@@ -7,25 +7,25 @@
 	<script type="text/javascript" src="<@s.url value="/scripts/swfobject.js"/>" ></script>
 	<script>
 	function updateByRegion(){
-		var url = '<@s.url value="/ajax/occResourceStatsByRegion.html"/>';
+		var url = '${cfg.getBaseUrlContextPath()}/ajax/occResourceStatsByRegion.html';
 		var params = { resourceId: ${resourceId}, type: $("#regionClass").val() }; 
 		var target = '#imgByRegion';	
 		ajaxHtmlUpdate(url, target, params);
 	};
 	function updateByCountry(){
-		var url = '<@s.url value="/ajax/occResourceStatsByCountry.html"/>';
+		var url = '${cfg.getBaseUrlContextPath()}/ajax/occResourceStatsByCountry.html';
 		var params = { resourceId: ${resourceId}, type: $("#countryClass").val() }; 
 		var target = '#imgByCountry';	
 		ajaxHtmlUpdate(url, target, params);
 	};
 	function updateByTaxon(){
-		var url = '<@s.url value="/ajax/occResourceStatsByTaxon.html"/>';
+		var url = '${cfg.getBaseUrlContextPath()}/ajax/occResourceStatsByTaxon.html';
 		var params = { resourceId: ${resourceId}, type: $("#rank").val() }; 
 		var target = '#imgByTaxon';	
 		ajaxHtmlUpdate(url, target, params);
 	};
 	function updateByHost(){
-		var url = '<@s.url value="/ajax/occResourceStatsByHost.html"/>';
+		var url = '${cfg.getBaseUrlContextPath()}/ajax/occResourceStatsByHost.html';
 		var params = { resourceId: ${resourceId}, type: $("#hostType").val() }; 
 		var target = '#imgByHost';	
 		ajaxHtmlUpdate(url, target, params);

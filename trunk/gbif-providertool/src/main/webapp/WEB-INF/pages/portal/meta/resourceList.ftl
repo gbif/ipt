@@ -29,7 +29,7 @@
 		// update keywords
 		$("#tagindex ul li a").click(function(e){
 			e.preventDefault(); 
-			ajaxHtmlUpdate("<@s.url value="/ajax/keywords.html"/>", "#keywords", { prefix:$(this).html() });
+			ajaxHtmlUpdate("<@s.url value="${cfg.getBaseUrlContextPath()}/ajax/keywords.html"/>", "#keywords", { prefix:$(this).html() });
 		});
 		var so = new SWFObject("<@s.url value="/scripts/IptResourcesMap.swf"/>", "swf", "690", "250", "9"); 
 		so.addParam("allowFullScreen", "true");

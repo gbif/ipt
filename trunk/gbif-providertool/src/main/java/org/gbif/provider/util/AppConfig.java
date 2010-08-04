@@ -1,17 +1,14 @@
 /*
  * Copyright 2009 GBIF.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
  * 
  * http://www.apache.org/licenses/LICENSE-2.0
  * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 package org.gbif.provider.util;
 
@@ -39,7 +36,6 @@ import java.net.URL;
 
 /**
  * TODO: Documentation.
- * 
  */
 public class AppConfig {
   private static final int DEFAULT_FULL_TEXT_SEARCH_HIT_COUNT = 10;
@@ -60,6 +56,46 @@ public class AppConfig {
 
   private static String gbifAnalyticsKey;
 
+  protected final Log log = LogFactory.getLog(AppConfig.class);
+
+  @Autowired
+  private IptNamingStrategy namingStrategy;
+
+  private final ProviderCfgManager providerCfgManager;
+
+  private ProviderCfg cfg;
+
+  private String version;
+
+  // OTHER UTILITY METHODS, MOSTLY DEFINING PATHS & URLs
+
+  private String copyrightYear;
+
+  private int fullTextSearchHitCount = DEFAULT_FULL_TEXT_SEARCH_HIT_COUNT;
+
+  private AppConfig(ProviderCfgManager providerCfgManager, String webappDir, String dataDir, String registryUrl,
+      String gbifAnalyticsKey, String iptVersion, String copyrightYear, String fullTextSearchHitCount) {
+    super();
+    AppConfig.dataDIR = dataDir; // new File(dataDir).getAbsolutePath();
+    AppConfig.webappDIR = new File(webappDir);
+    AppConfig.registryURL = registryUrl;
+    AppConfig.gbifAnalyticsKey = gbifAnalyticsKey;
+    try {
+      this.fullTextSearchHitCount = Integer.parseInt(fullTextSearchHitCount);
+    } catch (NumberFormatException e) {
+      log.error("Setting full text search hit count to default 10");
+    }
+    this.version = iptVersion;
+    this.copyrightYear = copyrightYear;
+    this.providerCfgManager = providerCfgManager;
+    cfg = providerCfgManager.load();
+    setBaseUrl(cfg.getBaseUrl());
+    reloadLogger();
+    log.info(String.format(
+        "\n--------------------\nIPT_DATA_DIR: %s\nIPT_WEBAPP_DIR: %s\nIPT_BASE_URL: %s\nIPT_GEOSERVER_URL: %s\nIPT_GEOSERVER_DATA_DIR: %s\n--------------------\n",
+        dataDIR, webappDIR.getAbsolutePath(), baseURL, cfg.getGeoserverUrl(), cfg.getGeoserverDataDir()));
+  }
+
   public static File getEmlFile(Long resourceId) {
     return getEmlFile(resourceId, 0);
   }
@@ -69,8 +105,7 @@ public class AppConfig {
     if (version > 0) {
       ver = "-" + version;
     }
-    File eml = new File(getResourceDataDir(resourceId), String.format(
-        "metadata/eml%s.xml", ver));
+    File eml = new File(getResourceDataDir(resourceId), String.format("metadata/eml%s.xml", ver));
     return eml;
   }
 
@@ -85,8 +120,6 @@ public class AppConfig {
   public static File getMetadataFile(Long resourceId) {
     return getResourceDataFile(resourceId, "metadata/metadata.xml");
   }
-
-  // OTHER UTILITY METHODS, MOSTLY DEFINING PATHS & URLs
 
   public static String getRegistryNodeUrl() {
     return String.format("%s/node", registryURL);
@@ -122,8 +155,7 @@ public class AppConfig {
 
   public static File getResourceDataDir(Long resourceId) {
     if (resourceId == null) {
-      throw new NullPointerException(
-          "Requires resourceId to find resource data dir");
+      throw new NullPointerException("Requires resourceId to find resource data dir");
     }
     File dir = new File(dataDIR, resourceId.toString());
     if (!dir.exists()) {
@@ -146,8 +178,7 @@ public class AppConfig {
   }
 
   public static File getResourceSourceFile(Long resourceId, String filename) {
-    return getResourceDataFile(resourceId,
-        String.format("sources/%s", filename));
+    return getResourceDataFile(resourceId, String.format("sources/%s", filename));
   }
 
   public static String getThesaurusDefinitionsUrl() {
@@ -163,6 +194,15 @@ public class AppConfig {
     return new File(webappDIR, relPath);
   }
 
+  public static void main(String[] args) {
+    try {
+      URL url = new URL("http://foo.com/");
+      System.out.println("Path=" + url.getPath());
+    } catch (MalformedURLException e) {
+      System.out.println("Path=" + "");
+    }
+  }
+
   // UTILITY METHODS
   private static String trimUrl(String url) {
     url = url.trim();
@@ -170,42 +210,6 @@ public class AppConfig {
       url = (String) url.subSequence(0, url.length() - 1);
     }
     return url;
-  }
-
-  protected final Log log = LogFactory.getLog(AppConfig.class);
-
-  @Autowired
-  private IptNamingStrategy namingStrategy;
-
-  private final ProviderCfgManager providerCfgManager;
-  private ProviderCfg cfg;
-  private String version;
-  private String copyrightYear;
-  private int fullTextSearchHitCount = DEFAULT_FULL_TEXT_SEARCH_HIT_COUNT;
-
-  private AppConfig(ProviderCfgManager providerCfgManager, String webappDir,
-      String dataDir, String registryUrl, String gbifAnalyticsKey,
-      String iptVersion, String copyrightYear, String fullTextSearchHitCount) {
-    super();
-    AppConfig.dataDIR = dataDir; // new File(dataDir).getAbsolutePath();
-    AppConfig.webappDIR = new File(webappDir);
-    AppConfig.registryURL = registryUrl;
-    AppConfig.gbifAnalyticsKey = gbifAnalyticsKey;
-    try {
-      this.fullTextSearchHitCount = Integer.parseInt(fullTextSearchHitCount);
-    } catch (NumberFormatException e) {
-      log.error("Setting full text search hit count to default 10");
-    }
-    this.version = iptVersion;
-    this.copyrightYear = copyrightYear;
-    this.providerCfgManager = providerCfgManager;
-    cfg = providerCfgManager.load();
-    setBaseUrl(cfg.getBaseUrl());
-    reloadLogger();
-    log.info(String.format(
-        "\n--------------------\nIPT_DATA_DIR: %s\nIPT_WEBAPP_DIR: %s\nIPT_BASE_URL: %s\nIPT_GEOSERVER_URL: %s\nIPT_GEOSERVER_DATA_DIR: %s\n--------------------\n",
-        dataDIR, webappDIR.getAbsolutePath(), baseURL, cfg.getGeoserverUrl(),
-        cfg.getGeoserverDataDir()));
   }
 
   public File getArchiveDescriptor(Long resourceId) {
@@ -217,10 +221,8 @@ public class AppConfig {
   }
 
   // ARCHIVES
-  public File getArchiveFile(Long resourceId, Extension extension)
-      throws IOException {
-    return new File(getResourceDataDir(resourceId), String.format(
-        "archive/%s.txt", extension.getName()));
+  public File getArchiveFile(Long resourceId, Extension extension) throws IOException {
+    return new File(getResourceDataDir(resourceId), String.format("archive/%s.txt", extension.getName()));
   }
 
   public File getArchiveTcsFile(Long resourceId) {
@@ -247,6 +249,21 @@ public class AppConfig {
     return cfg.getBaseUrl();
   }
 
+  /**
+   * Returns the context path of the base URLŒ
+   * 
+   * @return String
+   */
+  public String getBaseUrlContextPath() {
+    String path = "";
+    try {
+      URL url = new URL(cfg.getBaseUrl());
+      path = url.getPath();
+    } catch (MalformedURLException e) {
+    }
+    return path;
+  }
+
   public String getCopyrightYear() {
     return copyrightYear;
   }
@@ -271,8 +288,7 @@ public class AppConfig {
       throw new IllegalArgumentException("Core record class unknown");
     }
     format = format == null ? "" : "/" + format;
-    return String.format("%s/%s/%s%s", getBaseUrl(), type.alias,
-        core.getGuid(), format);
+    return String.format("%s/%s/%s%s", getBaseUrl(), type.alias, core.getGuid(), format);
   }
 
   public String getEmlUrl(String guid) {
@@ -316,8 +332,7 @@ public class AppConfig {
   }
 
   public String getGeoserverWebCacheUrl(Long resourceId) {
-    return cfg.getGeoserverUrl() + "/gwc/service/gmaps?LAYERS=gbif%3Aresource"
-        + resourceId;
+    return cfg.getGeoserverUrl() + "/gwc/service/gmaps?LAYERS=gbif%3Aresource" + resourceId;
   }
 
   public String getGoogleMapsApiKey() {
@@ -358,8 +373,8 @@ public class AppConfig {
   }
 
   /**
-   * Returns the resource metadata that encapsulates information about the GBIF
-   * Organisation representing this IPTs GBIF Resource in the GBRDS.
+   * Returns the resource metadata that encapsulates information about the GBIF Organisation representing this IPTs GBIF
+   * Resource in the GBRDS.
    * 
    * @return ResourceMetadata
    */
@@ -401,8 +416,7 @@ public class AppConfig {
 
   // SOURCE/UPLOAD FILES
   public File getSourceFile(Long resourceId, String fileName) {
-    File f = new File(getResourceDataDir(resourceId), String.format(
-        "sources/%s", fileName));
+    File f = new File(getResourceDataDir(resourceId), String.format("sources/%s", fileName));
     if (!f.getParentFile().exists()) {
       f.getParentFile().mkdirs();
     }
@@ -433,9 +447,7 @@ public class AppConfig {
   }
 
   public String getWfsEndpoint(Long resourceId) {
-    return String.format(
-        "%s/wfs?request=DescribeFeatureType&typeName=gbif:resource%s",
-        getGeoserverUrl(), resourceId);
+    return String.format("%s/wfs?request=DescribeFeatureType&typeName=gbif:resource%s", getGeoserverUrl(), resourceId);
   }
 
   public String getWmsEndpoint(Long resourceId) {
@@ -449,8 +461,7 @@ public class AppConfig {
   }
 
   /**
-   * Returns true if a GBIF Resource representing this IPT instance exists in
-   * the GBRDS. Otherwise returns false.
+   * Returns true if a GBIF Resource representing this IPT instance exists in the GBRDS. Otherwise returns false.
    * 
    * @return boolean
    */
@@ -464,8 +475,8 @@ public class AppConfig {
   }
 
   /**
-   * Returns true if a GBIF Organisation representing the GBIF Resource for this
-   * IPT instance exists in the GBRDS. Otherwise returns false.
+   * Returns true if a GBIF Organisation representing the GBIF Resource for this IPT instance exists in the GBRDS.
+   * Otherwise returns false.
    * 
    * @return boolean
    */
@@ -488,8 +499,7 @@ public class AppConfig {
       LogManager.resetConfiguration();
       IptFileAppender.LOGDIR = getLog4jFile().getParent();
       DOMConfigurator.configure(getLog4jFile().getAbsolutePath());
-      log.info("Reloaded log4j settings from "
-          + getLog4jFile().getAbsolutePath());
+      log.info("Reloaded log4j settings from " + getLog4jFile().getAbsolutePath());
     }
   }
 

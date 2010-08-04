@@ -65,7 +65,7 @@
 
 //google.load("jquery", "1.4.2");
 
-var registryUrl = "<@s.url value='/ajax/proxy.do?uri=${registryOrgUrl}/'/>";
+var registryUrl = '${cfg.getBaseUrlContextPath()}/ajax/proxy.do?uri=${registryOrgUrl}/';
 var registryService = new RegistryServiceAsync(registryUrl);  
 var titleWidget = new Widget('titleWidget');
 var titleTextBox = new TextBox('titleTextBox');

@@ -54,7 +54,8 @@
 	
 	function loadVocabulary(id){
     	var propertyFormId = "propertyForm"+id;
-		var url = '<@s.url value="/ajax/propVocabulary.html"/>';
+		//var url = '<@s.url value="/ajax/propVocabulary.html"/>';
+		var url = '${cfg.getBaseUrlContextPath()}/ajax/propVocabulary.html';		
 		ajaxHtmlUpdate(url, "div#"+propertyFormId+" div.valueMapping", {id:id});
 	}
 	

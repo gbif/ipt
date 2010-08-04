@@ -50,7 +50,7 @@
  * Loads language asynchronously.
  */
   function LoadLangAsync(callback) {
-    var url = '/ajax/vocSelect.html';
+    var url = '${cfg.getBaseUrlContextPath()}/ajax/vocSelect.html';
     // load language codes
     var params = {uri:"http://iso.org/639-1",alpha:true,empty:true};
     var id = "langSelect";
@@ -61,7 +61,7 @@
  * Loads contact countries asynchronously.
  */
   function LoadContactCountriesAsync(callback) {
-    var url = '/ajax/vocSelect.html';
+    var url = '${cfg.getBaseUrlContextPath()}/ajax/vocSelect.html';
     // load country codes
     var params = {uri:"http://iso.org/iso3166",alpha:true,empty:true};
     var id = "contactCountry";
@@ -72,7 +72,7 @@
  * Loads creator countries asynchronously.
  */
   function LoadCreatorCountriesAsync(callback) {
-    var url = '/ajax/vocSelect.html';
+    var url = '${cfg.getBaseUrlContextPath()}/ajax/vocSelect.html';
     // load country codes
     var params = {uri:"http://iso.org/iso3166",alpha:true,empty:true};
     var id = "creatorCountry";
@@ -83,7 +83,7 @@
  * Loads metadataProvider countries asynchronously.
  */
   function LoadMetadataProviderCountriesAsync(callback) {
-    var url = '/ajax/vocSelect.html';
+    var url = '${cfg.getBaseUrlContextPath()}/ajax/vocSelect.html';
     // load country codes
     var params = {uri:"http://iso.org/iso3166",alpha:true,empty:true};
     var id = "metadataProviderCountry";

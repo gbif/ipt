@@ -10,7 +10,7 @@
 <p class="reminder"><@s.text name="uploadstatus.reminder"/></p>
 
 
-<@s.url id="statusUrl" value="/ajax/resourceStatus.html?resourceId=${Parameters.resourceId}"/>
+<@s.url id="statusUrl" value="${cfg.getBaseUrlContextPath()}/ajax/resourceStatus.html?resourceId=${Parameters.resourceId}"/>
 <@s.div id="status" theme="ajax" href="%{statusUrl}" updateFreq="3000" showLoadingText="false" 
     startTimerListenTopics="/startTimer" stopTimerListenTopics="/stopTimer" executeScripts="true"
     errorText="Can't load status." >
