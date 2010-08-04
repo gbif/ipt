@@ -9,10 +9,12 @@ package org.gbif.ipt.model.factory;
 
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl.UpdateResult;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * TODO: Documentation.
@@ -30,6 +32,15 @@ public class MockVocabularyManager implements VocabulariesManager {
     return new Vocabulary();
   }
 
+  /*
+   * (non-Javadoc)
+   * @see org.gbif.ipt.service.admin.VocabulariesManager#getI18nVocab(java.lang.String, java.lang.String)
+   */
+  public Map<String, String> getI18nVocab(String uri, String lang) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
   public List<Vocabulary> list() {
     return new ArrayList<Vocabulary>();
   }
@@ -38,7 +49,13 @@ public class MockVocabularyManager implements VocabulariesManager {
     return 0;
   }
 
-  public void updateAll() {
+  /*
+   * (non-Javadoc)
+   * @see org.gbif.ipt.service.admin.VocabulariesManager#updateAll()
+   */
+  public UpdateResult updateAll() {
+    // TODO Auto-generated method stub
+    return null;
   }
 
 }

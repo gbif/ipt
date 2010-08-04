@@ -8,6 +8,7 @@ import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.service.admin.DwCExtensionManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl.UpdateResult;
 import org.gbif.registry.api.client.Gbrds;
 import org.gbif.registry.api.client.Gbrds.ExtensionApi;
 import org.gbif.registry.api.client.GbrdsExtension;
@@ -64,7 +65,7 @@ public class DwCExtensionsAction extends POSTAction {
   private List<Extension> extensions;
   private Extension extension;
   private String url;
-  private Boolean updateVocab = false;
+  private Boolean updateVocabs = false;
   private int numVocabs = 0;
   private Date vocabsLastUpdated = null;
 
@@ -99,27 +100,23 @@ public class DwCExtensionsAction extends POSTAction {
   }
 
   public Boolean getUpdateVocab() {
-    return updateVocab;
+    return updateVocabs;
   }
 
   public Date getVocabsLastUpdated() {
     return vocabsLastUpdated;
   }
 
-  public void install() throws Exception {
-    URL extensionURL;
-    try {
-      extensionURL = new URL(url);
-      extensionManager.install(extensionURL);
-      addActionMessage(getText("admin.extension.install.success", new String[]{url}));
-    } catch (Exception e) {
-      log.debug(e);
-      System.out.println(getText("admin.extension.install.error", new String[]{url}));
-      addActionError(getText("admin.extension.install.error", new String[]{url}));
-    }
-  }
-
   public String list() {
+    if (updateVocabs) {
+      UpdateResult result = vocabManager.updateAll();
+      addActionMessage(result.updated.size() + " vocabularies have been updated");
+      addActionMessage(result.unchanged.size() + " vocabularies have not been modifed since last download");
+      if (!result.errors.isEmpty()) {
+        addActionError(result.errors.size() + " vocabularies produced an error when updating. Please consult logs!");
+      }
+    }
+
     extensions = extensionManager.list();
     Collection<Vocabulary> vocabs = vocabManager.list();
     numVocabs = vocabs.size();
@@ -156,15 +153,12 @@ public class DwCExtensionsAction extends POSTAction {
   @Override
   public String save() {
     try {
-      if (updateVocab) {
-        vocabManager.updateAll();
-        addActionMessage("Updated " + vocabManager.list().size() + " vocabularies");
-      } else {
-        install();
-      }
+      extensionManager.install(new URL(url));
+      addActionMessage(getText("admin.extension.install.success", new String[]{url}));
     } catch (Exception e) {
-      addActionError(e.getMessage());
-      log.error(e);
+      log.debug(e);
+      System.out.println(getText("admin.extension.install.error", new String[]{url}));
+      addActionError(getText("admin.extension.install.error", new String[]{url}));
     }
     return SUCCESS;
   }
@@ -173,9 +167,9 @@ public class DwCExtensionsAction extends POSTAction {
     this.extension = extension;
   }
 
-  public void setUpdateVocab(String x) {
+  public void setUpdateVocabs(String x) {
     if (StringUtils.trimToNull(x) != null) {
-      this.updateVocab = true;
+      this.updateVocabs = true;
     }
   }
 

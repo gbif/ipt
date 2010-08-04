@@ -8,24 +8,21 @@ import org.gbif.ipt.model.factory.VocabularyFactory;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.utils.DownloadUtil;
 import org.gbif.registry.api.client.Gbrds;
-import org.gbif.registry.api.client.GbrdsThesaurus;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.thoughtworks.xstream.XStream;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOCase;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,8 +32,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -47,112 +46,154 @@ import javax.xml.parsers.ParserConfigurationException;
  */
 @Singleton
 public class VocabulariesManagerImpl extends BaseManager implements VocabulariesManager {
-  // keep vocabularies accessible via their normed filename which is build from a vocabularies URL
-  private Map<String, Vocabulary> vocabulariesByFilename = new HashMap<String, Vocabulary>();
-  // keep additional hash keyed on unique vocabulary URI (a required property of a vocabulary)
-  private Map<String, Vocabulary> vocabulariesByUri = new HashMap<String, Vocabulary>();
+  public class UpdateResult {
+    // key=uri
+    public Set<String> updated = new HashSet<String>();
+    // key=uri
+    public Set<String> unchanged = new HashSet<String>();
+    // key=uri, value=error text
+    public Map<String, String> errors = new HashMap<String, String>();
+  }
+
+  private Map<URL, Vocabulary> vocabularies = new HashMap<URL, Vocabulary>();
+  private Map<String, URL> uri2url = new HashMap<String, URL>();
   private static final String CONFIG_FOLDER = ".vocabularies";
+  public static final String PERSISTENCE_FILE = "vocabularies.xml";
   private VocabularyFactory vocabFactory;
-  private HttpClient httpClient;
+  private DownloadUtil downloadUtil;
+  private final XStream xstream = new XStream();
   private final Gbrds client;
 
   /**
    * 
    */
   @Inject
-  public VocabulariesManagerImpl(VocabularyFactory vocabFactory, HttpClient httpClient, Gbrds client) {
+  public VocabulariesManagerImpl(VocabularyFactory vocabFactory, DownloadUtil downloadUtil, Gbrds client) {
     super();
     this.vocabFactory = vocabFactory;
     this.client = client;
-    this.httpClient = httpClient;
+    this.downloadUtil = downloadUtil;
+    defineXstreamMapping();
+  }
+
+  private boolean addToCache(Vocabulary v, URL url) {
+    if (url == null) {
+      log.error("Cannot add vocabulary " + v.getUri() + " to cache without a valid URL");
+      return false;
+    }
+    uri2url.put(v.getUri().toLowerCase(), url);
+    // keep vocab in local lookup
+    if (vocabularies.containsKey(url)) {
+      log.warn("Vocabulary URI " + v.getUri() + " exists already - overwriting with new vocabulary from " + url);
+    }
+    vocabularies.put(url, v);
+    return true;
+  }
+
+  private void defineXstreamMapping() {
   }
 
   public void delete(String uri) {
-    Vocabulary vocab = vocabulariesByUri.remove(uri);
-    // TODO: check if its used by some extension
-    if (vocab != null) {
-      // also need to remove from by filename hash
-      String filename = null;
-      for (Map.Entry<String, Vocabulary> entry : vocabulariesByFilename.entrySet()) {
-        if (entry.getValue().equals(vocab)) {
-          filename = entry.getKey();
-          vocabulariesByFilename.remove(filename);
-          break;
+    if (uri != null) {
+      URL url = uri2url.get(uri.toLowerCase());
+      Vocabulary vocab = vocabularies.remove(url);
+      // TODO: check if its used by some extension
+      if (vocab != null) {
+        // remove file too
+        File f = getVocabFile(url);
+        if (f.exists()) {
+          f.delete();
+        } else {
+          log.warn("Local vocabulary copy missing, cant delete " + f.getAbsolutePath());
         }
-      }
-      // remove file too
-      File f = getVocabFile(filename);
-      if (f.exists()) {
-        f.delete();
-      } else {
-        log.warn("Local vocabulary copy missing, cant delete " + filename);
       }
     }
   }
 
   public Vocabulary get(String uri) {
-    return vocabulariesByUri.get(uri);
+    if (uri == null) {
+      return null;
+    }
+    URL url = uri2url.get(uri.toLowerCase());
+    return vocabularies.get(url);
   }
 
   public Vocabulary get(URL url) {
-    File f = getVocabFile(url);
-    if (!vocabulariesByFilename.containsKey(f.getName())) {
-      install(url);
+    if (!vocabularies.containsKey(url)) {
+      try {
+        install(url);
+      } catch (InvalidConfigException e) {
+        log.error(e);
+      } catch (IOException e) {
+        log.error(e);
+      }
     }
-    return vocabulariesByFilename.get(f.getName());
+    return vocabularies.get(url);
   }
 
-  private File getVocabFile(String filename) {
-    return dataDir.configFile(CONFIG_FOLDER + "/" + filename);
+  /*
+   * (non-Javadoc)
+   * @see org.gbif.ipt.service.admin.VocabulariesManager#getI18nVocab(java.lang.String, java.lang.String)
+   */
+  public Map<String, String> getI18nVocab(String uri, String lang) {
+    // TODO Auto-generated method stub
+    return null;
   }
 
   private File getVocabFile(URL url) {
     String filename = url.toString().replaceAll("[/.:]+", "_") + ".xml";
-    return getVocabFile(filename);
+    return dataDir.configFile(CONFIG_FOLDER + "/" + filename);
   }
 
-  private Vocabulary install(URL url) {
+  /**
+   * Downloads vocabulary into local file for subsequent IPT startups
+   * and adds the vocab to the internal cache.
+   * Downloads use a conditional GET, i.e. only download the vocabulary files if the content has been changed since the
+   * last download.
+   * lastModified dates are taken from the filesystem.
+   * 
+   * @param url
+   * @return
+   * @throws IOException
+   */
+  private Vocabulary install(URL url) throws IOException, InvalidConfigException {
+    Vocabulary v = null;
     if (url != null) {
-      // download vocabulary into local file first for subsequent IPT startups
+      // the file to download to. It may exist already in which case we do a conditional download
       File vocabFile = getVocabFile(url);
-      Writer localVocabWriter = null;
-      GetMethod method = new GetMethod(url.toString());
-      method.setFollowRedirects(true);
-      try {
-        FileUtils.forceMkdir(vocabFile.getParentFile());
-        localVocabWriter = new FileWriter(vocabFile);
-        httpClient.executeMethod(method);
-        InputStream is = method.getResponseBodyAsStream();
-        IOUtils.copy(is, localVocabWriter);
-        log.info("Successfully downloaded Vocabulary " + url);
-      } catch (Exception e) {
-        log.error(e);
-      } finally {
+      FileUtils.forceMkdir(vocabFile.getParentFile());
+      if (downloadUtil.downloadIfChanged(url, vocabFile)) {
+        // parse vocabulary file
         try {
-          if (localVocabWriter != null) {
-            localVocabWriter.close();
-          }
-          method.releaseConnection();
-        } catch (RuntimeException e) {
-        } catch (IOException e) {
+          v = loadFromFile(vocabFile);
+          addToCache(v, url);
+        } catch (InvalidConfigException e) {
+          log.error(e);
         }
+
+      } else {
+        log.info("Vocabulary " + url + " hasn't been modified since last download");
       }
 
-      try {
-        return loadFromFile(vocabFile);
-      } catch (InvalidConfigException e) {
-        e.printStackTrace();
-      }
     }
-    return null;
+    return v;
   }
 
   public List<Vocabulary> list() {
-    return new ArrayList<Vocabulary>(vocabulariesByFilename.values());
+    return new ArrayList<Vocabulary>(vocabularies.values());
   }
 
   public int load() {
     File dir = dataDir.configFile(CONFIG_FOLDER);
+    // first load peristent uri2url map
+    try {
+      InputStream in = new FileInputStream(dataDir.configFile(CONFIG_FOLDER + "/" + PERSISTENCE_FILE));
+      uri2url = (Map<String, URL>) xstream.fromXML(in);
+      log.debug("Loaded uri2url vocabulary map with " + uri2url.size() + " entries");
+    } catch (IOException e) {
+      log.warn("Cannot load the uri2url mapping: " + e.getMessage());
+    }
+    // now iterate over all vocab files and load them
     int counter = 0;
     if (dir.isDirectory()) {
       List<File> files = new ArrayList<File>();
@@ -160,8 +201,10 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       files.addAll(Arrays.asList(dir.listFiles(ff)));
       for (File ef : files) {
         try {
-          loadFromFile(ef);
-          counter++;
+          Vocabulary v = loadFromFile(ef);
+          if (addToCache(v, uri2url.get(v.getUri().toLowerCase()))) {
+            counter++;
+          }
         } catch (InvalidConfigException e) {
           log.error("Cant load local vocabulary definition " + ef.getAbsolutePath(), e);
         }
@@ -180,12 +223,6 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       // read filesystem date
       Date modified = new Date(vocabFile.lastModified());
       v.setLastUpdate(modified);
-      // keep vocab in local lookup
-      vocabulariesByFilename.put(vocabFile.getName(), v);
-      if (vocabulariesByUri.containsKey(v.getUri())) {
-        log.warn("Vocabulary URI " + v.getUri() + " exists already - overwriting with new vocabulary");
-      }
-      vocabulariesByUri.put(v.getUri(), v);
       log.info("Successfully loaded Vocabulary: " + v.getTitle());
     } catch (FileNotFoundException e) {
       log.error("Cant find local vocabulary file", e);
@@ -206,17 +243,41 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
     return v;
   }
 
-  public void updateAll() {
-    // build uri lookup dict
-    List<GbrdsThesaurus> thes = client.getIptApi().listThesauri().execute().getResult();
-    Map<String, URL> locationLookup = new HashMap<String, URL>();
-    for (GbrdsThesaurus th : thes) {
-      // need updated API for this to work...
-      // consider storing the original vocab URL somewhere for later lookup...
-    }
-    for (Vocabulary v : vocabulariesByUri.values()) {
-      log.debug("Updating vocabulary " + v.getUri());
-      install(locationLookup.get(v.getUri()));
+  public void save() {
+    // persist uri2url
+    log.debug("Saving uri2url vocabulary map with " + uri2url.size() + " entries ...");
+    Writer userWriter;
+    try {
+      userWriter = org.gbif.ipt.utils.FileUtils.startNewUtf8File(dataDir.configFile(CONFIG_FOLDER + "/"
+          + PERSISTENCE_FILE));
+      xstream.toXML(uri2url, userWriter);
+    } catch (IOException e) {
+      log.error("Cant write uri2url mapping", e);
     }
   }
+
+  public UpdateResult updateAll() {
+    UpdateResult result = new UpdateResult();
+    for (Vocabulary v : vocabularies.values()) {
+      log.debug("Updating vocabulary " + v.getUri());
+      URL url = uri2url.get(v.getUri());
+      File vocabFile = getVocabFile(url);
+      Date modified = new Date(vocabFile.lastModified());
+      try {
+        install(url);
+        Date modified2 = new Date(vocabFile.lastModified());
+        if (modified.equals(modified2)) {
+          // no update
+          result.unchanged.add(v.getUri());
+        } else {
+          result.updated.add(v.getUri());
+        }
+      } catch (Exception e) {
+        result.errors.put(v.getUri(), e.getMessage());
+        log.error(e);
+      }
+    }
+    return result;
+  }
+
 }
