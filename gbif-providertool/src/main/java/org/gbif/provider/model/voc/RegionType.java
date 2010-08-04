@@ -24,7 +24,7 @@ import java.util.List;
  * 
  */
 public enum RegionType {
-  Continent("continent"), Waterbody("waterbody"), IslandGroup("islandGroup"), Island(
+  Continent("continent"), WaterBody("waterBody"), IslandGroup("islandGroup"), Island(
       "island"), Country("country"), State("stateProvince"), County("county"), Locality(
       "locality");
 
@@ -34,7 +34,7 @@ public enum RegionType {
   static {
     List<RegionType> dwc = new ArrayList<RegionType>();
     dwc.add(Continent);
-    dwc.add(Waterbody);
+    dwc.add(WaterBody);
     dwc.add(IslandGroup);
     dwc.add(Island);
     dwc.add(Country);
