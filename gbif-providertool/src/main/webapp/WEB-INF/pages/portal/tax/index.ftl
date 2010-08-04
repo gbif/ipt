@@ -5,19 +5,19 @@
     <meta name="submenu" content="tax"/>    
 	<script>
 	function updateByTaxon(){
-		var url = '<@s.url value="/ajax/taxResourceStatsByTaxon.html"/>';
+		var url = '${cfg.getBaseUrlContextPath()}/ajax/taxResourceStatsByTaxon.html';
 		var params = { resourceId: ${resourceId}, type: $("#rank").val() }; 
 		var target = '#imgByTaxon';	
 		ajaxHtmlUpdate(url, target, params);
 	};
 	function updateByStatus(){
-		var url = '<@s.url value="/ajax/taxResourceStatsByStatus.html"/>';
+		var url = '${cfg.getBaseUrlContextPath()}/ajax/taxResourceStatsByStatus.html';
 		var params = { resourceId: ${resourceId}, type: $("#statusClass").val() }; 
 		var target = '#imgByStatus';	
 		ajaxHtmlUpdate(url, target, params);
 	};
 	function updateByRank(){
-		var url = '<@s.url value="/ajax/taxResourceStatsByRank.html"/>';
+		var url = '${cfg.getBaseUrlContextPath()}/ajax/taxResourceStatsByRank.html';
 		var params = { resourceId: ${resourceId} }; 
 		var target = '#imgByRank';	
 		ajaxHtmlUpdate(url, target, params);

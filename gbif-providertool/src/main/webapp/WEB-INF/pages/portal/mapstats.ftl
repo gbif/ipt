@@ -10,7 +10,7 @@
 	<script>
 	function updateMap(area){
 		var params = {resourceId:${resourceId}, zoom:'true', area:area }; 
-		var url = '<@s.url value="/ajax/occResourceStatsBy%{statsBy}.html"/>';
+		var url = '${cfg.getBaseUrlContextPath()}/ajax/occResourceStatsBy%{statsBy}.html';
 		var target = 'stats-map';	
 		var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
 	};

@@ -8,7 +8,7 @@
     <meta name="heading" content="<@s.text name='annotationslist.heading'/>"/>
 	<script type="text/javascript">  
 		function showAnnotation(anchor){
-			var url = '<@s.url value="/ajax/annotation.html"/>';
+			var url = '${cfg.getBaseUrlContextPath()}/ajax/annotation.html';
 			var params = { resourceId:${resourceId}, id: anchor.name }; 
 			$.get(url, params, function(data) { 
 				$(anchor).parent().parent().after("<tr class='odd anno'><td colspan='4'>"+data+"</td></tr>");

@@ -51,7 +51,7 @@
                 return row.name;
             }
         }).result( function(event, data, formatted) {
-            var url = "<@s.url value='/ajax/proxy.do?uri=${registryOrgUrl}/'/>"+data.key+'.json';
+            var url = '${cfg.getBaseUrlContextPath()}/ajax/proxy.do?uri=${registryOrgUrl}/'+data.key+'.json';
             $.getJSON(url, udpateOrg);
 //            alert("<@s.text name='config.ipt.passwordmessage'/>");
             showWithKey();
@@ -97,9 +97,9 @@
         <#-- the IPT is already registered. No way to change the organisation again -->
       <#else>
         <#-- the IPT is not registered. Provide autocompletes for node & org selection -->
-        $.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryOrgUrl}.json'/>", udpateOrgList);
+        $.getJSON('${cfg.getBaseUrlContextPath()}/ajax/proxy.do?uri=${registryOrgUrl}.json', udpateOrgList);
         $("#orgTitle").attr("readonly","readonly");
-        $.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryNodeUrl}.json'/>", udpateNodeList);        
+        $.getJSON('${cfg.getBaseUrlContextPath()}/ajax/proxy.do?uri=${registryNodeUrl}.json', udpateNodeList);        
 // Don't want GBIF Node selector to be disabled. May still need to select a node.
 //        $("#orgNodeName").attr("readonly","readonly");
         $("#btnNew").click(function(e) {
@@ -112,12 +112,12 @@
         });
       </#if>
       <#if config.isOrgRegistered()>
-        $.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryOrgUrl}/${config.org.uddiID}.json'/>", udpateOrg);
+        $.getJSON('${cfg.getBaseUrlContextPath()}/ajax/proxy.do?uri=${registryOrgUrl}/${config.org.uddiID}.json', udpateOrg);
         showWithKey();
       <#else>        
         showWithoutKey();
         <#if config.orgNode??>
-          $.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryNodeUrl}/${config.orgNode}.json'/>", function(data){
+          $.getJSON('${cfg.getBaseUrlContextPath()}/ajax/proxy.do?uri=${registryNodeUrl}/${config.orgNode}.json', function(data){
             $("#orgNodeName").val(data.nodeName);
             //console.debug(data);
           });

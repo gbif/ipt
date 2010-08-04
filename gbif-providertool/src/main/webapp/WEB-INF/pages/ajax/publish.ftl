@@ -50,7 +50,7 @@
 
   <#if resource.isRegistered()>
     <script>
-      $.getJSON("<@s.url value='/ajax/proxy.do?uri=${resource.registryUrl}.json'/>", function(data){
+      $.getJSON('${cfg.getBaseUrlContextPath()}/ajax/proxy.do?uri=${resource.registryUrl}.json'", function(data){
         //console.debug(data);
         $table='<table>';	
         $.each(data,function(x,y) {
