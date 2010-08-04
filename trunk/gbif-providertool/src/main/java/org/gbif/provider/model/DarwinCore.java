@@ -244,37 +244,15 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
       "identificationQualifier",
       "typeStatus",
       // Taxon
-      "taxonID", 
-      "scientificNameID", 
-      "acceptedNameUsageID",
-      "parentNameUsageID", 
-      "originalNameUsageID", 
-      "nameAccordingToID",
-      "namePublishedInID", 
-      "taxonConceptID", 
-      "scientificName",
-      "acceptedNameUsage", 
-      "parentNameUsage", 
-      "originalNameUsage",
-      "nameAccordingTo", 
-      "namePublishedIn", 
-      "higherClassification", 
-      "kingdom",
-      "phylum", 
-      "class", 
-      "order", 
-      "family", 
-      "genus", 
-      "subgenus",
-      "specificEpithet", 
-      "infraspecificEpithet", 
-      "taxonRank",
-      "verbatimTaxonRank", 
-      "scientificNameAuthorship", 
-      "vernacularName",
-      "nomenclaturalCode", 
-      "taxonomicStatus", 
-      "nomenclaturalStatus",
+      "taxonID", "scientificNameID", "acceptedNameUsageID",
+      "parentNameUsageID", "originalNameUsageID", "nameAccordingToID",
+      "namePublishedInID", "taxonConceptID", "scientificName",
+      "acceptedNameUsage", "parentNameUsage", "originalNameUsage",
+      "nameAccordingTo", "namePublishedIn", "higherClassification", "kingdom",
+      "phylum", "class", "order", "family", "genus", "subgenus",
+      "specificEpithet", "infraspecificEpithet", "taxonRank",
+      "verbatimTaxonRank", "scientificNameAuthorship", "vernacularName",
+      "nomenclaturalCode", "taxonomicStatus", "nomenclaturalStatus",
       "taxonRemarks");
 
   private static final Log log = LogFactory.getLog(DarwinCore.class);
@@ -406,17 +384,23 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     }
   }
 
-// generic property value getter taking parameters. propName is the name without namespace.
+  // generic property value getter taking parameters. propName is the name
+  // without namespace.
   private static String propertyValue(DarwinCore entity, String propName) {
-    // "class" needs to be translated to an alternative that isn't a Java keyword to function with getters and setters as well as with the H2 database, where the term name is stored as "CLASSS".
+    // "class" needs to be translated to an alternative that isn't a Java
+    // keyword to function with getters and setters as well as with the H2
+    // database, where the term name is stored as "CLASSS".
     if (propName.equals("class")) {
       propName = "classs";
     }
-    // sourceID needs to be translated to sourceId to match the setters, getters, and database. The Darwin Core Archive Reader uses an enum for sourceID, which is why the translation is done here.
-    if( propName.equals("sourceID")){
-    propName = "sourceId";
-    
-    // To make the getter, append the property name with a capital first letter to "get".
+    // sourceID needs to be translated to sourceId to match the setters,
+    // getters, and database. The Darwin Core Archive Reader uses an enum for
+    // sourceID, which is why the translation is done here.
+    if (propName.equals("sourceID")) {
+      propName = "sourceId";
+    }
+    // To make the getter, append the property name with a capital first letter
+    // to "get".
     String getter = String.format("get%s",
         propName.substring(0, 1).toUpperCase().concat(propName.substring(1)));
     String value = null;
@@ -915,7 +899,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     return catalogNumber;
   }
 
-// This getter must match the name of the field in the H2 database.
+  // This getter must match the name of the field in the H2 database.
   @Column(length = 128, name = "classs")
   // @Column(length = 128)
   public String getClasss() {
@@ -1466,9 +1450,11 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
 
   @Lob
   public String getOccurrenceID() {
-    // JRW: DarwinCore class can be used for a taxon resource or an occurrence resource. I don't think it was safe to assume that the guid would be only the occurrenceId
-    //  return guid;
-     return occurrenceID;
+    // JRW: DarwinCore class can be used for a taxon resource or an occurrence
+    // resource. I don't think it was safe to assume that the guid would be only
+    // the occurrenceId
+    // return guid;
+    return occurrenceID;
   }
 
   @Lob
@@ -1762,20 +1748,21 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
           acceptedNameUsage, acceptedNameUsageID, accessRights,
           associatedMedia, associatedOccurrences, associatedReferences,
           associatedSequences, associatedTaxa, basisOfRecord, bed, behavior,
-          bibliographicCitation, catalogNumber, classs, collectionCode, collectionID,
-          continent, coordinatePrecision, coordinateUncertaintyInMeters,
-          country, countryCode, county, dataGeneralizations, datasetID,
-          datasetName, dateIdentified, day, decimalLatitude, decimalLongitude,
-          disposition, dynamicProperties, earliestAgeOrLowestStage,
-          earliestEonOrLowestEonothem, earliestEpochOrLowestSeries,
-          earliestEraOrLowestErathem, earliestPeriodOrLowestSystem,
-          endDayOfYear, establishmentMeans, eventDate, eventID, eventRemarks,
-          eventTime, family, fieldNotes, fieldNumber, footprintSRS,
-          footprintSpatialFit, footprintWKT, formation, genus, geodeticDatum,
-          geologicalContextID, georeferenceProtocol, georeferenceRemarks,
-          georeferenceSources, georeferenceVerificationStatus, georeferencedBy,
-          group, habitat, higherClassification, higherGeography,
-          higherGeographyID, highestBiostratigraphicZone, identificationID,
+          bibliographicCitation, catalogNumber, classs, collectionCode,
+          collectionID, continent, coordinatePrecision,
+          coordinateUncertaintyInMeters, country, countryCode, county,
+          dataGeneralizations, datasetID, datasetName, dateIdentified, day,
+          decimalLatitude, decimalLongitude, disposition, dynamicProperties,
+          earliestAgeOrLowestStage, earliestEonOrLowestEonothem,
+          earliestEpochOrLowestSeries, earliestEraOrLowestErathem,
+          earliestPeriodOrLowestSystem, endDayOfYear, establishmentMeans,
+          eventDate, eventID, eventRemarks, eventTime, family, fieldNotes,
+          fieldNumber, footprintSRS, footprintSpatialFit, footprintWKT,
+          formation, genus, geodeticDatum, geologicalContextID,
+          georeferenceProtocol, georeferenceRemarks, georeferenceSources,
+          georeferenceVerificationStatus, georeferencedBy, group, habitat,
+          higherClassification, higherGeography, higherGeographyID,
+          highestBiostratigraphicZone, identificationID,
           identificationQualifier, identificationReferences,
           identificationRemarks, identifiedBy, individualCount, individualID,
           informationWithheld, infraspecificEpithet, institutionCode,
@@ -2337,17 +2324,25 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     this.previousIdentifications = previousIdentifications;
   }
 
-// generic property value setter taking parameters. property is the name without namespace.
+  // generic property value setter taking parameters. property is the name
+  // without namespace.
   public boolean setPropertyValue(ExtensionProperty property, String value) {
     try {
-    // "class" needs to be translated to an alternative that isn't a Java keyword to function with getters and setters as well as with the H2 database, where the term name is stored as "CLASSS".
-    if (propName.equals("class")) {
-      propName = "classs";
-    }
-    // sourceID needs to be translated to sourceId to match the setters, getters, and database. The Darwin Core Archive Reader uses an enum for sourceID, which is why the translation is done here.
-    if( propName.equals("sourceID")){
-    propName = "sourceId";
-    // To make the setter, append the property name with a capital first letter to "set".
+      String propName = property.getName();
+      // "class" needs to be translated to an alternative that isn't a Java
+      // keyword to function with getters and setters as well as with the H2
+      // database, where the term name is stored as "CLASSS".
+      if (propName.equals("class")) {
+        propName = "classs";
+      }
+      // sourceID needs to be translated to sourceId to match the setters,
+      // getters, and database. The Darwin Core Archive Reader uses an enum for
+      // sourceID, which is why the translation is done here.
+      if (propName.equals("sourceID")) {
+        propName = "sourceId";
+      }
+      // To make the setter, append the property name with a capital first
+      // letter to "set".
       Method m = this.getClass().getMethod(
           String.format("set%s",
               property.getName().substring(0, 1).toUpperCase().concat(
@@ -2513,7 +2508,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
   }
 
   public void setWaterBody(String waterBody) {
-    this.waterbody = waterBody;
+    this.waterBody = waterBody;
   }
 
   public void setYear(String year) {
