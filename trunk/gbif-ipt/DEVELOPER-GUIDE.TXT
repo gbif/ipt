@@ -14,12 +14,28 @@ qFyoVmtdwON
 ### Guice ###
 IptModule contains wiring, but for interfaces these are annotated directly with @ImplementedBy(ConfigManagerImpl.class)
  
+### Configuration ###
+DataDir
+ inside WEB-INF of a running IPT a single file datadir.location is created that points to the currently used datadir where all configuration and data is stored. If this file is deleted the setup intercseptor will ask the user to assign a new (potentially existing) datadir
+ hidden file ".gbifreg" indicates that the datadir is linked to the production registry. This cannot be changed again from the UI
+ the class is used to get handles on file within the current datadir - all access to files in the datadir should be done via this class!!!
+
+AppConfig
+ contains all IPT wide configuration, in particular the baseURL for the application
+ 
 ### Struts2 ###
 BaseAction:
  supplies the AppConfig, implements session aware and gives access to current user, implements a simpler TextProvider which is faster than the native struts2 one. 
 
+Interceptors
+ setup interceptor checks if the datadir is configured and an admin user exists - otherwise redirects to the setup action
+ resource interceptor: checks a manager is allowed to edit this resource and load a new resource (+eml & resource config) into the users session
+ access control for managers & admins is done in seperate interceptors
+ 
+ stacks:
+ for each package (root, portal, manage, admin) its own interceptor stack exists
 
-FormAction:
+POSTAction:
  this helper action class simplifies working with forms.
  For modifying instance data always use POST, never GET.
  The "input" resultname is used to show the form. We can therefore use the standard validation interceptor which uses the input result when data doesnt validate.
@@ -27,8 +43,8 @@ FormAction:
 
  The action implements preparable, request aware and the execute method.
    execute: FormAction determines if a POST or GET is used and calls save (POST), delete (POST + delete=true) or nothing (GET). 
- If any other action values need to be set you can override load() or this method - but remember to call super.execute().
-   prepare: the "id" parameter of the request object is stored in the action and the load() method which should in most cases be overriden is called
+ If any other action values need to be set you can override prepare() - but remember to call super.execute().
+   prepare: the "id" parameter of the request object is stored in the action
 
  Most full actions for modifying entities should override the following methods:
    prepare(): load existing values based on "id" parameter and request object
@@ -44,6 +60,10 @@ Validation:
   validation package for support classes to validate reoccurring entities, e.g. users
   
 ### HTML Design ###
+links
+  for absolute links always use ${base}/my/ipt/link.do and refrain from using struts or jsp url tags!
+  always use the suffix *.do for all urls within the IPT
+   
 forms
   use the forms.ftl macros instead of struts2 tags!
   i18n select drop downs
@@ -62,22 +82,12 @@ use jconfirmation plugin with plain links or buttons when asking for confirmatio
 
 
 ### CSS ###
-stick with the single css plus one for the portal webapp
+stick with the single css plus one for the portal webapp in the future
 
 ### Managers ###
 2 tier architecture only with interfaces + implementation 
 
-
-
-######################
-# CODE OVERVIEW      #
-######################
-
-### Configuration ###
-DataDir
- - hidden file ".gbifreg" indicates that the datadir is linked to the production registry. This cannot be changed again from the UI
- 
-AppConfig
-
-### Guice ###
+### i18n ###
+templates, actions and also important service messages should be localised using a single resource bundle, ApplicationResources.bundle
+the vocabularies can be used to populate select drop downs easily by calling getI18nVocab(...)
 
