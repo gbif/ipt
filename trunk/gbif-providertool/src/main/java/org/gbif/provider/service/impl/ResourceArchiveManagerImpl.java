@@ -184,7 +184,7 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
     File archiveLocation;
     SourceInspectionManager sourceInspectionManager;
     SourceManager sourceManager;
-    private Resource resource;
+    private final Resource resource;
 
     /**
      * Gives {@link ArchiveAdapter} a reference to services. Ideally services
@@ -426,7 +426,8 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
         // Looks up an existing extension property:
         ep = propertyManager.getProperty(extension, ct.qualifiedName());
         if (ep == null) {
-          log.warn("Unsupported ExtensionProperty: " + ct.qualifiedName());
+          log.warn("Warning: Unsupported ExtensionProperty: "
+              + ct.qualifiedName());
           continue;
         }
         extension.addProperty(ep);
@@ -999,10 +1000,10 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
     // check reserved sql words
     if (col.equalsIgnoreCase("order")) {
       col = "orderrr as \"ORDER\" ";
-    } else if (col.equalsIgnoreCase("classs")) {
+    } else if (col.equalsIgnoreCase("classs") || col.equalsIgnoreCase("class")) {
       col = "classs as \"CLASS\" ";
     } else if (col.equalsIgnoreCase("group")) {
-      col = "grouppp as \"GROUP\" ";
+      col = "group_ as \"GROUP\" ";
     }
     return col;
   }
