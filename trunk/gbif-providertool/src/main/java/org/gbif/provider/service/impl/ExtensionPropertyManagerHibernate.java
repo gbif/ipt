@@ -18,6 +18,8 @@ package org.gbif.provider.service.impl;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.google.common.base.Preconditions;
+
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.service.ExtensionPropertyManager;
@@ -25,14 +27,11 @@ import org.gbif.provider.tapir.ParseException;
 import org.gbif.provider.tapir.filter.BooleanOperator;
 import org.gbif.provider.tapir.filter.ComparisonOperator;
 import org.gbif.provider.tapir.filter.Filter;
-
-import com.google.common.base.Preconditions;
+import org.hibernate.NonUniqueResultException;
+import org.hibernate.Query;
 
 import java.util.HashSet;
 import java.util.Set;
-
-import org.hibernate.NonUniqueResultException;
-import org.hibernate.Query;
 
 /**
  * TODO: Documentation.
@@ -98,7 +97,7 @@ public class ExtensionPropertyManagerHibernate extends
     String query = "SELECT p " + "FROM ExtensionProperty p "
         + "JOIN p.extension e " + "WHERE p.name=:name "
         + "AND p.extension.id=:eid "
-        + "AND (p.namespace=:namespace OR p.namespace=:namespace2))";
+        + "AND (p.namespace=:namespace OR p.namespace=:namespace2)) ";
     if (extension.isCore()) {
       query += "AND e.core = true";
     }
@@ -116,7 +115,8 @@ public class ExtensionPropertyManagerHibernate extends
     if (p != null) {
       return p;
     }
-    log.warn("No match for " + namespace + " + " + name);
+    log.warn("No match for " + namespace + name + " in extension "
+        + extension.getName());
 
     // Otherwise we query just on the name:
     query = "SELECT p " + "FROM ExtensionProperty p " + "JOIN p.extension e "
@@ -132,7 +132,7 @@ public class ExtensionPropertyManagerHibernate extends
       log.warn("Duplicate matches for " + name);
     }
     if (p == null) {
-      log.warn("No matches for " + name);
+      log.warn("No match for " + name + " in extension " + extension.getName());
     }
 
     return p;
