@@ -7,7 +7,7 @@
     <id index="0" />
     <field index="1" term="http://purl.org/dc/terms/modified"/>
     <field index="2" term="http://purl.org/dc/terms/source"/>
-    <field index="3" term="http://ipt.gbif.org/terms/sourceID"/>
+    <field index="3" term="http://ipt.gbif.org/terms/sourceId"/>
    <#assign idx=4>
    <#if isChecklist>
     <#assign idx=11>
