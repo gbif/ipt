@@ -16,6 +16,7 @@ $(document).ready(function(){
 
 <table class="simple" width="100%">
 	<tr>
+		<th><@s.text name="admin.organisation.name"/></th>
 		<th><@s.text name="admin.organisation.alias"/></th>
 		<th><@s.text name="admin.organisation.canHost"/></th>
 		<th></th>		
@@ -23,6 +24,7 @@ $(document).ready(function(){
 	
 	<#list linkedOrganisations as o>	
 	<tr>
+		<td>${o.name!}</td>
 		<td>${o.alias!}</td>
 		<td>
 		<#if o.canHost>

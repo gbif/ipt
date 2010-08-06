@@ -4,6 +4,15 @@ $(document).ready(function(){
 	$('#organisation\\.key').click(function() {
 		var orgName = $('#organisation\\.key :selected').text();
 	
+	var emailContent = "Dear sir/madam,%0d%0d" 
+		+ "I am trying to install an Integrated Publishing Toolkit (IPT) which is going to be hosted under your institution/organisation.%0d"
+		+ "To continue with the installation, I will need to kindly ask you to provide me with your organisation's password as this is "
+		+ "needed to complete the process%0d" 
+		+ "In case you don't know this information, you can open this link into your browser to receive this information%0d%0d"
+		+ "http://gbrds.gbif.org/registry/organisation/" + $('#organisation\\.key :selected').val() + "?op=password%0d%0d"  
+		+ "Thank you for your attention.";
+		
+		
 		$('#organisation\\.name').val(orgName);	
 		$('#organisation\\.alias').val(orgName);	
 		//TODO: URL is hardwired to the dev registry. This must be replaced.
@@ -11,7 +20,8 @@ $(document).ready(function(){
 		var url = "<@s.url value='http://gbrdsdev.gbif.org/registry/organisation/'/>" + $('#organisation\\.key :selected').val() + ".json";
 		$.getJSON(url+"?callback=?",function(data){
 			var contactLink = "<a href=\"mailto:" + data.primaryContactEmail 
-					+ "?subject=Password request for " + orgName + " \"> "  
+					+ "?subject=Password request for " + orgName
+					+ "&body=" + emailContent  + "\"> "  
 					+ "Click here</a> to contact " + orgName;
 			$('#requestDetails').html(contactLink);
         	});				
@@ -46,7 +56,7 @@ $(document).ready(function(){
 	<div id="requestDetails"></div>
 	
 	<@input name="organisation.alias" keyBase="admin." type="text"/>
-	<@checkbox name="organisation.canHost" keyBase="admin."/>
+	<@checkbox name="organisation.canHost" keyBase="admin." value="organisation.canHost"/>
 	
    <div class="buttons">
  	<@s.submit name="save" key="button.save"/>
