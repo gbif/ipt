@@ -45,6 +45,21 @@ public class RegistrationAction extends POSTAction {
     this.registrationManager = registrationManager;
   }
 
+  public Organisation getHostingOrganisation() {
+    return registrationManager.getHostingOrganisation();
+  }
+
+  /**
+   * @return the registered
+   */
+  public boolean getIsRegistered() {
+    if (registrationManager.getHostingOrganisation() != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   /**
    * @return the organisation
    */
@@ -74,10 +89,8 @@ public class RegistrationAction extends POSTAction {
       addActionMessage("The IPT has been registered under the organisation");
       try {
         registrationManager.addHostingOrganisation(organisation);
-        // if organisation can as well host resources
-        if (organisation.isCanHost()) {
-          registrationManager.addAssociatedOrganisation(organisation);
-        }
+        // add the hosting organisation to the associated list of organisations as well
+        registrationManager.addAssociatedOrganisation(organisation);
         // save everything
         registrationManager.save();
         return SUCCESS;

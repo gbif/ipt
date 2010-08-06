@@ -3,6 +3,7 @@
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
 <h1><@s.text name="admin.home.title"/></h1>
+
 <table>
 	<tr>
 	  <td>
@@ -27,7 +28,8 @@
 	  <td>
 		<@s.text name="admin.home.editRegistration"/>
 	  </td>
-	</tr>	
+	</tr>
+	<#if isRegistered>
 	<tr>
 	  <td>
 		<a href="${baseURL}/admin/organisations.do"><img src="${baseURL}/images/icons/organisation.png" /></a>
@@ -36,6 +38,7 @@
 		<@s.text name="admin.home.editOrganisations"/>
 	  </td>
 	</tr>
+	</#if>
 	<tr>
 	  <td>
 		<a href="${baseURL}/admin/extensions.do"><img src="${baseURL}/images/icons/extensions.png" /></a>
