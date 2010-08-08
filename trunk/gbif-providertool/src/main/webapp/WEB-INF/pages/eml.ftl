@@ -383,7 +383,7 @@
         </collection>
        </#if>
        <#if (eml.getLogoUrl())??>
-        <resourceLogoUrl>${eml.logoUrl!}</resourceLogoUrl>
+	        <resourceLogoUrl>${eml.logoUrl!}</resourceLogoUrl>
        </#if>
        <#if (eml.getEmlVersion()>1)>
         <dc:replaces>${eml.getResource().guid}/eml-${eml.getEmlVersion()-1}.xml</dc:replaces>
