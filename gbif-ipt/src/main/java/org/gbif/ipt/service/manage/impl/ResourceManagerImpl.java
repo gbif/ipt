@@ -283,7 +283,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     // save into data dir
     File emlFile = dataDir.resourceFile(resource, EML_FILE);
     try {
-      EmlWriter.writeEmlXmlFile(emlFile, eml);
+      EmlWriter.writeEmlFile(emlFile, eml);
       log.debug("Updated EML file for " + resource);
     } catch (IOException e) {
       log.error(e);
