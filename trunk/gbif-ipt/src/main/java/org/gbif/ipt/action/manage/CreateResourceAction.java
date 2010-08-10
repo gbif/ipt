@@ -20,17 +20,15 @@ import java.io.OutputStream;
 
 public class CreateResourceAction extends POSTAction {
   @Inject
-  // the resource manager session is populated by the resource interceptor and kept alive for an entire manager session
-  private ResourceManagerSession ms;
+  protected ResourceManagerSession ms;
   @Inject
   private ResourceManager resourceManager;
   @Inject
   private DataDir dataDir;
-  private String shortname;
-  // file upload
   private File file;
   private String fileContentType;
   private String fileFileName;
+  private String shortname;
   private ResourceSupport validator = new ResourceSupport();
 
   public String getShortname() {

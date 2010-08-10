@@ -58,8 +58,13 @@
 			<result name="success" type="redirect">metadata-${next}.do</result>
 		</action>
 		
-		<action name="sources" class="org.gbif.ipt.action.manage.MetadataAction">
-			<result>/WEB-INF/pages/manage/metadata.ftl</result>
+		<action name="source" class="org.gbif.ipt.action.manage.SourceAction">
+			<interceptor-ref name="fileUpload">
+				<param name="maximumSize">104857600</param>
+			</interceptor-ref>
+			<interceptor-ref name="managerStack"/>
+			<result name="input">/WEB-INF/pages/manage/source.ftl</result>
+			<result type="redirect">resource.do</result>
 		</action>
 
 		<action name="generate" class="org.gbif.ipt.action.manage.MetadataAction">
