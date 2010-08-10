@@ -17,7 +17,7 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.ResourceConfiguration;
+import org.gbif.ipt.model.MappingConfiguration;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -46,11 +46,11 @@ public class ResourceManagerSession {
   private ResourceManager resourceManager;
 
   private Resource resource;
-  private ResourceConfiguration config;
+  private MappingConfiguration config;
   private Eml eml;
   private User manager;
 
-  public ResourceConfiguration getConfig() {
+  public MappingConfiguration getConfig() {
     return config;
   }
 
@@ -71,7 +71,7 @@ public class ResourceManagerSession {
     this.resource = resource;
     this.eml = resourceManager.getEml(resource);
     // TODO: load via config manager the appropiate instance
-    this.config = new ResourceConfiguration();
+    this.config = new MappingConfiguration();
     log.info("Loading new manager session for " + resource + " by user " + user.getEmail());
   }
 
