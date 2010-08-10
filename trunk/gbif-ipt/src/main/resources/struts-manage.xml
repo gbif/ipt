@@ -46,13 +46,15 @@
 			<result>/WEB-INF/pages/manage/overview.ftl</result>
 		</action>
 		
+		<!-- EML metadata actions dynamically invoked. This is the *only* action needed for all forms -->
 		<action name="metadata-*" class="org.gbif.ipt.action.manage.MetadataAction">
 			<!-- Setting parameters like this doesnt seem to work as expected :((( -->
 			<!-- workaround is parsing the request string in the action manually, see MetadataAction.prepare() -->
-			<!-- 
-				<param name="section">{1}</param>
-			-->
+			<!--   <param name="section">{1}</param>   -->
+			
+			<!-- use the template matching the dynamic method invocation, e.g. metadata-parties.do will use parties.ftl--> 
 			<result name="input">/WEB-INF/pages/manage/eml/{1}.ftl</result>
+			<!-- on sucess redirect to the next metadata form page -->
 			<result name="success" type="redirect">metadata-${next}.do</result>
 		</action>
 		
