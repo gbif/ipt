@@ -47,9 +47,11 @@
 		</action>
 		
 		<action name="metadata-*" class="org.gbif.ipt.action.manage.MetadataAction">
-			<!-- THIS JUST DOESNT SEEM TO WORK :((( -->
-			<!-- workaround is a request string parsing in the action - buah -->
-			<param name="section">{1}</param>
+			<!-- Setting parameters like this doesnt seem to work as expected :((( -->
+			<!-- workaround is parsing the request string in the action manually, see MetadataAction.prepare() -->
+			<!-- 
+				<param name="section">{1}</param>
+			-->
 			<result name="input">/WEB-INF/pages/manage/eml/{1}.ftl</result>
 			<result name="success" type="redirect">metadata-${next}.do</result>
 		</action>
