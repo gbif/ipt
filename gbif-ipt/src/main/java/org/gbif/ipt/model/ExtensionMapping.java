@@ -16,10 +16,42 @@
 
 package org.gbif.ipt.model;
 
+import org.gbif.dwc.text.ArchiveField;
+
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @author markus
- *
+ * 
  */
-public class ResourceConfiguration {
+public class ExtensionMapping {
+  private String sourceName;
+  private Extension extension; // persist only the rowType
+  private Set<ArchiveField> fields = new HashSet<ArchiveField>();
+
+  public Extension getExtension() {
+    return extension;
+  }
+
+  public Set<ArchiveField> getFields() {
+    return fields;
+  }
+
+  public String getSourceName() {
+    return sourceName;
+  }
+
+  public void setExtension(Extension extension) {
+    this.extension = extension;
+  }
+
+  public void setFields(Set<ArchiveField> fields) {
+    this.fields = fields;
+  }
+
+  public void setSourceName(String sourceName) {
+    this.sourceName = sourceName;
+  }
 
 }
