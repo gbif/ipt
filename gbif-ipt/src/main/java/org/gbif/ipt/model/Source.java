@@ -94,9 +94,54 @@ public abstract class Source implements Iterable<String[]> {
   }
 
   public static class SqlSource extends Source {
+    private String sql;
+    private String host;
+    private String database;
+    private String username;
+    private String password;
+
+    public String getDatabase() {
+      return database;
+    }
+
+    public String getHost() {
+      return host;
+    }
+
+    public String getPassword() {
+      return password;
+    }
+
+    public String getSql() {
+      return sql;
+    }
+
+    public String getUsername() {
+      return username;
+    }
 
     public Iterator<String[]> iterator() {
       throw new NotImplementedException();
+    }
+
+    public void setDatabase(String database) {
+      this.database = database;
+    }
+
+    public void setHost(String host) {
+      this.host = host;
+    }
+
+    public void setPassword(String password) {
+      this.password = password;
+    }
+
+    public void setSql(String sql) {
+      this.sql = sql;
+    }
+
+    public void setUsername(String username) {
+      this.username = username;
     }
   }
 
