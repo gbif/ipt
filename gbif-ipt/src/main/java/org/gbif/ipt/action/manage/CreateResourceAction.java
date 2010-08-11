@@ -2,7 +2,7 @@ package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.ResourceConfiguration;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.validation.ResourceSupport;
@@ -38,12 +38,12 @@ public class CreateResourceAction extends POSTAction {
   @Override
   public String save() throws IOException {
     try {
-      Resource res = resourceManager.create(shortname, getCurrentUser());
+      ResourceConfiguration config = resourceManager.create(shortname, getCurrentUser());
       File tmpFile = uploadToTmp();
       if (tmpFile != null) {
         // TODO: read existing archive
       }
-      ms.load(getCurrentUser(), res);
+      ms.load(getCurrentUser(), config);
     } catch (AlreadyExistingException e) {
       addFieldError("resource.shortname", getText("validation.resource.shortname.exists", new String[]{shortname}));
       return INPUT;

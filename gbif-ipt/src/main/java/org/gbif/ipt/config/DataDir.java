@@ -145,6 +145,9 @@ public class DataDir {
   }
 
   public File resourceFile(Resource resource, String path) {
+    if (resource == null) {
+      return null;
+    }
     return resourceFile(resource.getShortname(), path);
   }
 

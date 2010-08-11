@@ -2,6 +2,7 @@ package org.gbif.ipt.service.manage;
 
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.ResourceConfiguration;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
@@ -29,11 +30,13 @@ import java.util.List;
 @ImplementedBy(ResourceManagerImpl.class)
 public interface ResourceManager {
 
-  public Resource create(String shortname, User creator) throws AlreadyExistingException;
+  public ResourceConfiguration create(String shortname, User creator) throws AlreadyExistingException;
 
   public void delete(Resource resource) throws IOException;
 
   public Resource get(String shortname);
+
+  public ResourceConfiguration getConfig(String shortname);
 
   public Eml getEml(Resource resource);
 
@@ -75,7 +78,7 @@ public interface ResourceManager {
    * @param resource
    * @throws InvalidConfigException if resource was already registered
    */
-  public void publish(Resource resource) throws InvalidConfigException;
+  public void publish(ResourceConfiguration resource) throws InvalidConfigException;
 
   /**
    * Registers the resource with gbif
@@ -84,9 +87,9 @@ public interface ResourceManager {
    * @param organisation the org that the resource will be associated with
    * @throws InvalidConfigException
    */
-  public void register(Resource resource, Organisation organisation) throws InvalidConfigException;
+  public void register(ResourceConfiguration resource, Organisation organisation) throws InvalidConfigException;
 
-  public void save(Resource resource) throws InvalidConfigException;
+  public void save(ResourceConfiguration resource) throws InvalidConfigException;
 
   public void saveEml(Resource resource, Eml eml) throws InvalidConfigException;
 
@@ -104,6 +107,6 @@ public interface ResourceManager {
    * @param resource
    * @throws InvalidConfigException if resource was already registered
    */
-  public void unpublish(Resource resource) throws InvalidConfigException;
+  public void unpublish(ResourceConfiguration resource) throws InvalidConfigException;
 
 }

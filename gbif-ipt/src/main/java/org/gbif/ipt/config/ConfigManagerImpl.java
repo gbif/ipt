@@ -35,8 +35,6 @@ import java.net.URL;
  */
 @Singleton
 public class ConfigManagerImpl extends BaseManager implements ConfigManager {
-  private DataDir dataDir;
-  private AppConfig cfg;
   private InputStreamUtils streamUtils;
   private UserAccountManager userManager;
   private ResourceManager resourceManager;
@@ -48,9 +46,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   public ConfigManagerImpl(DataDir dataDir, AppConfig cfg, InputStreamUtils streamUtils,
       UserAccountManager userManager, ResourceManager resourceManager, DwCExtensionManager extensionManager,
       VocabulariesManager vocabManager, RegistrationManager registrationManager) {
-    super();
-    this.dataDir = dataDir;
-    this.cfg = cfg;
+    super(cfg, dataDir);
     this.streamUtils = streamUtils;
     this.userManager = userManager;
     this.resourceManager = resourceManager;

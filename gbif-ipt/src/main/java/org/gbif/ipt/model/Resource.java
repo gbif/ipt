@@ -21,12 +21,16 @@ import java.util.UUID;
  * 
  */
 public class Resource implements Serializable, Comparable<Resource> {
-  private static final long serialVersionUID = 3832626162173352190L;
+  public enum CoreRowType {
+    OCCURRENCE, CHECKLIST
+  }
 
+  private static final long serialVersionUID = 3832626162173352190L;;
   private String shortname; // unique
   private String title;
   private String description;
-  private String type;
+  private CoreRowType type;
+  private String subtype;
   private PublicationStatus status = PublicationStatus.PRIVATE;
   // resource meta-metadata
   private User creator;
@@ -104,11 +108,15 @@ public class Resource implements Serializable, Comparable<Resource> {
     return status;
   }
 
+  public String getSubtype() {
+    return subtype;
+  }
+
   public String getTitle() {
     return title;
   }
 
-  public String getType() {
+  public CoreRowType getType() {
     return type;
   }
 
@@ -163,11 +171,15 @@ public class Resource implements Serializable, Comparable<Resource> {
     this.status = status;
   }
 
+  public void setSubtype(String subtype) {
+    this.subtype = subtype;
+  }
+
   public void setTitle(String title) {
     this.title = title;
   }
 
-  public void setType(String type) {
+  public void setType(CoreRowType type) {
     this.type = type;
   }
 

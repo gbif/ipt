@@ -26,9 +26,9 @@ import com.google.inject.internal.Nullable;
  */
 public class EmlSupport extends BaseValidator {
 
-  public boolean isValid(Eml eml) {
+  public boolean isValid(Eml eml, @Nullable String part) {
     BaseAction action = new BaseAction(new SimpleTextProvider(), AppConfig.buildMock());
-    validate(action, eml, null);
+    validate(action, eml, part);
     if (action.hasActionErrors() || action.hasFieldErrors()) {
       return false;
     }

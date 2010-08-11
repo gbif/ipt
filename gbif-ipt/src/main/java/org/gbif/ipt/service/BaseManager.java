@@ -21,4 +21,16 @@ public abstract class BaseManager {
   protected AppConfig cfg;
   @Inject
   protected DataDir dataDir;
+
+  public BaseManager() {
+    super();
+    // TODO Auto-generated constructor stub
+  }
+
+  public BaseManager(AppConfig cfg, DataDir dataDir) {
+    super();
+    this.cfg = cfg;
+    this.dataDir = dataDir;
+  }
+
 }
