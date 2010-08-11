@@ -1,10 +1,9 @@
 package org.gbif.ipt.service.manage;
 
-import org.gbif.ipt.model.MappingConfiguration;
-import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.ResourceConfiguration;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.Source.FileSource;
-import org.gbif.ipt.service.manage.impl.MappingConfigManagerImpl;
+import org.gbif.ipt.service.manage.impl.SourceManagerImpl;
 
 import com.google.inject.ImplementedBy;
 
@@ -22,8 +21,8 @@ import java.util.List;
  * 
  * @author markus
  */
-@ImplementedBy(MappingConfigManagerImpl.class)
-public interface MappingConfigManager {
+@ImplementedBy(SourceManagerImpl.class)
+public interface SourceManager {
 
   /**
    * Adds either a text file or darwin core archive to a resource configuration.
@@ -40,14 +39,10 @@ public interface MappingConfigManager {
    *        or compressed
    * @throws IOException
    */
-  public void add(MappingConfiguration config, File file) throws IOException;
+  public void add(ResourceConfiguration config, File file) throws IOException;
 
   public void delete(FileSource source) throws IOException;
 
-  public MappingConfiguration get(Resource resource);
-
   public List<String[]> peek(Source source);
-
-  public void save(MappingConfiguration config) throws IOException;
 
 }

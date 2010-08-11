@@ -60,7 +60,7 @@ public class OverviewAction extends BaseAction {
   @Override
   public String execute() throws Exception {
     // check EML
-    missingMetadata = !emlValidator.isValid(ms.getEml());
+    missingMetadata = !emlValidator.isValid(ms.getEml(), null);
 
     return SUCCESS;
   }
@@ -98,7 +98,7 @@ public class OverviewAction extends BaseAction {
   public String publish() throws Exception {
     if (PublicationStatus.PRIVATE == ms.getResource().getStatus()) {
       try {
-        resourceManager.publish(ms.getResource());
+        resourceManager.publish(ms.getConfig());
         addActionMessage("Changed Publication Status to " + ms.getResource().getStatus());
       } catch (InvalidConfigException e) {
         log.error("Cant publish resource " + ms.getResource(), e);
@@ -108,7 +108,7 @@ public class OverviewAction extends BaseAction {
       Organisation org = null;
       try {
         org = registrationManager.get(id);
-        resourceManager.register(ms.getResource(), org);
+        resourceManager.register(ms.getConfig(), org);
         if (org != null) {
           addActionMessage("Registered resource with " + org.getName() + " in GBIF");
         }
@@ -122,7 +122,7 @@ public class OverviewAction extends BaseAction {
 
   public String unpublish() throws Exception {
     try {
-      resourceManager.unpublish(ms.getResource());
+      resourceManager.unpublish(ms.getConfig());
       addActionMessage("Changed Publication Status to " + ms.getResource().getStatus());
     } catch (InvalidConfigException e) {
       log.error("Cant unpublish resource " + ms.getResource(), e);

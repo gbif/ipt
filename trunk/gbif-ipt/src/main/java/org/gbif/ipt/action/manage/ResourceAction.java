@@ -1,7 +1,7 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.action.POSTAction;
-import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.ResourceConfiguration;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.manage.ResourceManager;
 
@@ -39,8 +39,8 @@ public class ResourceAction extends POSTAction {
   public String save() {
     if (id != null) {
       try {
-        Resource res = resourceManager.create(id, getCurrentUser());
-        ms.load(getCurrentUser(), res);
+        ResourceConfiguration config = resourceManager.create(id, getCurrentUser());
+        ms.load(getCurrentUser(), config);
       } catch (AlreadyExistingException e) {
         addFieldError("id", "Resource exists already");
       }

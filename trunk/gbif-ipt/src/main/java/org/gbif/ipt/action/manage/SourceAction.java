@@ -19,7 +19,7 @@ package org.gbif.ipt.action.manage;
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Source;
-import org.gbif.ipt.service.manage.MappingConfigManager;
+import org.gbif.ipt.service.manage.SourceManager;
 
 import com.google.inject.Inject;
 
@@ -45,7 +45,7 @@ public class SourceAction extends POSTAction {
   @Inject
   private ResourceManagerSession ms;
   @Inject
-  private MappingConfigManager mappingManager;
+  private SourceManager mappingManager;
   @Inject
   private DataDir dataDir;
   // config

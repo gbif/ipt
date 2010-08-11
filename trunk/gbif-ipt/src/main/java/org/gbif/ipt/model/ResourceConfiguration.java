@@ -23,7 +23,7 @@ import java.util.Set;
  * @author markus
  * 
  */
-public class MappingConfiguration {
+public class ResourceConfiguration {
   private Resource resource;
   private Set<Source> sources = new HashSet<Source>();
   private ExtensionMapping core;

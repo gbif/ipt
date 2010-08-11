@@ -1,9 +1,15 @@
 package org.gbif.ipt.service.manage.impl;
 
+import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.ResourceConfiguration;
+import org.gbif.ipt.model.Source.FileSource;
+import org.gbif.ipt.model.Source.SqlSource;
 import org.gbif.ipt.model.User;
+import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
 import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.voc.PublicationStatus;
@@ -49,17 +55,20 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   public static final String PERSISTENCE_FILE = "resource.xml";
   public static final String EML_FILE = "eml.xml";
   private final XStream xstream = new XStream();
-  private UserEmailConverter userConverter;
-  private OrganisationKeyConverter orgConverter;
+  private final UserEmailConverter userConverter;
+  private final OrganisationKeyConverter orgConverter;
+  private final ExtensionRowTypeConverter extensionConverter;
   private GBIFRegistryManager registryManager;
 
   @Inject
-  public ResourceManagerImpl(UserEmailConverter userConverter, OrganisationKeyConverter orgConverter,
-      GBIFRegistryManager registryManager) {
-    super();
+  public ResourceManagerImpl(AppConfig cfg, DataDir dataDir, UserEmailConverter userConverter,
+      OrganisationKeyConverter orgConverter, GBIFRegistryManager registryManager,
+      ExtensionRowTypeConverter extensionConverter) {
+    super(cfg, dataDir);
     this.userConverter = userConverter;
     this.registryManager = registryManager;
     this.orgConverter = orgConverter;
+    this.extensionConverter = extensionConverter;
     defineXstreamMapping();
   }
 
@@ -71,7 +80,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
    * (non-Javadoc)
    * @see org.gbif.ipt.service.manage.ResourceManager#create(java.lang.String)
    */
-  public Resource create(String shortname, User creator) throws AlreadyExistingException {
+  public ResourceConfiguration create(String shortname, User creator) throws AlreadyExistingException {
+    ResourceConfiguration config = null;
     Resource res = null;
     if (shortname != null) {
       // check if existing already
@@ -83,16 +93,18 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
       res.setShortname(shortname);
       res.setCreated(new Date());
       res.setCreator(creator);
+      config = new ResourceConfiguration();
+      config.setResource(res);
       // create dir
       try {
-        save(res);
+        save(config);
         log.debug("Created resource " + res.getShortname());
       } catch (InvalidConfigException e) {
         log.error("Error creating resource", e);
         return null;
       }
     }
-    return res;
+    return config;
   }
 
   /**
@@ -100,13 +112,21 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
    */
   private void defineXstreamMapping() {
     xstream.alias("resource", Resource.class);
-//    xstream.omitField(Resource.class, "eml");
-//    xstream.omitField(Resource.class, "config");
+    xstream.alias("user", User.class);
+    xstream.alias("config", ResourceConfiguration.class);
+    xstream.alias("filesource", FileSource.class);
+    xstream.alias("sqlsource", SqlSource.class);
+    xstream.alias("mapping", ExtensionMapping.class);
+    // transient properties
+    xstream.omitField(Resource.class, "shortname");
+    xstream.omitField(Resource.class, "title");
+    xstream.omitField(Resource.class, "description");
+    xstream.omitField(Resource.class, "type");
     // persist only emails for users
     xstream.registerConverter(userConverter);
     xstream.registerConverter(orgConverter);
-    xstream.alias("user", User.class);
-//    xstream.useAttributeFor(User.class, "email");
+    // persist only rowtype for extensions
+    xstream.registerConverter(extensionConverter);
   }
 
   public void delete(Resource resource) throws IOException {
@@ -122,6 +142,22 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
       return null;
     }
     return resources.get(shortname.toLowerCase());
+  }
+
+  public ResourceConfiguration getConfig(String shortname) {
+    try {
+      File cfgFile = dataDir.resourceFile(shortname, PERSISTENCE_FILE);
+      InputStream input = new FileInputStream(cfgFile);
+      ResourceConfiguration config = (ResourceConfiguration) xstream.fromXML(input);
+      // shortname persists as folder name, so xstream doesnt handle this:
+      config.getResource().setShortname(shortname);
+      log.debug("Read resource configuration for " + shortname);
+      return config;
+    } catch (FileNotFoundException e) {
+      log.error("Cannot read resource configuration for " + shortname, e);
+      throw new InvalidConfigException(TYPE.RESOURCE_CONFIG, "Cannot read resource configuration for " + shortname
+          + ": " + e.getMessage());
+    }
   }
 
   /*
@@ -142,7 +178,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
       log.error("Invalid EML document", e);
     }
 
-    updateEmlWithResourceBasics(resource, eml);
+    syncEmlWithResource(resource, eml);
     return eml;
   }
 
@@ -198,31 +234,27 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
         }
       }
     }
-    log.info("Loaded " + counter + " resources alltogether.");
+    log.info("Loaded " + counter + " resources into memory alltogether.");
     return counter;
   }
 
   /**
-   * Reads a local extension file into manager cache
+   * Reads a complete resource configuration (resource config & eml) from the resource config folder and returns only
+   * the basic Resource instance for the internal in memory cache
    * 
    * @param resourceDir
    * @return
    */
   private Resource loadFromDir(File resourceDir) throws InvalidConfigException {
-    File resCfg = dataDir.resourceFile(resourceDir.getName(), PERSISTENCE_FILE);
-    InputStream input;
-    Resource resource = null;
-    try {
-      input = new FileInputStream(resCfg);
-      resource = (Resource) xstream.fromXML(input);
-      resource.setShortname(resourceDir.getName());
-      log.debug("Loaded " + resource);
-    } catch (FileNotFoundException e) {
-      log.error("Cannot load main resource configuration", e);
-      throw new InvalidConfigException(TYPE.RESOURCE_CONFIG, "Cannot load main resource configuration: "
-          + e.getMessage());
+    if (!resourceDir.exists()) {
+      return null;
+    } else {
+      // load full configuration from resource.xml and eml.xml files
+      ResourceConfiguration config = getConfig(resourceDir.getName());
+      Eml eml = getEml(config.getResource());
+      syncEmlWithResource(config.getResource(), eml);
+      return config.getResource();
     }
-    return resource;
   }
 
   /*
@@ -230,12 +262,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
    * @see org.gbif.ipt.service.manage.ResourceManager#publish(org.gbif.ipt.model.Resource,
    * org.gbif.ipt.model.voc.PublicationStatus)
    */
-  public void publish(Resource resource) throws InvalidConfigException {
-    if (PublicationStatus.REGISTERED == resource.getStatus()) {
+  public void publish(ResourceConfiguration config) throws InvalidConfigException {
+    if (PublicationStatus.REGISTERED == config.getResource().getStatus()) {
       throw new InvalidConfigException(TYPE.RESOURCE_ALREADY_REGISTERED, "The resource is already registered with GBIF");
-    } else if (PublicationStatus.PRIVATE == resource.getStatus()) {
-      resource.setStatus(PublicationStatus.PUBLIC);
-      save(resource);
+    } else if (PublicationStatus.PRIVATE == config.getResource().getStatus()) {
+      config.getResource().setStatus(PublicationStatus.PUBLIC);
+      save(config);
     }
   }
 
@@ -244,32 +276,33 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
    * @see org.gbif.ipt.service.manage.ResourceManager#register(org.gbif.ipt.model.Resource,
    * org.gbif.ipt.model.Organisation)
    */
-  public void register(Resource resource, Organisation organisation) throws RegistryException {
-    if (PublicationStatus.REGISTERED != resource.getStatus()) {
-      UUID key = registryManager.register(resource, organisation);
+  public void register(ResourceConfiguration config, Organisation organisation) throws RegistryException {
+    if (PublicationStatus.REGISTERED != config.getResource().getStatus()) {
+      UUID key = registryManager.register(config.getResource(), organisation);
       if (key == null) {
         throw new RegistryException(RegistryException.TYPE.MISSING_METADATA, "No key returned for registered resoruce.");
       }
-      resource.setKey(key);
-      resource.setOrganisation(organisation);
-      resource.setStatus(PublicationStatus.REGISTERED);
-      save(resource);
+      config.getResource().setKey(key);
+      config.getResource().setOrganisation(organisation);
+      config.getResource().setStatus(PublicationStatus.REGISTERED);
+      save(config);
     }
   }
 
-  public void save(Resource resource) throws InvalidConfigException {
-    File resDir = dataDir.resourceFile(resource, "");
+  public void save(ResourceConfiguration config) throws InvalidConfigException {
+    File cfgFile = dataDir.resourceFile(config.getResource(), PERSISTENCE_FILE);
     try {
-      FileUtils.forceMkdir(resDir);
+      // make sure resource dir exists
+      FileUtils.forceMkdir(cfgFile.getParentFile());
       // persist data
-      Writer writer = org.gbif.ipt.utils.FileUtils.startNewUtf8File(dataDir.resourceFile(resource, PERSISTENCE_FILE));
-      xstream.toXML(resource, writer);
+      Writer writer = org.gbif.ipt.utils.FileUtils.startNewUtf8File(cfgFile);
+      xstream.toXML(config, writer);
       // add to internal map
-      addResource(resource);
-      log.debug("Saved " + resource);
+      addResource(config.getResource());
+      log.debug("Saved " + config);
     } catch (IOException e) {
       log.error(e);
-      throw new InvalidConfigException(TYPE.CONFIG_WRITE, "Cant write resource configuration");
+      throw new InvalidConfigException(TYPE.CONFIG_WRITE, "Cant write mapping configuration");
     }
   }
 
@@ -279,7 +312,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
    */
   public void saveEml(Resource resource, Eml eml) throws InvalidConfigException {
     // udpate EML with latest resource basics
-    updateEmlWithResourceBasics(resource, eml);
+    syncEmlWithResource(resource, eml);
     // save into data dir
     File emlFile = dataDir.resourceFile(resource, EML_FILE);
     try {
@@ -303,27 +336,27 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     return new ArrayList<Resource>(resources.values());
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.manage.ResourceManager#unpublish(org.gbif.ipt.model.Resource)
-   */
-  public void unpublish(Resource resource) throws InvalidConfigException {
-    if (PublicationStatus.REGISTERED == resource.getStatus()) {
-      throw new InvalidConfigException(TYPE.RESOURCE_ALREADY_REGISTERED, "The resource is already registered with GBIF");
-    } else if (PublicationStatus.PUBLIC == resource.getStatus()) {
-      resource.setStatus(PublicationStatus.PRIVATE);
-      save(resource);
-    }
-  }
-
-  private void updateEmlWithResourceBasics(Resource resource, Eml eml) {
-    eml.setTitle(resource.getTitle());
-    eml.setDescription(resource.getDescription());
+  private void syncEmlWithResource(Resource resource, Eml eml) {
+    resource.setTitle(eml.getTitle());
+    resource.setDescription(eml.getDescription());
     // we need some GUID. If we have use the registry key, if not use the resource URL
     if (resource.getKey() != null) {
       eml.setGuid(resource.getKey().toString());
     } else {
       eml.setGuid(getResourceLink(resource.getShortname()).toString());
+    }
+  }
+
+  /*
+   * (non-Javadoc)
+   * @see org.gbif.ipt.service.manage.ResourceManager#unpublish(org.gbif.ipt.model.Resource)
+   */
+  public void unpublish(ResourceConfiguration config) throws InvalidConfigException {
+    if (PublicationStatus.REGISTERED == config.getResource().getStatus()) {
+      throw new InvalidConfigException(TYPE.RESOURCE_ALREADY_REGISTERED, "The resource is already registered with GBIF");
+    } else if (PublicationStatus.PUBLIC == config.getResource().getStatus()) {
+      config.getResource().setStatus(PublicationStatus.PRIVATE);
+      save(config);
     }
   }
 }

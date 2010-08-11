@@ -17,7 +17,7 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.MappingConfiguration;
+import org.gbif.ipt.model.ResourceConfiguration;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -45,12 +45,11 @@ public class ResourceManagerSession {
   @Inject
   private ResourceManager resourceManager;
 
-  private Resource resource;
-  private MappingConfiguration config;
+  private ResourceConfiguration config;
   private Eml eml;
   private User manager;
 
-  public MappingConfiguration getConfig() {
+  public ResourceConfiguration getConfig() {
     return config;
   }
 
@@ -63,16 +62,25 @@ public class ResourceManagerSession {
   }
 
   public Resource getResource() {
-    return resource;
+    if (config == null) {
+      log.warn("No resource object in manager session!");
+      return null;
+    }
+    return config.getResource();
   }
 
   public void load(User user, Resource resource) {
     this.manager = user;
-    this.resource = resource;
     this.eml = resourceManager.getEml(resource);
-    // TODO: load via config manager the appropiate instance
-    this.config = new MappingConfiguration();
+    this.config = resourceManager.getConfig(resource.getShortname());
     log.info("Loading new manager session for " + resource + " by user " + user.getEmail());
+  }
+
+  public void load(User user, ResourceConfiguration config) {
+    this.manager = user;
+    this.eml = resourceManager.getEml(config.getResource());
+    this.config = config;
+    log.info("Loading new manager session for " + config.getResource() + " by user " + user.getEmail());
   }
 
   public void save() throws InvalidConfigException {
@@ -86,15 +94,15 @@ public class ResourceManagerSession {
   }
 
   public void saveEml() throws InvalidConfigException {
-    resourceManager.saveEml(resource, eml);
+    resourceManager.saveEml(getResource(), eml);
   }
 
   public void saveResource() throws InvalidConfigException {
-    resourceManager.save(resource);
+    resourceManager.save(config);
   }
 
   @Override
   public String toString() {
-    return "ManagerSession:R=" + resource + ";U=" + manager + "C=" + config;
+    return "ManagerSession:R=" + getResource() + ";U=" + manager + "C=" + config;
   }
 }
