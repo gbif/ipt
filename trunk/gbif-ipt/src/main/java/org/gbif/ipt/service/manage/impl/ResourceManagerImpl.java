@@ -195,6 +195,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     }
     return url;
   }
+  
+  /*
+   * (non-Javadoc)
+   * @see org.gbif.ipt.service.manage.ResourceManager#getResources()
+   */
+  public Map<String, Resource> getResources() {
+    return resources;
+  }
 
   /*
    * (non-Javadoc)
