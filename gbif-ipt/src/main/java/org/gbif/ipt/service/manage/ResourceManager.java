@@ -16,6 +16,7 @@ import com.google.inject.internal.Nullable;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This interface details ALL methods associated with the main resource entity.
@@ -39,6 +40,13 @@ public interface ResourceManager {
   public ResourceConfiguration getConfig(String shortname);
 
   public Eml getEml(Resource resource);
+  
+  /**
+   * Returns the map of resources
+   * 
+   * @return map of resources
+   */
+  public Map<String, Resource> getResources();
 
   /**
    * Returns the URL to a public resource in the IPT

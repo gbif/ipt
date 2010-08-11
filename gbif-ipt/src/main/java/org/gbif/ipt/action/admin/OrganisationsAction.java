@@ -5,10 +5,12 @@ package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.model.Organisation;
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.admin.GBIFRegistryManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.validation.OrganisationSupport;
 
 import com.google.inject.Inject;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * The Action responsible for all user input relating to the organisations allowed in the IPT
@@ -70,6 +73,7 @@ public class OrganisationsAction extends POSTAction {
   private static final long serialVersionUID = 7297470324204084809L;
 
   private RegistrationManager registrationManager;
+  private ResourceManager resourceManager;
   private OrganisationSupport organisationValidation;
 
   private Organisation organisation;
@@ -84,22 +88,35 @@ public class OrganisationsAction extends POSTAction {
    */
   @Inject
   public OrganisationsAction(GBIFRegistryManager registryManager, RegistrationManager registrationManager,
-      OrganisationSupport organisationValidation, RegisteredOrganisations orgSession) {
+      OrganisationSupport organisationValidation, RegisteredOrganisations orgSession, ResourceManager resourceManager) {
     this.registrationManager = registrationManager;
     this.organisationValidation = organisationValidation;
     this.orgSession = orgSession;
+    this.resourceManager = resourceManager;
   }
 
   @Override
   public String delete() {
-    try {
-      Organisation removedOrganisation = registrationManager.delete(id);
-      if (removedOrganisation == null) {
-        return NOT_FOUND;
+    boolean canDelete = true;
+    if (resourceManager.getResources() != null) {
+      for (Resource resource : resourceManager.getResources().values()) {
+        if (resource.getOrganisation().getKey().compareTo(UUID.fromString(id)) == 0) {
+          addActionError(getText("admin.organisation.cantdelete1"));
+          addActionError(getText("admin.organisation.cantdelete2"));
+          canDelete = false;
+        }
       }
-      registrationManager.save();
-      addActionMessage(getText("admin.organisation.deleted"));
-      return SUCCESS;
+    }
+    try {
+      if (canDelete) {
+        Organisation removedOrganisation = registrationManager.delete(id);
+        if (removedOrganisation == null) {
+          return NOT_FOUND;
+        }
+        registrationManager.save();
+        addActionMessage(getText("admin.organisation.deleted"));
+        return SUCCESS;
+      }
     } catch (DeletionNotAllowedException e) {
       addActionError(getText("admin.organisation.deleted.notempty"));
     } catch (IOException e) {
@@ -127,6 +144,13 @@ public class OrganisationsAction extends POSTAction {
    */
   public List<Organisation> getOrganisations() {
     return orgSession.organisations;
+  }
+
+  /**
+   * @return the resourceManager
+   */
+  public ResourceManager getResourceManager() {
+    return resourceManager;
   }
 
   public String list() {
@@ -188,6 +212,13 @@ public class OrganisationsAction extends POSTAction {
    */
   public void setOrganisation(Organisation organisation) {
     this.organisation = organisation;
+  }
+
+  /**
+   * @param resourceManager the resourceManager to set
+   */
+  public void setResourceManager(ResourceManager resourceManager) {
+    this.resourceManager = resourceManager;
   }
 
   @Override
