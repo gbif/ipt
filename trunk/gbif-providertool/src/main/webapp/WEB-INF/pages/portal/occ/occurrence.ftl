@@ -59,11 +59,13 @@
 
     <table> 
     <#list core.extension.properties as p>
+    <#if p??>
      <#if core.hasMappedProperty(p)>
       <tr>
         <th>${p.name}</th>
         <td>${dwc.getPropertyValue(p)!"---"}</td>
       </tr>
+     </#if>
      </#if>
     </#list>
     </table>

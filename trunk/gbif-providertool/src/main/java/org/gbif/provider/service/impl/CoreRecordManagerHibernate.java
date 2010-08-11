@@ -15,6 +15,7 @@
  */
 package org.gbif.provider.service.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.ExtensionProperty;
@@ -23,8 +24,6 @@ import org.gbif.provider.service.CoreRecordManager;
 import org.gbif.provider.service.FullTextSearchManager;
 import org.gbif.provider.tapir.filter.Filter;
 import org.gbif.provider.util.H2Utils;
-
-import org.apache.commons.lang.StringUtils;
 import org.hibernate.NonUniqueResultException;
 import org.hibernate.Query;
 import org.hibernate.ScrollMode;
@@ -73,6 +72,8 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends
       result = (T) query.uniqueResult();
     } catch (NonUniqueResultException e) {
       log.debug("source ID is not unique within the resource. Corrupted cache!");
+    } catch (Exception e) {
+      e.printStackTrace();
     }
     return result;
   }

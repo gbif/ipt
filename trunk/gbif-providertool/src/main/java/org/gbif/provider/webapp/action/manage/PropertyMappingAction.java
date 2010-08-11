@@ -192,8 +192,6 @@ public class PropertyMappingAction extends BaseDataResourceAction implements
       }
       // generate basic column mapping options
       try {
-        // sourceColumns = Lists.newArrayList(Splitter.on(',').split(
-        // view.getSource().getCsvFileHeader()));
         sourceColumns = sourceInspectionManager.getHeader(view.getSource());
       } catch (Exception e) {
         sourceColumns = new ArrayList<String>();
@@ -203,7 +201,7 @@ public class PropertyMappingAction extends BaseDataResourceAction implements
       // try to automap columns in case there aint no mapping yet
       automap();
 
-      // the property name used as GUID depending on resource type
+      // the property name used as GUID depends on resource type
       guidPropertyName = resourceType.equals(CHECKLIST)
           ? ChecklistResource.DWC_GUID_PROPERTY
           : OccurrenceResource.DWC_GUID_PROPERTY;

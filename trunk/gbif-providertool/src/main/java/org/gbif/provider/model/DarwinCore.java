@@ -235,7 +235,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
       "formation",
       "ember",
       "bed",
-      // Identificationm
+      // Identification
       "identificationID",
       "identifiedBy",
       "dateIdentified",
@@ -1452,9 +1452,10 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
   public String getOccurrenceID() {
     // JRW: DarwinCore class can be used for a taxon resource or an occurrence
     // resource. I don't think it was safe to assume that the guid would be only
-    // the occurrenceId
-    // return guid;
-    return occurrenceID;
+    // the occurrenceId. Nevertheless, I didn't change it because nothing seems
+    // to be broken by this assumption.
+    // return occurrenceID;
+    return guid;
   }
 
   @Lob
@@ -2332,13 +2333,13 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
       // "class" needs to be translated to an alternative that isn't a Java
       // keyword to function with getters and setters as well as with the H2
       // database, where the term name is stored as "CLASSS".
-      if (propName.equals("class")) {
+      if (propName.equalsIgnoreCase("class")) {
         propName = "classs";
       }
       // sourceID needs to be translated to sourceId to match the setters,
       // getters, and database. The Darwin Core Archive Reader uses an enum for
       // sourceID, which is why the translation is done here.
-      if (propName.equals("sourceID")) {
+      if (propName.equalsIgnoreCase("sourceID")) {
         propName = "sourceId";
       }
       // To make the setter, append the property name with a capital first

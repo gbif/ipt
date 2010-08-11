@@ -15,6 +15,11 @@
  */
 package org.gbif.provider.model;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Sets;
+
+import junit.framework.Assert;
+
 import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.datasource.ImportSourceException;
@@ -26,12 +31,6 @@ import org.gbif.provider.service.RegionManager;
 import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.ResourceTestBase;
-
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Sets;
-
-import junit.framework.Assert;
-
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -207,7 +206,7 @@ public class DarwinCoreTest extends ResourceTestBase {
     entity.setVerbatimSRS(i++ + "");
     entity.setVerbatimTaxonRank(i++ + "");
     entity.setVernacularName(i++ + "");
-    entity.setWaterbody(i++ + "");
+    entity.setWaterBody(i++ + "");
     entity.setYear(i++ + "");
     return entity;
   }
