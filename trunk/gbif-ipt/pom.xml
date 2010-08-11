@@ -137,6 +137,7 @@
 					<excludes>**/datadir.location</excludes>
 				</configuration>
 			</plugin>
+			
 		</plugins>
 		
 		<resources>
@@ -161,8 +162,19 @@
 			</resource>
 		</resources>
 		<testResources>
+			<!-- with filtering copying big test files becomes VERY slow -->
 			<testResource>
 				<directory>src/test/resources</directory>
+				<excludes>
+					<exclude>*.properties</exclude>
+				</excludes>
+				<filtering>false</filtering>
+			</testResource>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<includes>
+					<include>*.properties</include>
+				</includes>
 				<filtering>true</filtering>
 			</testResource>
 		</testResources>
