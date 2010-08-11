@@ -57,7 +57,7 @@ public class EmlSupport extends BaseValidator {
           action.addFieldError("eml.language", action.getText("validation.required"));
         }
         if (!exists(eml.getContact().getLastName())) {
-          action.addFieldError("eml.contact.lastname", action.getText("validation.required"));
+          action.addFieldError("eml.contact.lastName", action.getText("validation.required"));
         }
         if (!isValidEmail(eml.getContact().getEmail())) {
           action.addFieldError("eml.contact.email", action.getText("validation.invalid"));
@@ -78,3 +78,4 @@ public class EmlSupport extends BaseValidator {
   }
 
 }
+
