@@ -14,6 +14,8 @@ import com.google.inject.Inject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -28,6 +30,8 @@ public class RegistrationAction extends POSTAction {
   private GBIFRegistryManager registryManager;
   private RegistrationManager registrationManager;
   private OrganisationSupport organisationValidation;
+
+  private static boolean validatedBaseURL = false;
 
   private List<Organisation> organisations = new ArrayList<Organisation>();
   private Organisation organisation;
@@ -74,12 +78,31 @@ public class RegistrationAction extends POSTAction {
     return organisations;
   }
 
+  /**
+   * @return the validatedBaseURL
+   */
+  public boolean getValidatedBaseURL() {
+    return validatedBaseURL;
+  }
+
   @Override
   public void prepare() throws Exception {
-    // will not be saving session scoping the list of organisations from the registry as this is basically a 1 time step
+    // will not be session scoping the list of organisations from the registry as this is basically a 1 time step
     super.prepare();
     log.debug("getting list of organisations");
-    organisations = registryManager.listAllOrganisations();
+    List<Organisation> tempOrganisations = registryManager.listAllOrganisations();
+    organisations.addAll(tempOrganisations);
+    Collections.sort(organisations, new Comparator<Organisation>() {
+      public int compare(Organisation org1, Organisation org2) {
+        if (org1 == null || org1.getName() == null) {
+          return 1;
+        }
+        if (org2 == null || org2.getName() == null) {
+          return -1;
+        }
+        return org1.getName().compareToIgnoreCase(org2.getName());
+      }
+    });
     log.debug("organisations returned: " + organisations.size());
   }
 
@@ -126,6 +149,7 @@ public class RegistrationAction extends POSTAction {
   @Override
   public void validate() {
     if (isHttpPost()) {
+      validatedBaseURL = true;
       organisationValidation.validate(this, organisation);
     }
   }
