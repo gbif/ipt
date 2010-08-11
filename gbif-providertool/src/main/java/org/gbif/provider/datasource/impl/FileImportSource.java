@@ -145,11 +145,14 @@ public class FileImportSource extends ImportSourceBase {
   }
 
   private String getCurrentValue(String columnName) {
-    if (headerMap.containsKey(columnName)) {
-      return escapeRawValue(currentLine[headerMap.get(columnName)]);
-    } else {
+    if (!headerMap.containsKey(columnName)) {
       return null;
     }
+    int i = headerMap.get(columnName);
+    if (i < headerMap.size()) {
+      return escapeRawValue(currentLine[headerMap.get(columnName)]);
+    }
+    return null;
   }
 
 }

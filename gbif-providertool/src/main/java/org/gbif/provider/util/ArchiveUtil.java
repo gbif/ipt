@@ -15,6 +15,8 @@
  */
 package org.gbif.provider.util;
 
+// TODO: Internationalisation on messages throughout.
+
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -49,7 +51,6 @@ import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.service.SourceManager;
 import org.gbif.provider.service.ViewMappingManager;
-import org.gbif.provider.service.SourceInspectionManager.HeaderSpec;
 import org.gbif.provider.service.impl.BaseManager;
 import org.hibernate.NonUniqueResultException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,10 +58,15 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+
+import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * This class can be used to transform a Darwin Core Archive into Resource
@@ -215,7 +221,7 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
               break;
 
             case NO_FIELDS_NO_HEADER:
-              // TODO: How to handle index (<core index=0) here?
+              // TODO: This is not a valid case for a Darwin Core Archive.
               if (request.resource instanceof OccurrenceResource) {
                 saveOccurrenceResourceExtensionMappings(mapping, coreFile);
               } else if (request.resource instanceof ChecklistResource) {
@@ -224,8 +230,10 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
               state = State.DONE;
               break;
 
-            case HAS_FIELDS_NO_HEADER: // TODO: Correct?
+            case HAS_FIELDS_NO_HEADER:
             case HAS_FIELDS_HAS_HEADER:
+              // An archive is defined by the field elements if it has them,
+              // regardless of header.
               mapping = addPropertyMappings(extension, mapping, coreFile,
                   msgBuilder);
               state = State.DONE;
@@ -262,6 +270,8 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
         sourceManager.remove(sourceFile.getId());
         haltOnIllegalState(msg);
       }
+      // The resource can type can be determined from the archive meta.xml
+      // rowType attribute if the extension for it has been loaded.
       // TODO: Confirm that we do not want this check:
       // if (extension.getId().equals(Constants.DARWIN_CORE_EXTENSION_ID)
       // && !(request.resource instanceof OccurrenceResource)) {
@@ -280,7 +290,7 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
         sourceManager.remove(sourceFile.getId());
         haltOnIllegalState(msg);
       }
-      msgBuilder.add(String.format("Processed %s with core rowType %s",
+      msgBuilder.add(String.format("Processed file %s with core rowType %s",
           new File(coreFile.getLocation()).getName(), rowType));
     }
   }
@@ -498,16 +508,18 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
 
       // Looks up an existing extension property:
       String qn = concept.qualifiedName();
-      if (qn.endsWith("classs")) {
-        qn = qn.replace("classs", "class");
-      }
       ep = extensionPropertyManager.getProperty(extension, qn);
       if (ep == null) {
-        msg = "Warning: Unsupported ExtensionProperty: "
-            + concept.qualifiedName();
-        log.warn(msg);
-        msgBuilder.add(msg);
-        continue;
+        // Avoid spurious errors for special cases.
+        if (!qn.toLowerCase().endsWith("sourceid")
+            && !qn.toLowerCase().endsWith("source")
+            && !qn.toLowerCase().endsWith("classs")) {
+          msg = "Warning: Unsupported extension property: "
+              + concept.qualifiedName();
+          log.warn(msg);
+          msgBuilder.add(msg);
+          continue;
+        }
       }
       extension.addProperty(ep);
 
@@ -520,7 +532,8 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
         try {
           conceptName = header.get(field.getIndex());
         } catch (Exception e) {
-          msg = "Warning: Unable to determine concept name for " + field;
+          msg = "Warning: Unable to determine concept name for "
+              + field.getTerm().simpleName();
           log.warn(msg);
           msgBuilder.add(msg);
           continue;
@@ -532,9 +545,11 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
       pm.setViewMapping(mapping);
       mapping.addPropertyMapping(pm);
 
-      // TODO: Confirm this is correct:
+      // If the ArchiveFile has a Id column, set it in the mapping
       if (hasIdIndex(archiveFile)) {
-        mapping.setCoreIdColumn(header.get(getIdIndex(archiveFile)));
+        Integer i = getIdIndex(archiveFile);
+        String s = header.get(i);
+        mapping.setCoreIdColumn(s);
       } else {
         mapping.setCoreIdColumn(header.get(0));
       }
@@ -562,7 +577,7 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
       ep = epManager.getPropertyByName(extension, concept);
       // TODO: Confirm that we skip this extension property:
       if (ep == null) {
-        log.warn("Warning: No extension property found for extension "
+        log.warn("Warning: ArchiveUtil.java buildExtensionMappings(): No extension property found for extension "
             + extension.getName() + " with property name " + concept);
         continue;
       }
@@ -583,6 +598,13 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
     return mapping;
   }
 
+  protected Integer getFieldIndex(ArchiveFile core, String term) {
+    if (hasFieldIndex(core, term)) {
+      return core.getField(term).getIndex();
+    }
+    return null;
+  }
+
   protected Integer getIdIndex(ArchiveFile core) {
     if (hasIdIndex(core)) {
       return core.getId().getIndex();
@@ -596,11 +618,25 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
     throw new IllegalStateException(msg);
   }
 
+  /**
+   * @param extensionFile - the file to look in
+   * @param String term - the term to look for in the file
+   * @return boolean
+   */
+  protected boolean hasFieldIndex(ArchiveFile core, String term) {
+    ArchiveField fi = core.getField(term);
+    return fi != null && fi.getIndex() != null;
+  }
+
   protected boolean hasFields(ArchiveFile core) {
     return core.getFields() != null && !core.getFields().isEmpty();
   }
 
   protected boolean hasHeader(ArchiveFile af) {
+    // Always returning false because the <field> elements contain the presumed
+    // reliable mapping information. The specification allows an archive text
+    // file to have an arbitrary number of pre-data lines, but no way to insure
+    // that any of these is an actual column header.
     return false;
     // return af.getIgnoreHeaderLines() >= 1;
     // Integer ignoreHeaderLine = af.getIgnoreHeaderLines();
@@ -608,22 +644,13 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
   }
 
   /**
-   * @param extensionFile
+   * @param extensionFile - the file to look in
    * @return boolean
    */
   protected boolean hasIdIndex(ArchiveFile core) {
     ArchiveField coreId = core.getId();
     return coreId != null && coreId.getIndex() != null;
   }
-
-  /**
-   * @param extensionFile
-   * @return boolean
-   */
-  // private boolean hasIdIndex() {
-  // ArchiveField coreId = core.getId();
-  // return coreId != null && coreId.getIndex() != null;
-  // }
 
   protected boolean hasRowType(String rowType) {
     return rowType != null && rowType.trim().length() > 0;
@@ -709,52 +736,41 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
    */
   private ImmutableList<String> getHeader(final ArchiveFile af)
       throws Exception {
-    HeaderSpec spec = new HeaderSpec() {
 
-      public char getFieldSeparatorChar() {
-        return af.getFieldsTerminatedBy();
+    // TODO: Create header here from field elements.
+    // Assume a valid archive (i.e., field elements exists for all mapped terms,
+    // indexes are valid, etc.).
+
+    // Build a list that we will then sort by the indexes
+    List<Map.Entry<ConceptTerm, ArchiveField>> list = new LinkedList<Map.Entry<ConceptTerm, ArchiveField>>();
+    // TODO: Kludge. Rework this.
+    Map<ConceptTerm, ArchiveField> indexfields = new HashMap<ConceptTerm, ArchiveField>();
+    indexfields.put(null, af.getId());
+    list.addAll(indexfields.entrySet());
+    list.addAll(af.getFields().entrySet());
+
+    // Sort the list using an anonymous inner class implementing Comparator
+    // for the compare method
+    Collections.sort(list,
+        new Comparator<Map.Entry<ConceptTerm, ArchiveField>>() {
+          public int compare(Map.Entry<ConceptTerm, ArchiveField> entry,
+              Map.Entry<ConceptTerm, ArchiveField> entry1) {
+            return entry.getValue().getIndex().compareTo(
+                entry1.getValue().getIndex());
+          }
+        });
+
+    ImmutableList.Builder<String> b = ImmutableList.builder();
+
+    for (Map.Entry<ConceptTerm, ArchiveField> me : list) {
+      ArchiveField afield = me.getValue();
+      if (afield.getTerm() == null) {
+        b.add("id");
+      } else {
+        b.add(afield.getTerm().simpleName());
       }
-
-      public File getFile() {
-        return new File(af.getLocation());
-      }
-
-      public Charset getFileEncoding() {
-        return Charset.forName(af.getEncoding());
-      }
-
-      public int getNumberOfLinesToSkip() {
-        return af.getIgnoreHeaderLines();
-      }
-
-      public boolean headerExists() {
-        return hasHeader(af);
-      }
-
-    };
-
-    return sourceInspector.getHeader(spec);
-
-    // ImmutableList<String> header =
-    // ImmutableList.copyOf(Splitter.on(',').split(
-    // getSourceFile(af).getCsvFileHeader()));
-    // return header;
-    // File f = new File(af.getLocation());
-    // char separator = getSeparator(af).charAt(0);
-    // Charset charset = null;
-    // try {
-    // charset = Charset.forName(af.getEncoding());
-    // } catch (IllegalCharsetNameException e) {
-    // } catch (IllegalArgumentException e) {
-    // }
-    // if (charset == null) {
-    // log.warn("Setting charset to " + charset + " for file "
-    // + af.getLocation());
-    // charset = Charsets.ISO_8859_1;
-    // }
-    // ImmutableList<String> header = sourceInspector.getHeader(f, charset,
-    // separator);
-    // return header;
+    }
+    return b.build();
   }
 
   /**
@@ -815,6 +831,9 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
           ImmutableSet.of(e.toString()), false);
     }
     ImmutableSet.Builder<String> messages = ImmutableSet.builder();
+    // TODO: test that archive is well-formed with field elements for column
+    // headers.
+
     CoreStateMachine coreFsm = new CoreStateMachine(archive.getCore());
     try {
       coreFsm.process();

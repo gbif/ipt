@@ -69,7 +69,7 @@ public class OccResourceManagerHibernateTest extends ContextAwareTestBase {
         Constants.TEST_OCC_RESOURCE_ID, RegionType.Country, width, height,
         title));
     System.out.println(occResourceManager.occByRegionPieUrl(
-        Constants.TEST_OCC_RESOURCE_ID, RegionType.Waterbody, width, height,
+        Constants.TEST_OCC_RESOURCE_ID, RegionType.WaterBody, width, height,
         title));
   }
 

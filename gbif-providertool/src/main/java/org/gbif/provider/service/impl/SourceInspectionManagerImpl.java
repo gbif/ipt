@@ -226,6 +226,14 @@ public class SourceInspectionManagerImpl implements SourceInspectionManager {
 
   public List<String> getHeader(final SourceBase sourceBase) throws Exception {
     Preconditions.checkNotNull(sourceBase);
+    if (sourceBase.getCsvFileHeader() != null
+        && sourceBase.getCsvFileHeader().length() != 0) {
+      // CSV File Header has already been determined from archive field
+      // elements
+      List<String> sourceColumns = Lists.newArrayList(Splitter.on(
+          sourceBase.getSeparator()).split(sourceBase.getCsvFileHeader()));
+      return sourceColumns;
+    }
     if (sourceBase instanceof SourceFile) {
       ImmutableList<String> header;
       SourceFile sf = (SourceFile) sourceBase;
