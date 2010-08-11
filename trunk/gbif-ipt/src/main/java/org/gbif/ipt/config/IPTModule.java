@@ -20,11 +20,14 @@ import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.xml.parsers.SAXParserFactory;
 
 import freemarker.cache.ClassTemplateLoader;
+import freemarker.cache.MultiTemplateLoader;
 import freemarker.cache.TemplateLoader;
 import freemarker.template.Configuration;
 
@@ -79,11 +82,18 @@ public class IPTModule extends AbstractModule {
   @Provides
   @Singleton
   @Inject
-  public Configuration provideFreemarker(AppConfig cfg) {
-    // load templates from classpath by prefixing /templates
-    TemplateLoader tl = new ClassTemplateLoader(AppConfig.class, "/templates");
-
+  public Configuration provideFreemarker(AppConfig cfg, DataDir datadir) {
     Configuration fm = new Configuration();
+    // load templates from classpath by prefixing /templates
+    List<TemplateLoader> tLoader = new ArrayList<TemplateLoader>();
+    tLoader.add(new ClassTemplateLoader(AppConfig.class, "/templates"));
+    try {
+      TemplateLoader tlDataDir = new DataDirTemplateLoader(datadir.dataFile(""));
+      tLoader.add(tlDataDir);
+    } catch (IOException e) {
+      log.warn("Cannot load custom templates from data dir: " + e.getMessage(), e);
+    }
+    TemplateLoader tl = new MultiTemplateLoader(tLoader.toArray(new TemplateLoader[tLoader.size()]));
     fm.setDefaultEncoding("utf8");
     fm.setTemplateLoader(tl);
 

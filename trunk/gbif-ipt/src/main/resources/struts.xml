@@ -119,7 +119,7 @@
 			<result>/WEB-INF/pages/account.ftl</result>
 		</action>
 
-		<action name="about" >
+		<action name="about" class="org.gbif.ipt.action.AboutAction">
 			<result>/WEB-INF/pages/about.ftl</result>
 		</action>		
 		
