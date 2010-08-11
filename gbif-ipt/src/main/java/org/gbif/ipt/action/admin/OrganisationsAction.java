@@ -142,17 +142,14 @@ public class OrganisationsAction extends POSTAction {
     }
     linkedOrganisations = registrationManager.list();
     if (id != null) {
-      // modify existing user
+      // modify existing organisation
       organisation = registrationManager.get(id);
     }
-    // if no id was submitted we wanted to create a new account
-    // if an invalid email was entered, it gets stored in the id field and obviously userManager above cant find a
-    // matching user.
-    // in that case again provide a new, empty user instance
+    // if no id was submitted we wanted to create a new organisation
     if (organisation == null) {
       // reset id
       id = null;
-      // create new user
+      // create new organisation
       organisation = new Organisation();
     }
   }

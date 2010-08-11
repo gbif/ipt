@@ -42,7 +42,7 @@
   <div>
 	<@s.fielderror cssClass="fielderror" fieldName="${name}"/>
 	<label for="${name}"><@s.text name="${keyBase}${name}"/></label>
-	<@s.checkbox key="${name}" disabled=disabled value=value/>
+	<@s.checkbox key="${name}" id="${name}" disabled=disabled value=value/>
 <#--	<input type="checkbox" id="${name}" name="${name}" value="true" <#if value>checked="checked"</#if>/> -->
   </div>
 </#macro>  
