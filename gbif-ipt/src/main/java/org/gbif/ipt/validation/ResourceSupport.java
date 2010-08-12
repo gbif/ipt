@@ -32,9 +32,13 @@ public class ResourceSupport {
   public void validate(BaseAction action, Resource resource) {
     if (resource != null) {
       validateShortname(action, resource.getShortname());
+      
+      /* This is not needed anymore. Title and description attribute belong to the Eml class, 
+       * and its validation is in the corresponding EmlSupport method.
+       * 
       if (resource.getTitle() == null || resource.getTitle().length() < 3) {
         action.addFieldError("resource.title", action.getText("validation.resource.title.required"));
-      }
+      }*/
     }
   }
 
