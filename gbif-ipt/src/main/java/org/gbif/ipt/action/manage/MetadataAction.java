@@ -107,8 +107,7 @@ public class MetadataAction extends POSTAction {
 
   @Override
   public String save() throws Exception {
-    ms.saveResource();
-    ms.saveEml();
+    ms.save();
     return SUCCESS;
   }
 

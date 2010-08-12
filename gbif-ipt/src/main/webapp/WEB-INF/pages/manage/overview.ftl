@@ -82,9 +82,13 @@ By default a resource is private to the managers. Once published to GBIF you can
       		<table>
       		  <#list ms.config.sources as src>
       			<#if src.rows?exists>
-          		<tr><th>FILE ${src.title!"???"}</th><td>${src.fileSizeFormatted}, ${src.rows} rows, ${src.columns} columns. ${src.lastModified?string}</td></tr>
+          		<tr><th>FILE ${src.title}</th><td>${src.fileSizeFormatted}, ${src.rows} rows, ${src.columns} columns. ${src.lastModified?string}
+          		<a href="source.do?id=${src.title}"><button class="small">Edit</button></a>
+          		</td></tr>
           		<#else>
-          		<tr><th>SQL ${src.title!"???"}</th><td>db=${src.database!"..."}, ${src.columns} columns. ${src.lastModified?string}</td></tr>
+          		<tr><th>SQL ${src.title}</th><td>db=${src.database!"..."}, ${src.columns} columns. <img src="${baseURL}/images/warning.gif" /> 
+          		<a href="source.do?id=${src.title}"><button class="small">Edit</button></a>
+          		</td></tr>
           		</#if>
           	  </#list>
       		</table>

@@ -21,6 +21,7 @@ import org.gbif.dwc.text.ArchiveFactory;
 import org.gbif.ipt.model.ResourceConfiguration;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.Source.FileSource;
+import org.gbif.ipt.model.Source.SqlSource;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.manage.SourceManager;
 
@@ -49,6 +50,16 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   public void add(ResourceConfiguration config, File file) throws IOException {
     // anaylze using the dwca reader
     Archive arch = ArchiveFactory.openArchive(file);
+  }
+
+  /*
+   * (non-Javadoc)
+   * @see org.gbif.ipt.service.manage.SourceManager#add(org.gbif.ipt.model.ResourceConfiguration,
+   * org.gbif.ipt.model.Source.SqlSource)
+   */
+  public void add(ResourceConfiguration config, SqlSource source) throws IOException {
+    // TODO Auto-generated method stub
+
   }
 
   /*

@@ -19,6 +19,10 @@ package org.gbif.ipt.model;
 import org.gbif.file.CSVReader;
 import org.gbif.ipt.utils.FileUtils;
 
+import static com.google.common.base.Objects.equal;
+
+import com.google.common.base.Objects;
+
 import org.apache.commons.lang.NotImplementedException;
 
 import java.io.File;
@@ -39,6 +43,7 @@ public abstract class Source implements Iterable<String[]> {
     private File file;
     private long fileSize;
     private int rows;
+    protected Date lastModified;
 
     public char getFieldsEnclosedBy() {
       return fieldsEnclosedBy;
@@ -62,6 +67,10 @@ public abstract class Source implements Iterable<String[]> {
 
     public int getIgnoreHeaderLines() {
       return ignoreHeaderLines;
+    }
+
+    public Date getLastModified() {
+      return lastModified;
     }
 
     public char getLinesTerminatedBy() {
@@ -101,6 +110,10 @@ public abstract class Source implements Iterable<String[]> {
 
     public void setIgnoreHeaderLines(int ignoreHeaderLines) {
       this.ignoreHeaderLines = ignoreHeaderLines;
+    }
+
+    public void setLastModified(Date lastModified) {
+      this.lastModified = lastModified;
     }
 
     public void setLinesTerminatedBy(char linesTerminatedBy) {
@@ -164,14 +177,30 @@ public abstract class Source implements Iterable<String[]> {
     public void setUsername(String username) {
       this.username = username;
     }
+
   }
 
   protected Resource resource;
   protected String title;
   protected String encoding = "UTF-8";
   protected String dateFormat = "YYYY-MM-DD";
-  protected Date lastModified;
   protected int columns;
+
+  @Override
+  public boolean equals(Object other) {
+    if (this == other) {
+      return true;
+    }
+    if (!(other instanceof Source)) {
+      return false;
+    }
+    Source o = (Source) other;
+    return equal(resource, o.resource) && equal(title, o.title);
+  }
+
+  public int getColumns() {
+    return columns;
+  }
 
   public String getDateFormat() {
     return dateFormat;
@@ -179,10 +208,6 @@ public abstract class Source implements Iterable<String[]> {
 
   public String getEncoding() {
     return encoding;
-  }
-
-  public Date getLastModified() {
-    return lastModified;
   }
 
   public Resource getResource() {
@@ -193,6 +218,15 @@ public abstract class Source implements Iterable<String[]> {
     return title;
   }
 
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(resource, title);
+  }
+
+  public void setColumns(int columns) {
+    this.columns = columns;
+  }
+
   public void setDateFormat(String dateFormat) {
     this.dateFormat = dateFormat;
   }
@@ -201,16 +235,11 @@ public abstract class Source implements Iterable<String[]> {
     this.encoding = encoding;
   }
 
-  public void setLastModified(Date lastModified) {
-    this.lastModified = lastModified;
-  }
-
   public void setResource(Resource resource) {
     this.resource = resource;
   }
 
   public void setTitle(String title) {
-    this.title = title;
+    this.title = title.replaceAll("\\s", "_");
   }
-
 }
