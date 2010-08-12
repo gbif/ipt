@@ -18,15 +18,6 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 	<title><@s.text name='manage.metadata.geocoverage.title'/></title>
 	<#assign sideMenuEml=true />
-<#include "/WEB-INF/pages/inc/menu.ftl">
-<#include "/WEB-INF/pages/macros/forms.ftl"/>
-
-<head>
-    <title><@s.text name="metadata.heading.geocoverages"/></title>
-    <meta name="resource" content=""/>
-    <meta name="menu" content="ManagerMenu"/>
-    <meta name="submenu" content="manage_resource"/>
-    <meta name="heading" content="<@s.text name='eml.geographicCoverage'/>"/>    
     
 <script
   src="http://www.google.com/jsapi?key=ABQIAAAAQmTfPsuZgXDEr012HM6trBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQTBMMPM0apn-CWBZ8nUq7oUL6nMQ"
@@ -114,6 +105,10 @@
     </script>
 
 </head>
+
+<#include "/WEB-INF/pages/inc/menu.ftl">
+<#include "/WEB-INF/pages/macros/forms.ftl"/>
+
 	<@s.text name='manage.metadata.geocoverage.map.message'/>
     <div id="map"></div>
     <div class="break10"></div>
