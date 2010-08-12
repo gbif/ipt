@@ -2,14 +2,11 @@
 	something doesnt work right when calling macros inside macro definitions
 	thats why we use this include instead to keep the help code in one place
  -->
-<#if !(help?has_content)>
-	<#assign help><@s.text name="${keyBase}${name}.help"/></#assign>	
-</#if>
 <#if help?has_content>
 <img class="infoImg" src="${baseURL}/images/info.gif" />
 <div class="info">
-	${help}
-	<#if (helpOptions?size>0)>
+	<#if help=="i18n"><@s.text name="${keyBase}${name}.help"/><#else><#if help?has_content>${help}</#if></#if>
+	<#if (helpOptions?exists && helpOptions?size>0)>
 	<p>Options:</p>
 	<ol>
 	  <#list helpOptions?keys as val>
