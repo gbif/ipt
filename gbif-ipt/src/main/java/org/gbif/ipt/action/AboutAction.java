@@ -51,11 +51,15 @@ public class AboutAction extends BaseAction {
     host = regManager.getHostingOrganisation();
     if (host == null) {
       host = new Organisation();
-      System.out.println("NO HOST CONFIGURED");
     }
-    StringWriter result = new StringWriter();
-    Template tmpl = ftl.getTemplate("datadir::config/about.ftl");
-    tmpl.process(this, result);
-    content = result.toString();
+    try {
+      StringWriter result = new StringWriter();
+      Template tmpl = ftl.getTemplate("datadir::config/about.ftl");
+      tmpl.process(this, result);
+      content = result.toString();
+    } catch (Exception e) {
+      log.warn("Cannot render custom about.ftl template from data dir", e);
+      content = "";
+    }
   }
 }

@@ -1,11 +1,17 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 	<title><@s.text name="admin.user.title"/></title>
+<script type="text/javascript">
+$(document).ready(function(){
+	initHelp();
+});   
+</script>	
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
 <h1><@s.text name="admin.user.title"/></h1>
 
 <p><@s.text name="admin.user.intro"/></p>
 <p><@s.text name="admin.user.intro2"/></p>
+
  
 <#include "/WEB-INF/pages/macros/forms.ftl">
 <@s.form cssClass="topForm half" action="user.do" method="post">

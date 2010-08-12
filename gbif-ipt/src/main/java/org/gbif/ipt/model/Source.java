@@ -17,6 +17,7 @@
 package org.gbif.ipt.model;
 
 import org.gbif.file.CSVReader;
+import org.gbif.ipt.utils.FileUtils;
 
 import org.apache.commons.lang.NotImplementedException;
 
@@ -36,6 +37,8 @@ public abstract class Source implements Iterable<String[]> {
     private char linesTerminatedBy = '\n';
     private int ignoreHeaderLines = 0;
     private File file;
+    private long fileSize;
+    private int rows;
 
     public char getFieldsEnclosedBy() {
       return fieldsEnclosedBy;
@@ -49,12 +52,24 @@ public abstract class Source implements Iterable<String[]> {
       return file;
     }
 
+    public long getFileSize() {
+      return fileSize;
+    }
+
+    public String getFileSizeFormatted() {
+      return FileUtils.formatSize(fileSize, 1);
+    }
+
     public int getIgnoreHeaderLines() {
       return ignoreHeaderLines;
     }
 
     public char getLinesTerminatedBy() {
       return linesTerminatedBy;
+    }
+
+    public int getRows() {
+      return rows;
     }
 
     /*
@@ -90,6 +105,12 @@ public abstract class Source implements Iterable<String[]> {
 
     public void setLinesTerminatedBy(char linesTerminatedBy) {
       this.linesTerminatedBy = linesTerminatedBy;
+    }
+
+    public void updateFileStats() {
+
+      this.fileSize = file.length();
+      this.rows = rows;
     }
   }
 
@@ -150,6 +171,7 @@ public abstract class Source implements Iterable<String[]> {
   protected String encoding = "UTF-8";
   protected String dateFormat = "YYYY-MM-DD";
   protected Date lastModified;
+  protected int columns;
 
   public String getDateFormat() {
     return dateFormat;
