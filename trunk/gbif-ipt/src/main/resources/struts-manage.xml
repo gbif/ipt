@@ -64,7 +64,7 @@
 			</interceptor-ref>
 			<interceptor-ref name="managerStack"/>
 			<result name="input">/WEB-INF/pages/manage/source.ftl</result>
-			<result type="redirect">resource.do</result>
+			<result>/WEB-INF/pages/manage/source.ftl</result>
 		</action>
 
 		<action name="generate" class="org.gbif.ipt.action.manage.MetadataAction">

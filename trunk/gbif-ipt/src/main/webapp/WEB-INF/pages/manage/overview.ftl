@@ -37,7 +37,7 @@ By default a resource is private to the managers. Once published to GBIF you can
   	</div>
   	<div class="actions">
 	  <form action='metadata-basic.do' method='get'>
-		<input type='submit' name='edit' value='Edit' />
+       	<@s.submit name="edit" key="button.edit"/>
   	  </form>
   	</div>
   	<#if missingMetadata>
@@ -69,19 +69,24 @@ By default a resource is private to the managers. Once published to GBIF you can
   	<div class="actions">
 	  <form action='source.do' method='post' enctype="multipart/form-data">
 	    <@s.file name="file" key="manage.resource.create.file" />
-		<input type='submit' name='add' value='Add' />
+       	<@s.submit name="add" key="button.add"/>
   	  </form>
   	</div>
   </div>
   <div class="body">
       	<div>
-			Your data sources for generating a Darwin Core archive. You can upload text files or configure SQL views to databases in your local network.
+			Your data sources for generating a Darwin Core archive. You can upload text files (e.g. csv or tab delimited) or configure SQL views to databases in your local network.
+			To create a new sql source press <em><@s.text name="button.add"/></em>, to (re)upload a file please select the file before hitting <@s.text name="button.add"/>. 
       	</div>
       	<div class="details">
       		<table>
-          		<tr><th>FILE species.txt</th><td>10MB, 137.889 rows, 7 columns. Apr 20, 2007 12:45:09 PM</td></tr>
-          		<tr><th>FILE vernaculars.txt</th><td>4MB, 87.322 rows, 5 columns. Apr 20, 2007 12:52:19 PM</td></tr>
-          		<tr><th>SQL taxa</th><td>db=pontaurus, 21 columns</td></tr>
+      		  <#list ms.config.sources as src>
+      			<#if src.rows?exists>
+          		<tr><th>FILE ${src.title!"???"}</th><td>${src.fileSizeFormatted}, ${src.rows} rows, ${src.columns} columns. ${src.lastModified?string}</td></tr>
+          		<#else>
+          		<tr><th>SQL ${src.title!"???"}</th><td>db=${src.database!"..."}, ${src.columns} columns. ${src.lastModified?string}</td></tr>
+          		</#if>
+          	  </#list>
       		</table>
       	</div>
   </div>
@@ -93,11 +98,6 @@ By default a resource is private to the managers. Once published to GBIF you can
         DwC Mappings
   	</div>
   	<div class="actions">
-  	 <#-- 
-	  <form action='extension.do' method='post'>
-		<input type='submit' name='generate' value='Generate' />
-  	  </form>
-  	  -->
   	</div>
   </div>
   <div class="body">
@@ -126,10 +126,10 @@ By default a resource is private to the managers. Once published to GBIF you can
 		      <option value="${o.key}">${o.name}</option>
 		    </#list>
 			</select>
-			<input type='submit' class="confirm" name='publish' value='Register' />
+	       	<@s.submit cssClass="confirm" name="publish" key="button.register"/>
 		<#else>
 		    <#if ms.resource.status=="PRIVATE">
-			<input type='submit' class="confirm" name='publish' value='Publish' />
+	       	<@s.submit cssClass="confirm" name="publish" key="button.publish"/>
 			</#if>
 		</#if>
   	  </form>

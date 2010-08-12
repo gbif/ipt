@@ -25,6 +25,7 @@ import com.google.inject.Inject;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -140,5 +141,8 @@ public class SourceAction extends POSTAction {
   @Override
   public void validateHttpPostOnly() {
     // check if title exists already as a source
+    if (StringUtils.trimToEmpty(source.getTitle()).length() < 3) {
+      addFieldError("source.title", getText("validation.required"));
+    }
   }
 }

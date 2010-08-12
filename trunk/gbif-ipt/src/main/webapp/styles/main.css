@@ -34,7 +34,7 @@ div#wrapper {
 	width:950px;
 	background-color: #ffffff;
 	padding:10px;
-	margin-top: 30px;
+	margin-top: 20px;
 	margin-bottom: 30px;
 	padding-bottom:0px;
 	padding-top: 0px;
@@ -264,6 +264,21 @@ ul.fielderror{
 	display: inline !important;
 }
 
+div.info{
+	display: none;
+    position:absolute;
+    z-index:9999;  
+    max-width:350px;  
+    padding:7px; 
+    color: black;  
+    background-color:#e7f1fa; 
+    font-size:12px;  
+    border:1px solid #ccc; 
+}
+div.info ol{
+	color: red;
+}
+
 /* for forms generated with the custom freemarker inlcudes */
 .topForm {
 	margin: 2em 0em;
@@ -274,7 +289,7 @@ ul.fielderror{
 	margin-top: 1em;
 }
 .topForm input,.topForm textarea {
-	margin-left: 2em;
+	margin-left: 0.5em;
 	width: 90%;
 }
 .topForm input[type=submit]{
@@ -282,12 +297,16 @@ ul.fielderror{
 	width: auto;
 }
 .topForm select{
-	margin-left: 2em;
+	margin-left: 0.5em;
 	max-width:90%;
 	width: auto;
 }
 .topForm .buttons{
 	margin-top: 2em;
+}
+.topForm img.infoImg{
+	position: relative;
+	top: 4px;
 }
 
 
