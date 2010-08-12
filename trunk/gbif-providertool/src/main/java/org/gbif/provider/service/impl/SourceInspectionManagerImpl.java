@@ -230,8 +230,11 @@ public class SourceInspectionManagerImpl implements SourceInspectionManager {
         && sourceBase.getCsvFileHeader().length() != 0) {
       // CSV File Header has already been determined from archive field
       // elements
-      List<String> sourceColumns = Lists.newArrayList(Splitter.on(
-          sourceBase.getSeparator()).split(sourceBase.getCsvFileHeader()));
+      // TODO: JRW
+      // List<String> sourceColumns = Lists.newArrayList(Splitter.on(
+      // sourceBase.getSeparator()).split(sourceBase.getCsvFileHeader()));
+      List<String> sourceColumns = Lists.newArrayList(Splitter.on(",").split(
+          sourceBase.getCsvFileHeader()));
       return sourceColumns;
     }
     if (sourceBase instanceof SourceFile) {

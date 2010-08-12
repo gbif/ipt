@@ -105,7 +105,16 @@ public class GenericResourceManagerHibernate<T extends Resource> extends
 
   @Transactional(readOnly = false)
   public T publish(Long resourceId) {
+    if (resourceId == null) {
+      return null;
+    }
     T resource = get(resourceId);
+    if (resource == null) {
+      return null;
+    }
+    if (getCreds(resource) == null) {
+      return null;
+    }
     // make resource public. Otherwise it wont get registered with GBIF
     resource.setStatus(PublicationStatus.modified);
     updateRegistry(resource);
