@@ -614,8 +614,10 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
     if (eml == null && resource != null) {
       eml = emlManager.deserialize(resource);
     }
-    if (eml.getResource() == null) {
-      eml.setResource(resource);
+    if (eml != null) {
+      if (eml.getResource() == null) {
+        eml.setResource(resource);
+      }
     }
   }
 

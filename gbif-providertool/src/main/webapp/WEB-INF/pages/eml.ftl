@@ -275,9 +275,13 @@
           </para>
         </abstract>
         <studyAreaDescription>
+          <#if (eml.project.studyAreaDescription.name)??>
+          <#if (eml.project.studyAreaDescription.name.name)??>
           <descriptor name="${eml.project.studyAreaDescription.getName().getName()!}"  citableClassificationSystem="${eml.project.studyAreaDescription.citableClassificationSystem!}">
             <descriptorValue>${eml.project.studyAreaDescription.descriptorValue!}</descriptorValue>
           </descriptor>
+          </#if>
+          </#if>
         </studyAreaDescription>            
         <designDescription>
           <description>

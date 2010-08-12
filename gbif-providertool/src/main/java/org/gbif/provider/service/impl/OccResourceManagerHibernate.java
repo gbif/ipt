@@ -15,6 +15,8 @@
  */
 package org.gbif.provider.service.impl;
 
+import com.googlecode.gchartjava.GeographicalArea;
+
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.model.voc.HostType;
@@ -23,13 +25,10 @@ import org.gbif.provider.model.voc.RegionType;
 import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.RegionManager;
 import org.gbif.provider.util.StatsUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.googlecode.gchartjava.GeographicalArea;
 
 /**
  * TODO: Documentation.
@@ -230,11 +229,14 @@ public class OccResourceManagerHibernate extends
   @Override
   public OccurrenceResource publish(Long resourceId) {
     OccurrenceResource resource = super.publish(resourceId);
-    try {
-      geoTools.updateFeatureType(resource);
-    } catch (IOException e) {
-      log.error("Can't write new Geoserver FeatureTypeInfo for resource "
-          + resource.getId());
+    if (resource != null) {
+      try {
+        // TODO JRW
+        geoTools.updateFeatureType(resource);
+      } catch (Exception e) {
+        log.error("Can't write new Geoserver FeatureTypeInfo for resource "
+            + resource.getId());
+      }
     }
     return resource;
   }
