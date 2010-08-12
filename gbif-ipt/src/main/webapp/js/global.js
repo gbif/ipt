@@ -17,6 +17,12 @@ function initHelp(){
     $("div.info").click(function(e) {
         $(this).hide("fast");
     })
+    $(document).keyup(function(e) {
+    	// pressing the escape key
+  		if (e.keyCode == 27) { 
+	        $("div.info:visible").hide("fast");
+  		}   
+	});
     $("div.info ol a").click(function(e) {
     	e.preventDefault(); 
         $(this).parent().parent().parent().next().val($(this).attr("val"));
