@@ -9,8 +9,8 @@ function initHelp(){
         var show = $(this).next().is(":hidden");
 	    $("div.info:visible").hide("fast");
 	    if (show){
-	    	var off = $(this).offset();
-	    	$(this).next().css({ top: off.top-24, left: off.left-170 });
+//	    	var t = $(this).offset();
+//	    	$(this).next().css({ top: off.top-24, left: off.left-170 });
 	        $(this).next().show("fast");
 	    };
     })
