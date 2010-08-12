@@ -38,7 +38,7 @@ public class OverviewAction extends BaseAction {
     } else if (u != null) {
       ms.getResource().addManager(u);
       addActionMessage("Added " + u.getName() + " to resource managers");
-      ms.saveResource();
+      ms.saveConfig();
       potentialManagers.remove(u);
     }
     return execute();
@@ -51,7 +51,7 @@ public class OverviewAction extends BaseAction {
     } else {
       ms.getResource().getManagers().remove(u);
       addActionMessage("Removed " + u.getName() + " from resource managers");
-      ms.saveResource();
+      ms.saveConfig();
       potentialManagers.add(u);
     }
     return execute();

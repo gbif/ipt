@@ -19,6 +19,7 @@ package org.gbif.ipt.action.manage;
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Source;
+import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.manage.SourceManager;
 
 import com.google.inject.Inject;
@@ -46,7 +47,7 @@ public class SourceAction extends POSTAction {
   @Inject
   private ResourceManagerSession ms;
   @Inject
-  private SourceManager mappingManager;
+  private SourceManager sourceManager;
   @Inject
   private DataDir dataDir;
   // config
@@ -71,7 +72,8 @@ public class SourceAction extends POSTAction {
   }
 
   @Override
-  public void prepare() {
+  public void prepare() throws Exception {
+    super.prepare();
     if (id != null) {
       source = ms.getConfig().getSource(id);
     } else {
@@ -109,12 +111,16 @@ public class SourceAction extends POSTAction {
         // create a new file source instead of prepared sql one
         System.out.println(tmpFile.getAbsolutePath());
         Set<Source> before = new HashSet<Source>(ms.getConfig().getSources());
-        mappingManager.add(ms.getConfig(), tmpFile);
+        sourceManager.add(ms.getConfig(), tmpFile);
         Collection<Source> added = CollectionUtils.disjunction(before, ms.getConfig().getSources());
         log.debug("Added " + added.size() + " source(s)");
       } else if (source.getTitle() != null) {
-        System.out.println("Save config");
-        ms.saveConfig();
+        try {
+          ms.getConfig().addSource(source);
+          ms.saveConfig();
+        } catch (AlreadyExistingException e) {
+          addActionError("Source with that name exists already");
+        }
       } else {
         return INPUT;
       }
@@ -143,6 +149,8 @@ public class SourceAction extends POSTAction {
     // check if title exists already as a source
     if (StringUtils.trimToEmpty(source.getTitle()).length() < 3) {
       addFieldError("source.title", getText("validation.required"));
+    } else if (ms.getConfig().getSources().contains(source)) {
+      addFieldError("source.title", getText("manage.resource.source.unique"));
     }
   }
 }

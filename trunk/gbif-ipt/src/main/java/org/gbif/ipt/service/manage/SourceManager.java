@@ -3,6 +3,7 @@ package org.gbif.ipt.service.manage;
 import org.gbif.ipt.model.ResourceConfiguration;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.Source.FileSource;
+import org.gbif.ipt.model.Source.SqlSource;
 import org.gbif.ipt.service.manage.impl.SourceManagerImpl;
 
 import com.google.inject.ImplementedBy;
@@ -40,6 +41,8 @@ public interface SourceManager {
    * @throws IOException
    */
   public void add(ResourceConfiguration config, File file) throws IOException;
+
+  public void add(ResourceConfiguration config, SqlSource source) throws IOException;
 
   public void delete(FileSource source) throws IOException;
 

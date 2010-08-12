@@ -16,6 +16,8 @@
 
 package org.gbif.ipt.model;
 
+import org.gbif.ipt.service.AlreadyExistingException;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,6 +30,13 @@ public class ResourceConfiguration {
   private Set<Source> sources = new HashSet<Source>();
   private ExtensionMapping core;
   private Set<ExtensionMapping> extensions = new HashSet<ExtensionMapping>();
+
+  public void addSource(Source src) throws AlreadyExistingException {
+    if (sources.contains(src)) {
+      throw new AlreadyExistingException();
+    }
+    sources.add(src);
+  }
 
   public ExtensionMapping getCore() {
     return core;

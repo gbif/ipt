@@ -84,21 +84,16 @@ public class ResourceManagerSession {
   }
 
   public void save() throws InvalidConfigException {
-    saveResource();
     saveEml();
     saveConfig();
   }
 
   public void saveConfig() throws InvalidConfigException {
-    // TODO: implement
+    resourceManager.save(config);
   }
 
   public void saveEml() throws InvalidConfigException {
     resourceManager.saveEml(getResource(), eml);
-  }
-
-  public void saveResource() throws InvalidConfigException {
-    resourceManager.save(config);
   }
 
   @Override
