@@ -65,7 +65,7 @@ $(document).ready(function(){
 			<@selectList name="organisation.key" options="organisations" objValue="key" objTitle="name" keyBase="admin." value="" size=15/>  
 			<@input name="organisation.password" keyBase="admin." type="text"/>
 			<@input name="organisation.alias" keyBase="admin." type="text" />
-			<@checkbox name="organisation.canHost" keyBase="admin." />	
+			<@checkbox name="organisation.canHost" keyBase="admin." value="true"/>	
 			<@s.hidden id="organisation.name" name="organisation.name" />
 		   <div class="buttons">
 		 	<@s.submit cssClass="button" name="save" id="save" key="button.save"/>
