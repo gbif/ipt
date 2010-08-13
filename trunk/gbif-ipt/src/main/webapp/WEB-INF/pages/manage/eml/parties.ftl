@@ -73,12 +73,12 @@ $(document).ready(function(){
     </div>
     </br>
 	<div class="2col">
-  		<@input name="eml.associatedParties[${agent_index}].firstName" i8nkey="eml.associatedParties.firstName" keyBase="" size=40/>
-  		<@input name="eml.associatedParties[${agent_index}].lastName" i8nkey="eml.associatedParties.lastName" keyBase="" size=40/>
+  		<@input name="eml.associatedParties[${agent_index}].firstName" i18nkey="eml.associatedParties.firstName" keyBase="" size=40/>
+  		<@input name="eml.associatedParties[${agent_index}].lastName" i18nkey="eml.associatedParties.lastName" keyBase="" size=40/>
   	</div>
 	<div class="2col">
-  		<@input name="eml.associatedParties[${agent_index}].phone" i8nkey="eml.associatedParties.phone" keyBase="" size=40/>
-  		<@select name="eml.associatedParties[${agent_index}].role" value="${eml.associatedParties[agent_index].role}" keyBase="" options=roleOptions />
+  		<@input name="eml.associatedParties[${agent_index}].phone" i18nkey="eml.associatedParties.phone" keyBase="" size=40/>
+  		<@select name="eml.associatedParties[${agent_index}].role" value="${eml.associatedParties[agent_index].role}" options=roleOptions />
   	</div>
   	</div>
 </#list>

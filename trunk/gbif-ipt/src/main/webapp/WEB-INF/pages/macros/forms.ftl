@@ -1,28 +1,27 @@
-<#macro input name i8nkey="null" value="-99999" keyBase="" type="text" size=-1 disabled=false errorField="-99999" help="" helpOptions=[]>
-	<#if errorField=="-99999">
+<#macro input name value="-99999" keyBase="" type="text" size=-1 disabled=false errorfield="-99999" i18nkey="-99999" help="" helpOptions=[]>
+	<#if errorfield=="-99999">
 	 <#assign efield=name />
 	<#else>
-     <#assign efield=errorField />
+     <#assign efield=errorfield />
 	</#if>
-	<#if i8nkey="null" >
-	 <#assign i8nkey="${keyBase}${name}" />
+	<#if i18nkey=="-99999">
+	 <#assign i18nkeyMsg=keyBase+name />
+	<#else>
+     <#assign i18nkeyMsg=i18nkey />
 	</#if>
 	
   <div>
-	<@s.fielderror cssClass="fielderror" fieldName="${efield}"/>
-	<label for="${name}"><@s.text name="${i8nkey}"/></label>
-	<#include "/WEB-INF/pages/macros/help_inc.ftl">
+	<@s.fielderror cssclass="fielderror" fieldname="${efield}"/>
+	<label for="${name}"><@s.text name="${i18nkeyMsg}"/></label>
+	<#include "/web-inf/pages/macros/help_inc.ftl">
 	<input type="${type}" id="${name}" name="${name}" value="<#if value=="-99999"><@s.property value="${name}"/><#else>${value}</#if>" <#if (size>0)>size="${size}"</#if> <#if disabled>readonly="readonly"</#if>/>
   </div>
 </#macro> 
 
-<#macro text name i8nkey="null" keyBase="" size=40 rows=5 disabled=false help="">
-  <#if i8nkey="null" >
-    <#assign i8nkey="${keyBase}${name}" />
-  </#if>
+<#macro text name keyBase="" size=40 rows=5 disabled=false help="">
   <div>
 	<@s.fielderror cssClass="fielderror" fieldName="${name}"/>
-	<label for="${name}"><@s.text name="${i8nkey}"/></label>
+	<label for="${name}"><@s.text name="${keyBase}${name}"/></label>
 	<#include "/WEB-INF/pages/macros/help_inc.ftl">
 	<textarea id="${name}" name="${name}" cols=${size} rows=${rows} <#if disabled>readonly="readonly"</#if>><@s.property value="${name}"/></textarea>
   </div>
