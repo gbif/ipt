@@ -59,12 +59,15 @@ $(document).ready(function(){
 	<div id="requestDetails"></div>
 	
 	<@input name="organisation.alias" keyBase="admin." type="text"/>
-	<@checkbox name="organisation.canHost" keyBase="admin." value="organisation.canHost"/>
+	<#if id?has_content>
+		<@checkbox name="organisation.canHost" keyBase="admin." value="organisation.canHost"/>
+	<#else>
+		<@checkbox name="organisation.canHost" keyBase="admin." value="true"/>
+	</#if>
    <div class="buttons">
  	<@s.submit name="save" key="button.save"/>
  	<#if id?has_content>
- 	<!-- <@s.submit name="delete" key="button.delete" cssClass="confirm"/> -->
- 	<@s.submit name="delete" key="button.delete"/>
+	<@s.submit name="delete" key="button.delete" cssClass="confirm"/>
 	</#if>		   	
  	<@s.submit name="cancel" key="button.cancel"/>
   </div>
