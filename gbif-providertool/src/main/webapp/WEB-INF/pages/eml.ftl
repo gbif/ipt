@@ -10,7 +10,7 @@
 
     <dataset>
       <alternateIdentifier>${eml.getResource().guid}</alternateIdentifier>
-      <title xml:lang="${eml.language}">${eml.title}</title>
+      <title xml:lang="${eml.language}">${eml.title!}</title>
 <!-- The creator is the person who created the resource
      (not necessarily the author of this metadata about the resource). -->
       <creator>
@@ -269,11 +269,11 @@
           </individualName>
           <role>${eml.project.personnel.role!}</role>
         </personnel>
-        <abstract>
+        <funding>
           <para>
             ${eml.project.funding!}
           </para>
-        </abstract>
+        </funding>
         <studyAreaDescription>
           <#if (eml.project.studyAreaDescription.name)??>
           <#if (eml.project.studyAreaDescription.name.name)??>
@@ -330,7 +330,7 @@
        <#list eml.getPhysicalData() as pdata>
         <physical>
           <objectName>${pdata.name}</objectName>
-          <characterEncoding>${pdata.name}</characterEncoding>
+          <characterEncoding>${pdata.charset}</characterEncoding>
           <dataFormat>
             <externallyDefinedFormat>
               <formatName>${pdata.format}</formatName>
