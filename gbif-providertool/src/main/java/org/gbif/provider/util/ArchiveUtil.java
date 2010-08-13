@@ -521,6 +521,11 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
           continue;
         }
       }
+      // If there is no extension property, don't add it.
+      if (ep == null) {
+        continue;
+      }
+
       extension.addProperty(ep);
 
       // Static mapping:

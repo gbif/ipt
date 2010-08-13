@@ -15,11 +15,19 @@
  */
 package org.gbif.provider.model.factory;
 
+import org.apache.commons.digester.Digester;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.ThesaurusVocabulary;
 import org.gbif.provider.service.ThesaurusManager;
 import org.gbif.provider.service.util.ThesaurusHandlingRule;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,15 +38,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.digester.Digester;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.xml.sax.SAXException;
 
 /**
  * Building from XML definitions.
@@ -223,10 +222,17 @@ public class ExtensionFactory {
    */
   public Extension build(String url) throws IOException, SAXException {
     Set<String> thesaurusURLs = thesaurusURLs(url);
+    if (thesaurusURLs.size() == 0) {
+      return null;
+    }
 
     // build a map of
     // "http://thesaurusURI" -> thesaurus ID
     Map<String, ThesaurusVocabulary> url2ThesaurusMap = new HashMap<String, ThesaurusVocabulary>();
+    if (url2ThesaurusMap.size() == 0) {
+      return null;
+    }
+
     for (String t : thesaurusURLs) {
       log.info("Building referenced thesaurus: " + t);
       ThesaurusVocabulary tv = ThesaurusFactory.build(t);
