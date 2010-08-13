@@ -16,10 +16,13 @@
   </div>
 </#macro> 
 
-<#macro text name keyBase="" size=40 rows=5 disabled=false help="">
+<#macro text name i8nkey="null" keyBase="" size=40 rows=5 disabled=false help="">
+  <#if i8nkey="null" >
+    <#assign i8nkey="${keyBase}${name}" />
+  </#if>
   <div>
 	<@s.fielderror cssClass="fielderror" fieldName="${name}"/>
-	<label for="${name}"><@s.text name="${keyBase}${name}"/></label>
+	<label for="${name}"><@s.text name="${i8nkey}"/></label>
 	<#include "/WEB-INF/pages/macros/help_inc.ftl">
 	<textarea id="${name}" name="${name}" cols=${size} rows=${rows} <#if disabled>readonly="readonly"</#if>><@s.property value="${name}"/></textarea>
   </div>
