@@ -1,30 +1,24 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 <script type="text/javascript">
 $(document).ready(function(){
-alert(${validatedBaseURL?string});
+	<#if !validatedBaseURL>
+		$('#registrationForm').hide();
+	</#if>
 	$('#validate').click(function() {
 		$("#baseURLStatus").html('<img src="${baseURL}/images/small-loader.gif">');
 		var url = "<@s.url value='http://gbrdsdev.gbif.org/registry/ipt/validate.json?url=${baseURL}'/>";
 		$.getJSON(url+"&callback=?",function(data){
 			if(data.result==200) {
-				$("#baseURLStatus").html("Valid!");
-				$("#organisation\\.key").removeAttr("disabled");
-				$("#organisation\\.password").removeAttr("disabled");
-				$("#organisation\\.alias").removeAttr("disabled");
-				$("#organisation\\.canHost").removeAttr("disabled");
-				$("#save").removeAttr("disabled");
-				$("#cancel").removeAttr("disabled");
+				$('#registrationForm').show(500);
 			}
 			else {
-				$("#baseURLStatus").html("Not valid, callback failed! Please check your base url. (DEV--> fields are going to be activated for dev purposes)");
+				<#if cfg.registryType=="DEVELOPMENT">
+					$("#baseURLStatus").html("Not valid, callback failed! Please check your base url. (DEV--> fields are going to be activated for dev purposes)");
+					$('#registrationForm').show(500);
+				<#else>
+					$("#baseURLStatus").html("Not valid, callback failed! Please check your base url. ");
+				</#if>
 				
-				//this needs to be removed in production
-				$("#organisation\\.key").removeAttr("disabled");
-				$("#organisation\\.password").removeAttr("readonly");
-				$("#organisation\\.alias").removeAttr("readonly");
-				$("#organisation\\.canHost").removeAttr("disabled");
-				$("#save").removeAttr("disabled");
-				$("#cancel").removeAttr("disabled");				
 			}
 		});	
 
@@ -60,22 +54,24 @@ alert(${validatedBaseURL?string});
 			<@s.submit cssClass="button" name="validate" id="validate" key="Validate"/>
 		
 		<div id="baseURLStatus"></div>
-		<hr/>
 	</#if>
-
-	<p><@s.text name="admin.registration.intro"/></p>
-	<p><@s.text name="admin.registration.intro2"/></p>
 	
-	<@s.form cssClass="topForm half" action="registration" method="post">
-		<@selectList name="organisation.key" options="organisations" objValue="key" objTitle="name" keyBase="admin." value="" size=15 disabled=!validatedBaseURL/>  
-		<@input name="organisation.password" keyBase="admin." type="text" disabled=!validatedBaseURL/>
-		<@input name="organisation.alias" keyBase="admin." type="text" disabled=!validatedBaseURL/>
-		<@checkbox name="organisation.canHost" keyBase="admin." disabled=!validatedBaseURL/>	
-		<@s.hidden id="organisation.name" name="organisation.name" required="!validatedBaseURL" />
-	   <div class="buttons">
-	 	<@s.submit cssClass="button" name="save" id="save" key="button.save" disabled=!validatedBaseURL/>
-	 	<@s.submit cssClass="button" name="cancel" id="cancel" key="button.cancel" disabled=!validatedBaseURL/>
-	  </div>	  
-	</@s.form>
+	<div id="registrationForm">
+		<hr/>
+		<p><@s.text name="admin.registration.intro"/></p>
+		<p><@s.text name="admin.registration.intro2"/></p>
+		
+		<@s.form cssClass="topForm half" action="registration" method="post" id="registrationForm" >
+			<@selectList name="organisation.key" options="organisations" objValue="key" objTitle="name" keyBase="admin." value="" size=15/>  
+			<@input name="organisation.password" keyBase="admin." type="text"/>
+			<@input name="organisation.alias" keyBase="admin." type="text" />
+			<@checkbox name="organisation.canHost" keyBase="admin." />	
+			<@s.hidden id="organisation.name" name="organisation.name" />
+		   <div class="buttons">
+		 	<@s.submit cssClass="button" name="save" id="save" key="button.save"/>
+		 	<@s.submit cssClass="button" name="cancel" id="cancel" key="button.cancel"/>
+		  </div>	  
+		</@s.form>
+	</div>
 </#if>
 <#include "/WEB-INF/pages/inc/footer.ftl">

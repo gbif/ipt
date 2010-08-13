@@ -109,7 +109,7 @@ public class RegistrationAction extends POSTAction {
   @Override
   public String save() {
     if (registrationManager.getHostingOrganisation() == null) {
-      addActionMessage("The IPT has been registered under the organisation");
+      addActionMessage(getText("admin.registration.success"));
       try {
         registrationManager.addHostingOrganisation(organisation);
         // add the hosting organisation to the associated list of organisations as well
@@ -127,8 +127,8 @@ public class RegistrationAction extends POSTAction {
         return INPUT;
       }
     }
-    addActionError("This IPT is already registered against an existing organisation.");
-    addActionError("To change the association, please contact GBIF's help desk");
+    addActionError(getText("admin.registration.error.alreadyRegistered1"));
+    addActionError(getText("admin.registration.error.alreadyRegistered2"));
     return SUCCESS;
   }
 

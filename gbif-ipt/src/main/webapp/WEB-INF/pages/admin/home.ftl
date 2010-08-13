@@ -29,16 +29,17 @@
 		<@s.text name="admin.home.editRegistration"/>
 	  </td>
 	</tr>
-	<#if isRegistered>
 	<tr>
 	  <td>
-		<a href="${baseURL}/admin/organisations.do"><img src="${baseURL}/images/icons/organisation.png" /></a>
+		<#if isRegistered><a href="${baseURL}/admin/organisations.do"><img src="${baseURL}/images/icons/organisation.png" /></a>	
+		<#else><img src="${baseURL}/images/icons/organisation-grey.png" /></#if>
 	  </td>
 	  <td>
 		<@s.text name="admin.home.editOrganisations"/>
+		<#if !isRegistered><div class="small"><@s.text name="admin.home.editOrganisations.disabled"/></div></#if>
 	  </td>
 	</tr>
-	</#if>
+
 	<tr>
 	  <td>
 		<a href="${baseURL}/admin/extensions.do"><img src="${baseURL}/images/icons/extensions.png" /></a>

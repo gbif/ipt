@@ -72,11 +72,18 @@ public interface RegistrationManager {
   public Organisation getHostingOrganisation();
 
   /**
-   * Returns list of all associated organisations
+   * Returns list of all organisations able to host resources
    * 
    * @return
    */
   public List<Organisation> list();
+
+  /**
+   * Returns list of all associated organisations
+   * 
+   * @return
+   */
+  public List<Organisation> listAll();
 
   /**
    * Loads all user associated organisations from file into the manager
