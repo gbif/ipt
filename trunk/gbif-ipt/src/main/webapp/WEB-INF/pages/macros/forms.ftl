@@ -18,19 +18,29 @@
   </div>
 </#macro> 
 
-<#macro text name keyBase="" size=40 rows=5 disabled=false help="">
+<#macro text name keyBase="" i18nkey="-99999" size=40 rows=5 disabled=false help="">
+	<#if i18nkey=="-99999">
+	 <#assign i18nkeyMsg=keyBase+name />
+	<#else>
+     <#assign i18nkeyMsg=i18nkey />
+	</#if>
   <div>
 	<@s.fielderror cssClass="fielderror" fieldName="${name}"/>
-	<label for="${name}"><@s.text name="${keyBase}${name}"/></label>
+	<label for="${name}"><@s.text name="${i18nkeyMsg}"/></label>
 	<#include "/WEB-INF/pages/macros/help_inc.ftl">
 	<textarea id="${name}" name="${name}" cols=${size} rows=${rows} <#if disabled>readonly="readonly"</#if>><@s.property value="${name}"/></textarea>
   </div>
 </#macro> 
 
-<#macro select name options value="" keyBase="" size=1 disabled=false help="">
+<#macro select name options value="" keyBase="" i18nkey="-99999" size=1 disabled=false help="">
+	<#if i18nkey=="-99999">
+	 <#assign i18nkeyMsg=keyBase+name />
+	<#else>
+     <#assign i18nkeyMsg=i18nkey />
+	</#if>
   <div>
 	<@s.fielderror cssClass="fielderror" fieldName="${name}"/>
-	<label for="${name}"><@s.text name="${keyBase}${name}"/></label>
+	<label for="${name}"><@s.text name="${i18nkeyMsg}"/></label>
 	<#include "/WEB-INF/pages/macros/help_inc.ftl">
     <select name="${name}" id="${name}" size="${size}" <#if disabled>readonly="readonly"</#if>>
     <#list options?keys as val>
@@ -39,19 +49,29 @@
 	</select>
   </div>
 </#macro>
-<#macro selectList name options objValue objTitle value="" keyBase="" size=1 disabled=false help="">
+<#macro selectList name options objValue objTitle value="" keyBase="" i18nkey="-99999" size=1 disabled=false help="">
+	<#if i18nkey=="-99999">
+	 <#assign i18nkeyMsg=keyBase+name />
+	<#else>
+     <#assign i18nkeyMsg=i18nkey />
+	</#if>
   <div>
 	<@s.fielderror cssClass="fielderror" fieldName="${name}"/>
-	<label for="${name}"><@s.text name="${keyBase}${name}"/></label>
+	<label for="${name}"><@s.text name="${i18nkeyMsg}"/></label>
 	<#include "/WEB-INF/pages/macros/help_inc.ftl">
 	<@s.select id=name name=name list=options listKey=objValue listValue=objTitle value=value size=size disabled=disabled/>
    </div>
 </#macro>
 
-<#macro checkbox name keyBase="" disabled=false value=false help="">
+<#macro checkbox name keyBase="" i18nkey="-99999" disabled=false value=false help="">
+<#if i18nkey=="-99999">
+	 <#assign i18nkeyMsg=keyBase+name />
+	<#else>
+     <#assign i18nkeyMsg=i18nkey />
+	</#if>
   <div>
 	<@s.fielderror cssClass="fielderror" fieldName="${name}"/>
-	<label for="${name}"><@s.text name="${keyBase}${name}"/></label>
+	<label for="${name}"><@s.text name="${i18nkeyMsg}"/></label>
 	<#include "/WEB-INF/pages/macros/help_inc.ftl">
 	<@s.checkbox key="${name}" id="${name}" disabled=disabled value=value/>
   </div>
