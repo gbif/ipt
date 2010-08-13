@@ -16,9 +16,16 @@
 
 package org.gbif.ipt.action.manage;
 
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.voc.Rank;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.validation.EmlSupport;
 import org.gbif.ipt.validation.ResourceSupport;
@@ -26,12 +33,6 @@ import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.Role;
 
 import com.google.inject.Inject;
-
-import org.apache.commons.lang.StringUtils;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author markus
@@ -121,4 +122,15 @@ public class MetadataAction extends POSTAction {
     validatorEml.validate(this, ms.getEml(), section);
   }
 
+  /** 
+   * @return a map of Ranks
+   */
+  public Map<String, String> getRanks() {
+	 Map<String, String> map = new LinkedHashMap<String, String>();
+	 List<Rank> ranks = Rank.DARWIN_CORE_HIGHER_RANKS;
+	 for(Rank r : ranks) {
+		 map.put(r.name(), getText("rank."+r.name().toLowerCase()));
+	 }
+	 return map;
+  }
 }
