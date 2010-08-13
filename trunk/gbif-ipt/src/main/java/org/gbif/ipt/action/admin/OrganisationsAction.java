@@ -100,9 +100,8 @@ public class OrganisationsAction extends POSTAction {
     boolean canDelete = true;
     if (resourceManager.getResources() != null) {
       for (Resource resource : resourceManager.getResources().values()) {
-        if (resource.getOrganisation().getKey().compareTo(UUID.fromString(id)) == 0) {
-          addActionError(getText("admin.organisation.cantdelete1"));
-          addActionError(getText("admin.organisation.cantdelete2"));
+        if (resource.getOrganisation() != null
+            && resource.getOrganisation().getKey().compareTo(UUID.fromString(id)) == 0) {
           canDelete = false;
         }
       }
@@ -116,6 +115,9 @@ public class OrganisationsAction extends POSTAction {
         registrationManager.save();
         addActionMessage(getText("admin.organisation.deleted"));
         return SUCCESS;
+      } else {
+        addActionError(getText("admin.organisation.cantdelete1"));
+        addActionError(getText("admin.organisation.cantdelete2"));
       }
     } catch (DeletionNotAllowedException e) {
       addActionError(getText("admin.organisation.deleted.notempty"));
@@ -164,7 +166,7 @@ public class OrganisationsAction extends POSTAction {
     if (!orgSession.isLoaded()) {
       orgSession.load();
     }
-    linkedOrganisations = registrationManager.list();
+    linkedOrganisations = registrationManager.listAll();
     if (id != null) {
       // modify existing organisation
       organisation = registrationManager.get(id);
@@ -183,14 +185,19 @@ public class OrganisationsAction extends POSTAction {
 
     try {
       if (id == null) {
+        if (registrationManager.get(organisation.getKey()) != null) {
+          log.error("The organisation association already exists");
+          addActionError(getText("admin.organisation.error.existing"));
+          return INPUT;
+        }
         registrationManager.addAssociatedOrganisation(organisation);
       }
-      addActionMessage("The organisation has been associated to this IPT");
+      addActionMessage(getText("admin.organisation.associated.ipt"));
       registrationManager.save();
       return SUCCESS;
     } catch (IOException e) {
       log.error("The organisation association couldnt be saved: " + e.getMessage(), e);
-      addActionError(getText("admin.organisation.saveError"));
+      addActionError(getText("admin.organisation.error.save"));
       addActionError(e.getMessage());
       return INPUT;
     } catch (AlreadyExistingException e) {

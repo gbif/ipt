@@ -1,7 +1,10 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
+<script type="text/javascript" src="${baseURL}/js/jconfirmaction.jquery.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	$('#organisation\\.key').click(function() {
+	$('.confirm').jConfirmAction({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
+
+	$('#organisation\\.key').change(function() {
 		var orgName = $('#organisation\\.key :selected').text();
 	
 	var emailContent = "Dear sir/madam,%0d%0d" 
@@ -57,10 +60,10 @@ $(document).ready(function(){
 	
 	<@input name="organisation.alias" keyBase="admin." type="text"/>
 	<@checkbox name="organisation.canHost" keyBase="admin." value="organisation.canHost"/>
-	
    <div class="buttons">
  	<@s.submit name="save" key="button.save"/>
  	<#if id?has_content>
+ 	<!-- <@s.submit name="delete" key="button.delete" cssClass="confirm"/> -->
  	<@s.submit name="delete" key="button.delete"/>
 	</#if>		   	
  	<@s.submit name="cancel" key="button.cancel"/>

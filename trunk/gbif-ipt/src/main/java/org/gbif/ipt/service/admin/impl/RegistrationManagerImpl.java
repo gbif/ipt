@@ -121,6 +121,21 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
    * @see org.gbif.ipt.service.admin.RegistrationManager#list()
    */
   public List<Organisation> list() {
+    List<Organisation> organisationList = new ArrayList<Organisation>();
+    for (Organisation organisation : registration.getAssociatedOrganisations().values()) {
+      if (organisation.isCanHost()) {
+        organisationList.add(organisation);
+      }
+    }
+    return organisationList;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.gbif.ipt.service.admin.RegistrationManager#listAll()
+   */
+  public List<Organisation> listAll() {
     return new ArrayList<Organisation>(registration.getAssociatedOrganisations().values());
   }
 
