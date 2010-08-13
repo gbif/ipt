@@ -30,12 +30,10 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
-    $("input.form-reset").one("click", function () {
-      $(this).val("");
-    });
     $("#locale > a").click(function(e) {
         $("#availableLocales").toggle();
     })
+    initForm();
 	readUserPrefCookie();    
 });
 </script>

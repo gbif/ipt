@@ -4,6 +4,25 @@ function str(x) {
 	if(x!=null && x.length > 0) return x;
 	return '';
 }
+function isTrueOrNull(x){
+	if (x==null || x==true){
+		return true;
+	}
+	return false;
+}
+function initForm(){
+    $("input.form-reset").one("click", function () {
+      $(this).val("");
+    });
+	$("form input").keypress(function (e) {  
+        if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {  
+            $('button[type=submit].default').click();  
+            return false;  
+        } else {  
+            return true;  
+        }  
+    });    
+}
 function initHelp(){
     $("img.infoImg").click(function(e) {
         var show = $(this).next().is(":hidden");
@@ -46,13 +65,6 @@ function initCollapsable(){
         $(".TGshow",$(this).parent()).show();
     })
 }
-function isTrueOrNull(x){
-	if (x==null || x==true){
-		return true;
-	}
-	return false;
-}
-
 function readUserPrefCookie(){
 	var cookieData = $.cookie("prefs");
 	userPrefs = cookieData ? JSON.parse(cookieData) : {};
