@@ -96,7 +96,7 @@
     <@s.hidden name="resourceId" value="${(resource.id)!}"/>
     <@s.hidden name="resourceType" value="${(resourceType)!}"/>
     <@s.hidden name="guid" value="${(resource.guid)!}"/>
-    <@s.hidden name="nextPage" value="physicalData"/>
+    <@s.hidden name="nextPage" value="PhysicalData"/>
     <@s.hidden name="method" value="collections"/>
 
     <div class="newline"></div>
