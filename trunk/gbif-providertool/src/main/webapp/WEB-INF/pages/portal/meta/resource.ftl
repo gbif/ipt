@@ -104,7 +104,9 @@
 		<table>
 			<@trow label="eml.project.title" val=eml.getProject().title!/>  
 			<@trow label="eml.project.funding" val=eml.getProject().funding!/>  
+          <#if eml.getProject().studyAreaDescription??>
 			<@trow label="eml.project.studyAreaDescription.descriptorValue" val=eml.getProject().studyAreaDescription.descriptorValue!/>  
+          </#if>
 			<@trow label="eml.project.designDescription" val=eml.getProject().designDescription!/>  
 		</table>
 	</fieldset>

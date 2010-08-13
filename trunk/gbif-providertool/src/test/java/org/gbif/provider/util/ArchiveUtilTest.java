@@ -10,6 +10,7 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
 import org.gbif.file.FileUtils;
+import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.model.ExtensionProperty;
@@ -41,6 +42,9 @@ public class ArchiveUtilTest extends ResourceTestBase {
 
   @Autowired
   private ArchiveUtil archiveUtil;
+
+  @Autowired
+  private ArchiveUtil<ChecklistResource> checklistResourceArchiveUtil;
 
   @Autowired
   private SourceManager sourceManager;
@@ -127,6 +131,27 @@ public class ArchiveUtilTest extends ResourceTestBase {
     assertEquals(1, sourceManager.getAll(resource.getId()).size());
 
     ram.createArchive(resource);
+  }
+
+  @SuppressWarnings({"unchecked", "deprecation"})
+  @Test
+  public void testChecklist() throws IOException {
+    try {
+      File archive = FileUtils.getClasspathFile("dwc-archives/archive-tax.zip");
+      ChecklistResource resource = new ChecklistResource();
+      checklistResourceManager.save(resource);
+      resource.getExtensionMappingsMap().clear();
+      ArchiveRequest<ChecklistResource> request = ArchiveRequest.with(archive,
+          resource);
+      ArchiveResponse<ChecklistResource> response = checklistResourceArchiveUtil.init(
+          request).process();
+      // ArchiveResponse<ChecklistResource> response =
+      // archiveUtil.init(request).process();
+      resource = response.getResource();
+      ram.createArchive(resource);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   @SuppressWarnings("unchecked")

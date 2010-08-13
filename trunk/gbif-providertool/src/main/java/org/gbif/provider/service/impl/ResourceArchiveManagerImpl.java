@@ -743,6 +743,10 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
               + resource.getCoreMapping().getExtension().getName()
               + " of resource " + resource.getTitle());
     }
+    if (coreFile == null) {
+      throw new IllegalStateException(
+          "Unable to create core file for inclusion in archive.");
+    }
     for (ExtensionMapping view : resource.getExtensionMappings()) {
       try {
         if (resource instanceof ChecklistResource) {
@@ -937,7 +941,11 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
     log.debug("Created archive file " + file.getAbsolutePath());
     String sql = String.format(CSVWRITE, file.getAbsolutePath(), select);
     log.debug(sql);
-    getConnection().prepareStatement(sql).execute();
+    try {
+      getConnection().prepareStatement(sql).execute();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
     return file;
   }
 
