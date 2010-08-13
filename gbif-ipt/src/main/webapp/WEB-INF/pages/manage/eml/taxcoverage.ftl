@@ -32,7 +32,7 @@
 				.attr("name", "eml.taxonomicCoverages["+count+"].taxonKeyword.commonName");
 
 			//TODO Falta aplicar la implementacion de la internacionalizacion del label.
-			$("#form"+count+" #eml\\.taxonomicCoverages\\[0\\]\\.taxonKeyword\\.rank")
+			$("#form"+count+" #rank")
 				.attr("id", "eml.taxonomicCoverages["+count+"].taxonKeyword.rank")
 				.attr("name", "eml.taxonomicCoverages["+count+"].taxonKeyword.rank");
 
@@ -56,14 +56,14 @@
    </div>
    
    <div id='toAdd' style="visibility:hidden" >
-      <@text  i8nkey="manage.metadata.taxcoverage.description" name="description" />  	
+      <@text  i18nkey="manage.metadata.taxcoverage.description" name="description" />  	
 
          <div class="half">
-            <@input i8nkey="manage.metadata.taxcoverage.scientificName" name="scientificName" />
-            <@input i8nkey="manage.metadata.taxcoverage.commonName" name="commonName" />
+            <@input i18nkey="manage.metadata.taxcoverage.scientificName" name="scientificName" />
+            <@input i18nkey="manage.metadata.taxcoverage.commonName" name="commonName" />
          </div>
          
-      <@select name="eml.taxonomicCoverages[0].taxonKeyword.rank" options=ranks value="value" />	 
+      <@select i18nkey="manage.metadata.taxcoverage.rank"  name="rank" options=ranks value="value" />	 
    	
 	</div>
 	
