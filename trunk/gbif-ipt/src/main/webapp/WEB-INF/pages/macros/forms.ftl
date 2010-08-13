@@ -1,12 +1,16 @@
-<#macro input name value="-99999" keyBase="" type="text" size=-1 disabled=false errorField="-99999" help="" helpOptions=[]>
+<#macro input name i8nkey="null" value="-99999" keyBase="" type="text" size=-1 disabled=false errorField="-99999" help="" helpOptions=[]>
 	<#if errorField=="-99999">
 	 <#assign efield=name />
 	<#else>
      <#assign efield=errorField />
 	</#if>
+	<#if i8nkey="null" >
+	 <#assign i8nkey="${keyBase}${name}" />
+	</#if>
+	
   <div>
 	<@s.fielderror cssClass="fielderror" fieldName="${efield}"/>
-	<label for="${name}"><@s.text name="${keyBase}${name}"/></label>
+	<label for="${name}"><@s.text name="${i8nkey}"/></label>
 	<#include "/WEB-INF/pages/macros/help_inc.ftl">
 	<input type="${type}" id="${name}" name="${name}" value="<#if value=="-99999"><@s.property value="${name}"/><#else>${value}</#if>" <#if (size>0)>size="${size}"</#if> <#if disabled>readonly="readonly"</#if>/>
   </div>
