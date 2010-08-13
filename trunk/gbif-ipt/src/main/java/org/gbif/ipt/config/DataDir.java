@@ -1,6 +1,7 @@
 package org.gbif.ipt.config;
 
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.Source;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.impl.RegistrationManagerImpl;
 import org.gbif.ipt.service.admin.impl.UserAccountManagerImpl;
@@ -228,6 +229,13 @@ public class DataDir {
       }
       return created;
     }
+  }
+
+  public File sourceFile(Resource resource, Source source) {
+    if (resource == null) {
+      return null;
+    }
+    return resourceFile(resource.getShortname(), "sources/" + source.getName() + ".txt");
   }
 
   /**

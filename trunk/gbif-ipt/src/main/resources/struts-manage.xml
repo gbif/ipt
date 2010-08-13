@@ -24,7 +24,12 @@
 				<param name="location">/WEB-INF/pages/manage/401.ftl</param>
 			</result>
 			<result name="cancel" type="redirect">resource.do</result>
+			<result name="home" type="redirect">home.do</result>
 		</global-results>
+		
+		<global-exception-mappings>
+			<exception-mapping result="home" exception="org.gbif.ipt.action.manage.MissingResourceSession"/>
+		</global-exception-mappings>
 		
 		<action name="home" class="org.gbif.ipt.action.manage.HomeAction">
 			<result>/WEB-INF/pages/manage/home.ftl</result>
@@ -64,9 +69,9 @@
 			</interceptor-ref>
 			<interceptor-ref name="managerStack"/>
 			<result name="input">/WEB-INF/pages/manage/source.ftl</result>
-			<result>/WEB-INF/pages/manage/source.ftl</result>
+			<result type="redirect">resource.do</result>
 		</action>
-
+		
 		<action name="generate" class="org.gbif.ipt.action.manage.MetadataAction">
 			<result>/WEB-INF/pages/manage/metadata.ftl</result>
 		</action>

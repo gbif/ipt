@@ -71,7 +71,7 @@ public class ResourceConfiguration {
       return null;
     }
     for (Source src : sources) {
-      if (name.equalsIgnoreCase(src.getTitle())) {
+      if (name.equalsIgnoreCase(src.getName())) {
         return src;
       }
     }

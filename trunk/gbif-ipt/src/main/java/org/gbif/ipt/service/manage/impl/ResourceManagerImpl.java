@@ -6,6 +6,7 @@ import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.ResourceConfiguration;
+import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.Source.FileSource;
 import org.gbif.ipt.model.Source.SqlSource;
 import org.gbif.ipt.model.User;
@@ -122,6 +123,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     xstream.omitField(Resource.class, "title");
     xstream.omitField(Resource.class, "description");
     xstream.omitField(Resource.class, "type");
+    // make files transient to allow moving the datadir
+    xstream.omitField(FileSource.class, "file");
     // persist only emails for users
     xstream.registerConverter(userConverter);
     xstream.registerConverter(orgConverter);
@@ -151,6 +154,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
       ResourceConfiguration config = (ResourceConfiguration) xstream.fromXML(input);
       // shortname persists as folder name, so xstream doesnt handle this:
       config.getResource().setShortname(shortname);
+      // add proper source file pointer
+      for (Source src : config.getSources()) {
+        if (src instanceof FileSource) {
+          ((FileSource) src).setFile(dataDir.sourceFile(config.getResource(), src));
+        }
+      }
       log.debug("Read resource configuration for " + shortname);
       return config;
     } catch (FileNotFoundException e) {
@@ -195,7 +204,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     }
     return url;
   }
-  
+
   /*
    * (non-Javadoc)
    * @see org.gbif.ipt.service.manage.ResourceManager#getResources()

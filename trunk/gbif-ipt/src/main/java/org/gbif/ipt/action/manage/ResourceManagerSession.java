@@ -62,9 +62,9 @@ public class ResourceManagerSession {
   }
 
   public Resource getResource() {
-    if (config == null) {
-      log.warn("No resource object in manager session!");
-      return null;
+    if (config == null || config.getResource() == null) {
+      log.warn("No resource config object in manager session " + this.hashCode());
+      throw new MissingResourceSession();
     }
     return config.getResource();
   }
@@ -98,6 +98,8 @@ public class ResourceManagerSession {
 
   @Override
   public String toString() {
-    return "ManagerSession:R=" + getResource() + ";U=" + manager + "C=" + config;
+    return "ManagerSession:R="
+        + ((config == null || config.getResource() == null) ? "null" : config.getResource().toString()) + ";U="
+        + manager + ";ID=" + this.hashCode();
   }
 }

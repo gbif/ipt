@@ -1,6 +1,7 @@
 package org.gbif.ipt.struts2;
 
 import org.gbif.ipt.action.BaseAction;
+import org.gbif.ipt.action.manage.MissingResourceSession;
 import org.gbif.ipt.action.manage.ResourceManagerSession;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
@@ -42,10 +43,15 @@ public class ResourceInterceptor extends AbstractInterceptor {
       String requestedResource = StringUtils.trimToNull(((Object[]) requested)[0].toString());
       if (requestedResource != null) {
         // already loaded?
-        if (rms != null && rms.getResource() != null
-            && rms.getResource().getShortname().equalsIgnoreCase(requestedResource)) {
+        String currResource;
+        try {
+          currResource = rms.getResource().getShortname();
+        } catch (MissingResourceSession e) {
+          currResource = "";
+        }
+        if (currResource.equalsIgnoreCase(requestedResource)) {
           // yes - exists and is the same. Ignore request param
-          log.debug("Resource " + requestedResource + " already in manager session");
+          log.debug("Resource " + requestedResource + " already in manager session " + rms.hashCode());
         } else {
           // nope - different or first one
           // does resource exist at all?
