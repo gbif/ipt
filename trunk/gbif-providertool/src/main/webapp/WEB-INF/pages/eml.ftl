@@ -98,7 +98,7 @@
         <keyword>${k!""}</keyword>
       </#list>
       </#if>
-        <keywordThesaurus></keywordThesaurus>
+        <keywordThesaurus>${keyword.keywordThesaurus!}</keywordThesaurus>
       </keywordSet>
       </#list>
     </#if>
@@ -161,13 +161,13 @@
         <#if (tempcoverage.endDate)??>
           <rangeOfDates>
           <#if (tempcoverage.startDate)??>
-            <beginDate><calendarDate>${tempcoverage.startDate?string("yyyy-mm-dd")}</calendarDate></beginDate>
+            <beginDate><calendarDate>${tempcoverage.startDate?string("yyyy-MM-dd")}</calendarDate></beginDate>
           </#if>
-            <endDate><calendarDate>${tempcoverage.endDate?string("yyyy-mm-dd")}</calendarDate></endDate>
+            <endDate><calendarDate>${tempcoverage.endDate?string("yyyy-MM-dd")}</calendarDate></endDate>
           </rangeOfDates>
         <#else>
         <#if (tempcoverage.startDate)??>
-          <singleDateTime><calendarDate>${tempcoverage.startDate?string("yyyy-mm-dd")}</calendarDate></singleDateTime>
+          <singleDateTime><calendarDate>${tempcoverage.startDate?string("yyyy-MM-dd")}</calendarDate></singleDateTime>
         </#if>
         </#if>
         </temporalCoverage>
