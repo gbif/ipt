@@ -90,7 +90,6 @@ public class OverviewAction extends BaseAction {
     for (User u : ms.getResource().getManagers()) {
       potentialManagers.remove(u);
     }
-
     // enabled registry organisations
     organisations = registrationManager.list();
   }

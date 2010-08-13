@@ -24,6 +24,7 @@ import static com.google.common.base.Objects.equal;
 import com.google.common.base.Objects;
 
 import org.apache.commons.lang.NotImplementedException;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,20 +37,20 @@ import java.util.Iterator;
  */
 public abstract class Source implements Iterable<String[]> {
   public static class FileSource extends Source {
-    private char fieldsTerminatedBy = '\t';
-    private char fieldsEnclosedBy;
-    private char linesTerminatedBy = '\n';
+    private Character fieldsTerminatedBy = '\t';
+    private Character fieldsEnclosedBy = CSVReader.NULL_CHAR;
+    private Character linesTerminatedBy = '\n';
     private int ignoreHeaderLines = 0;
     private File file;
     private long fileSize;
     private int rows;
     protected Date lastModified;
 
-    public char getFieldsEnclosedBy() {
+    public Character getFieldsEnclosedBy() {
       return fieldsEnclosedBy;
     }
 
-    public char getFieldsTerminatedBy() {
+    public Character getFieldsTerminatedBy() {
       return fieldsTerminatedBy;
     }
 
@@ -73,8 +74,13 @@ public abstract class Source implements Iterable<String[]> {
       return lastModified;
     }
 
-    public char getLinesTerminatedBy() {
+    public Character getLinesTerminatedBy() {
       return linesTerminatedBy;
+    }
+
+    public CSVReader getReader() throws IOException {
+      return CSVReader.buildReader(this.getFile(), this.getEncoding(), this.getFieldsTerminatedBy(),
+          this.getFieldsEnclosedBy(), this.getIgnoreHeaderLines());
     }
 
     public int getRows() {
@@ -96,16 +102,20 @@ public abstract class Source implements Iterable<String[]> {
       return null;
     }
 
-    public void setFieldsEnclosedBy(char fieldsEnclosedBy) {
+    public void setFieldsEnclosedBy(Character fieldsEnclosedBy) {
       this.fieldsEnclosedBy = fieldsEnclosedBy;
     }
 
-    public void setFieldsTerminatedBy(char fieldsTerminatedBy) {
+    public void setFieldsTerminatedBy(Character fieldsTerminatedBy) {
       this.fieldsTerminatedBy = fieldsTerminatedBy;
     }
 
     public void setFile(File file) {
       this.file = file;
+    }
+
+    public void setFileSize(long fileSize) {
+      this.fileSize = fileSize;
     }
 
     public void setIgnoreHeaderLines(int ignoreHeaderLines) {
@@ -116,15 +126,14 @@ public abstract class Source implements Iterable<String[]> {
       this.lastModified = lastModified;
     }
 
-    public void setLinesTerminatedBy(char linesTerminatedBy) {
+    public void setLinesTerminatedBy(Character linesTerminatedBy) {
       this.linesTerminatedBy = linesTerminatedBy;
     }
 
-    public void updateFileStats() {
-
-      this.fileSize = file.length();
+    public void setRows(int rows) {
       this.rows = rows;
     }
+
   }
 
   public static class SqlSource extends Source {
@@ -140,6 +149,15 @@ public abstract class Source implements Iterable<String[]> {
 
     public String getHost() {
       return host;
+    }
+
+    public String getJdbcDriver() {
+      return "com.mysql.jdbc.Driver";
+    }
+
+    public String getJdbcUrl() {
+      return "jdbc:mysql://localhost/YOUR_DATABASE";
+
     }
 
     public String getPassword() {
@@ -177,14 +195,14 @@ public abstract class Source implements Iterable<String[]> {
     public void setUsername(String username) {
       this.username = username;
     }
-
   }
 
   protected Resource resource;
-  protected String title;
+  protected String name;
   protected String encoding = "UTF-8";
   protected String dateFormat = "YYYY-MM-DD";
   protected int columns;
+  protected boolean readable = false;
 
   @Override
   public boolean equals(Object other) {
@@ -195,7 +213,7 @@ public abstract class Source implements Iterable<String[]> {
       return false;
     }
     Source o = (Source) other;
-    return equal(resource, o.resource) && equal(title, o.title);
+    return equal(resource, o.resource) && equal(name, o.name);
   }
 
   public int getColumns() {
@@ -210,17 +228,21 @@ public abstract class Source implements Iterable<String[]> {
     return encoding;
   }
 
+  public String getName() {
+    return name;
+  }
+
   public Resource getResource() {
     return resource;
   }
 
-  public String getTitle() {
-    return title;
-  }
-
   @Override
   public int hashCode() {
-    return Objects.hashCode(resource, title);
+    return Objects.hashCode(resource, name);
+  }
+
+  public boolean isReadable() {
+    return readable;
   }
 
   public void setColumns(int columns) {
@@ -235,11 +257,15 @@ public abstract class Source implements Iterable<String[]> {
     this.encoding = encoding;
   }
 
-  public void setResource(Resource resource) {
-    this.resource = resource;
+  public void setName(String name) {
+    this.name = StringUtils.substringBeforeLast(name, ".").replaceAll("[\\s\\c\\W\\.\\:/]+", "").toLowerCase();
   }
 
-  public void setTitle(String title) {
-    this.title = title.replaceAll("\\s", "_");
+  public void setReadable(boolean readable) {
+    this.readable = readable;
+  }
+
+  public void setResource(Resource resource) {
+    this.resource = resource;
   }
 }
