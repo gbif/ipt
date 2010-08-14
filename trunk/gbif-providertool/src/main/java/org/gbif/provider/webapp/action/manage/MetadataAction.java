@@ -312,32 +312,6 @@ public class MetadataAction extends BaseMetadataResourceAction implements
       eml.setLogoUrl(cfg.getResourceLogoUrl(resource.getId()));
       // emlManager.save(eml);
     }
-
-    // if (resource != null) {
-    // resource = resourceManager.save(resource);
-    // eml = emlManager.deserialize(resource);
-    // if (eml == null) {
-    // eml = new Eml();
-    // }
-    // eml.setResource(resource);
-    // // Some properties in resource are the same as what's required in eml, so
-    // // we copy them over here:
-    // eml.setTitle(resource.getTitle());
-    // eml.setAlternateIdentifier(resource.getGuid());
-    // String contactName = resource.getContactName();
-    // if (contactName != null) {
-    // List<String> name = Lists.newArrayList(Splitter.on(
-    // CharMatcher.WHITESPACE).trimResults().omitEmptyStrings().split(
-    // contactName));
-    // eml.getResourceCreator().setFirstName(name.get(0));
-    // eml.getResourceCreator().setLastName(name.size() > 1 ? name.get(1) : "");
-    // }
-    // eml.setAbstract(resource.getDescription());
-    //
-    // // TODO: Causing problems?
-    // emlManager.serialize(eml);
-    // // emlManager.save(eml);
-    // }
   }
 
   public String publish() {
@@ -407,17 +381,6 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     resource = resourceManager.save(resource);
 
     eml.setResource(resource);
-    // eml.setTitle(resource.getTitle());
-    // eml.setAlternateIdentifier(resource.getGuid());
-    // String contactName = resource.getContactName();
-    // if (contactName != null) {
-    // List<String> name =
-    // Lists.newArrayList(Splitter.on(CharMatcher.WHITESPACE).trimResults().omitEmptyStrings().split(
-    // contactName));
-    // eml.getResourceCreator().setFirstName(name.get(0));
-    // eml.getResourceCreator().setLastName(name.size() > 1 ? name.get(1) : "");
-    // }
-    // eml.setAbstract(resource.getDescription());
 
     // validateEml();
     emlManager.serialize(eml);
@@ -632,6 +595,9 @@ public class MetadataAction extends BaseMetadataResourceAction implements
   }
 
   private void uploadData(File targetFile) throws IOException {
+    if (targetFile == null) {
+      return;
+    }
     // retrieve the file data
     InputStream stream = new FileInputStream(file);
 
@@ -656,11 +622,15 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     File logoFile = cfg.getResourceLogoFile(resource.getId());
     try {
       uploadData(logoFile);
+      if (logoFile == null) {
+        saveMessage(getText("logo.missingFile"));
+        return false;
+      }
       // do sth with the file
       ResizeImage.resizeImage(file, logoFile, Constants.LOGO_SIZE,
           Constants.LOGO_SIZE);
     } catch (Exception e) {
-      log.error("Couldnt upload or resize logo", e);
+      log.error(" or resize logo", e);
       saveMessage(getText("logo.resizeError"));
       return false;
     }
