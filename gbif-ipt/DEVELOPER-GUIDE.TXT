@@ -90,7 +90,9 @@ use jconfirmation plugin with plain links or buttons when asking for confirmatio
 
 
 ### CSS ###
-stick with the single css plus one for the portal webapp in the future
+stick with the single css plus one for the portal webapp in the future.
+Keep number of css classes to a minimum and consider using page specific css in <head><style> on that page
+
 
 ### Managers ###
 2 tier architecture only with interfaces + implementation 
