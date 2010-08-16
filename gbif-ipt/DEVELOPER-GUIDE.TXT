@@ -15,6 +15,10 @@ qFyoVmtdwON
 please dont check in unused files or "old" copies of files, e.g. by renaming them into xyz-old. Delete them and use subversion to get hold of previous copies!
 If you want an old copy side by side for the current work, please do so locally and do *not* check this file into svn.
 
+Code in the trunk should always compile and allow the startup of jetty via maven!
+There can be non functional pieces checked in as long as they dont break the entire application.
+
+
 ### Guice ###
 IptModule contains wiring, but for interfaces these are annotated directly with @ImplementedBy(ConfigManagerImpl.class)
  
