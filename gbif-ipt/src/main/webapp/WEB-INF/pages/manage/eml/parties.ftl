@@ -6,45 +6,35 @@ $(document).ready(function(){
 	$('.confirm').jConfirmAction({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});	
 
 	var partiesCount = parseInt($("#parties .party:last-child").attr("id").split("-")[1]);
+	if(partiesCount==99999){partiesCount=0;}
 	
 	//before save, if there is no party added then remove the hidden party form
 	$("#save").click(function() {
-		if(partiesCount==99999){
-			$('#party-'+partiesCount).remove();
-		}
+		$('#party-99999').remove();
 	});
 	
 	$("#add").click(function(event) {
 		event.preventDefault();
-		// if there is no party added then use the hidden party form
-		if(partiesCount==99999){
-			$('#party-'+partiesCount).attr("id","party-0");
-			$('#party-0').slideDown('slow');
-			partiesCount=0;
-		}else {
-			// to add more parties, clone the first one and change it's attributes
-			partiesCount++;
-			var newParty=$('#party-0').clone();
-			newParty.hide();
-			newParty.attr("id","party-"+partiesCount);
-			newParty.appendTo('#parties').slideDown('slow');
-			var partyBase="eml.associatedParties["+partiesCount+"]";
-			var escPartyBase="eml\\.associatedParties\\["+partiesCount+"\\]";
-			
-			$("#party-"+partiesCount+" input").attr("id",function() {return "eml.associatedParties["+partiesCount+"]."+ $(this).attr("id").split(".")[2]; });
-			$("#party-"+partiesCount+" select").attr("id",function() {return "eml.associatedParties["+partiesCount+"]."+ $(this).attr("id").split(".")[2]; });
-			
-			$("#party-"+partiesCount+" input").attr("name",function() {return $(this).attr("id"); });
-			$("#party-"+partiesCount+" select").attr("name",function() {return $(this).attr("id"); });
-			
-			$("#party-"+partiesCount+" input").attr("value","");
-			$("#party-"+partiesCount+" select").attr("value","");
-			
-			$("#party-"+partiesCount+" #removeLink-0").attr("id", "removeLink-"+partiesCount);
-			$("#removeLink-"+partiesCount).click(function(event) {
-				removeParty(event);
-			});
-		}
+		// to add more parties, clone the first one and change it's attributes
+		var newParty=$('#parties .party:first-child').clone();
+		newParty.hide();
+		newParty.attr("id","party-"+partiesCount);
+		newParty.appendTo('#parties').slideDown('slow');
+		
+		$("#party-"+partiesCount+" input").attr("id",function() {return "eml.associatedParties["+partiesCount+"]."+ $(this).attr("id").split(".")[2]; });
+		$("#party-"+partiesCount+" select").attr("id",function() {return "eml.associatedParties["+partiesCount+"]."+ $(this).attr("id").split(".")[2]; });
+		
+		$("#party-"+partiesCount+" input").attr("name",function() {return $(this).attr("id"); });
+		$("#party-"+partiesCount+" select").attr("name",function() {return $(this).attr("id"); });
+		
+		$("#party-"+partiesCount+" input").attr("value","");
+		$("#party-"+partiesCount+" select").attr("value","");
+		
+		$("#party-"+partiesCount+" #removeLink-0").attr("id", "removeLink-"+partiesCount);
+		$("#removeLink-"+partiesCount).click(function(event) {
+			removeParty(event);
+		});
+		partiesCount++;
 	});
 		
 	$(".removeLink").click(function(event) {
@@ -91,7 +81,6 @@ $(document).ready(function(){
   	</div>
   	</div>
 </#list>
-<#if next_agent_index==0>
 <div id="party-99999" class="party" style="display:none;">
 	<div class="right">
       <a id="removeLink-0" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.parties.item'/> ]</a>
@@ -106,7 +95,6 @@ $(document).ready(function(){
   		<@select name="eml.associatedParties[0].role" i18nkey="eml.associatedParties.role" value="" options=roleOptions />
   	</div>
 </div>
-</#if>
 </div>
 <div id='buttons' class="buttons">
   	<a id="add" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.parties.item'/></a></br></br>
