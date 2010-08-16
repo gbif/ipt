@@ -324,6 +324,9 @@ div.newline {
 	position: relative;
 	top: 4px;
 }
+.topForm .2col{
+		width: 45%;
+}
 .topForm .right {
 	float: right !important;
 	margin-bottom:0;
