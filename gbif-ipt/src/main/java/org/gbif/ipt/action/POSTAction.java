@@ -5,6 +5,7 @@ import org.apache.commons.lang.StringUtils;
 public class POSTAction extends BaseAction {
   protected boolean delete = false;
   protected boolean notFound = false;
+  protected boolean validate = true;
 
   /**
    * Override this method if you need to delete entities based on the id value after the PARAM interceptor is called
@@ -58,12 +59,19 @@ public class POSTAction extends BaseAction {
 
   public void setDelete(String delete) {
     this.delete = StringUtils.trimToNull(delete) != null;
+    if (this.delete) {
+      validate = false;
+    }
+  }
+
+  public void setValidate(boolean validate) {
+    this.validate = validate;
   }
 
   @Override
   public void validate() {
     // only validate on form submissions
-    if (isHttpPost()) {
+    if (isHttpPost() && validate) {
       validateHttpPostOnly();
     }
   }

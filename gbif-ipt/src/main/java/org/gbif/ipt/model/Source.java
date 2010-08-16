@@ -17,6 +17,7 @@
 package org.gbif.ipt.model;
 
 import org.gbif.file.CSVReader;
+import org.gbif.ipt.config.JdbcSupport.JdbcInfo;
 import org.gbif.ipt.utils.FileUtils;
 
 import static com.google.common.base.Objects.equal;
@@ -138,6 +139,7 @@ public abstract class Source implements Iterable<String[]> {
 
   public static class SqlSource extends Source {
     private String sql;
+    private JdbcInfo jdbc;
     private String host;
     private String database;
     private String username;
@@ -151,12 +153,16 @@ public abstract class Source implements Iterable<String[]> {
       return host;
     }
 
+    public JdbcInfo getJdbc() {
+      return jdbc;
+    }
+
     public String getJdbcDriver() {
-      return "com.mysql.jdbc.Driver";
+      return jdbc.getDriver();
     }
 
     public String getJdbcUrl() {
-      return "jdbc:mysql://localhost/YOUR_DATABASE";
+      return jdbc.getJdbcUrl(this);
 
     }
 
@@ -184,6 +190,10 @@ public abstract class Source implements Iterable<String[]> {
       this.host = host;
     }
 
+    public void setJdbc(JdbcInfo jdbc) {
+      this.jdbc = jdbc;
+    }
+
     public void setPassword(String password) {
       this.password = password;
     }
@@ -209,7 +219,7 @@ public abstract class Source implements Iterable<String[]> {
     if (this == other) {
       return true;
     }
-    if (!(other instanceof Source)) {
+    if (!Source.class.isInstance(other)) {
       return false;
     }
     Source o = (Source) other;
@@ -268,4 +278,10 @@ public abstract class Source implements Iterable<String[]> {
   public void setResource(Resource resource) {
     this.resource = resource;
   }
+
+  @Override
+  public String toString() {
+    return this.getClass().getSimpleName() + "[" + name + ";" + resource + "]";
+  }
+
 }

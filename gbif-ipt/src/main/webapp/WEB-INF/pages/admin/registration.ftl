@@ -50,7 +50,7 @@ $(document).ready(function(){
 		<p><@s.text name="admin.registration.test2"/></p>
 		<p><@s.text name="admin.registration.test3"/></p>
 		
-			<@input name="registration.baseURL" keyBase="admin." type="text" value="${baseURL}" size=70 disabled=true/>
+			<@input name="registration.baseURL" i18nkey="admin.registration.baseURL" type="text" value="${baseURL}" size=70 disabled=true/>
 			<@s.submit cssClass="button" name="validate" id="validate" key="Validate"/>
 		
 		<div id="baseURLStatus"></div>
@@ -62,10 +62,10 @@ $(document).ready(function(){
 		<p><@s.text name="admin.registration.intro2"/></p>
 		
 		<@s.form cssClass="topForm half" action="registration" method="post" id="registrationForm" >
-			<@selectList name="organisation.key" options="organisations" objValue="key" objTitle="name" keyBase="admin." value="" size=15/>  
-			<@input name="organisation.password" keyBase="admin." type="text"/>
-			<@input name="organisation.alias" keyBase="admin." type="text" />
-			<@checkbox name="organisation.canHost" keyBase="admin." value="true"/>	
+			<@selectList name="organisation.key" options="organisations" objValue="key" objTitle="name" i18nkey="admin.organisation.key" value="" size=15/>  
+			<@input name="organisation.password" i18nkey="admin.organisation.password" type="text"/>
+			<@input name="organisation.alias" i18nkey="admin.organisation.alias" type="text" />
+			<@checkbox name="organisation.canHost" i18nkey="admin.organisation.canHost" value="true"/>	
 			<@s.hidden id="organisation.name" name="organisation.name" />
 		   <div class="buttons">
 		 	<@s.submit cssClass="button" name="save" id="save" key="button.save"/>

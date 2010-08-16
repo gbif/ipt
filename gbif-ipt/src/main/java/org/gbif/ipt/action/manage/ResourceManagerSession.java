@@ -50,6 +50,10 @@ public class ResourceManagerSession {
   private User manager;
 
   public ResourceConfiguration getConfig() {
+    if (config == null) {
+      log.warn("No resource config object in manager session " + this.hashCode());
+      throw new MissingResourceSession();
+    }
     return config;
   }
 

@@ -48,21 +48,21 @@ $(document).ready(function(){
 <@s.form id="organisationsForm" cssClass="topForm half" action="organisation.do" method="post">
 	
 	<#if id?has_content>
-		<@input name="organisation.name" keyBase="admin." type="text" disabled=true/>
+		<@input name="organisation.name" i18nkey="admin.organisation.name" type="text" disabled=true/>
 		<@s.hidden name="organisation.key" id="organisation.key" required="true" />
 		<@s.hidden name="id" id="id" required="true" />
 	<#else>
 		<@s.hidden id="organisation.name" name="organisation.name" required="true" />
-		<@selectList name="organisation.key" options="organisations" objValue="key" objTitle="name" keyBase="admin." size=15 />
+		<@selectList name="organisation.key" options="organisations" objValue="key" objTitle="name" i18nkey="admin.organisation.key" size=15 />
 	</#if>		  
-	<@input name="organisation.password" keyBase="admin." type="text"/>
+	<@input name="organisation.password" i18nkey="admin.organisation.password" type="text"/>
 	<div id="requestDetails"></div>
 	
-	<@input name="organisation.alias" keyBase="admin." type="text"/>
+	<@input name="organisation.alias" i18nkey="admin.organisation.alias" type="text"/>
 	<#if id?has_content>
-		<@checkbox name="organisation.canHost" keyBase="admin." value="organisation.canHost"/>
+		<@checkbox name="organisation.canHost" i18nkey="admin.organisation.canHost" value="organisation.canHost"/>
 	<#else>
-		<@checkbox name="organisation.canHost" keyBase="admin." value="true"/>
+		<@checkbox name="organisation.canHost" i18nkey="admin.organisation.canHost" value="true"/>
 	</#if>
    <div class="buttons">
  	<@s.submit name="save" key="button.save"/>

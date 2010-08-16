@@ -45,7 +45,7 @@ public interface SourceManager {
    */
   public void analyze(Source source);
 
-  public void delete(ResourceConfiguration config, Source source);
+  public boolean delete(ResourceConfiguration config, Source source);
 
   /**
    * Imports a darwin core archive (simplest = 1 text file with a header row) to a resource configuration.
