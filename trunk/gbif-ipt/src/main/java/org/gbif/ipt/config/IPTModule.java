@@ -20,8 +20,10 @@ import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import javax.servlet.ServletContext;
 import javax.xml.parsers.SAXParserFactory;
@@ -106,6 +108,27 @@ public class IPTModule extends AbstractModule {
   public HttpClient provideHttpClient() {
     HttpClient client = new HttpClient(new MultiThreadedHttpConnectionManager());
     return client;
+  }
+
+  @Provides
+  @Singleton
+  public JdbcSupport provideJdbcSupport() {
+    JdbcSupport jdbcs = new JdbcSupport();
+    InputStreamUtils streamUtils = new InputStreamUtils();
+    InputStream configStream = streamUtils.classpathStream(JdbcSupport.CLASSPATH_PROPFILE);
+    if (configStream != null) {
+      try {
+        Properties props = new Properties();
+        props.load(configStream);
+        jdbcs.setProperties(props);
+        log.debug("Loaded supported jdbc driver information from " + JdbcSupport.CLASSPATH_PROPFILE);
+      } catch (IOException e) {
+        log.error("Could not load supported jdbc driver information from " + JdbcSupport.CLASSPATH_PROPFILE, e);
+      }
+    } else {
+      log.error("Could not find supported jdbc driver information file " + JdbcSupport.CLASSPATH_PROPFILE);
+    }
+    return jdbcs;
   }
 
   @Provides

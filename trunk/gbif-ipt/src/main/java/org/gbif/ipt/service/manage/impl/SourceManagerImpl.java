@@ -25,6 +25,7 @@ import org.gbif.ipt.model.ResourceConfiguration;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.Source.FileSource;
 import org.gbif.ipt.model.Source.SqlSource;
+import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.manage.SourceManager;
@@ -140,9 +141,9 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     }
     src.setFile(ddFile);
     src.setLastModified(new Date());
-    // add to config
-    config.getSources().add(src);
     try {
+      // add to config
+      config.addSource(src);
       // anaylze individual files using the dwca reader
       Archive arch = ArchiveFactory.openArchive(file);
       copyArchiveFileProperties(arch.getCore(), src);
@@ -151,6 +152,8 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       // throw new ImportException(e);
     } catch (IOException e) {
       log.warn(e.getMessage(), e);
+    } catch (AlreadyExistingException e) {
+      throw new ImportException(e);
     }
     // analyze file
     analyze(src);
@@ -200,9 +203,18 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
    * (non-Javadoc)
    * @see org.gbif.ipt.service.manage.MappingConfigManager#delete(org.gbif.ipt.model.Source.FileSource)
    */
-  public void delete(ResourceConfiguration config, Source source) {
-    // TODO Auto-generated method stub
-
+  public boolean delete(ResourceConfiguration config, Source source) {
+    boolean deleted = false;
+    if (source != null) {
+      config.deleteSource(source);
+      if (source instanceof FileSource) {
+        // also delete source data file
+        FileSource fs = (FileSource) source;
+        fs.getFile().delete();
+      }
+      deleted = true;
+    }
+    return deleted;
   }
 
   public List<String> getAllTables(SqlSource source) throws SQLException {

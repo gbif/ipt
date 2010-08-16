@@ -18,7 +18,10 @@ package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.config.JdbcSupport;
 import org.gbif.ipt.model.Source;
+import org.gbif.ipt.model.Source.FileSource;
+import org.gbif.ipt.model.Source.SqlSource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.manage.SourceManager;
@@ -34,6 +37,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Map;
 
 /**
  * @author markus
@@ -47,13 +51,40 @@ public class SourceAction extends POSTAction {
   private SourceManager sourceManager;
   @Inject
   private DataDir dataDir;
+  @Inject
+  private JdbcSupport jdbcSupport;
   // config
   private Source source;
+  private String jdbc;
   // file upload
   private File file;
   private String fileContentType;
   private String fileFileName;
   private boolean analyze = false;
+
+  public String add() throws IOException {
+    // new one
+    if (file != null) {
+      // uploaded a new file
+      // copy file temporarily to keep its original name
+      File tmpFile = copyToTmp();
+      tmpFile.deleteOnExit();
+      // create a new file source
+      try {
+        source = sourceManager.add(ms.getConfig(), tmpFile);
+        if (ms.getConfig().getSource(source.getName()) != null) {
+          addActionMessage("Replacing existing source " + source.getName());
+        } else {
+          addActionMessage("Added a new file source");
+        }
+      } catch (ImportException e) {
+        // even though we have problems with this source we'll keep it for manual corrections
+        log.error("Source error: " + e.getMessage(), e);
+        addActionError("Source error: " + e.getMessage());
+      }
+    }
+    return INPUT;
+  }
 
   private File copyToTmp() {
     File tmpFile = dataDir.tmpFile(fileFileName);
@@ -76,16 +107,17 @@ public class SourceAction extends POSTAction {
 
   @Override
   public String delete() {
-    addActionMessage("Deleting source " + id);
-    source = ms.getConfig().getSource(id);
-    if (source != null) {
-      sourceManager.delete(ms.getConfig(), source);
+    if (sourceManager.delete(ms.getConfig(), ms.getConfig().getSource(id))) {
+      addActionMessage("Deleted source " + id);
       ms.saveConfig();
-      return SUCCESS;
     } else {
-      addActionError("Couldnt delete source");
-      return INPUT;
+      addActionMessage("Couldnt delete source " + id);
     }
+    return SUCCESS;
+  }
+
+  public Map<String, String> getJdbcOptions() {
+    return jdbcSupport.optionMap();
   }
 
   public ResourceManagerSession getMs() {
@@ -105,6 +137,7 @@ public class SourceAction extends POSTAction {
       // prepare a new, empty sql source
       source = new Source.SqlSource();
       source.setResource(ms.getResource());
+      ((SqlSource) source).setJdbc(jdbcSupport.get("mysql"));
     } else {
       // prepare a new, empty sql source
       source = new Source.FileSource();
@@ -114,13 +147,20 @@ public class SourceAction extends POSTAction {
 
   @Override
   public String save() throws IOException {
+    // treat jdbc special
+    String result = INPUT;
+    if (source != null && jdbc != null) {
+      ((SqlSource) source).setJdbc(jdbcSupport.get(jdbc));
+    }
+    // existing source
     if (id != null) {
       if (this.analyze) {
         sourceManager.analyze(source);
       } else {
-        return SUCCESS;
+        result = SUCCESS;
       }
     } else {
+      // new one
       if (file != null) {
         // uploaded a new file
         // copy file temporarily to keep its original name
@@ -139,17 +179,17 @@ public class SourceAction extends POSTAction {
           log.error("Source error: " + e.getMessage(), e);
           addActionError("Source error: " + e.getMessage());
         }
-      } else if (source.getName() != null) {
+      } else {
         try {
           ms.getConfig().addSource(source);
         } catch (AlreadyExistingException e) {
-          // shouldnt really happen as we validate this beforehand
+          // shouldnt really happen as we validate this beforehand - still catching it here to be safe
           addActionError("Source with that name exists already");
         }
       }
     }
     ms.saveConfig();
-    return INPUT;
+    return result;
   }
 
   public void setAnalyze(String analyze) {
@@ -170,17 +210,39 @@ public class SourceAction extends POSTAction {
     this.fileFileName = fileFileName;
   }
 
+  public void setJdbc(String jdbc) {
+    this.jdbc = jdbc;
+  }
+
   public void setSource(Source source) {
     this.source = source;
   }
 
   @Override
   public void validateHttpPostOnly() {
-    // check if title exists already as a source
-//    if (StringUtils.trimToEmpty(source.getName()).length() < 3) {
-//      addFieldError("source.title", getText("validation.required"));
-//    } else if (ms.getConfig().getSources().contains(source)) {
-//      addFieldError("source.title", getText("manage.resource.source.unique"));
-//    }
+    if (source != null) {
+      // ALL SOURCES
+      // check if title exists already as a source
+      if (StringUtils.trimToEmpty(source.getName()).length() < 3) {
+        addFieldError("source.name", getText("validation.required"));
+      } else if (id == null && ms.getConfig().getSources().contains(source)) {
+        addFieldError("source.name", getText("manage.source.unique"));
+      }
+
+      if (SqlSource.class.isInstance(source)) {
+        // SQL SOURCE
+        SqlSource src = (SqlSource) source;
+        // pure ODBC connections need only a DSN, no server
+        if (jdbc != null && !jdbc.equalsIgnoreCase("odbc") && StringUtils.trimToEmpty(src.getHost()).length() < 2) {
+          addFieldError("source.host", getText("validation.required"));
+        }
+        if (StringUtils.trimToEmpty(src.getDatabase()).length() < 2) {
+          addFieldError("source.database", getText("validation.required"));
+        }
+      } else {
+        // FILE SOURCE
+        FileSource src = (FileSource) source;
+      }
+    }
   }
 }

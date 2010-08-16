@@ -11,6 +11,7 @@ import org.gbif.ipt.model.Source.FileSource;
 import org.gbif.ipt.model.Source.SqlSource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
+import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
 import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.voc.PublicationStatus;
@@ -59,17 +60,19 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   private final UserEmailConverter userConverter;
   private final OrganisationKeyConverter orgConverter;
   private final ExtensionRowTypeConverter extensionConverter;
+  private final JdbcInfoConverter jdbcInfoConverter;
   private GBIFRegistryManager registryManager;
 
   @Inject
   public ResourceManagerImpl(AppConfig cfg, DataDir dataDir, UserEmailConverter userConverter,
       OrganisationKeyConverter orgConverter, GBIFRegistryManager registryManager,
-      ExtensionRowTypeConverter extensionConverter) {
+      ExtensionRowTypeConverter extensionConverter, JdbcInfoConverter jdbcInfoConverter) {
     super(cfg, dataDir);
     this.userConverter = userConverter;
     this.registryManager = registryManager;
     this.orgConverter = orgConverter;
     this.extensionConverter = extensionConverter;
+    this.jdbcInfoConverter = jdbcInfoConverter;
     defineXstreamMapping();
   }
 
@@ -128,6 +131,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     // persist only emails for users
     xstream.registerConverter(userConverter);
     xstream.registerConverter(orgConverter);
+    xstream.registerConverter(jdbcInfoConverter);
     // persist only rowtype for extensions
     xstream.registerConverter(extensionConverter);
   }

@@ -59,6 +59,7 @@ public class DownloadUtil {
   public DownloadUtil(HttpClient client) {
     super();
     this.client = client;
+    client.setTimeout(3000);
   }
 
   public static void main(String[] args) throws Exception {

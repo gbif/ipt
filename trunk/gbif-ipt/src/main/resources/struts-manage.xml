@@ -64,12 +64,15 @@
 		</action>
 		
 		<action name="source" class="org.gbif.ipt.action.manage.SourceAction">
+			<result name="input">/WEB-INF/pages/manage/source.ftl</result>
+			<result type="redirect">resource.do</result>
+		</action>
+		<action name="addsource" class="org.gbif.ipt.action.manage.SourceAction" method="add">
 			<interceptor-ref name="fileUpload">
 				<param name="maximumSize">104857600</param>
 			</interceptor-ref>
 			<interceptor-ref name="managerStack"/>
 			<result name="input">/WEB-INF/pages/manage/source.ftl</result>
-			<result type="redirect">resource.do</result>
 		</action>
 		
 		<action name="generate" class="org.gbif.ipt.action.manage.MetadataAction">

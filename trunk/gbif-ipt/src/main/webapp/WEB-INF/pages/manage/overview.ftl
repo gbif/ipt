@@ -67,7 +67,8 @@ By default a resource is private to the managers. Once published to GBIF you can
         Source Data
   	</div>
   	<div class="actions">
-	  <form action='source.do' method='post' enctype="multipart/form-data">
+	  <form action='addsource.do' method='post' enctype="multipart/form-data">
+	    <input name="validate" type="hidden" value="false" />
 	    <@s.file name="file" key="manage.resource.create.file" />
        	<@s.submit name="add" key="button.add"/>
   	  </form>

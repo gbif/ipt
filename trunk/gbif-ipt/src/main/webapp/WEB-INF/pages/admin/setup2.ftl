@@ -17,7 +17,7 @@
 	<@input name="user.lastname" />  
 	<@input name="user.password" />  
 
-	<@checkbox name="production" keyBase="admin.config.setup2." />  
+	<@checkbox name="production" i18nkey="admin.config.setup2.production" />  
 	<@input name="baseURL" />
 
 	  <div class="buttons">

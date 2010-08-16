@@ -18,8 +18,11 @@ package org.gbif.ipt.model;
 
 import org.gbif.ipt.service.AlreadyExistingException;
 
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * @author markus
@@ -27,15 +30,22 @@ import java.util.Set;
  */
 public class ResourceConfiguration {
   private Resource resource;
-  private Set<Source> sources = new HashSet<Source>();
+  private Map<String, Source> sources = new TreeMap<String, Source>();
   private ExtensionMapping core;
   private Set<ExtensionMapping> extensions = new HashSet<ExtensionMapping>();
 
   public void addSource(Source src) throws AlreadyExistingException {
-    if (sources.contains(src)) {
+    if (sources.containsKey(src.getName().toLowerCase())) {
       throw new AlreadyExistingException();
     }
-    sources.add(src);
+    sources.put(src.getName().toLowerCase(), src);
+  }
+
+  public Source deleteSource(Source src) {
+    if (src != null) {
+      return sources.remove(src.getName().toLowerCase());
+    }
+    return null;
   }
 
   public ExtensionMapping getCore() {
@@ -70,16 +80,18 @@ public class ResourceConfiguration {
     if (name == null) {
       return null;
     }
-    for (Source src : sources) {
-      if (name.equalsIgnoreCase(src.getName())) {
-        return src;
-      }
-    }
-    return null;
+    return sources.get(name.toLowerCase());
   }
 
-  public Set<Source> getSources() {
-    return sources;
+  public Collection<Source> getSources() {
+    return sources.values();
+  }
+
+  public void renameSource(Source src, String oldName) throws AlreadyExistingException {
+    if (src != null && oldName != null) {
+      addSource(src);
+      sources.remove(oldName.toLowerCase());
+    }
   }
 
   public void setCore(ExtensionMapping core) {
@@ -92,10 +104,6 @@ public class ResourceConfiguration {
 
   public void setResource(Resource resource) {
     this.resource = resource;
-  }
-
-  public void setSources(Set<Source> sources) {
-    this.sources = sources;
   }
 
   @Override
