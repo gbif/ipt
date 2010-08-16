@@ -263,6 +263,17 @@ ul.fielderror{
 .buttons input{
 	display: inline !important;
 }
+.horizontal_dotted_line_large_foo {
+	border-bottom-color:#666666;
+	border-bottom-style:dotted;
+	border-bottom-width:1px;
+	line-height:1px;
+	margin-bottom:0;
+	margin-left:-7px;
+	margin-top:8px;
+	width:700px;
+}
+
 
 div.info{
 	display: none;
@@ -277,6 +288,11 @@ div.info{
 }
 div.info ol{
 	color: red;
+}
+
+div.newline {
+	padding-top: 5px;
+	clear: both;
 }
 
 /* for forms generated with the custom freemarker inlcudes */
@@ -308,7 +324,13 @@ div.info ol{
 	position: relative;
 	top: 4px;
 }
-
+.topForm .right {
+	float: right !important;
+	margin-bottom:0;
+	margin-left:0;
+	margin-right:0;
+	margin-top:0;
+}
 
 form.half{
 	width: 50%;

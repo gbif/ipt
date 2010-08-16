@@ -9,12 +9,13 @@
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
 <script type="text/javascript">
-	var count = new Number(1);
+	var count = new Number(0);
 
 	// a function called when adding new taxonomic coverages
 	// an element is cloned and the IDs reset etc etc
-	$(function() {	
-		$("#plus").click(function() {						
+	$(document).ready($(function() {	
+		$("#plus").click(function(event) {
+			event.preventDefault();						
 			var theNewForm = $("#toAdd").clone().attr('id', 'form'+count).css('visibility', '');
 			$("#forms").append(theNewForm);			
 			
@@ -47,6 +48,7 @@
 		});
 		
 		function removeTaxonomic(event){
+			event.preventDefault();
 			var $target = $(event.target);
 			var index=$target.attr("id").split("removeLink")[1];
 			$('#form'+index).slideUp("slow", function() { $(this).remove(); } );
@@ -54,7 +56,9 @@
   			// TODO reorder parties indexes after remove
 			// $('#party0').remove();
 		}
-	});	
+	})
+	);
+	
 </script>
 
 
@@ -62,26 +66,26 @@
 <div id="forms"></div>
 	
 	<!-- The add link and the buttons should be first. The next div is hidden. -->
-	<a id="plus" href="" onclick="return false;">Add new Taxonomic Coverage</a>
+	<a id="plus" href="" >Add new Taxonomic Coverage</a>
 	<div class="buttons">
  			<@s.submit name="save" key="button.save"/>
  			<@s.submit name="cancel" key="button.cancel"/>
    </div>
    
-   <div id='toAdd' style="visibility:hidden" >
+   <div id='toAdd' style="visibility:hidden">
       
-      <@text  i18nkey="manage.metadata.taxcoverage.description" name="description" />  	
+      <@text  i18nkey="eml.taxonomicCoverage.description" name="description" />  	
 
          <div class="half">
-            <@input i18nkey="manage.metadata.taxcoverage.scientificName" name="scientificName" />
-            <@input i18nkey="manage.metadata.taxcoverage.commonName" name="commonName" />
+            <@input i18nkey="eml.taxonomicCoverage.scientificName" name="scientificName" />
+            <@input i18nkey="eml.taxonomicCoverage.commonName" name="commonName" />
          </div>
          
-      <@select i18nkey="manage.metadata.taxcoverage.rank"  name="rank" options=ranks value="value" />	 
+      <@select i18nkey="eml.taxonomicCoverage.rank"  name="rank" options=ranks value="value" />	 
    	  
       <div class="newline"></div>
       <div class="right">
-        <a id="removeLink" class="removeLink" href="" onclick="return false;">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.item'/> ]</a>
+        <a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.item'/> ]</a>
       </div>
       <div class="newline"></div>
       <div class="horizontal_dotted_line_large_foo" id="separator"></div>
