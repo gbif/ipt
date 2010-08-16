@@ -1,51 +1,45 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 	<title><@s.text name='manage.metadata.parties.title'/></title>
 	<script type="text/javascript" src="${baseURL}/js/jconfirmaction.jquery.js"></script>
-	<style>
-	.2col-lft, .2col-rgt{
-		width: 45%;
-	}
-	.right{
-	float: right;
-	text-align: right;
-	padding-left: 15px;
-	padding-bottom: 15px;
-	}
-	</style>
-
 <script type="text/javascript">
 $(document).ready(function(){
-	$('.confirm').jConfirmAction({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
+	$('.confirm').jConfirmAction({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});	
+
 	var partiesCount = parseInt($("#parties .party:last-child").attr("id").split("-")[1]);
+	
+	//before save, if there is no party added then remove the hidden party form
 	$("#save").click(function() {
 		if(partiesCount==99999){
 			$('#party-'+partiesCount).remove();
 		}
 	});
+	
 	$("#add").click(function(event) {
 		event.preventDefault();
+		// if there is no party added then use the hidden party form
 		if(partiesCount==99999){
 			$('#party-'+partiesCount).attr("id","party-0");
 			$('#party-0').slideDown('slow');
 			partiesCount=0;
 		}else {
+			// to add more parties, clone the first one and change it's attributes
 			partiesCount++;
 			var newParty=$('#party-0').clone();
 			newParty.hide();
 			newParty.attr("id","party-"+partiesCount);
 			newParty.appendTo('#parties').slideDown('slow');
-			$("#party-"+partiesCount+" #eml\\.associatedParties\\[0\\]\\.firstName").attr("id","eml.associatedParties["+partiesCount+"].firstName");
-			$("#party-"+partiesCount+" #eml\\.associatedParties\\[0\\]\\.lastName").attr("id","eml.associatedParties["+partiesCount+"].lastName");
-			$("#party-"+partiesCount+" #eml\\.associatedParties\\[0\\]\\.phone").attr("id","eml.associatedParties["+partiesCount+"].phone");
-			$("#party-"+partiesCount+" #eml\\.associatedParties\\[0\\]\\.role").attr("id","eml.associatedParties["+partiesCount+"].role");
-			$("#party-"+partiesCount+" #eml\\.associatedParties\\["+partiesCount+"\\]\\.firstName").attr("name","eml.associatedParties["+partiesCount+"].firstName");
-			$("#party-"+partiesCount+" #eml\\.associatedParties\\["+partiesCount+"\\]\\.lastName").attr("name","eml.associatedParties["+partiesCount+"].lastName");
-			$("#party-"+partiesCount+" #eml\\.associatedParties\\["+partiesCount+"\\]\\.phone").attr("name","eml.associatedParties["+partiesCount+"].phone");
-			$("#party-"+partiesCount+" #eml\\.associatedParties\\["+partiesCount+"\\]\\.role").attr("name","eml.associatedParties["+partiesCount+"].role");
-			$("#party-"+partiesCount+" #eml\\.associatedParties\\["+partiesCount+"\\]\\.firstName").attr("value","");
-			$("#party-"+partiesCount+" #eml\\.associatedParties\\["+partiesCount+"\\]\\.lastName").attr("value","");
-			$("#party-"+partiesCount+" #eml\\.associatedParties\\["+partiesCount+"\\]\\.phone").attr("value","");
-			//$("#party-"+partiesCount+" #eml\\.associatedParties\\["+partiesCount+"\\]\\.role").attr("value","");
+			var partyBase="eml.associatedParties["+partiesCount+"]";
+			var escPartyBase="eml\\.associatedParties\\["+partiesCount+"\\]";
+			
+			$("#party-"+partiesCount+" input").attr("id",function() {return "eml.associatedParties["+partiesCount+"]."+ $(this).attr("id").split(".")[2]; });
+			$("#party-"+partiesCount+" select").attr("id",function() {return "eml.associatedParties["+partiesCount+"]."+ $(this).attr("id").split(".")[2]; });
+			
+			$("#party-"+partiesCount+" input").attr("name",function() {return $(this).attr("id"); });
+			$("#party-"+partiesCount+" select").attr("name",function() {return $(this).attr("id"); });
+			
+			$("#party-"+partiesCount+" input").attr("value","");
+			$("#party-"+partiesCount+" select").attr("value","");
+			
 			$("#party-"+partiesCount+" #removeLink-0").attr("id", "removeLink-"+partiesCount);
 			$("#removeLink-"+partiesCount).click(function(event) {
 				removeParty(event);
@@ -62,8 +56,6 @@ $(document).ready(function(){
 		var $target = $(event.target);
 		var index=$target.attr("id").split("-")[1];
 		$('#party-'+index).slideUp('slow', function() { $(this).remove(); } );
-  		// TODO reorder parties indexes after remove
-		// $('#party-0').remove();
 	}
 		
 });
@@ -86,7 +78,7 @@ $(document).ready(function(){
 	<#assign next_agent_index=agent_index+1>
 	<div id="party-${agent_index}" class="party">
 	<div class="right">
-      <a id="removeLink-${agent_index}" class="removeLink" href="">[ <@s.text name='metadata.removethis'/> <@s.text name='manage.metadata.parties.item'/> ]</a>
+      <a id="removeLink-${agent_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.parties.item'/> ]</a>
     </div>
     </br>
 	<div class="2col">
@@ -101,9 +93,8 @@ $(document).ready(function(){
 </#list>
 <#if next_agent_index==0>
 <div id="party-99999" class="party" style="display:none;">
-<h2>New Party</h2>
 	<div class="right">
-      <a id="removeLink-0" class="removeLink" href="">[ <@s.text name='metadata.removethis'/> <@s.text name='manage.metadata.parties.item'/> ]</a>
+      <a id="removeLink-0" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.parties.item'/> ]</a>
     </div>
     </br>
 	<div class="2col">
@@ -118,7 +109,7 @@ $(document).ready(function(){
 </#if>
 </div>
 <div id='buttons' class="buttons">
-  	<a id="add" href=""><@s.text name='metadata.addnew'/> <@s.text name='manage.metadata.parties.item'/></a></br></br>
+  	<a id="add" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.parties.item'/></a></br></br>
     <@s.submit name="save" key="button.save"/>
  	<@s.submit name="cancel" key="button.cancel"/>
   </div>	
