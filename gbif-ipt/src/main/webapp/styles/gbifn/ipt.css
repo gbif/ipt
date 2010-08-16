@@ -1,0 +1,19 @@
+.horizontal_dotted_line_large_foo{
+	border-bottom: 1px dotted #666666;
+	width: 700px;
+	margin-left: -7px;
+	margin-top: 8px;
+	margin-bottom: 0px;
+	line-height: 1px;	
+}
+div.newline {
+	padding-top: 5px;
+	clear: both;
+}
+form .right {
+float: right !important;
+margin-bottom:0;
+margin-left:0;
+margin-right:0;
+margin-top:0;
+}
