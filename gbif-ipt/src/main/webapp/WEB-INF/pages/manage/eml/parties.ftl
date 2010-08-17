@@ -5,26 +5,24 @@
 $(document).ready(function(){
 	$('.confirm').jConfirmAction({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});	
 
-	var partiesCount = parseInt($("#parties .party:last-child").attr("id").split("-")[1]);
-	if(partiesCount==99999){partiesCount=-1;}
-	
-	//before save, remove the hidden party fields
-	$("#save").click(function() {
-		$('#party-99999').remove();
-	});
+	var	partiesCount=-1;
+	var lastParty = $("#parties .party:last-child").attr("id");
+	if(lastParty != undefined){
+		var partiesCount=parseInt(lastParty.split("-")[1]);
+	}
 	
 	$("#add").click(function(event) {
 		partiesCount++;
 		event.preventDefault();
 		// to add more parties, clone the first one and change it's attributes
-		var newParty=$('#parties .party:first-child').clone();
+		var newParty=$('#baseParty').clone();
 		newParty.hide();
 		newParty.attr("id","party-"+partiesCount);
 		newParty.appendTo('#parties').slideDown('slow');
 		
-		$("#party-"+partiesCount+" input").attr("id",function() {return "eml.associatedParties["+partiesCount+"]."+ $(this).attr("id").split(".")[2]; });
-		$("#party-"+partiesCount+" select").attr("id",function() {return "eml.associatedParties["+partiesCount+"]."+ $(this).attr("id").split(".")[2]; });
-		$("#party-"+partiesCount+" label").attr("for",function() {return "eml.associatedParties["+partiesCount+"]."+ $(this).attr("id").split(".")[2]; });
+		$("#party-"+partiesCount+" input").attr("id",function() {return "eml.associatedParties["+partiesCount+"]."+ $(this).attr("id"); });
+		$("#party-"+partiesCount+" select").attr("id",function() {return "eml.associatedParties["+partiesCount+"]."+ $(this).attr("id"); });
+		$("#party-"+partiesCount+" label").attr("for",function() {return "eml.associatedParties["+partiesCount+"]."+ $(this).attr("id"); });
 		
 		$("#party-"+partiesCount+" input").attr("name",function() {return $(this).attr("id"); });
 		$("#party-"+partiesCount+" select").attr("name",function() {return $(this).attr("id"); });
@@ -32,7 +30,7 @@ $(document).ready(function(){
 		//$("#party-"+partiesCount+" input").attr("value","");
 		//$("#party-"+partiesCount+" select").attr("value","");
 		
-		$("#party-"+partiesCount+" #removeLink-0").attr("id", "removeLink-"+partiesCount);
+		$("#party-"+partiesCount+" .removeLink").attr("id", "removeLink-"+partiesCount);
 		$("#removeLink-"+partiesCount).click(function(event) {
 			removeParty(event);
 		});
@@ -65,20 +63,6 @@ $(document).ready(function(){
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <form class="topForm" action="metadata-${section}.do" method="post">
 <div id="parties">
-<div id="party-99999" class="party" style="display:none;">
-	<div class="right">
-      <a id="removeLink-99999" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.parties.item'/> ]</a>
-    </div>
-    </br>
-	<div class="2col">
-  		<@input name="eml.associatedParties[99999].firstName" i18nkey="eml.associatedParties.firstName" keyBase="" size=40/>
-  		<@input name="eml.associatedParties[99999].lastName" i18nkey="eml.associatedParties.lastName" keyBase="" size=40/>
-  	</div>
-	<div class="2col">
-  		<@input name="eml.associatedParties[99999].phone" i18nkey="eml.associatedParties.phone" keyBase="" size=40/>
-  		<@select name="eml.associatedParties[99999].role" i18nkey="eml.associatedParties.role" value="" options=roleOptions />
-  	</div>
-</div>
 <#assign next_agent_index=0 />
 <#list eml.associatedParties as agent>
 	<#assign next_agent_index=agent_index+1>
@@ -104,5 +88,19 @@ $(document).ready(function(){
  	<@s.submit name="cancel" key="button.cancel"/>
   </div>	
 </form>
+<div id="baseParty" class="party" style="display:none;">
+	<div class="right">
+      <a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.parties.item'/> ]</a>
+    </div>
+    </br>
+	<div class="2col">
+  		<@input name="firstName" i18nkey="eml.associatedParties.firstName" size=40/>
+  		<@input name="lastName" i18nkey="eml.associatedParties.lastName"  size=40/>
+  	</div>
+	<div class="2col">
+  		<@input name="phone" i18nkey="eml.associatedParties.phone" size=40/>
+  		<@select name="role" i18nkey="eml.associatedParties.role" value="" options=roleOptions />
+  	</div>
+</div>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
