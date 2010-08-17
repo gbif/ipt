@@ -10,45 +10,56 @@
 			count = parseInt(lastChild.split("-")[1])+1;
 		}
 		$("#plus").click(function(event) {
-			event.preventDefault();						
-			var theNewForm = $("#baseTaxon").clone().attr('id', 'taxonomic-'+count).css('visibility', '');
+			event.preventDefault();
+			var idNewForm = 'taxonomic-'+count;		
+			var theNewForm = $("#baseTaxon").clone().attr('id', idNewForm).css('visibility', '');
 			$("#taxonomies").append(theNewForm);			
 			
-			$("#taxonomic-"+count+" #description")
-				.attr("id", "eml.taxonomicCoverages["+count+"].description")
-				.attr("name", "eml.taxonomicCoverages["+count+"].description");
-			
-			$("#taxonomic-"+count+" #scientificName")
-				.attr("id", "eml.taxonomicCoverages["+count+"].taxonKeyword.scientificName")
-				.attr("name", "eml.taxonomicCoverages["+count+"].taxonKeyword.scientificName");
-			
-			$("#taxonomic-"+count+" #commonName")
-				.attr("id", "eml.taxonomicCoverages["+count+"].taxonKeyword.commonName")
-				.attr("name", "eml.taxonomicCoverages["+count+"].taxonKeyword.commonName");
-
-			$("#taxonomic-"+count+" #rank")
-				.attr("id", "eml.taxonomicCoverages["+count+"].taxonKeyword.rank")
-				.attr("name", "eml.taxonomicCoverages["+count+"].taxonKeyword.rank");
-			
-			$("#taxonomic-"+count+" #removeLink").attr("id", "removeLink"+count).attr("name", "removeLink-"+count);
-			$("#removeLink-"+count).click(function(event) { removeTaxonomic(event); });
+			updateFields(idNewForm, count);	
 
 			$("#taxonomic-"+count).hide().slideDown("slow");						
 			count++;
-		});
-					
+		});					
 		$(".removeLink").click(function(event) {
-			removeTaxonomic(event);
-		});
-		
-		function removeTaxonomic(event){
 			event.preventDefault();
+			removeTaxonomic(event);			
+		});		
+		// a function that change the atributes (id, name) of the fields and the labels of the specified form.
+		function updateFields(divId, newIndex) {
+			$("#"+divId+" [id$='description']").attr("id", "eml.taxonomicCoverages["+newIndex+"].description").attr("name", function() {return $(this).attr("id");});
+			$("#"+divId+" [for$='description']").attr("for", "eml.taxonomicCoverages["+newIndex+"].description");
+			$("#"+divId+" [id$='scientificName']").attr("id", "eml.taxonomicCoverages["+newIndex+"].taxonKeyword.scientificName").attr("name", function() {return $(this).attr("id");});
+			$("#"+divId+" [for$='scientificName']").attr("for", "eml.taxonomicCoverages["+newIndex+"].taxonKeyword.scientificName");
+			$("#"+divId+" [id$='commonName']").attr("id", "eml.taxonomicCoverages["+newIndex+"].taxonKeyword.commonName").attr("name", function() {return $(this).attr("id");});
+			$("#"+divId+" [for$='commonName']").attr("for", "eml.taxonomicCoverages["+newIndex+"].taxonKeyword.commonName");
+			$("#"+divId+" [id$='rank']").attr("id", "eml.taxonomicCoverages["+newIndex+"].taxonKeyword.rank").attr("name", function() {return $(this).attr("id");});
+			$("#"+divId+" [for$='rank']").attr("for", "eml.taxonomicCoverages["+newIndex+"].taxonKeyword.rank");
+			$("#"+divId+" .removeLink").attr("id", "removeLink-"+newIndex).click(
+				function(event){
+					event.preventDefault();
+					removeTaxonomic(event);	
+				}
+			);
+		}
+				
+		function removeTaxonomic(event) {
 			var $target = $(event.target);
-			var index=$target.attr("id").split("-")[1];
-			$('#taxonomic-'+index).slideUp("slow", function() { $(this).remove(); } );
-					
-  			// TODO reorder parties indexes after remove
-			// $('#party0').remove();
+			var index=$target.attr("id").split("-")[1];			
+			$('#taxonomic-'+index).attr("id", "toRemove");
+			var stopVar = true;
+			for(var c = index; stopVar; c++ ) {
+				var nextForm = $('#taxonomic-'+(parseInt(c)+1));				
+				if(nextForm.attr("id") == undefined) {
+					stopVar = false;
+				} else {
+					var antes = nextForm.attr("id");
+					updateFields(nextForm.attr("id"), c);
+					nextForm.attr("id", 'taxonomic-'+c);
+				}
+			}			
+			// removing the form in the html.
+			$("#toRemove").slideUp("slow", function() { $(this).remove(); } );
+			count--;
 		}
 	})
 	);	
