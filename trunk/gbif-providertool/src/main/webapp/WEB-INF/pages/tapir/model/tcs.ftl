@@ -31,7 +31,7 @@
     </#if>
 </tn:TaxonName>        
 <tc:TaxonConcept rdf:about="#tc-${t.guid}">
-    <tc:accordingToString>${t.taxonAccordingTo!t.resource.title}</tc:accordingToString>
+    <tc:accordingToString>${t.nameAccordingTo!t.resource.title}</tc:accordingToString>
     <tc:hasName rdf:resource="#tn-${t.guid}"/>
     <tc:nameString>${t.scientificName!}</tc:nameString>
     <#if t.dwcRank??>

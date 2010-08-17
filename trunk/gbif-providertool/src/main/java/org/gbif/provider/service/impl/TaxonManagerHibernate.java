@@ -24,7 +24,6 @@ import org.gbif.provider.model.voc.StatusType;
 import org.gbif.provider.service.AnnotationManager;
 import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.util.StatsUtils;
-
 import org.hibernate.Query;
 import org.hibernate.cfg.NamingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,12 +54,12 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon>
 
   public int annotateAmbigousNames(Long resourceId) {
     List<Taxon> ambigousTaxa = query(
-        "select t from Taxon t, Taxon t2 WHERE t.label=t2.label and t.taxonAccordingTo=t2.taxonAccordingTo and t.resource=t2.resource and t.id<>t2.id and t.resource.id = :resourceId").setLong(
+        "select t from Taxon t, Taxon t2 WHERE t.label=t2.label and t.nameAccordingTo=t2.nameAccordingTo and t.resource=t2.resource and t.id<>t2.id and t.resource.id = :resourceId").setLong(
         "resourceId", resourceId).list();
     for (Taxon tax : ambigousTaxa) {
       annotationManager.annotate(tax, AnnotationType.AmbigousTaxon,
           String.format("Multiple taxa named '%s' according to '%s' found",
-              tax.getScientificName(), tax.getTaxonAccordingTo()));
+              tax.getScientificName(), tax.getNameAccordingTo()));
     }
     return ambigousTaxa.size();
   }

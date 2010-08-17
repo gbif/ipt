@@ -208,10 +208,12 @@ public class GenericResourceManagerHibernate<T extends Resource> extends
     String resourceKey = resource.getUddiID();
     OrgCredentials creds = getCreds(resource);
     try {
-      if (registryManager.deleteResource(resourceKey, creds).getResult()) {
-        resource.getMeta().setUddiID(null);
-      } else {
-        log.warn("Resource could not be deleted from GBRDS: " + resourceId);
+      if (resourceKey != null && creds != null) {
+        if (registryManager.deleteResource(resourceKey, creds).getResult()) {
+          resource.getMeta().setUddiID(null);
+        } else {
+          log.warn("Resource could not be deleted from GBRDS: " + resourceId);
+        }
       }
     } catch (BadCredentialsException e) {
       log.warn("Resource could not be deleted from GBRDS: " + resourceId);
