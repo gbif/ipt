@@ -93,7 +93,7 @@ public class MetadataAction extends POSTAction {
 
   @Override
   public void prepare() throws Exception {
-    super.prepare();
+    super.prepare();    
     // somehow the action params in struts.xml dont seem to work right
     // we therefore take the section parameter from the requested url
     section = StringUtils.substringBetween(req.getRequestURI(), "-", ".");
@@ -104,6 +104,20 @@ public class MetadataAction extends POSTAction {
     next = sections.get(idx + 1);
     resourceTypes = vocabManager.getI18nVocab(Constants.VOCAB_URI_RESOURCE_TYPE, getLocaleLanguage());
     languages = vocabManager.getI18nVocab(Constants.VOCAB_URI_LANGUAGE, getLocaleLanguage());
+    
+    // if it is a submission of the taxonomic coverage, clear the session list
+    // TODO: Ask Markus if this is the preferred method of handling deletions 
+    // of elements in a list
+    if (isHttpPost()) {    	
+    	if (section.equals("parties")) {
+    		ms.getEml().getAssociatedParties().clear();
+    	}
+    	if (section.equals("taxcoverage")) {
+    	    ms.getEml().getTaxonomicCoverages().clear();
+    	}
+    	 
+    }
+    
   }
 
   @Override
