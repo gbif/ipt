@@ -175,8 +175,6 @@ public abstract class ImportTask<R extends DataResource> extends
 
       // run import of core into db, calling a subclass handler per record and
       // finally at the end
-      // JRW: TODO importCore never returns to here if the resource is a
-      // Checklist, so no archive gets saved.
       importCore();
       now = new Date();
       log.info(String.format("Import core took %s ms",
@@ -509,144 +507,131 @@ public abstract class ImportTask<R extends DataResource> extends
   @Transactional(readOnly = false, noRollbackFor = {Exception.class})
   private File importCore() throws InterruptedException {
     File out = null;
+    log.info("Starting import of core records for resource " + getTitle());
+    currentActivity = "Uploading "
+        + resource.getCoreMapping().getExtension().getName();
+    currentProcessed.set(0);
+    currentErroneous.set(0);
+
+    ImportSource source;
     try {
-      log.info("Starting import of core records for resource " + getTitle());
-      currentActivity = "Uploading "
-          + resource.getCoreMapping().getExtension().getName();
-      currentProcessed.set(0);
-      currentErroneous.set(0);
+      // prepare core import source. Can be a file or database source to
+      // iterate
+      // over in read-only mode
+      source = importSourceFactory.newInstance(resource,
+          resource.getCoreMapping());
 
-      ImportSource source;
+      // make sure in the finally section that source & writer is closed and
+      // upload event is created properly.
+      // for individual record exception there is another inner try/catch
       try {
-        // prepare core import source. Can be a file or database source to
-        // iterate
-        // over in read-only mode
-        source = importSourceFactory.newInstance(resource,
-            resource.getCoreMapping());
-
-        // make sure in the finally section that source & writer is closed and
-        // upload event is created properly.
-        // for individual record exception there is another inner try/catch
-        try {
-          // go through source records one by one
-          for (ImportRecord irec : source) {
-            // keep all annotations for a single record til the end so we can
-            // add
-            // the correct record GUID to them
-            if (irec == null) {
-              continue;
-            }
-            // keep track of processed source records
-            currentProcessed.addAndGet(1);
-
-            // check if thread should shutdown...
-            if (Thread.currentThread().isInterrupted()) {
-              throw new InterruptedException(
-                  String.format(
-                      "Cache import task for resource %s was interrupted externally",
-                      getResourceId()));
-            }
-
-            // get darwincore record based on this core record alone. no
-            // exceptions here!
-            DarwinCore dwc = dwcFactory.build(resource, irec, annotations);
-            if (dwc == null) {
-              currentErroneous.addAndGet(1);
-              annotationManager.badCoreRecord(resource, null,
-                  "Seems to be an empty record or missing source ID. Line "
-                      + String.valueOf(currentProcessed.get()));
-              continue;
-            }
-            try {
-              // get previous record or null if it didnt exist yet based on
-              // sourceID and resource
-              DarwinCore oldRecord = dwcManager.findBySourceId(
-                  irec.getSourceId(), getResourceId());
-
-              // check if sourceID was unique. All old records should have
-              // deleted
-              // flag=true
-              // so if deleted is false, the same sourceID was inserted before
-              // already!
-              if (oldRecord != null && !oldRecord.isDeleted()) {
-                annotationManager.badCoreRecord(resource, irec.getSourceId(),
-                    "Duplicate source ID");
-              }
-              // assign managed properties
-              updateCoreProperties(dwc, oldRecord);
-
-              // extract taxon
-              try {
-                extractTaxon(dwc);
-              } catch (Exception e) {
-                annotationManager.badCoreRecord(resource, dwc.getSourceId(),
-                    "Error extracting taxon: " + e.toString());
-              }
-
-              // extract region
-              try {
-                extractRegion(dwc);
-              } catch (Exception e) {
-                annotationManager.badCoreRecord(resource, dwc.getSourceId(),
-                    "Error extracting region: " + e.toString());
-              }
-
-              // allow specific actions per record
-              recordHandler(dwc);
-
-              // save core record
-              dwc = persistRecord(dwc, oldRecord);
-
-              // persist record annotations with good GUID
-              for (Annotation anno : annotations) {
-                anno.setGuid(dwc.getGuid());
-                annotationManager.save(anno);
-              }
-              annotations.clear();
-
-              // set stats per record. Saving of final resource stats is done in
-              // the close() section
-              recordsUploaded++;
-
-            } catch (ObjectNotFoundException e2) {
-              annotationManager.badCoreRecord(resource, irec.getSourceId(),
-                  "Unkown source ID: " + e2.toString());
-            } catch (Exception e) {
-              currentErroneous.addAndGet(1);
-              annotationManager.badCoreRecord(resource, irec.getSourceId(),
-                  "Unkown error: " + e.toString());
-            }
-
-            // clear session cache once in a while...
-            if (currentProcessed.get() > 0 && currentProcessed.get() % 100 == 0) {
-              dwcManager.flush();
-            }
-            if (currentProcessed.get() > 0
-                && currentProcessed.get() % 1000 == 0) {
-              log.debug(status());
-            }
+        // go through source records one by one
+        for (ImportRecord irec : source) {
+          // keep all annotations for a single record til the end so we can
+          // add
+          // the correct record GUID to them
+          if (irec == null) {
+            continue;
           }
-        } finally {
-          // store final numbers in normal Integer so that the AtomicNumber can
-          // be
-          // reset by other extension imports
-          recordsErroneous = currentErroneous.get();
-          // TODO: JRW Something is causing an inner state exception executing
-          // the
-          // next line when the resource is a Checklist, but works fine if it is
-          // an Occurrence.
-          source.close();
-        }
+          // keep track of processed source records
+          currentProcessed.addAndGet(1);
 
-      } catch (ImportSourceException e) {
-        annotationManager.annotateResource(resource,
-            "Couldn't open import source. Import aborted: " + e.toString());
-        throw new InterruptedException();
+          // check if thread should shutdown...
+          if (Thread.currentThread().isInterrupted()) {
+            throw new InterruptedException(String.format(
+                "Cache import task for resource %s was interrupted externally",
+                getResourceId()));
+          }
+
+          // get darwincore record based on this core record alone. no
+          // exceptions here!
+          DarwinCore dwc = dwcFactory.build(resource, irec, annotations);
+          if (dwc == null) {
+            currentErroneous.addAndGet(1);
+            annotationManager.badCoreRecord(resource, null,
+                "Seems to be an empty record or missing source ID. Line "
+                    + String.valueOf(currentProcessed.get()));
+            continue;
+          }
+          try {
+            // get previous record or null if it didnt exist yet based on
+            // sourceID and resource
+            DarwinCore oldRecord = dwcManager.findBySourceId(
+                irec.getSourceId(), getResourceId());
+
+            // check if sourceID was unique. All old records should have
+            // deleted
+            // flag=true
+            // so if deleted is false, the same sourceID was inserted before
+            // already!
+            if (oldRecord != null && !oldRecord.isDeleted()) {
+              annotationManager.badCoreRecord(resource, irec.getSourceId(),
+                  "Duplicate source ID");
+            }
+            // assign managed properties
+            updateCoreProperties(dwc, oldRecord);
+
+            // extract taxon
+            try {
+              extractTaxon(dwc);
+            } catch (Exception e) {
+              annotationManager.badCoreRecord(resource, dwc.getSourceId(),
+                  "Error extracting taxon: " + e.toString());
+            }
+
+            // extract region
+            try {
+              extractRegion(dwc);
+            } catch (Exception e) {
+              annotationManager.badCoreRecord(resource, dwc.getSourceId(),
+                  "Error extracting region: " + e.toString());
+            }
+
+            // allow specific actions per record
+            recordHandler(dwc);
+
+            // save core record
+            dwc = persistRecord(dwc, oldRecord);
+
+            // persist record annotations with good GUID
+            for (Annotation anno : annotations) {
+              anno.setGuid(dwc.getGuid());
+              annotationManager.save(anno);
+            }
+            annotations.clear();
+
+            // set stats per record. Saving of final resource stats is done in
+            // the close() section
+            recordsUploaded++;
+
+          } catch (ObjectNotFoundException e2) {
+            annotationManager.badCoreRecord(resource, irec.getSourceId(),
+                "Unkown source ID: " + e2.toString());
+          } catch (Exception e) {
+            currentErroneous.addAndGet(1);
+            annotationManager.badCoreRecord(resource, irec.getSourceId(),
+                "Unkown error: " + e.toString());
+          }
+
+          // clear session cache once in a while...
+          if (currentProcessed.get() > 0 && currentProcessed.get() % 100 == 0) {
+            dwcManager.flush();
+          }
+          if (currentProcessed.get() > 0 && currentProcessed.get() % 1000 == 0) {
+            log.debug(status());
+          }
+        }
+      } finally {
+        // store final numbers in normal Integer so that the AtomicNumber can
+        // be reset by other extension imports
+        recordsErroneous = currentErroneous.get();
+        source.close();
       }
-      // TODO: JRW Remove this try-catch block. Just for testing.
-      return out;
-    } catch (Exception e) {
-      e.printStackTrace();
+
+    } catch (ImportSourceException e) {
+      annotationManager.annotateResource(resource,
+          "Couldn't open import source. Import aborted: " + e.toString());
+      throw new InterruptedException();
     }
     return out;
   }

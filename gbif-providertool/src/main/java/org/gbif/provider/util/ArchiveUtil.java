@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableSet.Builder;
 
 import org.apache.commons.compress.compressors.gzip.GzipUtils;
 import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.terms.DcTerm;
 import org.gbif.dwc.text.Archive;
 import org.gbif.dwc.text.ArchiveFactory;
 import org.gbif.dwc.text.ArchiveField;
@@ -60,7 +61,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -742,16 +742,28 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
   private ImmutableList<String> getHeader(final ArchiveFile af)
       throws Exception {
 
-    // TODO: Create header here from field elements.
+    // Create header here from field elements.
     // Assume a valid archive (i.e., field elements exists for all mapped terms,
     // indexes are valid, etc.).
-
     // Build a list that we will then sort by the indexes
     List<Map.Entry<ConceptTerm, ArchiveField>> list = new LinkedList<Map.Entry<ConceptTerm, ArchiveField>>();
-    // TODO: Kludge. Rework this.
-    Map<ConceptTerm, ArchiveField> indexfields = new HashMap<ConceptTerm, ArchiveField>();
-    indexfields.put(null, af.getId());
-    list.addAll(indexfields.entrySet());
+    final Map.Entry<ConceptTerm, ArchiveField> idterm = new Map.Entry<ConceptTerm, ArchiveField>() {
+      ArchiveField field;
+
+      public ConceptTerm getKey() {
+        return DcTerm.identifier;
+      }
+
+      public ArchiveField getValue() {
+        return field;
+      }
+
+      public ArchiveField setValue(ArchiveField field) {
+        return this.field = field;
+      }
+    };
+    idterm.setValue(af.getId());
+    list.add(idterm);
     list.addAll(af.getFields().entrySet());
 
     // Sort the list using an anonymous inner class implementing Comparator
