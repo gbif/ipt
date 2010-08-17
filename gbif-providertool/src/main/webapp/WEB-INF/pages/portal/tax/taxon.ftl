@@ -35,8 +35,8 @@
 		<table>	
 		
 			<tr>
-			  <th><@s.text name="taxon.taxonAccordingTo"/></th>
-			  <td>${taxon.taxonAccordingTo!}</td>
+			  <th><@s.text name="taxon.nameAccordingTo"/></th>
+			  <td>${taxon.nameAccordingTo!}</td>
 			</tr>
 			<tr>
 			  <th><@s.text name="taxon.namePublishedIn"/></th>

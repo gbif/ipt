@@ -30,7 +30,7 @@ public interface TaxonManager extends CoreRecordManager<Taxon>,
     TreeNodeManager<Taxon, Rank> {
   /**
    * Create an annotations for each ambigous name, i.e. multiple taxa with the
-   * same ScientificName & taxonAccordingTo
+   * same ScientificName & nameAccordingTo
    * 
    * @param resourceId
    * @return

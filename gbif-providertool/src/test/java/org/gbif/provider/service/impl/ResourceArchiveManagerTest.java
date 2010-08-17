@@ -86,7 +86,6 @@ public class ResourceArchiveManagerTest extends ResourceTestBase {
     // - ZIP archive with eml, meta, and data file.
     // - Core rowType = http://rs.tdwg.org/dwc/terms/DarwinCore
     // - Extension rowType = http://rs.gbif.org/ipt/terms/1.0/VernacularName
-    // - Missing extensions in H2: http://rs.tdwg.org/dwc/terms/TaxonAccordingTo
     // - Missing extensions in H2: http://purl.org/dc/terms/source.
     a = doOpenArchive("dwc-archives/zip/archive-dwc.zip");
     assertNotNull(a);

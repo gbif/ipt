@@ -15,13 +15,12 @@
  */
 package org.gbif.provider.model;
 
-import org.gbif.provider.model.voc.Rank;
-
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.gbif.provider.model.voc.Rank;
 import org.hibernate.annotations.Index;
 import org.hibernate.validator.NotNull;
 
@@ -83,7 +82,7 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
   private String infraspecificEpithet;
   private String scientificNameAuthorship;
   private String nomenclaturalCode;
-  private String taxonAccordingTo;
+  private String nameAccordingTo;
   private String namePublishedIn;
   private String taxonomicStatus;
   private String nomenclaturalStatus;
@@ -109,8 +108,8 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
     }
     Taxon rhs = (Taxon) object;
     return new EqualsBuilder().append(this.getLabel(), rhs.getLabel()).append(
-        this.taxonRank, rhs.taxonRank).append(this.taxonAccordingTo,
-        rhs.taxonAccordingTo).append(this.getParent(), rhs.getParent()).append(
+        this.taxonRank, rhs.taxonRank).append(this.nameAccordingTo,
+        rhs.nameAccordingTo).append(this.getParent(), rhs.getParent()).append(
         this.getId(), rhs.getId()).isEquals();
   }
 
@@ -205,6 +204,10 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
     return link;
   }
 
+  public String getNameAccordingTo() {
+    return nameAccordingTo;
+  }
+
   public String getNamePublishedIn() {
     return namePublishedIn;
   }
@@ -274,10 +277,6 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
     return specificEpithet;
   }
 
-  public String getTaxonAccordingTo() {
-    return taxonAccordingTo;
-  }
-
   @Transient
   public String getTaxonID() {
     return guid;
@@ -299,7 +298,7 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
   @Override
   public int hashCode() {
     return new HashCodeBuilder(2136008009, 497664597).append(this.taxonRank).append(
-        this.getLabel()).append(this.taxonAccordingTo).append(this.getParent()).append(
+        this.getLabel()).append(this.nameAccordingTo).append(this.getParent()).append(
         this.getId()).toHashCode();
   }
 
@@ -342,6 +341,10 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 
   public void setLink(String link) {
     this.link = link;
+  }
+
+  public void setNameAccordingTo(String nameAccordingTo) {
+    this.nameAccordingTo = nameAccordingTo;
   }
 
   public void setNamePublishedIn(String namePublishedIn) {
@@ -409,10 +412,6 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 
   public void setSpecificEpithet(String specificEpithet) {
     this.specificEpithet = specificEpithet;
-  }
-
-  public void setTaxonAccordingTo(String taxonAccordingTo) {
-    this.taxonAccordingTo = taxonAccordingTo;
   }
 
   public void setTaxonID(String taxonID) {

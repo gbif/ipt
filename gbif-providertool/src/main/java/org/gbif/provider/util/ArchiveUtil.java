@@ -742,11 +742,18 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
   private ImmutableList<String> getHeader(final ArchiveFile af)
       throws Exception {
 
-    // Create header here from field elements.
+    // TODO: Create header here from field elements.
     // Assume a valid archive (i.e., field elements exists for all mapped terms,
     // indexes are valid, etc.).
+
     // Build a list that we will then sort by the indexes
     List<Map.Entry<ConceptTerm, ArchiveField>> list = new LinkedList<Map.Entry<ConceptTerm, ArchiveField>>();
+    // TODO: Kludge. Rework this.
+    // Map<ConceptTerm, ArchiveField> indexfields = new HashMap<ConceptTerm,
+    // ArchiveField>();
+    // int idIndex = af.getId().getIndex();
+    // indexfields.put(null, af.getId());
+    // list.addAll(indexfields.entrySet());
     final Map.Entry<ConceptTerm, ArchiveField> idterm = new Map.Entry<ConceptTerm, ArchiveField>() {
       ArchiveField field;
 
@@ -764,7 +771,23 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
     };
     idterm.setValue(af.getId());
     list.add(idterm);
-    list.addAll(af.getFields().entrySet());
+    int idIndex = af.getId().getIndex();
+
+    for (Map.Entry<ConceptTerm, ArchiveField> term : af.getFields().entrySet()) {
+      // add the term to the list for every term that doesn't have the same
+      // index as the id term
+      if (term.getValue().getIndex().intValue() == idIndex) {
+        boolean removed = list.remove(idterm);
+        if (removed) {
+          int count = list.size();
+          if (count > 0) {
+            count++;
+          }
+        }
+      }
+      list.add(term);
+    }
+    // list.addAll(af.getFields().entrySet());
 
     // Sort the list using an anonymous inner class implementing Comparator
     // for the compare method
