@@ -42,8 +42,9 @@ public interface SourceManager {
    * For SQL sources the database connection and number of avilable columns will be checked.
    * 
    * @param source
+   * @return problem message if source is not readable
    */
-  public void analyze(Source source);
+  public String analyze(Source source);
 
   public boolean delete(ResourceConfiguration config, Source source);
 

@@ -113,7 +113,9 @@ public class DataDir {
     // if (path.startsWith("/")){
     // return new File(path);
     // }
-    return new File(dataDir, path);
+    File f=new File(dataDir, path);
+    assureParentExists(f);
+    return f;
   }
 
   /**
@@ -247,7 +249,28 @@ public class DataDir {
     tmpCounter++;
     return tmpFile("file-" + tmpCounter + ".tmp");
   }
-
+  public File tmpDir() {
+    tmpCounter++;
+    File dir = tmpFile("dir-" + tmpCounter);
+    assureDirExists(dir);
+    return dir;
+  }
+  public File tmpDir(String name) {
+    tmpCounter++;
+    File dir = tmpFile("dir-" + tmpCounter+"/"+name);
+    assureDirExists(dir);
+    return dir;
+  }
+  private void assureParentExists(File f){
+	  if (f!=null && !f.getParentFile().exists()){
+		  f.getParentFile().mkdirs();
+	  }
+  }
+  private void assureDirExists(File f){
+	  if (f!=null && !f.exists()){
+		  f.mkdirs();
+	  }
+  }
   /**
    * Construct the absolute path for a given relative path within the /tmp subfolder.
    * This method doesnt generate a unique filename - it only assembles what was given.

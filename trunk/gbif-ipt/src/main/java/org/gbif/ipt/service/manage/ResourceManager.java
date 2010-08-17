@@ -6,6 +6,7 @@ import org.gbif.ipt.model.ResourceConfiguration;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
+import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.metadata.eml.Eml;
@@ -13,6 +14,7 @@ import org.gbif.metadata.eml.Eml;
 import com.google.inject.ImplementedBy;
 import com.google.inject.internal.Nullable;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -32,6 +34,8 @@ import java.util.Map;
 public interface ResourceManager {
 
   public ResourceConfiguration create(String shortname, User creator) throws AlreadyExistingException;
+  
+  public ResourceConfiguration create(String shortname, File dwca, User creator) throws AlreadyExistingException, ImportException;
 
   public void delete(Resource resource) throws IOException;
 

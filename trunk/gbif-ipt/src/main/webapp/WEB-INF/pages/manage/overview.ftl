@@ -77,16 +77,16 @@ By default a resource is private to the managers. Once published to GBIF you can
   <div class="body">
       	<div>
 			Your data sources for generating a Darwin Core archive. You can upload text files (e.g. csv or tab delimited) or configure SQL views to databases in your local network.
-			To create a new sql source press <em><@s.text name="button.add"/></em>, to (re)upload a file please select the file before hitting <@s.text name="button.add"/>. 
+			To create a new sql source press <em><@s.text name="button.add"/></em>, to (re)upload a file please select the local file before hitting <@s.text name="button.add"/>. 
       	</div>
       	<div class="details">
       		<table>
       		  <#list ms.config.sources as src>
       		  	<tr><th>
       			<#if src.rows?exists>
-          		FILE ${src.name}</th><td>${src.fileSizeFormatted}, ${src.rows} rows, ${src.columns} columns. ${(src.lastModified?string)!}
+          		 ${src.name} FILE:</th><td>${src.fileSizeFormatted}, ${src.rows} rows, ${src.columns} columns. ${(src.lastModified?datetime?string)!}
           		<#else>
-          		SQL ${src.name}</th><td>db=${src.database!"..."}, ${src.columns} columns. 
+          		 ${src.name} SQL:</th><td>db=${src.database!"..."}, ${src.columns} columns. 
           		</#if>
           		<#if !src.readable><img src="${baseURL}/images/warning.gif" /></#if> 
           		<a href="source.do?id=${src.name}"><button class="small">Edit</button></a>
@@ -111,8 +111,11 @@ By default a resource is private to the managers. Once published to GBIF you can
       	</div>
       	<div class="details">
       		<table>
-          		<tr><th>Taxon</th><td>7 terms mapped to species.txt</td></tr>
-          		<tr><th>Vernacular</th><td>3 terms mapped to vernaculars.txt</td></tr>
+      		  <#list ms.config.extensions as m>
+          		<tr><th>${m.extension.title}</th><td>${m.fields?size} terms mapped to source ${m.source.name}
+          		<a href="mapping.do?id=${m.extension.rowType}"><button class="small">Edit</button></a>
+          		</td></tr>
+          	  </#list>
       		</table>
       	</div>
   </div>

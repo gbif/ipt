@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -184,13 +185,12 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
           addToCache(v, url);
           save();
         } catch (InvalidConfigException e) {
-          log.error(e);
+          log.error(e.getMessage(), e);
         }
 
       } else {
         log.info("Vocabulary " + url + " hasn't been modified since last download");
       }
-
     }
     return v;
   }
@@ -232,7 +232,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
         try {
           install(new URL(vuri));
         } catch (Exception e) {
-          log.warn("Cant load default vocabularies", e);
+          log.warn("Cant load default vocabulary "+vuri, e);
         }
       }
     }
