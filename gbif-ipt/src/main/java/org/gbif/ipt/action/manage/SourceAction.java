@@ -116,6 +116,13 @@ public class SourceAction extends POSTAction {
     return SUCCESS;
   }
 
+  public FileSource getFileSource() {
+    if (source != null && source instanceof FileSource) {
+      return (FileSource) source;
+    }
+    return null;
+  }
+
   public Map<String, String> getJdbcOptions() {
     return jdbcSupport.optionMap();
   }
@@ -126,6 +133,13 @@ public class SourceAction extends POSTAction {
 
   public Source getSource() {
     return source;
+  }
+
+  public SqlSource getSqlSource() {
+    if (source != null && source instanceof SqlSource) {
+      return (SqlSource) source;
+    }
+    return null;
   }
 
   @Override
@@ -234,10 +248,10 @@ public class SourceAction extends POSTAction {
         SqlSource src = (SqlSource) source;
         // pure ODBC connections need only a DSN, no server
         if (jdbc != null && !jdbc.equalsIgnoreCase("odbc") && StringUtils.trimToEmpty(src.getHost()).length() < 2) {
-          addFieldError("source.host", getText("validation.required"));
+          addFieldError("sqlSource.host", getText("validation.required"));
         }
         if (StringUtils.trimToEmpty(src.getDatabase()).length() < 2) {
-          addFieldError("source.database", getText("validation.required"));
+          addFieldError("sqlSource.database", getText("validation.required"));
         }
       } else {
         // FILE SOURCE
