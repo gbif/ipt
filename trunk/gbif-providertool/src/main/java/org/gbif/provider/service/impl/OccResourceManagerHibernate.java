@@ -231,7 +231,6 @@ public class OccResourceManagerHibernate extends
     OccurrenceResource resource = super.publish(resourceId);
     if (resource != null) {
       try {
-        // TODO JRW
         geoTools.updateFeatureType(resource);
       } catch (Exception e) {
         log.error("Can't write new Geoserver FeatureTypeInfo for resource "
