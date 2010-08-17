@@ -41,12 +41,12 @@ $(document).ready(function(){
   	<#if source.fieldsTerminatedBy?exists>
 	  	<#-- only for file sources -->
 	  <div class="half">
-	  	<@input name="source.fieldsTerminatedBy" />
-	  	<@input name="source.fieldsEnclosedBy" />
+	  	<@input name="fileSource.fieldsTerminatedBy" help="i18n" helpOptions={"TAB":"\t","Comma":",","Semicolon":";","Pipe","|"}/>
+	  	<@input name="fileSource.fieldsEnclosedBy" help="i18n" helpOptions={"Double Quote":"&quot;","Single Quote":"'"}/>
   	  </div>
 	  <div class="half">
-	  	<@input name="source.linesTerminatedBy" />
-	  	<@input name="source.ignoreHeaderLines" />
+	  	<@input name="fileSource.linesTerminatedBy" help="i18n" helpOptions={"Windows":"\r\n","Unix":"\n"}/>
+	  	<@input name="fileSource.ignoreHeaderLines" help="i18n" helpOptions={"None":0,"Single Header row":1}/>
   	  </div>
   	<#else>
 	  	<#-- only for sql sources -->
@@ -54,14 +54,14 @@ $(document).ready(function(){
 	    <@select name="jdbc" options=jdbcOptions value="${source.jdbc.name}" i18nkey="source.jdbc" />  	  
   	  </div>
 	  <div class="half">
-	  	<@input name="source.host" help="i18n"/>
-	  	<@input name="source.database" help="i18n"/>
+	  	<@input name="sqlSource.host" help="i18n"/>
+	  	<@input name="sqlSource.database" help="i18n"/>
   	  </div>
 	  <div class="half">
-	  	<@input name="source.username" />
-	  	<@input name="source.password" />
+	  	<@input name="sqlSource.username" />
+	  	<@input name="sqlSource.password" />
   	  </div>
-  	  <@text name="source.sql" help="i18n"/>
+  	  <@text name="sqlSource.sql" help="i18n"/>
   	</#if>
   	<div class="half">
 	  	<@input name="source.encoding" help="i18n" helpOptions={"UTF-8":"UTF-8","Latin1":"Latin 1","Cp1252":"Windows1252"}/>
