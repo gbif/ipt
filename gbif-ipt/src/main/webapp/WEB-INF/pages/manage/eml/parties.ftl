@@ -6,35 +6,23 @@ $(document).ready(function(){
 	$('.confirm').jConfirmAction({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});	
 
 	var	partiesCount=-1;
-	var lastParty = $("#parties .party:last-child").attr("id");
-	if(lastParty != undefined){
-		var partiesCount=parseInt(lastParty.split("-")[1]);
+	calcNumberOfParties();
+	
+	function calcNumberOfParties(){
+		var lastParty = $("#parties .party:last-child").attr("id");
+		if(lastParty != undefined)
+			partiesCount=parseInt(lastParty.split("-")[1]);
+		else
+			partiesCount=-1;
 	}
 	
 	$("#add").click(function(event) {
-		partiesCount++;
 		event.preventDefault();
 		// to add more parties, clone the first one and change it's attributes
 		var newParty=$('#baseParty').clone();
 		newParty.hide();
-		newParty.attr("id","party-"+partiesCount);
 		newParty.appendTo('#parties').slideDown('slow');
-		
-		$("#party-"+partiesCount+" input").attr("id",function() {return "eml.associatedParties["+partiesCount+"]."+ $(this).attr("id"); });
-		$("#party-"+partiesCount+" select").attr("id",function() {return "eml.associatedParties["+partiesCount+"]."+ $(this).attr("id"); });
-		$("#party-"+partiesCount+" label").attr("for",function() {return "eml.associatedParties["+partiesCount+"]."+ $(this).attr("id"); });
-		
-		$("#party-"+partiesCount+" input").attr("name",function() {return $(this).attr("id"); });
-		$("#party-"+partiesCount+" select").attr("name",function() {return $(this).attr("id"); });
-		
-		//$("#party-"+partiesCount+" input").attr("value","");
-		//$("#party-"+partiesCount+" select").attr("value","");
-		
-		$("#party-"+partiesCount+" .removeLink").attr("id", "removeLink-"+partiesCount);
-		$("#removeLink-"+partiesCount).click(function(event) {
-			removeParty(event);
-		});
-		
+		changeFieldsIndex(newParty, ++partiesCount);
 	});
 		
 	$(".removeLink").click(function(event) {
@@ -44,8 +32,36 @@ $(document).ready(function(){
 	function removeParty(event){
 		event.preventDefault();
 		var $target = $(event.target);
-		var index=$target.attr("id").split("-")[1];
-		$('#party-'+index).slideUp('slow', function() { $(this).remove(); } );
+		$('#party-'+$target.attr("id").split("-")[1]).slideUp('slow', function() { 
+			$(this).remove();
+			$("#parties .party").each(function(index) { 
+					changeFieldsIndex($(this), index);
+				});
+			calcNumberOfParties();
+			});
+	}
+	
+	function changeFieldsIndex(party, index){
+		party.attr("id","party-"+index);		
+		$("#party-"+index+" input").attr("id",function() {
+			var parts=$(this).attr("id").split(".");var n=parseInt(parts.length)-1;
+			return "eml.associatedParties["+index+"]."+parts[n]; });
+		$("#party-"+index+" select").attr("id",function() {
+			var parts=$(this).attr("id").split(".");var n=parseInt(parts.length)-1;
+			return "eml.associatedParties["+index+"]."+parts[n]; });
+		$("#party-"+index+" label").attr("for",function() {
+			var parts=$(this).attr("for").split(".");var n=parseInt(parts.length)-1;
+			return "eml.associatedParties["+index+"]."+parts[n]; });		
+		$("#party-"+index+" input").attr("name",function() {return $(this).attr("id"); });
+		$("#party-"+index+" select").attr("name",function() {return $(this).attr("id"); });
+		
+		//$("#party-"+index+" input").attr("value","");
+		//$("#party-"+index+" select").attr("value","");
+		
+		$("#party-"+index+" .removeLink").attr("id", "removeLink-"+index);
+		$("#removeLink-"+index).click(function(event) {
+			removeParty(event);
+		});	
 	}
 		
 });
