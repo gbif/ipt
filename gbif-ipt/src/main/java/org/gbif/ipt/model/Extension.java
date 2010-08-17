@@ -6,6 +6,7 @@ import com.google.common.base.Objects;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.gbif.dwc.terms.ConceptTerm;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -20,7 +21,7 @@ import java.util.List;
  * 
  */
 public class Extension {
-  private String title; // humna title
+  private String title; // human title
   private String name; // table, file & xml tag naming. no whitespace allowed
   private URL url;
   private String rowType;
@@ -43,6 +44,28 @@ public class Extension {
    */
   public int compareTo(Extension object) {
     return new CompareToBuilder().append(this.url, object.url).toComparison();
+  }
+
+  public boolean hasProperty(String term){
+	  return getProperty(term)!=null;
+  }
+  public ExtensionProperty getProperty(String term){
+	  if (term==null){
+		  return null;
+	  }
+	  for (ExtensionProperty p : properties){
+		  if (term.equalsIgnoreCase(p.getQualname())){
+			  return p;
+		  }
+	  }
+	  return null;
+  }
+
+  public boolean hasProperty(ConceptTerm term){
+	  return getProperty(term)!=null;
+  }
+  public ExtensionProperty getProperty(ConceptTerm term){
+	  return getProperty(term.qualifiedName());
   }
 
   /**

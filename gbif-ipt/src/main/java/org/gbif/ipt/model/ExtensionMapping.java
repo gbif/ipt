@@ -26,7 +26,7 @@ import java.util.Set;
  * 
  */
 public class ExtensionMapping {
-  private String sourceName;
+  private Source source;
   private Extension extension; // persist only the rowType
   private Set<ArchiveField> fields = new HashSet<ArchiveField>();
 
@@ -38,8 +38,8 @@ public class ExtensionMapping {
     return fields;
   }
 
-  public String getSourceName() {
-    return sourceName;
+  public Source getSource() {
+    return source;
   }
 
   public void setExtension(Extension extension) {
@@ -50,8 +50,8 @@ public class ExtensionMapping {
     this.fields = fields;
   }
 
-  public void setSourceName(String sourceName) {
-    this.sourceName = sourceName;
+  public void setSource(Source source) {
+    this.source= source;
   }
 
 }

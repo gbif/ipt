@@ -18,8 +18,11 @@ package org.gbif.ipt.model;
 
 import org.gbif.ipt.service.AlreadyExistingException;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -30,22 +33,25 @@ import java.util.TreeMap;
  */
 public class ResourceConfiguration {
   private Resource resource;
-  private Map<String, Source> sources = new TreeMap<String, Source>();
+//  private Map<String, Source> sources = new TreeMap<String, Source>();
+  private Set<Source> sources = new HashSet<Source>();
   private ExtensionMapping core;
   private Set<ExtensionMapping> extensions = new HashSet<ExtensionMapping>();
 
-  public void addSource(Source src) throws AlreadyExistingException {
-    if (sources.containsKey(src.getName().toLowerCase())) {
+  public void addSource(Source src, boolean allowOverwrite) throws AlreadyExistingException {
+	  // make sure we talk about the same resource
+	  src.setResource(resource);
+    if (!allowOverwrite && sources.contains(src)) {
       throw new AlreadyExistingException();
     }
-    sources.put(src.getName().toLowerCase(), src);
+    sources.add(src);
   }
 
-  public Source deleteSource(Source src) {
+  public boolean deleteSource(Source src) {
     if (src != null) {
-      return sources.remove(src.getName().toLowerCase());
+      return sources.remove(src);
     }
-    return null;
+    return false;
   }
 
   public ExtensionMapping getCore() {
@@ -53,7 +59,10 @@ public class ResourceConfiguration {
   }
 
   public String getCoreRowType() {
-    return core.getExtension().getRowType();
+	  if (core!=null && core.getExtension()!=null){
+		 return core.getExtension().getRowType();
+	  }
+	  return null;
   }
 
   public Set<ExtensionMapping> getExtensions() {
@@ -80,18 +89,19 @@ public class ResourceConfiguration {
     if (name == null) {
       return null;
     }
-    return sources.get(name.toLowerCase());
-  }
-
-  public Collection<Source> getSources() {
-    return sources.values();
-  }
-
-  public void renameSource(Source src, String oldName) throws AlreadyExistingException {
-    if (src != null && oldName != null) {
-      addSource(src);
-      sources.remove(oldName.toLowerCase());
+    name=Source.normaliseName(name);
+    for (Source s : sources){
+    	if (s.getName().equals(name)){
+    		return s;
+    	}
     }
+    return null;
+  }
+
+  public List<Source> getSources() {
+	  List<Source> srcs = new ArrayList<Source>(sources);
+	  Collections.sort(srcs);
+    return srcs;
   }
 
   public void setCore(ExtensionMapping core) {
@@ -101,6 +111,11 @@ public class ResourceConfiguration {
   public void setExtensions(Set<ExtensionMapping> extensions) {
     this.extensions = extensions;
   }
+  public void addExtension(ExtensionMapping extension) {
+	  if (extension!=null){
+		  this.extensions.add(extension);		  
+	  }
+	}
 
   public void setResource(Resource resource) {
     this.resource = resource;

@@ -44,219 +44,227 @@ import java.util.Map;
  * 
  */
 public class SourceAction extends POSTAction {
-  // the resource manager session is populated by the resource interceptor and kept alive for an entire manager session
-  @Inject
-  private ResourceManagerSession ms;
-  @Inject
-  private SourceManager sourceManager;
-  @Inject
-  private DataDir dataDir;
-  @Inject
-  private JdbcSupport jdbcSupport;
-  // config
-  private Source source;
-  private String jdbc;
-  // file upload
-  private File file;
-  private String fileContentType;
-  private String fileFileName;
-  private boolean analyze = false;
+	// the resource manager session is populated by the resource interceptor and kept alive for an entire manager session
+	@Inject
+	private ResourceManagerSession ms;
+	@Inject
+	private SourceManager sourceManager;
+	@Inject
+	private DataDir dataDir;
+	@Inject
+	private JdbcSupport jdbcSupport;
+	// config
+	private Source source;
+	private String rdbms;
+	private String problem;
+	// file upload
+	private File file;
+	private String fileContentType;
+	private String fileFileName;
+	private boolean analyze = false;
 
-  public String add() throws IOException {
-    // new one
-    if (file != null) {
-      // uploaded a new file
-      // copy file temporarily to keep its original name
-      File tmpFile = copyToTmp();
-      tmpFile.deleteOnExit();
-      // create a new file source
-      try {
-        source = sourceManager.add(ms.getConfig(), tmpFile);
-        if (ms.getConfig().getSource(source.getName()) != null) {
-          addActionMessage("Replacing existing source " + source.getName());
-        } else {
-          addActionMessage("Added a new file source");
-        }
-      } catch (ImportException e) {
-        // even though we have problems with this source we'll keep it for manual corrections
-        log.error("Source error: " + e.getMessage(), e);
-        addActionError("Source error: " + e.getMessage());
-      }
-    }
-    return INPUT;
-  }
+	public String getProblem() {
+		return problem;
+	}
 
-  private File copyToTmp() {
-    File tmpFile = dataDir.tmpFile(fileFileName);
-    if (tmpFile.exists()) {
-      tmpFile.delete();
-    }
-    // retrieve the file data
-    try {
-      InputStream input = new FileInputStream(file);
-      // write the file to the file specified
-      OutputStream output = new FileOutputStream(tmpFile);
-      IOUtils.copy(input, output);
-      output.close();
-      input.close();
-    } catch (IOException e) {
-      log.error(e);
-    }
-    return tmpFile;
-  }
+	public String add() throws IOException {
+		// new one
+		if (file != null) {
+			// uploaded a new file
+			// copy file temporarily to keep its original name
+			File tmpFile = copyToTmp();
+			// create a new file source
+			boolean replaced=ms.getConfig().getSource(fileFileName) != null;
+			try {
+				source = sourceManager.add(ms.getConfig(), tmpFile);
+				ms.saveConfig();
+				id=source.getName();
+				if (replaced) {
+					addActionMessage("Replacing existing source " + source.getName());
+				} else {
+					addActionMessage("Added a new file source");
+				}
+				tmpFile.deleteOnExit();
+			} catch (ImportException e) {
+				// even though we have problems with this source we'll keep it for manual corrections
+				log.error("Source error: " + e.getMessage(), e);
+				addActionError("Source error: " + e.getMessage());
+			}
+		}
+		return INPUT;
+	}
 
-  @Override
-  public String delete() {
-    if (sourceManager.delete(ms.getConfig(), ms.getConfig().getSource(id))) {
-      addActionMessage("Deleted source " + id);
-      ms.saveConfig();
-    } else {
-      addActionMessage("Couldnt delete source " + id);
-    }
-    return SUCCESS;
-  }
+	private File copyToTmp() {
+		File tmpFile = dataDir.tmpFile(fileFileName);
+		if (tmpFile.exists()) {
+			tmpFile.delete();
+		}
+		// retrieve the file data
+		try {
+			InputStream input = new FileInputStream(file);
+			// write the file to the file specified
+			OutputStream output = new FileOutputStream(tmpFile);
+			IOUtils.copy(input, output);
+			output.close();
+			input.close();
+		} catch (IOException e) {
+			log.error(e);
+		}
+		return tmpFile;
+	}
 
-  public FileSource getFileSource() {
-    if (source != null && source instanceof FileSource) {
-      return (FileSource) source;
-    }
-    return null;
-  }
+	@Override
+	public String delete() {
+		if (sourceManager.delete(ms.getConfig(), ms.getConfig().getSource(id))) {
+			addActionMessage("Deleted source " + id);
+			ms.saveConfig();
+		} else {
+			addActionMessage("Couldnt delete source " + id);
+		}
+		return SUCCESS;
+	}
 
-  public Map<String, String> getJdbcOptions() {
-    return jdbcSupport.optionMap();
-  }
+	public FileSource getFileSource() {
+		if (source != null && source instanceof FileSource) {
+			return (FileSource) source;
+		}
+		return null;
+	}
 
-  public ResourceManagerSession getMs() {
-    return ms;
-  }
+	public Map<String, String> getJdbcOptions() {
+		return jdbcSupport.optionMap();
+	}
 
-  public Source getSource() {
-    return source;
-  }
+	public ResourceManagerSession getMs() {
+		return ms;
+	}
 
-  public SqlSource getSqlSource() {
-    if (source != null && source instanceof SqlSource) {
-      return (SqlSource) source;
-    }
-    return null;
-  }
+	public Source getSource() {
+		return source;
+	}
 
-  @Override
-  public void prepare() throws Exception {
-    super.prepare();
-    if (id != null) {
-      source = ms.getConfig().getSource(id);
-    } else if (file == null) {
-      // prepare a new, empty sql source
-      source = new Source.SqlSource();
-      source.setResource(ms.getResource());
-      ((SqlSource) source).setJdbc(jdbcSupport.get("mysql"));
-    } else {
-      // prepare a new, empty sql source
-      source = new Source.FileSource();
-      source.setResource(ms.getResource());
-    }
-  }
+	public SqlSource getSqlSource() {
+		if (source != null && source instanceof SqlSource) {
+			return (SqlSource) source;
+		}
+		return null;
+	}
 
-  @Override
-  public String save() throws IOException {
-    // treat jdbc special
-    String result = INPUT;
-    if (source != null && jdbc != null) {
-      ((SqlSource) source).setJdbc(jdbcSupport.get(jdbc));
-    }
-    // existing source
-    if (id != null) {
-      if (this.analyze) {
-        sourceManager.analyze(source);
-      } else {
-        result = SUCCESS;
-      }
-    } else {
-      // new one
-      if (file != null) {
-        // uploaded a new file
-        // copy file temporarily to keep its original name
-        File tmpFile = copyToTmp();
-        tmpFile.deleteOnExit();
-        // create a new file source
-        try {
-          source = sourceManager.add(ms.getConfig(), tmpFile);
-          if (ms.getConfig().getSource(source.getName()) != null) {
-            addActionMessage("Replacing existing source " + source.getName());
-          } else {
-            addActionMessage("Added a new file source");
-          }
-        } catch (ImportException e) {
-          // even though we have problems with this source we'll keep it for manual corrections
-          log.error("Source error: " + e.getMessage(), e);
-          addActionError("Source error: " + e.getMessage());
-        }
-      } else {
-        try {
-          ms.getConfig().addSource(source);
-        } catch (AlreadyExistingException e) {
-          // shouldnt really happen as we validate this beforehand - still catching it here to be safe
-          addActionError("Source with that name exists already");
-        }
-      }
-    }
-    ms.saveConfig();
-    return result;
-  }
+	@Override
+	public void prepare() throws Exception {
+		super.prepare();
+		if (id != null) {
+			source = ms.getConfig().getSource(id);
+		} else if (file == null) {
+			// prepare a new, empty sql source
+			source = new Source.SqlSource();
+			source.setResource(ms.getResource());
+			((SqlSource) source).setRdbms(jdbcSupport.get("mysql"));
+		} else {
+			// prepare a new, empty sql source
+			source = new Source.FileSource();
+			source.setResource(ms.getResource());
+		}
+	}
 
-  public void setAnalyze(String analyze) {
-    if (StringUtils.trimToNull(analyze) != null) {
-      this.analyze = true;
-    }
-  }
+	@Override
+	public String save() throws IOException {
+		// treat jdbc special
+		String result = INPUT;
+		if (source != null && rdbms != null) {
+			((SqlSource) source).setRdbms(jdbcSupport.get(rdbms));
+		}
+		// existing source
+		if (id != null && source!=null) {
+			if (this.analyze || !source.isReadable()) {
+				problem = sourceManager.analyze(source);
+			} else {
+				result = SUCCESS;
+			}
+		} else {
+			// new one
+			if (file != null) {
+				// uploaded a new file
+				// copy file temporarily to keep its original name
+				File tmpFile = copyToTmp();
+				tmpFile.deleteOnExit();
+				// create a new file source
+				try {
+					source = sourceManager.add(ms.getConfig(), tmpFile);
+					if (ms.getConfig().getSource(source.getName()) != null) {
+						addActionMessage("Replacing existing source " + source.getName());
+					} else {
+						addActionMessage("Added a new file source");
+					}
+				} catch (ImportException e) {
+					// even though we have problems with this source we'll keep it for manual corrections
+					log.error("Source error: " + e.getMessage(), e);
+					addActionError("Source error: " + e.getMessage());
+				}
+			} else {
+				try {
+					ms.getConfig().addSource(source, false);
+				} catch (AlreadyExistingException e) {
+					// shouldnt really happen as we validate this beforehand - still catching it here to be safe
+					addActionError("Source with that name exists already");
+				}
+			}
+		}
+		ms.saveConfig();
+		return result;
+	}
 
-  public void setFile(File file) {
-    this.file = file;
-  }
+	public void setAnalyze(String analyze) {
+		if (StringUtils.trimToNull(analyze) != null) {
+			this.analyze = true;
+		}
+	}
 
-  public void setFileContentType(String fileContentType) {
-    this.fileContentType = fileContentType;
-  }
+	public void setFile(File file) {
+		this.file = file;
+	}
 
-  public void setFileFileName(String fileFileName) {
-    this.fileFileName = fileFileName;
-  }
+	public void setFileContentType(String fileContentType) {
+		this.fileContentType = fileContentType;
+	}
 
-  public void setJdbc(String jdbc) {
-    this.jdbc = jdbc;
-  }
+	public void setFileFileName(String fileFileName) {
+		this.fileFileName = fileFileName;
+	}
 
-  public void setSource(Source source) {
-    this.source = source;
-  }
+	public void setRdbms(String jdbc) {
+		this.rdbms = jdbc;
+	}
 
-  @Override
-  public void validateHttpPostOnly() {
-    if (source != null) {
-      // ALL SOURCES
-      // check if title exists already as a source
-      if (StringUtils.trimToEmpty(source.getName()).length() < 3) {
-        addFieldError("source.name", getText("validation.required"));
-      } else if (id == null && ms.getConfig().getSources().contains(source)) {
-        addFieldError("source.name", getText("manage.source.unique"));
-      }
+	public void setSource(Source source) {
+		this.source = source;
+	}
 
-      if (SqlSource.class.isInstance(source)) {
-        // SQL SOURCE
-        SqlSource src = (SqlSource) source;
-        // pure ODBC connections need only a DSN, no server
-        if (jdbc != null && !jdbc.equalsIgnoreCase("odbc") && StringUtils.trimToEmpty(src.getHost()).length() < 2) {
-          addFieldError("sqlSource.host", getText("validation.required"));
-        }
-        if (StringUtils.trimToEmpty(src.getDatabase()).length() < 2) {
-          addFieldError("sqlSource.database", getText("validation.required"));
-        }
-      } else {
-        // FILE SOURCE
-        FileSource src = (FileSource) source;
-      }
-    }
-  }
+	@Override
+	public void validateHttpPostOnly() {
+		if (source != null) {
+			// ALL SOURCES
+			// check if title exists already as a source
+			if (StringUtils.trimToEmpty(source.getName()).length() < 3) {
+				addFieldError("source.name", getText("validation.required"));
+			} else if (id == null && ms.getConfig().getSources().contains(source)) {
+				addFieldError("source.name", getText("manage.source.unique"));
+			}
+
+			if (SqlSource.class.isInstance(source)) {
+				// SQL SOURCE
+				SqlSource src = (SqlSource) source;
+				// pure ODBC connections need only a DSN, no server
+				if (rdbms != null && !rdbms.equalsIgnoreCase("odbc") && StringUtils.trimToEmpty(src.getHost()).length() < 2) {
+					addFieldError("sqlSource.host", getText("validation.required"));
+				}
+				if (StringUtils.trimToEmpty(src.getDatabase()).length() < 2) {
+					addFieldError("sqlSource.database", getText("validation.required"));
+				}
+			} else {
+				// FILE SOURCE
+				FileSource src = (FileSource) source;
+			}
+		}
+	}
 }

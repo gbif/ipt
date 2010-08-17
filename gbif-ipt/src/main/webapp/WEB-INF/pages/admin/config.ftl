@@ -7,8 +7,10 @@
 <#include "/WEB-INF/pages/macros/forms.ftl">
 <@s.form cssClass="topForm half" action="config" method="post">
 
-	<@input name="baseUrl" i18nkey="admin.config.baseUrl" size=80/>  
-	<@input name="googleMapsKey" i18nkey="admin.config.googleMapsKey" size=80/>  
+	<@input name="baseUrl" i18nkey="admin.config.baseUrl" size=80/>
+	<#--  
+	<@input name="googleMapsKey" i18nkey="admin.config.googleMapsKey" size=80/>
+	-->  
 	<@input name="analyticsKey" i18nkey="admin.config.analyticsKey" size=80/>  
 	<@checkbox name="analyticsGbif" i18nkey="admin.config.analyticsGbif" />  
 	<@checkbox name="debug" i18nkey="admin.config.debug" />  

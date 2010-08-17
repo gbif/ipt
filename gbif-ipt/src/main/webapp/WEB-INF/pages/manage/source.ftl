@@ -19,21 +19,21 @@ $(document).ready(function(){
 
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <form class="topForm" action="source.do" method="post">
-  	<input type="hidden" name="id" value="${source.name!}" />
+  	<input type="hidden" name="id" value="${id!}" />
   	
   	<div class="half">
-	  	<@input name="source.name" help="i18n"/>
+	  	<@input name="source.name" help="i18n" disabled=id?has_content/>
 		<div class="details">
 			<table>
-			  	<tr><th>Readable</th><td><#if !source.readable><img src="${baseURL}/images/warning.gif" /></#if> ${source.readable?string}</td></tr>
+			  	<tr><th>Readable</th><td>${source.readable?string} <#if !source.readable><img src="${baseURL}/images/warning.gif" /> ${problem!}</#if></td></tr>
 			  	<tr><th>Columns</th><td>${source.columns!}</td></tr>
 		  	  	<#if source.fieldsTerminatedBy?exists>
 			  	<tr><th>File</th><td>${(source.file.getAbsolutePath())!}</td></tr>
 			  	<tr><th>Size</th><td>${source.fileSizeFormatted!"???"}</td></tr>
 			  	<tr><th>Rows</th><td>${source.rows!"???"}</td></tr>
+			  	<tr><th>Modified</th><td>${(source.lastModified?datetime?string)!}</td></tr>
 		  		<#else>
 		  		</#if>
-			  	<tr><th>Modified</th><td>${(source.lastModified?string)!}</td></tr>
 			</table>
 		 	<@s.submit cssClass="small" name="analyze" key="button.analyze"/>
 		</div>
@@ -51,7 +51,7 @@ $(document).ready(function(){
   	<#else>
 	  	<#-- only for sql sources -->
 	  <div class="half">
-	    <@select name="jdbc" options=jdbcOptions value="${source.jdbc.name}" i18nkey="source.jdbc" />  	  
+	    <@select name="rdbms" options=jdbcOptions value="${source.rdbms.name}" i18nkey="sqlSource.rdbms" />  	  
   	  </div>
 	  <div class="half">
 	  	<@input name="sqlSource.host" help="i18n"/>
@@ -70,7 +70,9 @@ $(document).ready(function(){
       	  
   <div class="buttons">
  	<@s.submit name="save" key="button.save"/>
+ 	<#if id?exists>
  	<@s.submit cssClass="confirm" name="delete" key="button.delete"/>
+ 	</#if>
  	<@s.submit name="cancel" key="button.cancel"/>
   </div>
 </form>

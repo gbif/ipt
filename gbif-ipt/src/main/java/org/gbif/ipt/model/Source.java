@@ -36,7 +36,7 @@ import java.util.Iterator;
  * @author markus
  * 
  */
-public abstract class Source implements Iterable<String[]> {
+public abstract class Source implements Iterable<String[]>, Comparable<Source> {
   public static class FileSource extends Source {
     private Character fieldsTerminatedBy = '\t';
     private Character fieldsEnclosedBy = CSVReader.NULL_CHAR;
@@ -139,7 +139,7 @@ public abstract class Source implements Iterable<String[]> {
 
   public static class SqlSource extends Source {
     private String sql;
-    private JdbcInfo jdbc;
+    private JdbcInfo rdbms;
     private String host;
     private String database;
     private String username;
@@ -153,16 +153,12 @@ public abstract class Source implements Iterable<String[]> {
       return host;
     }
 
-    public JdbcInfo getJdbc() {
-      return jdbc;
-    }
-
     public String getJdbcDriver() {
-      return jdbc.getDriver();
+      return rdbms.getDriver();
     }
 
     public String getJdbcUrl() {
-      return jdbc.getJdbcUrl(this);
+      return rdbms.getJdbcUrl(this);
 
     }
 
@@ -190,11 +186,15 @@ public abstract class Source implements Iterable<String[]> {
       this.host = host;
     }
 
-    public void setJdbc(JdbcInfo jdbc) {
-      this.jdbc = jdbc;
-    }
+    public JdbcInfo getRdbms() {
+		return rdbms;
+	}
 
-    public void setPassword(String password) {
+	public void setRdbms(JdbcInfo rdbms) {
+		this.rdbms = rdbms;
+	}
+
+	public void setPassword(String password) {
       this.password = password;
     }
 
@@ -214,7 +214,17 @@ public abstract class Source implements Iterable<String[]> {
   protected int columns;
   protected boolean readable = false;
 
-  @Override
+  public int compareTo(Source o) {
+    if (this == o) {
+        return 0;
+    }
+    if (this.name == null) {
+        return -1;
+    }
+    return name.compareTo(o.name);
+  }
+
+@Override
   public boolean equals(Object other) {
     if (this == other) {
       return true;
@@ -223,7 +233,8 @@ public abstract class Source implements Iterable<String[]> {
       return false;
     }
     Source o = (Source) other;
-    return equal(resource, o.resource) && equal(name, o.name);
+//    return equal(resource, o.resource) && equal(name, o.name);
+    return equal(name, o.name);
   }
 
   public int getColumns() {
@@ -248,7 +259,8 @@ public abstract class Source implements Iterable<String[]> {
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(resource, name);
+//    return Objects.hashCode(resource, name);
+    return Objects.hashCode(name);
   }
 
   public boolean isReadable() {
@@ -268,7 +280,10 @@ public abstract class Source implements Iterable<String[]> {
   }
 
   public void setName(String name) {
-    this.name = StringUtils.substringBeforeLast(name, ".").replaceAll("[\\s\\c\\W\\.\\:/]+", "").toLowerCase();
+    this.name = normaliseName(name);
+  }
+  public static String normaliseName(String name) {
+    return StringUtils.substringBeforeLast(name, ".").replaceAll("[\\s\\c\\W\\.\\:/]+", "").toLowerCase();
   }
 
   public void setReadable(boolean readable) {

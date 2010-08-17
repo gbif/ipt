@@ -40,6 +40,7 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
 import java.sql.Statement;
@@ -131,6 +132,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
 
   private FileSource addOneFile(ResourceConfiguration config, File file) throws ImportException {
     FileSource src = new FileSource();
+    src.setName(file.getName());
     src.setResource(config.getResource());
     // copy file
     File ddFile = dataDir.sourceFile(config.getResource(), src);
@@ -142,8 +144,9 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     src.setFile(ddFile);
     src.setLastModified(new Date());
     try {
-      // add to config
-      config.addSource(src);
+      // add to config, allow overwriting existing ones 
+      // if the file is uploaded not for the first time
+      config.addSource(src, true);
       // anaylze individual files using the dwca reader
       Archive arch = ArchiveFactory.openArchive(file);
       copyArchiveFileProperties(arch.getCore(), src);
@@ -164,7 +167,8 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
    * (non-Javadoc)
    * @see org.gbif.ipt.service.manage.SourceManager#analyze(org.gbif.ipt.model.Source)
    */
-  public void analyze(Source source) {
+  public String analyze(Source source) {
+	  String problem = null;
     if (source instanceof FileSource) {
       FileSource fs = (FileSource) source;
       try {
@@ -179,17 +183,36 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         fs.setRows(rows);
         fs.setReadable(true);
       } catch (IOException e) {
+          problem=e.getMessage();
         log.warn("Cant read source file " + fs.getFile().getAbsolutePath(), e);
         fs.setReadable(false);
         fs.setRows(-1);
       }
     } else {
       SqlSource ss = (SqlSource) source;
+      try {
+		Connection con = getDbConnection(ss);
+        // test sql
+        Statement stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+        stmt.setFetchSize(10);
+        ResultSet rs = stmt.executeQuery(ss.getSql());
+        // get number of columns
+        ResultSetMetaData meta = rs.getMetaData();
+        ss.setColumns(meta.getColumnCount());
+        ss.setReadable(true);
+        rs.close();
+        stmt.close();
+        con.close();
+      } catch (SQLException e) {
+        log.warn("Cant read sql source " + ss, e);
+        problem=e.getMessage();
+        ss.setReadable(false);
+      }
     }
-
+    return problem;
   }
 
-  private void copyArchiveFileProperties(ArchiveFile from, FileSource to) {
+  public static void copyArchiveFileProperties(ArchiveFile from, FileSource to) {
     to.setEncoding(from.getEncoding());
     to.setFieldsEnclosedBy(from.getFieldsEnclosedBy());
     to.setFieldsTerminatedBy(from.getFieldsTerminatedBy());
@@ -215,18 +238,6 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       deleted = true;
     }
     return deleted;
-  }
-
-  public List<String> getAllTables(SqlSource source) throws SQLException {
-    Connection conn = getDbConnection(source);
-    DatabaseMetaData dbmd = conn.getMetaData();
-    List<String> tableNames = new ArrayList<String>();
-    ResultSet rs = dbmd.getTables(null, null, null, new String[]{"TABLE"});
-    while (rs.next()) {
-      tableNames.add((String) rs.getObject(3));
-    }
-    conn.close();
-    return tableNames;
   }
 
   private Connection getDbConnection(SqlSource source) throws SQLException {
