@@ -81,19 +81,19 @@
 	<#assign next_agent_index=0 />
 	<#list eml.taxonomicCoverages as taxonomicCoverage>	
 		<div id='taxonomic-${taxonomicCoverage_index}' class="taxonom">
+			<div class="right">
+    			<a id="removeLink-${taxonomicCoverage_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.item'/> ]</a>
+  			</div>
+			<div class="newline"></div>
 			<@text  i18nkey="eml.taxonomicCoverage.description" name="eml.taxonomicCoverages[${taxonomicCoverage_index}].description" />
 			<div class="half">
            		<@input i18nkey="eml.taxonomicCoverage.scientificName" name="eml.taxonomicCoverages[${taxonomicCoverage_index}].taxonKeyword.scientificName" />
            		<@input i18nkey="eml.taxonomicCoverage.commonName" name="eml.taxonomicCoverages[${taxonomicCoverage_index}].taxonKeyword.commonName" />
         	</div>     	
            	<@select i18nkey="eml.taxonomicCoverage.rank"  name="eml.taxonomicCoverages[${taxonomicCoverage_index}].taxonKeyword.rank" options=ranks value="${eml.taxonomicCoverages[taxonomicCoverage_index].taxonKeyword.rank}" />
-   	  		<div class="newline"></div>
-         	
-			<div class="right">
-    			<a id="removeLink-${taxonomicCoverage_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.item'/> ]</a>
-  			</div>
-			<div class="newline"></div>
+   	  		<div class="newline"></div>			
 			<div class="horizontal_dotted_line_large_foo" id="separator"></div>
+			<div class="newline"></div>
 			<div class="newline"></div>
 		</div>
 	</#list>
@@ -107,22 +107,19 @@
    </div>
    
    <div id='baseTaxon' class="taxonom" style="visibility:hidden">
-      
-      <@text  i18nkey="eml.taxonomicCoverage.description" name="description" />  	
-
-      <div class="half">
-      	<@input i18nkey="eml.taxonomicCoverage.scientificName" name="scientificName" />
-        <@input i18nkey="eml.taxonomicCoverage.commonName" name="commonName" />
-      </div>
-         
-      <@select i18nkey="eml.taxonomicCoverage.rank"  name="rank" options=ranks value="value" />	 
-   	  
-      <div class="newline"></div>
       <div class="right">
         <a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.item'/> ]</a>
       </div>
       <div class="newline"></div>
+      <@text  i18nkey="eml.taxonomicCoverage.description" name="description" />
+      <div class="half">
+      	<@input i18nkey="eml.taxonomicCoverage.scientificName" name="scientificName" />
+        <@input i18nkey="eml.taxonomicCoverage.commonName" name="commonName" />
+      </div>         
+      <@select i18nkey="eml.taxonomicCoverage.rank"  name="rank" options=ranks value="value" />   	  
+      <div class="newline"></div>      
       <div class="horizontal_dotted_line_large_foo" id="separator"></div>
+      <div class="newline"></div>
       <div class="newline"></div>
    </div>
 	
