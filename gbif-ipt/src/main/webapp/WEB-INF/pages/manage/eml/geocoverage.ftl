@@ -28,32 +28,48 @@
       var marker1;
       var marker2;
       var rectangle;
-      var dfminx=65;
+      var dfminx=-10;
       var dfminy=-10;
-      var dfmaxx=71;
+      var dfmaxx=10;
       var dfmaxy=10;
       var bboxBase="eml\\.geographicCoverage\\.boundingCoordinates\\.";
 
-      /**
+	  /**
        * Called on the initial page load.
        */
       function init() {
         map = new google.maps.Map(document.getElementById('map'), {
-          'zoom': 3,
-          'center': new google.maps.LatLng(70, 0),
-          'mapTypeId': google.maps.MapTypeId.ROADMAP
+          'zoom': 1,
+          'center': new google.maps.LatLng(0, 0),
+          'mapTypeId': google.maps.MapTypeId.TERRAIN
         });
         
+       		var maxy=parseFloat($("#"+bboxBase+"max\\.latitude").attr("value"));
+       		var miny=parseFloat($("#"+bboxBase+"min\\.latitude").attr("value"));
+            var maxx=parseFloat($("#"+bboxBase+"max\\.longitude").attr("value"));
+            var minx=parseFloat($("#"+bboxBase+"min\\.longitude").attr("value"));
+  			
+  			var isFilled=true;
+  			if(isNaN(maxy)){maxy=dfmaxy;isFilled=false;}
+  				else dfmaxy=maxy;
+  			if(isNaN(miny)){miny=dfminy;isFilled=false;}
+  				else dfminy=miny;
+  			if(isNaN(maxx)){maxx=dfmaxx;isFilled=false;}
+  				else dfmaxx=maxx;
+  			if(isNaN(minx)){minx=dfminx;isFilled=false;}
+  				else dfminx=minx;
+  				
+        	
         // Plot two markers to represent the Rectangle's bounds.
         marker1 = new google.maps.Marker({
           map: map,
-          position: new google.maps.LatLng(dfminx, dfminy),
+          position: new google.maps.LatLng(minx, miny),
           draggable: true,
           title: 'marker1'
         });
         marker2 = new google.maps.Marker({
           map: map,
-          position: new google.maps.LatLng(dfmaxx, dfmaxy),
+          position: new google.maps.LatLng(maxy, maxx),
           draggable: true,
           title: 'marker2'
         }); 
@@ -68,7 +84,8 @@
         rectangle = new google.maps.Rectangle({
           map: map
         });
-        redrawAndFill();
+        redraw();
+        if(!isFilled) fill();	
       }
       
        $("#bbox input").keyup(function() {
@@ -117,46 +134,47 @@
       
       
       function fill(){
-          var tminy=marker1.getPosition().lat() < marker2.getPosition().lat() ? marker1.getPosition().lat() : marker2.getPosition().lat();
-          var tmaxy=marker1.getPosition().lat() < marker2.getPosition().lat() ? marker2.getPosition().lat() : marker1.getPosition().lat();
-
-          $("#"+bboxBase+"max\\.latitude").attr("value",tmaxy);
-          $("#"+bboxBase+"min\\.latitude").attr("value",tminy);
-          $("#"+bboxBase+"min\\.longitude").attr("value",marker1.getPosition().lng());
-          $("#"+bboxBase+"max\\.longitude").attr("value",marker2.getPosition().lng());
+          var miny=marker1.getPosition().lat() < marker2.getPosition().lat() ? marker1.getPosition().lat() : marker2.getPosition().lat();
+          var maxy=marker1.getPosition().lat() < marker2.getPosition().lat() ? marker2.getPosition().lat() : marker1.getPosition().lat();
+		  var minx=marker1.getPosition().lng();
+		  var maxx=marker2.getPosition().lng();
+          $("#"+bboxBase+"min\\.latitude").attr("value",Math.round(miny*100)/100);
+          $("#"+bboxBase+"max\\.latitude").attr("value",Math.round(maxy*100)/100);
+          $("#"+bboxBase+"min\\.longitude").attr("value",Math.round(minx*100)/100);
+          $("#"+bboxBase+"max\\.longitude").attr("value",Math.round(maxx*100)/100);
  	   }  
      
 });
 </script>
-
-</head>
 
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
 <@s.text name='manage.metadata.geocoverage.map.message'/>
 <div id="map"></div>
-<@s.form id="geoForm" action="geocoverage" method="post" validate="false">
-
-  <@s.hidden name="resourceId" value="${(resource.id)!}"/>
-  <@s.hidden name="resourceType" value="${(resourceType)!}"/>
-  <@s.hidden name="guid" value="${(resource.guid)!}"/>
-  <@s.hidden name="nextPage" value="taxcoverage"/>
-  <@s.hidden name="method" value="geographicCoverages"/>
-
-<div id="bbox">
-  <@input name="eml.geographicCoverage.boundingCoordinates.min.longitude"/>
-  <@input name="eml.geographicCoverage.boundingCoordinates.max.longitude" />
-  <@input name="eml.geographicCoverage.boundingCoordinates.min.latitude" />
-  <@input name="eml.geographicCoverage.boundingCoordinates.max.latitude" />
+<form class="topForm" action="metadata-${section}.do" method="post" validate="false">
+<div class="half" id="bbox">
+	<#if eml.geographicCoverage?exists>
+		  <@input name="eml.geographicCoverage.boundingCoordinates.min.longitude" value="${eml.geographicCoverage.boundingCoordinates.min.longitude}"/>
+  		  <@input name="eml.geographicCoverage.boundingCoordinates.max.longitude" value="${eml.geographicCoverage.boundingCoordinates.max.longitude}"/>
+          <@input name="eml.geographicCoverage.boundingCoordinates.min.latitude" value="${eml.geographicCoverage.boundingCoordinates.min.latitude}"/>
+          <@input name="eml.geographicCoverage.boundingCoordinates.max.latitude" value="${eml.geographicCoverage.boundingCoordinates.max.latitude}"/>
+	<#else>
+		  <@input name="eml.geographicCoverage.boundingCoordinates.min.longitude" value=""/>
+  		  <@input name="eml.geographicCoverage.boundingCoordinates.max.longitude" value=""/>
+  	 	  <@input name="eml.geographicCoverage.boundingCoordinates.min.latitude" value=""/>
+  		  <@input name="eml.geographicCoverage.boundingCoordinates.max.latitude" value=""/>	
+	</#if>
 </div>
 <div class="newline"></div>
-<@text name="eml.geographicCoverage.description" />
-
-<div class="break">
-  <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
+<@text name="eml.geographicCoverage.description"/>
+<div class="newline"></div>
+<div class="horizontal_dotted_line_large_foo" id="separator"></div>
+<div class="newline"></div>
+<div class="buttons">
   <@s.submit cssClass="button" key="button.save" name="next" theme="simple"/>
+  <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
 </div>
-</@s.form>
+</form>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">

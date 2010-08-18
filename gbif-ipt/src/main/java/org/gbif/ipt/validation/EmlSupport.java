@@ -16,6 +16,7 @@ package org.gbif.ipt.validation;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.TaxonomicCoverage;
 
@@ -64,7 +65,17 @@ public class EmlSupport extends BaseValidator {
           action.addFieldError("eml.contact.email", action.getText("validation.invalid"));
         }
       } else if (part == null || part.equalsIgnoreCase("parties")) {
-      } else if (part == null || part.equalsIgnoreCase("geocoverage")) {	     		  
+    	  System.out.println("############");
+    	  for(int index=0;index<eml.getAssociatedParties().size();index++) {  
+    		  System.out.println(eml.getAssociatedParties().get(index).getFirstName());
+    		  if(!exists(eml.getAssociatedParties().get(index).getFirstName())) {    			  
+    			  action.addFieldError("eml.associatedParties["+index+"].firstname", action.getText("validation.required"));
+    		  }
+    		  if(!exists(eml.getAssociatedParties().get(index).getLastName())) {
+    			  action.addFieldError("eml.associatedParties["+index+"].lastname", action.getText("validation.required"));
+    		  }
+    	  }
+      } else if (part == null || part.equalsIgnoreCase("geocoverage")) {	  
       } else if (part == null || part.equalsIgnoreCase("taxcoverage")) {
     	  int cont = 0;
     	  for(TaxonomicCoverage tc : eml.getTaxonomicCoverages()) {    		 
