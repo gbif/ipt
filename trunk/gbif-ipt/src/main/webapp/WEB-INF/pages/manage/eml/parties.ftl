@@ -113,11 +113,11 @@ $(document).ready(function(){
     </div>
     </br>
 	<div class="2col">
-  		<@input name="firstName" i18nkey="eml.associatedParties.firstName" size=40/>
-  		<@input name="lastName" i18nkey="eml.associatedParties.lastName"  size=40/>
+  		<@input name="firstName" i18nkey="eml.associatedParties.firstName" value="" size=40/>
+  		<@input name="lastName" i18nkey="eml.associatedParties.lastName"  value="" size=40/>
   	</div>
 	<div class="2col">
-  		<@input name="phone" i18nkey="eml.associatedParties.phone" size=40/>
+  		<@input name="phone" i18nkey="eml.associatedParties.phone" value="" size=40/>
   		<@select name="role" i18nkey="eml.associatedParties.role" value="" options=roleOptions />
   	</div>
   	<div class="newline"></div>

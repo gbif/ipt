@@ -65,14 +65,15 @@ public class EmlSupport extends BaseValidator {
           action.addFieldError("eml.contact.email", action.getText("validation.invalid"));
         }
       } else if (part == null || part.equalsIgnoreCase("parties")) {
-    	  System.out.println("############");
-    	  for(int index=0;index<eml.getAssociatedParties().size();index++) {  
-    		  System.out.println(eml.getAssociatedParties().get(index).getFirstName());
+    	  for(int index=0;index<eml.getAssociatedParties().size();index++) {
     		  if(!exists(eml.getAssociatedParties().get(index).getFirstName())) {    			  
     			  action.addFieldError("eml.associatedParties["+index+"].firstname", action.getText("validation.required"));
     		  }
     		  if(!exists(eml.getAssociatedParties().get(index).getLastName())) {
     			  action.addFieldError("eml.associatedParties["+index+"].lastname", action.getText("validation.required"));
+    		  }
+    		  if(!exists(eml.getAssociatedParties().get(index).getPhone())) {
+    			  action.addFieldError("eml.associatedParties["+index+"].phone", action.getText("validation.required"));
     		  }
     	  }
       } else if (part == null || part.equalsIgnoreCase("geocoverage")) {	  
