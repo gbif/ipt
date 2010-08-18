@@ -17,6 +17,7 @@ import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.metadata.eml.Eml;
+import org.gbif.metadata.eml.TaxonomicCoverage;
 
 import com.google.inject.internal.Nullable;
 
@@ -63,8 +64,21 @@ public class EmlSupport extends BaseValidator {
           action.addFieldError("eml.contact.email", action.getText("validation.invalid"));
         }
       } else if (part == null || part.equalsIgnoreCase("parties")) {
-      } else if (part == null || part.equalsIgnoreCase("geocoverage")) {
+      } else if (part == null || part.equalsIgnoreCase("geocoverage")) {	     		  
       } else if (part == null || part.equalsIgnoreCase("taxcoverage")) {
+    	  int cont = 0;
+    	  for(TaxonomicCoverage tc : eml.getTaxonomicCoverages()) {    		 
+    		  if(!exists(tc.getDescription(), 5)) {    			  
+    			  action.addFieldError("eml.taxonomicCoverages["+cont+"].description", action.getText("validation.required"));
+    		  }
+    		  if(!exists(tc.getTaxonKeyword().getScientificName())) {
+    			  action.addFieldError("eml.taxonomicCoverages["+cont+"].taxonKeyword.scientificName", action.getText("validation.required"));
+    		  }
+    		  if(!exists(tc.getTaxonKeyword().getCommonName())) {
+    			  action.addFieldError("eml.taxonomicCoverages["+cont+"].taxonKeyword.commonName", action.getText("validation.required"));
+    		  }    		  
+    		  cont++;
+    	  }
       } else if (part == null || part.equalsIgnoreCase("tempcoverage")) {
       } else if (part == null || part.equalsIgnoreCase("project")) {
       } else if (part == null || part.equalsIgnoreCase("methods")) {
