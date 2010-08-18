@@ -1,20 +1,24 @@
 /*
  * Copyright 2010 Global Biodiversity Informatics Facility.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
  * 
  * http://www.apache.org/licenses/LICENSE-2.0
  * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 package org.gbif.provider.webapp.action;
 
+import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.util.ValueStack;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.struts2.ServletActionContext;
 import org.gbif.provider.localization.SimpleTextProvider;
 import org.gbif.provider.model.LabelValue;
 import org.gbif.provider.model.User;
@@ -24,6 +28,12 @@ import org.gbif.provider.service.RoleManager;
 import org.gbif.provider.service.UserManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.Constants;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.security.Authentication;
+import org.springframework.security.context.SecurityContext;
+import org.springframework.security.context.SecurityContextHolder;
+import org.springframework.security.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,24 +50,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.struts2.ServletActionContext;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.security.Authentication;
-import org.springframework.security.context.SecurityContext;
-import org.springframework.security.context.SecurityContextHolder;
-import org.springframework.security.userdetails.UserDetails;
-
-import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.util.ValueStack;
-
 /**
- * Base action that all UI actions should extend. This base action provides
- * convenience methods and provides the IPT configuration singleton.
- * 
+ * Base action that all UI actions should extend. This base action provides convenience methods and provides the IPT
+ * configuration singleton.
  */
 public class BaseAction extends ActionSupport {
   // this setting can be changed by the SimpleTextProvider setter which gets
@@ -75,8 +70,7 @@ public class BaseAction extends ActionSupport {
   public static final String CANCEL = "cancel";
 
   /**
-   * Transient log to prevent session synchronization issues - children can use
-   * instance for logging.
+   * Transient log to prevent session synchronization issues - children can use instance for logging.
    */
   protected transient final Log log = LogFactory.getLog(getClass());
   @Autowired
@@ -182,8 +176,7 @@ public class BaseAction extends ActionSupport {
   }
 
   @Override
-  public String getText(String key, String defaultValue, List args,
-      ValueStack stack) {
+  public String getText(String key, String defaultValue, List args, ValueStack stack) {
     if (useSimpleTextProvider) {
       return textProvider.getText(this, key, defaultValue, args);
     }
@@ -207,8 +200,7 @@ public class BaseAction extends ActionSupport {
   }
 
   @Override
-  public String getText(String key, String defaultValue, String[] args,
-      ValueStack stack) {
+  public String getText(String key, String defaultValue, String[] args, ValueStack stack) {
     if (useSimpleTextProvider) {
       return textProvider.getText(this, key, defaultValue, args);
     }
@@ -241,9 +233,24 @@ public class BaseAction extends ActionSupport {
 
   public boolean isAdminUser() {
     User user = getCurrentUser();
-    if(user == null) return false;
+    if (user == null) {
+      return false;
+    }
     for (LabelValue val : user.getRoleList()) {
       if (val.getValue().equalsIgnoreCase(Constants.ADMIN_ROLE)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public boolean isManagerUser() {
+    User user = getCurrentUser();
+    if (user == null) {
+      return false;
+    }
+    for (LabelValue val : user.getRoleList()) {
+      if (val.getValue().equalsIgnoreCase(Constants.MANAGER_ROLE)) {
         return true;
       }
     }
@@ -259,8 +266,7 @@ public class BaseAction extends ActionSupport {
   }
 
   /**
-   * Convenience method for setting a "from" parameter to indicate the previous
-   * page.
+   * Convenience method for setting a "from" parameter to indicate the previous page.
    * 
    * @param from indicator for the originating page
    */
@@ -299,8 +305,7 @@ public class BaseAction extends ActionSupport {
   }
 
   /**
-   * Convenience method to get the session. This will create a session if one
-   * doesn't exist.
+   * Convenience method to get the session. This will create a session if one doesn't exist.
    * 
    * @return the session from the request (request.getSession()).
    */
@@ -328,8 +333,7 @@ public class BaseAction extends ActionSupport {
    * 
    * @param user the user to send to
    * @param msg the message to send
-   * @param url the URL to the application (or where ever you'd like to send
-   *          them)
+   * @param url the URL to the application (or where ever you'd like to send them)
    */
   protected void sendUserMessage(User user, String msg, String url) {
     if (log.isDebugEnabled()) {
@@ -356,9 +360,8 @@ public class BaseAction extends ActionSupport {
   }
 
   /**
-   * Localizes the values of a given map using the ActionContexts locale. Make
-   * sure you dont call this method in constructors as it depends on the
-   * instance of the action as the locale provider!
+   * Localizes the values of a given map using the ActionContexts locale. Make sure you dont call this method in
+   * constructors as it depends on the instance of the action as the locale provider!
    * 
    * @param map To get the i18n values for
    * @return i18n results not sorted in anyway
@@ -368,17 +371,15 @@ public class BaseAction extends ActionSupport {
   }
 
   /**
-   * Localizes the values of a given map using the ActionContexts locale. Make
-   * sure you dont call this method in constructors as it depends on the
-   * instance of the action as the locale provider!
+   * Localizes the values of a given map using the ActionContexts locale. Make sure you dont call this method in
+   * constructors as it depends on the instance of the action as the locale provider!
    * 
    * @param map to i18n'alise
-   * @param sortByValues if true, then this will sort the results alphabetically
-   *          on the i18n name (useful for drop downs...)
+   * @param sortByValues if true, then this will sort the results alphabetically on the i18n name (useful for drop
+   *        downs...)
    * @return The map which may be sorted on the values
    */
-  protected Map<String, String> translateI18nMap(Map<String, String> map,
-      boolean sortByValues) {
+  protected Map<String, String> translateI18nMap(Map<String, String> map, boolean sortByValues) {
     for (String key : map.keySet()) {
       String i18Key = map.get(key);
       map.put(key, getText(i18Key));
@@ -395,8 +396,7 @@ public class BaseAction extends ActionSupport {
       // Sort the list using an annonymous inner class implementing Comparator
       // for the compare method
       Collections.sort(list, new Comparator<Map.Entry<String, String>>() {
-        public int compare(Map.Entry<String, String> entry,
-            Map.Entry<String, String> entry1) {
+        public int compare(Map.Entry<String, String> entry, Map.Entry<String, String> entry1) {
           return entry.getValue().compareTo(entry1.getValue());
         }
       });
