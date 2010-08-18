@@ -95,6 +95,9 @@ $(document).ready(function(){
   		<@input name="eml.associatedParties[${agent_index}].phone" i18nkey="eml.associatedParties.phone" size=40/>
   		<@select name="eml.associatedParties[${agent_index}].role" i18nkey="eml.associatedParties.role" value="${eml.associatedParties[agent_index].role}" options=roleOptions />
   	</div>
+  	<div class="newline"></div>
+	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
+	<div class="newline"></div>
   	</div>
 </#list>
 </div>
@@ -117,6 +120,9 @@ $(document).ready(function(){
   		<@input name="phone" i18nkey="eml.associatedParties.phone" size=40/>
   		<@select name="role" i18nkey="eml.associatedParties.role" value="" options=roleOptions />
   	</div>
+  	<div class="newline"></div>
+	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
+	<div class="newline"></div>
 </div>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">

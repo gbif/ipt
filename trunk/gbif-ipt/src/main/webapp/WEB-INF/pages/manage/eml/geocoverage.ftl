@@ -16,29 +16,23 @@
  */
 -->
 <#include "/WEB-INF/pages/inc/header.ftl">
-	<title><@s.text name='manage.metadata.geocoverage.title'/></title>
-	<#assign sideMenuEml=true />
-    
-<script
-  src="http://www.google.com/jsapi?key=ABQIAAAAQmTfPsuZgXDEr012HM6trBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQTBMMPM0apn-CWBZ8nUq7oUL6nMQ"
-  type="text/javascript">
-</script>
+<title><@s.text name='manage.metadata.geocoverage.title'/></title>
+<#assign sideMenuEml=true />
 
-    <style type="text/css">
-      #map {
-        width: 690px;
-        height: 250px;
-      }
-    </style>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 
-    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-
-    <script type="text/javascript">
+<script type="text/javascript">
+    $(document).ready(function(){
       // Global variables
       var map;
       var marker1;
       var marker2;
       var rectangle;
+      var dfminx=65;
+      var dfminy=-10;
+      var dfmaxx=71;
+      var dfmaxy=10;
+      var bboxBase="eml\\.geographicCoverage\\.boundingCoordinates\\.";
 
       /**
        * Called on the initial page load.
@@ -49,24 +43,24 @@
           'center': new google.maps.LatLng(70, 0),
           'mapTypeId': google.maps.MapTypeId.ROADMAP
         });
-
+        
         // Plot two markers to represent the Rectangle's bounds.
         marker1 = new google.maps.Marker({
           map: map,
-          position: new google.maps.LatLng(65, -10),
+          position: new google.maps.LatLng(dfminx, dfminy),
           draggable: true,
-          title: 'Drag me!'
+          title: 'marker1'
         });
         marker2 = new google.maps.Marker({
           map: map,
-          position: new google.maps.LatLng(71, 10),
+          position: new google.maps.LatLng(dfmaxx, dfmaxy),
           draggable: true,
-          title: 'Drag me!'
-        });
+          title: 'marker2'
+        }); 
         
         // Allow user to drag each marker to resize the size of the Rectangle.
-        google.maps.event.addListener(marker1, 'drag', redraw);
-        google.maps.event.addListener(marker2, 'drag', redraw);
+        google.maps.event.addListener(marker1, 'drag', redrawAndFill);
+        google.maps.event.addListener(marker2, 'drag', redrawAndFill);
         
         // Create a new Rectangle overlay and place it on the map.  Size
         // will be determined by the LatLngBounds based on the two Marker
@@ -74,8 +68,38 @@
         rectangle = new google.maps.Rectangle({
           map: map
         });
-        redraw();
+        redrawAndFill();
       }
+      
+       $("#bbox input").keyup(function() {
+  			var maxy=parseFloat($("#"+bboxBase+"max\\.latitude").attr("value"));
+            var miny=parseFloat($("#"+bboxBase+"min\\.latitude").attr("value"));
+            var maxx=parseFloat($("#"+bboxBase+"max\\.longitude").attr("value"));
+            var minx=parseFloat($("#"+bboxBase+"min\\.longitude").attr("value"));
+  			
+  			if(isNaN(maxy))	maxy=dfmaxy;
+  				else dfmaxy=maxy;
+  			if(isNaN(miny))miny=dfminy;
+  				else dfminy=miny;
+  			if(isNaN(maxx))maxx=dfmaxx;
+  				else dfmaxx=maxx;
+  			if(isNaN(minx))minx=dfminx;
+  				else dfminx=minx;
+  			
+  			var tminy=miny < maxy ? miny : maxy;
+        	var tmaxy=miny > maxy ? miny : maxy;
+        	var tminx=minx < maxx ? minx : maxx;
+        	var tmaxx=minx > maxx ? minx : maxx;
+       
+       		marker1.setPosition(new google.maps.LatLng(tminy, tminx));
+      	 	marker2.setPosition(new google.maps.LatLng(tmaxy, tmaxx));
+       		redraw();
+		});
+                     
+       function redrawAndFill() {
+       	redraw();
+       	fill();
+       }
       
       /**
        * Updates the Rectangle's bounds to resize its dimensions.
@@ -86,53 +110,49 @@
           marker2.getPosition()
         );
         rectangle.setBounds(latLngBounds);
-        var tminy=marker1.getPosition().lat()<marker2.getPosition().lat()?marker1.getPosition().lat():marker2.getPosition().lat();
-        var tmaxy=marker1.getPosition().lat()<marker2.getPosition().lat()?marker2.getPosition().lat():marker1.getPosition().lat();
-        selectBoundigBox(marker1.getPosition().lng(), tminy, marker2.getPosition().lng(), tmaxy);
-      }
+       }
 
       // Register an event listener to fire when the page finishes loading.
       google.maps.event.addDomListener(window, 'load', init);
       
       
-      function selectBoundigBox(minx,miny,maxx,maxy){
-                $("#maxy").val(maxy);
-                $("#miny").val(miny);
-                $("#minx").val(minx);
-                $("#maxx").val(maxx);
- 	   }
-      
-    </script>
+      function fill(){
+          var tminy=marker1.getPosition().lat() < marker2.getPosition().lat() ? marker1.getPosition().lat() : marker2.getPosition().lat();
+          var tmaxy=marker1.getPosition().lat() < marker2.getPosition().lat() ? marker2.getPosition().lat() : marker1.getPosition().lat();
+
+          $("#"+bboxBase+"max\\.latitude").attr("value",tmaxy);
+          $("#"+bboxBase+"min\\.latitude").attr("value",tminy);
+          $("#"+bboxBase+"min\\.longitude").attr("value",marker1.getPosition().lng());
+          $("#"+bboxBase+"max\\.longitude").attr("value",marker2.getPosition().lng());
+ 	   }  
+     
+});
+</script>
 
 </head>
 
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
-	<@s.text name='manage.metadata.geocoverage.map.message'/>
-    <div id="map"></div>
-    <div class="break10"></div>
-<p class="explMt"><@s.text name='manage.metadata.geocoverage.description'/></p>
+<@s.text name='manage.metadata.geocoverage.map.message'/>
+<div id="map"></div>
 <@s.form id="geoForm" action="geocoverage" method="post" validate="false">
 
-<fieldset>
   <@s.hidden name="resourceId" value="${(resource.id)!}"/>
   <@s.hidden name="resourceType" value="${(resourceType)!}"/>
   <@s.hidden name="guid" value="${(resource.guid)!}"/>
   <@s.hidden name="nextPage" value="taxcoverage"/>
   <@s.hidden name="method" value="geographicCoverages"/>
 
-<div id="clone">
-  <@s.hidden id="minx" key="eml.geographicCoverage.boundingCoordinates.min.longitude"/>
-  <@s.hidden id="maxx" key="eml.geographicCoverage.boundingCoordinates.max.longitude" />
-  <@s.hidden id="miny" key="eml.geographicCoverage.boundingCoordinates.min.latitude" />
-  <@s.hidden id="maxy" key="eml.geographicCoverage.boundingCoordinates.max.latitude" />
-  <div class="newline"></div>
-  <div id="map"></div>
-  <@s.textarea key="eml.geographicCoverage.description" required="false" 
-    cssClass="text xlarge"/>
+<div id="bbox">
+  <@input name="eml.geographicCoverage.boundingCoordinates.min.longitude"/>
+  <@input name="eml.geographicCoverage.boundingCoordinates.max.longitude" />
+  <@input name="eml.geographicCoverage.boundingCoordinates.min.latitude" />
+  <@input name="eml.geographicCoverage.boundingCoordinates.max.latitude" />
 </div>
-</fieldset>
+<div class="newline"></div>
+<@text name="eml.geographicCoverage.description" />
+
 <div class="break">
   <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
   <@s.submit cssClass="button" key="button.save" name="next" theme="simple"/>

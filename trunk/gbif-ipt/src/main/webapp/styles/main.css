@@ -468,3 +468,10 @@ div.details td{
 	text-shadow: 0px 1px 0px #000;
 	background: url('../images/button.png') left top no-repeat;
 }
+
+#map{
+	width: 690px;
+    height: 250px;
+	border: none;
+	margin-top: 18px;
+}
