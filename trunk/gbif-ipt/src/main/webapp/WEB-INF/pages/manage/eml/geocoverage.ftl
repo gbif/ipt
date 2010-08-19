@@ -32,7 +32,7 @@
       var dfminy=-10;
       var dfmaxx=10;
       var dfmaxy=10;
-      var bboxBase="eml\\.geographicCoverage\\.boundingCoordinates\\.";
+      var bboxBase="eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.";
 
 	  /**
        * Called on the initial page load.
@@ -63,7 +63,7 @@
         // Plot two markers to represent the Rectangle's bounds.
         marker1 = new google.maps.Marker({
           map: map,
-          position: new google.maps.LatLng(minx, miny),
+          position: new google.maps.LatLng(miny, minx),
           draggable: true,
           title: 'marker1'
         });
@@ -85,7 +85,7 @@
           map: map
         });
         redraw();
-        if(!isFilled) fill();	
+        if(!isFilled)fill();	
       }
       
        $("#bbox input").keyup(function() {
@@ -154,20 +154,20 @@
 <div id="map"></div>
 <form class="topForm" action="metadata-${section}.do" method="post" validate="false">
 <div class="half" id="bbox">
-	<#if eml.geographicCoverage?exists>
-		  <@input name="eml.geographicCoverage.boundingCoordinates.min.longitude" value="${eml.geographicCoverage.boundingCoordinates.min.longitude}"/>
-  		  <@input name="eml.geographicCoverage.boundingCoordinates.max.longitude" value="${eml.geographicCoverage.boundingCoordinates.max.longitude}"/>
-          <@input name="eml.geographicCoverage.boundingCoordinates.min.latitude" value="${eml.geographicCoverage.boundingCoordinates.min.latitude}"/>
-          <@input name="eml.geographicCoverage.boundingCoordinates.max.latitude" value="${eml.geographicCoverage.boundingCoordinates.max.latitude}"/>
+	<#if eml.geospatialCoverages[0]?exists>
+		  <@input name="eml.geospatialCoverages[0].boundingCoordinates.min.longitude" value="${eml.geospatialCoverages[0].boundingCoordinates.min.longitude}" i18nkey="eml.geographicCoverage.boundingCoordinates.min.longitude"/>
+  		  <@input name="eml.geospatialCoverages[0].boundingCoordinates.max.longitude" value="${eml.geospatialCoverages[0].boundingCoordinates.max.longitude}" i18nkey="eml.geographicCoverage.boundingCoordinates.max.longitude"/>
+          <@input name="eml.geospatialCoverages[0].boundingCoordinates.min.latitude" value="${eml.geospatialCoverages[0].boundingCoordinates.min.latitude}" i18nkey="eml.geographicCoverage.boundingCoordinates.min.latitude"/>
+          <@input name="eml.geospatialCoverages[0].boundingCoordinates.max.latitude" value="${eml.geospatialCoverages[0].boundingCoordinates.max.latitude}" i18nkey="eml.geographicCoverage.boundingCoordinates.max.latitude"/>
 	<#else>
-		  <@input name="eml.geographicCoverage.boundingCoordinates.min.longitude" value=""/>
-  		  <@input name="eml.geographicCoverage.boundingCoordinates.max.longitude" value=""/>
-  	 	  <@input name="eml.geographicCoverage.boundingCoordinates.min.latitude" value=""/>
-  		  <@input name="eml.geographicCoverage.boundingCoordinates.max.latitude" value=""/>	
+		  <@input name="eml.geospatialCoverages[0].boundingCoordinates.min.longitude" value="" i18nkey="eml.geographicCoverage.boundingCoordinates.min.longitude"/>
+  		  <@input name="eml.geospatialCoverages[0].boundingCoordinates.max.longitude" value="" i18nkey="eml.geographicCoverage.boundingCoordinates.max.longitude"/>
+          <@input name="eml.geospatialCoverages[0].boundingCoordinates.min.latitude" value="" i18nkey="eml.geographicCoverage.boundingCoordinates.min.latitude"/>
+          <@input name="eml.geospatialCoverages[0].boundingCoordinates.max.latitude" value="" i18nkey="eml.geographicCoverage.boundingCoordinates.max.latitude"/>
 	</#if>
 </div>
 <div class="newline"></div>
-<@text name="eml.geographicCoverage.description"/>
+<@text name="eml.geospatialCoverages[0].description" i18nkey="eml.geographicCoverage.description"/>
 <div class="newline"></div>
 <div class="horizontal_dotted_line_large_foo" id="separator"></div>
 <div class="newline"></div>
