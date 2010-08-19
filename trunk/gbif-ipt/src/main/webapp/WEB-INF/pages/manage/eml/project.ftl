@@ -25,31 +25,21 @@
 <h1><@s.text name='manage.metadata.project.title'/>: <em>${ms.resource.title!ms.resource.shortname}</em></h1>
 <@s.text name='manage.metadata.project.intro'/>
 <form class="topForm" action="metadata-${section}.do" method="post"> 
-<#if eml.project?exists>
-	<@input name="eml.project.title" value="" />
+	<@input name="eml.project.title"/>
     <div class="half">
-      <@input name="eml.project.personnel.firstName" value=""/>
+      <@input name="eml.project.personnel.firstName" />
       <@input name="eml.project.personnel.lastName" />
     </div>
     <div class="leftxhalf">
-       <@select name="eml.project.personnel.role" value="${eml.project.personnel.role}" />
-    </div>
-    <@text name="eml.project.funding" />
-	<@text name="eml.project.studyAreaDescription.descriptorValue" />
-	<@text name="eml.project.designDescription" />
-<#else>
-	<@input name="eml.project.title" value="" />
-    <div class="half">
-      <@input name="eml.project.personnel.firstName" value="" />
-      <@input name="eml.project.personnel.lastName" value="" />
-    </div>
-    <div class="leftxhalf">
+      <#if eml.project?exists>
+       <@select name="eml.project.personnel.role" value="${eml.project.personnel.role}" options=roleOptions />
+      <#else>
        <@select name="eml.project.personnel.role" value="" options=roleOptions/>
+	  </#if>
     </div>
     <@text name="eml.project.funding" />
 	<@text name="eml.project.studyAreaDescription.descriptorValue" />
 	<@text name="eml.project.designDescription" />
-</#if>
 <div class="buttons">
   <@s.submit name="save" key="button.save" />
   <@s.submit name="cancel" key="button.cancel" />

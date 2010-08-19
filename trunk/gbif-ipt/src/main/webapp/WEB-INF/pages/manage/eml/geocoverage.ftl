@@ -158,17 +158,10 @@
 <div id="map"></div>
 <form class="topForm" action="metadata-${section}.do" method="post">
 <div class="half" id="bbox">
-	<#if eml.geospatialCoverages[0]?exists>
-		  <@input name="eml.geospatialCoverages[0].boundingCoordinates.min.longitude" value="${eml.geospatialCoverages[0].boundingCoordinates.min.longitude}" i18nkey="eml.geographicCoverage.boundingCoordinates.min.longitude"/>
-  		  <@input name="eml.geospatialCoverages[0].boundingCoordinates.max.longitude" value="${eml.geospatialCoverages[0].boundingCoordinates.max.longitude}" i18nkey="eml.geographicCoverage.boundingCoordinates.max.longitude"/>
-          <@input name="eml.geospatialCoverages[0].boundingCoordinates.min.latitude" value="${eml.geospatialCoverages[0].boundingCoordinates.min.latitude}" i18nkey="eml.geographicCoverage.boundingCoordinates.min.latitude"/>
-          <@input name="eml.geospatialCoverages[0].boundingCoordinates.max.latitude" value="${eml.geospatialCoverages[0].boundingCoordinates.max.latitude}" i18nkey="eml.geographicCoverage.boundingCoordinates.max.latitude"/>
-	<#else>
-		  <@input name="eml.geospatialCoverages[0].boundingCoordinates.min.longitude" value="" i18nkey="eml.geographicCoverage.boundingCoordinates.min.longitude"/>
-  		  <@input name="eml.geospatialCoverages[0].boundingCoordinates.max.longitude" value="" i18nkey="eml.geographicCoverage.boundingCoordinates.max.longitude"/>
-          <@input name="eml.geospatialCoverages[0].boundingCoordinates.min.latitude" value="" i18nkey="eml.geographicCoverage.boundingCoordinates.min.latitude"/>
-          <@input name="eml.geospatialCoverages[0].boundingCoordinates.max.latitude" value="" i18nkey="eml.geographicCoverage.boundingCoordinates.max.latitude"/>
-	</#if>
+  <@input name="eml.geospatialCoverages[0].boundingCoordinates.min.longitude" i18nkey="eml.geographicCoverage.boundingCoordinates.min.longitude"/>
+  <@input name="eml.geospatialCoverages[0].boundingCoordinates.max.longitude" i18nkey="eml.geographicCoverage.boundingCoordinates.max.longitude"/>
+  <@input name="eml.geospatialCoverages[0].boundingCoordinates.min.latitude"  i18nkey="eml.geographicCoverage.boundingCoordinates.min.latitude"/>
+  <@input name="eml.geospatialCoverages[0].boundingCoordinates.max.latitude"  i18nkey="eml.geographicCoverage.boundingCoordinates.max.latitude"/>
 </div>
 <div class="newline"></div>
 <@text name="eml.geospatialCoverages[0].description" i18nkey="eml.geographicCoverage.description"/>
