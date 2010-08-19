@@ -16,7 +16,7 @@ $(document).ready(function(){
 			partiesCount=-1;
 	}
 	
-	$("#add").click(function(event) {
+	$("#plus").click(function(event) {
 		event.preventDefault();
 		// to add more parties, clone the first one and change it's attributes
 		var newParty=$('#baseParty').clone();
@@ -101,8 +101,8 @@ $(document).ready(function(){
   	</div>
 </#list>
 </div>
+<a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.parties.item'/></a></br></br>
 <div id='buttons' class="buttons">
-  	<a id="add" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.parties.item'/></a></br></br>
     <@s.submit name="save" key="button.save"/>
  	<@s.submit name="cancel" key="button.cancel"/>
   </div>	

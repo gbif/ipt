@@ -29,13 +29,7 @@
     <div class="half">
       <@input name="eml.project.personnel.firstName" />
       <@input name="eml.project.personnel.lastName" />
-    </div>
-    <div class="leftxhalf">
-      <#if eml.project?exists>
-       <@select name="eml.project.personnel.role" value="${eml.project.personnel.role}" options=roleOptions />
-      <#else>
-       <@select name="eml.project.personnel.role" value="" options=roleOptions/>
-	  </#if>
+      <@select name="eml.project.personnel.role" value="${(eml.project.personnel.role)!}" options=roleOptions />
     </div>
     <@text name="eml.project.funding" />
 	<@text name="eml.project.studyAreaDescription.descriptorValue" />
@@ -44,5 +38,6 @@
   <@s.submit name="save" key="button.save" />
   <@s.submit name="cancel" key="button.cancel" />
 </div>
-<#include "/WEB-INF/pages/inc/footer.ftl">
 </form>
+
+<#include "/WEB-INF/pages/inc/footer.ftl">
