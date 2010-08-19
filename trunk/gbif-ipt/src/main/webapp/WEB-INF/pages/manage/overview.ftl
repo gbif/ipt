@@ -30,6 +30,7 @@ Please start by filling in at least the mandatory metadata before you can upload
 By default a resource is private to the managers. Once published to GBIF you can only remove the resource, but not revert to a private state.
 </p>
 
+
 <div class="definition" id="metadata">	
   <div class="title">
   	<div class="head">
@@ -84,9 +85,9 @@ By default a resource is private to the managers. Once published to GBIF you can
       		  <#list ms.config.sources as src>
       		  	<tr><th>
       			<#if src.rows?exists>
-          		 ${src.name} FILE:</th><td>${src.fileSizeFormatted}, ${src.rows} rows, ${src.columns} columns. ${(src.lastModified?datetime?string)!}
+          		 ${src.name} [file]</th><td>${src.fileSizeFormatted}, ${src.rows} rows, ${src.columns} columns. ${(src.lastModified?datetime?string)!}
           		<#else>
-          		 ${src.name} SQL:</th><td>db=${src.database!"..."}, ${src.columns} columns. 
+          		 ${src.name} [sql]</th><td>db=${src.database!"..."}, ${src.columns} columns. 
           		</#if>
           		<#if !src.readable><img src="${baseURL}/images/warning.gif" /></#if> 
           		<a href="source.do?id=${src.name}"><button class="small">Edit</button></a>
@@ -103,6 +104,14 @@ By default a resource is private to the managers. Once published to GBIF you can
         DwC Mappings
   	</div>
   	<div class="actions">
+	  <form action='mapping.do' method='post'>
+	    <select name="id" id="manager" size="1">
+	    <#list potentialExtensions as e>
+	      <option value="${e.rowType}">${e.title}</option>
+	    </#list>
+		</select>
+		<input type='submit' name='add' value='Add' />
+  	  </form>
   	</div>
   </div>
   <div class="body">
@@ -111,6 +120,11 @@ By default a resource is private to the managers. Once published to GBIF you can
       	</div>
       	<div class="details">
       		<table>
+          		<#if ms.config.core?exists>
+          		<tr><th>${ms.config.core.extension.title}</th><td>${ms.config.core.fields?size} terms mapped to source ${ms.config.core.source.name}
+          		<a href="mapping.do?id=${ms.config.core.extension.rowType}"><button class="small">Edit</button></a>
+          		</td></tr>
+          		</#if>
       		  <#list ms.config.extensions as m>
           		<tr><th>${m.extension.title}</th><td>${m.fields?size} terms mapped to source ${m.source.name}
           		<a href="mapping.do?id=${m.extension.rowType}"><button class="small">Edit</button></a>
@@ -169,6 +183,32 @@ By default a resource is private to the managers. Once published to GBIF you can
   </div>
 </div>
 
+<div class="definition" id="archive">	
+  <div class="title">
+  	<div class="head">
+        DwC Archive
+  	</div>
+  	<div class="actions">
+  	 <#-- 
+  	  -->
+	  <form action='archive.do' method='post'>
+		<input type='submit' name='generate' value='Generate' />
+  	  </form>
+  	</div>
+  </div>
+  <div class="body">
+      	<div>
+			A darwin core archive bundles all data sources with mappings and metadata in one archive.
+      	</div>
+      	<div class="details">
+      		<table>
+          		<tr><th>Generated</th><td>Apr 20, 2007 12:45:09 PM</td></tr>
+          		<tr><th>Download</th><td><a href="${baseURL}/archive.do?resource=${ms.resource.shortname}">${baseURL}/archive.do?resource=${ms.resource.shortname}</a></td></tr>
+      		</table>
+      	</div>
+  </div>
+</div>
+
 <div class="definition" id="managers">	
   <div class="title">
   	<div class="head">
@@ -196,32 +236,6 @@ By default a resource is private to the managers. Once published to GBIF you can
           		<#list ms.resource.managers as u>
           		<tr><th>Manager</th><td>${u.name}, ${u.email} <a class="confirm" href="resource-delmanager.do?id=${u.email}"><button class="small">Delete</button></a></td></tr>
 	    		</#list>
-      		</table>
-      	</div>
-  </div>
-</div>
-
-<div class="definition" id="archive">	
-  <div class="title">
-  	<div class="head">
-        DwC Archive
-  	</div>
-  	<div class="actions">
-  	 <#-- 
-  	  -->
-	  <form action='archive.do' method='post'>
-		<input type='submit' name='generate' value='Generate' />
-  	  </form>
-  	</div>
-  </div>
-  <div class="body">
-      	<div>
-			A darwin core archive bundles all data sources with mappings and metadata in one archive.
-      	</div>
-      	<div class="details">
-      		<table>
-          		<tr><th>Generated</th><td>Apr 20, 2007 12:45:09 PM</td></tr>
-          		<tr><th>Download</th><td><a href="${baseURL}/archive.do?resource=${ms.resource.shortname}">${baseURL}/archive.do?resource=${ms.resource.shortname}</a></td></tr>
       		</table>
       	</div>
   </div>

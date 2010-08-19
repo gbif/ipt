@@ -3,14 +3,14 @@
  */
 package org.gbif.ipt.service.admin;
 
-import org.gbif.ipt.model.Extension;
-import org.gbif.ipt.service.InvalidConfigException;
-import org.gbif.ipt.service.admin.impl.DwCExtensionManagerImpl;
-
-import com.google.inject.ImplementedBy;
-
 import java.net.URL;
 import java.util.List;
+
+import org.gbif.ipt.model.Extension;
+import org.gbif.ipt.service.InvalidConfigException;
+import org.gbif.ipt.service.admin.impl.ExtensionManagerImpl;
+
+import com.google.inject.ImplementedBy;
 
 /**
  * This interface details ALL methods associated with the DwC extensions.
@@ -20,8 +20,8 @@ import java.util.List;
 /**
  * @author markus
  */
-@ImplementedBy(DwCExtensionManagerImpl.class)
-public interface DwCExtensionManager {
+@ImplementedBy(ExtensionManagerImpl.class)
+public interface ExtensionManager {
 
   /**
    * Remove an installed extension by its unique rowType
@@ -53,6 +53,23 @@ public interface DwCExtensionManager {
    * @return list of installed IPT extensions
    */
   public List<Extension> list();
+
+  /**List all available extensions available for the given core 
+ * @param core extension 
+ * @return
+ */
+public List<Extension> list(Extension core);
+
+  /**List only the available core extensions
+ * @return
+ */
+public List<Extension> listCore();
+
+/**List all available extensions matching a registered keyword 
+ * @param keyword to filter by, e.g. dwc:Taxon for all taxonomic extensions 
+ * @return
+ */
+public List<Extension> search(String keyword);
 
   /**
    * Load all installed extensions from the data dir

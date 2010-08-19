@@ -6,6 +6,7 @@ import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveFile;
 import org.gbif.dwc.text.UnsupportedArchiveException;
 import org.gbif.file.CompressionUtil;
+import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Extension;
@@ -28,10 +29,11 @@ import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.RegistryException;
-import org.gbif.ipt.service.admin.DwCExtensionManager;
+import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.GBIFRegistryManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
+import org.gbif.ipt.utils.ActionLogger;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlFactory;
 import org.gbif.metadata.eml.EmlWriter;
@@ -75,12 +77,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 	private final JdbcInfoConverter jdbcInfoConverter;
 	private GBIFRegistryManager registryManager;
 	private SourceManager sourceManager;
-	private DwCExtensionManager extensionManager;
+	private ExtensionManager extensionManager;
 
 	@Inject
 	public ResourceManagerImpl(AppConfig cfg, DataDir dataDir, UserEmailConverter userConverter,
 			OrganisationKeyConverter orgConverter, GBIFRegistryManager registryManager,
-			ExtensionRowTypeConverter extensionConverter, JdbcInfoConverter jdbcInfoConverter, SourceManager sourceManager, DwCExtensionManager extensionManager) {
+			ExtensionRowTypeConverter extensionConverter, JdbcInfoConverter jdbcInfoConverter, SourceManager sourceManager, ExtensionManager extensionManager) {
 		super(cfg, dataDir);
 		this.userConverter = userConverter;
 		this.registryManager = registryManager;
@@ -137,6 +139,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 		xstream.alias("filesource", FileSource.class);
 		xstream.alias("sqlsource", SqlSource.class);
 		xstream.alias("mapping", ExtensionMapping.class);
+		xstream.alias("field", ArchiveField.class);
+
 		// transient properties
 		xstream.omitField(Resource.class, "shortname");
 		xstream.omitField(Resource.class, "title");
@@ -149,6 +153,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 		xstream.registerConverter(orgConverter);
 		xstream.registerConverter(jdbcInfoConverter);
 		// persist only rowtype for extensions
+		//TODO: replace with full ExtensionMappingConverter
 		xstream.registerConverter(extensionConverter);
 	}
 
@@ -398,8 +403,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 		}
 	}
 
-	public ResourceConfiguration create(String shortname, File dwca, User creator) throws AlreadyExistingException, ImportException {
+	public ResourceConfiguration create(String shortname, File dwca, User creator, BaseAction action) throws AlreadyExistingException, ImportException {
 		ResourceConfiguration config;
+		ActionLogger alog = new ActionLogger(this.log, action);
 		try {
 			// decompress archive
 			File dwcaDir = dataDir.tmpDir();
@@ -412,9 +418,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 			Map<String, FileSource> sources = new HashMap<String, FileSource>();
 			if (arch.getCore()!=null){
 				// read core source+mappings
-				FileSource s = importSource(config, arch.getCore());
+				FileSource s = importSource(alog,config, arch.getCore());
 				sources.put(arch.getCore().getLocation(), s);
-				ExtensionMapping map = importMappings(arch.getCore(), s);
+				ExtensionMapping map = importMappings(alog, arch.getCore(), s);
 				config.setCore(map);
 				// read extension sources+mappings
 				for (ArchiveFile ext : arch.getExtensions()){
@@ -422,42 +428,42 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 						s = sources.get(ext.getLocation());
 						log.debug("Source "+s.getName()+" shared by multiple extensions");
 					}else{
-						s = importSource(config, ext);
+						s = importSource(alog,config, ext);
 						sources.put(ext.getLocation(), s);
 					}
-					map = importMappings(ext, s);
+					map = importMappings(alog,ext, s);
 					config.addExtension(map);
 				}
 				// finally persist the whole thing
 				save(config);
-				log.info("Imported existing darwin core archive with core row type "+config.getCoreRowType()+" and "+config.getSources()+" sources, "+config.getExtensions()+" mappings");
+				alog.info("Imported existing darwin core archive with core row type "+config.getCoreRowType()+" and "+config.getSources()+" sources, "+config.getExtensions()+" mappings");
 			}else{
-				log.warn("Darwin core archive is invalid and does not have a core mapping");
+				alog.warn("Darwin core archive is invalid and does not have a core mapping");
 				throw new ImportException("Darwin core archive is invalid and does not have a core mapping");
 			}
 		} catch (UnsupportedArchiveException e) {
-			log.warn(e.getMessage(), e);
+			alog.warn(e.getMessage(), e);
 			throw new ImportException(e);
 		} catch (IOException e) {
-			log.warn(e.getMessage(), e);
+			alog.warn(e.getMessage(), e);
 			throw new ImportException(e);
 		}
 		return config;
 	}
 
-	private FileSource importSource(ResourceConfiguration config, ArchiveFile af) throws ImportException{
+	private FileSource importSource(ActionLogger alog, ResourceConfiguration config, ArchiveFile af) throws ImportException{
 		File extFile = new File(af.getLocation()); 
 		FileSource s = sourceManager.add(config, extFile);
 		SourceManagerImpl.copyArchiveFileProperties(af, s);
 		return s;
 	}
 	
-	private ExtensionMapping importMappings(ArchiveFile af, Source source){
+	private ExtensionMapping importMappings(ActionLogger alog, ArchiveFile af, Source source){
 		ExtensionMapping map = new ExtensionMapping();
 		map.setSource(source);
 		Extension ext = extensionManager.get(af.getRowType());
 		if (ext==null){
-			log.warn("RowType "+af.getRowType()+" not available in this IPT installation");
+			alog.warn("RowType "+af.getRowType()+" not available in this IPT installation");
 			return null;
 		}
 		map.setExtension(ext);
@@ -468,7 +474,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 			if (ext.hasProperty(f.getTerm())){
 				fields.add(f);
 			}else{
-				log.info("Skip mapped concept term "+f.getTerm().qualifiedName()+" which is unkown to extension "+ext.getRowType());
+				alog.info("Skip mapped concept term "+f.getTerm().qualifiedName()+" which is unkown to extension "+ext.getRowType());
 			}
 		}
 		map.setFields(fields);

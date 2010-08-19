@@ -3,12 +3,13 @@
  */
 package org.gbif.ipt.service.admin.impl;
 
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.factory.ExtensionFactory;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
-import org.gbif.ipt.service.admin.DwCExtensionManager;
+import org.gbif.ipt.service.admin.ExtensionManager;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -19,6 +20,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
+import org.apache.commons.lang.StringUtils;
 import org.xml.sax.SAXException;
 
 import java.io.File;
@@ -42,14 +44,16 @@ import javax.xml.parsers.ParserConfigurationException;
  * @author tim
  */
 @Singleton
-public class DwCExtensionManagerImpl extends BaseManager implements DwCExtensionManager {
+public class ExtensionManagerImpl extends BaseManager implements ExtensionManager {
   private Map<String, Extension> extensionsByRowtype = new HashMap<String, Extension>();
   private static final String CONFIG_FOLDER = ".extensions";
   private ExtensionFactory factory;;
   private HttpClient httpClient;
+  private final String TAXON_KEYWORD="dwc:taxon";
+  private final String OCCURRENCE_KEYWORD="dwc:occurrence";
 
   @Inject
-  public DwCExtensionManagerImpl(ExtensionFactory factory, HttpClient httpClient) {
+  public ExtensionManagerImpl(ExtensionFactory factory, HttpClient httpClient) {
     super();
     this.factory = factory;
     this.httpClient = httpClient;
@@ -182,4 +186,38 @@ public class DwCExtensionManagerImpl extends BaseManager implements DwCExtension
     }
     return ext;
   }
+
+public List<Extension> list(Extension core) {
+	if (core!=null && core.getRowType().equalsIgnoreCase(Constants.DWC_ROWTYPE_OCCURRENCE)){
+		return search(OCCURRENCE_KEYWORD);
+	}else if (core!=null && core.getRowType().equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON)){
+		return search(TAXON_KEYWORD);		
+	}else{
+		return list();
+	}
+}
+
+public List<Extension> listCore() {
+	List<Extension> list = new ArrayList<Extension>();
+	Extension e = get(Constants.DWC_ROWTYPE_OCCURRENCE);
+	if (e!=null){
+		list.add(e);
+	}
+	e = get(Constants.DWC_ROWTYPE_TAXON);
+	if (e!=null){
+		list.add(e);
+	}
+	return list;
+}
+
+public List<Extension> search(String keyword) {
+	List<Extension> list = new ArrayList<Extension>();
+	keyword=keyword.toLowerCase();
+	for (Extension e : extensionsByRowtype.values()){
+		if (StringUtils.containsIgnoreCase(e.getSubject(), keyword)){
+			list.add(e);
+		}
+	}
+	return list;
+}
 }
