@@ -88,6 +88,10 @@
         if(!isFilled)fill();	
       }
       
+      $("#save").click(function() {
+			fill();
+	  });
+		
        $("#bbox input").keyup(function() {
   			var maxy=parseFloat($("#"+bboxBase+"max\\.latitude").attr("value"));
             var miny=parseFloat($("#"+bboxBase+"min\\.latitude").attr("value"));
@@ -107,7 +111,7 @@
         	var tmaxy=miny > maxy ? miny : maxy;
         	var tminx=minx < maxx ? minx : maxx;
         	var tmaxx=minx > maxx ? minx : maxx;
-       
+
        		marker1.setPosition(new google.maps.LatLng(tminy, tminx));
       	 	marker2.setPosition(new google.maps.LatLng(tmaxy, tmaxx));
        		redraw();
@@ -149,10 +153,10 @@
 
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
-
-<@s.text name='manage.metadata.geocoverage.map.message'/>
+<h1><@s.text name='manage.metadata.geocoverage.title'/>: <em>${ms.resource.title!ms.resource.shortname}</em></h1>
+<@s.text name='manage.metadata.geocoverage.intro'/>
 <div id="map"></div>
-<form class="topForm" action="metadata-${section}.do" method="post" validate="false">
+<form class="topForm" action="metadata-${section}.do" method="post">
 <div class="half" id="bbox">
 	<#if eml.geospatialCoverages[0]?exists>
 		  <@input name="eml.geospatialCoverages[0].boundingCoordinates.min.longitude" value="${eml.geospatialCoverages[0].boundingCoordinates.min.longitude}" i18nkey="eml.geographicCoverage.boundingCoordinates.min.longitude"/>
@@ -168,12 +172,9 @@
 </div>
 <div class="newline"></div>
 <@text name="eml.geospatialCoverages[0].description" i18nkey="eml.geographicCoverage.description"/>
-<div class="newline"></div>
-<div class="horizontal_dotted_line_large_foo" id="separator"></div>
-<div class="newline"></div>
 <div class="buttons">
-  <@s.submit cssClass="button" key="button.save" name="next" theme="simple"/>
-  <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
+  <@s.submit name="save" key="button.save" />
+  <@s.submit name="cancel" key="button.cancel" />
 </div>
 </form>
 

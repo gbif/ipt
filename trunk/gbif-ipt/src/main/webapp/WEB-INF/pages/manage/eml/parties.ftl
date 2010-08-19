@@ -22,7 +22,7 @@ $(document).ready(function(){
 		var newParty=$('#baseParty').clone();
 		newParty.hide();
 		newParty.appendTo('#parties').slideDown('slow');
-		changeFieldsIndex(newParty, ++partiesCount);
+		setPartyIndex(newParty, ++partiesCount);
 	});
 		
 	$(".removeLink").click(function(event) {
@@ -35,13 +35,13 @@ $(document).ready(function(){
 		$('#party-'+$target.attr("id").split("-")[1]).slideUp('slow', function() { 
 			$(this).remove();
 			$("#parties .party").each(function(index) { 
-					changeFieldsIndex($(this), index);
+					setPartyIndex($(this), index);
 				});
 			calcNumberOfParties();
 			});
 	}
 	
-	function changeFieldsIndex(party, index){
+	function setPartyIndex(party, index){
 		party.attr("id","party-"+index);		
 		$("#party-"+index+" input").attr("id",function() {
 			var parts=$(this).attr("id").split(".");var n=parseInt(parts.length)-1;
