@@ -1,12 +1,15 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.action.BaseAction;
+import org.gbif.ipt.model.Extension;
+import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.RegistryException;
+import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -26,7 +29,10 @@ public class OverviewAction extends BaseAction {
   private UserAccountManager userManager;
   @Inject
   private RegistrationManager registrationManager;
+  @Inject
+  private ExtensionManager extensionManager;
   private List<User> potentialManagers;
+  private List<Extension> potentialExtensions;
   private List<Organisation> organisations;
   private EmlSupport emlValidator = new EmlSupport();
   private boolean missingMetadata = false;
@@ -44,7 +50,11 @@ public class OverviewAction extends BaseAction {
     return execute();
   }
 
-  public String delmanager() throws Exception {
+  public List<Extension> getPotentialExtensions() {
+	return potentialExtensions;
+}
+
+public String delmanager() throws Exception {
     User u = userManager.get(id);
     if (u == null || !ms.getResource().getManagers().contains(u)) {
       addActionError("Manager " + id + " not available");
@@ -92,6 +102,17 @@ public class OverviewAction extends BaseAction {
     }
     // enabled registry organisations
     organisations = registrationManager.list();
+    if (ms.getConfig().getCore()==null){
+    	// show core extensions for mapping
+        potentialExtensions=extensionManager.listCore();
+    }else{
+        // show unmapped extensions    	
+        potentialExtensions=extensionManager.list(ms.getConfig().getCore().getExtension());
+        // remove already associated ones
+        for (ExtensionMapping e : ms.getConfig().getExtensions()) {
+        	potentialExtensions.remove(e.getExtension());
+        }
+    }
   }
 
   public String publish() throws Exception {

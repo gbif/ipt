@@ -43,7 +43,7 @@ public class CreateResourceAction extends POSTAction {
       ResourceConfiguration config = null;
       System.out.println(tmpFile);
       if (tmpFile != null) {
-          config = resourceManager.create(shortname, tmpFile, getCurrentUser());
+          config = resourceManager.create(shortname, tmpFile, getCurrentUser(), this);
       }else{
           config = resourceManager.create(shortname, getCurrentUser());
       }

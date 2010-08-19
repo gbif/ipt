@@ -52,7 +52,7 @@
 <h3>Extensions available from the GBIF registry</h3>
 
 <#list gbrdsExtensions as ext>
-<a name="${ext.rowType}"></a>          
+${ext}
 <div class="definition">	
   <div class="title">
   	<div class="head">
@@ -71,7 +71,7 @@
       	</div>
       	<div class="details">
       		<table>
-          		<tr><th><@s.text name="extension.rowtype"/></th><td>${ext.rowType}</td></tr>
+          		<tr><th><@s.text name="extension.rowtype"/></th><td>${ext.rowType!}</td></tr>
           		<tr><th><@s.text name="basic.keywords"/></th><td>${ext.subject!}</td></tr>
       		</table>
       	</div>

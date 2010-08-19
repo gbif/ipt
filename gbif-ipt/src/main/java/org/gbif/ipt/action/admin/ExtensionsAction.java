@@ -6,7 +6,7 @@ package org.gbif.ipt.action.admin;
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Vocabulary;
-import org.gbif.ipt.service.admin.DwCExtensionManager;
+import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl.UpdateResult;
 import org.gbif.registry.api.client.Gbrds;
@@ -29,7 +29,7 @@ import java.util.List;
  * 
  * @author tim
  */
-public class DwCExtensionsAction extends POSTAction {
+public class ExtensionsAction extends POSTAction {
   /**
    * A session scoped bean to keep a list of all extensions with basic metadata as exposed by the registry directly.
    * There wont be any properties listed. The reason for keeping this in the session is to load the extension list only
@@ -57,7 +57,7 @@ public class DwCExtensionsAction extends POSTAction {
   }
 
   @Inject
-  private DwCExtensionManager extensionManager;
+  private ExtensionManager extensionManager;
   @Inject
   private VocabulariesManager vocabManager;
   @Inject

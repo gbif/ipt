@@ -1,5 +1,6 @@
 package org.gbif.ipt.service.manage;
 
+import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.ResourceConfiguration;
@@ -35,7 +36,7 @@ public interface ResourceManager {
 
   public ResourceConfiguration create(String shortname, User creator) throws AlreadyExistingException;
   
-  public ResourceConfiguration create(String shortname, File dwca, User creator) throws AlreadyExistingException, ImportException;
+  public ResourceConfiguration create(String shortname, File dwca, User creator, BaseAction asction) throws AlreadyExistingException, ImportException;
 
   public void delete(Resource resource) throws IOException;
 

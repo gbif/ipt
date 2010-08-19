@@ -8,7 +8,7 @@ import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.ConfigManager;
-import org.gbif.ipt.service.admin.DwCExtensionManager;
+import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
@@ -38,13 +38,13 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   private InputStreamUtils streamUtils;
   private UserAccountManager userManager;
   private ResourceManager resourceManager;
-  private DwCExtensionManager extensionManager;
+  private ExtensionManager extensionManager;
   private VocabulariesManager vocabManager;
   private RegistrationManager registrationManager;
 
   @Inject
   public ConfigManagerImpl(DataDir dataDir, AppConfig cfg, InputStreamUtils streamUtils,
-      UserAccountManager userManager, ResourceManager resourceManager, DwCExtensionManager extensionManager,
+      UserAccountManager userManager, ResourceManager resourceManager, ExtensionManager extensionManager,
       VocabulariesManager vocabManager, RegistrationManager registrationManager) {
     super(cfg, dataDir);
     this.streamUtils = streamUtils;

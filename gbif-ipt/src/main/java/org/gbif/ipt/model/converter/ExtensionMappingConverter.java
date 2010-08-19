@@ -16,7 +16,10 @@
 
 package org.gbif.ipt.model.converter;
 
+import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.ipt.model.Extension;
+import org.gbif.ipt.model.ExtensionMapping;
+import org.gbif.ipt.model.ExtensionProperty;
 import org.gbif.ipt.service.admin.ExtensionManager;
 
 import com.google.inject.Inject;
@@ -32,27 +35,35 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
  * 
  */
 @Singleton
-public class ExtensionRowTypeConverter implements Converter {
+public class ExtensionMappingConverter implements Converter {
   private ExtensionManager extManager;
 
   @Inject
-  public ExtensionRowTypeConverter(ExtensionManager extManager) {
+  public ExtensionMappingConverter(ExtensionManager extManager) {
     super();
     this.extManager = extManager;
   }
 
   public boolean canConvert(Class clazz) {
-    return clazz.equals(Extension.class);
+	    return clazz.equals(ExtensionMapping.class);
   }
 
   public void marshal(Object value, HierarchicalStreamWriter writer, MarshallingContext context) {
-    Extension e = (Extension) value;
-    writer.setValue(e.getRowType());
+	  ExtensionMapping e = (ExtensionMapping) value;
+	  // serialise whole object
+      writer.startNode("mapping");
+      // ...
+      writer.endNode();
   }
 
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
-    Extension e = extManager.get(reader.getValue());
-    return e;
+	  ExtensionMapping map = new ExtensionMapping();
+	  // read whole object, looking up the extension and its properties
+	  String term = reader.getValue();
+    for (Extension e: extManager.list()){
+    	ExtensionProperty prop = e.getProperty(term);
+    }
+    return map;
   }
 
 }
