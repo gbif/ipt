@@ -1,6 +1,7 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 <script type="text/javascript">
 $(document).ready(function(){
+	initHelp();
 	<#if !validatedBaseURL>
 		$('#registrationForm').hide();
 	</#if>
@@ -65,6 +66,7 @@ $(document).ready(function(){
 			<@selectList name="organisation.key" options="organisations" objValue="key" objTitle="name" i18nkey="admin.organisation.key" value="" size=15/>  
 			<@input name="organisation.password" i18nkey="admin.organisation.password" type="text"/>
 			<@input name="organisation.alias" i18nkey="admin.organisation.alias" type="text" />
+			<@input name="iptPassword" i18nkey="admin.ipt.password" type="text" help="i18n"/>
 			<@checkbox name="organisation.canHost" i18nkey="admin.organisation.canHost" value="true"/>	
 			<@s.hidden id="organisation.name" name="organisation.name" />
 		   <div class="buttons">
