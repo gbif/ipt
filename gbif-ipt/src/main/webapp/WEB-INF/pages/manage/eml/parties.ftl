@@ -5,63 +5,62 @@
 $(document).ready(function(){
 	$('.confirm').jConfirmAction({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});	
 
-	var	partiesCount=-1;
-	calcNumberOfParties();
+	var	itemsCount=-1;
+	calcNumberOfItems();
 	
-	function calcNumberOfParties(){
-		var lastParty = $("#parties .party:last-child").attr("id");
-		if(lastParty != undefined)
-			partiesCount=parseInt(lastParty.split("-")[1]);
+	function calcNumberOfItems(){
+		var lastItem = $("#items .item:last-child").attr("id");
+		if(lastItem != undefined)
+			itemsCount=parseInt(lastItem.split("-")[1]);
 		else
-			partiesCount=-1;
+			itemsCount=-1;
 	}
 	
 	$("#plus").click(function(event) {
 		event.preventDefault();
-		// to add more parties, clone the first one and change it's attributes
-		var newParty=$('#baseParty').clone();
-		newParty.hide();
-		newParty.appendTo('#parties').slideDown('slow');
-		setPartyIndex(newParty, ++partiesCount);
+		// to add more items, clone the first one and change it's attributes
+		var newItem=$('#baseItem').clone();
+		newItem.hide();
+		newItem.appendTo('#items').slideDown('slow');
+		setItemIndex(newItem, ++itemsCount);
 	});
 		
 	$(".removeLink").click(function(event) {
-		removeParty(event);
+		removeItem(event);
 	});
 		
-	function removeParty(event){
+	function removeItem(event){
 		event.preventDefault();
 		var $target = $(event.target);
-		$('#party-'+$target.attr("id").split("-")[1]).slideUp('slow', function() { 
+		$('#item-'+$target.attr("id").split("-")[1]).slideUp('slow', function() { 
 			$(this).remove();
-			$("#parties .party").each(function(index) { 
-					setPartyIndex($(this), index);
+			$("#items .item").each(function(index) { 
+					setItemIndex($(this), index);
 				});
-			calcNumberOfParties();
+			calcNumberOfItems();
 			});
 	}
 	
-	function setPartyIndex(party, index){
-		party.attr("id","party-"+index);		
-		$("#party-"+index+" input").attr("id",function() {
+	function setItemIndex(item, index){
+		item.attr("id","item-"+index);
+		$("#item-"+index+" .removeLink").attr("id", "removeLink-"+index);
+		$("#removeLink-"+index).click(function(event) {
+			removeItem(event);
+		});	
+		<#if "${section}"=="parties">		
+		$("#item-"+index+" input").attr("id",function() {
 			var parts=$(this).attr("id").split(".");var n=parseInt(parts.length)-1;
 			return "eml.associatedParties["+index+"]."+parts[n]; });
-		$("#party-"+index+" select").attr("id",function() {
+		$("#item-"+index+" select").attr("id",function() {
 			var parts=$(this).attr("id").split(".");var n=parseInt(parts.length)-1;
 			return "eml.associatedParties["+index+"]."+parts[n]; });
-		$("#party-"+index+" label").attr("for",function() {
+		$("#item-"+index+" label").attr("for",function() {
 			var parts=$(this).attr("for").split(".");var n=parseInt(parts.length)-1;
 			return "eml.associatedParties["+index+"]."+parts[n]; });		
-		$("#party-"+index+" input").attr("name",function() {return $(this).attr("id"); });
-		$("#party-"+index+" select").attr("name",function() {return $(this).attr("id"); });
+		$("#item-"+index+" input").attr("name",function() {return $(this).attr("id"); });
+		$("#item-"+index+" select").attr("name",function() {return $(this).attr("id"); });
+		</#if>
 		
-		//$("#party-"+index+" input").attr("value","");
-		//$("#party-"+index+" select").attr("value","");
-		
-		$("#party-"+index+" .removeLink").attr("id", "removeLink-"+index);
-		$("#removeLink-"+index).click(function(event) {
-			removeParty(event);
-		});	
 	}
 		
 });
@@ -78,15 +77,14 @@ $(document).ready(function(){
 
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <form class="topForm" action="metadata-${section}.do" method="post">
-<div id="parties">
+<div id="items">
 <#assign next_agent_index=0 />
 <#list eml.associatedParties as agent>
 	<#assign next_agent_index=agent_index+1>
-	<div id="party-${agent_index}" class="party">
+	<div id="item-${agent_index}" class="item">
 	<div class="right">
       <a id="removeLink-${agent_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.parties.item'/> ]</a>
     </div>
-    </br>
 	<div class="2col">
   		<@input name="eml.associatedParties[${agent_index}].firstName" i18nkey="eml.associatedParties.firstName" size=40/>
   		<@input name="eml.associatedParties[${agent_index}].lastName" i18nkey="eml.associatedParties.lastName" size=40/>
@@ -101,13 +99,13 @@ $(document).ready(function(){
   	</div>
 </#list>
 </div>
-<a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.parties.item'/></a></br></br>
+<a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.parties.item'/></a>
 <div id='buttons' class="buttons">
     <@s.submit name="save" key="button.save"/>
  	<@s.submit name="cancel" key="button.cancel"/>
   </div>	
 </form>
-<div id="baseParty" class="party" style="display:none;">
+<div id="baseItem" class="item" style="display:none;">
 	<div class="right">
       <a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.parties.item'/> ]</a>
     </div>
