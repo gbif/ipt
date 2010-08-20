@@ -97,4 +97,11 @@ public interface RegistrationManager {
    * @throws IOException
    */
   public void save() throws IOException;
+
+  /**
+   * Sets the IPT password
+   * 
+   * @param password
+   */
+  public void setIptPassword(String password);
 }

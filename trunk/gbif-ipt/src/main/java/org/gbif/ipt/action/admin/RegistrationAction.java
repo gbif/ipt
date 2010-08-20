@@ -35,6 +35,7 @@ public class RegistrationAction extends POSTAction {
 
   private List<Organisation> organisations = new ArrayList<Organisation>();
   private Organisation organisation;
+  private String iptPassword;
 
   /**
    * @param registryManager
@@ -51,6 +52,13 @@ public class RegistrationAction extends POSTAction {
 
   public Organisation getHostingOrganisation() {
     return registrationManager.getHostingOrganisation();
+  }
+
+  /**
+   * @return the iptPassword
+   */
+  public String getIptPassword() {
+    return iptPassword;
   }
 
   /**
@@ -114,6 +122,8 @@ public class RegistrationAction extends POSTAction {
         registrationManager.addHostingOrganisation(organisation);
         // add the hosting organisation to the associated list of organisations as well
         registrationManager.addAssociatedOrganisation(organisation);
+        // add the IPT password
+        registrationManager.setIptPassword(iptPassword);
         // save everything
         registrationManager.save();
         return SUCCESS;
@@ -130,6 +140,13 @@ public class RegistrationAction extends POSTAction {
     addActionError(getText("admin.registration.error.alreadyRegistered1"));
     addActionError(getText("admin.registration.error.alreadyRegistered2"));
     return SUCCESS;
+  }
+
+  /**
+   * @param iptPassword the iptPassword to set
+   */
+  public void setIptPassword(String iptPassword) {
+    this.iptPassword = iptPassword;
   }
 
   /**

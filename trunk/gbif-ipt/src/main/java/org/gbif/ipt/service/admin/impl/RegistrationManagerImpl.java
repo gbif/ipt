@@ -215,6 +215,15 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     out.close();
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.gbif.ipt.service.admin.RegistrationManager#setIptPassword(java.lang.String)
+   */
+  public void setIptPassword(String password) {
+    registration.setIptPassword(password);
+  }
+
   private void defineXstreamMapping() {
     xstream.omitField(Registration.class, "associatedOrganisations");
     xstream.alias("organisation", Organisation.class);
