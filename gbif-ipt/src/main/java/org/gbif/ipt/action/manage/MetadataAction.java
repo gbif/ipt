@@ -118,6 +118,9 @@ public class MetadataAction extends POSTAction {
     	if (section.equals("citations")) {
     	    ms.getEml().getBibliographicCitationSet().getBibliographicCitations().clear();
     	}
+    	if (section.equals("physical")) {
+    	    ms.getEml().getPhysicalData().clear();
+    	}
     	 
     }
     
