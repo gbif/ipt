@@ -90,9 +90,11 @@ $(document).ready(function(){
 <#list eml.bibliographicCitationSet.bibliographicCitations as agent>
 	<#assign next_agent_index=agent_index+1>
 	<div id="item-${agent_index}" class="item">
+	<div class="newline"></div>
 	<div class="right">
       <a id="removeLink-${agent_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.citations.item'/> ]</a>
     </div>
+    <div class="newline"></div>
 	<@input name="eml.bibliographicCitationSet.bibliographicCitations[${agent_index}]" i18nkey="eml.bibliographicCitationSet.bibliographicCitations" size=40/>
   	<div class="newline"></div>
 	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
@@ -108,9 +110,11 @@ $(document).ready(function(){
 </div>
 </form>
 <div id="baseItem" class="item" style="display:none;">
+	<div class="newline"></div>
 	<div class="right">
       <a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.citations.item'/> ]</a>
     </div>
+    <div class="newline"></div>
 	<@input name="eml.bibliographicCitationSet.bibliographicCitations[0]" i18nkey="eml.bibliographicCitationSet.bibliographicCitations"  value="" size=40/>
   	<div class="newline"></div>
 	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
