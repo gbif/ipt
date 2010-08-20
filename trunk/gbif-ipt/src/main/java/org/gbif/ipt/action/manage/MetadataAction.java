@@ -31,6 +31,8 @@ import org.gbif.ipt.validation.EmlSupport;
 import org.gbif.ipt.validation.ResourceSupport;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.Role;
+import org.gbif.metadata.eml.TemporalCoverage;
+import org.gbif.metadata.eml.TemporalCoverageType;
 
 import com.google.inject.Inject;
 
@@ -159,5 +161,9 @@ public class MetadataAction extends POSTAction {
 		 map.put(r.name(), getText("rank."+r.name().toLowerCase()));
 	 }
 	 return map;
+  }
+  
+  public Map<String, String> getTempTypes() {
+	  return TemporalCoverageType.htmlSelectMap;
   }
 }
