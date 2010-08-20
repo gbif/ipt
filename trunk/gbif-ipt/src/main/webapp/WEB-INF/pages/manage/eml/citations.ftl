@@ -82,8 +82,9 @@ $(document).ready(function(){
 <div>
   <@input name="eml.citation" />
 </div>
-<div id="separator" class="horizontal_dotted_line_large_foo"></div>
+<div class="newline"></div>
 <h2><@s.text name="manage.metadata.citations.bibliography"/></h2>
+<div id="separator" class="horizontal_dotted_line_large_foo"></div>
 
 <div id="items">
 <#assign next_agent_index=0 />
@@ -115,7 +116,7 @@ $(document).ready(function(){
       <a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.citations.item'/> ]</a>
     </div>
     <div class="newline"></div>
-	<@input name="eml.bibliographicCitationSet.bibliographicCitations[0]" i18nkey="eml.bibliographicCitationSet.bibliographicCitations"  value="" size=40/>
+	<@input name="bibliographicCitations" i18nkey="eml.bibliographicCitationSet.bibliographicCitations"  value="" size=40/>
   	<div class="newline"></div>
 	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
 	<div class="newline"></div>

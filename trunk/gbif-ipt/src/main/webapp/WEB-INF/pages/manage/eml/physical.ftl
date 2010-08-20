@@ -16,143 +16,129 @@
  */
 -->
 
-<head>
-  <title><@s.text name="metadata.heading.physicalData"/></title>
-  <meta name="resource" content="${eml.title!}"/>
-  <meta name="menu" content="ManagerMenu"/>
-  <meta name="submenu" content="manage_resource"/>
-  <meta name="heading" content="<@s.text name='metadata.heading.physicalData'/>"/>  
+<#include "/WEB-INF/pages/inc/header.ftl">
+<title><@s.text name='manage.metadata.physical.title'/></title>
+<script type="text/javascript">
+$(document).ready(function(){
+	var	itemsCount=-1;
+	calcNumberOfItems();
+	
+	function calcNumberOfItems(){
+		var lastItem = $("#items .item:last-child").attr("id");
+		if(lastItem != undefined)
+			itemsCount=parseInt(lastItem.split("-")[1]);
+		else
+			itemsCount=-1;
+	}
+	
+	$("#plus").click(function(event) {
+		event.preventDefault();
+		// to add more items, clone the first one and change it's attributes
+		var newItem=$('#baseItem').clone();
+		newItem.hide();
+		newItem.appendTo('#items').slideDown('slow');
+		setItemIndex(newItem, ++itemsCount);
+	});
+		
+	$(".removeLink").click(function(event) {
+		removeItem(event);
+	});
+		
+	function removeItem(event){
+		event.preventDefault();
+		var $target = $(event.target);
+		$('#item-'+$target.attr("id").split("-")[1]).slideUp('slow', function() { 
+			$(this).remove();
+			$("#items .item").each(function(index) { 
+					setItemIndex($(this), index);
+				});
+			calcNumberOfItems();
+			});
+	}
+	
+	function setItemIndex(item, index){
+		item.attr("id","item-"+index);
+		$("#item-"+index+" .removeLink").attr("id", "removeLink-"+index);
+		$("#removeLink-"+index).click(function(event) {
+			removeItem(event);
+		});	
+		<#if "${section}"=="physical">
+			$("#item-"+index+" input").attr("id",function() {
+				var parts=$(this).attr("id").split(".");var n=parseInt(parts.length)-1;
+				return "eml.physicalData["+index+"]."+parts[n]; });
+			$("#item-"+index+" select").attr("id",function() {
+				var parts=$(this).attr("id").split(".");var n=parseInt(parts.length)-1;
+				return "eml.physicalData["+index+"]."+parts[n]; });
+			$("#item-"+index+" label").attr("for",function() {
+				var parts=$(this).attr("for").split(".");var n=parseInt(parts.length)-1;
+				return "eml.physicalData["+index+"]."+parts[n]; });		
+			$("#item-"+index+" input").attr("name",function() {return $(this).attr("id"); });
+			$("#item-"+index+" select").attr("name",function() {return $(this).attr("id"); });
+		</#if>
+		
+	}
+		
+});
+</script>
+<#assign sideMenuEml=true />
+ 
+<#include "/WEB-INF/pages/inc/menu.ftl">
+<#include "/WEB-INF/pages/macros/forms.ftl"/>
 
-  <script
-    src="http://www.google.com/jsapi?key=ABQIAAAAQmTfPsuZgXDEr012HM6trBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQTBMMPM0apn-CWBZ8nUq7oUL6nMQ"
-    type="text/javascript">
-  </script>
+<h1><@s.text name='manage.metadata.physical.title'/>: <em>${ms.resource.title!ms.resource.shortname}</em></h1>
+<@s.text name='manage.metadata.physical.intro'/>
+<form class="topForm" action="metadata-${section}.do" method="post"> 
 
-  <script 
-    src="<@s.url value='/scripts/dto.js'/>"
-    type="text/javascript">
-  </script>
-
-  <script 
-    src="<@s.url value='/scripts/widgets.js'/>"
-    type="text/javascript">
-  </script>
-
-  <script language="Javascript"
-    type="text/javascript">
-
-//<![CDATA[  
-
-    google.load("jquery", "1.4.2");
-
-    function HidePhysicalDataClone() {
-      $('#removeLink').hide();
-      $('#clonePhysicalData').hide();
-    }
-  
-    function GetPhysicalData() {
-      var physicalData = new Array();
-      <#if (eml.physicalData ? size > 0)>
-        <@s.iterator value="eml.physicalData" status="stat">     
-          physicalData[${stat.index}] = new PhysicalData()
-            .charset("<@s.property value="charset"/>")
-            .distributionUrl("<@s.property value="distributionUrl"/>")
-            .format("<@s.property value="format"/>")
-            .formatVersion("<@s.property value="formatVersion"/>")
-            .name("<@s.property value="name"/>")
-            ;
-        </@s.iterator>
-      </#if>
-      return physicalData;
-    }
-
-    function OnLoad() {  
-      HidePhysicalDataClone();
-      var physicalDataPanel = new PhysicalDataPanel();
-      var physicalDataWidget;
-      $('#plus').click(function() {
-        physicalDataPanel.add(new PhysicalDataWidget());
-      });
-      var physicalData = GetPhysicalData();
-      for (physicalDatum in physicalData) {
-        physicalDataWidget = new PhysicalDataWidget(physicalData[physicalDatum]);
-        physicalDataPanel.add(physicalDataWidget);
-      }
-    }
-
-    google.setOnLoadCallback(OnLoad);
-    
-//]]>
-
-  </script>
-
-</head>
-
-<div class="break10"></div>
-<p class="explMt"><@s.text name='metadata.description.physicalData'/></p>
-<@s.form id="emlForm" action="physicalData" enctype="multipart/form-data" method="post">
-
-<fieldset>
-  <@s.hidden name="resourceId" value="${(resource.id)!}"/>
-  <@s.hidden name="resourceType" value="${(resourceType)!}"/>
-  <@s.hidden name="guid" value="${(resource.guid)!}"/>
-  <@s.hidden name="nextPage" value="keywords"/>
-  <@s.hidden name="method" value="physicalData"/>
-  <div id="physicalDataPanel" class="newline">
-    <!-- The clonePhysicalData DIV is not attached to the DOM. It's used as a template
-       for cloning physicalData UI widgets. 
-    -->
-    <div id="clonePhysicalData">
-      <div id="separator" class="horizontal_dotted_line_large_foo"></div>
-      <div class="newline"></div>
-      <div class="right">
-        <a id="removeLink" href="" onclick="return false;">[ <@s.text name='metadata.removethis'/> <@s.text name='metadata.heading.physicalData'/> ]</a>
-      </div>
-      <div class="newline"></div>
-
-      <div id="PhysicalDataDiv">
-        <div id="nameDiv" class="leftxhalf">
-          <@s.textfield id="name" key="" 
-          label="%{getText('physicalData.name')}" required="false" cssClass="text text xhalf slim"/>
-        </div>
-        <div id="charsetDiv" class="leftxhalf">
-          <@s.textfield id="charset" key="" 
-          label="%{getText('physicalData.charset')}" required="false" cssClass="text xhalf slim"/>
-        </div>
-        <div class="newline"></div>
-        <div id="distributionUrlDiv">
-          <@s.textfield id="distributionUrl" key="" 
-          label="%{getText('physicalData.distributionUrl')}" required="false" cssClass="text text xlarge slim"/>
-        </div>
-        <div class="newline"></div>
-        <div id="formatDiv" class="leftxhalf">
-          <@s.textfield id="format" key="" 
-          label="%{getText('physicalData.format')}" required="false" cssClass="text text xhalf slim"/>
-        </div>
-        <div id="formatVersionDiv" class="leftxhalf">
-          <@s.textfield id="formatVersion" key="" 
-          label="%{getText('physicalData.formatVersion')}" required="false" cssClass="text text xhalf slim"/>
-        </div>
-      </div>
-      <div class="newline"></div>
-      <div class="newline"></div>
-      <div class="newline"></div>
-      <div class="newline"></div>
+<div id="items">
+<#assign next_agent_index=0 />
+<#list eml.physicalData as agent>
+	<#assign next_agent_index=agent_index+1>
+	<div id="item-${agent_index}" class="item">
+	<div class="newline"></div>
+	<div class="right">
+      <a id="removeLink-${agent_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.physical.item'/> ]</a>
     </div>
-  </div>
-
-  <div class="left">
-    <a id="plus" href="" onclick="return false;"><@s.text name='metadata.addnew'/> <@s.text name='metadata.heading.physicalData'/></a>
-  </div>
+    <div class="newline"></div>
+    <div class="half">
+		<@input name="eml.physicalData[${agent_index}].name" i18nkey="eml.physicalData.name" size=40/>
+		<@input name="eml.physicalData[${agent_index}].charset" i18nkey="eml.physicalData.charset" size=40/>
+	</div>	
+	<@input name="eml.physicalData[${agent_index}].distributionUrl" i18nkey="eml.physicalData.distributionUrl" size=40/>
+  	<div class="half">
+		<@input name="eml.physicalData[${agent_index}].format" i18nkey="eml.physicalData.format" size=40/>
+		<@input name="eml.physicalData[${agent_index}].formatVersion" i18nkey="eml.physicalData.formatVersion" size=40/>
+	</div>
+  	<div class="newline"></div>
+	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
+	<div class="newline"></div>
+  	</div>
+</#list>
+</div>
+  <a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.physical.item'/></a>
   <div class="newline"></div>
   <div class="newline"></div>
-  <div class="newline"></div>
-  <div class="newline"></div>
-  <div class="newline"></div>
-  <div class="breakLeftButtons">
-    <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
-    <@s.submit cssClass="button" key="button.save" name="next" theme="simple"/>
-  </div>
-</fieldset>
-
-</@s.form>
+<div class="buttons">
+  <@s.submit name="save" key="button.save" />
+  <@s.submit name="cancel" key="button.cancel" />
+</div>
+</form>
+<div id="baseItem" class="item" style="display:none;">
+	<div class="newline"></div>
+	<div class="right">
+      <a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.physical.item'/> ]</a>
+    </div>
+    <div class="newline"></div>
+	<div class="half">
+		<@input name="name" i18nkey="eml.physicalData.name" size=40/>
+		<@input name="charset" i18nkey="eml.physicalData.charset" size=40/>
+	</div>
+	<@input name="distributionUrl" i18nkey="eml.physicalData.distributionUrl" size=40/>
+	<div class="half">
+		<@input name="format" i18nkey="eml.physicalData.format" size=40/>
+		<@input name="formatVersion" i18nkey="eml.physicalData.formatVersion" size=40/>
+	</div>
+  	<div class="newline"></div>
+	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
+	<div class="newline"></div>
+</div>
+<#include "/WEB-INF/pages/inc/footer.ftl">

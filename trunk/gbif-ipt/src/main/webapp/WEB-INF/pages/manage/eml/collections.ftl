@@ -16,89 +16,16 @@
  */
 -->
 
-<head>
-  <title><@s.text name="metadata.heading.collections"/></title>
-  <meta name="resource" content="${resource.title!}"/>
-  <meta name="menu" content="ManagerMenu"/>
-  <meta name="submenu" content="manage_resource"/>  
-  <meta name="heading" content="<@s.text name='metadata.heading.collections'/>"/> 
+<#include "/WEB-INF/pages/inc/header.ftl">
+<title><@s.text name='manage.metadata.collections.title'/></title>
+<#assign sideMenuEml=true />
+ 
+<#include "/WEB-INF/pages/inc/menu.ftl">
+<#include "/WEB-INF/pages/macros/forms.ftl"/>
 
-  <script
-    src="http://www.google.com/jsapi?key=ABQIAAAAQmTfPsuZgXDEr012HM6trBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQTBMMPM0apn-CWBZ8nUq7oUL6nMQ"
-    type="text/javascript">
-  </script>
-
-  <script 
-    src="<@s.url value='/scripts/dto.js'/>"
-    type="text/javascript">
-  </script>
-
-  <script 
-    src="<@s.url value='/scripts/widgets.js'/>"
-    type="text/javascript">
-  </script>
-
-  <script
-    language="Javascript"
-    type="text/javascript">
-
-//<![CDATA[  
-
-  google.load("jquery", "1.4.2");
-
-  function HideCuratorialUnitClone() {
-    $('#removeLink').hide();
-    $('#cloneCuratorialUnit').hide();
-  }
-  
-  function GetCuratorialUnits() {
-    var curatorialUnits = new Array();
-    <#if (eml.jgtiCuratorialUnits ? size > 0)>
-      <@s.iterator value="eml.jgtiCuratorialUnits" status="stat">     
-         curatorialUnits[${stat.index}] = new CuratorialUnit()
-          .rangeStart("<@s.property value="rangeStart"/>")
-          .rangeEnd("<@s.property value="rangeEnd"/>")
-          .rangeMean("<@s.property value="rangeMean"/>")
-          .unitType("<@s.property value="unitType"/>")
-          .uncertaintyMeasure("<@s.property value="uncertaintyMeasure"/>")
-          .type("<@s.property value="type"/>");
-      </@s.iterator>
-    </#if>
-    return curatorialUnits;
-  }
-
-  function OnLoad() {  
-    HideCuratorialUnitClone();
-    var curatorialUnitPanel = new CuratorialUnitPanel();
-    var size = curatorialUnitPanel.size();
-    var curatorialUnitWidget;
-    $('#plus').click(function() {
-      curatorialUnitPanel.add(new CuratorialUnitWidget());
-    });
-    var curatorialUnits = GetCuratorialUnits();
-    for (curatorialUnit in curatorialUnits) {
-      curatorialUnitWidget = new CuratorialUnitWidget(curatorialUnits[curatorialUnit]);
-      curatorialUnitPanel.add(curatorialUnitWidget);
-    }
-  }
-
-  google.setOnLoadCallback(OnLoad);
-
-//]]>
-
-  </script>  
-</head>
-
-<div class="break10"></div>
-<p class="explMt"><@s.text name='metadata.description.collections'/></p>
-<@s.form id="emlForm" action="collections" enctype="multipart/form-data" method="post">
-  <fieldset>
-    <@s.hidden name="resourceId" value="${(resource.id)!}"/>
-    <@s.hidden name="resourceType" value="${(resourceType)!}"/>
-    <@s.hidden name="guid" value="${(resource.guid)!}"/>
-    <@s.hidden name="nextPage" value="physicalData"/>
-    <@s.hidden name="method" value="collections"/>
-
+<h1><@s.text name='manage.metadata.collections.title'/>: <em>${ms.resource.title!ms.resource.shortname}</em></h1>
+<@s.text name='manage.metadata.collections.intro'/>
+<form class="topForm" action="metadata-${section}.do" method="post"> 
     <div class="newline"></div>
     <div>
       <div id="collectionNameDiv" class="leftxhalf">
@@ -182,9 +109,9 @@
     <div class="newline"></div>
     <div class="newline"></div>
     <div class="newline"></div>    
-    <div class="breakLeftButtons">
-      <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
-      <@s.submit cssClass="button" key="button.save" name="next" theme="simple"/>
-    </div>
-  </fieldset>
-</@s.form>
+<div class="buttons">
+  <@s.submit name="save" key="button.save" />
+  <@s.submit name="cancel" key="button.cancel" />
+</div>
+</form>
+<#include "/WEB-INF/pages/inc/footer.ftl">
