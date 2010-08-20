@@ -15,107 +15,105 @@
  * the License.
  */
 -->
-<head>
-<title><@s.text name="metadata.heading.citations"/></title>
-<meta name="resource" content="${resource.title!}"/>
-<meta name="menu" content="ManagerMenu"/>
-<meta name="submenu" content="manage_resource"/>  
-<meta name="heading" content="<@s.text name='metadata.heading.citations'/>"/> 
-
-<script
-  src="http://www.google.com/jsapi?key=ABQIAAAAQmTfPsuZgXDEr012HM6trBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQTBMMPM0apn-CWBZ8nUq7oUL6nMQ"
-  type="text/javascript">
+<#include "/WEB-INF/pages/inc/header.ftl">
+<title><@s.text name='manage.metadata.citations.title'/></title>
+<script type="text/javascript">
+$(document).ready(function(){
+	var	itemsCount=-1;
+	calcNumberOfItems();
+	
+	function calcNumberOfItems(){
+		var lastItem = $("#items .item:last-child").attr("id");
+		if(lastItem != undefined)
+			itemsCount=parseInt(lastItem.split("-")[1]);
+		else
+			itemsCount=-1;
+	}
+	
+	$("#plus").click(function(event) {
+		event.preventDefault();
+		// to add more items, clone the first one and change it's attributes
+		var newItem=$('#baseItem').clone();
+		newItem.hide();
+		newItem.appendTo('#items').slideDown('slow');
+		setItemIndex(newItem, ++itemsCount);
+	});
+		
+	$(".removeLink").click(function(event) {
+		removeItem(event);
+	});
+		
+	function removeItem(event){
+		event.preventDefault();
+		var $target = $(event.target);
+		$('#item-'+$target.attr("id").split("-")[1]).slideUp('slow', function() { 
+			$(this).remove();
+			$("#items .item").each(function(index) { 
+					setItemIndex($(this), index);
+				});
+			calcNumberOfItems();
+			});
+	}
+	
+	function setItemIndex(item, index){
+		item.attr("id","item-"+index);
+		$("#item-"+index+" .removeLink").attr("id", "removeLink-"+index);
+		$("#removeLink-"+index).click(function(event) {
+			removeItem(event);
+		});	
+		<#if "${section}"=="citations">
+			$("#item-"+index+" input").attr("id","eml.bibliographicCitationSet.bibliographicCitations["+index+"]");
+			$("#item-"+index+" input").attr("name","eml.bibliographicCitationSet.bibliographicCitations["+index+"]");
+			$("#item-"+index+" label").attr("for","eml.bibliographicCitationSet.bibliographicCitations["+index+"]");
+		</#if>
+		
+	}
+		
+});
 </script>
+<#assign sideMenuEml=true />
 
-<script 
-  src="<@s.url value='/scripts/dto.js'/>"
-  type="text/javascript">
-</script>
-
-<script 
-  src="<@s.url value='/scripts/widgets.js'/>"
-  type="text/javascript">
-</script>
-
-<script
-  language="Javascript"
-  type="text/javascript">
-
-//<![CDATA[  
-
-google.load("jquery", "1.4.2");
-
-function GetCitations() {
-  var citations = new Array();
-  <#if (eml.bibliographicCitationSet.bibliographicCitations ? size > 0)>
-    <@s.iterator value="eml.bibliographicCitationSet.bibliographicCitations" status="stat">     
-      citations[${stat.index}] = "<@s.property value="toString()"/>";
-    </@s.iterator>
-  </#if>
-  return citations;
-}
-
-function OnModuleLoaded() {
-  $('#cloneCitation').hide();
-  var citationPanel = new CitationPanel();
-  $('#addCitationLink').click(function() {
-    citationPanel.add(new CitationWidget());
-  });
-  var citations = GetCitations();		
-  for (c in citations) {		
-    citationPanel.add(new CitationWidget(citations[c]));		
-  } 
-}
-
-google.setOnLoadCallback(OnModuleLoaded);
-
-//]]>
-
-</script>  
-</head>
-<p class="explMt"><@s.text name='metadata.description.citations'/></p>
-<@s.form id="emlForm" action="citations" enctype="multipart/form-data" 
-  method="post">  
-<fieldset>
-<@s.hidden name="resourceId" value="${(resource.id)!}"/>
-<@s.hidden name="resourceType" value="${(resourceType)!}"/>
-<@s.hidden name="guid" value="${(resource.guid)!}"/>
-<@s.hidden name="nextPage" value="collections"/>
-<@s.hidden name="method" value="citations"/>
-
+<#include "/WEB-INF/pages/inc/menu.ftl">
+<#include "/WEB-INF/pages/macros/forms.ftl"/>
+<h1><@s.text name='manage.metadata.citations.title'/>: <em>${ms.resource.title!ms.resource.shortname}</em></h1>
+<@s.text name='manage.metadata.citations.intro'/>
+<form class="topForm" action="metadata-${section}.do" method="post"> 
 <div class="newline"></div>
 <div>
-  <@s.textfield id="citation" key="eml.citation"  cssClass="text xlarge"/>
+  <@input name="eml.citation" />
 </div>
-<h2 class="explMt"><@s.text name="metadata.heading.citations.bibliography"/></h2>
-<div id="citationsPanel" class="newline">
-  <div id="cloneCitation">
-    <div id="separator" class="horizontal_dotted_line_large_foo"></div>
-    <div class="newline"></div>
-    <div class="right">
-      <a id="removeLink" href="" onclick="return false;">[ <@s.text name='metadata.removethis'/> <@s.text name='metadata.heading.citation'/> ]</a>
+<div id="separator" class="horizontal_dotted_line_large_foo"></div>
+<h2><@s.text name="manage.metadata.citations.bibliography"/></h2>
+
+<div id="items">
+<#assign next_agent_index=0 />
+<#list eml.bibliographicCitationSet.bibliographicCitations as agent>
+	<#assign next_agent_index=agent_index+1>
+	<div id="item-${agent_index}" class="item">
+	<div class="right">
+      <a id="removeLink-${agent_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.citations.item'/> ]</a>
     </div>
-    <div class="newline"></div>
-    <div>
-      <@s.textfield id="citation" key="" label="Citation" cssClass="text xlarge"/>
-    </div>
-    <div class="newline"></div>
-    <div class="newline"></div>
-    <div class="newline"></div>
-    <div class="newline"></div>
-  </div>
-</div>
-<div class="left">
-  <a id="addCitationLink" href="" onclick="return false;"><@s.text name='metadata.addnew'/> <@s.text name='metadata.heading.citations'/></a>
-</div>
-<div class="newline"></div>
-<div class="newline"></div>
-<div class="newline"></div>    
-<div class="breakLeftButtons">
-  <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
-  <@s.submit cssClass="button" key="button.save" name="next" theme="simple"/>
+	<@input name="eml.bibliographicCitationSet.bibliographicCitations[${agent_index}]" i18nkey="eml.bibliographicCitationSet.bibliographicCitations" size=40/>
+  	<div class="newline"></div>
+	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
+	<div class="newline"></div>
+  	</div>
+</#list>
 </div>
 
-</fieldset>
-</@s.form>
-  
+  <a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.citations.item'/></a>
+<div class="buttons">
+  <@s.submit name="save" key="button.save" />
+  <@s.submit name="cancel" key="button.cancel" />
+</div>
+</form>
+<div id="baseItem" class="item" style="display:none;">
+	<div class="right">
+      <a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.citations.item'/> ]</a>
+    </div>
+	<@input name="eml.bibliographicCitationSet.bibliographicCitations[0]" i18nkey="eml.bibliographicCitationSet.bibliographicCitations"  value="" size=40/>
+  	<div class="newline"></div>
+	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
+	<div class="newline"></div>
+</div>
+<#include "/WEB-INF/pages/inc/footer.ftl">
