@@ -82,9 +82,11 @@ $(document).ready(function(){
 <#list eml.associatedParties as agent>
 	<#assign next_agent_index=agent_index+1>
 	<div id="item-${agent_index}" class="item">
+	<div class="newline"></div>
 	<div class="right">
       <a id="removeLink-${agent_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.parties.item'/> ]</a>
     </div>
+    <div class="newline"></div>
 	<div class="2col">
   		<@input name="eml.associatedParties[${agent_index}].firstName" i18nkey="eml.associatedParties.firstName" size=40/>
   		<@input name="eml.associatedParties[${agent_index}].lastName" i18nkey="eml.associatedParties.lastName" size=40/>
@@ -106,10 +108,11 @@ $(document).ready(function(){
   </div>	
 </form>
 <div id="baseItem" class="item" style="display:none;">
+	<div class="newline"></div>
 	<div class="right">
       <a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.parties.item'/> ]</a>
     </div>
-    </br>
+    <div class="newline"></div>
 	<div class="2col">
   		<@input name="firstName" i18nkey="eml.associatedParties.firstName" value="" size=40/>
   		<@input name="lastName" i18nkey="eml.associatedParties.lastName"  value="" size=40/>
