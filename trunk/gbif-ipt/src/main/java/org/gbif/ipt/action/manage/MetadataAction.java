@@ -101,7 +101,11 @@ public class MetadataAction extends POSTAction {
     if (idx < 0 || idx == sections.size()) {
       idx = 0;
     }
-    next = sections.get(idx + 1);
+    if(idx + 1 < sections.size()){
+    	next = sections.get(idx + 1);
+    }else{
+    	next = sections.get(0);
+    }
     resourceTypes = vocabManager.getI18nVocab(Constants.VOCAB_URI_RESOURCE_TYPE, getLocaleLanguage());
     languages = vocabManager.getI18nVocab(Constants.VOCAB_URI_LANGUAGE, getLocaleLanguage());
     
@@ -120,6 +124,9 @@ public class MetadataAction extends POSTAction {
     	}
     	if (section.equals("physical")) {
     	    ms.getEml().getPhysicalData().clear();
+    	}
+    	if (section.equals("keywords")) {
+    	    ms.getEml().getKeywords().clear();
     	}
     	 
     }
