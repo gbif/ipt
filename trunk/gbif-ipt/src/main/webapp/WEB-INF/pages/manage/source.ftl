@@ -25,7 +25,7 @@ $(document).ready(function(){
 	  	<@input name="source.name" help="i18n" disabled=id?has_content/>
 		<div class="details">
 			<table>
-			  	<tr><th>Readable</th><td>${source.readable?string} <#if !source.readable><img src="${baseURL}/images/warning.gif" /> ${problem!}</#if></td></tr>
+			  	<tr><th>Readable</th><td><img src="${baseURL}/images/<#if source.readable>good.gif" /><#else>bad.gif" /> ${problem!}</#if></td></tr>
 			  	<tr><th>Columns</th><td>${source.columns!}</td></tr>
 		  	  	<#if source.fieldsTerminatedBy?exists>
 			  	<tr><th>File</th><td>${(source.file.getAbsolutePath())!}</td></tr>
@@ -41,12 +41,12 @@ $(document).ready(function(){
   	<#if source.fieldsTerminatedBy?exists>
 	  	<#-- only for file sources -->
 	  <div class="half">
-	  	<@input name="fileSource.fieldsTerminatedBy" help="i18n" helpOptions={"TAB":"\t","Comma":",","Semicolon":";","Pipe","|"}/>
-	  	<@input name="fileSource.fieldsEnclosedBy" help="i18n" helpOptions={"Double Quote":"&quot;","Single Quote":"'"}/>
+	  	<@input name="fileSource.fieldsTerminatedBy" help="i18n" helpOptions={"\t":"Tabulator",",":"Comma",";":"Semicolon","|":"Pipe"}/>
+	  	<@input name="fileSource.fieldsEnclosedBy" help="i18n" helpOptions={"&quot;":"Double Quote","'":"Single Quote"}/>
   	  </div>
 	  <div class="half">
-	  	<@input name="fileSource.linesTerminatedBy" help="i18n" helpOptions={"Windows":"\r\n","Unix":"\n"}/>
-	  	<@input name="fileSource.ignoreHeaderLines" help="i18n" helpOptions={"None":0,"Single Header row":1}/>
+	  	<@input name="fileSource.linesTerminatedBy" help="i18n" helpOptions={"\r\n":"Windows","\n":"Unix"}/>
+	  	<@input name="fileSource.ignoreHeaderLines" help="i18n" helpOptions={"0":"None","1":"Single Header row"}/>
   	  </div>
   	<#else>
 	  	<#-- only for sql sources -->

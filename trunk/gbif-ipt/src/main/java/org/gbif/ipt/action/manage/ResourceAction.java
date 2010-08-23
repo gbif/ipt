@@ -1,11 +1,14 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.action.POSTAction;
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.ResourceConfiguration;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.manage.ResourceManager;
 
 import com.google.inject.Inject;
+
+import java.io.IOException;
 
 public class ResourceAction extends POSTAction {
   @Inject
@@ -18,8 +21,16 @@ public class ResourceAction extends POSTAction {
 
   @Override
   public String delete() {
-    // TODO Auto-generated method stub
-    return super.delete();
+    try {
+      Resource res = ms.getResource();
+      resourceManager.delete(res);
+      addActionMessage("Deleted " + res);
+      return HOME;
+    } catch (IOException e) {
+      log.error("Cannot delete resource", e);
+      addActionError("Cannot delete resource: " + e.getMessage());
+    }
+    return SUCCESS;
   }
 
   public ResourceManagerSession getMs() {

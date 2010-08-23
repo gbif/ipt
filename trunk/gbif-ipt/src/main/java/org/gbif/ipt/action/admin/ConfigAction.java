@@ -27,7 +27,6 @@ public class ConfigAction extends POSTAction {
   // http request submitted
   protected String baseUrl;
   protected Boolean debug;
-  protected String googleMapsKey;
   protected Boolean analyticsGbif;
   protected String analyticsKey;
 
@@ -45,10 +44,6 @@ public class ConfigAction extends POSTAction {
 
   public Boolean getDebug() {
     return cfg.debug();
-  }
-
-  public String getGoogleMapsKey() {
-    return cfg.getGoogleMapsKey();
   }
 
   /**
@@ -85,16 +80,6 @@ public class ConfigAction extends POSTAction {
         configManager.setDebugMode(debug);
       } catch (InvalidConfigException e) {
         addActionError(getText("admin.config.debug.error"));
-        return INPUT;
-      }
-    }
-
-    // googleMapsKey
-    if (googleMapsKey != null) {
-      try {
-        configManager.setGoogleMapsKey(googleMapsKey);
-      } catch (InvalidConfigException e) {
-        addActionError(getText("admin.config.googleMapsKey.error"));
         return INPUT;
       }
     }
@@ -145,10 +130,6 @@ public class ConfigAction extends POSTAction {
 
   public void setDebug(Boolean debug) {
     this.debug = debug;
-  }
-
-  public void setGoogleMapsKey(String googleMapsKey) {
-    this.googleMapsKey = googleMapsKey;
   }
 
 }

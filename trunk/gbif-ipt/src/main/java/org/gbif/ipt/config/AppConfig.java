@@ -33,7 +33,6 @@ public class AppConfig {
   private static final String CLASSPATH_PROPFILE = "/application.properties";
   public static final String BASEURL = "ipt.baseURL";
   public static final String DEBUG = "debug";
-  public static final String GMAPS_KEY = "google.maps.key";
   public static final String ANALYTICS_GBIF = "analytics.gbif";
   public static final String ANALYTICS_KEY = "analytics.key";
   private static final String PRODUCTION_TYPE_LOCKFILE = ".gbifreg";;
@@ -75,10 +74,6 @@ public class AppConfig {
     return base;
   }
 
-  public String getGoogleMapsKey() {
-    return properties.getProperty(GMAPS_KEY);
-  }
-
   public String getProperty(String key) {
     return properties.getProperty(key);
   }
@@ -89,6 +84,13 @@ public class AppConfig {
 
   private File getRegistryTypeLockFile() {
     return dataDir.configFile(PRODUCTION_TYPE_LOCKFILE);
+  }
+
+  public String getRegistryUrl() {
+    if (REGISTRY_TYPE.PRODUCTION == type) {
+      return getProperty("dev.registrydev.url");
+    }
+    return getProperty("dev.registry.url");
   }
 
   public String getVersion() {
