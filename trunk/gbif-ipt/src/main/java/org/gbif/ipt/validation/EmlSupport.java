@@ -19,6 +19,8 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.TaxonomicCoverage;
+import org.gbif.metadata.eml.TemporalCoverage;
+import org.gbif.metadata.eml.TemporalCoverageType;
 
 import com.google.inject.internal.Nullable;
 
@@ -92,6 +94,34 @@ public class EmlSupport extends BaseValidator {
     		  cont++;
     	  }
       } else if (part == null || part.equalsIgnoreCase("tempcoverage")) {
+    	  int cont = 0;
+    	  for(TemporalCoverage tc : eml.getTemporalCoverages()) {
+    		  
+    		  if(tc.getType().equals(TemporalCoverageType.SINGLE_DATE)) {
+    			  if(!exists(tc.getStartDate())) {
+    				  action.addFieldError("eml.temporalCoverages["+cont+"].startDate", action.getText("validation.required"));
+    			  }
+    		  }
+    		  if(tc.getType().equals(TemporalCoverageType.DATE_RANGE)) {
+    			  if(!exists(tc.getStartDate())) {
+    				  action.addFieldError("eml.temporalCoverages["+cont+"].startDate", action.getText("validation.required"));
+    			  }
+    			  if(!exists(tc.getEndDate())) {
+    				  action.addFieldError("eml.temporalCoverages["+cont+"].endDate", action.getText("validation.required"));    				  
+    			  }
+    		  }
+    		  if(tc.getType().equals(TemporalCoverageType.FORMATION_PERIOD)) {
+    			  if(!exists(tc.getFormationPeriod())) {
+    				  action.addFieldError("eml.temporalCoverages["+cont+"].formationPeriod", action.getText("validation.required"));
+    			  }
+    		  }
+    		  if(tc.getType().equals(TemporalCoverageType.LIVING_TIME_PERIOD)) {
+    			  if(!exists(tc.getLivingTimePeriod())) {
+    				  action.addFieldError("eml.temporalCoverages["+cont+"].livingTimePeriod", action.getText("validation.required"));
+    			  }
+    		  }    		  
+    		  cont++;
+    	  }
       } else if (part == null || part.equalsIgnoreCase("project")) {
       } else if (part == null || part.equalsIgnoreCase("methods")) {
       } else if (part == null || part.equalsIgnoreCase("citations")) {
