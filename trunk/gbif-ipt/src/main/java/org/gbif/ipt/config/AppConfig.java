@@ -88,9 +88,9 @@ public class AppConfig {
 
   public String getRegistryUrl() {
     if (REGISTRY_TYPE.PRODUCTION == type) {
-      return getProperty("dev.registrydev.url");
+      return getProperty("dev.registry.url");
     }
-    return getProperty("dev.registry.url");
+    return getProperty("dev.registrydev.url");
   }
 
   public String getVersion() {
