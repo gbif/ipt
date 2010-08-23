@@ -146,8 +146,7 @@
 				});
 				calculateCount();
 			} );
-		}
-		
+		}	
 		
 	});
 </script>
@@ -214,11 +213,7 @@
 		<@s.submit name="save" key="button.save"/>
 		<@s.submit name="cancel" key="button.cancel"/>
 	</div>
-	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
-	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
-	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
-	<div class="newline"></div>
-	<div class="newline"></div>
+	
 	
 	
 </form>

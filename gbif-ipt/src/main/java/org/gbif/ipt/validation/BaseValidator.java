@@ -15,6 +15,7 @@ package org.gbif.ipt.validation;
 
 import com.opensymphony.xwork2.validator.validators.EmailValidator;
 
+import java.util.Date;
 import java.util.regex.Pattern;
 
 /**
@@ -26,6 +27,10 @@ public abstract class BaseValidator {
 
   protected boolean exists(String x) {
     return exists(x, 2);
+  }
+  
+  protected boolean exists(Date d) {
+	 return d != null;
   }
 
   protected boolean exists(String x, int minLength) {
