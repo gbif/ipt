@@ -28,23 +28,21 @@
 <form class="topForm" action="metadata-${section}.do" method="post"> 
 
 <div id="items">
-<#assign next_agent_index=0 />
-<#list eml.physicalData as agent>
-	<#assign next_agent_index=agent_index+1>
-	<div id="item-${agent_index}" class="item">
+<#list eml.physicalData as item>
+	<div id="item-${item_index}" class="item">
 	<div class="newline"></div>
 	<div class="right">
-      <a id="removeLink-${agent_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.physical.item'/> ]</a>
+      <a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.physical.item'/> ]</a>
     </div>
     <div class="newline"></div>
     <div class="half">
-		<@input name="eml.physicalData[${agent_index}].name" i18nkey="eml.physicalData.name" size=40/>
-		<@input name="eml.physicalData[${agent_index}].charset" i18nkey="eml.physicalData.charset" size=40/>
+		<@input name="eml.physicalData[${item_index}].name" i18nkey="eml.physicalData.name" size=40/>
+		<@input name="eml.physicalData[${item_index}].charset" i18nkey="eml.physicalData.charset" size=40/>
 	</div>	
-	<@input name="eml.physicalData[${agent_index}].distributionUrl" i18nkey="eml.physicalData.distributionUrl" size=40/>
+	<@input name="eml.physicalData[${item_index}].distributionUrl" i18nkey="eml.physicalData.distributionUrl" size=40/>
   	<div class="half">
-		<@input name="eml.physicalData[${agent_index}].format" i18nkey="eml.physicalData.format" size=40/>
-		<@input name="eml.physicalData[${agent_index}].formatVersion" i18nkey="eml.physicalData.formatVersion" size=40/>
+		<@input name="eml.physicalData[${item_index}].format" i18nkey="eml.physicalData.format" size=40/>
+		<@input name="eml.physicalData[${item_index}].formatVersion" i18nkey="eml.physicalData.formatVersion" size=40/>
 	</div>
   	<div class="newline"></div>
 	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
