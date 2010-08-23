@@ -121,6 +121,9 @@ public class MetadataAction extends POSTAction {
     	if (section.equals("taxcoverage")) {
     	    ms.getEml().getTaxonomicCoverages().clear();
     	}
+    	if (section.equals("tempcoverage")) {
+    		ms.getEml().getTemporalCoverages().clear();
+    	}
     	if (section.equals("citations")) {
     	    ms.getEml().getBibliographicCitationSet().getBibliographicCitations().clear();
     	}
