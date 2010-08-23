@@ -9,7 +9,7 @@
 
 
 <#include "/WEB-INF/pages/macros/forms.ftl">
-<@s.form cssClass="topForm" action="setup2.do" method="post">
+<@s.form cssClass="topForm half" action="setup2.do" method="post">
 
 
 	<@input name="user.email" />  

@@ -158,10 +158,6 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     cfg.setProperty(AppConfig.ANALYTICS_GBIF, Boolean.toString(useGbifAnalytics));
   }
 
-  public void setGoogleMapsKey(String key) throws InvalidConfigException {
-    cfg.setProperty(AppConfig.GMAPS_KEY, StringUtils.trimToEmpty(key));
-  }
-
   public boolean setupComplete() {
     if (dataDir.isConfigured()) {
       if (cfg.getRegistryType() != null && !userManager.list(Role.Admin).isEmpty()) {

@@ -241,5 +241,10 @@ By default a resource is private to the managers. Once published to GBIF you can
   </div>
 </div>
 
+<div>
+  <form action='resource.do' method='post'>
+   	<@s.submit cssClass="confirm" name="delete" key="button.delete"/>
+  </form>
+</div>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
