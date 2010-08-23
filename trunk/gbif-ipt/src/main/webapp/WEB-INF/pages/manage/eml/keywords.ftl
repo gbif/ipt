@@ -28,17 +28,15 @@
 <form class="topForm" action="metadata-${section}.do" method="post"> 
 
 <div id="items">
-<#assign next_agent_index=0 />
-<#list eml.keywords as agent>
-	<#assign next_agent_index=agent_index+1>
-	<div id="item-${agent_index}" class="item">
+<#list eml.keywords as item>
+	<div id="item-${item_index}" class="item">
 	<div class="newline"></div>
 	<div class="right">
-      <a id="removeLink-${agent_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.keywords.item'/> ]</a>
+      <a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.keywords.item'/> ]</a>
     </div>
     <div class="newline"></div>
-	<@input name="eml.keywords[${agent_index}].keywordThesaurus" i18nkey="eml.keywords.keywordThesaurus" size=40/>
-	<@text name="eml.keywords[${agent_index}].keywordsString" i18nkey="eml.keywords.keywordsString"/>
+	<@input name="eml.keywords[${item_index}].keywordThesaurus" i18nkey="eml.keywords.keywordThesaurus" size=40/>
+	<@text name="eml.keywords[${item_index}].keywordsString" i18nkey="eml.keywords.keywordsString"/>
   	<div class="newline"></div>
 	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
 	<div class="newline"></div>

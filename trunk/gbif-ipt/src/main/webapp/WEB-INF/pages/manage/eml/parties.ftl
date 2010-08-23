@@ -8,22 +8,20 @@
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <form class="topForm" action="metadata-${section}.do" method="post">
 <div id="items">
-<#assign next_agent_index=0 />
-<#list eml.associatedParties as agent>
-	<#assign next_agent_index=agent_index+1>
-	<div id="item-${agent_index}" class="item">
+<#list eml.associatedParties as item>
+	<div id="item-${item_index}" class="item">
 	<div class="newline"></div>
 	<div class="right">
-      <a id="removeLink-${agent_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.parties.item'/> ]</a>
+      <a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.parties.item'/> ]</a>
     </div>
     <div class="newline"></div>
 	<div class="2col">
-  		<@input name="eml.associatedParties[${agent_index}].firstName" i18nkey="eml.associatedParties.firstName" size=40/>
-  		<@input name="eml.associatedParties[${agent_index}].lastName" i18nkey="eml.associatedParties.lastName" size=40/>
+  		<@input name="eml.associatedParties[${item_index}].firstName" i18nkey="eml.associatedParties.firstName" size=40/>
+  		<@input name="eml.associatedParties[${item_index}].lastName" i18nkey="eml.associatedParties.lastName" size=40/>
   	</div>
 	<div class="2col">
-  		<@input name="eml.associatedParties[${agent_index}].phone" i18nkey="eml.associatedParties.phone" size=40/>
-  		<@select name="eml.associatedParties[${agent_index}].role" i18nkey="eml.associatedParties.role" value="${eml.associatedParties[agent_index].role}" options=roleOptions />
+  		<@input name="eml.associatedParties[${item_index}].phone" i18nkey="eml.associatedParties.phone" size=40/>
+  		<@select name="eml.associatedParties[${item_index}].role" i18nkey="eml.associatedParties.role" value="${eml.associatedParties[item_index].role}" options=roleOptions />
   	</div>
   	<div class="newline"></div>
 	<div class="horizontal_dotted_line_large_foo" id="separator"></div>

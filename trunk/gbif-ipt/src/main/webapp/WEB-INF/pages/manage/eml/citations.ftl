@@ -33,16 +33,14 @@
 <div id="separator" class="horizontal_dotted_line_large_foo"></div>
 
 <div id="items">
-<#assign next_agent_index=0 />
-<#list eml.bibliographicCitationSet.bibliographicCitations as agent>
-	<#assign next_agent_index=agent_index+1>
-	<div id="item-${agent_index}" class="item">
+<#list eml.bibliographicCitationSet.bibliographicCitations as item>
+	<div id="item-${item_index}" class="item">
 	<div class="newline"></div>
 	<div class="right">
-      <a id="removeLink-${agent_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.citations.item'/> ]</a>
+      <a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.citations.item'/> ]</a>
     </div>
     <div class="newline"></div>
-	<@input name="eml.bibliographicCitationSet.bibliographicCitations[${agent_index}]" i18nkey="eml.bibliographicCitationSet.bibliographicCitations" size=40/>
+	<@input name="eml.bibliographicCitationSet.bibliographicCitations[${item_index}]" i18nkey="eml.bibliographicCitationSet.bibliographicCitations" size=40/>
   	<div class="newline"></div>
 	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
 	<div class="newline"></div>

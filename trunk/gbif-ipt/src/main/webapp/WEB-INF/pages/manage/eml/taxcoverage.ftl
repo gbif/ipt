@@ -1,63 +1,5 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
-<script type="text/javascript">
-	var count = new Number(0);
-	// a function called when adding new taxonomic coverages
-	// an element is cloned and the IDs reset etc etc
-	$(document).ready(function() {
-		calculateCount();
-		function calculateCount() {
-			var lastChild = $("#taxonomies .taxonom:last-child").attr("id");
-			if(lastChild != undefined) {
-				count = parseInt(lastChild.split("-")[1])+1;
-			}
-		}
-		$("#plus").click(function(event) {
-			event.preventDefault();
-			var idNewForm = 'taxonomic-'+count;		
-			var theNewForm = $("#baseTaxon").clone().attr('id', idNewForm).css('visibility', '');
-			$("#taxonomies").append(theNewForm);			
-			
-			updateFields(idNewForm, count);	
-
-			$("#taxonomic-"+count).hide().slideDown("slow");						
-			count++;
-		});			
-		$(".removeLink").click(function(event) {
-			event.preventDefault();
-			removeTaxonomic(event);			
-		});		
-		// a function that change the atributes (id, name) of the fields and the labels of the specified form.
-		function updateFields(divId, newIndex) {
-			$("#"+divId+" [id$='description']").attr("id", "eml.taxonomicCoverages["+newIndex+"].description").attr("name", function() {return $(this).attr("id");});
-			$("#"+divId+" [for$='description']").attr("for", "eml.taxonomicCoverages["+newIndex+"].description");
-			$("#"+divId+" [id$='scientificName']").attr("id", "eml.taxonomicCoverages["+newIndex+"].taxonKeyword.scientificName").attr("name", function() {return $(this).attr("id");});
-			$("#"+divId+" [for$='scientificName']").attr("for", "eml.taxonomicCoverages["+newIndex+"].taxonKeyword.scientificName");
-			$("#"+divId+" [id$='commonName']").attr("id", "eml.taxonomicCoverages["+newIndex+"].taxonKeyword.commonName").attr("name", function() {return $(this).attr("id");});
-			$("#"+divId+" [for$='commonName']").attr("for", "eml.taxonomicCoverages["+newIndex+"].taxonKeyword.commonName");
-			$("#"+divId+" [id$='rank']").attr("id", "eml.taxonomicCoverages["+newIndex+"].taxonKeyword.rank").attr("name", function() {return $(this).attr("id");});
-			$("#"+divId+" [for$='rank']").attr("for", "eml.taxonomicCoverages["+newIndex+"].taxonKeyword.rank");
-			$("#"+divId+" .removeLink").attr("id", "removeLink-"+newIndex).click(
-				function(event){
-					event.preventDefault();
-					removeTaxonomic(event);	
-				}
-			);
-		}				
-		function removeTaxonomic(event) {
-			var $target = $(event.target);
-			var index=$target.attr("id").split("-")[1];
-			$('#taxonomic-'+index).slideUp("slow", function() { 
-				// removing the form in the html.
-				$(this).remove();
-				$("#taxonomies .taxonom").each(function(index) {
-					updateFields($(this).attr("id"), index);
-					$(this).attr("id", "taxonomic-"+index);
-				});
-				calculateCount();
-			});			
-		}
-	});
-</script>
+<#include "/WEB-INF/pages/macros/metadata.ftl"/>
 <title><@s.text name='manage.metadata.taxcoverage.title'/></title>
 <#assign sideMenuEml=true />
 <#include "/WEB-INF/pages/inc/menu.ftl">
@@ -65,21 +7,21 @@
 <p><@s.text name='manage.metadata.taxcoverage.intro'/></p>
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <form class="topForm" action="metadata-${section}.do" method="post">
-	<div id="taxonomies">
+	<div id="items">
 		<!-- Adding the taxonomic coverages that already exists on the file -->	
 		<#assign next_agent_index=0 />
-		<#list eml.taxonomicCoverages as taxonomicCoverage>	
-			<div id='taxonomic-${taxonomicCoverage_index}' class="taxonom">
+		<#list eml.taxonomicCoverages as item>	
+			<div id='item-${item_index}' class="item">
 				<div class="right">
-    				<a id="removeLink-${taxonomicCoverage_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.item'/> ]</a>
+    				<a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.item'/> ]</a>
   				</div>
 				<div class="newline"></div>
-				<@text  i18nkey="eml.taxonomicCoverage.description" name="eml.taxonomicCoverages[${taxonomicCoverage_index}].description" />
+				<@text  i18nkey="eml.taxonomicCoverage.description" name="eml.taxonomicCoverages[${item_index}].description" />
 				<div class="half">
-           			<@input i18nkey="eml.taxonomicCoverage.scientificName" name="eml.taxonomicCoverages[${taxonomicCoverage_index}].taxonKeyword.scientificName" />
-           			<@input i18nkey="eml.taxonomicCoverage.commonName" name="eml.taxonomicCoverages[${taxonomicCoverage_index}].taxonKeyword.commonName" />
+           			<@input i18nkey="eml.taxonomicCoverage.scientificName" name="eml.taxonomicCoverages[${item_index}].taxonKeyword.scientificName" />
+           			<@input i18nkey="eml.taxonomicCoverage.commonName" name="eml.taxonomicCoverages[${item_index}].taxonKeyword.commonName" />
         		</div>     	
-           		<@select i18nkey="eml.taxonomicCoverage.rank"  name="eml.taxonomicCoverages[${taxonomicCoverage_index}].taxonKeyword.rank" options=ranks value="${eml.taxonomicCoverages[taxonomicCoverage_index].taxonKeyword.rank}" />
+           		<@select i18nkey="eml.taxonomicCoverage.rank"  name="eml.taxonomicCoverages[${item_index}].taxonKeyword.rank" options=ranks value="${eml.taxonomicCoverages[item_index].taxonKeyword.rank}" />
    	  			<div class="newline"></div>			
 				<div class="horizontal_dotted_line_large_foo" id="separator"></div>
 				<div class="newline"></div>
@@ -95,7 +37,7 @@
 	</div>
 </form>
 <!-- The base form that is going to be cloned every time an user clic in the 'add' link -->
-<div id='baseTaxon' class="taxonom" style="visibility:hidden">
+<div id='baseItem' class="item" style="display:none">
 	<div class="right">
 		<a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.item'/> ]</a>
 	</div>
