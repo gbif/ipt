@@ -19,6 +19,17 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name='manage.metadata.collections.title'/></title>
 <#include "/WEB-INF/pages/macros/metadata.ftl"/>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("[id^='type-']").change(function(event) {
+			var index=$(this).attr("id").split("-")[1];
+			if($(this).attr("value")=="COUNT_RANGE"){}
+			else{}
+
+			
+	});
+});
+</script>
 <#assign sideMenuEml=true />
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
@@ -37,21 +48,21 @@
     </div>
 
 <div class="newline"></div>
-<h2 class="explMt"><@s.text name="manage.metadata.collections.curatorialUnits.title"/></h2>
-<p class="explMt"><@s.text name='manage.metadata.collections.curatorialUnits.intro'/></p>
+<h2><@s.text name="manage.metadata.collections.curatorialUnits.title"/></h2>
+<p><@s.text name="manage.metadata.collections.curatorialUnits.intro"/></p>
 <div class="newline"></div>
 <div id="separator" class="horizontal_dotted_line_large_foo"></div>
 <div class="newline"></div>
 <div id="items">	
 <#list eml.jgtiCuratorialUnits as item>
+<#assign type="${eml.jgtiCuratorialUnits[item_index].type}"/>
 	<div id="item-${item_index}" class="item">
 		<div class="newline"></div>
 		<div class="right">
      		 <a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.collections.curatorialUnits.item'/> ]</a>
    		 </div>
    		<div class="newline"></div>
-		<#assign type="${eml.jgtiCuratorialUnits[item_index].type}"/>
-    	<@select name="eml.jgtiCuratorialUnits[${item_index}].type" i18nkey="eml.jgtiCuratorialUnits.type" value=type options=JGTICuratorialUnitTypeOptions />
+    	<@select name="type-${item_index}" i18nkey="eml.jgtiCuratorialUnits.type" value=type options=JGTICuratorialUnitTypeOptions />
     	<div class="newline"></div>
     	<div class="half">
     	<div id="subitem-${item_index}" class="subitem">
@@ -66,14 +77,12 @@
     	</div>
     	</div>
     		<@input name="eml.jgtiCuratorialUnits[${item_index}].unitType" i18nkey="eml.jgtiCuratorialUnits.unitType" size=40/>
-    	</div>
+    </div>
 <div class="newline"></div>
 <div id="separator" class="horizontal_dotted_line_large_foo"></div>
 <div class="newline"></div>
 </div>
 </#list>  	
-        <div class="newline"></div>
-        <div class="newline"></div>
 </div>
 <a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.collections.curatorialUnits.item'/></a>
 <div class="newline"></div>
@@ -89,7 +98,7 @@
      		 <a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.parties.item'/> ]</a>
    		 </div>
    		<div class="newline"></div>
-    	<@select name="type" i18nkey="eml.jgtiCuratorialUnits.type" options=JGTICuratorialUnitTypeOptions />
+    	<@select name="type" i18nkey="eml.jgtiCuratorialUnits.type" value="COUNT_RANGE" options=JGTICuratorialUnitTypeOptions />
     	<div class="newline"></div>
     	<div class="half">
     	<div id="subitem" class="subitem">
@@ -104,6 +113,5 @@
 <div id="separator" class="horizontal_dotted_line_large_foo"></div>
 <div class="newline"></div>
 </div>
-
 
 <#include "/WEB-INF/pages/inc/footer.ftl">

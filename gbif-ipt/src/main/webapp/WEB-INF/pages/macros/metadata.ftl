@@ -73,6 +73,7 @@ $(document).ready(function(){
 				return "eml.jgtiCuratorialUnits["+index+"]."+parts[n]; });		
 			$("#item-"+index+" input").attr("name",function() {return $(this).attr("id"); });
 			$("#item-"+index+" select").attr("name",function() {return $(this).attr("id"); });
+			$("#item-"+index+" .subitem").attr("id","subitem-"+index);
 		<#break>
 		<#case "physical">
 			$("#item-"+index+" input").attr("id",function() {
