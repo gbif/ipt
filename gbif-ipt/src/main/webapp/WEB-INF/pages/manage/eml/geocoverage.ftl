@@ -164,7 +164,7 @@
   <@input name="eml.geospatialCoverages[0].boundingCoordinates.max.latitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.max.latitude)!}" i18nkey="eml.geographicCoverage.boundingCoordinates.max.latitude"/>
 </div>
 <div class="newline"></div>
-<@text name="eml.geospatialCoverages[0].description" i18nkey="eml.geographicCoverage.description"/>
+<@text name="eml.geospatialCoverages[0].description" value="${(eml.geospatialCoverages[0].description)!}" i18nkey="eml.geographicCoverage.description"/>
 <div class="buttons">
   <@s.submit name="save" key="button.save" />
   <@s.submit name="cancel" key="button.cancel" />

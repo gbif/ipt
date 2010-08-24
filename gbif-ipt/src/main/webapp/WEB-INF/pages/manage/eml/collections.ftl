@@ -18,8 +18,8 @@
 
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name='manage.metadata.collections.title'/></title>
+<#include "/WEB-INF/pages/macros/metadata.ftl"/>
 <#assign sideMenuEml=true />
- 
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
@@ -27,91 +27,83 @@
 <@s.text name='manage.metadata.collections.intro'/>
 <form class="topForm" action="metadata-${section}.do" method="post"> 
     <div class="newline"></div>
-    <div>
-      <div id="collectionNameDiv" class="leftxhalf">
-        <@s.textfield id="collectionName" key="eml.collectionName" 
-          required="false" cssClass="text xhalf slim"/>
-      </div>
-    <div id="collectionIdDiv" class="leftxhalf">
-      <@s.textfield id="collectionId" key="eml.collectionId" 
-          required="false" cssClass="text xhalf slim"/>
+    <div class="half">
+        <@input name="eml.collectionName" />
+        <@input name="eml.collectionId" />
     </div>
     <div class="newline"></div>
-      <div id="parentCollectionIdDiv" class="leftxhalf">
-      <@s.textfield id="parentCollectionId" key="eml.parentCollectionId" 
-          required="false" cssClass="text xhalf slim"/>
-      </div>
+    <div class="half">
+      <@input name="eml.parentCollectionId" />
     </div>
 
-    <div class="newline"></div>
-    <h2 class="explMt"><@s.text name="metadata.heading.curatorialUnits"/></h2>
-    <p class="explMt"><@s.text name='metadata.description.curatorialUnits'/></p>
-
-    <div id="curatorialUnitPanel" class="newline">
-      <!-- The cloneCuratorialUnit DIV is not attached to the DOM. It's used as a template
-         for cloning CuratorialUnit UI widgets. 
-      -->
-      <div id="cloneCuratorialUnit">
-        <div id="separator" class="horizontal_dotted_line_large_foo"></div>
-        <div class="newline"></div>
-        <div class="right">
-          <a id="removeLink" href="" onclick="return false;">[ <@s.text name='metadata.removethis'/> <@s.text name='metadata.heading.curatorialUnit'/> ]</a>
-        </div>
-        <div class="newline"></div>
-
-        <div class="leftxhalf" id="typeDiv">
-          <@s.select id="type" key="" 
-            label="%{getText('method.type')}"
-            list="curatorialUnitTypeMap.entrySet()" 
-            value="curatorialUnitType.name()" listKey="key"
-            listValue="value" required="true"/>
-        </div>
-        <div class="newline"></div>
-
-        <div>
-          <div class="leftMedium" id="rangeStartDiv">
-            <@s.textfield id="rangeStart" key="" 
-              label="%{getText('jgtiCuratorialUnit.rangeStart')}"
-              required="false" cssClass="text medium"/>
-          </div>
-          <div class="leftMedium" id="rangeEndDiv">
-            <@s.textfield id="rangeEnd" key="" 
-              label="%{getText('jgtiCuratorialUnit.rangeEnd')}" 
-              required="false" cssClass="text medium"/>
-          </div>
-          <div class="leftMedium" id="rangeMeanDiv">
-            <@s.textfield id="rangeMean" key="" 
-              label="%{getText('jgtiCuratorialUnit.rangeMean')}"
-              required="false" cssClass="text medium"/>
-          </div>
-          <div class="leftMedium" id="uncertaintyMeasureDiv">
-            <@s.textfield id="uncertaintyMeasure" key="" 
-              label="%{getText('jgtiCuratorialUnit.uncertaintyMeasure')}" 
-              required="false" cssClass="text medium"/>
-          </div>
-          <div class="leftMedium" id="unitTypeDiv">
-            <@s.textfield id="unitType" key="" 
-              label="%{getText('jgtiCuratorialUnit.unitType')}" 
-              required="false" cssClass="text medium"/>
-          </div>
-        </div>
+<div class="newline"></div>
+<h2 class="explMt"><@s.text name="manage.metadata.collections.curatorialUnits.title"/></h2>
+<p class="explMt"><@s.text name='manage.metadata.collections.curatorialUnits.intro'/></p>
+<div class="newline"></div>
+<div id="separator" class="horizontal_dotted_line_large_foo"></div>
+<div class="newline"></div>
+<div id="items">	
+<#list eml.jgtiCuratorialUnits as item>
+	<div id="item-${item_index}" class="item">
+		<div class="newline"></div>
+		<div class="right">
+     		 <a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.collections.curatorialUnits.item'/> ]</a>
+   		 </div>
+   		<div class="newline"></div>
+		<#assign type="${eml.jgtiCuratorialUnits[item_index].type}"/>
+    	<@select name="eml.jgtiCuratorialUnits[${item_index}].type" i18nkey="eml.jgtiCuratorialUnits.type" value=type options=JGTICuratorialUnitTypeOptions />
+    	<div class="newline"></div>
+    	<div class="half">
+    	<div id="subitem-${item_index}" class="subitem">
+    	<div class="half">
+    		<#if type=="COUNT_RANGE">
+    			<@input name="eml.jgtiCuratorialUnits[${item_index}].rangeStart" i18nkey="eml.jgtiCuratorialUnits.rangeStart" size=40/>
+    			<@input name="eml.jgtiCuratorialUnits[${item_index}].rangeEnd" i18nkey="eml.jgtiCuratorialUnits.rangeEnd" size=40/>
+    		<#elseif type=="COUNT_WITH_UNCERTAINTY">
+				<@input name="eml.jgtiCuratorialUnits[${item_index}].rangeMean" i18nkey="eml.jgtiCuratorialUnits.rangeMean" size=40/>
+				<@input name="eml.jgtiCuratorialUnits[${item_index}].uncertaintyMeasure" i18nkey="eml.jgtiCuratorialUnits.uncertaintyMeasure" size=40/>
+    		</#if>
+    	</div>
+    	</div>
+    		<@input name="eml.jgtiCuratorialUnits[${item_index}].unitType" i18nkey="eml.jgtiCuratorialUnits.unitType" size=40/>
+    	</div>
+<div class="newline"></div>
+<div id="separator" class="horizontal_dotted_line_large_foo"></div>
+<div class="newline"></div>
+</div>
+</#list>  	
         <div class="newline"></div>
         <div class="newline"></div>
-        <div class="newline"></div>
-        <div class="newline"></div>
-      </div>
-    </div>
-    <div class="left">
-      <a id="plus" href="" onclick="return false;"><@s.text name='metadata.addnew'/> <@s.text name='metadata.heading.curatorialUnit'/></a>
-    </div>
-    <div class="newline"></div>
-    <div class="newline"></div>
-    <div class="newline"></div>
-    <div class="newline"></div>
-    <div class="newline"></div>    
+</div>
+<a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.collections.curatorialUnits.item'/></a>
+<div class="newline"></div>
+<div class="newline"></div>    
 <div class="buttons">
   <@s.submit name="save" key="button.save" />
   <@s.submit name="cancel" key="button.cancel" />
 </div>
 </form>
+<div id="baseItem" class="item" style="display:none;">
+		<div class="newline"></div>
+		<div class="right">
+     		 <a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.parties.item'/> ]</a>
+   		 </div>
+   		<div class="newline"></div>
+    	<@select name="type" i18nkey="eml.jgtiCuratorialUnits.type" options=JGTICuratorialUnitTypeOptions />
+    	<div class="newline"></div>
+    	<div class="half">
+    	<div id="subitem" class="subitem">
+    	<div class="half">
+    			<@input name="rangeStart" i18nkey="eml.jgtiCuratorialUnits.rangeStart" size=40/>
+    			<@input name="rangeEnd" i18nkey="eml.jgtiCuratorialUnits.rangeEnd" size=40/>
+    	</div>
+    	</div>
+    		<@input name="unitType" i18nkey="eml.jgtiCuratorialUnits.unitType" size=40/>
+    	</div>
+<div class="newline"></div>
+<div id="separator" class="horizontal_dotted_line_large_foo"></div>
+<div class="newline"></div>
+</div>
+
+
 <#include "/WEB-INF/pages/inc/footer.ftl">
