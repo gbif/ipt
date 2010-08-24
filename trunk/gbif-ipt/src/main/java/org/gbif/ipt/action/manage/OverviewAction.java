@@ -128,7 +128,7 @@ public String delmanager() throws Exception {
       Organisation org = null;
       try {
         org = registrationManager.get(id);
-        resourceManager.register(ms.getConfig(), org);
+        resourceManager.register(ms.getConfig(), org, registrationManager.getIpt());
         if (org != null) {
           addActionMessage("Registered resource with " + org.getName() + " in GBIF");
         }

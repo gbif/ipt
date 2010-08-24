@@ -24,8 +24,8 @@ $(document).ready(function(){
 		});	
 
 		$('#organisation\\.key').click(function() {
-			$('#organisation\\.name').val(orgName);
 			var orgName = $('#organisation\\.key :selected').text();
+			$('#organisation\\.name').val(orgName);
 			$('#ipt\\.organisationKey').val($('#organisation\\.key :selected').val());		
 		});
 	});		

@@ -11,13 +11,14 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
+import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.ResourceConfiguration;
 import org.gbif.ipt.model.Source;
+import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.Source.FileSource;
 import org.gbif.ipt.model.Source.SqlSource;
-import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
@@ -27,12 +28,13 @@ import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidConfigException;
-import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.RegistryException;
+import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.GBIFRegistryManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
+import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.utils.ActionLogger;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlFactory;
@@ -78,12 +80,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   private GBIFRegistryManager registryManager;
   private SourceManager sourceManager;
   private ExtensionManager extensionManager;
+  private RegistryManager registryManager2;
 
   @Inject
   public ResourceManagerImpl(AppConfig cfg, DataDir dataDir, UserEmailConverter userConverter,
       OrganisationKeyConverter orgConverter, GBIFRegistryManager registryManager,
       ExtensionRowTypeConverter extensionConverter, JdbcInfoConverter jdbcInfoConverter, SourceManager sourceManager,
-      ExtensionManager extensionManager) {
+      ExtensionManager extensionManager, RegistryManager registryManager2) {
     super(cfg, dataDir);
     this.userConverter = userConverter;
     this.registryManager = registryManager;
@@ -92,6 +95,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     this.jdbcInfoConverter = jdbcInfoConverter;
     this.sourceManager = sourceManager;
     this.extensionManager = extensionManager;
+    this.registryManager2=registryManager2;
     defineXstreamMapping();
   }
 
@@ -406,9 +410,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
    * @see org.gbif.ipt.service.manage.ResourceManager#register(org.gbif.ipt.model.Resource,
    * org.gbif.ipt.model.Organisation)
    */
-  public void register(ResourceConfiguration config, Organisation organisation) throws RegistryException {
+  public void register(ResourceConfiguration config, Organisation organisation, Ipt ipt) throws RegistryException {
     if (PublicationStatus.REGISTERED != config.getResource().getStatus()) {
-      UUID key = registryManager.register(config.getResource(), organisation);
+      registryManager2.setRegistryCredentials(organisation.getKey().toString(), organisation.getPassword());
+      UUID key = registryManager2.register(config.getResource(), organisation, ipt);
       if (key == null) {
         throw new RegistryException(RegistryException.TYPE.MISSING_METADATA, "No key returned for registered resoruce.");
       }

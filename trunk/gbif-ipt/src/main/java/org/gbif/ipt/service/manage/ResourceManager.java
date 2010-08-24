@@ -1,6 +1,7 @@
 package org.gbif.ipt.service.manage;
 
 import org.gbif.ipt.action.BaseAction;
+import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.ResourceConfiguration;
@@ -100,7 +101,7 @@ public interface ResourceManager {
    * @param organisation the org that the resource will be associated with
    * @throws InvalidConfigException
    */
-  public void register(ResourceConfiguration resource, Organisation organisation) throws InvalidConfigException;
+  public void register(ResourceConfiguration config, Organisation organisation, Ipt ipt) throws InvalidConfigException;
 
   public void save(ResourceConfiguration resource) throws InvalidConfigException;
 
