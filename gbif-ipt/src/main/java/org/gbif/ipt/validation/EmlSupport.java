@@ -18,6 +18,8 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.Eml;
+import org.gbif.metadata.eml.KeywordSet;
+import org.gbif.metadata.eml.PhysicalData;
 import org.gbif.metadata.eml.TaxonomicCoverage;
 import org.gbif.metadata.eml.TemporalCoverage;
 import org.gbif.metadata.eml.TemporalCoverageType;
@@ -68,14 +70,11 @@ public class EmlSupport extends BaseValidator {
         }
       } else if (part == null || part.equalsIgnoreCase("parties")) {
     	  for(int index=0;index<eml.getAssociatedParties().size();index++) {
-    		  if(!exists(eml.getAssociatedParties().get(index).getFirstName())) {    			  
-    			  action.addFieldError("eml.associatedParties["+index+"].firstname", action.getText("validation.required"));
+    		  if(!exists(eml.getAssociatedParties().get(index).getFirstName())) {
+    			  action.addFieldError("eml.associatedParties["+index+"].firstName", action.getText("validation.required"));
     		  }
     		  if(!exists(eml.getAssociatedParties().get(index).getLastName())) {
-    			  action.addFieldError("eml.associatedParties["+index+"].lastname", action.getText("validation.required"));
-    		  }
-    		  if(!exists(eml.getAssociatedParties().get(index).getPhone())) {
-    			  action.addFieldError("eml.associatedParties["+index+"].phone", action.getText("validation.required"));
+    			  action.addFieldError("eml.associatedParties["+index+"].lastName", action.getText("validation.required"));
     		  }
     	  }
       } else if (part == null || part.equalsIgnoreCase("geocoverage")) {	  
@@ -123,11 +122,43 @@ public class EmlSupport extends BaseValidator {
     		  cont++;
     	  }
       } else if (part == null || part.equalsIgnoreCase("project")) {
+    	  if(!exists(eml.getProject().getPersonnel().getFirstName())) {
+    		  action.addFieldError("eml.project.personnel.firstName", action.getText("validation.required"));
+    	  }
+    	  if(!exists(eml.getProject().getPersonnel().getLastName())) {
+    		  action.addFieldError("eml.project.personnel.lastName", action.getText("validation.required"));
+    	  }
+    	  
       } else if (part == null || part.equalsIgnoreCase("methods")) {
       } else if (part == null || part.equalsIgnoreCase("citations")) {
+    	  if(!exists(eml.getCitation())) {
+    		  action.addFieldError("eml.citation", action.getText("validation.required"));
+    	  }
+    	  for(int c = 0; c < eml.getBibliographicCitations().size(); c++) {
+    		  if(!exists(eml.getBibliographicCitations().get(c))) {
+    			  action.addFieldError("eml.bibliographicCitationSet.bibliographicCitations["+c+"]", action.getText("validation.required"));
+    		  }
+    	  }
       } else if (part == null || part.equalsIgnoreCase("collections")) {
       } else if (part == null || part.equalsIgnoreCase("physical")) {
+    	  int c = 0;
+    	  for(PhysicalData pd : eml.getPhysicalData()) {
+    		  if(!exists(pd.getName())) {
+    			  action.addFieldError("eml.physicalData["+c+"].name", action.getText("validation.required"));
+    		  }
+    		  c++;
+    	  }
       } else if (part == null || part.equalsIgnoreCase("keywords")) {
+    	  int c = 0;
+    	  for(KeywordSet ks : eml.getKeywords()) {
+    		  if(!exists(ks.getKeywordThesaurus())) {
+    			  action.addFieldError("eml.keywords["+c+"].keywordThesaurus", action.getText("validation.required"));
+    		  }
+    		  if(!exists(ks.getKeywordsString())) {
+    			  action.addFieldError("eml.keywords["+c+"].keywordsString", action.getText("validation.required"));
+    		  }
+    		  c++;
+    	  }
       } else if (part == null || part.equalsIgnoreCase("additional")) {
     	  if(!exists(eml.getDistributionUrl(), 5)) {
     		  if(!exists(eml.getDistributionUrl())) {
