@@ -105,7 +105,7 @@ By default a resource is private to the managers. Once published to GBIF you can
   	</div>
   	<div class="actions">
 	  <form action='mapping.do' method='post'>
-	    <select name="id" id="manager" size="1">
+	    <select name="id" id="rowType" size="1">
 	    <#list potentialExtensions as e>
 	      <option value="${e.rowType}">${e.title}</option>
 	    </#list>
@@ -242,7 +242,7 @@ By default a resource is private to the managers. Once published to GBIF you can
 </div>
 
 <div>
-  <form action='resource.do' method='post'>
+  <form action='resource-delete.do' method='post'>
    	<@s.submit cssClass="confirm" name="delete" key="button.delete"/>
   </form>
 </div>

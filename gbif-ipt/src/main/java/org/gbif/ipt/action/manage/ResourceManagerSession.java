@@ -49,6 +49,13 @@ public class ResourceManagerSession {
   private Eml eml;
   private User manager;
 
+  public void clear() {
+    this.manager = null;
+    this.eml = null;
+    this.config = null;
+    log.info("Clearing current manager session");
+  }
+
   public ResourceConfiguration getConfig() {
     if (config == null) {
       log.warn("No resource config object in manager session " + this.hashCode());

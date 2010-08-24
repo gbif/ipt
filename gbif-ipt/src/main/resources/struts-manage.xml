@@ -75,6 +75,11 @@
 			<result name="input">/WEB-INF/pages/manage/source.ftl</result>
 		</action>
 		
+		<action name="mapping" class="org.gbif.ipt.action.manage.MappingAction">
+			<result name="input">/WEB-INF/pages/manage/mapping.ftl</result>
+			<result type="redirect">resource.do</result>
+		</action>
+
 		<action name="generate" class="org.gbif.ipt.action.manage.MetadataAction">
 			<result>/WEB-INF/pages/manage/metadata.ftl</result>
 		</action>

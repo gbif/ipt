@@ -19,13 +19,10 @@ package org.gbif.ipt.model;
 import org.gbif.ipt.service.AlreadyExistingException;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 /**
  * @author markus
@@ -38,9 +35,15 @@ public class ResourceConfiguration {
   private ExtensionMapping core;
   private Set<ExtensionMapping> extensions = new HashSet<ExtensionMapping>();
 
+  public void addExtension(ExtensionMapping extension) {
+    if (extension != null) {
+      this.extensions.add(extension);
+    }
+  }
+
   public void addSource(Source src, boolean allowOverwrite) throws AlreadyExistingException {
-	  // make sure we talk about the same resource
-	  src.setResource(resource);
+    // make sure we talk about the same resource
+    src.setResource(resource);
     if (!allowOverwrite && sources.contains(src)) {
       throw new AlreadyExistingException();
     }
@@ -59,10 +62,10 @@ public class ResourceConfiguration {
   }
 
   public String getCoreRowType() {
-	  if (core!=null && core.getExtension()!=null){
-		 return core.getExtension().getRowType();
-	  }
-	  return null;
+    if (core != null && core.getExtension() != null) {
+      return core.getExtension().getRowType();
+    }
+    return null;
   }
 
   public Set<ExtensionMapping> getExtensions() {
@@ -72,6 +75,9 @@ public class ResourceConfiguration {
   public ExtensionMapping getMapping(String rowType) {
     if (rowType == null) {
       return null;
+    }
+    if (rowType.equals(core.getExtension().getRowType())) {
+      return core;
     }
     for (ExtensionMapping em : extensions) {
       if (rowType.equals(em.getExtension().getRowType())) {
@@ -89,18 +95,18 @@ public class ResourceConfiguration {
     if (name == null) {
       return null;
     }
-    name=Source.normaliseName(name);
-    for (Source s : sources){
-    	if (s.getName().equals(name)){
-    		return s;
-    	}
+    name = Source.normaliseName(name);
+    for (Source s : sources) {
+      if (s.getName().equals(name)) {
+        return s;
+      }
     }
     return null;
   }
 
   public List<Source> getSources() {
-	  List<Source> srcs = new ArrayList<Source>(sources);
-	  Collections.sort(srcs);
+    List<Source> srcs = new ArrayList<Source>(sources);
+    Collections.sort(srcs);
     return srcs;
   }
 
@@ -111,11 +117,6 @@ public class ResourceConfiguration {
   public void setExtensions(Set<ExtensionMapping> extensions) {
     this.extensions = extensions;
   }
-  public void addExtension(ExtensionMapping extension) {
-	  if (extension!=null){
-		  this.extensions.add(extension);		  
-	  }
-	}
 
   public void setResource(Resource resource) {
     this.resource = resource;

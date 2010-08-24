@@ -46,6 +46,12 @@ public interface SourceManager {
    */
   public String analyze(Source source);
 
+  /**
+   * @param source
+   * @return list of column names
+   */
+  public List<String> columns(Source source);
+
   public boolean delete(ResourceConfiguration config, Source source);
 
   /**
@@ -64,6 +70,10 @@ public interface SourceManager {
    */
   public int importArchive(ResourceConfiguration config, File file, boolean overwriteEml) throws ImportException;
 
-  public List<String[]> peek(Source source);
-
+  /**
+   * @param source
+   * @param rows number of rows to return
+   * @return sample rows from the dataset
+   */
+  public List<String[]> peek(Source source, int rows);
 }

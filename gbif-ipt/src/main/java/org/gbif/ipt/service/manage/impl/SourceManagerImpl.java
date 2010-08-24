@@ -37,7 +37,6 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -122,6 +121,16 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     super();
   }
 
+  public static void copyArchiveFileProperties(ArchiveFile from, FileSource to) {
+    to.setEncoding(from.getEncoding());
+    to.setFieldsEnclosedBy(from.getFieldsEnclosedBy());
+    to.setFieldsTerminatedBy(from.getFieldsTerminatedBy());
+    to.setIgnoreHeaderLines(from.getIgnoreHeaderLines());
+    to.setLinesTerminatedBy(from.getLinesTerminatedBy());
+    to.setName(from.getTitle());
+    to.setDateFormat(from.getDateFormat());
+  }
+
   /*
    * (non-Javadoc)
    * @see org.gbif.ipt.service.manage.ResourceConfigManager#add(org.gbif.ipt.model.ResourceConfiguration, java.io.File)
@@ -144,7 +153,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     src.setFile(ddFile);
     src.setLastModified(new Date());
     try {
-      // add to config, allow overwriting existing ones 
+      // add to config, allow overwriting existing ones
       // if the file is uploaded not for the first time
       config.addSource(src, true);
       // anaylze individual files using the dwca reader
@@ -168,7 +177,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
    * @see org.gbif.ipt.service.manage.SourceManager#analyze(org.gbif.ipt.model.Source)
    */
   public String analyze(Source source) {
-	  String problem = null;
+    String problem = null;
     if (source instanceof FileSource) {
       FileSource fs = (FileSource) source;
       try {
@@ -183,7 +192,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         fs.setRows(rows);
         fs.setReadable(true);
       } catch (IOException e) {
-          problem=e.getMessage();
+        problem = e.getMessage();
         log.warn("Cant read source file " + fs.getFile().getAbsolutePath(), e);
         fs.setReadable(false);
         fs.setRows(-1);
@@ -191,7 +200,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     } else {
       SqlSource ss = (SqlSource) source;
       try {
-		Connection con = getDbConnection(ss);
+        Connection con = getDbConnection(ss);
         // test sql
         Statement stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
         stmt.setFetchSize(10);
@@ -205,21 +214,19 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         con.close();
       } catch (SQLException e) {
         log.warn("Cant read sql source " + ss, e);
-        problem=e.getMessage();
+        problem = e.getMessage();
         ss.setReadable(false);
       }
     }
     return problem;
   }
 
-  public static void copyArchiveFileProperties(ArchiveFile from, FileSource to) {
-    to.setEncoding(from.getEncoding());
-    to.setFieldsEnclosedBy(from.getFieldsEnclosedBy());
-    to.setFieldsTerminatedBy(from.getFieldsTerminatedBy());
-    to.setIgnoreHeaderLines(from.getIgnoreHeaderLines());
-    to.setLinesTerminatedBy(from.getLinesTerminatedBy());
-    to.setName(from.getTitle());
-    to.setDateFormat(from.getDateFormat());
+  /*
+   * (non-Javadoc)
+   * @see org.gbif.ipt.service.manage.SourceManager#columns(org.gbif.ipt.model.Source)
+   */
+  public List<String> columns(Source source) {
+    return new ArrayList<String>();
   }
 
   /*
@@ -313,8 +320,8 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
    * (non-Javadoc)
    * @see org.gbif.ipt.service.manage.SourceManager#peek(org.gbif.ipt.model.Source)
    */
-  public List<String[]> peek(Source source) {
+  public List<String[]> peek(Source source, int rows) {
     // TODO Auto-generated method stub
-    return new ArrayList<String[]>();
+    return new ArrayList<String[]>(rows);
   }
 }
