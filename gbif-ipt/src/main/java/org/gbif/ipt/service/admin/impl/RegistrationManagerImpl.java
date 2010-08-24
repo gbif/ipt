@@ -130,6 +130,15 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
   /*
    * (non-Javadoc)
    * 
+   * @see org.gbif.ipt.service.admin.RegistrationManager#getIpt()
+   */
+  public Ipt getIpt() {
+    return registration.getIpt();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.gbif.ipt.service.admin.RegistrationManager#list()
    */
   public List<Organisation> list() {
@@ -168,6 +177,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
         Registration reg = (Registration) in.readObject();
         // load the organisation this IPT is registered against
         addHostingOrganisation(reg.getHostingOrganisation());
+        addIptInstance(reg.getIpt());
 
         // load the associated organisations
         while (true) {

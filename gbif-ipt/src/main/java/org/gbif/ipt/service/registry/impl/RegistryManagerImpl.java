@@ -1,6 +1,8 @@
 package org.gbif.ipt.service.registry.impl;
 
 import org.gbif.ipt.model.Ipt;
+import org.gbif.ipt.model.Organisation;
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.registry.RegistryManager;
@@ -21,6 +23,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.UUID;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -44,6 +47,60 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   public String getAtomFeedURL() {
     return String.format("%s/atom.xml", cfg.getBaseURL());
+  }
+
+  public String getDwcArchiveURL(String uuid) {
+    return String.format("%s/resource/%s/archive-dwc.zip", cfg.getBaseURL(), uuid);
+  }
+
+  public String getEmlURL(String uuid) {
+    return String.format("%s/resource/%s/eml", cfg.getBaseURL(), uuid);
+  }
+
+  public String getTapirURL(String id) {
+    return String.format("%s/tapir/%s", cfg.getBaseURL(), id);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.gbif.ipt.service.registry.RegistryManager#register(org.gbif.ipt.model.Resource,
+   * org.gbif.ipt.model.Organisation, org.gbif.ipt.model.Ipt)
+   */
+  public UUID register(Resource resource, Organisation organisation, Ipt ipt) throws RegistryException {
+    // registering IPT resource
+
+    NameValuePair[] data = {
+        new NameValuePair("organisationKey", StringUtils.trimToEmpty(organisation.getKey().toString())),
+        new NameValuePair("iptKey", StringUtils.trimToEmpty(ipt.getKey().toString())),
+        new NameValuePair("name", StringUtils.trimToEmpty(resource.getShortname())), // name
+        new NameValuePair("description", StringUtils.trimToEmpty(resource.getDescription())), // description
+        new NameValuePair("primaryContactType", "technical"),
+        new NameValuePair("primaryContactName", StringUtils.trimToEmpty(resource.getCreator().getName())),
+        new NameValuePair("primaryContactEmail", StringUtils.trimToEmpty(resource.getCreator().getEmail())),
+        new NameValuePair("serviceTypes", "TAPIR|EML|DWC-ARCHIVE"),
+        new NameValuePair("serviceURLs", getTapirURL("1") + "|" + getEmlURL("abc") + "|" + getDwcArchiveURL("xyz"))};
+    String result = executePost(getIptResourceUri(), data, true);
+    if (result != null) {
+      // read new UDDI ID
+      try {
+        saxParser.parse(getStream(result), newRegistryEntryHandler);
+        String key = newRegistryEntryHandler.key;
+        if (StringUtils.trimToNull(key) == null) {
+          key = newRegistryEntryHandler.resourceKey;
+        }
+        ipt.setKey(key);
+        if (key != null) {
+          log.info("A new resource has been registered with GBIF. Key = " + key);
+          return UUID.fromString(key);
+        }
+      } catch (Exception e) {
+        throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, "Bad registry response");
+      }
+    } else {
+      throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, "Bad registry response");
+    }
+    return null;
   }
 
   /*
@@ -144,6 +201,10 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       log.warn("Http request to ??? failed: " + method.getStatusLine());
     }
     return false;
+  }
+
+  private String getIptResourceUri() {
+    return String.format("%s/%s", cfg.getRegistryUrl(), "registry/ipt/resource");
   }
 
   private String getIptUri() {

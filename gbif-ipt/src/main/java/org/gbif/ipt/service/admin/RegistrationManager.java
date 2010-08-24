@@ -80,6 +80,13 @@ public interface RegistrationManager {
   public Organisation getHostingOrganisation();
 
   /**
+   * Returns the IPT instance
+   * 
+   * @return ipt instance
+   */
+  public Ipt getIpt();
+
+  /**
    * Returns list of all organisations able to host resources
    * 
    * @return
