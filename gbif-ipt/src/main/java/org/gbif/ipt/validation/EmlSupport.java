@@ -129,6 +129,13 @@ public class EmlSupport extends BaseValidator {
       } else if (part == null || part.equalsIgnoreCase("physical")) {
       } else if (part == null || part.equalsIgnoreCase("keywords")) {
       } else if (part == null || part.equalsIgnoreCase("additional")) {
+    	  if(!exists(eml.getDistributionUrl(), 5)) {
+    		  if(!exists(eml.getDistributionUrl())) {
+    			  action.addFieldError("eml.distributionUrl", action.getText("validation.required"));    			  
+    		  } else {
+    			  action.addFieldError("eml.distributionUrl", action.getText("validation.short"));
+    		  }
+    	  }
       }
     }
   }
