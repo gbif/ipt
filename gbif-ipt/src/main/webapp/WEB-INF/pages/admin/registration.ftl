@@ -24,8 +24,9 @@ $(document).ready(function(){
 		});	
 
 		$('#organisation\\.key').click(function() {
+			$('#organisation\\.name').val(orgName);
 			var orgName = $('#organisation\\.key :selected').text();
-			$('#organisation\\.name').val(orgName);		
+			$('#ipt\\.organisationKey').val($('#organisation\\.key :selected').val());		
 		});
 	});		
 });
@@ -66,9 +67,17 @@ $(document).ready(function(){
 			<@selectList name="organisation.key" options="organisations" objValue="key" objTitle="name" i18nkey="admin.organisation.key" value="" size=15/>  
 			<@input name="organisation.password" i18nkey="admin.organisation.password" type="text"/>
 			<@input name="organisation.alias" i18nkey="admin.organisation.alias" type="text" />
-			<@input name="iptPassword" i18nkey="admin.ipt.password" type="text" help="i18n"/>
-			<@checkbox name="organisation.canHost" i18nkey="admin.organisation.canHost" value="true"/>	
+			<@checkbox name="organisation.canHost" i18nkey="admin.organisation.canHost" value="true" help="i18n"/>	
+						
+			<@input name="ipt.name" i18nkey="admin.ipt.name" type="text" />
+			<@text name="ipt.description" i18nkey="admin.ipt.description" />
+			<@input name="ipt.primaryContactName" i18nkey="admin.ipt.primaryContactName" type="text" />
+			<@input name="ipt.primaryContactEmail" i18nkey="admin.ipt.primaryContactEmail" type="text" />
+			<@s.hidden id="admin.ipt.primaryContactType" name="ipt.primaryContactType" value="technical" />
+			
+			<@input name="ipt.wsPassword" i18nkey="admin.ipt.password" type="text" help="i18n"/>
 			<@s.hidden id="organisation.name" name="organisation.name" />
+			<@s.hidden id="ipt.organisationKey" name="ipt.organisationKey" />
 		   <div class="buttons">
 		 	<@s.submit cssClass="button" name="save" id="save" key="button.save"/>
 		 	<@s.submit cssClass="button" name="cancel" id="cancel" key="button.cancel"/>

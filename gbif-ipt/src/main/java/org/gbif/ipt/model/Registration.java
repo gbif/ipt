@@ -23,7 +23,7 @@ public class Registration {
   // private List<Organisation> associatedOrganisations;
   private SortedMap<String, Organisation> associatedOrganisations = new TreeMap<String, Organisation>();
   private Organisation hostingOrganisation;
-  private String iptPassword;
+  private Ipt ipt;
 
   /**
    * @return the associatedOrganisations
@@ -40,10 +40,17 @@ public class Registration {
   }
 
   /**
+   * @return the ipt
+   */
+  public Ipt getIpt() {
+    return ipt;
+  }
+
+  /**
    * @return the iptPassword
    */
   public String getIptPassword() {
-    return iptPassword;
+    return ipt.getWsPassword();
   }
 
   /**
@@ -61,10 +68,17 @@ public class Registration {
   }
 
   /**
+   * @param ipt the ipt to set
+   */
+  public void setIpt(Ipt ipt) {
+    this.ipt = ipt;
+  }
+
+  /**
    * @param iptPassword the iptPassword to set
    */
   public void setIptPassword(String iptPassword) {
-    this.iptPassword = iptPassword;
+    this.ipt.setWsPassword(iptPassword);
   }
 
 }
