@@ -30,10 +30,11 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.validation.EmlSupport;
 import org.gbif.ipt.validation.ResourceSupport;
 import org.gbif.metadata.eml.Eml;
+import org.gbif.metadata.eml.JGTICuratorialUnitType;
 import org.gbif.metadata.eml.Role;
-import org.gbif.metadata.eml.TemporalCoverage;
 import org.gbif.metadata.eml.TemporalCoverageType;
 
+import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 
 /**
@@ -88,7 +89,15 @@ public class MetadataAction extends POSTAction {
   public Map getRoleOptions() {
     return Role.htmlSelectMap;
   }
-
+  
+  public Map getJGTICuratorialUnitTypeOptions() {
+	  Map<String, String> map = Maps.newHashMap();
+	    for (JGTICuratorialUnitType rt : JGTICuratorialUnitType.values()) {
+	      map.put(rt.name(), getText("jgtiCuratorialUnitType." + rt.name()));
+	    }
+	  return map;
+  }
+  
   public String getSection() {
     return section;
   }
