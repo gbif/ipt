@@ -11,7 +11,7 @@ package org.gbif.ipt.service;
  */
 public class RegistryException extends RuntimeException {
   public enum TYPE {
-    NOT_AUTHORISED, RESOURCE_EXISTS_ALREADY, MISSING_METADATA
+    NOT_AUTHORISED, RESOURCE_EXISTS_ALREADY, MISSING_METADATA, BAD_RESPONSE
   };
 
   protected TYPE type;

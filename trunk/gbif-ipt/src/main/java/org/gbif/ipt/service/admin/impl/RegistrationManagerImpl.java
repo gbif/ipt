@@ -3,6 +3,7 @@
  */
 package org.gbif.ipt.service.admin.impl;
 
+import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Registration;
 import org.gbif.ipt.service.AlreadyExistingException;
@@ -66,6 +67,17 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
       registration.setHostingOrganisation(organisation);
     }
     return organisation;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.gbif.ipt.service.admin.RegistrationManager#addIptInstance(org.gbif.ipt.model.Ipt)
+   */
+  public void addIptInstance(Ipt ipt) {
+    if (ipt != null) {
+      registration.setIpt(ipt);
+    }
   }
 
   /*

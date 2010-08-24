@@ -3,6 +3,7 @@
  */
 package org.gbif.ipt.service.admin;
 
+import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.DeletionNotAllowedException;
@@ -38,6 +39,13 @@ public interface RegistrationManager {
    * @return
    */
   public Organisation addHostingOrganisation(Organisation organisation);
+
+  /**
+   * Add all the IPT specific data
+   * 
+   * @param ipt
+   */
+  public void addIptInstance(Ipt ipt);
 
   /**
    * Removes the specified organisation from the in memory list of organisations. See save() to persist this change to
