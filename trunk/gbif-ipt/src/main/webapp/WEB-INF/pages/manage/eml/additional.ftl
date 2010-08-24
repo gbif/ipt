@@ -13,10 +13,9 @@
 
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <form class="topForm" action="metadata-${section}.do" method="post">
-
 	<div class="half">
 	  	<@input name="eml.hierarchyLevel" i18nkey="eml.hierarchyLevel" disabled=true />
-	  	<@input name="eml.pubDate" i18nkey="eml.pubDate" disabled=true />
+	  	<@input name="eml.pubDate" i18nkey="eml.pubDate" help="i18n" helpOptions={"MM/DD/YYYY":"MM/DD/YYYY",  "MM/DD/YY":"MM/DD/YY", "January 1, 1990":"January 1, 1990"} />
 	</div>
 	<@input name="eml.distributionUrl" i18nkey="eml.distributionUrl" />
   	<@text name="eml.purpose" i18nkey="eml.purpose"/>
