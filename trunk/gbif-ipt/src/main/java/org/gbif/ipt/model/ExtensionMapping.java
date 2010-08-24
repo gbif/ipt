@@ -29,6 +29,7 @@ public class ExtensionMapping {
   private Source source;
   private Extension extension; // persist only the rowType
   private Set<ArchiveField> fields = new HashSet<ArchiveField>();
+  private Integer idColumn;
 
   public Extension getExtension() {
     return extension;
@@ -36,6 +37,10 @@ public class ExtensionMapping {
 
   public Set<ArchiveField> getFields() {
     return fields;
+  }
+
+  public Integer getIdColumn() {
+    return idColumn;
   }
 
   public Source getSource() {
@@ -50,8 +55,12 @@ public class ExtensionMapping {
     this.fields = fields;
   }
 
+  public void setIdColumn(Integer idColumn) {
+    this.idColumn = idColumn;
+  }
+
   public void setSource(Source source) {
-    this.source= source;
+    this.source = source;
   }
 
 }

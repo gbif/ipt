@@ -4,6 +4,7 @@ import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.Organisation;
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.model.voc.PublicationStatus;
@@ -17,6 +18,7 @@ import org.gbif.ipt.validation.EmlSupport;
 
 import com.google.inject.Inject;
 
+import java.io.IOException;
 import java.util.List;
 
 public class OverviewAction extends BaseAction {
@@ -50,11 +52,22 @@ public class OverviewAction extends BaseAction {
     return execute();
   }
 
-  public List<Extension> getPotentialExtensions() {
-	return potentialExtensions;
-}
+  public String delete() {
+    try {
+      Resource res = ms.getResource();
+      System.out.println("DELETING " + res);
+      resourceManager.delete(res);
+      ms.clear();
+      addActionMessage("Deleted " + res);
+      return HOME;
+    } catch (IOException e) {
+      log.error("Cannot delete resource", e);
+      addActionError("Cannot delete resource: " + e.getMessage());
+    }
+    return SUCCESS;
+  }
 
-public String delmanager() throws Exception {
+  public String delmanager() throws Exception {
     User u = userManager.get(id);
     if (u == null || !ms.getResource().getManagers().contains(u)) {
       addActionError("Manager " + id + " not available");
@@ -83,6 +96,10 @@ public String delmanager() throws Exception {
     return organisations;
   }
 
+  public List<Extension> getPotentialExtensions() {
+    return potentialExtensions;
+  }
+
   public List<User> getPotentialManagers() {
     return potentialManagers;
   }
@@ -102,16 +119,16 @@ public String delmanager() throws Exception {
     }
     // enabled registry organisations
     organisations = registrationManager.list();
-    if (ms.getConfig().getCore()==null){
-    	// show core extensions for mapping
-        potentialExtensions=extensionManager.listCore();
-    }else{
-        // show unmapped extensions    	
-        potentialExtensions=extensionManager.list(ms.getConfig().getCore().getExtension());
-        // remove already associated ones
-        for (ExtensionMapping e : ms.getConfig().getExtensions()) {
-        	potentialExtensions.remove(e.getExtension());
-        }
+    if (ms.getConfig().getCore() == null) {
+      // show core extensions for mapping
+      potentialExtensions = extensionManager.listCore();
+    } else {
+      // show unmapped extensions
+      potentialExtensions = extensionManager.list(ms.getConfig().getCore().getExtension());
+      // remove already associated ones
+      for (ExtensionMapping e : ms.getConfig().getExtensions()) {
+        potentialExtensions.remove(e.getExtension());
+      }
     }
   }
 
