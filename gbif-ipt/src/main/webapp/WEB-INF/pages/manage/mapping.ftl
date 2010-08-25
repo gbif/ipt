@@ -27,32 +27,27 @@ $(document).ready(function(){
 	</style>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
-<h1><@s.text name='manage.mapping.title'/>: <em>${mapping.extension.title}</em></h1>
+<h1>${mapping.extension.title}</h1>
 <p>${mapping.extension.description}</p>
 <#if mapping.extension.link?has_content>
 <p><@s.text name="basic.link"/>: <a href="${mapping.extension.link}">${mapping.extension.link}</a></p>
 </#if>
 
-<h1><@s.text name='manage.mapping.properties'/></h1>
-<p><@s.text name='manage.mapping.intro'/></p>
-
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <form class="topForm" action="mapping.do" method="post">
   	<input type="hidden" name="id" value="${id}" />
 
-	<@selectList name="source" options=ms.config.sources objValue="name" objTitle="name" value="${mapping.source.name!}" disabled=mapping.source?exists/>
-	<@select name="mapping.idColumn" options=columns value="${mapping.idColumn!}" />
+<#if mapping.source?exists>
+<h1><@s.text name='manage.mapping.title'/> <span class="small">${mapping.source.name}</span></h1>
+<p><@s.text name='manage.mapping.intro'><@s.param name="source">${mapping.source.name}</@s.param></@s.text></p>
+
+	<@select name="mapping.idColumn" options=columns value="${mapping.idColumn!}" i18nkey="manage.mapping.idColumn" help="i18n"/>
 
   <div class="buttons">
  	<@s.submit name="save" key="button.save"/>
- 	<#if mapping.source?exists>
  	<@s.submit cssClass="confirm" name="delete" key="button.delete"/>
- 	</#if>
  	<@s.submit name="cancel" key="button.cancel"/>
   </div>
-
-  
-<#if mapping.source?exists>
 
 	<#assign group=""/>
 	<#list mapping.extension.properties as p>
@@ -67,6 +62,19 @@ $(document).ready(function(){
 			${p.name}
 			<#if p.required>[required]</#if>
 	  	</div>
+	  	<div>
+	  		<img class="infoImg" src="${baseURL}/images/info.gif" />
+			<div class="info">
+				<#if p.description?has_content>${p.description}<br/><br/></#if>              	
+				<#if p.link?has_content><@s.text name="basic.seealso"/> <a href="${p.link}">${p.link}</a><br/><br/></#if>
+				<#if p.examples?has_content>
+				<em><@s.text name="basic.examples"/></em>: ${p.examples}
+				</#if>              	
+			</div>
+	      	<#if p.vocabulary?exists>	  		
+	      	<a href="vocabulary.do?id=${p.vocabulary.uri}"><img class="infoImg" src="${baseURL}/images/vocabulary.png" /></a>
+	      	</#if>			
+	  	</div>
 	  </div>
 	  <div class="body">
 	      	<div>
@@ -75,33 +83,24 @@ $(document).ready(function(){
 	      	<div>
 	      		<em>Example data from source</em>:
 	      	</div>
-	      	<div>
-	      		<em><@s.text name="basic.description"/></em>:
-	      		<span>
-				${p.description}
-				<#if p.description?has_content><br/></#if>              	
-				<#if p.link?has_content><@s.text name="basic.seealso"/> <a href="${p.link}">${p.link}</a></#if>
-				<em><@s.text name="basic.examples"/></em>:
-				${p.examples}
-				</span>              	
-	      	</div>
-	      	<div>
-	      	</div>
-	      	<#if p.vocabulary?exists>
-	      	<div>
-		      	<em><@s.text name="extension.vocabulary"/></em>: 
-		      	<a href="vocabulary.do?id=${p.vocabulary.uri}">${p.vocabulary.title}</a>
-	      	</div>
-	      	</#if>
 	  </div>
 	</div>
 	</#list>
 
   <div class="buttons">
  	<@s.submit name="save" key="button.save"/>
- 	<#if id?exists>
  	<@s.submit cssClass="confirm" name="delete" key="button.delete"/>
- 	</#if>
+ 	<@s.submit name="cancel" key="button.cancel"/>
+  </div>
+<#else>
+
+<h1><@s.text name='manage.mapping.source'/></h1>
+<p><@s.text name='manage.mapping.source.help'/></p>
+
+<@selectList name="source" options=ms.config.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" />
+
+  <div class="buttons">
+ 	<@s.submit name="save" key="button.save"/>
  	<@s.submit name="cancel" key="button.cancel"/>
   </div>
 </#if>

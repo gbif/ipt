@@ -259,6 +259,7 @@ ul.fielderror{
 }
 .buttons{
 	margin-top: 1em;
+	margin-bottom: 1em;
 }
 .buttons input{
 	display: inline !important;

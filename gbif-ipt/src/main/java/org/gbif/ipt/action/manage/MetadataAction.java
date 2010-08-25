@@ -27,7 +27,7 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.voc.Rank;
 import org.gbif.ipt.service.admin.VocabulariesManager;
-import org.gbif.ipt.validation.EmlSupport;
+import org.gbif.ipt.validation.EmlValidator;
 import org.gbif.ipt.validation.ResourceSupport;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.JGTICuratorialUnitType;
@@ -46,7 +46,7 @@ public class MetadataAction extends POSTAction {
 //the resource manager session is populated by the resource interceptor and kept alive for an entire manager session
   private ResourceManagerSession ms;
   private ResourceSupport validatorRes = new ResourceSupport();
-  private EmlSupport validatorEml = new EmlSupport();
+  private EmlValidator validatorEml = new EmlValidator();
   private String section = "basic";
   private String next = "parties";
   private Map<String, String> resourceTypes;

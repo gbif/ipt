@@ -126,7 +126,7 @@ By default a resource is private to the managers. Once published to GBIF you can
           		</td></tr>
           		</#if>
       		  <#list ms.config.extensions as m>
-          		<tr><th>${m.extension.title}</th><td>${m.fields?size} terms mapped to source ${m.source.name}
+          		<tr><th>${m.extension.title}</th><td>${m.fields?size} terms mapped to source ${(m.source.name)!}
           		<a href="mapping.do?id=${m.extension.rowType}"><button class="small">Edit</button></a>
           		</td></tr>
           	  </#list>

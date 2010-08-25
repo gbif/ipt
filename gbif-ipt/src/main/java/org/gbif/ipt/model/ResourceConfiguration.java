@@ -50,6 +50,18 @@ public class ResourceConfiguration {
     sources.add(src);
   }
 
+  public boolean deleteMapping(ExtensionMapping mapping) {
+    if (mapping != null) {
+      if (core.equals(mapping)) {
+        core = null;
+        return true;
+      } else {
+        return extensions.remove(mapping);
+      }
+    }
+    return false;
+  }
+
   public boolean deleteSource(Source src) {
     if (src != null) {
       return sources.remove(src);

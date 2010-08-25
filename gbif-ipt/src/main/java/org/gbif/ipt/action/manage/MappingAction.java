@@ -19,6 +19,7 @@ package org.gbif.ipt.action.manage;
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.ExtensionMapping;
+import org.gbif.ipt.model.Source;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.manage.SourceManager;
 
@@ -43,12 +44,13 @@ public class MappingAction extends POSTAction {
   private SourceManager sourceManager;
   // config
   private ExtensionMapping mapping;
+  private String source;
   private Map<Integer, String> columns;
   private List<String[]> peek;
 
   @Override
   public String delete() {
-    if (true) {
+    if (ms.getConfig().deleteMapping(mapping)) {
       addActionMessage("Deleted mapping " + id);
       ms.saveConfig();
     } else {
@@ -115,17 +117,22 @@ public class MappingAction extends POSTAction {
     }
     // save entire resource config
     ms.saveConfig();
-    return SUCCESS;
+    return INPUT;
   }
 
   public void setMapping(ExtensionMapping mapping) {
     this.mapping = mapping;
   }
 
+  public void setSource(String source) {
+    Source src = ms.getConfig().getSource(source);
+    mapping.setSource(src);
+  }
+
   @Override
   public void validateHttpPostOnly() {
-    if (mapping != null) {
-
+    if (mapping != null && mapping.getSource() == null) {
+      addFieldError("manage.mapping.source", getText("validation.required"));
     }
   }
 }
