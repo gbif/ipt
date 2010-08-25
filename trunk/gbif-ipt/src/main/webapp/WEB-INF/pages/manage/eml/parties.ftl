@@ -16,11 +16,11 @@
     </div>
     <div class="newline"></div>
 	<div class="2col">
-  		<@input name="eml.associatedParties[${item_index}].firstName" i18nkey="eml.associatedParties.firstName" size=40/>
-  		<@input name="eml.associatedParties[${item_index}].lastName" i18nkey="eml.associatedParties.lastName" size=40/>
+  		<@input name="eml.associatedParties[${item_index}].firstName" i18nkey="eml.associatedParties.firstName"/>
+  		<@input name="eml.associatedParties[${item_index}].lastName" i18nkey="eml.associatedParties.lastName"/>
   	</div>
 	<div class="2col">
-  		<@input name="eml.associatedParties[${item_index}].phone" i18nkey="eml.associatedParties.phone" size=40/>
+  		<@input name="eml.associatedParties[${item_index}].phone" i18nkey="eml.associatedParties.phone"/>
   		<@select name="eml.associatedParties[${item_index}].role" i18nkey="eml.associatedParties.role" value="${eml.associatedParties[item_index].role}" options=roleOptions />
   	</div>
   	<div class="newline"></div>
@@ -42,11 +42,11 @@
     </div>
     <div class="newline"></div>
 	<div class="2col">
-  		<@input name="firstName" i18nkey="eml.associatedParties.firstName" value="" size=40/>
-  		<@input name="lastName" i18nkey="eml.associatedParties.lastName"  value="" size=40/>
+  		<@input name="firstName" i18nkey="eml.associatedParties.firstName" value=""/>
+  		<@input name="lastName" i18nkey="eml.associatedParties.lastName"  value=""/>
   	</div>
 	<div class="2col">
-  		<@input name="phone" i18nkey="eml.associatedParties.phone" value="" size=40/>
+  		<@input name="phone" i18nkey="eml.associatedParties.phone" value=""/>
   		<@select name="role" i18nkey="eml.associatedParties.role" value="" options=roleOptions />
   	</div>
   	<div class="newline"></div>

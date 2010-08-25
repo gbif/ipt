@@ -35,7 +35,7 @@
       <a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.keywords.item'/> ]</a>
     </div>
     <div class="newline"></div>
-	<@input name="eml.keywords[${item_index}].keywordThesaurus" i18nkey="eml.keywords.keywordThesaurus" size=40/>
+	<@input name="eml.keywords[${item_index}].keywordThesaurus" i18nkey="eml.keywords.keywordThesaurus"/>
 	<@text name="eml.keywords[${item_index}].keywordsString" i18nkey="eml.keywords.keywordsString"/>
   	<div class="newline"></div>
 	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
@@ -56,7 +56,7 @@
 	<div class="right">
       <a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.keywords.item'/> ]</a>
     </div>
-	<@input name="keywordThesaurus" i18nkey="eml.keywords.keywordThesaurus" size=40/>
+	<@input name="keywordThesaurus" i18nkey="eml.keywords.keywordThesaurus"/>
 	<@text name="keywordsString" i18nkey="eml.keywords.keywordsString"/>
   	<div class="newline"></div>
 	<div class="horizontal_dotted_line_large_foo" id="separator"></div>

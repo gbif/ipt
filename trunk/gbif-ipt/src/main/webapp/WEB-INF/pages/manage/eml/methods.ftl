@@ -17,65 +17,42 @@
 -->
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name='manage.metadata.methods.title'/></title>
-<#assign sideMenuEml=true />
- 
+<#include "/WEB-INF/pages/macros/metadata.ftl"/>
+<#assign sideMenuEml=true /> 
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
 <h1><@s.text name='manage.metadata.methods.title'/>: <em>${ms.resource.title!ms.resource.shortname}</em></h1>
 <@s.text name='manage.metadata.methods.intro'/>
 <form class="topForm" action="metadata-${section}.do" method="post"> 
-    <div id="samplingMethodPanel" class="newline">
-      <!-- The cloneSamplingMethods DIV is not attached to the DOM. It's used as a template
-           for cloning sampling method UI widgets. 
-      -->
-      <div id="cloneSamplingMethods">
-        <div id="separator" class="horizontal_dotted_line_large_foo"></div>
-        <div class="newline"></div>
-        <div class="right">
-          <a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.methods.item'/> ]</a>
-    	</div>
-        <div class="newline"></div>
-
-        <div class="leftxhalf" id="typeDiv">
-          <@s.select id="type" key="" 
-            label="%{getText('method.type')}"
-            list="methodTypeMap.entrySet()" 
-            value="methodType.name()" listKey="key"
-            listValue="value" required="true"/>
-        </div>
-        <div class="newline"></div>
-
-        <div id="SamplingMethodDiv">
-          <div id="stepDescriptionDiv">
-            <@s.textarea id="stepDescription" key="" 
-            label="%{getText('method.stepDescription')}" required="false" cssClass="text xlarge slim"/>
-          </div>
-          <div id="studyExtentDiv">
-            <@s.textarea id="studyExtent" key="" 
-            label="%{getText('method.studyExtent')}" required="false" cssClass="text text xlarge slim"/>
-          </div>
-          <div id="sampleDescriptionDiv">
-            <@s.textarea id="sampleDescription" key="" 
-            label="%{getText('method.sampleDescription')}" required="false" cssClass="text text xlarge slim"/>
-          </div>
-          <div id="qualityControlDiv">
-            <@s.textarea id="qualityControl" key="" 
-            label="%{getText('method.qualityControl')}" required="false" cssClass="text text xlarge slim"/>
-          </div>
-        </div>
-        <div class="newline"></div>
-        <div class="newline"></div>
-        <div class="newline"></div>
-        <div class="newline"></div>
-      </div>
+<div id="items">
+<div id="item-0" class="item">
+<@text name="eml.samplingMethods[0].studyExtent" value="${(eml.samplingMethods[0].studyExtent)!}"  i18nkey="eml.samplingMethods.studyExtent"/>
+<@text name="eml.samplingMethods[0].sampleDescription" value="${(eml.samplingMethods[0].sampleDescription)!}" i18nkey="eml.samplingMethods.sampleDescription"/>
+</div>
+<div id="item-1" class="item">
+<@text name="eml.samplingMethods[1].qualityControl" value="${(eml.samplingMethods[1].qualityControl)!}" i18nkey="eml.samplingMethods.qualityControl"/>
+<div class="newline"></div>
+<div class="horizontal_dotted_line_large_foo" id="separator"></div>
+<div class="newline"></div>
+</div>
+<#list eml.samplingMethods as item>
+<#if eml.samplingMethods[item_index].stepDescription?exists >
+<div id="item-${item_index}" class="item">
+	<div class="newline"></div>
+	<div class="right">
+      <a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.methods.item'/> ]</a>
     </div>
-
+    <div class="newline"></div>
+	<@text name="eml.samplingMethods[${item_index}].stepDescription" i18nkey="eml.samplingMethods.stepDescription"/>
+  	<div class="newline"></div>
+	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
+	<div class="newline"></div>
+</div>
+</#if>
+</#list>
+</div>
 <a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.methods.item'/></a></br></br>
-
-    <div class="newline"></div>
-    <div class="newline"></div>
-    <div class="newline"></div>
     <div class="newline"></div>
     <div class="newline"></div>
 <div class="buttons">
@@ -83,5 +60,16 @@
   <@s.submit name="cancel" key="button.cancel" />
 </div>
 <form>
+<div id="baseItem" class="item" style="display:none">
+	<div class="newline"></div>
+	<div class="right">
+      <a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.methods.item'/> ]</a>
+    </div>
+    <div class="newline"></div>
+	<@text name="stepDescription" i18nkey="eml.samplingMethods.stepDescription"/>
+  	<div class="newline"></div>
+	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
+	<div class="newline"></div>
+</div>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">

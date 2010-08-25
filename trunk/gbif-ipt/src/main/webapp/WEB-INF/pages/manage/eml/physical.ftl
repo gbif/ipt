@@ -36,13 +36,13 @@
     </div>
     <div class="newline"></div>
     <div class="half">
-		<@input name="eml.physicalData[${item_index}].name" i18nkey="eml.physicalData.name" size=40/>
-		<@input name="eml.physicalData[${item_index}].charset" i18nkey="eml.physicalData.charset" size=40/>
+		<@input name="eml.physicalData[${item_index}].name" i18nkey="eml.physicalData.name"/>
+		<@input name="eml.physicalData[${item_index}].charset" i18nkey="eml.physicalData.charset"/>
 	</div>	
-	<@input name="eml.physicalData[${item_index}].distributionUrl" i18nkey="eml.physicalData.distributionUrl" size=40/>
+	<@input name="eml.physicalData[${item_index}].distributionUrl" i18nkey="eml.physicalData.distributionUrl"/>
   	<div class="half">
-		<@input name="eml.physicalData[${item_index}].format" i18nkey="eml.physicalData.format" size=40/>
-		<@input name="eml.physicalData[${item_index}].formatVersion" i18nkey="eml.physicalData.formatVersion" size=40/>
+		<@input name="eml.physicalData[${item_index}].format" i18nkey="eml.physicalData.format"/>
+		<@input name="eml.physicalData[${item_index}].formatVersion" i18nkey="eml.physicalData.formatVersion" />
 	</div>
   	<div class="newline"></div>
 	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
@@ -65,13 +65,13 @@
     </div>
     <div class="newline"></div>
 	<div class="half">
-		<@input name="name" i18nkey="eml.physicalData.name" size=40/>
-		<@input name="charset" i18nkey="eml.physicalData.charset" size=40/>
+		<@input name="name" i18nkey="eml.physicalData.name"/>
+		<@input name="charset" i18nkey="eml.physicalData.charset"/>
 	</div>
-	<@input name="distributionUrl" i18nkey="eml.physicalData.distributionUrl" size=40/>
+	<@input name="distributionUrl" i18nkey="eml.physicalData.distributionUrl"/>
 	<div class="half">
-		<@input name="format" i18nkey="eml.physicalData.format" size=40/>
-		<@input name="formatVersion" i18nkey="eml.physicalData.formatVersion" size=40/>
+		<@input name="format" i18nkey="eml.physicalData.format"/>
+		<@input name="formatVersion" i18nkey="eml.physicalData.formatVersion"/>
 	</div>
   	<div class="newline"></div>
 	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
