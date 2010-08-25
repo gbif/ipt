@@ -56,6 +56,15 @@ $(document).ready(function(){
 			$("#item-"+index+" input").attr("name",function() {return $(this).attr("id"); });
 			$("#item-"+index+" select").attr("name",function() {return $(this).attr("id"); });
     	<#break>
+    	<#case "methods">
+			$("#item-"+index+" textarea").attr("id",function() {
+				var parts=$(this).attr("id").split(".");var n=parseInt(parts.length)-1;
+				return "eml.samplingMethods["+index+"]."+parts[n]; });	
+			$("#item-"+index+" label").attr("for",function() {
+				var parts=$(this).attr("for").split(".");var n=parseInt(parts.length)-1;
+				return "eml.samplingMethods["+index+"]."+parts[n]; });		
+			$("#item-"+index+" textarea").attr("name",function() {return $(this).attr("id"); });
+		<#break>
  		<#case "citations">
 			$("#item-"+index+" input").attr("id","eml.bibliographicCitationSet.bibliographicCitations["+index+"]");
 			$("#item-"+index+" input").attr("name","eml.bibliographicCitationSet.bibliographicCitations["+index+"]");
