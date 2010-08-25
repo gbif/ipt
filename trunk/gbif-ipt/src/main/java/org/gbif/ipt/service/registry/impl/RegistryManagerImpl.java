@@ -7,6 +7,7 @@ import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.utils.NewRegistryEntryHandler;
+import org.gbif.metadata.eml.Eml;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethodBase;
@@ -49,16 +50,12 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return String.format("%s/atom.xml", cfg.getBaseURL());
   }
 
-  public String getDwcArchiveURL(String uuid) {
-    return String.format("%s/resource/%s/archive-dwc.zip", cfg.getBaseURL(), uuid);
+  public String getDwcArchiveURL(String resName) {
+    return String.format("%s/archive.do?resource=%s", cfg.getBaseURL(), resName);
   }
 
-  public String getEmlURL(String uuid) {
-    return String.format("%s/resource/%s/eml", cfg.getBaseURL(), uuid);
-  }
-
-  public String getTapirURL(String id) {
-    return String.format("%s/tapir/%s", cfg.getBaseURL(), id);
+  public String getEmlURL(String resName) {
+    return String.format("%s/eml.do?resource=%s", cfg.getBaseURL(), resName);
   }
 
   /*
@@ -67,19 +64,29 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * @see org.gbif.ipt.service.registry.RegistryManager#register(org.gbif.ipt.model.Resource,
    * org.gbif.ipt.model.Organisation, org.gbif.ipt.model.Ipt)
    */
-  public UUID register(Resource resource, Organisation organisation, Ipt ipt) throws RegistryException {
+  public UUID register(Resource resource, Organisation organisation, Ipt ipt, Eml eml) throws RegistryException {
     // registering IPT resource
+
+    // services should be registered?
+    String serviceTypes = null;
+    String serviceURLs = null;
+    if (resource.getType() != null) {
+      serviceTypes = "EML|DWC-ARCHIVE";
+      serviceURLs = getEmlURL(resource.getShortname()) + "|" + getDwcArchiveURL(resource.getShortname());
+    }
 
     NameValuePair[] data = {
         new NameValuePair("organisationKey", StringUtils.trimToEmpty(organisation.getKey().toString())),
         new NameValuePair("iptKey", StringUtils.trimToEmpty(ipt.getKey().toString())),
-        new NameValuePair("name", StringUtils.trimToEmpty(resource.getShortname())), // name
+        new NameValuePair("name", ((resource.getTitle() != null) ? StringUtils.trimToEmpty(resource.getTitle())
+            : StringUtils.trimToEmpty(resource.getShortname()))), // name
         new NameValuePair("description", StringUtils.trimToEmpty(resource.getDescription())), // description
         new NameValuePair("primaryContactType", "technical"),
-        new NameValuePair("primaryContactName", StringUtils.trimToEmpty(resource.getCreator().getName())),
-        new NameValuePair("primaryContactEmail", StringUtils.trimToEmpty(resource.getCreator().getEmail())),
-        new NameValuePair("serviceTypes", "TAPIR|EML|DWC-ARCHIVE"),
-        new NameValuePair("serviceURLs", getTapirURL("1") + "|" + getEmlURL("abc") + "|" + getDwcArchiveURL("xyz"))};
+        new NameValuePair("primaryContactName",
+            StringUtils.trimToNull(StringUtils.trimToEmpty(eml.getContact().getFirstName()) + " "
+                + StringUtils.trimToEmpty(eml.getContact().getLastName()))),
+        new NameValuePair("primaryContactEmail", StringUtils.trimToEmpty(eml.getContact().getEmail())),
+        new NameValuePair("serviceTypes", serviceTypes), new NameValuePair("serviceURLs", serviceURLs)};
     String result = executePost(getIptResourceUri(), data, true);
     if (result != null) {
       // read new UDDI ID

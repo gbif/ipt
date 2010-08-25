@@ -99,9 +99,11 @@ public interface ResourceManager {
    * 
    * @param resource
    * @param organisation the org that the resource will be associated with
+   * @param ipt the ipt that the resource will be published through
+   * @param eml eml object
    * @throws InvalidConfigException
    */
-  public void register(ResourceConfiguration config, Organisation organisation, Ipt ipt) throws InvalidConfigException;
+  public void register(ResourceConfiguration config, Organisation organisation, Ipt ipt, Eml eml) throws InvalidConfigException;
 
   public void save(ResourceConfiguration resource) throws InvalidConfigException;
 

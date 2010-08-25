@@ -20,7 +20,7 @@ $(document).ready(function(){
 		$('#organisation\\.alias').val(orgName);	
 		//TODO: URL is hardwired to the dev registry. This must be replaced.
 		//TODO: Internationalise if possible the email's subject
-		var url = "<@s.url value='http://gbrdsdev.gbif.org/registry/organisation/'/>" + $('#organisation\\.key :selected').val() + ".json";
+		var url = "<@s.url value='${registryURL}registry/organisation/'/>" + $('#organisation\\.key :selected').val() + ".json";
 		$.getJSON(url+"?callback=?",function(data){
 			var contactLink = "<a href=\"mailto:" + data.primaryContactEmail 
 					+ "?subject=Password request for " + orgName

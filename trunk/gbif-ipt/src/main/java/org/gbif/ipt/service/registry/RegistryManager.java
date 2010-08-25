@@ -5,6 +5,7 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.registry.impl.RegistryManagerImpl;
+import org.gbif.metadata.eml.Eml;
 
 import com.google.inject.ImplementedBy;
 
@@ -18,10 +19,12 @@ public interface RegistryManager {
    * 
    * @param resource
    * @param organisation
+   * @param ipt
+   * @param eml
    * @return the newly created registry key for the resource
    * @throws RegistryException
    */
-  public UUID register(Resource resource, Organisation organisation, Ipt ipt) throws RegistryException;
+  public UUID register(Resource resource, Organisation organisation, Ipt ipt, Eml eml) throws RegistryException;
 
   /**
    * Register an IPT instance against the GBIF Registry
