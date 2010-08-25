@@ -38,6 +38,7 @@ public class OverviewAction extends BaseAction {
   private List<Organisation> organisations;
   private EmlValidator emlValidator = new EmlValidator();
   private boolean missingMetadata = false;
+  private boolean missingBasicMetadata = false;
 
   public String addmanager() throws Exception {
     User u = userManager.get(id);
@@ -86,6 +87,10 @@ public class OverviewAction extends BaseAction {
     missingMetadata = !emlValidator.isValid(ms.getEml(), null);
 
     return SUCCESS;
+  }
+
+  public boolean getMissingBasicMetadata() {
+    return !emlValidator.isValid(ms.getEml(), "basic");
   }
 
   public ResourceManagerSession getMs() {
@@ -145,7 +150,7 @@ public class OverviewAction extends BaseAction {
       Organisation org = null;
       try {
         org = registrationManager.get(id);
-        resourceManager.register(ms.getConfig(), org, registrationManager.getIpt(), ms.getEml()); 
+        resourceManager.register(ms.getConfig(), org, registrationManager.getIpt(), ms.getEml());
         if (org != null) {
           addActionMessage("Registered resource with " + org.getName() + " in GBIF");
         }

@@ -18,10 +18,16 @@ $(document).ready(function(){
 		
 		$('#organisation\\.name').val(orgName);	
 		$('#organisation\\.alias').val(orgName);	
-		//TODO: URL is hardwired to the dev registry. This must be replaced.
 		//TODO: Internationalise if possible the email's subject
 		var url = "<@s.url value='${registryURL}registry/organisation/'/>" + $('#organisation\\.key :selected').val() + ".json";
 		$.getJSON(url+"?callback=?",function(data){
+			
+			$('#organisation\\.primaryContactType').val(data.primaryContactType);
+			$('#organisation\\.primaryContactName').val(data.primaryContactName);
+			$('#organisation\\.primaryContactEmail').val(data.primaryContactEmail);
+			$('#organisation\\.nodeKey').val(data.nodeKey);
+			$('#organisation\\.nodeName').val(data.nodeName);
+			
 			var contactLink = "<a href=\"mailto:" + data.primaryContactEmail 
 					+ "?subject=Password request for " + orgName
 					+ "&body=" + emailContent  + "\"> "  
@@ -53,6 +59,12 @@ $(document).ready(function(){
 		<@s.hidden name="id" id="id" required="true" />
 	<#else>
 		<@s.hidden id="organisation.name" name="organisation.name" required="true" />
+		<@s.hidden id="organisation.primaryContactType" name="organisation.primaryContactType" required="false" />
+		<@s.hidden id="organisation.primaryContactName" name="organisation.primaryContactName" required="false" />
+		<@s.hidden id="organisation.primaryContactEmail" name="organisation.primaryContactEmail" required="false" />
+		<@s.hidden id="organisation.nodeKey" name="organisation.nodeKey" required="false" />
+		<@s.hidden id="organisation.nodeName" name="organisation.nodeName" required="false" />
+		
 		<@selectList name="organisation.key" options="organisations" objValue="key" objTitle="name" i18nkey="admin.organisation.key" size=15 />
 	</#if>		  
 	<@input name="organisation.password" i18nkey="admin.organisation.password" type="text"/>
