@@ -65,15 +65,27 @@ $(document).ready(function(){
 			$("#item-"+index+" input").attr("id",function() {
 				var parts=$(this).attr("id").split(".");var n=parseInt(parts.length)-1;
 				return "eml.jgtiCuratorialUnits["+index+"]."+parts[n]; });
-			$("#item-"+index+" select").attr("id",function() {
-				var parts=$(this).attr("id").split(".");var n=parseInt(parts.length)-1;
-				return "eml.jgtiCuratorialUnits["+index+"]."+parts[n]; });
+			$("#item-"+index+" select").attr("id","type-"+index).unbind().change(function() {
+				changeForm($(this));
+			});
 			$("#item-"+index+" label").attr("for",function() {
 				var parts=$(this).attr("for").split(".");var n=parseInt(parts.length)-1;
-				return "eml.jgtiCuratorialUnits["+index+"]."+parts[n]; });		
+				return "eml.jgtiCuratorialUnits["+index+"]."+parts[n]; });
 			$("#item-"+index+" input").attr("name",function() {return $(this).attr("id"); });
 			$("#item-"+index+" select").attr("name",function() {return $(this).attr("id"); });
-			$("#item-"+index+" .subitem").attr("id","subitem-"+index);
+			$("#item-"+index+" .subitem").attr("id","subitem-"+index);			
+			var selectValue = $("#item-"+index+" #type-"+index).attr("value");
+			if(selectValue == "COUNT_RANGE") {
+				$("#item-"+index+" [id^='range-']").attr("id", "range-"+index).attr("name", function() {
+						$(this).css("display", "");
+						return $(this).attr("id"); 
+				});
+			} else {
+				$("#item-"+index+" [id^='uncertainty-']").attr("id", "uncertainty-"+index).attr("name", function() {
+						$(this).css("display", "");
+						return $(this).attr("id");
+				});
+			}
 		<#break>
 		<#case "physical">
 			$("#item-"+index+" input").attr("id",function() {
@@ -116,7 +128,38 @@ $(document).ready(function(){
 			$("#item-"+index+" [for$='rank']").attr("for", "eml.taxonomicCoverages["+index+"].taxonKeyword.rank");
 		<#break>
 		<#default>
-  	  </#switch>
+  	  </#switch>		
+	}
+	
+	$("[id^='type-']").change(function() {
+		changeForm($(this));
+	});
+	
+	function changeForm(select) {		
+		<#switch "${section}">
+  			<#case "collections">
+				var selection = select.attr("value");
+				var index = select.attr("id").split("-")[1];
+				if(selection == "COUNT_RANGE") {
+					$("#subitem-"+index+" [id^='uncertainty-']").fadeOut(function() {
+						$(this).remove();
+						var newItem = $("#range-99999").clone().css("display", "").attr("id", "range-"+index).attr("name", function() {$(this).attr("id")});
+						$("#subitem-"+index).append(newItem).hide().fadeIn(function() {
+							setItemIndex($("#item-"+index), index);
+						});
+					});		
+				} else {			
+					$("#subitem-"+index+" [id^='range-']").fadeOut(function() {
+						$(this).remove();
+						var newItem = $("#uncertainty-99999").clone().css("display", "").attr("id", "uncertainty-"+index).attr("name", function() {$(this).attr("id")});
+						$("#subitem-"+index).append(newItem).hide().fadeIn(function() {
+							setItemIndex($("#item-"+index), index);
+						});
+					});
+				}			
+    		<#break>
+    		<#default>
+    	</#switch>
 		
 	}
 		
