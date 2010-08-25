@@ -148,7 +148,10 @@ By default a resource is private to the managers. Once published to GBIF you can
 		      <option value="${o.key}">${o.name}</option>
 		    </#list>
 			</select>
-	       	<@s.submit cssClass="confirm" name="publish" key="button.register"/>
+	       	<@s.submit cssClass="confirm" name="publish" key="button.register" disabled="${missingBasicMetadata?string}"/>
+	       	<#if missingBasicMetadata>
+	       		<div class="warn">The <a href="${baseURL}/manage/metadata-basic.do">resource's basic metadata</a> should be saved before registering this IPT to the GBIF network.</div>
+	       	</#if>
 		<#else>
 		    <#if ms.resource.status=="PRIVATE">
 	       	<@s.submit cssClass="confirm" name="publish" key="button.publish"/>

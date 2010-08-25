@@ -2,6 +2,25 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	initHelp();
+
+	$('#organisation\\.key').change(function() {
+		var url = "<@s.url value='${registryURL}registry/organisation/'/>" + $('#organisation\\.key :selected').val() + ".json";
+		$.getJSON(url+"?callback=?",function(data){
+			
+			$('#organisation\\.primaryContactType').val(data.primaryContactType);
+			$('#organisation\\.primaryContactName').val(data.primaryContactName);
+			$('#organisation\\.primaryContactEmail').val(data.primaryContactEmail);
+			$('#organisation\\.nodeKey').val(data.nodeKey);
+			$('#organisation\\.nodeName').val(data.nodeName);
+			
+			var contactLink = "<a href=\"mailto:" + data.primaryContactEmail 
+					+ "?subject=Password request for " + orgName
+					+ "&body=" + emailContent  + "\"> "  
+					+ "Click here</a> to contact " + orgName;
+			$('#requestDetails').html(contactLink);
+        	});			
+	});
+			
 	<#if !validatedBaseURL>
 		$('#registrationForm').hide();
 	</#if>
@@ -68,6 +87,12 @@ $(document).ready(function(){
 			<@input name="organisation.password" i18nkey="admin.organisation.password" type="text"/>
 			<@input name="organisation.alias" i18nkey="admin.organisation.alias" type="text" />
 			<@checkbox name="organisation.canHost" i18nkey="admin.organisation.canHost" value="true" help="i18n"/>	
+			
+			<@s.hidden id="organisation.primaryContactType" name="organisation.primaryContactType" required="false" />
+			<@s.hidden id="organisation.primaryContactName" name="organisation.primaryContactName" required="false" />
+			<@s.hidden id="organisation.primaryContactEmail" name="organisation.primaryContactEmail" required="false" />
+			<@s.hidden id="organisation.nodeKey" name="organisation.nodeKey" required="false" />
+			<@s.hidden id="organisation.nodeName" name="organisation.nodeName" required="false" />			
 						
 			<@input name="ipt.name" i18nkey="admin.ipt.name" type="text" />
 			<@text name="ipt.description" i18nkey="admin.ipt.description" />
