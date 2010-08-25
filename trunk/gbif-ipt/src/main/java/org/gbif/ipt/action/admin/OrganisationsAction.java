@@ -148,6 +148,10 @@ public class OrganisationsAction extends POSTAction {
     return orgSession.organisations;
   }
 
+  public String getRegistryURL() {
+    return cfg.getRegistryUrl();
+  }
+
   /**
    * @return the resourceManager
    */
