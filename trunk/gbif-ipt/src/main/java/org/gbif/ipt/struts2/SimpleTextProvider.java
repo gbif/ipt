@@ -56,6 +56,7 @@ public class SimpleTextProvider implements I18nResourceProvider {
         text = MessageFormat.format(message, args);
       } catch (IllegalArgumentException e) {
         // message and arguments dont match?
+        log.debug(e);
         text = message;
       }
       return text;

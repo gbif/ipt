@@ -25,7 +25,7 @@ function initForm(){
 //    });    
 }
 function initHelp(){
-    $("img.infoImg").click(function(e) {
+    $(".infoImg").click(function(e) {
         var show = $(this).next().is(":hidden");
 	    $("div.info:visible").hide("fast");
 	    if (show){

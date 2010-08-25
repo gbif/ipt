@@ -26,7 +26,7 @@
     </tr>
     </#if>
     <tr>
-         <th><@s.text name="basic.lastModified"/></th><td>${vocabulary.lastUpdate?datetime.medium}</td>
+         <th><@s.text name="basic.lastModified"/></th><td>${vocabulary.lastUpdate?datetime?string.medium}</td>
     </tr>
    </table>
 <br/>

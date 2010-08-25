@@ -14,7 +14,7 @@ import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.manage.ResourceManager;
-import org.gbif.ipt.validation.EmlSupport;
+import org.gbif.ipt.validation.EmlValidator;
 
 import com.google.inject.Inject;
 
@@ -36,7 +36,7 @@ public class OverviewAction extends BaseAction {
   private List<User> potentialManagers;
   private List<Extension> potentialExtensions;
   private List<Organisation> organisations;
-  private EmlSupport emlValidator = new EmlSupport();
+  private EmlValidator emlValidator = new EmlValidator();
   private boolean missingMetadata = false;
 
   public String addmanager() throws Exception {

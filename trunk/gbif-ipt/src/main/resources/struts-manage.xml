@@ -79,7 +79,10 @@
 			<result name="input">/WEB-INF/pages/manage/mapping.ftl</result>
 			<result type="redirect">resource.do</result>
 		</action>
-
+		<action name="vocabulary" class="org.gbif.ipt.action.admin.VocabulariesAction">
+			<result>/WEB-INF/pages/manage/vocabulary.ftl</result>
+		</action>
+		
 		<action name="generate" class="org.gbif.ipt.action.manage.MetadataAction">
 			<result>/WEB-INF/pages/manage/metadata.ftl</result>
 		</action>

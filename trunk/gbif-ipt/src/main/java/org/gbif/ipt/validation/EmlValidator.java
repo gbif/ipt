@@ -30,7 +30,7 @@ import com.google.inject.internal.Nullable;
  * @author markus
  * 
  */
-public class EmlSupport extends BaseValidator {
+public class EmlValidator extends BaseValidator {
 
   public boolean isValid(Eml eml, @Nullable String part) {
     BaseAction action = new BaseAction(new SimpleTextProvider(), AppConfig.buildMock());
