@@ -410,10 +410,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
    * @see org.gbif.ipt.service.manage.ResourceManager#register(org.gbif.ipt.model.Resource,
    * org.gbif.ipt.model.Organisation)
    */
-  public void register(ResourceConfiguration config, Organisation organisation, Ipt ipt) throws RegistryException {
+  public void register(ResourceConfiguration config, Organisation organisation, Ipt ipt, Eml eml) throws RegistryException {
     if (PublicationStatus.REGISTERED != config.getResource().getStatus()) {
       registryManager2.setRegistryCredentials(organisation.getKey().toString(), organisation.getPassword());
-      UUID key = registryManager2.register(config.getResource(), organisation, ipt);
+      UUID key = registryManager2.register(config.getResource(), organisation, ipt, eml);
       if (key == null) {
         throw new RegistryException(RegistryException.TYPE.MISSING_METADATA, "No key returned for registered resoruce.");
       }

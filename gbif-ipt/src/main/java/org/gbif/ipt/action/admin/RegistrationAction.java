@@ -95,6 +95,10 @@ public class RegistrationAction extends POSTAction {
     return organisations;
   }
 
+  public String getRegistryURL() {
+    return cfg.getRegistryUrl();
+  }
+
   /**
    * @return the validatedBaseURL
    */

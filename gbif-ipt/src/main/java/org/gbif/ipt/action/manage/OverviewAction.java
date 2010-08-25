@@ -145,7 +145,7 @@ public class OverviewAction extends BaseAction {
       Organisation org = null;
       try {
         org = registrationManager.get(id);
-        resourceManager.register(ms.getConfig(), org, registrationManager.getIpt());
+        resourceManager.register(ms.getConfig(), org, registrationManager.getIpt(), ms.getEml()); 
         if (org != null) {
           addActionMessage("Registered resource with " + org.getName() + " in GBIF");
         }
