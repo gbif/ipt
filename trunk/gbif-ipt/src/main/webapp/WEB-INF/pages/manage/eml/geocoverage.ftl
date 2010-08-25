@@ -38,12 +38,6 @@
        * Called on the initial page load.
        */
       function init() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          'zoom': 1,
-          'center': new google.maps.LatLng(0, 0),
-          'mapTypeId': google.maps.MapTypeId.TERRAIN
-        });
-        
        		var maxy=parseFloat($("#"+bboxBase+"max\\.latitude").attr("value"));
        		var miny=parseFloat($("#"+bboxBase+"min\\.latitude").attr("value"));
             var maxx=parseFloat($("#"+bboxBase+"max\\.longitude").attr("value"));
@@ -59,6 +53,11 @@
   			if(isNaN(minx)){minx=dfminx;isFilled=false;}
   				else dfminx=minx;
   				
+        map = new google.maps.Map(document.getElementById('map'), {
+          'zoom': 2,
+          'center': new google.maps.LatLng((maxy+miny)/2, (maxx+minx)/2),
+          'mapTypeId': google.maps.MapTypeId.TERRAIN
+        });  				
         	
         // Plot two markers to represent the Rectangle's bounds.
         marker1 = new google.maps.Marker({
