@@ -8,6 +8,12 @@ $(document).ready(function(){
 });   
 </script>
 <style>
+	div.definition div.title{
+		width: 26%;
+	}
+	div.definition div.body{
+		width: 72%;
+	}
 	div.body select{
 		width: 200px;
 	}
