@@ -17,6 +17,9 @@ public class ResourceDisplay {
   String type;
 
   public ResourceDisplay(Resource r) {
+    if (r == null) {
+      return;
+    }
     if (r.isRegistered()) {
       if (r.isDirty()) {
         status = PublicationStatusForDisplay.UNPUBLISHED_CHANGES;

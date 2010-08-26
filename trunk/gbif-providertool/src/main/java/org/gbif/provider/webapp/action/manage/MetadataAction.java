@@ -1,14 +1,17 @@
 /*
  * Copyright 2009 GBIF.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
- * the License. You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
  * 
  * http://www.apache.org/licenses/LICENSE-2.0
  * 
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
- * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package org.gbif.provider.webapp.action.manage;
 
@@ -72,7 +75,8 @@ import javax.sql.DataSource;
 /**
  * TODO: Documentation.
  */
-public class MetadataAction extends BaseMetadataResourceAction implements Preparable, ServletRequestAware {
+public class MetadataAction extends BaseMetadataResourceAction implements
+    Preparable, ServletRequestAware {
 
   private static final long serialVersionUID = -4560571281629028337L;
 
@@ -160,7 +164,8 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
       Object previousQueue = session.get(Constants.RECENT_RESOURCES);
       if (previousQueue != null && previousQueue instanceof Queue) {
         Queue<LabelValue> queue = (Queue) previousQueue;
-        LabelValue res = new LabelValue(resource.getTitle(), resourceId.toString());
+        LabelValue res = new LabelValue(resource.getTitle(),
+            resourceId.toString());
         // remove entry from queue if it existed before
         queue.remove(res);
         // save back to session
@@ -260,26 +265,35 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
     resource = null;
     resources = getResourceTypeMatchingManager().getAll();
     if (isAdminUser()) {
-      resourcesForDisplay = Lists.transform(resources, new Function<Resource, ResourceDisplay>() {
-        public ResourceDisplay apply(Resource r) {
-          return new ResourceDisplay(r);
-        }
-      });
+      resourcesForDisplay = Lists.transform(resources,
+          new Function<Resource, ResourceDisplay>() {
+            public ResourceDisplay apply(Resource r) {
+              return new ResourceDisplay(r);
+            }
+          });
     } else {
-      resourcesForDisplay = Lists.transform(resources, new Function<Resource, ResourceDisplay>() {
-        public ResourceDisplay apply(Resource r) {
-          if (isManagerUser()) {
-            if (isResourceOwner(request, r.getId())) {
-              return new ResourceDisplay(r);
+      resourcesForDisplay = Lists.transform(resources,
+          new Function<Resource, ResourceDisplay>() {
+            public ResourceDisplay apply(Resource r) {
+              if (isManagerUser()) {
+                if (isResourceOwner(request, r.getId())) {
+                  return new ResourceDisplay(r);
+                }
+              } else {
+                if (r.isPublic()) {
+                  return new ResourceDisplay(r);
+                }
+              }
+              final ResourceDisplay stubresourcedisplay = new ResourceDisplay(
+                  null);
+              return stubresourcedisplay;
             }
-          } else {
-            if (r.isPublic()) {
-              return new ResourceDisplay(r);
-            }
-          }
-          return null;
-        }
-      });
+          });
+    }
+    for (ResourceDisplay rd : resourcesForDisplay) {
+      if (rd.getType() == null) {
+        resourcesForDisplay.remove(rd);
+      }
     }
     return SUCCESS;
   }
@@ -288,10 +302,12 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
   public void prepare() {
     super.prepare();
     System.out.println(request.getParameterMap());
-    resourceTypeMap = translateI18nMap(new HashMap<String, String>(ResourceType.htmlSelectMap), true);
-    agentRoleMap = translateI18nMap(new HashMap<String, String>(Role.htmlSelectMap), true);
-    publicationStatusMap = translateI18nMap(new HashMap<String, String>(PublicationStatusForDisplay.htmlSelectMap),
-        true);
+    resourceTypeMap = translateI18nMap(new HashMap<String, String>(
+        ResourceType.htmlSelectMap), true);
+    agentRoleMap = translateI18nMap(new HashMap<String, String>(
+        Role.htmlSelectMap), true);
+    publicationStatusMap = translateI18nMap(new HashMap<String, String>(
+        PublicationStatusForDisplay.htmlSelectMap), true);
     if (resource == null && resourceType != null) {
       // create new empty resource
       if (resourceType.equalsIgnoreCase(OCCURRENCE)) {
@@ -336,7 +352,8 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
       }
       try {
         emlManager.toXmlFile(eml);
-        saveMessage("Created new eml.xml file: " + cfg.getEmlFile(resource.getId()));
+        saveMessage("Created new eml.xml file: "
+            + cfg.getEmlFile(resource.getId()));
       } catch (IOException e) {
         saveMessage("Unable to create new eml.xml file");
       }
@@ -475,8 +492,8 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 
     // Receives the uploaded file and saves it to disk:
     File targetFile = cfg.getSourceFile(resource.getId(), fileFileName);
-    log.debug(String.format("Uploading source file for resource %s to file %s", resource.getId(),
-        targetFile.getAbsolutePath()));
+    log.debug(String.format("Uploading source file for resource %s to file %s",
+        resource.getId(), targetFile.getAbsolutePath()));
     InputStream stream = new FileInputStream(file);
     OutputStream bos = new FileOutputStream(targetFile);
     int bytesRead;
@@ -494,7 +511,8 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 
     boolean success = false;
     if (resource instanceof OccurrenceResource) {
-      ArchiveRequest<OccurrenceResource> req = ArchiveRequest.with(targetFile, (OccurrenceResource) resource);
+      ArchiveRequest<OccurrenceResource> req = ArchiveRequest.with(targetFile,
+          (OccurrenceResource) resource);
       ArchiveResponse<OccurrenceResource> res = occResourceArchiveUtil.init(req).process();
       resource = res.getResource();
       occResourceManager.save((OccurrenceResource) resource);
@@ -503,8 +521,10 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
         saveMessage(msg);
       }
     } else if (resource instanceof ChecklistResource) {
-      ArchiveRequest<ChecklistResource> req = ArchiveRequest.with(targetFile, (ChecklistResource) resource);
-      ArchiveResponse<ChecklistResource> res = checklistResourceArchiveUtil.init(req).process();
+      ArchiveRequest<ChecklistResource> req = ArchiveRequest.with(targetFile,
+          (ChecklistResource) resource);
+      ArchiveResponse<ChecklistResource> res = checklistResourceArchiveUtil.init(
+          req).process();
       resource = res.getResource();
       checklistResourceManager.save((ChecklistResource) resource);
       success = res.isSuccess();
@@ -547,7 +567,8 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
     if (getRequest().getMethod().equalsIgnoreCase("post")) {
       getFieldErrors().clear();
       if ("".equals(fileFileName) || file == null) {
-        super.addFieldError("file", getText("errors.requiredField", new String[]{getText("uploadForm.file")}));
+        super.addFieldError("file", getText("errors.requiredField",
+            new String[]{getText("uploadForm.file")}));
       } else if (file.length() > 104857600) {
         addActionError(getText("maxLengthExceeded"));
       }
@@ -594,7 +615,8 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
       // load resource and compare creator to user
       Resource res = resourceManager.get(resourceId);
       Principal user = request.getUserPrincipal();
-      if (res.getCreator() != null && res.getCreator().getUsername() != user.getName()) {
+      if (res.getCreator() != null
+          && res.getCreator().getUsername() != user.getName()) {
         return false;
       }
     } catch (NumberFormatException e) {
@@ -652,14 +674,16 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
         return false;
       }
       // do sth with the file
-      ResizeImage.resizeImage(file, logoFile, Constants.LOGO_SIZE, Constants.LOGO_SIZE);
+      ResizeImage.resizeImage(file, logoFile, Constants.LOGO_SIZE,
+          Constants.LOGO_SIZE);
     } catch (Exception e) {
       log.error(" or resize logo", e);
       saveMessage(getText("logo.resizeError"));
       return false;
     }
 
-    log.info(String.format("Logo %s uploaded and resized for resource %s", logoFile.getAbsolutePath(), resourceId));
+    log.info(String.format("Logo %s uploaded and resized for resource %s",
+        logoFile.getAbsolutePath(), resourceId));
     return true;
   }
 
