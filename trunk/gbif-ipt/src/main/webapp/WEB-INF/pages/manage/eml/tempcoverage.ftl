@@ -92,7 +92,9 @@
 			if(typeSubForm == DATE_RANGE) {
 				$("#"+idNewForm+" [id^='date-']").attr("id", "date-"+index);
 				$("#"+idNewForm+" [id$='startDate']").attr("id", "eml.temporalCoverages["+index+"].startDate").attr("name", function() {return $(this).attr("id");});
+				insertCalendar($("#"+idNewForm+" [id$='startDate']"));							
 				$("#"+idNewForm+" [id$='endDate']").attr("id", "eml.temporalCoverages["+index+"].endDate").attr("name", function() {return $(this).attr("id");});
+				insertCalendar($("#"+idNewForm+" [id$='endDate']"));
 			}
 			if(typeSubForm == FORMATION_PERIOD) {
 				$("#"+idNewForm+" [id^='formation-']").attr("id", "formation-"+index);
@@ -104,7 +106,8 @@
 			}
 			if(typeSubForm == SINGLE_DATE) {				
 				$("#"+idNewForm+" [id^='single-']").attr("id", "single-"+index);
-				$("#"+idNewForm+" [id$='startDate']").attr("id", "eml.temporalCoverages["+index+"].startDate").attr("name", function() {return $(this).attr("id");});				
+				$("#"+idNewForm+" [id$='startDate']").attr("id", "eml.temporalCoverages["+index+"].startDate").attr("name", function() {return $(this).attr("id");});
+				insertCalendar($("#"+idNewForm+" [id$='startDate']"));		
 			}
 		}
 		
@@ -137,7 +140,6 @@
 			var $target = $(event.target);
 			var index = $target.attr("id").split("-")[1];									
 			// removing the form in the html.
-			//$("#toRemove").slideUp("slow", function() {
 			$('#temporal-'+index).slideUp("slow", function() {
 				$(this).remove();
 				$("#temporals .tempo").each(function(index) { 
@@ -176,13 +178,13 @@
 			<#if "${temporalCoverage.type}" == "DATE_RANGE" >
 				<div id="date-${temporalCoverage_index}" class="typeForm" >
 					<div class="half">
-						<@input i18nkey="eml.temporalCoverage.startDate" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n" helpOptions={"MM/DD/YYYY":"MM/DD/YYYY",  "MM/DD/YY":"MM/DD/YY", "January 1, 1990":"January 1, 1990"}/>
-						<@input i18nkey="eml.temporalCoverage.endDate" name="eml.temporalCoverages[${temporalCoverage_index}].endDate" help="i18n" helpOptions={"MM/DD/YYYY":"MM/DD/YYYY",  "MM/DD/YY":"MM/DD/YY", "January 1, 1990":"January 1, 1990"}/>
+						<@input i18nkey="eml.temporalCoverage.startDate" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n" helpOptions={"MM/DD/YYYY":"MM/DD/YYYY",  "MM/DD/YY":"MM/DD/YY"}/>
+						<@input i18nkey="eml.temporalCoverage.endDate" name="eml.temporalCoverages[${temporalCoverage_index}].endDate" help="i18n" helpOptions={"MM/DD/YYYY":"MM/DD/YYYY",  "MM/DD/YY":"MM/DD/YY"}/>
 					</div>
 			<#elseif "${temporalCoverage.type}" == "SINGLE_DATE" >
 				<div id="single-${temporalCoverage_index}" class="typeForm" >
 					<div class="half">
-						<@input i18nkey="eml.temporalCoverage.startDate" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n" helpOptions={"MM/DD/YYYY":"MM/DD/YYYY",  "MM/DD/YY":"MM/DD/YY", "January 1, 1990":"January 1, 1990"}/>
+						<@input i18nkey="eml.temporalCoverage.startDate" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n" helpOptions={"MM/DD/YYYY":"MM/DD/YYYY",  "MM/DD/YY":"MM/DD/YY"}/>
 					</div>
 			<#elseif "${temporalCoverage.type}" == "FORMATION_PERIOD" >
 				<div id="formation-${temporalCoverage_index}" class="typeForm" >
@@ -231,8 +233,8 @@
 <!-- DATE RANGE -->
 <div id="date-99999" class="typeForm" style="display:none">
 	<div class="half">
-		<@input i18nkey="eml.temporalCoverage.startDate" name="startDate" help="i18n" helpOptions={"MM/DD/YYYY":"MM/DD/YYYY",  "MM/DD/YY":"MM/DD/YY", "January 1, 1990":"January 1, 1990"}/>
-		<@input i18nkey="eml.temporalCoverage.endDate" name="endDate" help="i18n" helpOptions={"MM/DD/YYYY":"MM/DD/YYYY",  "MM/DD/YY":"MM/DD/YY", "January 1, 1990":"January 1, 1990"}/>
+		<@input i18nkey="eml.temporalCoverage.startDate" name="startDate" help="i18n" helpOptions={"MM/DD/YYYY":"MM/DD/YYYY",  "MM/DD/YY":"MM/DD/YY"}/>
+		<@input i18nkey="eml.temporalCoverage.endDate" name="endDate" help="i18n" helpOptions={"MM/DD/YYYY":"MM/DD/YYYY",  "MM/DD/YY":"MM/DD/YY"}/>
 	</div>		  
 	<div class="newline"></div>      
 	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
@@ -243,7 +245,7 @@
 <!-- SINGLE DATE -->
 <div id="single-99999" class="typeForm" style="display:none">
 	<div class="half">
-		<@input i18nkey="eml.temporalCoverage.startDate" name="startDate" help="i18n" helpOptions={"MM/DD/YYYY":"MM/DD/YYYY",  "MM/DD/YY":"MM/DD/YY", "January 1, 1990":"January 1, 1990"} />
+		<@input i18nkey="eml.temporalCoverage.startDate" name="startDate" help="i18n" helpOptions={"MM/DD/YYYY":"MM/DD/YYYY",  "MM/DD/YY":"MM/DD/YY"} />
 	</div>
 	<div class="newline"></div>
 	<div class="horizontal_dotted_line_large_foo" id="separator"></div>

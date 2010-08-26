@@ -24,6 +24,17 @@ function initForm(){
 //        }  
 //    });    
 }
+function insertCalendar(inputField) {
+	if (inputField != undefined) {
+		inputField.datepicker({
+			showOn: "button",
+			buttonImage: "../images/calendar.png",
+			buttonImageOnly: true,
+			changeMonth: true,
+			changeYear: true
+		});
+	}
+}
 function initHelp(){
     $(".infoImg").click(function(e) {
         var show = $(this).next().is(":hidden");
@@ -33,8 +44,8 @@ function initHelp(){
 //	    	$(this).next().css({ top: off.top-24, left: off.left-170 });
 	        $(this).next().show("fast");
 	    };
-    })
-    $("div.info").click(function(e) {
+    })	
+	$("div.info").click(function(e) {
         $(this).hide("fast");
     })
     $(document).keyup(function(e) {
