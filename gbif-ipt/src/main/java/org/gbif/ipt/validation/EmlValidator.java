@@ -145,23 +145,23 @@ public class EmlValidator extends BaseValidator {
       } else if (part == null || part.equalsIgnoreCase("collections")) {
     	  int c = 0;
     	  for(JGTICuratorialUnit jcu : eml.getJgtiCuratorialUnits()) {
-    		  if(jcu.getType().equals(JGTICuratorialUnitType.COUNT_RANGE)) {
-    			  if(!exists(jcu.getRangeStart().toString())) {
+    		  if(jcu.getType().equals(JGTICuratorialUnitType.COUNT_RANGE)) {    			  
+    			  if(!exists(jcu.getRangeStart())) {
     				  action.addFieldError("eml.jgtiCuratorialUnits["+c+"].rangeStart", action.getText("validation.required"));
     			  }
     			  if(!exists(jcu.getRangeEnd().toString())) {
     				  action.addFieldError("eml.jgtiCuratorialUnits["+c+"].rangeEnd", action.getText("validation.required"));
     			  }
     		  }
-    		  if(jcu.getType().equals(JGTICuratorialUnitType.COUNT_WITH_UNCERTAINTY)) {
-    			  if(!exists(jcu.getRangeMean().toString())) {
+    		  if(jcu.getType().equals(JGTICuratorialUnitType.COUNT_WITH_UNCERTAINTY)) {    			  
+    			  if(!exists(jcu.getRangeMean())) {
     				  action.addFieldError("eml.jgtiCuratorialUnits["+c+"].rangeMean", action.getText("validation.required"));
     			  }
-    			  if(!exists(jcu.getUncertaintyMeasure().toString())) {
+    			  if(!exists(jcu.getUncertaintyMeasure())) {
     				  action.addFieldError("eml.jgtiCuratorialUnits["+c+"].uncertaintyMeasure", action.getText("validation.required"));
     			  }
     		  }
-    		  if(!exists(jcu.getUnitType().toString())) {
+    		  if(!exists(jcu.getUnitType())) {
 				  action.addFieldError("eml.jgtiCuratorialUnits["+c+"].unitType", action.getText("validation.required"));
 			  }
     		  c++;

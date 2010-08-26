@@ -29,6 +29,10 @@ public abstract class BaseValidator {
     return exists(x, 2);
   }
   
+  protected boolean exists(Integer i) {
+	  return i != null;
+  }
+  
   protected boolean exists(Date d) {
 	 return d != null;
   }
