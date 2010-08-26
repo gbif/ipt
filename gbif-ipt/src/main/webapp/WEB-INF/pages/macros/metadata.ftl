@@ -1,6 +1,6 @@
 <script type="text/javascript">
+var	itemsCount=-1;
 $(document).ready(function(){
-	var	itemsCount=-1;
 	calcNumberOfItems();
 	
 	function calcNumberOfItems(){
@@ -75,7 +75,7 @@ $(document).ready(function(){
 				var parts=$(this).attr("id").split(".");var n=parseInt(parts.length)-1;
 				return "eml.jgtiCuratorialUnits["+index+"]."+parts[n]; });
 			$("#item-"+index+" select").attr("id","type-"+index).unbind().change(function() {
-				changeForm($(this));
+				updateSubitem($(this));
 			});
 			$("#item-"+index+" label").attr("for",function() {
 				var parts=$(this).attr("for").split(".");var n=parseInt(parts.length)-1;
@@ -141,10 +141,10 @@ $(document).ready(function(){
 	}
 	
 	$("[id^='type-']").change(function() {
-		changeForm($(this));
+		updateSubitem($(this));
 	});
 	
-	function changeForm(select) {		
+	function updateSubitem(select) {		
 		<#switch "${section}">
   			<#case "collections">
 				var selection = select.attr("value");
