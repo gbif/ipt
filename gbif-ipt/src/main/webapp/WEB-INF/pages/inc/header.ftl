@@ -1,4 +1,5 @@
 [#ftl]
+[#setting url_escaping_charset="UTF-8"]
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
     <head>
 	    <meta name="copyright" lang="en" content="GBIF" />

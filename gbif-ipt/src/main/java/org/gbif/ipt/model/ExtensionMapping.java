@@ -35,6 +35,15 @@ public class ExtensionMapping {
     return extension;
   }
 
+  public ArchiveField getField(String qname) {
+    for (ArchiveField f : fields) {
+      if (f.getTerm().qualifiedName().equals(qname)) {
+        return f;
+      }
+    }
+    return null;
+  }
+
   public Set<ArchiveField> getFields() {
     return fields;
   }

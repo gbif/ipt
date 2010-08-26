@@ -88,7 +88,7 @@ public class ResourceConfiguration {
     if (rowType == null) {
       return null;
     }
-    if (rowType.equals(core.getExtension().getRowType())) {
+    if (core != null && core.getExtension() != null && rowType.equals(core.getExtension().getRowType())) {
       return core;
     }
     for (ExtensionMapping em : extensions) {

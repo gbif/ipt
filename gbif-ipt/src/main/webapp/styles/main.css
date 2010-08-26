@@ -382,6 +382,18 @@ table.simple tr.linebreak{
 }
 
 
+/* horizontal list */
+ul.horizontal {
+	margin:0; 
+	padding:0; 
+	list-style:none; 
+}
+ul.horizontal > li {
+	display:inline; 
+	margin:0; 
+	padding: 0px 10px 0px 0px; 
+}
+
 
 
 /* 
