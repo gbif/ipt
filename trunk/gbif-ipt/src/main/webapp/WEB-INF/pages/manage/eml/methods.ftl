@@ -18,45 +18,27 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name='manage.metadata.methods.title'/></title>
 <#include "/WEB-INF/pages/macros/metadata.ftl"/>
-<script type="text/javascript">
-    $(document).ready(function(){
-      
-      $("#save").click(function() {
-			$("#sampling textarea").attr("id",function() {
-				var parts=$(this).attr("id").split(".");var n=parseInt(parts.length)-1;
-				return "eml.samplingMethods["+(itemsCount+2)+"]."+parts[n]; });
-		    $("#qualitycontrol textarea").attr("id",function() {
-				var parts=$(this).attr("id").split(".");var n=parseInt(parts.length)-1;
-				return "eml.samplingMethods["+(itemsCount+1)+"]."+parts[n]; });
-			$("#sampling textarea").attr("name",function() {return $(this).attr("id"); });
-			$("#qualitycontrol textarea").attr("name",function() {return $(this).attr("id"); });
-			$("#sampling label").attr("for",function() {
-				var parts=$(this).attr("for").split(".");var n=parseInt(parts.length)-1;
-				return "eml.samplingMethods["+(itemsCount+2)+"]."+parts[n]; });	
-			$("#qualitycontrol label").attr("for",function() {
-				var parts=$(this).attr("for").split(".");var n=parseInt(parts.length)-1;
-				return "eml.samplingMethods["+(itemsCount+1)+"]."+parts[n]; });	
-	  });
-     
-});
-</script>
+
 <#assign sideMenuEml=true /> 
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
 <h1><@s.text name='manage.metadata.methods.title'/>: <em>${ms.resource.title!ms.resource.shortname}</em></h1>
 <@s.text name='manage.metadata.methods.intro'/>
-<form class="topForm" action="metadata-${section}.do" method="post"> 
-<#assign last=("${eml.samplingMethods.size()}"?number)-1/>
+<form class="topForm" action="metadata-${section}.do" method="post">
+<#assign last=0/>
+<#if eml.samplingMethods?? >
+	<#assign last=("${eml.samplingMethods.size()}"?number)-1/>
+</#if>
 <div id="sampling" class="item">
 <@text name="studyExtent" value="${((eml.samplingMethods[last].studyExtent)!)}"  i18nkey="eml.samplingMethods.studyExtent"/>
 <@text name="sampleDescription" value="${((eml.samplingMethods[last].sampleDescription)!)}" i18nkey="eml.samplingMethods.sampleDescription"/>
 </div>
 <div id="qualitycontrol" class="item">
-<#if eml.samplingMethods[last].qualityControl?? >
-<@text name="qualityControl" value="${(eml.samplingMethods[last].qualityControl)!}" i18nkey="eml.samplingMethods.qualityControl"/>
+<#if eml.samplingMethods[last]?? && eml.samplingMethods[last].qualityControl?? >
+	<@text name="qualityControl" value="${(eml.samplingMethods[last].qualityControl)!}" i18nkey="eml.samplingMethods.qualityControl"/>
 <#else>
-<@text name="qualityControl" value="${(eml.samplingMethods[last-1].qualityControl)!}" i18nkey="eml.samplingMethods.qualityControl"/>
+	<@text name="qualityControl" value="${(eml.samplingMethods[last-1].qualityControl)!}" i18nkey="eml.samplingMethods.qualityControl"/>
 </#if>
 <div class="newline"></div>
 <div class="horizontal_dotted_line_large_foo" id="separator"></div>
@@ -64,7 +46,7 @@
 </div>
 <div id="items">
 <#list eml.samplingMethods as item>
-<#if eml.samplingMethods[item_index].stepDescription?exists >
+<#if eml.samplingMethods[item_index].stepDescription?exists && eml.samplingMethods[item_index].stepDescription!=" ">
 <div id="item-${item_index}" class="item">
 	<div class="newline"></div>
 	<div class="right">

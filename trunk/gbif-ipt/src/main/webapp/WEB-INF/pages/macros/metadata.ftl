@@ -1,6 +1,6 @@
 <script type="text/javascript">
-var	itemsCount=-1;
 $(document).ready(function(){
+	var	itemsCount=-1;
 	calcNumberOfItems();
 	
 	function calcNumberOfItems(){
@@ -13,15 +13,52 @@ $(document).ready(function(){
 	
 	$("#plus").click(function(event) {
 		event.preventDefault();
-		var newItem=$('#baseItem').clone();
-		newItem.hide();
-		newItem.appendTo('#items').slideDown('slow');
-		setItemIndex(newItem, ++itemsCount);
+		addNewItem(true);
 	});
 		
 	$(".removeLink").click(function(event) {
 		removeItem(event);
 	});
+	
+	$("#save").click(function() {
+		<#switch "${section}">
+  			<#case "methods">
+      		if(itemsCount<0){
+				addNewItem(false);
+				$("#item-0 textarea").attr("value"," ");
+			}
+			$("#sampling textarea").attr("id",function() {
+				var parts=$(this).attr("id").split(".");var n=parseInt(parts.length)-1;
+				return "eml.samplingMethods["+(itemsCount+2)+"]."+parts[n]; });
+		    $("#qualitycontrol textarea").attr("id",function() {
+				var parts=$(this).attr("id").split(".");var n=parseInt(parts.length)-1;
+				return "eml.samplingMethods["+(itemsCount+1)+"]."+parts[n]; });
+			$("#sampling textarea").attr("name",function() {return $(this).attr("id"); });
+			$("#qualitycontrol textarea").attr("name",function() {return $(this).attr("id"); });
+			$("#qualitycontrol textarea").each(function() {
+				if($(this).attr("value")==""){
+					$(this).attr("value"," ");}
+			});				
+			$("#sampling label").attr("for",function() {
+				var parts=$(this).attr("for").split(".");var n=parseInt(parts.length)-1;
+				return "eml.samplingMethods["+(itemsCount+2)+"]."+parts[n]; });	
+			$("#qualitycontrol label").attr("for",function() {
+				var parts=$(this).attr("for").split(".");var n=parseInt(parts.length)-1;
+				return "eml.samplingMethods["+(itemsCount+1)+"]."+parts[n]; });
+			<#break>
+		<#default>
+  	  </#switch>	
+	  });
+	
+	function addNewItem(effects){
+		var newItem=$('#baseItem').clone();
+		if(effects){
+			newItem.hide();}
+		newItem.appendTo('#items');
+		if(effects){
+			newItem.slideDown('slow');}
+		setItemIndex(newItem, ++itemsCount);
+	}
 		
 	function removeItem(event){
 		event.preventDefault();
