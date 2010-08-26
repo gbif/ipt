@@ -289,11 +289,13 @@ public class MetadataAction extends BaseMetadataResourceAction implements
               return stubresourcedisplay;
             }
           });
-    }
-    for (ResourceDisplay rd : resourcesForDisplay) {
-      if (rd.getType() == null) {
-        resourcesForDisplay.remove(rd);
+      List<ResourceDisplay> rfdlist = Lists.newArrayList();
+      for (ResourceDisplay rd : resourcesForDisplay) {
+        if (!rd.getType().equalsIgnoreCase("stub")) {
+          rfdlist.add(rd);
+        }
       }
+      resourcesForDisplay = rfdlist;
     }
     return SUCCESS;
   }
