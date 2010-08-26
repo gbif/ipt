@@ -18,6 +18,8 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.Eml;
+import org.gbif.metadata.eml.JGTICuratorialUnit;
+import org.gbif.metadata.eml.JGTICuratorialUnitType;
 import org.gbif.metadata.eml.KeywordSet;
 import org.gbif.metadata.eml.PhysicalData;
 import org.gbif.metadata.eml.TaxonomicCoverage;
@@ -130,6 +132,7 @@ public class EmlValidator extends BaseValidator {
     	  }
     	  
       } else if (part == null || part.equalsIgnoreCase("methods")) {
+    	  
       } else if (part == null || part.equalsIgnoreCase("citations")) {
     	  if(!exists(eml.getCitation())) {
     		  action.addFieldError("eml.citation", action.getText("validation.required"));
@@ -140,6 +143,29 @@ public class EmlValidator extends BaseValidator {
     		  }
     	  }
       } else if (part == null || part.equalsIgnoreCase("collections")) {
+    	  int c = 0;
+    	  for(JGTICuratorialUnit jcu : eml.getJgtiCuratorialUnits()) {
+    		  if(jcu.getType().equals(JGTICuratorialUnitType.COUNT_RANGE)) {
+    			  if(!exists(jcu.getRangeStart().toString())) {
+    				  action.addFieldError("eml.jgtiCuratorialUnits["+c+"].rangeStart", action.getText("validation.required"));
+    			  }
+    			  if(!exists(jcu.getRangeEnd().toString())) {
+    				  action.addFieldError("eml.jgtiCuratorialUnits["+c+"].rangeEnd", action.getText("validation.required"));
+    			  }
+    		  }
+    		  if(jcu.getType().equals(JGTICuratorialUnitType.COUNT_WITH_UNCERTAINTY)) {
+    			  if(!exists(jcu.getRangeMean().toString())) {
+    				  action.addFieldError("eml.jgtiCuratorialUnits["+c+"].rangeMean", action.getText("validation.required"));
+    			  }
+    			  if(!exists(jcu.getUncertaintyMeasure().toString())) {
+    				  action.addFieldError("eml.jgtiCuratorialUnits["+c+"].uncertaintyMeasure", action.getText("validation.required"));
+    			  }
+    		  }
+    		  if(!exists(jcu.getUnitType().toString())) {
+				  action.addFieldError("eml.jgtiCuratorialUnits["+c+"].unitType", action.getText("validation.required"));
+			  }
+    		  c++;
+    	  }
       } else if (part == null || part.equalsIgnoreCase("physical")) {
     	  int c = 0;
     	  for(PhysicalData pd : eml.getPhysicalData()) {
