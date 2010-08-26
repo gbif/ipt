@@ -18,6 +18,7 @@ public class ResourceDisplay {
 
   public ResourceDisplay(Resource r) {
     if (r == null) {
+      type = "stub";
       return;
     }
     if (r.isRegistered()) {
