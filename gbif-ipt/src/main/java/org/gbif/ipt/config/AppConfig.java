@@ -93,6 +93,18 @@ public class AppConfig {
     return getProperty("dev.registrydev.url");
   }
 
+  public String getResourceArchiveUrl(String shortname) {
+    return getBaseURL() + "/dwca.do?" + Constants.REQ_PARAM_RESOURCE + "=" + shortname;
+  }
+
+  public String getResourceEmlUrl(String shortname) {
+    return getBaseURL() + "/eml.do?" + Constants.REQ_PARAM_RESOURCE + "=" + shortname;
+  }
+
+  public String getResourceUrl(String shortname) {
+    return getBaseURL() + "/resource.do?" + Constants.REQ_PARAM_RESOURCE + "=" + shortname;
+  }
+
   public String getVersion() {
     return properties.getProperty("dev.version");
   }
