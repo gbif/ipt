@@ -95,33 +95,33 @@ public class EmlValidator extends BaseValidator {
     		  cont++;
     	  }
       } else if (part == null || part.equalsIgnoreCase("tempcoverage")) {
-    	  int cont = 0;
+    	  int index = 0;
     	  for(TemporalCoverage tc : eml.getTemporalCoverages()) {
     		  
     		  if(tc.getType().equals(TemporalCoverageType.SINGLE_DATE)) {
     			  if(!exists(tc.getStartDate())) {
-    				  action.addFieldError("eml.temporalCoverages["+cont+"].startDate", action.getText("validation.required"));
+    				  action.addFieldError("eml.temporalCoverages["+index+"].startDate", action.getText("validation.required"));
     			  }
     		  }
     		  if(tc.getType().equals(TemporalCoverageType.DATE_RANGE)) {
     			  if(!exists(tc.getStartDate())) {
-    				  action.addFieldError("eml.temporalCoverages["+cont+"].startDate", action.getText("validation.required"));
+    				  action.addFieldError("eml.temporalCoverages["+index+"].startDate", action.getText("validation.required"));
     			  }
     			  if(!exists(tc.getEndDate())) {
-    				  action.addFieldError("eml.temporalCoverages["+cont+"].endDate", action.getText("validation.required"));    				  
+    				  action.addFieldError("eml.temporalCoverages["+index+"].endDate", action.getText("validation.required"));    				  
     			  }
     		  }
     		  if(tc.getType().equals(TemporalCoverageType.FORMATION_PERIOD)) {
     			  if(!exists(tc.getFormationPeriod())) {
-    				  action.addFieldError("eml.temporalCoverages["+cont+"].formationPeriod", action.getText("validation.required"));
+    				  action.addFieldError("eml.temporalCoverages["+index+"].formationPeriod", action.getText("validation.required"));
     			  }
     		  }
     		  if(tc.getType().equals(TemporalCoverageType.LIVING_TIME_PERIOD)) {
     			  if(!exists(tc.getLivingTimePeriod())) {
-    				  action.addFieldError("eml.temporalCoverages["+cont+"].livingTimePeriod", action.getText("validation.required"));
+    				  action.addFieldError("eml.temporalCoverages["+index+"].livingTimePeriod", action.getText("validation.required"));
     			  }
     		  }    		  
-    		  cont++;
+    		  index++;
     	  }
       } else if (part == null || part.equalsIgnoreCase("project")) {
     	  if(!exists(eml.getProject().getPersonnel().getFirstName())) {
@@ -132,58 +132,62 @@ public class EmlValidator extends BaseValidator {
     	  }
     	  
       } else if (part == null || part.equalsIgnoreCase("methods")) {
-    	  
+    	  for(int index=1;index<eml.getSamplingMethods().size()-2;index++) {
+    		  if(!exists(eml.getSamplingMethods().get(index).getStepDescription(), 5)) {
+    			  action.addFieldError("eml.samplingMethods["+index+"].stepDescription", action.getText("validation.required"));
+    		  }
+    	  }
       } else if (part == null || part.equalsIgnoreCase("citations")) {
     	  if(!exists(eml.getCitation())) {
     		  action.addFieldError("eml.citation", action.getText("validation.required"));
     	  }
-    	  for(int c = 0; c < eml.getBibliographicCitations().size(); c++) {
-    		  if(!exists(eml.getBibliographicCitations().get(c))) {
-    			  action.addFieldError("eml.bibliographicCitationSet.bibliographicCitations["+c+"]", action.getText("validation.required"));
+    	  for(int index = 0; index < eml.getBibliographicCitations().size(); index++) {
+    		  if(!exists(eml.getBibliographicCitations().get(index))) {
+    			  action.addFieldError("eml.bibliographicCitationSet.bibliographicCitations["+index+"]", action.getText("validation.required"));
     		  }
     	  }
       } else if (part == null || part.equalsIgnoreCase("collections")) {
-    	  int c = 0;
+    	  int index = 0;
     	  for(JGTICuratorialUnit jcu : eml.getJgtiCuratorialUnits()) {
     		  if(jcu.getType().equals(JGTICuratorialUnitType.COUNT_RANGE)) {    			  
     			  if(!exists(jcu.getRangeStart())) {
-    				  action.addFieldError("eml.jgtiCuratorialUnits["+c+"].rangeStart", action.getText("validation.required"));
+    				  action.addFieldError("eml.jgtiCuratorialUnits["+index+"].rangeStart", action.getText("validation.required"));
     			  }
     			  if(!exists(jcu.getRangeEnd().toString())) {
-    				  action.addFieldError("eml.jgtiCuratorialUnits["+c+"].rangeEnd", action.getText("validation.required"));
+    				  action.addFieldError("eml.jgtiCuratorialUnits["+index+"].rangeEnd", action.getText("validation.required"));
     			  }
     		  }
     		  if(jcu.getType().equals(JGTICuratorialUnitType.COUNT_WITH_UNCERTAINTY)) {    			  
     			  if(!exists(jcu.getRangeMean())) {
-    				  action.addFieldError("eml.jgtiCuratorialUnits["+c+"].rangeMean", action.getText("validation.required"));
+    				  action.addFieldError("eml.jgtiCuratorialUnits["+index+"].rangeMean", action.getText("validation.required"));
     			  }
     			  if(!exists(jcu.getUncertaintyMeasure())) {
-    				  action.addFieldError("eml.jgtiCuratorialUnits["+c+"].uncertaintyMeasure", action.getText("validation.required"));
+    				  action.addFieldError("eml.jgtiCuratorialUnits["+index+"].uncertaintyMeasure", action.getText("validation.required"));
     			  }
     		  }
     		  if(!exists(jcu.getUnitType())) {
-				  action.addFieldError("eml.jgtiCuratorialUnits["+c+"].unitType", action.getText("validation.required"));
+				  action.addFieldError("eml.jgtiCuratorialUnits["+index+"].unitType", action.getText("validation.required"));
 			  }
-    		  c++;
+    		  index++;
     	  }
       } else if (part == null || part.equalsIgnoreCase("physical")) {
-    	  int c = 0;
+    	  int index = 0;
     	  for(PhysicalData pd : eml.getPhysicalData()) {
     		  if(!exists(pd.getName())) {
-    			  action.addFieldError("eml.physicalData["+c+"].name", action.getText("validation.required"));
+    			  action.addFieldError("eml.physicalData["+index+"].name", action.getText("validation.required"));
     		  }
-    		  c++;
+    		  index++;
     	  }
       } else if (part == null || part.equalsIgnoreCase("keywords")) {
-    	  int c = 0;
+    	  int index = 0;
     	  for(KeywordSet ks : eml.getKeywords()) {
     		  if(!exists(ks.getKeywordThesaurus())) {
-    			  action.addFieldError("eml.keywords["+c+"].keywordThesaurus", action.getText("validation.required"));
+    			  action.addFieldError("eml.keywords["+index+"].keywordThesaurus", action.getText("validation.required"));
     		  }
     		  if(!exists(ks.getKeywordsString())) {
-    			  action.addFieldError("eml.keywords["+c+"].keywordsString", action.getText("validation.required"));
+    			  action.addFieldError("eml.keywords["+index+"].keywordsString", action.getText("validation.required"));
     		  }
-    		  c++;
+    		  index++;
     	  }
       } else if (part == null || part.equalsIgnoreCase("additional")) {
     	  if(!exists(eml.getDistributionUrl(), 5)) {
