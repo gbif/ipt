@@ -44,6 +44,7 @@ import java.sql.SQLException;
 import java.sql.SQLWarning;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -126,7 +127,6 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     to.setFieldsEnclosedBy(from.getFieldsEnclosedBy());
     to.setFieldsTerminatedBy(from.getFieldsTerminatedBy());
     to.setIgnoreHeaderLines(from.getIgnoreHeaderLines());
-    to.setLinesTerminatedBy(from.getLinesTerminatedBy());
     to.setName(from.getTitle());
     to.setDateFormat(from.getDateFormat());
   }
@@ -221,11 +221,41 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     return problem;
   }
 
+  private List<String> columns(FileSource source) {
+    if (source != null) {
+      try {
+        CSVReader reader = source.getReader();
+        if (source.getIgnoreHeaderLines() > 0) {
+          return Arrays.asList(reader.getHeader());
+        } else {
+          List<String> columns = new ArrayList<String>();
+          int x = 1;
+          for (String col : reader.getHeader()) {
+            columns.add("Column #" + x);
+            x++;
+          }
+          return columns;
+        }
+      } catch (IOException e) {
+        log.warn("Cant read source " + source.getName(), e);
+      }
+    }
+
+    return new ArrayList<String>();
+  }
+
   /*
    * (non-Javadoc)
    * @see org.gbif.ipt.service.manage.SourceManager#columns(org.gbif.ipt.model.Source)
    */
   public List<String> columns(Source source) {
+    if (source instanceof FileSource) {
+      return columns((FileSource) source);
+    }
+    return columns((SqlSource) source);
+  }
+
+  private List<String> columns(SqlSource source) {
     return new ArrayList<String>();
   }
 
@@ -316,12 +346,36 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     }
   }
 
+  private List<String[]> peek(FileSource source, int rows) {
+    List<String[]> preview = new ArrayList<String[]>();
+    if (source != null) {
+      try {
+        CSVReader reader = source.getReader();
+        while (rows > 0 && reader.hasNext()) {
+          rows--;
+          preview.add(reader.readNext());
+        }
+      } catch (IOException e) {
+        log.warn("Cant read source " + source.getName(), e);
+      }
+    }
+
+    return preview;
+  }
+
   /*
    * (non-Javadoc)
    * @see org.gbif.ipt.service.manage.SourceManager#peek(org.gbif.ipt.model.Source)
    */
   public List<String[]> peek(Source source, int rows) {
-    // TODO Auto-generated method stub
+    if (source instanceof FileSource) {
+      return peek((FileSource) source, rows);
+    }
+    return peek((SqlSource) source, rows);
+  }
+
+  private List<String[]> peek(SqlSource source, int rows) {
     return new ArrayList<String[]>(rows);
   }
+
 }

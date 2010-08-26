@@ -7,24 +7,30 @@ $(document).ready(function(){
 	$('.confirm').jConfirmAction({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
 });   
 </script>
-	<style>
-	.actions select{
+<style>
+	div.body select{
 		width: 200px;
 	}
-	div.definition div.title{
-		width: 30%;
+	div.body input{
+		width: 400px;
 	}
-	div.title input[type="submit"]{
-		float: right;
-		margin-right: 5px;
+	.required{
+		color:#bc5e5b;
+		font-weight: normal;
 	}
-	div.definition div.body{
-		width: 68%;
+	div.infos{
+		float:left;
+		width:40px;
 	}
-	div.details{
-		padding-top: 20px;
+	div.infos img.vocabImg {
+		top: 2px !important;
+		position: relative;
 	}
-	</style>
+	div.buttons{
+		margin-top: 1em !important;
+		margin-bottom: 2em !important;
+	}	
+</style>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
 <h1>${mapping.extension.title}</h1>
@@ -39,9 +45,13 @@ $(document).ready(function(){
 
 <#if mapping.source?exists>
 <h1><@s.text name='manage.mapping.title'/> <span class="small">${mapping.source.name}</span></h1>
-<p><@s.text name='manage.mapping.intro'><@s.param name="source">${mapping.source.name}</@s.param></@s.text></p>
-
-	<@select name="mapping.idColumn" options=columns value="${mapping.idColumn!}" i18nkey="manage.mapping.idColumn" help="i18n"/>
+<p><@s.text name='manage.mapping.idColumn' /></p>
+<select name="mapping.idColumn">
+  <option value="" <#if !mapping.idColumn??> selected="selected"</#if>></option>
+<#list columns as col>
+  <option value="${col_index}" <#if (mapping.idColumn!-1)==col_index> selected="selected"</#if>>${col}</option>
+</#list>
+</select>
 
   <div class="buttons">
  	<@s.submit name="save" key="button.save"/>
@@ -49,20 +59,43 @@ $(document).ready(function(){
  	<@s.submit name="cancel" key="button.cancel"/>
   </div>
 
+<p><@s.text name='manage.mapping.intro'><@s.param name="source">${mapping.source.name}</@s.param></@s.text></p>
+
 	<#assign group=""/>
+	<ul class="horizontal">
 	<#list mapping.extension.properties as p>
-	
-	<#if (p.group!"")!=group>
+	<#if (p.group!"")!="" && (p.group!"")!=group>
 		<#assign group=p.group/>
+		<li><a href="#${p.group?url}">${p.group}</a></li>
+	</#if>
+	</#list>
+	</ul>
+
+	<#assign group=""/>
+	<#--list mapping.extension.properties as p-->
+	<#list fields as field>
+	<#assign p=field.term/>
+	
+	<#if p.group?exists && p.group!=group>
+	  <#if group!="">
+	  <div class="buttons">
+	 	<@s.submit name="save" key="button.save"/>
+	 	<@s.submit name="cancel" key="button.cancel"/>
+	  </div>
+	  </#if>
+		<#assign group=p.group/>
+		<a name="${p.group?url}"></a>
 		<h2>${p.group}</h2>
 	</#if>
 	<div class="definition">	
 	  <div class="title">
 	  	<div class="head">
 			${p.name}
-			<#if p.required>[required]</#if>
+			<#if p.required><span class="required">***</span></#if>
 	  	</div>
-	  	<div>
+	  </div>
+	  <div class="body">
+	  	<div class="infos">
 	  		<img class="infoImg" src="${baseURL}/images/info.gif" />
 			<div class="info">
 				<#if p.description?has_content>${p.description}<br/><br/></#if>              	
@@ -72,26 +105,38 @@ $(document).ready(function(){
 				</#if>              	
 			</div>
 	      	<#if p.vocabulary?exists>	  		
-	      	<a href="vocabulary.do?id=${p.vocabulary.uri}"><img class="infoImg" src="${baseURL}/images/vocabulary.png" /></a>
+	      	<a href="vocabulary.do?id=${p.vocabulary.uri}" target="_blank"><img class="vocabImg" src="${baseURL}/images/vocabulary.png" /></a>
 	      	</#if>			
 	  	</div>
-	  </div>
-	  <div class="body">
-	      	<div>
-	      		<em>The Mapping</em>:
+		<div>
+				<select id="fIdx${field_index}" name="fields[${field_index}].index">
+				  <option value="" <#if !field.index??> selected="selected"</#if>></option>
+				<#list columns as col>
+				  <option value="${col_index}" <#if (field.index!-1)==col_index> selected="selected"</#if>>${col}</option>
+				</#list>
+				</select>
+				<input id="fVal${field_index}" name="fields[${field_index}].defaultValue" value="${field.defaultValue!}"/>  
 	      	</div>
+	      	<#if field.index?exists>
 	      	<div>
-	      		<em>Example data from source</em>:
+	      		<em>Source Sample</em>:
+	      		<#assign first=true/>
+	      		<#list peek as row><#if row[field.index]?has_content><#if !first> | </#if><#assign first=false/>${row[field.index]}</#if></#list>
 	      	</div>
+	      	</#if>
 	  </div>
 	</div>
-	</#list>
 
-  <div class="buttons">
- 	<@s.submit name="save" key="button.save"/>
- 	<@s.submit cssClass="confirm" name="delete" key="button.delete"/>
- 	<@s.submit name="cancel" key="button.cancel"/>
-  </div>
+	<#if !field_has_next>
+	  <div class="buttons">
+	 	<@s.submit name="save" key="button.save"/>
+	 	<@s.submit name="cancel" key="button.cancel"/>
+	  </div>
+	</#if>
+
+	</#list>
+	
+	
 <#else>
 
 <h1><@s.text name='manage.mapping.source'/></h1>

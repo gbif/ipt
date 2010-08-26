@@ -1,5 +1,11 @@
 package org.gbif.ipt.service.manage.impl;
 
+import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.terms.DcTerm;
+import org.gbif.dwc.terms.DwcTerm;
+import org.gbif.dwc.terms.GbifTerm;
+import org.gbif.dwc.terms.IptTerm;
+import org.gbif.dwc.terms.IucnTerm;
 import org.gbif.dwc.text.Archive;
 import org.gbif.dwc.text.ArchiveFactory;
 import org.gbif.dwc.text.ArchiveField;
@@ -11,14 +17,16 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
+import org.gbif.ipt.model.ExtensionProperty;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.ResourceConfiguration;
 import org.gbif.ipt.model.Source;
-import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.Source.FileSource;
 import org.gbif.ipt.model.Source.SqlSource;
+import org.gbif.ipt.model.User;
+import org.gbif.ipt.model.converter.ConceptTermConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
@@ -28,8 +36,8 @@ import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidConfigException;
-import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
+import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.GBIFRegistryManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -76,17 +84,18 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   private final UserEmailConverter userConverter;
   private final OrganisationKeyConverter orgConverter;
   private final ExtensionRowTypeConverter extensionConverter;
+  private final ConceptTermConverter conceptTermConverter;
   private final JdbcInfoConverter jdbcInfoConverter;
-  private GBIFRegistryManager registryManager;
   private SourceManager sourceManager;
   private ExtensionManager extensionManager;
+  private GBIFRegistryManager registryManager;
   private RegistryManager registryManager2;
 
   @Inject
   public ResourceManagerImpl(AppConfig cfg, DataDir dataDir, UserEmailConverter userConverter,
       OrganisationKeyConverter orgConverter, GBIFRegistryManager registryManager,
       ExtensionRowTypeConverter extensionConverter, JdbcInfoConverter jdbcInfoConverter, SourceManager sourceManager,
-      ExtensionManager extensionManager, RegistryManager registryManager2) {
+      ExtensionManager extensionManager, RegistryManager registryManager2, ConceptTermConverter conceptTermConverter) {
     super(cfg, dataDir);
     this.userConverter = userConverter;
     this.registryManager = registryManager;
@@ -95,7 +104,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     this.jdbcInfoConverter = jdbcInfoConverter;
     this.sourceManager = sourceManager;
     this.extensionManager = extensionManager;
-    this.registryManager2=registryManager2;
+    this.registryManager2 = registryManager2;
+    this.conceptTermConverter = conceptTermConverter;
     defineXstreamMapping();
   }
 
@@ -188,6 +198,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 	 * 
 	 */
   private void defineXstreamMapping() {
+    // xstream.setMode(XStream.NO_REFERENCES);
+
     xstream.alias("resource", Resource.class);
     xstream.alias("user", User.class);
     xstream.alias("config", ResourceConfiguration.class);
@@ -203,13 +215,21 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     xstream.omitField(Resource.class, "type");
     // make files transient to allow moving the datadir
     xstream.omitField(FileSource.class, "file");
+
     // persist only emails for users
     xstream.registerConverter(userConverter);
+    // persist only rowtype
+    xstream.registerConverter(extensionConverter);
+    // persist only qualified concept name
+    xstream.registerConverter(conceptTermConverter);
+    xstream.addDefaultImplementation(ExtensionProperty.class, ConceptTerm.class);
+    xstream.addDefaultImplementation(DwcTerm.class, ConceptTerm.class);
+    xstream.addDefaultImplementation(DcTerm.class, ConceptTerm.class);
+    xstream.addDefaultImplementation(GbifTerm.class, ConceptTerm.class);
+    xstream.addDefaultImplementation(IucnTerm.class, ConceptTerm.class);
+    xstream.addDefaultImplementation(IptTerm.class, ConceptTerm.class);
     xstream.registerConverter(orgConverter);
     xstream.registerConverter(jdbcInfoConverter);
-    // persist only rowtype for extensions
-    // TODO: replace with full ExtensionMappingConverter
-    xstream.registerConverter(extensionConverter);
   }
 
   public void delete(Resource resource) throws IOException {
@@ -410,7 +430,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
    * @see org.gbif.ipt.service.manage.ResourceManager#register(org.gbif.ipt.model.Resource,
    * org.gbif.ipt.model.Organisation)
    */
-  public void register(ResourceConfiguration config, Organisation organisation, Ipt ipt, Eml eml) throws RegistryException {
+  public void register(ResourceConfiguration config, Organisation organisation, Ipt ipt, Eml eml)
+      throws RegistryException {
     if (PublicationStatus.REGISTERED != config.getResource().getStatus()) {
       registryManager2.setRegistryCredentials(organisation.getKey().toString(), organisation.getPassword());
       UUID key = registryManager2.register(config.getResource(), organisation, ipt, eml);

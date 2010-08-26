@@ -16,8 +16,9 @@
 
 package org.gbif.ipt.model.converter;
 
+import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.terms.UnknownTerm;
 import org.gbif.ipt.model.Extension;
-import org.gbif.ipt.service.admin.ExtensionManager;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -27,38 +28,48 @@ import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
+import org.apache.log4j.Logger;
+
 /**
  * @author markus
  * 
  */
 @Singleton
-public class ExtensionRowTypeConverter implements Converter {
-  private ExtensionManager extManager;
-  private Extension lastExtensionConverted;
+public class ConceptTermConverter implements Converter {
+  private Logger log = Logger.getLogger(this.getClass());
+  private ExtensionRowTypeConverter extConverter;
 
   @Inject
-  public ExtensionRowTypeConverter(ExtensionManager extManager) {
+  public ConceptTermConverter(ExtensionRowTypeConverter extConverter) {
     super();
-    this.extManager = extManager;
+    this.extConverter = extConverter;
   }
 
   public boolean canConvert(Class clazz) {
-    return clazz.equals(Extension.class);
-  }
-
-  public Extension getLastExtensionConverted() {
-    return lastExtensionConverted;
+    return ConceptTerm.class.isAssignableFrom(clazz);
   }
 
   public void marshal(Object value, HierarchicalStreamWriter writer, MarshallingContext context) {
-    Extension e = (Extension) value;
-    writer.setValue(e.getRowType());
+    ConceptTerm t = (ConceptTerm) value;
+    writer.setValue(t.qualifiedName());
   }
 
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
-    Extension e = extManager.get(reader.getValue());
-    lastExtensionConverted = e;
-    return e;
-  }
+    // this is tricky. Relies on xstream implementation to convert the matching extension BEFORE we reach here
+    // But just cant get the hierarchical reader to tell me the current extension name
 
+    // other far more complex solution is to create an full blown ExtensionMapping converter
+    // that could make use of existing local converters for composite objects parts
+    Extension extension = extConverter.getLastExtensionConverted();
+    ConceptTerm t = null;
+    if (extension != null) {
+      t = extension.getProperty(reader.getValue());
+    }
+    if (t == null) {
+      log.warn("Cant unmarshall concept " + reader.getValue());
+      t = new UnknownTerm(reader.getValue(), reader.getValue());
+    }
+
+    return t;
+  }
 }

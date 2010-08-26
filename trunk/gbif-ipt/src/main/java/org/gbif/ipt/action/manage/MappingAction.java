@@ -16,19 +16,24 @@
 
 package org.gbif.ipt.action.manage;
 
+import org.gbif.dwc.text.ArchiveField;
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.ExtensionMapping;
+import org.gbif.ipt.model.ExtensionProperty;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.manage.SourceManager;
 
 import com.google.inject.Inject;
 
+import org.apache.commons.lang.xwork.StringUtils;
+
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 /**
  * @author markus
@@ -45,8 +50,9 @@ public class MappingAction extends POSTAction {
   // config
   private ExtensionMapping mapping;
   private String source;
-  private Map<Integer, String> columns;
+  private List<String> columns;
   private List<String[]> peek;
+  private List<ArchiveField> fields;
 
   @Override
   public String delete() {
@@ -59,8 +65,12 @@ public class MappingAction extends POSTAction {
     return SUCCESS;
   }
 
-  public Map<Integer, String> getColumns() {
+  public List<String> getColumns() {
     return columns;
+  }
+
+  public List<ArchiveField> getFields() {
+    return fields;
   }
 
   public ExtensionMapping getMapping() {
@@ -86,19 +96,31 @@ public class MappingAction extends POSTAction {
         mapping = new ExtensionMapping();
         mapping.setExtension(extensionManager.get(id));
       }
-      columns = new HashMap<Integer, String>();
-      if (mapping.getSource() != null) {
-        peek = sourceManager.peek(mapping.getSource(), 5);
-        int idx = 0;
-        for (String col : sourceManager.columns(mapping.getSource())) {
-          columns.put(idx, col);
-          idx++;
-        }
-      }
+      readSource();
     }
 
     if (mapping == null || mapping.getExtension() == null) {
       notFound = true;
+    } else {
+      fields = new ArrayList<ArchiveField>(mapping.getExtension().getProperties().size());
+      for (ExtensionProperty p : mapping.getExtension().getProperties()) {
+        // mapped already?
+        ArchiveField f = mapping.getField(p.getQualname());
+        if (f == null) {
+          f = new ArchiveField();
+        }
+        f.setTerm(p);
+        fields.add(f);
+      }
+    }
+  }
+
+  private void readSource() {
+    if (mapping.getSource() != null) {
+      peek = sourceManager.peek(mapping.getSource(), 5);
+      columns = sourceManager.columns(mapping.getSource());
+    } else {
+      columns = new ArrayList<String>();
     }
   }
 
@@ -112,12 +134,29 @@ public class MappingAction extends POSTAction {
       } else {
         ms.getConfig().addExtension(mapping);
       }
+      // read source as prepare wasnt yet ready for this
+      readSource();
     } else {
-      // TODO: save field mappings
+      // save field mappings
+      System.out.println("fields.size()=" + fields.size());
+      Set<ArchiveField> mappedFields = new HashSet<ArchiveField>();
+      for (ArchiveField f : fields) {
+        if (f.getIndex() != null || StringUtils.trimToNull(f.getDefaultValue()) != null) {
+          mappedFields.add(f);
+          System.out.println(f.getTerm() + ": column " + f.getIndex() + ", value=" + f.getDefaultValue());
+        }
+      }
+      System.out.println("mappedFields.size()=" + mappedFields.size());
+      // back to mapping object
+      mapping.setFields(mappedFields);
     }
     // save entire resource config
     ms.saveConfig();
     return INPUT;
+  }
+
+  public void setFields(List<ArchiveField> fields) {
+    this.fields = fields;
   }
 
   public void setMapping(ExtensionMapping mapping) {

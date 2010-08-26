@@ -40,7 +40,6 @@ public abstract class Source implements Iterable<String[]>, Comparable<Source> {
   public static class FileSource extends Source {
     private Character fieldsTerminatedBy = '\t';
     private Character fieldsEnclosedBy = CSVReader.NULL_CHAR;
-    private Character linesTerminatedBy = '\n';
     private int ignoreHeaderLines = 0;
     private File file;
     private long fileSize;
@@ -73,10 +72,6 @@ public abstract class Source implements Iterable<String[]>, Comparable<Source> {
 
     public Date getLastModified() {
       return lastModified;
-    }
-
-    public Character getLinesTerminatedBy() {
-      return linesTerminatedBy;
     }
 
     public CSVReader getReader() throws IOException {
@@ -127,10 +122,6 @@ public abstract class Source implements Iterable<String[]>, Comparable<Source> {
       this.lastModified = lastModified;
     }
 
-    public void setLinesTerminatedBy(Character linesTerminatedBy) {
-      this.linesTerminatedBy = linesTerminatedBy;
-    }
-
     public void setRows(int rows) {
       this.rows = rows;
     }
@@ -166,6 +157,10 @@ public abstract class Source implements Iterable<String[]>, Comparable<Source> {
       return password;
     }
 
+    public JdbcInfo getRdbms() {
+      return rdbms;
+    }
+
     public String getSql() {
       return sql;
     }
@@ -186,16 +181,12 @@ public abstract class Source implements Iterable<String[]>, Comparable<Source> {
       this.host = host;
     }
 
-    public JdbcInfo getRdbms() {
-		return rdbms;
-	}
-
-	public void setRdbms(JdbcInfo rdbms) {
-		this.rdbms = rdbms;
-	}
-
-	public void setPassword(String password) {
+    public void setPassword(String password) {
       this.password = password;
+    }
+
+    public void setRdbms(JdbcInfo rdbms) {
+      this.rdbms = rdbms;
     }
 
     public void setSql(String sql) {
@@ -214,17 +205,21 @@ public abstract class Source implements Iterable<String[]>, Comparable<Source> {
   protected int columns;
   protected boolean readable = false;
 
+  public static String normaliseName(String name) {
+    return StringUtils.substringBeforeLast(name, ".").replaceAll("[\\s\\c\\W\\.\\:/]+", "").toLowerCase();
+  }
+
   public int compareTo(Source o) {
     if (this == o) {
-        return 0;
+      return 0;
     }
     if (this.name == null) {
-        return -1;
+      return -1;
     }
     return name.compareTo(o.name);
   }
 
-@Override
+  @Override
   public boolean equals(Object other) {
     if (this == other) {
       return true;
@@ -233,7 +228,7 @@ public abstract class Source implements Iterable<String[]>, Comparable<Source> {
       return false;
     }
     Source o = (Source) other;
-//    return equal(resource, o.resource) && equal(name, o.name);
+    // return equal(resource, o.resource) && equal(name, o.name);
     return equal(name, o.name);
   }
 
@@ -281,9 +276,6 @@ public abstract class Source implements Iterable<String[]>, Comparable<Source> {
 
   public void setName(String name) {
     this.name = normaliseName(name);
-  }
-  public static String normaliseName(String name) {
-    return StringUtils.substringBeforeLast(name, ".").replaceAll("[\\s\\c\\W\\.\\:/]+", "").toLowerCase();
   }
 
   public void setReadable(boolean readable) {
