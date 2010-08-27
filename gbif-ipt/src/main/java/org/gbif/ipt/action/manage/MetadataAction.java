@@ -91,11 +91,7 @@ public class MetadataAction extends POSTAction {
   }
   
   public Map getJGTICuratorialUnitTypeOptions() {
-	  Map<String, String> map = Maps.newHashMap();
-	    for (JGTICuratorialUnitType rt : JGTICuratorialUnitType.values()) {
-	      map.put(rt.name(), getText("jgtiCuratorialUnitType." + rt.name()));
-	    }
-	  return map;
+    return JGTICuratorialUnitType.htmlSelectMap;
   }
   
   public String getSection() {
