@@ -24,19 +24,28 @@ function initForm(){
 //        }  
 //    });    
 }
-function insertCalendar(inputField) {
-	if (inputField != undefined) {
-		inputField.datepicker({
+/**
+ * This method initialises the "help utility" of the forms
+ * @param {String} context - is used to add events only to a specific context. 
+ * 	-remember to add the (#) simbol in the parameter-. (this parameter can be omited).
+ */
+function initHelp(context){
+	if(context == undefined) context = "";
+	
+	$(context+" .calendarInfo").each(function(i) {
+		if (context != "") {
+			$(this).find("input").removeAttr("class");
+			$(this).find(".ui-datepicker-trigger").remove();
+		}		
+		$(this).find("input").datepicker({
 			showOn: "button",
 			buttonImage: "../images/calendar.png",
 			buttonImageOnly: true,
 			changeMonth: true,
 			changeYear: true
-		});
-	}
-}
-function initHelp(){
-    $(".infoImg").click(function(e) {
+		});		
+	});
+	$(context+" .infoImg").click(function(e) {
         var show = $(this).next().is(":hidden");
 	    $("div.info:visible").hide("fast");
 	    if (show){
@@ -44,21 +53,21 @@ function initHelp(){
 //	    	$(this).next().css({ top: off.top-24, left: off.left-170 });
 	        $(this).next().show("fast");
 	    };
-    })	
-	$("div.info").click(function(e) {
+    });
+	$(context+" div.info").click(function(e) {
         $(this).hide("fast");
-    })
+    });
     $(document).keyup(function(e) {
     	// pressing the escape key
   		if (e.keyCode == 27) { 
 	        $("div.info:visible").hide("fast");
   		}   
 	});
-    $("div.info ol a").click(function(e) {
+    $(context+" div.info ol a").click(function(e) {
     	e.preventDefault(); 
         $(this).parent().parent().parent().next().val($(this).attr("val"));
         $(this).parent().parent().parent().hide("fast");
-    })
+    });
 }
 function initCollapsable(){
     $("div.collapsed ul").hide();
