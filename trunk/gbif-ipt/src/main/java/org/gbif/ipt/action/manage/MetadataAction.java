@@ -34,7 +34,6 @@ import org.gbif.metadata.eml.JGTICuratorialUnitType;
 import org.gbif.metadata.eml.Role;
 import org.gbif.metadata.eml.TemporalCoverageType;
 
-import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 
 /**
@@ -86,11 +85,11 @@ public class MetadataAction extends POSTAction {
     return resourceTypes;
   }
 
-  public Map getRoleOptions() {
+  public Map<String, String> getRoleOptions() {
     return Role.htmlSelectMap;
   }
   
-  public Map getJGTICuratorialUnitTypeOptions() {
+  public Map<String, String> getJGTICuratorialUnitTypeOptions() {
     return JGTICuratorialUnitType.htmlSelectMap;
   }
   

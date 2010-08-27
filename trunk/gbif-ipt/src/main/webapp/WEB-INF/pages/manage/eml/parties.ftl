@@ -47,7 +47,7 @@
   	</div>
 	<div class="2col">
   		<@input name="phone" i18nkey="eml.associatedParties.phone" value=""/>
-  		<@select name="role" i18nkey="eml.associatedParties.role" value="value" options=roleOptions />
+  		<@select name="role" i18nkey="eml.associatedParties.role"  options=roleOptions />
   	</div>
   	<div class="newline"></div>
 	<div class="horizontal_dotted_line_large_foo" id="separator"></div>

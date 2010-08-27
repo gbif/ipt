@@ -226,7 +226,7 @@
 		<a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.tempcoverage.item'/> ]</a>
 	</div>
 	<div class="newline"></div>	
-	<@select i18nkey="eml.temporalCoverage.type"  name="tempTypes" options=tempTypes value="value" />  
+	<@select i18nkey="eml.temporalCoverage.type"  name="tempTypes" options=tempTypes />  
 	<div class="newline"></div>	
 </div>
 
