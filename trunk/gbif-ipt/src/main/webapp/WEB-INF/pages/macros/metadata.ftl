@@ -52,11 +52,12 @@ $(document).ready(function(){
 	
 	function addNewItem(effects){
 		var newItem=$('#baseItem').clone();
-		if(effects){
-			newItem.hide();}
+		if(effects) newItem.hide();
 		newItem.appendTo('#items');
-		if(effects){
-			newItem.slideDown('slow');}
+		if(effects) newItem.slideDown('slow');
+		
+		initHelp("#baseItem");
+		
 		setItemIndex(newItem, ++itemsCount);
 	}
 		

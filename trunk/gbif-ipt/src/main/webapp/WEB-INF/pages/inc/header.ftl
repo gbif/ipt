@@ -4,12 +4,7 @@
     <head>
 	    <meta name="copyright" lang="en" content="GBIF" />
  		<link rel="stylesheet" type="text/css" href="${baseURL}/styles/main.css"/>
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>	
-		
-		<!-- Calendar help functionality -->
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/jquery-ui.min.js"></script>
-		<link media="all" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/themes/base/jquery-ui.css" rel="stylesheet">
-				
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>				
 		<script type="text/javascript" src="${baseURL}/js/jquery.cookie.min.js"></script>
 		<script type="text/javascript" src="${baseURL}/js/json2.min.js"></script>
 		<script type="text/javascript" src="${baseURL}/js/global.js"></script>
