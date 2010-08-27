@@ -20,6 +20,11 @@
 <title><@s.text name='manage.metadata.physical.title'/></title>
 <#include "/WEB-INF/pages/macros/metadata.ftl"/>
 <#assign sideMenuEml=true />
+<script type="text/javascript">
+$(document).ready(function(){
+	initHelp();
+});   
+</script>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
@@ -37,12 +42,12 @@
     <div class="newline"></div>
     <div class="half">
 		<@input name="eml.physicalData[${item_index}].name" i18nkey="eml.physicalData.name"/>
-		<@input name="eml.physicalData[${item_index}].charset" i18nkey="eml.physicalData.charset"/>
+		<@input name="eml.physicalData[${item_index}].charset" i18nkey="eml.physicalData.charset" help="i18n"/>
 	</div>	
-	<@input name="eml.physicalData[${item_index}].distributionUrl" i18nkey="eml.physicalData.distributionUrl"/>
+	<@input name="eml.physicalData[${item_index}].distributionUrl" i18nkey="eml.physicalData.distributionUrl" help="i18n"/>
   	<div class="half">
-		<@input name="eml.physicalData[${item_index}].format" i18nkey="eml.physicalData.format"/>
-		<@input name="eml.physicalData[${item_index}].formatVersion" i18nkey="eml.physicalData.formatVersion" />
+		<@input name="eml.physicalData[${item_index}].format" i18nkey="eml.physicalData.format" help="i18n"/>
+		<@input name="eml.physicalData[${item_index}].formatVersion" i18nkey="eml.physicalData.formatVersion" help="i18n"/>
 	</div>
   	<div class="newline"></div>
 	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
@@ -66,12 +71,12 @@
     <div class="newline"></div>
 	<div class="half">
 		<@input name="name" i18nkey="eml.physicalData.name"/>
-		<@input name="charset" i18nkey="eml.physicalData.charset"/>
+		<@input name="charset" i18nkey="eml.physicalData.charset" help="i18n"/>
 	</div>
-	<@input name="distributionUrl" i18nkey="eml.physicalData.distributionUrl"/>
+	<@input name="distributionUrl" i18nkey="eml.physicalData.distributionUrl" help="i18n"/>
 	<div class="half">
-		<@input name="format" i18nkey="eml.physicalData.format"/>
-		<@input name="formatVersion" i18nkey="eml.physicalData.formatVersion"/>
+		<@input name="format" i18nkey="eml.physicalData.format" help="i18n"/>
+		<@input name="formatVersion" i18nkey="eml.physicalData.formatVersion" help="i18n"/>
 	</div>
   	<div class="newline"></div>
 	<div class="horizontal_dotted_line_large_foo" id="separator"></div>

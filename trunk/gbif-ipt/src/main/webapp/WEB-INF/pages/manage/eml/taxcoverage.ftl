@@ -52,7 +52,7 @@ $(document).ready(function(){
 		<@input i18nkey="eml.taxonomicCoverage.scientificName" name="scientificName" />
 		<@input i18nkey="eml.taxonomicCoverage.commonName" name="commonName" />
 	</div>         
-	<@select i18nkey="eml.taxonomicCoverage.rank"  name="rank" options=ranks />   	  
+	<@select i18nkey="eml.taxonomicCoverage.rank"  name="rank" options=ranks help="i18n"/>   	  
 	<div class="newline"></div>      
 	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
 	<div class="newline"></div>

@@ -42,11 +42,11 @@
     </div>
     <div class="newline"></div>
 	<div class="2col">
-  		<@input name="firstName" i18nkey="eml.associatedParties.firstName" value=""/>
-  		<@input name="lastName" i18nkey="eml.associatedParties.lastName"  value=""/>
+  		<@input name="firstName" i18nkey="eml.associatedParties.firstName" />
+  		<@input name="lastName" i18nkey="eml.associatedParties.lastName"  />
   	</div>
 	<div class="2col">
-  		<@input name="phone" i18nkey="eml.associatedParties.phone" value=""/>
+  		<@input name="phone" i18nkey="eml.associatedParties.phone" />
   		<@select name="role" i18nkey="eml.associatedParties.role"  options=roleOptions />
   	</div>
   	<div class="newline"></div>

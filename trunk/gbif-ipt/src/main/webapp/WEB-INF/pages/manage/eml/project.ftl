@@ -18,7 +18,11 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name='manage.metadata.project.title'/></title>
 <#assign sideMenuEml=true />
- 
+<script type="text/javascript">
+$(document).ready(function(){
+	initHelp();
+});   
+</script>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
@@ -31,9 +35,9 @@
       <@input name="eml.project.personnel.lastName" />
       <@select name="eml.project.personnel.role" value="${(eml.project.personnel.role)!}" options=roleOptions />
     </div>
-    <@text name="eml.project.funding" />
-	<@text name="eml.project.studyAreaDescription.descriptorValue" />
-	<@text name="eml.project.designDescription" />
+    <@text name="eml.project.funding" help="i18n"/>
+	<@text name="eml.project.studyAreaDescription.descriptorValue" help="i18n" />
+	<@text name="eml.project.designDescription" help="i18n" />
 <div class="buttons">
   <@s.submit name="save" key="button.save" />
   <@s.submit name="cancel" key="button.cancel" />
