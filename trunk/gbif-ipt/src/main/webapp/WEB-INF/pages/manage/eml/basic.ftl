@@ -4,17 +4,16 @@
 $(document).ready(function(){
 	initHelp();
 });   
-</script>	
-	<#assign sideMenuEml=true />
+</script>
+<#assign sideMenuEml=true />
 <#include "/WEB-INF/pages/inc/menu.ftl">
-
 <h1><@s.text name='manage.metadata.basic.title'/>: <em>${ms.resource.title!ms.resource.shortname}</em></h1>
 <p><@s.text name='manage.metadata.basic.intro'/></p>
 
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <form class="topForm" action="metadata-${section}.do" method="post">
 
-  	<@input name="eml.title" help="my custom help text. Better to use i18n for a internationalised lookup in the resource bundle" helpOptions={"Very good title":"Title One",  "A much better title":"Title Two"} />
+  	<@input name="eml.title" />
   	<@text name="eml.description" />
 
 	<div class="half">
