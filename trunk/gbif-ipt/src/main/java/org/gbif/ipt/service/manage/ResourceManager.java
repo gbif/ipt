@@ -55,6 +55,15 @@ public interface ResourceManager {
   public Map<String, Resource> getResources();
 
   /**
+   * Returns the latest resources , order by last modified
+   * 
+   * @param startPage
+   * @param pageSize
+   * @return list of resources
+   */
+  public List<Resource> latest(int startPage, int pageSize);  
+  
+  /**
    * Returns the URL to a public resource in the IPT
    * 
    * @param shortname

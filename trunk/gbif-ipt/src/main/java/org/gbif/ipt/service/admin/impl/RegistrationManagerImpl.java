@@ -25,6 +25,7 @@ import java.io.ObjectOutputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -76,6 +77,9 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
    */
   public void addIptInstance(Ipt ipt) {
     if (ipt != null) {
+      if (ipt.getCreated() == null) {
+        ipt.setCreated(new Date());
+      }
       registration.setIpt(ipt);
     }
   }
