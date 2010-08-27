@@ -127,7 +127,14 @@
 
 		<action name="about" class="org.gbif.ipt.action.AboutAction">
 			<result>/WEB-INF/pages/about.ftl</result>
-		</action>		
+		</action>	
+		<action name="rss"
+			class="org.gbif.ipt.action.portal.ResourceAction" method="rss">
+			<result name="success" type="freemarker">
+				<param name="location">/WEB-INF/pages/portal/rss.ftl</param>
+				<param name="contentType">text/xml</param>
+			</result>
+		</action>			
 		
 	</package>	
 	

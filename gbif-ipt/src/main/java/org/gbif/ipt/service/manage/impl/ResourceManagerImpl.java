@@ -23,9 +23,9 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.ResourceConfiguration;
 import org.gbif.ipt.model.Source;
+import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.Source.FileSource;
 import org.gbif.ipt.model.Source.SqlSource;
-import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
@@ -36,8 +36,8 @@ import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidConfigException;
-import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.RegistryException;
+import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.GBIFRegistryManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -64,6 +64,8 @@ import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -194,6 +196,36 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     return config;
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.gbif.ipt.service.manage.ResourceManager#latest(int, int)
+   */
+  public List<Resource> latest(int startPage, int pageSize) {
+    List<Resource> resourceList = new ArrayList<Resource>();
+    for (Resource resource : resources.values()) {
+      if (!(resource.getStatus().equals(PublicationStatus.PRIVATE))) {
+        resourceList.add(resource);
+      }
+    }
+    Collections.sort(resourceList, new Comparator<Resource>() {
+      public int compare(Resource r1, Resource r2) {
+        if (r1 == null || r1.getModified() == null) {
+          return 1;
+        }
+        if (r2 == null || r2.getModified() == null) {
+          return -1;
+        }
+        if (r1.getModified().before(r2.getModified())) {
+          return 1;
+        } else {
+          return -1;
+        }
+      }
+    });
+    return resourceList;
+  }  
+  
   /**
 	 * 
 	 */

@@ -12,6 +12,7 @@
  */
 package org.gbif.ipt.model;
 
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -26,6 +27,7 @@ public class Ipt {
   private String language;
   private String homepageUrl;
   private String logoUrl;
+  private Date created;
   private String primaryContactType;
   private String primaryContactName;
   private String primaryContactAddress;
@@ -33,6 +35,13 @@ public class Ipt {
   private String primaryContactEmail;
   private String primaryContactPhone;
   private String wsPassword;
+
+  /**
+   * @return the created
+   */
+  public Date getCreated() {
+    return created;
+  }
 
   /**
    * @return the description
@@ -130,6 +139,13 @@ public class Ipt {
    */
   public String getWsPassword() {
     return wsPassword;
+  }
+
+  /**
+   * @param created the created to set
+   */
+  public void setCreated(Date created) {
+    this.created = created;
   }
 
   /**
