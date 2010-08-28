@@ -37,6 +37,7 @@ import org.gbif.provider.service.SourceManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.CsvParser;
 import org.gbif.provider.util.MalformedTabFileException;
+import org.gbif.provider.util.SourceFileReader;
 import org.gbif.provider.util.TabFileReader;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -323,15 +324,16 @@ public class SourceInspectionManagerImpl implements SourceInspectionManager {
 
   private List<List<? extends Object>> getPreview(SourceFile source)
       throws IOException, MalformedTabFileException {
+    if (source == null) {
+      return null;
+    }
     List<List<? extends Object>> preview = new ArrayList<List<? extends Object>>();
     // read file
     preview.add(getHeader(source));
-    TabFileReader reader = new TabFileReader(getSourceFile(source),
-        !source.hasHeaders());
-    while (reader.hasNext() && preview.size() <= PREVIEW_SIZE) {
-      preview.add(Arrays.asList(reader.next()));
+    SourceFileReader sfreader = SourceFileReader.with(source);
+    while (sfreader.hasNext() && preview.size() <= PREVIEW_SIZE) {
+      preview.add(Arrays.asList(sfreader.next()));
     }
-    reader.close();
     return preview;
   }
 
