@@ -153,11 +153,6 @@
   </div>
 
 
-  <div class="break"></div>
-  <div id="sourcepreview">
-	<@s.text name='propertymapping.retrieving'/>
-  </div>	
-
   <div class="break"></div>	
 	<h2><@s.text name='propertymapping.mappings'/></h2>
 	<p><@s.text name='propertymapping.instructions'/>
@@ -222,5 +217,10 @@
 	</div>
   </div>
 </div> <#-- property form template -->
+
+  <div class="break"></div>
+  <div id="sourcepreview">
+	<@s.text name='propertymapping.retrieving'/>
+  </div>	
 
 </body>

@@ -163,13 +163,6 @@
     </#if>
 </fieldset>
 
-
-<div class="break"></div>
-<div id="sourcepreview" style="display:none">
-    <@s.text name='sources.retrieving'/>
-</div>  
-
-
 <#if (fileSources?size>0) || (sqlSources?size>0)>
 <div class="break">
 <@s.form action="mappings" method="get">
@@ -181,5 +174,11 @@
 </div>
 </#if>
 
-
 <div class="break20"></div>
+<div class="break20"></div>
+<div class="break20"></div>
+
+<div class="break"></div>
+<div id="sourcepreview" style="display:none">
+    <@s.text name='sources.retrieving'/>
+</div>
