@@ -417,6 +417,9 @@ public class AppConfig {
   }
 
   public String getResourceLogoUrl(Long resourceId) {
+    if (resourceId == null) {
+      return null;
+    }
     return String.format("%slogo.jpg", getResourceUrl(resourceId));
   }
 
