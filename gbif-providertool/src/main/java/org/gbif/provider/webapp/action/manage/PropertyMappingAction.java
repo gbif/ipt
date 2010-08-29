@@ -26,7 +26,7 @@ import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.PropertyMapping;
-import org.gbif.provider.model.SourceFile;
+import org.gbif.provider.model.SourceBase;
 import org.gbif.provider.model.Transformation;
 import org.gbif.provider.model.voc.TransformationType;
 import org.gbif.provider.service.ExtensionManager;
@@ -164,7 +164,7 @@ public class PropertyMappingAction extends BaseDataResourceAction implements
         if (view != null && view.getSource() == null && sid != null) {
           // this is probably the default core mapping without a source assigned
           // yet.
-          SourceFile source = (SourceFile) sourceManager.get(sid);
+          SourceBase source = sourceManager.get(sid);
           view.setSource(source);
           viewMappingManager.save(view);
         }
@@ -174,7 +174,7 @@ public class PropertyMappingAction extends BaseDataResourceAction implements
         if (view != null && view.getSource() == null && sid != null) {
           // this is probably the default core mapping without a source assigned
           // yet.
-          SourceFile source = (SourceFile) sourceManager.get(sid);
+          SourceBase source = sourceManager.get(sid);
           view.setSource(source);
           viewMappingManager.save(view);
         }
