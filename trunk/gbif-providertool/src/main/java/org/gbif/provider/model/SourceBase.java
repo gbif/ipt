@@ -41,7 +41,7 @@ public abstract class SourceBase implements BaseObject, ResourceRelatedObject {
   protected String name;
   protected String csvFileHeader;
   protected String separator;
-  protected Integer numLinesToSkip;
+  protected Integer numLinesToSkip = 0;
   protected Boolean archiveFile = false;
   protected String encoding;
 
