@@ -37,7 +37,7 @@ public class Dao extends JdbcDaoSupport {
 			Double minLatitude,	Double maxLatitude, Double minLongitude, Double maxLongitude, int maxResults) {
 		
 		// select is always the same
-		String select = "SELECT dwc.guid as guid, taxon_fk, t.lft as taxon_lft, t.rgt as taxon_rgt, region_fk, r.lft as region_lft, r.rgt as region_rgt, scientific_name, family, type_status, locality, institution_code, collection_code, catalog_number, recorded_by, event_date, basis_of_record, lat, lon  " +
+		String select = "SELECT dwc.guid as guid, taxon_fk, t.lft as taxon_lft, t.rgt as taxon_rgt, region_fk, r.lft as region_lft, r.rgt as region_rgt, dwc.scientific_name, dwc.family, dwc.type_status, dwc.locality, dwc.institution_code, dwc.collection_code, dwc.catalog_number, dwc.recorded_by, dwc.event_date, dwc.basis_of_record, lat, lon  " +
 				" FROM darwin_core dwc  join taxon t on dwc.taxon_fk=t.id  join region r on dwc.region_fk=r.id";
 		// build the where clause
 		List<Object> params = new LinkedList<Object>();
