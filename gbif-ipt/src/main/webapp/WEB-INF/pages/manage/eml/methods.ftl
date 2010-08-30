@@ -26,40 +26,32 @@
 <h1><@s.text name='manage.metadata.methods.title'/>: <em>${ms.resource.title!ms.resource.shortname}</em></h1>
 <@s.text name='manage.metadata.methods.intro'/>
 <form class="topForm" action="metadata-${section}.do" method="post">
-<#assign last=0/>
-<#if eml.samplingMethods?? >
-	<#assign last=("${eml.samplingMethods.size()}"?number)-1/>
-</#if>
-<div id="sampling" class="item">
-<@text name="studyExtent" value="${((eml.samplingMethods[last].studyExtent)!)}"  i18nkey="eml.samplingMethods.studyExtent"/>
-<@text name="sampleDescription" value="${((eml.samplingMethods[last].sampleDescription)!)}" i18nkey="eml.samplingMethods.sampleDescription"/>
+<div id="sampling" >
+<@text name="eml.studyExtent"  i18nkey="eml.studyExtent"/>
+<@text name="eml.sampleDescription" i18nkey="eml.sampleDescription"/>
 </div>
-<div id="qualitycontrol" class="item">
-<#if eml.samplingMethods[last]?? && eml.samplingMethods[last].qualityControl?? >
-	<@text name="qualityControl" value="${(eml.samplingMethods[last].qualityControl)!}" i18nkey="eml.samplingMethods.qualityControl"/>
-<#else>
-	<@text name="qualityControl" value="${(eml.samplingMethods[last-1].qualityControl)!}" i18nkey="eml.samplingMethods.qualityControl"/>
-</#if>
+<div id="qualitycontrol" >
+<@text name="eml.qualityControl" i18nkey="eml.qualityControl"/>
 <div class="newline"></div>
 <div class="horizontal_dotted_line_large_foo" id="separator"></div>
 <div class="newline"></div>
 </div>
 <div id="items">
-<#list eml.samplingMethods as item>
-<#if eml.samplingMethods[item_index].stepDescription?exists && eml.samplingMethods[item_index].stepDescription!=" ">
+<#if eml.methodSteps??>
+<#list eml.methodSteps as item>
 <div id="item-${item_index}" class="item">
 	<div class="newline"></div>
 	<div class="right">
       <a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.methods.item'/> ]</a>
     </div>
     <div class="newline"></div>
-	<@text name="eml.samplingMethods[${item_index}].stepDescription" i18nkey="eml.samplingMethods.stepDescription"/>
+	<@text name="eml.methodSteps[${item_index}]" i18nkey="eml.methodSteps"/>
   	<div class="newline"></div>
 	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
 	<div class="newline"></div>
 </div>
-</#if>
 </#list>
+</#if>
 </div>
 <a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.methods.item'/></a></br></br>
     <div class="newline"></div>
@@ -75,7 +67,7 @@
       <a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.methods.item'/> ]</a>
     </div>
     <div class="newline"></div>
-	<@text name="stepDescription" i18nkey="eml.samplingMethods.stepDescription"/>
+	<@text name="" i18nkey="eml.methodSteps"/>
   	<div class="newline"></div>
 	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
 	<div class="newline"></div>

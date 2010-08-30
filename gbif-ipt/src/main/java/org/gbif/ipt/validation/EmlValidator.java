@@ -131,9 +131,9 @@ public class EmlValidator extends BaseValidator {
     	  }
     	  
       } else if (part == null || part.equalsIgnoreCase("methods")) {
-    	  for(int index=1;index<eml.getSamplingMethods().size()-2;index++) {
-    		  if(!exists(eml.getSamplingMethods().get(index).getStepDescription(), 5)) {
-    			  action.addFieldError("eml.samplingMethods["+index+"].stepDescription", action.getText("validation.required"));
+    	  for(int index=0;index<eml.getMethodSteps().size();index++) {
+    		  if(!exists(eml.getMethodSteps().get(index), 5)) {
+    			  action.addFieldError("eml.methodSteps["+index+"]", action.getText("validation.required"));
     		  }
     	  }
       } else if (part == null || part.equalsIgnoreCase("citations")) {
