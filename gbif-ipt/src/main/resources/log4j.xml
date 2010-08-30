@@ -15,21 +15,21 @@
 	</appender>
 	
 	<appender name="LOGFILE" class="org.gbif.ipt.utils.LogFileAppender">
-		<param name="File" value="debug.log "/>
-		<param name="MaxFileSize" value="10MB"/>
-		<param name="MaxBackupIndex" value="10"/>
-		<param name="Append" value="false"/>		
+		<param name="file" value="debug.log "/>
+		<param name="maxFileSize" value="10MB"/>
+		<param name="maxBackupIndex" value="10"/>
+		<param name="append" value="false"/>		
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%-5p [%c] - %m%n"/>
 		</layout>
 	</appender>
 	
 	<appender name="ADMINFILE" class="org.gbif.ipt.utils.LogFileAppender">
-		<param name="Threshold" value="WARN"/>
-		<param name="File" value="admin.log "/>
-		<param name="MaxFileSize" value="2MB"/>
-		<param name="MaxBackupIndex" value="0"/>
-		<param name="Append" value="false"/>		
+		<param name="threshold" value="WARN"/>
+		<param name="file" value="admin.log "/>
+		<param name="maxFileSize" value="2MB"/>
+		<param name="maxBackupIndex" value="0"/>
+		<param name="append" value="false"/>		
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%-5p %m%n"/>
 		</layout>
