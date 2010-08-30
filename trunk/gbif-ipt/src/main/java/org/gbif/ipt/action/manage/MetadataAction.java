@@ -129,7 +129,7 @@ public class MetadataAction extends POSTAction {
     		ms.getEml().getTemporalCoverages().clear();
     	}
     	if (section.equals("methods")) {
-    	    ms.getEml().getSamplingMethods().clear();
+    	    ms.getEml().getMethodSteps().clear();
     	}
     	if (section.equals("citations")) {
     	    ms.getEml().getBibliographicCitationSet().getBibliographicCitations().clear();
