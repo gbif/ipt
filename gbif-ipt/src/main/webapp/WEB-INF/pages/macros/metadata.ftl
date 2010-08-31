@@ -52,17 +52,30 @@ $(document).ready(function(){
 		
 	  <#switch "${section}">
   		<#case "parties">
-			$("#item-"+index+" input").attr("id",function() {
-				var parts=$(this).attr("id").split(".");var n=parseInt(parts.length)-1;
-				return "eml.associatedParties["+index+"]."+parts[n]; });
-			$("#item-"+index+" select").attr("id",function() {
-				var parts=$(this).attr("id").split(".");var n=parseInt(parts.length)-1;
-				return "eml.associatedParties["+index+"]."+parts[n]; });
-			$("#item-"+index+" label").attr("for",function() {
-				var parts=$(this).attr("for").split(".");var n=parseInt(parts.length)-1;
-				return "eml.associatedParties["+index+"]."+parts[n]; });		
-			$("#item-"+index+" input").attr("name",function() {return $(this).attr("id"); });
-			$("#item-"+index+" select").attr("name",function() {return $(this).attr("id"); });
+  			$("#item-"+index+" [id$='firstName']").attr("id", "eml.associatedParties["+index+"].firstName").attr("name", function() {return $(this).attr("id");});
+			$("#item-"+index+" [for$='firstName']").attr("for", "eml.associatedParties["+index+"].firstName");
+  			$("#item-"+index+" [id$='lastName']").attr("id", "eml.associatedParties["+index+"].lastName").attr("name", function() {return $(this).attr("id");});
+			$("#item-"+index+" [for$='lastName']").attr("for", "eml.associatedParties["+index+"].lastName");
+  			$("#item-"+index+" [id$='position']").attr("id", "eml.associatedParties["+index+"].position").attr("name", function() {return $(this).attr("id");});
+			$("#item-"+index+" [for$='position']").attr("for", "eml.associatedParties["+index+"].position");
+  			$("#item-"+index+" [id$='organisation']").attr("id", "eml.associatedParties["+index+"].organisation").attr("name", function() {return $(this).attr("id");});
+			$("#item-"+index+" [for$='organisation']").attr("for", "eml.associatedParties["+index+"].organisation");
+  			$("#item-"+index+" [id$='address']").attr("id", "eml.associatedParties["+index+"].address.address").attr("name", function() {return $(this).attr("id");});
+			$("#item-"+index+" [for$='address']").attr("for", "eml.associatedParties["+index+"].address.address");
+  			$("#item-"+index+" [id$='city']").attr("id", "eml.associatedParties["+index+"].address.city").attr("name", function() {return $(this).attr("id");});
+			$("#item-"+index+" [for$='city']").attr("for", "eml.associatedParties["+index+"].address.city");
+  			$("#item-"+index+" [id$='province']").attr("id", "eml.associatedParties["+index+"].address.province").attr("name", function() {return $(this).attr("id");});
+			$("#item-"+index+" [for$='province']").attr("for", "eml.associatedParties["+index+"].address.province");
+  			$("#item-"+index+" [id$='country']").attr("id", "eml.associatedParties["+index+"].address.country").attr("name", function() {return $(this).attr("id");});
+			$("#item-"+index+" [for$='country']").attr("for", "eml.associatedParties["+index+"].address.country");
+  			$("#item-"+index+" [id$='phone']").attr("id", "eml.associatedParties["+index+"].phone").attr("name", function() {return $(this).attr("id");});
+			$("#item-"+index+" [for$='phone']").attr("for", "eml.associatedParties["+index+"].phone");
+  			$("#item-"+index+" [id$='email']").attr("id", "eml.associatedParties["+index+"].email").attr("name", function() {return $(this).attr("id");});
+			$("#item-"+index+" [for$='email']").attr("for", "eml.associatedParties["+index+"].email");
+  			$("#item-"+index+" [id$='homepage']").attr("id", "eml.associatedParties["+index+"].homepage").attr("name", function() {return $(this).attr("id");});
+			$("#item-"+index+" [for$='homepage']").attr("for", "eml.associatedParties["+index+"].homepage");
+  			$("#item-"+index+" [id$='role']").attr("id", "eml.associatedParties["+index+"].role").attr("name", function() {return $(this).attr("id");});
+			$("#item-"+index+" [for$='role']").attr("for", "eml.associatedParties["+index+"].role");
     	<#break>
     	<#case "methods">
 			$("#item-"+index+" textarea").attr("id", "eml.methodSteps["+index+"]");	
