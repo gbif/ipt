@@ -53,29 +53,112 @@ public class EmlValidator extends BaseValidator {
    */
   public void validate(BaseAction action, Eml eml, @Nullable String part) {
     if (eml != null) {
-      if (part == null || part.equalsIgnoreCase("basic")) {
+    	// BASIC METADATA
+      if (part == null || part.equalsIgnoreCase("basic")) {   	  
+    	  /* title - mandatory
+    	   * 
+    	   * <dataset>
+    	   * 	<title> {eml.title} </title>
+    	   * </dataset>
+    	   */
         if (!exists(eml.getTitle())) {
           action.addFieldError("eml.title", action.getText("validation.required"));
         }
+        
+        /*
+         * description - mandatory and greater than 5 chars
+         * 
+         * <dataset>
+         * 		<abstract>
+         * 			<para> {eml.description} </para>
+         * 		</abstract>
+         * </dataset>
+         */
         if (!exists(eml.getDescription(), 5)) {
           action.addFieldError("eml.description", action.getText("validation.required"));
         }
+        /*
+         * languaje - mandatory
+         * 
+         * <dataset>
+         * 		<title xml:lang={eml.language}> </title>
+         * </dataset>
+         */
         if (!exists(eml.getLanguage(), 2)) {
           action.addFieldError("eml.language", action.getText("validation.required"));
         }
+        
+        /*
+         * firstName - optional and disallowed ":" to appear in the string ("xs:NCName").
+         * 
+         * <dataset>
+         * 		<contact>
+         * 			<individualName>
+         * 				<givenName> {eml.contact.firstName} </givenName>
+         * 			</individualName>
+         * 		</contact>
+         * </dataset>
+         */        
+        if(exists(eml.getContact().getFirstName(), 2) && eml.getContact().getFirstName().contains(":")) {
+        		action.addFieldError("eml.contact.firstName", action.getText("validation.contains", new String[]{":"}));
+        }
+        
+        /*
+         * lastName - mandatory and disallowed ":" to appear in the string ("xs:NCName").
+         * 
+         * <dataset>
+         * 		<contact>
+         * 			<individualName>
+         * 				<surName>{eml.contact.lastName}</surName>
+         * 			</individualName>
+         * 		</contact>
+         * </dataset>
+         */
         if (!exists(eml.getContact().getLastName())) {
           action.addFieldError("eml.contact.lastName", action.getText("validation.required"));
+        } else if(eml.getContact().getLastName().contains(":")) {
+        	action.addFieldError("eml.contact.lastName", action.getText("validation.contains", new String[]{":"}));
         }
+        
+        
+        /*
+         * email - mandatory
+         * 
+         * <dataset>
+         * 		<contact>
+         * 			<electronicMailAddress> {eml.contact.email} </electronicMailAddress>
+         * 		</contact>
+         * </dataset>
+         */
         if (!isValidEmail(eml.getContact().getEmail())) {
           action.addFieldError("eml.contact.email", action.getText("validation.invalid"));
         }
+        
+        /*
+         * phone - mandatory
+         * 
+		 * <dataset>
+		 * 		<contact>
+		 * 			<phone>{eml.contact.phone}</phone>
+		 * 		</contact>
+		 * </dataset>
+         */
+        if(!exists(eml.getContact().getPhone())) {
+        	action.addFieldError("eml.contact.phone", action.getText("validation.required"));
+        }
       } else if (part == null || part.equalsIgnoreCase("parties")) {
     	  for(int index=0;index<eml.getAssociatedParties().size();index++) {
-    		  if(!exists(eml.getAssociatedParties().get(index).getFirstName())) {
-    			  action.addFieldError("eml.associatedParties["+index+"].firstName", action.getText("validation.required"));
+    		  /*
+    		   * firstName - optional and disallowed ":" to appear in the string ("xs:NCName").
+    		   */
+    		  if(exists(eml.getAssociatedParties().get(index).getFirstName()) && eml.getAssociatedParties().get(index).getFirstName().contains(":")) {
+    			  action.addFieldError("eml.contact.firstName", action.getText("validation.contains", new String[]{":"}));
     		  }
+    		  
     		  if(!exists(eml.getAssociatedParties().get(index).getLastName())) {
     			  action.addFieldError("eml.associatedParties["+index+"].lastName", action.getText("validation.required"));
+    		  } else if(eml.getAssociatedParties().get(index).getLastName().contains(":")) {
+    			  action.addFieldError("eml.contact.lastName", action.getText("validation.contains", new String[]{":"}));
     		  }
     	  }
       } else if (part == null || part.equalsIgnoreCase("geocoverage")) {	  
@@ -131,11 +214,11 @@ public class EmlValidator extends BaseValidator {
     	  }
     	  
       } else if (part == null || part.equalsIgnoreCase("methods")) {
-    	  for(int index=0;index<eml.getMethodSteps().size();index++) {
+    	/*  for(int index=0;index<eml.getMethodSteps().size();index++) {
     		  if(!exists(eml.getMethodSteps().get(index), 5)) {
     			  action.addFieldError("eml.methodSteps["+index+"]", action.getText("validation.required"));
     		  }
-    	  }
+    	  }*/
       } else if (part == null || part.equalsIgnoreCase("citations")) {
     	  if(!exists(eml.getCitation())) {
     		  action.addFieldError("eml.citation", action.getText("validation.required"));

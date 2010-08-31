@@ -19,7 +19,9 @@ package org.gbif.ipt.action.manage;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
 import org.gbif.ipt.action.POSTAction;
@@ -129,7 +131,7 @@ public class MetadataAction extends POSTAction {
     		ms.getEml().getTemporalCoverages().clear();
     	}
     	if (section.equals("methods")) {
-    	    ms.getEml().getMethodSteps().clear();
+    	  	ms.getEml().getMethodSteps().clear();
     	}
     	if (section.equals("citations")) {
     	    ms.getEml().getBibliographicCitationSet().getBibliographicCitations().clear();
@@ -176,4 +178,22 @@ public class MetadataAction extends POSTAction {
   public Map<String, String> getTempTypes() {
 	  return TemporalCoverageType.htmlSelectMap;
   }
+  
+  /*
+   * TODO This method should be implemented different.
+   * This is only a test version for the basic page.
+   * The list of countries should be gotten using a different way. 
+   */
+  public Map<String, String> getCountryList() {
+	  Map<String, String> countryList = new TreeMap<String, String>();
+	  String c;
+	  for(Locale locale : Locale.getAvailableLocales()) {
+		  c = locale.getDisplayCountry();
+		  if(c.length() > 0) {
+			  countryList.put(locale.getISO3Country(), c);
+		  }
+	  }	  
+	  return countryList;
+  }  
+  
 }
