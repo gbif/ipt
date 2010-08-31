@@ -31,6 +31,7 @@ import org.gbif.ipt.model.voc.Rank;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.validation.EmlValidator;
 import org.gbif.ipt.validation.ResourceSupport;
+import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.JGTICuratorialUnitType;
 import org.gbif.metadata.eml.Role;
@@ -149,6 +150,11 @@ public class MetadataAction extends POSTAction {
 
   @Override
   public String save() throws Exception {
+	Agent current = new Agent();
+	current.setFirstName(getCurrentUser().getFirstname());
+	current.setLastName(getCurrentUser().getLastname());
+	current.setEmail(getCurrentUser().getEmail());
+	ms.getEml().setMetadataProvider(current);
     ms.save();
     return SUCCESS;
   }
