@@ -26,7 +26,7 @@ $(document).ready(function(){
            			<@input i18nkey="eml.taxonomicCoverage.scientificName" name="eml.taxonomicCoverages[${item_index}].taxonKeyword.scientificName" />
            			<@input i18nkey="eml.taxonomicCoverage.commonName" name="eml.taxonomicCoverages[${item_index}].taxonKeyword.commonName" />
         		</div>     	
-           		<@select i18nkey="eml.taxonomicCoverage.rank"  name="eml.taxonomicCoverages[${item_index}].taxonKeyword.rank" options=ranks value="${eml.taxonomicCoverages[item_index].taxonKeyword.rank}" help="i18n" />
+           		<@select i18nkey="eml.taxonomicCoverage.rank"  name="eml.taxonomicCoverages[${item_index}].taxonKeyword.rank" options=ranks value="${eml.taxonomicCoverages[item_index].taxonKeyword.rank}" />
    	  			<div class="newline"></div>			
 				<div class="horizontal_dotted_line_large_foo" id="separator"></div>
 				<div class="newline"></div>
@@ -52,7 +52,7 @@ $(document).ready(function(){
 		<@input i18nkey="eml.taxonomicCoverage.scientificName" name="scientificName" />
 		<@input i18nkey="eml.taxonomicCoverage.commonName" name="commonName" />
 	</div>         
-	<@select i18nkey="eml.taxonomicCoverage.rank"  name="rank" options=ranks help="i18n"/>   	  
+	<@select i18nkey="eml.taxonomicCoverage.rank"  name="rank" options=ranks />   	  
 	<div class="newline"></div>      
 	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
 	<div class="newline"></div>

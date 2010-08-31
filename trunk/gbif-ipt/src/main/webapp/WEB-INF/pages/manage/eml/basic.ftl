@@ -3,6 +3,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	initHelp();
+	
 });   
 </script>
 <#assign sideMenuEml=true />
@@ -24,11 +25,22 @@ $(document).ready(function(){
 	  	<@input name="eml.contact.firstName" />
 	  	<@input name="eml.contact.lastName" />
   	</div>
+  	<div class="half">
+  		<@input name="eml.contact.position" />
+  		<@input name="eml.contact.organisation" />
+  	</div>
+  	<div class="half">
+  		<@input name="eml.contact.address.address" />
+  		<@input name="eml.contact.address.city" />
+  	</div>
+  	<div class="half">
+  		<@input name="eml.contact.address.province" />
+  		<@select name="eml.contact.address.country" options=countryList value="${eml.contact.address.country}" />
+  	</div>
 	<div class="half">
 	  	<@input name="eml.contact.email" />
 	  	<@input name="eml.contact.phone" />
-  	</div>
-  
+  	</div>  
   <div class="buttons">
  	<@s.submit name="save" key="button.save"/>
  	<@s.submit name="cancel" key="button.cancel"/>
