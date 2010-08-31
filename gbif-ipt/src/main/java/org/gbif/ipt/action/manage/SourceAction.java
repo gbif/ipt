@@ -43,10 +43,7 @@ import java.util.Map;
  * @author markus
  * 
  */
-public class SourceAction extends POSTAction {
-	// the resource manager session is populated by the resource interceptor and kept alive for an entire manager session
-	@Inject
-	private ResourceManagerSession ms;
+public class SourceAction extends ManagerBaseAction {
 	@Inject
 	private SourceManager sourceManager;
 	@Inject
@@ -71,20 +68,17 @@ public class SourceAction extends POSTAction {
 		// new one
 		if (file != null) {
 			// uploaded a new file
-			// copy file temporarily to keep its original name
-			File tmpFile = copyToTmp();
 			// create a new file source
-			boolean replaced=ms.getConfig().getSource(fileFileName) != null;
+			boolean replaced=resource.getSource(fileFileName) != null;
 			try {
-				source = sourceManager.add(ms.getConfig(), tmpFile);
-				ms.saveConfig();
+				source = sourceManager.add(resource, file, fileFileName);
+				saveResource();
 				id=source.getName();
 				if (replaced) {
 					addActionMessage("Replacing existing source " + source.getName());
 				} else {
 					addActionMessage("Added a new file source");
 				}
-				tmpFile.deleteOnExit();
 			} catch (ImportException e) {
 				// even though we have problems with this source we'll keep it for manual corrections
 				log.error("Source error: " + e.getMessage(), e);
@@ -94,30 +88,11 @@ public class SourceAction extends POSTAction {
 		return INPUT;
 	}
 
-	private File copyToTmp() {
-		File tmpFile = dataDir.tmpFile(fileFileName);
-		if (tmpFile.exists()) {
-			tmpFile.delete();
-		}
-		// retrieve the file data
-		try {
-			InputStream input = new FileInputStream(file);
-			// write the file to the file specified
-			OutputStream output = new FileOutputStream(tmpFile);
-			IOUtils.copy(input, output);
-			output.close();
-			input.close();
-		} catch (IOException e) {
-			log.error(e);
-		}
-		return tmpFile;
-	}
-
 	@Override
 	public String delete() {
-		if (sourceManager.delete(ms.getConfig(), ms.getConfig().getSource(id))) {
+		if (sourceManager.delete(resource, resource.getSource(id))) {
 			addActionMessage("Deleted source " + id);
-			ms.saveConfig();
+			saveResource();
 		} else {
 			addActionMessage("Couldnt delete source " + id);
 		}
@@ -135,10 +110,6 @@ public class SourceAction extends POSTAction {
 		return jdbcSupport.optionMap();
 	}
 
-	public ResourceManagerSession getMs() {
-		return ms;
-	}
-
 	public Source getSource() {
 		return source;
 	}
@@ -154,16 +125,16 @@ public class SourceAction extends POSTAction {
 	public void prepare() throws Exception {
 		super.prepare();
 		if (id != null) {
-			source = ms.getConfig().getSource(id);
+			source = resource.getSource(id);
 		} else if (file == null) {
 			// prepare a new, empty sql source
 			source = new Source.SqlSource();
-			source.setResource(ms.getResource());
+			source.setResource(resource);
 			((SqlSource) source).setRdbms(jdbcSupport.get("mysql"));
 		} else {
 			// prepare a new, empty sql source
 			source = new Source.FileSource();
-			source.setResource(ms.getResource());
+			source.setResource(resource);
 		}
 	}
 
@@ -185,13 +156,10 @@ public class SourceAction extends POSTAction {
 			// new one
 			if (file != null) {
 				// uploaded a new file
-				// copy file temporarily to keep its original name
-				File tmpFile = copyToTmp();
-				tmpFile.deleteOnExit();
 				// create a new file source
 				try {
-					source = sourceManager.add(ms.getConfig(), tmpFile);
-					if (ms.getConfig().getSource(source.getName()) != null) {
+					source = sourceManager.add(resource, file, fileFileName);
+					if (resource.getSource(source.getName()) != null) {
 						addActionMessage("Replacing existing source " + source.getName());
 					} else {
 						addActionMessage("Added a new file source");
@@ -203,14 +171,14 @@ public class SourceAction extends POSTAction {
 				}
 			} else {
 				try {
-					ms.getConfig().addSource(source, false);
+					resource.addSource(source, false);
 				} catch (AlreadyExistingException e) {
 					// shouldnt really happen as we validate this beforehand - still catching it here to be safe
 					addActionError("Source with that name exists already");
 				}
 			}
 		}
-		ms.saveConfig();
+		saveResource();
 		return result;
 	}
 
@@ -247,7 +215,7 @@ public class SourceAction extends POSTAction {
 			// check if title exists already as a source
 			if (StringUtils.trimToEmpty(source.getName()).length() < 3) {
 				addFieldError("source.name", getText("validation.required", new String[]{getText("source.name")}));
-			} else if (id == null && ms.getConfig().getSources().contains(source)) {
+			} else if (id == null && resource.getSources().contains(source)) {
 				addFieldError("source.name", getText("manage.source.unique"));
 			}
 			if (SqlSource.class.isInstance(source)) {

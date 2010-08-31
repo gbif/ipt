@@ -12,8 +12,6 @@ import java.util.List;
 public class HomeAction extends BaseAction {
   private List<Resource> resources = new ArrayList<Resource>();
   @Inject
-  private ResourceManagerSession rms;
-  @Inject
   private ResourceManager resourceManager;
   private boolean registrationAllowed = false;
 

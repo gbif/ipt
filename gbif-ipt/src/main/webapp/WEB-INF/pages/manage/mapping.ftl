@@ -47,6 +47,7 @@ $(document).ready(function(){
 
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <form class="topForm" action="mapping.do" method="post">
+  	<input type="hidden" name="r" value="${resource.shortname}" />
   	<input type="hidden" name="id" value="${id}" />
 
 <#if mapping.source?exists>
@@ -148,7 +149,7 @@ $(document).ready(function(){
 <h1><@s.text name='manage.mapping.source'/></h1>
 <p><@s.text name='manage.mapping.source.help'/></p>
 
-<@selectList name="source" options=ms.config.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" />
+<@selectList name="source" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" />
 
   <div class="buttons">
  	<@s.submit name="save" key="button.save"/>

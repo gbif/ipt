@@ -1,14 +1,19 @@
 package org.gbif.ipt.model;
 
 import org.gbif.ipt.model.voc.PublicationStatus;
+import org.gbif.ipt.service.AlreadyExistingException;
+import org.gbif.metadata.eml.Eml;
 
 import static com.google.common.base.Objects.equal;
 
 import com.google.common.base.Objects;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -27,20 +32,123 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   private static final long serialVersionUID = 3832626162173352190L;;
   private String shortname; // unique
-  private String title;
-  private String description;
+  private Eml eml=new Eml();
   private CoreRowType type;
   private String subtype;
   private PublicationStatus status = PublicationStatus.PRIVATE;
+  private int lastPublishedEmlHash=0;
+  // registry data - only exists when status=REGISTERED
+  private UUID key;
+  private Organisation organisation;
   // resource meta-metadata
   private User creator;
   private Date created;
   private User modifier;
   private Date modified;
   private Set<User> managers = new HashSet<User>();
-  // registry data - only exists when status=REGISTERED
-  private UUID key;
-  private Organisation organisation;
+  // mapping configs
+  private Set<Source> sources = new HashSet<Source>();
+  private ExtensionMapping core;
+  private Set<ExtensionMapping> extensions = new HashSet<ExtensionMapping>();
+
+  public void addExtension(ExtensionMapping extension) {
+    if (extension != null) {
+      this.extensions.add(extension);
+    }
+  }
+
+  public Eml getEml() {
+	return eml;
+}
+
+public void setEml(Eml eml) {
+	this.eml = eml;
+}
+
+public void addSource(Source src, boolean allowOverwrite) throws AlreadyExistingException {
+    // make sure we talk about the same resource
+    src.setResource(this);
+    if (!allowOverwrite && sources.contains(src)) {
+      throw new AlreadyExistingException();
+    }
+    sources.add(src);
+  }
+
+  public boolean deleteMapping(ExtensionMapping mapping) {
+    if (mapping != null) {
+      if (core.equals(mapping)) {
+        core = null;
+        return true;
+      } else {
+        return extensions.remove(mapping);
+      }
+    }
+    return false;
+  }
+
+  public boolean deleteSource(Source src) {
+    if (src != null) {
+      return sources.remove(src);
+    }
+    return false;
+  }
+
+  public ExtensionMapping getCore() {
+    return core;
+  }
+
+  public String getCoreRowType() {
+    if (core != null && core.getExtension() != null) {
+      return core.getExtension().getRowType();
+    }
+    return null;
+  }
+
+  public Set<ExtensionMapping> getExtensions() {
+    return extensions;
+  }
+
+  public ExtensionMapping getMapping(String rowType) {
+    if (rowType == null) {
+      return null;
+    }
+    if (core != null && core.getExtension() != null && rowType.equals(core.getExtension().getRowType())) {
+      return core;
+    }
+    for (ExtensionMapping em : extensions) {
+      if (rowType.equals(em.getExtension().getRowType())) {
+        return em;
+      }
+    }
+    return null;
+  }
+
+  public Source getSource(String name) {
+    if (name == null) {
+      return null;
+    }
+    name = Source.normaliseName(name);
+    for (Source s : sources) {
+      if (s.getName().equals(name)) {
+        return s;
+      }
+    }
+    return null;
+  }
+
+  public List<Source> getSources() {
+    List<Source> srcs = new ArrayList<Source>(sources);
+    Collections.sort(srcs);
+    return srcs;
+  }
+
+  public void setCore(ExtensionMapping core) {
+    this.core = core;
+  }
+
+  public void setExtensions(Set<ExtensionMapping> extensions) {
+    this.extensions = extensions;
+  }
 
   public void addManager(User manager) {
     if (manager != null) {
@@ -48,7 +156,15 @@ public class Resource implements Serializable, Comparable<Resource> {
     }
   }
 
-  /*
+  public int getLastPublishedEmlHash() {
+	return lastPublishedEmlHash;
+}
+
+public void setLastPublishedEmlHash(int lastPublishedEmlHash) {
+	this.lastPublishedEmlHash = lastPublishedEmlHash;
+}
+
+/*
    * (non-Javadoc)
    * @see java.lang.Comparable#compareTo(java.lang.Object)
    */
@@ -77,7 +193,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   public String getDescription() {
-    return description;
+    return eml.getDescription();
   }
 
   public UUID getKey() {
@@ -113,7 +229,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   public String getTitle() {
-    return title;
+    return eml.getTitle();
   }
 
   public CoreRowType getType() {
@@ -137,10 +253,6 @@ public class Resource implements Serializable, Comparable<Resource> {
     if (modifier == null) {
       modifier = creator;
     }
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
   }
 
   public void setKey(UUID key) {
@@ -176,7 +288,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   public void setTitle(String title) {
-    this.title = title;
+    this.eml.setTitle(title);
   }
 
   public void setType(CoreRowType type) {

@@ -5,7 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.gbif.ipt.mock.ModelMocks;
-import org.gbif.ipt.model.ResourceConfiguration;
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.Source.FileSource;
 import org.gbif.ipt.model.Source.SqlSource;
@@ -19,8 +19,7 @@ public class SourceManagerImplTest {
 	public void testDelete() throws AlreadyExistingException {
 		SourceManager man = new SourceManagerImpl();
 		ModelMocks mm = new ModelMocks();
-		ResourceConfiguration cfg = new ResourceConfiguration ();
-		cfg.setResource(mm.r1);
+		Resource cfg = new Resource();
 		cfg.addSource(mm.src1, false);
 		cfg.addSource(mm.src2, false);
 		cfg.addSource(mm.src3, false);

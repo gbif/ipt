@@ -14,11 +14,12 @@ $(document).ready(function(){
 	</style>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
-<h1><@s.text name='manage.source.title'/>: <em>${ms.resource.title!ms.resource.shortname}</em></h1>
+<h1><@s.text name='manage.source.title'/>: <em>${resource.title!resource.shortname}</em></h1>
 <p><@s.text name='manage.source.intro'/></p>
 
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <form class="topForm" action="source.do" method="post">
+  	<input type="hidden" name="r" value="${resource.shortname}" />
   	<input type="hidden" name="id" value="${id!}" />
   	
   	<div class="half">

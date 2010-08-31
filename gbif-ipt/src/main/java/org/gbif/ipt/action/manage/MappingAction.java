@@ -39,10 +39,8 @@ import java.util.Set;
  * @author markus
  * 
  */
-public class MappingAction extends POSTAction {
+public class MappingAction extends ManagerBaseAction {
   // the resource manager session is populated by the resource interceptor and kept alive for an entire manager session
-  @Inject
-  private ResourceManagerSession ms;
   @Inject
   private ExtensionManager extensionManager;
   @Inject
@@ -56,9 +54,9 @@ public class MappingAction extends POSTAction {
 
   @Override
   public String delete() {
-    if (ms.getConfig().deleteMapping(mapping)) {
+    if (resource.deleteMapping(mapping)) {
       addActionMessage("Deleted mapping " + id);
-      ms.saveConfig();
+      saveResource();
     } else {
       addActionMessage("Couldnt delete mapping " + id);
     }
@@ -77,10 +75,6 @@ public class MappingAction extends POSTAction {
     return mapping;
   }
 
-  public ResourceManagerSession getMs() {
-    return ms;
-  }
-
   public List<String[]> getPeek() {
     return peek;
   }
@@ -90,7 +84,7 @@ public class MappingAction extends POSTAction {
     super.prepare();
     if (id != null) {
       // existing mapping?
-      mapping = ms.getConfig().getMapping(id);
+      mapping = resource.getMapping(id);
       if (mapping == null) {
         // a new new mapping
         mapping = new ExtensionMapping();
@@ -127,12 +121,12 @@ public class MappingAction extends POSTAction {
   @Override
   public String save() throws IOException {
     // a new mapping?
-    if (ms.getConfig().getMapping(id) == null) {
+    if (resource.getMapping(id) == null) {
       // is this a core "extension" ?
       if (Constants.DWC_ROWTYPE_OCCURRENCE.equalsIgnoreCase(id) || Constants.DWC_ROWTYPE_TAXON.equalsIgnoreCase(id)) {
-        ms.getConfig().setCore(mapping);
+        resource.setCore(mapping);
       } else {
-        ms.getConfig().addExtension(mapping);
+        resource.addExtension(mapping);
       }
       // read source as prepare wasnt yet ready for this
       readSource();
@@ -151,7 +145,7 @@ public class MappingAction extends POSTAction {
       mapping.setFields(mappedFields);
     }
     // save entire resource config
-    ms.saveConfig();
+    saveResource();
     return INPUT;
   }
 
@@ -164,7 +158,7 @@ public class MappingAction extends POSTAction {
   }
 
   public void setSource(String source) {
-    Source src = ms.getConfig().getSource(source);
+    Source src = resource.getSource(source);
     mapping.setSource(src);
   }
 

@@ -21,13 +21,13 @@ import org.gbif.dwc.text.ArchiveFactory;
 import org.gbif.dwc.text.ArchiveFile;
 import org.gbif.dwc.text.UnsupportedArchiveException;
 import org.gbif.file.CSVReader;
-import org.gbif.ipt.model.ResourceConfiguration;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.Source.FileSource;
 import org.gbif.ipt.model.Source.SqlSource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.ImportException;
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.manage.SourceManager;
 
 import com.google.inject.Inject;
@@ -127,7 +127,6 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     to.setFieldsEnclosedBy(from.getFieldsEnclosedBy());
     to.setFieldsTerminatedBy(from.getFieldsTerminatedBy());
     to.setIgnoreHeaderLines(from.getIgnoreHeaderLines());
-    to.setName(from.getTitle());
     to.setDateFormat(from.getDateFormat());
   }
 
@@ -135,16 +134,19 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
    * (non-Javadoc)
    * @see org.gbif.ipt.service.manage.ResourceConfigManager#add(org.gbif.ipt.model.ResourceConfiguration, java.io.File)
    */
-  public FileSource add(ResourceConfiguration config, File file) throws ImportException {
-    return addOneFile(config, file);
+  public FileSource add(Resource resource, File file, String sourceName) throws ImportException {
+    return addOneFile(resource, file, sourceName);
   }
 
-  private FileSource addOneFile(ResourceConfiguration config, File file) throws ImportException {
+  private FileSource addOneFile(Resource resource, File file, String sourceName) throws ImportException {
     FileSource src = new FileSource();
-    src.setName(file.getName());
-    src.setResource(config.getResource());
+    if (sourceName==null){
+    	sourceName=file.getName();
+    }
+    src.setName(sourceName);
+    src.setResource(resource);
     // copy file
-    File ddFile = dataDir.sourceFile(config.getResource(), src);
+    File ddFile = dataDir.sourceFile(resource, src);
     try {
       FileUtils.copyFile(file, ddFile);
     } catch (IOException e1) {
@@ -153,9 +155,9 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     src.setFile(ddFile);
     src.setLastModified(new Date());
     try {
-      // add to config, allow overwriting existing ones
+      // add to resource, allow overwriting existing ones
       // if the file is uploaded not for the first time
-      config.addSource(src, true);
+    	resource.addSource(src, true);
       // anaylze individual files using the dwca reader
       Archive arch = ArchiveFactory.openArchive(file);
       copyArchiveFileProperties(arch.getCore(), src);
@@ -284,10 +286,10 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
    * (non-Javadoc)
    * @see org.gbif.ipt.service.manage.MappingConfigManager#delete(org.gbif.ipt.model.Source.FileSource)
    */
-  public boolean delete(ResourceConfiguration config, Source source) {
+  public boolean delete(Resource resource, Source source) {
     boolean deleted = false;
     if (source != null) {
-      config.deleteSource(source);
+    	resource.deleteSource(source);
       if (source instanceof FileSource) {
         // also delete source data file
         FileSource fs = (FileSource) source;
@@ -345,7 +347,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     return terms;
   }
 
-  public int importArchive(ResourceConfiguration config, File file, boolean overwriteEml) throws ImportException {
+  public int importArchive(Resource resource, File file, boolean overwriteEml) throws ImportException {
     // anaylze using the dwca reader
     try {
       Archive arch = ArchiveFactory.openArchive(file);

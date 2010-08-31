@@ -23,13 +23,12 @@
 			<result name="401">
 				<param name="location">/WEB-INF/pages/manage/401.ftl</param>
 			</result>
-			<result name="cancel" type="redirect">resource.do</result>
+			<result name="cancel" type="redirectAction">
+				<param name="actionName">resource</param>
+				<param name="r">${r}</param>
+			</result>
 			<result name="home" type="redirect">home.do</result>
 		</global-results>
-		
-		<global-exception-mappings>
-			<exception-mapping result="home" exception="org.gbif.ipt.action.manage.MissingResourceSession"/>
-		</global-exception-mappings>
 		
 		<action name="home" class="org.gbif.ipt.action.manage.HomeAction">
 			<result>/WEB-INF/pages/manage/home.ftl</result>
@@ -41,7 +40,10 @@
 			</interceptor-ref>
 			<interceptor-ref name="managerStack"/>
 			<result name="input">/WEB-INF/pages/manage/create_input.ftl</result>
-			<result type="redirect">resource.do</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">resource</param>
+				<param name="r">${shortname}</param>
+			</result>
 		</action>
 
 		<action name="resource" class="org.gbif.ipt.action.manage.OverviewAction">
@@ -65,7 +67,10 @@
 		
 		<action name="source" class="org.gbif.ipt.action.manage.SourceAction">
 			<result name="input">/WEB-INF/pages/manage/source.ftl</result>
-			<result type="redirect">resource.do</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">resource</param>
+				<param name="r">${resource.shortname}</param>
+			</result>
 		</action>
 		<action name="addsource" class="org.gbif.ipt.action.manage.SourceAction" method="add">
 			<interceptor-ref name="fileUpload">
@@ -77,15 +82,14 @@
 		
 		<action name="mapping" class="org.gbif.ipt.action.manage.MappingAction">
 			<result name="input">/WEB-INF/pages/manage/mapping.ftl</result>
-			<result type="redirect">resource.do</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">resource</param>
+				<param name="r">${resource.shortname}</param>
+			</result>
 		</action>
 		<action name="vocabulary" class="org.gbif.ipt.action.admin.VocabulariesAction">
 			<result>/WEB-INF/pages/manage/vocabulary.ftl</result>
 		</action>
 		
-		<action name="generate" class="org.gbif.ipt.action.manage.MetadataAction">
-			<result>/WEB-INF/pages/manage/metadata.ftl</result>
-		</action>
-
 	</package>
 </struts>

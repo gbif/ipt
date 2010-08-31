@@ -28,7 +28,7 @@ public class ResourceAction extends BaseAction {
     if (resource == null || PublicationStatus.PRIVATE == resource.getStatus()) {
       return NOT_FOUND;
     }
-    eml = resourceManager.getEml(resource);
+    eml = resource.getEml();
     return SUCCESS;
   }
 
