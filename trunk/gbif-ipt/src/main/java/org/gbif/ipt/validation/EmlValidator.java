@@ -87,7 +87,7 @@ public class EmlValidator extends BaseValidator {
         if (!exists(eml.getLanguage(), 2)) {
           action.addFieldError("eml.language", action.getText("validation.required"));
         }
-        
+               
         /*
          * firstName - optional and disallowed ":" to appear in the string ("xs:NCName").
          * 
@@ -132,6 +132,93 @@ public class EmlValidator extends BaseValidator {
          */
         if (!isValidEmail(eml.getContact().getEmail())) {
           action.addFieldError("eml.contact.email", action.getText("validation.invalid"));
+        }
+        
+        /*
+         * organisation - mandatory and disallowed ":" to appear in the string ("xs:NCName").
+         * 
+         * <dataset>
+         * 		<contact>
+         * 			<organizationName>{eml.contact.organisation}</organizationName>
+         * 		</contact>
+         * </dataset>
+         */
+        if(!exists(eml.getContact().getOrganisation())) {
+        	action.addFieldError("eml.contact.organisation", action.getText("validation.required"));
+        } else if(eml.getContact().getOrganisation().contains(":")) {
+        	action.addFieldError("eml.contact.organisation", action.getText("validation.contains", new String[]{":"}));
+        }
+      
+        /*
+         * position - mandatory
+         * 
+         * <dataset>
+         * 		<contact>
+         * 			<positionName>{eml.contact.position}</positionName>
+         * 		</contact>
+         * </dataset>
+         */
+        if(!exists(eml.getContact().getOrganisation())) {
+        	action.addFieldError("eml.contact.position", action.getText("validation.required"));
+        }
+        
+        /*
+         * address - optional
+         * <dataset>
+         * 		<contact>
+         * 			<address>
+         * 				<deliveryPoint>{eml.contact.address.address}</deliveryPoint>
+         * 			</address>
+         * 		</contact>
+         * </dataset>
+         */
+        
+        /*
+         * city - mandatory and disallowed ":" to appear in the string ("xs:NCName").
+         * 
+         * <dataset>
+         * 		<contact>
+         * 			<address>
+         * 				<city>{eml.contact.address.city}</city>
+         * 			</address>
+         * 		</contact>
+         * </dataset>
+         */
+        if(!exists(eml.getContact().getAddress().getCity())) {
+        	action.addFieldError("eml.contact.address.city", action.getText("validation.required"));
+        } else if(eml.getContact().getAddress().getCity().contains(":")) {
+        	action.addFieldError("eml.contact.address.city", action.getText("validation.contains", new String[]{":"}));
+        }
+        
+        
+        /*
+         * province - mandatory
+         * 
+         * <dataset>
+         * 		<contact>
+         * 			<address>
+         * 				<administrativeArea>{eml.contact.province}</administrativeArea>
+         * 			</address>
+         * 		</contact>
+         * </dataset>
+         */
+        if(!exists(eml.getContact().getAddress().getProvince())) {
+        	action.addFieldError("eml.contact.address.province", action.getText("validation.required"));
+        }
+        
+        /*
+         * email - mandatory
+         * 
+         * <dataset>
+         * 		<contact>
+         * 			<electronicMailAddress>{eml.contact.email}</electronicMailAddress>
+         * 		</contact>
+         * </dataset>
+         */
+        if(!exists(eml.getContact().getEmail())) {
+        	action.addFieldError("eml.contact.email", action.getText("validation.email.required"));
+        } else if(!isValidEmail(eml.getContact().getEmail())) {
+        	action.addFieldError("eml.contact.email", action.getText("validation.email.invalid"));
         }
         
         /*
