@@ -1,11 +1,14 @@
 package org.gbif.ipt.struts2;
 
+import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.SetupAction;
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.admin.ConfigManager;
 
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
+import com.opensymphony.xwork2.util.ValueStack;
 
 import org.apache.commons.lang.xwork.StringUtils;
 import org.apache.log4j.Logger;
@@ -38,6 +41,14 @@ public class SetupAndCancelInterceptor extends AbstractInterceptor {
     Object cancel = invocation.getInvocationContext().getParameters().get(CANCEL_RESULTNAME);
     if (cancel != null && cancel.getClass().isArray() && ((Object[]) cancel).length > 0
         && StringUtils.trimToNull(((Object[]) cancel)[0].toString()) != null) {
+
+		String requestedResource = RequireManagerInterceptor.getResourceParam(invocation);
+		if (requestedResource != null) {
+			// keep resource parameter in value stack for redirects
+	        ValueStack stack = invocation.getInvocationContext().getValueStack();
+        	stack.set("r", requestedResource);
+		}
+
       return CANCEL_RESULTNAME;
     }
 

@@ -4,7 +4,6 @@ import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.ResourceConfiguration;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
@@ -35,18 +34,14 @@ import java.util.Map;
 @ImplementedBy(ResourceManagerImpl.class)
 public interface ResourceManager {
 
-  public ResourceConfiguration create(String shortname, User creator) throws AlreadyExistingException;
+  public Resource create(String shortname, User creator) throws AlreadyExistingException;
   
-  public ResourceConfiguration create(String shortname, File dwca, User creator, BaseAction asction) throws AlreadyExistingException, ImportException;
+  public Resource create(String shortname, File dwca, User creator, BaseAction asction) throws AlreadyExistingException, ImportException;
 
   public void delete(Resource resource) throws IOException;
 
   public Resource get(String shortname);
 
-  public ResourceConfiguration getConfig(String shortname);
-
-  public Eml getEml(Resource resource);
-  
   /**
    * Returns the map of resources
    * 
@@ -101,7 +96,15 @@ public interface ResourceManager {
    * @param resource
    * @throws InvalidConfigException if resource was already registered
    */
-  public void publish(ResourceConfiguration resource) throws InvalidConfigException;
+  public void visibilityToPublic(Resource resource) throws InvalidConfigException;
+
+  /**
+   * Publishes a new version of a resource including generating a darwin core archive and issuing a new EML version.
+   * 
+   * @param resource
+   * @throws InvalidConfigException if resource was already registered
+   */
+  public void publish(Resource resource) throws InvalidConfigException;
 
   /**
    * Registers the resource with gbif
@@ -112,11 +115,20 @@ public interface ResourceManager {
    * @param eml eml object
    * @throws InvalidConfigException
    */
-  public void register(ResourceConfiguration config, Organisation organisation, Ipt ipt, Eml eml) throws InvalidConfigException;
+  public void register(Resource resource, Organisation organisation, Ipt ipt) throws InvalidConfigException;
 
-  public void save(ResourceConfiguration resource) throws InvalidConfigException;
+  /** Persists the whole resource configuration *but* not the EML file.
+   * @See saveEml(Resource)
+ * @param resource
+ * @throws InvalidConfigException
+ */
+public void save(Resource resource) throws InvalidConfigException;
 
-  public void saveEml(Resource resource, Eml eml) throws InvalidConfigException;
+  /** Save the eml file of a resource only. Complementary method to @See save(Resource)
+ * @param resource
+ * @throws InvalidConfigException
+ */
+public void saveEml(Resource resource) throws InvalidConfigException;
 
   /**
    * list all resource that match the given full text search string and optional resource type
@@ -132,6 +144,6 @@ public interface ResourceManager {
    * @param resource
    * @throws InvalidConfigException if resource was already registered
    */
-  public void unpublish(ResourceConfiguration resource) throws InvalidConfigException;
+  public void visibilityToPrivate(Resource resource) throws InvalidConfigException;
 
 }

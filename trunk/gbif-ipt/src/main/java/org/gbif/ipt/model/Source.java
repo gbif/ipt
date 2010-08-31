@@ -206,6 +206,9 @@ public abstract class Source implements Iterable<String[]>, Comparable<Source> {
   protected boolean readable = false;
 
   public static String normaliseName(String name) {
+	  if (name==null){
+		  return null;
+	  }
     return StringUtils.substringBeforeLast(name, ".").replaceAll("[\\s\\c\\W\\.\\:/]+", "").toLowerCase();
   }
 

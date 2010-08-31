@@ -22,11 +22,11 @@ import java.util.regex.Pattern;
  * @author markus
  * 
  */
-public class ResourceSupport {
+public class ResourceValidator {
   private static Pattern shortnamePattern = Pattern.compile("^[a-zA-Z0-9_-]+$");
 
   public static void main(String[] args) {
-    System.out.println(ResourceSupport.shortnamePattern.matcher("piasü").matches());
+    System.out.println(ResourceValidator.shortnamePattern.matcher("piasü").matches());
   }
 
   public void validate(BaseAction action, Resource resource) {

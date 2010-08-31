@@ -30,7 +30,7 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.voc.Rank;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.validation.EmlValidator;
-import org.gbif.ipt.validation.ResourceSupport;
+import org.gbif.ipt.validation.ResourceValidator;
 import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.JGTICuratorialUnitType;
@@ -43,11 +43,8 @@ import com.google.inject.Inject;
  * @author markus
  * 
  */
-public class MetadataAction extends POSTAction {
-  @Inject
-//the resource manager session is populated by the resource interceptor and kept alive for an entire manager session
-  private ResourceManagerSession ms;
-  private ResourceSupport validatorRes = new ResourceSupport();
+public class MetadataAction extends ManagerBaseAction {
+  private ResourceValidator validatorRes = new ResourceValidator();
   private EmlValidator validatorEml = new EmlValidator();
   private String section = "basic";
   private String next = "parties";
@@ -65,15 +62,11 @@ public class MetadataAction extends POSTAction {
   }
 
   public Eml getEml() {
-    return ms.getEml();
+    return resource.getEml();
   }
 
   public Map<String, String> getLanguages() {
     return languages;
-  }
-
-  public ResourceManagerSession getMs() {
-    return ms;
   }
 
   public String getNext() {
@@ -81,7 +74,7 @@ public class MetadataAction extends POSTAction {
   }
 
   public Resource getResource() {
-    return ms.getResource();
+    return resource;
   }
 
   public Map<String, String> getResourceTypes() {
@@ -123,25 +116,25 @@ public class MetadataAction extends POSTAction {
     // of elements in a list
     if (isHttpPost()) {    	
     	if (section.equals("parties")) {
-    		ms.getEml().getAssociatedParties().clear();
+    		resource.getEml().getAssociatedParties().clear();
     	}
     	if (section.equals("taxcoverage")) {
-    	    ms.getEml().getTaxonomicCoverages().clear();
+    		resource.getEml().getTaxonomicCoverages().clear();
     	}
     	if (section.equals("tempcoverage")) {
-    		ms.getEml().getTemporalCoverages().clear();
+    		resource.getEml().getTemporalCoverages().clear();
     	}
     	if (section.equals("methods")) {
-    	  	ms.getEml().getMethodSteps().clear();
+    		resource.getEml().getMethodSteps().clear();
     	}
     	if (section.equals("citations")) {
-    	    ms.getEml().getBibliographicCitationSet().getBibliographicCitations().clear();
+    		resource.getEml().getBibliographicCitationSet().getBibliographicCitations().clear();
     	}
     	if (section.equals("physical")) {
-    	    ms.getEml().getPhysicalData().clear();
+    		resource.getEml().getPhysicalData().clear();
     	}
     	if (section.equals("keywords")) {
-    	    ms.getEml().getKeywords().clear();
+    		resource.getEml().getKeywords().clear();
     	}
     	 
     }
@@ -154,19 +147,15 @@ public class MetadataAction extends POSTAction {
 	current.setFirstName(getCurrentUser().getFirstname());
 	current.setLastName(getCurrentUser().getLastname());
 	current.setEmail(getCurrentUser().getEmail());
-	ms.getEml().setMetadataProvider(current);
-    ms.save();
+	resource.getEml().setMetadataProvider(current);
+    saveResource();
     return SUCCESS;
-  }
-
-  public void setMs(ResourceManagerSession ms) {
-    this.ms = ms;
   }
 
   @Override
   public void validateHttpPostOnly() {
-    validatorRes.validate(this, ms.getResource());
-    validatorEml.validate(this, ms.getEml(), section);
+    validatorRes.validate(this, resource);
+    validatorEml.validate(this, resource.getEml(), section);
   }
 
   /** 

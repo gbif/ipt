@@ -24,7 +24,7 @@ public interface RegistryManager {
    * @return the newly created registry key for the resource
    * @throws RegistryException
    */
-  public UUID register(Resource resource, Organisation organisation, Ipt ipt, Eml eml) throws RegistryException;
+  public UUID register(Resource resource, Organisation organisation, Ipt ipt) throws RegistryException;
 
   /**
    * Register an IPT instance against the GBIF Registry

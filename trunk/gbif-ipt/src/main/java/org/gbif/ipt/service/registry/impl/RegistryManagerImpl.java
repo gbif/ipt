@@ -64,7 +64,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * @see org.gbif.ipt.service.registry.RegistryManager#register(org.gbif.ipt.model.Resource,
    * org.gbif.ipt.model.Organisation, org.gbif.ipt.model.Ipt)
    */
-  public UUID register(Resource resource, Organisation organisation, Ipt ipt, Eml eml) throws RegistryException {
+  public UUID register(Resource resource, Organisation organisation, Ipt ipt) throws RegistryException {
+	  Eml eml = resource.getEml();
     // registering IPT resource
 
     // services should be registered?

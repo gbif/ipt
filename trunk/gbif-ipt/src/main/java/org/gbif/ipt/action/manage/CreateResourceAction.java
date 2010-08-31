@@ -2,11 +2,11 @@ package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.model.ResourceConfiguration;
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.manage.ResourceManager;
-import org.gbif.ipt.validation.ResourceSupport;
+import org.gbif.ipt.validation.ResourceValidator;
 
 import com.google.inject.Inject;
 
@@ -21,8 +21,6 @@ import java.io.OutputStream;
 
 public class CreateResourceAction extends POSTAction {
   @Inject
-  protected ResourceManagerSession ms;
-  @Inject
   private ResourceManager resourceManager;
   @Inject
   private DataDir dataDir;
@@ -30,7 +28,7 @@ public class CreateResourceAction extends POSTAction {
   private String fileContentType;
   private String fileFileName;
   private String shortname;
-  private ResourceSupport validator = new ResourceSupport();
+  private ResourceValidator validator = new ResourceValidator();
 
   public String getShortname() {
     return shortname;
@@ -40,14 +38,12 @@ public class CreateResourceAction extends POSTAction {
   public String save() throws IOException {
     try {
       File tmpFile = uploadToTmp();
-      ResourceConfiguration config = null;
-      System.out.println(tmpFile);
+      Resource resource= null;
       if (tmpFile != null) {
-          config = resourceManager.create(shortname, tmpFile, getCurrentUser(), this);
+    	  resource = resourceManager.create(shortname, tmpFile, getCurrentUser(), this);
       }else{
-          config = resourceManager.create(shortname, getCurrentUser());
+    	  resource = resourceManager.create(shortname, getCurrentUser());
       }
-      ms.load(getCurrentUser(), config);
     } catch (AlreadyExistingException e) {
       addFieldError("resource.shortname", getText("validation.resource.shortname.exists", new String[]{shortname}));
       return INPUT;

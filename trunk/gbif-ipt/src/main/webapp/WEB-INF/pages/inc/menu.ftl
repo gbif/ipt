@@ -50,12 +50,14 @@
 		    </div>
 		    
 		    <div id="search">
+		     [#--
 		        <form action="${baseURL}/search" method="get">
 		            <div>
 		                <input type="text" name="q" id="search-input" [#if !q??] class="form-reset" value='search ${searchText!" resources"}'[#else] value='${q}'[/#if] />
 		                <input class="default" type="submit" value="Search" id="search-submit" />
 		        	</div>
 		        </form>
+		     --]
 		    </div>
 
 [#if sideMenuEml!false]		    

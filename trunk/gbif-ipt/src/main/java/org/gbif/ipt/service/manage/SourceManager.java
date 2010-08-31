@@ -1,6 +1,6 @@
 package org.gbif.ipt.service.manage;
 
-import org.gbif.ipt.model.ResourceConfiguration;
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.Source.FileSource;
 import org.gbif.ipt.service.ImportException;
@@ -31,10 +31,11 @@ public interface SourceManager {
    * The file will be analyzed to detect the character encoding and delimiters if not given explicitly in a dwc-a.
    * 
    * @param config the resource configuration to be added to
-   * @param file the source file to be added to this resource config
+   * @param file the source file to be added to this resource
+ * @param sourceName  the preferred sourcename
    * @throws ImportException if the file cant be copied or read
    */
-  public FileSource add(ResourceConfiguration config, File file) throws ImportException;
+  public FileSource add(Resource resource, File file, String sourceName) throws ImportException;
 
   /**
    * Checks if a source is readable and analyzes its file size, number of rows and other source properties which will be
@@ -52,7 +53,7 @@ public interface SourceManager {
    */
   public List<String> columns(Source source);
 
-  public boolean delete(ResourceConfiguration config, Source source);
+  public boolean delete(Resource resource, Source source);
 
   /**
    * Imports a darwin core archive (simplest = 1 text file with a header row) to a resource configuration.
@@ -68,7 +69,7 @@ public interface SourceManager {
    *        will be ignored
    * @throws IOException
    */
-  public int importArchive(ResourceConfiguration config, File file, boolean overwriteEml) throws ImportException;
+  public int importArchive(Resource resource, File file, boolean overwriteEml) throws ImportException;
 
   /**
    * @param source
