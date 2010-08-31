@@ -246,20 +246,19 @@ public class SourceAction extends POSTAction {
 			// ALL SOURCES
 			// check if title exists already as a source
 			if (StringUtils.trimToEmpty(source.getName()).length() < 3) {
-				addFieldError("source.name", getText("validation.required"));
+				addFieldError("source.name", getText("validation.required", new String[]{getText("source.name")}));
 			} else if (id == null && ms.getConfig().getSources().contains(source)) {
 				addFieldError("source.name", getText("manage.source.unique"));
 			}
-
 			if (SqlSource.class.isInstance(source)) {
 				// SQL SOURCE
 				SqlSource src = (SqlSource) source;
 				// pure ODBC connections need only a DSN, no server
 				if (rdbms != null && !rdbms.equalsIgnoreCase("odbc") && StringUtils.trimToEmpty(src.getHost()).length() < 2) {
-					addFieldError("sqlSource.host", getText("validation.required"));
+					addFieldError("sqlSource.host", getText("validation.required", new String[]{getText("sqlSource.host")}));
 				}
 				if (StringUtils.trimToEmpty(src.getDatabase()).length() < 2) {
-					addFieldError("sqlSource.database", getText("validation.required"));
+					addFieldError("sqlSource.database", getText("validation.required", new String[]{getText("sqlSource.database")}));
 				}
 			} else {
 				// FILE SOURCE

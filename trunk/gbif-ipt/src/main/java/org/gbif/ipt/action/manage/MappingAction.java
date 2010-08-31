@@ -171,7 +171,7 @@ public class MappingAction extends POSTAction {
   @Override
   public void validateHttpPostOnly() {
     if (mapping != null && mapping.getSource() == null) {
-      addFieldError("manage.mapping.source", getText("validation.required"));
+      addFieldError("manage.mapping.source", getText("validation.required", new String[]{getText("manage.mapping.source")}));
     }
   }
 }
