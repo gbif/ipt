@@ -1,5 +1,9 @@
 package org.gbif.ipt.struts2;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.SetupAction;
 import org.gbif.ipt.model.Resource;
@@ -39,15 +43,28 @@ public class SetupAndCancelInterceptor extends AbstractInterceptor {
     }
     // check if any non empty content exists in cancel request parameter
     Object cancel = invocation.getInvocationContext().getParameters().get(CANCEL_RESULTNAME);
+//    System.out.print("CANCEL INTERCEPT params:");
+//    for (Entry<String, Object> p : invocation.getInvocationContext().getParameters().entrySet()){
+//        System.out.print(p.getKey()+"=");  
+//        if (p.getValue().getClass().isArray()){
+//            System.out.print(((Object[])p.getValue())[0].toString()+"|");  
+//        }else{
+//            System.out.print(p.getValue()+"|");  
+//        }
+//    }
+//    System.out.print("\n");
     if (cancel != null && cancel.getClass().isArray() && ((Object[]) cancel).length > 0
         && StringUtils.trimToNull(((Object[]) cancel)[0].toString()) != null) {
 
-		String requestedResource = RequireManagerInterceptor.getResourceParam(invocation);
-		if (requestedResource != null) {
-			// keep resource parameter in value stack for redirects
-	        ValueStack stack = invocation.getInvocationContext().getValueStack();
-        	stack.set("r", requestedResource);
-		}
+//		String requestedResource = RequireManagerInterceptor.getResourceParam(invocation);
+//		if (requestedResource != null) {
+//			// keep resource parameter in value stack for redirects
+//	        ValueStack stack = invocation.getInvocationContext().getValueStack();
+//        	Map<Object,Object> params = new HashMap<Object,Object>();        	
+//        	params.put("r", requestedResource);
+//        	params.put("shortname", requestedResource);
+//        	stack.setExprOverrides(params);
+//		}
 
       return CANCEL_RESULTNAME;
     }

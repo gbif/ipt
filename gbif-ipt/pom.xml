@@ -197,7 +197,7 @@
 		<dependency>
 			<groupId>org.apache.struts</groupId>
 			<artifactId>struts2-core</artifactId>
-			<version>2.1.8</version>
+			<version>2.2.1</version>
 			<exclusions>
 				<!-- not needed - we use guice -->
 				<exclusion>
@@ -205,6 +205,12 @@
 					<artifactId>spring-test</artifactId>
 				</exclusion>
 			</exclusions>			
+		</dependency>
+		<!-- required by OGNL/struts2 since version 2.2.x -->
+		<dependency>
+			<groupId>javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>3.8.0.GA</version>
 		</dependency>
 		
 		<!-- Guice provides the code based (not XML based) injection dependency framework -->
@@ -322,15 +328,6 @@
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>
 			<version>3.1</version>
-			<!-- we only want log4j for logging, but its a required dependency  -->
-			<!-- 
-				<exclusions>
-				<exclusion>
-					<groupId>commons-logging</groupId>
-					<artifactId>commons-logging</artifactId>
-				</exclusion>
-			</exclusions>
-			-->
 		</dependency>
 		
 		<!-- Simple XML Parsing -->
@@ -362,12 +359,12 @@
 		</dependency>
 		
 		<!-- for generating pageable html tables -->
+		<!-- 
 		<dependency>
 			<groupId>displaytag</groupId>
 			<artifactId>displaytag</artifactId>
 			<version>1.2</version>
 			<exclusions>
-				<!-- we only want log4j for logging  -->
 				<exclusion>
 					<groupId>org.slf4j</groupId>
 					<artifactId>jcl104-over-slf4j</artifactId>
@@ -378,6 +375,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		-->
 		
 		<!-- Lucene, full text search -->
 		<dependency>

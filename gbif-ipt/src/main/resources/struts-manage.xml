@@ -25,7 +25,9 @@
 			</result>
 			<result name="cancel" type="redirectAction">
 				<param name="actionName">resource</param>
-				<param name="r">${r}</param>
+				<param name="parse">true</param>
+				<param name="r">{r}</param>
+				<param name="r2">${r}</param>
 			</result>
 			<result name="home" type="redirect">home.do</result>
 		</global-results>
