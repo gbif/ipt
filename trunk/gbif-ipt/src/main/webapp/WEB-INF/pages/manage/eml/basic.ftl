@@ -13,7 +13,7 @@ $(document).ready(function(){
 
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <form class="topForm" action="metadata-${section}.do" method="post">
-
+	<input type="hidden" name="r" value="${resource.shortname}" />
   	<@input name="eml.title" />
   	<@text name="eml.description" />
 

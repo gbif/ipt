@@ -4,7 +4,7 @@ import com.opensymphony.xwork2.LocaleProvider;
 import com.opensymphony.xwork2.util.LocalizedTextUtil;
 
 import org.apache.log4j.Logger;
-import org.displaytag.localization.I18nResourceProvider;
+//import org.displaytag.localization.I18nResourceProvider;
 
 import java.text.MessageFormat;
 import java.util.HashSet;
@@ -25,7 +25,7 @@ import javax.servlet.jsp.tagext.Tag;
  * @author markus
  */
 
-public class SimpleTextProvider implements I18nResourceProvider {
+public class SimpleTextProvider { //implements I18nResourceProvider {
   protected static Logger log = Logger.getLogger(SimpleTextProvider.class);
   private static final String defaultBundle = "ApplicationResources";
   private Set<String> baseBundleNames = new HashSet<String>();

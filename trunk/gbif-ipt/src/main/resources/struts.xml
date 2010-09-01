@@ -36,6 +36,8 @@
 		<interceptors>
 			<interceptor name="requireAdmin" class="org.gbif.ipt.struts2.RequireAdminInterceptor"/>
 			<interceptor name="requireManager" class="org.gbif.ipt.struts2.RequireManagerInterceptor"/>
+			<!-- interceptor changing the current resource in the session if a "r" parameter is supplied -->
+			<interceptor name="resourceSession" class="org.gbif.ipt.struts2.ResourceSessionInterceptor"/>			
 			<!-- development interceptor only logging in an admin wiht password "carla" automatically when not yet logged in -->
 			<interceptor name="autoLogin" class="org.gbif.ipt.struts2.AutoLoginAdminInterceptor"/>
 			<!-- custom interceptor to preserve action messages across redirects -->
@@ -64,6 +66,7 @@
 				<interceptor-ref name="iptStackWithoutSetup"/>
 			</interceptor-stack>
 			<interceptor-stack name="managerStack">
+				<interceptor-ref name="resourceSession"/>
 				<interceptor-ref name="setupAndCancel"/>
 				<!-- development only ! -->
 				<!-- 
