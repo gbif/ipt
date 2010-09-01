@@ -7,10 +7,8 @@
 </script>	
 	<#assign sideMenuEml=true />
 <#include "/WEB-INF/pages/inc/menu.ftl">
-
 <h1><@s.text name='manage.metadata.additional.title'/>: <em>${resource.title!resource.shortname}</em></h1>
 <p><@s.text name='manage.metadata.additional.intro'/></p>
-
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <form class="topForm" action="metadata-${section}.do" method="post">
 	<div class="half">
@@ -25,7 +23,7 @@
  		<@s.submit name="save" key="button.save"/>
  		<@s.submit name="cancel" key="button.cancel"/>
   	</div>
+  	<!-- internal parameter -->
+	<input name="r" type="hidden" value="${resource.shortname}" />
 </form>
-
-
 <#include "/WEB-INF/pages/inc/footer.ftl">

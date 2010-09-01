@@ -40,6 +40,8 @@ $(document).ready(function(){
 		<@s.submit name="save" key="button.save"/>
 		<@s.submit name="cancel" key="button.cancel"/>
 	</div>
+	<!-- internal parameter -->
+	<input name="r" type="hidden" value="${resource.shortname}" />
 </form>
 <!-- The base form that is going to be cloned every time an user clic in the 'add' link -->
 <div id='baseItem' class="item" style="display:none">

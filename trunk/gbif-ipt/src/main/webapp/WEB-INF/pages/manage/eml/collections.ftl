@@ -15,15 +15,12 @@
  * the License.
  */
 -->
-
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name='manage.metadata.collections.title'/></title>
 <#include "/WEB-INF/pages/macros/metadata.ftl"/>
-
 <#assign sideMenuEml=true />
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
-
 <h1><@s.text name='manage.metadata.collections.title'/>: <em>${resource.title!resource.shortname}</em></h1>
 <@s.text name='manage.metadata.collections.intro'/>
 <form class="topForm" action="metadata-${section}.do" method="post"> 
@@ -36,7 +33,6 @@
 	<div class="half">
 		<@input name="eml.parentCollectionId" />
 	</div>
-
 	<div class="newline"></div>
 	<h2><@s.text name="manage.metadata.collections.curatorialUnits.title"/></h2>
 	<p><@s.text name="manage.metadata.collections.curatorialUnits.intro"/></p>
@@ -83,7 +79,10 @@
   		<@s.submit name="save" key="button.save" />
   		<@s.submit name="cancel" key="button.cancel" />
 	</div>
+	<!-- internal parameter -->
+	<input name="r" type="hidden" value="${resource.shortname}" />	
 </form>
+
 <div id="baseItem" class="item" style="display:none;">
 	<div class="newline"></div>
 	<div class="right">
@@ -114,4 +113,5 @@
 	<@input name="rangeMean" i18nkey="eml.jgtiCuratorialUnits.rangeMean" size=40/>
     <@input name="uncertaintyMeasure" i18nkey="eml.jgtiCuratorialUnits.uncertaintyMeasure" size=40/>
 </div>
+
 <#include "/WEB-INF/pages/inc/footer.ftl">
