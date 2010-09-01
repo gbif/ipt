@@ -12,28 +12,22 @@ import com.google.inject.Inject;
 
 import java.util.List;
 
-public class ResourceAction extends BaseAction {
-  @Inject
-  private ResourceManager resourceManager;
+public class ResourceAction extends PortalBaseAction {
   @Inject
   private RegistrationManager registrationManager;
-  private Resource resource;
-  private Eml eml;
   private List<Resource> resources;
   private Integer page = 1;
 
-  @Override
+@Override
   public String execute() throws Exception {
-    resource = resourceManager.get(id);
-    if (resource == null || PublicationStatus.PRIVATE == resource.getStatus()) {
+    if (resource == null) {
       return NOT_FOUND;
     }
-    eml = resource.getEml();
     return SUCCESS;
   }
 
   public Eml getEml() {
-    return eml;
+    return resource.getEml();
   }
 
   public Ipt getIpt() {
@@ -41,10 +35,6 @@ public class ResourceAction extends BaseAction {
       return new Ipt();
     }
     return registrationManager.getIpt();
-  }
-
-  public Resource getResource() {
-    return resource;
   }
 
   /**

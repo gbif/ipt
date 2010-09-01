@@ -35,8 +35,11 @@ public class Resource implements Serializable, Comparable<Resource> {
   private Eml eml=new Eml();
   private CoreRowType type;
   private String subtype;
+  // publication
   private PublicationStatus status = PublicationStatus.PRIVATE;
   private int lastPublishedEmlHash=0;
+  private int emlVersion=0;
+  private Date lastPublished;
   // registry data - only exists when status=REGISTERED
   private UUID key;
   private Organisation organisation;
@@ -57,7 +60,26 @@ public class Resource implements Serializable, Comparable<Resource> {
     }
   }
 
-  public Eml getEml() {
+  public Date getLastPublished() {
+	return lastPublished;
+}
+
+public void setLastPublished(Date lastPublished) {
+	this.lastPublished = lastPublished;
+}
+
+public int getEmlVersion() {
+	return emlVersion;
+}
+
+public void setEmlVersion(int emlVersion) {
+	this.emlVersion = emlVersion;
+	if (eml!=null){
+		eml.setEmlVersion(emlVersion);
+	}
+}
+
+public Eml getEml() {
 	return eml;
 }
 
@@ -193,7 +215,10 @@ public void setLastPublishedEmlHash(int lastPublishedEmlHash) {
   }
 
   public String getDescription() {
-    return eml.getDescription();
+	  if (eml!=null){
+		    return eml.getDescription();		  
+	  }
+	  return null;
   }
 
   public UUID getKey() {
@@ -229,7 +254,10 @@ public void setLastPublishedEmlHash(int lastPublishedEmlHash) {
   }
 
   public String getTitle() {
-    return eml.getTitle();
+	  if (eml!=null){
+		    return eml.getTitle();		  
+	  }
+	  return null;
   }
 
   public CoreRowType getType() {
@@ -277,6 +305,9 @@ public void setLastPublishedEmlHash(int lastPublishedEmlHash) {
 
   public void setShortname(String shortname) {
     this.shortname = shortname;
+    if (eml!=null && eml.getTitle()==null){
+    	eml.setTitle(shortname);
+    }
   }
 
   public void setStatus(PublicationStatus status) {
@@ -288,7 +319,9 @@ public void setLastPublishedEmlHash(int lastPublishedEmlHash) {
   }
 
   public void setTitle(String title) {
-    this.eml.setTitle(title);
+	  if (eml!=null){
+		    this.eml.setTitle(title);
+	  }
   }
 
   public void setType(CoreRowType type) {

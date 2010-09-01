@@ -8,6 +8,7 @@ import org.gbif.ipt.service.admin.impl.UserAccountManagerImpl;
 import org.gbif.ipt.utils.InputStreamUtils;
 
 import com.google.inject.Singleton;
+import com.google.inject.internal.Nullable;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
@@ -163,6 +164,19 @@ public class DataDir {
   public File resourceFile(String resourceName, String path) {
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + path);
   }
+
+  public File resourceEmlFile(String resourceName, @Nullable Integer version) {
+	  String fn;
+	  if (version==null){
+		  fn="eml.xml";
+	  }else{
+		  fn="eml-"+version+".xml";
+	  }
+	    return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
+  }
+  public File resourceDwcaFile(String resourceName) {
+	    return dataFile(RESOURCES_DIR + "/" + resourceName + "/dwca.zip");
+}
 
   /**
    * Sets the path to the data directory for the entire application and persists it in the /WEB-INF folder. This method
