@@ -8,7 +8,7 @@ $(document).ready(function(){
 <title><@s.text name='manage.metadata.taxcoverage.title'/></title>
 <#assign sideMenuEml=true />
 <#include "/WEB-INF/pages/inc/menu.ftl">
-<h1><@s.text name='manage.metadata.taxcoverage.title'/>: <em>${ms.resource.title!ms.resource.shortname}</em></h1>
+<h1><@s.text name='manage.metadata.taxcoverage.title'/>: <em>${resource.title!resource.shortname}</em></h1>
 <p><@s.text name='manage.metadata.taxcoverage.intro'/></p>
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <form class="topForm" action="metadata-${section}.do" method="post">

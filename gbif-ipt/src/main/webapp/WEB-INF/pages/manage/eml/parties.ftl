@@ -3,7 +3,7 @@
 <#include "/WEB-INF/pages/macros/metadata.ftl"/>
 <#assign sideMenuEml=true />
 <#include "/WEB-INF/pages/inc/menu.ftl">
-<h1><@s.text name='manage.metadata.parties.title'/>: <em>${ms.resource.title!ms.resource.shortname}</em></h1>
+<h1><@s.text name='manage.metadata.parties.title'/>: <em>${resource.title!resource.shortname}</em></h1>
 <p><@s.text name='manage.metadata.parties.intro'/></p>
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <form class="topForm" action="metadata-${section}.do" method="post">
@@ -47,9 +47,13 @@
 </div>
 <a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.parties.item'/></a>
 <div id='buttons' class="buttons">
-    <@s.submit name="save" key="button.save"/>
- 	<@s.submit name="cancel" key="button.cancel"/>
-  </div>	
+   	<@s.submit name="save" key="button.save"/>
+	<@s.submit name="cancel" key="button.cancel"/>
+</div>
+
+<!-- internal use -->
+<input name="r" type="hidden" value="${resource.shortname}" />
+		
 </form>
 <div id="baseItem" class="item" style="display:none;">
 	<div class="newline"></div>
