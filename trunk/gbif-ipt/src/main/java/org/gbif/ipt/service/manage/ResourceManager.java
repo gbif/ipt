@@ -9,6 +9,7 @@ import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidConfigException;
+import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.metadata.eml.Eml;
 
@@ -102,9 +103,10 @@ public interface ResourceManager {
    * Publishes a new version of a resource including generating a darwin core archive and issuing a new EML version.
    * 
    * @param resource
-   * @throws InvalidConfigException if resource was already registered
+   * @return true if a new eml version has been published or false if the content hasnt changed
+   * @throws PublicationException if resource was already registered
    */
-  public void publish(Resource resource) throws InvalidConfigException;
+  public boolean publish(Resource resource) throws PublicationException;
 
   /**
    * Registers the resource with gbif

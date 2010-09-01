@@ -35,6 +35,7 @@ import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidConfigException;
+import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.ExtensionManager;
@@ -80,7 +81,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 	// key=shortname in lower case, value=resource
 	private Map<String, Resource> resources = new HashMap<String, Resource>();
 	public static final String PERSISTENCE_FILE = "resource.xml";
-	public static final String EML_FILE = "eml.xml";
 	private final XStream xstream = new XStream();
 	private final UserEmailConverter userConverter;
 	private final OrganisationKeyConverter orgConverter;
@@ -281,7 +281,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 	 * @see org.gbif.ipt.service.manage.ResourceManager#getEml(java.lang.String)
 	 */
 	private Eml loadEml(Resource resource) {
-		File emlFile = dataDir.resourceFile(resource, EML_FILE);
+		File emlFile = dataDir.resourceEmlFile(resource.getShortname(), null);
 		Eml eml = null;
 		try {
 			InputStream in = new FileInputStream(emlFile);
@@ -491,7 +491,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 		// udpate EML with latest resource basics
 		syncEmlWithResource(resource);
 		// save into data dir
-		File emlFile = dataDir.resourceFile(resource, EML_FILE);
+		File emlFile = dataDir.resourceEmlFile(resource.getShortname(), null);
 		try {
 			EmlWriter.writeEmlFile(emlFile, resource.getEml());
 			log.debug("Updated EML file for " + resource);
@@ -514,6 +514,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 	}
 
 	private void syncEmlWithResource(Resource resource) {
+		resource.getEml().setEmlVersion(resource.getEmlVersion());
 		// we need some GUID. If we have use the registry key, if not use the resource URL
 		if (resource.getKey() != null) {
 			resource.getEml().setGuid(resource.getKey().toString());
@@ -535,20 +536,33 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 		}
 	}
 
-	public void publish(Resource resource) throws InvalidConfigException {
+	public boolean publish(Resource resource) throws PublicationException {
+		boolean newEmlVersion=false;
 		// see if eml has changed since last publication
 		Eml eml = resource.getEml();
 		int newHash = getEmlHash(resource,eml); 
 		if (newHash!=resource.getLastPublishedEmlHash()){
-			int version = eml.getEmlVersion();
+			int version = resource.getEmlVersion();
 			version++;
-			eml.setEmlVersion(version);
+			resource.setEmlVersion(version);
 			saveEml(resource);
+			newEmlVersion=true;
+			// copy stable version of the eml file
+			File trunkFile = dataDir.resourceEmlFile(resource.getShortname(), null);
+			File versionedFile = dataDir.resourceEmlFile(resource.getShortname(), version);
+			try {
+				FileUtils.copyFile(trunkFile, versionedFile);
+			} catch (IOException e) {
+				log.error("Cant publish resource "+resource.getShortname(), e);
+				throw new PublicationException(PublicationException.TYPE.EML, "Cant publish eml file for resource "+resource.getShortname(), e);
+			}
 			resource.setLastPublishedEmlHash(newHash);
 		}
 		// TODO: regenerate dwca ?
 		// persist any resource object changes
+		resource.setLastPublished(new Date());
 		save(resource);
+		return newEmlVersion;
 	}
 
 	private int getEmlHash(Resource resource, Eml eml){

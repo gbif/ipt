@@ -62,9 +62,6 @@ By default a resource is private to the managers. Once published to GBIF you can
           		<tr><th>Keywords</th><td>${resource.eml.subject!}</td></tr>
           		<tr><th>Taxon Coverage</th><td><#list resource.eml.keywords as k>${k.keywordsString!}<#if !k_has_next>, </#if></#list></td></tr>
           		<tr><th>Spatial Coverage</th><td><#list resource.eml.geospatialCoverages as geo><#list geo.keywords as k>${k!}<#if !k_has_next>,</#if> </#list></#list></td></tr>
-			  	<#if !missingMetadata>
-          		<tr><th>EML</th><td><a href="${baseURL}/eml.do?r=${resource.shortname}">download</a> <a href="${baseURL}/eml.do?r=${resource.shortname}">view</a></td></tr>
-			  	</#if>
       		</table>
       	</div>
   </div>
@@ -214,7 +211,7 @@ By default a resource is private to the managers. Once published to GBIF you can
         Publish
   	</div>
    	<div class="actions">
-   	  <#if !missingBasicMetadata>
+   	  <#if !missingMetadata>
 	  <form action='resource-publish.do' method='post'>
 	    <input name="r" type="hidden" value="${resource.shortname}" />
 	    <@s.submit cssClass="confirm" name="publish" key="button.publish" />
@@ -224,12 +221,21 @@ By default a resource is private to the managers. Once published to GBIF you can
   </div>
   <div class="body">
       	<div>
-			A darwin core archive bundles all data sources with mappings and metadata in one archive.
+			When publishing a resource a new EML version and a darwin core archive (DWCA) is created. <br/>
+			A DWCA bundles all data sources with mappings and metadata in one zipped archive.
       	</div>
+   	  <#if missingMetadata>
+      	<div>
+			Before publishing a resource please first provide the basic metadata!
+      	</div>
+  	  </#if>
       	<div class="details">
       		<table>
-          		<tr><th>Generated</th><td>Apr 20, 2007 12:45:09 PM</td></tr>
-          		<tr><th>Download</th><td><a href="${baseURL}/archive.do?r=${resource.shortname}">${baseURL}/archive.do?r=${resource.shortname}</a></td></tr>
+			  	<#if resource.lastPublished??>
+          		<tr><th>Last Publication</th><td>Version ${resource.eml.emlVersion} from ${resource.lastPublished?date?string.medium}</td></tr>
+          		<tr><th>Archive</th><td><a href="${baseURL}/archive.do?r=${resource.shortname}">download</a></td></tr>
+          		<tr><th>EML</th><td><a href="${baseURL}/eml.do?r=${resource.shortname}">download</a> <a href="${baseURL}/resource.do?r=${resource.shortname}">view</a></td></tr>
+			  	</#if>
       		</table>
       	</div>
   </div>
