@@ -153,7 +153,7 @@ div#search #search-input {
 
 div#sidebar {
 	position: relative;
-	top: -3em;
+	//top: -3em;
 	width: 170px;
 	padding: 0px 5px 20px 5px;
 	clear: both;
@@ -188,7 +188,7 @@ div#content {
 }
 div#content.fixed { 
 	position: relative;
-	top: -4em;
+	//top: -4em;
 	width: 750px;
 	float:left;
 }
