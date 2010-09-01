@@ -27,16 +27,11 @@
 			var newForm = $("#temporal-99999").clone().attr("id", idNewForm).css('display', '');
 			// Add the fields depending of the actual value in the select
 			var typeSubForm = $("#tempTypes").attr("value");			
-			
 			//Adding the 'sub-form' to the new form.
 			addTypeForm(newForm, typeSubForm, true);			
-			
-			$("#temporals").append(newForm);	
-		
+			$("#temporals").append(newForm);		
 			//Updating the componetsof the new 'sub-form'.
 			updateFields(idNewForm, count);			
-			
-			
 			$("#temporal-"+count).hide().slideDown("slow");
 			//initHelp("#temporal-"+count);
 			count++;
@@ -69,30 +64,25 @@
 		 * this method update the name and the id of the form to the consecutive number in the parameter.
 		 */
 		function updateFields(idNewForm, index) {
-			$("#"+idNewForm+" .removeLink").attr("id", "removeLink-"+index)
-			
+			$("#"+idNewForm+" .removeLink").attr("id", "removeLink-"+index);			
 			// Remove Link (registering the event for the new links).
 			$("#"+idNewForm+" .removeLink").click(
 				function(event) {
 					event.preventDefault();					
 					removeTemporal(event);
 				}
-			);
+			);			
 			// Select ==> tempTypes
-			$("#"+idNewForm+" [id^='tempTypes']").attr("id", "tempTypes-"+index).attr("name", function() {return $(this).attr("id");});
-			
+			$("#"+idNewForm+" [id^='tempTypes']").attr("id", "tempTypes-"+index).attr("name", function() {return $(this).attr("id");});			
 			// Update the fields depending of the actual value in the select
-			var typeSubForm = $("#"+idNewForm+" #tempTypes-"+index).attr("value");
-			
-			
-			
+			var typeSubForm = $("#"+idNewForm+" #tempTypes-"+index).attr("value");			
 			// Registering the event for the new selects.
 			$("#"+idNewForm+" #tempTypes-"+count).change(
 				function() {		
 					changeForm($(this));
 				}
-			);			
-			
+			);
+						
 			if(typeSubForm == DATE_RANGE) {
 				$("#"+idNewForm+" [id^='date-']").attr("id", "date-"+index);
 				$("#"+idNewForm+" [id$='startDate']").attr("id", "eml.temporalCoverages["+index+"].startDate").attr("name", function() {return $(this).attr("id");});
@@ -130,9 +120,7 @@
 				$("#temporal-"+index+" .typeForm").fadeIn(function() {
 					updateFields("temporal-"+index, index);
 				});
-			});
-			
-						
+			});						
 		}
 		
 		// This event should work for the temporal coverage that already exist in the file.
@@ -152,21 +140,17 @@
 					$(this).attr("id", "temporal-"+index);
 				});
 				calculateCount();
-			} );
-		}	
-		
+			});
+		}		
 	});
 </script>
 
 <title><@s.text name='manage.metadata.tempcoverage.title'/></title>
 <#assign sideMenuEml=true />
 <#include "/WEB-INF/pages/inc/menu.ftl">
-
 <h1><@s.text name='manage.metadata.tempcoverage.title'/>: <em>${resource.title!resource.shortname}</em></h1>
 <p><@s.text name='manage.metadata.tempcoverage.intro'/></p>
-
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
-
 <form class="topForm" action="metadata-${section}.do" method="post">
 	<div id="temporals">
 		<!-- Adding the temporal coverages that already exists on the file -->
@@ -210,19 +194,15 @@
 			<div class="newline"></div>	
 			</div>
 		</#list>
-
-
-	</div>
-	
+	</div>	
 	<!-- The add link and the buttons should be first. The next div is hidden. -->
 	<a id="plus" href="" ><@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.tempcoverage.item' /></a>
 	<div class="buttons">
 		<@s.submit name="save" key="button.save"/>
 		<@s.submit name="cancel" key="button.cancel"/>
 	</div>
-	
-	
-	
+	<!-- internal parameter -->
+	<input name="r" type="hidden" value="${resource.shortname}" />	
 </form>
 
 <!-- The base form that is going to be cloned every time an user clic in the 'add' link -->

@@ -31,7 +31,6 @@
 	<div class="newline"></div>
 	<h2><@s.text name="manage.metadata.citations.bibliography"/></h2>
 	<div id="separator" class="horizontal_dotted_line_large_foo"></div>
-
 	<div id="items">
 		<#list eml.bibliographicCitationSet.bibliographicCitations as item>
 			<div id="item-${item_index}" class="item">
@@ -47,12 +46,14 @@
   			</div>
 		</#list>
 	</div>
-
+	<div class="newline"></div>
 	<a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.citations.item'/></a>
 	<div class="buttons">
 		<@s.submit name="save" key="button.save" />
 		<@s.submit name="cancel" key="button.cancel" />
 	</div>
+	<!-- internal parameter -->
+	<input name="r" type="hidden" value="${resource.shortname}" />	
 </form>
 <div id="baseItem" class="item" style="display:none;">
 	<div class="newline"></div>

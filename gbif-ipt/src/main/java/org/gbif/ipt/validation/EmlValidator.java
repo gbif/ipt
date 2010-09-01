@@ -77,6 +77,7 @@ public class EmlValidator extends BaseValidator {
         if (!exists(eml.getDescription(), 5)) {
           action.addFieldError("eml.description", action.getText("validation.required", new String[]{action.getText("eml.title")}));
         }
+        
         /*
          * languaje - mandatory
          * 
@@ -89,7 +90,7 @@ public class EmlValidator extends BaseValidator {
         }
                
         /*
-         * firstName - optional and disallowed ":" to appear in the string ("xs:NCName").
+         * firstName - optional. But if firstName exists, lastName have to exist.
          * 
          * <dataset>
          * 		<contact>
@@ -99,12 +100,11 @@ public class EmlValidator extends BaseValidator {
          * 		</contact>
          * </dataset>
          */        
-        if(exists(eml.getContact().getFirstName(), 2) && eml.getContact().getFirstName().contains(":")) {
-        		action.addFieldError("eml.contact.firstName", action.getText("validation.contains", new String[]{":"}));
+        if(exists(eml.getContact().getFirstName()) && !exists(eml.getContact().getLastName())) {
+        	action.addFieldError("eml.contact.lastName", action.getText("validation.basic.firstname.lastname"));        	
         }
-        
         /*
-         * lastName - mandatory and disallowed ":" to appear in the string ("xs:NCName").
+         * lastName - mandatory.
          * 
          * <dataset>
          * 		<contact>
@@ -114,13 +114,20 @@ public class EmlValidator extends BaseValidator {
          * 		</contact>
          * </dataset>
          */
-        if (!exists(eml.getContact().getLastName())) {
-          action.addFieldError("eml.contact.lastName", action.getText("validation.required", new String[]{action.getText("eml.contact.lastName")}));
-        } else if(eml.getContact().getLastName().contains(":")) {
-        	action.addFieldError("eml.contact.lastName", action.getText("validation.contains", new String[]{":"}));
+        if (!exists(eml.getContact().getOrganisation()) && !exists(eml.getContact().getLastName())) {
+        	action.addActionError(action.getText("validation.basic.lastname.organisation"));
         }
         
-        
+        /*
+         * organisation - mandatory.
+         * 
+         * <dataset>
+         * 		<contact>
+         * 			<organizationName>{eml.contact.organisation}</organizationName>
+         * 		</contact>
+         * </dataset>
+         */
+                
         /*
          * email - mandatory
          * 
@@ -134,20 +141,6 @@ public class EmlValidator extends BaseValidator {
           action.addFieldError("eml.contact.email", action.getText("validation.invalid", new String[]{action.getText("eml.contact.email")}));
         }
         
-        /*
-         * organisation - mandatory and disallowed ":" to appear in the string ("xs:NCName").
-         * 
-         * <dataset>
-         * 		<contact>
-         * 			<organizationName>{eml.contact.organisation}</organizationName>
-         * 		</contact>
-         * </dataset>
-         */
-        if(!exists(eml.getContact().getOrganisation())) {
-        	action.addFieldError("eml.contact.organisation", action.getText("validation.required", new String[]{action.getText("eml.contact.organisation")}));
-        } else if(eml.getContact().getOrganisation().contains(":")) {
-        	action.addFieldError("eml.contact.organisation", action.getText("validation.contains", new String[]{":"}));
-        }
       
         /*
          * position - mandatory
@@ -163,7 +156,7 @@ public class EmlValidator extends BaseValidator {
         }
         
         /*
-         * address - optional
+         * address - mandatory
          * <dataset>
          * 		<contact>
          * 			<address>
@@ -173,8 +166,9 @@ public class EmlValidator extends BaseValidator {
          * </dataset>
          */
         
+        
         /*
-         * city - mandatory and disallowed ":" to appear in the string ("xs:NCName").
+         * city - mandatory.
          * 
          * <dataset>
          * 		<contact>
@@ -186,10 +180,7 @@ public class EmlValidator extends BaseValidator {
          */
         if(!exists(eml.getContact().getAddress().getCity())) {
         	action.addFieldError("eml.contact.address.city", action.getText("validation.required", new String[]{action.getText("eml.contact.address.city")}));
-        } else if(eml.getContact().getAddress().getCity().contains(":")) {
-        	action.addFieldError("eml.contact.address.city", action.getText("validation.contains", new String[]{":"}));
-        }
-        
+        }        
         
         /*
          * province - mandatory
