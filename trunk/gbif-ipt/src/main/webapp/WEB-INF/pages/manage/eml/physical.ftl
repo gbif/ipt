@@ -28,7 +28,7 @@ $(document).ready(function(){
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
-<h1><@s.text name='manage.metadata.physical.title'/>: <em>${ms.resource.title!ms.resource.shortname}</em></h1>
+<h1><@s.text name='manage.metadata.physical.title'/>: <em>${resource.title!resource.shortname}</em></h1>
 <@s.text name='manage.metadata.physical.intro'/>
 <form class="topForm" action="metadata-${section}.do" method="post"> 
 

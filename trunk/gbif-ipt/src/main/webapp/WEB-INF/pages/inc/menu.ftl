@@ -65,7 +65,7 @@
 				<h2>Section</h2>
 				<ul>
 				[#list ["basic", "parties", "geocoverage", "taxcoverage","tempcoverage", "project", "methods", "citations", "collections", "physical", "keywords", "additional"] as it]
-				 <li[#if currentSideMenu?exists && currentSideMenu==it] class="current"[/#if]><a href="metadata-${it}.do">[@s.text name="submenu.${it}"/]</a></li>
+				 <li[#if currentSideMenu?exists && currentSideMenu==it] class="current"[/#if]><a href="metadata-${it}.do?r=${resource.shortname!r!}">[@s.text name="submenu.${it}"/]</a></li>
 				[/#list]
 				</ul>
 			</div>

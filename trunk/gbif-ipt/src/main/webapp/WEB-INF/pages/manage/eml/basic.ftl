@@ -35,16 +35,20 @@ $(document).ready(function(){
   	</div>
   	<div class="half">
   		<@input name="eml.contact.address.province" />
-  		<@select name="eml.contact.address.country" options=countryList value="${eml.contact.address.country}" />
-  	</div>
+  		<@select name="eml.contact.address.country" options=countryList value="${eml.contact.address.country!}"/>
+   	</div>
 	<div class="half">
 	  	<@input name="eml.contact.email" />
 	  	<@input name="eml.contact.phone" />
   	</div>  
-  <div class="buttons">
- 	<@s.submit name="save" key="button.save"/>
- 	<@s.submit name="cancel" key="button.cancel"/>
-  </div>
+	<div class="buttons">
+ 		<@s.submit name="save" key="button.save"/>
+ 		<@s.submit name="cancel" key="button.cancel"/>
+	</div>
+  
+	<!-- internal use -->
+	<input name="r" type="hidden" value="${resource.shortname}" />
+  
 </form>
 
 

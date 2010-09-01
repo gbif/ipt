@@ -62,7 +62,10 @@
 			<!-- use the template matching the dynamic method invocation, e.g. metadata-parties.do will use parties.ftl--> 
 			<result name="input">/WEB-INF/pages/manage/eml/{1}.ftl</result>
 			<!-- on sucess redirect to the next metadata form page -->
-			<result name="success" type="redirect">metadata-${next}.do</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">metadata-${next}</param>
+				<param name="r">${resource.shortname}</param>
+			</result>
 		</action>
 		
 		<action name="source" class="org.gbif.ipt.action.manage.SourceAction">
