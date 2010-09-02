@@ -52,6 +52,7 @@ public class MetadataAction extends ManagerBaseAction {
   private String next = "parties";
   private Map<String, String> resourceTypes;
   private Map<String, String> languages;
+  private Map<String, String> countries;
 
   private static final List<String> sections = Arrays.asList("basic", "parties", "geocoverage", "taxcoverage",
       "tempcoverage", "project", "methods", "citations", "collections", "physical", "keywords", "additional");
@@ -112,6 +113,7 @@ public class MetadataAction extends ManagerBaseAction {
     }
     resourceTypes = vocabManager.getI18nVocab(Constants.VOCAB_URI_RESOURCE_TYPE, getLocaleLanguage());
     languages = vocabManager.getI18nVocab(Constants.VOCAB_URI_LANGUAGE, getLocaleLanguage());
+    countries = vocabManager.getI18nVocab(Constants.VOCAB_URI_COUNTRY, getLocaleLanguage());
     
     // assure the metadataProvider is the currently logged in user
 	Agent current = new Agent();
@@ -121,8 +123,6 @@ public class MetadataAction extends ManagerBaseAction {
 	resource.getEml().setMetadataProvider(current);
 
     // if it is a submission of the taxonomic coverage, clear the session list
-    // TODO: Ask Markus if this is the preferred method of handling deletions 
-    // of elements in a list
     if (isHttpPost()) {    	
     	if (section.equals("parties")) {
     		resource.getEml().getAssociatedParties().clear();

@@ -3,6 +3,7 @@
  */
 package org.gbif.ipt.service.admin.impl;
 
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.model.VocabularyConcept;
 import org.gbif.ipt.model.VocabularyTerm;
@@ -65,19 +66,16 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   private VocabularyFactory vocabFactory;
   private DownloadUtil downloadUtil;
   private final XStream xstream = new XStream();
-  private final Gbrds client;
   private final String[] defaultVocabs = new String[]{
-      "http://rs.gbif.org/vocabulary/gbif/resource_type.xml", "http://rs.gbif.org/vocabulary/iso/639-1.xml",
-      "http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml"};
+      Constants.VOCAB_URI_LANGUAGE, Constants.VOCAB_URI_COUNTRY, Constants.VOCAB_URI_RESOURCE_TYPE};
 
   /**
    * 
    */
   @Inject
-  public VocabulariesManagerImpl(VocabularyFactory vocabFactory, DownloadUtil downloadUtil, Gbrds client) {
+  public VocabulariesManagerImpl(VocabularyFactory vocabFactory, DownloadUtil downloadUtil) {
     super();
     this.vocabFactory = vocabFactory;
-    this.client = client;
     this.downloadUtil = downloadUtil;
     defineXstreamMapping();
   }

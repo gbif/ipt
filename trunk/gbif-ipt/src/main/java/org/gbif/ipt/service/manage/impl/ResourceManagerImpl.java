@@ -40,7 +40,6 @@ import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.ExtensionManager;
-import org.gbif.ipt.service.admin.GBIFRegistryManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;

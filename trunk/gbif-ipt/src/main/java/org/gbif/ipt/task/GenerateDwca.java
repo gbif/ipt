@@ -30,7 +30,7 @@ public class GenerateDwca implements ReportingTask<Integer>{
 	private File dwcaFolder;
 	
 	@Inject
-	public GenerateDwca(Resource resource, @Assisted DataDir dataDir, @Assisted SourceManager sourceManager) {
+	public GenerateDwca(@Assisted Resource resource, DataDir dataDir, SourceManager sourceManager) {
 		super();
 		this.resource = resource;
 		this.dataDir=dataDir;
