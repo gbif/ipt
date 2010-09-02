@@ -11,7 +11,6 @@ package org.gbif.ipt.validation;
 
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.model.Ipt;
-import org.gbif.ipt.service.admin.GBIFRegistryManager;
 
 import com.google.inject.Inject;
 
@@ -19,8 +18,6 @@ import com.google.inject.Inject;
  * @author josecuadra
  */
 public class IptSupport extends BaseValidator {
-  @Inject
-  private GBIFRegistryManager registryManager;
 
   public IptSupport() {
   }

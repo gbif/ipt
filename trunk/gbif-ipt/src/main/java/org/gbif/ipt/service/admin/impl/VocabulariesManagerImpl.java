@@ -12,7 +12,6 @@ import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.utils.DownloadUtil;
-import org.gbif.registry.api.client.Gbrds;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;

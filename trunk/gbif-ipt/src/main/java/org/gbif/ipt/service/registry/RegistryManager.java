@@ -59,4 +59,6 @@ public interface RegistryManager {
    */
   public void setRegistryCredentials(String username, String password);
 
+  public boolean validateOrganisation(String organisationKey, String password);
+
 }
