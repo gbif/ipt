@@ -8,7 +8,6 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.DeletionNotAllowedException;
-import org.gbif.ipt.service.admin.GBIFRegistryManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
@@ -88,7 +87,7 @@ public class OrganisationsAction extends POSTAction {
    * @param orgSession
    */
   @Inject
-  public OrganisationsAction(GBIFRegistryManager registryManager, RegistrationManager registrationManager,
+  public OrganisationsAction(RegistrationManager registrationManager,
       OrganisationSupport organisationValidation, RegisteredOrganisations orgSession, ResourceManager resourceManager) {
     this.registrationManager = registrationManager;
     this.organisationValidation = organisationValidation;

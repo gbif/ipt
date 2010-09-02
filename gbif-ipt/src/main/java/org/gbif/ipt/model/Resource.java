@@ -72,11 +72,6 @@ public void setRecordsPublished(int recordsPublished) {
 	this.recordsPublished = recordsPublished;
 }
 
-public boolean isPublished() {
-  return lastPublished!=null;
-}
-
-
 public Date getLastPublished() {
 	return lastPublished;
 }
