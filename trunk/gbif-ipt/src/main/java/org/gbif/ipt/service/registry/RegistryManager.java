@@ -1,5 +1,6 @@
 package org.gbif.ipt.service.registry;
 
+import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
@@ -9,10 +10,25 @@ import org.gbif.metadata.eml.Eml;
 
 import com.google.inject.ImplementedBy;
 
+import java.util.List;
 import java.util.UUID;
 
 @ImplementedBy(RegistryManagerImpl.class)
 public interface RegistryManager {
+
+  /**
+   * Gets list of extensions
+   * 
+   * @return
+   */
+  public List<Extension> getExtensions();
+
+  /**
+   * List of organisations
+   * 
+   * @return
+   */
+  public List<Organisation> getOrganisations();
 
   /**
    * Register a new resource with the GBIF registry and associate with to the given organisation.

@@ -169,7 +169,7 @@ By default a resource is private to the managers. Once published to GBIF you can
 			</select>
 	       	<@s.submit cssClass="confirm" name="publish" key="button.register" disabled="${missingRegistrationMetadata?string}"/>
 	       	<#if missingRegistrationMetadata>
-	       		<div class="warn">The <a href="${baseURL}/manage/metadata-basic.do?r=${resource.shortname}">resource's basic metadata</a> should be saved before registering this resource to the GBIF network.</div>
+	       		<div class="warn">The <a href="${baseURL}/manage/metadata-basic.do?r=${resource.shortname}">resource's basic metadata</a> should be saved and the EML & Archive files need to be generated prior to registering to the GBIF Network</div>
 	       	</#if>
 	       	</#if>
 		<#else>

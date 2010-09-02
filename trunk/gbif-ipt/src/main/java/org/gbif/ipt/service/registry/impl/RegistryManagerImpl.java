@@ -1,5 +1,6 @@
 package org.gbif.ipt.service.registry.impl;
 
+import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
@@ -10,20 +11,30 @@ import org.gbif.ipt.utils.NewRegistryEntryHandler;
 import org.gbif.metadata.eml.Eml;
 
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpMethodBase;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.lang.StringUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -46,16 +57,71 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     saxParser = factory.newSAXParser();
   }
 
-  public String getAtomFeedURL() {
-    return String.format("%s/atom.xml", cfg.getBaseURL());
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.gbif.ipt.service.registry.RegistryManager#getExtensions()
+   */
+  public List<Extension> getExtensions() {
+    List<Extension> extensions = new ArrayList<Extension>();
+    JSONObject jSONextensions = null;
+    String result = null;
+    GetMethod method = new GetMethod(getExtensionsURL(true));
+    try {
+      client.executeMethod(method);
+      if (succeeded(method)) {
+        result = method.getResponseBodyAsString();
+        if (result != null) {
+          jSONextensions = new JSONObject(result);
+
+          JSONArray jSONArray = (JSONArray) jSONextensions.get("extensions");
+
+          for (int i = 0; i < jSONArray.length(); i++) {
+            extensions.add(buildExtension((JSONObject) jSONArray.get(i)));
+          }
+        }
+      }
+    } catch (JSONException e) {
+      e.printStackTrace();
+    } catch (HttpException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return extensions;
   }
 
-  public String getDwcArchiveURL(String resName) {
-    return String.format("%s/archive.do?resource=%s", cfg.getBaseURL(), resName);
-  }
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.gbif.ipt.service.registry.RegistryManager#getOrganisations()
+   */
+  public List<Organisation> getOrganisations() {
+    List<Organisation> organisations = new ArrayList<Organisation>();
+    JSONArray jSONorganisations = null;
+    String result = null;
+    System.out.println("url: " + getOrganisationsURL(true));
+    GetMethod method = new GetMethod(getOrganisationsURL(true));
+    try {
+      client.executeMethod(method);
+      if (succeeded(method)) {
+        result = method.getResponseBodyAsString();
+        if (result != null) {
+          jSONorganisations = new JSONArray(result);
 
-  public String getEmlURL(String resName) {
-    return String.format("%s/eml.do?resource=%s", cfg.getBaseURL(), resName);
+          for (int i = 0; i < jSONorganisations.length(); i++) {
+            organisations.add(buildOrganisation((JSONObject) jSONorganisations.get(i)));
+          }
+        }
+      }
+    } catch (JSONException e) {
+      e.printStackTrace();
+    } catch (HttpException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return organisations;
   }
 
   /*
@@ -65,7 +131,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * org.gbif.ipt.model.Organisation, org.gbif.ipt.model.Ipt)
    */
   public UUID register(Resource resource, Organisation organisation, Ipt ipt) throws RegistryException {
-	  Eml eml = resource.getEml();
+    Eml eml = resource.getEml();
     // registering IPT resource
 
     // services should be registered?
@@ -199,6 +265,12 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return new ByteArrayInputStream(source.getBytes());
   }
 
+  /**
+   * Whether a request has succedded, i.e.: 200 response code
+   * 
+   * @param method
+   * @return
+   */
   protected boolean succeeded(HttpMethodBase method) {
     if (method.getStatusCode() >= 200 && method.getStatusCode() < 300) {
       return true;
@@ -211,14 +283,117 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return false;
   }
 
+  /**
+   * Takes an JSON object and returns an Extension object
+   * 
+   * @param ext
+   * @return
+   */
+  private Extension buildExtension(JSONObject ext) {
+    Extension extension = new Extension();
+    try {
+      extension.setDescription(ext.getString("description"));
+      extension.setUrl(new URL(ext.getString("url")));
+      extension.setTitle(ext.getString("title"));
+      extension.setSubject(ext.getString("subject"));
+      extension.setRowType(ext.getString("identifier"));
+    } catch (JSONException e) {
+      e.printStackTrace();
+    } catch (MalformedURLException e) {
+      e.printStackTrace();
+    }
+    return extension;
+  }
+
+  /**
+   * Takes an JSON object and returns an Organisation object
+   * 
+   * @param ext
+   * @return
+   */
+  private Organisation buildOrganisation(JSONObject org) {
+    Organisation organisation = new Organisation();
+    try {
+      organisation.setName(org.getString("name"));
+      organisation.setKey(org.getString("key"));
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+    return organisation;
+  }
+
+  /**
+   * Returns the ATOM url
+   * 
+   * @return
+   */
+  private String getAtomFeedURL() {
+    return String.format("%s/atom.xml", cfg.getBaseURL());
+  }
+
+  /**
+   * Returns the DwCArchive url
+   * 
+   * @param resName
+   * @return
+   */
+  private String getDwcArchiveURL(String resName) {
+    return String.format("%s/archive.do?resource=%s", cfg.getBaseURL(), resName);
+  }
+
+  /**
+   * Returns the EML url
+   * 
+   * @param resName
+   * @return
+   */
+  private String getEmlURL(String resName) {
+    return String.format("%s/eml.do?resource=%s", cfg.getBaseURL(), resName);
+  }
+
+  /**
+   * Returns the Extensions url
+   * 
+   * @param json
+   * @return
+   */
+  private String getExtensionsURL(boolean json) {
+    return String.format("%s%s%s", cfg.getRegistryUrl(), "registry/extensions", json ? ".json" : "/");
+  }
+
+  /**
+   * Returns the IPT Resource url
+   * 
+   * @return
+   */
   private String getIptResourceUri() {
     return String.format("%s/%s", cfg.getRegistryUrl(), "registry/ipt/resource");
   }
 
+  /**
+   * Returns the IPT url
+   * 
+   * @return
+   */
   private String getIptUri() {
     return String.format("%s/%s", cfg.getRegistryUrl(), "registry/ipt/register");
   }
 
+  /**
+   * Returns the Organisations url
+   * 
+   * @param json
+   * @return
+   */
+  private String getOrganisationsURL(boolean json) {
+    return String.format("%s%s%s", cfg.getRegistryUrl(), "registry/organisation", json ? ".json" : "/");
+  }
+
+  /**
+   * @param url
+   * @param authenticate
+   * @return
+   */
   private PostMethod newHttpPost(String url, boolean authenticate) {
     PostMethod method = new PostMethod(url);
     method.setDoAuthentication(authenticate);
