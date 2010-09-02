@@ -12,7 +12,6 @@
 
 <h1>${resource.title!resource.shortname}</h1>
 <p>${resource.description!"No Description available"}</p>
-
 <div class="definition" id="metadata">	
   <div class="title">
   	<div class="head">
@@ -103,8 +102,13 @@
   </div>
   <div class="body">
       	<div class="details">
-      	<div class="half">
+      	<table>
 			<#list eml.associatedParties as item>
+			<#if "${item_index % 2}"=="0">
+				<tr>
+				<th>
+				<div class="half">
+			</#if>
 			<div>
 			<@s.text name='manage.metadata.parties.item'/> ${item_index+1}
       		<table>
@@ -123,8 +127,13 @@
       		</table>
       		<div class="newline"></div>
 			</div>
+			<#if "${item_index % 2}"=="1">
+				</div>
+				</th>
+			 	</tr>
+			</#if>
 			</#list>
-      	</div>
+      	</table>
       	</div>
   </div>
 </div>
@@ -156,23 +165,259 @@
   </div>
   <div class="body">
       	<div class="details">
-      	<div class="half">
+      	<table>
 			<#list eml.taxonomicCoverages as item>
+			<#if "${item_index % 2}"=="0">
+				<tr>
+				<th>
+				<div class="half">
+			</#if>
 			<div>
 			<@s.text name='manage.metadata.taxcoverage.item'/> ${item_index+1}
       		<table>
-				<tr><th><@s.text name='eml.taxonomicCoverages.taxonKeyword.scientificName'/></th><td>${eml.taxonomicCoverages[item_index].taxonKeyword.scientificName!}</td></tr>
+      			<tr><th><@s.text name='eml.taxonomicCoverages.taxonKeyword.scientificName'/></th><td>${eml.taxonomicCoverages[item_index].taxonKeyword.scientificName!}</td></tr>
 				<tr><th><@s.text name='eml.taxonomicCoverages.taxonKeyword.commonName'/></th><td>${eml.taxonomicCoverages[item_index].taxonKeyword.commonName!}</td></tr>
 				<tr><th><@s.text name='eml.taxonomicCoverages.taxonKeyword.rank'/></th><td>${eml.taxonomicCoverages[item_index].taxonKeyword.rank!}</td></tr>
 				<tr><th><@s.text name='eml.taxonomicCoverages.description'/></th><td>${eml.taxonomicCoverages[item_index].description!}</td></tr>
 			</table>
       		<div class="newline"></div>
 			</div>
+			<#if "${item_index % 2}"=="1">
+				</div>
+				</th>
+			 	</tr>
+			</#if>
 			</#list>
-      	</div>
+      	</table>
       	</div>
   </div>
 </div>
+
+<div class="definition">	
+  <div class="title">
+  	<div class="head">
+        <@s.text name='manage.metadata.tempcoverage.title'/>
+  	</div>
+  </div>
+  <div class="body">
+      	<div class="details">
+      	<table>
+			<#list eml.temporalCoverages as item>
+			<#if "${item_index % 2}"=="0">
+				<tr>
+				<th>
+				<div class="half">
+			</#if>
+			<div>
+			<@s.text name='manage.metadata.tempcoverage.item'/> ${item_index+1}
+      		<table>
+				<#if "${item.type}" == "DATE_RANGE" >
+					<tr><th><@s.text name='eml.temporalCoverage.startDate'/></th><td>${eml.temporalCoverages[item_index].startDate?date}</td></tr>
+					<tr><th><@s.text name='eml.temporalCoverage.endDate'/></th><td>${eml.temporalCoverages[item_index].endDate?date}</td></tr>
+				<#elseif "${item.type}" == "SINGLE_DATE" >
+					<tr><th><@s.text name='eml.temporalCoverage.startDate'/></th><td>${eml.temporalCoverages[item_index].startDate?date}</td></tr>
+				<#elseif "${item.type}" == "FORMATION_PERIOD" >
+					<tr><th><@s.text name='eml.temporalCoverage.formationPeriod'/></th><td>${eml.temporalCoverages[item_index].formationPeriod}</td></tr>
+				<#else> <!-- LIVING_TIME_PERIOD -->
+					<tr><th><@s.text name='eml.temporalCoverage.livingTimePeriod'/></th><td>${eml.temporalCoverages[item_index].livingTimePeriod!}</td></tr>
+				</#if>
+			</table>
+			<div class="newline"></div>
+			</div>
+			<#if "${item_index % 2}"=="1">
+				</div>
+				</th>
+			 	</tr>
+			</#if>
+			</#list>
+      	</table>
+      	</div>
+  </div>
+</div>
+
+<div class="definition">	
+  <div class="title">
+  	<div class="head">
+        <@s.text name='manage.metadata.project.title'/>
+  	</div>
+  </div>
+  <div class="body">
+      	<div class="details">
+      		<table>
+          		<tr><th><@s.text name='eml.project.title'/></th><td>${eml.project.title!}</td></tr>
+          		<tr><th><@s.text name='eml.project.personnel.firstName'/></th><td>${eml.project.personnel.firstName!}</td></tr>
+          		<tr><th><@s.text name='eml.project.personnel.lastName'/></th><td>${eml.project.personnel.lastName!}</td></tr>
+          		<tr><th><@s.text name='eml.project.personnel.role'/></th><td>${eml.project.personnel.role!}</td></tr>
+          		<tr><th><@s.text name='eml.project.funding'/></th><td>${eml.project.funding!}</td></tr>
+          		<tr><th><@s.text name='eml.project.studyAreaDescription.descriptorValue'/></th><td>${eml.project.studyAreaDescription.descriptorValue!}</td></tr>
+          		<tr><th><@s.text name='eml.project.designDescription'/></th><td>${eml.project.designDescription!}</td></tr>
+      		</table>
+      	</div>
+  </div>
+</div>
+
+<div class="definition">	
+  <div class="title">
+  	<div class="head">
+        <@s.text name='manage.metadata.methods.title'/>
+  	</div>
+  </div>
+  <div class="body">
+      	<div class="details">
+      		<table>
+          		<tr><th><@s.text name='eml.studyExtent'/></th><td>${eml.studyExtent!}</td></tr>
+          		<tr><th><@s.text name='eml.sampleDescription'/></th><td>${eml.sampleDescription!}</td></tr>
+          		<tr><th><@s.text name='eml.qualityControl'/></th><td>${eml.qualityControl!}</td></tr>
+          		<#list eml.methodSteps as item>
+          			<tr><th><@s.text name='eml.methodSteps'/> ${item_index+1}</th><td>${eml.methodSteps[item_index]!}</td></tr>
+          		</#list>
+      		</table>
+      	</div>
+  </div>
+</div>
+
+<div class="definition">	
+  <div class="title">
+  	<div class="head">
+        <@s.text name='manage.metadata.citations.title'/>
+  	</div>
+  </div>
+  <div class="body">
+      	<div class="details">
+      		<table>
+          		<tr><th><@s.text name='eml.citation'/></th><td>${eml.citation!}</td></tr>
+          		<#list eml.bibliographicCitationSet.bibliographicCitations as item>
+          			<tr><th><@s.text name='eml.bibliographicCitationSet.bibliographicCitations'/> ${item_index+1}</th><td>${eml.bibliographicCitationSet.bibliographicCitations[item_index]!}</td></tr>
+          		</#list>
+      		</table>
+      	</div>
+  </div>
+</div>
+
+<div class="definition">	
+  <div class="title">
+  	<div class="head">
+        <@s.text name='manage.metadata.collections.title'/>
+  	</div>
+  </div>
+  <div class="body">
+      	<div class="details">
+      		<table>
+          		<tr><th><@s.text name='eml.collectionName'/></th><td>${eml.collectionName!}</td></tr>
+          		<tr><th><@s.text name='eml.collectionId'/></th><td>${eml.collectionId!}</td></tr>
+          		<tr><th><@s.text name='eml.parentCollectionId'/></th><td>${eml.parentCollectionId!}</td></tr>
+          	</table>
+          	<div class="newline"></div>
+        	<table>
+        	<#list eml.jgtiCuratorialUnits as item>
+				<#if "${item_index % 2}"=="0">
+					<tr>
+					<th>
+					<div >
+				</#if>
+				<div>
+				<@s.text name='manage.metadata.collections.curatorialUnits.item'/> ${item_index+1}
+		       		<table>	
+         		   		<#if item.type=="COUNT_RANGE">
+          					<tr><th><@s.text name='eml.jgtiCuratorialUnits.rangeStart'/></th><td>${eml.jgtiCuratorialUnits[item_index].rangeStart}</td></tr>
+    						<tr><th><@s.text name='eml.jgtiCuratorialUnits.rangeEnd'/></th><td>${eml.jgtiCuratorialUnits[item_index].rangeEnd}</td></tr>
+    					<#else>
+    						<tr><th><@s.text name='eml.jgtiCuratorialUnits.rangeMean'/></th><td>${eml.jgtiCuratorialUnits[item_index].rangeMean}</td></tr>
+    						<tr><th><@s.text name='eml.jgtiCuratorialUnits.uncertaintyMeasure'/></th><td>${eml.jgtiCuratorialUnits[item_index].uncertaintyMeasure}</td></tr>
+   						</#if>
+    	  			</table>
+				<div class="newline"></div>
+				</div>
+				<#if "${item_index % 2}"=="1">
+					</div>
+					</th>
+				 	</tr>
+				</#if>
+	   		</#list>
+	   		</table>
+      	</div>
+  </div>
+</div>
+
+<div class="definition">	
+  <div class="title">
+  	<div class="head">
+        <@s.text name='manage.metadata.physical.title'/>
+  	</div>
+  </div>
+  <div class="body">
+      	<div class="details">
+      	<table>
+			<#list eml.physicalData as item>
+			<tr>
+			<th>
+			<div>
+			<@s.text name='manage.metadata.physical.item'/> ${item_index+1}
+      		<table>
+				<tr><th><@s.text name='eml.physicalData.name'/></th><td>${eml.physicalData[item_index].name!}</td></tr>
+				<tr><th><@s.text name='eml.physicalData.charset'/></th><td>${eml.physicalData[item_index].charset!}</td></tr>
+				<tr><th><@s.text name='eml.physicalData.format'/></th><td>${eml.physicalData[item_index].format!}</td></tr>
+				<tr><th><@s.text name='eml.physicalData.formatVersion'/></th><td>${eml.physicalData[item_index].formatVersion!}</td></tr>
+				<tr><th><@s.text name='eml.physicalData.distributionUrl'/></th><td><a href="${eml.physicalData[item_index].distributionUrl}">${eml.physicalData[item_index].distributionUrl!}</a></td></tr>				
+      		</table>
+      		<div class="newline"></div>
+			</div>
+			</th>
+		 	</tr>
+			</#list>
+      	</table>
+      	</div>
+  </div>
+</div>
+
+<div class="definition">	
+  <div class="title">
+  	<div class="head">
+        <@s.text name='manage.metadata.keywords.title'/>
+  	</div>
+  </div>
+  <div class="body">
+      	<div class="details">
+      	<table>
+			<#list eml.physicalData as item>
+			<tr>
+			<th>
+			<div>
+			<@s.text name='manage.metadata.keywords.item'/> ${item_index+1}
+      		<table>
+				<tr><th><@s.text name='eml.keywords.keywordThesaurus'/></th><td>${eml.keywords[item_index].name!}</td></tr>
+				<tr><th><@s.text name='eml.keywords.keywordsString'/></th><td>${eml.keywords[item_index].keywordsString!}</td></tr>
+			</table>
+      		<div class="newline"></div>
+			</div>
+			</th>
+			</tr>
+			</#list>
+      	</table>
+      	</div>
+  </div>
+</div>
+
+<div class="definition">	
+  <div class="title">
+  	<div class="head">
+        <@s.text name='manage.metadata.project.title'/>
+  	</div>
+  </div>
+  <div class="body">
+      	<div class="details">
+      		<table>
+          		<tr><th><@s.text name='eml.hierarchyLevel'/></th><td>${eml.hierarchyLevel!}</td></tr>
+          		<tr><th><@s.text name='eml.pubDate'/></th><td>${eml.pubDate?date!}</td></tr>
+          		<tr><th><@s.text name='eml.distributionUrl'/></th><td><a href="${eml.distributionUrl}">${eml.distributionUrl!}</a></td></tr>
+          		<tr><th><@s.text name='eml.purpose'/></th><td>${eml.purpose!}</td></tr>
+          		<tr><th><@s.text name='eml.intellectualRights'/></th><td>${eml.intellectualRights!}</td></tr>
+          		<tr><th><@s.text name='eml.additionalInfo'/></th><td>${eml.additionalInfo!}</td></tr>
+      		</table>
+      	</div>
+  </div>
+</div>
+
 
 <div class="definition">	
   <div class="title">
