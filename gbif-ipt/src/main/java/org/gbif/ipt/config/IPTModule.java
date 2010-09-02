@@ -7,8 +7,6 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.GenerateDwca;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.utils.InputStreamUtils;
-import org.gbif.registry.api.client.Gbrds;
-import org.gbif.registry.api.client.GbrdsImpl;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;

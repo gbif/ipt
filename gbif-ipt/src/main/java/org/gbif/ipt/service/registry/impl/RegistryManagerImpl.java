@@ -400,4 +400,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return method;
   }
 
+public boolean validateOrganisation(String organisationKey, String password) {
+	return false;
+}
+
 }

@@ -11,7 +11,7 @@ package org.gbif.ipt.validation;
 
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.model.Organisation;
-import org.gbif.ipt.service.admin.GBIFRegistryManager;
+import org.gbif.ipt.service.registry.RegistryManager;
 
 import com.google.inject.Inject;
 
@@ -20,7 +20,7 @@ import com.google.inject.Inject;
  */
 public class OrganisationSupport {
   @Inject
-  private GBIFRegistryManager registryManager;
+  private RegistryManager registryManager;
 
   public OrganisationSupport() {
   }
