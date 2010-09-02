@@ -44,6 +44,8 @@ import org.gbif.ipt.service.admin.GBIFRegistryManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
+import org.gbif.ipt.task.GenerateDwca;
+import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.utils.ActionLogger;
 import org.gbif.metadata.BasicMetadata;
 import org.gbif.metadata.MetadataException;
@@ -77,6 +79,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import freemarker.template.TemplateException;
 
@@ -94,11 +101,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 	private SourceManager sourceManager;
 	private ExtensionManager extensionManager;
 	private RegistryManager registryManager;
-
+	private ExecutorService executor = Executors.newFixedThreadPool(3);
+	private GenerateDwcaFactory dwcaFactory;
+	
 	@Inject
 	public ResourceManagerImpl(AppConfig cfg, DataDir dataDir, UserEmailConverter userConverter,
 			OrganisationKeyConverter orgConverter, ExtensionRowTypeConverter extensionConverter, JdbcInfoConverter jdbcInfoConverter, SourceManager sourceManager,
-			ExtensionManager extensionManager, RegistryManager registryManager, ConceptTermConverter conceptTermConverter) {
+			ExtensionManager extensionManager, RegistryManager registryManager, ConceptTermConverter conceptTermConverter, GenerateDwcaFactory dwcaFactory) {
 		super(cfg, dataDir);
 		this.userConverter = userConverter;
 		this.orgConverter = orgConverter;
@@ -108,6 +117,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 		this.extensionManager = extensionManager;
 		this.registryManager = registryManager;
 		this.conceptTermConverter = conceptTermConverter;
+		this.dwcaFactory=dwcaFactory;
 		defineXstreamMapping();
 	}
 
@@ -634,13 +644,34 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 			}
 			resource.setLastPublishedEmlHash(newHash);
 		}
-		// TODO: regenerate dwca ?
+		
+		// regenerate dwca asynchroneously - this will alter the resource object once its finished setting the correct number of records
+		generateDwca(resource);
+		
 		// persist any resource object changes
 		resource.setLastPublished(new Date());
 		save(resource);
 		return newEmlVersion;
 	}
-
+	
+	private void generateDwca(Resource resource){
+		// use threads to run in the background as sql sources might take a long time
+		GenerateDwca worker = dwcaFactory.create(resource);
+		Future<Integer> f = executor.submit(worker);
+		// for now do it sequentially for quick testing - requires ajax UI otherwise
+		while (!f.isDone()) {
+			
+		}
+		try {
+			resource.setRecordsPublished(f.get());
+			log.info("Finished dwca generation");
+		} catch (InterruptedException e) {
+			log.info("Dwca generation interrupted");
+		} catch (ExecutionException e) {
+			log.error("Dwca generation failed", e);
+		}
+	}
+	
 	private int getEmlHash(Resource resource, Eml eml){
 		//TODO: replace by hashing the eml xml file content? 
 		// Alternatively code a proper hashCode method for Eml that needs to be maintained - might be too much effort
