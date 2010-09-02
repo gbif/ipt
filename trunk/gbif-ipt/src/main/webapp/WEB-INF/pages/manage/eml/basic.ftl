@@ -13,13 +13,14 @@
 <form class="topForm" action="metadata-${section}.do" method="post">
   	<@input name="eml.title" />
   	<@text name="eml.description" />
-	<div class="half">
+  	<@input name="eml.creator.onlineUrl" />
+  	<div class="half">
 	  	<@select name="resource.subtype" options=resourceTypes value="${resource.subtype!}" />
 	  	<@select name="eml.language" help="i18n" options=languages value="${eml.language!}" />
   	</div>
 	<div class="half">
-	  	<@input name="eml.contact.firstName" disabled=true/>
-	  	<@input name="eml.contact.lastName" disabled=true/>
+	  	<@input name="eml.contact.firstName" />
+	  	<@input name="eml.contact.lastName" />
   	</div>
   	<div class="half">
   		<@input name="eml.contact.position" />
@@ -34,7 +35,7 @@
   		<@select name="eml.contact.address.country" options=countryList value="${eml.contact.address.country!}"/>
    	</div>
 	<div class="half">
-	  	<@input name="eml.contact.email" disabled=true/>
+	  	<@input name="eml.contact.email" />
 	  	<@input name="eml.contact.phone" />
   	</div>  
 	<div class="buttons">
