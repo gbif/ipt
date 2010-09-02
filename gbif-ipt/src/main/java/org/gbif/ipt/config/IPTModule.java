@@ -153,16 +153,5 @@ public class IPTModule extends AbstractModule {
     }
     return saxf;
   }
-
-  @Provides
-  @Singleton
-  @Inject
-  public Gbrds provideRegistryClient(AppConfig cfg) {
-    // rely on the fact that AppConfig is already setup
-    String url = cfg.getRegistryUrl();
-    Gbrds gbif = GbrdsImpl.init(url);
-    log.info("Created GBF " + cfg.getRegistryType() + " Registry client with URL: " + url);
-    return gbif;
-  }
   
 }
