@@ -154,16 +154,16 @@
 <div id="map"></div>
 <form class="topForm" action="metadata-${section}.do" method="post">
 	<div class="half" id="bbox">
-		<@input name="eml.geospatialCoverages[0].boundingCoordinates.min.longitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.min.longitude)!}" i18nkey="eml.geographicCoverage.boundingCoordinates.min.longitude"/>
-		<@input name="eml.geospatialCoverages[0].boundingCoordinates.max.longitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.max.longitude)!}" i18nkey="eml.geographicCoverage.boundingCoordinates.max.longitude"/>
-		<@input name="eml.geospatialCoverages[0].boundingCoordinates.min.latitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.min.latitude)!}" i18nkey="eml.geographicCoverage.boundingCoordinates.min.latitude"/>
-		<@input name="eml.geospatialCoverages[0].boundingCoordinates.max.latitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.max.latitude)!}" i18nkey="eml.geographicCoverage.boundingCoordinates.max.latitude"/>
+  		<@input name="eml.geospatialCoverages[0].boundingCoordinates.min.longitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.min.longitude)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.min.longitude"/>
+  		<@input name="eml.geospatialCoverages[0].boundingCoordinates.max.longitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.max.longitude)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.max.longitude"/>
+  		<@input name="eml.geospatialCoverages[0].boundingCoordinates.min.latitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.min.latitude)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.min.latitude"/>
+  		<@input name="eml.geospatialCoverages[0].boundingCoordinates.max.latitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.max.latitude)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.max.latitude"/>
 	</div>
 	<div class="newline"></div>
-	<@text name="eml.geospatialCoverages[0].description" value="${(eml.geospatialCoverages[0].description)!}" i18nkey="eml.geographicCoverage.description"/>
+		<@text name="eml.geospatialCoverages[0].description" value="${(eml.geospatialCoverages[0].description)!}" i18nkey="eml.geospatialCoverages.description"/>
 	<div class="buttons">
-		<@s.submit name="save" key="button.save" />
-		<@s.submit name="cancel" key="button.cancel" />
+  		<@s.submit name="save" key="button.save" />
+  		<@s.submit name="cancel" key="button.cancel" />
 	</div>
 	
 	<!-- internal parameter -->

@@ -21,12 +21,12 @@ $(document).ready(function(){
     				<a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.item'/> ]</a>
   				</div>
 				<div class="newline"></div>
-				<@text  i18nkey="eml.taxonomicCoverage.description" name="eml.taxonomicCoverages[${item_index}].description" help="i18n" />
+				<@text  i18nkey="eml.taxonomicCoverages.description" name="eml.taxonomicCoverages[${item_index}].description" help="i18n" />
 				<div class="half">
-           			<@input i18nkey="eml.taxonomicCoverage.scientificName" name="eml.taxonomicCoverages[${item_index}].taxonKeyword.scientificName" />
-           			<@input i18nkey="eml.taxonomicCoverage.commonName" name="eml.taxonomicCoverages[${item_index}].taxonKeyword.commonName" />
+           			<@input i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" name="eml.taxonomicCoverages[${item_index}].taxonKeyword.scientificName" />
+           			<@input i18nkey="eml.taxonomicCoverages.taxonKeyword.commonName" name="eml.taxonomicCoverages[${item_index}].taxonKeyword.commonName" />
         		</div>     	
-           		<@select i18nkey="eml.taxonomicCoverage.rank"  name="eml.taxonomicCoverages[${item_index}].taxonKeyword.rank" options=ranks value="${eml.taxonomicCoverages[item_index].taxonKeyword.rank}" />
+           		<@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="eml.taxonomicCoverages[${item_index}].taxonKeyword.rank" options=ranks value="${eml.taxonomicCoverages[item_index].taxonKeyword.rank}" />
    	  			<div class="newline"></div>			
 				<div class="horizontal_dotted_line_large_foo" id="separator"></div>
 				<div class="newline"></div>
@@ -49,12 +49,12 @@ $(document).ready(function(){
 		<a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.item'/> ]</a>
 	</div>
 	<div class="newline"></div>
-	<@text  i18nkey="eml.taxonomicCoverage.description" help="i18n" name="description" />
+	<@text  i18nkey="eml.taxonomicCoverages.description" help="i18n" name="description" />
 	<div class="half">
-		<@input i18nkey="eml.taxonomicCoverage.scientificName" name="scientificName" />
-		<@input i18nkey="eml.taxonomicCoverage.commonName" name="commonName" />
+		<@input i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" name="scientificName" />
+		<@input i18nkey="eml.taxonomicCoverages.taxonKeyword.commonName" name="commonName" />
 	</div>         
-	<@select i18nkey="eml.taxonomicCoverage.rank"  name="rank" options=ranks />   	  
+	<@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="rank" options=ranks />   	  
 	<div class="newline"></div>      
 	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
 	<div class="newline"></div>
