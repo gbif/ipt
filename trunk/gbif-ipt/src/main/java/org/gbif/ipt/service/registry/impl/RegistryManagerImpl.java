@@ -233,6 +233,22 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     }
   }
 
+  public boolean validateOrganisation(String organisationKey, String password) {
+    setRegistryCredentials(organisationKey, password);
+    GetMethod method = new GetMethod(getLoginURL(organisationKey));
+    //GetMethod method = newHttpPost(getLoginURL(organisationKey), true);
+    try {
+      client.executeMethod(method);
+      if (succeeded(method)) {
+        return true;
+      }
+      return false;
+    } catch (Exception e) {
+      log.warn(e.toString());
+    }
+    return false;
+  }
+
   /**
    * Executes a generic POST request
    * 
@@ -380,6 +396,16 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   }
 
   /**
+   * Returns the login URL
+   * 
+   * @param organisationKey
+   * @return
+   */
+  private String getLoginURL(String organisationKey) {
+    return String.format("%s%s%s%s", cfg.getRegistryUrl(), "registry/organisation/", organisationKey, "?op=login");
+  }
+
+  /**
    * Returns the Organisations url
    * 
    * @param json
@@ -399,9 +425,4 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     method.setDoAuthentication(authenticate);
     return method;
   }
-
-public boolean validateOrganisation(String organisationKey, String password) {
-	return false;
-}
-
 }
