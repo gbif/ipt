@@ -11,6 +11,7 @@ import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.admin.GBIFRegistryManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.validation.OrganisationSupport;
 
 import com.google.inject.Inject;
@@ -32,10 +33,10 @@ public class OrganisationsAction extends POSTAction {
   @SessionScoped
   public static class RegisteredOrganisations {
     private List<Organisation> organisations = new ArrayList<Organisation>();
-    private GBIFRegistryManager registryManager;
+    private RegistryManager registryManager;
 
     @Inject
-    public RegisteredOrganisations(GBIFRegistryManager registryManager) {
+    public RegisteredOrganisations(RegistryManager registryManager) {
       super();
       this.registryManager = registryManager;
     }
@@ -50,7 +51,7 @@ public class OrganisationsAction extends POSTAction {
     public void load() throws RuntimeException {
       log.debug("getting list of organisations from registry");
 
-      List<Organisation> tempOrganisations = registryManager.listAllOrganisations();
+      List<Organisation> tempOrganisations = registryManager.getOrganisations();
       organisations.addAll(tempOrganisations);
 
       Collections.sort(organisations, new Comparator<Organisation>() {

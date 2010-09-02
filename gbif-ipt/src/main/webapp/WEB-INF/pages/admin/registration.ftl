@@ -84,7 +84,7 @@ $(document).ready(function(){
 		
 		<@s.form cssClass="topForm half" action="registration" method="post" id="registrationForm" >
 			<@selectList name="organisation.key" options="organisations" objValue="key" objTitle="name" i18nkey="admin.organisation.key" value="" size=15/>  
-			<@input name="organisation.password" i18nkey="admin.organisation.password" type="text"/>
+			<@input name="organisation.password" i18nkey="admin.organisation.password" type="text" help="i18n"/>
 			<@input name="organisation.alias" i18nkey="admin.organisation.alias" type="text" />
 			<@checkbox name="organisation.canHost" i18nkey="admin.organisation.canHost" value="true" help="i18n"/>	
 			

@@ -9,9 +9,7 @@ import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl.UpdateResult;
-import org.gbif.registry.api.client.Gbrds;
-import org.gbif.registry.api.client.Gbrds.ExtensionApi;
-import org.gbif.registry.api.client.GbrdsExtension;
+import org.gbif.ipt.service.registry.RegistryManager;
 
 import com.google.inject.Inject;
 import com.google.inject.servlet.SessionScoped;
@@ -40,20 +38,20 @@ public class ExtensionsAction extends POSTAction {
    */
   @SessionScoped
   public static class RegisteredExtensions {
-    public List<GbrdsExtension> extensions = new ArrayList<GbrdsExtension>();
-    private Gbrds client;
+    // public List<GbrdsExtension> extensions = new ArrayList<GbrdsExtension>();
+    public List<Extension> extensions = new ArrayList<Extension>();
+    // private Gbrds client;
+    private RegistryManager registryManager;
 
     @Inject
-    public RegisteredExtensions(Gbrds client) {
+    public RegisteredExtensions(RegistryManager registryManager) {
       super();
-      this.client = client;
+      this.registryManager = registryManager;
     }
 
     public void load() throws RuntimeException {
-      ExtensionApi api = client.getExtensionApi();
-      extensions = api.list().execute().getResult();
+      extensions = registryManager.getExtensions();
     }
-
   }
 
   @Inject
@@ -84,15 +82,8 @@ public class ExtensionsAction extends POSTAction {
     return extensions;
   }
 
-  public List<GbrdsExtension> getGbrdsExtensions() {
-    List<GbrdsExtension> newExts = new ArrayList<GbrdsExtension>();
-    // only add non installed ones
-    for (GbrdsExtension e : registered.extensions) {
-      if (extensionManager.get(e.getRowType()) == null) {
-        newExts.add(e);
-      }
-    }
-    return newExts;
+  public List<Extension> getGbrdsExtensions() {
+    return registered.extensions;
   }
 
   public int getNumVocabs() {

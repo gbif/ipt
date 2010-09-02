@@ -1,6 +1,5 @@
 package org.gbif.ipt.action.manage;
 
-import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.Organisation;
@@ -15,6 +14,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.validation.EmlValidator;
+import org.gbif.metadata.eml.Eml;
 
 import com.google.inject.Inject;
 
@@ -98,6 +98,13 @@ public class OverviewAction extends ManagerBaseAction {
     return !emlValidator.isValid(resource.getEml(), "basic");
   }
 
+  /**
+   * @return the missingRegistrationMetadata
+   */
+  public boolean getMissingRegistrationMetadata() {
+    return missingRegistrationMetadata;
+  }
+
   public List<Organisation> getOrganisations() {
     return organisations;
   }
@@ -117,30 +124,45 @@ public class OverviewAction extends ManagerBaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
-    if (resource!=null){
-        // get potential new managers
-        potentialManagers = userManager.list(Role.Manager);
+    if (resource != null) {
+      // get potential new managers
+      potentialManagers = userManager.list(Role.Manager);
+      // remove already associated ones
+      for (User u : resource.getManagers()) {
+        potentialManagers.remove(u);
+      }
+      // enabled registry organisations
+      organisations = registrationManager.list();
+      if (resource.getCore() == null) {
+        // show core extensions for mapping
+        potentialExtensions = extensionManager.listCore();
+      } else {
+        // show unmapped extensions
+        potentialExtensions = extensionManager.list(resource.getCore().getExtension());
         // remove already associated ones
-        for (User u : resource.getManagers()) {
-          potentialManagers.remove(u);
+        for (ExtensionMapping e : resource.getExtensions()) {
+          potentialExtensions.remove(e.getExtension());
         }
-        // enabled registry organisations
-        organisations = registrationManager.list();
-        if (resource.getCore() == null) {
-          // show core extensions for mapping
-          potentialExtensions = extensionManager.listCore();
-        } else {
-          // show unmapped extensions
-          potentialExtensions = extensionManager.list(resource.getCore().getExtension());
-          // remove already associated ones
-          for (ExtensionMapping e : resource.getExtensions()) {
-            potentialExtensions.remove(e.getExtension());
-          }
-        }
-        // check EML
-        missingMetadata = !emlValidator.isValid(resource.getEml(), null);
-        missingRegistrationMetadata = !emlValidator.isValid(resource.getEml(), "basic");
-	}
+      }
+      // check EML
+      missingMetadata = !emlValidator.isValid(resource.getEml(), null);
+      missingRegistrationMetadata = !minimumRegistryInfo(resource);         //!emlValidator.isValid(resource.getEml(), "basic");
+    }
+  }
+  
+  private boolean minimumRegistryInfo(Resource resource) {
+    if(resource==null)
+      return false;
+    if(resource.getEml()==null)
+      return false;
+    if(resource.getEml().getContact()==null)
+      return false;
+    if(resource.getEml().getContact().getEmail()==null)
+      return false;
+    System.out.println("REGISTERED? " + resource.isPublished());
+    if(!resource.isPublished())
+      return false;
+    return true;
   }
 
   public String publish() throws Exception {

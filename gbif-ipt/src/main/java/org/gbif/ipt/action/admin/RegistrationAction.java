@@ -8,7 +8,6 @@ import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.RegistryException;
-import org.gbif.ipt.service.admin.GBIFRegistryManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.validation.IptSupport;
@@ -31,8 +30,7 @@ import java.util.List;
 public class RegistrationAction extends POSTAction {
   private static final long serialVersionUID = -6522969037528106704L;
 
-  private GBIFRegistryManager registryManager;
-  private RegistryManager registryManager2;
+  private RegistryManager registryManager;
   private RegistrationManager registrationManager;
   private OrganisationSupport organisationValidation;
   private IptSupport iptValidation;
@@ -50,12 +48,11 @@ public class RegistrationAction extends POSTAction {
    * @param registrationManager
    */
   @Inject
-  public RegistrationAction(GBIFRegistryManager registryManager, OrganisationSupport organisationValidation,
-      RegistrationManager registrationManager, RegistryManager registryManager2, IptSupport iptValidation) {
+  public RegistrationAction(OrganisationSupport organisationValidation, RegistrationManager registrationManager,
+      RegistryManager registryManager, IptSupport iptValidation) {
     this.registryManager = registryManager;
     this.organisationValidation = organisationValidation;
     this.registrationManager = registrationManager;
-    this.registryManager2 = registryManager2;
     this.iptValidation = iptValidation;
   }
 
@@ -111,7 +108,7 @@ public class RegistrationAction extends POSTAction {
     // will not be session scoping the list of organisations from the registry as this is basically a 1 time step
     super.prepare();
     log.debug("getting list of organisations");
-    List<Organisation> tempOrganisations = registryManager.listAllOrganisations();
+    List<Organisation> tempOrganisations = registryManager.getOrganisations();
     organisations.addAll(tempOrganisations);
     Collections.sort(organisations, new Comparator<Organisation>() {
       public int compare(Organisation org1, Organisation org2) {
@@ -134,8 +131,8 @@ public class RegistrationAction extends POSTAction {
       try {
         // register against the Registry
         try {
-          registryManager2.setRegistryCredentials(organisation.getKey().toString(), organisation.getPassword());
-          registryManager2.registerIPT(ipt);
+          registryManager.setRegistryCredentials(organisation.getKey().toString(), organisation.getPassword());
+          registryManager.registerIPT(ipt);
         } catch (RegistryException re) {
           addActionError(getText("admin.registration.error.registry"));
           return INPUT;
