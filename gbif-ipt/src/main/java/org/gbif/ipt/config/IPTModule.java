@@ -4,6 +4,8 @@ import org.gbif.ipt.model.factory.ExtensionFactory;
 import org.gbif.ipt.model.factory.ThesaurusHandlingRule;
 import org.gbif.ipt.model.factory.VocabularyFactory;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.task.GenerateDwca;
+import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.utils.InputStreamUtils;
 import org.gbif.registry.api.client.Gbrds;
 import org.gbif.registry.api.client.GbrdsImpl;
@@ -13,6 +15,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Scopes;
 import com.google.inject.Singleton;
+import com.google.inject.assistedinject.FactoryProvider;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
@@ -55,6 +58,10 @@ public class IPTModule extends AbstractModule {
 
     // prototypes
     bind(ThesaurusHandlingRule.class).in(Scopes.NO_SCOPE);
+    
+    // assisted inject factories
+    bind(GenerateDwcaFactory.class).toProvider(FactoryProvider.newFactory(GenerateDwcaFactory.class, GenerateDwca.class));
+
   }
 
   @Provides
@@ -157,4 +164,5 @@ public class IPTModule extends AbstractModule {
     log.info("Created GBF " + cfg.getRegistryType() + " Registry client with URL: " + url);
     return gbif;
   }
+  
 }

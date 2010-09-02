@@ -246,6 +246,11 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<dependency> 
+			<groupId>com.google.inject.extensions</groupId>
+			<artifactId>guice-assisted-inject</artifactId>
+			<version>2.0</version>
+		</dependency>
 		
 		<!-- Used for the SimpleTextProvider in Struts2 -->
 		<dependency>

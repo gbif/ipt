@@ -64,6 +64,9 @@ public class Resource implements Serializable, Comparable<Resource> {
   public int getRecordsPublished() {
 	return recordsPublished;
 }
+  public boolean isPublished(){
+	  return lastPublished!=null;
+  }
 
 public void setRecordsPublished(int recordsPublished) {
 	this.recordsPublished = recordsPublished;
