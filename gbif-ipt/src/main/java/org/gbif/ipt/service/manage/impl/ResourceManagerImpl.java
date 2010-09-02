@@ -12,6 +12,7 @@ import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveFile;
 import org.gbif.dwc.text.UnsupportedArchiveException;
 import org.gbif.file.CompressionUtil;
+import org.gbif.file.CompressionUtil.UnsupportedCompressionType;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
@@ -44,6 +45,9 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.utils.ActionLogger;
+import org.gbif.metadata.BasicMetadata;
+import org.gbif.metadata.MetadataException;
+import org.gbif.metadata.MetadataFactory;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlFactory;
 import org.gbif.metadata.eml.EmlWriter;
@@ -89,23 +93,20 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 	private final JdbcInfoConverter jdbcInfoConverter;
 	private SourceManager sourceManager;
 	private ExtensionManager extensionManager;
-	private GBIFRegistryManager registryManager;
-	private RegistryManager registryManager2;
+	private RegistryManager registryManager;
 
 	@Inject
 	public ResourceManagerImpl(AppConfig cfg, DataDir dataDir, UserEmailConverter userConverter,
-			OrganisationKeyConverter orgConverter, GBIFRegistryManager registryManager,
-			ExtensionRowTypeConverter extensionConverter, JdbcInfoConverter jdbcInfoConverter, SourceManager sourceManager,
-			ExtensionManager extensionManager, RegistryManager registryManager2, ConceptTermConverter conceptTermConverter) {
+			OrganisationKeyConverter orgConverter, ExtensionRowTypeConverter extensionConverter, JdbcInfoConverter jdbcInfoConverter, SourceManager sourceManager,
+			ExtensionManager extensionManager, RegistryManager registryManager, ConceptTermConverter conceptTermConverter) {
 		super(cfg, dataDir);
 		this.userConverter = userConverter;
-		this.registryManager = registryManager;
 		this.orgConverter = orgConverter;
 		this.extensionConverter = extensionConverter;
 		this.jdbcInfoConverter = jdbcInfoConverter;
 		this.sourceManager = sourceManager;
 		this.extensionManager = extensionManager;
-		this.registryManager2 = registryManager2;
+		this.registryManager = registryManager;
 		this.conceptTermConverter = conceptTermConverter;
 		defineXstreamMapping();
 	}
@@ -114,16 +115,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 		resources.put(res.getShortname().toLowerCase(), res);
 	}
 
-	public Resource create(String shortname, File dwca, User creator, BaseAction action)
+	private Resource createFromArchive(String shortname, File dwca, User creator, ActionLogger alog)
 	throws AlreadyExistingException, ImportException {
-		Resource resource;
-		ActionLogger alog = new ActionLogger(this.log, action);
+		Resource resource=null;
 		try {
-			// decompress archive
-			File dwcaDir = dataDir.tmpDir();
-			CompressionUtil.decompressFile(dwcaDir, dwca);
 			// open the dwca with dwca reader
-			Archive arch = ArchiveFactory.openArchive(dwcaDir);
+			Archive arch = ArchiveFactory.openArchive(dwca);
 			// create new resource once we know the archive can be read
 			resource = create(shortname, creator);
 			// keep track of source files as an dwc archive might refer to the same source file multiple times
@@ -146,14 +143,21 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 					map = importMappings(alog, ext, s);
 					resource.addExtension(map);
 				}
+				// try to read metadata
+				Eml eml = readMetadata(arch, alog);
+				if (eml!=null){
+					resource.setEml(eml);
+				}
 				// finally persist the whole thing
 				save(resource);
 				alog.info("Imported existing darwin core archive with core row type " + resource.getCoreRowType() + " and "
-						+ resource.getSources().size() + " source(s), " + resource.getExtensions().size() + " mapping(s)");
+						+ resource.getSources().size() + " source(s), " + (resource.getExtensions().size()+1) + " mapping(s)");
+				
 			} else {
 				alog.warn("Darwin core archive is invalid and does not have a core mapping");
 				throw new ImportException("Darwin core archive is invalid and does not have a core mapping");
 			}
+				
 		} catch (UnsupportedArchiveException e) {
 			alog.warn(e.getMessage(), e);
 			throw new ImportException(e);
@@ -161,9 +165,81 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 			alog.warn(e.getMessage(), e);
 			throw new ImportException(e);
 		}
+
 		return resource;
 	}
-
+	
+	private Resource createFromEml(String shortname, File emlFile, User creator, ActionLogger alog)
+	throws AlreadyExistingException, ImportException {
+		Eml eml = readMetadata(emlFile, alog);
+		if (eml!=null){
+			// create resource with imorted metadata
+			Resource resource = create(shortname, creator);
+			resource.setEml(eml);
+			return resource;
+		}else{
+			alog.error("Cant read the uploaded file");
+			throw new ImportException("Cant read the uploaded file");
+		}
+	}
+	
+	public Resource create(String shortname, File dwca, User creator, BaseAction action)
+	throws AlreadyExistingException, ImportException {
+		ActionLogger alog = new ActionLogger(this.log, action);
+		// decompress archive
+		File dwcaDir = dataDir.tmpDir();
+		try {
+			CompressionUtil.decompressFile(dwcaDir, dwca);
+			return createFromArchive(shortname, dwcaDir, creator, alog);
+		} catch (UnsupportedCompressionType e) {
+			// try to read single eml file
+			return createFromEml(shortname, dwca, creator, alog);
+		} catch (AlreadyExistingException e) {
+			throw e;
+		} catch (ImportException e) {
+			throw e;
+		} catch (Exception e) {
+			alog.warn(e.getMessage(), e);
+			throw new ImportException(e);
+		}
+	}
+	
+	private Eml readMetadata(Archive archive, ActionLogger alog){
+		try {
+			return convertMetadataToEml(archive.getMetadata(), alog);
+		} catch (MetadataException e) {
+			// swallow;
+		}
+		return null;
+	}
+	private Eml readMetadata(File file, ActionLogger alog){
+		MetadataFactory fact = new MetadataFactory();
+		try{
+			return convertMetadataToEml(fact.read(file), alog);
+		} catch (MetadataException e) {
+			// swallow;
+		}
+		return null;
+	}
+	private Eml convertMetadataToEml(BasicMetadata metadata, ActionLogger alog){
+		Eml eml = null;
+		if (metadata!=null){
+			if (metadata instanceof Eml){
+				eml = (Eml) metadata;
+			}else{
+				//copy properties
+				eml = new Eml();
+				eml.setTitle(metadata.getTitle());
+				eml.setDescription(metadata.getDescription());
+				eml.setHomeUrl(metadata.getHomeUrl());
+				eml.setLogoUrl(metadata.getLogoUrl());
+				eml.setSubject(metadata.getSubject());
+				eml.setPubDate(metadata.getPublished());
+			}
+			alog.info("Metadata imported.");
+		}
+		return eml;
+	}
 	/*
 	 * (non-Javadoc)
 	 * @see org.gbif.ipt.service.manage.ResourceManager#create(java.lang.String)
@@ -454,8 +530,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 	public void register(Resource resource, Organisation organisation, Ipt ipt)
 	throws RegistryException {
 		if (PublicationStatus.REGISTERED != resource.getStatus()) {
-			registryManager2.setRegistryCredentials(organisation.getKey().toString(), organisation.getPassword());
-			UUID key = registryManager2.register(resource, organisation, ipt);
+			registryManager.setRegistryCredentials(organisation.getKey().toString(), organisation.getPassword());
+			UUID key = registryManager.register(resource, organisation, ipt);
 			if (key == null) {
 				throw new RegistryException(RegistryException.TYPE.MISSING_METADATA, "No key returned for registered resoruce.");
 			}

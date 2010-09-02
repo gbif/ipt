@@ -167,8 +167,8 @@ By default a resource is private to the managers. Once published to GBIF you can
 		      <option value="${o.key}">${o.name}</option>
 		    </#list>
 			</select>
-	       	<@s.submit cssClass="confirm" name="publish" key="button.register" disabled="${missingBasicMetadata?string}"/>
-	       	<#if missingBasicMetadata>
+	       	<@s.submit cssClass="confirm" name="publish" key="button.register" disabled="${missingRegistrationMetadata?string}"/>
+	       	<#if missingRegistrationMetadata>
 	       		<div class="warn">The <a href="${baseURL}/manage/metadata-basic.do?r=${resource.shortname}">resource's basic metadata</a> should be saved before registering this resource to the GBIF network.</div>
 	       	</#if>
 	       	</#if>
@@ -233,7 +233,7 @@ By default a resource is private to the managers. Once published to GBIF you can
       		<table>
 			  	<#if resource.lastPublished??>
           		<tr><th>Last Publication</th><td>Version ${resource.eml.emlVersion} from ${resource.lastPublished?date?string.medium}</td></tr>
-          		<tr><th>Archive</th><td><a href="${baseURL}/archive.do?r=${resource.shortname}">download</a></td></tr>
+          		<tr><th>Archive</th><td><a href="${baseURL}/archive.do?r=${resource.shortname}">download</a>, ${resource.recordsPublished} records </td></tr>
           		<tr><th>EML</th><td><a href="${baseURL}/eml.do?r=${resource.shortname}">download</a> <a href="${baseURL}/resource.do?r=${resource.shortname}">view</a></td></tr>
 			  	</#if>
       		</table>
