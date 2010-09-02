@@ -240,11 +240,14 @@ ul.fielderror{
 }
 .actionMessage{
 	list-style:none; 
+    //list-style-image: url('../images/info.gif');
 	color: #6dd03e;
 	padding: 0px;
 	margin: 0px;
 }
-
+.actionMessage li{
+	padding-bottom: 5px;
+}
 .small{
 	font-size: 0.75em;
 	color: #888;

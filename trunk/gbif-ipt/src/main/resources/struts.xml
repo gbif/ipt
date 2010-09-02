@@ -57,8 +57,11 @@
 				</interceptor-ref>
 				<interceptor-ref name="workflow"/>
 			</interceptor-stack>
-			<interceptor-stack name="iptStack">
+			
+			<interceptor-stack name="portalStack">
+				<interceptor-ref name="resourceSession"/>
 				<interceptor-ref name="setupAndCancel"/>
+				<interceptor-ref name="protectPrivateResource"/>
 				<interceptor-ref name="iptStackWithoutSetup"/>
 			</interceptor-stack>
 			
@@ -67,6 +70,7 @@
 				<interceptor-ref name="requireAdmin"/>
 				<interceptor-ref name="iptStackWithoutSetup"/>
 			</interceptor-stack>
+			
 			<interceptor-stack name="managerStack">
 				<interceptor-ref name="resourceSession"/>
 				<interceptor-ref name="setupAndCancel"/>
@@ -77,15 +81,10 @@
 				<interceptor-ref name="requireManager"/>
 				<interceptor-ref name="iptStackWithoutSetup"/>
 			</interceptor-stack>
-			<interceptor-stack name="portalStack">
-				<interceptor-ref name="resourceSession"/>
-				<interceptor-ref name="protectPrivateResource"/>
-				<interceptor-ref name="iptStackWithoutSetup"/>
-			</interceptor-stack>
 			
 		</interceptors>
 		
-		<default-interceptor-ref name="iptStack"/>
+		<default-interceptor-ref name="portalStack"/>
 		
 		<default-class-ref class="org.gbif.ipt.action.BaseAction"/>
 		
