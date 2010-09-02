@@ -1,7 +1,7 @@
 <@s.text name="manage.resource.create.intro"/>
 
 <@s.form cssClass="topForm half" action="create.do" method="post" enctype="multipart/form-data">
-  <@input name="shortname" i18nkey="resource.shortname" size=40/>  
+  <@input name="shortname" i18nkey="resource.shortname" errorfield="resource.shortname" size=40/>  
   <div>
 	<@s.fielderror cssClass="fielderror" fieldName="file"/>
 	<label for="file"><@s.text name="manage.resource.create.file"/></label>

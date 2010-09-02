@@ -18,8 +18,8 @@
 	  	<@select name="eml.language" help="i18n" options=languages value="${eml.language!}" />
   	</div>
 	<div class="half">
-	  	<@input name="eml.contact.firstName" />
-	  	<@input name="eml.contact.lastName" />
+	  	<@input name="eml.contact.firstName" disabled=true/>
+	  	<@input name="eml.contact.lastName" disabled=true/>
   	</div>
   	<div class="half">
   		<@input name="eml.contact.position" />
@@ -34,7 +34,7 @@
   		<@select name="eml.contact.address.country" options=countryList value="${eml.contact.address.country!}"/>
    	</div>
 	<div class="half">
-	  	<@input name="eml.contact.email" />
+	  	<@input name="eml.contact.email" disabled=true/>
 	  	<@input name="eml.contact.phone" />
   	</div>  
 	<div class="buttons">

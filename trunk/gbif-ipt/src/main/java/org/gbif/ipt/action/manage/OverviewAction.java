@@ -35,7 +35,7 @@ public class OverviewAction extends ManagerBaseAction {
   private List<Organisation> organisations;
   private EmlValidator emlValidator = new EmlValidator();
   private boolean missingMetadata = false;
-  private boolean missingBasicMetadata = false;
+  private boolean missingRegistrationMetadata = false;
 
   public String addmanager() throws Exception {
 	  if (resource==null){
@@ -91,9 +91,6 @@ public class OverviewAction extends ManagerBaseAction {
 	  if (resource==null){
 		  return NOT_FOUND;
 	  }
-    // check EML
-    missingMetadata = !emlValidator.isValid(resource.getEml(), null);
-
     return SUCCESS;
   }
 
@@ -140,6 +137,9 @@ public class OverviewAction extends ManagerBaseAction {
             potentialExtensions.remove(e.getExtension());
           }
         }
+        // check EML
+        missingMetadata = !emlValidator.isValid(resource.getEml(), null);
+        missingRegistrationMetadata = !emlValidator.isValid(resource.getEml(), "basic");
 	}
   }
 

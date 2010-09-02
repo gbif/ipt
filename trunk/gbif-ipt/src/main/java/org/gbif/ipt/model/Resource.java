@@ -40,6 +40,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   private int lastPublishedEmlHash=0;
   private int emlVersion=0;
   private Date lastPublished;
+  private int recordsPublished=0;
   // registry data - only exists when status=REGISTERED
   private UUID key;
   private Organisation organisation;
@@ -60,7 +61,15 @@ public class Resource implements Serializable, Comparable<Resource> {
     }
   }
 
-  public Date getLastPublished() {
+  public int getRecordsPublished() {
+	return recordsPublished;
+}
+
+public void setRecordsPublished(int recordsPublished) {
+	this.recordsPublished = recordsPublished;
+}
+
+public Date getLastPublished() {
 	return lastPublished;
 }
 

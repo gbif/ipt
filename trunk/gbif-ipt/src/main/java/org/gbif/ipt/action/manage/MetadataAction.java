@@ -111,6 +111,13 @@ public class MetadataAction extends ManagerBaseAction {
     resourceTypes = vocabManager.getI18nVocab(Constants.VOCAB_URI_RESOURCE_TYPE, getLocaleLanguage());
     languages = vocabManager.getI18nVocab(Constants.VOCAB_URI_LANGUAGE, getLocaleLanguage());
     
+    // assure the metadataProvider is the currently logged in user
+	Agent current = new Agent();
+	current.setFirstName(getCurrentUser().getFirstname());
+	current.setLastName(getCurrentUser().getLastname());
+	current.setEmail(getCurrentUser().getEmail());
+	resource.getEml().setMetadataProvider(current);
+
     // if it is a submission of the taxonomic coverage, clear the session list
     // TODO: Ask Markus if this is the preferred method of handling deletions 
     // of elements in a list
@@ -143,11 +150,6 @@ public class MetadataAction extends ManagerBaseAction {
 
   @Override
   public String save() throws Exception {
-	Agent current = new Agent();
-	current.setFirstName(getCurrentUser().getFirstname());
-	current.setLastName(getCurrentUser().getLastname());
-	current.setEmail(getCurrentUser().getEmail());
-	resource.getEml().setMetadataProvider(current);
 	resourceManager.saveEml(resource);
     return SUCCESS;
   }
