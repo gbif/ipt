@@ -17,6 +17,8 @@
 package org.gbif.ipt.action.manage;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -179,12 +181,21 @@ public class MetadataAction extends ManagerBaseAction {
   /*
    * TODO This method should be implemented different.
    * This is only a test version for the basic page.
-   * The list of countries should be gotten using a different way. 
+   * The list of countries should be gotten using a different way.
+   * 
+   *  Remember to put a null reference at the start of the list.
    */
   public Map<String, String> getCountryList() {
-	  Map<String, String> countryList = new TreeMap<String, String>();
+	  Map<String, String> countryList = new LinkedHashMap<String, String>();
 	  String c;
-	  for(Locale locale : Locale.getAvailableLocales()) {
+	  Locale[] locales = Locale.getAvailableLocales();
+	  Arrays.sort(locales, new Comparator<Locale>() {
+		public int compare(Locale o1, Locale o2) {
+			return o1.getDisplayCountry().compareTo(o2.getDisplayCountry());		
+		}		  
+	  });	 
+	  countryList.put("", getText("eml.country.selection"));
+	  for(Locale locale : locales) {
 		  c = locale.getDisplayCountry();
 		  if(c.length() > 0) {
 			  countryList.put(locale.getISO3Country(), c);

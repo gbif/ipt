@@ -54,6 +54,25 @@ public class EmlValidator extends BaseValidator {
   public void validate(BaseAction action, Eml eml, @Nullable String part) {
     if (eml != null) {
     	// BASIC METADATA
+    	/* XML Schema Documentation
+    	 * 
+    	 * <dataset>
+    	 * 	<alternateIdentifier></alternateIdentifier> - optional
+    	 * 	<title>{eml.title}</title> - mandatory
+    	 * 	<creator>
+    	 * 		<organizationName>{eml.contact.organisation}</organizationName> - mandatory	|
+    	 * 		<individualName> - mandatory												|
+    	 * 			<givenName>{eml.contact.firstName}</givenName> - optional				| - At least one of them
+    	 * 			<surName>{eml.contact.lastName}</surName> - mandatory					|
+    	 * 		</individualName>															|
+    	 * 		<positionName>{eml.contact.position}</positionName> - optional
+    	 * 		<address>
+    	 * 			<deliveryPoint>{}</deliveryPoint>
+    	 * 		</address>
+    	 * 	</creator>
+    	 * </dataset>
+    	 * 
+    	 */
       if (part == null || part.equalsIgnoreCase("basic")) {   	  
     	  /* title - mandatory
     	   * 
@@ -90,7 +109,7 @@ public class EmlValidator extends BaseValidator {
         }
                
         /*
-         * firstName - optional. But if firstName exists, lastName have to exist.
+         * TODO firstName - optional. But if firstName exists, lastName have to exist.
          * 
          * <dataset>
          * 		<contact>
@@ -101,7 +120,7 @@ public class EmlValidator extends BaseValidator {
          * </dataset>
          */        
         if(exists(eml.getContact().getFirstName()) && !exists(eml.getContact().getLastName())) {
-        	action.addFieldError("eml.contact.lastName", action.getText("validation.basic.firstname.lastname"));        	
+        	action.addFieldError("eml.contact.lastName", action.getText("validation.firstname.lastname"));        	
         }
         /*
          * lastName - mandatory.
@@ -115,7 +134,7 @@ public class EmlValidator extends BaseValidator {
          * </dataset>
          */
         if (!exists(eml.getContact().getOrganisation()) && !exists(eml.getContact().getLastName())) {
-        	action.addActionError(action.getText("validation.basic.lastname.organisation"));
+        	action.addActionError(action.getText("validation.lastname.organisation"));
         }
         
         /*
@@ -127,21 +146,7 @@ public class EmlValidator extends BaseValidator {
          * 		</contact>
          * </dataset>
          */
-                
-        /*
-         * email - mandatory
-         * 
-         * <dataset>
-         * 		<contact>
-         * 			<electronicMailAddress> {eml.contact.email} </electronicMailAddress>
-         * 		</contact>
-         * </dataset>
-         */
-        if (!isValidEmail(eml.getContact().getEmail())) {
-          action.addFieldError("eml.contact.email", action.getText("validation.invalid", new String[]{action.getText("eml.contact.email")}));
-        }
-        
-      
+              
         /*
          * position - mandatory
          * 
@@ -225,18 +230,71 @@ public class EmlValidator extends BaseValidator {
         	action.addFieldError("eml.contact.phone", action.getText("validation.required", new String[]{action.getText("eml.contact.phone")}));
         }
       } else if (part == null || part.equalsIgnoreCase("parties")) {
+    	  /* PARTIES.FTL - XML Schema Documentation
+    	   * 
+    	   * <dataset>
+    	   * 	<associatedParty> - optional - many
+    	   * 		<organizationName>{eml.associatedParties[i].organisation}</organizationName>	|
+    	   * 		<individualName>																|
+    	   * 			<givenName>{eml.associatedParties[i].firstName}</givenName>					| - mandatory (at least one of them)
+    	   * 			<surName>{eml.associatedParties[i].lastName}</surName>						|
+    	   * 		</individualName>																|
+    	   * 		<address> - optional
+    	   * 			<deliveryPoin>{eml.associatedParties[i].address.address}</deliveryPoint> - optional
+    	   * 			<city>{eml.associatedParties[i].address.city}</city> - mandatory
+    	   * 			<administrativeArea>{eml.associatedParties[i].address.province}</administrativeArea> - mandatory
+    	   * 			<postalCode>{eml.associatedParties[i].address.postalCode}</postalCode> - mandatory
+    	   * 			<country>{eml.associatedParties[i].address.country}</country> - mandatory
+    	   * 		</address>
+    	   * 		<phone>{eml.associatedParties[i].phone}</phone> - mandatory
+    	   * 		<electronicMailAddress>{eml.associatedParties[i].email}</electronicMailAddress> - optional
+    	   * 		<onlineUrl>{eml.associatedParties[i].homePage}</onlineUrl> - optional
+    	   * 		<role>eml.associatedParties[i].role</role> - mandatory
+    	   * 	</associatedParty>
+    	   * </dataset>
+    	   */
     	  for(int index=0;index<eml.getAssociatedParties().size();index++) {
-    		  /*
-    		   * firstName - optional and disallowed ":" to appear in the string ("xs:NCName").
-    		   */
-    		  if(exists(eml.getAssociatedParties().get(index).getFirstName()) && eml.getAssociatedParties().get(index).getFirstName().contains(":")) {
-    			  action.addFieldError("eml.contact.firstName", action.getText("validation.contains", new String[]{":"}));
+    		  /* firstName - optional. But if firstName exists, lastName have to exist */
+    		  if(exists(eml.getAssociatedParties().get(index).getFirstName()) && !exists(eml.getAssociatedParties().get(index).getLastName())) {
+    			  action.addFieldError("eml.associatedParties["+index+"].lastName", action.getText("validation.firstname.lastname"));
     		  }
     		  
-    		  if(!exists(eml.getAssociatedParties().get(index).getLastName())) {
-    			  action.addFieldError("eml.associatedParties["+index+"].lastName", action.getText("validation.required", new String[]{action.getText("eml.associatedParties["+index+"].lastName")}));
-    		  } else if(eml.getAssociatedParties().get(index).getLastName().contains(":")) {
-    			  action.addFieldError("eml.contact.lastName", action.getText("validation.contains", new String[]{":"}));
+    		  /* At least have to exist an organisation or a lastName (or both) */
+    		  if (!exists(eml.getAssociatedParties().get(index).getOrganisation()) && !exists(eml.getAssociatedParties().get(index).getLastName())) {
+    	        	action.addActionError(action.getText("validation.lastname.organisation"));
+    		  }
+    		  
+    		  /* address is optional. But if someone fill some of this fields (city, province, postal code or country), 
+    		   * the user is obligated to fill all the address information. */
+    		  if(exists(eml.getAssociatedParties().get(index).getAddress().getAddress())
+    				  || exists(eml.getAssociatedParties().get(index).getAddress().getCity()) 
+    				  || exists(eml.getAssociatedParties().get(index).getAddress().getProvince())
+    				  || exists(eml.getAssociatedParties().get(index).getAddress().getPostalCode())
+    				  || exists(eml.getAssociatedParties().get(index).getAddress().getCountry())) {
+    			  if(!exists(eml.getAssociatedParties().get(index).getAddress().getCity())) {
+    				  action.addFieldError("eml.associatedParties["+index+"].address.city", 
+    						  action.getText("validation.required", new String[]{action.getText("eml.associatedParties.address.city")}));
+    			  }
+    			  if(!exists(eml.getAssociatedParties().get(index).getAddress().getProvince())) {
+    				  action.addFieldError("eml.associatedParties["+index+"].address.province", 
+    						  action.getText("validation.required", new String[]{action.getText("eml.associatedParties.address.province")}));    				  
+    			  }
+    			  /* postal code should be a number*/
+    			  if(!exists(eml.getAssociatedParties().get(index).getAddress().getPostalCode())) {
+    				  action.addFieldError("eml.associatedParties["+index+"].address.postalCode", 
+    						  action.getText("validation.required", new String[]{action.getText("eml.associatedParties.address.postalCode")}));
+    			  } else {
+    				  try {
+    					  Integer.parseInt(eml.getAssociatedParties().get(index).getAddress().getPostalCode());
+    				  } catch(NumberFormatException e) {
+    					  action.addFieldError("eml.associatedParties["+index+"].address.postalCode", 
+    							  action.getText("validation.invalid", new String[]{action.getText("eml.associatedParties.address.postalCode")}));
+    				  }    				  
+    			  }
+    			  if(!exists(eml.getAssociatedParties().get(index).getAddress().getCountry())) {
+    				  action.addFieldError("eml.associatedParties["+index+"].address.country", 
+    						  action.getText("validation.required", new String[]{action.getText("eml.associatedParties.address.country")}));
+    			  }    			  
     		  }
     	  }
       } else if (part == null || part.equalsIgnoreCase("geocoverage")) {	  

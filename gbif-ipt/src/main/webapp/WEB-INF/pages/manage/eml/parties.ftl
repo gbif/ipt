@@ -32,13 +32,14 @@
 		  			<@select name="eml.associatedParties[${item_index}].address.country" options=countryList i18nkey="eml.associatedParties.address.country" value="${eml.associatedParties[item_index].address.country!}"/>
 		  		</div>
 		  		<div class="half">
+		  			<@input name="eml.associatedParties[${item_index}].address.postalCode" i18nkey="eml.associatedParties.address.postalCode" />
 		  			<@input name="eml.associatedParties[${item_index}].phone" i18nkey="eml.associatedParties.phone" />
-		  			<@input name="eml.associatedParties[${item_index}].email" i18nkey="eml.associatedParties.email" />
-		  		</div>  	
-		  		<div class="half">
-		  			<@input name="eml.associatedParties[${item_index}].homepage" i18nkey="eml.associatedParties.homepage" />
-		  			<@select name="eml.associatedParties[${item_index}].role" i18nkey="eml.associatedParties.role" value="${eml.associatedParties[item_index].role}" options=roleOptions />  		
 		  		</div>
+		  		<div class="half">
+		  			<@input name="eml.associatedParties[${item_index}].email" i18nkey="eml.associatedParties.email" />
+		  			<@input name="eml.associatedParties[${item_index}].homepage" i18nkey="eml.associatedParties.homepage" />
+		  		</div>  	
+		  		<@select name="eml.associatedParties[${item_index}].role" i18nkey="eml.associatedParties.role" value="${eml.associatedParties[item_index].role}" options=roleOptions />  		
 		  		<div class="newline"></div>
 				<div class="horizontal_dotted_line_large_foo" id="separator"></div>
 				<div class="newline"></div>
