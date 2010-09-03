@@ -24,6 +24,7 @@
           		<tr><th>Keywords</th><td>Taxonomy, Europe, Plants</td></tr>
           		<tr><th>EML</th><td><a href="${baseURL}/eml.do?id=${resource.shortname}">EML</a></td></tr>
           		<tr><th>DwC archive</th><td><a href="${baseURL}/archive.do?id=${resource.shortname}">DwC-A</a> from Apr 20, 2007 12:45:09 PM</td></tr>
+      		   	<tr><th><@s.text name='eml.language'/></th><td>${eml.language!}</td></tr>
       		   	<#if resource.status=="REGISTERED">
 	          		<tr><th>GBIF Registration</th><td><a href="http://gbrdsdev.gbif.org/browse/agent?uuid=${resource.key}">${resource.key}</a></td></tr>
 	          		<#if resource.organisation?exists>
@@ -39,37 +40,26 @@
 <div class="definition">	
   <div class="title">
   	<div class="head">
-        <@s.text name='portal.resource.metadata'/>
-  	</div>
-  </div>
-  <div class="body">
-      	<div class="details">
-      		<table>
-          		<tr><th><@s.text name='eml.title'/></th><td>${eml.title!}</td></tr>
-          		<tr><th><@s.text name='eml.language'/></th><td>${eml.language!}</td></tr>
-          		<tr><th><@s.text name='eml.description'/></th><td>${eml.description!}</td></tr>
-      		</table>
-      	</div>
-  </div>
-</div>
-
-<div class="definition">	
-  <div class="title">
-  	<div class="head">
         <@s.text name='portal.resource.creator'/>
   	</div>
   </div>
   <div class="body">
       	<div class="details">
       		<table>
-          		<tr><th><@s.text name='resource.creator.firstname'/></th><td>${resource.creator.firstname}</td></tr>
-          		<tr><th><@s.text name='resource.creator.lastname'/></th><td>${resource.creator.lastname}</td></tr>
-          		<tr><th><@s.text name='resource.creator.email'/></th><td>${resource.creator.email}</td></tr>
+          		<tr><th><@s.text name='portal.resource.name'/></th><td>${resource.creator.firstname} ${resource.creator.lastname}</td></tr>
+          		<tr><th><@s.text name='resource.creator.email'/></th><td><a href="mailto:${resource.creator.email}">${resource.creator.email}</a></td></tr>
       		</table>
       	</div>
   </div>
 </div>
 
+	<#assign address>
+		<#if eml.contact.address.address??>${eml.contact.address.address}, </#if>
+		<#if eml.contact.address.city??>${eml.contact.address.city}, </#if>
+		<#if eml.contact.address.province??>${eml.contact.address.province}, </#if>
+		<#if eml.contact.address.country??>${eml.contact.address.country},</#if>
+	</#assign>
+      
 <div class="definition">	
   <div class="title">
   	<div class="head">
@@ -79,16 +69,10 @@
   <div class="body">
       	<div class="details">
       		<table>
-          		<tr><th><@s.text name='eml.contact.firstName'/></th><td>${eml.contact.firstName!}</td></tr>
-          		<tr><th><@s.text name='eml.contact.lastName'/></th><td>${eml.contact.lastName!}</td></tr>
-          		<tr><th><@s.text name='eml.contact.organisation'/></th><td>${eml.contact.organisation!}</td></tr>
-          		<tr><th><@s.text name='eml.contact.position'/></th><td>${eml.contact.position!}</td></tr>
-          		<tr><th><@s.text name='eml.contact.phone'/></th><td>${eml.contact.phone!}</td></tr>
-          		<tr><th><@s.text name='eml.contact.email'/></th><td>${eml.contact.email!}</td></tr>
-          		<tr><th><@s.text name='eml.contact.address.address'/></th><td>${eml.contact.address.address!}</td></tr>
-          		<tr><th><@s.text name='eml.contact.address.city'/></th><td>${eml.contact.address.city!}</td></tr>
-          		<tr><th><@s.text name='eml.contact.address.province'/></th><td>${eml.contact.address.province!}</td></tr>
-          		<tr><th><@s.text name='eml.contact.address.country'/></th><td>${eml.contact.address.country!}</td></tr>
+          		<tr><th><@s.text name='portal.resource.name'/></th><td>${eml.contact.firstName!} ${eml.contact.lastName!}</td></tr>
+          		<tr><th><@s.text name='eml.contact.organisation'/></th><td>${eml.contact.organisation!} <#if eml.contact.position??>(${eml.contact.position})</#if></td></tr>
+          		<tr><th><@s.text name='eml.contact.address.address'/></th><td>${address}</td></tr>
+          		<tr><th><@s.text name='portal.resource.contact'/></th><td><a href="mailto:${eml.contact.email!}">${eml.contact.email!}</a> <@s.text name='portal.resource.tel'/>: ${eml.contact.phone!}</td></tr>
       		</table>
       	</div>
   </div>
@@ -110,10 +94,10 @@
 				<div class="half">
 			</#if>
 			<div>
-			<@s.text name='manage.metadata.parties.item'/> ${item_index+1}
+			<#assign itemTitle><@s.text name='manage.metadata.parties.item'/></#assign>
+			${itemTitle?upper_case} ${item_index+1}
       		<table>
-				<tr><th><@s.text name='eml.associatedParties.firstName'/></th><td>${eml.associatedParties[item_index].firstName!}</td></tr>
-				<tr><th><@s.text name='eml.associatedParties.lastName'/></th><td>${eml.associatedParties[item_index].lastName!}</td></tr>
+				<tr><th><@s.text name='portal.resource.name'/></th><td>${eml.associatedParties[item_index].firstName!} ${eml.associatedParties[item_index].lastName!}</td></tr>
 				<tr><th><@s.text name='eml.associatedParties.position'/></th><td>${eml.associatedParties[item_index].position!}</td></tr>
 				<tr><th><@s.text name='eml.associatedParties.organisation'/></th><td>${eml.associatedParties[item_index].organisation!}</td></tr>
 				<tr><th><@s.text name='eml.associatedParties.address.address'/></th><td>${eml.associatedParties[item_index].address.address!}</td></tr>
@@ -121,9 +105,9 @@
 				<tr><th><@s.text name='eml.associatedParties.address.province'/></th><td>${eml.associatedParties[item_index].address.province!}</td></tr>
   				<tr><th><@s.text name='eml.associatedParties.address.country'/></th><td>${eml.associatedParties[item_index].address.country!}</td></tr>
   				<tr><th><@s.text name='eml.associatedParties.phone'/></th><td>${eml.associatedParties[item_index].phone!}</td></tr>
-  				<tr><th><@s.text name='eml.associatedParties.email'/></th><td>${eml.associatedParties[item_index].email!}</td></tr>
-  				<tr><th><@s.text name='eml.associatedParties.homepage'/></th><td>${eml.associatedParties[item_index].homepage!}</td></tr>
-  				<tr><th><@s.text name='eml.associatedParties.role'/></th><td>${eml.associatedParties[item_index].role!}</td></tr>
+  				<tr><th><@s.text name='eml.associatedParties.email'/></th><td><a href="mailto:${eml.associatedParties[item_index].email!}">${eml.associatedParties[item_index].email!}</a></td></tr>
+  				<tr><th><@s.text name='eml.associatedParties.homepage'/></th><td><a href="${eml.associatedParties[item_index].homepage!}">${eml.associatedParties[item_index].homepage!}</a></td></tr>
+  				<tr><th><@s.text name='eml.associatedParties.role'/></th><td><@s.text name='roleType.${eml.associatedParties[item_index].role!}'/></td></tr>
       		</table>
       		<div class="newline"></div>
 			</div>
@@ -173,7 +157,8 @@
 				<div class="half">
 			</#if>
 			<div>
-			<@s.text name='manage.metadata.taxcoverage.item'/> ${item_index+1}
+			<#assign itemTitle><@s.text name='manage.metadata.taxcoverage.item'/></#assign>
+			${itemTitle?upper_case} ${item_index+1}
       		<table>
       			<tr><th><@s.text name='eml.taxonomicCoverages.taxonKeyword.scientificName'/></th><td>${eml.taxonomicCoverages[item_index].taxonKeyword.scientificName!}</td></tr>
 				<tr><th><@s.text name='eml.taxonomicCoverages.taxonKeyword.commonName'/></th><td>${eml.taxonomicCoverages[item_index].taxonKeyword.commonName!}</td></tr>
@@ -209,8 +194,9 @@
 				<div class="half">
 			</#if>
 			<div>
-			<@s.text name='manage.metadata.tempcoverage.item'/> ${item_index+1}
-      		<table>
+			<#assign itemTitle><@s.text name='manage.metadata.tempcoverage.item'/></#assign>
+			${itemTitle?upper_case} ${item_index+1}
+			<table>
 				<#if "${item.type}" == "DATE_RANGE" >
 					<tr><th><@s.text name='eml.temporalCoverage.startDate'/></th><td>${eml.temporalCoverages[item_index].startDate?date}</td></tr>
 					<tr><th><@s.text name='eml.temporalCoverage.endDate'/></th><td>${eml.temporalCoverages[item_index].endDate?date}</td></tr>
@@ -247,7 +233,7 @@
           		<tr><th><@s.text name='eml.project.title'/></th><td>${eml.project.title!}</td></tr>
           		<tr><th><@s.text name='eml.project.personnel.firstName'/></th><td>${eml.project.personnel.firstName!}</td></tr>
           		<tr><th><@s.text name='eml.project.personnel.lastName'/></th><td>${eml.project.personnel.lastName!}</td></tr>
-          		<tr><th><@s.text name='eml.project.personnel.role'/></th><td>${eml.project.personnel.role!}</td></tr>
+          		<#if eml.project.personnel.role??><tr><th><@s.text name='eml.project.personnel.role'/></th><td><@s.text name='roleType.${eml.project.personnel.role!}'/></td></tr></#if>
           		<tr><th><@s.text name='eml.project.funding'/></th><td>${eml.project.funding!}</td></tr>
           		<tr><th><@s.text name='eml.project.studyAreaDescription.descriptorValue'/></th><td>${eml.project.studyAreaDescription.descriptorValue!}</td></tr>
           		<tr><th><@s.text name='eml.project.designDescription'/></th><td>${eml.project.designDescription!}</td></tr>
@@ -316,7 +302,8 @@
 					<div >
 				</#if>
 				<div>
-				<@s.text name='manage.metadata.collections.curatorialUnits.item'/> ${item_index+1}
+					<#assign itemTitle><@s.text name='manage.metadata.collections.curatorialUnits.item'/></#assign>
+					${itemTitle?upper_case} ${item_index+1}
 		       		<table>	
          		   		<#if item.type=="COUNT_RANGE">
           					<tr><th><@s.text name='eml.jgtiCuratorialUnits.rangeStart'/></th><td>${eml.jgtiCuratorialUnits[item_index].rangeStart}</td></tr>
@@ -352,8 +339,9 @@
 			<tr>
 			<th>
 			<div>
-			<@s.text name='manage.metadata.physical.item'/> ${item_index+1}
-      		<table>
+			<#assign itemTitle><@s.text name='manage.metadata.physical.item'/></#assign>
+			${itemTitle?upper_case} ${item_index+1}
+			<table>
 				<tr><th><@s.text name='eml.physicalData.name'/></th><td>${eml.physicalData[item_index].name!}</td></tr>
 				<tr><th><@s.text name='eml.physicalData.charset'/></th><td>${eml.physicalData[item_index].charset!}</td></tr>
 				<tr><th><@s.text name='eml.physicalData.format'/></th><td>${eml.physicalData[item_index].format!}</td></tr>
@@ -383,7 +371,8 @@
 			<tr>
 			<th>
 			<div>
-			<@s.text name='manage.metadata.keywords.item'/> ${item_index+1}
+			<#assign itemTitle><@s.text name='manage.metadata.keywords.item'/></#assign>
+			${itemTitle?upper_case} ${item_index+1}
       		<table>
 				<tr><th><@s.text name='eml.keywords.keywordThesaurus'/></th><td>${eml.keywords[item_index].name!}</td></tr>
 				<tr><th><@s.text name='eml.keywords.keywordsString'/></th><td>${eml.keywords[item_index].keywordsString!}</td></tr>
@@ -401,7 +390,7 @@
 <div class="definition">	
   <div class="title">
   	<div class="head">
-        <@s.text name='manage.metadata.project.title'/>
+        <@s.text name='manage.metadata.additional.title'/>
   	</div>
   </div>
   <div class="body">
@@ -409,7 +398,7 @@
       		<table>
           		<tr><th><@s.text name='eml.hierarchyLevel'/></th><td>${eml.hierarchyLevel!}</td></tr>
           		<tr><th><@s.text name='eml.pubDate'/></th><td>${eml.pubDate?date!}</td></tr>
-          		<tr><th><@s.text name='eml.distributionUrl'/></th><td><a href="${eml.distributionUrl}">${eml.distributionUrl!}</a></td></tr>
+          		<tr><th><@s.text name='eml.distributionUrl'/></th><td><a href="${eml.distributionUrl!}">${eml.distributionUrl!}</a></td></tr>
           		<tr><th><@s.text name='eml.purpose'/></th><td>${eml.purpose!}</td></tr>
           		<tr><th><@s.text name='eml.intellectualRights'/></th><td>${eml.intellectualRights!}</td></tr>
           		<tr><th><@s.text name='eml.additionalInfo'/></th><td>${eml.additionalInfo!}</td></tr>
@@ -417,29 +406,5 @@
       	</div>
   </div>
 </div>
-
-
-<div class="definition">	
-  <div class="title">
-  	<div class="head">
-        Metadata III
-  	</div>
-  </div>
-  <div class="body">
-      	<div class="details">
-      		<table>
-          		<tr><th>Spatial Coverage</th><td>Europe</td></tr>
-          		<tr><th>Taxon Coverage</th><td>Fabaceae, Poaceae, Rosaceae, Fabaceae, Poaceae, Rosaceae</td></tr>
-          		<tr><th>Spatial Coverage</th><td>Europe</td></tr>
-          		<tr><th>Taxon Coverage</th><td>Fabaceae, Poaceae, Rosaceae, Fabaceae, Poaceae, Rosaceae</td></tr>
-          		<tr><th>Spatial Coverage</th><td>Europe</td></tr>
-          		<tr><th>Taxon Coverage</th><td>Fabaceae, Poaceae, Rosaceae, Fabaceae, Poaceae, Rosaceae</td></tr>
-      		</table>
-      	</div>
-  </div>
-</div>
-
-
-
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
