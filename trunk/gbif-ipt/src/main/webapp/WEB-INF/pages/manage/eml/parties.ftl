@@ -75,7 +75,7 @@
   	</div>
   	<div class="half">
   		<@input name="province" i18nkey="eml.associatedParties.address.province" />
-  		<@select name="country" options=countryList i18nkey="eml.associatedParties.address.country" />
+  		<@select name="country" options=countries i18nkey="eml.associatedParties.address.country" />
   	</div>
   	<div class="half">
   		<@input name="phone" i18nkey="eml.associatedParties.phone" />

@@ -17,16 +17,13 @@
 package org.gbif.ipt.action.manage;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
-import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.voc.Rank;
@@ -114,13 +111,14 @@ public class MetadataAction extends ManagerBaseAction {
     resourceTypes = vocabManager.getI18nVocab(Constants.VOCAB_URI_RESOURCE_TYPE, getLocaleLanguage());
     languages = vocabManager.getI18nVocab(Constants.VOCAB_URI_LANGUAGE, getLocaleLanguage());
     countries = vocabManager.getI18nVocab(Constants.VOCAB_URI_COUNTRY, getLocaleLanguage());
-    
-    // assure the metadataProvider is the currently logged in user
-	Agent current = new Agent();
-	current.setFirstName(getCurrentUser().getFirstname());
-	current.setLastName(getCurrentUser().getLastname());
-	current.setEmail(getCurrentUser().getEmail());
-	resource.getEml().setMetadataProvider(current);
+        
+    if(resource.getEml().getMetadataProvider().getLastName() == null || resource.getEml().getMetadataProvider().getEmail() == null) {
+    	Agent current = new Agent();
+    	current.setFirstName(getCurrentUser().getFirstname());
+    	current.setLastName(getCurrentUser().getLastname());
+    	current.setEmail(getCurrentUser().getEmail());
+    	resource.getEml().setMetadataProvider(current);    	
+    }
 
     // if it is a submission of the taxonomic coverage, clear the session list
     if (isHttpPost()) {    	
@@ -178,30 +176,8 @@ public class MetadataAction extends ManagerBaseAction {
 	  return TemporalCoverageType.htmlSelectMap;
   }
   
-  /*
-   * TODO This method should be implemented different.
-   * This is only a test version for the basic page.
-   * The list of countries should be gotten using a different way.
-   * 
-   *  Remember to put a null reference at the start of the list.
-   */
-  public Map<String, String> getCountryList() {
-	  Map<String, String> countryList = new LinkedHashMap<String, String>();
-	  String c;
-	  Locale[] locales = Locale.getAvailableLocales();
-	  Arrays.sort(locales, new Comparator<Locale>() {
-		public int compare(Locale o1, Locale o2) {
-			return o1.getDisplayCountry().compareTo(o2.getDisplayCountry());		
-		}		  
-	  });	 
-	  countryList.put("", getText("eml.country.selection"));
-	  for(Locale locale : locales) {
-		  c = locale.getDisplayCountry();
-		  if(c.length() > 0) {
-			  countryList.put(locale.getISO3Country(), c);
-		  }
-	  }	  
-	  return countryList;
+  public Map<String, String> getCountries(){
+	  countries.put("", getText("eml.country.selection"));
+	  return countries;
   }  
-  
 }

@@ -342,6 +342,11 @@ div.newline {
 form.half{
 	width: 50%;
 }
+form h2 {
+	clear:left;
+	font-size:1.6em;
+	font-weight:normal;
+}
 
 div.half{
 	clear: both;	
