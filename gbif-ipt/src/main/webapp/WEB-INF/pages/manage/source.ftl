@@ -42,12 +42,11 @@ $(document).ready(function(){
   	<#if source.fieldsTerminatedBy?exists>
 	  	<#-- only for file sources -->
 	  <div class="half">
-	  	<@input name="fileSource.fieldsTerminatedBy" help="i18n" helpOptions={"\t":"Tabulator",",":"Comma",";":"Semicolon","|":"Pipe"}/>
-	  	<@input name="fileSource.fieldsEnclosedBy" help="i18n" helpOptions={"&quot;":"Double Quote","'":"Single Quote"}/>
+	  	<@input name="fileSource.ignoreHeaderLines" help="i18n" helpOptions={"0":"None","1":"Single Header row"}/>
   	  </div>
 	  <div class="half">
-	  	<@input name="fileSource.linesTerminatedBy" help="i18n" helpOptions={"\r\n":"Windows","\n":"Unix"}/>
-	  	<@input name="fileSource.ignoreHeaderLines" help="i18n" helpOptions={"0":"None","1":"Single Header row"}/>
+	  	<@input name="fileSource.fieldsTerminatedBy" help="i18n" helpOptions={"\t":"Tabulator",",":"Comma",";":"Semicolon","|":"Pipe"}/>
+	  	<@input name="fileSource.fieldsEnclosedBy" help="i18n" helpOptions={"&quot;":"Double Quote","'":"Single Quote"}/>
   	  </div>
   	<#else>
 	  	<#-- only for sql sources -->

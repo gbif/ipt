@@ -260,6 +260,12 @@ ul.fielderror{
 .warn{
 	color: red;
 }
+.green{
+	color: green;
+}
+.red{
+	color: red;
+}
 .buttons{
 	margin-top: 1em;
 	margin-bottom: 1em;
@@ -339,9 +345,6 @@ div.newline {
 	margin-top:0;
 }
 
-form.half{
-	width: 50%;
-}
 form h2 {
 	clear:left;
 	font-size:1.6em;
@@ -349,6 +352,7 @@ form h2 {
 }
 
 div.half{
+	width: 50%;
 	clear: both;	
 }
 div.half:after{

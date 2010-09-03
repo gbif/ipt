@@ -103,10 +103,11 @@ public interface ResourceManager {
    * Publishes a new version of a resource including generating a darwin core archive and issuing a new EML version.
    * 
    * @param resource
+   * @param action the action to use for logging messages to
    * @return true if a new eml version has been published or false if the content hasnt changed
    * @throws PublicationException if resource was already registered
    */
-  public boolean publish(Resource resource) throws PublicationException;
+  public boolean publish(Resource resource, BaseAction action) throws PublicationException;
 
   /**
    * Registers the resource with gbif

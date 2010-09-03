@@ -1,13 +1,17 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 	<script type="text/javascript" src="${baseURL}/js/jconfirmaction.jquery.js"></script>
 	<style>
+	img.info{
+		position: relative;
+		top: 4px;
+	}
 	.actions select, .actions input[type="file"]{
 		width: 200px;
 	}
 	div.definition div.title{
 		width: 30%;
 	}
-	div.title input[type="submit"]{
+	div.title input[type="submit"], div.title button{
 		float: right;
 		margin-right: 5px;
 	}
@@ -155,12 +159,17 @@ By default a resource is private to the managers. Once published to GBIF you can
   <div class="title">
   	<div class="head">
         Visibility
-        <span class="rightHead"><@s.text name="resource.status.${resource.status?lower_case}"/></span>
+        <em class="<#if resource.status=="PRIVATE">RED<#else>green</#if>"><@s.text name="resource.status.${resource.status?lower_case}"/></em>
   	</div>
   	<div class="actions">
 	  <form action='resource-visibility.do' method='post'>
 	    <input name="r" type="hidden" value="${resource.shortname}" />
 	    <#if resource.status=="PUBLIC">
+		    <a class="confirm" href="resource-unpublish.do?r=${resource.shortname}">
+		    <button><@s.text name="button.private"/></button>
+		    </a>
+		    <br/>
+
 	    	<#if (organisations?size>0)>
 		    <select name="id" id="org" size="1">
 		    <#list organisations as o>
@@ -174,7 +183,7 @@ By default a resource is private to the managers. Once published to GBIF you can
 	       	</#if>
 		<#else>
 		    <#if resource.status=="PRIVATE">
-	       	<@s.submit cssClass="confirm" name="publish" key="button.public"/>
+	       	<@s.submit name="publish" key="button.public"/>
 			</#if>
 		</#if>
   	  </form>
@@ -183,10 +192,17 @@ By default a resource is private to the managers. Once published to GBIF you can
   <div class="body">
       	<div>
 			<@s.text name="manage.resource.status.intro.${resource.status?lower_case}"/>
-		    <#if resource.status=="PUBLIC">
-		    <a class="confirm" href="resource-unpublish.do?r=${resource.shortname}">
-		    <button><@s.text name="manage.resource.status.restrict"/></button>
-		    </a>
+		    <#if resource.status=="PUBLIC" && missingRegistrationMetadata>
+		    <div>
+	          	<img class="info" src="${baseURL}/images/info.gif" /> 
+				<em>In order to register this resource with GBIF you must provide more metadata (ask Jose what is required)!</em>
+      		</div>
+		    </#if>
+		    <#if resource.status=="PUBLIC" && (organisations?size==0)>
+		    <div>
+	          	<img class="info" src="${baseURL}/images/info.gif" /> 
+				<em>In order to register this resource with GBIF your IPT admin must first associate organisations with this IPT!</em>
+      		</div>
 		    </#if>
       	</div>
       	<div class="details">
@@ -208,7 +224,7 @@ By default a resource is private to the managers. Once published to GBIF you can
 <div class="definition" id="publish">	
   <div class="title">
   	<div class="head">
-        Publish
+        Published Release
   	</div>
    	<div class="actions">
    	  <#if !missingMetadata>
@@ -221,12 +237,13 @@ By default a resource is private to the managers. Once published to GBIF you can
   </div>
   <div class="body">
       	<div>
-			When publishing a resource a new EML version and a darwin core archive (DWCA) is created. <br/>
+			When publishing a new release a new EML version and a darwin core archive (DWCA) will be created. <br/>
 			A DWCA bundles all data sources with mappings and metadata in one zipped archive.
       	</div>
    	  <#if missingMetadata>
       	<div>
-			Before publishing a resource please first provide the basic metadata!
+          	<img class="info"src="${baseURL}/images/info.gif" /> 
+			<em>Before you can publish a resource you have to provide the basic metadata first!</em>
       	</div>
   	  </#if>
       	<div class="details">
