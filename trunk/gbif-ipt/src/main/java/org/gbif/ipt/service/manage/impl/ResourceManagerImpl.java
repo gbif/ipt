@@ -45,6 +45,7 @@ import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.task.GenerateDwca;
 import org.gbif.ipt.task.GenerateDwcaFactory;
+import org.gbif.ipt.task.TaskMessage;
 import org.gbif.ipt.utils.ActionLogger;
 import org.gbif.metadata.BasicMetadata;
 import org.gbif.metadata.MetadataException;
@@ -658,17 +659,23 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 		// use threads to run in the background as sql sources might take a long time
 		GenerateDwca worker = dwcaFactory.create(resource);
 		Future<Integer> f = executor.submit(worker);
-		// for now do it sequentially for quick testing - requires ajax UI otherwise
-		while (!f.isDone()) {
-			
-		}
 		try {
-			resource.setRecordsPublished(f.get());
-			alog.info("Finished dwca generation");
+			// for now do it sequentially for quick testing - requires ajax UI otherwise
+			while (!f.isDone()) {
+				
+			}
+			int recs = f.get();
+			resource.setRecordsPublished(recs);
+			alog.info("Generated dwca with "+recs+" core records.");
 		} catch (InterruptedException e) {
 			alog.info("Dwca generation interrupted");
 		} catch (ExecutionException e) {
 			alog.error("Dwca generation failed: "+e.getMessage(), e);
+		} finally {
+			// copy task messages into action for UI
+			for (TaskMessage msg : worker.messages()){
+				alog.log(msg);
+			}
 		}
 	}
 	
