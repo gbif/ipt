@@ -112,6 +112,8 @@ public void addSource(Source src, boolean allowOverwrite) throws AlreadyExisting
     if (mapping != null) {
       if (core.equals(mapping)) {
         core = null;
+        // if core gets deleted delete all other mappings too!
+        extensions.clear();
         return true;
       } else {
         return extensions.remove(mapping);

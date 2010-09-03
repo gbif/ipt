@@ -169,12 +169,11 @@ public class OverviewAction extends ManagerBaseAction {
 	  if (resource==null){
 		  return NOT_FOUND;
 	  }
-	  if (resourceManager.publish(resource)){
+	  if (resourceManager.publish(resource, this)){
 		  addActionMessage("Resource published as version "+resource.getEmlVersion()+".");
 	  }else{
 		  addActionMessage("The metadata hasnt changed since the last publication of version "+resource.getEmlVersion()+".");
 	  }
-	  addActionMessage("Darwin Core Archive (re)generated.");
 	  return SUCCESS;
   }
   

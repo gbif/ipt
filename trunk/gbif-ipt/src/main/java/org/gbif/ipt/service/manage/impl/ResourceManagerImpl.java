@@ -621,7 +621,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 		}
 	}
 
-	public boolean publish(Resource resource) throws PublicationException {
+	public boolean publish(Resource resource, BaseAction action) throws PublicationException {
+		ActionLogger alog = new ActionLogger(this.log, action);
 		boolean newEmlVersion=false;
 		// see if eml has changed since last publication
 		Eml eml = resource.getEml();
@@ -638,14 +639,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 			try {
 				FileUtils.copyFile(trunkFile, versionedFile);
 			} catch (IOException e) {
-				log.error("Cant publish resource "+resource.getShortname(), e);
+				alog.error("Cant publish resource "+resource.getShortname(), e);
 				throw new PublicationException(PublicationException.TYPE.EML, "Cant publish eml file for resource "+resource.getShortname(), e);
 			}
 			resource.setLastPublishedEmlHash(newHash);
 		}
 		
 		// regenerate dwca asynchroneously - this will alter the resource object once its finished setting the correct number of records
-		generateDwca(resource);
+		generateDwca(resource, alog);
 		
 		// persist any resource object changes
 		resource.setLastPublished(new Date());
@@ -653,7 +654,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 		return newEmlVersion;
 	}
 	
-	private void generateDwca(Resource resource){
+	private void generateDwca(Resource resource, ActionLogger alog){
 		// use threads to run in the background as sql sources might take a long time
 		GenerateDwca worker = dwcaFactory.create(resource);
 		Future<Integer> f = executor.submit(worker);
@@ -663,11 +664,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 		}
 		try {
 			resource.setRecordsPublished(f.get());
-			log.info("Finished dwca generation");
+			alog.info("Finished dwca generation");
 		} catch (InterruptedException e) {
-			log.info("Dwca generation interrupted");
+			alog.info("Dwca generation interrupted");
 		} catch (ExecutionException e) {
-			log.error("Dwca generation failed", e);
+			alog.error("Dwca generation failed: "+e.getMessage(), e);
 		}
 	}
 	
