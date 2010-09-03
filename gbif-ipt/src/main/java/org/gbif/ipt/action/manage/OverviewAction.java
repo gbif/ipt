@@ -146,7 +146,7 @@ public class OverviewAction extends ManagerBaseAction {
       }
       // check EML
       missingMetadata = !emlValidator.isValid(resource.getEml(), null);
-      missingRegistrationMetadata = !minimumRegistryInfo(resource);         //!emlValidator.isValid(resource.getEml(), "basic");
+      missingRegistrationMetadata = !minimumRegistryInfo(resource);
     }
   }
   
@@ -159,7 +159,6 @@ public class OverviewAction extends ManagerBaseAction {
       return false;
     if(resource.getEml().getContact().getEmail()==null)
       return false;
-    System.out.println("REGISTERED? " + resource.isPublished());
     if(!resource.isPublished())
       return false;
     return true;

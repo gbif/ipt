@@ -1,7 +1,10 @@
 package org.gbif.ipt.utils;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
 import org.gbif.ipt.action.BaseAction;
+import org.gbif.ipt.task.TaskMessage;
 
 import com.opensymphony.xwork2.ValidationAwareSupport;
 
@@ -13,6 +16,16 @@ public class ActionLogger {
 		super();
 		this.log = log;
 		this.action = action;
+	}
+
+	public void log(TaskMessage msg) {
+		if (Level.ERROR.equals(msg.level)){
+			action.addActionError(action.getText(msg.message,msg.params));
+			log.error(msg.message);
+		}else{
+			action.addActionMessage(action.getText(msg.message,msg.params));
+			log.log(msg.level, msg.message);
+		}
 	}
 
 	public void error(String message, String[] args, Throwable t) {
