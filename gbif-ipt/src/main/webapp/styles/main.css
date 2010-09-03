@@ -351,8 +351,10 @@ form h2 {
 	font-weight:normal;
 }
 
+form.half{		
+	width: 50%;		
+}
 div.half{
-	width: 50%;
 	clear: both;	
 }
 div.half:after{
