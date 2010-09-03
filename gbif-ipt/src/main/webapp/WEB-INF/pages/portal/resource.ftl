@@ -122,6 +122,7 @@
   </div>
 </div>
 
+<#if eml.geospatialCoverages[0]??>
 <div class="definition">	
   <div class="title">
   	<div class="head">
@@ -131,16 +132,18 @@
   <div class="body">
       	<div class="details">
       		<table>
-          		<tr><th><@s.text name='eml.geospatialCoverages.description'/></th><td><#if eml.geospatialCoverages[0]??>${eml.geospatialCoverages[0].description}</#if></td></tr>
-      			<tr><th><@s.text name='eml.geospatialCoverages.boundingCoordinates.min.longitude'/></th><td><#if eml.geospatialCoverages[0]??>${eml.geospatialCoverages[0].boundingCoordinates.min.longitude}</#if></td></tr>
-      			<tr><th><@s.text name='eml.geospatialCoverages.boundingCoordinates.max.longitude'/></th><td><#if eml.geospatialCoverages[0]??>${eml.geospatialCoverages[0].boundingCoordinates.max.longitude}</#if></td></tr>
-      			<tr><th><@s.text name='eml.geospatialCoverages.boundingCoordinates.min.latitude'/></th><td><#if eml.geospatialCoverages[0]??>${eml.geospatialCoverages[0].boundingCoordinates.min.latitude}</#if></td></tr>
-      			<tr><th><@s.text name='eml.geospatialCoverages.boundingCoordinates.max.latitude'/></th><td><#if eml.geospatialCoverages[0]??>${eml.geospatialCoverages[0].boundingCoordinates.max.latitude}</#if></td></tr>
+          		<tr><th><@s.text name='eml.geospatialCoverages.description'/></th><td>${eml.geospatialCoverages[0].description}</td></tr>
+      			<tr><th><@s.text name='eml.geospatialCoverages.boundingCoordinates.min.longitude'/></th><td>${eml.geospatialCoverages[0].boundingCoordinates.min.longitude}</td></tr>
+      			<tr><th><@s.text name='eml.geospatialCoverages.boundingCoordinates.max.longitude'/></th><td>${eml.geospatialCoverages[0].boundingCoordinates.max.longitude}</td></tr>
+      			<tr><th><@s.text name='eml.geospatialCoverages.boundingCoordinates.min.latitude'/></th><td>${eml.geospatialCoverages[0].boundingCoordinates.min.latitude}</td></tr>
+      			<tr><th><@s.text name='eml.geospatialCoverages.boundingCoordinates.max.latitude'/></th><td>${eml.geospatialCoverages[0].boundingCoordinates.max.latitude}</td></tr>
       		</table>
       	</div>
   </div>
 </div>
+</#if>
 
+<#if (eml.taxonomicCoverages?size > 0 )>
 <div class="definition">	
   <div class="title">
   	<div class="head">
@@ -177,7 +180,9 @@
       	</div>
   </div>
 </div>
+</#if>
 
+<#if (eml.temporalCoverages?size > 0 )>
 <div class="definition">	
   <div class="title">
   	<div class="head">
@@ -220,6 +225,7 @@
       	</div>
   </div>
 </div>
+</#if>
 
 <div class="definition">	
   <div class="title">
@@ -231,9 +237,8 @@
       	<div class="details">
       		<table>
           		<tr><th><@s.text name='eml.project.title'/></th><td>${eml.project.title!}</td></tr>
-          		<tr><th><@s.text name='eml.project.personnel.firstName'/></th><td>${eml.project.personnel.firstName!}</td></tr>
-          		<tr><th><@s.text name='eml.project.personnel.lastName'/></th><td>${eml.project.personnel.lastName!}</td></tr>
-          		<#if eml.project.personnel.role??><tr><th><@s.text name='eml.project.personnel.role'/></th><td><@s.text name='roleType.${eml.project.personnel.role!}'/></td></tr></#if>
+          		<tr><th><@s.text name='portal.resource.name'/></th><td>${eml.project.personnel.firstName!} ${eml.project.personnel.lastName!}</td></tr>
+	          	<#if eml.project.personnel.role??><tr><th><@s.text name='eml.project.personnel.role'/></th><td><@s.text name='roleType.${eml.project.personnel.role!}'/></td></tr></#if>
           		<tr><th><@s.text name='eml.project.funding'/></th><td>${eml.project.funding!}</td></tr>
           		<tr><th><@s.text name='eml.project.studyAreaDescription.descriptorValue'/></th><td>${eml.project.studyAreaDescription.descriptorValue!}</td></tr>
           		<tr><th><@s.text name='eml.project.designDescription'/></th><td>${eml.project.designDescription!}</td></tr>
@@ -326,6 +331,7 @@
   </div>
 </div>
 
+<#if (eml.physicalData?size > 0 )>
 <div class="definition">	
   <div class="title">
   	<div class="head">
@@ -357,7 +363,9 @@
       	</div>
   </div>
 </div>
+</#if>
 
+<#if (eml.physicalData?size > 0 )>
 <div class="definition">	
   <div class="title">
   	<div class="head">
@@ -386,6 +394,7 @@
       	</div>
   </div>
 </div>
+</#if>
 
 <div class="definition">	
   <div class="title">
