@@ -12,6 +12,8 @@
  ***************************************************************************/
 
 package org.gbif.ipt.validation;
+ 
+import java.util.Iterator;
 
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
@@ -52,204 +54,288 @@ public class EmlValidator extends BaseValidator {
    * @param part
    */
   public void validate(BaseAction action, Eml eml, @Nullable String part) {
-    if (eml != null) {
-    	// BASIC METADATA
-    	/* XML Schema Documentation
-    	 * 
-    	 * <dataset>
-    	 * 	<alternateIdentifier></alternateIdentifier> - optional
-    	 * 	<title>{eml.title}</title> - mandatory
-    	 * 	<creator>
-    	 * 		<organizationName>{eml.contact.organisation}</organizationName> - mandatory	|
-    	 * 		<individualName> - mandatory												|
-    	 * 			<givenName>{eml.contact.firstName}</givenName> - optional				| - At least one of them
-    	 * 			<surName>{eml.contact.lastName}</surName> - mandatory					|
-    	 * 		</individualName>															|
-    	 * 		<positionName>{eml.contact.position}</positionName> - optional
-    	 * 		<address>
-    	 * 			<deliveryPoint>{}</deliveryPoint>
-    	 * 		</address>
-    	 * 	</creator>
-    	 * </dataset>
-    	 * 
-    	 */
-      if (part == null || part.equalsIgnoreCase("basic")) {   	  
-    	  /* title - mandatory
+    if (eml != null) {    	
+      if (part == null || part.equalsIgnoreCase("basic")) {
+    	  /* BASIC.FTL - XML Schema Documentation */
+    	  
+    	   /* Principal Fields
     	   * 
     	   * <dataset>
-    	   * 	<title> {eml.title} </title>
+    	   * 	<title>{eml.title}</title> 			- mandatory
+    	   * 	<language>{eml.language}</language> - optional
+    	   * 	<abstract> 							- mandatory
+    	   * 		<para>{eml.description}</para> 	- mandatory
+    	   * 	</abstract> 	
     	   * </dataset>
     	   */
-        if (!exists(eml.getTitle())) {
-          action.addFieldError("eml.title", action.getText("validation.required", new String[]{action.getText("eml.title")}));
-        }
-        
-        /*
-         * description - mandatory and greater than 5 chars
-         * 
-         * <dataset>
-         * 		<abstract>
-         * 			<para> {eml.description} </para>
-         * 		</abstract>
-         * </dataset>
-         */
-        if (!exists(eml.getDescription(), 5)) {
-          action.addFieldError("eml.description", action.getText("validation.required", new String[]{action.getText("eml.title")}));
-        }
-        
-        /*
-         * languaje - mandatory
-         * 
-         * <dataset>
-         * 		<title xml:lang={eml.language}> </title>
-         * </dataset>
-         */
-        if (!exists(eml.getLanguage(), 2)) {
-          action.addFieldError("eml.language", action.getText("validation.required", new String[]{action.getText("eml.title")}));
-        }
+    	  
+    	  /* Title - mandatory*/
+    	  if (!exists(eml.getTitle())) {
+    		  action.addFieldError("eml.title", action.getText("validation.required", new String[]{action.getText("eml.title")}));
+    	  }
+    	  /* languaje - optional */
+    	  
+    	  /* description - mandatory and greater than 5 chars */
+    	  if(!exists(eml.getDescription())) {
+    		  action.addFieldError("eml.description", action.getText("validation.required", new String[]{action.getText("eml.description")}));
+    	  } else if (!exists(eml.getDescription(), 5)) {
+    		  action.addFieldError("eml.description", action.getText("validation.short", new String[]{action.getText("eml.title"), "5"}));
+    	  }
+    	  
+    	  /* RESOURCE CREATOR
+    	   * <dataset>
+    	   * 	<creator>
+    	   * 		<organizationName>{eml.creator.organisation}</organizationName> 						|
+    	   * 		<individualName> - mandatory															|
+    	   * 			<givenName>{eml.creator.firstName}</givenName> 		- optional						| - mandatory (at least one of them)
+    	   * 			<surName>{eml.creator.lastName}</surName> 			- mandatory						|
+    	   * 		</individualName>																		|
+    	   * 		<positionName>{eml.creator.position}</positionName> 									- optional
+    	   * 		<address> 																				- optional
+    	   * 			<deliveryPoint>{eml.creator.address.address}</deliveryPoint> 						- optional
+    	   * 			<city>{eml.creator.address.city}</city> 											- mandatory
+    	   * 			<administrativeArea>{eml.creator.address.province}</administrativeArea> 			- mandatory
+    	   * 			<postalCode>{eml.creator.address.postalCode}</postalCode> 							- mandatory
+    	   * 			<country>{eml.creator.country}</country> 											- mandatory
+    	   * 		</address>
+    	   * 	</creator>
+    	   * </dataset>
+    	   */
                
-        /*
-         * TODO firstName - optional. But if firstName exists, lastName have to exist.
-         * 
-         * <dataset>
-         * 		<contact>
-         * 			<individualName>
-         * 				<givenName> {eml.contact.firstName} </givenName>
-         * 			</individualName>
-         * 		</contact>
-         * </dataset>
-         */        
-        if(exists(eml.getContact().getFirstName()) && !exists(eml.getContact().getLastName())) {
-        	action.addFieldError("eml.contact.lastName", action.getText("validation.firstname.lastname"));        	
-        }
-        /*
-         * lastName - mandatory.
-         * 
-         * <dataset>
-         * 		<contact>
-         * 			<individualName>
-         * 				<surName>{eml.contact.lastName}</surName>
-         * 			</individualName>
-         * 		</contact>
-         * </dataset>
-         */
-        if (!exists(eml.getContact().getOrganisation()) && !exists(eml.getContact().getLastName())) {
-        	action.addActionError(action.getText("validation.lastname.organisation"));
-        }
-        
-        /*
-         * organisation - mandatory.
-         * 
-         * <dataset>
-         * 		<contact>
-         * 			<organizationName>{eml.contact.organisation}</organizationName>
-         * 		</contact>
-         * </dataset>
-         */
-              
-        /*
-         * position - mandatory
-         * 
-         * <dataset>
-         * 		<contact>
-         * 			<positionName>{eml.contact.position}</positionName>
-         * 		</contact>
-         * </dataset>
-         */
-        if(!exists(eml.getContact().getPosition())) {
-        	action.addFieldError("eml.contact.position", action.getText("validation.required", new String[]{action.getText("eml.contact.position")}));
-        }
-        
-        /*
-         * address - mandatory
-         * <dataset>
-         * 		<contact>
-         * 			<address>
-         * 				<deliveryPoint>{eml.contact.address.address}</deliveryPoint>
-         * 			</address>
-         * 		</contact>
-         * </dataset>
-         */
-        
-        
-        /*
-         * city - mandatory.
-         * 
-         * <dataset>
-         * 		<contact>
-         * 			<address>
-         * 				<city>{eml.contact.address.city}</city>
-         * 			</address>
-         * 		</contact>
-         * </dataset>
-         */
-        if(!exists(eml.getContact().getAddress().getCity())) {
-        	action.addFieldError("eml.contact.address.city", action.getText("validation.required", new String[]{action.getText("eml.contact.address.city")}));
-        }        
-        
-        /*
-         * province - mandatory
-         * 
-         * <dataset>
-         * 		<contact>
-         * 			<address>
-         * 				<administrativeArea>{eml.contact.province}</administrativeArea>
-         * 			</address>
-         * 		</contact>
-         * </dataset>
-         */
-        if(!exists(eml.getContact().getAddress().getProvince())) {
-        	action.addFieldError("eml.contact.address.province", action.getText("validation.required", new String[]{action.getText("eml.contact.address.province")}));
-        }
-        
-        /*
-         * email - mandatory
-         * 
-         * <dataset>
-         * 		<contact>
-         * 			<electronicMailAddress>{eml.contact.email}</electronicMailAddress>
-         * 		</contact>
-         * </dataset>
-         */
-        if(!exists(eml.getContact().getEmail())) {
-        	action.addFieldError("eml.contact.email", action.getText("validation.email.required", new String[]{action.getText("eml.contact.email")}));
-        } else if(!isValidEmail(eml.getContact().getEmail())) {
-        	action.addFieldError("eml.contact.email", action.getText("validation.email.invalid"));
-        }
-        
-        /*
-         * phone - mandatory
-         * 
-		 * <dataset>
-		 * 		<contact>
-		 * 			<phone>{eml.contact.phone}</phone>
-		 * 		</contact>
-		 * </dataset>
-         */
-        if(!exists(eml.getContact().getPhone())) {
-        	action.addFieldError("eml.contact.phone", action.getText("validation.required", new String[]{action.getText("eml.contact.phone")}));
-        }
+    	  /* At least have to exist an organisation or a lastName (or both) */
+    	  if (!exists(eml.getResourceCreator().getOrganisation()) && !exists(eml.getResourceCreator().getLastName())) {
+    		  action.addActionError(action.getText("validation.lastname.organisation"));
+    		  action.addFieldError("eml.resourceCreator.organisation", action.getText("validation.required", new String[]{action.getText("eml.resourceCreator.organisation")}));
+    		  action.addFieldError("eml.resourceCreator.lastName", action.getText("validation.required", new String[]{action.getText("eml.resourceCreator.lastName")}));    		  
+    	  } else {    	  
+	    	  /* firstName - optional. But if firstName exists, lastName have to exist. */        
+	    	  if(exists(eml.getResourceCreator().getFirstName()) && !exists(eml.getResourceCreator().getLastName())) {
+	    		  action.addFieldError("eml.resourceCreator.lastName", action.getText("validation.firstname.lastname"));        	
+	    	  }
+    	  }
+    	  
+    	  /* positionName is optional*/
+    	  
+    	  /* address is optional. But if someone fill some of this fields (city, province, postalCode or country), 
+		   * the user is obligated to fill all the address information. */
+		  if(exists(eml.getResourceCreator().getAddress().getAddress())
+				  || exists(eml.getResourceCreator().getAddress().getCity()) 
+				  || exists(eml.getResourceCreator().getAddress().getProvince())
+				  || exists(eml.getResourceCreator().getAddress().getPostalCode())
+				  || exists(eml.getResourceCreator().getAddress().getCountry())) {
+			  if(!exists(eml.getResourceCreator().getAddress().getCity())) {
+				  action.addFieldError("eml.resourceCreator.address.city", 
+						  action.getText("validation.required", new String[]{action.getText("eml.resourceCreator.address.city")}));
+			  }
+			  if(!exists(eml.getResourceCreator().getAddress().getProvince())) {
+				  action.addFieldError("eml.resourceCreator.address.province", 
+						  action.getText("validation.required", new String[]{action.getText("eml.resourceCreator.address.province")}));    				  
+			  }
+			  /* postalCode should be a number*/
+			  if(!exists(eml.getResourceCreator().getAddress().getPostalCode())) {
+				  action.addFieldError("eml.resourceCreator.address.postalCode", 
+						  action.getText("validation.required", new String[]{action.getText("eml.resourceCreator.address.postalCode")}));
+			  } else {
+				  try {
+					  Integer.parseInt(eml.getResourceCreator().getAddress().getPostalCode());
+				  } catch(NumberFormatException e) {
+					  action.addFieldError("eml.resourceCreator.address.postalCode", 
+							  action.getText("validation.invalid", new String[]{action.getText("eml.resourceCreator.address.postalCode")}));
+				  }    				  
+			  }
+			  if(!exists(eml.getResourceCreator().getAddress().getCountry())) {
+				  action.addFieldError("eml.resourceCreator.address.country", 
+						  action.getText("validation.required", new String[]{action.getText("eml.resourceCreator.address.country")}));
+			  } 			  
+		  }
+		  
+		  /* email is optional. But if it exists, should be a valid email address */
+		  if(exists(eml.getResourceCreator().getEmail()) && !isValidEmail(eml.getResourceCreator().getEmail())) {
+			  action.addFieldError("eml.resourceCreator.email", action.getText("validation.invalid", new String[]{action.getText("eml.resourceCreator.email")}));
+		  }
+		  
+		  /* phone is optional. But if it exists, should be a number */
+		  if(exists(eml.getResourceCreator().getPhone())) {
+			  try {
+				  Integer.parseInt(eml.getResourceCreator().getPhone());
+			  } catch (NumberFormatException e) {
+				  action.addFieldError("eml.resourceCreator.phone", action.getText("validation.invalid", new String[]{action.getText("eml.resourceCreator.phone")}));
+			  }
+		  }
+		  
+		  /* METADATA PROVIDER
+		   * 
+		   * <dataset>
+		   * 	<metadataProvider> 																			- mandatory
+		   * 		<individualName> 																		- mandatory
+		   * 			<givenName>{eml.metadataProvider.firstName}</givenName> 							- optional
+		   * 			<surName>{eml.metadataProvider.lastName}</surName> 									- mandatory
+		   * 		</individualName>
+		   * 		<address> 																				- optional
+		   * 			<deliveryPoint>{eml.metadataProvider.address.address}</deliveryPoint> 				- optional
+		   * 			<city>{eml.metadataProvider.address.city}</city> 									- mandatory
+		   * 			<administrativeArea>{eml.metadataProvider.address.province}</administrativeArea> 	- mandatory
+		   * 			<postalCode>{eml.metadataProvider.address.postalCode}</postalCode> 					- mandatory
+		   * 			<country>{eml.metadataProvider.address.country}</country> 							- mandatory
+		   * 		</address>
+		   * 		<electronicMailAddress>{eml.metadataProvider.email}</electronicMailAddress> 			- optional
+		   * 	</metadataProvider>
+		   * </dataset>
+		   * 
+		   */
+		  
+		  /* firstName - optional. But if firstName exists, lastName have to exist. */        
+    	  if(exists(eml.getMetadataProvider().getFirstName()) && !exists(eml.getMetadataProvider().getLastName())) {
+    		  action.addFieldError("eml.metadataProvider.lastName", action.getText("validation.firstname.lastname"));        	
+    	  }
+    	  
+    	  /* address is optional. But if someone fill some of this fields (city, province, postalCode or country), 
+		   * the user is obligated to fill all the address information. */
+		  if(exists(eml.getMetadataProvider().getAddress().getAddress())
+				  || exists(eml.getMetadataProvider().getAddress().getCity()) 
+				  || exists(eml.getMetadataProvider().getAddress().getProvince())
+				  || exists(eml.getMetadataProvider().getAddress().getPostalCode())
+				  || exists(eml.getMetadataProvider().getAddress().getCountry())) {
+			  if(!exists(eml.getMetadataProvider().getAddress().getCity())) {
+				  action.addFieldError("eml.metadataProvider.address.city", 
+						  action.getText("validation.required", new String[]{action.getText("eml.metadataProvider.address.city")}));
+			  }
+			  if(!exists(eml.getMetadataProvider().getAddress().getProvince())) {
+				  action.addFieldError("eml.metadataProvider.address.province", 
+						  action.getText("validation.required", new String[]{action.getText("eml.metadataProvider.address.province")}));    				  
+			  }
+			  /* postalCode should be a number*/
+			  if(!exists(eml.getMetadataProvider().getAddress().getPostalCode())) {
+				  action.addFieldError("eml.metadataProvider.address.postalCode", 
+						  action.getText("validation.required", new String[]{action.getText("eml.metadataProvider.address.postalCode")}));
+			  } else {
+				  try {
+					  Integer.parseInt(eml.getMetadataProvider().getAddress().getPostalCode());
+				  } catch(NumberFormatException e) {
+					  action.addFieldError("eml.metadataProvider.address.postalCode", 
+							  action.getText("validation.invalid", new String[]{action.getText("eml.metadataProvider.address.postalCode")}));
+				  }    				  
+			  }
+			  if(!exists(eml.getMetadataProvider().getAddress().getCountry())) {
+				  action.addFieldError("eml.metadataProvider.address.country", 
+						  action.getText("validation.required", new String[]{action.getText("eml.metadataProvider.address.country")}));
+			  } 			  
+		  }
+		  
+		  /* email is optional. But if it exists, should be a valid email address */
+		  if(exists(eml.getMetadataProvider().getEmail()) && !isValidEmail(eml.getMetadataProvider().getEmail())) {
+			  action.addFieldError("eml.metadataProvider.email", action.getText("validation.invalid", new String[]{action.getText("eml.metadataProvider.email")}));
+		  }
+		  
+		  /* RESOURCE CONTACT
+		   *
+		   * <dataset>
+		   *	<contact>
+		   * 		<organizationName>{eml.contact.organisation}</organizationName> 				|
+		   * 		<individualName> - mandatory													|
+		   * 			<givenName>{eml.contact.firstName}</givenName> 		- optional				| - mandatory (at least one of them)
+		   * 			<surName>{eml.contact.lastName}</surName> 			- mandatory				|
+		   * 		</individualName>																|
+		   * 		<positionName>{eml.contact.position}</positionName> 							- optional
+		   * 		<address> 																		- optional
+		   * 			<deliveryPoint>{eml.contact.address.address}</deliveryPoint> 				- optional
+		   * 			<city>{eml.contact.address.city}</city> 									- mandatory
+		   * 			<administrativeArea>{eml.contact.address.province}</administrativeArea> 	- mandatory
+		   * 			<postalCode>{eml.contact.address.postalCode}</postalCode> 					- mandatory
+		   * 			<country>{eml.contact.country}</country> 									- mandatory
+		   * 		</address>
+		   * 		<phone>{eml.creator.phone}</phone> 												- optional
+		   * 		<electronicMailAddress>{eml.creator.email}</electronicMailAddress> 				- optional
+		   * 		<onlineUrl>{eml.creator.homepage}</onlineUrl> 									- optional
+		   * 	</contact>
+		   * </dataset>
+		   */
+		  
+		  /* At least have to exist an organisation or a lastName (or both) */
+    	  if (!exists(eml.getContact().getOrganisation()) && !exists(eml.getContact().getLastName())) {
+    		  if(!action.getActionErrors().contains(action.getText("validation.lastname.organisation"))) {
+    			  action.addActionError(action.getText("validation.lastname.organisation"));
+    		  }
+    		  action.addFieldError("eml.contact.organisation", action.getText("validation.required", new String[]{action.getText("eml.contact.organisation")}));
+    		  action.addFieldError("eml.contact.lastName", action.getText("validation.required", new String[]{action.getText("eml.contact.lastName")}));
+    	  } else {    	  
+	    	  /* firstName - optional. But if firstName exists, lastName have to exist. */        
+	    	  if(exists(eml.getContact().getFirstName()) && !exists(eml.getContact().getLastName())) {
+	    		  action.addFieldError("eml.contact.lastName", action.getText("validation.firstname.lastname"));        	
+	    	  }
+    	  }
+    	  
+    	  /* positionName is optional*/
+    	  
+    	  /* address is optional. But if someone fill some of this fields (city, province, postalCode or country), 
+		   * the user is obligated to fill all the address information. */
+		  if(exists(eml.getContact().getAddress().getAddress())
+				  || exists(eml.getContact().getAddress().getCity()) 
+				  || exists(eml.getContact().getAddress().getProvince())
+				  || exists(eml.getContact().getAddress().getPostalCode())
+				  || exists(eml.getContact().getAddress().getCountry())) {
+			  if(!exists(eml.getContact().getAddress().getCity())) {
+				  action.addFieldError("eml.contact.address.city", 
+						  action.getText("validation.required", new String[]{action.getText("eml.contact.address.city")}));
+			  }
+			  if(!exists(eml.getResourceCreator().getAddress().getProvince())) {
+				  action.addFieldError("eml.contact.address.province", 
+						  action.getText("validation.required", new String[]{action.getText("eml.contact.address.province")}));    				  
+			  }
+			  /* postalCode should be a number*/
+			  if(!exists(eml.getContact().getAddress().getPostalCode())) {
+				  action.addFieldError("eml.contact.address.postalCode", 
+						  action.getText("validation.required", new String[]{action.getText("eml.contact.address.postalCode")}));
+			  } else {
+				  try {
+					  Integer.parseInt(eml.getContact().getAddress().getPostalCode());
+				  } catch(NumberFormatException e) {
+					  action.addFieldError("eml.contact.address.postalCode", 
+							  action.getText("validation.invalid", new String[]{action.getText("eml.contact.address.postalCode")}));
+				  }    				  
+			  }
+			  if(!exists(eml.getContact().getAddress().getCountry())) {
+				  action.addFieldError("eml.contact.address.country", 
+						  action.getText("validation.required", new String[]{action.getText("eml.contact.address.country")}));
+			  } 			  
+		  }
+		  
+		  /* email is optional. But if it exists, should be a valid email address */
+		  if(exists(eml.getContact().getEmail()) && !isValidEmail(eml.getContact().getEmail())) {
+			  action.addFieldError("eml.contact.email", action.getText("validation.invalid", new String[]{action.getText("eml.contact.email")}));
+		  }
+		  
+		  /* phone is optional. But if it exists, should be a number */
+		  if(exists(eml.getContact().getPhone())) {
+			  try {
+				  Integer.parseInt(eml.getContact().getPhone());
+			  } catch (NumberFormatException e) {
+				  action.addFieldError("eml.contact.phone", action.getText("validation.invalid", new String[]{action.getText("eml.contact.phone")}));
+			  }
+		  }
+		 
+
       } else if (part == null || part.equalsIgnoreCase("parties")) {
     	  /* PARTIES.FTL - XML Schema Documentation
     	   * 
     	   * <dataset>
     	   * 	<associatedParty> - optional - many
-    	   * 		<organizationName>{eml.associatedParties[i].organisation}</organizationName>	|
-    	   * 		<individualName>																|
-    	   * 			<givenName>{eml.associatedParties[i].firstName}</givenName>					| - mandatory (at least one of them)
-    	   * 			<surName>{eml.associatedParties[i].lastName}</surName>						|
-    	   * 		</individualName>																|
-    	   * 		<address> - optional
-    	   * 			<deliveryPoin>{eml.associatedParties[i].address.address}</deliveryPoint> - optional
-    	   * 			<city>{eml.associatedParties[i].address.city}</city> - mandatory
-    	   * 			<administrativeArea>{eml.associatedParties[i].address.province}</administrativeArea> - mandatory
-    	   * 			<postalCode>{eml.associatedParties[i].address.postalCode}</postalCode> - mandatory
-    	   * 			<country>{eml.associatedParties[i].address.country}</country> - mandatory
+    	   * 		<organizationName>{eml.associatedParties[i].organisation}</organizationName>				|
+    	   * 		<individualName>																			|
+    	   * 			<givenName>{eml.associatedParties[i].firstName}</givenName>								| - mandatory (at least one of them)
+    	   * 			<surName>{eml.associatedParties[i].lastName}</surName>									|
+    	   * 		</individualName>																			|
+    	   * 		<address> 																					- optional
+    	   * 			<deliveryPoin>{eml.associatedParties[i].address.address}</deliveryPoint> 				- optional
+    	   * 			<city>{eml.associatedParties[i].address.city}</city> 									- mandatory
+    	   * 			<administrativeArea>{eml.associatedParties[i].address.province}</administrativeArea> 	- mandatory
+    	   * 			<postalCode>{eml.associatedParties[i].address.postalCode}</postalCode> 					- mandatory	- integer
+    	   * 			<country>{eml.associatedParties[i].address.country}</country> 							- mandatory
     	   * 		</address>
-    	   * 		<phone>{eml.associatedParties[i].phone}</phone> - mandatory
-    	   * 		<electronicMailAddress>{eml.associatedParties[i].email}</electronicMailAddress> - optional
-    	   * 		<onlineUrl>{eml.associatedParties[i].homePage}</onlineUrl> - optional
-    	   * 		<role>eml.associatedParties[i].role</role> - mandatory
+    	   * 		<phone>{eml.associatedParties[i].phone}</phone> 											- mandatory - integer
+    	   * 		<electronicMailAddress>{eml.associatedParties[i].email}</electronicMailAddress> 			- optional - valid format
+    	   * 		<onlineUrl>{eml.associatedParties[i].homePage}</onlineUrl> 									- optional
+    	   * 		<role>eml.associatedParties[i].role</role> 													- mandatory
     	   * 	</associatedParty>
     	   * </dataset>
     	   */
@@ -295,6 +381,22 @@ public class EmlValidator extends BaseValidator {
     				  action.addFieldError("eml.associatedParties["+index+"].address.country", 
     						  action.getText("validation.required", new String[]{action.getText("eml.associatedParties.address.country")}));
     			  }    			  
+    		  }
+    		  
+    		  /* email is optional. But if it exists, should be a valid email address */
+    		  if(exists(eml.getAssociatedParties().get(index).getEmail()) && !isValidEmail(eml.getAssociatedParties().get(index).getEmail())) {
+    			  action.addFieldError("eml.associatedParties["+index+"].email", 
+    					  action.getText("validation.invalid", new String[]{action.getText("eml.associatedParties.email")}));
+    		  }
+    		  
+    		  /* phone is optional. But if it exists, should be a number */
+    		  if(exists(eml.getAssociatedParties().get(index).getPhone())) {
+    			  try {
+    				  Integer.parseInt(eml.getAssociatedParties().get(index).getPhone());
+    			  } catch (NumberFormatException e) {
+    				  action.addFieldError("eml.associatedParties["+index+"].phone", 
+    						  action.getText("validation.invalid", new String[]{action.getText("eml.associatedParties.phone")}));
+    			  }
     		  }
     	  }
       } else if (part == null || part.equalsIgnoreCase("geocoverage")) {	  

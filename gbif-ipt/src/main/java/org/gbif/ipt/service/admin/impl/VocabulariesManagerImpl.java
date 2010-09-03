@@ -3,6 +3,31 @@
  */
 package org.gbif.ipt.service.admin.impl;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Writer;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOCase;
+import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.model.VocabularyConcept;
@@ -12,35 +37,11 @@ import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.utils.DownloadUtil;
+import org.xml.sax.SAXException;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.xstream.XStream;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOCase;
-import org.apache.commons.io.filefilter.SuffixFileFilter;
-import org.xml.sax.SAXException;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Writer;
-import java.net.URL;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 /**
  * Manager for all vocabulary related methods. Keeps an internal map of locally existing and parsed vocabularies which
@@ -139,10 +140,18 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
    * @see org.gbif.ipt.service.admin.VocabulariesManager#getI18nVocab(java.lang.String, java.lang.String)
    */
   public Map<String, String> getI18nVocab(String uri, String lang) {
-    Map<String, String> map = new HashMap<String, String>();
+    Map<String, String> map = new LinkedHashMap<String, String>();
     Vocabulary v = get(uri);
     if (v != null) {
-      for (VocabularyConcept c : v.getConcepts()) {
+    	List<VocabularyConcept> concepts = v.getConcepts();
+    	final String s = lang;
+    	Collections.sort(concepts, new Comparator<VocabularyConcept>() {
+			public int compare(VocabularyConcept o1, VocabularyConcept o2) {
+				 return (o1.getPreferredTerm(s) == null ? o1.getIdentifier() : o1.getPreferredTerm(s).getTitle())
+				 .compareTo((o2.getPreferredTerm(s) == null ? o2.getIdentifier() : o2.getPreferredTerm(s).getTitle()));
+			}
+		});
+      for (VocabularyConcept c : concepts) {
         VocabularyTerm t = c.getPreferredTerm(lang);
         map.put(c.getIdentifier(), t == null ? c.getIdentifier() : t.getTitle());
       }
