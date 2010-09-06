@@ -16,7 +16,7 @@
 	</tr>
 <#list resources as r>
   <tr>
-	<td><a href="resource.do?id=${r.shortname}">${r.title!r.shortname}</a></td>
+	<td><a href="resource.do?r=${r.shortname}">${r.title!r.shortname}</a></td>
 	<td>${(r.organisation.name)!"---"}</td>
 	<td>${r.type!"---"}</td>
 	<td>0</td>

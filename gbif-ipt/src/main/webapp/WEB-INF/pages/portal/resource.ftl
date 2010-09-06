@@ -21,10 +21,23 @@
   <div class="body">
       	<div class="details">
       		<table>
-          		<tr><th>Keywords</th><td>Taxonomy, Europe, Plants</td></tr>
-          		<tr><th>EML</th><td><a href="${baseURL}/eml.do?id=${resource.shortname}">EML</a></td></tr>
-          		<tr><th>DwC archive</th><td><a href="${baseURL}/archive.do?id=${resource.shortname}">DwC-A</a> from Apr 20, 2007 12:45:09 PM</td></tr>
+          		<tr><th>Keywords</th><td>${resource.eml.subject!}</td></tr>
+          		<tr><th>Taxon Coverage</th><td><#list resource.eml.taxonomicCoverages as k>${k.taxonKeyword.scientificName!k.taxonKeyword.commonName!}<#if !k_has_next>; </#if></#list></td></tr>
+          		<tr><th>Spatial Coverage</th><td><#list resource.eml.geospatialCoverages as geo><#list geo.keywords as k>${k!}<#if !k_has_next>;</#if> </#list></#list></td></tr>
+
       		   	<tr><th><@s.text name='eml.language'/></th><td>${eml.language!}</td></tr>
+
+          		<tr><th>Last Publication</th>
+			  	<#if resource.lastPublished??>
+			  	    <td>Version ${resource.eml.emlVersion} from ${resource.lastPublished?date?string.medium}</td></tr>
+			  	<#if (resource.recordsPublished>0)>
+          		<tr><th>Archive</th><td><a href="${baseURL}/archive.do?r=${resource.shortname}">download</a>, ${resource.recordsPublished} records </td></tr>
+			  	</#if>
+          		<tr><th>EML</th><td><a href="${baseURL}/eml.do?r=${resource.shortname}">download</a></td></tr>
+          		<#else>
+          		    <td>Never</td></tr>
+			  	</#if>
+
       		   	<#if resource.status=="REGISTERED">
 	          		<tr><th>GBIF Registration</th><td><a href="http://gbrdsdev.gbif.org/browse/agent?uuid=${resource.key}">${resource.key}</a></td></tr>
 	          		<#if resource.organisation?exists>
