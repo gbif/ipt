@@ -30,6 +30,7 @@ import org.gbif.ipt.model.converter.ConceptTermConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
+import org.gbif.ipt.model.converter.PasswordConverter;
 import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
@@ -93,11 +94,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   private Map<String, Resource> resources = new HashMap<String, Resource>();
   public static final String PERSISTENCE_FILE = "resource.xml";
   private final XStream xstream = new XStream();
-  private final UserEmailConverter userConverter;
-  private final OrganisationKeyConverter orgConverter;
-  private final ExtensionRowTypeConverter extensionConverter;
-  private final ConceptTermConverter conceptTermConverter;
-  private final JdbcInfoConverter jdbcInfoConverter;
   private SourceManager sourceManager;
   private ExtensionManager extensionManager;
   private RegistryManager registryManager;
@@ -108,18 +104,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   public ResourceManagerImpl(AppConfig cfg, DataDir dataDir, UserEmailConverter userConverter,
       OrganisationKeyConverter orgConverter, ExtensionRowTypeConverter extensionConverter,
       JdbcInfoConverter jdbcInfoConverter, SourceManager sourceManager, ExtensionManager extensionManager,
-      RegistryManager registryManager, ConceptTermConverter conceptTermConverter, GenerateDwcaFactory dwcaFactory) {
+      RegistryManager registryManager, ConceptTermConverter conceptTermConverter, GenerateDwcaFactory dwcaFactory,
+      PasswordConverter passwordConverter) {
     super(cfg, dataDir);
-    this.userConverter = userConverter;
-    this.orgConverter = orgConverter;
-    this.extensionConverter = extensionConverter;
-    this.jdbcInfoConverter = jdbcInfoConverter;
     this.sourceManager = sourceManager;
     this.extensionManager = extensionManager;
     this.registryManager = registryManager;
-    this.conceptTermConverter = conceptTermConverter;
     this.dwcaFactory = dwcaFactory;
-    defineXstreamMapping();
+    defineXstreamMapping(userConverter, orgConverter, extensionConverter, conceptTermConverter, jdbcInfoConverter,
+        passwordConverter);
   }
 
   private void addResource(Resource res) {
@@ -264,9 +257,17 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   }
 
   /**
-	 * 
-	 */
-  private void defineXstreamMapping() {
+   * @param passwordConverter
+   * @param jdbcInfoConverter
+   * @param conceptTermConverter
+   * @param extensionConverter
+   * @param orgConverter
+   * @param userConverter
+   * 
+   */
+  private void defineXstreamMapping(UserEmailConverter userConverter, OrganisationKeyConverter orgConverter,
+      ExtensionRowTypeConverter extensionConverter, ConceptTermConverter conceptTermConverter,
+      JdbcInfoConverter jdbcInfoConverter, PasswordConverter passwordConverter) {
     // xstream.setMode(XStream.NO_REFERENCES);
 
     xstream.alias("resource", Resource.class);
@@ -289,6 +290,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     xstream.registerConverter(extensionConverter);
     // persist only qualified concept name
     xstream.registerConverter(conceptTermConverter);
+    // encrypt passwords
+    xstream.registerConverter(passwordConverter);
+
     xstream.addDefaultImplementation(ExtensionProperty.class, ConceptTerm.class);
     xstream.addDefaultImplementation(DwcTerm.class, ConceptTerm.class);
     xstream.addDefaultImplementation(DcTerm.class, ConceptTerm.class);
@@ -643,7 +647,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
       throw new InvalidConfigException(TYPE.CONFIG_WRITE, "IO exception when writing eml for " + resource);
     } catch (TemplateException e) {
       log.error("EML template exception", e);
-      throw new InvalidConfigException(TYPE.CONFIG_WRITE, "EML template exception when writing eml for " + resource);
+      throw new InvalidConfigException(TYPE.EML, "EML template exception when writing eml for " + resource + ": "
+          + e.getMessage());
     }
   }
 

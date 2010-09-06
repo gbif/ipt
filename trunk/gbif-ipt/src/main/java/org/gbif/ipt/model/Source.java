@@ -134,7 +134,7 @@ public abstract class Source implements Iterable<String[]>, Comparable<Source> {
     private String host;
     private String database;
     private String username;
-    private String password;
+    private Password password = new Password();
 
     public String getDatabase() {
       return database;
@@ -154,7 +154,7 @@ public abstract class Source implements Iterable<String[]>, Comparable<Source> {
     }
 
     public String getPassword() {
-      return password;
+      return password.password;
     }
 
     public JdbcInfo getRdbms() {
@@ -182,7 +182,7 @@ public abstract class Source implements Iterable<String[]>, Comparable<Source> {
     }
 
     public void setPassword(String password) {
-      this.password = password;
+      this.password.password = password;
     }
 
     public void setRdbms(JdbcInfo rdbms) {
@@ -206,9 +206,9 @@ public abstract class Source implements Iterable<String[]>, Comparable<Source> {
   protected boolean readable = false;
 
   public static String normaliseName(String name) {
-	  if (name==null){
-		  return null;
-	  }
+    if (name == null) {
+      return null;
+    }
     return StringUtils.substringBeforeLast(name, ".").replaceAll("[\\s\\c\\W\\.\\:/]+", "").toLowerCase();
   }
 

@@ -14,7 +14,6 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.validation.EmlValidator;
-import org.gbif.metadata.eml.Eml;
 
 import com.google.inject.Inject;
 
@@ -38,9 +37,9 @@ public class OverviewAction extends ManagerBaseAction {
   private boolean missingRegistrationMetadata = false;
 
   public String addmanager() throws Exception {
-	  if (resource==null){
-		  return NOT_FOUND;
-	  }
+    if (resource == null) {
+      return NOT_FOUND;
+    }
     User u = userManager.get(id);
     if (u != null && !potentialManagers.contains(u)) {
       addActionError("Manager " + id + " not available");
@@ -53,10 +52,11 @@ public class OverviewAction extends ManagerBaseAction {
     return execute();
   }
 
+  @Override
   public String delete() {
-	  if (resource==null){
-		  return NOT_FOUND;
-	  }
+    if (resource == null) {
+      return NOT_FOUND;
+    }
     try {
       Resource res = resource;
       System.out.println("DELETING " + res);
@@ -71,9 +71,9 @@ public class OverviewAction extends ManagerBaseAction {
   }
 
   public String delmanager() throws Exception {
-	  if (resource==null){
-		  return NOT_FOUND;
-	  }
+    if (resource == null) {
+      return NOT_FOUND;
+    }
     User u = userManager.get(id);
     if (u == null || !resource.getManagers().contains(u)) {
       addActionError("Manager " + id + " not available");
@@ -88,9 +88,9 @@ public class OverviewAction extends ManagerBaseAction {
 
   @Override
   public String execute() throws Exception {
-	  if (resource==null){
-		  return NOT_FOUND;
-	  }
+    if (resource == null) {
+      return NOT_FOUND;
+    }
     return SUCCESS;
   }
 
@@ -121,6 +121,25 @@ public class OverviewAction extends ManagerBaseAction {
     return missingMetadata;
   }
 
+  private boolean minimumRegistryInfo(Resource resource) {
+    if (resource == null) {
+      return false;
+    }
+    if (resource.getEml() == null) {
+      return false;
+    }
+    if (resource.getEml().getContact() == null) {
+      return false;
+    }
+    if (resource.getEml().getContact().getEmail() == null) {
+      return false;
+    }
+    if (!resource.isPublished()) {
+      return false;
+    }
+    return true;
+  }
+
   @Override
   public void prepare() throws Exception {
     super.prepare();
@@ -149,37 +168,42 @@ public class OverviewAction extends ManagerBaseAction {
       missingRegistrationMetadata = !minimumRegistryInfo(resource);
     }
   }
-  
-  private boolean minimumRegistryInfo(Resource resource) {
-    if(resource==null)
-      return false;
-    if(resource.getEml()==null)
-      return false;
-    if(resource.getEml().getContact()==null)
-      return false;
-    if(resource.getEml().getContact().getEmail()==null)
-      return false;
-    if(!resource.isPublished())
-      return false;
-    return true;
-  }
 
   public String publish() throws Exception {
-	  if (resource==null){
-		  return NOT_FOUND;
-	  }
-	  if (resourceManager.publish(resource, this)){
-		  addActionMessage("Resource published as version "+resource.getEmlVersion()+".");
-	  }else{
-		  addActionMessage("The metadata hasnt changed since the last publication of version "+resource.getEmlVersion()+".");
-	  }
-	  return SUCCESS;
+    if (resource == null) {
+      return NOT_FOUND;
+    }
+    try {
+      if (resourceManager.publish(resource, this)) {
+        addActionMessage("Resource published as version " + resource.getEmlVersion() + ".");
+      } else {
+        addActionMessage("The metadata hasnt changed since the last publication of version " + resource.getEmlVersion()
+            + ".");
+      }
+    } catch (Exception e) {
+      log.error("Error publishing resource", e);
+      addActionError("Error publishing resource: " + e.getMessage());
+    }
+    return SUCCESS;
   }
-  
+
+  public String unpublish() throws Exception {
+    if (resource == null) {
+      return NOT_FOUND;
+    }
+    try {
+      resourceManager.visibilityToPrivate(resource);
+      addActionMessage("Changed Publication Status to " + resource.getStatus());
+    } catch (InvalidConfigException e) {
+      log.error("Cant unpublish resource " + resource, e);
+    }
+    return execute();
+  }
+
   public String visibility() throws Exception {
-	  if (resource==null){
-		  return NOT_FOUND;
-	  }
+    if (resource == null) {
+      return NOT_FOUND;
+    }
     if (PublicationStatus.PRIVATE == resource.getStatus()) {
       try {
         resourceManager.visibilityToPublic(resource);
@@ -200,19 +224,6 @@ public class OverviewAction extends ManagerBaseAction {
         log.error("Cant register resource " + resource + " with organisation " + org, e);
       }
 
-    }
-    return execute();
-  }
-
-  public String unpublish() throws Exception {
-	  if (resource==null){
-		  return NOT_FOUND;
-	  }
-    try {
-      resourceManager.visibilityToPrivate(resource);
-      addActionMessage("Changed Publication Status to " + resource.getStatus());
-    } catch (InvalidConfigException e) {
-      log.error("Cant unpublish resource " + resource, e);
     }
     return execute();
   }

@@ -7,6 +7,8 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.GenerateDwca;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.utils.InputStreamUtils;
+import org.gbif.ipt.utils.PBEEncrypt;
+import org.gbif.ipt.utils.PBEEncrypt.EncryptionException;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
@@ -56,9 +58,10 @@ public class IPTModule extends AbstractModule {
 
     // prototypes
     bind(ThesaurusHandlingRule.class).in(Scopes.NO_SCOPE);
-    
+
     // assisted inject factories
-    bind(GenerateDwcaFactory.class).toProvider(FactoryProvider.newFactory(GenerateDwcaFactory.class, GenerateDwca.class));
+    bind(GenerateDwcaFactory.class).toProvider(
+        FactoryProvider.newFactory(GenerateDwcaFactory.class, GenerateDwca.class));
 
   }
 
@@ -151,5 +154,18 @@ public class IPTModule extends AbstractModule {
     }
     return saxf;
   }
-  
+
+  @Provides
+  @Inject
+  @Singleton
+  public PBEEncrypt providePasswordEncryption() {
+    final byte[] salt = {0x00, 0x05, 0x02, 0x05, 0x04, 0x25, 0x06, 0x17};
+    PBEEncrypt enc = null;
+    try {
+      enc = new PBEEncrypt("Carla Maria Luise", salt, 9);
+    } catch (EncryptionException e) {
+      log.error("Cannot create password encryption", e);
+    }
+    return enc;
+  }
 }
