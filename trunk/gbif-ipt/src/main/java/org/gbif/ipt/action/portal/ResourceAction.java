@@ -1,11 +1,8 @@
 package org.gbif.ipt.action.portal;
 
-import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.admin.RegistrationManager;
-import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.metadata.eml.Eml;
 
 import com.google.inject.Inject;
@@ -18,7 +15,7 @@ public class ResourceAction extends PortalBaseAction {
   private List<Resource> resources;
   private Integer page = 1;
 
-@Override
+  @Override
   public String execute() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
