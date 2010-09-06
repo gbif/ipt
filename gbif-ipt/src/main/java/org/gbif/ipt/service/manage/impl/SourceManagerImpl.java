@@ -322,8 +322,8 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     // try to connect to db via simple JDBC
     if (source.getJdbcUrl() != null && source.getJdbcDriver() != null) {
       try {
-        Class.forName(source.getJdbcDriver());
         DriverManager.setLoginTimeout(5);
+        Class.forName(source.getJdbcDriver());
         conn = DriverManager.getConnection(source.getJdbcUrl(), source.getUsername(), source.getPassword());
 
         // If a SQLWarning object is available, print its
