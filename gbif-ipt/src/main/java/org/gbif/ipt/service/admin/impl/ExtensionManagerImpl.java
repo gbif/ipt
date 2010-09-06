@@ -49,8 +49,8 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   private static final String CONFIG_FOLDER = ".extensions";
   private ExtensionFactory factory;;
   private HttpClient httpClient;
-  private final String TAXON_KEYWORD="dwc:taxon";
-  private final String OCCURRENCE_KEYWORD="dwc:occurrence";
+  private final String TAXON_KEYWORD = "dwc:taxon";
+  private final String OCCURRENCE_KEYWORD = "dwc:occurrence";
 
   @Inject
   public ExtensionManagerImpl(ExtensionFactory factory, HttpClient httpClient) {
@@ -130,6 +130,29 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     return new ArrayList<Extension>(extensionsByRowtype.values());
   }
 
+  public List<Extension> list(Extension core) {
+    if (core != null && core.getRowType().equalsIgnoreCase(Constants.DWC_ROWTYPE_OCCURRENCE)) {
+      return search(OCCURRENCE_KEYWORD, true);
+    } else if (core != null && core.getRowType().equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON)) {
+      return search(TAXON_KEYWORD, true);
+    } else {
+      return list();
+    }
+  }
+
+  public List<Extension> listCore() {
+    List<Extension> list = new ArrayList<Extension>();
+    Extension e = get(Constants.DWC_ROWTYPE_OCCURRENCE);
+    if (e != null) {
+      list.add(e);
+    }
+    e = get(Constants.DWC_ROWTYPE_TAXON);
+    if (e != null) {
+      list.add(e);
+    }
+    return list;
+  }
+
   public int load() {
     File extensionDir = dataDir.configFile(CONFIG_FOLDER);
     int counter = 0;
@@ -187,37 +210,22 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     return ext;
   }
 
-public List<Extension> list(Extension core) {
-	if (core!=null && core.getRowType().equalsIgnoreCase(Constants.DWC_ROWTYPE_OCCURRENCE)){
-		return search(OCCURRENCE_KEYWORD);
-	}else if (core!=null && core.getRowType().equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON)){
-		return search(TAXON_KEYWORD);		
-	}else{
-		return list();
-	}
-}
+  public List<Extension> search(String keyword) {
+    return search(keyword, false);
+  }
 
-public List<Extension> listCore() {
-	List<Extension> list = new ArrayList<Extension>();
-	Extension e = get(Constants.DWC_ROWTYPE_OCCURRENCE);
-	if (e!=null){
-		list.add(e);
-	}
-	e = get(Constants.DWC_ROWTYPE_TAXON);
-	if (e!=null){
-		list.add(e);
-	}
-	return list;
-}
-
-public List<Extension> search(String keyword) {
-	List<Extension> list = new ArrayList<Extension>();
-	keyword=keyword.toLowerCase();
-	for (Extension e : extensionsByRowtype.values()){
-		if (StringUtils.containsIgnoreCase(e.getSubject(), keyword)){
-			list.add(e);
-		}
-	}
-	return list;
-}
+  private List<Extension> search(String keyword, boolean includeEmptySubject) {
+    List<Extension> list = new ArrayList<Extension>();
+    keyword = StringUtils.trimToNull(keyword);
+    if (keyword != null) {
+      keyword = keyword.toLowerCase();
+      for (Extension e : extensionsByRowtype.values()) {
+        if ((includeEmptySubject && StringUtils.trimToNull(e.getSubject()) == null)
+            || StringUtils.containsIgnoreCase(e.getSubject(), keyword)) {
+          list.add(e);
+        }
+      }
+    }
+    return list;
+  }
 }

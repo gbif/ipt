@@ -16,8 +16,8 @@
 
 package org.gbif.ipt.action.manage;
 
+import org.gbif.dwc.terms.TermFactory;
 import org.gbif.dwc.text.ArchiveField;
-import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;
@@ -52,6 +52,23 @@ public class MappingAction extends ManagerBaseAction {
   private List<String[]> peek;
   private List<ArchiveField> fields;
 
+  private void automap() {
+    int automapped = 0;
+    for (ArchiveField f : fields) {
+      int idx = 0;
+      for (String col : columns) {
+        col = StringUtils.substringAfter(TermFactory.normaliseTerm(col), ":");
+        if (f.getTerm().simpleNormalisedName().equalsIgnoreCase(col)) {
+          f.setIndex(idx);
+          automapped++;
+          break;
+        }
+        idx++;
+      }
+    }
+    addActionMessage("Automapped " + automapped + " columns based on header names");
+  }
+
   @Override
   public String delete() {
     if (resource.deleteMapping(mapping)) {
@@ -82,11 +99,13 @@ public class MappingAction extends ManagerBaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
+    boolean newMapping = false;
     if (id != null) {
-      // existing mapping?
       mapping = resource.getMapping(id);
+      // existing mapping?
       if (mapping == null) {
         // a new new mapping
+        newMapping = true;
         mapping = new ExtensionMapping();
         mapping.setExtension(extensionManager.get(id));
       }
@@ -101,12 +120,19 @@ public class MappingAction extends ManagerBaseAction {
         // mapped already?
         ArchiveField f = mapping.getField(p.getQualname());
         if (f == null) {
+          // no, create bare mapping field
           f = new ArchiveField();
         }
         f.setTerm(p);
         fields.add(f);
       }
     }
+
+    // finally do automapping for new mappings
+    if (newMapping) {
+      automap();
+    }
+
   }
 
   private void readSource() {
@@ -165,7 +191,8 @@ public class MappingAction extends ManagerBaseAction {
   @Override
   public void validateHttpPostOnly() {
     if (mapping != null && mapping.getSource() == null) {
-      addFieldError("manage.mapping.source", getText("validation.required", new String[]{getText("manage.mapping.source")}));
+      addFieldError("manage.mapping.source",
+          getText("validation.required", new String[]{getText("manage.mapping.source")}));
     }
   }
 }
