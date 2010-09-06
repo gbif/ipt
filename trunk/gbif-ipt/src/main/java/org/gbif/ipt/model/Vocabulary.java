@@ -24,11 +24,12 @@ import java.util.List;
  * 
  */
 public class Vocabulary implements Comparable {
-  private String uri;
+  private String uri; // identifier
+  private URL url; // url to its definition
   private String title;
   private String description;
   private String subject;
-  private URL link;
+  private URL link; // to further documentation
   private List<VocabularyConcept> concepts = new LinkedList<VocabularyConcept>();
   // the data this local vocabulary copy was last updated
   private Date lastUpdate = new Date();
@@ -103,6 +104,10 @@ public class Vocabulary implements Comparable {
     return uri;
   }
 
+  public URL getUrl() {
+    return url;
+  }
+
   /**
    * @see java.lang.Object#hashCode()
    */
@@ -146,6 +151,10 @@ public class Vocabulary implements Comparable {
 
   public void setUri(String uri) {
     this.uri = uri;
+  }
+
+  public void setUrl(URL url) {
+    this.url = url;
   }
 
 }

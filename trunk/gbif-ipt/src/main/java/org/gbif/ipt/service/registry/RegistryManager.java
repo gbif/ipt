@@ -4,9 +4,9 @@ import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.registry.impl.RegistryManagerImpl;
-import org.gbif.metadata.eml.Eml;
 
 import com.google.inject.ImplementedBy;
 
@@ -29,6 +29,13 @@ public interface RegistryManager {
    * @return
    */
   public List<Organisation> getOrganisations();
+
+  /**
+   * Gets list of vocabularies, but only the basic metadata, i.e. each without the list concepts
+   * 
+   * @return
+   */
+  public List<Vocabulary> getVocabularies();
 
   /**
    * Register a new resource with the GBIF registry and associate with to the given organisation.

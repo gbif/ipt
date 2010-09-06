@@ -1,12 +1,13 @@
 package org.gbif.ipt.model;
 
+import org.gbif.dwc.terms.ConceptTerm;
+
 import static com.google.common.base.Objects.equal;
 
 import com.google.common.base.Objects;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.gbif.dwc.terms.ConceptTerm;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -43,29 +44,7 @@ public class Extension {
    * @see java.lang.Comparable#compareTo(Object)
    */
   public int compareTo(Extension object) {
-    return new CompareToBuilder().append(this.url, object.url).toComparison();
-  }
-
-  public boolean hasProperty(String term){
-	  return getProperty(term)!=null;
-  }
-  public ExtensionProperty getProperty(String term){
-	  if (term==null){
-		  return null;
-	  }
-	  for (ExtensionProperty p : properties){
-		  if (term.equalsIgnoreCase(p.getQualname())){
-			  return p;
-		  }
-	  }
-	  return null;
-  }
-
-  public boolean hasProperty(ConceptTerm term){
-	  return getProperty(term)!=null;
-  }
-  public ExtensionProperty getProperty(ConceptTerm term){
-	  return getProperty(term.qualifiedName());
+    return new CompareToBuilder().append(this.rowType, object.rowType).toComparison();
   }
 
   /**
@@ -80,7 +59,7 @@ public class Extension {
       return false;
     }
     Extension o = (Extension) other;
-    return equal(rowType, o.rowType) && equal(url, o.url);
+    return equal(rowType, o.rowType);
   }
 
   public String getDescription() {
@@ -107,6 +86,22 @@ public class Extension {
     return properties;
   }
 
+  public ExtensionProperty getProperty(ConceptTerm term) {
+    return getProperty(term.qualifiedName());
+  }
+
+  public ExtensionProperty getProperty(String term) {
+    if (term == null) {
+      return null;
+    }
+    for (ExtensionProperty p : properties) {
+      if (term.equalsIgnoreCase(p.getQualname())) {
+        return p;
+      }
+    }
+    return null;
+  }
+
   public String getRowType() {
     return rowType;
   }
@@ -128,7 +123,15 @@ public class Extension {
    */
   @Override
   public int hashCode() {
-    return Objects.hashCode(rowType, url);
+    return Objects.hashCode(rowType);
+  }
+
+  public boolean hasProperty(ConceptTerm term) {
+    return getProperty(term) != null;
+  }
+
+  public boolean hasProperty(String term) {
+    return getProperty(term) != null;
   }
 
   public boolean isCore() {

@@ -49,9 +49,9 @@
 </#if>
 <hr/>
 
-<h3>Extensions available from the GBIF registry</h3>
+<h3>Further extensions available from the GBIF registry</h3>
 
-<#list gbrdsExtensions as ext>
+<#list newExtensions as ext>
 <div class="definition">	
   <div class="title">
   	<div class="head">
