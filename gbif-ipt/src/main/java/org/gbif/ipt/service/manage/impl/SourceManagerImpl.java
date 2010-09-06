@@ -22,13 +22,13 @@ import org.gbif.dwc.text.ArchiveFile;
 import org.gbif.dwc.text.UnsupportedArchiveException;
 import org.gbif.file.CSVReader;
 import org.gbif.ipt.model.ExtensionMapping;
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.Source.FileSource;
 import org.gbif.ipt.model.Source.SqlSource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.ImportException;
-import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
 
@@ -47,7 +47,6 @@ import java.sql.SQLWarning;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -59,9 +58,6 @@ import java.util.Set;
  * 
  */
 public class SourceManagerImpl extends BaseManager implements SourceManager {
-	@Inject
-	private ResourceManager resourceManager;
-	
   private class FileIterator implements Iterator<Object> {
     private final CSVReader reader;
     private final int column;
@@ -123,6 +119,9 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   }
 
   @Inject
+  private ResourceManager resourceManager;
+
+  @Inject
   public SourceManagerImpl() {
     super();
   }
@@ -145,8 +144,8 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
 
   private FileSource addOneFile(Resource resource, File file, String sourceName) throws ImportException {
     FileSource src = new FileSource();
-    if (sourceName==null){
-    	sourceName=file.getName();
+    if (sourceName == null) {
+      sourceName = file.getName();
     }
     src.setName(sourceName);
     src.setResource(resource);
@@ -162,7 +161,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     try {
       // add to resource, allow overwriting existing ones
       // if the file is uploaded not for the first time
-    	resource.addSource(src, true);
+      resource.addSource(src, true);
       // anaylze individual files using the dwca reader
       Archive arch = ArchiveFactory.openArchive(file);
       copyArchiveFileProperties(arch.getCore(), src);
@@ -294,24 +293,24 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   public boolean delete(Resource resource, Source source) {
     boolean deleted = false;
     if (source != null) {
-    	resource.deleteSource(source);
+      resource.deleteSource(source);
       if (source instanceof FileSource) {
         // also delete source data file
         FileSource fs = (FileSource) source;
         fs.getFile().delete();
       }
-      // core source ? 
-	  if (resource.getCore()!=null && source.equals(resource.getCore().getSource())){
-		  resource.deleteMapping(resource.getCore());
-		  log.info("Cascading source delete to core mapping.");
-	  }
+      // core source ?
+      if (resource.getCore() != null && source.equals(resource.getCore().getSource())) {
+        resource.deleteMapping(resource.getCore());
+        log.info("Cascading source delete to core mapping.");
+      }
       // remove existing mappings
-	  Set<ExtensionMapping> exts = new HashSet<ExtensionMapping>(resource.getExtensions());
-      for (ExtensionMapping em : exts){
-    	  if (em.getSource().equals(source)){
-    		  resource.deleteMapping(em);
-    		  log.info("Cascading source delete to mapping "+em.getExtension().getTitle());
-    	  }
+      Set<ExtensionMapping> exts = new HashSet<ExtensionMapping>(resource.getExtensions());
+      for (ExtensionMapping em : exts) {
+        if (em.getSource().equals(source)) {
+          resource.deleteMapping(em);
+          log.info("Cascading source delete to mapping " + em.getExtension().getTitle());
+        }
       }
       deleted = true;
     }
@@ -324,6 +323,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     if (source.getJdbcUrl() != null && source.getJdbcDriver() != null) {
       try {
         Class.forName(source.getJdbcDriver());
+        DriverManager.setLoginTimeout(5);
         conn = DriverManager.getConnection(source.getJdbcUrl(), source.getUsername(), source.getPassword());
 
         // If a SQLWarning object is available, print its
