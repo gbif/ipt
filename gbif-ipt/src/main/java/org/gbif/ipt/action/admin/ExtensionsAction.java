@@ -66,6 +66,7 @@ public class ExtensionsAction extends POSTAction {
   private Boolean updateVocabs = false;
   private int numVocabs = 0;
   private Date vocabsLastUpdated = null;
+  private ArrayList<Extension> newExtensions;
 
   @Override
   public String delete() {
@@ -82,8 +83,8 @@ public class ExtensionsAction extends POSTAction {
     return extensions;
   }
 
-  public List<Extension> getGbrdsExtensions() {
-    return registered.extensions;
+  public ArrayList<Extension> getNewExtensions() {
+    return newExtensions;
   }
 
   public int getNumVocabs() {
@@ -109,6 +110,11 @@ public class ExtensionsAction extends POSTAction {
     }
 
     extensions = extensionManager.list();
+    newExtensions = new ArrayList<Extension>(registered.extensions);
+    // remove allready installed ones
+    for (Extension e : extensions) {
+      newExtensions.remove(e);
+    }
     Collection<Vocabulary> vocabs = vocabManager.list();
     numVocabs = vocabs.size();
     // find latest update data of any of all vocabularies

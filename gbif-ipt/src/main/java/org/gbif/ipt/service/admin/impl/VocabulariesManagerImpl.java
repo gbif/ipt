@@ -3,6 +3,26 @@
  */
 package org.gbif.ipt.service.admin.impl;
 
+import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.model.Vocabulary;
+import org.gbif.ipt.model.VocabularyConcept;
+import org.gbif.ipt.model.VocabularyTerm;
+import org.gbif.ipt.model.factory.VocabularyFactory;
+import org.gbif.ipt.service.BaseManager;
+import org.gbif.ipt.service.InvalidConfigException;
+import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.service.registry.RegistryManager;
+import org.gbif.ipt.utils.DownloadUtil;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.thoughtworks.xstream.XStream;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOCase;
+import org.apache.commons.io.filefilter.SuffixFileFilter;
+import org.xml.sax.SAXException;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -10,6 +30,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,24 +45,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOCase;
-import org.apache.commons.io.filefilter.SuffixFileFilter;
-import org.gbif.ipt.config.Constants;
-import org.gbif.ipt.model.Vocabulary;
-import org.gbif.ipt.model.VocabularyConcept;
-import org.gbif.ipt.model.VocabularyTerm;
-import org.gbif.ipt.model.factory.VocabularyFactory;
-import org.gbif.ipt.service.BaseManager;
-import org.gbif.ipt.service.InvalidConfigException;
-import org.gbif.ipt.service.admin.VocabulariesManager;
-import org.gbif.ipt.utils.DownloadUtil;
-import org.xml.sax.SAXException;
-
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import com.thoughtworks.xstream.XStream;
 
 /**
  * Manager for all vocabulary related methods. Keeps an internal map of locally existing and parsed vocabularies which
@@ -66,6 +69,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   private VocabularyFactory vocabFactory;
   private DownloadUtil downloadUtil;
   private final XStream xstream = new XStream();
+  private final RegistryManager registryManager;
   private final String[] defaultVocabs = new String[]{
       Constants.VOCAB_URI_LANGUAGE, Constants.VOCAB_URI_COUNTRY, Constants.VOCAB_URI_RESOURCE_TYPE};
 
@@ -73,10 +77,12 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
    * 
    */
   @Inject
-  public VocabulariesManagerImpl(VocabularyFactory vocabFactory, DownloadUtil downloadUtil) {
+  public VocabulariesManagerImpl(VocabularyFactory vocabFactory, DownloadUtil downloadUtil,
+      RegistryManager registryManager) {
     super();
     this.vocabFactory = vocabFactory;
     this.downloadUtil = downloadUtil;
+    this.registryManager = registryManager;
     defineXstreamMapping();
   }
 
@@ -143,14 +149,14 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
     Map<String, String> map = new LinkedHashMap<String, String>();
     Vocabulary v = get(uri);
     if (v != null) {
-    	List<VocabularyConcept> concepts = v.getConcepts();
-    	final String s = lang;
-    	Collections.sort(concepts, new Comparator<VocabularyConcept>() {
-			public int compare(VocabularyConcept o1, VocabularyConcept o2) {
-				 return (o1.getPreferredTerm(s) == null ? o1.getIdentifier() : o1.getPreferredTerm(s).getTitle())
-				 .compareTo((o2.getPreferredTerm(s) == null ? o2.getIdentifier() : o2.getPreferredTerm(s).getTitle()));
-			}
-		});
+      List<VocabularyConcept> concepts = v.getConcepts();
+      final String s = lang;
+      Collections.sort(concepts, new Comparator<VocabularyConcept>() {
+        public int compare(VocabularyConcept o1, VocabularyConcept o2) {
+          return (o1.getPreferredTerm(s) == null ? o1.getIdentifier() : o1.getPreferredTerm(s).getTitle()).compareTo((o2.getPreferredTerm(s) == null
+              ? o2.getIdentifier() : o2.getPreferredTerm(s).getTitle()));
+        }
+      });
       for (VocabularyConcept c : concepts) {
         VocabularyTerm t = c.getPreferredTerm(lang);
         map.put(c.getIdentifier(), t == null ? c.getIdentifier() : t.getTitle());
@@ -213,7 +219,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       uri2url = (Map<String, URL>) xstream.fromXML(in);
       log.debug("Loaded uri2url vocabulary map with " + uri2url.size() + " entries");
     } catch (IOException e) {
-      log.warn("Cannot load the uri2url mapping: " + e.getMessage());
+      log.warn("Cannot load the uri2url mapping from datadir: " + e.getMessage());
     }
     // now iterate over all vocab files and load them
     int counter = 0;
@@ -232,13 +238,25 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
         }
       }
     }
-    // finally load mandatory vocabs
+
+    // we could be starting up for the very first time. Try to load default vocabs with URLs from registry
+    // load mandatory vocabs
+    Map<String, Vocabulary> registeredVocabs = null;
     for (String vuri : defaultVocabs) {
       if (!uri2url.containsKey(vuri.toLowerCase())) {
+        if (registeredVocabs == null) {
+          // lazy load list of all registered vocabularies
+          registeredVocabs = registeredVocabs();
+        }
         try {
-          install(new URL(vuri));
+          Vocabulary v = registeredVocabs.get(vuri);
+          if (v == null) {
+            log.warn("Default vocabulary " + vuri + " unknown to GBIF registry");
+          } else {
+            install(v.getUrl());
+          }
         } catch (Exception e) {
-          log.warn("Cant load default vocabulary "+vuri, e);
+          log.warn("Cant load default vocabulary " + vuri, e);
         }
       }
     }
@@ -274,6 +292,37 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       }
     }
     return v;
+  }
+
+  private Map<String, Vocabulary> registeredVocabs() {
+    Map<String, Vocabulary> registeredVocabs = new HashMap<String, Vocabulary>();
+    for (Vocabulary v : registryManager.getVocabularies()) {
+      if (v != null) {
+        registeredVocabs.put(v.getUri(), v);
+      }
+    }
+    // TODO: remove this "hack" once the registry is listing all vocabs fine
+    try {
+      Vocabulary v = new Vocabulary();
+      v.setUri(Constants.VOCAB_URI_LANGUAGE);
+      v.setUrl(new URL("http://rs.gbif.org/vocabulary/iso/639-1.xml"));
+      registeredVocabs.put(Constants.VOCAB_URI_LANGUAGE, v);
+
+      v = new Vocabulary();
+      v.setUri(Constants.VOCAB_URI_COUNTRY);
+      v.setUrl(new URL("http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml"));
+      registeredVocabs.put(Constants.VOCAB_URI_COUNTRY, v);
+
+      v = new Vocabulary();
+      v.setUri(Constants.VOCAB_URI_RESOURCE_TYPE);
+      v.setUrl(new URL("http://rs.gbif.org/vocabulary/gbif/resource_type.xml"));
+      registeredVocabs.put(Constants.VOCAB_URI_RESOURCE_TYPE, v);
+    } catch (MalformedURLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+    return registeredVocabs;
   }
 
   public void save() {
