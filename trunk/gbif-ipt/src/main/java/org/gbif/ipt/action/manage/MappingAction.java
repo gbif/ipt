@@ -16,10 +16,10 @@
 
 package org.gbif.ipt.action.manage;
 
-import org.gbif.dwc.text.ArchiveField;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;
+import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.manage.SourceManager;
@@ -51,11 +51,11 @@ public class MappingAction extends ManagerBaseAction {
   private String source;
   private List<String> columns;
   private List<String[]> peek;
-  private List<ArchiveField> fields;
+  private List<PropertyMapping> fields;
 
   private void automap() {
     int automapped = 0;
-    for (ArchiveField f : fields) {
+    for (PropertyMapping f : fields) {
       int idx = 0;
       for (String col : columns) {
         if (col == null) {
@@ -91,7 +91,7 @@ public class MappingAction extends ManagerBaseAction {
     return columns;
   }
 
-  public List<ArchiveField> getFields() {
+  public List<PropertyMapping> getFields() {
     return fields;
   }
 
@@ -120,13 +120,13 @@ public class MappingAction extends ManagerBaseAction {
     if (mapping == null || mapping.getExtension() == null) {
       notFound = true;
     } else {
-      fields = new ArrayList<ArchiveField>(mapping.getExtension().getProperties().size());
+      fields = new ArrayList<PropertyMapping>(mapping.getExtension().getProperties().size());
       for (ExtensionProperty p : mapping.getExtension().getProperties()) {
         // mapped already?
-        ArchiveField f = mapping.getField(p.getQualname());
+        PropertyMapping f = mapping.getField(p.getQualname());
         if (f == null) {
           // no, create bare mapping field
-          f = new ArchiveField();
+          f = new PropertyMapping();
         }
         f.setTerm(p);
         fields.add(f);
@@ -162,8 +162,8 @@ public class MappingAction extends ManagerBaseAction {
       readSource();
     } else {
       // save field mappings
-      Set<ArchiveField> mappedFields = new HashSet<ArchiveField>();
-      for (ArchiveField f : fields) {
+      Set<PropertyMapping> mappedFields = new HashSet<PropertyMapping>();
+      for (PropertyMapping f : fields) {
         if (f.getIndex() != null || StringUtils.trimToNull(f.getDefaultValue()) != null) {
           mappedFields.add(f);
         }
@@ -176,7 +176,7 @@ public class MappingAction extends ManagerBaseAction {
     return INPUT;
   }
 
-  public void setFields(List<ArchiveField> fields) {
+  public void setFields(List<PropertyMapping> fields) {
     this.fields = fields;
   }
 

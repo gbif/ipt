@@ -25,6 +25,22 @@ import java.util.Map;
  * 
  */
 public class PropertyMapping extends ArchiveField {
-  private Map<String, String> termMap;
+  private Map<String, String> translation;
+
+  public PropertyMapping() {
+    super();
+  }
+
+  public PropertyMapping(ArchiveField field) {
+    super(field.getIndex(), field.getTerm(), field.getDefaultValue(), field.getType());
+  }
+
+  public Map<String, String> getTranslation() {
+    return translation;
+  }
+
+  public void setTranslation(Map<String, String> translation) {
+    this.translation = translation;
+  }
 
 }

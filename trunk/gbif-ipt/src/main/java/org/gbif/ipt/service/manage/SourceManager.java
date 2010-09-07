@@ -4,6 +4,7 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.Source.FileSource;
 import org.gbif.ipt.service.ImportException;
+import org.gbif.ipt.service.SourceException;
 import org.gbif.ipt.service.manage.impl.SourceManagerImpl;
 
 import com.google.inject.ImplementedBy;
@@ -11,6 +12,7 @@ import com.google.inject.ImplementedBy;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 /**
  * This interface details ALL methods associated with the main resource entity.
@@ -32,7 +34,7 @@ public interface SourceManager {
    * 
    * @param config the resource configuration to be added to
    * @param file the source file to be added to this resource
- * @param sourceName  the preferred sourcename
+   * @param sourceName the preferred sourcename
    * @throws ImportException if the file cant be copied or read
    */
   public FileSource add(Resource resource, File file, String sourceName) throws ImportException;
@@ -70,6 +72,18 @@ public interface SourceManager {
    * @throws IOException
    */
   public int importArchive(Resource resource, File file, boolean overwriteEml) throws ImportException;
+
+  /**
+   * Retrieves a set of unique string values used in a given column of a source.
+   * The maximum number of distinct values can be restricted.
+   * 
+   * @param source
+   * @param column column to inspect
+   * @param rows number of rows to return. If zero or negative all values will be retrieved.
+   * @return sample rows from the dataset
+   * @throws Exception
+   */
+  public Set<String> inspectColumn(Source source, int column, int max) throws SourceException;
 
   /**
    * @param source
