@@ -54,7 +54,6 @@ public class MappingAction extends ManagerBaseAction {
   private List<ArchiveField> fields;
 
   private void automap() {
-    System.out.println("AUTOMAPPING");
     int automapped = 0;
     for (ArchiveField f : fields) {
       int idx = 0;
