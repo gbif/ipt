@@ -50,10 +50,10 @@ The list of distinct values found in your source is generated the first time for
   </div>
   
 <table>                               
-<#list field.translation?keys as k>	
+<#list tmap?keys as k>	
 <tr>
  <td>${k}</td>
- <td>${field.translation[k]}</td>
+ <td>${tmap[k]!}</td>
 </tr>     
 </#list>
 </table>
