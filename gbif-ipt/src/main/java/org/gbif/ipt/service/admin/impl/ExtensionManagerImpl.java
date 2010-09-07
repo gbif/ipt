@@ -132,9 +132,9 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
 
   public List<Extension> list(Extension core) {
     if (core != null && core.getRowType().equalsIgnoreCase(Constants.DWC_ROWTYPE_OCCURRENCE)) {
-      return search(OCCURRENCE_KEYWORD, true);
+      return search(OCCURRENCE_KEYWORD, true, false);
     } else if (core != null && core.getRowType().equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON)) {
-      return search(TAXON_KEYWORD, true);
+      return search(TAXON_KEYWORD, true, false);
     } else {
       return list();
     }
@@ -211,15 +211,18 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   }
 
   public List<Extension> search(String keyword) {
-    return search(keyword, false);
+    return search(keyword, false, false);
   }
 
-  private List<Extension> search(String keyword, boolean includeEmptySubject) {
+  private List<Extension> search(String keyword, boolean includeEmptySubject, boolean includeCoreExtensions) {
     List<Extension> list = new ArrayList<Extension>();
     keyword = StringUtils.trimToNull(keyword);
     if (keyword != null) {
       keyword = keyword.toLowerCase();
       for (Extension e : extensionsByRowtype.values()) {
+        if (!includeCoreExtensions && e.isCore()) {
+          continue;
+        }
         if ((includeEmptySubject && StringUtils.trimToNull(e.getSubject()) == null)
             || StringUtils.containsIgnoreCase(e.getSubject(), keyword)) {
           list.add(e);
