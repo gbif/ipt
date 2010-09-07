@@ -16,8 +16,6 @@
 
 package org.gbif.ipt.model;
 
-import org.gbif.dwc.text.ArchiveField;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,15 +26,15 @@ import java.util.Set;
 public class ExtensionMapping {
   private Source source;
   private Extension extension; // persist only the rowType
-  private Set<ArchiveField> fields = new HashSet<ArchiveField>();
+  private Set<PropertyMapping> fields = new HashSet<PropertyMapping>();
   private Integer idColumn;
 
   public Extension getExtension() {
     return extension;
   }
 
-  public ArchiveField getField(String qname) {
-    for (ArchiveField f : fields) {
+  public PropertyMapping getField(String qname) {
+    for (PropertyMapping f : fields) {
       if (f.getTerm().qualifiedName().equals(qname)) {
         return f;
       }
@@ -44,7 +42,7 @@ public class ExtensionMapping {
     return null;
   }
 
-  public Set<ArchiveField> getFields() {
+  public Set<PropertyMapping> getFields() {
     return fields;
   }
 
@@ -60,7 +58,7 @@ public class ExtensionMapping {
     this.extension = extension;
   }
 
-  public void setFields(Set<ArchiveField> fields) {
+  public void setFields(Set<PropertyMapping> fields) {
     this.fields = fields;
   }
 

@@ -21,6 +21,7 @@ import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
+import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.Source.FileSource;
@@ -275,7 +276,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     xstream.alias("filesource", FileSource.class);
     xstream.alias("sqlsource", SqlSource.class);
     xstream.alias("mapping", ExtensionMapping.class);
-    xstream.alias("field", ArchiveField.class);
+    xstream.alias("field", PropertyMapping.class);
 
     // transient properties
     xstream.omitField(Resource.class, "shortname");
@@ -386,11 +387,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     // set ID column
     map.setIdColumn(af.getId().getIndex());
 
-    Set<ArchiveField> fields = new HashSet<ArchiveField>();
+    Set<PropertyMapping> fields = new HashSet<PropertyMapping>();
     // iterate over each field to make sure its part of the extension we know
     for (ArchiveField f : af.getFields().values()) {
       if (ext.hasProperty(f.getTerm())) {
-        fields.add(f);
+        fields.add(new PropertyMapping(f));
       } else {
         alog.info("Skip mapped concept term " + f.getTerm().qualifiedName() + " which is unkown to extension "
             + ext.getRowType());

@@ -21,6 +21,7 @@ import org.gbif.dwc.text.ArchiveFactory;
 import org.gbif.dwc.text.ArchiveFile;
 import org.gbif.dwc.text.UnsupportedArchiveException;
 import org.gbif.file.CSVReader;
+import org.gbif.file.ClosableIterator;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
@@ -29,6 +30,7 @@ import org.gbif.ipt.model.Source.SqlSource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.ImportException;
+import org.gbif.ipt.service.SourceException;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
 
@@ -58,13 +60,19 @@ import java.util.Set;
  * 
  */
 public class SourceManagerImpl extends BaseManager implements SourceManager {
-  private class FileIterator implements Iterator<Object> {
+  private class FileIterator implements ClosableIterator<Object> {
     private final CSVReader reader;
     private final int column;
 
     public FileIterator(FileSource source, int column) throws IOException {
       reader = source.getReader();
       this.column = column;
+    }
+
+    public void close() {
+      if (reader != null) {
+        reader.close();
+      }
     }
 
     public boolean hasNext() {
@@ -80,19 +88,35 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     }
   }
 
-  private class SqlIterator implements Iterator<Object> {
+  private class SqlIterator implements ClosableIterator<Object> {
+    private final Connection conn;
     private final Statement stmt;
     private final ResultSet rs;
     private final int column;
     private boolean hasNext;
+    private final String sourceName;
 
     public SqlIterator(SqlSource source, int column) throws SQLException {
-      Connection conn = getDbConnection(source);
+      this.conn = getDbConnection(source);
       this.stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
       this.stmt.setFetchSize(100);
       this.rs = stmt.executeQuery(source.getSql());
       this.column = column;
       this.hasNext = rs.next();
+      sourceName = source.getName();
+    }
+
+    public void close() {
+      if (rs != null) {
+        try {
+          rs.close();
+          stmt.close();
+          conn.close();
+        } catch (SQLException e) {
+          log.error("Cant close iterator for sql source " + sourceName, e);
+        }
+      }
+
     }
 
     public boolean hasNext() {
@@ -377,7 +401,34 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     }
   }
 
-  private Iterator<Object> iterSourceColumn(Source source, int column) throws Exception {
+  /*
+   * (non-Javadoc)
+   * @see org.gbif.ipt.service.manage.SourceManager#inspectColumn(org.gbif.ipt.model.Source, int, int)
+   */
+  public Set<String> inspectColumn(Source source, int column, int max) throws SourceException {
+    Set<String> values = new HashSet<String>();
+    ClosableIterator<Object> iter = null;
+    try {
+      iter = iterSourceColumn(source, column);
+      // get distinct values
+      while (iter.hasNext() && (max < 1 || values.size() <= max)) {
+        Object obj = iter.next();
+        if (obj != null) {
+          String val = obj.toString();
+          values.add(val);
+        }
+      }
+    } catch (Exception e) {
+      throw new SourceException("Error reading source " + source.getName(), e);
+    } finally {
+      if (iter != null) {
+        iter.close();
+      }
+    }
+    return values;
+  }
+
+  private ClosableIterator<Object> iterSourceColumn(Source source, int column) throws Exception {
     if (source instanceof FileSource) {
       FileSource src = (FileSource) source;
       return new FileIterator(src, column);

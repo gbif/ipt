@@ -6,6 +6,7 @@ public class POSTAction extends BaseAction {
   protected boolean delete = false;
   protected boolean notFound = false;
   protected boolean validate = true;
+  protected String defaultResult = INPUT;
 
   /**
    * Override this method if you need to delete entities based on the id value after the PARAM interceptor is called
@@ -40,7 +41,7 @@ public class POSTAction extends BaseAction {
         return result;
       }
     }
-    return INPUT;
+    return defaultResult;
   }
 
   public boolean isDelete() {

@@ -90,5 +90,13 @@
 		<action name="vocabulary" class="org.gbif.ipt.action.admin.VocabulariesAction">
 			<result>/WEB-INF/pages/manage/vocabulary.ftl</result>
 		</action>
+		
+		<action name="translation" class="org.gbif.ipt.action.manage.TranslationAction">
+			<result>/WEB-INF/pages/manage/translation.ftl</result>
+		</action>
+		<action name="translationReload" class="org.gbif.ipt.action.manage.TranslationAction" method="reload">
+			<result>/WEB-INF/pages/manage/translation.ftl</result>
+		</action>
+		
 	</package>
 </struts>
