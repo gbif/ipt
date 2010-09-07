@@ -383,6 +383,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     }
     map.setExtension(ext);
 
+    // set ID column
+    map.setIdColumn(af.getId().getIndex());
+
     Set<ArchiveField> fields = new HashSet<ArchiveField>();
     // iterate over each field to make sure its part of the extension we know
     for (ArchiveField f : af.getFields().values()) {
