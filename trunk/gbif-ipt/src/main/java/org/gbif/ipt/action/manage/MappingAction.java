@@ -129,6 +129,7 @@ public class MappingAction extends ManagerBaseAction {
     }
 
     // finally do automapping for new mappings
+    System.out.println("New Mapping=" + newMapping);
     if (newMapping) {
       automap();
     }
@@ -158,15 +159,12 @@ public class MappingAction extends ManagerBaseAction {
       readSource();
     } else {
       // save field mappings
-      System.out.println("fields.size()=" + fields.size());
       Set<ArchiveField> mappedFields = new HashSet<ArchiveField>();
       for (ArchiveField f : fields) {
         if (f.getIndex() != null || StringUtils.trimToNull(f.getDefaultValue()) != null) {
           mappedFields.add(f);
-          System.out.println(f.getTerm() + ": column " + f.getIndex() + ", value=" + f.getDefaultValue());
         }
       }
-      System.out.println("mappedFields.size()=" + mappedFields.size());
       // back to mapping object
       mapping.setFields(mappedFields);
     }

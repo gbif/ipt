@@ -1,6 +1,7 @@
 package org.gbif.ipt.model;
 
 import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.ipt.config.Constants;
 
 import static com.google.common.base.Objects.equal;
 
@@ -142,10 +143,6 @@ public class Extension {
     return installed;
   }
 
-  public void setCore(boolean core) {
-    this.core = core;
-  }
-
   public void setDescription(String description) {
     this.description = description;
   }
@@ -184,6 +181,12 @@ public class Extension {
   }
 
   public void setRowType(String rowType) {
+    if (Constants.DWC_ROWTYPE_OCCURRENCE.equalsIgnoreCase(rowType)
+        || Constants.DWC_ROWTYPE_TAXON.equalsIgnoreCase(rowType)) {
+      core = true;
+    } else {
+      core = false;
+    }
     this.rowType = rowType;
   }
 

@@ -54,7 +54,7 @@ $(document).ready(function(){
 <h1><@s.text name='manage.mapping.title'/> <span class="small">${mapping.source.name}</span></h1>
 <p><@s.text name='manage.mapping.idColumn' /></p>
 <select name="mapping.idColumn">
-  <option value="" <#if !mapping.idColumn??> selected="selected"</#if>></option>
+  <option value="" <#if !mapping.idColumn??> selected="selected"</#if>><@s.text name="manage.mapping.lineNumber"/></option>
 <#list columns as col>
   <option value="${col_index}" <#if (mapping.idColumn!-1)==col_index> selected="selected"</#if>>${col}</option>
 </#list>
