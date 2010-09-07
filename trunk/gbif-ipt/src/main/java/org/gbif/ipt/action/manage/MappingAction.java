@@ -16,7 +16,6 @@
 
 package org.gbif.ipt.action.manage;
 
-import org.gbif.dwc.terms.TermFactory;
 import org.gbif.dwc.text.ArchiveField;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.ExtensionMapping;
@@ -34,12 +33,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * @author markus
  * 
  */
 public class MappingAction extends ManagerBaseAction {
+  private static final Pattern normTerm = Pattern.compile("[\\W\\s_0-9]+");
   // the resource manager session is populated by the resource interceptor and kept alive for an entire manager session
   @Inject
   private ExtensionManager extensionManager;
@@ -53,11 +54,18 @@ public class MappingAction extends ManagerBaseAction {
   private List<ArchiveField> fields;
 
   private void automap() {
+    System.out.println("AUTOMAPPING");
     int automapped = 0;
     for (ArchiveField f : fields) {
       int idx = 0;
       for (String col : columns) {
-        col = StringUtils.substringAfter(TermFactory.normaliseTerm(col), ":");
+        if (col == null) {
+          continue;
+        }
+        col = normTerm.matcher(col.toLowerCase()).replaceAll("");
+        if (col.contains(":")) {
+          col = StringUtils.substringAfter(col, ":");
+        }
         if (f.getTerm().simpleNormalisedName().equalsIgnoreCase(col)) {
           f.setIndex(idx);
           automapped++;
@@ -99,13 +107,11 @@ public class MappingAction extends ManagerBaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
-    boolean newMapping = false;
     if (id != null) {
       mapping = resource.getMapping(id);
       // existing mapping?
       if (mapping == null) {
         // a new new mapping
-        newMapping = true;
         mapping = new ExtensionMapping();
         mapping.setExtension(extensionManager.get(id));
       }
@@ -126,14 +132,12 @@ public class MappingAction extends ManagerBaseAction {
         f.setTerm(p);
         fields.add(f);
       }
-    }
+      // finally do automapping for if no fields are found
+      if (mapping.getFields().isEmpty()) {
+        automap();
+      }
 
-    // finally do automapping for new mappings
-    System.out.println("New Mapping=" + newMapping);
-    if (newMapping) {
-      automap();
     }
-
   }
 
   private void readSource() {
