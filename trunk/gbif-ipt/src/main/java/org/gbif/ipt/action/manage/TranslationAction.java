@@ -26,10 +26,9 @@ import org.gbif.ipt.service.manage.SourceManager;
 import com.google.inject.Inject;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * @author markus
@@ -48,6 +47,7 @@ public class TranslationAction extends ManagerBaseAction {
   private PropertyMapping field;
   private ExtensionProperty property;
   private ExtensionMapping mapping;
+  private TreeMap<String, String> tmap;
 
   public TranslationAction() {
     super();
@@ -68,6 +68,10 @@ public class TranslationAction extends ManagerBaseAction {
     return property;
   }
 
+  public TreeMap<String, String> getTmap() {
+    return tmap;
+  }
+
   public Set<String> getValues() {
     return values;
   }
@@ -77,12 +81,8 @@ public class TranslationAction extends ManagerBaseAction {
     super.prepare();
     notFound = true;
     mapping = resource.getMapping(req.getParameter(REQ_PARAM_MAPPING));
-    System.out.println("PREPARE mapping=" + req.getParameter(REQ_PARAM_MAPPING) + ", term="
-        + req.getParameter(REQ_PARAM_TERM));
-    System.out.println("PREPARE mapping:" + mapping);
     if (mapping != null) {
       field = mapping.getField(req.getParameter(REQ_PARAM_TERM));
-      System.out.println("PREPARE field:" + field);
       if (field != null) {
         notFound = false;
         property = mapping.getExtension().getProperty(field.getTerm());
@@ -98,13 +98,14 @@ public class TranslationAction extends ManagerBaseAction {
       reloadSourceValues();
       saveResource();
     } catch (SourceException e) {
+      log.error("Cant inspect source values", e);
       addActionError(e.getMessage());
     }
     return SUCCESS;
   }
 
   private void reloadSourceValues() throws SourceException {
-    Map<String, String> tmap = new HashMap<String, String>();
+    tmap = new TreeMap<String, String>();
     // reload new values
     for (String val : sourceManager.inspectColumn(mapping.getSource(), field.getIndex(), 1000)) {
       tmap.put(val, null);
@@ -118,17 +119,21 @@ public class TranslationAction extends ManagerBaseAction {
         }
       }
     }
-    // put map back to field
-    field.setTranslation(tmap);
 
     addActionMessage("Reloaded " + tmap.size() + " distinct values from source");
   }
 
   @Override
   public String save() throws IOException {
+    // put map back to field
+    field.setTranslation(tmap);
     // save entire resource config
     saveResource();
     return SUCCESS;
+  }
+
+  public void setTmap(TreeMap<String, String> tmap) {
+    this.tmap = tmap;
   }
 
 }

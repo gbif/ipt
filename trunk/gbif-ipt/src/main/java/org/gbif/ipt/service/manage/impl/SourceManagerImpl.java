@@ -80,7 +80,11 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     }
 
     public Object next() {
-      return reader.next()[column];
+      String[] row = reader.next();
+      if (row == null || row.length < column) {
+        return null;
+      }
+      return row[column];
     }
 
     public void remove() {
