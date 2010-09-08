@@ -9,6 +9,7 @@ import org.gbif.dwc.text.ArchiveWriter;
 import org.gbif.file.CompressionUtil;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.ExtensionMapping;
+import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.manage.SourceManager;
 
@@ -58,11 +59,11 @@ public class GenerateDwca implements ReportingTask<Integer> {
     af.setId(buildField(null, 0, null));
 
     // build list of fields for the new data file and keep it in the archive file
-    List<ArchiveField> newColumns = new ArrayList<ArchiveField>();
+    List<PropertyMapping> newColumns = new ArrayList<PropertyMapping>();
     // get maximum column index to check incoming rows for correctness
     int maxColumnIndex = mapping.getIdColumn() == null ? -1 : mapping.getIdColumn();
     int linesWithWrongColumnNumber = 0;
-    for (ArchiveField f : mapping.getFields()) {
+    for (PropertyMapping f : mapping.getFields()) {
       Integer idx = null;
       if (f.getIndex() != null) {
         newColumns.add(f);
@@ -101,8 +102,12 @@ public class GenerateDwca implements ReportingTask<Integer> {
           row[0] = in[mapping.getIdColumn()];
         }
         int idx = 1;
-        for (ArchiveField f : newColumns) {
+        for (PropertyMapping f : newColumns) {
           String val = in[f.getIndex()];
+          // translate value?
+          if (f.getTranslation() != null && f.getTranslation().containsKey(val)) {
+            val = f.getTranslation().get(val);
+          }
           if (f.getType() != null) {
             if (f.getType() == DataType.date) {
               // TODO: parse date type with mapping date format

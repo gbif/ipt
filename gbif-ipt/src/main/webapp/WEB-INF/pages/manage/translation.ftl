@@ -5,13 +5,36 @@
 $(document).ready(function(){
 	initHelp();
 	$('.confirm').jConfirmAction({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
-});   
+	$("table input").focus(function() {
+		$(this).parent().parent().addClass("highlight");
+		<#-- use vocabulary -->
+		<#if true>
+		$("#vocabulary")
+		</#if>
+	});
+	$("table input").blur(function() {
+		$(this).parent().parent().removeClass("highlight")
+		<#-- use vocabulary -->
+		<#if true>
+		</#if>
+	});
+});  
 </script>
 <style>
 	img.vocabImg {
 		top: 2px !important;
 		position: relative;
 		padding: 0px 5px;
+	}
+	.highlight {
+		background-color: #effad7;
+	}
+	th {
+		text-align: left;
+	}
+	#vocabulary {
+		display: none;
+		position: absolute;
 	}
 </style>
 <#include "/WEB-INF/pages/inc/menu.ftl">
@@ -36,7 +59,7 @@ The list of distinct values found in your source is generated the first time for
 </#if>			
 
 
-<h2>Translation Map</h2>
+
 <form class="topForm" action="translation.do" method="post">
   	<input type="hidden" name="r" value="${resource.shortname}" />
   	<input type="hidden" name="term" value="${property.qualname}" />
@@ -49,11 +72,19 @@ The list of distinct values found in your source is generated the first time for
  	<a href="mapping.do?r=${resource.shortname}&id=${property.extension.rowType}"><button><@s.text name="button.cancel"/></button></a>
   </div>
   
-<table>                               
+<table id="translation">                               
+  <colgroup>
+    <col width="400">
+    <col width="400">
+  </colgroup>
+<tr>
+ <th>Source Value</th>
+ <th>Translated Value</th>
+</tr>     
 <#list tmap?keys as k>	
 <tr>
  <td>${k}</td>
- <td>${tmap[k]!}</td>
+ <td><input type="text" name="tmap['${k}']" size="50" value="${tmap.get(k)!}"/></td>
 </tr>     
 </#list>
 </table>

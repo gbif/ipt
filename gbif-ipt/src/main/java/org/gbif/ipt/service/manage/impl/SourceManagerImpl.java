@@ -415,7 +415,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     try {
       iter = iterSourceColumn(source, column);
       // get distinct values
-      while (iter.hasNext() && (max < 1 || values.size() <= max)) {
+      while (iter.hasNext() && (max < 1 || values.size() < max)) {
         Object obj = iter.next();
         if (obj != null) {
           String val = obj.toString();
