@@ -16,6 +16,7 @@
 
 package org.gbif.ipt.action.manage;
 
+import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;
 import org.gbif.ipt.model.PropertyMapping;
@@ -24,10 +25,12 @@ import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.manage.SourceManager;
 
 import com.google.inject.Inject;
+import com.google.inject.servlet.SessionScoped;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.TreeMap;
 
 /**
@@ -35,6 +38,38 @@ import java.util.TreeMap;
  * 
  */
 public class TranslationAction extends ManagerBaseAction {
+  @SessionScoped
+  static class Translation {
+    private String rowType;
+    private ConceptTerm term;
+    private TreeMap<String, String> tmap;
+
+    public Map<String, String> getPersistentMap() {
+      Map<String, String> m = new HashMap<String, String>();
+      for (String key : tmap.keySet()) {
+        if (tmap.get(key) != null && !tmap.get(key).equals("") && !tmap.get(key).equals(key)) {
+          m.put(key, tmap.get(key));
+        }
+      }
+      return m;
+    }
+
+    public TreeMap<String, String> getTmap() {
+      return tmap;
+    }
+
+    public boolean isLoaded(String rowType, ConceptTerm term) {
+      return (this.rowType != null && this.rowType.equals(rowType) && this.term != null && this.term.equals(term) && tmap != null);
+    }
+
+    public void setTmap(String rowType, ConceptTerm term, TreeMap<String, String> tmap) {
+      this.tmap = tmap;
+      this.rowType = rowType;
+      this.term = term;
+    }
+
+  }
+
   @Inject
   private ExtensionManager extensionManager;
   @Inject
@@ -43,11 +78,12 @@ public class TranslationAction extends ManagerBaseAction {
   private static final String REQ_PARAM_TERM = "term";
   private static final String REQ_PARAM_MAPPING = "mapping";
   // config
-  private Set<String> values;
   private PropertyMapping field;
   private ExtensionProperty property;
   private ExtensionMapping mapping;
-  private TreeMap<String, String> tmap;
+
+  @Inject
+  private Translation trans;
 
   public TranslationAction() {
     super();
@@ -68,12 +104,8 @@ public class TranslationAction extends ManagerBaseAction {
     return property;
   }
 
-  public TreeMap<String, String> getTmap() {
-    return tmap;
-  }
-
-  public Set<String> getValues() {
-    return values;
+  public Map<String, String> getTmap() {
+    return trans.getTmap();
   }
 
   @Override
@@ -86,7 +118,7 @@ public class TranslationAction extends ManagerBaseAction {
       if (field != null) {
         notFound = false;
         property = mapping.getExtension().getProperty(field.getTerm());
-        if (field.getTranslation() == null || field.getTranslation().isEmpty()) {
+        if (!trans.isLoaded(mapping.getExtension().getRowType(), field.getTerm())) {
           reloadSourceValues();
         }
       }
@@ -96,7 +128,6 @@ public class TranslationAction extends ManagerBaseAction {
   public String reload() {
     try {
       reloadSourceValues();
-      saveResource();
     } catch (SourceException e) {
       log.error("Cant inspect source values", e);
       addActionError(e.getMessage());
@@ -105,35 +136,35 @@ public class TranslationAction extends ManagerBaseAction {
   }
 
   private void reloadSourceValues() throws SourceException {
-    tmap = new TreeMap<String, String>();
+    trans.setTmap(this.mapping.getExtension().getRowType(), property, new TreeMap<String, String>());
     // reload new values
     for (String val : sourceManager.inspectColumn(mapping.getSource(), field.getIndex(), 1000)) {
-      tmap.put(val, null);
+      trans.getTmap().put(val, null);
     }
     // keep existing translations
     if (field.getTranslation() != null) {
       for (Entry<String, String> entry : field.getTranslation().entrySet()) {
         // only keep entries with values mapped that exist in the newly reloaded map
-        if (entry.getValue() != null && tmap.containsKey(entry.getKey())) {
-          tmap.put(entry.getKey(), entry.getValue());
+        if (entry.getValue() != null && trans.getTmap().containsKey(entry.getKey())) {
+          trans.getTmap().put(entry.getKey(), entry.getValue());
         }
       }
     }
 
-    addActionMessage("Reloaded " + tmap.size() + " distinct values from source");
+    addActionMessage("Reloaded " + trans.getTmap().size() + " distinct values from source");
   }
 
   @Override
   public String save() throws IOException {
-    // put map back to field
-    field.setTranslation(tmap);
+    // put map with non empty values back to field
+    field.setTranslation(trans.getPersistentMap());
     // save entire resource config
     saveResource();
     return SUCCESS;
   }
 
   public void setTmap(TreeMap<String, String> tmap) {
-    this.tmap = tmap;
+    this.trans.tmap = tmap;
   }
 
 }
