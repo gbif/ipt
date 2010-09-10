@@ -158,6 +158,18 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     cfg.setProperty(AppConfig.ANALYTICS_GBIF, Boolean.toString(useGbifAnalytics));
   }
 
+  public void setIptLocation(Double lat, Double lon) throws InvalidConfigException {
+    // TODO validate coordinate
+    if (lat != null && lon != null) {
+      cfg.setProperty(AppConfig.IPT_LATITUDE, Double.toString(lat));
+      cfg.setProperty(AppConfig.IPT_LONGITUDE, Double.toString(lon));
+    } else {
+      cfg.setProperty(AppConfig.IPT_LATITUDE, "");
+      cfg.setProperty(AppConfig.IPT_LONGITUDE, "");
+    }
+
+  }
+
   public boolean setupComplete() {
     if (dataDir.isConfigured()) {
       if (cfg.getRegistryType() != null && !userManager.list(Role.Admin).isEmpty()) {
