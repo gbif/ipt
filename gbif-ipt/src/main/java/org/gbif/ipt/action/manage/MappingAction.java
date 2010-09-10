@@ -109,6 +109,10 @@ public class MappingAction extends ManagerBaseAction {
     return peek;
   }
 
+  public Map<String, Map<String, String>> getVocabTerms() {
+    return vocabTerms;
+  }
+
   @Override
   public void prepare() throws Exception {
     super.prepare();

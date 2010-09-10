@@ -23,6 +23,12 @@
     </#if>  
     <docs>http://cyber.law.harvard.edu/rss/rss.html</docs>
     <ttl>15</ttl>
+    <#if cfg.hasLocation()>
+    <geo:Point>
+      <geo:lat>${cfg.latitude?c}</geo:lat>
+      <geo:long>${cfg.longitude?c}</geo:long>
+    </geo:Point>
+    </#if>
  	<#list resources as res>
     <item>
       <title>${res.title!}</title>

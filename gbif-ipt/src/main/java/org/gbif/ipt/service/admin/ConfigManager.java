@@ -104,6 +104,8 @@ public interface ConfigManager {
    */
   public void setGbifAnalytics(boolean useGbifAnalytics) throws InvalidConfigException;
 
+  public void setIptLocation(Double lat, Double lon) throws InvalidConfigException;
+
   /**
    * @return true if the basic setup routine is completed, false otherwise
    */

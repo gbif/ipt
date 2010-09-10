@@ -29,6 +29,8 @@ public class ConfigAction extends POSTAction {
   protected Boolean debug;
   protected Boolean analyticsGbif;
   protected String analyticsKey;
+  protected Double latitude;
+  protected Double longitude;
 
   public Boolean getAnalyticsGbif() {
     return cfg.isGbifAnalytics();
@@ -44,6 +46,14 @@ public class ConfigAction extends POSTAction {
 
   public Boolean getDebug() {
     return cfg.debug();
+  }
+
+  public Double getLatitude() {
+    return cfg.getLatitude();
+  }
+
+  public Double getLongitude() {
+    return cfg.getLongitude();
   }
 
   /**
@@ -104,6 +114,16 @@ public class ConfigAction extends POSTAction {
       }
     }
 
+    // IPT lat/lon
+    if (latitude != null && longitude != null) {
+      try {
+        configManager.setIptLocation(latitude, longitude);
+      } catch (InvalidConfigException e) {
+        addActionError(getText("admin.config.location.error"));
+        return INPUT;
+      }
+    }
+
     try {
       configManager.saveConfig();
     } catch (InvalidConfigException e) {
@@ -130,6 +150,14 @@ public class ConfigAction extends POSTAction {
 
   public void setDebug(Boolean debug) {
     this.debug = debug;
+  }
+
+  public void setLatitude(Double latitude) {
+    this.latitude = latitude;
+  }
+
+  public void setLongitude(Double longitude) {
+    this.longitude = longitude;
   }
 
 }

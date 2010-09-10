@@ -35,6 +35,8 @@ public class AppConfig {
   public static final String DEBUG = "debug";
   public static final String ANALYTICS_GBIF = "analytics.gbif";
   public static final String ANALYTICS_KEY = "analytics.key";
+  public static final String IPT_LATITUDE = "location.lat";
+  public static final String IPT_LONGITUDE = "location.lon";
   private static final String PRODUCTION_TYPE_LOCKFILE = ".gbifreg";;
   private Properties properties = new Properties();
   private Logger log = Logger.getLogger(this.getClass());
@@ -74,6 +76,22 @@ public class AppConfig {
     return base;
   }
 
+  public Double getLatitude() {
+    try {
+      return Double.valueOf(properties.getProperty(IPT_LATITUDE));
+    } catch (NumberFormatException e) {
+      return null;
+    }
+  }
+
+  public Double getLongitude() {
+    try {
+      return Double.valueOf(properties.getProperty(IPT_LONGITUDE));
+    } catch (NumberFormatException e) {
+      return null;
+    }
+  }
+
   public String getProperty(String key) {
     return properties.getProperty(key);
   }
@@ -107,6 +125,13 @@ public class AppConfig {
 
   public String getVersion() {
     return properties.getProperty("dev.version");
+  }
+
+  public boolean hasLocation() {
+    if (getLongitude() != null && getLatitude() != null) {
+      return true;
+    }
+    return false;
   }
 
   public boolean isGbifAnalytics() {
