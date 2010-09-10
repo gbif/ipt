@@ -64,7 +64,7 @@ By default a resource is private to the managers. Once published to GBIF you can
       	<div class="details">
       		<table>
           		<tr><th>Keywords</th><td>${resource.eml.subject!}</td></tr>
-          		<tr><th>Taxon Coverage</th><td><#list resource.eml.taxonomicCoverages as k>${k.taxonKeyword.scientificName!k.taxonKeyword.commonName!}<#if !k_has_next>; </#if></#list></td></tr>
+          		<tr><th>Taxon Coverage</th><td><#list resource.eml.taxonomicCoverages as tc><#list tc.taxonKeywords as k>${k.scientificName!k.commonName!}<#if !k_has_next>; </#if></#list></#list></td></tr>
           		<tr><th>Spatial Coverage</th><td><#list resource.eml.geospatialCoverages as geo><#list geo.keywords as k>${k!}<#if !k_has_next>;</#if> </#list></#list></td></tr>
       		</table>
       	</div>

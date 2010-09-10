@@ -22,6 +22,7 @@ import org.gbif.ipt.model.ExtensionProperty;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.service.admin.ExtensionManager;
+import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.SourceManager;
 
 import com.google.inject.Inject;
@@ -30,8 +31,10 @@ import org.apache.commons.lang.xwork.StringUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -46,12 +49,15 @@ public class MappingAction extends ManagerBaseAction {
   private ExtensionManager extensionManager;
   @Inject
   private SourceManager sourceManager;
+  @Inject
+  private VocabulariesManager vocabManager;
   // config
   private ExtensionMapping mapping;
   private String source;
   private List<String> columns;
   private List<String[]> peek;
   private List<PropertyMapping> fields;
+  private Map<String, Map<String, String>> vocabTerms = new HashMap<String, Map<String, String>>();
 
   private void automap() {
     int automapped = 0;
@@ -122,6 +128,11 @@ public class MappingAction extends ManagerBaseAction {
     } else {
       fields = new ArrayList<PropertyMapping>(mapping.getExtension().getProperties().size());
       for (ExtensionProperty p : mapping.getExtension().getProperties()) {
+        // uses a vocabulary?
+        if (p.getVocabulary() != null) {
+          vocabTerms.put(p.getVocabulary().getUri(),
+              vocabManager.getI18nVocab(p.getVocabulary().getUri(), getLocaleLanguage()));
+        }
         // mapped already?
         PropertyMapping f = mapping.getField(p.getQualname());
         if (f == null) {
