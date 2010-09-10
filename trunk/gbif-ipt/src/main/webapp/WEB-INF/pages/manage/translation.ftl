@@ -33,7 +33,7 @@ $(document).ready(function(){
 		text-align: left;
 	}
 	#vocabulary {
-		display: none;
+		//display: none;
 		position: absolute;
 	}
 </style>
@@ -98,10 +98,11 @@ The list of distinct values found in your source is generated the first time for
   </div>
 </form>
 
-<#if property.vocabulary?exists>	  		
+
+<#if (vocabTerms?size>0)>	  		
 <select id="vocabulary">
-<#list property.vocabulary.concepts as c>
-  <option>${c.identifier}</option>
+<#list vocabTerms?keys as code>
+  <option value="${code}">${vocabTerms[code]}</option>
 </#list>
 </select>
 </#if>

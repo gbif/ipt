@@ -22,6 +22,7 @@ import org.gbif.ipt.model.ExtensionProperty;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.service.SourceException;
 import org.gbif.ipt.service.admin.ExtensionManager;
+import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.SourceManager;
 
 import com.google.inject.Inject;
@@ -74,6 +75,8 @@ public class TranslationAction extends ManagerBaseAction {
   private ExtensionManager extensionManager;
   @Inject
   private SourceManager sourceManager;
+  @Inject
+  private VocabulariesManager vocabManager;
   //
   private static final String REQ_PARAM_TERM = "term";
   private static final String REQ_PARAM_MAPPING = "mapping";
@@ -81,6 +84,7 @@ public class TranslationAction extends ManagerBaseAction {
   private PropertyMapping field;
   private ExtensionProperty property;
   private ExtensionMapping mapping;
+  private Map<String, String> vocabTerms = new HashMap<String, String>();
 
   @Inject
   private Translation trans;
@@ -108,6 +112,10 @@ public class TranslationAction extends ManagerBaseAction {
     return trans.getTmap();
   }
 
+  public Map<String, String> getVocabTerms() {
+    return vocabTerms;
+  }
+
   @Override
   public void prepare() throws Exception {
     super.prepare();
@@ -118,6 +126,9 @@ public class TranslationAction extends ManagerBaseAction {
       if (field != null) {
         notFound = false;
         property = mapping.getExtension().getProperty(field.getTerm());
+        if (property.getVocabulary() != null) {
+          vocabTerms = vocabManager.getI18nVocab(property.getVocabulary().getUri(), getLocaleLanguage());
+        }
         if (!trans.isLoaded(mapping.getExtension().getRowType(), field.getTerm())) {
           reloadSourceValues();
         }
