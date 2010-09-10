@@ -1,5 +1,9 @@
 <?xml version="1.0"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:ipt="http://ipt.gbif.org/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#">
+<rss version="2.0" 
+	xmlns:foaf="http://xmlns.com/foaf/0.1/" 
+	xmlns:ipt="http://ipt.gbif.org/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#">
 <#escape x as x?xml>
   <channel>
     <title>${ipt.name!}</title>
@@ -23,13 +27,18 @@
     <item>
       <title>${res.title!}</title>
       <link>${cfg.getResourceUrl(res.shortname)}</link>
-      <description>${res.description!} &lt;a href="${cfg.getResourceEmlUrl(res.shortname)}"&gt;EML&lt;/a&gt;</description>      
-      <ipt:emlLink>${cfg.getResourceEmlUrl(res.shortname)}</ipt:emlLink>
+      <description>${res.description!} &lt;a href="${cfg.getResourceEmlUrl(res.shortname)}"&gt;EML&lt;/a&gt;</description>
+      <author>${res.creator.email}</author>
+      <#if res.lastPublished??>      
+      <ipt:eml>${cfg.getResourceEmlUrl(res.shortname)}</ipt:eml>
+	  <dc:publisher>${res.eml.contact.firstName!} ${res.eml.contact.lastName!} ${res.eml.contact.organisation!}<#if res.eml.contact.email??>&lt;${res.eml.contact.email}&gt;</#if></dc:publisher>
+	  <dc:creator>${res.eml.getResourceCreator().firstName!} ${res.eml.getResourceCreator().lastName!} ${res.eml.getResourceCreator().organisation!}<#if res.eml.getResourceCreator().email??>&lt;${res.eml.getResourceCreator().email}&gt;</#if></dc:creator>
+       <#if (res.recordsPublished>0)>      
+      <ipt:dwca>${cfg.getResourceArchiveUrl(res.shortname)}</ipt:dwca>
+      </#if>
+       </#if>
 	  <#if res.link??>
-	  <ipt:homeLink>${res.link}</ipt:homeLink>
-	  </#if>
-	  <#if res.contactName??>
-	  <ipt:contact>${res.contactName} <#if res.contactEmail??>&lt;${res.contactEmail}&gt;</#if></ipt:contact>
+	  <foaf:homepage>${res.link}</foaf:homepage>
 	  </#if>
       <#if res.modified??>
       <pubDate>${res.modified?string("EEE, dd MMM yyyy HH:mm:ss Z")}</pubDate>

@@ -8,6 +8,7 @@
 		<script type="text/javascript" src="${baseURL}/js/jquery.cookie.min.js"></script>
 		<script type="text/javascript" src="${baseURL}/js/json2.min.js"></script>
 		<script type="text/javascript" src="${baseURL}/js/global.js"></script>
+	    <link href="${baseURL}/rss.do" title="Latest Resources" rel="alternate" type="application/rss+xml" />
  		
 [#-- GOOGLE ANALYTICS - asynchroneous: http://code.google.com/apis/analytics/docs/tracking/asyncTracking.html --]
 [#if cfg.gbifAnalytics || (cfg.analyticsKey!"")?length>1] 

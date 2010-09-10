@@ -122,7 +122,16 @@ $(document).ready(function(){
 				  <option value="${col_index}" <#if (field.index!-1)==col_index> selected="selected"</#if>>${col}</option>
 				</#list>
 				</select>
-				<input id="fVal${field_index}" name="fields[${field_index}].defaultValue" value="${field.defaultValue!}"/>  
+		      	<#if p.vocabulary?exists>
+					<select id="fVal${field_index}" name="fields[${field_index}].defaultValue">
+					  <option value="" <#if !field.defaultValue??> selected="selected"</#if>></option>
+					<#list vocabTerms[p.vocabulary.uri]?keys as code>
+					  <option value="${code}" <#if (field.defaultValue!"")==code> selected="selected"</#if>>${vocabTerms[p.vocabulary.uri][code]}</option>
+					</#list>
+					</select>
+		      	<#else>
+  					<input id="fVal${field_index}" name="fields[${field_index}].defaultValue" value="${field.defaultValue!}"/>  
+		      	</#if>		
 	      	</div>
 	      	<#if field.index?exists>
 	      	<div>

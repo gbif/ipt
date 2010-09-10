@@ -21,6 +21,7 @@ import org.gbif.metadata.eml.JGTICuratorialUnit;
 import org.gbif.metadata.eml.JGTICuratorialUnitType;
 import org.gbif.metadata.eml.KeywordSet;
 import org.gbif.metadata.eml.PhysicalData;
+import org.gbif.metadata.eml.TaxonKeyword;
 import org.gbif.metadata.eml.TaxonomicCoverage;
 import org.gbif.metadata.eml.TemporalCoverage;
 import org.gbif.metadata.eml.TemporalCoverageType;
@@ -351,17 +352,13 @@ public class EmlValidator extends BaseValidator {
       } else if (part == null || part.equalsIgnoreCase("taxcoverage")) {
         int cont = 0;
         for (TaxonomicCoverage tc : eml.getTaxonomicCoverages()) {
-          if (!exists(tc.getDescription(), 5)) {
-            action.addFieldError("eml.taxonomicCoverages[" + cont + "].description",
-                action.getText("validation.required"));
-          }
-          if (!exists(tc.getTaxonKeyword().getScientificName())) {
-            action.addFieldError("eml.taxonomicCoverages[" + cont + "].taxonKeyword.scientificName",
-                action.getText("validation.required"));
-          }
-          if (!exists(tc.getTaxonKeyword().getCommonName())) {
-            action.addFieldError("eml.taxonomicCoverages[" + cont + "].taxonKeyword.commonName",
-                action.getText("validation.required"));
+          int kw = 0;
+          for (TaxonKeyword k : tc.getTaxonKeywords()) {
+            if (!exists(k.getScientificName())) {
+              action.addFieldError("eml.taxonomicCoverages[" + cont + "].taxonKeywords[" + kw + "].scientificName",
+                  action.getText("validation.required"));
+            }
+            kw++;
           }
           cont++;
         }
