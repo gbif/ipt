@@ -52,9 +52,10 @@ public interface VocabulariesManager {
    * 
    * @param uri the identifier for the vocabulary
    * @param lang a 2 character iso language code, e.g. DE
+   * @param sortAlphabetically if true sort map values alphabetically, otherwise use native ordering
    * @return
    */
-  public Map<String, String> getI18nVocab(String uri, String lang);
+  public Map<String, String> getI18nVocab(String uri, String lang, boolean sortAlphabetically);
 
   /**
    * Lists all locally known vocabularies
