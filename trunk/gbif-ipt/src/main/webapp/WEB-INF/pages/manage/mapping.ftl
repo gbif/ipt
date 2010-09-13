@@ -136,11 +136,19 @@ $(document).ready(function(){
 	      	</div>
 	      	<#if field.index?exists>
 	      	<div>
-	      		<em>Source Sample</em>
-	      		<a href="translation.do?r=${resource.shortname}&mapping=${p.extension.rowType}&term=${p.qualname}">Translation (${(field.translation?size)!0})</a>
-	      		:	      		
+	      		<em>Source Sample</em>:	      		
 	      		<#assign first=true/>
 	      		<#list peek as row><#if row[field.index]?has_content><#if !first> | </#if><#assign first=false/>${row[field.index]}</#if></#list>
+	      	</div>
+	      	<div>
+	      		<em>Translation</em>:
+	      		<a href="translation.do?r=${resource.shortname}&mapping=${p.extension.rowType}&term=${p.qualname}">
+	      		<#if (((field.translation?size)!0)>0)>
+	      		${(field.translation?size)!0} terms
+	      		<#else>
+	      		<button><@s.text name="button.add"/></button>
+	      		</#if>
+	      		</a>
 	      	</div>
 	      	</#if>
 	  </div>
