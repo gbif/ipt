@@ -37,6 +37,7 @@ $(document).ready(function(){
 		position: absolute;
 	}
 </style>
+ <#assign currentMenu = "manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 

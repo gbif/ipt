@@ -1,5 +1,6 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
-	<title><@s.text name="admin.vocabulary.title"/></title>
+ <title><@s.text name="admin.vocabulary.title"/></title>
+ <#assign currentMenu = "manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
 <h1>${vocabulary.title}</h1>

@@ -1,5 +1,6 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 	<title><@s.text name="manage.resource.create.title"/></title>
+ <#assign currentMenu = "manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
