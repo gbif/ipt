@@ -16,6 +16,8 @@
 
 package org.gbif.ipt.action.manage;
 
+import org.gbif.file.CompressionUtil;
+import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.config.JdbcSupport;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.Source.FileSource;
@@ -30,6 +32,7 @@ import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,6 +44,8 @@ public class SourceAction extends ManagerBaseAction {
   private SourceManager sourceManager;
   @Inject
   private JdbcSupport jdbcSupport;
+  @Inject
+  private DataDir dataDir;
   // config
   private Source source;
   private String rdbms;
@@ -54,25 +59,43 @@ public class SourceAction extends ManagerBaseAction {
   public String add() throws IOException {
     // new one
     if (file != null) {
-      // uploaded a new file
-      // create a new file source
-      boolean replaced = resource.getSource(fileFileName) != null;
-      try {
-        source = sourceManager.add(resource, file, fileFileName);
-        saveResource();
-        id = source.getName();
-        if (replaced) {
-          addActionMessage("Replacing existing source " + source.getName());
-        } else {
-          addActionMessage("Added a new file source");
+      // uploaded a new file. Is it compressed?
+      System.out.println(fileContentType);
+      if (StringUtils.endsWithIgnoreCase(fileContentType, "zip") // application/zip
+          || StringUtils.endsWithIgnoreCase(fileContentType, "gzip")) { // application/x-gzip
+        File tmpDir = dataDir.tmpDir();
+        List<File> files = CompressionUtil.decompressFile(tmpDir, file);
+        addActionMessage(files.size() + " compressed files found, adding all.");
+        // import each file. The last file will become the id parameter,
+        // so the new page opens with that source
+        for (File f : files) {
+          addTextFile(f, f.getName());
         }
-      } catch (ImportException e) {
-        // even though we have problems with this source we'll keep it for manual corrections
-        log.error("Source error: " + e.getMessage(), e);
-        addActionError("Source error: " + e.getMessage());
+      } else {
+        // treat as is - hopefully a simple text data file
+        addTextFile(file, fileFileName);
       }
     }
     return INPUT;
+  }
+
+  private void addTextFile(File f, String filename) {
+    // create a new file source
+    boolean replaced = resource.getSource(filename) != null;
+    try {
+      source = sourceManager.add(resource, f, filename);
+      saveResource();
+      id = source.getName();
+      if (replaced) {
+        addActionMessage("Replaced existing source >>" + source.getName() + "<<");
+      } else {
+        addActionMessage("Added new file source >>" + source.getName() + "<<");
+      }
+    } catch (ImportException e) {
+      // even though we have problems with this source we'll keep it for manual corrections
+      log.error("Cannot add source " + filename + ": " + e.getMessage(), e);
+      addActionError("Cannot add source " + filename + ": " + e.getMessage());
+    }
   }
 
   @Override

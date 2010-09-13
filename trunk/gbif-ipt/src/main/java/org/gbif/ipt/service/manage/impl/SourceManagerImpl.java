@@ -35,6 +35,7 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
 
 import com.google.inject.Inject;
+import com.google.inject.internal.Nullable;
 
 import org.apache.commons.io.FileUtils;
 
@@ -166,38 +167,40 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
    * (non-Javadoc)
    * @see org.gbif.ipt.service.manage.ResourceConfigManager#add(org.gbif.ipt.model.ResourceConfiguration, java.io.File)
    */
-  public FileSource add(Resource resource, File file, String sourceName) throws ImportException {
+  public FileSource add(Resource resource, File file, @Nullable String sourceName) throws ImportException {
     return addOneFile(resource, file, sourceName);
   }
 
-  private FileSource addOneFile(Resource resource, File file, String sourceName) throws ImportException {
+  private FileSource addOneFile(Resource resource, File file, @Nullable String sourceName) throws ImportException {
     FileSource src = new FileSource();
     if (sourceName == null) {
       sourceName = file.getName();
     }
     src.setName(sourceName);
     src.setResource(resource);
-    // copy file
-    File ddFile = dataDir.sourceFile(resource, src);
+    System.out.println("ADDING SOURCE " + sourceName + " FROM " + file.getAbsolutePath());
     try {
-      FileUtils.copyFile(file, ddFile);
-    } catch (IOException e1) {
-      throw new ImportException(e1);
-    }
-    src.setFile(ddFile);
-    src.setLastModified(new Date());
-    try {
-      // add to resource, allow overwriting existing ones
-      // if the file is uploaded not for the first time
-      resource.addSource(src, true);
       // anaylze individual files using the dwca reader
       Archive arch = ArchiveFactory.openArchive(file);
       copyArchiveFileProperties(arch.getCore(), src);
+      // copy file
+      File ddFile = dataDir.sourceFile(resource, src);
+      try {
+        FileUtils.copyFile(file, ddFile);
+      } catch (IOException e1) {
+        throw new ImportException(e1);
+      }
+      src.setFile(ddFile);
+      src.setLastModified(new Date());
+      // add to resource, allow overwriting existing ones
+      // if the file is uploaded not for the first time
+      resource.addSource(src, true);
     } catch (UnsupportedArchiveException e) {
-      log.warn(e.getMessage(), e);
-      // throw new ImportException(e);
+      log.warn(e.getMessage());
+      throw new ImportException(e);
     } catch (IOException e) {
-      log.warn(e.getMessage(), e);
+      log.warn(e.getMessage());
+      throw new ImportException(e);
     } catch (AlreadyExistingException e) {
       throw new ImportException(e);
     }
