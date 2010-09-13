@@ -2,10 +2,13 @@ package org.gbif.ipt.action;
 
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.User;
+import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.validation.UserSupport;
 
 import com.google.inject.Inject;
+
+import org.apache.commons.lang.xwork.StringUtils;
 
 import java.io.IOException;
 
@@ -18,6 +21,10 @@ public class AccountAction extends POSTAction {
   private String email;
   private String password;
   private User user;
+  // to show admin contact
+  private User admin;
+  private String lostPswdEmailSubject;
+  private String lostPswdEmailBody;
 
   @Override
   public String execute() throws Exception {
@@ -28,8 +35,20 @@ public class AccountAction extends POSTAction {
     return super.execute();
   }
 
+  public User getAdmin() {
+    return admin;
+  }
+
   public String getEmail() {
     return email;
+  }
+
+  public String getLostPswdEmailBody() {
+    return lostPswdEmailBody;
+  }
+
+  public String getLostPswdEmailSubject() {
+    return lostPswdEmailSubject;
   }
 
   public String getPassword() {
@@ -45,6 +64,7 @@ public class AccountAction extends POSTAction {
   }
 
   public String login() throws IOException {
+    // login
     if (email != null) {
       User user = userManager.authenticate(email, password);
       if (user != null) {
@@ -64,7 +84,7 @@ public class AccountAction extends POSTAction {
   }
 
   public String logout() {
-    setRedirectUrl();
+    redirectUrl = getBase() + "/";
     session.clear();
     return SUCCESS;
   }
@@ -72,6 +92,11 @@ public class AccountAction extends POSTAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
+    // populate admin user
+    admin = userManager.list(Role.Admin).get(0);
+    lostPswdEmailSubject = getText("login.forgottenpassword.mail.subject");
+    lostPswdEmailBody = getTextWithDynamicArgs("login.forgottenpassword.mail.body", admin.getName(), "",
+        cfg.getBaseURL() + "/admin/users.do");
     if (getCurrentUser() != null) {
       // modify existing user in session
       user = getCurrentUser();
@@ -92,8 +117,10 @@ public class AccountAction extends POSTAction {
   }
 
   public void setEmail(String email) {
+    this.email = StringUtils.trimToNull(email);
     if (email != null) {
-      this.email = email;
+      lostPswdEmailBody = getTextWithDynamicArgs("login.forgottenpassword.mail.body", admin.getName(), this.email,
+          cfg.getBaseURL() + "/admin/user.do?id=" + this.email);
     }
   }
 

@@ -6,7 +6,7 @@
 <h1>[@s.text name="login.title"/]</h1>
 
 [#if email?exists]
-<p>[@s.text name="login.forgottenPassword"/]</p>
+<p>[@s.text name="login.forgottenpassword"/] <a href="mailto:${admin.email}?subject=${lostPswdEmailSubject?url}&Body=${lostPswdEmailBody?url}">${admin.getNameWithEmail()?xml}</a></p>
 [/#if]
 
 <div id="login">

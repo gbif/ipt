@@ -5,6 +5,15 @@
 $(document).ready(function(){
 	initHelp();
 	$('.confirm').jConfirmAction({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
+	$("#peekBtn").click(function(e) {
+		e.preventDefault();
+		$("#modalcontent").load("peek.do?r=${resource.shortname}&id=${id!}");
+		$("#modalbox").show();
+    });
+	$("#modalbox").click(function(e) {
+		e.preventDefault();
+		$("#modalbox").hide();
+    });
 });   
 </script>
 	<style>
@@ -36,7 +45,8 @@ $(document).ready(function(){
 		  		<#else>
 		  		</#if>
 			</table>
-		 	<@s.submit cssClass="small" name="analyze" key="button.analyze"/>
+		 	<@s.submit name="analyze" key="button.analyze"/>
+		 	<@s.submit id="peekBtn" name="peek" key="button.preview"/>
 		</div>
   	</div>
   	<#if source.fieldsTerminatedBy?exists>

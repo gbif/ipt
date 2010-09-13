@@ -55,12 +55,15 @@ public class SourceAction extends ManagerBaseAction {
   private String fileContentType;
   private String fileFileName;
   private boolean analyze = false;
+  // preview
+  private List<String> columns;
+  private List<String[]> peek;
+  private int rows = 10;
 
   public String add() throws IOException {
     // new one
     if (file != null) {
       // uploaded a new file. Is it compressed?
-      System.out.println(fileContentType);
       if (StringUtils.endsWithIgnoreCase(fileContentType, "zip") // application/zip
           || StringUtils.endsWithIgnoreCase(fileContentType, "gzip")) { // application/x-gzip
         File tmpDir = dataDir.tmpDir();
@@ -109,6 +112,10 @@ public class SourceAction extends ManagerBaseAction {
     return SUCCESS;
   }
 
+  public List<String> getColumns() {
+    return columns;
+  }
+
   public FileSource getFileSource() {
     if (source != null && source instanceof FileSource) {
       return (FileSource) source;
@@ -118,6 +125,14 @@ public class SourceAction extends ManagerBaseAction {
 
   public Map<String, String> getJdbcOptions() {
     return jdbcSupport.optionMap();
+  }
+
+  public List<String[]> getPeek() {
+    return peek;
+  }
+
+  public int getPreviewSize() {
+    return rows;
   }
 
   public String getProblem() {
@@ -133,6 +148,15 @@ public class SourceAction extends ManagerBaseAction {
       return (SqlSource) source;
     }
     return null;
+  }
+
+  public String peek() {
+    if (source == null) {
+      return NOT_FOUND;
+    }
+    peek = sourceManager.peek(source, rows);
+    columns = sourceManager.columns(source);
+    return SUCCESS;
   }
 
   @Override
@@ -217,6 +241,10 @@ public class SourceAction extends ManagerBaseAction {
 
   public void setRdbms(String jdbc) {
     this.rdbms = jdbc;
+  }
+
+  public void setRows(int previewSize) {
+    this.rows = previewSize > 0 ? previewSize : 10;
   }
 
   public void setSource(Source source) {

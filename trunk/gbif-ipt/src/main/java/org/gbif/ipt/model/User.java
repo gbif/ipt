@@ -64,6 +64,10 @@ public class User implements Serializable, Cloneable {
     return StringUtils.trimToNull(StringUtils.trimToEmpty(firstname) + " " + StringUtils.trimToEmpty(lastname));
   }
 
+  public String getNameWithEmail() {
+    return StringUtils.trimToNull(getName() + " <" + email + ">");
+  }
+
   public String getPassword() {
     return password;
   }
