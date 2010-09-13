@@ -40,4 +40,4 @@ $(document).ready(function(){
 });
 </script>
 
-[#assign currentMenu = "index"]
+[#assign currentMenu = "home"]

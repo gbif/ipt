@@ -1,5 +1,6 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
  <title><@s.text name="account.title"/></title>
+ <#assign currentMenu = "account"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
 <h1><@s.text name="account.title"/></h1>

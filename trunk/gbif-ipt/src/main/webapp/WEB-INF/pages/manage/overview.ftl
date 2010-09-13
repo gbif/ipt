@@ -30,6 +30,7 @@ $(document).ready(function(){
 });
 </script>
 
+ <#assign currentMenu = "manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
@@ -87,8 +88,10 @@ By default a resource is private to the managers. Once published to GBIF you can
   </div>
   <div class="body">
       	<div>
-			Your data sources for generating a Darwin Core archive. You can upload text files (e.g. csv or tab delimited) or configure SQL views to databases in your local network.
-			To create a new sql source press <em><@s.text name="button.add"/></em>, to (re)upload a file please select the local file before hitting <@s.text name="button.add"/>. 
+			Your data sources for generating a Darwin Core archive. 
+			You can upload delimited text files (e.g. csv, tab or using any other delimiter) either directly or compressed (zip or gzip).
+			Alternatively you can configure SQL views to databases in your local network.
+			To create a new sql source press <@s.text name="button.add"/>, to (re)upload a file please select the local file before hitting <@s.text name="button.add"/>. 
       	</div>
       	<div class="details">
       		<table>
@@ -100,7 +103,7 @@ By default a resource is private to the managers. Once published to GBIF you can
           		 ${src.name} [sql]</th><td>db=${src.database!"..."}, ${src.columns} columns. 
           		</#if>
           		<#if !src.readable><img src="${baseURL}/images/warning.gif" /></#if> 
-          		<a href="source.do?r=${resource.shortname}&id=${src.name}"><button class="small">Edit</button></a>
+          		<a href="source.do?r=${resource.shortname}&id=${src.name}"><button>Edit</button></a>
           		</td></tr>
           	  </#list>
       		</table>
@@ -142,12 +145,12 @@ By default a resource is private to the managers. Once published to GBIF you can
       		<table>
           		<#if resource.core?exists>
           		<tr><th>${resource.core.extension.title}</th><td>${resource.core.fields?size} terms mapped to source ${resource.core.source.name}
-          		<a href="mapping.do?r=${resource.shortname}&id=${resource.core.extension.rowType}"><button class="small">Edit</button></a>
+          		<a href="mapping.do?r=${resource.shortname}&id=${resource.core.extension.rowType}"><button>Edit</button></a>
           		</td></tr>
           		</#if>
       		  <#list resource.extensions as m>
           		<tr><th>${m.extension.title}</th><td>${m.fields?size} terms mapped to source ${(m.source.name)!}
-          		<a href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType}"><button class="small">Edit</button></a>
+          		<a href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType}"><button>Edit</button></a>
           		</td></tr>
           	  </#list>
       		</table>
@@ -286,7 +289,7 @@ By default a resource is private to the managers. Once published to GBIF you can
       		<table>
           		<tr><th>Creator</th><td>${resource.creator.name}, ${resource.creator.email}</td></tr>
           		<#list resource.managers as u>
-          		<tr><th>Manager</th><td>${u.name}, ${u.email} <a class="confirm" href="resource-delmanager.do?r=${resource.shortname}&id=${u.email}"><button class="small">Delete</button></a></td></tr>
+          		<tr><th>Manager</th><td>${u.name}, ${u.email} <a class="confirm" href="resource-delmanager.do?r=${resource.shortname}&id=${u.email}"><button>Delete</button></a></td></tr>
 	    		</#list>
       		</table>
       	</div>

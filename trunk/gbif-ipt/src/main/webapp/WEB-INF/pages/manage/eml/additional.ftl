@@ -5,7 +5,8 @@
 		initHelp();
 	});   
 </script>	
-	<#assign sideMenuEml=true />
+ <#assign sideMenuEml=true />
+ <#assign currentMenu="manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <h1><@s.text name='manage.metadata.additional.title'/>: <em>${resource.title!resource.shortname}</em></h1>
 <p><@s.text name='manage.metadata.additional.intro'/></p>

@@ -51,6 +51,7 @@ $(document).ready(function(){
 });
 </script>	
 	<title><@s.text name="title"/></title>
+ <#assign currentMenu = "admin"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
 <h1><@s.text name="admin.registration.title"/></h1>

@@ -74,34 +74,31 @@ div#topmenu > ul > li.current a {
 	margin: 0px;
 }
    
+   
 div#menu {
 	height: 50px;
-	background-color: #eeeeee;
+	background-color: #eee;
 }
 div#menu ul {
 	padding: 0px;
+    list-style: none;
 }
 div#menu li {
 	width: 144px;
     float: left;
     display: inline;
-    list-style: none;
     margin-left: 5px;
     padding: 0;
     font-size: 12px;
     line-height: 1em;
     margin-top:8px;
-    height: 40px;
+    height: 35px;
     text-align:center;
     font-family: arial, helvetica, verdana, sans-serif;
-    background: transparent url(../images/bkgButton_up.gif) no-repeat;
+	background: #aaa; 
 }
 
-div#menu a,
-div#menu a:link,
-div#menu a:active,
-div#menu a:visited {
-	background: transparent;
+div#menu a{
     display: inline-block;
     /* hide from ie/mac \*/
     display: block;
@@ -111,29 +108,17 @@ div#menu a:visited {
     margin: 0;
     padding: 5px 15px 5px 15px;
     padding-top: 12px;
-	color: #FFF;
 	height: 26px;
 	width: 114px;
+	color: #FFF;
+	background: transparent url(../images/menubtn.gif) no-repeat; 
 }
-div#menu a:hover {
-    text-decoration: none;
-    width: 114px;
-	background: transparent url(../images/bkgButton.gif) no-repeat;
+div#menu li.current{
+	background: #4ea226; 
 }
-div#menu a.current {
-    display: inline-block;
-    /* hide from ie/mac \*/
-    display: block;
-    /* end hide */
-    color: #FFF;
-    font-size: 12px !important;
-}
-div#menu a.current,
-div#menu a.current:link,
-div#menu a.current:active,
-div#menu a.current:visited,
-div#menu a.current:hover {
-	background: transparent url(../images/bkgButton.gif) no-repeat; 
+div#menu li:hover {
+    opacity: 0.8;
+    //background: #077a2d;
 }
 
 div#search {

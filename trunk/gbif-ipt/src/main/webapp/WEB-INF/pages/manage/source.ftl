@@ -21,6 +21,7 @@ $(document).ready(function(){
 		padding-top: 20px;
 	}
 	</style>
+ <#assign currentMenu = "manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
 <h1><@s.text name='manage.source.title'/>: <em>${resource.title!resource.shortname}</em></h1>

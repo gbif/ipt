@@ -8,6 +8,7 @@ $(document).ready(function(){
 })
 });
 </script>	
+ <#assign currentMenu = "admin"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
 <h1><@s.text name="admin.organisation.title"/></h1>

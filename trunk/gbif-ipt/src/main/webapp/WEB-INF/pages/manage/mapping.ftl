@@ -37,6 +37,7 @@ $(document).ready(function(){
 		margin-bottom: 2em !important;
 	}	
 </style>
+ <#assign currentMenu = "manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
 <h1>${mapping.extension.title}</h1>
