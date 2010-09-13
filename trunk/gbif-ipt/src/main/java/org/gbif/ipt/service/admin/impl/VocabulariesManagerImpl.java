@@ -145,18 +145,23 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
    * (non-Javadoc)
    * @see org.gbif.ipt.service.admin.VocabulariesManager#getI18nVocab(java.lang.String, java.lang.String)
    */
-  public Map<String, String> getI18nVocab(String uri, String lang) {
+  public Map<String, String> getI18nVocab(String uri, String lang, boolean sortAlphabetically) {
     Map<String, String> map = new LinkedHashMap<String, String>();
     Vocabulary v = get(uri);
     if (v != null) {
-      List<VocabularyConcept> concepts = v.getConcepts();
-      final String s = lang;
-      Collections.sort(concepts, new Comparator<VocabularyConcept>() {
-        public int compare(VocabularyConcept o1, VocabularyConcept o2) {
-          return (o1.getPreferredTerm(s) == null ? o1.getIdentifier() : o1.getPreferredTerm(s).getTitle()).compareTo((o2.getPreferredTerm(s) == null
-              ? o2.getIdentifier() : o2.getPreferredTerm(s).getTitle()));
-        }
-      });
+      List<VocabularyConcept> concepts;
+      if (sortAlphabetically) {
+        concepts = new ArrayList<VocabularyConcept>(v.getConcepts());
+        final String s = lang;
+        Collections.sort(concepts, new Comparator<VocabularyConcept>() {
+          public int compare(VocabularyConcept o1, VocabularyConcept o2) {
+            return (o1.getPreferredTerm(s) == null ? o1.getIdentifier() : o1.getPreferredTerm(s).getTitle()).compareTo((o2.getPreferredTerm(s) == null
+                ? o2.getIdentifier() : o2.getPreferredTerm(s).getTitle()));
+          }
+        });
+      } else {
+        concepts = v.getConcepts();
+      }
       for (VocabularyConcept c : concepts) {
         VocabularyTerm t = c.getPreferredTerm(lang);
         map.put(c.getIdentifier(), t == null ? c.getIdentifier() : t.getTitle());

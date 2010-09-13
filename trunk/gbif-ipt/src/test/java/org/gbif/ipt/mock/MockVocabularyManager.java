@@ -36,7 +36,7 @@ public class MockVocabularyManager implements VocabulariesManager {
    * (non-Javadoc)
    * @see org.gbif.ipt.service.admin.VocabulariesManager#getI18nVocab(java.lang.String, java.lang.String)
    */
-  public Map<String, String> getI18nVocab(String uri, String lang) {
+  public Map<String, String> getI18nVocab(String uri, String lang, boolean sort) {
     // TODO Auto-generated method stub
     return null;
   }

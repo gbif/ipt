@@ -151,7 +151,7 @@ public class TranslationAction extends ManagerBaseAction {
         notFound = false;
         property = mapping.getExtension().getProperty(field.getTerm());
         if (property.getVocabulary() != null) {
-          vocabTerms = vocabManager.getI18nVocab(property.getVocabulary().getUri(), getLocaleLanguage());
+          vocabTerms = vocabManager.getI18nVocab(property.getVocabulary().getUri(), getLocaleLanguage(), true);
         }
         if (!trans.isLoaded(mapping.getExtension().getRowType(), field.getTerm())) {
           reloadSourceValues();
