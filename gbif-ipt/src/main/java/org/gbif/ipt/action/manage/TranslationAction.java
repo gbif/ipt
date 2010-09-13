@@ -20,6 +20,8 @@ import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;
 import org.gbif.ipt.model.PropertyMapping;
+import org.gbif.ipt.model.Vocabulary;
+import org.gbif.ipt.model.VocabularyConcept;
 import org.gbif.ipt.service.SourceException;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
@@ -92,6 +94,28 @@ public class TranslationAction extends ManagerBaseAction {
   public TranslationAction() {
     super();
     defaultResult = SUCCESS;
+  }
+
+  public String automap() {
+    // try to lookup vocabulary synonyms and terms
+    if (property != null && property.getVocabulary() != null) {
+      Vocabulary vocab = property.getVocabulary();
+      int count = 0;
+      for (String src : trans.getTmap().keySet()) {
+        // only if not yet mapped
+        if (trans.getTmap().get(src) == null) {
+          VocabularyConcept vc = vocab.findConcept(src);
+          if (vc != null) {
+            trans.getTmap().put(src, vc.getIdentifier());
+            count++;
+          }
+        }
+      }
+      addActionMessage("Mapped " + count + " terms based on vocabulary terms");
+    } else {
+      addActionError("Cant find a vocabulary to automap translation");
+    }
+    return SUCCESS;
   }
 
   @Override

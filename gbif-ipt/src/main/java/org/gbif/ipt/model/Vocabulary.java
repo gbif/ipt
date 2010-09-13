@@ -76,6 +76,32 @@ public class Vocabulary implements Comparable {
     return equal(uri, o.uri);
   }
 
+  public VocabularyConcept findConcept(String term) {
+    // try codes
+    for (VocabularyConcept c : concepts) {
+      if (c.getIdentifier().equalsIgnoreCase(term)) {
+        return c;
+      }
+    }
+    // try preferred
+    for (VocabularyConcept c : concepts) {
+      for (VocabularyTerm t : c.getPreferredTerms()) {
+        if (t.getTitle().equalsIgnoreCase(term)) {
+          return c;
+        }
+      }
+    }
+    // try alt
+    for (VocabularyConcept c : concepts) {
+      for (VocabularyTerm t : c.getAlternativeTerms()) {
+        if (t.getTitle().equalsIgnoreCase(term)) {
+          return c;
+        }
+      }
+    }
+    return null;
+  }
+
   public List<VocabularyConcept> getConcepts() {
     return concepts;
   }

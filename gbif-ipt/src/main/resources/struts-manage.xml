@@ -100,6 +100,9 @@
 		<action name="translationReload" class="org.gbif.ipt.action.manage.TranslationAction" method="reload">
 			<result>/WEB-INF/pages/manage/translation.ftl</result>
 		</action>
+		<action name="translationAutomap" class="org.gbif.ipt.action.manage.TranslationAction" method="automap">
+			<result>/WEB-INF/pages/manage/translation.ftl</result>
+		</action>
 		
 	</package>
 </struts>
