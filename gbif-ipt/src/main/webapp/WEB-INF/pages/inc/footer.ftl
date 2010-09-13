@@ -23,5 +23,13 @@
 				</#if>
 			</div>			
 		</div>
+
+<div id="modalbox">
+ <div id="modalback"></div>
+ <div id="modalcontainer">
+   <div id="modalcontent"></div>
+ </div>
+</div>
+
 	</body>
 </html>

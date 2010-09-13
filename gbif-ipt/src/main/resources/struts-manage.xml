@@ -79,7 +79,10 @@
 			<interceptor-ref name="managerStack"/>
 			<result name="input">/WEB-INF/pages/manage/source.ftl</result>
 		</action>
-		
+		<action name="peek" class="org.gbif.ipt.action.manage.SourceAction" method="peek">
+			<interceptor-ref name="ajaxStack"/>
+			<result>/WEB-INF/pages/manage/peek.ftl</result>
+		</action> 
 		<action name="mapping" class="org.gbif.ipt.action.manage.MappingAction">
 			<result name="input">/WEB-INF/pages/manage/mapping.ftl</result>
 			<result name="success" type="redirectAction">

@@ -82,6 +82,10 @@
 				<interceptor-ref name="iptStackWithoutSetup"/>
 			</interceptor-stack>
 			
+			<interceptor-stack name="ajaxStack">
+				<interceptor-ref name="i18nStack"/>
+			</interceptor-stack>
+			
 		</interceptors>
 		
 		<default-interceptor-ref name="portalStack"/>

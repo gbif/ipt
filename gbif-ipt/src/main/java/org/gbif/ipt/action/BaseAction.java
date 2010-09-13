@@ -163,6 +163,10 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
     return textProvider.getTexts(bundleName, getLocale());
   }
 
+  public String getTextWithDynamicArgs(String key, String... args) {
+    return textProvider.getText(this, key, null, args);
+  }
+
   public boolean isAdminRights() {
     User user = getCurrentUser();
     if (user != null && user.hasAdminRights()) {
