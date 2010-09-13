@@ -8,6 +8,7 @@ import org.gbif.ipt.service.SourceException;
 import org.gbif.ipt.service.manage.impl.SourceManagerImpl;
 
 import com.google.inject.ImplementedBy;
+import com.google.inject.internal.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,10 +35,10 @@ public interface SourceManager {
    * 
    * @param config the resource configuration to be added to
    * @param file the source file to be added to this resource
-   * @param sourceName the preferred sourcename
+   * @param sourceName the preferred sourcename. If null the filename will be used
    * @throws ImportException if the file cant be copied or read
    */
-  public FileSource add(Resource resource, File file, String sourceName) throws ImportException;
+  public FileSource add(Resource resource, File file, @Nullable String sourceName) throws ImportException;
 
   /**
    * Checks if a source is readable and analyzes its file size, number of rows and other source properties which will be
