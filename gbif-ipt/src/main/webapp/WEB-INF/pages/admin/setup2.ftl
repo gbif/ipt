@@ -1,16 +1,10 @@
-<#include "/WEB-INF/pages/inc/header.ftl">
-	<title><@s.text name="admin.config.setup2.title"/></title>
-<#include "/WEB-INF/pages/inc/menu.ftl">
+<#include "/WEB-INF/pages/inc/header_setup.ftl">
 
 <h1><@s.text name="admin.config.setup2.title"/></h1>
-
 <p><@s.text name="admin.config.setup2.welcome"/></p>
-
-
 
 <#include "/WEB-INF/pages/macros/forms.ftl">
 <@s.form cssClass="topForm half" action="setup2.do" method="post">
-
 
 	<@input name="user.email" />  
 	<@input name="user.firstname" />  

@@ -103,6 +103,14 @@ public class SetupAction extends BaseAction implements ServletContextAware {
     return production;
   }
 
+  @Override
+  public void prepare() throws Exception {
+    super.prepare();
+    for (String key : session.keySet()) {
+      System.out.println("SESSION " + key + " -> " + session.get(key));
+    }
+  }
+
   public void setBaseURL(String baseUrlVerbatim) {
     this.baseURL = baseUrlVerbatim;
   }
@@ -137,19 +145,20 @@ public class SetupAction extends BaseAction implements ServletContextAware {
           addActionMessage(getText("admin.config.setup.datadir.reused"));
         }
       } catch (InvalidConfigException e) {
-        log.debug("Failed to setup datadir: " + e.getMessage(), e);
+        log.warn("Failed to setup datadir: " + e.getMessage(), e);
         addActionError(getText("admin.config.setup.datadir.error"));
-        addActionError(e.getMessage());
       }
     }
     if (dataDir.isConfigured()) {
       // the data dir is already/now configured, skip the first setup step
+      session.put("DONE", "carla");
       return SUCCESS;
     }
     return INPUT;
   }
 
   public String setup2() {
+    session.put("DONE2", "pia");
     // first check if the selected datadir contains an admin user already
     if (configManager.setupComplete()) {
       addActionMessage(getText("admin.config.setup2.existingFound"));
@@ -159,8 +168,8 @@ public class SetupAction extends BaseAction implements ServletContextAware {
       // we have submitted the form
       try {
         user.setRole(Role.Admin);
-        user.setLastLoginToNow();
         userManager.create(user);
+        user.setLastLoginToNow();
         userManager.save();
         // set IPT type: registry URL
         if (production) {
@@ -177,6 +186,9 @@ public class SetupAction extends BaseAction implements ServletContextAware {
         // save config
         configManager.saveConfig();
         addActionMessage(getText("admin.config.setup2.success"));
+        addActionMessage(getText("admin.config.setup2.next"));
+        // login as new admin
+        session.put(Constants.SESSION_USER, user);
         return SUCCESS;
       } catch (IOException e) {
         log.error(e);
