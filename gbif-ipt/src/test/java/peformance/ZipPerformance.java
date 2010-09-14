@@ -15,7 +15,7 @@ import java.util.zip.ZipOutputStream;
  * This is a test to see how long it takes to modify an existing Zip file  
  * @author timrobertson
  */
-public class TestZipPerformance {
+public class ZipPerformance {
 	public static void main(String[] args) {
 		try {
 			long time = System.currentTimeMillis();
@@ -25,7 +25,7 @@ public class TestZipPerformance {
 			
 			time = System.currentTimeMillis();
 			System.out.println("Adding data to Zip");
-			InputStream is = TestZipPerformance.class.getResourceAsStream("/data/two_fifty_thousand.txt");
+			InputStream is = ZipPerformance.class.getResourceAsStream("/data/two_fifty_thousand.txt");
 			BufferedInputStream bis = new BufferedInputStream(is, 1024);
 			ZipEntry entry = new ZipEntry("two_fifty_thousand.txt");
 			out.putNextEntry(entry);
@@ -39,7 +39,7 @@ public class TestZipPerformance {
 			
 			time = System.currentTimeMillis();
 			System.out.println("Adding EML to Zip");
-			is = TestZipPerformance.class.getResourceAsStream("/data/eml.xml");
+			is = ZipPerformance.class.getResourceAsStream("/data/eml.xml");
 			bis = new BufferedInputStream(is, 1024);
 			entry = new ZipEntry("eml.xml");
 			out.putNextEntry(entry);
@@ -60,7 +60,7 @@ public class TestZipPerformance {
 			
 			time = System.currentTimeMillis();
 			System.out.println("Adding new EML to new Zip");
-			is = TestZipPerformance.class.getResourceAsStream("/data/eml2.xml");
+			is = ZipPerformance.class.getResourceAsStream("/data/eml2.xml");
 			bis = new BufferedInputStream(is, 1024);
 			entry = new ZipEntry("eml.xml");
 			out.putNextEntry(entry);

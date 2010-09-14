@@ -29,7 +29,7 @@ import javax.xml.transform.stream.StreamSource;
  * @author markus
  * 
  */
-public class TestXslt {
+public class XsltExample {
   public static void main(String[] args) throws Exception {
     SAXParserFactory saxf = null;
     saxf = SAXParserFactory.newInstance();

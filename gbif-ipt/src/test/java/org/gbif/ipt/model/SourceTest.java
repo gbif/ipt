@@ -96,7 +96,7 @@ public class SourceTest {
     s.setName("karlos");
     assertFalse(sources.contains(s));
     s.setName("karl");
-    assertFalse(sources.contains(s));
+    assertTrue(sources.contains(s));
     s.setResource(r);
     assertTrue(sources.contains(s));
 
