@@ -17,7 +17,7 @@ import org.xml.sax.SAXException;
  * @author timrobertson
  *
  */
-public class MemoryForEMLTest {
+public class MemoryForEML {
 
 	/**
 	 * @param args
