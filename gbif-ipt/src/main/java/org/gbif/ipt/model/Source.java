@@ -75,8 +75,9 @@ public abstract class Source implements Iterable<String[]>, Comparable<Source> {
     }
 
     public CSVReader getReader() throws IOException {
-      return CSVReader.buildReader(this.getFile(), this.getEncoding(), this.getFieldsTerminatedBy(),
-          this.getFieldsEnclosedBy(), this.getIgnoreHeaderLines());
+      char delim = this.getFieldsTerminatedBy() == null ? CSVReader.NULL_CHAR : this.getFieldsTerminatedBy();
+      char quote = this.getFieldsEnclosedBy() == null ? CSVReader.NULL_CHAR : this.getFieldsEnclosedBy();
+      return CSVReader.buildReader(this.getFile(), this.getEncoding(), delim, quote, this.getIgnoreHeaderLines());
     }
 
     public int getRows() {

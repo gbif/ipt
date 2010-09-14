@@ -9,5 +9,5 @@ public class Constants {
   public static final String VOCAB_URI_RESOURCE_TYPE = "http://rs.gbif.org/vocabulary/gbif/resource_type";
   public static final String VOCAB_URI_LANGUAGE = "http://iso.org/639-1";
   public static final String VOCAB_URI_COUNTRY = "http://iso.org/iso3166-1/alpha2";
-
+  public static final String VOCAB_URI_RANKS = "http://rs.gbif.org/vocabulary/gbif/rank";
 }

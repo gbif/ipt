@@ -3,8 +3,7 @@ package org.gbif.ipt.config;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.service.InvalidConfigException;
-import org.gbif.ipt.service.admin.impl.RegistrationManagerImpl;
-import org.gbif.ipt.service.admin.impl.UserAccountManagerImpl;
+import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.utils.InputStreamUtils;
 
 import com.google.inject.Singleton;
@@ -16,6 +15,7 @@ import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -143,6 +143,15 @@ public class DataDir {
   }
 
   /**
+   * Constructs an absolute path to the logs folder of the data dir
+   * 
+   * @return
+   */
+  public File loggingDir() {
+    return dataFile(LOGGING_DIR);
+  }
+
+  /**
    * Constructs an absolute path to a file within the logs folder of the data dir
    * 
    * @param path the relative path within the logs folder
@@ -243,15 +252,21 @@ public class DataDir {
             FileUtils.forceMkdir(loggingDir);
             FileUtils.forceMkdir(jettyDir);
             // copy default config files
-            org.gbif.ipt.utils.FileUtils.copyStreamToFile(streamUtils.classpathStream("/configDefault/ipt.properties"),
-                configFile(AppConfig.DATADIR_PROPFILE));
-            org.gbif.ipt.utils.FileUtils.copyStreamToFile(streamUtils.classpathStream("/configDefault/about.ftl"),
-                configFile("about.ftl"));
-            org.gbif.ipt.utils.FileUtils.copyStreamToFile(streamUtils.classpathStream("/configDefault/users.xml"),
-                configFile(UserAccountManagerImpl.PERSISTENCE_FILE));
-            org.gbif.ipt.utils.FileUtils.copyStreamToFile(
-                streamUtils.classpathStream("/configDefault/registration.xml"),
-                configFile(RegistrationManagerImpl.PERSISTENCE_FILE));
+            InputStream input = streamUtils.classpathStream("configDefault/ipt.properties");
+            if (input == null) {
+              throw new InvalidConfigException(TYPE.CONFIG_WRITE,
+                  "Cannot read required classpath resources to create new data dir!");
+            } else {
+              org.gbif.ipt.utils.FileUtils.copyStreamToFile(input, configFile(AppConfig.DATADIR_PROPFILE));
+            }
+
+            input = streamUtils.classpathStream("configDefault/about.ftl");
+            if (input == null) {
+              throw new InvalidConfigException(TYPE.CONFIG_WRITE,
+                  "Cannot read required classpath resources to create new data dir!");
+            } else {
+              org.gbif.ipt.utils.FileUtils.copyStreamToFile(input, configFile("about.ftl"));
+            }
           }
         } catch (IOException e) {
           log.error("New DataDir " + dataDir.getAbsolutePath() + " not writable", e);

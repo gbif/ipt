@@ -46,7 +46,6 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.admin.RegistrationManager#addAssociatedOrganisation(org.gbif.ipt.model.Organisation)
    */
   public Organisation addAssociatedOrganisation(Organisation organisation) throws AlreadyExistingException {
@@ -59,7 +58,6 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.admin.RegistrationManager#addHostingOrganisation(org.gbif.ipt.model.Organisation)
    */
   public Organisation addHostingOrganisation(Organisation organisation) {
@@ -72,7 +70,6 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.admin.RegistrationManager#addIptInstance(org.gbif.ipt.model.Ipt)
    */
   public void addIptInstance(Ipt ipt) {
@@ -84,9 +81,15 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     }
   }
 
+  private void defineXstreamMapping() {
+    xstream.omitField(Registration.class, "associatedOrganisations");
+    xstream.alias("organisation", Organisation.class);
+    xstream.alias("registry", Registration.class);
+
+  }
+
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.admin.RegistrationManager#delete(java.lang.String)
    */
   public Organisation delete(String key) throws DeletionNotAllowedException {
@@ -100,7 +103,6 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.admin.OrganisationsManager#get(java.lang.String)
    */
   public Organisation get(String key) {
@@ -112,7 +114,6 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.admin.OrganisationsManager#get(java.util.UUID)
    */
   public Organisation get(UUID key) {
@@ -124,7 +125,6 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.admin.OrganisationsManager#getHostingOrganisation()
    */
   public Organisation getHostingOrganisation() {
@@ -133,7 +133,6 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.admin.RegistrationManager#getIpt()
    */
   public Ipt getIpt() {
@@ -142,7 +141,6 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.admin.RegistrationManager#list()
    */
   public List<Organisation> list() {
@@ -157,7 +155,6 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.admin.RegistrationManager#listAll()
    */
   public List<Organisation> listAll() {
@@ -166,7 +163,6 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.admin.RegistrationManager#load()
    */
   public void load() throws InvalidConfigException {
@@ -204,9 +200,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
       }
 
     } catch (FileNotFoundException e) {
-      log.debug(e);
-      throw new InvalidConfigException(TYPE.REGISTRATION_CONFIG, "Couldnt read the registration information: "
-          + e.getMessage());
+      log.warn("Registration information not existing, " + PERSISTENCE_FILE + " file missing");
     } catch (ClassNotFoundException e) {
       log.error(e.getMessage(), e);
     } catch (IOException e) {
@@ -225,7 +219,6 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.admin.OrganisationManager#save()
    */
   public void save() throws IOException {
@@ -243,17 +236,9 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.admin.RegistrationManager#setIptPassword(java.lang.String)
    */
   public void setIptPassword(String password) {
     registration.setIptPassword(password);
-  }
-
-  private void defineXstreamMapping() {
-    xstream.omitField(Registration.class, "associatedOrganisations");
-    xstream.alias("organisation", Organisation.class);
-    xstream.alias("registry", Registration.class);
-
   }
 }

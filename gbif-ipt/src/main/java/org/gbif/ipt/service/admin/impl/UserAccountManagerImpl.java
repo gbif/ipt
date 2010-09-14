@@ -170,8 +170,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
         }
       }
     } catch (FileNotFoundException e) {
-      log.debug(e);
-      throw new InvalidConfigException(TYPE.USER_CONFIG, "Couldnt read user accounts: " + e.getMessage());
+      log.warn("User accounts not existing, " + PERSISTENCE_FILE + " file missing");
     } catch (IOException e) {
       log.error(e.getMessage(), e);
       throw new InvalidConfigException(TYPE.USER_CONFIG, "Couldnt read user accounts: " + e.getMessage());
