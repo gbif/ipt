@@ -30,7 +30,7 @@ public class AppConfig {
   }
 
   protected static final String DATADIR_PROPFILE = "ipt.properties";
-  private static final String CLASSPATH_PROPFILE = "/application.properties";
+  private static final String CLASSPATH_PROPFILE = "application.properties";
   public static final String BASEURL = "ipt.baseURL";
   public static final String DEBUG = "debug";
   public static final String ANALYTICS_GBIF = "analytics.gbif";
@@ -78,18 +78,24 @@ public class AppConfig {
 
   public Double getLatitude() {
     try {
-      return Double.valueOf(properties.getProperty(IPT_LATITUDE));
+      String val = properties.getProperty(IPT_LATITUDE);
+      if (val != null) {
+        return Double.valueOf(val);
+      }
     } catch (NumberFormatException e) {
-      return null;
     }
+    return null;
   }
 
   public Double getLongitude() {
     try {
-      return Double.valueOf(properties.getProperty(IPT_LONGITUDE));
+      String val = properties.getProperty(IPT_LONGITUDE);
+      if (val != null) {
+        return Double.valueOf(val);
+      }
     } catch (NumberFormatException e) {
-      return null;
     }
+    return null;
   }
 
   public String getProperty(String key) {

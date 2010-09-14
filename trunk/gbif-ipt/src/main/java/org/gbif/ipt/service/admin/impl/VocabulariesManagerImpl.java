@@ -71,7 +71,8 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   private final XStream xstream = new XStream();
   private final RegistryManager registryManager;
   private final String[] defaultVocabs = new String[]{
-      Constants.VOCAB_URI_LANGUAGE, Constants.VOCAB_URI_COUNTRY, Constants.VOCAB_URI_RESOURCE_TYPE};
+      Constants.VOCAB_URI_LANGUAGE, Constants.VOCAB_URI_COUNTRY, Constants.VOCAB_URI_RESOURCE_TYPE,
+      Constants.VOCAB_URI_RANKS};
 
   /**
    * 
@@ -322,6 +323,11 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       v.setUri(Constants.VOCAB_URI_RESOURCE_TYPE);
       v.setUrl(new URL("http://rs.gbif.org/vocabulary/gbif/resource_type.xml"));
       registeredVocabs.put(Constants.VOCAB_URI_RESOURCE_TYPE, v);
+
+      v = new Vocabulary();
+      v.setUri(Constants.VOCAB_URI_RANKS);
+      v.setUrl(new URL("http://rs.gbif.org/vocabulary/gbif/rank.xml"));
+      registeredVocabs.put(Constants.VOCAB_URI_RANKS, v);
     } catch (MalformedURLException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();

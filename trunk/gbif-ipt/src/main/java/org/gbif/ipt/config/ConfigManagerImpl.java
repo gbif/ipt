@@ -98,20 +98,24 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   }
 
   private void reloadLogger() {
-    LogFileAppender.LOGDIR = dataDir.loggingFile("").getAbsolutePath();
+    LogFileAppender.LOGDIR = dataDir.loggingDir().getAbsolutePath();
     log.info("Setting logging dir to " + LogFileAppender.LOGDIR);
 
     InputStream log4j;
     // use different log4j settings files for production or debug mode
     if (cfg.debug()) {
-      log4j = streamUtils.classpathStream("/log4j.xml");
+      log4j = streamUtils.classpathStream("log4j.xml");
     } else {
-      log4j = streamUtils.classpathStream("/log4j-production.xml");
+      log4j = streamUtils.classpathStream("log4j-production.xml");
     }
     LogManager.resetConfiguration();
     DOMConfigurator domConfig = new DOMConfigurator();
-    domConfig.doConfigure(log4j, LogManager.getLoggerRepository());
-    log.info("Reloaded log4j for " + (cfg.debug() ? "debugging" : "production"));
+    try {
+      domConfig.doConfigure(log4j, LogManager.getLoggerRepository());
+      log.info("Reloaded log4j for " + (cfg.debug() ? "debugging" : "production"));
+    } catch (Error e) {
+      log.error("Failed to reload log4j configuration for " + (cfg.debug() ? "debugging" : "production"), e);
+    }
   }
 
   public void saveConfig() throws InvalidConfigException {

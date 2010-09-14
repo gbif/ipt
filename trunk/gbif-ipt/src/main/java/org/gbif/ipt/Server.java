@@ -14,11 +14,10 @@
  * the License.
  ***************************************************************************/
 
-package org.gbif.ipt.server;
+package org.gbif.ipt;
 
 import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Handler;
-import org.mortbay.jetty.Server;
 import org.mortbay.jetty.bio.SocketConnector;
 import org.mortbay.jetty.webapp.WebAppContext;
 import org.mortbay.jetty.webapp.WebInfConfiguration;
@@ -28,27 +27,35 @@ import org.mortbay.jetty.webapp.WebXmlConfiguration;
  * @author markus
  * 
  */
-public class IptServer {
-  private static final Server SERVER = new Server();
+public class Server {
+  private static final org.mortbay.jetty.Server SERVER = new org.mortbay.jetty.Server();
 
   public static void main(String[] args) throws Exception {
-    String webapp = "./src/main/webapp";
+    String webapp = "webapp";
+    Integer port = 7001;
+    if (args.length > 0) {
+      try {
+        port = Integer.parseInt(args[0]);
+      } catch (Exception e) {
+        System.err.println("Argument is not a valid port number: " + args[0] + " - using default port " + port);
+      }
+    }
     WebAppContext app = new WebAppContext();
-    app.setContextPath("/ipt");
+    app.setContextPath("/");
     app.setWar(webapp);
     // Avoid the taglib configuration because its a PITA if you don't have a net connection
     app.setConfigurationClasses(new String[]{WebInfConfiguration.class.getName(), WebXmlConfiguration.class.getName()});
     app.setParentLoaderPriority(true);
     // We explicitly use the SocketConnector because the SelectChannelConnector locks files
     Connector connector = new SocketConnector();
-    connector.setPort(Integer.parseInt(System.getProperty("jetty.port", "7001")));
+    connector.setPort(Integer.parseInt(System.getProperty("jetty.port", port.toString())));
     connector.setMaxIdleTime(60000);
-    IptServer.SERVER.setConnectors(new Connector[]{connector});
-    IptServer.SERVER.setHandlers(new Handler[]{app});
-    IptServer.SERVER.setAttribute("org.mortbay.jetty.Request.maxFormContentSize", 0);
-    IptServer.SERVER.setStopAtShutdown(true);
+    Server.SERVER.setConnectors(new Connector[]{connector});
+    Server.SERVER.setHandlers(new Handler[]{app});
+    Server.SERVER.setAttribute("org.mortbay.jetty.Request.maxFormContentSize", 0);
+    Server.SERVER.setStopAtShutdown(true);
     try {
-      IptServer.SERVER.start();
+      Server.SERVER.start();
     } catch (Exception e) {
       e.printStackTrace();
     }

@@ -251,7 +251,9 @@
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jsp-api</artifactId>
+			<!-- need it for standalone, embedded jetty
 			<scope>provided</scope>
+			-->
 			<version>2.0</version>
 		</dependency>
 		
