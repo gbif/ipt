@@ -486,6 +486,10 @@ div.details table{
     margin: 0;
     padding: 0;
 }
+div.details div.subitem{
+	padding-left:20px;
+}
+
 div.details table th, 
 div.details td{
     color: #999;
@@ -493,6 +497,7 @@ div.details td{
     text-align: left;
     background-color: white;
     padding:0px 10px 0px 0px;
+    vertical-align:text-top;
 }
 
 
