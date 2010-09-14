@@ -33,6 +33,7 @@ public class DataDir {
   public static final String RESOURCES_DIR = "resources";
   public static final String LUCENE_DIR = "lucene";
   public static final String TMP_DIR = "tmp";
+  private static final String JETTY_DIR = "jetty";
   private int tmpCounter = 0;
   private Map<String, Integer> tmpPrefixCounter = new HashMap<String, Integer>();
 
@@ -84,6 +85,18 @@ public class DataDir {
     return new DataDir();
   }
 
+  private void assureDirExists(File f) {
+    if (f != null && !f.exists()) {
+      f.mkdirs();
+    }
+  }
+
+  private void assureParentExists(File f) {
+    if (f != null && !f.getParentFile().exists()) {
+      f.getParentFile().mkdirs();
+    }
+  }
+
   protected void clearTmp() throws IOException {
     File tmpDir = tmpFile("");
     FileUtils.forceMkdir(tmpDir);
@@ -114,7 +127,7 @@ public class DataDir {
     // if (path.startsWith("/")){
     // return new File(path);
     // }
-    File f=new File(dataDir, path);
+    File f = new File(dataDir, path);
     assureParentExists(f);
     return f;
   }
@@ -148,6 +161,20 @@ public class DataDir {
     return dataFile("lucene");
   }
 
+  public File resourceDwcaFile(String resourceName) {
+    return dataFile(RESOURCES_DIR + "/" + resourceName + "/dwca.zip");
+  }
+
+  public File resourceEmlFile(String resourceName, @Nullable Integer version) {
+    String fn;
+    if (version == null) {
+      fn = "eml.xml";
+    } else {
+      fn = "eml-" + version + ".xml";
+    }
+    return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
+  }
+
   public File resourceFile(Resource resource, String path) {
     if (resource == null) {
       return null;
@@ -164,19 +191,6 @@ public class DataDir {
   public File resourceFile(String resourceName, String path) {
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + path);
   }
-
-  public File resourceEmlFile(String resourceName, @Nullable Integer version) {
-	  String fn;
-	  if (version==null){
-		  fn="eml.xml";
-	  }else{
-		  fn="eml-"+version+".xml";
-	  }
-	    return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
-  }
-  public File resourceDwcaFile(String resourceName) {
-	    return dataFile(RESOURCES_DIR + "/" + resourceName + "/dwca.zip");
-}
 
   /**
    * Sets the path to the data directory for the entire application and persists it in the /WEB-INF folder. This method
@@ -222,10 +236,12 @@ public class DataDir {
             File resourcesDir = dataFile(RESOURCES_DIR);
             File luceneDir = dataFile(LUCENE_DIR);
             File loggingDir = dataFile(LOGGING_DIR);
+            File jettyDir = tmpFile(JETTY_DIR);
             FileUtils.forceMkdir(configDir);
             FileUtils.forceMkdir(resourcesDir);
             FileUtils.forceMkdir(luceneDir);
             FileUtils.forceMkdir(loggingDir);
+            FileUtils.forceMkdir(jettyDir);
             // copy default config files
             org.gbif.ipt.utils.FileUtils.copyStreamToFile(streamUtils.classpathStream("/configDefault/ipt.properties"),
                 configFile(AppConfig.DATADIR_PROPFILE));
@@ -254,6 +270,20 @@ public class DataDir {
     return resourceFile(resource.getShortname(), "sources/" + source.getName() + ".txt");
   }
 
+  public File tmpDir() {
+    tmpCounter++;
+    File dir = tmpFile("dir-" + tmpCounter);
+    assureDirExists(dir);
+    return dir;
+  }
+
+  public File tmpDir(String name) {
+    tmpCounter++;
+    File dir = tmpFile("dir-" + tmpCounter + "/" + name);
+    assureDirExists(dir);
+    return dir;
+  }
+
   /**
    * Generate a new unique temporary filename inside the datadir based on an autoincremented counter.
    * 
@@ -263,28 +293,7 @@ public class DataDir {
     tmpCounter++;
     return tmpFile("file-" + tmpCounter + ".tmp");
   }
-  public File tmpDir() {
-    tmpCounter++;
-    File dir = tmpFile("dir-" + tmpCounter);
-    assureDirExists(dir);
-    return dir;
-  }
-  public File tmpDir(String name) {
-    tmpCounter++;
-    File dir = tmpFile("dir-" + tmpCounter+"/"+name);
-    assureDirExists(dir);
-    return dir;
-  }
-  private void assureParentExists(File f){
-	  if (f!=null && !f.getParentFile().exists()){
-		  f.getParentFile().mkdirs();
-	  }
-  }
-  private void assureDirExists(File f){
-	  if (f!=null && !f.exists()){
-		  f.mkdirs();
-	  }
-  }
+
   /**
    * Construct the absolute path for a given relative path within the /tmp subfolder.
    * This method doesnt generate a unique filename - it only assembles what was given.
