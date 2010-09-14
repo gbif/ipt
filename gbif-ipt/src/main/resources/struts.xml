@@ -34,16 +34,17 @@
 			<result-type name="freemarker" class="org.apache.struts2.views.freemarker.FreemarkerResult" default="true"/>
 		</result-types>
 		<interceptors>
+			<!-- interceptors enforcing user roles and login -->
 			<interceptor name="requireAdmin" class="org.gbif.ipt.struts2.RequireAdminInterceptor"/>
 			<interceptor name="requireManager" class="org.gbif.ipt.struts2.RequireManagerInterceptor"/>
 			<interceptor name="protectPrivateResource" class="org.gbif.ipt.struts2.PrivateResourceInterceptor"/>
 			
 			<!-- interceptor changing the current resource in the session if a "r" parameter is supplied -->
-			<interceptor name="resourceSession" class="org.gbif.ipt.struts2.ResourceSessionInterceptor"/>			
-			<!-- development interceptor only logging in an admin wiht password "carla" automatically when not yet logged in -->
-			<interceptor name="autoLogin" class="org.gbif.ipt.struts2.AutoLoginAdminInterceptor"/>
+			<interceptor name="resourceSession" class="org.gbif.ipt.struts2.ResourceSessionInterceptor"/>
+			
 			<!-- custom interceptor to preserve action messages across redirects -->
 			<interceptor name="keepRedirectMessages" class="org.gbif.ipt.struts2.RedirectMessageInterceptor"/>
+			
 			<!-- custom interceptor to redirect to the basic setup pages in case basic configuration is missing -->
 			<!-- also check for any values in the cancel request parameter and returns the cancel result in that case immediately -->
 			<interceptor name="setupAndCancel" class="org.gbif.ipt.struts2.SetupAndCancelInterceptor"/>
@@ -58,6 +59,7 @@
 				<interceptor-ref name="workflow"/>
 			</interceptor-stack>
 			
+			<!-- stack to be used as the default for the public portal package -->
 			<interceptor-stack name="portalStack">
 				<interceptor-ref name="resourceSession"/>
 				<interceptor-ref name="setupAndCancel"/>
@@ -65,12 +67,18 @@
 				<interceptor-ref name="iptStackWithoutSetup"/>
 			</interceptor-stack>
 			
+			<!-- stack to be used as the default for the admin package -->
 			<interceptor-stack name="adminStack">
 				<interceptor-ref name="setupAndCancel"/>
 				<interceptor-ref name="requireAdmin"/>
 				<interceptor-ref name="iptStackWithoutSetup"/>
 			</interceptor-stack>
 			
+
+			<!-- development interceptor only logging in an admin wiht password "carla" automatically when not yet logged in -->
+			<interceptor name="autoLogin" class="org.gbif.ipt.struts2.AutoLoginAdminInterceptor"/>
+			
+			<!-- stack to be used as the default for the manage package -->
 			<interceptor-stack name="managerStack">
 				<interceptor-ref name="resourceSession"/>
 				<interceptor-ref name="setupAndCancel"/>
@@ -82,6 +90,7 @@
 				<interceptor-ref name="iptStackWithoutSetup"/>
 			</interceptor-stack>
 			
+			<!-- stack to be used for individual ajax actions within any package -->
 			<interceptor-stack name="ajaxStack">
 				<interceptor-ref name="i18nStack"/>
 			</interceptor-stack>
