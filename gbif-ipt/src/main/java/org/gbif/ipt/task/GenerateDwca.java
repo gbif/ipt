@@ -90,7 +90,7 @@ public class GenerateDwca implements ReportingTask<Integer> {
         if (in == null || in.length == 0) {
           continue;
         }
-        if (in.length < maxColumnIndex) {
+        if (in.length <= maxColumnIndex) {
           linesWithWrongColumnNumber++;
           continue;
         }
