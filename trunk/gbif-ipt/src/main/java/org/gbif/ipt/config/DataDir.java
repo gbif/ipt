@@ -33,7 +33,6 @@ public class DataDir {
   public static final String RESOURCES_DIR = "resources";
   public static final String LUCENE_DIR = "lucene";
   public static final String TMP_DIR = "tmp";
-  private static final String JETTY_DIR = "jetty";
   private int tmpCounter = 0;
   private Map<String, Integer> tmpPrefixCounter = new HashMap<String, Integer>();
 
@@ -114,6 +113,36 @@ public class DataDir {
     return dataFile(CONFIG_DIR + "/" + path);
   }
 
+  private void createDefaultDir() throws IOException {
+    // create config, resources and lucene directories
+    File configDir = dataFile(CONFIG_DIR);
+    File resourcesDir = dataFile(RESOURCES_DIR);
+    File luceneDir = dataFile(LUCENE_DIR);
+    File loggingDir = dataFile(LOGGING_DIR);
+    FileUtils.forceMkdir(configDir);
+    FileUtils.forceMkdir(resourcesDir);
+    FileUtils.forceMkdir(luceneDir);
+    FileUtils.forceMkdir(loggingDir);
+    // copy default config files
+    InputStream input = streamUtils.classpathStream("configDefault/ipt.properties");
+    if (input == null) {
+      throw new InvalidConfigException(TYPE.CONFIG_WRITE,
+          "Cannot read required classpath resources to create new data dir!");
+    } else {
+      org.gbif.ipt.utils.FileUtils.copyStreamToFile(input, configFile(AppConfig.DATADIR_PROPFILE));
+    }
+
+    input = streamUtils.classpathStream("configDefault/about.ftl");
+    if (input == null) {
+      throw new InvalidConfigException(TYPE.CONFIG_WRITE,
+          "Cannot read required classpath resources to create new data dir!");
+    } else {
+      org.gbif.ipt.utils.FileUtils.copyStreamToFile(input, configFile("about.ftl"));
+    }
+
+    log.info("Creating new default data dir");
+  }
+
   /**
    * Basic method to convert a relative path within the data dir to an absolute path on the filesystem
    * 
@@ -170,6 +199,12 @@ public class DataDir {
     return dataFile("lucene");
   }
 
+  private void persistLocation() throws IOException {
+    // persist location in WEB-INF
+    FileUtils.writeStringToFile(dataDirSettingFile, dataDir.getAbsolutePath());
+    log.info("IPT DataDir location file in /WEB-INF changed to " + dataDir.getAbsolutePath());
+  }
+
   public File resourceDwcaFile(String resourceName) {
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/dwca.zip");
   }
@@ -215,66 +250,49 @@ public class DataDir {
     if (dataDir == null) {
       throw new NullPointerException("DataDir file required");
     } else {
-      boolean created = false;
-      if (dataDir.exists() && !dataDir.isDirectory()) {
-        throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_DATA_DIR, "DataDir "
-            + dataDir.getAbsolutePath() + " is not a directory");
-      } else {
-        try {
-          if (!dataDir.exists()) {
-            // create new main data dir. Populate later
-            FileUtils.forceMkdir(dataDir);
+
+      this.dataDir = dataDir;
+      File configDir = configFile("");
+
+      if (dataDir.exists() && (!dataDir.isDirectory() || dataDir.list().length > 0)) {
+        // EXISTING file or directory with content: make sure its an IPT datadir - otherwise break
+        if (!dataDir.isDirectory()) {
+          this.dataDir = null;
+          throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_DATA_DIR, "DataDir "
+              + dataDir.getAbsolutePath() + " is not a directory");
+        } else {
+          // check if this directory contains a config folder - if not copy empty default dir from classpath
+          if (!configDir.exists() || !configDir.isDirectory()) {
+            this.dataDir = null;
+            throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_DATA_DIR, "DataDir "
+                + dataDir.getAbsolutePath() + " exists already and is no IPT data dir.");
           }
+          log.info("Reusing existing data dir.");
+          return false;
+        }
+
+      } else {
+        // NEW datadir
+        try {
+          // create new main data dir. Populate later
+          FileUtils.forceMkdir(dataDir);
           // test if we can write to the directory
           File testFile = new File(dataDir, "test.tmp");
           FileUtils.touch(testFile);
-          this.dataDir = dataDir;
-          // remove test file and persist location in WEB-INF
+          // remove test file
           testFile.delete();
-          FileUtils.writeStringToFile(dataDirSettingFile, dataDir.getAbsolutePath());
-          log.info("IPT DataDir location file in /WEB-INF changed to " + dataDir.getAbsolutePath());
-          // check if this directory contains a config folder - if not copy empty default dir from classpath
-          File configDir = configFile("");
-          if (configDir.exists() && configDir.isDirectory()) {
-            log.info("Reusing existing data dir.");
-          } else {
-            log.info("Creating new default data dir.");
-            created = true;
-            FileUtils.cleanDirectory(dataDir);
-            // create config, resources and lucene directories
-            File resourcesDir = dataFile(RESOURCES_DIR);
-            File luceneDir = dataFile(LUCENE_DIR);
-            File loggingDir = dataFile(LOGGING_DIR);
-            File jettyDir = tmpFile(JETTY_DIR);
-            FileUtils.forceMkdir(configDir);
-            FileUtils.forceMkdir(resourcesDir);
-            FileUtils.forceMkdir(luceneDir);
-            FileUtils.forceMkdir(loggingDir);
-            FileUtils.forceMkdir(jettyDir);
-            // copy default config files
-            InputStream input = streamUtils.classpathStream("configDefault/ipt.properties");
-            if (input == null) {
-              throw new InvalidConfigException(TYPE.CONFIG_WRITE,
-                  "Cannot read required classpath resources to create new data dir!");
-            } else {
-              org.gbif.ipt.utils.FileUtils.copyStreamToFile(input, configFile(AppConfig.DATADIR_PROPFILE));
-            }
-
-            input = streamUtils.classpathStream("configDefault/about.ftl");
-            if (input == null) {
-              throw new InvalidConfigException(TYPE.CONFIG_WRITE,
-                  "Cannot read required classpath resources to create new data dir!");
-            } else {
-              org.gbif.ipt.utils.FileUtils.copyStreamToFile(input, configFile("about.ftl"));
-            }
-          }
+          // create new default data dir
+          createDefaultDir();
+          // all works fine - persist location in WEB-INF
+          persistLocation();
+          return true;
         } catch (IOException e) {
           log.error("New DataDir " + dataDir.getAbsolutePath() + " not writable", e);
+          this.dataDir = null;
           throw new InvalidConfigException(InvalidConfigException.TYPE.NON_WRITABLE_DATA_DIR, "DataDir "
               + dataDir.getAbsolutePath() + " is not writable");
         }
       }
-      return created;
     }
   }
 
