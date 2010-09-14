@@ -91,6 +91,8 @@
   </div>
 </div>
 
+<#assign size=eml.associatedParties?size/>
+<#if (size > 0 )>
 <div class="definition">	
   <div class="title">
   	<div class="head">
@@ -99,16 +101,13 @@
   </div>
   <div class="body">
       	<div class="details">
-      	<table>
 			<#list eml.associatedParties as item>
 			<#if "${item_index % 2}"=="0">
-				<tr>
-				<th>
 				<div class="half">
 			</#if>
 			<div>
 			<#assign itemTitle><@s.text name='manage.metadata.parties.item'/></#assign>
-			${itemTitle?upper_case} ${item_index+1}
+			<div class="head">${itemTitle?upper_case} ${item_index+1}</div>
       		<table>
 				<tr><th><@s.text name='portal.resource.name'/></th><td>${eml.associatedParties[item_index].firstName!} ${eml.associatedParties[item_index].lastName!}</td></tr>
 				<tr><th><@s.text name='eml.associatedParties.position'/></th><td>${eml.associatedParties[item_index].position!}</td></tr>
@@ -124,16 +123,14 @@
       		</table>
       		<div class="newline"></div>
 			</div>
-			<#if "${item_index % 2}"=="1">
+			<#if "${item_index % 2}"=="1" || "${item_index + 1}"=="${size}">
 				</div>
-				</th>
-			 	</tr>
 			</#if>
 			</#list>
-      	</table>
       	</div>
   </div>
 </div>
+</#if>
 
 <#if eml.geospatialCoverages[0]??>
 <div class="definition">	
@@ -156,7 +153,8 @@
 </div>
 </#if>
 
-<#if (eml.taxonomicCoverages?size > 0 )>
+<#assign size=eml.taxonomicCoverages?size/>
+<#if (size > 0 )>
 <div class="definition">	
   <div class="title">
   	<div class="head">
@@ -165,37 +163,41 @@
   </div>
   <div class="body">
       	<div class="details">
-      	<table>
 			<#list eml.taxonomicCoverages as item>
-			<#if "${item_index % 2}"=="0">
-				<tr>
-				<th>
-				<div class="half">
-			</#if>
 			<div>
 			<#assign itemTitle><@s.text name='manage.metadata.taxcoverage.item'/></#assign>
-			${itemTitle?upper_case} ${item_index+1}
+			<div class="head">${itemTitle?upper_case} ${item_index+1}</div>
+			<#assign size=eml.taxonomicCoverages[item_index].taxonKeywords?size/>
       		<table>
-      			<tr><th><@s.text name='eml.taxonomicCoverages.taxonKeyword.scientificName'/></th><td>${eml.taxonomicCoverages[item_index].taxonKeyword.scientificName!}</td></tr>
-				<tr><th><@s.text name='eml.taxonomicCoverages.taxonKeyword.commonName'/></th><td>${eml.taxonomicCoverages[item_index].taxonKeyword.commonName!}</td></tr>
-				<tr><th><@s.text name='eml.taxonomicCoverages.taxonKeyword.rank'/></th><td>${eml.taxonomicCoverages[item_index].taxonKeyword.rank!}</td></tr>
 				<tr><th><@s.text name='eml.taxonomicCoverages.description'/></th><td>${eml.taxonomicCoverages[item_index].description!}</td></tr>
-			</table>
-      		<div class="newline"></div>
-			</div>
-			<#if "${item_index % 2}"=="1">
+				<#list eml.taxonomicCoverages[item_index].taxonKeywords as subitem>
+				<tr>
+				<th>
+				<div class="subitem">
+					<div class="newline"></div>
+					<#assign itemTitle><@s.text name='manage.metadata.taxcoverage.subitem'/></#assign>
+					${itemTitle?upper_case} ${subitem_index+1}
+					<table>
+						<tr><th><@s.text name='eml.taxonomicCoverages.taxonKeywords.scientificName'/></th><td>${eml.taxonomicCoverages[item_index].taxonKeywords[subitem_index].scientificName!}</td></tr>
+						<tr><th><@s.text name='eml.taxonomicCoverages.taxonKeywords.commonName'/></th><td>${eml.taxonomicCoverages[item_index].taxonKeywords[subitem_index].commonName!}</td></tr>
+						<tr><th><@s.text name='eml.taxonomicCoverages.taxonKeywords.rank'/></th><td>${eml.taxonomicCoverages[item_index].taxonKeywords[subitem_index].rank!}</td></tr>
+					</table>
+					<div class="newline"></div>
 				</div>
 				</th>
-			 	</tr>
-			</#if>
+				</tr>
+				</#list>
+      		</table>
+      		<div class="newline"></div>
+			</div>
 			</#list>
-      	</table>
       	</div>
   </div>
 </div>
 </#if>
 
-<#if (eml.temporalCoverages?size > 0 )>
+<#assign size=eml.temporalCoverages?size/>
+<#if (size > 0 )>
 <div class="definition">	
   <div class="title">
   	<div class="head">
@@ -206,35 +208,29 @@
       	<div class="details">
       	<table>
 			<#list eml.temporalCoverages as item>
-			<#if "${item_index % 2}"=="0">
-				<tr>
-				<th>
-				<div class="half">
-			</#if>
-			<div>
+			<tr>
 			<#assign itemTitle><@s.text name='manage.metadata.tempcoverage.item'/></#assign>
-			${itemTitle?upper_case} ${item_index+1}
-			<table>
-				<#if "${item.type}" == "DATE_RANGE" >
-					<tr><th><@s.text name='eml.temporalCoverage.startDate'/></th><td>${eml.temporalCoverages[item_index].startDate?date}</td></tr>
-					<tr><th><@s.text name='eml.temporalCoverage.endDate'/></th><td>${eml.temporalCoverages[item_index].endDate?date}</td></tr>
-				<#elseif "${item.type}" == "SINGLE_DATE" >
-					<tr><th><@s.text name='eml.temporalCoverage.startDate'/></th><td>${eml.temporalCoverages[item_index].startDate?date}</td></tr>
-				<#elseif "${item.type}" == "FORMATION_PERIOD" >
-					<tr><th><@s.text name='eml.temporalCoverage.formationPeriod'/></th><td>${eml.temporalCoverages[item_index].formationPeriod}</td></tr>
-				<#else> <!-- LIVING_TIME_PERIOD -->
-					<tr><th><@s.text name='eml.temporalCoverage.livingTimePeriod'/></th><td>${eml.temporalCoverages[item_index].livingTimePeriod!}</td></tr>
-				</#if>
-			</table>
-			<div class="newline"></div>
-			</div>
-			<#if "${item_index % 2}"=="1">
+			<th>${itemTitle?upper_case} ${item_index+1}</th>
+			<td>
+				<div>
+				<table>
+					<#if "${item.type}" == "DATE_RANGE" >
+						<tr><th><@s.text name='eml.temporalCoverage.startDate'/></th><td>${eml.temporalCoverages[item_index].startDate?date}</td></tr>
+						<tr><th><@s.text name='eml.temporalCoverage.endDate'/></th><td>${eml.temporalCoverages[item_index].endDate?date}</td></tr>
+					<#elseif "${item.type}" == "SINGLE_DATE" >
+						<tr><th><@s.text name='eml.temporalCoverage.startDate'/></th><td>${eml.temporalCoverages[item_index].startDate?date}</td></tr>
+					<#elseif "${item.type}" == "FORMATION_PERIOD" >
+						<tr><th><@s.text name='eml.temporalCoverage.formationPeriod'/></th><td>${eml.temporalCoverages[item_index].formationPeriod}</td></tr>
+					<#else> <!-- LIVING_TIME_PERIOD -->
+						<tr><th><@s.text name='eml.temporalCoverage.livingTimePeriod'/></th><td>${eml.temporalCoverages[item_index].livingTimePeriod!}</td></tr>
+					</#if>
+				</table>
+				<div class="newline"></div>
 				</div>
-				</th>
-			 	</tr>
-			</#if>
+			</td>
+			</tr>
 			</#list>
-      	</table>
+		</table>
       	</div>
   </div>
 </div>
@@ -314,14 +310,11 @@
           	<div class="newline"></div>
         	<table>
         	<#list eml.jgtiCuratorialUnits as item>
-				<#if "${item_index % 2}"=="0">
-					<tr>
-					<th>
-					<div >
-				</#if>
+				<tr>
 				<div>
 					<#assign itemTitle><@s.text name='manage.metadata.collections.curatorialUnits.item'/></#assign>
-					${itemTitle?upper_case} ${item_index+1}
+					<th>${itemTitle?upper_case} ${item_index+1}</th>
+					<td>
 		       		<table>	
          		   		<#if item.type=="COUNT_RANGE">
           					<tr><th><@s.text name='eml.jgtiCuratorialUnits.rangeStart'/></th><td>${eml.jgtiCuratorialUnits[item_index].rangeStart}</td></tr>
@@ -333,11 +326,8 @@
     	  			</table>
 				<div class="newline"></div>
 				</div>
-				<#if "${item_index % 2}"=="1">
-					</div>
-					</th>
-				 	</tr>
-				</#if>
+				</td>
+				</tr>
 	   		</#list>
 	   		</table>
       	</div>
@@ -353,13 +343,10 @@
   </div>
   <div class="body">
       	<div class="details">
-      	<table>
-			<#list eml.physicalData as item>
-			<tr>
-			<th>
+		<#list eml.physicalData as item>
 			<div>
 			<#assign itemTitle><@s.text name='manage.metadata.physical.item'/></#assign>
-			${itemTitle?upper_case} ${item_index+1}
+			<div class="head">${itemTitle?upper_case} ${item_index+1}</div>
 			<table>
 				<tr><th><@s.text name='eml.physicalData.name'/></th><td>${eml.physicalData[item_index].name!}</td></tr>
 				<tr><th><@s.text name='eml.physicalData.charset'/></th><td>${eml.physicalData[item_index].charset!}</td></tr>
@@ -369,10 +356,7 @@
       		</table>
       		<div class="newline"></div>
 			</div>
-			</th>
-		 	</tr>
-			</#list>
-      	</table>
+		</#list>
       	</div>
   </div>
 </div>
@@ -387,23 +371,17 @@
   </div>
   <div class="body">
       	<div class="details">
-      	<table>
-			<#list eml.physicalData as item>
-			<tr>
-			<th>
+		<#list eml.physicalData as item>
 			<div>
 			<#assign itemTitle><@s.text name='manage.metadata.keywords.item'/></#assign>
-			${itemTitle?upper_case} ${item_index+1}
+			<div class="head">${itemTitle?upper_case} ${item_index+1}</div>
       		<table>
 				<tr><th><@s.text name='eml.keywords.keywordThesaurus'/></th><td>${eml.keywords[item_index].name!}</td></tr>
 				<tr><th><@s.text name='eml.keywords.keywordsString'/></th><td>${eml.keywords[item_index].keywordsString!}</td></tr>
 			</table>
       		<div class="newline"></div>
 			</div>
-			</th>
-			</tr>
-			</#list>
-      	</table>
+		</#list>
       	</div>
   </div>
 </div>
