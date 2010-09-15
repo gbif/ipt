@@ -11,7 +11,6 @@ import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.service.manage.SourceManager;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -26,29 +25,38 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.regex.Pattern;
 
 import freemarker.template.TemplateException;
 
-public class GenerateDwca implements ReportingTask<Integer> {
+public class GenerateDwca extends ReportingTask implements Callable<Integer> {
+  private enum STATE {
+    WAITING, STARTED, DATAFILES, METADATA, BUNDLING, COMPLETED
+  };
+
   private static final Pattern escapeChars = Pattern.compile("[\t\n\r]");
   private final Resource resource;
   private final DataDir dataDir;
-  private final SourceManager sourceManager;
-  private int records = 0;
+  private int coreRecords = 0;
   private Archive archive;
   private File dwcaFolder;
-  private List<TaskMessage> messages = new ArrayList<TaskMessage>();
+  // status reporting
+  private int currRecords = 0;
+  private String currExtension;
+  private STATE state = STATE.WAITING;
 
   @Inject
-  public GenerateDwca(@Assisted Resource resource, DataDir dataDir, SourceManager sourceManager) {
-    super();
+  public GenerateDwca(@Assisted Resource resource, @Assisted ReportHandler handler, DataDir dataDir) {
+    super(1000, resource.getShortname(), handler);
     this.resource = resource;
     this.dataDir = dataDir;
-    this.sourceManager = sourceManager;
   }
 
   private void addDataFile(ExtensionMapping mapping, boolean isCore) throws IOException, GeneratorException {
+    // update reporting
+    currRecords = 0;
+    currExtension = mapping.getExtension().getTitle();
     // create new meta.xml with the help of the Archive class
     // create archive file representing this extensions
     ArchiveFile af = ArchiveFile.buildTabFile();
@@ -86,6 +94,9 @@ public class GenerateDwca implements ReportingTask<Integer> {
     try {
       while (iter.hasNext()) {
         line++;
+        if (line % 1000 == 0) {
+          reportIfNeeded();
+        }
         String[] in = iter.next();
         if (in == null || in.length == 0) {
           continue;
@@ -121,20 +132,18 @@ public class GenerateDwca implements ReportingTask<Integer> {
           idx++;
         }
         writer.write(tabRow(row));
-        if (isCore) {
-          records++;
-        }
+        currRecords++;
       }
     } catch (Exception e) {
       // some error writing this file, report
       throw new GeneratorException("Error writing data file for mapping " + mapping.getExtension().getName()
           + " in source " + mapping.getSource().getName() + ", line " + line, e);
     } finally {
+      // remember core record number
+      if (isCore) {
+        coreRecords = currRecords;
+      }
       writer.close();
-    }
-    // add wrong lines user message
-    if (linesWithWrongColumnNumber > 0) {
-      messages.add(new TaskMessage(Level.INFO, +linesWithWrongColumnNumber + " lines with less columns than mapped."));
     }
     // add source file location
     af.addLocation(dataFile.getName());
@@ -144,11 +153,22 @@ public class GenerateDwca implements ReportingTask<Integer> {
     } else {
       archive.addExtension(af);
     }
+
+    // add wrong lines user message
+    if (linesWithWrongColumnNumber > 0) {
+      addMessage(Level.INFO, linesWithWrongColumnNumber + " lines with less columns than mapped.");
+    }
+    // final reporting
+    addMessage(Level.INFO, "Data file written for " + currExtension + " with " + currRecords + " records and "
+        + newColumns.size() + " columns");
   }
 
   private void addEmlFile() throws IOException {
+    setState(STATE.METADATA);
     FileUtils.copyFile(dataDir.resourceEmlFile(resource.getShortname(), null), new File(dwcaFolder, "eml.xml"));
     archive.setMetadataLocation("eml.xml");
+    // final reporting
+    addMessage(Level.INFO, "EML file written");
   }
 
   private ArchiveField buildField(ConceptTerm term, Integer column, String defaultValue) {
@@ -160,6 +180,7 @@ public class GenerateDwca implements ReportingTask<Integer> {
   }
 
   private void bundleArchive() throws IOException {
+    setState(STATE.BUNDLING);
     // create zip
     File zip = dataDir.tmpFile("dwca", ".zip");
     CompressionUtil.zipDir(dwcaFolder, zip);
@@ -169,53 +190,92 @@ public class GenerateDwca implements ReportingTask<Integer> {
       target.delete();
     }
     FileUtils.moveFile(zip, target);
+    // final reporting
+    addMessage(Level.INFO, "Archive compressed");
   }
 
   public Integer call() throws Exception {
     try {
+      setState(STATE.STARTED);
+      addMessage(Level.INFO, "Archive generation started for resource " + resource.getShortname());
       // create a temp dir to copy all dwca files to
       dwcaFolder = dataDir.tmpDir();
       archive = new Archive();
+
       // create data files
       createDataFiles();
+
       // copy eml file
       addEmlFile();
+
       // create meta.xml
       createMetaFile();
+
       // zip archive and copy to resource folder
       bundleArchive();
-      // return messages for UI
-      return records;
+
+      // final reporting
+      addMessage(Level.INFO, "Archive generated successfully!");
+      setState(STATE.COMPLETED);
+
+      return coreRecords;
+
     } catch (Exception e) {
       throw new GeneratorException(e);
     }
   }
 
+  @Override
+  protected boolean completed() {
+    return STATE.COMPLETED == this.state;
+  }
+
   private void createDataFiles() throws IOException, GeneratorException {
+    setState(STATE.DATAFILES);
     if (resource.getCore() == null || resource.getCore().getSource() == null) {
       throw new GeneratorException("Core is not mapped");
     }
     addDataFile(resource.getCore(), true);
     for (ExtensionMapping mapping : resource.getExtensions()) {
+      report();
       addDataFile(mapping, false);
     }
+    // final reporting
+    addMessage(Level.INFO, "All data files completed");
+    report();
   }
 
   private void createMetaFile() throws IOException, TemplateException {
+    setState(STATE.METADATA);
     ArchiveWriter writer = new ArchiveWriter();
     writer.writeMetaFile(new File(dwcaFolder, "meta.xml"), archive);
+    // final reporting
+    addMessage(Level.INFO, "meta.xml archive descriptor written");
   }
 
-  public int getRecords() {
-    return records;
+  @Override
+  protected String currentState() {
+    switch (state) {
+      case WAITING:
+        return "Not started yet";
+      case STARTED:
+        return "Starting archive generation";
+      case DATAFILES:
+        return "Processing record " + currRecords + " for data file <em>" + currExtension + "</em>";
+      case METADATA:
+        return "Creating metadata files";
+      case BUNDLING:
+        return "Compressing archive";
+      case COMPLETED:
+        return "Archive generated!";
+      default:
+        return "You should never see this";
+    }
   }
 
-  public List<TaskMessage> messages() {
-    return messages;
-  }
-
-  public String state() {
-    return "Processing record " + records;
+  private void setState(STATE s) {
+    state = s;
+    report();
   }
 
   private String tabRow(String[] columns) {

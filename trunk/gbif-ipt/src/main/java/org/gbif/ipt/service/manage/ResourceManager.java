@@ -11,7 +11,7 @@ import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
-import org.gbif.metadata.eml.Eml;
+import org.gbif.ipt.task.StatusReport;
 
 import com.google.inject.ImplementedBy;
 import com.google.inject.internal.Nullable;
@@ -35,13 +35,22 @@ import java.util.Map;
 @ImplementedBy(ResourceManagerImpl.class)
 public interface ResourceManager {
 
+  public Resource create(String shortname, File dwca, User creator, BaseAction asction)
+      throws AlreadyExistingException, ImportException;
+
   public Resource create(String shortname, User creator) throws AlreadyExistingException;
-  
-  public Resource create(String shortname, File dwca, User creator, BaseAction asction) throws AlreadyExistingException, ImportException;
 
   public void delete(Resource resource) throws IOException;
 
   public Resource get(String shortname);
+
+  /**
+   * Returns the URL to a public resource in the IPT
+   * 
+   * @param shortname
+   * @return
+   */
+  public URL getResourceLink(String shortname);
 
   /**
    * Returns the map of resources
@@ -51,21 +60,19 @@ public interface ResourceManager {
   public Map<String, Resource> getResources();
 
   /**
+   * @param shortname
+   * @return true if resource is currently locked for any management
+   */
+  public boolean isLocked(String shortname);
+
+  /**
    * Returns the latest resources , order by last modified
    * 
    * @param startPage
    * @param pageSize
    * @return list of resources
    */
-  public List<Resource> latest(int startPage, int pageSize);  
-  
-  /**
-   * Returns the URL to a public resource in the IPT
-   * 
-   * @param shortname
-   * @return
-   */
-  public URL getResourceLink(String shortname);
+  public List<Resource> latest(int startPage, int pageSize);
 
   /**
    * list all resources in the IPT having a certain publication status
@@ -92,12 +99,10 @@ public interface ResourceManager {
   public int load();
 
   /**
-   * Makes a resource public
-   * 
-   * @param resource
-   * @throws InvalidConfigException if resource was already registered
+   * @param shortname for the resource
+   * @return status report of current task either running or on queue for the requested resource or null if none exists
    */
-  public void visibilityToPublic(Resource resource) throws InvalidConfigException;
+  public StatusReport status(String shortname);
 
   /**
    * Publishes a new version of a resource including generating a darwin core archive and issuing a new EML version.
@@ -120,18 +125,22 @@ public interface ResourceManager {
    */
   public void register(Resource resource, Organisation organisation, Ipt ipt) throws InvalidConfigException;
 
-  /** Persists the whole resource configuration *but* not the EML file.
+  /**
+   * Persists the whole resource configuration *but* not the EML file.
+   * 
    * @See saveEml(Resource)
- * @param resource
- * @throws InvalidConfigException
- */
-public void save(Resource resource) throws InvalidConfigException;
+   * @param resource
+   * @throws InvalidConfigException
+   */
+  public void save(Resource resource) throws InvalidConfigException;
 
-  /** Save the eml file of a resource only. Complementary method to @See save(Resource)
- * @param resource
- * @throws InvalidConfigException
- */
-public void saveEml(Resource resource) throws InvalidConfigException;
+  /**
+   * Save the eml file of a resource only. Complementary method to @See save(Resource)
+   * 
+   * @param resource
+   * @throws InvalidConfigException
+   */
+  public void saveEml(Resource resource) throws InvalidConfigException;
 
   /**
    * list all resource that match the given full text search string and optional resource type
@@ -148,5 +157,13 @@ public void saveEml(Resource resource) throws InvalidConfigException;
    * @throws InvalidConfigException if resource was already registered
    */
   public void visibilityToPrivate(Resource resource) throws InvalidConfigException;
+
+  /**
+   * Makes a resource public
+   * 
+   * @param resource
+   * @throws InvalidConfigException if resource was already registered
+   */
+  public void visibilityToPublic(Resource resource) throws InvalidConfigException;
 
 }

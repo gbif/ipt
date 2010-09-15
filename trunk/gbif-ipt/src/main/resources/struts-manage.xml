@@ -104,5 +104,12 @@
 			<result>/WEB-INF/pages/manage/translation.ftl</result>
 		</action>
 		
+		<!-- ajaxy status report about background processes kicked off by the current user -->			
+		<action name="processes" class="org.gbif.ipt.action.manage.ProcessesAction">
+			<interceptor-ref name="ajaxStack"/>
+			<result>/WEB-INF/pages/manage/processes.ftl</result>
+			<result name="error">/WEB-INF/pages/manage/processes-error.ftl</result>
+		</action> 
+		
 	</package>
 </struts>
