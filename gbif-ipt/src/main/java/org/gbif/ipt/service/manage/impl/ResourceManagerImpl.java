@@ -48,7 +48,8 @@ import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.RequireManagerInterceptor;
 import org.gbif.ipt.task.GenerateDwca;
 import org.gbif.ipt.task.GenerateDwcaFactory;
-import org.gbif.ipt.task.TaskMessage;
+import org.gbif.ipt.task.ReportHandler;
+import org.gbif.ipt.task.StatusReport;
 import org.gbif.ipt.utils.ActionLogger;
 import org.gbif.metadata.BasicMetadata;
 import org.gbif.metadata.MetadataException;
@@ -83,14 +84,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import freemarker.template.TemplateException;
 
 @Singleton
-public class ResourceManagerImpl extends BaseManager implements ResourceManager {
+public class ResourceManagerImpl extends BaseManager implements ResourceManager, ReportHandler {
   // key=shortname in lower case, value=resource
   private Map<String, Resource> resources = new HashMap<String, Resource>();
   public static final String PERSISTENCE_FILE = "resource.xml";
@@ -98,8 +99,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   private SourceManager sourceManager;
   private ExtensionManager extensionManager;
   private RegistryManager registryManager;
-  private ExecutorService executor = Executors.newFixedThreadPool(3);
+  private ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(3);
   private GenerateDwcaFactory dwcaFactory;
+  private Map<String, Future<Integer>> processFutures = new HashMap<String, Future<Integer>>();
+  private Map<String, StatusReport> processReports = new HashMap<String, StatusReport>();
 
   @Inject
   public ResourceManagerImpl(AppConfig cfg, DataDir dataDir, UserEmailConverter userConverter,
@@ -311,28 +314,19 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     resources.remove(resource.getShortname().toLowerCase());
   }
 
+  /**
+   * @See isLocked for removing jobs from internal maps
+   * @param resource
+   * @param alog
+   */
   private void generateDwca(Resource resource, ActionLogger alog) {
     // use threads to run in the background as sql sources might take a long time
-    GenerateDwca worker = dwcaFactory.create(resource);
+    GenerateDwca worker = dwcaFactory.create(resource, this);
     Future<Integer> f = executor.submit(worker);
-    try {
-      // for now do it sequentially for quick testing - requires ajax UI otherwise
-      while (!f.isDone()) {
-
-      }
-      int recs = f.get();
-      resource.setRecordsPublished(recs);
-      alog.info("Generated dwca with " + recs + " core records.");
-    } catch (InterruptedException e) {
-      alog.info("Dwca generation interrupted");
-    } catch (ExecutionException e) {
-      alog.error("Dwca generation failed: " + e.getMessage(), e);
-    } finally {
-      // copy task messages into action for UI
-      for (TaskMessage msg : worker.messages()) {
-        alog.log(msg);
-      }
-    }
+    processFutures.put(resource.getShortname(), f);
+    alog.info("DwC-A generation started");
+    // make sure we have at least a first report for this resource
+    worker.report();
   }
 
   /*
@@ -407,6 +401,38 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     FileSource s = sourceManager.add(config, extFile, af.getLocation());
     SourceManagerImpl.copyArchiveFileProperties(af, s);
     return s;
+  }
+
+  /*
+   * Checks if a resource is locked due some background processing.
+   * While doing so it checks the known futures for completion.
+   * If completed the resource is updated with the status messages and the lock is removed.
+   * (non-Javadoc)
+   * @see org.gbif.ipt.service.manage.ResourceManager#isLocked(java.lang.String)
+   */
+  public boolean isLocked(String shortname) {
+    if (processFutures.containsKey(shortname)) {
+      // is listed as locked but task might be finished, check
+      Future<Integer> f = processFutures.get(shortname);
+      if (f.isDone()) {
+        try {
+          Integer coreRecords = f.get();
+          processFutures.remove(shortname);
+          Resource res = get(shortname);
+          res.setRecordsPublished(coreRecords);
+          save(res);
+          return false;
+        } catch (InterruptedException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        } catch (ExecutionException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+      }
+      return true;
+    }
+    return false;
   }
 
   /*
@@ -547,6 +573,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   public boolean publish(Resource resource, BaseAction action) throws PublicationException {
     ActionLogger alog = new ActionLogger(this.log, action);
     boolean newEmlVersion = false;
+    // check if publishing task is already running
+    if (isLocked(resource.getShortname())) {
+      throw new PublicationException(PublicationException.TYPE.LOCKED, "Resource " + resource.getShortname()
+          + " is currently locked by another process");
+    }
     // see if eml has changed since last publication
     Eml eml = resource.getEml();
     int newHash = getEmlHash(resource, eml);
@@ -569,8 +600,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
       resource.setLastPublishedEmlHash(newHash);
     }
 
-    // regenerate dwca asynchroneously - this will alter the resource object once its finished setting the correct
-// number of records
+    // regenerate dwca asynchroneously
     generateDwca(resource, alog);
 
     // persist any resource object changes
@@ -615,6 +645,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
       resource.setStatus(PublicationStatus.REGISTERED);
       save(resource);
     }
+  }
+
+  /*
+   * (non-Javadoc)
+   * @see org.gbif.ipt.task.ReportHandler#report(org.gbif.ipt.task.StatusReport)
+   */
+  public synchronized void report(String shortname, StatusReport report) {
+    processReports.put(shortname, report);
   }
 
   public void save(Resource resource) throws InvalidConfigException {
@@ -663,6 +701,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   public List<Resource> search(String q, String type) {
     // TODO: do real search - for testing return all resources for now
     return new ArrayList<Resource>(resources.values());
+  }
+
+  public StatusReport status(String shortname) {
+    isLocked(shortname);
+    return processReports.get(shortname);
   }
 
   private void syncEmlWithResource(Resource resource) {

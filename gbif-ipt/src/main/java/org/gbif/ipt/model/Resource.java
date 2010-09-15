@@ -32,15 +32,15 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   private static final long serialVersionUID = 3832626162173352190L;;
   private String shortname; // unique
-  private Eml eml=new Eml();
+  private Eml eml = new Eml();
   private CoreRowType type;
   private String subtype;
   // publication
   private PublicationStatus status = PublicationStatus.PRIVATE;
-  private int lastPublishedEmlHash=0;
-  private int emlVersion=0;
+  private int lastPublishedEmlHash = 0;
+  private int emlVersion = 0;
   private Date lastPublished;
-  private int recordsPublished=0;
+  private int recordsPublished = 0;
   // registry data - only exists when status=REGISTERED
   private UUID key;
   private Organisation organisation;
@@ -61,51 +61,27 @@ public class Resource implements Serializable, Comparable<Resource> {
     }
   }
 
-  public int getRecordsPublished() {
-	return recordsPublished;
-}
-  public boolean isPublished(){
-	  return lastPublished!=null;
+  public void addManager(User manager) {
+    if (manager != null) {
+      this.managers.add(manager);
+    }
   }
 
-public void setRecordsPublished(int recordsPublished) {
-	this.recordsPublished = recordsPublished;
-}
-
-public Date getLastPublished() {
-	return lastPublished;
-}
-
-public void setLastPublished(Date lastPublished) {
-	this.lastPublished = lastPublished;
-}
-
-public int getEmlVersion() {
-	return emlVersion;
-}
-
-public void setEmlVersion(int emlVersion) {
-	this.emlVersion = emlVersion;
-	if (eml!=null){
-		eml.setEmlVersion(emlVersion);
-	}
-}
-
-public Eml getEml() {
-	return eml;
-}
-
-public void setEml(Eml eml) {
-	this.eml = eml;
-}
-
-public void addSource(Source src, boolean allowOverwrite) throws AlreadyExistingException {
+  public void addSource(Source src, boolean allowOverwrite) throws AlreadyExistingException {
     // make sure we talk about the same resource
     src.setResource(this);
     if (!allowOverwrite && sources.contains(src)) {
       throw new AlreadyExistingException();
     }
     sources.add(src);
+  }
+
+  /*
+   * (non-Javadoc)
+   * @see java.lang.Comparable#compareTo(java.lang.Object)
+   */
+  public int compareTo(Resource o) {
+    return shortname.compareToIgnoreCase(o.shortname);
   }
 
   public boolean deleteMapping(ExtensionMapping mapping) {
@@ -129,6 +105,18 @@ public void addSource(Source src, boolean allowOverwrite) throws AlreadyExisting
     return false;
   }
 
+  @Override
+  public boolean equals(Object other) {
+    if (this == other) {
+      return true;
+    }
+    if (!(other instanceof Resource)) {
+      return false;
+    }
+    Resource o = (Resource) other;
+    return equal(shortname, o.shortname);
+  }
+
   public ExtensionMapping getCore() {
     return core;
   }
@@ -140,8 +128,47 @@ public void addSource(Source src, boolean allowOverwrite) throws AlreadyExisting
     return null;
   }
 
+  public Date getCreated() {
+    return created;
+  }
+
+  public User getCreator() {
+    return creator;
+  }
+
+  public String getDescription() {
+    if (eml != null) {
+      return eml.getDescription();
+    }
+    return null;
+  }
+
+  public Eml getEml() {
+    return eml;
+  }
+
+  public int getEmlVersion() {
+    return emlVersion;
+  }
+
   public Set<ExtensionMapping> getExtensions() {
     return extensions;
+  }
+
+  public UUID getKey() {
+    return key;
+  }
+
+  public Date getLastPublished() {
+    return lastPublished;
+  }
+
+  public int getLastPublishedEmlHash() {
+    return lastPublishedEmlHash;
+  }
+
+  public Set<User> getManagers() {
+    return managers;
   }
 
   public ExtensionMapping getMapping(String rowType) {
@@ -157,6 +184,26 @@ public void addSource(Source src, boolean allowOverwrite) throws AlreadyExisting
       }
     }
     return null;
+  }
+
+  public Date getModified() {
+    return modified;
+  }
+
+  public User getModifier() {
+    return modifier;
+  }
+
+  public Organisation getOrganisation() {
+    return organisation;
+  }
+
+  public int getRecordsPublished() {
+    return recordsPublished;
+  }
+
+  public String getShortname() {
+    return shortname;
   }
 
   public Source getSource(String name) {
@@ -178,87 +225,6 @@ public void addSource(Source src, boolean allowOverwrite) throws AlreadyExisting
     return srcs;
   }
 
-  public void setCore(ExtensionMapping core) {
-    this.core = core;
-  }
-
-  public void setExtensions(Set<ExtensionMapping> extensions) {
-    this.extensions = extensions;
-  }
-
-  public void addManager(User manager) {
-    if (manager != null) {
-      this.managers.add(manager);
-    }
-  }
-
-  public int getLastPublishedEmlHash() {
-	return lastPublishedEmlHash;
-}
-
-public void setLastPublishedEmlHash(int lastPublishedEmlHash) {
-	this.lastPublishedEmlHash = lastPublishedEmlHash;
-}
-
-/*
-   * (non-Javadoc)
-   * @see java.lang.Comparable#compareTo(java.lang.Object)
-   */
-  public int compareTo(Resource o) {
-    return shortname.compareToIgnoreCase(o.shortname);
-  }
-
-  @Override
-  public boolean equals(Object other) {
-    if (this == other) {
-      return true;
-    }
-    if (!(other instanceof Resource)) {
-      return false;
-    }
-    Resource o = (Resource) other;
-    return equal(shortname, o.shortname);
-  }
-
-  public Date getCreated() {
-    return created;
-  }
-
-  public User getCreator() {
-    return creator;
-  }
-
-  public String getDescription() {
-	  if (eml!=null){
-		    return eml.getDescription();		  
-	  }
-	  return null;
-  }
-
-  public UUID getKey() {
-    return key;
-  }
-
-  public Set<User> getManagers() {
-    return managers;
-  }
-
-  public Date getModified() {
-    return modified;
-  }
-
-  public User getModifier() {
-    return modifier;
-  }
-
-  public Organisation getOrganisation() {
-    return organisation;
-  }
-
-  public String getShortname() {
-    return shortname;
-  }
-
   public PublicationStatus getStatus() {
     return status;
   }
@@ -268,10 +234,10 @@ public void setLastPublishedEmlHash(int lastPublishedEmlHash) {
   }
 
   public String getTitle() {
-	  if (eml!=null){
-		    return eml.getTitle();		  
-	  }
-	  return null;
+    if (eml != null) {
+      return eml.getTitle();
+    }
+    return null;
   }
 
   public CoreRowType getType() {
@@ -281,6 +247,14 @@ public void setLastPublishedEmlHash(int lastPublishedEmlHash) {
   @Override
   public int hashCode() {
     return Objects.hashCode(shortname);
+  }
+
+  public boolean isPublished() {
+    return lastPublished != null;
+  }
+
+  public void setCore(ExtensionMapping core) {
+    this.core = core;
   }
 
   public void setCreated(Date created) {
@@ -297,8 +271,31 @@ public void setLastPublishedEmlHash(int lastPublishedEmlHash) {
     }
   }
 
+  public void setEml(Eml eml) {
+    this.eml = eml;
+  }
+
+  public void setEmlVersion(int emlVersion) {
+    this.emlVersion = emlVersion;
+    if (eml != null) {
+      eml.setEmlVersion(emlVersion);
+    }
+  }
+
+  public void setExtensions(Set<ExtensionMapping> extensions) {
+    this.extensions = extensions;
+  }
+
   public void setKey(UUID key) {
     this.key = key;
+  }
+
+  public void setLastPublished(Date lastPublished) {
+    this.lastPublished = lastPublished;
+  }
+
+  public void setLastPublishedEmlHash(int lastPublishedEmlHash) {
+    this.lastPublishedEmlHash = lastPublishedEmlHash;
   }
 
   public void setManagers(Set<User> managers) {
@@ -317,10 +314,14 @@ public void setLastPublishedEmlHash(int lastPublishedEmlHash) {
     this.organisation = organisation;
   }
 
+  public void setRecordsPublished(int recordsPublished) {
+    this.recordsPublished = recordsPublished;
+  }
+
   public void setShortname(String shortname) {
     this.shortname = shortname;
-    if (eml!=null && eml.getTitle()==null){
-    	eml.setTitle(shortname);
+    if (eml != null && eml.getTitle() == null) {
+      eml.setTitle(shortname);
     }
   }
 
@@ -333,9 +334,9 @@ public void setLastPublishedEmlHash(int lastPublishedEmlHash) {
   }
 
   public void setTitle(String title) {
-	  if (eml!=null){
-		    this.eml.setTitle(title);
-	  }
+    if (eml != null) {
+      this.eml.setTitle(title);
+    }
   }
 
   public void setType(CoreRowType type) {

@@ -1,5 +1,7 @@
 package org.gbif.ipt.action.manage;
 
+import static org.gbif.ipt.config.Constants.SESSION_PROCESSES_DWCA;
+
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.Organisation;
@@ -8,6 +10,7 @@ import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.InvalidConfigException;
+import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
@@ -18,6 +21,7 @@ import org.gbif.ipt.validation.EmlValidator;
 import com.google.inject.Inject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class OverviewAction extends ManagerBaseAction {
@@ -179,6 +183,19 @@ public class OverviewAction extends ManagerBaseAction {
       } else {
         addActionMessage("The metadata hasnt changed since the last publication of version " + resource.getEmlVersion()
             + ".");
+      }
+      // keep resource in session of currently active resources
+      if (!session.containsKey(SESSION_PROCESSES_DWCA)) {
+        session.put(SESSION_PROCESSES_DWCA, new ArrayList<String>());
+      }
+      List<String> procs = (List<String>) session.get(SESSION_PROCESSES_DWCA);
+      procs.add(resource.getShortname());
+
+    } catch (PublicationException e) {
+      if (PublicationException.TYPE.LOCKED == e.getType()) {
+        addActionError("Resource is being published already. Please be patient");
+      } else {
+        addActionError("Error publishing resource: " + e.getMessage());
       }
     } catch (Exception e) {
       log.error("Error publishing resource", e);

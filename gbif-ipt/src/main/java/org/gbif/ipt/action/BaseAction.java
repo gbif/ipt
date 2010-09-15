@@ -217,6 +217,11 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
 
   public void setSession(Map<String, Object> session) {
     this.session = session;
+    // always keep sth in the session otherwise the session is not maintained and e.g. the message redirect interceptor
+    // doesnt work
+    if (session.isEmpty()) {
+      session.put("-", true);
+    }
   }
 
   /**

@@ -27,7 +27,7 @@ hr {
 
 
 /* MAIN LAYOUT PIECES */
-div#wrapper {
+#wrapper {
 	position:relative;
 	margin-left:auto;
 	margin-right:auto;
@@ -40,23 +40,23 @@ div#wrapper {
 	padding-top: 0px;
 }
 
-div#topmenu {
+#topmenu {
 	position:relative;
 	float: right;
 	bottom: -6px;
 }
-div#topmenu > ul {
+#topmenu > ul {
 	margin:0; 
 	padding:0; 
 	list-style:none; 
 }
-div#topmenu > ul > li {
+#topmenu > ul > li {
 	display:inline; 
 	margin:0; 
 	float:left; 
 	padding: 0px 0 0px 10px; 
 }
-div#topmenu > ul > li.current a {
+#topmenu > ul > li.current a {
 	font-weight:bold;
 }
 
@@ -75,15 +75,22 @@ div#topmenu > ul > li.current a {
 }
    
    
-div#menu {
+#reports{
+    position:absolute;
+    right: 6px;
+    top: 50px;
+    padding:5px; 
+}
+
+#menu {
 	height: 50px;
 	background-color: #eee;
 }
-div#menu ul {
+#menu ul {
 	padding: 0px;
     list-style: none;
 }
-div#menu li {
+#menu li {
 	width: 144px;
     float: left;
     display: inline;
@@ -98,7 +105,7 @@ div#menu li {
 	background: #aaa; 
 }
 
-div#menu a{
+#menu a{
     display: inline-block;
     /* hide from ie/mac \*/
     display: block;
@@ -113,15 +120,15 @@ div#menu a{
 	color: #FFF;
 	background: transparent url(../images/menubtn.gif) no-repeat; 
 }
-div#menu li.current{
+#menu li.current{
 	background: #4ea226; 
 }
-div#menu li:hover {
+#menu li:hover {
     opacity: 0.8;
     //background: #077a2d;
 }
 
-div#search {
+#search {
 	position: relative; 
 	top:-40px; 
 	right:0; 
@@ -129,14 +136,14 @@ div#search {
 	padding:7px; 
 	float: right;
 }
-div#search #search-input {
+#search #search-input {
 	width:190px; 
 	padding:3px;
 	border:1px solid #AFAFAF;
 }
 
 
-div#sidebar {
+#sidebar {
 	position: relative;
 	//top: -3em;
 	width: 170px;
@@ -144,7 +151,7 @@ div#sidebar {
 	clear: both;
 	float:right;
 }
-div#sidebar:after{
+#sidebar:after{
     /*Having something in the content such as a period 
     gives a more consistent results across browsers.*/
     content: "."; 
@@ -154,30 +161,30 @@ div#sidebar:after{
     clear: both; 
     visibility:hidden;
 }
-div#sidebar > ul {
+#sidebar > ul {
 	margin:0; 
 	padding:0; 
 	list-style:none; 
 }
-div#sidebar > ul > li {
+#sidebar > ul > li {
 	margin:0px; 
 	padding: 2px; 
 }
-div#sidebar > ul > li.current {
+#sidebar > ul > li.current {
 	font-weight:bold;
 }
 
 
-div#content { 
+#content { 
 	padding: 10px;
 }
-div#content.fixed { 
+#content.fixed { 
 	position: relative;
 	//top: -4em;
 	width: 750px;
 	float:left;
 }
-div#content:after{
+#content:after{
     /*Having something in the content such as a period 
     gives a more consistent results across browsers.*/
     content: "."; 
@@ -188,7 +195,7 @@ div#content:after{
     visibility:hidden;
 }
 
-div#footer{
+#footer{
 	clear: both;
 	text-align: center;
 	padding: 15px 0px;
@@ -196,12 +203,12 @@ div#footer{
 	margin-left:-10px;
 	margin-right:-10px;
 }
-div#footer ul {
+#footer ul {
 	margin:0; 
 	padding:5px; 
 	list-style:none; 
 }
-div#footer li {
+#footer li {
 	display:inline; 
 	margin:0; 
 	padding: 0px 10px; 
@@ -437,6 +444,12 @@ ul.horizontal > li {
 	padding: 0px 10px 0px 0px; 
 }
 
+ul.simple {
+	margin:0; 
+	padding:0; 
+	list-style:none;
+    text-align: left;	 
+}
 
 
 /* 

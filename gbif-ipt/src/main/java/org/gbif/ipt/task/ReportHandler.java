@@ -14,33 +14,14 @@
  * the License.
  ***************************************************************************/
 
-package org.gbif.ipt.config;
-
-import org.apache.log4j.Logger;
-
-import java.io.File;
-import java.io.IOException;
-
-import freemarker.cache.FileTemplateLoader;
+package org.gbif.ipt.task;
 
 /**
+ * A callback handler to report the current state of a concurrent task, ie. Runnable
+ * 
  * @author markus
  * 
  */
-public class DataDirTemplateLoader extends FileTemplateLoader {
-  private Logger log = Logger.getLogger(DataDirTemplateLoader.class);
-
-  public DataDirTemplateLoader(File baseDir) throws IOException {
-    super(baseDir);
-  }
-
-  @Override
-  public Object findTemplateSource(String name) throws IOException {
-    // only find templates with a datadir:: prefix
-    if (name != null && name.startsWith("datadir::")) {
-      name = name.substring(9);
-      return super.findTemplateSource(name);
-    }
-    return null;
-  }
+public interface ReportHandler {
+  public void report(String resourceShortname, StatusReport report);
 }

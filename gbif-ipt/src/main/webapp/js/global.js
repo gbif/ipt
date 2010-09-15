@@ -10,6 +10,29 @@ function isTrueOrNull(x){
 	}
 	return false;
 }
+
+var reporter;
+var reporterUrl;
+function initReporting(url){
+	reporterUrl=url;
+	$("#reports").click(function(e) {
+		e.preventDefault();
+		loadReport();
+		$("#modalbox").show();
+		// reload content with timer until finished with click function below
+		reporter = setInterval(loadReport, 1000);
+    });
+	$("#modalbox").click(function(e) {
+		e.preventDefault();
+		$("#modalbox").hide();
+		// end timer
+		clearInterval(reporter);
+		//$("#reports").hide();
+    });	
+}
+function loadReport(){
+	$("#modalcontent").load(reporterUrl);
+}
 function initForm(){
     $("input.form-reset").one("click", function () {
       $(this).val("");

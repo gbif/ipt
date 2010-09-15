@@ -36,7 +36,10 @@ $(document).ready(function(){
         $("#availableLocales").toggle();
     })
     initForm();
-	readUserPrefCookie();    
+	readUserPrefCookie();
+  [#if Session?? && Session.curr_processes_dwca?? && Session.curr_processes_dwca?size>0] 
+  	initReporting("${baseURL}/manage/processes.do");    
+  [/#if]
 });
 </script>
 
