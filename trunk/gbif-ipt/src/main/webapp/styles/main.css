@@ -345,9 +345,26 @@ form h2 {
 	font-size:1.6em;
 	font-weight:normal;
 }
-
 form.half{		
 	width: 50%;		
+}
+div.third{
+	clear: both;
+}
+div.third input{
+	width: 85%;
+}
+div.third select{
+	max-width:90%;
+	width: 85%;
+}
+div.third img{
+	max-width:90%;	
+	vertical-align: middle;
+}
+div.third > div{
+	width: 30%;
+	float: left;
 }
 div.half{
 	clear: both;	
