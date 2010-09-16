@@ -15,15 +15,25 @@ import java.util.List;
 import java.util.Map;
 
 public class ProcessesAction extends BaseAction {
+  private static final String SESSION_PROCESSES_DONE = "done_processes_dwca";
+  private static final int interval = 20000;
   @Inject
   private ResourceManager resourceManager;
   private Map<String, StatusReport> reports = new HashMap<String, StatusReport>();
   private Date now = new Date();
+  private boolean allCompleted = false;
+  private boolean purge = false;
 
   @Override
   public String execute() throws Exception {
     // see if any resources are marked in session
     if (session.containsKey(SESSION_PROCESSES_DWCA)) {
+      // keep processes recently completed in the session too so we can show them until the last one finished
+      if (!session.containsKey(SESSION_PROCESSES_DONE)) {
+        session.put(SESSION_PROCESSES_DONE, new HashMap<String, Long>());
+      }
+      Map<String, Long> completed = (Map<String, Long>) session.get(SESSION_PROCESSES_DONE);
+
       List<String> resources = (List<String>) session.get(SESSION_PROCESSES_DWCA);
       // show all processes for the current user
       Iterator<String> iter = resources.iterator();
@@ -33,12 +43,26 @@ public class ProcessesAction extends BaseAction {
         reports.put(shortname, report);
         if (report.isCompleted()) {
           // finito, remove from session
-          log.debug("Resource " + shortname + " unlocked, removed from session");
           iter.remove();
+          // add to completed
+          completed.put(shortname, new Date().getTime());
         }
       }
+      // have all resources completed by now?
+      if (resources.isEmpty()) {
+        allCompleted = true;
+      }
+      for (String shortname : completed.keySet()) {
+        reports.put(shortname, resourceManager.status(shortname));
+      }
+    } else {
+      allCompleted = true;
     }
-    // check if complete - in that case remove from session
+    // if all are completed remove completed session all together
+    if (allCompleted || purge) {
+      log.debug("Purging completed processes from session");
+      session.remove(SESSION_PROCESSES_DONE);
+    }
     return SUCCESS;
   }
 
@@ -48,6 +72,14 @@ public class ProcessesAction extends BaseAction {
 
   public Map<String, StatusReport> getReports() {
     return reports;
+  }
+
+  public boolean isAllCompleted() {
+    return allCompleted;
+  }
+
+  public void setPurge(boolean purge) {
+    this.purge = purge;
   }
 
 }
