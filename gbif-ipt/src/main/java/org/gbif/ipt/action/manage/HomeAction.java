@@ -29,4 +29,15 @@ public class HomeAction extends BaseAction {
     return registrationAllowed;
   }
 
+  /**
+   * method for dealing with the action for a locked resource.
+   * Does nothing but the regular home plus an error message
+   * 
+   * @return
+   */
+  public String locked() {
+    addActionError("This resource is locked due to background processing, please try again later.");
+    return execute();
+  }
+
 }

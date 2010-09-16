@@ -99,7 +99,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private SourceManager sourceManager;
   private ExtensionManager extensionManager;
   private RegistryManager registryManager;
-  private ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(3);
+  private ThreadPoolExecutor executor;
   private GenerateDwcaFactory dwcaFactory;
   private Map<String, Future<Integer>> processFutures = new HashMap<String, Future<Integer>>();
   private Map<String, StatusReport> processReports = new HashMap<String, StatusReport>();
@@ -115,6 +115,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     this.extensionManager = extensionManager;
     this.registryManager = registryManager;
     this.dwcaFactory = dwcaFactory;
+    this.executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(cfg.getMaxThreads());
     defineXstreamMapping(userConverter, orgConverter, extensionConverter, conceptTermConverter, jdbcInfoConverter,
         passwordConverter);
   }

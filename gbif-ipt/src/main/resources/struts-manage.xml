@@ -25,9 +25,13 @@
 			</result>
 			<result name="cancel" type="redirect">resource.do</result>
 			<result name="home" type="redirect">home.do</result>
+			<result name="locked" type="redirect">locked.do</result>			
 		</global-results>
 		
 		<action name="home" class="org.gbif.ipt.action.manage.HomeAction">
+			<result>/WEB-INF/pages/manage/home.ftl</result>
+		</action>
+		<action name="locked" class="org.gbif.ipt.action.manage.HomeAction" method="locked">
 			<result>/WEB-INF/pages/manage/home.ftl</result>
 		</action>
 		
