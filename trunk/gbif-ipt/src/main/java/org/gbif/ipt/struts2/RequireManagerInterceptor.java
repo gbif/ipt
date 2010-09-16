@@ -17,7 +17,8 @@ import java.util.Map;
 
 /**
  * An Interceptor that makes sure a user with manager rights (=admin or manager role) is currently logged in and returns
- * a notAllowed otherwise.
+ * a notAllowed otherwise. It also checks if the resource is currently locked and returns locked in that case regardless
+ * of user rights.
  * If a resource is requested it also checks that the logged in user has permissions to manage that specific resource.
  */
 public class RequireManagerInterceptor extends AbstractInterceptor {
@@ -69,6 +70,10 @@ public class RequireManagerInterceptor extends AbstractInterceptor {
         // authorized?
         if (user == null || !isAuthorized(user, resource)) {
           return BaseAction.NOT_ALLOWED;
+        }
+        // locked?
+        if (resourceManager.isLocked(requestedResource)) {
+          return BaseAction.LOCKED;
         }
       }
       return invocation.invoke();

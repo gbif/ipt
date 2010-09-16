@@ -98,6 +98,14 @@ public class AppConfig {
     return null;
   }
 
+  public int getMaxThreads() {
+    try {
+      return Integer.parseInt(getProperty("dev.maxthreads"));
+    } catch (NumberFormatException e) {
+      return 3;
+    }
+  }
+
   public String getProperty(String key) {
     return properties.getProperty(key);
   }
