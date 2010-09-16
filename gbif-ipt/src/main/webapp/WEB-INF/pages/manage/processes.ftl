@@ -1,5 +1,5 @@
 <#setting url_escaping_charset="UTF-8">
-<h1>Background Process Status</h1>
+<h1<#if allCompleted> id="allReportsCompleted"</#if>>Background Process Status</h1>
 <span class="small">${now?datetime?string}</span>
 
 <#if reports?size==0>
@@ -7,6 +7,7 @@
 </#if>
 
 <#list reports?keys as res>
+<div<#if reports[res]?? && reports[res].completed> class="completed"</#if>>
  <h2>Resource ${res}</h2>
  <#if reports[res]??>
   <#assign status=reports[res]/>
@@ -20,5 +21,6 @@
  <#else>
   <h4>Finished<h4>
  </#if>
+</div>
  
 </#list>
