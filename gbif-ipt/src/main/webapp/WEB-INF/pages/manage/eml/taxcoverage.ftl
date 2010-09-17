@@ -37,15 +37,41 @@
 			// cloning the taxonItem and setting the corresponding id.
 			var taxonItem = $("#taxon-9999").clone();
 			
+			// setting the ids to the rest of the components of the taxomItem
+			$("#"+idBaseItem+" #sub-baseItem").append(taxonItem);
+						
 			// setting the ids to the rest of the components of the taxonItem.
 			setSubItemIndex(baseItem, taxonItem, lastIndex);
 			
-			$("#"+idBaseItem+" #sub-baseItem").append(taxonItem);
 			taxonItem.slideDown('slow');
 		}
 		
 		function setSubItemIndex(baseItem, subItem, subBaseIndex) {
 			subItem.attr("id", "taxon-"+subBaseIndex);
+			//alert(baseItem.attr("id"));
+			$("#"+baseItem.attr("id")+" #"+subItem.attr("id")).find("[id$='scientificName']").attr("id", "eml.taxonomicCoverage["+baseItem.attr("id").split("-")[1]+"].taxonKeywords["+subBaseIndex+"].scientificName").attr("name", function() {return $(this).attr("id");});
+			$("#"+baseItem.attr("id")+" #"+subItem.attr("id")).find("[for$='scientificName']").attr("for", "eml.taxonomicCoverage["+baseItem.attr("id").split("-")[1]+"].taxonKeywords["+subBaseIndex+"].scientificName");
+			$("#"+baseItem.attr("id")+" #"+subItem.attr("id")).find("[id$='commonName']").attr("id", "eml.taxonomicCoverage["+baseItem.attr("id").split("-")[1]+"].taxonKeywords["+subBaseIndex+"].commonName").attr("name", function() {return $(this).attr("id");});
+			$("#"+baseItem.attr("id")+" #"+subItem.attr("id")).find("[for$='commonName']").attr("for", "eml.taxonomicCoverage["+baseItem.attr("id").split("-")[1]+"].taxonKeywords["+subBaseIndex+"].commonName");
+			$("#"+baseItem.attr("id")+" #"+subItem.attr("id")).find("[id$='rank']").attr("id", "eml.taxonomicCoverage["+baseItem.attr("id").split("-")[1]+"].taxonKeywords["+subBaseIndex+"].rank").attr("name", function() {return $(this).attr("id");});
+			$("#"+baseItem.attr("id")+" #"+subItem.attr("id")).find("[for$='rank']").attr("for", "eml.taxonomicCoverage["+baseItem.attr("id").split("-")[1]+"].taxonKeywords["+subBaseIndex+"].rank");
+			$("#"+baseItem.attr("id")+" #"+subItem.attr("id")).find("[id^='trash']").attr("id", "trash-"+baseItem.attr("id").split("-")[1]+"-"+subBaseIndex).attr("name", function() {return $(this).attr("id");});
+			$("#trash-"+baseItem.attr("id").split("-")[1]+"-"+subBaseIndex).click(function(event) {
+				removeSubItem(event);
+			});
+		}
+		
+		function removeSubItem(event) {
+			event.preventDefault();
+			var $target = $(event.target);
+			$("#item-"+$target.attr("id").split("-")[1]+" #taxon-"+$target.attr("id").split("-")[2]).slideUp("slow", function() {
+				var indexItem = $(this).find("[id^='trash']").attr("id").split("-")[1];
+				$(this).remove();
+				$("#item-"+indexItem+" .sub-item").each(function(index) {
+					var indexItem = $(this).find("[id^='trash']").attr("id").split("-")[1];
+					setSubItemIndex($("#item-"+indexItem), $(this), index);					
+				});
+			});
 		}
 		
 		function removeItem(event){
@@ -78,9 +104,7 @@
 			$("#item-"+index+" [id$='commonName']").attr("id", "eml.taxonomicCoverages["+index+"].taxonKeyword.commonName").attr("name", function() {return $(this).attr("id");});
 			$("#item-"+index+" [for$='commonName']").attr("for", "eml.taxonomicCoverages["+index+"].taxonKeyword.commonName");
 			$("#item-"+index+" [id$='rank']").attr("id", "eml.taxonomicCoverages["+index+"].taxonKeyword.rank").attr("name", function() {return $(this).attr("id");});
-			$("#item-"+index+" [for$='rank']").attr("for", "eml.taxonomicCoverages["+index+"].taxonKeyword.rank");
-			
-						
+			$("#item-"+index+" [for$='rank']").attr("for", "eml.taxonomicCoverages["+index+"].taxonKeyword.rank");			
 		}
 		
 		$("#plus").click(function(event) {
@@ -115,17 +139,30 @@
 				<div class="right">
     				<a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.item'/> ]</a>
   				</div>
+  				<div class="newline"></div>
+  				<@text  i18nkey="eml.taxonomicCoverages.description" help="i18n" name="description" />				
+				<div id="sub-baseItem">
+					<#list item.taxonKeywords as subItem>
+						<div id="taxon-${subItem_index}" class="sub-item">
+							<div class="third">
+								<@input i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].scientificName" />
+								<@input i18nkey="eml.taxonomicCoverages.taxonKeyword.commonName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].commonName" />
+								<@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].rank" options=ranks value="${eml.taxonomicCoverages[item_index].taxonKeywords[subItem_index].rank}"/>		
+								<br><br>
+								<img id="trash-${item_index}-${subItem_index}" src="http://localhost:7001/ipt/images/trash-m.png">
+							</div>
+							<div class="newline"></div>
+						</div>						
+					</#list>
+				</div>
+				<br>
 				<div class="newline"></div>
-				<@text  i18nkey="eml.taxonomicCoverages.description" name="eml.taxonomicCoverages[${item_index}].description" help="i18n" />
-				<div class="half">
-           			<@input i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" name="eml.taxonomicCoverages[${item_index}].taxonKeyword.scientificName" />
-           			<@input i18nkey="eml.taxonomicCoverages.taxonKeyword.commonName" name="eml.taxonomicCoverages[${item_index}].taxonKeyword.commonName" />
-        		</div>     	
-           		<@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="eml.taxonomicCoverages[${item_index}].taxonKeyword.rank" options=ranks value="${eml.taxonomicCoverages[item_index].taxonKeyword.rank}" />
-   	  			<div class="newline"></div>			
+				<a id="plus-taxon" href="" ><@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.taxcoverage.taxon.item' /></a> 	  
+				<div class="newline"></div>      
 				<div class="horizontal_dotted_line_large_foo" id="separator"></div>
 				<div class="newline"></div>
 				<div class="newline"></div>
+				
 			</div>
 		</#list>
 	</div>	
@@ -145,8 +182,8 @@
 		<a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.item'/> ]</a>
 	</div>
 	<div class="newline"></div>
-	<@text  i18nkey="eml.taxonomicCoverages.description" help="i18n" name="description" />
-	<div id="sub-baseItem">
+		<@text  i18nkey="eml.taxonomicCoverages.description" help="i18n" name="description" />
+		<div id="sub-baseItem">
 	</div>
 	<br>
 	<div class="newline"></div>
