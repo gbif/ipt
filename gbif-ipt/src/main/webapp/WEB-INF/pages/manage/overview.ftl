@@ -188,6 +188,9 @@ By default a resource is private to the managers. Once published to GBIF you can
 		    <#if resource.status=="PRIVATE">
 	       	<@s.submit name="publish" key="button.public"/>
 			</#if>
+		    <#if resource.status=="REGISTERED">
+	       	<@s.submit name="update" key="button.update"/>
+			</#if>			
 		</#if>
   	  </form>
   	</div>

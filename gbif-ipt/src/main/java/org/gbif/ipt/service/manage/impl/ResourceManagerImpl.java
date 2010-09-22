@@ -24,9 +24,9 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
+import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.Source.FileSource;
 import org.gbif.ipt.model.Source.SqlSource;
-import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
@@ -38,9 +38,9 @@ import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidConfigException;
-import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.RegistryException;
+import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
@@ -746,4 +746,19 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.gbif.ipt.service.manage.ResourceManager#updateRegistration(org.gbif.ipt.model.Resource,
+   * org.gbif.ipt.model.Organisation, org.gbif.ipt.model.Ipt)
+   */
+  public void updateRegistration(Resource resource, Organisation organisation, Ipt ipt) throws InvalidConfigException {
+    if (PublicationStatus.REGISTERED == resource.getStatus()) {
+      log.debug("Updating resource with Organisation Key: " + organisation.getKey().toString() + " & pwd "
+          + organisation.getPassword());
+      registryManager.setRegistryCredentials(organisation.getKey().toString(), organisation.getPassword());
+      registryManager.updateResource(resource, organisation, ipt);
+      // save(resource);
+    }
+  }
 }

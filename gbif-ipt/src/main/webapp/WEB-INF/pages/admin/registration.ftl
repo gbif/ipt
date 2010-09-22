@@ -27,7 +27,6 @@ $(document).ready(function(){
 	$('#validate').click(function() {
 		$("#baseURLStatus").html('<img src="${baseURL}/images/small-loader.gif">');
 		var url = "<@s.url value='${registryURL}ipt/validate.json?url=${baseURL}'/>";
-		alert(url);
 		$.getJSON(url+"&callback=?",function(data){
 			if(data.result==200) {
 				$('#registrationForm').show(500);
