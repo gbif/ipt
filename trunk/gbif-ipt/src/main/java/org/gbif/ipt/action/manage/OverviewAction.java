@@ -246,9 +246,7 @@ public class OverviewAction extends ManagerBaseAction {
       try {
         //org = registrationManager.get(resource.getOrganisation());
         resourceManager.updateRegistration(resource, resource.getOrganisation(), registrationManager.getIpt());
-        if (org != null) {
-          addActionMessage("Updated registration of resource with " + org.getName() + " in GBIF");
-        }
+        addActionMessage("Updated registration of resource " + resource.getTitle() + " in GBIF");
       } catch (RegistryException e) {
         log.error("Cant update registration of resource " + resource + " with organisation " + org, e);
       }
