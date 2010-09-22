@@ -251,7 +251,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * @return
    */
   private String getIptResourceUri() {
-    return String.format("%s/%s", cfg.getRegistryUrl(), "ipt/resource");
+    return String.format("%s%s", cfg.getRegistryUrl(), "ipt/resource");
   }
   
   /**
@@ -260,7 +260,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * @return
    */
   private String getIptUpdateResourceUri(String resourceKey) {
-    return String.format("%s/%s%s", cfg.getRegistryUrl(), "ipt/resource/", resourceKey);
+    return String.format("%s%s%s", cfg.getRegistryUrl(), "ipt/resource/", resourceKey);
   }  
 
   /**
@@ -269,7 +269,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * @return
    */
   private String getIptUri() {
-    return String.format("%s/%s", cfg.getRegistryUrl(), "ipt/register");
+    return String.format("%s%s", cfg.getRegistryUrl(), "ipt/register");
   }
 
   /**
