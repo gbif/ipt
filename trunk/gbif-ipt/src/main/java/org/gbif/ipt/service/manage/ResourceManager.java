@@ -124,6 +124,17 @@ public interface ResourceManager {
    * @throws InvalidConfigException
    */
   public void register(Resource resource, Organisation organisation, Ipt ipt) throws InvalidConfigException;
+  
+  /**
+   * Update the registration of the resource with gbif
+   * 
+   * @param resource
+   * @param organisation the org that the resource will be associated with
+   * @param ipt the ipt that the resource will be published through
+   * @param eml eml object
+   * @throws InvalidConfigException
+   */
+  public void updateRegistration(Resource resource, Organisation organisation, Ipt ipt) throws InvalidConfigException;  
 
   /**
    * Persists the whole resource configuration *but* not the EML file.

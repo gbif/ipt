@@ -132,15 +132,15 @@ public class OverviewAction extends ManagerBaseAction {
     if (resource.getEml() == null) {
       return false;
     }
-    if (resource.getEml().getContact() == null) {
+    if (resource.getCreator() == null) {
       return false;
     }
-    if (resource.getEml().getContact().getEmail() == null) {
+    if (resource.getCreator().getEmail() == null) {
       return false;
     }
-    if (!resource.isPublished()) {
-      return false;
-    }
+    //if (!resource.isPublished()) {
+    //  return false;
+    //}
     return true;
   }
 
@@ -239,6 +239,18 @@ public class OverviewAction extends ManagerBaseAction {
         }
       } catch (RegistryException e) {
         log.error("Cant register resource " + resource + " with organisation " + org, e);
+      }
+
+    } else if (PublicationStatus.REGISTERED == resource.getStatus()) {
+      Organisation org = null;
+      try {
+        //org = registrationManager.get(resource.getOrganisation());
+        resourceManager.updateRegistration(resource, resource.getOrganisation(), registrationManager.getIpt());
+        if (org != null) {
+          addActionMessage("Updated registration of resource with " + org.getName() + " in GBIF");
+        }
+      } catch (RegistryException e) {
+        log.error("Cant update registration of resource " + resource + " with organisation " + org, e);
       }
 
     }
