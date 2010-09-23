@@ -30,7 +30,7 @@
 		  		</div>
 		  		<div class="half">
 		  			<@input name="eml.associatedParties[${item_index}].address.province" i18nkey="eml.associatedParties.address.province" />
-		  			<@select name="eml.associatedParties[${item_index}].address.country" options=countryList i18nkey="eml.associatedParties.address.country" value="${eml.associatedParties[item_index].address.country!}"/>
+		  			<@select name="eml.associatedParties[${item_index}].address.country" options=countries i18nkey="eml.associatedParties.address.country" value="${eml.associatedParties[item_index].address.country!}"/>
 		  		</div>
 		  		<div class="half">
 		  			<@input name="eml.associatedParties[${item_index}].address.postalCode" i18nkey="eml.associatedParties.address.postalCode" />
