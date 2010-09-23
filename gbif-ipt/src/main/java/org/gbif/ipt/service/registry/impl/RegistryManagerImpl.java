@@ -368,7 +368,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * @return
    */
   private String getVocabulariesURL(boolean json) {
-    return String.format("%s%s%s", cfg.getRegistryUrl(), "thesauri.json", json ? ".json" : "/");
+    return String.format("%s%s%s", cfg.getRegistryUrl(), "thesauri", json ? ".json" : "/");
   }
 
   /**
@@ -412,9 +412,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
         new NameValuePair("description", StringUtils.trimToEmpty(resource.getDescription())), // description
         new NameValuePair("primaryContactType", "technical"),
         new NameValuePair("primaryContactName",
-            StringUtils.trimToNull(StringUtils.trimToEmpty(eml.getContact().getFirstName()) + " "
-                + StringUtils.trimToEmpty(eml.getContact().getLastName()))),
-        new NameValuePair("primaryContactEmail", StringUtils.trimToEmpty(eml.getContact().getEmail())),
+            StringUtils.trimToNull(StringUtils.trimToEmpty(resource.getCreator().getName()))),
+        new NameValuePair("primaryContactEmail", StringUtils.trimToEmpty(resource.getCreator().getEmail())),
         new NameValuePair("serviceTypes", serviceTypes), new NameValuePair("serviceURLs", serviceURLs)};
     boolean result = executeUpdate(getIptUpdateResourceUri(resource.getKey().toString()), data, true);
     if (result) {
@@ -456,9 +455,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
         new NameValuePair("description", StringUtils.trimToEmpty(resource.getDescription())), // description
         new NameValuePair("primaryContactType", "technical"),
         new NameValuePair("primaryContactName",
-            StringUtils.trimToNull(StringUtils.trimToEmpty(eml.getContact().getFirstName()) + " "
-                + StringUtils.trimToEmpty(eml.getContact().getLastName()))),
-        new NameValuePair("primaryContactEmail", StringUtils.trimToEmpty(eml.getContact().getEmail())),
+            StringUtils.trimToNull(StringUtils.trimToEmpty(resource.getCreator().getName()))),
+        new NameValuePair("primaryContactEmail", StringUtils.trimToEmpty(resource.getCreator().getEmail())),
         new NameValuePair("serviceTypes", serviceTypes), new NameValuePair("serviceURLs", serviceURLs)};
     String result = executePost(getIptResourceUri(), data, true);
     if (result != null) {
