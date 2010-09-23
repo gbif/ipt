@@ -185,8 +185,7 @@
 		<dependency>
 			<groupId>org.gbif</groupId>
 			<artifactId>dwc-archive</artifactId>
-			<version>1.2</version>
-			<!-- next is 1.2.1-SNAPSHOT -->
+			<version>1.2.1-SNAPSHOT</version>
 		</dependency>
 		
 		<!-- Struts2 -->

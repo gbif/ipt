@@ -151,14 +151,12 @@ public class SetupAction extends BaseAction implements ServletContextAware {
     }
     if (dataDir.isConfigured()) {
       // the data dir is already/now configured, skip the first setup step
-      session.put("DONE", "carla");
       return SUCCESS;
     }
     return INPUT;
   }
 
   public String setup2() {
-    session.put("DONE2", "pia");
     // first check if the selected datadir contains an admin user already
     if (configManager.setupComplete()) {
       addActionMessage(getText("admin.config.setup2.existingFound"));
