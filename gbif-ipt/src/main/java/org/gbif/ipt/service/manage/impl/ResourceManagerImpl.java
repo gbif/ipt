@@ -418,17 +418,16 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       if (f.isDone()) {
         try {
           Integer coreRecords = f.get();
-          processFutures.remove(shortname);
           Resource res = get(shortname);
           res.setRecordsPublished(coreRecords);
           save(res);
           return false;
         } catch (InterruptedException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
+          log.info("Process canceled for resource "+shortname);
         } catch (ExecutionException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
+          log.error("Process for resource "+shortname+" aborted due to error: "+e.getMessage());
+        } finally {
+          processFutures.remove(shortname);
         }
       }
       return true;

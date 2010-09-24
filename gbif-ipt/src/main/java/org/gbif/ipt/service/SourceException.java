@@ -14,12 +14,4 @@ public class SourceException extends IOException {
     super(message);
   }
 
-  public SourceException(String message, Throwable cause) {
-    super(message, cause);
-  }
-
-  public SourceException(Throwable cause) {
-    super(cause);
-  }
-
 }

@@ -61,11 +61,11 @@ import java.util.Set;
  * 
  */
 public class SourceManagerImpl extends BaseManager implements SourceManager {
-  private class FileIterator implements ClosableIterator<Object> {
+  private class FileColumnIterator implements ClosableIterator<Object> {
     private final CSVReader reader;
     private final int column;
 
-    public FileIterator(FileSource source, int column) throws IOException {
+    public FileColumnIterator(FileSource source, int column) throws IOException {
       reader = source.getReader();
       this.column = column;
     }
@@ -93,7 +93,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     }
   }
 
-  private class SqlIterator implements ClosableIterator<Object> {
+  private class SqlColumnIterator implements ClosableIterator<Object> {
     private final Connection conn;
     private final Statement stmt;
     private final ResultSet rs;
@@ -101,7 +101,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     private boolean hasNext;
     private final String sourceName;
 
-    public SqlIterator(SqlSource source, int column) throws SQLException {
+    public SqlColumnIterator(SqlSource source, int column) throws SQLException {
       this.conn = getDbConnection(source);
       this.stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
       this.stmt.setFetchSize(100);
@@ -147,6 +147,79 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     }
   }
 
+
+  private class SqlRowIterator implements ClosableIterator<String[]> {
+      private final Connection conn;
+      private final Statement stmt;
+      private final ResultSet rs;
+      private boolean hasNext;
+      private final String sourceName;
+      private final int rowSize;
+
+      SqlRowIterator(SqlSource source) throws SQLException {
+        this.conn = getDbConnection(source);
+        this.stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+        this.stmt.setFetchSize(1000);
+        this.rs = stmt.executeQuery(source.getSql());
+        this.rowSize=rs.getMetaData().getColumnCount();
+        this.hasNext = rs.next();
+        sourceName = source.getName();
+      }
+
+      public void close() {
+        if (rs != null) {
+          try {
+            rs.close();
+            stmt.close();
+            conn.close();
+          } catch (SQLException e) {
+            log.error("Cant close iterator for sql source " + sourceName, e);
+          }
+        }
+
+      }
+
+      public boolean hasNext() {
+        return hasNext;
+      }
+
+      public String[] next() {
+      	String[] val = new String[rowSize];
+        if (hasNext) {
+          try {
+            for (int i=1; i<rowSize; i++){
+            	val[i-1]=rs.getString(i);
+            }
+            // forward rs cursor
+            hasNext = rs.next();
+          } catch (SQLException e2) {
+            hasNext = false;
+          }
+        }
+        return val;
+      }
+
+      public void remove() {
+        // unsupported
+      }
+    }
+  
+  
+  public ClosableIterator<String[]> rowIterator(Source source) throws SourceException{
+	  if (source==null){
+		  return null;
+	  }
+	try {
+		if (source instanceof FileSource) {
+			return ((FileSource) source).getReader().iterator();
+		}
+		return new SqlRowIterator((SqlSource) source);
+	} catch (Exception e) {
+		log.error(e);
+		throw new SourceException("Cant build iterator for source "+source.getName()+" :"+e.getMessage());
+	}
+  }
+  
   @Inject
   private ResourceManager resourceManager;
 
@@ -426,7 +499,8 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         }
       }
     } catch (Exception e) {
-      throw new SourceException("Error reading source " + source.getName(), e);
+    	log.error(e);
+      throw new SourceException("Error reading source " + source.getName()+": "+e.getMessage());
     } finally {
       if (iter != null) {
         iter.close();
@@ -438,10 +512,10 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   private ClosableIterator<Object> iterSourceColumn(Source source, int column) throws Exception {
     if (source instanceof FileSource) {
       FileSource src = (FileSource) source;
-      return new FileIterator(src, column);
+      return new FileColumnIterator(src, column);
     } else {
       SqlSource src = (SqlSource) source;
-      return new SqlIterator(src, column);
+      return new SqlColumnIterator(src, column);
     }
   }
 

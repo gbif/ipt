@@ -1,5 +1,6 @@
 package org.gbif.ipt.service.manage;
 
+import org.gbif.file.ClosableIterator;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.Source.FileSource;
@@ -92,4 +93,12 @@ public interface SourceManager {
    * @return sample rows from the dataset
    */
   public List<String[]> peek(Source source, int rows);
+  
+  /**
+ * @param src
+ * @return a closable row iterator for a source
+ * @throws SourceException 
+ */
+public ClosableIterator<String[]> rowIterator(Source src) throws SourceException;
+
 }

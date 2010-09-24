@@ -5,7 +5,7 @@
  </tr>
  <#list peek as row><#if row??>
    <tr<#if (row_index % 2) == 0> class="even"</#if>>
-   <#list row as col><td>${col}</td></#list>
+   <#list row as col><td>${col!"<em>null</em>"}</td></#list>
    </tr>
  </#if></#list>	
 </table>
