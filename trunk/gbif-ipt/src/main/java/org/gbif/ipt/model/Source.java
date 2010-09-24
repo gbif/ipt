@@ -24,7 +24,6 @@ import static com.google.common.base.Objects.equal;
 
 import com.google.common.base.Objects;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
@@ -36,7 +35,7 @@ import java.util.Iterator;
  * @author markus
  * 
  */
-public abstract class Source implements Iterable<String[]>, Comparable<Source> {
+public abstract class Source implements Comparable<Source> {
   public static class FileSource extends Source {
     private Character fieldsTerminatedBy = '\t';
     private Character fieldsEnclosedBy = CSVReader.NULL_CHAR;
@@ -136,7 +135,7 @@ public abstract class Source implements Iterable<String[]>, Comparable<Source> {
     private String database;
     private String username;
     private Password password = new Password();
-
+    
     public String getDatabase() {
       return database;
     }
@@ -168,10 +167,6 @@ public abstract class Source implements Iterable<String[]>, Comparable<Source> {
 
     public String getUsername() {
       return username;
-    }
-
-    public Iterator<String[]> iterator() {
-      throw new NotImplementedException();
     }
 
     public void setDatabase(String database) {

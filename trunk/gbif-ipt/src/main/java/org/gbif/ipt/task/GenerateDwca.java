@@ -6,11 +6,13 @@ import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveField.DataType;
 import org.gbif.dwc.text.ArchiveFile;
 import org.gbif.dwc.text.ArchiveWriter;
+import org.gbif.file.ClosableIterator;
 import org.gbif.file.CompressionUtil;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.service.manage.SourceManager;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -45,12 +47,14 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
   private int currRecords = 0;
   private String currExtension;
   private STATE state = STATE.WAITING;
+  private SourceManager sourceManager;
 
   @Inject
-  public GenerateDwca(@Assisted Resource resource, @Assisted ReportHandler handler, DataDir dataDir) {
+  public GenerateDwca(@Assisted Resource resource, @Assisted ReportHandler handler, DataDir dataDir, SourceManager sourceManager) {
     super(1000, resource.getShortname(), handler);
     this.resource = resource;
     this.dataDir = dataDir;
+    this.sourceManager=sourceManager;
   }
 
   private void addDataFile(ExtensionMapping mapping, boolean isCore) throws IOException, GeneratorException {
@@ -85,11 +89,12 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     }
 
     // create the new data file
-    Iterator<String[]> iter = mapping.getSource().iterator();
+    ClosableIterator<String[]> iter = sourceManager.rowIterator(mapping.getSource());
     int rowSize = newColumns.size();
     int line = 0;
     // open new file writer
-    File dataFile = new File(dwcaFolder, mapping.getExtension().getName().toLowerCase().replaceAll("\\s", "_") + ".txt");
+    String fn = mapping.getExtension().getName().toLowerCase().replaceAll("\\s", "_") + ".txt";
+    File dataFile = new File(dwcaFolder, fn);
     Writer writer = org.gbif.file.FileUtils.startNewUtf8File(dataFile);
     try {
       while (iter.hasNext()) {
@@ -143,6 +148,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       if (isCore) {
         coreRecords = currRecords;
       }
+      iter.close();
       writer.close();
     }
     // add source file location
