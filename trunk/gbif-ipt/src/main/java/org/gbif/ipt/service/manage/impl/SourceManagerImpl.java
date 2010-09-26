@@ -256,6 +256,15 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       // anaylze individual files using the dwca reader
       Archive arch = ArchiveFactory.openArchive(file);
       copyArchiveFileProperties(arch.getCore(), src);
+    } catch (IOException e) {
+        log.warn(e.getMessage());
+        throw new ImportException(e);
+    } catch (UnsupportedArchiveException e) {
+    	// fine, cant read it with dwca library, but might still be a valid file for manual setup
+        log.warn(e.getMessage());
+    }
+    
+    try{
       // copy file
       File ddFile = dataDir.sourceFile(resource, src);
       try {
@@ -268,12 +277,6 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       // add to resource, allow overwriting existing ones
       // if the file is uploaded not for the first time
       resource.addSource(src, true);
-    } catch (UnsupportedArchiveException e) {
-      log.warn(e.getMessage());
-      throw new ImportException(e);
-    } catch (IOException e) {
-      log.warn(e.getMessage());
-      throw new ImportException(e);
     } catch (AlreadyExistingException e) {
       throw new ImportException(e);
     }

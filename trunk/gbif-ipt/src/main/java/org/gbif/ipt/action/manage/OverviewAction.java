@@ -1,6 +1,5 @@
 package org.gbif.ipt.action.manage;
 
-import static org.gbif.ipt.config.Constants.SESSION_PROCESSES_DWCA;
 
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
@@ -16,15 +15,18 @@ import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.task.StatusReport;
 import org.gbif.ipt.validation.EmlValidator;
 
 import com.google.inject.Inject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class OverviewAction extends ManagerBaseAction {
+  private static final int interval = 20000;
   @Inject
   private ResourceManager resourceManager;
   @Inject
@@ -39,8 +41,42 @@ public class OverviewAction extends ManagerBaseAction {
   private EmlValidator emlValidator = new EmlValidator();
   private boolean missingMetadata = false;
   private boolean missingRegistrationMetadata = false;
+  private StatusReport report;
+  private Date now;
 
-  public String addmanager() throws Exception {
+  
+  public String locked() throws Exception {
+	  report = resourceManager.status(resource.getShortname());
+	  now = new Date();
+      if (report.isCompleted()) {
+          addActionMessage("Resource published!");
+    	  return "cancel";
+      }
+   	  return SUCCESS;
+  }
+  public String cancel() throws Exception {
+	    if (id != null) {
+		    try {
+			      System.out.println("CANCEL DWCA GENERATION for " + id);
+			      resourceManager.cancelPublishing(id, this);
+			      addActionMessage("Stopped publishing " + id);
+			    } catch (Exception e) {
+			      log.error("Failed to stop publishing resource", e);
+			      addActionError("Failed to stop publishing: " + e.getMessage());
+			    }
+	    }
+	    return execute();
+	  }
+  
+  public StatusReport getReport() {
+	return report;
+}
+
+public Date getNow() {
+	return now;
+}
+
+public String addmanager() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
     }
@@ -56,6 +92,7 @@ public class OverviewAction extends ManagerBaseAction {
     return execute();
   }
 
+  
   @Override
   public String delete() {
     if (resource == null) {
@@ -63,7 +100,6 @@ public class OverviewAction extends ManagerBaseAction {
     }
     try {
       Resource res = resource;
-      System.out.println("DELETING " + res);
       resourceManager.delete(res);
       addActionMessage("Deleted " + res);
       return HOME;
@@ -179,18 +215,12 @@ public class OverviewAction extends ManagerBaseAction {
     }
     try {
       if (resourceManager.publish(resource, this)) {
-        addActionMessage("Resource published as version " + resource.getEmlVersion() + ".");
+        addActionMessage("Publishing resource version " + resource.getEmlVersion() + ".");
       } else {
         addActionMessage("The metadata hasnt changed since the last publication of version " + resource.getEmlVersion()
             + ".");
       }
-      // keep resource in session of currently active resources
-      if (!session.containsKey(SESSION_PROCESSES_DWCA)) {
-        session.put(SESSION_PROCESSES_DWCA, new ArrayList<String>());
-      }
-      List<String> procs = (List<String>) session.get(SESSION_PROCESSES_DWCA);
-      procs.add(resource.getShortname());
-
+      return SUCCESS;
     } catch (PublicationException e) {
       if (PublicationException.TYPE.LOCKED == e.getType()) {
         addActionError("Resource is being published already. Please be patient");
@@ -201,7 +231,7 @@ public class OverviewAction extends ManagerBaseAction {
       log.error("Error publishing resource", e);
       addActionError("Error publishing resource: " + e.getMessage());
     }
-    return SUCCESS;
+    return ERROR;
   }
 
   public String unpublish() throws Exception {

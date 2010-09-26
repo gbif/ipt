@@ -234,7 +234,7 @@ By default a resource is private to the managers. Once published to GBIF you can
   	</div>
    	<div class="actions">
    	  <#if !missingMetadata>
-	  <form action='resource-publish.do' method='post'>
+	  <form action='publish.do' method='post'>
 	    <input name="r" type="hidden" value="${resource.shortname}" />
 	    <@s.submit name="publish" key="button.publish" />
   	  </form>

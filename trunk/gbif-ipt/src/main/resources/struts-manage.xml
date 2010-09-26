@@ -31,8 +31,8 @@
 		<action name="home" class="org.gbif.ipt.action.manage.HomeAction">
 			<result>/WEB-INF/pages/manage/home.ftl</result>
 		</action>
-		<action name="locked" class="org.gbif.ipt.action.manage.HomeAction" method="locked">
-			<result>/WEB-INF/pages/manage/home.ftl</result>
+		<action name="locked" class="org.gbif.ipt.action.manage.OverviewAction" method="locked">
+			<result>/WEB-INF/pages/manage/locked.ftl</result>
 		</action>
 		
 		<action name="create" class="org.gbif.ipt.action.manage.CreateResourceAction">
@@ -49,6 +49,10 @@
 
 		<action name="resource" class="org.gbif.ipt.action.manage.OverviewAction">
 			<result>/WEB-INF/pages/manage/overview.ftl</result>
+		</action>
+		<action name="publish" class="org.gbif.ipt.action.manage.OverviewAction" method="publish">
+			<result>/WEB-INF/pages/manage/locked.ftl</result>
+			<result name="error">/WEB-INF/pages/manage/overview.ftl</result>
 		</action>
 		<action name="resource-*" class="org.gbif.ipt.action.manage.OverviewAction" method="{1}">
 			<result>/WEB-INF/pages/manage/overview.ftl</result>
@@ -109,11 +113,15 @@
 		</action>
 		
 		<!-- ajaxy status report about background processes kicked off by the current user -->			
-		<action name="processes" class="org.gbif.ipt.action.manage.ProcessesAction">
+		<action name="report" class="org.gbif.ipt.action.manage.OverviewAction" method="locked">
 			<interceptor-ref name="ajaxStack"/>
-			<result>/WEB-INF/pages/manage/processes.ftl</result>
-			<result name="error">/WEB-INF/pages/manage/processes-error.ftl</result>
+			<result>/WEB-INF/pages/manage/report.ftl</result>
+			<result name="cancel">/WEB-INF/pages/manage/report.ftl</result>
 		</action> 
-		
+		<action name="cancel" class="org.gbif.ipt.action.manage.OverviewAction" method="cancel">
+			<interceptor-ref name="ajaxStack"/>
+			<result>/WEB-INF/pages/manage/report.ftl</result>
+		</action>		
+			
 	</package>
 </struts>
