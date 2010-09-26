@@ -36,12 +36,6 @@
 				<img src="${baseURL}/styles/logo.jpg">					
 			</div>
 
-	      [#if Session?? && Session.curr_processes_dwca?? && Session.curr_processes_dwca?size>0] 
-			<div id="reports">
-				<img src="${baseURL}/images/loading_cube.gif">					
-			</div>
-		  [/#if]
-			  
 			<div id="menu">
 		        <ul>
 			    	<li[#if currentMenu=='home'] class="current"[/#if]><a href="${baseURL}/">[@s.text name="menu.home"/]</a></li>

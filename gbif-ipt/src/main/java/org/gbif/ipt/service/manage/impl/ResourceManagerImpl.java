@@ -83,6 +83,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -325,7 +326,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     GenerateDwca worker = dwcaFactory.create(resource, this);
     Future<Integer> f = executor.submit(worker);
     processFutures.put(resource.getShortname(), f);
-    alog.info("DwC-A generation started");
     // make sure we have at least a first report for this resource
     worker.report();
   }
@@ -423,7 +423,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           save(res);
           return false;
         } catch (InterruptedException e) {
-          log.info("Process canceled for resource "+shortname);
+          log.info("Process interrupted for resource "+shortname);
+        } catch (CancellationException e) {
+            log.info("Process canceled for resource "+shortname);
         } catch (ExecutionException e) {
           log.error("Process for resource "+shortname+" aborted due to error: "+e.getMessage());
         } finally {
@@ -760,4 +762,23 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       // save(resource);
     }
   }
+
+public boolean cancelPublishing(String shortname, BaseAction action) throws PublicationException {
+	// get future
+    Future<Integer> f = processFutures.get(shortname);
+    if (f!=null){
+    	f.cancel(true);
+    	try {
+            f.get();
+        } catch (InterruptedException e) {
+            log.info("Process canceled for resource "+shortname);
+            return true;
+        } catch (ExecutionException e) {
+            log.info("Process aborted due to execution exception for resource "+shortname);
+            return true;
+		}
+    }
+
+	return false;
+}
 }

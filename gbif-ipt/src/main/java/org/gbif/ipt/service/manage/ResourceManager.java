@@ -114,6 +114,8 @@ public interface ResourceManager {
    */
   public boolean publish(Resource resource, BaseAction action) throws PublicationException;
 
+  public boolean cancelPublishing(String shortname, BaseAction action) throws PublicationException;
+
   /**
    * Registers the resource with gbif
    * 

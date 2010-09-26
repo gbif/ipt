@@ -11,34 +11,6 @@ function isTrueOrNull(x){
 	return false;
 }
 
-var reporter;
-var reporterUrl;
-function initReporting(url){
-	reporterUrl=url;
-	$("#reports").click(function(e) {
-		e.preventDefault();
-		loadReport();
-		$("#modalbox").show();
-		// reload content with timer until finished with click function below
-		reporter = setInterval(loadReport, 1000);
-    });
-	$("#modalbox").click(function(e) {
-		$("#modalcontent").load(reporterUrl+"?purge=true");
-		e.preventDefault();
-		$("#modalbox").hide();
-		// end timer
-		clearInterval(reporter);
-    });	
-}
-function loadReport(){
-	$("#modalcontent").load(reporterUrl, function() {
-		if ($("h1#allReportsCompleted").length > 0){
-			// stop timer and hide gif
-			clearInterval(reporter);
-			$("#reports").hide();
-		};	
-	});
-}
 function initForm(){
     $("input.form-reset").one("click", function () {
       $(this).val("");
