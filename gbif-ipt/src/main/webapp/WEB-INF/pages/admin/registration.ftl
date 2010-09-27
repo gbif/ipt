@@ -42,7 +42,7 @@ $(document).ready(function(){
 			}
 		});	
 
-		$('#organisation\\.key').click(function() {
+		$('#organisation\\.key').change(function() {
 			var orgName = $('#organisation\\.key :selected').text();
 			$('#organisation\\.name').val(orgName);
 			$('#ipt\\.organisationKey').val($('#organisation\\.key :selected').val());		
