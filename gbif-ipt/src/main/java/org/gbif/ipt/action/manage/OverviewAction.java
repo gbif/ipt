@@ -269,6 +269,7 @@ public String addmanager() throws Exception {
         }
       } catch (RegistryException e) {
         log.error("Cant register resource " + resource + " with organisation " + org, e);
+        addActionError("Registration of resource failed!");
       }
 
     } else if (PublicationStatus.REGISTERED == resource.getStatus()) {
@@ -276,9 +277,10 @@ public String addmanager() throws Exception {
       try {
         //org = registrationManager.get(resource.getOrganisation());
         resourceManager.updateRegistration(resource, resource.getOrganisation(), registrationManager.getIpt());
-        addActionMessage("Updated registration of resource " + resource.getTitle() + " in GBIF");
+        addActionMessage("Updated registration of resource " + resource.getShortname() + " in GBIF");
       } catch (RegistryException e) {
         log.error("Cant update registration of resource " + resource + " with organisation " + org, e);
+        addActionError("Registration update failed!");
       }
 
     }

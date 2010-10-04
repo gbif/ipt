@@ -12,6 +12,8 @@
  */
 package org.gbif.ipt.model;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 import java.util.UUID;
 
 /**
@@ -258,6 +260,14 @@ public class Organisation {
    */
   public void setPrimaryContactType(String primaryContactType) {
     this.primaryContactType = primaryContactType;
+  }
+
+  /**
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString() {
+    return ToStringBuilder.reflectionToString(this);
   }
 
 }

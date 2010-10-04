@@ -290,11 +290,11 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     List<Organisation> organisations = new ArrayList<Organisation>();
     JSONArray jSONorganisations = null;
     String result = null;
-    System.out.println("url: " + getOrganisationsURL(true));
     GetMethod method = new GetMethod(getOrganisationsURL(true));
     try {
       client.executeMethod(method);
       if (succeeded(method)) {
+        method.getParams().setParameter("http.protocol.content-charset", "UTF-8");
         result = method.getResponseBodyAsString();
         if (result != null) {
           jSONorganisations = new JSONArray(result);
