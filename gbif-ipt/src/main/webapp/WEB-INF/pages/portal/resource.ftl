@@ -178,9 +178,9 @@
 					<#assign itemTitle><@s.text name='manage.metadata.taxcoverage.subitem'/></#assign>
 					${itemTitle?upper_case} ${subitem_index+1}
 					<table>
-						<tr><th><@s.text name='eml.taxonomicCoverages.taxonKeywords.scientificName'/></th><td>${eml.taxonomicCoverages[item_index].taxonKeywords[subitem_index].scientificName!}</td></tr>
-						<tr><th><@s.text name='eml.taxonomicCoverages.taxonKeywords.commonName'/></th><td>${eml.taxonomicCoverages[item_index].taxonKeywords[subitem_index].commonName!}</td></tr>
-						<tr><th><@s.text name='eml.taxonomicCoverages.taxonKeywords.rank'/></th><td>${eml.taxonomicCoverages[item_index].taxonKeywords[subitem_index].rank!}</td></tr>
+						<tr><th><@s.text name='eml.taxonomicCoverages.taxonKeyword.scientificName'/></th><td>${eml.taxonomicCoverages[item_index].taxonKeywords[subitem_index].scientificName!}</td></tr>
+						<tr><th><@s.text name='eml.taxonomicCoverages.taxonKeyword.commonName'/></th><td>${eml.taxonomicCoverages[item_index].taxonKeywords[subitem_index].commonName!}</td></tr>
+						<tr><th><@s.text name='eml.taxonomicCoverages.taxonKeyword.rank'/></th><td>${eml.taxonomicCoverages[item_index].taxonKeywords[subitem_index].rank!}</td></tr>
 					</table>
 					<div class="newline"></div>
 				</div>
