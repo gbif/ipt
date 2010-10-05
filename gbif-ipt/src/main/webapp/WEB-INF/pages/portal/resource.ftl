@@ -15,7 +15,7 @@
 <div class="definition" id="metadata">	
   <div class="title">
   	<div class="head">
-        Summary
+        <@s.text name='portal.resource.summary'/>
   	</div>
   </div>
   <div class="body">
