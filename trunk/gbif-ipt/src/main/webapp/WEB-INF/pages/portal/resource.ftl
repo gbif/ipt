@@ -22,8 +22,8 @@
       	<div class="details">
       		<table>
           		<tr><th>Keywords</th><td>${resource.eml.subject!}</td></tr>
-          		<tr><th>Taxon Coverage</th><td><#list resource.eml.taxonomicCoverages as tc><#list tc.taxonKeywords as k>${k.scientificName!k.commonName!}<#if !k_has_next>; </#if></#list></#list></td></tr>
-          		<tr><th>Spatial Coverage</th><td><#list resource.eml.geospatialCoverages as geo><#list geo.keywords as k>${k!}<#if !k_has_next>;</#if> </#list></#list></td></tr>
+          		<tr><th>Taxon Coverage</th><td><#list eml.taxonomicCoverages as tc><#list tc.taxonKeywords as k>${k.scientificName}<#if k_has_next>, </#if></#list><#if tc_has_next>; </#if></#list></td></tr>
+          		<tr><th>Spatial Coverage</th><td><#list eml.geospatialCoverages as geo>${geo.description!}<#if geo_has_next>; </#if></#list></td></tr>
 
       		   	<tr><th><@s.text name='eml.language'/></th><td>${eml.language!}</td></tr>
 
