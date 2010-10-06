@@ -7,6 +7,8 @@
   <p class="green">${report.state}</p>
   <#if report.completed>
     <p>Continue to <a href="resource.do?r=${resource.shortname}">resource overview</a>.</p>
+  <#else>
+    <p><a href="cancel.do?r=${resource.shortname}">Cancel</a> publishing.</p>
   </#if> 
   <ul class="simple">
    <li><strong>Log Messages</strong></li>

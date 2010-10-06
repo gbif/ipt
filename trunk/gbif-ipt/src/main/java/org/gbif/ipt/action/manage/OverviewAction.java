@@ -1,6 +1,5 @@
 package org.gbif.ipt.action.manage;
 
-
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.Organisation;
@@ -21,7 +20,6 @@ import org.gbif.ipt.validation.EmlValidator;
 import com.google.inject.Inject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -44,39 +42,7 @@ public class OverviewAction extends ManagerBaseAction {
   private StatusReport report;
   private Date now;
 
-  
-  public String locked() throws Exception {
-	  report = resourceManager.status(resource.getShortname());
-	  now = new Date();
-      if (report.isCompleted()) {
-          addActionMessage("Resource published!");
-    	  return "cancel";
-      }
-   	  return SUCCESS;
-  }
-  public String cancel() throws Exception {
-	    if (id != null) {
-		    try {
-			      System.out.println("CANCEL DWCA GENERATION for " + id);
-			      resourceManager.cancelPublishing(id, this);
-			      addActionMessage("Stopped publishing " + id);
-			    } catch (Exception e) {
-			      log.error("Failed to stop publishing resource", e);
-			      addActionError("Failed to stop publishing: " + e.getMessage());
-			    }
-	    }
-	    return execute();
-	  }
-  
-  public StatusReport getReport() {
-	return report;
-}
-
-public Date getNow() {
-	return now;
-}
-
-public String addmanager() throws Exception {
+  public String addmanager() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
     }
@@ -92,7 +58,25 @@ public String addmanager() throws Exception {
     return execute();
   }
 
-  
+  public String cancel() throws Exception {
+    if (resource != null) {
+      try {
+        resourceManager.cancelPublishing(resource.getShortname(), this);
+        addActionMessage("Stopped publishing " + resource);
+      } catch (Exception e) {
+        String reason = "";
+        if (e.getMessage() != null) {
+          reason = e.getMessage();
+        }
+        addActionError("Failed to stop publishing resource. " + reason);
+        return ERROR;
+      }
+    } else {
+      return NOT_FOUND;
+    }
+    return execute();
+  }
+
   @Override
   public String delete() {
     if (resource == null) {
@@ -145,6 +129,10 @@ public String addmanager() throws Exception {
     return missingRegistrationMetadata;
   }
 
+  public Date getNow() {
+    return now;
+  }
+
   public List<Organisation> getOrganisations() {
     return organisations;
   }
@@ -157,8 +145,22 @@ public String addmanager() throws Exception {
     return potentialManagers;
   }
 
+  public StatusReport getReport() {
+    return report;
+  }
+
   public boolean isMissingMetadata() {
     return missingMetadata;
+  }
+
+  public String locked() throws Exception {
+    report = resourceManager.status(resource.getShortname());
+    now = new Date();
+    if (report.isCompleted()) {
+      addActionMessage("Resource published!");
+      return "cancel";
+    }
+    return SUCCESS;
   }
 
   private boolean minimumRegistryInfo(Resource resource) {
@@ -174,9 +176,9 @@ public String addmanager() throws Exception {
     if (resource.getCreator().getEmail() == null) {
       return false;
     }
-    //if (!resource.isPublished()) {
-    //  return false;
-    //}
+    // if (!resource.isPublished()) {
+    // return false;
+    // }
     return true;
   }
 
@@ -275,7 +277,7 @@ public String addmanager() throws Exception {
     } else if (PublicationStatus.REGISTERED == resource.getStatus()) {
       Organisation org = null;
       try {
-        //org = registrationManager.get(resource.getOrganisation());
+        // org = registrationManager.get(resource.getOrganisation());
         resourceManager.updateRegistration(resource, resource.getOrganisation(), registrationManager.getIpt());
         addActionMessage("Updated registration of resource " + resource.getShortname() + " in GBIF");
       } catch (RegistryException e) {
