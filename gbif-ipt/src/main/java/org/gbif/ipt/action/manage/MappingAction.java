@@ -58,6 +58,7 @@ public class MappingAction extends ManagerBaseAction {
   private List<String[]> peek;
   private List<PropertyMapping> fields;
   private Map<String, Map<String, String>> vocabTerms = new HashMap<String, Map<String, String>>();
+  private ExtensionProperty coreid;
 
   private void automap() {
     int automapped = 0;
@@ -97,6 +98,10 @@ public class MappingAction extends ManagerBaseAction {
     return columns;
   }
 
+  public ExtensionProperty getCoreid() {
+    return coreid;
+  }
+
   public List<PropertyMapping> getFields() {
     return fields;
   }
@@ -130,8 +135,25 @@ public class MappingAction extends ManagerBaseAction {
     if (mapping == null || mapping.getExtension() == null) {
       notFound = true;
     } else {
+      // setup the core record id term
+      String coreRowType = resource.getCoreRowType();
+      if (coreRowType == null) {
+        // not yet set, the id of this mapping should be the core row type!
+        coreRowType = id;
+      }
+      String coreIdTerm = Constants.DWC_OCCURRENCE_ID;
+      if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON)) {
+        coreIdTerm = Constants.DWC_TAXON_ID;
+      }
+      coreid = extensionManager.get(coreRowType).getProperty(coreIdTerm);
+
+      // prepare all other fields
       fields = new ArrayList<PropertyMapping>(mapping.getExtension().getProperties().size());
       for (ExtensionProperty p : mapping.getExtension().getProperties()) {
+        // ignore core id term
+        if (p.equals(coreid)) {
+          continue;
+        }
         // uses a vocabulary?
         if (p.getVocabulary() != null) {
           vocabTerms.put(p.getVocabulary().getUri(),

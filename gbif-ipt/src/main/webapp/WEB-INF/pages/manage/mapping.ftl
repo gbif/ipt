@@ -83,12 +83,38 @@ $(document).ready(function(){
 <#if mapping.source?exists>
 <h1><@s.text name='manage.mapping.title'/> <span class="small">${mapping.source.name}</span></h1>
 <p><@s.text name='manage.mapping.idColumn' /></p>
-<select name="mapping.idColumn">
-  <option value="" <#if !mapping.idColumn??> selected="selected"</#if>><@s.text name="manage.mapping.lineNumber"/></option>
-<#list columns as col>
-  <option value="${col_index}" <#if (mapping.idColumn!-1)==col_index> selected="selected"</#if>>${col}</option>
-</#list>
-</select>
+
+<div class="definition required">	
+  <div class="title">
+  	<div class="head">
+		${coreid.name!"Record ID"}			
+  	</div>
+  </div>
+  <div class="body">
+  	<div class="infos">
+  	  <#if coreid??>
+  		<img class="infoImg" src="${baseURL}/images/info.gif" />
+		<div class="info">		
+			<#if coreid.description?has_content>${coreid.description}<br/><br/></#if>              	
+			<#if coreid.link?has_content><@s.text name="basic.seealso"/> <a href="${coreid.link}">${coreid.link}</a><br/><br/></#if>
+			<#if coreid.examples?has_content>
+			<em><@s.text name="basic.examples"/></em>: ${coreid.examples}
+			</#if>              	
+		</div>		
+      </#if>              	
+  	</div>
+	<div>
+		<select name="mapping.idColumn">
+		  <option value="" <#if !mapping.idColumn??> selected="selected"</#if>><@s.text name="manage.mapping.lineNumber"/></option>
+		<#list columns as col>
+		  <option value="${col_index}" <#if (mapping.idColumn!-1)==col_index> selected="selected"</#if>>${col}</option>
+		</#list>
+		</select>
+    </div>
+  </div>
+</div>
+	
+
 
   <div class="buttons">
  	<@s.submit name="save" key="button.save"/>
