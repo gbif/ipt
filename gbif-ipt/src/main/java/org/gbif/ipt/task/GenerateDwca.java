@@ -25,7 +25,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.regex.Pattern;
@@ -34,7 +33,7 @@ import freemarker.template.TemplateException;
 
 public class GenerateDwca extends ReportingTask implements Callable<Integer> {
   private enum STATE {
-    WAITING, STARTED, DATAFILES, METADATA, BUNDLING, COMPLETED
+    WAITING, STARTED, DATAFILES, METADATA, BUNDLING, COMPLETED, STOPPING
   };
 
   private static final Pattern escapeChars = Pattern.compile("[\t\n\r]");
@@ -50,14 +49,16 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
   private SourceManager sourceManager;
 
   @Inject
-  public GenerateDwca(@Assisted Resource resource, @Assisted ReportHandler handler, DataDir dataDir, SourceManager sourceManager) {
+  public GenerateDwca(@Assisted Resource resource, @Assisted ReportHandler handler, DataDir dataDir,
+      SourceManager sourceManager) {
     super(1000, resource.getShortname(), handler);
     this.resource = resource;
     this.dataDir = dataDir;
-    this.sourceManager=sourceManager;
+    this.sourceManager = sourceManager;
   }
 
   private void addDataFile(ExtensionMapping mapping, boolean isCore) throws IOException, GeneratorException {
+    checkForInterruption();
     // update reporting
     currRecords = 0;
     currExtension = mapping.getExtension().getTitle();
@@ -100,6 +101,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       while (iter.hasNext()) {
         line++;
         if (line % 1000 == 0) {
+          checkForInterruption(line);
           reportIfNeeded();
         }
         String[] in = iter.next();
@@ -185,12 +187,13 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     return f;
   }
 
-  private void bundleArchive() throws IOException {
+  private void bundleArchive() throws IOException, GeneratorException {
     setState(STATE.BUNDLING);
     // create zip
     File zip = dataDir.tmpFile("dwca", ".zip");
     CompressionUtil.zipDir(dwcaFolder, zip);
     // move to data dir
+    checkForInterruption();
     File target = dataDir.resourceDwcaFile(resource.getShortname());
     if (target.exists()) {
       target.delete();
@@ -202,6 +205,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
   public Integer call() throws Exception {
     try {
+      checkForInterruption();
       setState(STATE.STARTED);
       addMessage(Level.INFO, "Archive generation started for resource " + resource.getShortname());
       // create a temp dir to copy all dwca files to
@@ -209,15 +213,19 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       archive = new Archive();
 
       // create data files
+      checkForInterruption();
       createDataFiles();
 
       // copy eml file
+      checkForInterruption();
       addEmlFile();
 
       // create meta.xml
+      checkForInterruption();
       createMetaFile();
 
       // zip archive and copy to resource folder
+      checkForInterruption();
       bundleArchive();
 
       // final reporting
@@ -228,6 +236,22 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
     } catch (Exception e) {
       throw new GeneratorException(e);
+    }
+  }
+
+  private void checkForInterruption() throws GeneratorException {
+    if (Thread.interrupted()) {
+      StatusReport report = report();
+      log.info("Interrupting dwca generator. Last status: " + report.getState());
+      throw new GeneratorException("Canceled");
+    }
+  }
+
+  private void checkForInterruption(int line) throws GeneratorException {
+    if (Thread.interrupted()) {
+      StatusReport report = report();
+      log.info("Interrupting dwca generator at line " + line + ". Last status: " + report.getState());
+      throw new GeneratorException("Canceled");
     }
   }
 
@@ -274,6 +298,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
         return "Compressing archive";
       case COMPLETED:
         return "Archive generated!";
+      case STOPPING:
+        return "Stopping process";
       default:
         return "You should never see this";
     }

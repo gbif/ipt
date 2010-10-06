@@ -24,9 +24,9 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
-import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.Source.FileSource;
 import org.gbif.ipt.model.Source.SqlSource;
+import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
@@ -38,9 +38,9 @@ import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidConfigException;
+import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.RegistryException;
-import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
@@ -123,6 +123,24 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   private void addResource(Resource res) {
     resources.put(res.getShortname().toLowerCase(), res);
+  }
+
+  public boolean cancelPublishing(String shortname, BaseAction action) throws PublicationException {
+    boolean canceled = false;
+    // get future
+    Future<Integer> f = processFutures.get(shortname);
+    if (f != null) {
+      canceled = f.cancel(true);
+      if (canceled) {
+        log.info("Publication of resource " + shortname + " canceled");
+        // remove process from locking list
+        processFutures.remove(shortname);
+      } else {
+        log.warn("Canceling publication of resource " + shortname + " failed");
+      }
+    }
+
+    return canceled;
   }
 
   private Eml convertMetadataToEml(BasicMetadata metadata, ActionLogger alog) {
@@ -423,11 +441,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           save(res);
           return false;
         } catch (InterruptedException e) {
-          log.info("Process interrupted for resource "+shortname);
+          log.info("Process interrupted for resource " + shortname);
         } catch (CancellationException e) {
-            log.info("Process canceled for resource "+shortname);
+          log.info("Process canceled for resource " + shortname);
         } catch (ExecutionException e) {
-          log.error("Process for resource "+shortname+" aborted due to error: "+e.getMessage());
+          log.error("Process for resource " + shortname + " aborted due to error: " + e.getMessage());
         } finally {
           processFutures.remove(shortname);
         }
@@ -722,6 +740,21 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
+   * @see org.gbif.ipt.service.manage.ResourceManager#updateRegistration(org.gbif.ipt.model.Resource,
+   * org.gbif.ipt.model.Organisation, org.gbif.ipt.model.Ipt)
+   */
+  public void updateRegistration(Resource resource, Organisation organisation, Ipt ipt) throws InvalidConfigException {
+    if (PublicationStatus.REGISTERED == resource.getStatus()) {
+      log.debug("Updating resource with Organisation Key: " + organisation.getKey().toString() + " & pwd "
+          + organisation.getPassword());
+      registryManager.setRegistryCredentials(organisation.getKey().toString(), organisation.getPassword());
+      registryManager.updateResource(resource, organisation, ipt);
+      // save(resource);
+    }
+  }
+
+  /*
+   * (non-Javadoc)
    * @see org.gbif.ipt.service.manage.ResourceManager#unpublish(org.gbif.ipt.model.Resource)
    */
   public void visibilityToPrivate(Resource resource) throws InvalidConfigException {
@@ -746,39 +779,4 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       save(resource);
     }
   }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.gbif.ipt.service.manage.ResourceManager#updateRegistration(org.gbif.ipt.model.Resource,
-   * org.gbif.ipt.model.Organisation, org.gbif.ipt.model.Ipt)
-   */
-  public void updateRegistration(Resource resource, Organisation organisation, Ipt ipt) throws InvalidConfigException {
-    if (PublicationStatus.REGISTERED == resource.getStatus()) {
-      log.debug("Updating resource with Organisation Key: " + organisation.getKey().toString() + " & pwd "
-          + organisation.getPassword());
-      registryManager.setRegistryCredentials(organisation.getKey().toString(), organisation.getPassword());
-      registryManager.updateResource(resource, organisation, ipt);
-      // save(resource);
-    }
-  }
-
-public boolean cancelPublishing(String shortname, BaseAction action) throws PublicationException {
-	// get future
-    Future<Integer> f = processFutures.get(shortname);
-    if (f!=null){
-    	f.cancel(true);
-    	try {
-            f.get();
-        } catch (InterruptedException e) {
-            log.info("Process canceled for resource "+shortname);
-            return true;
-        } catch (ExecutionException e) {
-            log.info("Process aborted due to execution exception for resource "+shortname);
-            return true;
-		}
-    }
-
-	return false;
-}
 }

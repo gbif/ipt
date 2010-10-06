@@ -27,7 +27,7 @@ $(document).ready(function(){
 		$("#toggleFields").text("Show All");
 		$('div.definition').not('.required').each(function(index) {
 			// always show all mapped and required fields
-			if ($(".body select", this).val()=="" && $(".body input", this).val()==""){
+			if ($(".fidx", this).val()=="" && $(".fval", this).val()==""){
 				$(this).hide();
 			};
 		});
@@ -147,21 +147,21 @@ $(document).ready(function(){
 	      	</#if>			
 	  	</div>
 		<div>
-				<select id="fIdx${field_index}" name="fields[${field_index}].index">
+				<select id="fIdx${field_index}" class="fidx" name="fields[${field_index}].index">
 				  <option value="" <#if !field.index??> selected="selected"</#if>></option>
 				<#list columns as col>
 				  <option value="${col_index}" <#if (field.index!-1)==col_index> selected="selected"</#if>>${col}</option>
 				</#list>
 				</select>
 		      	<#if p.vocabulary?exists>
-					<select id="fVal${field_index}" name="fields[${field_index}].defaultValue">
+					<select id="fVal${field_index}" class="fval" name="fields[${field_index}].defaultValue">
 					  <option value="" <#if !field.defaultValue??> selected="selected"</#if>></option>
 					<#list vocabTerms[p.vocabulary.uri]?keys as code>
 					  <option value="${code}" <#if (field.defaultValue!"")==code> selected="selected"</#if>>${vocabTerms[p.vocabulary.uri][code]}</option>
 					</#list>
 					</select>
 		      	<#else>
-  					<input id="fVal${field_index}" name="fields[${field_index}].defaultValue" value="${field.defaultValue!}"/>  
+  					<input id="fVal${field_index}" class="fval" name="fields[${field_index}].defaultValue" value="${field.defaultValue!}"/>  
 		      	</#if>		
 	      	</div>
 	      	<#if field.index?exists>
