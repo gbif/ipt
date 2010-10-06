@@ -27,6 +27,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CancellationException;
 import java.util.regex.Pattern;
 
 import freemarker.template.TemplateException;
@@ -187,7 +188,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     return f;
   }
 
-  private void bundleArchive() throws IOException, GeneratorException {
+  private void bundleArchive() throws IOException {
     setState(STATE.BUNDLING);
     // create zip
     File zip = dataDir.tmpFile("dwca", ".zip");
@@ -239,11 +240,11 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     }
   }
 
-  private void checkForInterruption() throws GeneratorException {
+  private void checkForInterruption() {
     if (Thread.interrupted()) {
       StatusReport report = report();
       log.info("Interrupting dwca generator. Last status: " + report.getState());
-      throw new GeneratorException("Canceled");
+      throw new CancellationException("Canceled dwca generator");
     }
   }
 
