@@ -5,6 +5,34 @@
 $(document).ready(function(){
 	initHelp();
 	$('.confirm').jConfirmAction({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
+	// show only required and mapped fields
+	var showAll=${Parameters.showAll!"true"};
+	if (!showAll){
+		hideFields();
+	};
+	$("#toggleFields").click(function() {
+		if(showAll){
+			hideFields();
+		}else{
+			showAll=true;
+			$("#showAllValue").val("true");
+			$("#toggleFields").text("Hide Empty");
+			$('div.definition').show();
+		}
+	});
+	
+	function hideFields() {
+		showAll=false;
+		$("#showAllValue").val("false");
+		$("#toggleFields").text("Show All");
+		$('div.definition').not('.required').each(function(index) {
+			// always show all mapped and required fields
+			if ($(".body select", this).val()=="" && $(".body input", this).val()==""){
+				$(this).hide();
+			};
+		});
+	}
+	
 });   
 </script>
 <style>
@@ -50,6 +78,7 @@ $(document).ready(function(){
 <form class="topForm" action="mapping.do" method="post">
   	<input type="hidden" name="r" value="${resource.shortname}" />
   	<input type="hidden" name="id" value="${id}" />
+  	<input id="showAllValue" type="hidden" name="showAll" value="${Parameters.showAll!"true"}" />
 
 <#if mapping.source?exists>
 <h1><@s.text name='manage.mapping.title'/> <span class="small">${mapping.source.name}</span></h1>
@@ -79,6 +108,8 @@ $(document).ready(function(){
 	</#list>
 	</ul>
 
+<a id="toggleFields" href="#">Hide Empty</a>
+
 	<#assign group=""/>
 	<#--list mapping.extension.properties as p-->
 	<#list fields as field>
@@ -95,11 +126,10 @@ $(document).ready(function(){
 		<a name="${p.group?url}"></a>
 		<h2>${p.group}</h2>
 	</#if>
-	<div class="definition">	
+	<div class="definition<#if p.required> required</#if>">	
 	  <div class="title">
 	  	<div class="head">
-			${p.name}
-			<#if p.required><span class="required">***</span></#if>
+			${p.name}			
 	  	</div>
 	  </div>
 	  <div class="body">
