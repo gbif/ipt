@@ -12,6 +12,8 @@
  */
 package org.gbif.ipt.model;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 import java.util.Date;
 import java.util.UUID;
 
@@ -244,6 +246,14 @@ public class Ipt {
    */
   public void setWsPassword(String wsPassword) {
     this.wsPassword = wsPassword;
+  }
+
+  /**
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString() {
+    return ToStringBuilder.reflectionToString(this);
   }
 
 }
