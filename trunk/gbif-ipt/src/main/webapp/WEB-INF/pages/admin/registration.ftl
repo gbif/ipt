@@ -4,6 +4,11 @@ $(document).ready(function(){
 	initHelp();
 
 	$('#organisation\\.key').change(function() {
+	
+		var orgName = $('#organisation\\.key :selected').text();
+		$('#organisation\\.name').val(orgName);
+		$('#ipt\\.organisationKey').val($('#organisation\\.key :selected').val());
+	
 		var url = "<@s.url value='${registryURL}registry/organisation/'/>" + $('#organisation\\.key :selected').val() + ".json";
 		$.getJSON(url+"?callback=?",function(data){
 			
@@ -42,11 +47,6 @@ $(document).ready(function(){
 			}
 		});	
 
-		$('#organisation\\.key').change(function() {
-			var orgName = $('#organisation\\.key :selected').text();
-			$('#organisation\\.name').val(orgName);
-			$('#ipt\\.organisationKey').val($('#organisation\\.key :selected').val());		
-		});
 	});		
 });
 </script>	

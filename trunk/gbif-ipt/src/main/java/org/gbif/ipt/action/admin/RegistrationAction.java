@@ -130,13 +130,8 @@ public class RegistrationAction extends POSTAction {
     if (registrationManager.getHostingOrganisation() == null) {
       try {
         // register against the Registry
-        try {
-          registryManager.setRegistryCredentials(organisation.getKey().toString(), organisation.getPassword());
-          registryManager.registerIPT(ipt);
-        } catch (RegistryException re) {
-          addActionError(getText("admin.registration.error.registry"));
-          return INPUT;
-        }
+        registryManager.setRegistryCredentials(organisation.getKey().toString(), organisation.getPassword());
+        registryManager.registerIPT(ipt);
         registrationManager.addHostingOrganisation(organisation);
         // add the hosting organisation to the associated list of organisations as well
         registrationManager.addAssociatedOrganisation(organisation);
@@ -145,6 +140,9 @@ public class RegistrationAction extends POSTAction {
         registrationManager.save();
         addActionMessage(getText("admin.registration.success"));
         return SUCCESS;
+      } catch (RegistryException re) {
+        addActionError(getText("admin.registration.error.registry"));
+        return INPUT;
       } catch (AlreadyExistingException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
