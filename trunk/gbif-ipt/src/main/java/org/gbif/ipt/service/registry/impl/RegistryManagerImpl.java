@@ -231,6 +231,10 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       e.printStackTrace();
     } catch (IOException e) {
       e.printStackTrace();
+    } finally {
+    	if (method != null) {
+    		method.releaseConnection();
+    	}
     }
     return extensions;
   }
@@ -310,6 +314,10 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       e.printStackTrace();
     } catch (IOException e) {
       e.printStackTrace();
+    } finally {
+    	if (method != null) {
+    		method.releaseConnection();
+    	}
     }
     return organisations;
   }
@@ -357,6 +365,10 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       e.printStackTrace();
     } catch (IOException e) {
       e.printStackTrace();
+    } finally {
+    	if (method != null) {
+    		method.releaseConnection();
+    	}
     }
     return extensions;
   }
@@ -565,6 +577,10 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       return false;
     } catch (Exception e) {
       log.warn(e.toString());
+    } finally {
+    	if (method != null) {
+    		method.releaseConnection();
+    	}
     }
     return false;
   }
