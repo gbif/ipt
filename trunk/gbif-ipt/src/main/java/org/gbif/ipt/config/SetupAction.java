@@ -106,9 +106,6 @@ public class SetupAction extends BaseAction implements ServletContextAware {
   @Override
   public void prepare() throws Exception {
     super.prepare();
-    for (String key : session.keySet()) {
-      System.out.println("SESSION " + key + " -> " + session.get(key));
-    }
   }
 
   public void setBaseURL(String baseUrlVerbatim) {
@@ -178,7 +175,8 @@ public class SetupAction extends BaseAction implements ServletContextAware {
         user.setLastLoginToNow();
         userManager.save();
         // set IPT type: registry URL
-        if (production) {
+        System.out.println("DEV MODE: " + cfg.devMode());
+        if (production && !cfg.devMode()) {
           cfg.setRegistryType(REGISTRY_TYPE.PRODUCTION);
         } else {
           cfg.setRegistryType(REGISTRY_TYPE.DEVELOPMENT);

@@ -714,15 +714,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.manage.ResourceManager#search(java.lang.String, org.gbif.ipt.model.voc.ResourceType)
-   */
-  public List<Resource> search(String q, String type) {
-    // TODO: do real search - for testing return all resources for now
-    return new ArrayList<Resource>(resources.values());
-  }
-
   public StatusReport status(String shortname) {
     isLocked(shortname);
     return processReports.get(shortname);

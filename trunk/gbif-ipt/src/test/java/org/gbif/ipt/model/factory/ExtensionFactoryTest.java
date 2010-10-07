@@ -25,7 +25,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
 /**
- * TODO: Documentation.
  */
 @RunWith(InjectingTestClassRunner.class)
 public class ExtensionFactoryTest {

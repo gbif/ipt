@@ -24,7 +24,6 @@ public abstract class BaseManager {
 
   public BaseManager() {
     super();
-    // TODO Auto-generated constructor stub
   }
 
   public BaseManager(AppConfig cfg, DataDir dataDir) {

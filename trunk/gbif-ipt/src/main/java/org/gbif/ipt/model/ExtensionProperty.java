@@ -15,7 +15,11 @@ import static com.google.common.base.Objects.equal;
 import com.google.common.base.Objects;
 
 /**
- * TODO: Documentation.
+ * A single property of an extension. Often also known as concept or term.
+ * It implements the ConceptTerm of the dwca reader and its equal method compares only the qualified name, so that any
+ * ConceptTerm with the same qualified name is considered equal.
+ * 
+ * Natural sorting is based on the group and then the property name
  */
 public class ExtensionProperty implements Comparable<ExtensionProperty>, ConceptTerm {
   private Extension extension;

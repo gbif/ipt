@@ -144,8 +144,7 @@ public class RegistrationAction extends POSTAction {
         addActionError(getText("admin.registration.error.registry"));
         return INPUT;
       } catch (AlreadyExistingException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+        log.error(e);
       } catch (IOException e) {
         log.error("The organisation association couldnt be saved: " + e.getMessage(), e);
         addActionError(getText("admin.organisation.saveError"));

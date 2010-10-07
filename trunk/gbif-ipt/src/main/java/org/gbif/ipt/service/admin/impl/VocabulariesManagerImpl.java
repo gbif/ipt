@@ -329,8 +329,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       v.setUrl(new URL("http://rs.gbif.org/vocabulary/gbif/rank.xml"));
       registeredVocabs.put(Constants.VOCAB_URI_RANKS, v);
     } catch (MalformedURLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      log.error(e);
     }
 
     return registeredVocabs;

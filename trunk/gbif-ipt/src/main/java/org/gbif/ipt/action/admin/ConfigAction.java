@@ -68,9 +68,13 @@ public class ConfigAction extends POSTAction {
     if (!stringEquals(baseUrl, cfg.getBaseURL())) {
       log.info("Changing the installation baseURL from[" + cfg.getBaseURL() + "] to[" + baseUrl + "]");
       try {
-        configManager.setBaseURL(new URL(baseUrl));
+        URL burl = new URL(baseUrl);
+        configManager.setBaseURL(burl);
         log.info("Installation baseURL successfully changed to[" + baseUrl + "]");
         addActionMessage(getText("admin.config.baseUrl.changed"));
+        if (burl.getHost().equalsIgnoreCase("localhost") || burl.getHost().equalsIgnoreCase("127.0.0.1")) {
+          addActionError(getText("admin.config.error.localhostURL"));
+        }
       } catch (MalformedURLException e) {
         addActionError(getText("admin.config.error.invalidURL"));
         return INPUT;

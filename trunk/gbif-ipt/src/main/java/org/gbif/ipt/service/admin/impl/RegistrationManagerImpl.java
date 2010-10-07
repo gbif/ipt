@@ -195,8 +195,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
       } catch (EOFException e) {
         // end of file, expected exception!
       } catch (AlreadyExistingException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+        log.error(e);
       }
 
     } catch (FileNotFoundException e) {

@@ -73,9 +73,9 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       extension.setSubject(ext.getString("subject"));
       extension.setRowType(ext.getString("identifier"));
     } catch (JSONException e) {
-      e.printStackTrace();
+      log.debug(e);
     } catch (MalformedURLException e) {
-      e.printStackTrace();
+      log.debug(e);
     }
     return extension;
   }
@@ -92,7 +92,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       organisation.setName(org.getString("name"));
       organisation.setKey(org.getString("key"));
     } catch (JSONException e) {
-      e.printStackTrace();
+      log.debug(e);
     }
     return organisation;
   }
@@ -110,9 +110,9 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       extension.setTitle(ext.getString("title"));
       extension.setSubject(ext.getString("subject"));
     } catch (JSONException e) {
-      e.printStackTrace();
+      log.debug(e);
     } catch (MalformedURLException e) {
-      e.printStackTrace();
+      log.debug(e);
     }
     return extension;
   }
@@ -144,7 +144,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     }
     return result;
   }
-  
+
   /**
    * Executes a generic POST request
    * 
@@ -171,7 +171,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       }
     }
     return result;
-  }  
+  }
 
   /**
    * Returns the ATOM url
@@ -257,7 +257,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   private String getIptResourceUri() {
     return String.format("%s%s", cfg.getRegistryUrl(), "ipt/resource");
   }
-  
+
   /**
    * Returns the IPT update Resource url
    * 
@@ -265,7 +265,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    */
   private String getIptUpdateResourceUri(String resourceKey) {
     return String.format("%s%s%s", cfg.getRegistryUrl(), "ipt/resource/", resourceKey);
-  }  
+  }
 
   /**
    * Returns the IPT url
@@ -393,49 +393,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     method.setDoAuthentication(authenticate);
     return method;
   }
-  
-  
-
-  /* (non-Javadoc)
-   * @see org.gbif.ipt.service.registry.RegistryManager#updateResource(org.gbif.ipt.model.Resource, org.gbif.ipt.model.Organisation, org.gbif.ipt.model.Ipt)
-   */
-  public UUID updateResource(Resource resource, Organisation organisation, Ipt ipt) throws RegistryException {
-    Eml eml = resource.getEml();
-    // registering IPT resource
-
-    // services should be registered?
-    String serviceTypes = null;
-    String serviceURLs = null;
-    log.debug("Last published: " + resource.getLastPublished());
-    if (resource.getLastPublished() != null) {
-      log.debug("Registering DWC & EML Service");
-      serviceTypes = "EML|DWC-ARCHIVE";
-      serviceURLs = getEmlURL(resource.getShortname()) + "|" + getDwcArchiveURL(resource.getShortname());
-    }
-    else {
-      log.debug("No DWC & EML Service present");
-    }
-
-    NameValuePair[] data = {
-        //new NameValuePair("organisationKey", StringUtils.trimToEmpty(organisation.getKey().toString())),
-        //new NameValuePair("iptKey", StringUtils.trimToEmpty(ipt.getKey().toString())),
-        new NameValuePair("name", ((resource.getTitle() != null) ? StringUtils.trimToEmpty(resource.getTitle())
-            : StringUtils.trimToEmpty(resource.getShortname()))), // name
-        new NameValuePair("description", StringUtils.trimToEmpty(resource.getDescription())), // description
-        new NameValuePair("primaryContactType", "technical"),
-        new NameValuePair("primaryContactName",
-            StringUtils.trimToNull(StringUtils.trimToEmpty(resource.getCreator().getName()))),
-        new NameValuePair("primaryContactEmail", StringUtils.trimToEmpty(resource.getCreator().getEmail())),
-        new NameValuePair("serviceTypes", serviceTypes), new NameValuePair("serviceURLs", serviceURLs)};
-    boolean result = executeUpdate(getIptUpdateResourceUri(resource.getKey().toString()), data, true);
-    if (result) {
-      // read new UDDI ID
-      log.debug("Resource's registration info has been updated");
-    } else {
-      throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, "Bad registry response");
-    }
-    return null;
-  }
 
   /*
    * (non-Javadoc)
@@ -454,8 +411,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       log.debug("Registering DWC & EML Service");
       serviceTypes = "EML|DWC-ARCHIVE";
       serviceURLs = getEmlURL(resource.getShortname()) + "|" + getDwcArchiveURL(resource.getShortname());
-    }
-    else {
+    } else {
       log.debug("No DWC & EML Service present");
     }
 
@@ -563,6 +519,48 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       log.warn("Http request to ??? failed: " + method.getStatusLine());
     }
     return false;
+  }
+
+  /*
+   * (non-Javadoc)
+   * @see org.gbif.ipt.service.registry.RegistryManager#updateResource(org.gbif.ipt.model.Resource,
+   * org.gbif.ipt.model.Organisation, org.gbif.ipt.model.Ipt)
+   */
+  public UUID updateResource(Resource resource, Organisation organisation, Ipt ipt) throws RegistryException {
+    Eml eml = resource.getEml();
+    // registering IPT resource
+
+    // services should be registered?
+    String serviceTypes = null;
+    String serviceURLs = null;
+    log.debug("Last published: " + resource.getLastPublished());
+    if (resource.getLastPublished() != null) {
+      log.debug("Registering DWC & EML Service");
+      serviceTypes = "EML|DWC-ARCHIVE";
+      serviceURLs = getEmlURL(resource.getShortname()) + "|" + getDwcArchiveURL(resource.getShortname());
+    } else {
+      log.debug("No DWC & EML Service present");
+    }
+
+    NameValuePair[] data = {
+        // new NameValuePair("organisationKey", StringUtils.trimToEmpty(organisation.getKey().toString())),
+        // new NameValuePair("iptKey", StringUtils.trimToEmpty(ipt.getKey().toString())),
+        new NameValuePair("name", ((resource.getTitle() != null) ? StringUtils.trimToEmpty(resource.getTitle())
+            : StringUtils.trimToEmpty(resource.getShortname()))), // name
+        new NameValuePair("description", StringUtils.trimToEmpty(resource.getDescription())), // description
+        new NameValuePair("primaryContactType", "technical"),
+        new NameValuePair("primaryContactName",
+            StringUtils.trimToNull(StringUtils.trimToEmpty(resource.getCreator().getName()))),
+        new NameValuePair("primaryContactEmail", StringUtils.trimToEmpty(resource.getCreator().getEmail())),
+        new NameValuePair("serviceTypes", serviceTypes), new NameValuePair("serviceURLs", serviceURLs)};
+    boolean result = executeUpdate(getIptUpdateResourceUri(resource.getKey().toString()), data, true);
+    if (result) {
+      // read new UDDI ID
+      log.debug("Resource's registration info has been updated");
+    } else {
+      throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, "Bad registry response");
+    }
+    return null;
   }
 
   public boolean validateOrganisation(String organisationKey, String password) {

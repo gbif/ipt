@@ -64,6 +64,10 @@ public class AppConfig {
     return "true".equalsIgnoreCase(properties.getProperty(DEBUG));
   }
 
+  public boolean devMode() {
+    return !("false".equalsIgnoreCase(properties.getProperty("dev.devmode")));
+  }
+
   public String getAnalyticsKey() {
     return properties.getProperty(ANALYTICS_KEY);
   }
