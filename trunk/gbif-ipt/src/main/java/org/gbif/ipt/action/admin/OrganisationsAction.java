@@ -52,7 +52,7 @@ public class OrganisationsAction extends POSTAction {
 
       List<Organisation> tempOrganisations = registryManager.getOrganisations();
       organisations.addAll(tempOrganisations);
-
+      //sort by name
       Collections.sort(organisations, new Comparator<Organisation>() {
         public int compare(Organisation org1, Organisation org2) {
           if (org1 == null || org1.getName() == null) {
@@ -145,7 +145,14 @@ public class OrganisationsAction extends POSTAction {
    * @return the organisations
    */
   public List<Organisation> getOrganisations() {
-    return orgSession.organisations;
+    List<Organisation> allOrganisations = orgSession.organisations;
+    //remove organisations already associated to the IPT
+    for(Organisation linkedOrganisation: getLinkedOrganisations()) {
+      if(allOrganisations.contains(linkedOrganisation)) {
+        allOrganisations.remove(linkedOrganisation); 
+      }
+    }
+    return allOrganisations;
   }
 
   public String getRegistryURL() {

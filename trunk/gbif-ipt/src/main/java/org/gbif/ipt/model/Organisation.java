@@ -270,4 +270,17 @@ public class Organisation {
     return ToStringBuilder.reflectionToString(this);
   }
 
+  /* (non-Javadoc)
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if( ((Organisation)obj).getKey().equals(this.getKey()))
+      return true;
+    else
+      return false;
+  }
+  
+  
+
 }
