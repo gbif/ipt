@@ -128,6 +128,14 @@ public class SetupAction extends BaseAction implements ServletContextAware {
   }
 
   /**
+   * If the config is in debug mode, then production settings are not possible
+   * @return true if production setting is allowed
+   */
+  public boolean isProductionSettingAllowed() {
+	  return !cfg.debug();
+  }  
+  
+  /**
    * Method called when setting up the IPT for the very first time. There might not even be a logged in user, be careful
    * to not require an admin!
    * 
