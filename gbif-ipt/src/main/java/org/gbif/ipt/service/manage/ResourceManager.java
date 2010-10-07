@@ -14,7 +14,6 @@ import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.task.StatusReport;
 
 import com.google.inject.ImplementedBy;
-import com.google.inject.internal.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,6 +33,8 @@ import java.util.Map;
  */
 @ImplementedBy(ResourceManagerImpl.class)
 public interface ResourceManager {
+
+  public boolean cancelPublishing(String shortname, BaseAction action) throws PublicationException;
 
   public Resource create(String shortname, File dwca, User creator, BaseAction asction)
       throws AlreadyExistingException, ImportException;
@@ -99,12 +100,6 @@ public interface ResourceManager {
   public int load();
 
   /**
-   * @param shortname for the resource
-   * @return status report of current task either running or on queue for the requested resource or null if none exists
-   */
-  public StatusReport status(String shortname);
-
-  /**
    * Publishes a new version of a resource including generating a darwin core archive and issuing a new EML version.
    * 
    * @param resource
@@ -113,8 +108,6 @@ public interface ResourceManager {
    * @throws PublicationException if resource was already registered
    */
   public boolean publish(Resource resource, BaseAction action) throws PublicationException;
-
-  public boolean cancelPublishing(String shortname, BaseAction action) throws PublicationException;
 
   /**
    * Registers the resource with gbif
@@ -126,17 +119,6 @@ public interface ResourceManager {
    * @throws InvalidConfigException
    */
   public void register(Resource resource, Organisation organisation, Ipt ipt) throws InvalidConfigException;
-  
-  /**
-   * Update the registration of the resource with gbif
-   * 
-   * @param resource
-   * @param organisation the org that the resource will be associated with
-   * @param ipt the ipt that the resource will be published through
-   * @param eml eml object
-   * @throws InvalidConfigException
-   */
-  public void updateRegistration(Resource resource, Organisation organisation, Ipt ipt) throws InvalidConfigException;  
 
   /**
    * Persists the whole resource configuration *but* not the EML file.
@@ -156,12 +138,21 @@ public interface ResourceManager {
   public void saveEml(Resource resource) throws InvalidConfigException;
 
   /**
-   * list all resource that match the given full text search string and optional resource type
-   * 
-   * @param type
-   * @return
+   * @param shortname for the resource
+   * @return status report of current task either running or on queue for the requested resource or null if none exists
    */
-  public List<Resource> search(String q, @Nullable String type);
+  public StatusReport status(String shortname);
+
+  /**
+   * Update the registration of the resource with gbif
+   * 
+   * @param resource
+   * @param organisation the org that the resource will be associated with
+   * @param ipt the ipt that the resource will be published through
+   * @param eml eml object
+   * @throws InvalidConfigException
+   */
+  public void updateRegistration(Resource resource, Organisation organisation, Ipt ipt) throws InvalidConfigException;
 
   /**
    * makes a resource private

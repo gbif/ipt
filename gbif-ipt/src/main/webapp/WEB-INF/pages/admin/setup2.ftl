@@ -10,14 +10,9 @@
 	<@input name="user.firstname" />  
 	<@input name="user.lastname" />  
 	<@input name="user.password" />  
-	
-	<#if !productionSettingAllowed>
-		<@checkbox name="production" i18nkey="admin.config.setup2.production.disabled" disabled="true"/> 
-		<@s.hidden id="production" name="production" value="false" />  
-	<#else>
-		<@checkbox name="production" i18nkey="admin.config.setup2.production" />  
-	</#if>
-	
+
+	<@checkbox name="production" i18nkey="admin.config.setup2.production" disabled=cfg.devMode() value="false" />
+	  
 	<@input name="baseURL" />
 
 	  <div class="buttons">

@@ -37,7 +37,6 @@ public class MockVocabularyManager implements VocabulariesManager {
    * @see org.gbif.ipt.service.admin.VocabulariesManager#getI18nVocab(java.lang.String, java.lang.String)
    */
   public Map<String, String> getI18nVocab(String uri, String lang, boolean sort) {
-    // TODO Auto-generated method stub
     return null;
   }
 
@@ -54,7 +53,6 @@ public class MockVocabularyManager implements VocabulariesManager {
    * @see org.gbif.ipt.service.admin.VocabulariesManager#updateAll()
    */
   public UpdateResult updateAll() {
-    // TODO Auto-generated method stub
     return null;
   }
 

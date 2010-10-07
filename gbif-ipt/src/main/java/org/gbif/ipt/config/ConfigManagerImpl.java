@@ -137,7 +137,9 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   public void setBaseURL(URL baseURL) throws InvalidConfigException {
     log.info("Updating the baseURL to: " + baseURL);
 
-    // TODO insert some tests to check the base url is not a localhost
+    if (baseURL.getHost().equalsIgnoreCase("localhost") || baseURL.getHost().equalsIgnoreCase("127.0.0.1")) {
+      log.warn("Localhost used as base url, IPT will not be visible to the outside!");
+    }
 
     // store in properties file
     cfg.setProperty(AppConfig.BASEURL, baseURL.toString());
@@ -163,7 +165,11 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   }
 
   public void setIptLocation(Double lat, Double lon) throws InvalidConfigException {
-    // TODO validate coordinate
+    if ((lat > 90.0 || lat < -90.0) || (lon > 180.0 || lon < -180.0)) {
+      log.warn("IPT Lat/Lon is not a valid coordinate");
+      lat = null;
+      lon = null;
+    }
     if (lat != null && lon != null) {
       cfg.setProperty(AppConfig.IPT_LATITUDE, Double.toString(lat));
       cfg.setProperty(AppConfig.IPT_LONGITUDE, Double.toString(lon));
