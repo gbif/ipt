@@ -19,6 +19,7 @@ import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
+import org.apache.commons.httpclient.methods.DeleteMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.lang.StringUtils;
@@ -56,6 +57,414 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     super();
     SAXParserFactory factory = SAXParserFactory.newInstance();
     saxParser = factory.newSAXParser();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.gbif.ipt.service.registry.RegistryManager#deregister(org.gbif.ipt.model.Resource)
+   */
+  public boolean deregister(Resource resource) throws RegistryException {
+    String result = executeDelete(getDeleteResourceUri(resource.getKey().toString()), true);
+    if (result != null) {
+      log.info("The resource has been deleted. Resource key: " + resource.getKey().toString());
+    } else {
+      throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, "Bad registry response");
+    }
+    return false;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.gbif.ipt.service.registry.RegistryManager#getExtensions()
+   */
+  public List<Extension> getExtensions() {
+    List<Extension> extensions = new ArrayList<Extension>();
+    JSONObject jSONextensions = null;
+    String result = null;
+    GetMethod method = new GetMethod(getExtensionsURL(true));
+    try {
+      client.executeMethod(method);
+      if (succeeded(method)) {
+        result = method.getResponseBodyAsString();
+        if (result != null) {
+          jSONextensions = new JSONObject(result);
+
+          JSONArray jSONArray = (JSONArray) jSONextensions.get("extensions");
+
+          for (int i = 0; i < jSONArray.length(); i++) {
+            extensions.add(buildExtension((JSONObject) jSONArray.get(i)));
+          }
+        }
+      }
+    } catch (JSONException e) {
+      e.printStackTrace();
+    } catch (HttpException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    } finally {
+      if (method != null) {
+        method.releaseConnection();
+      }
+    }
+    return extensions;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.gbif.ipt.service.registry.RegistryManager#getOrganisations()
+   */
+  public List<Organisation> getOrganisations() {
+    List<Organisation> organisations = new ArrayList<Organisation>();
+    JSONArray jSONorganisations = null;
+    String result = null;
+    GetMethod method = new GetMethod(getOrganisationsURL(true));
+    try {
+      client.executeMethod(method);
+      if (succeeded(method)) {
+        method.getParams().setParameter("http.protocol.content-charset", "UTF-8");
+        result = method.getResponseBodyAsString();
+        if (result != null) {
+          jSONorganisations = new JSONArray(result);
+
+          for (int i = 0; i < jSONorganisations.length(); i++) {
+            organisations.add(buildOrganisation((JSONObject) jSONorganisations.get(i)));
+          }
+        }
+      }
+    } catch (JSONException e) {
+      e.printStackTrace();
+    } catch (HttpException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    } finally {
+      if (method != null) {
+        method.releaseConnection();
+      }
+    }
+    return organisations;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.gbif.ipt.service.registry.RegistryManager#getVocabularies()
+   */
+  public List<Vocabulary> getVocabularies() {
+    List<Vocabulary> extensions = new ArrayList<Vocabulary>();
+    JSONObject jSONextensions = null;
+    String result = null;
+    GetMethod method = new GetMethod(getVocabulariesURL(true));
+    try {
+      client.executeMethod(method);
+      if (succeeded(method)) {
+        result = method.getResponseBodyAsString();
+        if (result != null) {
+          jSONextensions = new JSONObject(result);
+
+          JSONArray jSONArray = (JSONArray) jSONextensions.get("thesauri");
+
+          for (int i = 0; i < jSONArray.length(); i++) {
+            extensions.add(buildVocabulary((JSONObject) jSONArray.get(i)));
+          }
+        }
+      }
+    } catch (JSONException e) {
+      e.printStackTrace();
+    } catch (HttpException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    } finally {
+      if (method != null) {
+        method.releaseConnection();
+      }
+    }
+    return extensions;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.gbif.ipt.service.registry.RegistryManager#register(org.gbif.ipt.model.Resource,
+   * org.gbif.ipt.model.Organisation, org.gbif.ipt.model.Ipt)
+   */
+  public UUID register(Resource resource, Organisation organisation, Ipt ipt) throws RegistryException {
+    Eml eml = resource.getEml();
+    // registering IPT resource
+
+    // services should be registered?
+    String serviceTypes = null;
+    String serviceURLs = null;
+    log.debug("Last published: " + resource.getLastPublished());
+    if (resource.getLastPublished() != null) {
+      log.debug("Registering DWC & EML Service");
+      serviceTypes = "EML|DWC-ARCHIVE";
+      serviceURLs = getEmlURL(resource.getShortname()) + "|" + getDwcArchiveURL(resource.getShortname());
+    } else {
+      log.debug("No DWC & EML Service present");
+    }
+
+    NameValuePair[] data = {
+        new NameValuePair("organisationKey", StringUtils.trimToEmpty(organisation.getKey().toString())),
+        new NameValuePair("iptKey", StringUtils.trimToEmpty(ipt.getKey().toString())),
+        new NameValuePair("name", ((resource.getTitle() != null) ? StringUtils.trimToEmpty(resource.getTitle())
+            : StringUtils.trimToEmpty(resource.getShortname()))), // name
+        new NameValuePair("description", StringUtils.trimToEmpty(resource.getDescription())), // description
+        new NameValuePair("primaryContactType", "technical"),
+        new NameValuePair("primaryContactName",
+            StringUtils.trimToNull(StringUtils.trimToEmpty(resource.getCreator().getName()))),
+        new NameValuePair("primaryContactEmail", StringUtils.trimToEmpty(resource.getCreator().getEmail())),
+        new NameValuePair("serviceTypes", serviceTypes), new NameValuePair("serviceURLs", serviceURLs)};
+    String result = executePost(getIptResourceUri(), data, true);
+    if (result != null) {
+      // read new UDDI ID
+      try {
+        saxParser.parse(getStream(result), newRegistryEntryHandler);
+        String key = newRegistryEntryHandler.key;
+        if (StringUtils.trimToNull(key) == null) {
+          key = newRegistryEntryHandler.resourceKey;
+        }
+        resource.setKey(UUID.fromString(key));
+        if (key != null) {
+          log.info("A new resource has been registered with GBIF. Key = " + key);
+          return UUID.fromString(key);
+        }
+      } catch (Exception e) {
+        throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, "Bad registry response");
+      }
+    } else {
+      throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, "Bad registry response");
+    }
+    return null;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.gbif.ipt.service.registry.RegistryManager#registerIPT(org.gbif.ipt.model.Ipt)
+   */
+  public String registerIPT(Ipt ipt) throws RegistryException {
+    // registering IPT resource
+    NameValuePair[] data = {
+        new NameValuePair("organisationKey", StringUtils.trimToEmpty(ipt.getOrganisationKey().toString())),
+        new NameValuePair("name", StringUtils.trimToEmpty(ipt.getName())), // name
+        new NameValuePair("description", StringUtils.trimToEmpty(ipt.getDescription())), // description
+        new NameValuePair("wsPassword", StringUtils.trimToEmpty(ipt.getWsPassword())), // description
+        new NameValuePair("primaryContactType", ipt.getPrimaryContactType()),
+        new NameValuePair("primaryContactName", StringUtils.trimToEmpty(ipt.getPrimaryContactName())),
+        new NameValuePair("primaryContactEmail", StringUtils.trimToEmpty(ipt.getPrimaryContactEmail())),
+        new NameValuePair("serviceTypes", "RSS"), new NameValuePair("serviceURLs", getAtomFeedURL())};
+    String result = executePost(getIptUri(), data, true);
+    if (result != null) {
+      // read new UDDI ID
+      try {
+        saxParser.parse(getStream(result), newRegistryEntryHandler);
+        String key = newRegistryEntryHandler.key;
+        if (StringUtils.trimToNull(key) == null) {
+          key = newRegistryEntryHandler.resourceKey;
+        }
+        ipt.setKey(key);
+        if (key != null) {
+          log.info("A new ipt has been registered with GBIF. Key = " + key);
+          return key;
+        }
+      } catch (Exception e) {
+        throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, "Bad registry response");
+      }
+    } else {
+      throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, "Bad registry response");
+    }
+    return null;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.gbif.ipt.service.registry.RegistryManager#setRegistryCredentials(java.lang.String, java.lang.String)
+   */
+  public void setRegistryCredentials(String username, String password) {
+    try {
+      URI geoURI = new URI(cfg.getRegistryUrl());
+      AuthScope scope = new AuthScope(geoURI.getHost(), -1, AuthScope.ANY_REALM); // AuthScope.ANY;
+      client.getState().setCredentials(scope,
+          new UsernamePasswordCredentials(StringUtils.trimToEmpty(username), StringUtils.trimToEmpty(password)));
+      client.getParams().setAuthenticationPreemptive(true);
+    } catch (URISyntaxException e) {
+      log.error("Exception setting the registry credentials", e);
+    }
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.gbif.ipt.service.registry.RegistryManager#updateResource(org.gbif.ipt.model.Resource,
+   * org.gbif.ipt.model.Organisation, org.gbif.ipt.model.Ipt)
+   */
+  public UUID updateResource(Resource resource, Organisation organisation, Ipt ipt) throws RegistryException {
+    Eml eml = resource.getEml();
+    // registering IPT resource
+
+    // services should be registered?
+    String serviceTypes = null;
+    String serviceURLs = null;
+    log.debug("Last published: " + resource.getLastPublished());
+    if (resource.getLastPublished() != null) {
+      log.debug("Registering DWC & EML Service");
+      serviceTypes = "EML|DWC-ARCHIVE";
+      serviceURLs = getEmlURL(resource.getShortname()) + "|" + getDwcArchiveURL(resource.getShortname());
+    } else {
+      log.debug("No DWC & EML Service present");
+    }
+
+    NameValuePair[] data = {
+        // new NameValuePair("organisationKey", StringUtils.trimToEmpty(organisation.getKey().toString())),
+        // new NameValuePair("iptKey", StringUtils.trimToEmpty(ipt.getKey().toString())),
+        new NameValuePair("name", ((resource.getTitle() != null) ? StringUtils.trimToEmpty(resource.getTitle())
+            : StringUtils.trimToEmpty(resource.getShortname()))), // name
+        new NameValuePair("description", StringUtils.trimToEmpty(resource.getDescription())), // description
+        new NameValuePair("primaryContactType", "technical"),
+        new NameValuePair("primaryContactName",
+            StringUtils.trimToNull(StringUtils.trimToEmpty(resource.getCreator().getName()))),
+        new NameValuePair("primaryContactEmail", StringUtils.trimToEmpty(resource.getCreator().getEmail())),
+        new NameValuePair("serviceTypes", serviceTypes), new NameValuePair("serviceURLs", serviceURLs)};
+    boolean result = executeUpdate(getIptUpdateResourceUri(resource.getKey().toString()), data, true);
+    if (result) {
+      // read new UDDI ID
+      log.debug("Resource's registration info has been updated");
+    } else {
+      throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, "Bad registry response");
+    }
+    return null;
+  }
+
+  public boolean validateOrganisation(String organisationKey, String password) {
+    setRegistryCredentials(organisationKey, password);
+    GetMethod method = new GetMethod(getLoginURL(organisationKey));
+    // GetMethod method = newHttpPost(getLoginURL(organisationKey), true);
+    try {
+      client.executeMethod(method);
+      if (succeeded(method)) {
+        return true;
+      }
+      return false;
+    } catch (Exception e) {
+      log.warn(e.toString());
+    } finally {
+      if (method != null) {
+        method.releaseConnection();
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Executes a generic DELETE request
+   * 
+   * @param uri
+   * @param params
+   * @param authenticate
+   * @return
+   */
+  protected String executeDelete(String uri, boolean authenticate) {
+    String result = null;
+    log.info("Posting to " + uri);
+    DeleteMethod method = newHttpDelete(uri, authenticate);
+    try {
+      client.executeMethod(method);
+      if (succeeded(method)) {
+        result = method.getResponseBodyAsString();
+      }
+    } catch (Exception e) {
+      log.warn(uri + ": " + e.toString());
+    } finally {
+      if (method != null) {
+        method.releaseConnection();
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Executes a generic POST request
+   * 
+   * @param uri
+   * @param params
+   * @param authenticate
+   * @return
+   */
+  protected String executePost(String uri, NameValuePair[] params, boolean authenticate) {
+    String result = null;
+    log.info("Posting to " + uri);
+    PostMethod method = newHttpPost(uri, authenticate);
+    method.setRequestBody(params);
+    try {
+      client.executeMethod(method);
+      if (succeeded(method)) {
+        result = method.getResponseBodyAsString();
+      }
+    } catch (Exception e) {
+      log.warn(uri + ": " + e.toString());
+    } finally {
+      if (method != null) {
+        method.releaseConnection();
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Executes a generic POST request
+   * 
+   * @param uri
+   * @param params
+   * @param authenticate
+   * @return
+   */
+  protected boolean executeUpdate(String uri, NameValuePair[] params, boolean authenticate) {
+    boolean result = false;
+    log.info("Posting to " + uri);
+    PostMethod method = newHttpPost(uri, authenticate);
+    method.setRequestBody(params);
+    try {
+      client.executeMethod(method);
+      if (succeeded(method)) {
+        result = true;
+      }
+    } catch (Exception e) {
+      log.warn(uri + ": " + e.toString());
+    } finally {
+      if (method != null) {
+        method.releaseConnection();
+      }
+    }
+    return result;
+  }
+
+  protected InputStream getStream(String source) {
+    return new ByteArrayInputStream(source.getBytes());
+  }
+
+  /**
+   * Whether a request has succedded, i.e.: 200 response code
+   * 
+   * @param method
+   * @return
+   */
+  protected boolean succeeded(HttpMethodBase method) {
+    if (method.getStatusCode() >= 200 && method.getStatusCode() < 300) {
+      return true;
+    }
+    try {
+      log.warn("Http request to " + method.getURI() + " failed: " + method.getStatusLine());
+    } catch (URIException e) {
+      log.warn("Http request to ??? failed: " + method.getStatusLine());
+    }
+    return false;
   }
 
   /**
@@ -117,71 +526,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return extension;
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.registry.RegistryManager#deregister(org.gbif.ipt.model.Resource)
-   */
-  public boolean deregister(Resource resource) throws RegistryException {
-    // TODO Auto-generated method stub
-    return false;
-  }
-
-  /**
-   * Executes a generic POST request
-   * 
-   * @param uri
-   * @param params
-   * @param authenticate
-   * @return
-   */
-  protected String executePost(String uri, NameValuePair[] params, boolean authenticate) {
-    String result = null;
-    log.info("Posting to " + uri);
-    PostMethod method = newHttpPost(uri, authenticate);
-    method.setRequestBody(params);
-    try {
-      client.executeMethod(method);
-      if (succeeded(method)) {
-        result = method.getResponseBodyAsString();
-      }
-    } catch (Exception e) {
-      log.warn(uri + ": " + e.toString());
-    } finally {
-      if (method != null) {
-        method.releaseConnection();
-      }
-    }
-    return result;
-  }
-
-  /**
-   * Executes a generic POST request
-   * 
-   * @param uri
-   * @param params
-   * @param authenticate
-   * @return
-   */
-  protected boolean executeUpdate(String uri, NameValuePair[] params, boolean authenticate) {
-    boolean result = false;
-    log.info("Posting to " + uri);
-    PostMethod method = newHttpPost(uri, authenticate);
-    method.setRequestBody(params);
-    try {
-      client.executeMethod(method);
-      if (succeeded(method)) {
-        result = true;
-      }
-    } catch (Exception e) {
-      log.warn(uri + ": " + e.toString());
-    } finally {
-      if (method != null) {
-        method.releaseConnection();
-      }
-    }
-    return result;
-  }
-
   /**
    * Returns the ATOM url
    * 
@@ -189,6 +533,15 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    */
   private String getAtomFeedURL() {
     return String.format("%s/atom.xml", cfg.getBaseURL());
+  }
+
+  /**
+   * Returns the delete resource URL
+   * 
+   * @return
+   */
+  private String getDeleteResourceUri(String resourceKey) {
+    return String.format("%s%s%s", cfg.getRegistryUrl(), "ipt/resource/", resourceKey);
   }
 
   /**
@@ -209,43 +562,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    */
   private String getEmlURL(String resName) {
     return String.format("%s/eml.do?resource=%s", cfg.getBaseURL(), resName);
-  }
-
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.registry.RegistryManager#getExtensions()
-   */
-  public List<Extension> getExtensions() {
-    List<Extension> extensions = new ArrayList<Extension>();
-    JSONObject jSONextensions = null;
-    String result = null;
-    GetMethod method = new GetMethod(getExtensionsURL(true));
-    try {
-      client.executeMethod(method);
-      if (succeeded(method)) {
-        result = method.getResponseBodyAsString();
-        if (result != null) {
-          jSONextensions = new JSONObject(result);
-
-          JSONArray jSONArray = (JSONArray) jSONextensions.get("extensions");
-
-          for (int i = 0; i < jSONArray.length(); i++) {
-            extensions.add(buildExtension((JSONObject) jSONArray.get(i)));
-          }
-        }
-      }
-    } catch (JSONException e) {
-      e.printStackTrace();
-    } catch (HttpException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
-      e.printStackTrace();
-    } finally {
-      if (method != null) {
-        method.releaseConnection();
-      }
-    }
-    return extensions;
   }
 
   /**
@@ -295,42 +611,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return String.format("%s%s%s%s", cfg.getRegistryUrl(), "organisation/", organisationKey, "?op=login");
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.registry.RegistryManager#getOrganisations()
-   */
-  public List<Organisation> getOrganisations() {
-    List<Organisation> organisations = new ArrayList<Organisation>();
-    JSONArray jSONorganisations = null;
-    String result = null;
-    GetMethod method = new GetMethod(getOrganisationsURL(true));
-    try {
-      client.executeMethod(method);
-      if (succeeded(method)) {
-        method.getParams().setParameter("http.protocol.content-charset", "UTF-8");
-        result = method.getResponseBodyAsString();
-        if (result != null) {
-          jSONorganisations = new JSONArray(result);
-
-          for (int i = 0; i < jSONorganisations.length(); i++) {
-            organisations.add(buildOrganisation((JSONObject) jSONorganisations.get(i)));
-          }
-        }
-      }
-    } catch (JSONException e) {
-      e.printStackTrace();
-    } catch (HttpException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
-      e.printStackTrace();
-    } finally {
-      if (method != null) {
-        method.releaseConnection();
-      }
-    }
-    return organisations;
-  }
-
   /**
    * Returns the Organisations url
    * 
@@ -339,47 +619,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    */
   private String getOrganisationsURL(boolean json) {
     return String.format("%s%s%s", cfg.getRegistryUrl(), "organisation", json ? ".json" : "/");
-  }
-
-  protected InputStream getStream(String source) {
-    return new ByteArrayInputStream(source.getBytes());
-  }
-
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.registry.RegistryManager#getVocabularies()
-   */
-  public List<Vocabulary> getVocabularies() {
-    List<Vocabulary> extensions = new ArrayList<Vocabulary>();
-    JSONObject jSONextensions = null;
-    String result = null;
-    GetMethod method = new GetMethod(getVocabulariesURL(true));
-    try {
-      client.executeMethod(method);
-      if (succeeded(method)) {
-        result = method.getResponseBodyAsString();
-        if (result != null) {
-          jSONextensions = new JSONObject(result);
-
-          JSONArray jSONArray = (JSONArray) jSONextensions.get("thesauri");
-
-          for (int i = 0; i < jSONArray.length(); i++) {
-            extensions.add(buildVocabulary((JSONObject) jSONArray.get(i)));
-          }
-        }
-      }
-    } catch (JSONException e) {
-      e.printStackTrace();
-    } catch (HttpException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
-      e.printStackTrace();
-    } finally {
-      if (method != null) {
-        method.releaseConnection();
-      }
-    }
-    return extensions;
   }
 
   /**
@@ -397,198 +636,20 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * @param authenticate
    * @return
    */
-  private PostMethod newHttpPost(String url, boolean authenticate) {
-    PostMethod method = new PostMethod(url);
+  private DeleteMethod newHttpDelete(String url, boolean authenticate) {
+    DeleteMethod method = new DeleteMethod(url);
     method.setDoAuthentication(authenticate);
     return method;
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.registry.RegistryManager#register(org.gbif.ipt.model.Resource,
-   * org.gbif.ipt.model.Organisation, org.gbif.ipt.model.Ipt)
-   */
-  public UUID register(Resource resource, Organisation organisation, Ipt ipt) throws RegistryException {
-    Eml eml = resource.getEml();
-    // registering IPT resource
-
-    // services should be registered?
-    String serviceTypes = null;
-    String serviceURLs = null;
-    log.debug("Last published: " + resource.getLastPublished());
-    if (resource.getLastPublished() != null) {
-      log.debug("Registering DWC & EML Service");
-      serviceTypes = "EML|DWC-ARCHIVE";
-      serviceURLs = getEmlURL(resource.getShortname()) + "|" + getDwcArchiveURL(resource.getShortname());
-    } else {
-      log.debug("No DWC & EML Service present");
-    }
-
-    NameValuePair[] data = {
-        new NameValuePair("organisationKey", StringUtils.trimToEmpty(organisation.getKey().toString())),
-        new NameValuePair("iptKey", StringUtils.trimToEmpty(ipt.getKey().toString())),
-        new NameValuePair("name", ((resource.getTitle() != null) ? StringUtils.trimToEmpty(resource.getTitle())
-            : StringUtils.trimToEmpty(resource.getShortname()))), // name
-        new NameValuePair("description", StringUtils.trimToEmpty(resource.getDescription())), // description
-        new NameValuePair("primaryContactType", "technical"),
-        new NameValuePair("primaryContactName",
-            StringUtils.trimToNull(StringUtils.trimToEmpty(resource.getCreator().getName()))),
-        new NameValuePair("primaryContactEmail", StringUtils.trimToEmpty(resource.getCreator().getEmail())),
-        new NameValuePair("serviceTypes", serviceTypes), new NameValuePair("serviceURLs", serviceURLs)};
-    String result = executePost(getIptResourceUri(), data, true);
-    if (result != null) {
-      // read new UDDI ID
-      try {
-        saxParser.parse(getStream(result), newRegistryEntryHandler);
-        String key = newRegistryEntryHandler.key;
-        if (StringUtils.trimToNull(key) == null) {
-          key = newRegistryEntryHandler.resourceKey;
-        }
-        resource.setKey(UUID.fromString(key));
-        if (key != null) {
-          log.info("A new resource has been registered with GBIF. Key = " + key);
-          return UUID.fromString(key);
-        }
-      } catch (Exception e) {
-        throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, "Bad registry response");
-      }
-    } else {
-      throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, "Bad registry response");
-    }
-    return null;
-  }
-
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.registry.RegistryManager#registerIPT(org.gbif.ipt.model.Ipt)
-   */
-  public String registerIPT(Ipt ipt) throws RegistryException {
-    // registering IPT resource
-    NameValuePair[] data = {
-        new NameValuePair("organisationKey", StringUtils.trimToEmpty(ipt.getOrganisationKey().toString())),
-        new NameValuePair("name", StringUtils.trimToEmpty(ipt.getName())), // name
-        new NameValuePair("description", StringUtils.trimToEmpty(ipt.getDescription())), // description
-        new NameValuePair("wsPassword", StringUtils.trimToEmpty(ipt.getWsPassword())), // description
-        new NameValuePair("primaryContactType", ipt.getPrimaryContactType()),
-        new NameValuePair("primaryContactName", StringUtils.trimToEmpty(ipt.getPrimaryContactName())),
-        new NameValuePair("primaryContactEmail", StringUtils.trimToEmpty(ipt.getPrimaryContactEmail())),
-        new NameValuePair("serviceTypes", "RSS"), new NameValuePair("serviceURLs", getAtomFeedURL())};
-    String result = executePost(getIptUri(), data, true);
-    if (result != null) {
-      // read new UDDI ID
-      try {
-        saxParser.parse(getStream(result), newRegistryEntryHandler);
-        String key = newRegistryEntryHandler.key;
-        if (StringUtils.trimToNull(key) == null) {
-          key = newRegistryEntryHandler.resourceKey;
-        }
-        ipt.setKey(key);
-        if (key != null) {
-          log.info("A new ipt has been registered with GBIF. Key = " + key);
-          return key;
-        }
-      } catch (Exception e) {
-        throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, "Bad registry response");
-      }
-    } else {
-      throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, "Bad registry response");
-    }
-    return null;
-  }
-
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.registry.RegistryManager#setRegistryCredentials(java.lang.String, java.lang.String)
-   */
-  public void setRegistryCredentials(String username, String password) {
-    try {
-      URI geoURI = new URI(cfg.getRegistryUrl());
-      AuthScope scope = new AuthScope(geoURI.getHost(), -1, AuthScope.ANY_REALM); // AuthScope.ANY;
-      client.getState().setCredentials(scope,
-          new UsernamePasswordCredentials(StringUtils.trimToEmpty(username), StringUtils.trimToEmpty(password)));
-      client.getParams().setAuthenticationPreemptive(true);
-    } catch (URISyntaxException e) {
-      log.error("Exception setting the registry credentials", e);
-    }
-  }
-
   /**
-   * Whether a request has succedded, i.e.: 200 response code
-   * 
-   * @param method
+   * @param url
+   * @param authenticate
    * @return
    */
-  protected boolean succeeded(HttpMethodBase method) {
-    if (method.getStatusCode() >= 200 && method.getStatusCode() < 300) {
-      return true;
-    }
-    try {
-      log.warn("Http request to " + method.getURI() + " failed: " + method.getStatusLine());
-    } catch (URIException e) {
-      log.warn("Http request to ??? failed: " + method.getStatusLine());
-    }
-    return false;
-  }
-
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.registry.RegistryManager#updateResource(org.gbif.ipt.model.Resource,
-   * org.gbif.ipt.model.Organisation, org.gbif.ipt.model.Ipt)
-   */
-  public UUID updateResource(Resource resource, Organisation organisation, Ipt ipt) throws RegistryException {
-    Eml eml = resource.getEml();
-    // registering IPT resource
-
-    // services should be registered?
-    String serviceTypes = null;
-    String serviceURLs = null;
-    log.debug("Last published: " + resource.getLastPublished());
-    if (resource.getLastPublished() != null) {
-      log.debug("Registering DWC & EML Service");
-      serviceTypes = "EML|DWC-ARCHIVE";
-      serviceURLs = getEmlURL(resource.getShortname()) + "|" + getDwcArchiveURL(resource.getShortname());
-    } else {
-      log.debug("No DWC & EML Service present");
-    }
-
-    NameValuePair[] data = {
-        // new NameValuePair("organisationKey", StringUtils.trimToEmpty(organisation.getKey().toString())),
-        // new NameValuePair("iptKey", StringUtils.trimToEmpty(ipt.getKey().toString())),
-        new NameValuePair("name", ((resource.getTitle() != null) ? StringUtils.trimToEmpty(resource.getTitle())
-            : StringUtils.trimToEmpty(resource.getShortname()))), // name
-        new NameValuePair("description", StringUtils.trimToEmpty(resource.getDescription())), // description
-        new NameValuePair("primaryContactType", "technical"),
-        new NameValuePair("primaryContactName",
-            StringUtils.trimToNull(StringUtils.trimToEmpty(resource.getCreator().getName()))),
-        new NameValuePair("primaryContactEmail", StringUtils.trimToEmpty(resource.getCreator().getEmail())),
-        new NameValuePair("serviceTypes", serviceTypes), new NameValuePair("serviceURLs", serviceURLs)};
-    boolean result = executeUpdate(getIptUpdateResourceUri(resource.getKey().toString()), data, true);
-    if (result) {
-      // read new UDDI ID
-      log.debug("Resource's registration info has been updated");
-    } else {
-      throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, "Bad registry response");
-    }
-    return null;
-  }
-
-  public boolean validateOrganisation(String organisationKey, String password) {
-    setRegistryCredentials(organisationKey, password);
-    GetMethod method = new GetMethod(getLoginURL(organisationKey));
-    // GetMethod method = newHttpPost(getLoginURL(organisationKey), true);
-    try {
-      client.executeMethod(method);
-      if (succeeded(method)) {
-        return true;
-      }
-      return false;
-    } catch (Exception e) {
-      log.warn(e.toString());
-    } finally {
-      if (method != null) {
-        method.releaseConnection();
-      }
-    }
-    return false;
+  private PostMethod newHttpPost(String url, boolean authenticate) {
+    PostMethod method = new PostMethod(url);
+    method.setDoAuthentication(authenticate);
+    return method;
   }
 }
