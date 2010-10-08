@@ -4,6 +4,7 @@
 package org.gbif.ipt.service.admin;
 
 import org.gbif.ipt.model.Vocabulary;
+import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl.UpdateResult;
 
@@ -25,8 +26,9 @@ public interface VocabulariesManager {
    * removes a local vocabulary copy
    * 
    * @param uri unique URI identifying the vocabulary as given in the vocabulary definition
+   * @throws DeletionNotAllowedException
    */
-  public void delete(String uri);
+  public void delete(String uri) throws DeletionNotAllowedException;
 
   /**
    * Retrieve vocabulary by its unique global URI identifier from installed vocabularies.

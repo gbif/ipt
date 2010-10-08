@@ -3,6 +3,7 @@
  */
 package org.gbif.ipt.service.admin.impl;
 
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.service.AlreadyExistingException;
@@ -12,8 +13,10 @@ import org.gbif.ipt.service.DeletionNotAllowedException.Reason;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.UserAccountManager;
+import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.utils.FileUtils;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.xstream.XStream;
 
@@ -25,8 +28,10 @@ import java.io.ObjectOutputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -44,6 +49,8 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
   private boolean allowSimplifiedAdminLogin = true;
   private String onlyAdminEmail;
   private final XStream xstream = new XStream();
+  @Inject
+  private ResourceManager resourceManager;
 
   public UserAccountManagerImpl() {
     super();
@@ -107,26 +114,49 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
 
   public User delete(String email) throws DeletionNotAllowedException {
     if (email != null) {
-      User remUser = users.remove(email.toLowerCase());
-      // TODO: check if a resource is linked to this user and potentially throw DeletionNotAllowedException()
-
+      User remUser = users.get(email.toLowerCase());
       // if admin, some other admin still existing?
       if (remUser.getRole() == Role.Admin) {
-        boolean lastAdmin = true;
         for (User u : users.values()) {
           if (u.getRole() == Role.Admin) {
-            lastAdmin = false;
-            break;
+            log.warn("Last admin cannot be deleted");
+            throw new DeletionNotAllowedException(Reason.LAST_ADMIN);
           }
         }
-        if (lastAdmin) {
-          log.warn("Last admin cannot be deleted");
-          addUser(remUser);
-          throw new DeletionNotAllowedException(Reason.LAST_ADMIN);
+      }
+
+      // if manager or admin, last manager of a resource?
+      boolean isResourceCreator = false;
+      if (remUser.hasManagerRights()) {
+        for (Resource r : resourceManager.list(remUser)) {
+          if (r.getCreator().equals(remUser)) {
+            isResourceCreator = true;
+          }
+          Set<User> managers = new HashSet<User>(r.getManagers());
+          managers.add(r.getCreator());
+          if (managers.size() == 1) {
+            String msg = "Last manager for resource " + r.getShortname() + " cannot be deleted";
+            log.warn(msg);
+            throw new DeletionNotAllowedException(Reason.LAST_RESOURCE_MANAGER, msg);
+          }
         }
       }
+
+      // finally remove user from internal hash or update role if its a resource creator
+      if (isResourceCreator) {
+        remUser.setRole(Role.User);
+        log.warn("Creator of resources cannot be deleted. Changed role to a simple user instead");
+      } else {
+        users.remove(email.toLowerCase());
+        // remove from resource managers
+        for (Resource r : resourceManager.list(remUser)) {
+          r.getManagers().remove(remUser);
+        }
+      }
+      // update resource creator
       return remUser;
     }
+
     return null;
   }
 

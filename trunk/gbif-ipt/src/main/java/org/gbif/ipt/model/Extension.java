@@ -14,7 +14,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * A Darwin Core extension definition
@@ -141,6 +143,19 @@ public class Extension {
 
   public boolean isInstalled() {
     return installed;
+  }
+
+  /**
+   * @return set of vocabularies used by this extension
+   */
+  public Set<Vocabulary> listVocabularies() {
+    Set<Vocabulary> vocabs = new HashSet<Vocabulary>();
+    for (ExtensionProperty prop : getProperties()) {
+      if (prop.getVocabulary() != null) {
+        vocabs.add(prop.getVocabulary());
+      }
+    }
+    return vocabs;
   }
 
   public void setDescription(String description) {

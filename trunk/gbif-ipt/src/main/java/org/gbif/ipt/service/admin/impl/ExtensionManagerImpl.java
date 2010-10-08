@@ -5,11 +5,15 @@ package org.gbif.ipt.service.admin.impl;
 
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Extension;
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.factory.ExtensionFactory;
 import org.gbif.ipt.service.BaseManager;
+import org.gbif.ipt.service.DeletionNotAllowedException;
+import org.gbif.ipt.service.DeletionNotAllowedException.Reason;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.ExtensionManager;
+import org.gbif.ipt.service.manage.ResourceManager;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -51,6 +55,8 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   private HttpClient httpClient;
   private final String TAXON_KEYWORD = "dwc:taxon";
   private final String OCCURRENCE_KEYWORD = "dwc:occurrence";
+  @Inject
+  private ResourceManager resourceManager;
 
   @Inject
   public ExtensionManagerImpl(ExtensionFactory factory, HttpClient httpClient) {
@@ -59,20 +65,26 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     this.httpClient = httpClient;
   }
 
-  public void delete(String rowType) {
+  public void delete(String rowType) throws DeletionNotAllowedException {
     if (extensionsByRowtype.containsKey(rowType)) {
-      Extension ext = extensionsByRowtype.remove(rowType);
-      if (ext == null) {
-        log.warn("Extension not installed locally, cant delete " + rowType);
-      } else {
-        // TODO: check if its used by some resources
-        File f = getExtensionFile(rowType);
-        if (f.exists()) {
-          f.delete();
-        } else {
-          log.warn("Extension doesnt exist locally, cant delete " + rowType);
+      // check if its used by some resources
+      for (Resource r : resourceManager.list()) {
+        if (r.getMapping(rowType) != null) {
+          String msg = "Extension mapped in resource " + r.getShortname();
+          log.warn(msg);
+          throw new DeletionNotAllowedException(Reason.EXTENSION_MAPPED, msg);
         }
       }
+      // delete
+      extensionsByRowtype.remove(rowType);
+      File f = getExtensionFile(rowType);
+      if (f.exists()) {
+        f.delete();
+      } else {
+        log.warn("Extension doesnt exist locally, cant delete " + rowType);
+      }
+    } else {
+      log.warn("Extension not installed locally, cant delete " + rowType);
     }
   }
 

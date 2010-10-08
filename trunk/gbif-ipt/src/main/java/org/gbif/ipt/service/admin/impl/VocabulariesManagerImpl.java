@@ -4,12 +4,16 @@
 package org.gbif.ipt.service.admin.impl;
 
 import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.model.VocabularyConcept;
 import org.gbif.ipt.model.VocabularyTerm;
 import org.gbif.ipt.model.factory.VocabularyFactory;
 import org.gbif.ipt.service.BaseManager;
+import org.gbif.ipt.service.DeletionNotAllowedException;
+import org.gbif.ipt.service.DeletionNotAllowedException.Reason;
 import org.gbif.ipt.service.InvalidConfigException;
+import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.utils.DownloadUtil;
@@ -70,6 +74,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   private DownloadUtil downloadUtil;
   private final XStream xstream = new XStream();
   private final RegistryManager registryManager;
+  private final ExtensionManager extensionManager;
   private final String[] defaultVocabs = new String[]{
       Constants.VOCAB_URI_LANGUAGE, Constants.VOCAB_URI_COUNTRY, Constants.VOCAB_URI_RESOURCE_TYPE,
       Constants.VOCAB_URI_RANKS};
@@ -79,11 +84,12 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
    */
   @Inject
   public VocabulariesManagerImpl(VocabularyFactory vocabFactory, DownloadUtil downloadUtil,
-      RegistryManager registryManager) {
+      RegistryManager registryManager, ExtensionManager extensionManager) {
     super();
     this.vocabFactory = vocabFactory;
     this.downloadUtil = downloadUtil;
     this.registryManager = registryManager;
+    this.extensionManager = extensionManager;
     defineXstreamMapping();
   }
 
@@ -104,12 +110,28 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   private void defineXstreamMapping() {
   }
 
-  public void delete(String uri) {
+  public void delete(String uri) throws DeletionNotAllowedException {
     if (uri != null) {
       URL url = uri2url.get(uri.toLowerCase());
-      Vocabulary vocab = vocabularies.remove(url);
-      // TODO: check if its used by some extension
+      Vocabulary vocab = get(url);
       if (vocab != null) {
+        // is its a basic IPT vocab?
+        for (String defaultUri : defaultVocabs) {
+          if (defaultUri.equalsIgnoreCase(uri)) {
+            throw new DeletionNotAllowedException(Reason.BASE_VOCABULARY);
+          }
+        }
+        // check if its used by some extension
+        for (Extension ext : extensionManager.list()) {
+          for (Vocabulary v : ext.listVocabularies()) {
+            if (uri.equalsIgnoreCase(v.getUri())) {
+              throw new DeletionNotAllowedException(Reason.VOCABULARY_USED_IN_EXTENSION,
+                  "Vocabulary used by extension " + ext.getRowType());
+            }
+          }
+        }
+        // remove vocab
+        vocabularies.remove(url);
         // remove file too
         File f = getVocabFile(url);
         if (f.exists()) {

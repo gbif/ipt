@@ -6,6 +6,7 @@ package org.gbif.ipt.action.admin;
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Vocabulary;
+import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl.UpdateResult;
@@ -70,8 +71,12 @@ public class ExtensionsAction extends POSTAction {
 
   @Override
   public String delete() {
-    extensionManager.delete(id);
-    addActionMessage(getText("admin.extension.delete.success", new String[]{id}));
+    try {
+      extensionManager.delete(id);
+      addActionMessage(getText("admin.extension.delete.success", new String[]{id}));
+    } catch (DeletionNotAllowedException e) {
+      addActionError(getText("admin.extension.delete.failed", new String[]{id}));
+    }
     return SUCCESS;
   }
 

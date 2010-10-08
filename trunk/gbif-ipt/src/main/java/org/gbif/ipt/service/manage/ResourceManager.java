@@ -76,6 +76,13 @@ public interface ResourceManager {
   public List<Resource> latest(int startPage, int pageSize);
 
   /**
+   * list all resources in the IPT
+   * 
+   * @return
+   */
+  public List<Resource> list();
+
+  /**
    * list all resources in the IPT having a certain publication status
    * 
    * @param status

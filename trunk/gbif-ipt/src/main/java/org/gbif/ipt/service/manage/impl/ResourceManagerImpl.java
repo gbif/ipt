@@ -328,6 +328,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   public void delete(Resource resource) throws IOException {
+    // deregister resource?
+    if (resource.getKey() != null) {
+      if (!registryManager.deregister(resource)) {
+        throw new IOException("Unable to deregister resource");
+      }
+    }
     // remove from data dir
     FileUtils.forceDelete(dataDir.resourceFile(resource, ""));
     // remove object
@@ -482,6 +488,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       }
     });
     return resourceList;
+  }
+
+  public List<Resource> list() {
+    return new ArrayList<Resource>(resources.values());
   }
 
   /*
