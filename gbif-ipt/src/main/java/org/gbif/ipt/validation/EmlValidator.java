@@ -277,8 +277,9 @@ public class EmlValidator extends BaseValidator {
 					/* At least have to exist an organisation or a lastName (or both) */
 					if (!exists(eml.getAssociatedParties().get(index).getOrganisation()) && !exists(eml.getAssociatedParties().get(index).getLastName())) {
 						action.addActionError(action.getText("validation.lastname.organisation"));
-						action.addFieldError("eml.associatedParties["+index+"].organisation", action.getText("validation.required", new String[] { action.getText("eml.associatedParties.organisation") }));
-						action.addFieldError("eml.associatedParties["+index+"].lastName", action.getText("validation.required", new String[] { action.getText("eml.associatedParties.lastName") }));
+						action.addFieldError("eml.associatedParties[" + index + "].organisation", action.getText("validation.required", new String[] { action
+								.getText("eml.associatedParties.organisation") }));
+						action.addFieldError("eml.associatedParties[" + index + "].lastName", action.getText("validation.required", new String[] { action.getText("eml.associatedParties.lastName") }));
 					}
 
 					/*
@@ -330,17 +331,17 @@ public class EmlValidator extends BaseValidator {
 				/*
 				 * GEOCOVERAGE.FTL - XML Schema Documentation
 				 * <dataset>
-      			 *	<coverage>
-        		 *	 <geographicCoverage>																					- mandatory - many
-        		 *		<geographicDescription>{geocoverage.description}</geographicDescription> 							- optional
-          		 *		<boundingCoordinates>																				- mandatory
-          		 * 		 <westBoundingCoordinate>{geocoverage.boundingCoordinates.min.longitude}</westBoundingCoordinate>	- mandatory
-          		 * 		 <eastBoundingCoordinate>{geocoverage.boundingCoordinates.max.longitude}</eastBoundingCoordinate>	- mandatory
-          		 * 		 <northBoundingCoordinate>{geocoverage.boundingCoordinates.max.latitude}</northBoundingCoordinate>	- mandatory
-          		 * 		 <southBoundingCoordinate>{geocoverage.boundingCoordinates.min.latitude}</southBoundingCoordinate>  - mandatory
-          		 *		</boundingCoordinates>
-        		 *	 </geographicCoverage>
-        		 *	</coverage>
+				 *	<coverage>
+				 *	 <geographicCoverage>																					- mandatory - many
+				 *		<geographicDescription>{geocoverage.description}</geographicDescription> 							- optional
+				 *		<boundingCoordinates>																				- mandatory
+				 * 		 <westBoundingCoordinate>{geocoverage.boundingCoordinates.min.longitude}</westBoundingCoordinate>	- mandatory
+				 * 		 <eastBoundingCoordinate>{geocoverage.boundingCoordinates.max.longitude}</eastBoundingCoordinate>	- mandatory
+				 * 		 <northBoundingCoordinate>{geocoverage.boundingCoordinates.max.latitude}</northBoundingCoordinate>	- mandatory
+				 * 		 <southBoundingCoordinate>{geocoverage.boundingCoordinates.min.latitude}</southBoundingCoordinate>  - mandatory
+				 *		</boundingCoordinates>
+				 *	 </geographicCoverage>
+				 *	</coverage>
 				 * </dataset>
 				 * */
 				for (int index = 0; index < eml.getGeospatialCoverages().size(); index++) {
@@ -357,7 +358,7 @@ public class EmlValidator extends BaseValidator {
 						action.addFieldError("eml.geospatialcoverages[" + index + "].boundingCoordinates.min.latitude", action.getText("validation.invalid"));
 					}
 				}
-				
+
 			} else if (part == null || part.equalsIgnoreCase("taxcoverage")) {
 				/*
 				 * TAXCOVERAGE.FTL - XML Schema Documentation
@@ -440,14 +441,35 @@ public class EmlValidator extends BaseValidator {
 				/* 
 				 * PROJECT.FTL - XML Schema Documentation
 				 * <dataset>
-				 * 
+				 *    <project>                                                                                      - optional
+				 *       <title>{eml.project.title}</title>                                                          - mandatory
+				 *       <personnel>                                                                                 - mandatory
+				 *          <individualName>                                                                         - mandatory
+				 *             <givenName>{eml.project.personnel.firstName}</givenName>                              - optional
+				 *             <surName>{eml.project.personnel.lastName}</surName>                                   - mandatory
+				 *          </individualName>
+				 *          <role>{eml.project.personnel.role}</role>                                                - mandatory
+				 *       </personnel>
+				 *       <funding>                                                                                   - mandatory
+				 *          <para>{eml.project.funding}</para>                                                       - mandatory
+				 *       </funding>
+				 *       <studyAreaDescription>                                                                      - mandatory
+				 *          <descriptor name="generic" citableClassificationSystem="false">                          - mandatory
+				 *             <descriptorValue>{eml.project.studyAreaDescription.descriptorValue}</descriptorValue> - mandatory
+				 *          </descriptor>
+				 *       </studyAreaDescription>
+				 *       <designDescription>                                                                         - mandatory
+				 *          <description>{eml.project.designDescription}</description>                               - mandatory
+				 *       </designDescription>
+				 *    </project>
 				 * </dataset>
 				 */
-				if (!exists(eml.getProject().getPersonnel().getFirstName())) {
-					action.addFieldError("eml.project.personnel.firstName", action.getText("validation.required"));
-				}
-				if (!exists(eml.getProject().getPersonnel().getLastName())) {
-					action.addFieldError("eml.project.personnel.lastName", action.getText("validation.required"));
+
+				/* First Name is optional but if exists, last name must to exist */
+				if (exists(eml.getProject().getPersonnel().getFirstName()) && !exists(eml.getProject().getPersonnel().getLastName())) {
+					action.addFieldError("eml.project.personnel.lastName", action.getText("validation.firstname.lastname"));
+				} else if (!exists(eml.getProject().getPersonnel().getLastName())) {
+					action.addFieldError("eml.project.personnel.lastName", action.getText("validation.required", new String[] { action.getText("eml.project.personnel.lastName") }));
 				}
 
 			} else if (part == null || part.equalsIgnoreCase("methods")) {
