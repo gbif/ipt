@@ -65,6 +65,13 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
     this.cfg = cfg;
   }
 
+  protected void addActionExceptionMessage(Exception e) {
+    String msg = e.getMessage();
+    if (msg != null) {
+      addActionMessage(msg);
+    }
+  }
+
   /**
    * Easy access to the configured application root for simple use in templates
    * 
