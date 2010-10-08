@@ -68,6 +68,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     String result = executeDelete(getDeleteResourceUri(resource.getKey().toString()), true);
     if (result != null) {
       log.info("The resource has been deleted. Resource key: " + resource.getKey().toString());
+      return true;
     } else {
       throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, "Bad registry response");
     }
