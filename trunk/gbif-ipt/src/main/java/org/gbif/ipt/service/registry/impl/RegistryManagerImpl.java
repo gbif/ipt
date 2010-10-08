@@ -72,7 +72,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     } else {
       throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, "Bad registry response");
     }
-    return false;
+
   }
 
   /*
