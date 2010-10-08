@@ -75,7 +75,8 @@ public class ExtensionsAction extends POSTAction {
       extensionManager.delete(id);
       addActionMessage(getText("admin.extension.delete.success", new String[]{id}));
     } catch (DeletionNotAllowedException e) {
-      addActionError(getText("admin.extension.delete.failed", new String[]{id}));
+      addActionError(getText("admin.extension.delete.error", new String[]{id}));
+      addActionExceptionMessage(e);
     }
     return SUCCESS;
   }
