@@ -248,24 +248,24 @@ public class EmlValidator extends BaseValidator {
 				/*
 				 * PARTIES.FTL - XML Schema Documentation
 				 * <dataset>
-				 * <associatedParty> - optional - many
-				 * <organizationName>{eml.associatedParties[i].organisation}</organizationName> |
-				 * <individualName> |
-				 * <givenName>{eml.associatedParties[i].firstName}</givenName> | - mandatory (at least one of them)
-				 * <surName>{eml.associatedParties[i].lastName}</surName> |
-				 * </individualName> |
-				 * <address> - optional
-				 * <deliveryPoin>{eml.associatedParties[i].address.address}</deliveryPoint> - optional
-				 * <city>{eml.associatedParties[i].address.city}</city> - mandatory
-				 * <administrativeArea>{eml.associatedParties[i].address.province}</administrativeArea> - mandatory
-				 * <postalCode>{eml.associatedParties[i].address.postalCode}</postalCode> - mandatory - integer
-				 * <country>{eml.associatedParties[i].address.country}</country> - mandatory
-				 * </address>
-				 * <phone>{eml.associatedParties[i].phone}</phone> - mandatory - integer
-				 * <electronicMailAddress>{eml.associatedParties[i].email}</electronicMailAddress> - optional - valid format
-				 * <onlineUrl>{eml.associatedParties[i].homePage}</onlineUrl> - optional
-				 * <role>eml.associatedParties[i].role</role> - mandatory
-				 * </associatedParty>
+				 *    <associatedParty>                                                                          - optional - many
+				 *       <organizationName>{eml.associatedParties[i].organisation}</organizationName>                         |
+				 *       <individualName>                                                                                     |
+				 *          <givenName>{eml.associatedParties[i].firstName}</givenName>                                       | - mandatory (at least one of them)
+				 *          <surName>{eml.associatedParties[i].lastName}</surName>                                            |
+				 *       </individualName>                                                                                    |
+				 *       <address> - optional
+				 *          <deliveryPoint>{eml.associatedParties[i].address.address}</deliveryPoint>            - optional
+				 *          <city>{eml.associatedParties[i].address.city}</city>                                 - optional
+				 *          <administrativeArea>{eml.associatedParties[i].address.province}</administrativeArea> - optional
+				 *          <postalCode>{eml.associatedParties[i].address.postalCode}</postalCode>               - optional
+				 *          <country>{eml.associatedParties[i].address.country}</country>                        - optional
+				 *       </address>
+				 *       <phone>{eml.associatedParties[i].phone}</phone>                                         - optional
+				 *       <electronicMailAddress>{eml.associatedParties[i].email}</electronicMailAddress>         - optional - valid format
+				 *       <onlineUrl>{eml.associatedParties[i].homePage}</onlineUrl>                              - optional
+				 *       <role>eml.associatedParties[i].role</role>                                              - optional
+				 *    </associatedParty>
 				 * </dataset>
 				 */
 				for (int index = 0; index < eml.getAssociatedParties().size(); index++) {
@@ -277,6 +277,8 @@ public class EmlValidator extends BaseValidator {
 					/* At least have to exist an organisation or a lastName (or both) */
 					if (!exists(eml.getAssociatedParties().get(index).getOrganisation()) && !exists(eml.getAssociatedParties().get(index).getLastName())) {
 						action.addActionError(action.getText("validation.lastname.organisation"));
+						action.addFieldError("eml.associatedParties["+index+"].organisation", action.getText("validation.required", new String[] { action.getText("eml.associatedParties.organisation") }));
+						action.addFieldError("eml.associatedParties["+index+"].lastName", action.getText("validation.required", new String[] { action.getText("eml.associatedParties.lastName") }));
 					}
 
 					/*
@@ -316,18 +318,31 @@ public class EmlValidator extends BaseValidator {
 					if (exists(eml.getAssociatedParties().get(index).getEmail()) && !isValidEmail(eml.getAssociatedParties().get(index).getEmail())) {
 						action.addFieldError("eml.associatedParties[" + index + "].email", action.getText("validation.invalid", new String[] { action.getText("eml.associatedParties.email") }));
 					}
-
-					/* phone is optional. But if it exists, should be a number */
+					
+					/* phone is optional. But if it exists, should match the pattern */
 					if (exists(eml.getAssociatedParties().get(index).getPhone())) {
-						try {
-							Integer.parseInt(eml.getAssociatedParties().get(index).getPhone());
-						} catch (NumberFormatException e) {
+						if (!isValidPhoneNumber(eml.getAssociatedParties().get(index).getPhone())) {
 							action.addFieldError("eml.associatedParties[" + index + "].phone", action.getText("validation.invalid", new String[] { action.getText("eml.associatedParties.phone") }));
 						}
-					}
+					}					
 				}
 			} else if (part == null || part.equalsIgnoreCase("geocoverage")) {
 			} else if (part == null || part.equalsIgnoreCase("taxcoverage")) {
+				/*
+				 * TAXCOVERAGE.FTL - XML Schema Documentation
+				 * <dataset>
+				 *    <coverage>                                                                                      - optional
+				 *       <taxonomicCoverage>                                                                          - mandatory - many
+				 *          <generalTaxonomicCoverage>{eml.taxonomicCoverages.description}</generalTaxonomicCoverage> - optional
+				 *          <taxonomicClassification>                                                                 - mandatory - many
+				 *             <taxonRankName>{eml.taxonomicCoverages.taxonKeywords.scientificName}</taxonRankName>   - optional
+				 *             <taxonRankValue>{eml.taxonomicCoverages.taxonKeywords.rank}</taxonRankValue>           - mandatory
+				 *             <commonName>{eml.taxonomicCoverages.taxonKeywords.commonName}</commonName>             - optional
+				 *          </taxonomicClassification>
+				 *       </taxonomicCoverage>
+				 *    </coverage>
+				 * </dataset>
+				 */				
 				int cont = 0;
 				for (TaxonomicCoverage tc : eml.getTaxonomicCoverages()) {
 					int kw = 0;
