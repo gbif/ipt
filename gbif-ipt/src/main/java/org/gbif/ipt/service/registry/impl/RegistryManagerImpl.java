@@ -117,6 +117,15 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return extension;
   }
 
+  /*
+   * (non-Javadoc)
+   * @see org.gbif.ipt.service.registry.RegistryManager#deregister(org.gbif.ipt.model.Resource)
+   */
+  public boolean deregister(Resource resource) throws RegistryException {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
   /**
    * Executes a generic POST request
    * 
@@ -232,9 +241,9 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     } catch (IOException e) {
       e.printStackTrace();
     } finally {
-    	if (method != null) {
-    		method.releaseConnection();
-    	}
+      if (method != null) {
+        method.releaseConnection();
+      }
     }
     return extensions;
   }
@@ -315,9 +324,9 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     } catch (IOException e) {
       e.printStackTrace();
     } finally {
-    	if (method != null) {
-    		method.releaseConnection();
-    	}
+      if (method != null) {
+        method.releaseConnection();
+      }
     }
     return organisations;
   }
@@ -366,9 +375,9 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     } catch (IOException e) {
       e.printStackTrace();
     } finally {
-    	if (method != null) {
-    		method.releaseConnection();
-    	}
+      if (method != null) {
+        method.releaseConnection();
+      }
     }
     return extensions;
   }
@@ -576,9 +585,9 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     } catch (Exception e) {
       log.warn(e.toString());
     } finally {
-    	if (method != null) {
-    		method.releaseConnection();
-    	}
+      if (method != null) {
+        method.releaseConnection();
+      }
     }
     return false;
   }

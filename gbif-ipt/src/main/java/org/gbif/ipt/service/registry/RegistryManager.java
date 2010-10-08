@@ -16,6 +16,8 @@ import java.util.UUID;
 @ImplementedBy(RegistryManagerImpl.class)
 public interface RegistryManager {
 
+  public boolean deregister(Resource resource) throws RegistryException;
+
   /**
    * Gets list of extensions
    * 
@@ -48,18 +50,6 @@ public interface RegistryManager {
    * @throws RegistryException
    */
   public UUID register(Resource resource, Organisation organisation, Ipt ipt) throws RegistryException;
-  
-  /**
-   * Updates a new resource with the GBIF registry and associate with to the given organisation.
-   * 
-   * @param resource
-   * @param organisation
-   * @param ipt
-   * @param eml
-   * @return the newly created registry key for the resource
-   * @throws RegistryException
-   */
-  public UUID updateResource(Resource resource, Organisation organisation, Ipt ipt) throws RegistryException;  
 
   /**
    * Register an IPT instance against the GBIF Registry
@@ -77,6 +67,18 @@ public interface RegistryManager {
    * @param password
    */
   public void setRegistryCredentials(String username, String password);
+
+  /**
+   * Updates a new resource with the GBIF registry and associate with to the given organisation.
+   * 
+   * @param resource
+   * @param organisation
+   * @param ipt
+   * @param eml
+   * @return the newly created registry key for the resource
+   * @throws RegistryException
+   */
+  public UUID updateResource(Resource resource, Organisation organisation, Ipt ipt) throws RegistryException;
 
   public boolean validateOrganisation(String organisationKey, String password);
 

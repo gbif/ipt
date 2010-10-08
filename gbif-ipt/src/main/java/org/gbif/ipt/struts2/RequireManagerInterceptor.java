@@ -40,10 +40,11 @@ public class RequireManagerInterceptor extends AbstractInterceptor {
     if (user.hasAdminRights()) {
       return true;
     }
-    if (resource != null && resource.getCreator() != null && resource.getCreator().equals(user)) {
-      return true;
-    }
-    if (user.hasManagerRights()) {
+    if (resource != null && user.hasManagerRights()) {
+      // even resource creators need still to be managers
+      if (resource.getCreator() != null && resource.getCreator().equals(user)) {
+        return true;
+      }
       for (User m : resource.getManagers()) {
         if (user.equals(m)) {
           return true;

@@ -3,14 +3,15 @@
  */
 package org.gbif.ipt.service.admin;
 
-import java.net.URL;
-import java.util.List;
-
 import org.gbif.ipt.model.Extension;
+import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.impl.ExtensionManagerImpl;
 
 import com.google.inject.ImplementedBy;
+
+import java.net.URL;
+import java.util.List;
 
 /**
  * This interface details ALL methods associated with the DwC extensions.
@@ -27,8 +28,9 @@ public interface ExtensionManager {
    * Remove an installed extension by its unique rowType
    * 
    * @param rowType
+   * @throws DeletionNotAllowedException
    */
-  public void delete(String rowType);
+  public void delete(String rowType) throws DeletionNotAllowedException;
 
   /**
    * Get a locally installed extension by its rowType
@@ -54,22 +56,20 @@ public interface ExtensionManager {
    */
   public List<Extension> list();
 
-  /**List all available extensions available for the given core 
- * @param core extension 
- * @return
- */
-public List<Extension> list(Extension core);
+  /**
+   * List all available extensions available for the given core
+   * 
+   * @param core extension
+   * @return
+   */
+  public List<Extension> list(Extension core);
 
-  /**List only the available core extensions
- * @return
- */
-public List<Extension> listCore();
-
-/**List all available extensions matching a registered keyword 
- * @param keyword to filter by, e.g. dwc:Taxon for all taxonomic extensions 
- * @return
- */
-public List<Extension> search(String keyword);
+  /**
+   * List only the available core extensions
+   * 
+   * @return
+   */
+  public List<Extension> listCore();
 
   /**
    * Load all installed extensions from the data dir
@@ -77,5 +77,13 @@ public List<Extension> search(String keyword);
    * @return number of extensions that have been loaded successfully
    */
   public int load();
+
+  /**
+   * List all available extensions matching a registered keyword
+   * 
+   * @param keyword to filter by, e.g. dwc:Taxon for all taxonomic extensions
+   * @return
+   */
+  public List<Extension> search(String keyword);
 
 }
