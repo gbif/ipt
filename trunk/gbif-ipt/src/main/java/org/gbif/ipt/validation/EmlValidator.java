@@ -318,13 +318,13 @@ public class EmlValidator extends BaseValidator {
 					if (exists(eml.getAssociatedParties().get(index).getEmail()) && !isValidEmail(eml.getAssociatedParties().get(index).getEmail())) {
 						action.addFieldError("eml.associatedParties[" + index + "].email", action.getText("validation.invalid", new String[] { action.getText("eml.associatedParties.email") }));
 					}
-					
+
 					/* phone is optional. But if it exists, should match the pattern */
 					if (exists(eml.getAssociatedParties().get(index).getPhone())) {
 						if (!isValidPhoneNumber(eml.getAssociatedParties().get(index).getPhone())) {
 							action.addFieldError("eml.associatedParties[" + index + "].phone", action.getText("validation.invalid", new String[] { action.getText("eml.associatedParties.phone") }));
 						}
-					}					
+					}
 				}
 			} else if (part == null || part.equalsIgnoreCase("geocoverage")) {
 				/*
@@ -362,30 +362,52 @@ public class EmlValidator extends BaseValidator {
 				/*
 				 * TAXCOVERAGE.FTL - XML Schema Documentation
 				 * <dataset>
-				 *    <coverage>                                                                                      - optional
-				 *       <taxonomicCoverage>                                                                          - mandatory - many
-				 *          <generalTaxonomicCoverage>{eml.taxonomicCoverages.description}</generalTaxonomicCoverage> - optional
-				 *          <taxonomicClassification>                                                                 - mandatory - many
-				 *             <taxonRankName>{eml.taxonomicCoverages.taxonKeywords.scientificName}</taxonRankName>   - optional
-				 *             <taxonRankValue>{eml.taxonomicCoverages.taxonKeywords.rank}</taxonRankValue>           - mandatory
-				 *             <commonName>{eml.taxonomicCoverages.taxonKeywords.commonName}</commonName>             - optional
+				 *    <coverage>                                                                                          - optional
+				 *       <taxonomicCoverage>                                                                              - mandatory - many
+				 *          <generalTaxonomicCoverage>{eml.taxonomicCoverages[i].description}</generalTaxonomicCoverage>  - optional
+				 *          <taxonomicClassification>                                                                     - mandatory - many
+				 *             <taxonRankName>{eml.taxonomicCoverages[i].taxonKeywords[j].scientificName}</taxonRankName> - optional
+				 *             <taxonRankValue>{eml.taxonomicCoverages[i].taxonKeywords[j].rank}</taxonRankValue>         - mandatory
+				 *             <commonName>{eml.taxonomicCoverages[i].taxonKeywords[j].commonName}</commonName>           - optional
 				 *          </taxonomicClassification>
 				 *       </taxonomicCoverage>
 				 *    </coverage>
 				 * </dataset>
-				 */				
-				int cont = 0;
+				 */
+				int index = 0;
 				for (TaxonomicCoverage tc : eml.getTaxonomicCoverages()) {
 					int kw = 0;
 					for (TaxonKeyword k : tc.getTaxonKeywords()) {
 						if (!exists(k.getScientificName())) {
-							action.addFieldError("eml.taxonomicCoverages[" + cont + "].taxonKeywords[" + kw + "].scientificName", action.getText("validation.required"));
+							action.addFieldError("eml.taxonomicCoverages[" + index + "].taxonKeywords[" + kw + "].scientificName", action.getText("validation.required"));
 						}
 						kw++;
 					}
-					cont++;
+					index++;
 				}
 			} else if (part == null || part.equalsIgnoreCase("tempcoverage")) {
+				/* 
+				 * TEMPCOVERAGE.FTL - XML Schema Documentation
+				 * <dataset>
+				 *    <coverage>                                                                                               - optional 
+				 *       <temporalCoverage>                                                                                    - mandatory - many 
+				 *          <rangeOfDates>                                                                                     - mandatory        |
+				 *             <beginDate><calendarDate>{eml.temporalCoverages[i].startDate}</calendarDate></beginDate>        - mandatory        |
+				 *             <endDate><calendarDate>{eml.temporalCoverages[i].endDate}</calendarDate></endDate>              - mandatory        | - mandatory (but only should appear one of them)
+				 *          </rangeOfDates>                                                                                                       |         "rangeOfDates or singleDateTime"
+				 *          <singleDateTime><calendarDate>{eml.temporalCoverages[i].startDate}</calendarDate></singleDateTime> - mandatory        |
+				 *       </temporalCoverage>
+				 *    </coverage>    
+				 * </dataset>
+				 * <additionalMetadata>                                                                                        - optional
+				 *    <metadata>                                                                                               - mandatory
+				 *       <gbif>                                                                                                - mandatory
+				 *          <formationPeriod>{eml.temporalCoverages[i].formationPeriod}</formationPeriod>                      - optional  //TODO should be fixed
+				 *          <livingTimePeriod>{eml.temporalCoverages[i].livingTimePeriod}</livingTimePeriod>                   - optional - many
+				 *       </gbif>
+				 *    </metadata>
+				 * </additionalMetadata> 
+				 */
 				int index = 0;
 				for (TemporalCoverage tc : eml.getTemporalCoverages()) {
 
@@ -415,6 +437,12 @@ public class EmlValidator extends BaseValidator {
 					index++;
 				}
 			} else if (part == null || part.equalsIgnoreCase("project")) {
+				/* 
+				 * PROJECT.FTL - XML Schema Documentation
+				 * <dataset>
+				 * 
+				 * </dataset>
+				 */
 				if (!exists(eml.getProject().getPersonnel().getFirstName())) {
 					action.addFieldError("eml.project.personnel.firstName", action.getText("validation.required"));
 				}
