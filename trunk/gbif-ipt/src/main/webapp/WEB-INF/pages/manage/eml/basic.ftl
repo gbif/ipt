@@ -119,7 +119,11 @@
 	</div>		
 	<div class="half">
 		<@input name="eml.metadataProvider.address.postalCode" />
+		<@input name="eml.metadataProvider.phone" />
+	</div>
+	<div class="half">
 		<@input name="eml.metadataProvider.email" />
+		<@input name="eml.metadataProvider.homepage" />
 	</div>
 	
 	<div class="buttons">
