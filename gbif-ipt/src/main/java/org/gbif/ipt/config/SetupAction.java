@@ -174,8 +174,13 @@ public class SetupAction extends BaseAction implements ServletContextAware {
         userManager.create(user);
         user.setLastLoginToNow();
         userManager.save();
+        
+        // when in dev mode, production is disabled in the form
+        if (production==null) {
+        	production=false;
+        }
+        
         // set IPT type: registry URL
-        System.out.println("DEV MODE: " + cfg.devMode());
         if (production && !cfg.devMode()) {
           cfg.setRegistryType(REGISTRY_TYPE.PRODUCTION);
         } else {
