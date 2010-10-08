@@ -327,6 +327,37 @@ public class EmlValidator extends BaseValidator {
 					}					
 				}
 			} else if (part == null || part.equalsIgnoreCase("geocoverage")) {
+				/*
+				 * GEOCOVERAGE.FTL - XML Schema Documentation
+				 * <dataset>
+      			 *	<coverage>
+        		 *	 <geographicCoverage>																					- mandatory - many
+        		 *		<geographicDescription>{geocoverage.description}</geographicDescription> 							- optional
+          		 *		<boundingCoordinates>																				- mandatory
+          		 * 		 <westBoundingCoordinate>{geocoverage.boundingCoordinates.min.longitude}</westBoundingCoordinate>	- mandatory
+          		 * 		 <eastBoundingCoordinate>{geocoverage.boundingCoordinates.max.longitude}</eastBoundingCoordinate>	- mandatory
+          		 * 		 <northBoundingCoordinate>{geocoverage.boundingCoordinates.max.latitude}</northBoundingCoordinate>	- mandatory
+          		 * 		 <southBoundingCoordinate>{geocoverage.boundingCoordinates.min.latitude}</southBoundingCoordinate>  - mandatory
+          		 *		</boundingCoordinates>
+        		 *	 </geographicCoverage>
+        		 *	</coverage>
+				 * </dataset>
+				 * */
+				for (int index = 0; index < eml.getGeospatialCoverages().size(); index++) {
+					if (Double.isNaN(eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMin().getLongitude())) {
+						action.addFieldError("eml.geospatialcoverages[" + index + "].boundingCoordinates.min.longitude", action.getText("validation.invalid"));
+					}
+					if (Double.isNaN(eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLongitude())) {
+						action.addFieldError("eml.geospatialcoverages[" + index + "].boundingCoordinates.max.longitude", action.getText("validation.invalid"));
+					}
+					if (Double.isNaN(eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLatitude())) {
+						action.addFieldError("eml.geospatialcoverages[" + index + "].boundingCoordinates.max.latitude", action.getText("validation.invalid"));
+					}
+					if (Double.isNaN(eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMin().getLatitude())) {
+						action.addFieldError("eml.geospatialcoverages[" + index + "].boundingCoordinates.min.latitude", action.getText("validation.invalid"));
+					}
+				}
+				
 			} else if (part == null || part.equalsIgnoreCase("taxcoverage")) {
 				/*
 				 * TAXCOVERAGE.FTL - XML Schema Documentation
