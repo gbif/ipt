@@ -34,9 +34,6 @@ public class OrganisationSupport {
     if (organisation.getPassword() == null || organisation.getPassword().length() < 1) {
       action.addFieldError("organisation.password", action.getText("validation.organisation.password.required"));
     }
-    if (organisation.getAlias() == null || organisation.getAlias().length() < 1) {
-      action.addFieldError("organisation.alias", action.getText("validation.organisation.alias.required"));
-    }
     // validate if the key+password combination validates to true
     if (organisation.getKey() != null && organisation.getPassword() != null) {
       if (organisation.getKey().toString().length() > 0 && organisation.getPassword().length() > 0) {
