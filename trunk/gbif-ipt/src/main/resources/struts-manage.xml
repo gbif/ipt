@@ -49,9 +49,11 @@
 
 		<action name="resource" class="org.gbif.ipt.action.manage.OverviewAction">
 			<result>/WEB-INF/pages/manage/overview.ftl</result>
+			<result name="input">/WEB-INF/pages/manage/overview.ftl</result>
 		</action>
 		<action name="publish" class="org.gbif.ipt.action.manage.OverviewAction" method="publish">
-			<result>/WEB-INF/pages/manage/locked.ftl</result>
+			<result name="publishing">/WEB-INF/pages/manage/locked.ftl</result>
+			<result>/WEB-INF/pages/manage/overview.ftl</result>
 			<result name="error">/WEB-INF/pages/manage/overview.ftl</result>
 		</action>
 		<action name="cancel" class="org.gbif.ipt.action.manage.OverviewAction" method="cancel">
@@ -91,6 +93,10 @@
 			</interceptor-ref>
 			<interceptor-ref name="managerStack"/>
 			<result name="input">/WEB-INF/pages/manage/source.ftl</result>
+			<result name="error" type="redirectAction">
+				<param name="actionName">resource</param>
+				<param name="r">${resource.shortname}</param>
+			</result>
 		</action>
 		<action name="peek" class="org.gbif.ipt.action.manage.SourceAction" method="peek">
 			<interceptor-ref name="ajaxStack"/>

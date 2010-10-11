@@ -6,14 +6,18 @@ package org.gbif.ipt.service.admin.impl;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Registration;
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.DeletionNotAllowedException;
+import org.gbif.ipt.service.DeletionNotAllowedException.Reason;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.utils.FileUtils;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.xstream.XStream;
 
@@ -38,6 +42,8 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
   public static final String PERSISTENCE_FILE = "registration.xml";
   private Registration registration = new Registration();
   private final XStream xstream = new XStream();
+  @Inject
+  private ResourceManager resourceManager;
 
   public RegistrationManagerImpl() {
     super();
@@ -93,12 +99,18 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
    * @see org.gbif.ipt.service.admin.RegistrationManager#delete(java.lang.String)
    */
   public Organisation delete(String key) throws DeletionNotAllowedException {
-    if (key != null) {
-      Organisation remOrganisation = registration.getAssociatedOrganisations().remove(key);
-      // TODO: Check whether the organisation does not have any resources associated
-      return remOrganisation;
+    Organisation org = get(key);
+    if (org != null) {
+      // Check whether the organisation does not have any resources associated
+      for (Resource resource : resourceManager.list()) {
+        if (resource.getOrganisation() != null && resource.getOrganisation().equals(org)) {
+          throw new DeletionNotAllowedException(Reason.RESOURCE_REGISTERED_WITH_ORGANISATION, "Resource "
+              + resource.getShortname() + " associated with organisation");
+        }
+      }
+      registration.getAssociatedOrganisations().remove(key);
     }
-    return null;
+    return org;
   }
 
   /*

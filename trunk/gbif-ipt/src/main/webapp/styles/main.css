@@ -19,6 +19,9 @@ h1 {
 a {
 	color: #005418;
 }
+button{
+    text-decoration: none !important;
+}
 hr {
 	margin-top: 15px;
 	margin-bottom: 10px;
@@ -265,9 +268,6 @@ ul.fielderror{
 .buttons input{
 	display: inline !important;
 }
-a button{
-    text-decoration: none !important;
-}
 .horizontal_dotted_line_large_foo {
 	border-bottom-color:#666666;
 	border-bottom-style:dotted;
@@ -494,7 +494,7 @@ div.definition div.actions {
 	margin: 10px 0 0 0;
 }
 div.definition div.actions form{ 
-	margin: 0px;
+	margin: 0;
 }
 div.definition div.body{ 
 	width: 78%;
@@ -508,7 +508,6 @@ div.definition div.body > div{
     padding-bottom: 10px;
 }
 
-// div.definition only ???
 div.details{
     padding-bottom: 0px;
 }

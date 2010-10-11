@@ -327,12 +327,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     xstream.registerConverter(jdbcInfoConverter);
   }
 
-  public void delete(Resource resource) throws IOException {
+  public void delete(Resource resource) throws IOException, RegistryException {
     // deregister resource?
     if (resource.getKey() != null) {
-      if (!registryManager.deregister(resource)) {
-        throw new IOException("Unable to deregister resource");
-      }
+      registryManager.deregister(resource);
     }
     // remove from data dir
     FileUtils.forceDelete(dataDir.resourceFile(resource, ""));
@@ -383,14 +381,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       log.error(e);
     }
     return url;
-  }
-
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.manage.ResourceManager#getResources()
-   */
-  public Map<String, Resource> getResources() {
-    return resources;
   }
 
   private ExtensionMapping importMappings(ActionLogger alog, ArchiveFile af, Source source) {
@@ -602,41 +592,38 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   public boolean publish(Resource resource, BaseAction action) throws PublicationException {
     ActionLogger alog = new ActionLogger(this.log, action);
-    boolean newEmlVersion = false;
     // check if publishing task is already running
     if (isLocked(resource.getShortname())) {
       throw new PublicationException(PublicationException.TYPE.LOCKED, "Resource " + resource.getShortname()
           + " is currently locked by another process");
     }
-    // see if eml has changed since last publication
-    Eml eml = resource.getEml();
-    int newHash = getEmlHash(resource, eml);
-    if (newHash != resource.getLastPublishedEmlHash()) {
-      int version = resource.getEmlVersion();
-      version++;
-      resource.setEmlVersion(version);
-      saveEml(resource);
-      newEmlVersion = true;
-      // copy stable version of the eml file
-      File trunkFile = dataDir.resourceEmlFile(resource.getShortname(), null);
-      File versionedFile = dataDir.resourceEmlFile(resource.getShortname(), version);
-      try {
-        FileUtils.copyFile(trunkFile, versionedFile);
-      } catch (IOException e) {
-        alog.error("Cant publish resource " + resource.getShortname(), e);
-        throw new PublicationException(PublicationException.TYPE.EML, "Cant publish eml file for resource "
-            + resource.getShortname(), e);
-      }
-      resource.setLastPublishedEmlHash(newHash);
+    // increase eml version
+    int version = resource.getEmlVersion();
+    version++;
+    resource.setEmlVersion(version);
+    saveEml(resource);
+    // copy stable version of the eml file
+    File trunkFile = dataDir.resourceEmlFile(resource.getShortname(), null);
+    File versionedFile = dataDir.resourceEmlFile(resource.getShortname(), version);
+    try {
+      FileUtils.copyFile(trunkFile, versionedFile);
+    } catch (IOException e) {
+      alog.error("Cant publish resource " + resource.getShortname(), e);
+      throw new PublicationException(PublicationException.TYPE.EML, "Cant publish eml file for resource "
+          + resource.getShortname(), e);
     }
 
     // regenerate dwca asynchroneously
-    generateDwca(resource, alog);
+    boolean dwca = false;
+    if (resource.hasMappedData()) {
+      generateDwca(resource, alog);
+      dwca = true;
+    }
 
     // persist any resource object changes
     resource.setLastPublished(new Date());
     save(resource);
-    return newEmlVersion;
+    return dwca;
   }
 
   private Eml readMetadata(Archive archive, ActionLogger alog) {
