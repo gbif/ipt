@@ -64,8 +64,7 @@ $(document).ready(function(){
 		<@s.hidden id="organisation.primaryContactEmail" name="organisation.primaryContactEmail" required="false" />
 		<@s.hidden id="organisation.nodeKey" name="organisation.nodeKey" required="false" />
 		<@s.hidden id="organisation.nodeName" name="organisation.nodeName" required="false" />
-		
-		<@selectList name="organisation.key" options="organisations" objValue="key" objTitle="name" i18nkey="admin.organisation.key" size=15 />
+		<@s.select id="organisation.key" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" size="15" disabled="false"/>		
 	</#if>		  
 	<@input name="organisation.password" i18nkey="admin.organisation.password" type="text"/>
 	<div id="requestDetails"></div>
