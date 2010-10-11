@@ -11,7 +11,7 @@ import java.util.Date;
 
 public class User implements Serializable, Cloneable {
   public enum Role {
-    User, Manager, Admin
+    User, Manager, Publisher, Admin
   }
 
   private static final long serialVersionUID = 3832626162173359411L;;
@@ -93,6 +93,13 @@ public class User implements Serializable, Cloneable {
    */
   public boolean hasManagerRights() {
     return !(Role.User == this.role);
+  }
+
+  /**
+   * @return true if a user has rights to register resources with gbif
+   */
+  public boolean hasRegistrationRights() {
+    return Role.Publisher == this.role || Role.Admin == this.role;
   }
 
   public void setEmail(String email) {
