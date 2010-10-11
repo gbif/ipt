@@ -8,10 +8,44 @@ $(document).ready(function(){
 		var orgName = $('#organisation\\.key :selected').text();
 		$('#organisation\\.name').val(orgName);
 		$('#ipt\\.organisationKey').val($('#organisation\\.key :selected').val());
+		
+		var emailContent = '<@s.text name="emails.request.ipt.registration1"/>';
+		emailContent += '<@s.text name="emails.request.ipt.registration2"/>';
+		emailContent += '<@s.text name="emails.request.ipt.registration3"/>';
+		emailContent += '<@s.text name="emails.request.ipt.registration4"/>';
+		emailContent += '<@s.text name="emails.request.ipt.registration5"><@s.param>'
+		emailContent += $("#organisation\\.key :selected").val();
+		emailContent += '</@s.param></@s.text>';
+		emailContent += '<@s.text name="emails.request.ipt.registration6"/>';
 	
-			
+			$('#organisation\\.name').val(orgName);	
+			$('#organisation\\.alias').val(orgName);	
+			var url = "<@s.url value='${registryURL}organisation/'/>" + $('#organisation\\.key :selected').val() + ".json";
+			$.getJSON(url+"?callback=?",function(data){
+				
+				$('#organisation\\.primaryContactType').val(data.primaryContactType);
+				$('#organisation\\.primaryContactName').val(data.primaryContactName);
+				$('#organisation\\.primaryContactEmail').val(data.primaryContactEmail);
+				$('#organisation\\.nodeKey').val(data.nodeKey);
+				$('#organisation\\.nodeName').val(data.nodeName);
+				
+				//Create a contact link to prefill an email to request a password from an Organisation
+				var contactLink = '<a href=\"mailto:';
+				contactLink += data.primaryContactEmail;
+				contactLink += '?subject=';
+				contactLink += '<@s.text name="emails.request.ipt.registration.subject"><@s.param>';
+				contactLink += orgName;
+				contactLink += '</@s.param></@s.text>';
+				contactLink += '&body=';
+				contactLink += emailContent;
+				contactLink += '\">'; 
+				contactLink += '<@s.text name="emails.request.ipt.registration.footer"/>';
+				contactLink += '</a> ';
+				contactLink += orgName;
+				$('#requestDetails').html(contactLink);
+	        });				
 	});
-			
+	
 	<#if !validatedBaseURL>
 		$('#registrationForm').hide();
 	</#if>
@@ -72,6 +106,7 @@ $(document).ready(function(){
 		<@s.form cssClass="topForm half" action="registration" method="post" id="registrationForm" >
 			<@s.select id="organisation.key" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" size="15" disabled="false"/>
 			<@input name="organisation.password" i18nkey="admin.organisation.password" type="text" help="i18n"/>
+			<div id="requestDetails"></div>
 			<@input name="organisation.alias" i18nkey="admin.organisation.alias" type="text" />
 			<@checkbox name="organisation.canHost" i18nkey="admin.organisation.canHost" value="true" help="i18n"/>	
 			

@@ -7,19 +7,19 @@ $(document).ready(function(){
 	$('#organisation\\.key').change(function() {
 		var orgName = $('#organisation\\.key :selected').text();
 	
-	var emailContent = "Dear sir/madam,%0d%0d" 
-		+ "I am trying to install an Integrated Publishing Toolkit (IPT) which is going to be hosted under your institution/organisation.%0d"
-		+ "To continue with the installation, I will need to kindly ask you to provide me with your organisation's password as this is "
-		+ "needed to complete the process%0d" 
-		+ "In case you don't know this information, you can open this link into your browser to receive this information%0d%0d"
-		+ "http://gbrds.gbif.org/registry/organisation/" + $('#organisation\\.key :selected').val() + "?op=password%0d%0d"  
-		+ "Thank you for your attention.";
-		
-		
+	var emailContent = '<@s.text name="emails.request.organisation.association1"/>';
+	emailContent += '<@s.text name="emails.request.organisation.association2"/>';
+	emailContent += '<@s.text name="emails.request.organisation.association3"/>';
+	emailContent += '<@s.text name="emails.request.organisation.association4"/>';
+	emailContent += '<@s.text name="emails.request.organisation.association5"/>';
+	emailContent += '<@s.text name="emails.request.organisation.association6"><@s.param>'
+	emailContent += $("#organisation\\.key :selected").val();
+	emailContent += '</@s.param></@s.text>';
+	emailContent += '<@s.text name="emails.request.organisation.association7"/>';
+
 		$('#organisation\\.name').val(orgName);	
 		$('#organisation\\.alias').val(orgName);	
-		//TODO: Internationalise if possible the email's subject
-		var url = "<@s.url value='${registryURL}registry/organisation/'/>" + $('#organisation\\.key :selected').val() + ".json";
+		var url = "<@s.url value='${registryURL}organisation/'/>" + $('#organisation\\.key :selected').val() + ".json";
 		$.getJSON(url+"?callback=?",function(data){
 			
 			$('#organisation\\.primaryContactType').val(data.primaryContactType);
@@ -28,10 +28,19 @@ $(document).ready(function(){
 			$('#organisation\\.nodeKey').val(data.nodeKey);
 			$('#organisation\\.nodeName').val(data.nodeName);
 			
-			var contactLink = "<a href=\"mailto:" + data.primaryContactEmail 
-					+ "?subject=Password request for " + orgName
-					+ "&body=" + emailContent  + "\"> "  
-					+ "Click here</a> to contact " + orgName;
+			//Create a contact link to prefill an email to request a password from an Organisation
+			var contactLink = '<a href=\"mailto:';
+			contactLink += data.primaryContactEmail;
+			contactLink += '?subject=';
+			contactLink += '<@s.text name="emails.request.organisation.association.subject"><@s.param>';
+			contactLink += orgName;
+			contactLink += '</@s.param></@s.text>';
+			contactLink += '&body=';
+			contactLink += emailContent;
+			contactLink += '\">'; 
+			contactLink += '<@s.text name="emails.request.organisation.association.footer"/>';
+			contactLink += '</a> ';
+			contactLink += orgName;
 			$('#requestDetails').html(contactLink);
         	});				
 	});
