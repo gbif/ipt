@@ -113,11 +113,6 @@ Checklists are confined to +/- the taxonomic subset of all Darwin Core terms.
 
 GBIF ECAT provides [http://code.google.com/p/gbif-ecat/wiki/publishingChecklists recommendations on how to publish species checklists].
 
-=== Example ===
-[http://spreadsheets.google.com/pub?key=tnoVriNunOOMzYp709vtauQ&output=html  Euro+Med dataset sample]
-
-more examples can be found on the [http://code.google.com/p/gbif-ecat/wiki/publishingClassifications ECAT site]
-
 
 = The Darwin Core Archive =
 Darwin Core archives (DwC-A) are the new, primary means of publishing data to the GBIF network.
