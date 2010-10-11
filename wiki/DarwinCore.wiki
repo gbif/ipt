@@ -138,23 +138,3 @@ The format follows the [http://rs.tdwg.org/dwc/terms/guides/text/index.htm Darwi
 A typical package is illustrated in the diagram below and consists of components described in [http://code.google.com/p/gbif-ecat/wiki/DwCArchive details here].
 
 http://gbif-ecat.googlecode.com/files/dwca.png
-
-== Checklist Extensions ==
-GBIF and the Global Names Architecture (GNA) are authoring several [http://spreadsheets.google.com/pub?key=r4I1G8E7mDIgY_kt9Rxyc8A GNA extensions for Darwin Core] to share species data. 
-Theses are still drafts, but very stable already and expected to be released shortly after Darwin Core has been ratified.
-
-
-
-= Best Practices =
- 
- # prefer to use standard CSV (i.e. delimiter = , quotation = ") or TAB files instead of custom delimiters and quotes
- # always encode text as UTF-8
- # make sure you have replaced line breaks, i.e. \r \n or \r\n with either simple spaces or use 2 characters "\r" to escape the line break if the intention is to preserve them
- # encode NULLs as empty fields, i.e. no characters between 2 delimiters, not \N or \NULL
- # DwC-A requires a identifier column. In case only a single core file is needed, this column may contain NULLs, i.e. empty fields. It is still required to designate a column for identifiers. This is to be avoided as much as possible and it is highly recommended to supply records with IDs.
- # dwc:higherTaxon(ID), dwc:acceptedTaxon(ID) or dwc:basionym(ID) must point to existing records in the dataset. Specifically it is invalid to point to higher taxa which dont exist as records. For this the denormalised higher darwin core ranks like dwc:kingdom should be used.
- # always include dwc:kingdom. If its the same throughout the dataset consider using a static mapping in the meta descriptor, see below
- # if you can, include dwc:phylum and dwc:family
- # test your archive with the [http://code.google.com/p/gbif-indexingtoolkit/wiki/DarwinCoreArchiveReader dwc-a reader]
- # the primary key in the core taxon file, mapped to the Darwin Core taxonID term, is preferred to be a globally unique identifier (GUID) rather than a typical integer id that is not unique outside the source database.
- 
