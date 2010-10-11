@@ -1,0 +1,4 @@
+#The environments configurations that IPT is known to work with
+
+|| *Operating system* || *Java version* || *Tomcat version* ||
+|| Mac OSX 10.5.8 || Java 1.6.0_30 || Tomcat 5.5_30 ||
