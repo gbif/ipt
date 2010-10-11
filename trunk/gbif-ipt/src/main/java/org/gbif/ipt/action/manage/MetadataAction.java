@@ -49,6 +49,7 @@ public class MetadataAction extends ManagerBaseAction {
   private Map<String, String> resourceTypes;
   private Map<String, String> languages;
   private Map<String, String> countries;
+  private Map<String, String> ranks;
 
   private static final List<String> sections = Arrays.asList("basic", "geocoverage", "taxcoverage", "tempcoverage",
       "keywords", "parties", "project", "methods", "citations", "collections", "physical", "additional");
@@ -91,6 +92,7 @@ public class MetadataAction extends ManagerBaseAction {
       map.put(r.name(), getText("rank." + r.name().toLowerCase()));
     }
     return map;
+	  //return ranks;
   }
 
   @Override
@@ -132,7 +134,8 @@ public class MetadataAction extends ManagerBaseAction {
     resourceTypes = vocabManager.getI18nVocab(Constants.VOCAB_URI_RESOURCE_TYPE, getLocaleLanguage(), true);
     languages = vocabManager.getI18nVocab(Constants.VOCAB_URI_LANGUAGE, getLocaleLanguage(), true);
     countries = vocabManager.getI18nVocab(Constants.VOCAB_URI_COUNTRY, getLocaleLanguage(), true);
-
+    ranks = vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, getLocaleLanguage(), true);
+    
     if (resource.getEml().getMetadataProvider().getLastName() == null
         || resource.getEml().getMetadataProvider().getEmail() == null) {
       Agent current = new Agent();
@@ -164,6 +167,9 @@ public class MetadataAction extends ManagerBaseAction {
       }
       if (section.equals("keywords")) {
         resource.getEml().getKeywords().clear();
+      }
+      if (section.equals("collections")) {
+        resource.getEml().getJgtiCuratorialUnits().clear();
       }
 
     }

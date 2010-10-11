@@ -43,6 +43,15 @@ public class EmlValidator extends BaseValidator {
 		}
 		return phonePattern.matcher(phone).matches();
 	}
+	
+	public static boolean isValidInteger(String integer) {
+		try {
+			Integer.parseInt(integer);
+			return true;
+		} catch(NumberFormatException e) {
+			return false;
+		}		
+	}
 
 	public boolean isValid(Eml eml, @Nullable String part) {
 		BaseAction action = new BaseAction(new SimpleTextProvider(), AppConfig.buildMock());
@@ -403,7 +412,7 @@ public class EmlValidator extends BaseValidator {
 				 * <additionalMetadata>                                                                                        - optional
 				 *    <metadata>                                                                                               - mandatory
 				 *       <gbif>                                                                                                - mandatory
-				 *          <formationPeriod>{eml.temporalCoverages[i].formationPeriod}</formationPeriod>                      - optional  //TODO should be fixed
+				 *          <formationPeriod>{eml.temporalCoverages[i].formationPeriod}</formationPeriod>                      - optional - many
 				 *          <livingTimePeriod>{eml.temporalCoverages[i].livingTimePeriod}</livingTimePeriod>                   - optional - many
 				 *       </gbif>
 				 *    </metadata>
@@ -459,7 +468,9 @@ public class EmlValidator extends BaseValidator {
 				 *          </descriptor>
 				 *       </studyAreaDescription>
 				 *       <designDescription>                                                                         - mandatory
-				 *          <description>{eml.project.designDescription}</description>                               - mandatory
+				 *          <description>                                                                            - mandatory                       
+				 *             <para>{eml.project.designDescription}</para>                                          - optional
+				 *          </description>                               
 				 *       </designDescription>
 				 *    </project>
 				 * </dataset>
@@ -490,26 +501,49 @@ public class EmlValidator extends BaseValidator {
 					}
 				}
 			} else if (part == null || part.equalsIgnoreCase("collections")) {
+				/* 
+				 * COLLECTIONS.FTL - XML Schema Documentation
+				 * <metadata>
+				 *    <gbif>
+				 *       <collection> - optional
+				 *          <parentCollectionIdentifier>{xxx}</parentCollectionIdentifier> - mandatory
+				 *          <collectionIdentifier>{xxx}</collectionIdentifier> - mandatory
+				 *          <collectionName>{xxx}</collectionName> - mandatory
+				 *       </collection>
+				 *       <jgtiCuratorialUnit> - optional - many
+				 *          <jgtiUnitType>{xxx}</jgtiUnitType> - optional
+				 *          <jgtiUnits uncertaintyMeasure="{xxx}">{xxx}</jgtiUnits> - mandatory (xs:integer) |
+				 *          <jgtiUnitRange> - mandatory                                                      |
+				 *             <beginRange>{xxx}</beginRange> - mandatory (xs:integer)                       | 
+				 *             <endRange>{xxx}</endRange> - mandatory (xs:integer)                           |
+				 *          </jgtiUnitRange>                                                                 |
+				 *       </jgtiCuratorialUnit>
+				 *    </gbif>
+				 * </metadata>
+				 */		
+				
 				int index = 0;
 				for (JGTICuratorialUnit jcu : eml.getJgtiCuratorialUnits()) {
 					if (jcu.getType().equals(JGTICuratorialUnitType.COUNT_RANGE)) {
 						if (!exists(jcu.getRangeStart())) {
-							action.addFieldError("eml.jgtiCuratorialUnits[" + index + "].rangeStart", action.getText("validation.required"));
-						}
-						if (!exists(jcu.getRangeEnd().toString())) {
-							action.addFieldError("eml.jgtiCuratorialUnits[" + index + "].rangeEnd", action.getText("validation.required"));
+							action.addFieldError("eml.jgtiCuratorialUnits[" + index + "].rangeStart", action.getText("validation.required", new String[]{action.getText("validation.field.required")}));
+						} /*else if(isValidInteger(jcu.getRangeStart())){
+							
+						}*/
+						if (!exists(jcu.getRangeEnd())) {
+							action.addFieldError("eml.jgtiCuratorialUnits[" + index + "].rangeEnd", action.getText("validation.required", new String[]{action.getText("validation.field.required")}));
 						}
 					}
 					if (jcu.getType().equals(JGTICuratorialUnitType.COUNT_WITH_UNCERTAINTY)) {
 						if (!exists(jcu.getRangeMean())) {
-							action.addFieldError("eml.jgtiCuratorialUnits[" + index + "].rangeMean", action.getText("validation.required"));
+							action.addFieldError("eml.jgtiCuratorialUnits[" + index + "].rangeMean", action.getText("validation.required", new String[]{action.getText("validation.field.required")}));
 						}
 						if (!exists(jcu.getUncertaintyMeasure())) {
-							action.addFieldError("eml.jgtiCuratorialUnits[" + index + "].uncertaintyMeasure", action.getText("validation.required"));
+							action.addFieldError("eml.jgtiCuratorialUnits[" + index + "].uncertaintyMeasure", action.getText("validation.required", new String[]{action.getText("validation.field.required")}));
 						}
 					}
 					if (!exists(jcu.getUnitType())) {
-						action.addFieldError("eml.jgtiCuratorialUnits[" + index + "].unitType", action.getText("validation.required"));
+						action.addFieldError("eml.jgtiCuratorialUnits[" + index + "].unitType", action.getText("validation.required", new String[]{action.getText("eml.jgtiCuratorialUnits.unitType")}));
 					}
 					index++;
 				}
