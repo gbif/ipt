@@ -24,7 +24,7 @@ $(document).ready(function(){
 	<@input name="user.firstname" />  
 	<@input name="user.lastname" />  
 	<@input name="user.password" />
-	<@select name="user.role" value=user.role options={"User":"user.roles.user", "Manager":"user.roles.manager", "Admin":"user.roles.admin"}/>
+	<@select name="user.role" value=user.role options={"User":"user.roles.user", "Manager":"user.roles.manager", "Publisher":"user.roles.publisher", "Admin":"user.roles.admin"}/>
 	  	
   <div class="buttons">
  	<@s.submit name="save" key="button.save"/>

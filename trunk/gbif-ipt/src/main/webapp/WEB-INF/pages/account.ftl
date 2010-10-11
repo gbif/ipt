@@ -15,8 +15,10 @@
 	<@input name="user.email" disabled=true />  
 	<@input name="user.firstname" />  
 	<@input name="user.lastname" />  
-	<@input name="user.password" />  
-	  	
+	<@input name="user.password" />
+	<#assign val><@s.text name="user.roles.${user.role?lower_case}"/></#assign>
+	<@readonly i18nkey="user.role" value=val />  
+	
   <div class="buttons">
  	<@s.submit cssClass="button" name="save" key="button.save"/>
   </div>	

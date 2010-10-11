@@ -168,18 +168,18 @@ By default a resource is private to the managers. Once published to GBIF you can
 	  <form action='resource-visibility.do' method='post'>
 	    <input name="r" type="hidden" value="${resource.shortname}" />
 	    <#if resource.status=="PUBLIC">
-	    	<#if (organisations?size>0)>
+	    	<#if currentUser.hasRegistrationRights() && (organisations?size>0)>
 		    <select name="id" id="org" size="1">
 		    <#list organisations as o>
 		      <option value="${o.key}">${o.alias!o.name}</option>
 		    </#list>
 			</select>
 	       	<@s.submit cssClass="confirm" name="publish" key="button.register" disabled="${missingRegistrationMetadata?string}"/>
-	       	<@s.submit cssClass="confirm" name="unpublish" key="button.private" />
 	       	<#if missingRegistrationMetadata>
 	       		<div class="warn">The <a href="${baseURL}/manage/metadata-basic.do?r=${resource.shortname}">resource's basic metadata</a> should be saved and the EML & Archive files need to be generated prior to registering to the GBIF Network</div>
 	       	</#if>
 	       	</#if>
+	       	<@s.submit cssClass="confirm" name="unpublish" key="button.private" />
 		<#else>
 		    <#if resource.status=="PRIVATE">
 	       	<@s.submit name="publish" key="button.public"/>
@@ -193,18 +193,28 @@ By default a resource is private to the managers. Once published to GBIF you can
   </div>
   <div class="body">
       	<div>
-			<@s.text name="manage.resource.status.intro.${resource.status?lower_case}"/>
-		    <#if resource.status=="PUBLIC" && missingRegistrationMetadata>
-		    <div>
-	          	<img class="info" src="${baseURL}/images/info.gif" /> 
-				<em>In order to register this resource with GBIF you must provide more metadata (ask Jose what is required)!</em>
-      		</div>
-		    </#if>
-		    <#if resource.status=="PUBLIC" && (organisations?size==0)>
-		    <div>
-	          	<img class="info" src="${baseURL}/images/info.gif" /> 
-				<em>In order to register this resource with GBIF your IPT admin must first associate organisations with this IPT!</em>
-      		</div>
+			<@s.text name="manage.resource.status.intro.${resource.status?lower_case}"/> 
+		    <#if resource.status=="PUBLIC">
+			  <#if currentUser.hasRegistrationRights()>
+				<@s.text name="manage.resource.status.registration.intro"/>
+			  <#else>
+			    <div>
+		          	<img class="info" src="${baseURL}/images/info.gif" /> 
+					<em><@s.text name="manage.resource.status.registration.forbidden"/></em>
+	      		</div>
+			  </#if>
+		      <#if missingRegistrationMetadata>
+			    <div>
+		          	<img class="info" src="${baseURL}/images/info.gif" /> 
+					<em>In order to register this resource with GBIF you must provide more metadata (ask Jose what is required)!</em>
+	      		</div>
+		      </#if>
+		      <#if organisations?size==0>
+			    <div>
+		          	<img class="info" src="${baseURL}/images/info.gif" /> 
+					<em>In order to register this resource with GBIF your IPT admin must first associate organisations with this IPT!</em>
+	      		</div>
+			  </#if>
 		    </#if>
       	</div>
       	<div class="details">

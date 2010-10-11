@@ -265,16 +265,21 @@ public class OverviewAction extends ManagerBaseAction {
           log.error("Cant unpublish resource " + resource, e);
         }
       } else {
-        Organisation org = null;
-        try {
-          org = registrationManager.get(id);
-          resourceManager.register(resource, org, registrationManager.getIpt());
-          if (org != null) {
-            addActionMessage("Registered resource with " + org.getName() + " in GBIF");
+        // plain managers are not allowed to register a resource
+        if (!getCurrentUser().hasRegistrationRights()) {
+          addActionError(getText("manage.resource.status.registration.forbidden"));
+        } else {
+          Organisation org = null;
+          try {
+            org = registrationManager.get(id);
+            resourceManager.register(resource, org, registrationManager.getIpt());
+            if (org != null) {
+              addActionMessage("Registered resource with " + org.getName() + " in GBIF");
+            }
+          } catch (RegistryException e) {
+            log.error("Cant register resource " + resource + " with organisation " + org, e);
+            addActionError("Registration of resource failed!");
           }
-        } catch (RegistryException e) {
-          log.error("Cant register resource " + resource + " with organisation " + org, e);
-          addActionError("Registration of resource failed!");
         }
       }
     } else if (PublicationStatus.REGISTERED == resource.getStatus()) {

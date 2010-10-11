@@ -19,7 +19,7 @@
 	<tr>
 		<td><a href="user?id=${u.email}">${u.name}</a></td>
 		<td>${u.email}</td>
-		<td>${u.role}</td>
+		<td><@s.text name="user.roles.${u.role?lower_case}"/></td>
 		<td>${(u.lastLogin?datetime?string.short)!"never"}</td>
 	</tr>
 	</#list>
