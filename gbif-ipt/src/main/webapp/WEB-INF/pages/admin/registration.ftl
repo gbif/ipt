@@ -9,21 +9,7 @@ $(document).ready(function(){
 		$('#organisation\\.name').val(orgName);
 		$('#ipt\\.organisationKey').val($('#organisation\\.key :selected').val());
 	
-		var url = "<@s.url value='${registryURL}registry/organisation/'/>" + $('#organisation\\.key :selected').val() + ".json";
-		$.getJSON(url+"?callback=?",function(data){
 			
-			$('#organisation\\.primaryContactType').val(data.primaryContactType);
-			$('#organisation\\.primaryContactName').val(data.primaryContactName);
-			$('#organisation\\.primaryContactEmail').val(data.primaryContactEmail);
-			$('#organisation\\.nodeKey').val(data.nodeKey);
-			$('#organisation\\.nodeName').val(data.nodeName);
-			
-			var contactLink = "<a href=\"mailto:" + data.primaryContactEmail 
-					+ "?subject=Password request for " + orgName
-					+ "&body=" + emailContent  + "\"> "  
-					+ "Click here</a> to contact " + orgName;
-			$('#requestDetails').html(contactLink);
-        	});			
 	});
 			
 	<#if !validatedBaseURL>
@@ -84,7 +70,7 @@ $(document).ready(function(){
 		<p><@s.text name="admin.registration.intro2"/></p>
 		
 		<@s.form cssClass="topForm half" action="registration" method="post" id="registrationForm" >
-			<@selectList name="organisation.key" options="organisations" objValue="key" objTitle="name" i18nkey="admin.organisation.key" value="" size=15/>  
+			<@s.select id="organisation.key" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" size="15" disabled="false"/>
 			<@input name="organisation.password" i18nkey="admin.organisation.password" type="text" help="i18n"/>
 			<@input name="organisation.alias" i18nkey="admin.organisation.alias" type="text" />
 			<@checkbox name="organisation.canHost" i18nkey="admin.organisation.canHost" value="true" help="i18n"/>	
