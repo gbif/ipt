@@ -34,7 +34,6 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -329,29 +328,11 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
         registeredVocabs.put(v.getUri(), v);
       }
     }
-    // TODO: remove this "hack" once the registry is listing all vocabs fine
-    try {
-      Vocabulary v = new Vocabulary();
-      v.setUri(Constants.VOCAB_URI_LANGUAGE);
-      v.setUrl(new URL("http://rs.gbif.org/vocabulary/iso/639-1.xml"));
-      registeredVocabs.put(Constants.VOCAB_URI_LANGUAGE, v);
-
-      v = new Vocabulary();
-      v.setUri(Constants.VOCAB_URI_COUNTRY);
-      v.setUrl(new URL("http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml"));
-      registeredVocabs.put(Constants.VOCAB_URI_COUNTRY, v);
-
-      v = new Vocabulary();
-      v.setUri(Constants.VOCAB_URI_RESOURCE_TYPE);
-      v.setUrl(new URL("http://rs.gbif.org/vocabulary/gbif/resource_type.xml"));
-      registeredVocabs.put(Constants.VOCAB_URI_RESOURCE_TYPE, v);
-
-      v = new Vocabulary();
-      v.setUri(Constants.VOCAB_URI_RANKS);
-      v.setUrl(new URL("http://rs.gbif.org/vocabulary/gbif/rank.xml"));
-      registeredVocabs.put(Constants.VOCAB_URI_RANKS, v);
-    } catch (MalformedURLException e) {
-      log.error(e);
+    // assure we have at least the basic vocabs in this list
+    for (String uri : defaultVocabs) {
+      if (!registeredVocabs.containsKey(uri)) {
+        log.error("Missing required default vocabulary in registry: " + uri);
+      }
     }
 
     return registeredVocabs;
