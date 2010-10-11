@@ -10,6 +10,7 @@ import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.PublicationException;
+import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.task.StatusReport;
 
@@ -19,7 +20,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This interface details ALL methods associated with the main resource entity.
@@ -41,7 +41,7 @@ public interface ResourceManager {
 
   public Resource create(String shortname, User creator) throws AlreadyExistingException;
 
-  public void delete(Resource resource) throws IOException;
+  public void delete(Resource resource) throws IOException, RegistryException;
 
   public Resource get(String shortname);
 
@@ -52,13 +52,6 @@ public interface ResourceManager {
    * @return
    */
   public URL getResourceLink(String shortname);
-
-  /**
-   * Returns the map of resources
-   * 
-   * @return map of resources
-   */
-  public Map<String, Resource> getResources();
 
   /**
    * @param shortname
@@ -111,7 +104,7 @@ public interface ResourceManager {
    * 
    * @param resource
    * @param action the action to use for logging messages to
-   * @return true if a new eml version has been published or false if the content hasnt changed
+   * @return true if a new asynchroneous dwca generation job has been issued which requires some mapped data
    * @throws PublicationException if resource was already registered
    */
   public boolean publish(Resource resource, BaseAction action) throws PublicationException;

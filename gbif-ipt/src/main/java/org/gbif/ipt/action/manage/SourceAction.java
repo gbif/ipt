@@ -17,6 +17,7 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.file.CompressionUtil;
+import org.gbif.file.CompressionUtil.UnsupportedCompressionType;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.config.JdbcSupport;
 import org.gbif.ipt.model.Source;
@@ -66,13 +67,22 @@ public class SourceAction extends ManagerBaseAction {
       // uploaded a new file. Is it compressed?
       if (StringUtils.endsWithIgnoreCase(fileContentType, "zip") // application/zip
           || StringUtils.endsWithIgnoreCase(fileContentType, "gzip")) { // application/x-gzip
-        File tmpDir = dataDir.tmpDir();
-        List<File> files = CompressionUtil.decompressFile(tmpDir, file);
-        addActionMessage(files.size() + " compressed files found, adding all.");
-        // import each file. The last file will become the id parameter,
-        // so the new page opens with that source
-        for (File f : files) {
-          addTextFile(f, f.getName());
+        try {
+          File tmpDir = dataDir.tmpDir();
+          List<File> files = CompressionUtil.decompressFile(tmpDir, file);
+          addActionMessage(files.size() + " compressed files found, adding all.");
+          // import each file. The last file will become the id parameter,
+          // so the new page opens with that source
+          for (File f : files) {
+            addTextFile(f, f.getName());
+          }
+        } catch (IOException e) {
+          log.error(e);
+          addActionError("Filesystem error: " + e.getMessage());
+          return ERROR;
+        } catch (UnsupportedCompressionType e) {
+          addActionError("Unsupported compression format. Please use zip, gzip or plain text files.");
+          return ERROR;
         }
       } else {
         // treat as is - hopefully a simple text data file

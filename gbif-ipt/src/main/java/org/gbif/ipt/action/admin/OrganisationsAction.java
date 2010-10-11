@@ -5,7 +5,6 @@ package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.model.Organisation;
-import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.admin.RegistrationManager;
@@ -21,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * The Action responsible for all user input relating to the organisations allowed in the IPT
@@ -52,7 +50,7 @@ public class OrganisationsAction extends POSTAction {
 
       List<Organisation> tempOrganisations = registryManager.getOrganisations();
       organisations.addAll(tempOrganisations);
-      //sort by name
+      // sort by name
       Collections.sort(organisations, new Comparator<Organisation>() {
         public int compare(Organisation org1, Organisation org2) {
           if (org1 == null || org1.getName() == null) {
@@ -87,8 +85,8 @@ public class OrganisationsAction extends POSTAction {
    * @param orgSession
    */
   @Inject
-  public OrganisationsAction(RegistrationManager registrationManager,
-      OrganisationSupport organisationValidation, RegisteredOrganisations orgSession, ResourceManager resourceManager) {
+  public OrganisationsAction(RegistrationManager registrationManager, OrganisationSupport organisationValidation,
+      RegisteredOrganisations orgSession, ResourceManager resourceManager) {
     this.registrationManager = registrationManager;
     this.organisationValidation = organisationValidation;
     this.orgSession = orgSession;
@@ -97,30 +95,17 @@ public class OrganisationsAction extends POSTAction {
 
   @Override
   public String delete() {
-    boolean canDelete = true;
-    if (resourceManager.getResources() != null) {
-      for (Resource resource : resourceManager.getResources().values()) {
-        if (resource.getOrganisation() != null
-            && resource.getOrganisation().getKey().compareTo(UUID.fromString(id)) == 0) {
-          canDelete = false;
-        }
-      }
-    }
     try {
-      if (canDelete) {
-        Organisation removedOrganisation = registrationManager.delete(id);
-        if (removedOrganisation == null) {
-          return NOT_FOUND;
-        }
-        registrationManager.save();
-        addActionMessage(getText("admin.organisation.deleted"));
-        return SUCCESS;
-      } else {
-        addActionError(getText("admin.organisation.cantdelete1"));
-        addActionError(getText("admin.organisation.cantdelete2"));
+      Organisation removedOrganisation = registrationManager.delete(id);
+      if (removedOrganisation == null) {
+        return NOT_FOUND;
       }
+      registrationManager.save();
+      addActionMessage(getText("admin.organisation.deleted"));
+      return SUCCESS;
     } catch (DeletionNotAllowedException e) {
       addActionError(getText("admin.organisation.deleted.notempty"));
+      addActionExceptionError(e);
     } catch (IOException e) {
       addActionError("cant save organisation file: " + e.getMessage());
     }
@@ -146,17 +131,17 @@ public class OrganisationsAction extends POSTAction {
    */
   public List<Organisation> getOrganisations() {
     List<Organisation> allOrganisations = orgSession.organisations;
-    //remove organisations already associated to the IPT
-    for(Organisation linkedOrganisation: getLinkedOrganisations()) {
-      if(allOrganisations.contains(linkedOrganisation)) {
-        allOrganisations.remove(linkedOrganisation); 
+    // remove organisations already associated to the IPT
+    for (Organisation linkedOrganisation : getLinkedOrganisations()) {
+      if (allOrganisations.contains(linkedOrganisation)) {
+        allOrganisations.remove(linkedOrganisation);
       }
     }
     return allOrganisations;
   }
 
   public String getRegistryURL() {
-    return cfg.getRegistryUrl();
+    return cfg.getRegistryUrl() + "/registry/";
   }
 
   /**

@@ -19,12 +19,15 @@ import org.gbif.ipt.validation.EmlValidator;
 
 import com.google.inject.Inject;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
 public class OverviewAction extends ManagerBaseAction {
   private static final int interval = 20000;
+  private static final String PUBLISHING = "publishing";
   @Inject
   private ResourceManager resourceManager;
   @Inject
@@ -41,6 +44,7 @@ public class OverviewAction extends ManagerBaseAction {
   private boolean missingRegistrationMetadata = false;
   private StatusReport report;
   private Date now;
+  private boolean unpublish = false;
 
   public String addmanager() throws Exception {
     if (resource == null) {
@@ -218,11 +222,11 @@ public class OverviewAction extends ManagerBaseAction {
     try {
       if (resourceManager.publish(resource, this)) {
         addActionMessage("Publishing resource version " + resource.getEmlVersion() + ".");
+        return PUBLISHING;
       } else {
-        addActionMessage("The metadata hasnt changed since the last publication of version " + resource.getEmlVersion()
-            + ".");
+        addActionMessage("Published resource version " + resource.getEmlVersion() + ".");
+        return SUCCESS;
       }
-      return SUCCESS;
     } catch (PublicationException e) {
       if (PublicationException.TYPE.LOCKED == e.getType()) {
         addActionError("Resource is being published already. Please be patient");
@@ -236,17 +240,8 @@ public class OverviewAction extends ManagerBaseAction {
     return ERROR;
   }
 
-  public String unpublish() throws Exception {
-    if (resource == null) {
-      return NOT_FOUND;
-    }
-    try {
-      resourceManager.visibilityToPrivate(resource);
-      addActionMessage("Changed Publication Status to " + resource.getStatus());
-    } catch (InvalidConfigException e) {
-      log.error("Cant unpublish resource " + resource, e);
-    }
-    return execute();
+  public void setUnpublish(String unpublish) {
+    this.unpublish = StringUtils.trimToNull(unpublish) != null;
   }
 
   public String visibility() throws Exception {
@@ -262,18 +257,26 @@ public class OverviewAction extends ManagerBaseAction {
       }
 
     } else if (PublicationStatus.PUBLIC == resource.getStatus()) {
-      Organisation org = null;
-      try {
-        org = registrationManager.get(id);
-        resourceManager.register(resource, org, registrationManager.getIpt());
-        if (org != null) {
-          addActionMessage("Registered resource with " + org.getName() + " in GBIF");
+      if (unpublish) {
+        try {
+          resourceManager.visibilityToPrivate(resource);
+          addActionMessage("Changed Publication Status to " + resource.getStatus());
+        } catch (InvalidConfigException e) {
+          log.error("Cant unpublish resource " + resource, e);
         }
-      } catch (RegistryException e) {
-        log.error("Cant register resource " + resource + " with organisation " + org, e);
-        addActionError("Registration of resource failed!");
+      } else {
+        Organisation org = null;
+        try {
+          org = registrationManager.get(id);
+          resourceManager.register(resource, org, registrationManager.getIpt());
+          if (org != null) {
+            addActionMessage("Registered resource with " + org.getName() + " in GBIF");
+          }
+        } catch (RegistryException e) {
+          log.error("Cant register resource " + resource + " with organisation " + org, e);
+          addActionError("Registration of resource failed!");
+        }
       }
-
     } else if (PublicationStatus.REGISTERED == resource.getStatus()) {
       Organisation org = null;
       try {

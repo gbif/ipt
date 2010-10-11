@@ -37,7 +37,6 @@ public class Resource implements Serializable, Comparable<Resource> {
   private String subtype;
   // publication
   private PublicationStatus status = PublicationStatus.PRIVATE;
-  private int lastPublishedEmlHash = 0;
   private int emlVersion = 0;
   private Date lastPublished;
   private int recordsPublished = 0;
@@ -163,10 +162,6 @@ public class Resource implements Serializable, Comparable<Resource> {
     return lastPublished;
   }
 
-  public int getLastPublishedEmlHash() {
-    return lastPublishedEmlHash;
-  }
-
   public Set<User> getManagers() {
     return managers;
   }
@@ -249,6 +244,13 @@ public class Resource implements Serializable, Comparable<Resource> {
     return Objects.hashCode(shortname);
   }
 
+  public boolean hasMappedData() {
+    if (core != null && core.getFields().size() > 0) {
+      return true;
+    }
+    return false;
+  }
+
   public boolean isPublished() {
     return lastPublished != null;
   }
@@ -292,10 +294,6 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   public void setLastPublished(Date lastPublished) {
     this.lastPublished = lastPublished;
-  }
-
-  public void setLastPublishedEmlHash(int lastPublishedEmlHash) {
-    this.lastPublishedEmlHash = lastPublishedEmlHash;
   }
 
   public void setManagers(Set<User> managers) {

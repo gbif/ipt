@@ -93,7 +93,7 @@ public class RegistrationAction extends POSTAction {
   }
 
   public String getRegistryURL() {
-    return cfg.getRegistryUrl();
+    return cfg.getRegistryUrl() + "/registry/";
   }
 
   /**

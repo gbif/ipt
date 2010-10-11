@@ -168,18 +168,14 @@ By default a resource is private to the managers. Once published to GBIF you can
 	  <form action='resource-visibility.do' method='post'>
 	    <input name="r" type="hidden" value="${resource.shortname}" />
 	    <#if resource.status=="PUBLIC">
-		    <a class="confirm" href="resource-unpublish.do?r=${resource.shortname}">
-		    <button><@s.text name="button.private"/></button>
-		    </a>
-		    <br/>
-
 	    	<#if (organisations?size>0)>
 		    <select name="id" id="org" size="1">
 		    <#list organisations as o>
-		      <option value="${o.key}">${o.name}</option>
+		      <option value="${o.key}">${o.alias!o.name}</option>
 		    </#list>
 			</select>
 	       	<@s.submit cssClass="confirm" name="publish" key="button.register" disabled="${missingRegistrationMetadata?string}"/>
+	       	<@s.submit cssClass="confirm" name="unpublish" key="button.private" />
 	       	<#if missingRegistrationMetadata>
 	       		<div class="warn">The <a href="${baseURL}/manage/metadata-basic.do?r=${resource.shortname}">resource's basic metadata</a> should be saved and the EML & Archive files need to be generated prior to registering to the GBIF Network</div>
 	       	</#if>
@@ -213,8 +209,8 @@ By default a resource is private to the managers. Once published to GBIF you can
       	</div>
       	<div class="details">
       		<table>
-		      	<#if resource.status=="REGISTERED">
-	          		<tr><th>Resource Key</th><td>${resource.key!}</td></tr>
+		      	<#if resource.status=="REGISTERED" && resource.key??>
+	          		<tr><th>Resource Key</th><td>${resource.key} <a href="${cfg.registryUrl}/browse/agent?uuid=${resource.key}">GBRDS</a></td></tr>
 	          		<#if resource.organisation?exists>
 	          		<tr><th>Organisation</th><td>${resource.organisation.name!}</td></tr>
 	          		<tr><th>Organisation Contact</th><td>${resource.organisation.primaryContactName!}, ${resource.organisation.primaryContactEmail!}</td></tr>
@@ -255,9 +251,11 @@ By default a resource is private to the managers. Once published to GBIF you can
       	<div class="details">
       		<table>
 			  	<#if resource.lastPublished??>
-          		<tr><th>Last Publication</th><td>Version ${resource.eml.emlVersion} from ${resource.lastPublished?date?string.medium}</td></tr>
-          		<tr><th>Archive</th><td><a href="${baseURL}/archive.do?r=${resource.shortname}">download</a>, ${resource.recordsPublished} records </td></tr>
-          		<tr><th>EML</th><td><a href="${baseURL}/eml.do?r=${resource.shortname}">download</a> <a href="${baseURL}/resource.do?r=${resource.shortname}">view</a></td></tr>
+          		 <tr><th>Last Publication</th><td>Version ${resource.eml.emlVersion} from ${resource.lastPublished?date?string.medium}</td></tr>
+			  	 <#if (resource.recordsPublished>0)>
+          		  <tr><th>Archive</th><td><a href="${baseURL}/archive.do?r=${resource.shortname}">download</a>, ${resource.recordsPublished} records </td></tr>
+			  	 </#if>
+          		 <tr><th>EML</th><td><a href="${baseURL}/eml.do?r=${resource.shortname}">download</a> <a href="${baseURL}/resource.do?r=${resource.shortname}">view</a></td></tr>
 			  	</#if>
       		</table>
       	</div>

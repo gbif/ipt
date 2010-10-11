@@ -16,7 +16,7 @@ import java.util.UUID;
 @ImplementedBy(RegistryManagerImpl.class)
 public interface RegistryManager {
 
-  public boolean deregister(Resource resource) throws RegistryException;
+  public void deregister(Resource resource) throws RegistryException;
 
   /**
    * Gets list of extensions

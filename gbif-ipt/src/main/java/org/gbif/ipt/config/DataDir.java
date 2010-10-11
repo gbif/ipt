@@ -268,6 +268,12 @@ public class DataDir {
                 + dataDir.getAbsolutePath() + " exists already and is no IPT data dir.");
           }
           log.info("Reusing existing data dir.");
+          // persist location in WEB-INF
+          try {
+            persistLocation();
+          } catch (IOException e) {
+            log.error("Cant persist datadir location in WEBINF webapp folder", e);
+          }
           return false;
         }
 
