@@ -191,7 +191,8 @@ public class OverviewAction extends ManagerBaseAction {
     super.prepare();
     if (resource != null) {
       // get potential new managers
-      potentialManagers = userManager.list(Role.Manager);
+      potentialManagers = userManager.list(Role.Publisher);
+      potentialManagers.addAll(userManager.list(Role.Manager));
       // remove already associated ones
       for (User u : resource.getManagers()) {
         potentialManagers.remove(u);
