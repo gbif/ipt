@@ -50,5 +50,4 @@ public class TaskMessage {
   public String toString() {
     return message;
   }
-
 }
