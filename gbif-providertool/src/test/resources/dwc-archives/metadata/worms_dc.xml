@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<metadata xmlns:dc="http://purl.org/dc/terms/">
- <dc:title>World Register of Marine Species</dc:title>
- <dc:identifier>World Register of Marine Species</dc:identifier>
- <onlineUrl>http://www.gbif.org</onlineUrl>
- <dc:description>The aim of a World Register of Marine Species (WoRMS) is to provide an authoritative and comprehensive list of names of marine organisms, including information on synonymy. While highest priority goes to valid names, other names in use are included so that this register can serve as a guide to interpret taxonomic literature.</dc:description>
- <dc:subject>Marine;Taxonomy;Species Checklist;Authoritative;Specimens</dc:subject>
-</metadata>
