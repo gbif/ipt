@@ -141,8 +141,11 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
           row[idx] = val;
           idx++;
         }
-        writer.write(tabRow(row));
-        currRecords++;
+        String newRow = tabRow(row);
+        if (newRow != null) {
+          writer.write(newRow);
+          currRecords++;
+        }
       }
     } catch (Exception e) {
       // some error writing this file, report
@@ -315,10 +318,16 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
   private String tabRow(String[] columns) {
     // escape \t \n \r chars !!!
+    boolean empty = true;
     for (int i = 0; i < columns.length; i++) {
       if (columns[i] != null) {
+        empty = false;
         columns[i] = StringUtils.trimToNull(escapeChars.matcher(columns[i]).replaceAll(" "));
       }
+    }
+    if (empty) {
+      // dont create a row at all!
+      return null;
     }
     return StringUtils.join(columns, '\t') + "\n";
   }
