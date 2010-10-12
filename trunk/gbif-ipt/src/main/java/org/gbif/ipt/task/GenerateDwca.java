@@ -74,25 +74,24 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
     // build list of fields for the new data file and keep it in the archive file
     List<PropertyMapping> newColumns = new ArrayList<PropertyMapping>();
+    int dataFileRowSize = 1; // first column will become the id column
     // get maximum column index to check incoming rows for correctness
     int maxColumnIndex = mapping.getIdColumn() == null ? -1 : mapping.getIdColumn();
     int linesWithWrongColumnNumber = 0;
     for (PropertyMapping f : mapping.getFields()) {
-      Integer idx = null;
       if (f.getIndex() != null) {
         newColumns.add(f);
-        idx = newColumns.size();
+        dataFileRowSize++;
         if (maxColumnIndex < f.getIndex()) {
           maxColumnIndex = f.getIndex();
         }
       }
-      ArchiveField f2 = buildField(f.getTerm(), idx, f.getDefaultValue());
+      ArchiveField f2 = buildField(f.getTerm(), dataFileRowSize - 1, f.getDefaultValue());
       af.addField(f2);
     }
 
     // create the new data file
     ClosableIterator<String[]> iter = sourceManager.rowIterator(mapping.getSource());
-    int rowSize = newColumns.size();
     int line = 0;
     // open new file writer
     String fn = mapping.getExtension().getName().toLowerCase().replaceAll("\\s", "_") + ".txt";
@@ -110,10 +109,13 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
           continue;
         }
         if (in.length <= maxColumnIndex) {
+          // input row is smaller than the highest mapped column. Resize array by adding nulls
+          String[] in2 = new String[maxColumnIndex + 1];
+          System.arraycopy(in, 0, in2, 0, in.length);
+          in = in2;
           linesWithWrongColumnNumber++;
-          continue;
         }
-        String[] row = new String[rowSize + 1];
+        String[] row = new String[dataFileRowSize];
         // add id column - either an existing column or the line number
         if (mapping.getIdColumn() == null) {
           row[0] = String.valueOf(line);
