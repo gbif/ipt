@@ -36,6 +36,8 @@ import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.BaseManager;
+import org.gbif.ipt.service.DeletionNotAllowedException;
+import org.gbif.ipt.service.DeletionNotAllowedException.Reason;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
@@ -327,10 +329,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     xstream.registerConverter(jdbcInfoConverter);
   }
 
-  public void delete(Resource resource) throws IOException, RegistryException {
+  public void delete(Resource resource) throws IOException, DeletionNotAllowedException {
     // deregister resource?
     if (resource.getKey() != null) {
-      registryManager.deregister(resource);
+      try {
+        registryManager.deregister(resource);
+      } catch (RegistryException e) {
+        log.error("Failed to deregister resource: " + e.getMessage(), e);
+        throw new DeletionNotAllowedException(Reason.REGISTRY_ERROR, e.getMessage());
+      }
     }
     // remove from data dir
     FileUtils.forceDelete(dataDir.resourceFile(resource, ""));

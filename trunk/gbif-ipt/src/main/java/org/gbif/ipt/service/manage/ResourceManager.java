@@ -7,10 +7,10 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
+import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.PublicationException;
-import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.task.StatusReport;
 
@@ -41,7 +41,7 @@ public interface ResourceManager {
 
   public Resource create(String shortname, User creator) throws AlreadyExistingException;
 
-  public void delete(Resource resource) throws IOException, RegistryException;
+  public void delete(Resource resource) throws IOException, DeletionNotAllowedException;
 
   public Resource get(String shortname);
 
