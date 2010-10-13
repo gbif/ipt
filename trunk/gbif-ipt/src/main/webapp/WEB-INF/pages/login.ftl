@@ -19,7 +19,7 @@
     <input class="form-reset"  type="password" size="30" name="password" id="pass" value="${password!"admin"}"/>
   </div>
   <div>
-    <input type="submit" value="Login" id="login-submit"/>
+    [@s.submit key="portal.login" name="login-submit"/]
   </div>
 </form>
 </div>
