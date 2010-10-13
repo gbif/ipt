@@ -221,7 +221,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * @return
    */
   private String getAtomFeedURL() {
-    return String.format("%s/atom.xml", cfg.getBaseURL());
+    return String.format("%s/rss.do", cfg.getBaseURL());
   }
 
   /**
