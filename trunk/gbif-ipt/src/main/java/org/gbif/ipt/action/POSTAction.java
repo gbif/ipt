@@ -12,8 +12,9 @@ public class POSTAction extends BaseAction {
    * Override this method if you need to delete entities based on the id value after the PARAM interceptor is called
    * 
    * @return
+   * @throws Exception
    */
-  public String delete() {
+  public String delete() throws Exception {
     return SUCCESS;
   }
 

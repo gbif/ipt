@@ -54,7 +54,7 @@
 				<interceptor-ref name="keepRedirectMessages"/>
 				<interceptor-ref name="i18nStack"/>
 				<interceptor-ref name="validation">
-					<param name="excludeMethods">input,back,cancel</param>
+					<param name="excludeMethods">input,back,cancel,list</param>
 				</interceptor-ref>
 				<interceptor-ref name="workflow"/>
 			</interceptor-stack>
@@ -73,6 +73,12 @@
 				<interceptor-ref name="requireAdmin"/>
 				<interceptor-ref name="iptStackWithoutSetup"/>
 			</interceptor-stack>
+			<interceptor-stack name="adminStackNoWorkflow">
+				<interceptor-ref name="setupAndCancel"/>
+				<interceptor-ref name="requireAdmin"/>
+				<interceptor-ref name="keepRedirectMessages"/>
+				<interceptor-ref name="i18nStack"/>
+			</interceptor-stack>
 			
 
 			<!-- development interceptor only logging in an admin wiht password "carla" automatically when not yet logged in -->
@@ -88,6 +94,13 @@
 				-->
 				<interceptor-ref name="requireManager"/>
 				<interceptor-ref name="iptStackWithoutSetup"/>
+			</interceptor-stack>
+			<interceptor-stack name="managerStackNoWorkflow">
+				<interceptor-ref name="resourceSession"/>
+				<interceptor-ref name="setupAndCancel"/>
+				<interceptor-ref name="requireManager"/>
+				<interceptor-ref name="keepRedirectMessages"/>
+				<interceptor-ref name="i18nStack"/>
 			</interceptor-stack>
 			
 			<!-- stack to be used for individual ajax actions within any package -->
