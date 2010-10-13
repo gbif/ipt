@@ -39,7 +39,7 @@
 
 <#if (numVocabs>0)>
 <hr/>
-<h3>Vocabularies</h3>
+<h3><@s.text name="extension.vocabularies.title"/></h3>
 <p>
 	last updated on ${vocabsLastUpdated?date?string.medium}<br/> 
 	  <form action='extensions.do' method='post'>
@@ -50,7 +50,7 @@
 </#if>
 <hr/>
 
-<h3>Further extensions available from the GBIF registry</h3>
+<h3><@s.text name="extension.further.title"/></h3>
 
 <#list newExtensions as ext>
 <div class="definition">	

@@ -48,7 +48,7 @@
 	<@checkbox name="debug" i18nkey="admin.config.debug" />
 
   <div id="location">
-	<label for="latitude">IPT Server Location (Lat/Lon)</label>
+	<label for="latitude"><@s.text name="admin.config.server.location"/></label>
 	<input type="text" id="latitude" name="latitude" value="${latitude!}" size="10" />
 	<input type="text" id="longitude" name="longitude" value="${longitude!}" size="10" />
   </div>

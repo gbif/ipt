@@ -1,29 +1,28 @@
 [#ftl]
 [#include "/WEB-INF/pages/inc/header.ftl"/]
- <title>Missing</title>
+<title>[@s.text name="error.header.title"/]</title>
 [#include "/WEB-INF/pages/inc/menu.ftl"/]
 
-<h1>Oops</h1>
-<p>It seems you have discovered an unforseen error:<p/>
+<h1>[@s.text name="error.title"/]</h1>
+<p>[@s.text name="error.body"/]<p/>
 
 <pre>
       [@s.property value="%{exception.message}"/]
 </pre>
     
 [#if adminRights]
-<p><a href="${baseURL}/admin/logs.do">View IPT logs</a></p>
+<p><a href="${baseURL}/admin/logs.do">[@s.text name="error.view.logs"/]</a></p>
 [/#if]
 <p>
-If you think this shouldnt have happened, would you mind helping us to improve the IPT and 
-<a href="http://code.google.com/p/gbif-providertoolkit/issues/entry?summary=IPT%20error">file a small bug report</a> for this exception?
+[@s.text name="error.report"/]
 </p>
 
 <p>
-Thanks a million, the IPT development team.
+[@s.text name="error.thanks"/]
 </p>
 
 <hr/>
-<h3>Technical Details</h3>
+<h3>[@s.text name="error.details.title"/]</h3>
 <p>
   [@s.property value="%{exceptionStack}"/]
 </p>

@@ -3,8 +3,6 @@
  <title>Login Required</title>
 [#include "/WEB-INF/pages/inc/menu.ftl"/]
 
-<h1>Manager Login Required</h1>
-<p>You need to be logged in with manager rights to use this part of the IPT. 
-Please <a href="${baseURL}/login">login</a> with an existing manager account or contact the IPT admin to provide you with these rights.</p>
-
+<h1>[@s.text name="401.manager.title"/]</h1>
+<p>[@s.text name="401.manager.body"][@s.param]${baseURL}/login[/@s.param][/@s.text]</p>
 [#include "/WEB-INF/pages/inc/footer.ftl"/]
