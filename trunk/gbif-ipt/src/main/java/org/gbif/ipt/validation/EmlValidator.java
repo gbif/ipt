@@ -423,25 +423,25 @@ public class EmlValidator extends BaseValidator {
 
 					if (tc.getType().equals(TemporalCoverageType.SINGLE_DATE)) {
 						if (!exists(tc.getStartDate())) {
-							action.addFieldError("eml.temporalCoverages[" + index + "].startDate", action.getText("validation.required"));
+							action.addFieldError("eml.temporalCoverages[" + index + "].startDate", action.getText("validation.required", new String[]{action.getText("eml.temporalCoverages.startDate")}));
 						}
 					}
 					if (tc.getType().equals(TemporalCoverageType.DATE_RANGE)) {
 						if (!exists(tc.getStartDate())) {
-							action.addFieldError("eml.temporalCoverages[" + index + "].startDate", action.getText("validation.required"));
+							action.addFieldError("eml.temporalCoverages[" + index + "].startDate", action.getText("validation.required", new String[]{action.getText("eml.temporalCoverages.startDate")}));
 						}
 						if (!exists(tc.getEndDate())) {
-							action.addFieldError("eml.temporalCoverages[" + index + "].endDate", action.getText("validation.required"));
+							action.addFieldError("eml.temporalCoverages[" + index + "].endDate", action.getText("validation.required", new String[]{action.getText("eml.temporalCoverages.endDate")}));
 						}
 					}
 					if (tc.getType().equals(TemporalCoverageType.FORMATION_PERIOD)) {
 						if (!exists(tc.getFormationPeriod())) {
-							action.addFieldError("eml.temporalCoverages[" + index + "].formationPeriod", action.getText("validation.required"));
+							action.addFieldError("eml.temporalCoverages[" + index + "].formationPeriod", action.getText("validation.required", new String[]{action.getText("eml.temporalCoverages.formationPeriod")}));
 						}
 					}
 					if (tc.getType().equals(TemporalCoverageType.LIVING_TIME_PERIOD)) {
 						if (!exists(tc.getLivingTimePeriod())) {
-							action.addFieldError("eml.temporalCoverages[" + index + "].livingTimePeriod", action.getText("validation.required"));
+							action.addFieldError("eml.temporalCoverages[" + index + "].livingTimePeriod", action.getText("validation.required", new String[]{action.getText("eml.temporalCoverages.livingTimePeriod")}));
 						}
 					}
 					index++;
@@ -506,30 +506,27 @@ public class EmlValidator extends BaseValidator {
 				 * <metadata>
 				 *    <gbif>
 				 *       <collection> - optional
-				 *          <parentCollectionIdentifier>{xxx}</parentCollectionIdentifier> - mandatory
-				 *          <collectionIdentifier>{xxx}</collectionIdentifier> - mandatory
-				 *          <collectionName>{xxx}</collectionName> - mandatory
+				 *          <parentCollectionIdentifier>{eml.parentCollectionId}</parentCollectionIdentifier> - mandatory
+				 *          <collectionIdentifier>{eml.collectionId}</collectionIdentifier> - mandatory
+				 *          <collectionName>{eml.collectionName}</collectionName> - mandatory
 				 *       </collection>
 				 *       <jgtiCuratorialUnit> - optional - many
-				 *          <jgtiUnitType>{xxx}</jgtiUnitType> - optional
-				 *          <jgtiUnits uncertaintyMeasure="{xxx}">{xxx}</jgtiUnits> - mandatory (xs:integer) |
-				 *          <jgtiUnitRange> - mandatory                                                      |
-				 *             <beginRange>{xxx}</beginRange> - mandatory (xs:integer)                       | 
-				 *             <endRange>{xxx}</endRange> - mandatory (xs:integer)                           |
-				 *          </jgtiUnitRange>                                                                 |
+				 *          <jgtiUnitType>{eml.jgtiCuratorialUnits[i].unitType}</jgtiUnitType> - optional
+				 *          <jgtiUnits uncertaintyMeasure="{eml.jgtiCuratorialUnits[i].uncertaintyMeasure}">{eml.jgtiCuratorialUnits[i].rangeMean}</jgtiUnits> - mandatory (xs:integer) |
+				 *          <jgtiUnitRange> - mandatory                                                                                                                                 |
+				 *             <beginRange>{eml.jgtiCuratorialUnits[i].rangeStart}</beginRange> - mandatory (xs:integer)                                                                | It has to be only one of them. <jgtiUnits> or <jgtiUnitRange>.
+				 *             <endRange>{eml.jgtiCuratorialUnits[i].rangeEnd}</endRange> - mandatory (xs:integer)                                                                      |
+				 *          </jgtiUnitRange>                                                                                                                                            |
 				 *       </jgtiCuratorialUnit>
 				 *    </gbif>
 				 * </metadata>
-				 */		
-				
+				 */				
 				int index = 0;
 				for (JGTICuratorialUnit jcu : eml.getJgtiCuratorialUnits()) {
 					if (jcu.getType().equals(JGTICuratorialUnitType.COUNT_RANGE)) {
 						if (!exists(jcu.getRangeStart())) {
 							action.addFieldError("eml.jgtiCuratorialUnits[" + index + "].rangeStart", action.getText("validation.required", new String[]{action.getText("validation.field.required")}));
-						} /*else if(isValidInteger(jcu.getRangeStart())){
-							
-						}*/
+						}
 						if (!exists(jcu.getRangeEnd())) {
 							action.addFieldError("eml.jgtiCuratorialUnits[" + index + "].rangeEnd", action.getText("validation.required", new String[]{action.getText("validation.field.required")}));
 						}
@@ -548,6 +545,7 @@ public class EmlValidator extends BaseValidator {
 					index++;
 				}
 			} else if (part == null || part.equalsIgnoreCase("physical")) {
+				
 				int index = 0;
 				for (PhysicalData pd : eml.getPhysicalData()) {
 					if (!exists(pd.getName())) {
