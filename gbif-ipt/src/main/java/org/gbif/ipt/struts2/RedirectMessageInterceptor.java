@@ -8,9 +8,10 @@ package org.gbif.ipt.struts2;
  * governing permissions and limitations under the License.
  */
 
+import org.gbif.ipt.action.BaseAction;
+
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.Result;
-import com.opensymphony.xwork2.ValidationAware;
 import com.opensymphony.xwork2.interceptor.MethodFilterInterceptor;
 
 import org.apache.struts2.dispatcher.ServletActionRedirectResult;
@@ -36,48 +37,36 @@ public class RedirectMessageInterceptor extends MethodFilterInterceptor {
   public static final String FIELD_ERRORS_KEY = "RedirectMessageInterceptor_FieldErrors";
   public static final String ACTION_ERRORS_KEY = "RedirectMessageInterceptor_ActionErrors";
   public static final String ACTION_MESSAGES_KEY = "RedirectMessageInterceptor_ActionMessages";
+  public static final String ACTION_WARNINGS_KEY = "RedirectMessageInterceptor_ActionWarnings";
 
   public RedirectMessageInterceptor() {
-  }
-
-  @Override
-  public String doIntercept(ActionInvocation invocation) throws Exception {
-    Object action = invocation.getAction();
-    if (action instanceof ValidationAware) {
-      before(invocation, (ValidationAware) action);
-    }
-
-    String result = invocation.invoke();
-
-    if (action instanceof ValidationAware) {
-      after(invocation, (ValidationAware) action);
-    }
-    return result;
   }
 
   /**
    * If the result is a redirect then store error and messages in the session.
    */
-  protected void after(ActionInvocation invocation, ValidationAware validationAware) throws Exception {
+  protected void after(ActionInvocation invocation, BaseAction action) throws Exception {
     Result result = invocation.getResult();
 
     if (result != null && (result instanceof ServletRedirectResult || result instanceof ServletActionRedirectResult)) {
       Map<String, Object> session = invocation.getInvocationContext().getSession();
 
-      Collection<String> actionErrors = validationAware.getActionErrors();
+      Collection<String> actionWarnings = action.getWarnings();
+      if (actionWarnings != null && actionWarnings.size() > 0) {
+        session.put(ACTION_WARNINGS_KEY, actionWarnings);
+      }
+
+      Collection<String> actionErrors = action.getActionErrors();
       if (actionErrors != null && actionErrors.size() > 0) {
         session.put(ACTION_ERRORS_KEY, actionErrors);
       }
 
-      Collection<String> actionMessages = validationAware.getActionMessages();
-      // if (actionErrors!=null){
-      // System.out.println("Found "+actionErrors.size()+" actionMessages in redirect");
-      // }
+      Collection<String> actionMessages = action.getActionMessages();
       if (actionMessages != null && actionMessages.size() > 0) {
         session.put(ACTION_MESSAGES_KEY, actionMessages);
       }
 
-      Map<String, List<String>> fieldErrors = validationAware.getFieldErrors();
+      Map<String, List<String>> fieldErrors = action.getFieldErrors();
       if (fieldErrors != null && fieldErrors.size() > 0) {
         session.put(FIELD_ERRORS_KEY, fieldErrors);
       }
@@ -87,7 +76,7 @@ public class RedirectMessageInterceptor extends MethodFilterInterceptor {
   /**
    * Retrieve the errors and messages from the session and add them to the action.
    */
-  protected void before(ActionInvocation invocation, ValidationAware validationAware) throws Exception {
+  protected void before(ActionInvocation invocation, BaseAction action) throws Exception {
     @SuppressWarnings("unchecked")
     Map<String, ?> session = invocation.getInvocationContext().getSession();
 
@@ -95,7 +84,15 @@ public class RedirectMessageInterceptor extends MethodFilterInterceptor {
     Collection<String> actionErrors = (Collection) session.remove(ACTION_ERRORS_KEY);
     if (actionErrors != null && actionErrors.size() > 0) {
       for (String error : actionErrors) {
-        validationAware.addActionError(error);
+        action.addActionError(error);
+      }
+    }
+
+    @SuppressWarnings("unchecked")
+    Collection<String> actionWarnings = (Collection) session.remove(ACTION_WARNINGS_KEY);
+    if (actionWarnings != null && actionWarnings.size() > 0) {
+      for (String error : actionWarnings) {
+        action.addActionWarning(error);
       }
     }
 
@@ -106,7 +103,7 @@ public class RedirectMessageInterceptor extends MethodFilterInterceptor {
     // }
     if (actionMessages != null && actionMessages.size() > 0) {
       for (String message : actionMessages) {
-        validationAware.addActionMessage(message);
+        action.addActionMessage(message);
       }
     }
 
@@ -115,9 +112,24 @@ public class RedirectMessageInterceptor extends MethodFilterInterceptor {
     if (fieldErrors != null && fieldErrors.size() > 0) {
       for (Map.Entry<String, List<String>> fieldError : fieldErrors.entrySet()) {
         for (String message : fieldError.getValue()) {
-          validationAware.addFieldError(fieldError.getKey(), message);
+          action.addFieldError(fieldError.getKey(), message);
         }
       }
     }
+  }
+
+  @Override
+  public String doIntercept(ActionInvocation invocation) throws Exception {
+    Object action = invocation.getAction();
+    if (action instanceof BaseAction) {
+      before(invocation, (BaseAction) action);
+    }
+
+    String result = invocation.invoke();
+
+    if (action instanceof BaseAction) {
+      after(invocation, (BaseAction) action);
+    }
+    return result;
   }
 }

@@ -38,7 +38,6 @@
 		
 		<!-- EXTENSION & VOCAB MANAGEMENT -->
 		<action name="extensions" class="org.gbif.ipt.action.admin.ExtensionsAction" method="list">
-			<interceptor-ref name="adminStackNoWorkflow" />
 			<result>/WEB-INF/pages/admin/extensions.ftl</result>
 		</action>
 		<action name="extension" class="org.gbif.ipt.action.admin.ExtensionsAction">

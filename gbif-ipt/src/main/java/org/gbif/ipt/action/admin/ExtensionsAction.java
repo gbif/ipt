@@ -75,8 +75,8 @@ public class ExtensionsAction extends POSTAction {
       extensionManager.delete(id);
       addActionMessage(getText("admin.extension.delete.success", new String[]{id}));
     } catch (DeletionNotAllowedException e) {
-      addActionError(getText("admin.extension.delete.error", new String[]{id}));
-      addActionExceptionMessage(e);
+      addActionWarning(getText("admin.extension.delete.error", new String[]{id}));
+      addActionExceptionWarning(e);
     }
     return SUCCESS;
   }
@@ -111,7 +111,7 @@ public class ExtensionsAction extends POSTAction {
       addActionMessage(result.updated.size() + " vocabularies have been updated");
       addActionMessage(result.unchanged.size() + " vocabularies have not been modifed since last download");
       if (!result.errors.isEmpty()) {
-        addActionError(result.errors.size() + " vocabularies produced an error when updating. Please consult logs!");
+        addActionWarning(result.errors.size() + " vocabularies produced an error when updating. Please consult logs!");
       }
     }
 
@@ -141,7 +141,7 @@ public class ExtensionsAction extends POSTAction {
         registered.load();
       } catch (Exception e) {
         log.error("Couldnt load registered extensions", e);
-        addActionError("Couldnt load registered extensions: " + e.getMessage());
+        addActionWarning("Couldnt load registered extensions: " + e.getMessage());
       }
     }
     if (id != null) {

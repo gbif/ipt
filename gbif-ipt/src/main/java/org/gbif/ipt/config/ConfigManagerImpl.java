@@ -41,11 +41,12 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   private ExtensionManager extensionManager;
   private VocabulariesManager vocabManager;
   private RegistrationManager registrationManager;
+  private ConfigWarnings warnings;
 
   @Inject
   public ConfigManagerImpl(DataDir dataDir, AppConfig cfg, InputStreamUtils streamUtils,
       UserAccountManager userManager, ResourceManager resourceManager, ExtensionManager extensionManager,
-      VocabulariesManager vocabManager, RegistrationManager registrationManager) {
+      VocabulariesManager vocabManager, RegistrationManager registrationManager, ConfigWarnings warnings) {
     super(cfg, dataDir);
     this.streamUtils = streamUtils;
     this.userManager = userManager;
@@ -53,6 +54,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     this.extensionManager = extensionManager;
     this.vocabManager = vocabManager;
     this.registrationManager = registrationManager;
+    this.warnings = warnings;
     if (dataDir.isConfigured()) {
       log.info("IPT DataDir configured - loading its configuration");
       try {
@@ -188,4 +190,5 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     }
     return false;
   }
+
 }

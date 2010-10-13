@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.SessionAware;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -45,6 +46,7 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
    */
   protected static Logger log = Logger.getLogger(BaseAction.class);
 
+  protected List<String> warnings = new ArrayList<String>();
   protected Map<String, Object> session;
   @Inject
   protected SimpleTextProvider textProvider;
@@ -65,18 +67,46 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
     this.cfg = cfg;
   }
 
-  protected void addActionExceptionError(Exception e) {
-    String msg = e.getMessage();
-    if (msg != null) {
-      addActionError(msg);
-    }
-  }
-
+  /**
+   * Adds an exception message, if not null, to the action messages
+   * 
+   * @param e the exception from which the message is taken
+   */
   protected void addActionExceptionMessage(Exception e) {
     String msg = e.getMessage();
     if (msg != null) {
       addActionMessage(msg);
     }
+  }
+
+  /**
+   * Adds an exception message, if not null, to the action warnings
+   * 
+   * @param e the exception from which the message is taken
+   */
+  protected void addActionExceptionWarning(Exception e) {
+    String msg = e.getMessage();
+    if (msg != null) {
+      warnings.add(msg);
+    }
+  }
+
+  /**
+   * Adds a warning similar to the action errors to the user UI, but does not interact with the validation aware
+   * workflow interceptor, therefore no changes to the result name of the action are expected.
+   * This is the way to present user warnings/errors others than for form validation.
+   * 
+   * If you want form validation with the workflow interceptor, please @see addActionError instead
+   * 
+   * @param anErrorMessage
+   */
+  public void addActionWarning(String anErrorMessage) {
+    warnings.add(anErrorMessage);
+  }
+
+  public void addActionWarning(String anErrorMessage, Exception e) {
+    warnings.add(anErrorMessage);
+    addActionExceptionWarning(e);
   }
 
   /**
@@ -180,6 +210,10 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
 
   public String getTextWithDynamicArgs(String key, String... args) {
     return textProvider.getText(this, key, null, args);
+  }
+
+  public List<String> getWarnings() {
+    return warnings;
   }
 
   public boolean isAdminRights() {

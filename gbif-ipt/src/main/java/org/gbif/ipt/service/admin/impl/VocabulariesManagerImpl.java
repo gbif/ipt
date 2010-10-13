@@ -3,6 +3,7 @@
  */
 package org.gbif.ipt.service.admin.impl;
 
+import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Vocabulary;
@@ -77,18 +78,20 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   private final String[] defaultVocabs = new String[]{
       Constants.VOCAB_URI_LANGUAGE, Constants.VOCAB_URI_COUNTRY, Constants.VOCAB_URI_RESOURCE_TYPE,
       Constants.VOCAB_URI_RANKS};
+  private ConfigWarnings warnings;
 
   /**
    * 
    */
   @Inject
   public VocabulariesManagerImpl(VocabularyFactory vocabFactory, DownloadUtil downloadUtil,
-      RegistryManager registryManager, ExtensionManager extensionManager) {
+      RegistryManager registryManager, ExtensionManager extensionManager, ConfigWarnings warnings) {
     super();
     this.vocabFactory = vocabFactory;
     this.downloadUtil = downloadUtil;
     this.registryManager = registryManager;
     this.extensionManager = extensionManager;
+    this.warnings = warnings;
     defineXstreamMapping();
   }
 
@@ -224,7 +227,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
           addToCache(v, url);
           save();
         } catch (InvalidConfigException e) {
-          log.error(e.getMessage(), e);
+          warnings.addStartupError("Cannot install vocabulary " + url, e);
         }
 
       } else {
@@ -257,11 +260,11 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       for (File ef : files) {
         try {
           Vocabulary v = loadFromFile(ef);
-          if (addToCache(v, uri2url.get(v.getUri().toLowerCase()))) {
+          if (v != null && addToCache(v, uri2url.get(v.getUri().toLowerCase()))) {
             counter++;
           }
         } catch (InvalidConfigException e) {
-          log.error("Cant load local vocabulary definition " + ef.getAbsolutePath(), e);
+          warnings.addStartupError("Cant load local vocabulary definition " + ef.getAbsolutePath(), e);
         }
       }
     }
@@ -283,7 +286,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
             install(v.getUrl());
           }
         } catch (Exception e) {
-          log.warn("Cant load default vocabulary " + vuri, e);
+          warnings.addStartupError("Cant load default vocabulary " + vuri, e);
         }
       }
     }
@@ -303,13 +306,13 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       v.setLastUpdate(modified);
       log.info("Successfully loaded Vocabulary: " + v.getTitle());
     } catch (FileNotFoundException e) {
-      log.error("Cant find local vocabulary file", e);
+      warnings.addStartupError("Cant find local vocabulary file", e);
     } catch (IOException e) {
-      log.error("Cant access local vocabulary file", e);
+      warnings.addStartupError("Cant access local vocabulary file", e);
     } catch (SAXException e) {
-      log.error("Cant parse local vocabulary file", e);
+      warnings.addStartupError("Cant parse local vocabulary file", e);
     } catch (ParserConfigurationException e) {
-      log.error("Cant create sax parser", e);
+      warnings.addStartupError("Cant create sax parser", e);
     } finally {
       if (fileIn != null) {
         try {

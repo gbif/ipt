@@ -20,6 +20,7 @@ import java.net.URL;
  */
 @ImplementedBy(ConfigManagerImpl.class)
 public interface ConfigManager {
+
   /**
    * Loads all in memory configuration persisting in the datadir. This is:
    * - main IPT configuration, AppConfig
