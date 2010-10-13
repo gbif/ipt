@@ -1,6 +1,6 @@
 <#macro input name value="-99999" i18nkey="" errorfield="" type="text" size=-1 disabled=false help="" helpOptions=[] date=false>
   <#if date><div class="calendarInfo"><#else><div></#if>
-	<#include "/web-inf/pages/macros/form_field_common.ftl">
+	<#include "/WEB-INF/pages/macros/form_field_common.ftl">
 	<input type="${type}" id="${name}" name="${name}" value="<#if value=="-99999"><@s.property value="${name}"/><#else>${value}</#if>" <#if (size>0)>size="${size}"</#if> <#if disabled>readonly="readonly"</#if>/>
   </div>
 </#macro>
