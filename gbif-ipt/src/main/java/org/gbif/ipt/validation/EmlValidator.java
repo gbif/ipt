@@ -561,6 +561,9 @@ public class EmlValidator extends BaseValidator {
 					if (!exists(ks.getKeywordsString())) {
 						action.addFieldError("eml.keywords[" + index + "].keywordsString", action.getText("validation.required"));
 					}
+					if(!exists(ks.getKeywordThesaurus())){
+						action.addFieldError("eml.keywords[" + index + "].keywordThesaurus", action.getText("validation.required"));
+					}
 					index++;
 				}
 			} else if (part == null || part.equalsIgnoreCase("additional")) {

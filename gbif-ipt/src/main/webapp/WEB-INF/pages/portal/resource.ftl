@@ -21,28 +21,28 @@
   <div class="body">
       	<div class="details">
       		<table>
-          		<tr><th>Keywords</th><td>${resource.eml.subject!}</td></tr>
-          		<tr><th>Taxon Coverage</th><td><#list eml.taxonomicCoverages as tc><#list tc.taxonKeywords as k>${k.scientificName}<#if k_has_next>, </#if></#list><#if tc_has_next>; </#if></#list></td></tr>
-          		<tr><th>Spatial Coverage</th><td><#list eml.geospatialCoverages as geo>${geo.description!}<#if geo_has_next>; </#if></#list></td></tr>
+          		<tr><th><@s.text name='portal.resource.summary.keywords'/></th><td>${resource.eml.subject!}</td></tr>
+          		<tr><th><@s.text name='portal.resource.summary.taxcoverage'/></th><td><#list eml.taxonomicCoverages as tc><#list tc.taxonKeywords as k>${k.scientificName}<#if k_has_next>, </#if></#list><#if tc_has_next>; </#if></#list></td></tr>
+          		<tr><th><@s.text name='portal.resource.summary.geocoverage'/></th><td><#list eml.geospatialCoverages as geo>${geo.description!}<#if geo_has_next>; </#if></#list></td></tr>
 
       		   	<tr><th><@s.text name='eml.language'/></th><td>${eml.language!}</td></tr>
 
-          		<tr><th>Last Publication</th>
+          		<tr><th><@s.text name='portal.resource.last.publication'/></th>
 			  	<#if resource.lastPublished??>
-			  	    <td>Version ${resource.eml.emlVersion} from ${resource.lastPublished?date?string.medium}</td></tr>
+			  	    <td><@s.text name='portal.resource.version'/> ${resource.eml.emlVersion} <@s.text name='portal.resource.version.from'/> ${resource.lastPublished?date?string.medium}</td></tr>
 			  	<#if (resource.recordsPublished>0)>
-          		<tr><th>Archive</th><td><a href="${baseURL}/archive.do?r=${resource.shortname}">download</a>, ${resource.recordsPublished} records </td></tr>
+          		<tr><th><@s.text name='portal.resource.published.archive'/></th><td><a href="${baseURL}/archive.do?r=${resource.shortname}"><@s.text name='portal.resource.download'/></a>, ${resource.recordsPublished} <@s.text name='portal.resource.records'/> </td></tr>
 			  	</#if>
-          		<tr><th>EML</th><td><a href="${baseURL}/eml.do?r=${resource.shortname}">download</a></td></tr>
+          		<tr><th><@s.text name='portal.resource.published.eml'/></th><td><a href="${baseURL}/eml.do?r=${resource.shortname}"><@s.text name='portal.resource.download'/></a></td></tr>
           		<#else>
-          		    <td>Never</td></tr>
+          		    <td><@s.text name='portal.resource.published.never'/></td></tr>
 			  	</#if>
 
       		   	<#if resource.status=="REGISTERED">
-	          		<tr><th>GBIF Registration</th><td><a href="http://gbrdsdev.gbif.org/browse/agent?uuid=${resource.key}">${resource.key}</a></td></tr>
+	          		<tr><th><@s.text name='portal.resource.organisation.key'/></th><td><a href="http://gbrdsdev.gbif.org/browse/agent?uuid=${resource.key}">${resource.key}</a></td></tr>
 	          		<#if resource.organisation?exists>
-	          		<tr><th>Organisation</th><td><a href="http://gbrdsdev.gbif.org/browse/agent?uuid=${resource.organisation.key}">${resource.organisation.name!}</a> </td></tr>
-	          		<tr><th>Endorsing Node</th><td>${resource.organisation.nodeName!}</td></tr>
+	          		<tr><th><@s.text name='portal.resource.organisation.name'/></th><td><a href="http://gbrdsdev.gbif.org/browse/agent?uuid=${resource.organisation.key}">${resource.organisation.name!}</a> </td></tr>
+	          		<tr><th><@s.text name='portal.resource.organisation.node'/></th><td>${resource.organisation.nodeName!}</td></tr>
 	          		</#if>
           		</#if>
       		</table>
@@ -142,7 +142,7 @@
   <div class="body">
       	<div class="details">
       		<table>
-          		<tr><th><@s.text name='eml.geospatialCoverages.description'/></th><td>${eml.geospatialCoverages[0].description}</td></tr>
+          		<tr><th><@s.text name='eml.geospatialCoverages.description'/></th><td>${eml.geospatialCoverages[0].description!}</td></tr>
       			<tr><th><@s.text name='eml.geospatialCoverages.boundingCoordinates.min.longitude'/></th><td>${eml.geospatialCoverages[0].boundingCoordinates.min.longitude}</td></tr>
       			<tr><th><@s.text name='eml.geospatialCoverages.boundingCoordinates.max.longitude'/></th><td>${eml.geospatialCoverages[0].boundingCoordinates.max.longitude}</td></tr>
       			<tr><th><@s.text name='eml.geospatialCoverages.boundingCoordinates.min.latitude'/></th><td>${eml.geospatialCoverages[0].boundingCoordinates.min.latitude}</td></tr>
@@ -215,14 +215,14 @@
 				<div>
 				<table>
 					<#if "${item.type}" == "DATE_RANGE" >
-						<tr><th><@s.text name='eml.temporalCoverage.startDate'/></th><td>${eml.temporalCoverages[item_index].startDate?date}</td></tr>
-						<tr><th><@s.text name='eml.temporalCoverage.endDate'/></th><td>${eml.temporalCoverages[item_index].endDate?date}</td></tr>
+						<tr><th><@s.text name='eml.temporalCoverages.startDate'/></th><td>${eml.temporalCoverages[item_index].startDate?date}</td></tr>
+						<tr><th><@s.text name='eml.temporalCoverages.endDate'/></th><td>${eml.temporalCoverages[item_index].endDate?date}</td></tr>
 					<#elseif "${item.type}" == "SINGLE_DATE" >
-						<tr><th><@s.text name='eml.temporalCoverage.startDate'/></th><td>${eml.temporalCoverages[item_index].startDate?date}</td></tr>
+						<tr><th><@s.text name='eml.temporalCoverages.startDate'/></th><td>${eml.temporalCoverages[item_index].startDate?date}</td></tr>
 					<#elseif "${item.type}" == "FORMATION_PERIOD" >
-						<tr><th><@s.text name='eml.temporalCoverage.formationPeriod'/></th><td>${eml.temporalCoverages[item_index].formationPeriod}</td></tr>
+						<tr><th><@s.text name='eml.temporalCoverages.formationPeriod'/></th><td>${eml.temporalCoverages[item_index].formationPeriod}</td></tr>
 					<#else> <!-- LIVING_TIME_PERIOD -->
-						<tr><th><@s.text name='eml.temporalCoverage.livingTimePeriod'/></th><td>${eml.temporalCoverages[item_index].livingTimePeriod!}</td></tr>
+						<tr><th><@s.text name='eml.temporalCoverages.livingTimePeriod'/></th><td>${eml.temporalCoverages[item_index].livingTimePeriod!}</td></tr>
 					</#if>
 				</table>
 				<div class="newline"></div>
