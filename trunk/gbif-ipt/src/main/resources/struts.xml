@@ -73,13 +73,7 @@
 				<interceptor-ref name="requireAdmin"/>
 				<interceptor-ref name="iptStackWithoutSetup"/>
 			</interceptor-stack>
-			<interceptor-stack name="adminStackNoWorkflow">
-				<interceptor-ref name="setupAndCancel"/>
-				<interceptor-ref name="requireAdmin"/>
-				<interceptor-ref name="keepRedirectMessages"/>
-				<interceptor-ref name="i18nStack"/>
-			</interceptor-stack>
-			
+
 
 			<!-- development interceptor only logging in an admin wiht password "carla" automatically when not yet logged in -->
 			<interceptor name="autoLogin" class="org.gbif.ipt.struts2.AutoLoginAdminInterceptor"/>
@@ -94,13 +88,6 @@
 				-->
 				<interceptor-ref name="requireManager"/>
 				<interceptor-ref name="iptStackWithoutSetup"/>
-			</interceptor-stack>
-			<interceptor-stack name="managerStackNoWorkflow">
-				<interceptor-ref name="resourceSession"/>
-				<interceptor-ref name="setupAndCancel"/>
-				<interceptor-ref name="requireManager"/>
-				<interceptor-ref name="keepRedirectMessages"/>
-				<interceptor-ref name="i18nStack"/>
 			</interceptor-stack>
 			
 			<!-- stack to be used for individual ajax actions within any package -->

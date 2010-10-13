@@ -96,12 +96,12 @@ public class OverviewAction extends ManagerBaseAction {
       String msg = getText("manage.resource.delete.failed");
       log.error(msg, e);
       addActionError(msg);
-      addActionExceptionError(e);
+      addActionExceptionWarning(e);
     } catch (DeletionNotAllowedException e) {
       String msg = getText("manage.resource.delete.failed");
       log.error(msg, e);
       addActionError(msg);
-      addActionExceptionError(e);
+      addActionExceptionWarning(e);
     }
 
     return SUCCESS;
@@ -239,13 +239,13 @@ public class OverviewAction extends ManagerBaseAction {
       }
     } catch (PublicationException e) {
       if (PublicationException.TYPE.LOCKED == e.getType()) {
-        addActionError("Resource is being published already. Please be patient");
+        addActionWarning("Resource is being published already. Please be patient");
       } else {
-        addActionError("Error publishing resource: " + e.getMessage());
+        addActionWarning("Error publishing resource", e);
       }
     } catch (Exception e) {
       log.error("Error publishing resource", e);
-      addActionError("Error publishing resource: " + e.getMessage());
+      addActionWarning("Error publishing resource: ", e);
     }
     return ERROR;
   }

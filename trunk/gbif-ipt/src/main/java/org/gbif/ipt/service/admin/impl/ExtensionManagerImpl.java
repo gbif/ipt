@@ -3,6 +3,7 @@
  */
 package org.gbif.ipt.service.admin.impl;
 
+import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Resource;
@@ -55,14 +56,17 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   private HttpClient httpClient;
   private final String TAXON_KEYWORD = "dwc:taxon";
   private final String OCCURRENCE_KEYWORD = "dwc:occurrence";
-  @Inject
   private ResourceManager resourceManager;
+  private ConfigWarnings warnings;
 
   @Inject
-  public ExtensionManagerImpl(ExtensionFactory factory, HttpClient httpClient) {
+  public ExtensionManagerImpl(ExtensionFactory factory, HttpClient httpClient, ResourceManager resourceManager,
+      ConfigWarnings warnings) {
     super();
     this.factory = factory;
     this.httpClient = httpClient;
+    this.warnings = warnings;
+    this.resourceManager = resourceManager;
   }
 
   public void delete(String rowType) throws DeletionNotAllowedException {
@@ -177,7 +181,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
           loadFromFile(ef);
           counter++;
         } catch (InvalidConfigException e) {
-          log.error("Cant load local extension definition " + ef.getAbsolutePath(), e);
+          warnings.addStartupError("Cant load local extension definition " + ef.getAbsolutePath(), e);
         }
       }
     }

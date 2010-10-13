@@ -105,7 +105,7 @@ public class OrganisationsAction extends POSTAction {
       return SUCCESS;
     } catch (DeletionNotAllowedException e) {
       addActionError(getText("admin.organisation.deleted.notempty"));
-      addActionExceptionError(e);
+      addActionExceptionWarning(e);
     } catch (IOException e) {
       addActionError("cant save organisation file: " + e.getMessage());
     }
