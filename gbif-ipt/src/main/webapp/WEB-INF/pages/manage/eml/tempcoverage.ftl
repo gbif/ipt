@@ -145,9 +145,11 @@
 	});
 </script>
 
+
+
 <title><@s.text name='manage.metadata.tempcoverage.title'/></title>
 <#assign sideMenuEml=true />
- <#assign currentMenu="manage"/>
+<#assign currentMenu="manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <h1><@s.text name='manage.metadata.tempcoverage.title'/>: <em>${resource.title!resource.shortname}</em></h1>
 <p><@s.text name='manage.metadata.tempcoverage.intro'/></p>
@@ -162,29 +164,29 @@
 					<a id="removeLink-${temporalCoverage_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.tempcoverage.item'/> ]</a>
 				</div>
 			<div class="newline"></div>	
-			<@select i18nkey="eml.temporalCoverage.type"  name="tempTypes-${temporalCoverage_index}" options=tempTypes value="${temporalCoverage.type}" />
+			<@select i18nkey="eml.temporalCoverages.type"  name="tempTypes-${temporalCoverage_index}" options=tempTypes value="${temporalCoverage.type}" />
 			<!-- Adding new subform -->
 			<br>
 			<#if "${temporalCoverage.type}" == "DATE_RANGE" >
 				<div id="date-${temporalCoverage_index}" class="typeForm" >
 					<div class="half">
-						<@input date=true i18nkey="eml.temporalCoverage.startDate" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n" helpOptions={"MM/DD/YYYY":"MM/DD/YYYY",  "MM/DD/YY":"MM/DD/YY"}/>
-						<@input date=true i18nkey="eml.temporalCoverage.endDate" name="eml.temporalCoverages[${temporalCoverage_index}].endDate" help="i18n" helpOptions={"MM/DD/YYYY":"MM/DD/YYYY",  "MM/DD/YY":"MM/DD/YY"}/>
+						<@input date=true i18nkey="eml.temporalCoverages.startDate" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n" helpOptions={"MM/DD/YYYY":"MM/DD/YYYY",  "MM/DD/YY":"MM/DD/YY"}/>
+						<@input date=true i18nkey="eml.temporalCoverages.endDate" name="eml.temporalCoverages[${temporalCoverage_index}].endDate" help="i18n" helpOptions={"MM/DD/YYYY":"MM/DD/YYYY",  "MM/DD/YY":"MM/DD/YY"}/>
 					</div>
 			<#elseif "${temporalCoverage.type}" == "SINGLE_DATE" >
 				<div id="single-${temporalCoverage_index}" class="typeForm" >
 					<div class="half">
-						<@input date=true i18nkey="eml.temporalCoverage.startDate" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n" helpOptions={"MM/DD/YYYY":"MM/DD/YYYY",  "MM/DD/YY":"MM/DD/YY"}/>
+						<@input date=true i18nkey="eml.temporalCoverages.startDate" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n" helpOptions={"MM/DD/YYYY":"MM/DD/YYYY",  "MM/DD/YY":"MM/DD/YY"}/>
 					</div>
 			<#elseif "${temporalCoverage.type}" == "FORMATION_PERIOD" >
 				<div id="formation-${temporalCoverage_index}" class="typeForm" >
 					<div class="half">
-						<@input i18nkey="eml.temporalCoverage.formationPeriod" name="eml.temporalCoverages[${temporalCoverage_index}].formationPeriod" help="i18n" />
+						<@input i18nkey="eml.temporalCoverages.formationPeriod" name="eml.temporalCoverages[${temporalCoverage_index}].formationPeriod" help="i18n" />
 					</div>
 			<#else> <!-- LIVING_TIME_PERIOD -->
 				<div id="living-${temporalCoverage_index}" class="typeForm"  >
 					<div class="half">
-						<@input i18nkey="eml.temporalCoverage.livingTimePeriod" name="eml.temporalCoverages[${temporalCoverage_index}].livingTimePeriod" help="i18n" />
+						<@input i18nkey="eml.temporalCoverages.livingTimePeriod" name="eml.temporalCoverages[${temporalCoverage_index}].livingTimePeriod" help="i18n" />
 					</div>
 			</#if>
 					<div class="newline"></div>      
@@ -212,15 +214,15 @@
 		<a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.tempcoverage.item'/> ]</a>
 	</div>
 	<div class="newline"></div>	
-	<@select i18nkey="eml.temporalCoverage.type"  name="tempTypes" options=tempTypes />  
+	<@select i18nkey="eml.temporalCoverages.type"  name="tempTypes" options=tempTypes />  
 	<div class="newline"></div>	
 </div>
 
 <!-- DATE RANGE -->
 <div id="date-99999" class="typeForm" style="display:none">
 	<div class="half">
-		<@input date=true i18nkey="eml.temporalCoverage.startDate" name="startDate" help="i18n" helpOptions={"MM/DD/YYYY":"MM/DD/YYYY",  "MM/DD/YY":"MM/DD/YY"}/>
-		<@input date=true i18nkey="eml.temporalCoverage.endDate" name="endDate" help="i18n" helpOptions={"MM/DD/YYYY":"MM/DD/YYYY",  "MM/DD/YY":"MM/DD/YY"}/>
+		<@input date=true i18nkey="eml.temporalCoverages.startDate" name="startDate" help="i18n" helpOptions={"MM/DD/YYYY":"MM/DD/YYYY",  "MM/DD/YY":"MM/DD/YY"}/>
+		<@input date=true i18nkey="eml.temporalCoverages.endDate" name="endDate" help="i18n" helpOptions={"MM/DD/YYYY":"MM/DD/YYYY",  "MM/DD/YY":"MM/DD/YY"}/>
 	</div>		  
 	<div class="newline"></div>      
 	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
@@ -231,7 +233,7 @@
 <!-- SINGLE DATE -->
 <div id="single-99999" class="typeForm" style="display:none">
 	<div class="half">
-		<@input date=true i18nkey="eml.temporalCoverage.startDate" name="startDate" help="i18n" helpOptions={"MM/DD/YYYY":"MM/DD/YYYY",  "MM/DD/YY":"MM/DD/YY"} />
+		<@input date=true i18nkey="eml.temporalCoverages.startDate" name="startDate" help="i18n" helpOptions={"MM/DD/YYYY":"MM/DD/YYYY",  "MM/DD/YY":"MM/DD/YY"} />
 	</div>
 	<div class="newline"></div>
 	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
@@ -242,7 +244,7 @@
 <!-- FORMATION PERIOD -->
 <div id="formation-99999" class="typeForm" style="display:none">
 	<div class="half">
-		<@input i18nkey="eml.temporalCoverage.formationPeriod" name="formationPeriod" help="i18n" />
+		<@input i18nkey="eml.temporalCoverages.formationPeriod" name="formationPeriod" help="i18n" />
 	</div>
 	<div class="newline"></div>
 	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
@@ -253,7 +255,7 @@
 <!-- LIVING TIME PERIOD -->
 <div id="living-99999" class="typeForm" style="display:none">
 	<div class="half">
-		<@input i18nkey="eml.temporalCoverage.livingTimePeriod" name="livingTimePeriod" help="i18n" />
+		<@input i18nkey="eml.temporalCoverages.livingTimePeriod" name="livingTimePeriod" help="i18n" />
 	</div>
 	<div class="newline"></div>
 	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
