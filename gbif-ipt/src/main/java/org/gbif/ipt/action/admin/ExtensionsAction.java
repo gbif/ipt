@@ -70,7 +70,7 @@ public class ExtensionsAction extends POSTAction {
   private ArrayList<Extension> newExtensions;
 
   @Override
-  public String delete() {
+  public String delete() throws Exception {
     try {
       extensionManager.delete(id);
       addActionMessage(getText("admin.extension.delete.success", new String[]{id}));
@@ -160,7 +160,6 @@ public class ExtensionsAction extends POSTAction {
       addActionMessage(getText("admin.extension.install.success", new String[]{url}));
     } catch (Exception e) {
       log.debug(e);
-      System.out.println(getText("admin.extension.install.error", new String[]{url}));
       addActionError(getText("admin.extension.install.error", new String[]{url}));
     }
     return SUCCESS;
