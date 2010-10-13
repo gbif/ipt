@@ -7,6 +7,7 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.model.voc.PublicationStatus;
+import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.RegistryException;
@@ -92,9 +93,17 @@ public class OverviewAction extends ManagerBaseAction {
       addActionMessage("Deleted " + res);
       return HOME;
     } catch (IOException e) {
-      log.error("Cannot delete resource", e);
-      addActionError("Cannot delete resource: " + e.getMessage());
+      String msg = getText("manage.resource.delete.failed");
+      log.error(msg, e);
+      addActionError(msg);
+      addActionExceptionError(e);
+    } catch (DeletionNotAllowedException e) {
+      String msg = getText("manage.resource.delete.failed");
+      log.error(msg, e);
+      addActionError(msg);
+      addActionExceptionError(e);
     }
+
     return SUCCESS;
   }
 
