@@ -9,7 +9,7 @@
 <div class="info">
 	<#if help=="i18n"><#if i18nkey==""><@s.text name="${name}.help"/><#else><@s.text name="${i18nkey}.help"/></#if><#else><#if help?has_content>${help}</#if></#if>
 	<#if (helpOptions?exists && helpOptions?size>0)>
-	<p>Options:</p>
+	<p><@s.text name="help.options"/></p>
 	<ol>
 	  <#list helpOptions?keys as val>
 	    <li><a href="#" val="${val}">${helpOptions[val]}</a></li>
