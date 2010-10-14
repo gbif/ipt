@@ -1,19 +1,7 @@
 <#macro input name value="-99999" i18nkey="" errorfield="" type="text" size=-1 disabled=false help="" helpOptions=[] date=false>
   <#if date><div class="calendarInfo"><#else><div></#if>
 	<#include "/WEB-INF/pages/macros/form_field_common.ftl">
-	<input type="${type}" id="${name}" name="${name}" value=
-		<#if value=="-99999">
-			<#assign name_value><@s.property value="${name}"/></#assign>
-			<#if date && name_value?has_content>
-				<#setting date_format="dd/MM/yy">
-				${name_value?date?string("dd/MM/yyyy")}
-			<#else>
-				"${name_value}"
-			</#if>
-		<#else>
-			${value}
-		</#if>
-		<#if (size>0)>size="${size}"</#if> <#if disabled>readonly="readonly"</#if>/>
+	<input type="${type}" id="${name}" name="${name}" value="<#if value=="-99999"><@s.property value="${name}"/><#else>${value}</#if>" <#if (size>0)>size="${size}"</#if> <#if disabled>readonly="readonly"</#if>/>
   </div>
 </#macro>
 
@@ -58,5 +46,4 @@
 	<img style="visibility:hidden" src="${baseURL}/images/info.gif" />
 	<input type="text" value="${value}" <#if (size>0)>size="${size}"</#if> readonly="readonly" />
   </div>
-</#macro> 
-
+</#macro>
