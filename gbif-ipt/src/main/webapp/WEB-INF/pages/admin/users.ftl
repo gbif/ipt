@@ -9,10 +9,10 @@
 
 <table class="simple" width="100%">
 	<tr>
-		<th>Name</th>
-		<th>Email</th>
-		<th>Role</th>
-		<th>Last Login</th>
+		<th><@s.text name="admin.users.name"/></th>
+		<th><@s.text name="admin.users.email"/></th>
+		<th><@s.text name="admin.users.role"/></th>
+		<th><@s.text name="admin.users.last.login"/></th>
 	</tr>
 
 	<#list users as u>	
