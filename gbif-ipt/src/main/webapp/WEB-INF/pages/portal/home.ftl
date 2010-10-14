@@ -9,16 +9,16 @@
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
 <h1><@s.text name="portal.home.title"/></h1>
-<p>Public resources available through this IPT installation.</p> 
+<p><@s.text name="portal.home.intro"/></p> 
 
 <#if (resources?size>0)>
 <table class="simple" width="100%">
 	<tr>
-		<th>Name</th>
-		<th>Organisation</th>
-		<th>Type</th>
-		<th>Records</th>
-		<th>Last modified</th>
+		<th><@s.text name="portal.home.name"/></th>
+		<th><@s.text name="portal.home.organisation"/></th>
+		<th><@s.text name="portal.home.type"/></th>
+		<th><@s.text name="portal.home.records"/></th>
+		<th><@s.text name="portal.home.last.modified"/></th>
 	</tr>
 <#list resources as r>
   <tr>
@@ -31,10 +31,10 @@
 </#list>
 </table>
 
-<p>The most recently updated resources are also available as an <a href="${baseURL}/rss.do">RSS feed</a> <img id="rssImage" src="${baseURL}/images/rss.png"/>.</p>
+<p><@s.text name="portal.home.feed"><@s.param>${baseURL}/rss.do</@s.param></@s.text> <img id="rssImage" src="${baseURL}/images/rss.png"/>.</p>
 
 <#else>
-	<p>No public resources existing.</p>
+	<p><@s.text name="portal.home.no.public"/></p>
 </#if>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
