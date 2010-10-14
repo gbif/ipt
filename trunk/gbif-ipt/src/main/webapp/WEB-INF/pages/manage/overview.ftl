@@ -270,7 +270,7 @@ $(document).ready(function(){
 <div class="definition" id="managers">	
   <div class="title">
   	<div class="head">
-        Resource Managers
+        <@s.text name="manage.overview.resource.managers"/>
   	</div>
   	<div class="actions">
   	  <#if (potentialManagers?size>0)>
@@ -289,13 +289,13 @@ $(document).ready(function(){
   </div>
   <div class="body">
       	<div>
-			Resources can be managed by several managers. You can grant other managers permission to modify ${resource.shortname} 
-      	</div>
+      		<@s.text name="manage.overview.resource.managers.description"><@s.param>${resource.shortname}</@s.param></@s.text>
+		</div>
       	<div class="details">
       		<table>
-          		<tr><th>Creator</th><td>${resource.creator.name}, ${resource.creator.email}</td></tr>
+          		<tr><th><@s.text name="manage.overview.resource.managers.creator"/></th><td>${resource.creator.name}, ${resource.creator.email}</td></tr>
           		<#list resource.managers as u>
-          		<tr><th>Manager</th><td>${u.name}, ${u.email} <a class="confirm" href="resource-delmanager.do?r=${resource.shortname}&id=${u.email}"><button>Delete</button></a></td></tr>
+          		<tr><th><@s.text name="manage.overview.resource.managers.manager"/></th><td>${u.name}, ${u.email} <a class="confirm" href="resource-delmanager.do?r=${resource.shortname}&id=${u.email}"><button><@s.text name="button.delete"/></button></a></td></tr>
 	    		</#list>
       		</table>
       	</div>
