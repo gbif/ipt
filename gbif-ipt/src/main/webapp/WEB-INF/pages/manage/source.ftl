@@ -50,7 +50,7 @@ $(document).ready(function(){
 		 	<@s.submit id="peekBtn" name="peek" key="button.preview"/>
 		</div>
   	</div>
-  	<#if source.fieldsTerminatedBy?exists>
+  	<#if source.isFileSource()>
 	  	<#-- only for file sources -->
 	  <div class="half">
 	  	<@input name="fileSource.ignoreHeaderLines" help="i18n" helpOptions={"0":"None","1":"Single Header row"}/>

@@ -135,7 +135,7 @@ public abstract class Source implements Comparable<Source> {
     private String database;
     private String username;
     private Password password = new Password();
-    
+
     public String getDatabase() {
       return database;
     }
@@ -255,6 +255,13 @@ public abstract class Source implements Comparable<Source> {
   public int hashCode() {
 //    return Objects.hashCode(resource, name);
     return Objects.hashCode(name);
+  }
+
+  public boolean isFileSource() {
+    if (FileSource.class.isInstance(this)) {
+      return true;
+    }
+    return false;
   }
 
   public boolean isReadable() {
