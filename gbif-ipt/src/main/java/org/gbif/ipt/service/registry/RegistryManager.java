@@ -23,21 +23,21 @@ public interface RegistryManager {
    * 
    * @return
    */
-  public List<Extension> getExtensions();
+  public List<Extension> getExtensions() throws RegistryException;
 
   /**
    * List of organisations
    * 
    * @return
    */
-  public List<Organisation> getOrganisations();
+  public List<Organisation> getOrganisations() throws RegistryException;
 
   /**
    * Gets list of vocabularies, but only the basic metadata, i.e. each without the list concepts
    * 
    * @return
    */
-  public List<Vocabulary> getVocabularies();
+  public List<Vocabulary> getVocabularies() throws RegistryException;
 
   /**
    * Register a new resource with the GBIF registry and associate with to the given organisation.
@@ -55,18 +55,11 @@ public interface RegistryManager {
    * Register an IPT instance against the GBIF Registry
    * 
    * @param ipt
+   * @param organisation the organisation to register the IPT with
    * @return
    * @throws RegistryException
    */
-  public String registerIPT(Ipt ipt) throws RegistryException;
-
-  /**
-   * Sets the Registry credentials
-   * 
-   * @param username
-   * @param password
-   */
-  public void setRegistryCredentials(String username, String password);
+  public String registerIPT(Ipt ipt, Organisation organisation) throws RegistryException;
 
   /**
    * Updates a new resource with the GBIF registry and associate with to the given organisation.
@@ -75,10 +68,11 @@ public interface RegistryManager {
    * @param organisation
    * @param ipt
    * @param eml
-   * @return the newly created registry key for the resource
    * @throws RegistryException
+   * @throws IllegalArgumentException is resource is not registered yet
    */
-  public UUID updateResource(Resource resource, Organisation organisation, Ipt ipt) throws RegistryException;
+  public void updateResource(Resource resource, Organisation organisation, Ipt ipt) throws RegistryException,
+      IllegalArgumentException;
 
   public boolean validateOrganisation(String organisationKey, String password);
 

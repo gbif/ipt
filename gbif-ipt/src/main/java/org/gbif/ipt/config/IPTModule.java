@@ -17,8 +17,26 @@ import com.google.inject.Scopes;
 import com.google.inject.Singleton;
 import com.google.inject.assistedinject.FactoryProvider;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
+import org.apache.http.HttpException;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpRequestInterceptor;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.AuthState;
+import org.apache.http.auth.Credentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.protocol.ClientContext;
+import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.conn.scheme.PlainSocketFactory;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.impl.auth.BasicScheme;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.ExecutionContext;
+import org.apache.http.protocol.HttpContext;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -113,8 +131,42 @@ public class IPTModule extends AbstractModule {
   @Provides
   @Singleton
   @Inject
-  public HttpClient provideHttpClient() {
-    HttpClient client = new HttpClient(new MultiThreadedHttpConnectionManager());
+  public DefaultHttpClient provideHttpClient() {
+    HttpParams params = new BasicHttpParams();
+    SchemeRegistry schemeRegistry = new SchemeRegistry();
+    schemeRegistry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
+
+    ClientConnectionManager cm = new ThreadSafeClientConnManager(params, schemeRegistry);
+    DefaultHttpClient client = new DefaultHttpClient(cm, params);
+
+    // registry currently requires Preemptive authentication
+    // add preemptive authentication via this interceptor
+    HttpRequestInterceptor preemptiveAuth = new HttpRequestInterceptor() {
+      public void process(final HttpRequest request, final HttpContext context) throws HttpException, IOException {
+
+        AuthState authState = (AuthState) context.getAttribute(ClientContext.TARGET_AUTH_STATE);
+        System.out.println("authState:" + authState);
+        CredentialsProvider credsProvider = (CredentialsProvider) context.getAttribute(ClientContext.CREDS_PROVIDER);
+        System.out.println("credsProvider:" + credsProvider);
+        HttpHost targetHost = (HttpHost) context.getAttribute(ExecutionContext.HTTP_TARGET_HOST);
+        System.out.println("targetHost:" + targetHost);
+
+        // If not auth scheme has been initialized yet
+        if (authState.getAuthScheme() == null && credsProvider != null) {
+          AuthScope authScope = new AuthScope(targetHost.getHostName(), targetHost.getPort());
+          // Obtain credentials matching the target host
+          Credentials creds = credsProvider.getCredentials(authScope);
+          // If found, generate BasicScheme preemptively
+          if (creds != null) {
+            authState.setAuthScheme(new BasicScheme());
+            authState.setCredentials(creds);
+          }
+        }
+      }
+    };
+
+    // Add as the very first interceptor in the protocol chain
+    client.addRequestInterceptor(preemptiveAuth, 0);
     return client;
   }
 
