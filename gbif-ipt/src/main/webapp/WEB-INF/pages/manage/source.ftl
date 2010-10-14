@@ -36,13 +36,13 @@ $(document).ready(function(){
 	  	<@input name="source.name" help="i18n" disabled=id?has_content/>
 		<div class="details">
 			<table>
-			  	<tr><th>Readable</th><td><img src="${baseURL}/images/<#if source.readable>good.gif" /><#else>bad.gif" /> ${problem!}</#if></td></tr>
-			  	<tr><th>Columns</th><td>${source.columns!}</td></tr>
+			  	<tr><th><@s.text name='manage.source.readable'/></th><td><img src="${baseURL}/images/<#if source.readable>good.gif" /><#else>bad.gif" /> ${problem!}</#if></td></tr>
+			  	<tr><th><@s.text name='manage.source.columns'/></th><td>${source.columns!}</td></tr>
 		  	  	<#if source.fieldsTerminatedBy?exists>
-			  	<tr><th>File</th><td>${(source.file.getAbsolutePath())!}</td></tr>
-			  	<tr><th>Size</th><td>${source.fileSizeFormatted!"???"}</td></tr>
-			  	<tr><th>Rows</th><td>${source.rows!"???"}</td></tr>
-			  	<tr><th>Modified</th><td>${(source.lastModified?datetime?string)!}</td></tr>
+			  	<tr><th><@s.text name='manage.source.file'/></th><td>${(source.file.getAbsolutePath())!}</td></tr>
+			  	<tr><th><@s.text name='manage.source.size'/></th><td>${source.fileSizeFormatted!"???"}</td></tr>
+			  	<tr><th><@s.text name='manage.source.rows'/></th><td>${source.rows!"???"}</td></tr>
+			  	<tr><th><@s.text name='manage.source.modified'/></th><td>${(source.lastModified?datetime?string)!}</td></tr>
 		  		<#else>
 		  		</#if>
 			</table>
