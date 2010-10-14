@@ -7,7 +7,7 @@
 		    <div id="topmenu">
 		        <ul>
 		      [#if (Session.curr_user)??] 
-		        	<li>Logged in as <em>${Session.curr_user.email}</em></li>
+		        	<li>[@s.text name="menu.loggedin"/] <em>${Session.curr_user.email}</em></li>
 		        	<li[#if currentMenu=="account"] class="current"[/#if]><a href="${baseURL}/account.do">[@s.text name="menu.account"/]</a></li>
 		        	<li[#if currentMenu=="logout"] class="current"[/#if]><a href="${baseURL}/logout.do">[@s.text name="menu.logout"/]</a></li>
 			  [#else]
