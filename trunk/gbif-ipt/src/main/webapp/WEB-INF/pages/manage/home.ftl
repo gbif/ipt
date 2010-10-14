@@ -17,7 +17,7 @@
 		<th><@s.text name="manage.home.visible"/></th>
 		<#-- see if the ADMIN has enabled registrations -->
 		<#if registrationAllowed>
-		<th>Registered</th>
+		<th><@s.text name="manage.home.registered"/></th>
 		</#if>
 	</tr>
 <#list resources as r>
@@ -36,9 +36,9 @@
 	<#if registrationAllowed>
 	<td>
 		<#if r.status=='REGISTERED'>
-			My Organisation
+			<@s.text name="manage.home.myOrganisation"/>
 		<#else>
-			Not Registered
+			<@s.text name="manage.home.not.registered"/>
 		</#if>
 	</td>
 	</#if>
