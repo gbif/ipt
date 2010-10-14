@@ -10,11 +10,11 @@
 <#if (resources?size>0)>
 <table class="simple" width="100%">
 	<tr>
-		<th>Name</th>
-		<th>Type</th>
-		<th>Records</th>
-		<th>Last modified</th>
-		<th>Visible to</th>
+		<th><@s.text name="manage.home.name"/></th>
+		<th><@s.text name="manage.home.type"/></th>
+		<th><@s.text name="manage.home.records"/></th>
+		<th><@s.text name="manage.home.last.modified"/></th>
+		<th><@s.text name="manage.home.visible"/></th>
 		<#-- see if the ADMIN has enabled registrations -->
 		<#if registrationAllowed>
 		<th>Registered</th>
@@ -28,9 +28,9 @@
 	<td>${r.modified?date}</td>
 	<td>
 		<#if r.status=='PRIVATE'>
-			You and ${(r.managers?size)!0} others
+			<@s.text name="manage.home.visible.private"><@s.param>${(r.managers?size)!0}</@s.param></@s.text>
 		<#else>
-			Everyone
+			<@s.text name="manage.home.visible.public"/>
 		</#if>
 	</td>
 	<#if registrationAllowed>
@@ -47,7 +47,7 @@
 </table>
 
 <#else>
-	<p>None, please create a resource or ask existing managers to add you to their resource(s).</p>
+	<p><@s.text name="manage.home.resources.none"/></p>
 </#if>
 
 
