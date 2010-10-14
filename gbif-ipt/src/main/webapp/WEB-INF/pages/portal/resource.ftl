@@ -11,7 +11,8 @@
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
 <h1>${resource.title!resource.shortname}</h1>
-<p>${resource.description!"No Description available"}</p>
+<#assign no_description><@s.text name='portal.resource.no.description'/></#assign>
+<p>${resource.description!no_description}</p>
 <div class="definition" id="metadata">	
   <div class="title">
   	<div class="head">

@@ -35,16 +35,15 @@ $(document).ready(function(){
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
 <h1>${resource.title!resource.shortname}</h1>
-<p>This is the overview page for the <em>${resource.shortname}</em> resource.
-Please start by filling in at least the mandatory metadata before you can upload and map data in order to generate darwin core archives.
-By default a resource is private to the managers. Once published to GBIF you can only remove the resource, but not revert to a private state.
+<p>
+<@s.text name="manage.overview.intro"><@s.param>${resource.shortname}</@s.param></@s.text>
 </p>
 
 
 <div class="definition" id="metadata">	
   <div class="title">
   	<div class="head">
-        Metadata
+        <@s.text name='manage.overview.Metadata'/>
   	</div>
   	<div class="actions">
 	  <form action='metadata-basic.do' method='get'>
@@ -54,19 +53,20 @@ By default a resource is private to the managers. Once published to GBIF you can
   	</div>
   	<#if missingMetadata>
   	<div class="warn">
-		The resource is missing mandatory metadata! 
+		<@s.text name='manage.overview.missing.metadata'/>
   	</div>
   	</#if>
   </div>
   <div class="body">
       	<div>
-      		${resource.description!"No Description entered yet"}
+      		<#assign no_description><@s.text name='manage.overview.no.description'/></#assign>
+      		${resource.description!no_description}
       	</div>
       	<div class="details">
       		<table>
-          		<tr><th>Keywords</th><td>${resource.eml.subject!}</td></tr>
-          		<tr><th>Taxon Coverage</th><td><#list resource.eml.taxonomicCoverages as tc><#list tc.taxonKeywords as k>${k.scientificName!k.commonName!}<#if !k_has_next>; </#if></#list></#list></td></tr>
-          		<tr><th>Spatial Coverage</th><td><#list resource.eml.geospatialCoverages as geo><#list geo.keywords as k>${k!}<#if !k_has_next>;</#if> </#list></#list></td></tr>
+          		<tr><th><@s.text name='manage.overview.keywords'/></th><td>${resource.eml.subject!}</td></tr>
+          		<tr><th><@s.text name='manage.overview.taxcoverage'/></th><td><#list resource.eml.taxonomicCoverages as tc><#list tc.taxonKeywords as k>${k.scientificName!k.commonName!}<#if !k_has_next>; </#if></#list></#list></td></tr>
+          		<tr><th><@s.text name='manage.overview.geocoverage'/></th><td><#list resource.eml.geospatialCoverages as geo><#list geo.keywords as k>${k!}<#if !k_has_next>;</#if> </#list></#list></td></tr>
       		</table>
       	</div>
   </div>
@@ -88,22 +88,19 @@ By default a resource is private to the managers. Once published to GBIF you can
   </div>
   <div class="body">
       	<div>
-			Your data sources for generating a Darwin Core archive. 
-			You can upload delimited text files (e.g. csv, tab or using any other delimiter) either directly or compressed (zip or gzip).
-			Alternatively you can configure SQL views to databases in your local network.
-			To create a new sql source press <@s.text name="button.add"/>, to (re)upload a file please select the local file before hitting <@s.text name="button.add"/>. 
+      		<@s.text name='manage.overview.source.description1'/> <@s.text name='manage.overview.source.description2'/> <@s.text name="button.add"/><@s.text name='manage.overview.source.description3'/> <@s.text name="button.add"/>. 
       	</div>
       	<div class="details">
       		<table>
       		  <#list resource.sources as src>
       		  	<tr><th>
       			<#if src.rows?exists>
-          		 ${src.name} [file]</th><td>${src.fileSizeFormatted}, ${src.rows} rows, ${src.columns} columns. ${(src.lastModified?datetime?string)!}
+          		 ${src.name} <@s.text name='manage.overview.source.file'/></th><td>${src.fileSizeFormatted}, ${src.rows} <@s.text name='manage.overview.source.rows'/>, ${src.columns} <@s.text name='manage.overview.source.columns'/>. ${(src.lastModified?datetime?string)!}
           		<#else>
-          		 ${src.name} [sql]</th><td>db=${src.database!"..."}, ${src.columns} columns. 
+          		 ${src.name} <@s.text name='manage.overview.source.sql'/></th><td>db=${src.database!"..."}, ${src.columns} <@s.text name='manage.overview.source.columns'/>. 
           		</#if>
           		<#if !src.readable><img src="${baseURL}/images/warning.gif" /></#if> 
-          		<a href="source.do?r=${resource.shortname}&id=${src.name}"><button>Edit</button></a>
+          		<a href="source.do?r=${resource.shortname}&id=${src.name}"><button><@s.text name='button.edit'/></button></a>
           		</td></tr>
           	  </#list>
       		</table>
@@ -114,7 +111,7 @@ By default a resource is private to the managers. Once published to GBIF you can
 <div class="definition" id="mappings">	
   <div class="title">
   	<div class="head">
-        DwC Mappings
+        <@s.text name='manage.overview.DwC.Mappings'/>
   	</div>
   	<div class="actions">
   	  <#if (potentialExtensions?size>0)>
@@ -130,8 +127,7 @@ By default a resource is private to the managers. Once published to GBIF you can
   	  <#else>
   	  	<#if !resource.core?exists>
 	  	<div class="warn">
-			No DwC extensions installed. 
-			<br/>Please contact your admin! 
+			<@s.text name='manage.overview.no.DwC.extensions'/>
 	  	</div>
   	  	</#if>
   	  </#if>
@@ -139,18 +135,18 @@ By default a resource is private to the managers. Once published to GBIF you can
   </div>
   <div class="body">
       	<div>
-			Your mapping between the source data and Darwin Core terms.
+      		<@s.text name='manage.overview.DwC.Mappings.description'/>
       	</div>
       	<div class="details">
       		<table>
           		<#if resource.core?exists>
-          		<tr><th>${resource.core.extension.title}</th><td>${resource.core.fields?size} terms mapped to source ${resource.core.source.name}
-          		<a href="mapping.do?r=${resource.shortname}&id=${resource.core.extension.rowType}"><button>Edit</button></a>
+          		<tr><th>${resource.core.extension.title}</th><td>${resource.core.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${resource.core.source.name}
+          		<a href="mapping.do?r=${resource.shortname}&id=${resource.core.extension.rowType}"><button><@s.text name='button.edit'/></button></a>
           		</td></tr>
           		</#if>
       		  <#list resource.extensions as m>
-          		<tr><th>${m.extension.title}</th><td>${m.fields?size} terms mapped to source ${(m.source.name)!}
-          		<a href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType}"><button>Edit</button></a>
+          		<tr><th>${m.extension.title}</th><td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}
+          		<a href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType}"><button><@s.text name='button.edit'/></button></a>
           		</td></tr>
           	  </#list>
       		</table>
@@ -161,7 +157,7 @@ By default a resource is private to the managers. Once published to GBIF you can
 <div class="definition" id="visibility">	
   <div class="title">
   	<div class="head">
-        Visibility
+        <@s.text name='manage.overview.visibility'/>
         <em class="<#if resource.status=="PRIVATE">RED<#else>green</#if>"><@s.text name="resource.status.${resource.status?lower_case}"/></em>
   	</div>
   	<div class="actions">
