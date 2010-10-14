@@ -41,10 +41,10 @@
 <hr/>
 <h3><@s.text name="extension.vocabularies.title"/></h3>
 <p>
-	last updated on ${vocabsLastUpdated?date?string.medium}<br/> 
+	<@s.text name="extension.vocabularies.last.update"><@s.param>${vocabsLastUpdated?date?string.medium}</@s.param></@s.text>
 	  <form action='extensions.do' method='post'>
 		<input type='submit' name='updateVocabs' value='Update' />
-  	  all ${numVocabs} vocabularies with latest registered version
+	<@s.text name="extension.vocabularies.number"><@s.param>${numVocabs}</@s.param></@s.text>
   	  </form>
 </p>
 </#if>
