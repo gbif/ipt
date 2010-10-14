@@ -61,5 +61,6 @@ public class AboutAction extends BaseAction {
       log.warn("Cannot render custom about.ftl template from data dir", e);
       content = "";
     }
+
   }
 }

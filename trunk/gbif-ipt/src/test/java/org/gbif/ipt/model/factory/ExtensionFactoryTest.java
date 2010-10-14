@@ -8,7 +8,6 @@
 package org.gbif.ipt.model.factory;
 
 import org.gbif.ipt.config.IPTModule;
-import org.gbif.ipt.config.InjectingTestClassRunner;
 import org.gbif.ipt.mock.MockVocabularyManager;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionProperty;
@@ -17,8 +16,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -26,13 +25,13 @@ import javax.xml.parsers.SAXParserFactory;
 
 /**
  */
-@RunWith(InjectingTestClassRunner.class)
 public class ExtensionFactoryTest {
 
   private ExtensionFactory getFactory() throws ParserConfigurationException, SAXException {
     IPTModule mod = new IPTModule();
     SAXParserFactory sax = mod.provideNsAwareSaxParserFactory();
-    ExtensionFactory factory = new ExtensionFactory(new ThesaurusHandlingRule(new MockVocabularyManager()), sax);
+    DefaultHttpClient client = new DefaultHttpClient();
+    ExtensionFactory factory = new ExtensionFactory(new ThesaurusHandlingRule(new MockVocabularyManager()), sax, client);
     return factory;
   }
 

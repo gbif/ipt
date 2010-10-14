@@ -130,8 +130,7 @@ public class RegistrationAction extends POSTAction {
     if (registrationManager.getHostingOrganisation() == null) {
       try {
         // register against the Registry
-        registryManager.setRegistryCredentials(organisation.getKey().toString(), organisation.getPassword());
-        registryManager.registerIPT(ipt);
+        registryManager.registerIPT(ipt, organisation);
         registrationManager.addHostingOrganisation(organisation);
         // add the hosting organisation to the associated list of organisations as well
         registrationManager.addAssociatedOrganisation(organisation);

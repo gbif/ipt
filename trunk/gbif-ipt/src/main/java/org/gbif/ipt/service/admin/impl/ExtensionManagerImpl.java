@@ -15,15 +15,14 @@ import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.utils.DownloadUtil;
+import org.gbif.ipt.utils.HttpUtil;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOCase;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.commons.lang.StringUtils;
 import org.xml.sax.SAXException;
@@ -31,11 +30,9 @@ import org.xml.sax.SAXException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Writer;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,18 +50,19 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   private Map<String, Extension> extensionsByRowtype = new HashMap<String, Extension>();
   private static final String CONFIG_FOLDER = ".extensions";
   private ExtensionFactory factory;;
-  private HttpClient httpClient;
+  private HttpUtil http;
+  private DownloadUtil downloader;
   private final String TAXON_KEYWORD = "dwc:taxon";
   private final String OCCURRENCE_KEYWORD = "dwc:occurrence";
   private ResourceManager resourceManager;
   private ConfigWarnings warnings;
 
   @Inject
-  public ExtensionManagerImpl(ExtensionFactory factory, HttpClient httpClient, ResourceManager resourceManager,
+  public ExtensionManagerImpl(ExtensionFactory factory, HttpUtil http, ResourceManager resourceManager,
       ConfigWarnings warnings) {
     super();
     this.factory = factory;
-    this.httpClient = httpClient;
+    this.http = http;
     this.warnings = warnings;
     this.resourceManager = resourceManager;
   }
@@ -106,19 +104,9 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     // download extension into local file first for subsequent IPT startups
     // final filename is based on rowType which we dont know yet - create a tmp file first
     File tmpFile = dataDir.configFile(CONFIG_FOLDER + "/tmp-extension.xml");
-    if (tmpFile.exists()) {
-    }
-    Writer localWriter = null;
-    GetMethod method = new GetMethod(url.toString());
-    method.setFollowRedirects(true);
     try {
-      FileUtils.forceMkdir(tmpFile.getParentFile());
-      localWriter = new FileWriter(tmpFile);
-      httpClient.executeMethod(method);
-      InputStream is = method.getResponseBodyAsStream();
-      IOUtils.copy(is, localWriter);
+      downloader.download(url, tmpFile);
       log.info("Successfully downloaded Extension " + url);
-      localWriter.close();
       // finally read in the new file and create the extension object
       ext = loadFromFile(tmpFile);
       if (ext != null && ext.getRowType() != null) {
@@ -133,11 +121,6 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     } catch (Exception e) {
       log.error(e);
       throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Error installing extension " + url);
-    } finally {
-      try {
-        method.releaseConnection();
-      } catch (RuntimeException e) {
-      }
     }
     return ext;
   }

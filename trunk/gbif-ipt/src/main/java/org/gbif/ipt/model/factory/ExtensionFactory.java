@@ -14,9 +14,11 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import org.apache.commons.digester.Digester;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
-import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
@@ -41,16 +43,17 @@ import javax.xml.parsers.SAXParserFactory;
 @Singleton
 public class ExtensionFactory {
   protected static Logger log = Logger.getLogger(ExtensionFactory.class);
-  protected static HttpClient httpClient = new HttpClient(new MultiThreadedHttpConnectionManager());
   public static final String EXTENSION_NAMESPACE = "http://rs.gbif.org/extension/";
   private ThesaurusHandlingRule thesaurusRule;
   private SAXParserFactory saxf;
+  private HttpClient client;
 
   @Inject
-  public ExtensionFactory(ThesaurusHandlingRule thesaurusRule, SAXParserFactory factory) {
+  public ExtensionFactory(ThesaurusHandlingRule thesaurusRule, SAXParserFactory factory, DefaultHttpClient client) {
     super();
     this.thesaurusRule = thesaurusRule;
     this.saxf = factory;
+    this.client = client;
   }
 
   /**
@@ -167,30 +170,32 @@ public class ExtensionFactory {
    */
   public Extension build(String url) throws IOException, SAXException {
 
-    GetMethod method = new GetMethod(url);
-    method.setFollowRedirects(true);
-    try {
-      httpClient.executeMethod(method);
-      InputStream is = method.getResponseBodyAsStream();
-      try {
-        Extension e = build(is);
-        log.info("Successfully parsed extension: " + e.getTitle());
-        return e;
+    HttpGet get = new HttpGet(url);
 
-      } catch (SAXException e) {
-        log.error("Unable to parse XML for extension: " + e.getMessage(), e);
-      } finally {
-        is.close();
+    // execute
+    try {
+      HttpResponse response = client.execute(get);
+      HttpEntity entity = response.getEntity();
+      if (entity != null) {
+        // copy stream to local file
+        InputStream is = entity.getContent();
+        try {
+          Extension e = build(is);
+          log.info("Successfully parsed extension: " + e.getTitle());
+          return e;
+
+        } catch (SAXException e) {
+          log.error("Unable to parse XML for extension: " + e.getMessage(), e);
+        } finally {
+          is.close();
+        }
+        entity.consumeContent();
       }
     } catch (Exception e) {
       log.error(e);
-
-    } finally {
-      try {
-        method.releaseConnection();
-      } catch (RuntimeException e) {
-      }
     }
+
+    // close http connection
     return null;
   }
 

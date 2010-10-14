@@ -11,10 +11,15 @@ package org.gbif.ipt.service;
  */
 public class RegistryException extends RuntimeException {
   public enum TYPE {
-    NOT_AUTHORISED, RESOURCE_EXISTS_ALREADY, MISSING_METADATA, BAD_RESPONSE
+    NOT_AUTHORISED, RESOURCE_EXISTS_ALREADY, MISSING_METADATA, BAD_RESPONSE, IO_ERROR, FAILED, UNKNOWN
   };
 
   protected TYPE type;
+
+  public RegistryException(TYPE type, Exception e) {
+    super(e.getMessage(), e);
+    this.type = type;
+  }
 
   /**
    * All configuration errors must have a type and a message. The message is useful in logging but not for display, as
@@ -25,6 +30,11 @@ public class RegistryException extends RuntimeException {
    */
   public RegistryException(TYPE type, String message) {
     super(message);
+    this.type = type;
+  }
+
+  public RegistryException(TYPE type, String message, Exception e) {
+    super(message, e);
     this.type = type;
   }
 

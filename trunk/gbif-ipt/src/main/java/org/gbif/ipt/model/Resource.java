@@ -235,6 +235,13 @@ public class Resource implements Serializable, Comparable<Resource> {
     return null;
   }
 
+  public String getTitleOrShortname() {
+    if (eml != null) {
+      return eml.getTitle();
+    }
+    return shortname;
+  }
+
   public CoreRowType getType() {
     return type;
   }
@@ -345,4 +352,5 @@ public class Resource implements Serializable, Comparable<Resource> {
   public String toString() {
     return "Resource " + shortname;
   }
+
 }

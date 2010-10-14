@@ -14,6 +14,7 @@ import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.DeletionNotAllowedException.Reason;
 import org.gbif.ipt.service.InvalidConfigException;
+import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.registry.RegistryManager;
@@ -249,7 +250,8 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       uri2url = (Map<String, URL>) xstream.fromXML(in);
       log.debug("Loaded uri2url vocabulary map with " + uri2url.size() + " entries");
     } catch (IOException e) {
-      log.warn("Cannot load the uri2url mapping from datadir: " + e.getMessage());
+      log.warn("Cannot load the uri2url mapping from datadir. This is normal when first setting up a new datadir. Error: "
+          + e.getMessage());
     }
     // now iterate over all vocab files and load them
     int counter = 0;
@@ -271,7 +273,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
 
     // we could be starting up for the very first time. Try to load default vocabs with URLs from registry
     // load mandatory vocabs
-    Map<String, Vocabulary> registeredVocabs = null;
+    Map<String, URL> registeredVocabs = null;
     for (String vuri : defaultVocabs) {
       if (!uri2url.containsKey(vuri.toLowerCase())) {
         if (registeredVocabs == null) {
@@ -279,11 +281,11 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
           registeredVocabs = registeredVocabs();
         }
         try {
-          Vocabulary v = registeredVocabs.get(vuri);
-          if (v == null) {
+          URL vurl = registeredVocabs.get(vuri);
+          if (vurl == null) {
             log.warn("Default vocabulary " + vuri + " unknown to GBIF registry");
           } else {
-            install(v.getUrl());
+            install(vurl);
           }
         } catch (Exception e) {
           warnings.addStartupError("Cant load default vocabulary " + vuri, e);
@@ -324,20 +326,17 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
     return v;
   }
 
-  private Map<String, Vocabulary> registeredVocabs() {
-    Map<String, Vocabulary> registeredVocabs = new HashMap<String, Vocabulary>();
-    for (Vocabulary v : registryManager.getVocabularies()) {
-      if (v != null) {
-        registeredVocabs.put(v.getUri(), v);
+  private Map<String, URL> registeredVocabs() {
+    Map<String, URL> registeredVocabs = new HashMap<String, URL>();
+    try {
+      for (Vocabulary v : registryManager.getVocabularies()) {
+        if (v != null) {
+          registeredVocabs.put(v.getUri(), v.getUrl());
+        }
       }
+    } catch (RegistryException e) {
+      warnings.addStartupError("Failed to retrieve list of registered vocabularies from GBIF registry", e);
     }
-    // assure we have at least the basic vocabs in this list
-    for (String uri : defaultVocabs) {
-      if (!registeredVocabs.containsKey(uri)) {
-        log.error("Missing required default vocabulary in registry: " + uri);
-      }
-    }
-
     return registeredVocabs;
   }
 

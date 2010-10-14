@@ -14,14 +14,16 @@ import org.gbif.ipt.model.VocabularyTerm;
 import com.google.inject.Inject;
 
 import org.apache.commons.digester.Digester;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -34,53 +36,14 @@ import javax.xml.parsers.SAXParserFactory;
 public class VocabularyFactory {
   public static final String VOCABULARY_NAMESPACE = "http://rs.gbif.org/thesaurus/";
   protected static Logger log = Logger.getLogger(VocabularyFactory.class);
-  private HttpClient httpClient;
+  private HttpClient client;
   private SAXParserFactory saxf;
 
   @Inject
-  public VocabularyFactory(HttpClient httpClient, SAXParserFactory saxf) {
+  public VocabularyFactory(DefaultHttpClient httpClient, SAXParserFactory saxf) {
     super();
-    this.httpClient = httpClient;
+    this.client = httpClient;
     this.saxf = saxf;
-  }
-
-  /**
-   * Builds thesauri from the supplied Strings which should be URLs
-   * 
-   * @param urls To build thesauri from
-   * @return The collection of thesauri
-   */
-  public Collection<Vocabulary> build(Collection<String> urls) {
-    List<Vocabulary> thesauri = new LinkedList<Vocabulary>();
-
-    for (String urlAsString : urls) {
-      GetMethod method = new GetMethod(urlAsString);
-      method.setFollowRedirects(true);
-      try {
-        httpClient.executeMethod(method);
-        InputStream is = method.getResponseBodyAsStream();
-        try {
-          Vocabulary tv = build(is);
-          log.info("Successfully parsed Thesaurus: " + tv.getTitle());
-          thesauri.add(tv);
-
-        } catch (SAXException e) {
-          log.error("Unable to parse XML for extension: " + e.getMessage(), e);
-        } finally {
-          is.close();
-        }
-      } catch (Exception e) {
-        log.error(e);
-
-      } finally {
-        try {
-          method.releaseConnection();
-        } catch (RuntimeException e) {
-        }
-      }
-    }
-
-    return thesauri;
   }
 
   /**
@@ -167,29 +130,30 @@ public class VocabularyFactory {
   public Vocabulary build(String url) {
     List<Vocabulary> thesauri = new LinkedList<Vocabulary>();
 
-    GetMethod method = new GetMethod(url);
-    method.setFollowRedirects(true);
-    try {
-      httpClient.executeMethod(method);
-      InputStream is = method.getResponseBodyAsStream();
-      try {
-        Vocabulary tv = build(is);
-        log.info("Successfully parsed Thesaurus: " + tv.getTitle());
-        return tv;
+    HttpGet get = new HttpGet(url);
 
-      } catch (SAXException e) {
-        log.error("Unable to parse XML for extension: " + e.getMessage(), e);
-      } finally {
-        is.close();
+    // execute
+    try {
+      HttpResponse response = client.execute(get);
+      HttpEntity entity = response.getEntity();
+      if (entity != null) {
+        // copy stream to local file
+        InputStream is = entity.getContent();
+        try {
+          Vocabulary tv = build(is);
+          log.info("Successfully parsed Thesaurus: " + tv.getTitle());
+          return tv;
+
+        } catch (SAXException e) {
+          log.error("Unable to parse XML for extension: " + e.getMessage(), e);
+        } finally {
+          is.close();
+        }
+        // close http connection
+        entity.consumeContent();
       }
     } catch (Exception e) {
       log.error(e);
-
-    } finally {
-      try {
-        method.releaseConnection();
-      } catch (RuntimeException e) {
-      }
     }
 
     return null;

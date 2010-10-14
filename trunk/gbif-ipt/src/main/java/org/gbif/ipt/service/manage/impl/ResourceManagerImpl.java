@@ -659,7 +659,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   public void register(Resource resource, Organisation organisation, Ipt ipt) throws RegistryException {
     if (PublicationStatus.REGISTERED != resource.getStatus()) {
-      registryManager.setRegistryCredentials(organisation.getKey().toString(), organisation.getPassword());
       UUID key = registryManager.register(resource, organisation, ipt);
       if (key == null) {
         throw new RegistryException(RegistryException.TYPE.MISSING_METADATA, "No key returned for registered resoruce.");
@@ -742,7 +741,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (PublicationStatus.REGISTERED == resource.getStatus()) {
       log.debug("Updating resource with Organisation Key: " + organisation.getKey().toString() + " & pwd "
           + organisation.getPassword());
-      registryManager.setRegistryCredentials(organisation.getKey().toString(), organisation.getPassword());
       registryManager.updateResource(resource, organisation, ipt);
       // save(resource);
     }

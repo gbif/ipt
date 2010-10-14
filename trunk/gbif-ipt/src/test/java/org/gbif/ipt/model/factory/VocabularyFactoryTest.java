@@ -8,7 +8,6 @@
 package org.gbif.ipt.model.factory;
 
 import org.gbif.ipt.config.IPTModule;
-import org.gbif.ipt.config.InjectingTestClassRunner;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.model.VocabularyConcept;
 import org.gbif.ipt.model.VocabularyTerm;
@@ -18,10 +17,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -30,13 +27,12 @@ import javax.xml.parsers.SAXParserFactory;
 /**
  * TODO: Documentation.
  */
-@RunWith(InjectingTestClassRunner.class)
 public class VocabularyFactoryTest {
 
   private VocabularyFactory getFactory() throws ParserConfigurationException, SAXException {
     IPTModule mod = new IPTModule();
     SAXParserFactory sax = mod.provideNsAwareSaxParserFactory();
-    HttpClient client = new HttpClient(new MultiThreadedHttpConnectionManager());
+    DefaultHttpClient client = new DefaultHttpClient();
     VocabularyFactory factory = new VocabularyFactory(client, sax);
     return factory;
   }
