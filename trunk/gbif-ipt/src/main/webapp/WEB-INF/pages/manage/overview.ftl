@@ -172,7 +172,7 @@ $(document).ready(function(){
 			</select>
 	       	<@s.submit cssClass="confirm" name="publish" key="button.register" disabled="${missingRegistrationMetadata?string}"/>
 	       	<#if missingRegistrationMetadata>
-	       		<div class="warn">The <a href="${baseURL}/manage/metadata-basic.do?r=${resource.shortname}">resource's basic metadata</a> should be saved and the EML & Archive files need to be generated prior to registering to the GBIF Network</div>
+	       		<div class="warn"><@s.text name="manage.overview.visibility.missing.metadata"><@s.param>${baseURL}/manage/metadata-basic.do?r=${resource.shortname}</@s.param></@s.text></div>
 	       	</#if>
 	       	</#if>
 	       	<@s.submit cssClass="confirm" name="unpublish" key="button.private" />
@@ -202,13 +202,13 @@ $(document).ready(function(){
 		      <#if missingRegistrationMetadata>
 			    <div>
 		          	<img class="info" src="${baseURL}/images/info.gif" /> 
-					<em>In order to register this resource with GBIF you must provide more metadata (ask Jose what is required)!</em>
+					<em><@s.text name="manage.overview.visibility.missing.registration.metadata"/></em>
 	      		</div>
 		      </#if>
 		      <#if organisations?size==0>
 			    <div>
 		          	<img class="info" src="${baseURL}/images/info.gif" /> 
-					<em>In order to register this resource with GBIF your IPT admin must first associate organisations with this IPT!</em>
+					<em><@s.text name="manage.overview.visibility.no.organisations"/></em>
 	      		</div>
 			  </#if>
 		    </#if>
@@ -216,12 +216,12 @@ $(document).ready(function(){
       	<div class="details">
       		<table>
 		      	<#if resource.status=="REGISTERED" && resource.key??>
-	          		<tr><th>Resource Key</th><td>${resource.key} <a href="${cfg.registryUrl}/browse/agent?uuid=${resource.key}">GBRDS</a></td></tr>
+	          		<tr><th><@s.text name="manage.overview.visibility.resource.key"/></th><td>${resource.key} <a href="${cfg.registryUrl}/browse/agent?uuid=${resource.key}">GBRDS</a></td></tr>
 	          		<#if resource.organisation?exists>
-	          		<tr><th>Organisation</th><td>${resource.organisation.name!}</td></tr>
-	          		<tr><th>Organisation Contact</th><td>${resource.organisation.primaryContactName!}, ${resource.organisation.primaryContactEmail!}</td></tr>
-	          		<tr><th>Organisation Key</th><td>${resource.organisation.key!}</td></tr>
-	          		<tr><th>Endorsing Node</th><td>${resource.organisation.nodeName!}</td></tr>
+	          		<tr><th><@s.text name="manage.overview.visibility.organisation"/></th><td>${resource.organisation.name!}</td></tr>
+	          		<tr><th><@s.text name="manage.overview.visibility.organisation.contact"/></th><td>${resource.organisation.primaryContactName!}, ${resource.organisation.primaryContactEmail!}</td></tr>
+	          		<tr><th><@s.text name="manage.overview.visibility.organisation.key"/></th><td>${resource.organisation.key!}</td></tr>
+	          		<tr><th><@s.text name="manage.overview.visibility.endorsing.node"/></th><td>${resource.organisation.nodeName!}</td></tr>
 	          		</#if>
           		</#if>
       		</table>
@@ -232,7 +232,7 @@ $(document).ready(function(){
 <div class="definition" id="publish">	
   <div class="title">
   	<div class="head">
-        Published Release
+        <@s.text name="manage.overview.published"/>
   	</div>
    	<div class="actions">
    	  <#if !missingMetadata>
@@ -245,23 +245,22 @@ $(document).ready(function(){
   </div>
   <div class="body">
       	<div>
-			When publishing a new release a new EML version and a darwin core archive (DWCA) will be created. <br/>
-			A DWCA bundles all data sources with mappings and metadata in one zipped archive.
+      		<@s.text name="manage.overview.published.description"/>
       	</div>
    	  <#if missingMetadata>
       	<div>
           	<img class="info"src="${baseURL}/images/info.gif" /> 
-			<em>Before you can publish a resource you have to provide the basic metadata first!</em>
+			<em><@s.text name="manage.overview.published.missing.metadata"/></em>
       	</div>
   	  </#if>
       	<div class="details">
       		<table>
 			  	<#if resource.lastPublished??>
-          		 <tr><th>Last Publication</th><td>Version ${resource.eml.emlVersion} from ${resource.lastPublished?date?string.medium}</td></tr>
+          		 <tr><th><@s.text name="manage.overview.published.last.publication"/></th><td><@s.text name="manage.overview.published.version"/> ${resource.eml.emlVersion} <@s.text name="manage.overview.published.from"/> ${resource.lastPublished?date?string.medium}</td></tr>
 			  	 <#if (resource.recordsPublished>0)>
-          		  <tr><th>Archive</th><td><a href="${baseURL}/archive.do?r=${resource.shortname}">download</a>, ${resource.recordsPublished} records </td></tr>
+          		  <tr><th><@s.text name="manage.overview.published.archive"/></th><td><a href="${baseURL}/archive.do?r=${resource.shortname}"><@s.text name="manage.overview.published.download"/></a>, ${resource.recordsPublished} <@s.text name="manage.overview.published.records"/> </td></tr>
 			  	 </#if>
-          		 <tr><th>EML</th><td><a href="${baseURL}/eml.do?r=${resource.shortname}">download</a> <a href="${baseURL}/resource.do?r=${resource.shortname}">view</a></td></tr>
+          		 <tr><th><@s.text name="manage.overview.published.eml"/></th><td><a href="${baseURL}/eml.do?r=${resource.shortname}"><@s.text name="manage.overview.published.download"/></a> <a href="${baseURL}/resource.do?r=${resource.shortname}"><@s.text name="manage.overview.published.view"/></a></td></tr>
 			  	</#if>
       		</table>
       	</div>
