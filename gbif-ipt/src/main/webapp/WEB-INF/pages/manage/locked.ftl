@@ -18,9 +18,8 @@ $(document).ready(function(){
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
 <h1>${resource.title!resource.shortname}</h1>
-<p>This resource is currently being published. 
-Meanwhile it is locked for further modifications, 
-but you can <a href="${baseURL}/manage/cancel.do?id=${resource.shortname}">cancel</a> the process if needed.
+<p>
+<@s.text name="manage.locked"><@s.param>${baseURL}/manage/cancel.do?id=${resource.shortname}</@s.param></@s.text>
 </p>
 
 <div id="report">
