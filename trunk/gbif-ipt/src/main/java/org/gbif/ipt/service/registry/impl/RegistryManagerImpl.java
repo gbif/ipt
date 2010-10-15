@@ -124,14 +124,21 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    */
   public void deregister(Resource resource) throws RegistryException {
     try {
-      Response resp = http.delete(getDeleteResourceUri(resource.getKey().toString()), true);
-      if (http.success(resp)) {
-        log.info("The resource has been deleted. Resource key: " + resource.getKey().toString());
-      } else {
-        throw new RegistryException(TYPE.BAD_RESPONSE, "Empty registry response");
+       if(resource.getOrganisation()!=null) {
+        Response resp = http.delete(getDeleteResourceUri(resource.getKey().toString()), orgCredentials(resource.getOrganisation()));
+        if (http.success(resp)) {
+          log.info("The resource has been deleted. Resource key: " + resource.getKey().toString());
+        } else {
+          throw new RegistryException(TYPE.BAD_RESPONSE, "Empty registry response");
+        } 
+      }
+      else {
+      	throw new RegistryException(TYPE.NOT_AUTHORISED, "Credentials should be specified");
       }
     } catch (IOException e) {
       throw new RegistryException(TYPE.IO_ERROR, e);
+    } catch (Exception e) {
+      throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, e);
     }
 
   }
@@ -446,22 +453,21 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       log.debug("No DWC or EML Service present");
     }
 
-    Map<String, Object> data = new HashMap<String, Object>();
-
+    List<NameValuePair> data = new ArrayList<NameValuePair>();
     // data.put("organisationKey", StringUtils.trimToEmpty(organisation.getKey().toString())),
     // data.put("iptKey", StringUtils.trimToEmpty(ipt.getKey().toString())),
-    data.put("name", StringUtils.trimToEmpty(resource.getTitleOrShortname()));
-    data.put("description", StringUtils.trimToEmpty(resource.getDescription()));
+    data.add(new BasicNameValuePair("name", StringUtils.trimToEmpty(resource.getTitleOrShortname())));
+    data.add(new BasicNameValuePair("description", StringUtils.trimToEmpty(resource.getDescription())));
 
     // TODO: should this not be the eml contact agent instead?
-    data.put("primaryContactType", "technical");
-    data.put("primaryContactName", StringUtils.trimToNull(StringUtils.trimToEmpty(resource.getCreator().getName())));
-    data.put("primaryContactEmail", StringUtils.trimToEmpty(resource.getCreator().getEmail()));
-    data.put("serviceTypes", serviceTypes);
-    data.put("serviceURLs", serviceURLs);
+    data.add(new BasicNameValuePair("primaryContactType", "technical"));
+    data.add(new BasicNameValuePair("primaryContactName", StringUtils.trimToNull(StringUtils.trimToEmpty(resource.getCreator().getName()))));
+    data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(resource.getCreator().getEmail())));
+    data.add(new BasicNameValuePair("serviceTypes", serviceTypes));
+    data.add(new BasicNameValuePair("serviceURLs", serviceURLs));
 
     try {
-      Response resp = http.post(getIptUpdateResourceUri(resource.getKey().toString()), http.params(data));
+      Response resp = http.post(getIptUpdateResourceUri(resource.getKey().toString()), null, null, orgCredentials(organisation), new UrlEncodedFormEntity(data));
       if (http.success(resp)) {
         // read new UDDI ID
         log.debug("Resource's registration info has been updated");

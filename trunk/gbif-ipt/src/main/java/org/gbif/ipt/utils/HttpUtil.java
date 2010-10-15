@@ -153,11 +153,12 @@ public class HttpUtil {
    * @return
    * @throws IOException
    */
-  public Response delete(String url, boolean authenticate) throws IOException {
+  public Response delete(String url, UsernamePasswordCredentials credentials) throws IOException, URISyntaxException {
     log.info("Http delete to " + url);
-    HttpDelete http = new HttpDelete(url);
-    HttpGet get = new HttpGet(url);
-    HttpResponse response = client.execute(get);
+    HttpDelete delete = new HttpDelete(url);
+    HttpContext authContext = buildContext(url, credentials);
+    // HttpGet get = new HttpGet(url);
+    HttpResponse response = client.execute(delete, authContext);
     Response result = new Response(response);
     HttpEntity entity = response.getEntity();
     if (entity != null) {
@@ -243,23 +244,23 @@ public class HttpUtil {
    * @throws URISyntaxException
    * @throws IOException
    */
-  public Response post(String uri, HttpParams params) throws IOException, URISyntaxException {
-    return post(uri, params, null, null, null);
+  public Response post(String uri, HttpEntity encodedEntity) throws IOException, URISyntaxException {
+    return post(uri, null, null, null, encodedEntity);
   }
-  
+
   public Response post(String uri, HttpParams params, @Nullable Map<String, String> headers,
       @Nullable UsernamePasswordCredentials credentials) throws IOException, URISyntaxException {
     return post(uri, params, headers, credentials, null);
   }
-  
 
   public Response post(String uri, HttpParams params, @Nullable Map<String, String> headers,
-      @Nullable UsernamePasswordCredentials credentials, @Nullable HttpEntity encodedEntity) throws IOException, URISyntaxException {
+      @Nullable UsernamePasswordCredentials credentials, @Nullable HttpEntity encodedEntity) throws IOException,
+      URISyntaxException {
     HttpPost post = new HttpPost(uri);
-    //if (params != null) {
-    //  post.setParams(params);
-    //}
-    if(encodedEntity!=null) {
+    // if (params != null) {
+    // post.setParams(params);
+    // }
+    if (encodedEntity != null) {
       post.setEntity(encodedEntity);
     }
     // authentication
