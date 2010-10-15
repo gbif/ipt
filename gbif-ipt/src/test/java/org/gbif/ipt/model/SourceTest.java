@@ -113,8 +113,8 @@ public class SourceTest {
     src.setName(" Peter nice");
     assertEquals("peternice", src.getName());
 
-    src.setName("verNAcÜl.:s");
-    assertEquals("vernacül", src.getName());
+    src.setName("verNAcUl.:s");
+    assertEquals("vernacul", src.getName());
 
     src.setName("veraculars.txt");
     assertEquals("veraculars", src.getName());
