@@ -13,6 +13,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.utils.HttpUtil;
 import org.gbif.ipt.utils.InputStreamUtils;
 import org.gbif.ipt.utils.LogFileAppender;
 
@@ -20,6 +21,9 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpHost;
+import org.apache.http.conn.params.ConnRoutePNames;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.xml.DOMConfigurator;
 
@@ -42,11 +46,14 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   private VocabulariesManager vocabManager;
   private RegistrationManager registrationManager;
   private ConfigWarnings warnings;
+  private DefaultHttpClient client;
+  private HttpUtil http;
 
   @Inject
   public ConfigManagerImpl(DataDir dataDir, AppConfig cfg, InputStreamUtils streamUtils,
       UserAccountManager userManager, ResourceManager resourceManager, ExtensionManager extensionManager,
-      VocabulariesManager vocabManager, RegistrationManager registrationManager, ConfigWarnings warnings) {
+      VocabulariesManager vocabManager, RegistrationManager registrationManager, ConfigWarnings warnings,
+      DefaultHttpClient client, HttpUtil http) {
     super(cfg, dataDir);
     this.streamUtils = streamUtils;
     this.userManager = userManager;
@@ -55,6 +62,8 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     this.vocabManager = vocabManager;
     this.registrationManager = registrationManager;
     this.warnings = warnings;
+    this.client = client;
+    this.http = http;
     if (dataDir.isConfigured()) {
       log.info("IPT DataDir configured - loading its configuration");
       try {
@@ -81,6 +90,15 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
 
     log.info("Reloading log4j settings ...");
     reloadLogger();
+
+    if (cfg.getProxy() != null) {
+      log.info("Configuring http proxy ...");
+      try {
+        setProxy(cfg.getProxy());
+      } catch (InvalidConfigException e) {
+        warnings.addStartupError(e);
+      }
+    }
 
     log.info("Loading user accounts ...");
     userManager.load();
@@ -180,6 +198,45 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
       cfg.setProperty(AppConfig.IPT_LONGITUDE, "");
     }
 
+  }
+
+  /*
+   * (non-Javadoc)
+   * @see org.gbif.ipt.service.admin.ConfigManager#setProxy(java.lang.String)
+   */
+  public void setProxy(String proxy) throws InvalidConfigException {
+    StringUtils.removeStartIgnoreCase(proxy, "https://");
+    StringUtils.removeStartIgnoreCase(proxy, "http://");
+    proxy = StringUtils.trimToNull(proxy);
+
+    if (proxy == null) {
+      // remove proxy from http client
+      log.info("Removing proxy setting");
+      client.getParams().removeParameter(ConnRoutePNames.DEFAULT_PROXY);
+    } else {
+      // add proxy to http client
+      try {
+        HttpHost host = null;
+        if (proxy.contains(":")) {
+          String hostString = StringUtils.substringBeforeLast(proxy, ":");
+          Integer port = Integer.parseInt(StringUtils.substringAfterLast(proxy, ":"));
+          host = new HttpHost(hostString, port);
+        } else {
+          host = new HttpHost(proxy);
+        }
+        // test that host really exists
+        if (!http.verifyHost(host)) {
+          throw new InvalidConfigException(TYPE.INVALID_PROXY, "Cannot connect to proxy host");
+        }
+        log.info("Updating the proxy setting to: " + proxy);
+        client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, host);
+      } catch (NumberFormatException e) {
+        throw new InvalidConfigException(TYPE.INVALID_PROXY, "port number is no integer");
+      }
+    }
+
+    // store in properties file
+    cfg.setProperty(AppConfig.PROXY, proxy);
   }
 
   public boolean setupComplete() {

@@ -108,6 +108,11 @@ public interface ConfigManager {
   public void setIptLocation(Double lat, Double lon) throws InvalidConfigException;
 
   /**
+   * @param proxy
+   */
+  public void setProxy(String proxy);
+
+  /**
    * @return true if the basic setup routine is completed, false otherwise
    */
   public boolean setupComplete();

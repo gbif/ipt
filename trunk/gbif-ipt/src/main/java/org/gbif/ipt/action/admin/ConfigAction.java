@@ -9,6 +9,8 @@ import org.gbif.ipt.service.admin.ConfigManager;
 
 import com.google.inject.Inject;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -26,6 +28,7 @@ public class ConfigAction extends POSTAction {
   // getters and setters are called by the Struts2 interceptors based on the
   // http request submitted
   protected String baseUrl;
+  protected String proxy;
   protected Boolean debug;
   protected Boolean analyticsGbif;
   protected String analyticsKey;
@@ -56,6 +59,10 @@ public class ConfigAction extends POSTAction {
     return cfg.getLongitude();
   }
 
+  public String getProxy() {
+    return cfg.getProxy();
+  }
+
   /**
    * This is called when the new configuration is submitted
    * 
@@ -84,6 +91,16 @@ public class ConfigAction extends POSTAction {
         } else {
           addActionError(getText("admin.error.invalidConfiguration", new String[]{e.getMessage()}));
         }
+        return INPUT;
+      }
+    }
+
+    // http proxy
+    if (proxy != null) {
+      try {
+        configManager.setProxy(proxy);
+      } catch (InvalidConfigException e) {
+        addActionError(getText("admin.config.proxy.error"));
         return INPUT;
       }
     }
@@ -123,7 +140,7 @@ public class ConfigAction extends POSTAction {
       try {
         configManager.setIptLocation(latitude, longitude);
       } catch (InvalidConfigException e) {
-        addActionError(getText("admin.config.location.error"));
+        addActionError(getText("admin.config.server.location.error"));
         return INPUT;
       }
     }
@@ -162,6 +179,10 @@ public class ConfigAction extends POSTAction {
 
   public void setLongitude(Double longitude) {
     this.longitude = longitude;
+  }
+
+  public void setProxy(String proxy) {
+    this.proxy = StringUtils.trimToNull(proxy);
   }
 
 }
