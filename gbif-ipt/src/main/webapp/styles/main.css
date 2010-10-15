@@ -19,6 +19,10 @@ h1 {
 a {
 	color: #005418;
 }
+a img {
+	border: 0px;
+	}
+
 button{
     text-decoration: none !important;
 }
@@ -185,7 +189,6 @@ hr {
 }
 #content.fixed { 
 	position: relative;
-	//top: -4em;
 	width: 750px;
 	float:left;
 }
