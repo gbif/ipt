@@ -28,7 +28,7 @@ function initForm(){
 /**
  * This method initialises the "help utility" of the forms
  * @param {String} context - is used to add events only to a specific context. 
- * 	-remember to add the (#) simbol in the parameter-. (this parameter can be omited).
+ * 	-remember to add the (#) symbol in the parameter-. (this parameter can be omitted).
  */
 function initHelp(context){
 	if(context == undefined) context = "";
@@ -37,14 +37,23 @@ function initHelp(context){
 		if (context != "") {
 			$(this).find("input").removeAttr("class");
 			$(this).find(".ui-datepicker-trigger").remove();
-		}		
+		}
 		$(this).find("input").datepicker({
 			showOn: "button",
 			buttonImage: "../images/calendar.png",
 			buttonImageOnly: true,
 			changeMonth: true,
-			changeYear: true
-		});		
+			changeYear: true,
+			constrainInput: false,
+			dateFormat: 'yy-mm-dd'
+		});
+		/*$(this).find("input").each(function(index) {
+			if($(this).attr("value").length > 0) {			
+				$(this).val($.datepicker.formatDate("yy-mm-dd", $.datepicker.parseDate("m/d/y", $(this).val())));
+			}
+		});*/
+		
+		
 	});
 	$(context+" .infoImg").click(function(e) {
         var show = $(this).next().is(":hidden");
