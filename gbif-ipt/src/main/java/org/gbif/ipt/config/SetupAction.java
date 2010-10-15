@@ -45,6 +45,7 @@ public class SetupAction extends BaseAction {
   private String password2;
   protected Boolean production;
   protected String baseURL;
+  protected String proxy;
   private boolean setup2 = false;
 
   /**
@@ -97,6 +98,10 @@ public class SetupAction extends BaseAction {
     }
   }
 
+  public String getProxy() {
+    return proxy;
+  }
+
   public User getUser() {
     return user;
   }
@@ -133,6 +138,10 @@ public class SetupAction extends BaseAction {
 
   public void setProduction(Boolean production) {
     this.production = production;
+  }
+
+  public void setProxy(String proxy) {
+    this.proxy = proxy;
   }
 
   public void setSetup2(boolean setup2) {
@@ -204,6 +213,12 @@ public class SetupAction extends BaseAction {
           configManager.setBaseURL(burl);
         } catch (MalformedURLException e) {
           // checked in validate() already
+        }
+        // set proxy
+        try {
+          configManager.setProxy(proxy);
+        } catch (InvalidConfigException e) {
+          addFieldError("proxy", getText("admin.config.proxy.error"));
         }
         // save config
         configManager.saveConfig();
