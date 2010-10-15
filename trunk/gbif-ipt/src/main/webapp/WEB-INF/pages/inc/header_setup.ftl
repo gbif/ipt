@@ -9,6 +9,12 @@ h1 {
 	font-size: 30px;
 }
 		</style>
+<script type="text/javascript">
+$(document).ready(function(){
+  initHelp();	
+});
+</script>
+
  	</head>
  	<body>
 		<div id="wrapper">

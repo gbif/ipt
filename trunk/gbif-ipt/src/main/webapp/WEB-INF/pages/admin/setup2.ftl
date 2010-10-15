@@ -14,8 +14,8 @@
 
 	<@checkbox name="production" i18nkey="admin.config.setup2.production" disabled=cfg.devMode() value="false" />
 	  
-	<@input name="baseURL" help="i18n"/>
-	<@input name="proxy" help="i18n"/>
+	<@input name="baseURL" help="i18n" i18nkey="admin.config.baseUrl"/>
+	<@input name="proxy" help="i18n" i18nkey="admin.config.proxy" />
 
 	  <div class="buttons">
  	<@s.submit cssClass="button" name="save" key="button.save"/>

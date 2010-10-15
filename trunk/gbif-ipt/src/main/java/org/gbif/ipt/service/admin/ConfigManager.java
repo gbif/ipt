@@ -110,7 +110,7 @@ public interface ConfigManager {
   /**
    * @param proxy
    */
-  public void setProxy(String proxy);
+  public void setProxy(String proxy) throws InvalidConfigException;
 
   /**
    * @return true if the basic setup routine is completed, false otherwise
