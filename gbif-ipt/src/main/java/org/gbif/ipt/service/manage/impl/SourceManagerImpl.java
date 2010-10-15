@@ -22,6 +22,8 @@ import org.gbif.dwc.text.ArchiveFile;
 import org.gbif.dwc.text.UnsupportedArchiveException;
 import org.gbif.file.CSVReader;
 import org.gbif.file.ClosableIterator;
+import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
@@ -31,7 +33,6 @@ import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.SourceException;
-import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
 
 import com.google.inject.Inject;
@@ -147,85 +148,65 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     }
   }
 
-
   private class SqlRowIterator implements ClosableIterator<String[]> {
-      private final Connection conn;
-      private final Statement stmt;
-      private final ResultSet rs;
-      private boolean hasNext;
-      private final String sourceName;
-      private final int rowSize;
+    private final Connection conn;
+    private final Statement stmt;
+    private final ResultSet rs;
+    private boolean hasNext;
+    private final String sourceName;
+    private final int rowSize;
 
-      SqlRowIterator(SqlSource source) throws SQLException {
-        this.conn = getDbConnection(source);
-        this.stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-        this.stmt.setFetchSize(1000);
-        this.rs = stmt.executeQuery(source.getSql());
-        this.rowSize=rs.getMetaData().getColumnCount();
-        this.hasNext = rs.next();
-        sourceName = source.getName();
-      }
-
-      public void close() {
-        if (rs != null) {
-          try {
-            rs.close();
-            stmt.close();
-            conn.close();
-          } catch (SQLException e) {
-            log.error("Cant close iterator for sql source " + sourceName, e);
-          }
-        }
-
-      }
-
-      public boolean hasNext() {
-        return hasNext;
-      }
-
-      public String[] next() {
-      	String[] val = new String[rowSize];
-        if (hasNext) {
-          try {
-            for (int i=1; i<rowSize; i++){
-            	val[i-1]=rs.getString(i);
-            }
-            // forward rs cursor
-            hasNext = rs.next();
-          } catch (SQLException e2) {
-            hasNext = false;
-          }
-        }
-        return val;
-      }
-
-      public void remove() {
-        // unsupported
-      }
+    SqlRowIterator(SqlSource source) throws SQLException {
+      this.conn = getDbConnection(source);
+      this.stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+      this.stmt.setFetchSize(1000);
+      this.rs = stmt.executeQuery(source.getSql());
+      this.rowSize = rs.getMetaData().getColumnCount();
+      this.hasNext = rs.next();
+      sourceName = source.getName();
     }
-  
-  
-  public ClosableIterator<String[]> rowIterator(Source source) throws SourceException{
-	  if (source==null){
-		  return null;
-	  }
-	try {
-		if (source instanceof FileSource) {
-			return ((FileSource) source).getReader().iterator();
-		}
-		return new SqlRowIterator((SqlSource) source);
-	} catch (Exception e) {
-		log.error(e);
-		throw new SourceException("Cant build iterator for source "+source.getName()+" :"+e.getMessage());
-	}
+
+    public void close() {
+      if (rs != null) {
+        try {
+          rs.close();
+          stmt.close();
+          conn.close();
+        } catch (SQLException e) {
+          log.error("Cant close iterator for sql source " + sourceName, e);
+        }
+      }
+
+    }
+
+    public boolean hasNext() {
+      return hasNext;
+    }
+
+    public String[] next() {
+      String[] val = new String[rowSize];
+      if (hasNext) {
+        try {
+          for (int i = 1; i < rowSize; i++) {
+            val[i - 1] = rs.getString(i);
+          }
+          // forward rs cursor
+          hasNext = rs.next();
+        } catch (SQLException e2) {
+          hasNext = false;
+        }
+      }
+      return val;
+    }
+
+    public void remove() {
+      // unsupported
+    }
   }
-  
-  @Inject
-  private ResourceManager resourceManager;
 
   @Inject
-  public SourceManagerImpl() {
-    super();
+  public SourceManagerImpl(AppConfig cfg, DataDir dataDir) {
+    super(cfg, dataDir);
   }
 
   public static void copyArchiveFileProperties(ArchiveFile from, FileSource to) {
@@ -257,14 +238,14 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       Archive arch = ArchiveFactory.openArchive(file);
       copyArchiveFileProperties(arch.getCore(), src);
     } catch (IOException e) {
-        log.warn(e.getMessage());
-        throw new ImportException(e);
+      log.warn(e.getMessage());
+      throw new ImportException(e);
     } catch (UnsupportedArchiveException e) {
-    	// fine, cant read it with dwca library, but might still be a valid file for manual setup
-        log.warn(e.getMessage());
+      // fine, cant read it with dwca library, but might still be a valid file for manual setup
+      log.warn(e.getMessage());
     }
-    
-    try{
+
+    try {
       // copy file
       File ddFile = dataDir.sourceFile(resource, src);
       try {
@@ -502,8 +483,8 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         }
       }
     } catch (Exception e) {
-    	log.error(e);
-      throw new SourceException("Error reading source " + source.getName()+": "+e.getMessage());
+      log.error(e);
+      throw new SourceException("Error reading source " + source.getName() + ": " + e.getMessage());
     } finally {
       if (iter != null) {
         iter.close();
@@ -574,5 +555,20 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       log.warn("Cant read sql source " + source, e);
     }
     return preview;
+  }
+
+  public ClosableIterator<String[]> rowIterator(Source source) throws SourceException {
+    if (source == null) {
+      return null;
+    }
+    try {
+      if (source instanceof FileSource) {
+        return ((FileSource) source).getReader().iterator();
+      }
+      return new SqlRowIterator((SqlSource) source);
+    } catch (Exception e) {
+      log.error(e);
+      throw new SourceException("Cant build iterator for source " + source.getName() + " :" + e.getMessage());
+    }
   }
 }

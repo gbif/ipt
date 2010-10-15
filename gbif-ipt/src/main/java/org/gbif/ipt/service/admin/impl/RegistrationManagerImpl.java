@@ -3,6 +3,8 @@
  */
 package org.gbif.ipt.service.admin.impl;
 
+import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Registration;
@@ -42,11 +44,12 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
   public static final String PERSISTENCE_FILE = "registration.xml";
   private Registration registration = new Registration();
   private final XStream xstream = new XStream();
-  @Inject
   private ResourceManager resourceManager;
 
-  public RegistrationManagerImpl() {
-    super();
+  @Inject
+  public RegistrationManagerImpl(AppConfig cfg, DataDir dataDir, ResourceManager resourceManager) {
+    super(cfg, dataDir);
+    this.resourceManager = resourceManager;
     defineXstreamMapping();
   }
 
@@ -211,7 +214,8 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
       }
 
     } catch (FileNotFoundException e) {
-      log.warn("Registration information not existing, " + PERSISTENCE_FILE + " file missing");
+      log.warn("Registration information not existing, " + PERSISTENCE_FILE
+          + " file missing  (This is normal when first setting up a new datadir)");
     } catch (ClassNotFoundException e) {
       log.error(e.getMessage(), e);
     } catch (IOException e) {

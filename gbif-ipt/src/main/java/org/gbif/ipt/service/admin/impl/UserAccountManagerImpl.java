@@ -3,6 +3,8 @@
  */
 package org.gbif.ipt.service.admin.impl;
 
+import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
@@ -49,11 +51,12 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
   private boolean allowSimplifiedAdminLogin = true;
   private String onlyAdminEmail;
   private final XStream xstream = new XStream();
-  @Inject
   private ResourceManager resourceManager;
 
-  public UserAccountManagerImpl() {
-    super();
+  @Inject
+  public UserAccountManagerImpl(AppConfig cfg, DataDir dataDir, ResourceManager resourceManager) {
+    super(cfg, dataDir);
+    this.resourceManager = resourceManager;
     defineXstreamMapping();
   }
 
@@ -200,7 +203,8 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
         }
       }
     } catch (FileNotFoundException e) {
-      log.warn("User accounts not existing, " + PERSISTENCE_FILE + " file missing");
+      log.warn("User accounts not existing, " + PERSISTENCE_FILE
+          + " file missing  (This is normal when first setting up a new datadir)");
     } catch (IOException e) {
       log.error(e.getMessage(), e);
       throw new InvalidConfigException(TYPE.USER_CONFIG, "Couldnt read user accounts: " + e.getMessage());

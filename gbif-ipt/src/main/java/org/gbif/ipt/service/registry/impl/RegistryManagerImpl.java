@@ -1,5 +1,7 @@
 package org.gbif.ipt.service.registry.impl;
 
+import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
@@ -11,7 +13,7 @@ import org.gbif.ipt.service.RegistryException.TYPE;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.utils.HttpUtil;
 import org.gbif.ipt.utils.HttpUtil.Response;
-import org.gbif.ipt.utils.NewRegistryEntryHandler;
+import org.gbif.ipt.utils.RegistryEntryHandler;
 import org.gbif.metadata.eml.Eml;
 
 import com.google.inject.Inject;
@@ -40,18 +42,18 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 public class RegistryManagerImpl extends BaseManager implements RegistryManager {
-  // private ResourceMetadataHandler metaHandler = new ResourceMetadataHandler();
-  private NewRegistryEntryHandler newRegistryEntryHandler = new NewRegistryEntryHandler();
+  private RegistryEntryHandler newRegistryEntryHandler = new RegistryEntryHandler();
 
   public static final String FORM_URL_ENCODED_CONTENT_TYPE = "application/x-www-form-urlencoded";
-  @Inject
   private HttpUtil http;
   private SAXParser saxParser;
 
-  public RegistryManagerImpl() throws ParserConfigurationException, SAXException {
-    super();
-    SAXParserFactory factory = SAXParserFactory.newInstance();
-    saxParser = factory.newSAXParser();
+  @Inject
+  public RegistryManagerImpl(AppConfig cfg, DataDir dataDir, HttpUtil http, SAXParserFactory saxFactory)
+      throws ParserConfigurationException, SAXException {
+    super(cfg, dataDir);
+    this.saxParser = saxFactory.newSAXParser();
+    this.http = http;
   }
 
   /**
@@ -479,7 +481,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       }
       return false;
     } catch (Exception e) {
-      log.warn(e.toString());
+      log.warn(e);
     }
     return false;
   }

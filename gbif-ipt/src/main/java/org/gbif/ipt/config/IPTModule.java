@@ -142,14 +142,14 @@ public class IPTModule extends AbstractModule {
     // registry currently requires Preemptive authentication
     // add preemptive authentication via this interceptor
     HttpRequestInterceptor preemptiveAuth = new HttpRequestInterceptor() {
+      private Logger log = Logger.getLogger(this.getClass());
+
       public void process(final HttpRequest request, final HttpContext context) throws HttpException, IOException {
 
+        log.debug(request.getRequestLine());
         AuthState authState = (AuthState) context.getAttribute(ClientContext.TARGET_AUTH_STATE);
-        System.out.println("authState:" + authState);
         CredentialsProvider credsProvider = (CredentialsProvider) context.getAttribute(ClientContext.CREDS_PROVIDER);
-        System.out.println("credsProvider:" + credsProvider);
         HttpHost targetHost = (HttpHost) context.getAttribute(ExecutionContext.HTTP_TARGET_HOST);
-        System.out.println("targetHost:" + targetHost);
 
         // If not auth scheme has been initialized yet
         if (authState.getAuthScheme() == null && credsProvider != null) {
@@ -158,6 +158,7 @@ public class IPTModule extends AbstractModule {
           Credentials creds = credsProvider.getCredentials(authScope);
           // If found, generate BasicScheme preemptively
           if (creds != null) {
+            log.debug("Authentication used for scope " + authScope.getHost());
             authState.setAuthScheme(new BasicScheme());
             authState.setCredentials(creds);
           }

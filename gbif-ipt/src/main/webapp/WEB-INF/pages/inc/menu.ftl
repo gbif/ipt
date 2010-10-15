@@ -13,8 +13,8 @@
 			  [#else]
 		        	<li>
 				        <form id="login-form" action="${baseURL}/login" method="post">
-				        	<input type="text" size="15" name="email" value="admin" class="form-reset" />
-		        			<input type="password" size="15" name="password" value="admin" class="form-reset" />
+				        	<input type="text" size="15" name="email" value="email" class="form-reset" />
+		        			<input type="password" size="15" name="password" value="password" class="form-reset" />
 		        			[@s.submit key="portal.login" name="login-submit"/]
 				        </form>
 					</li>

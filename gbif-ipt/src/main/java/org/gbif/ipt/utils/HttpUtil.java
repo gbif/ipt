@@ -29,9 +29,12 @@ import org.apache.http.ProtocolVersion;
 import org.apache.http.StatusLine;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.protocol.ClientContext;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
@@ -126,9 +129,14 @@ public class HttpUtil {
     HttpContext authContext = new BasicHttpContext();
     if (credentials != null) {
       URI authUri = new URI(uri);
-      AuthScope scope = new AuthScope(authUri.getHost(), -1, AuthScope.ANY_REALM);
-      log.debug("Authentication scope " + authUri.getHost());
+      AuthScope scope = new AuthScope(authUri.getHost(), AuthScope.ANY_PORT, AuthScope.ANY_REALM);
+
+      CredentialsProvider credsProvider = new BasicCredentialsProvider();
+      credsProvider.setCredentials(scope, credentials);
+
+      authContext.setAttribute(ClientContext.CREDS_PROVIDER, credsProvider);
     }
+
     return authContext;
   }
 
