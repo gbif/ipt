@@ -12,14 +12,17 @@ import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.RegistryException.TYPE;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.utils.HttpUtil;
-import org.gbif.ipt.utils.HttpUtil.Response;
 import org.gbif.ipt.utils.RegistryEntryHandler;
+import org.gbif.ipt.utils.HttpUtil.Response;
 import org.gbif.metadata.eml.Eml;
 
 import com.google.inject.Inject;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.NameValuePair;
 import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -335,23 +338,20 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     } else {
       log.debug("No DWC & EML Service present");
     }
-
-    Map<String, Object> data = new HashMap<String, Object>();
-    data.put("organisationKey", StringUtils.trimToEmpty(org.getKey().toString()));
-    data.put("iptKey", StringUtils.trimToEmpty(ipt.getKey().toString()));
-    data.put(
-        "name",
-        ((resource.getTitle() != null) ? StringUtils.trimToEmpty(resource.getTitle())
-            : StringUtils.trimToEmpty(resource.getShortname())));
-    data.put("description", StringUtils.trimToEmpty(resource.getDescription()));
-    data.put("primaryContactType", "technical");
-    data.put("primaryContactName", StringUtils.trimToNull(StringUtils.trimToEmpty(resource.getCreator().getName())));
-    data.put("primaryContactEmail", StringUtils.trimToEmpty(resource.getCreator().getEmail()));
-    data.put("serviceTypes", serviceTypes);
-    data.put("serviceURLs", serviceURLs);
+    
+    List<NameValuePair> data = new ArrayList<NameValuePair>();
+    data.add(new BasicNameValuePair("organisationKey", StringUtils.trimToEmpty(org.getKey().toString())));
+    data.add(new BasicNameValuePair("iptKey", StringUtils.trimToEmpty(ipt.getKey().toString())));
+    data.add(new BasicNameValuePair("name", ((resource.getTitle() != null) ? StringUtils.trimToEmpty(resource.getTitle()) : StringUtils.trimToEmpty(resource.getShortname()))));
+    data.add(new BasicNameValuePair("description", StringUtils.trimToEmpty(resource.getDescription())));
+    data.add(new BasicNameValuePair("primaryContactType", "technical"));
+    data.add(new BasicNameValuePair("primaryContactName", StringUtils.trimToNull(StringUtils.trimToEmpty(resource.getCreator().getName()))));
+    data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(resource.getCreator().getEmail())));
+    data.add(new BasicNameValuePair("serviceTypes", serviceTypes));
+    data.add(new BasicNameValuePair("serviceURLs", serviceURLs));
 
     try {
-      Response result = http.post(getIptResourceUri(), http.params(data), null, orgCredentials(org));
+      Response result = http.post(getIptResourceUri(), null, null, orgCredentials(org), new UrlEncodedFormEntity(data));
       if (result != null) {
         // read new UDDI ID
         saxParser.parse(getStream(result.content), newRegistryEntryHandler);
@@ -379,19 +379,20 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    */
   public String registerIPT(Ipt ipt, Organisation org) throws RegistryException {
     // registering IPT resource
-    Map<String, Object> data = new HashMap<String, Object>();
-    data.put("organisationKey", StringUtils.trimToEmpty(ipt.getOrganisationKey().toString()));
-    data.put("name", StringUtils.trimToEmpty(ipt.getName())); // name
-    data.put("description", StringUtils.trimToEmpty(ipt.getDescription())); // description
-    data.put("wsPassword", StringUtils.trimToEmpty(ipt.getWsPassword())); // description
-    data.put("primaryContactType", ipt.getPrimaryContactType());
-    data.put("primaryContactName", StringUtils.trimToEmpty(ipt.getPrimaryContactName()));
-    data.put("primaryContactEmail", StringUtils.trimToEmpty(ipt.getPrimaryContactEmail()));
-    data.put("serviceTypes", "RSS");
-    data.put("serviceURLs", getRssFeedURL());
+    
+    List<NameValuePair> data = new ArrayList<NameValuePair>();
+    data.add(new BasicNameValuePair("organisationKey", StringUtils.trimToEmpty(ipt.getOrganisationKey().toString())));
+    data.add(new BasicNameValuePair("name", StringUtils.trimToEmpty(ipt.getName()))); // name
+    data.add(new BasicNameValuePair("description", StringUtils.trimToEmpty(ipt.getDescription()))); // description
+    data.add(new BasicNameValuePair("wsPassword", StringUtils.trimToEmpty(ipt.getWsPassword()))); // description
+    data.add(new BasicNameValuePair("primaryContactType", ipt.getPrimaryContactType()));
+    data.add(new BasicNameValuePair("primaryContactName", StringUtils.trimToEmpty(ipt.getPrimaryContactName())));
+    data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(ipt.getPrimaryContactEmail())));
+    data.add(new BasicNameValuePair("serviceTypes", "RSS"));
+    data.add(new BasicNameValuePair("serviceURLs", getRssFeedURL()));
 
     try {
-      Response result = http.post(getIptUri(), http.params(data), null, orgCredentials(org));
+      Response result = http.post(getIptUri(), null, null, orgCredentials(org), new UrlEncodedFormEntity(data));
       if (result != null) {
         // read new UDDI ID
         saxParser.parse(getStream(result.content), newRegistryEntryHandler);
