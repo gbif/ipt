@@ -181,7 +181,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     } catch (ImportException e) {
       throw e;
     } catch (Exception e) {
-      alog.warn(e.getMessage(), e);
+      alog.warn(e);
       throw new ImportException(e);
     }
   }

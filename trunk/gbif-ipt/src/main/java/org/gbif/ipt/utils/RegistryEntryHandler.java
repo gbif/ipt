@@ -21,7 +21,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * Super simple SAX handler that extracts all element and attribute content from any XML document. The resulting string
  * is concatenating all content and inserts a space at every element or attribute start.
  */
-public class NewRegistryEntryHandler extends DefaultHandler {
+public class RegistryEntryHandler extends DefaultHandler {
   private String content;
   public String organisationKey;
   public String resourceKey;

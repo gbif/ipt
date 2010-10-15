@@ -3,8 +3,10 @@
  */
 package org.gbif.ipt.service.admin.impl;
 
+import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.model.VocabularyConcept;
@@ -85,9 +87,10 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
    * 
    */
   @Inject
-  public VocabulariesManagerImpl(VocabularyFactory vocabFactory, DownloadUtil downloadUtil,
-      RegistryManager registryManager, ExtensionManager extensionManager, ConfigWarnings warnings) {
-    super();
+  public VocabulariesManagerImpl(AppConfig cfg, DataDir dataDir, VocabularyFactory vocabFactory,
+      DownloadUtil downloadUtil, RegistryManager registryManager, ExtensionManager extensionManager,
+      ConfigWarnings warnings) {
+    super(cfg, dataDir);
     this.vocabFactory = vocabFactory;
     this.downloadUtil = downloadUtil;
     this.registryManager = registryManager;
@@ -250,8 +253,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       uri2url = (Map<String, URL>) xstream.fromXML(in);
       log.debug("Loaded uri2url vocabulary map with " + uri2url.size() + " entries");
     } catch (IOException e) {
-      log.warn("Cannot load the uri2url mapping from datadir. This is normal when first setting up a new datadir. Error: "
-          + e.getMessage());
+      log.warn("Cannot load the uri2url mapping from datadir (This is normal when first setting up a new datadir)");
     }
     // now iterate over all vocab files and load them
     int counter = 0;

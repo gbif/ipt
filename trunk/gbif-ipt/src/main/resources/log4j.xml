@@ -35,9 +35,13 @@
 		</layout>
 	</appender>
 	
-	<logger name="httpclient.wire">
+	<logger name="org.apache.http.headers">
 		<level value="INFO" />
 	</logger>
+	<logger name="log4j.logger.org.apache.http">
+		<level value="INFO" />
+	</logger>
+	
 	<logger name="org">
 		<level value="INFO" />
 	</logger>

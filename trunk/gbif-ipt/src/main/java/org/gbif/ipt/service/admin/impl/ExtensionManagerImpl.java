@@ -3,8 +3,10 @@
  */
 package org.gbif.ipt.service.admin.impl;
 
+import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.factory.ExtensionFactory;
@@ -58,9 +60,9 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   private ConfigWarnings warnings;
 
   @Inject
-  public ExtensionManagerImpl(ExtensionFactory factory, HttpUtil http, ResourceManager resourceManager,
-      ConfigWarnings warnings) {
-    super();
+  public ExtensionManagerImpl(AppConfig cfg, DataDir dataDir, ExtensionFactory factory, HttpUtil http,
+      ResourceManager resourceManager, ConfigWarnings warnings) {
+    super(cfg, dataDir);
     this.factory = factory;
     this.http = http;
     this.warnings = warnings;

@@ -17,52 +17,80 @@ public class ActionLogger {
   }
 
   public void error(String message) {
-    action.addActionWarning(action.getText(message));
-    log.error(message);
+    if (message != null) {
+      action.addActionWarning(action.getText(message));
+      log.error(message);
+    }
   }
 
   public void error(String message, String[] args) {
-    action.addActionWarning(action.getText(message, args));
-    log.error(message);
+    if (message != null) {
+      action.addActionWarning(action.getText(message, args));
+      log.error(message);
+    }
   }
 
   public void error(String message, String[] args, Throwable t) {
-    action.addActionWarning(action.getText(message, args));
-    log.error(message, t);
+    if (message == null) {
+      error(t);
+    } else {
+      action.addActionWarning(action.getText(message, args));
+      log.error(message, t);
+    }
   }
 
   public void error(String message, Throwable t) {
-    action.addActionWarning(action.getText(message));
-    log.error(message, t);
+    if (message == null) {
+      error(t);
+    } else {
+      action.addActionWarning(action.getText(message));
+      log.error(message, t);
+    }
   }
 
   public void error(Throwable t) {
-    action.addActionWarning(t.getMessage());
+    if (t.getMessage() != null) {
+      action.addActionWarning(t.getMessage());
+    }
     log.error(t);
   }
 
   public void info(String message) {
-    action.addActionMessage(action.getText(message));
-    log.info(message);
+    if (message != null) {
+      action.addActionMessage(action.getText(message));
+      log.info(message);
+    }
   }
 
   public void info(String message, String[] args) {
-    action.addActionMessage(action.getText(message, args));
-    log.info(message);
+    if (message != null) {
+      action.addActionMessage(action.getText(message, args));
+      log.info(message);
+    }
   }
 
   public void info(String message, String[] args, Throwable t) {
-    action.addActionMessage(action.getText(message, args));
-    log.info(message, t);
+    if (message == null) {
+      info(t);
+    } else {
+      action.addActionMessage(action.getText(message, args));
+      log.info(message, t);
+    }
   }
 
   public void info(String message, Throwable t) {
-    action.addActionMessage(action.getText(message));
-    log.info(message, t);
+    if (message == null) {
+      info(t);
+    } else {
+      action.addActionMessage(action.getText(message));
+      log.info(message, t);
+    }
   }
 
   public void info(Throwable t) {
-    action.addActionMessage(t.getMessage());
+    if (t.getMessage() != null) {
+      action.addActionMessage(t.getMessage());
+    }
     log.info(t);
   }
 

@@ -8,13 +8,6 @@
         Users can switch from this to a detailed developer log4j.xml definition in a running system
     -->
 
-    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
-        <param name="Threshold" value="WARN"/>
-        <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%-5p %m%n"/>
-        </layout>
-    </appender>
-
     <appender name="LOGFILE" class="org.gbif.ipt.utils.LogFileAppender">
         <param name="Threshold" value="INFO"/>
         <param name="File" value="debug.log "/>
@@ -54,7 +47,6 @@
     
     <root>
         <level value="INFO"/>
-        <appender-ref ref="CONSOLE"/>
         <appender-ref ref="LOGFILE"/>
     </root>
 
