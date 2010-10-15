@@ -154,7 +154,7 @@ hr {
 
 #sidebar {
 	position: relative;
-	//top: -3em;
+	/*top: -3em;*/
 	width: 170px;
 	padding: 0px 5px 20px 5px;
 	clear: both;
@@ -189,6 +189,7 @@ hr {
 }
 #content.fixed { 
 	position: relative;
+	/*top: -3em;*/	
 	width: 750px;
 	float:left;
 }
