@@ -1,6 +1,6 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 <#include "/WEB-INF/pages/inc/header_ui.ftl">
-	<title>Value Translation</title>
+	<title><@s.text name="manage.translation.title"/></title>
 	<script type="text/javascript" src="${baseURL}/js/jconfirmaction.jquery.js"></script>
 	
 <script type="text/javascript">
@@ -39,12 +39,10 @@ $(document).ready(function(){
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
-<h1>Value Translation</h1>
-<p>You can define a translation for the values used in your source and the ones that should be used in the generated archive.
-The list of distinct values found in your source is generated the first time for you, but can be manually reloaded at any time while keeping the current translation.
-</p>
+<h1><@s.text name="manage.translation.title"/></h1>
+<p><@s.text name="manage.translation.intro"/></p>
 
-<h2>Property <em>${property.name}</em></h2>
+<h2><@s.text name="manage.translation.property"/> <em>${property.name}</em></h2>
 <p>&quot;${property.description!}&quot;</p>
 
 <#if property.vocabulary?exists>	  		
