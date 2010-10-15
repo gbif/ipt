@@ -27,6 +27,11 @@ public class InvalidConfigException extends RuntimeException {
     this.type = type;
   }
 
+  public InvalidConfigException(TYPE type, String message, Exception e) {
+    super(message, e);
+    this.type = type;
+  }
+
   /**
    * @return the type of configuration exception. This allows for internationalized display
    */

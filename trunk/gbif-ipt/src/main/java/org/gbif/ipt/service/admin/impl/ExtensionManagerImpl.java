@@ -18,7 +18,6 @@ import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.utils.DownloadUtil;
-import org.gbif.ipt.utils.HttpUtil;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -52,7 +51,6 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   private Map<String, Extension> extensionsByRowtype = new HashMap<String, Extension>();
   private static final String CONFIG_FOLDER = ".extensions";
   private ExtensionFactory factory;;
-  private HttpUtil http;
   private DownloadUtil downloader;
   private final String TAXON_KEYWORD = "dwc:taxon";
   private final String OCCURRENCE_KEYWORD = "dwc:occurrence";
@@ -60,13 +58,13 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   private ConfigWarnings warnings;
 
   @Inject
-  public ExtensionManagerImpl(AppConfig cfg, DataDir dataDir, ExtensionFactory factory, HttpUtil http,
-      ResourceManager resourceManager, ConfigWarnings warnings) {
+  public ExtensionManagerImpl(AppConfig cfg, DataDir dataDir, ExtensionFactory factory,
+      ResourceManager resourceManager, ConfigWarnings warnings, DownloadUtil downloader) {
     super(cfg, dataDir);
     this.factory = factory;
-    this.http = http;
     this.warnings = warnings;
     this.resourceManager = resourceManager;
+    this.downloader = downloader;
   }
 
   public static String normalizeRowType(String rowType) {
@@ -124,11 +122,13 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   }
 
   public Extension install(URL url) throws InvalidConfigException {
-    Extension ext = null;
+    Extension ext;
+    ext = null;
     // download extension into local file first for subsequent IPT startups
     // final filename is based on rowType which we dont know yet - create a tmp file first
     File tmpFile = dataDir.configFile(CONFIG_FOLDER + "/tmp-extension.xml");
     try {
+      System.out.println(downloader);
       downloader.download(url, tmpFile);
       log.info("Successfully downloaded Extension " + url);
       // finally read in the new file and create the extension object
@@ -143,8 +143,9 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     } catch (InvalidConfigException e) {
       throw e;
     } catch (Exception e) {
+      e.printStackTrace();
       log.error(e);
-      throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Error installing extension " + url);
+      throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Error installing extension " + url, e);
     }
     return ext;
   }

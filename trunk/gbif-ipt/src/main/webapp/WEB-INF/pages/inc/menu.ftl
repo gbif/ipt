@@ -12,9 +12,9 @@
 		        	<li[#if currentMenu=="logout"] class="current"[/#if]><a href="${baseURL}/logout.do">[@s.text name="menu.logout"/]</a></li>
 			  [#else]
 		        	<li>
-				        <form id="login-form" action="${baseURL}/login" method="post">
-				        	<input type="text" size="15" name="email" value="email" class="form-reset" />
-		        			<input type="password" size="15" name="password" value="password" class="form-reset" />
+				        <form id="login-form" action="${baseURL}/login.do" method="post">
+				        	<input type="text" size="25" name="email" value="email" class="form-reset" />
+		        			<input type="password" size="20" name="password" value="password" class="form-reset" />
 		        			[@s.submit key="portal.login" name="login-submit"/]
 				        </form>
 					</li>

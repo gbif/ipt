@@ -105,23 +105,41 @@ public class ActionLogger {
   }
 
   public void warn(String message) {
-    info(message);
+    if (message != null) {
+      action.addActionWarning(action.getText(message));
+      log.warn(message);
+    }
   }
 
   public void warn(String message, String[] args) {
-    info(message, args);
+    if (message != null) {
+      action.addActionWarning(action.getText(message, args));
+      log.warn(message);
+    }
   }
 
   public void warn(String message, String[] args, Throwable t) {
-    info(message, args, t);
+    if (message == null) {
+      info(t);
+    } else {
+      action.addActionWarning(action.getText(message, args));
+      log.warn(message, t);
+    }
   }
 
   public void warn(String message, Throwable t) {
-    info(message, t);
+    if (message == null) {
+      info(t);
+    } else {
+      action.addActionWarning(action.getText(message));
+      log.warn(message, t);
+    }
   }
 
   public void warn(Throwable t) {
-    info(t);
+    if (t.getMessage() != null) {
+      action.addActionWarning(t.getMessage());
+    }
+    log.warn(t);
   }
-
 }
