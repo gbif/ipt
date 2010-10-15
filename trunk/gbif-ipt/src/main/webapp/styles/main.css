@@ -117,9 +117,11 @@ hr {
     text-decoration: none;
     margin: 0;
     padding: 5px 15px 5px 15px;
+    padding-left: 0px;
+    padding-right: 0px;
     padding-top: 12px;
 	height: 26px;
-	width: 114px;
+	width: 144px;
 	color: #FFF;
 	background: transparent url(../images/menubtn.gif) no-repeat; 
 }
