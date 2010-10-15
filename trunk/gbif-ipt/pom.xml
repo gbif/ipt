@@ -415,7 +415,6 @@
 		<profile>
 			<id>release</id>
 			<properties>
-				<registry.url></registry.url>
 				<devMode>false</devMode>
 				<devModeNegated>true</devModeNegated>
 			</properties>
@@ -427,7 +426,6 @@
 			<properties>
 				<devMode>false</devMode>
 				<devModeNegated>true</devModeNegated>
-				<registry.url>http://gbrds.gbif.org/registrydev/</registry.url>
 				<ipt.baseURL>http://ipt.gbif.org/</ipt.baseURL>
 			</properties>
 		</profile>
@@ -446,7 +444,8 @@
 		To build a release please use -P release 
 	-->
 	<properties>
-		<registry.url></registry.url>
+		<!-- This project uses UTF8 for Regular Expressions -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- 
 			maven treats properties as strings only, so we cannot negate a boolean devMode value. 
 			Therefore we keep both available - make sure they are always negated in all profiles! 

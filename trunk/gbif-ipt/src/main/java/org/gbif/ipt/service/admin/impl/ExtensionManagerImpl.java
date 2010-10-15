@@ -69,6 +69,28 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     this.resourceManager = resourceManager;
   }
 
+  public static String normalizeRowType(String rowType) {
+    // occurrence alternatives
+    if ("http://rs.tdwg.org/dwc/terms/DarwinCore".equalsIgnoreCase(rowType)) {
+      return Constants.DWC_ROWTYPE_OCCURRENCE;
+    } else if ("http://rs.tdwg.org/dwc/xsd/simpledarwincore/".equalsIgnoreCase(rowType)) {
+      return Constants.DWC_ROWTYPE_OCCURRENCE;
+    } else if ("http://rs.tdwg.org/dwc/terms/SimpleDarwinCore".equalsIgnoreCase(rowType)) {
+      return Constants.DWC_ROWTYPE_OCCURRENCE;
+    } else if ("http://rs.tdwg.org/dwc/dwctype/Occurrence".equalsIgnoreCase(rowType)) {
+      return Constants.DWC_ROWTYPE_OCCURRENCE;
+    } else if ("http://rs.tdwg.org/dwc/xsd/simpledarwincore/SimpleDarwinRecord".equalsIgnoreCase(rowType)) {
+      return Constants.DWC_ROWTYPE_OCCURRENCE;
+    }
+
+    // taxon alternatives
+    if ("http://rs.tdwg.org/dwc/dwctype/Taxon".equalsIgnoreCase(rowType)) {
+      return Constants.DWC_ROWTYPE_TAXON;
+    }
+
+    return rowType;
+  }
+
   public void delete(String rowType) throws DeletionNotAllowedException {
     if (extensionsByRowtype.containsKey(rowType)) {
       // check if its used by some resources
@@ -93,7 +115,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   }
 
   public Extension get(String rowType) {
-    return extensionsByRowtype.get(rowType);
+    return extensionsByRowtype.get(normalizeRowType(rowType));
   }
 
   private File getExtensionFile(String rowType) {
@@ -185,6 +207,8 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     try {
       fileIn = new FileInputStream(localFile);
       ext = factory.build(fileIn);
+      // normalise rowtype
+      ext.setRowType(normalizeRowType(ext.getRowType()));
       // keep vocab in local lookup
       extensionsByRowtype.put(ext.getRowType(), ext);
       log.info("Successfully loaded extension " + ext.getRowType());
