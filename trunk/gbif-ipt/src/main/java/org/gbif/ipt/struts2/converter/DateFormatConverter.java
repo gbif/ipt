@@ -49,7 +49,10 @@ public class DateFormatConverter extends StrutsTypeConverter {
 	public String convertToString(Map context, Object o) {
 		if (o instanceof Date) {
 			Date d = (Date) o;
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");			
+			if(new SimpleDateFormat("SSS").format(d).equals("001")) {
+				return format.format(d).split("-")[0];
+			}
 			return format.format(d);
 		}
 		return null;
