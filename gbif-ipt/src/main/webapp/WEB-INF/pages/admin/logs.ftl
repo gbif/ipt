@@ -12,8 +12,8 @@ $(document).ready(function(){
 
 <h1><@s.text name="admin.logs.title"/></h1>
 
-<h2>IPT Log messages >= WARN</h2>
-<p>Download the <a href="logfile.do?log=debug">complete log file</a></p>
+<h2><@s.text name="admin.logs.warn"/></h2>
+<p><@s.text name="admin.logs.download"><@s.param>logfile.do?log=debug</@s.param></@s.text></p>
 
 <pre id="logs">
 </pre>

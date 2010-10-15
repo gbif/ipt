@@ -58,10 +58,10 @@ $(document).ready(function(){
 			}
 			else {
 				<#if cfg.registryType=="DEVELOPMENT">
-					$("#baseURLStatus").html("Not valid, callback failed! Please check your base url. This IPT is being run in development mode, and therefore fields will be activated regardless)");
+					$("#baseURLStatus").html("<@s.text name="admin.registration.validate.failed.development"/>");
 					$('#registrationForm').show(500);
 				<#else>
-					$("#baseURLStatus").html("Not valid, callback failed! Please check your base url. ");
+					$("#baseURLStatus").html("<@s.text name="admin.registration.validate.failed"/>");
 				</#if>
 				
 			}
