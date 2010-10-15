@@ -105,8 +105,6 @@ public class DownloadUtil {
       Response resp = http.get(url.toString(), header, null);
       if (resp.getStatusCode() == HttpStatus.SC_NOT_MODIFIED) {
         log.debug("Content not modified since last request");
-      } else {
-        log.debug("Get Method retrieved content. Last modified=" + resp.getFirstHeader(LAST_MODIFIED).getValue());
       }
       return resp.content;
     } catch (URISyntaxException e) {
@@ -147,7 +145,6 @@ public class DownloadUtil {
 
         try {
           serverModified = DATE_FORMAT_RFC2616.parse(response.getFirstHeader(LAST_MODIFIED).getValue());
-          log.debug("Content last modified on server: " + serverModified);
         } catch (ParseException e) {
           log.debug("Cant parse http header Last-Modified date");
         }

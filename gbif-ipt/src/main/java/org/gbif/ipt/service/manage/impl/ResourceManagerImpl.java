@@ -634,11 +634,34 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   private Eml readMetadata(Archive archive, ActionLogger alog) {
+    Eml eml = null;
     try {
-      return convertMetadataToEml(archive.getMetadata(), alog);
-    } catch (MetadataException e) {
-      // swallow;
+      File emlFile = archive.getMetadataLocationFile();
+      if (emlFile == null || !emlFile.exists()) {
+        // some archives dont indicate the name of the eml metadata file
+        // so we also try with the default eml.xml name
+        emlFile = new File(archive.getLocation(), "eml.xml");
+      }
+      if (emlFile.exists()) {
+        InputStream emlIn = new FileInputStream(emlFile);
+        eml = EmlFactory.build(emlIn);
+        alog.info("EML metadata read");
+        return eml;
+      } else {
+        log.warn("Cant find any eml metadata to import");
+      }
+    } catch (Exception e) {
+      log.warn("Cant read archive eml metadata", e);
     }
+    // try to read other metadata formats like dc
+    try {
+      eml = convertMetadataToEml(archive.getMetadata(), alog);
+      alog.info("Basic metadata read");
+      return eml;
+    } catch (Exception e) {
+      log.warn("Cant read basic archive metadata: " + e.getMessage());
+    }
+    alog.warn("Cant read archive metadata");
     return null;
   }
 
