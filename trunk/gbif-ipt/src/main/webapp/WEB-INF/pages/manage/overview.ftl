@@ -1,4 +1,5 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
+	<title><@s.text name="manage.overview.title"/>: ${resource.title!resource.shortname}</title>
 	<script type="text/javascript" src="${baseURL}/js/jconfirmaction.jquery.js"></script>
 	<style>
 	img.info{
@@ -43,7 +44,7 @@ $(document).ready(function(){
 <div class="definition" id="metadata">	
   <div class="title">
   	<div class="head">
-        <@s.text name='manage.overview.Metadata'/>
+        <@s.text name='manage.overview.metadata'/>
   	</div>
   	<div class="actions">
 	  <form action='metadata-basic.do' method='get'>
