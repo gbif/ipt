@@ -47,8 +47,8 @@ $(document).ready(function(){
 
 <#if property.vocabulary?exists>	  		
 <p>
-<strong>Vocabulary required</strong>:  
-See indicator for each value if a corresponding term in the vocabulary exists.
+<strong><@s.text name="manage.translation.vocabulary.required"/></strong>:  
+<@s.text name="manage.translation.vocabulary.required.intro"/>
 </p>
 <p>
 <em>${property.vocabulary.title!property.vocabulary.uri}</em>:
@@ -65,9 +65,9 @@ See indicator for each value if a corresponding term in the vocabulary exists.
   <div class="buttons">
  	<@s.submit name="save" key="button.save"/>
  	<@s.submit cssClass="confirm" name="delete" key="button.delete"/>
- 	<a href="translationReload.do?r=${resource.shortname}&mapping=${property.extension.rowType}&term=${property.qualname}"><button>Reload</button></a>
+ 	<a href="translationReload.do?r=${resource.shortname}&mapping=${property.extension.rowType}&term=${property.qualname}"><button><@s.text name="button.reload"/></button></a>
  	<#if property.vocabulary?exists>	  		
- 	<a href="translationAutomap.do?r=${resource.shortname}&mapping=${property.extension.rowType}&term=${property.qualname}"><button>Automap</button></a>
+ 	<a href="translationAutomap.do?r=${resource.shortname}&mapping=${property.extension.rowType}&term=${property.qualname}"><button><@s.text name="button.automap"/></button></a>
  	</#if>			
  	<a href="mapping.do?r=${resource.shortname}&id=${property.extension.rowType}"><button><@s.text name="button.cancel"/></button></a>
   </div>
@@ -79,9 +79,9 @@ See indicator for each value if a corresponding term in the vocabulary exists.
     <col width="400">
   </colgroup>
 <tr>
- <th>Source Value</th>
+ <th><@s.text name="manage.translation.source.value"/></th>
  <th></th>
- <th>Translated Value</th>
+ <th><@s.text name="manage.translation.translated.value"/></th>
 </tr>     
 <#list tmap?keys as k>	
 <tr<#if (k_index % 2) == 1> class="even"</#if>>
@@ -96,7 +96,7 @@ See indicator for each value if a corresponding term in the vocabulary exists.
   <div class="buttons">
  	<@s.submit name="save" key="button.save"/>
  	<@s.submit cssClass="confirm" name="delete" key="button.delete"/>
- 	<a href="translationReload.do?r=${resource.shortname}&mapping=${property.extension.rowType}&term=${property.qualname}"><button>Reload</button></a>
+ 	<a href="translationReload.do?r=${resource.shortname}&mapping=${property.extension.rowType}&term=${property.qualname}"><button><@s.text name="button.reload"/></button></a>
  	<a href="mapping.do?r=${resource.shortname}&id=${property.extension.rowType}"><button><@s.text name="button.cancel"/></button></a>
   </div>
 </form>
