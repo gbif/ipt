@@ -1,5 +1,6 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
-	<title><@s.text name='manage.metadata.basic.title'/></title>
+<#include "/WEB-INF/pages/inc/header_ui.ftl">
+<title><@s.text name='manage.metadata.basic.title'/></title>
 <script type="text/javascript">
 	$(document).ready(function(){
 		initHelp();
@@ -14,7 +15,7 @@
 <form class="topForm" action="metadata-${section}.do" method="post">
 	<div class="half">
 	  	<@input name="eml.hierarchyLevel" i18nkey="eml.hierarchyLevel" disabled=true />
-	  	<@input name="eml.pubDate" i18nkey="eml.pubDate" help="i18n" helpOptions={"MM/DD/YYYY":"MM/DD/YYYY",  "MM/DD/YY":"MM/DD/YY", "January 1, 1990":"January 1, 1990"} />
+	  	<@input date=true name="eml.pubDate" i18nkey="eml.pubDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD",  "MM/DD/YYYY":"MM/DD/YYYY"} />
 	</div>
 	<@input name="eml.distributionUrl" i18nkey="eml.distributionUrl" />
   	<@text name="eml.purpose" i18nkey="eml.purpose"/>
