@@ -107,7 +107,7 @@ public class OrganisationsAction extends POSTAction {
       addActionError(getText("admin.organisation.deleted.notempty"));
       addActionExceptionWarning(e);
     } catch (IOException e) {
-      addActionError("cant save organisation file: " + e.getMessage());
+      addActionError(getText("admin.organisation.cantSave") + ": " + e.getMessage());
     }
     return INPUT;
   }

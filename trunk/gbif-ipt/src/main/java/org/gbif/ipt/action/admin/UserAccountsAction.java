@@ -47,7 +47,7 @@ public class UserAccountsAction extends POSTAction {
         addActionError(getText("admin.user.deleted.lastmanager"));
       }
     } catch (IOException e) {
-      addActionError("cant save user file: " + e.getMessage());
+      addActionError(getText("admin.user.cantSave") + ": " + e.getMessage());
     }
     return INPUT;
   }
