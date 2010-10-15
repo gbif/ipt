@@ -244,14 +244,23 @@ public class HttpUtil {
    * @throws IOException
    */
   public Response post(String uri, HttpParams params) throws IOException, URISyntaxException {
-    return post(uri, params, null, null);
+    return post(uri, params, null, null, null);
   }
-
+  
   public Response post(String uri, HttpParams params, @Nullable Map<String, String> headers,
       @Nullable UsernamePasswordCredentials credentials) throws IOException, URISyntaxException {
+    return post(uri, params, headers, credentials, null);
+  }
+  
+
+  public Response post(String uri, HttpParams params, @Nullable Map<String, String> headers,
+      @Nullable UsernamePasswordCredentials credentials, @Nullable HttpEntity encodedEntity) throws IOException, URISyntaxException {
     HttpPost post = new HttpPost(uri);
-    if (params != null) {
-      post.setParams(params);
+    //if (params != null) {
+    //  post.setParams(params);
+    //}
+    if(encodedEntity!=null) {
+      post.setEntity(encodedEntity);
     }
     // authentication
     HttpContext authContext = buildContext(uri, credentials);
