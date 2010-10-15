@@ -157,6 +157,7 @@ public class ExtensionFactory {
     digester.addSetNext("*/property", "addProperty");
 
     digester.parse(is);
+
     return e;
   }
 

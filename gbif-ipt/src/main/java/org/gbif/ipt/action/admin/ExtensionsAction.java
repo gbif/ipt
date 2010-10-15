@@ -160,7 +160,7 @@ public class ExtensionsAction extends POSTAction {
       addActionMessage(getText("admin.extension.install.success", new String[]{url}));
     } catch (Exception e) {
       log.debug(e);
-      addActionError(getText("admin.extension.install.error", new String[]{url}));
+      addActionWarning(getText("admin.extension.install.error", new String[]{url}), e);
     }
     return SUCCESS;
   }
