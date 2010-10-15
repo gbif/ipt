@@ -3,6 +3,8 @@
 	    <meta name="copyright" lang="en" content="GBIF" />
 		<title><@s.text name="admin.config.setup.title"/></title>
  		<link rel="stylesheet" type="text/css" href="styles/main.css"/>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>				
+		<script type="text/javascript" src="js/global.js"></script>
 		<style>
 h1 {
 	color: #077A2D;
