@@ -14,6 +14,14 @@
 		width: 325px;
 	}
 	</style>
+	
+<script type="text/javascript">
+$(document).ready(function(){
+  initHelp();	
+});
+</script>
+	
+	
   <#if latitude?? && longitude??>	
 	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 	<script type="text/javascript">
@@ -42,7 +50,8 @@
 <#include "/WEB-INF/pages/macros/forms.ftl">
 <@s.form cssClass="topForm half" action="config" method="post">
 
-	<@input name="baseUrl" i18nkey="admin.config.baseUrl" size=80/>
+	<@input name="baseUrl" i18nkey="admin.config.baseUrl" help="i18n" size=80/>
+	<@input name="proxy" i18nkey="admin.config.proxy" help="i18n" size=80/>
 	<@input name="analyticsKey" i18nkey="admin.config.analyticsKey" size=80/>  
 	<@checkbox name="analyticsGbif" i18nkey="admin.config.analyticsGbif" />  
 	<@checkbox name="debug" i18nkey="admin.config.debug" />

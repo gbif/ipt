@@ -32,6 +32,7 @@ public class AppConfig {
   protected static final String DATADIR_PROPFILE = "ipt.properties";
   private static final String CLASSPATH_PROPFILE = "application.properties";
   public static final String BASEURL = "ipt.baseURL";
+  public static final String PROXY = "proxy";
   public static final String DEBUG = "debug";
   public static final String ANALYTICS_GBIF = "analytics.gbif";
   public static final String ANALYTICS_KEY = "analytics.key";
@@ -112,6 +113,10 @@ public class AppConfig {
 
   public String getProperty(String key) {
     return properties.getProperty(key);
+  }
+
+  public String getProxy() {
+    return properties.getProperty(PROXY);
   }
 
   public REGISTRY_TYPE getRegistryType() {

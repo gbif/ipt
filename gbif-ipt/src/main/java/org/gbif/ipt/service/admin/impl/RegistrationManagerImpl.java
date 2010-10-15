@@ -215,7 +215,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
     } catch (FileNotFoundException e) {
       log.warn("Registration information not existing, " + PERSISTENCE_FILE
-          + " file missing  (This is normal when first setting up a new datadir)");
+          + " file missing  (This is normal when IPT is not registered yet)");
     } catch (ClassNotFoundException e) {
       log.error(e.getMessage(), e);
     } catch (IOException e) {

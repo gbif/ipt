@@ -24,6 +24,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.HeaderIterator;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.StatusLine;
@@ -32,6 +33,7 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpHead;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.impl.client.BasicCredentialsProvider;
@@ -289,6 +291,20 @@ public class HttpUtil {
   public boolean success(Response resp) {
     if (resp.getStatusLine().getStatusCode() >= 200 && resp.getStatusLine().getStatusCode() < 300) {
       return true;
+    }
+    return false;
+  }
+
+  public boolean verifyHost(HttpHost host) {
+    if (host != null) {
+      try {
+        HttpHead head = new HttpHead(host.toURI());
+        client.execute(host, head);
+        return true;
+      } catch (Exception e) {
+        e.printStackTrace();
+        log.debug(e);
+      }
     }
     return false;
   }
