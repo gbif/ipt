@@ -17,9 +17,9 @@ import com.google.inject.Inject;
 /**
  * @author josecuadra
  */
-public class IptSupport extends BaseValidator {
+public class IptValidator extends BaseValidator {
 
-  public IptSupport() {
+  public IptValidator() {
   }
 
   public void validate(BaseAction action, Ipt ipt) {
