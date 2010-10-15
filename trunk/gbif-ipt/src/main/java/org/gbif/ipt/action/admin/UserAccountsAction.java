@@ -9,7 +9,7 @@ import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.DeletionNotAllowedException.Reason;
 import org.gbif.ipt.service.admin.UserAccountManager;
-import org.gbif.ipt.validation.UserSupport;
+import org.gbif.ipt.validation.UserValidator;
 
 import com.google.inject.Inject;
 
@@ -25,7 +25,7 @@ public class UserAccountsAction extends POSTAction {
   private static final long serialVersionUID = 8892204508303815998L;
   @Inject
   private UserAccountManager userManager;
-  private UserSupport validator = new UserSupport();
+  private UserValidator validator = new UserValidator();
 
   private User user;
   private List<User> users;

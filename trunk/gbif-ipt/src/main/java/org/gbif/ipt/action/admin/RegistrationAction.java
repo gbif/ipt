@@ -10,7 +10,7 @@ import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.registry.RegistryManager;
-import org.gbif.ipt.validation.IptSupport;
+import org.gbif.ipt.validation.IptValidator;
 import org.gbif.ipt.validation.OrganisationSupport;
 
 import com.google.inject.Inject;
@@ -33,7 +33,7 @@ public class RegistrationAction extends POSTAction {
   private RegistryManager registryManager;
   private RegistrationManager registrationManager;
   private OrganisationSupport organisationValidation;
-  private IptSupport iptValidation;
+  private IptValidator iptValidation;
 
   private static boolean validatedBaseURL = false;
 
@@ -49,7 +49,7 @@ public class RegistrationAction extends POSTAction {
    */
   @Inject
   public RegistrationAction(OrganisationSupport organisationValidation, RegistrationManager registrationManager,
-      RegistryManager registryManager, IptSupport iptValidation) {
+      RegistryManager registryManager, IptValidator iptValidation) {
     this.registryManager = registryManager;
     this.organisationValidation = organisationValidation;
     this.registrationManager = registrationManager;

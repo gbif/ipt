@@ -20,25 +20,32 @@ import org.gbif.ipt.model.User;
  * @author markus
  * 
  */
-public class UserSupport extends BaseValidator {
-  public void validate(BaseAction action, User user) {
+public class UserValidator extends BaseValidator {
+  public boolean validate(BaseAction action, User user) {
+    boolean valid = true;
     if (user != null) {
       if (!exists(user.getEmail())) {
         action.addFieldError("user.email", action.getText("validation.email.required"));
+        valid = false;
       } else {
         if (!isValidEmail(user.getEmail())) {
+          valid = false;
           action.addFieldError("user.email", action.getText("validation.email.invalid"));
         }
       }
       if (!exists(user.getFirstname(), 1)) {
+        valid = false;
         action.addFieldError("user.firstname", action.getText("validation.firstname.required"));
       }
       if (!exists(user.getLastname(), 1)) {
+        valid = false;
         action.addFieldError("user.lastname", action.getText("validation.lastname.required"));
       }
       if (!exists(user.getPassword(), 3)) {
+        valid = false;
         action.addFieldError("user.password", action.getText("validation.password.required"));
       }
     }
+    return valid;
   }
 }

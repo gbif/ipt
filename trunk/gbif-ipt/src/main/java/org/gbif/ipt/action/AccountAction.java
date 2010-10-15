@@ -4,7 +4,7 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.service.admin.UserAccountManager;
-import org.gbif.ipt.validation.UserSupport;
+import org.gbif.ipt.validation.UserValidator;
 
 import com.google.inject.Inject;
 
@@ -15,7 +15,7 @@ import java.io.IOException;
 public class AccountAction extends POSTAction {
   @Inject
   private UserAccountManager userManager;
-  private UserSupport userValidation = new UserSupport();
+  private UserValidator userValidation = new UserValidator();
 
   private String redirectUrl;
   private String email;

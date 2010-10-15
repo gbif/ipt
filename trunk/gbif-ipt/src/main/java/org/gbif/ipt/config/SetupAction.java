@@ -11,12 +11,11 @@ import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.ConfigManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
-import org.gbif.ipt.validation.UserSupport;
+import org.gbif.ipt.validation.UserValidator;
 
 import com.google.inject.Inject;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.struts2.util.ServletContextAware;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,14 +24,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 
-import javax.servlet.ServletContext;
-
 /**
  * The Action responsible for all user input relating to the IPT configuration
  * 
  * @author tim
  */
-public class SetupAction extends BaseAction implements ServletContextAware {
+public class SetupAction extends BaseAction {
   private static final long serialVersionUID = 4726973323043063968L;
   @Inject
   protected ConfigManager configManager;
@@ -40,14 +37,15 @@ public class SetupAction extends BaseAction implements ServletContextAware {
   protected UserAccountManager userManager;
   @Inject
   private DataDir dataDir;
-  private UserSupport userValidation = new UserSupport();
+  private UserValidator userValidation = new UserValidator();
 
   // action attributes to be set
   protected String dataDirPath;
   protected User user = new User();
+  private String password2;
   protected Boolean production;
   protected String baseURL;
-  private ServletContext ctx;
+  private boolean setup2 = false;
 
   /**
    * Tries to guess the current baseURL on the running server from the context
@@ -86,6 +84,10 @@ public class SetupAction extends BaseAction implements ServletContextAware {
     return host;
   }
 
+  public String getPassword2() {
+    return password2;
+  }
+
   private String getPort() {
     if ("http".equalsIgnoreCase(req.getScheme()) && req.getServerPort() != 80
         || "https".equalsIgnoreCase(req.getScheme()) && req.getServerPort() != 443) {
@@ -103,6 +105,15 @@ public class SetupAction extends BaseAction implements ServletContextAware {
     return production;
   }
 
+  /**
+   * If the config is in debug mode, then production settings are not possible
+   * 
+   * @return true if production setting is allowed
+   */
+  public boolean isProductionSettingAllowed() {
+    return !cfg.debug();
+  }
+
   @Override
   public void prepare() throws Exception {
     super.prepare();
@@ -116,22 +127,18 @@ public class SetupAction extends BaseAction implements ServletContextAware {
     this.dataDirPath = dataDirPath;
   }
 
+  public void setPassword2(String password2) {
+    this.password2 = password2;
+  }
+
   public void setProduction(Boolean production) {
     this.production = production;
   }
 
-  public void setServletContext(ServletContext context) {
-    this.ctx = context;
+  public void setSetup2(boolean setup2) {
+    this.setup2 = setup2;
   }
 
-  /**
-   * If the config is in debug mode, then production settings are not possible
-   * @return true if production setting is allowed
-   */
-  public boolean isProductionSettingAllowed() {
-	  return !cfg.debug();
-  }  
-  
   /**
    * Method called when setting up the IPT for the very first time. There might not even be a logged in user, be careful
    * to not require an admin!
@@ -171,15 +178,20 @@ public class SetupAction extends BaseAction implements ServletContextAware {
       // we have submitted the form
       try {
         user.setRole(Role.Admin);
-        userManager.create(user);
-        user.setLastLoginToNow();
-        userManager.save();
-        
-        // when in dev mode, production is disabled in the form
-        if (production==null) {
-        	production=false;
+        if (userValidation.validate(this, user)) {
+          // confirm password
+          userManager.create(user);
+          user.setLastLoginToNow();
+          userManager.save();
+          // login as new admin
+          session.put(Constants.SESSION_USER, user);
         }
-        
+
+        // when in dev mode, production is disabled in the form
+        if (production == null) {
+          production = false;
+        }
+
         // set IPT type: registry URL
         if (production && !cfg.devMode()) {
           cfg.setRegistryType(REGISTRY_TYPE.PRODUCTION);
@@ -191,13 +203,12 @@ public class SetupAction extends BaseAction implements ServletContextAware {
           URL burl = new URL(baseURL);
           configManager.setBaseURL(burl);
         } catch (MalformedURLException e) {
+          // checked in validate() already
         }
         // save config
         configManager.saveConfig();
         addActionMessage(getText("admin.config.setup2.success"));
         addActionMessage(getText("admin.config.setup2.next"));
-        // login as new admin
-        session.put(Constants.SESSION_USER, user);
         return SUCCESS;
       } catch (IOException e) {
         log.error(e);
@@ -218,16 +229,18 @@ public class SetupAction extends BaseAction implements ServletContextAware {
 
   @Override
   public void validate() {
-    if (user != null && production != null) {
+    if (user != null && setup2) {
       // we are in step2
       userValidation.validate(this, user);
+      if (StringUtils.trimToNull(user.getPassword()) != null && !user.getPassword().equals(password2)) {
+        addFieldError("password2", getText("validation.password2.wrong"));
+      }
       if (StringUtils.trimToNull(baseURL) == null) {
         addFieldError("baseURL", getText("validation.baseURL.required"));
       } else {
         try {
           URL burl = new URL(baseURL);
         } catch (MalformedURLException e) {
-          addFieldError("baseURL", getText("validation.baseURL.invalid"));
         }
       }
     }
