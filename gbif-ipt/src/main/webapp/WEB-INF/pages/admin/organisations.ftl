@@ -4,8 +4,20 @@
 
 $(document).ready(function(){
 	$('#organisation\\.key').click(function() {
-	$('#organisation\\.name').val($('#organisation\\.key :selected').text());	
-})
+		$('#organisation\\.name').val($('#organisation\\.key :selected').text());	
+	});
+	//Hack needed for Internet Explorer X.*x
+	$('#create').click(function() {
+		window.location='organisation.do';
+	});
+	$('#cancel').click(function() {
+		window.location='organisations.do?cancel=true';
+	});	
+	$('.edit').each(function() {
+		$(this).click(function() {
+			window.location = $(this).parent('a').attr('href');
+		});
+	});		
 });
 </script>	
  <#assign currentMenu = "admin"/>
@@ -34,15 +46,15 @@ $(document).ready(function(){
 			<@s.checkbox name="organisation.canHost" key="organisation.canHost" disabled="true" value="false" />
 		</#if>
 		</td>
-		<td><a href="organisation?id=${o.key}"><button><@s.text name="button.edit"/></button></a></td>
+		<td><a id="editLink_${o.key}" href="organisation?id=${o.key}"><button class="edit" id="${o.key}"><@s.text name="button.edit"/></button></a></td>
 	</tr>
 	</#list>
 </table>
 
 
 <p>
-	<a href="organisation.do"><button><@s.text name="button.create"/></button></a>
-	<a href="organisations.do?cancel=true"><button><@s.text name="button.cancel"/></button></a>
+	<a href="organisation.do"><button id="create"><@s.text name="button.create"/></button></a>
+	<a href="organisations.do?cancel=true"><button id="cancel"><@s.text name="button.cancel"/></button></a>
 </p>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
