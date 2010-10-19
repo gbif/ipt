@@ -47,27 +47,46 @@ hr {
 	padding-top: 0px;
 }
 
-#topmenu {
+/* Drop down language selector & login box */
+#topwrapper
+{
 	position:relative;
-	float: right;
-	bottom: -6px;
-}
-#topmenu > ul {
-	margin:0; 
-	padding:0; 
-	list-style:none; 
-}
-#topmenu > ul > li {
-	display:inline; 
-	margin:0; 
-	float:left; 
-	padding: 0px 0 0px 10px; 
-}
-#topmenu > ul > li.current a {
-	font-weight:bold;
+	float:right;
+	bottom:-6px;
 }
 
+#topmenu {	
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+}
+	
+#topmenu li
+{	float: left;
+	list-style: none;
+}
 
+#topmenu li a
+{	display: block;
+	padding: 1px 3px;
+}
+
+#topmenu li a:hover {
+	background: #ffffe1
+}
+	
+#topmenu li ul {
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	visibility: hidden;
+}
+
+#topmenu li ul li {
+	float: none;
+	display: inline
+}
+
+/*
 #availableLocales{   
 	display: none;
 	padding: 0;
@@ -80,6 +99,7 @@ hr {
 #availableLocales li + li {
 	margin: 0px;
 }
+*/
    
    
 #reports{
