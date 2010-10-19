@@ -1,5 +1,14 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
  <title><@s.text name="admin.user.title"/></title>
+ <script type="text/javascript">
+
+$(document).ready(function(){
+	//Hack needed for Internet Explorer
+	$('#create').click(function() {
+		window.location='user.do';
+	});	
+});
+</script>	
  <#assign currentMenu = "admin"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
@@ -27,7 +36,7 @@
 </table>
 
 <p>
-	<a href="user.do"><button><@s.text name="button.create"/></button></a>
+	<a href="user.do"><button id="create"><@s.text name="button.create"/></button></a>
 </p>
 
 
