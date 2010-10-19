@@ -28,7 +28,7 @@
 				<div id="list-${item_index}" class="half" style="display:none">
 					<@text i18nkey="eml.taxonomicCoverages.taxonList" help="i18n" name="taxon-list-${item_index}" value="" />
 					<div class="buttons">
-						<@s.submit name="addButton-${item_index}" key="button.add"/>
+						<@s.submit name="add-button-${item_index}" key="button.add"/>
 					</div>
 				</div>				
 				<div id="subItems">
@@ -79,7 +79,7 @@
 	<div id="list" class="half" style="display:none">
 		<@text i18nkey="eml.taxonomicCoverages.taxonList" help="i18n" name="taxon-list" value="" />
 		<div class="buttons">
-			<@s.submit name="addButton" key="button.add"/>
+			<@s.submit name="add-button" key="button.add"/>
 		</div>
 	</div>
 	<div id="subItems">
