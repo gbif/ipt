@@ -21,11 +21,19 @@ $(document).ready(function(){
 	});
 	
 	$("[id^=plus-subItem]").click(function(event) {
-			addNewSubItem(event);
+		addNewSubItem(event);
 	});
 	
 	$("[id^=trash]").click(function(event) {
-			removeSubItem(event);			
+		removeSubItem(event);			
+	});
+	
+	$(".show-taxonList").click(function(event) {
+		showList(event);
+	});
+	
+	$("[id^=addButton]").click(function(event) {
+		createTaxons(event);
 	});
 	
 	function addNewSubItem(event){
@@ -101,6 +109,19 @@ $(document).ready(function(){
 				});
 			calcNumberOfItems();
 		});
+	}
+	
+	function showList(event) {
+		event.preventDefault();
+		var $target = $(event.target);			
+		$("#list-"+$target.attr("id").split("-")[1]).slideDown('slow', function(){
+			$("#taxonsLink-"+$target.attr("id").split("-")[1]).hide();
+		});		
+	}
+	
+	function createTaxons(event) {
+		event.preventDefault();
+		alert("You click me! \nI'm not ready yet.\nBe patient.");
 	}
 	
 	function setItemIndex(item, index){
@@ -210,7 +231,18 @@ $(document).ready(function(){
 				addNewSubItem(event);
 			});			
 			$("#item-"+index+" [id$='description']").attr("id", "eml.taxonomicCoverages["+index+"].description").attr("name", function() {return $(this).attr("id");});
-			$("#item-"+index+" [for$='description']").attr("for", "eml.taxonomicCoverages["+index+"].description");	
+			$("#item-"+index+" [for$='description']").attr("for", "eml.taxonomicCoverages["+index+"].description");
+			
+			$("#item-"+index+" [id^='list']").attr("id", "list-"+index).attr("name", function() {return $(this).attr("id");});
+			$("#item-"+index+" [id^='taxon-list']").attr("id", "taxon-list-"+index).attr("name", function() {return $(this).attr("id");});
+			$("#item-"+index+" [id^='taxonsLink']").attr("id", "taxonsLink-"+index);
+			$("#taxonsLink-"+index).click(function(event){
+				 showList(event);
+			});	
+			$("#item-"+index+" [id^='addButton']").attr("id", "addButton-"+index).attr("name", function() {return $(this).attr("id");});
+			$("#addButton-"+index).click(function(event){
+				createTaxons(event);
+			});
 		<#break>
 		<#default>
   	  </#switch>		

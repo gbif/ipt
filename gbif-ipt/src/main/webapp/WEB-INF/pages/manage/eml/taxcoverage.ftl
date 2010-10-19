@@ -22,7 +22,15 @@
     				<a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.item'/> ]</a>
   				</div>
   				<div class="newline"></div>
-  				<@text  i18nkey="eml.taxonomicCoverages.description" help="i18n" name="eml.taxonomicCoverages[${item_index}].description" />				
+  				<@text  i18nkey="eml.taxonomicCoverages.description" help="i18n" name="eml.taxonomicCoverages[${item_index}].description" />
+  				<!-- Taxon list-->
+				<a id="taxonsLink-${item_index}" class="show-taxonList" href="" ><@s.text name='manage.metadata.addseveral' /> <@s.text name='manage.metadata.taxcoverage.taxon.items' /></a>	
+				<div id="list-${item_index}" class="half" style="display:none">
+					<@text i18nkey="eml.taxonomicCoverages.taxonList" help="i18n" name="taxon-list-${item_index}" value="" />
+					<div class="buttons">
+						<@s.submit name="addButton-${item_index}" key="button.add"/>
+					</div>
+				</div>				
 				<div id="subItems">
 					<#list item.taxonKeywords as subItem>
 						<div id="subItem-${subItem_index}" class="sub-item">
@@ -65,10 +73,13 @@
 	</div>
 	<div class="newline"></div>
 	<@text i18nkey="eml.taxonomicCoverages.description" help="i18n" name="description" />
-	<div id="list" class="half" >
+
+	<!-- Taxon list-->
+	<a id="taxonsLink" class="show-taxonList" href="" ><@s.text name='manage.metadata.addseveral' /> <@s.text name='manage.metadata.taxcoverage.taxon.items' /></a>	
+	<div id="list" class="half" style="display:none">
 		<@text i18nkey="eml.taxonomicCoverages.taxonList" help="i18n" name="taxon-list" value="" />
 		<div class="buttons">
-			<@s.submit name="save" key="button.add"/>
+			<@s.submit name="addButton" key="button.add"/>
 		</div>
 	</div>
 	<div id="subItems">
