@@ -3,12 +3,11 @@
  	</head>
  	<body>
 		<div id="wrapper">
-
-		    <div id="topmenu">
-		        <ul>
+		    <div id="topwrapper">
+		        <ul id="topmenu">
 		      [#if (Session.curr_user)??] 
 		        	<li>[@s.text name="menu.loggedin"/] <em>${Session.curr_user.email}</em></li>
-		        	<li[#if currentMenu=="account"] class="current"[/#if]><a href="${baseURL}/account.do">[@s.text name="menu.account"/]</a></li>
+		        	<li[#if currentMenu=="account"] class="current"[/#if] ><a href="${baseURL}/account.do">[@s.text name="menu.account"/]</a></li>
 		        	<li[#if currentMenu=="logout"] class="current"[/#if]><a href="${baseURL}/logout.do">[@s.text name="menu.logout"/]</a></li>
 			  [#else]
 		        	<li>
@@ -19,9 +18,9 @@
 				        </form>
 					</li>
 			  [/#if]
-				    <li id="locale">
+				    <li>
 				    	<a href="#"><img src="${baseURL}/images/flags/flag_${localeLanguage}.gif"/></a>
-					    <ul id="availableLocales">
+					    <ul>
 				        	[#list ["en","de","es","fr"] as lang]
 					        	[#if localeLanguage!=lang]
 								<li><a href="?request_locale=${lang}"><img src="${baseURL}/images/flags/flag_${lang}.gif"/></a></li>
