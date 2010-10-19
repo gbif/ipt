@@ -21,7 +21,7 @@ $(document).ready(function(){
 	});
 	
 	$("[id^=plus-subItem]").click(function(event) {
-		addNewSubItem(event, true);
+		addNewSubItem(event);
 	});
 	
 	$("[id^=trash]").click(function(event) {
@@ -36,7 +36,7 @@ $(document).ready(function(){
 		createTaxons(event);
 	});
 	
-	function addNewSubItem(event, value){			
+	function addNewSubItem(event, text){			
 		event.preventDefault();		
 		var baseItem = $("#item-"+$(event.target).attr("id").split("-")[2]);
 		// calculating the last taxon index.
@@ -53,10 +53,10 @@ $(document).ready(function(){
 		$("#"+idBaseItem+" #subItems").append(subBaseItem);						
 		// setting the ids to the rest of the components of the taxonItem.
 		setSubItemIndex(baseItem, subBaseItem, lastIndex);
-		if(value == "undefined") {
+		if(text == undefined) {		
 			subBaseItem.slideDown('slow');
 		} else {
-			$("#"+baseItem.attr("id")+" #"+subBaseItem.attr("id")).find("[id$='scientificName']").val(value);
+			$("#"+baseItem.attr("id")+" #"+subBaseItem.attr("id")).find("[id$='scientificName']").val(text);
 			subBaseItem.show();
 		}
 	}
@@ -248,7 +248,7 @@ $(document).ready(function(){
 			$("#item-"+index+" #plus-subItem").attr("id", "plus-subItem-"+index);
 			$("#plus-subItem-"+index).click(function(event){
 				event.preventDefault();
-				addNewSubItem(event, true);
+				addNewSubItem(event);
 			});			
 			$("#item-"+index+" [id$='description']").attr("id", "eml.taxonomicCoverages["+index+"].description").attr("name", function() {return $(this).attr("id");});
 			$("#item-"+index+" [for$='description']").attr("for", "eml.taxonomicCoverages["+index+"].description");
