@@ -164,8 +164,8 @@ $(document).ready(function(){
 			$("#item-"+index+" textarea").attr("name", "eml.methodSteps["+index+"]");
 		<#break>
  		<#case "citations">
-			$("#item-"+index+" input").attr("id","eml.bibliographicCitationSet.bibliographicCitations["+index+"]");
-			$("#item-"+index+" input").attr("name","eml.bibliographicCitationSet.bibliographicCitations["+index+"]");
+			$("#item-"+index+" textarea").attr("id","eml.bibliographicCitationSet.bibliographicCitations["+index+"]");
+			$("#item-"+index+" textarea").attr("name","eml.bibliographicCitationSet.bibliographicCitations["+index+"]");
 			$("#item-"+index+" label").attr("for","eml.bibliographicCitationSet.bibliographicCitations["+index+"]");
 		<#break>
 		<#case "collections">

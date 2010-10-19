@@ -10,7 +10,7 @@
 <form class="topForm" action="metadata-${section}.do" method="post"> 
 	<div class="newline"></div>
 	<div>
-  		<@input name="eml.citation" />
+  		<@text name="eml.citation" />
 	</div>
 	<div class="newline"></div>
 	<h2><@s.text name="manage.metadata.citations.bibliography"/></h2>
@@ -23,7 +23,7 @@
       				<a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.citations.item'/> ]</a>
     			</div>
     			<div class="newline"></div>
-					<@input name="eml.bibliographicCitationSet.bibliographicCitations[${item_index}]" i18nkey="eml.bibliographicCitationSet.bibliographicCitations" size=40/>
+					<@text name="eml.bibliographicCitationSet.bibliographicCitations[${item_index}]" i18nkey="eml.bibliographicCitationSet.bibliographicCitations" size=40/>
   				<div class="newline"></div>
 				<div class="horizontal_dotted_line_large_foo" id="separator"></div>
 				<div class="newline"></div>
@@ -45,7 +45,7 @@
 		<a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.citations.item'/> ]</a>
 	</div>
 	<div class="newline"></div>
-		<@input name="bibliographicCitations" i18nkey="eml.bibliographicCitationSet.bibliographicCitations"  value="" size=40/>
+		<@text name="bibliographicCitations" i18nkey="eml.bibliographicCitationSet.bibliographicCitations"  value="" size=40/>
 	<div class="newline"></div>
 	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
 	<div class="newline"></div>
