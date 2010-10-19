@@ -57,9 +57,27 @@ public class MetadataAction extends ManagerBaseAction {
   @Inject
   private VocabulariesManager vocabManager;
 
+  /**
+   * @return a map of countries
+   */
   public Map<String, String> getCountries() {
     countries.put("", getText("eml.country.selection"));
     return countries;
+  }
+  
+  /**
+   * @return a map of Ranks
+   */
+  public Map<String, String> getRanks() {
+    /*Map<String, String> map = new LinkedHashMap<String, String>();
+    List<Rank> ranks = Rank.DARWIN_CORE_HIGHER_RANKS;
+    for (Rank r : ranks) {
+      map.put(r.name(), getText("rank." + r.name().toLowerCase()));
+    }
+    return map;*/
+	  ranks.remove(ranks.keySet().iterator().next());
+	  ranks.put("", getText("eml.rank.selection"));
+	  return ranks;
   }
 
   public String getCurrentSideMenu() {
@@ -80,19 +98,6 @@ public class MetadataAction extends ManagerBaseAction {
 
   public String getNext() {
     return next;
-  }
-
-  /**
-   * @return a map of Ranks
-   */
-  public Map<String, String> getRanks() {
-    Map<String, String> map = new LinkedHashMap<String, String>();
-    List<Rank> ranks = Rank.DARWIN_CORE_HIGHER_RANKS;
-    for (Rank r : ranks) {
-      map.put(r.name(), getText("rank." + r.name().toLowerCase()));
-    }
-    return map;
-	  //return ranks;
   }
 
   @Override
