@@ -64,8 +64,14 @@
 		<a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.item'/> ]</a>
 	</div>
 	<div class="newline"></div>
-		<@text  i18nkey="eml.taxonomicCoverages.description" help="i18n" name="description" />
-		<div id="subItems">
+	<@text i18nkey="eml.taxonomicCoverages.description" help="i18n" name="description" />
+	<div id="list" class="half" >
+		<@text i18nkey="eml.taxonomicCoverages.taxonList" help="i18n" name="taxon-list" value="" />
+		<div class="buttons">
+			<@s.submit name="save" key="button.add"/>
+		</div>
+	</div>
+	<div id="subItems">
 	</div>
 	<br>
 	<div class="newline"></div>
