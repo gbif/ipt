@@ -34,21 +34,36 @@
   		if(isNaN(maxx)){maxx=dfmaxx;isFilled=false;}
   			else dfmaxx=maxx;
   		if(isNaN(minx)){minx=dfminx;isFilled=false;}
-  			else dfminx=minx;  				
-        map = new google.maps.Map(document.getElementById('map'), {
-        	'zoom': 2,
-        	'center': new google.maps.LatLng((maxy+miny)/2, (maxx+minx)/2),
-        	'mapTypeId': google.maps.MapTypeId.TERRAIN
-        });  				
-        	
+  			else dfminx=minx;
+  			
+  		var mapOptions = {
+   			 zoom: 2,
+   			 center: new google.maps.LatLng((maxy+miny)/2, (maxx+minx)/2),
+  			 scaleControl: true,
+  			 mapTypeControl: true,
+  			 mapTypeControlOptions: {
+      			style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+    		},
+    		navigationControl: true,
+    		navigationControlOptions: {
+     			style: google.maps.NavigationControlStyle.ANDROID
+   			},
+   			mapTypeId: google.maps.MapTypeId.TERRAIN
+  		}			
+        map = new google.maps.Map(document.getElementById('map'), mapOptions);  				
+        
+        var markerIcon = 'http://www.google.com/intl/en_us/mapfiles/ms/micons/green-dot.png';
+		
 	    // Plot two markers to represent the Rectangle's bounds.
 	    marker1 = new google.maps.Marker({
+	    	icon: markerIcon,
 	    	map: map,
 	        position: new google.maps.LatLng(miny, minx),
 	        draggable: true,
 	        title: 'marker1'
 	    });
 	    marker2 = new google.maps.Marker({
+	    	icon: markerIcon,
 	    	map: map,
 	        position: new google.maps.LatLng(maxy, maxx),
 	        draggable: true,
