@@ -54,6 +54,7 @@ $(document).ready(function(){
 		var url = "<@s.url value='${registryURL}ipt/validate.json?url=${baseURL}'/>";
 		$.getJSON(url+"&callback=?",function(data){
 			if(data.result==200) {
+				$("#baseURLStatus").html("<@s.text name="admin.registration.validate.success"/>");
 				$('#registrationForm').show(500);
 			}
 			else {
