@@ -16,30 +16,48 @@
 		      		<a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.parties.item'/> ]</a>
 		    	</div>
 		    	<div class="newline"></div>
-				<div class="half">
+				<div class="halfcolumn">
 		  			<@input name="eml.associatedParties[${item_index}].firstName" i18nkey="eml.associatedParties.firstName"/>
+				</div>
+			  	<div class="halfcolumn">			  			
 		  			<@input name="eml.associatedParties[${item_index}].lastName" i18nkey="eml.associatedParties.lastName"/>
 		  		</div>
-		  		<div class="half">
+		  		<div class="newline"></div>
+		  		<div class="halfcolumn">
 		  			<@input name="eml.associatedParties[${item_index}].position" i18nkey="eml.associatedParties.position" />
+		  		</div>
+  				<div class="halfcolumn">	
 		  			<@input name="eml.associatedParties[${item_index}].organisation" i18nkey="eml.associatedParties.organisation" />
 		  		</div>
-		  		<div class="half">
+		  		<div class="newline"></div>
+		  		<div class="halfcolumn">
 		  			<@input name="eml.associatedParties[${item_index}].address.address" i18nkey="eml.associatedParties.address.address" />
+				</div>
+			  	<div class="halfcolumn">			  			
 		  			<@input name="eml.associatedParties[${item_index}].address.city" i18nkey="eml.associatedParties.address.city" />
 		  		</div>
-		  		<div class="half">
+		  		<div class="newline"></div>
+		  		<div class="halfcolumn">
 		  			<@input name="eml.associatedParties[${item_index}].address.province" i18nkey="eml.associatedParties.address.province" />
+				</div>
+  				<div class="halfcolumn">			  			
 		  			<@select name="eml.associatedParties[${item_index}].address.country" options=countries i18nkey="eml.associatedParties.address.country" value="${eml.associatedParties[item_index].address.country!}"/>
 		  		</div>
-		  		<div class="half">
+		  		<div class="newline"></div>
+		  		<div class="halfcolumn">
 		  			<@input name="eml.associatedParties[${item_index}].address.postalCode" i18nkey="eml.associatedParties.address.postalCode" />
+				</div>
+  				<div class="halfcolumn">			  			
 		  			<@input name="eml.associatedParties[${item_index}].phone" i18nkey="eml.associatedParties.phone" />
 		  		</div>
-		  		<div class="half">
+		  		<div class="newline"></div>
+		  		<div class="halfcolumn">
 		  			<@input name="eml.associatedParties[${item_index}].email" i18nkey="eml.associatedParties.email" />
+				</div>
+  				<div class="halfcolumn">			  			
 		  			<@input name="eml.associatedParties[${item_index}].homepage" i18nkey="eml.associatedParties.homepage" />
-		  		</div>  	
+		  		</div> 
+		  		<div class="newline"></div> 	
 		  		<@select name="eml.associatedParties[${item_index}].role" i18nkey="eml.associatedParties.role" value="${eml.associatedParties[item_index].role}" options=roleOptions />  		
 		  		<div class="newline"></div>
 				<div class="horizontal_dotted_line_large_foo" id="separator"></div>
@@ -62,28 +80,45 @@
       <a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.parties.item'/> ]</a>
     </div>
     <div class="newline"></div>
-	<div class="half">
+	<div class="halfcolumn">
   		<@input name="firstName" i18nkey="eml.associatedParties.firstName" />
+  	</div>
+  	<div class="halfcolumn">
   		<@input name="lastName" i18nkey="eml.associatedParties.lastName"  />
   	</div>
-  	<div class="half">
+  	<div class="newline"></div>
+  	<div class="halfcolumn">
   		<@input name="position" i18nkey="eml.associatedParties.position" />
+  	</div>
+  	<div class="halfcolumn">  		
   		<@input name="organisation" i18nkey="eml.associatedParties.organisation" />
   	</div>
-  	<div class="half">
+  	<div class="newline"></div>
+  	<div class="halfcolumn">
   		<@input name="address" i18nkey="eml.associatedParties.address.address" />
+  	</div>
+  	<div class="halfcolumn">  		
   		<@input name="city" i18nkey="eml.associatedParties.address.city" />
   	</div>
-  	<div class="half">
+  	<div class="newline"></div>
+  	<div class="halfcolumn">
   		<@input name="province" i18nkey="eml.associatedParties.address.province" />
+  	</div>
+  	<div class="halfcolumn">  		
   		<@select name="country" options=countries i18nkey="eml.associatedParties.address.country" />
   	</div>
-  	<div class="half">
+  	<div class="newline"></div>
+  	<div class="halfcolumn">
   		<@input name="phone" i18nkey="eml.associatedParties.phone" />
+  	</div>
+  	<div class="halfcolumn">  		
   		<@input name="email" i18nkey="eml.associatedParties.email" />
   	</div>
-	<div class="half">
+  	<div class="newline"></div>
+	<div class="halfcolumn">
   		<@input name="homepage" i18nkey="eml.associatedParties.homepage" />
+  	</div>
+  	<div class="halfcolumn">  		
   		<@select name="role" i18nkey="eml.associatedParties.role"  options=roleOptions />
   	</div>
   	<div class="newline"></div>

@@ -417,6 +417,19 @@ div.half select{
 	width: auto;
 }
 
+div.halfcolumn {
+	float: left;
+	margin: 0px 0x 0px 0px;
+	width: 50%;
+}
+div.halfcolumn select{
+	max-width:90%;
+	width: auto;
+}
+div.halfcolumn input{
+	width: 85%;
+}
+
 /* overlay div for modal views */
 #modalbox { 
 	display: none;
