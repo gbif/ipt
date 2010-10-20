@@ -423,8 +423,7 @@ div.halfcolumn {
 	width: 50%;
 }
 div.halfcolumn select{
-	max-width:90%;
-	width: auto;
+	width:90%;
 }
 div.halfcolumn input{
 	width: 85%;
