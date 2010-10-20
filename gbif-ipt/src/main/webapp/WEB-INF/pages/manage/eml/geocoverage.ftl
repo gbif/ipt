@@ -40,15 +40,19 @@
    			 zoom: 2,
    			 center: new google.maps.LatLng((maxy+miny)/2, (maxx+minx)/2),
   			 scaleControl: true,
+  			 scaleControlOptions: {
+  			 	position: google.maps.ControlPosition.TOP_LEFT
+  			 },
   			 mapTypeControl: true,
   			 mapTypeControlOptions: {
       			style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
-    		},
-    		navigationControl: true,
-    		navigationControlOptions: {
-     			style: google.maps.NavigationControlStyle.ANDROID
-   			},
-   			mapTypeId: google.maps.MapTypeId.TERRAIN
+    		 },
+    		 navigationControl: true,
+    		 navigationControlOptions: {
+     			style: google.maps.NavigationControlStyle.ANDROID,
+     			position: google.maps.ControlPosition.BOTTOM_LEFT
+   			 },
+   			 mapTypeId: google.maps.MapTypeId.TERRAIN
   		}			
         map = new google.maps.Map(document.getElementById('map'), mapOptions);  				
         
