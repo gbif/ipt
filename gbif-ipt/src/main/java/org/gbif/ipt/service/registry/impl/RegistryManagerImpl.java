@@ -31,6 +31,7 @@ import org.xml.sax.SAXException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -48,6 +49,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   private RegistryEntryHandler newRegistryEntryHandler = new RegistryEntryHandler();
 
   public static final String FORM_URL_ENCODED_CONTENT_TYPE = "application/x-www-form-urlencoded";
+  public static final String UTF8_ENCODING = "UTF-8";
   private HttpUtil http;
   private SAXParser saxParser;
 
@@ -358,7 +360,10 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     data.add(new BasicNameValuePair("serviceURLs", serviceURLs));
 
     try {
-      Response result = http.post(getIptResourceUri(), null, null, orgCredentials(org), new UrlEncodedFormEntity(data));
+      UrlEncodedFormEntity uefe = new UrlEncodedFormEntity(data);
+      uefe.setContentEncoding(UTF8_ENCODING);        
+      uefe.setContentType(FORM_URL_ENCODED_CONTENT_TYPE);
+      Response result = http.post(getIptResourceUri(), null, null, orgCredentials(org), uefe);
       if (result != null) {
         // read new UDDI ID
         saxParser.parse(getStream(result.content), newRegistryEntryHandler);
@@ -387,6 +392,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   public String registerIPT(Ipt ipt, Organisation org) throws RegistryException {
     // registering IPT resource
     
+    log.debug("IPTs Name: " + StringUtils.trimToEmpty(ipt.getName()));
+    
     List<NameValuePair> data = new ArrayList<NameValuePair>();
     data.add(new BasicNameValuePair("organisationKey", StringUtils.trimToEmpty(ipt.getOrganisationKey().toString())));
     data.add(new BasicNameValuePair("name", StringUtils.trimToEmpty(ipt.getName()))); // name
@@ -397,9 +404,12 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(ipt.getPrimaryContactEmail())));
     data.add(new BasicNameValuePair("serviceTypes", "RSS"));
     data.add(new BasicNameValuePair("serviceURLs", getRssFeedURL()));
-
+    
     try {
-      Response result = http.post(getIptUri(), null, null, orgCredentials(org), new UrlEncodedFormEntity(data));
+      UrlEncodedFormEntity uefe = new UrlEncodedFormEntity(data);
+      uefe.setContentEncoding(UTF8_ENCODING);        
+      uefe.setContentType(FORM_URL_ENCODED_CONTENT_TYPE);
+      Response result = http.post(getIptUri(), null, null, orgCredentials(org), uefe);
       if (result != null) {
         // read new UDDI ID
         saxParser.parse(getStream(result.content), newRegistryEntryHandler);
