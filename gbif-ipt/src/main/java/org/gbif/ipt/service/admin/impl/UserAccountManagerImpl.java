@@ -120,11 +120,16 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
       User remUser = users.get(email.toLowerCase());
       // if admin, some other admin still existing?
       if (remUser.getRole() == Role.Admin) {
+        boolean lastAdmin = true;
         for (User u : users.values()) {
-          if (u.getRole() == Role.Admin) {
-            log.warn("Last admin cannot be deleted");
-            throw new DeletionNotAllowedException(Reason.LAST_ADMIN);
+          if (u.getRole() == Role.Admin && !u.equals(remUser)) {
+            lastAdmin = false;
+            break;
           }
+        }
+        if (lastAdmin) {
+          log.warn("Last admin cannot be deleted");
+          throw new DeletionNotAllowedException(Reason.LAST_ADMIN);
         }
       }
 
@@ -137,7 +142,8 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
           }
           Set<User> managers = new HashSet<User>(r.getManagers());
           managers.add(r.getCreator());
-          if (managers.size() == 1) {
+          managers.remove(remUser);
+          if (managers.size() == 0) {
             String msg = "Last manager for resource " + r.getShortname() + " cannot be deleted";
             log.warn(msg);
             throw new DeletionNotAllowedException(Reason.LAST_RESOURCE_MANAGER, msg);

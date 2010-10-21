@@ -32,22 +32,29 @@ public class UserAccountsAction extends POSTAction {
 
   @Override
   public String delete() {
-    try {
-      User removedUser = userManager.delete(id);
-      if (removedUser == null) {
-        return NOT_FOUND;
+    if (getCurrentUser().getEmail().equalsIgnoreCase(id)) {
+      // cant remove logged in user
+      addActionError(getText("admin.user.deleted.current"));
+    } else {
+      try {
+        User removedUser = userManager.delete(id);
+        if (removedUser == null) {
+          return NOT_FOUND;
+        }
+        userManager.save();
+        addActionMessage(getText("admin.user.deleted"));
+        return SUCCESS;
+      } catch (DeletionNotAllowedException e) {
+        if (Reason.LAST_ADMIN == e.getReason()) {
+          addActionError(getText("admin.user.deleted.lastadmin"));
+        } else if (Reason.LAST_RESOURCE_MANAGER == e.getReason()) {
+          addActionError(getText("admin.user.deleted.lastmanager"));
+        } else {
+          addActionError(getText("admin.user.deleted.error"));
+        }
+      } catch (IOException e) {
+        addActionError(getText("admin.user.cantSave") + ": " + e.getMessage());
       }
-      userManager.save();
-      addActionMessage(getText("admin.user.deleted"));
-      return SUCCESS;
-    } catch (DeletionNotAllowedException e) {
-      if (Reason.LAST_ADMIN == e.getReason()) {
-        addActionError(getText("admin.user.deleted.lastadmin"));
-      } else if (Reason.LAST_RESOURCE_MANAGER == e.getReason()) {
-        addActionError(getText("admin.user.deleted.lastmanager"));
-      }
-    } catch (IOException e) {
-      addActionError(getText("admin.user.cantSave") + ": " + e.getMessage());
     }
     return INPUT;
   }
