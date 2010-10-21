@@ -16,6 +16,15 @@
    <li>${msg.message} <span class="small">${msg.date?time?string}</span></li>
    </#list>
   </ul>
+  <#if report.hasException()>
+  <br/>
+  <ul class="simple">
+   <li><strong>Exception</strong> ${report.exceptionMessage!}</li>
+   <#list report.exceptionStacktrace as msg>
+   <li>${msg}</li>
+   </#list>
+  </ul>
+  </#if>
  <#else>
   <h4>Finished<h4>
   <p>Continue to <a href="resource.do?r=${resource.shortname}">resource overview</a>.</p>

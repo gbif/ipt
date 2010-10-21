@@ -42,6 +42,8 @@ public abstract class ReportingTask {
 
   abstract protected boolean completed();
 
+  abstract protected Exception currentException();
+
   abstract protected String currentState();
 
   /**
@@ -49,7 +51,12 @@ public abstract class ReportingTask {
    * Call this method at least once a second inside your task if possible, so users keep updated.
    */
   public StatusReport report() {
-    lastReport = new StatusReport(completed(), currentState(), messages);
+    Exception e = currentException();
+    if (e != null) {
+      lastReport = new StatusReport(e, currentState(), messages);
+    } else {
+      lastReport = new StatusReport(completed(), currentState(), messages);
+    }
     handler.report(resourceShortname, lastReport);
     return lastReport;
   }

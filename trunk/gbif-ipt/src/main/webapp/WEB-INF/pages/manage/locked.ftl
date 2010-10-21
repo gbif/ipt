@@ -6,7 +6,7 @@ $(document).ready(function(){
   var reporter = setInterval(loadReport, 1000);
   function loadReport(){
 	$("#report").load("${baseURL}/manage/report.do?r=${resource.shortname}", function() {
-		if ($("#completed").length > 0){
+		if ($(".completed").length > 0){
 			// stop timer and hide gif
 			clearInterval(reporter);
 		};	
