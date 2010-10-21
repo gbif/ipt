@@ -80,7 +80,9 @@ public class MappingAction extends ManagerBaseAction {
         idx++;
       }
     }
-    addActionMessage("Automapped " + automapped + " columns based on header names");
+    if (automapped > 0) {
+      addActionMessage("Automapped " + automapped + " columns based on header names");
+    }
   }
 
   @Override
@@ -125,7 +127,7 @@ public class MappingAction extends ManagerBaseAction {
       mapping = resource.getMapping(id);
       // existing mapping?
       if (mapping == null) {
-        // a new new mapping
+        // no, a new new mapping
         mapping = new ExtensionMapping();
         mapping.setExtension(extensionManager.get(id));
       }
@@ -168,7 +170,7 @@ public class MappingAction extends ManagerBaseAction {
         f.setTerm(p);
         fields.add(f);
       }
-      // finally do automapping for if no fields are found
+      // finally do automapping if no fields are found
       if (mapping.getFields().isEmpty()) {
         automap();
       }
@@ -197,6 +199,7 @@ public class MappingAction extends ManagerBaseAction {
       }
       // read source as prepare wasnt yet ready for this
       readSource();
+      automap();
     } else {
       // save field mappings
       Set<PropertyMapping> mappedFields = new HashSet<PropertyMapping>();
