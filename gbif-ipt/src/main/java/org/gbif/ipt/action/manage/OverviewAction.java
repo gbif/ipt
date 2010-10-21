@@ -234,6 +234,11 @@ public class OverviewAction extends ManagerBaseAction {
         addActionMessage("Publishing resource version " + resource.getEmlVersion() + ".");
         return PUBLISHING;
       } else {
+        if (!resource.hasMappedData()) {
+          addActionMessage("Source data or dwc mappings missing. No data archive generated.");
+        } else {
+          addActionMessage("No data archive generated.");
+        }
         addActionMessage("Published resource version " + resource.getEmlVersion() + ".");
         return SUCCESS;
       }
