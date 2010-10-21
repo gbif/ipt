@@ -34,7 +34,7 @@ import freemarker.template.TemplateException;
 
 public class GenerateDwca extends ReportingTask implements Callable<Integer> {
   private enum STATE {
-    WAITING, STARTED, DATAFILES, METADATA, BUNDLING, COMPLETED, STOPPING
+    WAITING, STARTED, DATAFILES, METADATA, BUNDLING, COMPLETED, STOPPING, FAILED
   };
 
   private static final Pattern escapeChars = Pattern.compile("[\t\n\r]");
@@ -48,6 +48,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
   private String currExtension;
   private STATE state = STATE.WAITING;
   private SourceManager sourceManager;
+  private Exception exception;
 
   @Inject
   public GenerateDwca(@Assisted Resource resource, @Assisted ReportHandler handler, DataDir dataDir,
@@ -241,6 +242,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       return coreRecords;
 
     } catch (Exception e) {
+      // set last error report!
+      setState(e);
       throw new GeneratorException(e);
     }
   }
@@ -289,6 +292,15 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     addMessage(Level.INFO, "meta.xml archive descriptor written");
   }
 
+  /*
+   * (non-Javadoc)
+   * @see org.gbif.ipt.task.ReportingTask#currentException()
+   */
+  @Override
+  protected Exception currentException() {
+    return exception;
+  }
+
   @Override
   protected String currentState() {
     switch (state) {
@@ -306,9 +318,17 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
         return "Archive generated!";
       case STOPPING:
         return "Stopping process";
+      case FAILED:
+        return "Failed. Fatal error!";
       default:
         return "You should never see this";
     }
+  }
+
+  private void setState(Exception e) {
+    exception = e;
+    state = STATE.FAILED;
+    report();
   }
 
   private void setState(STATE s) {
