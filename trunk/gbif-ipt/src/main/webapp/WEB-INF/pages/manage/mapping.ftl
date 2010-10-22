@@ -82,6 +82,10 @@ $(document).ready(function(){
 
 <#if mapping.source?exists>
 <h1><@s.text name='manage.mapping.title'/> <span class="small">${mapping.source.name}</span></h1>
+<p><@s.text name='manage.mapping.intro'><@s.param name="source">${mapping.source.name}</@s.param></@s.text></p>
+
+<a id="toggleFields" href="#">Hide Empty</a>
+
 <p><@s.text name='manage.mapping.idColumn' /></p>
 
 <div class="definition required">	
@@ -122,19 +126,18 @@ $(document).ready(function(){
  	<@s.submit name="cancel" key="button.cancel"/>
   </div>
 
-<p><@s.text name='manage.mapping.intro'><@s.param name="source">${mapping.source.name}</@s.param></@s.text></p>
 
 	<#assign group=""/>
-	<ul class="horizontal">
-	<#list mapping.extension.properties as p>
-	<#if (p.group!"")!="" && (p.group!"")!=group>
+	<#assign groupMenu>
+	 <ul class="horizontal">
+	 <#list mapping.extension.properties as p>
+	 <#if (p.group!"")!="" && (p.group!"")!=group>
 		<#assign group=p.group/>
 		<li><a href="#${p.group?url}">${p.group}</a></li>
-	</#if>
-	</#list>
-	</ul>
-
-<a id="toggleFields" href="#">Hide Empty</a>
+	 </#if>
+	 </#list>
+	 </ul>
+	</#assign>
 
 	<#assign group=""/>
 	<#--list mapping.extension.properties as p-->
@@ -148,9 +151,10 @@ $(document).ready(function(){
 	 	<@s.submit name="cancel" key="button.cancel"/>
 	  </div>
 	  </#if>
-		<#assign group=p.group/>
-		<a name="${p.group?url}"></a>
-		<h2>${p.group}</h2>
+	  ${groupMenu}
+	  <#assign group=p.group/>
+	  <a name="${p.group?url}"></a>
+	  <h2>${p.group}</h2>
 	</#if>
 	<div class="definition<#if p.required> required</#if>">	
 	  <div class="title">
