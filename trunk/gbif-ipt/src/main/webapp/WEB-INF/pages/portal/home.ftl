@@ -18,7 +18,7 @@
 		<th><@s.text name="portal.home.organisation"/></th>
 		<th><@s.text name="portal.home.type"/></th>
 		<th><@s.text name="portal.home.records"/></th>
-		<th><@s.text name="portal.home.last.modified"/></th>
+		<th><@s.text name="portal.home.modified"/></th>
 	</tr>
 <#list resources as r>
   <tr>

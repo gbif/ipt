@@ -575,6 +575,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         File cfgFile = dataDir.resourceFile(shortname, PERSISTENCE_FILE);
         InputStream input = new FileInputStream(cfgFile);
         Resource resource = (Resource) xstream.fromXML(input);
+        // non existing users end up being a NULL in the set, so remove them
+        // shouldnt really happen - but people can even manually cause a mess
+        resource.getManagers().remove(null);
+
         // shortname persists as folder name, so xstream doesnt handle this:
         resource.setShortname(shortname);
         // add proper source file pointer

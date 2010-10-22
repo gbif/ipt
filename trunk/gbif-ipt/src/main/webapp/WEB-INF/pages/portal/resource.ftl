@@ -60,20 +60,13 @@
   <div class="body">
       	<div class="details">
       		<table>
-          		<tr><th><@s.text name='portal.resource.name'/></th><td>${resource.creator.firstname} ${resource.creator.lastname}</td></tr>
+          		<tr><th><@s.text name='portal.resource.name'/></th><td>${resource.creator.name!}</td></tr>
           		<tr><th><@s.text name='resource.creator.email'/></th><td><a href="mailto:${resource.creator.email}">${resource.creator.email}</a></td></tr>
       		</table>
       	</div>
   </div>
 </div>
 
-	<#assign address>
-		<#if eml.contact.address.address??>${eml.contact.address.address}, </#if>
-		<#if eml.contact.address.city??>${eml.contact.address.city}, </#if>
-		<#if eml.contact.address.province??>${eml.contact.address.province}, </#if>
-		<#if eml.contact.address.country??>${eml.contact.address.country},</#if>
-	</#assign>
-      
 <div class="definition">	
   <div class="title">
   	<div class="head">
@@ -81,9 +74,15 @@
   	</div>
   </div>
   <div class="body">
+	<#assign address>
+		<#if eml.contact.address.address??>${eml.contact.address.address}, </#if>
+		<#if eml.contact.address.city??>${eml.contact.address.city}, </#if>
+		<#if eml.contact.address.province??>${eml.contact.address.province}, </#if>
+		<#if eml.contact.address.country??>${eml.contact.address.country},</#if>
+	</#assign>
       	<div class="details">
       		<table>
-          		<tr><th><@s.text name='portal.resource.name'/></th><td>${eml.contact.firstName!} ${eml.contact.lastName!}</td></tr>
+          		<tr><th><@s.text name='portal.resource.name'/></th><td>${eml.contact.name!}</td></tr>
           		<tr><th><@s.text name='eml.contact.organisation'/></th><td>${eml.contact.organisation!} <#if eml.contact.position??>(${eml.contact.position})</#if></td></tr>
           		<tr><th><@s.text name='eml.contact.address.address'/></th><td>${address}</td></tr>
           		<tr><th><@s.text name='portal.resource.contact'/></th><td><a href="mailto:${eml.contact.email!}">${eml.contact.email!}</a> <@s.text name='portal.resource.tel'/>: ${eml.contact.phone!}</td></tr>
