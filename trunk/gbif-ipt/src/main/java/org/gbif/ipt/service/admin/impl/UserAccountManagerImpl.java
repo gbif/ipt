@@ -29,6 +29,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Reader;
 import java.io.Writer;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -47,6 +49,7 @@ import java.util.TreeMap;
 @Singleton
 public class UserAccountManagerImpl extends BaseManager implements UserAccountManager {
   public static final String PERSISTENCE_FILE = "users.xml";
+  public static final String ALGORITHM = "MD5";
   private SortedMap<String, User> users = new TreeMap<String, User>();
   private boolean allowSimplifiedAdminLogin = true;
   private String onlyAdminEmail;
@@ -89,7 +92,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
       email = onlyAdminEmail;
     }
     User agent = get(email);
-    if (agent != null && agent.getPassword() != null && agent.getPassword().equals(password)) {
+    if (agent != null && agent.getPassword() != null && agent.getPassword().equals(encrypt(password))) {
       return agent;
     }
     return null;
@@ -100,9 +103,32 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
       if (get(user.getEmail()) != null) {
         throw new AlreadyExistingException();
       }
+      user.setPassword(encrypt(user.getPassword()));
       addUser(user);
       save();
     }
+  }
+  
+  public String encrypt(String password){
+	  byte[] passwordBytes=password.getBytes();
+	  try {
+		MessageDigest mdigest= MessageDigest.getInstance(ALGORITHM);
+		mdigest.reset();
+		mdigest.update(passwordBytes);
+		byte[] mdigestBytes=mdigest.digest();
+		StringBuffer sb=new StringBuffer();
+		for (int i = 0; i < mdigestBytes.length; i++) {
+		     String hex=Integer.toHexString(0xff & mdigestBytes[i]);
+		     if(hex.length()==1) sb.append('0');
+		     sb.append(hex);
+		}
+		return sb.toString();
+		
+	} catch (NoSuchAlgorithmException e) {
+		log.debug("Unable to encode using algorithm " + ALGORITHM);
+	}
+	  
+	  return password;
   }
 
   private void defineXstreamMapping() {
@@ -239,6 +265,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
    * @see org.gbif.ipt.service.admin.UserAccountManager#save(org.gbif.ipt.model.User)
    */
   public void save(User user) throws IOException {
+	user.setPassword(encrypt(user.getPassword()));
     addUser(user);
     save();
   }
