@@ -267,8 +267,15 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
    * @see org.gbif.ipt.service.admin.UserAccountManager#save(org.gbif.ipt.model.User)
    */
   public void save(User user) throws IOException {
-	user.setPassword(encrypt(user.getPassword()));
     addUser(user);
     save();
   }
+  
+  public void save(User user, boolean encryptPassword) throws IOException {
+	if(encryptPassword)
+		user.setPassword(encrypt(user.getPassword()));
+	save(user);
+  }
+  
+  
 }

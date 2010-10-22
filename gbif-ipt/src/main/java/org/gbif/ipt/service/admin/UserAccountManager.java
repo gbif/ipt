@@ -94,5 +94,14 @@ public interface UserAccountManager {
    * @throws IOException
    */
   public void save(User user) throws IOException;
+  
+  /**
+   * Updates the internal cache with this user and persists the change
+   * 
+   * @param user
+   * @param encryptPassword
+   * @throws IOException
+   */
+  public void save(User user, boolean encryptPassword)throws IOException;
 
 }
