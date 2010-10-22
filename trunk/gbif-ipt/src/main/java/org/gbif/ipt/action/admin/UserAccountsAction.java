@@ -12,7 +12,7 @@ import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.validation.UserValidator;
 
 import com.google.inject.Inject;
-
+import org.apache.commons.lang.RandomStringUtils;
 import java.io.IOException;
 import java.util.List;
 
@@ -95,6 +95,22 @@ public class UserAccountsAction extends POSTAction {
     }
   }
 
+  
+  public String resetPassword(){
+	try {
+	  String newPassword=RandomStringUtils.random(8,"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
+	  user.setPassword(newPassword);
+	  userManager.save(user,true);
+	  addActionMessage(getText("admin.user.passwordChanged")+" "+newPassword);
+	  return INPUT;
+	} catch (IOException e) {
+	  log.error("The user change couldnt be saved: " + e.getMessage(), e);
+	  addActionError(getText("admin.user.saveError"));
+	  addActionError(e.getMessage());
+	  return INPUT;
+	}
+  }
+  
   @Override
   public String save() {
     try {
