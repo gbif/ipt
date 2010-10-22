@@ -198,7 +198,7 @@ $(document).ready(function(){
 	      	<div>
 	      		<em>Source Sample</em>:	      		
 	      		<#assign first=true/>
-	      		<#list peek as row><#if row[field.index]?has_content><#if !first> | </#if><#assign first=false/>${row[field.index]}</#if></#list>
+	      		<#list peek as row><#if row??><#if row[field.index]?has_content><#if !first> | </#if><#assign first=false/>${row[field.index]}</#if></#if></#list>
 	      	</div>
 	      	<div>
 	      		<em>Translation</em>:

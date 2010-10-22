@@ -16,6 +16,9 @@
 
 package org.gbif.ipt.service.registry.impl;
 
+import org.gbif.ipt.model.Ipt;
+import org.gbif.ipt.model.Organisation;
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.utils.IptMockBaseTest;
 
@@ -26,6 +29,9 @@ import static org.junit.Assert.fail;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
+import java.util.Date;
+import java.util.UUID;
+
 import javax.xml.parsers.ParserConfigurationException;
 
 /**
@@ -33,9 +39,28 @@ import javax.xml.parsers.ParserConfigurationException;
  * 
  */
 public class RegistryManagerImplTest extends IptMockBaseTest {
+  private static final String TIM_UUID = "3780d048-8e18-4c0c-afcd-cb6389df56de";
+  private static final String TIM_PASSWORD = "password";
+
+  /**
+   * @return
+   */
+  private Ipt getIpt() {
+    Ipt ipt = new Ipt();
+    return ipt;
+  }
+
   public RegistryManager getManager() throws ParserConfigurationException, SAXException {
     RegistryManager man = new RegistryManagerImpl(cfg, dataDir, buildHttpUtil(), buildSaxFactory());
     return man;
+  }
+
+  public Organisation getTim() {
+    Organisation org = new Organisation();
+    org.setKey(TIM_UUID);
+    org.setName("Tim");
+    org.setPassword(TIM_PASSWORD);
+    return org;
   }
 
   @Test
@@ -43,10 +68,37 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
     try {
       RegistryManager man = getManager();
       // test dev organisation "Tim"
-      assertTrue(man.validateOrganisation("3780d048-8e18-4c0c-afcd-cb6389df56de", "password"));
-      assertFalse(man.validateOrganisation("3780d048-8e18-4c0c-afcd-cb6389df56de", "tim"));
-      assertFalse(man.validateOrganisation("3780d048-8e18-4c0c-afcd-cb6389df56df", "password"));
+      assertTrue(man.validateOrganisation(TIM_UUID, TIM_PASSWORD));
+      assertFalse(man.validateOrganisation(TIM_UUID, "tim"));
+      assertFalse(man.validateOrganisation("3780d048-8e18-4c0c-afcd-cb6389df56df", TIM_PASSWORD));
 
+    } catch (Exception e) {
+      e.printStackTrace();
+      fail(e.getMessage());
+    }
+  }
+
+  @Test
+  public void testWriteReadResource() {
+    try {
+      RegistryManager man = getManager();
+      Resource res = new Resource();
+      Organisation tim = getTim();
+      Ipt ipt = getIpt();
+      ipt.setCreated(new Date());
+      ipt.setDescription("a unit test mock IPT");
+      ipt.setLanguage("en");
+      ipt.setName("Mock IPT");
+
+      // register IPT
+      man.registerIPT(ipt, tim);
+
+      // register resource
+      UUID uuid = man.register(res, tim, ipt);
+      assertTrue(uuid != null);
+
+      // get resource and compare
+      // TODO: no registry method for this yet
     } catch (Exception e) {
       e.printStackTrace();
       fail(e.getMessage());

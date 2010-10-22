@@ -12,8 +12,8 @@ import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.RegistryException.TYPE;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.utils.HttpUtil;
-import org.gbif.ipt.utils.RegistryEntryHandler;
 import org.gbif.ipt.utils.HttpUtil.Response;
+import org.gbif.ipt.utils.RegistryEntryHandler;
 import org.gbif.metadata.eml.Eml;
 
 import com.google.inject.Inject;
@@ -31,14 +31,11 @@ import org.xml.sax.SAXException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -126,16 +123,16 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    */
   public void deregister(Resource resource) throws RegistryException {
     try {
-       if(resource.getOrganisation()!=null) {
-        Response resp = http.delete(getDeleteResourceUri(resource.getKey().toString()), orgCredentials(resource.getOrganisation()));
+      if (resource.getOrganisation() != null) {
+        Response resp = http.delete(getDeleteResourceUri(resource.getKey().toString()),
+            orgCredentials(resource.getOrganisation()));
         if (http.success(resp)) {
           log.info("The resource has been deleted. Resource key: " + resource.getKey().toString());
         } else {
           throw new RegistryException(TYPE.BAD_RESPONSE, "Empty registry response");
-        } 
-      }
-      else {
-      	throw new RegistryException(TYPE.NOT_AUTHORISED, "Credentials should be specified");
+        }
+      } else {
+        throw new RegistryException(TYPE.NOT_AUTHORISED, "Credentials should be specified");
       }
     } catch (IOException e) {
       throw new RegistryException(TYPE.IO_ERROR, e);
@@ -347,21 +344,23 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     } else {
       log.debug("No DWC & EML Service present");
     }
-    
+
     List<NameValuePair> data = new ArrayList<NameValuePair>();
     data.add(new BasicNameValuePair("organisationKey", StringUtils.trimToEmpty(org.getKey().toString())));
     data.add(new BasicNameValuePair("iptKey", StringUtils.trimToEmpty(ipt.getKey().toString())));
-    data.add(new BasicNameValuePair("name", ((resource.getTitle() != null) ? StringUtils.trimToEmpty(resource.getTitle()) : StringUtils.trimToEmpty(resource.getShortname()))));
+    data.add(new BasicNameValuePair("name", ((resource.getTitle() != null)
+        ? StringUtils.trimToEmpty(resource.getTitle()) : StringUtils.trimToEmpty(resource.getShortname()))));
     data.add(new BasicNameValuePair("description", StringUtils.trimToEmpty(resource.getDescription())));
     data.add(new BasicNameValuePair("primaryContactType", "technical"));
-    data.add(new BasicNameValuePair("primaryContactName", StringUtils.trimToNull(StringUtils.trimToEmpty(resource.getCreator().getName()))));
+    data.add(new BasicNameValuePair("primaryContactName",
+        StringUtils.trimToNull(StringUtils.trimToEmpty(resource.getCreator().getName()))));
     data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(resource.getCreator().getEmail())));
     data.add(new BasicNameValuePair("serviceTypes", serviceTypes));
     data.add(new BasicNameValuePair("serviceURLs", serviceURLs));
 
     try {
       UrlEncodedFormEntity uefe = new UrlEncodedFormEntity(data);
-      uefe.setContentEncoding(UTF8_ENCODING);        
+      uefe.setContentEncoding(UTF8_ENCODING);
       uefe.setContentType(FORM_URL_ENCODED_CONTENT_TYPE);
       Response result = http.post(getIptResourceUri(), null, null, orgCredentials(org), uefe);
       if (result != null) {
@@ -391,44 +390,44 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    */
   public String registerIPT(Ipt ipt, Organisation org) throws RegistryException {
     // registering IPT resource
-    
+
     log.debug("IPTs Name: " + StringUtils.trimToEmpty(ipt.getName()));
-    
+
     List<NameValuePair> data = new ArrayList<NameValuePair>();
-    data.add(new BasicNameValuePair("organisationKey", StringUtils.trimToEmpty(ipt.getOrganisationKey().toString())));
+    data.add(new BasicNameValuePair("organisationKey", StringUtils.trimToEmpty(org.getKey().toString())));
     data.add(new BasicNameValuePair("name", StringUtils.trimToEmpty(ipt.getName()))); // name
     data.add(new BasicNameValuePair("description", StringUtils.trimToEmpty(ipt.getDescription()))); // description
-    data.add(new BasicNameValuePair("wsPassword", StringUtils.trimToEmpty(ipt.getWsPassword()))); // description
+    // TODO: what is this wsPassword for when registering a new IPT ?
+    // data.add(new BasicNameValuePair("wsPassword", StringUtils.trimToEmpty(ipt.getWsPassword()))); // description
     data.add(new BasicNameValuePair("primaryContactType", ipt.getPrimaryContactType()));
     data.add(new BasicNameValuePair("primaryContactName", StringUtils.trimToEmpty(ipt.getPrimaryContactName())));
     data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(ipt.getPrimaryContactEmail())));
     data.add(new BasicNameValuePair("serviceTypes", "RSS"));
     data.add(new BasicNameValuePair("serviceURLs", getRssFeedURL()));
-    
+
+    String key = null;
     try {
       UrlEncodedFormEntity uefe = new UrlEncodedFormEntity(data);
-      uefe.setContentEncoding(UTF8_ENCODING);        
+      uefe.setContentEncoding(UTF8_ENCODING);
       uefe.setContentType(FORM_URL_ENCODED_CONTENT_TYPE);
       Response result = http.post(getIptUri(), null, null, orgCredentials(org), uefe);
       if (result != null) {
         // read new UDDI ID
         saxParser.parse(getStream(result.content), newRegistryEntryHandler);
-        String key = newRegistryEntryHandler.key;
+        key = newRegistryEntryHandler.key;
         if (StringUtils.trimToNull(key) == null) {
           key = newRegistryEntryHandler.resourceKey;
         }
+        log.info("A new ipt has been registered with GBIF. Key = " + key);
         ipt.setKey(key);
-        if (key != null) {
-          log.info("A new ipt has been registered with GBIF. Key = " + key);
-          return key;
-        }
       } else {
         throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, "Bad registry response");
       }
     } catch (Exception e) {
+      log.error("Bad registry response", e);
       throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, "Bad registry response");
     }
-    return null;
+    return key;
   }
 
   /*
@@ -471,13 +470,15 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
     // TODO: should this not be the eml contact agent instead?
     data.add(new BasicNameValuePair("primaryContactType", "technical"));
-    data.add(new BasicNameValuePair("primaryContactName", StringUtils.trimToNull(StringUtils.trimToEmpty(resource.getCreator().getName()))));
+    data.add(new BasicNameValuePair("primaryContactName",
+        StringUtils.trimToNull(StringUtils.trimToEmpty(resource.getCreator().getName()))));
     data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(resource.getCreator().getEmail())));
     data.add(new BasicNameValuePair("serviceTypes", serviceTypes));
     data.add(new BasicNameValuePair("serviceURLs", serviceURLs));
 
     try {
-      Response resp = http.post(getIptUpdateResourceUri(resource.getKey().toString()), null, null, orgCredentials(organisation), new UrlEncodedFormEntity(data));
+      Response resp = http.post(getIptUpdateResourceUri(resource.getKey().toString()), null, null,
+          orgCredentials(organisation), new UrlEncodedFormEntity(data));
       if (http.success(resp)) {
         // read new UDDI ID
         log.debug("Resource's registration info has been updated");
