@@ -296,6 +296,7 @@ $(document).ready(function(){
       		<table>
           		<tr><th><@s.text name="manage.overview.resource.managers.creator"/></th><td>${resource.creator.name}, ${resource.creator.email}</td></tr>
           		<#list resource.managers as u>
+          		${u}
           		<tr><th><@s.text name="manage.overview.resource.managers.manager"/></th><td>${u.name}, ${u.email} <a class="confirm" href="resource-delmanager.do?r=${resource.shortname}&id=${u.email}"><button><@s.text name="button.delete"/></button></a></td></tr>
 	    		</#list>
       		</table>

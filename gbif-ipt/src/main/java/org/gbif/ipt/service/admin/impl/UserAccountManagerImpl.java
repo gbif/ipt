@@ -177,18 +177,20 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
         }
       }
 
-      // finally remove user from internal hash or update role if its a resource creator
+      // finally remove user from internal hash and resource managers or update role if its a resource creator
+      // remove from resource managers
+      for (Resource r : resourceManager.list(remUser)) {
+        r.getManagers().remove(remUser);
+        resourceManager.save(r);
+      }
+      // update resource creator
       if (isResourceCreator) {
         remUser.setRole(Role.User);
         log.warn("Creator of resources cannot be deleted. Changed role to a simple user instead");
       } else {
         users.remove(email.toLowerCase());
-        // remove from resource managers
-        for (Resource r : resourceManager.list(remUser)) {
-          r.getManagers().remove(remUser);
-        }
       }
-      // update resource creator
+
       return remUser;
     }
 
