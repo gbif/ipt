@@ -119,6 +119,7 @@ public class HttpUtil {
   }
 
   protected static final Logger log = Logger.getLogger(HttpUtil.class);
+  public static final String FORM_URL_ENCODED_CONTENT_TYPE = "application/x-www-form-urlencoded; charset=UTF-8";
   private DefaultHttpClient client;
 
   @Inject
@@ -259,6 +260,7 @@ public class HttpUtil {
       @Nullable UsernamePasswordCredentials credentials, @Nullable HttpEntity encodedEntity) throws IOException,
       URISyntaxException {
     HttpPost post = new HttpPost(uri);
+    post.setHeader("content-type", FORM_URL_ENCODED_CONTENT_TYPE);
     // if (params != null) {
     // post.setParams(params);
     // }

@@ -12,8 +12,8 @@ import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.RegistryException.TYPE;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.utils.HttpUtil;
-import org.gbif.ipt.utils.HttpUtil.Response;
 import org.gbif.ipt.utils.RegistryEntryHandler;
+import org.gbif.ipt.utils.HttpUtil.Response;
 import org.gbif.metadata.eml.Eml;
 
 import com.google.inject.Inject;
@@ -23,6 +23,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,8 +46,6 @@ import javax.xml.parsers.SAXParserFactory;
 public class RegistryManagerImpl extends BaseManager implements RegistryManager {
   private RegistryEntryHandler newRegistryEntryHandler = new RegistryEntryHandler();
 
-  public static final String FORM_URL_ENCODED_CONTENT_TYPE = "application/x-www-form-urlencoded";
-  public static final String UTF8_ENCODING = "UTF-8";
   private HttpUtil http;
   private SAXParser saxParser;
 
@@ -359,9 +358,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     data.add(new BasicNameValuePair("serviceURLs", serviceURLs));
 
     try {
-      UrlEncodedFormEntity uefe = new UrlEncodedFormEntity(data);
-      uefe.setContentEncoding(UTF8_ENCODING);
-      uefe.setContentType(FORM_URL_ENCODED_CONTENT_TYPE);
+      UrlEncodedFormEntity uefe = new UrlEncodedFormEntity(data,"UTF-8");
       Response result = http.post(getIptResourceUri(), null, null, orgCredentials(org), uefe);
       if (result != null) {
         // read new UDDI ID
@@ -391,8 +388,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   public String registerIPT(Ipt ipt, Organisation org) throws RegistryException {
     // registering IPT resource
 
-    log.debug("IPTs Name: " + StringUtils.trimToEmpty(ipt.getName()));
-
     List<NameValuePair> data = new ArrayList<NameValuePair>();
     data.add(new BasicNameValuePair("organisationKey", StringUtils.trimToEmpty(org.getKey().toString())));
     data.add(new BasicNameValuePair("name", StringUtils.trimToEmpty(ipt.getName()))); // name
@@ -407,9 +402,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
     String key = null;
     try {
-      UrlEncodedFormEntity uefe = new UrlEncodedFormEntity(data);
-      uefe.setContentEncoding(UTF8_ENCODING);
-      uefe.setContentType(FORM_URL_ENCODED_CONTENT_TYPE);
+      UrlEncodedFormEntity uefe = new UrlEncodedFormEntity(data,HTTP.UTF_8); 
       Response result = http.post(getIptUri(), null, null, orgCredentials(org), uefe);
       if (result != null) {
         // read new UDDI ID
