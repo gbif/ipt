@@ -19,6 +19,7 @@ package org.gbif.ipt.service.registry.impl;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.Resource.CoreRowType;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.utils.IptMockBaseTest;
@@ -88,15 +89,21 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
 
       Ipt ipt = getIpt();
       ipt.setCreated(new Date());
-      ipt.setDescription("a unit test mock IPT");
+      ipt.setDescription("a unit test mock IPT");      
+      ipt.setPrimaryContactEmail("gbif@mailinator.com");
+      ipt.setPrimaryContactType("technical");
       ipt.setLanguage("en");
       ipt.setName("Mock IPT");
 
       // register IPT
-      man.registerIPT(ipt, tim);
+      ipt.setKey(man.registerIPT(ipt, tim));
 
       // register resource
       Resource res = new Resource();
+      User user = new User();
+      user.setFirstname("Mock Name");
+      user.setEmail("mocking@themock.org");
+      res.setCreator(user);
       res.setShortname("mock");
       res.setTitle("Möck rèşürçe wíŧħ ƒũñňÿ ćĥåřæċŧëŗş");
       res.setCreated(new Date());
