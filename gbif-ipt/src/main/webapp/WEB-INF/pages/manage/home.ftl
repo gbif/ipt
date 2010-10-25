@@ -23,7 +23,7 @@
 <#list resources as r>
   <tr>
 	<td><a href="resource.do?r=${r.shortname}">${r.title!r.shortname}</a></td>
-	<td>${r.subtype!"---"}</td>
+	<td>${r.subtype!r.coreType!"---"}</td>
 	<td>${r.recordsPublished!0}</td>
 	<td>${r.modified?date}</td>
 	<td>

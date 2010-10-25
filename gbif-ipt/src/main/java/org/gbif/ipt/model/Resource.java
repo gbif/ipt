@@ -1,5 +1,7 @@
 package org.gbif.ipt.model;
 
+import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.terms.TermFactory;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.metadata.eml.Eml;
@@ -30,10 +32,11 @@ public class Resource implements Serializable, Comparable<Resource> {
     OCCURRENCE, CHECKLIST
   }
 
+  private static final TermFactory fact = new TermFactory();
+
   private static final long serialVersionUID = 3832626162173352190L;;
   private String shortname; // unique
   private Eml eml = new Eml();
-  private CoreRowType type;
   private String subtype;
   // publication
   private PublicationStatus status = PublicationStatus.PRIVATE;
@@ -123,6 +126,13 @@ public class Resource implements Serializable, Comparable<Resource> {
   public String getCoreRowType() {
     if (core != null && core.getExtension() != null) {
       return core.getExtension().getRowType();
+    }
+    return null;
+  }
+
+  public ConceptTerm getCoreType() {
+    if (core != null) {
+      return fact.findTerm(core.getExtension().getRowType());
     }
     return null;
   }
@@ -242,10 +252,6 @@ public class Resource implements Serializable, Comparable<Resource> {
     return shortname;
   }
 
-  public CoreRowType getType() {
-    return type;
-  }
-
   @Override
   public int hashCode() {
     return Objects.hashCode(shortname);
@@ -342,10 +348,6 @@ public class Resource implements Serializable, Comparable<Resource> {
     if (eml != null) {
       this.eml.setTitle(title);
     }
-  }
-
-  public void setType(CoreRowType type) {
-    this.type = type;
   }
 
   @Override
