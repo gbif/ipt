@@ -15,7 +15,9 @@
 	<@input name="user.email" disabled=true />  
 	<@input name="user.firstname" />  
 	<@input name="user.lastname" />  
-	<@input name="user.password" />
+	<@input name="password" i18nkey="user.password.new" type="password" />
+	<@input name="password2" i18nkey="user.password2" type="password"/>
+	  
 	<#assign val><@s.text name="user.roles.${user.role?lower_case}"/></#assign>
 	<@readonly i18nkey="user.role" value=val />  
 	

@@ -47,3 +47,10 @@
 	<input type="text" value="${value}" <#if (size>0)>size="${size}"</#if> readonly="readonly" />
   </div>
 </#macro>
+<#macro label i18nkey help="">
+  <div>
+	<label><@s.text name="${i18nkey}"/></label>
+	<img style="visibility:hidden" src="${baseURL}/images/info.gif" />
+	<#nested>
+  </div>
+</#macro>
