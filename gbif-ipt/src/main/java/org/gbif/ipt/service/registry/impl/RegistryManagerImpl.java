@@ -358,7 +358,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     data.add(new BasicNameValuePair("serviceURLs", serviceURLs));
 
     try {
-      UrlEncodedFormEntity uefe = new UrlEncodedFormEntity(data,"UTF-8");
+      UrlEncodedFormEntity uefe = new UrlEncodedFormEntity(data,HTTP.UTF_8);
       Response result = http.post(getIptResourceUri(), null, null, orgCredentials(org), uefe);
       if (result != null) {
         // read new UDDI ID
