@@ -25,11 +25,13 @@ $(document).ready(function(){
 	<@input name="user.lastname" />  
 	<@select name="user.role" value=user.role options={"User":"user.roles.user", "Manager":"user.roles.manager", "Publisher":"user.roles.publisher", "Admin":"user.roles.admin"}/>
 	
-	<#if user.email??>
-		<br>
-		<@s.text name="user.password"/>	   <@s.submit name="resetPassword" key="button.resetPassword" method="resetPassword"/>
+	<#if user.password??>
+		<@label i18nkey="user.password">
+			<@s.submit name="resetPassword" key="button.resetPassword" />
+		</@label>
 	<#else>
 		<@input name="user.password" type="password" />
+		<@input name="password2" i18nkey="user.password2" type="password"/>  
 	</#if>
   <div class="buttons">
  	<@s.submit name="save" key="button.save"/>

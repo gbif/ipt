@@ -20,6 +20,7 @@ public class AccountAction extends POSTAction {
   private String redirectUrl;
   private String email;
   private String password;
+  private String password2;
   private User user;
   // to show admin contact
   private User admin;
@@ -55,6 +56,10 @@ public class AccountAction extends POSTAction {
     return password;
   }
 
+  public String getPassword2() {
+    return password2;
+  }
+
   public String getRedirectUrl() {
     return redirectUrl;
   }
@@ -77,7 +82,7 @@ public class AccountAction extends POSTAction {
         return SUCCESS;
       } else {
         addActionError("The email - password combination does not exists");
-        log.info("User " + email + " failed to log in with password " + password);
+        log.info("User " + email + " failed to log in");
       }
     }
     return INPUT;
@@ -106,6 +111,10 @@ public class AccountAction extends POSTAction {
   @Override
   public String save() {
     try {
+      // update passwords?
+      if (password != null) {
+        user.setPassword(password);
+      }
       addActionMessage(getText("admin.user.changed"));
       userManager.save();
       return SUCCESS;
@@ -128,6 +137,10 @@ public class AccountAction extends POSTAction {
     this.password = password;
   }
 
+  public void setPassword2(String password2) {
+    this.password2 = password2;
+  }
+
   private void setRedirectUrl() {
     redirectUrl = getBase() + "/";
     // if we have a request refer back to the originally requested page
@@ -146,9 +159,16 @@ public class AccountAction extends POSTAction {
   }
 
   @Override
-  public void validate() {
+  public void validateHttpPostOnly() {
     if (user != null) {
       userValidation.validate(this, user);
+      // update passwords?
+      if (password != null) {
+        if (!password.equals(password2)) {
+          addFieldError("password2", getText("validation.password2.wrong"));
+          password2 = null;
+        }
+      }
     }
   }
 

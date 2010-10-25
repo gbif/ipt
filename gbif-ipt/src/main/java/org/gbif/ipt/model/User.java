@@ -17,7 +17,7 @@ public class User implements Serializable, Cloneable {
   private static final long serialVersionUID = 3832626162173359411L;;
 
   private String email; // unique
-  private String password;
+  private Password password = new Password();
   private String firstname;
   private String lastname;
   private Role role = Role.User;
@@ -69,7 +69,7 @@ public class User implements Serializable, Cloneable {
   }
 
   public String getPassword() {
-    return password;
+    return password.password;
   }
 
   public Role getRole() {
@@ -126,7 +126,7 @@ public class User implements Serializable, Cloneable {
   }
 
   public void setPassword(String password) {
-    this.password = password;
+    this.password.password = password;
   }
 
   public void setRole(Role role) {

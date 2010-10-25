@@ -8,6 +8,7 @@ import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
+import org.gbif.ipt.model.converter.PasswordConverter;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.DeletionNotAllowedException;
@@ -29,8 +30,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Reader;
 import java.io.Writer;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -57,10 +56,11 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
   private ResourceManager resourceManager;
 
   @Inject
-  public UserAccountManagerImpl(AppConfig cfg, DataDir dataDir, ResourceManager resourceManager) {
+  public UserAccountManagerImpl(AppConfig cfg, DataDir dataDir, ResourceManager resourceManager,
+      PasswordConverter passwordConverter) {
     super(cfg, dataDir);
     this.resourceManager = resourceManager;
-    defineXstreamMapping();
+    defineXstreamMapping(passwordConverter);
   }
 
   private User addUser(User user) {
@@ -92,7 +92,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
       email = onlyAdminEmail;
     }
     User agent = get(email);
-    if (agent != null && agent.getPassword() != null && agent.getPassword().equals(encrypt(password))) {
+    if (agent != null && agent.getPassword() != null && agent.getPassword().equals(password)) {
       return agent;
     }
     return null;
@@ -103,35 +103,12 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
       if (get(user.getEmail()) != null) {
         throw new AlreadyExistingException();
       }
-      user.setPassword(encrypt(user.getPassword()));
       addUser(user);
       save();
     }
   }
-  
-  public String encrypt(String password){
-	  byte[] passwordBytes=password.getBytes();
-	  try {
-		MessageDigest mdigest= MessageDigest.getInstance(ALGORITHM);
-		mdigest.reset();
-		mdigest.update(passwordBytes);
-		byte[] mdigestBytes=mdigest.digest();
-		StringBuffer sb=new StringBuffer();
-		for (int i = 0; i < mdigestBytes.length; i++) {
-		     String hex=Integer.toHexString(0xff & mdigestBytes[i]);
-		     if(hex.length()==1) sb.append('0');
-		     sb.append(hex);
-		}
-		return sb.toString();
-		
-	} catch (NoSuchAlgorithmException e) {
-		log.debug("Unable to encode using algorithm " + ALGORITHM);
-	}
-	  
-	  return password;
-  }
 
-  private void defineXstreamMapping() {
+  private void defineXstreamMapping(PasswordConverter passwordConverter) {
     xstream.alias("user", User.class);
     xstream.useAttributeFor(User.class, "email");
     xstream.useAttributeFor(User.class, "password");
@@ -139,6 +116,8 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
     xstream.useAttributeFor(User.class, "lastname");
     xstream.useAttributeFor(User.class, "role");
     xstream.useAttributeFor(User.class, "lastLogin");
+    // encrypt passwords
+    xstream.registerConverter(passwordConverter);
   }
 
   public User delete(String email) throws DeletionNotAllowedException {
@@ -270,12 +249,5 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
     addUser(user);
     save();
   }
-  
-  public void save(User user, boolean encryptPassword) throws IOException {
-	if(encryptPassword)
-		user.setPassword(encrypt(user.getPassword()));
-	save(user);
-  }
-  
-  
+
 }
