@@ -69,7 +69,10 @@ public class User implements Serializable, Cloneable {
   }
 
   public String getPassword() {
-    return password.password;
+    if (password != null) {
+      return password.password;
+    }
+    return null;
   }
 
   public Role getRole() {
@@ -126,6 +129,9 @@ public class User implements Serializable, Cloneable {
   }
 
   public void setPassword(String password) {
+    if (password == null) {
+      this.password = new Password();
+    }
     this.password.password = password;
   }
 
