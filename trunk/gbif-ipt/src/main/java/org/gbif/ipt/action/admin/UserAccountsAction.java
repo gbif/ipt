@@ -115,7 +115,7 @@ public class UserAccountsAction extends POSTAction {
             "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
         user.setPassword(newPassword);
         userManager.save(user);
-        addActionMessage(getText("admin.user.passwordChanged") + " " + newPassword);
+        addActionMessage(getText("admin.user.passwordChanged", new String[]{user.getEmail(),newPassword}));
       } else {
         userManager.save(user);
         addActionMessage(getText("admin.user.changed"));
