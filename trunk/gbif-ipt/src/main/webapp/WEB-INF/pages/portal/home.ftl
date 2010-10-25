@@ -24,7 +24,7 @@
   <tr>
 	<td><a href="resource.do?r=${r.shortname}">${r.title!r.shortname}</a></td>
 	<td>${(r.organisation.name)!"---"}</td>
-	<td>${r.type!"---"}</td>
+	<td>${r.subtype!r.coreType!"---"}</td>
 	<td>${r.recordsPublished!0}</td>
 	<td>${r.modified?date}</td>
   </tr>

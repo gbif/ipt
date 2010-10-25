@@ -20,7 +20,6 @@ import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
-import org.gbif.ipt.model.Resource.CoreRowType;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.utils.IptMockBaseTest;
 import org.gbif.metadata.eml.Eml;
@@ -89,7 +88,7 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
 
       Ipt ipt = getIpt();
       ipt.setCreated(new Date());
-      ipt.setDescription("a unit test mock IPT");      
+      ipt.setDescription("a unit test mock IPT");
       ipt.setPrimaryContactEmail("gbif@mailinator.com");
       ipt.setPrimaryContactType("technical");
       ipt.setLanguage("en");
@@ -107,7 +106,6 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
       res.setShortname("mock");
       res.setTitle("Möck rèşürçe wíŧħ ƒũñňÿ ćĥåřæċŧëŗş");
       res.setCreated(new Date());
-      res.setType(CoreRowType.OCCURRENCE);
       res.setSubtype("occurrence test");
       Eml eml = new Eml();
       eml.setAbstract("An IPT unit test resource that can be deleted. Testing unicode characters like ą ć ę ł ń  ś ź ż (for polish) ť ů ž č ď ě ň ř š (for czech) and other taken from http://www.alanflavell.org.uk/unicode/unidata.html  ᠀᠔ᡎᢥ(mongolian) ⅛  Ⅳ ⅸ ↂ (numbers) ∀ ∰ ⊇ ⋩ (maths) CJK Symbols and Punctuation U+3000 – U+303F (12288–12351) 々 〒 〣 〰 Hiragana U+3040 – U+309F (12352–12447) あ ぐ る ゞ Katakana U+30A0 – U+30FF (12448–12543) ア ヅ ヨ ヾ Bopomofo U+3100 – U+312F (12544–12591) ㄆ ㄓ ㄝ ㄩ Hangul Compatibility Jamo U+3130 – U+318F (12592–12687) ㄱ ㄸ ㅪ ㆍ Kanbun U+3190 – U+319F (12688–12703) ㆐ ㆕ ㆚ ㆟ Bopomofo Extended U+31A0 – U+32BF (12704–12735) ㆠ ㆧ ㆯ ㆷ Katakana Phonetic Extensions U+31F0 – U+31FF (12784–12799) ㇰ ㇵ ㇺ ㇿ Enclosed CJK Letters and Months U+3200 – U+32FF (12800–13055) ㈔ ㈲ ㊧ ㋮ CJK Compatibility U+3300 – U+33FF (13056–13311) ㌃ ㍻ ㎡ ㏵ CJK Unified Ideographs Extension A U+3400 – U+4DB5 (13312–19893) 㐅 㒅 㝬 㿜 Yijing Hexagram Symbols U+4DC0 – U+4DFF (19904–19967) ䷂ ䷫ ䷴ ䷾ CJK Unified Ideographs U+4E00 – U+9FFF (19968–40959) 一 憨 田 龥 Yi Syllables U+A000 – U+A48F (40960–42127) ꀀ ꅴ ꊩ ꒌ Yi Radicals U+A490 – U+A4CF (42128–42191) ꒐ ꒡ ꒰ ꓆ ");
