@@ -41,6 +41,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
@@ -260,7 +261,7 @@ public class HttpUtil {
       @Nullable UsernamePasswordCredentials credentials, @Nullable HttpEntity encodedEntity) throws IOException,
       URISyntaxException {
     HttpPost post = new HttpPost(uri);
-    post.setHeader("content-type", FORM_URL_ENCODED_CONTENT_TYPE);
+    post.setHeader(HTTP.CONTENT_TYPE, FORM_URL_ENCODED_CONTENT_TYPE);
     // if (params != null) {
     // post.setParams(params);
     // }
