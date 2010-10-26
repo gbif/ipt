@@ -342,7 +342,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
     return registeredVocabs;
   }
 
-  public void save() {
+  public synchronized void save() {
     // persist uri2url
     log.debug("Saving uri2url vocabulary map with " + uri2url.size() + " entries ...");
     Writer userWriter;

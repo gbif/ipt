@@ -705,7 +705,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     processReports.put(shortname, report);
   }
 
-  public void save(Resource resource) throws InvalidConfigException {
+  public synchronized void save(Resource resource) throws InvalidConfigException {
     File cfgFile = dataDir.resourceFile(resource, PERSISTENCE_FILE);
     try {
       // make sure resource dir exists
@@ -726,7 +726,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * (non-Javadoc)
    * @see org.gbif.ipt.service.manage.ResourceManager#save(java.lang.String, org.gbif.metadata.eml.Eml)
    */
-  public void saveEml(Resource resource) throws InvalidConfigException {
+  public synchronized void saveEml(Resource resource) throws InvalidConfigException {
     // udpate EML with latest resource basics
     syncEmlWithResource(resource);
     // save into data dir

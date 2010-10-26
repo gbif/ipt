@@ -236,7 +236,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
    * (non-Javadoc)
    * @see org.gbif.ipt.service.admin.OrganisationManager#save()
    */
-  public void save() throws IOException {
+  public synchronized void save() throws IOException {
     log.debug("Saving all user organisations associated to this IPT...");
     Writer organisationWriter = FileUtils.startNewUtf8File(dataDir.configFile(PERSISTENCE_FILE));
     // registration.setAssociatedOrganisations(new ArrayList<Organisation>(organisations.values()));
