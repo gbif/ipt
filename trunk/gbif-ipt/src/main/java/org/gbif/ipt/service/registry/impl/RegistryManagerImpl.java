@@ -12,8 +12,8 @@ import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.RegistryException.TYPE;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.utils.HttpUtil;
-import org.gbif.ipt.utils.RegistryEntryHandler;
 import org.gbif.ipt.utils.HttpUtil.Response;
+import org.gbif.ipt.utils.RegistryEntryHandler;
 import org.gbif.metadata.eml.Eml;
 
 import com.google.inject.Inject;
@@ -358,7 +358,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     data.add(new BasicNameValuePair("serviceURLs", serviceURLs));
 
     try {
-      UrlEncodedFormEntity uefe = new UrlEncodedFormEntity(data,HTTP.UTF_8);
+      UrlEncodedFormEntity uefe = new UrlEncodedFormEntity(data, HTTP.UTF_8);
       Response result = http.post(getIptResourceUri(), null, null, orgCredentials(org), uefe);
       if (result != null) {
         // read new UDDI ID
@@ -402,7 +402,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
     String key = null;
     try {
-      UrlEncodedFormEntity uefe = new UrlEncodedFormEntity(data,HTTP.UTF_8); 
+      UrlEncodedFormEntity uefe = new UrlEncodedFormEntity(data, HTTP.UTF_8);
       Response result = http.post(getIptUri(), null, null, orgCredentials(org), uefe);
       if (result != null) {
         // read new UDDI ID

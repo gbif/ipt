@@ -121,7 +121,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     return dataDir.configFile(CONFIG_FOLDER + "/" + filename);
   }
 
-  public Extension install(URL url) throws InvalidConfigException {
+  public synchronized Extension install(URL url) throws InvalidConfigException {
     Extension ext;
     ext = null;
     // download extension into local file first for subsequent IPT startups

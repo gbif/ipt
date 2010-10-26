@@ -231,7 +231,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
     }
   }
 
-  public void save() throws IOException {
+  public synchronized void save() throws IOException {
     log.debug("Saving all " + users.size() + " user accounts...");
     Writer userWriter = FileUtils.startNewUtf8File(dataDir.configFile(PERSISTENCE_FILE));
     ObjectOutputStream out = xstream.createObjectOutputStream(userWriter, "users");
