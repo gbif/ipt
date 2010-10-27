@@ -20,7 +20,7 @@ import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.registry.RegistryManager;
-import org.gbif.ipt.utils.DownloadUtil;
+import org.gbif.ipt.utils.HttpUtil;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -74,7 +74,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   private static final String CONFIG_FOLDER = ".vocabularies";
   public static final String PERSISTENCE_FILE = "vocabularies.xml";
   private VocabularyFactory vocabFactory;
-  private DownloadUtil downloadUtil;
+  private HttpUtil downloadUtil;
   private final XStream xstream = new XStream();
   private final RegistryManager registryManager;
   private final ExtensionManager extensionManager;
@@ -87,9 +87,8 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
    * 
    */
   @Inject
-  public VocabulariesManagerImpl(AppConfig cfg, DataDir dataDir, VocabularyFactory vocabFactory,
-      DownloadUtil downloadUtil, RegistryManager registryManager, ExtensionManager extensionManager,
-      ConfigWarnings warnings) {
+  public VocabulariesManagerImpl(AppConfig cfg, DataDir dataDir, VocabularyFactory vocabFactory, HttpUtil downloadUtil,
+      RegistryManager registryManager, ExtensionManager extensionManager, ConfigWarnings warnings) {
     super(cfg, dataDir);
     this.vocabFactory = vocabFactory;
     this.downloadUtil = downloadUtil;
