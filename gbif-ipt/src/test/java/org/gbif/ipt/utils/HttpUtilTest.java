@@ -32,14 +32,13 @@ import java.util.Date;
  * @author markus
  * 
  */
-public class DownloadUtilTest {
+public class HttpUtilTest {
   @Test
   public void testConditionalGet() throws ParseException, IOException {
     DefaultHttpClient client = new DefaultHttpClient();
-    HttpUtil http = new HttpUtil(client);
-    DownloadUtil util = new DownloadUtil(client, http);
-    Date last = DownloadUtil.DATE_FORMAT_RFC2616.parse("Wed, 03 Aug 2009 22:37:31 GMT");
-    Date current = DownloadUtil.DATE_FORMAT_RFC2616.parse("Wed, 04 Aug 2010 8:14:57 GMT");
+    HttpUtil util = new HttpUtil(client);
+    Date last = HttpUtil.DATE_FORMAT_RFC2616.parse("Wed, 03 Aug 2009 22:37:31 GMT");
+    Date current = HttpUtil.DATE_FORMAT_RFC2616.parse("Wed, 04 Aug 2010 8:14:57 GMT");
 
     File tmp = File.createTempFile("vocab", ".xml");
     URL url = new URL("http://rs.gbif.org/vocabulary/gbif/resource_type.xml");

@@ -17,7 +17,7 @@ import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.manage.ResourceManager;
-import org.gbif.ipt.utils.DownloadUtil;
+import org.gbif.ipt.utils.HttpUtil;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -51,7 +51,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   private Map<String, Extension> extensionsByRowtype = new HashMap<String, Extension>();
   private static final String CONFIG_FOLDER = ".extensions";
   private ExtensionFactory factory;;
-  private DownloadUtil downloader;
+  private HttpUtil downloader;
   private final String TAXON_KEYWORD = "dwc:taxon";
   private final String OCCURRENCE_KEYWORD = "dwc:occurrence";
   private ResourceManager resourceManager;
@@ -59,7 +59,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
 
   @Inject
   public ExtensionManagerImpl(AppConfig cfg, DataDir dataDir, ExtensionFactory factory,
-      ResourceManager resourceManager, ConfigWarnings warnings, DownloadUtil downloader) {
+      ResourceManager resourceManager, ConfigWarnings warnings, HttpUtil downloader) {
     super(cfg, dataDir);
     this.factory = factory;
     this.warnings = warnings;
