@@ -56,8 +56,8 @@ $(document).ready(function(){
 	  	<@input name="fileSource.ignoreHeaderLines" help="i18n" helpOptions={"0":"None","1":"Single Header row"}/>
   	  </div>
 	  <div class="half">
-	  	<@input name="fileSource.fieldsTerminatedBy" help="i18n" helpOptions={"\\t":"Tabulator",",":"Comma",";":"Semicolon","|":"Pipe"}/>
-	  	<@input name="fileSource.fieldsEnclosedBy" help="i18n" helpOptions={"":"None","&quot;":"Double Quote","'":"Single Quote"}/>
+	  	<@input name="fileSource.fieldsTerminatedByEscaped" help="i18n" helpOptions={"\\t":"Tabulator",",":"Comma",";":"Semicolon","|":"Pipe"}/>
+	  	<@input name="fileSource.fieldsEnclosedByEscaped" help="i18n" helpOptions={"":"None","&quot;":"Double Quote","'":"Single Quote"}/>
   	  </div>
   	<#else>
 	  	<#-- only for sql sources -->
