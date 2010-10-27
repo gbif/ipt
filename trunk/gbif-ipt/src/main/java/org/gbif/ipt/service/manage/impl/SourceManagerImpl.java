@@ -277,7 +277,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       try {
         fs.setFileSize(fs.getFile().length());
         CSVReader reader = fs.getReader();
-        fs.setColumns(reader.getHeader().length);
+        fs.setColumns(reader.header.length);
         int rows = 0;
         while (reader.hasNext()) {
           reader.next();
@@ -320,11 +320,11 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       try {
         CSVReader reader = source.getReader();
         if (source.getIgnoreHeaderLines() > 0) {
-          return Arrays.asList(reader.getHeader());
+          return Arrays.asList(reader.header);
         } else {
           List<String> columns = new ArrayList<String>();
           int x = 1;
-          for (String col : reader.getHeader()) {
+          for (String col : reader.header) {
             columns.add("Column #" + x);
             x++;
           }
@@ -510,7 +510,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         CSVReader reader = source.getReader();
         while (rows > 0 && reader.hasNext()) {
           rows--;
-          preview.add(reader.readNext());
+          preview.add(reader.next());
         }
       } catch (IOException e) {
         log.warn("Cant read source " + source.getName(), e);
