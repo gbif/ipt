@@ -37,8 +37,8 @@ import java.util.Iterator;
  */
 public abstract class Source implements Comparable<Source> {
   public static class FileSource extends Source {
-    private Character fieldsTerminatedBy = '\t';
-    private Character fieldsEnclosedBy = CSVReader.NULL_CHAR;
+    private String fieldsTerminatedBy = "\t";
+    private Character fieldsEnclosedBy;
     private int ignoreHeaderLines = 0;
     private File file;
     private long fileSize;
@@ -49,7 +49,7 @@ public abstract class Source implements Comparable<Source> {
       return fieldsEnclosedBy;
     }
 
-    public Character getFieldsTerminatedBy() {
+    public String getFieldsTerminatedBy() {
       return fieldsTerminatedBy;
     }
 
@@ -74,9 +74,7 @@ public abstract class Source implements Comparable<Source> {
     }
 
     public CSVReader getReader() throws IOException {
-      char delim = this.getFieldsTerminatedBy() == null ? CSVReader.NULL_CHAR : this.getFieldsTerminatedBy();
-      char quote = this.getFieldsEnclosedBy() == null ? CSVReader.NULL_CHAR : this.getFieldsEnclosedBy();
-      return CSVReader.buildReader(this.getFile(), this.getEncoding(), delim, quote, this.getIgnoreHeaderLines());
+      return CSVReader.build(file, encoding, fieldsTerminatedBy.toString(), fieldsEnclosedBy, ignoreHeaderLines);
     }
 
     public int getRows() {
@@ -90,7 +88,7 @@ public abstract class Source implements Comparable<Source> {
     public Iterator<String[]> iterator() {
       CSVReader reader;
       try {
-        reader = CSVReader.buildReader(file, encoding, fieldsTerminatedBy, fieldsEnclosedBy, ignoreHeaderLines);
+        reader = getReader();
         return reader.iterator();
       } catch (IOException e) {
         e.printStackTrace();
@@ -102,7 +100,7 @@ public abstract class Source implements Comparable<Source> {
       this.fieldsEnclosedBy = fieldsEnclosedBy;
     }
 
-    public void setFieldsTerminatedBy(Character fieldsTerminatedBy) {
+    public void setFieldsTerminatedBy(String fieldsTerminatedBy) {
       this.fieldsTerminatedBy = fieldsTerminatedBy;
     }
 
