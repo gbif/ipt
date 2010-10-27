@@ -108,16 +108,20 @@
   		<@select name="country" options=countries i18nkey="eml.associatedParties.address.country" />
   	</div>
   	<div class="newline"></div>
+	<div class="halfcolumn">  		
+  		<@input name="postalCode" i18nkey="eml.associatedParties.address.postalCode" />
+  	</div>
   	<div class="halfcolumn">
   		<@input name="phone" i18nkey="eml.associatedParties.phone" />
   	</div>
+  	<div class="newline"></div>
   	<div class="halfcolumn">  		
   		<@input name="email" i18nkey="eml.associatedParties.email" />
   	</div>
-  	<div class="newline"></div>
 	<div class="halfcolumn">
   		<@input name="homepage" i18nkey="eml.associatedParties.homepage" />
   	</div>
+  	<div class="newline"></div>
   	<div class="halfcolumn">  		
   		<@select name="role" i18nkey="eml.associatedParties.role"  options=roleOptions />
   	</div>
