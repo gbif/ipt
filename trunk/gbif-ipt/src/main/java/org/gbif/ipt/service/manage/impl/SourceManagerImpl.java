@@ -211,7 +211,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
 
   public static void copyArchiveFileProperties(ArchiveFile from, FileSource to) {
     to.setEncoding(from.getEncoding());
-    to.setFieldsEnclosedBy(from.getFieldsEnclosedBy());
+    to.setFieldsEnclosedBy(from.getFieldsEnclosedBy().toString());
     to.setFieldsTerminatedBy(from.getFieldsTerminatedBy());
     to.setIgnoreHeaderLines(from.getIgnoreHeaderLines());
     to.setDateFormat(from.getDateFormat());

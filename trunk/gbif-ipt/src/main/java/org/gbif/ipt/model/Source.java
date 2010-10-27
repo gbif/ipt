@@ -38,19 +38,42 @@ import java.util.Iterator;
 public abstract class Source implements Comparable<Source> {
   public static class FileSource extends Source {
     private String fieldsTerminatedBy = "\t";
-    private Character fieldsEnclosedBy;
+    private String fieldsEnclosedBy;
     private int ignoreHeaderLines = 0;
     private File file;
     private long fileSize;
     private int rows;
     protected Date lastModified;
 
-    public Character getFieldsEnclosedBy() {
+    private String escape(String x) {
+      if (x == null) {
+        return null;
+      }
+      return x.replaceAll("\\t", "\\\\t").replaceAll("\\n", "\\\\n").replaceAll("\\r", "\\\\r").replaceAll("\\f",
+          "\\\\f");
+    }
+
+    public Character getFieldQuoteChar() {
+      if (fieldsEnclosedBy == null || fieldsEnclosedBy.equals("")) {
+        return null;
+      }
+      return fieldsEnclosedBy.charAt(0);
+    }
+
+    public String getFieldsEnclosedBy() {
       return fieldsEnclosedBy;
+    }
+
+    public String getFieldsEnclosedByEscaped() {
+      return escape(fieldsEnclosedBy);
     }
 
     public String getFieldsTerminatedBy() {
       return fieldsTerminatedBy;
+    }
+
+    public String getFieldsTerminatedByEscaped() {
+      return escape(fieldsTerminatedBy);
     }
 
     public File getFile() {
@@ -74,7 +97,7 @@ public abstract class Source implements Comparable<Source> {
     }
 
     public CSVReader getReader() throws IOException {
-      return CSVReader.build(file, encoding, fieldsTerminatedBy.toString(), fieldsEnclosedBy, ignoreHeaderLines);
+      return CSVReader.build(file, encoding, fieldsTerminatedBy, getFieldQuoteChar(), ignoreHeaderLines);
     }
 
     public int getRows() {
@@ -96,12 +119,20 @@ public abstract class Source implements Comparable<Source> {
       return null;
     }
 
-    public void setFieldsEnclosedBy(Character fieldsEnclosedBy) {
+    public void setFieldsEnclosedBy(String fieldsEnclosedBy) {
       this.fieldsEnclosedBy = fieldsEnclosedBy;
+    }
+
+    public void setFieldsEnclosedByEscaped(String fieldsEnclosedBy) {
+      this.fieldsEnclosedBy = unescape(fieldsEnclosedBy);
     }
 
     public void setFieldsTerminatedBy(String fieldsTerminatedBy) {
       this.fieldsTerminatedBy = fieldsTerminatedBy;
+    }
+
+    public void setFieldsTerminatedByEscaped(String fieldsTerminatedBy) {
+      this.fieldsTerminatedBy = unescape(fieldsTerminatedBy);
     }
 
     public void setFile(File file) {
@@ -122,6 +153,14 @@ public abstract class Source implements Comparable<Source> {
 
     public void setRows(int rows) {
       this.rows = rows;
+    }
+
+    private String unescape(String x) {
+      if (x == null) {
+        return null;
+      }
+      return x.replaceAll("\\\\t", String.valueOf('\t')).replaceAll("\\\\n", String.valueOf('\n')).replaceAll("\\\\r",
+          String.valueOf('\r')).replaceAll("\\\\f", String.valueOf('\f'));
     }
 
   }
