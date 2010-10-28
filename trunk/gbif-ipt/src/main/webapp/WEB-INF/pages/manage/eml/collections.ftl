@@ -9,12 +9,14 @@
 <@s.text name='manage.metadata.collections.intro'/>
 <form class="topForm" action="metadata-${section}.do" method="post"> 
 	<div class="newline"></div>
-	<div class="half">
+	<div class="halfcolumn">
 		<@input name="eml.collectionName" />
+	</div>
+	<div class="halfcolumn">
 		<@input name="eml.collectionId" />
 	</div>
 	<div class="newline"></div>
-	<div class="half">
+	<div class="halfcolumn">
 		<@input name="eml.parentCollectionId" />
 	</div>
 	<div class="newline"></div>
@@ -37,14 +39,22 @@
     			<div class="half">
     				<div id="subitem-${item_index}" class="subitem">
     					<#if type=="COUNT_RANGE">
-    						<div id="range-${item_index}" class="half">
+    						<div id="range-${item_index}">
+							 <div class="halfcolumn">
     							<@input name="eml.jgtiCuratorialUnits[${item_index}].rangeStart" i18nkey="eml.jgtiCuratorialUnits.rangeStart" size=40/>
+							 </div>
+							 <div class="halfcolumn">
     							<@input name="eml.jgtiCuratorialUnits[${item_index}].rangeEnd" i18nkey="eml.jgtiCuratorialUnits.rangeEnd" size=40/>
+    						 </div>
 							</div>
     					<#elseif type=="COUNT_WITH_UNCERTAINTY">
-    						<div id="uncertainty-${item_index}" class="half">
+    						<div id="uncertainty-${item_index}">
+    						 <div class="halfcolumn">
 								<@input name="eml.jgtiCuratorialUnits[${item_index}].rangeMean" i18nkey="eml.jgtiCuratorialUnits.rangeMean" size=40/>
+							 </div>
+							 <div class="halfcolumn">
 								<@input name="eml.jgtiCuratorialUnits[${item_index}].uncertaintyMeasure" i18nkey="eml.jgtiCuratorialUnits.uncertaintyMeasure" size=40/>
+							 </div>
     						</div>
     					</#if>
     				</div>
@@ -78,10 +88,14 @@
     <div class="half">
     	<div class="subitem">
     		<!-- The sub-form is here -->
-    		<div id="range-99999" class="half" style="display:none" >
-				<@input name="rangeStart" i18nkey="eml.jgtiCuratorialUnits.rangeStart" size=40/>
-   				<@input name="rangeEnd" i18nkey="eml.jgtiCuratorialUnits.rangeEnd" size=40/>
-			</div>    		
+    		<div id="range-99999" style="display:none" >
+    			<div class="halfcolumn">
+					<@input name="rangeStart" i18nkey="eml.jgtiCuratorialUnits.rangeStart" size=40/>
+				</div>
+				<div class="halfcolumn">
+   					<@input name="rangeEnd" i18nkey="eml.jgtiCuratorialUnits.rangeEnd" size=40/>
+				</div>	
+			</div>
     	</div>
     	<@input name="unitType" i18nkey="eml.jgtiCuratorialUnits.unitType" size=40/>
     </div>
@@ -89,13 +103,21 @@
 	<div id="separator" class="horizontal_dotted_line_large_foo"></div>
 	<div class="newline"></div>
 </div>
-<div id="range-99999" class="half" style="display:none" >
-	<@input name="rangeStart" i18nkey="eml.jgtiCuratorialUnits.rangeStart" size=40/>
-    <@input name="rangeEnd" i18nkey="eml.jgtiCuratorialUnits.rangeEnd" size=40/>
+<div id="range-99999" style="display:none" >
+	<div class="halfcolumn">
+		<@input name="rangeStart" i18nkey="eml.jgtiCuratorialUnits.rangeStart" size=40/>
+	</div>
+	<div class="halfcolumn">
+    	<@input name="rangeEnd" i18nkey="eml.jgtiCuratorialUnits.rangeEnd" size=40/>
+    </div>
 </div>
-<div id="uncertainty-99999" class="half" style="display:none" >
-	<@input name="rangeMean" i18nkey="eml.jgtiCuratorialUnits.rangeMean" size=40/>
-    <@input name="uncertaintyMeasure" i18nkey="eml.jgtiCuratorialUnits.uncertaintyMeasure" size=40/>
+<div id="uncertainty-99999"  style="display:none" >
+	<div class="halfcolumn">
+		<@input name="rangeMean" i18nkey="eml.jgtiCuratorialUnits.rangeMean" size=40/>
+	</div>
+    <div class="halfcolumn">
+    	<@input name="uncertaintyMeasure" i18nkey="eml.jgtiCuratorialUnits.uncertaintyMeasure" size=40/>
+    </div>
 </div>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
