@@ -273,7 +273,6 @@ ul.fielderror{
 }
 .actionMessage{
 	list-style:none; 
-    //list-style-image: url('../images/info.gif');
 	color: #4ea226;
 	margin: 10px 15px 5px 0px;
 	border: 1px solid;
