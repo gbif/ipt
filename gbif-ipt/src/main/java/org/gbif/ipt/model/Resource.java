@@ -10,6 +10,8 @@ import static com.google.common.base.Objects.equal;
 
 import com.google.common.base.Objects;
 
+import org.apache.log4j.Logger;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,6 +33,8 @@ public class Resource implements Serializable, Comparable<Resource> {
   public enum CoreRowType {
     OCCURRENCE, CHECKLIST
   }
+
+  private static Logger log = Logger.getLogger(Resource.class);
 
   private static final TermFactory fact = new TermFactory();
 
@@ -54,19 +58,32 @@ public class Resource implements Serializable, Comparable<Resource> {
   private Set<User> managers = new HashSet<User>();
   // mapping configs
   private Set<Source> sources = new HashSet<Source>();
-  private ExtensionMapping core;
-  private Set<ExtensionMapping> extensions = new HashSet<ExtensionMapping>();
-
-  public void addExtension(ExtensionMapping extension) {
-    if (extension != null) {
-      this.extensions.add(extension);
-    }
-  }
+  private List<ExtensionMapping> mappings = new ArrayList<ExtensionMapping>();
 
   public void addManager(User manager) {
     if (manager != null) {
       this.managers.add(manager);
     }
+  }
+
+  /**
+   * Adds a new extension mapping to the resource. For non core extensions a core extension must exist already.
+   * It returns the list index for this mapping according to getMappings(rowType)
+   * 
+   * @param mapping
+   * @return list index corresponding to getMappings(rowType) or null if the mapping couldnt be added
+   * @throws IllegalArgumentException if no core mapping exists when adding a non core mapping
+   */
+  public Integer addMapping(ExtensionMapping mapping) throws IllegalArgumentException {
+    if (mapping != null && mapping.getExtension() != null) {
+      if (!mapping.isCore() && !hasCore()) {
+        throw new IllegalArgumentException("Cannot add extension mapping before a core mapping exists");
+      }
+      Integer index = getMappings(mapping.getExtension().getRowType()).size();
+      this.mappings.add(mapping);
+      return index;
+    }
+    return null;
   }
 
   public void addSource(Source src, boolean allowOverwrite) throws AlreadyExistingException {
@@ -87,24 +104,34 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   public boolean deleteMapping(ExtensionMapping mapping) {
+    boolean result = false;
     if (mapping != null) {
-      if (core.equals(mapping)) {
-        core = null;
-        // if core gets deleted delete all other mappings too!
-        extensions.clear();
-        return true;
-      } else {
-        return extensions.remove(mapping);
+      result = mappings.remove(mapping);
+      if (result && mapping.isCore()) {
+        // if last core gets deleted, delete all other mappings too!
+        if (getCoreMappings().isEmpty()) {
+          mappings.clear();
+          return true;
+        }
       }
     }
-    return false;
+    return result;
   }
 
   public boolean deleteSource(Source src) {
+    boolean result = false;
     if (src != null) {
-      return sources.remove(src);
+      result = sources.remove(src);
+      // also remove existing mappings
+      List<ExtensionMapping> ems = new ArrayList<ExtensionMapping>(mappings);
+      for (ExtensionMapping em : ems) {
+        if (em.getSource().equals(src)) {
+          deleteMapping(em);
+          log.debug("Cascading source delete to mapping " + em.getExtension().getTitle());
+        }
+      }
     }
-    return false;
+    return result;
   }
 
   @Override
@@ -119,20 +146,28 @@ public class Resource implements Serializable, Comparable<Resource> {
     return equal(shortname, o.shortname);
   }
 
-  public ExtensionMapping getCore() {
-    return core;
+  public List<ExtensionMapping> getCoreMappings() {
+    List<ExtensionMapping> cores = new ArrayList<ExtensionMapping>();
+    for (ExtensionMapping m : mappings) {
+      if (m.isCore()) {
+        cores.add(m);
+      }
+    }
+    return cores;
   }
 
   public String getCoreRowType() {
-    if (core != null && core.getExtension() != null) {
-      return core.getExtension().getRowType();
+    List<ExtensionMapping> cores = getCoreMappings();
+    if (cores.size() > 0) {
+      return cores.get(0).getExtension().getRowType();
     }
     return null;
   }
 
   public ConceptTerm getCoreType() {
-    if (core != null) {
-      return fact.findTerm(core.getExtension().getRowType());
+    List<ExtensionMapping> cores = getCoreMappings();
+    if (cores.size() > 0) {
+      return fact.findTerm(cores.get(0).getExtension().getRowType());
     }
     return null;
   }
@@ -160,10 +195,6 @@ public class Resource implements Serializable, Comparable<Resource> {
     return emlVersion;
   }
 
-  public Set<ExtensionMapping> getExtensions() {
-    return extensions;
-  }
-
   public UUID getKey() {
     return key;
   }
@@ -176,19 +207,45 @@ public class Resource implements Serializable, Comparable<Resource> {
     return managers;
   }
 
-  public ExtensionMapping getMapping(String rowType) {
-    if (rowType == null) {
-      return null;
+  public List<Extension> getMappedExtensions() {
+    Set<Extension> exts = new HashSet<Extension>();
+    for (ExtensionMapping em : mappings) {
+      exts.add(em.getExtension());
     }
-    if (core != null && core.getExtension() != null && rowType.equals(core.getExtension().getRowType())) {
-      return core;
-    }
-    for (ExtensionMapping em : extensions) {
-      if (rowType.equals(em.getExtension().getRowType())) {
-        return em;
+    return new ArrayList<Extension>(exts);
+  }
+
+  public ExtensionMapping getMapping(String rowType, Integer index) {
+    if (rowType != null && index != null) {
+      List<ExtensionMapping> maps = getMappings(rowType);
+      if (maps.size() >= index) {
+        return maps.get(index);
       }
     }
     return null;
+  }
+
+  public List<ExtensionMapping> getMappings() {
+    return mappings;
+  }
+
+  /**
+   * Get the list of mappings for the requested extension rowtype.
+   * The order of mappings in the list is guaranteed to be stable and the same as the underlying original mappings list.
+   * 
+   * @param rowType identifying the extension
+   * @return the list of mappings for the requested extension rowtype
+   */
+  public List<ExtensionMapping> getMappings(String rowType) {
+    List<ExtensionMapping> maps = new ArrayList<ExtensionMapping>();
+    if (rowType != null) {
+      for (ExtensionMapping m : mappings) {
+        if (rowType.equals(m.getExtension().getRowType())) {
+          maps.add(m);
+        }
+      }
+    }
+    return maps;
   }
 
   public Date getModified() {
@@ -252,24 +309,33 @@ public class Resource implements Serializable, Comparable<Resource> {
     return shortname;
   }
 
+  /**
+   * @return true if this resource is mapped to at least one core extension
+   */
+  public boolean hasCore() {
+    if (getCoreType() != null) {
+      return true;
+    }
+    return false;
+  }
+
   @Override
   public int hashCode() {
     return Objects.hashCode(shortname);
   }
 
   public boolean hasMappedData() {
-    if (core != null && core.getFields().size() > 0) {
-      return true;
+    for (ExtensionMapping cm : getCoreMappings()) {
+      // test each core mapping if there is at least one field mapped
+      if (cm.getFields().size() > 0) {
+        return true;
+      }
     }
     return false;
   }
 
   public boolean isPublished() {
     return lastPublished != null;
-  }
-
-  public void setCore(ExtensionMapping core) {
-    this.core = core;
   }
 
   public void setCreated(Date created) {
@@ -297,10 +363,6 @@ public class Resource implements Serializable, Comparable<Resource> {
     }
   }
 
-  public void setExtensions(Set<ExtensionMapping> extensions) {
-    this.extensions = extensions;
-  }
-
   public void setKey(UUID key) {
     this.key = key;
   }
@@ -311,6 +373,10 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   public void setManagers(Set<User> managers) {
     this.managers = managers;
+  }
+
+  public void setMappings(List<ExtensionMapping> extensions) {
+    this.mappings = extensions;
   }
 
   public void setModified(Date modified) {

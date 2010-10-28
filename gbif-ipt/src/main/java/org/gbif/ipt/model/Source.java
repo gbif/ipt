@@ -143,8 +143,8 @@ public abstract class Source implements Comparable<Source> {
       this.fileSize = fileSize;
     }
 
-    public void setIgnoreHeaderLines(int ignoreHeaderLines) {
-      this.ignoreHeaderLines = ignoreHeaderLines;
+    public void setIgnoreHeaderLines(Integer ignoreHeaderLines) {
+      this.ignoreHeaderLines = ignoreHeaderLines == null ? 0 : ignoreHeaderLines;
     }
 
     public void setLastModified(Date lastModified) {

@@ -126,10 +126,10 @@ $(document).ready(function(){
 		<input type='submit' name='add' value='Add' />
   	  </form>
   	  <#else>
-  	  	<#if !resource.core?exists>
-	  	<div class="warn">
-			<@s.text name='manage.overview.no.DwC.extensions'/>
-	  	</div>
+  	  	<#if (resource.sources?size>0) && !resource.hasCore()>
+		  	<div class="warn">
+				<@s.text name='manage.overview.no.DwC.extensions'/>
+		  	</div>
   	  	</#if>
   	  </#if>
   	</div>
@@ -140,15 +140,19 @@ $(document).ready(function(){
       	</div>
       	<div class="details">
       		<table>
-          		<#if resource.core?exists>
-          		<tr><th>${resource.core.extension.title}</th><td>${resource.core.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${resource.core.source.name}
-          		<a href="mapping.do?r=${resource.shortname}&id=${resource.core.extension.rowType}"><button><@s.text name='button.edit'/></button></a>
-          		</td></tr>
-          		</#if>
-      		  <#list resource.extensions as m>
-          		<tr><th>${m.extension.title}</th><td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}
-          		<a href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType}"><button><@s.text name='button.edit'/></button></a>
-          		</td></tr>
+	      		  <#list resource.coreMappings as m>
+	          		<tr><th><#if m_index==0>${m.extension.title}</#if></th><td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!} 
+	          		<a href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType}&mid=${m_index}"><button><@s.text name='button.edit'/></button></a>
+	          		</td></tr>
+	          	  </#list>
+      		  <#list resource.getMappedExtensions() as ext>
+      		  	<#if !ext.isCore()>
+	      		  <#list resource.getMappings(ext.rowType) as m>
+	          		<tr><th><#if m_index==0>${ext.title}</#if></th><td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!} 
+	          		<a href="mapping.do?r=${resource.shortname}&id=${ext.rowType}&mid=${m_index}"><button><@s.text name='button.edit'/></button></a>
+	          		</td></tr>
+	          	  </#list>
+	          	</#if>
           	  </#list>
       		</table>
       	</div>

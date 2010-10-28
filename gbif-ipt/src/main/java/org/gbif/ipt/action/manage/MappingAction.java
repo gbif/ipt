@@ -17,6 +17,7 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;
 import org.gbif.ipt.model.PropertyMapping;
@@ -53,12 +54,12 @@ public class MappingAction extends ManagerBaseAction {
   private VocabulariesManager vocabManager;
   // config
   private ExtensionMapping mapping;
-  private String source;
   private List<String> columns;
   private List<String[]> peek;
   private List<PropertyMapping> fields;
   private Map<String, Map<String, String>> vocabTerms = new HashMap<String, Map<String, String>>();
   private ExtensionProperty coreid;
+  private Integer mid;
 
   private void automap() {
     int automapped = 0;
@@ -112,6 +113,10 @@ public class MappingAction extends ManagerBaseAction {
     return mapping;
   }
 
+  public Integer getMid() {
+    return mid;
+  }
+
   public List<String[]> getPeek() {
     return peek;
   }
@@ -123,25 +128,36 @@ public class MappingAction extends ManagerBaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
+    String midStr = StringUtils.trimToNull(req.getParameter("mid"));
+    if (midStr != null) {
+      mid = Integer.valueOf(midStr);
+    }
+    // id is rowtype
     if (id != null) {
-      mapping = resource.getMapping(id);
-      // existing mapping?
-      if (mapping == null) {
-        // no, a new new mapping
-        mapping = new ExtensionMapping();
-        mapping.setExtension(extensionManager.get(id));
+      // mapping id, i.e. list index for the given rowtype, is given
+      if (mid != null) {
+        List<ExtensionMapping> maps = resource.getMappings(id);
+        mapping = maps.get(mid);
+      } else {
+        // new mapping
+        Extension ext = extensionManager.get(id);
+        if (ext != null) {
+          mapping = new ExtensionMapping();
+          mapping.setExtension(ext);
+        }
+
       }
-      readSource();
     }
 
     if (mapping == null || mapping.getExtension() == null) {
       notFound = true;
     } else {
+      readSource();
       // setup the core record id term
       String coreRowType = resource.getCoreRowType();
       if (coreRowType == null) {
-        // not yet set, the id of this mapping should be the core row type!
-        coreRowType = id;
+        // not yet set, the current mapping must be the core type
+        coreRowType = mapping.getExtension().getRowType();
       }
       String coreIdTerm = Constants.DWC_OCCURRENCE_ID;
       if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON)) {
@@ -190,13 +206,8 @@ public class MappingAction extends ManagerBaseAction {
   @Override
   public String save() throws IOException {
     // a new mapping?
-    if (resource.getMapping(id) == null) {
-      // is this a core "extension" ?
-      if (Constants.DWC_ROWTYPE_OCCURRENCE.equalsIgnoreCase(id) || Constants.DWC_ROWTYPE_TAXON.equalsIgnoreCase(id)) {
-        resource.setCore(mapping);
-      } else {
-        resource.addExtension(mapping);
-      }
+    if (resource.getMapping(id, mid) == null) {
+      mid = resource.addMapping(mapping);
       // read source as prepare wasnt yet ready for this
       readSource();
       automap();
@@ -222,6 +233,10 @@ public class MappingAction extends ManagerBaseAction {
 
   public void setMapping(ExtensionMapping mapping) {
     this.mapping = mapping;
+  }
+
+  public void setMid(Integer mid) {
+    this.mid = mid;
   }
 
   public void setSource(String source) {

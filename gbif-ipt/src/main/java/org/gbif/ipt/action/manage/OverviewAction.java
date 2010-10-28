@@ -1,7 +1,6 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.model.Extension;
-import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
@@ -23,11 +22,11 @@ import com.google.inject.Inject;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class OverviewAction extends ManagerBaseAction {
-  private static final int interval = 20000;
   private static final String PUBLISHING = "publishing";
   @Inject
   private ResourceManager resourceManager;
@@ -208,16 +207,16 @@ public class OverviewAction extends ManagerBaseAction {
       }
       // enabled registry organisations
       organisations = registrationManager.list();
-      if (resource.getCore() == null) {
+      if (resource.hasCore()) {
+        // show extensions suited for this core
+        potentialExtensions = extensionManager.list(resource.getCoreRowType());
+        // add core itself
+        potentialExtensions.add(0, extensionManager.get(resource.getCoreRowType()));
+      } else if (!resource.getSources().isEmpty()) {
         // show core extensions for mapping
         potentialExtensions = extensionManager.listCore();
       } else {
-        // show unmapped extensions
-        potentialExtensions = extensionManager.list(resource.getCore().getExtension());
-        // remove already associated ones
-        for (ExtensionMapping e : resource.getExtensions()) {
-          potentialExtensions.remove(e.getExtension());
-        }
+        potentialExtensions = new ArrayList<Extension>();
       }
       // check EML
       missingMetadata = !emlValidator.isValid(resource.getEml(), null);

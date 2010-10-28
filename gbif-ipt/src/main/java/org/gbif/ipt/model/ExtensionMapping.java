@@ -24,10 +24,19 @@ import java.util.Set;
  * 
  */
 public class ExtensionMapping {
+  public static final Integer IDGEN_LINE_NUMBER = -1;
+  public static final Integer IDGEN_UUID = -2;
+
   private Source source;
   private Extension extension; // persist only the rowType
   private Set<PropertyMapping> fields = new HashSet<PropertyMapping>();
   private Integer idColumn;
+  private String idSuffix;
+  private RecordFilter filter;
+
+  public ExtensionMapping() {
+    super();
+  }
 
   public Extension getExtension() {
     return extension;
@@ -46,12 +55,27 @@ public class ExtensionMapping {
     return fields;
   }
 
+  public RecordFilter getFilter() {
+    return filter;
+  }
+
   public Integer getIdColumn() {
     return idColumn;
   }
 
+  public String getIdSuffix() {
+    return idSuffix;
+  }
+
   public Source getSource() {
     return source;
+  }
+
+  public boolean isCore() {
+    if (extension != null && extension.isCore()) {
+      return true;
+    }
+    return false;
   }
 
   public void setExtension(Extension extension) {
@@ -62,8 +86,16 @@ public class ExtensionMapping {
     this.fields = fields;
   }
 
+  public void setFilter(RecordFilter filter) {
+    this.filter = filter;
+  }
+
   public void setIdColumn(Integer idColumn) {
     this.idColumn = idColumn;
+  }
+
+  public void setIdSuffix(String idSuffix) {
+    this.idSuffix = idSuffix;
   }
 
   public void setSource(Source source) {

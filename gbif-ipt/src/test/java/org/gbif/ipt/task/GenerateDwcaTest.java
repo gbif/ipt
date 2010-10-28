@@ -14,37 +14,33 @@
  * the License.
  ***************************************************************************/
 
-package org.gbif.ipt.model;
+package org.gbif.ipt.task;
 
-import org.gbif.dwc.text.ArchiveField;
+import static org.junit.Assert.assertTrue;
 
-import java.util.Map;
+import org.junit.Test;
 
 /**
  * @author markus
  * 
  */
-public class PropertyMapping extends ArchiveField {
-  private Map<String, String> translation;
-
-  public PropertyMapping() {
-    super();
+public class GenerateDwcaTest {
+  @Test
+  public void testGenerateCoreFromSingleSourceFile() {
+    // TODO: write test
+    assertTrue(true);
   }
 
-  public PropertyMapping(ArchiveField field) {
-    super(field.getIndex(), field.getTerm(), field.getDefaultValue(), field.getType());
+  @Test
+  public void testGenerateCoreFromTwoMappings() {
+    // TODO: write test
+    assertTrue(true);
   }
 
-  public Map<String, String> getTranslation() {
-    return translation;
+  @Test
+  public void testGenerateExtensionsFromMultipleMappings() {
+    // TODO: write test
+    assertTrue(true);
   }
 
-  public void setTranslation(Map<String, String> translation) {
-    this.translation = translation;
-  }
-
-  @Override
-  public String toString() {
-    return "PM:" + getTerm() + ";Idx=" + getIndex() + ";Val=" + getDefaultValue();
-  }
 }

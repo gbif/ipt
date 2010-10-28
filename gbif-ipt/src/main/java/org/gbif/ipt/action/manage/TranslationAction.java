@@ -81,7 +81,8 @@ public class TranslationAction extends ManagerBaseAction {
   private VocabulariesManager vocabManager;
   //
   private static final String REQ_PARAM_TERM = "term";
-  private static final String REQ_PARAM_MAPPING = "mapping";
+  private static final String REQ_PARAM_ROWTYPE = "rowtype";
+  private static final String REQ_PARAM_MAPPINGID = "mid";
   // config
   private PropertyMapping field;
   private ExtensionProperty property;
@@ -144,7 +145,12 @@ public class TranslationAction extends ManagerBaseAction {
   public void prepare() throws Exception {
     super.prepare();
     notFound = true;
-    mapping = resource.getMapping(req.getParameter(REQ_PARAM_MAPPING));
+
+    try {
+      mapping = resource.getMapping(req.getParameter(REQ_PARAM_ROWTYPE),
+          Integer.valueOf(req.getParameter(REQ_PARAM_MAPPINGID)));
+    } catch (Exception e) {
+    }
     if (mapping != null) {
       field = mapping.getField(req.getParameter(REQ_PARAM_TERM));
       if (field != null) {

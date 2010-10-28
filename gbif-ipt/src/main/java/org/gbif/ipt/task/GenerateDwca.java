@@ -9,8 +9,10 @@ import org.gbif.dwc.text.ArchiveWriter;
 import org.gbif.file.ClosableIterator;
 import org.gbif.file.CompressionUtil;
 import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.PropertyMapping;
+import org.gbif.ipt.model.RecordFilter;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.manage.SourceManager;
 
@@ -24,8 +26,8 @@ import org.apache.log4j.Level;
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
 import java.util.regex.Pattern;
@@ -59,123 +61,96 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     this.sourceManager = sourceManager;
   }
 
-  private void addDataFile(ExtensionMapping mapping, boolean isCore) throws IOException, GeneratorException {
+  /**
+   * Adds a single data file for a list of extension mappings that must all be mapped to the same extension
+   * 
+   * @param mappings
+   * @throws IOException
+   * @throws GeneratorException
+   * @throws IllegalArgumentException if not all mappings are mapped to the same extension
+   * 
+   */
+  private void addDataFile(List<ExtensionMapping> mappings) throws IOException, GeneratorException,
+      IllegalArgumentException {
     checkForInterruption();
+    if (mappings == null || mappings.isEmpty()) {
+      return;
+    }
+
     // update reporting
     currRecords = 0;
-    currExtension = mapping.getExtension().getTitle();
+    Extension ext = mappings.get(0).getExtension();
+    currExtension = ext.getTitle();
+
+    // verify that all mappings share this extension
+    for (ExtensionMapping m : mappings) {
+      if (!ext.equals(m.getExtension())) {
+        throw new IllegalArgumentException(
+            "All mappings for a single data file need to be mapped to the same extension: " + ext.getRowType());
+      }
+    }
+
     // create new meta.xml with the help of the Archive class
     // create archive file representing this extensions
     ArchiveFile af = ArchiveFile.buildTabFile();
-    af.setRowType(mapping.getExtension().getRowType());
+    af.setRowType(ext.getRowType());
     af.setEncoding("utf-8");
     af.setDateFormat("YYYY-MM-DD");
     // in the generated file column 0 will be the id row
     af.setId(buildField(null, 0, null));
 
-    // build list of fields for the new data file and keep it in the archive file
-    List<PropertyMapping> newColumns = new ArrayList<PropertyMapping>();
+    // first we need to find the union of all terms mapped and make them a field in the final archive
+    // we keep a static mapping only if it applies to ALL mappings of the same term
     int dataFileRowSize = 1; // first column will become the id column
-    // get maximum column index to check incoming rows for correctness
-    int maxColumnIndex = mapping.getIdColumn() == null ? -1 : mapping.getIdColumn();
-    int linesWithWrongColumnNumber = 0;
-    for (PropertyMapping f : mapping.getFields()) {
-      if (f.getIndex() != null) {
-        newColumns.add(f);
-        dataFileRowSize++;
-        if (maxColumnIndex < f.getIndex()) {
-          maxColumnIndex = f.getIndex();
+    for (ExtensionMapping m : mappings) {
+      for (PropertyMapping pm : m.getFields()) {
+        if (af.hasTerm(pm.getTerm())) {
+          // different default value?
+          ArchiveField field = af.getField(pm.getTerm());
+          if (field.getDefaultValue() != null && !field.getDefaultValue().equals(pm.getDefaultValue())) {
+            // different values, reset to null - we will have to explicitly write the values into the data file
+            field.setDefaultValue(null);
+            field.setIndex(dataFileRowSize);
+            dataFileRowSize++;
+          }
+        } else {
+          af.addField(buildField(pm.getTerm(), dataFileRowSize, pm.getDefaultValue()));
+          dataFileRowSize++;
         }
       }
-      ArchiveField f2 = buildField(f.getTerm(), dataFileRowSize - 1, f.getDefaultValue());
-      af.addField(f2);
     }
 
-    // create the new data file
-    ClosableIterator<String[]> iter = sourceManager.rowIterator(mapping.getSource());
-    int line = 0;
-    // open new file writer
-    String fn = mapping.getExtension().getName().toLowerCase().replaceAll("\\s", "_") + ".txt";
+    // open new file writer for single data file
+    String fn = ext.getName().toLowerCase().replaceAll("\\s", "_") + ".txt";
     File dataFile = new File(dwcaFolder, fn);
     Writer writer = org.gbif.file.FileUtils.startNewUtf8File(dataFile);
-    try {
-      while (iter.hasNext()) {
-        line++;
-        if (line % 1000 == 0) {
-          checkForInterruption(line);
-          reportIfNeeded();
-        }
-        String[] in = iter.next();
-        if (in == null || in.length == 0) {
-          continue;
-        }
-        if (in.length <= maxColumnIndex) {
-          // input row is smaller than the highest mapped column. Resize array by adding nulls
-          String[] in2 = new String[maxColumnIndex + 1];
-          System.arraycopy(in, 0, in2, 0, in.length);
-          in = in2;
-          linesWithWrongColumnNumber++;
-        }
-        String[] row = new String[dataFileRowSize];
-        // add id column - either an existing column or the line number
-        if (mapping.getIdColumn() == null) {
-          row[0] = String.valueOf(line);
-        } else {
-          row[0] = in[mapping.getIdColumn()];
-        }
-        int idx = 1;
-        for (PropertyMapping f : newColumns) {
-          String val = in[f.getIndex()];
-          // translate value?
-          if (f.getTranslation() != null && f.getTranslation().containsKey(val)) {
-            val = f.getTranslation().get(val);
-          }
-          if (f.getType() != null) {
-            if (f.getType() == DataType.date) {
-              // TODO: parse date type with mapping date format
-            } else if (f.getType() == DataType.dateTime) {
-              // TODO: parse date type with mapping date format
-            } else if (f.getType() == DataType.decimal) {
-              // normalise punctuation
-            }
-          }
-          row[idx] = val;
-          idx++;
-        }
-        String newRow = tabRow(row);
-        if (newRow != null) {
-          writer.write(newRow);
-          currRecords++;
-        }
-      }
-    } catch (Exception e) {
-      // some error writing this file, report
-      throw new GeneratorException("Error writing data file for mapping " + mapping.getExtension().getName()
-          + " in source " + mapping.getSource().getName() + ", line " + line, e);
-    } finally {
-      // remember core record number
-      if (isCore) {
-        coreRecords = currRecords;
-      }
-      iter.close();
-      writer.close();
-    }
     // add source file location
     af.addLocation(dataFile.getName());
+
+    // ready to go though each mapping and dump the data
+    try {
+      for (ExtensionMapping m : mappings) {
+        // write to data file
+        dumpData(writer, af, m, dataFileRowSize);
+        // remember core record number
+        if (ext.isCore()) {
+          coreRecords += currRecords;
+        }
+      }
+    } finally {
+      writer.close();
+    }
+
     // add archive file to archive
-    if (isCore) {
+    if (ext.isCore()) {
       archive.setCore(af);
     } else {
       archive.addExtension(af);
     }
 
-    // add wrong lines user message
-    if (linesWithWrongColumnNumber > 0) {
-      addMessage(Level.INFO, linesWithWrongColumnNumber + " lines with less columns than mapped.");
-    }
     // final reporting
     addMessage(Level.INFO, "Data file written for " + currExtension + " with " + currRecords + " records and "
-        + newColumns.size() + " columns");
+        + dataFileRowSize + " columns");
   }
 
   private void addEmlFile() throws IOException {
@@ -271,13 +246,12 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
   private void createDataFiles() throws IOException, GeneratorException {
     setState(STATE.DATAFILES);
-    if (resource.getCore() == null || resource.getCore().getSource() == null) {
+    if (!resource.hasCore() || resource.getCoreMappings().get(0).getSource() == null) {
       throw new GeneratorException("Core is not mapped");
     }
-    addDataFile(resource.getCore(), true);
-    for (ExtensionMapping mapping : resource.getExtensions()) {
+    for (Extension ext : resource.getMappedExtensions()) {
       report();
-      addDataFile(mapping, false);
+      addDataFile(resource.getMappings(ext.getRowType()));
     }
     // final reporting
     addMessage(Level.INFO, "All data files completed");
@@ -323,6 +297,134 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       default:
         return "You should never see this";
     }
+  }
+
+  /**
+   * @param writer
+   * @param dataFileRowSize
+   * @param m
+   * @throws GeneratorException
+   */
+  private void dumpData(Writer writer, ArchiveFile dataFile, ExtensionMapping mapping, int dataFileRowSize)
+      throws GeneratorException {
+    final String idSuffix = StringUtils.trimToEmpty(mapping.getIdSuffix());
+    final RecordFilter filter = mapping.getFilter();
+    // get maximum column index to check incoming rows for correctness
+    int linesWithWrongColumnNumber = 0;
+    int recordsFiltered = 0;
+    int maxColumnIndex = mapping.getIdColumn() == null ? -1 : mapping.getIdColumn();
+    for (PropertyMapping pm : mapping.getFields()) {
+      if (pm.getIndex() != null && maxColumnIndex < pm.getIndex()) {
+        maxColumnIndex = pm.getIndex();
+      }
+    }
+
+    // prepare index ordered list of all output columns apart from id column, so its fast to iterate
+    PropertyMapping[] inCols = new PropertyMapping[dataFileRowSize];
+    for (ArchiveField f : dataFile.getFields().values()) {
+      if (f.getIndex() != null && f.getIndex() > 0) {
+        inCols[f.getIndex()] = mapping.getField(f.getTerm().qualifiedName());
+      }
+    }
+
+    // DEBUG
+    System.out.println("IN COLS");
+    for (PropertyMapping pm : inCols) {
+      System.out.println(pm);
+    }
+
+    // get the source iterator
+    ClosableIterator<String[]> iter = null;
+    int line = 0;
+    try {
+      iter = sourceManager.rowIterator(mapping.getSource());
+      while (iter.hasNext()) {
+        line++;
+        if (line % 1000 == 0) {
+          checkForInterruption(line);
+          reportIfNeeded();
+        }
+        String[] in = iter.next();
+        if (in == null || in.length == 0) {
+          continue;
+        }
+        if (in.length <= maxColumnIndex) {
+          // input row is smaller than the highest mapped column. Resize array by adding nulls
+          String[] in2 = new String[maxColumnIndex + 1];
+          System.arraycopy(in, 0, in2, 0, in.length);
+          in = in2;
+          linesWithWrongColumnNumber++;
+        }
+        // filter this record?
+        if (filter != null && filter.matches(in)) {
+          recordsFiltered++;
+          continue;
+        }
+
+        String[] record = new String[dataFileRowSize];
+        // add id column - either an existing column or the line number
+        if (mapping.getIdColumn() == null) {
+          record[0] = null;
+        } else if (mapping.getIdColumn().equals(ExtensionMapping.IDGEN_LINE_NUMBER)) {
+          record[0] = String.valueOf(line) + idSuffix;
+        } else if (mapping.getIdColumn().equals(ExtensionMapping.IDGEN_UUID)) {
+          record[0] = UUID.randomUUID().toString();
+        } else if (mapping.getIdColumn() >= 0) {
+          record[0] = in[mapping.getIdColumn()] + idSuffix;
+        }
+        // go thru all archive fields
+        for (int i = 1; i < inCols.length; i++) {
+          PropertyMapping pm = inCols[i];
+          String val = null;
+          if (pm != null) {
+            if (pm.getIndex() != null) {
+              val = in[pm.getIndex()];
+              // translate value?
+              if (pm.getTranslation() != null && pm.getTranslation().containsKey(val)) {
+                val = pm.getTranslation().get(val);
+              }
+              if (pm.getType() != null) {
+                if (pm.getType() == DataType.date) {
+                  // TODO: parse date type with mapping date format
+                } else if (pm.getType() == DataType.dateTime) {
+                  // TODO: parse date type with mapping date format
+                } else if (pm.getType() == DataType.decimal) {
+                  // normalise punctuation
+                }
+              }
+            }
+            // use default value for null values
+            if (val == null) {
+              val = pm.getDefaultValue();
+            }
+          }
+          // add value to data file record
+          record[i] = val;
+        }
+        String newRow = tabRow(record);
+        if (newRow != null) {
+          writer.write(newRow);
+          currRecords++;
+        }
+      }
+    } catch (Exception e) {
+      // some error writing this file, report
+      log.error("Fatal DwC-A Generator Error", e);
+      throw new GeneratorException("Error writing data file for mapping " + mapping.getExtension().getName()
+          + " in source " + mapping.getSource().getName() + ", line " + line, e);
+    } finally {
+      iter.close();
+    }
+
+    // add wrong lines user message
+    if (linesWithWrongColumnNumber > 0) {
+      addMessage(Level.INFO, linesWithWrongColumnNumber + " lines with less columns than mapped.");
+    }
+    // add filter message
+    if (recordsFiltered > 0) {
+      addMessage(Level.INFO, recordsFiltered + " lines matched the filter criteria and were skipped.");
+    }
+
   }
 
   private void setState(Exception e) {
