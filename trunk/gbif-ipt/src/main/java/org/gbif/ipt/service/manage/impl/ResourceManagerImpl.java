@@ -155,7 +155,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         eml = new Eml();
         eml.setTitle(metadata.getTitle());
         eml.setDescription(metadata.getDescription());
-        eml.setHomeUrl(metadata.getHomeUrl());
+        eml.setHomeUrl(metadata.getHomepageUrl());
         eml.setLogoUrl(metadata.getLogoUrl());
         eml.setSubject(metadata.getSubject());
         eml.setPubDate(metadata.getPublished());
