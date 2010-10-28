@@ -13,11 +13,16 @@
 <@s.text name='manage.metadata.project.intro'/>
 <form class="topForm" action="metadata-${section}.do" method="post"> 
 	<@input name="eml.project.title"/>
-	<div class="half">
+	<div class="halfcolumn">
 		<@input name="eml.project.personnel.firstName" />
+	</div>
+	<div class="halfcolumn">
 		<@input name="eml.project.personnel.lastName" />
+	</div>
+	<div class="halfcolumn">
 		<@select name="eml.project.personnel.role" value="${(eml.project.personnel.role)!}" options=roleOptions />
 	</div>
+	<div class="newline"></div>
 	<@text name="eml.project.funding" help="i18n"/>
 	<@text name="eml.project.studyAreaDescription.descriptorValue" help="i18n" />
 	<@text name="eml.project.designDescription" help="i18n" />
