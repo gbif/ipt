@@ -18,13 +18,22 @@ $(document).ready(function(){
 			$("#showAllValue").val("true");
 			$("#toggleFields").text("Hide Empty");
 			$('div.definition').show();
+			$(".groupmenu").show();
 		}
 	});
-	
+	$("#idColumn").change(function() {
+		if($('#idColumn option:selected').val()==-1){
+			$('#idSuffix').show();
+		}else{
+			$('#idSuffix').hide();
+			$('#idSuffix').val("");
+		}
+	});
 	function hideFields() {
 		showAll=false;
 		$("#showAllValue").val("false");
 		$("#toggleFields").text("Show All");
+		$(".groupmenu").hide();
 		$('div.definition').not('.required').each(function(index) {
 			// always show all mapped and required fields
 			if ($(".fidx", this).val()=="" && $(".fval", this).val()==""){
@@ -48,7 +57,7 @@ $(document).ready(function(){
 	div.body input{
 		width: 400px;
 	}
-	.required{
+	div.required div.title{
 		color:#bc5e5b;
 		font-weight: normal;
 	}
@@ -77,16 +86,15 @@ $(document).ready(function(){
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <form class="topForm" action="mapping.do" method="post">
   	<input type="hidden" name="r" value="${resource.shortname}" />
-  	<input type="hidden" name="id" value="${id}" />
+  	<input type="hidden" name="id" value="${mapping.extension.rowType}" />
+  	<input type="hidden" name="mid" value="${mid!}" />
   	<input id="showAllValue" type="hidden" name="showAll" value="${Parameters.showAll!"true"}" />
 
 <#if mapping.source?exists>
 <h1><@s.text name='manage.mapping.title'/> <span class="small">${mapping.source.name}</span></h1>
 <p><@s.text name='manage.mapping.intro'><@s.param name="source">${mapping.source.name}</@s.param></@s.text></p>
 
-<a id="toggleFields" href="#">Hide Empty</a>
-
-<p><@s.text name='manage.mapping.idColumn' /></p>
+<p><a id="toggleFields" href="#">Hide Empty</a></p>
 
 <div class="definition required">	
   <div class="title">
@@ -108,17 +116,30 @@ $(document).ready(function(){
       </#if>              	
   	</div>
 	<div>
-		<select name="mapping.idColumn">
-		  <option value="" <#if !mapping.idColumn??> selected="selected"</#if>><@s.text name="manage.mapping.lineNumber"/></option>
+		<select name="mapping.idColumn" id="idColumn">
+		  <option value="" <#if !mapping.idColumn??> selected="selected"</#if>><@s.text name="manage.mapping.noid"/></option>
+		  <option value="-1" <#if (mapping.idColumn!-99)==-1> selected="selected"</#if>><@s.text name="manage.mapping.lineNumber"/></option>
+		  <option value="-2" <#if (mapping.idColumn!-99)==-2> selected="selected"</#if>><@s.text name="manage.mapping.uuid"/></option>
 		<#list columns as col>
-		  <option value="${col_index}" <#if (mapping.idColumn!-1)==col_index> selected="selected"</#if>>${col}</option>
+		  <option value="${col_index}" <#if (mapping.idColumn!-99)==col_index> selected="selected"</#if>>${col}</option>
 		</#list>
 		</select>
+		<input id="idSuffix" type="text" name="mapping.idSuffix" size="10" value="${mapping.idSuffix!}" <#if (mapping.idColumn!-99)!=-1>style="display: none;"</#if>/>
     </div>
+    <div>
+	    <@s.text name='manage.mapping.idColumn' />
+    </div>
+  	<#if ((mapping.idColumn!-99)>=0)>
+  	<div>
+  		<em>Source Sample</em>:	      		
+  		<#assign first=true/>
+  		<#list peek as row><#if row??><#if row[mapping.idColumn]?has_content><#if !first> | </#if><#assign first=false/>${row[mapping.idColumn]}</#if></#if></#list>
+  	</div>
+  	</#if>
   </div>
+
 </div>
 	
-
 
   <div class="buttons">
  	<@s.submit name="save" key="button.save"/>
@@ -145,16 +166,18 @@ $(document).ready(function(){
 	<#assign p=field.term/>
 	
 	<#if p.group?exists && p.group!=group>
-	  <#if group!="">
-	  <div class="buttons">
-	 	<@s.submit name="save" key="button.save"/>
-	 	<@s.submit name="cancel" key="button.cancel"/>
+	  <div class="groupmenu">
+		  <#if group!="">
+		  <div class="buttons">
+		 	<@s.submit name="save" key="button.save"/>
+		 	<@s.submit name="cancel" key="button.cancel"/>
+		  </div>
+		  </#if>
+		  ${groupMenu}
+		  <#assign group=p.group/>
+		  <a name="${p.group?url}"></a>
+		  <h2>${p.group}</h2>
 	  </div>
-	  </#if>
-	  ${groupMenu}
-	  <#assign group=p.group/>
-	  <a name="${p.group?url}"></a>
-	  <h2>${p.group}</h2>
 	</#if>
 	<div class="definition<#if p.required> required</#if>">	
 	  <div class="title">
@@ -202,7 +225,7 @@ $(document).ready(function(){
 	      	</div>
 	      	<div>
 	      		<em>Translation</em>:
-	      		<a href="translation.do?r=${resource.shortname}&mapping=${p.extension.rowType}&term=${p.qualname}">
+	      		<a href="translation.do?r=${resource.shortname}&rowtype=${p.extension.rowType}&mid=${mid}&term=${p.qualname}">
 	      		<#if (((field.translation?size)!0)>0)>
 	      		${(field.translation?size)!0} terms
 	      		<#else>
@@ -222,6 +245,7 @@ $(document).ready(function(){
 	</#if>
 
 	</#list>
+	
 	
 	
 <#else>

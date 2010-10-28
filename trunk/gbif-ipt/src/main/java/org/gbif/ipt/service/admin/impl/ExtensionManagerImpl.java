@@ -93,7 +93,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     if (extensionsByRowtype.containsKey(rowType)) {
       // check if its used by some resources
       for (Resource r : resourceManager.list()) {
-        if (r.getMapping(rowType) != null) {
+        if (!r.getMappings(rowType).isEmpty()) {
           String msg = "Extension mapped in resource " + r.getShortname();
           log.warn(msg);
           throw new DeletionNotAllowedException(Reason.EXTENSION_MAPPED, msg);
@@ -154,10 +154,10 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     return new ArrayList<Extension>(extensionsByRowtype.values());
   }
 
-  public List<Extension> list(Extension core) {
-    if (core != null && core.getRowType().equalsIgnoreCase(Constants.DWC_ROWTYPE_OCCURRENCE)) {
+  public List<Extension> list(String coreRowType) {
+    if (coreRowType != null && coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_OCCURRENCE)) {
       return search(OCCURRENCE_KEYWORD, true, false);
-    } else if (core != null && core.getRowType().equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON)) {
+    } else if (coreRowType != null && coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON)) {
       return search(TAXON_KEYWORD, true, false);
     } else {
       return list();

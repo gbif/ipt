@@ -229,7 +229,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         FileSource s = importSource(alog, resource, arch.getCore());
         sources.put(arch.getCore().getLocation(), s);
         ExtensionMapping map = importMappings(alog, arch.getCore(), s);
-        resource.setCore(map);
+        resource.addMapping(map);
         // read extension sources+mappings
         for (ArchiveFile ext : arch.getExtensions()) {
           if (sources.containsKey(ext.getLocation())) {
@@ -240,7 +240,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             sources.put(ext.getLocation(), s);
           }
           map = importMappings(alog, ext, s);
-          resource.addExtension(map);
+          resource.addMapping(map);
         }
         // try to read metadata
         Eml eml = readMetadata(arch, alog);
@@ -250,7 +250,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // finally persist the whole thing
         save(resource);
         alog.info("Imported existing darwin core archive with core row type " + resource.getCoreRowType() + " and "
-            + resource.getSources().size() + " source(s), " + (resource.getExtensions().size() + 1) + " mapping(s)");
+            + resource.getSources().size() + " source(s), " + (resource.getMappings().size() + 1) + " mapping(s)");
 
       } else {
         alog.warn("Darwin core archive is invalid and does not have a core mapping");

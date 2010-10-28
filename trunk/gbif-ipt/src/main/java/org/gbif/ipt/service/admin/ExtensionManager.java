@@ -62,7 +62,7 @@ public interface ExtensionManager {
    * @param core extension
    * @return
    */
-  public List<Extension> list(Extension core);
+  public List<Extension> list(String coreRowType);
 
   /**
    * List only the available core extensions

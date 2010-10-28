@@ -24,7 +24,6 @@ import org.gbif.file.CSVReader;
 import org.gbif.file.ClosableIterator;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.Source.FileSource;
@@ -211,7 +210,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
 
   public static void copyArchiveFileProperties(ArchiveFile from, FileSource to) {
     to.setEncoding(from.getEncoding());
-    to.setFieldsEnclosedBy(from.getFieldsEnclosedBy().toString());
+    to.setFieldsEnclosedBy(from.getFieldsEnclosedBy() == null ? null : from.getFieldsEnclosedBy().toString());
     to.setFieldsTerminatedBy(from.getFieldsTerminatedBy());
     to.setIgnoreHeaderLines(from.getIgnoreHeaderLines());
     to.setDateFormat(from.getDateFormat());
@@ -232,7 +231,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     }
     src.setName(sourceName);
     src.setResource(resource);
-    System.out.println("ADDING SOURCE " + sourceName + " FROM " + file.getAbsolutePath());
+    log.debug("ADDING SOURCE " + sourceName + " FROM " + file.getAbsolutePath());
     try {
       // anaylze individual files using the dwca reader
       Archive arch = ArchiveFactory.openArchive(file);
@@ -386,19 +385,6 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         // also delete source data file
         FileSource fs = (FileSource) source;
         fs.getFile().delete();
-      }
-      // core source ?
-      if (resource.getCore() != null && source.equals(resource.getCore().getSource())) {
-        resource.deleteMapping(resource.getCore());
-        log.info("Cascading source delete to core mapping.");
-      }
-      // remove existing mappings
-      Set<ExtensionMapping> exts = new HashSet<ExtensionMapping>(resource.getExtensions());
-      for (ExtensionMapping em : exts) {
-        if (em.getSource().equals(source)) {
-          resource.deleteMapping(em);
-          log.info("Cascading source delete to mapping " + em.getExtension().getTitle());
-        }
       }
       deleted = true;
     }
