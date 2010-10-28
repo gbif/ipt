@@ -23,7 +23,7 @@ import org.apache.commons.lang.StringUtils;
  * 
  */
 public class RecordFilter {
-  enum Comparator {
+  public enum Comparator {
     IsNULL, IsNotNULL, Equals, NotEquals
   };
 
@@ -64,7 +64,7 @@ public class RecordFilter {
           return !val.equals(param);
       }
     }
-    return false;
+    return true;
   }
 
   public void setColumn(Integer column) {

@@ -29,6 +29,14 @@ $(document).ready(function(){
 			$('#idSuffix').val("");
 		}
 	});
+	$("#filterComp").change(function() {
+		if($('#filterComp option:selected').val()=="Equals" || $('#filterComp option:selected').val()=="NotEquals"){
+			$('#filterParam').show();
+		}else{
+			$('#filterParam').hide();
+			$('#filterParam').val("");
+		}
+	});
 	function hideFields() {
 		showAll=false;
 		$("#showAllValue").val("false");
@@ -137,9 +145,51 @@ $(document).ready(function(){
   	</div>
   	</#if>
   </div>
-
 </div>
 	
+
+<div class="definition">	
+  <div class="title">
+  	<div class="head">
+		Filter			
+  	</div>
+  </div>
+  <div class="body">
+  	<div class="infos">
+  		<img class="infoImg" src="${baseURL}/images/info.gif" />
+		<div class="info">		
+			A filter excludes matching records from the generated archive.
+			For example specify &quot;ColumnA IsNotNull&quot; to include only records that have some value in ColumnA.
+			<br/>
+			A filter can be very useful if the same extension is mapped several times to do pivots.
+			If you have two columns for vernacular names, one for English, one for Spanish, in the same source you can map the same source twice to the vernacular names extension.
+			Map one of the two columns for each mapping and set the filter on the same column to IsNotNull.
+			That way only extension records that actually have a vernacular name will end up in the final data file.
+		</div>		
+  	</div>
+	<div>
+		<select name="mapping.filter.column">
+		  <option value="" <#if !mapping.filter.column??> selected="selected"</#if>></option>
+		<#list columns as c>
+		  <option value="${c_index}" <#if c_index==mapping.filter.column!-999> selected="selected"</#if>>${c}</option>
+		</#list>
+		</select>
+		
+		<select id="filterComp" name="mapping.filter.comparator">
+		  <option value="" <#if !mapping.filter.comparator??> selected="selected"</#if>></option>
+		<#list comparators as c>
+		  <option value="${c}" <#if c==mapping.filter.comparator!""> selected="selected"</#if>>${c}</option>
+		</#list>
+		</select>
+
+		<input id="filterParam" name="mapping.filter.param" style="width:190px" value="${mapping.filter.param!}"/>  
+    </div>
+    <div>
+			You can define a filter to exclude records from the generated archive.
+			Specify the criteria that matches the records to be included.
+    </div>
+  </div>
+</div>
 
   <div class="buttons">
  	<@s.submit name="save" key="button.save"/>

@@ -128,6 +128,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     af.addLocation(dataFile.getName());
 
     // ready to go though each mapping and dump the data
+    addMessage(Level.INFO, "Start writing data file for " + currExtension);
     try {
       for (ExtensionMapping m : mappings) {
         // write to data file
@@ -328,10 +329,10 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     }
 
     // DEBUG
-    System.out.println("IN COLS");
-    for (PropertyMapping pm : inCols) {
-      System.out.println(pm);
-    }
+//    System.out.println("IN COLS");
+//    for (PropertyMapping pm : inCols) {
+//      System.out.println(pm);
+//    }
 
     // get the source iterator
     ClosableIterator<String[]> iter = null;
@@ -356,7 +357,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
           linesWithWrongColumnNumber++;
         }
         // filter this record?
-        if (filter != null && filter.matches(in)) {
+        if (filter != null && !filter.matches(in)) {
           recordsFiltered++;
           continue;
         }
@@ -422,7 +423,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     }
     // add filter message
     if (recordsFiltered > 0) {
-      addMessage(Level.INFO, recordsFiltered + " lines matched the filter criteria and were skipped.");
+      addMessage(Level.INFO, recordsFiltered + " lines did not match the filter criteria and were skipped.");
     }
 
   }
