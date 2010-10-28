@@ -21,6 +21,8 @@ import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;
 import org.gbif.ipt.model.PropertyMapping;
+import org.gbif.ipt.model.RecordFilter;
+import org.gbif.ipt.model.RecordFilter.Comparator;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
@@ -55,6 +57,7 @@ public class MappingAction extends ManagerBaseAction {
   // config
   private ExtensionMapping mapping;
   private List<String> columns;
+  private Comparator[] comparators = Comparator.values();
   private List<String[]> peek;
   private List<PropertyMapping> fields;
   private Map<String, Map<String, String>> vocabTerms = new HashMap<String, Map<String, String>>();
@@ -99,6 +102,10 @@ public class MappingAction extends ManagerBaseAction {
 
   public List<String> getColumns() {
     return columns;
+  }
+
+  public Comparator[] getComparators() {
+    return comparators;
   }
 
   public ExtensionProperty getCoreid() {
@@ -152,6 +159,10 @@ public class MappingAction extends ManagerBaseAction {
     if (mapping == null || mapping.getExtension() == null) {
       notFound = true;
     } else {
+      // set empty filter if not existing
+      if (mapping.getFilter() == null) {
+        mapping.setFilter(new RecordFilter());
+      }
       readSource();
       // setup the core record id term
       String coreRowType = resource.getCoreRowType();

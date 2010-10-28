@@ -18,7 +18,6 @@ package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.voc.Rank;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.validation.EmlValidator;
 import org.gbif.ipt.validation.ResourceValidator;
@@ -33,7 +32,6 @@ import com.google.inject.Inject;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -64,21 +62,6 @@ public class MetadataAction extends ManagerBaseAction {
     countries.put("", getText("eml.country.selection"));
     return countries;
   }
-  
-  /**
-   * @return a map of Ranks
-   */
-  public Map<String, String> getRanks() {
-    /*Map<String, String> map = new LinkedHashMap<String, String>();
-    List<Rank> ranks = Rank.DARWIN_CORE_HIGHER_RANKS;
-    for (Rank r : ranks) {
-      map.put(r.name(), getText("rank." + r.name().toLowerCase()));
-    }
-    return map;*/
-	  ranks.remove(ranks.keySet().iterator().next());
-	  ranks.put("", getText("eml.rank.selection"));
-	  return ranks;
-  }
 
   public String getCurrentSideMenu() {
     return section;
@@ -98,6 +81,23 @@ public class MetadataAction extends ManagerBaseAction {
 
   public String getNext() {
     return next;
+  }
+
+  /**
+   * @return a map of Ranks
+   */
+  public Map<String, String> getRanks() {
+    /*
+     * Map<String, String> map = new LinkedHashMap<String, String>();
+     * List<Rank> ranks = Rank.DARWIN_CORE_HIGHER_RANKS;
+     * for (Rank r : ranks) {
+     * map.put(r.name(), getText("rank." + r.name().toLowerCase()));
+     * }
+     * return map;
+     */
+    ranks.remove(ranks.keySet().iterator().next());
+    ranks.put("", getText("eml.rank.selection"));
+    return ranks;
   }
 
   @Override
@@ -140,7 +140,7 @@ public class MetadataAction extends ManagerBaseAction {
     languages = vocabManager.getI18nVocab(Constants.VOCAB_URI_LANGUAGE, getLocaleLanguage(), true);
     countries = vocabManager.getI18nVocab(Constants.VOCAB_URI_COUNTRY, getLocaleLanguage(), true);
     ranks = vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, getLocaleLanguage(), true);
-    
+
     if (resource.getEml().getMetadataProvider().getLastName() == null
         || resource.getEml().getMetadataProvider().getEmail() == null) {
       Agent current = new Agent();

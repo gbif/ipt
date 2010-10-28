@@ -12,20 +12,23 @@
   </div>
 </#macro> 
 
-<#macro select name options value="" i18nkey="" errorfield="" size=1 disabled=false help="">
+<#macro select name options value="" i18nkey="" errorfield="" size=1 disabled=false help="" includeEmpty=false>
   <div>
 	<#include "/WEB-INF/pages/macros/form_field_common.ftl">
     <select name="${name}" id="${name}" size="${size}" <#if disabled>readonly="readonly"</#if>>
+	<#if includeEmpty>
+      <option value="" <#if (value!"")==""> selected="selected"</#if>></option>
+	</#if>
     <#list options?keys as val>
       <option value="${val}" <#if (value!"")==val> selected="selected"</#if>><@s.text name="${options[val]}"/></option>
     </#list>
 	</select>
   </div>
 </#macro>
-<#macro selectList name options objValue objTitle value="" i18nkey="" errorfield="" size=1 disabled=false help="">
+<#macro selectList name options objValue objTitle value="" i18nkey="" errorfield="" size=1 disabled=false help="" includeEmpty=false>
   <div>
 	<#include "/WEB-INF/pages/macros/form_field_common.ftl">
-	<@s.select id=name name=name list=options listKey=objValue listValue=objTitle value=value size=size disabled=disabled/>
+	<@s.select id=name name=name list=options listKey=objValue listValue=objTitle value=value size=size disabled=disabled emptyOption=includeEmpty/>
    </div>
 </#macro>
 
