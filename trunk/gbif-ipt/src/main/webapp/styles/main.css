@@ -274,9 +274,14 @@ ul.fielderror{
 .actionMessage{
 	list-style:none; 
     //list-style-image: url('../images/info.gif');
-	color: #6dd03e;
-	padding: 0px;
-	margin: 0px;
+	color: #4ea226;
+	margin: 10px 15px 5px 0px;
+	border: 1px solid;
+	padding:5px 15px 5px 25px;
+	background-repeat: no-repeat;
+	background-position: 5px center;
+	background-color: #dff2bf;
+	background-image: url('../images/good.gif');
 }
 .actionMessage li{
 	padding-bottom: 5px;
