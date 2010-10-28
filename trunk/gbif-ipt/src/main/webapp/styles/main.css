@@ -252,14 +252,24 @@ hr {
 ul.fielderror{
 	list-style:none; 
 	color: #d8424f;
-	padding: 0px;
-	margin: 10px 0px 5px 0px;
+	margin: 10px 15px 5px 0px;
+	border: 1px solid;
+	padding:5px 15px 5px 25px;
+	background-repeat: no-repeat;
+	background-position: 5px center;
+	background-color: #ffdddd;
+	background-image: url('../images/minus.png');
 }
 .errorMessage{
 	list-style:none; 
 	color: #d8424f;
-	padding: 0px;
-	margin: 0px;
+	margin: 10px 15px 5px 0px;
+	border: 1px solid;
+	padding:5px 15px 5px 25px;
+	background-repeat: no-repeat;
+	background-position: 5px center;
+	background-color: #ffdddd;
+	background-image: url('../images/minus.png');
 }
 .actionMessage{
 	list-style:none; 
