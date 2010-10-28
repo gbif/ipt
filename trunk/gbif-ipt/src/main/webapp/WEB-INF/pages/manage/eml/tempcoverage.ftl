@@ -183,23 +183,25 @@
 			<br>
 			<#if "${temporalCoverage.type}" == "DATE_RANGE" >
 				<div id="date-${temporalCoverage_index}" class="typeForm" >
-					<div class="half">
+					<div class="halfcolumn">
 						<@input date=true i18nkey="eml.temporalCoverages.startDate" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD",  "MM/DD/YYYY":"MM/DD/YYYY"}/>
+					</div>
+					<div class="halfcolumn">
 						<@input date=true i18nkey="eml.temporalCoverages.endDate" name="eml.temporalCoverages[${temporalCoverage_index}].endDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD",  "MM/DD/YYYY":"MM/DD/YYYY"}/>
 					</div>
 			<#elseif "${temporalCoverage.type}" == "SINGLE_DATE" >
 				<div id="single-${temporalCoverage_index}" class="typeForm" >
-					<div class="half">
+					<div class="halfcolumn">
 						<@input date=true i18nkey="eml.temporalCoverages.startDate" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD",  "MM/DD/YYYY":"MM/DD/YYYY"}/>
 					</div>
 			<#elseif "${temporalCoverage.type}" == "FORMATION_PERIOD" >
 				<div id="formation-${temporalCoverage_index}" class="typeForm" >
-					<div class="half">
+					<div class="halfcolumn">
 						<@input i18nkey="eml.temporalCoverages.formationPeriod" name="eml.temporalCoverages[${temporalCoverage_index}].formationPeriod" help="i18n" />
 					</div>
 			<#else> <!-- LIVING_TIME_PERIOD -->
 				<div id="living-${temporalCoverage_index}" class="typeForm"  >
-					<div class="half">
+					<div class="halfcolumn">
 						<@input i18nkey="eml.temporalCoverages.livingTimePeriod" name="eml.temporalCoverages[${temporalCoverage_index}].livingTimePeriod" help="i18n" />
 					</div>
 			</#if>
@@ -234,8 +236,10 @@
 
 <!-- DATE RANGE -->
 <div id="date-99999" class="typeForm" style="display:none">
-	<div class="half">
+	<div class="halfcolumn">
 		<@input date=true i18nkey="eml.temporalCoverages.startDate" name="startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD",  "MM/DD/YYYY":"MM/DD/YYYY"}/>
+	</div>
+	<div class="halfcolumn">
 		<@input date=true i18nkey="eml.temporalCoverages.endDate" name="endDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD",  "MM/DD/YYYY":"MM/DD/YYYY"}/>
 	</div>		  
 	<div class="newline"></div>      
@@ -246,7 +250,7 @@
 
 <!-- SINGLE DATE -->
 <div id="single-99999" class="typeForm" style="display:none">
-	<div class="half">
+	<div class="halfcolumn">
 		<@input date=true i18nkey="eml.temporalCoverages.startDate" name="startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD",  "MM/DD/YYYY":"MM/DD/YYYY"} />
 	</div>
 	<div class="newline"></div>
@@ -257,7 +261,7 @@
 
 <!-- FORMATION PERIOD -->
 <div id="formation-99999" class="typeForm" style="display:none">
-	<div class="half">
+	<div class="halfcolumn">
 		<@input i18nkey="eml.temporalCoverages.formationPeriod" name="formationPeriod" help="i18n" />
 	</div>
 	<div class="newline"></div>
@@ -268,7 +272,7 @@
 
 <!-- LIVING TIME PERIOD -->
 <div id="living-99999" class="typeForm" style="display:none">
-	<div class="half">
+	<div class="halfcolumn">
 		<@input i18nkey="eml.temporalCoverages.livingTimePeriod" name="livingTimePeriod" help="i18n" />
 	</div>
 	<div class="newline"></div>
