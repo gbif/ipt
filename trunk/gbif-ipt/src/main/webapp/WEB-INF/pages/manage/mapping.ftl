@@ -23,10 +23,10 @@ $(document).ready(function(){
 	});
 	$("#idColumn").change(function() {
 		if($('#idColumn option:selected').val()==-1){
-			$('#idSuffix').show();
+			$('.idSuffix').show();
 		}else{
-			$('#idSuffix').hide();
-			$('#idSuffix').val("");
+			$('.idSuffix').hide();
+			$('input.idSuffix').val("");
 		}
 	});
 	$("#filterComp").change(function() {
@@ -117,9 +117,13 @@ $(document).ready(function(){
 		<div class="info">		
 			<#if coreid.description?has_content>${coreid.description}<br/><br/></#if>              	
 			<#if coreid.link?has_content><@s.text name="basic.seealso"/> <a href="${coreid.link}">${coreid.link}</a><br/><br/></#if>
+			<span class="idSuffix">
+				For linenumbers you can specify an optional suffix to be appended to the id. 
+				This is useful to generate unique identifiers when mapping the same source multiple times.<br/><br/>             	
+			</span>              	
 			<#if coreid.examples?has_content>
 			<em><@s.text name="basic.examples"/></em>: ${coreid.examples}
-			</#if>              	
+			</#if>
 		</div>		
       </#if>              	
   	</div>
@@ -132,7 +136,7 @@ $(document).ready(function(){
 		  <option value="${col_index}" <#if (mapping.idColumn!-99)==col_index> selected="selected"</#if>>${col}</option>
 		</#list>
 		</select>
-		<input id="idSuffix" type="text" name="mapping.idSuffix" size="10" value="${mapping.idSuffix!}" <#if (mapping.idColumn!-99)!=-1>style="display: none;"</#if>/>
+		<input type="text" name="mapping.idSuffix" style="width:200px" value="${mapping.idSuffix!}" class="idSuffix" <#if (mapping.idColumn!-99)!=-1>style="display: none;"</#if>/>
     </div>
     <div>
 	    <@s.text name='manage.mapping.idColumn' />
@@ -182,7 +186,7 @@ $(document).ready(function(){
 		</#list>
 		</select>
 
-		<input id="filterParam" name="mapping.filter.param" style="width:190px" value="${mapping.filter.param!}"/>  
+		<input id="filterParam" name="mapping.filter.param" style="width:190px;<#if !mapping.filter.comparator?? || mapping.filter.comparator=="IsNULL" || mapping.filter.comparator=="IsNotNULL">display: none;</#if>" value="${mapping.filter.param!}" />  
     </div>
     <div>
 			You can define a filter to exclude records from the generated archive.
