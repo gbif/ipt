@@ -16,6 +16,7 @@
 
 package org.gbif.ipt.action.manage;
 
+import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
@@ -27,6 +28,8 @@ import org.gbif.ipt.model.Source;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.SourceManager;
+import org.gbif.ipt.validation.ExtensionMappingValidator;
+import org.gbif.ipt.validation.ExtensionMappingValidator.ValidationStatus;
 
 import com.google.inject.Inject;
 
@@ -42,6 +45,16 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
+ * A rather complex action that deals with a single mapping configuration.
+ * The prepare method does a lot of work.
+ * For initial GET requests linked from the overview the prepare() method decides on the result name, i.e. which
+ * template to call.
+ * 
+ * We dont use any regular validation here but only raise warnings to the user.
+ * So the save method is always executed for POST requests, but not for GETs.
+ * Please dont add any action errors as this will trigger the validation interceptor and causes problems, use
+ * addActionWarning() instead.
+ * 
  * @author markus
  * 
  */
@@ -63,6 +76,21 @@ public class MappingAction extends ManagerBaseAction {
   private Map<String, Map<String, String>> vocabTerms = new HashMap<String, Map<String, String>>();
   private ExtensionProperty coreid;
   private Integer mid;
+
+  public void addWarnings() {
+    if (mapping.getSource() != null) {
+      ExtensionMappingValidator validator = new ExtensionMappingValidator();
+      ValidationStatus v = validator.validate(mapping, resource);
+      if (v != null && !v.isValid()) {
+        if (v.getIdProblem() != null) {
+          addActionWarning(getText(v.getIdProblem(), v.getIdProblemParams()));
+        }
+        for (ConceptTerm t : v.getMissingRequiredFields()) {
+          addActionWarning(getText("validation.required", new String[]{t.simpleName()}));
+        }
+      }
+    }
+  }
 
   private void automap() {
     int automapped = 0;
@@ -135,6 +163,7 @@ public class MappingAction extends ManagerBaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
+    // get mapping sequence id from parameters as setters are not called yet
     String midStr = StringUtils.trimToNull(req.getParameter("mid"));
     if (midStr != null) {
       mid = Integer.valueOf(midStr);
@@ -146,7 +175,6 @@ public class MappingAction extends ManagerBaseAction {
         List<ExtensionMapping> maps = resource.getMappings(id);
         mapping = maps.get(mid);
       } else {
-        // new mapping
         Extension ext = extensionManager.get(id);
         if (ext != null) {
           mapping = new ExtensionMapping();
@@ -159,11 +187,24 @@ public class MappingAction extends ManagerBaseAction {
     if (mapping == null || mapping.getExtension() == null) {
       notFound = true;
     } else {
+      // is source assigned yet?
+      if (mapping.getSource() == null) {
+        // get source parameter as setters are not called yet
+        String source = StringUtils.trimToNull(req.getParameter("source"));
+        if (source != null) {
+          Source src = resource.getSource(source);
+          mapping.setSource(src);
+        } else {
+          // show set source form
+          defaultResult = "source";
+        }
+      }
+      // inspect source
+      readSource();
       // set empty filter if not existing
       if (mapping.getFilter() == null) {
         mapping.setFilter(new RecordFilter());
       }
-      readSource();
       // setup the core record id term
       String coreRowType = resource.getCoreRowType();
       if (coreRowType == null) {
@@ -197,11 +238,16 @@ public class MappingAction extends ManagerBaseAction {
         f.setTerm(p);
         fields.add(f);
       }
+
       // finally do automapping if no fields are found
       if (mapping.getFields().isEmpty()) {
         automap();
       }
 
+      if (!isHttpPost()) {
+        // save, which does the validation, is not called for GET requests
+        addWarnings();
+      }
     }
   }
 
@@ -219,9 +265,6 @@ public class MappingAction extends ManagerBaseAction {
     // a new mapping?
     if (resource.getMapping(id, mid) == null) {
       mid = resource.addMapping(mapping);
-      // read source as prepare wasnt yet ready for this
-      readSource();
-      automap();
     } else {
       // save field mappings
       Set<PropertyMapping> mappedFields = new HashSet<PropertyMapping>();
@@ -235,6 +278,12 @@ public class MappingAction extends ManagerBaseAction {
     }
     // save entire resource config
     saveResource();
+    // report validation without skipping this save
+    addWarnings();
+    return defaultResult;
+  }
+
+  public String saveSetSource() {
     return INPUT;
   }
 
@@ -248,18 +297,5 @@ public class MappingAction extends ManagerBaseAction {
 
   public void setMid(Integer mid) {
     this.mid = mid;
-  }
-
-  public void setSource(String source) {
-    Source src = resource.getSource(source);
-    mapping.setSource(src);
-  }
-
-  @Override
-  public void validateHttpPostOnly() {
-    if (mapping != null && mapping.getSource() == null) {
-      addFieldError("manage.mapping.source",
-          getText("validation.required", new String[]{getText("manage.mapping.source")}));
-    }
   }
 }

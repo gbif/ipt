@@ -3,13 +3,46 @@
 	<script type="text/javascript" src="${baseURL}/js/jconfirmaction.jquery.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	function showHideIdSuffix(){
+		if($('#idColumn option:selected').val()!="" && $('#idColumn option:selected').val()>=-1){
+			$('.idSuffix').show();
+		}else{
+			$('.idSuffix').hide();
+			$('input.idSuffix').val("");
+		}
+	}
+	function showHideFilter(){
+		if($('#filterComp option:selected').val()=="Equals" || $('#filterComp option:selected').val()=="NotEquals"){
+			$('#filterParam').show();
+		}else{
+			$('#filterParam').hide();
+			$('#filterParam').val("");
+		}
+	}
+	function hideFields() {
+		showAll=false;
+		$("#showAllValue").val("false");
+		$("#toggleFields").text("Show All");
+		$(".groupmenu").hide();
+		$('div.definition').not('.required').each(function(index) {
+			// always show all mapped and required fields
+			if ($(".fidx", this).val()=="" && $(".fval", this).val()==""){
+				$(this).hide();
+			};
+		});
+	}	
+	
 	initHelp();
-	$('.confirm').jConfirmAction({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
-	// show only required and mapped fields
+	showHideIdSuffix();
+	showHideFilter();
 	var showAll=${Parameters.showAll!"true"};
 	if (!showAll){
 		hideFields();
 	};
+	
+	$('.confirm').jConfirmAction({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
+	
+	// show only required and mapped fields
 	$("#toggleFields").click(function() {
 		if(showAll){
 			hideFields();
@@ -22,33 +55,13 @@ $(document).ready(function(){
 		}
 	});
 	$("#idColumn").change(function() {
-		if($('#idColumn option:selected').val()==-1){
-			$('.idSuffix').show();
-		}else{
-			$('.idSuffix').hide();
-			$('input.idSuffix').val("");
-		}
+		showHideIdSuffix();
 	});
+	
 	$("#filterComp").change(function() {
-		if($('#filterComp option:selected').val()=="Equals" || $('#filterComp option:selected').val()=="NotEquals"){
-			$('#filterParam').show();
-		}else{
-			$('#filterParam').hide();
-			$('#filterParam').val("");
-		}
+		showHideFilter();
 	});
-	function hideFields() {
-		showAll=false;
-		$("#showAllValue").val("false");
-		$("#toggleFields").text("Show All");
-		$(".groupmenu").hide();
-		$('div.definition').not('.required').each(function(index) {
-			// always show all mapped and required fields
-			if ($(".fidx", this).val()=="" && $(".fval", this).val()==""){
-				$(this).hide();
-			};
-		});
-	}
+
 	
 });   
 </script>
@@ -98,7 +111,6 @@ $(document).ready(function(){
   	<input type="hidden" name="mid" value="${mid!}" />
   	<input id="showAllValue" type="hidden" name="showAll" value="${Parameters.showAll!"true"}" />
 
-<#if mapping.source?exists>
 <h1><@s.text name='manage.mapping.title'/> <span class="small">${mapping.source.name}</span></h1>
 <p><@s.text name='manage.mapping.intro'><@s.param name="source">${mapping.source.name}</@s.param></@s.text></p>
 
@@ -118,7 +130,7 @@ $(document).ready(function(){
 			<#if coreid.description?has_content>${coreid.description}<br/><br/></#if>              	
 			<#if coreid.link?has_content><@s.text name="basic.seealso"/> <a href="${coreid.link}">${coreid.link}</a><br/><br/></#if>
 			<span class="idSuffix">
-				For linenumbers you can specify an optional suffix to be appended to the id. 
+				For linenumbers you can specify an optional non numerical suffix to be appended to the id. 
 				This is useful to generate unique identifiers when mapping the same source multiple times.<br/><br/>             	
 			</span>              	
 			<#if coreid.examples?has_content>
@@ -129,14 +141,16 @@ $(document).ready(function(){
   	</div>
 	<div>
 		<select name="mapping.idColumn" id="idColumn">
+		<#if mapping.isCore()>
 		  <option value="" <#if !mapping.idColumn??> selected="selected"</#if>><@s.text name="manage.mapping.noid"/></option>
-		  <option value="-1" <#if (mapping.idColumn!-99)==-1> selected="selected"</#if>><@s.text name="manage.mapping.lineNumber"/></option>
 		  <option value="-2" <#if (mapping.idColumn!-99)==-2> selected="selected"</#if>><@s.text name="manage.mapping.uuid"/></option>
+		</#if>
+		  <option value="-1" <#if (mapping.idColumn!-99)==-1> selected="selected"</#if>><@s.text name="manage.mapping.lineNumber"/></option>
 		<#list columns as col>
 		  <option value="${col_index}" <#if (mapping.idColumn!-99)==col_index> selected="selected"</#if>>${col}</option>
 		</#list>
 		</select>
-		<input type="text" name="mapping.idSuffix" style="width:200px" value="${mapping.idSuffix!}" class="idSuffix" <#if (mapping.idColumn!-99)!=-1>style="display: none;"</#if>/>
+		<input type="text" name="mapping.idSuffix" style="width:200px" value="${mapping.idSuffix!}" class="idSuffix" />
     </div>
     <div>
 	    <@s.text name='manage.mapping.idColumn' />
@@ -186,7 +200,7 @@ $(document).ready(function(){
 		</#list>
 		</select>
 
-		<input id="filterParam" name="mapping.filter.param" style="width:190px;<#if !mapping.filter.comparator?? || mapping.filter.comparator=="IsNULL" || mapping.filter.comparator=="IsNotNULL">display: none;</#if>" value="${mapping.filter.param!}" />  
+		<input id="filterParam" name="mapping.filter.param" style="width:190px;" value="${mapping.filter.param!}" />  
     </div>
     <div>
 			You can define a filter to exclude records from the generated archive.
@@ -299,21 +313,6 @@ $(document).ready(function(){
 	</#if>
 
 	</#list>
-	
-	
-	
-<#else>
-
-<h1><@s.text name='manage.mapping.source'/></h1>
-<p><@s.text name='manage.mapping.source.help'/></p>
-
-<@selectList name="source" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" />
-
-  <div class="buttons">
- 	<@s.submit name="save" key="button.save"/>
- 	<@s.submit name="cancel" key="button.cancel"/>
-  </div>
-</#if>
 
 </form>
 
