@@ -36,7 +36,7 @@ $(document).ready(function(){
 </table>
 
 <p>
-	<a href="user.do"><button id="create"><@s.text name="button.create"/></button></a>
+	<button id="create"><@s.text name="button.create"/></button>
 </p>
 
 
