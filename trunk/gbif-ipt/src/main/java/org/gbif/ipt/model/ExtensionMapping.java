@@ -16,6 +16,8 @@
 
 package org.gbif.ipt.model;
 
+import org.gbif.dwc.terms.ConceptTerm;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,6 +26,7 @@ import java.util.Set;
  * 
  */
 public class ExtensionMapping {
+
   public static final Integer IDGEN_LINE_NUMBER = -1;
   public static final Integer IDGEN_UUID = -2;
 
@@ -73,6 +76,18 @@ public class ExtensionMapping {
 
   public boolean isCore() {
     if (extension != null && extension.isCore()) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * @param p
+   * @return
+   */
+  public boolean isMapped(ConceptTerm t) {
+    PropertyMapping pm = getField(t.qualifiedName());
+    if (pm != null && (pm.getIndex() != null || pm.getDefaultValue() != null)) {
       return true;
     }
     return false;
