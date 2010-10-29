@@ -715,7 +715,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       xstream.toXML(resource, writer);
       // add to internal map
       addResource(resource);
-      log.debug("Saved " + resource);
     } catch (IOException e) {
       log.error(e);
       throw new InvalidConfigException(TYPE.CONFIG_WRITE, "Cant write mapping configuration");
