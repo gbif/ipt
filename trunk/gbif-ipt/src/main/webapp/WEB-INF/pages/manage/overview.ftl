@@ -24,10 +24,28 @@
 		margin-right: 10px;
 		font-style: italic;
 	}
+	.report{
+		background-color: #f3f3f3;
+		color: #111;
+		padding: 10px;
+	
+	}
 	</style>
 <script type="text/javascript">
 $(document).ready(function(){
 	$('.confirm').jConfirmAction({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
+	var showReport=false;
+	$("#toggleReport").click(function() {
+		if(showReport){
+			showReport=false;
+			$("#toggleReport").text("Show Report");
+			$('#dwcaReport').hide();
+		}else{
+			showReport=true;
+			$("#toggleReport").text("Hide Report");
+			$('#dwcaReport').show();
+		}
+	});
 });
 </script>
 
@@ -261,7 +279,31 @@ $(document).ready(function(){
       	<div class="details">
       		<table>
 			  	<#if resource.lastPublished??>
-          		 <tr><th><@s.text name="manage.overview.published.last.publication"/></th><td><@s.text name="manage.overview.published.version"/> ${resource.eml.emlVersion} <@s.text name="manage.overview.published.from"/> ${resource.lastPublished?date?string.medium}</td></tr>
+          		 <tr><th><@s.text name="manage.overview.published.last.publication"/></th>
+          		 	<td><@s.text name="manage.overview.published.version"/> ${resource.eml.emlVersion} <@s.text name="manage.overview.published.from"/> ${resource.lastPublished?date?string.medium}
+				  	<#if report??><a id="toggleReport" href="#">See report</a></#if>
+          		    </td>
+          		 </tr>
+			  	 <#if report??>
+          		 <tr id="dwcaReport" style="display: none;"><td colspan="2">
+<div class="report">
+  <ul class="simple">
+   <#list report.messages as msg>
+   <li>${msg.message} <span class="small">${msg.date?time?string}</span></li>
+   </#list>
+  </ul>
+  <#if report.hasException()>
+  <br/>
+  <ul class="simple">
+   <li><strong>Exception</strong> ${report.exceptionMessage!}</li>
+   <#list report.exceptionStacktrace as msg>
+   <li>${msg}</li>
+   </#list>
+  </ul>
+  </#if>
+</div>
+          		 </td></tr>
+				 </#if>          		 
 			  	 <#if (resource.recordsPublished>0)>
           		  <tr><th><@s.text name="manage.overview.published.archive"/></th><td><a href="${baseURL}/archive.do?r=${resource.shortname}"><@s.text name="manage.overview.published.download"/></a>, ${resource.recordsPublished} <@s.text name="manage.overview.published.records"/> </td></tr>
 			  	 </#if>

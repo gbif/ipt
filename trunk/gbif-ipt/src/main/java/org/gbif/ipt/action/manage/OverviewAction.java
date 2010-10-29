@@ -166,9 +166,8 @@ public class OverviewAction extends ManagerBaseAction {
   }
 
   public String locked() throws Exception {
-    report = resourceManager.status(resource.getShortname());
     now = new Date();
-    if (report.isCompleted()) {
+    if (report != null && report.isCompleted()) {
       addActionMessage("Resource published!");
       return "cancel";
     }
@@ -198,6 +197,8 @@ public class OverviewAction extends ManagerBaseAction {
   public void prepare() throws Exception {
     super.prepare();
     if (resource != null) {
+      // get last archive report
+      report = resourceManager.status(resource.getShortname());
       // get potential new managers
       potentialManagers = userManager.list(Role.Publisher);
       potentialManagers.addAll(userManager.list(Role.Manager));
