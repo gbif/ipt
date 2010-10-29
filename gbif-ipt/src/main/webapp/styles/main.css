@@ -261,30 +261,42 @@ ul.fielderror{
 	background-image: url('../images/minus.png');
 }
 .errorMessage{
-	list-style:none; 
 	color: #d8424f;
-	margin: 10px 15px 5px 0px;
-	border: 1px solid;
-	padding:5px 15px 5px 25px;
-	background-repeat: no-repeat;
-	background-position: 5px center;
 	background-color: #ffdddd;
 	background-image: url('../images/minus.png');
-}
-.actionMessage{
 	list-style:none; 
-	color: #4ea226;
 	margin: 10px 15px 5px 0px;
 	border: 1px solid;
 	padding:5px 15px 5px 25px;
 	background-repeat: no-repeat;
 	background-position: 5px center;
+}
+.warnMessage{
+	color: #9F6000;
+	background-color: #FEEFB3;
+	background-image: url('../images/warning.gif');
+	list-style:none; 
+	margin: 10px 15px 5px 0px;
+	border: 1px solid;
+	padding:5px 15px 5px 25px;
+	background-repeat: no-repeat;
+	background-position: 5px center;
+}
+.actionMessage{
+	color: #4ea226;
 	background-color: #dff2bf;
 	background-image: url('../images/good.gif');
+	list-style:none; 
+	margin: 10px 15px 5px 0px;
+	border: 1px solid;
+	padding:5px 15px 5px 25px;
+	background-repeat: no-repeat;
+	background-position: 5px center;
 }
-.actionMessage li{
+/*.actionMessage li{
 	padding-bottom: 5px;
 }
+*/
 .small{
 	font-size: 0.75em;
 	color: #888;

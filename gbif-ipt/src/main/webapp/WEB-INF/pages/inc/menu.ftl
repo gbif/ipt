@@ -79,7 +79,7 @@
 			[@s.actionmessage/]
 			[@s.actionerror/]
 			[#if warnings?size>0]		    
-			 <ul class="errorMessage">
+			 <ul class="warnMessage">
 			 [#list warnings as w]
 	          <li><span>${w!}</span></li>
 			 [/#list]
