@@ -94,13 +94,14 @@ $(document).ready(function(){
 <div class="definition" id="sources">	
   <div class="title">
   	<div class="head">
-        Source Data
+        <@s.text name='manage.overview.source.data'/>
   	</div>
   	<div class="actions">
 	  <form action='addsource.do' method='post' enctype="multipart/form-data">
 	    <input name="r" type="hidden" value="${resource.shortname}" />
 	    <input name="validate" type="hidden" value="false" />
 	    <@s.file name="file" key="manage.resource.create.file" />
+	    <br/>
        	<@s.submit name="add" key="button.add"/>
   	  </form>
   	</div>
