@@ -359,7 +359,11 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
     for (Vocabulary v : vocabularies.values()) {
       log.debug("Updating vocabulary " + v.getUri());
       URL url = uri2url.get(v.getUri());
-      File vocabFile = getVocabFile(url);
+      if(url==null){
+    	  result.errors.put(v.getUri(), "Getting null vocabulary url for key "+ v.getUri());
+    	  continue;
+      }
+	  File vocabFile = getVocabFile(url);
       Date modified = new Date(vocabFile.lastModified());
       try {
         install(url);
