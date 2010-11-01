@@ -542,6 +542,7 @@ ul.simple {
 div.definition {
 	width: 100%;
 	overflow: hidden;
+	//overflow: visible;
 	margin-bottom: 10px; 
 }
 
