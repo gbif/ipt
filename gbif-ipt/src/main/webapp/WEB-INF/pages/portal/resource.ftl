@@ -362,7 +362,7 @@
 </div>
 </#if>
 
-<#if (eml.physicalData?size > 0 )>
+<#if (eml.keywords?size > 0 )>
 <div class="definition">	
   <div class="title">
   	<div class="head">
@@ -371,7 +371,7 @@
   </div>
   <div class="body">
       	<div class="details">
-		<#list eml.physicalData as item>
+		<#list eml.keywords as item>
 			<div>
 			<#assign itemTitle><@s.text name='manage.metadata.keywords.item'/></#assign>
 			<div class="head">${itemTitle?upper_case} ${item_index+1}</div>
