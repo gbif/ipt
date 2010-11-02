@@ -102,10 +102,7 @@
   <div class="body">
       	<div class="details">
 			<#list eml.associatedParties as item>
-			<#if "${item_index % 2}"=="0">
-				<div class="half">
-			</#if>
-			<div>
+			<div class="halfcolumn">
 			<#assign itemTitle><@s.text name='manage.metadata.parties.item'/></#assign>
 			<div class="head">${itemTitle?upper_case} ${item_index+1}</div>
       		<table>
@@ -123,9 +120,6 @@
       		</table>
       		<div class="newline"></div>
 			</div>
-			<#if "${item_index % 2}"=="1" || "${item_index + 1}"=="${size}">
-				</div>
-			</#if>
 			</#list>
       	</div>
   </div>
