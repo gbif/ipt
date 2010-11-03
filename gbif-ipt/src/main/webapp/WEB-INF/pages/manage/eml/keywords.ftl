@@ -10,7 +10,7 @@ $(document).ready(function(){
 </script>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
-<h1><@s.text name='manage.metadata.keywords.title'/>: <em>${resource.title!resource.shortname}</em></h1>
+<h1><@s.text name='manage.metadata.keywords.title'/>: <a href="resource.do?r=${resource.title!resource.shortname}"><em>${resource.title!resource.shortname}</em></a> </h1>
 <@s.text name='manage.metadata.keywords.intro'/>
 <form class="topForm" action="metadata-${section}.do" method="post">
 	<div id="items">
