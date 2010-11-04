@@ -61,6 +61,13 @@ $(document).ready(function(){
 	$("#filterComp").change(function() {
 		showHideFilter();
 	});
+	
+	//Hack needed for Internet Explorer X.*x
+	$('.add').each(function() {
+		$(this).click(function() {
+			window.location = $(this).parent('a').attr('href');
+		});
+	});	
 
 	
 });   
@@ -297,7 +304,7 @@ $(document).ready(function(){
 	      		<#if (((field.translation?size)!0)>0)>
 	      		${(field.translation?size)!0} terms
 	      		<#else>
-	      		<button><@s.text name="button.add"/></button>
+	      		<button class="add"><@s.text name="button.add"/></button>
 	      		</#if>
 	      		</a>
 	      	</div>

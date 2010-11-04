@@ -46,6 +46,12 @@ $(document).ready(function(){
 			$('#dwcaReport').show();
 		}
 	});
+	//Hack needed for Internet Explorer X.*x
+	$('.edit').each(function() {
+		$(this).click(function() {
+			window.location = $(this).parent('a').attr('href');
+		});
+	});	
 });
 </script>
 
@@ -120,7 +126,7 @@ $(document).ready(function(){
           		 ${src.name} <@s.text name='manage.overview.source.sql'/></th><td>db=${src.database!"..."}, ${src.columns} <@s.text name='manage.overview.source.columns'/>. 
           		</#if>
           		<#if !src.readable><img src="${baseURL}/images/warning.gif" /></#if> 
-          		<a href="source.do?r=${resource.shortname}&id=${src.name}"><button><@s.text name='button.edit'/></button></a>
+          		<a href="source.do?r=${resource.shortname}&id=${src.name}"><button class="edit"><@s.text name='button.edit'/></button></a>
           		</td></tr>
           	  </#list>
       		</table>
@@ -161,14 +167,14 @@ $(document).ready(function(){
       		<table>
 	      		  <#list resource.coreMappings as m>
 	          		<tr><th><#if m_index==0>${m.extension.title}</#if></th><td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!} 
-	          		<a href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType}&mid=${m_index}"><button><@s.text name='button.edit'/></button></a>
+	          		<a href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType}&mid=${m_index}"><button class="edit"><@s.text name='button.edit'/></button></a>
 	          		</td></tr>
 	          	  </#list>
       		  <#list resource.getMappedExtensions() as ext>
       		  	<#if !ext.isCore()>
 	      		  <#list resource.getMappings(ext.rowType) as m>
 	          		<tr><th><#if m_index==0>${ext.title}</#if></th><td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!} 
-	          		<a href="mapping.do?r=${resource.shortname}&id=${ext.rowType}&mid=${m_index}"><button><@s.text name='button.edit'/></button></a>
+	          		<a href="mapping.do?r=${resource.shortname}&id=${ext.rowType}&mid=${m_index}"><button class="edit"><@s.text name='button.edit'/></button></a>
 	          		</td></tr>
 	          	  </#list>
 	          	</#if>
