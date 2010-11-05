@@ -363,11 +363,16 @@ div.newline {
 	display: block;
 	margin-top: 1em;
 }
-.topForm input,.topForm textarea {
+.topForm textarea {
+	margin-left: 0.5em;
+	width: 90%;
+	overflow: auto;
+}
+.topForm input {
 	margin-left: 0.5em;
 	width: 90%;
 }
-.topForm input[type=submit]{
+.topForm .submit{
 	margin-left: 0em;
 	width: auto;
 }
@@ -451,7 +456,7 @@ div.halfcolumn {
 	width: 50%;
 }
 div.halfcolumn select{
-	width:90%;
+	width: 85%;
 }
 div.halfcolumn input{
 	width: 85%;
