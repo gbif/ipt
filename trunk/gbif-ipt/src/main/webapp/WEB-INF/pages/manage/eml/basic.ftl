@@ -45,8 +45,10 @@
 <form class="topForm" action="metadata-${section}.do" method="post">
   	<@input name="eml.title" />
   	<@text name="eml.description" />
-  	<div class="half">
+  	<div class="halfcolumn">
 	  	<@select name="resource.subtype" options=resourceTypes value="${resource.subtype!}" />
+	</div>
+	<div class="halfcolumn">
 	  	<@select name="eml.language" help="i18n" options=languages value="${eml.language!}" />
   	</div>
   	<div class="newline"></div>
@@ -96,7 +98,9 @@
   	</div> 	
 	<div class="newline"></div>
   	<div class="horizontal_dotted_line_large_foo" id="separator"></div>  	
-
+	<div class="newline"></div>
+	<div class="newline"></div>
+	
   	<!-- Resource Creator -->
   	<div class="right">
   		<a id="copyDetails" href="">[ <@s.text name="eml.resourceCreator.copyLink" />  ]</a>
@@ -145,7 +149,9 @@
 	</div>
 	<div class="newline"></div>	
   	<div class="horizontal_dotted_line_large_foo" id="separator"></div>  	
-  	
+  	<div class="newline"></div>
+	<div class="newline"></div>
+	
   	<!-- Metadata Provider -->
   	<div class="right">
   		<a id="copyDetails2" href="">[ <@s.text name="eml.resourceCreator.copyLink" />  ]</a>
@@ -195,8 +201,8 @@
 	</div>
 	<div class="newline"></div>	
 	<div class="buttons">
- 		<@s.submit name="save" key="button.save"/>
- 		<@s.submit name="cancel" key="button.cancel"/>
+ 		<@s.submit cssClass="submit" name="save" key="button.save"/>
+ 		<@s.submit cssClass="submit" name="cancel" key="button.cancel"/>
 	</div>
 	<!-- internal parameter -->
 	<input name="r" type="hidden" value="${resource.shortname}" />  
