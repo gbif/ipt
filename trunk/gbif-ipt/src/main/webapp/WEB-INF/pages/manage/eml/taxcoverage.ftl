@@ -28,7 +28,7 @@
 				<div id="list-${item_index}" class="half" style="display:none">
 					<@text i18nkey="eml.taxonomicCoverages.taxonList" help="i18n" name="taxon-list-${item_index}" value="" />
 					<div class="buttons">
-						<@s.submit name="add-button-${item_index}" key="button.add"/>
+						<@s.submit cssClass="button" name="add-button-${item_index}" key="button.add"/>
 					</div>
 				</div>				
 				<div id="subItems">
@@ -59,8 +59,8 @@
 	<div class="newline"></div>
 	<a id="plus" href="" ><@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.taxcoverage.item' /></a>
 	<div class="buttons">
-		<@s.submit name="save" key="button.save"/>
-		<@s.submit name="cancel" key="button.cancel"/>
+		<@s.submit cssClass="button" name="save" key="button.save"/>
+		<@s.submit cssClass="button" name="cancel" key="button.cancel"/>
 	</div>
 	<!-- internal parameter -->
 	<input name="r" type="hidden" value="${resource.shortname}" />
@@ -79,7 +79,7 @@
 	<div id="list" class="half" style="display:none">
 		<@text i18nkey="eml.taxonomicCoverages.taxonList" help="i18n" name="taxon-list" value="" />
 		<div class="buttons">
-			<@s.submit name="add-button" key="button.add"/>
+			<@s.submit cssClass="button" name="add-button" key="button.add"/>
 		</div>
 	</div>
 	<div id="subItems">

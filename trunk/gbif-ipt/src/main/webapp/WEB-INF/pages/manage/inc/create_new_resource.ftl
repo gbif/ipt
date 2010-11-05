@@ -9,7 +9,7 @@
   </div>  
   
   <div class="buttons">
-   	<@s.submit name="create" key="button.create"/>
+   	<@s.submit cssClass="button" name="create" key="button.create"/>
   </div>	
       
 </@s.form>
