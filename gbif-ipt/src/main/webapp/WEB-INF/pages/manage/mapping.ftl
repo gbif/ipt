@@ -217,9 +217,9 @@ $(document).ready(function(){
 </div>
 
   <div class="buttons">
- 	<@s.submit name="save" key="button.save"/>
+ 	<@s.submit cssClass="button" name="save" key="button.save"/>
  	<@s.submit cssClass="confirm" name="delete" key="button.delete"/>
- 	<@s.submit name="cancel" key="button.cancel"/>
+ 	<@s.submit cssClass="button" name="cancel" key="button.cancel"/>
   </div>
 
 
@@ -244,8 +244,8 @@ $(document).ready(function(){
 	  <div class="groupmenu">
 		  <#if group!="">
 		  <div class="buttons">
-		 	<@s.submit name="save" key="button.save"/>
-		 	<@s.submit name="cancel" key="button.cancel"/>
+		 	<@s.submit cssClass="button" name="save" key="button.save"/>
+		 	<@s.submit cssClass="button" name="cancel" key="button.cancel"/>
 		  </div>
 		  </#if>
 		  ${groupMenu}
@@ -314,8 +314,8 @@ $(document).ready(function(){
 
 	<#if !field_has_next>
 	  <div class="buttons">
-	 	<@s.submit name="save" key="button.save"/>
-	 	<@s.submit name="cancel" key="button.cancel"/>
+	 	<@s.submit cssClass="button" name="save" key="button.save"/>
+	 	<@s.submit cssClass="button" name="cancel" key="button.cancel"/>
 	  </div>
 	</#if>
 

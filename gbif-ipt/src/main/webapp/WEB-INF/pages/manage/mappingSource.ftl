@@ -28,8 +28,8 @@ $(document).ready(function(){
 <@selectList name="source" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" />
 
   <div class="buttons">
- 	<@s.submit name="save" key="button.save"/>
- 	<@s.submit name="cancel" key="button.cancel"/>
+ 	<@s.submit cssClass="button" name="save" key="button.save"/>
+ 	<@s.submit cssClass="button" name="cancel" key="button.cancel"/>
   </div>
 
 </form>

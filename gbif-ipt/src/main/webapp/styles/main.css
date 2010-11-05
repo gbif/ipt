@@ -322,6 +322,10 @@ ul.fielderror{
 .buttons input{
 	display: inline !important;
 }
+.buttons .button,.buttons input.confirm{
+	margin-left: 0em;
+	width: auto;
+}
 .horizontal_dotted_line_large_foo {
 	border-bottom-color:#666666;
 	border-bottom-style:dotted;
@@ -371,10 +375,6 @@ div.newline {
 .topForm input {
 	margin-left: 0.5em;
 	width: 90%;
-}
-.topForm .submit{
-	margin-left: 0em;
-	width: auto;
 }
 .topForm select{
 	margin-left: 0.5em;

@@ -201,8 +201,8 @@
 	</div>
 	<div class="newline"></div>	
 	<div class="buttons">
- 		<@s.submit cssClass="submit" name="save" key="button.save"/>
- 		<@s.submit cssClass="submit" name="cancel" key="button.cancel"/>
+ 		<@s.submit cssClass="button" name="save" key="button.save"/>
+ 		<@s.submit cssClass="button" name="cancel" key="button.cancel"/>
 	</div>
 	<!-- internal parameter -->
 	<input name="r" type="hidden" value="${resource.shortname}" />  

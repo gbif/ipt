@@ -22,8 +22,8 @@
   	<@text name="eml.intellectualRights" i18nkey="eml.intellectualRights" help="i18n"/>
   	<@text name="eml.additionalInfo" i18nkey="eml.additionalInfo"/>
   	<div class="buttons">
- 		<@s.submit name="save" key="button.save"/>
- 		<@s.submit name="cancel" key="button.cancel"/>
+ 		<@s.submit cssClass="button" name="save" key="button.save"/>
+ 		<@s.submit cssClass="button" name="cancel" key="button.cancel"/>
   	</div>
   	<!-- internal parameter -->
 	<input name="r" type="hidden" value="${resource.shortname}" />

@@ -174,8 +174,8 @@
 	<div class="newline"></div>
 		<@text name="eml.geospatialCoverages[0].description" value="${(eml.geospatialCoverages[0].description)!}" i18nkey="eml.geospatialCoverages.description"/>
 	<div class="buttons">
-  		<@s.submit name="save" key="button.save" />
-  		<@s.submit name="cancel" key="button.cancel" />
+  		<@s.submit cssClass="button" name="save" key="button.save" />
+  		<@s.submit cssClass="button" name="cancel" key="button.cancel" />
 	</div>
 	
 	<!-- internal parameter -->
