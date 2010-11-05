@@ -13,6 +13,22 @@ $(document).ready(function(){
 	$("table input").blur(function() {
 		$(this).parent().parent().removeClass("highlight")
 	});
+	//Hack needed for Internet Explorer X.*x
+	$('.reload').each(function() {
+		$(this).click(function() {
+			window.location ='translationReload.do?r=${resource.shortname}&mapping=${property.extension.rowType}&term=${property.qualname}';
+		});
+	});
+	$('.automap').each(function() {
+		$(this).click(function() {
+			window.location ='translationAutomap.do?r=${resource.shortname}&mapping=${property.extension.rowType}&term=${property.qualname}';
+		});
+	});	
+	$('.cancelb').each(function() {
+		$(this).click(function() {
+			window.location ='mapping.do?r=${resource.shortname}&id=${property.extension.rowType}';
+		});
+	});	
 	<#-- use vocabulary -->
 	<#if (vocabTerms?size>0)>
 	var vocab = [<#list vocabTerms?keys as code>{"value":"${code?replace('"','\"')}","label":"${vocabTerms[code]}"},</#list>];	
@@ -65,11 +81,11 @@ $(document).ready(function(){
   <div class="buttons">
  	<@s.submit name="save" key="button.save"/>
  	<@s.submit cssClass="confirm" name="delete" key="button.delete"/>
- 	<a href="translationReload.do?r=${resource.shortname}&mapping=${property.extension.rowType}&term=${property.qualname}"><button><@s.text name="button.reload"/></button></a>
+ 	<button id="reload"><@s.text name="button.reload"/></button>
  	<#if property.vocabulary?exists>	  		
- 	<a href="translationAutomap.do?r=${resource.shortname}&mapping=${property.extension.rowType}&term=${property.qualname}"><button><@s.text name="button.automap"/></button></a>
+ 	<button id="automap"><@s.text name="button.automap"/></button>
  	</#if>			
- 	<a href="mapping.do?r=${resource.shortname}&id=${property.extension.rowType}"><button><@s.text name="button.cancel"/></button></a>
+ 	<button id="cancel"><@s.text name="button.cancel"/></button>
   </div>
   
 <table id="translation" class="simple">                               
@@ -96,8 +112,8 @@ $(document).ready(function(){
   <div class="buttons">
  	<@s.submit name="save" key="button.save"/>
  	<@s.submit cssClass="confirm" name="delete" key="button.delete"/>
- 	<a href="translationReload.do?r=${resource.shortname}&mapping=${property.extension.rowType}&term=${property.qualname}"><button><@s.text name="button.reload"/></button></a>
- 	<a href="mapping.do?r=${resource.shortname}&id=${property.extension.rowType}"><button><@s.text name="button.cancel"/></button></a>
+ 	<button class="reload"><@s.text name="button.reload"/></button>
+ 	<button class="cancelb"><@s.text name="button.cancel"/></button>
   </div>
 </form>
 
