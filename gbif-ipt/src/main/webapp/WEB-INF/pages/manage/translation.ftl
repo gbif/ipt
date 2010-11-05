@@ -79,7 +79,7 @@ $(document).ready(function(){
   	<input type="hidden" name="mapping" value="${property.extension.rowType}" />
 
   <div class="buttons">
- 	<@s.submit name="save" key="button.save"/>
+ 	<@s.submit cssClass="button" name="save" key="button.save"/>
  	<@s.submit cssClass="confirm" name="delete" key="button.delete"/>
  	<button id="reload"><@s.text name="button.reload"/></button>
  	<#if property.vocabulary?exists>	  		
@@ -110,7 +110,7 @@ $(document).ready(function(){
 
 				
   <div class="buttons">
- 	<@s.submit name="save" key="button.save"/>
+ 	<@s.submit cssClass="button" name="save" key="button.save"/>
  	<@s.submit cssClass="confirm" name="delete" key="button.delete"/>
  	<button class="reload"><@s.text name="button.reload"/></button>
  	<button class="cancelb"><@s.text name="button.cancel"/></button>
