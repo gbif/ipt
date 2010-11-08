@@ -137,7 +137,7 @@ $(document).ready(function(){
 			<#if coreid.description?has_content>${coreid.description}<br/><br/></#if>              	
 			<#if coreid.link?has_content><@s.text name="basic.seealso"/> <a href="${coreid.link}">${coreid.link}</a><br/><br/></#if>
 			<span class="idSuffix">
-				<@s.text name='manage.mapping.coreid.linenumbers'/>            	
+				<@s.text name='manage.mapping.info.linenumbers'/>            	
 			</span>              	
 			<#if coreid.examples?has_content>
 			<em><@s.text name="basic.examples"/></em>: ${coreid.examples}
@@ -163,7 +163,7 @@ $(document).ready(function(){
     </div>
   	<#if ((mapping.idColumn!-99)>=0)>
   	<div>
-  		<em>Source Sample</em>:	      		
+  		<em><@s.text name='manage.mapping.sourceSample' /></em>:	      		
   		<#assign first=true/>
   		<#list peek as row><#if row??><#if row[mapping.idColumn]?has_content><#if !first> | </#if><#assign first=false/>${row[mapping.idColumn]}</#if></#if></#list>
   	</div>
@@ -182,13 +182,7 @@ $(document).ready(function(){
   	<div class="infos">
   		<img class="infoImg" src="${baseURL}/images/info.gif" />
 		<div class="info">		
-			A filter excludes matching records from the generated archive.
-			For example specify &quot;ColumnA IsNotNull&quot; to include only records that have some value in ColumnA.
-			<br/>
-			A filter can be very useful if the same extension is mapped several times to do pivots.
-			If you have two columns for vernacular names, one for English, one for Spanish, in the same source you can map the same source twice to the vernacular names extension.
-			Map one of the two columns for each mapping and set the filter on the same column to IsNotNull.
-			That way only extension records that actually have a vernacular name will end up in the final data file.
+			<@s.text name='manage.mapping.info'/>     
 		</div>		
   	</div>
 	<div>
