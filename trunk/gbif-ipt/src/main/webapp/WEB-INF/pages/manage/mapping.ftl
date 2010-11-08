@@ -83,7 +83,7 @@ $(document).ready(function(){
 		width: 200px;
 	}
 	div.body input{
-		width: 300px;
+		width: 375px;
 	}
 	div.required div.title{
 		color:#bc5e5b;
@@ -229,7 +229,7 @@ $(document).ready(function(){
 	 <#list mapping.extension.properties as p>
 	 <#if (p.group!"")!="" && (p.group!"")!=group>
 		<#assign group=p.group/>
-		<li><a href="#${p.group?url}">${p.group}</a></li>
+		<li class="horizontal"><a href="#${p.group?url}">${p.group}</a></li>
 	 </#if>
 	 </#list>
 	 </ul>
