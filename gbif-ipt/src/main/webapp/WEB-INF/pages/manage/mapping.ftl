@@ -117,11 +117,11 @@ $(document).ready(function(){
   	<input type="hidden" name="id" value="${mapping.extension.rowType}" />
   	<input type="hidden" name="mid" value="${mid!}" />
   	<input id="showAllValue" type="hidden" name="showAll" value="${Parameters.showAll!"true"}" />
-
+<a href="resource.do?r=${resource.title!resource.shortname}"><@s.text name='manage.mapping.backToOverview'/></a>
 <h1><@s.text name='manage.mapping.title'/> <span class="small">${mapping.source.name}</span></h1>
 <p><@s.text name='manage.mapping.intro'><@s.param name="source">${mapping.source.name}</@s.param></@s.text></p>
 
-<p><a id="toggleFields" href="#">Hide Empty</a></p>
+<p><a id="toggleFields" href="#"><@s.text name='manage.mapping.hideEmpty'/></a></p>
 
 <div class="definition required">	
   <div class="title">
@@ -137,8 +137,7 @@ $(document).ready(function(){
 			<#if coreid.description?has_content>${coreid.description}<br/><br/></#if>              	
 			<#if coreid.link?has_content><@s.text name="basic.seealso"/> <a href="${coreid.link}">${coreid.link}</a><br/><br/></#if>
 			<span class="idSuffix">
-				For linenumbers you can specify an optional non numerical suffix to be appended to the id. 
-				This is useful to generate unique identifiers when mapping the same source multiple times.<br/><br/>             	
+				<@s.text name='manage.mapping.coreid.linenumbers'/>            	
 			</span>              	
 			<#if coreid.examples?has_content>
 			<em><@s.text name="basic.examples"/></em>: ${coreid.examples}
