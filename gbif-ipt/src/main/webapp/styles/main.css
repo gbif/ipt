@@ -526,7 +526,7 @@ ul.horizontal {
 	padding:0; 
 	list-style:none; 
 }
-ul.horizontal > li {
+li.horizontal {
 	display:inline; 
 	margin:0; 
 	padding: 0px 10px 0px 0px; 
