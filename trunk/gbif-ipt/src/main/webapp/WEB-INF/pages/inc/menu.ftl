@@ -62,9 +62,9 @@
 [#if sideMenuEml!false]		    
 			<div id="sidebar">
 				<h2>Section</h2>
-				<ul>
+				<ul class="sidebar">
 				[#list ["basic", "geocoverage", "taxcoverage","tempcoverage", "keywords", "parties", "project", "methods", "citations", "collections", "physical", "additional"] as it]
-				 <li[#if currentSideMenu?exists && currentSideMenu==it] class="current"[/#if]><a href="metadata-${it}.do?r=${resource.shortname!r!}">[@s.text name="submenu.${it}"/]</a></li>
+				 <li[#if currentSideMenu?exists && currentSideMenu==it] class="current"[#else] class="sidebar"[/#if]><a href="metadata-${it}.do?r=${resource.shortname!r!}">[@s.text name="submenu.${it}"/]</a></li>
 				[/#list]
 				</ul>
 			</div>
