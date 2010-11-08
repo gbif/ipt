@@ -203,8 +203,7 @@ $(document).ready(function(){
 		<input id="filterParam" name="mapping.filter.param" style="width:190px;" value="${mapping.filter.param!}" />  
     </div>
     <div>
-			You can define a filter to exclude records from the generated archive.
-			Specify the criteria that matches the records to be included.
+    	<@s.text name='manage.mapping.filter' />
     </div>
   </div>
 </div>
@@ -287,12 +286,12 @@ $(document).ready(function(){
 	      	</div>
 	      	<#if field.index?exists>
 	      	<div>
-	      		<em>Source Sample</em>:	      		
+	      		<em><@s.text name='manage.mapping.sourceSample' /></em>:	      		
 	      		<#assign first=true/>
 	      		<#list peek as row><#if row??><#if row[field.index]?has_content><#if !first> | </#if><#assign first=false/>${row[field.index]}</#if></#if></#list>
 	      	</div>
 	      	<div>
-	      		<em>Translation</em>:
+	      		<em><@s.text name='manage.mapping.translation' /></em>:
 	      		<a href="translation.do?r=${resource.shortname}&rowtype=${p.extension.rowType}&mid=${mid}&term=${p.qualname}">
 	      		<#if (((field.translation?size)!0)>0)>
 	      		${(field.translation?size)!0} terms
