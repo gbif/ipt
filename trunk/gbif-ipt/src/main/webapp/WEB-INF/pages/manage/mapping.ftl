@@ -83,7 +83,7 @@ $(document).ready(function(){
 		width: 200px;
 	}
 	div.body input{
-		width: 400px;
+		width: 300px;
 	}
 	div.required div.title{
 		color:#bc5e5b;
