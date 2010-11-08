@@ -343,6 +343,7 @@ div.info{
     position:absolute;
     z-index:9999;  
     max-width:350px;  
+    //width:350px;  
     padding:7px; 
     color: black;  
     background-color:#e7f1fa; 
