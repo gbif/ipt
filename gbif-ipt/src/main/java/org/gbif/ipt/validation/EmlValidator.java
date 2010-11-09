@@ -174,8 +174,8 @@ public class EmlValidator extends BaseValidator {
 				 * </dataset>
 				 */
 
-				/* At least have to exist an organisation or a lastName (or both) */
-				if (!exists(eml.getResourceCreator().getOrganisation()) && !exists(eml.getResourceCreator().getLastName())) {
+				/* At least have to exist an organisation, a lastName or a position */
+				if (!exists(eml.getResourceCreator().getOrganisation()) && !exists(eml.getResourceCreator().getLastName()) && !exists(eml.getResourceCreator().getPosition())) {
 					if (!action.getActionErrors().contains(action.getText("validation.lastname.organisation.position"))) {
 						action.addActionError(action.getText("validation.lastname.organisation.position"));
 					}
@@ -227,8 +227,8 @@ public class EmlValidator extends BaseValidator {
 				 * </dataset>
 				 */
 
-				/* At least have to exist an organisation or a lastName (or both) */
-				if (!exists(eml.getMetadataProvider().getOrganisation()) && !exists(eml.getMetadataProvider().getLastName())) {
+				/* At least have to exist an organisation, a lastName or a position */
+				if (!exists(eml.getMetadataProvider().getOrganisation()) && !exists(eml.getMetadataProvider().getLastName()) && !exists(eml.getMetadataProvider().getPosition())) {
 					if (!action.getActionErrors().contains(action.getText("validation.lastname.organisation.position"))) {
 						action.addActionError(action.getText("validation.lastname.organisation.position"));
 					}
