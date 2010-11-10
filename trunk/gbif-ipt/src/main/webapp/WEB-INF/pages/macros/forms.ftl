@@ -33,8 +33,8 @@
 </#macro>
 
 <#macro checkbox name i18nkey="" errorfield="" disabled=false value="-99999" help="">
-  <div>
-	<#include "/WEB-INF/pages/macros/form_field_common.ftl">
+  <div class="checkbox">    
+	<div><#include "/WEB-INF/pages/macros/form_field_common.ftl"></div>
 	<#if value=="-99999">
 	<#assign val><@s.property value="${name}"/></#assign>
 	<@s.checkbox key="${name}" id="${name}" disabled=disabled value=val />

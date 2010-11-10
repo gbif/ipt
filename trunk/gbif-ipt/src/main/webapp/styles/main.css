@@ -400,6 +400,22 @@ div.newline {
 	margin-right:0;
 	margin-top:0;
 }
+.checkbox input {	
+	display: inline;
+	width: 5%;
+	margin-left: 0.5em;
+}
+.checkbox label {
+	display: inline-block;
+}
+.checkbox img {
+	display: inline;
+	margin-left: 1em;
+}
+.checkbox div {
+	display: inline-block;
+	width: 200px;
+}
 
 form h2 {
 	clear:left;
