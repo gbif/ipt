@@ -85,11 +85,11 @@ $(document).ready(function(){
 		<@checkbox name="organisation.canHost" i18nkey="admin.organisation.canHost" value="true"/>
 	</#if>
    <div class="buttons">
- 	<@s.submit name="save" key="button.save"/>
+ 	<@s.submit name="save" key="button.save" cssClass="confirm"/>
  	<#if id?has_content>
 	<@s.submit name="delete" key="button.delete" cssClass="confirm"/>
 	</#if>		   	
- 	<@s.submit name="cancel" key="button.cancel"/>
+ 	<@s.submit name="cancel" key="button.cancel" cssClass="confirm"/>
   </div>
 </@s.form>
 <#include "/WEB-INF/pages/inc/footer.ftl">
