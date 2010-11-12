@@ -9,6 +9,7 @@ package org.gbif.ipt.utils;
 
 import org.apache.log4j.RollingFileAppender;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -20,9 +21,10 @@ public class LogFileAppender extends RollingFileAppender {
   @Override
   public synchronized void setFile(String fileName, boolean append, boolean bufferedIO, int bufferSize)
       throws IOException {
+	File logfile=new File(fileName);
     // modify fileName if relative
-    if (!fileName.startsWith("/")) {
-      fileName = LOGDIR + "/" + fileName;
+    if (!LOGDIR.isEmpty() && !logfile.isAbsolute()) {
+      fileName = LOGDIR + File.separator + fileName;
     }
     super.setFile(fileName, append, bufferedIO, bufferSize);
   }
