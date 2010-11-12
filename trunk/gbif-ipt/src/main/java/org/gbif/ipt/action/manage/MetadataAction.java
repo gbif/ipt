@@ -86,16 +86,7 @@ public class MetadataAction extends ManagerBaseAction {
   /**
    * @return a map of Ranks
    */
-  public Map<String, String> getRanks() {
-    /*
-     * Map<String, String> map = new LinkedHashMap<String, String>();
-     * List<Rank> ranks = Rank.DARWIN_CORE_HIGHER_RANKS;
-     * for (Rank r : ranks) {
-     * map.put(r.name(), getText("rank." + r.name().toLowerCase()));
-     * }
-     * return map;
-     */
-    ranks.remove(ranks.keySet().iterator().next());
+  public Map<String, String> getRanks() {   
     ranks.put("", getText("eml.rank.selection"));
     return ranks;
   }
@@ -139,7 +130,7 @@ public class MetadataAction extends ManagerBaseAction {
     resourceTypes = vocabManager.getI18nVocab(Constants.VOCAB_URI_RESOURCE_TYPE, getLocaleLanguage(), true);
     languages = vocabManager.getI18nVocab(Constants.VOCAB_URI_LANGUAGE, getLocaleLanguage(), true);
     countries = vocabManager.getI18nVocab(Constants.VOCAB_URI_COUNTRY, getLocaleLanguage(), true);
-    ranks = vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, getLocaleLanguage(), true);
+    ranks = vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, getLocaleLanguage(), false);
 
     if (resource.getEml().getMetadataProvider().getLastName() == null
         || resource.getEml().getMetadataProvider().getEmail() == null) {

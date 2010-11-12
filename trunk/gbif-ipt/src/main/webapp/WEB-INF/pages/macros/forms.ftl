@@ -20,7 +20,7 @@
       <option value="" <#if (value!"")==""> selected="selected"</#if>></option>
 	</#if>
     <#list options?keys as val>
-      <option value="${val}" <#if (value!"")==val> selected="selected"</#if>><@s.text name="${options[val]}"/></option>
+      <option value="${val}" <#if (value!"")==val> selected="selected"</#if>><@s.text name="${options.get(val)}"/></option>
     </#list>
 	</select>
   </div>
