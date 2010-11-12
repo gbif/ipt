@@ -394,11 +394,13 @@
 		</dependency>
 		
 		<!-- JSON -->
-		<dependency>
+		<!-- This has been moved to the source code directly, since the maven repository versions are
+			 all compiled for Java 1.6 -->
+		<!--dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<version>20090211</version>	
-		</dependency>		
+		</dependency-->		
 
 		<!-- testing only. Shows the struts2 configuration in the browser at /config-browser/index.do -->
 		<!-- 
