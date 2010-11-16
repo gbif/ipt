@@ -46,14 +46,7 @@ function initHelp(context){
 			changeYear: true,
 			constrainInput: false,
 			dateFormat: 'yy-mm-dd'
-		});
-		/*$(this).find("input").each(function(index) {
-			if($(this).attr("value").length > 0) {			
-				$(this).val($.datepicker.formatDate("yy-mm-dd", $.datepicker.parseDate("m/d/y", $(this).val())));
-			}
-		});*/
-		
-		
+		});		
 	});
 	$(context+" .infoImg").click(function(e) {
         var show = $(this).next().is(":hidden");
@@ -64,6 +57,7 @@ function initHelp(context){
 	        $(this).next().show("fast");
 	    };
     });
+	$("div.info:visible").hide("fast");
 	$(context+" div.info").click(function(e) {
         $(this).hide("fast");
     });
