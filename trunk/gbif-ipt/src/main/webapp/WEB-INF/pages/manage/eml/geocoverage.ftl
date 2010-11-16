@@ -7,6 +7,7 @@
 
 <script type="text/javascript">
 	$(document).ready(function(){
+		initHelp();
     // Global variables
     var map;
     var marker1;
@@ -90,7 +91,7 @@
       
 	$("#save").click(function() {
 		fill();
-	});
+	});	
 		
 	$("#bbox input").keyup(function() {
   		var maxy=parseFloat($("#"+bboxBase+"max\\.latitude").attr("value"));
@@ -141,11 +142,32 @@
         var maxy=marker1.getPosition().lat() < marker2.getPosition().lat() ? marker2.getPosition().lat() : marker1.getPosition().lat();
 		var minx=marker1.getPosition().lng();
 		var maxx=marker2.getPosition().lng();
+		if(maxx == -180) maxx = 179.9999;
         $("#"+bboxBase+"min\\.latitude").attr("value",Math.round(miny*100)/100);
         $("#"+bboxBase+"max\\.latitude").attr("value",Math.round(maxy*100)/100);
         $("#"+bboxBase+"min\\.longitude").attr("value",Math.round(minx*100)/100);
         $("#"+bboxBase+"max\\.longitude").attr("value",Math.round(maxx*100)/100);
-	}  
+	}
+	
+	$(":checkbox").click(function() {
+		if($(":checkbox").attr("checked")) {		
+			$("#"+bboxBase+"min\\.latitude").attr("disabled", "disabled");
+	        $("#"+bboxBase+"max\\.latitude").attr("disabled", "disabled");
+	        $("#"+bboxBase+"min\\.longitude").attr("disabled", "disabled");	
+	        $("#"+bboxBase+"max\\.longitude").attr("disabled", "disabled");
+	        marker1.setPosition(new google.maps.LatLng(-90, -180));
+      		marker2.setPosition(new google.maps.LatLng(90, 180));
+       		redrawAndFill();			
+		} else {
+			$("#"+bboxBase+"min\\.latitude").attr("disabled", "");
+	        $("#"+bboxBase+"max\\.longitude").attr("disabled", "");
+	        $("#"+bboxBase+"max\\.latitude").attr("disabled", "");
+	        $("#"+bboxBase+"min\\.longitude").attr("disabled", "");
+	        marker1.setPosition(new google.maps.LatLng(-10, -10));
+      		marker2.setPosition(new google.maps.LatLng(10, 10));
+       		redrawAndFill();
+	     }		
+	});
      
 });
 </script>
@@ -157,6 +179,7 @@
 <div id="map"></div>
 <form class="topForm" action="metadata-${section}.do" method="post">
 	<div id="bbox">
+		<@checkbox name="eml.geospatialCoverages.globalCoverage" help="i18n"/>
 		<div class="halfcolumn">
   			<@input name="eml.geospatialCoverages[0].boundingCoordinates.min.longitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.min.longitude)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.min.longitude"/>
   		</div>
