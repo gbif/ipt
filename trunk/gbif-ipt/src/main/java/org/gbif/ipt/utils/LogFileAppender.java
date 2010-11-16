@@ -23,7 +23,7 @@ public class LogFileAppender extends RollingFileAppender {
       throws IOException {
 	File logfile=new File(fileName);
     // modify fileName if relative
-    if (!LOGDIR.isEmpty() && !logfile.isAbsolute()) {
+    if (!LOGDIR.equals("") && !logfile.isAbsolute()) {
       fileName = LOGDIR + File.separator + fileName;
     }
     super.setFile(fileName, append, bufferedIO, bufferSize);
