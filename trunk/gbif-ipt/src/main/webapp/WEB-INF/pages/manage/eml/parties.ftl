@@ -12,7 +12,10 @@
 		<#list eml.associatedParties as item>
 			<div id="item-${item_index}" class="item">
 				<div class="newline"></div>
-				<div class="right">
+				<div class="halfcolumn">
+  	  				<a id="copyDetails-${item_index}" href="">[ <@s.text name="eml.resourceCreator.copyLink" />  ]</a>
+    			</div>
+				<div class="halfcolumn">
 		      		<a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.parties.item'/> ]</a>
 		    	</div>
 		    	<div class="newline"></div>
@@ -76,7 +79,10 @@
 
 <div id="baseItem" class="item" style="display:none;">
 	<div class="newline"></div>
-	<div class="right">
+	<div class="halfcolumn">
+  	  <a id="copyDetails" href="">[ <@s.text name="eml.resourceCreator.copyLink" />  ]</a>
+    </div>
+    <div class="halfcolumn">
       <a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.parties.item'/> ]</a>
     </div>
     <div class="newline"></div>

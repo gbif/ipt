@@ -36,6 +36,11 @@ $(document).ready(function(){
 		createTaxons(event);
 	});
 	
+	$("[id^='copyDetails']").click(function(event) {
+		event.preventDefault();
+		copyDetails(event);
+	});	
+	
 	function addNewSubItem(event, text){			
 		event.preventDefault();		
 		var baseItem = $("#item-"+$(event.target).attr("id").split("-")[2]);
@@ -116,6 +121,24 @@ $(document).ready(function(){
 			calcNumberOfItems();
 		});
 	}
+
+	function copyDetails(event) {
+		event.preventDefault();
+		var $target = $(event.target);
+		var index = $target.attr("id").split("-")[1];
+		$("#item-"+index+" [id$='firstName']").attr("value", "${eml.contact.firstName!}");
+		$("#item-"+index+" [id$='lastName']").attr("value", "${eml.contact.lastName!}");
+		$("#item-"+index+" [id$='position']").attr("value", "${eml.contact.position!}");
+		$("#item-"+index+" [id$='organisation']").attr("value", "${eml.contact.organisation!}");
+		$("#item-"+index+" [id$='address']").attr("value", "${eml.contact.address.address!}");
+		$("#item-"+index+" [id$='city']").attr("value", "${eml.contact.address.city!}");
+		$("#item-"+index+" [id$='province']").attr("value", "${eml.contact.address.province!}");
+		$("#item-"+index+" [id$='postalCode']").attr("value", "${eml.contact.address.postalCode!}");
+		$("#item-"+index+" [id$='country']").attr("value", "${eml.contact.address.country!}");
+		$("#item-"+index+" [id$='phone']").attr("value", "${eml.contact.phone!}");
+		$("#item-"+index+" [id$='email']").attr("value", "${eml.contact.email!}");
+		$("#item-"+index+" [id$='homepage']").attr("value", "${eml.contact.homepage!}");		
+	}
 	
 	function showList(event) {
 		event.preventDefault();
@@ -179,6 +202,10 @@ $(document).ready(function(){
 			$("#item-"+index+" [for$='homepage']").attr("for", "eml.associatedParties["+index+"].homepage");
   			$("#item-"+index+" [id$='role']").attr("id", "eml.associatedParties["+index+"].role").attr("name", function() {return $(this).attr("id");});
 			$("#item-"+index+" [for$='role']").attr("for", "eml.associatedParties["+index+"].role");
+			$("#item-"+index+" [id^='copyDetails']").attr("id", "copyDetails-"+index);
+			$("#copyDetails-"+index).click(function(event) {
+				copyDetails(event, index);
+			});
     	<#break>
     	<#case "methods">
 			$("#item-"+index+" textarea").attr("id", "eml.methodSteps["+index+"]");	
@@ -301,6 +328,6 @@ $(document).ready(function(){
     	</#switch>
 		
 	}
-		
+	
 });
 </script>
