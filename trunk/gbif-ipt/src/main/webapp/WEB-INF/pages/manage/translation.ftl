@@ -75,8 +75,9 @@ $(document).ready(function(){
 
 <form class="topForm" action="translation.do" method="post">
   	<input type="hidden" name="r" value="${resource.shortname}" />
+  	<input type="hidden" name="rowtype" value="${property.extension.rowType}" />
+  	<input type="hidden" name="mid" value="${mid}" />
   	<input type="hidden" name="term" value="${property.qualname}" />
-  	<input type="hidden" name="mapping" value="${property.extension.rowType}" />
 
   <div class="buttons">
  	<@s.submit cssClass="button" name="save" key="button.save"/>

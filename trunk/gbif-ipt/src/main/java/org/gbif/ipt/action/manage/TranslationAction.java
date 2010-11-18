@@ -30,6 +30,8 @@ import org.gbif.ipt.service.manage.SourceManager;
 import com.google.inject.Inject;
 import com.google.inject.servlet.SessionScoped;
 
+import org.apache.commons.lang.xwork.StringUtils;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -88,6 +90,7 @@ public class TranslationAction extends ManagerBaseAction {
   private ExtensionProperty property;
   private ExtensionMapping mapping;
   private Map<String, String> vocabTerms = new HashMap<String, String>();
+  private Integer mid;
 
   @Inject
   private Translation trans;
@@ -129,6 +132,10 @@ public class TranslationAction extends ManagerBaseAction {
     return field;
   }
 
+  public Integer getMid() {
+    return mid;
+  }
+
   public ExtensionProperty getProperty() {
     return property;
   }
@@ -147,8 +154,12 @@ public class TranslationAction extends ManagerBaseAction {
     notFound = true;
 
     try {
-      mapping = resource.getMapping(req.getParameter(REQ_PARAM_ROWTYPE),
-          Integer.valueOf(req.getParameter(REQ_PARAM_MAPPINGID)));
+      // get mapping sequence id from parameters as setters are not called yet
+      String midStr = StringUtils.trimToNull(req.getParameter(REQ_PARAM_MAPPINGID));
+      if (midStr != null) {
+        mid = Integer.valueOf(midStr);
+        mapping = resource.getMapping(req.getParameter(REQ_PARAM_ROWTYPE), mid);
+      }
     } catch (Exception e) {
     }
     if (mapping != null) {
