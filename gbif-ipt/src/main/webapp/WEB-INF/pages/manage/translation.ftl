@@ -81,11 +81,11 @@ $(document).ready(function(){
   <div class="buttons">
  	<@s.submit cssClass="button" name="save" key="button.save"/>
  	<@s.submit cssClass="confirm" name="delete" key="button.delete"/>
- 	<button id="reload"><@s.text name="button.reload"/></button>
+ 	<a href='translationReload.do?r=${resource.shortname}&mapping=${property.extension.rowType}&term=${property.qualname}'><button class="reload"><@s.text name="button.reload"/></button></a>
  	<#if property.vocabulary?exists>	  		
- 	<button id="automap"><@s.text name="button.automap"/></button>
+ 	<a href='translationAutomap.do?r=${resource.shortname}&mapping=${property.extension.rowType}&term=${property.qualname}'><button class="automap"><@s.text name="button.automap"/></button></a>
  	</#if>			
- 	<button id="cancel"><@s.text name="button.cancel"/></button>
+ 	<a href='mapping.do?r=${resource.shortname}&id=${property.extension.rowType}'><button class="cancelb"><@s.text name="button.cancel"/></button></a>
   </div>
   
 <table id="translation" class="simple">                               
@@ -112,8 +112,8 @@ $(document).ready(function(){
   <div class="buttons">
  	<@s.submit cssClass="button" name="save" key="button.save"/>
  	<@s.submit cssClass="confirm" name="delete" key="button.delete"/>
- 	<button class="reload"><@s.text name="button.reload"/></button>
- 	<button class="cancelb"><@s.text name="button.cancel"/></button>
+ 	<a href='translationReload.do?r=${resource.shortname}&mapping=${property.extension.rowType}&term=${property.qualname}'><button class="reload"><@s.text name="button.reload"/></button></a>
+ 	<a href='mapping.do?r=${resource.shortname}&id=${property.extension.rowType}'><button class="cancelb"><@s.text name="button.cancel"/></button></a>
   </div>
 </form>
 
