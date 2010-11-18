@@ -117,7 +117,7 @@ $(document).ready(function(){
   	<input type="hidden" name="id" value="${mapping.extension.rowType}" />
   	<input type="hidden" name="mid" value="${mid!}" />
   	<input id="showAllValue" type="hidden" name="showAll" value="${Parameters.showAll!"true"}" />
-<a href="resource.do?r=${resource.title!resource.shortname}"><@s.text name='manage.mapping.backToOverview'/></a>
+<a href="resource.do?r=${resource.shortname}"><@s.text name='manage.mapping.backToOverview'/></a>
 <h1><@s.text name='manage.mapping.title'/> <span class="small">${mapping.source.name}</span></h1>
 <p><@s.text name='manage.mapping.intro'><@s.param name="source">${mapping.source.name}</@s.param></@s.text></p>
 

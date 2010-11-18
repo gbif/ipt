@@ -24,7 +24,7 @@ $(document).ready(function(){
  <#assign currentMenu = "manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
-<h1><@s.text name='manage.source.title'/>: <a href="resource.do?r=${resource.title!resource.shortname}"><em>${resource.title!resource.shortname}</em></a></h1>
+<h1><@s.text name='manage.source.title'/>: <a href="resource.do?r=${resource.shortname}"><em>${resource.title!resource.shortname}</em></a></h1>
 <p><@s.text name='manage.source.intro'/></p>
 
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
