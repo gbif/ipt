@@ -274,10 +274,11 @@ $(document).ready(function(){
 				</#list>
 				</select>
 		      	<#if p.vocabulary?exists>
+		      		<#assign vocab=vocabTerms[p.vocabulary.uri] />
 					<select id="fVal${field_index}" class="fval" name="fields[${field_index}].defaultValue">
 					  <option value="" <#if !field.defaultValue??> selected="selected"</#if>></option>
-					<#list vocabTerms[p.vocabulary.uri]?keys as code>
-					  <option value="${code}" <#if (field.defaultValue!"")==code> selected="selected"</#if>>${vocabTerms[p.vocabulary.uri][code]}</option>
+					<#list vocab?keys as code>
+					  <option value="${code}" <#if (field.defaultValue!"")==code> selected="selected"</#if>>${vocab.get(code)}</option>
 					</#list>
 					</select>
 		      	<#else>
