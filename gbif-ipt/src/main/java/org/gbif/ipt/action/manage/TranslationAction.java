@@ -188,6 +188,11 @@ public class TranslationAction extends ManagerBaseAction {
   }
 
   private void reloadSourceValues() throws SourceException {
+    String midStr = StringUtils.trimToNull(req.getParameter(REQ_PARAM_MAPPINGID));
+    if (midStr != null) {
+      mid = Integer.valueOf(midStr);
+      mapping = resource.getMapping(req.getParameter(REQ_PARAM_ROWTYPE), mid);
+    }
     trans.setTmap(this.mapping.getExtension().getRowType(), property, new TreeMap<String, String>());
     // reload new values
     for (String val : sourceManager.inspectColumn(mapping.getSource(), field.getIndex(), 1000)) {
