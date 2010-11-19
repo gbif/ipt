@@ -114,8 +114,13 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
             dataFileRowSize++;
           }
         } else {
-          af.addField(buildField(pm.getTerm(), dataFileRowSize, pm.getDefaultValue()));
-          dataFileRowSize++;
+          // check if we have a dynamic mapping
+          if (pm.getIndex() != null) {
+            af.addField(buildField(pm.getTerm(), dataFileRowSize, pm.getDefaultValue()));
+            dataFileRowSize++;
+          } else {
+            af.addField(buildField(pm.getTerm(), null, pm.getDefaultValue()));
+          }
         }
       }
     }
