@@ -352,21 +352,23 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     List<String> columns = new ArrayList<String>();
     try {
       Connection con = getDbConnection(source);
-      // test sql
-      Statement stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-      stmt.setFetchSize(1);
-      ResultSet rs = stmt.executeQuery(source.getSql());
-      // get column metadata
-      ResultSetMetaData meta = rs.getMetaData();
-      int idx = 1;
-      int max = meta.getColumnCount();
-      while (idx <= max) {
-        columns.add(meta.getColumnLabel(idx));
-        idx++;
+      if(con!=null){
+    	  // test sql
+    	  Statement stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+    	  stmt.setFetchSize(1);
+    	  ResultSet rs = stmt.executeQuery(source.getSql());
+    	  // get column metadata
+    	  ResultSetMetaData meta = rs.getMetaData();
+    	  int idx = 1;
+    	  int max = meta.getColumnCount();
+    	  while (idx <= max) {
+    		  columns.add(meta.getColumnLabel(idx));
+    		  idx++;
+    	  }
+    	  rs.close();
+    	  stmt.close();
+    	  con.close();
       }
-      rs.close();
-      stmt.close();
-      con.close();
     } catch (SQLException e) {
       log.warn("Cant read sql source " + source, e);
     }
@@ -394,7 +396,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   private Connection getDbConnection(SqlSource source) throws SQLException {
     Connection conn = null;
     // try to connect to db via simple JDBC
-    if (source.getJdbcUrl() != null && source.getJdbcDriver() != null) {
+    if (source.getHost()!=null && source.getJdbcUrl() != null && source.getJdbcDriver() != null) {
       try {
         DriverManager.setLoginTimeout(5);
         Class.forName(source.getJdbcDriver());
@@ -521,22 +523,24 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     List<String[]> preview = new ArrayList<String[]>();
     try {
       Connection con = getDbConnection(source);
-      // test sql
-      Statement stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-      stmt.setFetchSize(rows);
-      ResultSet rs = stmt.executeQuery(source.getSql());
-      // loop over result
-      while (rows > 0 && rs.next()) {
-        rows--;
-        String[] row = new String[source.getColumns()];
-        for (int idx = 0; idx < source.getColumns(); idx++) {
-          row[idx] = rs.getString(idx + 1);
-        }
-        preview.add(row);
+      if(con!=null){
+    	  // test sql
+    	  Statement stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+    	  stmt.setFetchSize(rows);
+    	  ResultSet rs = stmt.executeQuery(source.getSql());
+    	  // loop over result
+    	  while (rows > 0 && rs.next()) {
+    		  rows--;
+    		  String[] row = new String[source.getColumns()];
+    		  for (int idx = 0; idx < source.getColumns(); idx++) {
+    			  row[idx] = rs.getString(idx + 1);
+    		  }
+    		  preview.add(row);
+    	  }
+    	  rs.close();
+    	  stmt.close();
+    	  con.close();
       }
-      rs.close();
-      stmt.close();
-      con.close();
     } catch (SQLException e) {
       log.warn("Cant read sql source " + source, e);
     }
