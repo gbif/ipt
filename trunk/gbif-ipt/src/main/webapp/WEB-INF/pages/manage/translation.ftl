@@ -29,6 +29,7 @@ $(document).ready(function(){
  				window.location = $(this).parent('a').attr('href');
  		});
 	});	
+	// end hack
 	<#-- use vocabulary -->
 	<#if (vocabTerms?size>0)>
 	var vocab = [<#list vocabTerms?keys as code>{"value":"${code?replace('"','\"')}","label":"${vocabTerms[code]}"},</#list>];	
@@ -84,9 +85,9 @@ $(document).ready(function(){
  	<@s.submit cssClass="confirm" name="delete" key="button.delete"/>
  	<a href='translationReload.do?r=${resource.shortname}&mapping=${property.extension.rowType}&term=${property.qualname}&mid=${mid}&rowtype=${property.extension.rowType}'><button class="reload"><@s.text name="button.reload"/></button></a>
  	<#if property.vocabulary?exists>	  		
- 	<a href='translationAutomap.do?r=${resource.shortname}&mapping=${property.extension.rowType}&term=${property.qualname}'><button class="automap"><@s.text name="button.automap"/></button></a>
+ 	<a href='translationAutomap.do?r=${resource.shortname}&mapping=${property.extension.rowType}&term=${property.qualname}&mid=${mid}'><button class="automap"><@s.text name="button.automap"/></button></a>
  	</#if>			
- 	<a href='mapping.do?r=${resource.shortname}&id=${property.extension.rowType}'><button class="cancelb"><@s.text name="button.cancel"/></button></a>
+ 	<a href='mapping.do?r=${resource.shortname}&id=${property.extension.rowType}&mid=${mid}'><button class="cancelb"><@s.text name="button.cancel"/></button></a>
   </div>
   
 <table id="translation" class="simple">                               
@@ -114,7 +115,7 @@ $(document).ready(function(){
  	<@s.submit cssClass="button" name="save" key="button.save"/>
  	<@s.submit cssClass="confirm" name="delete" key="button.delete"/>
  	<a href='translationReload.do?r=${resource.shortname}&mapping=${property.extension.rowType}&term=${property.qualname}&mid=${mid}&rowtype=${property.extension.rowType}'><button class="reload"><@s.text name="button.reload"/></button></a>
- 	<a href='mapping.do?r=${resource.shortname}&id=${property.extension.rowType}'><button class="cancelb"><@s.text name="button.cancel"/></button></a>
+ 	<a href='mapping.do?r=${resource.shortname}&id=${property.extension.rowType}&mid=${mid}'><button class="cancelb"><@s.text name="button.cancel"/></button></a>
   </div>
 </form>
 
