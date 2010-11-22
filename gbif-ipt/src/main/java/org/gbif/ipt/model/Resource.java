@@ -111,7 +111,6 @@ public class Resource implements Serializable, Comparable<Resource> {
         // if last core gets deleted, delete all other mappings too!
         if (getCoreMappings().isEmpty()) {
           mappings.clear();
-          return true;
         }
       }
     }
