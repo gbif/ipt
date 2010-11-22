@@ -124,7 +124,9 @@ public class TranslationAction extends ManagerBaseAction {
 
   @Override
   public String delete() {
-    addActionMessage("Couldnt delete translation for term " + field.getTerm());
+	field.getTranslation().clear();
+	saveResource();
+	addActionMessage("Translation deleted for term " + field.getTerm());
     return SUCCESS;
   }
 
