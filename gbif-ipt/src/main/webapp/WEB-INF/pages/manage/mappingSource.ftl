@@ -29,7 +29,7 @@ $(document).ready(function(){
 
   <div class="buttons">
  	<@s.submit cssClass="button" name="save" key="button.save"/>
- 	<@s.submit cssClass="button" name="cancel" key="button.cancel"/>
+ 	<@s.submit cssClass="button" name="cancel" key="button.cancel" method="cancel"/>
   </div>
 
 </form>

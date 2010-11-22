@@ -282,6 +282,11 @@ public class MappingAction extends ManagerBaseAction {
     addWarnings();
     return defaultResult;
   }
+  
+  public String cancel(){
+	  resource.deleteMapping(mapping);
+	  return SUCCESS;
+  }
 
   public String saveSetSource() {
     return INPUT;
