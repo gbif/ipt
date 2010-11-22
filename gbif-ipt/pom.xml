@@ -393,6 +393,15 @@
 			<scope>test</scope>
 		</dependency>
 		
+		<!-- JSON representation -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>1.4</version>
+			<scope>compile</scope>
+		</dependency>
+		
+		
 		<!-- JSON -->
 		<!-- This has been moved to the source code directly, since the maven repository versions are
 			 all compiled for Java 1.6 -->
