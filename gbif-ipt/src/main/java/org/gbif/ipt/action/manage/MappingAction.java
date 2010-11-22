@@ -285,6 +285,7 @@ public class MappingAction extends ManagerBaseAction {
   
   public String cancel(){
 	  resource.deleteMapping(mapping);
+	  saveResource();
 	  return SUCCESS;
   }
 
