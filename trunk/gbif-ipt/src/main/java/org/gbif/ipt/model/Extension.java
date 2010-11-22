@@ -6,6 +6,7 @@ import org.gbif.ipt.config.Constants;
 import static com.google.common.base.Objects.equal;
 
 import com.google.common.base.Objects;
+import com.google.gson.annotations.SerializedName;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -28,7 +29,7 @@ public class Extension {
   private String title; // human title
   private String name; // table, file & xml tag naming. no whitespace allowed
   private URL url;
-  private String rowType;
+  @SerializedName("identifier") private String rowType; // Custom serialized field for JSON.
   private String subject;
   private String description;
   private String namespace;

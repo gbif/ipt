@@ -16,6 +16,8 @@ import org.gbif.ipt.utils.HttpUtil.Response;
 import org.gbif.ipt.utils.RegistryEntryHandler;
 import org.gbif.metadata.eml.Eml;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
 
 import org.apache.commons.lang.StringUtils;
@@ -37,6 +39,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -62,7 +65,9 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * 
    * @param ext
    * @return
+   * @deprecated This method is not used anymore because google-gson does all the work automatically.
    */
+  @Deprecated
   private Extension buildExtension(JSONObject ext) {
     Extension extension = new Extension();
     try {
@@ -177,12 +182,14 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   public List<Extension> getExtensions() throws RegistryException {
     List<Extension> extensions = new ArrayList<Extension>();
     try {
-      JSONObject jSONextensions = http.getJsonObj(getExtensionsURL(true));
-      JSONArray jSONArray = (JSONArray) jSONextensions.get("extensions");
-      for (int i = 0; i < jSONArray.length(); i++) {
-        extensions.add(buildExtension((JSONObject) jSONArray.get(i)));
-      }
-    } catch (JSONException e) {
+    	Gson gson = new Gson();
+    	Map<String, List<Extension>> jSONextensions = gson.fromJson(http.get(getExtensionsURL(true)).content, new TypeToken<Map<String, List<Extension>>>() {}.getType());
+    	List<Extension> jSONList = jSONextensions.get("extensions");
+    	for(int i = 0; i < jSONList.size(); i++) {
+    		Extension ext = jSONList.get(i);    		
+    		extensions.add(ext);
+    	}
+    } catch (ClassCastException e) {
       throw new RegistryException(TYPE.BAD_RESPONSE, e);
     } catch (IOException e) {
       throw new RegistryException(TYPE.IO_ERROR, e);
