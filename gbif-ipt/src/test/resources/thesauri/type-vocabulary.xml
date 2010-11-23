@@ -8,7 +8,8 @@
   >
   <voc:concept dc:identifier="Collection" dc:URI="http://purl.org/dc/dcmitype/Collection" >
    <voc:preferred>
-    <voc:term dc:source="Dublin Core RDF" dc:title="Collection" xml:lang="en"/>
+    <voc:term dc:source="Dublin Core RDF" dc:title="Collection" xml:lang="eng"/>
+    <voc:term dc:title="Sammlung" xml:lang="ger"/>
    </voc:preferred>
    <voc:alternative/>
   </voc:concept>
