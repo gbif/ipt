@@ -91,6 +91,7 @@ public class TranslationAction extends ManagerBaseAction {
   private ExtensionMapping mapping;
   private Map<String, String> vocabTerms = new HashMap<String, String>();
   private Integer mid;
+  private String id;
 
   @Inject
   private Translation trans;
@@ -127,7 +128,8 @@ public class TranslationAction extends ManagerBaseAction {
 	field.getTranslation().clear();
 	saveResource();
 	addActionMessage("Translation deleted for term " + field.getTerm());
-    return SUCCESS;
+    id = mapping.getExtension().getRowType();
+    return NONE;
   }
 
   public PropertyMapping getField() {
@@ -137,7 +139,11 @@ public class TranslationAction extends ManagerBaseAction {
   public Integer getMid() {
     return mid;
   }
-
+  
+  public String getId() {
+		return id;
+  }
+  
   public ExtensionProperty getProperty() {
     return property;
   }
@@ -219,7 +225,9 @@ public class TranslationAction extends ManagerBaseAction {
     field.setTranslation(trans.getPersistentMap());
     // save entire resource config
     saveResource();
-    return SUCCESS;
+    id = mapping.getExtension().getRowType();
+    addActionMessage("Translation saved for term " + field.getTerm());
+    return NONE;
   }
 
   public void setTmap(TreeMap<String, String> tmap) {

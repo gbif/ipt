@@ -116,6 +116,12 @@
 		
 		<action name="translation" class="org.gbif.ipt.action.manage.TranslationAction">
 			<result>/WEB-INF/pages/manage/translation.ftl</result>
+			<result name="none" type="redirectAction">
+				<param name="actionName">mapping</param>
+				<param name="r">${resource.shortname}</param>
+				<param name="id">${id}</param>
+				<param name="mid">${mid}</param>
+			</result>
 		</action>
 		<action name="translationReload" class="org.gbif.ipt.action.manage.TranslationAction" method="reload">
 			<result>/WEB-INF/pages/manage/translation.ftl</result>
