@@ -368,6 +368,10 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     	  rs.close();
     	  stmt.close();
     	  con.close();
+      }else{    	  
+    	 String msg="Can't read sql source, the connection couldn't be created with the current parameters";
+    	 columns.add(msg);
+    	 log.warn(msg+" "+source);
       }
     } catch (SQLException e) {
       log.warn("Cant read sql source " + source, e);
