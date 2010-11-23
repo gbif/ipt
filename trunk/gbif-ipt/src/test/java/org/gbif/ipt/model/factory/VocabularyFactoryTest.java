@@ -40,8 +40,7 @@ public class VocabularyFactoryTest {
   @Test
   public void testBuild() {
     try {
-      Vocabulary tv = getFactory().build(
-          VocabularyFactoryTest.class.getResourceAsStream("/thesauri/type-vocabulary.xml"));
+      Vocabulary tv = getFactory().build(VocabularyFactoryTest.class.getResourceAsStream("/thesauri/type-vocabulary.xml"));
       assertEquals("Dublin Core Type Vocabulary", tv.getTitle());
       assertEquals("http://dublincore.org/documents/dcmi-type-vocabulary/", tv.getUri());
       assertEquals(
@@ -57,12 +56,20 @@ public class VocabularyFactoryTest {
       assertNull(tc.getLink());
       assertEquals("http://purl.org/dc/dcmitype/Collection", tc.getUri());
       assertEquals(tv, tc.getVocabulary());
+      assertEquals("Collection", tc.getIdentifier());
+      assertEquals("Collection", tc.getPreferredTerm("en").getTitle());
+      assertEquals("Sammlung", tc.getPreferredTerm("de").getTitle());
+
+      assertEquals("Collection", tc.getIdentifier());
+      assertNull(tc.getLink());
+      assertEquals("http://purl.org/dc/dcmitype/Collection", tc.getUri());
+      assertEquals(tv, tc.getVocabulary());
 
       assertNotNull(tc.getTerms());
       assertNotNull(tc.getPreferredTerms());
-      assertEquals(1, tc.getPreferredTerms().size());
+      assertEquals(2, tc.getPreferredTerms().size());
       assertEquals(0, tc.getAlternativeTerms().size());
-      assertEquals(1, tc.getTerms().size());
+      assertEquals(2, tc.getTerms().size());
       VocabularyTerm tt = tc.getTerms().iterator().next();
       assertEquals("en", tt.getLang());
       assertEquals("Collection", tt.getTitle());
