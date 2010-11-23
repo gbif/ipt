@@ -12,6 +12,8 @@
  */
 package org.gbif.ipt.model;
 
+import org.gbif.ipt.utils.LangUtils;
+
 import static com.google.common.base.Objects.equal;
 
 import com.google.common.base.Objects;
@@ -50,7 +52,7 @@ public class VocabularyTerm {
   }
 
   public void setLang(String lang) {
-    this.lang = lang;
+    this.lang = LangUtils.iso2(lang);
   }
 
   public void setTitle(String title) {

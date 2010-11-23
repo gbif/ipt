@@ -24,10 +24,8 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
@@ -40,17 +38,6 @@ public class VocabularyFactory {
   protected static Logger log = Logger.getLogger(VocabularyFactory.class);
   private HttpClient client;
   private SAXParserFactory saxf;
-  private final static Map<String, String> common3letterLangCodes = new HashMap<String, String>();
-  static {
-    common3letterLangCodes.put("eng", "en");
-    common3letterLangCodes.put("fra", "fr");
-    common3letterLangCodes.put("fre", "fr");
-    common3letterLangCodes.put("deu", "de");
-    common3letterLangCodes.put("ger", "de");
-    common3letterLangCodes.put("spa", "es");
-    common3letterLangCodes.put("ita", "it");
-    common3letterLangCodes.put("por", "pt");
-  }
 
   @Inject
   public VocabularyFactory(DefaultHttpClient httpClient, SAXParserFactory saxf) {
