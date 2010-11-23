@@ -50,8 +50,7 @@ public class VocabularyConcept implements Comparable {
    */
   public int compareTo(Object object) {
     VocabularyConcept myClass = (VocabularyConcept) object;
-    return new CompareToBuilder().append(this.vocabulary, myClass.vocabulary).append(this.order, myClass.order).append(
-        this.uri, myClass.uri).toComparison();
+    return new CompareToBuilder().append(this.vocabulary, myClass.vocabulary).append(this.order, myClass.order).append(this.uri, myClass.uri).toComparison();
   }
 
   @Override
@@ -88,6 +87,9 @@ public class VocabularyConcept implements Comparable {
 
   public VocabularyTerm getPreferredTerm(String lang) {
     VocabularyTerm tEN = null;
+    if (lang == null || lang.length() != 2) {
+      throw new IllegalArgumentException("lang argument needs to be a 2 letter language code");
+    }
     for (VocabularyTerm t : preferredTerms) {
       if (t.getLang().equalsIgnoreCase(lang)) {
         return t;
