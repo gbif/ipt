@@ -46,11 +46,14 @@
   	<@input name="eml.title" />
   	<@text name="eml.description" />
   	<div class="halfcolumn">
-	  	<@select name="resource.subtype" options=resourceTypes value="${resource.subtype!}" />
+	  	<@select name="eml.metadataLanguage" help="i18n" options=languages value="${eml.metadataLanguage!}" />
 	</div>
 	<div class="halfcolumn">
 	  	<@select name="eml.language" help="i18n" options=languages value="${eml.language!}" />
   	</div>
+  	<div class="halfcolumn">
+	  	<@select name="resource.subtype" options=resourceTypes value="${resource.subtype!}" />
+	</div>
   	<div class="newline"></div>
   	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
   	
