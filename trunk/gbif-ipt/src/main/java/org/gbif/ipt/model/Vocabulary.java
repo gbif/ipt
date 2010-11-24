@@ -10,6 +10,7 @@ package org.gbif.ipt.model;
 import static com.google.common.base.Objects.equal;
 
 import com.google.common.base.Objects;
+import com.google.gson.annotations.SerializedName;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 
@@ -24,7 +25,7 @@ import java.util.List;
  * 
  */
 public class Vocabulary implements Comparable {
-  private String uri; // identifier
+  @SerializedName("identifier") private String uri; // identifier for JSON.
   private URL url; // url to its definition
   private String title;
   private String description;

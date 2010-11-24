@@ -51,6 +51,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   private HttpUtil http;
   private SAXParser saxParser;
+  private Gson gson;
 
   @Inject
   public RegistryManagerImpl(AppConfig cfg, DataDir dataDir, HttpUtil http, SAXParserFactory saxFactory)
@@ -58,67 +59,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     super(cfg, dataDir);
     this.saxParser = saxFactory.newSAXParser();
     this.http = http;
-  }
-
-  /**
-   * Takes an JSON object and returns an Extension object
-   * 
-   * @param ext
-   * @return
-   * @deprecated This method is not used anymore because google-gson does all the work automatically.
-   */
-  @Deprecated
-  private Extension buildExtension(JSONObject ext) {
-    Extension extension = new Extension();
-    try {
-      extension.setDescription(ext.getString("description"));
-      extension.setUrl(new URL(ext.getString("url")));
-      extension.setTitle(ext.getString("title"));
-      extension.setSubject(ext.getString("subject"));
-      extension.setRowType(ext.getString("identifier"));
-    } catch (JSONException e) {
-      log.debug(e);
-    } catch (MalformedURLException e) {
-      log.debug(e);
-    }
-    return extension;
-  }
-
-  /**
-   * Takes an JSON object and returns an Organisation object
-   * 
-   * @param ext
-   * @return
-   */
-  private Organisation buildOrganisation(JSONObject org) {
-    Organisation organisation = new Organisation();
-    try {
-      organisation.setName(org.getString("name"));
-      organisation.setKey(org.getString("key"));
-    } catch (JSONException e) {
-      log.debug(e);
-    }
-    return organisation;
-  }
-
-  /**
-   * @param jsonObject
-   * @return
-   */
-  private Vocabulary buildVocabulary(JSONObject ext) {
-    Vocabulary extension = new Vocabulary();
-    try {
-      extension.setUri(ext.getString("identifier"));
-      extension.setUrl(new URL(ext.getString("url")));
-      extension.setDescription(ext.getString("description"));
-      extension.setTitle(ext.getString("title"));
-      extension.setSubject(ext.getString("subject"));
-    } catch (JSONException e) {
-      log.debug(e);
-    } catch (MalformedURLException e) {
-      log.debug(e);
-    }
-    return extension;
+    this.gson = new Gson();
   }
 
   /*
@@ -180,15 +121,14 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * @see org.gbif.ipt.service.registry.RegistryManager#getExtensions()
    */
   public List<Extension> getExtensions() throws RegistryException {
-    List<Extension> extensions = new ArrayList<Extension>();
-    try {
-    	Gson gson = new Gson();
-    	Map<String, List<Extension>> jSONextensions = gson.fromJson(http.get(getExtensionsURL(true)).content, new TypeToken<Map<String, List<Extension>>>() {}.getType());
-    	List<Extension> jSONList = jSONextensions.get("extensions");
-    	for(int i = 0; i < jSONList.size(); i++) {
-    		Extension ext = jSONList.get(i);    		
-    		extensions.add(ext);
-    	}
+    try {    	
+    	Response resp = http.get(getExtensionsURL(true));
+    	if(resp.content != null) {
+    		Map<String, List<Extension>> jSONextensions = gson.fromJson(resp.content, new TypeToken<Map<String, List<Extension>>>() {}.getType());
+    		return jSONextensions.get("extensions");
+    	} else {
+    		throw new RegistryException(TYPE.BAD_RESPONSE, "Response content is null");
+    	}    	
     } catch (ClassCastException e) {
       throw new RegistryException(TYPE.BAD_RESPONSE, e);
     } catch (IOException e) {
@@ -196,8 +136,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     } catch (Exception e) {
       throw new RegistryException(TYPE.IO_ERROR, e);
     }
-
-    return extensions;
   }
 
   /**
@@ -252,21 +190,20 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * @see org.gbif.ipt.service.registry.RegistryManager#getOrganisations()
    */
   public List<Organisation> getOrganisations() throws RegistryException {
-    List<Organisation> organisations = new ArrayList<Organisation>();
-
     try {
-      JSONArray jSONorganisations = http.getJsonArray(getOrganisationsURL(true));
-      for (int i = 0; i < jSONorganisations.length(); i++) {
-        organisations.add(buildOrganisation((JSONObject) jSONorganisations.get(i)));
-      }
-    } catch (JSONException e) {
-      throw new RegistryException(TYPE.BAD_RESPONSE, e);
+    	Response resp = http.get(getOrganisationsURL(true));    	
+    	if(resp.content != null) {
+    		return gson.fromJson(resp.content, new TypeToken<List<Organisation>>() {}.getType());
+    	} else {
+    		throw new RegistryException(TYPE.BAD_RESPONSE, "Response content is null");
+    	}    	
+    } catch (ClassCastException e) {
+    	throw new RegistryException(TYPE.BAD_RESPONSE, e);
     } catch (IOException e) {
-      throw new RegistryException(TYPE.IO_ERROR, e);
+    	throw new RegistryException(TYPE.IO_ERROR, e);
     } catch (URISyntaxException e) {
-      throw new RegistryException(TYPE.UNKNOWN, e);
+    	throw new RegistryException(TYPE.UNKNOWN, e);
     }
-    return organisations;
   }
 
   /**
@@ -297,23 +234,21 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * @see org.gbif.ipt.service.registry.RegistryManager#getVocabularies()
    */
   public List<Vocabulary> getVocabularies() throws RegistryException {
-    List<Vocabulary> vocabs = new ArrayList<Vocabulary>();
-
     try {
-      JSONObject jSONextensions = http.getJsonObj(getVocabulariesURL(true));
-      JSONArray jSONArray = (JSONArray) jSONextensions.get("thesauri");
-      for (int i = 0; i < jSONArray.length(); i++) {
-        vocabs.add(buildVocabulary((JSONObject) jSONArray.get(i)));
-      }
-    } catch (JSONException e) {
+    	Response resp = http.get(getVocabulariesURL(true));
+    	if(resp.content != null) {
+    		Map<String, List<Vocabulary>> map = gson.fromJson(resp.content, new TypeToken<Map<String, List<Vocabulary>>>(){}.getType());
+    		return map.get("thesauri");    		
+    	} else {
+    		throw new RegistryException(TYPE.BAD_RESPONSE, "Response content is null");
+    	}
+    } catch (ClassCastException e) {
       throw new RegistryException(TYPE.BAD_RESPONSE, e);
     } catch (IOException e) {
       throw new RegistryException(TYPE.IO_ERROR, e);
     } catch (Exception e) {
       throw new RegistryException(TYPE.IO_ERROR, e);
     }
-
-    return vocabs;
   }
 
   /**
