@@ -49,9 +49,6 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -346,30 +343,6 @@ public class HttpUtil {
     return result;
   }
 
-  public JSONArray getJsonArray(String url) throws JSONException, IOException, URISyntaxException {
-    JSONArray json = null;
-    Response resp = get(url);
-    if (resp.content != null) {
-      json = new JSONArray(resp.content);
-    }
-    return json;
-  }
-
-  /**
-   * @param url
-   * @return
-   * @throws JSONException if no proper json was returned
-   * @throws IOException in case of a problem or the connection was aborted
-   * @throws URISyntaxException
-   */
-  public JSONObject getJsonObj(String url) throws JSONException, IOException, URISyntaxException {
-    JSONObject json = null;
-    Response resp = get(url);
-    if (resp.content != null) {
-      json = new JSONObject(resp.content);
-    }
-    return json;
-  }
 
   public HttpParams params(Map<String, Object> params) {
     HttpParams p = new BasicHttpParams();
