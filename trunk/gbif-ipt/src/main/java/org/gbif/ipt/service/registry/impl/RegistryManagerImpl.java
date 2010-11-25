@@ -43,6 +43,11 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 public class RegistryManagerImpl extends BaseManager implements RegistryManager {
+  class RegistryServices {
+    public String serviceURLs = null;
+    public String serviceTypes = null;
+  }
+
   private RegistryEntryHandler newRegistryEntryHandler = new RegistryEntryHandler();
   private static final String SERVICE_TYPE_EML = "EML";
   private static final String SERVICE_TYPE_DWCA = "DWC-ARCHIVE";
@@ -50,6 +55,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   private static final String SERVICE_TYPE_CHECKLIST = "DWC-ARCHIVE-CHECKLIST";
   private HttpUtil http;
   private SAXParser saxParser;
+
   private Gson gson;
 
   @Inject
@@ -58,6 +64,29 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     this.saxParser = saxFactory.newSAXParser();
     this.http = http;
     this.gson = new Gson();
+  }
+
+  private RegistryServices buildServiceTypeParams(Resource resource) {
+    RegistryServices rs = new RegistryServices();
+    rs.serviceTypes = SERVICE_TYPE_EML;
+    rs.serviceURLs = cfg.getResourceEmlUrl(resource.getShortname());
+    if (resource.hasPublishedData()) {
+      rs.serviceURLs += "|" + cfg.getResourceArchiveUrl(resource.getShortname());
+      if (DwcTerm.Occurrence.equals(resource.getCoreType())) {
+        log.debug("Registering EML & DwC-A Occurrence Service");
+        rs.serviceTypes += "|" + SERVICE_TYPE_OCCURRENCE;
+      } else if (DwcTerm.Taxon.equals(resource.getCoreType())) {
+        log.debug("Registering EML & DwC-A Checklist Service");
+        rs.serviceTypes += "|" + SERVICE_TYPE_CHECKLIST;
+      } else {
+        log.warn("Unknown core resource type " + resource.getCoreType());
+        log.debug("Registering EML & general DwC-A Service");
+        rs.serviceTypes += "|" + SERVICE_TYPE_DWCA;
+      }
+    } else {
+      log.debug("Registering EML Service only");
+    }
+    return rs;
   }
 
   /*
@@ -91,26 +120,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    */
   private String getDeleteResourceUri(String resourceKey) {
     return String.format("%s%s%s", cfg.getRegistryUrl(), "/registry/ipt/resource/", resourceKey);
-  }
-
-  /**
-   * Returns the DwCArchive url
-   * 
-   * @param resName
-   * @return
-   */
-  private String getDwcArchiveURL(String resName) {
-    return String.format("%s/archive.do?resource=%s", cfg.getBaseURL(), resName);
-  }
-
-  /**
-   * Returns the EML url
-   * 
-   * @param resName
-   * @return
-   */
-  private String getEmlURL(String resName) {
-    return String.format("%s/eml.do?resource=%s", cfg.getBaseURL(), resName);
   }
 
   /*
@@ -274,33 +283,15 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     Eml eml = resource.getEml();
     // registering IPT resource
 
-    String serviceTypes = null;
-    String serviceURLs = null;
     // which services should be registered?
-    if (resource.isPublished()) {
-      log.debug("Last published: " + resource.getLastPublished());
-      // see if we have a published dwca or if its only metadata
-      serviceTypes = SERVICE_TYPE_EML;
-      serviceURLs = getEmlURL(resource.getShortname());
-      if (resource.hasPublishedData()) {
-        serviceURLs += "|" + getDwcArchiveURL(resource.getShortname());
-        if (DwcTerm.Occurrence.equals(resource.getCoreType())) {
-          log.debug("Registering EML & DwC-A Occurrence Service");
-          serviceTypes += "|" + SERVICE_TYPE_OCCURRENCE;
-        } else if (DwcTerm.Taxon.equals(resource.getCoreType())) {
-          log.debug("Registering EML & DwC-A Checklist Service");
-          serviceTypes += "|" + SERVICE_TYPE_CHECKLIST;
-        } else {
-          log.warn("Registering unknown core resource type " + resource.getCoreType());
-          log.debug("Registering EML & general DwC-A Service");
-          serviceTypes += "|" + SERVICE_TYPE_DWCA;
-        }
-      } else {
-        log.debug("Registering EML Service only");
-      }
-    } else {
-      log.debug("Resource not published yet");
+    if (!resource.isPublished()) {
+      log.warn("Cannot register, resource not published yet");
+      return null;
     }
+
+    log.debug("Last published: " + resource.getLastPublished());
+    // see if we have a published dwca or if its only metadata
+    RegistryServices services = buildServiceTypeParams(resource);
 
     List<NameValuePair> data = new ArrayList<NameValuePair>();
     data.add(new BasicNameValuePair("organisationKey", StringUtils.trimToEmpty(org.getKey().toString())));
@@ -311,8 +302,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     data.add(new BasicNameValuePair("primaryContactType", "technical"));
     data.add(new BasicNameValuePair("primaryContactName", StringUtils.trimToNull(StringUtils.trimToEmpty(resource.getCreator().getName()))));
     data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(resource.getCreator().getEmail())));
-    data.add(new BasicNameValuePair("serviceTypes", serviceTypes));
-    data.add(new BasicNameValuePair("serviceURLs", serviceURLs));
+    data.add(new BasicNameValuePair("serviceTypes", services.serviceTypes));
+    data.add(new BasicNameValuePair("serviceURLs", services.serviceURLs));
 
     try {
       UrlEncodedFormEntity uefe = new UrlEncodedFormEntity(data, HTTP.UTF_8);
@@ -393,23 +384,14 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     Eml eml = resource.getEml();
     // registering IPT resource
 
-    // services should be registered?
-    String serviceTypes = null;
-    String serviceURLs = null;
-    log.debug("Last published: " + resource.getLastPublished());
-    if (resource.getLastPublished() != null) {
-      log.debug("Registering EML Service");
-      serviceTypes = "EML";
-      serviceURLs = getEmlURL(resource.getShortname());
-      // dwca exists?
-      if (resource.getRecordsPublished() > 0) {
-        log.debug("Registering DWC-A Service");
-        serviceTypes += "|DWC-ARCHIVE";
-        serviceURLs += "|" + getDwcArchiveURL(resource.getShortname());
-      }
-    } else {
-      log.debug("No DWC or EML Service present");
+    // which services should be registered?
+    if (!resource.isPublished()) {
+      log.warn("Updating registered resource although resource is not published yet");
     }
+
+    log.debug("Last published: " + resource.getLastPublished());
+    // see if we have a published dwca or if its only metadata
+    RegistryServices services = buildServiceTypeParams(resource);
 
     List<NameValuePair> data = new ArrayList<NameValuePair>();
     // data.put("organisationKey", StringUtils.trimToEmpty(organisation.getKey().toString())),
@@ -421,8 +403,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     data.add(new BasicNameValuePair("primaryContactType", "technical"));
     data.add(new BasicNameValuePair("primaryContactName", StringUtils.trimToNull(StringUtils.trimToEmpty(resource.getCreator().getName()))));
     data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(resource.getCreator().getEmail())));
-    data.add(new BasicNameValuePair("serviceTypes", serviceTypes));
-    data.add(new BasicNameValuePair("serviceURLs", serviceURLs));
+    data.add(new BasicNameValuePair("serviceTypes", services.serviceTypes));
+    data.add(new BasicNameValuePair("serviceURLs", services.serviceURLs));
 
     try {
       Response resp = http.post(getIptUpdateResourceUri(resource.getKey().toString()), null, null, orgCredentials(organisation), new UrlEncodedFormEntity(data));
