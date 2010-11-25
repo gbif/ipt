@@ -1,5 +1,6 @@
 package org.gbif.ipt.service.registry.impl;
 
+import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Extension;
@@ -43,7 +44,10 @@ import javax.xml.parsers.SAXParserFactory;
 
 public class RegistryManagerImpl extends BaseManager implements RegistryManager {
   private RegistryEntryHandler newRegistryEntryHandler = new RegistryEntryHandler();
-
+  private static final String SERVICE_TYPE_EML = "EML";
+  private static final String SERVICE_TYPE_DWCA = "DWC-ARCHIVE";
+  private static final String SERVICE_TYPE_OCCURRENCE = "DWC-ARCHIVE-OCCURRENCE";
+  private static final String SERVICE_TYPE_CHECKLIST = "DWC-ARCHIVE-CHECKLIST";
   private HttpUtil http;
   private SAXParser saxParser;
   private Gson gson;
@@ -276,14 +280,23 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     if (resource.isPublished()) {
       log.debug("Last published: " + resource.getLastPublished());
       // see if we have a published dwca or if its only metadata
+      serviceTypes = SERVICE_TYPE_EML;
+      serviceURLs = getEmlURL(resource.getShortname());
       if (resource.hasPublishedData()) {
-        log.debug("Registering DWC & EML Service");
-        serviceTypes = "EML|DWC-ARCHIVE";
-        serviceURLs = getEmlURL(resource.getShortname()) + "|" + getDwcArchiveURL(resource.getShortname());
+        serviceURLs += "|" + getDwcArchiveURL(resource.getShortname());
+        if (DwcTerm.Occurrence.equals(resource.getCoreType())) {
+          log.debug("Registering EML & DwC-A Occurrence Service");
+          serviceTypes += "|" + SERVICE_TYPE_OCCURRENCE;
+        } else if (DwcTerm.Taxon.equals(resource.getCoreType())) {
+          log.debug("Registering EML & DwC-A Checklist Service");
+          serviceTypes += "|" + SERVICE_TYPE_CHECKLIST;
+        } else {
+          log.warn("Registering unknown core resource type " + resource.getCoreType());
+          log.debug("Registering EML & general DwC-A Service");
+          serviceTypes += "|" + SERVICE_TYPE_DWCA;
+        }
       } else {
         log.debug("Registering EML Service only");
-        serviceTypes = "EML";
-        serviceURLs = getEmlURL(resource.getShortname());
       }
     } else {
       log.debug("Resource not published yet");
