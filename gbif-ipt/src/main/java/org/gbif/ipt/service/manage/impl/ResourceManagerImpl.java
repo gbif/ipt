@@ -108,19 +108,16 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private Map<String, StatusReport> processReports = new HashMap<String, StatusReport>();
 
   @Inject
-  public ResourceManagerImpl(AppConfig cfg, DataDir dataDir, UserEmailConverter userConverter,
-      OrganisationKeyConverter orgConverter, ExtensionRowTypeConverter extensionConverter,
-      JdbcInfoConverter jdbcInfoConverter, SourceManager sourceManager, ExtensionManager extensionManager,
-      RegistryManager registryManager, ConceptTermConverter conceptTermConverter, GenerateDwcaFactory dwcaFactory,
-      PasswordConverter passwordConverter) {
+  public ResourceManagerImpl(AppConfig cfg, DataDir dataDir, UserEmailConverter userConverter, OrganisationKeyConverter orgConverter,
+      ExtensionRowTypeConverter extensionConverter, JdbcInfoConverter jdbcInfoConverter, SourceManager sourceManager, ExtensionManager extensionManager,
+      RegistryManager registryManager, ConceptTermConverter conceptTermConverter, GenerateDwcaFactory dwcaFactory, PasswordConverter passwordConverter) {
     super(cfg, dataDir);
     this.sourceManager = sourceManager;
     this.extensionManager = extensionManager;
     this.registryManager = registryManager;
     this.dwcaFactory = dwcaFactory;
     this.executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(cfg.getMaxThreads());
-    defineXstreamMapping(userConverter, orgConverter, extensionConverter, conceptTermConverter, jdbcInfoConverter,
-        passwordConverter);
+    defineXstreamMapping(userConverter, orgConverter, extensionConverter, conceptTermConverter, jdbcInfoConverter, passwordConverter);
   }
 
   private void addResource(Resource res) {
@@ -165,8 +162,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return eml;
   }
 
-  public Resource create(String shortname, File dwca, User creator, BaseAction action) throws AlreadyExistingException,
-      ImportException {
+  public Resource create(String shortname, File dwca, User creator, BaseAction action) throws AlreadyExistingException, ImportException {
     ActionLogger alog = new ActionLogger(this.log, action);
     // decompress archive
     File dwcaDir = dataDir.tmpDir();
@@ -214,8 +210,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return res;
   }
 
-  private Resource createFromArchive(String shortname, File dwca, User creator, ActionLogger alog)
-      throws AlreadyExistingException, ImportException {
+  private Resource createFromArchive(String shortname, File dwca, User creator, ActionLogger alog) throws AlreadyExistingException, ImportException {
     Resource resource = null;
     try {
       // open the dwca with dwca reader
@@ -249,8 +244,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         }
         // finally persist the whole thing
         save(resource);
-        alog.info("Imported existing darwin core archive with core row type " + resource.getCoreRowType() + " and "
-            + resource.getSources().size() + " source(s), " + (resource.getMappings().size() + 1) + " mapping(s)");
+        alog.info("Imported existing darwin core archive with core row type " + resource.getCoreRowType() + " and " + resource.getSources().size()
+            + " source(s), " + (resource.getMappings().size() + 1) + " mapping(s)");
 
       } else {
         alog.warn("Darwin core archive is invalid and does not have a core mapping");
@@ -268,8 +263,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return resource;
   }
 
-  private Resource createFromEml(String shortname, File emlFile, User creator, ActionLogger alog)
-      throws AlreadyExistingException, ImportException {
+  private Resource createFromEml(String shortname, File emlFile, User creator, ActionLogger alog) throws AlreadyExistingException, ImportException {
     Eml eml = readMetadata(emlFile, alog);
     if (eml != null) {
       // create resource with imorted metadata
@@ -291,9 +285,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @param userConverter
    * 
    */
-  private void defineXstreamMapping(UserEmailConverter userConverter, OrganisationKeyConverter orgConverter,
-      ExtensionRowTypeConverter extensionConverter, ConceptTermConverter conceptTermConverter,
-      JdbcInfoConverter jdbcInfoConverter, PasswordConverter passwordConverter) {
+  private void defineXstreamMapping(UserEmailConverter userConverter, OrganisationKeyConverter orgConverter, ExtensionRowTypeConverter extensionConverter,
+      ConceptTermConverter conceptTermConverter, JdbcInfoConverter jdbcInfoConverter, PasswordConverter passwordConverter) {
     // xstream.setMode(XStream.NO_REFERENCES);
 
     xstream.alias("resource", Resource.class);
@@ -409,8 +402,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       if (ext.hasProperty(f.getTerm())) {
         fields.add(new PropertyMapping(f));
       } else {
-        alog.info("Skip mapped concept term " + f.getTerm().qualifiedName() + " which is unkown to extension "
-            + ext.getRowType());
+        alog.info("Skip mapped concept term " + f.getTerm().qualifiedName() + " which is unkown to extension " + ext.getRowType());
       }
     }
     map.setFields(fields);
@@ -594,8 +586,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         return resource;
       } catch (FileNotFoundException e) {
         log.error("Cannot read resource configuration for " + shortname, e);
-        throw new InvalidConfigException(TYPE.RESOURCE_CONFIG, "Cannot read resource configuration for " + shortname
-            + ": " + e.getMessage());
+        throw new InvalidConfigException(TYPE.RESOURCE_CONFIG, "Cannot read resource configuration for " + shortname + ": " + e.getMessage());
       }
     }
     return null;
@@ -605,8 +596,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     ActionLogger alog = new ActionLogger(this.log, action);
     // check if publishing task is already running
     if (isLocked(resource.getShortname())) {
-      throw new PublicationException(PublicationException.TYPE.LOCKED, "Resource " + resource.getShortname()
-          + " is currently locked by another process");
+      throw new PublicationException(PublicationException.TYPE.LOCKED, "Resource " + resource.getShortname() + " is currently locked by another process");
     }
     // increase eml version
     int version = resource.getEmlVersion();
@@ -620,8 +610,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       FileUtils.copyFile(trunkFile, versionedFile);
     } catch (IOException e) {
       alog.error("Cant publish resource " + resource.getShortname(), e);
-      throw new PublicationException(PublicationException.TYPE.EML, "Cant publish eml file for resource "
-          + resource.getShortname(), e);
+      throw new PublicationException(PublicationException.TYPE.EML, "Cant publish eml file for resource " + resource.getShortname(), e);
     }
 
     // regenerate dwca asynchroneously
@@ -629,6 +618,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (resource.hasMappedData()) {
       generateDwca(resource, alog);
       dwca = true;
+    } else {
+      resource.setRecordsPublished(0);
     }
 
     // persist any resource object changes
@@ -738,8 +729,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       throw new InvalidConfigException(TYPE.CONFIG_WRITE, "IO exception when writing eml for " + resource);
     } catch (TemplateException e) {
       log.error("EML template exception", e);
-      throw new InvalidConfigException(TYPE.EML, "EML template exception when writing eml for " + resource + ": "
-          + e.getMessage());
+      throw new InvalidConfigException(TYPE.EML, "EML template exception when writing eml for " + resource + ": " + e.getMessage());
     }
   }
 
@@ -765,8 +755,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   public void updateRegistration(Resource resource, Organisation organisation, Ipt ipt) throws InvalidConfigException {
     if (PublicationStatus.REGISTERED == resource.getStatus()) {
-      log.debug("Updating resource with Organisation Key: " + organisation.getKey().toString() + " & pwd "
-          + organisation.getPassword());
+      log.debug("Updating resource with Organisation Key: " + organisation.getKey().toString() + " & pwd " + organisation.getPassword());
       registryManager.updateResource(resource, organisation, ipt);
       // save(resource);
     }
