@@ -333,6 +333,10 @@ public class Resource implements Serializable, Comparable<Resource> {
     return false;
   }
 
+  public boolean hasPublishedData() {
+    return recordsPublished > 0;
+  }
+
   public boolean isPublished() {
     return lastPublished != null;
   }
