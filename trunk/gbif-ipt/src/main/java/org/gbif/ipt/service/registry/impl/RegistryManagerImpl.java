@@ -66,6 +66,26 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     this.gson = new Gson();
   }
 
+  private List<NameValuePair> buildRegistryParameters(Resource resource) {
+    List<NameValuePair> data = new ArrayList<NameValuePair>();
+
+    Eml eml = resource.getEml();
+    data.add(new BasicNameValuePair("name", ((resource.getTitle() != null) ? StringUtils.trimToEmpty(resource.getTitle())
+        : StringUtils.trimToEmpty(resource.getShortname()))));
+    data.add(new BasicNameValuePair("description", StringUtils.trimToEmpty(resource.getDescription())));
+    // TODO: should this not be the eml contact agent instead?
+    data.add(new BasicNameValuePair("primaryContactType", "technical"));
+    data.add(new BasicNameValuePair("primaryContactName", StringUtils.trimToNull(StringUtils.trimToEmpty(resource.getCreator().getName()))));
+    data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(resource.getCreator().getEmail())));
+
+    // see if we have a published dwca or if its only metadata
+    RegistryServices services = buildServiceTypeParams(resource);
+    data.add(new BasicNameValuePair("serviceTypes", services.serviceTypes));
+    data.add(new BasicNameValuePair("serviceURLs", services.serviceURLs));
+
+    return data;
+  }
+
   private RegistryServices buildServiceTypeParams(Resource resource) {
     RegistryServices rs = new RegistryServices();
     rs.serviceTypes = SERVICE_TYPE_EML;
@@ -280,30 +300,18 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * org.gbif.ipt.model.Organisation, org.gbif.ipt.model.Ipt)
    */
   public UUID register(Resource resource, Organisation org, Ipt ipt) throws RegistryException {
-    Eml eml = resource.getEml();
-    // registering IPT resource
-
-    // which services should be registered?
     if (!resource.isPublished()) {
       log.warn("Cannot register, resource not published yet");
       return null;
     }
 
+    // registering a new IPT resource
     log.debug("Last published: " + resource.getLastPublished());
-    // see if we have a published dwca or if its only metadata
-    RegistryServices services = buildServiceTypeParams(resource);
 
-    List<NameValuePair> data = new ArrayList<NameValuePair>();
+    List<NameValuePair> data = buildRegistryParameters(resource);
+    // add additional ipt and organisation parameters
     data.add(new BasicNameValuePair("organisationKey", StringUtils.trimToEmpty(org.getKey().toString())));
     data.add(new BasicNameValuePair("iptKey", StringUtils.trimToEmpty(ipt.getKey().toString())));
-    data.add(new BasicNameValuePair("name", ((resource.getTitle() != null) ? StringUtils.trimToEmpty(resource.getTitle())
-        : StringUtils.trimToEmpty(resource.getShortname()))));
-    data.add(new BasicNameValuePair("description", StringUtils.trimToEmpty(resource.getDescription())));
-    data.add(new BasicNameValuePair("primaryContactType", "technical"));
-    data.add(new BasicNameValuePair("primaryContactName", StringUtils.trimToNull(StringUtils.trimToEmpty(resource.getCreator().getName()))));
-    data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(resource.getCreator().getEmail())));
-    data.add(new BasicNameValuePair("serviceTypes", services.serviceTypes));
-    data.add(new BasicNameValuePair("serviceURLs", services.serviceURLs));
 
     try {
       UrlEncodedFormEntity uefe = new UrlEncodedFormEntity(data, HTTP.UTF_8);
@@ -381,35 +389,17 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       throw new IllegalArgumentException("Resource is not registered");
     }
 
-    Eml eml = resource.getEml();
     // registering IPT resource
-
-    // which services should be registered?
     if (!resource.isPublished()) {
       log.warn("Updating registered resource although resource is not published yet");
     }
 
     log.debug("Last published: " + resource.getLastPublished());
-    // see if we have a published dwca or if its only metadata
-    RegistryServices services = buildServiceTypeParams(resource);
-
-    List<NameValuePair> data = new ArrayList<NameValuePair>();
-    // data.put("organisationKey", StringUtils.trimToEmpty(organisation.getKey().toString())),
-    // data.put("iptKey", StringUtils.trimToEmpty(ipt.getKey().toString())),
-    data.add(new BasicNameValuePair("name", StringUtils.trimToEmpty(resource.getTitleOrShortname())));
-    data.add(new BasicNameValuePair("description", StringUtils.trimToEmpty(resource.getDescription())));
-
-    // TODO: should this not be the eml contact agent instead?
-    data.add(new BasicNameValuePair("primaryContactType", "technical"));
-    data.add(new BasicNameValuePair("primaryContactName", StringUtils.trimToNull(StringUtils.trimToEmpty(resource.getCreator().getName()))));
-    data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(resource.getCreator().getEmail())));
-    data.add(new BasicNameValuePair("serviceTypes", services.serviceTypes));
-    data.add(new BasicNameValuePair("serviceURLs", services.serviceURLs));
+    List<NameValuePair> data = buildRegistryParameters(resource);
 
     try {
       Response resp = http.post(getIptUpdateResourceUri(resource.getKey().toString()), null, null, orgCredentials(organisation), new UrlEncodedFormEntity(data));
       if (http.success(resp)) {
-        // read new UDDI ID
         log.debug("Resource's registration info has been updated");
       } else {
         throw new RegistryException(RegistryException.TYPE.FAILED, "Registration update failed");

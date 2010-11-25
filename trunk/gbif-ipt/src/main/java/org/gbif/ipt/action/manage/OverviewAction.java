@@ -187,9 +187,9 @@ public class OverviewAction extends ManagerBaseAction {
     if (resource.getCreator().getEmail() == null) {
       return false;
     }
-    // if (!resource.isPublished()) {
-    // return false;
-    // }
+    if (!resource.isPublished()) {
+      return false;
+    }
     return true;
   }
 
