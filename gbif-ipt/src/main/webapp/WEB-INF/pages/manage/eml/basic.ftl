@@ -46,13 +46,17 @@
   	<@input name="eml.title" />
   	<@text name="eml.description" />
   	<div class="halfcolumn">
-	  	<@select name="eml.metadataLanguage" help="i18n" options=languages value="${eml.metadataLanguage!}" />
+  		<#assign lang>${eml.metadataLanguage}</#assign>
+		<#if (lang ? length < 3)><#assign lang="eng"/></#if>
+	  	<@select name="eml.metadataLanguage" help="i18n" options=languages value="${lang}" />
 	</div>
 	<div class="halfcolumn">
-	  	<@select name="eml.language" help="i18n" options=languages value="${eml.language!}" />
+		<#assign lang>${eml.language}</#assign>
+		<#if (lang ? length < 3)><#assign lang="eng"/></#if>
+	  	<@select name="eml.language" help="i18n" options=languages value="${lang}" />
   	</div>
   	<div class="halfcolumn">
-	  	<@select name="resource.subtype" options=resourceTypes value="${resource.subtype!}" />
+	  	<@select name="resource.subtype" options=resourceTypes value="${resource.subtype!'eng'}" />
 	</div>
   	<div class="newline"></div>
   	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
