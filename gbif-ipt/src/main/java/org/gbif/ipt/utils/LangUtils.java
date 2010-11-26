@@ -35,6 +35,16 @@ public class LangUtils {
     common3letterLangCodes.put("ita", "it");
     common3letterLangCodes.put("por", "pt");
   }
+  
+  private final static Map<String, String> common2letterLangCodes = new HashMap<String, String>();
+  static {
+    common2letterLangCodes.put("en", "eng");
+    common2letterLangCodes.put("fr", "fre");
+    common2letterLangCodes.put("de", "ger");
+    common2letterLangCodes.put("es", "spa");
+    common2letterLangCodes.put("it", "ita");
+    common2letterLangCodes.put("pt", "por");
+  }
 
   public static String iso2(String language) {
     if (language != null && language.length() == 2) {
@@ -44,4 +54,13 @@ public class LangUtils {
     }
     return null;
   }
+  
+  public static String iso3(String language) {
+	    if (language != null && language.length() == 3) {
+	      return language;
+	    } else if (language != null && language.length() == 2) {
+	      return common2letterLangCodes.get(language.toLowerCase());
+	    }
+	    return null;
+	  }
 }

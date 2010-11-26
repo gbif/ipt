@@ -19,6 +19,7 @@ package org.gbif.ipt.action.manage;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.utils.LangUtils;
 import org.gbif.ipt.validation.EmlValidator;
 import org.gbif.ipt.validation.ResourceValidator;
 import org.gbif.metadata.eml.Agent;
@@ -78,7 +79,11 @@ public class MetadataAction extends ManagerBaseAction {
   public Map<String, String> getLanguages() {
     return languages;
   }
-
+  
+  public String getLocaleLanguageIso3(){
+	return LangUtils.iso3(getLocaleLanguage());
+  }
+  
   public String getNext() {
     return next;
   }
