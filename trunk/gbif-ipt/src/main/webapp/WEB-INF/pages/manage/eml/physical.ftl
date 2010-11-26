@@ -13,6 +13,8 @@ $(document).ready(function(){
 <h1><@s.text name='manage.metadata.physical.title'/>: <a href="resource.do?r=${resource.shortname}"><em>${resource.title!resource.shortname}</em></a> </h1>
 <@s.text name='manage.metadata.physical.intro'/>
 <form class="topForm" action="metadata-${section}.do" method="post">
+	<@input name="eml.distributionUrl" i18nkey="eml.distributionUrl" />
+	<br/>
 	<div id="items">
 		<#list eml.physicalData as item>
 			<div id="item-${item_index}" class="item">

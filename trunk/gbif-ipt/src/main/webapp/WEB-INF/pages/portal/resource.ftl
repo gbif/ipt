@@ -54,6 +54,31 @@
 <div class="definition">	
   <div class="title">
   	<div class="head">
+        <@s.text name='manage.metadata.physical.title'/>
+  	</div>
+  </div>
+  <div class="body">
+      	<div class="details">
+      		<table>
+          		<tr><th><@s.text name='eml.distributionUrl'/></th><td><a href="${eml.distributionUrl!}">${eml.distributionUrl!}</a></td></tr>
+		<#if (eml.physicalData?size > 0 )>
+			<#list eml.physicalData as item>
+				<#assign link=eml.physicalData[item_index]/>
+				<tr><th>${link.name!}</th><td><a href="${link.distributionUrl}">${link.distributionUrl!"?"}</a>
+				<#if link.charset?? || link.format?? || link.formatVersion??> 
+				${link.charset!} ${link.format!} ${link.formatVersion!}
+				</#if>
+				</td></tr>
+			</#list>
+		</#if>
+      		</table>
+      	</div>
+  </div>
+</div>
+
+<div class="definition">	
+  <div class="title">
+  	<div class="head">
         <@s.text name='portal.resource.creator'/>
   	</div>
   </div>
@@ -327,34 +352,6 @@
       	</div>
   </div>
 </div>
-
-<#if (eml.physicalData?size > 0 )>
-<div class="definition">	
-  <div class="title">
-  	<div class="head">
-        <@s.text name='manage.metadata.physical.title'/>
-  	</div>
-  </div>
-  <div class="body">
-      	<div class="details">
-		<#list eml.physicalData as item>
-			<div>
-			<#assign itemTitle><@s.text name='manage.metadata.physical.item'/></#assign>
-			<div class="head">${itemTitle?upper_case} ${item_index+1}</div>
-			<table>
-				<tr><th><@s.text name='eml.physicalData.name'/></th><td>${eml.physicalData[item_index].name!}</td></tr>
-				<tr><th><@s.text name='eml.physicalData.charset'/></th><td>${eml.physicalData[item_index].charset!}</td></tr>
-				<tr><th><@s.text name='eml.physicalData.format'/></th><td>${eml.physicalData[item_index].format!}</td></tr>
-				<tr><th><@s.text name='eml.physicalData.formatVersion'/></th><td>${eml.physicalData[item_index].formatVersion!}</td></tr>
-				<tr><th><@s.text name='eml.physicalData.distributionUrl'/></th><td><a href="${eml.physicalData[item_index].distributionUrl}">${eml.physicalData[item_index].distributionUrl!}</a></td></tr>				
-      		</table>
-      		<div class="newline"></div>
-			</div>
-		</#list>
-      	</div>
-  </div>
-</div>
-</#if>
 
 <#if (eml.keywords?size > 0 )>
 <div class="definition">	
