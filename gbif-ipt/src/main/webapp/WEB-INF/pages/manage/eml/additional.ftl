@@ -17,7 +17,6 @@
 	  	<@input name="eml.hierarchyLevel" i18nkey="eml.hierarchyLevel" disabled=true />
 	  	<@input date=true name="eml.pubDate" i18nkey="eml.pubDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD",  "MM/DD/YYYY":"MM/DD/YYYY"} />
 	</div>
-	<@input name="eml.distributionUrl" i18nkey="eml.distributionUrl" />
   	<@text name="eml.purpose" i18nkey="eml.purpose" help="i18n"/>
   	<@text name="eml.intellectualRights" i18nkey="eml.intellectualRights" help="i18n"/>
   	<@text name="eml.additionalInfo" i18nkey="eml.additionalInfo"/>
