@@ -1,6 +1,7 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.model.Extension;
+import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
@@ -222,6 +223,14 @@ public class OverviewAction extends ManagerBaseAction {
       // check EML
       missingMetadata = !emlValidator.isValid(resource.getEml(), null);
       missingRegistrationMetadata = !minimumRegistryInfo(resource);
+      
+      //remove all DwC mappings with 0 terms mapped
+      for(ExtensionMapping em : resource.getCoreMappings()) {
+    	  if(em.getFields().size() == 0) {
+    		  resource.deleteMapping(em);
+    	  }
+      }
+      
     }
   }
 
