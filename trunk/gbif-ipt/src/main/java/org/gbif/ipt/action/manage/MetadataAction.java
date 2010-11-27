@@ -108,6 +108,11 @@ public class MetadataAction extends ManagerBaseAction {
   public Map<String, String> getRoleOptions() {
     return Role.htmlSelectMap;
   }
+  
+  public Map<String, String> getSpecimenPreservationMethodOptions() {
+	 // TODO returning roleOptions for testing, the specimenPreservationMethodOptions map must be created
+	 return Role.htmlSelectMap;
+  }
 
   public String getSection() {
     return section;
