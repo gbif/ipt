@@ -19,6 +19,9 @@
 	<div class="halfcolumn">
 		<@input name="eml.parentCollectionId" />
 	</div>
+	<div class="halfcolumn">
+		<@select name="eml.specimenPreservationMethod" value="${eml.specimenPreservationMethod!}" options=roleOptions />
+	</div>
 	<div class="newline"></div>
 	<h2><@s.text name="manage.metadata.collections.curatorialUnits.title"/></h2>
 	<p><@s.text name="manage.metadata.collections.curatorialUnits.intro"/></p>
