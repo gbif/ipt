@@ -117,11 +117,12 @@ public class DataDir {
     // create config, resources and lucene directories
     File configDir = dataFile(CONFIG_DIR);
     File resourcesDir = dataFile(RESOURCES_DIR);
-    File luceneDir = dataFile(LUCENE_DIR);
     File loggingDir = dataFile(LOGGING_DIR);
     FileUtils.forceMkdir(configDir);
     FileUtils.forceMkdir(resourcesDir);
-    FileUtils.forceMkdir(luceneDir);
+    // placeholder for the future
+    //File luceneDir = dataFile(LUCENE_DIR);
+    //FileUtils.forceMkdir(luceneDir);
     FileUtils.forceMkdir(loggingDir);
     // copy default config files
     InputStream input = streamUtils.classpathStream("configDefault/ipt.properties");
