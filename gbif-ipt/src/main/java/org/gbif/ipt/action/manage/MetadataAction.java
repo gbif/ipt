@@ -36,8 +36,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.text.html.HTMLDocument.HTMLReader.SpecialAction;
-
 /**
  * @author markus
  * 
@@ -53,8 +51,8 @@ public class MetadataAction extends ManagerBaseAction {
   private Map<String, String> ranks;
   private Map<String, String> preservationMethods;
 
-  private static final List<String> sections = Arrays.asList("basic", "geocoverage", "taxcoverage", "tempcoverage",
-      "keywords", "parties", "project", "methods", "citations", "collections", "physical", "additional");
+  private static final List<String> sections = Arrays.asList("basic", "geocoverage", "taxcoverage", "tempcoverage", "keywords", "parties", "project",
+      "methods", "citations", "collections", "physical", "additional");
 
   @Inject
   private VocabulariesManager vocabManager;
@@ -82,29 +80,29 @@ public class MetadataAction extends ManagerBaseAction {
   public Map<String, String> getLanguages() {
     return languages;
   }
-  
-  public String getLocaleLanguageIso3(){
-	return LangUtils.iso3(getLocaleLanguage());
+
+  public String getLocaleLanguageIso3() {
+    return LangUtils.iso3(getLocaleLanguage());
   }
-  
+
   public String getNext() {
     return next;
   }
 
   /**
-   * @return a map of Ranks
+   * @return a map of preservation methods
    */
-  public Map<String, String> getRanks() {   
-    ranks.put("", getText("eml.rank.selection"));
-    return ranks;
+  public Map<String, String> getPreservationMethods() {
+    preservationMethods.put("", getText("eml.preservation.methods.selection"));
+    return preservationMethods;
   }
 
   /**
-   * @return a map of preservation methods
+   * @return a map of Ranks
    */
-  public Map<String, String> getPreservationMethods() {   
-    preservationMethods.put("", getText("eml.preservation.methods.selection"));
-    return preservationMethods;
+  public Map<String, String> getRanks() {
+    ranks.put("", getText("eml.rank.selection"));
+    return ranks;
   }
 
   @Override
@@ -119,9 +117,14 @@ public class MetadataAction extends ManagerBaseAction {
   public Map<String, String> getRoleOptions() {
     return Role.htmlSelectMap;
   }
-  
+
   public String getSection() {
     return section;
+  }
+
+  public Map<String, String> getSpecimenPreservationMethodOptions() {
+    // TODO returning roleOptions for testing, the specimenPreservationMethodOptions map must be created
+    return Role.htmlSelectMap;
   }
 
   public Map<String, String> getTempTypes() {
@@ -149,8 +152,7 @@ public class MetadataAction extends ManagerBaseAction {
     ranks = vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, getLocaleLanguage(), false);
     preservationMethods = vocabManager.getI18nVocab(Constants.VOCAB_URI_PRESERVATION_METHOD, getLocaleLanguage(), false);
 
-    if (resource.getEml().getMetadataProvider().getLastName() == null
-        || resource.getEml().getMetadataProvider().getEmail() == null) {
+    if (resource.getEml().getMetadataProvider() != null && resource.getEml().getMetadataProvider().isEmpty()) {
       Agent current = new Agent();
       current.setFirstName(getCurrentUser().getFirstname());
       current.setLastName(getCurrentUser().getLastname());
