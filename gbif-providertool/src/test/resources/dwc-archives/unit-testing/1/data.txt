@@ -1,4 +1,0 @@
-TaxonId, scientificName
-1, tuco
-2, bufo
-3, dude
