@@ -186,7 +186,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       String[] val = new String[rowSize];
       if (hasNext) {
         try {
-          for (int i = 1; i < rowSize; i++) {
+          for (int i = 1; i <= rowSize; i++) {
             val[i - 1] = rs.getString(i);
           }
           // forward rs cursor
@@ -352,26 +352,26 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     List<String> columns = new ArrayList<String>();
     try {
       Connection con = getDbConnection(source);
-      if(con!=null){
-    	  // test sql
-    	  Statement stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-    	  stmt.setFetchSize(1);
-    	  ResultSet rs = stmt.executeQuery(source.getSql());
-    	  // get column metadata
-    	  ResultSetMetaData meta = rs.getMetaData();
-    	  int idx = 1;
-    	  int max = meta.getColumnCount();
-    	  while (idx <= max) {
-    		  columns.add(meta.getColumnLabel(idx));
-    		  idx++;
-    	  }
-    	  rs.close();
-    	  stmt.close();
-    	  con.close();
-      }else{    	  
-    	 String msg="Can't read sql source, the connection couldn't be created with the current parameters";
-    	 columns.add(msg);
-    	 log.warn(msg+" "+source);
+      if (con != null) {
+        // test sql
+        Statement stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+        stmt.setFetchSize(1);
+        ResultSet rs = stmt.executeQuery(source.getSql());
+        // get column metadata
+        ResultSetMetaData meta = rs.getMetaData();
+        int idx = 1;
+        int max = meta.getColumnCount();
+        while (idx <= max) {
+          columns.add(meta.getColumnLabel(idx));
+          idx++;
+        }
+        rs.close();
+        stmt.close();
+        con.close();
+      } else {
+        String msg = "Can't read sql source, the connection couldn't be created with the current parameters";
+        columns.add(msg);
+        log.warn(msg + " " + source);
       }
     } catch (SQLException e) {
       log.warn("Cant read sql source " + source, e);
@@ -400,7 +400,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   private Connection getDbConnection(SqlSource source) throws SQLException {
     Connection conn = null;
     // try to connect to db via simple JDBC
-    if (source.getHost()!=null && source.getJdbcUrl() != null && source.getJdbcDriver() != null) {
+    if (source.getHost() != null && source.getJdbcUrl() != null && source.getJdbcDriver() != null) {
       try {
         DriverManager.setLoginTimeout(5);
         Class.forName(source.getJdbcDriver());
@@ -418,15 +418,13 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
           warn = warn.getNextWarning();
         }
       } catch (java.lang.ClassNotFoundException e) {
-        String msg = String.format(
-            "Couldnt load JDBC driver to create new external datasource connection with JDBC Class=%s and URL=%s. Error: %s",
+        String msg = String.format("Couldnt load JDBC driver to create new external datasource connection with JDBC Class=%s and URL=%s. Error: %s",
             source.getJdbcDriver(), source.getJdbcUrl(), e.getMessage());
         log.warn(msg, e);
         throw new SQLException(msg);
       } catch (Exception e) {
-        String msg = String.format(
-            "Couldnt create new external datasource connection with JDBC Class=%s, URL=%s, user=%s. Error: %s",
-            source.getJdbcDriver(), source.getJdbcUrl(), source.getUsername(), e.getMessage());
+        String msg = String.format("Couldnt create new external datasource connection with JDBC Class=%s, URL=%s, user=%s. Error: %s", source.getJdbcDriver(),
+            source.getJdbcUrl(), source.getUsername(), e.getMessage());
         log.warn(msg, e);
         throw new SQLException(msg);
       }
@@ -527,23 +525,23 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     List<String[]> preview = new ArrayList<String[]>();
     try {
       Connection con = getDbConnection(source);
-      if(con!=null){
-    	  // test sql
-    	  Statement stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-    	  stmt.setFetchSize(rows);
-    	  ResultSet rs = stmt.executeQuery(source.getSql());
-    	  // loop over result
-    	  while (rows > 0 && rs.next()) {
-    		  rows--;
-    		  String[] row = new String[source.getColumns()];
-    		  for (int idx = 0; idx < source.getColumns(); idx++) {
-    			  row[idx] = rs.getString(idx + 1);
-    		  }
-    		  preview.add(row);
-    	  }
-    	  rs.close();
-    	  stmt.close();
-    	  con.close();
+      if (con != null) {
+        // test sql
+        Statement stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+        stmt.setFetchSize(rows);
+        ResultSet rs = stmt.executeQuery(source.getSql());
+        // loop over result
+        while (rows > 0 && rs.next()) {
+          rows--;
+          String[] row = new String[source.getColumns()];
+          for (int idx = 0; idx < source.getColumns(); idx++) {
+            row[idx] = rs.getString(idx + 1);
+          }
+          preview.add(row);
+        }
+        rs.close();
+        stmt.close();
+        con.close();
       }
     } catch (SQLException e) {
       log.warn("Cant read sql source " + source, e);
