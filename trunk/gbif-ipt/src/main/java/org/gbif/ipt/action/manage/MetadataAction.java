@@ -36,6 +36,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.SpecialAction;
+
 /**
  * @author markus
  * 
@@ -49,6 +51,7 @@ public class MetadataAction extends ManagerBaseAction {
   private Map<String, String> languages;
   private Map<String, String> countries;
   private Map<String, String> ranks;
+  private Map<String, String> preservationMethods;
 
   private static final List<String> sections = Arrays.asList("basic", "geocoverage", "taxcoverage", "tempcoverage",
       "keywords", "parties", "project", "methods", "citations", "collections", "physical", "additional");
@@ -96,6 +99,14 @@ public class MetadataAction extends ManagerBaseAction {
     return ranks;
   }
 
+  /**
+   * @return a map of preservation methods
+   */
+  public Map<String, String> getPreservationMethods() {   
+    preservationMethods.put("", getText("eml.preservation.methods.selection"));
+    return preservationMethods;
+  }
+
   @Override
   public Resource getResource() {
     return resource;
@@ -109,11 +120,6 @@ public class MetadataAction extends ManagerBaseAction {
     return Role.htmlSelectMap;
   }
   
-  public Map<String, String> getSpecimenPreservationMethodOptions() {
-	 // TODO returning roleOptions for testing, the specimenPreservationMethodOptions map must be created
-	 return Role.htmlSelectMap;
-  }
-
   public String getSection() {
     return section;
   }
@@ -141,6 +147,7 @@ public class MetadataAction extends ManagerBaseAction {
     languages = vocabManager.getI18nVocab(Constants.VOCAB_URI_LANGUAGE, getLocaleLanguage(), true);
     countries = vocabManager.getI18nVocab(Constants.VOCAB_URI_COUNTRY, getLocaleLanguage(), true);
     ranks = vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, getLocaleLanguage(), false);
+    preservationMethods = vocabManager.getI18nVocab(Constants.VOCAB_URI_PRESERVATION_METHOD, getLocaleLanguage(), false);
 
     if (resource.getEml().getMetadataProvider().getLastName() == null
         || resource.getEml().getMetadataProvider().getEmail() == null) {
