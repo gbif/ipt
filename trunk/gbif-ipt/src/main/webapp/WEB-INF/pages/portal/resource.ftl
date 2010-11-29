@@ -1,3 +1,20 @@
+<#macro agentTable agent>
+<table>
+	<#if agent.role?? ><tr><th><@s.text name='eml.associatedParties.role'/></th><td><@s.text name='roleType.${agent.role!}'/></td></tr></#if>
+	<#if agent.firstName?? ><tr><th><@s.text name='portal.resource.name'/></th><td>${agent.firstName!} ${agent.lastName!}</td></tr></#if>
+	<#if agent.position?? ><tr><th><@s.text name='eml.associatedParties.position'/></th><td>${agent.position!}</td></tr></#if>
+	<#if agent.organisation?? ><tr><th><@s.text name='eml.contact.organisation'/></th><td>${agent.organisation!}</td></tr></#if>
+	<#if !agent.address.isEmpty()><tr><th><@s.text name='eml.contact.address.address'/></th><td>
+		<#if agent.address.address??>${agent.address.address}, </#if>
+		<#if agent.address.city??>${agent.address.city}, </#if>
+		<#if agent.address.province??>${agent.address.province}, </#if>
+		<#if agent.address.country??>${agent.address.country},</#if>
+	</td></tr></#if>
+	<#if agent.email?? || agent.phone??><tr><th><@s.text name='portal.resource.contact'/></th><td><a href="mailto:${agent.email!}">${agent.email!}</a> <#if agent.phone??><@s.text name='portal.resource.tel'/>: ${agent.phone!}</#if></td></tr></#if>
+	<#if agent.homepage?? ><tr><th><@s.text name='eml.associatedParties.homepage'/></th><td><a href="${agent.homepage!}">${agent.homepage!}</a></td></tr></#if>
+</table>
+</#macro>
+
 <#include "/WEB-INF/pages/inc/header.ftl">
 	<title>${resource.title!resource.shortname!}</title>
 	<style>
@@ -79,15 +96,25 @@
 <div class="definition">	
   <div class="title">
   	<div class="head">
+        <@s.text name='eml.contact'/>
+  	</div>
+  </div>
+  <div class="body">
+      	<div class="details">      		
+      		<@agentTable eml.contact />
+      	</div>
+  </div>
+</div>
+
+<div class="definition">	
+  <div class="title">
+  	<div class="head">
         <@s.text name='portal.resource.creator'/>
   	</div>
   </div>
   <div class="body">
-      	<div class="details">
-      		<table>
-          		<tr><th><@s.text name='portal.resource.name'/></th><td>${resource.creator.name!}</td></tr>
-          		<tr><th><@s.text name='resource.creator.email'/></th><td><a href="mailto:${resource.creator.email}">${resource.creator.email}</a></td></tr>
-      		</table>
+      	<div class="details">      		
+      		<@agentTable eml.getResourceCreator() />
       	</div>
   </div>
 </div>
@@ -99,19 +126,8 @@
   	</div>
   </div>
   <div class="body">
-	<#assign address>
-		<#if eml.contact.address.address??>${eml.contact.address.address}, </#if>
-		<#if eml.contact.address.city??>${eml.contact.address.city}, </#if>
-		<#if eml.contact.address.province??>${eml.contact.address.province}, </#if>
-		<#if eml.contact.address.country??>${eml.contact.address.country},</#if>
-	</#assign>
       	<div class="details">
-      		<table>
-          		<tr><th><@s.text name='portal.resource.name'/></th><td>${eml.contact.name!}</td></tr>
-          		<tr><th><@s.text name='eml.contact.organisation'/></th><td>${eml.contact.organisation!} <#if eml.contact.position??>(${eml.contact.position})</#if></td></tr>
-          		<tr><th><@s.text name='eml.contact.address.address'/></th><td>${address}</td></tr>
-          		<tr><th><@s.text name='portal.resource.contact'/></th><td><a href="mailto:${eml.contact.email!}">${eml.contact.email!}</a> <@s.text name='portal.resource.tel'/>: ${eml.contact.phone!}</td></tr>
-      		</table>
+      		<@agentTable eml.getMetadataProvider() />
       	</div>
   </div>
 </div>
@@ -127,24 +143,18 @@
   <div class="body">
       	<div class="details">
 			<#list eml.associatedParties as item>
-			<div class="halfcolumn">
-			<#assign itemTitle><@s.text name='manage.metadata.parties.item'/></#assign>
-			<div class="head">${itemTitle?upper_case} ${item_index+1}</div>
-      		<table>
-				<tr><th><@s.text name='portal.resource.name'/></th><td>${eml.associatedParties[item_index].firstName!} ${eml.associatedParties[item_index].lastName!}</td></tr>
-				<tr><th><@s.text name='eml.associatedParties.position'/></th><td>${eml.associatedParties[item_index].position!}</td></tr>
-				<tr><th><@s.text name='eml.associatedParties.organisation'/></th><td>${eml.associatedParties[item_index].organisation!}</td></tr>
-				<tr><th><@s.text name='eml.associatedParties.address.address'/></th><td>${eml.associatedParties[item_index].address.address!}</td></tr>
-				<tr><th><@s.text name='eml.associatedParties.address.city'/></th><td>${eml.associatedParties[item_index].address.city!}</td></tr>
-				<tr><th><@s.text name='eml.associatedParties.address.province'/></th><td>${eml.associatedParties[item_index].address.province!}</td></tr>
-  				<tr><th><@s.text name='eml.associatedParties.address.country'/></th><td>${eml.associatedParties[item_index].address.country!}</td></tr>
-  				<tr><th><@s.text name='eml.associatedParties.phone'/></th><td>${eml.associatedParties[item_index].phone!}</td></tr>
-  				<tr><th><@s.text name='eml.associatedParties.email'/></th><td><a href="mailto:${eml.associatedParties[item_index].email!}">${eml.associatedParties[item_index].email!}</a></td></tr>
-  				<tr><th><@s.text name='eml.associatedParties.homepage'/></th><td><a href="${eml.associatedParties[item_index].homepage!}">${eml.associatedParties[item_index].homepage!}</a></td></tr>
-  				<tr><th><@s.text name='eml.associatedParties.role'/></th><td><@s.text name='roleType.${eml.associatedParties[item_index].role!}'/></td></tr>
-      		</table>
-      		<div class="newline"></div>
+			<#if (item_index % 2) == 0>
+			<div>
+			</#if>
+				<div class="halfcolumn">
+					<#assign itemTitle><@s.text name='manage.metadata.parties.item'/></#assign>
+					<div class="head">${itemTitle?upper_case} ${item_index+1}</div>
+		      		<@agentTable item />
+				</div>
+			<#if (item_index % 2) == 1>
 			</div>
+      		<div class="newline"> <br/> </div>
+			</#if>
 			</#list>
       	</div>
   </div>
@@ -390,7 +400,6 @@
       		<table>
           		<tr><th><@s.text name='eml.hierarchyLevel'/></th><td>${eml.hierarchyLevel!}</td></tr>
           		<tr><th><@s.text name='eml.pubDate'/></th><td>${eml.pubDate?date!}</td></tr>
-          		<tr><th><@s.text name='eml.distributionUrl'/></th><td><a href="${eml.distributionUrl!}">${eml.distributionUrl!}</a></td></tr>
           		<tr><th><@s.text name='eml.purpose'/></th><td>${eml.purpose!}</td></tr>
           		<tr><th><@s.text name='eml.intellectualRights'/></th><td>${eml.intellectualRights!}</td></tr>
           		<tr><th><@s.text name='eml.additionalInfo'/></th><td>${eml.additionalInfo!}</td></tr>
