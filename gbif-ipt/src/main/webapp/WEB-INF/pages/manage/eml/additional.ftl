@@ -13,10 +13,13 @@
 <p><@s.text name='manage.metadata.additional.intro'/></p>
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <form class="topForm" action="metadata-${section}.do" method="post">
-	<div class="half">
-	  	<@input name="eml.hierarchyLevel" i18nkey="eml.hierarchyLevel" disabled=true />
+	<div class="halfcolumn">
+	  	<@input name="eml.hierarchyLevel" i18nkey="eml.hierarchyLevel" help="i18n" disabled=true />
+	</div>
+	<div class="halfcolumn">
 	  	<@input date=true name="eml.pubDate" i18nkey="eml.pubDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD",  "MM/DD/YYYY":"MM/DD/YYYY"} />
 	</div>
+	<div class="newline"></div>
   	<@text name="eml.purpose" i18nkey="eml.purpose" help="i18n"/>
   	<@text name="eml.intellectualRights" i18nkey="eml.intellectualRights" help="i18n"/>
   	<@text name="eml.additionalInfo" i18nkey="eml.additionalInfo"/>
