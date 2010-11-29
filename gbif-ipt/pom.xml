@@ -379,11 +379,11 @@
 		-->
 		
 		<!-- Lucene, full text search -->
-		<dependency>
+		<!--dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-core</artifactId>
 			<version>3.0.2</version>
-		</dependency>
+		</dependency-->
 		
 		<!-- testing -->
 		<dependency>
