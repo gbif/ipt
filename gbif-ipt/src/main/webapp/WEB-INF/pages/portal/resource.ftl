@@ -325,6 +325,7 @@
           		<tr><th><@s.text name='eml.collectionName'/></th><td>${eml.collectionName!}</td></tr>
           		<tr><th><@s.text name='eml.collectionId'/></th><td>${eml.collectionId!}</td></tr>
           		<tr><th><@s.text name='eml.parentCollectionId'/></th><td>${eml.parentCollectionId!}</td></tr>
+          		<tr><th><@s.text name='eml.specimenPreservationMethod'/></th><td>${eml.specimenPreservationMethod!}</td></tr>
           	</table>
           	<div class="newline"></div>
         	<table>

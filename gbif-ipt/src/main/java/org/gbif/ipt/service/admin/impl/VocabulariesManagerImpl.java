@@ -78,9 +78,10 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   private final XStream xstream = new XStream();
   private final RegistryManager registryManager;
   private final ExtensionManager extensionManager;
+  // these vocabularies are always updates on startup of the IPT
   private final String[] defaultVocabs = new String[]{
       Constants.VOCAB_URI_LANGUAGE, Constants.VOCAB_URI_COUNTRY, Constants.VOCAB_URI_RESOURCE_TYPE,
-      Constants.VOCAB_URI_RANKS};
+      Constants.VOCAB_URI_RANKS, Constants.VOCAB_URI_PRESERVATION_METHOD};
   private ConfigWarnings warnings;
 
   /**

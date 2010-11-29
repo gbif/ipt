@@ -20,7 +20,7 @@
 		<@input name="eml.parentCollectionId" />
 	</div>
 	<div class="halfcolumn">
-		<@select name="eml.specimenPreservationMethod" value="${eml.specimenPreservationMethod!}" options=roleOptions />
+		<@select name="eml.specimenPreservationMethod" value="${eml.specimenPreservationMethod!}" options=preservationMethods />
 	</div>
 	<div class="newline"></div>
 	<h2><@s.text name="manage.metadata.collections.curatorialUnits.title"/></h2>
