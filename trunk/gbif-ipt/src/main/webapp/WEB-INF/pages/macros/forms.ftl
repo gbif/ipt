@@ -12,7 +12,7 @@
   </div>
 </#macro> 
 
-<#macro select name options value="" i18nkey="" errorfield="" size=1 disabled=false help="" includeEmpty=false>
+<#macro select name options value="" i18nkey="" errorfield="" size=1 disabled=false help="" includeEmpty=false javaGetter=true>
   <div>
 	<#include "/WEB-INF/pages/macros/form_field_common.ftl">
     <select name="${name}" id="${name}" size="${size}" <#if disabled>readonly="readonly"</#if>>
@@ -20,7 +20,9 @@
       <option value="" <#if (value!"")==""> selected="selected"</#if>></option>
 	</#if>
     <#list options?keys as val>
-      <option value="${val}" <#if (value!"")==val> selected="selected"</#if>><@s.text name="${options.get(val)}"/></option>
+      <option value="${val}" <#if (value!"")==val> selected="selected"</#if>>
+	  <#if javaGetter><@s.text name="${options.get(val)}"/><#else><@s.text name="${options[val]}"/></#if>
+	  </option>
     </#list>
 	</select>
   </div>

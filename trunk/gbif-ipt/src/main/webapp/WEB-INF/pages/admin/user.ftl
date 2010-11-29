@@ -23,7 +23,7 @@ $(document).ready(function(){
 	<@input name="user.email" disabled=id?has_content/>  
 	<@input name="user.firstname" />  
 	<@input name="user.lastname" />  
-	<@select name="user.role" value=user.role options={"User":"user.roles.user", "Manager":"user.roles.manager", "Publisher":"user.roles.publisher", "Admin":"user.roles.admin"}/>
+	<@select name="user.role" value=user.role javaGetter=false options={"User":"user.roles.user", "Manager":"user.roles.manager", "Publisher":"user.roles.publisher", "Admin":"user.roles.admin"}/>
 	
 	<#if user.password??>
 	  <div class="buttons">
