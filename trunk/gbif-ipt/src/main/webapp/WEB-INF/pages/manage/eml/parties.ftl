@@ -61,7 +61,7 @@
 		  			<@input name="eml.associatedParties[${item_index}].homepage" i18nkey="eml.associatedParties.homepage" />
 		  		</div> 
 		  		<div class="newline"></div> 	
-		  		<@select name="eml.associatedParties[${item_index}].role" i18nkey="eml.associatedParties.role" value="${eml.associatedParties[item_index].role}" options=roles />  		
+		  		<@select name="eml.associatedParties[${item_index}].role" i18nkey="eml.associatedParties.role" help="i18n" value="${eml.associatedParties[item_index].role}" options=roles />  		
 		  		<div class="newline"></div>
 				<div class="horizontal_dotted_line_large_foo" id="separator"></div>
 				<div class="newline"></div>
@@ -129,7 +129,7 @@
   	</div>
   	<div class="newline"></div>
   	<div class="halfcolumn">  		
-  		<@select name="role" i18nkey="eml.associatedParties.role"  options=roles />
+  		<@select name="role" i18nkey="eml.associatedParties.role" help="i18n" options=roles />
   	</div>
   	<div class="newline"></div>
 	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
