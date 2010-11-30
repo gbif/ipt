@@ -57,13 +57,17 @@ $(document).ready(function(){
 	<@checkbox name="debug" i18nkey="admin.config.debug" />
 
   <div id="location">
-	<label for="latitude"><@s.text name="admin.config.server.location"/></label>
 	<div class="newline"></div>
+	<div class="newline"></div>
+	<div class="newline"></div>
+	<label for="latitude"><@s.text name="admin.config.server.location"/></label>
 	<div class="halfcolumn">
-		<input type="text" id="latitude" name="latitude" value="${latitude!}" size="10" />
+		<@input name="latitude" i18nkey="admin.config.server.latitude" />
+		<!-- input type="text" id="latitude" name="latitude" value="${latitude!}" size="10" /-->
 	</div>
 	<div class="halfcolumn">
-		<input type="text" id="longitude" name="longitude" value="${longitude!}" size="10" />
+		<@input name="longitude" i18nkey="admin.config.server.longitude" />
+		<!-- input type="text" id="longitude" name="longitude" value="${longitude!}" size="10" / -->
 	</div>
   </div>
   <div id="locationMap">
