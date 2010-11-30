@@ -14,6 +14,7 @@ import com.google.gson.annotations.SerializedName;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
@@ -24,8 +25,10 @@ import java.util.List;
  * TODO: Documentation.
  * 
  */
-public class Vocabulary implements Comparable {
-  @SerializedName("identifier") private String uri; // identifier for JSON.
+public class Vocabulary implements Comparable, Serializable {
+  private static final long serialVersionUID = 22000013267L;
+  @SerializedName("identifier")
+  private String uri; // identifier for JSON.
   private URL url; // url to its definition
   private String title;
   private String description;

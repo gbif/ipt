@@ -14,6 +14,8 @@ import static com.google.common.base.Objects.equal;
 
 import com.google.common.base.Objects;
 
+import java.io.Serializable;
+
 /**
  * A single property of an extension. Often also known as concept or term.
  * It implements the ConceptTerm of the dwca reader and its equal method compares only the qualified name, so that any
@@ -21,7 +23,8 @@ import com.google.common.base.Objects;
  * 
  * Natural sorting is based on the group and then the property name
  */
-public class ExtensionProperty implements Comparable<ExtensionProperty>, ConceptTerm {
+public class ExtensionProperty implements Comparable<ExtensionProperty>, ConceptTerm, Serializable {
+  private static final long serialVersionUID = 698996553L;
   private Extension extension;
   private String name;
   private String namespace;

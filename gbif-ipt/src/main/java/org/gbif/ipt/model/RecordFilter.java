@@ -18,14 +18,18 @@ package org.gbif.ipt.model;
 
 import org.apache.commons.lang.StringUtils;
 
+import java.io.Serializable;
+
 /**
  * @author markus
  * 
  */
-public class RecordFilter {
+public class RecordFilter implements Serializable {
   public enum Comparator {
     IsNULL, IsNotNULL, Equals, NotEquals
-  };
+  }
+
+  private static final long serialVersionUID = 98709027465L;;
 
   private Comparator comparator;
   private Integer column;

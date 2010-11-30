@@ -11,6 +11,7 @@ import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -25,11 +26,13 @@ import java.util.Set;
  * @author markus
  * 
  */
-public class Extension {
+public class Extension implements Serializable {
+  private static final long serialVersionUID = 543543543L;
   private String title; // human title
   private String name; // table, file & xml tag naming. no whitespace allowed
   private URL url;
-  @SerializedName("identifier") private String rowType; // Custom serialized field for JSON.
+  @SerializedName("identifier")
+  private String rowType; // Custom serialized field for JSON.
   private String subject;
   private String description;
   private String namespace;
@@ -197,8 +200,7 @@ public class Extension {
   }
 
   public void setRowType(String rowType) {
-    if (Constants.DWC_ROWTYPE_OCCURRENCE.equalsIgnoreCase(rowType)
-        || Constants.DWC_ROWTYPE_TAXON.equalsIgnoreCase(rowType)) {
+    if (Constants.DWC_ROWTYPE_OCCURRENCE.equalsIgnoreCase(rowType) || Constants.DWC_ROWTYPE_TAXON.equalsIgnoreCase(rowType)) {
       core = true;
     } else {
       core = false;

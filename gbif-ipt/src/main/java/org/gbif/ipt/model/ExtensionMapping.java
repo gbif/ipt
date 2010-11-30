@@ -18,6 +18,7 @@ package org.gbif.ipt.model;
 
 import org.gbif.dwc.terms.ConceptTerm;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,7 +26,8 @@ import java.util.Set;
  * @author markus
  * 
  */
-public class ExtensionMapping {
+public class ExtensionMapping implements Serializable {
+  private static final long serialVersionUID = 23789961641L;
 
   public static final Integer IDGEN_LINE_NUMBER = -1;
   public static final Integer IDGEN_UUID = -2;

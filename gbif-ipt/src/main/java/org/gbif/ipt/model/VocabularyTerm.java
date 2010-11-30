@@ -18,11 +18,14 @@ import static com.google.common.base.Objects.equal;
 
 import com.google.common.base.Objects;
 
+import java.io.Serializable;
+
 /**
  * A single literal representation of a vocabulary concept in a given language
  * 
  */
-public class VocabularyTerm {
+public class VocabularyTerm implements Serializable {
+  private static final long serialVersionUID = 9000999000012L;
   private String title;
   private String lang;
 
