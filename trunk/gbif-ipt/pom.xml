@@ -7,7 +7,7 @@
 	<groupId>org.gbif</groupId>
 	<artifactId>ipt</artifactId>
 	<packaging>war</packaging>
-	<version>2.0-SNAPSHOT</version>
+		<version>2.0-RC1</version>
 	<name>IPT</name>
 	<description>The GBIF Integrated Publishing Toolkit</description>
 	
@@ -401,16 +401,6 @@
 			<scope>compile</scope>
 		</dependency>
 		
-		
-		<!-- JSON -->
-		<!-- This has been moved to the source code directly, since the maven repository versions are
-			 all compiled for Java 1.6 -->
-		<!--dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>20090211</version>	
-		</dependency-->		
-
 		<!-- testing only. Shows the struts2 configuration in the browser at /config-browser/index.do -->
 		<!-- 
 		<dependency>
@@ -441,12 +431,6 @@
 			</properties>
 		</profile>
 		
-		<!-- Personal settings used by markus for development -->
-		<profile>
-			<id>markus</id>
-			<properties>
-			</properties>
-		</profile>
 	</profiles>
 	
 	
