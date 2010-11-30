@@ -49,6 +49,7 @@ public class MetadataAction extends ManagerBaseAction {
   private Map<String, String> languages;
   private Map<String, String> countries;
   private Map<String, String> ranks;
+  private Map<String, String> roles;
   private Map<String, String> preservationMethods;
 
   private static final List<String> sections = Arrays.asList("basic", "geocoverage", "taxcoverage", "tempcoverage", "keywords", "parties", "project",
@@ -114,8 +115,9 @@ public class MetadataAction extends ManagerBaseAction {
     return resourceTypes;
   }
 
-  public Map<String, String> getRoleOptions() {
-    return Role.htmlSelectMap;
+  public Map<String, String> getRoles() {
+	roles.put("", getText("eml.agent.role.selection"));
+    return roles;
   }
 
   public String getSection() {
@@ -145,6 +147,7 @@ public class MetadataAction extends ManagerBaseAction {
     languages = vocabManager.getI18nVocab(Constants.VOCAB_URI_LANGUAGE, getLocaleLanguage(), true);
     countries = vocabManager.getI18nVocab(Constants.VOCAB_URI_COUNTRY, getLocaleLanguage(), true);
     ranks = vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, getLocaleLanguage(), false);
+    roles = vocabManager.getI18nVocab(Constants.VOCAB_URI_ROLES, getLocaleLanguage(), false);
     preservationMethods = vocabManager.getI18nVocab(Constants.VOCAB_URI_PRESERVATION_METHOD, getLocaleLanguage(), false);
 
     if (resource.getEml().getMetadataProvider() != null && resource.getEml().getMetadataProvider().isEmpty()) {
