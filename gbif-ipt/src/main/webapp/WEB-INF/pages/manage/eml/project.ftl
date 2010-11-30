@@ -20,7 +20,7 @@
 		<@input name="eml.project.personnel.lastName" />
 	</div>
 	<div class="halfcolumn">
-		<@select name="eml.project.personnel.role" value="${(eml.project.personnel.role)!}" options=roles />
+		<@select name="eml.project.personnel.role" value="${(eml.project.personnel.role)!}" help="i18n" options=roles />
 	</div>
 	<div class="newline"></div>
 	<@text name="eml.project.funding" help="i18n"/>
