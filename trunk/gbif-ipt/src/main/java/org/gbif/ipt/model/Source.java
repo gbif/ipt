@@ -28,6 +28,7 @@ import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Iterator;
 
@@ -35,7 +36,7 @@ import java.util.Iterator;
  * @author markus
  * 
  */
-public abstract class Source implements Comparable<Source> {
+public abstract class Source implements Comparable<Source>, Serializable {
   public static class FileSource extends Source {
     private String fieldsTerminatedBy = "\t";
     private String fieldsEnclosedBy;
@@ -49,8 +50,7 @@ public abstract class Source implements Comparable<Source> {
       if (x == null) {
         return null;
       }
-      return x.replaceAll("\\t", "\\\\t").replaceAll("\\n", "\\\\n").replaceAll("\\r", "\\\\r").replaceAll("\\f",
-          "\\\\f");
+      return x.replaceAll("\\t", "\\\\t").replaceAll("\\n", "\\\\n").replaceAll("\\r", "\\\\r").replaceAll("\\f", "\\\\f");
     }
 
     public Character getFieldQuoteChar() {
@@ -159,12 +159,11 @@ public abstract class Source implements Comparable<Source> {
       if (x == null) {
         return null;
       }
-      return x.replaceAll("\\\\t", String.valueOf('\t')).replaceAll("\\\\n", String.valueOf('\n')).replaceAll("\\\\r",
-          String.valueOf('\r')).replaceAll("\\\\f", String.valueOf('\f'));
+      return x.replaceAll("\\\\t", String.valueOf('\t')).replaceAll("\\\\n", String.valueOf('\n')).replaceAll("\\\\r", String.valueOf('\r')).replaceAll(
+          "\\\\f", String.valueOf('\f'));
     }
 
   }
-
   public static class SqlSource extends Source {
     private String sql;
     private JdbcInfo rdbms;
@@ -230,6 +229,8 @@ public abstract class Source implements Comparable<Source> {
       this.username = username;
     }
   }
+
+  private static final long serialVersionUID = 119920000112L;
 
   protected Resource resource;
   protected String name;

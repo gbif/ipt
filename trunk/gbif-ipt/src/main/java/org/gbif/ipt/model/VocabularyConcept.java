@@ -14,6 +14,7 @@ import com.google.common.base.Objects;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.log4j.Logger;
 
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashSet;
@@ -25,7 +26,8 @@ import java.util.Set;
  * preferred term in German, but both Germany and Deutschland are simply terms representing a single concept in a
  * vocabulary.
  */
-public class VocabularyConcept implements Comparable {
+public class VocabularyConcept implements Comparable, Serializable {
+  private static final long serialVersionUID = 900099923L;
   private static Logger log = Logger.getLogger(VocabularyConcept.class);
 
   private Vocabulary vocabulary;

@@ -12,12 +12,14 @@ package org.gbif.ipt.model;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
  * Encapsulates all the information for an Organisation
  */
-public class Organisation {
+public class Organisation implements Serializable {
+  private static final long serialVersionUID = 2238765436256564L;
 
   private UUID key;
   private String description;
