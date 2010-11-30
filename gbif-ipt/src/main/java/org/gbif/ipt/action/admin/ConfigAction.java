@@ -96,14 +96,7 @@ public class ConfigAction extends POSTAction {
     }
 
     // http proxy
-    if (proxy != null) {
-      try {
-        configManager.setProxy(proxy);
-      } catch (InvalidConfigException e) {
-        addActionError(getText("admin.config.proxy.error"));
-        return INPUT;
-      }
-    }
+    configManager.setProxy(proxy);
 
     // ipt debug mode
     if (debug != null) {
