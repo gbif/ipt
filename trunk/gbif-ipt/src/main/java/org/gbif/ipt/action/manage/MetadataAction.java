@@ -133,7 +133,7 @@ public class MetadataAction extends ManagerBaseAction {
     super.prepare();
     // somehow the action params in struts.xml dont seem to work right
     // we therefore take the section parameter from the requested url
-    section = StringUtils.substringBetween(req.getRequestURI(), "-", ".");
+    section = StringUtils.substringBetween(req.getRequestURI(), "metadata-", ".");
     int idx = sections.indexOf(section);
     if (idx < 0 || idx == sections.size()) {
       idx = 0;
