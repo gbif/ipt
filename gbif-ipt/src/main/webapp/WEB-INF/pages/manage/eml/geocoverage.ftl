@@ -163,8 +163,8 @@
 	        $("#"+bboxBase+"max\\.longitude").attr("disabled", "");
 	        $("#"+bboxBase+"max\\.latitude").attr("disabled", "");
 	        $("#"+bboxBase+"min\\.longitude").attr("disabled", "");
-	        marker1.setPosition(new google.maps.LatLng(-10, -10));
-      		marker2.setPosition(new google.maps.LatLng(10, 10));
+	        marker1.setPosition(new google.maps.LatLng(dfminy, dfminx));
+      		marker2.setPosition(new google.maps.LatLng(dfmaxy, dfmaxx));
        		redrawAndFill();
 	     }		
 	});
@@ -179,7 +179,7 @@
 <div id="map"></div>
 <form class="topForm" action="metadata-${section}.do" method="post">
 	<div id="bbox">
-		<@checkbox name="eml.geospatialCoverages.globalCoverage" help="i18n"/>
+		<@checkbox name="globalCoverage" help="i18n" i18nkey="eml.geospatialCoverages.globalCoverage"/>
 		<div class="halfcolumn">
   			<@input name="eml.geospatialCoverages[0].boundingCoordinates.min.longitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.min.longitude)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.min.longitude"/>
   		</div>
