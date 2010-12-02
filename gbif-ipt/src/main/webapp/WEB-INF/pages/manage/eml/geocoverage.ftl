@@ -150,22 +150,16 @@
 	}
 	
 	$(":checkbox").click(function() {
-		if($(":checkbox").attr("checked")) {		
-			$("#"+bboxBase+"min\\.latitude").attr("disabled", "disabled");
-	        $("#"+bboxBase+"max\\.latitude").attr("disabled", "disabled");
-	        $("#"+bboxBase+"min\\.longitude").attr("disabled", "disabled");	
-	        $("#"+bboxBase+"max\\.longitude").attr("disabled", "disabled");
+		if($(":checkbox").attr("checked")) {
+			$("#coordinates").slideUp('slow');	
 	        marker1.setPosition(new google.maps.LatLng(-90, -180));
       		marker2.setPosition(new google.maps.LatLng(90, 180));
        		redrawAndFill();			
 		} else {
-			$("#"+bboxBase+"min\\.latitude").attr("disabled", "");
-	        $("#"+bboxBase+"max\\.longitude").attr("disabled", "");
-	        $("#"+bboxBase+"max\\.latitude").attr("disabled", "");
-	        $("#"+bboxBase+"min\\.longitude").attr("disabled", "");
 	        marker1.setPosition(new google.maps.LatLng(dfminy, dfminx));
       		marker2.setPosition(new google.maps.LatLng(dfmaxy, dfmaxx));
        		redrawAndFill();
+			$("#coordinates").slideDown('slow')
 	     }		
 	});
      
@@ -180,6 +174,7 @@
 <form class="topForm" action="metadata-${section}.do" method="post">
 	<div id="bbox">
 		<@checkbox name="globalCoverage" help="i18n" i18nkey="eml.geospatialCoverages.globalCoverage"/>
+	 <div id="coordinates">
 		<div class="halfcolumn">
   			<@input name="eml.geospatialCoverages[0].boundingCoordinates.min.longitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.min.longitude)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.min.longitude"/>
   		</div>
@@ -193,6 +188,7 @@
   		<div class="halfcolumn">
   			<@input name="eml.geospatialCoverages[0].boundingCoordinates.max.latitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.max.latitude)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.max.latitude"/>
   		</div>
+  	 </div>	
 	</div>
 	<div class="newline"></div>
 		<@text name="eml.geospatialCoverages[0].description" value="${(eml.geospatialCoverages[0].description)!}" i18nkey="eml.geospatialCoverages.description"/>
