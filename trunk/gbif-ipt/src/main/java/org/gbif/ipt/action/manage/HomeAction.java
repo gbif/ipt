@@ -36,7 +36,7 @@ public class HomeAction extends BaseAction {
    * @return
    */
   public String locked() {
-    addActionError("This resource is locked due to background processing, please try again later.");
+    addActionError(getText("manage.home.resource.locked"));
     return execute();
   }
 

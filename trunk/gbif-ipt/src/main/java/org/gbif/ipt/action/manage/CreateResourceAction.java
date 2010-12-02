@@ -49,7 +49,7 @@ public class CreateResourceAction extends POSTAction {
       return INPUT;
     } catch (ImportException e) {
     	log.error("Error importing the dwc archive: "+e.getMessage(), e);
-        addActionError("Error importing the dwc archive - are you sure this is a DwC-A? "+e.getMessage());
+    	addActionError(getText("validation.resource.import.exception", new String[]{e.getMessage()}));
         return INPUT;
 	}
     return SUCCESS;
