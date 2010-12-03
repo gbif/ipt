@@ -81,7 +81,7 @@ public class AccountAction extends POSTAction {
         setRedirectUrl();
         return SUCCESS;
       } else {
-        addActionError("The email - password combination does not exists");
+        addActionError(getText("admin.user.wrong.email.password.combination"));
         log.info("User " + email + " failed to log in");
       }
     }
