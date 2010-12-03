@@ -108,10 +108,10 @@ public class ExtensionsAction extends POSTAction {
   public String list() {
     if (updateVocabs) {
       UpdateResult result = vocabManager.updateAll();
-      addActionMessage(result.updated.size() + " vocabularies have been updated");
-      addActionMessage(result.unchanged.size() + " vocabularies have not been modifed since last download");
+      addActionMessage(getText("admin.extensions.vocabularies.updated", new String[]{result.updated.size()+""}));
+      addActionMessage(getText("admin.extensions.vocabularies.unchanged", new String[]{result.unchanged.size()+""}));
       if (!result.errors.isEmpty()) {
-        addActionWarning(result.errors.size() + " vocabularies produced an error when updating. Please consult logs!");
+    	addActionWarning(getText("admin.extensions.vocabularies.errors", new String[]{result.errors.size()+""}));
       }
     }
 
