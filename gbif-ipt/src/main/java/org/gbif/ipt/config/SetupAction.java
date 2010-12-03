@@ -227,7 +227,7 @@ public class SetupAction extends BaseAction {
         return SUCCESS;
       } catch (IOException e) {
         log.error(e);
-        addActionError("Failed to setup admin account. Can't write user file: " + e.getMessage());
+        addActionError(getText("admin.config.setup2.failed", new String[]{e.getMessage()}));
       } catch (AlreadyExistingException e) {
         addFieldError("user.email", "User exists as non admin user already");
       } catch (InvalidConfigException e) {
