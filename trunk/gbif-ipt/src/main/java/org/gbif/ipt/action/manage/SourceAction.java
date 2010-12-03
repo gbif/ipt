@@ -107,7 +107,7 @@ public class SourceAction extends ManagerBaseAction {
     } catch (ImportException e) {
       // even though we have problems with this source we'll keep it for manual corrections
       log.error("Cannot add source " + filename + ": " + e.getMessage(), e);
-      addActionError("Cannot add source " + filename + ": " + e.getMessage());
+      addActionError(getText("manage.resource.source.cannot.add", new String[]{filename,e.getMessage()}));
     }
   }
 
