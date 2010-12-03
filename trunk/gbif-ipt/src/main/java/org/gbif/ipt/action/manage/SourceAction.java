@@ -78,10 +78,10 @@ public class SourceAction extends ManagerBaseAction {
           }
         } catch (IOException e) {
           log.error(e);
-          addActionError(getText("manage.resource.source.filesystem.error", new String[]{e.getMessage()}));
+          addActionError(getText("manage.source.filesystem.error", new String[]{e.getMessage()}));
           return ERROR;
         } catch (UnsupportedCompressionType e) {
-          addActionError(getText("manage.resource.source.unsupported.compression.format"));
+          addActionError(getText("manage.source.unsupported.compression.format"));
           return ERROR;
         }
       } else {
@@ -100,24 +100,24 @@ public class SourceAction extends ManagerBaseAction {
       saveResource();
       id = source.getName();
       if (replaced) {
-    	addActionMessage(getText("manage.resource.source.replaced.existing", new String[]{source.getName()}));
+    	addActionMessage(getText("manage.source.replaced.existing", new String[]{source.getName()}));
       } else {
-        addActionMessage(getText("manage.resource.source.added.new", new String[]{source.getName()}));
+        addActionMessage(getText("manage.source.added.new", new String[]{source.getName()}));
       }
     } catch (ImportException e) {
       // even though we have problems with this source we'll keep it for manual corrections
       log.error("Cannot add source " + filename + ": " + e.getMessage(), e);
-      addActionError(getText("manage.resource.source.cannot.add", new String[]{filename,e.getMessage()}));
+      addActionError(getText("manage.source.cannot.add", new String[]{filename,e.getMessage()}));
     }
   }
 
   @Override
   public String delete() {
     if (sourceManager.delete(resource, resource.getSource(id))) {
-      addActionMessage(getText("manage.resource.source.deleted", new String[]{id}));
+      addActionMessage(getText("manage.source.deleted", new String[]{id}));
       saveResource();
     } else {
-      addActionMessage(getText("manage.resource.source.deleted.couldnt", new String[]{id}));
+      addActionMessage(getText("manage.source.deleted.couldnt", new String[]{id}));
     }
     return SUCCESS;
   }
@@ -208,21 +208,21 @@ public class SourceAction extends ManagerBaseAction {
         try {
           source = sourceManager.add(resource, file, fileFileName);
           if (resource.getSource(source.getName()) != null) {
-          	addActionMessage(getText("manage.resource.source.replaced.existing", new String[]{source.getName()}));
+          	addActionMessage(getText("manage.source.replaced.existing", new String[]{source.getName()}));
           } else {
-            addActionMessage(getText("manage.resource.source.added.new", new String[]{source.getName()}));
+            addActionMessage(getText("manage.source.added.new", new String[]{source.getName()}));
           }
         } catch (ImportException e) {
           // even though we have problems with this source we'll keep it for manual corrections
           log.error("Source error: " + e.getMessage(), e);
-          addActionError(getText("manage.resource.source.error", new String[]{e.getMessage()}));
+          addActionError(getText("manage.source.error", new String[]{e.getMessage()}));
         }
       } else {
         try {
           resource.addSource(source, false);
         } catch (AlreadyExistingException e) {
           // shouldnt really happen as we validate this beforehand - still catching it here to be safe
-          addActionError(getText("manage.resource.source.existing"));
+          addActionError(getText("manage.source.existing"));
         }
       }
       id = source.getName();

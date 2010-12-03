@@ -116,9 +116,9 @@ public class TranslationAction extends ManagerBaseAction {
           }
         }
       }
-      addActionMessage("Mapped " + count + " terms based on vocabulary terms");
+      addActionMessage(getText("manage.translation.mapped.terms", new String[]{count+""}));
     } else {
-      addActionError("Cant find a vocabulary to automap translation");
+      addActionError(getText("manage.translation.cantfind.vocabulary"));
     }
     return SUCCESS;
   }
@@ -127,7 +127,7 @@ public class TranslationAction extends ManagerBaseAction {
   public String delete() {
 	field.getTranslation().clear();
 	saveResource();
-	addActionMessage("Translation deleted for term " + field.getTerm());
+	addActionMessage(getText("manage.translation.deleted", new String[]{field.getTerm().toString()}));
     id = mapping.getExtension().getRowType();
     return NONE;
   }
@@ -216,7 +216,7 @@ public class TranslationAction extends ManagerBaseAction {
       }
     }
 
-    addActionMessage("Reloaded " + trans.getTmap().size() + " distinct values from source");
+    addActionMessage(getText("manage.translation.reloaded.values", new String[]{trans.getTmap().size()+""}));
   }
 
   @Override
@@ -226,7 +226,7 @@ public class TranslationAction extends ManagerBaseAction {
     // save entire resource config
     saveResource();
     id = mapping.getExtension().getRowType();
-    addActionMessage("Translation saved for term " + field.getTerm());
+    addActionMessage(getText("manage.translation.saved", new String[]{field.getTerm().toString()}));
     return NONE;
   }
 
