@@ -87,7 +87,7 @@ public class EmlValidator extends BaseValidator {
 				 */
 
 				/* Title - mandatory */
-				if (!exists(eml.getTitle())) {
+				if (!exists(eml.getTitle()) || eml.getTitle().trim().equals("")) {
 					action.addFieldError("eml.title", action.getText("validation.required", new String[] { action.getText("eml.title") }));
 				}
 				/* languaje - optional */
