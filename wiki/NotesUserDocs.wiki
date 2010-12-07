@@ -8,7 +8,7 @@ The only exception are annotations to data, which can only be done if you have a
 
 = IPT Setup / Admin =
 == Initial Setup ==
-=== DataDir ===
+=== Data Dir ===
 === Admin Account ===
 === BaseURL & Proxy ===
 
