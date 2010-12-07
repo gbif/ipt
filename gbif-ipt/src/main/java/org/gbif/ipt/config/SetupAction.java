@@ -156,30 +156,34 @@ public class SetupAction extends BaseAction {
    * @throws InvalidConfigException
    */
   public String setup() {
-    if (isHttpPost() && dataDirPath != null) {
-      File dd = new File(dataDirPath);
-      try {
-        boolean created = configManager.setDataDir(dd);
-        if (created) {
-          addActionMessage(getText("admin.config.setup.datadir.created"));
-        } else {
-          addActionMessage(getText("admin.config.setup.datadir.reused"));
-        }
-      } catch (InvalidConfigException e) {
-        log.warn("Failed to setup datadir: " + e.getMessage(), e);
-        if(e.getType() == InvalidConfigException.TYPE.NON_WRITABLE_DATA_DIR) {
-        	addActionError(getText("admin.config.setup.datadir.writable", new String[] {dataDirPath}));
-        } else {
-        	addActionError(getText("admin.config.setup.datadir.error"));
-        }
-      }
-    }
-    if (dataDir.isConfigured()) {
-      // the data dir is already/now configured, skip the first setup step
-      return SUCCESS;
-    }
-    return INPUT;
-  }
+	    if (isHttpPost() && dataDirPath != null) {
+	      File dd = new File(dataDirPath);
+	      try {
+	    	  if(dd.isAbsolute()) {
+	    		  boolean created = configManager.setDataDir(dd);
+	    		  if (created) {
+	    			  addActionMessage(getText("admin.config.setup.datadir.created"));
+	    		  } else {
+	    			  addActionMessage(getText("admin.config.setup.datadir.reused"));
+	    		  }
+	    	  } else {
+	    		  addActionError(getText("admin.config.setup.datadir.absolute", new String[] {dataDirPath}));
+	    	  }
+	      } catch (InvalidConfigException e) {
+	    	  log.warn("Failed to setup datadir: " + e.getMessage(), e);
+	    	  if(e.getType() == InvalidConfigException.TYPE.NON_WRITABLE_DATA_DIR) {
+	    		  addActionError(getText("admin.config.setup.datadir.writable", new String[] {dataDirPath}));
+	    	  } else {
+	    		  addActionError(getText("admin.config.setup.datadir.error"));
+	    	  }
+	      }      
+	    }
+	    if (dataDir.isConfigured()) {
+	      // the data dir is already/now configured, skip the first setup step
+	      return SUCCESS;
+	    }
+	    return INPUT;
+	  }
 
   public String setup2() {
     // first check if the selected datadir contains an admin user already
