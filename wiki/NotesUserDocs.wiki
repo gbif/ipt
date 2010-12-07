@@ -1,6 +1,6 @@
 #summary list of issues to be covered by the upcoming ipt user manual version 2.0
 
-* *** FOR JOHN *** *
+_* FOR JOHN *_
 
 = IPT Setup / Admin =
 == Initial Setup ==
