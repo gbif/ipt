@@ -157,7 +157,7 @@ public class SetupAction extends BaseAction {
    */
   public String setup() {
 	    if (isHttpPost() && dataDirPath != null) {
-	      File dd = new File(dataDirPath);
+	      File dd = new File(dataDirPath.trim());
 	      try {
 	    	  if(dd.isAbsolute()) {
 	    		  boolean created = configManager.setDataDir(dd);
