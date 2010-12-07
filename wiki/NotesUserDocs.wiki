@@ -1,10 +1,5 @@
 #summary list of issues to be covered by the upcoming ipt user manual version 2.0
 
-= Portal =
-The portal is meant to publish the resources on the web and is in large parts accessible to the public without any login.
-The only exception are annotations to data, which can only be done if you have a registered login.
-
-#summary list of issues to be covered by the upcoming developer documentation
 
 = IPT Setup / Admin =
 == Initial Setup ==
