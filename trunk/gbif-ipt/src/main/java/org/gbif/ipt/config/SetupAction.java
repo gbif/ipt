@@ -167,7 +167,11 @@ public class SetupAction extends BaseAction {
         }
       } catch (InvalidConfigException e) {
         log.warn("Failed to setup datadir: " + e.getMessage(), e);
-        addActionError(getText("admin.config.setup.datadir.error"));
+        if(e.getType() == InvalidConfigException.TYPE.NON_WRITABLE_DATA_DIR) {
+        	addActionError(getText("admin.config.setup.datadir.writable", new String[] {dataDirPath}));
+        } else {
+        	addActionError(getText("admin.config.setup.datadir.error"));
+        }
       }
     }
     if (dataDir.isConfigured()) {
