@@ -86,13 +86,8 @@
 	    	map: map
 	    });
 	    redraw();
-	    if(!isFilled) fill();	
 	}
       
-	$("#save").click(function() {
-		fill();
-	});	
-		
 	$("#bbox input").keyup(function() {
   		var maxy=parseFloat($("#"+bboxBase+"max\\.latitude").attr("value"));
         var miny=parseFloat($("#"+bboxBase+"min\\.latitude").attr("value"));
