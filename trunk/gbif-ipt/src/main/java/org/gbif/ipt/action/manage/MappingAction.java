@@ -113,17 +113,17 @@ public class MappingAction extends ManagerBaseAction {
       }
     }
     if (automapped > 0) {
-      addActionMessage("Automapped " + automapped + " columns based on header names");
+      addActionMessage(getText("manage.mapping.automaped", new String[]{automapped+""}));
     }
   }
 
   @Override
   public String delete() {
     if (resource.deleteMapping(mapping)) {
-      addActionMessage("Deleted mapping " + id);
+      addActionMessage(getText("manage.mapping.deleted", new String[]{id}));
       saveResource();
     } else {
-      addActionMessage("Couldnt delete mapping " + id);
+      addActionMessage(getText("manage.mapping.couldnt.delete", new String[]{id}));
     }
     return SUCCESS;
   }
