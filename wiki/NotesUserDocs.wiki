@@ -6,6 +6,9 @@ _* FOR JOHN *_
 = IPT Setup / Admin =
 == Initial Setup ==
 === Data Dir ===
+ * Format (OS depending)
+ * Absoluth path (Not relative)
+ * Please take a look at [DataDirSetup this Wiki]
 === Admin Account ===
 === BaseURL & Proxy ===
 
