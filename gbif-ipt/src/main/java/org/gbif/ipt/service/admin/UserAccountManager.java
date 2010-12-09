@@ -94,5 +94,8 @@ public interface UserAccountManager {
    * @throws IOException
    */
   public void save(User user) throws IOException;
+  
+  public User getSetupUser();
 
+  public void setSetupUser(User setupLogin);
 }
