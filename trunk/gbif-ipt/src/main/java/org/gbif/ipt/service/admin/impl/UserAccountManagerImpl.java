@@ -54,6 +54,16 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
   private String onlyAdminEmail;
   private final XStream xstream = new XStream();
   private ResourceManager resourceManager;
+  
+  private User setupUser;
+
+  public User getSetupUser() {
+	return setupUser;
+ }
+
+ public void setSetupUser(User setupUser) {
+	this.setupUser = setupUser;
+  }
 
   @Inject
   public UserAccountManagerImpl(AppConfig cfg, DataDir dataDir, ResourceManager resourceManager,

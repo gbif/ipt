@@ -232,6 +232,7 @@ public class SetupAction extends BaseAction {
         configManager.saveConfig();
         addActionMessage(getText("admin.config.setup2.success"));
         addActionMessage(getText("admin.config.setup2.next"));
+        userManager.setSetupUser(user);
         return SUCCESS;
       } catch (IOException e) {
         log.error(e);
