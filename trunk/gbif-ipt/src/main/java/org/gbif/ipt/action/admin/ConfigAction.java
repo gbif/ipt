@@ -136,15 +136,14 @@ public class ConfigAction extends POSTAction {
       }
     }
 
-    // IPT lat/lon
-    if (latitude != null && longitude != null) {
-      try {
-        configManager.setIptLocation(latitude, longitude);
-      } catch (InvalidConfigException e) {
-        addActionError(getText("admin.config.server.location.error"));
-        return INPUT;
-      }
+    // IPT lat/lon   
+    try {
+      configManager.setIptLocation(latitude, longitude);
+    } catch (InvalidConfigException e) {
+      addActionError(getText("admin.config.server.location.error"));
+      return INPUT;
     }
+    
 
     try {
       configManager.saveConfig();

@@ -3,6 +3,17 @@
  */
 package org.gbif.ipt.config;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpHost;
+import org.apache.http.conn.params.ConnRoutePNames;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.xml.DOMConfigurator;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.InvalidConfigException;
@@ -19,18 +30,6 @@ import org.gbif.ipt.utils.LogFileAppender;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.http.HttpHost;
-import org.apache.http.conn.params.ConnRoutePNames;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.xml.DOMConfigurator;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 
 /**
  * A skeleton implementation for the time being....
@@ -185,17 +184,16 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   }
 
   public void setIptLocation(Double lat, Double lon) throws InvalidConfigException {
-    if ((lat > 90.0 || lat < -90.0) || (lon > 180.0 || lon < -180.0)) {
-      log.warn("IPT Lat/Lon is not a valid coordinate");
-      lat = null;
-      lon = null;
-    }
     if (lat != null && lon != null) {
-      cfg.setProperty(AppConfig.IPT_LATITUDE, Double.toString(lat));
-      cfg.setProperty(AppConfig.IPT_LONGITUDE, Double.toString(lon));
+    	if ((lat > 90.0 || lat < -90.0) || (lon > 180.0 || lon < -180.0)) {
+    	      log.warn("IPT Lat/Lon is not a valid coordinate");
+    	      throw new InvalidConfigException(TYPE.FORMAT_ERROR, "IPT Lat/Lon is not a valid coordinate");
+    	}
+    	cfg.setProperty(AppConfig.IPT_LATITUDE, Double.toString(lat));
+    	cfg.setProperty(AppConfig.IPT_LONGITUDE, Double.toString(lon));
     } else {
-      cfg.setProperty(AppConfig.IPT_LATITUDE, "");
-      cfg.setProperty(AppConfig.IPT_LONGITUDE, "");
+    	cfg.setProperty(AppConfig.IPT_LATITUDE, "");
+    	cfg.setProperty(AppConfig.IPT_LONGITUDE, "");
     }
 
   }
