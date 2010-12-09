@@ -73,6 +73,10 @@ public class AppConfig {
     return properties.getProperty(ANALYTICS_KEY);
   }
 
+  public DataDir getDataDir() {
+	return dataDir;
+  }
+
   public String getBaseURL() {
     String base = properties.getProperty(BASEURL);
     while (base != null && base.endsWith("/")) {
