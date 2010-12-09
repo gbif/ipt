@@ -42,6 +42,14 @@ public class ConfigAction extends POSTAction {
   public String getAnalyticsKey() {
     return cfg.getAnalyticsKey();
   }
+  
+  public String getDataDir() {
+	 return cfg.getDataDir().dataFile("").getAbsolutePath();
+  }
+  
+  public String getLogDir() {
+	 return cfg.getDataDir().loggingDir().getAbsolutePath();
+  }
 
   public String getBaseUrl() {
     return cfg.getBaseURL();

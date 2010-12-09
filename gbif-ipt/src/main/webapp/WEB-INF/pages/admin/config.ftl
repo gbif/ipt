@@ -48,6 +48,13 @@ $(document).ready(function(){
 <h1><@s.text name="admin.config.title"/></h1>
 
 <#include "/WEB-INF/pages/macros/forms.ftl">
+
+<div class="newline"></div>
+<label><@s.text name="admin.config.server.data.dir"/></label>: ${dataDir}
+<div class="newline"></div>
+<label><@s.text name="admin.config.server.log.dir"/></label>: ${logDir}
+<div class="newline"></div>
+
 <@s.form cssClass="topForm half" action="config" method="post">
 
 	<@input name="baseUrl" i18nkey="admin.config.baseUrl" help="i18n" size=80/>
