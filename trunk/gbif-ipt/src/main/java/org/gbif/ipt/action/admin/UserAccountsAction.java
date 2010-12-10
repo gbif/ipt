@@ -33,6 +33,7 @@ public class UserAccountsAction extends POSTAction {
   private User user;
   private String password2;
   private boolean resetPassword;
+  private boolean newUser;
   private List<User> users;
 
   @Override
@@ -89,6 +90,8 @@ public class UserAccountsAction extends POSTAction {
       // modify copy of existing user - otherwise we even change the proper instances when canceling the request or
       // submitting non validating data
       user = userManager.get(id);
+    }else{
+    	newUser=true;
     }
     // if no id was submitted we wanted to create a new account
     // if an invalid email was entered, it gets stored in the id field and obviously userManager above cant find a
@@ -154,7 +157,7 @@ public class UserAccountsAction extends POSTAction {
     // && users == null
     validator.validate(this, user);
     // check 2nd password
-    if (!resetPassword && StringUtils.trimToNull(user.getPassword()) != null && !user.getPassword().equals(password2)) {
+    if (newUser && StringUtils.trimToNull(user.getPassword()) != null && !user.getPassword().equals(password2)) {
       addFieldError("password2", getText("validation.password2.wrong"));
       password2 = null;
       user.setPassword(null);
