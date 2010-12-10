@@ -24,8 +24,8 @@ $(document).ready(function(){
 	<@input name="user.firstname" />  
 	<@input name="user.lastname" />  
 	<@select name="user.role" value=user.role javaGetter=false options={"User":"user.roles.user", "Manager":"user.roles.manager", "Publisher":"user.roles.publisher", "Admin":"user.roles.admin"}/>
-	
-	<#if user.password??>
+
+	<#if "${newUser!}"=="no">
 	  <div class="buttons">
 		<@label i18nkey="user.password">
 			<@s.submit cssClass="button" name="resetPassword" key="button.resetPassword" />

@@ -41,7 +41,7 @@ public class UserValidator extends BaseValidator {
         valid = false;
         action.addFieldError("user.lastname", action.getText("validation.lastname.required"));
       }
-      if (!exists(user.getPassword(), 3)) {
+      if (!exists(user.getPassword(), 4)) {
         valid = false;
         action.addFieldError("user.password", action.getText("validation.password.required"));
       }

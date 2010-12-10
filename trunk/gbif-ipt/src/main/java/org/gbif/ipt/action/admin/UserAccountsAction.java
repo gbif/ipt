@@ -68,6 +68,10 @@ public class UserAccountsAction extends POSTAction {
   public String getPassword2() {
     return password2;
   }
+  
+  public String getNewUser() {
+	 return newUser?"yes":"no";
+  }
 
   // Getters / Setters follow
   public User getUser() {
@@ -104,6 +108,7 @@ public class UserAccountsAction extends POSTAction {
       id = null;
       // create new user
       user = new User();
+      newUser=true;
     }
   }
 
