@@ -1,5 +1,10 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name='manage.metadata.citations.title'/></title>
+<script type="text/javascript">
+	$(document).ready(function(){
+		initHelp();
+	});
+</script>		
 <#include "/WEB-INF/pages/macros/metadata.ftl"/>
  <#assign sideMenuEml=true />
  <#assign currentMenu="manage"/>
@@ -10,7 +15,8 @@
 <form class="topForm" action="metadata-${section}.do" method="post"> 
 	<div class="newline"></div>
 	<div>
-  		<@text name="eml.citation" />
+		<@input name="eml.citation.identifier" help="i18n"/>
+  		<@text name="eml.citation.citation" />
 	</div>
 	<div class="newline"></div>
 	<h2><@s.text name="manage.metadata.citations.bibliography"/></h2>
@@ -23,7 +29,8 @@
       				<a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.citations.item'/> ]</a>
     			</div>
     			<div class="newline"></div>
-					<@text name="eml.bibliographicCitationSet.bibliographicCitations[${item_index}]" i18nkey="eml.bibliographicCitationSet.bibliographicCitations" size=40/>
+    				<@input name="eml.bibliographicCitationSet.bibliographicCitations[${item_index}].identifier" i18nkey="eml.bibliographicCitationSet.bibliographicCitations.identifier" />
+					<@text name="eml.bibliographicCitationSet.bibliographicCitations[${item_index}].citation" i18nkey="eml.bibliographicCitationSet.bibliographicCitations.citation" size=40/>
   				<div class="newline"></div>
 				<div class="horizontal_dotted_line_large_foo" id="separator"></div>
 				<div class="newline"></div>
@@ -45,7 +52,8 @@
 		<a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.citations.item'/> ]</a>
 	</div>
 	<div class="newline"></div>
-		<@text name="bibliographicCitations" i18nkey="eml.bibliographicCitationSet.bibliographicCitations"  value="" size=40/>
+		<@input name="identifier" i18nkey="eml.bibliographicCitationSet.bibliographicCitations.identifier" />
+		<@text name="citation" i18nkey="eml.bibliographicCitationSet.bibliographicCitations.citation"  value="" size=40/>
 	<div class="newline"></div>
 	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
 	<div class="newline"></div>
