@@ -52,6 +52,9 @@
 
 <h3><@s.text name="extension.further.title"/></h3>
 
+<#if (newExtensions ? size < 1) >
+<@s.text name="extension.already.installed"/>
+</#if>
 <#list newExtensions as ext>
 <div class="definition">	
   <div class="title">
