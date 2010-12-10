@@ -34,6 +34,7 @@ import org.apache.http.ProtocolVersion;
 import org.apache.http.StatusLine;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
@@ -43,6 +44,7 @@ import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HTTP;
@@ -310,6 +312,27 @@ public class HttpUtil {
     return downloadIfChanged(url, lastModified, downloadTo);
   }
 
+  public HttpResponse executeGetWithTimeout(HttpGet get, int timeout) throws ClientProtocolException, IOException {
+    HttpParams httpParams = client.getParams();
+    // keep old values to rest afterwards
+    int ct = HttpConnectionParams.getConnectionTimeout(httpParams);
+    int st = HttpConnectionParams.getSoTimeout(httpParams);
+
+    HttpConnectionParams.setConnectionTimeout(httpParams, timeout);
+    HttpConnectionParams.setSoTimeout(httpParams, timeout);
+
+    HttpResponse response = null;
+    try {
+      response = client.execute(get);
+    } finally {
+      // rest to previous values
+      HttpConnectionParams.setConnectionTimeout(httpParams, ct);
+      HttpConnectionParams.setSoTimeout(httpParams, st);
+    }
+
+    return response;
+  }
+
   /**
    * @param url
    * @return
@@ -342,7 +365,6 @@ public class HttpUtil {
     }
     return result;
   }
-
 
   public HttpParams params(Map<String, Object> params) {
     HttpParams p = new BasicHttpParams();

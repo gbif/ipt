@@ -169,7 +169,8 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     boolean valid = true;
     try {
       HttpGet get = new HttpGet(baseURL.toString() + pathToCss);
-      HttpResponse response = client.execute(get);
+
+      HttpResponse response = http.executeGetWithTimeout(get, 4000);
       valid = (response.getStatusLine().getStatusCode() == 200);
     } catch (ClientProtocolException e) {
       log.info("Protocol error connecting to new base URL [" + baseURL.toString() + "]", e);
@@ -178,7 +179,9 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
       log.info("IO error connecting to new base URL [" + baseURL.toString() + "]", e);
       valid = false;
     }
-    if (!valid) throw new InvalidConfigException(TYPE.INACCESSIBLE_BASE_URL, "No IPT found at new base URL");
+    if (!valid) {
+      throw new InvalidConfigException(TYPE.INACCESSIBLE_BASE_URL, "No IPT found at new base URL");
+    }
 
     // store in properties file
     cfg.setProperty(AppConfig.BASEURL, baseURL.toString());
@@ -220,7 +223,6 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.admin.ConfigManager#setProxy(java.lang.String)
    */
   public void setProxy(String proxy) throws InvalidConfigException {
