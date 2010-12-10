@@ -42,13 +42,13 @@ public class ConfigAction extends POSTAction {
   public String getAnalyticsKey() {
     return cfg.getAnalyticsKey();
   }
-  
+
   public String getDataDir() {
-	 return cfg.getDataDir().dataFile("").getAbsolutePath();
+    return cfg.getDataDir().dataFile("").getAbsolutePath();
   }
-  
+
   public String getLogDir() {
-	 return cfg.getDataDir().loggingDir().getAbsolutePath();
+    return cfg.getDataDir().loggingDir().getAbsolutePath();
   }
 
   public String getBaseUrl() {
@@ -96,6 +96,8 @@ public class ConfigAction extends POSTAction {
       } catch (InvalidConfigException e) {
         if (e.getType() == InvalidConfigException.TYPE.INVALID_BASE_URL) {
           addActionError(getText("admin.config.baseUrl.invalidBaseURL"));
+        } else if (e.getType() == InvalidConfigException.TYPE.INACCESSIBLE_BASE_URL) {
+          addActionError(getText("admin.config.baseUrl.inaccessible"));
         } else {
           addActionError(getText("admin.error.invalidConfiguration", new String[]{e.getMessage()}));
         }
@@ -136,14 +138,13 @@ public class ConfigAction extends POSTAction {
       }
     }
 
-    // IPT lat/lon   
+    // IPT lat/lon
     try {
       configManager.setIptLocation(latitude, longitude);
     } catch (InvalidConfigException e) {
       addActionError(getText("admin.config.server.location.error"));
       return INPUT;
     }
-    
 
     try {
       configManager.saveConfig();
