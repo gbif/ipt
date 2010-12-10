@@ -213,9 +213,12 @@ $(document).ready(function(){
 			$("#item-"+index+" textarea").attr("name", "eml.methodSteps["+index+"]");
 		<#break>
  		<#case "citations">
-			$("#item-"+index+" textarea").attr("id","eml.bibliographicCitationSet.bibliographicCitations["+index+"]");
-			$("#item-"+index+" textarea").attr("name","eml.bibliographicCitationSet.bibliographicCitations["+index+"]");
-			$("#item-"+index+" label").attr("for","eml.bibliographicCitationSet.bibliographicCitations["+index+"]");
+			$("#item-"+index+" [id$='citation']").attr("id","eml.bibliographicCitationSet.bibliographicCitations["+index+"].citation");
+			$("#item-"+index+" [name$='citation']").attr("name","eml.bibliographicCitationSet.bibliographicCitations["+index+"].citation");
+			$("#item-"+index+" [for$='citation']").attr("for","eml.bibliographicCitationSet.bibliographicCitations["+index+"].citation");
+			$("#item-"+index+" [id$='identifier']").attr("id","eml.bibliographicCitationSet.bibliographicCitations["+index+"].identifier");
+			$("#item-"+index+" [name$='identifier']").attr("name","eml.bibliographicCitationSet.bibliographicCitations["+index+"].identifier");
+			$("#item-"+index+" [for$='identifier']").attr("for","eml.bibliographicCitationSet.bibliographicCitations["+index+"].identifier");
 		<#break>
 		<#case "collections">
 			$("#item-"+index+" input").attr("id",function() {

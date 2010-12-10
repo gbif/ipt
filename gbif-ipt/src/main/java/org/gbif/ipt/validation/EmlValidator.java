@@ -16,6 +16,7 @@ package org.gbif.ipt.validation;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.metadata.eml.Citation;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.JGTICuratorialUnit;
 import org.gbif.metadata.eml.JGTICuratorialUnitType;
@@ -515,7 +516,14 @@ public class EmlValidator extends BaseValidator {
 				 *    </metadata>
 				 * </additionalMetadata>
 				 */
-				// There are not validations
+				int index = 0;
+				for(Citation citation : eml.getBibliographicCitations()) {
+					if(!exists(citation.getCitation())) {
+						action.addFieldError("eml.bibliographicCitationSet.bibliographicCitations["+index+"].citation", action.getText("validation.required", new String[] { action
+								.getText("validation.field.required") }));
+					}						
+					index++;
+				}
 
 			} else if (part == null || part.equalsIgnoreCase("collections")) {
 				/*
