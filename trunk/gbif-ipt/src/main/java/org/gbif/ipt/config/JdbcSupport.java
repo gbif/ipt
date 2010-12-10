@@ -38,27 +38,76 @@ import java.util.regex.Pattern;
  * 
  */
 public class JdbcSupport {
-	private static final Pattern SELECT = Pattern.compile("(^| )select ",Pattern.CASE_INSENSITIVE); 
-	private static final Pattern WHERE = Pattern.compile(" where ",Pattern.CASE_INSENSITIVE); 
-	private static final Pattern LIMIT = Pattern.compile(" limit \\d*",Pattern.CASE_INSENSITIVE); 
   public class JdbcInfo {
+
     protected final String name;
     protected final String title;
     protected final String driver;
     protected final String url;
-    protected final String sqlSelect;
-    protected final String sqlWhere;
-    protected final String sqlLimit;
+    protected final LIMIT_TYPE limitType;
 
-    protected JdbcInfo(String name, String title, String driver, String url, String sqlSelect, String sqlWhere, String sqlLimit) {
+    protected JdbcInfo(String name, String title, String driver, String url, LIMIT_TYPE limitType) {
       super();
       this.name = name;
       this.title = title;
       this.driver = driver;
       this.url = url;
-      this.sqlSelect=StringUtils.trimToNull(sqlSelect);
-      this.sqlWhere=StringUtils.trimToNull(sqlWhere);
-      this.sqlLimit=StringUtils.trimToNull(sqlLimit);
+      this.limitType = limitType;
+    }
+
+    public String addLimit(String sql, int limit) {
+      // replace select
+      Matcher m = null;
+      if (LIMIT_TYPE.LIMIT == limitType) {
+        m = LIMIT.matcher(sql);
+        // does LIMIT already exist?
+        if (m.find()) {
+          sql = m.replaceAll(" LIMIT " + limit);
+        } else {
+          // lets append it then
+          sql += " LIMIT " + limit;
+        }
+
+      } else if (LIMIT_TYPE.TOP == limitType) {
+        m = SELECT.matcher(sql);
+        if (m.find()) {
+          // does TOP already exist?
+          Matcher m2 = TOP.matcher(sql);
+          if (m2.find()) {
+            sql = m2.replaceFirst(" TOP " + limit);
+          } else {
+            sql = m.replaceAll(" SELECT TOP " + limit + " ");
+          }
+        } else {
+          // there MUST be a select...should we throw an error?
+        }
+
+      } else if (LIMIT_TYPE.ROWNUM == limitType) {
+        m = WHERE.matcher(sql);
+        if (m.find()) {
+          // does rownum already exist?
+          Matcher m2 = ROWNUM.matcher(sql);
+          if (m2.find()) {
+            sql = m2.replaceAll(" rownum <= " + limit + " ");
+          } else {
+            sql = m.replaceAll(" WHERE rownum <= " + limit + " AND ");
+          }
+        } else {
+          // lets append it then
+          // TODO: lookout for order or group bys
+          sql += " WHERE rownum <= " + limit;
+        }
+      }
+
+      return sql;
+    }
+
+    private Pattern findClause(String clause, boolean requireWhitespace) {
+      String white = " *";
+      if (requireWhitespace) {
+        white = " +";
+      }
+      return Pattern.compile(clause.replace(" ", white).replace("?", "(\\d*)"), Pattern.CASE_INSENSITIVE);
     }
 
     public String getDriver() {
@@ -84,63 +133,17 @@ public class JdbcSupport {
     public String getUrl() {
       return url;
     }
-    private String prepClause(String sql, int limit){
-        return " "+sql.replace("?", String.valueOf(limit))+" ";
-    }
-    private Pattern findClause(String clause, boolean requireWhitespace){
-    	String white = " *";
-    	if (requireWhitespace){
-        	white = " +";
-    	}
-        return Pattern.compile(clause.replace(" ", white).replace("?", "(\\d*)"),Pattern.CASE_INSENSITIVE);
-    }
-    public String addLimit(String sql,int limit){
-    	// replace select
-    	if (sqlSelect!=null){
-        	Matcher m = SELECT.matcher(sql);
-        	if (m.find()) {
-        		// does our new clause, e.g. TOP, already exist?
-            	Matcher m2 = findClause(sqlSelect,true).matcher(sql);
-            	if (m2.find()) {
-            	    sql = m2.replaceFirst(prepClause(sqlSelect,limit));
-            	}else{
-            	    sql = m.replaceAll(" SELECT"+prepClause(sqlSelect,limit));
-            	}
-        	} else {
-        	    // there MUST be a select...should we throw an error?
-        	}
-    	}
-    	// replace where
-    	if (sqlWhere!=null){
-    		Matcher m = WHERE.matcher(sql);
-        	String clause = " WHERE"+prepClause(sqlWhere,limit);
-        	if (m.find()) {
-        		// does our new clause, e.g. TOP, already exist?
-            	Matcher m2 = findClause(sqlWhere,false).matcher(sql);
-            	if (m2.find()) {
-            	    sql = m2.replaceFirst(prepClause(sqlWhere,limit));
-            	}else{
-            	    sql = m.replaceAll(clause+"AND ");
-            	}
-        	} else {
-        	    // lets append it then
-        		sql+=clause;
-        	}
-    	}
-    	// append limit
-    	if (sqlLimit!=null){
-    		Matcher m = LIMIT.matcher(sql);
-        	String clause = prepClause(sqlLimit,limit);
-        	if (m.find()) {
-        	    sql = m.replaceAll(clause);
-        	} else {
-        	    // lets append it then
-        		sql+=clause;
-        	}
-    	}
-    	return sql;
-    }
+
+  };
+  protected enum LIMIT_TYPE {
+    LIMIT, TOP, ROWNUM
   }
+
+  private static final Pattern SELECT = Pattern.compile("(^| )select ", Pattern.CASE_INSENSITIVE);
+  private static final Pattern TOP = Pattern.compile(" top \\d+", Pattern.CASE_INSENSITIVE);
+  private static final Pattern WHERE = Pattern.compile(" where ", Pattern.CASE_INSENSITIVE);
+  private static final Pattern ROWNUM = Pattern.compile(" rownum[ <>=]+\\d+", Pattern.CASE_INSENSITIVE);
+  private static final Pattern LIMIT = Pattern.compile(" limit \\d+", Pattern.CASE_INSENSITIVE);
 
   public static final String CLASSPATH_PROPFILE = "jdbc.properties";
 
@@ -182,8 +185,8 @@ public class JdbcSupport {
     // create a jdbc info object for each
     for (String name : names) {
       name = name.toLowerCase();
-      JdbcInfo info = new JdbcInfo(name, props.getProperty(name + ".title"), props.getProperty(name + ".driver"),
-          props.getProperty(name + ".url"), props.getProperty(name + ".sql.select"), props.getProperty(name + ".sql.where"), props.getProperty(name + ".sql.limit"));
+      LIMIT_TYPE lt = LIMIT_TYPE.valueOf(props.getProperty(name + ".limitType"));
+      JdbcInfo info = new JdbcInfo(name, props.getProperty(name + ".title"), props.getProperty(name + ".driver"), props.getProperty(name + ".url"), lt);
       driver.put(name, info);
     }
     return driver.size();
