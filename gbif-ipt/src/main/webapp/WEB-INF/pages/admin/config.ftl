@@ -49,19 +49,15 @@ $(document).ready(function(){
 
 <#include "/WEB-INF/pages/macros/forms.ftl">
 
-<div class="newline"></div>
-<label><@s.text name="admin.config.server.data.dir"/></label>: ${dataDir}
-<div class="newline"></div>
-<label><@s.text name="admin.config.server.log.dir"/></label>: ${logDir}
-<div class="newline"></div>
-
 <@s.form cssClass="topForm half" action="config" method="post">
 
+  	<@readonly i18nkey="admin.config.server.data.dir" value="${dataDir}"/>
 	<@input name="baseUrl" i18nkey="admin.config.baseUrl" help="i18n" size=80/>
 	<@input name="proxy" i18nkey="admin.config.proxy" help="i18n" size=80/>
 	<@input name="analyticsKey" i18nkey="admin.config.analyticsKey" size=80/>  
 	<@checkbox name="analyticsGbif" i18nkey="admin.config.analyticsGbif" />  
 	<@checkbox name="debug" i18nkey="admin.config.debug" />
+  	<@readonly i18nkey="admin.config.server.log.dir" value="${logDir}" />
 
   <div id="location">
 	<div class="newline"></div>
