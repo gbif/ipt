@@ -54,7 +54,7 @@ public class UserAccountsAction extends POSTAction {
         if (Reason.LAST_ADMIN == e.getReason()) {
           addActionError(getText("admin.user.deleted.lastadmin"));
         } else if (Reason.LAST_RESOURCE_MANAGER == e.getReason()) {
-          addActionError(getText("admin.user.deleted.lastmanager"));
+          addActionError(getText("admin.user.deleted.lastmanager", new String[]{e.getMessage()}));
         } else {
           addActionError(getText("admin.user.deleted.error"));
         }

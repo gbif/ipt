@@ -151,6 +151,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
       // if manager or admin, last manager of a resource?
       boolean isResourceCreator = false;
       if (remUser.hasManagerRights()) {
+    	Set<String> resourcesWithProblems = new HashSet<String>();
         for (Resource r : resourceManager.list(remUser)) {
           if (r.getCreator().equals(remUser)) {
             isResourceCreator = true;
@@ -158,11 +159,14 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
           Set<User> managers = new HashSet<User>(r.getManagers());
           managers.add(r.getCreator());
           managers.remove(remUser);
-          if (managers.size() == 0) {
+          if (managers.size() == 0) {        	 
             String msg = "Last manager for resource " + r.getShortname() + " cannot be deleted";
+            resourcesWithProblems.add(r.getShortname());
             log.warn(msg);
-            throw new DeletionNotAllowedException(Reason.LAST_RESOURCE_MANAGER, msg);
           }
+        }
+        if(resourcesWithProblems.size() > 0) {
+        	throw new DeletionNotAllowedException(Reason.LAST_RESOURCE_MANAGER, resourcesWithProblems.toString());
         }
       }
 
