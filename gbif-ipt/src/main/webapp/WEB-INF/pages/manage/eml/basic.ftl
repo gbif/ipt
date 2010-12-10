@@ -43,6 +43,7 @@
 <p><@s.text name='manage.metadata.basic.intro'/></p>
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <form class="topForm" action="metadata-${section}.do" method="post">
+	<b><@s.text name="manage.metadata.basic.required.message" /></b>
   	<@input name="eml.title" />
   	<@text name="eml.description" />
   	<div class="halfcolumn">
