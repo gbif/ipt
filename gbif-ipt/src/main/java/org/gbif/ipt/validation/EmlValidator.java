@@ -332,25 +332,25 @@ public class EmlValidator extends BaseValidator {
 					coord=eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMin().getLongitude();
 					if ( coord==null || Double.isNaN(coord)) {
 						descriptionNeeded=false;
-						action.addFieldError("eml.geospatialCoverages[" + index + "].boundingCoordinates.min.longitude", action.getText("validation.invalid"));
+						action.addFieldError("eml.geospatialCoverages[" + index + "].boundingCoordinates.min.longitude", action.getText("validation.invalid",new String[]{action.getText("eml.geospatialCoverages.boundingCoordinates.min.longitude")}));
 					}
 					coord=eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLongitude();
 					if ( coord==null  || Double.isNaN(coord)) {
 						descriptionNeeded=false;
-						action.addFieldError("eml.geospatialCoverages[" + index + "].boundingCoordinates.max.longitude", action.getText("validation.invalid"));
+						action.addFieldError("eml.geospatialCoverages[" + index + "].boundingCoordinates.max.longitude", action.getText("validation.invalid", new String[]{action.getText("eml.geospatialCoverages.boundingCoordinates.max.longitude")}));
 					}
 					coord=eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLatitude();
 					if ( coord==null  || Double.isNaN(coord)) {
 						descriptionNeeded=false;
-						action.addFieldError("eml.geospatialCoverages[" + index + "].boundingCoordinates.max.latitude", action.getText("validation.invalid"));
+						action.addFieldError("eml.geospatialCoverages[" + index + "].boundingCoordinates.max.latitude", action.getText("validation.invalid",new String[]{action.getText("eml.geospatialCoverages.boundingCoordinates.max.latitude")}));
 					}
 					coord=eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMin().getLatitude();
 					if ( coord==null  || Double.isNaN(coord)) {
 						descriptionNeeded=false;
-						action.addFieldError("eml.geospatialCoverages[" + index + "].boundingCoordinates.min.latitude", action.getText("validation.invalid"));
+						action.addFieldError("eml.geospatialCoverages[" + index + "].boundingCoordinates.min.latitude", action.getText("validation.invalid",new String[]{action.getText("eml.geospatialCoverages.boundingCoordinates.min.latitude")}));
 					}
 					if(descriptionNeeded && !exists(eml.getGeospatialCoverages().get(index).getDescription())){
-						action.addFieldError("eml.geospatialCoverages[" + index + "].description", action.getText("validation.required"));
+						action.addFieldError("eml.geospatialCoverages[" + index + "].description", action.getText("validation.required",new String[]{action.getText("eml.geospatialCoverages.description")}));
 					}
 				}
 
