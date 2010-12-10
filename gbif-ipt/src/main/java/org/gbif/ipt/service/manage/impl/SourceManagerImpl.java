@@ -166,7 +166,9 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     SqlRowIterator(SqlSource source) throws SQLException {
       this.conn = getDbConnection(source);
       this.stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-      this.stmt.setFetchSize(1000);
+      // force resultsset streaming
+      // see http://benjchristensen.com/2008/05/27/mysql-jdbc-memory-usage-on-large-resultset/
+      this.stmt.setFetchSize(Integer.MIN_VALUE);
       this.rs = stmt.executeQuery(source.getSql());
       this.rowSize = rs.getMetaData().getColumnCount();
       this.hasNext = rs.next();
