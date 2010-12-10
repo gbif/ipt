@@ -186,6 +186,11 @@ public class SetupAction extends BaseAction {
     return INPUT;
   }
 
+  public String setup3() {
+	  session.put(Constants.SESSION_USER, userManager.getSetupUser());
+	  return INPUT;
+  }
+  
   public String setup2() {
     // first check if the selected datadir contains an admin user already
     if (configManager.setupComplete()) {
@@ -280,6 +285,10 @@ public class SetupAction extends BaseAction {
         }
       }
     }
+  }
+  
+  public String continueHome(){
+	  return SUCCESS;
   }
 
 }

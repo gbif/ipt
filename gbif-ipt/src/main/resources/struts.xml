@@ -130,6 +130,10 @@
 		</action>
 		<action name="setup2" class="org.gbif.ipt.config.SetupAction" method="setup2">
 			<result name="input">/WEB-INF/pages/admin/setup2.ftl</result>
+			<result type="redirect">${baseURL}/setup3.do</result>
+		</action>
+		<action name="setup3" class="org.gbif.ipt.config.SetupAction" method="setup3">
+			<result name="input">/WEB-INF/pages/admin/setup3.ftl</result>
 			<result type="redirect">/</result>
 		</action>
 		
