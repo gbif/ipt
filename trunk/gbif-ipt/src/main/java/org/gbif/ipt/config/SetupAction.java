@@ -9,6 +9,7 @@ import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.InvalidConfigException;
+import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.ConfigManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.validation.UserValidator;
@@ -156,34 +157,34 @@ public class SetupAction extends BaseAction {
    * @throws InvalidConfigException
    */
   public String setup() {
-	    if (isHttpPost() && dataDirPath != null) {
-	      File dd = new File(dataDirPath.trim());
-	      try {
-	    	  if(dd.isAbsolute()) {
-	    		  boolean created = configManager.setDataDir(dd);
-	    		  if (created) {
-	    			  addActionMessage(getText("admin.config.setup.datadir.created"));
-	    		  } else {
-	    			  addActionMessage(getText("admin.config.setup.datadir.reused"));
-	    		  }
-	    	  } else {
-	    		  addActionError(getText("admin.config.setup.datadir.absolute", new String[] {dataDirPath}));
-	    	  }
-	      } catch (InvalidConfigException e) {
-	    	  log.warn("Failed to setup datadir: " + e.getMessage(), e);
-	    	  if(e.getType() == InvalidConfigException.TYPE.NON_WRITABLE_DATA_DIR) {
-	    		  addActionError(getText("admin.config.setup.datadir.writable", new String[] {dataDirPath}));
-	    	  } else {
-	    		  addActionError(getText("admin.config.setup.datadir.error"));
-	    	  }
-	      }      
-	    }
-	    if (dataDir.isConfigured()) {
-	      // the data dir is already/now configured, skip the first setup step
-	      return SUCCESS;
-	    }
-	    return INPUT;
-	  }
+    if (isHttpPost() && dataDirPath != null) {
+      File dd = new File(dataDirPath.trim());
+      try {
+        if (dd.isAbsolute()) {
+          boolean created = configManager.setDataDir(dd);
+          if (created) {
+            addActionMessage(getText("admin.config.setup.datadir.created"));
+          } else {
+            addActionMessage(getText("admin.config.setup.datadir.reused"));
+          }
+        } else {
+          addActionError(getText("admin.config.setup.datadir.absolute", new String[]{dataDirPath}));
+        }
+      } catch (InvalidConfigException e) {
+        log.warn("Failed to setup datadir: " + e.getMessage(), e);
+        if (e.getType() == InvalidConfigException.TYPE.NON_WRITABLE_DATA_DIR) {
+          addActionError(getText("admin.config.setup.datadir.writable", new String[]{dataDirPath}));
+        } else {
+          addActionError(getText("admin.config.setup.datadir.error"));
+        }
+      }
+    }
+    if (dataDir.isConfigured()) {
+      // the data dir is already/now configured, skip the first setup step
+      return SUCCESS;
+    }
+    return INPUT;
+  }
 
   public String setup2() {
     // first check if the selected datadir contains an admin user already
@@ -195,14 +196,9 @@ public class SetupAction extends BaseAction {
       // we have submitted the form
       try {
         user.setRole(Role.Admin);
-        if (userValidation.validate(this, user)) {
-          // confirm password
-          userManager.create(user);
-          user.setLastLoginToNow();
-          userManager.save();
-          // login as new admin
-          session.put(Constants.SESSION_USER, user);
-        }
+
+        // do user validation, but don't create user yet
+        boolean gotValidUser = userValidation.validate(this, user);
 
         // when in dev mode, production is disabled in the form
         if (production == null) {
@@ -228,8 +224,20 @@ public class SetupAction extends BaseAction {
         } catch (InvalidConfigException e) {
           addFieldError("proxy", getText("admin.config.proxy.error"));
         }
+
         // save config
         configManager.saveConfig();
+
+        // everything else is valid, now create the user
+        if (gotValidUser) {
+          // confirm password
+          userManager.create(user);
+          user.setLastLoginToNow();
+          userManager.save();
+          // login as new admin
+          session.put(Constants.SESSION_USER, user);
+        }
+
         addActionMessage(getText("admin.config.setup2.success"));
         addActionMessage(getText("admin.config.setup2.next"));
         userManager.setSetupUser(user);
@@ -240,8 +248,12 @@ public class SetupAction extends BaseAction {
       } catch (AlreadyExistingException e) {
         addFieldError("user.email", "User exists as non admin user already");
       } catch (InvalidConfigException e) {
-        log.error(e);
-        addActionError(e.getType().toString() + ": " + e.getMessage());
+        if (e.getType() == TYPE.INACCESSIBLE_BASE_URL) {
+          addFieldError("baseURL", getText("admin.config.baseUrl.inaccessible"));
+        } else {
+          log.error(e);
+          addActionError(e.getType().toString() + ": " + e.getMessage());
+        }
       }
     }
     return INPUT;

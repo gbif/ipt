@@ -3,17 +3,6 @@
  */
 package org.gbif.ipt.config;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.http.HttpHost;
-import org.apache.http.conn.params.ConnRoutePNames;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.xml.DOMConfigurator;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.InvalidConfigException;
@@ -31,6 +20,21 @@ import org.gbif.ipt.utils.LogFileAppender;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.params.ConnRoutePNames;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.xml.DOMConfigurator;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+
 /**
  * A skeleton implementation for the time being....
  * 
@@ -47,6 +51,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   private ConfigWarnings warnings;
   private DefaultHttpClient client;
   private HttpUtil http;
+  private final String pathToCss = "/styles/main.css";
 
   @Inject
   public ConfigManagerImpl(DataDir dataDir, AppConfig cfg, InputStreamUtils streamUtils,
@@ -160,6 +165,21 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
       log.warn("Localhost used as base url, IPT will not be visible to the outside!");
     }
 
+    // ensure there is an ipt listening at the new target
+    boolean valid = true;
+    try {
+      HttpGet get = new HttpGet(baseURL.toString() + pathToCss);
+      HttpResponse response = client.execute(get);
+      valid = (response.getStatusLine().getStatusCode() == 200);
+    } catch (ClientProtocolException e) {
+      log.info("Protocol error connecting to new base URL [" + baseURL.toString() + "]", e);
+      valid = false;
+    } catch (IOException e) {
+      log.info("IO error connecting to new base URL [" + baseURL.toString() + "]", e);
+      valid = false;
+    }
+    if (!valid) throw new InvalidConfigException(TYPE.INACCESSIBLE_BASE_URL, "No IPT found at new base URL");
+
     // store in properties file
     cfg.setProperty(AppConfig.BASEURL, baseURL.toString());
   }
@@ -185,21 +205,22 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
 
   public void setIptLocation(Double lat, Double lon) throws InvalidConfigException {
     if (lat != null && lon != null) {
-    	if ((lat > 90.0 || lat < -90.0) || (lon > 180.0 || lon < -180.0)) {
-    	      log.warn("IPT Lat/Lon is not a valid coordinate");
-    	      throw new InvalidConfigException(TYPE.FORMAT_ERROR, "IPT Lat/Lon is not a valid coordinate");
-    	}
-    	cfg.setProperty(AppConfig.IPT_LATITUDE, Double.toString(lat));
-    	cfg.setProperty(AppConfig.IPT_LONGITUDE, Double.toString(lon));
+      if ((lat > 90.0 || lat < -90.0) || (lon > 180.0 || lon < -180.0)) {
+        log.warn("IPT Lat/Lon is not a valid coordinate");
+        throw new InvalidConfigException(TYPE.FORMAT_ERROR, "IPT Lat/Lon is not a valid coordinate");
+      }
+      cfg.setProperty(AppConfig.IPT_LATITUDE, Double.toString(lat));
+      cfg.setProperty(AppConfig.IPT_LONGITUDE, Double.toString(lon));
     } else {
-    	cfg.setProperty(AppConfig.IPT_LATITUDE, "");
-    	cfg.setProperty(AppConfig.IPT_LONGITUDE, "");
+      cfg.setProperty(AppConfig.IPT_LATITUDE, "");
+      cfg.setProperty(AppConfig.IPT_LONGITUDE, "");
     }
 
   }
 
   /*
    * (non-Javadoc)
+   * 
    * @see org.gbif.ipt.service.admin.ConfigManager#setProxy(java.lang.String)
    */
   public void setProxy(String proxy) throws InvalidConfigException {
