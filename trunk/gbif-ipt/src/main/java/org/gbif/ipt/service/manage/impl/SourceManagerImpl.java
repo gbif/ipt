@@ -38,6 +38,7 @@ import com.google.inject.Inject;
 import com.google.inject.internal.Nullable;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.xwork.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -52,7 +53,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -102,19 +102,21 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     private final String sourceName;
 
     public SqlColumnIterator(SqlSource source, int column) throws SQLException {
-    	this(source,column,source.getSql());
+      this(source, column, source.getSql());
     }
+
     public SqlColumnIterator(SqlSource source, int column, int limit) throws SQLException {
-    	this(source,column,source.getSqlLimited(limit));
+      this(source, column, source.getSqlLimited(limit));
     }
+
     private SqlColumnIterator(SqlSource source, int column, String sql) throws SQLException {
-        this.conn = getDbConnection(source);
-        this.stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-        this.stmt.setFetchSize(100);
-        this.column = column;
-        this.rs = stmt.executeQuery(sql);
-        this.hasNext = rs.next();
-        sourceName = source.getName();
+      this.conn = getDbConnection(source);
+      this.stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+      this.stmt.setFetchSize(100);
+      this.column = column;
+      this.rs = stmt.executeQuery(sql);
+      this.hasNext = rs.next();
+      sourceName = source.getName();
     }
 
     public void close() {
@@ -301,15 +303,19 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       try {
         Connection con = getDbConnection(ss);
         // test sql
-        Statement stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-        stmt.setFetchSize(10);
-        ResultSet rs = stmt.executeQuery(ss.getSql());
-        // get number of columns
-        ResultSetMetaData meta = rs.getMetaData();
-        ss.setColumns(meta.getColumnCount());
-        ss.setReadable(true);
-        rs.close();
-        stmt.close();
+        if (StringUtils.trimToNull(ss.getSql()) != null) {
+          Statement stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+          stmt.setFetchSize(10);
+          ResultSet rs = stmt.executeQuery(ss.getSqlLimited(10));
+          // get number of columns
+          ResultSetMetaData meta = rs.getMetaData();
+          ss.setColumns(meta.getColumnCount());
+          ss.setReadable(true);
+          rs.close();
+          stmt.close();
+        } else {
+
+        }
         con.close();
       } catch (SQLException e) {
         log.warn("Cant read sql source " + ss, e);
@@ -362,7 +368,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         // test sql
         Statement stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
         stmt.setFetchSize(1);
-        ResultSet rs = stmt.executeQuery(source.getSql());
+        ResultSet rs = stmt.executeQuery(source.getSqlLimited(1));
         // get column metadata
         ResultSetMetaData meta = rs.getMetaData();
         int idx = 1;
@@ -458,7 +464,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     Set<String> values = new HashSet<String>();
     ClosableIterator<Object> iter = null;
     try {
-	  iter = iterSourceColumn(source, column, maxRows);
+      iter = iterSourceColumn(source, column, maxRows);
       // get distinct values
       while (iter.hasNext() && (maxValues < 1 || values.size() < maxValues)) {
         Object obj = iter.next();
@@ -479,22 +485,22 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   }
 
   /**
- * @param source
- * @param column
- * @param limit limit for the recordset passed into the sql. If negative or zero no limit will be used 
- * @return
- * @throws Exception
- */
-private ClosableIterator<Object> iterSourceColumn(Source source, int column, int limit) throws Exception {
+   * @param source
+   * @param column
+   * @param limit limit for the recordset passed into the sql. If negative or zero no limit will be used
+   * @return
+   * @throws Exception
+   */
+  private ClosableIterator<Object> iterSourceColumn(Source source, int column, int limit) throws Exception {
     if (source instanceof FileSource) {
       FileSource src = (FileSource) source;
       return new FileColumnIterator(src, column);
     } else {
       SqlSource src = (SqlSource) source;
-      if (limit>0){
-          return new SqlColumnIterator(src, column, limit);
-      }else{
-          return new SqlColumnIterator(src, column);
+      if (limit > 0) {
+        return new SqlColumnIterator(src, column, limit);
+      } else {
+        return new SqlColumnIterator(src, column);
       }
     }
   }
@@ -535,7 +541,7 @@ private ClosableIterator<Object> iterSourceColumn(Source source, int column, int
         // test sql
         Statement stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
         stmt.setFetchSize(rows);
-        ResultSet rs = stmt.executeQuery(source.getSqlLimited(rows+1));
+        ResultSet rs = stmt.executeQuery(source.getSqlLimited(rows + 1));
         // loop over result
         while (rows > 0 && rs.next()) {
           rows--;

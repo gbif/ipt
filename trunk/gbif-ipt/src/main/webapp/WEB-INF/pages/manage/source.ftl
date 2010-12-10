@@ -86,6 +86,12 @@ $(document).ready(function(){
 	  	<@input name="sqlSource.password" />
   	  </div>
   	  <@text name="sqlSource.sql" help="i18n"/>
+  	  <#if sqlSource.sql?has_content>
+  	  <@label i18nkey="sqlSource.sqlLimited" >
+  	  ${sqlSource.getSqlLimited(10)}
+  	  </@label>
+  	  </#if>
+  	  
   	</#if>
     <div class="halfcolumn">
 	  	<@input name="source.encoding" help="i18n" helpOptions={"UTF-8":"UTF-8","Latin1":"Latin 1","Cp1252":"Windows1252"}/>

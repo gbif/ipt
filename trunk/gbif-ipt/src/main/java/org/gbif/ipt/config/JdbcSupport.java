@@ -56,6 +56,9 @@ public class JdbcSupport {
     }
 
     public String addLimit(String sql, int limit) {
+      if (sql == null) {
+        return null;
+      }
       // replace select
       Matcher m = null;
       if (LIMIT_TYPE.LIMIT == limitType) {
