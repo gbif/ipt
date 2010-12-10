@@ -192,6 +192,7 @@ public class MetadataAction extends ManagerBaseAction {
   @Override
   public String save() throws Exception {
     resourceManager.saveEml(resource);
+    addActionMessage(getText("manage.success"));
     return SUCCESS;
   }
 
