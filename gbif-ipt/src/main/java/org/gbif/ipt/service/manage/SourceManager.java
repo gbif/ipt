@@ -43,10 +43,11 @@ public interface SourceManager {
 
   /**
    * Checks if a source is readable and analyzes its file size, number of rows and other source properties which will be
-   * updated.
+   * updated. A full analysis might take some time in particular for sql source, so one should use the the quick full=false one as much as possible.
+   * 
    * For SQL sources the database connection and number of avilable columns will be checked.
    * 
-   * @param source
+   * @param source the source to analyze
    * @return problem message if source is not readable
    */
   public String analyze(Source source);
@@ -94,12 +95,12 @@ public interface SourceManager {
    * @return sample rows from the dataset
    */
   public List<String[]> peek(Source source, int rows);
-  
+
   /**
- * @param src
- * @return a closable row iterator for a source
- * @throws SourceException 
- */
-public ClosableIterator<String[]> rowIterator(Source src) throws SourceException;
+   * @param src
+   * @return a closable row iterator for a source
+   * @throws SourceException
+   */
+  public ClosableIterator<String[]> rowIterator(Source src) throws SourceException;
 
 }

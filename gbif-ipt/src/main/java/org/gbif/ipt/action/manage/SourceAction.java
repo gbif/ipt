@@ -59,7 +59,8 @@ public class SourceAction extends ManagerBaseAction {
   // preview
   private List<String> columns;
   private List<String[]> peek;
-  private int rows = 10;
+  private int peekRows = 10;
+  private int analyzeRows = 1000;
 
   public String add() throws IOException {
     // new one
@@ -100,14 +101,14 @@ public class SourceAction extends ManagerBaseAction {
       saveResource();
       id = source.getName();
       if (replaced) {
-    	addActionMessage(getText("manage.source.replaced.existing", new String[]{source.getName()}));
+        addActionMessage(getText("manage.source.replaced.existing", new String[]{source.getName()}));
       } else {
         addActionMessage(getText("manage.source.added.new", new String[]{source.getName()}));
       }
     } catch (ImportException e) {
       // even though we have problems with this source we'll keep it for manual corrections
       log.error("Cannot add source " + filename + ": " + e.getMessage(), e);
-      addActionError(getText("manage.source.cannot.add", new String[]{filename,e.getMessage()}));
+      addActionError(getText("manage.source.cannot.add", new String[]{filename, e.getMessage()}));
     }
   }
 
@@ -142,7 +143,7 @@ public class SourceAction extends ManagerBaseAction {
   }
 
   public int getPreviewSize() {
-    return rows;
+    return peekRows;
   }
 
   public String getProblem() {
@@ -164,7 +165,7 @@ public class SourceAction extends ManagerBaseAction {
     if (source == null) {
       return NOT_FOUND;
     }
-    peek = sourceManager.peek(source, rows);
+    peek = sourceManager.peek(source, peekRows);
     columns = sourceManager.columns(source);
     return SUCCESS;
   }
@@ -208,7 +209,7 @@ public class SourceAction extends ManagerBaseAction {
         try {
           source = sourceManager.add(resource, file, fileFileName);
           if (resource.getSource(source.getName()) != null) {
-          	addActionMessage(getText("manage.source.replaced.existing", new String[]{source.getName()}));
+            addActionMessage(getText("manage.source.replaced.existing", new String[]{source.getName()}));
           } else {
             addActionMessage(getText("manage.source.added.new", new String[]{source.getName()}));
           }
@@ -254,7 +255,7 @@ public class SourceAction extends ManagerBaseAction {
   }
 
   public void setRows(int previewSize) {
-    this.rows = previewSize > 0 ? previewSize : 10;
+    this.peekRows = previewSize > 0 ? previewSize : 10;
   }
 
   public void setSource(Source source) {
