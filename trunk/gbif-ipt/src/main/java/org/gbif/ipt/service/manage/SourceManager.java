@@ -81,11 +81,12 @@ public interface SourceManager {
    * 
    * @param source
    * @param column column to inspect
-   * @param rows number of rows to return. If zero or negative all values will be retrieved.
-   * @return sample rows from the dataset
+   * @param maxValues maximun number of distinct values to return. If zero or negative all values will be retrieved.
+   * @param maxRows maximum number of rows to inspect. If zero or negative all rows will be scanned.
+   * @return unique values found in the column
    * @throws Exception
    */
-  public Set<String> inspectColumn(Source source, int column, int max) throws SourceException;
+  public Set<String> inspectColumn(Source source, int column, int maxValues, int maxRows) throws SourceException;
 
   /**
    * @param source

@@ -30,24 +30,35 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author markus
  * 
  */
 public class JdbcSupport {
+	private static final Pattern SELECT = Pattern.compile("(^| )select ",Pattern.CASE_INSENSITIVE); 
+	private static final Pattern WHERE = Pattern.compile(" where ",Pattern.CASE_INSENSITIVE); 
+	private static final Pattern LIMIT = Pattern.compile(" limit \\d*",Pattern.CASE_INSENSITIVE); 
   public class JdbcInfo {
     protected final String name;
     protected final String title;
     protected final String driver;
     protected final String url;
+    protected final String sqlSelect;
+    protected final String sqlWhere;
+    protected final String sqlLimit;
 
-    private JdbcInfo(String name, String title, String driver, String url) {
+    protected JdbcInfo(String name, String title, String driver, String url, String sqlSelect, String sqlWhere, String sqlLimit) {
       super();
       this.name = name;
       this.title = title;
       this.driver = driver;
       this.url = url;
+      this.sqlSelect=StringUtils.trimToNull(sqlSelect);
+      this.sqlWhere=StringUtils.trimToNull(sqlWhere);
+      this.sqlLimit=StringUtils.trimToNull(sqlLimit);
     }
 
     public String getDriver() {
@@ -72,6 +83,62 @@ public class JdbcSupport {
 
     public String getUrl() {
       return url;
+    }
+    private String prepClause(String sql, int limit){
+        return " "+sql.replace("?", String.valueOf(limit))+" ";
+    }
+    private Pattern findClause(String clause, boolean requireWhitespace){
+    	String white = " *";
+    	if (requireWhitespace){
+        	white = " +";
+    	}
+        return Pattern.compile(clause.replace(" ", white).replace("?", "(\\d*)"),Pattern.CASE_INSENSITIVE);
+    }
+    public String addLimit(String sql,int limit){
+    	// replace select
+    	if (sqlSelect!=null){
+        	Matcher m = SELECT.matcher(sql);
+        	if (m.find()) {
+        		// does our new clause, e.g. TOP, already exist?
+            	Matcher m2 = findClause(sqlSelect,true).matcher(sql);
+            	if (m2.find()) {
+            	    sql = m2.replaceFirst(prepClause(sqlSelect,limit));
+            	}else{
+            	    sql = m.replaceAll(" SELECT"+prepClause(sqlSelect,limit));
+            	}
+        	} else {
+        	    // there MUST be a select...should we throw an error?
+        	}
+    	}
+    	// replace where
+    	if (sqlWhere!=null){
+    		Matcher m = WHERE.matcher(sql);
+        	String clause = " WHERE"+prepClause(sqlWhere,limit);
+        	if (m.find()) {
+        		// does our new clause, e.g. TOP, already exist?
+            	Matcher m2 = findClause(sqlWhere,false).matcher(sql);
+            	if (m2.find()) {
+            	    sql = m2.replaceFirst(prepClause(sqlWhere,limit));
+            	}else{
+            	    sql = m.replaceAll(clause+"AND ");
+            	}
+        	} else {
+        	    // lets append it then
+        		sql+=clause;
+        	}
+    	}
+    	// append limit
+    	if (sqlLimit!=null){
+    		Matcher m = LIMIT.matcher(sql);
+        	String clause = prepClause(sqlLimit,limit);
+        	if (m.find()) {
+        	    sql = m.replaceAll(clause);
+        	} else {
+        	    // lets append it then
+        		sql+=clause;
+        	}
+    	}
+    	return sql;
     }
   }
 
@@ -116,7 +183,7 @@ public class JdbcSupport {
     for (String name : names) {
       name = name.toLowerCase();
       JdbcInfo info = new JdbcInfo(name, props.getProperty(name + ".title"), props.getProperty(name + ".driver"),
-          props.getProperty(name + ".url"));
+          props.getProperty(name + ".url"), props.getProperty(name + ".sql.select"), props.getProperty(name + ".sql.where"), props.getProperty(name + ".sql.limit"));
       driver.put(name, info);
     }
     return driver.size();

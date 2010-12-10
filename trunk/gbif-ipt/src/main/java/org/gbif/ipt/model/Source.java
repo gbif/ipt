@@ -201,6 +201,17 @@ public abstract class Source implements Comparable<Source>, Serializable {
       return sql;
     }
 
+    /** The configured sql with an additional limit clause.
+     * The exact format of this clause depends on the database and is kept in the JdbcSupport.
+     * Select TOP ?, Where ROWNUM<? and LIMIT ? are readily supported.
+     *  
+     * @param limit the number of records to limit this query by
+     * @return the final sql string
+     */
+    public String getSqlLimited(int limit) {
+        return rdbms.addLimit(sql,limit);
+    }
+
     public String getUsername() {
       return username;
     }

@@ -203,7 +203,7 @@ public class TranslationAction extends ManagerBaseAction {
     }
     trans.setTmap(this.mapping.getExtension().getRowType(), property, new TreeMap<String, String>());
     // reload new values
-    for (String val : sourceManager.inspectColumn(mapping.getSource(), field.getIndex(), 1000)) {
+    for (String val : sourceManager.inspectColumn(mapping.getSource(), field.getIndex(), 1000, 10000)) {
       trans.getTmap().put(val, null);
     }
     // keep existing translations

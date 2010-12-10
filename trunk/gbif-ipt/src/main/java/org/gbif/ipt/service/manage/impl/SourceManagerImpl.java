@@ -102,13 +102,19 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     private final String sourceName;
 
     public SqlColumnIterator(SqlSource source, int column) throws SQLException {
-      this.conn = getDbConnection(source);
-      this.stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-      this.stmt.setFetchSize(100);
-      this.rs = stmt.executeQuery(source.getSql());
-      this.column = column;
-      this.hasNext = rs.next();
-      sourceName = source.getName();
+    	this(source,column,source.getSql());
+    }
+    public SqlColumnIterator(SqlSource source, int column, int limit) throws SQLException {
+    	this(source,column,source.getSqlLimited(limit));
+    }
+    private SqlColumnIterator(SqlSource source, int column, String sql) throws SQLException {
+        this.conn = getDbConnection(source);
+        this.stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+        this.stmt.setFetchSize(100);
+        this.column = column;
+        this.rs = stmt.executeQuery(sql);
+        this.hasNext = rs.next();
+        sourceName = source.getName();
     }
 
     public void close() {
@@ -432,17 +438,6 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     return conn;
   }
 
-  public Set<String> getDistinctValues(Source source, int column) throws Exception {
-    // iterate through entire source and store distinct terms in memory (scary)
-    Set<String> terms = new HashSet<String>();
-    Iterator iter = iterSourceColumn(source, column);
-    while (iter.hasNext()) {
-      String term = iter.next().toString();
-      terms.add(term);
-    }
-    return terms;
-  }
-
   public int importArchive(Resource resource, File file, boolean overwriteEml) throws ImportException {
     // anaylze using the dwca reader
     try {
@@ -459,13 +454,13 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
    * (non-Javadoc)
    * @see org.gbif.ipt.service.manage.SourceManager#inspectColumn(org.gbif.ipt.model.Source, int, int)
    */
-  public Set<String> inspectColumn(Source source, int column, int max) throws SourceException {
+  public Set<String> inspectColumn(Source source, int column, int maxValues, int maxRows) throws SourceException {
     Set<String> values = new HashSet<String>();
     ClosableIterator<Object> iter = null;
     try {
-      iter = iterSourceColumn(source, column);
+	  iter = iterSourceColumn(source, column, maxRows);
       // get distinct values
-      while (iter.hasNext() && (max < 1 || values.size() < max)) {
+      while (iter.hasNext() && (maxValues < 1 || values.size() < maxValues)) {
         Object obj = iter.next();
         if (obj != null) {
           String val = obj.toString();
@@ -483,13 +478,24 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     return values;
   }
 
-  private ClosableIterator<Object> iterSourceColumn(Source source, int column) throws Exception {
+  /**
+ * @param source
+ * @param column
+ * @param limit limit for the recordset passed into the sql. If negative or zero no limit will be used 
+ * @return
+ * @throws Exception
+ */
+private ClosableIterator<Object> iterSourceColumn(Source source, int column, int limit) throws Exception {
     if (source instanceof FileSource) {
       FileSource src = (FileSource) source;
       return new FileColumnIterator(src, column);
     } else {
       SqlSource src = (SqlSource) source;
-      return new SqlColumnIterator(src, column);
+      if (limit>0){
+          return new SqlColumnIterator(src, column, limit);
+      }else{
+          return new SqlColumnIterator(src, column);
+      }
     }
   }
 
@@ -529,7 +535,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         // test sql
         Statement stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
         stmt.setFetchSize(rows);
-        ResultSet rs = stmt.executeQuery(source.getSql());
+        ResultSet rs = stmt.executeQuery(source.getSqlLimited(rows+1));
         // loop over result
         while (rows > 0 && rs.next()) {
           rows--;
