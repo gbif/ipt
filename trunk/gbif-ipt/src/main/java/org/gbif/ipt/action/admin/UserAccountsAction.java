@@ -5,6 +5,7 @@ package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.model.User;
+import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.DeletionNotAllowedException.Reason;
@@ -125,8 +126,14 @@ public class UserAccountsAction extends POSTAction {
         userManager.save(user);
         addActionMessage(getText("admin.user.passwordChanged", new String[]{user.getEmail(),newPassword}));
       } else {
-        userManager.save(user);
-        addActionMessage(getText("admin.user.changed"));
+    	  System.out.println("Admins: "+userManager.list(Role.Admin).size());
+    	  System.out.println("Role ingresado: "+user.getRole().toString());
+    	  if(userManager.list(Role.Admin).size() <= 1 && (user.getRole() != Role.Admin)) {
+    		  addActionError(getText("admin.user.changed.current"));
+    		  return INPUT;
+    	  }
+    	  userManager.save(user);
+    	  addActionMessage(getText("admin.user.changed"));
       }
       return SUCCESS;
     } catch (IOException e) {
