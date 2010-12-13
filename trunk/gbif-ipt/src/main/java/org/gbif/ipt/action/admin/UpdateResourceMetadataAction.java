@@ -38,16 +38,21 @@ public class UpdateResourceMetadataAction extends POSTAction {
     // key representing resource and update step (eml, registry, dwca), value "success" or error message
     Map<String, String> resUpdateStatus = new HashMap<String, String>();
 
-    if (log.isDebugEnabled()) log.debug("Loading published resources");
+    if (log.isDebugEnabled()) {
+      log.debug("Loading published resources");
+    }
     // many iterations are a bit wasteful, but keep the logic and error handling cleaner
     List<Resource> allResources = resourceManager.list();
     List<Resource> publishedResources = new ArrayList<Resource>();
     for (Resource res : allResources) {
-      if (res.isPublished()) publishedResources.add(res);
+      if (res.isPublished()) {
+        publishedResources.add(res);
+      }
     }
-    if (log.isDebugEnabled())
+    if (log.isDebugEnabled()) {
       log.debug("Got [" + publishedResources.size() + "] published resources of [" + allResources.size()
           + "] total resources");
+    }
 
     log.info("Updating resource metadata - eml.xml");
     for (Resource res : publishedResources) {
@@ -80,6 +85,7 @@ public class UpdateResourceMetadataAction extends POSTAction {
   }
 
   private void logFeedback(List<Resource> publishedResources, Map<String, String> resUpdateStatus) {
+    int successCounter = 0;
     for (Resource res : publishedResources) {
       String logMsg = "Resource " + res.getShortname() + " : ";
       String emlMsg = resUpdateStatus.get(res.getShortname() + eml);
@@ -92,28 +98,38 @@ public class UpdateResourceMetadataAction extends POSTAction {
 
         allGood = emlMsg.equals(success) && registryMsg.equals(success);
         if (allGood) {
-          logMsg = logMsg + "successfully updated eml and GBIF registry";
+          logMsg = logMsg + getText("admin.config.updateMetadata.resource.success");
         } else if (!emlMsg.equals(success) && registryMsg.equals(success)) {
-          logMsg = logMsg + "successfully updated GBIF registry, but error on eml update - " + emlMsg;
+          logMsg = logMsg + getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.eml", emlMsg);
         } else if (emlMsg.equals(success) && !registryMsg.equals(success)) {
-          logMsg = logMsg + "successfully updated eml, but error on GBIF registry update - " + registryMsg;
+          logMsg = logMsg + getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.registry", registryMsg);
         } else {
-          logMsg = logMsg + "error on eml update - " + emlMsg + ", and error on GBIF registry update - " + registryMsg;
+          logMsg = logMsg + getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.both", emlMsg, registryMsg);
         }
       } else {
         allGood = emlMsg.equals(success);
         if (allGood) {
-          logMsg = logMsg + "successfully updated eml, and resource is not registered with GBIF registry";
+          logMsg = logMsg + getText("admin.config.updateMetadata.resource.success.notRegistered");
         } else {
-          logMsg = logMsg + "error on eml update - " + emlMsg + ", and resource is not registered with GBIF registry";
+          logMsg = logMsg + getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.eml.notRegistered", emlMsg);
         }
       }
 
       if (allGood) {
+        successCounter++;
         this.addActionMessage(logMsg);
       } else {
         this.addActionWarning(logMsg);
       }
     }
+
+    // final summary message
+    if (publishedResources.isEmpty()) {
+      this.addActionWarning(getText("admin.config.updateMetadata.nonePublished"));
+    } else {
+      this.addActionMessage(getTextWithDynamicArgs("admin.config.updateMetadata.summary", String.valueOf(successCounter),
+          String.valueOf(publishedResources.size())));
+    }
+
   }
 }

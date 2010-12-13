@@ -391,9 +391,9 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
               }
               if (pm.getType() != null) {
                 if (pm.getType() == DataType.date) {
-                  // TODO: parse date type with mapping date format
-                } else if (pm.getType() == DataType.dateTime) {
-                  // TODO: parse date type with mapping date format
+                  // TODO: parse date type with mapping datetime format
+                } else if (pm.getType() == DataType.bool) {
+                  // TODO: parse date type with mapping boolean format
                 } else if (pm.getType() == DataType.decimal) {
                   // normalise punctuation
                 }

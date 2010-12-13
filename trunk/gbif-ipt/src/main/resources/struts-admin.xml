@@ -17,6 +17,7 @@
 		</global-results>
 		
 		<action name="home" class="org.gbif.ipt.action.admin.HomeAction">
+			<result name="input">/WEB-INF/pages/admin/home.ftl</result>
 			<result>/WEB-INF/pages/admin/home.ftl</result>
 		</action>
 		
