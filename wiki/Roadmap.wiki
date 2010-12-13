@@ -12,11 +12,23 @@ Estimated release dates can vary considerably and are shown mainly to indicate f
 [http://code.google.com/p/gbif-providertoolkit/issues/list?can=2&q=Milestone%3DRelease2.0RC1+&colspec=ID+Type+Status+Priority+Milestone+Owner+Summary&cells=tiles pending issues]
 
 -----
-= Release 2.0RC2 (expected 2010-12-10)  =
+= Release 2.0RC2 (expected 2010-12-13)  =
 
 == Issues to be addressed before release ==
 [http://code.google.com/p/gbif-providertoolkit/issues/list?can=2&q=Milestone%3DRelease2.0RC2+&colspec=ID+Type+Status+Priority+Milestone+Owner+Summary&cells=tiles pending issues]
 
 -----
-= Release 2.0GA (expected 2010-12-31)  =
+= Release 2.0RC3 (expected 2011-01-07)  =
+
+== Issues to be addressed before release ==
+[http://code.google.com/p/gbif-providertoolkit/issues/list?q=Milestone%3DRelease2.0RC3 pending issues]
+
+-----
+= Release 2.0GA (expected 2011-01-21)  =
+[http://code.google.com/p/gbif-providertoolkit/issues/list?q=Milestone%3DRelease2.0GA pending issues]
 * Release date subject to user testing
+
+-----
+= Release 2.0.1 (expected 2011-03-31)  =
+
+[http://code.google.com/p/gbif-providertoolkit/issues/list?q=Milestone%3DRelease2.0.1 issues to be addressed]
