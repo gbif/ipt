@@ -43,16 +43,12 @@ public class ConfigAction extends POSTAction {
     return cfg.getAnalyticsKey();
   }
 
-  public String getDataDir() {
-    return cfg.getDataDir().dataFile("").getAbsolutePath();
-  }
-
-  public String getLogDir() {
-    return cfg.getDataDir().loggingDir().getAbsolutePath();
-  }
-
   public String getBaseUrl() {
     return cfg.getBaseURL();
+  }
+
+  public String getDataDir() {
+    return cfg.getDataDir().dataFile("").getAbsolutePath();
   }
 
   public Boolean getDebug() {
@@ -61,6 +57,10 @@ public class ConfigAction extends POSTAction {
 
   public Double getLatitude() {
     return cfg.getLatitude();
+  }
+
+  public String getLogDir() {
+    return cfg.getDataDir().loggingDir().getAbsolutePath();
   }
 
   public Double getLongitude() {
@@ -88,7 +88,7 @@ public class ConfigAction extends POSTAction {
         log.info("Installation baseURL successfully changed to[" + baseUrl + "]");
         addActionMessage(getText("admin.config.baseUrl.changed"));
         if (burl.getHost().equalsIgnoreCase("localhost") || burl.getHost().equalsIgnoreCase("127.0.0.1")) {
-          addActionError(getText("admin.config.error.localhostURL"));
+          addActionWarning(getText("admin.config.error.localhostURL"));
         }
       } catch (MalformedURLException e) {
         addActionError(getText("admin.config.error.invalidURL"));

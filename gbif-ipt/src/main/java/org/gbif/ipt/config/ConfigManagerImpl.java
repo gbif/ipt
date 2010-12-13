@@ -81,6 +81,18 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     }
   }
 
+  public boolean isBaseURLValid() {
+    boolean valid = true;
+    try {
+      URL baseURL = new URL(cfg.getProperty(AppConfig.BASEURL));
+      valid = validateBaseURL(baseURL);
+    } catch (MalformedURLException e) {
+      valid = false;
+    }
+
+    return valid;
+  }
+
   /**
    * Update configuration singleton from config file in data dir
    * 
@@ -166,41 +178,12 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
       log.warn("Localhost used as base url, IPT will not be visible to the outside!");
     }
 
-    if (!validateBaseURL(baseURL))
+    if (!validateBaseURL(baseURL)) {
       throw new InvalidConfigException(TYPE.INACCESSIBLE_BASE_URL, "No IPT found at new base URL");
+    }
 
     // store in properties file
     cfg.setProperty(AppConfig.BASEURL, baseURL.toString());
-  }
-
-  public boolean isBaseURLValid() {
-    boolean valid = true;
-    try {
-      URL baseURL = new URL(cfg.getProperty(AppConfig.BASEURL));
-      valid = validateBaseURL(baseURL);
-    } catch (MalformedURLException e) {
-      valid = false;
-    }
-
-    return valid;
-  }
-
-  private boolean validateBaseURL(URL baseURL) {
-    // ensure there is an ipt listening at the target
-    boolean valid = true;
-    try {
-      HttpGet get = new HttpGet(baseURL.toString() + pathToCss);
-      HttpResponse response = client.execute(get);
-      valid = (response.getStatusLine().getStatusCode() == 200);
-    } catch (ClientProtocolException e) {
-      log.info("Protocol error connecting to new base URL [" + baseURL.toString() + "]", e);
-      valid = false;
-    } catch (IOException e) {
-      log.info("IO error connecting to new base URL [" + baseURL.toString() + "]", e);
-      valid = false;
-    }
-
-    return valid;
   }
 
   public void setConfigProperty(String key, String value) {
@@ -239,7 +222,6 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.admin.ConfigManager#setProxy(java.lang.String)
    */
   public void setProxy(String proxy) throws InvalidConfigException {
@@ -284,6 +266,24 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
       }
     }
     return false;
+  }
+
+  private boolean validateBaseURL(URL baseURL) {
+    // ensure there is an ipt listening at the target
+    boolean valid = true;
+    try {
+      HttpGet get = new HttpGet(baseURL.toString() + pathToCss);
+      HttpResponse response = http.executeGetWithTimeout(get, 4000);
+      valid = (response.getStatusLine().getStatusCode() == 200);
+    } catch (ClientProtocolException e) {
+      log.info("Protocol error connecting to new base URL [" + baseURL.toString() + "]", e);
+      valid = false;
+    } catch (IOException e) {
+      log.info("IO error connecting to new base URL [" + baseURL.toString() + "]", e);
+      valid = false;
+    }
+
+    return valid;
   }
 
 }

@@ -17,9 +17,11 @@
 package org.gbif.ipt.validation;
 
 import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.text.ArchiveField.DataType;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;
+import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
 
 import org.apache.commons.lang.xwork.StringUtils;
@@ -36,11 +38,16 @@ import java.util.Set;
 public class ExtensionMappingValidator {
   public static class ValidationStatus {
     private List<ConceptTerm> missingRequiredFields = new ArrayList<ConceptTerm>();
+    private List<ConceptTerm> wrongDataType = new ArrayList<ConceptTerm>();
     private String idProblem;
     private String[] idProblemParams;
 
     public void addMissingRequiredField(ConceptTerm missingRequiredField) {
       this.missingRequiredFields.add(missingRequiredField);
+    }
+
+    public void addWrongDataTypeField(ConceptTerm wrongDataTypeField) {
+      this.wrongDataType.add(wrongDataTypeField);
     }
 
     /**
@@ -61,6 +68,10 @@ public class ExtensionMappingValidator {
       return missingRequiredFields;
     }
 
+    public List<ConceptTerm> getWrongDataTypeFields() {
+      return wrongDataType;
+    }
+
     public boolean isValid() {
       return idProblem == null && missingRequiredFields.isEmpty();
     }
@@ -75,7 +86,11 @@ public class ExtensionMappingValidator {
 
   }
 
-  public ValidationStatus validate(ExtensionMapping mapping, Resource resource) {
+  private boolean isValidDataType(DataType dt, PropertyMapping pm, List<String[]> peek) {
+    return true;
+  }
+
+  public ValidationStatus validate(ExtensionMapping mapping, Resource resource, List<String[]> peek) {
     ValidationStatus v = new ValidationStatus();
     // check required fields
     Extension ext = mapping.getExtension();
@@ -85,6 +100,17 @@ public class ExtensionMappingValidator {
           v.addMissingRequiredField(p);
         }
       }
+
+      // check data types for default mappings
+      for (PropertyMapping pm : mapping.getFields()) {
+        if (StringUtils.trimToNull(pm.getDefaultValue()) != null && pm.getType() != null && DataType.string != pm.getType()) {
+          // non string data type. check
+          if (!isValidDataType(mapping.getExtension().getProperty(pm.getTerm()).getType(), pm, peek)) {
+            v.addWrongDataTypeField(pm.getTerm());
+          }
+        }
+      }
+
       // check id mapping
       if (mapping.getIdColumn() == null) {
         // no id, ok if this is a core

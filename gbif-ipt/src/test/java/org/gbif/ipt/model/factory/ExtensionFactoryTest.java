@@ -7,6 +7,9 @@
  */
 package org.gbif.ipt.model.factory;
 
+import org.gbif.dwc.terms.DcTerm;
+import org.gbif.dwc.terms.DwcTerm;
+import org.gbif.dwc.text.ArchiveField.DataType;
 import org.gbif.ipt.config.IPTModule;
 import org.gbif.ipt.mock.MockVocabularyManager;
 import org.gbif.ipt.model.Extension;
@@ -57,14 +60,14 @@ public class ExtensionFactoryTest {
       assertEquals("http://rs.tdwg.org/dwc/terms/index.htm#Taxon", e.getLink().toString());
 
       assertNotNull(e.getProperties());
-      assertEquals(47, e.getProperties().size());
+      assertEquals(40, e.getProperties().size());
       for (ExtensionProperty p : e.getProperties()) {
         if (p.getName().equalsIgnoreCase("kingdom")) {
           assertEquals("http://rs.tdwg.org/dwc/terms/kingdom", p.getQualname());
           assertEquals("http://rs.tdwg.org/dwc/terms/", p.getNamespace());
           assertEquals("Taxon", p.getGroup());
-          assertEquals("Kingdom examples", p.getExamples());
-          assertEquals("Kingdom description", p.getDescription());
+          assertEquals("\"Animalia\", \"Plantae\"", p.getExamples());
+          assertEquals("The full scientific name of the kingdom in which the taxon is classified.", p.getDescription());
           assertEquals("http://rs.tdwg.org/dwc/terms/index.htm#kingdom", p.getLink());
         }
 
@@ -79,6 +82,11 @@ public class ExtensionFactoryTest {
         }
 
       }
+
+      // data types
+      assertEquals(DataType.date, e.getProperty(DcTerm.modified).getType());
+      assertEquals(DataType.string, e.getProperty(DwcTerm.scientificName).getType());
+      assertEquals(DataType.uri, e.getProperty(DcTerm.source).getType());
 
     } catch (Exception e) {
       e.printStackTrace();

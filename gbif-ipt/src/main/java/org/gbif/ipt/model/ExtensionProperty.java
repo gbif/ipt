@@ -9,6 +9,7 @@ package org.gbif.ipt.model;
 
 import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.terms.TermFactory;
+import org.gbif.dwc.text.ArchiveField.DataType;
 
 import static com.google.common.base.Objects.equal;
 
@@ -30,7 +31,7 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Concept
   private String namespace;
   private String qualname;
   private String group;
-  private int columnLength = 255; // sensible default
+  private DataType type = DataType.string;
   private String link;
   private String examples;
   private String description;
@@ -84,16 +85,6 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Concept
     return equal(extension, o.extension) && equal(qualname, o.qualname);
   }
 
-  /**
-   * The length of the database column to be generated when the extension property is installed. Also used to trim
-   * incoming data before SQL insert is generated. For LOB columns use -1 or any negative value
-   * 
-   * @return
-   */
-  public int getColumnLength() {
-    return columnLength;
-  }
-
   public String getDescription() {
     return description;
   }
@@ -124,6 +115,10 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Concept
 
   public String getQualname() {
     return qualname;
+  }
+
+  public DataType getType() {
+    return type;
   }
 
   public Vocabulary getVocabulary() {
@@ -160,19 +155,6 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Concept
    */
   public String qualifiedNormalisedName() {
     return TermFactory.normaliseTerm(qualifiedName());
-  }
-
-  public void setColumnLength(int columnLength) {
-    this.columnLength = columnLength;
-  }
-
-  // required for SAX parser
-  public void setColumnLength(String columnLength) {
-    try {
-      this.columnLength = Integer.parseInt(columnLength);
-    } catch (NumberFormatException e) {
-      // swallow stupidity
-    }
   }
 
   public void setDescription(String description) {
@@ -220,6 +202,17 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Concept
     }
 
     // or we just don't change if not understood
+  }
+
+  public void setType(DataType type) {
+    this.type = type;
+  }
+
+  public void setType(String type) {
+    this.type = DataType.findByExtensionEnumTypeName(type);
+    if (this.type == null) {
+      this.type = DataType.string;
+    }
   }
 
   public void setVocabulary(Vocabulary vocabulary) {

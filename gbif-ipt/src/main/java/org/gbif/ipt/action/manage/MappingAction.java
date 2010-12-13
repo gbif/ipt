@@ -80,13 +80,16 @@ public class MappingAction extends ManagerBaseAction {
   public void addWarnings() {
     if (mapping.getSource() != null) {
       ExtensionMappingValidator validator = new ExtensionMappingValidator();
-      ValidationStatus v = validator.validate(mapping, resource);
+      ValidationStatus v = validator.validate(mapping, resource, peek);
       if (v != null && !v.isValid()) {
         if (v.getIdProblem() != null) {
           addActionWarning(getText(v.getIdProblem(), v.getIdProblemParams()));
         }
         for (ConceptTerm t : v.getMissingRequiredFields()) {
           addActionWarning(getText("validation.required", new String[]{t.simpleName()}));
+        }
+        for (ConceptTerm t : v.getWrongDataTypeFields()) {
+          addActionWarning(getText("validation.wrong.datatype", new String[]{t.simpleName()}));
         }
       }
     }
@@ -113,8 +116,14 @@ public class MappingAction extends ManagerBaseAction {
       }
     }
     if (automapped > 0) {
-      addActionMessage(getText("manage.mapping.automaped", new String[]{automapped+""}));
+      addActionMessage(getText("manage.mapping.automaped", new String[]{automapped + ""}));
     }
+  }
+
+  public String cancel() {
+    resource.deleteMapping(mapping);
+    saveResource();
+    return SUCCESS;
   }
 
   @Override
@@ -280,16 +289,10 @@ public class MappingAction extends ManagerBaseAction {
     saveResource();
     // report validation without skipping this save
     addWarnings();
-    if(resource.isPublished()){
-    	resourceManager.publish(resource, this);
+    if (resource.isPublished()) {
+      resourceManager.publish(resource, this);
     }
     return defaultResult;
-  }
-  
-  public String cancel(){
-	  resource.deleteMapping(mapping);
-	  saveResource();
-	  return SUCCESS;
   }
 
   public String saveSetSource() {

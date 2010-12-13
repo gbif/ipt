@@ -147,8 +147,8 @@ public class ExtensionFactory {
     digester.addCallMethod("*/property", "setExamples", 1);
     digester.addCallParam("*/property", 0, "examples");
 
-    digester.addCallMethod("*/property", "setColumnLength", 1);
-    digester.addCallParam("*/property", 0, "columnLength");
+    digester.addCallMethod("*/property", "setType", 1);
+    digester.addCallParam("*/property", 0, "type");
 
     // This is a special rule that will use the url2ThesaurusMap
     // to set the Vocabulary based on the attribute "thesaurus"
