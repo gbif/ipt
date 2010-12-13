@@ -23,12 +23,10 @@ import java.util.List;
 
 /**
  * This interface details ALL methods associated with the main resource entity.
- * 
  * The manager keeps a map of the basic metadata and authorisation information in memory, but further details like the
  * full EML or mapping configuration is stored in files and loaded into manager sessions when needed.
  * 
  * @See ResourceManagerSession
- * 
  * @author markus
  */
 @ImplementedBy(ResourceManagerImpl.class)
@@ -95,7 +93,6 @@ public interface ResourceManager {
    * Load all configured resources from the datadir into memory.
    * We do not keep the EML or mapping configuration in memory for all resources, but we
    * maintain a map of the basic metadata and authorisation information in this manager.
-   * 
    */
   public int load();
 
@@ -108,6 +105,15 @@ public interface ResourceManager {
    * @throws PublicationException if resource was already registered
    */
   public boolean publish(Resource resource, BaseAction action) throws PublicationException;
+
+  /**
+   * Publishes a new EML version for the given resource.
+   * 
+   * @param resource
+   * @param action the action to use for logging messages
+   * @throws PublicationException if resource was already registered
+   */
+  public void publishEml(Resource resource, BaseAction action) throws PublicationException;
 
   /**
    * Registers the resource with gbif
