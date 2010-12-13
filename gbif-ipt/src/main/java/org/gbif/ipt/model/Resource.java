@@ -27,7 +27,6 @@ import java.util.UUID;
  * A resource can be identified by its short name which has to be unique within an IPT instance.
  * 
  * @author markus
- * 
  */
 public class Resource implements Serializable, Comparable<Resource> {
   public enum CoreRowType {
@@ -97,6 +96,7 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   /*
    * (non-Javadoc)
+   * 
    * @see java.lang.Comparable#compareTo(java.lang.Object)
    */
   public int compareTo(Resource o) {
@@ -339,6 +339,10 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   public boolean isPublished() {
     return lastPublished != null;
+  }
+
+  public boolean isRegistered() {
+    return key != null;
   }
 
   public void setCreated(Date created) {

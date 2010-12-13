@@ -25,6 +25,9 @@
 			<result name="input">/WEB-INF/pages/admin/config.ftl</result>
 			<result type="redirect">home.do</result>
 		</action>
+		<action name="updateResourceMetadata" class="org.gbif.ipt.action.admin.UpdateResourceMetadataAction">
+			<result type="redirect">home.do</result>
+		</action>
 		
 		<!-- USER MANAGEMENT -->
 		<action name="users" class="org.gbif.ipt.action.admin.UserAccountsAction" method="list">
