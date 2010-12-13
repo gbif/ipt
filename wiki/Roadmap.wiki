@@ -15,6 +15,8 @@ Estimated release dates can vary considerably and are shown mainly to indicate f
 
 -----
 = Release 2.0RC3 (expected 2011-01-07)  =
+This last release candidate will be working against the live registry already and allow to use the IPT for production publishing. Data published with this version will be able to migrate to the GA release without a change.
+
 [http://code.google.com/p/gbif-providertoolkit/issues/list?q=Milestone%3DRelease2.0RC3 pending issues]
 
 -----
