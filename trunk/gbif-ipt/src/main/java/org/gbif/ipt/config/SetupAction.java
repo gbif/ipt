@@ -24,6 +24,7 @@ import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.List;
 
 /**
  * The Action responsible for all user input relating to the IPT configuration
@@ -47,6 +48,8 @@ public class SetupAction extends BaseAction {
   protected Boolean production;
   protected String baseURL;
   protected String proxy;
+  // can't pass a literal boolean to ftl, using int instead...
+  protected Integer ignoreUserValidation = 0;
   private boolean setup2 = false;
 
   /**
@@ -149,6 +152,14 @@ public class SetupAction extends BaseAction {
     this.setup2 = setup2;
   }
 
+  public void setIgnoreUserValidation(Integer ignoreUserValidation) {
+    this.ignoreUserValidation = ignoreUserValidation;
+  }
+
+  public Integer getIgnoreUserValidation() {
+    return this.ignoreUserValidation;
+  }
+
   /**
    * Method called when setting up the IPT for the very first time. There might not even be a logged in user, be careful
    * to not require an admin!
@@ -194,28 +205,42 @@ public class SetupAction extends BaseAction {
   public String setup2() {
     // first check if the selected datadir contains an admin user already
     if (configManager.setupComplete()) {
-      addActionMessage(getText("admin.config.setup2.existingFound"));
-      return SUCCESS;
+      if (configManager.isBaseURLValid()) {
+        addActionMessage(getText("admin.config.setup2.existingFound"));
+        return SUCCESS;
+      } else if (!isHttpPost()) {
+        // the only way here is if this is a new deploy over an old data dir and the old base URL is bad
+        baseURL = cfg.getBaseURL();
+        proxy = cfg.getProxy();
+        List<User> admins = userManager.list(User.Role.Admin);
+        if (admins != null && admins.size() > 0) user = admins.get(0);
+        ignoreUserValidation = 1;
+        addFieldError("baseURL", getText("admin.config.baseUrl.inaccessible"));
+      }
     }
     if (isHttpPost()) {
       // we have submitted the form
       try {
-        user.setRole(Role.Admin);
+        boolean gotValidUser = false;
+        if (ignoreUserValidation.intValue() == 0) {
+          user.setRole(Role.Admin);
 
-        // do user validation, but don't create user yet
-        boolean gotValidUser = userValidation.validate(this, user);
+          // do user validation, but don't create user yet
+          gotValidUser = userValidation.validate(this, user);
 
-        // when in dev mode, production is disabled in the form
-        if (production == null) {
-          production = false;
+          // when in dev mode, production is disabled in the form
+          if (production == null) {
+            production = false;
+          }
+
+          // set IPT type: registry URL
+          if (production && !cfg.devMode()) {
+            cfg.setRegistryType(REGISTRY_TYPE.PRODUCTION);
+          } else {
+            cfg.setRegistryType(REGISTRY_TYPE.DEVELOPMENT);
+          }
         }
 
-        // set IPT type: registry URL
-        if (production && !cfg.devMode()) {
-          cfg.setRegistryType(REGISTRY_TYPE.PRODUCTION);
-        } else {
-          cfg.setRegistryType(REGISTRY_TYPE.DEVELOPMENT);
-        }
         // set baseURL
         try {
           URL burl = new URL(baseURL);
@@ -234,7 +259,7 @@ public class SetupAction extends BaseAction {
         configManager.saveConfig();
 
         // everything else is valid, now create the user
-        if (gotValidUser) {
+        if (ignoreUserValidation.intValue() == 0 && gotValidUser) {
           // confirm password
           userManager.create(user);
           user.setLastLoginToNow();
@@ -270,12 +295,14 @@ public class SetupAction extends BaseAction {
 
   @Override
   public void validate() {
-    if (user != null && setup2) {
-      // we are in step2
-      userValidation.validate(this, user);
-      if (StringUtils.trimToNull(user.getPassword()) != null && !user.getPassword().equals(password2)) {
-        addFieldError("password2", getText("validation.password2.wrong"));
+    if (setup2) {
+      if (ignoreUserValidation == 0 && user != null) {
+        userValidation.validate(this, user);
+        if (StringUtils.trimToNull(user.getPassword()) != null && !user.getPassword().equals(password2)) {
+          addFieldError("password2", getText("validation.password2.wrong"));
+        }
       }
+
       if (StringUtils.trimToNull(baseURL) == null) {
         addFieldError("baseURL", getText("validation.baseURL.required"));
       } else {
