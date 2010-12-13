@@ -25,4 +25,5 @@ Estimated release dates can vary considerably and are shown mainly to indicate f
 -----
 = Release 2.0.1 (expected 2011-03-31)  =
 Minor update without change in data directory.
+
 [http://code.google.com/p/gbif-providertoolkit/issues/list?q=Milestone%3DRelease2.0.1 issues to be addressed]
