@@ -57,7 +57,6 @@ public interface ConfigManager {
    * to know things such as virtual host definitions, URL rewriting or proxies that might come
    * into play in the deployment. If any services have been registered, then this will communicate through
    * the registryAPI to update those URLs that have changed.
-   * 
    * The modified AppConfig is not immediately persisted - remember to call save() at some point!
    * 
    * @param baseURL The new baseURL for the IPT
@@ -65,6 +64,13 @@ public interface ConfigManager {
    *         will not be addressable from the internet.
    */
   public void setBaseURL(URL baseURL) throws InvalidConfigException;
+
+  /**
+   * Checks for an existing base URL from the AppConfig, and ensures that it is accessible over http.
+   * 
+   * @return false if there is no base URL set or if it is inaccessible
+   */
+  public boolean isBaseURLValid();
 
   /**
    * Generic method to set an appconfig property in memory without persisting it
