@@ -418,15 +418,12 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         Class.forName(source.getJdbcDriver());
         conn = DriverManager.getConnection(source.getJdbcUrl(), source.getUsername(), source.getPassword());
 
-        // If a SQLWarning object is available, print its
+        // If a SQLWarning object is available, log its
         // warning(s). There may be multiple warnings chained.
 
         SQLWarning warn = conn.getWarnings();
         while (warn != null) {
-          System.out.println("SQLState: " + warn.getSQLState());
-          System.out.println("Message:  " + warn.getMessage());
-          System.out.println("Vendor:   " + warn.getErrorCode());
-          System.out.println("");
+          log.warn("SQLWarning: state=" + warn.getSQLState() + ", message=" + warn.getMessage() + ", vendor=" + warn.getErrorCode());
           warn = warn.getNextWarning();
         }
       } catch (java.lang.ClassNotFoundException e) {

@@ -25,20 +25,17 @@ import java.util.regex.Pattern;
 public class ResourceValidator {
   private static Pattern shortnamePattern = Pattern.compile("^[a-zA-Z0-9_-]+$");
 
-  public static void main(String[] args) {
-    System.out.println(ResourceValidator.shortnamePattern.matcher("piasü").matches());
-  }
-
   public void validate(BaseAction action, Resource resource) {
     if (resource != null) {
       validateShortname(action, resource.getShortname());
-      
-      /* This is not needed anymore. Title and description attribute belong to the Eml class, 
+
+      /*
+       * This is not needed anymore. Title and description attribute belong to the Eml class,
        * and its validation is in the corresponding EmlSupport method.
-       * 
-      if (resource.getTitle() == null || resource.getTitle().length() < 3) {
-        action.addFieldError("resource.title", action.getText("validation.resource.title.required"));
-      }*/
+       * if (resource.getTitle() == null || resource.getTitle().length() < 3) {
+       * action.addFieldError("resource.title", action.getText("validation.resource.title.required"));
+       * }
+       */
     }
   }
 
