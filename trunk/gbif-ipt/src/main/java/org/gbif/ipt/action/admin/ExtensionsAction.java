@@ -141,7 +141,7 @@ public class ExtensionsAction extends POSTAction {
         registered.load();
       } catch (Exception e) {
         log.error("Couldnt load registered extensions", e);
-        addActionWarning("Couldnt load registered extensions: " + e.getMessage());
+    	addActionWarning(getText("admin.extensions.couldnt.load", new String[]{e.getMessage()}));
       }
     }
     if (id != null) {

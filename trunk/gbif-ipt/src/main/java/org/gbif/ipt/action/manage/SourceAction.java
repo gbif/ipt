@@ -71,7 +71,7 @@ public class SourceAction extends ManagerBaseAction {
         try {
           File tmpDir = dataDir.tmpDir();
           List<File> files = CompressionUtil.decompressFile(tmpDir, file);
-          addActionMessage(files.size() + " compressed files found, adding all.");
+          addActionMessage(getText("manage.source.compressed.files", new String[]{files.size()+""}));
           // import each file. The last file will become the id parameter,
           // so the new page opens with that source
           for (File f : files) {
