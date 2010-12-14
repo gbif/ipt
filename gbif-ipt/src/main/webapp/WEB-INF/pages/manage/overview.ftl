@@ -61,7 +61,7 @@ $(document).ready(function(){
 
 <h1>${resource.title!resource.shortname}</h1>
 <p>
-<@s.text name="manage.overview.intro"><@s.param>${resource.shortname}</@s.param></@s.text>
+<@s.text name="manage.overview.intro"><@s.param>${resource.title!resource.shortname}</@s.param></@s.text>
 </p>
 
 
