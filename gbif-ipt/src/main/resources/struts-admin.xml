@@ -84,6 +84,7 @@
 		</action>			
 		
 		<action name="organisations" class="org.gbif.ipt.action.admin.OrganisationsAction" method="list">
+			<result name="input">/WEB-INF/pages/admin/organisations.ftl</result>
 			<result>/WEB-INF/pages/admin/organisations.ftl</result>
 		</action>							
 		

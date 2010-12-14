@@ -108,20 +108,26 @@ public class RegistrationAction extends POSTAction {
     // will not be session scoping the list of organisations from the registry as this is basically a 1 time step
     super.prepare();
     log.debug("getting list of organisations");
-    List<Organisation> tempOrganisations = registryManager.getOrganisations();
-    organisations.addAll(tempOrganisations);
-    Collections.sort(organisations, new Comparator<Organisation>() {
-      public int compare(Organisation org1, Organisation org2) {
-        if (org1 == null || org1.getName() == null) {
-          return 1;
-        }
-        if (org2 == null || org2.getName() == null) {
-          return -1;
-        }
-        return org1.getName().compareToIgnoreCase(org2.getName());
-      }
-    });
-    log.debug("organisations returned: " + organisations.size());
+	try {
+		List<Organisation> tempOrganisations = registryManager.getOrganisations();
+	    organisations.addAll(tempOrganisations);
+	    Collections.sort(organisations, new Comparator<Organisation>() {
+	      public int compare(Organisation org1, Organisation org2) {
+	        if (org1 == null || org1.getName() == null) {
+	          return 1;
+	        }
+	        if (org2 == null || org2.getName() == null) {
+	          return -1;
+	        }
+	        return org1.getName().compareToIgnoreCase(org2.getName());
+	      }
+	    });
+	    log.debug("organisations returned: " + organisations.size());
+	} catch (RegistryException e) {
+		String msg = getText("admin.registration.error.registry");
+    	log.error(msg, e);
+		addActionError(msg);
+	}
   }
 
   @Override

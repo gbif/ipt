@@ -78,6 +78,7 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
       addActionMessage(msg);
     }
   }
+  
 
   /**
    * Adds an exception message, if not null, to the action warnings
