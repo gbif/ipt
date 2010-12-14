@@ -620,7 +620,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       dwca = true;
       // make sure the dwca service is registered
       // this might not have been the case when the first dwca is created, but the resource was already registered before
-      registryManager.updateResource(resource, registrationManager.getIpt());
+      if (resource.isRegistered()) {
+        registryManager.updateResource(resource, registrationManager.getIpt());
+      }
     } else {
       resource.setRecordsPublished(0);
     }

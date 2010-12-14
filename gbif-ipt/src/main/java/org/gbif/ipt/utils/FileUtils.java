@@ -2,6 +2,7 @@ package org.gbif.ipt.utils;
 
 import org.apache.commons.io.LineIterator;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -30,6 +31,7 @@ import java.util.regex.Pattern;
 public class FileUtils {
   public static final Pattern TAB_DELIMITED = Pattern.compile("\t");
   public static final String UTF8 = "UTF8";
+  protected static Logger log = Logger.getLogger(FileUtils.class);
 
   public static Set<String> columnsToSet(InputStream source, int... column) throws IOException {
     return columnsToSet(source, new HashSet<String>(), column);
@@ -172,7 +174,19 @@ public class FileUtils {
 
   public static Writer startNewUtf8File(File file) throws IOException {
     Writer writer = null;
-    org.apache.commons.io.FileUtils.touch(file);
+    try {
+      org.apache.commons.io.FileUtils.touch(file);
+    } catch (IOException e) {
+      // io error can happen on windows if last modification cannot be set
+      // see http://commons.apache.org/io/api-1.4/org/apache/commons/io/FileUtils.html#touch(java.io.File)
+      // we catch this and check if the file was created
+      if (file.exists() && file.canWrite()) {
+        log.warn("Cant touch file, but it was created: " + e.getMessage());
+        log.debug(e);
+      } else {
+        throw e;
+      }
+    }
     writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, false), UTF8));
     return writer;
   }
