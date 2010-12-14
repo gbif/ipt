@@ -114,11 +114,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       OrganisationKeyConverter orgConverter, ExtensionRowTypeConverter extensionConverter,
       JdbcInfoConverter jdbcInfoConverter, SourceManager sourceManager, ExtensionManager extensionManager,
       RegistryManager registryManager, ConceptTermConverter conceptTermConverter, GenerateDwcaFactory dwcaFactory,
-      PasswordConverter passwordConverter) {
+      PasswordConverter passwordConverter, RegistrationManager registrationManager) {
     super(cfg, dataDir);
     this.sourceManager = sourceManager;
     this.extensionManager = extensionManager;
     this.registryManager = registryManager;
+    this.registrationManager = registrationManager;
     this.dwcaFactory = dwcaFactory;
     this.executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(cfg.getMaxThreads());
     defineXstreamMapping(userConverter, orgConverter, extensionConverter, conceptTermConverter, jdbcInfoConverter,
