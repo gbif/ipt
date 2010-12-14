@@ -191,6 +191,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
+   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#create(java.lang.String)
    */
   public Resource create(String shortname, User creator) throws AlreadyExistingException {
@@ -363,6 +364,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
+   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#get(java.lang.String)
    */
   public Resource get(String shortname) {
@@ -380,6 +382,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
+   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#getResourceLink(java.lang.String)
    */
   public URL getResourceLink(String shortname) {
@@ -432,6 +435,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * While doing so it checks the known futures for completion.
    * If completed the resource is updated with the status messages and the lock is removed.
    * (non-Javadoc)
+   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#isLocked(java.lang.String)
    */
   public boolean isLocked(String shortname) {
@@ -462,6 +466,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
+   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#latest(int, int)
    */
   public List<Resource> latest(int startPage, int pageSize) {
@@ -495,6 +500,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
+   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#list(org.gbif.ipt.model.voc.PublicationStatus)
    */
   public List<Resource> list(PublicationStatus status) {
@@ -509,6 +515,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
+   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#list(org.gbif.ipt.model.User)
    */
   public List<Resource> list(User user) {
@@ -542,6 +549,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
+   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#getEml(java.lang.String)
    */
   private Eml loadEml(Resource resource) {
@@ -619,7 +627,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       generateDwca(resource, alog);
       dwca = true;
       // make sure the dwca service is registered
-      // this might not have been the case when the first dwca is created, but the resource was already registered before
+      // this might not have been the case when the first dwca is created, but the resource was already registered
+// before
       if (resource.isRegistered()) {
         registryManager.updateResource(resource, registrationManager.getIpt());
       }
@@ -652,9 +661,53 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     try {
       FileUtils.copyFile(trunkFile, versionedFile);
     } catch (IOException e) {
-      alog.error("Cant publish resource " + resource.getShortname(), e);
-      throw new PublicationException(PublicationException.TYPE.EML, "Cant publish eml file for resource "
+      alog.error("Can't publish resource " + resource.getShortname(), e);
+      throw new PublicationException(PublicationException.TYPE.EML, "Can't publish eml file for resource "
           + resource.getShortname(), e);
+    }
+  }
+
+  public void updateDwcaEml(Resource resource, BaseAction action) throws PublicationException {
+    ActionLogger alog = new ActionLogger(this.log, action);
+    // check if publishing task is already running
+    if (isLocked(resource.getShortname())) {
+      throw new PublicationException(PublicationException.TYPE.LOCKED, "Resource " + resource.getShortname()
+          + " is currently locked by another process");
+    }
+
+    if (!resource.isPublished()) {
+      throw new PublicationException(PublicationException.TYPE.DWCA, "Resource " + resource.getShortname()
+          + " has not yet been published - can't update a non-existent dwca.");
+    }
+
+    try {
+      // tmp directory to work in
+      File dwcaFolder = dataDir.tmpDir();
+      if (log.isDebugEnabled()) log.debug("Using tmp dir [" + dwcaFolder.getAbsolutePath() + "]");
+
+      // the latest files
+      File dwcaFile = dataDir.resourceDwcaFile(resource.getShortname());
+      if (log.isDebugEnabled()) log.debug("Using dwca file [" + dwcaFile.getAbsolutePath() + "]");
+      File emlFile = dataDir.resourceEmlFile(resource.getShortname(), resource.getEmlVersion());
+      if (log.isDebugEnabled()) log.debug("Using eml file [" + emlFile.getAbsolutePath() + "]");
+
+      // unzip, copy the eml file in, rezip
+      CompressionUtil.unzipFile(dwcaFolder, dwcaFile);
+      if (log.isDebugEnabled()) {
+        log.debug("Copying new eml file [" + emlFile.getAbsolutePath() + "] to [" + dwcaFolder.getAbsolutePath()
+            + "] as eml.xml");
+      }
+      FileUtils.copyFile(emlFile, new File(dwcaFolder, "eml.xml"));
+      File zip = dataDir.tmpFile("dwca", ".zip");
+      CompressionUtil.zipDir(dwcaFolder, zip);
+
+      // move to data dir
+      dwcaFile.delete();
+      FileUtils.moveFile(zip, dwcaFile);
+    } catch (IOException e) {
+      alog.error("Can't update dwca for resource " + resource.getShortname(), e);
+      throw new PublicationException(PublicationException.TYPE.DWCA, "Could not process dwca file for resource ["
+          + resource.getShortname() + "]");
     }
   }
 
@@ -702,6 +755,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
+   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#register(org.gbif.ipt.model.Resource,
    * org.gbif.ipt.model.Organisation)
    */
@@ -718,6 +772,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
+   * 
    * @see org.gbif.ipt.task.ReportHandler#report(org.gbif.ipt.task.StatusReport)
    */
   public synchronized void report(String shortname, StatusReport report) {
@@ -742,6 +797,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
+   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#save(java.lang.String, org.gbif.metadata.eml.Eml)
    */
   public synchronized void saveEml(Resource resource) throws InvalidConfigException {
@@ -779,6 +835,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
+   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#updateRegistration(org.gbif.ipt.model.Resource,
    * org.gbif.ipt.model.Organisation, org.gbif.ipt.model.Ipt)
    */
@@ -791,6 +848,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
+   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#unpublish(org.gbif.ipt.model.Resource)
    */
   public void visibilityToPrivate(Resource resource) throws InvalidConfigException {
@@ -804,6 +862,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
+   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#publish(org.gbif.ipt.model.Resource,
    * org.gbif.ipt.model.voc.PublicationStatus)
    */
