@@ -223,14 +223,14 @@ public class OverviewAction extends ManagerBaseAction {
       // check EML
       missingMetadata = !emlValidator.isValid(resource.getEml(), null);
       missingRegistrationMetadata = !minimumRegistryInfo(resource);
-      
-      //remove all DwC mappings with 0 terms mapped
-      for(ExtensionMapping em : resource.getCoreMappings()) {
-    	  if(em.getFields().size() == 0) {
-    		  resource.deleteMapping(em);
-    	  }
+
+      // remove all DwC mappings with 0 terms mapped
+      for (ExtensionMapping em : resource.getCoreMappings()) {
+        if (em.getFields().size() == 0) {
+          resource.deleteMapping(em);
+        }
       }
-      
+
     }
   }
 
@@ -310,7 +310,7 @@ public class OverviewAction extends ManagerBaseAction {
       Organisation org = null;
       try {
         // org = registrationManager.get(resource.getOrganisation());
-        resourceManager.updateRegistration(resource, resource.getOrganisation(), registrationManager.getIpt());
+        resourceManager.updateRegistration(resource, registrationManager.getIpt());
         addActionMessage("Updated registration of resource " + resource.getShortname() + " in GBIF");
       } catch (RegistryException e) {
         log.error("Cant update registration of resource " + resource + " with organisation " + org, e);

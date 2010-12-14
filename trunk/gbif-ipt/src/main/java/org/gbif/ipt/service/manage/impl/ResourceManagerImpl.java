@@ -44,6 +44,7 @@ import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.ExtensionManager;
+import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
@@ -102,6 +103,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private SourceManager sourceManager;
   private ExtensionManager extensionManager;
   private RegistryManager registryManager;
+  private RegistrationManager registrationManager;
   private ThreadPoolExecutor executor;
   private GenerateDwcaFactory dwcaFactory;
   private Map<String, Future<Integer>> processFutures = new HashMap<String, Future<Integer>>();
@@ -188,7 +190,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#create(java.lang.String)
    */
   public Resource create(String shortname, User creator) throws AlreadyExistingException {
@@ -361,7 +362,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#get(java.lang.String)
    */
   public Resource get(String shortname) {
@@ -379,7 +379,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#getResourceLink(java.lang.String)
    */
   public URL getResourceLink(String shortname) {
@@ -432,7 +431,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * While doing so it checks the known futures for completion.
    * If completed the resource is updated with the status messages and the lock is removed.
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#isLocked(java.lang.String)
    */
   public boolean isLocked(String shortname) {
@@ -463,7 +461,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#latest(int, int)
    */
   public List<Resource> latest(int startPage, int pageSize) {
@@ -497,7 +494,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#list(org.gbif.ipt.model.voc.PublicationStatus)
    */
   public List<Resource> list(PublicationStatus status) {
@@ -512,7 +508,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#list(org.gbif.ipt.model.User)
    */
   public List<Resource> list(User user) {
@@ -546,7 +541,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#getEml(java.lang.String)
    */
   private Eml loadEml(Resource resource) {
@@ -623,6 +617,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (resource.hasMappedData()) {
       generateDwca(resource, alog);
       dwca = true;
+      // make sure the dwca service is registered
+      // this might not have been the case when the first dwca is created, but the resource was already registered before
+      registryManager.updateResource(resource, registrationManager.getIpt());
     } else {
       resource.setRecordsPublished(0);
     }
@@ -702,7 +699,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#register(org.gbif.ipt.model.Resource,
    * org.gbif.ipt.model.Organisation)
    */
@@ -712,8 +708,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       if (key == null) {
         throw new RegistryException(RegistryException.TYPE.MISSING_METADATA, "No key returned for registered resoruce.");
       }
-      resource.setKey(key);
-      resource.setOrganisation(organisation);
       resource.setStatus(PublicationStatus.REGISTERED);
       save(resource);
     }
@@ -721,7 +715,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.task.ReportHandler#report(org.gbif.ipt.task.StatusReport)
    */
   public synchronized void report(String shortname, StatusReport report) {
@@ -746,7 +739,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#save(java.lang.String, org.gbif.metadata.eml.Eml)
    */
   public synchronized void saveEml(Resource resource) throws InvalidConfigException {
@@ -784,22 +776,18 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#updateRegistration(org.gbif.ipt.model.Resource,
    * org.gbif.ipt.model.Organisation, org.gbif.ipt.model.Ipt)
    */
-  public void updateRegistration(Resource resource, Organisation organisation, Ipt ipt) throws InvalidConfigException {
+  public void updateRegistration(Resource resource, Ipt ipt) throws InvalidConfigException {
     if (PublicationStatus.REGISTERED == resource.getStatus()) {
-      log.debug("Updating resource with Organisation Key: " + organisation.getKey().toString() + " & pwd "
-          + organisation.getPassword());
-      registryManager.updateResource(resource, organisation, ipt);
-      // save(resource);
+      log.debug("Updating resource with key: " + resource.getKey().toString());
+      registryManager.updateResource(resource, ipt);
     }
   }
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#unpublish(org.gbif.ipt.model.Resource)
    */
   public void visibilityToPrivate(Resource resource) throws InvalidConfigException {
@@ -813,7 +801,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#publish(org.gbif.ipt.model.Resource,
    * org.gbif.ipt.model.voc.PublicationStatus)
    */

@@ -289,9 +289,7 @@ public class MappingAction extends ManagerBaseAction {
     saveResource();
     // report validation without skipping this save
     addWarnings();
-    if (resource.isPublished()) {
-      resourceManager.publish(resource, this);
-    }
+
     return defaultResult;
   }
 

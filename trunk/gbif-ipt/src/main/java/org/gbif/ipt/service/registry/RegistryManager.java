@@ -62,7 +62,7 @@ public interface RegistryManager {
   public String registerIPT(Ipt ipt, Organisation organisation) throws RegistryException;
 
   /**
-   * Updates a new resource with the GBIF registry and associate with to the given organisation.
+   * Updates a resource's metadata with the GBIF registry and associate with to the given organisation.
    * 
    * @param resource
    * @param organisation
@@ -71,8 +71,7 @@ public interface RegistryManager {
    * @throws RegistryException
    * @throws IllegalArgumentException is resource is not registered yet
    */
-  public void updateResource(Resource resource, Organisation organisation, Ipt ipt) throws RegistryException,
-      IllegalArgumentException;
+  public void updateResource(Resource resource, Ipt ipt) throws RegistryException, IllegalArgumentException;
 
   public boolean validateOrganisation(String organisationKey, String password);
 

@@ -20,6 +20,8 @@ import org.gbif.ipt.model.Source.SqlSource;
 
 import org.apache.commons.lang.xwork.StringUtils;
 
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -103,6 +105,16 @@ public class JdbcSupport {
       }
 
       return sql;
+    }
+
+    public void enableLargeResultSet(Statement stmnt) throws SQLException {
+      // force resultsset streaming for MYSQL only
+      if (this.driver.startsWith("com.mysql")) {
+        // see http://benjchristensen.com/2008/05/27/mysql-jdbc-memory-usage-on-large-resultset/
+        stmnt.setFetchSize(Integer.MIN_VALUE);
+      } else {
+        stmnt.setFetchSize(1000);
+      }
     }
 
     private Pattern findClause(String clause, boolean requireWhitespace) {
