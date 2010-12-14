@@ -23,10 +23,14 @@ import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
+import org.gbif.metadata.DateUtils;
 
 import org.apache.commons.lang.xwork.StringUtils;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -87,6 +91,46 @@ public class ExtensionMappingValidator {
   }
 
   private boolean isValidDataType(DataType dt, PropertyMapping pm, List<String[]> peek) {
+    // prepare set of strings to test
+    Set<String> testData = new HashSet<String>();
+    testData.add(pm.getDefaultValue());
+    if (pm.getIndex() != null) {
+      for (String[] row : peek) {
+        if (row.length >= pm.getIndex() && pm.getIndex() >= 0) {
+          testData.add(row[pm.getIndex()]);
+        }
+      }
+    }
+    for (String val : testData) {
+      val = StringUtils.trimToNull(val);
+      if (val == null) {
+        continue;
+      }
+      try {
+        if (DataType.bool == dt) {
+          if (val.equals("1")) {
+            continue;
+          } else {
+            Boolean.parseBoolean(val);
+          }
+        } else if (DataType.date == dt) {
+          Date d = DateUtils.parse(val, DateUtils.isoDateFormat);
+          if (d == null) {
+            return false;
+          }
+        } else if (DataType.decimal == dt) {
+          Float.parseFloat(val);
+        } else if (DataType.integer == dt) {
+          Integer.parseInt(val);
+        } else if (DataType.uri == dt) {
+          URI uri = new URI(val);
+        }
+      } catch (NumberFormatException e) {
+        return false;
+      } catch (URISyntaxException e) {
+        return false;
+      }
+    }
     return true;
   }
 

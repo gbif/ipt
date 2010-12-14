@@ -112,7 +112,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     private SqlColumnIterator(SqlSource source, int column, String sql) throws SQLException {
       this.conn = getDbConnection(source);
       this.stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-      this.stmt.setFetchSize(100);
+      source.getRdbms().enableLargeResultSet(this.stmt);
       this.column = column;
       this.rs = stmt.executeQuery(sql);
       this.hasNext = rs.next();
@@ -166,13 +166,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     SqlRowIterator(SqlSource source) throws SQLException {
       this.conn = getDbConnection(source);
       this.stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-      // force resultsset streaming for MYSQL only
-      if (source.getJdbcDriver().startsWith("com.mysql")) {
-        // see http://benjchristensen.com/2008/05/27/mysql-jdbc-memory-usage-on-large-resultset/
-        this.stmt.setFetchSize(Integer.MIN_VALUE);
-      } else {
-        this.stmt.setFetchSize(1000);
-      }
+      source.getRdbms().enableLargeResultSet(this.stmt);
       this.rs = stmt.executeQuery(source.getSql());
       this.rowSize = rs.getMetaData().getColumnCount();
       this.hasNext = rs.next();

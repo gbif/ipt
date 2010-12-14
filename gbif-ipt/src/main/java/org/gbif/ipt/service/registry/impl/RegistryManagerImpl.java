@@ -113,7 +113,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.registry.RegistryManager#deregister(org.gbif.ipt.model.Resource)
    */
   public void deregister(Resource resource) throws RegistryException {
@@ -148,7 +147,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.registry.RegistryManager#getExtensions()
    */
   public List<Extension> getExtensions() throws RegistryException {
@@ -156,7 +154,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       Response resp = http.get(getExtensionsURL(true));
       if (resp.content != null) {
         Map<String, List<Extension>> jSONextensions = gson.fromJson(resp.content,
-            new TypeToken<Map<String, List<Extension>>>() {}.getType());
+            new TypeToken<Map<String, List<Extension>>>() {
+            }.getType());
         return jSONextensions.get("extensions");
       } else {
         throw new RegistryException(TYPE.BAD_RESPONSE, "Response content is null");
@@ -219,14 +218,14 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.registry.RegistryManager#getOrganisations()
    */
   public List<Organisation> getOrganisations() throws RegistryException {
     try {
       Response resp = http.get(getOrganisationsURL(true));
       if (resp.content != null) {
-        return gson.fromJson(resp.content, new TypeToken<List<Organisation>>() {}.getType());
+        return gson.fromJson(resp.content, new TypeToken<List<Organisation>>() {
+        }.getType());
       } else {
         throw new RegistryException(TYPE.BAD_RESPONSE, "Response content is null");
       }
@@ -264,7 +263,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.registry.RegistryManager#getVocabularies()
    */
   public List<Vocabulary> getVocabularies() throws RegistryException {
@@ -272,7 +270,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       Response resp = http.get(getVocabulariesURL(true));
       if (resp.content != null) {
         Map<String, List<Vocabulary>> map = gson.fromJson(resp.content,
-            new TypeToken<Map<String, List<Vocabulary>>>() {}.getType());
+            new TypeToken<Map<String, List<Vocabulary>>>() {
+            }.getType());
         return map.get("thesauri");
       } else {
         throw new RegistryException(TYPE.BAD_RESPONSE, "Response content is null");
@@ -302,7 +301,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.registry.RegistryManager#register(org.gbif.ipt.model.Resource,
    * org.gbif.ipt.model.Organisation, org.gbif.ipt.model.Ipt)
    */
@@ -330,23 +328,29 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
         if (StringUtils.trimToNull(key) == null) {
           key = newRegistryEntryHandler.resourceKey;
         }
-        resource.setKey(UUID.fromString(key));
-        if (key != null) {
-          log.info("A new resource has been registered with GBIF. Key = " + key);
-          return UUID.fromString(key);
+        UUID uuidKey;
+        try {
+          uuidKey = UUID.fromString(key);
+          if (uuidKey != null) {
+            resource.setKey(uuidKey);
+            resource.setOrganisation(org);
+            log.info("A new resource has been registered with GBIF. Key = " + key);
+            return uuidKey;
+          } else {
+            throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, "Missing UUID key in response");
+          }
+        } catch (IllegalArgumentException e) {
+          throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, "Invalid UUID key in response");
         }
-      } else {
-        throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, "Empty registry response");
       }
+      throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, "Empty registry response");
     } catch (Exception e) {
       throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, e);
     }
-    return null;
   }
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.registry.RegistryManager#registerIPT(org.gbif.ipt.model.Ipt)
    */
   public String registerIPT(Ipt ipt, Organisation org) throws RegistryException {
@@ -389,12 +393,10 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.registry.RegistryManager#updateResource(org.gbif.ipt.model.Resource,
    * org.gbif.ipt.model.Organisation, org.gbif.ipt.model.Ipt)
    */
-  public void updateResource(Resource resource, Organisation organisation, Ipt ipt) throws RegistryException,
-      IllegalArgumentException {
+  public void updateResource(Resource resource, Ipt ipt) throws RegistryException, IllegalArgumentException {
     if (!resource.isRegistered()) {
       throw new IllegalArgumentException("Resource is not registered");
     }
@@ -409,7 +411,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
     try {
       Response resp = http.post(getIptUpdateResourceUri(resource.getKey().toString()), null, null,
-          orgCredentials(organisation), new UrlEncodedFormEntity(data));
+          orgCredentials(resource.getOrganisation()), new UrlEncodedFormEntity(data));
       if (http.success(resp)) {
         log.debug("Resource's registration info has been updated");
       } else {
