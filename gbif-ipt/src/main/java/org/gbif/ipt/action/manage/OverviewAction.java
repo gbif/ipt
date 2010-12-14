@@ -253,13 +253,13 @@ public class OverviewAction extends ManagerBaseAction {
       }
     } catch (PublicationException e) {
       if (PublicationException.TYPE.LOCKED == e.getType()) {
-        addActionWarning("Resource is being published already. Please be patient");
+    	addActionWarning(getText("manage.overview.resource.being.published"));
       } else {
-        addActionWarning("Error publishing resource", e);
+        addActionWarning(getText("manage.overview.publishing.error"),e);
       }
     } catch (Exception e) {
       log.error("Error publishing resource", e);
-      addActionWarning("Error publishing resource: ", e);
+      addActionWarning(getText("manage.overview.publishing.error"),e);
     }
     return ERROR;
   }
