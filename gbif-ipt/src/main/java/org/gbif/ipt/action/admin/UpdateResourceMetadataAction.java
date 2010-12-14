@@ -71,15 +71,25 @@ public class UpdateResourceMetadataAction extends POSTAction {
           registryManager.updateResource(res, registrationManager.getIpt());
           resUpdateStatus.put(res.getShortname() + registry, success);
         } catch (RegistryException e) {
+          log.warn("Registry exception updating resource", e);
           resUpdateStatus.put(res.getShortname() + registry, e.getMessage());
         }
       }
     }
 
-    /** TODO: unzip published dwca, replace eml.xml with newly generated file, rezip */
-// log.info("Updating resource metadata - published DwC archives");
+    log.info("Updating resource metadata - published DwC archives");
+    for (Resource res : publishedResources) {
+      try {
+        resourceManager.updateDwcaEml(res, this);
+        resUpdateStatus.put(res.getShortname() + dwca, success);
+      } catch (RegistryException e) {
+        resUpdateStatus.put(res.getShortname() + dwca, e.getMessage());
+      }
+    }
 
     logFeedback(publishedResources, resUpdateStatus);
+
+    log.info("Updating resource metadata complete");
 
     return SUCCESS;
   }
@@ -87,35 +97,71 @@ public class UpdateResourceMetadataAction extends POSTAction {
   private void logFeedback(List<Resource> publishedResources, Map<String, String> resUpdateStatus) {
     int successCounter = 0;
     for (Resource res : publishedResources) {
-      String logMsg = "Resource " + res.getShortname() + " : ";
       String emlMsg = resUpdateStatus.get(res.getShortname() + eml);
+      String registryMsg = "";
+      String dwcaMsg = resUpdateStatus.get(res.getShortname() + dwca);
 
-      /** TODO: make this msg creation better */
-      // an extremely painful way of creating a nice looking message
-      boolean allGood = false;
+      // 0 is fail, 1 is success, 2 is only for reg, means not registered
+      // emlVal can be 0 or 100, reg 0, 10, or 20, dwca 0 or 1 - their sum gives unique state
+      int emlVal = 100 * (emlMsg.equals(success) ? 1 : 0);
+      int registryVal = 20;
       if (res.isRegistered()) {
-        String registryMsg = resUpdateStatus.get(res.getShortname() + registry);
+        registryMsg = resUpdateStatus.get(res.getShortname() + registry);
+        registryVal = 10 * (registryMsg.equals(success) ? 1 : 0);
+      }
+      int dwcaVal = (dwcaMsg.equals(success) ? 1 : 0);
 
-        allGood = emlMsg.equals(success) && registryMsg.equals(success);
-        if (allGood) {
-          logMsg = logMsg + getText("admin.config.updateMetadata.resource.success");
-        } else if (!emlMsg.equals(success) && registryMsg.equals(success)) {
-          logMsg = logMsg + getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.eml", emlMsg);
-        } else if (emlMsg.equals(success) && !registryMsg.equals(success)) {
-          logMsg = logMsg + getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.registry", registryMsg);
-        } else {
-          logMsg = logMsg + getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.both", emlMsg, registryMsg);
-        }
-      } else {
-        allGood = emlMsg.equals(success);
-        if (allGood) {
-          logMsg = logMsg + getText("admin.config.updateMetadata.resource.success.notRegistered");
-        } else {
-          logMsg = logMsg + getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.eml.notRegistered", emlMsg);
-        }
+      int state = emlVal + registryVal + dwcaVal;
+      if (log.isDebugEnabled()) log.debug("Logging feedback for state [" + state + "]");
+
+      String logMsg = null;
+      switch (state) {
+        case 000:
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.all", emlMsg, registryMsg,
+              dwcaMsg);
+          break;
+        case 001:
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.eml_and_registry", emlMsg,
+              registryMsg);
+          break;
+        case 010:
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.eml_and_dwca", emlMsg, dwcaMsg);
+          break;
+        case 011:
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.eml", emlMsg);
+          break;
+        case 020:
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.eml_and_dwca.notRegistered",
+              emlMsg, dwcaMsg);
+          break;
+        case 021:
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.eml.notRegistered", emlMsg);
+          break;
+        case 100:
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.registry_and_dwca", registryMsg,
+              dwcaMsg);
+          break;
+        case 101:
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.registry", registryMsg);
+          break;
+        case 110:
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.dwca", dwcaMsg);
+          break;
+        case 111:
+          logMsg = getText("admin.config.updateMetadata.resource.success");
+          break;
+        case 120:
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.dwca.notRegistered", dwcaMsg);
+          break;
+        case 121:
+          logMsg = getText("admin.config.updateMetadata.resource.success.notRegistered");
+          break;
       }
 
-      if (allGood) {
+      logMsg = "Resource " + res.getShortname() + " : " + logMsg;
+      if (log.isDebugEnabled()) log.debug("User feedback: " + logMsg);
+
+      if (state == 111 | state == 121) {
         successCounter++;
         this.addActionMessage(logMsg);
       } else {
@@ -127,8 +173,8 @@ public class UpdateResourceMetadataAction extends POSTAction {
     if (publishedResources.isEmpty()) {
       this.addActionWarning(getText("admin.config.updateMetadata.nonePublished"));
     } else {
-      this.addActionMessage(getTextWithDynamicArgs("admin.config.updateMetadata.summary", String.valueOf(successCounter),
-          String.valueOf(publishedResources.size())));
+      this.addActionMessage(getTextWithDynamicArgs("admin.config.updateMetadata.summary",
+          String.valueOf(successCounter), String.valueOf(publishedResources.size())));
     }
 
   }
