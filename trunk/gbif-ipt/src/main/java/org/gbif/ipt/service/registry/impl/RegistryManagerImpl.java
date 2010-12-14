@@ -233,7 +233,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       throw new RegistryException(TYPE.BAD_RESPONSE, e);
     } catch (IOException e) {
       throw new RegistryException(TYPE.IO_ERROR, e);
-    } catch (URISyntaxException e) {
+    } catch (Exception e) {
       throw new RegistryException(TYPE.UNKNOWN, e);
     }
   }
