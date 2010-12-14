@@ -56,7 +56,7 @@ public class OverviewAction extends ManagerBaseAction {
       addActionError(getText("manage.overview.manager.not.available", new String[]{id}));
     } else if (u != null) {
       resource.addManager(u);
-      addActionMessage("Added " + u.getName() + " to resource managers");
+      addActionMessage(getText("manage.overview.user.added", new String[]{u.getName()}));
       saveResource();
       potentialManagers.remove(u);
     }
@@ -90,7 +90,7 @@ public class OverviewAction extends ManagerBaseAction {
     try {
       Resource res = resource;
       resourceManager.delete(res);
-      addActionMessage("Deleted " + res);
+      addActionMessage(getText("manage.overview.resource.deleted", new String[]{res.toString()}));
       return HOME;
     } catch (IOException e) {
       String msg = getText("manage.resource.delete.failed");
@@ -116,7 +116,7 @@ public class OverviewAction extends ManagerBaseAction {
       addActionError(getText("manage.overview.manager.not.available", new String[]{id}));
     } else {
       resource.getManagers().remove(u);
-      addActionMessage("Removed " + u.getName() + " from resource managers");
+      addActionMessage(getText("manage.overview.user.removed", new String[]{u.getName()}));
       saveResource();
       potentialManagers.add(u);
     }
@@ -169,7 +169,7 @@ public class OverviewAction extends ManagerBaseAction {
   public String locked() throws Exception {
     now = new Date();
     if (report != null && report.isCompleted()) {
-      addActionMessage("Resource published!");
+      addActionMessage(getText("manage.overview.resource.published"));
       return "cancel";
     }
     return SUCCESS;
@@ -240,15 +240,15 @@ public class OverviewAction extends ManagerBaseAction {
     }
     try {
       if (resourceManager.publish(resource, this)) {
-        addActionMessage("Publishing resource version " + resource.getEmlVersion() + ".");
+    	addActionMessage(getText("manage.overview.publishing.resource.version", new String[]{resource.getEmlVersion()+""}));
         return PUBLISHING;
       } else {
         if (!resource.hasMappedData()) {
-          addActionMessage("Source data or dwc mappings missing. No data archive generated.");
+          addActionMessage(getText("manage.overview.data.missing"));
         } else {
-          addActionMessage("No data archive generated.");
+          addActionMessage(getText("manage.overview.no.data.archive.generated"));
         }
-        addActionMessage("Published resource version " + resource.getEmlVersion() + ".");
+        addActionMessage(getText("manage.overview.published.resource.version", new String[]{resource.getEmlVersion()+""}));
         return SUCCESS;
       }
     } catch (PublicationException e) {
@@ -275,7 +275,7 @@ public class OverviewAction extends ManagerBaseAction {
     if (PublicationStatus.PRIVATE == resource.getStatus()) {
       try {
         resourceManager.visibilityToPublic(resource);
-        addActionMessage("Changed Publication Status to " + resource.getStatus());
+        addActionMessage(getText("manage.overview.changed.publication.status", new String[]{resource.getStatus().toString()}));
       } catch (InvalidConfigException e) {
         log.error("Cant publish resource " + resource, e);
       }
@@ -284,7 +284,7 @@ public class OverviewAction extends ManagerBaseAction {
       if (unpublish) {
         try {
           resourceManager.visibilityToPrivate(resource);
-          addActionMessage("Changed Publication Status to " + resource.getStatus());
+          addActionMessage(getText("manage.overview.changed.publication.status", new String[]{resource.getStatus().toString()}));
         } catch (InvalidConfigException e) {
           log.error("Cant unpublish resource " + resource, e);
         }
@@ -298,7 +298,7 @@ public class OverviewAction extends ManagerBaseAction {
             org = registrationManager.get(id);
             resourceManager.register(resource, org, registrationManager.getIpt());
             if (org != null) {
-              addActionMessage("Registered resource with " + org.getName() + " in GBIF");
+              addActionMessage(getText("manage.overview.resource.registered", new String[]{org.getName()}));
             }
           } catch (RegistryException e) {
             log.error("Cant register resource " + resource + " with organisation " + org, e);
@@ -311,7 +311,7 @@ public class OverviewAction extends ManagerBaseAction {
       try {
         // org = registrationManager.get(resource.getOrganisation());
         resourceManager.updateRegistration(resource, registrationManager.getIpt());
-        addActionMessage("Updated registration of resource " + resource.getShortname() + " in GBIF");
+        addActionMessage(getText("manage.overview.resource.update.registration", new String[]{resource.getShortname()}));
       } catch (RegistryException e) {
         log.error("Cant update registration of resource " + resource + " with organisation " + org, e);
         addActionError(getText("manage.overview.failed.resource.update"));
