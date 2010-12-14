@@ -105,7 +105,11 @@ $(document).ready(function(){
 		<p><@s.text name="admin.registration.intro2"/></p>
 		
 		<@s.form cssClass="topForm half" action="registration" method="post" id="registrationForm" >
+		
+			<@label i18nkey="admin.organisation.key">
 			<@s.select id="organisation.key" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" size="15" disabled="false"/>
+			</@label>
+		
 			<@input name="organisation.password" i18nkey="admin.organisation.password" type="text" help="i18n"/>
 			<div id="requestDetails"></div>
 			<@input name="organisation.alias" i18nkey="admin.organisation.alias" type="text" />
