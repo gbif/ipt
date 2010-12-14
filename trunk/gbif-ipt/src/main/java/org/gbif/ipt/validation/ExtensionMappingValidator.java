@@ -42,7 +42,7 @@ import java.util.Set;
 public class ExtensionMappingValidator {
   public static class ValidationStatus {
     private List<ConceptTerm> missingRequiredFields = new ArrayList<ConceptTerm>();
-    private List<ConceptTerm> wrongDataType = new ArrayList<ConceptTerm>();
+    private List<ConceptTerm> wrongDataTypeFields = new ArrayList<ConceptTerm>();
     private String idProblem;
     private String[] idProblemParams;
 
@@ -51,7 +51,7 @@ public class ExtensionMappingValidator {
     }
 
     public void addWrongDataTypeField(ConceptTerm wrongDataTypeField) {
-      this.wrongDataType.add(wrongDataTypeField);
+      this.wrongDataTypeFields.add(wrongDataTypeField);
     }
 
     /**
@@ -73,11 +73,11 @@ public class ExtensionMappingValidator {
     }
 
     public List<ConceptTerm> getWrongDataTypeFields() {
-      return wrongDataType;
+      return wrongDataTypeFields;
     }
 
     public boolean isValid() {
-      return idProblem == null && missingRequiredFields.isEmpty();
+      return idProblem == null && missingRequiredFields.isEmpty() && wrongDataTypeFields.isEmpty();
     }
 
     public void setIdProblem(String idProblem) {
@@ -91,6 +91,11 @@ public class ExtensionMappingValidator {
   }
 
   private boolean isValidDataType(DataType dt, PropertyMapping pm, List<String[]> peek) {
+    // shortcut for strings and nulls
+    if (dt == null || dt == DataType.string) {
+      return true;
+    }
+
     // prepare set of strings to test
     Set<String> testData = new HashSet<String>();
     testData.add(pm.getDefaultValue());
@@ -111,7 +116,7 @@ public class ExtensionMappingValidator {
           if (val.equals("1")) {
             continue;
           } else {
-            Boolean.parseBoolean(val);
+            Boolean b = Boolean.parseBoolean(val);
           }
         } else if (DataType.date == dt) {
           Date d = DateUtils.parse(val, DateUtils.isoDateFormat);
@@ -147,9 +152,10 @@ public class ExtensionMappingValidator {
 
       // check data types for default mappings
       for (PropertyMapping pm : mapping.getFields()) {
-        if (StringUtils.trimToNull(pm.getDefaultValue()) != null && pm.getType() != null && DataType.string != pm.getType()) {
+        DataType type = mapping.getExtension().getProperty(pm.getTerm()).getType();
+        if (type != null && DataType.string != type) {
           // non string data type. check
-          if (!isValidDataType(mapping.getExtension().getProperty(pm.getTerm()).getType(), pm, peek)) {
+          if (!isValidDataType(type, pm, peek)) {
             v.addWrongDataTypeField(pm.getTerm());
           }
         }

@@ -128,7 +128,6 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     // final filename is based on rowType which we dont know yet - create a tmp file first
     File tmpFile = dataDir.configFile(CONFIG_FOLDER + "/tmp-extension.xml");
     try {
-      System.out.println(downloader);
       downloader.download(url, tmpFile);
       log.info("Successfully downloaded Extension " + url);
       // finally read in the new file and create the extension object

@@ -389,12 +389,13 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
               if (pm.getTranslation() != null && pm.getTranslation().containsKey(val)) {
                 val = pm.getTranslation().get(val);
               }
-              if (pm.getType() != null) {
-                if (pm.getType() == DataType.date) {
+              DataType type = mapping.getExtension().getProperty(pm.getTerm()).getType();
+              if (type != null) {
+                if (type == DataType.date) {
                   // TODO: parse date type with mapping datetime format
-                } else if (pm.getType() == DataType.bool) {
+                } else if (type == DataType.bool) {
                   // TODO: parse date type with mapping boolean format
-                } else if (pm.getType() == DataType.decimal) {
+                } else if (type == DataType.decimal) {
                   // normalise punctuation
                 }
               }
