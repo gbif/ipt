@@ -4,10 +4,11 @@
 <span class="small">${now?datetime?string}</span>
 <div<#if report?? && report.completed> class="completed"</#if>>
  <#if report??>
-  <p class="green">${report.state}</p>
   <#if report.completed>
+	<p class="actionMessage">${report.state}</p>
     <p>Continue to <a href="resource.do?r=${resource.shortname}">resource overview</a>.</p>
   <#else>
+  	<p class="warnMessage">${report.state}</p>
     <p><a href="cancel.do?r=${resource.shortname}">Cancel</a> publishing.</p>
   </#if> 
   <ul class="simple">
