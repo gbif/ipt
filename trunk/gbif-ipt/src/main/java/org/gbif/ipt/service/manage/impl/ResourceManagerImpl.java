@@ -675,9 +675,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           + " is currently locked by another process");
     }
 
-    if (!resource.isPublished()) {
+    if (!resource.hasPublishedData()) {
       throw new PublicationException(PublicationException.TYPE.DWCA, "Resource " + resource.getShortname()
-          + " has not yet been published - can't update a non-existent dwca.");
+          + " has no published data - can't update a non-existent dwca.");
     }
 
     try {
