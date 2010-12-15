@@ -276,6 +276,13 @@ $(document).ready(function(){
 			$("#item-"+index+" textarea").attr("name",function() {return $(this).attr("id"); });
 			$("#item-"+index+" select").attr("name",function() {return $(this).attr("id"); });
 		<#break>
+		<#case "additional">
+			$("#item-"+index+" input").attr("id",function() {
+				return "eml.alternateIdentifiers["+index+"]"; });
+			$("#item-"+index+" label").attr("for",function() {
+				return "eml.alternateIdentifiers["+index+"]"; });		
+			$("#item-"+index+" input").attr("name",function() {return $(this).attr("id"); });
+		<#break>
 		<#case "taxcoverage">
 			$("#item-"+index+" #plus-subItem").attr("id", "plus-subItem-"+index);
 			$("#plus-subItem-"+index).click(function(event){
