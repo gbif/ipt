@@ -37,7 +37,7 @@ $(document).ready(function(){
 	
 	<#list linkedOrganisations as o>	
 	<tr>
-		<td>${o.name!}</td>
+		<td><a id="editLink_${o.key}" href="organisation?id=${o.key}"><#if o.name?trim?has_content>${o.name}<#else>${o.alias!}</#if></a></td>
 		<td>${o.alias!}</td>
 		<td>
 		<#if o.canHost>
@@ -46,7 +46,6 @@ $(document).ready(function(){
 			<@s.checkbox name="organisation.canHost" key="organisation.canHost" disabled="true" value="false" />
 		</#if>
 		</td>
-		<td><a id="editLink_${o.key}" href="organisation?id=${o.key}"><button class="edit" id="${o.key}"><@s.text name="button.edit"/></button></a></td>
 	</tr>
 	</#list>
 </table>
