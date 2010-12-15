@@ -50,23 +50,19 @@ $(document).ready(function(){
 
  <#assign currentMenu = "admin"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
-
-
-<h1><@s.text name="admin.organisation.title"/></h1>
-
-<p><@s.text name="admin.organisation.intro"/></p>
-<p><@s.text name="admin.organisation.intro2"/></p>
-
 <#include "/WEB-INF/pages/macros/forms.ftl"> 
-
 
 <@s.form id="organisationsForm" cssClass="topForm half" action="organisation.do" method="post">
 	
 	<#if id?has_content>
+<h1><@s.text name="admin.organisation.title"/></h1>
 		<@input name="organisation.name" i18nkey="admin.organisation.name" type="text" disabled=true/>
 		<@s.hidden name="organisation.key" id="organisation.key" required="true" />
 		<@s.hidden name="id" id="id" required="true" />
 	<#else>
+<h1><@s.text name="admin.organisation.add.title"/></h1>
+<p><@s.text name="admin.organisation.add.intro"/></p>
+<p><@s.text name="admin.organisation.add.intro2"/></p>
 		<@s.hidden id="organisation.name" name="organisation.name" required="true" />
 		<@s.hidden id="organisation.primaryContactType" name="organisation.primaryContactType" required="false" />
 		<@s.hidden id="organisation.primaryContactName" name="organisation.primaryContactName" required="false" />
@@ -75,7 +71,7 @@ $(document).ready(function(){
 		<@s.hidden id="organisation.nodeName" name="organisation.nodeName" required="false" />
 		<@s.select id="organisation.key" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" size="15" disabled="false"/>		
 	</#if>		  
-	<@input name="organisation.password" i18nkey="admin.organisation.password" type="text"/>
+	<@input name="organisation.password" i18nkey="admin.organisation.password" type="password"/>
 	<div id="requestDetails"></div>
 	
 	<@input name="organisation.alias" i18nkey="admin.organisation.alias" type="text"/>
