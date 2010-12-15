@@ -150,6 +150,8 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     try {
       domConfig.doConfigure(log4j, LogManager.getLoggerRepository());
       log.info("Reloaded log4j for " + (cfg.debug() ? "debugging" : "production"));
+      log.info("Logging to " + LogFileAppender.LOGDIR);
+      log.info("IPT Data Directory: " + dataDir.dataFile(".").getAbsolutePath());
     } catch (Error e) {
       log.error("Failed to reload log4j configuration for " + (cfg.debug() ? "debugging" : "production"), e);
     }
