@@ -184,6 +184,9 @@ public class MetadataAction extends ManagerBaseAction {
       if (section.equals("collections")) {
         resource.getEml().getJgtiCuratorialUnits().clear();
       }
+      if (section.equals("additional")) {
+          resource.getEml().getAlternateIdentifiers().clear();
+      }
 
     }
 
