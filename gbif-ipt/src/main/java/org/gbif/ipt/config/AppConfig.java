@@ -73,16 +73,16 @@ public class AppConfig {
     return properties.getProperty(ANALYTICS_KEY);
   }
 
-  public DataDir getDataDir() {
-	return dataDir;
-  }
-
   public String getBaseURL() {
     String base = properties.getProperty(BASEURL);
     while (base != null && base.endsWith("/")) {
       base = base.substring(0, base.length() - 1);
     }
     return base;
+  }
+
+  public DataDir getDataDir() {
+    return dataDir;
   }
 
   public Double getLatitude() {
@@ -139,7 +139,7 @@ public class AppConfig {
   }
 
   public String getResourceArchiveUrl(String shortname) {
-    return getBaseURL() + "/dwca.do?" + Constants.REQ_PARAM_RESOURCE + "=" + shortname;
+    return getBaseURL() + "/archive.do?" + Constants.REQ_PARAM_RESOURCE + "=" + shortname;
   }
 
   public String getResourceEmlUrl(String shortname) {
