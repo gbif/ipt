@@ -7,6 +7,9 @@ $(document).ready(function(){
 	$('#create').click(function() {
 		window.location='user.do';
 	});	
+	$('#cancel').click(function() {
+		window.location='home.do';
+	});	
 });
 </script>	
  <#assign currentMenu = "admin"/>
@@ -37,6 +40,7 @@ $(document).ready(function(){
 
 <p>
 	<button id="create"><@s.text name="button.create"/></button>
+	<button id="cancel"><@s.text name="button.cancel"/></button>
 </p>
 
 

@@ -53,6 +53,7 @@ $(document).ready(function(){
 
 <p>
 	<button id="create"><@s.text name="button.create"/></button>
+	<button id="cancel"><@s.text name="button.cancel"/></button>
 </p>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
