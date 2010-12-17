@@ -45,7 +45,7 @@ $(document).ready(function(){
  <#assign currentMenu = "admin"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
-<h1><@s.text name="admin.config.title"/></h1>
+<h1><@s.text name="admin.home.editConfig"/></h1>
 
 <#include "/WEB-INF/pages/macros/forms.ftl">
 
