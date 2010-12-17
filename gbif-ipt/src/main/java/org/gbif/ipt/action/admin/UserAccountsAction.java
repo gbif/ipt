@@ -48,7 +48,7 @@ public class UserAccountsAction extends POSTAction {
         if (removedUser == null) {
           return NOT_FOUND;
         }
-        userManager.save();
+        userManager.save();       
         addActionMessage(getText("admin.user.deleted"));
         return SUCCESS;
       } catch (DeletionNotAllowedException e) {
@@ -129,8 +129,14 @@ public class UserAccountsAction extends POSTAction {
     	  if(userManager.list(Role.Admin).size() <= 1 && (user.getRole() != Role.Admin)) {
     		  addActionError(getText("admin.user.changed.current"));
     		  return INPUT;
+    	  }  	  
+    	  if(user.getEmail().equals(getCurrentUser().getEmail())){
+    		  getCurrentUser().setRole(user.getRole());
     	  }
     	  userManager.save(user);
+    	  if(getCurrentUser().getRole() != Role.Admin) {    		  
+    		  return HOME;
+          }
     	  addActionMessage(getText("admin.user.changed"));
       }
       return SUCCESS;

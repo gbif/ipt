@@ -37,6 +37,7 @@
 		<action name="user" class="org.gbif.ipt.action.admin.UserAccountsAction">
 			<result name="input">/WEB-INF/pages/admin/user.ftl</result>
 			<result name="cancel" type="redirect">users.do</result>
+			<result name="home" type="redirect">/home.do</result>			
 			<result type="redirect">users.do</result>
 		</action>
 		
