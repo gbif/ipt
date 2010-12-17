@@ -126,7 +126,7 @@ public class UserAccountsAction extends POSTAction {
         userManager.save(user);
         addActionMessage(getText("admin.user.passwordChanged", new String[]{user.getEmail(),newPassword}));
       } else {
-    	  if(userManager.list(Role.Admin).size() <= 1 && (user.getRole() != Role.Admin)) {
+    	  if(userManager.get(user.getEmail()).getRole() == Role.Admin && user.getRole() != Role.Admin && userManager.list(Role.Admin).size() < 2 ) {
     		  addActionError(getText("admin.user.changed.current"));
     		  return INPUT;
     	  }  	  
