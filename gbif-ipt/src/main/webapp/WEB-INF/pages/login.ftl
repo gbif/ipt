@@ -13,7 +13,7 @@
 <#include "/WEB-INF/pages/macros/forms.ftl">
 <@s.form cssClass="topForm half" action="login.do" method="post">
 	<@input name="email" />  
-	<@input name="password" type="password" />
+	<@input name="password" type="password" value=""/>
 	
 <#if email?exists>
 <p><@s.text name="login.forgottenpassword"/></p>
