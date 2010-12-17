@@ -1,9 +1,9 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
- <title><@s.text name="admin.extensions.title"/></title>
+ <title><@s.text name="admin.home.manageExtensions"/></title>
  <#assign currentMenu = "admin"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
-<h1><@s.text name="admin.extensions.title"/></h1>
+<h1><@s.text name="admin.home.manageExtensions"/></h1>
 
 <#list extensions as ext>	
 <a name="${ext.rowType}"></a>          
