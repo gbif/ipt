@@ -90,8 +90,6 @@ $(document).ready(function(){
 	<#if !validatedBaseURL>
 
 		<p><@s.text name="admin.registration.test1"/></p>
-		<p><@s.text name="admin.registration.test2"/></p>
-		<p><@s.text name="admin.registration.test3"/></p>
 		
 			<@input name="registration.baseURL" i18nkey="admin.registration.baseURL" type="text" value="${baseURL}" size=70 disabled=true/>
 			<@s.submit cssClass="button" name="validate" id="validate" key="Validate"/>
