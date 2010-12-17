@@ -23,7 +23,7 @@ $(document).ready(function(){
  <#assign currentMenu = "admin"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
-<h1><@s.text name="admin.organisations.title"/></h1>
+<h1><@s.text name="admin.home.editOrganisations"/></h1>
 
 <#include "/WEB-INF/pages/macros/forms.ftl"> 
 
