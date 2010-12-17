@@ -75,7 +75,7 @@ $(document).ready(function(){
  <#assign currentMenu = "admin"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
-<h1><@s.text name="admin.registration.title"/></h1>
+<h1><@s.text name="admin.home.editRegistration"/></h1>
 
 <#-- If the hosting institution already exists, this IP has been registered. Don't present the register form -->
 

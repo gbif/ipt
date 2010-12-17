@@ -1,5 +1,5 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
- <title><@s.text name="admin.user.title"/></title>
+ <title><@s.text name="admin.home.manageUsers"/></title>
  <script type="text/javascript">
 
 $(document).ready(function(){
@@ -15,7 +15,7 @@ $(document).ready(function(){
  <#assign currentMenu = "admin"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
-<h1><@s.text name="admin.user.title"/></h1>
+<h1><@s.text name="admin.home.manageUsers"/></h1>
 
 <p><@s.text name="admin.users.intro"/></p>
 
