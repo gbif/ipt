@@ -7,7 +7,7 @@ $(document).ready(function(){
 		$('#organisation\\.name').val($('#organisation\\.key :selected').text());	
 	});
 	//Hack needed for Internet Explorer X.*x
-	$('#create').click(function() {
+	$('#add').click(function() {
 		window.location='organisation.do';
 	});
 	$('#cancel').click(function() {
@@ -52,7 +52,7 @@ $(document).ready(function(){
 
 
 <p>
-	<button id="create"><@s.text name="button.create"/></button>
+	<button id="add"><@s.text name="button.add"/></button>
 	<button id="cancel"><@s.text name="button.cancel"/></button>
 </p>
 
