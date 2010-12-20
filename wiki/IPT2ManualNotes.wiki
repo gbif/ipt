@@ -37,7 +37,8 @@ Successful deployment of the IPT to the servlet container will make the IPT acce
 ==Set up the IPT for the first time==
 ===IPT setup===
 The first time the IPT is run, you will be presented with a few simple steps to prepare the IPT for use. The IPT setup page requires a location where the data for the IPT installation can be stored. The format of the location entered on the page must conform with the standard for the absolute path to a directory for the operating system on which the IPT is installed, relative paths are not supported. For example, use a path such as "c:\datadir" for Windows environments or "/usr/datadir" for Unix and MacOSX environments. The IPT must have write permission to to the selected location. If it does, the path can be simply be entered in the text box provided and then click on the button labeled "Save". If not, create the data directory first with the appropriate write permissions, then enter that directory path in the text box and click on "Save". Note: If you have a data directory from a previously running IPT of the same version, you can use the absolute path of that data directory in this first step of the IPT setup. That will be sufficient for the entire setup process. Clicking on "Save" in this case will bypass the page titled IPT setup II and present the IPT Administration page.
-<<screenshot>>
+ 
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTSetup1.png]
 
 ===IPT setup II===
 If the initial data directory assignment step was successful, the IPT will present a page on which the information about the default administrator of the IPT must be entered, along with the information about how the IPT will be accessed from the Internet. The default administrator will have a distinct login and the authority to make changes to all aspects of the IPT installation. The default administrator will be able to make additional user accounts, including other administrators having the same authority to make changes. Following are explanations of the fields encountered on this page:
@@ -50,7 +51,8 @@ If the initial data directory assignment step was successful, the IPT will prese
   * *Production use* - Check this box if the IPT installation will be fully functional for real-world production use rather than for evaluation or testing.
   * *Base URL for this IPT* - This is the URL that points to the root of this IPT installation. The URL is detected automatically if possible, but should be changed in production systems to be accessible via the Internet in order for the IPT to function fully. Configuring the IPT Base URL to localhost, for example, will not allow the instance of the IPT to be registered with GBIF, will not allow the IPT to be associated with an organization, and will not allow the resources to be publicly accessible.
   * *Proxy URL* - If the server on which the IPT is installed is routed through a proxy server or virtual host, enter the host address and port number through which the IPT will be accessible via the Internet as a URL in the format host:port, for example, proxy.gbif.org:8080.
-<<screenshot>>
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTSetup2.png]
 
 When all of the information on the page is complete and correct, click on the button labeled "Save" to complete the IPT setup process. If a problem occurs, an error notification will appear at the top of the page with recommendations about how to resolve the issue. If the setup is successful, the IPT Administration page will be presented, from which further configuration of the IPT can be accomplished. It is recommended to review all of the Administration functions before. Details about the options presented on this page are given in the Administration section of the Quick Reference Guide. Before going on to add data resources to the IPT, the administrator must, at a minimum, set the GBIF registration options and associate the IPT with an organisation.
 
@@ -68,10 +70,25 @@ This Quick Reference explains in detail the capabilities of an IPT instance that
 ===User interface controls===
 Most user interface controls have both enabled and disabled modes. If the feature is enabled, changes can be made to the control and these changes will be saved, if possible, when the form on why they appear is saved. Disabled control show the value of the associated information, but do not allow that information to be saved under the conditions in effect at the time they appear.
 
-*Text boxes* - allow textual information to be viewed or entered.<br>
-*Check boxes* - allow a value to viewed or set to true (when checked) or false (when unchecked).<br>
-*Selection boxes* - allows a value to be viewed or selected from a list of predefined values. A selection box may contain explanatory text about the selection in place of a selected value. In this case the selection will begin with "Select " (e.g., "Select a country, territory, or island"). Click on the selection box to open it and see the list of possible choices. Click on one of the choices to select it as the value for that particular field.<br>
+*Text boxes* - allow textual information to be viewed or entered.
+
+Example text box:
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TextBoxExample.png]
+
+*Check boxes* - allow a value to viewed or set to true (when checked) or false (when unchecked).
+
+Example check box:
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-CheckboxExample.png]<br>
+
+*Selection boxes* - allows a value to be viewed or selected from a list of predefined values. A selection box may contain explanatory text about the selection in place of a selected value. In this case the selection will begin with "Select " (e.g., "Select a country, territory, or island"). Click on the selection box to open it and see the list of possible choices. Click on one of the choices to select it as the value for that particular field.
+
+Example selection box:
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-SelectBoxExample.png]
+
 *Information buttons* - shows a message explaining the field next to which it appears. Click on an information icon next to any field to see a help message about that field. Click on it again to make the message disappear.
+
+Example information button:
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/InformationButton.png]
 
 ===Controls on all pages===
 This section describes several features that are accessible from more than one page.
