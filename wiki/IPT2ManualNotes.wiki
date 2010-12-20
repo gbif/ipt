@@ -1,38 +1,39 @@
 #Unfinished Notes (safety net/backup) for IPT 2.0 User Manual
 
-Note: None of this is in wiki format - just text for safe keeping.
-
 =Requirements=
-===========
-Internet Connectivity - Aspects of the IPT, such as communication with the GBIF Registry, require a stable connection to the Internet. From the perspective of IPT administration, the speed of the internet connection affects only such communications; most IPT user functions are not affected by Internet speeds. 
+==Internet Connectivity==
+Aspects of the IPT, such as communication with the GBIF Registry, require a stable connection to the Internet. From the perspective of IPT administration, the speed of the internet connection affects only such communications; most IPT user functions are not affected by Internet speeds. 
 
-Stable URL - The it can be used simply as a tool to generate Darwin Core archives, The IPT is meant to be a discoverable and accessible Internet-based resource. To support this functionality, the server on which the IPT is installed must be able to support access to the application through a stable URL.
+==Stable URL==
+The it can be used simply as a tool to generate Darwin Core archives, The IPT is meant to be a discoverable and accessible Internet-based resource. To support this functionality, the server on which the IPT is installed must be able to support access to the application through a stable URL.
 
-Memory - The server hosting the IPT installation must make 256 MB memory available to the application.
+==Memory==
+The server hosting the IPT installation must make 256 MB memory available to the application.
 
-Disk space - The space required by the IPT application is less then 20MB. The contents of the IPT data directory after installation requires less than 1MB of disk storage, writable by the IPT. The content of the data directory will grow as resources are created, and will require space roughly equal to the size of the files containing the imported data sets. Normal usage of the IPT appends information to the log files, which will grow over time, but which require minimal space.
+==Disk space==
+The space required by the IPT application is less then 20MB. The contents of the IPT data directory after installation requires less than 1MB of disk storage, writable by the IPT. The content of the data directory will grow as resources are created, and will require space roughly equal to the size of the files containing the imported data sets. Normal usage of the IPT appends information to the log files, which will grow over time, but which require minimal space.
 
-Java - The server hosting the IPT must have a version no less than Java 5 installed and functional prior to the installation of the IPT.
+==Java==
+The server hosting the IPT must have a version no less than Java 5 installed and functional prior to the installation of the IPT.
 
-Servlet container - The IPT application comes packaged with Jetty and therefore requires no further servlet container. Nevertheless, the IPT can be deployed in another servlet container (e.g., Tomcat) that is already in use. Information about how to use various servlet containers with the IPT can be found at http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation.
+==Servlet container==
+The IPT application comes packaged with Jetty and therefore requires no further servlet container. Nevertheless, the IPT can be deployed in another servlet container (e.g., Tomcat) that is already in use. Information about how to use various servlet containers with the IPT can be found at http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation.
 
 =Getting Started=
-============
 The GBIF Integrated Publishing Toolkit (IPT) is a web application that makes it relatively easy to share biodiversity-related data sets. Data registered through an instance of the IPT are connected to the GBIF Biodiversity Resource Discovery System (GBRDS - also known as the GBIF Registry), are indexed for consultation via the GBIF portal, and made accessible for public use.
 
 This Getting Started Guide is meant for those wishing to install and run an IPT instance for the first time. If you would like to see a functional installation of the IPT in action, you may use the public test instance of the latest general release version at http://ipt.gbif.org/. If you do so, refer to Quick Reference Guide for details on how to use the screens you will see.
 
-*Install the IPT
+==Install the IPT==
 Prepare the server - Before installing the IPT, be sure that the intended hosting server meets the minimum specifications described in the <Requirements> section. 
 Download IPT - The latest release of the IPT software is available for download as a file named ipt.war from http://code.google.com/p/gbif-providertoolkit/downloads/list. Download this file to the server on which the IPT will run. 
 Deploy the IPT to the servlet container - follow the normal process for deploying a web applications to a servlet container. A wiki page with further information about installations on specific application servers can be found at http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation.
 Run the IPT application - successful deployment of the IPT to the servlet container will make the IPT accessible through a web browser at a URL determined by the servlet's base URL followed by /ipt (e.g., http://localhost:8080/ipt). If the installation was successful, the initial IPT setup page will appear in the browser.
 
-*Set up the IPT for the first time
-<<screenshot>>
+==Set up the IPT for the first time==
 IPT setup - The first time the IPT is run, you will be presented with a few simple steps to prepare the IPT for use. The IPT setup page requires a location where the data for the IPT installation can be stored. The format of the location entered on the page must conform with the standard for the absolute path to a directory for the operating system on which the IPT is installed, relative paths are not supported. For example, use a path such as "c:\datadir" for Windows environments or "/usr/datadir" for Unix and MacOSX environments. The IPT must have write permission to to the selected location. If it does, the path can be simply be entered in the text box provided and then click on the button labeled "Save". If not, create the data directory first with the appropriate write permissions, then enter that directory path in the text box and click on "Save". Note: If you have a data directory from a previously running IPT of the same version, you can use the absolute path of that data directory in this first step of the IPT setup. That will be sufficient for the entire setup process. Clicking on "Save" in this case will bypass the page titled IPT setup II and present the IPT Administration page.
-
 <<screenshot>>
+
 IPT setup II - if the initial data directory assignment step was successful, the IPT will present a page on which the information about the default administrator of the IPT must be entered, along with the information about how the IPT will be accessed from the Internet. The default administrator will have a distinct login and the authority to make changes to all aspects of the IPT installation. The default administrator will be able to make additional user accounts, including other administrators having the same authority to make changes. Following are explanations of the fields encountered on this page:
 **Email - The full, active email address of the default administrator of the IPT installation. 
 **First name - The first name of the default administrator. 
@@ -42,12 +43,13 @@ IPT setup II - if the initial data directory assignment step was successful, the
 **Production use - Check this box if the IPT installation will be fully functional for real-world production use rather than for evaluation or testing.
 **Base URL for this IPT - This is the URL that points to the root of this IPT installation. The URL is detected automatically if possible, but should be changed in production systems to be accessible via the Internet in order for the IPT to function fully. Configuring the IPT Base URL to localhost, for example, will not allow the instance of the IPT to be registered with GBIF, will not allow the IPT to be associated with an organization, and will not allow the resources to be publicly accessible.
 **Proxy URL - If the server on which the IPT is installed is routed through a proxy server or virtual host, enter the host address and port number through which the IPT will be accessible via the Internet as a URL in the format host:port, for example, proxy.gbif.org:8080.
+<<screenshot>>
 
 When all of the information on the page is complete and correct, click on the button labeled "Save" to complete the IPT setup process. If a problem occurs, an error notification will appear at the top of the page with recommendations about how to resolve the issue. If the setup is successful, the IPT Administration page will be presented, from which further configuration of the IPT can be accomplished. It is recommended to review all of the Administration functions before. Details about the options presented on this page are given in the <Administration> section of the Quick Reference Guide. Before going on to add data resources to the IPT, the administrator must, at a minimum, set the <GBIF registration options> and associate the IPT with an organisation.
 
 Once you have completed the steps in this Getting Started Guide, you may want to complete one of more of the <tutorials> to understand how common IPT tasks are accomplished. There is a also a <Quick Reference Guide>, which explains each of the forms of the IPT in detail. 
 
-*Starting Over
+==Starting Over==
 It is relatively easy to re-initiate the IPT and begin again at the first setup step. To do so, everyone who is logged in the the IPT must log out. Then remove the file called datadir.location from the folder where it was created by the IPT (normally WEB-INF within the IPT base installation directory). Then then the person having the default administrator information and knowledge of the IPT installation should reload the IPT base URL in a web browser. This will open the the initial IPT setup page again. At this point, if the user enters the same data directory absolute path as before, the previous configuration will be completely restored, assuming that there has been no incompatible upgrade in IPT versions between the time when the data directory was last used and when it used to reinitiate the IPT. If the same data directory location is desired, but without the previous IPT configuration, then the contents of that data directory should be moved to a different location or removed before clicking on "Save" in the initial IPT setup page. If an entirely new data directory is used, then the setup will proceed exactly as described from the beginning of this Getting Started Guide.
 
 =Quick Reference=
@@ -74,8 +76,8 @@ Information buttons - shows a message explaining the field next to which it appe
 *Request new feature.  This link (http://code.google.com/p/gbif-providertoolkit/issues/entry?template=Feature%20request) opens a specific form in the IPT issue tracker that can be filled in to request a capability that the IPT does not currently have.
 *Copyright. The copyright for the IPT software is held by the Global Biodiversity Information Facility. Details of the copyright and licensing can be seen in the About Section of this User Manual.
 
-==Home== (visible to all users)
-*Intro: This page allows users to view a list of public resources, if any, and to look at the detailed metadata of any resource on the list. If there are any public resources, they will appear in a table with the following columns:
+==Home (visible to all users)==
+This page allows users to view a list of public resources, if any, and to look at the detailed metadata of any resource on the list. If there are any public resources, they will appear in a table with the following columns:
 **Name - the title of the resource as given in the Title entry of the resource metadata. The Name appears as a link, which will open a <detailed metadata page> for the selected resource.
 **Organisation - the organisation under which the resource has been registered, if any. See the "Configure organisations" section under "Administration" for more information about registering organisations and registering a resource under an organisation.
 **Type - the category of data (specimen, checklist, etc.) in the dataset represented by the resource. 
@@ -86,7 +88,7 @@ Information buttons - shows a message explaining the field next to which it appe
 
 *Detailed Metadata Page: Clicking on the Name link in the list of resources on the Home page shows shows a new page having all of the metadata about the selected resource. This is the one page where you can easily review all of the metadata for a resource. A user with Admin or Manager rights can edit the metadata. See the section on "Editing an existing resource" under Manage Resources.
 
-Administration (visible only to users having the Admin role)
+==Administration (visible only to users having the Admin role)==
 *Intro: Clicking on the Administration menu opens a page from which the following specific administrative tasks can be accessed: (Screen shots for icons src/main/webapp/images/icons
 <Configure IPT settings>
 <Configure user accounts>
@@ -157,7 +159,7 @@ controlled vocabularies. Periodically these vocabularies may also change. Updati
 *View IPT logs
 This page shows messages from the admin.log file, which contains only those messages that are warnings or more severe. The complete log of messages (contained in debug.log) can be opened and viewed by clicking on the link labeled "complete log file". The contents of the complete log file may be useful when <reporting a bug>.
 
-=Manage Resources= (visible to users with an Admin or Manager role)
+==Manage Resources (visible to users with an Admin or Manager role)==
 *Intro: This page allows users having the appropriate rights (managers and administrators) to make changes to existing resources listed on the page or to create new resources.
 
 *Create or upload a resource
@@ -172,15 +174,13 @@ This page shows messages from the admin.log file, which contains only those mess
 **Published Release
 **Resource Managers
 
-About  (visible to all users)
+==About  (visible to all users)==
 *The About page gives information about the IPT installation that is running, including information about the hosting institution, if that has been registered (see sectionXXX). Edit about.ftl in the data directory/config to customize the contents of this page for the IPT installation.
 
-Updates
-=======
+=Updates=
 Software updates. Extension updates. Data directory. Resource updates.
 
-Tutorials
-=======
+=Tutorials=
 This page lists the titles and brief descriptions of step-by-step tutorials for various aspects of using the IPT. All tutorials assumes that the IPT has been installed, run for the first time, and has passed the tests given in the Getting Started section.
 
 Tutorial 1 - Prepare IPT for data resources
@@ -188,8 +188,7 @@ Tutorial 2 - Create Darwin Core Occurrence resource (data extension and import C
 Tutorial 3 - Creating a Darwin Core archive. (make one, then import it again, suggesting hoe this could be done on another server).
 Tutorial 4 - Using IPT in one organisation to host resources for other organisations.
 
-About
-=====
+=About=
 Citation
 This User Manual adapts and builds upon the previous IPT User Manual (Réveillon 2009). The recommended citation for this User Manual is as follows:
 
@@ -206,7 +205,7 @@ This User Manual is released under the Creative Commons Attribution-Noncommercia
 	•	you may not use this work for commercial purposes;
 	•	if you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
 
-Resources
+=Resources=
 *Darwin Core Archive documentation - details about the structure of Darwin Core Archives can be found in the Text Guide section of the Darwin Core web site: http://rs.tdwg.org/dwc/terms/guides/text/.
 
 *GBIF Help Desk - send email messages to helpdesk@gbif.org to report problems with GBIF services, such as the GBIF Registry. Do not send IPT-specific help question to the Help Desk. Instead send them to the <IPT mailing list>.
@@ -223,8 +222,7 @@ Resources
 References
 Réveillon, A. 2009. The GBIF Integrated Publishing Toolkit User Manual, version 1.0. Copenhagen: Global Biodiversity Information Facility. 37 pp.
 
-Glossary
-=======
+=Glossary=
 Checklist Resource -
 CSV file - a file that contains data in the Comma-separated Value format.
 Data directory -
