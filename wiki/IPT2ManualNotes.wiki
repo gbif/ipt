@@ -1,8 +1,8 @@
 #Unfinished Notes (safety net/backup) for IPT 2.0 User Manual
 
-Note: None of this is in wiki format - just text.
+Note: None of this is in wiki format - just text for safe keeping.
 
-Requirements
+=Requirements=
 ===========
 Internet Connectivity - Aspects of the IPT, such as communication with the GBIF Registry, require a stable connection to the Internet. From the perspective of IPT administration, the speed of the internet connection affects only such communications; most IPT user functions are not affected by Internet speeds. 
 
@@ -14,11 +14,9 @@ Disk space - The space required by the IPT application is less then 20MB. The co
 
 Java - The server hosting the IPT must have a version no less than Java 5 installed and functional prior to the installation of the IPT.
 
-Application Server - The IPT application comes packaged with Jetty and therefore requires no further application server. Nevertheless, the IPT can be deployed in another application server (e.g., Tomcat) that is already in use. 
+Servlet container - The IPT application comes packaged with Jetty and therefore requires no further servlet container. Nevertheless, the IPT can be deployed in another servlet container (e.g., Tomcat) that is already in use. Information about how to use various servlet containers with the IPT can be found at http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation.
 
-Additional information - <<more>>
-
-Getting Started
+=Getting Started=
 ============
 The GBIF Integrated Publishing Toolkit (IPT) is a web application that makes it relatively easy to share biodiversity-related data sets. Data registered through an instance of the IPT are connected to the GBIF Biodiversity Resource Discovery System (GBRDS - also known as the GBIF Registry), are indexed for consultation via the GBIF portal, and made accessible for public use.
 
@@ -26,9 +24,9 @@ This Getting Started Guide is meant for those wishing to install and run an IPT 
 
 *Install the IPT
 Prepare the server - Before installing the IPT, be sure that the intended hosting server meets the minimum specifications described in the <Requirements> section. 
-Download IPT - The latest release of the IPT software is available for download as a file named ipt.war from http://code.google.com/p/gbif-providertoolkit/downloads/list. Download this file to the server on which the IPT will run.
-Deploy the IPT to the application server - follow the normal process for deploying web applications to the application server. For Tomcat, this means copying the pit.war file to the Tomcat webapps folder and then starting Tomcat, or restarting Tomcat if it is already running. <<more>> This section could benefit from a link to a wiki page where various application server installation instructions could be held.
-Run the IPT application - successful deployment of the IPT to the application server will make the IPT accessible through a web browser at a URL determined by the application server's base URL followed by /ipt (e.g., http://localhost:8080/ipt). If the installation was successful, the initial IPT setup page will appear in the browser.
+Download IPT - The latest release of the IPT software is available for download as a file named ipt.war from http://code.google.com/p/gbif-providertoolkit/downloads/list. Download this file to the server on which the IPT will run. 
+Deploy the IPT to the servlet container - follow the normal process for deploying a web applications to a servlet container. A wiki page with further information about installations on specific application servers can be found at http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation.
+Run the IPT application - successful deployment of the IPT to the servlet container will make the IPT accessible through a web browser at a URL determined by the servlet's base URL followed by /ipt (e.g., http://localhost:8080/ipt). If the installation was successful, the initial IPT setup page will appear in the browser.
 
 *Set up the IPT for the first time
 <<screenshot>>
@@ -52,24 +50,23 @@ Once you have completed the steps in this Getting Started Guide, you may want to
 *Starting Over
 It is relatively easy to re-initiate the IPT and begin again at the first setup step. To do so, everyone who is logged in the the IPT must log out. Then remove the file called datadir.location from the folder where it was created by the IPT (normally WEB-INF within the IPT base installation directory). Then then the person having the default administrator information and knowledge of the IPT installation should reload the IPT base URL in a web browser. This will open the the initial IPT setup page again. At this point, if the user enters the same data directory absolute path as before, the previous configuration will be completely restored, assuming that there has been no incompatible upgrade in IPT versions between the time when the data directory was last used and when it used to reinitiate the IPT. If the same data directory location is desired, but without the previous IPT configuration, then the contents of that data directory should be moved to a different location or removed before clicking on "Save" in the initial IPT setup page. If an entirely new data directory is used, then the setup will proceed exactly as described from the beginning of this Getting Started Guide.
 
-Quick Reference
+=Quick Reference=
 =============
-Intro
+==Intro==
 This Quick Reference explains in detail the capabilities of an IPT instance that has been installed, run for the first time, and tested as given in the Getting Started Guide. The details are presented in four sections corresponding to the four "menus" available in the IPT user interface. Some tabs are only visible when a user having the appropriate rights to see them is logged in.
 
-Common features
+==Common features==
 Most user interface controls have both enabled and disabled modes. If the feature is enabled, changes can be made to the control and these changes will be saved, if possible, when the form on why they appear is saved. Disabled control show the value of the associated information, but do not allow that information to be saved under the conditions in effect at the time they appear.
 
-Text boxes - these allow textual information <<more>>.
-Check boxes - <<more>>.
-Selection boxes - <<more>> show existing value or an explanation of what to select.
-Calendars - <<more>>.
-Information buttons - click on an information icon next to any label to see an help message with the labeled information, click again to make the message disappear.
+Text boxes - allow textual information to be viewed or entered.
+Check boxes - allow a value to viewed or set to true (when checked) or false (when unchecked).
+Selection boxes - allows a value to be viewed or selected from a list of predefined values. A selection box may contain explanatory text about the selection in place of a selected value. In this case the selection will begin with "Select " (e.g., "Select a country, territory, or island"). Click on the selection box to open it and see the list of possible choices. Click on one of the choices to select it as the value for that particular field.
+Information buttons - shows a message explaining the field next to which it appears. Click on an information icon next to any field to see a help message about that field. Click on it again to make the message disappear.
 
 *Intro: This section describes several features that are accessible from more than one page.
 *Login. If no one is logged in to the IPT, one can do so for a user that has already been created in this IPT installation by entering the email address and password in the upper right-hand corner of the page, and then by clicking on the "Login" link. New users can be created only by an existing user who has Admin rights. The process for creating new users is explained under "Configure user accounts" in the Administration section. The process of initializing the IPT creates the first user having administrator rights.
 *Logout. If someone is logged in to the IPT, the email address of the person who is logged in is given in the upper right-hand corner of the of the page along with a "Logout" link.
-*Account. To see this link and the page to which it leads, you must be logged in the the IPT. The page shows the details of the account information for the person who is logged in to the IPT.
+*Account. To see this link and the page to which it leads, you must be logged in the the IPT. The page shows the details of the account information for the person who is logged in to the IPT and allows them to be changed. The details of the fields found on this page can be found in the <Configure user accounts> section.
 *Language selection flag. In the upper right-hand corner of the page is a flag depicting the language in which the IPT is currently being presented. The default language for the IPT is English. The language of the user interface can be changed by clicking on the flag and selecting a flag for the desired language, if available.  GBIF actively seeks translations for the IPT in additional languages. See captured "How to contribute page (http://code.google.com/p/gbif-providertoolkit/wiki/HowToContribute).
 *Version. At the left of the footer at bottom of the page is the version of the IPT that is currently running. The version information can be used to determine which features are included in the IPT and what bugs are known to exist. 
 *About the IPT Project. This link (http://code.google.com/p/gbif-providertoolkit/) leads to the project code site for the IPT, where further information about the IPT can be found, including the latest version of this manual.
@@ -77,7 +74,7 @@ Information buttons - click on an information icon next to any label to see an h
 *Request new feature.  This link (http://code.google.com/p/gbif-providertoolkit/issues/entry?template=Feature%20request) opens a specific form in the IPT issue tracker that can be filled in to request a capability that the IPT does not currently have.
 *Copyright. The copyright for the IPT software is held by the Global Biodiversity Information Facility. Details of the copyright and licensing can be seen in the About Section of this User Manual.
 
-Home (visible to all users)
+==Home== (visible to all users)
 *Intro: This page allows users to view a list of public resources, if any, and to look at the detailed metadata of any resource on the list. If there are any public resources, they will appear in a table with the following columns:
 **Name - the title of the resource as given in the Title entry of the resource metadata. The Name appears as a link, which will open a <detailed metadata page> for the selected resource.
 **Organisation - the organisation under which the resource has been registered, if any. See the "Configure organisations" section under "Administration" for more information about registering organisations and registering a resource under an organisation.
@@ -85,7 +82,7 @@ Home (visible to all users)
 **Records - the number of rows of data in the core data file that were successfully loaded into the IPT for the resource.
 **Last modified - either the date the resource was created or the date on which the data were last modified, whichever is more recent.
 
-*RSS feed. <<more>>
+*RSS feed: The IPT supports syndication via RSS for those who wish to monitor changes that occur in any of the resources as they are published. The RSS feed is accessible by clicking on the link provided below the list of public hosted resources.
 
 *Detailed Metadata Page: Clicking on the Name link in the list of resources on the Home page shows shows a new page having all of the metadata about the selected resource. This is the one page where you can easily review all of the metadata for a resource. A user with Admin or Manager rights can edit the metadata. See the section on "Editing an existing resource" under Manage Resources.
 
@@ -107,27 +104,30 @@ This page allows a user having Admin rights to make and change settings for the 
 **Debugging Mode - Check this box if you need IPT to begin logging in the verbose debugging mode. Debugging mode is generally unnecessary unless you are trying to track a problem with the IPT. The IPT log file is located in the file debug.log in the IPT's data directory. The data directory is set during the first step in the installation process (see the <Getting Started> section of this manual). See the <View IPT logs> section for an easy way for users having Admin rights to view the debug.log file.
 **IPT Server Location - This section allows the Admin to set the geographic coordinates (latitude and longitude) of the location of the server on which the IPT is installed. Setting these coordinates allows GBIF to map the location of registered IPT installations around the world. {Once coordinates are set, the server latitude and longitude can no longer be set to blank, though they can be changed.}
 
-*Configure user accounts
+*Update Metadata
+This selection updates all resource-related documents (EML, Darwin Core archives) and registry entries with the current metadata when it has changed because of a change in the URL from which the IPT is accessed via the Internet. If the Base URL or Proxy URL are changed in the <IPT settings> page, click on this button to make the required updates.
+
+*Configure User accounts
 This page allows users having Admin rights to create, modify, and delete user accounts. When the page is first opened, it shows a table of existing users and basic information about them including their names, email addresses, roles, and the date and time of their last logins. 
 **Create a new user - a new user can be created by first clicking on the button labeled "Create" below the list of existing users. Following are explanations of the information that must be entered about the new user, after which the new user can be created by clicking on the button labeled "Save":
 **Email - The full, active email address of the user. The email address is used as an identifier within the IPT and can not be changed. If the user requires a change of email address, the correct procedure is to create a new user account with the new email address, then delete the user account having the antiquated email address.
 **First name - The first name of the user. 
 **Last name - The last name of the user.
 **Role - The role the user will have with respect to this installation of the IPT. Admin users can make changes to all aspects of the instance of the IPT. Users having the role "Manager with registration rights" are able to create, edit, remove, manage, and register resources they create of have been invited to manage within the IPT instance. Users having the role "Manager without registration rights have the same capabilities as the Manager with registration rights except that they cannot register resources with the GBIF network. Other users can log in to the IPT and view resources, but cannot make any changes.
-**Password - A password for the user. The password should be made secure and safe from loss, as it is not recoverable from the IPT application. If a user's password is lost, it can be reset to an automatically generated new value by another user having the Admin role. 
+**Password - A password for the user. The password should be made secure and safe from loss, as it is not recoverable from the IPT application. If a user's password is lost, it can be reset to an automatically generated new value by another user having the Admin role. It is the responsibility of the Admin user to communicate this new password to the user for whom it was reset. The user can then change the password to the desired value by entering it in the <IPT Account> page accessible through the "Account" link in the upper right corner of every page after logging in.
 **Verify password - An exact copy of the password as entered in the Password text box to confirm that it was entered as intended.
 
-**Modify an existing user - information about users can be changed in the user details page after selecting the name of the user you wish to modify from the list of existing users. The user detail page shows all of the information about that user. The first name, last name, and role for the user can be changed by entering the new values and clicking on the button labelled "Save". Details of the information to be entered on this page can be found in the explanations in the <Create new user> section.
-**Reset password - If a user forgets a password, a new one can be generated by clicking on the button labelled "Reset Password", after which new password is given in an information message at the top of the page. The IPT does not inform the affected user of this change, so it is the responsibility of the Admin who resets the password to communicate the new one to the user.
+**Modify an existing user - information about users can be changed in the user details page after selecting the name of the user you wish to modify from the list of existing users. The user detail page shows all of the information about that user. The first name, last name, and role for the user can be changed by entering the new values and clicking on the button labeled "Save". Details of the information to be entered on this page can be found in the explanations in the <Create new user> section.
+**Reset password - If a user forgets a password, a new one can be generated by clicking on the button labeled "Reset Password", after which new password is given in an information message at the top of the page. The IPT does not inform the affected user of this change, so it is the responsibility of the Admin who resets the password to communicate the new one to the user.
 
-**Delete a user - users accounts that are no longer necessary can be deleted using the user detail page accessed by selecting the name of the user you wish to delete from the list of existing users. On the user detail page, click on the button labelled "Delete" to remove this user account. Note: there are several conditions under which a user cannot be deleted. A user cannot delete an account while logged in to that account. It must be deleted from another account having Admin rights. Also, the IPT installation must always have at least one user having Admin rights, so the last remaining one can not be deleted. To do so, first create a new user having Admin rights and use that to delete the account. Finally, each resource must have at least one associated user having either Admin or Manager rights, so the last remaining Manager of a resource can not be deleted. To do so, first associate another user having Admin or Manager rights with the resources for which this user is the last remaining manager. {there is no easy way to find out which resources are so affected, as it is written to the log, not to the UI.}. See the <Resource Managers> section of <Editing an existing resource> to see how new managers can be assigned. 
+**Delete a user - users accounts that are no longer necessary can be deleted using the user detail page accessed by selecting the name of the user you wish to delete from the list of existing users. On the user detail page, click on the button labeled "Delete" to remove this user account. Note: there are several conditions under which a user cannot be deleted. A user cannot delete an account while logged in to that account. It must be deleted from another account having Admin rights. Also, the IPT installation must always have at least one user having Admin rights, so the last remaining one can not be deleted. To do so, first create a new user having Admin rights and use that to delete the account. Finally, each resource must have at least one associated user having either Admin or Manager rights, so the last remaining Manager of a resource can not be deleted. To do so, first associate another user having Admin or Manager rights with the resources for which this user is the last remaining manager. {there is no easy way to find out which resources are so affected, as it is written to the log, not to the UI.}. See the <Resource Managers> section of <Editing an existing resource> to see how new managers can be assigned. 
 
-*Configure GBIF registration
+*Configure GBIF registration options
 This page allows a user to register the IPT instance in the GBIF Registry if this has not already been done. The IPT must be registered before any of the IPTs resources can be associated with an organisation (see <Configure organisations>, below) or published. Information about a registered IPT and its public resources become searchable through the Registry's services, and the data from the public resources published on the IPT can be indexed for searching via the GBIF portal.  If the IPT has already been registered, the registered information for the IPT can only be changed by contacting the GBIF Help Desk (helpdesk@gbif.org).
-The first step to register with GBIF is to test that the IPT has a valid URL that can be reached by the GBIF services. To run this test, click on the button labelled "Validate". If the test is unsuccessful, an error message will suggest the nature of the problem with the communication between the GBIF Registry and the IPT. Basic causes for an error include having the IPT unable to communicate with the GBIF Registry and vice versa. Specific causes of error include loss of connection to the Internet while the Configure GBIF registration page is open, having an incorrect Base URL, having an incorrect or missing Proxy URL (if needed), and failure communication to the GBIF Registry. The IPT requires an active Internet connection to function properly. Restore intent connectivity before trying to proceed with registration. Problems with the Base URL and Proxy URL can be amended on the <Configure IPT Settings> page. Problems connecting to the GBIF registry should be reported to the GBIF help desk (helpdesk@gbif.org).
+The first step to register with GBIF is to test that the IPT has a valid URL that can be reached by the GBIF services. To run this test, click on the button labeled "Validate". If the test is unsuccessful, an error message will suggest the nature of the problem with the communication between the GBIF Registry and the IPT. Basic causes for an error include having the IPT unable to communicate with the GBIF Registry and vice versa. Specific causes of error include loss of connection to the Internet while the Configure GBIF registration page is open, having an incorrect Base URL, having an incorrect or missing Proxy URL (if needed), and failure communication to the GBIF Registry. The IPT requires an active Internet connection to function properly. Restore intent connectivity before trying to proceed with registration. Problems with the Base URL and Proxy URL can be amended on the <Configure IPT Settings> page. Problems connecting to the GBIF registry should be reported to the GBIF help desk (helpdesk@gbif.org).
 If the IPT passes the validation step above, a form showing additional information required for the registration is presented. In this step, the organisation with which the IPT instance will be associated must already be registered in the GBIF Registry. Following are explanations of the specific information to select or enter:
 **Organisation - the box contains a list of organisations in the GBIF registry. Select the single organisation with which this IPT instance will be associated. If you are unable to find the organisation on the list, use the GBIF Registry (http://gbrds.gbif.org) to determine if the organisation is registered under a name other than what you expected. If the organisation is not yet registered with GBIF, please contact the GBIF Help Desk to register the organisation before proceeding with the registration of the IPT.
-**Organisation's password - the correct password registered in the GBIF registry for the selected organisation must be entered here to verify that the user has the authorisation required to associate the IPT instance with that organisation. The password will be used to authenticate the IPT registration when the button labelled "Save" is is clicked.
+**Organisation's password - the correct password registered in the GBIF registry for the selected organisation must be entered here to verify that the user has the authorisation required to associate the IPT instance with that organisation. The password will be used to authenticate the IPT registration when the button labeled "Save" is is clicked.
 **Alias - enter a convenient name or code to represent the organisation within this instance of the IPT. The alias will appear in place of the full organisation name in organisation selection boxes in the IPT user interfaces.
 **Can host resource? - check this box if the selected organisation can also be associated with resources published on this instance of the IPT. If left unchecked, the organisation will not appear in the list of organisations available to associate with a resource. Leave unchecked only if this organisation is only the host for the IPT instance, not for any of the resources published through the IPT instance.
 **Title for the IPT installation - enter the title of the IPT installation to be used in the GBIF Registry. The title is the primary information used for listing and searching for the IPT installation in the Registry.  
@@ -135,26 +135,29 @@ If the IPT passes the validation step above, a form showing additional informati
 **Contact Name - enter the name of the person who should be contacted for information about the IPT installation. This person should be someone who has Admin rights in the IPT instance and knows the technical details about the installation. 
 **Contact Email - enter the email address of the person whose name is given in the Contact Name.
 **IPT password - enter the password that should be used to access the entry for this IPT installation in the GBIF Registry.
-**Save - click on the button labelled "Save" when all of the information above is entered or selected to registry the the IPT installation with the GBIF Registry. After successfully registering the IPT installation, the Configure GBIF registration page will show that the IPT has already been registered and associated with the selected organisation. Any changes to the registration will have to be done in consultation with the GBIF Help Desk (helpdesk@gbif.org). Also after a successful registration, the <Configure organisations> page will become accessible from the Administration menu. 
+**Save - click on the button labeled "Save" when all of the information above is entered or selected to registry the the IPT installation with the GBIF Registry. After successfully registering the IPT installation, the Configure GBIF registration page will show that the IPT has already been registered and associated with the selected organisation. Any changes to the registration will have to be done in consultation with the GBIF Help Desk (helpdesk@gbif.org). Also after a successful registration, the <Configure organisations> page will become accessible from the Administration menu. 
 
-*Configure organisations
-This page is unavailable until the IPT instance has been successfully registered in the GBIF Registry (see <Configure GBIF registration>, above). Once registered, this page shows a list of organisations that can be associated with resources in this IPT instance. An IPT that hosts data for organisations other than the one to which it is associated must have the additional organisations configured before they can be used.  The list shows columns for "Organisation Name",  "Alias", and "Can host resources?" The Organisation Name is the title of the organisation as registered in the GBIF Registry. The Alias is a name given to the organisation for use within the IPT instance for convenience. Aliases, rather then the full Organisation Name, appear in Organisation selection lists in the IPT. The checkbox under the column labelled "Can host resources?" indicates whether the organisation can be associated with resources in the IPT. Only those organisations having this box checked will appear in lists to be associated with a resource. 
-**Edit organisation - click on the button labeled "Edit" to open the page containing the details of the selected organisation. On this page a user having Admin rights can change the Alias and select or de-select the checkbox labelled "Can host resources? The organisation name, alias, and "Can host resources?" are explained above and in the <Configure GBIF registration section>. 
-**Add organisation - click on the button labelled "Add" ("Create" in version r2660) to open a page on which an additional organisation can be selected from the GBIF Registry to be used in this instance of the IPT. For explanations of the fields and selections on this page, refer to the <Configure GBIF registration section> of this manual. After the desired organisation is selected and all other data entered, including the password for the organisation, click on the button labelled "Save" to add the selected organisation to the list.
+*Configure Organisations
+This page is unavailable until the IPT instance has been successfully registered in the GBIF Registry (see <Configure GBIF registration>, above). Once registered, this page shows a list of organisations that can be associated with resources in this IPT instance. An IPT that hosts data for organisations other than the one to which it is associated must have the additional organisations configured before they can be used.  The list shows columns for "Organisation Name",  "Alias", and "Can host resources?" The Organisation Name is the title of the organisation as registered in the GBIF Registry. The Alias is a name given to the organisation for use within the IPT instance for convenience. Aliases, rather then the full Organisation Name, appear in Organisation selection lists in the IPT. The checkbox under the column labeled "Can host resources?" indicates whether the organisation can be associated with resources in the IPT. Only those organisations having this box checked will appear in lists to be associated with a resource. 
+**Edit organisation - click on the button labeled "Edit" to open the page containing the details of the selected organisation. On this page a user having Admin rights can change the Alias and select or de-select the checkbox labeled "Can host resources? The organisation name, alias, and "Can host resources?" are explained above and in the <Configure GBIF registration section>. 
+**Add organisation - click on the button labeled "Add" ("Create" in version r2660) to open a page on which an additional organisation can be selected from the GBIF Registry to be used in this instance of the IPT. For explanations of the fields and selections on this page, refer to the <Configure GBIF registration section> of this manual. After the desired organisation is selected and all other data entered, including the password for the organisation, click on the button labeled "Save" to add the selected organisation to the list.
 
 *Configure Extensions
 This page allows a user having Admin rights to enable the instance of the IPT to import and share various pre-defined types of data, called extensions (or vocabularies) from the GBIF Registry. Each extension includes terms (or fields) that support a specific purpose. For example, the Darwin Core Taxon extension supports information pertaining to taxonomic names, taxon name usages, and taxon concepts and allows the IPT to host resources for taxonomic and nomenclatural checklists. In order to share data, the appropriate extensions must be enabled in the IPT. 
-This page shows a list of extensions that have already been enabled (if any) and a list of available extensions that can be enabled. To the right of each listed extension is a summary of the information about it, including a brief description of the type of data the extension is meant to accommodate, the number of terms (fields, properties) in the extension, the name of the extension, it's namespace, RowType, and keywords. <<more>>
-Following are the actions that can be taken with respect to extensions
-**Update extensions - click on the button labelled "Update" to communicate with the GBIF Registry to retrieve new extensions and updates to extensions already on the lists in the IPT. After the update is complete, one or more messages will indicate how many updates were made and if there were any errors. {image}
-**View extension details - 
-**Install extension - click on on the button labelled "Install" to  
-**Remove
-{what happens the first time to get the extensions? Do extensions have to be registered?}
+This page shows a list of extensions that have already been enabled (if any) and a list of available extensions that can be enabled. To the right of each listed extension is a summary of the information about it, including a brief description of the type of data the extension is meant to accommodate, a link to more information about the extension if it exists, the number of properties (fields, terms) in the extension, the name of the extension, it's namespace, RowType, and keywords. For more information about these attributes of an extension, see the documentation on Darwin Core archives at http://rs.tdwg.org/dwc/terms/guides/text/.
+Following are the actions that can be taken with respect to extensions:
+**Update extensions - click on the button labeled "Update" to communicate with the GBIF Registry to retrieve new extensions and updates to extensions already on the lists in the IPT. An extension can make use of lists of terms of predefined values, known as
+controlled vocabularies. Periodically these vocabularies may also change. Updating extensions will also retrieve the latest versions of the these vocabularies. After the update is complete, one or more messages will indicate how many updates were made and if there were any errors. 
+<<screenshot>>
+**View extension details - the title of each extension in the first column is a link to a detail page for that extension. The detail page shows all of the summary information that can be seen in the the right-hand column of the extensions list as well as the detailed description, references, and examples for each of the properties in the extension.
+<<screenshot>>
+**Install extension - for any of the extensions that have not yet been installed in the IPT, there is a button labeled "Install" under the extension name in the left-hand column. Click on this button to retrieve the extension from the GBIF registry and install it in the IPT.
+**Remove - for any extension that has already been installed in the IPT, it can be removed by clicking the button labeled "Remove". Extensions that are in use to mapped data for any resource in the IPT cannot be removed. Any attempt to do so will show an error message and a list of resources that use the extension in a mapping.
 
-*View IPT logs - The easiest way to see the contents of the debug.log file is to click on the "complete log file" link at the top of the page.
+*View IPT logs
+This page shows messages from the admin.log file, which contains only those messages that are warnings or more severe. The complete log of messages (contained in debug.log) can be opened and viewed by clicking on the link labeled "complete log file". The contents of the complete log file may be useful when <reporting a bug>.
 
-Manage Resources (visible to users with an Admin or Manager role)
+=Manage Resources= (visible to users with an Admin or Manager role)
 *Intro: This page allows users having the appropriate rights (managers and administrators) to make changes to existing resources listed on the page or to create new resources.
 
 *Create or upload a resource
@@ -204,6 +207,8 @@ This User Manual is released under the Creative Commons Attribution-Noncommercia
 	•	if you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
 
 Resources
+*Darwin Core Archive documentation - details about the structure of Darwin Core Archives can be found in the Text Guide section of the Darwin Core web site: http://rs.tdwg.org/dwc/terms/guides/text/.
+
 *GBIF Help Desk - send email messages to helpdesk@gbif.org to report problems with GBIF services, such as the GBIF Registry. Do not send IPT-specific help question to the Help Desk. Instead send them to the <IPT mailing list>.
 
 *GBIF Registry - use this online application to find information about find organisations, IPT instances, and resources registered with GBIF: http://gbrds.gbif.org
@@ -212,7 +217,7 @@ Resources
 *IPT contributors mailing list - subscribe to receive messages generated by contributions to the GBIF IPT Google Code site. This group is for contributors to the IPT and those who would keep track of the changes to the code site as they occur: http://groups.google.com/group/gbif-ipt-contributors/.
 *IPT code site - the repository for the open source code of the IPT software: http://code.google.com/p/gbif-providertoolkit/source/checkout/.
 *IPT issue tracker - the bug report and feature request management for the IPT software and documentation: http://code.google.com/p/gbif-providertoolkit/issues/list/.
-*Darwin Core Archive documentation - details about the structure of Darwin Core Archives can be found in the Text Guide section of the Darwin Core web site: http://rs.tdwg.org/dwc/terms/guides/text/.
+*IPT server preparation - the details of preparing a server to run the IPT can be found on the IPT project code site wiki at http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation.
 *Further information about the IPT, including the latest version of this User Manual, can be found on the project's code site at http://code.google.com/p/gbif-providertoolkit/.
 
 References
@@ -239,6 +244,7 @@ Published Release -
 Resource -
 Resource Managers -
 RowType - the category of information represented in an extension. The RowType is generally the URI the Class that best fits the information contained in the extension. 
+RSS - Really Simple Syndication, a type of subscription format for tracking changes to a web site.
 Source Data -
 Version - 
 Visibility - 
