@@ -613,12 +613,12 @@ public class EmlValidator extends BaseValidator {
 					index++;
 				}
 			} else if (part == null || part.equalsIgnoreCase("additional")) {
-				if (!exists(eml.getDistributionUrl(), 5)) {
-					if (!exists(eml.getDistributionUrl())) {
-						action.addFieldError("eml.distributionUrl", action.getText("validation.required", new String[] { action.getText("eml.distributionUrl") }));
-					} else {
-						action.addFieldError("eml.distributionUrl", action.getText("validation.short", new String[] { action.getText("eml.distributionUrl"), "5" }));
+				int index = 0;
+				for (String ai : eml.getAlternateIdentifiers()) {
+					if (!exists(ai)) {
+						action.addFieldError("eml.alternateIdentifiers[" + index + "]", action.getText("validation.required", new String[] { action.getText("eml.alternateIdentifier")}));
 					}
+					index++;
 				}
 			}
 		}
