@@ -14,7 +14,7 @@
 	<@input name="user.password" type="password" disabled=(ignoreUserValidation==1) />  
 	<@input name="password2" i18nkey="user.password2" type="password" disabled=(ignoreUserValidation==1) />  
 
-	<@checkbox name="production" i18nkey="admin.config.setup2.production" disabled=(cfg.devMode() || ignoreUserValidation==1) value="false" />
+	<@checkbox name="production" i18nkey="admin.config.setup2.production" help="i18n" disabled=(cfg.devMode() || ignoreUserValidation==1) value="false" />
 	  
 	<@input name="baseURL" help="i18n" i18nkey="admin.config.baseUrl"/>
 	<@input name="proxy" help="i18n" i18nkey="admin.config.proxy" />
