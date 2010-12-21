@@ -193,6 +193,12 @@ public class OrganisationsAction extends POSTAction {
 					addActionError(getText("admin.organisation.error.existing"));
 					return INPUT;
 				}
+				for(Organisation org:getOrganisations()){
+					if(org.getKey().equals(organisation.getKey())){
+						organisation.setName(org.getName());
+						break;
+					}
+				}
 				registrationManager.addAssociatedOrganisation(organisation);
 			}
 			addActionMessage(getText("admin.organisation.associated.ipt"));
@@ -234,7 +240,7 @@ public class OrganisationsAction extends POSTAction {
 	@Override
 	public void validate() {
 		if (isHttpPost()) {
-			organisationValidation.validate(this, organisation);
+			//organisationValidation.validate(this, organisation);
 		}
 	}
 
