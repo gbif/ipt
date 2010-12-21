@@ -63,7 +63,7 @@ $(document).ready(function(){
   	  </div>
   	  <div class="newline"></div>	
 	  <div class="halfcolumn">
-	  	<@input name="fileSource.fieldsTerminatedByEscaped" help="i18n" helpOptions={"\\t":"Tab",",":"Comma",";":"Semicolon","|":"Pipe"}/>
+	  	<@input name="fileSource.fieldsTerminatedByEscaped" help="i18n" helpOptions={"\\t":"[ \\t ] Tab",",":"[ , ] Comma",";":"[ ; ] Semicolon","|":"[ | ] Pipe"}/>
 	  </div>
 	  <div class="halfcolumn">
 	  	<@input name="fileSource.fieldsEnclosedByEscaped" help="i18n" helpOptions={"":"None","&quot;":"Double Quote","'":"Single Quote"}/>
