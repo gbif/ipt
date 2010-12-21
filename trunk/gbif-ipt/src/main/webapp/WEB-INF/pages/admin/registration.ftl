@@ -108,7 +108,7 @@ $(document).ready(function(){
 			<@s.select id="organisation.key" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" size="15" disabled="false"/>
 			</@label>
 		
-			<@input name="organisation.password" i18nkey="admin.organisation.password" type="text" help="i18n"/>
+			<@input name="organisation.password" i18nkey="admin.organisation.password" type="password" help="i18n"/>
 			<div id="requestDetails"></div>
 			<@input name="organisation.alias" i18nkey="admin.organisation.alias" type="text" />
 			<@checkbox name="organisation.canHost" i18nkey="admin.organisation.canHost" value="true" help="i18n"/>	
@@ -125,7 +125,7 @@ $(document).ready(function(){
 			<@input name="ipt.primaryContactEmail" i18nkey="admin.ipt.primaryContactEmail" type="text" />
 			<@s.hidden id="admin.ipt.primaryContactType" name="ipt.primaryContactType" value="technical" />
 			
-			<@input name="ipt.wsPassword" i18nkey="admin.ipt.password" type="text" help="i18n"/>
+			<@input name="ipt.wsPassword" i18nkey="admin.ipt.password" type="password" help="i18n"/>
 			<@s.hidden id="organisation.name" name="organisation.name" />
 			<@s.hidden id="ipt.organisationKey" name="ipt.organisationKey" />
 		   <div class="buttons">
