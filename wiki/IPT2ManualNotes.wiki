@@ -1,4 +1,6 @@
-#Unfinished Notes (safety net/backup) for IPT 2.0 User Manual
+#Draft Wiki form of IPT 2.0 User Manual
+
+<wiki:toc max_depth="3" />
 
 =Requirements=
 ==Internet Connectivity==
@@ -37,7 +39,7 @@ Successful deployment of the IPT to the servlet container will make the IPT acce
 ==Set up the IPT for the first time==
 ===IPT setup===
 The first time the IPT is run, you will be presented with a few simple steps to prepare the IPT for use. The IPT setup page requires a location where the data for the IPT installation can be stored. The format of the location entered on the page must conform with the standard for the absolute path to a directory for the operating system on which the IPT is installed, relative paths are not supported. For example, use a path such as "c:\datadir" for Windows environments or "/usr/datadir" for Unix and MacOSX environments. The IPT must have write permission to to the selected location. If it does, the path can be simply be entered in the text box provided and then click on the button labeled "Save". If not, create the data directory first with the appropriate write permissions, then enter that directory path in the text box and click on "Save". Note: If you have a data directory from a previously running IPT of the same version, you can use the absolute path of that data directory in this first step of the IPT setup. That will be sufficient for the entire setup process. Clicking on "Save" in this case will bypass the page titled IPT setup II and present the IPT Administration page.
- 
+
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTSetup1.png]
 
 ===IPT setup II===
@@ -68,22 +70,32 @@ This Quick Reference explains in detail the capabilities of an IPT instance that
 
 ==Common features==
 ===User interface controls===
-Most user interface controls have both enabled and disabled modes. If the feature is enabled, changes can be made to the control and these changes will be saved, if possible, when the form on why they appear is saved. Disabled control show the value of the associated information, but do not allow that information to be saved under the conditions in effect at the time they appear.
+Most user interface controls have both enabled and disabled modes. If the control is enabled, it will either commit an action when clicked (a button, for example), or it will allow changes to be made to the value bound to the control. In the latter case the changes will be saved, if possible, when the form on why they appear is saved. Disabled controls show the value of the associated information, but do not allow that information to be saved under the conditions in effect at the time they appear. The purpose for most user interface controls is indicated by an associated label that appears above and/or to the left of the control. Sometimes supplemental information is also accessible from an associated information button.
 
-*Text boxes* - allow textual information to be viewed or entered.
+*Menus* - are used in the IPT to guide users to fundamental topics. Menus appear only for the pages that are not permitted to be seen based on the current user's role. Exactly one menu is active at a time, and the active menu is colored brightly, while inactive menus are grey. Click on a menu to open and activate the page for that topic.
 
-Example text box:
+Example menu:
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-HomeMenu.png]
+
+*Text boxes* - allow textual information to be viewed or entered. 
+
+Example text box and label:
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TextBoxExample.png]
 
 *Check boxes* - allow a value to viewed or set to true (when checked) or false (when unchecked).
 
-Example check box:
+Example check box and label:
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-CheckboxExample.png]<br>
 
 *Selection boxes* - allows a value to be viewed or selected from a list of predefined values. A selection box may contain explanatory text about the selection in place of a selected value. In this case the selection will begin with "Select " (e.g., "Select a country, territory, or island"). Click on the selection box to open it and see the list of possible choices. Click on one of the choices to select it as the value for that particular field.
 
-Example selection box:
+Example selection box and label:
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-SelectBoxExample.png]
+
+*Links* - open a page other than the one on which the link occurs. Links may open the new page in the same browser window (or tab) or in an additional window (or tab).
+
+Example link:
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-LinkExample.png]
 
 *Information buttons* - shows a message explaining the field next to which it appears. Click on an information icon next to any field to see a help message about that field. Click on it again to make the message disappear.
 
@@ -105,10 +117,11 @@ This section describes several features that are accessible from more than one p
 
 ==Home (visible to all users)==
 This page allows users to view a list of public resources, if any, and to look at the detailed metadata of any resource on the list. 
+
 ===Public Resources Table===
 If there are any public resources, they will appear in a table with the following columns:
 
-*Name* - the title of the resource as given in the Title entry of the resource metadata. The Name appears as a link, which will open a detailed metadata page for the selected resource. Refer to the Metadata section in Editing a Resource under the documentation for Manage Resources menu.<br>
+*Name* - the title of the resource as given in the Title entry of the resource metadata. The Name appears as a link, which will open a detailed metadata page for the selected resource. For more information about the Resource Metadata Management page, see the Metadata section in Editing a Resource under the documentation for the Manage Resources menu.<br>
 *Organisation* - the organisation under which the resource has been registered, if any. See the Configure organisations section under the documentation for the Administration menu for more information about registering organisations and registering a resource under an organisation.<br>
 *Type* - the category of data (specimen, checklist, etc.) in the dataset represented by the resource. <br>
 *Records* - the number of rows of data in the core data file that were successfully loaded into the IPT for the resource.<br>
@@ -187,10 +200,13 @@ Following are the actions that can be taken with respect to extensions:
 
 *Update extensions*<br>
 Click on the button labeled "Update" to communicate with the GBIF Registry to retrieve new extensions and updates to extensions already on the lists in the IPT. An extension can make use of lists of terms of predefined values, known as
-controlled vocabularies. Periodically these vocabularies may also change. Updating extensions will also retrieve the latest versions of the these vocabularies. After the update is complete, one or more messages will indicate how many updates were made and if there were any errors. <<screenshot>>
+controlled vocabularies. Periodically these vocabularies may also change. Updating extensions will also retrieve the latest versions of the these vocabularies. After the update is complete, one or more messages will indicate how many updates were made and if there were any errors. 
+
+<<2 screenshots>>
 
 *View extension details*<br>
 The title of each extension in the first column is a link to a detail page for that extension. The detail page shows all of the summary information that can be seen in the the right-hand column of the extensions list as well as the detailed description, references, and examples for each of the properties in the extension.
+
 <<screenshot>>
 
 *Install extension*<br>
@@ -203,19 +219,38 @@ For any extension that has already been installed in the IPT, it can be removed 
 This page shows messages from the admin.log file, which contains only those messages that are warnings or more severe. The complete log of messages (contained in debug.log) can be opened and viewed by clicking on the link labeled "complete log file". The contents of the complete log file may be useful when reporting a bug.
 
 ==Manage Resources (visible to users with an Admin or Manager role)==
-This page allows users having the appropriate rights (managers and administrators) to make changes to existing resources listed on the page or to create new resources.
+This page allows users having the appropriate rights (managers and administrators) to make changes to existing resources listed on the page or to create new resources. 
 
-*Create or upload a resource
-**Create a new resource
-**Upload an existing resource 
+===Manage Resources Table===
+When the Manage Resources page is first opened, it shows a table of existing resources that the current user has permission to change, including those created by this user and those which this user has been invited to manage by others. The layout of this table is similar to the one for publicly visible resources on the page accessed by clicking on the Home menu. See the Public Resources Table section under the Home menu documentation for detailed explanations of the Name, Type, Records, and Last Modified columns. In addition, the Manage Resources Table includes the following column for the basic information about the resources:
 
-*Edit an existing resource
+*Visible To* - the basic description of who has access to view the resource. If the resource is public, all users will be able to see it on the Public Resources table on the Home page, and this column will contain the value "Everyone". If the resource is private, it will not be visible to anyone on the Public Resources table, and it will be visible in the Manage Resources table only to the user who created it and to those who have been invited to manage it. In this case, the column will have a value of the form "You and n others", where n is the nubbier of other users who have been invited to manage the resource. Details about inviting others to manage a resource are given in the Resource Managers section of the Resource Metadata Management page.
+
+===Create new resource===
+Below the Manage Resource table is a form that can be used to create a new resource in the IPT. First, a unique "shortname" must be provided for the resource. This short name will be used to identify the resource within the IPT instance, and will used within the URL to access the resource via the Internet. The short name must be at least three character in length, may contain alphanumeric characters, but must not contain white space or punctuation other than hyphens (-) or underscores (_) (e.g., "firstresource" or "first_resource", but not "first resource" or firstresource!"). 
+
+There are three ways to create a new resource in the IPT:
+
+*Upload a Darwin Core archive*<br>
+The IPT is able to import and export valid Darwin Core archive files (see http://rs.tdwg.org/dwc/terms/guides/text/). To import a Darwin Core archive, click on the button labeled "Choose File", then navigate to and select the intended archive file. After selecting the file, its name will appear next to the "Choose File" button. Click on the button labeled "Create". If there is a problem importing the selected file, an error message will alert the user. If the import is successful, a Resource Overview page will appear with an informational message at the top describing the results of the import process.
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceUploadDwCASuccess.png]
+
+*Upload an archived resource configuration folder*<br>
+
+*Create an entirely new resource*<br>
+
+===Edit an existing resource===
+
+
+===Resource Overview===
 **Metadata
 **Source Data
-**DwC Mappings
+**Darwin Core Mappings
 **Visibility - a Manager with registration rights can select an organisation from the list. When the metadata are saved, the resource will be associated with the new organisation (when published next or right away? see overview.ftl line 197 and OverviewAction.java line 293) 
 **Published Release
 **Resource Managers
+**Delete
 
 ==About  (visible to all users)==
 *The About page gives information about the IPT installation that is running, including information about the hosting institution, if that has been registered (see sectionXXX). Edit about.ftl in the data directory/config to customize the contents of this page for the IPT installation.
