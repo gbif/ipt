@@ -25,7 +25,6 @@ import org.gbif.ipt.validation.ResourceValidator;
 import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.JGTICuratorialUnitType;
-import org.gbif.metadata.eml.Role;
 import org.gbif.metadata.eml.TemporalCoverageType;
 
 import com.google.inject.Inject;
