@@ -71,7 +71,7 @@ $(document).ready(function(){
   	<#else>
 	  	<#-- only for sql sources -->
 	  <div class="half">
-	    <@select name="rdbms" options=jdbcOptions value="${source.rdbms.name}" i18nkey="sqlSource.rdbms" />  	  
+	    <@select name="rdbms" options=jdbcOptions value="${rdbms}" i18nkey="sqlSource.rdbms" />  	  
 	  </div>
 	  <div class="halfcolumn">
 	  	<@input name="sqlSource.host" help="i18n"/>
