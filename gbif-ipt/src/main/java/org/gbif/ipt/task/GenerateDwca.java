@@ -140,7 +140,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
         dumpData(writer, af, m, dataFileRowSize);
         // remember core record number
         if (ext.isCore()) {
-          coreRecords += currRecords;
+          coreRecords = currRecords;
         }
       }
     } finally {
