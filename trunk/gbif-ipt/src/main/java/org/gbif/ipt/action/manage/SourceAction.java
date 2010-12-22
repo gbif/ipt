@@ -153,6 +153,10 @@ public class SourceAction extends ManagerBaseAction {
   public Source getSource() {
     return source;
   }
+  
+  public String getRdbms() {
+	    return rdbms;
+  }
 
   public SqlSource getSqlSource() {
     if (source != null && source instanceof SqlSource) {
@@ -191,6 +195,7 @@ public class SourceAction extends ManagerBaseAction {
   public String save() throws IOException {
     // treat jdbc special
     String result = INPUT;
+    System.out.println("RRRRRRRRRR "+rdbms);
     if (source != null && rdbms != null) {
       ((SqlSource) source).setRdbms(jdbcSupport.get(rdbms));
     }
@@ -229,6 +234,8 @@ public class SourceAction extends ManagerBaseAction {
       id = source.getName();
     }
     saveResource();
+    System.out.println("RRRRRRRRRR "+rdbms);
+
     return result;
   }
 
