@@ -10,6 +10,7 @@ Several factors have provided motivation for the development of the IPT:
   * the need to decentralise and speed up the process of indexing biodiversity occurrence data sets;
   * the need to offer additional benefits and services to the data publishers to encourage data publication;
   * the lack of appropriate tools to publish certain types of biodiversity data, such as names checklists and data set metadata.
+----
 =Getting Started Guide=
 This Getting Started Guide is meant for those wishing to install and run an IPT instance for the first time. If you would like to see a functional installation of the IPT in action, you may use the public test instance of the latest general release version at http://ipt.gbif.org/. If you do so, refer to Quick Reference Guide for details on how to use the screens you will see. Developers who wish to work with the latest revision of the source code should consult the "Developers" section of the GBIF IPT Google Code site wiki (http://code.google.com/p/gbif-providertoolkit/wiki/HowToContribute).
 ==Requirements==
@@ -63,6 +64,7 @@ Click on the button labeled "Continue" to open the IPT Administration page (see 
 Once you have completed the steps in this Getting Started Guide, your IPT is ready to add resources (data sets and metadata).You may want to complete one of more of the tutorials to understand how common IPT tasks are accomplished. For detailed explanations of any further aspects of the IPT, consult the Quick Reference Guide of this user manual.
 ==Starting Over==
 It is relatively easy to re-initiate the IPT and begin again at the first setup step. To do so, every user who is logged in to the IPT should first log out. Then remove the file called datadir.location from the folder where it was created by the IPT (normally WEB-INF within the IPT base installation directory - not within the IPT data directory configured in the first setup step). Then the person having the default administrator information and knowledge of the IPT installation should reload the IPT base URL in a web browser. This will open the the initial IPT setup page again (see the "IPT setup" section in this Getting Started Guide). At this point, if the user enters the same absolute path to the data directory as before, the previous configuration will be completely restored, assuming that there has been no incompatible upgrade in IPT versions between the time when the data directory was last used and when it is used to reinitiate the IPT. If the same data directory location is desired, but without the previous IPT configuration, then the contents of that data directory should be moved to a different location or removed entirely before clicking on "Save" in the initial IPT setup page. If an entirely new data directory is used, then the setup will proceed exactly as described in the "IPT setup" section of this Getting Started Guide.
+----
 =Quick Reference Guide=
 ==Introduction==
 This Quick Reference Guide explains in detail the capabilities of an IPT instance that has been installed, run for the first time, and tested to be functional as explained in the Getting Started Guide. The details of this guide are presented in four sections corresponding to the four "menus" available in the IPT user interface. Some tabs are only visible when a user having the appropriate rights to see them is logged in.
@@ -133,6 +135,7 @@ Header, logged in, English language chosen for the user interface:
 This page allows users to view a list of public resources, if any, and to look at the detailed metadata of any resource on the list. 
 ===Public Resources Table===
 If there are any public resources, they will appear in a table having the following columns:
+
 *Name* - the title of the resource as given in the Title entry of the resource metadata. The Name appears as a link, which will open a Metadata Overview page (see below) for the selected resource.<br>
 *Organisation* - the organisation under which the resource has been registered, if any. Review the information under the "Organisations" heading in the "Administration Menu" section for more information about registering organisations and registering a resource under an organisation.<br>
 *Type* - the category of data (specimen, checklist, etc.) in the data set represented by the resource. <br>
@@ -477,6 +480,7 @@ This page shows messages from the admin.log file, which contains only those mess
 ==About Menu (visible to all users)==
 The default About page gives information about the IPT installation that is running, including information about the hosting organisation, if that has been registered. This page is meant to be customized for the individual IPT instance by editing the about.ftl file in the folder called "config" within the IPT data directory (see the information under the "IPT Settings" heading in the "Administration Menu" section). The about.ftl file is a Freemarker template that can contain a combination of HTML and variable references of the form ${host.variable!"alternate value if null"}. Look at the default about.ftl file for examples of variables that can be included.
 
+----
 =Tutorials=
 Following are step-by-step tutorials for various commonly used aspects of using the IPT. All tutorials assume that the IPT has been installed and run for the first time as described in the Getting Started Guide.
 
@@ -496,6 +500,7 @@ Create a resource, save it, send it, import it.
 In this tutorial we will...
 Install Taxon, Vernacular Names, and Description extensions, create new Checklist Resource, map all three extensions reusing the same source for taxon and vernacular mapping.
 
+----
 =About the IPT=
 ==Citation==
 This User Manual adapts and builds upon the previous IPT User Manual (Réveillon 2009). The recommended citation for this User Manual is as follows:
@@ -513,7 +518,7 @@ This User Manual is released under the Creative Commons Attribution-Noncommercia
  * you must cite the work in the manner specified on this page (but not in a way that suggests that GBIF or the GBIF Secretariat endorses you or your use of the work);
  * you may not use this work for commercial purposes;
  * if you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
-
+----
 =Resources=
 *Darwin Core Archive documentation* - details about the structure of a Darwin Core Archive, abbreviated DWCA, can be found in the "Text Guide" section of the Darwin Core web site: http://rs.tdwg.org/dwc/terms/guides/text/. Further information about the IPT's use of DWCAs can be found on the GBIF IPT Google Code site wiki: (http://code.google.com/p/gbif-providertoolkit/wiki/DarwinCore).<br>
 *GBIF Help Desk* - send email messages to helpdesk@gbif.org to report problems with GBIF services, such as the GBIF Registry. Do not send IPT-specific help question to the Help Desk. Instead send them to the IPT mailing list.<br>
@@ -526,15 +531,18 @@ This User Manual is released under the Creative Commons Attribution-Noncommercia
 *IPT server preparation* - details about preparing a server to run the IPT can be found on the IPT project code site wiki at http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation.<br>
 *IPT software updates* - details about updating an older installation of the IPT to a new version can be found on the IPT project code site wiki at http://code.google.com/p/gbif-providertoolkit/wiki/IPTUpdates.<br>
 *IPT test installation* - GBIF provides a functional installation of the IPT for evaluation and testing purposes. The test installation of the latest release can be found at http://ipt/gbif/org/.<br>
+----
 =IPT Software Updates=
 Describe where to get the latest.
 Version changes, refer to separate Wiki page.
 
 *Further information about the IPT, including the latest version of this User Manual, can be found on the project's code site at http://code.google.com/p/gbif-providertoolkit/.<br>
 
-==References==
+----
+=References=
 Réveillon, A. 2009. The GBIF Integrated Publishing Toolkit User Manual, version 1.0. Copenhagen: Global Biodiversity Information Facility. 37 pp.
 
+----
 =Glossary=
 *Checklist Resource* - a resource having information about one of many types of taxon-related lists.<br>
 *Core extension* - one of two types of Darwin Core extensions (Taxon and Occurrence) used as the basis of a resource. Additional extensions might be linked to these extensions when mapping data in the IPT.<br>
