@@ -1,7 +1,7 @@
 =The GBIF Integrated Publishing Toolkit User Manual, version 2.0=
-
+=Table of Contents=
 <wiki:toc max_depth="4" />
-
+----
 =Background Information=
 The GBIF Integrated Publishing Toolkit (IPT) is an freely available open source web application that makes it relatively easy to share three types of biodiversity-related information: primary taxon occurrence data, taxon checklists, and general metadata about data sources. An IPT instance as well as the data and metadata registered through the IPT are connected to the GBIF Biodiversity Resource Discovery System (GBRDS - also known as the GBIF Registry), are indexed for consultation via the GBIF portal, and are made accessible for public use.
 
@@ -232,14 +232,14 @@ Following is a list of the metadata pages and their contents:
   * *Taxonomic Coverages* - This metadata page contains information about one of more groups of taxa covered by the data in the resource.
     * *Description* - 
     * *Add several taxa/Taxon List* - 
-    * *Add new taxon* - multiple possible taxa 
+    * *Add new taxon/Scientific Name, Common Name, Rank* - multiple possible taxa 
 
   * *Temporal Coverages* - This metadata page contains information about one of more dates, date ranges, or named periods of time covered by the data in the resource.
     * *Temporal Coverage Type* - 
-    * *Start Date* - 
-    * *End Date* - 
-    * *Living Time Period* - 
-    * *Formation Period* - 
+      * *Start Date* - 
+      * *End Date* - 
+      * *Living Time Period* - 
+      * *Formation Period* - 
 
   * *Other Keywords/Keyword Sets* - This metadata page contains one or more sets of keywords about the resource and the thesauri that govern them.
     * *Thesaurus* - 
@@ -273,10 +273,15 @@ Following is a list of the metadata pages and their contents:
     * *Study Extent* -
     * *Sampling Description* -
     * *Quality Control* -
+    * *Add new method step* - 
+      * *Step Description* - 
 
   * *Citations* - This metadata page contains information about how to cite the resource as well as a bibliography of zero or more additional citations related to the data set.
     * *Citation Identifier* -
     * *Resource Citation* -
+    * *Bibliography* -
+      * *Citation Identifier* -
+      * *Citation* -
 
   * *Collection Data* - This metadata page contains information about the collection associated with the resource as well as summary information about zero or more types and counts of objects in the collection.
     * *Collection Name* -
@@ -285,9 +290,9 @@ Following is a list of the metadata pages and their contents:
     * *Specimen Preservation Method* -
     * *Curatorial Units* - multiple possible units
       * *Method Type* -
-      * *Count Range* -
-      * *Count with uncertainty* -
-      * *Unit Type* -
+        * *Count Range* -
+        * *Count with uncertainty* -
+        * *Unit Type* -
 
   * *External Links* - This metadata page contains links to the home page for the resource as well as zero or more additional links to the resource in alternate forms (database files, spreadsheets, linked data, etc.).
     * *Resource Homepage* -
@@ -305,6 +310,7 @@ Following is a list of the metadata pages and their contents:
     * *IP Rights* -
     * *Additional Information* -
     * *Additional Identifiers* - multiple possible identifiers
+      * *Additional Identifier* -
 ====Source Data====
 The Source Data area of the Resource Overview page allows a user to import primary data from files or databases into the IPT. If a resource has no source data it is considered a metadata-only resource, with information about a data set or collection, but without any primary data. Following are separate explanations for the preliminary step of choosing the source data:
 
@@ -337,11 +343,7 @@ The IPT can use database connections to import data from tables or views. To con
  * *Database* - The name of the database in the database management system, or the DSN for an ODBC connection.
  * *Database User* - the name of the database user to use when connecting to the database.
  * *Database Password* - the password for the database user to connect to the database.
- * *SQL Statement* - The Structured Query Language statement used to read data from the source database. The statement will be sent as-is to the configured database, so you can use any native feature of the database such as functions, group bys, limits, or unions, if supported. Example:
- 
-{{{`SELECT * from specimen join taxon on taxon_fk=taxon.id`}}} 
-
-While testing a large data source it is a good idea to include the appropriate language to the SELECT statement to limit the number of rows returned by the query. When the statement has been fully tested with the Darwin Core Mappings (see the following section of the Quick Reference Guide), change the SQL Statement to return the full intended data set.
+ * *SQL Statement* - The Structured Query Language statement used to read data from the source database. The statement will be sent as-is to the configured database, so you can use any native feature of the database such as functions, group bys, limits, or unions, if supported. Example:{{{`SELECT * from specimen join taxon on taxon_fk=taxon.id`}}} While testing a large data source it is a good idea to include the appropriate language to the SELECT statement to limit the number of rows returned by the query. When the statement has been fully tested with the Darwin Core Mappings (see the following section of the Quick Reference Guide), change the SQL Statement to return the full intended data set.
  * *Character Encoding* - the system that defines byte-wise definitions of the characters in the data (e.g., Latin1, UTF-8 ).
  * *Date Format* - a code describing the format of fields having a date data type (e.g., YYYY-MM-DD for four-digit year, two-digit month, and two-digit day separated by dashes).
 
@@ -376,11 +378,12 @@ The right-hand column contains information icons and controls (select boxes, tex
 
 In addition to the explanatory information about the extension at the top of the page and the two columns described above, the Data Mapping page may have following links and buttons:
   * *Back to Resource Overview page* - clicking on this link will navigate to the Resource Overview page without saving any of the pending changes.
-  * *Hide Unmapped Fields* - this link will remove from view on this page all fields that have not yet been mapped, leaving only those with completed mappings. To view again those fields that have not been mapped, first save any pending changes by clicking on the button labeled "Save", then click on the "Back to Resource Overview page" link, then click on the "Edit" button next to the data source in the Darwin Core Mapping area again. This will open the Data Mapping page with all fields showing.
+  * *Hide Unmapped Fields* - this link will remove from view on this page all fields that have not yet been mapped, leaving only those with completed mappings. To view again those fields that have not been mapped, click on the "Show all" link.
+  * *Show all* - this link will make all fields visible, whether mapped already or not. This link appears only after the "Hide Unmapped Fields" link has been invoked.
   * *Save* - clicking on any of the potentially many buttons labeled "Save" will change the pending changes on the page.
   * *Delete* - clicking the this button will remove the entire mapping to a data source, not just the mapped fields, and return to the Resource Overview page. 
 ====Visibility====
-This area of the Resource Overview page shows the status of how the resource may be viewed and discovered (private, public, registered). Each resource is created with the default private visibility. ***
+This area of the Resource Overview page shows the status of how the resource may be viewed and discovered (private, public, registered). Each resource is created with the default private visibility.
   * *Private* - A private resource is visible only to those who created it, or those who have been granted permission to manage it within the IPT, or by a user having the Admin role. This is primarily meant to preserve the resource from public visibility until it has been completely and properly configured. When the resource is ready for public visibility, click on the button labeled "Public". A message will appear at the top of the page saying that the status has been changed to "Public".
   * *Public* - A public resource is visible to anyone using the IPT instance where the resource is installed (on the table of public resource on the IPT Home page). The resource is also accessible via the internet to anyone who knows its location and Shortname. However, the resource is not discoverable until it has been registered with the GBIF Registry. If the resource is public, a select box containing a list of organisations with which the resource may be associated appears in the Visibility area of the Resource Overview page. Two buttons also appear in this area. Clicking on the button labeled "Private" will remove the resource entirely from public visibility and return it to the private state. The button labeled "Register" will be enabled if 1) the required metadata for the resource are complete, 2) the resource has been published (see the explanation of the "Published Release" area of the Resource Overview page, below), and 3) the user has the role "Manager with registration rights" (see the explanation for Role under "Create a new user" under the "Configure User accounts" heading of the "Administration Menu" section). A user having the Admin role can grant the "Manager with registration rights" to any user. To register the resource and make it discoverable via the GBIF Registry, first make sure that the required metadata are entered (see the "Metadata" section under the "Resource Overview" heading of the "Manage Resources Menu" section), then choose the organisation with which the resource is associated from the select box. If the organisation does not appear in the list it may be added by a user having the Admin role (see the information under the "Configure Organisations" heading in the "Administration Menu" section). When the metadata are complete and the correct organisation is selected, publish the resource following the procedure described in the "Published Release" section under the "Resource Overview" heading of the "Manage Resources Menu" section. Finally, click on the button labeled "Register" to register the resource with the GBIF Registry. If the attempt to register is successful, a message will appear at the top of the page saying that the status has been changed to "Registered".
   * *Registered* - A resource that has been registered with the GBIF network is discoverable through that system and the data from the resource can be indexed by and accessed from the GBIF portal. If the resource has already been registered, a button labeled "Update Registration" will appear in the Visibility area of the Resource Overview page and will be enabled if the user has the role "Manager with registration rights". Click on this button to send new information about the resource to the GBIF Registry if any of the following have changed since the registry was last updated: title, description, primary contact name or email. A summary of information registered with GBIF will appear in the right-hand column when registration is complete. The visibility of a registered resource can not be changed to private. If a resource must be removed from the GBIF Registry, follow the procedure described in the "Delete a Resource" section under the "Resource Overview" heading in the "Manage Resources Menu" section.
@@ -520,17 +523,28 @@ This User Manual is released under the Creative Commons Attribution-Noncommercia
  * if you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
 ----
 =Resources=
-*Darwin Core Archive documentation* - details about the structure of a Darwin Core Archive, abbreviated DWCA, can be found in the "Text Guide" section of the Darwin Core web site: http://rs.tdwg.org/dwc/terms/guides/text/. Further information about the IPT's use of DWCAs can be found on the GBIF IPT Google Code site wiki: (http://code.google.com/p/gbif-providertoolkit/wiki/DarwinCore).<br>
-*GBIF Help Desk* - send email messages to helpdesk@gbif.org to report problems with GBIF services, such as the GBIF Registry. Do not send IPT-specific help question to the Help Desk. Instead send them to the IPT mailing list.<br>
-*GBIF Registry* - use this online application to find information about find organisations, IPT instances, and resources registered with GBIF: http://gbrds.gbif.org<br>
-*IPT code site* - the repository for the open source code of the IPT software: http://code.google.com/p/gbif-providertoolkit/source/checkout/.<br>
-*IPT contributors mailing list* - subscribe to receive messages generated by contributions to the GBIF IPT Google Code site. This group is for contributors to the IPT and those who would keep track of the changes to the code site as they occur: http://groups.google.com/group/gbif-ipt-contributors/.<br>
-*IPT developer documentation* - developers who wish to contribute, or to use the latest revision of the source code for their installation should consult the "Developers" section of the GBIF IPT Google Code site wiki: http://code.google.com/p/gbif-providertoolkit/wiki/HowToContribute.<br>
-*IPT issue tracker* - the bug report and feature request management for the IPT software and documentation: http://code.google.com/p/gbif-providertoolkit/issues/list/.<br>
-*IPT mailing list* - subscribe to send and receive messages related to the use of the Integrated Publishing Toolkit. This group is for users to support each other in the use of the IPT: http://lists.gbif.org/mailman/listinfo/ipt/.<br>
-*IPT server preparation* - details about preparing a server to run the IPT can be found on the IPT project code site wiki at http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation.<br>
-*IPT software updates* - details about updating an older installation of the IPT to a new version can be found on the IPT project code site wiki at http://code.google.com/p/gbif-providertoolkit/wiki/IPTUpdates.<br>
-*IPT test installation* - GBIF provides a functional installation of the IPT for evaluation and testing purposes. The test installation of the latest release can be found at http://ipt/gbif/org/.<br>
+==Darwin Core Archive documentation==
+Details about the structure of a Darwin Core Archive, abbreviated DWCA, can be found in the "Text Guide" section of the Darwin Core web site: http://rs.tdwg.org/dwc/terms/guides/text/. Further information about the IPT's use of DWCAs can be found on the GBIF IPT Google Code site wiki: (http://code.google.com/p/gbif-providertoolkit/wiki/DarwinCore).
+==GBIF Help Desk==
+Send email messages to helpdesk@gbif.org to report problems with GBIF services, such as the GBIF Registry. Do not send IPT-specific help question to the Help Desk. Instead send them to the IPT mailing list.
+==GBIF Registry==
+Use this online application to find information about find organisations, IPT instances, and resources registered with GBIF: http://gbrds.gbif.org.
+==IPT code site==
+The code site is the project repository for all of the open source code, management, and documentation of the IPT: http://code.google.com/p/gbif-providertoolkit/source/checkout/.
+==IPT contributors mailing list==
+Subscribe to this mailing list to receive messages generated by contributions to the GBIF IPT Google Code site. This group is for contributors to the IPT and those who would keep track of the changes to the code site as they occur: http://groups.google.com/group/gbif-ipt-contributors/.
+==IPT developer documentation==
+Developers who wish to contribute, or to use the latest revision of the source code for their installation should consult the "Developers" section of the GBIF IPT Google Code site wiki: http://code.google.com/p/gbif-providertoolkit/wiki/HowToContribute.
+==IPT issue tracker==
+The issue tracker is the bug report and feature request management system for the IPT software and documentation: http://code.google.com/p/gbif-providertoolkit/issues/list/.
+==IPT mailing list==
+Subscribe to this mailing list to send and receive messages related to the use of the Integrated Publishing Toolkit. This group is for users to support each other in the use of the IPT: http://lists.gbif.org/mailman/listinfo/ipt/.
+==IPT server preparation==
+This wiki page gives details about preparing a server to run the IPT can be found on the IPT project code site wiki at http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation.
+==IPT software updates==
+This wiki page gives details about updating aspects of the IPT, including upgrading an older installation of the IPT to a new version: http://code.google.com/p/gbif-providertoolkit/wiki/IPTUpdates.
+==IPT test installation==
+GBIF provides a functional installation of the IPT for evaluation and testing purposes. The test installation of the latest release can be found at http://ipt.gbif.org.
 ----
 =IPT Software Updates=
 Describe where to get the latest.
