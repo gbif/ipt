@@ -546,13 +546,6 @@ This wiki page gives details about updating aspects of the IPT, including upgrad
 ==IPT test installation==
 GBIF provides a functional installation of the IPT for evaluation and testing purposes. The test installation of the latest release can be found at http://ipt.gbif.org.
 ----
-=IPT Software Updates=
-Describe where to get the latest.
-Version changes, refer to separate Wiki page.
-
-*Further information about the IPT, including the latest version of this User Manual, can be found on the project's code site at http://code.google.com/p/gbif-providertoolkit/.<br>
-
-----
 =References=
 Réveillon, A. 2009. The GBIF Integrated Publishing Toolkit User Manual, version 1.0. Copenhagen: Global Biodiversity Information Facility. 37 pp.
 
