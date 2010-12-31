@@ -73,12 +73,15 @@ Most user interface controls have both enabled and disabled modes. If the contro
 *Menus* - in the IPT, a menu bar appears below the GBIF logo on nearly every page. The menu bar is populated with menus that guide users to fundamental topics. Menus appear only for the pages that are authorized to be seen based on the current user's role. Exactly one menu is active at a time, and the active menu is colored brightly, while inactive menus are grey. Click on a menu to open and activate the page for that topic.
 
 Menu bar before login or after a user having no special role logs in, with the Home menu active:
+
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTMenuBarHomeAbout.png]
 
 Menu after a user having a Manager role logs in, with the Manage Resources menu active:
+
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTMenuBarHomeManageAbout.png]
 
 Menu after a user having the Admin role logs in, with the Administration menu active:
+
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTMenuBarHomeManageAdminAbout.png]
 
 *Text boxes* - allow textual information to be viewed or entered. 
