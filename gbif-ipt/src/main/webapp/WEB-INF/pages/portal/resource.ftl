@@ -314,9 +314,9 @@
   <div class="body">
       	<div class="details">
       		<table>
-          		<tr><th><@s.text name='eml.citation'/></th><td>${eml.citation!}</td></tr>
+          		<tr><th><@s.text name='eml.citation.citation'/></th><td>${eml.citation!}</td></tr>
           		<#list eml.bibliographicCitationSet.bibliographicCitations as item>
-          			<tr><th><@s.text name='eml.bibliographicCitationSet.bibliographicCitations'/> ${item_index+1}</th><td>${eml.bibliographicCitationSet.bibliographicCitations[item_index]!}</td></tr>
+          			<tr><th><@s.text name='eml.bibliographicCitationSet.bibliographicCitations.citation'/> ${item_index+1}</th><td>${eml.bibliographicCitationSet.bibliographicCitations[item_index]!}</td></tr>
           		</#list>
       		</table>
       	</div>
