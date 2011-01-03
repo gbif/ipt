@@ -3,6 +3,18 @@
 
 <wiki:toc max_depth="2" />
 
+= IPT 2.x =
+== IPT 2.0 RC3 ==
+to be released 7th january 2011
+
+== IPT 2.0 RC2 ==
+ * http://code.google.com/p/gbif-providertoolkit/downloads/detail?name=ipt-2.0RC2.war
+== IPT 2.0 RC1 ==
+ * http://code.google.com/p/gbif-providertoolkit/downloads/detail?name=ipt-2.0RC1.war
+
+= IPT 1.x =
+Deprecated first versions of the IPT using an internal database and a richer web application.
+
 == IPT 1.0 - SNAPSHOT ==
 Download latest snapshot: [ftp://ftp.gbif.org/projects/ipt/downloads/]
  * Fixed bugs:
