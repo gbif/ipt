@@ -38,21 +38,33 @@ public class CreateResourceAction extends POSTAction {
   public String save() throws IOException {
     try {
       File tmpFile = uploadToTmp();
-      Resource resource= null;
+      Resource resource = null;
       if (tmpFile != null) {
-    	  resource = resourceManager.create(shortname, tmpFile, getCurrentUser(), this);
-      }else{
-    	  resource = resourceManager.create(shortname, getCurrentUser());
+        resource = resourceManager.create(shortname, tmpFile, getCurrentUser(), this);
+      } else {
+        resource = resourceManager.create(shortname, getCurrentUser());
       }
     } catch (AlreadyExistingException e) {
       addFieldError("resource.shortname", getText("validation.resource.shortname.exists", new String[]{shortname}));
       return INPUT;
     } catch (ImportException e) {
-    	log.error("Error importing the dwc archive: "+e.getMessage(), e);
-    	addActionError(getText("validation.resource.import.exception", new String[]{e.getMessage()}));
-        return INPUT;
-	}
+      log.error("Error importing the dwc archive: " + e.getMessage(), e);
+      addActionError(getText("validation.resource.import.exception") + " Archive Validator: http://tools.gbif.org/dwca-validator/"); // e.getMessage()
+      return INPUT;
+    }
     return SUCCESS;
+  }
+
+  public void setFile(File file) {
+    this.file = file;
+  }
+
+  public void setFileContentType(String fileContentType) {
+    this.fileContentType = fileContentType;
+  }
+
+  public void setFileFileName(String fileFileName) {
+    this.fileFileName = fileFileName;
   }
 
   public void setShortname(String shortname) {
@@ -83,19 +95,7 @@ public class CreateResourceAction extends POSTAction {
     return tmpFile;
   }
 
-  public void setFile(File file) {
-	this.file = file;
-}
-
-public void setFileContentType(String fileContentType) {
-	this.fileContentType = fileContentType;
-}
-
-public void setFileFileName(String fileFileName) {
-	this.fileFileName = fileFileName;
-}
-
-@Override
+  @Override
   public void validate() {
     if (isHttpPost()) {
       validator.validateShortname(this, shortname);

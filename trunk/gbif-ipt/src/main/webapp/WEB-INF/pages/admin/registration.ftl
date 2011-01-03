@@ -81,7 +81,12 @@ $(document).ready(function(){
 
 <#if hostingOrganisation?exists>
 	<p><@s.text name="admin.registration.registered1"/></p>
-	<h3><@s.text name="admin.registration.registered2"><@s.param>${hostingOrganisation.name!}</@s.param></@s.text></h3>
+	<h3><@s.text name="admin.registration.registered2"><@s.param>${hostingOrganisation.name!"???"}</@s.param></@s.text></h3>
+	<p><@s.text name="admin.registration.links"/></p>
+	<ul>
+	 <li><a href="${cfg.registryUrl}/browse/agent?uuid=${registeredIpt.key}">${registeredIpt.name!"IPT"}</a></li>
+	 <li><a href="${cfg.registryUrl}/browse/agent?uuid=${hostingOrganisation.key}">${hostingOrganisation.name!"Organisation"}</a></li>
+	</ul>
 	<p><@s.text name="admin.registration.registered3"/></p>
 <#else>
 	<#include "/WEB-INF/pages/macros/forms.ftl"> 
