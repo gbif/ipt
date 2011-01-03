@@ -12,6 +12,8 @@ to be released 7th january 2011
 == IPT 2.0 RC1 ==
  * http://code.google.com/p/gbif-providertoolkit/downloads/detail?name=ipt-2.0RC1.war
 
+-----
+
 = IPT 1.x =
 Deprecated first versions of the IPT using an internal database and a richer web application.
 
