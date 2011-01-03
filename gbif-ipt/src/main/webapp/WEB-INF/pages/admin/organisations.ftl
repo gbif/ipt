@@ -37,14 +37,10 @@ $(document).ready(function(){
 	
 	<#list linkedOrganisations as o>	
 	<tr>
-		<td><a id="editLink_${o.key}" href="organisation?id=${o.key}"><#if o.name?trim?has_content>${o.name}<#else>${o.alias!}</#if></a></td>
+		<td><a id="editLink_${o.key}" href="organisation?id=${o.key}">${o.name!"???"}</a></td>
 		<td>${o.alias!}</td>
 		<td>
-		<#if o.canHost>
-			<@s.checkbox name="organisation.canHost" key="organisation.canHost" disabled="true" value="true" />
-		<#else>
-			<@s.checkbox name="organisation.canHost" key="organisation.canHost" disabled="true" value="false" />
-		</#if>
+		<@s.checkbox name="organisation.canHost" key="organisation.canHost" disabled="true" value="${o.canHost?string}" />
 		</td>
 	</tr>
 	</#list>

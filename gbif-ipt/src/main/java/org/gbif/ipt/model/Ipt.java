@@ -9,6 +9,7 @@
  */
 package org.gbif.ipt.model;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.io.Serializable;
@@ -18,23 +19,13 @@ import java.util.UUID;
 /**
  * Encapsulates all the information for an Ipt instance
  */
-public class Ipt implements Serializable {
+public class Ipt extends AgentBase implements Serializable {
 
   private static final long serialVersionUID = 78945123624747L;
-  private UUID key;
   private UUID organisationKey;
-  private String name;
-  private String description;
   private String language;
-  private String homepageUrl;
   private String logoUrl;
   private Date created;
-  private String primaryContactType;
-  private String primaryContactName;
-  private String primaryContactAddress;
-  private String primaryContactDescription;
-  private String primaryContactEmail;
-  private String primaryContactPhone;
   private String wsPassword;
 
   /**
@@ -47,22 +38,9 @@ public class Ipt implements Serializable {
   /**
    * @return the description
    */
+  @Override
   public String getDescription() {
     return description;
-  }
-
-  /**
-   * @return the homepageUrl
-   */
-  public String getHomepageUrl() {
-    return homepageUrl;
-  }
-
-  /**
-   * @return the key
-   */
-  public UUID getKey() {
-    return key;
   }
 
   /**
@@ -80,59 +58,10 @@ public class Ipt implements Serializable {
   }
 
   /**
-   * @return the name
-   */
-  public String getName() {
-    return name;
-  }
-
-  /**
    * @return the organisationKey
    */
   public UUID getOrganisationKey() {
     return organisationKey;
-  }
-
-  /**
-   * @return the primaryContactAddress
-   */
-  public String getPrimaryContactAddress() {
-    return primaryContactAddress;
-  }
-
-  /**
-   * @return the primaryContactDescription
-   */
-  public String getPrimaryContactDescription() {
-    return primaryContactDescription;
-  }
-
-  /**
-   * @return the primaryContactEmail
-   */
-  public String getPrimaryContactEmail() {
-    return primaryContactEmail;
-  }
-
-  /**
-   * @return the primaryContactName
-   */
-  public String getPrimaryContactName() {
-    return primaryContactName;
-  }
-
-  /**
-   * @return the primaryContactPhone
-   */
-  public String getPrimaryContactPhone() {
-    return primaryContactPhone;
-  }
-
-  /**
-   * @return the primaryContactType
-   */
-  public String getPrimaryContactType() {
-    return primaryContactType;
   }
 
   /**
@@ -153,42 +82,21 @@ public class Ipt implements Serializable {
    * @param description the description to set
    */
   public void setDescription(String description) {
-    this.description = description;
-  }
-
-  /**
-   * @param homepageUrl the homepageUrl to set
-   */
-  public void setHomepageUrl(String homepageUrl) {
-    this.homepageUrl = homepageUrl;
-  }
-
-  /**
-   * @param key the key to set
-   */
-  public void setKey(String key) {
-    this.key = UUID.fromString(key);
+    this.description = StringUtils.trimToNull(description);
   }
 
   /**
    * @param language the language to set
    */
   public void setLanguage(String language) {
-    this.language = language;
+    this.language = StringUtils.trimToNull(language);
   }
 
   /**
    * @param logoUrl the logoUrl to set
    */
   public void setLogoUrl(String logoUrl) {
-    this.logoUrl = logoUrl;
-  }
-
-  /**
-   * @param name the name to set
-   */
-  public void setName(String name) {
-    this.name = name;
+    this.logoUrl = StringUtils.trimToNull(logoUrl);
   }
 
   /**
@@ -196,48 +104,6 @@ public class Ipt implements Serializable {
    */
   public void setOrganisationKey(String organisationKey) {
     this.organisationKey = UUID.fromString(organisationKey);
-  }
-
-  /**
-   * @param primaryContactAddress the primaryContactAddress to set
-   */
-  public void setPrimaryContactAddress(String primaryContactAddress) {
-    this.primaryContactAddress = primaryContactAddress;
-  }
-
-  /**
-   * @param primaryContactDescription the primaryContactDescription to set
-   */
-  public void setPrimaryContactDescription(String primaryContactDescription) {
-    this.primaryContactDescription = primaryContactDescription;
-  }
-
-  /**
-   * @param primaryContactEmail the primaryContactEmail to set
-   */
-  public void setPrimaryContactEmail(String primaryContactEmail) {
-    this.primaryContactEmail = primaryContactEmail;
-  }
-
-  /**
-   * @param primaryContactName the primaryContactName to set
-   */
-  public void setPrimaryContactName(String primaryContactName) {
-    this.primaryContactName = primaryContactName;
-  }
-
-  /**
-   * @param primaryContactPhone the primaryContactPhone to set
-   */
-  public void setPrimaryContactPhone(String primaryContactPhone) {
-    this.primaryContactPhone = primaryContactPhone;
-  }
-
-  /**
-   * @param primaryContactType the primaryContactType to set
-   */
-  public void setPrimaryContactType(String primaryContactType) {
-    this.primaryContactType = primaryContactType;
   }
 
   /**
