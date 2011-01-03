@@ -1,5 +1,4 @@
 #summary One-sentence summary of this page.
-===*IPT 2.x Documentation*===
  * User Manual
    * [UserManualChapter1 Background Information]
    * [UserManualChapter2 General specifications]
