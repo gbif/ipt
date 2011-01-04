@@ -79,6 +79,12 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     data.add(new BasicNameValuePair("primaryContactName",
         StringUtils.trimToNull(StringUtils.trimToEmpty(resource.getCreator().getName()))));
     data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(resource.getCreator().getEmail())));
+    
+    // the following are not yet supported by the registry at the time of writing, but a request has been logged:
+    // http://code.google.com/p/gbif-registry/issues/detail?id=88 
+    data.add(new BasicNameValuePair("primaryContactFirstName", StringUtils.trimToNull(StringUtils.trimToEmpty(resource.getCreator().getFirstname()))));
+    data.add(new BasicNameValuePair("primaryContactLastName", StringUtils.trimToNull(StringUtils.trimToEmpty(resource.getCreator().getLastname()))));
+    
 
     // see if we have a published dwca or if its only metadata
     RegistryServices services = buildServiceTypeParams(resource);
