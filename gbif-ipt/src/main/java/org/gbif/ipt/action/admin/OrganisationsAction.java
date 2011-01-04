@@ -240,7 +240,7 @@ public class OrganisationsAction extends POSTAction {
 	@Override
 	public void validate() {
 		if (isHttpPost()) {
-			//organisationValidation.validate(this, organisation);
+			organisationValidation.validate(this, organisation);
 		}
 	}
 
