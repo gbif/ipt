@@ -195,7 +195,7 @@ public class OrganisationsAction extends POSTAction {
 				}
 				for(Organisation org:getOrganisations()){
 					if(org.getKey().equals(organisation.getKey())){
-						organisation.setName(org.getName());
+						organisation=org;
 						break;
 					}
 				}
@@ -240,7 +240,7 @@ public class OrganisationsAction extends POSTAction {
 	@Override
 	public void validate() {
 		if (isHttpPost()) {
-			organisationValidation.validate(this, organisation);
+			//organisationValidation.validate(this, organisation);
 		}
 	}
 
