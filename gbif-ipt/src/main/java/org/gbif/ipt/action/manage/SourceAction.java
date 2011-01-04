@@ -71,7 +71,7 @@ public class SourceAction extends ManagerBaseAction {
         try {
           File tmpDir = dataDir.tmpDir();
           List<File> files = CompressionUtil.decompressFile(tmpDir, file);
-          addActionMessage(getText("manage.source.compressed.files", new String[]{files.size()+""}));
+          addActionMessage(getText("manage.source.compressed.files", new String[]{files.size() + ""}));
           // import each file. The last file will become the id parameter,
           // so the new page opens with that source
           for (File f : files) {
@@ -150,12 +150,12 @@ public class SourceAction extends ManagerBaseAction {
     return problem;
   }
 
+  public String getRdbms() {
+    return rdbms;
+  }
+
   public Source getSource() {
     return source;
-  }
-  
-  public String getRdbms() {
-	    return rdbms;
   }
 
   public SqlSource getSqlSource() {
@@ -185,7 +185,7 @@ public class SourceAction extends ManagerBaseAction {
       source.setResource(resource);
       ((SqlSource) source).setRdbms(jdbcSupport.get("mysql"));
     } else {
-      // prepare a new, empty sql source
+      // prepare a new, empty file source
       source = new Source.FileSource();
       source.setResource(resource);
     }
@@ -257,6 +257,9 @@ public class SourceAction extends ManagerBaseAction {
 
   public void setRdbms(String jdbc) {
     this.rdbms = jdbc;
+    if (source != null && !source.isFileSource()) {
+      ((SqlSource) source).setRdbms(jdbcSupport.get(rdbms));
+    }
   }
 
   public void setRows(int previewSize) {
