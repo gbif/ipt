@@ -22,7 +22,7 @@ $(document).ready(function(){
 	function hideFields() {
 		showAll=false;
 		$("#showAllValue").val("false");
-		$("#toggleFields").text("Show All");
+		$("#toggleFields").text("<@s.text name="manage.mapping.showAll" />");
 		$(".groupmenu").hide();
 		$('div.definition').not('.required').each(function(index) {
 			// always show all mapped and required fields
@@ -49,7 +49,7 @@ $(document).ready(function(){
 		}else{
 			showAll=true;
 			$("#showAllValue").val("true");
-			$("#toggleFields").text("Hide Empty");
+			$("#toggleFields").text("<@s.text name="manage.mapping.hideEmpty"/>");
 			$('div.definition').show();
 			$(".groupmenu").show();
 		}
