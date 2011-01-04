@@ -200,8 +200,10 @@ public class OrganisationsAction extends POSTAction {
 					}
 				}
 				registrationManager.addAssociatedOrganisation(organisation);
+				addActionMessage(getText("admin.organisation.associated.ipt"));
+			} else {
+				addActionMessage(getText("admin.organisation.updated.ipt"));
 			}
-			addActionMessage(getText("admin.organisation.associated.ipt"));
 			registrationManager.save();
 			return SUCCESS;
 		} catch (IOException e) {
