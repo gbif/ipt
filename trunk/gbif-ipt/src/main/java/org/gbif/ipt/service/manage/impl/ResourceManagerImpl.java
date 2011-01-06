@@ -252,11 +252,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         }
         // finally persist the whole thing
         save(resource);
-        alog.info("Imported existing darwin core archive with core row type " + resource.getCoreRowType() + " and "
-            + resource.getSources().size() + " source(s), " + (resource.getMappings().size() + 1) + " mapping(s)");
+        alog.info("manage.resource.create.success", new String[]{resource.getCoreRowType(), ""+resource.getSources().size(), ""+(resource.getMappings().size()+1)});
 
       } else {
-        alog.warn("Darwin core archive is invalid and does not have a core mapping");
+        alog.warn("manage.resource.create.core.invalid");
         throw new ImportException("Darwin core archive is invalid and does not have a core mapping");
       }
 
@@ -280,7 +279,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       resource.setEml(eml);
       return resource;
     } else {
-      alog.error("Cant read the uploaded file");
+      alog.error("manage.resource.create.failed");
       throw new ImportException("Cant read the uploaded file");
     }
   }
@@ -397,7 +396,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     map.setSource(source);
     Extension ext = extensionManager.get(af.getRowType());
     if (ext == null) {
-      alog.warn("RowType " + af.getRowType() + " not available in this IPT installation");
+      alog.warn("manage.resource.create.rowType.null", new String[]{af.getRowType()});
       return null;
     }
     map.setExtension(ext);
@@ -411,8 +410,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       if (ext.hasProperty(f.getTerm())) {
         fields.add(new PropertyMapping(f));
       } else {
-        alog.warn("Skip mapped concept term " + f.getTerm().qualifiedName() + " which is unkown to extension "
-            + ext.getRowType());
+        alog.warn("manage.resource.create.mapping.concept.skip", new String[]{f.getTerm().qualifiedName(), ext.getRowType()});
       }
     }
     map.setFields(fields);
@@ -671,7 +669,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       if (emlFile.exists()) {
         InputStream emlIn = new FileInputStream(emlFile);
         eml = EmlFactory.build(emlIn);
-        alog.info("EML metadata read");
+        alog.info("manage.resource.read.eml.metadata");
         return eml;
       } else {
         log.warn("Cant find any eml metadata to import");
@@ -682,12 +680,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // try to read other metadata formats like dc
     try {
       eml = convertMetadataToEml(archive.getMetadata(), alog);
-      alog.info("Basic metadata read");
+      alog.info("manage.resource.read.basic.metadata");
       return eml;
     } catch (Exception e) {
       log.warn("Cant read basic archive metadata: " + e.getMessage());
     }
-    alog.warn("Cant read archive metadata");
+    alog.warn("manage.resource.read.problem");
     return null;
   }
 

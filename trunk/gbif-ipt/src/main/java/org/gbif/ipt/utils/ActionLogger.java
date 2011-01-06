@@ -19,14 +19,14 @@ public class ActionLogger {
   public void error(String message) {
     if (message != null) {
       action.addActionWarning(action.getText(message));
-      log.error(message);
+      log.error(action.getText(message) == null ? message : action.getText(message));
     }
   }
 
   public void error(String message, String[] args) {
     if (message != null) {
       action.addActionWarning(action.getText(message, args));
-      log.error(message);
+      log.error(action.getText(message) == null ? message : action.getText(message, args));
     }
   }
 
@@ -35,7 +35,7 @@ public class ActionLogger {
       error(t);
     } else {
       action.addActionWarning(action.getText(message, args));
-      log.error(message, t);
+      log.error(action.getText(message) == null ? message : action.getText(message, args), t);
     }
   }
 
@@ -44,7 +44,7 @@ public class ActionLogger {
       error(t);
     } else {
       action.addActionWarning(action.getText(message));
-      log.error(message, t);
+      log.error(action.getText(message) == null ? message : action.getText(message), t);
     }
   }
 
@@ -58,14 +58,14 @@ public class ActionLogger {
   public void info(String message) {
     if (message != null) {
       action.addActionMessage(action.getText(message));
-      log.info(message);
+      log.info(action.getText(message) == null ? message : action.getText(message));
     }
   }
 
   public void info(String message, String[] args) {
     if (message != null) {
       action.addActionMessage(action.getText(message, args));
-      log.info(message);
+      log.info(action.getText(message) == null ? message : action.getText(message));
     }
   }
 
@@ -74,7 +74,7 @@ public class ActionLogger {
       info(t);
     } else {
       action.addActionMessage(action.getText(message, args));
-      log.info(message, t);
+      log.info(action.getText(message) == null ? message : action.getText(message), t);
     }
   }
 
@@ -83,7 +83,7 @@ public class ActionLogger {
       info(t);
     } else {
       action.addActionMessage(action.getText(message));
-      log.info(message, t);
+      log.info(action.getText(message) == null ? message : action.getText(message), t);
     }
   }
 
@@ -97,24 +97,24 @@ public class ActionLogger {
   public void log(TaskMessage msg) {
     if (Level.ERROR.equals(msg.level)) {
       action.addActionWarning(action.getText(msg.message, msg.params));
-      log.error(msg.message);
+      log.error(action.getText(msg.message) == null ? msg.getMessage() : action.getText(msg.message, msg.params));
     } else {
       action.addActionMessage(action.getText(msg.message, msg.params));
-      log.log(msg.level, msg.message);
+      log.log(msg.level, action.getText(msg.message) == null ? msg.message : action.getText(msg.message, msg.params));
     }
   }
 
   public void warn(String message) {
     if (message != null) {
       action.addActionWarning(action.getText(message));
-      log.warn(message);
+      log.warn(action.getText(message) == null ? message : action.getText(message));
     }
   }
 
   public void warn(String message, String[] args) {
     if (message != null) {
       action.addActionWarning(action.getText(message, args));
-      log.warn(message);
+      log.warn(action.getText(message) == null ? message : action.getText(message));
     }
   }
 
@@ -123,7 +123,7 @@ public class ActionLogger {
       info(t);
     } else {
       action.addActionWarning(action.getText(message, args));
-      log.warn(message, t);
+      log.warn(action.getText(message) == null ? message : action.getText(message, args), t);
     }
   }
 
@@ -132,7 +132,7 @@ public class ActionLogger {
       info(t);
     } else {
       action.addActionWarning(action.getText(message));
-      log.warn(message, t);
+      log.warn(action.getText(message) == null ? message : action.getText(message), t);
     }
   }
 
