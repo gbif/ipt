@@ -114,7 +114,7 @@ public class ExtensionsAction extends POSTAction {
       if (!result.errors.isEmpty()) {
         addActionWarning(getText("admin.extensions.vocabularies.errors", new String[]{result.errors.size() + ""}));
         for (Entry<String, String> err : result.errors.entrySet()) {
-          addActionError("Error updating vocabulary " + err.getKey() + " : " + err.getValue());
+          addActionError(getText("admin.extensions.error.updating", new String[]{err.getKey(),err.getValue()}));
         }
       }
     }
