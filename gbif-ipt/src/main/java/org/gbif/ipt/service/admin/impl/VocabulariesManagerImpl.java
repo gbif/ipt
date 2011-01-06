@@ -29,6 +29,7 @@ import com.thoughtworks.xstream.XStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
+import org.apache.commons.lang.StringUtils;
 import org.xml.sax.SAXException;
 
 import java.io.File;
@@ -357,14 +358,23 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
 
   public UpdateResult updateAll() {
     UpdateResult result = new UpdateResult();
+    // list all known vocab URIs in debug log
+    log.info("Updating all installed vocabularies");
+    log.debug("Known vocabulary locations for URIs: " + StringUtils.join(uri2url.keySet(), ", "));
     for (Vocabulary v : vocabularies.values()) {
-      log.debug("Updating vocabulary " + v.getUri());
-      URL url = uri2url.get(v.getUri());
-      if(url==null){
-    	  result.errors.put(v.getUri(), "Getting null vocabulary url for key "+ v.getUri());
-    	  continue;
+      if (v.getUri() == null) {
+        log.warn("Vocabulary without identifier, skipped!");
+        continue;
       }
-	  File vocabFile = getVocabFile(url);
+      log.debug("Updating vocabulary " + v.getUri());
+      URL url = uri2url.get(v.getUri().toLowerCase());
+      if (url == null) {
+        String msg = "Dont know the vocabulary URL to retrieve update from for vocabulary Identifier " + v.getUri();
+        result.errors.put(v.getUri(), msg);
+        log.error(msg);
+        continue;
+      }
+      File vocabFile = getVocabFile(url);
       Date modified = new Date(vocabFile.lastModified());
       try {
         install(url);
@@ -382,5 +392,4 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
     }
     return result;
   }
-
 }

@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map.Entry;
 
 /**
  * The Action responsible for all user input relating to the DarwinCore extension management.
@@ -108,10 +109,13 @@ public class ExtensionsAction extends POSTAction {
   public String list() {
     if (updateVocabs) {
       UpdateResult result = vocabManager.updateAll();
-      addActionMessage(getText("admin.extensions.vocabularies.updated", new String[]{result.updated.size()+""}));
-      addActionMessage(getText("admin.extensions.vocabularies.unchanged", new String[]{result.unchanged.size()+""}));
+      addActionMessage(getText("admin.extensions.vocabularies.updated", new String[]{result.updated.size() + ""}));
+      addActionMessage(getText("admin.extensions.vocabularies.unchanged", new String[]{result.unchanged.size() + ""}));
       if (!result.errors.isEmpty()) {
-    	addActionWarning(getText("admin.extensions.vocabularies.errors", new String[]{result.errors.size()+""}));
+        addActionWarning(getText("admin.extensions.vocabularies.errors", new String[]{result.errors.size() + ""}));
+        for (Entry<String, String> err : result.errors.entrySet()) {
+          addActionError("Error updating vocabulary " + err.getKey() + " : " + err.getValue());
+        }
       }
     }
 
@@ -141,7 +145,7 @@ public class ExtensionsAction extends POSTAction {
         registered.load();
       } catch (Exception e) {
         log.error("Couldnt load registered extensions", e);
-    	addActionWarning(getText("admin.extensions.couldnt.load", new String[]{e.getMessage()}));
+        addActionWarning(getText("admin.extensions.couldnt.load", new String[]{e.getMessage()}));
       }
     }
     if (id != null) {
