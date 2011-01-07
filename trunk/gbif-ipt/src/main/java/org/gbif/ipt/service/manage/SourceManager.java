@@ -81,7 +81,7 @@ public interface SourceManager {
    * The maximum number of distinct values can be restricted.
    * 
    * @param source
-   * @param column column to inspect
+   * @param column column to inspect, zero based numbering as used in the dwc archives
    * @param maxValues maximun number of distinct values to return. If zero or negative all values will be retrieved.
    * @param maxRows maximum number of rows to inspect. If zero or negative all rows will be scanned.
    * @return unique values found in the column
