@@ -9,7 +9,6 @@ import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.ConfigManager;
 
 import com.google.inject.Inject;
-import com.sun.tools.javac.code.Attribute.Constant;
 
 import org.apache.commons.lang.StringUtils;
 
