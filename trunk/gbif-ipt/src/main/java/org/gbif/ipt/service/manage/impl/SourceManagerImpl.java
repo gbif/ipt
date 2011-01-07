@@ -109,6 +109,14 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       this(source, column, source.getSqlLimited(limit));
     }
 
+    /**
+     * SqlColumnIterator constructor
+     * 
+     * @param source of the sql data
+     * @param column to inspect, zero based numbering as used in the dwc archives
+     * @param sql statement to query in the sql source
+     * @throws SQLException
+     */
     private SqlColumnIterator(SqlSource source, int column, String sql) throws SQLException {
       this.conn = getDbConnection(source);
       this.stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
