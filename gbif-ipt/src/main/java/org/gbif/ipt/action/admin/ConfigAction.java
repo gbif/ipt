@@ -4,10 +4,12 @@
 package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.POSTAction;
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.ConfigManager;
 
 import com.google.inject.Inject;
+import com.sun.tools.javac.code.Attribute.Constant;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -85,8 +87,10 @@ public class ConfigAction extends POSTAction {
       try {
         URL burl = new URL(baseUrl);
         configManager.setBaseURL(burl);
+        session.remove(Constants.SESSION_USER);
         log.info("Installation baseURL successfully changed to[" + baseUrl + "]");
         addActionMessage(getText("admin.config.baseUrl.changed"));
+        addActionMessage("admin.user.login");
         if (burl.getHost().equalsIgnoreCase("localhost") || burl.getHost().equalsIgnoreCase("127.0.0.1")) {
           addActionWarning(getText("admin.config.error.localhostURL"));
         }
