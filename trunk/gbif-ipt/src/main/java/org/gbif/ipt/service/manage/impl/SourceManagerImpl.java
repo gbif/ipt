@@ -113,7 +113,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       this.conn = getDbConnection(source);
       this.stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
       source.getRdbms().enableLargeResultSet(this.stmt);
-      this.column = column;
+      this.column = column + 1;
       this.rs = stmt.executeQuery(sql);
       this.hasNext = rs.next();
       sourceName = source.getName();
