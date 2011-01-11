@@ -53,7 +53,7 @@ If the initial data directory assignment step was successful, the IPT will prese
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTSetup2.png]
 
-When all of the information on the page is complete and correct, click on the button labeled "Save" to complete the IPT setup process. If a problem occurs, an error message will appear at the top of the page with recommendations about how to resolve the issue. If the setup is successful, a page confirming the success of the setup will appear (see screen image, below). 
+When all of the information on the page is complete and correct, click on the button labeled "Save" to complete the IPT setup process. If a problem occurs, an error message will appear at the top of the page with recommendations about how to resolve the issue. If the setup is successful, a page confirming the success of the setup will appear. 
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTSetupFinished.png]
 
@@ -89,26 +89,31 @@ Menu after a user having the Admin role logs in, with the Administration menu ac
 *Text boxes* - allow textual information to be viewed or entered. 
 
 Example text box and label for an email address:
+
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TextBoxExample.png]
 
 *Check boxes* - allow a value to viewed or set to true (when checked) or false (when unchecked).
 
 Example check box and label to indicate that the IPT can host resources:
+
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-CheckboxExample.png]<br>
 
 *Select boxes* - allows a value to be viewed or selected from a list of predefined values. A select box may contain explanatory text about the selection in place of a selectable value. In this case the selection will begin with "Select " (e.g., "Select a country, territory, or island"). Click on the select box to open it and see the list of possible values. Click on one of the choices to set that value.
 
 Example select box and label for the user role, with Admin selected:
+
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-SelectBoxExample.png]
 
 *Links* - opens a page other than the one on which the link occurs. Links may open the new page in the same browser window (or tab) or in a separate window (or tab).
 
 Example link to the account information page for the logged in user:
+
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-LinkExample.png]
 
 *Information icon* - shows a message explaining the intention of the control next to which it appears. Click on the icon next to any field to see a help message about that control. Click on it again to make the message disappear. Some information messages include a link, which, if selected, will populate the control with the appropriate value for the selection.
 
 Example information icon for character encoding after the UTF-8 link was selected:
+
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Information-CharacterEncoding.png]
 
 *Trash icon* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TrashIcon.png] - this icon is associated with other controls on the page. Clicking on the icon will delete the associated data.
@@ -116,6 +121,7 @@ Example information icon for character encoding after the UTF-8 link was selecte
 *Calendar icon* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-CalendarIcon.png] - this icon is associated with a text field meant to contain a date. Clicking on the icon opens a small calendar with controls that allow the user to scroll forward and backward from the currently selected month and year, select boxes to choose a different month or year, and days of the week arranged in a standard New Era calendar. Selecting a specific day will place the date in the correct format into the associated text box.
 
 Example calendar associated with an text box labeled "End Date" in which 31 Dec 2010 is the current date but not yet selected:
+
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TextBoxWithCalendarOpen.png]
  
 ===Controls that appear on all pages===
@@ -124,9 +130,11 @@ This section describes several features that are accessible in the header and fo
 The header section of the IPT appears in the upper right of most pages and allows basic control over the IPT, including the who is using it, and in what language. Following are two screen images showing the two possible states in which the header may be found - logged in, and not logged in.
 
 Header, not logged in, English language chosen for the user interface: 
+
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTHeaderNotLoggedIn.png]
 
 Header, logged in, English language chosen for the user interface: 
+
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTHeaderLoggedIn.png]
 
 *Login* - A user who has already been created in this IPT instance can log in by entering the email address and password in the upper right-hand corner of the page, and then click on the "Login" link. New users can be created only by an existing user having the Admin role. The process for creating new users is explained under the "Configure User accounts" heading in the "Administration Menu" section. The process of initializing the IPT creates the first user having the Admin role.<br>
@@ -139,10 +147,10 @@ The footer section of the IPT appears along the bottom of most pages and contain
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTFooter.png]
 
 *Version* - At the left of the footer at bottom of the page is the version of the IPT that is currently running. The version information can be used to determine which features are included in the IPT and what bugs are known to exist. This is the version information that is requested when making bug reports.<br>
-*About the IPT Project* - This link (http://code.google.com/p/gbif-providertoolkit/ ) leads to the Google Code site for the IPT, where further information about the IPT can be found, including the latest version of this manual, open issues, source code, and further related documentation.<br>
-*Report a bug* - This link (http://code.google.com/p/gbif-providertoolkit/issues/list/ ) opens the list of known open issues for the IPT. If you think you have encountered a bug, look at the list of known issues first to see if the bug has already been reported. If it has, you may add new information as a comment to the existing bug report that might help engineers to diagnose the problem and get it fixed. If no bug similar to the one you have encountered in the IPT appears on the list, you can create a new bug report by clicking on the "New issues" link. When entering a bug report, it is useful to include the version of the IPT you are using (see the explanation for "Version", above).<br>
+*About the IPT Project* - This link leads to the Google Code site for the IPT (http://code.google.com/p/gbif-providertoolkit/), where further information about the IPT can be found, including the latest version of this manual, open issues, source code, and further related documentation.<br>
+*Report a bug* - This link opens the list of known open issues for the IPT (http://code.google.com/p/gbif-providertoolkit/issues/list/). If you think you have encountered a bug, look at the list of known issues first to see if the bug has already been reported. If it has, you may add new information as a comment to the existing bug report that might help engineers to diagnose the problem and get it fixed. If no bug similar to the one you have encountered in the IPT appears on the list, you can create a new bug report by clicking on the "New issues" link. When entering a bug report, it is useful to include the version of the IPT you are using (see the explanation for "Version", above).<br>
 *Request new feature* - This link (http://code.google.com/p/gbif-providertoolkit/issues/entry?template=Feature%20request) opens a specific form in the IPT issue tracker that can be filled in to request a capability that the IPT does not currently have.<br>
-*Copyright* - The copyright for the IPT software is held by the Global Biodiversity Information Facility. Details of the copyright and licensing can be seen in the "About" section of this user manual.
+*Copyright* - The copyright for the IPT software is held by the Global Biodiversity Information Facility. Details of the copyright and licensing can be seen in the "About the IPT" section of this user manual.
 ==Home Menu (visible to all users)==
 This page allows users to view a list of public resources, if any, and to look at the detailed metadata of any resource on the list. 
 
@@ -161,12 +169,15 @@ The IPT supports syndication via RSS for those who wish to monitor resource conf
 Clicking on the Name link in the list of resources on the Home page shows a new page having all of the metadata about the selected resource. This is the one page where you can easily review all of the metadata for a resource. A user having the Admin role or one of the Manager roles can edit the metadata. Refer to the information under the "Edit an existing resource" heading in the "Manage Resources Menu" section.
 ==Manage Resources Menu (visible to users with an Admin or Manager role)==
 This page allows users having the appropriate role (managers and administrators) to make changes to existing resources listed in the table on the page or to create new resources. 
+
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResources.png]
 ===Manage Resources Table===
 When the Manage Resources page is first opened, it shows a table of existing resources that the current user has permission to change, including those created by this user and those which this user has been invited to manage by others. Refer to the information under the "Public Resources Table" heading in the "Home Menu" section for detailed explanations of the Name, Type, Records, and Last Modified columns. In addition, the Manage Resources Table includes the following column of basic information about the resources:
 
 *Visible To* - a summary description of who has access to view the resource. If the resource is public, all users will be able to see it on the Public Resources table on the Home page, and this column will contain the value "Everyone". If the resource is private, it will not be visible to anyone on the Public Resources table, and it will be visible in the Manage Resources table only to the user who created it, to those who have been invited to manage it, and to users having the Admin role. In this case, the column will have a value of the form "You and n others", where n is the nubbier of other users who have been invited to manage the resource. Details about inviting others to manage a resource are given in the "Resource Managers" section under the "Resource Overview" heading in the "Manage Resources" section.
 ===Create New Resource===
-Below the Manage Resource table is a form that can be used to create a new resource. First, a unique "shortname" must be provided for the resource. This short name will be used to uniquely identify the resource within the IPT instance, and will be used within the URL to access the resource via the Internet. The shortname must be at least three characters in length, may contain alphanumeric characters, but must not contain white space or punctuation other than hyphens (-) or underscores (_) (e.g., "firstresource" or "first_resource", but not "first resource" or firstresource!"). 
+Below the Manage Resource table is a form that can be used to create a new resource. First, a unique "shortname" must be provided for the resource. This short name will be used to uniquely identify the resource within the IPT instance, and will be used within the URL to access the resource via the Internet. The shortname must be at least three characters in length, may contain alphanumeric characters, but must not contain white space or punctuation other than hyphens or underscores (e.g., "firstresource" or "first_resource", but not "first resource" or firstresource!"). 
 
 There are several ways to create a new resource in the IPT as described in the following sections.
 ====Upload a Darwin Core Archive====
@@ -192,12 +203,14 @@ Clicking on the "Edit" button opens the Basic Metadata page, the first of a seri
 
 Following is a list of the metadata pages and their contents: 
   * *Basic Metadata* - This is the only metadata page that has fields that are required to be entered by the IPT. The title and description of the resource are required, as are one of Last Name, Position, or Organisation for the Resource Contact.
+  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataBasicMetadata.png]
     * *Title* (required) - the Title for the resource. This title will appear as a the Name of the resource throughout the IPT. The title will also appear in the GBIF Registry.
     * *Description* (required) - text describing the resource. This required field should provide a summary that will help potential users of the data to understand if it may be of interest.
     * *Metadata Language* - the standard English name of the human language in which the metadata are written.
     * *Resource Language* - the stander English name of the human language in which the data for the resource are written.
     * *Subtype* - this select box shows a list of specific types of resources within the two categories "occurrence" and "checklist". The selected type should be compatible with the extensions to which the resource is mapped (e.g., Darwin Core Occurrence extension for observations, specimens, and occurrences; Darwin Core Taxon extension for all checklists). Review to the information under the "Configure Extensions" heading of the "Administration Menu" section.
     * *Resource Contact* - The resource contact is the person or organisation that should be contacted to get more information about the resource, or to whom putative problems with the resource or its data should be addressed.
+    * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataResourceContact.png]
       * *First Name* - the first or given name of the resource contact.
       * *Last Name* (required if Position and Organisation are empty, required if the first name is not empty) - the last or surname of the resource contact.
       * *Position* (required if Last Name and Organisation are empty) - the relevant title or position held by the resource contact.
@@ -213,25 +226,21 @@ Following is a list of the metadata pages and their contents:
     * *Resource Creator* - The resource creator is the person or organisation responsible for the creation of the resource as it appears in the IPT. If this person or organisation is the same as the resource contact, all of the details of the latter can be copied into the equivalent fields for the resource creator by clicking on the link labeled "copy details from contact". The resource creator has all of the same fields and requirements as the resource contact. Refer to the field explanations under Resource Contact, above.
     * *Metadata Provider* - The metadata provider is the person or organisation responsible for producing the resource metadata. If this person or organisation is the same as the resource contact, all of the details of the latter can be copied into the equivalent fields for the resource creator by clicking on the link labeled "copy details from contact". The metadata provider has all of the same fields and requirements as the resource contact. Refer to the field explanations under Resource Contact, above.
   * *Geographic Coverage* - This metadata page contains information about the geographic area covered by the resource. The page contains a map and associated controls that allow the user to set the geographic coverage. Below is a screen image showing the contents of the Geographic Coverage page, followed by explanations of the controls.
-
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataGeographicCoverage.png]
+  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataGeographicCoverage.png]
     * *Coverage Map* - if connected to the Internet, a Google Map of the earth will appear on the geographic coverage page. This map shows a box with control points (markers) on opposite corners. The corners correspond with the values in the Latitude and Longitude text boxes, explained below. Click on a marker and drag it to a new location to reset the geographic bounds of the box. The corresponding latitude and longitude values will change to match the box on the map. Both markers can be dragged in this way. The map has common viewing features of Google Maps, including a scale bar, a select menu to view different layers (terrain, satellite imagery, etc.), and buttons to zoom in (+) and zoom out (-).
     * *Set global coverage?* - click on this check box to change the geographic coverage to cover the entire earth.
     * *Latitude/Longitude* - these four text boxes correspond to the corners of the box bounding the area covered by the resource. The values to enter in these text boxes are decimal degrees (e.g. 45.2345), with the standard limiting values of -90 to +90 latitude and -180 to +180 longitude, with positive latitude in the northern hemisphere and positive longitude east of the Greenwich Meridian to the International Dateline. These values will be set by manipulating the bounding box markers on the map, but valid values can all be entered in these text boxes directly if desired. The map will update when the information on the page is saved by clicking on the button labeled "Save". 
     * *Description* - a textual description of the geographic coverage. This information can be provided in place of, or to augment the information in the other fields on the page.
   * *Taxonomic Coverages* - This metadata page allows the user to enter information about one of more groups of taxa covered by the resource, each of which is called a taxonomic coverage. Each coverage consists of a description and list of taxa, where each taxon consists of a taxon name (either scientific or common) and a taxon rank. Before any taxonomic coverages are created, the page shows only a link labeled "Add new taxonomic coverage". Clicking on this link will show a text box for the description and several links. Below is a screen image showing the Taxonomic Coverage page before any data have been entered, followed by explanations of the controls seen on the page in this state.
-
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataTaxonomic.png]
+  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataTaxonomic.png]
     * *Remove this taxonomic coverage* - click on this link to remove the taxonomic coverage that follows immediately below the link, including the description, the list, and all single taxon entries.
     * *Description* - a textual description of a range of taxa represented in the resource. Each taxonomic coverage has its own description. This information can be provided in place of, or to augment the information in the other fields on the page.
     * *Add several taxa* - this link adds a text box labeled "Taxon List" to the page.
-
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataTaxonList.png]
+    * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataTaxonList.png]
       * *Taxon List* - this text box allows the user to enter a list of taxa separated by a semi-colon ';', or a pipe '|', or a new line (ENTER). The taxa entered in this list are treated as scientific names.
       * *Add* - this button processes the values entered in the Taxon List text box and creates scientific names for each of them within the taxonomic coverage.
     * *Add new taxon* - this link adds controls to enter a single taxon to the taxonomic coverage - text boxes for Scientific Name and Common Name, a select box for Rank and a trash icon. The taxon can contain any combination of scientific and common name with an optional rank.
-
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataSingleTaxon.png]
+    * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataSingleTaxon.png]
       * *Scientific Name* - this text box is meant to contain the scientific name for the taxon.
       * *Common Name* - this text box is meant to contain the scientific name for the taxon.
       * *Rank* - this text box is meant to contain the taxonomic rank of the taxon.
@@ -240,8 +249,7 @@ Following is a list of the metadata pages and their contents:
     * *Save* - click on this button to save all of the data entered on this page and navigate to the Temporal Coverages page.
     * *Cancel* - click on this button to disregard any changes made to metadata on this page and return to the Resource Overview page.
   * *Temporal Coverages* - This metadata page contains information about one of more dates, date ranges, or named periods of time covered by the resource, each of which is called a temporal coverage. Coverages may refer to the times during which the collection or data set was assembled (Single Date, Date Range, and Formation Period), or to times during which the subjects of the data set or collection were alive (Living Time Period). Before the first temporal coverage for the resource is created, the page shows only a link labeled "Add new temporal coverage". Clicking on this link will show the default temporal coverage type "Single Date" in a select box, a text box labeled "Start Date", a calendar icon, and two links. Below is a screen image showing the default Temporal Coverage page before any data have been entered, followed by explanations of the controls seen on the page in this state.
-
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataTemporalCoverages.png]
+  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataTemporalCoverages.png]
     * *Remove this taxonomic coverage* - click on this link to remove the temporal coverage that follows immediately below the link.
     * *Temporal Coverage Type* - select one of the options in this select box to set the type of temporal coverage, which can consist of a single date, a date range, a formation period, or a living time period. Selecting a type will reveal controls appropriate to the choice as explained below.
       * *Single Date* - this is the default temporal coverage type showing when a temporal coverage is first created. This type is meant to represent a coverage spanning one day. Selecting this type reveals a text box for a Start Date. 
@@ -249,20 +257,16 @@ Following is a list of the metadata pages and their contents:
       * *Date Range * - selecting this temporal coverage type reveals a text box for a Start Date and a text box for an End Date, each with a calendar icon to the right with which a date can be selected. The explanation for the Start Date is given above.
         * *Start Date* - this text box is meant to contain the date the coverage began, in one of the supported date formats. Open the information icon to see the list of supported formats. Example: 2010-12-31 for 31 December 2010 in the New Era calendar.
         * *End Date* - this text box is meant to contain the date the coverage ended, in one of the supported date formats. Open the information icon to see the list of supported formats. Example: 2010-12-31 for 31 December 2010 in the New Era calendar.
-
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataTemporalCoverageLivingTimePeriod.png]
+        * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataTemporalCoverageDateRange.png]
       * *Formation Period* - this temporal coverage type is meant to accommodate a named or other time period during which a collection or data set was assembled. Examples: "Victorian", "1922-1932", "c. 1750".
-
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataTemporalCoverageFormationPeriod.png]
+      * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataTemporalCoverageFormationPeriod.png]
       * *Living Time Period* - this temporal coverage type is meant to accommodate a named or other time period during which the biological entities in the collection or data set were alive, including palaeontological time periods. Examples: "1900-1950", "Ming Dynasty", "Pleistocene".
-
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataTemporalCoverageLivingTimePeriod.png]
+      * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataTemporalCoverageLivingTimePeriod.png]
     * *Add new temporal coverage* - click on this link to initiate a form for an additional temporal coverage.
     * *Save* - click on this button to save all of the data entered on this page and navigate to the Other Keywords page.
     * *Cancel* - click on this button to disregard any changes made to metadata on this page and return to the Resource Overview page.
   * *Other Keywords/Keyword Sets* - This metadata page allows the user to create one or more sets of keywords about the resource. Each set of keywords can be be associated with a thesaurus that governs the terms in the list.
-
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataKeywords.png]
+  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataKeywords.png]
     * *Remove this keyword set* - click on this link to remove the keyword set that follows immediately below the link.
     * *Thesaurus* - enter the name of a thesaurus or controlled vocabulary from which the keywords in the set are derived. If the keywords are not governed by a thesaurus, enter "not applicable" in this text box. Example: IRIS keyword thesaurus.
     * *Keyword List* - enter a list of keywords, separated by commas, that describe or are related to the resource.
@@ -270,8 +274,7 @@ Following is a list of the metadata pages and their contents:
     * *Save* - click on this button to save all of the data entered on this page and navigate to the Associate Parties page.
     * *Cancel* - click on this button to disregard any changes made to metadata on this page and return to the Resource Overview page.
   * *Associated Parties* - This metadata pages contains information about one or more people or organisations associated with the resource in addition to those already covered on the Basic Metadata page. Many of the controls on this page are in common with those for the Resource Contact on the "Basic Metadata" page. Explanations for the remainder of the controls are given below.
-
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataAssociatedParties.png]
+  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataAssociatedParties.png]
     * *Copy details from contact* - if this person or organisation is the same as the Resource Contact on the Basic Metadata page, all of the details can be copied into the equivalent fields for the associated party by clicking on this link.
     * *Remove this associated party* - click on this link to remove the associated party that follows immediately below the link.
     * *Role* - this select box contains a list of possible roles that the associated party might have in relation to the resource. Click on the information icon to the left of the select box to see descriptions of the possible roles. Choose the most appropriate role for the associated party in the select box.
@@ -279,8 +282,7 @@ Following is a list of the metadata pages and their contents:
     * *Save* - click on this button to save all of the data entered on this page and navigate to the Project Data page.
     * *Cancel* - click on this button to disregard any changes made to metadata on this page and return to the Resource Overview page.
   * *Project Data* - This metadata page contains information about a project under which the data in the resource were produced. Appropriate only if the data were produced under a single project.
-
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataProjectData.png]
+  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataProjectData.png]
     * *Title* - the title of the project.
     * *Personnel First Name* - the first name of the most relevant person associated with the project.
     * *Personnel Last Name* - the first name of the most relevant person associated with the project.
@@ -291,8 +293,7 @@ Following is a list of the metadata pages and their contents:
     * *Save* - click on this button to save all of the data entered on this page and navigate to the Sampling Methods page.
     * *Cancel* - click on this button to disregard any changes made to metadata on this page and return to the Resource Overview page.
   * *Sampling Methods* - This metadata page contains information about sampling methods in general, and about specific sampling steps. if appropriate. Before any Sampling Method data are entered for the resource, the page will show text boxes for three aspects of the sampling methods (Study Extent, Sampling Description, and Quality Control) and a link labeled "Add new method step".
-
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataSamplingMethods.png]
+  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataSamplingMethods.png]
     * *Study Extent* - a description of the physical and temporal conditions under which the sampling occurred.
     * *Sampling Description* - a description of the protocol used during sampling that resulted in the data in the resource.
     * *Quality Control* - a description of methods taken to measure and report the quality of the data produced by the sampling methods.
@@ -302,8 +303,7 @@ Following is a list of the metadata pages and their contents:
     * *Save* - click on this button to save all of the data entered on this page and navigate to the Citations page.
     * *Cancel* - click on this button to disregard any changes made to metadata on this page and return to the Resource Overview page.
   * *Citations* - This metadata page contains information about how to cite the resource as well as a bibliography of zero or more additional citations related to the data set, such as publications that were used in or resulted from the production of the data. Each Citation, whether for the resource or in the bibliography, consists of an optional unique Citation Identifier allowing the citation to be found among digital sources and a traditional textual citation. Before any Citation data are entered, the page will show a text box for the Citation Identifier for the resource, a text box for the Resource Citation, a heading labeled "Bibliography", and a link labeled "Add new citation".
-
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataCitations.png]
+  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataCitations.png]
     * *Citation Identifier* - the URL or other unique identifier to be used to cite the resource.
     * *Resource Citation* - the traditional textual citation for the resource with author, date, and publisher information.
     * *Bibliography* - this header separates the single citation for the resource from the additional citations used to produce or as a result of the production of the resource.
@@ -314,8 +314,7 @@ Following is a list of the metadata pages and their contents:
     * *Save* - click on this button to save all of the data entered on this page and navigate to the Collection Data page.
     * *Cancel* - click on this button to disregard any changes made to metadata on this page and return to the Resource Overview page.
   * *Collection Data* - This metadata page contains information about the physical collection associated with the resource (if any) as well as lists of types objects in the collection, called Curatorial Units, and summary information about them. Before any Collection data are entered, the page will show text and select boxes for four aspects of the collection (Name, Identifier, Parent Collection Identifier, and Specimen Preservation Type), a header for the section for Curatorial Units, and a link labeled "Add new curatorial unit".
-
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataCollectionData.png]
+  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataCollectionData.png]
     * *Collection Name* - the full standard name by which the collection is known or cited.
     * *Collection Identifier* - the URL or other unique identifier for the collection.
     * *Parent Collection Identifier* - the URL or other unique identifier for the collection of which this collection is a subset.
@@ -327,8 +326,7 @@ Following is a list of the metadata pages and their contents:
           * *Between* - enter the lower bound of the number of objects in this text box.
           * *and* - enter the upper bound of the number of objects in this text box.
         * *Count with uncertainty* - this method allows the user to set a number of objects of a particular unit type with an uncertainty above or below that number.
-
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataCollectionDataCountWithUncertainty.png]
+        * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataCollectionDataCountWithUncertainty.png]
           * *Count* - enter the mean likely number of object in this text box.
           * *+/-* - enter the number of objects more or less than the number in the count text box for the range of possible counts of the particular unit type
         * *Unit Type* - the single type of object (specimen, lot, tray, box, jar, etc.) represented by the method type and count.
@@ -336,8 +334,7 @@ Following is a list of the metadata pages and their contents:
     * *Save* - click on this button to save all of the data entered on this page and navigate to the External Links page.
     * *Cancel* - click on this button to disregard any changes made to metadata on this page and return to the Resource Overview page.
   * *External Links* - This metadata page contains links to the home page for the resource as well as links to the resource in alternate forms (database files, spreadsheets, linked data, etc.) and the information about them. Before any external links are entered, the page will show a text box for the Resource Homepage and a link labeled "Add new external link".
-
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataExternalLinks.png]
+  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataExternalLinks.png]
     * *Resource Homepage* - enter the full current URL of the web page containing information about the resource or its data set.
     * *Add new external link* -  click on the link having this text to add the text boxes required for an additional external link.
       * *Name* - the name of the file or data set.
@@ -349,8 +346,7 @@ Following is a list of the metadata pages and their contents:
     * *Save* - click on this button to save all of the data entered on this page and navigate to the Additional Metadata page.
     * *Cancel* - click on this button to disregard any changes made to metadata on this page and return to the Resource Overview page.
   * *Additional Metadata* - This metadata page contains information about other aspects of the resource not captured on one of the other metadata pages, including additional identifiers for the resource. Before any additional identifiers are entered, the page will show a text boxes the additional metadata, a header for the Additional Identifiers area, and a link labeled "Add new alternative identifier".
-
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataAdditionalMetadata.png]
+  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataAdditionalMetadata.png]
     * *Hierarchy Level* - designates the level of information to which the metadata applies. For an IPT resource this is always a dataset, and therefore the text box is populated with this value, but disabled so that it cannot be changed.
     * *Date Published* - the date when the resource was last published. This value is set automatically when publishing (see the "Published Release" section under the "Resource Overview" header of the "Manage Resources" menu). 
     * *Purpose* - a statement of the purpose or purposes for which the creation of the data set for this resource was intended.
