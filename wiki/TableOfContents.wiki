@@ -13,6 +13,7 @@
    * [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Background_Information Background Information]
    * [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Getting_Started_Guide Getting Started Guide]
    * [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Quick_Reference_Guide Quick Reference Guide]
+   * [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#About_the_IPT About the IPT]
    * [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Resources Resources]
    * [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#References References]
    * [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Glossary Glossary]
