@@ -11,7 +11,7 @@
  * User Manual version 2.0 (Draft)
    * [IPT2ManualNotes#Background_Information Background Information]
    * [IPT2ManualNotes#Getting_Started_Guide Getting Started Guide]
-   * [IPT2ManualNotes#QuickReference_Guide Quick Reference Guide]
+   * [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Quick_Reference_Guide Quick Reference Guide]
    * [IPT2ManualNotes#Resources Resources]
    * [IPT2ManualNotes#References References]
    * [IPT2ManualNotes#Glossary Glossary]
