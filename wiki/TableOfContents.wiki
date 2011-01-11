@@ -8,22 +8,6 @@
    * [UserManualChapter5 Resources Management]
    * [UserManualCopyright Copyright]
    * [FAQ]
- * User Manual version 2.0 (Draft)
-   * [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Table_of_Contents Table of Contents]
-   * [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Background_Information Background Information]
-   * [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Getting_Started_Guide Getting Started Guide]
-   * [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Quick_Reference_Guide Quick Reference Guide]
-   * [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#About_the_IPT About the IPT]
-   * [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Resources Resources]
-   * [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#References References]
-   * [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Glossary Glossary]
- * Tutorials version 2.0 (Draft)
-   * [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Tutorial_1_-_Collaborate_to_manage_a_metadata-only_resource Collaborate to manage a metadata-only resource]
-   * [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Tutorial_2_-_Create_Darwin_Core_Occurrence_resource Create Darwin Core Occurrence resource]
-   * [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Tutorial_3_-_Creating_a_Darwin_Core_Archive Creating a Darwin Core Archive]
-   * [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Tutorial_4_-_Using_IPT_in_one_organisation_to_host_resources_for Using IPT in one organisation to host resources for other organisations]
-   * [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Tutorial_5_-_Multi-extension_Resource Multi-extension Resource]
-
  * Training Material
    * [DarwinCore] 
    * [ItwPrepareData Prepare Your Data]
