@@ -237,7 +237,7 @@ Following is a list of the metadata pages and their contents:
     * *Description* - a textual description of a range of taxa represented in the resource. Each taxonomic coverage has its own description. This information can be provided in place of, or to augment the information in the other fields on the page.
     * *Add several taxa* - this link adds a text box labeled "Taxon List" to the page.
     * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataTaxonList.png]
-      * *Taxon List* - this text box allows the user to enter a list of taxa separated by a semi-colon ';', or a pipe '|', or a new line (ENTER). The taxa entered in this list are treated as scientific names.
+      * *Taxon List* - this text box allows the user to enter a list of taxa with each taxon on a separate line by using the ENTER key within the text box. The taxa entered in this list are treated as scientific names.
       * *Add* - this button processes the values entered in the Taxon List text box and creates scientific names for each of them within the taxonomic coverage.
     * *Add new taxon* - this link adds controls to enter a single taxon to the taxonomic coverage - text boxes for Scientific Name and Common Name, a select box for Rank and a trash icon. The taxon can contain any combination of scientific and common name with an optional rank.
     * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataSingleTaxon.png]
@@ -345,15 +345,15 @@ Following is a list of the metadata pages and their contents:
     * *Remove this external link* - click on the link having this label to remove the external link that follows immediately below.
     * *Save* - click on this button to save all of the data entered on this page and navigate to the Additional Metadata page.
     * *Cancel* - click on this button to disregard any changes made to metadata on this page and return to the Resource Overview page.
-  * *Additional Metadata* - This metadata page contains information about other aspects of the resource not captured on one of the other metadata pages, including additional identifiers for the resource. Before any additional identifiers are entered, the page will show a text boxes the additional metadata, a header for the Additional Identifiers area, and a link labeled "Add new alternative identifier".
+  * *Additional Metadata* - This metadata page contains information about other aspects of the resource not captured on one of the other metadata pages, including alternative identifiers for the resource. Before any alternative identifiers are entered, the page will show text boxes for the additional metadata, a header for the Alternative Identifiers area, and a link labeled "Add new alternative identifier".
   * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataAdditionalMetadata.png]
     * *Hierarchy Level* - designates the level of information to which the metadata applies. For an IPT resource this is always a dataset, and therefore the text box is populated with this value, but disabled so that it cannot be changed.
     * *Date Published* - the date when the resource was last published. This value is set automatically when publishing (see the "Published Release" section under the "Resource Overview" header of the "Manage Resources" menu). 
     * *Purpose* - a statement of the purpose or purposes for which the creation of the data set for this resource was intended.
     * *IP Rights* - a statement of the intellectual property rights associated with the resource or a reference to where to find such a statement.
     * *Additional Information* - any information of possible interest not recorded anywhere else in the metadata.
-    * *Additional Identifiers* - this section contains a list of additional or alternative identifiers for the resource. When the resource is published, the IPT's URL to the resource is added to the list of identifiers. When a resource is registered with the GBIF Registry, the Registry's unique resource key is also added to the list of identifiers. 
-    * *Add new alternative identifier* -  click on this link to add a text box for an additional identifier for the resource.
+    * *Alternative Identifiers* - this section contains a list of additional or alternative identifiers for the resource. When the resource is published, the IPT's URL to the resource is added to the list of identifiers. When a resource is registered with the GBIF Registry, the Registry's unique resource key is also added to the list of identifiers. 
+    * *Add new alternative identifier* -  click on this link to add a text box for an alternative identifier for the resource.
       * *Alternative Identifier* - the text for the alternative identifier for the resource (e.g., a URL, UUID, or any other unique key value).
     * *Remove this alternative identifier* - click on this link to remove the alternative identifier that follows immediately below.
     * *Save* - click on this button to save all of the data entered on this page and navigate to the Basic Metadata page.
@@ -557,22 +557,57 @@ Click on the button labeled "Add" to open a page on which an additional organisa
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminOrgsAddOrg.png]
 ==Configure Extensions==
-This page allows a user having the Admin role to enable the instance of the IPT to import and share various pre-defined types of data, called extensions from the GBIF Registry. Each extension includes properties (fields, terms) that support a specific purpose. For example, the Darwin Core Taxon extension supports information pertaining to taxonomic names, taxon name usages, and taxon concepts and allows the IPT to host resources for taxonomic and nomenclatural checklists. In order to share data, the appropriate extensions must be enabled in the IPT. 
-The Configure Extensions page shows a list of extensions that have already been enabled and a list of available extensions that can be enabled. To the right of each listed extension is a summary of the information about it, including a brief description of the type of data the extension is meant to accommodate, a link to more information about the extension if it exists, the number of properties (fields, terms) in the extension, the name of the extension, it's namespace, !RowType, and keywords. For more information about these attributes of an extension, see the documentation on Darwin Core Archives at http://rs.tdwg.org/dwc/terms/guides/text/.
+This page allows a user having the Admin role to enable the instance of the IPT to import and share various pre-defined types of data, called extensions, from the GBIF Registry. Each extension includes properties (fields, terms) that support a specific purpose. For example, the Darwin Core Taxon extension supports information pertaining to taxonomic names, taxon name usages, and taxon concepts and allows the IPT to host resources for taxonomic and nomenclatural checklists. In order to share data, the appropriate extensions must be enabled in the IPT. 
+
+Before and extensions have been installed, the Extensions page begins with a section labeled "Vocabularies" having a single button labeled "Update". Extensions that exist in the GBIF Registry but have not yet been installed are listed below the Vocabularies section. When an extension is successfully installed, it will appear above the Vocabularies section.
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminExtensions.png]
+
+The lists of extensions (installed and not installed) each have two columns. The left-hand column shows the name of the extension as a link and a button labeled either "Install" or "Remove". In the right-had column is a summary of the information about the extension, including a brief description of the type of data the extension is meant to accommodate, a link to more information about the extension if it exists, the number of properties (fields, terms) in the extension, the name of the extension, it's namespace, !RowType, and keywords. For more information about these attributes of an extension, see the documentation on Darwin Core Archives at http://rs.tdwg.org/dwc/terms/guides/text/.
 Following are the actions that can be taken with respect to extensions:
-===Update extensions===
-Click on the button labeled "Update" to communicate with the GBIF Registry to retrieve new extensions and updates to extensions already on the lists in the IPT. An extension can make use of lists of terms of predefined values, known as
-controlled vocabularies. Periodically these vocabularies may also change and require updating the in the IPT. Updating extensions will also retrieve the latest versions of the these vocabularies. After the update is complete, one or more messages will indicate how many updates were made and if there were any errors. 
+===Update vocabularies===
+An extension can make use of lists of terms of predefined values, known as controlled vocabularies. Periodically these vocabularies may also change and require updating the in the IPT. Click on the button labeled "Update" in the Vocabularies section to communicate with the GBIF Registry to retrieve new controlled vocabularies and updates to existing ones. After the update is complete, one or more messages will indicate how many updates were made and if there were any errors. 
 ===View extension details===
 The title of each extension in the first column is a link to a detail page for that extension. The detail page shows all of the summary information that can be seen in the the right-hand column of the extensions list as well as the detailed description, references, and examples for each of the properties in the extension.
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminExtensionsDetail.png]
 ===Install extension===
 For any of the extensions that have not yet been installed in the IPT, there is a button labeled "Install" under the extension name in the left-hand column. Click on this button to retrieve the extension from the GBIF registry and install it in the IPT.
 ===Remove extension===
 For any extension that has already been installed in the IPT, it can be removed by clicking the button labeled "Remove". Extensions that are in use to map data for any resource in the IPT cannot be removed. Any attempt to do so will show an error message and a list of resources that use the extension in a mapping.
 ==View IPT logs==
 Messages generated from actions taken while running the IPT are logged to files for reference in the directory called "logs" within the IPT data directory (see the information under the "IPT Settings" heading in the "Administration Menu" section). The View IPT logs page shows messages from the file called admin.log, which contains only those log messages that have a severity of WARNING or greater (such as errors). The complete log of messages (contained in the file called debug.log) can be opened and viewed by clicking on the link labeled "complete log file". The contents of the complete log file may be useful when reporting an apparent bug.
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminLogs.png]
 ==About Menu (visible to all users)==
 The default About page gives information about the current IPT installation, including information about the hosting organisation, if that has been registered. This page is meant to be customized for the individual IPT instance by editing the file called about.ftl in the directory called "config" within the IPT data directory (see the information under the "IPT Settings" heading in the "Administration Menu" section). The about.ftl file is a Freemarker template that can contain a combination of HTML and variable references of the form ${host.variable!"alternate value if null"}. Look at the default about.ftl file for examples of variables that can be included.
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAbout.png]
+
+Here is the content of the about.ftl file resulting in the page as viewed above.
+{{{
+<h1>About this IPT installation</h1>
+<p>This is a default IPT hosted by ${host.name!"???"}</p>
+
+<p>You can use the following variables about the hosting organisation:</p>
+<ul>
+  <li>key = ${host.key!}</li>
+  <li>description = ${host.description!}</li>
+  <li>name = ${host.name!}</li>
+  <li>password = ${host.password!}</li>
+  <li>alias = ${host.alias!}</li>
+  <li>homepageURL = ${host.homepageURL!}</li>
+  <li>primaryContactType = ${host.primaryContactType!}</li>
+  <li>primaryContactName = ${host.primaryContactName!}</li>
+  <li>primaryContactDescription = ${host.primaryContactDescription!}</li>
+  <li>primaryContactAddress = ${host.primaryContactAddress!}</li>
+  <li>primaryContactEmail = ${host.primaryContactEmail!}</li>
+  <li>primaryContactPhone = ${host.primaryContactPhone!}</li>
+  <li>nodeKey = ${host.nodeKey!}</li>
+  <li>nodeName = ${host.nodeName!}</li>
+  <li>nodeContactEmail = ${host.nodeContactEmail!}</li>
+</ul>
+}}}
 ----
 =Tutorials=
 Following are step-by-step tutorials for various commonly used aspects of using the IPT. All tutorials assume that the IPT has been installed and run for the first time as described in the Getting Started Guide.
