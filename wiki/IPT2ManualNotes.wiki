@@ -609,27 +609,6 @@ Here is the content of the about.ftl file resulting in the page as viewed above.
 </ul>
 }}}
 ----
-=Tutorials=
-Following are step-by-step tutorials for various commonly used aspects of using the IPT. All tutorials assume that the IPT has been installed and run for the first time as described in the Getting Started Guide.
-
-Production Use setting for tutorials?
-==Tutorial 1 - Collaborate to manage a metadata-only resource==
-In this tutorial we will...
-==Tutorial 2 - Create Darwin Core Occurrence resource==
-In this tutorial we will...
-Install occurrence extension, create occurrence resource, import CSV data source, map, translation.
-==Tutorial 3 - Creating a Darwin Core Archive==
-In this tutorial we will...
-Make one, then import it again, suggesting hoe this could be done on another server).
-==Tutorial 4 - Using IPT in one organisation to host resources for other organisations==
-In this tutorial we will...
-Create a resource, save it, send it, import it.
-==Tutorial 5 - Multi-extension Resource==
-In this tutorial we will...
-Install Taxon, Vernacular Names, and Description extensions, create new Checklist Resource, map all three extensions reusing the same source for taxon and vernacular mapping.
-http://data.canadensys.net/vascan/dataset
-
-----
 =About the IPT=
 ==Citation==
 This User Manual adapts and builds upon the previous IPT User Manual (Réveillon 2009). The recommended citation for this User Manual is as follows:
