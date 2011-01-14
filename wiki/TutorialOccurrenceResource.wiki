@@ -1,0 +1,79 @@
+=Tutorial - Create a Darwin Core Occurrence Resource=
+=Table of Contents=
+<wiki:toc max_depth="3" />
+
+This tutorial explains how to create an example resource, install extensions, import source data, map source data fields to the extension, create data value translations, and publish the resource.
+Install occurrence extension, create occurrence resource, import CSV data source, map, translation.
+
+==Prerequisites==
+Following are the conditions assumed to be true in order to follow this tutorial in a working IPT environment.
+1) A fresh, functional, non-production version of the IPT is installed, running, and connected to the Internet. Refer to the [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Getting_Started_Guide Getting Started Guide] section of the IPT User Manual to see how to prepare the IPT for its first use.
+2) The reader can log in to the IPT as a user having the Admin role.
+==Steps==
+===1) Login===
+Use the default user email address and password to log in to the IPT. After logging in successfully, the IPT menu bar will appear. Quick Reference Guide: [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Header Common Features/Controls that appear on all pages/Header]
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceLoggedIn.png]
+
+===2) Navigate to Extensions===
+Click on the Administration Menu to open the options available to users having the Admin role.
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminBeforeRegistration.png]
+
+Click on the Extensions button to enter into the Extensions management page. If no extensions have been installed yet, the Vocabularies section will appear at the top of the page as in the following screen image. If extensions have already been installed, they will appear on the page above the Vocabularies section. Quick Reference Guide: [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Configure_Extensions Administration Menu/Configure Extensions]
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceExtensionsFirstTime.png]
+
+===3) Update vocabularies===
+Click on the button labeled "Update" in the Vocabularies section to get the latest information from the GBIF Registry on controlled vocabularies used with the extensions. After updating, an information message will appear at the top of the page indicating the results of the update attempt. Quick Reference Guide: [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Update_vocabularies Administration Menu/Configure Extensions/Update vocabularies]
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceVocabularyUpdated.png]
+
+===4) Install Darwin Core Occurrence extension===
+Locate the row for the Darwin Core Occurrence extension. If it has not yet been installed, it will appear below the Vocabularies section and will have a button labeled "Install" in the right-hand column under the extension name (Darwin Core Occurrence). If the extension has already been installed, it will appear above the Vocabularies section. If this is the case, skip this step, otherwise, click on the "Install" button. See screen image above, under step 2. Quick Reference Guide: [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Install_extension Administration Menu/Configure Extensions/Install extension]
+
+===5) Navigate to Manage Resources menu===
+Click on Manage Resources in the menu bar. If this IPT installation does not yet have any resources configured, the page will appear as in the screen image below. Otherwise it will show table of existing resources above the section labeled "Create New Resource".
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceCreateNewResource.png]
+
+===6) Create the resource===
+Enter the value "My Occurrence Resource" in the text box labeled "Shortname", then click on the button labeled "Create". In this tutorial we will not create a resource from a pre-existing Darwin Core archive. If we wanted to do so, we would choose the archive file before clicking on the "Create" button. Quick Reference Guide: [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Create_an_entirely_new_resource Manage Resources Menu/Create New Resource/Create an entirely new resource]
+
+Notice that the page shows that an invalid entry was made for the resource's Shortname. 
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceCreateNewResourceBadName.png]
+
+Enter the value "MyOccurrenceResource" as a valid value in the Shortname text box and click on the Create button. If there are no further errors the Resource Overview page will appear. Note that the resource is currently known by its Shortname in all lower case, lacks required metadata, has no source data set, and is private.
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceOverviewAfterCreate.png]
+
+===7) Navigate to the Basic Metadata page===
+Click on the button labeled "Edit" to enter the Basic Metadata page, the first of a series of metadata pages and the only one having fields for metadata that are required for the resource to be published. The Basic Metadata page opens with minimal default values already selected. The current title is the same as the Shortname given in step 6, the metadata and resource languages are selected, the resource subtype is selected, and the Metadata Provider's First Name, Last Name, and Email address are filled in from the information about the currently logged in user.
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceBasicMetadata.png]
+
+===8) Enter required metadata===
+The required metadata fields include the Title, the Description, and one of the following for the Resource Contact, the Resource Creator, and the Metadata Provider: Last Name, Position, Organisation. Change the Title from the current shortname to "My Occurrence Resource". Enter a Description. Select "occurrence resource" for the Subtype. Enter at least one of the required fields and any other fields you would like for the Resource Contact. Click on the "Copy details from contact" link in the Resource Creator section to see how the fields are filled from the Resource Contact section above. Enter or change any other fields for the Resource Contact, Creator, or Metadata Provider, without violating the metadata requirements. Click on the button labeled "Save". The Geographic Coverage page, the next in the series of metadata pages, will appear. In this tutorial it is not necessary to enter any metadata on any of the remaining metadata pages - there are no further metadata requirements to publish a resource. Quick Reference Guide: [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Metadata Manage Resources Menu/Resource Overview/Metadata]
+
+===9) Navigate to the Resource Overview page===
+Click on the Manage Resources menu. Now you will see the table of existing resources with a row for the newly edited resource named "My Occurrence Resource" having the Type "occurrence", 0 for the number of Records, a Last Modified corresponding to the date the metadata were last saved, and Visible to "You and 0 others". 
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceListAfterMetadata.png]
+
+Click on the "My Occurrence Resource" link in the Name column to open the Resource Overview page again. Note that there is no longer a message in the Metadata area of the page saying that the metadata are incomplete. Also, the page title is now the Title of the resource instead of the resource shortname, and the resource description shows in right-hand, summary column of the metadata area.
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceOverviewAfterMetadata.png]
+
+===10) Add a source data file===
+Download the Occurrence example data file from the IPT project web site (http://gbif-providertoolkit.googlecode.com/files/OccurrenceData.txt). Click on the button labeled "Choose File" to navigate to and select the downloaded file. After the file is selected its name will appear in the Source Data area next to the Choose File button. Click on the button labeled "Add" to navigate to the Source Data File detail page. Note that the file summary in upper right shows that the file was readable given the parameters that were detected in the file and entered in the fields on this page automatically. The file contains 27 columns and 12 Rows. To see the contents of the file as interpreted, click on the button labeled "Preview". Quick Reference Guide: [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Source_Data Manage Resources Menu/Resource Overview/Source Data]
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceSourceDataAdd.png]
+
+Click on the button labeled "Save" to preserve the source data file information and return to the Resource Overview page. Note that the right-hand column of the Source Data area shows summary information for the source data file and a button labeled "Edit", which will reopen the Source Data File detail page if clicked. The Resource Overview page now also shows a select box in the left-hand area of the Darwin Core Mappings area. Quick Reference Guide: [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Darwin_Core_Mappings Manage Resources Menu/Resource Overview/Darwin Core Mappings]
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceOverviewAfterSourceData.png]
+
+===11) Map source data fields to extension properties=== 
+
+===12) Make the resource public===
