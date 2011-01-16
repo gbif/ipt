@@ -189,3 +189,42 @@ The resource entitled "My Occurrence Resource" is currently not visible to anyon
 To increase the visibility to all potential users, click on the button labeled "Public". Doing so will show a message at the top of the Resource Overview page indicating that the Visibility status has changed and will show a button labeled "Private" instead of the one labeled "Public" in the Visibility area of the page. 
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceVisibilityPublic.png]
+
+===14) Register the resource===
+If the IPT instance you are using is in production use (it is not supposed to be for tutorials, see prerequisite 1), please do not continue beyond this point in the tutorial, as registering test instances of the IPT and example resources will add spurious information to the GBIF registry. An IPT in non-production use will use an alternate test registry to avoid this problem.
+
+Though the resource has been made public, it is not yet registered in the GBIF Registry, which means it is not discoverable by those who aren't informed of the resource's existence. Registering the resource is the best way to do this. Note the informational message in the Visibility area of the Resource Overview page (see screen image above). It suggests that a user having the Admin role has to configure organisations for the IPT before resource registration is possible. Normally this step would already have been taken by an IPT administrator. We'll take a detour now to accomplish this task.
+
+===15) Register the IPT===
+Quick Reference Guide: [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Configure_Organisations Manage Resources Menu/Resource Overview/Configure Organisations]
+
+Quick Reference Guide: [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Configure_GBIF_registration_options Manage Resources Menu/Resource Overview/Configure GBIF registration options]
+
+In step 14, the informational message suggested that the IPT has to be associated with one or more organisations before a resource can be registered. Organisations can be made available for use in the IPT through the Configure Organisations page under the Administration Menu. Click on the Administration Menu. Note that the Organisations button is disabled because the IPT has not yet been registered with GBIF (see screen image in step 2). To do so, click on the button labeled "GBIF registration options". The preliminary registration options page will open showing the Base URL for the IPT and a button labeled "Validate".
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminRegistrationStep1.png]
+
+The validation step tests to see if the IPT instance is properly accessible via the Internet. When the test is finished, controls to select the organisation as well as other basic IPT information will appear on the GBIF registration options page below the Validate button.
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminRegistrationStep2.png]
+
+Select "AAA1Organisation" in the Organisation list box. This will populate the text box labeled "Alias" with the value "AAA1Organisation". 
+
+Change the value in the Alias text box to "AAA1". This will force the title of this organisation to the value of the Alias wherever this organisation appears in the IPT, including in select boxes with lists of available organisations.
+
+Enter the value "aaa1" in the text box labeled "Organisation's Password". The password will be obscured as it is typed as a security measure. This is the password on record in the test registry for the organisation entitled "AAA1Organisation", and is needed to affirm that the administrator associating this IPT with the organisation has the right to do so based on knowing the organisation's password.
+
+Enter the value "Tutorial IPT" in the text box labeled "Title for the IPT Installation". The IPT can be found via its title in the GBIF Registry (in this case the test version) once it has been successfully registered. Fill in all of the remaining fields. Of these, the Contact Email and IPT Password are required. Use your email address for the Contact Email and a password to be used to edit the entry for this IPT installation in the GBIF Registry (though we will not do so as a part of this tutorial). When finished entering the additional information, click on the button labeled "Save". If there are no validation errors, the GBIF registration options page will display a message indicating that the IPT has been successfully registered and show the titles as links to the entries in the GBIF Registry for both the IPT instance and the organisation with which it is associated. The IPT has now been associated with an organisation, which will be available to associate with individual resources. 
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceAfterRegistration.png]
+
+For an IPT that hosts resources for just on organisation, this is all that has to be done. If the IPT will host resources for multiple institutions, these can be added through the Configure Organisations page, which is enabled now that the IPT has been registered. We will not configure further organisations in this tutorial.
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceOrgsEnabled.png]
+
+===15) Try again to register the resource===
+Quick Reference Guide: [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Visibility Manage Resources Menu/Resource Overview/Visibility]
+
+Navigate once again to the Resource Overview page for "My Occurrence Resource" by clicking on the Manage Resources Menu, then by clicking on the link for the resource title "My Occurrence Resource" in the table of resources you have the right to manage. The Visibility area of the page 
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceOrgsEnabled.png]
