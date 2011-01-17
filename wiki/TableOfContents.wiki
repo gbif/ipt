@@ -1,10 +1,13 @@
 #summary One-sentence summary of this page.
 
  * User Manual
-   * chapters 1
+   * IPT2ManualNotes#Getting_Started_Guide
+   * IPT2ManualNotes#Quick_Reference_Guide
+   * IPT2ManualNotes#About_the_IPT
+   * IPT2ManualNotes#Resources
    * [FAQ]
  * Tutorials
-   * tutorial 1
+   * TutorialOccurrenceResource
 
  * Developers
    * [HowToContribute How to contribute]
