@@ -21,6 +21,7 @@
  * Versions
    * [Roadmap]
    * [VersionHistory]
+   * [IPTUpdates]
    * New Features Considered
      * [DataTransformations]
  * IPT version 1.0 (*deprecated*)
