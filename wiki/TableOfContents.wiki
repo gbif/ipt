@@ -7,7 +7,8 @@
    * [IPT2ManualNotes#Resources Resources]
    * [IPT2ManualNotes#Glossary Glossary]
    * [FAQ]
- * Tutorials
+ * Tutorials & Resources
+   * [DarwinCore] 
    * TutorialOccurrenceResource
  * Developers
    * [HowToContribute How to contribute]
@@ -28,7 +29,6 @@
      * [UserManualChapter5 Resources Management]
      * [UserManualCopyright Copyright]
    * Training Material
-     * [DarwinCore] 
      * [ItwPrepareData Prepare Your Data]
      * [ItwWebservices Data Services] 
    * Developers
