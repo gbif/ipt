@@ -8,7 +8,8 @@
    * [IPT2ManualNotes#Glossary Glossary]
    * [FAQ]
  * Tutorials & Resources
-   * [DarwinCore] 
+   * DarwinCore
+   * DataPreparation
    * TutorialOccurrenceResource
  * Developers
    * [HowToContribute How to contribute]
