@@ -2,7 +2,6 @@
 <font color=red>
 _Warning: This page relates to the deprecated version 1 of the IPT_
 </font>
-#sidebar TableOfContents
 
 = The GBIF Integrated Publishing Toolkit User Manual =
 
