@@ -1,27 +1,38 @@
 #summary One-sentence summary of this page.
-===IPT 2.x Documentation===
- * User Manual version 1.0
-   * [UserManualChapter1 Background Information]
-   * [UserManualChapter2 General specifications]
-   * [UserManualChapter3 Installation]
-   * [UserManualChapter4 Configuration]
-   * [UserManualChapter5 Resources Management]
-   * [UserManualCopyright Copyright]
+
+ * User Manual
+   * chapters 1
    * [FAQ]
- * Training Material
-   * [DarwinCore] 
-   * [ItwPrepareData Prepare Your Data]
-   * [ItwWebservices Data Services] 
-   * [DwcExtensions]
+ * Tutorials
+   * tutorial 1
+
  * Developers
    * [HowToContribute How to contribute]
-   * Development Setup
+   * [KeyTechnologies]
+   * [DevelopersGettingStarted Getting Started]
+   * [DeveloperFAQ]
+
+ * Versions
+   * [Roadmap]
+   * [VersionHistory]
+   * New Features Considered
+     * [DataTransformations]
+
+ * IPT version 1.0 (*deprecated*)
+   * User Manual v1.0
+     * [UserManualChapter1 Background Information]
+     * [UserManualChapter2 General specifications]
+     * [UserManualChapter3 Installation]
+     * [UserManualChapter4 Configuration]
+     * [UserManualChapter5 Resources Management]
+     * [UserManualCopyright Copyright]
+   * Training Material
+     * [DarwinCore] 
+     * [DwcExtensions]
+     * [ItwPrepareData Prepare Your Data]
+     * [ItwWebservices Data Services] 
+   * Developers
      * [DevelopersGettingStarted Getting Started]
      * [DevelopersGettingStartedAlt Getting Started (command line setup)]
      * [EclipseEnvironmentAndCheckstyles Eclipse Setup]
      * [EclipseSetupOSX OS X Developers]
-   * [DeveloperFAQ]
-   * New Features Considered
-     * [DataTransformations]
-   * [Roadmap]
-   * [VersionHistory]
