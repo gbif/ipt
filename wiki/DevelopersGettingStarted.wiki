@@ -1,22 +1,22 @@
 #summary Getting started with IPT development
 
-= Getting Started =
+= Developers Getting Started =
 
 == Introduction  ==
 
-The GBIF IPT is an open source web application in Java that connects and serves biodiversity data that are registered in a GBIF IPT instance and connected to the GBIF distributed network for public consultation and use.
+The GBIF IPT is an open source struts2 web application in Java, see KeyTechnologies. Its software architecture and important use cases are described in detail in the [http://code.google.com/p/gbif-providertoolkit/downloads/list?can=2&q=IPT+Architecture IPT Architecture document].
 
-== Implementation ==
+== Getting the source, Maven & Eclipse ==
+We use Maven extensively to manage dependencies and the build process. 
+To checkout the source code and setup an eclipse project simply do the following (it will create an eclipse project folder _gbif-ipt_ in your current dir):
+{{{
+svn checkout http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt
+cd gbif-ipt
+mvn eclipse:eclipse
+mvn
+}}}
 
-The IPT is a web application in Java that is managed by Maven. It uses a 2 tier architecture with DAO/Service layers. [http://geoserver.org Geoserver] provides spatial processing with a custom [http://code.google.com/p/gbif-providertoolkit/source/browse/trunk/GT2-gbif-providertool/ datasource module] for WFS and mapping. Statistical charts are implemented with the [http://code.google.com/p/gchartjava Google Chart API]. Cache DB is embedded as a [http://www.h2database.com/ H2 database]. [http://lucene.apache.org/java/docs/ Lucene] provides full text searching. [http://jquery.com/ JQuery] provides JavaScript and AJAX support.
-[http://appfuse.org/display/APF/AppFuse+QuickStart#AppFuseQuickStart-create Appfuse2] is used for the Struts 2 Basic archetype, although we may migrate away from AppFuse in favor of [http://struts.apache.org/2.x/index.html Struts2], [http://www.springsource.org/about Spring 2.5], [https://www.hibernate.org/5.html Hibernate], and [http://freemarker.sourceforge.net/docs/ FreeMarker].
+The command mvn eclipse:eclipse should have created the project artifacts for eclipse so you can import this folder into your eclipse editor if thats what you are using.
 
-== Working with the Code ==
-
-Developers should start with the [EclipseEnvironmentAndCheckstyles Eclipse Setup] page that describe how to configure the Eclipse environment for IPT development and how to setup the IPT checkstyles that enforce good programming style.
-
-Next, the  [EclipseSetupOSX Developing IPT on Mac OS X] page describes a typical Eclipse development setup for working with IPT source code, including checking out the source and setting up run configurations for deploying and debugging the IPT web application.
-
-== Developer Community ==
-
-The developer community exists primarily through the [http://groups.google.com/group/gbif-ipt-contributors GBIF IPT Contributors Group] and on this code site. 
+The last command starts up the IPT via the Jetty plugin on port 7001. 
+You should be able to see the IPT running by opening the addess http://localhost:7001 in your browser.
