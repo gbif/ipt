@@ -9,19 +9,16 @@
    * [FAQ]
  * Tutorials
    * TutorialOccurrenceResource
-
  * Developers
    * [HowToContribute How to contribute]
    * [KeyTechnologies]
    * [DevelopersGettingStarted Getting Started]
    * [DeveloperFAQ]
-
  * Versions
    * [Roadmap]
    * [VersionHistory]
    * New Features Considered
      * [DataTransformations]
-
  * IPT version 1.0 (*deprecated*)
    * User Manual v1.0
      * [UserManualChapter1 Background Information]
