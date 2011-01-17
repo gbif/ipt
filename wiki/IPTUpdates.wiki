@@ -1,3 +1,0 @@
-= IPT Update Information =
-
-This page is meant to contain information about how to do IPT software and resource updates.
