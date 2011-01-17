@@ -1,6 +1,0 @@
-#summary GBIF IPT User manual ver. 1.0 - INDEX
-#labels Phase-Deploy
-#sidebar TableOfContents
-
-= Manual Moved =
-*please use the new manual on your left*
