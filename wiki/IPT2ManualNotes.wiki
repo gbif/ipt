@@ -1,5 +1,4 @@
 =The GBIF Integrated Publishing Toolkit User Manual, version 2.0=
-=Table of Contents=
 <wiki:toc max_depth="4" />
 ----
 =Background Information=
