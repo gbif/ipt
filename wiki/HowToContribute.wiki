@@ -16,10 +16,10 @@ The IPT and the documentation both need internationalisation. In the case of the
 
 To add new internationalization follow these steps:
   * Download Attesoro from http://attesoro.org/download.html
-  * Download the default properties file ApplicationResources.properties from the gbif-providertoolkit project site (http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-providertool/src/main/resources/ApplicationResources.properties).
-  * In the same location as the default properties in the previous step, download the properties file from the gbif-providertoolkt project site for the language to which you wish to translate. For example, for the French properties file, download http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-providertool/src/main/resources/ApplicationResources_fr.properties.
+  * Download the [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt/src/main/resources/ApplicationResources_en.properties english default properties file] from the gbif-ipt project site.
+  * Create a new file for the language you want to translate into. Name it ApplicationResources_LC.properties with LC being the iso 2 letter language code of your language. For example ApplicationResources_fr.properties for the French properties file.
   * Open the Attesoro jar file (e.g., attesoro_1_8.jar). It is an executable jar file that will run as an application if you have Java installed on your system. Otherwise you will have to install Java and then run the Attesoro jar file.
-  * In Attesoro, select the File->Open menu item and open the ApplicationResources.properties file downloaded from the gbif-providertoolkit project site in a previous step, above. If you have done all of the previous steps correctly you should see a screen such as the following:
+  * In Attesoro, select the File->Open menu item and open the ApplicationResources_en.properties file downloaded from the gbif-providertoolkit project site in a previous step, above. If you have done all of the previous steps correctly you should see a screen such as the following:
 
 http://gbif-providertoolkit.googlecode.com/files/Attesoro-fr.png
 
