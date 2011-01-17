@@ -2,3 +2,5 @@
 
 || *Operating system* || *Java version* || *Tomcat version* ||
 || Mac OSX 10.5.8 || Java 1.6.0_30 || Tomcat 5.5_30 ||
+|| Mac OSX 10.6.5 || Java 1.6.0_22 || Tomcat 6.0_29 ||
+|| Mac OSX 10.6.5 || Java 1.6.0_22 || Tomcat 5.5_31 ||
