@@ -29,11 +29,9 @@
      * [UserManualChapter4 Configuration]
      * [UserManualChapter5 Resources Management]
      * [UserManualCopyright Copyright]
-   * Training Material
-     * [ItwPrepareData Prepare Your Data]
-     * [ItwWebservices Data Services] 
    * Developers
      * [DevelopersGettingStarted Getting Started]
      * [DevelopersGettingStartedAlt Getting Started (command line setup)]
      * [EclipseEnvironmentAndCheckstyles Eclipse Setup]
      * [EclipseSetupOSX OS X Developers]
+     * [ItwWebservices Data Services] 
