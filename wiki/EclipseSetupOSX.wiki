@@ -1,5 +1,7 @@
 #summary Setting up Eclipse for developing IPT on Mac OS X
-
+<font color=red>
+_Warning: This page relates to the deprecated version 1 of the IPT_
+</font>
 = Developing IPT on Mac OS X =
 
 The following describes a typical Eclipse development setup for working with IPT source code in the following environment:
