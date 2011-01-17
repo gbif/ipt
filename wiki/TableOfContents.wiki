@@ -29,7 +29,6 @@
      * [UserManualCopyright Copyright]
    * Training Material
      * [DarwinCore] 
-     * [DwcExtensions]
      * [ItwPrepareData Prepare Your Data]
      * [ItwWebservices Data Services] 
    * Developers
