@@ -7,12 +7,12 @@ The core development of the IPT is directed by GBIF, but the coding, the documen
 
 = How To Contribute =
 == Documentation ==
-We are always keen on getting a better documentation. The easiest and quickest way to help us improving the user manual is to [http://code.google.com/p/gbif-providertoolkit/issues/entry?template=Documentation%20issue submit documentation issues] into our issue tracker and mark them with "Documentation". This will be picked up by our technical writer and finally end up in the user manual which is [http://code.google.com/p/gbif-providertoolkit/source/browse/trunk/gbif-ipt-docs/IPT_documentation.txt hosted in the code repository].
+We are always keen on getting a better documentation. The easiest and quickest way to help us improving the user manual is to [http://code.google.com/p/gbif-providertoolkit/issues/entry?template=Documentation%20issue submit documentation issues] into our issue tracker and mark them with "Documentation". This will be picked up by our technical writer and finally end up in the [IPT2ManualNotes user manual].
 
-If you feel there is a lot to modify, please get in touch with us to get write access to subversion.
+If you feel there is a lot to modify, please [[http://lists.gbif.org/mailman/listinfo/ipt Mailing List] get in touch with us].
 
 == Translations ==
-The IPT and the documentation both need internationalisation. In the case of the IPT all text is kept in so called property files, one for each language. The [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-providertool/src/main/resources/ApplicationResources.properties original] is in english and if you are able and willing to translate it into another language, here's how...
+The IPT and the documentation both need internationalisation. In the case of the IPT all text is kept in a single property file, one for each language. The [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt/src/main/resources/ApplicationResources_en.properties original] is in english and if you are able and willing to translate it into another language, here's how...
 
 To add new internationalization follow these steps:
   * Download Attesoro from http://attesoro.org/download.html
