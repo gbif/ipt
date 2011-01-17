@@ -229,12 +229,6 @@ $(document).ready(function(){
 					<em><@s.text name="manage.resource.status.registration.forbidden"/></em>
 	      		</div>
 			  </#if>
-		      <#if missingRegistrationMetadata>
-			    <div>
-		          	<img class="info" src="${baseURL}/images/info.gif" /> 
-					<em><@s.text name="manage.overview.visibility.missing.registration.metadata"/></em>
-	      		</div>
-		      </#if>
 		      <#if organisations?size==0>
 			    <div>
 		          	<img class="info" src="${baseURL}/images/info.gif" /> 
