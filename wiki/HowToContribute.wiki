@@ -1,5 +1,3 @@
-#sidebar TableOfContents
-
 <font color=red>
 _Warning: This page is outdated and needs some update!_
 </font>
