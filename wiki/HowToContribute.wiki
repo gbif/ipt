@@ -1,5 +1,9 @@
 #sidebar TableOfContents
 
+<font color=red>
+_Warning: This page is outdated and needs some update!_
+</font>
+
 = Introduction =
 The core development of the IPT is directed by GBIF, but the coding, the documentation and internationalisation is a community effort and everyone is welcome to join the project. *Please use the [http://lists.gbif.org/mailman/listinfo/ipt mailing list] to get in touch with the developers and project leaders*.
 
