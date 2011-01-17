@@ -85,7 +85,7 @@ $(document).ready(function(){
  	<@s.submit cssClass="confirm" name="delete" key="button.delete"/>
  	<a href='translationReload.do?r=${resource.shortname}&mapping=${property.extension.rowType}&term=${property.qualname}&mid=${mid}&rowtype=${property.extension.rowType}'><button class="reload"><@s.text name="button.reload"/></button></a>
  	<#if property.vocabulary?exists>	  		
- 	<a href='translationAutomap.do?r=${resource.shortname}&mapping=${property.extension.rowType}&term=${property.qualname}&mid=${mid}'><button class="automap"><@s.text name="button.automap"/></button></a>
+ 	<a href='translationAutomap.do?r=${resource.shortname}&mapping=${property.extension.rowType}&rowtype=${property.extension.rowType}&term=${property.qualname}&mid=${mid}'><button class="automap"><@s.text name="button.automap"/></button></a>
  	</#if>			
  	<a href='mapping.do?r=${resource.shortname}&id=${property.extension.rowType}&mid=${mid}'><button class="cancelb"><@s.text name="button.cancel"/></button></a>
   </div>
