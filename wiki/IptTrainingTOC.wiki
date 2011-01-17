@@ -1,7 +1,0 @@
-#summary TOC for the IPT training workshop
-
- * [ItwOverview Housekeeping]
- * [ItwResources Resources] 
- * [DarwinCore] 
- * [ItwPrepareData Prepare Your Data]
- * [ItwWebservices Data Services] 
