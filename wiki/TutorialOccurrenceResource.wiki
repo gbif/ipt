@@ -222,9 +222,37 @@ For an IPT that hosts resources for just on organisation, this is all that has t
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceOrgsEnabled.png]
 
-===15) Try again to register the resource===
+===16) Try again to register the resource===
 Quick Reference Guide: [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Visibility Manage Resources Menu/Resource Overview/Visibility]
 
-Navigate once again to the Resource Overview page for "My Occurrence Resource" by clicking on the Manage Resources Menu, then by clicking on the link for the resource title "My Occurrence Resource" in the table of resources you have the right to manage. The Visibility area of the page 
+Navigate once again to the Resource Overview page for "My Occurrence Resource" by clicking on the Manage Resources Menu, then by clicking on the link for the resource title "My Occurrence Resource" in the table of resources you have the right to manage. The Visibility area of the Resource Overview page now shows an organisation select box in which the one associated organisation in this IPT, "AAA1Organisation" appears, a disabled button labeled "Register", and a message indicating that the resource needs to be published before it can be registered.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceOrgsEnabled.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceVisibilityAfterIPTRegistration.png]
+
+===17) Publish the resource===
+Quick Reference Guide: [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Published_Release Manage Resources Menu/Resource Overview/Published Release]
+
+The Published Release area of the Resource Overview page contains a button labeled "Publish". Click on the Publish button to initiate the publication process.
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourcePublish.png]
+
+When the publication process is finished, a status page will appear giving a summary of everything that just occurred. If no errors occurred, an information message will show that the archive was generated. 
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceAfterPublish.png]
+
+There will also be a link on the page labeled "resource overview". Click on this link to return to the resource overview page. The Published Release area of the page now shows summary information about the results of the publication process, including links to the files that were created, and to the publication report.
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourcePublishedReleaseAfterPublish.png]
+
+===18) Try one more time to register the resource===
+Quick Reference Guide: [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Visibility Manage Resources Menu/Resource Overview/Visibility]
+
+The Visibility area of the Resource Overview page now shows an enabled Register button and no messages indicating obstacles to registering. 
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceVisibilityAfterPublish.png]
+
+Click on the Register button and then click on "Yes" when prompted by the question "Are you sure?" When the registration is complete, the left-hand column of the Visibility area will show a summary of the registration information for the resource, including a link to view the resource information in the GBIF Registry.
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceVisibilityAfterRegister.png]
+
+Congratulations! You have succeeded in creating and publishing a Darwin Core Occurrence resource.
