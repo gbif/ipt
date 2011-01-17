@@ -6,18 +6,10 @@ Estimated release dates can vary considerably and are shown mainly to indicate f
 <wiki:toc max_depth="2" />
 
 -----
-= Release 2.0RC1 (expected 2010-11-26) =
-[http://code.google.com/p/gbif-providertoolkit/issues/list?can=2&q=Milestone%3DRelease2.0RC1+&colspec=ID+Type+Status+Priority+Milestone+Owner+Summary&cells=tiles pending issues]
+= Release 2.0.1 (expected 2011-03-31)  =
+Minor update without change in data directory.
 
------
-= Release 2.0RC2 (expected 2010-12-13)  =
-[http://code.google.com/p/gbif-providertoolkit/issues/list?can=2&q=Milestone%3DRelease2.0RC2+&colspec=ID+Type+Status+Priority+Milestone+Owner+Summary&cells=tiles pending issues]
-
------
-= Release 2.0RC3 (expected 2011-01-07)  =
-This last release candidate will be working against the live registry already and allow to use the IPT for production publishing. Data published with this version will be able to migrate to the GA release without a change.
-
-[http://code.google.com/p/gbif-providertoolkit/issues/list?q=Milestone%3DRelease2.0RC3 pending issues]
+[http://code.google.com/p/gbif-providertoolkit/issues/list?q=Milestone%3DRelease2.0.1 issues to be addressed]
 
 -----
 = Release 2.0GA (expected 2011-01-21)  =
@@ -25,7 +17,19 @@ This last release candidate will be working against the live registry already an
 * Release date subject to user testing
 
 -----
-= Release 2.0.1 (expected 2011-03-31)  =
-Minor update without change in data directory.
+= Release 2.0RC3  =
+This last release candidate will be working against the live registry already and allow to use the IPT for production publishing. Data published with this version will be able to migrate to the GA release without a change.
 
-[http://code.google.com/p/gbif-providertoolkit/issues/list?q=Milestone%3DRelease2.0.1 issues to be addressed]
+[http://code.google.com/p/gbif-providertoolkit/issues/list?q=Milestone%3DRelease2.0RC3 pending issues]
+
+-----
+
+= Release 2.0RC2  =
+[http://code.google.com/p/gbif-providertoolkit/issues/list?can=2&q=Milestone%3DRelease2.0RC2+&colspec=ID+Type+Status+Priority+Milestone+Owner+Summary&cells=tiles pending issues]
+-----
+
+= Release 2.0RC1 =
+[http://code.google.com/p/gbif-providertoolkit/issues/list?can=2&q=Milestone%3DRelease2.0RC1+&colspec=ID+Type+Status+Priority+Milestone+Owner+Summary&cells=tiles pending issues]
+
+
+-----
