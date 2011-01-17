@@ -30,7 +30,7 @@
      * [UserManualChapter5 Resources Management]
      * [UserManualCopyright Copyright]
    * Developers
-     * [DevelopersGettingStarted Getting Started]
+     * [V1DevelopersGettingStarted Getting Started]
      * [DevelopersGettingStartedAlt Getting Started (command line setup)]
      * [EclipseEnvironmentAndCheckstyles Eclipse Setup]
      * [EclipseSetupOSX OS X Developers]
