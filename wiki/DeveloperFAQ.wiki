@@ -35,8 +35,6 @@ WebContextPropertyResolver.java
 AppConfig.java
 }}}
 
-== Lucene ==
-Main index is across all metadata through all resources. There is also one for each resource that indexes each data.
 
 
 -----
