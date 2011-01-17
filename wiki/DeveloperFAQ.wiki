@@ -1,4 +1,7 @@
 #summary Developer Frequently Asked Questions
+<font color=red>
+_Warning: This page is outdated and needs some update!_
+</font>
 
 <wiki:toc max_depth="2" />
 
