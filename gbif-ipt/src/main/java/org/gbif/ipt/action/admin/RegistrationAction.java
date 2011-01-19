@@ -29,47 +29,48 @@ import java.util.List;
  * @author josecuadra
  */
 public class RegistrationAction extends POSTAction {
-	@SessionScoped
-	public static class RegisteredOrganisations {
-		private List<Organisation> organisations = new ArrayList<Organisation>();
-		private RegistryManager registryManager;
+  @SessionScoped
+  public static class RegisteredOrganisations {
+    private List<Organisation> organisations = new ArrayList<Organisation>();
+    private RegistryManager registryManager;
 
-		@Inject
-		public RegisteredOrganisations(RegistryManager registryManager) {
-			super();
-			this.registryManager = registryManager;
-		}
+    @Inject
+    public RegisteredOrganisations(RegistryManager registryManager) {
+      super();
+      this.registryManager = registryManager;
+    }
 
-		public boolean isLoaded() {
-			if (organisations.size() > 0) {
-				return true;
-			}
-			return false;
-		}
+    public boolean isLoaded() {
+      if (organisations.size() > 0) {
+        return true;
+      }
+      return false;
+    }
 
-		public void load() throws RuntimeException {
-			log.debug("getting list of organisations from registry");
+    public void load() throws RuntimeException {
+      log.debug("getting list of organisations from registry");
 
-			List<Organisation> tempOrganisations;
-			tempOrganisations = registryManager.getOrganisations();
-			organisations.addAll(tempOrganisations);
-			// sort by name
-			Collections.sort(organisations, new Comparator<Organisation>() {
-				public int compare(Organisation org1, Organisation org2) {
-					if (org1 == null || org1.getName() == null) {
-						return 1;
-					}
-					if (org2 == null || org2.getName() == null) {
-						return -1;
-					}
-					return org1.getName().compareToIgnoreCase(org2.getName());
-				}
-			});
-			log.debug("organisations returned: " + organisations.size());
-		}
+      List<Organisation> tempOrganisations;
+      tempOrganisations = registryManager.getOrganisations();
+      organisations.clear();
+      organisations.addAll(tempOrganisations);
+      // sort by name
+      Collections.sort(organisations, new Comparator<Organisation>() {
+        public int compare(Organisation org1, Organisation org2) {
+          if (org1 == null || org1.getName() == null) {
+            return 1;
+          }
+          if (org2 == null || org2.getName() == null) {
+            return -1;
+          }
+          return org1.getName().compareToIgnoreCase(org2.getName());
+        }
+      });
+      log.debug("organisations returned: " + organisations.size());
+    }
 
-	}
-  
+  }
+
   private static final long serialVersionUID = -6522969037528106704L;
   private RegistryManager registryManager;
   private RegistrationManager registrationManager;
@@ -83,7 +84,7 @@ public class RegistrationAction extends POSTAction {
   private String iptPassword;
   private Ipt ipt;
   private RegisteredOrganisations orgSession;
-  
+
   /**
    * @param registryManager
    * @param organisationValidation
@@ -132,7 +133,7 @@ public class RegistrationAction extends POSTAction {
    * @return the organisations
    */
   public List<Organisation> getOrganisations() {
-	organisations.addAll(orgSession.organisations);
+    organisations.addAll(orgSession.organisations);
     return organisations;
   }
 
@@ -155,15 +156,15 @@ public class RegistrationAction extends POSTAction {
   public void prepare() throws Exception {
     // will not be session scoping the list of organisations from the registry as this is basically a 1 time step
     super.prepare();
-	if (!orgSession.isLoaded()) {
-		try {
-			orgSession.load();
-		} catch (RegistryException e) {
-			String msg = getText("admin.registration.error.registry");
-			log.error(msg, e);
-			addActionError(msg);
-		}
-	}
+    if (!orgSession.isLoaded()) {
+      try {
+        orgSession.load();
+      } catch (RegistryException e) {
+        String msg = getText("admin.registration.error.registry");
+        log.error(msg, e);
+        addActionError(msg);
+      }
+    }
   }
 
   @Override

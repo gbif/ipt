@@ -51,20 +51,19 @@ $(document).ready(function(){
 	</#if>
 	$('#validate').click(function() {
 		$("#baseURLStatus").html('<img src="${baseURL}/images/small-loader.gif">');
-		var url = "<@s.url value='${registryURL}ipt/validate.json?url=${baseURL}'/>";
-		$.getJSON(url+"&callback=?",function(data){
-			if(data.result==200) {
+		var url = "http://tools.gbif.org/ws-validurl/?url=${baseURL}&callback=?";
+		$.getJSON(url,function(data){
+			console.log(data);
+			if(data.success==true) {
 				$("#baseURLStatus").html("<@s.text name="admin.registration.validate.success"/>");
 				$('#registrationForm').show(500);
-			}
-			else {
+			}else {
 				<#if cfg.registryType=="DEVELOPMENT">
 					$("#baseURLStatus").html("<@s.text name="admin.registration.validate.failed.development"/>");
 					$('#registrationForm').show(500);
 				<#else>
 					$("#baseURLStatus").html("<@s.text name="admin.registration.validate.failed"/>");
 				</#if>
-				
 			}
 		});	
 
