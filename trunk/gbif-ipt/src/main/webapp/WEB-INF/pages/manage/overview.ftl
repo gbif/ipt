@@ -240,7 +240,7 @@ $(document).ready(function(){
       	<div class="details">
       		<table>
 		      	<#if resource.status=="REGISTERED" && resource.key??>
-	          		<tr><th><@s.text name="manage.overview.visibility.resource.key"/></th><td>${resource.key} <a href="${cfg.registryUrl}/browse/agent?uuid=${resource.key}">GBRDS</a></td></tr>
+	          		<tr><th><@s.text name="manage.overview.visibility.resource.key"/></th><td>${resource.key} <a href="${cfg.registryUrl}/browse/agent?uuid=${resource.key}" target="_blank" >GBRDS</a></td></tr>
 	          		<#if resource.organisation?exists>
 	          		<tr><th><@s.text name="manage.overview.visibility.organisation"/></th><td>${resource.organisation.name!}</td></tr>
 	          		<tr><th><@s.text name="manage.overview.visibility.organisation.contact"/></th><td>${resource.organisation.primaryContactName!}, ${resource.organisation.primaryContactEmail!}</td></tr>
