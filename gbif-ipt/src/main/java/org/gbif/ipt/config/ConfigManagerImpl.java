@@ -82,15 +82,14 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   }
 
   public boolean isBaseURLValid() {
-    boolean valid = true;
     try {
       URL baseURL = new URL(cfg.getProperty(AppConfig.BASEURL));
-      valid = validateBaseURL(baseURL);
+      return validateBaseURL(baseURL);
     } catch (MalformedURLException e) {
-      valid = false;
+
     }
 
-    return valid;
+    return false;
   }
 
   /**
@@ -271,18 +270,21 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   }
 
   private boolean validateBaseURL(URL baseURL) {
+    if (baseURL == null) {
+      return false;
+    }
     // ensure there is an ipt listening at the target
-    boolean valid = true;
+    boolean valid = false;
     try {
       HttpGet get = new HttpGet(baseURL.toString() + pathToCss);
       HttpResponse response = http.executeGetWithTimeout(get, 4000);
       valid = (response.getStatusLine().getStatusCode() == 200);
     } catch (ClientProtocolException e) {
       log.info("Protocol error connecting to new base URL [" + baseURL.toString() + "]", e);
-      valid = false;
     } catch (IOException e) {
       log.info("IO error connecting to new base URL [" + baseURL.toString() + "]", e);
-      valid = false;
+    } catch (Exception e) {
+      log.info("Unknown error connecting to new base URL [" + baseURL.toString() + "]", e);
     }
 
     return valid;

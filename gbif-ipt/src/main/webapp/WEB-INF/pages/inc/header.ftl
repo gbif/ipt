@@ -2,9 +2,12 @@
 [#setting date_format="yyyy-MM-dd"]
 [#setting time_format="dd/MM/yy"]
 [#setting datetime_format="dd/MM/yy"]
+[#setting locale="en"]
+[#-- 
 [#if localeLanguage??]
  [#setting locale=localeLanguage]
 [/#if]
+--]
 [#setting url_escaping_charset="UTF-8"]
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
     <head>
