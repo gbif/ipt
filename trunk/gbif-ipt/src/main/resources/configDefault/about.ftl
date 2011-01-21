@@ -6,7 +6,6 @@
   <li>key = ${host.key!}</li>
   <li>description = ${host.description!}</li>
   <li>name = ${host.name!}</li>
-  <li>password = ${host.password!}</li>
   <li>alias = ${host.alias!}</li>
   <li>homepageURL = ${host.homepageURL!}</li>
   <li>primaryContactType = ${host.primaryContactType!}</li>
