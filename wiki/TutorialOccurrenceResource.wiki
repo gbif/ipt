@@ -12,7 +12,7 @@ Following are the conditions assumed to be true in order to follow this tutorial
 ===1) Login===
 Quick Reference Guide: [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Header Common Features/Controls that appear on all pages/Header]
 
-Use the default user email address and password to log in to the IPT. After logging in successfully, the IPT menu bar will appear. 
+Use the default Admin user email address and password to log in to the IPT. After logging in successfully, the IPT menu bar will appear. 
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceLoggedIn.png]
 
