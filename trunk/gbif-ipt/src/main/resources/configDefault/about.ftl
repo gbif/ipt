@@ -1,5 +1,6 @@
 <h1>About this IPT installation</h1>
-<p>This is a default IPT hosted by ${host.name!"???"}</p>
+<#if host.name??>
+<p>This is a default IPT hosted by ${host.name}</p>
 
 <p>You can use the following variables about the hosting organisation:</p>
 <ul>
@@ -17,3 +18,6 @@
   <li>nodeName = ${host.nodeName!}</li>
   <li>nodeContactEmail = ${host.nodeContactEmail!}</li>
 </ul>
+<#else>
+This IPT installation has not been registered yet.
+</#if>
