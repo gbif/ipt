@@ -28,3 +28,7 @@ The first time the mvn command is run it will download many libraries and may ta
 The IPT is known to work with Tomcat 5.5 or later. Download the ipt.war file of the latest release of the IPT from http://code.google.com/p/gbif-providertoolkit/downloads/list. Copy the ipt.war file to the Tomcat webapps folder and then start Tomcat, or restart Tomcat if it is already running. You can then invoke the IPT in a web browser running on the same server by using the following URL:
 
 http://localhost:8080/ipt
+
+If the installation doesn't start please check the catalina.out logfile.  If you see the message 
+`Provider org.apache.xalan.processor.TransformerFactoryImpl not found`
+the chances are good that you are running Tomcat 5.x under Java 1.6 and are getting a conflict in your xml parsing libraries.  Look in ${catalina.home}/common/endorsed and remove any jars named like jaxp_parser_impl.jar and xml-common-apis.jar.  Then restart Tomcat and you should be ready to go.
