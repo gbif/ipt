@@ -3,7 +3,6 @@
 
 <p>You can use the following variables about the hosting organisation:</p>
 <ul>
-  <li>key = ${host.key!}</li>
   <li>description = ${host.description!}</li>
   <li>name = ${host.name!}</li>
   <li>alias = ${host.alias!}</li>
