@@ -24,6 +24,7 @@
 		<!-- IPT MAIN CONFIGURATION -->
 		<action name="config" class="org.gbif.ipt.action.admin.ConfigAction">
 			<result name="input">/WEB-INF/pages/admin/config.ftl</result>
+			<result name="home" type="redirect">/home.do</result>
 			<result type="redirect">home.do</result>
 		</action>
 		<action name="updateResourceMetadata" class="org.gbif.ipt.action.admin.UpdateResourceMetadataAction">

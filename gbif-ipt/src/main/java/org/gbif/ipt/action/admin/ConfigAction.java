@@ -80,19 +80,21 @@ public class ConfigAction extends POSTAction {
   @Override
   public String save() {
     log.info("Changing the IPT configuration");
+    boolean baseUrlChanged = false;
     // base URL
     if (!stringEquals(baseUrl, cfg.getBaseURL())) {
       log.info("Changing the installation baseURL from[" + cfg.getBaseURL() + "] to[" + baseUrl + "]");
       try {
         URL burl = new URL(baseUrl);
         configManager.setBaseURL(burl);
-        session.remove(Constants.SESSION_USER);
         log.info("Installation baseURL successfully changed to[" + baseUrl + "]");
         addActionMessage(getText("admin.config.baseUrl.changed"));
         addActionMessage(getText("admin.user.login"));
+        session.remove(Constants.SESSION_USER);
         if (burl.getHost().equalsIgnoreCase("localhost") || burl.getHost().equalsIgnoreCase("127.0.0.1")) {
           addActionWarning(getText("admin.config.error.localhostURL"));
         }
+        baseUrlChanged = true;
       } catch (MalformedURLException e) {
         addActionError(getText("admin.config.error.invalidURL"));
         return INPUT;
@@ -156,7 +158,8 @@ public class ConfigAction extends POSTAction {
       addActionError(getText("admin.config.save.error"));
       return INPUT;
     }
-
+    if(baseUrlChanged) return HOME;
+    
     return SUCCESS;
   }
 
