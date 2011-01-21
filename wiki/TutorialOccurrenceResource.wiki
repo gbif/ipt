@@ -3,7 +3,6 @@
 <wiki:toc max_depth="3" />
 
 This tutorial explains how to create an example resource, install extensions, import source data, map source data fields to the extension, create data value translations, and publish the resource.
-Install occurrence extension, create occurrence resource, import CSV data source, map, translation.
 
 ==Prerequisites==
 Following are the conditions assumed to be true in order to follow this tutorial in a working IPT environment.
