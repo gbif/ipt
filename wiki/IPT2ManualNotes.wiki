@@ -607,14 +607,13 @@ The default About page gives information about the current IPT installation, inc
 Here is the content of the about.ftl file resulting in the page as viewed above.
 {{{
 <h1>About this IPT installation</h1>
-<p>This is a default IPT hosted by ${host.name!"???"}</p>
+<#if host.name??>
+<p>This is a default IPT hosted by ${host.name}</p>
 
 <p>You can use the following variables about the hosting organisation:</p>
 <ul>
-  <li>key = ${host.key!}</li>
   <li>description = ${host.description!}</li>
   <li>name = ${host.name!}</li>
-  <li>password = ${host.password!}</li>
   <li>alias = ${host.alias!}</li>
   <li>homepageURL = ${host.homepageURL!}</li>
   <li>primaryContactType = ${host.primaryContactType!}</li>
@@ -627,6 +626,9 @@ Here is the content of the about.ftl file resulting in the page as viewed above.
   <li>nodeName = ${host.nodeName!}</li>
   <li>nodeContactEmail = ${host.nodeContactEmail!}</li>
 </ul>
+<#else>
+This IPT installation has not been registered yet.
+</#if>
 }}}
 ----
 =About the IPT=
