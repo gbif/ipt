@@ -6,8 +6,8 @@ import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveField.DataType;
 import org.gbif.dwc.text.ArchiveFile;
 import org.gbif.dwc.text.ArchiveWriter;
-import org.gbif.file.ClosableIterator;
-import org.gbif.file.CompressionUtil;
+import org.gbif.utils.file.ClosableIterator;
+import org.gbif.utils.file.CompressionUtil;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
@@ -128,7 +128,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     // open new file writer for single data file
     String fn = ext.getName().toLowerCase().replaceAll("\\s", "_") + ".txt";
     File dataFile = new File(dwcaFolder, fn);
-    Writer writer = org.gbif.file.FileUtils.startNewUtf8File(dataFile);
+    Writer writer = org.gbif.utils.file.FileUtils.startNewUtf8File(dataFile);
     // add source file location
     af.addLocation(dataFile.getName());
 

@@ -16,8 +16,8 @@
 
 package org.gbif.ipt.action.manage;
 
-import org.gbif.file.CompressionUtil;
-import org.gbif.file.CompressionUtil.UnsupportedCompressionType;
+import org.gbif.utils.file.CompressionUtil;
+import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.config.JdbcSupport;
 import org.gbif.ipt.model.Source;
