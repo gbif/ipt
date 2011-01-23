@@ -1,6 +1,6 @@
 package org.gbif.ipt.service.manage;
 
-import org.gbif.file.ClosableIterator;
+import org.gbif.utils.file.ClosableIterator;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.Source.FileSource;

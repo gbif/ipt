@@ -55,9 +55,14 @@
 			<id>central</id>
 			<url>http://repo1.maven.org/maven2</url>
 		</repository>
+		<!-- TODO: This reference needs to be removed as the repository is deprecated -->
 		<repository>
 			<id>gbif</id>
-			<url>http://tools.gbif.org/maven/repository/</url>
+			<url>http://tools.gbif.org/maven/repository</url>
+		</repository>
+		<repository>
+			<id>gbif-new</id>
+			<url>http://repository.gbif.org/content/groups/gbif</url>
 		</repository>
 	</repositories>
 	
@@ -184,8 +189,13 @@
 		<!-- GBIF libs -->
 		<dependency>
 			<groupId>org.gbif</groupId>
-			<artifactId>dwc-archive</artifactId>
-			<version>1.4</version>
+			<artifactId>dwca-reader</artifactId>
+			<version>1.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.gbif</groupId>
+			<artifactId>gbif-common</artifactId>
+			<version>0.0.2</version>
 		</dependency>
 		
 		<!-- Struts2 -->
