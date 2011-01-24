@@ -315,6 +315,7 @@
   </div>
 </div>
 
+<#if eml.citation?has_content || eml.bibliographicCitationSet.bibliographicCitations?has_content>
 <div class="definition">	
   <div class="title">
   	<div class="head">
@@ -324,7 +325,7 @@
   <div class="body">
       	<div class="details">
       		<table>
-          		<tr><th><@s.text name='eml.citation.citation'/></th><td>${eml.citation!}</td></tr>
+          		<#if eml.citation?has_content><tr><th><@s.text name='eml.citation.citation'/></th><td>${eml.citation!}</td></tr></#if>
           		<#list eml.bibliographicCitationSet.bibliographicCitations as item>
           			<tr><th><@s.text name='eml.bibliographicCitationSet.bibliographicCitations.citation'/> ${item_index+1}</th><td>${eml.bibliographicCitationSet.bibliographicCitations[item_index]!}</td></tr>
           		</#list>
@@ -332,6 +333,7 @@
       	</div>
   </div>
 </div>
+</#if>
 
 <div class="definition">	
   <div class="title">
