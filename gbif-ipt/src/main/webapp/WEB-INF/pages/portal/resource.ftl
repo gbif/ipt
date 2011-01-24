@@ -404,6 +404,12 @@
           		<tr><th><@s.text name='eml.intellectualRights'/></th><td>${eml.intellectualRights!}</td></tr>
           		<tr><th><@s.text name='eml.additionalInfo'/></th><td>${eml.additionalInfo!}</td></tr>
       		</table>
+      		<table>
+          		<#list eml.alternateIdentifiers as item>
+          		<#assign itemTitle><@s.text name='manage.metadata.alternateIdentifiers.item'/></#assign>
+          			<tr><th>${itemTitle?upper_case}$ {item_index+1}</th><td>${eml.alternateIdentifiers[item_index]!}</td></tr>
+          		</#list>
+      		</table>
       	</div>
   </div>
 </div>
