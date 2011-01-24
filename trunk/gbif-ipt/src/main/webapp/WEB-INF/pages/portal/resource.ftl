@@ -151,7 +151,7 @@
 					<div class="head">${itemTitle?upper_case} ${item_index+1}</div>
 		      		<@agentTable item />
 				</div>
-			<#if (item_index % 2) == 1>
+			<#if (item_index % 2) == 1 || eml.associatedParties?size=item_index+1>
 			</div>
       		<div class="newline"> <br/> </div>
 			</#if>
@@ -276,7 +276,7 @@
       		<table>
           		<tr><th><@s.text name='eml.project.title'/></th><td>${eml.project.title!}</td></tr>
           		<tr><th><@s.text name='portal.resource.name'/></th><td>${eml.project.personnel.firstName!} ${eml.project.personnel.lastName!}</td></tr>
-	          	<#if eml.project.personnel.role??><tr><th><@s.text name='eml.project.personnel.role'/></th><td><@s.text name='roleType.${eml.project.personnel.role!}'/></td></tr></#if>
+	          	<#if eml.project.personnel.role??><tr><th><@s.text name='eml.project.personnel.role'/></th><td>${eml.project.personnel.role!}</td></tr></#if>
           		<tr><th><@s.text name='eml.project.funding'/></th><td>${eml.project.funding!}</td></tr>
           		<tr><th><@s.text name='eml.project.studyAreaDescription.descriptorValue'/></th><td>${eml.project.studyAreaDescription.descriptorValue!}</td></tr>
           		<tr><th><@s.text name='eml.project.designDescription'/></th><td>${eml.project.designDescription!}</td></tr>
