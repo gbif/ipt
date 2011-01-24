@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	
+
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.gbif</groupId>
 	<artifactId>ipt</artifactId>
@@ -10,7 +10,7 @@
 	<version>2.0GA-SNAPSHOT</version>
 	<name>IPT</name>
 	<description>The GBIF Integrated Publishing Toolkit</description>
-	
+
 	<licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>
@@ -18,12 +18,12 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-	
+
 	<organization>
 		<name>Global Biodiversity Information Facility</name>
 		<url>http://www.gbif.org</url>
 	</organization>
-	
+
 	<scm>
 		<connection>
 			scm:svn:http://gbif-providertoolkit.googlecode.com/svn/trunk/</connection>
@@ -32,12 +32,12 @@
 		<url>
 			http://code.google.com/p/gbif-providertoolkit/source/browse#svn/trunk/</url>
 	</scm>
-	
+
 	<issueManagement>
 		<system>Google Code</system>
 		<url>http://code.google.com/p/gbif-providertoolkit/issues/list</url>
 	</issueManagement>
-	
+
 	<developers>
 		<developer>
 			<name>Tim Robertson</name>
@@ -52,13 +52,13 @@
 			<email>mdoering@gbif.org</email>
 		</developer>
 	</developers>
-	
+
 	<repositories>
 		<repository>
 			<id>central</id>
 			<url>http://repo1.maven.org/maven2</url>
 		</repository>
-		
+
 		<!-- TODO: This reference needs to be removed as the repository is deprecated -->
 		<repository>
 			<id>gbif</id>
@@ -69,12 +69,12 @@
 			<url>http://repository.gbif.org/content/groups/gbif</url>
 		</repository>
 	</repositories>
-	
+
 	<build>
 		<finalName>ipt-${project.version}-r${buildNumber}</finalName>
 		<defaultGoal>jetty:run</defaultGoal>
 		<plugins>
-			
+
 			<!-- To simplify development, allows developers to use "mvn jetty:run" -->
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
@@ -145,20 +145,20 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.0.2</version>
 				<configuration>
-					
+
 					<!-- dont bundle local datadir.location file with generated war -->
 					<excludes>**/datadir.location</excludes>
 				</configuration>
 			</plugin>
-			
+
 		</plugins>
-		
+
 		<resources>
-			
+
 			<!-- The default resources will all be filtered, i.e. maven variables ${xyz} will be replaced by maven -->
 			<resource>
 				<directory>src/main/resources</directory>
-				
+
 				<!-- exclude the following files, as they use the same ${} syntax for non maven variables -->
 				<excludes>
 					<exclude>ApplicationResources*.properties</exclude>
@@ -167,7 +167,7 @@
 				<filtering>true</filtering>
 			</resource>
 			<resource>
-				
+
 				<!-- finally include the excluded files again without filtering -->
 				<directory>src/main/resources</directory>
 				<includes>
@@ -195,13 +195,13 @@
 			</testResource>
 		</testResources>
 	</build>
-	
+
 	<dependencies>
 		<!-- GBIF libs -->
 		<dependency>
 			<groupId>org.gbif</groupId>
 			<artifactId>dwca-reader</artifactId>
-			<version>1.6</version>
+			<version>1.6.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.gbif</groupId>
@@ -209,13 +209,13 @@
 			<version>0.0.2</version>
 		</dependency>
 		<dependency>
-			
+
 			<!-- To redirect calls to SLF4J from dwca-reader & gbif-common to Log4J -->
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.6.1</version>
 		</dependency>
-		
+
 		<!-- Struts2 -->
 		<dependency>
 			<groupId>org.apache.struts</groupId>
@@ -235,15 +235,15 @@
 			<artifactId>javassist</artifactId>
 			<version>3.8.0.GA</version>
 		</dependency>
-		
-		
+
+
 		<!-- Guice provides the code based (not XML based) injection dependency framework -->
 		<dependency>
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
 			<version>2.0</version>
 			<exclusions>
-				
+
 				<!-- superceded by guava and causing exceptions under tomcat6 -->
 				<!--
 				java.lang.NoSuchMethodError com.google.common.collect.ImmutableList.copyOf(Ljava/util/Collection;)
@@ -276,7 +276,7 @@
 			<artifactId>guice-assisted-inject</artifactId>
 			<version>2.0</version>
 		</dependency>
-		
+
 		<!-- Used for the SimpleTextProvider in Struts2 -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -286,14 +286,14 @@
 			-->
 			<version>2.0</version>
 		</dependency>
-		
+
 		<!-- Jetty to use as an embedded server-->
 		<dependency>
 			<groupId>org.mortbay.jetty</groupId>
 			<artifactId>jetty</artifactId>
 			<version>6.1.25</version>
 		</dependency>
-		
+
 		<!-- Google base libraries, e.g. collections
 		Used for equals & hash method a lot and in EML by Aaron
 		-->
@@ -302,8 +302,8 @@
 			<artifactId>guava</artifactId>
 			<version>r03</version>
 		</dependency>
-		
-		
+
+
 		<!-- H2 is a lightweight embedded Java database. We consider using it for the portal webapp -->
 		<!--
 		<dependency>
@@ -312,8 +312,8 @@
 		<version>1.2.138</version>
 		</dependency>
 		-->
-		
-		
+
+
 		<!-- Accessing different external databases to suck in data alternatively to text files -->
 		<!-- JDBC driver to support a variety of external datasources -->
 		<dependency>
@@ -336,7 +336,7 @@
 			<artifactId>ojdbc</artifactId>
 			<version>14</version>
 		</dependency>
-		
+
 		<!--
 		Log4j used directly
 		PLEASE DONT USE COMMONS-LOGGING !!!
@@ -347,63 +347,51 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.16</version>
 		</dependency>
-		
-		
+
+
 		<!-- Commons lang provides utilities for (e.g.) simple hashcode building -->
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 			<version>2.5</version>
 		</dependency>
-		
+
 		<!-- native java io cannot handle redirects -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>4.0.3</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>commons-logging</artifactId>
-					<groupId>commons-logging</groupId>
-				</exclusion>
-			</exclusions>
 		</dependency>
-		
+
 		<!-- Simple XML Parsing -->
 		<dependency>
 			<groupId>commons-digester</groupId>
 			<artifactId>commons-digester</artifactId>
 			<version>2.0</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>commons-logging</artifactId>
-					<groupId>commons-logging</groupId>
-				</exclusion>
-			</exclusions>
 		</dependency>
-		
-		
+
+
 		<!-- XStream for resource config data persistency (could be replaced by JAXB in the future) -->
 		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
 			<artifactId>xstream</artifactId>
 			<version>1.3</version>
 		</dependency>
-		
+
 		<!-- for reading compressed archives -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-compress</artifactId>
 			<version>1.0</version>
 		</dependency>
-		
+
 		<!-- file utils -->
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>1.4</version>
 		</dependency>
-		
+
 		<!-- for generating pageable html tables -->
 		<!--
 		<dependency>
@@ -422,14 +410,14 @@
 		</exclusions>
 		</dependency>
 		-->
-		
+
 		<!-- Lucene, full text search -->
 		<!--dependency>
 		<groupId>org.apache.lucene</groupId>
 		<artifactId>lucene-core</artifactId>
 		<version>3.0.2</version>
 		</dependency-->
-		
+
 		<!-- testing -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -443,7 +431,7 @@
 			<version>1.8.5</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<!-- JSON representation -->
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
@@ -451,8 +439,8 @@
 			<version>1.4</version>
 			<scope>compile</scope>
 		</dependency>
-		
-		
+
+
 		<!-- testing only. Shows the struts2 configuration in the browser at /config-browser/index.do -->
 		<!--
 		<dependency>
@@ -462,7 +450,7 @@
 		</dependency>
 		-->
 	</dependencies>
-	
+
 	<profiles>
 		<!-- Settings used for an IPT release -->
 		<profile>
@@ -472,7 +460,7 @@
 				<devModeNegated>true</devModeNegated>
 			</properties>
 		</profile>
-		
+
 		<!-- Settings used for the IPT demo installation -->
 		<profile>
 			<id>gbif</id>
@@ -482,9 +470,9 @@
 				<ipt.baseURL>http://ipt.gbif.org/</ipt.baseURL>
 			</properties>
 		</profile>
-		
+
 	</profiles>
-	
+
 	<!--
 	Default settings used mainly for development.
 	To build a release please use -P release
@@ -498,7 +486,7 @@
 		-->
 		<devMode>true</devMode>
 		<devModeNegated>false</devModeNegated>
-		
+
 		<analytics.key></analytics.key>
 		<ipt.frontPageImageURL></ipt.frontPageImageURL>
 		<google.maps.key></google.maps.key>
