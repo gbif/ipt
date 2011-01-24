@@ -13,6 +13,7 @@
     <head>
 	    <meta name="copyright" lang="en" content="GBIF" />
  		<link rel="stylesheet" type="text/css" href="${baseURL}/styles/main.css"/>
+ 		<link rel="shortcut icon" href="${baseURL}/images/icons/favicon.ico" type="image/x-icon" />
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>				
 		<script type="text/javascript" src="${baseURL}/js/jquery.cookie.min.js"></script>
 		<script type="text/javascript" src="${baseURL}/js/json2.min.js"></script>
