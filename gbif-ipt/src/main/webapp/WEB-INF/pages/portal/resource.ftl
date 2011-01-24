@@ -125,6 +125,7 @@
 </div>
 </#if>
 
+<#if eml.getMetadataProvider().organisation?has_content || eml.getMetadataProvider().lastName?has_content || eml.getMetadataProvider().position?has_content>
 <div class="definition">	
   <div class="title">
   	<div class="head">
@@ -137,6 +138,7 @@
       	</div>
   </div>
 </div>
+</#if>
 
 <#assign size=eml.associatedParties?size/>
 <#if (size > 0 )>
