@@ -337,6 +337,7 @@
 </div>
 </#if>
 
+<#if eml.collectionName?has_content || eml.collectionId?has_content || eml.parentCollectionId?has_content || eml.specimenPreservationMethod?has_content || eml.jgtiCuratorialUnits?has_content >
 <div class="definition">	
   <div class="title">
   	<div class="head">
@@ -346,10 +347,10 @@
   <div class="body">
       	<div class="details">
       		<table>
-          		<tr><th><@s.text name='eml.collectionName'/></th><td>${eml.collectionName!}</td></tr>
-          		<tr><th><@s.text name='eml.collectionId'/></th><td>${eml.collectionId!}</td></tr>
-          		<tr><th><@s.text name='eml.parentCollectionId'/></th><td>${eml.parentCollectionId!}</td></tr>
-          		<tr><th><@s.text name='eml.specimenPreservationMethod'/></th><td>${eml.specimenPreservationMethod!}</td></tr>
+          		<#if eml.collectionName?has_content><tr><th><@s.text name='eml.collectionName'/></th><td>${eml.collectionName!}</td></tr></#if>
+          		<#if eml.collectionId?has_content><tr><th><@s.text name='eml.collectionId'/></th><td>${eml.collectionId!}</td></tr></#if>
+          		<#if eml.parentCollectionId?has_content><tr><th><@s.text name='eml.parentCollectionId'/></th><td>${eml.parentCollectionId!}</td></tr></#if>
+          		<#if eml.specimenPreservationMethod?has_content><tr><th><@s.text name='eml.specimenPreservationMethod'/></th><td>${eml.specimenPreservationMethod!}</td></tr></#if>
           	</table>
           	<div class="newline"></div>
         	<table>
@@ -377,6 +378,7 @@
       	</div>
   </div>
 </div>
+</#if>
 
 <#if (eml.keywords?size > 0 )>
 <div class="definition">	
