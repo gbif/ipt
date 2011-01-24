@@ -65,11 +65,11 @@ $(document).ready(function(){
 	<div class="newline"></div>
 	<label for="latitude"><@s.text name="admin.config.server.location"/></label>
 	<div class="halfcolumn">
-		<@input name="latitude" i18nkey="admin.config.server.latitude" />
+		<@input name="latitude" i18nkey="admin.config.server.latitude" help="i18n" />
 		<!-- input type="text" id="latitude" name="latitude" value="${latitude!}" size="10" /-->
 	</div>
 	<div class="halfcolumn">
-		<@input name="longitude" i18nkey="admin.config.server.longitude" />
+		<@input name="longitude" i18nkey="admin.config.server.longitude" help="i18n" />
 		<!-- input type="text" id="longitude" name="longitude" value="${longitude!}" size="10" / -->
 	</div>
   </div>
