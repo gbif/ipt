@@ -95,6 +95,7 @@
 </div>
 </#if>
 
+<#if eml.contact.organisation?has_content || eml.contact.lastName?has_content || eml.contact.position?has_content>
 <div class="definition">	
   <div class="title">
   	<div class="head">
@@ -107,7 +108,9 @@
       	</div>
   </div>
 </div>
+</#if>
 
+<#if eml.getResourceCreator().organisation?has_content || eml.getResourceCreator().lastName?has_content || eml.getResourceCreator().position?has_content>
 <div class="definition">	
   <div class="title">
   	<div class="head">
@@ -120,6 +123,7 @@
       	</div>
   </div>
 </div>
+</#if>
 
 <div class="definition">	
   <div class="title">
