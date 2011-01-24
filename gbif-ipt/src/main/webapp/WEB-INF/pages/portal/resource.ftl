@@ -1,6 +1,6 @@
 <#macro agentTable agent>
 <table>
-	<#if agent.role?? ><tr><th><@s.text name='eml.associatedParties.role'/></th><td><@s.text name='roleType.${agent.role!}'/></td></tr></#if>
+	<#if agent.role?? ><tr><th><@s.text name='eml.associatedParties.role'/></th><td>${agent.role!}</td></tr></#if>
 	<#if agent.firstName?? ><tr><th><@s.text name='portal.resource.name'/></th><td>${agent.firstName!} ${agent.lastName!}</td></tr></#if>
 	<#if agent.position?? ><tr><th><@s.text name='eml.associatedParties.position'/></th><td>${agent.position!}</td></tr></#if>
 	<#if agent.organisation?? ><tr><th><@s.text name='eml.contact.organisation'/></th><td>${agent.organisation!}</td></tr></#if>
