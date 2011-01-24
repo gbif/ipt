@@ -39,7 +39,7 @@
   <div class="body">
       	<div class="details">
       		<table>
-          		<tr><th><@s.text name='portal.resource.summary.keywords'/></th><td>${resource.eml.subject!}</td></tr>
+          		<#if resource.eml.subject?has_content><tr><th><@s.text name='portal.resource.summary.keywords'/></th><td>${resource.eml.subject!}</td></tr></#if>
           		<tr><th><@s.text name='portal.resource.summary.taxcoverage'/></th><td><#list eml.taxonomicCoverages as tc><#list tc.taxonKeywords as k>${k.scientificName}<#if k_has_next>, </#if></#list><#if tc_has_next>; </#if></#list></td></tr>
           		<tr><th><@s.text name='portal.resource.summary.geocoverage'/></th><td><#list eml.geospatialCoverages as geo>${geo.description!}<#if geo_has_next>; </#if></#list></td></tr>
 
@@ -275,12 +275,12 @@
   <div class="body">
       	<div class="details">
       		<table>
-          		<#if eml.project.title??><tr><th><@s.text name='eml.project.title'/></th><td>${eml.project.title!}</td></tr></#if>
-          		<#if eml.project.personnel.lastName??><tr><th><@s.text name='portal.resource.name'/></th><td>${eml.project.personnel.firstName!} ${eml.project.personnel.lastName!}</td></tr></#if>
+          		<#if eml.project.title?has_content><tr><th><@s.text name='eml.project.title'/></th><td>${eml.project.title!}</td></tr></#if>
+          		<#if eml.project.personnel.lastName?has_content><tr><th><@s.text name='portal.resource.name'/></th><td>${eml.project.personnel.firstName!} ${eml.project.personnel.lastName!}</td></tr></#if>
 	          	<#if eml.project.personnel.role??><tr><th><@s.text name='eml.project.personnel.role'/></th><td>${eml.project.personnel.role!}</td></tr></#if>
-          		<#if eml.project.funding??><tr><th><@s.text name='eml.project.funding'/></th><td>${eml.project.funding!}</td></tr></#if>
-          		<#if eml.project.studyAreaDescription.descriptorValue??><tr><th><@s.text name='eml.project.studyAreaDescription.descriptorValue'/></th><td>${eml.project.studyAreaDescription.descriptorValue!}</td></tr></#if>
-          		<#if eml.project.designDescription??><tr><th><@s.text name='eml.project.designDescription'/></th><td>${eml.project.designDescription!}</td></tr></#if>
+          		<#if eml.project.funding?has_content><tr><th><@s.text name='eml.project.funding'/></th><td>${eml.project.funding!}</td></tr></#if>
+          		<#if eml.project.studyAreaDescription.descriptorValue?has_content><tr><th><@s.text name='eml.project.studyAreaDescription.descriptorValue'/></th><td>${eml.project.studyAreaDescription.descriptorValue!}</td></tr></#if>
+          		<#if eml.project.designDescription?has_content><tr><th><@s.text name='eml.project.designDescription'/></th><td>${eml.project.designDescription!}</td></tr></#if>
       		</table>
       	</div>
   </div>
