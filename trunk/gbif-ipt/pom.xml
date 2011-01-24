@@ -25,9 +25,12 @@
 	</organization>
 	
 	<scm>
-		<connection>scm:svn:http://gbif-providertoolkit.googlecode.com/svn/trunk/</connection>
-		<developerConnection>scm:svn:https://gbif-providertoolkit.googlecode.com/svn/trunk/</developerConnection>
-		<url>http://code.google.com/p/gbif-providertoolkit/source/browse#svn/trunk/</url>
+		<connection>
+			scm:svn:http://gbif-providertoolkit.googlecode.com/svn/trunk/</connection>
+		<developerConnection>
+			scm:svn:https://gbif-providertoolkit.googlecode.com/svn/trunk/</developerConnection>
+		<url>
+			http://code.google.com/p/gbif-providertoolkit/source/browse#svn/trunk/</url>
 	</scm>
 	
 	<issueManagement>
@@ -55,6 +58,7 @@
 			<id>central</id>
 			<url>http://repo1.maven.org/maven2</url>
 		</repository>
+		
 		<!-- TODO: This reference needs to be removed as the repository is deprecated -->
 		<repository>
 			<id>gbif</id>
@@ -70,6 +74,7 @@
 		<finalName>ipt-${project.version}-r${buildNumber}</finalName>
 		<defaultGoal>jetty:run</defaultGoal>
 		<plugins>
+			
 			<!-- To simplify development, allows developers to use "mvn jetty:run" -->
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
@@ -94,10 +99,10 @@
 					<target>1.5</target>
 				</configuration>
 			</plugin>
-			<!-- 
-				small plugin that allows to access the projects SVN revision number.
-				Useful to keep the pom ipt version at 1.x-SNAPSHOT while still having a unique build number
-				See: http://mojo.codehaus.org/buildnumber-maven-plugin/usage.html
+			<!--
+			small plugin that allows to access the projects SVN revision number.
+			Useful to keep the pom ipt version at 1.x-SNAPSHOT while still having a unique build number
+			See: http://mojo.codehaus.org/buildnumber-maven-plugin/usage.html
 			-->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -116,28 +121,31 @@
 					<doUpdate>${devModeNegated}</doUpdate>
 				</configuration>
 			</plugin>
-		    <plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-eclipse-plugin</artifactId>
 				<version>2.6</version>
-		    	<configuration>
-		    		<downloadSources>true</downloadSources>
-		    		<additionalBuildcommands>
-		    			<buildcommand>com.atlassw.tools.eclipse.checkstyle.CheckstyleBuilder</buildcommand>
-		    		</additionalBuildcommands>
-		    		<additionalConfig>
-		    			<file>
-		    				<name>.checkstyle</name>
-		    				<url>http://rs.gbif.org/conventions/java-style-config.xml</url>
-		    			</file>
-		    		</additionalConfig>
-		    	</configuration>
-		    </plugin>
+				<configuration>
+					<downloadSources>true</downloadSources>
+					<additionalBuildcommands>
+						<buildcommand>
+							com.atlassw.tools.eclipse.checkstyle.CheckstyleBuilder</buildcommand>
+					</additionalBuildcommands>
+					<additionalConfig>
+						<file>
+							<name>.checkstyle</name>
+							<url>
+								http://rs.gbif.org/conventions/java-style-config.xml</url>
+						</file>
+					</additionalConfig>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.0.2</version>
 				<configuration>
+					
 					<!-- dont bundle local datadir.location file with generated war -->
 					<excludes>**/datadir.location</excludes>
 				</configuration>
@@ -146,9 +154,11 @@
 		</plugins>
 		
 		<resources>
+			
 			<!-- The default resources will all be filtered, i.e. maven variables ${xyz} will be replaced by maven -->
 			<resource>
 				<directory>src/main/resources</directory>
+				
 				<!-- exclude the following files, as they use the same ${} syntax for non maven variables -->
 				<excludes>
 					<exclude>ApplicationResources*.properties</exclude>
@@ -157,6 +167,7 @@
 				<filtering>true</filtering>
 			</resource>
 			<resource>
+				
 				<!-- finally include the excluded files again without filtering -->
 				<directory>src/main/resources</directory>
 				<includes>
@@ -197,6 +208,13 @@
 			<artifactId>gbif-common</artifactId>
 			<version>0.0.2</version>
 		</dependency>
+		<dependency>
+			
+			<!-- To redirect calls to SLF4J from dwca-reader & gbif-common to Log4J -->
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.6.1</version>
+		</dependency>
 		
 		<!-- Struts2 -->
 		<dependency>
@@ -209,7 +227,7 @@
 					<groupId>org.springframework</groupId>
 					<artifactId>spring-test</artifactId>
 				</exclusion>
-			</exclusions>			
+			</exclusions>
 		</dependency>
 		<!-- required by OGNL/struts2 since version 2.2.x -->
 		<dependency>
@@ -218,12 +236,14 @@
 			<version>3.8.0.GA</version>
 		</dependency>
 		
+		
 		<!-- Guice provides the code based (not XML based) injection dependency framework -->
-		<dependency> 
-			<groupId>com.google.inject</groupId> 
-			<artifactId>guice</artifactId> 
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
 			<version>2.0</version>
 			<exclusions>
+				
 				<!-- superceded by guava and causing exceptions under tomcat6 -->
 				<!--
 				java.lang.NoSuchMethodError com.google.common.collect.ImmutableList.copyOf(Ljava/util/Collection;)
@@ -232,10 +252,10 @@
 					<groupId>com.google.code.google-collections</groupId>
 					<artifactId>google-collect</artifactId>
 				</exclusion>
-			</exclusions>			
+			</exclusions>
 		</dependency>
 		<!-- connector to use guice natively with struts2 -->
-		<dependency> 
+		<dependency>
 			<groupId>com.google.inject.extensions</groupId>
 			<artifactId>guice-struts2-plugin</artifactId>
 			<version>2.0</version>
@@ -251,7 +271,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<dependency> 
+		<dependency>
 			<groupId>com.google.inject.extensions</groupId>
 			<artifactId>guice-assisted-inject</artifactId>
 			<version>2.0</version>
@@ -267,7 +287,6 @@
 			<version>2.0</version>
 		</dependency>
 		
-		
 		<!-- Jetty to use as an embedded server-->
 		<dependency>
 			<groupId>org.mortbay.jetty</groupId>
@@ -276,7 +295,7 @@
 		</dependency>
 		
 		<!-- Google base libraries, e.g. collections
-			Used for equals & hash method a lot and in EML by Aaron
+		Used for equals & hash method a lot and in EML by Aaron
 		-->
 		<dependency>
 			<groupId>com.google.guava</groupId>
@@ -284,14 +303,16 @@
 			<version>r03</version>
 		</dependency>
 		
+		
 		<!-- H2 is a lightweight embedded Java database. We consider using it for the portal webapp -->
 		<!--
 		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<version>1.2.138</version>
+		<groupId>com.h2database</groupId>
+		<artifactId>h2</artifactId>
+		<version>1.2.138</version>
 		</dependency>
 		-->
+		
 		
 		<!-- Accessing different external databases to suck in data alternatively to text files -->
 		<!-- JDBC driver to support a variety of external datasources -->
@@ -316,16 +337,17 @@
 			<version>14</version>
 		</dependency>
 		
-		<!-- 
-			Log4j used directly 
-			PLEASE DONT USE COMMONS-LOGGING !!!
-			there are some know classloader issues when used with tomcat
+		<!--
+		Log4j used directly
+		PLEASE DONT USE COMMONS-LOGGING !!!
+		there are some know classloader issues when used with tomcat
 		-->
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.16</version>
 		</dependency>
+		
 		
 		<!-- Commons lang provides utilities for (e.g.) simple hashcode building -->
 		<dependency>
@@ -339,6 +361,12 @@
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>4.0.3</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-logging</artifactId>
+					<groupId>commons-logging</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		
 		<!-- Simple XML Parsing -->
@@ -346,7 +374,14 @@
 			<groupId>commons-digester</groupId>
 			<artifactId>commons-digester</artifactId>
 			<version>2.0</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-logging</artifactId>
+					<groupId>commons-logging</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
+		
 		
 		<!-- XStream for resource config data persistency (could be replaced by JAXB in the future) -->
 		<dependency>
@@ -370,29 +405,29 @@
 		</dependency>
 		
 		<!-- for generating pageable html tables -->
-		<!-- 
+		<!--
 		<dependency>
-			<groupId>displaytag</groupId>
-			<artifactId>displaytag</artifactId>
-			<version>1.2</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>jcl104-over-slf4j</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-log4j12</artifactId>
-				</exclusion>
-			</exclusions>
+		<groupId>displaytag</groupId>
+		<artifactId>displaytag</artifactId>
+		<version>1.2</version>
+		<exclusions>
+		<exclusion>
+		<groupId>org.slf4j</groupId>
+		<artifactId>jcl104-over-slf4j</artifactId>
+		</exclusion>
+		<exclusion>
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-log4j12</artifactId>
+		</exclusion>
+		</exclusions>
 		</dependency>
 		-->
 		
 		<!-- Lucene, full text search -->
 		<!--dependency>
-			<groupId>org.apache.lucene</groupId>
-			<artifactId>lucene-core</artifactId>
-			<version>3.0.2</version>
+		<groupId>org.apache.lucene</groupId>
+		<artifactId>lucene-core</artifactId>
+		<version>3.0.2</version>
 		</dependency-->
 		
 		<!-- testing -->
@@ -417,12 +452,13 @@
 			<scope>compile</scope>
 		</dependency>
 		
+		
 		<!-- testing only. Shows the struts2 configuration in the browser at /config-browser/index.do -->
-		<!-- 
+		<!--
 		<dependency>
-			<groupId>org.apache.struts</groupId>
-			<artifactId>struts2-config-browser-plugin</artifactId>
-			<version>2.1.8</version>
+		<groupId>org.apache.struts</groupId>
+		<artifactId>struts2-config-browser-plugin</artifactId>
+		<version>2.1.8</version>
 		</dependency>
 		-->
 	</dependencies>
@@ -449,17 +485,16 @@
 		
 	</profiles>
 	
-	
-	<!-- 
-		Default settings used mainly for development. 
-		To build a release please use -P release 
+	<!--
+	Default settings used mainly for development.
+	To build a release please use -P release
 	-->
 	<properties>
 		<!-- This project uses UTF8 for Regular Expressions -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<!-- 
-			maven treats properties as strings only, so we cannot negate a boolean devMode value. 
-			Therefore we keep both available - make sure they are always negated in all profiles! 
+		<!--
+		maven treats properties as strings only, so we cannot negate a boolean devMode value.
+		Therefore we keep both available - make sure they are always negated in all profiles!
 		-->
 		<devMode>true</devMode>
 		<devModeNegated>false</devModeNegated>
