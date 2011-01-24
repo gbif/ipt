@@ -46,8 +46,8 @@ $(document).ready(function(){
 	        });				
 	});
 	
-	<#if !validatedBaseURL>
-		$('#registrationForm').hide();
+	<#if validatedBaseURL>
+		$('#registrationForm').show();
 	</#if>
 	$('#validate').click(function() {
 		$("#baseURLStatus").html('<img src="${baseURL}/images/small-loader.gif">');
@@ -100,7 +100,7 @@ $(document).ready(function(){
 		<div id="baseURLStatus"></div>
 	</#if>
 	
-	<div id="registrationForm">
+	<div id="registrationForm" style="display: none;" >
 		<hr/>
 		<p><@s.text name="admin.registration.intro"/></p>
 		<p><@s.text name="admin.registration.intro2"/></p>
