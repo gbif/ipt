@@ -53,7 +53,6 @@ $(document).ready(function(){
 		$("#baseURLStatus").html('<img src="${baseURL}/images/small-loader.gif">');
 		var url = "http://tools.gbif.org/ws-validurl/?url=${baseURL}&callback=?";
 		$.getJSON(url,function(data){
-			console.log(data);
 			if(data.success==true) {
 				$("#baseURLStatus").html("<@s.text name="admin.registration.validate.success"/>");
 				$('#registrationForm').show(500);
