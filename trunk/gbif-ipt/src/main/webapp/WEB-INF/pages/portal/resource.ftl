@@ -68,6 +68,7 @@
   </div>
 </div>
 
+<#if eml.distributionUrl?? || eml.physicalData?has_content >
 <div class="definition">	
   <div class="title">
   	<div class="head">
@@ -77,7 +78,7 @@
   <div class="body">
       	<div class="details">
       		<table>
-          		<tr><th><@s.text name='eml.distributionUrl'/></th><td><a href="${eml.distributionUrl!}">${eml.distributionUrl!}</a></td></tr>
+          		<#if eml.distributionUrl??><tr><th><@s.text name='eml.distributionUrl'/></th><td><a href="${eml.distributionUrl!}">${eml.distributionUrl!}</a></td></tr></#if>
 		<#if (eml.physicalData?size > 0 )>
 			<#list eml.physicalData as item>
 				<#assign link=eml.physicalData[item_index]/>
@@ -92,6 +93,7 @@
       	</div>
   </div>
 </div>
+</#if>
 
 <div class="definition">	
   <div class="title">
