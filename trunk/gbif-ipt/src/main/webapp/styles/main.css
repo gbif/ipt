@@ -619,6 +619,10 @@ div.details td{
     vertical-align:text-top;
 }
 
+div.details table th.title, 
+div.details td{
+    color: #666;
+}
 
 /* confirmation plugin */
 .question {

@@ -239,7 +239,7 @@
 			<#list eml.temporalCoverages as item>
 			<tr>
 			<#assign itemTitle><@s.text name='manage.metadata.tempcoverage.item'/></#assign>
-			<th>${itemTitle?upper_case} ${item_index+1}</th>
+			<b><th class="title">${itemTitle?upper_case} ${item_index+1}</th></b>
 			<td>
 				<div>
 				<table>
@@ -343,7 +343,7 @@
 				<tr>
 				<div>
 					<#assign itemTitle><@s.text name='manage.metadata.collections.curatorialUnits.item'/></#assign>
-					<th>${itemTitle?upper_case} ${item_index+1}</th>
+					<th class="title">${itemTitle?upper_case} ${item_index+1}</th>
 					<td>
 		       		<table>	
          		   		<#if item.type=="COUNT_RANGE">
@@ -407,7 +407,7 @@
       		<table>
           		<#list eml.alternateIdentifiers as item>
           		<#assign itemTitle><@s.text name='manage.metadata.alternateIdentifiers.item'/></#assign>
-          			<tr><th>${itemTitle?upper_case}$ {item_index+1}</th><td>${eml.alternateIdentifiers[item_index]!}</td></tr>
+          			<tr><th>${itemTitle?upper_case} ${item_index+1}</th><td>${eml.alternateIdentifiers[item_index]!}</td></tr>
           		</#list>
       		</table>
       	</div>
