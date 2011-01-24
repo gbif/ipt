@@ -414,11 +414,11 @@
   <div class="body">
       	<div class="details">
       		<table>
-          		<tr><th><@s.text name='eml.hierarchyLevel'/></th><td>${eml.hierarchyLevel!}</td></tr>
-          		<tr><th><@s.text name='eml.pubDate'/></th><td>${eml.pubDate?date!}</td></tr>
-          		<tr><th><@s.text name='eml.purpose'/></th><td>${eml.purpose!}</td></tr>
-          		<tr><th><@s.text name='eml.intellectualRights'/></th><td>${eml.intellectualRights!}</td></tr>
-          		<tr><th><@s.text name='eml.additionalInfo'/></th><td>${eml.additionalInfo!}</td></tr>
+          		<#if eml.hierarchyLevel?has_content><tr><th><@s.text name='eml.hierarchyLevel'/></th><td>${eml.hierarchyLevel!}</td></tr></#if>
+          		<#if eml.pubDate?has_content><tr><th><@s.text name='eml.pubDate'/></th><td>${eml.pubDate?date!}</td></tr></#if>
+          		<#if eml.purpose?has_content><tr><th><@s.text name='eml.purpose'/></th><td>${eml.purpose!}</td></tr></#if>
+          		<#if eml.intellectualRights?has_content><tr><th><@s.text name='eml.intellectualRights'/></th><td>${eml.intellectualRights!}</td></tr></#if>
+          		<#if eml.additionalInfo?has_content><tr><th><@s.text name='eml.additionalInfo'/></th><td>${eml.additionalInfo!}</td></tr></#if>
       		</table>
       		<table>
           		<#list eml.alternateIdentifiers as item>
