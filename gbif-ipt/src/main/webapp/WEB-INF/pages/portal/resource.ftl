@@ -295,6 +295,7 @@
 </div>
 </#if>
 
+<#if eml.studyExtent?has_content || eml.sampleDescription?has_content || eml.qualityControl?has_content || eml.methodSteps?has_content>
 <div class="definition">	
   <div class="title">
   	<div class="head">
@@ -304,9 +305,9 @@
   <div class="body">
       	<div class="details">
       		<table>
-          		<tr><th><@s.text name='eml.studyExtent'/></th><td>${eml.studyExtent!}</td></tr>
-          		<tr><th><@s.text name='eml.sampleDescription'/></th><td>${eml.sampleDescription!}</td></tr>
-          		<tr><th><@s.text name='eml.qualityControl'/></th><td>${eml.qualityControl!}</td></tr>
+          		<#if eml.studyExtent?has_content><tr><th><@s.text name='eml.studyExtent'/></th><td>${eml.studyExtent!}</td></tr></#if>
+          		<#if eml.sampleDescription?has_content><tr><th><@s.text name='eml.sampleDescription'/></th><td>${eml.sampleDescription!}</td></tr></#if>
+          		<#if eml.qualityControl?has_content><tr><th><@s.text name='eml.qualityControl'/></th><td>${eml.qualityControl!}</td></tr></#if>
           		<#list eml.methodSteps as item>
           			<tr><th><@s.text name='eml.methodSteps'/> ${item_index+1}</th><td>${eml.methodSteps[item_index]!}</td></tr>
           		</#list>
@@ -314,6 +315,7 @@
       	</div>
   </div>
 </div>
+</#if>
 
 <#if eml.citation?has_content || eml.bibliographicCitationSet.bibliographicCitations?has_content>
 <div class="definition">	
