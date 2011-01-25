@@ -85,13 +85,17 @@ $(document).ready(function(){
   <div class="body">
       	<div>
       		<#assign no_description><@s.text name='manage.overview.no.description'/></#assign>
-      		${resource.description!no_description}
+      		<#if (resource.description?length>200)>
+      			${(resource.description!no_description)?substring(0,200)} ...
+      		<#else>
+      			${resource.description!no_description}
+      		</#if>
       	</div>
       	<div class="details">
       		<table>
           		<tr><th><@s.text name='manage.overview.keywords'/></th><td>${resource.eml.subject!}</td></tr>
           		<tr><th><@s.text name='manage.overview.taxcoverage'/></th><td><#list resource.eml.taxonomicCoverages as tc><#list tc.taxonKeywords as k>${k.scientificName!k.commonName!}<#if !k_has_next>; </#if></#list></#list></td></tr>
-          		<tr><th><@s.text name='manage.overview.geocoverage'/></th><td><#list resource.eml.geospatialCoverages as geo><#list geo.keywords as k>${k!}<#if !k_has_next>;</#if> </#list></#list></td></tr>
+          		<tr><th><@s.text name='manage.overview.geocoverage'/></th><td><#list resource.eml.geospatialCoverages as geo>${geo.description!}<#if geo_has_next>; </#if></#list></td></tr>
       		</table>
       	</div>
   </div>
