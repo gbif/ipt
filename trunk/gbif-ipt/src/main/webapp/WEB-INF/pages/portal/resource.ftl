@@ -29,7 +29,7 @@
 
 <h1>${resource.title!resource.shortname}</h1>
 <#assign no_description><@s.text name='portal.resource.no.description'/></#assign>
-<p>${resource.description!no_description}</p>
+<p><#escape x as x?html>${resource.description!no_description}</#escape></p>
 <div class="definition" id="metadata">	
   <div class="title">
   	<div class="head">
