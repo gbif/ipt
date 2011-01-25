@@ -1,3 +1,4 @@
+<#escape x as x?html>
 <#setting url_escaping_charset="UTF-8">
 <#include "/WEB-INF/pages/inc/header.ftl">
 <script type="text/javascript">
@@ -27,3 +28,4 @@ $(document).ready(function(){
 
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
+</#escape>
