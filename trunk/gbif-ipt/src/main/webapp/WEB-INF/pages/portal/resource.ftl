@@ -1,7 +1,7 @@
 <#escape x as x?html>
-<#macro agentTable agent>
+<#macro agentTable agent withRole=false>
 <table>
-	<#if agent.role?? ><tr><th><@s.text name='eml.associatedParties.role'/></th><td>${agent.role!}</td></tr></#if>
+	<#if withRole & agent.role?? ><tr><th><@s.text name='eml.associatedParties.role'/></th><td>${agent.role!}</td></tr></#if>
 	<#if agent.firstName?? ><tr><th><@s.text name='portal.resource.name'/></th><td>${agent.firstName!} ${agent.lastName!}</td></tr></#if>
 	<#if agent.position?? ><tr><th><@s.text name='eml.associatedParties.position'/></th><td>${agent.position!}</td></tr></#if>
 	<#if agent.organisation?? ><tr><th><@s.text name='eml.contact.organisation'/></th><td>${agent.organisation!}</td></tr></#if>
@@ -157,7 +157,7 @@
 				<div class="halfcolumn">
 					<#assign itemTitle><@s.text name='manage.metadata.parties.item'/></#assign>
 					<div class="head">${itemTitle?upper_case} ${item_index+1}</div>
-		      		<@agentTable item />
+		      		<@agentTable item true />
 				</div>
 			<#if (item_index % 2) == 1 || eml.associatedParties?size=item_index+1>
 			</div>
