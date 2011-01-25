@@ -1,3 +1,4 @@
+<#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
 <#include "/WEB-INF/pages/inc/header_ui.ftl">
 	<title><@s.text name="manage.translation.title"/></title>
@@ -123,3 +124,4 @@ $(document).ready(function(){
 
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
+</#escape>

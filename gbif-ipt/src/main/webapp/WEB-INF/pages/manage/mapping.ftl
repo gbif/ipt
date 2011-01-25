@@ -1,3 +1,4 @@
+<#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
 	<title><@s.text name='manage.mapping.title'/></title>
 	<script type="text/javascript" src="${baseURL}/js/jconfirmaction.jquery.js"></script>
@@ -318,3 +319,4 @@ $(document).ready(function(){
 
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
+</#escape>
