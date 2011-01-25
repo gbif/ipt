@@ -1,3 +1,4 @@
+<#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
  <title><@s.text name="admin.vocabulary.title"/></title>
  <#assign currentMenu = "manage"/>
@@ -48,3 +49,4 @@
 </#list>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
+</#escape>
