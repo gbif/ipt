@@ -292,7 +292,7 @@ $(document).ready(function(){
       		<table>
 			  	<#if resource.lastPublished??>
           		 <tr><th><@s.text name="manage.overview.published.last.publication"/></th>
-          		 	<td><@s.text name="manage.overview.published.version"/> ${resource.eml.emlVersion} <@s.text name="manage.overview.published.from"/> ${resource.lastPublished?date?string.medium}
+          		 	<td><@s.text name="manage.overview.published.version"/> ${resource.eml.emlVersion} <@s.text name="manage.overview.published.from"/> ${resource.lastPublished?datetime?string}
 				  	<#if report??><a id="toggleReport" href="#">See report</a></#if>
           		    </td>
           		 </tr>
