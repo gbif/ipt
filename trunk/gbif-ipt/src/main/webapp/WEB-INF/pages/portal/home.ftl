@@ -1,3 +1,4 @@
+<#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
 	<title><@s.text name="title"/></title>
 	<style>
@@ -38,3 +39,4 @@
 </#if>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
+</#escape>
