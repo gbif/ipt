@@ -1,3 +1,4 @@
+<#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name='manage.metadata.project.title'/></title>
 <#assign sideMenuEml=true />
@@ -34,3 +35,4 @@
 	<input name="r" type="hidden" value="${resource.shortname}" />
 </form>
 <#include "/WEB-INF/pages/inc/footer.ftl">
+</#escape>

@@ -1,3 +1,4 @@
+<#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
 <#include "/WEB-INF/pages/inc/header_ui.ftl">
 <script type="text/javascript">
@@ -282,3 +283,4 @@
 </div>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
+</#escape>

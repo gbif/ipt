@@ -1,3 +1,4 @@
+<#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
 <#include "/WEB-INF/pages/macros/metadata.ftl"/>
 <script type="text/javascript">
@@ -103,3 +104,4 @@
 	<div class="newline"></div>
 </div>
 <#include "/WEB-INF/pages/inc/footer.ftl">
+</#escape>

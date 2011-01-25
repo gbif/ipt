@@ -1,3 +1,4 @@
+<#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
 <#include "/WEB-INF/pages/inc/header_ui.ftl">
 <#include "/WEB-INF/pages/macros/metadata.ftl"/>
@@ -62,3 +63,4 @@
 	<div class="newline"></div>
 </div>
 <#include "/WEB-INF/pages/inc/footer.ftl">
+</#escape>
