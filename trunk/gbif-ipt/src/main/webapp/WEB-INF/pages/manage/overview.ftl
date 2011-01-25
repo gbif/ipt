@@ -84,12 +84,18 @@ $(document).ready(function(){
   </div>
   <div class="body">
       	<div>
-      		<#assign no_description><@s.text name='manage.overview.no.description'/></#assign>
-      		<#if (resource.description?length>200)>
-      			${(resource.description!no_description)?substring(0,200)} ...
-      		<#else>
-      			${resource.description!no_description}
-      		</#if>
+      		<#assign description>
+      			<#if resource.description?has_content>
+      				<#if (resource.description?length>200)>
+      					${(resource.description)?substring(0,200)} ...
+      				<#else>
+      					${(resource.description)}
+      				</#if>
+      			<#else>
+	   				<@s.text name='manage.overview.no.description'/>
+      			</#if>
+      		</#assign>
+		<#escape x as x?html>${description}</#escape>
       	</div>
       	<div class="details">
       		<table>
