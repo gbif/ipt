@@ -1,3 +1,4 @@
+<#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
  <title><@s.text name="title"/></title>
  <#assign currentMenu = "manage"/>
@@ -60,3 +61,4 @@
 
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
+</#escape>

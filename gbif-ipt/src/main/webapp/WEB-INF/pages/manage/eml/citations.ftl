@@ -1,3 +1,4 @@
+<#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name='manage.metadata.citations.title'/></title>
 <script type="text/javascript">
@@ -59,3 +60,4 @@
 	<div class="newline"></div>
 </div>
 <#include "/WEB-INF/pages/inc/footer.ftl">
+</#escape>

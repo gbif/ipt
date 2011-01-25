@@ -1,3 +1,4 @@
+<#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
 	<title><@s.text name="manage.overview.title"/>: ${resource.title!resource.shortname}</title>
 	<script type="text/javascript" src="${baseURL}/js/jconfirmaction.jquery.js"></script>
@@ -95,7 +96,7 @@ $(document).ready(function(){
 	   				<@s.text name='manage.overview.no.description'/>
       			</#if>
       		</#assign>
-		<#escape x as x?html>${description}</#escape>
+		${description}
       	</div>
       	<div class="details">
       		<table>
@@ -369,3 +370,4 @@ $(document).ready(function(){
 </div>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
+</#escape>
