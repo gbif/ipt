@@ -425,7 +425,7 @@
       		<table>
           		<#list eml.alternateIdentifiers as item>
           		<#assign itemTitle><@s.text name='manage.metadata.alternateIdentifiers.item'/></#assign>
-          			<tr><th>${itemTitle?upper_case} ${item_index+1}</th><td>${eml.alternateIdentifiers[item_index]!}</td></tr>
+          			<tr><th class="title">${itemTitle?upper_case} ${item_index+1}</th><td>${eml.alternateIdentifiers[item_index]!}</td></tr>
           		</#list>
       		</table>
       	</div>
