@@ -317,7 +317,7 @@
 </div>
 </#if>
 
-<#if eml.citation?has_content || eml.bibliographicCitationSet.bibliographicCitations?has_content>
+<#if eml.citation.citation?has_content || eml.citation.identifier?has_content || eml.bibliographicCitationSet.bibliographicCitations?has_content>
 <div class="definition">	
   <div class="title">
   	<div class="head">
