@@ -360,7 +360,8 @@ public class HttpUtil {
     Response result = new Response(response);
     HttpEntity entity = response.getEntity();
     if (entity != null) {
-      result.content = EntityUtils.toString(entity);
+      // Adding a default charset in case it is not found  	
+      result.content = EntityUtils.toString(entity, HTTP.UTF_8);
       entity.consumeContent();
     }
     return result;
