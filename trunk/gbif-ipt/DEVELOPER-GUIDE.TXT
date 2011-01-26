@@ -1,3 +1,6 @@
+MVN JUNIT TEST Parameters throw Proxy
+-Dhttp.proxyHost=proxy.com -Dhttp.proxyPort=0000
+
 TEST ORGS:
 Tim
 password

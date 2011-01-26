@@ -1,6 +1,6 @@
 <#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
-	<title><@s.text name="admin.user.title"/></title>
+	<title><#if "${newUser!}"=="no"><@s.text name="admin.user.title.edit"/><#else><@s.text name="admin.user.title.new"/></#if></title>
 	<script type="text/javascript" src="${baseURL}/js/jconfirmaction.jquery.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -11,7 +11,9 @@ $(document).ready(function(){
  <#assign currentMenu = "admin"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
-<h1><@s.text name="admin.user.title"/></h1>
+
+
+<h1><#if "${newUser!}"=="no"><@s.text name="admin.user.title.edit"/><#else><@s.text name="admin.user.title.new"/></#if></h1>
 
 <p><@s.text name="admin.user.intro"/></p>
 <p><@s.text name="admin.user.intro2"/></p>
