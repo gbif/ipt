@@ -241,7 +241,7 @@ $(document).ready(function(){
 		 	<@s.submit cssClass="button" name="cancel" key="button.cancel"/>
 		  </div>
 		  </#if>
-		  ${groupMenu}
+		  <#noescape>${groupMenu}</#noescape>
 		  <#assign group=p.group/>
 		  <a name="${p.group?url}"></a>
 		  <h2>${p.group}</h2>
