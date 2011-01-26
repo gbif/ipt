@@ -145,8 +145,10 @@ public class UserAccountsAction extends POSTAction {
       addActionError(getText("admin.user.saveError"));
       addActionError(e.getMessage());
       return INPUT;
-    } catch (AlreadyExistingException e) {
-      addActionError(getText("admin.user.exists", new String[]{id,}));
+    } catch (AlreadyExistingException e) {    	
+      addActionError(getText("admin.user.exists", new String[]{user.getEmail()}));
+      // resetting user
+      user = new User();
       return INPUT;
     }
   }
@@ -177,6 +179,7 @@ public class UserAccountsAction extends POSTAction {
       addFieldError("password2", getText("validation.password2.wrong"));
       password2 = null;
       user.setPassword(null);
-    }
+    }       
+    
   }
 }
