@@ -1,3 +1,4 @@
+<#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
 <script type="text/javascript" src="${baseURL}/js/jconfirmaction.jquery.js"></script>
 <script type="text/javascript">
@@ -89,3 +90,4 @@ $(document).ready(function(){
   </div>
 </@s.form>
 <#include "/WEB-INF/pages/inc/footer.ftl">
+</#escape>
