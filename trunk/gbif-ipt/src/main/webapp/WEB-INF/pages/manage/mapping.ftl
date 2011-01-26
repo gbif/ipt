@@ -31,6 +31,10 @@ $(document).ready(function(){
 				$(this).hide();
 			};
 		});
+		
+		if($('#filterComp option:selected').val()=="") {
+		  $('#filterSection').hide();
+		}
 	}	
 	
 	initHelp();
@@ -54,6 +58,7 @@ $(document).ready(function(){
 			$('div.definition').show();
 			$(".groupmenu").show();
 		}
+		showHideFilter();
 	});
 	$("#idColumn").change(function() {
 		showHideIdSuffix();
@@ -173,7 +178,7 @@ $(document).ready(function(){
 </div>
 	
 
-<div class="definition">	
+<div id="filterSection" class="definition">	
   <div class="title">
   	<div class="head">
 		Filter			
@@ -183,11 +188,11 @@ $(document).ready(function(){
   	<div class="infos">
   		<img class="infoImg" src="${baseURL}/images/info.gif" />
 		<div class="info">		
-			<@s.text name='manage.mapping.info'/>     
+			<@s.text name='manage.mapping.info'/>
 		</div>		
   	</div>
 	<div>
-		<select name="mapping.filter.column">
+		<select id="filterName" name="mapping.filter.column">
 		  <option value="" <#if !mapping.filter.column??> selected="selected"</#if>></option>
 		<#list columns as c>
 		  <option value="${c_index}" <#if c_index==mapping.filter.column!-999> selected="selected"</#if>>${c}</option>
@@ -316,7 +321,5 @@ $(document).ready(function(){
 	</#list>
 
 </form>
-
-
 <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>
