@@ -296,6 +296,17 @@ public class OverviewAction extends ManagerBaseAction {
           Organisation org = null;
           try {
             org = registrationManager.get(id);
+            
+            // http://code.google.com/p/gbif-providertoolkit/issues/detail?id=594
+            // It is safe to test the Organisation here.  A resource cannot be registered 
+            // without an organisation being provided, and the issue 594 is an example
+            // how one can produce this sequence of events.  A more robust improvement
+            // would might be to submit a state transition from the form "makePublic", 
+            // "makePrivate" which would be more atomic.
+            if (org==null) {
+            	return execute();
+            }
+            
             resourceManager.register(resource, org, registrationManager.getIpt());
             if (org != null) {
               addActionMessage(getText("manage.overview.resource.registered", new String[]{org.getName()}));
