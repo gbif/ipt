@@ -87,8 +87,8 @@ $(document).ready(function(){
       	<div>
       		<#assign description>
       			<#if resource.description?has_content>
-      				<#if (resource.description?length>200)>
-      					${(resource.description)?substring(0,200)} ...
+      				<#if (resource.description?length>100)>
+      					${(resource.description)?substring(0,100)}...
       				<#else>
       					${(resource.description)}
       				</#if>

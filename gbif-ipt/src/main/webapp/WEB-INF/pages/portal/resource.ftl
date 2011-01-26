@@ -15,6 +15,17 @@
 	<#if agent.homepage?? ><tr><th><@s.text name='eml.associatedParties.homepage'/></th><td><a href="${agent.homepage!}">${agent.homepage!}</a></td></tr></#if>
 </table>
 </#macro>
+<#macro description text noText maxLength>
+	<#if text?has_content>
+    	<#if (text?length>maxLength)>
+    		${(text)?substring(0,maxLength)}...
+    	<#else>
+    		${(text)}
+    	</#if>
+    <#else>
+		${(noText)}
+    </#if>
+</#macro>
 
 <#include "/WEB-INF/pages/inc/header.ftl">
 	<title>${resource.title!resource.shortname!}</title>
@@ -29,7 +40,7 @@
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <h1>${resource.title!resource.shortname}</h1>
 <#assign no_description><@s.text name='portal.resource.no.description'/></#assign>
-<p>${resource.description!no_description}</p>
+<p><@description resource.description!no_description no_description 150/></p>
 <div class="definition" id="metadata">	
   <div class="title">
   	<div class="head">
@@ -205,8 +216,10 @@
 			<#assign itemTitle><@s.text name='manage.metadata.taxcoverage.item'/></#assign>
 			<div class="head">${itemTitle?upper_case} ${item_index+1}</div>
 			<#assign size=eml.taxonomicCoverages[item_index].taxonKeywords?size/>
+			<table>
+			<tr><th><@s.text name='eml.taxonomicCoverages.description'/></th><td><@description eml.taxonomicCoverages[item_index].description no_description 50/></td></tr>
+			<table>
       		<table>
-				<tr><th><@s.text name='eml.taxonomicCoverages.description'/></th><td>${eml.taxonomicCoverages[item_index].description!}</td></tr>
 				<#list eml.taxonomicCoverages[item_index].taxonKeywords as subitem>
 				<tr>
 				<th>
@@ -317,7 +330,7 @@
 </div>
 </#if>
 
-<#if eml.citation.citation?has_content || eml.citation.identifier?has_content || eml.bibliographicCitationSet.bibliographicCitations?has_content>
+<#if (eml.citation?? && (eml.citation.citation?has_content || eml.citation.identifier?has_content)) || eml.bibliographicCitationSet.bibliographicCitations?has_content>
 <div class="definition">	
   <div class="title">
   	<div class="head">
