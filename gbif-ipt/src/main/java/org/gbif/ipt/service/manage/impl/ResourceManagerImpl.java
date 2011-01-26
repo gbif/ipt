@@ -521,23 +521,28 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   public int load() {
-    File extensionDir = dataDir.dataFile(DataDir.RESOURCES_DIR);
+    File resourcesDir = dataDir.dataFile(DataDir.RESOURCES_DIR);
     int counter = 0;
     resources.clear();
-    if(extensionDir!=null){
-	    for (File resourceDir : extensionDir.listFiles()) {
-	      if (resourceDir.isDirectory()) {
-	        try {
-	          addResource(loadFromDir(resourceDir));
-	          counter++;
-	        } catch (InvalidConfigException e) {
-	          log.error("Cant load resource " + resourceDir.getName(), e);
-	        }
-	      }
-	    }
-	    log.info("Loaded " + counter + " resources into memory alltogether.");
-    }else{
-    	log.info("Data directory is corrupt: "+dataDir.dataFile(""));
+    if(resourcesDir!=null){
+	    File[] resources = resourcesDir.listFiles();
+    	if (resources!=null) {
+		    for (File resourceDir : resources) {
+		      if (resourceDir.isDirectory()) {
+		        try {
+		          addResource(loadFromDir(resourceDir));
+		          counter++;
+		        } catch (InvalidConfigException e) {
+		          log.error("Cant load resource " + resourceDir.getName(), e);
+		        }
+		      }
+		    }
+		    log.info("Loaded " + counter + " resources into memory alltogether.");
+    	} else {
+    		log.info("Data directory does not hold a resources directory: "+dataDir.dataFile(""));
+    	}
+    } else {
+    	log.info("Data directory does not hold a resources directory: "+dataDir.dataFile(""));
     }
     return counter;
   }
