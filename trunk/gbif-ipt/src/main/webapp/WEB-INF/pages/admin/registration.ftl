@@ -1,3 +1,4 @@
+<#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
 <script type="text/javascript">
 $(document).ready(function(){
@@ -139,3 +140,4 @@ $(document).ready(function(){
 	</div>
 </#if>
 <#include "/WEB-INF/pages/inc/footer.ftl">
+</#escape>
