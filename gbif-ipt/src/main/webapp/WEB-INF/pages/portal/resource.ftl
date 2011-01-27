@@ -15,16 +15,12 @@
 	<#if agent.homepage?? ><tr><th><@s.text name='eml.associatedParties.homepage'/></th><td><a href="${agent.homepage!}">${agent.homepage!}</a></td></tr></#if>
 </table>
 </#macro>
-<#macro description text noText maxLength>
-	<#if text?has_content>
-    	<#if (text?length>maxLength)>
-    		${(text)?substring(0,maxLength)}...
-    	<#else>
-    		${(text)}
-    	</#if>
-    <#else>
-		${(noText)}
-    </#if>
+<#macro description text maxLength>
+   	<#if (text?length>maxLength)>
+   		${(text)?substring(0,maxLength)}...
+   	<#else>
+   		${(text)}
+   	</#if>
 </#macro>
 
 <#include "/WEB-INF/pages/inc/header.ftl">
@@ -40,7 +36,7 @@
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <h1>${resource.title!resource.shortname}</h1>
 <#assign no_description><@s.text name='portal.resource.no.description'/></#assign>
-<p><@description resource.description!no_description no_description 150/></p>
+<p><@description resource.description!no_description 150/></p>
 <div class="definition" id="metadata">	
   <div class="title">
   	<div class="head">
@@ -217,7 +213,7 @@
 			<div class="head">${itemTitle?upper_case} ${item_index+1}</div>
 			<#assign size=eml.taxonomicCoverages[item_index].taxonKeywords?size/>
 			<table>
-			<tr><th><@s.text name='eml.taxonomicCoverages.description'/></th><td><@description eml.taxonomicCoverages[item_index].description no_description 50/></td></tr>
+			<tr><th><@s.text name='eml.taxonomicCoverages.description'/></th><td><@description eml.taxonomicCoverages[item_index].description!no_description 30/></td></tr>
 			<table>
       		<table>
 				<#list eml.taxonomicCoverages[item_index].taxonKeywords as subitem>
