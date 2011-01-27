@@ -118,8 +118,10 @@ $(document).ready(function(){
 	    <input name="r" type="hidden" value="${resource.shortname}" />
 	    <input name="validate" type="hidden" value="false" />
 	    <@s.file name="file" key="manage.resource.create.file" />
-	    <br/>
+	    <div class="newline"></div>
        	<@s.submit name="add" key="button.add"/>
+       	<div class="newline"></div>
+       	<div class="newline"></div>
   	  </form>
   	</div>
   </div>
@@ -160,6 +162,8 @@ $(document).ready(function(){
 	    </#list>
 		</select>
 		<input type='submit' name='add' value='Add' />
+		<div class="newline"></div>
+		<div class="newline"></div>
   	  </form>
   	  <#else>
   	  	<#if (resource.sources?size>0) && !resource.hasCore()>
@@ -220,6 +224,8 @@ $(document).ready(function(){
 		<#else>
 		    <#if resource.status=="PRIVATE">
 	       	<@s.submit name="publish" key="button.public"/>
+	       	<div class="newline"></div>
+	       	<div class="newline"></div>
 			</#if>
 		    <#if resource.status=="REGISTERED">
 	       	<@s.submit name="update" key="button.update"/>
@@ -274,6 +280,8 @@ $(document).ready(function(){
 	  <form action='publish.do' method='post'>
 	    <input name="r" type="hidden" value="${resource.shortname}" />
 	    <@s.submit name="publish" key="button.publish" />
+	    <div class="newline"></div>
+	    <div class="newline"></div>
   	  </form>
   	  </#if>
   	</div>
