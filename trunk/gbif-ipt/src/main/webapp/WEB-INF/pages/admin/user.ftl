@@ -40,7 +40,7 @@ $(document).ready(function(){
 	</#if>
   <div class="buttons">
  	<@s.submit cssClass="button" name="save" key="button.save"/>
- 	<@s.submit cssClass="confirm" name="delete" key="button.delete"/>
+ 	<#if "${newUser!}"=="no"><@s.submit cssClass="confirm" name="delete" key="button.delete"/></#if>
  	<@s.submit cssClass="button" name="cancel" key="button.cancel"/>
   </div>	
 </@s.form>
