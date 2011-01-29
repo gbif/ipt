@@ -28,7 +28,10 @@ import java.util.List;
  * @author tim
  */
 public class OrganisationsAction extends POSTAction {
-	@SessionScoped
+	/**
+	 * A session scoped cache of the organisations from the GBIF registry
+	 */
+  @SessionScoped
 	public static class RegisteredOrganisations {
 		private List<Organisation> organisations = new ArrayList<Organisation>();
 		private RegistryManager registryManager;
@@ -39,12 +42,19 @@ public class OrganisationsAction extends POSTAction {
 			this.registryManager = registryManager;
 		}
 
-		public boolean isLoaded() {
-			if (organisations.size() > 0) {
-				return true;
-			}
-			return false;
-		}
+    public boolean isLoaded() {
+      if (organisations.size() > 0) {
+        return true;
+      }
+      return false;
+    }
+
+    /**
+     * Invalidates the session scoped cache of organisations
+     */
+    public void clearCache() {
+      organisations = new ArrayList<Organisation>();
+    }
 
 		public void load() throws RuntimeException {
 			log.debug("getting list of organisations from registry");
@@ -101,6 +111,8 @@ public class OrganisationsAction extends POSTAction {
 			if (removedOrganisation == null) {
 				return NOT_FOUND;
 			}
+			// force a reload of the cached organisation
+			orgSession.clearCache();
 			registrationManager.save();
 			addActionMessage(getText("admin.organisation.deleted"));
 			return SUCCESS;
