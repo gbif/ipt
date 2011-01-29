@@ -422,6 +422,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     File extFile = af.getLocationFile();
     FileSource s = sourceManager.add(config, extFile, af.getLocation());
     SourceManagerImpl.copyArchiveFileProperties(af, s);
+    
+    // the number of rows was calculated using the standard file importer
+    // make an adjustment now that the exact number of header rows are known
+    if (s.getIgnoreHeaderLines()!=1) {
+        log.info("Adjusting row count to " + (s.getRows()+1 - s.getIgnoreHeaderLines()) + " from " + 
+                + s.getRows() + " since header count is declared as " + s.getIgnoreHeaderLines());
+    }
+    s.setRows(s.getRows()+1 - s.getIgnoreHeaderLines());
+    
     return s;
   }
 
