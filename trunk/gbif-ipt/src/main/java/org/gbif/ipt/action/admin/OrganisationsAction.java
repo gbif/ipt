@@ -205,9 +205,17 @@ public class OrganisationsAction extends POSTAction {
 					addActionError(getText("admin.organisation.error.existing"));
 					return INPUT;
 				}
+				// store the fields the user has supplied 
+				String alias = organisation.getAlias();
+				boolean canHost = organisation.isCanHost();
+				String password = organisation.getPassword();
+				
 				for(Organisation org:getOrganisations()){
 					if(org.getKey().equals(organisation.getKey())){
 						organisation=org;
+						organisation.setAlias(alias);
+						organisation.setCanHost(canHost);
+						organisation.setPassword(password);
 						break;
 					}
 				}
