@@ -4,7 +4,7 @@
    * [IPTServerPreparation Server Preparation]
    * [IPT2ManualNotes#Getting_Started_Guide Getting Started Guide]
    * [IPT2ManualNotes#Quick_Reference_Guide Quick Reference Guide]
-   * [IPT2DatabaseConnection Connecting to a Database]
+   * [IPT2DatabaseConnection Supported Databases]
    * [IPT2ManualNotes#About_the_IPT About, Credits]
    * [IPT2ManualNotes#Resources Resources]
    * [IPT2ManualNotes#Glossary Glossary]
