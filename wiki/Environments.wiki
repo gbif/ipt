@@ -1,6 +1,10 @@
 #The environments configurations that IPT is known to work with
 
-|| *Operating system* || *Java version* || *Tomcat version* ||
-|| Mac OSX 10.5.8 || Java 1.6.0_30 || Tomcat 5.5_30 ||
-|| Mac OSX 10.6.5 || Java 1.6.0_22 || Tomcat 6.0_29 ||
-|| Mac OSX 10.6.5 || Java 1.6.0_22 || Tomcat 5.5_31 ||
+Please post a comment with known environments and they will be added to the matrix.
+
+|| *Operating system* || *Java version* || *Tomcat version* || *IPT Version* ||
+|| Mac OSX 10.5.8 || Java 1.6.0_30 || Tomcat 5.5_30 || 2.0RC1+ ||
+|| Mac OSX 10.6.5 || Java 1.6.0_22 || Tomcat 6.0_29 || 2.0RC1+ ||
+|| Mac OSX 10.6.5 || Java 1.6.0_22 || Tomcat 5.5_31 || 2.0RC1+ ||
+|| Mac OSX 10.6.4 || Java 1.6.0_20 || Tomcat 6.0_24 || 2.0RC1+ ||
+|| Linux 2.6.36-ARCH || Java 1.6.0_20-b20 || Tomcat 5.5_31 || 2.0RC1+ ||
