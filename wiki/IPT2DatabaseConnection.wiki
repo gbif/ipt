@@ -1,16 +1,6 @@
-#summary Connecting the IPT to an institutional database
+#summary Supported databases
 
-This section provides information about using a relational database as the source of data to publish through an IPT.
-
-*Topics*
-<wiki:toc max_depth="2" />
-
-== Database as data source ==
-The IPT can use database connections to import data from tables or views. 
-
-To configure a database as a data source, click on the button labeled "Add" in the left-hand column of the Source Data area of the Resource Overview page. This will open a Source Database detail page. This page shows the name of the resource along with a summary of the database characteristics (readability, number of columns detected) and allows the user to view and edit the parameters that describe how to access the data from the database, and to use these settings to analyze and preview the data. 
-
-Click on the button labeled "Analyze" to regenerate the data summary based on the format parameters on the page, click on the "Preview" button to see an interpretation of the data based on these settings. 
+This section provides information about the source database types supported by the IPT
 
 == Suported databases ==
 The IPT can use database connections to import data from tables or views. Currently the following databases are supported:
@@ -20,7 +10,3 @@ The IPT can use database connections to import data from tables or views. Curren
  * Oracle
  * PostgreSQL
  * Sybase databases
-
-To configure a database as a data source, click on the button labeled "Add" in the left-hand column of the Source Data area of the Resource Overview page. This will open a Source Database detail page. This page shows the name of the resource along with a summary of the database characteristics (readability, number of columns detected) and allows the user to view and edit the parameters that describe how to access the data from the database, and to use these settings to analyze and preview the data. 
-
-Click on the button labeled "Analyze" to regenerate the data summary based on the format parameters on the page, click on the "Preview" button to see an interpretation of the data based on these settings.
