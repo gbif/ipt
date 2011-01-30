@@ -4,6 +4,7 @@
    * [IPTServerPreparation Server Preparation]
    * [IPT2ManualNotes#Getting_Started_Guide Getting Started Guide]
    * [IPT2ManualNotes#Quick_Reference_Guide Quick Reference Guide]
+   * [IPT2DatabaseConnection Connecting to a Database]
    * [IPT2ManualNotes#About_the_IPT About, Credits]
    * [IPT2ManualNotes#Resources Resources]
    * [IPT2ManualNotes#Glossary Glossary]
@@ -13,17 +14,17 @@
    * DataPreparation
    * TutorialOccurrenceResource
  * Developers
-   * [HowToContribute How to contribute]
+   * [HowToContribute How to Contribute]
    * [KeyTechnologies]
    * [DevelopersGettingStarted Getting Started]
-   * [DeveloperFAQ]
+   * [DeveloperFAQ Developer FAQ]
    * [Environments]
  * Versions
    * [Roadmap]
-   * [VersionHistory]
-   * [IPTUpdates]
+   * [VersionHistory Version History]
+   * [IPTUpdates IPT Updates]
    * New Features Considered
-     * [DataTransformations]
+     * [DataTransformations Data transformations]
  * IPT version 1.0 (*deprecated*)
    * User Manual v1.0
      * [UserManualChapter1 Background Information]
