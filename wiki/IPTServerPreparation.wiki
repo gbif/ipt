@@ -1,7 +1,5 @@
 #IPT server preparation considerations for various environments
 
-= Introduction =
-
 This section contains information about IPT installations that may vary between operating systems or servlet containers.  
 
 *Topics*
