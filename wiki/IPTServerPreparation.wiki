@@ -2,9 +2,10 @@
 
 = Introduction =
 
-This page is meant to contain information about IPT installations that may vary between operating systems or servlet containers.
+This section contains information about IPT installations that may vary between operating systems or servlet containers.  
 
-= Details =
+*Topics*
+<wiki:toc max_depth="2" />
 
 ==Jetty==
 
