@@ -45,12 +45,9 @@
 	</#if>
   </div>
 </#macro> 
-<#macro readonly i18nkey value size=-1 help="">
-  <div>
-	<label><@s.text name="${i18nkey}"/></label>
-	<img style="visibility:hidden" src="${baseURL}/images/info.gif" />
+<#macro readonly name i18nkey value size=-1 help="" errorfield="">
+	<#include "/WEB-INF/pages/macros/form_field_common.ftl">
 	<input type="text" value="${value}" <#if (size>0)>size="${size}"</#if> readonly="readonly" />
-  </div>
 </#macro>
 <#macro label i18nkey help="">
   <div>

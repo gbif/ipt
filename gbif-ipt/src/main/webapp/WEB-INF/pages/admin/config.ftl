@@ -51,13 +51,13 @@ $(document).ready(function(){
 
 <@s.form cssClass="topForm half" action="config" method="post">
 
-  	<@readonly i18nkey="admin.config.server.data.dir" value="${dataDir}"/>
+  	<@readonly name="dataDir" i18nkey="admin.config.server.data.dir" value="${dataDir}" help="i18n"/>
 	<@input name="baseUrl" i18nkey="admin.config.baseUrl" help="i18n" size=80/>
 	<@input name="proxy" i18nkey="admin.config.proxy" help="i18n" size=80/>
-	<@input name="analyticsKey" i18nkey="admin.config.analyticsKey" size=80/>  
-	<@checkbox name="analyticsGbif" i18nkey="admin.config.analyticsGbif" />  
-	<@checkbox name="debug" i18nkey="admin.config.debug" />
-  	<@readonly i18nkey="admin.config.server.log.dir" value="${logDir}" />
+	<@input name="analyticsKey" i18nkey="admin.config.analyticsKey" help="i18n" size=80/>  
+	<@checkbox name="analyticsGbif" i18nkey="admin.config.analyticsGbif" help="i18n"/>  
+	<@checkbox name="debug" i18nkey="admin.config.debug" help="i18n"/>
+  	<@readonly name="logDir" i18nkey="admin.config.server.log.dir" value="${logDir}" help="i18n"/>
 
   <div id="location">
 	<div class="newline"></div>

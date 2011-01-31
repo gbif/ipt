@@ -19,7 +19,7 @@
 	<@input name="password2" i18nkey="user.password2" type="password"/>
 	  
 	<#assign val><@s.text name="user.roles.${user.role?lower_case}"/></#assign>
-	<@readonly i18nkey="user.role" value=val />  
+	<@readonly name="role" i18nkey="user.role" value=val />  
 	
   <div class="buttons">
  	<@s.submit cssClass="button" name="save" key="button.save"/>
