@@ -57,7 +57,7 @@ function initHelp(context){
 	        $(this).next().show("fast");
 	    };
     });
-	$("div.info:visible").hide("fast");
+	$("div.info:visible").hide();
 	$(context+" div.info").click(function(e) {
         $(this).hide("fast");
     });
