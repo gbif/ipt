@@ -72,6 +72,10 @@ public class ConfigAction extends POSTAction {
     return cfg.getProxy();
   }
 
+  public String getRegistryUrl() {
+    return cfg.getRegistryUrl();
+  }
+
   /**
    * This is called when the new configuration is submitted
    * 
@@ -158,8 +162,10 @@ public class ConfigAction extends POSTAction {
       addActionError(getText("admin.config.save.error"));
       return INPUT;
     }
-    if(baseUrlChanged) return HOME;
-    
+    if (baseUrlChanged) {
+      return HOME;
+    }
+
     return SUCCESS;
   }
 

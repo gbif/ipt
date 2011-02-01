@@ -58,6 +58,7 @@ $(document).ready(function(){
 	<@checkbox name="analyticsGbif" i18nkey="admin.config.analyticsGbif" help="i18n"/>  
 	<@checkbox name="debug" i18nkey="admin.config.debug" help="i18n"/>
   	<@readonly name="logDir" i18nkey="admin.config.server.log.dir" value="${logDir}" help="i18n"/>
+  	<@readonly name="registryUrl" i18nkey="admin.config.registry.url" value="${registryUrl}" help="i18n"/>
 
   <div id="location">
 	<div class="newline"></div>
