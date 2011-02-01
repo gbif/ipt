@@ -366,7 +366,7 @@ Following is a list of the metadata pages and their contents:
       * *Alternative Identifier* - the text for the alternative identifier for the resource (e.g., a URL, UUID, or any other unique key value).
     * *Remove this alternative identifier* - click on this link to remove the alternative identifier that follows immediately below.
 ====Source Data====
-This area of the Resource Overview page allows a user to import primary data from files or databases into the IPT. If a resource has no source data it is considered a metadata-only resource, with information about a data set or collection, but without any primary data. Following are separate explanations for the preliminary step of choosing the source data:
+This area of the Resource Overview page allows a user to import primary data from files or databases into the IPT. If a resource has no source data it is considered a metadata-only resource, with information about a data set or collection, but without any primary data. It is possible to connect a resource to more than one data source if the sources are related to each other. More about relating multiple data sources is explained in the [http://rs.tdwg.org/dwc/terms/guides/text/index.htm#implement Implementation Guide] section of the Darwin Core Text Guide  Following are explanations for the preliminary step of choosing the source data either from text files or from database sources:
 
 *File as data source*<br>
 The IPT can import uncompressed delimited text files (csv, tab, and files using any other delimiter) or equivalent files compressed with zip or gzip. Click on the button labeled "Choose File" to navigate to and select the file to import. After selecting the file, its name will appear to the right of the "Choose File" button. 
@@ -390,7 +390,7 @@ After the parameters for the data source have been set so that the file is inter
 If the source data are contained in multiple text files, the process described in this section can be repeated for each of the files to import.
 
 *Database as data source*<br>
-The IPT can use database connections to import data from tables or views. To configure a database as a data source, click on the button labeled "Add" in the left-hand column of the Source Data area of the Resource Overview page. This will open a Source Database detail page. This page shows the name of the resource along with a summary of the database characteristics (readability, number of columns detected) and allows the user to view and edit the parameters that describe how to access the data from the database, and to use these settings to analyze and preview the data. Click on the button labeled "Analyze" to regenerate the data summary based on the format parameters on the page, click on the "Preview" button to see an interpretation of the data based on these settings.
+The IPT can use database connections to import data from tables or views. A list of supported database connections is given on the [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2DatabaseConnection Supported databases] page of the IPT Project wiki. To configure a database as a data source, click on the button labeled "Add" in the left-hand column of the Source Data area of the Resource Overview page. This will open a Source Database detail page. This page shows the name of the resource along with a summary of the database characteristics (readability, number of columns detected) and allows the user to view and edit the parameters that describe how to access the data from the database, and to use these settings to analyze and preview the data. Click on the button labeled "Analyze" to regenerate the data summary based on the format parameters on the page, click on the "Preview" button to see an interpretation of the data based on these settings.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceSourceDatabase.png]
 
@@ -672,6 +672,8 @@ Subscribe to the IPT mailing list to send and receive messages related to the us
 This wiki page gives details about preparing a server to run the IPT and can be found on the IPT project code site wiki at http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation.
 ==IPT software updates==
 This wiki page gives details about updating aspects of the IPT, including upgrading an older installation of the IPT to a new version: http://code.google.com/p/gbif-providertoolkit/wiki/IPTUpdates.
+==IPT supported databases==
+This wiki page gives details about the database management systems to which the IPT can connect for a data source. The page can be found on the IPT project code site at http://code.google.com/p/gbif-providertoolkit/wiki/IPT2DatabaseConnection.
 ==IPT test installation==
 GBIF provides a functional installation of the IPT for evaluation and testing purposes. The test installation of the latest release can be found at http://ipt.gbif.org.
 ----
