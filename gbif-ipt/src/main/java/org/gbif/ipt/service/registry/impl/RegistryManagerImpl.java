@@ -18,6 +18,7 @@ import org.gbif.ipt.utils.RegistryEntryHandler;
 import org.gbif.metadata.eml.Eml;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
 
@@ -230,8 +231,20 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     try {
       Response resp = http.get(getOrganisationsURL(true));
       if (resp.content != null) {
-        return gson.fromJson(resp.content, new TypeToken<List<Organisation>>() {
-        }.getType());
+    	  List<Map<String, String>> organisationsTemp = gson.fromJson(resp.content, 
+    			  new TypeToken<List<Map<String, String>>>() {}.getType());
+    	  List<Organisation> organisations = new ArrayList<Organisation>();
+    	  for(Map<String, String> org : organisationsTemp) {
+    		  if(!org.get("key").equals("") && !org.get("name").equals("")) {
+    			  Organisation o = new Organisation();
+    			  o.setName(org.get("name"));    		  
+    			  o.setKey(org.get("key"));
+    			  organisations.add(o);
+    		  }
+    		  
+    	  }
+    	  return organisations;
+        //return gson.fromJson(resp.content, new TypeToken<List<Organisation>>() {}.getType());
       } else {
         throw new RegistryException(TYPE.BAD_RESPONSE, "Response content is null");
       }
