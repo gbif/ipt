@@ -35,22 +35,28 @@
 	</style>
 <script type="text/javascript">
 $(document).ready(function(){
+	var $registered = false;
 	$('.confirm').jConfirmAction({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
 	//$('.confirmRegistration').jConfirmAction({question : "<@s.text name="manage.overview.visibility.confirm.registration"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
-	$( '.confirmRegistration').click(function(event) {				
-		$('#dialog-confirm').dialog({
-			resizable: true,
-			height:200,
-			modal: true,
-			buttons: {
-				"<@s.text name="basic.yes"/>": function() {								
-					$( this ).dialog( "close" );					
-				},
-				"<@s.text name="basic.no"/>": function() {
-					$( this ).dialog( "close" );					
+	$( '.confirmRegistration').click(function(event) {
+		if($registered == false) {
+			event.preventDefault();
+			$('#dialog-confirm').dialog({			
+				resizable: true,
+				height:200,
+				modal: true,
+				buttons: {
+					"<@s.text name="basic.yes"/>": function() {
+						$registered = true;
+						$( this ).dialog( "close" );				
+						$('.confirmRegistration').click();				
+					},
+					"<@s.text name="basic.no"/>": function() {
+						$( this ).dialog( "close" );					
+					}
 				}
-			}
-		});		
+			});
+		}
 	});
 	    
 	$('.confirmDeletion').jConfirmAction({question : "<#if resource.status=="REGISTERED"><@s.text name="manage.resource.delete.confirm.registered"/><#else><@s.text name="basic.confirm"/></#if>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
