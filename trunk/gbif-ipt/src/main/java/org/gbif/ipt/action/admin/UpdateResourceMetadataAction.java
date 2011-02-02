@@ -57,7 +57,7 @@ public class UpdateResourceMetadataAction extends POSTAction {
     log.info("Updating resource metadata - eml.xml");
     for (Resource res : publishedResources) {
       try {
-        resourceManager.publishEml(res, this);
+        resourceManager.publishMetadata(res, this);
         resUpdateStatus.put(res.getShortname() + eml, success);
       } catch (PublicationException e) {
         resUpdateStatus.put(res.getShortname() + eml, e.getMessage());

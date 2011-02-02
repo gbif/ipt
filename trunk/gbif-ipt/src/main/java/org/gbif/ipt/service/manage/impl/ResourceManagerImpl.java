@@ -11,8 +11,6 @@ import org.gbif.dwc.text.ArchiveFactory;
 import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveFile;
 import org.gbif.dwc.text.UnsupportedArchiveException;
-import org.gbif.utils.file.CompressionUtil;
-import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
@@ -49,6 +47,7 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.RequireManagerInterceptor;
+import org.gbif.ipt.task.Eml2Rtf;
 import org.gbif.ipt.task.GenerateDwca;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.task.ReportHandler;
@@ -60,9 +59,14 @@ import org.gbif.metadata.MetadataFactory;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlFactory;
 import org.gbif.metadata.eml.EmlWriter;
+import org.gbif.utils.file.CompressionUtil;
+import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.rtf.RtfWriter2;
 import com.thoughtworks.xstream.XStream;
 
 import org.apache.commons.io.FileUtils;
@@ -71,8 +75,10 @@ import org.xml.sax.SAXException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -106,6 +112,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private RegistrationManager registrationManager;
   private ThreadPoolExecutor executor;
   private GenerateDwcaFactory dwcaFactory;
+  private Eml2Rtf eml2Rtf;
   private Map<String, Future<Integer>> processFutures = new HashMap<String, Future<Integer>>();
   private Map<String, StatusReport> processReports = new HashMap<String, StatusReport>();
 
@@ -114,13 +121,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       OrganisationKeyConverter orgConverter, ExtensionRowTypeConverter extensionConverter,
       JdbcInfoConverter jdbcInfoConverter, SourceManager sourceManager, ExtensionManager extensionManager,
       RegistryManager registryManager, ConceptTermConverter conceptTermConverter, GenerateDwcaFactory dwcaFactory,
-      PasswordConverter passwordConverter, RegistrationManager registrationManager) {
+      PasswordConverter passwordConverter, RegistrationManager registrationManager, Eml2Rtf eml2Rtf) {
     super(cfg, dataDir);
     this.sourceManager = sourceManager;
     this.extensionManager = extensionManager;
     this.registryManager = registryManager;
     this.registrationManager = registrationManager;
     this.dwcaFactory = dwcaFactory;
+    this.eml2Rtf = eml2Rtf;
     this.executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(cfg.getMaxThreads());
     defineXstreamMapping(userConverter, orgConverter, extensionConverter, conceptTermConverter, jdbcInfoConverter,
         passwordConverter);
@@ -252,7 +260,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         }
         // finally persist the whole thing
         save(resource);
-        alog.info("manage.resource.create.success", new String[]{resource.getCoreRowType(), ""+resource.getSources().size(), ""+(resource.getMappings().size()+1)});
+        alog.info("manage.resource.create.success", new String[]{
+            resource.getCoreRowType(), "" + resource.getSources().size(), "" + (resource.getMappings().size() + 1)});
 
       } else {
         alog.warn("manage.resource.create.core.invalid");
@@ -422,15 +431,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     File extFile = af.getLocationFile();
     FileSource s = sourceManager.add(config, extFile, af.getLocation());
     SourceManagerImpl.copyArchiveFileProperties(af, s);
-    
+
     // the number of rows was calculated using the standard file importer
     // make an adjustment now that the exact number of header rows are known
-    if (s.getIgnoreHeaderLines()!=1) {
-        log.info("Adjusting row count to " + (s.getRows()+1 - s.getIgnoreHeaderLines()) + " from " + 
-                + s.getRows() + " since header count is declared as " + s.getIgnoreHeaderLines());
+    if (s.getIgnoreHeaderLines() != 1) {
+      log.info("Adjusting row count to " + (s.getRows() + 1 - s.getIgnoreHeaderLines()) + " from " +
+                +s.getRows() + " since header count is declared as " + s.getIgnoreHeaderLines());
     }
-    s.setRows(s.getRows()+1 - s.getIgnoreHeaderLines());
-    
+    s.setRows(s.getRows() + 1 - s.getIgnoreHeaderLines());
+
     return s;
   }
 
@@ -533,25 +542,25 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     File resourcesDir = dataDir.dataFile(DataDir.RESOURCES_DIR);
     int counter = 0;
     resources.clear();
-    if(resourcesDir!=null){
-	    File[] resources = resourcesDir.listFiles();
-    	if (resources!=null) {
-		    for (File resourceDir : resources) {
-		      if (resourceDir.isDirectory()) {
-		        try {
-		          addResource(loadFromDir(resourceDir));
-		          counter++;
-		        } catch (InvalidConfigException e) {
-		          log.error("Cant load resource " + resourceDir.getName(), e);
-		        }
-		      }
-		    }
-		    log.info("Loaded " + counter + " resources into memory alltogether.");
-    	} else {
-    		log.info("Data directory does not hold a resources directory: "+dataDir.dataFile(""));
-    	}
+    if (resourcesDir != null) {
+      File[] resources = resourcesDir.listFiles();
+      if (resources != null) {
+        for (File resourceDir : resources) {
+          if (resourceDir.isDirectory()) {
+            try {
+              addResource(loadFromDir(resourceDir));
+              counter++;
+            } catch (InvalidConfigException e) {
+              log.error("Cant load resource " + resourceDir.getName(), e);
+            }
+          }
+        }
+        log.info("Loaded " + counter + " resources into memory alltogether.");
+      } else {
+        log.info("Data directory does not hold a resources directory: " + dataDir.dataFile(""));
+      }
     } else {
-    	log.info("Data directory does not hold a resources directory: "+dataDir.dataFile(""));
+      log.info("Data directory does not hold a resources directory: " + dataDir.dataFile(""));
     }
     return counter;
   }
@@ -627,7 +636,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           + " is currently locked by another process");
     }
 
-    publishEml(resource, action);
+    publishMetadata(resource, action);
 
     // regenerate dwca asynchronously
     boolean dwca = false;
@@ -650,7 +659,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return dwca;
   }
 
-  public void publishEml(Resource resource, BaseAction action) throws PublicationException {
+  public void publishMetadata(Resource resource, BaseAction action) throws PublicationException {
     ActionLogger alog = new ActionLogger(this.log, action);
     // check if publishing task is already running
     if (isLocked(resource.getShortname())) {
@@ -672,6 +681,26 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       alog.error("Can't publish resource " + resource.getShortname(), e);
       throw new PublicationException(PublicationException.TYPE.EML, "Can't publish eml file for resource "
           + resource.getShortname(), e);
+    }
+    // publish also as RTF
+    publishRtf(resource, alog);
+  }
+
+  private void publishRtf(Resource resource, ActionLogger alog) {
+    Document doc = new Document();
+    File rtfFile = dataDir.resourceRtfFile(resource.getShortname());
+    OutputStream out;
+    try {
+      out = new FileOutputStream(rtfFile);
+      RtfWriter2 writer = RtfWriter2.getInstance(doc, out);
+      eml2Rtf.writeEmlIntoRtf(doc, resource);
+      out.close();
+    } catch (FileNotFoundException e) {
+      alog.error("Cant find rtf file to write metadata to: " + rtfFile.getAbsolutePath(), e);
+    } catch (DocumentException e) {
+      alog.error("RTF DocumentException while writing to file " + rtfFile.getAbsolutePath(), e);
+    } catch (IOException e) {
+      alog.error("Cant write to rtf file " + rtfFile.getAbsolutePath(), e);
     }
   }
 

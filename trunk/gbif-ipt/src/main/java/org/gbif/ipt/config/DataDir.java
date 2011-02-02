@@ -121,8 +121,8 @@ public class DataDir {
     FileUtils.forceMkdir(configDir);
     FileUtils.forceMkdir(resourcesDir);
     // placeholder for the future
-    //File luceneDir = dataFile(LUCENE_DIR);
-    //FileUtils.forceMkdir(luceneDir);
+    // File luceneDir = dataFile(LUCENE_DIR);
+    // FileUtils.forceMkdir(luceneDir);
     FileUtils.forceMkdir(loggingDir);
     // copy default config files
     InputStream input = streamUtils.classpathStream("configDefault/ipt.properties");
@@ -235,6 +235,17 @@ public class DataDir {
    */
   public File resourceFile(String resourceName, String path) {
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + path);
+  }
+
+  /**
+   * File for the only & current rtf file representing the eml metadata for data publishers in RTF format
+   * 
+   * @param resourceName
+   * @return
+   */
+  public File resourceRtfFile(String resourceName) {
+    String fn = resourceName + ".rtf";
+    return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
   }
 
   /**
