@@ -640,7 +640,7 @@ div.details td{
 .yes, .cancel {
 	margin-top: .5em;
 	margin-right: 1em;
-	padding: 2px 4px;
+	padding: 2px 8px;
 	cursor: pointer;
 	display: inline-block;
 	color: #fff;
