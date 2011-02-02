@@ -70,10 +70,6 @@ $(document).ready(function(){
 <@s.text name="manage.overview.intro"><@s.param>${resource.title!resource.shortname}</@s.param></@s.text>
 </p>
 
-<div id="dialog-confirm" title="Are you sure?" style="display: none;">
-	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>These items will be permanently deleted and cannot be recovered. Are you sure?</p>
-</div>
-
 <div class="definition" id="metadata">	
   <div class="title">
   	<div class="head">
