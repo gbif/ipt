@@ -2,7 +2,7 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 <#include "/WEB-INF/pages/inc/header_ui.ftl">
 	<title><@s.text name="manage.overview.title"/>: ${resource.title!resource.shortname}</title>
-	<script type="text/javascript" src="${baseURL}/js/jconfirmaction.jquery.js"></script>
+	<script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
 	<style>
 	img.info{
 		position: relative;
@@ -37,29 +37,8 @@
 $(document).ready(function(){
 	var $registered = false;
 	$('.confirm').jConfirmAction({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
-	//$('.confirmRegistration').jConfirmAction({question : "<@s.text name="manage.overview.visibility.confirm.registration"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
-	$( '.confirmRegistration').click(function(event) {
-		if($registered == false) {
-			event.preventDefault();
-			$('#dialog-confirm').dialog({			
-				resizable: true,
-				height:200,
-				modal: true,
-				buttons: {
-					"<@s.text name="basic.yes"/>": function() {
-						$registered = true;
-						$( this ).dialog( "close" );				
-						$('.confirmRegistration').click();				
-					},
-					"<@s.text name="basic.no"/>": function() {
-						$( this ).dialog( "close" );					
-					}
-				}
-			});
-		}
-	});
-	    
-	$('.confirmDeletion').jConfirmAction({question : "<#if resource.status=="REGISTERED"><@s.text name="manage.resource.delete.confirm.registered"/><#else><@s.text name="basic.confirm"/></#if>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
+	$('.confirmRegistration').jConfirmAction({question : '<@s.text name="manage.overview.visibility.confirm.registration"/>', yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
+	$('.confirmDeletion').jConfirmAction({question : '<#if resource.status=="REGISTERED"><@s.text name="manage.resource.delete.confirm.registered"/><#else><@s.text name="basic.confirm"/></#if>', yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
 				
 	var showReport=false;
 	$("#toggleReport").click(function() {
