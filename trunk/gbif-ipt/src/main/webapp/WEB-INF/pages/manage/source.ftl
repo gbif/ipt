@@ -84,7 +84,7 @@ $(document).ready(function(){
 	  	<@input name="sqlSource.username" />
 	  </div>
 	  <div class="halfcolumn">
-	  	<@input name="sqlSource.password" />
+	  	<@input name="sqlSource.password" type="password" />
   	  </div>
   	  <@text name="sqlSource.sql" help="i18n"/>
   	  <#if sqlSource.sql?has_content>
