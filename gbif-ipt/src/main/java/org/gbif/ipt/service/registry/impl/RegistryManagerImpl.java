@@ -18,7 +18,6 @@ import org.gbif.ipt.utils.RegistryEntryHandler;
 import org.gbif.metadata.eml.Eml;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
 
@@ -33,7 +32,6 @@ import org.xml.sax.SAXException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -80,12 +78,11 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     data.add(new BasicNameValuePair("primaryContactName",
         StringUtils.trimToNull(StringUtils.trimToEmpty(resource.getCreator().getName()))));
     data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(resource.getCreator().getEmail())));
-    
+
     // the following are not yet supported by the registry at the time of writing, but a request has been logged:
-    // http://code.google.com/p/gbif-registry/issues/detail?id=88 
+    // http://code.google.com/p/gbif-registry/issues/detail?id=88
     data.add(new BasicNameValuePair("primaryContactFirstName", StringUtils.trimToNull(StringUtils.trimToEmpty(resource.getCreator().getFirstname()))));
     data.add(new BasicNameValuePair("primaryContactLastName", StringUtils.trimToNull(StringUtils.trimToEmpty(resource.getCreator().getLastname()))));
-    
 
     // see if we have a published dwca or if its only metadata
     RegistryServices services = buildServiceTypeParams(resource);
@@ -231,20 +228,31 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     try {
       Response resp = http.get(getOrganisationsURL(true));
       if (resp.content != null) {
-    	  List<Map<String, String>> organisationsTemp = gson.fromJson(resp.content, 
-    			  new TypeToken<List<Map<String, String>>>() {}.getType());
-    	  List<Organisation> organisations = new ArrayList<Organisation>();
-    	  for(Map<String, String> org : organisationsTemp) {
-    		  if(!org.get("key").equals("") && !org.get("name").equals("")) {
-    			  Organisation o = new Organisation();
-    			  o.setName(org.get("name"));    		  
-    			  o.setKey(org.get("key"));
-    			  organisations.add(o);
-    		  }
-    		  
-    	  }
-    	  return organisations;
-        //return gson.fromJson(resp.content, new TypeToken<List<Organisation>>() {}.getType());
+        List<Map<String, String>> organisationsTemp = gson.fromJson(resp.content,
+            new TypeToken<List<Map<String, String>>>() {
+            }.getType());
+        List<Organisation> organisations = new ArrayList<Organisation>();
+        int invalid = 0;
+        for (Map<String, String> org : organisationsTemp) {
+          if (org.isEmpty() || StringUtils.isBlank(org.get("key")) || StringUtils.isBlank(org.get("name"))) {
+            invalid++;
+          } else {
+            Organisation o = new Organisation();
+            o.setName(org.get("name"));
+            try {
+              o.setKey(org.get("key"));
+              organisations.add(o);
+            } catch (IllegalArgumentException e) {
+              // this is not a uuid...
+              invalid++;
+            }
+          }
+          if (invalid > 0) {
+            log.debug("Skipped " + invalid + " invalid organisation JSON objects");
+          }
+        }
+        return organisations;
+        // return gson.fromJson(resp.content, new TypeToken<List<Organisation>>() {}.getType());
       } else {
         throw new RegistryException(TYPE.BAD_RESPONSE, "Response content is null");
       }
