@@ -10,6 +10,7 @@
 		<script type="text/javascript">
 			
 			$(document).ready(function() {
+				$('.ask-large').jConfirmAction({question : "Have you ever thought about getting a decent job? If you havent, please indicate with yes and we will do the best we can for you.", yesAnswer : "Yes", cancelAnswer : "No, never"});
 				$('.ask-custom').jConfirmAction({question : "Anda Yakin?", yesAnswer : "Ya", cancelAnswer : "Tidak"});
 				$('.ask').jConfirmAction();
 			});
@@ -36,6 +37,10 @@
 	<hr/>
 	<label>Customized Language (Indonesian) </label>
 	: <a href="jconfirmation_test_delete.html" class="ask-custom"><img src="../images/trash.png" border="0" align="absbottom" /></a>
+	
+	<hr/>
+	<label>Large labels </label>
+	: <a href="jconfirmation_test_delete.html" class="ask-large"><img src="../images/trash.png" border="0" align="absbottom" /></a>
 </div>
 </div>
 </div>
