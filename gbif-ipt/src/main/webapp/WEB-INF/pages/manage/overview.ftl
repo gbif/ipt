@@ -1,5 +1,6 @@
 <#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
+<#include "/WEB-INF/pages/inc/header_ui.ftl">
 	<title><@s.text name="manage.overview.title"/>: ${resource.title!resource.shortname}</title>
 	<script type="text/javascript" src="${baseURL}/js/jconfirmaction.jquery.js"></script>
 	<style>
@@ -35,7 +36,23 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	$('.confirm').jConfirmAction({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
-	$('.confirmRegistration').jConfirmAction({question : "<@s.text name="manage.overview.visibility.confirm.registration"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});    
+	//$('.confirmRegistration').jConfirmAction({question : "<@s.text name="manage.overview.visibility.confirm.registration"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
+	$( '.confirmRegistration').click(function(event) {				
+		$('#dialog-confirm').dialog({
+			resizable: true,
+			height:200,
+			modal: true,
+			buttons: {
+				"<@s.text name="basic.yes"/>": function() {								
+					$( this ).dialog( "close" );					
+				},
+				"<@s.text name="basic.no"/>": function() {
+					$( this ).dialog( "close" );					
+				}
+			}
+		});		
+	});
+	    
 	$('.confirmDeletion').jConfirmAction({question : "<#if resource.status=="REGISTERED"><@s.text name="manage.resource.delete.confirm.registered"/><#else><@s.text name="basic.confirm"/></#if>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
 				
 	var showReport=false;
@@ -68,6 +85,9 @@ $(document).ready(function(){
 <@s.text name="manage.overview.intro"><@s.param>${resource.title!resource.shortname}</@s.param></@s.text>
 </p>
 
+<div id="dialog-confirm" title="Are you sure?" style="display: none;">
+	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>These items will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
 
 <div class="definition" id="metadata">	
   <div class="title">
