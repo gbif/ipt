@@ -24,8 +24,7 @@
 
 					$('#dialog-confirm').html('<p>'+theOptions.question+'</p>');
 					$('#dialog-confirm').dialog({
-							resizable: true,
-							height:200,
+							resizable: false,
 							modal: true,
 							buttons: {
 								"theOptions.yesAnswer": function() {								
