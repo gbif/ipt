@@ -90,3 +90,5 @@
             [/#if]
 			[@s.actionerror/]
             
+            <div id="dialog-confirm" title="[@s.text name="basic.confirm"/]" style="display: none;">
+			</div>
