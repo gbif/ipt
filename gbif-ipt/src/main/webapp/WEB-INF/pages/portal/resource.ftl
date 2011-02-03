@@ -218,23 +218,15 @@
 			<#assign size=eml.taxonomicCoverages[item_index].taxonKeywords?size/>
 			<table>
 			<tr><th><@s.text name='eml.taxonomicCoverages.description'/></th><td><@description eml.taxonomicCoverages[item_index].description!no_description 30/></td></tr>
-			<table>
       		<table>
 				<#list eml.taxonomicCoverages[item_index].taxonKeywords as subitem>
 				<tr>
-				<th>
+				<td>
 				<div class="subitem">
-					<div class="newline"></div>
-					<#assign itemTitle><@s.text name='manage.metadata.taxcoverage.subitem'/></#assign>
-					${itemTitle?upper_case} ${subitem_index+1}
-					<table>
-						<tr><th><@s.text name='eml.taxonomicCoverages.taxonKeyword.scientificName'/></th><td>${eml.taxonomicCoverages[item_index].taxonKeywords[subitem_index].scientificName!}</td></tr>
-						<tr><th><@s.text name='eml.taxonomicCoverages.taxonKeyword.commonName'/></th><td>${eml.taxonomicCoverages[item_index].taxonKeywords[subitem_index].commonName!}</td></tr>
-						<tr><th><@s.text name='eml.taxonomicCoverages.taxonKeyword.rank'/></th><td>${eml.taxonomicCoverages[item_index].taxonKeywords[subitem_index].rank!}</td></tr>
-					</table>
+					<#if subitem.scientificName?has_content><i>${subitem.scientificName!}</i>,</#if> <#if subitem.commonName?has_content>${subitem.commonName!}</#if> <#if subitem.rank?has_content>[${subitem.rank!}]</#if>
 					<div class="newline"></div>
 				</div>
-				</th>
+				</td>
 				</tr>
 				</#list>
       		</table>
