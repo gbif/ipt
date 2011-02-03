@@ -64,6 +64,11 @@ $(document).ready(function(){
 			window.location = $(this).parent('a').attr('href');
 		});
 	});	
+	$('.submit').each(function() {
+		$(this).click(function() {
+			$(this).parent('form').submit();
+		});
+	});	
 });
 </script>
 
