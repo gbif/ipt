@@ -1,4 +1,11 @@
 <#escape x as x?html>
+<#macro description text maxLength>
+   	<#if (text?length>maxLength)>
+   		${(text)?substring(0,maxLength)}...
+   	<#else>
+   		${(text)}
+   	</#if>
+</#macro>
 <#include "/WEB-INF/pages/inc/header.ftl">
 	<title><@s.text name="manage.overview.title"/>: ${resource.title!resource.shortname}</title>
 	<script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
@@ -78,34 +85,30 @@ $(document).ready(function(){
 	  <form action='metadata-basic.do' method='get'>
 	    <input name="r" type="hidden" value="${resource.shortname}" />
        	<@s.submit name="edit" key="button.edit"/>
+       	<div class="newline"></div>
+       	<div class="newline"></div>
   	  </form>
   	</div>
   	<#if missingMetadata>
   	<div class="warn">
 		<@s.text name='manage.overview.missing.metadata'/>
+		<div class="newline"></div>
+       	<div class="newline"></div>
   	</div>
   	</#if>
   </div>
   <div class="body">
       	<div>
-      		<#assign description>
-      			<#if resource.description?has_content>
-      				<#if (resource.description?length>100)>
-      					${(resource.description)?substring(0,100)}...
-      				<#else>
-      					${(resource.description)}
-      				</#if>
-      			<#else>
-	   				<@s.text name='manage.overview.no.description'/>
-      			</#if>
-      		</#assign>
-		${description}
+      		<#assign no_description><@s.text name='manage.overview.no.description'/></#assign>
+			<@description resource.description!no_description 100/>
       	</div>
       	<div class="details">
       		<table>
-          		<tr><th><@s.text name='manage.overview.keywords'/></th><td>${resource.eml.subject!}</td></tr>
-          		<tr><th><@s.text name='manage.overview.taxcoverage'/></th><td><#list resource.eml.taxonomicCoverages as tc><#list tc.taxonKeywords as k>${k.scientificName!k.commonName!}<#if !k_has_next>; </#if></#list></#list></td></tr>
-          		<tr><th><@s.text name='manage.overview.geocoverage'/></th><td><#list resource.eml.geospatialCoverages as geo>${geo.description!}<#if geo_has_next>; </#if></#list></td></tr>
+          		<#if resource.eml.subject?has_content><tr><th><@s.text name='portal.resource.summary.keywords'/></th><td><@description resource.eml.subject!no_description 90/></td></tr></#if>
+          		<#assign text><#list resource.eml.taxonomicCoverages as tc><#list tc.taxonKeywords as k>${k.scientificName}<#if k_has_next>, </#if></#list><#if tc_has_next>; </#if></#list></#assign>
+          		<#if resource.eml.taxonomicCoverages?has_content><tr><th><@s.text name='portal.resource.summary.taxcoverage'/></th><td><@description text!no_description 90/></td></tr></#if>
+          		<#assign text><#list resource.eml.geospatialCoverages as geo>${geo.description!}<#if geo_has_next>; </#if></#list></#assign>
+          		<#if resource.eml.geospatialCoverages?has_content><tr><th><@s.text name='portal.resource.summary.geocoverage'/></th><td><@description text!no_description 90/></td></tr></#if>
       		</table>
       	</div>
   </div>
