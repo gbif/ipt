@@ -46,8 +46,9 @@
   <div class="body">
       	<div class="details">
       		<table>
-          		<#if resource.eml.subject?has_content><tr><th><@s.text name='portal.resource.summary.keywords'/></th><td>${resource.eml.subject!}</td></tr></#if>
-          		<#if eml.taxonomicCoverages?has_content><tr><th><@s.text name='portal.resource.summary.taxcoverage'/></th><td><#list eml.taxonomicCoverages as tc><#list tc.taxonKeywords as k>${k.scientificName}<#if k_has_next>, </#if></#list><#if tc_has_next>; </#if></#list></td></tr></#if>
+          		<#if resource.eml.subject?has_content><tr><th><@s.text name='portal.resource.summary.keywords'/></th><td><@description resource.eml.subject!no_description 50/></td></tr></#if>
+          		<#assign text><#list eml.taxonomicCoverages as tc><#list tc.taxonKeywords as k>${k.scientificName}<#if k_has_next>, </#if></#list><#if tc_has_next>; </#if></#list></#assign>
+          		<#if eml.taxonomicCoverages?has_content><tr><th><@s.text name='portal.resource.summary.taxcoverage'/></th><td><@description text!no_description 50/></td></tr></#if>
           		<#if eml.geospatialCoverages?has_content><tr><th><@s.text name='portal.resource.summary.geocoverage'/></th><td><#list eml.geospatialCoverages as geo>${geo.description!}<#if geo_has_next>; </#if></#list></td></tr></#if>
 
       		   	<tr><th><@s.text name='eml.language'/></th><td>${eml.language!}</td></tr>
