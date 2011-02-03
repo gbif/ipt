@@ -1,6 +1,5 @@
 <#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
-<#include "/WEB-INF/pages/inc/header_ui.ftl">
 	<title><@s.text name="manage.translation.title"/></title>
 	<script type="text/javascript" src="${baseURL}/js/jconfirmaction.jquery.js"></script>
 	

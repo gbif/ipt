@@ -1,6 +1,5 @@
 <#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
-<#include "/WEB-INF/pages/inc/header_ui.ftl">
 <script type="text/javascript">
 	var DATE_RANGE = "DATE_RANGE";
 	var FORMATION_PERIOD = "FORMATION_PERIOD";
@@ -18,7 +17,7 @@
 			$(".hasDatepicker").each(function(index){
 				if($(this).attr("value").length > 0) {
 					if(dateExpression.test($(this).attr("value"))){
-						alert($(this).val()+" - Esta bien! pero todavía falta averiguar si la fecha es correcta");						
+						alert($(this).val()+" - Esta bien! pero todavï¿½a falta averiguar si la fecha es correcta");						
 					} else {
 						alert($(this).val()+" - Esta Mal! "+"\<\@s\.text name=\'manage\.metadata\.tempcoverage\.title\'\/\>");
 						allOk = false;						

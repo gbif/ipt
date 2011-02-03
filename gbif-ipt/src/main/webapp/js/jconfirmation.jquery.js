@@ -11,7 +11,6 @@
 			yesAnswer: "Yes",
 			cancelAnswer: "Cancel"
 		}, options);
-		
 		return this.each (function () {
 			
 			$(this).bind('click', function(e) {
@@ -21,26 +20,26 @@
 				}else{
 					e.preventDefault();
 					thisHref = $(this).attr('href');
+					var btns = {};
+					btns[theOptions.yesAnswer]=function() {								
+						$( this ).dialog( "close" );					
+						if (thisHref!=null){
+							window.location = thisHref;
+						}else{
+							submitBtn.attr("jconfirmed", true);
+							submitBtn.click();
+						}
+					}; 
+					btns[theOptions.cancelAnswer]=function() {								
+						$( this ).dialog( "close" );					
+						submitBtn.removeAttr("jconfirmed");
+					}; 		
 
 					$('#dialog-confirm').html('<p>'+theOptions.question+'</p>');
 					$('#dialog-confirm').dialog({
-							resizable: false,
-							modal: true,
-							buttons: {
-								"theOptions.yesAnswer": function() {								
-									$( this ).dialog( "close" );					
-									if (thisHref!=null){
-										window.location = thisHref;
-									}else{
-										submitBtn.attr("jconfirmed", true);
-										submitBtn.click();
-									}
-								},
-								"theOptions.cancelAnswer": function() {
-									$( this ).dialog( "close" );					
-									submitBtn.removeAttr("jconfirmed");
-								}
-							}
+						resizable: false,
+						modal: true,
+						buttons: btns
 					});		
 					
 				};
