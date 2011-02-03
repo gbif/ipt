@@ -46,10 +46,11 @@
   <div class="body">
       	<div class="details">
       		<table>
-          		<#if resource.eml.subject?has_content><tr><th><@s.text name='portal.resource.summary.keywords'/></th><td><@description resource.eml.subject!no_description 50/></td></tr></#if>
+          		<#if resource.eml.subject?has_content><tr><th><@s.text name='portal.resource.summary.keywords'/></th><td><@description resource.eml.subject!no_description 90/></td></tr></#if>
           		<#assign text><#list eml.taxonomicCoverages as tc><#list tc.taxonKeywords as k>${k.scientificName}<#if k_has_next>, </#if></#list><#if tc_has_next>; </#if></#list></#assign>
-          		<#if eml.taxonomicCoverages?has_content><tr><th><@s.text name='portal.resource.summary.taxcoverage'/></th><td><@description text!no_description 50/></td></tr></#if>
-          		<#if eml.geospatialCoverages?has_content><tr><th><@s.text name='portal.resource.summary.geocoverage'/></th><td><#list eml.geospatialCoverages as geo>${geo.description!}<#if geo_has_next>; </#if></#list></td></tr></#if>
+          		<#if eml.taxonomicCoverages?has_content><tr><th><@s.text name='portal.resource.summary.taxcoverage'/></th><td><@description text!no_description 90/></td></tr></#if>
+          		<#assign text><#list eml.geospatialCoverages as geo>${geo.description!}<#if geo_has_next>; </#if></#list></#assign>
+          		<#if eml.geospatialCoverages?has_content><tr><th><@s.text name='portal.resource.summary.geocoverage'/></th><td><@description text!no_description 90/></td></tr></#if>
 
       		   	<tr><th><@s.text name='eml.language'/></th><td>${eml.language!}</td></tr>
 
@@ -191,11 +192,8 @@
   <div class="body">
       	<div class="details">
       		<table>
-          		<tr><th><@s.text name='eml.geospatialCoverages.description'/></th><td>${eml.geospatialCoverages[0].description!}</td></tr>
-      			<tr><th><@s.text name='eml.geospatialCoverages.boundingCoordinates.min.longitude'/></th><td>${eml.geospatialCoverages[0].boundingCoordinates.min.longitude}</td></tr>
-      			<tr><th><@s.text name='eml.geospatialCoverages.boundingCoordinates.max.longitude'/></th><td>${eml.geospatialCoverages[0].boundingCoordinates.max.longitude}</td></tr>
-      			<tr><th><@s.text name='eml.geospatialCoverages.boundingCoordinates.min.latitude'/></th><td>${eml.geospatialCoverages[0].boundingCoordinates.min.latitude}</td></tr>
-      			<tr><th><@s.text name='eml.geospatialCoverages.boundingCoordinates.max.latitude'/></th><td>${eml.geospatialCoverages[0].boundingCoordinates.max.latitude}</td></tr>
+          		<tr><th><@s.text name='eml.geospatialCoverages.description'/></th><td><@description eml.geospatialCoverages[0].description!no_description 90/></td></tr>
+      			<tr><th><@s.text name='eml.geospatialCoverages.boundingCoordinates'/></th><td>${eml.geospatialCoverages[0].boundingCoordinates.min.latitude}, ${eml.geospatialCoverages[0].boundingCoordinates.max.latitude} / ${eml.geospatialCoverages[0].boundingCoordinates.min.longitude}, ${eml.geospatialCoverages[0].boundingCoordinates.max.longitude} <@s.text name='eml.geospatialCoverages.boundingCoordinates.indicator'/></td></tr>
       		</table>
       	</div>
   </div>
