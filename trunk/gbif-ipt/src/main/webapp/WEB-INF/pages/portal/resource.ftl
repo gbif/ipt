@@ -59,7 +59,10 @@
           		<tr><th><@s.text name='portal.resource.published.archive'/></th><td><a href="${baseURL}/archive.do?r=${resource.shortname}"><@s.text name='portal.resource.download'/></a>, ${resource.recordsPublished} <@s.text name='portal.resource.records'/> </td></tr>
 			  	</#if>
           		<tr><th><@s.text name='portal.resource.published.eml'/></th><td><a href="${baseURL}/eml.do?r=${resource.shortname}"><@s.text name='portal.resource.download'/></a></td></tr>
+          		<#--
+          		DONT SHOW THE RTF LINK UNTIL v2.0.1 
           		<tr><th><@s.text name='portal.resource.published.rtf'/></th><td><a href="${baseURL}/rtf.do?r=${resource.shortname}"><@s.text name='portal.resource.download'/></a></td></tr>
+          		-->
           		<#else>
           		    <td><@s.text name='portal.resource.published.never'/></td></tr>
 			  	</#if>
