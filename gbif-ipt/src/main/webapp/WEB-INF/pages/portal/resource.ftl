@@ -168,13 +168,11 @@
 			<div>
 			</#if>
 				<div class="halfcolumn">
-					<#assign itemTitle><@s.text name='manage.metadata.parties.item'/></#assign>
-					<div class="head">${itemTitle?upper_case} ${item_index+1}</div>
 		      		<@agentTable item true />
 				</div>
 			<#if (item_index % 2) == 1 || eml.associatedParties?size=item_index+1>
 			</div>
-      		<div class="newline"> <br/> </div>
+      		<div class="newline"> <br/><br/> </div>
 			</#if>
 			</#list>
       	</div>
@@ -212,8 +210,6 @@
       	<div class="details">
 			<#list eml.taxonomicCoverages as item>
 			<div>
-			<#assign itemTitle><@s.text name='manage.metadata.taxcoverage.item'/></#assign>
-			<div class="head">${itemTitle?upper_case} ${item_index+1}</div>
 			<#assign size=eml.taxonomicCoverages[item_index].taxonKeywords?size/>
 			<table>
 			<tr><th><@s.text name='eml.taxonomicCoverages.description'/></th><td><@description eml.taxonomicCoverages[item_index].description!no_description 30/></td></tr>
@@ -250,8 +246,6 @@
       	<table>
 			<#list eml.temporalCoverages as item>
 			<tr>
-			<#assign itemTitle><@s.text name='manage.metadata.tempcoverage.item'/></#assign>
-			<b><th class="title">${itemTitle?upper_case} ${item_index+1}</th></b>
 			<td>
 				<div>
 				<table>
@@ -415,6 +409,23 @@
 <div class="definition">	
   <div class="title">
   	<div class="head">
+        <@s.text name='manage.metadata.alternateIdentifiers.title'/>
+  	</div>
+  </div>
+  <div class="body">
+      	<div class="details">
+      		<table>
+          		<#list eml.alternateIdentifiers as item>
+          			<tr><td>${eml.alternateIdentifiers[item_index]!}</td></tr>
+          		</#list>
+      		</table>
+      	</div>
+  </div>
+</div>
+
+<div class="definition">	
+  <div class="title">
+  	<div class="head">
         <@s.text name='manage.metadata.additional.title'/>
   	</div>
   </div>
@@ -426,12 +437,6 @@
           		<#if eml.purpose?has_content><tr><th><@s.text name='eml.purpose'/></th><td>${eml.purpose!}</td></tr></#if>
           		<#if eml.intellectualRights?has_content><tr><th><@s.text name='eml.intellectualRights'/></th><td>${eml.intellectualRights!}</td></tr></#if>
           		<#if eml.additionalInfo?has_content><tr><th><@s.text name='eml.additionalInfo'/></th><td>${eml.additionalInfo!}</td></tr></#if>
-      		</table>
-      		<table>
-          		<#list eml.alternateIdentifiers as item>
-          		<#assign itemTitle><@s.text name='manage.metadata.alternateIdentifiers.item'/></#assign>
-          			<tr><th class="title">${itemTitle?upper_case} ${item_index+1}</th><td>${eml.alternateIdentifiers[item_index]!}</td></tr>
-          		</#list>
       		</table>
       	</div>
   </div>
