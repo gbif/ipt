@@ -257,8 +257,7 @@
 				<div>
 				<table>
 					<#if "${item.type}" == "DATE_RANGE" >
-						<tr><th><@s.text name='eml.temporalCoverages.startDate'/></th><td>${eml.temporalCoverages[item_index].startDate?date}</td></tr>
-						<tr><th><@s.text name='eml.temporalCoverages.endDate'/></th><td>${eml.temporalCoverages[item_index].endDate?date}</td></tr>
+						<tr><th><@s.text name='eml.temporalCoverages.startDate'/> / <@s.text name='eml.temporalCoverages.endDate'/></th><td>${eml.temporalCoverages[item_index].startDate?date} / ${eml.temporalCoverages[item_index].endDate?date}</td></tr>
 					<#elseif "${item.type}" == "SINGLE_DATE" >
 						<tr><th><@s.text name='eml.temporalCoverages.startDate'/></th><td>${eml.temporalCoverages[item_index].startDate?date}</td></tr>
 					<#elseif "${item.type}" == "FORMATION_PERIOD" >
