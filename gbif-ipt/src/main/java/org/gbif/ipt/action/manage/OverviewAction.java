@@ -244,11 +244,11 @@ public class OverviewAction extends ManagerBaseAction {
         return PUBLISHING;
       } else {
         if (!resource.hasMappedData()) {
-          addActionError(getText("manage.overview.data.missing"));
+        	addActionWarning(getText("manage.overview.data.missing"));
         } else {
-          addActionError(getText("manage.overview.no.data.archive.generated"));
+        	addActionWarning(getText("manage.overview.no.data.archive.generated"));
         }
-        //addActionMessage(getText("manage.overview.published.resource.version", new String[]{resource.getEmlVersion()+""}));
+        addActionMessage(getText("manage.overview.published.eml", new String[]{resource.getEmlVersion()+""}));
         return SUCCESS;
       }
     } catch (PublicationException e) {
