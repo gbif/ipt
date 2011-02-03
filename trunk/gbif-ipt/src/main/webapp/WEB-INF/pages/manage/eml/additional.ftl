@@ -1,6 +1,5 @@
 <#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
-<#include "/WEB-INF/pages/inc/header_ui.ftl">
 <#include "/WEB-INF/pages/macros/metadata.ftl"/>
 <title><@s.text name='manage.metadata.basic.title'/></title>
 <script type="text/javascript">

@@ -1,5 +1,9 @@
-var userPrefs;
+var timeout    = 500;
+var closetimer = 0;
+var ddmenuitem = 0;
 
+
+	
 function str(x) {
 	if(x!=null && x.length > 0) return x;
 	return '';
@@ -52,8 +56,6 @@ function initHelp(context){
         var show = $(this).next().is(":hidden");
 	    $("div.info:visible").hide("fast");
 	    if (show){
-//	    	var t = $(this).offset();
-//	    	$(this).next().css({ top: off.top-24, left: off.left-170 });
 	        $(this).next().show("fast");
 	    };
     });
@@ -73,31 +75,26 @@ function initHelp(context){
         $(this).parent().parent().parent().hide("fast");
     });
 }
-function initCollapsable(){
-    $("div.collapsed ul").hide();
-    $("div.collapsable").prepend('<div class="toggler"><span class="btn TGshow">show</span><span class="btn TGhide">hide</span></div>');
-    $("span.TGshow").hide();
-    $("div.collapsed span.TGhide").hide();
-    $("div.collapsed span.TGshow").show();
-    $(".TGshow").click(function(e) {
-        $("ul",$(this).parent().parent()).show();
-        $(this).hide();
-        $(".TGhide",$(this).parent()).show();
-    })
-    $(".TGhide").click(function(e) {
-        $("ul",$(this).parent().parent()).hide();
-        $(this).hide();
-        $(".TGshow",$(this).parent()).show();
-    })
+function jsddm_open() {  
+	jsddm_canceltimer();
+	jsddm_close();
+	ddmenuitem = $(this).find('ul').css('visibility', 'visible');
 }
-function readUserPrefCookie(){
-	var cookieData = $.cookie("prefs");
-	userPrefs = cookieData ? JSON.parse(cookieData) : {};
+function jsddm_close() { 
+	if(ddmenuitem) ddmenuitem.css('visibility', 'hidden');
 }
-function setUserPrefCookie(){
-	// expiration in days
-    var options = { path: '/', expires: 1 }; 
-	var cookieData = JSON.stringify(userPrefs);
-	$.cookie("prefs", cookieData, options);
+function jsddm_timer() {
+	closetimer = window.setTimeout(jsddm_close, timeout);
 }
-
+function jsddm_canceltimer() {  
+	if(closetimer) {
+		window.clearTimeout(closetimer);
+      closetimer = null;
+    }
+}
+function initMenu() {  
+	// Simple Drop-Down Menu
+	// taken from http://javascript-array.com/scripts/jquery_simple_drop_down_menu/
+	$('#topmenu > li').bind('mouseover', jsddm_open);
+	$('#topmenu > li').bind('mouseout',  jsddm_timer);	
+}

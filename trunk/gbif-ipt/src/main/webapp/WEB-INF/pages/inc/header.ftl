@@ -15,8 +15,8 @@
  		<link rel="stylesheet" type="text/css" href="${baseURL}/styles/main.css"/>
  		<link rel="shortcut icon" href="${baseURL}/images/icons/favicon.ico" type="image/x-icon" />
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>				
-		<script type="text/javascript" src="${baseURL}/js/jquery.cookie.min.js"></script>
-		<script type="text/javascript" src="${baseURL}/js/json2.min.js"></script>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/jquery-ui.min.js"></script>
+		<link media="all" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/themes/base/jquery-ui.css" rel="stylesheet">
 		<script type="text/javascript" src="${baseURL}/js/global.js"></script>
 	    <link href="${baseURL}/rss.do" title="Latest Resources" rel="alternate" type="application/rss+xml" />
  		
@@ -42,32 +42,9 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
+[#-- see global.js for function defs --]
     initForm();
-	readUserPrefCookie();
-	$('#topmenu > li').bind('mouseover', jsddm_open);
-	$('#topmenu > li').bind('mouseout',  jsddm_timer);	
-	// Simple Drop-Down Menu
-	// taken from http://javascript-array.com/scripts/jquery_simple_drop_down_menu/
-	var timeout    = 500;
-	var closetimer = 0;
-	var ddmenuitem = 0;
-	function jsddm_open() {  
-		jsddm_canceltimer();
-   		jsddm_close();
-   		ddmenuitem = $(this).find('ul').css('visibility', 'visible');
-   	}
-	function jsddm_close() { 
-		if(ddmenuitem) ddmenuitem.css('visibility', 'hidden');
-	}
-	function jsddm_timer() {
-		closetimer = window.setTimeout(jsddm_close, timeout);
-	}
-	function jsddm_canceltimer() {  
-		if(closetimer) {
-			window.clearTimeout(closetimer);
-	      closetimer = null;
-	    }
-	}	
+	initMenu();
 });
 </script>
 
