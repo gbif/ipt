@@ -771,20 +771,35 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   public synchronized void save(Resource resource) throws InvalidConfigException {
-    File cfgFile = dataDir.resourceFile(resource, PERSISTENCE_FILE);
-    try {
-      // make sure resource dir exists
-      FileUtils.forceMkdir(cfgFile.getParentFile());
-      // persist data
-      Writer writer = org.gbif.ipt.utils.FileUtils.startNewUtf8File(cfgFile);
-      xstream.toXML(resource, writer);
-      // add to internal map
-      addResource(resource);
-    } catch (IOException e) {
-      log.error(e);
-      throw new InvalidConfigException(TYPE.CONFIG_WRITE, "Cant write mapping configuration");
-    }
-  }
+	    File cfgFile = dataDir.resourceFile(resource, PERSISTENCE_FILE);
+	    Writer writer=null;
+	    try {
+	      // make sure resource dir exists
+	      FileUtils.forceMkdir(cfgFile.getParentFile());
+	      // persist data
+	      writer = org.gbif.ipt.utils.FileUtils.startNewUtf8File(cfgFile);
+	      xstream.toXML(resource, writer);
+	      // add to internal map
+	      addResource(resource);
+	    } catch (IOException e) {
+	      log.error(e);
+	      throw new InvalidConfigException(TYPE.CONFIG_WRITE, "Cant write mapping configuration");
+	    } finally {
+	      if (writer!=null) {
+	         	closeWriter(writer);
+	      }
+	    }
+	  }
+  
+  public synchronized void closeWriter(Writer writer) {
+      if (writer!=null) {
+        try {
+          writer.close();
+        } catch (IOException e) {
+        	log.error(e);
+        }
+      }  
+  };
 
   /*
    * (non-Javadoc)
