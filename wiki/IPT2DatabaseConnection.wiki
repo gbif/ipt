@@ -1,4 +1,5 @@
 #summary Supported databases
+<wiki:toc max_depth="3" />
 
 This section provides information about the source database types supported by the IPT
 
