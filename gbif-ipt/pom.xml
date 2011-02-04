@@ -58,16 +58,15 @@
 			<id>central</id>
 			<url>http://repo1.maven.org/maven2</url>
 		</repository>
-
-		<!-- TODO: This reference needs to be removed as the repository is deprecated -->
-		<repository>
-			<id>gbif</id>
-			<url>http://tools.gbif.org/maven/repository</url>
-		</repository>
 		<repository>
 			<id>gbif-new</id>
 			<url>http://repository.gbif.org/content/groups/gbif</url>
 		</repository>
+		<repository>
+			<id>gbif-thirdparty</id>
+			<url>http://repository.gbif.org/content/repositories/thirdparty</url>
+		</repository>
+		
 	</repositories>
 
 	<build>
