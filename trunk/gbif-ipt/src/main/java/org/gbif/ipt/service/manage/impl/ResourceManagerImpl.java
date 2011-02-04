@@ -47,7 +47,6 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.RequireManagerInterceptor;
-import org.gbif.ipt.task.Eml2Rtf;
 import org.gbif.ipt.task.GenerateDwca;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.task.ReportHandler;
@@ -64,9 +63,6 @@ import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.rtf.RtfWriter2;
 import com.thoughtworks.xstream.XStream;
 
 import org.apache.commons.io.FileUtils;
@@ -75,10 +71,8 @@ import org.xml.sax.SAXException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -112,7 +106,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private RegistrationManager registrationManager;
   private ThreadPoolExecutor executor;
   private GenerateDwcaFactory dwcaFactory;
-  private Eml2Rtf eml2Rtf;
   private Map<String, Future<Integer>> processFutures = new HashMap<String, Future<Integer>>();
   private Map<String, StatusReport> processReports = new HashMap<String, StatusReport>();
 
@@ -121,14 +114,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       OrganisationKeyConverter orgConverter, ExtensionRowTypeConverter extensionConverter,
       JdbcInfoConverter jdbcInfoConverter, SourceManager sourceManager, ExtensionManager extensionManager,
       RegistryManager registryManager, ConceptTermConverter conceptTermConverter, GenerateDwcaFactory dwcaFactory,
-      PasswordConverter passwordConverter, RegistrationManager registrationManager, Eml2Rtf eml2Rtf) {
+      PasswordConverter passwordConverter, RegistrationManager registrationManager) {
     super(cfg, dataDir);
     this.sourceManager = sourceManager;
     this.extensionManager = extensionManager;
     this.registryManager = registryManager;
     this.registrationManager = registrationManager;
     this.dwcaFactory = dwcaFactory;
-    this.eml2Rtf = eml2Rtf;
     this.executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(cfg.getMaxThreads());
     defineXstreamMapping(userConverter, orgConverter, extensionConverter, conceptTermConverter, jdbcInfoConverter,
         passwordConverter);
@@ -687,21 +679,24 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   private void publishRtf(Resource resource, ActionLogger alog) {
-    Document doc = new Document();
-    File rtfFile = dataDir.resourceRtfFile(resource.getShortname());
-    OutputStream out;
-    try {
-      out = new FileOutputStream(rtfFile);
-      RtfWriter2 writer = RtfWriter2.getInstance(doc, out);
-      eml2Rtf.writeEmlIntoRtf(doc, resource);
-      out.close();
-    } catch (FileNotFoundException e) {
-      alog.error("Cant find rtf file to write metadata to: " + rtfFile.getAbsolutePath(), e);
-    } catch (DocumentException e) {
-      alog.error("RTF DocumentException while writing to file " + rtfFile.getAbsolutePath(), e);
-    } catch (IOException e) {
-      alog.error("Cant write to rtf file " + rtfFile.getAbsolutePath(), e);
-    }
+    // TODO: implement the rtf publishing
+    // comment out the following and add back in the Eml2Rtf class, injecting them into the constructor:
+    // http://code.google.com/p/gbif-providertoolkit/source/browse/trunk/gbif-ipt/src/main/java/org/gbif/ipt/task/Eml2Rtf.java?r=2990
+//    Document doc = new Document();
+//    File rtfFile = dataDir.resourceRtfFile(resource.getShortname());
+//    OutputStream out;
+//    try {
+//      out = new FileOutputStream(rtfFile);
+//      RtfWriter2 writer = RtfWriter2.getInstance(doc, out);
+//      eml2Rtf.writeEmlIntoRtf(doc, resource);
+//      out.close();
+//    } catch (FileNotFoundException e) {
+//      alog.error("Cant find rtf file to write metadata to: " + rtfFile.getAbsolutePath(), e);
+//    } catch (DocumentException e) {
+//      alog.error("RTF DocumentException while writing to file " + rtfFile.getAbsolutePath(), e);
+//    } catch (IOException e) {
+//      alog.error("Cant write to rtf file " + rtfFile.getAbsolutePath(), e);
+//    }
   }
 
   private Eml readMetadata(Archive archive, ActionLogger alog) {
