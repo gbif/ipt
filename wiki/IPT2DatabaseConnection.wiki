@@ -3,7 +3,7 @@
 
 This section provides information about the source database types supported by the IPT
 
-= Suported default databases =
+= Supported default databases =
 The IPT can use database connections to import data from tables or views. Currently the following databases are supported out of the box:
  * Microsoft SQL Server
  * MySQL
