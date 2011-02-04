@@ -783,6 +783,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 	      if (writer!=null) {
 	         	closeWriter(writer);
 	      }
+	      System.gc();
 	    }
 	  }
   
@@ -793,8 +794,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         } catch (IOException e) {
         	log.error(e);
         }
-      }  
-  };
+      }
+  }
 
   /*
    * (non-Javadoc)
