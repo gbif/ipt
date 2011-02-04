@@ -3,7 +3,7 @@
 
 This section provides information about the source database types supported by the IPT
 
-== Suported databases ==
+= Suported databases =
 The IPT can use database connections to import data from tables or views. Currently the following databases are supported out of the box:
  * Microsoft SQL Server
  * MySQL
@@ -12,16 +12,16 @@ The IPT can use database connections to import data from tables or views. Curren
  * PostgreSQL
  * Sybase databases
 
-== Adding new JDBC drivers ==
+= Adding new JDBC drivers =
 You can add your own jdbc drivers to the IPT if needed. For example if you prefer to use the Microsoft JDBC driver for SQL Server or want to add one for sqlite. The following steps assume you have a working IPT installed with an "exploded" war, i.e. you have a folder `ipt` (or however you named your instance) in your application servers webapps folder. The IPT needs to be stopped before you start adding a driver:
 
-=== Add jdbc driver jar to classpath ===
+== Add jdbc driver jar to classpath ==
 First get hold of the jar file of the driver you want to add, for example download the SQLite jar here:
 http://www.xerial.org/maven/repository/artifact/org/xerial/sqlite-jdbc/3.7.2/sqlite-jdbc-3.7.2.jar
 
 You need to copy this jar into the classpath of your webapp. The simplest is to copy it to the `ipt/WEB-INF/lib` directory.
 
-=== Modify jdbc.properties ===
+== Modify jdbc.properties ==
 In order for the IPT to understand which drivers are available and how to construct the jdbc url for it, we maintain a simple properties file with all the information. Open `ipt/WEB-INF/classes/jdbc.properties` and inspect the existing entries, for example for PostgreSQL:
 
 {{{
