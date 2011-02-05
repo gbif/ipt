@@ -1,7 +1,7 @@
 <#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
 	<title><#if "${newUser!}"=="no"><@s.text name="admin.user.title.edit"/><#else><@s.text name="admin.user.title.new"/></#if></title>
-	<script type="text/javascript" src="${baseURL}/js/jconfirmaction.jquery.js"></script>
+	<script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	initHelp();
