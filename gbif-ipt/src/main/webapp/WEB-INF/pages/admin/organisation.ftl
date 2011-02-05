@@ -1,6 +1,6 @@
 <#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
-<script type="text/javascript" src="${baseURL}/js/jconfirmaction.jquery.js"></script>
+<script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	$('.confirm').jConfirmAction({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
