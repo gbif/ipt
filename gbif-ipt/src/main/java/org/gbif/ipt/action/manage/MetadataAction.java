@@ -19,6 +19,7 @@ package org.gbif.ipt.action.manage;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.utils.CountryUtils;
 import org.gbif.ipt.utils.LangUtils;
 import org.gbif.ipt.validation.EmlValidator;
 import org.gbif.ipt.validation.ResourceValidator;
@@ -84,7 +85,7 @@ public class MetadataAction extends ManagerBaseAction {
   public String getLocaleLanguageIso3() {
     return LangUtils.iso3(getLocaleLanguage());
   }
-
+  
   public String getNext() {
     return next;
   }
@@ -149,6 +150,16 @@ public class MetadataAction extends ManagerBaseAction {
     roles = vocabManager.getI18nVocab(Constants.VOCAB_URI_ROLES, getLocaleLanguage(), false);
     preservationMethods = vocabManager.getI18nVocab(Constants.VOCAB_URI_PRESERVATION_METHOD, getLocaleLanguage(), false);
 
+    if(resource.getEml().getContact().getAddress().getCountry()!=null){
+    	resource.getEml().getContact().getAddress().setCountry(CountryUtils.iso2(resource.getEml().getContact().getAddress().getCountry()));
+    }
+    if(resource.getEml().resourceCreator().getAddress().getCountry()!=null){
+    	resource.getEml().resourceCreator().getAddress().setCountry(CountryUtils.iso2(resource.getEml().resourceCreator().getAddress().getCountry()));
+    }
+    if(resource.getEml().getMetadataProvider().getAddress().getCountry()!=null){
+    	resource.getEml().getMetadataProvider().getAddress().setCountry(CountryUtils.iso2(resource.getEml().getMetadataProvider().getAddress().getCountry()));
+    }
+    
     if (resource.getEml().getMetadataProvider() != null && resource.getEml().getMetadataProvider().isEmpty()) {
       Agent current = new Agent();
       current.setFirstName(getCurrentUser().getFirstname());
