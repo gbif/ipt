@@ -613,6 +613,9 @@ public class EmlValidator extends BaseValidator {
 					index++;
 				}
 			} else if (part == null || part.equalsIgnoreCase("additional")) {
+				if(eml.getPubDate() == null) {
+					action.addFieldError("eml.pubDate", action.getText("validation.required", new String[] { action.getText("eml.pubDate")}));
+				}
 				int index = 0;
 				for (String ai : eml.getAlternateIdentifiers()) {
 					if (!exists(ai)) {
