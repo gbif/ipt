@@ -212,7 +212,7 @@
 			<div>
 			<#assign size=eml.taxonomicCoverages[item_index].taxonKeywords?size/>
 			<table>
-			<tr><th><@s.text name='eml.taxonomicCoverages.description'/></th><td><@description eml.taxonomicCoverages[item_index].description!no_description 30/></td></tr>
+			<tr><th><@s.text name='eml.taxonomicCoverages.description'/></th><td><@description eml.taxonomicCoverages[item_index].description!no_description 80/></td></tr>
       		<table>
 				<#list eml.taxonomicCoverages[item_index].taxonKeywords as subitem>
 				<tr>
@@ -435,7 +435,7 @@
           		<#if eml.hierarchyLevel?has_content><tr><th><@s.text name='eml.hierarchyLevel'/></th><td>${eml.hierarchyLevel!}</td></tr></#if>
           		<#if eml.pubDate?has_content><tr><th><@s.text name='eml.pubDate'/></th><td>${eml.pubDate?date!}</td></tr></#if>
           		<#if eml.purpose?has_content><tr><th><@s.text name='eml.purpose'/></th><td>${eml.purpose!}</td></tr></#if>
-          		<#if eml.intellectualRights?has_content><tr><th><@s.text name='eml.intellectualRights'/></th><td>${eml.intellectualRights!}</td></tr></#if>
+          		<#if eml.intellectualRights?has_content><tr><th><@s.text name='eml.intellectualRights'/></th><td><@description eml.intellectualRights!no_description 100/></td></tr></#if>
           		<#if eml.additionalInfo?has_content><tr><th><@s.text name='eml.additionalInfo'/></th><td>${eml.additionalInfo!}</td></tr></#if>
       		</table>
       	</div>
