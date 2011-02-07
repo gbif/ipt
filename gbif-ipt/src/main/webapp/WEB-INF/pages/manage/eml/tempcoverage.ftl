@@ -1,5 +1,6 @@
 <#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
+<#setting number_format="#####.##">
 <script type="text/javascript">
 	var DATE_RANGE = "DATE_RANGE";
 	var FORMATION_PERIOD = "FORMATION_PERIOD";
