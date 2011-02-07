@@ -86,7 +86,7 @@ $(document).ready(function(){
  	<#if id?has_content>
 	<@s.submit name="delete" key="button.delete" cssClass="confirm"/>
 	</#if>		   	
- 	<@s.submit name="cancel" key="button.cancel" cssClass="confirm"/>
+ 	<@s.submit name="cancel" key="button.cancel" cssClass="button"/>
   </div>
 </@s.form>
 <#include "/WEB-INF/pages/inc/footer.ftl">
