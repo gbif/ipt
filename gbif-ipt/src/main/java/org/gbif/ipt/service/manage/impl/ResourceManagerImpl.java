@@ -66,6 +66,7 @@ import com.google.inject.Singleton;
 import com.thoughtworks.xstream.XStream;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.xml.sax.SAXException;
 
 import java.io.File;
@@ -252,8 +253,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         }
         // finally persist the whole thing
         save(resource);
-        alog.info("manage.resource.create.success", new String[]{
-            resource.getCoreRowType(), "" + resource.getSources().size(), "" + (resource.getMappings().size() + 1)});
+        
+        if (StringUtils.isBlank(resource.getCoreRowType())) {
+          alog.info("manage.resource.create.success.nocore", new String[]{""+resource.getSources().size(), ""+(resource.getMappings().size())});
+        } else {
+          alog.info("manage.resource.create.success", new String[]{resource.getCoreRowType(), ""+resource.getSources().size(), ""+(resource.getMappings().size())});
+        }
 
       } else {
         alog.warn("manage.resource.create.core.invalid");
