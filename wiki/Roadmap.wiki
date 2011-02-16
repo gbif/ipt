@@ -1,7 +1,13 @@
 #summary Roadmap for upcoming releases
 #sidebar TableOfContents
 
-The current release of the IPT is v2.0 - it is the current stable release and is recommended for any data publishers in the GBIF network.  Only small changes to address bugs will be added in 2011, and these will be shown as "patch releases" e.g. v2.0.x.  The best release to use is the highest version of x, and this release will always be the featured download from the main download page. Estimated release dates can vary considerably and are shown mainly to indicate forthcoming functionality.
+The *IPT v2.0* is the *current stable release recommended for any data publishers* in the GBIF network. 
+
+Only *small changes to address bugs will be added in 2011*, and these will be shown as "patch releases" e.g. v2.0.x.
+
+The *best release to use is the highest version of x*, which will be the *featured download* from the [http://code.google.com/p/gbif-providertoolkit/downloads/list main download page]. 
+
+*Estimated release dates can vary considerably* and are shown below mainly to indicate forthcoming functionality.
 
 <wiki:toc max_depth="2" />
 
