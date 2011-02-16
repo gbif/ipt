@@ -6,9 +6,13 @@
 -----
 
 = IPT 2.x =
-== IPT 2.0 RC3 ==
-to be released 7th january 2011
 
+== IPT 2.0.1 ==
+ * http://code.google.com/p/gbif-providertoolkit/downloads/detail?name=ipt-2.0.1.war
+== IPT 2.0 General Availability (GA) ==
+ * http://code.google.com/p/gbif-providertoolkit/downloads/detail?name=ipt-2.0GA.war
+== IPT 2.0 RC3 ==
+ * http://code.google.com/p/gbif-providertoolkit/downloads/detail?name=ipt-2.0RC3.war
 == IPT 2.0 RC2 ==
  * http://code.google.com/p/gbif-providertoolkit/downloads/detail?name=ipt-2.0RC2.war
 == IPT 2.0 RC1 ==
