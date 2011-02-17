@@ -256,4 +256,15 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     }
     return list;
   }
+
+  public void installCoreTypes() {
+	  String coreURLs[]={"http://rs.gbif.org/core/dwc_occurrence.xml","http://rs.gbif.org/core/dwc_taxon.xml"};
+	  for(String url :coreURLs){
+		  try {
+		  	install(new URL(url));
+		  } catch (Exception e) {
+			  log.debug(e);
+		  }	
+	  }
+  }
 }

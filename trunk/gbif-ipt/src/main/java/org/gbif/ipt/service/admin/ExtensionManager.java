@@ -86,4 +86,6 @@ public interface ExtensionManager {
    */
   public List<Extension> search(String keyword);
 
+  public void installCoreTypes();
+
 }
