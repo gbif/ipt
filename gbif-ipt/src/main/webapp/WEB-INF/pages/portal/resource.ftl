@@ -324,11 +324,26 @@
   <div class="body">
       	<div class="details">
       		<table>
-          		<#if eml.citation?has_content><tr><th><@s.text name='eml.citation.citation'/></th><td>${eml.citation!}</td></tr></#if>
-          		<#list eml.bibliographicCitationSet.bibliographicCitations as item>
-          			<tr><th><@s.text name='eml.bibliographicCitationSet.bibliographicCitations.citation'/> ${item_index+1}</th><td>${eml.bibliographicCitationSet.bibliographicCitations[item_index]!}</td></tr>
-          		</#list>
-      		</table>
+          		<#if eml.citation.citation?has_content>
+          			<#if eml.citation.identifier?has_content><tr><th><@s.text name='eml.citation.identifier'/></th><td>${eml.citation.identifier!}</td></tr></#if>
+          			<tr><th><@s.text name='eml.citation.citation'/></th><td>${eml.citation.citation!}</td></tr>
+          		</#if>          		
+          	</table>
+          	<div class="newline"></div>
+   			<#assign itemTitle><@s.text name='eml.bibliographicCitationSet.bibliographicCitations.citation'/></#assign>
+          	<table>
+       		<#list eml.bibliographicCitationSet.bibliographicCitations as item>
+       			<tr>
+				<th class="title">${itemTitle?upper_case} ${item_index+1}</th>
+				<td>
+	          	<table>
+          			<tr><th><@s.text name='eml.bibliographicCitationSet.bibliographicCitations.identifier'/></th><td>${item.identifier!}</td></tr>
+          			<tr><th><@s.text name='eml.bibliographicCitationSet.bibliographicCitations.citation'/></th><td>${item.citation!}</td></tr>
+	      		</table>
+				</td>
+				</tr>
+       		</#list>
+       		</table>
       	</div>
   </div>
 </div>
@@ -406,6 +421,7 @@
 </#if>
 -->
 
+<#if (eml.alternateIdentifiers?size > 0 )>
 <div class="definition">	
   <div class="title">
   	<div class="head">
@@ -422,6 +438,7 @@
       	</div>
   </div>
 </div>
+</#if>
 
 <div class="definition">	
   <div class="title">
