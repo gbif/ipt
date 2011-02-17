@@ -11,6 +11,7 @@ import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.ConfigManager;
+import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.validation.UserValidator;
 
@@ -39,6 +40,8 @@ public class SetupAction extends BaseAction {
   protected UserAccountManager userManager;
   @Inject
   private DataDir dataDir;
+  @Inject
+  private ExtensionManager extensionManager;
   private UserValidator userValidation = new UserValidator();
 
   // action attributes to be set
@@ -199,6 +202,7 @@ public class SetupAction extends BaseAction {
 
   public String setup3() {
 	  session.put(Constants.SESSION_USER, userManager.getSetupUser());
+	  extensionManager.installCoreTypes();	    
 	  return INPUT;
   }
   
