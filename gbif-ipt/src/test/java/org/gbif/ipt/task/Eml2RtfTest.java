@@ -44,7 +44,7 @@ public class Eml2RtfTest {
 	@Ignore
 	@Test
 	public void generateRtfFile() {
-		File rtfFile = null;
+		File rtfTempFile = null;
 		try {
 		System.out.println("----------------");
 			Document doc = new Document();
@@ -55,16 +55,16 @@ public class Eml2RtfTest {
 			creator.setFirstname("Markus");
 			creator.setLastname("Döring");
 			resource.setCreator(creator);
-			rtfFile = new File(resource.getShortname() + ".rtf");
+			rtfTempFile = File.createTempFile("resource", ".rtf");
+			System.out.println("Writing temporary test RTF file to "+rtfTempFile.getAbsolutePath());
 			Eml2Rtf eml2Rtf = new Eml2Rtf();
 			OutputStream out;
-			out = new FileOutputStream(rtfFile);
+			out = new FileOutputStream(rtfTempFile);
 
 			RtfWriter2.getInstance(doc, out);
 			eml2Rtf.writeEmlIntoRtf(doc, resource);
-
 			out.close();
-			System.out.println("Remember to remove the file located in "+rtfFile.getAbsolutePath());
+			rtfTempFile.deleteOnExit();
 		} catch (FileNotFoundException e) {			
 			e.printStackTrace();
 		} catch (DocumentException e) {
