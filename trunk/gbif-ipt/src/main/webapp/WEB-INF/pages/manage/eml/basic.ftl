@@ -48,14 +48,14 @@
   	<@input name="eml.title" />
   	<@text name="eml.description" />
   	<div class="halfcolumn">
-  		<#assign lang="${eml.metadataLanguage}"/>
+  		<#assign lang="${eml.metadataLanguage!}"/>
 		<#if (lang ? length != 3)><#assign lang="${localeLanguageIso3!}"/></#if>
-	  	<@select name="eml.metadataLanguage" help="i18n" options=languages value="${lang}" />
+	  	<@select name="eml.metadataLanguage" help="i18n" options=languages value="${lang!}" />
 	</div>
 	<div class="halfcolumn">
-		<#assign lang="${eml.language}"/>
+		<#assign lang="${eml.language!}"/>
 		<#if (lang ? length != 3)><#assign lang="${localeLanguageIso3!}"/></#if>
-	  	<@select name="eml.language" help="i18n" options=languages value="${lang}" />
+	  	<@select name="eml.language" help="i18n" options=languages value="${lang!}" />
   	</div>
   	<div class="halfcolumn">
 	  	<@select name="resource.subtype" options=resourceTypes value="${resource.subtype!'eng'}" />
