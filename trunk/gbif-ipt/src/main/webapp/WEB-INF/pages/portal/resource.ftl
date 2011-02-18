@@ -333,14 +333,13 @@
    			<#assign itemTitle><@s.text name='eml.bibliographicCitationSet.bibliographicCitations.citation'/></#assign>
           	<table>
        		<#list eml.bibliographicCitationSet.bibliographicCitations as item>
-       			<tr>
-				<th class="title">${itemTitle?upper_case} ${item_index+1}</th>
-				<td>
+       			<tr>				
 	          	<table>
           			<tr><th><@s.text name='eml.bibliographicCitationSet.bibliographicCitations.identifier'/></th><td>${item.identifier!}</td></tr>
           			<tr><th><@s.text name='eml.bibliographicCitationSet.bibliographicCitations.citation'/></th><td>${item.citation!}</td></tr>
 	      		</table>
-				</td>
+	      		<div class="newline"></div>
+	      		<div class="newline"></div>
 				</tr>
        		</#list>
        		</table>
