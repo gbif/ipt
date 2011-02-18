@@ -3,6 +3,7 @@
  */
 package org.gbif.ipt.service.admin.impl;
 
+import org.gbif.ipt.action.admin.ExtensionsAction.RegisteredExtensions;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.Constants;
@@ -17,10 +18,12 @@ import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.utils.HttpUtil;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.inject.servlet.SessionScoped;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOCase;
@@ -56,6 +59,49 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   private final String OCCURRENCE_KEYWORD = "dwc:occurrence";
   private ResourceManager resourceManager;
   private ConfigWarnings warnings;
+  @Inject
+  private RegisteredExtensions registered;
+  
+  @SessionScoped
+  public static class RegisteredExtensions {
+    private List<Extension> extensions = new ArrayList<Extension>();
+    private RegistryManager registryManager;
+
+    @Inject
+    public RegisteredExtensions(RegistryManager registryManager) {
+      super();
+      this.registryManager = registryManager;
+    }
+
+    public boolean isLoaded() {
+        if (extensions.size() > 0) {
+          return true;
+        }
+        return false;
+      }
+    
+    public void load() throws RuntimeException {
+      extensions = registryManager.getExtensions();
+    }
+    
+    public List<Extension> getCoreTypes() {
+      if(!isLoaded())load();
+      List<Extension> coreTypes = new ArrayList<Extension>();
+	  for(Extension ext :extensions){
+		  if(Constants.DWC_ROWTYPE_OCCURRENCE.equals(normalizeRowType(ext.getRowType()))){
+			  coreTypes.add(ext);
+		  }
+		  if(Constants.DWC_ROWTYPE_TAXON.equals(normalizeRowType(ext.getRowType()))){
+			  coreTypes.add(ext);
+		  }
+	  }
+    	return coreTypes;
+    }
+    
+    public List<Extension> getExtensions() {
+    	return extensions;
+    }
+  }
 
   @Inject
   public ExtensionManagerImpl(AppConfig cfg, DataDir dataDir, ExtensionFactory factory,
@@ -258,13 +304,12 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   }
 
   public void installCoreTypes() {
-	  String coreURLs[]={"http://rs.gbif.org/core/dwc_occurrence.xml","http://rs.gbif.org/core/dwc_taxon.xml"};
-	  for(String url :coreURLs){
+	  for(Extension ext :registered.getCoreTypes()){
 		  try {
-		  	install(new URL(url));
-		  } catch (Exception e) {
-			  log.debug(e);
-		  }	
+			  	install(ext.getUrl());
+			  } catch (Exception e) {
+				  log.debug(e);
+			  }	
 	  }
   }
 }
