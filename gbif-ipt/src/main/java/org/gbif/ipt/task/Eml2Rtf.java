@@ -21,11 +21,14 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.TreeSet;
 
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.KeywordSet;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
@@ -51,6 +54,13 @@ public class Eml2Rtf {
 	private Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, Font.BOLD, new Color(0, 0, 0));
 	private Font fontHeader = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14, Font.BOLD, new Color(0, 0, 0));
 
+	@Inject
+	private VocabulariesManager vocabManager;
+	
+	public Eml2Rtf(VocabulariesManager vocabManager) {
+		super();
+		this.vocabManager = vocabManager;
+	}
 	private void addPara(Document doc, String text, Font font, int spacing, int alignType) throws DocumentException {
 		Paragraph p = new Paragraph(text, font);
 		if (spacing != 0) {
@@ -94,7 +104,17 @@ public class Eml2Rtf {
 		addAuthors(doc, eml);
 
 		doc.add(Chunk.NEWLINE);
-		// addKeywords(doc, keys);
+
+		// Received, Revised, Accepted, and ‘published’ dates
+		/* These are to be manually inserted by the Publisher of the Data Paper 
+		 * to indicate the dates of original manuscript submission, revised manuscript 
+		 * submission, acceptance of manuscript and publishing of the manuscript 
+		 * as Data Paper in the journal. */
+		
+
+		// addKeywords(doc, keys);		
+		
+		
 
 		addPara(doc, "Abstract", fontTitle, 0, Element.ALIGN_LEFT);
 		addPara(doc, eml.getDescription(), fontItalic, 0, Element.ALIGN_JUSTIFIED);
@@ -160,9 +180,8 @@ public class Eml2Rtf {
 			p.add(affiliations.get(c).getOrganisation() + ", ");
 			p.add(affiliations.get(c).getAddress().getAddress() + ", ");
 			p.add(affiliations.get(c).getAddress().getPostalCode() + ", ");
-			p.add(affiliations.get(c).getAddress().getCity() + ", ");
-			// TODO - Should be country name - NOT country iso.
-			p.add(affiliations.get(c).getAddress().getCountry());
+			p.add(affiliations.get(c).getAddress().getCity() + ", ");			
+			p.add(vocabManager.get(Constants.VOCAB_URI_COUNTRY).findConcept(affiliations.get(c).getAddress().getCountry()).getPreferredTerm("en").getTitle());
 		}
 		doc.add(p);
 
@@ -175,10 +194,10 @@ public class Eml2Rtf {
 		p.add(new Phrase("Corresponding authors: ", fontTitle));
 		p.setFont(font);
 		for (int c = 0; c < agents.length; c++) {
-			if (c != 0)	
+			if (c != 0)
 				p.add(", ");
-			//TODO - Validation for authors with blank email needed.
-			p.add(agents[c].getFirstName()+" "+agents[c].getLastName()+" ("+agents[c].getEmail()+")");
+			// TODO - Validation for authors with blank email needed.
+			p.add(agents[c].getFirstName() + " " + agents[c].getLastName() + " (" + agents[c].getEmail() + ")");
 		}
 
 		doc.add(p);
