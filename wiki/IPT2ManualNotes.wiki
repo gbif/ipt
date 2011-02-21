@@ -577,7 +577,7 @@ Organisations are not available to be associated with resources until they are a
 ==Configure Extensions==
 This page allows a user having the Admin role to enable the instance of the IPT to import and share various pre-defined types of data, called extensions and vocabularies, from the GBIF Registry. Each extension includes properties (fields, terms) that support a specific purpose. For example, the Darwin Core Taxon extension supports information pertaining to taxonomic names, taxon name usages, and taxon concepts and allows the IPT to host resources for taxonomic and nomenclatural checklists. In order to share data, the appropriate extensions must be enabled in the IPT. Each vocabulary contains a list of valid values that a particular term in an extension can take. For example, the BasisOfRecord vocabulary contains all of the standard values allowed in the Darwin Core term BasisOfRecord.
 
-Before and extensions have been installed, the Extensions page begins with a section labeled "Vocabularies" having a single button labeled "Update". Extensions that exist in the GBIF Registry but have not yet been installed are listed below the Vocabularies section. When an extension is successfully installed, it will appear above the Vocabularies section.
+Before any extensions have been installed, the Extensions page begins with a section labeled "Vocabularies" having a single button labeled "Update". Extensions that exist in the GBIF Registry but have not yet been installed are listed below the Vocabularies section. When an extension is successfully installed, it will appear above the Vocabularies section.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminExtensions.png]
 
