@@ -13,7 +13,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
-import org.gbif.ipt.utils.HttpUtil;
+import org.gbif.utils.HttpUtil;
 import org.gbif.ipt.utils.InputStreamUtils;
 import org.gbif.ipt.utils.LogFileAppender;
 
@@ -58,7 +58,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   public ConfigManagerImpl(DataDir dataDir, AppConfig cfg, InputStreamUtils streamUtils,
       UserAccountManager userManager, ResourceManager resourceManager, ExtensionManager extensionManager,
       VocabulariesManager vocabManager, RegistrationManager registrationManager, ConfigWarnings warnings,
-      DefaultHttpClient client, HttpUtil http) {
+      DefaultHttpClient client) {
     super(cfg, dataDir);
     this.streamUtils = streamUtils;
     this.userManager = userManager;
@@ -68,7 +68,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     this.registrationManager = registrationManager;
     this.warnings = warnings;
     this.client = client;
-    this.http = http;
+    this.http = new HttpUtil(client);
     if (dataDir.isConfigured()) {
       log.info("IPT DataDir configured - loading its configuration");
       try {

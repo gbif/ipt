@@ -20,7 +20,7 @@ import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.registry.RegistryManager;
-import org.gbif.ipt.utils.HttpUtil;
+import org.gbif.utils.HttpUtil;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -30,6 +30,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.xml.sax.SAXException;
 
 import java.io.File;
@@ -89,11 +90,11 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
    * 
    */
   @Inject
-  public VocabulariesManagerImpl(AppConfig cfg, DataDir dataDir, VocabularyFactory vocabFactory, HttpUtil downloadUtil,
+  public VocabulariesManagerImpl(AppConfig cfg, DataDir dataDir, VocabularyFactory vocabFactory, DefaultHttpClient client,
       RegistryManager registryManager, ExtensionManager extensionManager, ConfigWarnings warnings) {
     super(cfg, dataDir);
     this.vocabFactory = vocabFactory;
-    this.downloadUtil = downloadUtil;
+    this.downloadUtil = new HttpUtil(client);
     this.registryManager = registryManager;
     this.extensionManager = extensionManager;
     this.warnings = warnings;

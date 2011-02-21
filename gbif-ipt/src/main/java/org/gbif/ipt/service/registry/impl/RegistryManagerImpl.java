@@ -12,8 +12,8 @@ import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.RegistryException.TYPE;
 import org.gbif.ipt.service.registry.RegistryManager;
-import org.gbif.ipt.utils.HttpUtil;
-import org.gbif.ipt.utils.HttpUtil.Response;
+import org.gbif.utils.HttpUtil;
+import org.gbif.utils.HttpUtil.Response;
 import org.gbif.ipt.utils.RegistryEntryHandler;
 import org.gbif.metadata.eml.Eml;
 
@@ -25,6 +25,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.xml.sax.SAXException;
@@ -58,11 +59,11 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   private Gson gson;
 
   @Inject
-  public RegistryManagerImpl(AppConfig cfg, DataDir dataDir, HttpUtil http, SAXParserFactory saxFactory)
+  public RegistryManagerImpl(AppConfig cfg, DataDir dataDir, DefaultHttpClient client, SAXParserFactory saxFactory)
       throws ParserConfigurationException, SAXException {
     super(cfg, dataDir);
     this.saxParser = saxFactory.newSAXParser();
-    this.http = http;
+    this.http = new HttpUtil(client);
     this.gson = new Gson();
   }
 
