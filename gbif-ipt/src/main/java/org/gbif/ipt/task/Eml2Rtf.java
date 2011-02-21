@@ -18,12 +18,15 @@ package org.gbif.ipt.task;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.TreeSet;
 
 import org.gbif.ipt.model.Resource;
 import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.KeywordSet;
+import org.mockito.internal.matchers.CompareTo;
 
 import com.google.inject.Singleton;
 import com.lowagie.text.Chunk;
@@ -34,6 +37,7 @@ import com.lowagie.text.Font;
 import com.lowagie.text.FontFactory;
 import com.lowagie.text.Header;
 import com.lowagie.text.Paragraph;
+import com.lowagie.text.Phrase;
 
 /**
  * Populates a RTF document with a resources metadata, mainly derived from its EML. TODO: add more eml metadata
@@ -48,7 +52,7 @@ public class Eml2Rtf {
 	private Font fontItalic = FontFactory.getFont(FontFactory.HELVETICA_OBLIQUE, 12, Font.ITALIC, new Color(0, 0, 0));
 	private Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, Font.BOLD, new Color(0, 0, 0));
 	private Font fontHeader = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14, Font.BOLD, new Color(0, 0, 0));
-	
+
 	private void addPara(Document doc, String text, Font font, int spacing, int alignType) throws DocumentException {
 		Paragraph p = new Paragraph(text, font);
 		if (spacing != 0) {
@@ -59,7 +63,7 @@ public class Eml2Rtf {
 		}
 		doc.add(p);
 	}
-	
+
 	private Chunk createSuperScript(String text) {
 		return new Chunk(text).setTextRise(5f);
 	}
@@ -87,12 +91,12 @@ public class Eml2Rtf {
 		// title
 		addPara(doc, eml.getTitle(), fontHeader, 0, Element.ALIGN_CENTER);
 		doc.add(Chunk.NEWLINE);
-		
+
 		// Authors, affiliations and corresponging authors
 		addAuthors(doc, eml);
-		
+
 		doc.add(Chunk.NEWLINE);
-		//addKeywords(doc, keys);
+		// addKeywords(doc, keys);
 
 		addPara(doc, "Abstract", fontTitle, 0, Element.ALIGN_LEFT);
 		addPara(doc, eml.getDescription(), fontItalic, 0, Element.ALIGN_JUSTIFIED);
@@ -100,34 +104,85 @@ public class Eml2Rtf {
 	}
 
 	private void addAuthors(Document doc, Eml eml) throws DocumentException {
-		
-		ArrayList<Agent> agents = new ArrayList<Agent>();
-		agents.add(eml.getResourceCreator());
-		agents.add(eml.getMetadataProvider());
-		agents.addAll(eml.getAssociatedParties());
-		
+
+		// <AUTHORS>
+
+		// Creating set of authors with different names. (first names + last names).
+		TreeSet<Agent> tempAgents = new TreeSet<Agent>(new Comparator<Agent>() {
+			public int compare(Agent a, Agent b) {
+				return (a.getFirstName() + a.getLastName()).compareTo(b.getFirstName() + b.getLastName());
+			}
+		});
+		tempAgents.add(eml.getResourceCreator());
+		tempAgents.add(eml.getMetadataProvider());
+		tempAgents.addAll(eml.getAssociatedParties());
+		Agent[] agents = new Agent[tempAgents.size()];
+		tempAgents.toArray(agents);
 		// Adding authors
 		Paragraph p = new Paragraph();
 		p.setFont(font);
 		p.setAlignment(Element.ALIGN_CENTER);
-		for(int c = 0; c < agents.size(); c++) {
-			if(c!=0) p.add(", ");
+		Agent agent = null;
+		ArrayList<Agent> affiliations = new ArrayList<Agent>();
+		for (int c = 0; c < agents.length; c++) {
+			if (c != 0)
+				p.add(", ");
 			// First Name and Last Name
-			p.add(agents.get(c).getFirstName()+" "+agents.get(c).getLastName());			
-			
+			p.add(agents[c].getFirstName() + " " + agents[c].getLastName());
+
 			// Looking for addresses of other authors (superscripts should not be repeated).
 			int index = 0;
-			while(index < c) {				
-				if(agents.get(c).getAddress().equals(agents.get(index).getAddress())) {
-					p.add(createSuperScript(""+(index+1)));
+			while (index < c) {
+				if (agents[c].getAddress().equals(agents[index].getAddress())) {
+					p.add(createSuperScript("" + (index + 1)));
 					break;
 				}
 				index++;
 			}
-			if(index == c) {
-				p.add(createSuperScript(""+(index+1)));
+			if (index == c) {
+				p.add(createSuperScript("" + (index + 1)));
+				affiliations.add(agents[c]);
 			}
 		}
+		doc.add(p);
+
+		doc.add(Chunk.NEWLINE);
+
+		tempAgents.clear();
+
+		// <AFFILIATIONS>
+
+		p = new Paragraph();
+		p.setFont(font);
+		p.setAlignment(Element.ALIGN_JUSTIFIED);
+		for (int c = 0; c < affiliations.size(); c++) {
+			if (c != 0)
+				p.add("; ");
+			p.add((c + 1) + " ");
+			p.add(affiliations.get(c).getOrganisation() + ", ");
+			p.add(affiliations.get(c).getAddress().getAddress() + ", ");
+			p.add(affiliations.get(c).getAddress().getPostalCode() + ", ");
+			p.add(affiliations.get(c).getAddress().getCity() + ", ");
+			// TODO - Should be country name - NOT country iso.
+			p.add(affiliations.get(c).getAddress().getCountry());
+		}
+		doc.add(p);
+
+		doc.add(Chunk.NEWLINE);
+
+		// <Corresponding Authors>
+
+		p = new Paragraph();
+		p.setAlignment(Element.ALIGN_JUSTIFIED);
+		p.add(new Phrase("Corresponding authors: ", fontTitle));
+		p.setFont(font);
+		for (int c = 0; c < agents.length; c++) {
+			if (c != 0)	
+				p.add(", ");
+			//TODO - Validation for authors with blank email needed.
+			p.add(agents[c].getFirstName()+" "+agents[c].getLastName()+" ("+agents[c].getEmail()+")");
+		}
+
 		doc.add(p);
 
 	}
@@ -136,5 +191,5 @@ public class Eml2Rtf {
 		addPara(doc, "Keywords", fontHeader, 10, Element.ALIGN_LEFT);
 		addPara(doc, keys, fontItalic, 0, Element.ALIGN_LEFT);
 	}
-	
+
 }
