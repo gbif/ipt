@@ -6,7 +6,9 @@ This tutorial explains how to create an example resource, install extensions, im
 
 ==Prerequisites==
 Following are the conditions assumed to be true in order to follow this tutorial in a working IPT environment.
+
 1) A fresh, functional, non-production version of the IPT is installed, running, and connected to the Internet. Refer to the [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Getting_Started_Guide Getting Started Guide] section of the IPT User Manual to see how to prepare the IPT for its first use.
+
 2) The reader can log in to the IPT as a user having the Admin role.
 ==Steps==
 ===1) Login===
