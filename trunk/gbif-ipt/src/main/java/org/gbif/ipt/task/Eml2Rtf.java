@@ -16,13 +16,14 @@
 
 package org.gbif.ipt.task;
 
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.HashSet;
+
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.User;
 import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.Eml;
-import org.gbif.metadata.eml.EmlFactory;
 import org.gbif.metadata.eml.KeywordSet;
-import org.xml.sax.SAXException;
 
 import com.google.inject.Singleton;
 import com.lowagie.text.Chunk;
@@ -33,31 +34,20 @@ import com.lowagie.text.Font;
 import com.lowagie.text.FontFactory;
 import com.lowagie.text.Header;
 import com.lowagie.text.Paragraph;
-import com.lowagie.text.pdf.PdfTemplate;
-import com.lowagie.text.rtf.RtfWriter2;
-
-import java.awt.Color;
-import java.awt.font.TextAttribute;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.Writer;
 
 /**
  * Populates a RTF document with a resources metadata, mainly derived from its EML. TODO: add more eml metadata
  * 
  * @author markus
+ * @author htobon
  * 
  */
 @Singleton
 public class Eml2Rtf {
-	private Font font = FontFactory.getFont(FontFactory.HELVETICA, 14, Font.NORMAL, new Color(0, 0, 0));
-	private Font fontItalic = FontFactory.getFont(FontFactory.HELVETICA, 14, Font.ITALIC, new Color(0, 0, 0));
-	private Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA, 24, Font.BOLD, new Color(0, 0, 0));
-	private Font fontHeader = FontFactory.getFont(FontFactory.HELVETICA, 18, Font.BOLD, new Color(0, 0, 0));
+	private Font font = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.NORMAL, new Color(0, 0, 0));
+	private Font fontItalic = FontFactory.getFont(FontFactory.HELVETICA_OBLIQUE, 12, Font.ITALIC, new Color(0, 0, 0));
+	private Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, Font.BOLD, new Color(0, 0, 0));
+	private Font fontHeader = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14, Font.BOLD, new Color(0, 0, 0));
 	
 	private void addPara(Document doc, String text, Font font, int spacing, int alignType) throws DocumentException {
 		Paragraph p = new Paragraph(text, font);
@@ -94,51 +84,57 @@ public class Eml2Rtf {
 		// write proper doc
 		doc.open();
 
-		addPara(doc, eml.getTitle(), fontTitle, 2, Element.ALIGN_CENTER);
-
-		addPara(doc, "Description", fontHeader, 10, Element.ALIGN_CENTER);
-		addPara(doc, eml.getDescription(), font, 10, Element.ALIGN_JUSTIFIED);
+		// title
+		addPara(doc, eml.getTitle(), fontHeader, 0, Element.ALIGN_CENTER);
+		doc.add(Chunk.NEWLINE);
+		
+		// Authors, affiliations and corresponging authors
 		addAuthors(doc, eml);
+		
+		doc.add(Chunk.NEWLINE);
+		//addKeywords(doc, keys);
 
-		addKeywords(doc, keys);
-
+		addPara(doc, "Abstract", fontTitle, 0, Element.ALIGN_LEFT);
+		addPara(doc, eml.getDescription(), fontItalic, 0, Element.ALIGN_JUSTIFIED);
 		doc.close();
 	}
 
 	private void addAuthors(Document doc, Eml eml) throws DocumentException {
-		int count = 1;
-		Agent agent;
-		Paragraph p = new Paragraph("", font);
-		if ((agent = eml.getContact()) != null) {
-			p.add(agent.getFirstName() + " " + agent.getLastName());
-			p.add(createSuperScript("" + count));
-		}
-		count++;
-		if ((agent = eml.getResourceCreator()) != null) {
-			if (!p.isEmpty())
-				p.add(", ");
-
-			p.add(agent.getFirstName() + " " + agent.getLastName());
-			p.add(createSuperScript("" + count));
-		}
-
-		count++;
-		if ((agent = eml.getMetadataProvider()) != null) {
-			if (!p.isEmpty())
-				p.add(", ");
-
-			p.add(agent.getFirstName() + " " + agent.getLastName());
-			p.add(new Chunk("" + count).setTextRise(5f));
-		}
-
+		
+		ArrayList<Agent> agents = new ArrayList<Agent>();
+		agents.add(eml.getResourceCreator());
+		agents.add(eml.getMetadataProvider());
+		agents.addAll(eml.getAssociatedParties());
+		
+		// Adding authors
+		Paragraph p = new Paragraph();
+		p.setFont(font);
 		p.setAlignment(Element.ALIGN_CENTER);
+		for(int c = 0; c < agents.size(); c++) {
+			if(c!=0) p.add(", ");
+			// First Name and Last Name
+			p.add(agents.get(c).getFirstName()+" "+agents.get(c).getLastName());			
+			
+			// Looking for addresses of other authors (superscripts should not be repeated).
+			int index = 0;
+			while(index < c) {				
+				if(agents.get(c).getAddress().equals(agents.get(index).getAddress())) {
+					p.add(createSuperScript(""+(index+1)));
+					break;
+				}
+				index++;
+			}
+			if(index == c) {
+				p.add(createSuperScript(""+(index+1)));
+			}
+		}
 		doc.add(p);
 
 	}
 
 	private void addKeywords(Document doc, String keys) throws DocumentException {
-		addPara(doc, "Keywords", fontHeader, 10, Element.ALIGN_CENTER);
-		addPara(doc, keys, fontItalic, 0, Element.ALIGN_CENTER);
+		addPara(doc, "Keywords", fontHeader, 10, Element.ALIGN_LEFT);
+		addPara(doc, keys, fontItalic, 0, Element.ALIGN_LEFT);
 	}
 	
 }
