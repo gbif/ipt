@@ -20,7 +20,7 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.config.IPTModule;
 import org.gbif.ipt.service.manage.ResourceManager;
-
+import org.gbif.utils.HttpUtil;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import javax.xml.parsers.SAXParserFactory;
@@ -34,7 +34,7 @@ public abstract class IptMockBaseTest {
   protected DataDir dataDir;
   protected AppConfig cfg;
   private HttpUtil http;
-  private DefaultHttpClient client;
+  protected DefaultHttpClient client;
 
   public IptMockBaseTest() {
     super();

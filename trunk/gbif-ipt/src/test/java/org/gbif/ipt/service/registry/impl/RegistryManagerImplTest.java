@@ -53,7 +53,7 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
   }
 
   public RegistryManager getManager() throws ParserConfigurationException, SAXException {
-    RegistryManager man = new RegistryManagerImpl(cfg, dataDir, buildHttpUtil(), buildSaxFactory());
+    RegistryManager man = new RegistryManagerImpl(cfg, dataDir, client, buildSaxFactory());
     return man;
   }
 

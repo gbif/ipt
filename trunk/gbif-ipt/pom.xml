@@ -257,6 +257,11 @@
       <version>${gbif-common.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.gbif</groupId>
+      <artifactId>gbif-httputils</artifactId>
+      <version>0.0.3-SNAPSHOT</version>
+    </dependency>
+    <dependency>
 
       <!-- To redirect calls to SLF4J from dwca-reader & gbif-common to Log4J -->
       <groupId>org.slf4j</groupId>

@@ -3,7 +3,6 @@
  */
 package org.gbif.ipt.service.admin.impl;
 
-import org.gbif.ipt.action.admin.ExtensionsAction.RegisteredExtensions;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.Constants;
@@ -19,16 +18,16 @@ import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
-import org.gbif.ipt.utils.HttpUtil;
+import org.gbif.utils.HttpUtil;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.google.inject.servlet.SessionScoped;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.xml.sax.SAXException;
 
 import java.io.File;
@@ -104,12 +103,12 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
 
   @Inject
   public ExtensionManagerImpl(AppConfig cfg, DataDir dataDir, ExtensionFactory factory,
-      ResourceManager resourceManager, ConfigWarnings warnings, HttpUtil downloader) {
+      ResourceManager resourceManager, ConfigWarnings warnings, DefaultHttpClient client) {
     super(cfg, dataDir);
     this.factory = factory;
     this.warnings = warnings;
     this.resourceManager = resourceManager;
-    this.downloader = downloader;
+    this.downloader = new HttpUtil(client);
   }
 
   public static String normalizeRowType(String rowType) {
