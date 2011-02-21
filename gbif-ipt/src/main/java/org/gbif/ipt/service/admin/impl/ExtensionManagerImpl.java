@@ -62,7 +62,6 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   @Inject
   private RegisteredExtensions registered;
   
-  @SessionScoped
   public static class RegisteredExtensions {
     private List<Extension> extensions = new ArrayList<Extension>();
     private RegistryManager registryManager;
