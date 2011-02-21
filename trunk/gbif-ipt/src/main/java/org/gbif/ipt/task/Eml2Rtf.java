@@ -19,14 +19,12 @@ package org.gbif.ipt.task;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.TreeSet;
 
 import org.gbif.ipt.model.Resource;
 import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.KeywordSet;
-import org.mockito.internal.matchers.CompareTo;
 
 import com.google.inject.Singleton;
 import com.lowagie.text.Chunk;
