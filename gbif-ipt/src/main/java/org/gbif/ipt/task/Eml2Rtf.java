@@ -49,18 +49,15 @@ import com.lowagie.text.Phrase;
  */
 @Singleton
 public class Eml2Rtf {
-	private Font font = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.NORMAL, new Color(0, 0, 0));
-	private Font fontItalic = FontFactory.getFont(FontFactory.HELVETICA_OBLIQUE, 12, Font.ITALIC, new Color(0, 0, 0));
-	private Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, Font.BOLD, new Color(0, 0, 0));
-	private Font fontHeader = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14, Font.BOLD, new Color(0, 0, 0));
+	private Font font = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.NORMAL, Color.BLACK);
+	private Font fontToComplete = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.NORMAL, Color.RED);
+	private Font fontItalic = FontFactory.getFont(FontFactory.HELVETICA_OBLIQUE, 12, Font.ITALIC, Color.BLACK);
+	private Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, Font.BOLD, Color.BLACK);
+	private Font fontHeader = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14, Font.BOLD, Color.BLACK);
 
 	@Inject
 	private VocabulariesManager vocabManager;
-	
-	public Eml2Rtf(VocabulariesManager vocabManager) {
-		super();
-		this.vocabManager = vocabManager;
-	}
+
 	private void addPara(Document doc, String text, Font font, int spacing, int alignType) throws DocumentException {
 		Paragraph p = new Paragraph(text, font);
 		if (spacing != 0) {
@@ -110,15 +107,44 @@ public class Eml2Rtf {
 		 * to indicate the dates of original manuscript submission, revised manuscript 
 		 * submission, acceptance of manuscript and publishing of the manuscript 
 		 * as Data Paper in the journal. */
-		
+		addDates(doc, eml);
 
-		// addKeywords(doc, keys);		
-		
-		
+		doc.add(Chunk.NEWLINE);
 
+		addCitations(doc, eml);
+		// addKeywords(doc, keys);
+
+		doc.add(Chunk.NEWLINE);
+		
 		addPara(doc, "Abstract", fontTitle, 0, Element.ALIGN_LEFT);
 		addPara(doc, eml.getDescription(), fontItalic, 0, Element.ALIGN_JUSTIFIED);
 		doc.close();
+	}
+
+	private void addCitations(Document doc, Eml eml) {
+		Paragraph p = new Paragraph();
+		p.setAlignment(Element.ALIGN_JUSTIFIED);
+		p.setFont(font);
+		p.add(new Phrase("Citation: ", fontTitle));
+		
+
+	}
+
+	private void addDates(Document doc, Eml eml) throws DocumentException {
+		Paragraph p = new Paragraph();
+		Phrase phrase = new Phrase("{date}", fontToComplete);
+		p.setFont(font);
+		p.add("Received ");
+		p.add(phrase);
+		p.add("; Revised ");
+		p.add(phrase);
+		p.add("; Accepted ");
+		p.add(phrase);
+		p.add("; Published ");
+		p.add(phrase);
+		
+		doc.add(p);
+		p.clear();
 	}
 
 	private void addAuthors(Document doc, Eml eml) throws DocumentException {
@@ -180,7 +206,7 @@ public class Eml2Rtf {
 			p.add(affiliations.get(c).getOrganisation() + ", ");
 			p.add(affiliations.get(c).getAddress().getAddress() + ", ");
 			p.add(affiliations.get(c).getAddress().getPostalCode() + ", ");
-			p.add(affiliations.get(c).getAddress().getCity() + ", ");			
+			p.add(affiliations.get(c).getAddress().getCity() + ", ");
 			p.add(vocabManager.get(Constants.VOCAB_URI_COUNTRY).findConcept(affiliations.get(c).getAddress().getCountry()).getPreferredTerm("en").getTitle());
 		}
 		doc.add(p);
@@ -207,6 +233,10 @@ public class Eml2Rtf {
 	private void addKeywords(Document doc, String keys) throws DocumentException {
 		addPara(doc, "Keywords", fontHeader, 10, Element.ALIGN_LEFT);
 		addPara(doc, keys, fontItalic, 0, Element.ALIGN_LEFT);
+	}
+	
+	public void setVocabManager(VocabulariesManager vocabManager) {
+		this.vocabManager = vocabManager;
 	}
 
 }
