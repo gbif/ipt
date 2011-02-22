@@ -19,11 +19,15 @@ package org.gbif.ipt.task;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.TreeSet;
 
+import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.KeywordSet;
@@ -39,6 +43,8 @@ import com.lowagie.text.FontFactory;
 import com.lowagie.text.Header;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
+import com.opensymphony.xwork2.LocaleProvider;
+import com.opensymphony.xwork2.TextProvider;
 
 /**
  * Populates a RTF document with a resources metadata, mainly derived from its EML. TODO: add more eml metadata
@@ -54,7 +60,9 @@ public class Eml2Rtf {
 	private Font fontItalic = FontFactory.getFont(FontFactory.HELVETICA_OBLIQUE, 12, Font.ITALIC, Color.BLACK);
 	private Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, Font.BOLD, Color.BLACK);
 	private Font fontHeader = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14, Font.BOLD, Color.BLACK);
-
+	
+	@Inject
+	private SimpleTextProvider textProvider;	
 	@Inject
 	private VocabulariesManager vocabManager;
 
@@ -89,45 +97,60 @@ public class Eml2Rtf {
 		}
 		doc.addKeywords(keys);
 		doc.add(new Header("inspired by", "William Shakespeare"));
-
 		// write proper doc
 		doc.open();
-
 		// title
 		addPara(doc, eml.getTitle(), fontHeader, 0, Element.ALIGN_CENTER);
 		doc.add(Chunk.NEWLINE);
-
 		// Authors, affiliations and corresponging authors
 		addAuthors(doc, eml);
-
 		doc.add(Chunk.NEWLINE);
-
 		// Received, Revised, Accepted, and ‘published’ dates
 		/* These are to be manually inserted by the Publisher of the Data Paper 
 		 * to indicate the dates of original manuscript submission, revised manuscript 
 		 * submission, acceptance of manuscript and publishing of the manuscript 
 		 * as Data Paper in the journal. */
 		addDates(doc, eml);
-
 		doc.add(Chunk.NEWLINE);
-
 		addCitations(doc, eml);
-		// addKeywords(doc, keys);
-
+		doc.add(Chunk.NEWLINE);		
+		addAbstract(doc, eml);
+		doc.add(Chunk.NEWLINE);		
+		addKeywords(doc, keys);
 		doc.add(Chunk.NEWLINE);
-		
-		addPara(doc, "Abstract", fontTitle, 0, Element.ALIGN_LEFT);
-		addPara(doc, eml.getDescription(), fontItalic, 0, Element.ALIGN_JUSTIFIED);
+		addTaxonomicCoverages(doc, eml);
+		doc.add(Chunk.NEWLINE);
+
 		doc.close();
 	}
 
-	private void addCitations(Document doc, Eml eml) {
+	private void addTaxonomicCoverages(Document doc, Eml eml) throws DocumentException {
 		Paragraph p = new Paragraph();
 		p.setAlignment(Element.ALIGN_JUSTIFIED);
 		p.setFont(font);
-		p.add(new Phrase("Citation: ", fontTitle));
 		
+		p.add(new Phrase("Taxonomic Coverage", font));
+		p.add(Chunk.NEWLINE);
+		p.add(new Phrase("General Taxonomic Coverage Description", font));
+		
+		doc.add(p);
+		p.clear();
+		
+	}
 
+	private void addAbstract(Document doc, Eml eml) throws DocumentException {
+		addPara(doc, "Abstract", fontTitle, 0, Element.ALIGN_LEFT);
+		addPara(doc, eml.getDescription(), font, 0, Element.ALIGN_JUSTIFIED);		
+	}
+
+	private void addCitations(Document doc, Eml eml) throws DocumentException {
+		Paragraph p = new Paragraph();
+		p.setAlignment(Element.ALIGN_JUSTIFIED);
+		p.setFont(fontToComplete);
+		p.add(new Phrase("Citation: ", fontTitle));
+		p.add("Combination of Authors, year of data paper publication (in paranthesis), Title, Journal Name, Volume, Issue number (in paranthesis), and doi of the data paper.");
+		doc.add(p);
+		p.clear();
 	}
 
 	private void addDates(Document doc, Eml eml) throws DocumentException {
@@ -142,7 +165,7 @@ public class Eml2Rtf {
 		p.add(phrase);
 		p.add("; Published ");
 		p.add(phrase);
-		
+
 		doc.add(p);
 		p.clear();
 	}
@@ -206,8 +229,10 @@ public class Eml2Rtf {
 			p.add(affiliations.get(c).getOrganisation() + ", ");
 			p.add(affiliations.get(c).getAddress().getAddress() + ", ");
 			p.add(affiliations.get(c).getAddress().getPostalCode() + ", ");
-			p.add(affiliations.get(c).getAddress().getCity() + ", ");
-			p.add(vocabManager.get(Constants.VOCAB_URI_COUNTRY).findConcept(affiliations.get(c).getAddress().getCountry()).getPreferredTerm("en").getTitle());
+			p.add(affiliations.get(c).getAddress().getCity());
+			if (affiliations.get(c).getAddress().getCountry() != null) {
+				p.add(", " + vocabManager.get(Constants.VOCAB_URI_COUNTRY).findConcept(affiliations.get(c).getAddress().getCountry()).getPreferredTerm("en").getTitle());
+			}
 		}
 		doc.add(p);
 
@@ -227,16 +252,24 @@ public class Eml2Rtf {
 		}
 
 		doc.add(p);
-
+		p.clear();
 	}
 
 	private void addKeywords(Document doc, String keys) throws DocumentException {
 		addPara(doc, "Keywords", fontHeader, 10, Element.ALIGN_LEFT);
 		addPara(doc, keys, fontItalic, 0, Element.ALIGN_LEFT);
 	}
-	
+
 	public void setVocabManager(VocabulariesManager vocabManager) {
 		this.vocabManager = vocabManager;
+	}
+	public void setTextProvider(SimpleTextProvider textProvider) {
+		this.textProvider = textProvider;
+	}
+	public String getText(String key) {		
+		ResourceBundle res = textProvider.getTexts(Locale.getDefault());
+		return textProvider.findText(res, key, "default.message", new String[0]);
+		
 	}
 
 }
