@@ -22,13 +22,19 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Enumeration;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
+import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.model.VocabularyConcept;
 import org.gbif.ipt.model.VocabularyTerm;
 import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.utils.IptMockBaseTest;
 import org.gbif.metadata.eml.EmlFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,24 +55,36 @@ import static org.mockito.Mockito.*;
  *
  */
 @RunWith(MockitoJUnitRunner.class)
-public class Eml2RtfTest {
+public class Eml2RtfTest extends IptMockBaseTest {
+	
+	private Locale defaultLocale = new Locale("en");
 	
 	@Mock private VocabulariesManager mockedVocabManager;
 	@Mock private Vocabulary mockedVocabulary;
 	@Mock private VocabularyConcept mockedVocabConcept;
 	
-	private VocabularyTerm testVocabTerm;	
+	
+	private VocabularyTerm testVocabTerm;
+	private SimpleTextProvider textProvider;
 	private Eml2Rtf eml2Rtf;
 	
+	/**
+	 * This method should be used to configure some Mock class. If needed.
+	 */
 	@Before
 	public void setUp() {
-		// TODO This method should be used to configure some Mock class. If needed.
+		eml2Rtf = new Eml2Rtf();	
+		
+		textProvider = new SimpleTextProvider();
+		textProvider.setDefaultLocale(defaultLocale.toString());
+		eml2Rtf.setTextProvider(textProvider);
+		
 		testVocabTerm = new VocabularyTerm();
 		testVocabTerm.setLang("Country");
-		testVocabTerm.setTitle("The Country");
+		testVocabTerm.setTitle("The Country");		
 		
-		eml2Rtf = new Eml2Rtf();
 		eml2Rtf.setVocabManager(mockedVocabManager);
+		
 		when(mockedVocabManager.get(anyString())).thenReturn(mockedVocabulary);
 		when(mockedVocabulary.findConcept(anyString())).thenReturn(mockedVocabConcept);
 		when(mockedVocabConcept.getPreferredTerm(anyString())).thenReturn(testVocabTerm);
@@ -89,8 +107,7 @@ public class Eml2RtfTest {
 			rtfTempFile = File.createTempFile("resource", ".rtf");
 			System.out.println("Writing temporary test RTF file to "+rtfTempFile.getAbsolutePath());
 			
-			OutputStream out;
-			out = new FileOutputStream(rtfTempFile);
+			OutputStream out = new FileOutputStream(rtfTempFile);			
 
 			RtfWriter2.getInstance(doc, out);
 			eml2Rtf.writeEmlIntoRtf(doc, resource);
