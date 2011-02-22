@@ -19,9 +19,6 @@ $(document).ready(function(){
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
 <h1>${resource.title!resource.shortname}</h1>
-<p>
-<@s.text name="manage.locked"><@s.param>${baseURL}/manage/cancel.do?id=${resource.shortname}</@s.param></@s.text>
-</p>
 
 <div id="report">
 </div>
