@@ -8,8 +8,9 @@
 	<p class="actionMessage">${report.state}</p>
     <p>Continue to <a href="resource.do?r=${resource.shortname}">resource overview</a>.</p>
   <#else>
-  	<p class="warnMessage">${report.state}</p>
-    <p><a href="cancel.do?r=${resource.shortname}">Cancel</a> publishing.</p>
+    <p><@s.text name="manage.locked"><@s.param>${baseURL}/manage/cancel.do?id=${resource.shortname}</@s.param></@s.text></p>
+   	<p class="warnMessage">${report.state}</p>
+    <p><a href="cancel.do?r=${resource.shortname}"><@s.text name="button.cancel"/></a> <@s.text name="manage.overview.publishing"/>.</p>
   </#if> 
   <ul class="simple">
    <li><strong>Log Messages</strong></li>
