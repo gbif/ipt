@@ -68,11 +68,19 @@
           		<#else>
           		    <td><@s.text name='portal.resource.published.never'/></td></tr>
 			  	</#if>
-
+			  	
+			  	<#assign gbrdsURL>
+			  		<#if debug>
+			  			http://gbrdsdev.gbif.org/browse/agent?uuid=
+			  		<#else>
+			  			http://gbrds.gbif.org/browse/agent?uuid=
+			  		</#if>
+			  	</#assign>
+				
       		   	<#if resource.status=="REGISTERED">
-	          		<tr><th><@s.text name='portal.resource.organisation.key'/></th><td><a href="http://gbrdsdev.gbif.org/browse/agent?uuid=${resource.key}">${resource.key}</a></td></tr>
+	          		<tr><th><@s.text name='portal.resource.organisation.key'/></th><td><a href="${gbrdsURL}${resource.key}">${resource.key}</a></td></tr>
 	          		<#if resource.organisation?exists>
-	          		<tr><th><@s.text name='portal.resource.organisation.name'/></th><td><a href="http://gbrdsdev.gbif.org/browse/agent?uuid=${resource.organisation.key}">${resource.organisation.name!}</a> </td></tr>
+	          		<tr><th><@s.text name='portal.resource.organisation.name'/></th><td><a href="${gbrdsURL}${resource.organisation.key}">${resource.organisation.name!}</a> </td></tr>
 	          		<tr><th><@s.text name='portal.resource.organisation.node'/></th><td>${resource.organisation.nodeName!}</td></tr>
 	          		</#if>
           		</#if>

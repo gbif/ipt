@@ -26,6 +26,10 @@ public class ResourceAction extends PortalBaseAction {
   public Eml getEml() {
     return resource.getEml();
   }
+  
+  public boolean getDebug() {
+	return cfg.debug();
+  }
 
   public Ipt getIpt() {
     if (registrationManager.getIpt() == null) {
