@@ -16,81 +16,94 @@
 
 package org.gbif.ipt.task;
 
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Enumeration;
 import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.Map;
 
-import org.gbif.ipt.action.BaseAction;
+import org.gbif.ipt.mock.MockVocabulariesManager;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.model.VocabularyConcept;
 import org.gbif.ipt.model.VocabularyTerm;
-import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.IptMockBaseTest;
 import org.gbif.metadata.eml.EmlFactory;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.stubbing.Answer;
 import org.xml.sax.SAXException;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.rtf.RtfWriter2;
 
-import static org.mockito.Mockito.*;
-
 /**
  * 
  * @author htobon
- *
+ * 
  */
 @RunWith(MockitoJUnitRunner.class)
 public class Eml2RtfTest extends IptMockBaseTest {
-	
+
 	private Locale defaultLocale = new Locale("en");
-	
-	@Mock private VocabulariesManager mockedVocabManager;
-	@Mock private Vocabulary mockedVocabulary;
-	@Mock private VocabularyConcept mockedVocabConcept;
-	
-	
+
+	@Mock
+	private VocabulariesManagerImpl mockedVocabManager;
+	@Mock
+	private Vocabulary mockedVocabulary;
+	@Mock
+	private VocabularyConcept mockedVocabConcept;
+
 	private VocabularyTerm testVocabTerm;
 	private SimpleTextProvider textProvider;
 	private Eml2Rtf eml2Rtf;
-	
+
 	/**
 	 * This method should be used to configure some Mock class. If needed.
 	 */
 	@Before
 	public void setUp() {
-		eml2Rtf = new Eml2Rtf();	
-		
+		eml2Rtf = new Eml2Rtf();
+
 		textProvider = new SimpleTextProvider();
 		textProvider.setDefaultLocale(defaultLocale.toString());
 		eml2Rtf.setTextProvider(textProvider);
-		
+
 		testVocabTerm = new VocabularyTerm();
 		testVocabTerm.setLang("Country");
-		testVocabTerm.setTitle("The Country");		
-		
+		testVocabTerm.setTitle("The Country");
+
 		eml2Rtf.setVocabManager(mockedVocabManager);
-		
+
+		// TODO These stub configurations are temporally used while MockVocabulariesManager is terminated.
 		when(mockedVocabManager.get(anyString())).thenReturn(mockedVocabulary);
 		when(mockedVocabulary.findConcept(anyString())).thenReturn(mockedVocabConcept);
 		when(mockedVocabConcept.getPreferredTerm(anyString())).thenReturn(testVocabTerm);
-		
+
+		when(mockedVocabManager.getI18nVocab(anyString(), anyString(), anyBoolean())).thenAnswer(new Answer<Map<String, String>>() {
+			public Map<String, String> answer(InvocationOnMock invocation) throws Throwable {
+				return new MockVocabulariesManager().getI18nVocab((String) invocation.getArguments()[0], (String) invocation.getArguments()[1], (Boolean) invocation.getArguments()[2]);
+			}
+		});
 	}
-	
+
+	@Ignore
 	@Test
 	public void generateRtfFile() {
 		File rtfTempFile = null;
@@ -98,32 +111,32 @@ public class Eml2RtfTest extends IptMockBaseTest {
 			Document doc = new Document();
 			Resource resource = new Resource();
 			resource.setEml(EmlFactory.build(new FileInputStream("./src/test/resources/data/eml.xml"))); //or eml2.xml
-			//resource.setEml(EmlFactory.build(new FileInputStream("./src/test/resources/data/eml-worms_gbif_example-v1.xml"))); //or eml2.xml
+			//resource.setEml(EmlFactory.build(new FileInputStream("./src/test/resources/data/eml-worms_gbif_example-v1.xml"))); // or eml2.xml
 			resource.setShortname("resource");
 			User creator = new User();
 			creator.setFirstname("Markus");
 			creator.setLastname("Döring");
 			resource.setCreator(creator);
 			rtfTempFile = File.createTempFile("resource", ".rtf");
-			System.out.println("Writing temporary test RTF file to "+rtfTempFile.getAbsolutePath());
-			
-			OutputStream out = new FileOutputStream(rtfTempFile);			
+			System.out.println("Writing temporary test RTF file to " + rtfTempFile.getAbsolutePath());
+
+			OutputStream out = new FileOutputStream(rtfTempFile);
 
 			RtfWriter2.getInstance(doc, out);
 			eml2Rtf.writeEmlIntoRtf(doc, resource);
-			out.close();			
-			//Runtime.getRuntime().exec("C:/Program Files/Microsoft Office/Office12/WINWORD.EXE "+rtfTempFile.getAbsolutePath());			
+			out.close();
+			//Runtime.getRuntime().exec("C:/Program Files/Microsoft Office/Office12/WINWORD.EXE " + rtfTempFile.getAbsolutePath());
 			// Do not comment the following line if you are going to commit this code.
 			rtfTempFile.deleteOnExit();
-		} catch (FileNotFoundException e) {			
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (DocumentException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (SAXException e) {		
+		} catch (SAXException e) {
 			e.printStackTrace();
 		}
-	
+
 	}
 }

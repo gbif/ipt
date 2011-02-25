@@ -11,7 +11,7 @@ import org.gbif.dwc.terms.DcTerm;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.text.ArchiveField.DataType;
 import org.gbif.ipt.config.IPTModule;
-import org.gbif.ipt.mock.MockVocabularyManager;
+import org.gbif.ipt.mock.MockVocabulariesManager;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionProperty;
 
@@ -34,7 +34,7 @@ public class ExtensionFactoryTest {
     IPTModule mod = new IPTModule();
     SAXParserFactory sax = mod.provideNsAwareSaxParserFactory();
     DefaultHttpClient client = new DefaultHttpClient();
-    ExtensionFactory factory = new ExtensionFactory(new ThesaurusHandlingRule(new MockVocabularyManager()), sax, client);
+    ExtensionFactory factory = new ExtensionFactory(new ThesaurusHandlingRule(new MockVocabulariesManager()), sax, client);
     return factory;
   }
 
