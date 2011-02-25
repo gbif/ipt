@@ -51,9 +51,9 @@ public class MockVocabulariesManager extends IptMockBaseTest implements Vocabula
 	public MockVocabulariesManager() throws ParserConfigurationException, SAXException {
 		SAXParserFactory sax = guice.provideNsAwareSaxParserFactory();
 		VocabularyFactory vocabFactory = new VocabularyFactory(buildHttpClient(), sax);
-		RegistryManager registryManager = new RegistryManagerImpl(cfg, dataDir, buildHttpUtil(), buildSaxFactory());		
+		RegistryManager registryManager = new RegistryManagerImpl(cfg, dataDir, buildHttpClient(), buildSaxFactory());		
 		warnings = new ConfigWarnings();		
-		vocabManager = new VocabulariesManagerImpl(cfg, dataDir, vocabFactory, buildHttpUtil(), registryManager, mockedExtensionManager, warnings);
+		vocabManager = new VocabulariesManagerImpl(cfg, dataDir, vocabFactory, buildHttpClient(), registryManager, mockedExtensionManager, warnings);
 		
 	}
 
