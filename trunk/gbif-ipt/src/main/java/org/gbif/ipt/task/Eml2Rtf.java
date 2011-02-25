@@ -20,10 +20,10 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.TreeSet;
 
-import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.admin.VocabulariesManager;
@@ -31,6 +31,8 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.KeywordSet;
+import org.gbif.metadata.eml.TaxonKeyword;
+import org.gbif.metadata.eml.TaxonomicCoverage;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -43,11 +45,11 @@ import com.lowagie.text.FontFactory;
 import com.lowagie.text.Header;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
-import com.opensymphony.xwork2.LocaleProvider;
-import com.opensymphony.xwork2.TextProvider;
 
 /**
- * Populates a RTF document with a resources metadata, mainly derived from its EML. TODO: add more eml metadata
+ * Populates a RTF document with a resources metadata, mainly derived from its EML. 
+ * TODO: add more eml metadata
+ * TODO: implement internationalisation.
  * 
  * @author markus
  * @author htobon
@@ -129,9 +131,27 @@ public class Eml2Rtf {
 		p.setAlignment(Element.ALIGN_JUSTIFIED);
 		p.setFont(font);
 		
-		p.add(new Phrase("Taxonomic Coverage", font));
+		p.add(new Phrase("Taxonomic Coverage", fontTitle));
 		p.add(Chunk.NEWLINE);
-		p.add(new Phrase("General Taxonomic Coverage Description", font));
+		System.out.println(eml.getTaxonomicCoverages().size());
+		for(TaxonomicCoverage taxcoverage : eml.getTaxonomicCoverages()) {
+			p.add(new Phrase("General Taxonomic Coverage Description: ", fontTitle));
+			p.add(taxcoverage.getDescription());
+			p.add(Chunk.NEWLINE);
+			Map<String, String> ranks = vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, Locale.getDefault().toString(), false);
+			
+			p.add(Chunk.NEWLINE);
+			p.add(new Phrase("Common Name: ", fontTitle));
+			for(int c = 0 ; c < taxcoverage.getTaxonKeywords().size(); c++) {
+				if(c != 0) p.add(", ");
+				// TODO Common Names should not be repeated.
+				p.add(((TaxonKeyword) taxcoverage.getTaxonKeywords().get(c)).getCommonName());
+			}
+			
+			
+			p.add(Chunk.NEWLINE);
+		}
+		
 		
 		doc.add(p);
 		p.clear();
@@ -189,7 +209,6 @@ public class Eml2Rtf {
 		Paragraph p = new Paragraph();
 		p.setFont(font);
 		p.setAlignment(Element.ALIGN_CENTER);
-		Agent agent = null;
 		ArrayList<Agent> affiliations = new ArrayList<Agent>();
 		for (int c = 0; c < agents.length; c++) {
 			if (c != 0)
