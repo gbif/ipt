@@ -17,9 +17,9 @@
 		<th><@s.text name="manage.home.last.modified"/></th>
 		<th><@s.text name="manage.home.visible"/></th>
 		<#-- see if the ADMIN has enabled registrations -->
-		<#if registrationAllowed>
+		<#-- if registrationAllowed -->
 		<th><@s.text name="manage.home.registered"/></th>
-		</#if>
+		<#-- >/#if -->
 	</tr>
 <#list resources as r>
   <tr>
@@ -29,20 +29,20 @@
 	<td>${r.modified?date}</td>
 	<td>
 		<#if r.status=='PRIVATE'>
-			<@s.text name="manage.home.visible.private"><@s.param>${(r.managers?size)!0}</@s.param></@s.text>
+			<@s.text name="manage.home.visible.private"/>
 		<#else>
 			<@s.text name="manage.home.visible.public"/>
 		</#if>
 	</td>
-	<#if registrationAllowed>
+	<#-- if registrationAllowed -->
 	<td>
 		<#if r.status=='REGISTERED'>
-			<@s.text name="manage.home.myOrganisation"/>
+			${r.organisation.name}
 		<#else>
 			<@s.text name="manage.home.not.registered"/>
 		</#if>
 	</td>
-	</#if>
+	<#-- >/#if -->
   </tr>
 </#list>
 </table>
