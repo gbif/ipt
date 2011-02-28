@@ -7,13 +7,23 @@
  */
 package org.gbif.ipt.mock;
 
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.gbif.ipt.config.AppConfig;
+import static org.mockito.Mockito.mock;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
+
 import org.gbif.ipt.config.ConfigWarnings;
-import org.gbif.ipt.config.IPTModule;
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Vocabulary;
-import org.gbif.ipt.model.factory.ExtensionFactory;
-import org.gbif.ipt.model.factory.ThesaurusHandlingRule;
+import org.gbif.ipt.model.VocabularyConcept;
+import org.gbif.ipt.model.VocabularyTerm;
 import org.gbif.ipt.model.factory.VocabularyFactory;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
@@ -21,51 +31,50 @@ import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl.UpdateResult;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.service.registry.impl.RegistryManagerImpl;
-import org.gbif.ipt.service.registry.impl.RegistryManagerImplTest;
 import org.gbif.ipt.utils.IptMockBaseTest;
 import org.xml.sax.SAXException;
-
-import org.mockito.Mock;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.when;
-
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParserFactory;
 
 /**
  * TODO: Documentation.
  */
 public class MockVocabulariesManager extends IptMockBaseTest implements VocabulariesManager {
 
+	
 	private VocabulariesManager vocabManager;
 	private ConfigWarnings warnings;
-	@Mock private ExtensionManager mockedExtensionManager;
+	private ExtensionManager mockedExtensionManager;
 
 	public MockVocabulariesManager() throws ParserConfigurationException, SAXException {
 		SAXParserFactory sax = guice.provideNsAwareSaxParserFactory();
 		VocabularyFactory vocabFactory = new VocabularyFactory(buildHttpClient(), sax);
-		RegistryManager registryManager = new RegistryManagerImpl(cfg, dataDir, buildHttpClient(), buildSaxFactory());		
-		warnings = new ConfigWarnings();		
-		vocabManager = new VocabulariesManagerImpl(cfg, dataDir, vocabFactory, buildHttpClient(), registryManager, mockedExtensionManager, warnings);
-		
-	}
+		RegistryManager registryManager = new RegistryManagerImpl(cfg, dataDir, buildHttpClient(), buildSaxFactory());
+		warnings = new ConfigWarnings();
+		mockedExtensionManager = mock(ExtensionManager.class);
+		vocabManager = new VocabulariesManagerImpl(cfg, dataDir, vocabFactory, buildHttpClient(), registryManager, mockedExtensionManager, warnings);	
+	}	
 
 	public void delete(String uri) {
 	}
-
+	
 	public Vocabulary get(String uri) {
-		return new Vocabulary();
+		Vocabulary v = new Vocabulary();
+		Map<String, String> vocabMap = getI18nVocab(uri, Locale.getDefault().getDisplayLanguage(), false);
+		for(String key : vocabMap.keySet()) {
+			VocabularyConcept concept = new VocabularyConcept();
+			concept.setIdentifier(key);
+			VocabularyTerm term = new VocabularyTerm();
+			term.setTitle(vocabMap.get(key));
+			term.setLang("en");
+			concept.addPreferredTerm(term);
+			v.addConcept(concept);
+		}		
+		return v;
 	}
 
 	public Vocabulary get(URL url) {
-		return new Vocabulary();
+		Vocabulary vocab = new Vocabulary();
+		
+		return vocab;
 	}
 
 	/*
@@ -74,10 +83,27 @@ public class MockVocabulariesManager extends IptMockBaseTest implements Vocabula
 	 */
 	public Map<String, String> getI18nVocab(String uri, String lang, boolean sort) {
 		Map<String, String> vocabMap = new LinkedHashMap<String, String>();
-		//TODO 
-		return vocabManager.getI18nVocab(uri, lang, sort);
-		
-		
+		if (uri.equals(Constants.VOCAB_URI_PRESERVATION_METHOD)) {
+			vocabMap.put("domain", "domain");
+			vocabMap.put("kingdom", "kingdom");
+			vocabMap.put("phylum", "phylum");
+			vocabMap.put("class", "class");
+			vocabMap.put("order", "order");
+			vocabMap.put("family", "family");
+			vocabMap.put("tribe", "tribe");
+			vocabMap.put("genus", "genus");
+			vocabMap.put("section", "section");
+			vocabMap.put("species", "species");
+			vocabMap.put("variety", "variety");
+			vocabMap.put("form", "form");
+			vocabMap.put("cultivar", "cultivar");			
+		} else if(uri.equals(Constants.VOCAB_URI_COUNTRY)) {
+			vocabMap.put("CO", "COLOMBIA");
+			vocabMap.put("DK", "DENMARK");
+			vocabMap.put("DE", "GERMANY");
+			vocabMap.put("US", "UNITED STATES");
+		}
+		return vocabMap;
 	}
 
 	public List<Vocabulary> list() {
