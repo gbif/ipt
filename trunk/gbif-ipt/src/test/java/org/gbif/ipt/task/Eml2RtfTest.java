@@ -16,10 +16,6 @@
 
 package org.gbif.ipt.task;
 
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.when;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -27,15 +23,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Locale;
-import java.util.Map;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.gbif.ipt.mock.MockVocabulariesManager;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
-import org.gbif.ipt.model.Vocabulary;
-import org.gbif.ipt.model.VocabularyConcept;
-import org.gbif.ipt.model.VocabularyTerm;
-import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
+import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.IptMockBaseTest;
 import org.gbif.metadata.eml.EmlFactory;
@@ -43,10 +37,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.mockito.stubbing.Answer;
 import org.xml.sax.SAXException;
 
 import com.lowagie.text.Document;
@@ -61,46 +52,24 @@ import com.lowagie.text.rtf.RtfWriter2;
 @RunWith(MockitoJUnitRunner.class)
 public class Eml2RtfTest extends IptMockBaseTest {
 
-	private Locale defaultLocale = new Locale("en");
-
-	@Mock
-	private VocabulariesManagerImpl mockedVocabManager;
-	@Mock
-	private Vocabulary mockedVocabulary;
-	@Mock
-	private VocabularyConcept mockedVocabConcept;
-
-	private VocabularyTerm testVocabTerm;
+	private Locale defaultLocale = new Locale("en");	
+	private VocabulariesManager mockedVocabManager;
 	private SimpleTextProvider textProvider;
 	private Eml2Rtf eml2Rtf;
 
 	/**
 	 * This method should be used to configure some Mock class. If needed.
+	 * @throws SAXException 
+	 * @throws ParserConfigurationException 
 	 */
 	@Before
-	public void setUp() {
+	public void setUp() throws ParserConfigurationException, SAXException {
 		eml2Rtf = new Eml2Rtf();
-
+		mockedVocabManager = new MockVocabulariesManager();
 		textProvider = new SimpleTextProvider();
 		textProvider.setDefaultLocale(defaultLocale.toString());
 		eml2Rtf.setTextProvider(textProvider);
-
-		testVocabTerm = new VocabularyTerm();
-		testVocabTerm.setLang("Country");
-		testVocabTerm.setTitle("The Country");
-
 		eml2Rtf.setVocabManager(mockedVocabManager);
-
-		// TODO These stub configurations are temporally used while MockVocabulariesManager is terminated.
-		when(mockedVocabManager.get(anyString())).thenReturn(mockedVocabulary);
-		when(mockedVocabulary.findConcept(anyString())).thenReturn(mockedVocabConcept);
-		when(mockedVocabConcept.getPreferredTerm(anyString())).thenReturn(testVocabTerm);
-
-		when(mockedVocabManager.getI18nVocab(anyString(), anyString(), anyBoolean())).thenAnswer(new Answer<Map<String, String>>() {
-			public Map<String, String> answer(InvocationOnMock invocation) throws Throwable {
-				return new MockVocabulariesManager().getI18nVocab((String) invocation.getArguments()[0], (String) invocation.getArguments()[1], (Boolean) invocation.getArguments()[2]);
-			}
-		});
 	}
 
 	@Ignore

@@ -26,6 +26,9 @@ import java.util.TreeSet;
 
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.Vocabulary;
+import org.gbif.ipt.model.VocabularyConcept;
+import org.gbif.ipt.model.VocabularyTerm;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.metadata.eml.Agent;
@@ -140,6 +143,8 @@ public class Eml2Rtf {
 			p.add(Chunk.NEWLINE);
 			Map<String, String> ranks = vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, Locale.getDefault().toString(), false);
 			
+			//TODO working on! here
+			
 			p.add(Chunk.NEWLINE);
 			p.add(new Phrase("Common Name: ", fontTitle));
 			for(int c = 0 ; c < taxcoverage.getTaxonKeywords().size(); c++) {
@@ -248,7 +253,7 @@ public class Eml2Rtf {
 			p.add(affiliations.get(c).getOrganisation() + ", ");
 			p.add(affiliations.get(c).getAddress().getAddress() + ", ");
 			p.add(affiliations.get(c).getAddress().getPostalCode() + ", ");
-			p.add(affiliations.get(c).getAddress().getCity());
+			p.add(affiliations.get(c).getAddress().getCity());			
 			if (affiliations.get(c).getAddress().getCountry() != null) {
 				p.add(", " + vocabManager.get(Constants.VOCAB_URI_COUNTRY).findConcept(affiliations.get(c).getAddress().getCountry()).getPreferredTerm("en").getTitle());
 			}
