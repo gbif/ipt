@@ -13,6 +13,7 @@
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <h1><@s.text name='manage.metadata.additional.title'/>: <a href="resource.do?r=${resource.shortname}"><em>${resource.title!resource.shortname}</em></a> </h1>
 <p><@s.text name='manage.metadata.additional.intro'/></p>
+<p><@s.text name='manage.metadata.additional.logo.intro'/></p>
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 	  <form id="uploadaction" action='addlogourl.do' method='post' enctype="multipart/form-data">
 	    <input name="r" type="hidden" value="${resource.shortname}" />
