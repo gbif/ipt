@@ -29,6 +29,7 @@ import org.gbif.ipt.service.manage.SourceManager;
 
 import com.google.inject.Inject;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
@@ -92,6 +93,20 @@ public class SourceAction extends ManagerBaseAction {
     }
     return INPUT;
   }
+  
+  public String addLogoUrl(){
+	  if(file!=null){
+		  File logoFile=dataDir.resourceFile(resource.getShortname(), "sources/" + "logo.jpg");
+		  try {System.out.println(logoFile);
+			FileUtils.copyFile(file,logoFile);
+		  } catch (IOException e) {
+			log.warn(e.getMessage());
+		  }
+		  resource.getEml().setLogoUrl(getBaseURL()+"/logo.do?r="+resource.getShortname());
+	  }
+	  return INPUT;
+  }
+
 
   private void addTextFile(File f, String filename) {
     // create a new file source
