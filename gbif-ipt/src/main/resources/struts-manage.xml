@@ -98,6 +98,17 @@
 				<param name="r">${resource.shortname}</param>
 			</result>
 		</action>
+		<action name="addlogourl" class="org.gbif.ipt.action.manage.SourceAction" method="addLogoUrl">
+			<interceptor-ref name="fileUpload">
+				<param name="maximumSize">2097152</param>
+				<param name="allowedTypes">image/jpeg</param>
+			</interceptor-ref>
+			<interceptor-ref name="managerStack"/>
+			<result name="input" type="redirectAction">
+				<param name="actionName">metadata-additional</param>
+				<param name="r">${resource.shortname}</param>
+			</result>
+		</action>
 		<action name="peek" class="org.gbif.ipt.action.manage.SourceAction" method="peek">
 			<interceptor-ref name="ajaxStack"/>
 			<result>/WEB-INF/pages/manage/peek.ftl</result>

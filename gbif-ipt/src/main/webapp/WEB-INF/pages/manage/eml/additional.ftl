@@ -14,6 +14,12 @@
 <h1><@s.text name='manage.metadata.additional.title'/>: <a href="resource.do?r=${resource.shortname}"><em>${resource.title!resource.shortname}</em></a> </h1>
 <p><@s.text name='manage.metadata.additional.intro'/></p>
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
+	  <form id="uploadaction" action='addlogourl.do' method='post' enctype="multipart/form-data">
+	    <input name="r" type="hidden" value="${resource.shortname}" />
+	    <input name="validate" type="hidden" value="false" />
+    	<@s.file name="file"/>
+    	<@s.submit name="button.upload"/>
+  	  </form>
 <form class="topForm" action="metadata-${section}.do" method="post">
 	<div class="halfcolumn">
 	  	<@input name="eml.hierarchyLevel" i18nkey="eml.hierarchyLevel" help="i18n" disabled=true />

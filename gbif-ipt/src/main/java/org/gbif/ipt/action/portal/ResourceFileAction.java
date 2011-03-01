@@ -56,6 +56,14 @@ public class ResourceFileAction extends BaseAction {
     filename = "eml-" + resource.getShortname() + "-v" + version + ".xml";
     return execute();
   }
+  
+  public String logo() {
+	// if no specific version is requested use the latest published
+	data = dataDir.resourceFile(resource.getShortname(), "sources/" + "logo.jpg");
+	mimeType = "image/jpeg";
+	filename = "logo";
+	return execute();
+  }
 
   @Override
   public String execute() {
