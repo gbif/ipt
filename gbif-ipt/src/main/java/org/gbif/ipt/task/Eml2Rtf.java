@@ -26,9 +26,6 @@ import java.util.TreeSet;
 
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.Vocabulary;
-import org.gbif.ipt.model.VocabularyConcept;
-import org.gbif.ipt.model.VocabularyTerm;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.metadata.eml.Agent;
@@ -50,9 +47,7 @@ import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
 
 /**
- * Populates a RTF document with a resources metadata, mainly derived from its EML. 
- * TODO: add more eml metadata
- * TODO: implement internationalisation.
+ * Populates a RTF document with a resources metadata, mainly derived from its EML. TODO: add more eml metadata TODO: implement internationalisation.
  * 
  * @author markus
  * @author htobon
@@ -65,9 +60,9 @@ public class Eml2Rtf {
 	private Font fontItalic = FontFactory.getFont(FontFactory.HELVETICA_OBLIQUE, 12, Font.ITALIC, Color.BLACK);
 	private Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, Font.BOLD, Color.BLACK);
 	private Font fontHeader = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14, Font.BOLD, Color.BLACK);
-	
+
 	@Inject
-	private SimpleTextProvider textProvider;	
+	private SimpleTextProvider textProvider;
 	@Inject
 	private VocabulariesManager vocabManager;
 
@@ -118,9 +113,9 @@ public class Eml2Rtf {
 		addDates(doc, eml);
 		doc.add(Chunk.NEWLINE);
 		addCitations(doc, eml);
-		doc.add(Chunk.NEWLINE);		
+		doc.add(Chunk.NEWLINE);
 		addAbstract(doc, eml);
-		doc.add(Chunk.NEWLINE);		
+		doc.add(Chunk.NEWLINE);
 		addKeywords(doc, keys);
 		doc.add(Chunk.NEWLINE);
 		addTaxonomicCoverages(doc, eml);
@@ -133,39 +128,56 @@ public class Eml2Rtf {
 		Paragraph p = new Paragraph();
 		p.setAlignment(Element.ALIGN_JUSTIFIED);
 		p.setFont(font);
+
 		
-		p.add(new Phrase("Taxonomic Coverage", fontTitle));
-		p.add(Chunk.NEWLINE);
-		System.out.println(eml.getTaxonomicCoverages().size());
-		for(TaxonomicCoverage taxcoverage : eml.getTaxonomicCoverages()) {
+		for (TaxonomicCoverage taxcoverage : eml.getTaxonomicCoverages()) {
+			p.add(new Phrase("Taxonomic Coverage", fontTitle));
+			p.add(Chunk.NEWLINE);
+			p.add(Chunk.NEWLINE);
 			p.add(new Phrase("General Taxonomic Coverage Description: ", fontTitle));
 			p.add(taxcoverage.getDescription());
 			p.add(Chunk.NEWLINE);
+			p.add(new Phrase("Taxonomic Ranks: ", fontTitle));
+			p.add(Chunk.NEWLINE);
 			Map<String, String> ranks = vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, Locale.getDefault().toString(), false);
-			
-			//TODO working on! here
-			
+			boolean firstRank = true;
+			for (String rank : ranks.keySet()) {
+				boolean wroteRank = false;
+				for (TaxonKeyword keyword : taxcoverage.getTaxonKeywords()) {
+					if (keyword.getRank().equals(rank)) {
+						if (!wroteRank) {
+							if(!firstRank) p.add(", ");
+							p.add(rank + ": ");
+							p.add(keyword.getScientificName());
+							wroteRank = true;
+							firstRank=false;
+						} else {
+							p.add(", " + keyword.getScientificName());
+						}
+					}
+				}
+			}
+			p.remove(", ");
 			p.add(Chunk.NEWLINE);
 			p.add(new Phrase("Common Name: ", fontTitle));
-			for(int c = 0 ; c < taxcoverage.getTaxonKeywords().size(); c++) {
-				if(c != 0) p.add(", ");
+			for (int c = 0; c < taxcoverage.getTaxonKeywords().size(); c++) {
+				if (c != 0)
+					p.add(", ");
 				// TODO Common Names should not be repeated.
 				p.add(((TaxonKeyword) taxcoverage.getTaxonKeywords().get(c)).getCommonName());
 			}
-			
-			
+			p.add(Chunk.NEWLINE);
 			p.add(Chunk.NEWLINE);
 		}
-		
-		
+
 		doc.add(p);
 		p.clear();
-		
+
 	}
 
 	private void addAbstract(Document doc, Eml eml) throws DocumentException {
 		addPara(doc, "Abstract", fontTitle, 0, Element.ALIGN_LEFT);
-		addPara(doc, eml.getDescription(), font, 0, Element.ALIGN_JUSTIFIED);		
+		addPara(doc, eml.getDescription(), font, 0, Element.ALIGN_JUSTIFIED);
 	}
 
 	private void addCitations(Document doc, Eml eml) throws DocumentException {
@@ -253,7 +265,7 @@ public class Eml2Rtf {
 			p.add(affiliations.get(c).getOrganisation() + ", ");
 			p.add(affiliations.get(c).getAddress().getAddress() + ", ");
 			p.add(affiliations.get(c).getAddress().getPostalCode() + ", ");
-			p.add(affiliations.get(c).getAddress().getCity());			
+			p.add(affiliations.get(c).getAddress().getCity());
 			if (affiliations.get(c).getAddress().getCountry() != null) {
 				p.add(", " + vocabManager.get(Constants.VOCAB_URI_COUNTRY).findConcept(affiliations.get(c).getAddress().getCountry()).getPreferredTerm("en").getTitle());
 			}
@@ -287,13 +299,15 @@ public class Eml2Rtf {
 	public void setVocabManager(VocabulariesManager vocabManager) {
 		this.vocabManager = vocabManager;
 	}
+
 	public void setTextProvider(SimpleTextProvider textProvider) {
 		this.textProvider = textProvider;
 	}
-	public String getText(String key) {		
+
+	public String getText(String key) {
 		ResourceBundle res = textProvider.getTexts(Locale.getDefault());
 		return textProvider.findText(res, key, "default.message", new String[0]);
-		
+
 	}
 
 }
