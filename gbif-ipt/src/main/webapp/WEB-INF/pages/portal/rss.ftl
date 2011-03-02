@@ -33,7 +33,7 @@
     <item>
       <title>${res.title!}</title>
       <link>${cfg.getResourceUrl(res.shortname)}</link>
-      <description>${res.description!} &lt;a href="${cfg.getResourceEmlUrl(res.shortname)}"&gt;EML&lt;/a&gt;</description>
+      <description>${res.description!} &lt;a href="${cfg.getResourceLogoUrl(res.shortname)}"&gt;Resource Logo&lt;/a&gt; &lt;a href="${cfg.getResourceEmlUrl(res.shortname)}"&gt;EML&lt;/a&gt;</description>
       <author>${res.creator.email}</author>
       <#if res.lastPublished??>      
       <ipt:eml>${cfg.getResourceEmlUrl(res.shortname)}</ipt:eml>

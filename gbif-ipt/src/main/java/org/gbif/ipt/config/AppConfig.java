@@ -149,6 +149,10 @@ public class AppConfig {
   public String getResourceUrl(String shortname) {
     return getBaseURL() + "/resource.do?" + Constants.REQ_PARAM_RESOURCE + "=" + shortname;
   }
+  
+  public String getResourceLogoUrl(String shortname) {
+	    return getBaseURL() + "/logo.do?" + Constants.REQ_PARAM_RESOURCE + "=" + shortname;
+  }
 
   public String getVersion() {
     return properties.getProperty("dev.version");
