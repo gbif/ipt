@@ -83,7 +83,7 @@ public class MockVocabulariesManager extends IptMockBaseTest implements Vocabula
 	 */
 	public Map<String, String> getI18nVocab(String uri, String lang, boolean sort) {
 		Map<String, String> vocabMap = new LinkedHashMap<String, String>();
-		if (uri.equals(Constants.VOCAB_URI_PRESERVATION_METHOD)) {
+		if (uri.equals(Constants.VOCAB_URI_RANKS)) {
 			vocabMap.put("domain", "domain");
 			vocabMap.put("kingdom", "kingdom");
 			vocabMap.put("phylum", "phylum");

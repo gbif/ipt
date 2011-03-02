@@ -28,8 +28,11 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.utils.CoordinateUtils;
 import org.gbif.metadata.eml.Agent;
+import org.gbif.metadata.eml.BBox;
 import org.gbif.metadata.eml.Eml;
+import org.gbif.metadata.eml.GeospatialCoverage;
 import org.gbif.metadata.eml.KeywordSet;
 import org.gbif.metadata.eml.TaxonKeyword;
 import org.gbif.metadata.eml.TaxonomicCoverage;
@@ -120,8 +123,39 @@ public class Eml2Rtf {
 		doc.add(Chunk.NEWLINE);
 		addTaxonomicCoverages(doc, eml);
 		doc.add(Chunk.NEWLINE);
+		addSpatialCoverage(doc, eml);
+		doc.add(Chunk.NEWLINE);
 
 		doc.close();
+	}
+
+	private void addSpatialCoverage(Document doc, Eml eml) throws DocumentException {
+		Paragraph p = new Paragraph();
+		p.setAlignment(Element.ALIGN_JUSTIFIED);
+		p.setFont(font);		
+		
+		for(GeospatialCoverage coverage : eml.getGeospatialCoverages()) {
+			p.add(new Phrase("Spatial Coverage", fontTitle));
+			p.add(Chunk.NEWLINE);
+			p.add(Chunk.NEWLINE);
+			p.add(new Phrase("General Spatial Coverage: ", fontTitle));
+			p.add(coverage.getDescription());
+			p.add(Chunk.NEWLINE);
+			p.add(new Phrase("Coordinates: ", fontTitle));
+			BBox coordinates = coverage.getBoundingCoordinates();
+			p.add(CoordinateUtils.decToDms(coordinates.getMin().getLatitude(), CoordinateUtils.LATITUDE));
+			p.add(" and ");
+			p.add(CoordinateUtils.decToDms(coordinates.getMax().getLatitude(), CoordinateUtils.LATITUDE));
+			p.add(" Latitude; ");
+			p.add(CoordinateUtils.decToDms(coordinates.getMin().getLongitude(), CoordinateUtils.LONGITUDE));
+			p.add(" and ");
+			p.add(CoordinateUtils.decToDms(coordinates.getMax().getLongitude(), CoordinateUtils.LONGITUDE));
+			p.add(" Longitude");
+		}
+		p.add(Chunk.NEWLINE);		
+		doc.add(p);
+		p.clear();
+		
 	}
 
 	private void addTaxonomicCoverages(Document doc, Eml eml) throws DocumentException {
