@@ -3,9 +3,13 @@
  <#assign currentMenu = "admin"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
-<h1><@s.text name="admin.home.manageExtensions"/></h1>
+<h1><@s.text name="admin.extension.coreTypes"/></h1>
 
-<#list extensions as ext>	
+<#assign count=0>
+
+<#list extensions as ext>
+<#if ext.core>
+<#assign count=count+1>
 <a name="${ext.rowType}"></a>          
 <div class="definition">	
   <div class="title">
@@ -35,7 +39,54 @@
       	</div>
   </div>
 </div>
+</#if>
 </#list>
+<#if count=0>
+	<@s.text name="admin.extension.no.coreTypes.installed"/>
+</#if>
+
+<div class="newline"></div>
+<div class="newline"></div>
+<h1><@s.text name="admin.extension.extensions"/></h1>
+
+<#assign count=0>
+<#list extensions as ext>
+<#if !ext.core>
+<#assign count=count+1>
+<a name="${ext.rowType}"></a>          
+<div class="definition">	
+  <div class="title">
+  	<div class="head">
+        <a href="extension.do?id=${ext.rowType}">${ext.title}</a>
+  	</div>
+  	<div class="actions">
+	  <form action='extension.do' method='post'>
+		<input type='hidden' name='id' value='${ext.rowType}' />
+		<input type='submit' name='delete' value='Remove' />
+  	  </form>
+  	</div>
+  </div>
+  <div class="body">
+      	<div>
+			${ext.description!}
+			<#if ext.link?has_content><br/><@s.text name="basic.seealso"/> <a href="${ext.link}">${ext.link}</a></#if>              	
+      	</div>
+      	<div class="details">
+      		<table>
+          		<tr><th><@s.text name="extension.properties"/></th><td>${ext.properties?size}</td></tr>
+          		<tr><th><@s.text name="basic.name"/></th><td>${ext.name}</td></tr>
+          		<tr><th><@s.text name="basic.namespace"/></th><td>${ext.namespace}</td></tr>
+          		<tr><th><@s.text name="extension.rowtype"/></th><td>${ext.rowType}</td></tr>
+          		<tr><th><@s.text name="basic.keywords"/></th><td>${ext.subject!}</td></tr>
+      		</table>
+      	</div>
+  </div>
+</div>
+</#if>
+</#list>
+<#if count=0>
+	<@s.text name="admin.extension.no.extensions.installed"/>
+</#if>
 
 <#if (numVocabs>0)>
 <hr/>
@@ -52,10 +103,9 @@
 
 <h3><@s.text name="extension.further.title"/></h3>
 
-<#if (newExtensions ? size < 1) >
-<@s.text name="extension.already.installed"/>
-</#if>
+<#assign count=0>
 <#list newExtensions as ext>
+<#assign count=count+1>
 <div class="definition">	
   <div class="title">
   	<div class="head">
@@ -81,5 +131,8 @@
   </div>
 </div>
 </#list>
+<#if count=0>
+	<@s.text name="extension.already.installed"/>
+</#if>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
