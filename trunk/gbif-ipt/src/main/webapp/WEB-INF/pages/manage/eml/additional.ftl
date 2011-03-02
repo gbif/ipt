@@ -15,12 +15,18 @@
 <p><@s.text name='manage.metadata.additional.intro'/></p>
 <p><@s.text name='manage.metadata.additional.logo.intro'/></p>
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
+  	  <div id="resourcelogo">
+		<#if resource.eml.logoUrl?has_content>
+			<img src="${resource.eml.logoUrl}" />
+		</#if>
+	  </div>
 	  <form id="uploadaction" action='uploadlogo.do' method='post' enctype="multipart/form-data">
 	    <input name="r" type="hidden" value="${resource.shortname}" />
 	    <input name="validate" type="hidden" value="false" />
     	<@s.file name="file"/>
-    	<@s.submit name="button.upload"/>
+    	<@s.submit name="button.upload" key="button.upload"/>
   	  </form>
+  	  <div class="newline"></div>
 <form class="topForm" action="metadata-${section}.do" method="post">
 	<div class="halfcolumn">
 	  	<@input name="eml.hierarchyLevel" i18nkey="eml.hierarchyLevel" help="i18n" disabled=true />
