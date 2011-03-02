@@ -26,15 +26,6 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 	<title>${resource.title!resource.shortname!}</title>
 	<style>
-	#resourcelogo{
-		float: right;
-	}
-	#resourcelogo img{
-		max-height: 100px;
-		max-width: 100px;
-		width: expression(this.width > 100 ? "100px" : true);
-  		height: expression(this.height > 100 ? "100px" : true);
-	}
 	div.definition div.title{
 		width: 20%;
 	}

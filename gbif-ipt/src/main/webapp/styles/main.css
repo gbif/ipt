@@ -157,7 +157,16 @@ hr {
 #menu li:hover {
     opacity: 0.8;
 }
-
+#resourcelogo{
+	float: right;
+	padding-right: 40px;
+}
+#resourcelogo img{
+	max-width: 100px;
+	max-height: 100px;
+ 	width: expression(this.width > 100 ? "100px" : true);
+	height: expression(this.height > 100 ? "100px" : true);
+}
 #search {
 	position: relative; 
 	top:-40px; 
