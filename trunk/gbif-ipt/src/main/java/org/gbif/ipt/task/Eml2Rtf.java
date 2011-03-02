@@ -17,7 +17,10 @@
 package org.gbif.ipt.task;
 
 import java.awt.Color;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Locale;
 import java.util.Map;
@@ -36,6 +39,8 @@ import org.gbif.metadata.eml.GeospatialCoverage;
 import org.gbif.metadata.eml.KeywordSet;
 import org.gbif.metadata.eml.TaxonKeyword;
 import org.gbif.metadata.eml.TaxonomicCoverage;
+import org.gbif.metadata.eml.TemporalCoverage;
+import org.gbif.metadata.eml.TemporalCoverageType;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -125,8 +130,50 @@ public class Eml2Rtf {
 		doc.add(Chunk.NEWLINE);
 		addSpatialCoverage(doc, eml);
 		doc.add(Chunk.NEWLINE);
-
+		addTemporalCoverages(doc, eml);
+		doc.add(Chunk.NEWLINE);
+		
 		doc.close();
+	}
+
+	private void addTemporalCoverages(Document doc, Eml eml) throws DocumentException {
+		Paragraph p = new Paragraph();
+		p.setAlignment(Element.ALIGN_JUSTIFIED);
+		p.setFont(font);
+		DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG);
+		SimpleDateFormat timeFormat = new SimpleDateFormat("SSS");
+		SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+		for(TemporalCoverage coverage : eml.getTemporalCoverages()) {
+			p.add(new Phrase("Temporal Coverage: ", fontTitle));
+			if(coverage.getType().equals(TemporalCoverageType.SINGLE_DATE)){
+				if(timeFormat.format(coverage.getStartDate()).equals("001")) {
+					p.add(yearFormat.format(coverage.getStartDate()));
+				} else {
+					p.add(dateFormat.format(coverage.getStartDate()));					
+				}
+			} else if(coverage.getType().equals(TemporalCoverageType.DATE_RANGE)) {
+				if(timeFormat.format(coverage.getStartDate()).equals("001")) {
+					p.add(yearFormat.format(coverage.getStartDate()));
+				} else {
+					p.add(dateFormat.format(coverage.getStartDate()));					
+				}				
+				p.add(" - ");
+				if(timeFormat.format(coverage.getEndDate()).equals("001")) {
+					p.add(yearFormat.format(coverage.getEndDate()));
+				} else {
+					p.add(dateFormat.format(coverage.getEndDate()));					
+				}
+			} else if(coverage.getType().equals(TemporalCoverageType.FORMATION_PERIOD)) {
+				p.add(coverage.getFormationPeriod());
+			} else if(coverage.getType().equals(TemporalCoverageType.LIVING_TIME_PERIOD)) {
+				p.add(coverage.getLivingTimePeriod());
+			}
+			p.add(Chunk.NEWLINE);
+			p.add(Chunk.NEWLINE);
+		}
+		
+		doc.add(p);
+		p.clear();
 	}
 
 	private void addSpatialCoverage(Document doc, Eml eml) throws DocumentException {
@@ -152,7 +199,6 @@ public class Eml2Rtf {
 			p.add(CoordinateUtils.decToDms(coordinates.getMax().getLongitude(), CoordinateUtils.LONGITUDE));
 			p.add(" Longitude");
 		}
-		p.add(Chunk.NEWLINE);		
 		doc.add(p);
 		p.clear();
 		
@@ -199,9 +245,7 @@ public class Eml2Rtf {
 					p.add(", ");
 				// TODO Common Names should not be repeated.
 				p.add(((TaxonKeyword) taxcoverage.getTaxonKeywords().get(c)).getCommonName());
-			}
-			p.add(Chunk.NEWLINE);
-			p.add(Chunk.NEWLINE);
+			}			
 		}
 
 		doc.add(p);
