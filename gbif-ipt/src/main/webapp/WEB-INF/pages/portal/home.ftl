@@ -6,6 +6,12 @@
 		top: 2px !important;
 		position: relative;
 	}
+	.resourceminilogo{
+		max-width: 30px;
+		max-height: 30px;
+ 		width: expression(this.width > 30 ? "30px" : true);
+		height: expression(this.height > 30 ? "30px" : true);
+	}
 	</style>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
@@ -15,6 +21,7 @@
 <#if (resources?size>0)>
 <table class="simple" width="100%">
 	<tr>
+		<th><@s.text name="portal.home.logo"/></th>
 		<th><@s.text name="portal.home.name"/></th>
 		<th><@s.text name="portal.home.organisation"/></th>
 		<th><@s.text name="portal.home.type"/></th>
@@ -23,6 +30,7 @@
 	</tr>
 <#list resources as r>
   <tr>
+  	<td><#if r.eml.logoUrl?has_content><img class="resourceminilogo" src="${r.eml.logoUrl}" /></#if></td>
 	<td><a href="resource.do?r=${r.shortname}"><#if r.title?has_content>${r.title}<#else>${r.shortname}</#if></a></td>
 	<td>${(r.organisation.name)!"---"}</td>
 	<td>${r.subtype!r.coreType!"---"}</td>

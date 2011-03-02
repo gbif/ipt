@@ -23,8 +23,7 @@
 	  <form id="uploadaction" action='uploadlogo.do' method='post' enctype="multipart/form-data">
 	    <input name="r" type="hidden" value="${resource.shortname}" />
 	    <input name="validate" type="hidden" value="false" />
-    	<@s.file name="file"/>
-    	<@s.submit name="button.upload" key="button.upload"/>
+    	<@s.file name="file"/>    <@s.submit name="upload" key="button.upload"/>
   	  </form>
   	  <div class="newline"></div>
 <form class="topForm" action="metadata-${section}.do" method="post">
