@@ -291,7 +291,7 @@ public class SourceAction extends ManagerBaseAction {
       } catch (IOException e) {
         log.warn(e.getMessage());
       }
-      resource.getEml().setLogoUrl(getBaseURL() + "/logo.do?r=" + resource.getShortname());
+      resource.getEml().setLogoUrl(cfg.getResourceLogoUrl(resource.getShortname()));
     }
     return INPUT;
   }
