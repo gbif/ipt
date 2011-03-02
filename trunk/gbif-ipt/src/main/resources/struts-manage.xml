@@ -98,14 +98,18 @@
 				<param name="r">${resource.shortname}</param>
 			</result>
 		</action>
-		<action name="addlogourl" class="org.gbif.ipt.action.manage.SourceAction" method="addLogoUrl">
+		<action name="uploadlogo" class="org.gbif.ipt.action.manage.SourceAction" method="uploadLogo">
 			<interceptor-ref name="fileUpload">
 				<param name="maximumSize">2097152</param>
-				<param name="allowedTypes">image/jpeg</param>
+				<param name="allowedTypes">image/jpeg,image/gif,image/png</param>
 			</interceptor-ref>
 			<interceptor-ref name="managerStack"/>
 			<result name="input" type="redirectAction">
 				<param name="actionName">metadata-additional</param>
+				<param name="r">${resource.shortname}</param>
+			</result>
+			<result name="error" type="redirectAction">
+				<param name="actionName">resource</param>
 				<param name="r">${resource.shortname}</param>
 			</result>
 		</action>

@@ -26,6 +26,15 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 	<title>${resource.title!resource.shortname!}</title>
 	<style>
+	#resourcelogo{
+		float: right;
+	}
+	#resourcelogo img{
+		max-height: 100px;
+		max-width: 100px;
+		width: expression(this.width > 100 ? "100px" : true);
+  		height: expression(this.height > 100 ? "100px" : true);
+	}
 	div.definition div.title{
 		width: 20%;
 	}
@@ -35,6 +44,11 @@
 	</style>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <h1>${resource.title!resource.shortname}</h1>
+<div id="resourcelogo">
+	<#if resource.eml.logoUrl?has_content>
+	<img src="${resource.eml.logoUrl}" />
+	</#if>
+</div>
 <#assign no_description><@s.text name='portal.resource.no.description'/></#assign>
 <p><@description resource.description!no_description 150/></p>
 <div class="definition" id="metadata">	

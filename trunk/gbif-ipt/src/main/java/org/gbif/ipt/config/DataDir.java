@@ -238,6 +238,19 @@ public class DataDir {
   }
 
   /**
+   * @param resourceName
+   * @param suffix the logo file suffix, indicating the format. E.g. jpeg or gif
+   * @return
+   */
+  public File resourceLogoFile(String resourceName, String suffix) {
+    if (suffix == null) {
+      suffix = "jpeg";
+    }
+    suffix = suffix.toLowerCase();
+    return dataFile(RESOURCES_DIR + "/" + resourceName + "/logo." + suffix);
+  }
+
+  /**
    * File for the only & current rtf file representing the eml metadata for data publishers in RTF format
    * 
    * @param resourceName
