@@ -56,14 +56,6 @@ public class ResourceFileAction extends BaseAction {
     filename = "eml-" + resource.getShortname() + "-v" + version + ".xml";
     return execute();
   }
-  
-  public String logo() {
-	// if no specific version is requested use the latest published
-	data = dataDir.resourceFile(resource.getShortname(), "sources/" + "logo.jpg");
-	mimeType = "image/jpeg";
-	filename = "logo";
-	return execute();
-  }
 
   @Override
   public String execute() {
@@ -106,6 +98,22 @@ public class ResourceFileAction extends BaseAction {
 
   public Integer getVersion() {
     return version;
+  }
+
+  public String logo() {
+    for (String type : Constants.IMAGE_TYPES) {
+      data = dataDir.resourceLogoFile(resource.getShortname(), type);
+      if (data.exists()) {
+        mimeType = "image/" + type;
+        filename = "logo" + type;
+        break;
+      }
+    }
+    if (!data.exists()) {
+      // show default "empty" logo instead ?
+      return NOT_FOUND;
+    }
+    return execute();
   }
 
   @Override

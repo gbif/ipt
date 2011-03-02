@@ -16,8 +16,7 @@
 
 package org.gbif.ipt.action.manage;
 
-import org.gbif.utils.file.CompressionUtil;
-import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.config.JdbcSupport;
 import org.gbif.ipt.model.Source;
@@ -26,6 +25,8 @@ import org.gbif.ipt.model.Source.SqlSource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.manage.SourceManager;
+import org.gbif.utils.file.CompressionUtil;
+import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
 
 import com.google.inject.Inject;
 
@@ -93,20 +94,6 @@ public class SourceAction extends ManagerBaseAction {
     }
     return INPUT;
   }
-  
-  public String addLogoUrl(){
-	  if(file!=null){
-		  File logoFile=dataDir.resourceFile(resource.getShortname(), "sources/" + "logo.jpg");
-		  try {System.out.println(logoFile);
-			FileUtils.copyFile(file,logoFile);
-		  } catch (IOException e) {
-			log.warn(e.getMessage());
-		  }
-		  resource.getEml().setLogoUrl(getBaseURL()+"/logo.do?r="+resource.getShortname());
-	  }
-	  return INPUT;
-  }
-
 
   private void addTextFile(File f, String filename) {
     // create a new file source
@@ -283,6 +270,30 @@ public class SourceAction extends ManagerBaseAction {
 
   public void setSource(Source source) {
     this.source = source;
+  }
+
+  public String uploadLogo() {
+    if (file != null) {
+      // remove any previous logo file
+      for (String suffix : Constants.IMAGE_TYPES) {
+        FileUtils.deleteQuietly(dataDir.resourceLogoFile(resource.getShortname(), suffix));
+      }
+      // inspect file type
+      String type = "jpeg";
+      if (fileContentType != null) {
+        System.out.println(fileContentType);
+        type = StringUtils.substringAfterLast(fileContentType, "/");
+      }
+      File logoFile = dataDir.resourceLogoFile(resource.getShortname(), type);
+      try {
+        System.out.println(logoFile.getAbsolutePath());
+        FileUtils.copyFile(file, logoFile);
+      } catch (IOException e) {
+        log.warn(e.getMessage());
+      }
+      resource.getEml().setLogoUrl(getBaseURL() + "/logo.do?r=" + resource.getShortname());
+    }
+    return INPUT;
   }
 
   @Override

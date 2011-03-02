@@ -12,6 +12,13 @@ public class Constants {
   public static final String VOCAB_URI_LANGUAGE = "http://iso.org/639-2";
   public static final String VOCAB_URI_COUNTRY = "http://iso.org/iso3166-1/alpha2";
   public static final String VOCAB_URI_RANKS = "http://rs.gbif.org/vocabulary/gbif/rank";
-  public static final String VOCAB_URI_ROLES= "http://rs.gbif.org/vocabulary/gbif/agentRole";
+  public static final String VOCAB_URI_ROLES = "http://rs.gbif.org/vocabulary/gbif/agentRole";
   public static final String VOCAB_URI_PRESERVATION_METHOD = "http://rs.gbif.org/vocabulary/gbif/preservation_method";
+  public static final String[] IMAGE_TYPES = new String[3];
+  static {
+    IMAGE_TYPES[0] = "jpeg";
+    IMAGE_TYPES[1] = "gif";
+    IMAGE_TYPES[2] = "png";
+  }
+
 }
