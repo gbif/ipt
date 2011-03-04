@@ -52,6 +52,8 @@ import com.lowagie.text.Element;
 import com.lowagie.text.Font;
 import com.lowagie.text.FontFactory;
 import com.lowagie.text.Header;
+import com.lowagie.text.List;
+import com.lowagie.text.ListItem;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
 
@@ -69,6 +71,11 @@ public class Eml2Rtf {
 	private Font fontItalic = FontFactory.getFont(FontFactory.HELVETICA_OBLIQUE, 12, Font.ITALIC, Color.BLACK);
 	private Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, Font.BOLD, Color.BLACK);
 	private Font fontHeader = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14, Font.BOLD, Color.BLACK);
+	// private Font font = FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.NORMAL, Color.BLACK);
+	// private Font fontToComplete = FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.NORMAL, Color.RED);
+	// private Font fontItalic = FontFactory.getFont(FontFactory.TIMES_ITALIC, 12, Font.ITALIC, Color.BLACK);
+	// private Font fontTitle = FontFactory.getFont(FontFactory.TIMES_BOLD, 12, Font.BOLD, Color.BLACK);
+	// private Font fontHeader = FontFactory.getFont(FontFactory.TIMES_BOLD, 14, Font.BOLD, Color.BLACK);
 
 	@Inject
 	private SimpleTextProvider textProvider;
@@ -127,15 +134,47 @@ public class Eml2Rtf {
 		addTemporalCoverages(doc, eml);
 		addProjectData(doc, eml);
 		addNaturalCollections(doc, eml);
-		/*addMethods(doc, eml);
-		doc.add(Chunk.NEWLINE);*/
-
+		addMethods(doc, eml);
 		doc.close();
 	}
 
-	private void addMethods(Document doc, Eml eml) {
-		// TODO Auto-generated method stub
-
+	private void addMethods(Document doc, Eml eml) throws DocumentException {
+		Paragraph p = new Paragraph();
+		p.setAlignment(Element.ALIGN_JUSTIFIED);
+		p.setFont(font);
+		p.add(new Phrase("Methods", fontTitle));
+		p.add(Chunk.NEWLINE);
+		if (eml.getMethodSteps().size() > 0 && eml.getMethodSteps().size() == 1) {
+			p.add(new Phrase("Method step description: ", fontTitle));
+			p.add(eml.getMethodSteps().get(0));
+			p.add(Chunk.NEWLINE);
+		} else if (eml.getMethodSteps().size() > 1) {
+			p.add(new Phrase("Method step description: ", fontTitle));
+			p.add(Chunk.NEWLINE);
+			List list = new List(List.UNORDERED, 0);
+			list.setIndentationLeft(20);
+			for (String method : eml.getMethodSteps()) {
+				list.add(new ListItem(method, font));
+			}
+			p.add(list);
+		}
+		if (eml.getStudyExtent() != null && !eml.getStudyExtent().equals("")) {
+			p.add(new Phrase("Study extent description: ", fontTitle));
+			p.add(eml.getStudyExtent());
+			p.add(Chunk.NEWLINE);
+		}
+		if (eml.getStudyExtent() != null && !eml.getSampleDescription().equals("")) {
+			p.add(new Phrase("Sampling description: ", fontTitle));
+			p.add(eml.getSampleDescription());
+			p.add(Chunk.NEWLINE);
+		}
+		if (eml.getStudyExtent() != null && !eml.getQualityControl().equals("")) {
+			p.add(new Phrase("Quality control description: ", fontTitle));
+			p.add(eml.getQualityControl());
+			p.add(Chunk.NEWLINE);
+		}
+		doc.add(p);
+		p.clear();
 	}
 
 	private void addNaturalCollections(Document doc, Eml eml) throws DocumentException {
@@ -217,11 +256,11 @@ public class Eml2Rtf {
 		boolean firstCoverage = true;
 		for (TemporalCoverage coverage : eml.getTemporalCoverages()) {
 			if (coverage.getType().equals(TemporalCoverageType.SINGLE_DATE)) {
-				if(!firstCoverage) {
+				if (!firstCoverage) {
 					p.add(Chunk.NEWLINE);
 				} else {
 					firstCoverage = false;
-				}				
+				}
 				p.add(new Phrase("Temporal Coverage: ", fontTitle));
 				if (timeFormat.format(coverage.getStartDate()).equals("001")) {
 					p.add(yearFormat.format(coverage.getStartDate()));
@@ -230,7 +269,7 @@ public class Eml2Rtf {
 				}
 				p.add(Chunk.NEWLINE);
 			} else if (coverage.getType().equals(TemporalCoverageType.DATE_RANGE)) {
-				if(!firstCoverage) {
+				if (!firstCoverage) {
 					p.add(Chunk.NEWLINE);
 				} else {
 					firstCoverage = false;
@@ -260,10 +299,10 @@ public class Eml2Rtf {
 		p.setFont(font);
 		boolean firstCoverage = true;
 		for (GeospatialCoverage coverage : eml.getGeospatialCoverages()) {
-			if(!firstCoverage) {
+			if (!firstCoverage) {
 				p.add(Chunk.NEWLINE);
 			} else {
-				firstCoverage = false;				
+				firstCoverage = false;
 			}
 			p.add(new Phrase("Spatial Coverage", fontTitle));
 			p.add(Chunk.NEWLINE);
@@ -294,7 +333,7 @@ public class Eml2Rtf {
 		p.setFont(font);
 		boolean firstTaxon = true;
 		for (TaxonomicCoverage taxcoverage : eml.getTaxonomicCoverages()) {
-			if(!firstTaxon) {
+			if (!firstTaxon) {
 				p.add(Chunk.NEWLINE);
 			}
 			firstTaxon = false;
@@ -315,7 +354,7 @@ public class Eml2Rtf {
 								p.add(", ");
 							} else {
 								p.add(new Phrase("Taxonomic Ranks: ", fontTitle));
-								p.add(Chunk.NEWLINE);						
+								p.add(Chunk.NEWLINE);
 							}
 							p.add(rank + ": ");
 							p.add(keyword.getScientificName());
