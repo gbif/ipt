@@ -43,7 +43,7 @@
 $(document).ready(function(){
 	var $registered = false;
 	$('.confirm').jConfirmAction({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
-	$('.confirmRegistration').jConfirmAction({question : '<@s.text name="manage.overview.visibility.confirm.registration"/>', yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
+	$('.confirmRegistration').jConfirmAction({question : '<@s.text name="manage.overview.visibility.confirm.registration"/>', yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", checkboxText:'<@s.text name="manage.overview.visibility.confirm.agreement"/>'});
 	$('.confirmDeletion').jConfirmAction({question : '<#if resource.status=="REGISTERED"><@s.text name="manage.resource.delete.confirm.registered"/><#else><@s.text name="basic.confirm"/></#if>', yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
 				
 	var showReport=false;
@@ -226,6 +226,7 @@ $(document).ready(function(){
 		      <option value="${o.key}">${o.alias!o.name}</option>
 		    </#list>
 			</select>
+			<div class="newline"></div>
 	       	<@s.submit cssClass="confirmRegistration" name="publish" key="button.register" disabled="${missingRegistrationMetadata?string}"/>
 	       	<#if missingRegistrationMetadata>
 	       		<div class="warn"><@s.text name="manage.overview.visibility.missing.metadata"><@s.param>${baseURL}/manage/metadata-basic.do?r=${resource.shortname}</@s.param></@s.text></div>
@@ -235,13 +236,13 @@ $(document).ready(function(){
 		<#else>
 		    <#if resource.status=="PRIVATE">
 	       	<@s.submit name="publish" key="button.public"/>
-	       	<div class="newline"></div>
-	       	<div class="newline"></div>
 			</#if>
 		    <#if resource.status=="REGISTERED">
 	       	<@s.submit name="update" key="button.update"/>
 			</#if>			
 		</#if>
+		<div class="newline"></div>
+	    <div class="newline"></div>
   	  </form>
   	</div>
   </div>

@@ -6,10 +6,12 @@
 		// question : a text for your question.
 		// yesAnswer : a text for Yes answer.
 		// cancelAnswer : a text for Cancel/No answer.
+		// checkboxText: a text for the checkbox needed to confirm for Yes answer (optional)
 		var theOptions = jQuery.extend ({
 			question: "Are You Sure ?",
 			yesAnswer: "Yes",
-			cancelAnswer: "Cancel"
+			cancelAnswer: "Cancel",
+			checkboxText: undefined
 		}, options);
 		return this.each (function () {
 			
@@ -33,14 +35,31 @@
 					btns[theOptions.cancelAnswer]=function() {								
 						$( this ).dialog( "close" );					
 						submitBtn.removeAttr("jconfirmed");
-					}; 		
+					};
+					
+					var content='<p>'+theOptions.question+'</p>';
+					if(theOptions.checkboxText!=undefined){
+						content='<p>'+'<input type="checkbox" id="cbox">'+theOptions.checkboxText+'<br/><br/>'+theOptions.question+'</p>';
+					}					
+										
+					$('#dialog-confirm').html(content);
+					$('#cbox').click(function() {
+						if($('#cbox').attr("checked")){
+							$('.ui-dialog-buttonset button:first-child').show();
+						}else{
+							$('.ui-dialog-buttonset button:first-child').hide();
+						}
 
-					$('#dialog-confirm').html('<p>'+theOptions.question+'</p>');
+					});
 					$('#dialog-confirm').dialog({
 						resizable: false,
 						modal: true,
 						buttons: btns
 					});		
+					
+					if(theOptions.checkboxText!=undefined){
+						$('.ui-dialog-buttonset button:first-child').hide();
+					}
 					
 				};
 			});
