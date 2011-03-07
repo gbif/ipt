@@ -689,7 +689,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           + resource.getShortname(), e);
     }
     // publish also as RTF
-    publishRtf(resource, alog);
+    // TODO publishing as RTF is not available until validation finish. 
+    //publishRtf(resource, alog);
   }
 
   private void publishRtf(Resource resource, ActionLogger alog) {
