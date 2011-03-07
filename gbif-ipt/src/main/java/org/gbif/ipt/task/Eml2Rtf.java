@@ -38,6 +38,7 @@ import org.gbif.metadata.eml.GeospatialCoverage;
 import org.gbif.metadata.eml.JGTICuratorialUnit;
 import org.gbif.metadata.eml.JGTICuratorialUnitType;
 import org.gbif.metadata.eml.KeywordSet;
+import org.gbif.metadata.eml.PhysicalData;
 import org.gbif.metadata.eml.TaxonKeyword;
 import org.gbif.metadata.eml.TaxonomicCoverage;
 import org.gbif.metadata.eml.TemporalCoverage;
@@ -45,6 +46,7 @@ import org.gbif.metadata.eml.TemporalCoverageType;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.lowagie.text.Anchor;
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -135,7 +137,51 @@ public class Eml2Rtf {
 		addProjectData(doc, eml);
 		addNaturalCollections(doc, eml);
 		addMethods(doc, eml);
+		addDatasetDescriptions(doc, eml);
 		doc.close();
+	}
+
+	
+
+	private void addDatasetDescriptions(Document doc, Eml eml) throws DocumentException {
+		Paragraph p = new Paragraph();
+		p.setAlignment(Element.ALIGN_JUSTIFIED);
+		p.setFont(font);		
+		for(PhysicalData data : eml.getPhysicalData()) {
+			p.add(new Phrase("Dataset descriptions", fontTitle));
+			p.add(Chunk.NEWLINE);
+			p.add(new Phrase("Object name: ", fontTitle));
+			p.add(data.getName());
+			p.add(Chunk.NEWLINE);
+			p.add(new Phrase("Character encoding: ", fontTitle));
+			p.add(data.getCharset());
+			p.add(Chunk.NEWLINE);
+			p.add(new Phrase("Format name: ", fontTitle));
+			p.add(data.getFormat());
+			p.add(Chunk.NEWLINE);
+			p.add(new Phrase("Format version: ", fontTitle));
+			p.add(data.getFormatVersion());
+			p.add(Chunk.NEWLINE);
+			p.add(new Phrase("Distribution: ", fontTitle));
+			Anchor distributionLink = new Anchor(data.getDistributionUrl(), font);
+			distributionLink.setReference(data.getDistributionUrl());
+			p.add(distributionLink);
+			p.add(Chunk.NEWLINE);
+			p.add(Chunk.NEWLINE);
+		}
+		p.add(new Phrase("Publication date: ", fontTitle));
+		SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-DD");
+		p.add(f.format(eml.getPubDate()));
+		p.add(Chunk.NEWLINE);
+		p.add(new Phrase("Language: ", fontTitle));
+		p.add(vocabManager.get(Constants.VOCAB_URI_LANGUAGE).findConcept(eml.getLanguage()).getPreferredTerm("en").getTitle());
+		p.add(Chunk.NEWLINE);
+		p.add(new Phrase("Intellectual rights: ", fontTitle));
+		p.add(eml.getIntellectualRights());
+		p.add(Chunk.NEWLINE);		
+		p.add(Chunk.NEWLINE);		
+		doc.add(p);
+		p.clear();
 	}
 
 	private void addMethods(Document doc, Eml eml) throws DocumentException {
