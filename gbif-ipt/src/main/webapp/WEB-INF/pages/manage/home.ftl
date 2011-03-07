@@ -9,7 +9,7 @@
 <br/>
 
 <#if (resources?size>0)>
-<table class="simple" width="100%">
+<table class="sortable" width="100%">
 	<tr>
 		<th><@s.text name="manage.home.name"/></th>
 		<th><@s.text name="manage.home.type"/></th>
@@ -18,7 +18,7 @@
 		<th><@s.text name="manage.home.visible"/></th>
 		<#-- see if the ADMIN has enabled registrations -->
 		<#-- if registrationAllowed -->
-		<th><@s.text name="manage.home.registered"/></th>
+		<th><@s.text name="manage.home.organisation"/></th>
 		<#-- >/#if -->
 	</tr>
 <#list resources as r>
