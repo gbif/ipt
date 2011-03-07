@@ -4,7 +4,7 @@
 		<title><@s.text name="admin.config.setup.title"/></title>
  		<link rel="stylesheet" type="text/css" href="styles/main.css"/>
  		<link rel="shortcut icon" href="${baseURL}/images/icons/favicon.ico" type="image/x-icon" />
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>				
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script>				
 		<script type="text/javascript" src="js/global.js"></script>
 		<style>
 h1 {
