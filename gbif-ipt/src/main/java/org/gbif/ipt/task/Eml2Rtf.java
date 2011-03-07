@@ -20,11 +20,10 @@ import java.awt.Color;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.TreeSet;
 
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
@@ -68,16 +67,11 @@ import com.lowagie.text.Phrase;
  */
 @Singleton
 public class Eml2Rtf {
-	private Font font = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.NORMAL, Color.BLACK);
-	private Font fontToComplete = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.NORMAL, Color.RED);
-	private Font fontItalic = FontFactory.getFont(FontFactory.HELVETICA_OBLIQUE, 12, Font.ITALIC, Color.BLACK);
-	private Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, Font.BOLD, Color.BLACK);
-	private Font fontHeader = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14, Font.BOLD, Color.BLACK);
-	// private Font font = FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.NORMAL, Color.BLACK);
-	// private Font fontToComplete = FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.NORMAL, Color.RED);
-	// private Font fontItalic = FontFactory.getFont(FontFactory.TIMES_ITALIC, 12, Font.ITALIC, Color.BLACK);
-	// private Font fontTitle = FontFactory.getFont(FontFactory.TIMES_BOLD, 12, Font.BOLD, Color.BLACK);
-	// private Font fontHeader = FontFactory.getFont(FontFactory.TIMES_BOLD, 14, Font.BOLD, Color.BLACK);
+	private Font font = FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.NORMAL, Color.BLACK);
+	private Font fontToComplete = FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.NORMAL, Color.RED);
+	private Font fontItalic = FontFactory.getFont(FontFactory.TIMES_ITALIC, 12, Font.ITALIC, Color.BLACK);
+	private Font fontTitle = FontFactory.getFont(FontFactory.TIMES_BOLD, 12, Font.BOLD, Color.BLACK);
+	private Font fontHeader = FontFactory.getFont(FontFactory.TIMES_BOLD, 14, Font.BOLD, Color.BLACK);
 
 	@Inject
 	private SimpleTextProvider textProvider;
@@ -102,6 +96,9 @@ public class Eml2Rtf {
 
 	public void writeEmlIntoRtf(Document doc, Resource resource) throws DocumentException {
 		Eml eml = resource.getEml();
+		// configure page
+		doc.setMargins(72, 72, 72, 72);
+
 		// write metadata
 		doc.addAuthor(resource.getCreator().getName());
 		doc.addCreationDate();
@@ -141,13 +138,11 @@ public class Eml2Rtf {
 		doc.close();
 	}
 
-	
-
 	private void addDatasetDescriptions(Document doc, Eml eml) throws DocumentException {
 		Paragraph p = new Paragraph();
 		p.setAlignment(Element.ALIGN_JUSTIFIED);
-		p.setFont(font);		
-		for(PhysicalData data : eml.getPhysicalData()) {
+		p.setFont(font);
+		for (PhysicalData data : eml.getPhysicalData()) {
 			p.add(new Phrase("Dataset descriptions", fontTitle));
 			p.add(Chunk.NEWLINE);
 			p.add(new Phrase("Object name: ", fontTitle));
@@ -178,8 +173,8 @@ public class Eml2Rtf {
 		p.add(Chunk.NEWLINE);
 		p.add(new Phrase("Intellectual rights: ", fontTitle));
 		p.add(eml.getIntellectualRights());
-		p.add(Chunk.NEWLINE);		
-		p.add(Chunk.NEWLINE);		
+		p.add(Chunk.NEWLINE);
+		p.add(Chunk.NEWLINE);
 		doc.add(p);
 		p.clear();
 	}
@@ -431,8 +426,10 @@ public class Eml2Rtf {
 	}
 
 	private void addAbstract(Document doc, Eml eml) throws DocumentException {
-		addPara(doc, "Abstract", fontTitle, 0, Element.ALIGN_LEFT);
-		addPara(doc, eml.getDescription(), font, 0, Element.ALIGN_JUSTIFIED);
+		if (eml.getDescription() != null) {
+			addPara(doc, "Abstract", fontTitle, 0, Element.ALIGN_LEFT);
+			addPara(doc, eml.getDescription(), font, 0, Element.ALIGN_JUSTIFIED);
+		}
 	}
 
 	private void addCitations(Document doc, Eml eml) throws DocumentException {
@@ -466,13 +463,19 @@ public class Eml2Rtf {
 	private void addAuthors(Document doc, Eml eml) throws DocumentException {
 		// <AUTHORS>
 		// Creating set of authors with different names. (first names + last names).
-		TreeSet<Agent> tempAgents = new TreeSet<Agent>(new Comparator<Agent>() {
+		LinkedHashSet<Agent> tempAgents = new LinkedHashSet<Agent>();
+
+		/*TreeSet<Agent> tempAgents2 = new TreeSet<Agent>(new Comparator<Agent>() {
 			public int compare(Agent a, Agent b) {
 				return (a.getFirstName() + a.getLastName()).compareTo(b.getFirstName() + b.getLastName());
 			}
-		});
-		tempAgents.add(eml.getResourceCreator());
-		tempAgents.add(eml.getMetadataProvider());
+		});*/
+		if (eml.getResourceCreator() != null) {
+			tempAgents.add(eml.getResourceCreator());
+		}
+		if (eml.getMetadataProvider() != null) {
+			tempAgents.add(eml.getMetadataProvider());
+		}
 		tempAgents.addAll(eml.getAssociatedParties());
 		Agent[] agents = new Agent[tempAgents.size()];
 		tempAgents.toArray(agents);
@@ -485,7 +488,10 @@ public class Eml2Rtf {
 			if (c != 0)
 				p.add(", ");
 			// First Name and Last Name
-			p.add(agents[c].getFirstName() + " " + agents[c].getLastName());
+			if (agents[c].getFirstName() != null) {
+				p.add(agents[c].getFirstName() + " ");
+			}
+			p.add(agents[c].getLastName());
 			// Looking for addresses of other authors (superscripts should not be repeated).
 			int index = 0;
 			while (index < c) {
@@ -501,6 +507,7 @@ public class Eml2Rtf {
 			}
 		}
 		doc.add(p);
+		p.clear();
 		doc.add(Chunk.NEWLINE);
 		tempAgents.clear();
 		// <AFFILIATIONS>
@@ -511,26 +518,52 @@ public class Eml2Rtf {
 			if (c != 0)
 				p.add("; ");
 			p.add((c + 1) + " ");
-			p.add(affiliations.get(c).getOrganisation() + ", ");
-			p.add(affiliations.get(c).getAddress().getAddress() + ", ");
-			p.add(affiliations.get(c).getAddress().getPostalCode() + ", ");
-			p.add(affiliations.get(c).getAddress().getCity());
+			if (affiliations.get(c).getOrganisation() != null) {
+				p.add(affiliations.get(c).getOrganisation() + ", ");
+			}
+			if (affiliations.get(c).getAddress().getAddress() != null) {
+				p.add(affiliations.get(c).getAddress().getAddress() + ", ");
+			}
+			if (affiliations.get(c).getAddress().getPostalCode() != null) {
+				p.add(affiliations.get(c).getAddress().getPostalCode() + ", ");
+			}
+			if (affiliations.get(c).getAddress().getCity() != null) {
+				p.add(affiliations.get(c).getAddress().getCity());
+			}
 			if (affiliations.get(c).getAddress().getCountry() != null) {
 				p.add(", " + vocabManager.get(Constants.VOCAB_URI_COUNTRY).findConcept(affiliations.get(c).getAddress().getCountry()).getPreferredTerm("en").getTitle());
 			}
 		}
 		doc.add(p);
+		p.clear();
 		doc.add(Chunk.NEWLINE);
 		// <Corresponding Authors>
 		p = new Paragraph();
 		p.setAlignment(Element.ALIGN_JUSTIFIED);
 		p.add(new Phrase("Corresponding authors: ", fontTitle));
 		p.setFont(font);
-		for (int c = 0; c < agents.length; c++) {
-			if (c != 0)
+		boolean isFirst = true;
+		if (eml.getResourceCreator() != null) {
+			if (eml.getResourceCreator().getFirstName() != null) {
+				p.add(eml.getResourceCreator().getFirstName() + " ");
+			}
+			p.add(eml.getResourceCreator().getLastName());
+			if (eml.getResourceCreator().getEmail() != null) {
+				p.add(" (" + eml.getResourceCreator().getEmail() + ")");
+			}
+			isFirst = false;
+		}
+		if (eml.getMetadataProvider() != null) {
+			if (!isFirst) {
 				p.add(", ");
-			// TODO - Validation for authors with blank email needed.
-			p.add(agents[c].getFirstName() + " " + agents[c].getLastName() + " (" + agents[c].getEmail() + ")");
+			}
+			if (eml.getMetadataProvider().getFirstName() != null) {
+				p.add(eml.getMetadataProvider().getFirstName() + " ");
+			}
+			p.add(eml.getMetadataProvider().getLastName());
+			if (eml.getMetadataProvider().getEmail() != null) {
+				p.add(" (" + eml.getMetadataProvider().getEmail() + ")");
+			}
 		}
 		p.add(Chunk.NEWLINE);
 		doc.add(p);
@@ -538,9 +571,11 @@ public class Eml2Rtf {
 	}
 
 	private void addKeywords(Document doc, String keys) throws DocumentException {
-		addPara(doc, "Keywords", fontTitle, 10, Element.ALIGN_LEFT);
-		addPara(doc, keys, fontItalic, 0, Element.ALIGN_LEFT);
-		doc.add(Chunk.NEWLINE);
+		if (keys != null && !keys.equals("")) {
+			addPara(doc, "Keywords", fontTitle, 10, Element.ALIGN_LEFT);
+			addPara(doc, keys, font, 0, Element.ALIGN_LEFT);
+			doc.add(Chunk.NEWLINE);
+		}
 	}
 
 	public void setVocabManager(VocabulariesManager vocabManager) {
