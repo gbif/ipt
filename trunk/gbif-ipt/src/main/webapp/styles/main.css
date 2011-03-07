@@ -545,6 +545,24 @@ table.simple tr.even{
 	background-color: #fff;
 }
 
+/* sortable table */
+table.sortable th{
+	background-color: #fff;
+	text-align: left;
+	text-decoration: underline;
+	padding-bottom: 10px;
+}
+table.sortable tr{
+	background-color: #f1f1f1;
+}
+table.sortable tr.linebreak{
+	background-color: #fff;
+	height: 1em;
+}
+table.sortable tr.even{
+	background-color: #fff;
+}
+
 /* horizontal list */
 ul.horizontal {
 	margin:0; 
