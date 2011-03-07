@@ -102,6 +102,11 @@ public class MockVocabulariesManager extends IptMockBaseTest implements Vocabula
 			vocabMap.put("DK", "DENMARK");
 			vocabMap.put("DE", "GERMANY");
 			vocabMap.put("US", "UNITED STATES");
+		} else if(uri.equals(Constants.VOCAB_URI_LANGUAGE)) {
+			vocabMap.put("eng", "English");
+			vocabMap.put("spa", "Spanish");
+			vocabMap.put("ger", "German");
+			vocabMap.put("fre", "French");			
 		}
 		return vocabMap;
 	}
