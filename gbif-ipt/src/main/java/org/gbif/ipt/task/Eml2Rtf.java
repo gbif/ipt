@@ -25,6 +25,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import org.apache.commons.lang.WordUtils;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.admin.VocabulariesManager;
@@ -117,6 +118,7 @@ public class Eml2Rtf {
 		doc.open();
 		// title
 		addPara(doc, eml.getTitle(), fontHeader, 0, Element.ALIGN_CENTER);
+		doc.add(Chunk.NEWLINE);
 		// Authors, affiliations and corresponging authors
 		addAuthors(doc, eml);
 		// Received, Revised, Accepted, and ‘published’ dates
@@ -268,21 +270,32 @@ public class Eml2Rtf {
 		p.setFont(font);
 		p.add(new Phrase("Project description", fontTitle));
 		p.add(Chunk.NEWLINE);
-		p.add(new Phrase("Project title: ", fontTitle));
-		p.add(eml.getProject().getTitle());
-		p.add(Chunk.NEWLINE);
+		if (exists(eml.getProject().getTitle())) {
+			p.add(new Phrase("Project title: ", fontTitle));
+			p.add(eml.getProject().getTitle());
+			p.add(Chunk.NEWLINE);
+		}
 		p.add(new Phrase("Personnel: ", fontTitle));
-		p.add(eml.getProject().getPersonnel().getFirstName() + " " + eml.getProject().getPersonnel().getLastName());
+		if (exists(eml.getProject().getPersonnel().getFirstName())) {
+			p.add(eml.getProject().getPersonnel().getFirstName() + " ");
+		}
+		eml.getProject().getPersonnel().getLastName();
 		p.add(Chunk.NEWLINE);
-		p.add(new Phrase("Funding: ", fontTitle));
-		p.add(eml.getProject().getFunding());
-		p.add(Chunk.NEWLINE);
-		p.add(new Phrase("Study Area Descriptions/descriptor: ", fontTitle));
-		p.add(eml.getProject().getStudyAreaDescription().getDescriptorValue());
-		p.add(Chunk.NEWLINE);
-		p.add(new Phrase("Design Description: ", fontTitle));
-		p.add(eml.getProject().getDesignDescription());
-		p.add(Chunk.NEWLINE);
+		if (exists(eml.getProject().getFunding())) {
+			p.add(new Phrase("Funding: ", fontTitle));
+			p.add(eml.getProject().getFunding());
+			p.add(Chunk.NEWLINE);
+		}
+		if (exists(eml.getProject().getStudyAreaDescription().getDescriptorValue())) {
+			p.add(new Phrase("Study Area Descriptions/descriptor: ", fontTitle));
+			p.add(eml.getProject().getStudyAreaDescription().getDescriptorValue());
+			p.add(Chunk.NEWLINE);
+		}
+		if (exists(eml.getProject().getDesignDescription())) {
+			p.add(new Phrase("Design Description: ", fontTitle));
+			p.add(eml.getProject().getDesignDescription());
+			p.add(Chunk.NEWLINE);
+		}
 		doc.add(p);
 		p.clear();
 	}
@@ -345,12 +358,13 @@ public class Eml2Rtf {
 			} else {
 				firstCoverage = false;
 			}
-			p.add(new Phrase("Spatial Coverage", fontTitle));
-			p.add(Chunk.NEWLINE);
-			p.add(Chunk.NEWLINE);
-			p.add(new Phrase("General Spatial Coverage: ", fontTitle));
-			p.add(coverage.getDescription());
-			p.add(Chunk.NEWLINE);
+			if (exists(coverage.getDescription())) {
+				p.add(new Phrase("Spatial Coverage", fontTitle));
+				p.add(Chunk.NEWLINE);
+				p.add(new Phrase("General Spatial Coverage: ", fontTitle));
+				p.add(coverage.getDescription());
+				p.add(Chunk.NEWLINE);
+			}
 			p.add(new Phrase("Coordinates: ", fontTitle));
 			BBox coordinates = coverage.getBoundingCoordinates();
 			p.add(CoordinateUtils.decToDms(coordinates.getMin().getLatitude(), CoordinateUtils.LATITUDE));
@@ -380,7 +394,6 @@ public class Eml2Rtf {
 			firstTaxon = false;
 			p.add(new Phrase("Taxonomic Coverage", fontTitle));
 			p.add(Chunk.NEWLINE);
-			p.add(Chunk.NEWLINE);
 			p.add(new Phrase("General Taxonomic Coverage Description: ", fontTitle));
 			p.add(taxcoverage.getDescription());
 			p.add(Chunk.NEWLINE);
@@ -389,7 +402,7 @@ public class Eml2Rtf {
 			for (String rank : ranks.keySet()) {
 				boolean wroteRank = false;
 				for (TaxonKeyword keyword : taxcoverage.getTaxonKeywords()) {
-					if (keyword.getRank() != null && keyword.equals(rank)) {
+					if (exists(keyword.getRank()) && keyword.getRank().equals(rank)) {
 						if (!wroteRank) {
 							if (!firstRank) {
 								p.add(", ");
@@ -397,7 +410,7 @@ public class Eml2Rtf {
 								p.add(new Phrase("Taxonomic Ranks: ", fontTitle));
 								p.add(Chunk.NEWLINE);
 							}
-							p.add(rank + ": ");
+							p.add(WordUtils.capitalizeFully(rank) + ": ");
 							p.add(keyword.getScientificName());
 							wroteRank = true;
 							firstRank = false;
@@ -407,9 +420,10 @@ public class Eml2Rtf {
 					}
 				}
 			}
+			p.add(Chunk.NEWLINE);
 			boolean isFirst = true;
 			for (TaxonKeyword keyword : taxcoverage.getTaxonKeywords()) {
-				if (keyword.getCommonName() != null && !keyword.getCommonName().equals("")) {
+				if (exists(keyword.getCommonName())) {
 					if (!isFirst) {
 						p.add(", ");
 					} else {
@@ -426,7 +440,7 @@ public class Eml2Rtf {
 	}
 
 	private void addAbstract(Document doc, Eml eml) throws DocumentException {
-		if (eml.getDescription() != null) {
+		if (exists(eml.getDescription())) {
 			addPara(doc, "Abstract", fontTitle, 0, Element.ALIGN_LEFT);
 			addPara(doc, eml.getDescription(), font, 0, Element.ALIGN_JUSTIFIED);
 		}
@@ -464,16 +478,10 @@ public class Eml2Rtf {
 		// <AUTHORS>
 		// Creating set of authors with different names. (first names + last names).
 		LinkedHashSet<Agent> tempAgents = new LinkedHashSet<Agent>();
-
-		/*TreeSet<Agent> tempAgents2 = new TreeSet<Agent>(new Comparator<Agent>() {
-			public int compare(Agent a, Agent b) {
-				return (a.getFirstName() + a.getLastName()).compareTo(b.getFirstName() + b.getLastName());
-			}
-		});*/
-		if (eml.getResourceCreator() != null) {
+		if (exists(eml.getResourceCreator())) {
 			tempAgents.add(eml.getResourceCreator());
 		}
-		if (eml.getMetadataProvider() != null) {
+		if (exists(eml.getMetadataProvider())) {
 			tempAgents.add(eml.getMetadataProvider());
 		}
 		tempAgents.addAll(eml.getAssociatedParties());
@@ -488,7 +496,7 @@ public class Eml2Rtf {
 			if (c != 0)
 				p.add(", ");
 			// First Name and Last Name
-			if (agents[c].getFirstName() != null) {
+			if (exists(agents[c].getFirstName())) {
 				p.add(agents[c].getFirstName() + " ");
 			}
 			p.add(agents[c].getLastName());
@@ -518,20 +526,21 @@ public class Eml2Rtf {
 			if (c != 0)
 				p.add("; ");
 			p.add((c + 1) + " ");
-			if (affiliations.get(c).getOrganisation() != null) {
+			if (exists(affiliations.get(c).getOrganisation())) {
 				p.add(affiliations.get(c).getOrganisation() + ", ");
 			}
-			if (affiliations.get(c).getAddress().getAddress() != null) {
+			if (exists(affiliations.get(c).getAddress().getAddress())) {
 				p.add(affiliations.get(c).getAddress().getAddress() + ", ");
 			}
-			if (affiliations.get(c).getAddress().getPostalCode() != null) {
+			if (exists(affiliations.get(c).getAddress().getPostalCode())) {
 				p.add(affiliations.get(c).getAddress().getPostalCode() + ", ");
 			}
-			if (affiliations.get(c).getAddress().getCity() != null) {
+			if (exists(affiliations.get(c).getAddress().getCity())) {
 				p.add(affiliations.get(c).getAddress().getCity());
 			}
-			if (affiliations.get(c).getAddress().getCountry() != null) {
-				p.add(", " + vocabManager.get(Constants.VOCAB_URI_COUNTRY).findConcept(affiliations.get(c).getAddress().getCountry()).getPreferredTerm("en").getTitle());
+			if (exists(affiliations.get(c).getAddress().getCountry())) {
+				String country = vocabManager.get(Constants.VOCAB_URI_COUNTRY).findConcept(affiliations.get(c).getAddress().getCountry()).getPreferredTerm("en").getTitle();
+				p.add(", " + WordUtils.capitalizeFully(country));
 			}
 		}
 		doc.add(p);
@@ -543,25 +552,25 @@ public class Eml2Rtf {
 		p.add(new Phrase("Corresponding authors: ", fontTitle));
 		p.setFont(font);
 		boolean isFirst = true;
-		if (eml.getResourceCreator() != null) {
-			if (eml.getResourceCreator().getFirstName() != null) {
+		if (exists(eml.getResourceCreator())) {
+			if (exists(eml.getResourceCreator().getFirstName())) {
 				p.add(eml.getResourceCreator().getFirstName() + " ");
 			}
 			p.add(eml.getResourceCreator().getLastName());
-			if (eml.getResourceCreator().getEmail() != null) {
+			if (exists(eml.getResourceCreator().getEmail())) {
 				p.add(" (" + eml.getResourceCreator().getEmail() + ")");
 			}
 			isFirst = false;
 		}
-		if (eml.getMetadataProvider() != null) {
+		if (exists(eml.getMetadataProvider())) {
 			if (!isFirst) {
 				p.add(", ");
 			}
-			if (eml.getMetadataProvider().getFirstName() != null) {
+			if (exists(eml.getMetadataProvider().getFirstName())) {
 				p.add(eml.getMetadataProvider().getFirstName() + " ");
 			}
 			p.add(eml.getMetadataProvider().getLastName());
-			if (eml.getMetadataProvider().getEmail() != null) {
+			if (exists(eml.getMetadataProvider().getEmail())) {
 				p.add(" (" + eml.getMetadataProvider().getEmail() + ")");
 			}
 		}
@@ -576,6 +585,16 @@ public class Eml2Rtf {
 			addPara(doc, keys, font, 0, Element.ALIGN_LEFT);
 			doc.add(Chunk.NEWLINE);
 		}
+	}
+
+	private boolean exists(Object obj) {
+		if (obj == null)
+			return false;
+		if (obj instanceof String) {
+			if (((String) obj).equals(""))
+				return false;
+		}
+		return true;
 	}
 
 	public void setVocabManager(VocabulariesManager vocabManager) {
