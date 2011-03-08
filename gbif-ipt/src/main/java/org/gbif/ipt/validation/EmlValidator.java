@@ -549,6 +549,15 @@ public class EmlValidator extends BaseValidator {
 				 *    </gbif>
 				 * </metadata>
 				 */
+				if(!exists(eml.getParentCollectionId())) {
+					action.addFieldError("eml.parentCollectionId", action.getText("validation.required", new String[]{action.getText("eml.parentCollectionId")}));
+				}
+				if(!exists(eml.getCollectionId())) {
+					action.addFieldError("eml.collectionId", action.getText("validation.required", new String[]{action.getText("eml.collectionId")}));
+				}
+				if(!exists(eml.getCollectionName())) {
+					action.addFieldError("eml.collectionName", action.getText("validation.required", new String[]{action.getText("eml.collectionName")}));
+				}
 				int index = 0;
 				for (JGTICuratorialUnit jcu : eml.getJgtiCuratorialUnits()) {
 					if (jcu.getType().equals(JGTICuratorialUnitType.COUNT_RANGE)) {
