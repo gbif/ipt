@@ -94,7 +94,7 @@ public class Eml2RtfTest extends IptMockBaseTest {
 			RtfWriter2.getInstance(doc, out);
 			eml2Rtf.writeEmlIntoRtf(doc, resource);
 			out.close();
-			Runtime.getRuntime().exec("C:/Program Files/Microsoft Office/Office12/WINWORD.EXE " + rtfTempFile.getAbsolutePath());
+			//Runtime.getRuntime().exec("C:/Program Files/Microsoft Office/Office12/WINWORD.EXE " + rtfTempFile.getAbsolutePath());
 			// Do not comment the following line if you are going to commit this code.
 			rtfTempFile.deleteOnExit();
 		} catch (FileNotFoundException e) {
