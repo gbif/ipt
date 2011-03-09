@@ -32,9 +32,10 @@ java.sql.SQLException: Cannot convert value '0000-00-00 00:00:00' from column 65
 
 that means you have invalid date value in your data source, which, in this case, is "0000-00-00 00:00:00."
 
-To solve this, you can update the value with "Null" value, and update the source.
+To solve this, you can update the value with "Null" value, and update the resource.
 Usually, you can rely on the log message to identify the column of interest, like in the example above, it says "column 65," which is the 65th column in the data source.
 
+The "0000-00-00 00:00:00" value in your SQL table could be resulted when importing, while having defined the column with "Not Null" and default value as "0000-00-00 00:00:00."
 = Performance =
 
 == My GBIF IPT instance is slow. What can I do to improve performance? ==
