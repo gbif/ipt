@@ -137,7 +137,45 @@ public class Eml2Rtf {
 		addNaturalCollections(doc, eml);
 		addMethods(doc, eml);
 		addDatasetDescriptions(doc, eml);
+		addMetadataDescriptions(doc, eml);
+		addReferences(doc, eml);
 		doc.close();
+	}
+
+	private void addReferences(Document doc, Eml eml) throws DocumentException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void addMetadataDescriptions(Document doc, Eml eml) throws DocumentException {
+		Paragraph p = new Paragraph();
+		p.setAlignment(Element.ALIGN_JUSTIFIED);
+		p.setFont(font);
+		if(exists(eml.getMetadataLanguage())) {
+			p.add(new Phrase("Metadata language: ", fontTitle));
+			p.add(vocabManager.get(Constants.VOCAB_URI_LANGUAGE).findConcept(eml.getMetadataLanguage()).getPreferredTerm("en").getTitle());
+			p.add(Chunk.NEWLINE);
+		}
+		if(exists(eml.getDateStamp())) {
+			p.add(new Phrase("Date of metadata creation: ", fontTitle));
+			SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-DD");
+			p.add(f.format(eml.getDateStamp()));
+			p.add(Chunk.NEWLINE);
+		}
+		if(exists(eml.getHierarchyLevel())) {
+			p.add(new Phrase("Heirarchy level: ", fontTitle));
+			p.add(WordUtils.capitalizeFully(eml.getHierarchyLevel()));
+			p.add(Chunk.NEWLINE);
+		}
+		if(exists(eml.getMetadataLocale())) {
+			p.add(new Phrase("Locale: ", fontTitle));
+			p.add(vocabManager.get(Constants.VOCAB_URI_LANGUAGE).findConcept(eml.getMetadataLocale().getLanguage()).getPreferredTerm("en").getTitle());
+			p.add(Chunk.NEWLINE);
+		}
+		p.add(Chunk.NEWLINE);
+		doc.add(p);
+		p.clear();
+		
 	}
 
 	private void addDatasetDescriptions(Document doc, Eml eml) throws DocumentException {
@@ -187,34 +225,36 @@ public class Eml2Rtf {
 		p.setFont(font);
 		p.add(new Phrase("Methods", fontTitle));
 		p.add(Chunk.NEWLINE);
-		if (eml.getMethodSteps().size() > 0 && eml.getMethodSteps().size() == 1) {
-			p.add(new Phrase("Method step description: ", fontTitle));
-			p.add(eml.getMethodSteps().get(0));
-			p.add(Chunk.NEWLINE);
-		} else if (eml.getMethodSteps().size() > 1) {
-			p.add(new Phrase("Method step description: ", fontTitle));
-			p.add(Chunk.NEWLINE);
-			List list = new List(List.UNORDERED, 0);
-			list.setIndentationLeft(20);
-			for (String method : eml.getMethodSteps()) {
-				list.add(new ListItem(method, font));
+		if (exists(eml.getMethodSteps())) {
+			if (eml.getMethodSteps().size() == 1) {
+				p.add(new Phrase("Method step description: ", fontTitle));
+				p.add(eml.getMethodSteps().get(0));
+				p.add(Chunk.NEWLINE);
+			} else if (eml.getMethodSteps().size() > 1) {
+				p.add(new Phrase("Method step description: ", fontTitle));
+				p.add(Chunk.NEWLINE);
+				List list = new List(List.UNORDERED, 0);
+				list.setIndentationLeft(20);
+				for (String method : eml.getMethodSteps()) {
+					list.add(new ListItem(method, font));
+				}
+				p.add(list);
 			}
-			p.add(list);
-		}
-		if (eml.getStudyExtent() != null && !eml.getStudyExtent().equals("")) {
-			p.add(new Phrase("Study extent description: ", fontTitle));
-			p.add(eml.getStudyExtent());
-			p.add(Chunk.NEWLINE);
-		}
-		if (eml.getStudyExtent() != null && !eml.getSampleDescription().equals("")) {
-			p.add(new Phrase("Sampling description: ", fontTitle));
-			p.add(eml.getSampleDescription());
-			p.add(Chunk.NEWLINE);
-		}
-		if (eml.getStudyExtent() != null && !eml.getQualityControl().equals("")) {
-			p.add(new Phrase("Quality control description: ", fontTitle));
-			p.add(eml.getQualityControl());
-			p.add(Chunk.NEWLINE);
+			if (exists(eml.getStudyExtent())) {
+				p.add(new Phrase("Study extent description: ", fontTitle));
+				p.add(eml.getStudyExtent());
+				p.add(Chunk.NEWLINE);
+			}
+			if (exists(eml.getStudyExtent())) {
+				p.add(new Phrase("Sampling description: ", fontTitle));
+				p.add(eml.getSampleDescription());
+				p.add(Chunk.NEWLINE);
+			}
+			if (exists(eml.getStudyExtent())) {
+				p.add(new Phrase("Quality control description: ", fontTitle));
+				p.add(eml.getQualityControl());
+				p.add(Chunk.NEWLINE);
+			}
 		}
 		doc.add(p);
 		p.clear();
@@ -224,13 +264,17 @@ public class Eml2Rtf {
 		Paragraph p = new Paragraph();
 		p.setAlignment(Element.ALIGN_JUSTIFIED);
 		p.setFont(font);
-		p.add(new Phrase("Natural Collections Description", fontTitle));
-		p.add(Chunk.NEWLINE);
-		p.add(new Phrase("Parent collection identifier: ", fontTitle));
-		p.add(eml.getParentCollectionId());
-		p.add(Chunk.NEWLINE);
-		p.add(new Phrase("Collection name: ", fontTitle));
-		p.add(eml.getCollectionName());
+		if (exists(eml.getParentCollectionId())) {
+			p.add(new Phrase("Natural Collections Description", fontTitle));
+			p.add(Chunk.NEWLINE);
+			p.add(new Phrase("Parent collection identifier: ", fontTitle));
+			p.add(eml.getParentCollectionId());
+			p.add(Chunk.NEWLINE);
+		}
+		if (exists(eml.getCollectionName())) {
+			p.add(new Phrase("Collection name: ", fontTitle));
+			p.add(eml.getCollectionName());
+		}
 		for (TemporalCoverage coverage : eml.getTemporalCoverages()) {
 			if (coverage.getType().equals(TemporalCoverageType.FORMATION_PERIOD)) {
 				p.add(Chunk.NEWLINE);
@@ -245,9 +289,11 @@ public class Eml2Rtf {
 				p.add(coverage.getLivingTimePeriod());
 			}
 		}
-		p.add(Chunk.NEWLINE);
-		p.add(new Phrase("Specimen preservation method: ", fontTitle));
-		p.add(eml.getSpecimenPreservationMethod());
+		if (exists(eml.getSpecimenPreservationMethod())) {
+			p.add(Chunk.NEWLINE);
+			p.add(new Phrase("Specimen preservation method: ", fontTitle));
+			p.add(WordUtils.capitalizeFully(eml.getSpecimenPreservationMethod()));
+		}
 		for (JGTICuratorialUnit unit : eml.getJgtiCuratorialUnits()) {
 			p.add(Chunk.NEWLINE);
 			p.add(new Phrase("Curatorial unit: ", fontTitle));
