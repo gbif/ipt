@@ -7,6 +7,7 @@
   <#if report.completed>
 	<p class="actionMessage">${report.state}</p>
     <p>Continue to <a href="resource.do?r=${resource.shortname}">resource overview</a>.</p>
+    <p><@s.text name='portal.publication.download.log'/> <a href="${baseURL}/publicationlog.do?r=${resource.shortname}"><@s.text name='portal.publication.log'/></a></p>
   <#else>
     <p><@s.text name="manage.locked"><@s.param>${baseURL}/manage/cancel.do?id=${resource.shortname}</@s.param></@s.text></p>
    	<p class="warnMessage">${report.state}</p>

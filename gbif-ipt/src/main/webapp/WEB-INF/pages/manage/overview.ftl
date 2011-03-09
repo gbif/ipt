@@ -314,6 +314,7 @@ $(document).ready(function(){
           		 <tr><th><@s.text name="manage.overview.published.last.publication"/></th>
           		 	<td><@s.text name="manage.overview.published.version"/> ${resource.eml.emlVersion} <@s.text name="manage.overview.published.from"/> ${resource.lastPublished?datetime?string}
 				  	<#if report??><a id="toggleReport" href="#">See report</a></#if>
+				  	<a href="${baseURL}/publicationlog.do?r=${resource.shortname}"><@s.text name='portal.publication.log'/></a>
           		    </td>
           		 </tr>
 			  	 <#if report??>
