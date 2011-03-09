@@ -28,11 +28,13 @@ import java.util.ResourceBundle;
 import org.apache.commons.lang.WordUtils;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.VocabularyConcept;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.CoordinateUtils;
 import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.BBox;
+import org.gbif.metadata.eml.Citation;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.GeospatialCoverage;
 import org.gbif.metadata.eml.JGTICuratorialUnit;
@@ -143,8 +145,19 @@ public class Eml2Rtf {
 	}
 
 	private void addReferences(Document doc, Eml eml) throws DocumentException {
-		// TODO Auto-generated method stub
+		Paragraph p = new Paragraph();
+		p.setAlignment(Element.ALIGN_JUSTIFIED);
+		p.setFont(font);
 		
+		if(exists(eml.getBibliographicCitationSet()) && eml.getBibliographicCitationSet().getBibliographicCitations().size() > 0) {
+			p.add(new Phrase("References", fontTitle));
+			p.add(Chunk.NEWLINE);
+		for(Citation citation : eml.getBibliographicCitationSet().getBibliographicCitations()) {
+			p.add(citation.getCitation());
+			p.add(Chunk.NEWLINE);
+		}}
+		doc.add(p);
+		p.clear();
 	}
 
 	private void addMetadataDescriptions(Document doc, Eml eml) throws DocumentException {
@@ -152,8 +165,11 @@ public class Eml2Rtf {
 		p.setAlignment(Element.ALIGN_JUSTIFIED);
 		p.setFont(font);
 		if(exists(eml.getMetadataLanguage())) {
-			p.add(new Phrase("Metadata language: ", fontTitle));
-			p.add(vocabManager.get(Constants.VOCAB_URI_LANGUAGE).findConcept(eml.getMetadataLanguage()).getPreferredTerm("en").getTitle());
+			VocabularyConcept vocabConcept = vocabManager.get(Constants.VOCAB_URI_LANGUAGE).findConcept(eml.getMetadataLanguage());
+			if(exists(vocabConcept)) {
+				p.add(new Phrase("Metadata language: ", fontTitle));
+				p.add(vocabConcept.getPreferredTerm("en").getTitle());				
+			}
 			p.add(Chunk.NEWLINE);
 		}
 		if(exists(eml.getDateStamp())) {
@@ -168,11 +184,13 @@ public class Eml2Rtf {
 			p.add(Chunk.NEWLINE);
 		}
 		if(exists(eml.getMetadataLocale())) {
-			p.add(new Phrase("Locale: ", fontTitle));
-			p.add(vocabManager.get(Constants.VOCAB_URI_LANGUAGE).findConcept(eml.getMetadataLocale().getLanguage()).getPreferredTerm("en").getTitle());
+			VocabularyConcept vocabConcept = vocabManager.get(Constants.VOCAB_URI_LANGUAGE).findConcept(eml.getMetadataLocale().getLanguage());
+			if(exists(vocabConcept)) {
+				p.add(new Phrase("Locale: ", fontTitle));
+				p.add(vocabConcept.getPreferredTerm("en").getTitle());				
+			}
 			p.add(Chunk.NEWLINE);
 		}
-		p.add(Chunk.NEWLINE);
 		doc.add(p);
 		p.clear();
 		
@@ -208,12 +226,16 @@ public class Eml2Rtf {
 		SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-DD");
 		p.add(f.format(eml.getPubDate()));
 		p.add(Chunk.NEWLINE);
-		p.add(new Phrase("Language: ", fontTitle));
-		p.add(vocabManager.get(Constants.VOCAB_URI_LANGUAGE).findConcept(eml.getLanguage()).getPreferredTerm("en").getTitle());
+		VocabularyConcept vocabConcept = vocabManager.get(Constants.VOCAB_URI_LANGUAGE).findConcept(eml.getLanguage());
+		if(exists(vocabConcept)) {			
+			p.add(new Phrase("Language: ", fontTitle));
+			p.add(vocabConcept.getPreferredTerm("en").getTitle());
+		} else {
+			p.add("The Language");
+		}
 		p.add(Chunk.NEWLINE);
 		p.add(new Phrase("Intellectual rights: ", fontTitle));
 		p.add(eml.getIntellectualRights());
-		p.add(Chunk.NEWLINE);
 		p.add(Chunk.NEWLINE);
 		doc.add(p);
 		p.clear();
