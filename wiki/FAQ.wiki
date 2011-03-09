@@ -24,7 +24,7 @@ Sometimes deleting a resource causes an error and leaves a corrupted resource be
 
 == DwC-A file doesn't include all records ==
 === Caused by invalid DATETIME value ===
-If the published DwC-A file doesn't count as the expected number, and you see there is a message in Administration > Logs that says
+If the published DwC-A file doesn't have records in the expected counts, and you see there is a message in Administration > Logs, which says
 
 {{{
 java.sql.SQLException: Cannot convert value '0000-00-00 00:00:00' from column 65 to TIMESTAMP
@@ -34,6 +34,8 @@ that means you have invalid date value in your data source, which, in this case,
 
 To solve this, you can update the value with "Null" value, and repeat the mapping steps.
 Usually, you can rely on the log message to identify the column of interest, like in the example above, it says "column 65," which is the 65th column in the data source.
+
+If your resource was imported to a SQL database, it's good to check if the default value for the DATETIME is set to 0 (zero).
 
 = Performance =
 
