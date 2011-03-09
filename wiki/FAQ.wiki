@@ -32,10 +32,8 @@ java.sql.SQLException: Cannot convert value '0000-00-00 00:00:00' from column 65
 
 that means you have invalid date value in your data source, which, in this case, is "0000-00-00 00:00:00."
 
-To solve this, you can update the value with "Null" value, and repeat the mapping steps.
+To solve this, you can update the value with "Null" value, and update the source.
 Usually, you can rely on the log message to identify the column of interest, like in the example above, it says "column 65," which is the 65th column in the data source.
-
-If your resource was imported to a SQL database, it's good to check if the default value for the DATETIME is set to 0 (zero).
 
 = Performance =
 
