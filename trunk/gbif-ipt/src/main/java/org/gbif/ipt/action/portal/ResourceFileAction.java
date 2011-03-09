@@ -115,6 +115,17 @@ public class ResourceFileAction extends BaseAction {
     }
     return execute();
   }
+  
+  public String publicationLog() {
+      	data = dataDir.resourcePublicationLogFile(resource.getShortname());
+      	if (resource.isPublished() && data.exists()) {
+	        mimeType = "text/log" ;
+	        filename = "publication.log";
+	    }else{
+	      return NOT_FOUND;
+	    }
+	    return execute();
+  }
 
   @Override
   public void prepare() {

@@ -251,6 +251,14 @@ public class DataDir {
   }
 
   /**
+   * @param resourceName
+   * @return
+   */
+  public File resourcePublicationLogFile(String resourceName) {
+    return dataFile(RESOURCES_DIR + "/" + resourceName + "/publication.log" );
+  }
+  
+  /**
    * File for the only & current rtf file representing the eml metadata for data publishers in RTF format
    * 
    * @param resourceName

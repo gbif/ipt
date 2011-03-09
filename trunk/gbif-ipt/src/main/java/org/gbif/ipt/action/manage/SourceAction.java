@@ -281,12 +281,10 @@ public class SourceAction extends ManagerBaseAction {
       // inspect file type
       String type = "jpeg";
       if (fileContentType != null) {
-        System.out.println(fileContentType);
         type = StringUtils.substringAfterLast(fileContentType, "/");
       }
       File logoFile = dataDir.resourceLogoFile(resource.getShortname(), type);
       try {
-        System.out.println(logoFile.getAbsolutePath());
         FileUtils.copyFile(file, logoFile);
       } catch (IOException e) {
         log.warn(e.getMessage());
