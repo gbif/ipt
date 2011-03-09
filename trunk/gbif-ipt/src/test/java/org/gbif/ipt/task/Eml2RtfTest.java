@@ -42,6 +42,7 @@ import org.xml.sax.SAXException;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
+import com.lowagie.text.PageSize;
 import com.lowagie.text.rtf.RtfWriter2;
 
 /**
@@ -72,15 +73,14 @@ public class Eml2RtfTest extends IptMockBaseTest {
 		eml2Rtf.setVocabManager(mockedVocabManager);
 	}
 
-	@Ignore
 	@Test
 	public void generateRtfFile() {
 		File rtfTempFile = null;
 		try {
-			Document doc = new Document();
+			Document doc = new Document(PageSize.LETTER);
 			Resource resource = new Resource();
 			resource.setEml(EmlFactory.build(new FileInputStream("./src/test/resources/data/eml.xml"))); //or eml2.xml
-			//resource.setEml(EmlFactory.build(new FileInputStream("./src/test/resources/data/eml-worms_gbif_example-v1.xml"))); // or eml2.xml
+			//resource.setEml(EmlFactory.build(new FileInputStream("D:\\GBIF\\IPT\\resources\\indfauna\\eml.xml"))); // or eml2.xml
 			resource.setShortname("resource");
 			User creator = new User();
 			creator.setFirstname("Markus");
@@ -94,7 +94,7 @@ public class Eml2RtfTest extends IptMockBaseTest {
 			RtfWriter2.getInstance(doc, out);
 			eml2Rtf.writeEmlIntoRtf(doc, resource);
 			out.close();
-			//Runtime.getRuntime().exec("C:/Program Files/Microsoft Office/Office12/WINWORD.EXE " + rtfTempFile.getAbsolutePath());
+			Runtime.getRuntime().exec("C:/Program Files/Microsoft Office/Office12/WINWORD.EXE " + rtfTempFile.getAbsolutePath());
 			// Do not comment the following line if you are going to commit this code.
 			rtfTempFile.deleteOnExit();
 		} catch (FileNotFoundException e) {
