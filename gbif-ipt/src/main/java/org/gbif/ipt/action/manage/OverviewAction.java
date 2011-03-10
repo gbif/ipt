@@ -240,7 +240,7 @@ public class OverviewAction extends ManagerBaseAction {
     }
     try {
       if (resourceManager.publish(resource, this)) {
-    	addActionWarning(getText("manage.overview.publishing.resource.version", new String[]{resource.getEmlVersion()+""}));
+    	addActionMessage(getText("manage.overview.publishing.resource.version", new String[]{resource.getEmlVersion()+""}));
         return PUBLISHING;
       } else {
         if (!resource.hasMappedData()) {
