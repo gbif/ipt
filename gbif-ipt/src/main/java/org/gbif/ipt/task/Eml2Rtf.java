@@ -28,6 +28,7 @@ import java.util.ResourceBundle;
 import org.apache.commons.lang.WordUtils;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.model.VocabularyConcept;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -72,7 +73,6 @@ import com.lowagie.text.Phrase;
 public class Eml2Rtf {
 	private Font font = FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.NORMAL, Color.BLACK);
 	private Font fontToComplete = FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.NORMAL, Color.RED);
-	private Font fontItalic = FontFactory.getFont(FontFactory.TIMES_ITALIC, 12, Font.ITALIC, Color.BLACK);
 	private Font fontTitle = FontFactory.getFont(FontFactory.TIMES_BOLD, 12, Font.BOLD, Color.BLACK);
 	private Font fontHeader = FontFactory.getFont(FontFactory.TIMES_BOLD, 14, Font.BOLD, Color.BLACK);
 
@@ -165,7 +165,8 @@ public class Eml2Rtf {
 		p.setAlignment(Element.ALIGN_JUSTIFIED);
 		p.setFont(font);
 		if(exists(eml.getMetadataLanguage())) {
-			VocabularyConcept vocabConcept = vocabManager.get(Constants.VOCAB_URI_LANGUAGE).findConcept(eml.getMetadataLanguage());
+			Vocabulary vocab = vocabManager.get(Constants.VOCAB_URI_LANGUAGE);
+			VocabularyConcept vocabConcept = vocab.findConcept(eml.getMetadataLanguage());
 			if(exists(vocabConcept)) {
 				p.add(new Phrase("Metadata language: ", fontTitle));
 				p.add(vocabConcept.getPreferredTerm("en").getTitle());				
@@ -465,7 +466,7 @@ public class Eml2Rtf {
 			p.add(new Phrase("General Taxonomic Coverage Description: ", fontTitle));
 			p.add(taxcoverage.getDescription());
 			p.add(Chunk.NEWLINE);
-			Map<String, String> ranks = vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, Locale.getDefault().toString(), false);
+			Map<String, String> ranks = vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, Locale.getDefault().getLanguage(), false);
 			boolean firstRank = true;
 			for (String rank : ranks.keySet()) {
 				boolean wroteRank = false;
