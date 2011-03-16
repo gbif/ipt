@@ -719,7 +719,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     OutputStream out;
     try {
       out = new FileOutputStream(rtfFile);
-      RtfWriter2 writer = RtfWriter2.getInstance(doc, out);
+      RtfWriter2.getInstance(doc, out);
       eml2Rtf.writeEmlIntoRtf(doc, resource);
       out.close();
     } catch (FileNotFoundException e) {
