@@ -47,7 +47,6 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.RequireManagerInterceptor;
-import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.Eml2Rtf;
 import org.gbif.ipt.task.GenerateDwca;
 import org.gbif.ipt.task.GenerateDwcaFactory;
@@ -78,9 +77,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -158,6 +157,16 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return canceled;
   }
 
+  public synchronized void closeWriter(Writer writer) {
+    if (writer != null) {
+      try {
+        writer.close();
+      } catch (IOException e) {
+        log.error(e);
+      }
+    }
+  }
+
   private Eml convertMetadataToEml(BasicMetadata metadata, ActionLogger alog) {
     Eml eml = null;
     if (metadata != null) {
@@ -201,6 +210,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
+   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#create(java.lang.String)
    */
   public Resource create(String shortname, User creator) throws AlreadyExistingException {
@@ -262,11 +272,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         }
         // finally persist the whole thing
         save(resource);
-        
+
         if (StringUtils.isBlank(resource.getCoreRowType())) {
-          alog.info("manage.resource.create.success.nocore", new String[]{""+resource.getSources().size(), ""+(resource.getMappings().size())});
+          alog.info("manage.resource.create.success.nocore", new String[]{
+              "" + resource.getSources().size(), "" + (resource.getMappings().size())});
         } else {
-          alog.info("manage.resource.create.success", new String[]{resource.getCoreRowType(), ""+resource.getSources().size(), ""+(resource.getMappings().size())});
+          alog.info("manage.resource.create.success", new String[]{
+              resource.getCoreRowType(), "" + resource.getSources().size(), "" + (resource.getMappings().size())});
         }
 
       } else {
@@ -377,6 +389,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
+   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#get(java.lang.String)
    */
   public Resource get(String shortname) {
@@ -394,6 +407,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
+   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#getResourceLink(java.lang.String)
    */
   public URL getResourceLink(String shortname) {
@@ -425,7 +439,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       if (ext.hasProperty(f.getTerm())) {
         fields.add(new PropertyMapping(f));
       } else {
-        alog.warn("manage.resource.create.mapping.concept.skip", new String[]{f.getTerm().qualifiedName(), ext.getRowType()});
+        alog.warn("manage.resource.create.mapping.concept.skip",
+            new String[]{f.getTerm().qualifiedName(), ext.getRowType()});
       }
     }
     map.setFields(fields);
@@ -441,8 +456,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // the number of rows was calculated using the standard file importer
     // make an adjustment now that the exact number of header rows are known
     if (s.getIgnoreHeaderLines() != 1) {
-      log.info("Adjusting row count to " + (s.getRows() + 1 - s.getIgnoreHeaderLines()) + " from " +
-                +s.getRows() + " since header count is declared as " + s.getIgnoreHeaderLines());
+      log.info("Adjusting row count to " + (s.getRows() + 1 - s.getIgnoreHeaderLines()) + " from " + +s.getRows()
+          + " since header count is declared as " + s.getIgnoreHeaderLines());
     }
     s.setRows(s.getRows() + 1 - s.getIgnoreHeaderLines());
 
@@ -454,6 +469,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * While doing so it checks the known futures for completion.
    * If completed the resource is updated with the status messages and the lock is removed.
    * (non-Javadoc)
+   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#isLocked(java.lang.String)
    */
   public boolean isLocked(String shortname) {
@@ -484,6 +500,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
+   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#latest(int, int)
    */
   public List<Resource> latest(int startPage, int pageSize) {
@@ -517,6 +534,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
+   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#list(org.gbif.ipt.model.voc.PublicationStatus)
    */
   public List<Resource> list(PublicationStatus status) {
@@ -531,6 +549,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
+   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#list(org.gbif.ipt.model.User)
    */
   public List<Resource> list(User user) {
@@ -573,6 +592,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
+   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#getEml(java.lang.String)
    */
   private Eml loadEml(Resource resource) {
@@ -642,6 +662,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           + " is currently locked by another process");
     }
 
+    // publish EML as well as RTF
     publishMetadata(resource, action);
 
     // regenerate dwca asynchronously
@@ -689,14 +710,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           + resource.getShortname(), e);
     }
     // publish also as RTF
-    // TODO publishing as RTF is not available until validation finish. 
-    //publishRtf(resource, alog);
+    publishRtf(resource, alog);
   }
 
   private void publishRtf(Resource resource, ActionLogger alog) {
-    // TODO: implement the rtf publishing
-    // comment out the following and add back in the Eml2Rtf class, injecting them into the constructor:
-    // http://code.google.com/p/gbif-providertoolkit/source/browse/trunk/gbif-ipt/src/main/java/org/gbif/ipt/task/Eml2Rtf.java?r=2990
     Document doc = new Document();
     File rtfFile = dataDir.resourceRtfFile(resource.getShortname());
     OutputStream out;
@@ -758,6 +775,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
+   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#register(org.gbif.ipt.model.Resource,
    * org.gbif.ipt.model.Organisation)
    */
@@ -774,6 +792,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
+   * 
    * @see org.gbif.ipt.task.ReportHandler#report(org.gbif.ipt.task.StatusReport)
    */
   public synchronized void report(String shortname, StatusReport report) {
@@ -781,39 +800,30 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   public synchronized void save(Resource resource) throws InvalidConfigException {
-	    File cfgFile = dataDir.resourceFile(resource, PERSISTENCE_FILE);
-	    Writer writer=null;
-	    try {
-	      // make sure resource dir exists
-	      FileUtils.forceMkdir(cfgFile.getParentFile());
-	      // persist data
-	      writer = org.gbif.ipt.utils.FileUtils.startNewUtf8File(cfgFile);
-	      xstream.toXML(resource, writer);
-	      // add to internal map
-	      addResource(resource);
-	    } catch (IOException e) {
-	      log.error(e);
-	      throw new InvalidConfigException(TYPE.CONFIG_WRITE, "Cant write mapping configuration");
-	    } finally {
-	      if (writer!=null) {
-	         	closeWriter(writer);
-	      }
-	      System.gc();
-	    }
-	  }
-  
-  public synchronized void closeWriter(Writer writer) {
-      if (writer!=null) {
-        try {
-          writer.close();
-        } catch (IOException e) {
-        	log.error(e);
-        }
+    File cfgFile = dataDir.resourceFile(resource, PERSISTENCE_FILE);
+    Writer writer = null;
+    try {
+      // make sure resource dir exists
+      FileUtils.forceMkdir(cfgFile.getParentFile());
+      // persist data
+      writer = org.gbif.ipt.utils.FileUtils.startNewUtf8File(cfgFile);
+      xstream.toXML(resource, writer);
+      // add to internal map
+      addResource(resource);
+    } catch (IOException e) {
+      log.error(e);
+      throw new InvalidConfigException(TYPE.CONFIG_WRITE, "Cant write mapping configuration");
+    } finally {
+      if (writer != null) {
+        closeWriter(writer);
       }
+      System.gc();
+    }
   }
 
   /*
    * (non-Javadoc)
+   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#save(java.lang.String, org.gbif.metadata.eml.Eml)
    */
   public synchronized void saveEml(Resource resource) throws InvalidConfigException {
@@ -901,6 +911,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
+   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#updateRegistration(org.gbif.ipt.model.Resource,
    * org.gbif.ipt.model.Organisation, org.gbif.ipt.model.Ipt)
    */
@@ -913,6 +924,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
+   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#unpublish(org.gbif.ipt.model.Resource)
    */
   public void visibilityToPrivate(Resource resource) throws InvalidConfigException {
@@ -926,6 +938,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /*
    * (non-Javadoc)
+   * 
    * @see org.gbif.ipt.service.manage.ResourceManager#publish(org.gbif.ipt.model.Resource,
    * org.gbif.ipt.model.voc.PublicationStatus)
    */
