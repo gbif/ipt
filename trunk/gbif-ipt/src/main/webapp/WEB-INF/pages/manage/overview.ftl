@@ -341,6 +341,7 @@ $(document).ready(function(){
           		  <tr><th><@s.text name="manage.overview.published.archive"/></th><td><a href="${baseURL}/archive.do?r=${resource.shortname}"><@s.text name="manage.overview.published.download"/></a>, ${resource.recordsPublished} <@s.text name="manage.overview.published.records"/> </td></tr>
 			  	 </#if>
           		 <tr><th><@s.text name="manage.overview.published.eml"/></th><td><a href="${baseURL}/eml.do?r=${resource.shortname}"><@s.text name="manage.overview.published.download"/></a> <a href="${baseURL}/resource.do?r=${resource.shortname}"><@s.text name="manage.overview.published.view"/></a></td></tr>
+			  	 <tr><th><@s.text name="portal.resource.published.rtf"/></th><td><a href="${baseURL}/rtf.do?r=${resource.shortname}"><@s.text name="manage.overview.published.download"/></a> </td></tr>
 			  	</#if>
       		</table>
       	</div>
