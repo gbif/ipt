@@ -202,8 +202,6 @@ When the Manage Resources page is first opened, it shows a table of existing res
 
 *Visibility* - a summary description of who has access to view the resource. If the resource is public, all users will be able to see it on the Public Resources table on the Home page, and this column will contain the value "Everyone". If the resource is private, it will be visible in the Manage Resources table only to the user who created it, to those who have been invited to manage it, and to users having the Admin role. In this case, the column will have a value of the form "You and n others", where n is the number of other users who have been invited to manage the resource. Details about inviting others to manage a resource are given in the "Resource Managers" section under the "Resource Overview" heading in the "Manage Resources" section.
 
-*Sorting* - The table is sortable by clicking the header. Upon the first click to the header, by default, a triangle will appear to indicate it is sorted in ascending order. Click again will sort it in descending order.
-
 ===Create New Resource===
 Below the Manage Resource table is a form that can be used to create a new resource. First, a unique "shortname" must be provided for the resource. This short name will be used to uniquely identify the resource within the IPT instance, and will be used within the URL to access the resource via the Internet. The shortname must be at least three characters in length, may contain alphanumeric characters, but must not contain white space or punctuation other than hyphens or underscores (e.g., "firstresource" or "first_resource", but not "first resource" or "firstresource!"). 
 
