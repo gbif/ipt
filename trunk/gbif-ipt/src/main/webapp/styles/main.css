@@ -552,6 +552,9 @@ table.sortable th{
 	text-decoration: underline;
 	padding-bottom: 10px;
 }
+table.sortable td{
+	font-size: small;
+}
 table.sortable tr{
 	background-color: #f1f1f1;
 }
