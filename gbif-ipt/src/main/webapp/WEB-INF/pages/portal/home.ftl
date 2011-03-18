@@ -19,9 +19,9 @@
 <p><@s.text name="portal.home.intro"/></p> 
 
 <#if (resources?size>0)>
-<table class="simple" width="100%">
+<table class="sortable" width="100%">
 	<tr>
-		<th><@s.text name="portal.home.logo"/></th>
+		<th class="sorttable_nosort"><@s.text name="portal.home.logo"/></th>
 		<th><@s.text name="portal.home.name"/></th>
 		<th><@s.text name="portal.home.organisation"/></th>
 		<th><@s.text name="portal.home.type"/></th>
