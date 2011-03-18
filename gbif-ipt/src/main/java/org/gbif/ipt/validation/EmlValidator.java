@@ -501,6 +501,14 @@ public class EmlValidator extends BaseValidator {
 				 *    </methods>
 				 * </dataset>				 
 				 */
+				int index = 0;
+				for(String method : eml.getMethodSteps()) {
+					if(method.trim().equals("")) {
+						action.addFieldError("eml.methodSteps["+index+"]", action.getText("validation.required", new String[] { action
+								.getText("validation.field.required") }));
+					}						
+					index++;
+				}
 
 			} else if (part == null || part.equalsIgnoreCase("citations")) {
 				/*
