@@ -461,12 +461,10 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 		  addMessage(Level.INFO, msg);
 	    }
         if(linesWithWrongColumnNumber==0){
-		  logWriter.write("No ines with less columns than mapped");
-		  logWriter.write("\n");
+		  logWriter.write("No lines with less columns than mapped\n");
 	    }
         if(recordsFiltered==0){
-  		  logWriter.write("All lines match the filter criteria");
-  		  logWriter.write("\n");
+  		  logWriter.write("All lines match the filter criteria\n");
   	    }
 	    logWriter.flush();
 	    logWriter.close();
