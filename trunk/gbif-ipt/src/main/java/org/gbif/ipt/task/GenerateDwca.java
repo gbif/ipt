@@ -6,8 +6,6 @@ import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveField.DataType;
 import org.gbif.dwc.text.ArchiveFile;
 import org.gbif.dwc.text.ArchiveWriter;
-import org.gbif.utils.file.ClosableIterator;
-import org.gbif.utils.file.CompressionUtil;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
@@ -15,6 +13,8 @@ import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.RecordFilter;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.manage.SourceManager;
+import org.gbif.utils.file.ClosableIterator;
+import org.gbif.utils.file.CompressionUtil;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -166,7 +166,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     FileUtils.copyFile(dataDir.resourceEmlFile(resource.getShortname(), null), new File(dwcaFolder, "eml.xml"));
     archive.setMetadataLocation("eml.xml");
     // final reporting
-    addMessage(Level.INFO, "EML file written");
+    addMessage(Level.INFO, "EML file added");
   }
 
   private ArchiveField buildField(ConceptTerm term, Integer column, String defaultValue) {
@@ -345,133 +345,135 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     ClosableIterator<String[]> iter = null;
     int line = 0;
     try {
-    	
-	    File logFile= dataDir.resourcePublicationLogFile(resource.getShortname());
-	    FileUtils.deleteQuietly(logFile);
-	    BufferedWriter logWriter = new BufferedWriter(new FileWriter(logFile));
-	    logWriter.write("Log Messages for publishing resouce "+resource.getShortname()+" version "+resource.getEmlVersion());
-	    logWriter.write("\n\n");
-	    
-	    try {
-	      iter = sourceManager.rowIterator(mapping.getSource());
-	      while (iter.hasNext()) {
-	        line++;
-	        if (line % 1000 == 0) {
-	          checkForInterruption(line);
-	          reportIfNeeded();
-	        }
-	        String[] in = iter.next();
-	        String inLine="[";
-	        for(int i=0;i<in.length;i++){
-	        	if(i==0){
-	        		inLine+=in[i];
-	        	}else{
-	        		inLine+="; "+in[i];
-	        	}
-	        }
-	        inLine+="]";
-	        if (in == null || in.length == 0) {
-	          continue;
-	        }      
-	        
-	        if (in.length <= maxColumnIndex) {
-	          logWriter.write("Line with less columns than mapped\tSource:"+mapping.getSource().getName()+"\tLine:"+line+in.length+"\tColumns:"+in.length+"\t"+inLine);
-	          logWriter.write("\n");
-	          // input row is smaller than the highest mapped column. Resize array by adding nulls
-	          String[] in2 = new String[maxColumnIndex + 1];
-	          System.arraycopy(in, 0, in2, 0, in.length);
-	          in = in2;
-	          linesWithWrongColumnNumber++;
-	        }
-	        // filter this record?
-	        if (filter != null && !filter.matches(in)) {
-	          logWriter.write("Line did not match the filter criteria and were skipped\tSource:"+mapping.getSource().getName()+"\tLine:"+line+in.length+"\t"+inLine);
-	          logWriter.write("\n");
-	          recordsFiltered++;
-	          continue;
-	        }
-	
-	        String[] record = new String[dataFileRowSize];
-	        // add id column - either an existing column or the line number
-	        if (mapping.getIdColumn() == null) {
-	          record[0] = null;
-	        } else if (mapping.getIdColumn().equals(ExtensionMapping.IDGEN_LINE_NUMBER)) {
-	          record[0] = String.valueOf(line) + idSuffix;
-	        } else if (mapping.getIdColumn().equals(ExtensionMapping.IDGEN_UUID)) {
-	          record[0] = UUID.randomUUID().toString();
-	        } else if (mapping.getIdColumn() >= 0) {
-	          record[0] = in[mapping.getIdColumn()] + idSuffix;
-	        }
-	        // go thru all archive fields
-	        for (int i = 1; i < inCols.length; i++) {
-	          PropertyMapping pm = inCols[i];
-	          String val = null;
-	          if (pm != null) {
-	            if (pm.getIndex() != null) {
-	              val = in[pm.getIndex()];
-	              // translate value?
-	              if (pm.getTranslation() != null && pm.getTranslation().containsKey(val)) {
-	                val = pm.getTranslation().get(val);
-	              }
-	              DataType type = mapping.getExtension().getProperty(pm.getTerm()).getType();
-	              if (type != null) {
-	                if (type == DataType.date) {
-	                  // TODO: parse date type with mapping datetime format
-	                } else if (type == DataType.bool) {
-	                  // TODO: parse date type with mapping boolean format
-	                } else if (type == DataType.decimal) {
-	                  // normalise punctuation
-	                }
-	              }
-	            }
-	            // use default value for null values
-	            if (val == null) {
-	              val = pm.getDefaultValue();
-	            }
-	          }
-	          // add value to data file record
-	          record[i] = val;
-	        }
-	        String newRow = tabRow(record);
-	        if (newRow != null) {
-	          writer.write(newRow);
-	          currRecords++;
-	        }
-	      }
-	      
-	    } catch (Exception e) {
-	      // some error writing this file, report
-	      log.error("Fatal DwC-A Generator Error", e);
-	      throw new GeneratorException("Error writing data file for mapping " + mapping.getExtension().getName()
-	          + " in source " + mapping.getSource().getName() + ", line " + line, e);
-	    } finally {
-	      iter.close();
-	    }
-	
-	    // add wrong lines user message
-	    if (linesWithWrongColumnNumber > 0) {
-	      String msg=linesWithWrongColumnNumber + " lines with less columns than mapped.";
-	      logWriter.write(msg+"\n");
-	      addMessage(Level.INFO, msg);
-	    }
-	    // add filter message
-	    if (recordsFiltered > 0) {
-		  String msg=recordsFiltered + " lines did not match the filter criteria and were skipped.";
-		  logWriter.write(msg+"\n");
-		  addMessage(Level.INFO, msg);
-	    }
-        if(linesWithWrongColumnNumber==0){
-		  logWriter.write("No lines with less columns than mapped\n");
-	    }
-        if(recordsFiltered==0){
-  		  logWriter.write("All lines match the filter criteria\n");
-  	    }
-	    logWriter.flush();
-	    logWriter.close();
+
+      File logFile = dataDir.resourcePublicationLogFile(resource.getShortname());
+      FileUtils.deleteQuietly(logFile);
+      BufferedWriter logWriter = new BufferedWriter(new FileWriter(logFile));
+      logWriter.write("Log Messages for publishing resouce " + resource.getShortname() + " version " + resource.getEmlVersion());
+      logWriter.write("\n\n");
+
+      try {
+        iter = sourceManager.rowIterator(mapping.getSource());
+        while (iter.hasNext()) {
+          line++;
+          if (line % 1000 == 0) {
+            checkForInterruption(line);
+            reportIfNeeded();
+          }
+          String[] in = iter.next();
+          String inLine = "[";
+          for (int i = 0; i < in.length; i++) {
+            if (i == 0) {
+              inLine += in[i];
+            } else {
+              inLine += "; " + in[i];
+            }
+          }
+          inLine += "]";
+          if (in == null || in.length == 0) {
+            continue;
+          }
+
+          if (in.length <= maxColumnIndex) {
+            logWriter.write("Line with less columns than mapped\tSource:" + mapping.getSource().getName() + "\tLine:" + line + in.length + "\tColumns:"
+                + in.length + "\t" + inLine);
+            logWriter.write("\n");
+            // input row is smaller than the highest mapped column. Resize array by adding nulls
+            String[] in2 = new String[maxColumnIndex + 1];
+            System.arraycopy(in, 0, in2, 0, in.length);
+            in = in2;
+            linesWithWrongColumnNumber++;
+          }
+          // filter this record?
+          if (filter != null && !filter.matches(in)) {
+            logWriter.write("Line did not match the filter criteria and were skipped\tSource:" + mapping.getSource().getName() + "\tLine:" + line + in.length
+                + "\t" + inLine);
+            logWriter.write("\n");
+            recordsFiltered++;
+            continue;
+          }
+
+          String[] record = new String[dataFileRowSize];
+          // add id column - either an existing column or the line number
+          if (mapping.getIdColumn() == null) {
+            record[0] = null;
+          } else if (mapping.getIdColumn().equals(ExtensionMapping.IDGEN_LINE_NUMBER)) {
+            record[0] = String.valueOf(line) + idSuffix;
+          } else if (mapping.getIdColumn().equals(ExtensionMapping.IDGEN_UUID)) {
+            record[0] = UUID.randomUUID().toString();
+          } else if (mapping.getIdColumn() >= 0) {
+            record[0] = in[mapping.getIdColumn()] + idSuffix;
+          }
+          // go thru all archive fields
+          for (int i = 1; i < inCols.length; i++) {
+            PropertyMapping pm = inCols[i];
+            String val = null;
+            if (pm != null) {
+              if (pm.getIndex() != null) {
+                val = in[pm.getIndex()];
+                // translate value?
+                if (pm.getTranslation() != null && pm.getTranslation().containsKey(val)) {
+                  val = pm.getTranslation().get(val);
+                }
+                DataType type = mapping.getExtension().getProperty(pm.getTerm()).getType();
+                if (type != null) {
+                  if (type == DataType.date) {
+                    // TODO: parse date type with mapping datetime format
+                  } else if (type == DataType.bool) {
+                    // TODO: parse date type with mapping boolean format
+                  } else if (type == DataType.decimal) {
+                    // normalise punctuation
+                  }
+                }
+              }
+              // use default value for null values
+              if (val == null) {
+                val = pm.getDefaultValue();
+              }
+            }
+            // add value to data file record
+            record[i] = val;
+          }
+          String newRow = tabRow(record);
+          if (newRow != null) {
+            writer.write(newRow);
+            currRecords++;
+          }
+        }
+
+      } catch (Exception e) {
+        // some error writing this file, report
+        log.error("Fatal DwC-A Generator Error", e);
+        throw new GeneratorException("Error writing data file for mapping " + mapping.getExtension().getName()
+            + " in source " + mapping.getSource().getName() + ", line " + line, e);
+      } finally {
+        iter.close();
+      }
+
+      // add wrong lines user message
+      if (linesWithWrongColumnNumber > 0) {
+        String msg = linesWithWrongColumnNumber + " lines with less columns than mapped.";
+        logWriter.write(msg + "\n");
+        addMessage(Level.INFO, msg);
+      }
+      // add filter message
+      if (recordsFiltered > 0) {
+        String msg = recordsFiltered + " lines did not match the filter criteria and were skipped.";
+        logWriter.write(msg + "\n");
+        addMessage(Level.INFO, msg);
+      }
+      if (linesWithWrongColumnNumber == 0) {
+        logWriter.write("No lines with less columns than mapped\n");
+      }
+      if (recordsFiltered == 0) {
+        logWriter.write("All lines match the filter criteria\n");
+      }
+      logWriter.flush();
+      logWriter.close();
 
     } catch (IOException e) {
-    	log.error("Log Generator Error", e);
-    	e.printStackTrace();
+      log.error("Log Generator Error", e);
+      e.printStackTrace();
     }
 
   }
