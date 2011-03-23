@@ -722,6 +722,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       RtfWriter2.getInstance(doc, out);
       eml2Rtf.writeEmlIntoRtf(doc, resource);
       out.close();
+      alog.info("RTF published successfully!");
     } catch (FileNotFoundException e) {
       alog.error("Cant find rtf file to write metadata to: " + rtfFile.getAbsolutePath(), e);
     } catch (DocumentException e) {
