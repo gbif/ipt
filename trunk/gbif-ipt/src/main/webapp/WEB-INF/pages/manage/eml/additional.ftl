@@ -2,32 +2,67 @@
 <#setting number_format="#####.##">
 <#include "/WEB-INF/pages/inc/header.ftl">
 <#include "/WEB-INF/pages/macros/metadata.ftl"/>
+<script type="text/javascript" src="${baseURL}/js/ajaxfileupload.js"></script>
 <title><@s.text name='manage.metadata.basic.title'/></title>
 <script type="text/javascript">
 	$(document).ready(function(){
 		initHelp();
-	});   
+		
+		$("#buttonUpload").click(function() {
+  			return ajaxFileUpload();
+		});
+        
+	});
+	
+	function ajaxFileUpload()
+    {
+        var logourl=$("#resourcelogo img").attr("src");
+        $.ajaxFileUpload
+        (
+            {
+                url:'uploadlogo.do', 
+                secureuri:false,
+                fileElementId:'file',
+                dataType: 'json',
+                success: function (data, status)
+                {
+                    if(typeof(data.error) != 'undefined')
+                    {
+                        if(data.error != '')
+                        {
+                            alert(data.error);
+                        }else
+                        {
+                            alert(data.msg);
+                        }
+                    }
+                },
+                error: function (data, status, e)
+                {
+                    alert(e);
+                }
+            }
+        )
+        if(logourl==undefined){
+        	var baseimg=$('#baseimg').clone();
+			baseimg.appendTo('#resourcelogo');
+			$("[id$='eml.logoUrl']").attr("value",$("#baseimg").attr("src"));
+        	$("#resourcelogo img").show('slow');
+        }else{
+         	logourl=logourl.split('&')[0];
+        	$("#resourcelogo img").hide().removeAttr("src").attr("src", logourl+"&t="+(new Date()).getTime()).show('slow');
+        }
+        return false;
+
+    }    
 </script>	
  <#assign sideMenuEml=true />
  <#assign currentMenu="manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <h1><@s.text name='manage.metadata.additional.title'/>: <a href="resource.do?r=${resource.shortname}"><em>${resource.title!resource.shortname}</em></a> </h1>
 <p><@s.text name='manage.metadata.additional.intro'/></p>
-<p><@s.text name='manage.metadata.additional.logo.intro'/></p>
-<#include "/WEB-INF/pages/macros/forms.ftl"/>
-  	  <div id="resourcelogo">
-		<#if resource.eml.logoUrl?has_content>
-			<img src="${resource.eml.logoUrl}" />
-		</#if>
-	  </div>
-	  <form id="uploadaction" action='uploadlogo.do' method='post' enctype="multipart/form-data">
-	    <input name="r" type="hidden" value="${resource.shortname}" />
-	    <input name="validate" type="hidden" value="false" />
-    	<@s.file name="file"/>    <@s.submit name="upload" key="button.upload"/>
-  	  </form>
-  	  <div class="newline"></div>
+<#include "/WEB-INF/pages/macros/forms.ftl"/>  	 
 <form class="topForm" action="metadata-${section}.do" method="post">
-	<@input name="eml.logoUrl" i18nkey="eml.logoUrl" help="i18n"/>
 	<div class="halfcolumn">
 	  	<@input name="eml.hierarchyLevel" i18nkey="eml.hierarchyLevel" help="i18n" disabled=true />
 	</div>
@@ -35,6 +70,29 @@
 	  	<@input date=true name="eml.pubDate" i18nkey="eml.pubDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD",  "MM/DD/YYYY":"MM/DD/YYYY"} />
 	</div>
 	<div class="newline"></div>
+	<div id="logofields">
+		<div class="halfcolumn">
+			<@input name="eml.logoUrl" i18nkey="eml.logoUrl" help="i18n"/>
+			<div style="padding-left: 20px;">
+			<div class="newline"></div>
+			<@s.file name="file"/>
+			<div class="newline"></div>
+			<button class="button" id="buttonUpload"><@s.text name="button.upload"/></button>
+			</div>
+		</div>
+		<div class="halfcolumn">
+			<div id="resourcelogo">
+				<div class="newline"></div>
+				<div class="newline"></div>
+				<div class="newline"></div>
+				<div class="newline"></div>
+				<#if resource.eml.logoUrl?has_content>
+					<img src="${resource.eml.logoUrl}" />
+				</#if>
+			</div>
+		</div>
+	</div>
+  	<div class="newline"></div>
   	<@text name="eml.purpose" i18nkey="eml.purpose" help="i18n"/>
   	<@text name="eml.intellectualRights" i18nkey="eml.intellectualRights" help="i18n"/>
   	<@text name="eml.additionalInfo" i18nkey="eml.additionalInfo"/>
@@ -63,7 +121,8 @@
  		<@s.submit cssClass="button" name="cancel" key="button.cancel"/>
   	</div>
   	<!-- internal parameter -->
-	<input name="r" type="hidden" value="${resource.shortname}" />
+	<input id="r" name="r" type="hidden" value="${resource.shortname}" />
+	<input id="validate" name="validate" type="hidden" value="false" />
 </form>
 <div id="baseItem" class="item" style="display:none;">
 	<div class="newline"></div>
@@ -75,5 +134,7 @@
 	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
 	<div class="newline"></div>
 </div>
+<img id="baseimg" src="${baseURL}/logo.do?r=${resource.shortname}" style="display:none;"/>
+<img id="loadingimg" src="${baseURL}/images/loading_indicator_bar.gif" style="display:none;"/>
 <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>
