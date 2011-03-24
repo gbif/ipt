@@ -289,7 +289,7 @@ public class SourceAction extends ManagerBaseAction {
       } catch (IOException e) {
         log.warn(e.getMessage());
       }
-      resource.getEml().setLogoUrl(cfg.getResourceLogoUrl(resource.getShortname()));
+      //resource.getEml().setLogoUrl(cfg.getResourceLogoUrl(resource.getShortname()));
     }
     return INPUT;
   }
