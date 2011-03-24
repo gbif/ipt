@@ -11,10 +11,8 @@
 		$("#buttonUpload").click(function() {
   			return ajaxFileUpload();
 		});
-        
-	});
-	
-	function ajaxFileUpload()
+		
+		function ajaxFileUpload()
     {
         var logourl=$("#resourcelogo img").attr("src");
         $.ajaxFileUpload
@@ -46,15 +44,26 @@
         if(logourl==undefined){
         	var baseimg=$('#baseimg').clone();
 			baseimg.appendTo('#resourcelogo');
-			$("[id$='eml.logoUrl']").attr("value",$("#baseimg").attr("src"));
-        	$("#resourcelogo img").show('slow');
+			logourl=$("#resourcelogo img").attr("src");
+			$("#resourcelogo img").hide('slow').removeAttr("src");
+			$("#resourcelogo img").show('slow', function() {
+    			$("[id$='eml.logoUrl']").attr("value",logourl);
+				$("#resourcelogo img").attr("src", logourl+"&t="+(new Date()).getTime());
+  			});			
         }else{
+        	$("#resourcelogo img").hide('slow').removeAttr("src");
          	logourl=logourl.split('&')[0];
-        	$("#resourcelogo img").hide().removeAttr("src").attr("src", logourl+"&t="+(new Date()).getTime()).show('slow');
+         	 $("#resourcelogo img").show('slow', function() {
+    			$("#resourcelogo img").attr("src", logourl+"&t="+(new Date()).getTime());
+  			});
         }
         return false;
 
     }    
+        
+	});
+	
+	
 </script>	
  <#assign sideMenuEml=true />
  <#assign currentMenu="manage"/>
