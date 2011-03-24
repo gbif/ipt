@@ -148,14 +148,15 @@ public class Eml2Rtf {
 		Paragraph p = new Paragraph();
 		p.setAlignment(Element.ALIGN_JUSTIFIED);
 		p.setFont(font);
-		
-		if(exists(eml.getBibliographicCitationSet()) && eml.getBibliographicCitationSet().getBibliographicCitations().size() > 0) {
+
+		if (exists(eml.getBibliographicCitationSet()) && eml.getBibliographicCitationSet().getBibliographicCitations().size() > 0) {
 			p.add(new Phrase("References", fontTitle));
 			p.add(Chunk.NEWLINE);
-		for(Citation citation : eml.getBibliographicCitationSet().getBibliographicCitations()) {
-			p.add(citation.getCitation());
-			p.add(Chunk.NEWLINE);
-		}}
+			for (Citation citation : eml.getBibliographicCitationSet().getBibliographicCitations()) {
+				p.add(citation.getCitation());
+				p.add(Chunk.NEWLINE);
+			}
+		}
 		doc.add(p);
 		p.clear();
 	}
@@ -164,37 +165,37 @@ public class Eml2Rtf {
 		Paragraph p = new Paragraph();
 		p.setAlignment(Element.ALIGN_JUSTIFIED);
 		p.setFont(font);
-		if(exists(eml.getMetadataLanguage())) {
+		if (exists(eml.getMetadataLanguage())) {
 			Vocabulary vocab = vocabManager.get(Constants.VOCAB_URI_LANGUAGE);
 			VocabularyConcept vocabConcept = vocab.findConcept(eml.getMetadataLanguage());
-			if(exists(vocabConcept)) {
+			if (exists(vocabConcept)) {
 				p.add(new Phrase("Metadata language: ", fontTitle));
-				p.add(vocabConcept.getPreferredTerm("en").getTitle());				
+				p.add(vocabConcept.getPreferredTerm("en").getTitle());
 			}
 			p.add(Chunk.NEWLINE);
 		}
-		if(exists(eml.getDateStamp())) {
+		if (exists(eml.getDateStamp())) {
 			p.add(new Phrase("Date of metadata creation: ", fontTitle));
 			SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-DD");
 			p.add(f.format(eml.getDateStamp()));
 			p.add(Chunk.NEWLINE);
 		}
-		if(exists(eml.getHierarchyLevel())) {
+		if (exists(eml.getHierarchyLevel())) {
 			p.add(new Phrase("Heirarchy level: ", fontTitle));
 			p.add(WordUtils.capitalizeFully(eml.getHierarchyLevel()));
 			p.add(Chunk.NEWLINE);
 		}
-		if(exists(eml.getMetadataLocale())) {
+		if (exists(eml.getMetadataLocale())) {
 			VocabularyConcept vocabConcept = vocabManager.get(Constants.VOCAB_URI_LANGUAGE).findConcept(eml.getMetadataLocale().getLanguage());
-			if(exists(vocabConcept)) {
+			if (exists(vocabConcept)) {
 				p.add(new Phrase("Locale: ", fontTitle));
-				p.add(vocabConcept.getPreferredTerm("en").getTitle());				
+				p.add(vocabConcept.getPreferredTerm("en").getTitle());
 			}
 			p.add(Chunk.NEWLINE);
 		}
 		doc.add(p);
 		p.clear();
-		
+
 	}
 
 	private void addDatasetDescriptions(Document doc, Eml eml) throws DocumentException {
@@ -228,7 +229,7 @@ public class Eml2Rtf {
 		p.add(f.format(eml.getPubDate()));
 		p.add(Chunk.NEWLINE);
 		VocabularyConcept vocabConcept = vocabManager.get(Constants.VOCAB_URI_LANGUAGE).findConcept(eml.getLanguage());
-		if(exists(vocabConcept)) {			
+		if (exists(vocabConcept)) {
 			p.add(new Phrase("Language: ", fontTitle));
 			p.add(vocabConcept.getPreferredTerm("en").getTitle());
 		} else {
@@ -346,7 +347,7 @@ public class Eml2Rtf {
 		}
 		p.add(new Phrase("Personnel: ", fontTitle));
 		if (exists(eml.getProject().getPersonnel().getFirstName())) {
-			p.add(eml.getProject().getPersonnel().getFirstName() + " ");
+			p.add(eml.getProject().getPersonnel().getFirstName() + " " + eml.getProject().getPersonnel().getLastName());
 		}
 		eml.getProject().getPersonnel().getLastName();
 		p.add(Chunk.NEWLINE);

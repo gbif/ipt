@@ -377,6 +377,9 @@ public class EmlValidator extends BaseValidator {
 						if (!exists(k.getScientificName())) {
 							action.addFieldError("eml.taxonomicCoverages[" + index + "].taxonKeywords[" + kw + "].scientificName", action.getText("validation.required",new String[]{action.getText("eml.taxonomicCoverages.taxonKeyword.scientificName")}));
 						}
+						if(!exists(k.getRank())) {
+							action.addFieldError("eml.taxonomicCoverages[" + index + "].taxonKeywords[" + kw + "].rank", action.getText("validation.required",new String[]{action.getText("eml.taxonomicCoverages.taxonKeyword.rank")}));							
+						}
 						kw++;
 					}
 					index++;
@@ -598,22 +601,7 @@ public class EmlValidator extends BaseValidator {
 			} else if (part == null || part.equalsIgnoreCase("physical")) {
 				/*
 				 * PHYSICAL.FTL - XML Schema Documentation
-				 * <metadata>
-				 *    <gbif>
-				 *       <collection>                                                                         - optional
-				 *          <parentCollectionIdentifier>{eml.parentCollectionId}</parentCollectionIdentifier> - mandatory
-				 *          <collectionIdentifier>{eml.collectionId}</collectionIdentifier>                   - mandatory
-				 *          <collectionName>{eml.collectionName}</collectionName>                             - mandatory
-				 *       </collection>
-				 *       <jgtiCuratorialUnit>                                                                 - optional - many
-				 *          <jgtiUnitType>{eml.jgtiCuratorialUnits[i].unitType}</jgtiUnitType>                - optional
-				 *             <jgtiUnits uncertaintyMeasure="{eml.jgtiCuratorialUnits[i].uncertaintyMeasure}">{eml.jgtiCuratorialUnits[i].rangeMean}</jgtiUnits> - mandatory (xs:integer) | <jgtiUnitRange> - mandatory |
-				 *             <beginRange>{eml.jgtiCuratorialUnits[i].rangeStart}</beginRange> - mandatory (xs:integer)                                                                   | It has to be only one of them. <jgtiUnits> or <jgtiUnitRange>.
-				 *             <endRange>{eml.jgtiCuratorialUnits[i].rangeEnd}</endRange>                                                                         - mandatory (xs:integer) |
-				 *          </jgtiUnitType>          
-				 *       </jgtiCuratorialUnit>
-				 *    </gbif>
-				 * </metadata>
+				 * 
 				 */
 				int index = 0;
 				for (PhysicalData pd : eml.getPhysicalData()) {
