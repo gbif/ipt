@@ -219,6 +219,16 @@ public class DataDir {
     }
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
   }
+  
+  public File resourceRtfFile(String resourceName, @Nullable Integer version) {
+	  String fn;
+	  if (version == null) {
+		  fn = resourceName+".rtf";
+	  } else {
+		  fn = resourceName+"-" + version + ".rtf";
+	  }
+	  return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
+  }
 
   public File resourceFile(Resource resource, String path) {
     if (resource == null) {
