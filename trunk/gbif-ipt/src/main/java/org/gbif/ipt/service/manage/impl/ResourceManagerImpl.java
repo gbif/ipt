@@ -711,6 +711,17 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
     // publish also as RTF
     publishRtf(resource, alog);
+    
+    // copy current rtf version.
+    File trunkRtfFile = dataDir.resourceRtfFile(resource.getShortname());
+    File versionedRtfFile = dataDir.resourceRtfFile(resource.getShortname(), version);
+    try {
+		FileUtils.copyFile(trunkRtfFile, versionedRtfFile);
+	} catch (IOException e) {
+		alog.error("Can't publish resource " + resource.getShortname() + "as RTF", e);
+		throw new PublicationException(PublicationException.TYPE.EML, "Can't publish rtf file for resource "
+				+ resource.getShortname(), e);		
+	}
   }
 
   private void publishRtf(Resource resource, ActionLogger alog) {
