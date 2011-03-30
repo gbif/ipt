@@ -40,7 +40,8 @@ public class VocabularyFactoryTest {
   @Test
   public void testBuild() {
     try {
-      Vocabulary tv = getFactory().build(VocabularyFactoryTest.class.getResourceAsStream("/thesauri/type-vocabulary.xml"));
+      Vocabulary tv = getFactory().build(
+          VocabularyFactoryTest.class.getResourceAsStream("/thesauri/type-vocabulary.xml"));
       assertEquals("Dublin Core Type Vocabulary", tv.getTitle());
       assertEquals("http://dublincore.org/documents/dcmi-type-vocabulary/", tv.getUri());
       assertEquals(
@@ -70,9 +71,17 @@ public class VocabularyFactoryTest {
       assertEquals(2, tc.getPreferredTerms().size());
       assertEquals(0, tc.getAlternativeTerms().size());
       assertEquals(2, tc.getTerms().size());
+
+      // previously there was an assertion that caused IPT to fail when built with Java 5
+      // Java 5 - term that comes off iterator 1st is de
+      // Java 6 - term that comes off iterator 1st is en
       VocabularyTerm tt = tc.getTerms().iterator().next();
-      assertEquals("en", tt.getLang());
-      assertEquals("Collection", tt.getTitle());
+      if (tt.getLang().equals("en")) {
+        assertEquals("Collection", tt.getTitle());
+      } else {
+        assertEquals("de", tt.getLang());
+        assertEquals("Sammlung", tt.getTitle());
+      }
 
     } catch (Exception e) {
       e.printStackTrace();
