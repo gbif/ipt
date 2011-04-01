@@ -43,7 +43,7 @@
     <commons-digester.version>2.0</commons-digester.version>
     <commons-lang.version>2.5</commons-lang.version>
     <commons-io.version>1.4</commons-io.version>
-    <dwca-reader.version>1.7.5</dwca-reader.version>
+    <dwca-reader.version>1.7.6</dwca-reader.version>
     <freemarker.version>2.3.16</freemarker.version>
     <gbif-common.version>0.1</gbif-common.version>
     <guava.version>r08</guava.version>

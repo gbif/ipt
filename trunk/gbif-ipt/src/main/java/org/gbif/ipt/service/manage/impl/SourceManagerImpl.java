@@ -40,7 +40,9 @@ import com.google.inject.internal.Nullable;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.xwork.StringUtils;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -290,22 +292,41 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     if (source instanceof FileSource) {
       FileSource fs = (FileSource) source;
       try {
+    	 CSVReader reader = fs.getReader();
         fs.setFileSize(fs.getFile().length());
-        CSVReader reader = fs.getReader();
         fs.setColumns(reader.header.length);
-        int rows = 0;
         while (reader.hasNext()) {
           reader.next();
-          rows++;
         }
-        fs.setRows(rows);
+        fs.setRows(reader.getReadRows());
         fs.setReadable(true);
+        
+        File logFile= dataDir.sourceLogFile(source.getResource().getShortname(), source.getName()) ;
+        FileUtils.deleteQuietly(logFile);
+        try {
+        	BufferedWriter logWriter = new BufferedWriter(new FileWriter(logFile));
+        	logWriter.write("Log for source name:"+ source.getName()+" from resource: "+source.getResource().getShortname()+"\n");
+	        if(reader.getEmptyLines().size()>0){
+	        	for(Integer i: reader.getEmptyLines()){
+	        		logWriter.write("Line: "+i+" [EMPTY LINE]\n");
+	        	}
+        	}else{
+        		logWriter.write("No rows were skipped in this source");
+        	}
+	        logWriter.flush();
+	        logWriter.close();
+        } catch (IOException e) {
+        	log.warn("Cant write source log file " + logFile.getAbsolutePath(), e);
+        	e.printStackTrace();
+        }
       } catch (IOException e) {
         problem = e.getMessage();
         log.warn("Cant read source file " + fs.getFile().getAbsolutePath(), e);
         fs.setReadable(false);
         fs.setRows(-1);
       }
+      
+      
     } else {
       SqlSource ss = (SqlSource) source;
       try {

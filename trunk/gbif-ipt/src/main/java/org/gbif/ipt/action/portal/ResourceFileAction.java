@@ -7,6 +7,7 @@ import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.Source;
 import org.gbif.ipt.service.manage.ResourceManager;
 
 import com.google.inject.Inject;
@@ -28,8 +29,10 @@ public class ResourceFileAction extends BaseAction {
   @Inject
   protected ResourceManager resourceManager;
   protected String r;
+  protected String s;
   protected Integer version;
   protected Resource resource;
+  protected Source source;
   private InputStream inputStream;
   protected File data;
   protected String mimeType = "text/plain";
@@ -126,10 +129,22 @@ public class ResourceFileAction extends BaseAction {
 	    }
 	    return execute();
   }
+  
+  public String sourceLog() {
+    	data = dataDir.sourceLogFile(resource.getShortname(), source.getName()) ;
+    	if (data.exists()) {
+	        mimeType = "text/log" ;
+	        filename = source.getName()+".log";
+	    }else{
+	      return NOT_FOUND;
+	    }
+	    return execute();
+  }
 
   @Override
   public void prepare() {
     r = StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_RESOURCE));
+    s = StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_SOURCE));
     if (r == null) {
       // try session instead
       try {
@@ -139,6 +154,7 @@ public class ResourceFileAction extends BaseAction {
       }
     }
     resource = resourceManager.get(r);
+    source = resource.getSource(s);
   }
 
   public String rtf() {
