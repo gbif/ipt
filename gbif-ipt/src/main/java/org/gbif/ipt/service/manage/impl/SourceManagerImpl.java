@@ -53,6 +53,7 @@ import java.sql.SQLWarning;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -307,7 +308,9 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         	BufferedWriter logWriter = new BufferedWriter(new FileWriter(logFile));
         	logWriter.write("Log for source name:"+ source.getName()+" from resource: "+source.getResource().getShortname()+"\n");
 	        if(reader.getEmptyLines().size()>0){
-	        	for(Integer i: reader.getEmptyLines()){
+	        	List<Integer> emptyLines=new ArrayList<Integer>(reader.getEmptyLines());
+	        	Collections.sort(emptyLines);
+	        	for(Integer i: emptyLines){
 	        		logWriter.write("Line: "+i+" [EMPTY LINE]\n");
 	        	}
         	}else{
@@ -317,7 +320,6 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
 	        logWriter.close();
         } catch (IOException e) {
         	log.warn("Cant write source log file " + logFile.getAbsolutePath(), e);
-        	e.printStackTrace();
         }
       } catch (IOException e) {
         problem = e.getMessage();
