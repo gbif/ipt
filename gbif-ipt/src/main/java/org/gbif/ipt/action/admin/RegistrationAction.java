@@ -8,6 +8,7 @@ import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.RegistryException;
+import org.gbif.ipt.service.RegistryException.TYPE;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.validation.IptValidator;
@@ -17,6 +18,7 @@ import com.google.inject.Inject;
 import com.google.inject.servlet.SessionScoped;
 
 import java.io.IOException;
+import java.net.Proxy.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -160,7 +162,14 @@ public class RegistrationAction extends POSTAction {
       try {
         orgSession.load();
       } catch (RegistryException e) {
-        String msg = getText("admin.registration.error.registry");
+    	  String msg = getText("admin.registration.error.registry");
+    	  if(e.getType() == TYPE.PROXY) {
+    		  msg = getText("admin.registration.error.proxy");
+    	  } else if(e.getType() == TYPE.SITE_DOWN) {
+    		  msg = getText("admin.registration.error.siteDown");    		  
+    	  } else if(e.getType() == TYPE.NO_INTERNET) {
+    		  msg = getText("admin.registration.error.internetConnection");    		  
+    	  }
         log.error(msg, e);
         addActionError(msg);
       }

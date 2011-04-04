@@ -33,6 +33,9 @@ import org.xml.sax.SAXException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.ConnectException;
+import java.net.URISyntaxException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -227,7 +230,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    */
   public List<Organisation> getOrganisations() throws RegistryException {
     try {
-      Response resp = http.get(getOrganisationsURL(true));
+      Response resp = http.get(getOrganisationsURL(true)); 
       if (resp.content != null) {
         List<Map<String, String>> organisationsTemp = gson.fromJson(resp.content,
             new TypeToken<List<Map<String, String>>>() {
@@ -259,6 +262,18 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       }
     } catch (ClassCastException e) {
       throw new RegistryException(TYPE.BAD_RESPONSE, e);
+    } catch (ConnectException e) {
+    	// This normally happend when a time out appear. Probably is a problem of firewall or proxy.
+    	throw new RegistryException(TYPE.PROXY, e);
+    } catch (UnknownHostException e) {
+    	try {
+    		// if server can not connect to google. Probably the internet connection is not active.
+			http.get("http://www.google.com");
+		} catch (Exception e1) {
+			throw new RegistryException(TYPE.NO_INTERNET, e);			
+		}
+		// if server could connect to google. Probably GBIF Registry page is down.
+		throw new RegistryException(TYPE.SITE_DOWN, e);			
     } catch (IOException e) {
       throw new RegistryException(TYPE.IO_ERROR, e);
     } catch (Exception e) {
