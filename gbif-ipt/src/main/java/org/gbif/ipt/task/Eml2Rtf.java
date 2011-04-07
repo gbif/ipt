@@ -63,7 +63,7 @@ import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
 
 /**
- * Populates a RTF document with a resources metadata, mainly derived from its EML. TODO: add more eml metadata TODO: implement internationalisation.
+ * Populates a RTF document with a resources metadata, mainly derived from its EML. TODO: implement internationalisation.
  * 
  * @author markus
  * @author htobon
@@ -115,7 +115,6 @@ public class Eml2Rtf {
 			}
 		}
 		doc.addKeywords(keys);
-		doc.add(new Header("inspired by", "William Shakespeare"));
 		// write proper doc
 		doc.open();
 		// title
@@ -123,7 +122,7 @@ public class Eml2Rtf {
 		doc.add(Chunk.NEWLINE);
 		// Authors, affiliations and corresponging authors
 		addAuthors(doc, eml);
-		// Received, Revised, Accepted, and ‘published’ dates
+		// Received, Revised, Accepted, and published dates
 		/* These are to be manually inserted by the Publisher of the Data Paper 
 		 * to indicate the dates of original manuscript submission, revised manuscript 
 		 * submission, acceptance of manuscript and publishing of the manuscript 
@@ -563,25 +562,27 @@ public class Eml2Rtf {
 		p.setAlignment(Element.ALIGN_CENTER);
 		ArrayList<Agent> affiliations = new ArrayList<Agent>();
 		for (int c = 0; c < agents.length; c++) {
-			if (c != 0)
-				p.add(", ");
-			// First Name and Last Name
-			if (exists(agents[c].getFirstName())) {
-				p.add(agents[c].getFirstName() + " ");
-			}
-			p.add(agents[c].getLastName());
-			// Looking for addresses of other authors (superscripts should not be repeated).
-			int index = 0;
-			while (index < c) {
-				if (agents[c].getAddress().equals(agents[index].getAddress())) {
-					p.add(createSuperScript("" + (index + 1)));
-					break;
+			if (exists(agents[c].getLastName())) {
+				if (c != 0)
+					p.add(", ");
+				// First Name and Last Name
+				if (exists(agents[c].getFirstName())) {
+					p.add(agents[c].getFirstName() + " ");
 				}
-				index++;
-			}
-			if (index == c) {
-				p.add(createSuperScript("" + (index + 1)));
-				affiliations.add(agents[c]);
+				p.add(agents[c].getLastName());
+				// Looking for addresses of other authors (superscripts should not be repeated).
+				int index = 0;
+				while (index < c) {
+					if (agents[c].getAddress().equals(agents[index].getAddress())) {
+						p.add(createSuperScript("" + (index + 1)));
+						break;
+					}
+					index++;
+				}
+				if (index == c) {
+					p.add(createSuperScript("" + (index + 1)));
+					affiliations.add(agents[c]);
+				}
 			}
 		}
 		doc.add(p);
@@ -633,15 +634,19 @@ public class Eml2Rtf {
 			isFirst = false;
 		}
 		if (exists(eml.getMetadataProvider())) {
+			boolean sameAsCreator = false;
 			if (!isFirst) {
+				sameAsCreator = eml.getMetadataProvider().getAddress().equals(eml.getResourceCreator().getAddress());
 				p.add(", ");
 			}
-			if (exists(eml.getMetadataProvider().getFirstName())) {
-				p.add(eml.getMetadataProvider().getFirstName() + " ");
-			}
-			p.add(eml.getMetadataProvider().getLastName());
-			if (exists(eml.getMetadataProvider().getEmail())) {
-				p.add(" (" + eml.getMetadataProvider().getEmail() + ")");
+			if (!sameAsCreator) {
+				if (exists(eml.getMetadataProvider().getFirstName())) {
+					p.add(eml.getMetadataProvider().getFirstName() + " ");
+				}
+				p.add(eml.getMetadataProvider().getLastName());
+				if (exists(eml.getMetadataProvider().getEmail())) {
+					p.add(" (" + eml.getMetadataProvider().getEmail() + ")");
+				}
 			}
 		}
 		p.add(Chunk.NEWLINE);
