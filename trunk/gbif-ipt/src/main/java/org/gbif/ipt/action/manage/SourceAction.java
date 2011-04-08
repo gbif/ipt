@@ -271,6 +271,10 @@ public class SourceAction extends ManagerBaseAction {
   public void setSource(Source source) {
     this.source = source;
   }
+  
+  public boolean getLogExists(){
+	  return dataDir.sourceLogFile(resource.getShortname(), source.getName()).exists();
+  }
 
   public String uploadLogo() {
     if (file != null) {
