@@ -3,6 +3,23 @@
  */
 package org.gbif.ipt.service.admin.impl;
 
+import java.io.EOFException;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Reader;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
+
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Resource;
@@ -12,8 +29,8 @@ import org.gbif.ipt.model.converter.PasswordConverter;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.DeletionNotAllowedException;
-import org.gbif.ipt.service.DeletionNotAllowedException.Reason;
 import org.gbif.ipt.service.InvalidConfigException;
+import org.gbif.ipt.service.DeletionNotAllowedException.Reason;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -22,21 +39,6 @@ import org.gbif.ipt.utils.FileUtils;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.xstream.XStream;
-
-import java.io.EOFException;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Reader;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 /**
  * 
@@ -49,7 +51,7 @@ import java.util.TreeMap;
 public class UserAccountManagerImpl extends BaseManager implements UserAccountManager {
   public static final String PERSISTENCE_FILE = "users.xml";
   public static final String ALGORITHM = "MD5";
-  private SortedMap<String, User> users = new TreeMap<String, User>();
+  private Map<String, User> users = new LinkedHashMap<String, User>();
   private boolean allowSimplifiedAdminLogin = true;
   private String onlyAdminEmail;
   private final XStream xstream = new XStream();
@@ -64,7 +66,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
  public void setSetupUser(User setupUser) {
 	this.setupUser = setupUser;
   }
-
+ 
   @Inject
   public UserAccountManagerImpl(AppConfig cfg, DataDir dataDir, ResourceManager resourceManager,
       PasswordConverter passwordConverter) {
@@ -198,7 +200,13 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
   }
 
   public List<User> list() {
-    return new ArrayList<User>(users.values());
+	  ArrayList<User> userList = new ArrayList<User>(users.values());
+	  Collections.sort(userList, new Comparator<User>() {
+		public int compare(User o1, User o2) {
+			return (o1.getFirstname()+" "+o1.getLastname()).compareTo(o2.getFirstname()+" "+o2.getLastname());
+		}		  
+	  });
+	  return userList;
   }
 
   public List<User> list(Role role) {
