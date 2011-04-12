@@ -12,6 +12,7 @@ import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.model.VocabularyConcept;
 import org.gbif.ipt.model.VocabularyTerm;
 import org.gbif.ipt.model.factory.VocabularyFactory;
+import org.gbif.ipt.model.UpdateResult;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.DeletionNotAllowedException.Reason;
@@ -62,14 +63,6 @@ import javax.xml.parsers.ParserConfigurationException;
  */
 @Singleton
 public class VocabulariesManagerImpl extends BaseManager implements VocabulariesManager {
-  public class UpdateResult {
-    // key=uri
-    public Set<String> updated = new HashSet<String>();
-    // key=uri
-    public Set<String> unchanged = new HashSet<String>();
-    // key=uri, value=error text
-    public Map<String, String> errors = new HashMap<String, String>();
-  }
 
   private Map<URL, Vocabulary> vocabularies = new HashMap<URL, Vocabulary>();
   private Map<String, URL> uri2url = new HashMap<String, URL>();
