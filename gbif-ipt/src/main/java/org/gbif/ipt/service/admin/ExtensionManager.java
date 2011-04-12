@@ -7,6 +7,7 @@ import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.impl.ExtensionManagerImpl;
+import org.gbif.ipt.model.UpdateResult;
 
 import com.google.inject.ImplementedBy;
 
@@ -87,5 +88,7 @@ public interface ExtensionManager {
   public List<Extension> search(String keyword);
 
   public void installCoreTypes();
+  
+  public UpdateResult updateAll();
 
 }
