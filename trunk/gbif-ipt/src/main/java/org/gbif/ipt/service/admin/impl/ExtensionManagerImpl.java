@@ -10,7 +10,6 @@ import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.factory.ExtensionFactory;
-import org.gbif.ipt.model.UpdateResult;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.DeletionNotAllowedException.Reason;
@@ -27,7 +26,6 @@ import com.google.inject.Singleton;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
-import org.apache.commons.io.comparator.SizeFileComparator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.xml.sax.SAXException;
@@ -42,10 +40,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -75,14 +71,14 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
       this.registryManager = registryManager;
     }
 
-    private boolean isLoaded() {
+    public boolean isLoaded() {
         if (extensions.size() > 0) {
           return true;
         }
         return false;
       }
     
-    private void load() throws RuntimeException {
+    public void load() throws RuntimeException {
       extensions = registryManager.getExtensions();
     }
     
@@ -101,7 +97,6 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     }
     
     public List<Extension> getExtensions() {
-        if(!isLoaded())load();
     	return extensions;
     }
   }
@@ -314,69 +309,5 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
 				  log.debug(e);
 			  }	
 	  }
-  }
-  
-  
-  public UpdateResult updateAll(){
-	    UpdateResult result = new UpdateResult();
-	    System.out.println(registered.getExtensions().size());
-	    for(Extension ext :registered.getExtensions()){
-	    	if(list().contains(ext)){
-    		try {
-	    	   for (Resource r : resourceManager.list()) {
-	    	       if (!r.getMappings(ext.getRowType()).isEmpty()) {
-	    	         String msg = "Extension mapped in resource " + r.getShortname();
-	    	         log.warn(msg);
-						throw new DeletionNotAllowedException(Reason.EXTENSION_MAPPED, msg);
-	    	       }
-	    	   }
-	    		URL url=ext.getUrl();
-	    	    Extension ext2;
-	    	    ext2 = null;
-	    	    // download extension into local file first for subsequent IPT startups
-	    	    // final filename is based on rowType which we dont know yet - create a tmp file first
-	    	    File tmpFile = dataDir.configFile(CONFIG_FOLDER + "/tmp-extension.xml");
-	    	    try {
-	    	      downloader.download(url, tmpFile);
-	    	      log.info("Successfully downloaded Extension " + url);
-	    	      // finally read in the new file and create the extension object
-	    	      ext2 = loadFromFile(tmpFile);
-	    	      if (ext2 != null && ext2.getRowType() != null) {
-	    	        // rename tmp file into final version
-	    	        File localFile = getExtensionFile(ext2.getRowType());
-	    	        SizeFileComparator comparator =new SizeFileComparator();
-	    	        if(comparator.compare(tmpFile, localFile)!=0){
-	    	        	localFile.delete();
-	    	        	FileUtils.moveFile(tmpFile, localFile);
-	    	        	result.updated.add(ext2.getRowType());
-	    	        }else{
-	    	        	result.unchanged.add(ext.getRowType());
-	    	        }
-	    	        System.out.println("ext "+ext2.getRowType() );
-	    	      } else {
-	    	    	String msg="Extension lacking required rowType!";
-	    	        log.error(msg);
-	    	        result.errors.put(ext.getRowType(),msg);
-	    	        result.unchanged.add(ext.getRowType());
-	    	      }
-	    	    } catch (InvalidConfigException e) {
-	    	      result.errors.put(ext.getRowType(), e.getMessage());
-	    	      result.unchanged.add(ext.getRowType());
-	    	      throw e;
-	    	    } catch (Exception e) {
-	    	      e.printStackTrace();
-	    	      log.error(e);
-	    	      result.errors.put(ext.getRowType(), e.getMessage());
-	    	      result.unchanged.add(ext.getRowType());
-	    	      throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Error installing extension " + url, e);
-	    	    }
-	    	  
-    		} catch (DeletionNotAllowedException e) {
-    			 result.unchanged.add(ext.getRowType());
-    			 log.warn(e);
-    		}
-	    	}
-	    }
-	    return result;
   }
 }
