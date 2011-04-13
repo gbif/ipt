@@ -6,10 +6,10 @@ package org.gbif.ipt.action.admin;
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Vocabulary;
-import org.gbif.ipt.model.UpdateResult;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl.UpdateResult;
 import org.gbif.ipt.service.registry.RegistryManager;
 
 import com.google.inject.Inject;
@@ -108,17 +108,7 @@ public class ExtensionsAction extends POSTAction {
 
   public String list() {
     if (updateVocabs) {
-      UpdateResult result = extensionManager.updateAll();
-      addActionMessage(getText("admin.extensions.updated", new String[]{result.updated.size() + ""}));
-      addActionMessage(getText("admin.extensions.unchanged", new String[]{result.unchanged.size() + ""}));
-      if (!result.errors.isEmpty()) {
-        addActionWarning(getText("admin.extensions.errors", new String[]{result.errors.size() + ""}));
-        for (Entry<String, String> err : result.errors.entrySet()) {
-          addActionError(getText("admin.extensions.error.updating", new String[]{err.getKey(),err.getValue()}));
-        }
-      }
-      
-      result = vocabManager.updateAll();
+      UpdateResult result = vocabManager.updateAll();
       addActionMessage(getText("admin.extensions.vocabularies.updated", new String[]{result.updated.size() + ""}));
       addActionMessage(getText("admin.extensions.vocabularies.unchanged", new String[]{result.unchanged.size() + ""}));
       if (!result.errors.isEmpty()) {

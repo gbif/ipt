@@ -6,7 +6,7 @@ package org.gbif.ipt.service.admin;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
-import org.gbif.ipt.model.UpdateResult;
+import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl.UpdateResult;
 
 import com.google.inject.ImplementedBy;
 
