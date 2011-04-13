@@ -322,6 +322,14 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
 	    System.out.println(registered.getExtensions().size());
 	    for(Extension ext :registered.getExtensions()){
 	    	if(list().contains(ext)){
+    		try {
+	    	   for (Resource r : resourceManager.list()) {
+	    	       if (!r.getMappings(ext.getRowType()).isEmpty()) {
+	    	         String msg = "Extension mapped in resource " + r.getShortname();
+	    	         log.warn(msg);
+						throw new DeletionNotAllowedException(Reason.EXTENSION_MAPPED, msg);
+	    	       }
+	    	   }
 	    		URL url=ext.getUrl();
 	    	    Extension ext2;
 	    	    ext2 = null;
@@ -363,6 +371,10 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
 	    	      throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Error installing extension " + url, e);
 	    	    }
 	    	  
+    		} catch (DeletionNotAllowedException e) {
+    			 result.unchanged.add(ext.getRowType());
+    			 log.warn(e);
+    		}
 	    	}
 	    }
 	    return result;
