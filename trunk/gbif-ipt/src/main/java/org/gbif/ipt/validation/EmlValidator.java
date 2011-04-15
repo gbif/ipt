@@ -527,6 +527,10 @@ public class EmlValidator extends BaseValidator {
 				 *    </metadata>
 				 * </additionalMetadata>
 				 */
+				if(!eml.getCitation().getIdentifier().equals("") && !exists(eml.getCitation().getIdentifier())) {				
+					action.addFieldError("eml.citation.identifier", action.getText("validation.required", new String[] {action.getText("eml.citation.identifier")}));
+				}
+				
 				if(exists(eml.getCitation().getIdentifier()) && !exists(eml.getCitation().getCitation())) {
 					action.addFieldError("eml.citation.citation", action.getText("validation.required", new String[] {action.getText("eml.citation.citation")}));
 				}
