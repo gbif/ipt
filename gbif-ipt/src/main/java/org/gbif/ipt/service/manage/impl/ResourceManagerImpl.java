@@ -299,7 +299,26 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   private Resource createFromEml(String shortname, File emlFile, User creator, ActionLogger alog)
       throws AlreadyExistingException, ImportException {
-    Eml eml = readMetadata(emlFile, alog);
+    //Eml eml = readMetadata(emlFile, alog);
+
+	  File emlFile2 = dataDir.resourceEmlFile(shortname, null);
+      try {
+		FileUtils.copyFile(emlFile, emlFile2);
+      } catch (IOException e1) {
+		log.error("Unnable to copy EML FIle",e1);
+      }
+      Eml eml = null;
+      try {
+    	InputStream in = new FileInputStream(emlFile2);
+        eml = EmlFactory.build(in);
+      } catch (FileNotFoundException e) {
+        eml = new Eml();
+      } catch (IOException e) {
+    	log.error(e);
+      } catch (SAXException e) {
+        log.error("Invalid EML document", e);
+      }    
+    
     if (eml != null) {
       // create resource with imorted metadata
       Resource resource = create(shortname, creator);
