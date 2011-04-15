@@ -38,7 +38,7 @@ public abstract class BaseValidator {
   }
 
   protected boolean exists(String x, int minLength) {
-    return x != null && x.length() >= minLength;
+    return x != null && x.trim().length() >= minLength;
   }
 
   protected boolean isValidEmail(String email) {
