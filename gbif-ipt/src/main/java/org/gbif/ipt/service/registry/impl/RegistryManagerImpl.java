@@ -403,8 +403,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     data.add(new BasicNameValuePair("organisationKey", StringUtils.trimToEmpty(org.getKey().toString())));
     data.add(new BasicNameValuePair("name", StringUtils.trimToEmpty(ipt.getName()))); // name
     data.add(new BasicNameValuePair("description", StringUtils.trimToEmpty(ipt.getDescription()))); // description
-    // TODO: what is this wsPassword for when registering a new IPT ?
-    // data.add(new BasicNameValuePair("wsPassword", StringUtils.trimToEmpty(ipt.getWsPassword()))); // description
+    //IPT password used for updating the IPT's own metadata & issuing atomic updateURL operations
+    data.add(new BasicNameValuePair("wsPassword", StringUtils.trimToEmpty(ipt.getWsPassword()))); // IPT instance password
     data.add(new BasicNameValuePair("primaryContactType", ipt.getPrimaryContactType()));
     data.add(new BasicNameValuePair("primaryContactName", StringUtils.trimToEmpty(ipt.getPrimaryContactName())));
     data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(ipt.getPrimaryContactEmail())));
