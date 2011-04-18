@@ -33,6 +33,7 @@ import com.google.inject.Inject;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -62,7 +63,6 @@ public class MetadataAction extends ManagerBaseAction {
    * @return a map of countries
    */
   public Map<String, String> getCountries() {
-    countries.put("", getText("eml.country.selection"));
     return countries;
   }
 
@@ -94,7 +94,6 @@ public class MetadataAction extends ManagerBaseAction {
    * @return a map of preservation methods
    */
   public Map<String, String> getPreservationMethods() {
-    preservationMethods.put("", getText("eml.preservation.methods.selection"));
     return preservationMethods;
   }
 
@@ -102,7 +101,6 @@ public class MetadataAction extends ManagerBaseAction {
    * @return a map of Ranks
    */
   public Map<String, String> getRanks() {
-    ranks.put("", getText("eml.rank.selection"));
     return ranks;
   }
 
@@ -116,7 +114,6 @@ public class MetadataAction extends ManagerBaseAction {
   }
 
   public Map<String, String> getRoles() {
-	roles.put("", getText("eml.agent.role.selection"));
     return roles;
   }
 
@@ -145,10 +142,18 @@ public class MetadataAction extends ManagerBaseAction {
     }
     resourceTypes = vocabManager.getI18nVocab(Constants.VOCAB_URI_RESOURCE_TYPE, getLocaleLanguage(), true);
     languages = vocabManager.getI18nVocab(Constants.VOCAB_URI_LANGUAGE, getLocaleLanguage(), true);
-    countries = vocabManager.getI18nVocab(Constants.VOCAB_URI_COUNTRY, getLocaleLanguage(), true);
-    ranks = vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, getLocaleLanguage(), false);
-    roles = vocabManager.getI18nVocab(Constants.VOCAB_URI_ROLES, getLocaleLanguage(), false);
-    preservationMethods = vocabManager.getI18nVocab(Constants.VOCAB_URI_PRESERVATION_METHOD, getLocaleLanguage(), false);
+    countries = new LinkedHashMap<String, String>();
+    countries.put("", getText("eml.country.selection"));
+    countries.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_COUNTRY, getLocaleLanguage(), true));
+    ranks = new LinkedHashMap<String, String>();
+    ranks.put("", getText("eml.rank.selection"));
+    ranks.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, getLocaleLanguage(), false));
+    roles = new LinkedHashMap<String, String>();
+    roles.put("", getText("eml.agent.role.selection"));
+    roles.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_ROLES, getLocaleLanguage(), false));
+    preservationMethods = new LinkedHashMap<String, String>();
+    preservationMethods.put("", getText("eml.preservation.methods.selection"));
+    preservationMethods.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_PRESERVATION_METHOD, getLocaleLanguage(), false));
 
     if(resource.getEml().getContact().getAddress().getCountry()!=null){
     	resource.getEml().getContact().getAddress().setCountry(CountryUtils.iso2(resource.getEml().getContact().getAddress().getCountry()));
