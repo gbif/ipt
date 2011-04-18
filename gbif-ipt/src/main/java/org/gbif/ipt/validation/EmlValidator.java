@@ -528,7 +528,7 @@ public class EmlValidator extends BaseValidator {
 				 * </additionalMetadata>
 				 */
 				if(!eml.getCitation().getIdentifier().equals("") && !exists(eml.getCitation().getIdentifier())) {				
-					action.addFieldError("eml.citation.identifier", action.getText("validation.required", new String[] {action.getText("eml.citation.identifier")}));
+					action.addFieldError("eml.citation.identifier", action.getText("validation.field.blank", new String[] {action.getText("eml.citation.identifier")}));
 				}
 				
 				if(exists(eml.getCitation().getIdentifier()) && !exists(eml.getCitation().getCitation())) {
@@ -537,6 +537,10 @@ public class EmlValidator extends BaseValidator {
 				
 				int index = 0;
 				for(Citation citation : eml.getBibliographicCitations()) {
+					if(!citation.getIdentifier().equals("") && !exists(citation.getIdentifier())) {
+						action.addFieldError("eml.bibliographicCitationSet.bibliographicCitations["+index+"].identifier", action.getText("validation.field.blank", new String[] { action
+								.getText("eml.bibliographicCitationSet.bibliographicCitations.identifier") }));
+					}
 					if(!exists(citation.getCitation())) {
 						action.addFieldError("eml.bibliographicCitationSet.bibliographicCitations["+index+"].citation", action.getText("validation.required", new String[] { action
 								.getText("validation.field.required") }));
