@@ -20,6 +20,7 @@ import java.awt.Color;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Map;
@@ -56,7 +57,6 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
 import com.lowagie.text.Font;
 import com.lowagie.text.FontFactory;
-import com.lowagie.text.Header;
 import com.lowagie.text.List;
 import com.lowagie.text.ListItem;
 import com.lowagie.text.Paragraph;
@@ -554,26 +554,51 @@ public class Eml2Rtf {
 			tempAgents.add(eml.getMetadataProvider());
 		}
 		tempAgents.addAll(eml.getAssociatedParties());
-		Agent[] agents = new Agent[tempAgents.size()];
-		tempAgents.toArray(agents);
+		
+		// comparing and removing those repeated agents with same name and same address.
+		ArrayList<Integer> toRemove = new ArrayList<Integer>();
+		int counter = 0;
+		for(Iterator<Agent> i = tempAgents.iterator(); i.hasNext(); counter++) {
+			if(toRemove.contains(counter)) {
+				i.remove();
+			} else {
+				Agent agentA = i.next();				
+				boolean flag = false;
+				int countTemp = 0;
+				for(Iterator<Agent> j = tempAgents.iterator(); j.hasNext(); countTemp++) {
+					Agent agentB = j.next();
+					if(flag) {
+						if(agentA.getLastName().equals(agentB.getLastName()) && agentA.getFirstName().equals(agentB.getFirstName()) 
+								&& agentA.getAddress().equals(agentB.getAddress())) {						
+							toRemove.add(countTemp);
+						}
+					} else if(agentA.equals(agentB)) {
+						flag = true;
+					}
+				}
+			}
+		}
+		
+		Agent[] agentsArray = new Agent[tempAgents.size()];
+		tempAgents.toArray(agentsArray);
 		// Adding authors
 		Paragraph p = new Paragraph();
 		p.setFont(font);
 		p.setAlignment(Element.ALIGN_CENTER);
 		ArrayList<Agent> affiliations = new ArrayList<Agent>();
-		for (int c = 0; c < agents.length; c++) {
-			if (exists(agents[c].getLastName())) {
+		for (int c = 0; c < agentsArray.length; c++) {
+			if (exists(agentsArray[c].getLastName())) {
 				if (c != 0)
 					p.add(", ");
 				// First Name and Last Name
-				if (exists(agents[c].getFirstName())) {
-					p.add(agents[c].getFirstName() + " ");
+				if (exists(agentsArray[c].getFirstName())) {
+					p.add(agentsArray[c].getFirstName() + " ");
 				}
-				p.add(agents[c].getLastName());
+				p.add(agentsArray[c].getLastName());
 				// Looking for addresses of other authors (superscripts should not be repeated).
 				int index = 0;
 				while (index < c) {
-					if (agents[c].getAddress().equals(agents[index].getAddress())) {
+					if (agentsArray[c].getAddress().equals(agentsArray[index].getAddress())) {
 						p.add(createSuperScript("" + (index + 1)));
 						break;
 					}
@@ -581,7 +606,7 @@ public class Eml2Rtf {
 				}
 				if (index == c) {
 					p.add(createSuperScript("" + (index + 1)));
-					affiliations.add(agents[c]);
+					affiliations.add(agentsArray[c]);
 				}
 			}
 		}
