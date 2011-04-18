@@ -62,6 +62,8 @@ import com.lowagie.text.ListItem;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
 
+import static com.google.common.base.Objects.equal;
+
 /**
  * Populates a RTF document with a resources metadata, mainly derived from its EML. TODO: implement internationalisation.
  * 
@@ -547,10 +549,10 @@ public class Eml2Rtf {
 		// <AUTHORS>
 		// Creating set of authors with different names. (first names + last names).
 		LinkedHashSet<Agent> tempAgents = new LinkedHashSet<Agent>();
-		if (exists(eml.getResourceCreator())) {
+		if (exists(eml.getResourceCreator()) && exists(eml.getResourceCreator().getLastName())) {
 			tempAgents.add(eml.getResourceCreator());
 		}
-		if (exists(eml.getMetadataProvider())) {
+		if (exists(eml.getMetadataProvider()) && exists(eml.getMetadataProvider().getLastName())) {
 			tempAgents.add(eml.getMetadataProvider());
 		}
 		tempAgents.addAll(eml.getAssociatedParties());
@@ -568,8 +570,8 @@ public class Eml2Rtf {
 				for(Iterator<Agent> j = tempAgents.iterator(); j.hasNext(); countTemp++) {
 					Agent agentB = j.next();
 					if(flag) {
-						if(agentA.getLastName().equals(agentB.getLastName()) && agentA.getFirstName().equals(agentB.getFirstName()) 
-								&& agentA.getAddress().equals(agentB.getAddress())) {						
+						if(equal(agentA.getLastName(), agentB.getLastName()) && equal(agentA.getFirstName(), agentB.getFirstName()) && 
+								equal(agentA.getAddress(), agentB.getAddress())) {						
 							toRemove.add(countTemp);
 						}
 					} else if(agentA.equals(agentB)) {
