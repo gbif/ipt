@@ -18,16 +18,7 @@ function isTrueOrNull(x){
 function initForm(){
     $("input.form-reset").one("click", function () {
       $(this).val("");
-    });
-    // not working right for pages with multiple forms...
-//	$("form input").keypress(function (e) {  
-//        if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {  
-//            $('button[type=submit].default').click();  
-//            return false;  
-//        } else {  
-//            return true;  
-//        }  
-//    });    
+    });  
 }
 /**
  * This method initialises the "help utility" of the forms
