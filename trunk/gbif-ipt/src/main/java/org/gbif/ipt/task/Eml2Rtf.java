@@ -299,6 +299,11 @@ public class Eml2Rtf {
 		if (exists(eml.getCollectionName())) {
 			p.add(new Phrase("Collection name: ", fontTitle));
 			p.add(eml.getCollectionName());
+			p.add(Chunk.NEWLINE);
+		}
+		if (exists(eml.getCollectionId())) {
+			p.add(new Phrase("Collection Identifier: ", fontTitle));
+			p.add(eml.getCollectionId());
 		}
 		for (TemporalCoverage coverage : eml.getTemporalCoverages()) {
 			if (coverage.getType().equals(TemporalCoverageType.FORMATION_PERIOD)) {
@@ -317,7 +322,9 @@ public class Eml2Rtf {
 		if (exists(eml.getSpecimenPreservationMethod())) {
 			p.add(Chunk.NEWLINE);
 			p.add(new Phrase("Specimen preservation method: ", fontTitle));
-			p.add(WordUtils.capitalizeFully(eml.getSpecimenPreservationMethod()));
+			VocabularyConcept vocabConcept = vocabManager.get(Constants.VOCAB_URI_PRESERVATION_METHOD).findConcept(eml.getSpecimenPreservationMethod());
+			p.add(vocabConcept.getPreferredTerm("en").getTitle());
+			//p.add(WordUtils.capitalizeFully(eml.getSpecimenPreservationMethod()));
 		}
 		for (JGTICuratorialUnit unit : eml.getJgtiCuratorialUnits()) {
 			p.add(Chunk.NEWLINE);
@@ -600,7 +607,7 @@ public class Eml2Rtf {
 				// Looking for addresses of other authors (superscripts should not be repeated).
 				int index = 0;
 				while (index < c) {
-					if (agentsArray[c].getAddress().equals(agentsArray[index].getAddress())) {
+					if (agentsArray[c].getAddress().equals(agentsArray[index].getAddress()) && equal(agentsArray[c].getEmail(), agentsArray[index].getEmail())) {
 						p.add(createSuperScript("" + (index + 1)));
 						break;
 					}
@@ -639,6 +646,9 @@ public class Eml2Rtf {
 			if (exists(affiliations.get(c).getAddress().getCountry())) {
 				String country = vocabManager.get(Constants.VOCAB_URI_COUNTRY).findConcept(affiliations.get(c).getAddress().getCountry()).getPreferredTerm("en").getTitle();
 				p.add(", " + WordUtils.capitalizeFully(country));
+			}
+			if(exists(affiliations.get(c).getEmail())) {
+				p.add(", " + affiliations.get(c).getEmail());				
 			}
 		}
 		doc.add(p);
