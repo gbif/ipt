@@ -110,6 +110,21 @@ public class MockVocabulariesManager extends IptMockBaseTest implements Vocabula
 			vocabMap.put("spa", "Spanish");
 			vocabMap.put("ger", "German");
 			vocabMap.put("fre", "French");			
+		} else if(uri.equals(Constants.VOCAB_URI_PRESERVATION_METHOD)) {
+			vocabMap.put("noTreatment", "No treatment");
+			vocabMap.put("alcohol", "Alcohol");
+			vocabMap.put("deepFrozen", "Deep frozen");
+			vocabMap.put("dried", "Dried");
+			vocabMap.put("driedAndPressed", "Dried and pressed");
+			vocabMap.put("formalin", "Formalin");
+			vocabMap.put("refrigerated", "Refrigerated");
+			vocabMap.put("freezeDried", "Freeze-dried");
+			vocabMap.put("glycerin", "Glycerin");
+			vocabMap.put("gumArabic", "Gum arabic");
+			vocabMap.put("microscopicPreparation", "Microscopic preparation");
+			vocabMap.put("mounted", "Mounted");
+			vocabMap.put("pinned", "Pinned");
+			vocabMap.put("other", "Other");
 		}
 		return vocabMap;
 	}
