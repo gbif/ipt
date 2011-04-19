@@ -200,14 +200,19 @@ public class SetupAction extends BaseAction {
     return INPUT;
   }
 
-  public String setup3() {
+  public String setup3() {	  
 	  session.put(Constants.SESSION_USER, userManager.getSetupUser());
 	  extensionManager.installCoreTypes();	    
 	  return INPUT;
   }
   
   public String setup2() {
-    // first check if the selected datadir contains an admin user already
+	  // first check if a data directory exists.
+	  if(!dataDir.isConfigured()) {
+		  addActionWarning(getText("admin.config.setup2.datadir.notExist"));
+		  return ERROR;
+	  }
+	  // second check if the selected datadir contains an admin user already
     if (configManager.setupComplete()) {
       if (configManager.isBaseURLValid()) {
         addActionMessage(getText("admin.config.setup2.existingFound"));
