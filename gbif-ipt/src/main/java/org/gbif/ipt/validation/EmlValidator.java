@@ -377,9 +377,6 @@ public class EmlValidator extends BaseValidator {
 						if (!exists(k.getScientificName())) {
 							action.addFieldError("eml.taxonomicCoverages[" + index + "].taxonKeywords[" + kw + "].scientificName", action.getText("validation.required",new String[]{action.getText("eml.taxonomicCoverages.taxonKeyword.scientificName")}));
 						}
-						if(!exists(k.getRank())) {
-							action.addFieldError("eml.taxonomicCoverages[" + index + "].taxonKeywords[" + kw + "].rank", action.getText("validation.required",new String[]{action.getText("eml.taxonomicCoverages.taxonKeyword.rank")}));							
-						}
 						kw++;
 					}
 					index++;
