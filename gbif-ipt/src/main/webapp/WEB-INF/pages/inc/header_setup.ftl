@@ -4,8 +4,8 @@
 		<title><@s.text name="admin.config.setup.title"/></title>
  		<link rel="stylesheet" type="text/css" href="styles/main.css"/>
  		<link rel="shortcut icon" href="${baseURL}/images/icons/favicon.ico" type="image/x-icon" />
-		<script type="text/javascript" src="js/jquery/jquery.min-1.5.1.js"></script>				
-		<script type="text/javascript" src="js/global.js"></script>
+		<script type="text/javascript" src="${baseURL}/js/jquery/jquery.min-1.5.1.js"></script>				
+		<script type="text/javascript" src="${baseURL}/js/global.js"></script>
 		<style>
 h1 {
 	color: #077A2D;
