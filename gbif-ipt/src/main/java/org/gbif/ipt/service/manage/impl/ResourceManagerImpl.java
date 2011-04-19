@@ -266,7 +266,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           resource.addMapping(map);
         }
         // try to read metadata
-        Eml eml = readMetadata(arch, alog);
+        Eml eml = readMetadata(resource.getShortname(),arch, alog);
         if (eml != null) {
           resource.setEml(eml);
         }
@@ -296,16 +296,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
     return resource;
   }
-
-  private Resource createFromEml(String shortname, File emlFile, User creator, ActionLogger alog)
-      throws AlreadyExistingException, ImportException {
-    //Eml eml = readMetadata(emlFile, alog);
-
+  
+  private Eml copyMetadata(String shortname, File emlFile) throws ImportException{
+	  
 	  File emlFile2 = dataDir.resourceEmlFile(shortname, null);
       try {
 		FileUtils.copyFile(emlFile, emlFile2);
       } catch (IOException e1) {
-		log.error("Unnable to copy EML FIle",e1);
+		log.error("Unnable to copy EML File",e1);
       }
       Eml eml = null;
       try {
@@ -317,7 +315,19 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     	log.error(e);
       } catch (SAXException e) {
         log.error("Invalid EML document", e);
-      }    
+      } 
+      
+      if(eml==null){
+    	  throw new ImportException("Invalid EML document");
+      }
+      
+      return eml;
+  }
+
+  private Resource createFromEml(String shortname, File emlFile, User creator, ActionLogger alog)
+      throws AlreadyExistingException, ImportException {
+	// Eml eml = readMetadata(emlFile, alog);
+	Eml eml = copyMetadata(shortname, emlFile);
     
     if (eml != null) {
       // create resource with imorted metadata
@@ -626,6 +636,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       log.error(e);
     } catch (SAXException e) {
       log.error("Invalid EML document", e);
+      eml = new Eml();
+    } catch (Exception e) {
+      eml = new Eml();
     }
     resource.setEml(eml);
     syncEmlWithResource(resource);
@@ -762,24 +775,30 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
-  private Eml readMetadata(Archive archive, ActionLogger alog) {
+  private Eml readMetadata(String shortname, Archive archive, ActionLogger alog) {
     Eml eml = null;
+    File emlFile = archive.getMetadataLocationFile();
     try {
-      File emlFile = archive.getMetadataLocationFile();
       if (emlFile == null || !emlFile.exists()) {
         // some archives dont indicate the name of the eml metadata file
         // so we also try with the default eml.xml name
         emlFile = new File(archive.getLocation(), "eml.xml");
       }
       if (emlFile.exists()) {
-        InputStream emlIn = new FileInputStream(emlFile);
-        eml = EmlFactory.build(emlIn);
+       	// InputStream emlIn = new FileInputStream(emlFile);
+        // eml = EmlFactory.build(emlIn);
+       	eml = copyMetadata(shortname, emlFile);
         alog.info("manage.resource.read.eml.metadata");
         return eml;
       } else {
         log.warn("Cant find any eml metadata to import");
       }
-    } catch (Exception e) {
+    } catch (ImportException e) {
+    	String msg="Cant read basic archive metadata: " + e.getMessage();
+    	log.warn(msg);
+    	alog.warn(msg);
+    	return null;
+	} catch (Exception e) {
       log.warn("Cant read archive eml metadata", e);
     }
     // try to read other metadata formats like dc
