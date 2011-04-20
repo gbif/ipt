@@ -52,9 +52,10 @@
   			});			
         }else{
         	$("#resourcelogo img").hide('slow').removeAttr("src");
-         	logourl=logourl.split('&')[0];
+         	logourl=$("#baseimg").attr("src");
          	 $("#resourcelogo img").show('slow', function() {
     			$("#resourcelogo img").attr("src", logourl+"&t="+(new Date()).getTime());
+    			$("input[name$='logoUrl']").val( logourl+"&t="+(new Date()).getTime());
   			});
         }
         return false;
