@@ -673,7 +673,7 @@ public class Eml2Rtf {
 		if (exists(eml.getMetadataProvider())) {
 			boolean sameAsCreator = false;
 			if (!isFirst) {
-				sameAsCreator = eml.getMetadataProvider().getAddress().equals(eml.getResourceCreator().getAddress());
+				sameAsCreator = eml.getMetadataProvider().getAddress().equals(eml.getResourceCreator().getAddress()) && equal(eml.getMetadataProvider(), eml.getResourceCreator().getEmail());
 				p.add(", ");
 			}
 			if (!sameAsCreator) {
