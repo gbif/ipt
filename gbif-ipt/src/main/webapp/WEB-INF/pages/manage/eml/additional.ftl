@@ -55,7 +55,7 @@
          	logourl=$("#baseimg").attr("src");
          	 $("#resourcelogo img").show('slow', function() {
     			$("#resourcelogo img").attr("src", logourl+"&t="+(new Date()).getTime());
-    			$("input[name$='logoUrl']").val( logourl+"&t="+(new Date()).getTime());
+    			$("#logofields input[name$='logoUrl']").val( logourl);
   			});
         }
         return false;
