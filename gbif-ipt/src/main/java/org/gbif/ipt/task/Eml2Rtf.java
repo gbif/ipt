@@ -202,6 +202,11 @@ public class Eml2Rtf {
 		Paragraph p = new Paragraph();
 		p.setAlignment(Element.ALIGN_JUSTIFIED);
 		p.setFont(font);
+		if (eml.getPhysicalData().size() > 1) {
+			p.add(new Phrase("Datasets", fontTitle));
+			p.add(Chunk.NEWLINE);
+			p.add(Chunk.NEWLINE);
+		}
 		for (PhysicalData data : eml.getPhysicalData()) {
 			p.add(new Phrase("Dataset description", fontTitle));
 			p.add(Chunk.NEWLINE);
@@ -241,15 +246,15 @@ public class Eml2Rtf {
 			p.add(Chunk.NEWLINE);
 		}
 		VocabularyConcept vocabConcept = vocabManager.get(Constants.VOCAB_URI_LANGUAGE).findConcept(eml.getLanguage());
+		p.add(new Phrase("Language: ", fontTitle));
 		if (exists(vocabConcept)) {
-			p.add(new Phrase("Language: ", fontTitle));
 			p.add(vocabConcept.getPreferredTerm("en").getTitle());
 		} else {
 			p.add("Unknown");
 		}
 		p.add(Chunk.NEWLINE);
 		if (exists(eml.getIntellectualRights())) {
-			p.add(new Phrase("Intellectual rights: ", fontTitle));
+			p.add(new Phrase("Licenses of use: ", fontTitle));
 			p.add(eml.getIntellectualRights());
 			p.add(Chunk.NEWLINE);
 		}
@@ -263,6 +268,7 @@ public class Eml2Rtf {
 			p.setAlignment(Element.ALIGN_JUSTIFIED);
 			p.setFont(font);
 			p.add(new Phrase("Methods", fontTitle));
+			p.add(Chunk.NEWLINE);
 			p.add(Chunk.NEWLINE);
 			if (eml.getMethodSteps().size() == 1) {
 				p.add(new Phrase("Method step description: ", fontTitle));
@@ -299,60 +305,65 @@ public class Eml2Rtf {
 	}
 
 	private void addNaturalCollections(Document doc, Eml eml) throws DocumentException {
-		Paragraph p = new Paragraph();
-		p.setAlignment(Element.ALIGN_JUSTIFIED);
-		p.setFont(font);
-		if (exists(eml.getParentCollectionId())) {
-			p.add(new Phrase("Natural collections description", fontTitle));
-			p.add(Chunk.NEWLINE);
-			p.add(new Phrase("Parent collection identifier: ", fontTitle));
-			p.add(eml.getParentCollectionId());
-			p.add(Chunk.NEWLINE);
-		}
-		if (exists(eml.getCollectionName())) {
-			p.add(new Phrase("Collection name: ", fontTitle));
-			p.add(eml.getCollectionName());
-			p.add(Chunk.NEWLINE);
-		}
-		if (exists(eml.getCollectionId())) {
-			p.add(new Phrase("Collection Identifier: ", fontTitle));
-			p.add(eml.getCollectionId());
-		}
-		for (TemporalCoverage coverage : eml.getTemporalCoverages()) {
-			if (coverage.getType().equals(TemporalCoverageType.FORMATION_PERIOD)) {
+		if (exists(eml.getParentCollectionId()) || exists(eml.getCollectionName()) || exists(eml.getCollectionId()) || eml.getTemporalCoverages().size() > 0
+				|| exists(eml.getSpecimenPreservationMethod()) || eml.getJgtiCuratorialUnits().size() > 0) {
+			Paragraph p = new Paragraph();
+			p.setAlignment(Element.ALIGN_JUSTIFIED);
+			p.setFont(font);
+			if (exists(eml.getParentCollectionId())) {
+				p.add(new Phrase("Natural collections description", fontTitle));
 				p.add(Chunk.NEWLINE);
-				p.add(new Phrase("Formation period: ", fontTitle));
-				p.add(coverage.getFormationPeriod());
-			}
-		}
-		for (TemporalCoverage coverage : eml.getTemporalCoverages()) {
-			if (coverage.getType().equals(TemporalCoverageType.LIVING_TIME_PERIOD)) {
 				p.add(Chunk.NEWLINE);
-				p.add(new Phrase("Living time period: ", fontTitle));
-				p.add(coverage.getLivingTimePeriod());
+				p.add(new Phrase("Parent collection identifier: ", fontTitle));
+				p.add(eml.getParentCollectionId());
+				p.add(Chunk.NEWLINE);
 			}
-		}
-		if (exists(eml.getSpecimenPreservationMethod())) {
-			p.add(Chunk.NEWLINE);
-			p.add(new Phrase("Specimen preservation method: ", fontTitle));
-			VocabularyConcept vocabConcept = vocabManager.get(Constants.VOCAB_URI_PRESERVATION_METHOD).findConcept(eml.getSpecimenPreservationMethod());
-			p.add(vocabConcept.getPreferredTerm("en").getTitle());
-			// p.add(WordUtils.capitalizeFully(eml.getSpecimenPreservationMethod()));
-		}
-		for (JGTICuratorialUnit unit : eml.getJgtiCuratorialUnits()) {
-			p.add(Chunk.NEWLINE);
-			p.add(new Phrase("Curatorial unit: ", fontTitle));
-			if (unit.getType().equals(JGTICuratorialUnitType.COUNT_RANGE)) {
-				p.add("Between " + unit.getRangeStart() + " and " + unit.getRangeEnd());
+			if (exists(eml.getCollectionName())) {
+				p.add(new Phrase("Collection name: ", fontTitle));
+				p.add(eml.getCollectionName());
+				p.add(Chunk.NEWLINE);
 			}
-			if (unit.getType().equals(JGTICuratorialUnitType.COUNT_WITH_UNCERTAINTY)) {
-				p.add(unit.getRangeMean() + " with an uncertainty of " + unit.getUncertaintyMeasure());
+			if (exists(eml.getCollectionId())) {
+				p.add(new Phrase("Collection Identifier: ", fontTitle));
+				p.add(eml.getCollectionId());
+				p.add(Chunk.NEWLINE);
 			}
-			p.add(" (" + unit.getUnitType() + ")");
+			for (TemporalCoverage coverage : eml.getTemporalCoverages()) {
+				if (coverage.getType().equals(TemporalCoverageType.FORMATION_PERIOD)) {
+					p.add(new Phrase("Formation period: ", fontTitle));
+					p.add(coverage.getFormationPeriod());
+					p.add(Chunk.NEWLINE);
+				}
+			}
+			for (TemporalCoverage coverage : eml.getTemporalCoverages()) {
+				if (coverage.getType().equals(TemporalCoverageType.LIVING_TIME_PERIOD)) {
+					p.add(new Phrase("Living time period: ", fontTitle));
+					p.add(coverage.getLivingTimePeriod());
+					p.add(Chunk.NEWLINE);
+				}
+			}
+			if (exists(eml.getSpecimenPreservationMethod())) {
+				p.add(new Phrase("Specimen preservation method: ", fontTitle));
+				VocabularyConcept vocabConcept = vocabManager.get(Constants.VOCAB_URI_PRESERVATION_METHOD).findConcept(eml.getSpecimenPreservationMethod());
+				p.add(vocabConcept.getPreferredTerm("en").getTitle());
+				p.add(Chunk.NEWLINE);
+			}
+			for (JGTICuratorialUnit unit : eml.getJgtiCuratorialUnits()) {
+				p.add(new Phrase("Curatorial unit: ", fontTitle));
+				if (unit.getType().equals(JGTICuratorialUnitType.COUNT_RANGE)) {
+					p.add("Between " + unit.getRangeStart() + " and " + unit.getRangeEnd());
+				}
+				if (unit.getType().equals(JGTICuratorialUnitType.COUNT_WITH_UNCERTAINTY)) {
+					p.add(unit.getRangeMean() + " with an uncertainty of " + unit.getUncertaintyMeasure());
+				}
+				p.add(" (" + unit.getUnitType() + ")");
+				p.add(Chunk.NEWLINE);
+			}
+			if (!p.isEmpty()) {
+				doc.add(p);
+			}
+			p.clear();
 		}
-		p.add(Chunk.NEWLINE);
-		doc.add(p);
-		p.clear();
 	}
 
 	private void addProjectData(Document doc, Eml eml) throws DocumentException {
@@ -363,6 +374,7 @@ public class Eml2Rtf {
 			p.setFont(font);
 			p.add(new Phrase("Project description", fontTitle));
 			p.add(Chunk.NEWLINE);
+			p.add(Chunk.NEWLINE);
 			if (exists(eml.getProject().getTitle())) {
 				p.add(new Phrase("Project title: ", fontTitle));
 				p.add(eml.getProject().getTitle());
@@ -371,9 +383,8 @@ public class Eml2Rtf {
 			p.add(new Phrase("Personnel: ", fontTitle));
 			if (exists(eml.getProject().getPersonnel().getFirstName())) {
 				p.add(eml.getProject().getPersonnel().getFirstName() + " " + eml.getProject().getPersonnel().getLastName());
+				p.add(Chunk.NEWLINE);
 			}
-			eml.getProject().getPersonnel().getLastName();
-			p.add(Chunk.NEWLINE);
 			if (exists(eml.getProject().getFunding())) {
 				p.add(new Phrase("Funding: ", fontTitle));
 				p.add(eml.getProject().getFunding());
@@ -455,6 +466,7 @@ public class Eml2Rtf {
 			if (exists(coverage.getDescription())) {
 				p.add(new Phrase("Spatial coverage", fontTitle));
 				p.add(Chunk.NEWLINE);
+				p.add(Chunk.NEWLINE);
 				p.add(new Phrase("General spatial coverage: ", fontTitle));
 				p.add(coverage.getDescription());
 				p.add(Chunk.NEWLINE);
@@ -487,6 +499,7 @@ public class Eml2Rtf {
 			}
 			firstTaxon = false;
 			p.add(new Phrase("Taxonomic coverage", fontTitle));
+			p.add(Chunk.NEWLINE);
 			p.add(Chunk.NEWLINE);
 			p.add(new Phrase("General taxonomic coverage description: ", fontTitle));
 			p.add(taxcoverage.getDescription());
@@ -535,8 +548,15 @@ public class Eml2Rtf {
 
 	private void addAbstract(Document doc, Eml eml) throws DocumentException {
 		if (exists(eml.getDescription())) {
-			addPara(doc, "Concise description", fontTitle, 0, Element.ALIGN_LEFT);
-			addPara(doc, eml.getDescription(), font, 0, Element.ALIGN_JUSTIFIED);
+			Paragraph p = new Paragraph();
+			p.setAlignment(Element.ALIGN_JUSTIFIED);
+			p.setFont(font);
+			p.add(new Phrase("Concise description", fontTitle));
+			p.add(Chunk.NEWLINE);
+			p.add(Chunk.NEWLINE);
+			p.add(eml.getDescription());
+			doc.add(p);
+			p.clear();
 		}
 	}
 

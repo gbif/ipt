@@ -14,13 +14,13 @@ public class CoordinateUtils {
    * 
    * @param decimalCoordinate to convert.
    * @param CoordinateType CoordinateUtils.LATITUDE or CoordinateUtils.LONGITUDE
-   * @return an String with the following format: DD�MM'SS''[N, S, W or E]
+   * @return an String with the following format: DD°MM'SS''[N, S, W or E]
    */
   public static String decToDms(double decimalCoordinate, String CoordinateType) {
     String dms = "";
     double absCoordinate = Math.abs(decimalCoordinate);
     int integer = (int) Math.floor(absCoordinate);
-    dms += integer + "�";
+    dms += integer + "\u00B0";
     int min = (int) Math.floor(60.0 * (absCoordinate - integer));
     dms += min + "'";
     double sec = ((60.0 * (absCoordinate - integer)) - min) * 60;
