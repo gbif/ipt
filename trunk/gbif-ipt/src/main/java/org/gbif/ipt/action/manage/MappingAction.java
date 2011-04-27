@@ -70,6 +70,7 @@ public class MappingAction extends ManagerBaseAction {
   // config
   private ExtensionMapping mapping;
   private List<String> columns;
+  private List<String> nonMappedColumns;
   private Comparator[] comparators = Comparator.values();
   private List<String[]> peek;
   private List<PropertyMapping> fields;
@@ -139,6 +140,19 @@ public class MappingAction extends ManagerBaseAction {
 
   public List<String> getColumns() {
     return columns;
+  }
+  
+  public List<String> getNonMappedColumns() {
+	nonMappedColumns=new ArrayList<String>();
+	nonMappedColumns.addAll(columns);
+	for(int index=0;index<columns.size();index++){
+	 for(PropertyMapping field:fields){
+	   if(field.getIndex()!=null && (field.getIndex())==index){
+		   nonMappedColumns.remove(columns.get(index));
+	   }
+	 }
+	}
+	return nonMappedColumns;
   }
 
   public Comparator[] getComparators() {
