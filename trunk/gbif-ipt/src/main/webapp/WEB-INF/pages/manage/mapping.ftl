@@ -317,7 +317,7 @@ $(document).ready(function(){
 		<@s.text name="manage.mapping.no.mapped.columns"/>:<br/>
 		<em>
 		<#list nonMappedColumns as col>
-			${col},
+			${col}<#if nonMappedColumns.size()!=col_index+1>,<#else>.</#if>
 		</#list>
 		</em>
 	  </#if>
