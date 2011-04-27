@@ -312,6 +312,14 @@ $(document).ready(function(){
 	</div>
 
 	<#if !field_has_next>
+	<br/><b><@s.text name="manage.mapping.no.mapped.title"/></b><br/><br/>
+	<@s.text name="manage.mapping.no.mapped.columns"/>:<br/>
+	<em>
+	<#list nonMappedColumns as col>
+		${col},
+	</#list>
+	</em>
+	
 	  <div class="buttons">
 	 	<@s.submit cssClass="button" name="save" key="button.save"/>
 	 	<@s.submit cssClass="button" name="cancel" key="button.cancel"/>
