@@ -240,7 +240,7 @@ public class Eml2Rtf {
 			p.add(Chunk.NEWLINE);
 		}
 		if (exists(eml.getPubDate())) {
-			p.add(new Phrase("Publication date: ", fontTitle));
+			p.add(new Phrase("Publication date of data: ", fontTitle));
 			SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
 			p.add(f.format(eml.getPubDate()));
 			p.add(Chunk.NEWLINE);
@@ -515,7 +515,6 @@ public class Eml2Rtf {
 								p.add(", ");
 							} else {
 								p.add(new Phrase("Taxonomic ranks: ", fontTitle));
-								//p.add(Chunk.NEWLINE);
 							}
 							p.add(WordUtils.capitalizeFully(rank) + ": ");
 							p.add(keyword.getScientificName());
