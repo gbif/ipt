@@ -176,7 +176,7 @@ public class Eml2Rtf {
 		}
 		if (exists(eml.getDateStamp())) {
 			p.add(new Phrase("Date of metadata creation: ", fontTitle));
-			SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-DD");
+			SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
 			p.add(f.format(eml.getDateStamp()));
 			p.add(Chunk.NEWLINE);
 		}
@@ -241,7 +241,7 @@ public class Eml2Rtf {
 		}
 		if (exists(eml.getPubDate())) {
 			p.add(new Phrase("Publication date: ", fontTitle));
-			SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-DD");
+			SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
 			p.add(f.format(eml.getPubDate()));
 			p.add(Chunk.NEWLINE);
 		}
@@ -324,7 +324,7 @@ public class Eml2Rtf {
 				p.add(Chunk.NEWLINE);
 			}
 			if (exists(eml.getCollectionId())) {
-				p.add(new Phrase("Collection Identifier: ", fontTitle));
+				p.add(new Phrase("Collection identifier: ", fontTitle));
 				p.add(eml.getCollectionId());
 				p.add(Chunk.NEWLINE);
 			}
@@ -514,8 +514,8 @@ public class Eml2Rtf {
 							if (!firstRank) {
 								p.add(", ");
 							} else {
-								p.add(new Phrase("Taxonomic Ranks: ", fontTitle));
-								p.add(Chunk.NEWLINE);
+								p.add(new Phrase("Taxonomic ranks: ", fontTitle));
+								//p.add(Chunk.NEWLINE);
 							}
 							p.add(WordUtils.capitalizeFully(rank) + ": ");
 							p.add(keyword.getScientificName());
@@ -551,10 +551,11 @@ public class Eml2Rtf {
 			Paragraph p = new Paragraph();
 			p.setAlignment(Element.ALIGN_JUSTIFIED);
 			p.setFont(font);
-			p.add(new Phrase("Concise description", fontTitle));
+			p.add(new Phrase("Abstract", fontTitle));
 			p.add(Chunk.NEWLINE);
 			p.add(Chunk.NEWLINE);
 			p.add(eml.getDescription());
+			p.add(Chunk.NEWLINE);
 			doc.add(p);
 			p.clear();
 		}
@@ -728,9 +729,14 @@ public class Eml2Rtf {
 
 	private void addKeywords(Document doc, String keys) throws DocumentException {
 		if (keys != null && !keys.equals("")) {
-			addPara(doc, "Keywords", fontTitle, 10, Element.ALIGN_LEFT);
-			addPara(doc, keys, font, 0, Element.ALIGN_LEFT);
-			doc.add(Chunk.NEWLINE);
+			Paragraph p = new Paragraph();
+			p.setAlignment(Element.ALIGN_JUSTIFIED);
+			p.setFont(font);
+			p.add(new Phrase("Keywords: ", fontTitle));			
+			p.add(keys);
+			p.add(Chunk.NEWLINE);
+			doc.add(p);
+			p.clear();
 		}
 	}
 
