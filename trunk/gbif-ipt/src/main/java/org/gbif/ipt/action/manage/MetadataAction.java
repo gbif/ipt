@@ -82,8 +82,20 @@ public class MetadataAction extends ManagerBaseAction {
     return languages;
   }
 
-  public String getLocaleLanguageIso3() {
-    return LangUtils.iso3(getLocaleLanguage());
+  public String getMetadataLanguageIso3() {
+	String iso3=LangUtils.iso3(resource.getEml().getMetadataLanguage());
+	if(languages.containsKey(iso3)){
+		return iso3;
+    }
+	return null;
+  }
+  
+  public String getLanguageIso3() {
+	String iso3=LangUtils.iso3(resource.getEml().getLanguage());
+	if(languages.containsKey(iso3)){
+		return iso3;
+	}
+	return null;
   }
   
   public String getNext() {
