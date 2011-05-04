@@ -669,10 +669,10 @@ public class Eml2Rtf {
 					p.add(agentsArray[c].getFirstName() + " ");
 				}
 				p.add(agentsArray[c].getLastName());
-				// Looking for addresses of other authors (superscripts should not be repeated).
+				// Looking for addresses and organisations of other authors (superscripts should not be repeated).
 				int index = 0;
 				while (index < c) {
-					if (agentsArray[c].getAddress().equals(agentsArray[index].getAddress()) && equal(agentsArray[c].getOrganisation(), agentsArray[index].getOrganisation())) {
+					if (equal(agentsArray[c].getAddress(), agentsArray[index].getAddress()) && equal(agentsArray[c].getOrganisation(), agentsArray[index].getOrganisation())) {
 						p.add(createSuperScript("" + (index + 1)));
 						break;
 					}
