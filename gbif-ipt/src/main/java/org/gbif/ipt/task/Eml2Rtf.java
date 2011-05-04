@@ -513,9 +513,7 @@ public class Eml2Rtf {
 				for (TaxonKeyword keyword : taxcoverage.getTaxonKeywords()) {
 					if (exists(keyword.getRank()) && keyword.getRank().equals(rank)) {
 						if (!wroteRank) {
-							if (!firstRank) {
-								//p.add(", ");
-							} else {
+							if (firstRank) {
 								p.add(new Phrase("Taxonomic ranks", fontTitle));
 							}
 							p.add(Chunk.NEWLINE);
@@ -639,7 +637,7 @@ public class Eml2Rtf {
 				i.remove();
 			} else {
 				Agent agentA = i.next();
-				boolean flag = false;
+				boolean flag = false; //when second iterator should be start.
 				int countTemp = 0;
 				for (Iterator<Agent> j = tempAgents.iterator(); j.hasNext(); countTemp++) {
 					Agent agentB = j.next();
@@ -661,6 +659,7 @@ public class Eml2Rtf {
 		p.setFont(font);
 		p.setAlignment(Element.ALIGN_CENTER);
 		ArrayList<Agent> affiliations = new ArrayList<Agent>();
+		int superStriptCounter = 1;
 		for (int c = 0; c < agentsArray.length; c++) {
 			if (exists(agentsArray[c].getLastName())) {
 				if (c != 0)
@@ -673,14 +672,14 @@ public class Eml2Rtf {
 				// Looking for addresses of other authors (superscripts should not be repeated).
 				int index = 0;
 				while (index < c) {
-					if (agentsArray[c].getAddress().equals(agentsArray[index].getAddress()) && equal(agentsArray[c].getEmail(), agentsArray[index].getEmail())) {
+					if (agentsArray[c].getAddress().equals(agentsArray[index].getAddress()) && equal(agentsArray[c].getOrganisation(), agentsArray[index].getOrganisation())) {
 						p.add(createSuperScript("" + (index + 1)));
 						break;
 					}
 					index++;
 				}
 				if (index == c) {
-					p.add(createSuperScript("" + (index + 1)));
+					p.add(createSuperScript("" + (superStriptCounter++)));
 					affiliations.add(agentsArray[c]);
 				}
 			}
@@ -712,10 +711,7 @@ public class Eml2Rtf {
 			if (exists(affiliations.get(c).getAddress().getCountry())) {
 				String country = vocabManager.get(Constants.VOCAB_URI_COUNTRY).findConcept(affiliations.get(c).getAddress().getCountry()).getPreferredTerm("en").getTitle();
 				p.add(", " + WordUtils.capitalizeFully(country));
-			}
-			if (exists(affiliations.get(c).getEmail())) {
-				p.add(", " + affiliations.get(c).getEmail());
-			}
+			}			
 		}
 		doc.add(p);
 		p.clear();
@@ -739,10 +735,10 @@ public class Eml2Rtf {
 		if (exists(eml.getMetadataProvider())) {
 			boolean sameAsCreator = false;
 			if (!isFirst) {
-				sameAsCreator = eml.getMetadataProvider().getAddress().equals(eml.getResourceCreator().getAddress()) && equal(eml.getMetadataProvider(), eml.getResourceCreator().getEmail());
-				p.add(", ");
+				sameAsCreator = equal(eml.getMetadataProvider().getAddress(), eml.getResourceCreator().getAddress()) && equal(eml.getMetadataProvider().getEmail(), eml.getResourceCreator().getEmail());
 			}
 			if (!sameAsCreator) {
+				p.add(", ");
 				if (exists(eml.getMetadataProvider().getFirstName())) {
 					p.add(eml.getMetadataProvider().getFirstName() + " ");
 				}
