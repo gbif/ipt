@@ -26,6 +26,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
@@ -133,6 +134,7 @@ public class Eml2Rtf {
 		addCitations(doc, eml);
 		addAbstract(doc, eml);
 		addKeywords(doc, keys);
+		addResourceLink(doc, eml);
 		addTaxonomicCoverages(doc, eml);
 		addSpatialCoverage(doc, eml);
 		addTemporalCoverages(doc, eml);
@@ -143,7 +145,7 @@ public class Eml2Rtf {
 		addMetadataDescriptions(doc, eml);
 		addReferences(doc, eml);
 		doc.close();
-	}
+	}	
 
 	private void addReferences(Document doc, Eml eml) throws DocumentException {
 		if (exists(eml.getBibliographicCitationSet()) && eml.getBibliographicCitationSet().getBibliographicCitations().size() > 0) {
@@ -512,12 +514,13 @@ public class Eml2Rtf {
 					if (exists(keyword.getRank()) && keyword.getRank().equals(rank)) {
 						if (!wroteRank) {
 							if (!firstRank) {
-								p.add(", ");
+								//p.add(", ");
 							} else {
-								p.add(new Phrase("Taxonomic ranks: ", fontTitle));
+								p.add(new Phrase("Taxonomic ranks", fontTitle));
 							}
-							p.add(WordUtils.capitalizeFully(rank) + ": ");
-							p.add(keyword.getScientificName());
+							p.add(Chunk.NEWLINE);
+							p.add(StringUtils.capitalize(rank) + ": ");
+							p.add(keyword.getScientificName());							
 							wroteRank = true;
 							firstRank = false;
 						} else {
@@ -525,7 +528,7 @@ public class Eml2Rtf {
 						}
 					}
 				}
-			}
+			}			
 			p.add(Chunk.NEWLINE);
 			boolean isFirst = true;
 			for (TaxonKeyword keyword : taxcoverage.getTaxonKeywords()) {
@@ -533,7 +536,7 @@ public class Eml2Rtf {
 					if (!isFirst) {
 						p.add(", ");
 					} else {
-						p.add(new Phrase("Common name: ", fontTitle));
+						p.add(new Phrase("Common names: ", fontTitle));
 					}
 					isFirst = false;
 					p.add(keyword.getCommonName());
@@ -543,6 +546,34 @@ public class Eml2Rtf {
 		p.add(Chunk.NEWLINE);
 		doc.add(p);
 		p.clear();
+	}
+	
+	private void addResourceLink(Document doc, Eml eml) throws DocumentException {
+		if (exists(eml.getGuid())) {
+			Paragraph p = new Paragraph();			
+			p.setFont(font);
+			p.add(new Phrase("Metadata resource link: ", fontTitle));
+			p.add(Chunk.NEWLINE);
+			Anchor resourceLink = new Anchor(eml.getGuid(), font);
+			resourceLink.setReference(eml.getGuid());
+			p.add(resourceLink);
+			p.add(Chunk.NEWLINE);
+			doc.add(p);
+			p.clear();
+		}		
+	}
+
+	private void addKeywords(Document doc, String keys) throws DocumentException {
+		if (keys != null && !keys.equals("")) {
+			Paragraph p = new Paragraph();
+			p.setAlignment(Element.ALIGN_JUSTIFIED);
+			p.setFont(font);
+			p.add(new Phrase("Keywords: ", fontTitle));			
+			p.add(keys);
+			p.add(Chunk.NEWLINE);
+			doc.add(p);
+			p.clear();
+		}
 	}
 
 	private void addAbstract(Document doc, Eml eml) throws DocumentException {
@@ -724,19 +755,6 @@ public class Eml2Rtf {
 		p.add(Chunk.NEWLINE);
 		doc.add(p);
 		p.clear();
-	}
-
-	private void addKeywords(Document doc, String keys) throws DocumentException {
-		if (keys != null && !keys.equals("")) {
-			Paragraph p = new Paragraph();
-			p.setAlignment(Element.ALIGN_JUSTIFIED);
-			p.setFont(font);
-			p.add(new Phrase("Keywords: ", fontTitle));			
-			p.add(keys);
-			p.add(Chunk.NEWLINE);
-			doc.add(p);
-			p.clear();
-		}
 	}
 
 	private boolean exists(Object obj) {
