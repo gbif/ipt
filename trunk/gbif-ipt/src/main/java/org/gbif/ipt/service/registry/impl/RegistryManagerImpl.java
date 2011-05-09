@@ -78,6 +78,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
         ? StringUtils.trimToEmpty(resource.getTitle()) : StringUtils.trimToEmpty(resource.getShortname()))));
     data.add(new BasicNameValuePair("description", StringUtils.trimToEmpty(resource.getDescription())));
     data.add(new BasicNameValuePair("homepageURL", StringUtils.trimToEmpty(eml.getDistributionUrl())));
+    data.add(new BasicNameValuePair("logoURL", StringUtils.trimToEmpty(eml.getLogoUrl())));
     
     // TODO: should this not be the eml contact agent instead?
     data.add(new BasicNameValuePair("primaryContactType", "technical"));
