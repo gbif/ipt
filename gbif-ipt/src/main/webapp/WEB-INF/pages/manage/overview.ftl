@@ -152,7 +152,7 @@ $(document).ready(function(){
       		<@s.text name='manage.overview.source.description1'/> <@s.text name="button.add"/>
        		<div class="newline"></div>
        		<div class="newline"></div>
-       		<@s.text name='manage.overview.source.description2'/> <@s.text name="button.add"/> <@s.text name='manage.overview.source.description3'/> 
+       		<@s.text name='manage.overview.source.description2'/> <@s.text name="button.connectDB"/> <@s.text name='manage.overview.source.description3'/> 
       	</div>
       	<div class="details">
       		<table>
