@@ -77,6 +77,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     data.add(new BasicNameValuePair("name", ((resource.getTitle() != null)
         ? StringUtils.trimToEmpty(resource.getTitle()) : StringUtils.trimToEmpty(resource.getShortname()))));
     data.add(new BasicNameValuePair("description", StringUtils.trimToEmpty(resource.getDescription())));
+    data.add(new BasicNameValuePair("homepageURL", StringUtils.trimToEmpty(eml.getDistributionUrl())));
+    
     // TODO: should this not be the eml contact agent instead?
     data.add(new BasicNameValuePair("primaryContactType", "technical"));
     data.add(new BasicNameValuePair("primaryContactName",
@@ -92,6 +94,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     RegistryServices services = buildServiceTypeParams(resource);
     data.add(new BasicNameValuePair("serviceTypes", services.serviceTypes));
     data.add(new BasicNameValuePair("serviceURLs", services.serviceURLs));
+    
 
     return data;
   }
