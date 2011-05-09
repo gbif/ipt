@@ -69,6 +69,16 @@ $(document).ready(function(){
 			$(this).parent('form').submit();
 		});
 	});	
+	$("#file").change(function() {
+		if($("#file").attr("value") != "") {
+			$("#add").attr("value", '<@s.text name="button.add"/>');
+		}
+	});
+	$("#clear").click(function(event) {
+		event.preventDefault();
+		$("#file").attr("value", "");
+		$("#add").attr("value", '<@s.text name="button.connectDB"/>');
+	});
 });
 </script>
 
@@ -130,7 +140,8 @@ $(document).ready(function(){
 	    <input name="validate" type="hidden" value="false" />
 	    <@s.file name="file" key="manage.resource.create.file" />
 	    <div class="newline"></div>
-       	<@s.submit name="add" key="button.add"/>
+       	<@s.submit name="add" key="button.connectDB"/>
+       	<@s.submit name="clear" key="button.clear"/>
        	<div class="newline"></div>
        	<div class="newline"></div>
   	  </form>
