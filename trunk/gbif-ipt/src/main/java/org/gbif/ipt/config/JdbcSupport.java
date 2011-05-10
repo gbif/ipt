@@ -70,6 +70,9 @@ public class JdbcSupport {
           sql = m.replaceAll(" LIMIT " + limit);
         } else {
           // lets append it then
+        	if(sql.endsWith(";")) {
+        		sql = sql.substring(0, sql.length()- 1);
+        	}
           sql += " LIMIT " + limit;
         }
 
