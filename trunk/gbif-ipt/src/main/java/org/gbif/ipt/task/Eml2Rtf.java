@@ -28,10 +28,13 @@ import java.util.ResourceBundle;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
+import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.model.VocabularyConcept;
+import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.CoordinateUtils;
@@ -83,6 +86,8 @@ public class Eml2Rtf {
 	private SimpleTextProvider textProvider;
 	@Inject
 	private VocabulariesManager vocabManager;
+	@Inject
+	private AppConfig appConfig;	
 
 	private void addPara(Document doc, String text, Font font, int spacing, int alignType) throws DocumentException {
 		Paragraph p = new Paragraph(text, font);
@@ -104,7 +109,7 @@ public class Eml2Rtf {
 		Eml eml = resource.getEml();
 		// configure page
 		doc.setMargins(72, 72, 72, 72);
-
+		System.out.println(DataDir.CONFIG_DIR);
 		// write metadata
 		doc.addAuthor(resource.getCreator().getName());
 		doc.addCreationDate();
@@ -134,7 +139,7 @@ public class Eml2Rtf {
 		addCitations(doc, eml);
 		addAbstract(doc, eml);
 		addKeywords(doc, keys);
-		addResourceLink(doc, eml);
+		addResourceLink(doc, resource, eml);
 		addTaxonomicCoverages(doc, eml);
 		addSpatialCoverage(doc, eml);
 		addTemporalCoverages(doc, eml);
@@ -546,19 +551,20 @@ public class Eml2Rtf {
 		p.clear();
 	}
 	
-	private void addResourceLink(Document doc, Eml eml) throws DocumentException {
-		if (exists(eml.getGuid())) {
+	private void addResourceLink(Document doc, Resource resource, Eml eml) throws DocumentException {	
+		if(resource.getStatus().equals(PublicationStatus.PUBLIC) || resource.getStatus().equals(PublicationStatus.REGISTERED)) {
 			Paragraph p = new Paragraph();			
 			p.setFont(font);
 			p.add(new Phrase("Metadata resource link: ", fontTitle));
 			p.add(Chunk.NEWLINE);
-			Anchor resourceLink = new Anchor(eml.getGuid(), font);
-			resourceLink.setReference(eml.getGuid());
+			String link = appConfig.getBaseURL()+"/resource.do?r="+resource.getShortname();
+			Anchor resourceLink = new Anchor(link, font);
+			resourceLink.setReference(link);
 			p.add(resourceLink);
 			p.add(Chunk.NEWLINE);
 			doc.add(p);
-			p.clear();
-		}		
+			p.clear();			
+		}
 	}
 
 	private void addKeywords(Document doc, String keys) throws DocumentException {
@@ -776,4 +782,7 @@ public class Eml2Rtf {
 		return textProvider.findText(res, key, "default.message", new String[0]);
 	}
 
+	public void setAppConfig(AppConfig appConfig) {
+		this.appConfig = appConfig;
+	}
 }
