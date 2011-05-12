@@ -2,6 +2,7 @@ package org.gbif.ipt.action.portal;
 
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.metadata.eml.Eml;
 
@@ -17,7 +18,7 @@ public class ResourceAction extends PortalBaseAction {
 
   @Override
   public String execute() throws Exception {
-    if (resource == null) {
+    if (resource == null || resource.getStatus().equals(PublicationStatus.PRIVATE)) {
       return NOT_FOUND;
     }
     return SUCCESS;

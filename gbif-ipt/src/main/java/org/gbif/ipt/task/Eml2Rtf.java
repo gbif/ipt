@@ -139,7 +139,7 @@ public class Eml2Rtf {
 		addCitations(doc, eml);
 		addAbstract(doc, eml);
 		addKeywords(doc, keys);
-		addResourceLink(doc, resource, eml);
+		addResourceLink(doc, resource);
 		addTaxonomicCoverages(doc, eml);
 		addSpatialCoverage(doc, eml);
 		addTemporalCoverages(doc, eml);
@@ -551,7 +551,7 @@ public class Eml2Rtf {
 		p.clear();
 	}
 	
-	private void addResourceLink(Document doc, Resource resource, Eml eml) throws DocumentException {	
+	private void addResourceLink(Document doc, Resource resource) throws DocumentException {	
 		if(resource.getStatus().equals(PublicationStatus.PUBLIC) || resource.getStatus().equals(PublicationStatus.REGISTERED)) {
 			Paragraph p = new Paragraph();			
 			p.setFont(font);
