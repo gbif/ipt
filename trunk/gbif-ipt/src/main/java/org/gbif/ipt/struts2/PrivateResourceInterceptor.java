@@ -26,7 +26,7 @@ public class PrivateResourceInterceptor extends AbstractInterceptor {
 
 	@Override
 	public String intercept(ActionInvocation invocation) throws Exception {
-		String requestedResource = RequireManagerInterceptor.getResourceParam(invocation);
+		String requestedResource = RequireManagerInterceptor.getResourceParam(invocation);		
 		if (requestedResource != null) {
 			// does resource exist at all?
 			Resource resource = resourceManager.get(requestedResource);
@@ -35,7 +35,7 @@ public class PrivateResourceInterceptor extends AbstractInterceptor {
 			}
 			// private? 
 			if (PublicationStatus.PRIVATE == resource.getStatus()){
-				Map session = invocation.getInvocationContext().getSession();
+				Map<String, Object> session = invocation.getInvocationContext().getSession();
 				User user = (User) session.get(Constants.SESSION_USER);
 				// user authorised?
 				if (user == null || !isAuthorized(user, resource, invocation)){
