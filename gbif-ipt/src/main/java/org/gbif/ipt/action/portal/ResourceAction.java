@@ -1,14 +1,13 @@
 package org.gbif.ipt.action.portal;
 
+import java.util.List;
+
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.metadata.eml.Eml;
 
 import com.google.inject.Inject;
-
-import java.util.List;
 
 public class ResourceAction extends PortalBaseAction {
   @Inject
@@ -17,10 +16,10 @@ public class ResourceAction extends PortalBaseAction {
   private Integer page = 1;
 
   @Override
-  public String execute() throws Exception {
-    if (resource == null || resource.getStatus().equals(PublicationStatus.PRIVATE)) {
+  public String execute() throws Exception {	  
+    if (resource == null) {
       return NOT_FOUND;
-    }
+    }    
     return SUCCESS;
   }
 
