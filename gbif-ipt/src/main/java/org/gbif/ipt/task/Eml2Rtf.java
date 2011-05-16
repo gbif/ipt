@@ -81,6 +81,8 @@ public class Eml2Rtf {
 	private Font fontToComplete = FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.NORMAL, Color.RED);
 	private Font fontTitle = FontFactory.getFont(FontFactory.TIMES_BOLD, 12, Font.BOLD, Color.BLACK);
 	private Font fontHeader = FontFactory.getFont(FontFactory.TIMES_BOLD, 14, Font.BOLD, Color.BLACK);
+	private Font fontLinkTitle = FontFactory.getFont(FontFactory.TIMES_BOLD, 12, font.UNDERLINE, Color.BLUE);
+	private Font fontLink = FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, font.UNDERLINE, Color.BLUE);
 
 	@Inject
 	private SimpleTextProvider textProvider;
@@ -554,9 +556,12 @@ public class Eml2Rtf {
 	private void addResourceLink(Document doc, Resource resource) throws DocumentException {	
 		if(resource.getStatus().equals(PublicationStatus.PUBLIC) || resource.getStatus().equals(PublicationStatus.REGISTERED)) {
 			Paragraph p = new Paragraph();			
-			p.setFont(font);
-			p.add(new Phrase("Metadata resource link: ", fontTitle));
-			p.add(Chunk.NEWLINE);
+			p.setFont(font);			
+			p.add(new Phrase("Data published through ", fontTitle));
+			Anchor gbifLink = new Anchor("GBIF", fontLinkTitle);
+			gbifLink.setReference("http://www.gbif.org");
+			p.add(gbifLink);
+			p.add(": ");
 			String link = appConfig.getBaseURL()+"/resource.do?r="+resource.getShortname();
 			Anchor resourceLink = new Anchor(link, font);
 			resourceLink.setReference(link);
