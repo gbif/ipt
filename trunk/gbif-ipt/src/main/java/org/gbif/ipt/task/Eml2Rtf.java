@@ -256,67 +256,140 @@ public class Eml2Rtf {
     p.clear();
   }
 
-  private void addDatasetDescriptions(Document doc, Eml eml) throws DocumentException {
+  private void addDatasetDescriptions(Document doc, Resource resource) throws DocumentException {
     Paragraph p = new Paragraph();
     p.setAlignment(Element.ALIGN_JUSTIFIED);
     p.setFont(font);
-    if (eml.getPhysicalData().size() > 1) {
-      p.add(new Phrase("Datasets", fontTitle));
-      p.add(Chunk.NEWLINE);
-      p.add(Chunk.NEWLINE);
-    }
-    for (PhysicalData data : eml.getPhysicalData()) {
-      p.add(new Phrase("Dataset description", fontTitle));
-      p.add(Chunk.NEWLINE);
-      if (exists(data.getName())) {
-        p.add(new Phrase("Object name: ", fontTitle));
-        p.add(data.getName());
+    Eml eml = resource.getEml();
+    if (resource.hasMappedData()) {
+      for (int cont = 0; cont < eml.getPhysicalData().size(); cont++) {
+        PhysicalData data = eml.getPhysicalData().get(cont);
+        if (cont == 0) {
+          p.add(new Phrase("Dataset description", fontTitle));
+          p.add(Chunk.NEWLINE);
+        } else if (cont == 1) {
+          p.add(new Phrase("External datasets", fontTitle));
+          p.add(Chunk.NEWLINE);
+          p.add(Chunk.NEWLINE);
+        }
+        if (exists(data.getName())) {
+          p.add(new Phrase("Object name: ", fontTitle));
+          p.add(data.getName());
+          p.add(Chunk.NEWLINE);
+        }
+        if (exists(data.getCharset())) {
+          p.add(new Phrase("Character encoding: ", fontTitle));
+          p.add(data.getCharset());
+          p.add(Chunk.NEWLINE);
+        }
+        if (exists(data.getFormat())) {
+          p.add(new Phrase("Format name: ", fontTitle));
+          p.add(data.getFormat());
+          p.add(Chunk.NEWLINE);
+        }
+        if (exists(data.getFormatVersion())) {
+          p.add(new Phrase("Format version: ", fontTitle));
+          p.add(data.getFormatVersion());
+          p.add(Chunk.NEWLINE);
+        }
+        if (exists(data.getDistributionUrl())) {
+          p.add(new Phrase("Distribution: ", fontTitle));
+          Anchor distributionLink = new Anchor(data.getDistributionUrl(), fontLink);
+          distributionLink.setReference(data.getDistributionUrl());
+          p.add(distributionLink);
+          p.add(Chunk.NEWLINE);
+        }
         p.add(Chunk.NEWLINE);
+        if (cont == 0) {
+          if (exists(eml.getPubDate())) {
+            p.add(new Phrase("Publication date of data: ", fontTitle));
+            SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+            p.add(f.format(eml.getPubDate()));
+            p.add(Chunk.NEWLINE);
+          }
+          VocabularyConcept vocabConcept = vocabManager.get(Constants.VOCAB_URI_LANGUAGE).findConcept(eml.getLanguage());
+          p.add(new Phrase("Language: ", fontTitle));
+          if (exists(vocabConcept)) {
+            p.add(vocabConcept.getPreferredTerm("en").getTitle());
+          } else {
+            p.add("Unknown");
+          }
+          p.add(Chunk.NEWLINE);
+          if (exists(eml.getIntellectualRights())) {
+            p.add(new Phrase("Licenses of use: ", fontTitle));
+            p.add(eml.getIntellectualRights());
+            p.add(Chunk.NEWLINE);
+          }
+          p.add(Chunk.NEWLINE);
+        }
       }
-      if (exists(data.getCharset())) {
-        p.add(new Phrase("Character encoding: ", fontTitle));
-        p.add(data.getCharset());
-        p.add(Chunk.NEWLINE);
-      }
-      if (exists(data.getFormat())) {
-        p.add(new Phrase("Format name: ", fontTitle));
-        p.add(data.getFormat());
-        p.add(Chunk.NEWLINE);
-      }
-      if (exists(data.getFormatVersion())) {
-        p.add(new Phrase("Format version: ", fontTitle));
-        p.add(data.getFormatVersion());
-        p.add(Chunk.NEWLINE);
-      }
-      if (exists(data.getDistributionUrl())) {
-        p.add(new Phrase("Distribution: ", fontTitle));
-        Anchor distributionLink = new Anchor(data.getDistributionUrl(), font);
-        distributionLink.setReference(data.getDistributionUrl());
-        p.add(distributionLink);
-      }
-      p.add(Chunk.NEWLINE);
-      p.add(Chunk.NEWLINE);
-    }
-    if (exists(eml.getPubDate())) {
-      p.add(new Phrase("Publication date of data: ", fontTitle));
-      SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
-      p.add(f.format(eml.getPubDate()));
-      p.add(Chunk.NEWLINE);
-    }
-    VocabularyConcept vocabConcept = vocabManager.get(Constants.VOCAB_URI_LANGUAGE).findConcept(eml.getLanguage());
-    p.add(new Phrase("Language: ", fontTitle));
-    if (exists(vocabConcept)) {
-      p.add(vocabConcept.getPreferredTerm("en").getTitle());
+      doc.add(p);
     } else {
-      p.add("Unknown");
+      if (eml.getPhysicalData().size() > 0) {
+        p.add(new Phrase("Dataset description", fontTitle));
+        p.add(Chunk.NEWLINE);
+        p.add(new Phrase(
+            "There is no dataset published through Darwin Core Archive format for this resource. Currently described datasets are listed in the section \"External datasets\", and accordingly the \"External links\" are listed in the \"External datasets\" section.",
+            font));
+        p.add(Chunk.NEWLINE);
+        p.add(Chunk.NEWLINE);
+        if (exists(eml.getPubDate())) {
+          p.add(new Phrase("Publication date of data: ", fontTitle));
+          SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+          p.add(f.format(eml.getPubDate()));
+          p.add(Chunk.NEWLINE);
+        }
+        VocabularyConcept vocabConcept = vocabManager.get(Constants.VOCAB_URI_LANGUAGE).findConcept(eml.getLanguage());
+        p.add(new Phrase("Language: ", fontTitle));
+        if (exists(vocabConcept)) {
+          p.add(vocabConcept.getPreferredTerm("en").getTitle());
+        } else {
+          p.add("Unknown");
+        }
+        p.add(Chunk.NEWLINE);
+        if (exists(eml.getIntellectualRights())) {
+          p.add(new Phrase("Licenses of use: ", fontTitle));
+          p.add(eml.getIntellectualRights());
+          p.add(Chunk.NEWLINE);
+        }
+        p.add(Chunk.NEWLINE);
+
+        for (PhysicalData data : eml.getPhysicalData()) {
+          p.add(new Phrase("External datasets", fontTitle));
+          p.add(Chunk.NEWLINE);
+          p.add(Chunk.NEWLINE);
+          if (exists(data.getName())) {
+            p.add(new Phrase("Object name: ", fontTitle));
+            p.add(data.getName());
+            p.add(Chunk.NEWLINE);
+          }
+          if (exists(data.getCharset())) {
+            p.add(new Phrase("Character encoding: ", fontTitle));
+            p.add(data.getCharset());
+            p.add(Chunk.NEWLINE);
+          }
+          if (exists(data.getFormat())) {
+            p.add(new Phrase("Format name: ", fontTitle));
+            p.add(data.getFormat());
+            p.add(Chunk.NEWLINE);
+          }
+          if (exists(data.getFormatVersion())) {
+            p.add(new Phrase("Format version: ", fontTitle));
+            p.add(data.getFormatVersion());
+            p.add(Chunk.NEWLINE);
+          }
+          if (exists(data.getDistributionUrl())) {
+            p.add(new Phrase("Distribution: ", fontTitle));
+            Anchor distributionLink = new Anchor(data.getDistributionUrl(), fontLink);
+            distributionLink.setReference(data.getDistributionUrl());
+            p.add(distributionLink);
+            p.add(Chunk.NEWLINE);
+          }
+        }
+      }
+
+      doc.add(p);
     }
-    p.add(Chunk.NEWLINE);
-    if (exists(eml.getIntellectualRights())) {
-      p.add(new Phrase("Licenses of use: ", fontTitle));
-      p.add(eml.getIntellectualRights());
-      p.add(Chunk.NEWLINE);
-    }
-    doc.add(p);
     p.clear();
   }
 
@@ -798,7 +871,7 @@ public class Eml2Rtf {
     addProjectData(doc, eml);
     addNaturalCollections(doc, eml);
     addMethods(doc, eml);
-    addDatasetDescriptions(doc, eml);
+    addDatasetDescriptions(doc, resource);
     addMetadataDescriptions(doc, eml);
     addReferences(doc, eml);
     doc.close();
