@@ -274,7 +274,11 @@ public class Eml2Rtf {
         }
         if (exists(data.getName())) {
           p.add(new Phrase("Object name: ", fontTitle));
-          p.add("Darwin Core Archive " + data.getName());
+          if (cont == 0) {
+            p.add("Darwin Core Archive " + eml.getTitle());
+          } else {
+            p.add(data.getName());
+          }
           p.add(Chunk.NEWLINE);
         }
         if (exists(data.getCharset())) {
