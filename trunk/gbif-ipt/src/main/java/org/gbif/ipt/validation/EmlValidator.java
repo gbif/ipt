@@ -568,6 +568,8 @@ public class EmlValidator extends BaseValidator {
         if (!eml.getCitation().getIdentifier().equals("") && !exists(eml.getCitation().getIdentifier())) {
           action.addFieldError("eml.citation.identifier", action.getText("validation.field.blank",
               new String[]{action.getText("eml.citation.identifier")}));
+        } else {
+          eml.getCitation().setIdentifier(eml.getCitation().getIdentifier().trim());
         }
 
         if (exists(eml.getCitation().getIdentifier()) && !exists(eml.getCitation().getCitation())) {
