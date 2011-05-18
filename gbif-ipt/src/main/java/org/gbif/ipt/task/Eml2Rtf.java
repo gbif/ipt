@@ -261,7 +261,7 @@ public class Eml2Rtf {
     p.setAlignment(Element.ALIGN_JUSTIFIED);
     p.setFont(font);
     Eml eml = resource.getEml();
-    if (resource.hasMappedData()) {
+    if (resource.hasPublishedData()) {
       for (int cont = 0; cont < eml.getPhysicalData().size(); cont++) {
         PhysicalData data = eml.getPhysicalData().get(cont);
         if (cont == 0) {
@@ -274,7 +274,7 @@ public class Eml2Rtf {
         }
         if (exists(data.getName())) {
           p.add(new Phrase("Object name: ", fontTitle));
-          p.add(data.getName());
+          p.add("Darwin Core Archive " + data.getName());
           p.add(Chunk.NEWLINE);
         }
         if (exists(data.getCharset())) {
@@ -299,7 +299,6 @@ public class Eml2Rtf {
           p.add(distributionLink);
           p.add(Chunk.NEWLINE);
         }
-        p.add(Chunk.NEWLINE);
         if (cont == 0) {
           if (exists(eml.getPubDate())) {
             p.add(new Phrase("Publication date of data: ", fontTitle));
