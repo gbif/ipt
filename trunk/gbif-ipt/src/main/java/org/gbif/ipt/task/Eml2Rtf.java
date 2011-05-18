@@ -356,10 +356,9 @@ public class Eml2Rtf {
           p.add(Chunk.NEWLINE);
         }
         p.add(Chunk.NEWLINE);
-
+        p.add(new Phrase("External datasets", fontTitle));
+        p.add(Chunk.NEWLINE);
         for (PhysicalData data : eml.getPhysicalData()) {
-          p.add(new Phrase("External datasets", fontTitle));
-          p.add(Chunk.NEWLINE);
           p.add(Chunk.NEWLINE);
           if (exists(data.getName())) {
             p.add(new Phrase("Object name: ", fontTitle));
