@@ -327,7 +327,7 @@ public class Eml2Rtf {
         p.add(Chunk.NEWLINE);
         p.add(new Phrase("Dataset description", fontTitle));
         p.add(Chunk.NEWLINE);
-        p.add("There is no dataset published through Darwin Core Archive format for this resource. Currently described datasets are listed in the section External datasets");
+        p.add("There is no dataset published through Darwin Core Archive format for this resource. Currently described datasets are listed in the section External datasets.");
         p.add(Chunk.NEWLINE);
         VocabularyConcept vocabConcept = vocabManager.get(Constants.VOCAB_URI_LANGUAGE).findConcept(eml.getLanguage());
         p.add(new Phrase("Language: ", fontTitle));
