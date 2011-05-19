@@ -266,7 +266,7 @@ public class Eml2Rtf {
        * If data is uploaded/published through the IPT, the "Dataset description" describes the DwC-A being published by
        * the IPT.
        */
-      p.add(new Phrase("Datasets", fontTitle)); // ASK if this should be singular or plural (Datasets).
+      p.add(new Phrase("Datasets", fontTitle));
       p.add(Chunk.NEWLINE);
       p.add(Chunk.NEWLINE);
       p.add(new Phrase("Dataset description", fontTitle));
@@ -275,7 +275,7 @@ public class Eml2Rtf {
       p.add("Darwin Core Archive " + eml.getTitle());
       p.add(Chunk.NEWLINE);
       p.add(new Phrase("Character encoding: ", fontTitle));
-      p.add("UTF-8"); // ASK if is always this encoding
+      p.add("UTF-8");
       p.add(Chunk.NEWLINE);
       p.add(new Phrase("Format name: ", fontTitle));
       p.add("Darwin Core Archive format");
@@ -329,6 +329,19 @@ public class Eml2Rtf {
         p.add(Chunk.NEWLINE);
         p.add("There is no dataset published through Darwin Core Archive format for this resource. Currently described datasets are listed in the section External datasets");
         p.add(Chunk.NEWLINE);
+        VocabularyConcept vocabConcept = vocabManager.get(Constants.VOCAB_URI_LANGUAGE).findConcept(eml.getLanguage());
+        p.add(new Phrase("Language: ", fontTitle));
+        if (exists(vocabConcept)) {
+          p.add(vocabConcept.getPreferredTerm("en").getTitle());
+        } else {
+          p.add("Unknown");
+        }
+        p.add(Chunk.NEWLINE);
+        if (exists(eml.getIntellectualRights())) {
+          p.add(new Phrase("Licenses of use: ", fontTitle));
+          p.add(eml.getIntellectualRights());
+          p.add(Chunk.NEWLINE);
+        }
         doc.add(p);
 
         // ------ External Datasets ------
