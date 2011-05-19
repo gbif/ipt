@@ -261,24 +261,120 @@ public class Eml2Rtf {
     p.setAlignment(Element.ALIGN_JUSTIFIED);
     p.setFont(font);
     Eml eml = resource.getEml();
-    if (resource.hasPublishedData()) {
-      for (int cont = 0; cont < eml.getPhysicalData().size(); cont++) {
-        PhysicalData data = eml.getPhysicalData().get(cont);
-        if (cont == 0) {
-          p.add(new Phrase("Dataset description", fontTitle));
-          p.add(Chunk.NEWLINE);
-        } else if (cont == 1) {
-          p.add(new Phrase("External datasets", fontTitle));
-          p.add(Chunk.NEWLINE);
-          p.add(Chunk.NEWLINE);
-        }
+    if (resource.hasMappedData()) {
+      /*
+       * If data is uploaded/published through the IPT, the "Dataset description" describes the DwC-A being published by
+       * the IPT.
+       */
+      p.add(new Phrase("Datasets", fontTitle)); // ASK if this should be singular or plural (Datasets).
+      p.add(Chunk.NEWLINE);
+      p.add(Chunk.NEWLINE);
+      p.add(new Phrase("Dataset description", fontTitle));
+      p.add(Chunk.NEWLINE);
+      p.add(new Phrase("Object name: ", fontTitle));
+      p.add("Darwin Core Archive " + eml.getTitle());
+      p.add(Chunk.NEWLINE);
+      p.add(new Phrase("Character encoding: ", fontTitle));
+      p.add("UTF-8"); // ASK if is always this encoding
+      p.add(Chunk.NEWLINE);
+      p.add(new Phrase("Format name: ", fontTitle));
+      p.add("Darwin Core Archive format");
+      p.add(Chunk.NEWLINE);
+      p.add(new Phrase("Format version: ", fontTitle));
+      p.add("1.0");
+      p.add(Chunk.NEWLINE);
+      p.add(new Phrase("Distribution: ", fontTitle));
+      String dwcaLink = appConfig.getBaseURL() + "/archive.do?r=" + resource.getShortname();
+      Anchor distributionLink = new Anchor(dwcaLink, fontLink);
+      distributionLink.setReference(dwcaLink);
+      p.add(distributionLink);
+      p.add(Chunk.NEWLINE);
+      if (exists(eml.getPubDate())) {
+        p.add(new Phrase("Publication date of data: ", fontTitle));
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+        p.add(f.format(eml.getPubDate()));
+        p.add(Chunk.NEWLINE);
+      }
+      VocabularyConcept vocabConcept = vocabManager.get(Constants.VOCAB_URI_LANGUAGE).findConcept(eml.getLanguage());
+      p.add(new Phrase("Language: ", fontTitle));
+      if (exists(vocabConcept)) {
+        p.add(vocabConcept.getPreferredTerm("en").getTitle());
+      } else {
+        p.add("Unknown");
+      }
+      p.add(Chunk.NEWLINE);
+      if (exists(eml.getIntellectualRights())) {
+        p.add(new Phrase("Licenses of use: ", fontTitle));
+        p.add(eml.getIntellectualRights());
+        p.add(Chunk.NEWLINE);
+      }
+
+      doc.add(p);
+
+      /* ...And all other "External links" entered in the IPT appear under a new section called "External datasets". */
+      // ------ External Datasets ------
+      addExternalLinks(doc, eml);
+    } else {
+      if (eml.getPhysicalData().size() > 0) {
+        /*
+         * If no data is uploaded/published through the IPT but there are one or more "External links", the
+         * "Dataset description" reads:
+         * "There is no dataset published through Darwin Core Archive format for this resource. Currently described datasets are listed in the section "
+         * External datasets", and accordingly the "External links" are listed in the "External datasets" section.
+         */
+        p.add(new Phrase("Datasets", fontTitle)); // ASK if this should be singular or plural (Datasets).
+        p.add(Chunk.NEWLINE);
+        p.add(Chunk.NEWLINE);
+        p.add(new Phrase("Dataset description", fontTitle));
+        p.add(Chunk.NEWLINE);
+        p.add("There is no dataset published through Darwin Core Archive format for this resource. Currently described datasets are listed in the section External datasets");
+        p.add(Chunk.NEWLINE);
+        doc.add(p);
+
+        // ------ External Datasets ------
+        addExternalLinks(doc, eml);
+      }
+      /*
+       * If there is no data uploaded/published through the IPT, and no "External links", then that means only the
+       * metadata is being published and no "Dataset" and "Dataset description" sections will appear at all.
+       */
+
+    }
+    p.clear();
+  }
+
+  private void addDates(Document doc, Eml eml) throws DocumentException {
+    Paragraph p = new Paragraph();
+    Phrase phrase = new Phrase("{date}", fontToComplete);
+    p.setFont(font);
+    p.add("Received ");
+    p.add(phrase);
+    p.add("; Revised ");
+    p.add(phrase);
+    p.add("; Accepted ");
+    p.add(phrase);
+    p.add("; Published ");
+    p.add(phrase);
+    p.add(Chunk.NEWLINE);
+    doc.add(p);
+    p.clear();
+  }
+
+  private void addExternalLinks(Document doc, Eml eml) throws DocumentException {
+    if (eml.getPhysicalData().size() > 0) {
+      Paragraph p = new Paragraph();
+      p.setAlignment(Element.ALIGN_JUSTIFIED);
+      p.setFont(font);
+
+      p.add(new Phrase("External datasets", fontTitle));
+      p.add(Chunk.NEWLINE);
+      p.add(Chunk.NEWLINE);
+      for (PhysicalData data : eml.getPhysicalData()) {
+        p.add(new Phrase("Dataset description", fontTitle));
+        p.add(Chunk.NEWLINE);
         if (exists(data.getName())) {
           p.add(new Phrase("Object name: ", fontTitle));
-          if (cont == 0) {
-            p.add("Darwin Core Archive " + eml.getTitle());
-          } else {
-            p.add(data.getName());
-          }
+          p.add(data.getName());
           p.add(Chunk.NEWLINE);
         }
         if (exists(data.getCharset())) {
@@ -303,113 +399,11 @@ public class Eml2Rtf {
           p.add(distributionLink);
           p.add(Chunk.NEWLINE);
         }
-        if (cont == 0) {
-          if (exists(eml.getPubDate())) {
-            p.add(new Phrase("Publication date of data: ", fontTitle));
-            SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
-            p.add(f.format(eml.getPubDate()));
-            p.add(Chunk.NEWLINE);
-          }
-          VocabularyConcept vocabConcept = vocabManager.get(Constants.VOCAB_URI_LANGUAGE).findConcept(eml.getLanguage());
-          p.add(new Phrase("Language: ", fontTitle));
-          if (exists(vocabConcept)) {
-            p.add(vocabConcept.getPreferredTerm("en").getTitle());
-          } else {
-            p.add("Unknown");
-          }
-          p.add(Chunk.NEWLINE);
-          if (exists(eml.getIntellectualRights())) {
-            p.add(new Phrase("Licenses of use: ", fontTitle));
-            p.add(eml.getIntellectualRights());
-            p.add(Chunk.NEWLINE);
-          }
-          p.add(Chunk.NEWLINE);
-        }
+        p.add(Chunk.NEWLINE);
       }
       doc.add(p);
-    } else {
-      if (eml.getPhysicalData().size() > 0) {
-        p.add(new Phrase("Dataset description", fontTitle));
-        p.add(Chunk.NEWLINE);
-        p.add(new Phrase(
-            "There is no dataset published through Darwin Core Archive format for this resource. Currently described datasets are listed in the section \"External datasets\", and accordingly the \"External links\" are listed in the \"External datasets\" section.",
-            font));
-        p.add(Chunk.NEWLINE);
-        p.add(Chunk.NEWLINE);
-        if (exists(eml.getPubDate())) {
-          p.add(new Phrase("Publication date of data: ", fontTitle));
-          SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
-          p.add(f.format(eml.getPubDate()));
-          p.add(Chunk.NEWLINE);
-        }
-        VocabularyConcept vocabConcept = vocabManager.get(Constants.VOCAB_URI_LANGUAGE).findConcept(eml.getLanguage());
-        p.add(new Phrase("Language: ", fontTitle));
-        if (exists(vocabConcept)) {
-          p.add(vocabConcept.getPreferredTerm("en").getTitle());
-        } else {
-          p.add("Unknown");
-        }
-        p.add(Chunk.NEWLINE);
-        if (exists(eml.getIntellectualRights())) {
-          p.add(new Phrase("Licenses of use: ", fontTitle));
-          p.add(eml.getIntellectualRights());
-          p.add(Chunk.NEWLINE);
-        }
-        p.add(Chunk.NEWLINE);
-        p.add(new Phrase("External datasets", fontTitle));
-        p.add(Chunk.NEWLINE);
-        for (PhysicalData data : eml.getPhysicalData()) {
-          p.add(Chunk.NEWLINE);
-          if (exists(data.getName())) {
-            p.add(new Phrase("Object name: ", fontTitle));
-            p.add(data.getName());
-            p.add(Chunk.NEWLINE);
-          }
-          if (exists(data.getCharset())) {
-            p.add(new Phrase("Character encoding: ", fontTitle));
-            p.add(data.getCharset());
-            p.add(Chunk.NEWLINE);
-          }
-          if (exists(data.getFormat())) {
-            p.add(new Phrase("Format name: ", fontTitle));
-            p.add(data.getFormat());
-            p.add(Chunk.NEWLINE);
-          }
-          if (exists(data.getFormatVersion())) {
-            p.add(new Phrase("Format version: ", fontTitle));
-            p.add(data.getFormatVersion());
-            p.add(Chunk.NEWLINE);
-          }
-          if (exists(data.getDistributionUrl())) {
-            p.add(new Phrase("Distribution: ", fontTitle));
-            Anchor distributionLink = new Anchor(data.getDistributionUrl(), fontLink);
-            distributionLink.setReference(data.getDistributionUrl());
-            p.add(distributionLink);
-            p.add(Chunk.NEWLINE);
-          }
-        }
-      }
-
-      doc.add(p);
+      p.clear();
     }
-    p.clear();
-  }
-
-  private void addDates(Document doc, Eml eml) throws DocumentException {
-    Paragraph p = new Paragraph();
-    Phrase phrase = new Phrase("{date}", fontToComplete);
-    p.setFont(font);
-    p.add("Received ");
-    p.add(phrase);
-    p.add("; Revised ");
-    p.add(phrase);
-    p.add("; Accepted ");
-    p.add(phrase);
-    p.add("; Published ");
-    p.add(phrase);
-    p.add(Chunk.NEWLINE);
-    doc.add(p);
-    p.clear();
   }
 
   private void addKeywords(Document doc, String keys) throws DocumentException {
