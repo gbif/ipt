@@ -490,7 +490,7 @@ This area of the Resource Overview page allows a user to publish a release (vers
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourcePublishingStatus.png]
 
-  * *Published* - After a resource has been published, summary information about the published release will appear in the right-hand column of the Published Release area, including the serial integer version and date of the latest publication, a link to download the Darwin Core Archive file, a link to download the EML file, a link to the RTF data publication, and a link to view the metadata contained in the EML file in the Metadata Overview page as described under the heading of the same name in the "Home Menu" section.
+  * *Published* - After a resource has been published, summary information about the published release will appear in the right-hand column of the Published Release area of the Metadata Overview page. The summary includes the serial integer version and date of the latest publication, a link entitled "Show Report" to view the publication log summary, a link to the Publication Log file, a link to download the Darwin Core Archive file, a link download the EML file, a link to view the metadata contained in the EML file in the Metadata Overview page as described under the heading of the same name in the "Home Menu" section, and a link to download the RTF data publication.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourcePublished.png]
 ====Resource Managers====
