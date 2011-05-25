@@ -1,11 +1,17 @@
 package org.gbif.ipt.task;
 
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Level;
 import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.text.Archive;
 import org.gbif.dwc.text.ArchiveField;
-import org.gbif.dwc.text.ArchiveField.DataType;
 import org.gbif.dwc.text.ArchiveFile;
 import org.gbif.dwc.text.ArchiveWriter;
+import org.gbif.dwc.text.ArchiveField.DataType;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
@@ -15,13 +21,6 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.utils.file.ClosableIterator;
 import org.gbif.utils.file.CompressionUtil;
-
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Level;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -51,11 +50,12 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
   private int currRecords = 0;
   private String currExtension;
   private STATE state = STATE.WAITING;
-  private SourceManager sourceManager;
+  private final SourceManager sourceManager;
   private Exception exception;
 
   @Inject
-  public GenerateDwca(@Assisted Resource resource, @Assisted ReportHandler handler, DataDir dataDir,
+  public GenerateDwca(@Assisted Resource resource,
+      @Assisted ReportHandler handler, DataDir dataDir,
       SourceManager sourceManager) {
     super(1000, resource.getShortname(), handler);
     this.resource = resource;
@@ -63,17 +63,98 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     this.sourceManager = sourceManager;
   }
 
+  public Integer call() throws Exception {
+    try {
+      checkForInterruption();
+      setState(STATE.STARTED);
+      addMessage(Level.INFO, "Archive generation started for resource "
+          + resource.getShortname());
+      // create a temp dir to copy all dwca files to
+      dwcaFolder = dataDir.tmpDir();
+      archive = new Archive();
+
+      // create data files
+      checkForInterruption();
+      createDataFiles();
+
+      // copy eml file
+      checkForInterruption();
+      addEmlFile();
+
+      // create meta.xml
+      checkForInterruption();
+      createMetaFile();
+
+      // zip archive and copy to resource folder
+      checkForInterruption();
+      bundleArchive();
+
+      // final reporting
+      addMessage(Level.INFO, "Archive generated successfully!");
+      setState(STATE.COMPLETED);
+
+      return coreRecords;
+
+    } catch (Exception e) {
+      // set last error report!
+      setState(e);
+      throw new GeneratorException(e);
+    }
+  }
+
+  @Override
+  protected boolean completed() {
+    return STATE.COMPLETED == this.state;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.gbif.ipt.task.ReportingTask#currentException()
+   */
+  @Override
+  protected Exception currentException() {
+    return exception;
+  }
+
+  @Override
+  protected String currentState() {
+    switch (state) {
+      case WAITING:
+        return "Not started yet";
+      case STARTED:
+        return "Starting archive generation";
+      case DATAFILES:
+        return "Processing record " + currRecords + " for data file <em>"
+            + currExtension + "</em>";
+      case METADATA:
+        return "Creating metadata files";
+      case BUNDLING:
+        return "Compressing archive";
+      case COMPLETED:
+        return "Archive generated!";
+      case STOPPING:
+        return "Stopping process";
+      case FAILED:
+        return "Failed. Fatal error!";
+      default:
+        return "You should never see this";
+    }
+  }
+
   /**
-   * Adds a single data file for a list of extension mappings that must all be mapped to the same extension
+   * Adds a single data file for a list of extension mappings that must all be
+   * mapped to the same extension
    * 
    * @param mappings
    * @throws IOException
    * @throws GeneratorException
-   * @throws IllegalArgumentException if not all mappings are mapped to the same extension
+   * @throws IllegalArgumentException if not all mappings are mapped to the same
+   *           extension
    * 
    */
-  private void addDataFile(List<ExtensionMapping> mappings) throws IOException, GeneratorException,
-      IllegalArgumentException {
+  private void addDataFile(List<ExtensionMapping> mappings) throws IOException,
+      GeneratorException, IllegalArgumentException {
     checkForInterruption();
     if (mappings == null || mappings.isEmpty()) {
       return;
@@ -88,7 +169,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     for (ExtensionMapping m : mappings) {
       if (!ext.equals(m.getExtension())) {
         throw new IllegalArgumentException(
-            "All mappings for a single data file need to be mapped to the same extension: " + ext.getRowType());
+            "All mappings for a single data file need to be mapped to the same extension: "
+                + ext.getRowType());
       }
     }
 
@@ -101,16 +183,20 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     // in the generated file column 0 will be the id row
     af.setId(buildField(null, 0, null));
 
-    // first we need to find the union of all terms mapped and make them a field in the final archive
-    // we keep a static mapping only if it applies to ALL mappings of the same term
+    // first we need to find the union of all terms mapped and make them a field
+    // in the final archive
+    // we keep a static mapping only if it applies to ALL mappings of the same
+    // term
     int dataFileRowSize = 1; // first column will become the id column
     for (ExtensionMapping m : mappings) {
       for (PropertyMapping pm : m.getFields()) {
         if (af.hasTerm(pm.getTerm())) {
           // different default value?
           ArchiveField field = af.getField(pm.getTerm());
-          if (field.getDefaultValue() != null && !field.getDefaultValue().equals(pm.getDefaultValue())) {
-            // different values, reset to null - we will have to explicitly write the values into the data file
+          if (field.getDefaultValue() != null
+              && !field.getDefaultValue().equals(pm.getDefaultValue())) {
+            // different values, reset to null - we will have to explicitly
+            // write the values into the data file
             field.setDefaultValue(null);
             field.setIndex(dataFileRowSize);
             dataFileRowSize++;
@@ -118,7 +204,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
         } else {
           // check if we have a dynamic mapping
           if (pm.getIndex() != null) {
-            af.addField(buildField(pm.getTerm(), dataFileRowSize, pm.getDefaultValue()));
+            af.addField(buildField(pm.getTerm(), dataFileRowSize,
+                pm.getDefaultValue()));
             dataFileRowSize++;
           } else {
             af.addField(buildField(pm.getTerm(), null, pm.getDefaultValue()));
@@ -157,19 +244,21 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     }
 
     // final reporting
-    addMessage(Level.INFO, "Data file written for " + currExtension + " with " + currRecords + " records and "
-        + dataFileRowSize + " columns");
+    addMessage(Level.INFO, "Data file written for " + currExtension + " with "
+        + currRecords + " records and " + dataFileRowSize + " columns");
   }
 
   private void addEmlFile() throws IOException {
     setState(STATE.METADATA);
-    FileUtils.copyFile(dataDir.resourceEmlFile(resource.getShortname(), null), new File(dwcaFolder, "eml.xml"));
+    FileUtils.copyFile(dataDir.resourceEmlFile(resource.getShortname(), null),
+        new File(dwcaFolder, "eml.xml"));
     archive.setMetadataLocation("eml.xml");
     // final reporting
     addMessage(Level.INFO, "EML file added");
   }
 
-  private ArchiveField buildField(ConceptTerm term, Integer column, String defaultValue) {
+  private ArchiveField buildField(ConceptTerm term, Integer column,
+      String defaultValue) {
     ArchiveField f = new ArchiveField();
     f.setTerm(term);
     f.setIndex(column);
@@ -193,44 +282,6 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     addMessage(Level.INFO, "Archive compressed");
   }
 
-  public Integer call() throws Exception {
-    try {
-      checkForInterruption();
-      setState(STATE.STARTED);
-      addMessage(Level.INFO, "Archive generation started for resource " + resource.getShortname());
-      // create a temp dir to copy all dwca files to
-      dwcaFolder = dataDir.tmpDir();
-      archive = new Archive();
-
-      // create data files
-      checkForInterruption();
-      createDataFiles();
-
-      // copy eml file
-      checkForInterruption();
-      addEmlFile();
-
-      // create meta.xml
-      checkForInterruption();
-      createMetaFile();
-
-      // zip archive and copy to resource folder
-      checkForInterruption();
-      bundleArchive();
-
-      // final reporting
-      addMessage(Level.INFO, "Archive generated successfully!");
-      setState(STATE.COMPLETED);
-
-      return coreRecords;
-
-    } catch (Exception e) {
-      // set last error report!
-      setState(e);
-      throw new GeneratorException(e);
-    }
-  }
-
   private void checkForInterruption() {
     if (Thread.interrupted()) {
       StatusReport report = report();
@@ -242,19 +293,16 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
   private void checkForInterruption(int line) throws GeneratorException {
     if (Thread.interrupted()) {
       StatusReport report = report();
-      log.info("Interrupting dwca generator at line " + line + ". Last status: " + report.getState());
+      log.info("Interrupting dwca generator at line " + line
+          + ". Last status: " + report.getState());
       throw new GeneratorException("Canceled");
     }
   }
 
-  @Override
-  protected boolean completed() {
-    return STATE.COMPLETED == this.state;
-  }
-
   private void createDataFiles() throws IOException, GeneratorException {
     setState(STATE.DATAFILES);
-    if (!resource.hasCore() || resource.getCoreMappings().get(0).getSource() == null) {
+    if (!resource.hasCore()
+        || resource.getCoreMappings().get(0).getSource() == null) {
       throw new GeneratorException("Core is not mapped");
     }
     for (Extension ext : resource.getMappedExtensions()) {
@@ -274,60 +322,29 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     addMessage(Level.INFO, "meta.xml archive descriptor written");
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.task.ReportingTask#currentException()
-   */
-  @Override
-  protected Exception currentException() {
-    return exception;
-  }
-
-  @Override
-  protected String currentState() {
-    switch (state) {
-      case WAITING:
-        return "Not started yet";
-      case STARTED:
-        return "Starting archive generation";
-      case DATAFILES:
-        return "Processing record " + currRecords + " for data file <em>" + currExtension + "</em>";
-      case METADATA:
-        return "Creating metadata files";
-      case BUNDLING:
-        return "Compressing archive";
-      case COMPLETED:
-        return "Archive generated!";
-      case STOPPING:
-        return "Stopping process";
-      case FAILED:
-        return "Failed. Fatal error!";
-      default:
-        return "You should never see this";
-    }
-  }
-
   /**
    * @param writer
    * @param dataFileRowSize
    * @param m
    * @throws GeneratorException
    */
-  private void dumpData(Writer writer, ArchiveFile dataFile, ExtensionMapping mapping, int dataFileRowSize)
-      throws GeneratorException {
+  private void dumpData(Writer writer, ArchiveFile dataFile,
+      ExtensionMapping mapping, int dataFileRowSize) throws GeneratorException {
     final String idSuffix = StringUtils.trimToEmpty(mapping.getIdSuffix());
     final RecordFilter filter = mapping.getFilter();
     // get maximum column index to check incoming rows for correctness
     int linesWithWrongColumnNumber = 0;
     int recordsFiltered = 0;
-    int maxColumnIndex = mapping.getIdColumn() == null ? -1 : mapping.getIdColumn();
+    int maxColumnIndex = mapping.getIdColumn() == null ? -1
+        : mapping.getIdColumn();
     for (PropertyMapping pm : mapping.getFields()) {
       if (pm.getIndex() != null && maxColumnIndex < pm.getIndex()) {
         maxColumnIndex = pm.getIndex();
       }
     }
 
-    // prepare index ordered list of all output columns apart from id column, so its fast to iterate
+    // prepare index ordered list of all output columns apart from id column, so
+    // its fast to iterate
     PropertyMapping[] inCols = new PropertyMapping[dataFileRowSize];
     for (ArchiveField f : dataFile.getFields().values()) {
       if (f.getIndex() != null && f.getIndex() > 0) {
@@ -336,10 +353,10 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     }
 
     // DEBUG
-//    System.out.println("IN COLS");
-//    for (PropertyMapping pm : inCols) {
-//      System.out.println(pm);
-//    }
+    // System.out.println("IN COLS");
+    // for (PropertyMapping pm : inCols) {
+    // System.out.println(pm);
+    // }
 
     // get the source iterator
     ClosableIterator<String[]> iter = null;
@@ -349,7 +366,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       File logFile = dataDir.resourcePublicationLogFile(resource.getShortname());
       FileUtils.deleteQuietly(logFile);
       BufferedWriter logWriter = new BufferedWriter(new FileWriter(logFile));
-      logWriter.write("Log Messages for publishing resouce " + resource.getShortname() + " version " + resource.getEmlVersion());
+      logWriter.write("Log Messages for publishing resource "
+          + resource.getShortname() + " version " + resource.getEmlVersion());
       logWriter.write("\n\n");
 
       try {
@@ -375,10 +393,12 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
           }
 
           if (in.length <= maxColumnIndex) {
-            logWriter.write("Line with less columns than mapped\tSource:" + mapping.getSource().getName() + "\tLine:" + line + in.length + "\tColumns:"
-                + in.length + "\t" + inLine);
+            logWriter.write("Line with less columns than mapped\tSource:"
+                + mapping.getSource().getName() + "\tLine:" + line + in.length
+                + "\tColumns:" + in.length + "\t" + inLine);
             logWriter.write("\n");
-            // input row is smaller than the highest mapped column. Resize array by adding nulls
+            // input row is smaller than the highest mapped column. Resize array
+            // by adding nulls
             String[] in2 = new String[maxColumnIndex + 1];
             System.arraycopy(in, 0, in2, 0, in.length);
             in = in2;
@@ -386,7 +406,11 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
           }
           // filter this record?
           if (filter != null && !filter.matches(in)) {
-            logWriter.write("Line did not match the filter criteria and were skipped\tSource:" + mapping.getSource().getName() + "\tLine:" + line + in.length
+            logWriter.write("Line did not match the filter criteria and were skipped\tSource:"
+                + mapping.getSource().getName()
+                + "\tLine:"
+                + line
+                + in.length
                 + "\t" + inLine);
             logWriter.write("\n");
             recordsFiltered++;
@@ -397,7 +421,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
           // add id column - either an existing column or the line number
           if (mapping.getIdColumn() == null) {
             record[0] = null;
-          } else if (mapping.getIdColumn().equals(ExtensionMapping.IDGEN_LINE_NUMBER)) {
+          } else if (mapping.getIdColumn().equals(
+              ExtensionMapping.IDGEN_LINE_NUMBER)) {
             record[0] = String.valueOf(line) + idSuffix;
           } else if (mapping.getIdColumn().equals(ExtensionMapping.IDGEN_UUID)) {
             record[0] = UUID.randomUUID().toString();
@@ -412,7 +437,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
               if (pm.getIndex() != null) {
                 val = in[pm.getIndex()];
                 // translate value?
-                if (pm.getTranslation() != null && pm.getTranslation().containsKey(val)) {
+                if (pm.getTranslation() != null
+                    && pm.getTranslation().containsKey(val)) {
                   val = pm.getTranslation().get(val);
                 }
                 DataType type = mapping.getExtension().getProperty(pm.getTerm()).getType();
@@ -444,21 +470,24 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       } catch (Exception e) {
         // some error writing this file, report
         log.error("Fatal DwC-A Generator Error", e);
-        throw new GeneratorException("Error writing data file for mapping " + mapping.getExtension().getName()
-            + " in source " + mapping.getSource().getName() + ", line " + line, e);
+        throw new GeneratorException("Error writing data file for mapping "
+            + mapping.getExtension().getName() + " in source "
+            + mapping.getSource().getName() + ", line " + line, e);
       } finally {
         iter.close();
       }
 
       // add wrong lines user message
       if (linesWithWrongColumnNumber > 0) {
-        String msg = linesWithWrongColumnNumber + " lines with less columns than mapped.";
+        String msg = linesWithWrongColumnNumber
+            + " lines with less columns than mapped.";
         logWriter.write(msg + "\n");
         addMessage(Level.INFO, msg);
       }
       // add filter message
       if (recordsFiltered > 0) {
-        String msg = recordsFiltered + " lines did not match the filter criteria and were skipped.";
+        String msg = recordsFiltered
+            + " lines did not match the filter criteria and were skipped.";
         logWriter.write(msg + "\n");
         addMessage(Level.INFO, msg);
       }
@@ -495,7 +524,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     for (int i = 0; i < columns.length; i++) {
       if (columns[i] != null) {
         empty = false;
-        columns[i] = StringUtils.trimToNull(escapeChars.matcher(columns[i]).replaceAll(" "));
+        columns[i] = StringUtils.trimToNull(escapeChars.matcher(columns[i]).replaceAll(
+            " "));
       }
     }
     if (empty) {
