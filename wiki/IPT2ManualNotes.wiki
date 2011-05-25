@@ -173,10 +173,11 @@ The footer section of the IPT appears along the bottom of most pages and contain
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTFooter.png]
 
 *Version* - At the left of the footer at bottom of the page is the version of the IPT that is currently running. The version information can be used to determine which features are included in the IPT and what bugs are known to exist. This is the version information that is requested when making bug reports.<br>
-*About the IPT Project* - This link leads to the Google Code site for the IPT (http://code.google.com/p/gbif-providertoolkit/), where further information about the IPT can be found, including the latest version of this manual, open issues, source code, and further related documentation.<br>
+*About the IPT Project* - This link leads to the Google Code site (http://code.google.com/p/gbif-providertoolkit/), where further information about the IPT can be found, including the latest version of this manual, open issues, source code, and further related documentation.<br>
+*User Manual* - This link opens the most recently released online version of the IPT User Manual.<br>
 *Report a bug* - This link opens the list of known open issues for the IPT (http://code.google.com/p/gbif-providertoolkit/issues/list/). If you think you have encountered a bug, look at the list of known issues first to see if the bug has already been reported. If it has, you may add new information as a comment to the existing bug report that might help engineers to diagnose the problem and get it fixed. If no bug similar to the one you have encountered in the IPT appears on the list, you can create a new bug report by clicking on the "New issues" link. When entering a bug report, it is useful to include the version of the IPT you are using (see the explanation for "Version", above).<br>
 *Request new feature* - This link (http://code.google.com/p/gbif-providertoolkit/issues/entry?template=Feature%20request) opens a specific form in the IPT issue tracker that can be filled in to request a capability that the IPT does not currently have.<br>
-*Copyright* - The copyright for the IPT software is held by the Global Biodiversity Information Facility. Details of the copyright and licensing can be seen in the "About the IPT" section of this user manual.
+*Copyright* - The copyright for the IPT software is held by the Global Biodiversity Information Facility. A link to the home page for GBIF is provided. Details of the copyright and licensing can be seen in the "About the IPT" section of this user manual.
 ==Home Menu (visible to all users)==
 This page allows users to view a list of public resources, if any, and to look at the detailed metadata of any resource on the list. 
 
@@ -638,17 +639,17 @@ This IPT installation has not been registered yet.
 ----
 =About the IPT=
 ==Citation==
-This User Manual adapts and builds upon the previous IPT User Manual (Réveillon 2009). The recommended citation for this User Manual is as follows:
+This user manual adapts and builds upon the previous IPT User Manual (Réveillon 2009). The recommended citation for this user Manual is as follows:
 
 Wieczorek, J. 2011. The GBIF Integrated Publishing Toolkit User Manual, version 2.0. Copenhagen: Global Biodiversity Information Facility.
 
 ==Copyright==
-The GBIF Integrated Publishing Toolkit and this User Manual are Copyright 2011 by the Global Biodiversity Information Facility Secretariat.
+The GBIF Integrated Publishing Toolkit and this user manual are Copyright 2011 by the Global Biodiversity Information Facility Secretariat.
 
 ==License==
 The GBIF Integrated Publishing Toolkit is open source software released under the Apache License Version 2.0. You may obtain a copy of this License at http://www.apache.org/licenses/LICENSE-2.0. Unless required by applicable law or agreed to in writing, software distributed under this License is distributed on an "as is" basis, without warranties of conditions of any kind, either express or implied. See the License for the specific language governing rights and limitations under the License.
 
-This User Manual is released under the Creative Commons Attribution-Noncommercial-Share Alike 3.0 Unported License. You may obtain a copy of this license at http://creativecommons.org/licenses/by-nc-sa/3.0/. Though you should consult the actual license document for details, in general terms the license states that you are free to copy, distribute, transmit, remix and adapt the work, under the following conditions:
+This user manual is released under the Creative Commons Attribution-Noncommercial-Share Alike 3.0 Unported License. You may obtain a copy of this license at http://creativecommons.org/licenses/by-nc-sa/3.0/. Though you should consult the actual license document for details, in general terms the license states that you are free to copy, distribute, transmit, remix and adapt the work, under the following conditions:
  * you must cite the work in the manner specified on this page (but not in a way that suggests that GBIF or the GBIF Secretariat endorses you or your use of the work);
  * you may not use this work for commercial purposes;
  * if you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
@@ -693,19 +694,19 @@ Réveillon, A. 2009. The GBIF Integrated Publishing Toolkit User Manual, version
 *Darwin Core* - a standard consisting of terms and classes of terms used to share biodiversity data.<br>
 *Darwin Core Archive* - a single zipped archive for a data set consisting of one or more text files of data, an XML file (meta.xml) describing the contents of the text files and how they relate to each other, and an XML file (eml.xml) containing the metadata in EML about the data set.<br>
 *EML* - the Ecological Markup Language is a XML-based profile used to encode metadata about a data set. <br>
-*Extension* - in this User Manual, an extension is a set of terms corresponding to a specific category of data. An extension should be thought of as an extension of the capabilities of the IPT rather than as an extension of any particular standard. For example, the Darwin Core Occurrence extension is set of terms from the Darwin Core describing Occurrences. It is not an extension to the Darwin Core; it is a subset of the Darwin Core.<br>
+*Extension* - in this user manual, an extension is a set of terms corresponding to a specific category of data. An extension should be thought of as an extension of the capabilities of the IPT rather than as an extension of any particular standard. For example, the Darwin Core Occurrence extension is set of terms from the Darwin Core describing Occurrences. It is not an extension to the Darwin Core; it is a subset of the Darwin Core.<br>
 *GBIF Registry* - the Global Biodiversity Resources Discovery System (GBRDS) is an application that manages the nodes, organisations, resources, and IPT installations registered with GBIF, making them discoverable and interoperable.<br>
-*Metadata* - in this User Manual, metadata refers to the information about a data set as opposed the the primary data in the data set.<br>
+*Metadata* - in this user manual, metadata refers to the information about a data set as opposed the the primary data in the data set.<br>
 *Metadata Resource* - a resource having information about a data sets, but without having the actual primary data. A metadata resource might give information about a collection that has not yet been digitized, for example.<br>
 *Occurrence Resource* - a resource having information about Occurrences as defined in the Darwin Core.<br>
 *Private* - a state of a resource in which only the creator, invited managers, and IPT administrators can view it.<br>
 *Public* - a state of a resource in which anyone can view it.<br>
 *Published Release* - the latest version of the Darwin Core Archive produced for a resource in the IPT and registered in the GBIF Registry.<br>
 *Registered* - a state of a public resource or of an IPT instance in which anyone can discover it through the GBIF Registry.<br>
-*Resource* - in this User Manual, resource refers to a data set and the metadata about it.<br>
+*Resource* - in this user manual, resource refers to a data set and the metadata about it.<br>
 *Resource Managers* - IPT users having a role that allows them to create, change, and remove resources.<br>
 *!RowType* - the category of information represented in an extension. The !RowType is generally the URI of the Class that best fits the information contained in the extension.<br>
 *RSS* - the acronym for Really Simple Syndication, a type of subscription format for tracking changes to a web site.<br>
 *Shortname* - a short unique name used for resource identification within the IPT and services that access the IPT.<br>
-*Source Data* - in this User Manual, the source data are the data that are mapped to extensions within a resource and may consist of text files or a database.<br>
+*Source Data* - in this user manual, the source data are the data that are mapped to extensions within a resource and may consist of text files or a database.<br>
 *Visibility* - a term describing how a resource may be viewed (private, public, or registered).
