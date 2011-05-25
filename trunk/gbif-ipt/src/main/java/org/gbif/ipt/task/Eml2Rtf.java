@@ -151,8 +151,9 @@ public class Eml2Rtf {
     int superStriptCounter = 1;
     for (int c = 0; c < agentsArray.length; c++) {
       if (exists(agentsArray[c].getLastName())) {
-        if (c != 0)
+        if (c != 0) {
           p.add(", ");
+        }
         // First Name and Last Name
         if (exists(agentsArray[c].getFirstName())) {
           p.add(agentsArray[c].getFirstName() + " ");
@@ -183,8 +184,9 @@ public class Eml2Rtf {
     p.setFont(font);
     p.setAlignment(Element.ALIGN_JUSTIFIED);
     for (int c = 0; c < affiliations.size(); c++) {
-      if (c != 0)
+      if (c != 0) {
         p.add("; ");
+      }
       p.add((c + 1) + " ");
       if (exists(affiliations.get(c).getOrganisation())) {
         p.add(affiliations.get(c).getOrganisation() + ", ");
@@ -657,7 +659,7 @@ public class Eml2Rtf {
       p.add(gbifLink);
       p.add(": ");
       String link = appConfig.getBaseURL() + "/resource.do?r=" + resource.getShortname();
-      Anchor resourceLink = new Anchor(link, font);
+      Anchor resourceLink = new Anchor(link, fontLink);
       resourceLink.setReference(link);
       p.add(resourceLink);
       p.add(Chunk.NEWLINE);
@@ -811,11 +813,13 @@ public class Eml2Rtf {
   }
 
   private boolean exists(Object obj) {
-    if (obj == null)
+    if (obj == null) {
       return false;
+    }
     if (obj instanceof String) {
-      if (((String) obj).equals(""))
+      if (((String) obj).equals("")) {
         return false;
+      }
     }
     return true;
   }
