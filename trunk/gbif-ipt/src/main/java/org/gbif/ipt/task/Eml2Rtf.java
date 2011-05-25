@@ -1,18 +1,35 @@
 /***************************************************************************
- * Copyright 2010 Global Biodiversity Information Facility Secretariat
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * Copyright 2010 Global Biodiversity Information Facility Secretariat Licensed
+ * under the Apache License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the
+ * License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by
+ * applicable law or agreed to in writing, software distributed under the
+ * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+ * OF ANY KIND, either express or implied. See the License for the specific
+ * language governing permissions and limitations under the License.
  ***************************************************************************/
 
 package org.gbif.ipt.task;
 
+import static com.google.common.base.Objects.equal;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+
+import com.lowagie.text.Anchor;
+import com.lowagie.text.Chunk;
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Element;
+import com.lowagie.text.Font;
+import com.lowagie.text.FontFactory;
+import com.lowagie.text.List;
+import com.lowagie.text.ListItem;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.Phrase;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.WordUtils;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
@@ -37,25 +54,6 @@ import org.gbif.metadata.eml.TaxonomicCoverage;
 import org.gbif.metadata.eml.TemporalCoverage;
 import org.gbif.metadata.eml.TemporalCoverageType;
 
-import static com.google.common.base.Objects.equal;
-
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import com.lowagie.text.Anchor;
-import com.lowagie.text.Chunk;
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Element;
-import com.lowagie.text.Font;
-import com.lowagie.text.FontFactory;
-import com.lowagie.text.List;
-import com.lowagie.text.ListItem;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.Phrase;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.WordUtils;
-
 import java.awt.Color;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -67,20 +65,26 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
- * Populates a RTF document with a resources metadata, mainly derived from its EML. TODO: implement
- * internationalisation.
+ * Populates a RTF document with a resources metadata, mainly derived from its
+ * EML. TODO: implement internationalisation.
  * 
  * @author markus
  * @author htobon
  */
 @Singleton
 public class Eml2Rtf {
-  private Font font = FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.NORMAL, Color.BLACK);
-  private Font fontToComplete = FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.NORMAL, Color.RED);
-  private Font fontTitle = FontFactory.getFont(FontFactory.TIMES_BOLD, 12, Font.BOLD, Color.BLACK);
-  private Font fontHeader = FontFactory.getFont(FontFactory.TIMES_BOLD, 14, Font.BOLD, Color.BLACK);
-  private Font fontLinkTitle = FontFactory.getFont(FontFactory.TIMES_BOLD, 12, Font.UNDERLINE, Color.BLUE);
-  private Font fontLink = FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.UNDERLINE, Color.BLUE);
+  private final Font font = FontFactory.getFont(FontFactory.TIMES_ROMAN, 12,
+      Font.NORMAL, Color.BLACK);
+  private final Font fontToComplete = FontFactory.getFont(
+      FontFactory.TIMES_ROMAN, 12, Font.NORMAL, Color.RED);
+  private final Font fontTitle = FontFactory.getFont(FontFactory.TIMES_BOLD,
+      12, Font.BOLD, Color.BLACK);
+  private final Font fontHeader = FontFactory.getFont(FontFactory.TIMES_BOLD,
+      14, Font.BOLD, Color.BLACK);
+  private final Font fontLinkTitle = FontFactory.getFont(
+      FontFactory.TIMES_BOLD, 12, Font.UNDERLINE, Color.BLUE);
+  private final Font fontLink = FontFactory.getFont(FontFactory.TIMES_ROMAN,
+      12, Font.UNDERLINE, Color.BLUE);
 
   @Inject
   private SimpleTextProvider textProvider;
@@ -88,6 +92,73 @@ public class Eml2Rtf {
   private VocabulariesManager vocabManager;
   @Inject
   private AppConfig appConfig;
+
+  public String getText(String key) {
+    ResourceBundle res = textProvider.getTexts(Locale.getDefault());
+    return textProvider.findText(res, key, "default.message", new String[0]);
+  }
+
+  public void setAppConfig(AppConfig appConfig) {
+    this.appConfig = appConfig;
+  }
+
+  public void setTextProvider(SimpleTextProvider textProvider) {
+    this.textProvider = textProvider;
+  }
+
+  public void setVocabManager(VocabulariesManager vocabManager) {
+    this.vocabManager = vocabManager;
+  }
+
+  public void writeEmlIntoRtf(Document doc, Resource resource)
+      throws DocumentException {
+    Eml eml = resource.getEml();
+    // configure page
+    doc.setMargins(72, 72, 72, 72);
+    System.out.println(DataDir.CONFIG_DIR);
+    // write metadata
+    doc.addAuthor(resource.getCreator().getName());
+    doc.addCreationDate();
+    doc.addTitle(eml.getTitle());
+    String keys = "";
+    for (KeywordSet kw : eml.getKeywords()) {
+      if (keys.length() == 0) {
+        keys = kw.getKeywordsString(", ");
+      } else {
+        keys += ", " + kw.getKeywordsString(", ");
+      }
+    }
+    doc.addKeywords(keys);
+    // write proper doc
+    doc.open();
+    // title
+    addPara(doc, eml.getTitle(), fontHeader, 0, Element.ALIGN_CENTER);
+    doc.add(Chunk.NEWLINE);
+    // Authors, affiliations and corresponging authors
+    addAuthors(doc, eml);
+    // Received, Revised, Accepted, and published dates
+    /*
+     * These are to be manually inserted by the Publisher of the Data Paper to
+     * indicate the dates of original manuscript submission, revised manuscript
+     * submission, acceptance of manuscript and publishing of the manuscript as
+     * Data Paper in the journal.
+     */
+    addDates(doc, eml);
+    addCitations(doc, eml);
+    addAbstract(doc, eml);
+    addKeywords(doc, keys);
+    addResourceLink(doc, resource);
+    addTaxonomicCoverages(doc, eml);
+    addSpatialCoverage(doc, eml);
+    addTemporalCoverages(doc, eml);
+    addProjectData(doc, eml);
+    addNaturalCollections(doc, eml);
+    addMethods(doc, eml);
+    addDatasetDescriptions(doc, resource);
+    addMetadataDescriptions(doc, eml);
+    addReferences(doc, eml);
+    doc.close();
+  }
 
   private void addAbstract(Document doc, Eml eml) throws DocumentException {
     if (exists(eml.getDescription())) {
@@ -108,15 +179,18 @@ public class Eml2Rtf {
     // <AUTHORS>
     // Creating set of authors with different names. (first names + last names).
     LinkedHashSet<Agent> tempAgents = new LinkedHashSet<Agent>();
-    if (exists(eml.getResourceCreator()) && exists(eml.getResourceCreator().getLastName())) {
+    if (exists(eml.getResourceCreator())
+        && exists(eml.getResourceCreator().getLastName())) {
       tempAgents.add(eml.getResourceCreator());
     }
-    if (exists(eml.getMetadataProvider()) && exists(eml.getMetadataProvider().getLastName())) {
+    if (exists(eml.getMetadataProvider())
+        && exists(eml.getMetadataProvider().getLastName())) {
       tempAgents.add(eml.getMetadataProvider());
     }
     tempAgents.addAll(eml.getAssociatedParties());
 
-    // comparing and removing those repeated agents with same name and same address.
+    // comparing and removing those repeated agents with same name and same
+    // address.
     ArrayList<Integer> toRemove = new ArrayList<Integer>();
     int counter = 0;
     for (Iterator<Agent> i = tempAgents.iterator(); i.hasNext(); counter++) {
@@ -159,11 +233,14 @@ public class Eml2Rtf {
           p.add(agentsArray[c].getFirstName() + " ");
         }
         p.add(agentsArray[c].getLastName());
-        // Looking for addresses and organisations of other authors (superscripts should not be repeated).
+        // Looking for addresses and organisations of other authors
+        // (superscripts should not be repeated).
         int index = 0;
         while (index < c) {
-          if (equal(agentsArray[c].getAddress(), agentsArray[index].getAddress())
-              && equal(agentsArray[c].getOrganisation(), agentsArray[index].getOrganisation())) {
+          if (equal(agentsArray[c].getAddress(),
+              agentsArray[index].getAddress())
+              && equal(agentsArray[c].getOrganisation(),
+                  agentsArray[index].getOrganisation())) {
             p.add(createSuperScript("" + (index + 1)));
             break;
           }
@@ -202,7 +279,8 @@ public class Eml2Rtf {
       }
       if (exists(affiliations.get(c).getAddress().getCountry())) {
         String country = vocabManager.get(Constants.VOCAB_URI_COUNTRY).findConcept(
-            affiliations.get(c).getAddress().getCountry()).getPreferredTerm("en").getTitle();
+            affiliations.get(c).getAddress().getCountry()).getPreferredTerm(
+            "en").getTitle();
         p.add(", " + WordUtils.capitalizeFully(country));
       }
     }
@@ -228,8 +306,10 @@ public class Eml2Rtf {
     if (exists(eml.getMetadataProvider())) {
       boolean sameAsCreator = false;
       if (!isFirst) {
-        sameAsCreator = equal(eml.getMetadataProvider().getAddress(), eml.getResourceCreator().getAddress())
-            && equal(eml.getMetadataProvider().getEmail(), eml.getResourceCreator().getEmail());
+        sameAsCreator = equal(eml.getMetadataProvider().getAddress(),
+            eml.getResourceCreator().getAddress())
+            && equal(eml.getMetadataProvider().getEmail(),
+                eml.getResourceCreator().getEmail());
       }
       if (!sameAsCreator) {
         p.add(", ");
@@ -252,21 +332,22 @@ public class Eml2Rtf {
     p.setAlignment(Element.ALIGN_JUSTIFIED);
     p.setFont(fontToComplete);
     p.add(new Phrase("Citation: ", fontTitle));
-    p.add("Combination of authors, year of data paper publication (in paranthesis), Title, Journal Name, Volume, Issue number (in paranthesis), and doi of the data paper.");
+    p.add("Combination of authors, year of data paper publication (in parentheses), Title, Journal Name, Volume, Issue number (in parentheses), and DOI of the data paper.");
     p.add(Chunk.NEWLINE);
     doc.add(p);
     p.clear();
   }
 
-  private void addDatasetDescriptions(Document doc, Resource resource) throws DocumentException {
+  private void addDatasetDescriptions(Document doc, Resource resource)
+      throws DocumentException {
     Paragraph p = new Paragraph();
     p.setAlignment(Element.ALIGN_JUSTIFIED);
     p.setFont(font);
     Eml eml = resource.getEml();
     if (resource.hasMappedData()) {
       /*
-       * If data is uploaded/published through the IPT, the "Dataset description" describes the DwC-A being published by
-       * the IPT.
+       * If data is uploaded/published through the IPT, the
+       * "Dataset description" describes the DwC-A being published by the IPT.
        */
       p.add(new Phrase("Datasets", fontTitle));
       p.add(Chunk.NEWLINE);
@@ -286,7 +367,8 @@ public class Eml2Rtf {
       p.add("1.0");
       p.add(Chunk.NEWLINE);
       p.add(new Phrase("Distribution: ", fontTitle));
-      String dwcaLink = appConfig.getBaseURL() + "/archive.do?r=" + resource.getShortname();
+      String dwcaLink = appConfig.getBaseURL() + "/archive.do?r="
+          + resource.getShortname();
       Anchor distributionLink = new Anchor(dwcaLink, fontLink);
       distributionLink.setReference(dwcaLink);
       p.add(distributionLink);
@@ -297,7 +379,8 @@ public class Eml2Rtf {
         p.add(f.format(eml.getPubDate()));
         p.add(Chunk.NEWLINE);
       }
-      VocabularyConcept vocabConcept = vocabManager.get(Constants.VOCAB_URI_LANGUAGE).findConcept(eml.getLanguage());
+      VocabularyConcept vocabConcept = vocabManager.get(
+          Constants.VOCAB_URI_LANGUAGE).findConcept(eml.getLanguage());
       p.add(new Phrase("Language: ", fontTitle));
       if (exists(vocabConcept)) {
         p.add(vocabConcept.getPreferredTerm("en").getTitle());
@@ -313,25 +396,32 @@ public class Eml2Rtf {
 
       doc.add(p);
 
-      /* ...And all other "External links" entered in the IPT appear under a new section called "External datasets". */
+      /*
+       * ...And all other "External links" entered in the IPT appear under a new
+       * section called "External datasets".
+       */
       // ------ External Datasets ------
       addExternalLinks(doc, eml);
     } else {
       if (eml.getPhysicalData().size() > 0) {
         /*
-         * If no data is uploaded/published through the IPT but there are one or more "External links", the
-         * "Dataset description" reads:
+         * If no data is uploaded/published through the IPT but there are one or
+         * more "External links", the "Dataset description" reads:
          * "There is no dataset published through Darwin Core Archive format for this resource. Currently described datasets are listed in the section "
-         * External datasets", and accordingly the "External links" are listed in the "External datasets" section.
+         * External datasets", and accordingly the "External
+         * links" are listed in the "External datasets" section.
          */
-        p.add(new Phrase("Datasets", fontTitle)); // ASK if this should be singular or plural (Datasets).
+        p.add(new Phrase("Datasets", fontTitle)); // ASK if this should be
+                                                  // singular or plural
+                                                  // (Datasets).
         p.add(Chunk.NEWLINE);
         p.add(Chunk.NEWLINE);
         p.add(new Phrase("Dataset description", fontTitle));
         p.add(Chunk.NEWLINE);
         p.add("There is no dataset published through Darwin Core Archive format for this resource. Currently described datasets are listed in the section External datasets.");
         p.add(Chunk.NEWLINE);
-        VocabularyConcept vocabConcept = vocabManager.get(Constants.VOCAB_URI_LANGUAGE).findConcept(eml.getLanguage());
+        VocabularyConcept vocabConcept = vocabManager.get(
+            Constants.VOCAB_URI_LANGUAGE).findConcept(eml.getLanguage());
         p.add(new Phrase("Language: ", fontTitle));
         if (exists(vocabConcept)) {
           p.add(vocabConcept.getPreferredTerm("en").getTitle());
@@ -350,8 +440,9 @@ public class Eml2Rtf {
         addExternalLinks(doc, eml);
       }
       /*
-       * If there is no data uploaded/published through the IPT, and no "External links", then that means only the
-       * metadata is being published and no "Dataset" and "Dataset description" sections will appear at all.
+       * If there is no data uploaded/published through the IPT, and no
+       * "External links", then that means only the metadata is being published
+       * and no "Dataset" and "Dataset description" sections will appear at all.
        */
 
     }
@@ -409,7 +500,8 @@ public class Eml2Rtf {
         }
         if (exists(data.getDistributionUrl())) {
           p.add(new Phrase("Distribution: ", fontTitle));
-          Anchor distributionLink = new Anchor(data.getDistributionUrl(), fontLink);
+          Anchor distributionLink = new Anchor(data.getDistributionUrl(),
+              fontLink);
           distributionLink.setReference(data.getDistributionUrl());
           p.add(distributionLink);
           p.add(Chunk.NEWLINE);
@@ -434,7 +526,8 @@ public class Eml2Rtf {
     }
   }
 
-  private void addMetadataDescriptions(Document doc, Eml eml) throws DocumentException {
+  private void addMetadataDescriptions(Document doc, Eml eml)
+      throws DocumentException {
     Paragraph p = new Paragraph();
     p.setAlignment(Element.ALIGN_JUSTIFIED);
     p.setFont(font);
@@ -454,12 +547,13 @@ public class Eml2Rtf {
       p.add(Chunk.NEWLINE);
     }
     if (exists(eml.getHierarchyLevel())) {
-      p.add(new Phrase("Heirarchy level: ", fontTitle));
+      p.add(new Phrase("Hierarchy level: ", fontTitle));
       p.add(WordUtils.capitalizeFully(eml.getHierarchyLevel()));
       p.add(Chunk.NEWLINE);
     }
     if (exists(eml.getMetadataLocale())) {
-      VocabularyConcept vocabConcept = vocabManager.get(Constants.VOCAB_URI_LANGUAGE).findConcept(
+      VocabularyConcept vocabConcept = vocabManager.get(
+          Constants.VOCAB_URI_LANGUAGE).findConcept(
           eml.getMetadataLocale().getLanguage());
       if (exists(vocabConcept)) {
         p.add(new Phrase("Locale: ", fontTitle));
@@ -514,9 +608,12 @@ public class Eml2Rtf {
     }
   }
 
-  private void addNaturalCollections(Document doc, Eml eml) throws DocumentException {
-    if (exists(eml.getParentCollectionId()) || exists(eml.getCollectionName()) || exists(eml.getCollectionId())
-        || eml.getTemporalCoverages().size() > 0 || exists(eml.getSpecimenPreservationMethod())
+  private void addNaturalCollections(Document doc, Eml eml)
+      throws DocumentException {
+    if (exists(eml.getParentCollectionId()) || exists(eml.getCollectionName())
+        || exists(eml.getCollectionId())
+        || eml.getTemporalCoverages().size() > 0
+        || exists(eml.getSpecimenPreservationMethod())
         || eml.getJgtiCuratorialUnits().size() > 0) {
       Paragraph p = new Paragraph();
       p.setAlignment(Element.ALIGN_JUSTIFIED);
@@ -555,7 +652,8 @@ public class Eml2Rtf {
       }
       if (exists(eml.getSpecimenPreservationMethod())) {
         p.add(new Phrase("Specimen preservation method: ", fontTitle));
-        VocabularyConcept vocabConcept = vocabManager.get(Constants.VOCAB_URI_PRESERVATION_METHOD).findConcept(
+        VocabularyConcept vocabConcept = vocabManager.get(
+            Constants.VOCAB_URI_PRESERVATION_METHOD).findConcept(
             eml.getSpecimenPreservationMethod());
         p.add(vocabConcept.getPreferredTerm("en").getTitle());
         p.add(Chunk.NEWLINE);
@@ -563,10 +661,12 @@ public class Eml2Rtf {
       for (JGTICuratorialUnit unit : eml.getJgtiCuratorialUnits()) {
         p.add(new Phrase("Curatorial unit: ", fontTitle));
         if (unit.getType().equals(JGTICuratorialUnitType.COUNT_RANGE)) {
-          p.add("Between " + unit.getRangeStart() + " and " + unit.getRangeEnd());
+          p.add("Between " + unit.getRangeStart() + " and "
+              + unit.getRangeEnd());
         }
         if (unit.getType().equals(JGTICuratorialUnitType.COUNT_WITH_UNCERTAINTY)) {
-          p.add(unit.getRangeMean() + " with an uncertainty of " + unit.getUncertaintyMeasure());
+          p.add(unit.getRangeMean() + " with an uncertainty of "
+              + unit.getUncertaintyMeasure());
         }
         p.add(" (" + unit.getUnitType() + ")");
         p.add(Chunk.NEWLINE);
@@ -578,7 +678,8 @@ public class Eml2Rtf {
     }
   }
 
-  private void addPara(Document doc, String text, Font font, int spacing, int alignType) throws DocumentException {
+  private void addPara(Document doc, String text, Font font, int spacing,
+      int alignType) throws DocumentException {
     Paragraph p = new Paragraph(text, font);
     if (spacing != 0) {
       p.setSpacingBefore(spacing);
@@ -591,7 +692,8 @@ public class Eml2Rtf {
   }
 
   private void addProjectData(Document doc, Eml eml) throws DocumentException {
-    if (exists(eml.getProject().getTitle()) || exists(eml.getProject().getPersonnel().getFirstName())
+    if (exists(eml.getProject().getTitle())
+        || exists(eml.getProject().getPersonnel().getFirstName())
         || exists(eml.getProject().getFunding())
         || exists(eml.getProject().getStudyAreaDescription().getDescriptorValue())
         || exists(eml.getProject().getDesignDescription())) {
@@ -608,7 +710,8 @@ public class Eml2Rtf {
       }
       p.add(new Phrase("Personnel: ", fontTitle));
       if (exists(eml.getProject().getPersonnel().getFirstName())) {
-        p.add(eml.getProject().getPersonnel().getFirstName() + " " + eml.getProject().getPersonnel().getLastName());
+        p.add(eml.getProject().getPersonnel().getFirstName() + " "
+            + eml.getProject().getPersonnel().getLastName());
         p.add(Chunk.NEWLINE);
       }
       if (exists(eml.getProject().getFunding())) {
@@ -648,7 +751,8 @@ public class Eml2Rtf {
     }
   }
 
-  private void addResourceLink(Document doc, Resource resource) throws DocumentException {
+  private void addResourceLink(Document doc, Resource resource)
+      throws DocumentException {
     if (resource.getStatus().equals(PublicationStatus.PUBLIC)
         || resource.getStatus().equals(PublicationStatus.REGISTERED)) {
       Paragraph p = new Paragraph();
@@ -658,7 +762,8 @@ public class Eml2Rtf {
       gbifLink.setReference("http://www.gbif.org");
       p.add(gbifLink);
       p.add(": ");
-      String link = appConfig.getBaseURL() + "/resource.do?r=" + resource.getShortname();
+      String link = appConfig.getBaseURL() + "/resource.do?r="
+          + resource.getShortname();
       Anchor resourceLink = new Anchor(link, fontLink);
       resourceLink.setReference(link);
       p.add(resourceLink);
@@ -668,7 +773,8 @@ public class Eml2Rtf {
     }
   }
 
-  private void addSpatialCoverage(Document doc, Eml eml) throws DocumentException {
+  private void addSpatialCoverage(Document doc, Eml eml)
+      throws DocumentException {
     Paragraph p = new Paragraph();
     p.setAlignment(Element.ALIGN_JUSTIFIED);
     p.setFont(font);
@@ -689,13 +795,17 @@ public class Eml2Rtf {
       }
       p.add(new Phrase("Coordinates: ", fontTitle));
       BBox coordinates = coverage.getBoundingCoordinates();
-      p.add(CoordinateUtils.decToDms(coordinates.getMin().getLatitude(), CoordinateUtils.LATITUDE));
+      p.add(CoordinateUtils.decToDms(coordinates.getMin().getLatitude(),
+          CoordinateUtils.LATITUDE));
       p.add(" and ");
-      p.add(CoordinateUtils.decToDms(coordinates.getMax().getLatitude(), CoordinateUtils.LATITUDE));
+      p.add(CoordinateUtils.decToDms(coordinates.getMax().getLatitude(),
+          CoordinateUtils.LATITUDE));
       p.add(" Latitude; ");
-      p.add(CoordinateUtils.decToDms(coordinates.getMin().getLongitude(), CoordinateUtils.LONGITUDE));
+      p.add(CoordinateUtils.decToDms(coordinates.getMin().getLongitude(),
+          CoordinateUtils.LONGITUDE));
       p.add(" and ");
-      p.add(CoordinateUtils.decToDms(coordinates.getMax().getLongitude(), CoordinateUtils.LONGITUDE));
+      p.add(CoordinateUtils.decToDms(coordinates.getMax().getLongitude(),
+          CoordinateUtils.LONGITUDE));
       p.add(" Longitude");
       p.add(Chunk.NEWLINE);
     }
@@ -704,7 +814,8 @@ public class Eml2Rtf {
 
   }
 
-  private void addTaxonomicCoverages(Document doc, Eml eml) throws DocumentException {
+  private void addTaxonomicCoverages(Document doc, Eml eml)
+      throws DocumentException {
     Paragraph p = new Paragraph();
     p.setAlignment(Element.ALIGN_JUSTIFIED);
     p.setFont(font);
@@ -720,8 +831,8 @@ public class Eml2Rtf {
       p.add(new Phrase("General taxonomic coverage description: ", fontTitle));
       p.add(taxcoverage.getDescription());
       p.add(Chunk.NEWLINE);
-      Map<String, String> ranks = vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS,
-          Locale.getDefault().getLanguage(), false);
+      Map<String, String> ranks = vocabManager.getI18nVocab(
+          Constants.VOCAB_URI_RANKS, Locale.getDefault().getLanguage(), false);
       boolean firstRank = true;
       for (String rank : ranks.keySet()) {
         boolean wroteRank = false;
@@ -761,7 +872,8 @@ public class Eml2Rtf {
     p.clear();
   }
 
-  private void addTemporalCoverages(Document doc, Eml eml) throws DocumentException {
+  private void addTemporalCoverages(Document doc, Eml eml)
+      throws DocumentException {
     Paragraph p = new Paragraph();
     p.setAlignment(Element.ALIGN_JUSTIFIED);
     p.setFont(font);
@@ -822,71 +934,5 @@ public class Eml2Rtf {
       }
     }
     return true;
-  }
-
-  public String getText(String key) {
-    ResourceBundle res = textProvider.getTexts(Locale.getDefault());
-    return textProvider.findText(res, key, "default.message", new String[0]);
-  }
-
-  public void setAppConfig(AppConfig appConfig) {
-    this.appConfig = appConfig;
-  }
-
-  public void setTextProvider(SimpleTextProvider textProvider) {
-    this.textProvider = textProvider;
-  }
-
-  public void setVocabManager(VocabulariesManager vocabManager) {
-    this.vocabManager = vocabManager;
-  }
-
-  public void writeEmlIntoRtf(Document doc, Resource resource) throws DocumentException {
-    Eml eml = resource.getEml();
-    // configure page
-    doc.setMargins(72, 72, 72, 72);
-    System.out.println(DataDir.CONFIG_DIR);
-    // write metadata
-    doc.addAuthor(resource.getCreator().getName());
-    doc.addCreationDate();
-    doc.addTitle(eml.getTitle());
-    String keys = "";
-    for (KeywordSet kw : eml.getKeywords()) {
-      if (keys.length() == 0) {
-        keys = kw.getKeywordsString(", ");
-      } else {
-        keys += ", " + kw.getKeywordsString(", ");
-      }
-    }
-    doc.addKeywords(keys);
-    // write proper doc
-    doc.open();
-    // title
-    addPara(doc, eml.getTitle(), fontHeader, 0, Element.ALIGN_CENTER);
-    doc.add(Chunk.NEWLINE);
-    // Authors, affiliations and corresponging authors
-    addAuthors(doc, eml);
-    // Received, Revised, Accepted, and published dates
-    /*
-     * These are to be manually inserted by the Publisher of the Data Paper
-     * to indicate the dates of original manuscript submission, revised manuscript
-     * submission, acceptance of manuscript and publishing of the manuscript
-     * as Data Paper in the journal.
-     */
-    addDates(doc, eml);
-    addCitations(doc, eml);
-    addAbstract(doc, eml);
-    addKeywords(doc, keys);
-    addResourceLink(doc, resource);
-    addTaxonomicCoverages(doc, eml);
-    addSpatialCoverage(doc, eml);
-    addTemporalCoverages(doc, eml);
-    addProjectData(doc, eml);
-    addNaturalCollections(doc, eml);
-    addMethods(doc, eml);
-    addDatasetDescriptions(doc, resource);
-    addMetadataDescriptions(doc, eml);
-    addReferences(doc, eml);
-    doc.close();
   }
 }
