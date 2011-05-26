@@ -411,7 +411,7 @@ The IPT can use database connections to import data from tables or views. A list
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceSourceData.png]
 
-This page shows the name of the resource along with a summary of the database characteristics (readability, number of columns detected) and allows the user to view and edit the parameters that describe how to access the data from the database, and to use these settings to analyze and preview the data. Click on the button labeled "Analyze" to regenerate the data summary based on the format parameters on the page, click on the "Preview" button to see an interpretation of the data based on these settings.
+The Source Database Detail page shows the name of the resource along with a summary of the database characteristics (readability, number of columns detected) and allows the user to view and edit the parameters that describe how to access the data from the database, and to use these settings to analyze and preview the data. Click on the button labeled "Analyze" to regenerate the data summary based on the format parameters on the page, click on the "Preview" button to see an interpretation of the data based on these settings.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceSourceDatabase.png]
 
