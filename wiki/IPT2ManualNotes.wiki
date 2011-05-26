@@ -149,13 +149,14 @@ Example information icon for character encoding after the UTF-8 link was selecte
 Example calendar associated with an text box labeled "End Date" in which 31 Dec 2010 is the current date but not yet selected:
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TextBoxWithCalendarOpen.png]
- 
+
+
 *Sortable Table* - a table that allows the rows to be sorted by the values of a selected column in ascending or descending order. The column headers are the labels for the columns, which appear as links. Click on a column header to sort the table using the values in that column. Click again on the same column header to sort the the table in the opposite direction.
 
 Example table sorted in ascending order by the column labeled "Name".
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TableSortedAscending.png]
 
-Example table sorted in descending order by the column labeled "Name".
+Example table sorted in descending order by the column labeled "Type".
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TableSortedDescending.png]
 
 ===Controls that appear on all pages===
