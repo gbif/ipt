@@ -52,7 +52,7 @@
       	<div class="details">
       		<table>
           		<#if resource.eml.subject?has_content><tr><th><@s.text name='portal.resource.summary.keywords'/></th><td><@description resource.eml.subject!no_description 90/></td></tr></#if>
-          		<#assign text><#list eml.taxonomicCoverages as tc><#list tc.taxonKeywords as k>${k.scientificName}<#if k_has_next>, </#if></#list><#if tc_has_next>; </#if></#list></#assign>
+          		<#assign text><#list eml.taxonomicCoverages as tc><#list tc.taxonKeywords as k>${k.scientificName!}<#if k_has_next>, </#if></#list><#if tc_has_next>; </#if></#list></#assign>
           		<#if eml.taxonomicCoverages?has_content><tr><th><@s.text name='portal.resource.summary.taxcoverage'/></th><td><@description text!no_description 90/></td></tr></#if>
           		<#assign text><#list eml.geospatialCoverages as geo>${geo.description!}<#if geo_has_next>; </#if></#list></#assign>
           		<#if eml.geospatialCoverages?has_content><tr><th><@s.text name='portal.resource.summary.geocoverage'/></th><td><@description text!no_description 90/></td></tr></#if>
@@ -63,12 +63,12 @@
 			  	<#if resource.lastPublished??>
 			  	    <td><@s.text name='portal.resource.version'/> ${resource.eml.emlVersion} <@s.text name='portal.resource.version.from'/> ${resource.lastPublished?date?string.medium}</td></tr>
 			  	<#if (resource.recordsPublished>0)>
-          		<tr><th><@s.text name='portal.resource.published.archive'/></th><td><a href="${baseURL}/archive.do?r=${resource.shortname}"><@s.text name='portal.resource.download'/></a>, ${resource.recordsPublished} <@s.text name='portal.resource.records'/> </td></tr>
+          		<tr><th><@s.text name='portal.resource.published.archive'/></th><td><a href="${baseURL}/archive.do?r=${resource.shortname}"><@s.text name='portal.resource.download'/></a> (${dwcaFormattedSize}) ${resource.recordsPublished} <@s.text name='portal.resource.records'/></td></tr>
 			  	</#if>
-          		<tr><th><@s.text name='portal.resource.published.eml'/></th><td><a href="${baseURL}/eml.do?r=${resource.shortname}"><@s.text name='portal.resource.download'/></a></td></tr>
+          		<tr><th><@s.text name='portal.resource.published.eml'/></th><td><a href="${baseURL}/eml.do?r=${resource.shortname}"><@s.text name='portal.resource.download'/></a> (${emlFormattedSize})</td></tr>
           		
-          		<tr><th><@s.text name='portal.resource.published.rtf'/></th><td><a href="${baseURL}/rtf.do?r=${resource.shortname}"><@s.text name='portal.resource.download'/></a></td></tr>
-          		
+          		<tr><th><@s.text name='portal.resource.published.rtf'/></th><td><a href="${baseURL}/rtf.do?r=${resource.shortname}"><@s.text name='portal.resource.download'/></a> (${rtfFormattedSize})</td></tr>
+          		        		
           		<#else>
           		    <td><@s.text name='portal.resource.published.never'/></td></tr>
 			  	</#if>

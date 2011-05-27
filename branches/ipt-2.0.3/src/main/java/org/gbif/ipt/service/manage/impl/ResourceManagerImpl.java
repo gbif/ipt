@@ -187,6 +187,33 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return eml;
   }
 
+  private Eml copyMetadata(String shortname, File emlFile) throws ImportException {
+
+    File emlFile2 = dataDir.resourceEmlFile(shortname, null);
+    try {
+      FileUtils.copyFile(emlFile, emlFile2);
+    } catch (IOException e1) {
+      log.error("Unnable to copy EML File", e1);
+    }
+    Eml eml = null;
+    try {
+      InputStream in = new FileInputStream(emlFile2);
+      eml = EmlFactory.build(in);
+    } catch (FileNotFoundException e) {
+      eml = new Eml();
+    } catch (IOException e) {
+      log.error(e);
+    } catch (SAXException e) {
+      log.error("Invalid EML document", e);
+    }
+
+    if (eml == null) {
+      throw new ImportException("Invalid EML document");
+    }
+
+    return eml;
+  }
+
   public Resource create(String shortname, File dwca, User creator, BaseAction action) throws AlreadyExistingException,
       ImportException {
     ActionLogger alog = new ActionLogger(this.log, action);
@@ -245,7 +272,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       Archive arch = ArchiveFactory.openArchive(dwca);
       // create new resource once we know the archive can be read
       resource = create(shortname, creator);
-      // keep track of source files as an dwc archive might refer to the same source file multiple times
+      // keep track of source files as an dwc archive might refer to the
+      // same source file multiple times
       Map<String, FileSource> sources = new HashMap<String, FileSource>();
       if (arch.getCore() != null) {
         // read core source+mappings
@@ -266,7 +294,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           resource.addMapping(map);
         }
         // try to read metadata
-        Eml eml = readMetadata(resource.getShortname(),arch, alog);
+        Eml eml = readMetadata(resource.getShortname(), arch, alog);
         if (eml != null) {
           resource.setEml(eml);
         }
@@ -296,39 +324,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
     return resource;
   }
-  
-  private Eml copyMetadata(String shortname, File emlFile) throws ImportException{
-	  
-	  File emlFile2 = dataDir.resourceEmlFile(shortname, null);
-      try {
-		FileUtils.copyFile(emlFile, emlFile2);
-      } catch (IOException e1) {
-		log.error("Unnable to copy EML File",e1);
-      }
-      Eml eml = null;
-      try {
-    	InputStream in = new FileInputStream(emlFile2);
-        eml = EmlFactory.build(in);
-      } catch (FileNotFoundException e) {
-        eml = new Eml();
-      } catch (IOException e) {
-    	log.error(e);
-      } catch (SAXException e) {
-        log.error("Invalid EML document", e);
-      } 
-      
-      if(eml==null){
-    	  throw new ImportException("Invalid EML document");
-      }
-      
-      return eml;
-  }
 
   private Resource createFromEml(String shortname, File emlFile, User creator, ActionLogger alog)
       throws AlreadyExistingException, ImportException {
-	// Eml eml = readMetadata(emlFile, alog);
-	Eml eml = copyMetadata(shortname, emlFile);
-    
+    // Eml eml = readMetadata(emlFile, alog);
+    Eml eml = copyMetadata(shortname, emlFile);
+
     if (eml != null) {
       // create resource with imorted metadata
       Resource resource = create(shortname, creator);
@@ -408,7 +409,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @param alog
    */
   private void generateDwca(Resource resource, ActionLogger alog) {
-    // use threads to run in the background as sql sources might take a long time
+    // use threads to run in the background as sql sources might take a long
+    // time
     GenerateDwca worker = dwcaFactory.create(resource, this);
     Future<Integer> f = executor.submit(worker);
     processFutures.put(resource.getShortname(), f);
@@ -428,16 +430,44 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return resources.get(shortname.toLowerCase());
   }
 
+  /*
+   * Returns the size of the DwC-A file using the dataDir.
+   * 
+   * (non-Javadoc)
+   * 
+   * @see org.gbif.ipt.service.manage.ResourceManager#getDwcaSize(org.gbif.ipt.model.Resource)
+   */
+  public long getDwcaSize(Resource resource) {
+    File data = dataDir.resourceDwcaFile(resource.getShortname());
+    long size = data.length();
+    return size;
+  }
+
   private int getEmlHash(Resource resource, Eml eml) {
     // TODO: replace by hashing the eml xml file content?
-    // Alternatively code a proper hashCode method for Eml that needs to be maintained - might be too much effort
+    // Alternatively code a proper hashCode method for Eml that needs to be
+    // maintained - might be too much effort
     return eml.hashCode();
+  }
+
+  /*
+   * Returns the size of the EML file using the dataDir.
+   * 
+   * (non-Javadoc)
+   * 
+   * @see org.gbif.ipt.service.manage.ResourceManager#getEmlSize(org.gbif.ipt.model.Resource)
+   */
+  public long getEmlSize(Resource resource) {
+    File data = dataDir.resourceEmlFile(resource.getShortname(), resource.getEmlVersion());
+    return data.length();
   }
 
   /*
    * (non-Javadoc)
    * 
-   * @see org.gbif.ipt.service.manage.ResourceManager#getResourceLink(java.lang.String)
+   * @see
+   * org.gbif.ipt.service.manage.ResourceManager#getResourceLink(java.lang
+   * .String)
    */
   public URL getResourceLink(String shortname) {
     URL url = null;
@@ -447,6 +477,19 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       log.error(e);
     }
     return url;
+  }
+
+  /*
+   * Returns the size of the RTF file using the dataDir.
+   * 
+   * (non-Javadoc)
+   * 
+   * @see org.gbif.ipt.service.manage.ResourceManager#getRtfSize(org.gbif.ipt.model.Resource)
+   */
+  public long getRtfSize(Resource resource) {
+    File data = dataDir.resourceRtfFile(resource.getShortname());
+    long size = data.length();
+    return size;
   }
 
   private ExtensionMapping importMappings(ActionLogger alog, ArchiveFile af, Source source) {
@@ -463,7 +506,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     map.setIdColumn(af.getId().getIndex());
 
     Set<PropertyMapping> fields = new HashSet<PropertyMapping>();
-    // iterate over each field to make sure its part of the extension we know
+    // iterate over each field to make sure its part of the extension we
+    // know
     for (ArchiveField f : af.getFields().values()) {
       if (ext.hasProperty(f.getTerm())) {
         fields.add(new PropertyMapping(f));
@@ -494,12 +538,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   /*
-   * Checks if a resource is locked due some background processing.
-   * While doing so it checks the known futures for completion.
-   * If completed the resource is updated with the status messages and the lock is removed.
+   * Checks if a resource is locked due some background processing. While
+   * doing so it checks the known futures for completion. If completed the
+   * resource is updated with the status messages and the lock is removed.
    * (non-Javadoc)
    * 
-   * @see org.gbif.ipt.service.manage.ResourceManager#isLocked(java.lang.String)
+   * @see
+   * org.gbif.ipt.service.manage.ResourceManager#isLocked(java.lang.String)
    */
   public boolean isLocked(String shortname) {
     if (processFutures.containsKey(shortname)) {
@@ -564,7 +609,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   /*
    * (non-Javadoc)
    * 
-   * @see org.gbif.ipt.service.manage.ResourceManager#list(org.gbif.ipt.model.voc.PublicationStatus)
+   * @see
+   * org.gbif.ipt.service.manage.ResourceManager#list(org.gbif.ipt.model.voc
+   * .PublicationStatus)
    */
   public List<Resource> list(PublicationStatus status) {
     List<Resource> result = new ArrayList<Resource>();
@@ -579,7 +626,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   /*
    * (non-Javadoc)
    * 
-   * @see org.gbif.ipt.service.manage.ResourceManager#list(org.gbif.ipt.model.User)
+   * @see
+   * org.gbif.ipt.service.manage.ResourceManager#list(org.gbif.ipt.model.User)
    */
   public List<Resource> list(User user) {
     List<Resource> result = new ArrayList<Resource>();
@@ -646,8 +694,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   /**
-   * Reads a complete resource configuration (resource config & eml) from the resource config folder
-   * and returns the Resource instance for the internal in memory cache
+   * Reads a complete resource configuration (resource config & eml) from the
+   * resource config folder and returns the Resource instance for the internal
+   * in memory cache
    * 
    * @param resourceDir
    * @return
@@ -660,11 +709,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         File cfgFile = dataDir.resourceFile(shortname, PERSISTENCE_FILE);
         InputStream input = new FileInputStream(cfgFile);
         Resource resource = (Resource) xstream.fromXML(input);
-        // non existing users end up being a NULL in the set, so remove them
-        // shouldnt really happen - but people can even manually cause a mess
+        // non existing users end up being a NULL in the set, so remove
+        // them
+        // shouldnt really happen - but people can even manually cause a
+        // mess
         resource.getManagers().remove(null);
 
-        // shortname persists as folder name, so xstream doesnt handle this:
+        // shortname persists as folder name, so xstream doesnt handle
+        // this:
         resource.setShortname(shortname);
         // add proper source file pointer
         for (Source src : resource.getSources()) {
@@ -703,8 +755,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       generateDwca(resource, alog);
       dwca = true;
       // make sure the dwca service is registered
-      // this might not have been the case when the first dwca is created, but the resource was already registered
-// before
+      // this might not have been the case when the first dwca is created,
+      // but the resource was already registered
+      // before
       if (resource.isRegistered()) {
         registryManager.updateResource(resource, registrationManager.getIpt());
       }
@@ -743,17 +796,17 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
     // publish also as RTF
     publishRtf(resource, alog);
-    
+
     // copy current rtf version.
     File trunkRtfFile = dataDir.resourceRtfFile(resource.getShortname());
     File versionedRtfFile = dataDir.resourceRtfFile(resource.getShortname(), version);
     try {
-		FileUtils.copyFile(trunkRtfFile, versionedRtfFile);
-	} catch (IOException e) {
-		alog.error("Can't publish resource " + resource.getShortname() + "as RTF", e);
-		throw new PublicationException(PublicationException.TYPE.EML, "Can't publish rtf file for resource "
-				+ resource.getShortname(), e);		
-	}
+      FileUtils.copyFile(trunkRtfFile, versionedRtfFile);
+    } catch (IOException e) {
+      alog.error("Can't publish resource " + resource.getShortname() + "as RTF", e);
+      throw new PublicationException(PublicationException.TYPE.EML, "Can't publish rtf file for resource "
+          + resource.getShortname(), e);
+    }
   }
 
   private void publishRtf(Resource resource, ActionLogger alog) {
@@ -775,6 +828,16 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
+  private Eml readMetadata(File file, ActionLogger alog) {
+    MetadataFactory fact = new MetadataFactory();
+    try {
+      return convertMetadataToEml(fact.read(file), alog);
+    } catch (MetadataException e) {
+      // swallow;
+    }
+    return null;
+  }
+
   private Eml readMetadata(String shortname, Archive archive, ActionLogger alog) {
     Eml eml = null;
     File emlFile = archive.getMetadataLocationFile();
@@ -785,20 +848,20 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         emlFile = new File(archive.getLocation(), "eml.xml");
       }
       if (emlFile.exists()) {
-       	// InputStream emlIn = new FileInputStream(emlFile);
+        // InputStream emlIn = new FileInputStream(emlFile);
         // eml = EmlFactory.build(emlIn);
-       	eml = copyMetadata(shortname, emlFile);
+        eml = copyMetadata(shortname, emlFile);
         alog.info("manage.resource.read.eml.metadata");
         return eml;
       } else {
         log.warn("Cant find any eml metadata to import");
       }
     } catch (ImportException e) {
-    	String msg="Cant read basic archive metadata: " + e.getMessage();
-    	log.warn(msg);
-    	alog.warn(msg);
-    	return null;
-	} catch (Exception e) {
+      String msg = "Cant read basic archive metadata: " + e.getMessage();
+      log.warn(msg);
+      alog.warn(msg);
+      return null;
+    } catch (Exception e) {
       log.warn("Cant read archive eml metadata", e);
     }
     // try to read other metadata formats like dc
@@ -813,21 +876,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return null;
   }
 
-  private Eml readMetadata(File file, ActionLogger alog) {
-    MetadataFactory fact = new MetadataFactory();
-    try {
-      return convertMetadataToEml(fact.read(file), alog);
-    } catch (MetadataException e) {
-      // swallow;
-    }
-    return null;
-  }
-
   /*
    * (non-Javadoc)
    * 
-   * @see org.gbif.ipt.service.manage.ResourceManager#register(org.gbif.ipt.model.Resource,
-   * org.gbif.ipt.model.Organisation)
+   * @see
+   * org.gbif.ipt.service.manage.ResourceManager#register(org.gbif.ipt.model
+   * .Resource, org.gbif.ipt.model.Organisation)
    */
   public void register(Resource resource, Organisation organisation, Ipt ipt) throws RegistryException {
     if (PublicationStatus.REGISTERED != resource.getStatus()) {
@@ -843,7 +897,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   /*
    * (non-Javadoc)
    * 
-   * @see org.gbif.ipt.task.ReportHandler#report(org.gbif.ipt.task.StatusReport)
+   * @see
+   * org.gbif.ipt.task.ReportHandler#report(org.gbif.ipt.task.StatusReport)
    */
   public synchronized void report(String shortname, StatusReport report) {
     processReports.put(shortname, report);
@@ -874,7 +929,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   /*
    * (non-Javadoc)
    * 
-   * @see org.gbif.ipt.service.manage.ResourceManager#save(java.lang.String, org.gbif.metadata.eml.Eml)
+   * @see org.gbif.ipt.service.manage.ResourceManager#save(java.lang.String,
+   * org.gbif.metadata.eml.Eml)
    */
   public synchronized void saveEml(Resource resource) throws InvalidConfigException {
     // udpate EML with latest resource basics
@@ -901,7 +957,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   private void syncEmlWithResource(Resource resource) {
     resource.getEml().setEmlVersion(resource.getEmlVersion());
-    // we need some GUID. If we have use the registry key, if not use the resource URL
+    // we need some GUID. If we have use the registry key, if not use the
+    // resource URL
     if (resource.getKey() != null) {
       resource.getEml().setGuid(resource.getKey().toString());
     } else {
@@ -962,8 +1019,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   /*
    * (non-Javadoc)
    * 
-   * @see org.gbif.ipt.service.manage.ResourceManager#updateRegistration(org.gbif.ipt.model.Resource,
-   * org.gbif.ipt.model.Organisation, org.gbif.ipt.model.Ipt)
+   * @see
+   * org.gbif.ipt.service.manage.ResourceManager#updateRegistration(org.gbif
+   * .ipt.model.Resource, org.gbif.ipt.model.Organisation,
+   * org.gbif.ipt.model.Ipt)
    */
   public void updateRegistration(Resource resource, Ipt ipt) throws InvalidConfigException {
     if (PublicationStatus.REGISTERED == resource.getStatus()) {
@@ -975,7 +1034,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   /*
    * (non-Javadoc)
    * 
-   * @see org.gbif.ipt.service.manage.ResourceManager#unpublish(org.gbif.ipt.model.Resource)
+   * @see
+   * org.gbif.ipt.service.manage.ResourceManager#unpublish(org.gbif.ipt.model
+   * .Resource)
    */
   public void visibilityToPrivate(Resource resource) throws InvalidConfigException {
     if (PublicationStatus.REGISTERED == resource.getStatus()) {
@@ -989,8 +1050,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   /*
    * (non-Javadoc)
    * 
-   * @see org.gbif.ipt.service.manage.ResourceManager#publish(org.gbif.ipt.model.Resource,
-   * org.gbif.ipt.model.voc.PublicationStatus)
+   * @see
+   * org.gbif.ipt.service.manage.ResourceManager#publish(org.gbif.ipt.model
+   * .Resource, org.gbif.ipt.model.voc.PublicationStatus)
    */
   public void visibilityToPublic(Resource resource) throws InvalidConfigException {
     if (PublicationStatus.REGISTERED == resource.getStatus()) {
