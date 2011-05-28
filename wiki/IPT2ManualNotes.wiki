@@ -440,11 +440,11 @@ The Source Database Detail page shows the name of the resource along with a summ
 
 After the parameters for the data source have been set so that the data are accessed correctly, click on the button labeled "Save" to store this configuration. If the save is successful, the Resource Overview page will appear, with summary information about the data in the right-hand column of the Source Data area. A button labeled "Edit" will also appear with the source data summary information, allowing the user to reopen the Source Database detail page.
 ====Darwin Core Mappings====
-This area of the Resource Overview page allows a user to map the fields in the incoming data to fields in installed extensions. This option is not available until at least one data source has been successfully added and at least one extension has been installed. Once these conditions have been met, the left-hand column of the Darwin Core Mappings area will contain a select box with a list of Core Types and Extensions that have been installed. Select the appropriate extension that has fields matching the ones to map in the data source. If the appropriate extension does not appear in the select box, it will have to be installed first. Refer to the information under the "Configure Core Types and Extensions" heading in the "Administration Menu" section for an explanation of how to install extensions. 
+This area of the Resource Overview page allows a user to map the fields in the incoming data to fields in installed extensions and to see which fields from the sources have not been mapped. This option is not available until at least one data source has been successfully added and at least one extension has been installed. Once these conditions have been met, the left-hand column of the Darwin Core Mappings area will contain a select box with a list of Core Types and Extensions that have been installed. Select a Core Type and map that before selecting an extension to map. Select the appropriate extension that has fields matching the ones to map in the data source. If the appropriate core type or extension does not appear in the select box, it will have to be installed first. Refer to the information under the "Configure Core Types and Extensions" heading in the "Administration Menu" section for an explanation of how to install extensions. 
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceDwCMapping.png]
 
-After the desired extension is selected, click on the button labeled "Add" to open the Data Source selection page. This page gives an explanation of the type of data the extension is meant to support, and shows a select box containing a list of all of the configured data sources. 
+After the desired core type or extension is selected, click on the button labeled "Add" to open the Data Source selection page. This page gives an explanation of the type of data the extension is meant to support, and shows a select box containing a list of all of the configured data sources. 
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceSourceSelect.png]
 
@@ -492,12 +492,16 @@ The right-hand column contains information icons and controls (select boxes, tex
     * *!NotEquals* - this operator is true if the source data field is not equal to the value in the text box at the right. Equality is evaluated based on string matching, thus, if the data source value for a record is 2.0 and the value in the text box is 2, the record will be included in the filtered data set.
   * *Required fields* - If there are any required properties that must be mapped for the Core Type or Extension, these have their names highlighted. Core Types always have a required unique identifier field, which may be used with additional extensions having the same field to link records from the two sources together. 
 
-In addition to the explanatory information about the extension at the top of the page and the two columns described above, the Data Mapping page may have following links and buttons:
+In addition to the explanatory information about the extension at the top of the page and the two columns described above, the Data Mapping page may have following sections, links, and buttons:
   * *Back to Resource Overview page* - clicking on this link will navigate to the Resource Overview page without saving any of the pending changes.
   * *Hide Unmapped Fields* - this link will remove from view on this page all fields that have not yet been mapped, leaving only those with completed mappings. To view again those fields that have not been mapped, click on the "Show all" link.
   * *Show all* - this link will make all fields visible, whether mapped already or not. This link appears only after the "Hide Unmapped Fields" link has been invoked.
   * *Save* - clicking on any of the potentially many buttons labeled "Save" will change the pending changes on the page.
   * *Delete* - clicking the this button will remove the entire mapping to a data source, not just the mapped fields, and return to the Resource Overview page. 
+  * *Cancel* - clicking on this button will abandon all changes that have been made on this page since it was last opened and return to the Resource Overview page.
+  * *Unmapped columns* - this section contains a list of columns in the source file, table, or view that have not been mapped. This list can help to determine if everything from the source has been mapped that should be mapped.
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMappingUnmappedColumns.png]
+
 ====Visibility====
 The Visibility area of the Manage Resources page allows users having manager rights for the resource to change its visibility state. The visibility of a resource determines who will be able to view it, whether viewing is limited (private), open (public), or discoverable through the GBIF Registry (registered). By default, each resource is visible only to the user who created it and any other users who have the Admin role on the IPT where the resource is created.
 
