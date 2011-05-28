@@ -25,7 +25,7 @@ Click on the Administration Menu to open the options available to users having t
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminBeforeRegistration.png]
 
-Click on the Extensions button to enter into the Extensions management page. If no extensions have been installed yet, the Vocabularies section will appear at the top of the page as in the following screen image. If extensions have already been installed, they will appear on the page above the Vocabularies section. 
+Click on the Core Types and Extensions button to enter into the Extensions management page. If no extensions have been installed yet, the Core Type, Extensions, and Vocabularies sections will appear at the top of the page as in the following screen image. If core types or extensions have already been installed, they will appear in the appropriate section on the page above the Vocabularies section. 
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceExtensionsFirstTime.png]
 
