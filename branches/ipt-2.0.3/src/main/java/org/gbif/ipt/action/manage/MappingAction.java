@@ -156,10 +156,6 @@ public class MappingAction extends ManagerBaseAction {
 	     }
 	 }
 	}
-	System.out.println("------------------------------------");
-	for(String s : nonMappedColumns) 
-		System.out.println(s);
-	System.out.println("------------------------------------");
 	return nonMappedColumns;
   }
 
