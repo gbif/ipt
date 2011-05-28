@@ -32,7 +32,15 @@
   <tr>
   	<td><#if r.eml.logoUrl?has_content><img class="resourceminilogo" src="${r.eml.logoUrl}" /></#if></td>
 	<td><a href="resource.do?r=${r.shortname}"><#if r.title?has_content>${r.title}<#else>${r.shortname}</#if></a></td>
-	<td>${(r.organisation.name)!"---"}</td>
+	<#-- if registrationAllowed -->
+	<td>
+		<#if r.status=='REGISTERED'>
+			${r.organisation.name}
+		<#else>
+			<@s.text name="manage.home.not.registered"/>
+		</#if>
+	</td>
+	<#-- >/#if -->
 	<td>${r.subtype!r.coreType!"---"}</td>
 	<td>${r.recordsPublished!0}</td>
 	<td>${r.modified?date}</td>
