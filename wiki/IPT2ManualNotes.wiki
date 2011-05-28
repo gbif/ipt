@@ -499,7 +499,7 @@ In addition to the explanatory information about the extension at the top of the
   * *Save* - clicking on any of the potentially many buttons labeled "Save" will change the pending changes on the page.
   * *Delete* - clicking the this button will remove the entire mapping to a data source, not just the mapped fields, and return to the Resource Overview page. 
 ====Visibility====
-The visibility of a resource determines who will be able to view it, whether viewing is limited (private), open (public), or discoverable through the GBIF Registry (registered). By default, each resource is visible only to the user who created it and any other users who have the Admin role on the IPT where the resource is created.
+The Visibility area of the Manage Resources page allows users having manager rights for the resource to change its visibility state. The visibility of a resource determines who will be able to view it, whether viewing is limited (private), open (public), or discoverable through the GBIF Registry (registered). By default, each resource is visible only to the user who created it and any other users who have the Admin role on the IPT where the resource is created.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceVisibilityPrivate.png]
 
