@@ -146,12 +146,20 @@ public class MappingAction extends ManagerBaseAction {
 	nonMappedColumns=new ArrayList<String>();
 	nonMappedColumns.addAll(columns);
 	for(int index=0;index<columns.size();index++){
-	 for(PropertyMapping field:fields){
-	   if(field.getIndex()!=null && (field.getIndex())==index){
-		   nonMappedColumns.remove(columns.get(index));
-	   }
+	 if(columns.get(index) == "") {
+		 nonMappedColumns.remove(columns.get(index));
+	 } else {
+	     for(PropertyMapping field:fields){
+	       if(field.getIndex()!=null && (field.getIndex())==index){
+		     nonMappedColumns.remove(columns.get(index));
+	       }
+	     }
 	 }
 	}
+	System.out.println("------------------------------------");
+	for(String s : nonMappedColumns) 
+		System.out.println(s);
+	System.out.println("------------------------------------");
 	return nonMappedColumns;
   }
 
