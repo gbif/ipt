@@ -538,7 +538,7 @@ Clicking on the button labeled "Delete" on the Resource Overview page will remov
 ==Administration Menu (visible only to users having the Admin role)==
 This section describes each of the functions that are accessible from the Administration menu. Clicking on the Administration menu opens a page (see screen image, below) from which each of these specific administrative tasks can be accessed by clicking on the appropriate button. Note that the button labeled "Organisations" will remain disabled by default until the GBIF registration options have been set.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminBeforeRegistration.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTSetupFinished.png]
 ===Configure IPT settings===
 This page allows a user having the Admin role to make and change settings for the characteristics of this IPT instance.
 
