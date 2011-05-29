@@ -1000,4 +1000,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       save(resource);
     }
   }
+
+  public boolean isRtfExisting(String shortName) {
+	File rtfFile = dataDir.resourceRtfFile(shortName);
+	return rtfFile.exists();
+  }
 }
