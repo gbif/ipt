@@ -19,7 +19,7 @@ Use the default Admin user email address and password to log in to the IPT. Afte
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceLoggedIn.png]
 
 ===2) Navigate to Extensions===
-Quick Reference Guide: [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Configure_Extensions Administration Menu/Configure Extensions]
+Quick Reference Guide: [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Configure_Extensions Administration Menu/Configure Core Types and Extensions]
 
 Click on the Administration Menu to open the options available to users having the Admin role.
 
@@ -30,16 +30,18 @@ Click on the Core Types and Extensions button to enter into the Extensions manag
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceExtensionsFirstTime.png]
 
 ===3) Update vocabularies===
-Quick Reference Guide: [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Update_vocabularies Administration Menu/Configure Extensions/Update vocabularies]
+Quick Reference Guide: [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Update_vocabularies Administration Menu/Configure Core Types and Extensions/Update vocabularies]
 
-Click on the button labeled "Update" in the Vocabularies section to get the latest information from the GBIF Registry on controlled vocabularies used with the extensions. After updating, an information message will appear at the top of the page indicating the results of the update attempt. 
+Click on the button labeled "Update" in the Vocabularies section to get the latest information from the GBIF Registry on controlled vocabularies used with the core types and extensions. After updating, an information message will appear at the top of the page indicating the results of the update attempt. 
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceVocabularyUpdated.png]
 
 ===4) Install Darwin Core Occurrence extension===
 Quick Reference Guide: [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Install_extension Administration Menu/Configure Extensions/Install extension]
 
-Locate the row for the Darwin Core Occurrence extension. If it has not yet been installed, it will appear below the Vocabularies section and will have a button labeled "Install" in the right-hand column under the extension name (Darwin Core Occurrence). If the extension has already been installed, it will appear above the Vocabularies section. If this is the case, skip this step, otherwise, click on the "Install" button. See screen image above, under step 2. 
+Locate the row for the Darwin Core Occurrence Core Type. If it has not yet been installed, it will appear below the Vocabularies section and will have a button labeled "Install" in the right-hand column under the extension name (Darwin Core Occurrence). If the extension has already been installed, it will appear above the Vocabularies section (see screen image above, under step 2). If this is the case, skip this step, otherwise, click on the "Install" button. A message will appear indicating if the installation was successful. If it was, Darwin Core Occurrence will appear in the list of installed Core Types.
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceExtensionsOccurrenceAdded.png]
 
 ===5) Navigate to Manage Resources menu===
 Click on Manage Resources in the menu bar. If this IPT installation does not yet have any resources configured, the page will appear as in the screen image below. Otherwise it will show table of existing resources above the section labeled "Create New Resource".
