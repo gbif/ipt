@@ -83,15 +83,17 @@ Click on the "My Occurrence Resource" link in the Name column to open the Resour
 ===10) Add a source data file===
 Quick Reference Guide: [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Source_Data Manage Resources Menu/Resource Overview/Source Data]
 
-Download the Occurrence example data file from the IPT project web site (http://gbif-providertoolkit.googlecode.com/files/OccurrenceData.txt). Click on the button labeled "Choose File" to navigate to and select the downloaded file. After the file is selected its name will appear in the Source Data area next to the Choose File button. Click on the button labeled "Add" to navigate to the Source Data File detail page. Note that the file summary in upper right shows that the file was readable given the parameters that were detected in the file and entered in the fields on this page automatically. The file contains 27 columns and 12 Rows. To see the contents of the file as interpreted, click on the button labeled "Preview". 
+Download the Occurrence example data file from the IPT project web site (http://gbif-providertoolkit.googlecode.com/files/OccurrenceData.txt). Click on the button labeled "Choose File" to navigate to and select the downloaded file. After the file is selected its name will appear in the Source Data area next to the "Choose File" button. Click on the button labeled "Add" to navigate to the Source Data File detail page. Note that the file summary in upper right shows that the file was readable given the parameters that were detected in the file and entered in the fields on this page automatically. The file contains 27 columns and 12 Rows. 
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceSourceDataAdd.png]
+
+To see the contents of the file as interpreted, click on the button labeled "Preview". Click anywhere on the preview page to return to the "Source Data" page
 
 Click on the button labeled "Save" to preserve the source data file information and return to the Resource Overview page. 
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceOverviewAfterSourceData.png]
 
-Note that the right-hand column of the Source Data area shows summary information for the source data file and a button labeled "Edit", which will reopen the Source Data File detail page if clicked. The Resource Overview page now also shows a select box in the left-hand area of the Darwin Core Mappings area. This select box contains a list of Extensions that have been installed in this instance of the IPT. If this tutorial has been followed exactly, there will be only one item in the select box, "Darwin Core Occurrence", which represents the extension installed in step 4.
+Note that the right-hand column of the Source Data area shows summary information for the source data file and a button labeled "Edit", which will reopen the Source Data File detail page if clicked. The Resource Overview page now also shows a select box in the left-hand area of the Darwin Core Mappings area. This select box contains a list of Core Types and Extensions that have been installed in this instance of the IPT. If this tutorial has been followed exactly, there will be only one item in the select box, "Darwin Core Occurrence", which represents the extension installed in step 4.
 
 ===11) Select the extension and source data to map=== 
 Quick Reference Guide: [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes#Darwin_Core_Mappings Manage Resources Menu/Resource Overview/Darwin Core Mappings]
