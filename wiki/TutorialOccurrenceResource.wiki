@@ -193,7 +193,7 @@ The resource entitled "My Occurrence Resource" is currently not visible to anyon
 
 To increase the visibility to all potential users, click on the button labeled "Public". Doing so will show a message at the top of the Resource Overview page indicating that the Visibility status has changed and will show a button labeled "Private" instead of the one labeled "Public" in the Visibility area of the page along with a disabled button labeled "Register". In addition, if the resource has not been published, a message to that effect will appear in the Visibility area.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceVisibilityPublicUnpublished.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceVisibilityPublic.png]
 
 ===14) Register the resource===
 If the IPT instance you are using is in production use (it is not supposed to be for tutorials, see prerequisite 1), please do not continue beyond this point in the tutorial, as registering test instances of the IPT and example resources will add spurious information to the GBIF registry. An IPT in non-production use will use an alternate test registry to avoid this problem.
