@@ -139,7 +139,7 @@ The EARLIEST_DATE_COLLECTED column in the source data is the only date informati
 
 At this point all of the columns in the source data file that can be mapped have been mapped. However, many extension properties remain without mappings to source data columns. Fortunately, values for extension properties without corresponding data source fields can be set if all of the records in the source data share the same value. This called "static mapping". Following are some examples of additional sensible mappings that might made using this data set. 
 
-The "type" extension property comes from the Dublin Core metadata standard and is one of the Darwin Core recommended record-level terms (http://rs.tdwg.org/dwc/terms/index.htm#dcterms:type). It is meant to provide the general category to which the record belongs. For this data set, all of the records are about specimens, which correspond to the Dublin Core type "PhysicalObject". 
+The "type" extension property comes from the Dublin Core metadata standard and is one of the Darwin Core recommended record-level terms (http://rs.tdwg.org/dwc/terms/index.htm#dcterms:type). It is meant to provide the general category to which the record belongs. For this data set, all of the records are about specimens, which correspond to the Dublin Core type "!PhysicalObject". 
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceType.png]
 
@@ -147,11 +147,11 @@ Note that the row in the Mappings table for the "type" extension property differ
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceTypeVocabulary.png]
 
-The detail page gives a description of the purpose of the vocabulary and a link to the original documentation, followed by a table listing all of the valid values for "type"  in the left-hand column with preferred and alternative labels for the term in various languages in the right-hand column. Note that "PhysicalObject" is one of the valid "type" values and has a preferred English label "Physical Object".
+The detail page gives a description of the purpose of the vocabulary and a link to the original documentation, followed by a table listing all of the valid values for "type"  in the left-hand column with preferred and alternative labels for the term in various languages in the right-hand column. Note that "!PhysicalObject" is one of the valid "type" values and has a preferred English label "Physical Object".
 
-Navigate back to the Darwin Core Mappings page from which the vocabulary detail page was opened. Click on the right-most select box for the "type" extension property. The select box contains a list of the preferred terms from the controlled vocabulary, which we just saw in the Dublin Core Type Vocabulary detail page. Select "Physical Object". By making this selection, we are telling the IPT that every record in the source data file may set to the valid "type" vocabulary value ("PhysicalObject") corresponding to the selected preferred term "Physical Object".
+Navigate back to the Darwin Core Mappings page from which the vocabulary detail page was opened. Click on the right-most select box for the "type" extension property. The select box contains a list of the preferred terms from the controlled vocabulary, which we just saw in the Dublin Core Type Vocabulary detail page. Select "Physical Object". By making this selection, we are telling the IPT that every record in the source data file may set to the valid "type" vocabulary value ("!PhysicalObject") corresponding to the selected preferred term "Physical Object".
 
-The datasetName extension property is another good candidate for static mapping. All of the records in the data set come from the same source, a data set called "PonTaurus". Simply type "PonTaurus" into the text box in the row in the Mappings table for datasetName and leave the corresponding select box empty. This will tell the IPT that there is no source data column from which to get the datasetName, so use the value in the text box for every record.
+The datasetName extension property is another good candidate for static mapping. All of the records in the data set come from the same source, a data set called "!PonTaurus". Simply type "!PonTaurus" into the text box in the row in the Mappings table for datasetName and leave the corresponding select box empty. This will tell the IPT that there is no source data column from which to get the datasetName, so use the value in the text box for every record.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceDatasetName.png]
 
@@ -191,9 +191,9 @@ The resource entitled "My Occurrence Resource" is currently not visible to anyon
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceVisibilityPrivate.png]
 
-To increase the visibility to all potential users, click on the button labeled "Public". Doing so will show a message at the top of the Resource Overview page indicating that the Visibility status has changed and will show a button labeled "Private" instead of the one labeled "Public" in the Visibility area of the page. 
+To increase the visibility to all potential users, click on the button labeled "Public". Doing so will show a message at the top of the Resource Overview page indicating that the Visibility status has changed and will show a button labeled "Private" instead of the one labeled "Public" in the Visibility area of the page along with a disabled button labeled "Register". In addition, if the resource has not been published, a message to that effect will appear in the Visibility area.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceVisibilityPublic.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceVisibilityPublicUnpublished.png]
 
 ===14) Register the resource===
 If the IPT instance you are using is in production use (it is not supposed to be for tutorials, see prerequisite 1), please do not continue beyond this point in the tutorial, as registering test instances of the IPT and example resources will add spurious information to the GBIF registry. An IPT in non-production use will use an alternate test registry to avoid this problem.
