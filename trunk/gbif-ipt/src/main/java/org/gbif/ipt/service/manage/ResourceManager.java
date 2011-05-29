@@ -185,5 +185,12 @@ public interface ResourceManager {
    * @throws InvalidConfigException if resource was already registered
    */
   public void visibilityToPublic(Resource resource) throws InvalidConfigException;
+  
+  /**
+   * Validate if the RTF existence for a specific resource in the data directory.
+   * 
+   * @return true if RTF File exist. false in otherwise.
+   */
+  public boolean isRtfExisting(String shortName);
 
 }

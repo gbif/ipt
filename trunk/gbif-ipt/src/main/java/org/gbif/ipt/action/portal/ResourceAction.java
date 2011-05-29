@@ -23,6 +23,10 @@ public class ResourceAction extends PortalBaseAction {
     return SUCCESS;
   }
 
+  public boolean isRtfFileExisting() {
+    return resourceManager.isRtfExisting(resource.getShortname());
+  }
+  
   public Eml getEml() {
     return resource.getEml();
   }

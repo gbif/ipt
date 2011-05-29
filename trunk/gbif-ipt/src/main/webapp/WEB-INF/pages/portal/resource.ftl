@@ -67,7 +67,7 @@
 			  	</#if>
           		<tr><th><@s.text name='portal.resource.published.eml'/></th><td><a href="${baseURL}/eml.do?r=${resource.shortname}"><@s.text name='portal.resource.download'/></a></td></tr>
           		
-          		<tr><th><@s.text name='portal.resource.published.rtf'/></th><td><a href="${baseURL}/rtf.do?r=${resource.shortname}"><@s.text name='portal.resource.download'/></a></td></tr>
+          		<#if rtfFileExisting><tr><th><@s.text name='portal.resource.published.rtf'/></th><td><a href="${baseURL}/rtf.do?r=${resource.shortname}"><@s.text name='portal.resource.download'/></a></td></tr></#if>
           		
           		<#else>
           		    <td><@s.text name='portal.resource.published.never'/></td></tr>

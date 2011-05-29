@@ -47,6 +47,10 @@ public class OverviewAction extends ManagerBaseAction {
   private Date now;
   private boolean unpublish = false;
 
+  public boolean isRtfFileExisting() {
+    return resourceManager.isRtfExisting(resource.getShortname());
+  }
+  
   public String addmanager() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
