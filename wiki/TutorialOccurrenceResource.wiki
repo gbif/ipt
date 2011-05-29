@@ -57,7 +57,7 @@ Notice that the page shows that an invalid entry was made for the resource's Sho
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceCreateNewResourceBadName.png]
 
-Enter the value "MyOccurrenceResource" as a valid value in the Shortname text box and click on the Create button. If there are no further errors the Resource Overview page will appear. Note that the resource is currently known by its Shortname in all lower case, lacks required metadata, has no source data set, and is private.
+Enter the value "!MyOccurrenceResource" as a valid value in the Shortname text box and click on the Create button. If there are no further errors the Resource Overview page will appear. Note that the resource is currently known by its Shortname in all lower case, lacks required metadata, has no source data set, and is private.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/OccurrenceResourceTutorial/IPTTutorialOccurrenceResourceOverviewAfterCreate.png]
 
