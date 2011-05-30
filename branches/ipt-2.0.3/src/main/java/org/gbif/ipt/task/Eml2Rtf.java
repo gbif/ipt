@@ -87,7 +87,7 @@ public class Eml2Rtf {
       Paragraph p = new Paragraph();
       p.setAlignment(Element.ALIGN_JUSTIFIED);
       p.setFont(font);
-      p.add(new Phrase("Abstract", fontTitle));
+      p.add(new Phrase(getText("rtf.abstract"), fontTitle));
       p.add(Chunk.NEWLINE);
       p.add(Chunk.NEWLINE);
       p.add(eml.getDescription());
@@ -205,7 +205,7 @@ public class Eml2Rtf {
     // <Corresponding Authors>
     p = new Paragraph();
     p.setAlignment(Element.ALIGN_JUSTIFIED);
-    p.add(new Phrase("Corresponding author(s): ", fontTitle));
+    p.add(new Phrase(getText("rtf.authors") + ": ", fontTitle));
     p.setFont(font);
     boolean isFirst = true;
     if (exists(eml.getResourceCreator())) {
@@ -244,8 +244,8 @@ public class Eml2Rtf {
     Paragraph p = new Paragraph();
     p.setAlignment(Element.ALIGN_JUSTIFIED);
     p.setFont(fontToComplete);
-    p.add(new Phrase("Citation: ", fontTitle));
-    p.add("Combination of authors, year of data paper publication (in paranthesis), Title, Journal Name, Volume, Issue number (in paranthesis), and doi of the data paper.");
+    p.add(new Phrase(getText("rtf.citations") + ": ", fontTitle));
+    p.add(getText("rtf.citations.description"));
     p.add(Chunk.NEWLINE);
     doc.add(p);
     p.clear();
@@ -256,35 +256,35 @@ public class Eml2Rtf {
     p.setAlignment(Element.ALIGN_JUSTIFIED);
     p.setFont(font);
     if (eml.getPhysicalData().size() > 1) {
-      p.add(new Phrase("Datasets", fontTitle));
+      p.add(new Phrase(getText("rtf.datasets"), fontTitle));
       p.add(Chunk.NEWLINE);
       p.add(Chunk.NEWLINE);
     }
     for (PhysicalData data : eml.getPhysicalData()) {
-      p.add(new Phrase("Dataset description", fontTitle));
+      p.add(new Phrase(getText("rtf.datasets.description"), fontTitle));
       p.add(Chunk.NEWLINE);
       if (exists(data.getName())) {
-        p.add(new Phrase("Object name: ", fontTitle));
+        p.add(new Phrase(getText("rtf.datasets.object") + ": ", fontTitle));
         p.add(data.getName());
         p.add(Chunk.NEWLINE);
       }
       if (exists(data.getCharset())) {
-        p.add(new Phrase("Character encoding: ", fontTitle));
+        p.add(new Phrase(getText("rtf.datasets.character") + ": ", fontTitle));
         p.add(data.getCharset());
         p.add(Chunk.NEWLINE);
       }
       if (exists(data.getFormat())) {
-        p.add(new Phrase("Format name: ", fontTitle));
+        p.add(new Phrase(getText("rtf.datasets.format") + ": ", fontTitle));
         p.add(data.getFormat());
         p.add(Chunk.NEWLINE);
       }
       if (exists(data.getFormatVersion())) {
-        p.add(new Phrase("Format version: ", fontTitle));
+        p.add(new Phrase(getText("rtf.datasets.format.version") + ": ", fontTitle));
         p.add(data.getFormatVersion());
         p.add(Chunk.NEWLINE);
       }
       if (exists(data.getDistributionUrl())) {
-        p.add(new Phrase("Distribution: ", fontTitle));
+        p.add(new Phrase(getText("rtf.datasets.distribution") + ": ", fontTitle));
         Anchor distributionLink = new Anchor(data.getDistributionUrl(), font);
         distributionLink.setReference(data.getDistributionUrl());
         p.add(distributionLink);
@@ -293,21 +293,21 @@ public class Eml2Rtf {
       p.add(Chunk.NEWLINE);
     }
     if (exists(eml.getPubDate())) {
-      p.add(new Phrase("Publication date of data: ", fontTitle));
+      p.add(new Phrase(getText("rtf.publication") + ": ", fontTitle));
       SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
       p.add(f.format(eml.getPubDate()));
       p.add(Chunk.NEWLINE);
     }
     VocabularyConcept vocabConcept = vocabManager.get(Constants.VOCAB_URI_LANGUAGE).findConcept(eml.getLanguage());
-    p.add(new Phrase("Language: ", fontTitle));
+    p.add(new Phrase(getText("rtf.language") + ": ", fontTitle));
     if (exists(vocabConcept)) {
       p.add(vocabConcept.getPreferredTerm("en").getTitle());
     } else {
-      p.add("Unknown");
+      p.add(getText("rtf.unknown"));
     }
     p.add(Chunk.NEWLINE);
     if (exists(eml.getIntellectualRights())) {
-      p.add(new Phrase("Licenses of use: ", fontTitle));
+      p.add(new Phrase(getText("rtf.license") + ": ", fontTitle));
       p.add(eml.getIntellectualRights());
       p.add(Chunk.NEWLINE);
     }
@@ -317,15 +317,15 @@ public class Eml2Rtf {
 
   private void addDates(Document doc, Eml eml) throws DocumentException {
     Paragraph p = new Paragraph();
-    Phrase phrase = new Phrase("{date}", fontToComplete);
+    Phrase phrase = new Phrase("{" + getText("rtf.date") + "}", fontToComplete);
     p.setFont(font);
-    p.add("Received ");
+    p.add(getText("rtf.received") + " ");
     p.add(phrase);
-    p.add("; Revised ");
+    p.add("; " + getText("rtf.revised") + " ");
     p.add(phrase);
-    p.add("; Accepted ");
+    p.add("; " + getText("rtf.accepted") + " ");
     p.add(phrase);
-    p.add("; Published ");
+    p.add("; " + getText("rtf.published") + " ");
     p.add(phrase);
     p.add(Chunk.NEWLINE);
     doc.add(p);
@@ -337,7 +337,7 @@ public class Eml2Rtf {
       Paragraph p = new Paragraph();
       p.setAlignment(Element.ALIGN_JUSTIFIED);
       p.setFont(font);
-      p.add(new Phrase("Keywords: ", fontTitle));
+      p.add(new Phrase(getText("rtf.keywords") + ": ", fontTitle));
       p.add(keys);
       p.add(Chunk.NEWLINE);
       doc.add(p);
@@ -353,19 +353,19 @@ public class Eml2Rtf {
       Vocabulary vocab = vocabManager.get(Constants.VOCAB_URI_LANGUAGE);
       VocabularyConcept vocabConcept = vocab.findConcept(eml.getMetadataLanguage());
       if (exists(vocabConcept)) {
-        p.add(new Phrase("Metadata language: ", fontTitle));
+        p.add(new Phrase(getText("rtf.metdata.vocab") + ": ", fontTitle));
         p.add(vocabConcept.getPreferredTerm("en").getTitle());
       }
       p.add(Chunk.NEWLINE);
     }
     if (exists(eml.getDateStamp())) {
-      p.add(new Phrase("Date of metadata creation: ", fontTitle));
+      p.add(new Phrase(getText("rtf.metdata.date") + ": ", fontTitle));
       SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
       p.add(f.format(eml.getDateStamp()));
       p.add(Chunk.NEWLINE);
     }
     if (exists(eml.getHierarchyLevel())) {
-      p.add(new Phrase("Heirarchy level: ", fontTitle));
+      p.add(new Phrase(getText("rtf.metadata.level") + ": ", fontTitle));
       p.add(WordUtils.capitalizeFully(eml.getHierarchyLevel()));
       p.add(Chunk.NEWLINE);
     }
@@ -373,7 +373,7 @@ public class Eml2Rtf {
       VocabularyConcept vocabConcept = vocabManager.get(Constants.VOCAB_URI_LANGUAGE).findConcept(
           eml.getMetadataLocale().getLanguage());
       if (exists(vocabConcept)) {
-        p.add(new Phrase("Locale: ", fontTitle));
+        p.add(new Phrase(getText("rtf.metadata.locale") + ": ", fontTitle));
         p.add(vocabConcept.getPreferredTerm("en").getTitle());
       }
       p.add(Chunk.NEWLINE);
@@ -388,15 +388,15 @@ public class Eml2Rtf {
       Paragraph p = new Paragraph();
       p.setAlignment(Element.ALIGN_JUSTIFIED);
       p.setFont(font);
-      p.add(new Phrase("Methods", fontTitle));
+      p.add(new Phrase(getText("rtf.methods"), fontTitle));
       p.add(Chunk.NEWLINE);
       p.add(Chunk.NEWLINE);
       if (eml.getMethodSteps().size() == 1) {
-        p.add(new Phrase("Method step description: ", fontTitle));
+        p.add(new Phrase(getText("rtf.methods.description") + ": ", fontTitle));
         p.add(eml.getMethodSteps().get(0));
         p.add(Chunk.NEWLINE);
       } else if (eml.getMethodSteps().size() > 1) {
-        p.add(new Phrase("Method step description: ", fontTitle));
+        p.add(new Phrase(getText("rtf.methods.description") + ": ", fontTitle));
         p.add(Chunk.NEWLINE);
         List list = new List(List.UNORDERED, 0);
         list.setIndentationLeft(20);
@@ -406,17 +406,17 @@ public class Eml2Rtf {
         p.add(list);
       }
       if (exists(eml.getStudyExtent())) {
-        p.add(new Phrase("Study extent description: ", fontTitle));
+        p.add(new Phrase(getText("rtf.methods.studyExtent") + ": ", fontTitle));
         p.add(eml.getStudyExtent());
         p.add(Chunk.NEWLINE);
       }
       if (exists(eml.getStudyExtent())) {
-        p.add(new Phrase("Sampling description: ", fontTitle));
+        p.add(new Phrase(getText("rtf.methods.sampling") + ": ", fontTitle));
         p.add(eml.getSampleDescription());
         p.add(Chunk.NEWLINE);
       }
       if (exists(eml.getStudyExtent())) {
-        p.add(new Phrase("Quality control description: ", fontTitle));
+        p.add(new Phrase(getText("rtf.methods.quality") + ": ", fontTitle));
         p.add(eml.getQualityControl());
         p.add(Chunk.NEWLINE);
       }
@@ -433,51 +433,52 @@ public class Eml2Rtf {
       p.setAlignment(Element.ALIGN_JUSTIFIED);
       p.setFont(font);
       if (exists(eml.getParentCollectionId())) {
-        p.add(new Phrase("Natural collections description", fontTitle));
+        p.add(new Phrase(getText("rtf.collections.description"), fontTitle));
         p.add(Chunk.NEWLINE);
         p.add(Chunk.NEWLINE);
-        p.add(new Phrase("Parent collection identifier: ", fontTitle));
+        p.add(new Phrase(getText("rtf.collections.parent") + ": ", fontTitle));
         p.add(eml.getParentCollectionId());
         p.add(Chunk.NEWLINE);
       }
       if (exists(eml.getCollectionName())) {
-        p.add(new Phrase("Collection name: ", fontTitle));
+        p.add(new Phrase(getText("rtf.collections.name") + ": ", fontTitle));
         p.add(eml.getCollectionName());
         p.add(Chunk.NEWLINE);
       }
       if (exists(eml.getCollectionId())) {
-        p.add(new Phrase("Collection identifier: ", fontTitle));
+        p.add(new Phrase(getText("rtf.collections.identifier") + ": ", fontTitle));
         p.add(eml.getCollectionId());
         p.add(Chunk.NEWLINE);
       }
       for (TemporalCoverage coverage : eml.getTemporalCoverages()) {
         if (coverage.getType().equals(TemporalCoverageType.FORMATION_PERIOD)) {
-          p.add(new Phrase("Formation period: ", fontTitle));
+          p.add(new Phrase(getText("rtf.collections.formatPeriod") + ": ", fontTitle));
           p.add(coverage.getFormationPeriod());
           p.add(Chunk.NEWLINE);
         }
       }
       for (TemporalCoverage coverage : eml.getTemporalCoverages()) {
         if (coverage.getType().equals(TemporalCoverageType.LIVING_TIME_PERIOD)) {
-          p.add(new Phrase("Living time period: ", fontTitle));
+          p.add(new Phrase(getText("rtf.collections.livingPeriod") + ": ", fontTitle));
           p.add(coverage.getLivingTimePeriod());
           p.add(Chunk.NEWLINE);
         }
       }
       if (exists(eml.getSpecimenPreservationMethod())) {
-        p.add(new Phrase("Specimen preservation method: ", fontTitle));
+        p.add(new Phrase(getText("rtf.collections.specimen") + ": ", fontTitle));
         VocabularyConcept vocabConcept = vocabManager.get(Constants.VOCAB_URI_PRESERVATION_METHOD).findConcept(
             eml.getSpecimenPreservationMethod());
         p.add(vocabConcept.getPreferredTerm("en").getTitle());
         p.add(Chunk.NEWLINE);
       }
       for (JGTICuratorialUnit unit : eml.getJgtiCuratorialUnits()) {
-        p.add(new Phrase("Curatorial unit: ", fontTitle));
+        p.add(new Phrase(getText("rtf.collections.curatorial") + ": ", fontTitle));
         if (unit.getType().equals(JGTICuratorialUnitType.COUNT_RANGE)) {
           p.add("Between " + unit.getRangeStart() + " and " + unit.getRangeEnd());
         }
         if (unit.getType().equals(JGTICuratorialUnitType.COUNT_WITH_UNCERTAINTY)) {
-          p.add(unit.getRangeMean() + " with an uncertainty of " + unit.getUncertaintyMeasure());
+          p.add(unit.getRangeMean() + " " + getText("rtf.collections.curatorial.text") + " "
+              + unit.getUncertaintyMeasure());
         }
         p.add(" (" + unit.getUnitType() + ")");
         p.add(Chunk.NEWLINE);
@@ -509,31 +510,31 @@ public class Eml2Rtf {
       Paragraph p = new Paragraph();
       p.setAlignment(Element.ALIGN_JUSTIFIED);
       p.setFont(font);
-      p.add(new Phrase("Project description", fontTitle));
+      p.add(new Phrase(getText("rtf.project.description"), fontTitle));
       p.add(Chunk.NEWLINE);
       p.add(Chunk.NEWLINE);
       if (exists(eml.getProject().getTitle())) {
-        p.add(new Phrase("Project title: ", fontTitle));
+        p.add(new Phrase(getText("rtf.project.title") + ": ", fontTitle));
         p.add(eml.getProject().getTitle());
         p.add(Chunk.NEWLINE);
       }
-      p.add(new Phrase("Personnel: ", fontTitle));
+      p.add(new Phrase(getText("rtf.project.personnel") + ": ", fontTitle));
       if (exists(eml.getProject().getPersonnel().getFirstName())) {
         p.add(eml.getProject().getPersonnel().getFirstName() + " " + eml.getProject().getPersonnel().getLastName());
         p.add(Chunk.NEWLINE);
       }
       if (exists(eml.getProject().getFunding())) {
-        p.add(new Phrase("Funding: ", fontTitle));
+        p.add(new Phrase(getText("rtf.project.funding") + ": ", fontTitle));
         p.add(eml.getProject().getFunding());
         p.add(Chunk.NEWLINE);
       }
       if (exists(eml.getProject().getStudyAreaDescription().getDescriptorValue())) {
-        p.add(new Phrase("Study area descriptions/descriptor: ", fontTitle));
+        p.add(new Phrase(getText("rtf.project.area") + ": ", fontTitle));
         p.add(eml.getProject().getStudyAreaDescription().getDescriptorValue());
         p.add(Chunk.NEWLINE);
       }
       if (exists(eml.getProject().getDesignDescription())) {
-        p.add(new Phrase("Design description: ", fontTitle));
+        p.add(new Phrase(getText("rtf.project.design") + ": ", fontTitle));
         p.add(eml.getProject().getDesignDescription());
         p.add(Chunk.NEWLINE);
       }
@@ -548,7 +549,7 @@ public class Eml2Rtf {
       Paragraph p = new Paragraph();
       p.setAlignment(Element.ALIGN_JUSTIFIED);
       p.setFont(font);
-      p.add(new Phrase("References", fontTitle));
+      p.add(new Phrase(getText("rtf.references"), fontTitle));
       p.add(Chunk.NEWLINE);
       for (Citation citation : eml.getBibliographicCitationSet().getBibliographicCitations()) {
         p.add(citation.getCitation());
@@ -563,7 +564,7 @@ public class Eml2Rtf {
     if (exists(eml.getGuid())) {
       Paragraph p = new Paragraph();
       p.setFont(font);
-      p.add(new Phrase("Metadata resource link: ", fontTitle));
+      p.add(new Phrase(getText("rtf.resourceLink") + ": ", fontTitle));
       p.add(Chunk.NEWLINE);
       Anchor resourceLink = new Anchor(eml.getGuid(), font);
       resourceLink.setReference(eml.getGuid());
@@ -586,23 +587,23 @@ public class Eml2Rtf {
         firstCoverage = false;
       }
       if (exists(coverage.getDescription())) {
-        p.add(new Phrase("Spatial coverage", fontTitle));
+        p.add(new Phrase(getText("rtf.spatialCoverage"), fontTitle));
         p.add(Chunk.NEWLINE);
         p.add(Chunk.NEWLINE);
-        p.add(new Phrase("General spatial coverage: ", fontTitle));
+        p.add(new Phrase(getText("rtf.spatialCoverage.general") + ": ", fontTitle));
         p.add(coverage.getDescription());
         p.add(Chunk.NEWLINE);
       }
-      p.add(new Phrase("Coordinates: ", fontTitle));
+      p.add(new Phrase(getText("rtf.spatialCoverage.coordinates") + ": ", fontTitle));
       BBox coordinates = coverage.getBoundingCoordinates();
       p.add(CoordinateUtils.decToDms(coordinates.getMin().getLatitude(), CoordinateUtils.LATITUDE));
-      p.add(" and ");
+      p.add((" ") + getText("rtf.spatialCoverage.and") + (" "));
       p.add(CoordinateUtils.decToDms(coordinates.getMax().getLatitude(), CoordinateUtils.LATITUDE));
-      p.add(" Latitude; ");
+      p.add((" ") + getText("rtf.spatialCoverage.latitude") + ("; "));
       p.add(CoordinateUtils.decToDms(coordinates.getMin().getLongitude(), CoordinateUtils.LONGITUDE));
-      p.add(" and ");
+      p.add((" ") + getText("rtf.spatialCoverage.and") + (" "));
       p.add(CoordinateUtils.decToDms(coordinates.getMax().getLongitude(), CoordinateUtils.LONGITUDE));
-      p.add(" Longitude");
+      p.add((" ") + getText("rtf.spatialCoverage.longitude") + (" "));
       p.add(Chunk.NEWLINE);
     }
     doc.add(p);
@@ -620,10 +621,10 @@ public class Eml2Rtf {
         p.add(Chunk.NEWLINE);
       }
       firstTaxon = false;
-      p.add(new Phrase("Taxonomic coverage", fontTitle));
+      p.add(new Phrase(getText("rtf.taxcoverage"), fontTitle));
       p.add(Chunk.NEWLINE);
       p.add(Chunk.NEWLINE);
-      p.add(new Phrase("General taxonomic coverage description: ", fontTitle));
+      p.add(new Phrase(getText("rtf.taxcoverage.description") + ": ", fontTitle));
       p.add(taxcoverage.getDescription());
       p.add(Chunk.NEWLINE);
       Map<String, String> ranks = vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS,
@@ -635,7 +636,7 @@ public class Eml2Rtf {
           if (exists(keyword.getRank()) && keyword.getRank().equals(rank)) {
             if (!wroteRank) {
               if (firstRank) {
-                p.add(new Phrase("Taxonomic ranks", fontTitle));
+                p.add(new Phrase(getText("rtf.taxcoverage.rank"), fontTitle));
               }
               p.add(Chunk.NEWLINE);
               p.add(StringUtils.capitalize(rank) + ": ");
@@ -655,7 +656,7 @@ public class Eml2Rtf {
           if (!isFirst) {
             p.add(", ");
           } else {
-            p.add(new Phrase("Common names: ", fontTitle));
+            p.add(new Phrase(getText("rtf.taxcoverage.common") + ": ", fontTitle));
           }
           isFirst = false;
           p.add(keyword.getCommonName());
@@ -682,7 +683,7 @@ public class Eml2Rtf {
         } else {
           firstCoverage = false;
         }
-        p.add(new Phrase("Temporal coverage: ", fontTitle));
+        p.add(new Phrase(getText("rtf.tempcoverage") + ": ", fontTitle));
         if (timeFormat.format(coverage.getStartDate()).equals("001")) {
           p.add(yearFormat.format(coverage.getStartDate()));
         } else {
@@ -695,7 +696,7 @@ public class Eml2Rtf {
         } else {
           firstCoverage = false;
         }
-        p.add(new Phrase("Temporal coverage: ", fontTitle));
+        p.add(new Phrase(getText("rtf.tempcoverage") + ": ", fontTitle));
         if (timeFormat.format(coverage.getStartDate()).equals("001")) {
           p.add(yearFormat.format(coverage.getStartDate()));
         } else {
