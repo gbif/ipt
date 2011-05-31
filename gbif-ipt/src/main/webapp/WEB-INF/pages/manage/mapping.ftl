@@ -316,9 +316,11 @@ $(document).ready(function(){
 		<br/><b><@s.text name="manage.mapping.no.mapped.title"/></b><br/><br/>
 		<@s.text name="manage.mapping.no.mapped.columns"/>:<br/>
 		<em>
-		<#list nonMappedColumns as col>
-			${col}<#if nonMappedColumns.size()!=col_index+1>,<#else>.</#if>
-		</#list>
+		<ul>
+			<#list nonMappedColumns as col>
+				<li>${col}</li>
+			</#list>
+		</ul>
 		</em>
 	  </#if>
 	
