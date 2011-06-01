@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<org.gbif.provider.model.eml.Eml>
+  <resourceCreator>
+    <firstName>Markus</firstName>
+    <lastName>Döring</lastName>
+    <organisation></organisation>
+    <position></position>
+    <address>
+      <address>Wiener Straße 20</address>
+      <city>Berlin</city>
+      <province></province>
+      <country>Germany</country>
+      <postalCode>10999</postalCode>
+    </address>
+    <phone>+49 (30) 1234 5678</phone>
+    <email>markus@mailinator.com</email>
+    <role>ORIGINATOR</role>
+    <homepage></homepage>
+  </resourceCreator>
+  <pubDate>2008-12-11 11:20:59.9 CET</pubDate>
+  <language>en</language>
+  <intellectualRights>Creative Commons Attribution 3.0&#xd;
+http://creativecommons.org/licenses/by/3.0/legalcode&#xd;
+</intellectualRights>
+  <keywords>
+    <string>Vegetation</string>
+    <string>Phytosociology</string>
+    <string>Grass</string>
+    <string>Thorncussion</string>
+    <string>Turkey</string>
+    <string>Toroslar</string>
+  </keywords>
+  <geographicCoverage>
+    <description>Sites located mainly in the southern turkish Toroslar mountains and a few in the north eastern Kaçkar mountains.</description>
+    <boundingCoordinates>
+      <max>
+        <longitude>43.88341514435831</longitude>
+        <latitude>42.20826292244504</latitude>
+      </max>
+      <min>
+        <longitude>24.371696394358306</longitude>
+        <latitude>35.35279417244504</latitude>
+      </min>
+    </boundingCoordinates>
+  </geographicCoverage>
+  <temporalCoverage>
+    <start>1999-06-18 00:00:00.0 CEST</start>
+    <end>1999-08-22 00:00:00.0 CEST</end>
+  </temporalCoverage>
+  <taxonomicCoverageDescription>Higher plants mainly from the subalpine belt. Thorncushion formations made up mainly from species of the genus Astragalus are dominant as well as grass formations, often dominated by Festuca</taxonomicCoverageDescription>
+  <lowestCommonTaxon>
+    <scientificName>Plantae</scientificName>
+    <rank>kingdom</rank>
+    <commonName>Plants</commonName>
+  </lowestCommonTaxon>
+  <taxonomicClassification>
+    <org.gbif.provider.model.eml.TaxonKeyword>
+      <scientificName>Plantae</scientificName>
+    </org.gbif.provider.model.eml.TaxonKeyword>
+    <org.gbif.provider.model.eml.TaxonKeyword>
+      <scientificName>Astragalus</scientificName>
+    </org.gbif.provider.model.eml.TaxonKeyword>
+    <org.gbif.provider.model.eml.TaxonKeyword>
+      <scientificName>Poaceae</scientificName>
+    </org.gbif.provider.model.eml.TaxonKeyword>
+    <org.gbif.provider.model.eml.TaxonKeyword>
+      <scientificName>Festuca</scientificName>
+    </org.gbif.provider.model.eml.TaxonKeyword>
+  </taxonomicClassification>
+  <methods>Braun Blanquet based plot surveys. phytosociological vegetation analysis and classification.</methods>
+  <samplingDescription>Braun Blanquet mean covers for plants on selected plots between 1x1 and 10x10 meters.</samplingDescription>
+  <qualityControl></qualityControl>
+  <researchProject>
+    <title>PonTaurus</title>
+    <projectAbstract></projectAbstract>
+    <funding>no funding</funding>
+    <studyAreaDescription>Subalpine belt of the Turkish Toroslar and Kaçkar mountains</studyAreaDescription>
+    <designDescription></designDescription>
+    <personnelOriginator>
+      <organisation>Freie Universität Berlin</organisation>
+      <address/>
+      <role>ORIGINATOR</role>
+    </personnelOriginator>
+    <personnel>
+      <address/>
+    </personnel>
+  </researchProject>
+  <purpose></purpose>
+  <maintenance></maintenance>
+</org.gbif.provider.model.eml.Eml>
