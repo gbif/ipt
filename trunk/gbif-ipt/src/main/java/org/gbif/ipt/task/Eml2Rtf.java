@@ -195,6 +195,7 @@ public class Eml2Rtf {
     int counter = 0;
     for (Iterator<Agent> i = tempAgents.iterator(); i.hasNext(); counter++) {
       if (toRemove.contains(counter)) {
+        i.next();
         i.remove();
       } else {
         Agent agentA = i.next();
