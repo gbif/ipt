@@ -63,11 +63,11 @@
 			  	<#if resource.lastPublished??>
 			  	    <td><@s.text name='portal.resource.version'/> ${resource.eml.emlVersion} <@s.text name='portal.resource.version.from'/> ${resource.lastPublished?date?string.medium}</td></tr>
 			  	<#if (resource.recordsPublished>0)>
-          		<tr><th><@s.text name='portal.resource.published.archive'/></th><td><a href="${baseURL}/archive.do?r=${resource.shortname}"><@s.text name='portal.resource.download'/></a>, ${resource.recordsPublished} <@s.text name='portal.resource.records'/> </td></tr>
+          		<tr><th><@s.text name='portal.resource.published.archive'/></th><td><a href="${baseURL}/archive.do?r=${resource.shortname}"><@s.text name='portal.resource.download'/></a> (${dwcaFormattedSize}) ${resource.recordsPublished} <@s.text name='portal.resource.records'/></td></tr>
 			  	</#if>
-          		<tr><th><@s.text name='portal.resource.published.eml'/></th><td><a href="${baseURL}/eml.do?r=${resource.shortname}"><@s.text name='portal.resource.download'/></a></td></tr>
+          		<tr><th><@s.text name='portal.resource.published.eml'/></th><td><a href="${baseURL}/eml.do?r=${resource.shortname}"><@s.text name='portal.resource.download'/></a> (${emlFormattedSize})</td></tr>
           		
-          		<#if rtfFileExisting><tr><th><@s.text name='portal.resource.published.rtf'/></th><td><a href="${baseURL}/rtf.do?r=${resource.shortname}"><@s.text name='portal.resource.download'/></a></td></tr></#if>
+          		<tr><th><@s.text name='portal.resource.published.rtf'/></th><td><a href="${baseURL}/rtf.do?r=${resource.shortname}"><@s.text name='portal.resource.download'/></a> (${rtfFormattedSize})</td></tr>
           		
           		<#else>
           		    <td><@s.text name='portal.resource.published.never'/></td></tr>
