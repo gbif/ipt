@@ -16,6 +16,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.task.StatusReport;
+import org.gbif.ipt.utils.FileUtils;
 import org.gbif.ipt.validation.EmlValidator;
 
 import com.google.inject.Inject;
@@ -131,6 +132,24 @@ public class OverviewAction extends ManagerBaseAction {
     return SUCCESS;
   }
 
+  /**
+   * Return the size of the DwC-A file.
+   * 
+   * @return
+   */
+  public String getDwcaFormattedSize() {
+    return FileUtils.formatSize(resourceManager.getDwcaSize(resource), 2);
+  }
+
+  /**
+   * Return the EML file size
+   * 
+   * @return
+   */
+  public String getEmlFormattedSize() {
+    return FileUtils.formatSize(resourceManager.getEmlSize(resource), 2);
+  }
+
   public boolean getMissingBasicMetadata() {
     return !emlValidator.isValid(resource.getEml(), "basic");
   }
@@ -160,6 +179,15 @@ public class OverviewAction extends ManagerBaseAction {
 
   public StatusReport getReport() {
     return report;
+  }
+
+  /**
+   * Return the RTF file size
+   * 
+   * @return
+   */
+  public String getRtfFormattedSize() {
+    return FileUtils.formatSize(resourceManager.getRtfSize(resource), 2);
   }
 
   public boolean isMissingMetadata() {
