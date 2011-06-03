@@ -187,6 +187,33 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return eml;
   }
 
+  private Eml copyMetadata(String shortname, File emlFile) throws ImportException {
+
+    File emlFile2 = dataDir.resourceEmlFile(shortname, null);
+    try {
+      FileUtils.copyFile(emlFile, emlFile2);
+    } catch (IOException e1) {
+      log.error("Unnable to copy EML File", e1);
+    }
+    Eml eml = null;
+    try {
+      InputStream in = new FileInputStream(emlFile2);
+      eml = EmlFactory.build(in);
+    } catch (FileNotFoundException e) {
+      eml = new Eml();
+    } catch (IOException e) {
+      log.error(e);
+    } catch (SAXException e) {
+      log.error("Invalid EML document", e);
+    }
+
+    if (eml == null) {
+      throw new ImportException("Invalid EML document");
+    }
+
+    return eml;
+  }
+
   public Resource create(String shortname, File dwca, User creator, BaseAction action) throws AlreadyExistingException,
       ImportException {
     ActionLogger alog = new ActionLogger(this.log, action);
@@ -266,7 +293,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           resource.addMapping(map);
         }
         // try to read metadata
-        Eml eml = readMetadata(resource.getShortname(),arch, alog);
+        Eml eml = readMetadata(resource.getShortname(), arch, alog);
         if (eml != null) {
           resource.setEml(eml);
         }
@@ -296,39 +323,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
     return resource;
   }
-  
-  private Eml copyMetadata(String shortname, File emlFile) throws ImportException{
-	  
-	  File emlFile2 = dataDir.resourceEmlFile(shortname, null);
-      try {
-		FileUtils.copyFile(emlFile, emlFile2);
-      } catch (IOException e1) {
-		log.error("Unnable to copy EML File",e1);
-      }
-      Eml eml = null;
-      try {
-    	InputStream in = new FileInputStream(emlFile2);
-        eml = EmlFactory.build(in);
-      } catch (FileNotFoundException e) {
-        eml = new Eml();
-      } catch (IOException e) {
-    	log.error(e);
-      } catch (SAXException e) {
-        log.error("Invalid EML document", e);
-      } 
-      
-      if(eml==null){
-    	  throw new ImportException("Invalid EML document");
-      }
-      
-      return eml;
-  }
 
   private Resource createFromEml(String shortname, File emlFile, User creator, ActionLogger alog)
       throws AlreadyExistingException, ImportException {
-	// Eml eml = readMetadata(emlFile, alog);
-	Eml eml = copyMetadata(shortname, emlFile);
-    
+    // Eml eml = readMetadata(emlFile, alog);
+    Eml eml = copyMetadata(shortname, emlFile);
+
     if (eml != null) {
       // create resource with imorted metadata
       Resource resource = create(shortname, creator);
@@ -428,10 +428,33 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return resources.get(shortname.toLowerCase());
   }
 
+  /*
+   * Returns the size of the DwC-A file using the dataDir.
+   * (non-Javadoc)
+   * 
+   * @see org.gbif.ipt.service.manage.ResourceManager#getDwcaSize(org.gbif.ipt.model.Resource)
+   */
+  public long getDwcaSize(Resource resource) {
+    File data = dataDir.resourceDwcaFile(resource.getShortname());
+    long size = data.length();
+    return size;
+  }
+
   private int getEmlHash(Resource resource, Eml eml) {
     // TODO: replace by hashing the eml xml file content?
     // Alternatively code a proper hashCode method for Eml that needs to be maintained - might be too much effort
     return eml.hashCode();
+  }
+
+  /*
+   * Returns the size of the EML file using the dataDir
+   * (non-Javadoc)
+   * 
+   * @see org.gbif.ipt.service.manage.ResourceManager#getEmlSize(org.gbif.ipt.model.Resource)
+   */
+  public long getEmlSize(Resource resource) {
+    File data = dataDir.resourceEmlFile(resource.getShortname(), resource.getEmlVersion());
+    return data.length();
   }
 
   /*
@@ -447,6 +470,17 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       log.error(e);
     }
     return url;
+  }
+
+  /*
+   * Returns the size of the RTF file using the dataDir.
+   * (non-Javadoc)
+   * 
+   * @see org.gbif.ipt.service.manage.ResourceManager#getRtfSize(org.gbif.ipt.model.Resource)
+   */
+  public long getRtfSize(Resource resource) {
+    File data = dataDir.resourceRtfFile(resource.getShortname());
+    return data.length();
   }
 
   private ExtensionMapping importMappings(ActionLogger alog, ArchiveFile af, Source source) {
@@ -525,6 +559,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       return true;
     }
     return false;
+  }
+
+  public boolean isRtfExisting(String shortName) {
+    File rtfFile = dataDir.resourceRtfFile(shortName);
+    return rtfFile.exists();
   }
 
   /*
@@ -743,17 +782,17 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
     // publish also as RTF
     publishRtf(resource, alog);
-    
+
     // copy current rtf version.
     File trunkRtfFile = dataDir.resourceRtfFile(resource.getShortname());
     File versionedRtfFile = dataDir.resourceRtfFile(resource.getShortname(), version);
     try {
-		FileUtils.copyFile(trunkRtfFile, versionedRtfFile);
-	} catch (IOException e) {
-		alog.error("Can't publish resource " + resource.getShortname() + "as RTF", e);
-		throw new PublicationException(PublicationException.TYPE.EML, "Can't publish rtf file for resource "
-				+ resource.getShortname(), e);		
-	}
+      FileUtils.copyFile(trunkRtfFile, versionedRtfFile);
+    } catch (IOException e) {
+      alog.error("Can't publish resource " + resource.getShortname() + "as RTF", e);
+      throw new PublicationException(PublicationException.TYPE.EML, "Can't publish rtf file for resource "
+          + resource.getShortname(), e);
+    }
   }
 
   private void publishRtf(Resource resource, ActionLogger alog) {
@@ -775,6 +814,16 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
+  private Eml readMetadata(File file, ActionLogger alog) {
+    MetadataFactory fact = new MetadataFactory();
+    try {
+      return convertMetadataToEml(fact.read(file), alog);
+    } catch (MetadataException e) {
+      // swallow;
+    }
+    return null;
+  }
+
   private Eml readMetadata(String shortname, Archive archive, ActionLogger alog) {
     Eml eml = null;
     File emlFile = archive.getMetadataLocationFile();
@@ -785,20 +834,20 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         emlFile = new File(archive.getLocation(), "eml.xml");
       }
       if (emlFile.exists()) {
-       	// InputStream emlIn = new FileInputStream(emlFile);
+        // InputStream emlIn = new FileInputStream(emlFile);
         // eml = EmlFactory.build(emlIn);
-       	eml = copyMetadata(shortname, emlFile);
+        eml = copyMetadata(shortname, emlFile);
         alog.info("manage.resource.read.eml.metadata");
         return eml;
       } else {
         log.warn("Cant find any eml metadata to import");
       }
     } catch (ImportException e) {
-    	String msg="Cant read basic archive metadata: " + e.getMessage();
-    	log.warn(msg);
-    	alog.warn(msg);
-    	return null;
-	} catch (Exception e) {
+      String msg = "Cant read basic archive metadata: " + e.getMessage();
+      log.warn(msg);
+      alog.warn(msg);
+      return null;
+    } catch (Exception e) {
       log.warn("Cant read archive eml metadata", e);
     }
     // try to read other metadata formats like dc
@@ -810,16 +859,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       log.warn("Cant read basic archive metadata: " + e.getMessage());
     }
     alog.warn("manage.resource.read.problem");
-    return null;
-  }
-
-  private Eml readMetadata(File file, ActionLogger alog) {
-    MetadataFactory fact = new MetadataFactory();
-    try {
-      return convertMetadataToEml(fact.read(file), alog);
-    } catch (MetadataException e) {
-      // swallow;
-    }
     return null;
   }
 
@@ -999,10 +1038,5 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       resource.setStatus(PublicationStatus.PUBLIC);
       save(resource);
     }
-  }
-
-  public boolean isRtfExisting(String shortName) {
-	File rtfFile = dataDir.resourceRtfFile(shortName);
-	return rtfFile.exists();
   }
 }
