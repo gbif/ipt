@@ -109,10 +109,10 @@ public class FileUtils {
       return fmt.format(val).concat(" MB");
     }
     val = size / 1024;
-    if (val > 10) {
+    if (val > 1) {
       return fmt.format(val).concat(" KB");
     }
-    return longSize+" bytes";
+    return longSize + " bytes";
   }
 
   public static InputStream getInputStream(File source) throws FileNotFoundException {
