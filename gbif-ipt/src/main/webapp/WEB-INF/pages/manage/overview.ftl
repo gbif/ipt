@@ -231,33 +231,46 @@ $(document).ready(function(){
         <em class="<#if resource.status=="PRIVATE">RED<#else>green</#if>"><@s.text name="resource.status.${resource.status?lower_case}"/></em>
   	</div>
   	<div class="actions">
-	  <form action='resource-visibility.do' method='post'>
+	  <#assign action>registerResource</#assign>
+ 	  <#if resource.status=="PRIVATE">
+ 	    <#assign action>makePublic</#assign>
+ 	  </#if>
+ 	  <#if resource.status=="REGISTERED">
+ 	    <#assign action>updateRegistered</#assign>
+ 	  </#if>
+      
+      <form action='resource-${action}.do' method='post'>
 	    <input name="r" type="hidden" value="${resource.shortname}" />
 	    <#if resource.status=="PUBLIC">
 	    	<#if currentUser.hasRegistrationRights() && (organisations?size>0)>
-		    <select name="id" id="org" size="1">
-		    <#list organisations as o>
-		      <option value="${o.key}">${o.alias!o.name}</option>
-		    </#list>
-			</select>
-			<div class="newline"></div>
-	       	<@s.submit cssClass="confirmRegistration" name="publish" key="button.register" disabled="${missingRegistrationMetadata?string}"/>
-	       	<#if missingRegistrationMetadata>
+		      <select name="id" id="org" size="1">
+		        <#list organisations as o>
+		          <option value="${o.key}">${o.alias!o.name}</option>
+		        </#list>
+			  </select>
+			  <div class="newline"></div>
+	       	  <@s.submit cssClass="confirmRegistration" name="publish" key="button.register" disabled="${missingRegistrationMetadata?string}"/>
+	       	  <#if missingRegistrationMetadata>
 	       		<div class="warn"><@s.text name="manage.overview.visibility.missing.metadata"><@s.param>${baseURL}/manage/metadata-basic.do?r=${resource.shortname}</@s.param></@s.text></div>
-	       	</#if>
-	       	</#if>
-	       	<@s.submit cssClass="confirm" name="unpublish" key="button.private" />
+	       	  </#if>
+	       	</#if>	       	
 		<#else>
 		    <#if resource.status=="PRIVATE">
-	       	<@s.submit name="publish" key="button.public"/>
+	       	  <@s.submit name="publish" key="button.public"/>
 			</#if>
 		    <#if resource.status=="REGISTERED">
-	       	<@s.submit name="update" key="button.update"/>
+	       	  <@s.submit name="update" key="button.update"/>
 			</#if>			
 		</#if>
-		<div class="newline"></div>
-	    <div class="newline"></div>
   	  </form>
+  	  <#if resource.status=="PUBLIC">
+ 	    <#assign action>makePrivate</#assign>
+ 	    <form action='resource-${action}.do' method='post'>
+ 	      <@s.submit cssClass="confirm" name="unpublish" key="button.private" />
+        </form>
+      </#if>
+      <div class="newline"></div>
+      <div class="newline"></div>
   	</div>
   </div>
   <div class="body">
