@@ -781,7 +781,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           + resource.getShortname(), e);
     }
     // publish also as RTF
-    publishRtf(resource, alog);
+    publishRtf(resource, action);
 
     // copy current rtf version.
     File trunkRtfFile = dataDir.resourceRtfFile(resource.getShortname());
@@ -795,14 +795,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
-  private void publishRtf(Resource resource, ActionLogger alog) {
+  private void publishRtf(Resource resource, BaseAction action) {
+    ActionLogger alog = new ActionLogger(this.log, action);
     Document doc = new Document();
     File rtfFile = dataDir.resourceRtfFile(resource.getShortname());
     OutputStream out;
     try {
       out = new FileOutputStream(rtfFile);
       RtfWriter2.getInstance(doc, out);
-      eml2Rtf.writeEmlIntoRtf(doc, resource);
+      eml2Rtf.writeEmlIntoRtf(doc, resource, action);
       out.close();
       alog.info("RTF published successfully!");
     } catch (FileNotFoundException e) {
