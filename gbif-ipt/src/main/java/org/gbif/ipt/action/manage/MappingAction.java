@@ -1,12 +1,9 @@
 /***************************************************************************
  * Copyright 2010 Global Biodiversity Information Facility Secretariat
- * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -49,14 +46,12 @@ import java.util.regex.Pattern;
  * The prepare method does a lot of work.
  * For initial GET requests linked from the overview the prepare() method decides on the result name, i.e. which
  * template to call.
- * 
  * We dont use any regular validation here but only raise warnings to the user.
  * So the save method is always executed for POST requests, but not for GETs.
  * Please dont add any action errors as this will trigger the validation interceptor and causes problems, use
  * addActionWarning() instead.
  * 
  * @author markus
- * 
  */
 public class MappingAction extends ManagerBaseAction {
   private static final Pattern normTerm = Pattern.compile("[\\W\\s_0-9]+");
@@ -141,19 +136,6 @@ public class MappingAction extends ManagerBaseAction {
   public List<String> getColumns() {
     return columns;
   }
-  
-  public List<String> getNonMappedColumns() {
-	nonMappedColumns=new ArrayList<String>();
-	nonMappedColumns.addAll(columns);
-	for(int index=0;index<columns.size();index++){
-	 for(PropertyMapping field:fields){
-	   if(field.getIndex()!=null && (field.getIndex())==index){
-		   nonMappedColumns.remove(columns.get(index));
-	   }
-	 }
-	}
-	return nonMappedColumns;
-  }
 
   public Comparator[] getComparators() {
     return comparators;
@@ -173,6 +155,23 @@ public class MappingAction extends ManagerBaseAction {
 
   public Integer getMid() {
     return mid;
+  }
+
+  public List<String> getNonMappedColumns() {
+    nonMappedColumns = new ArrayList<String>();
+    nonMappedColumns.addAll(columns);
+    for (int index = 0; index < columns.size(); index++) {
+      if (columns.get(index) == "") {
+        nonMappedColumns.remove(columns.get(index));
+      } else {
+        for (PropertyMapping field : fields) {
+          if (field.getIndex() != null && (field.getIndex()) == index) {
+            nonMappedColumns.remove(columns.get(index));
+          }
+        }
+      }
+    }
+    return nonMappedColumns;
   }
 
   public List<String[]> getPeek() {

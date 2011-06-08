@@ -87,7 +87,7 @@ public class ConfigAction extends POSTAction {
     boolean baseUrlChanged = false;
     // base URL
     if (!stringEquals(baseUrl, cfg.getBaseURL())) {
-      log.info("Changing the installation baseURL from[" + cfg.getBaseURL() + "] to[" + baseUrl + "]");
+      log.info("Changing the installation baseURL from [" + cfg.getBaseURL() + "] to [" + baseUrl + "]");
       try {
         URL burl = new URL(baseUrl);
         configManager.setBaseURL(burl);
