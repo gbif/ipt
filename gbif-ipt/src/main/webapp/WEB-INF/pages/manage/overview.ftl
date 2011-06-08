@@ -224,6 +224,74 @@ $(document).ready(function(){
   </div>
 </div>
 
+
+
+<div class="definition" id="publish">	
+  <div class="title">
+  	<div class="head">
+        <@s.text name="manage.overview.published"/>
+  	</div>
+   	<div class="actions">
+   	  <#if !missingMetadata>
+	  <form action='publish.do' method='post'>
+	    <input name="r" type="hidden" value="${resource.shortname}" />
+	    <@s.submit name="publish" key="button.publish" />
+	    <div class="newline"></div>
+	    <div class="newline"></div>
+  	  </form>
+  	  </#if>
+  	</div>
+  </div>
+  <div class="body">
+      	<div>
+      		<@s.text name="manage.overview.published.description"/>
+      	</div>
+   	  <#if missingMetadata>
+      	<div>
+          	<img class="info"src="${baseURL}/images/info.gif" /> 
+			<em><@s.text name="manage.overview.published.missing.metadata"/></em>
+      	</div>
+  	  </#if>
+      	<div class="details">
+      		<table>
+			  	<#if resource.lastPublished??>
+          		 <tr><th><@s.text name="manage.overview.published.last.publication"/></th>
+          		 	<td><@s.text name="manage.overview.published.version"/> ${resource.eml.emlVersion} <@s.text name="manage.overview.published.from"/> ${resource.lastPublished?datetime?string}
+				  	<#if report??><a id="toggleReport" href="#">See report</a></#if>
+				  	<a href="${baseURL}/publicationlog.do?r=${resource.shortname}"><@s.text name='portal.publication.log'/></a>
+          		    </td>
+          		 </tr>
+			  	 <#if report??>
+          		 <tr id="dwcaReport" style="display: none;"><td colspan="2">
+<div class="report">
+  <ul class="simple">
+   <#list report.messages as msg>
+   <li>${msg.message} <span class="small">${msg.date?time?string}</span></li>
+   </#list>
+  </ul>
+  <#if report.hasException()>
+  <br/>
+  <ul class="simple">
+   <li><strong>Exception</strong> ${report.exceptionMessage!}</li>
+   <#list report.exceptionStacktrace as msg>
+   <li>${msg}</li>
+   </#list>
+  </ul>
+  </#if>
+</div>
+          		 </td></tr>
+				 </#if>          		 
+			  	 <#if (resource.recordsPublished>0)>
+          		  <tr><th><@s.text name="manage.overview.published.archive"/></th><td><a href="${baseURL}/archive.do?r=${resource.shortname}"><@s.text name="manage.overview.published.download"/></a> (${dwcaFormattedSize}) ${resource.recordsPublished} <@s.text name="manage.overview.published.records"/> </td></tr>
+			  	 </#if>
+          		 <tr><th><@s.text name="manage.overview.published.eml"/></th><td><a href="${baseURL}/eml.do?r=${resource.shortname}"><@s.text name="manage.overview.published.download"/></a> <a href="${baseURL}/resource.do?r=${resource.shortname}"><@s.text name="manage.overview.published.view"/></a> (${emlFormattedSize})</td></tr>
+			  	 <tr><th><@s.text name="portal.resource.published.rtf"/></th><td><a href="${baseURL}/rtf.do?r=${resource.shortname}"><@s.text name="manage.overview.published.download"/></a> (${rtfFormattedSize})</td></tr>
+			  	</#if>
+      		</table>
+      	</div>
+  </div>
+</div>
+
 <div class="definition" id="visibility">	
   <div class="title">
   	<div class="head">
@@ -304,72 +372,6 @@ $(document).ready(function(){
 	          		<tr><th><@s.text name="manage.overview.visibility.endorsing.node"/></th><td>${resource.organisation.nodeName!}</td></tr>
 	          		</#if>
           		</#if>
-      		</table>
-      	</div>
-  </div>
-</div>
-
-<div class="definition" id="publish">	
-  <div class="title">
-  	<div class="head">
-        <@s.text name="manage.overview.published"/>
-  	</div>
-   	<div class="actions">
-   	  <#if !missingMetadata>
-	  <form action='publish.do' method='post'>
-	    <input name="r" type="hidden" value="${resource.shortname}" />
-	    <@s.submit name="publish" key="button.publish" />
-	    <div class="newline"></div>
-	    <div class="newline"></div>
-  	  </form>
-  	  </#if>
-  	</div>
-  </div>
-  <div class="body">
-      	<div>
-      		<@s.text name="manage.overview.published.description"/>
-      	</div>
-   	  <#if missingMetadata>
-      	<div>
-          	<img class="info"src="${baseURL}/images/info.gif" /> 
-			<em><@s.text name="manage.overview.published.missing.metadata"/></em>
-      	</div>
-  	  </#if>
-      	<div class="details">
-      		<table>
-			  	<#if resource.lastPublished??>
-          		 <tr><th><@s.text name="manage.overview.published.last.publication"/></th>
-          		 	<td><@s.text name="manage.overview.published.version"/> ${resource.eml.emlVersion} <@s.text name="manage.overview.published.from"/> ${resource.lastPublished?datetime?string}
-				  	<#if report??><a id="toggleReport" href="#">See report</a></#if>
-				  	<a href="${baseURL}/publicationlog.do?r=${resource.shortname}"><@s.text name='portal.publication.log'/></a>
-          		    </td>
-          		 </tr>
-			  	 <#if report??>
-          		 <tr id="dwcaReport" style="display: none;"><td colspan="2">
-<div class="report">
-  <ul class="simple">
-   <#list report.messages as msg>
-   <li>${msg.message} <span class="small">${msg.date?time?string}</span></li>
-   </#list>
-  </ul>
-  <#if report.hasException()>
-  <br/>
-  <ul class="simple">
-   <li><strong>Exception</strong> ${report.exceptionMessage!}</li>
-   <#list report.exceptionStacktrace as msg>
-   <li>${msg}</li>
-   </#list>
-  </ul>
-  </#if>
-</div>
-          		 </td></tr>
-				 </#if>          		 
-			  	 <#if (resource.recordsPublished>0)>
-          		  <tr><th><@s.text name="manage.overview.published.archive"/></th><td><a href="${baseURL}/archive.do?r=${resource.shortname}"><@s.text name="manage.overview.published.download"/></a> (${dwcaFormattedSize}) ${resource.recordsPublished} <@s.text name="manage.overview.published.records"/> </td></tr>
-			  	 </#if>
-          		 <tr><th><@s.text name="manage.overview.published.eml"/></th><td><a href="${baseURL}/eml.do?r=${resource.shortname}"><@s.text name="manage.overview.published.download"/></a> <a href="${baseURL}/resource.do?r=${resource.shortname}"><@s.text name="manage.overview.published.view"/></a> (${emlFormattedSize})</td></tr>
-			  	 <tr><th><@s.text name="portal.resource.published.rtf"/></th><td><a href="${baseURL}/rtf.do?r=${resource.shortname}"><@s.text name="manage.overview.published.download"/></a> (${rtfFormattedSize})</td></tr>
-			  	</#if>
       		</table>
       	</div>
   </div>
