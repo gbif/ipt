@@ -95,7 +95,8 @@ public class ConfigAction extends POSTAction {
         addActionMessage(getText("admin.config.baseUrl.changed"));
         addActionMessage(getText("admin.user.login"));
         session.remove(Constants.SESSION_USER);
-        if (burl.getHost().equalsIgnoreCase("localhost") || burl.getHost().equalsIgnoreCase("127.0.0.1")) {
+        if (burl.getHost().equalsIgnoreCase("localhost") || burl.getHost().equalsIgnoreCase("127.0.0.1")
+            || burl.getHost().equalsIgnoreCase(configManager.getHostName())) {
           addActionWarning(getText("admin.config.error.localhostURL"));
         }
         baseUrlChanged = true;

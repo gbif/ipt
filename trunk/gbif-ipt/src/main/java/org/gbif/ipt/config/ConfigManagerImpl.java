@@ -13,9 +13,9 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
-import org.gbif.utils.HttpUtil;
 import org.gbif.ipt.utils.InputStreamUtils;
 import org.gbif.ipt.utils.LogFileAppender;
+import org.gbif.utils.HttpUtil;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -33,8 +33,10 @@ import org.apache.log4j.xml.DOMConfigurator;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
 
 /**
  * A skeleton implementation for the time being....
@@ -79,6 +81,19 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     } else {
       log.debug("IPT DataDir not configured - no configuration loaded");
     }
+  }
+
+  /**
+   * Returns the local host name
+   */
+  public String getHostName() {
+    String hostName = "";
+    try {
+      hostName = InetAddress.getLocalHost().getHostName();
+    } catch (UnknownHostException e) {
+      log.info("No IP address for the local hostname could be found", e);
+    }
+    return hostName;
   }
 
   public boolean isBaseURLValid() {
@@ -175,12 +190,35 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   public void setBaseURL(URL baseURL) throws InvalidConfigException {
     log.info("Updating the baseURL to: " + baseURL);
 
-    if (baseURL.getHost().equalsIgnoreCase("localhost") || baseURL.getHost().equalsIgnoreCase("127.0.0.1")) {
+    if (baseURL.getHost().equalsIgnoreCase("localhost") || baseURL.getHost().equalsIgnoreCase("127.0.0.1")
+        || baseURL.getHost().equalsIgnoreCase(this.getHostName())) {
       log.warn("Localhost used as base url, IPT will not be visible to the outside!");
     }
 
-    if (!validateBaseURL(baseURL)) {
-      throw new InvalidConfigException(TYPE.INACCESSIBLE_BASE_URL, "No IPT found at new base URL");
+    boolean validate = true;
+    // validate if localhost URL is configured only in developer mode.
+    if (cfg.devMode()) {
+      HttpHost hostTemp = (HttpHost) client.getParams().getParameter(ConnRoutePNames.DEFAULT_PROXY);
+      if (hostTemp != null) {
+        if (baseURL.getHost().equals("localhost") || baseURL.getHost().equals("127.0.0.1")
+            || baseURL.getHost().equalsIgnoreCase(this.getHostName())) {
+          // if local URL is configured, the IPT should do the validation without a proxy.
+          String proxyTemp = hostTemp.toHostString();
+          setProxy(null);
+          validate = false;
+          if (!validateBaseURL(baseURL)) {
+            setProxy(proxyTemp);
+            throw new InvalidConfigException(TYPE.INACCESSIBLE_BASE_URL, "No IPT found at new base URL");
+          }
+          setProxy(proxyTemp);
+        }
+      }
+    }
+    // for production mode, the validation should be made using proxy. (local URL are not permitted)
+    if (validate) {
+      if (!validateBaseURL(baseURL)) {
+        throw new InvalidConfigException(TYPE.INACCESSIBLE_BASE_URL, "No IPT found at new base URL");
+      }
     }
 
     // store in properties file
@@ -223,6 +261,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
 
   /*
    * (non-Javadoc)
+   * 
    * @see org.gbif.ipt.service.admin.ConfigManager#setProxy(java.lang.String)
    */
   public void setProxy(String proxy) throws InvalidConfigException {

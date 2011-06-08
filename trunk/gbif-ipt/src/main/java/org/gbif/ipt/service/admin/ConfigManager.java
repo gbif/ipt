@@ -22,6 +22,18 @@ import java.net.URL;
 public interface ConfigManager {
 
   /**
+   * @return the local host name
+   */
+  public String getHostName();
+
+  /**
+   * Checks for an existing base URL from the AppConfig, and ensures that it is accessible over http.
+   * 
+   * @return false if there is no base URL set or if it is inaccessible
+   */
+  public boolean isBaseURLValid();
+
+  /**
    * Loads all in memory configuration persisting in the datadir. This is:
    * - main IPT configuration, AppConfig
    * - user accounts
@@ -64,13 +76,6 @@ public interface ConfigManager {
    *         will not be addressable from the internet.
    */
   public void setBaseURL(URL baseURL) throws InvalidConfigException;
-
-  /**
-   * Checks for an existing base URL from the AppConfig, and ensures that it is accessible over http.
-   * 
-   * @return false if there is no base URL set or if it is inaccessible
-   */
-  public boolean isBaseURLValid();
 
   /**
    * Generic method to set an appconfig property in memory without persisting it

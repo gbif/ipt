@@ -21,10 +21,8 @@ import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.util.List;
 
 /**
@@ -55,6 +53,10 @@ public class SetupAction extends BaseAction {
   protected Integer ignoreUserValidation = 0;
   private boolean setup2 = false;
 
+  public String continueHome() {
+    return SUCCESS;
+  }
+
   /**
    * Tries to guess the current baseURL on the running server from the context
    * 
@@ -62,7 +64,7 @@ public class SetupAction extends BaseAction {
    */
   public String findBaseURL() {
     // try to detect the baseURL if not configured yet!
-    String appBase = req.getScheme() + "://" + getHostname() + getPort() + req.getContextPath();
+    String appBase = req.getScheme() + "://" + configManager.getHostName() + getPort() + req.getContextPath();
     log.info("Auto-Detected IPT BaseURL=" + appBase);
     return appBase;
   }
@@ -80,16 +82,8 @@ public class SetupAction extends BaseAction {
     return dataDirPath;
   }
 
-  private String getHostname() {
-    String host = req.getServerName();
-    try {
-      InetAddress addr = InetAddress.getLocalHost();
-      // Get hostname
-      host = addr.getHostName();
-    } catch (UnknownHostException e) {
-      // stick with localhost
-    }
-    return host;
+  public Integer getIgnoreUserValidation() {
+    return this.ignoreUserValidation;
   }
 
   public String getPassword2() {
@@ -139,6 +133,10 @@ public class SetupAction extends BaseAction {
     this.dataDirPath = dataDirPath;
   }
 
+  public void setIgnoreUserValidation(Integer ignoreUserValidation) {
+    this.ignoreUserValidation = ignoreUserValidation;
+  }
+
   public void setPassword2(String password2) {
     this.password2 = password2;
   }
@@ -153,14 +151,6 @@ public class SetupAction extends BaseAction {
 
   public void setSetup2(boolean setup2) {
     this.setup2 = setup2;
-  }
-
-  public void setIgnoreUserValidation(Integer ignoreUserValidation) {
-    this.ignoreUserValidation = ignoreUserValidation;
-  }
-
-  public Integer getIgnoreUserValidation() {
-    return this.ignoreUserValidation;
   }
 
   /**
@@ -200,19 +190,13 @@ public class SetupAction extends BaseAction {
     return INPUT;
   }
 
-  public String setup3() {	  
-	  session.put(Constants.SESSION_USER, userManager.getSetupUser());
-	  extensionManager.installCoreTypes();	    
-	  return INPUT;
-  }
-  
   public String setup2() {
-	  // first check if a data directory exists.
-	  if(!dataDir.isConfigured()) {
-		  addActionWarning(getText("admin.config.setup2.datadir.notExist"));
-		  return ERROR;
-	  }
-	  // second check if the selected datadir contains an admin user already
+    // first check if a data directory exists.
+    if (!dataDir.isConfigured()) {
+      addActionWarning(getText("admin.config.setup2.datadir.notExist"));
+      return ERROR;
+    }
+    // second check if the selected datadir contains an admin user already
     if (configManager.setupComplete()) {
       if (configManager.isBaseURLValid()) {
         addActionMessage(getText("admin.config.setup2.existingFound"));
@@ -222,7 +206,9 @@ public class SetupAction extends BaseAction {
         baseURL = cfg.getBaseURL();
         proxy = cfg.getProxy();
         List<User> admins = userManager.list(User.Role.Admin);
-        if (admins != null && admins.size() > 0) user = admins.get(0);
+        if (admins != null && admins.size() > 0) {
+          user = admins.get(0);
+        }
         ignoreUserValidation = 1;
         addFieldError("baseURL", getText("admin.config.baseUrl.inaccessible"));
       }
@@ -298,6 +284,12 @@ public class SetupAction extends BaseAction {
     return INPUT;
   }
 
+  public String setup3() {
+    session.put(Constants.SESSION_USER, userManager.getSetupUser());
+    extensionManager.installCoreTypes();
+    return INPUT;
+  }
+
   public void setUser(User user) {
     this.user = user;
   }
@@ -321,10 +313,6 @@ public class SetupAction extends BaseAction {
         }
       }
     }
-  }
-  
-  public String continueHome(){
-	  return SUCCESS;
   }
 
 }
