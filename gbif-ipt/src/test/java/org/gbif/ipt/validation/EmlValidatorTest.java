@@ -1,12 +1,9 @@
 /***************************************************************************
  * Copyright 2010 Global Biodiversity Information Facility Secretariat
- * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -23,7 +20,6 @@ import org.junit.Test;
 
 /**
  * @author markus
- * 
  */
 public class EmlValidatorTest {
   @Test
@@ -36,5 +32,20 @@ public class EmlValidatorTest {
     assertFalse(EmlValidator.isValidPhoneNumber("+49 (30) alpha"));
     assertFalse(EmlValidator.isValidPhoneNumber("3210049,33"));
     assertFalse(EmlValidator.isValidPhoneNumber("32134214."));
+  }
+
+  /*
+   * Validate the URL
+   */
+  @Test
+  public void testURL() {
+    assertFalse(EmlValidator.formatURL("- - - ") != null);
+    assertFalse(EmlValidator.formatURL("//**##") != null);
+    assertFalse(EmlValidator.formatURL("      ") != null);
+    assertFalse(EmlValidator.formatURL("ftp://ftp.gbif.org //h") != null);
+    assertTrue(EmlValidator.formatURL("www.gbif.com") != null);
+    assertTrue(EmlValidator.formatURL("torrent://www.gbif.org") != null);
+    assertTrue(EmlValidator.formatURL("ftp://ftp.gbif.org") != null);
+    assertTrue(EmlValidator.formatURL("http://www.gbif.org") != null);
   }
 }

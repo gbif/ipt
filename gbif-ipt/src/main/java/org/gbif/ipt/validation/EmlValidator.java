@@ -35,6 +35,28 @@ import java.util.regex.Pattern;
 public class EmlValidator extends BaseValidator {
   protected static Pattern phonePattern = Pattern.compile("[0-9 ()/+-]+");
 
+  /**
+   * @param url
+   * @return the URL formatted with the schema component
+   */
+  public static String formatURL(String url) {
+    if (url != null) {
+      try {
+        URI uri = URI.create(url);
+        if (uri.isAbsolute()) {
+          return url;
+        } else {
+          // adding a default scheme component
+          return "http://" + url;
+        }
+      } catch (IllegalArgumentException e) {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
+
   public static boolean isValidInteger(String integer) {
     try {
       Integer.parseInt(integer);
@@ -49,20 +71,6 @@ public class EmlValidator extends BaseValidator {
       return false;
     }
     return phonePattern.matcher(phone).matches();
-  }
-
-  /**
-   * @param url
-   * @return the URL formatted with the schema component
-   */
-  public String formatURL(String url) {
-    URI uri = URI.create(url);
-    if (uri.isAbsolute()) {
-      return url;
-    } else {
-      // adding a default scheme component
-      return "http://" + url;
-    }
   }
 
   public boolean isValid(Eml eml, @Nullable String part) {
@@ -174,9 +182,14 @@ public class EmlValidator extends BaseValidator {
           }
         }
 
-        /* Validate the home page URL */
+        /* Validate the homepage URL form resource contact */
         if (eml.getContact().getHomepage() != null) {
-          eml.getContact().setHomepage(this.formatURL(eml.getContact().getHomepage()));
+          if (formatURL(eml.getContact().getHomepage()) == null) {
+            action.addFieldError("eml.contact.homepage",
+                action.getText("validation.invalid", new String[]{action.getText("eml.contact.homepage")}));
+          } else {
+            eml.getContact().setHomepage(formatURL(eml.getContact().getHomepage()));
+          }
         }
 
         /*
@@ -236,9 +249,14 @@ public class EmlValidator extends BaseValidator {
           }
         }
 
-        /* Validate the home page URL */
+        /* Validate the homepage URL from resource creator */
         if (eml.getResourceCreator().getHomepage() != null) {
-          eml.getResourceCreator().setHomepage(this.formatURL(eml.getResourceCreator().getHomepage()));
+          if (formatURL(eml.getResourceCreator().getHomepage()) == null) {
+            action.addFieldError("eml.resourceCreator.homepage",
+                action.getText("validation.invalid", new String[]{action.getText("eml.resourceCreator.homepage")}));
+          } else {
+            eml.getResourceCreator().setHomepage(formatURL(eml.getResourceCreator().getHomepage()));
+          }
         }
 
         /*
@@ -300,9 +318,14 @@ public class EmlValidator extends BaseValidator {
           }
         }
 
-        /* Validate the home page URL */
+        /* Validate the homepage URL from metadata provider */
         if (eml.getMetadataProvider().getHomepage() != null) {
-          eml.getMetadataProvider().setHomepage(this.formatURL(eml.getMetadataProvider().getHomepage()));
+          if (formatURL(eml.getMetadataProvider().getHomepage()) == null) {
+            action.addFieldError("eml.metadataProvider.homepage",
+                action.getText("validation.invalid", new String[]{action.getText("eml.metadataProvider.homepage")}));
+          } else {
+            eml.getMetadataProvider().setHomepage(formatURL(eml.getMetadataProvider().getHomepage()));
+          }
         }
 
       } else if (part == null || part.equalsIgnoreCase("parties")) {
@@ -365,10 +388,15 @@ public class EmlValidator extends BaseValidator {
             }
           }
 
-          /* Validate the home page URL */
+          /* Validate the homepage URL from each associated parties */
           if (eml.getAssociatedParties().get(index).getHomepage() != null) {
-            eml.getAssociatedParties().get(index).setHomepage(
-                this.formatURL(eml.getAssociatedParties().get(index).getHomepage()));
+            if (formatURL(eml.getAssociatedParties().get(index).getHomepage()) == null) {
+              action.addFieldError("eml.associatedParties[" + index + "].homepage",
+                  action.getText("validation.invalid", new String[]{action.getText("eml.associatedParties.homepage")}));
+            } else {
+              eml.getAssociatedParties().get(index).setHomepage(
+                  formatURL(eml.getAssociatedParties().get(index).getHomepage()));
+            }
           }
 
         }
@@ -714,15 +742,26 @@ public class EmlValidator extends BaseValidator {
           if (!exists(pd.getName())) {
             action.addFieldError("eml.physicalData[" + index + "].name", action.getText("validation.required"));
           }
-          if (eml.getPhysicalData().get(index).getDistributionUrl() != null) {
-            eml.getPhysicalData().get(index).setDistributionUrl(
-                this.formatURL(eml.getPhysicalData().get(index).getDistributionUrl()));
+          /* Validate distribution URL form each Physical data */
+          if (pd.getDistributionUrl() != null) {
+            if (formatURL(pd.getDistributionUrl()) == null) {
+              action.addFieldError(
+                  "eml.physicalData[" + index + "].distributionUrl",
+                  action.getText("validation.invalid", new String[]{action.getText("eml.physicalData.distributionUrl")}));
+            } else {
+              pd.setDistributionUrl(formatURL(pd.getDistributionUrl()));
+            }
           }
           index++;
         }
-
+        /* Validate the distribution URL */
         if (eml.getDistributionUrl() != null) {
-          eml.setDistributionUrl(this.formatURL(eml.getDistributionUrl()));
+          if (formatURL(eml.getDistributionUrl()) == null) {
+            action.addFieldError("eml.distributionUrl",
+                action.getText("validation.invalid", new String[]{action.getText("eml.distributionUrl")}));
+          } else {
+            eml.setDistributionUrl(formatURL(eml.getDistributionUrl()));
+          }
         }
       } else if (part == null || part.equalsIgnoreCase("keywords")) {
         int index = 0;
@@ -751,5 +790,4 @@ public class EmlValidator extends BaseValidator {
       }
     }
   }
-
 }
