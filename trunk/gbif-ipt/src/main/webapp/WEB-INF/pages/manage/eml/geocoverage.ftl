@@ -18,7 +18,7 @@
     var dfminy=-10;
     var dfmaxx=10;
     var dfmaxy=10;
-    var bboxBase="eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.";
+    var bboxBase="eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.";    
 
 	/**
      * Called on the initial page load.
@@ -79,7 +79,8 @@
 	    // Allow user to drag each marker to resize the size of the Rectangle.
 	    google.maps.event.addListener(marker1, 'drag', redrawAndFill);
 	    google.maps.event.addListener(marker2, 'drag', redrawAndFill);
-	       
+	        
+	      
 	    // Create a new Rectangle overlay and place it on the map.  Size
 	    // will be determined by the LatLngBounds based on the two Marker
 	    // positions.
@@ -104,25 +105,48 @@
   		if(isNaN(minx))minx=dfminx;
   			else dfminx=minx;
   		
-  		var tminy=miny < maxy ? miny : maxy;
-        var tmaxy=miny > maxy ? miny : maxy;
-        var tminx=minx < maxx ? minx : maxx;
-        var tmaxx=minx > maxx ? minx : maxx;
-
-       	marker1.setPosition(new google.maps.LatLng(tminy, tminx));
-      	marker2.setPosition(new google.maps.LatLng(tmaxy, tmaxx));
+       	marker1.setPosition(new google.maps.LatLng(miny, minx));
+      	marker2.setPosition(new google.maps.LatLng(maxy, maxx));
        	redraw();
 	});
                      
     function redrawAndFill() {
-    	redraw();
-		fill();
+     	redraw();
+		fill();	
 	}
       
 	/**
       * Updates the Rectangle's bounds to resize its dimensions.
       */
     function redraw() {
+		var tminy;
+        var tmaxy;
+        if(marker1.getPosition().lat() < -84.9999){
+        	tminy=-84.9999;
+        }else{
+        	if(marker1.getPosition().lat() > 84.9999){
+        		tminy=84.9999;
+        	}else{
+        		tminy=marker1.getPosition().lat();
+        	}
+        }
+        
+        if(marker2.getPosition().lat() > 84.9999){
+        	tmaxy=84.9999;
+        }else{
+        	if(marker2.getPosition().lat() < -84.9999){
+        		tmaxy=-84.9999;
+        	}else{
+        		tmaxy=marker2.getPosition().lat();
+        	}
+        }
+        
+        var tminx= marker1.getPosition().lng();
+        var tmaxx= marker2.getPosition().lng();
+            
+        marker1.setPosition(new google.maps.LatLng(tminy, tminx));
+      	marker2.setPosition(new google.maps.LatLng(tmaxy, tmaxx));
+    
     	var latLngBounds = new google.maps.LatLngBounds(
         marker1.getPosition(),
         marker2.getPosition());
@@ -138,26 +162,29 @@
         var maxy=marker1.getPosition().lat() < marker2.getPosition().lat() ? marker2.getPosition().lat() : marker1.getPosition().lat();
 		var minx=marker1.getPosition().lng();
 		var maxx=marker2.getPosition().lng();
-		if(maxx == -180) maxx = 179.9999;
+		if(maxx == -180) maxx = 179.9999;		
         $("#"+bboxBase+"min\\.latitude").attr("value",Math.round(miny*100)/100);
         $("#"+bboxBase+"max\\.latitude").attr("value",Math.round(maxy*100)/100);
         $("#"+bboxBase+"min\\.longitude").attr("value",Math.round(minx*100)/100);
         $("#"+bboxBase+"max\\.longitude").attr("value",Math.round(maxx*100)/100);
 	}
 	
+	
 	$(":checkbox").click(function() {
-		if($(":checkbox").attr("checked")) {
-			$("#coordinates").slideUp('slow');	
-	        marker1.setPosition(new google.maps.LatLng(-90, -180));
-      		marker2.setPosition(new google.maps.LatLng(90, 180));
+		if($("#globalCoverage").is(":checked")) {
+       		$("#coordinates").slideUp('slow');				
+	        marker1.setPosition(new google.maps.LatLng(-89.9999, -179.9999));
+      		marker2.setPosition(new google.maps.LatLng(89.9999, 179.9999));
+       		redrawAndFill();	    			
+       		atribute=false;
+		} else {	
+       		marker1.setPosition(new google.maps.LatLng(dfminy, dfminx));
+      		marker2.setPosition(new google.maps.LatLng(dfmaxy, dfmaxx));       		
        		redrawAndFill();			
-		} else {
-	        marker1.setPosition(new google.maps.LatLng(dfminy, dfminx));
-      		marker2.setPosition(new google.maps.LatLng(dfmaxy, dfmaxx));
-       		redrawAndFill();
-			$("#coordinates").slideDown('slow')
+       		$("#coordinates").slideDown('slow'); 
 	     }		
-	});
+	});	
+	
      
 });
 </script>
