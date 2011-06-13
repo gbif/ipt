@@ -11,26 +11,6 @@
 
 package org.gbif.ipt.task;
 
-import static com.google.common.base.Objects.equal;
-
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-
-import com.lowagie.text.Anchor;
-import com.lowagie.text.Chunk;
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Element;
-import com.lowagie.text.Font;
-import com.lowagie.text.FontFactory;
-import com.lowagie.text.List;
-import com.lowagie.text.ListItem;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.Phrase;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.WordUtils;
-
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
@@ -56,6 +36,25 @@ import org.gbif.metadata.eml.TaxonomicCoverage;
 import org.gbif.metadata.eml.TemporalCoverage;
 import org.gbif.metadata.eml.TemporalCoverageType;
 
+import static com.google.common.base.Objects.equal;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.lowagie.text.Anchor;
+import com.lowagie.text.Chunk;
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Element;
+import com.lowagie.text.Font;
+import com.lowagie.text.FontFactory;
+import com.lowagie.text.List;
+import com.lowagie.text.ListItem;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.Phrase;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.WordUtils;
+
 import java.awt.Color;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -64,7 +63,6 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 /**
  * Populates a RTF document with a resources metadata, mainly derived from its
@@ -453,13 +451,13 @@ public class Eml2Rtf {
       Vocabulary vocab = vocabManager.get(Constants.VOCAB_URI_LANGUAGE);
       VocabularyConcept vocabConcept = vocab.findConcept(eml.getMetadataLanguage());
       if (exists(vocabConcept)) {
-        p.add(new Phrase(getText("rtf.metdata.vocab") + ": ", fontTitle));
+        p.add(new Phrase(getText("rtf.metdata.language") + ": ", fontTitle));
         p.add(vocabConcept.getPreferredTerm("en").getTitle());
       }
       p.add(Chunk.NEWLINE);
     }
     if (exists(eml.getDateStamp())) {
-      p.add(new Phrase(getText("rtf.metdata.date") + ": ", fontTitle));
+      p.add(new Phrase(getText("rtf.metdata.creation") + ": ", fontTitle));
       SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
       p.add(f.format(eml.getDateStamp()));
       p.add(Chunk.NEWLINE);
