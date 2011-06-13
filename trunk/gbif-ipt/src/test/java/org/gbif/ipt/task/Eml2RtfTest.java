@@ -59,8 +59,6 @@ public class Eml2RtfTest extends IptMockBaseTest {
   private VocabulariesManager mockedVocabManager;
   private Eml2Rtf eml2Rtf;
   private BaseAction action;
-  private AppConfig cfg;
-  private SimpleTextProvider textProvider;
 
   @Test
   public void generateRtfFile() {
@@ -110,12 +108,11 @@ public class Eml2RtfTest extends IptMockBaseTest {
   public void setUp() throws ParserConfigurationException, SAXException {
     eml2Rtf = new Eml2Rtf();
     mockedVocabManager = new MockVocabulariesManager();
-    eml2Rtf.setTextProvider(textProvider);
     eml2Rtf.setVocabManager(mockedVocabManager);
 
     // Building mocks.
-    cfg = MockAppConfig.buildMock();
-    textProvider = mock(SimpleTextProvider.class);
+    AppConfig cfg = MockAppConfig.buildMock();
+    SimpleTextProvider textProvider = mock(SimpleTextProvider.class);
 
     // Stubbing TextProvider
     when(textProvider.getText(any(LocaleProvider.class), anyString(), anyString(), any(Object[].class))).thenReturn(
