@@ -20,7 +20,6 @@ import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.model.VocabularyConcept;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.admin.VocabulariesManager;
-import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.CoordinateUtils;
 import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.BBox;
@@ -66,7 +65,7 @@ import java.util.Map;
 
 /**
  * Populates a RTF document with a resources metadata, mainly derived from its
- * EML. TODO: implement internationalisation.
+ * EML.
  * 
  * @author markus
  * @author htobon
@@ -82,8 +81,6 @@ public class Eml2Rtf {
   private BaseAction action;
 
   @Inject
-  private SimpleTextProvider textProvider;
-  @Inject
   private VocabulariesManager vocabManager;
   @Inject
   private AppConfig appConfig;
@@ -96,7 +93,7 @@ public class Eml2Rtf {
       p.add(new Phrase(getText("rtf.abstract"), fontTitle));
       p.add(Chunk.NEWLINE);
       p.add(Chunk.NEWLINE);
-      p.add(eml.getDescription());
+      p.add(eml.getDescription().replace("\r\n", "\n"));
       p.add(Chunk.NEWLINE);
       doc.add(p);
       p.clear();
@@ -273,21 +270,21 @@ public class Eml2Rtf {
       p.add(new Phrase(getText("rtf.datasets"), fontTitle));
       p.add(Chunk.NEWLINE);
       p.add(Chunk.NEWLINE);
-      p.add(new Phrase("Dataset description", fontTitle));
+      p.add(new Phrase(getText("rtf.datasets.description"), fontTitle));
       p.add(Chunk.NEWLINE);
       p.add(new Phrase(getText("rtf.datasets.object") + ": ", fontTitle));
-      p.add("Darwin Core Archive " + eml.getTitle());
+      p.add(getText("rtf.datasets.dwca") + " " + eml.getTitle());
       p.add(Chunk.NEWLINE);
-      p.add(new Phrase("Character encoding: ", fontTitle));
+      p.add(new Phrase(getText("rtf.datasets.character") + ": ", fontTitle));
       p.add("UTF-8");
       p.add(Chunk.NEWLINE);
-      p.add(new Phrase("Format name: ", fontTitle));
-      p.add("Darwin Core Archive format");
+      p.add(new Phrase(getText("rtf.datasets.format") + ": ", fontTitle));
+      p.add(getText("rtf.datasets.dwca.format"));
       p.add(Chunk.NEWLINE);
-      p.add(new Phrase("Format version: ", fontTitle));
+      p.add(new Phrase(getText("rtf.datasets.format.version") + ": ", fontTitle));
       p.add("1.0");
       p.add(Chunk.NEWLINE);
-      p.add(new Phrase("Distribution: ", fontTitle));
+      p.add(new Phrase(getText("rtf.datasets.distribution") + ": ", fontTitle));
       String dwcaLink = appConfig.getBaseURL() + "/archive.do?r=" + resource.getShortname();
       Anchor distributionLink = new Anchor(dwcaLink, fontLink);
       distributionLink.setReference(dwcaLink);
@@ -299,6 +296,7 @@ public class Eml2Rtf {
         p.add(f.format(eml.getPubDate()));
         p.add(Chunk.NEWLINE);
       }
+
       VocabularyConcept vocabConcept = vocabManager.get(Constants.VOCAB_URI_LANGUAGE).findConcept(eml.getLanguage());
       p.add(new Phrase(getText("rtf.language") + ": ", fontTitle));
       if (exists(vocabConcept)) {
@@ -307,9 +305,14 @@ public class Eml2Rtf {
         p.add(getText("rtf.unknown"));
       }
       p.add(Chunk.NEWLINE);
+      if (exists(eml.getPurpose())) {
+        p.add(new Phrase(getText("rtf.purpose") + ": ", fontTitle));
+        p.add(eml.getPurpose().replace("\r\n", "\n"));
+        p.add(Chunk.NEWLINE);
+      }
       if (exists(eml.getIntellectualRights())) {
         p.add(new Phrase(getText("rtf.license") + ": ", fontTitle));
-        p.add(eml.getIntellectualRights());
+        p.add(eml.getIntellectualRights().replace("\r\n", "\n"));
         p.add(Chunk.NEWLINE);
       }
 
@@ -330,25 +333,28 @@ public class Eml2Rtf {
          * External datasets", and accordingly the "External
          * links" are listed in the "External datasets" section.
          */
-        p.add(new Phrase("Datasets", fontTitle)); // ASK if this should be
-                                                  // singular or plural
-                                                  // (Datasets).
+        p.add(new Phrase(getText("rtf.datasets"), fontTitle));
         p.add(Chunk.NEWLINE);
         p.add(Chunk.NEWLINE);
-        p.add(new Phrase("Dataset description", fontTitle));
+        p.add(new Phrase(getText("rtf.datasets.description"), fontTitle));
         p.add(Chunk.NEWLINE);
-        p.add("There is no dataset published through Darwin Core Archive format for this resource. Currently described datasets are listed in the section External datasets.");
+        p.add(getText("rtf.datasets.noPublished"));
         p.add(Chunk.NEWLINE);
         VocabularyConcept vocabConcept = vocabManager.get(Constants.VOCAB_URI_LANGUAGE).findConcept(eml.getLanguage());
-        p.add(new Phrase("Language: ", fontTitle));
+        p.add(new Phrase(getText("rtf.language") + ": ", fontTitle));
         if (exists(vocabConcept)) {
           p.add(vocabConcept.getPreferredTerm("en").getTitle());
         } else {
-          p.add("Unknown");
+          p.add(getText("rtf.unknown"));
         }
         p.add(Chunk.NEWLINE);
+        if (exists(eml.getPurpose())) {
+          p.add(new Phrase(getText("rtf.purpose") + ": ", fontTitle));
+          p.add(eml.getPurpose().replace("\r\n", "\n"));
+          p.add(Chunk.NEWLINE);
+        }
         if (exists(eml.getIntellectualRights())) {
-          p.add(new Phrase("Licenses of use: ", fontTitle));
+          p.add(new Phrase(getText("rtf.license") + ": ", fontTitle));
           p.add(eml.getIntellectualRights());
           p.add(Chunk.NEWLINE);
         }
@@ -390,14 +396,14 @@ public class Eml2Rtf {
       p.setAlignment(Element.ALIGN_JUSTIFIED);
       p.setFont(font);
 
-      p.add(new Phrase("External datasets", fontTitle));
+      p.add(new Phrase(getText("rtf.dtasets.external"), fontTitle));
       p.add(Chunk.NEWLINE);
       p.add(Chunk.NEWLINE);
       for (PhysicalData data : eml.getPhysicalData()) {
-        p.add(new Phrase("Dataset description", fontTitle));
+        p.add(new Phrase(getText("rtf.datasets.description"), fontTitle));
         p.add(Chunk.NEWLINE);
         if (exists(data.getName())) {
-          p.add(new Phrase("Object name: ", fontTitle));
+          p.add(new Phrase(getText("rtf.datasets.object") + ": ", fontTitle));
           p.add(data.getName());
           p.add(Chunk.NEWLINE);
         }
@@ -491,7 +497,7 @@ public class Eml2Rtf {
       p.add(Chunk.NEWLINE);
       if (eml.getMethodSteps().size() == 1) {
         p.add(new Phrase(getText("rtf.methods.description") + ": ", fontTitle));
-        p.add(eml.getMethodSteps().get(0));
+        p.add(eml.getMethodSteps().get(0).replace("\r\n", "\n"));
         p.add(Chunk.NEWLINE);
       } else if (eml.getMethodSteps().size() > 1) {
         p.add(new Phrase(getText("rtf.methods.description") + ": ", fontTitle));
@@ -499,23 +505,23 @@ public class Eml2Rtf {
         List list = new List(List.UNORDERED, 0);
         list.setIndentationLeft(20);
         for (String method : eml.getMethodSteps()) {
-          list.add(new ListItem(method, font));
+          list.add(new ListItem(method.replace("\r\n", "\n"), font));
         }
         p.add(list);
       }
       if (exists(eml.getStudyExtent())) {
         p.add(new Phrase(getText("rtf.methods.studyExtent") + ": ", fontTitle));
-        p.add(eml.getStudyExtent());
+        p.add(eml.getStudyExtent().replace("\r\n", "\n"));
         p.add(Chunk.NEWLINE);
       }
       if (exists(eml.getStudyExtent())) {
         p.add(new Phrase(getText("rtf.methods.sampling") + ": ", fontTitle));
-        p.add(eml.getSampleDescription());
+        p.add(eml.getSampleDescription().replace("\r\n", "\n"));
         p.add(Chunk.NEWLINE);
       }
       if (exists(eml.getStudyExtent())) {
         p.add(new Phrase(getText("rtf.methods.quality") + ": ", fontTitle));
-        p.add(eml.getQualityControl());
+        p.add(eml.getQualityControl().replace("\r\n", "\n"));
         p.add(Chunk.NEWLINE);
       }
       doc.add(p);
@@ -623,17 +629,17 @@ public class Eml2Rtf {
       }
       if (exists(eml.getProject().getFunding())) {
         p.add(new Phrase(getText("rtf.project.funding") + ": ", fontTitle));
-        p.add(eml.getProject().getFunding());
+        p.add(eml.getProject().getFunding().replace("\r\n", "\n"));
         p.add(Chunk.NEWLINE);
       }
       if (exists(eml.getProject().getStudyAreaDescription().getDescriptorValue())) {
         p.add(new Phrase(getText("rtf.project.area") + ": ", fontTitle));
-        p.add(eml.getProject().getStudyAreaDescription().getDescriptorValue());
+        p.add(eml.getProject().getStudyAreaDescription().getDescriptorValue().replace("\r\n", "\n"));
         p.add(Chunk.NEWLINE);
       }
       if (exists(eml.getProject().getDesignDescription())) {
         p.add(new Phrase(getText("rtf.project.design") + ": ", fontTitle));
-        p.add(eml.getProject().getDesignDescription());
+        p.add(eml.getProject().getDesignDescription().replace("\r\n", "\n"));
         p.add(Chunk.NEWLINE);
       }
       doc.add(p);
@@ -650,7 +656,7 @@ public class Eml2Rtf {
       p.add(new Phrase(getText("rtf.references"), fontTitle));
       p.add(Chunk.NEWLINE);
       for (Citation citation : eml.getBibliographicCitationSet().getBibliographicCitations()) {
-        p.add(citation.getCitation());
+        p.add(citation.getCitation().replace("\r\n", "\n"));
         p.add(Chunk.NEWLINE);
       }
       doc.add(p);
@@ -694,7 +700,7 @@ public class Eml2Rtf {
         p.add(Chunk.NEWLINE);
         p.add(Chunk.NEWLINE);
         p.add(new Phrase(getText("rtf.spatialCoverage.general") + ": ", fontTitle));
-        p.add(coverage.getDescription());
+        p.add(coverage.getDescription().replace("\r\n", "\n"));
         p.add(Chunk.NEWLINE);
       }
       p.add(new Phrase(getText("rtf.spatialCoverage.coordinates") + ": ", fontTitle));
@@ -728,7 +734,7 @@ public class Eml2Rtf {
       p.add(Chunk.NEWLINE);
       p.add(Chunk.NEWLINE);
       p.add(new Phrase(getText("rtf.taxcoverage.description") + ": ", fontTitle));
-      p.add(taxcoverage.getDescription());
+      p.add(taxcoverage.getDescription().replace("\r\n", "\n"));
       p.add(Chunk.NEWLINE);
       Map<String, String> ranks = vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS,
           Locale.getDefault().getLanguage(), false);
@@ -840,10 +846,6 @@ public class Eml2Rtf {
 
   public void setAppConfig(AppConfig appConfig) {
     this.appConfig = appConfig;
-  }
-
-  public void setTextProvider(SimpleTextProvider textProvider) {
-    this.textProvider = textProvider;
   }
 
   public void setVocabManager(VocabulariesManager vocabManager) {
