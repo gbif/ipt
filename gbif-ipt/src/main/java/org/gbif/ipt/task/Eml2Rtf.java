@@ -451,13 +451,13 @@ public class Eml2Rtf {
       Vocabulary vocab = vocabManager.get(Constants.VOCAB_URI_LANGUAGE);
       VocabularyConcept vocabConcept = vocab.findConcept(eml.getMetadataLanguage());
       if (exists(vocabConcept)) {
-        p.add(new Phrase(getText("rtf.metdata.language") + ": ", fontTitle));
+        p.add(new Phrase(getText("rtf.metadata.language") + ": ", fontTitle));
         p.add(vocabConcept.getPreferredTerm("en").getTitle());
       }
       p.add(Chunk.NEWLINE);
     }
     if (exists(eml.getDateStamp())) {
-      p.add(new Phrase(getText("rtf.metdata.creation") + ": ", fontTitle));
+      p.add(new Phrase(getText("rtf.metadata.creation") + ": ", fontTitle));
       SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
       p.add(f.format(eml.getDateStamp()));
       p.add(Chunk.NEWLINE);
