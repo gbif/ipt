@@ -22,6 +22,24 @@ import org.junit.Test;
  * @author markus
  */
 public class EmlValidatorTest {
+  /*
+   * Validate the integer
+   */
+  @Test
+  public void testInteger() {
+    assertFalse(EmlValidator.isValidInteger("0.1"));
+    assertFalse(EmlValidator.isValidInteger("1,1"));
+    assertFalse(EmlValidator.isValidInteger("gbif"));
+    assertFalse(EmlValidator.isValidInteger("0-0"));
+    assertFalse(EmlValidator.isValidInteger("."));
+    assertFalse(EmlValidator.isValidInteger(" "));
+    assertFalse(EmlValidator.isValidInteger("1 1"));
+    assertFalse(EmlValidator.isValidInteger("12 alpha"));
+    assertTrue(EmlValidator.isValidInteger("0"));
+    assertTrue(EmlValidator.isValidInteger("-1"));
+    assertTrue(EmlValidator.isValidInteger("123445556"));
+  }
+
   @Test
   public void testPhone() {
     assertTrue(EmlValidator.isValidPhoneNumber("4916213056"));
