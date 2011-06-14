@@ -135,3 +135,9 @@ To shut down Tomcat type the following from the ./bin directory where Tomcat was
 {{{
 ./shutdown.sh
 }}}
+
+===7) References===
+For more thorough descriptions of Tomcat configuration on Mac OS X, also consult these sources:
+
+   * Tomcat documentation: [http://tomcat.apache.org/tomcat-6.0-doc/index.html]
+   * Tomcat wiki: [http://wiki.apache.org/tomcat/TomcatOnMacOS]
