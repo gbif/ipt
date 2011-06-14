@@ -1,0 +1,137 @@
+=Install Tomcat on Mac OS X=
+=Table of Contents=
+<wiki:toc max_depth="3" />
+
+This tutorial explains how to install the Apache Tomcat Java Servlet 6 on Mac OS X. This document is not tested to work with other versions of Tomcat or Java. For complete details, consult the specific documentation for those software installations.
+
+==Prerequisites==
+Following are the conditions assumed to be true in order to follow this tutorial.
+
+1) The client version of OS X 10.5.8 Leopard or OS X 10.6 Snow Leopard.
+
+2) The latest security upgrades.
+
+3) JAVA 5 or JAVA 6 Framework installed. 
+
+4) Logged in as an administrator.
+
+==Steps==
+===1) Download Tomcat 6.x===
+Download the latest stable Tomcat 6 Binary Distribution Core (tar.gz) release from http://tomcat.apache.org/download-60.cgi. This should put a file of the form apache-tomcat-6.x.x.tar.gz (or apache-tomcat-6.x.x.tar if you download with Safari) into your Downloads folder.
+
+===2) Install Tomcat 6.x===
+Open the Terminal application to get a command prompt. The commands that follow assume that the Bourne Again SHell (bash) is in use. You can find out which shell you are using by typing the following and then hitting the ENTER key in the Terminal's command prompt:
+{{{
+echo $SHELL
+}}}
+
+All versions of OS X later than 10.3 use bash as the default shell. If the result echo command does not end in "/bash", you can change the default shell by using the System Preferences Accounts pane. If the pane is locked, unlock it. Control Click on your account name and a contextual menu will appear. Click on Advanced Options. You will then be presented with a dialog where you can change the default login shell to whatever you want. Select "bin/bash".
+
+Change into the Library directory:
+{{{
+cd /Library
+}}}
+
+Create the Tomcat directory:
+{{{
+mkdir Tomcat
+}}}
+
+Set the owner of the Tomcat directory, where username should be the login name under which Tomcat will run:
+{{{
+chown username Tomcat
+}}}
+
+Set the group for the Tomcat directory to admin:
+{{{
+chgrp admin Tomcat
+}}}
+
+Change into the newly created Tomcat directory:
+{{{
+cd Tomcat
+}}}
+
+If the downloaded file was not already unzipped, unpack and unzip it into the Tomcat directory:
+{{{
+tar -xvzf ~/Downloads/apache-tomcat-6.x.x.tar.gz
+}}}
+
+Otherwise unpack the tar file:
+{{{
+tar -xvf ~/Downloads/apache-tomcat-6.0.x.tar
+}}}
+
+Create a Home symbolic link that points to the Tomcat directory:
+{{{
+ln -sfhv apache-tomcat-6.x.x Home
+}}}
+
+===3) Edit the Tomcat Configuration===
+You will need to add a name and password to the tomcat-users.xml configuration file to access the Tomcat management and administration programs. Execute the following commands in Terminal:
+
+Change into the Tomcat configuration directory:
+{{{
+cd Home/conf
+}}}
+
+Edit the tomcat-users.xml file. This example shows the command to edit using nano:
+{{{
+nano tomcat-users.xml
+}}}
+
+In the file, add the two lines below into the file above the line that says {{{</tomcat-users>}}} and outside of any comments (delimited with {{{<!--}}} and {{{-->}}}). Substitute the name you want as the admin's username for "admin" and enter a password for that user to log in to the Tomcat Manager in place of "password". 
+
+{{{
+<roll rollname="manager"/>
+<user username="admin" password="password" roles="standard,manager,admin"/>
+}}}
+
+Save the tomcat-users.xml file and exit from the editor.
+
+===4) Run Tomcat===
+Execute the following commands in Terminal:
+Change into the directory where Tomcat startup scripts are located
+{{{
+cd ../bin
+}}}
+
+Remove all of the scripts ending with {{{.bat}}}.
+{{{
+rm *.bat
+}}}
+
+Execute the Tomcat startup script:
+{{{
+./startup.sh
+}}}
+
+Check the Tomcat error log for errors:
+{{{
+less ../logs/catalina.out
+}}}
+
+If there are no error messages in the log files, then the installation has been completed successfully and Tomcat is running. There should be an informational message similar to the following near the end of the log file:
+{{{
+INFO: Server startup in 2412 ms
+}}}
+
+Under some circumstances the startup scripts do not execute because the execute permission has not been set. If this is the case you can change the execute permission to the scripts by typing the following:
+{{{
+cd ../bin
+chmod 750 *.sh
+}}}
+
+This signifies read, write, and execute permissions for the owner, read and execute permissions for the group, and no permissions for others.
+
+===5) Test Tomcat===
+If Tomcat is running successfully following step 4, above, you should be able to see the Tomcat Welcome page at the following URL:
+
+[http://localhost:8080/]
+
+===6) Shut down Tomcat===
+To shut down Tomcat type the following from the ./bin directory where Tomcat was installed (/Library/Tomcat/Home following the steps on this page):
+
+{{{
+./shutdown.sh
+}}}
