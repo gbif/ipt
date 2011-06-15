@@ -17,7 +17,7 @@ The last "mvn" command should start the IPT with a local jetty instance on port 
 
 http://localhost:7001/ipt
 
-The first time the mvn command is run it will download many libraries and may take a long time, depending on the Internet data transfer rate. After this has been done once it will be it will be fairly fast thereafter, even if you update to the latest trunk again, which can be done by issuing the following commands form the root directory of the IPT source code:
+The first time the mvn command is run it will download many libraries and may take a long time, depending on the Internet data transfer rate. After this has been done once it will be it will be fairly fast thereafter, even if you update to the latest trunk again, which can be done by issuing the following commands from the root directory of the IPT source code:
 
 `$ cd gbif-ipt`<br>
 `$ svn up`<br>
