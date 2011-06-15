@@ -101,7 +101,7 @@ public class ConfigAction extends POSTAction {
         }
         baseUrlChanged = true;
       } catch (MalformedURLException e) {
-        addActionError(getText("admin.config.error.invalidURL"));
+        addActionError(getText("admin.config.error.invalidBaseURL"));
         return INPUT;
       } catch (InvalidConfigException e) {
         if (e.getType() == InvalidConfigException.TYPE.INVALID_BASE_URL) {
@@ -116,7 +116,13 @@ public class ConfigAction extends POSTAction {
     }
 
     // http proxy
-    configManager.setProxy(proxy);
+
+    try {
+      configManager.setProxy(proxy);
+    } catch (InvalidConfigException e) {
+      addActionError(getText("admin.config.error.invalidProxyURL"));
+      return INPUT;
+    }
 
     // ipt debug mode
     if (debug != null) {
