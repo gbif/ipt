@@ -236,18 +236,20 @@ public class SetupAction extends BaseAction {
           }
         }
 
+        // set proxy
+        try {
+          configManager.setProxy(proxy);
+        } catch (InvalidConfigException e) {
+          addFieldError("proxy", getText("admin.config.proxy.error"));
+          return INPUT;
+        }
+
         // set baseURL
         try {
           URL burl = new URL(baseURL);
           configManager.setBaseURL(burl);
         } catch (MalformedURLException e) {
           // checked in validate() already
-        }
-        // set proxy
-        try {
-          configManager.setProxy(proxy);
-        } catch (InvalidConfigException e) {
-          addFieldError("proxy", getText("admin.config.proxy.error"));
         }
 
         // save config

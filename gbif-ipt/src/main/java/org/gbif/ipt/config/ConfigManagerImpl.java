@@ -203,14 +203,13 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
         if (baseURL.getHost().equals("localhost") || baseURL.getHost().equals("127.0.0.1")
             || baseURL.getHost().equalsIgnoreCase(this.getHostName())) {
           // if local URL is configured, the IPT should do the validation without a proxy.
-          String proxyTemp = hostTemp.toHostString();
           setProxy(null);
           validate = false;
           if (!validateBaseURL(baseURL)) {
-            setProxy(proxyTemp);
+            setProxy(hostTemp.toString());
             throw new InvalidConfigException(TYPE.INACCESSIBLE_BASE_URL, "No IPT found at new base URL");
           }
-          setProxy(proxyTemp);
+          setProxy(hostTemp.toString());
         }
       }
     }
@@ -263,26 +262,23 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
    * (non-Javadoc)
    * 
    * @see org.gbif.ipt.service.admin.ConfigManager#setProxy(java.lang.String)
+   * 
+   * Receive an URL with the format scheme://site:port, if don't, a MalformedURLException is thrown.
    */
   public void setProxy(String proxy) throws InvalidConfigException {
-    StringUtils.removeStartIgnoreCase(proxy, "https://");
-    StringUtils.removeStartIgnoreCase(proxy, "http://");
     proxy = StringUtils.trimToNull(proxy);
-
     if (proxy == null) {
       // remove proxy from http client
       log.info("Removing proxy setting");
       client.getParams().removeParameter(ConnRoutePNames.DEFAULT_PROXY);
     } else {
-      // add proxy to http client
       try {
+        URL url = new URL(proxy);
         HttpHost host = null;
         if (proxy.contains(":")) {
-          String hostString = StringUtils.substringBeforeLast(proxy, ":");
-          Integer port = Integer.parseInt(StringUtils.substringAfterLast(proxy, ":"));
-          host = new HttpHost(hostString, port);
+          host = new HttpHost(url.getHost(), url.getPort());
         } else {
-          host = new HttpHost(proxy);
+          host = new HttpHost(url.getHost());
         }
         // test that host really exists
         if (!http.verifyHost(host)) {
@@ -292,6 +288,8 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
         client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, host);
       } catch (NumberFormatException e) {
         throw new InvalidConfigException(TYPE.INVALID_PROXY, "port number is no integer");
+      } catch (MalformedURLException e) {
+        throw new InvalidConfigException(TYPE.INVALID_PROXY, "host URL is no valid");
       }
     }
 
