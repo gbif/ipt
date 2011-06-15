@@ -12,10 +12,10 @@ The *best release to use is the highest version of x*, which will be the *featur
 <wiki:toc max_depth="2" />
 
 -----
-= Release 2.0.2 (expected 2011-03-31)  =
-Minor update without change in data directory.
+= Release 2.0.2 (published  2011-06-08)  =
+Includes an output format of the metadata in rich text format.
 
-[http://code.google.com/p/gbif-providertoolkit/issues/list?q=Milestone%3DRelease2.0.2 issues to be addressed]
+[http://code.google.com/p/gbif-providertoolkit/issues/list?q=Milestone%3DRelease2.0.2 solved issues]
 
 -----
 = Release 2.0.1 (published 2011-02-16)  =
