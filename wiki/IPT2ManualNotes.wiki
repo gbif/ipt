@@ -1,4 +1,6 @@
-=The GBIF Integrated Publishing Toolkit User Manual, version 2.0=
+=The GBIF Integrated Publishing Toolkit User Manual=
+*IPT Version: 2.0.2*
+
 <wiki:toc max_depth="4" />
 ----
 =Introduction=
