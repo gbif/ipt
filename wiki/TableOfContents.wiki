@@ -3,6 +3,7 @@
  * [IPT2ManualNotes User Manual]
    * [IPTServerPreparation Server Preparation]
      * [TomcatInstallationMacOSX]
+     * [TomcatInstallationWindows7]
    * [IPT2ManualNotes#Getting_Started_Guide Getting Started Guide]
    * [IPT2ManualNotes#Quick_Reference_Guide Quick Reference Guide]
    * [IPT2DatabaseConnection Supported Databases]
