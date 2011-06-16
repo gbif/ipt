@@ -1,6 +1,6 @@
 #summary Permission Settings For IPT Data Directory
 
-= Introduction =
+= Permission settings for IPT data Directory  =
 
 For people who sets up Tomcat & IPT on UNIX servers (Linux, BSDs),
 when there is something not working, and it seems you've followed the
