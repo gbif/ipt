@@ -4,7 +4,7 @@
    * [IPTServerPreparation Server Preparation]
      * [TomcatInstallationMacOSX]
      * [TomcatInstallationWindows7]
-     * [PermissionSettings for IPT data directory]
+     * [PermissionSettingsforIPTdatadirectory]
    * [IPT2ManualNotes#Getting_Started_Guide Getting Started Guide]
    * [IPT2ManualNotes#Quick_Reference_Guide Quick Reference Guide]
    * [IPT2DatabaseConnection Supported Databases]
