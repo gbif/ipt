@@ -7,7 +7,7 @@ This tutorial explains how to install the Apache Tomcat Java Servlet 6 on Mac OS
 ==Prerequisites==
 Following are the conditions assumed to be true in order to follow this tutorial.
 
-1) The client version of OS X 10.5.8 Leopard or OS X 10.6 Snow Leopard.
+1) The client version of OS X 10.5.8 Leopard or OS X 10.6 Snow Leopard. If you're running Server version of Mac OS X 10.5 or 10.6, Tomcat is pre-installed.
 
 2) The latest security upgrades.
 
