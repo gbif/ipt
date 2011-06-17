@@ -1,13 +1,13 @@
-=Install Tomcat on Windows 7=
+=Install Tomcat 6 on Windows 7=
 =Table of Contents=
 <wiki:toc max_depth="3" />
 
-This tutorial explains how to install the Apache Tomcat Java Servlet 6 on Windows 7. This document is not tested to work with other versions of Tomcat or Java. For complete details, consult the specific documentation for those software installations.
+This tutorial explains how to install the Apache Tomcat Java Servlet 6 on Windows 7. This document is not tested to work with other versions of Tomcat. For complete details, consult the specific documentation for those software installations.
 
 ==Prerequisites==
 Please make sure the following conditions (software and version) are met before you continue.
 
-1) The client version of Windows 7. This tutorial is written based on the 32-bit version of Windows 7.
+1) The client version of Windows 7. This tutorial is written based on the 32-bit version of Windows 7 Professional.
 
 2) The latest security upgrades.
 
@@ -24,7 +24,7 @@ Double click the executable to start installation wizard. Do fill information to
 
 ===3) Run Tomcat===
 Go to c:\\Program Files\Apache Software Foundation\Tomcat 6.0\bin
-Double click the tomcat6 application.
+Double click the *tomcat6* application.
 
 You should see a terminal window showing logs about starting up Tomcat. When you see
 
@@ -33,6 +33,8 @@ INFO: Server startup in xxxx ms
 }}}
 
 That means the Tomcat is ready.
+
+You can also run the *tomcat6w* application by right-clicking it and choose "run as administrator". A service setting pane will be brought up, and you can decide you'd like to run Tomcat for once or make it start up automatically every time you boot Windows 7.
 
 ===4) Test Tomcat===
 If Tomcat is running successfully following step 5, above, you should be able to see the Tomcat Welcome page at the following URL:
@@ -47,6 +49,8 @@ Where you can upload the ipt.war file to install IPT.
 
 ===5) Shut down Tomcat===
 Close the terminal windows will shut down Tomcat.
+
+Or, if you brought up Tomcat by using tomcat6w, stop Tomcat by clicking the stop button.
 
 ===6) References===
 For more thorough descriptions of Tomcat configuration, also consult these sources:
