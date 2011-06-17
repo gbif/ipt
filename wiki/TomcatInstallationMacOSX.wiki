@@ -209,7 +209,7 @@ wait_for_death `cat $CATALINA_PID`
 3. Load the launchd process by
 
 {{{
-$ sudo launchctl load /Library/LaunchDaemon/org.apache.tomcat.plist
+$ sudo launchctl load /Library/`LaunchDaemon`/org.apache.tomcat.plist
 }}}
 
 You can replace the *load* subcommand as *unload*, *stop*, *start* to remove Tomcat from startup processes, stop or start it, respectively.
