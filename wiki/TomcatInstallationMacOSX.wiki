@@ -142,7 +142,7 @@ Mac OS X introduced *launchd* as the system-wide service management framework wh
 
 With the previous setup, to start up Tomcat while booting:
 
-1. Create a script as `[`omcat home`]`/bin/tomcat-launchd.sh to start Tomcat as a non-daemonised process:
+1. Create a script as `[`Tomcat home`]`/bin/tomcat-launchd.sh to start Tomcat as a non-daemonised process:
 
 {{{
 #!/bin/sh
