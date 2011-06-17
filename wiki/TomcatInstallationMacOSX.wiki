@@ -221,4 +221,5 @@ For more thorough descriptions of Tomcat configuration on Mac OS X, also consult
 
    * Tomcat documentation: [http://tomcat.apache.org/tomcat-6.0-doc/index.html]
    * Tomcat wiki: [http://wiki.apache.org/tomcat/TomcatOnMacOS]
-   * lanuchd intro: [http://en.wikipedia.org/wiki/Launchd]
+   * launchd intro: [http://en.wikipedia.org/wiki/Launchd]
+   * launchd wrapper: [http://confluence.atlassian.com/display/DOC/Start+Confluence+automatically+on+OS+X+using+launchd]
