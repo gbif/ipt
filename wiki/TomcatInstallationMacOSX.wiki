@@ -138,7 +138,7 @@ To shut down Tomcat type the following from the ./bin directory where Tomcat was
 
 
 ===7) Running Tomcat as a service daemon===
-Mac OS X introduced *launchd* as the system-wide service management framework as the release of Mac OS X 10.4 Tiger. Since then lanuchd succeeded traditional cron job management as the preferred way of daemonise system services on Mac OS X.
+Mac OS X introduced *launchd* as the system-wide service management framework when Mac OS X 10.4 Tiger was released. Since then lanuchd succeeded traditional cron job management as the preferred way of daemonise system services on Mac OS X.
 
 With the previous setup, to start up Tomcat while booting:
 
