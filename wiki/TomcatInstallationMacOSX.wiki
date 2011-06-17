@@ -214,7 +214,7 @@ $ sudo launchctl load /Library/LaunchDaemon/org.apache.tomcat.plist
 
 You can replace the *load* subcommand as *unload*, *stop*, *start* to remove Tomcat from startup processes, stop or start it, respectively.
 
-Please also note that, the sample launchd plist assume the service will run as the user _appserver, which is predefined on Mac OS X for running app services. So you'll have to make sure the Tomcat directories and IPT data directories are owned, writable and executable by _appserver. Or, please refer to [http://code.google.com/p/gbif-providertoolkit/wiki/PermissionSettings this page].
+Please also note that, the sample launchd plist assume the service will run as the user *`_`appserver*, which is predefined on Mac OS X for running app services. So you'll have to make sure the Tomcat directories and IPT data directories are owned, writable and executable by `_`appserver. Or, please refer to [http://code.google.com/p/gbif-providertoolkit/wiki/PermissionSettings this page].
 
 ===8) References===
 For more thorough descriptions of Tomcat configuration on Mac OS X, also consult these sources:
