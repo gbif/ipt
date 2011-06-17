@@ -400,7 +400,7 @@ Click on the button labeled "Clear" to remove the choice of selected file and re
  * *Columns* - the number of columns in the dataset as configured using the parameters on this page. 
  * *File* - the full path to the location of the file to use as the data source.
  * *Size* - the file size.
- * *Rows* - the number of rows found in the data file.
+ * *Rows* - the number of rows found in the data file. (Note: This number helps check if all records are identified.)
  * *Modified* - the date stamp of the file indicating when it was last saved.
  * *Source log* - this link downloads the file containing the log produced when processing the file using the information contained on this page. Any problems encountered while processing the file, such as missing data and unexpected formatting will be in this log file.
  * *Analyze* - click on the this button to generate a data summary based on the database connection settings on this page. The analysis will indicate whether the database is readable, and if so, how many columns there are in the results of the SQL Statement.
