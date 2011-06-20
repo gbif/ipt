@@ -186,7 +186,7 @@ $(document).ready(function(){
 	      <option value="${e.rowType}">${e.title}</option>
 	    </#list>
 		</select>
-		<input type='submit' name='add' value='Add' />
+		 <@s.submit name="add" key="button.add"/>
 		<div class="newline"></div>
 		<div class="newline"></div>
   	  </form>
@@ -257,7 +257,7 @@ $(document).ready(function(){
 			  	<#if resource.lastPublished??>
           		 <tr><th><@s.text name="manage.overview.published.last.publication"/></th>
           		 	<td><@s.text name="manage.overview.published.version"/> ${resource.eml.emlVersion} <@s.text name="manage.overview.published.from"/> ${resource.lastPublished?datetime?string}
-				  	<#if report??><a id="toggleReport" href="#">See report</a></#if>
+				  	<#if report??><a id="toggleReport" href="#"><@s.text name="manage.overview.published.see.report"/>&nbsp;</a></#if>
 				  	<a href="${baseURL}/publicationlog.do?r=${resource.shortname}"><@s.text name='portal.publication.log'/></a>
           		    </td>
           		 </tr>
@@ -392,7 +392,7 @@ $(document).ready(function(){
 	      <option value="${u.email}">${u.name}</option>
 	    </#list>
 		</select>
-		<input type='submit' name='add' value='Add' />
+			<@s.submit name="add" key="button.add"/>
   	  </form>
   	  </#if>
   	</div>

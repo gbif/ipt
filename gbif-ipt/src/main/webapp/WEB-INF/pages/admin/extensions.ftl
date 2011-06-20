@@ -19,7 +19,7 @@
   	<div class="actions">
 	  <form action='extension.do' method='post'>
 		<input type='hidden' name='id' value='${ext.rowType}' />
-		<input type='submit' name='delete' value='Remove' />
+		<@s.submit name="delete" key="button.remove"/>
   	  </form>
   	</div>
   </div>
@@ -62,7 +62,7 @@
   	<div class="actions">
 	  <form action='extension.do' method='post'>
 		<input type='hidden' name='id' value='${ext.rowType}' />
-		<input type='submit' name='delete' value='Remove' />
+		<@s.submit name="delete" key="button.remove"/>
   	  </form>
   	</div>
   </div>
@@ -94,7 +94,7 @@
 <p>
 	<@s.text name="extension.vocabularies.last.update"><@s.param>${vocabsLastUpdated?date?string.medium}</@s.param></@s.text>
 	  <form action='extensions.do' method='post'>
-		<input type='submit' name='updateVocabs' value='Update' />
+	  	<@s.submit name="updateVocabs" key="button.update"/>
 	<@s.text name="extension.vocabularies.number"><@s.param>${numVocabs}</@s.param></@s.text>
   	  </form>
 </p>
@@ -114,7 +114,7 @@
   	<div class="actions">
 	  <form action='extension.do' method='post'>
 		<input type='hidden' name='url' value='${ext.url}' />
-		<input type='submit' name='install' value='Install' />
+		<@s.submit name="install" key="button.install"/>
   	  </form>
   	</div>
   </div>

@@ -384,7 +384,7 @@ div.newline {
 }
 .topForm input {
 	margin-left: 0.5em;
-	width: 90%;
+	width: auto;
 }
 .topForm select{
 	margin-left: 0.5em;
