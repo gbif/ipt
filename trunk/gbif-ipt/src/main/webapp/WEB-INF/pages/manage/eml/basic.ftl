@@ -46,7 +46,7 @@
 <form class="topForm" action="metadata-${section}.do" method="post">
 	<b><@s.text name="manage.metadata.basic.required.message" /></b>
   	<@input name="eml.title" />
-  	<@text name="eml.description" />
+  	<@text name="eml.description" help="i18n" />
   	<div class="halfcolumn">
 	  	<@select name="eml.metadataLanguage" help="i18n" options=languages value="${metadataLanguageIso3!'eng'}" />
 	</div>
