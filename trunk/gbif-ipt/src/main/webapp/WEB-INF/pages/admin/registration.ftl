@@ -96,7 +96,7 @@ $(document).ready(function(){
 		<p><@s.text name="admin.registration.test1"/></p>
 		
 			<@input name="registration.baseURL" i18nkey="admin.registration.baseURL" type="text" value="${baseURL}" size=70 disabled=true/>
-			<@s.submit cssClass="button" name="validate" id="validate" key="Validate"/>
+			<@s.submit cssClass="button" name="validate" id="validate" key="admin.registration.validate"/>
 		
 		<div id="baseURLStatus"></div>
 	</#if>
