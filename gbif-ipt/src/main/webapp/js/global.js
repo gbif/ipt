@@ -1,7 +1,22 @@
 var timeout    = 500;
 var closetimer = 0;
 var ddmenuitem = 0;
-
+$(document).ready(function(){
+	$("#showMore").live("click", function(e) {
+		e.preventDefault();
+		var $parentTarget = $(e.target).parent();
+		var showLess = $parentTarget.html();
+		$parentTarget.html($parentTarget.next("#hiddenContent").html());	
+		$parentTarget.next("#hiddenContent").html(showLess);	
+	});
+	$("#showLess").live("click", function(e) {
+		e.preventDefault();
+		var $parentTarget = $(e.target).parent();
+		var showMore = $parentTarget.html();
+		$parentTarget.html($parentTarget.next("#hiddenContent").html());
+		$parentTarget.next("#hiddenContent").html(showMore);		
+	});	
+});
 
 	
 function str(x) {
@@ -64,7 +79,7 @@ function initHelp(context){
     	e.preventDefault(); 
         $(this).parent().parent().parent().next().val($(this).attr("val"));
         $(this).parent().parent().parent().hide("fast");
-    });
+    });    
 }
 function jsddm_open() {  
 	jsddm_canceltimer();
