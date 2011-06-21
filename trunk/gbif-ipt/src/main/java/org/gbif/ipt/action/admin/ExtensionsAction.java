@@ -18,10 +18,12 @@ import com.google.inject.servlet.SessionScoped;
 import org.apache.commons.lang.StringUtils;
 
 import java.net.URL;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map.Entry;
 
 /**
@@ -68,6 +70,7 @@ public class ExtensionsAction extends POSTAction {
   private Boolean updateVocabs = false;
   private int numVocabs = 0;
   private Date vocabsLastUpdated = null;
+  private String dateFormat = null;
   private ArrayList<Extension> newExtensions;
 
   @Override
@@ -80,6 +83,10 @@ public class ExtensionsAction extends POSTAction {
       addActionExceptionWarning(e);
     }
     return SUCCESS;
+  }
+
+  public String getDateFormat() {
+    return dateFormat;
   }
 
   public Extension getExtension() {
@@ -114,7 +121,7 @@ public class ExtensionsAction extends POSTAction {
       if (!result.errors.isEmpty()) {
         addActionWarning(getText("admin.extensions.vocabularies.errors", new String[]{result.errors.size() + ""}));
         for (Entry<String, String> err : result.errors.entrySet()) {
-          addActionError(getText("admin.extensions.error.updating", new String[]{err.getKey(),err.getValue()}));
+          addActionError(getText("admin.extensions.error.updating", new String[]{err.getKey(), err.getValue()}));
         }
       }
     }
@@ -130,7 +137,9 @@ public class ExtensionsAction extends POSTAction {
     // find latest update data of any of all vocabularies
     for (Vocabulary v : vocabs) {
       if (vocabsLastUpdated == null || vocabsLastUpdated.before(v.getLastUpdate())) {
+        Locale locale = getLocale();
         vocabsLastUpdated = v.getLastUpdate();
+        dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, locale).format(vocabsLastUpdated);
       }
     }
     return SUCCESS;
@@ -167,6 +176,10 @@ public class ExtensionsAction extends POSTAction {
       addActionWarning(getText("admin.extension.install.error", new String[]{url}), e);
     }
     return SUCCESS;
+  }
+
+  public void setDateFormat(String dateFormat) {
+    this.dateFormat = dateFormat;
   }
 
   public void setExtension(Extension extension) {
