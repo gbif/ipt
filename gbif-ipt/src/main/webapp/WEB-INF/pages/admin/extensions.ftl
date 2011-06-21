@@ -92,7 +92,7 @@
 <hr/>
 <h3><@s.text name="extension.vocabularies.title"/></h3>
 <p>
-	<@s.text name="extension.vocabularies.last.update"><@s.param>${vocabsLastUpdated?date?string.medium}</@s.param></@s.text>
+	<@s.text name="extension.vocabularies.last.update"><@s.param>${dateFormat}</@s.param></@s.text>
 	  <form action='extensions.do' method='post'>
 	  	<@s.submit name="updateVocabs" key="button.update"/>
 	<@s.text name="extension.vocabularies.number"><@s.param>${numVocabs}</@s.param></@s.text>

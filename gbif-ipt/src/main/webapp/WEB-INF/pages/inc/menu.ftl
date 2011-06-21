@@ -24,7 +24,7 @@
 					     
 					    	<!-- add more languages as translations become available. -->					    	
 				        	<!-- #list ["en","es","fr","de"] as lang -->
-				        	[#list ["en","fr"] as lang]
+				        	[#list ["en","fr","es"] as lang]
 					        	[#if localeLanguage!=lang]
 								<li><a href="?request_locale=${lang}"><img src="${baseURL}/images/flags/flag_${lang}.gif"/></a></li>
 								[/#if]
