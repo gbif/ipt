@@ -62,6 +62,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 /**
  * Populates a RTF document with a resources metadata, mainly derived from its
@@ -78,7 +79,8 @@ public class Eml2Rtf {
   private final Font fontHeader = FontFactory.getFont(FontFactory.TIMES_BOLD, 14, Font.BOLD, Color.BLACK);
   private final Font fontLinkTitle = FontFactory.getFont(FontFactory.TIMES_BOLD, 12, Font.UNDERLINE, Color.BLUE);
   private final Font fontLink = FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.UNDERLINE, Color.BLUE);
-  private BaseAction action;
+  private ResourceBundle resourceBoundle;
+  // private BaseAction action;
 
   @Inject
   private VocabulariesManager vocabManager;
@@ -841,7 +843,8 @@ public class Eml2Rtf {
   }
 
   public String getText(String key) {
-    return action.getText(key);
+    return resourceBoundle.getString(key);
+    // return action.getText(key);
   }
 
   public void setAppConfig(AppConfig appConfig) {
@@ -853,7 +856,9 @@ public class Eml2Rtf {
   }
 
   public void writeEmlIntoRtf(Document doc, Resource resource, BaseAction action) throws DocumentException {
-    this.action = action;
+    // initialising english resourceBoundle.
+    resourceBoundle = ResourceBundle.getBundle("ApplicationResources", new Locale("en"));
+    // this.action = action;
     Eml eml = resource.getEml();
     // configure page
     doc.setMargins(72, 72, 72, 72);
