@@ -6,10 +6,7 @@
 	<#if agent.position?? ><tr><th><@s.text name='eml.associatedParties.position'/></th><td>${agent.position!}</td></tr></#if>
 	<#if agent.organisation?? ><tr><th><@s.text name='eml.contact.organisation'/></th><td>${agent.organisation!}</td></tr></#if>
 	<#if !agent.address.isEmpty()><tr><th><@s.text name='eml.contact.address.address'/></th><td>
-		<#if agent.address.address??>${agent.address.address}, </#if>
-		<#if agent.address.city??>${agent.address.city}, </#if>
-		<#if agent.address.province??>${agent.address.province}, </#if>
-		<#if agent.address.country??>${agent.address.country},</#if>
+	<p><#if agent.address.address??>${agent.address.address}</#if><#if agent.address.city??>, ${agent.address.city}</#if><#if agent.address.province??>, ${agent.address.province}</#if><#if agent.address.country??>, ${agent.address.country}</#if><#if agent.address.postalCode??>, <@s.text name='eml.contact.address.postalCode'/> ${agent.address.postalCode}</#if></p>
 	</td></tr></#if>
 	<#if agent.email?? || agent.phone??><tr><th><@s.text name='portal.resource.contact'/></th><td><a href="mailto:${agent.email!}">${agent.email!}</a> <#if agent.phone??><@s.text name='portal.resource.tel'/>: ${agent.phone!}</#if></td></tr></#if>
 	<#if agent.homepage?? ><tr><th><@s.text name='eml.associatedParties.homepage'/></th><td><a href="${agent.homepage!}">${agent.homepage!}</a></td></tr></#if>
