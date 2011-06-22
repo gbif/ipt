@@ -490,7 +490,8 @@ public class Eml2Rtf {
   }
 
   private void addMethods(Document doc, Eml eml) throws DocumentException {
-    if (exists(eml.getMethodSteps()) && eml.getMethodSteps().size() > 0) {
+    if ((exists(eml.getMethodSteps()) && eml.getMethodSteps().size() > 0) || exists(eml.getStudyExtent())
+        || exists(eml.getStudyExtent()) || exists(eml.getStudyExtent())) {
       Paragraph p = new Paragraph();
       p.setAlignment(Element.ALIGN_JUSTIFIED);
       p.setFont(font);
@@ -671,7 +672,7 @@ public class Eml2Rtf {
         || resource.getStatus().equals(PublicationStatus.REGISTERED)) {
       Paragraph p = new Paragraph();
       p.setFont(font);
-      p.add(new Phrase(getText("rtf.resourceLink") + ": ", fontTitle));
+      p.add(new Phrase(getText("rtf.resourceLink"), fontTitle));
       Anchor gbifLink = new Anchor("GBIF", fontLinkTitle);
       gbifLink.setReference("http://www.gbif.org");
       p.add(gbifLink);
@@ -735,9 +736,11 @@ public class Eml2Rtf {
       p.add(new Phrase(getText("rtf.taxcoverage"), fontTitle));
       p.add(Chunk.NEWLINE);
       p.add(Chunk.NEWLINE);
-      p.add(new Phrase(getText("rtf.taxcoverage.description") + ": ", fontTitle));
-      p.add(taxcoverage.getDescription().replace("\r\n", "\n"));
-      p.add(Chunk.NEWLINE);
+      if (exists(taxcoverage.getDescription())) {
+        p.add(new Phrase(getText("rtf.taxcoverage.description") + ": ", fontTitle));
+        p.add(taxcoverage.getDescription().replace("\r\n", "\n"));
+        p.add(Chunk.NEWLINE);
+      }
       Map<String, String> ranks = vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS,
           Locale.getDefault().getLanguage(), false);
       boolean firstRank = true;
