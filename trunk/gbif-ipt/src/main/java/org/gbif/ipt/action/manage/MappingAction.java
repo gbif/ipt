@@ -20,8 +20,8 @@ import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.RecordFilter;
-import org.gbif.ipt.model.RecordFilter.Comparator;
 import org.gbif.ipt.model.Source;
+import org.gbif.ipt.model.RecordFilter.Comparator;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.SourceManager;
@@ -73,6 +73,8 @@ public class MappingAction extends ManagerBaseAction {
   private ExtensionProperty coreid;
   private Integer mid;
 
+  private PropertyMapping mappingCoreid;
+
   public void addWarnings() {
     if (mapping.getSource() != null) {
       ExtensionMappingValidator validator = new ExtensionMappingValidator();
@@ -93,6 +95,7 @@ public class MappingAction extends ManagerBaseAction {
 
   private void automap() {
     int automapped = 0;
+    boolean coreidEvaluated = false;
     for (PropertyMapping f : fields) {
       int idx = 0;
       for (String col : columns) {
@@ -103,6 +106,14 @@ public class MappingAction extends ManagerBaseAction {
         if (col.contains(":")) {
           col = StringUtils.substringAfter(col, ":");
         }
+        if (!coreidEvaluated) {
+          if (mappingCoreid.getTerm().simpleNormalisedName().equalsIgnoreCase(col)) {
+            mappingCoreid.setIndex(idx);
+            automapped++;
+            coreidEvaluated = true;
+            break;
+          }
+        }
         if (f.getTerm().simpleNormalisedName().equalsIgnoreCase(col)) {
           f.setIndex(idx);
           automapped++;
@@ -110,6 +121,7 @@ public class MappingAction extends ManagerBaseAction {
         }
         idx++;
       }
+      coreidEvaluated = true;
     }
     if (automapped > 0) {
       addActionMessage(getText("manage.mapping.automaped", new String[]{automapped + ""}));
@@ -153,6 +165,10 @@ public class MappingAction extends ManagerBaseAction {
     return mapping;
   }
 
+  public PropertyMapping getMappingCoreid() {
+    return mappingCoreid;
+  }
+
   public Integer getMid() {
     return mid;
   }
@@ -164,9 +180,13 @@ public class MappingAction extends ManagerBaseAction {
       if (columns.get(index) == "") {
         nonMappedColumns.remove(columns.get(index));
       } else {
-        for (PropertyMapping field : fields) {
-          if (field.getIndex() != null && (field.getIndex()) == index) {
-            nonMappedColumns.remove(columns.get(index));
+        if (mappingCoreid.getIndex() != null && mappingCoreid.getIndex() == index) {
+          nonMappedColumns.remove(columns.get(index));
+        } else {
+          for (PropertyMapping field : fields) {
+            if (field.getIndex() != null && (field.getIndex()) == index) {
+              nonMappedColumns.remove(columns.get(index));
+            }
           }
         }
       }
@@ -238,6 +258,12 @@ public class MappingAction extends ManagerBaseAction {
         coreIdTerm = Constants.DWC_TAXON_ID;
       }
       coreid = extensionManager.get(coreRowType).getProperty(coreIdTerm);
+      mappingCoreid = mapping.getField(coreid.getQualname());
+      if (mappingCoreid == null) {
+        // no, create bare mapping field
+        mappingCoreid = new PropertyMapping();
+      }
+      mappingCoreid.setTerm(coreid);
 
       // prepare all other fields
       fields = new ArrayList<PropertyMapping>(mapping.getExtension().getProperties().size());
@@ -248,8 +274,8 @@ public class MappingAction extends ManagerBaseAction {
         }
         // uses a vocabulary?
         if (p.getVocabulary() != null) {
-          vocabTerms.put(p.getVocabulary().getUri(),
-              vocabManager.getI18nVocab(p.getVocabulary().getUri(), getLocaleLanguage(), true));
+          vocabTerms.put(p.getVocabulary().getUri(), vocabManager.getI18nVocab(p.getVocabulary().getUri(),
+              getLocaleLanguage(), true));
         }
         // mapped already?
         PropertyMapping f = mapping.getField(p.getQualname());
@@ -295,6 +321,10 @@ public class MappingAction extends ManagerBaseAction {
           mappedFields.add(f);
         }
       }
+      // save coreid field
+      if (mappingCoreid.getIndex() != null || StringUtils.trimToNull(mappingCoreid.getDefaultValue()) != null) {
+        mappedFields.add(mappingCoreid);
+      }
       // back to mapping object
       mapping.setFields(mappedFields);
     }
@@ -316,6 +346,10 @@ public class MappingAction extends ManagerBaseAction {
 
   public void setMapping(ExtensionMapping mapping) {
     this.mapping = mapping;
+  }
+
+  public void setMappingCoreid(PropertyMapping mappingCoreid) {
+    this.mappingCoreid = mappingCoreid;
   }
 
   public void setMid(Integer mid) {
