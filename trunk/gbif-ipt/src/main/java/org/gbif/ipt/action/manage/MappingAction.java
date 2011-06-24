@@ -111,7 +111,6 @@ public class MappingAction extends ManagerBaseAction {
             mappingCoreid.setIndex(idx);
             automapped++;
             coreidEvaluated = true;
-            break;
           }
         }
         if (f.getTerm().simpleNormalisedName().equalsIgnoreCase(col)) {
