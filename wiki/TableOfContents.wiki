@@ -1,6 +1,6 @@
 #summary One-sentence summary of this page.
 
- * [IPT2ManualNotes Latest User Manual]
+ * [IPT2ManualNotes User Manual]
    * [IPTServerPreparation Server Preparation]
      * [TomcatInstallationMacOSX Install Tomcat on Mac OS X]
      * [TomcatInstallationWindows7 Install Tomcat on Windows 7]
