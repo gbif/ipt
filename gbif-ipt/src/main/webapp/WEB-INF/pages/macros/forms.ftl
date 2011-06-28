@@ -59,10 +59,10 @@
   </div>
 </#macro>
 
-<#macro linksText text>
-        <#assign words = text?word_list>
-        <#assign res = text?matches("http(s)?://([\\w-]+\\.)+[\\w-]+(/[\\w- ./?%&=]*)?")>
-        <#list words as x>
+<#macro textWithFormattedLink text>
+        <#assign words = text?word_list>              
+        <#assign res = text?matches("(http(s)?|ftp)://(([\\w-]+\\.)?)+[\\w-]+(/[\\w- ./-?%&=]*)?")>
+        <#list words as x> 
             <#assign flag=false>
             <#list res as m>
               <#if x?contains(m)><a href="${m}">${x}</a><#assign flag = true><#break></#if>
@@ -73,9 +73,9 @@
 
 <#macro showMore text maxLength>
     <#if (text?length>maxLength)>  
-    	<div id= "visibleContent"><@linksText (text)?substring(0,maxLength)/>... <a id="showMore" href=""><@s.text name='basic.showMore'/></a></div>
-    	<div id="hiddenContent" style="display: none"><@linksText text/><a id="showLess" href=""><@s.text name='basic.showLess'/></a></div>
+    	<div id= "visibleContent"><@textWithFormattedLink (text)?substring(0,maxLength)/>... <a id="showMore" href=""><@s.text name='basic.showMore'/></a></div>
+    	<div id="hiddenContent" style="display: none"><@textWithFormattedLink text/><a id="showLess" href=""><@s.text name='basic.showLess'/></a></div>
     <#else>
-    	<@linksText text/>
+    	<@textWithFormattedLink text/>
     </#if>
 </#macro>
