@@ -59,11 +59,23 @@
   </div>
 </#macro>
 
+<#macro linksText text>
+        <#assign words = text?word_list>
+        <#assign res = text?matches("http(s)?://([\\w-]+\\.)+[\\w-]+(/[\\w- ./?%&=]*)?")>
+        <#list words as x>
+            <#assign flag=false>
+            <#list res as m>
+              <#if x?contains(m)><a href="${m}">${x}</a><#assign flag = true><#break></#if>
+            </#list>
+            <#if flag==false>${x}</#if>
+        </#list>          
+</#macro>
+
 <#macro showMore text maxLength>
-   	<#if (text?length>maxLength)>
-   		<div id= "visibleContent"> ${(text)?substring(0,maxLength)}... <a id="showMore" href=""><@s.text name='basic.showMore'/></a></div>
-   		<div id="hiddenContent" style="display: none">${(text)} <a id="showLess" href=""><@s.text name='basic.showLess'/></a></div>
-   	<#else>
-   		${(text)}
-   	</#if>
+    <#if (text?length>maxLength)>  
+    	<div id= "visibleContent"><@linksText (text)?substring(0,maxLength)/>... <a id="showMore" href=""><@s.text name='basic.showMore'/></a></div>
+    	<div id="hiddenContent" style="display: none"><@linksText text/><a id="showLess" href=""><@s.text name='basic.showLess'/></a></div>
+    <#else>
+    	<@linksText text/>
+    </#if>
 </#macro>

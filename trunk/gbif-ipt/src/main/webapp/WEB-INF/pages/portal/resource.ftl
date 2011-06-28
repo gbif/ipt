@@ -212,7 +212,7 @@
 				<tr>
 				<td>
 				<div class="subitem">
-					<#if subitem.scientificName?has_content><i>${subitem.scientificName!}</i>,</#if> <#if subitem.commonName?has_content>${subitem.commonName!}</#if> <#if subitem.rank?has_content>[${subitem.rank!}]</#if>
+					<#if subitem.scientificName?has_content><i><@linksText subitem.scientificName!/></i>,</#if> <#if subitem.commonName?has_content>${subitem.commonName!}</#if> <#if subitem.rank?has_content>[${subitem.rank!}]</#if>
 					<div class="newline"></div>
 				</div>
 				</td>
@@ -274,7 +274,7 @@
   <div class="body">
       	<div class="details">
       		<table>
-          		<#if eml.project.title?has_content><tr><th><@s.text name='eml.project.title'/></th><td>${eml.project.title!}</td></tr></#if>
+          		<#if eml.project.title?has_content><tr><th><@s.text name='eml.project.title'/></th><td><@linksText eml.project.title!/></td></tr></#if>
           		<#if eml.project.personnel.lastName?has_content><tr><th><@s.text name='portal.resource.name'/></th><td>${eml.project.personnel.firstName!} ${eml.project.personnel.lastName!}</td></tr></#if>
 	          	<#if eml.project.personnel.role??><tr><th><@s.text name='eml.project.personnel.role'/></th><td>${eml.project.personnel.role!}</td></tr></#if>
           		<#if eml.project.funding?has_content><tr><th><@s.text name='eml.project.funding'/></th><td><@showMore eml.project.funding 100/></td></tr></#if>
@@ -319,7 +319,7 @@
       	<div class="details">
       		<table>
           		<#if eml.citation.citation?has_content>
-          			<#if eml.citation.identifier?has_content><tr><th><@s.text name='eml.citation.identifier'/></th><td>${eml.citation.identifier!}</td></tr></#if>
+          			<#if eml.citation.identifier?has_content><tr><th><@s.text name='eml.citation.identifier'/></th><td><@linksText eml.citation.identifier!/></td></tr></#if>
           			<tr><th><@s.text name='eml.citation.citation'/></th><td><@showMore eml.citation.citation 100 /></td></tr>
           		</#if>
           	</table>
@@ -329,7 +329,7 @@
        		<#list eml.bibliographicCitationSet.bibliographicCitations as item>
        			<tr>				
 	          	<table>
-          			<tr><th><@s.text name='eml.bibliographicCitationSet.bibliographicCitations.identifier'/></th><td>${item.identifier!}</td></tr>
+          			<tr><th><@s.text name='eml.bibliographicCitationSet.bibliographicCitations.identifier'/></th><td><@linksText item.identifier!/></td></tr>
           			<tr><th><@s.text name='eml.bibliographicCitationSet.bibliographicCitations.citation'/></th><td><@showMore item.citation 100 /></td></tr>
 	      		</table>
 	      		<div class="newline"></div>
