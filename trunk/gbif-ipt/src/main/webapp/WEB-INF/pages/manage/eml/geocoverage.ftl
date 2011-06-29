@@ -66,14 +66,14 @@
 	    	map: map,
 	        position: new google.maps.LatLng(miny, minx),
 	        draggable: true,
-	        title: 'marker1'
+	        title: 'West'
 	    });
 	    marker2 = new google.maps.Marker({
 	    	icon: markerIcon,
 	    	map: map,
 	        position: new google.maps.LatLng(maxy, maxx),
 	        draggable: true,
-	        title: 'marker2'
+	        title: 'East'
 	    }); 
         
 	    // Allow user to drag each marker to resize the size of the Rectangle.
