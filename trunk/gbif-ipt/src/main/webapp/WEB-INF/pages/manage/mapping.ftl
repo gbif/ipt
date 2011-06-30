@@ -306,7 +306,7 @@ $(document).ready(function(){
 	      		<#if (((field.translation?size)!0)>0)>
 	      		${(field.translation?size)!0} terms
 	      		<#else>
-	      		<button class="add"><@s.text name="button.add"/></button>
+	      		<button type="button" class="add" onclick="window.location.href"><@s.text name="button.add"/></button>
 	      		</#if>
 	      		</a>
 	      	</div>
