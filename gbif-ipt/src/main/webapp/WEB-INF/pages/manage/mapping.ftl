@@ -106,6 +106,9 @@ $(document).ready(function(){
 	div.buttons{
 		margin-top: 1em !important;
 		margin-bottom: 2em !important;
+	}
+	#filter{
+		color: #0080FF;
 	}	
 </style>
  <#assign currentMenu = "manage"/>
@@ -180,7 +183,7 @@ $(document).ready(function(){
 
 <div id="filterSection" class="definition">	
   <div class="title">
-  	<div class="head">
+  	<div class="head" id="filter">
 		Filter			
   	</div>
   </div>
