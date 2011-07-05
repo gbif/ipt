@@ -400,6 +400,7 @@ div.newline {
 .topForm img.infoImg{
 	position: relative;
 	top: 4px;
+	vertical-align: top;
 }
 .topForm .2col{
 	width: 45%;
@@ -411,17 +412,21 @@ div.newline {
 	margin-right:0;
 	margin-top:0;
 }
+.checkbox {
+  	padding-top: 1em;
+}
 .checkbox input {	
 	display: inline;
 	width: 5%;
 	margin-left: 0.5em;
 }
 .checkbox label {
-	display: inline-block;
+	display: inline-block;	
 }
 .checkbox img {
 	display: inline;
 	margin-left: 1em;
+	padding-top: 0.5em;
 }
 .checkbox div {
 	display: inline-block;

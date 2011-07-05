@@ -26,7 +26,8 @@
   				<div class="newline"></div>
   				<@text  i18nkey="eml.taxonomicCoverages.description" help="i18n" name="eml.taxonomicCoverages[${item_index}].description" />
   				<!-- Taxon list-->
-				<a id="taxonsLink-${item_index}" class="show-taxonList" href="" ><@s.text name='manage.metadata.addseveral' /> <@s.text name='manage.metadata.taxcoverage.taxon.items' /></a>	
+				<!-- a id="taxonsLink-${item_index}" class="show-taxonList" href="" ><@s.text name='manage.metadata.addseveral' /> <@s.text name='manage.metadata.taxcoverage.taxon.items' /></a -->
+				<@link name="taxonsLink-${item_index}" class="show-taxonList" value="manage.metadata.taxcoverage.addSeveralTaxa" help="i18n" i18nkey="manage.metadata.taxcoverage.addSeveralTaxa"/>	
 				<div id="list-${item_index}" class="half" style="display:none">
 					<@text i18nkey="eml.taxonomicCoverages.taxonList" help="i18n" name="taxon-list-${item_index}" value="" />
 					<div class="buttons">

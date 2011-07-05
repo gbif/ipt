@@ -145,6 +145,7 @@ $(document).ready(function(){
 		var $target = $(event.target);			
 		$("#list-"+$target.attr("id").split("-")[1]).slideDown('slow', function(){
 			$("#taxonsLink-"+$target.attr("id").split("-")[1]).hide();
+			$target.parent().children("img").hide();
 		});		
 	}
 	
@@ -164,6 +165,7 @@ $(document).ready(function(){
 		$("#taxon-list-"+index).val("");
 		$("#list-"+index).slideUp('slow', function() {
 			$("#taxonsLink-"+index).show();
+			$("#taxonsLink-"+index).parent().children("img").show();
 		});
 	}
 	
