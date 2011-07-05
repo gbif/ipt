@@ -5,6 +5,7 @@ package org.gbif.ipt.config;
 
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig.REGISTRY_TYPE;
+import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.service.AlreadyExistingException;
@@ -288,7 +289,10 @@ public class SetupAction extends BaseAction {
 
   public String setup3() {
     session.put(Constants.SESSION_USER, userManager.getSetupUser());
-    extensionManager.installCoreTypes();
+    List<Extension> list = extensionManager.listCore();
+    if (list.size() == 0) {
+      extensionManager.installCoreTypes();
+    }
     return INPUT;
   }
 
