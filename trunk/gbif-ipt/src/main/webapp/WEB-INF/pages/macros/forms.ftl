@@ -12,6 +12,13 @@
   </div>
 </#macro> 
 
+<#macro link name value="" href="" class="" i18nkey="" help="" errorfield="">
+	<div>   
+    	<#include "/WEB-INF/pages/macros/help_icon.ftl">
+    	<a id="${name}" name="${name}" class="${class}" href="${href}"><@s.text name="${value}"/></a>
+    </div>
+</#macro>
+
 <#macro select name options value="" i18nkey="" errorfield="" size=1 disabled=false help="" includeEmpty=false javaGetter=true>
   <div>
 	<#include "/WEB-INF/pages/macros/form_field_common.ftl">
@@ -27,6 +34,7 @@
 	</select>
   </div>
 </#macro>
+
 <#macro selectList name options objValue objTitle value="" i18nkey="" errorfield="" size=1 disabled=false help="" includeEmpty=false>
   <div>
 	<#include "/WEB-INF/pages/macros/form_field_common.ftl">
@@ -79,3 +87,5 @@
     	<@textWithFormattedLink text/>
     </#if>
 </#macro>
+
+	

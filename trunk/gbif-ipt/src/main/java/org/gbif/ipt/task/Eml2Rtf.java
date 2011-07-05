@@ -307,11 +307,6 @@ public class Eml2Rtf {
         p.add(getText("rtf.unknown"));
       }
       p.add(Chunk.NEWLINE);
-      if (exists(eml.getPurpose())) {
-        p.add(new Phrase(getText("rtf.purpose") + ": ", fontTitle));
-        p.add(eml.getPurpose().replace("\r\n", "\n"));
-        p.add(Chunk.NEWLINE);
-      }
       if (exists(eml.getIntellectualRights())) {
         p.add(new Phrase(getText("rtf.license") + ": ", fontTitle));
         p.add(eml.getIntellectualRights().replace("\r\n", "\n"));
@@ -350,11 +345,6 @@ public class Eml2Rtf {
           p.add(getText("rtf.unknown"));
         }
         p.add(Chunk.NEWLINE);
-        if (exists(eml.getPurpose())) {
-          p.add(new Phrase(getText("rtf.purpose") + ": ", fontTitle));
-          p.add(eml.getPurpose().replace("\r\n", "\n"));
-          p.add(Chunk.NEWLINE);
-        }
         if (exists(eml.getIntellectualRights())) {
           p.add(new Phrase(getText("rtf.license") + ": ", fontTitle));
           p.add(eml.getIntellectualRights());
@@ -431,6 +421,30 @@ public class Eml2Rtf {
           p.add(distributionLink);
           p.add(Chunk.NEWLINE);
         }
+        p.add(Chunk.NEWLINE);
+      }
+      doc.add(p);
+      p.clear();
+    }
+  }
+
+  private void addGeneralDescription(Document doc, Eml eml) throws DocumentException {
+    if (exists(eml.getPurpose()) || exists(eml.getAdditionalInfo())) {
+      Paragraph p = new Paragraph();
+      p.setAlignment(Element.ALIGN_JUSTIFIED);
+      p.setFont(font);
+
+      p.add(new Phrase(getText("rtf.generalDesciption"), fontTitle));
+      p.add(Chunk.NEWLINE);
+      p.add(Chunk.NEWLINE);
+      if (exists(eml.getPurpose())) {
+        p.add(new Phrase(getText("rtf.purpose") + ": ", fontTitle));
+        p.add(eml.getPurpose().replace("\r\n", "\n"));
+        p.add(Chunk.NEWLINE);
+      }
+      if (exists(eml.getAdditionalInfo())) {
+        p.add(new Phrase("Additional information" + ": ", fontTitle));
+        p.add(eml.getAdditionalInfo().replace("\r\n", "\n"));
         p.add(Chunk.NEWLINE);
       }
       doc.add(p);
@@ -617,7 +631,7 @@ public class Eml2Rtf {
       Paragraph p = new Paragraph();
       p.setAlignment(Element.ALIGN_JUSTIFIED);
       p.setFont(font);
-      p.add(new Phrase(getText("rtf.project.description"), fontTitle));
+      p.add(new Phrase(getText("rtf.project.details"), fontTitle));
       p.add(Chunk.NEWLINE);
       p.add(Chunk.NEWLINE);
       if (exists(eml.getProject().getTitle())) {
@@ -672,7 +686,7 @@ public class Eml2Rtf {
         || resource.getStatus().equals(PublicationStatus.REGISTERED)) {
       Paragraph p = new Paragraph();
       p.setFont(font);
-      p.add(new Phrase(getText("rtf.resourceLink"), fontTitle));
+      p.add(new Phrase(getText("rtf.resourceLink") + " ", fontTitle));
       Anchor gbifLink = new Anchor("GBIF", fontLinkTitle);
       gbifLink.setReference("http://www.gbif.org");
       p.add(gbifLink);
@@ -897,11 +911,12 @@ public class Eml2Rtf {
     addCitations(doc, eml);
     addAbstract(doc, eml);
     addKeywords(doc, keys);
+    addGeneralDescription(doc, eml);
+    addProjectData(doc, eml);
     addResourceLink(doc, resource);
     addTaxonomicCoverages(doc, eml);
     addSpatialCoverage(doc, eml);
     addTemporalCoverages(doc, eml);
-    addProjectData(doc, eml);
     addNaturalCollections(doc, eml);
     addMethods(doc, eml);
     addDatasetDescriptions(doc, resource);
