@@ -62,6 +62,14 @@ public interface RegistryManager {
   public String registerIPT(Ipt ipt, Organisation organisation) throws RegistryException;
 
   /**
+   * Update an IPT instance agains the GBIF Registry
+   * 
+   * @param ipt
+   * @throws RegistryException
+   */
+  public void updateIpt(Ipt ipt) throws RegistryException;
+  
+  /**
    * Updates a resource's metadata with the GBIF registry and associate with to the given organisation.
    * 
    * @param resource
