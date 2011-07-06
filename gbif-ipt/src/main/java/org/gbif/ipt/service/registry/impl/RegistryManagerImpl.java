@@ -1,5 +1,26 @@
 package org.gbif.ipt.service.registry.impl;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.ConnectException;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.NameValuePair;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
@@ -12,38 +33,15 @@ import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.RegistryException.TYPE;
 import org.gbif.ipt.service.registry.RegistryManager;
-import org.gbif.utils.HttpUtil;
-import org.gbif.utils.HttpUtil.Response;
 import org.gbif.ipt.utils.RegistryEntryHandler;
 import org.gbif.metadata.eml.Eml;
+import org.gbif.utils.HttpUtil;
+import org.gbif.utils.HttpUtil.Response;
+import org.xml.sax.SAXException;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.http.NameValuePair;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
-import org.xml.sax.SAXException;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.ConnectException;
-import java.net.URISyntaxException;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 public class RegistryManagerImpl extends BaseManager implements RegistryManager {
   class RegistryServices {
@@ -99,7 +97,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
     return data;
   }
-
+  
   private RegistryServices buildServiceTypeParams(Resource resource) {
     RegistryServices rs = new RegistryServices();
     rs.serviceTypes = SERVICE_TYPE_EML;
@@ -207,6 +205,15 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    */
   private String getIptUpdateResourceUri(String resourceKey) {
     return String.format("%s%s%s", cfg.getRegistryUrl(), "/registry/ipt/resource/", resourceKey);
+  }
+  
+  /**
+   * Returns the IPT update url used in GBIF Registry
+   * 
+   * @return
+   */
+  private String getIptUpdateUri(String iptKey) {
+	  return String.format("%s%s%s",cfg.getRegistryUrl(), "/registry/ipt/update/", iptKey);
   }
 
   /**
@@ -438,6 +445,44 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return key;
   }
 
+  public void updateIpt(Ipt ipt) {
+	  log.warn("Updating IPT instance throught GBIF Registry");
+	  UsernamePasswordCredentials iptCredentials = new UsernamePasswordCredentials(ipt.getKey().toString(), ipt.getWsPassword());
+	  List<NameValuePair> data = new ArrayList<NameValuePair>();
+	  data.add(new BasicNameValuePair("organisationKey", StringUtils.trimToEmpty(ipt.getKey().toString())));
+	  data.add(new BasicNameValuePair("name", StringUtils.trimToEmpty(ipt.getName())));
+	  data.add(new BasicNameValuePair("description", StringUtils.trimToEmpty(ipt.getDescription())));
+	  data.add(new BasicNameValuePair("language", StringUtils.trimToEmpty(ipt.getLanguage())));
+	  data.add(new BasicNameValuePair("homepageURL", StringUtils.trimToEmpty(ipt.getHomepageURL())));
+	  data.add(new BasicNameValuePair("logoURL", StringUtils.trimToEmpty(ipt.getLogoUrl())));
+	  data.add(new BasicNameValuePair("primaryContactName", StringUtils.trimToEmpty(ipt.getPrimaryContactName())));
+	  data.add(new BasicNameValuePair("primaryContactType", StringUtils.trimToEmpty(ipt.getPrimaryContactType())));
+	  data.add(new BasicNameValuePair("primaryContactAddress", StringUtils.trimToEmpty(ipt.getPrimaryContactAddress())));
+	  data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(ipt.getPrimaryContactEmail())));
+	  data.add(new BasicNameValuePair("primaryContactPhone", StringUtils.trimToEmpty(ipt.getPrimaryContactPhone())));
+	  data.add(new BasicNameValuePair("newBaseURL", cfg.getBaseURL()));
+	  
+	  /*
+	   * Old base url need to be provided in order to update the new base url. Some changes must be done in the GBIF Registry.
+	   */
+	 // data.add(new BasicNameValuePair("oldBaseURL", "old base url"));
+	  
+	  //data.add(new BasicNameValuePair("primaryContactFirstName", "")); TODO
+	  //data.add(new BasicNameValuePair("primaryContactLastName", "")); TODO
+	  
+	  try {
+		Response resp = http.post(getIptUpdateUri(ipt.getKey().toString()), null, null, iptCredentials, new UrlEncodedFormEntity(data));
+		if(http.success(resp)) {
+			log.debug("Ipt's registration info has been updated");
+		} else {
+			throw new RegistryException(RegistryException.TYPE.FAILED, "Registration update failed");
+		}
+	} catch (Exception e) {
+		throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, "Bad registry response");
+		
+	}
+  }
+  
   /*
    * (non-Javadoc)
    * @see org.gbif.ipt.service.registry.RegistryManager#updateResource(org.gbif.ipt.model.Resource,
@@ -456,7 +501,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     log.debug("Last published: " + resource.getLastPublished());
     List<NameValuePair> data = buildRegistryParameters(resource);
 
-    try {
+    try {    	
       Response resp = http.post(getIptUpdateResourceUri(resource.getKey().toString()), null, null,
           orgCredentials(resource.getOrganisation()), new UrlEncodedFormEntity(data));
       if (http.success(resp)) {

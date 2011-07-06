@@ -53,6 +53,15 @@ public class UpdateResourceMetadataAction extends POSTAction {
       log.debug("Got [" + publishedResources.size() + "] published resources of [" + allResources.size()
           + "] total resources");
     }
+    
+    log.info("Updating ipt instance");
+    try {
+    	registryManager.updateIpt(registrationManager.getIpt());
+    	resUpdateStatus.put(registrationManager.getIpt().getName() + registry, success);
+    } catch(RegistryException e) {
+    	log.warn("Registry exception updating ipt instance", e);
+    	resUpdateStatus.put(registrationManager.getIpt().getName() + registry, e.getMessage());
+    }
 
     log.info("Updating resource metadata - eml.xml");
     for (Resource res : publishedResources) {
