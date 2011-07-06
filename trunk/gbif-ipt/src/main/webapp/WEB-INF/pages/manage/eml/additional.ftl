@@ -105,7 +105,7 @@
   	<div class="newline"></div>
   	<@text name="eml.purpose" i18nkey="eml.purpose" help="i18n"/>
   	<@text name="eml.intellectualRights" i18nkey="eml.intellectualRights" help="i18n"/>
-  	<@text name="eml.additionalInfo" i18nkey="eml.additionalInfo"/>
+  	<@text name="eml.additionalInfo" i18nkey="eml.additionalInfo" help="i18n"/>
   	<div class="newline"></div>
   	<h2><@s.text name='manage.metadata.alternateIdentifiers.title'/></h2>
   	<p><@s.text name='manage.metadata.alternateIdentifiers.intro'/></p>
