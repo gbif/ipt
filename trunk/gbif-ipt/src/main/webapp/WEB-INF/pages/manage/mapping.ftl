@@ -75,6 +75,11 @@ $(document).ready(function(){
 		});
 	});	
 
+	$(function() {
+    if ( $.browser.msie) {
+      $('div.definition').css({overflow: "visible"});
+    } 
+  });
 	
 });   
 </script>
@@ -94,10 +99,6 @@ $(document).ready(function(){
 	div.required div.title{
 		color:#bc5e5b;
 		font-weight: normal;
-	}
-	div.infos{
-		float:left;
-		width:40px;
 	}
 	div.infos img.vocabImg {
 		top: 2px !important;
@@ -139,6 +140,7 @@ $(document).ready(function(){
   	</div>
   </div>
   <div class="body">
+  <div>
   	<div class="infos">
   	  <#if coreid??>
   		<img class="infoImg" src="${baseURL}/images/info.gif" />
@@ -152,9 +154,7 @@ $(document).ready(function(){
 			<em><@s.text name="basic.examples"/></em>: ${coreid.examples}
 			</#if>
 		</div>		
-      </#if>              	
-  	</div>
-	<div>
+      </#if>  
 		<select name="mapping.idColumn" id="idColumn">		
 		<#if mapping.isCore()>
 		  <option value="" <#if !mapping.idColumn??> selected="selected"</#if>><@s.text name="manage.mapping.noid"/></option>
@@ -178,6 +178,7 @@ $(document).ready(function(){
   	</div>
   	</#if>
   </div>
+  </div>
 </div>
 	
 
@@ -192,9 +193,7 @@ $(document).ready(function(){
   		<img class="infoImg" src="${baseURL}/images/info.gif" />
 		<div class="info">		
 			<@s.text name='manage.mapping.info'/>
-		</div>		
-  	</div>
-	<div>
+		</div>	
 		<select id="filterName" name="mapping.filter.column">
 		  <option value="" <#if !mapping.filter.column??> selected="selected"</#if>></option>
 		<#list columns as c>
@@ -262,6 +261,7 @@ $(document).ready(function(){
 	  	</div>
 	  </div>
 	  <div class="body">
+	  <div>
 	  	<div class="infos">
 	  		<img class="infoImg" src="${baseURL}/images/info.gif" />
 			<div class="info">
@@ -273,9 +273,7 @@ $(document).ready(function(){
 			</div>
 	      	<#if p.vocabulary?exists>	  		
 	      	<a href="vocabulary.do?id=${p.vocabulary.uri}" target="_blank"><img class="vocabImg" src="${baseURL}/images/vocabulary.png" /></a>
-	      	</#if>			
-	  	</div>
-		<div>
+	      	</#if>
 				<select id="fIdx${field_index}" class="fidx" name="fields[${field_index}].index">
 				  <option value="" <#if !field.index??> selected="selected"</#if>></option>
 				<#list columns as col>
@@ -311,6 +309,7 @@ $(document).ready(function(){
 	      		</a>
 	      	</div>
 	      	</#if>
+	      	</div>
 	  </div>
 	</div>
 
