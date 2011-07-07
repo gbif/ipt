@@ -12,21 +12,6 @@
 	$(document).ready(function() {	
 		initHelp();
 		calculateCount();		
-		/*$("#save").click(function(event){
-			var dateExpression = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{4}$/;			
-			var allOk = true;
-			$(".hasDatepicker").each(function(index){
-				if($(this).attr("value").length > 0) {
-					if(dateExpression.test($(this).attr("value"))){
-						alert($(this).val()+" - Esta bien! pero todav�a falta averiguar si la fecha es correcta");						
-					} else {
-						alert($(this).val()+" - Esta Mal! "+"\<\@s\.text name=\'manage\.metadata\.tempcoverage\.title\'\/\>");
-						allOk = false;						
-					}
-				}
-			});					
-			return true;
-		});*/
 		function calculateCount() {
 			var lastChild = $("#temporals .tempo:last-child").attr("id");
 			if(lastChild != undefined) {
@@ -44,11 +29,16 @@
 			var typeSubForm = $("#tempTypes").attr("value");			
 			//Adding the 'sub-form' to the new form.
 			addTypeForm(newForm, typeSubForm, true);			
-			$("#temporals").append(newForm);		
+			$("#temporals").append(newForm);
+			newForm.hide();		
 			//Updating the componetsof the new 'sub-form'.
-			updateFields(idNewForm, count);			
-			$("#temporal-"+count).hide().slideDown("slow");
-			//initHelp("#temporal-"+count);
+			updateFields(idNewForm, count);
+			// hack for IE (help icons dissapear)
+			if($.browser.msie) {		
+				$("#temporal-"+count).css('zoom', 1);
+			}
+			$("#temporal-"+count).slideDown("slow").css('zoom', 1);
+			
 			count++;
 		});
 		
