@@ -14,7 +14,6 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.config.Constants;
-import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.utils.CountryUtils;
@@ -28,7 +27,6 @@ import org.gbif.metadata.eml.TemporalCoverageType;
 
 import com.google.inject.Inject;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Arrays;
@@ -56,8 +54,6 @@ public class MetadataAction extends ManagerBaseAction {
 
   @Inject
   private VocabulariesManager vocabManager;
-  @Inject
-  private DataDir dataDir;
 
   /**
    * @return a map of countries
@@ -217,11 +213,6 @@ public class MetadataAction extends ManagerBaseAction {
       }
       if (section.equals("additional")) {
         resource.getEml().getAlternateIdentifiers().clear();
-        if (resource.getEml().getLogoUrl() == null) {
-          for (String suffix : Constants.IMAGE_TYPES) {
-            FileUtils.deleteQuietly(dataDir.resourceLogoFile(resource.getShortname(), suffix));
-          }
-        }
       }
 
     }

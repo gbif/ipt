@@ -167,15 +167,6 @@ public class SourceAction extends ManagerBaseAction {
     return null;
   }
 
-  public boolean isLogoExisting() {
-    for (String suffix : Constants.IMAGE_TYPES) {
-      File f = dataDir.resourceLogoFile(resource.getShortname(), StringUtils.substringAfterLast(suffix, "/"));
-      if (f.exists())
-        return true;
-    }
-    return false;
-  }
-
   public String peek() {
     if (source == null) {
       return NOT_FOUND;
@@ -282,13 +273,11 @@ public class SourceAction extends ManagerBaseAction {
   }
 
   public String uploadLogo() {
-    // remove any previous logo file
-    for (String suffix : Constants.IMAGE_TYPES) {
-      FileUtils.deleteQuietly(dataDir.resourceLogoFile(resource.getShortname(), suffix));
-    }
-    System.out.println("---------------");
-    System.out.println(file);
     if (file != null) {
+      // remove any previous logo file
+      for (String suffix : Constants.IMAGE_TYPES) {
+        FileUtils.deleteQuietly(dataDir.resourceLogoFile(resource.getShortname(), suffix));
+      }
       // inspect file type
       String type = "jpeg";
       if (fileContentType != null) {
