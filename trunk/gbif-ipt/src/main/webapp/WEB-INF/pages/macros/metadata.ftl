@@ -103,7 +103,13 @@ $(document).ready(function(){
 		var newItem=$('#baseItem').clone();
 		if(effects) newItem.hide();
 		newItem.appendTo('#items');
-		if(effects) newItem.slideDown('slow');
+
+		if(effects) {
+			// hack for IE (help icons dissapear)
+			if($.browser.msie) {
+			 	newItem..css('zoom', 1);
+			}			
+		}
 		
 		initHelp("#baseItem");
 		

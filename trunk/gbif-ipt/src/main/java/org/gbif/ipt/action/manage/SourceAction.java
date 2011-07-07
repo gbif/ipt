@@ -1,12 +1,9 @@
 /***************************************************************************
  * Copyright 2010 Global Biodiversity Information Facility Secretariat
- * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -40,7 +37,6 @@ import java.util.Map;
 
 /**
  * @author markus
- * 
  */
 public class SourceAction extends ManagerBaseAction {
   @Inject
@@ -140,6 +136,10 @@ public class SourceAction extends ManagerBaseAction {
     return jdbcSupport.optionMap();
   }
 
+  public boolean getLogExists() {
+    return dataDir.sourceLogFile(resource.getShortname(), source.getName()).exists();
+  }
+
   public List<String[]> getPeek() {
     return peek;
   }
@@ -165,6 +165,15 @@ public class SourceAction extends ManagerBaseAction {
       return (SqlSource) source;
     }
     return null;
+  }
+
+  public boolean isLogoExisting() {
+    for (String suffix : Constants.IMAGE_TYPES) {
+      File f = dataDir.resourceLogoFile(resource.getShortname(), StringUtils.substringAfterLast(suffix, "/"));
+      if (f.exists())
+        return true;
+    }
+    return false;
   }
 
   public String peek() {
@@ -271,17 +280,15 @@ public class SourceAction extends ManagerBaseAction {
   public void setSource(Source source) {
     this.source = source;
   }
-  
-  public boolean getLogExists(){
-	  return dataDir.sourceLogFile(resource.getShortname(), source.getName()).exists();
-  }
 
   public String uploadLogo() {
+    // remove any previous logo file
+    for (String suffix : Constants.IMAGE_TYPES) {
+      FileUtils.deleteQuietly(dataDir.resourceLogoFile(resource.getShortname(), suffix));
+    }
+    System.out.println("---------------");
+    System.out.println(file);
     if (file != null) {
-      // remove any previous logo file
-      for (String suffix : Constants.IMAGE_TYPES) {
-        FileUtils.deleteQuietly(dataDir.resourceLogoFile(resource.getShortname(), suffix));
-      }
       // inspect file type
       String type = "jpeg";
       if (fileContentType != null) {
@@ -293,7 +300,7 @@ public class SourceAction extends ManagerBaseAction {
       } catch (IOException e) {
         log.warn(e.getMessage());
       }
-      //resource.getEml().setLogoUrl(cfg.getResourceLogoUrl(resource.getShortname()));
+      // resource.getEml().setLogoUrl(cfg.getResourceLogoUrl(resource.getShortname()));
     }
     return INPUT;
   }
@@ -316,8 +323,8 @@ public class SourceAction extends ManagerBaseAction {
           addFieldError("sqlSource.host", getText("validation.required", new String[]{getText("sqlSource.host")}));
         }
         if (StringUtils.trimToEmpty(src.getDatabase()).length() < 2) {
-          addFieldError("sqlSource.database",
-              getText("validation.required", new String[]{getText("sqlSource.database")}));
+          addFieldError("sqlSource.database", getText("validation.required",
+              new String[]{getText("sqlSource.database")}));
         }
       } else {
         // FILE SOURCE

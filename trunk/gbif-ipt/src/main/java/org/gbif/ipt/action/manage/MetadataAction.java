@@ -1,12 +1,9 @@
 /***************************************************************************
  * Copyright 2010 Global Biodiversity Information Facility Secretariat
- * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -17,6 +14,7 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.utils.CountryUtils;
@@ -30,6 +28,7 @@ import org.gbif.metadata.eml.TemporalCoverageType;
 
 import com.google.inject.Inject;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Arrays;
@@ -39,7 +38,6 @@ import java.util.Map;
 
 /**
  * @author markus
- * 
  */
 public class MetadataAction extends ManagerBaseAction {
   private ResourceValidator validatorRes = new ResourceValidator();
@@ -53,11 +51,13 @@ public class MetadataAction extends ManagerBaseAction {
   private Map<String, String> roles;
   private Map<String, String> preservationMethods;
 
-  private static final List<String> sections = Arrays.asList("basic", "geocoverage", "taxcoverage", "tempcoverage", "keywords", "parties", "project",
-      "methods", "citations", "collections", "physical", "additional");
+  private static final List<String> sections = Arrays.asList("basic", "geocoverage", "taxcoverage", "tempcoverage",
+      "keywords", "parties", "project", "methods", "citations", "collections", "physical", "additional");
 
   @Inject
   private VocabulariesManager vocabManager;
+  @Inject
+  private DataDir dataDir;
 
   /**
    * @return a map of countries
@@ -78,26 +78,26 @@ public class MetadataAction extends ManagerBaseAction {
     return JGTICuratorialUnitType.htmlSelectMap;
   }
 
+  public String getLanguageIso3() {
+    String iso3 = LangUtils.iso3(resource.getEml().getLanguage());
+    if (languages.containsKey(iso3)) {
+      return iso3;
+    }
+    return null;
+  }
+
   public Map<String, String> getLanguages() {
     return languages;
   }
 
   public String getMetadataLanguageIso3() {
-	String iso3=LangUtils.iso3(resource.getEml().getMetadataLanguage());
-	if(languages.containsKey(iso3)){
-		return iso3;
+    String iso3 = LangUtils.iso3(resource.getEml().getMetadataLanguage());
+    if (languages.containsKey(iso3)) {
+      return iso3;
     }
-	return null;
+    return null;
   }
-  
-  public String getLanguageIso3() {
-	String iso3=LangUtils.iso3(resource.getEml().getLanguage());
-	if(languages.containsKey(iso3)){
-		return iso3;
-	}
-	return null;
-  }
-  
+
   public String getNext() {
     return next;
   }
@@ -165,18 +165,22 @@ public class MetadataAction extends ManagerBaseAction {
     roles.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_ROLES, getLocaleLanguage(), false));
     preservationMethods = new LinkedHashMap<String, String>();
     preservationMethods.put("", getText("eml.preservation.methods.selection"));
-    preservationMethods.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_PRESERVATION_METHOD, getLocaleLanguage(), false));
+    preservationMethods.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_PRESERVATION_METHOD, getLocaleLanguage(),
+        false));
 
-    if(resource.getEml().getContact().getAddress().getCountry()!=null){
-    	resource.getEml().getContact().getAddress().setCountry(CountryUtils.iso2(resource.getEml().getContact().getAddress().getCountry()));
+    if (resource.getEml().getContact().getAddress().getCountry() != null) {
+      resource.getEml().getContact().getAddress().setCountry(
+          CountryUtils.iso2(resource.getEml().getContact().getAddress().getCountry()));
     }
-    if(resource.getEml().resourceCreator().getAddress().getCountry()!=null){
-    	resource.getEml().resourceCreator().getAddress().setCountry(CountryUtils.iso2(resource.getEml().resourceCreator().getAddress().getCountry()));
+    if (resource.getEml().resourceCreator().getAddress().getCountry() != null) {
+      resource.getEml().resourceCreator().getAddress().setCountry(
+          CountryUtils.iso2(resource.getEml().resourceCreator().getAddress().getCountry()));
     }
-    if(resource.getEml().getMetadataProvider().getAddress().getCountry()!=null){
-    	resource.getEml().getMetadataProvider().getAddress().setCountry(CountryUtils.iso2(resource.getEml().getMetadataProvider().getAddress().getCountry()));
+    if (resource.getEml().getMetadataProvider().getAddress().getCountry() != null) {
+      resource.getEml().getMetadataProvider().getAddress().setCountry(
+          CountryUtils.iso2(resource.getEml().getMetadataProvider().getAddress().getCountry()));
     }
-    
+
     if (resource.getEml().getMetadataProvider() != null && resource.getEml().getMetadataProvider().isEmpty()) {
       Agent current = new Agent();
       current.setFirstName(getCurrentUser().getFirstname());
@@ -212,7 +216,12 @@ public class MetadataAction extends ManagerBaseAction {
         resource.getEml().getJgtiCuratorialUnits().clear();
       }
       if (section.equals("additional")) {
-          resource.getEml().getAlternateIdentifiers().clear();
+        resource.getEml().getAlternateIdentifiers().clear();
+        if (resource.getEml().getLogoUrl() == null) {
+          for (String suffix : Constants.IMAGE_TYPES) {
+            FileUtils.deleteQuietly(dataDir.resourceLogoFile(resource.getShortname(), suffix));
+          }
+        }
       }
 
     }
@@ -223,9 +232,9 @@ public class MetadataAction extends ManagerBaseAction {
   public String save() throws Exception {
     resourceManager.saveEml(resource);
     if (section.equals("basic")) {
-    	resourceManager.save(resource);
+      resourceManager.save(resource);
     }
-    addActionMessage(getText("manage.success", new String[]{getText("submenu."+section)}));
+    addActionMessage(getText("manage.success", new String[]{getText("submenu." + section)}));
     return SUCCESS;
   }
 
