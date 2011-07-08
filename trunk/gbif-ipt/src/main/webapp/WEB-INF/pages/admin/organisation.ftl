@@ -3,7 +3,33 @@
 <script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	$('.confirm').jConfirmAction({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
+	
+	var emailContent2 = '<@s.text name="emails.adding.organisation.association1"/>';
+	emailContent2 += '<@s.text name="emails.adding.organisation.association2"/>';
+	emailContent2 += '<@s.text name="emails.adding.organisation.association3"/>';
+	emailContent2 += '<@s.text name="emails.adding.organisation.association4"/>';
+	emailContent2 += '<@s.text name="emails.adding.organisation.association5"><@s.param>'
+	emailContent2 += "${currentUser.firstname}";
+	emailContent2 += '</@s.param></@s.text>';
+	emailContent2 += '<@s.text name="emails.adding.organisation.association6"><@s.param>'
+	emailContent2 += "${currentUser.email}";
+	emailContent2 += '</@s.param></@s.text>';
+	emailContent2 += '<@s.text name="emails.adding.organisation.association7"/>';
+	emailContent2 += '<@s.text name="emails.adding.organisation.association8"/>';
+	emailContent2 += "${currentUser.firstname}";
+	
+	//Email template for adding an associated organization
+	var contactLink = '<a href=\"mailto:helpdesk@gbif.org';
+	contactLink += '?subject=';
+	contactLink += '<@s.text name="emails.adding.organisation.association.subject"></@s.text>';
+	contactLink += '&body=';
+	contactLink += emailContent2;
+	contactLink += '\">'; 
+	contactLink += '<@s.text name="admin.organisation.contact.helpdesk"/>';  
+	contactLink += '</a> '; 
+	$('#contactHelpdesk').html(contactLink);	
+  
+    $('.confirm').jConfirmAction({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
 
 	$('#organisation\\.key').change(function() {
 		var orgName = $('#organisation\\.key :selected').text();
@@ -62,7 +88,7 @@ $(document).ready(function(){
 		<@s.hidden name="id" id="id" required="true" />
 	<#else>
 <h1><@s.text name="admin.organisation.add.title"/></h1>
-<p><@s.text name="admin.organisation.add.intro"/></p>
+<p><@s.text name="admin.organisation.add.intro"/> <a id='contactHelpdesk' href=""><@s.text name="admin.organisation.contact.helpdesk"/></a></p>
 <p><@s.text name="admin.organisation.add.intro2"/></p>
 		<@s.hidden id="organisation.name" name="organisation.name" required="true" />
 		<@s.hidden id="organisation.primaryContactType" name="organisation.primaryContactType" required="false" />
