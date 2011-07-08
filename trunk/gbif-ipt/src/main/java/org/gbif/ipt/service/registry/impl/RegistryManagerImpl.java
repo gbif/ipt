@@ -55,6 +55,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   private static final String SERVICE_TYPE_DWCA = "DWC-ARCHIVE";
   private static final String SERVICE_TYPE_OCCURRENCE = "DWC-ARCHIVE-OCCURRENCE";
   private static final String SERVICE_TYPE_CHECKLIST = "DWC-ARCHIVE-CHECKLIST";
+  private static final String SERVICE_TYPE_RSS = "RSS";
   private HttpUtil http;
   private SAXParser saxParser;
 
@@ -423,11 +424,11 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     data.add(new BasicNameValuePair("description", StringUtils.trimToEmpty(ipt.getDescription()))); // description
     // IPT password used for updating the IPT's own metadata & issuing atomic updateURL operations
     data.add(new BasicNameValuePair("wsPassword", StringUtils.trimToEmpty(ipt.getWsPassword()))); // IPT instance
-                                                                                                  // password
+    // password
     data.add(new BasicNameValuePair("primaryContactType", ipt.getPrimaryContactType()));
     data.add(new BasicNameValuePair("primaryContactName", StringUtils.trimToEmpty(ipt.getPrimaryContactName())));
     data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(ipt.getPrimaryContactEmail())));
-    data.add(new BasicNameValuePair("serviceTypes", "RSS"));
+    data.add(new BasicNameValuePair("serviceTypes", SERVICE_TYPE_RSS));
     data.add(new BasicNameValuePair("serviceURLs", getRssFeedURL()));
 
     String key = null;
@@ -469,13 +470,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     data.add(new BasicNameValuePair("primaryContactAddress", StringUtils.trimToEmpty(ipt.getPrimaryContactAddress())));
     data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(ipt.getPrimaryContactEmail())));
     data.add(new BasicNameValuePair("primaryContactPhone", StringUtils.trimToEmpty(ipt.getPrimaryContactPhone())));
-    data.add(new BasicNameValuePair("newBaseURL", cfg.getBaseURL()));
-
-    /*
-     * Old base url need to be provided in order to update the new base url. Some changes must be done in the GBIF
-     * Registry.
-     */
-    // data.add(new BasicNameValuePair("oldBaseURL", "old base url"));
+    data.add(new BasicNameValuePair("serviceTypes", SERVICE_TYPE_RSS));
+    data.add(new BasicNameValuePair("serviceURLs", getRssFeedURL()));
 
     // data.add(new BasicNameValuePair("primaryContactFirstName", "")); TODO
     // data.add(new BasicNameValuePair("primaryContactLastName", "")); TODO
