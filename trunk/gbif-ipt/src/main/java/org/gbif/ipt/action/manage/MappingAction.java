@@ -321,6 +321,9 @@ public class MappingAction extends ManagerBaseAction {
         }
       }
       // save coreid field
+      mappingCoreid.setIndex(mapping.getIdColumn());
+      mappingCoreid.setDefaultValue(mapping.getIdSuffix());
+      // mappingCoreid.setDefaultValue(mapping.g)
       if (mappingCoreid.getIndex() != null || StringUtils.trimToNull(mappingCoreid.getDefaultValue()) != null) {
         mappedFields.add(mappingCoreid);
       }
