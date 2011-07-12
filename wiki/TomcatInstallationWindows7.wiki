@@ -20,7 +20,7 @@ Please make sure the following conditions (software and version) are met before 
 Download the latest stable Tomcat 6 Binary Distribution Core (32-bit/64-bit Windows Service Installer) release from http://tomcat.apache.org/download-60.cgi. This should put a file of the form apache-tomcat-6.x.x.exe(or apache-tomcat-6.x.x.tar if you download with Safari) into your Downloads folder.
 
 ===2) Install Tomcat 6.x===
-Double click the executable to start installation wizard. Do fill information to specify the connector port, Tomcat administrator login credentials without changing the Roles.
+Double click the executable to start installation wizard. *Do* fill information to specify *the connector port*, *Tomcat administrator login credentials* without changing the Roles.
 
 ===3) Run Tomcat===
 Go to c:\\Program Files\Apache Software Foundation\Tomcat 6.0\bin
