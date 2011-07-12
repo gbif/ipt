@@ -103,11 +103,12 @@ $(document).ready(function(){
 		var newItem=$('#baseItem').clone();
 		if(effects) newItem.hide();
 		newItem.appendTo('#items');
-
+		
 		if(effects) {
+			 newItem.slideDown('slow');
 			// hack for IE (help icons dissapear)
 			if($.browser.msie) {
-			 	newItem..css('zoom', 1);
+			 	newItem.css('zoom', 1);
 			}			
 		}
 		
@@ -181,7 +182,7 @@ $(document).ready(function(){
 		$("#removeLink-"+index).click(function(event) {
 			removeItem(event);
 		});	
-		
+	    
 	  <#switch "${section}">
   		<#case "parties">
   			$("#item-"+index+" [id$='firstName']").attr("id", "eml.associatedParties["+index+"].firstName").attr("name", function() {return $(this).attr("id");});
