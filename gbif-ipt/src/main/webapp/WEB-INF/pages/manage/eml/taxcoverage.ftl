@@ -78,7 +78,7 @@
 	<@text i18nkey="eml.taxonomicCoverages.description" help="i18n" name="description" />
 
 	<!-- Taxon list-->
-	<a id="taxonsLink" class="show-taxonList" href="" ><@s.text name='manage.metadata.addseveral' /> <@s.text name='manage.metadata.taxcoverage.taxon.items' /></a>	
+	<a id="taxonsLink" class="show-taxonList" href="" ><@s.text name='manage.metadata.taxcoverage.addSeveralTaxa' /></a>	
 	<div id="list" class="half" style="display:none">
 		<@text i18nkey="eml.taxonomicCoverages.taxonList" help="i18n" name="taxon-list" value="" />
 		<div class="buttons">
