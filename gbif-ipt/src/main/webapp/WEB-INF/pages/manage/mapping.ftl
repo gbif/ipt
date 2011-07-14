@@ -185,8 +185,10 @@ $(document).ready(function(){
 <div id="filterSection" class="definition">	
   <div class="title">
   	<div class="head" id="filter">
-		Filter			
-  	</div>
+		<!-- Filter -->
+		<@select name="mapping.filter.filterTime" i18nkey="manage.mapping.filter" options=mapping.filter.filterTimes value="${mapping.filter.filterTime!}" />	
+  		
+  	</div>  	
   </div>
   <div class="body">
   	<div class="infos">
@@ -211,7 +213,7 @@ $(document).ready(function(){
 		<input id="filterParam" name="mapping.filter.param" style="width:190px;" value="${mapping.filter.param!}" />  
     </div>
     <div>
-    	<@s.text name='manage.mapping.filter' />
+    	<@s.text name='manage.mapping.filter.text' />
     </div>
   </div>
 </div>
