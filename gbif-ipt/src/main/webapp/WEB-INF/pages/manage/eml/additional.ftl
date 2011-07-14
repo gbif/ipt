@@ -3,10 +3,40 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 <#include "/WEB-INF/pages/macros/metadata.ftl"/>
 <script type="text/javascript" src="${baseURL}/js/ajaxfileupload.js"></script>
+<script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
 <title><@s.text name='manage.metadata.basic.title'/></title>
 <script type="text/javascript">
 	$(document).ready(function(){
 		initHelp();
+				
+		var value=$("#eml\\.intellectualRights").text();
+		if(value==""){
+			$("select#eml\\.intellectualRights\\.license\\.name").val('1'); 
+			$("#eml\\.intellectualRights").html('<@s.text name="eml.intellectualRights.license.cczero.text"/>');
+		}		
+		$('.confirm').jConfirmAction({question : "<@s.text name="eml.intellectualRights.licenses.confirmation"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});		
+		$("#eml\\.intellectualRights\\.license\\.name").change(function(){	
+			$("#disclaimerRigths").css('display', '');
+			var nameRights=$("#eml\\.intellectualRights\\.license\\.name").val();
+			switch(nameRights)
+	        {
+	            case '1':
+	            	$("#eml\\.intellectualRights").html('<@s.text name="eml.intellectualRights.license.cczero.text"/>');
+	            break;
+	            case '2':
+	            	$("#eml\\.intellectualRights").html('<@s.text name="eml.intellectualRights.license.pddl.text"/>');
+	            break;
+	            case '3': 
+	            	$("#eml\\.intellectualRights").html('<@s.text name="eml.intellectualRights.license.odcby.text"/>');
+	            break;
+	            case '4':
+	            	$("#eml\\.intellectualRights").html('<@s.text name="eml.intellectualRights.license.odbl.text"/>');
+	            break;
+	            default: 
+            		$("#eml\\.intellectualRights").html('');
+	            	$("#disclaimerRigths").css('display', 'none');
+	        }
+		});			 
 		
 		$("#buttonUpload").click(function() {
   			return ajaxFileUpload();
@@ -62,7 +92,7 @@
 
     }    
         
-	});
+	});	
 	
 	
 </script>	
@@ -102,10 +132,28 @@
 			</div>
 		</div>
 	</div>
-  	<div class="newline"></div>
+  	<div class="newline"></div>  	
   	<@text name="eml.purpose" i18nkey="eml.purpose" help="i18n"/>
-  	<@text name="eml.intellectualRights" i18nkey="eml.intellectualRights" help="i18n"/>
-  	<@text name="eml.additionalInfo" i18nkey="eml.additionalInfo" help="i18n"/>
+  	<div class="newline"></div>
+  	<div class="newline"></div>
+  	<div class="infos">	  
+		<img class="infoImg" src="${baseURL}/images/info.gif" />
+		<div class="info">		
+		<span class="idSuffix">
+			<@s.text name='eml.intellectualRights.license.help'/>            	
+		</span>         		
+		</div>	
+		<select id="eml.intellectualRights.license.name">
+	  	  <option value="0"><@s.text name='eml.intellectualRights.licenses'/></option>
+		  <option value="1"><@s.text name='eml.intellectualRights.license.cczero'/></option>
+		  <option value="2"><@s.text name='eml.intellectualRights.license.pddl'/></option>
+		  <option value="3"><@s.text name='eml.intellectualRights.license.odcby'/></option>
+		  <option value="4"><@s.text name='eml.intellectualRights.license.odbl'/></option>
+	  	</select>
+  	</div>  	
+  	<div id='disclaimerRigths' style='display: none'><p><@s.text name='eml.intellectualRights.license.disclaimer'/></p></div>
+  	<@text name="eml.intellectualRights"i18nkey="eml.intellectualRights" help="i18n" />  		
+	<@text name="eml.additionalInfo" i18nkey="eml.additionalInfo" help="i18n"/>  
   	<div class="newline"></div>
   	<h2><@s.text name='manage.metadata.alternateIdentifiers.title'/></h2>
   	<p><@s.text name='manage.metadata.alternateIdentifiers.intro'/></p>
@@ -127,7 +175,7 @@
   	<a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/></a>
 	
   	<div class="buttons">
- 		<@s.submit cssClass="button" name="save" key="button.save"/>
+ 		<@s.submit cssClass="button" name="save" key="button.save" cssClass="confirm" />
  		<@s.submit cssClass="button" name="cancel" key="button.cancel"/>
   	</div>
   	<!-- internal parameter -->
