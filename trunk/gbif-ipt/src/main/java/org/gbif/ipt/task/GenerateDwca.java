@@ -12,6 +12,7 @@ import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.RecordFilter;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.RecordFilter.FilterTime;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.utils.file.ClosableIterator;
 import org.gbif.utils.file.CompressionUtil;
@@ -392,16 +393,28 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
             in = in2;
             linesWithWrongColumnNumber++;
           }
-          // filter this record?
-          if (filter != null && !filter.matches(in)) {
-            logWriter.write("Line did not match the filter criteria and were skipped\tSource:"
-                + mapping.getSource().getName() + "\tLine:" + line + in.length + "\t" + inLine);
-            logWriter.write("\n");
-            recordsFiltered++;
-            continue;
-          }
 
           String[] record = new String[dataFileRowSize];
+
+          // filter this record?
+          boolean matchesFilter, alreadyTranslated = false;
+          if (filter != null) {
+            if (filter.getFilterTime() == FilterTime.AfterTranslation) {
+              int newColumn = translatingRecord(mapping, inCols, in, record);
+              matchesFilter = filter.matches(record, newColumn);
+              alreadyTranslated = true;
+            } else {
+              matchesFilter = filter.matches(in, -1);
+            }
+            if (!matchesFilter) {
+              logWriter.write("Line did not match the filter criteria and were skipped\tSource:"
+                  + mapping.getSource().getName() + "\tLine:" + line + in.length + "\t" + inLine);
+              logWriter.write("\n");
+              recordsFiltered++;
+              continue;
+            }
+          }
+
           // add id column - either an existing column or the line number
           if (mapping.getIdColumn() == null) {
             record[0] = null;
@@ -412,35 +425,10 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
           } else if (mapping.getIdColumn() >= 0) {
             record[0] = in[mapping.getIdColumn()] + idSuffix;
           }
+
           // go thru all archive fields
-          for (int i = 1; i < inCols.length; i++) {
-            PropertyMapping pm = inCols[i];
-            String val = null;
-            if (pm != null) {
-              if (pm.getIndex() != null) {
-                val = in[pm.getIndex()];
-                // translate value?
-                if (pm.getTranslation() != null && pm.getTranslation().containsKey(val)) {
-                  val = pm.getTranslation().get(val);
-                }
-                DataType type = mapping.getExtension().getProperty(pm.getTerm()).getType();
-                if (type != null) {
-                  if (type == DataType.date) {
-                    // TODO: parse date type with mapping datetime format
-                  } else if (type == DataType.bool) {
-                    // TODO: parse date type with mapping boolean format
-                  } else if (type == DataType.decimal) {
-                    // normalise punctuation
-                  }
-                }
-              }
-              // use default value for null values
-              if (val == null) {
-                val = pm.getDefaultValue();
-              }
-            }
-            // add value to data file record
-            record[i] = val;
+          if (!alreadyTranslated) {
+            translatingRecord(mapping, inCols, in, record);
           }
           String newRow = tabRow(record);
           if (newRow != null) {
@@ -511,6 +499,49 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       return null;
     }
     return StringUtils.join(columns, '\t') + "\n";
+  }
+
+  /**
+   * @param mapping
+   * @param inCols
+   * @param in
+   * @param record
+   */
+  private int translatingRecord(ExtensionMapping mapping, PropertyMapping[] inCols, String[] in, String[] record) {
+    int newColumn = -1;
+    for (int i = 1; i < inCols.length; i++) {
+      PropertyMapping pm = inCols[i];
+      String val = null;
+      if (pm != null) {
+        if (pm.getIndex() != null) {
+          val = in[pm.getIndex()];
+          if (pm.getIndex().equals(mapping.getFilter().getColumn())) {
+            newColumn = i;
+          }
+          // translate value?
+          if (pm.getTranslation() != null && pm.getTranslation().containsKey(val)) {
+            val = pm.getTranslation().get(val);
+          }
+          DataType type = mapping.getExtension().getProperty(pm.getTerm()).getType();
+          if (type != null) {
+            if (type == DataType.date) {
+              // TODO: parse date type with mapping datetime format
+            } else if (type == DataType.bool) {
+              // TODO: parse date type with mapping boolean format
+            } else if (type == DataType.decimal) {
+              // normalise punctuation
+            }
+          }
+        }
+        // use default value for null values
+        if (val == null) {
+          val = pm.getDefaultValue();
+        }
+      }
+      // add value to data file record
+      record[i] = val;
+    }
+    return newColumn;
   }
 
 }
