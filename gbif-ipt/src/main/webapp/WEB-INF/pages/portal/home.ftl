@@ -27,6 +27,7 @@
 		<th><@s.text name="portal.home.type"/></th>
 		<th><@s.text name="portal.home.records"/></th>
 		<th><@s.text name="portal.home.modified"/></th>
+		<th><@s.text name="portal.home.author"/></th>
 	</tr>
 <#list resources as r>
   <tr>
@@ -44,6 +45,7 @@
 	<td>${r.subtype!r.coreType!"---"}</td>
 	<td>${r.recordsPublished!0}</td>
 	<td>${r.modified?date}</td>
+	<td>${r.creator.firstname!} ${r.creator.lastname!}</td>
   </tr>
 </#list>
 </table>
