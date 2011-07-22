@@ -575,6 +575,10 @@ table.sortable tr.even{
 	background-color: #fff;
 }
 
+#resourcestable {	
+	width: 100%;
+}
+
 /* horizontal list */
 ul.horizontal {
 	margin:0; 

@@ -9,7 +9,7 @@
 <br/>
 
 <#if (resources?size>0)>
-<table class="sortable" width="100%">
+<table id="resourcestable" class="sortable">
 	<tr>
 		<th><@s.text name="manage.home.name"/></th>
 		<th><@s.text name="manage.home.type"/></th>

@@ -4,7 +4,7 @@
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
 
-<table>
+<table id="admintable">
 	<tr>
 	  <td>
 		<a href="${baseURL}/admin/config.do"><img src="${baseURL}/images/icons/settings.png" /></a>
