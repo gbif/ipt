@@ -31,7 +31,7 @@
 	</#if>
 </div>
 <#assign no_description><@s.text name='portal.resource.no.description'/></#assign>
-<@showMore resource.description!no_description 150 />
+<@textWithFormattedLink resource.description!no_description/>
 <div class="definition" id="metadata">	
   <div class="title">
   	<div class="head">
@@ -41,11 +41,11 @@
   <div class="body">
       	<div class="details">
       		<table>
-          		<#if resource.eml.subject?has_content><tr><th><@s.text name='portal.resource.summary.keywords'/></th><td><@showMore resource.eml.subject!no_description 90/></td></tr></#if>
+          		<#if resource.eml.subject?has_content><tr><th><@s.text name='portal.resource.summary.keywords'/></th><td><@textWithFormattedLink resource.eml.subject!no_description/></td></tr></#if>
           		<#assign text><#list eml.taxonomicCoverages as tc><#list tc.taxonKeywords as k>${k.scientificName!}<#if k_has_next>, </#if></#list><#if tc_has_next>; </#if></#list></#assign>
-          		<#if eml.taxonomicCoverages?has_content><tr><th><@s.text name='portal.resource.summary.taxcoverage'/></th><td><@showMore text!no_description 90/></td></tr></#if>
+          		<#if eml.taxonomicCoverages?has_content><tr><th><@s.text name='portal.resource.summary.taxcoverage'/></th><td><@textWithFormattedLink text!no_description/></td></tr></#if>
           		<#assign text><#list eml.geospatialCoverages as geo>${geo.description!}<#if geo_has_next>; </#if></#list></#assign>
-          		<#if eml.geospatialCoverages?has_content><tr><th><@s.text name='portal.resource.summary.geocoverage'/></th><td><@showMore text!no_description 90/></td></tr></#if>
+          		<#if eml.geospatialCoverages?has_content><tr><th><@s.text name='portal.resource.summary.geocoverage'/></th><td><@textWithFormattedLink text!no_description/></td></tr></#if>
 
       		   	<tr><th><@s.text name='eml.language'/></th><td>${eml.language!}</td></tr>
 
@@ -184,7 +184,7 @@
   <div class="body">
       	<div class="details">
       		<table>
-          		<tr><th><@s.text name='eml.geospatialCoverages.description'/></th><td><@showMore eml.geospatialCoverages[0].description!no_description 100/></td></tr>
+          		<tr><th><@s.text name='eml.geospatialCoverages.description'/></th><td><@textWithFormattedLink eml.geospatialCoverages[0].description!no_description/></td></tr>
       			<tr><th><@s.text name='eml.geospatialCoverages.boundingCoordinates'/></th><td>${eml.geospatialCoverages[0].boundingCoordinates.min.latitude}, ${eml.geospatialCoverages[0].boundingCoordinates.max.latitude} / ${eml.geospatialCoverages[0].boundingCoordinates.min.longitude}, ${eml.geospatialCoverages[0].boundingCoordinates.max.longitude} <@s.text name='eml.geospatialCoverages.boundingCoordinates.indicator'/></td></tr>
       		</table>
       	</div>
@@ -206,7 +206,7 @@
 			<div>
 			<#assign size=eml.taxonomicCoverages[item_index].taxonKeywords?size/>
 			<table>
-			<tr><th><@s.text name='eml.taxonomicCoverages.description'/></th><td><@showMore eml.taxonomicCoverages[item_index].description!no_description 80/></td></tr>
+			<tr><th><@s.text name='eml.taxonomicCoverages.description'/></th><td><@textWithFormattedLink eml.taxonomicCoverages[item_index].description!no_description/></td></tr>
       		<table>
 				<#list eml.taxonomicCoverages[item_index].taxonKeywords as subitem>
 				<tr>
@@ -277,9 +277,9 @@
           		<#if eml.project.title?has_content><tr><th><@s.text name='eml.project.title'/></th><td><@textWithFormattedLink eml.project.title!/></td></tr></#if>
           		<#if eml.project.personnel.lastName?has_content><tr><th><@s.text name='portal.resource.name'/></th><td>${eml.project.personnel.firstName!} ${eml.project.personnel.lastName!}</td></tr></#if>
 	          	<#if eml.project.personnel.role??><tr><th><@s.text name='eml.project.personnel.role'/></th><td>${eml.project.personnel.role!}</td></tr></#if>
-          		<#if eml.project.funding?has_content><tr><th><@s.text name='eml.project.funding'/></th><td><@showMore eml.project.funding 100/></td></tr></#if>
-          		<#if eml.project.studyAreaDescription.descriptorValue?has_content><tr><th><@s.text name='eml.project.studyAreaDescription.descriptorValue'/></th><td><@showMore eml.project.studyAreaDescription.descriptorValue 100/></td></tr></#if>
-          		<#if eml.project.designDescription?has_content><tr><th><@s.text name='eml.project.designDescription'/></th><td><@showMore eml.project.designDescription 100/></td></tr></#if>
+          		<#if eml.project.funding?has_content><tr><th><@s.text name='eml.project.funding'/></th><td><@textWithFormattedLink eml.project.funding/></td></tr></#if>
+          		<#if eml.project.studyAreaDescription.descriptorValue?has_content><tr><th><@s.text name='eml.project.studyAreaDescription.descriptorValue'/></th><td><@textWithFormattedLink eml.project.studyAreaDescription.descriptorValue/></td></tr></#if>
+          		<#if eml.project.designDescription?has_content><tr><th><@s.text name='eml.project.designDescription'/></th><td><@textWithFormattedLink eml.project.designDescription/></td></tr></#if>
       		</table>
       	</div>
   </div>
@@ -296,11 +296,11 @@
   <div class="body">
       	<div class="details">
       		<table>
-          		<#if eml.studyExtent?has_content><tr><th><@s.text name='eml.studyExtent'/></th><td><@showMore eml.studyExtent 100 /></td></tr></#if>
-          		<#if eml.sampleDescription?has_content><tr><th><@s.text name='eml.sampleDescription'/></th><td><@showMore eml.sampleDescription 100 /></td></tr></#if>
-          		<#if eml.qualityControl?has_content><tr><th><@s.text name='eml.qualityControl'/></th><td><@showMore eml.qualityControl 100 /></td></tr></#if>
+          		<#if eml.studyExtent?has_content><tr><th><@s.text name='eml.studyExtent'/></th><td><@textWithFormattedLink eml.studyExtent/></td></tr></#if>
+          		<#if eml.sampleDescription?has_content><tr><th><@s.text name='eml.sampleDescription'/></th><td><@textWithFormattedLink eml.sampleDescription/></td></tr></#if>
+          		<#if eml.qualityControl?has_content><tr><th><@s.text name='eml.qualityControl'/></th><td><@textWithFormattedLink eml.qualityControl/></td></tr></#if>
           		<#list eml.methodSteps as item>
-          			<tr><th><@s.text name='eml.methodSteps'/> ${item_index+1}</th><td><@showMore eml.methodSteps[item_index] 100 /></td></tr>
+          			<tr><th><@s.text name='eml.methodSteps'/> ${item_index+1}</th><td><@textWithFormattedLink eml.methodSteps[item_index]/></td></tr>
           		</#list>
       		</table>
       	</div>
@@ -320,7 +320,7 @@
       		<table>
           		<#if eml.citation.citation?has_content>
           			<#if eml.citation.identifier?has_content><tr><th><@s.text name='eml.citation.identifier'/></th><td><@textWithFormattedLink eml.citation.identifier!/></td></tr></#if>
-          			<tr><th><@s.text name='eml.citation.citation'/></th><td><@showMore eml.citation.citation 100 /></td></tr>
+          			<tr><th><@s.text name='eml.citation.citation'/></th><td><@textWithFormattedLink eml.citation.citation/></td></tr>
           		</#if>
           	</table>
           	<div class="newline"></div>
@@ -330,7 +330,7 @@
        			<tr>				
 	          	<table>
           			<tr><th><@s.text name='eml.bibliographicCitationSet.bibliographicCitations.identifier'/></th><td><@textWithFormattedLink item.identifier!/></td></tr>
-          			<tr><th><@s.text name='eml.bibliographicCitationSet.bibliographicCitations.citation'/></th><td><@showMore item.citation 100 /></td></tr>
+          			<tr><th><@s.text name='eml.bibliographicCitationSet.bibliographicCitations.citation'/></th><td><@textWithFormattedLink item.citation/></td></tr>
 	      		</table>
 	      		<div class="newline"></div>
 	      		<div class="newline"></div>
@@ -444,9 +444,9 @@
       		<table>
           		<#if eml.hierarchyLevel?has_content><tr><th><@s.text name='eml.hierarchyLevel'/></th><td>${eml.hierarchyLevel!}</td></tr></#if>
           		<#if eml.pubDate?has_content><tr><th><@s.text name='eml.pubDate'/></th><td>${eml.pubDate?date!}</td></tr></#if>
-          		<#if eml.purpose?has_content><tr><th><@s.text name='eml.purpose'/></th><td><@showMore eml.purpose 100 /></td></tr></#if>
-          		<#if eml.intellectualRights?has_content><tr><th><@s.text name='eml.intellectualRights'/></th><td><@showMore eml.intellectualRights!no_description 100/></td></tr></#if>
-          		<#if eml.additionalInfo?has_content><tr><th><@s.text name='eml.additionalInfo'/></th><td><@showMore eml.additionalInfo 100 /></td></tr></#if>
+          		<#if eml.purpose?has_content><tr><th><@s.text name='eml.purpose'/></th><td><@textWithFormattedLink eml.purpose/></td></tr></#if>
+          		<#if eml.intellectualRights?has_content><tr><th><@s.text name='eml.intellectualRights'/></th><td><@textWithFormattedLink eml.intellectualRights!no_description/></td></tr></#if>
+          		<#if eml.additionalInfo?has_content><tr><th><@s.text name='eml.additionalInfo'/></th><td><@textWithFormattedLink eml.additionalInfo/></td></tr></#if>
       		</table>
       	</div>
   </div>
