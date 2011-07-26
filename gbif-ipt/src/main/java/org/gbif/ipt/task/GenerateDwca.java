@@ -362,6 +362,17 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
       try {
         iter = sourceManager.rowIterator(mapping.getSource());
+
+        // generating headers
+        String[] headers = new String[inCols.length];
+        headers[0] = "id";
+        for (int c = 1; c < inCols.length; c++) {
+          headers[c] = inCols[c].getTerm().simpleName();
+        }
+        String headerLine = tabRow(headers);
+        dataFile.setIgnoreHeaderLines(1);
+        writer.write(headerLine);
+
         while (iter.hasNext()) {
           line++;
           if (line % 1000 == 0) {
@@ -398,7 +409,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
           // filter this record?
           boolean matchesFilter, alreadyTranslated = false;
-          if (filter != null) {
+          if (filter != null && filter.getColumn() != null && filter.getComparator() != null
+              && filter.getParam() != null) {
             if (filter.getFilterTime() == FilterTime.AfterTranslation) {
               int newColumn = translatingRecord(mapping, inCols, in, record);
               matchesFilter = filter.matches(record, newColumn);
@@ -428,7 +440,9 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
           // go thru all archive fields
           if (!alreadyTranslated) {
-            translatingRecord(mapping, inCols, in, record);
+            if (filter.getColumn() != null && filter.getComparator() != null && filter.getParam() != null) {
+              translatingRecord(mapping, inCols, in, record);
+            }
           }
           String newRow = tabRow(record);
           if (newRow != null) {
