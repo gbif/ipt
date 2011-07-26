@@ -65,7 +65,7 @@ public class SetupAction extends BaseAction {
    */
   public String findBaseURL() {
     // try to detect the baseURL if not configured yet!
-    String appBase = req.getScheme() + "://" + configManager.getHostName() + getPort() + req.getContextPath();
+    String appBase = req.getRequestURL().toString().replaceAll(req.getServletPath(), "");
     log.info("Auto-Detected IPT BaseURL=" + appBase);
     return appBase;
   }
