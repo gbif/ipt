@@ -20,6 +20,15 @@ $(document).ready(function(){
 			$('#filterParam').val("");
 		}
 	}
+	function showHideFilterName() {
+		if($("#filterName option:selected").val() == "") {
+			$("#filterComp").hide();
+			$("#filterComp").val("");
+			showHideFilter();
+		} else {
+			$("#filterComp").show();
+		}
+	}
 	function hideFields() {
 		showAll=false;
 		$("#showAllValue").val("false");
@@ -40,6 +49,7 @@ $(document).ready(function(){
 	initHelp();
 	showHideIdSuffix();
 	showHideFilter();
+	showHideFilterName();
 	var showAll=${Parameters.showAll!"true"};
 	if (!showAll){
 		hideFields();
@@ -66,6 +76,10 @@ $(document).ready(function(){
 	
 	$("#filterComp").change(function() {
 		showHideFilter();
+	});
+	
+	$("#filterName").change(function() {
+		showHideFilterName();
 	});
 	
 	//Hack needed for Internet Explorer X.*x
@@ -209,8 +223,7 @@ $(document).ready(function(){
 		  <option value="${c}" <#if c==mapping.filter.comparator!""> selected="selected"</#if>>${c}</option>
 		</#list>
 		</select>
-
-		<input id="filterParam" name="mapping.filter.param" style="width:190px;" value="${mapping.filter.param!}" />  
+		<input id="filterParam" name="mapping.filter.param" style="width:190px;" value="${mapping.filter.param!}" />
     </div>
     <div>
     	<@s.text name='manage.mapping.filter.text' />
