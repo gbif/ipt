@@ -39,19 +39,6 @@ $(document).ready(function(){
 	</#if>
 });  
 </script>
-<style>
-	img.vocabImg {
-		top: 2px !important;
-		position: relative;
-		padding: 0px 5px;
-	}
-	.highlight {
-		background-color: #effad7 !important;
-	}
-	th {
-		text-align: left;
-	}
-</style>
  <#assign currentMenu = "manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>

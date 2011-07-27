@@ -702,3 +702,98 @@ div.details td{
 #showMore, #showLess {
 	font-size: 11px;
 }
+
+/*home page*/
+.resourceminilogo{
+	max-width: 30px;
+	max-height: 30px;
+ 	width: expression(this.width > 30 ? "30px" : true);
+	height: expression(this.height > 30 ? "30px" : true);
+}
+
+#rssImage{
+	top: 2px !important;
+	position: relative;
+}
+
+/*config page*/
+#location > input{
+	width: 150px;
+	float: left;
+	margin-left: 2em;
+}
+
+#locationMap{
+	clear:both;
+	padding-top: 1em;
+	margin-left: 2em;
+	height: 95px;
+	width: 325px;
+}
+
+/*overview page*/
+img.info{
+	position: relative;
+	top: 4px;
+}
+div.definition div.titleOverview{
+	width: 30%;
+	float: left;
+    background-color: #f1f1f1;
+	padding: 5px 0 5px 5px;
+	margin-bottom: -100000px; 
+	padding-bottom: 100000px; 
+}
+div.titleOverview input[type="submit"], div.titleOverview button{
+	float: right;
+	margin-right: 5px;
+}
+div.definition div.bodyOverview{
+	width: 68%;
+	float: right;
+    font-size: 12px;
+	padding: 5px 0px;
+	margin-bottom: -2000px; 
+	padding-bottom: 2000px; 
+}
+.report{
+	background-color: #f3f3f3;
+	color: #111;
+	padding: 10px;	
+}
+.actions select, .actions input[type="file"]{
+	width: 200px;
+}
+
+/*source page*/
+div.detailsSource{
+	padding-top: 20px;
+	padding-bottom: 0px;
+}
+div.detailsSource table{
+    margin: 0;
+    padding: 0;
+}
+div.detailsSource table th, 
+div.detailsSource td{
+    color: #999;
+    font-size: 11px;
+    text-align: left;
+    padding:0px 10px 0px 0px;
+    vertical-align:text-top;
+}
+div.detailsSource table th.title, 
+div.detailsSource td{
+    color: #666;
+}
+
+/*traslation page*/
+img.vocabImg {
+	top: 2px !important;
+	position: relative;
+	padding: 0px 5px;
+}
+
+.highlight {
+	background-color: #effad7 !important;
+}

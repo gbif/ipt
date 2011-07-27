@@ -16,12 +16,7 @@ $(document).ready(function(){
 		$("#modalbox").hide();
     });
 });   
-</script>
-	<style>
-	div.details{
-		padding-top: 20px;
-	}
-	</style>
+</script>	
  <#assign currentMenu = "manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
@@ -31,13 +26,12 @@ $(document).ready(function(){
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <form class="topForm" action="source.do" method="post">
   	<input type="hidden" name="r" value="${resource.shortname}" />
-  	<input type="hidden" name="id" value="${id!}" />
-  	
+  	<input type="hidden" name="id" value="${id!}" />  	
   	<div class="halfcolumn">
 	  	<@input name="source.name" help="i18n" disabled=id?has_content/>
 	</div>
 	<div class="halfcolumn">
-		<div class="details">
+		<div class="detailsSource">
 			<table>
 			  	<tr><th><@s.text name='manage.source.readable'/></th><td><img src="${baseURL}/images/<#if source.readable>good.gif" /><#else>bad.gif" /> ${problem!}</#if></td></tr>
 			  	<tr><th><@s.text name='manage.source.columns'/></th><td>${source.columns!}</td></tr>
