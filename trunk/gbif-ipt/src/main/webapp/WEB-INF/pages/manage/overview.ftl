@@ -9,36 +9,6 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 	<title><@s.text name="manage.overview.title"/>: ${resource.title!resource.shortname}</title>
 	<script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
-	<style>
-	img.info{
-		position: relative;
-		top: 4px;
-	}
-	.actions select, .actions input[type="file"]{
-		width: 200px;
-	}
-	div.definition div.title{
-		width: 30%;
-	}
-	div.title input[type="submit"], div.title button{
-		float: right;
-		margin-right: 5px;
-	}
-	div.definition div.body{
-		width: 68%;
-	}
-	span.rightHead{
-		float:right;
-		margin-right: 10px;
-		font-style: italic;
-	}
-	.report{
-		background-color: #f3f3f3;
-		color: #111;
-		padding: 10px;
-	
-	}
-	</style>
 <script type="text/javascript">
 $(document).ready(function(){
 	var $registered = false;
@@ -92,7 +62,7 @@ $(document).ready(function(){
 </p>
 
 <div class="definition" id="metadata">	
-  <div class="title">
+  <div class="titleOverview">
   	<div class="head">
         <@s.text name='manage.overview.metadata'/>
   	</div>
@@ -112,7 +82,7 @@ $(document).ready(function(){
   	</div>
   	</#if>
   </div>
-  <div class="body">
+  <div class="bodyOverview">
       	<div>
       		<#assign no_description><@s.text name='manage.overview.no.description'/></#assign>
 			<@description resource.description!no_description 100/>
@@ -130,7 +100,7 @@ $(document).ready(function(){
 </div>
 
 <div class="definition" id="sources">	
-  <div class="title">
+  <div class="titleOverview">
   	<div class="head">
         <@s.text name='manage.overview.source.data'/>
   	</div>
@@ -147,7 +117,7 @@ $(document).ready(function(){
   	  </form>
   	</div>
   </div>
-  <div class="body">
+  <div class="bodyOverview">
       	<div>
       		<@s.text name='manage.overview.source.description1'><@s.param><@s.text name="button.add"/></@s.param></@s.text>      		
        		<div class="newline"></div>
@@ -173,7 +143,7 @@ $(document).ready(function(){
 </div>
 
 <div class="definition" id="mappings">	
-  <div class="title">
+  <div class="titleOverview">
   	<div class="head">
         <@s.text name='manage.overview.DwC.Mappings'/>
   	</div>
@@ -199,7 +169,7 @@ $(document).ready(function(){
   	  </#if>
   	</div>
   </div>
-  <div class="body">
+  <div class="bodyOverview">
       	<div>
       		<@s.text name='manage.overview.DwC.Mappings.description'/>
       	</div>
@@ -227,7 +197,7 @@ $(document).ready(function(){
 
 
 <div class="definition" id="publish">	
-  <div class="title">
+  <div class="titleOverview">
   	<div class="head">
         <@s.text name="manage.overview.published"/>
   	</div>
@@ -242,7 +212,7 @@ $(document).ready(function(){
   	  </#if>
   	</div>
   </div>
-  <div class="body">
+  <div class="bodyOverview">
       	<div>
       		<@s.text name="manage.overview.published.description"/>
       	</div>
@@ -293,7 +263,7 @@ $(document).ready(function(){
 </div>
 
 <div class="definition" id="visibility">	
-  <div class="title">
+  <div class="titleOverview">
   	<div class="head">
         <@s.text name='manage.overview.visibility'/>
         <em class="<#if resource.status=="PRIVATE">RED<#else>green</#if>"><@s.text name="resource.status.${resource.status?lower_case}"/></em>
@@ -341,7 +311,7 @@ $(document).ready(function(){
       <div class="newline"></div>
   	</div>
   </div>
-  <div class="body">
+  <div class="bodyOverview">
       	<div>
 			<@s.text name="manage.resource.status.intro.${resource.status?lower_case}"/> 
 		    <#if resource.status=="PUBLIC">
@@ -378,7 +348,7 @@ $(document).ready(function(){
 </div>
 
 <div class="definition" id="managers">	
-  <div class="title">
+  <div class="titleOverview">
   	<div class="head">
         <@s.text name="manage.overview.resource.managers"/>
   	</div>
@@ -397,7 +367,7 @@ $(document).ready(function(){
   	  </#if>
   	</div>
   </div>
-  <div class="body">
+  <div class="bodyOverview">
       	<div>
       		<@s.text name="manage.overview.resource.managers.description"><@s.param>${resource.shortname}</@s.param></@s.text>
 		</div>
