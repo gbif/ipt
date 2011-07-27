@@ -14,15 +14,7 @@
 </#macro>
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <#include "/WEB-INF/pages/inc/header.ftl">
-	<title>${resource.title!resource.shortname!}</title>
-	<style>
-	div.definition div.title{
-		width: 20%;
-	}
-	div.definition div.body{
-		width: 78%;
-	}
-	</style>
+	<title>${resource.title!resource.shortname!}</title>	
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <h1>${resource.title!resource.shortname}</h1>
 <div id="resourcelogo">
