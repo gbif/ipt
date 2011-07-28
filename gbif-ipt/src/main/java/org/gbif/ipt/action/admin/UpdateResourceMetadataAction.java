@@ -55,16 +55,12 @@ public class UpdateResourceMetadataAction extends POSTAction {
     }
 
     log.info("Updating ipt instance");
-    for (Resource res : publishedResources) {
-      if (res.isRegistered()) {
-        try {
-          registryManager.updateIpt(registrationManager.getIpt());
-          resUpdateStatus.put(registrationManager.getIpt().getName() + registry, success);
-        } catch (RegistryException e) {
-          log.warn("Registry exception updating ipt instance", e);
-          resUpdateStatus.put(registrationManager.getIpt().getName() + registry, e.getMessage());
-        }
-      }
+    try {
+      registryManager.updateIpt(registrationManager.getIpt());
+      resUpdateStatus.put(registrationManager.getIpt().getName() + registry, success);
+    } catch (RegistryException e) {
+      log.warn("Registry exception updating ipt instance", e);
+      resUpdateStatus.put(registrationManager.getIpt().getName() + registry, e.getMessage());
     }
 
     log.info("Updating resource metadata - eml.xml");
@@ -97,6 +93,8 @@ public class UpdateResourceMetadataAction extends POSTAction {
         resUpdateStatus.put(res.getShortname() + dwca, success);
       } catch (RegistryException e) {
         resUpdateStatus.put(res.getShortname() + dwca, e.getMessage());
+      } catch (PublicationException e2) {
+        System.out.println("Capturara excepcción");
       }
     }
 
