@@ -53,14 +53,18 @@ public class UpdateResourceMetadataAction extends POSTAction {
       log.debug("Got [" + publishedResources.size() + "] published resources of [" + allResources.size()
           + "] total resources");
     }
-    
+
     log.info("Updating ipt instance");
-    try {
-    	registryManager.updateIpt(registrationManager.getIpt());
-    	resUpdateStatus.put(registrationManager.getIpt().getName() + registry, success);
-    } catch(RegistryException e) {
-    	log.warn("Registry exception updating ipt instance", e);
-    	resUpdateStatus.put(registrationManager.getIpt().getName() + registry, e.getMessage());
+    for (Resource res : publishedResources) {
+      if (res.isRegistered()) {
+        try {
+          registryManager.updateIpt(registrationManager.getIpt());
+          resUpdateStatus.put(registrationManager.getIpt().getName() + registry, success);
+        } catch (RegistryException e) {
+          log.warn("Registry exception updating ipt instance", e);
+          resUpdateStatus.put(registrationManager.getIpt().getName() + registry, e.getMessage());
+        }
+      }
     }
 
     log.info("Updating resource metadata - eml.xml");
@@ -121,7 +125,9 @@ public class UpdateResourceMetadataAction extends POSTAction {
       int dwcaVal = (dwcaMsg.equals(success) ? 1 : 0);
 
       int state = emlVal + registryVal + dwcaVal;
-      if (log.isDebugEnabled()) log.debug("Logging feedback for state [" + state + "]");
+      if (log.isDebugEnabled()) {
+        log.debug("Logging feedback for state [" + state + "]");
+      }
 
       String logMsg = null;
       switch (state) {
@@ -168,7 +174,9 @@ public class UpdateResourceMetadataAction extends POSTAction {
       }
 
       logMsg = "Resource " + res.getShortname() + " : " + logMsg;
-      if (log.isDebugEnabled()) log.debug("User feedback: " + logMsg);
+      if (log.isDebugEnabled()) {
+        log.debug("User feedback: " + logMsg);
+      }
 
       if (state == 111 | state == 121) {
         successCounter++;
