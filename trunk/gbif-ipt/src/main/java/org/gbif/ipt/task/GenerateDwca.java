@@ -6,6 +6,7 @@ import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveFile;
 import org.gbif.dwc.text.ArchiveWriter;
 import org.gbif.dwc.text.ArchiveField.DataType;
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
@@ -122,9 +123,12 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
           }
         } else {
           // check if we have a dynamic mapping
-          if (pm.getIndex() != null) {
-            af.addField(buildField(pm.getTerm(), dataFileRowSize, pm.getDefaultValue()));
-            dataFileRowSize++;
+          if (pm.getIndex() != null && pm.getIndex() >= 0) {
+            if (!pm.getTerm().qualifiedName().equalsIgnoreCase(Constants.DWC_OCCURRENCE_ID)
+                && !pm.getTerm().qualifiedName().equalsIgnoreCase(Constants.DWC_TAXON_ID)) {
+              af.addField(buildField(pm.getTerm(), dataFileRowSize, pm.getDefaultValue()));
+              dataFileRowSize++;
+            }
           } else {
             af.addField(buildField(pm.getTerm(), null, pm.getDefaultValue()));
           }
@@ -342,12 +346,6 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       }
     }
 
-    // DEBUG
-    // System.out.println("IN COLS");
-    // for (PropertyMapping pm : inCols) {
-    // System.out.println(pm);
-    // }
-
     // get the source iterator
     ClosableIterator<String[]> iter = null;
     int line = 0;
@@ -440,9 +438,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
           // go thru all archive fields
           if (!alreadyTranslated) {
-            if (filter.getColumn() != null && filter.getComparator() != null && filter.getParam() != null) {
-              translatingRecord(mapping, inCols, in, record);
-            }
+            translatingRecord(mapping, inCols, in, record);
           }
           String newRow = tabRow(record);
           if (newRow != null) {
@@ -529,7 +525,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       if (pm != null) {
         if (pm.getIndex() != null) {
           val = in[pm.getIndex()];
-          if (pm.getIndex().equals(mapping.getFilter().getColumn())) {
+          if (mapping.getFilter() != null && pm.getIndex().equals(mapping.getFilter().getColumn())) {
             newColumn = i;
           }
           // translate value?
