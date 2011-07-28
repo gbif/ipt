@@ -93,8 +93,6 @@ public class UpdateResourceMetadataAction extends POSTAction {
         resUpdateStatus.put(res.getShortname() + dwca, success);
       } catch (RegistryException e) {
         resUpdateStatus.put(res.getShortname() + dwca, e.getMessage());
-      } catch (PublicationException e2) {
-        System.out.println("Capturara excepcción");
       }
     }
 
