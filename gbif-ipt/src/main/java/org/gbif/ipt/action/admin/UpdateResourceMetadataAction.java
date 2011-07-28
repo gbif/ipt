@@ -12,6 +12,7 @@ import org.gbif.ipt.service.registry.RegistryManager;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,7 @@ public class UpdateResourceMetadataAction extends POSTAction {
   private final String registry = "REGISTRY";
   private final String dwca = "DWCA";
   private final String success = "SUCCESS";
+  private final String rtf = "RTF";
 
   @Override
   public String execute() throws Exception {
@@ -49,6 +51,7 @@ public class UpdateResourceMetadataAction extends POSTAction {
         publishedResources.add(res);
       }
     }
+    Collections.sort(publishedResources);
     if (log.isDebugEnabled()) {
       log.debug("Got [" + publishedResources.size() + "] published resources of [" + allResources.size()
           + "] total resources");
@@ -56,8 +59,10 @@ public class UpdateResourceMetadataAction extends POSTAction {
 
     log.info("Updating ipt instance");
     try {
-      registryManager.updateIpt(registrationManager.getIpt());
-      resUpdateStatus.put(registrationManager.getIpt().getName() + registry, success);
+      if ((registrationManager.getIpt()) != null) {
+        registryManager.updateIpt(registrationManager.getIpt());
+        resUpdateStatus.put(registrationManager.getIpt().getName() + registry, success);
+      }
     } catch (RegistryException e) {
       log.warn("Registry exception updating ipt instance", e);
       resUpdateStatus.put(registrationManager.getIpt().getName() + registry, e.getMessage());
@@ -67,6 +72,7 @@ public class UpdateResourceMetadataAction extends POSTAction {
     for (Resource res : publishedResources) {
       try {
         resourceManager.publishMetadata(res, this);
+        resUpdateStatus.put(res.getShortname() + rtf, success);
         resUpdateStatus.put(res.getShortname() + eml, success);
       } catch (PublicationException e) {
         resUpdateStatus.put(res.getShortname() + eml, e.getMessage());
@@ -91,6 +97,8 @@ public class UpdateResourceMetadataAction extends POSTAction {
       try {
         resourceManager.updateDwcaEml(res, this);
         resUpdateStatus.put(res.getShortname() + dwca, success);
+      } catch (PublicationException e) {
+        resUpdateStatus.put(res.getShortname() + dwca, e.getMessage());
       } catch (RegistryException e) {
         resUpdateStatus.put(res.getShortname() + dwca, e.getMessage());
       }
@@ -109,6 +117,7 @@ public class UpdateResourceMetadataAction extends POSTAction {
       String emlMsg = resUpdateStatus.get(res.getShortname() + eml);
       String registryMsg = "";
       String dwcaMsg = resUpdateStatus.get(res.getShortname() + dwca);
+      String rtfMsg = resUpdateStatus.get(res.getShortname() + rtf);
 
       // 0 is fail, 1 is success, 2 is only for reg, means not registered
       // emlVal can be 0 or 100, reg 0, 10, or 20, dwca 0 or 1 - their sum gives unique state
@@ -120,52 +129,98 @@ public class UpdateResourceMetadataAction extends POSTAction {
       }
       int dwcaVal = (dwcaMsg.equals(success) ? 1 : 0);
 
-      int state = emlVal + registryVal + dwcaVal;
+      int rtfVal = 1000 * (rtfMsg.equals(success) ? 1 : 0);
+
+      int state = emlVal + rtfVal + dwcaVal + registryVal;
       if (log.isDebugEnabled()) {
         log.debug("Logging feedback for state [" + state + "]");
       }
 
       String logMsg = null;
       switch (state) {
-        case 000:
-          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.all", emlMsg, registryMsg,
-              dwcaMsg);
+        case 0000:
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.all", emlMsg, rtfMsg, dwcaMsg,
+              registryMsg);
           break;
-        case 001:
+        case 0001:
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.eml_rtf_and_registry", emlMsg,
+              rtfMsg, registryMsg);
+          break;
+        case 0010:
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.eml_rtf_and_dwca", emlMsg,
+              rtfMsg, dwcaMsg);
+          break;
+        case 0011:
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.eml_and_rtf", emlMsg, rtfMsg);
+          break;
+        case 0020:
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.eml_rtf_and_dwca.notRegistered",
+              emlMsg, rtfMsg, dwcaMsg);
+          break;
+        case 0021:
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.eml_and_rtf.notRegistered",
+              emlMsg, rtfMsg);
+          break;
+        case 0100:
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.rtf_dwca_and_registry", rtfMsg,
+              dwcaMsg, registryMsg);
+          break;
+        case 0101:
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.rtf_and_registry", rtfMsg,
+              registryMsg);
+          break;
+        case 0110:
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.rtf_and_dwca", rtfMsg, dwcaMsg);
+          break;
+        case 0111:
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.rtf", rtfMsg);
+          break;
+        case 1111:
+          logMsg = getText("admin.config.updateMetadata.resource.success");
+          break;
+        case 0120:
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.rtf_and_dwca.notRegistered",
+              rtfMsg, dwcaMsg);
+          break;
+        case 0121:
+          logMsg = getText("admin.config.updateMetadata.resource.failed.rtf.notRegistered", rtfMsg);
+          break;
+        case 1121:
+          logMsg = getText("admin.config.updateMetadata.resource.success.notRegistered");
+          break;
+        case 1000:
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.eml_dwca_and_registry", emlMsg,
+              dwcaMsg, registryMsg);
+          break;
+        case 1001:
           logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.eml_and_registry", emlMsg,
               registryMsg);
           break;
-        case 010:
+        case 1010:
           logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.eml_and_dwca", emlMsg, dwcaMsg);
           break;
-        case 011:
+        case 1011:
           logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.eml", emlMsg);
           break;
-        case 020:
+        case 1020:
           logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.eml_and_dwca.notRegistered",
               emlMsg, dwcaMsg);
           break;
-        case 021:
-          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.eml.notRegistered", emlMsg);
-          break;
-        case 100:
-          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.registry_and_dwca", registryMsg,
-              dwcaMsg);
-          break;
-        case 101:
-          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.registry", registryMsg);
-          break;
-        case 110:
-          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.dwca", dwcaMsg);
-          break;
-        case 111:
-          logMsg = getText("admin.config.updateMetadata.resource.success");
-          break;
-        case 120:
+        case 1120:
           logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.dwca.notRegistered", dwcaMsg);
           break;
-        case 121:
-          logMsg = getText("admin.config.updateMetadata.resource.success.notRegistered");
+        case 1021:
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.eml.notRegistered", emlMsg);
+          break;
+        case 1100:
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.dwca_and_registry", dwcaMsg,
+              registryMsg);
+          break;
+        case 1101:
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.registry", registryMsg);
+          break;
+        case 1110:
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.dwca", dwcaMsg);
           break;
       }
 
@@ -174,7 +229,7 @@ public class UpdateResourceMetadataAction extends POSTAction {
         log.debug("User feedback: " + logMsg);
       }
 
-      if (state == 111 | state == 121) {
+      if (state == 1111 | state == 1121) {
         successCounter++;
         this.addActionMessage(logMsg);
       } else {
