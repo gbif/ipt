@@ -139,7 +139,7 @@ public class UpdateResourceMetadataAction extends POSTAction {
       String logMsg = null;
       switch (state) {
         case 0000:
-          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.all", emlMsg, rtfMsg, dwcaMsg,
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.all", emlMsg, rtfMsg,
               registryMsg);
           break;
         case 0001:
@@ -163,14 +163,14 @@ public class UpdateResourceMetadataAction extends POSTAction {
           break;
         case 0100:
           logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.rtf_dwca_and_registry", rtfMsg,
-              dwcaMsg, registryMsg);
+              registryMsg);
           break;
         case 0101:
           logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.rtf_and_registry", rtfMsg,
               registryMsg);
           break;
         case 0110:
-          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.rtf_and_dwca", rtfMsg, dwcaMsg);
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.rtf_and_dwca", rtfMsg);
           break;
         case 0111:
           logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.rtf", rtfMsg);
@@ -197,30 +197,29 @@ public class UpdateResourceMetadataAction extends POSTAction {
               registryMsg);
           break;
         case 1010:
-          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.eml_and_dwca", emlMsg, dwcaMsg);
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.eml_and_dwca", emlMsg);
           break;
         case 1011:
           logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.eml", emlMsg);
           break;
         case 1020:
           logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.eml_and_dwca.notRegistered",
-              emlMsg, dwcaMsg);
+              emlMsg);
           break;
         case 1120:
-          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.dwca.notRegistered", dwcaMsg);
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.dwca.notRegistered");
           break;
         case 1021:
           logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.eml.notRegistered", emlMsg);
           break;
         case 1100:
-          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.dwca_and_registry", dwcaMsg,
-              registryMsg);
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.dwca_and_registry", registryMsg);
           break;
         case 1101:
           logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.registry", registryMsg);
           break;
         case 1110:
-          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.dwca", dwcaMsg);
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.failed.dwca");
           break;
       }
 
@@ -229,7 +228,7 @@ public class UpdateResourceMetadataAction extends POSTAction {
         log.debug("User feedback: " + logMsg);
       }
 
-      if (state == 1111 | state == 1121) {
+      if (state == 1111 | state == 1121 | state == 1110 | state == 1120) {
         successCounter++;
         this.addActionMessage(logMsg);
       } else {
@@ -241,9 +240,10 @@ public class UpdateResourceMetadataAction extends POSTAction {
     if (publishedResources.isEmpty()) {
       this.addActionWarning(getText("admin.config.updateMetadata.nonePublished"));
     } else {
-      this.addActionMessage(getTextWithDynamicArgs("admin.config.updateMetadata.summary",
-          String.valueOf(successCounter), String.valueOf(publishedResources.size())));
+      if (successCounter > 0) {
+        this.addActionMessage(getTextWithDynamicArgs("admin.config.updateMetadata.summary",
+            String.valueOf(successCounter), String.valueOf(publishedResources.size())));
+      }
     }
-
   }
 }
