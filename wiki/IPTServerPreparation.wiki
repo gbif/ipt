@@ -5,26 +5,9 @@ This section contains information about IPT installations that may vary between 
 *Topics*
 <wiki:toc max_depth="2" />
 
-==Jetty==
-
-The IPT comes equipped with a Jetty web server and servlet container. The IPT can be launched using Jetty if you have Java 5 (minimum), Maven, and Subversion installed (Mac OSX comes with all of these installed by default). First, change the working directory to the location where you would like to put the IPT source code. Then issue the following commands:
-
-`$ svn checkout http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt`<br>
-`$ cd gbif-ipt`<br>
-`$ mvn`<br>
-
-The last "mvn" command should start the IPT with a local jetty instance on port 7001. You can then invoke the IPT in a web browser using the following URL :
-
-http://localhost:7001/ipt
-
-The first time the mvn command is run it will download many libraries and may take a long time, depending on the Internet data transfer rate. After this has been done once it will be it will be fairly fast thereafter, even if you update to the latest trunk again, which can be done by issuing the following commands from the root directory of the IPT source code:
-
-`$ cd gbif-ipt`<br>
-`$ svn up`<br>
- 
 ==Tomcat==
 
-The IPT is known to work with Tomcat 5.5 or later. The Apache Tomcat Documentation can be found on http://tomcat.apache.org/. Also, minimal instructions for Tomcat installations on various operating systems can be found in associated Server Preparation pages.
+The IPT has been tested and works well with Tomcat 5.5 and Tomcat 6.0. Tomcat 7.0 currently does not work. The Apache Tomcat Documentation can be found on http://tomcat.apache.org/. Also, minimal instructions for Tomcat installations on various operating systems can be found in associated Server Preparation pages.
 
 Download the ipt.war file of the latest release of the IPT from http://code.google.com/p/gbif-providertoolkit/downloads/list. Copy the ipt.war file to the Tomcat webapps folder and then start Tomcat, or restart Tomcat if it is already running. You can then invoke the IPT in a web browser running on the same server by using the following URL:
 
@@ -44,3 +27,25 @@ If you wish to use Apache to proxy requests to Tomcat (because, for instance, yo
 	`ProxyPassReverseCookiePath /ipt /`<br/>
 
 And, make sure that the proxy and proxy_http modules have been loaded into Apache.
+
+==Jetty==
+
+The IPT comes equipped with a Jetty web server and servlet container. The IPT can be launched using Jetty if you have Java 5 (minimum), Maven, and Subversion installed (Mac OSX comes with all of these installed by default). 
+
+Please note, launching the IPT using Jetty launches it in testing mode, meaning that the checkbox "Production use" will be grayed out on Setup page II and registrations will be against the test registry "http://gbrdsdev.gbif.org" and not the live registry "http://gbrds.gbif.org".
+
+First, change the working directory to the location where you would like to put the IPT source code. Then issue the following commands:
+
+`$ svn checkout http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt`<br>
+`$ cd gbif-ipt`<br>
+`$ mvn`<br>
+
+The last "mvn" command should start the IPT with a local jetty instance on port 7001. You can then invoke the IPT in a web browser using the following URL :
+
+http://localhost:7001/ipt
+
+The first time the mvn command is run it will download many libraries and may take a long time, depending on the Internet data transfer rate. After this has been done once it will be it will be fairly fast thereafter, even if you update to the latest trunk again, which can be done by issuing the following commands from the root directory of the IPT source code:
+
+`$ cd gbif-ipt`<br>
+`$ svn up`<br>
+ 
