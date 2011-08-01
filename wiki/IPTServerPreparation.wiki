@@ -32,15 +32,21 @@ And, make sure that the proxy and proxy_http modules have been loaded into Apach
 
 The IPT comes equipped with a Jetty web server and servlet container. The IPT can be launched using Jetty if you have Java 5 (minimum), Maven, and Subversion installed (Mac OSX comes with all of these installed by default). 
 
-Please note, launching the IPT using Jetty launches it in testing mode, meaning that the checkbox "Production use" will be grayed out on Setup page II and registrations will be against the test registry "http://gbrdsdev.gbif.org" and not the live registry "http://gbrds.gbif.org".
-
 First, change the working directory to the location where you would like to put the IPT source code. Then issue the following commands:
 
 `$ svn checkout http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt`<br>
 `$ cd gbif-ipt`<br>
 `$ mvn`<br>
 
-The last "mvn" command should start the IPT with a local jetty instance on port 7001. You can then invoke the IPT in a web browser using the following URL :
+The last "mvn" command should start the IPT with a local jetty instance on port 7001. Please note, this launches the IPT in testing mode, meaning that the checkbox "Production use" will be grayed out on Setup page II and registrations will be against the test registry "http://gbrdsdev.gbif.org" and not the live registry "http://gbrds.gbif.org".
+
+To run in production mode, in place of the last "mvn" command use:
+
+`$ mvn -P release`<br>
+
+This makes the checkbox "Production use" on Setup page II appear. It must be checked obviously to run in production. What this means is that registrations will be against the live registry "http://gbrds.gbif.org" and not the test registry "http://gbrdsdev.gbif.org",
+
+Either way, you can then invoke the IPT in a web browser using the following URL :
 
 http://localhost:7001/ipt
 
