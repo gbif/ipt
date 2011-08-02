@@ -30,9 +30,11 @@ import com.google.inject.Inject;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author markus
@@ -47,6 +49,7 @@ public class MetadataAction extends ManagerBaseAction {
   private Map<String, String> countries;
   private Map<String, String> ranks;
   private Map<String, String> roles;
+  private Map<String, String> licenses;
   private Map<String, String> preservationMethods;
 
   private static final List<String> sections = Arrays.asList("basic", "geocoverage", "taxcoverage", "tempcoverage",
@@ -84,6 +87,29 @@ public class MetadataAction extends ManagerBaseAction {
 
   public Map<String, String> getLanguages() {
     return languages;
+  }
+
+  /*
+   * Return the text of the license through the value of the map
+   */
+  public String getLicenseName() {
+    String licenseText = resource.getEml().getIntellectualRights();
+    if (licenseText != null) {
+      Set<String> keys = licenses.keySet();
+      Iterator<String> it = keys.iterator();
+      licenseText = licenseText.trim().toLowerCase();
+      while (it.hasNext()) {
+        String licenseName = it.next();
+        if (licenses.get(licenseName).trim().toLowerCase().equals(licenseText)) {
+          return licenseName;
+        }
+      }
+    }
+    return null;
+  }
+
+  public Map<String, String> getLicenses() {
+    return licenses;
   }
 
   public String getMetadataLanguageIso3() {
@@ -148,6 +174,14 @@ public class MetadataAction extends ManagerBaseAction {
     } else {
       next = sections.get(0);
     }
+    // Temporary licenses initialization
+    licenses = new LinkedHashMap<String, String>();
+    licenses.put(getText("eml.intellectualRights.nolicenses"), "");
+    licenses.put(getText("eml.intellectualRights.license.cczero"),
+        getText("eml.intellectualRights.license.cczero.text"));
+    licenses.put(getText("eml.intellectualRights.license.pddl"), getText("eml.intellectualRights.license.pddl.text"));
+    licenses.put(getText("eml.intellectualRights.license.odcby"), getText("eml.intellectualRights.license.odcby.text"));
+    licenses.put(getText("eml.intellectualRights.license.odbl"), getText("eml.intellectualRights.license.odbl.text"));
     resourceTypes = vocabManager.getI18nVocab(Constants.VOCAB_URI_RESOURCE_TYPE, getLocaleLanguage(), true);
     languages = vocabManager.getI18nVocab(Constants.VOCAB_URI_LANGUAGE, getLocaleLanguage(), true);
     countries = new LinkedHashMap<String, String>();
@@ -227,6 +261,10 @@ public class MetadataAction extends ManagerBaseAction {
     }
     addActionMessage(getText("manage.success", new String[]{getText("submenu." + section)}));
     return SUCCESS;
+  }
+
+  public void setLicenses(Map<String, String> licenses) {
+    this.licenses = licenses;
   }
 
   @Override
