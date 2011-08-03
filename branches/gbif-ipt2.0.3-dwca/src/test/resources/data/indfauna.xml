@@ -1,0 +1,115 @@
+<eml:eml xmlns:eml="eml://ecoinformatics.org/eml-2.1.1" 
+    xmlns:md="eml://ecoinformatics.org/methods-2.1.1" 
+    xmlns:proj="eml://ecoinformatics.org/project-2.1.1" 
+    xmlns:d="eml://ecoinformatics.org/dataset-2.1.1" 
+    xmlns:res="eml://ecoinformatics.org/resource-2.1.1" 
+    xmlns:dc="http://purl.org/dc/terms/" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="eml://ecoinformatics.org/eml-2.1.1 http://rs.gbif.org/schema/eml-gbif-profile/1.0/eml.xsd"
+    packageId="http://localhost:7001/ipt/resource.do?id=indfauna/v0" system="http://gbif.org" scope="system" xml:lang="eng">
+
+    <dataset>
+      <title xml:lang="eng">IndFauna, electronic catalogue of known Indian fauna</title>
+      <creator>
+    <individualName>
+      <givenName>Jitendra</givenName>
+      <surName>Gaikwad</surName>
+    </individualName>
+    <organizationName>National Chemical Laboratory</organizationName>
+    <address>
+      <city>Pune</city>
+      <postalCode>411007</postalCode>
+      <country>IN</country>
+    </address>
+      </creator>
+      <metadataProvider>
+    <individualName>
+      <givenName>Rebecca</givenName>
+      <surName>James</surName>
+    </individualName>
+    <organizationName>Bulgarian Academy of Sciences</organizationName>
+    <address>
+      <city>Sofia</city>
+      <postalCode>2300</postalCode>
+      <country>BG</country>
+    </address>
+      </metadataProvider>
+      <associatedParty>
+    <individualName>
+      <givenName>Monica</givenName>
+      <surName>Peterson</surName>
+    </individualName>
+    <organizationName>National Natural History Museum</organizationName>
+    <address>
+      <deliveryPoint>1722, , The Netherlands</deliveryPoint>
+      <city>Leiden</city>
+      <postalCode>1722</postalCode>
+      <country>NL</country>
+    </address>
+    <role>metadataProvider</role>
+      </associatedParty>
+      <associatedParty>
+    <individualName>
+      <givenName>David</givenName>
+      <surName>Robertson</surName>
+    </individualName>
+    <address>
+      <deliveryPoint>1988 ½  South Shenandoah Street</deliveryPoint>
+      <city>Los Angeles</city>
+      <postalCode>3041</postalCode>
+      <country>US</country>
+    </address>
+    <role></role>
+      </associatedParty>
+      <associatedParty>
+    <individualName>
+      <givenName>Tom</givenName>
+      <surName>Griswold</surName>
+    </individualName>
+    <organizationName>California Academy of Sciences</organizationName>
+    <address>
+      <city>San Francisco</city>
+      <postalCode>1111</postalCode>
+      <country>US</country>
+    </address>
+    <role></role>
+      </associatedParty>
+      <associatedParty>
+    <individualName>
+      <givenName>S.</givenName>
+      <surName>Krishnan</surName>
+    </individualName>
+    <organizationName>National Chemical Laboratory</organizationName>
+    <address>
+      <city>Pune</city>
+      <postalCode>411007</postalCode>
+      <country>IN</country>
+    </address>
+    <role></role>
+      </associatedParty>
+	  <pubDate>
+      	2011-03-07
+      </pubDate>
+      <language>eng</language>
+      <abstract>
+        <para>This article describes the development and features of IndFauna, electronic catalogue of known Indian fauna. Accessible at http://www.ncbi.org.in, this catalogue raises several issues concerned with taxonomy or systematics and information technology in biodiversity information management. Baseline information on more than 93% of the 90,000 known faunal species in India has been documented in IndFauna, which demonstrates a model of collaboration between domain experts and IT managers. It is our belief that such ECATs would be effective in overcoming taxonomic impediments as well as better sustainable use and conservation of our biotic resources.</para>
+      </abstract>
+      <contact>
+    <individualName>
+      <surName>xxxxxxxxxx</surName>
+    </individualName>
+    <positionName>xxxxxxxxxxxx</positionName>
+    <address>
+      <country>IN</country>
+    </address>
+      </contact>
+    </dataset>
+    <additionalMetadata>
+     <metadata>
+      <gbif>
+        <dateStamp>2011-03-07T02:23:50.058-05:00</dateStamp>
+        <hierarchyLevel>dataset</hierarchyLevel>
+      </gbif>
+     </metadata>
+    </additionalMetadata>
+</eml:eml>

@@ -1,0 +1,293 @@
+<eml:eml xmlns:eml="eml://ecoinformatics.org/eml-2.1.1" 
+    xmlns:md="eml://ecoinformatics.org/methods-2.1.1" 
+    xmlns:proj="eml://ecoinformatics.org/project-2.1.1" 
+    xmlns:d="eml://ecoinformatics.org/dataset-2.1.1" 
+    xmlns:res="eml://ecoinformatics.org/resource-2.1.1" 
+    xmlns:dc="http://purl.org/dc/terms/" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="eml://ecoinformatics.org/eml-2.1.1 http://rs.gbif.org/schema/eml-gbif-profile/1.0/eml.xsd"
+    packageId="http://localhost:7001/ipt/resource.do?id=gbif-example/v0" system="http://gbif.org" scope="system" xml:lang="eng">
+
+    <dataset>
+      <alternateIdentifier>619a4b95-1a82-4006-be6a-7dbe3c9b33c5</alternateIdentifier>    
+      <alternateIdentifier>doi:10.1093/ageing/29.1.57</alternateIdentifier>    
+      <alternateIdentifier>http://ageing.oxfordjournals.org/content/29/1/57</alternateIdentifier>    
+      <title xml:lang="eng">Tanzanian Entomological Collection</title>
+      <creator>
+    <individualName>
+      <givenName>David</givenName>
+      <surName>Remsen</surName>
+    </individualName>
+    <organizationName>GBIF</organizationName>
+    <positionName>ECAT Programme Officer</positionName>
+    <address>
+      <deliveryPoint>Universitestparken 15</deliveryPoint>
+      <city>Copenhagen</city>
+      <administrativeArea>Sjaelland</administrativeArea>
+      <postalCode>2100</postalCode>
+      <country>DK</country>
+    </address>
+    <phone>+4528261487</phone>
+    <electronicMailAddress>dremsen@gbif.org</electronicMailAddress>
+    <onlineUrl>http://www.gbif.org</onlineUrl>
+      </creator>
+      <metadataProvider>
+    <individualName>
+      <givenName>Tim</givenName>
+      <surName>Robertson</surName>
+    </individualName>
+    <address>
+      <deliveryPoint>Universitestparken 15</deliveryPoint>
+      <city>Copenhagen</city>
+      <administrativeArea>Copenhagen</administrativeArea>
+      <postalCode>2100</postalCode>
+      <country>DK</country>
+    </address>
+    <phone>+4528261487</phone>
+    <electronicMailAddress>trobertson@gbif.org</electronicMailAddress>
+    <onlineUrl>http://www.gbif.org</onlineUrl>
+      </metadataProvider>
+      <associatedParty>
+    <individualName>
+      <surName>Doering</surName>
+    </individualName>
+    <phone>4535321487</phone>
+    <role>author</role>
+      </associatedParty>
+      <associatedParty>
+    <individualName>
+      <surName>Hahn</surName>
+    </individualName>
+    <phone>4535321478</phone>
+    <role>pointOfContact</role>
+      </associatedParty>
+	  <pubDate>
+      	2010-02-02
+      </pubDate>
+      <language>eng</language>
+      <abstract>
+        <para>Specimens in jars</para>
+      </abstract>
+      <keywordSet>
+        <keyword>Insect</keyword>
+        <keyword>Fly</keyword>
+        <keyword>Bee</keyword>
+        <keywordThesaurus>Zoology Vocabulary Version 1</keywordThesaurus>
+      </keywordSet>
+      <keywordSet>
+        <keyword>Spider</keyword>
+        <keywordThesaurus>Zoology Vocabulary Version 1</keywordThesaurus>
+      </keywordSet>
+      <additionalInfo>
+        <para>Where can the additional information possibly come from?!</para>
+      </additionalInfo>
+      <intellectualRights>
+        <para>Owner grants XXX a worldwide, non-exclusive right to: (i) use, reproduce, perform,
+                display, archive, transmit and distribute the Content (including any trademarks,
+                tradenames and logos in the Content) in electronic form in connection with the Site,
+                (ii) allow users of the Site to use, search, copy, download and transmit the
+                Content, and (iii) modify and reformat the Content, but solely to the extent
+                necessary and for the purposes of: (a) conforming to the format and &quot;look and feel&quot;
+                of the Site, and (b) creating snippets, headlines or teasers consisting of selected
+                lines or sections from the Content to be displayed on the Site (or displayed on
+                other websites owned by XXX for the purposes of directing traffic to the Site).</para>
+      </intellectualRights>
+      <distribution scope="document">
+        <online>
+          <url function="information">http://www.any.org/fauna/coleoptera/beetleList.html</url>
+        </online>
+      </distribution>
+      <coverage>        
+        <geographicCoverage>
+          <geographicDescription>India lies to the north of the equator. India&apos;s coast is 7,517 kilometres (4,700 mi) long; of this distance, 5,423 kilometres (3,400 mi) belong to peninsular India, and 2,094 kilometres (1,300 mi) to the Andaman, Nicobar, and Lakshadweep Islands</geographicDescription>
+          <boundingCoordinates>
+            <westBoundingCoordinate>69.18</westBoundingCoordinate>
+            <eastBoundingCoordinate>86.76</eastBoundingCoordinate>
+            <northBoundingCoordinate>26.35</northBoundingCoordinate>
+            <southBoundingCoordinate>9.71</southBoundingCoordinate>
+          </boundingCoordinates>
+        </geographicCoverage>
+        <geographicCoverage>
+          <geographicDescription>Bounding Box 2</geographicDescription>
+          <boundingCoordinates>
+            <westBoundingCoordinate>-10.703</westBoundingCoordinate>
+            <eastBoundingCoordinate>11.564</eastBoundingCoordinate>
+            <northBoundingCoordinate>43.975</northBoundingCoordinate>
+            <southBoundingCoordinate>-32.745</southBoundingCoordinate>
+          </boundingCoordinates>
+        </geographicCoverage>
+        <temporalCoverage>
+          <rangeOfDates>
+            <beginDate><calendarDate>2009-12-01</calendarDate></beginDate>
+            <endDate><calendarDate>2009-12-30</calendarDate></endDate>
+          </rangeOfDates>
+        </temporalCoverage>
+        <temporalCoverage>
+          <rangeOfDates>
+            <beginDate><calendarDate>2008-06-01</calendarDate></beginDate>
+            <endDate><calendarDate>2008-06-01</calendarDate></endDate>
+          </rangeOfDates>
+        </temporalCoverage>
+        <taxonomicCoverage>
+         	<generalTaxonomicCoverage>This is a general taxon coverage with only the scientific name</generalTaxonomicCoverage>
+         <taxonomicClassification>
+           	<taxonRankValue>Mammalia</taxonRankValue>
+         </taxonomicClassification>
+         <taxonomicClassification>
+           	<taxonRankValue>Reptilia</taxonRankValue>
+         </taxonomicClassification>
+         <taxonomicClassification>
+           	<taxonRankValue>Coleoptera</taxonRankValue>
+         </taxonomicClassification>
+        </taxonomicCoverage>
+        <taxonomicCoverage>
+         	<generalTaxonomicCoverage>This is a second taxon coverage with all fields</generalTaxonomicCoverage>
+         <taxonomicClassification>
+           	<taxonRankName>domain</taxonRankName>
+           	<taxonRankValue>Aves</taxonRankValue>
+           	<commonName>Birds</commonName>
+         </taxonomicClassification>
+        </taxonomicCoverage>
+      </coverage>
+      <purpose>
+        <para>Provide data to the whole world.</para>
+      </purpose>
+      <contact>
+    <individualName>
+      <givenName>David</givenName>
+      <surName>Remsen</surName>
+    </individualName>
+    <organizationName>GBIF</organizationName>
+    <positionName>ECAT Programme Officer</positionName>
+    <address>
+      <deliveryPoint>Universitestparken 15</deliveryPoint>
+      <city>Copenhagen</city>
+      <administrativeArea>Sjaelland</administrativeArea>
+      <postalCode>2100</postalCode>
+      <country>DK</country>
+    </address>
+    <phone>+4528261487</phone>
+    <electronicMailAddress>dremsen@gbif.org</electronicMailAddress>
+    <onlineUrl>http://www.gbif.org</onlineUrl>
+      </contact>
+      <methods>
+        <methodStep>
+          <description>
+            <para>Took picture, identified</para>
+          </description>
+        </methodStep>
+        <methodStep>
+          <description>
+            <para>Themometer based test</para>
+          </description>
+        </methodStep>
+        <methodStep>
+          <description>
+            <para>Visual based test</para>
+          </description>
+        </methodStep>
+        <qualityControl>
+          <description>
+            <para>None</para>
+          </description>
+        </qualityControl>
+        <sampling>
+          <studyExtent>
+            <description>
+            	<para>Daily Obersevation of Pigeons Eating Habits</para>
+            </description>
+          </studyExtent>
+          <samplingDescription>
+            <para>44KHz is what a CD has... I was more like one a day if I felt like it</para>
+          </samplingDescription>
+        </sampling>
+      </methods>
+      <project>
+       	 <title>Documenting Some Asian Birds and Insects</title>
+        <personnel>
+          <individualName>
+            <givenName>Hans</givenName>
+            <surName>Remsen</surName>
+          </individualName>
+          <role>publisher</role>
+        </personnel>
+        <funding>
+          <para>My Deep Pockets</para>
+        </funding>
+        <studyAreaDescription>
+          <descriptor name="generic"  citableClassificationSystem="false">
+            <descriptorValue>Turkish Mountains</descriptorValue>
+          </descriptor>
+        </studyAreaDescription>            
+        <designDescription>
+          <description>
+          		<para>This was done in Avian Migration patterns</para>
+          </description>
+        </designDescription>
+      </project>
+    </dataset>
+    <additionalMetadata>
+     <metadata>
+      <gbif>
+        <dateStamp>2002-10-23T12:13:51.235-05:00</dateStamp>
+        <hierarchyLevel>dataset</hierarchyLevel>
+        <citation identifier="doi:tims-ident.2135.ex43.33.d">Tims assembled checklist</citation>
+        <bibliography>
+          <citation>title 1</citation>
+          <citation>title 2</citation>
+          <citation>title 3</citation>
+        </bibliography>
+        <physical>
+          <objectName>INV-GCEM-0305a1_1_1.shp</objectName>
+          <characterEncoding>ASCII</characterEncoding>
+          <dataFormat>
+            <externallyDefinedFormat>
+              <formatName>shapefile</formatName>
+              <formatVersion>2.0</formatVersion>
+            </externallyDefinedFormat>
+          </dataFormat>
+          <distribution>
+            <online>
+              <url function="download">http://metacat.lternet.edu/knb/dataAccessServlet?docid=knb-lter-gce.109.10&amp;urlTail=accession=INV-GCEM-0305a1&amp;filename=INV-GCEM-0305a1_1_1.TXT</url>
+            </online>
+          </distribution>
+        </physical>
+        <physical>
+          <objectName>INV-GCEM-0305a1_1_2.shp</objectName>
+          <characterEncoding>ASCII</characterEncoding>
+          <dataFormat>
+            <externallyDefinedFormat>
+              <formatName>shapefile</formatName>
+              <formatVersion>2.0</formatVersion>
+            </externallyDefinedFormat>
+          </dataFormat>
+          <distribution>
+            <online>
+              <url function="download">http://metacat.lternet.edu/knb/dataAccessServlet?docid=knb-lter-gce.109.10&amp;urlTail=accession=INV-GCEM-0305a1&amp;filename=INV-GCEM-0305a1_1_2.TXT</url>
+            </online>
+          </distribution>
+        </physical>
+        <resourceLogoUrl>http://www.tim.org/logo.jpg</resourceLogoUrl>
+        <collection>
+          <parentCollectionIdentifier>urn:lsid:tim.org:12:1</parentCollectionIdentifier>
+          <collectionIdentifier>urn:lsid:tim.org:12:2</collectionIdentifier>
+          <collectionName>Mammals</collectionName>
+        </collection>
+        	<formationPeriod>During the 70s</formationPeriod>
+        <specimenPreservationMethod>alcohol</specimenPreservationMethod>
+       		<livingTimePeriod>Jurassic</livingTimePeriod>
+        <jgtiCuratorialUnit>
+          <jgtiUnitType>jars</jgtiUnitType>
+          <jgtiUnitRange>
+             <beginRange>500</beginRange>
+             <endRange>600</endRange>
+          </jgtiUnitRange>
+        </jgtiCuratorialUnit>
+        <jgtiCuratorialUnit>
+          <jgtiUnitType>jers</jgtiUnitType>
+            <jgtiUnits uncertaintyMeasure="100">500</jgtiUnits>
+        </jgtiCuratorialUnit>
+      </gbif>
+     </metadata>
+    </additionalMetadata>
+</eml:eml>
