@@ -13,6 +13,7 @@
 		<th><@s.text name="portal.home.name"/></th>
 		<th><@s.text name="portal.home.organisation"/></th>
 		<th><@s.text name="portal.home.type"/></th>
+		<th><@s.text name="manage.home.subtype"/></th>
 		<th><@s.text name="portal.home.records"/></th>
 		<th><@s.text name="portal.home.modified"/></th>
 		<th><@s.text name="portal.home.author"/></th>
@@ -30,7 +31,8 @@
 		</#if>
 	</td>
 	<#-- >/#if -->
-	<td>${r.subtype!r.coreType!"---"}</td>
+	<td>${r.coreType!"---"}</td>
+	<td>${r.subtype!"---"}</td>
 	<td>${r.recordsPublished!0}</td>
 	<td>${r.modified?date}</td>
 	<td>${r.creator.firstname!} ${r.creator.lastname!}</td>

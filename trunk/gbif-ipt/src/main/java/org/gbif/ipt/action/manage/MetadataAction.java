@@ -18,6 +18,7 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.utils.CountryUtils;
 import org.gbif.ipt.utils.LangUtils;
+import org.gbif.ipt.utils.SubtypeUtils;
 import org.gbif.ipt.validation.EmlValidator;
 import org.gbif.ipt.validation.ResourceValidator;
 import org.gbif.metadata.eml.Agent;
@@ -51,12 +52,18 @@ public class MetadataAction extends ManagerBaseAction {
   private Map<String, String> roles;
   private Map<String, String> licenses;
   private Map<String, String> preservationMethods;
+  private Map<String, String> types;
 
   private static final List<String> sections = Arrays.asList("basic", "geocoverage", "taxcoverage", "tempcoverage",
       "keywords", "parties", "project", "methods", "citations", "collections", "physical", "additional");
 
   @Inject
   private VocabulariesManager vocabManager;
+
+  // Return the static list from SubtypeUtils class
+  public Map<String, String> getChecklistSubtypes() {
+    return SubtypeUtils.checklistSubtypeList();
+  }
 
   /**
    * @return a map of countries
@@ -124,6 +131,11 @@ public class MetadataAction extends ManagerBaseAction {
     return next;
   }
 
+  // Return the static list from SubtypeUtils class
+  public Map<String, String> getOccurrenceSubtypes() {
+    return SubtypeUtils.occurrenceSubtypeList();
+  }
+
   /**
    * @return a map of preservation methods
    */
@@ -159,6 +171,10 @@ public class MetadataAction extends ManagerBaseAction {
     return TemporalCoverageType.htmlSelectMap;
   }
 
+  public Map<String, String> getTypes() {
+    return types;
+  }
+
   @Override
   public void prepare() throws Exception {
     super.prepare();
@@ -174,7 +190,13 @@ public class MetadataAction extends ManagerBaseAction {
     } else {
       next = sections.get(0);
     }
-    // Temporary licenses initialization
+    types = new LinkedHashMap<String, String>();
+    types.put("Select a type", "");
+    types.put(StringUtils.capitalize(("" + Resource.CoreRowType.CHECKLIST).toLowerCase()),
+        StringUtils.capitalize(("" + Resource.CoreRowType.CHECKLIST).toLowerCase()));
+    types.put(StringUtils.capitalize(("" + Resource.CoreRowType.OCCURRENCE).toLowerCase()),
+        StringUtils.capitalize(("" + Resource.CoreRowType.OCCURRENCE).toLowerCase()));
+    types.put("Other", "Other");
     licenses = new LinkedHashMap<String, String>();
     licenses.put(getText("eml.intellectualRights.nolicenses"), "");
     licenses.put(getText("eml.intellectualRights.license.cczero"),
@@ -248,9 +270,7 @@ public class MetadataAction extends ManagerBaseAction {
       if (section.equals("additional")) {
         resource.getEml().getAlternateIdentifiers().clear();
       }
-
     }
-
   }
 
   @Override
