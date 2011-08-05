@@ -189,25 +189,26 @@
   </div>
   <div class="body">
       	<div class="details">
-			<#list eml.taxonomicCoverages as item>
-			<div>
+			<#list eml.taxonomicCoverages as item>			
 			<#assign size=eml.taxonomicCoverages[item_index].taxonKeywords?size/>
 			<table>
-			<tr><th><@s.text name='eml.taxonomicCoverages.description'/></th><td><@textWithFormattedLink eml.taxonomicCoverages[item_index].description!no_description/></td></tr>
-      		<table>
-				<#list eml.taxonomicCoverages[item_index].taxonKeywords as subitem>
-				<tr>
-				<td>
-				<div class="subitem">
+				<tr><th><@s.text name='eml.taxonomicCoverages.description'/></th><td><@textWithFormattedLink eml.taxonomicCoverages[item_index].description!no_description/></td></tr>
+	      		<tr><th></th><td>
+	      		<table>
+					<#list eml.taxonomicCoverages[item_index].taxonKeywords as subitem>
+					<tr>
+					<td>
+					<div class="subitem">
 					<#if subitem.scientificName?has_content><i><@textWithFormattedLink subitem.scientificName!/></i>,</#if> <#if subitem.commonName?has_content>${subitem.commonName!}</#if> <#if subitem.rank?has_content>[${subitem.rank!}]</#if>
 					<div class="newline"></div>
-				</div>
-				</td>
-				</tr>
-				</#list>
-      		</table>
-      		<div class="newline"></div>
-			</div>
+					</div>
+					</td>
+					</tr>
+					</#list>
+	      		</table>
+	      		</td></tr>
+	        </table>
+      		<div class="newline"></div>		
 			</#list>
       	</div>
   </div>
@@ -347,11 +348,10 @@
           	<div class="newline"></div>
         	<table>
         	<#list eml.jgtiCuratorialUnits as item>
-				<tr>
-				<div>
-					<#assign itemTitle><@s.text name='manage.metadata.collections.curatorialUnits.item'/></#assign>
-					<th class="title">${itemTitle?upper_case} ${item_index+1}</th>
-					<td>
+				<tr>				
+				<#assign itemTitle><@s.text name='manage.metadata.collections.curatorialUnits.item'/></#assign>
+				<th class="title">${itemTitle?upper_case} ${item_index+1}</th>
+				<td>
 		       		<table>	
          		   		<#if item.type=="COUNT_RANGE">
           					<tr><th><@s.text name='eml.jgtiCuratorialUnits.rangeStart'/></th><td>${eml.jgtiCuratorialUnits[item_index].rangeStart}</td></tr>
@@ -363,8 +363,7 @@
     						<tr><th><@s.text name='eml.jgtiCuratorialUnits.unitType'/></th><td>${eml.jgtiCuratorialUnits[item_index].unitType}</td></tr>
    						</#if>
     	  			</table>
-				<div class="newline"></div>
-				</div>
+					<div class="newline"></div>				
 				</td>
 				</tr>
 	   		</#list>
