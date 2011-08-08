@@ -22,6 +22,7 @@ import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.RecordFilter;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.RecordFilter.Comparator;
+import org.gbif.ipt.model.Source.FileSource;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.SourceManager;
@@ -302,7 +303,7 @@ public class MappingAction extends ManagerBaseAction {
   private void readSource() {
     if (mapping.getSource() != null) {
       peek = sourceManager.peek(mapping.getSource(), 5);
-      if (mapping.getFields() != null && mapping.getFields().size() > 0) {
+      if (mapping.getSource().isFileSource() && ((FileSource) mapping.getSource()).getIgnoreHeaderLines() == 0) {
         columns = mapping.getColumns(mappingCoreid);
       } else {
         columns = sourceManager.columns(mapping.getSource());
