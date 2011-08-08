@@ -1,12 +1,9 @@
 /***************************************************************************
  * Copyright 2010 Global Biodiversity Information Facility Secretariat
- * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -19,12 +16,13 @@ package org.gbif.ipt.model;
 import org.gbif.dwc.terms.ConceptTerm;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
  * @author markus
- * 
  */
 public class ExtensionMapping implements Serializable {
   private static final long serialVersionUID = 23789961641L;
@@ -41,6 +39,30 @@ public class ExtensionMapping implements Serializable {
 
   public ExtensionMapping() {
     super();
+  }
+
+  /**
+   * @param mapping
+   * @return list of columns names depending on its mapping.
+   */
+  public List<String> getColumns(PropertyMapping mappingCoreID) {
+    int maxColumnIndex = 0;
+    for (PropertyMapping pm : getFields()) {
+      if (pm.getIndex() != null && maxColumnIndex < pm.getIndex()) {
+        maxColumnIndex = pm.getIndex();
+      }
+    }
+    ArrayList<String> columns = new ArrayList<String>(maxColumnIndex);
+    for (int count = 0; count <= maxColumnIndex; count++) {
+      columns.add("Column #" + count);
+    }
+    for (PropertyMapping pm : getFields()) {
+      if (pm.getIndex() != null) {
+        columns.set(pm.getIndex(), pm.getTerm().simpleName());
+      }
+    }
+    columns.set(0, mappingCoreID.getTerm().simpleName());
+    return columns;
   }
 
   public Extension getExtension() {
