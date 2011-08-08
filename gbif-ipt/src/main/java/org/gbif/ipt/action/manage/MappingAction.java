@@ -240,8 +240,6 @@ public class MappingAction extends ManagerBaseAction {
           defaultResult = "source";
         }
       }
-      // inspect source
-      readSource();
       // set empty filter if not existing
       if (mapping.getFilter() == null) {
         mapping.setFilter(new RecordFilter());
@@ -263,6 +261,9 @@ public class MappingAction extends ManagerBaseAction {
         mappingCoreid = new PropertyMapping();
       }
       mappingCoreid.setTerm(coreid);
+
+      // inspect source
+      readSource();
 
       // prepare all other fields
       fields = new ArrayList<PropertyMapping>(mapping.getExtension().getProperties().size());
@@ -301,7 +302,11 @@ public class MappingAction extends ManagerBaseAction {
   private void readSource() {
     if (mapping.getSource() != null) {
       peek = sourceManager.peek(mapping.getSource(), 5);
-      columns = sourceManager.columns(mapping.getSource());
+      if (mapping.getFields() != null && mapping.getFields().size() > 0) {
+        columns = mapping.getColumns(mappingCoreid);
+      } else {
+        columns = sourceManager.columns(mapping.getSource());
+      }
     } else {
       columns = new ArrayList<String>();
     }
