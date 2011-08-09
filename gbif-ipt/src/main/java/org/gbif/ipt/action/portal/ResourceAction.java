@@ -1,20 +1,27 @@
 package org.gbif.ipt.action.portal;
 
-import java.util.List;
-
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.utils.FileUtils;
 import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.utils.FileUtils;
 import org.gbif.metadata.eml.Eml;
 
 import com.google.inject.Inject;
+
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class ResourceAction extends PortalBaseAction {
   @Inject
   private RegistrationManager registrationManager;
   private List<Resource> resources;
   private Integer page = 1;
+
+  @Inject
+  private VocabulariesManager vocabManager;
 
   @Override
   public String execute() throws Exception {
@@ -53,6 +60,12 @@ public class ResourceAction extends PortalBaseAction {
       return new Ipt();
     }
     return registrationManager.getIpt();
+  }
+
+  public Map<String, String> getRanks() {
+    Map<String, String> ranks = vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, Locale.getDefault().getLanguage(),
+        false);
+    return ranks;
   }
 
   /**

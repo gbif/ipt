@@ -589,6 +589,11 @@ table.sortable tr.even{
 	width: 100%;
 }
 
+#taxonKeywords th{	
+		min-width: 60px;
+		width: 60px;
+}
+
 /* horizontal list */
 ul.horizontal {
 	margin:0; 
