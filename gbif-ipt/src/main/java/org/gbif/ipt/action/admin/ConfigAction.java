@@ -120,7 +120,7 @@ public class ConfigAction extends POSTAction {
     try {
       configManager.setProxy(proxy);
     } catch (InvalidConfigException e) {
-      addActionError(getText("admin.config.error.invalidProxyURL"));
+      addActionError(getText(e.getMessage()));
       return INPUT;
     }
 
