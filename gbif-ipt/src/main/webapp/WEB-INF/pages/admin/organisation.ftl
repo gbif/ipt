@@ -8,15 +8,11 @@ $(document).ready(function(){
 	emailContent2 += '<@s.text name="emails.adding.organisation.association2"/>';
 	emailContent2 += '<@s.text name="emails.adding.organisation.association3"/>';
 	emailContent2 += '<@s.text name="emails.adding.organisation.association4"/>';
-	emailContent2 += '<@s.text name="emails.adding.organisation.association5"><@s.param>'
-	emailContent2 += "${currentUser.firstname}";
-	emailContent2 += '</@s.param></@s.text>';
-	emailContent2 += '<@s.text name="emails.adding.organisation.association6"><@s.param>'
-	emailContent2 += "${currentUser.email}";
-	emailContent2 += '</@s.param></@s.text>';
+	emailContent2 += '<@s.text name="emails.adding.organisation.association5"/>';
+	emailContent2 += '<@s.text name="emails.adding.organisation.association6"/>';
 	emailContent2 += '<@s.text name="emails.adding.organisation.association7"/>';
 	emailContent2 += '<@s.text name="emails.adding.organisation.association8"/>';
-	emailContent2 += "${currentUser.firstname}";
+	emailContent2 += '<@s.text name="emails.adding.organisation.association9"/>';
 	
 	//Email template for adding an associated organization
 	var contactLink = '<a href=\"mailto:helpdesk@gbif.org';
