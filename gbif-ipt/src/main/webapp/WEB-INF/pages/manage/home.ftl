@@ -20,6 +20,7 @@
 		<#-- see if the ADMIN has enabled registrations -->
 		<#-- if registrationAllowed -->
 		<th><@s.text name="manage.home.organisation"/></th>
+		<th><@s.text name="portal.home.author"/></th>
 		<#-- >/#if -->
 	</tr>
 <#list resources as r>
@@ -44,6 +45,7 @@
 			<@s.text name="manage.home.not.registered"/>
 		</#if>
 	</td>
+	<td>${r.creator.firstname!} ${r.creator.lastname!}</td>
 	<#-- >/#if -->
   </tr>
 </#list>
