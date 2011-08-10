@@ -275,21 +275,22 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
       try {
         URL url = new URL(proxy);
         HttpHost host = null;
-        if (proxy.contains(":")) {
+        String var[] = proxy.split(":");
+        if (var.length > 2) {
           host = new HttpHost(url.getHost(), url.getPort());
         } else {
           host = new HttpHost(url.getHost());
         }
         // test that host really exists
         if (!http.verifyHost(host)) {
-          throw new InvalidConfigException(TYPE.INVALID_PROXY, "Cannot connect to proxy host");
+          throw new InvalidConfigException(TYPE.INVALID_PROXY, "admin.config.error.connectionRefused");
         }
         log.info("Updating the proxy setting to: " + proxy);
         client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, host);
       } catch (NumberFormatException e) {
-        throw new InvalidConfigException(TYPE.INVALID_PROXY, "port number is no integer");
+        throw new InvalidConfigException(TYPE.INVALID_PROXY, "admin.config.error.invalidPort");
       } catch (MalformedURLException e) {
-        throw new InvalidConfigException(TYPE.INVALID_PROXY, "host URL is no valid");
+        throw new InvalidConfigException(TYPE.INVALID_PROXY, "admin.config.error.invalidProxyURL");
       }
     }
 

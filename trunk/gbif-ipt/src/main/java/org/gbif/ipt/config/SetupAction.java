@@ -11,6 +11,7 @@ import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
+import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.ConfigManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
@@ -241,7 +242,7 @@ public class SetupAction extends BaseAction {
         try {
           configManager.setProxy(proxy);
         } catch (InvalidConfigException e) {
-          addFieldError("proxy", getText("admin.config.proxy.error"));
+          addFieldError("proxy", getText(e.getMessage()));
           return INPUT;
         }
 
@@ -291,7 +292,11 @@ public class SetupAction extends BaseAction {
     session.put(Constants.SESSION_USER, userManager.getSetupUser());
     List<Extension> list = extensionManager.listCore();
     if (list.size() == 0) {
-      extensionManager.installCoreTypes();
+      try {
+        extensionManager.installCoreTypes();
+      } catch (RegistryException e) {
+        log.error(e);
+      }
     }
     return INPUT;
   }
