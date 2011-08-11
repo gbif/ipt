@@ -118,9 +118,13 @@ public class UpdateResourceMetadataAction extends POSTAction {
       String registryMsg = "";
       String dwcaMsg = resUpdateStatus.get(res.getShortname() + dwca);
       String rtfMsg = resUpdateStatus.get(res.getShortname() + rtf);
-
-      // 0 is fail, 1 is success, 2 is only for reg, means not registered
-      // emlVal can be 0 or 100, reg 0, 10, or 20, dwca 0 or 1 - their sum gives unique state
+      // Messages states
+      // rtfVal 0/1000: 0 is fail, 1000 is success.
+      // emlVal 0/100 : 0 is fail, 100 is success.
+      // registryVal 0/10/20: 0 is fail, 10 is success and 20 means the resource is not registered.
+      // dwcaVal 0/1 : 0 is fail, 1 is success
+      // Each state is calculated as follows: rtfVal + emlVal + registryVal + dwcaVal
+      // e.g if everything is satisfactory state= 1000 + 100 + 10 + 1 = 1111
       int emlVal = 100 * (emlMsg.equals(success) ? 1 : 0);
       int registryVal = 20;
       if (res.isRegistered()) {
