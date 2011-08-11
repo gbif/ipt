@@ -19,7 +19,7 @@
     </#if>
     <generator>GBIF IPT ${cfg.version!}</generator>
     <#if ipt.primaryContactEmail??>
-    <webMaster>${ipt.primaryContactEmail} (${ipt.primaryContactName})</webMaster>
+    <webMaster>${ipt.primaryContactEmail} (${ipt.primaryContactFirstName!}) (${ipt.primaryContactLastName!})</webMaster>
     </#if>  
     <docs>http://cyber.law.harvard.edu/rss/rss.html</docs>
     <ttl>15</ttl>

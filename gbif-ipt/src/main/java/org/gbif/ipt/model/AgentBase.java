@@ -1,12 +1,9 @@
 /***************************************************************************
  * Copyright 2010 Global Biodiversity Information Facility Secretariat
- * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -20,10 +17,8 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.UUID;
 
-
 /**
  * @author markus
- * 
  */
 public abstract class AgentBase {
 
@@ -33,6 +28,8 @@ public abstract class AgentBase {
   private String homepageURL;
   private String primaryContactType;
   private String primaryContactName;
+  private String primaryContactFirstName;
+  private String primaryContactLastName;
   private String primaryContactDescription;
   private String primaryContactAddress;
   private String primaryContactEmail;
@@ -85,6 +82,14 @@ public abstract class AgentBase {
    */
   public String getPrimaryContactEmail() {
     return primaryContactEmail;
+  }
+
+  public String getPrimaryContactFirstName() {
+    return primaryContactFirstName;
+  }
+
+  public String getPrimaryContactLastName() {
+    return primaryContactLastName;
   }
 
   /**
@@ -148,6 +153,14 @@ public abstract class AgentBase {
    */
   public void setPrimaryContactEmail(String primaryContactEmail) {
     this.primaryContactEmail = StringUtils.trimToNull(primaryContactEmail);
+  }
+
+  public void setPrimaryContactFirstName(String primaryContactFirstName) {
+    this.primaryContactFirstName = StringUtils.trimToNull(primaryContactFirstName);
+  }
+
+  public void setPrimaryContactLastName(String primaryContactLastName) {
+    this.primaryContactLastName = StringUtils.trimToNull(primaryContactLastName);
   }
 
   /**

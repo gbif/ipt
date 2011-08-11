@@ -125,7 +125,8 @@ $(document).ready(function(){
 						
 			<@input name="ipt.name" i18nkey="admin.ipt.name" type="text" />
 			<@text name="ipt.description" i18nkey="admin.ipt.description" />
-			<@input name="ipt.primaryContactName" i18nkey="admin.ipt.primaryContactName" type="text" />
+			<@input name="ipt.primaryContactFirstName" i18nkey="admin.ipt.primaryContactFirstName" type="text" />
+			<@input name="ipt.primaryContactLastName" i18nkey="admin.ipt.primaryContactLastName" type="text" />
 			<@input name="ipt.primaryContactEmail" i18nkey="admin.ipt.primaryContactEmail" type="text" />
 			<@s.hidden id="admin.ipt.primaryContactType" name="ipt.primaryContactType" value="technical" />
 			
