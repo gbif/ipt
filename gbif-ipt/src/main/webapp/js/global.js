@@ -18,6 +18,28 @@ $(document).ready(function(){
 	});	
 });
 
+/**
+ * This method shows the languages with their links.
+ * Validates the parameter construction when the language is changed.
+ * @param {String}  Local Language.
+ * @param {String}	Base URL.
+ */
+function langs(localLanguage,baseUrl) {
+	var location = window.location+'';
+	var request = '?request_locale';
+	if(location.indexOf("request_locale") != -1){
+		location = location.slice(0,location.indexOf("request_locale")-1);
+	}
+	if(location.indexOf("?") != -1){
+		request = '&request_locale';		
+	}
+  	var lan=  ["en","fr","es"];
+	$.each(lan, function() {
+	  if ( localLanguage != this){
+	  	$("#languages").append('<li><a href="'+location+request+'='+this+'"><img src="'+baseUrl+'/images/flags/flag_'+this+'.gif"/></a></li>');
+	  }
+	});
+}
 	
 function str(x) {
 	if(x!=null && x.length > 0) return x;

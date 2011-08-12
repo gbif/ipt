@@ -15,9 +15,10 @@ h1 {
 		</style>
 <script type="text/javascript">
 $(document).ready(function(){
-  initHelp();	
-[#-- see global.js for function defs --]
-	initMenu();  
+  	initHelp();	
+	[#-- see global.js for function defs --]
+	initMenu();
+	langs("${localeLanguage}","${baseURL}");  
 });
 </script>
 

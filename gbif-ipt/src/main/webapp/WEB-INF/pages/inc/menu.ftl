@@ -1,10 +1,14 @@
 [#ftl]
-
- 	</head>
+<script type="text/javascript">	
+	$(document).ready(function(){
+  		langs("${localeLanguage}","${baseURL}");
+	});
+</script>
+</head>
  	<body>
 		<div id="wrapper">
 		    <div id="topwrapper">
-		        <ul id="topmenu">
+		   		 <ul id="topmenu">
 		      [#if (Session.curr_user)??] 
 		        	<li>[@s.text name="menu.loggedin"/] <em>${Session.curr_user.email}</em></li>
 		        	<li[#if currentMenu=="account"] class="current"[/#if] ><a href="${baseURL}/account.do">[@s.text name="menu.account"/]</a></li>
@@ -20,19 +24,12 @@
 			  [/#if]
 				    <li>
 				    	<a href="#"><img src="${baseURL}/images/flags/flag_${localeLanguage}.gif"/></a>
-					    <ul>
-					     
+					    <ul id=languages>					     
 					    	<!-- add more languages as translations become available. -->					    	
-				        	<!-- #list ["en","es","fr","de"] as lang -->
-				        	[#list ["en","fr","es"] as lang]
-					        	[#if localeLanguage!=lang]
-								<li><a href="?request_locale=${lang}"><img src="${baseURL}/images/flags/flag_${lang}.gif"/></a></li>
-								[/#if]
-				        	[/#list] 
-				        	
+				        	<!-- To see more information go to langs method in global.js -->				        	
 					    </ul>
 				    </li>
-		        </ul>
+				 </ul>
 		    </div>
 
 			<div id="logo">
