@@ -18,7 +18,6 @@ import com.google.inject.Inject;
 import com.google.inject.servlet.SessionScoped;
 
 import java.io.IOException;
-import java.net.Proxy.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -158,27 +157,28 @@ public class RegistrationAction extends POSTAction {
   public void prepare() throws Exception {
     // will not be session scoping the list of organisations from the registry as this is basically a 1 time step
     super.prepare();
-    if (!orgSession.isLoaded()) {
-      try {
-        orgSession.load();
-      } catch (RegistryException e) {
-    	  String msg = getText("admin.registration.error.registry");
-    	  if(e.getType() == TYPE.PROXY) {
-    		  msg = getText("admin.registration.error.proxy");
-    	  } else if(e.getType() == TYPE.SITE_DOWN) {
-    		  msg = getText("admin.registration.error.siteDown");    		  
-    	  } else if(e.getType() == TYPE.NO_INTERNET) {
-    		  msg = getText("admin.registration.error.internetConnection");    		  
-    	  }
-        log.error(msg, e);
-        addActionError(msg);
+    if (!getIsRegistered()) {
+      if (!orgSession.isLoaded()) {
+        try {
+          orgSession.load();
+        } catch (RegistryException e) {
+          String msg = getText("admin.registration.error.registry");
+          if (e.getType() == TYPE.PROXY) {
+            msg = getText("admin.registration.error.proxy");
+          } else if (e.getType() == TYPE.SITE_DOWN) {
+            msg = getText("admin.registration.error.siteDown");
+          } else if (e.getType() == TYPE.NO_INTERNET) {
+            msg = getText("admin.registration.error.internetConnection");
+          }
+          log.error(msg, e);
+          addActionError(msg);
+        }
       }
     }
   }
 
   @Override
   public String save() {
-
     if (registrationManager.getHostingOrganisation() == null) {
       try {
         // register against the Registry
@@ -229,13 +229,30 @@ public class RegistrationAction extends POSTAction {
     this.organisations = organisations;
   }
 
+  public String update() {
+    try {
+      registryManager.updateIpt(getRegisteredIpt());
+      registrationManager.save();
+      addActionMessage("success IPT update!");
+    } catch (RegistryException e) {
+      addActionError(e.getMessage());
+    } catch (IOException e) {
+      addActionError(e.getMessage());
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return INPUT;
+  }
+
   @Override
   public void validate() {
     if (isHttpPost()) {
-      validatedBaseURL = true;
-      organisationValidation.validate(this, organisation);
-      iptValidation.validate(this, ipt);
+      if (!getIsRegistered()) {
+        validatedBaseURL = true;
+        organisationValidation.validate(this, organisation);
+      } else {
+        iptValidation.validateUpdate(this, getRegisteredIpt());
+      }
     }
   }
-
 }

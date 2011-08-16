@@ -72,6 +72,7 @@ $(document).ready(function(){
 </script>	
 	<title><@s.text name="title"/></title>
  <#assign currentMenu = "admin"/>
+<#include "/WEB-INF/pages/macros/forms.ftl"> 
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
 <h1><@s.text name="admin.home.editRegistration"/></h1>
@@ -86,9 +87,19 @@ $(document).ready(function(){
 	 <li><a href="${cfg.registryUrl}/browse/agent?uuid=${registeredIpt.key}">${registeredIpt.name!"IPT"}</a></li>
 	 <li><a href="${cfg.registryUrl}/browse/agent?uuid=${hostingOrganisation.key}">${hostingOrganisation.name!"Organisation"}</a></li>
 	</ul>
-	<p><@s.text name="admin.registration.registered3"/></p>
+	<!-- p><@s.text name="admin.registration.registered3"/></p -->
+	<form class="topForm half" action="registration.do" method="post">	
+		<@input name="registeredIpt.name" i18nkey="admin.ipt.name" type="text" />
+		<@text name="registeredIpt.description" i18nkey="admin.ipt.description" />
+		<@input name="registeredIpt.primaryContactFirstName" i18nkey="admin.ipt.primaryContactFirstName" type="text" />
+		<@input name="registeredIpt.primaryContactLastName" i18nkey="admin.ipt.primaryContactLastName" type="text" />
+		<@input name="registeredIpt.primaryContactEmail" i18nkey="admin.ipt.primaryContactEmail" type="text" />
+		<div class="buttons">
+			<@s.submit cssClass="button" name="update" id="update" key="button.update" method="update"/>
+		 	<@s.submit cssClass="button" name="cancel" id="cancel" key="button.cancel"/>
+		</div>		
+	</form>
 <#else>
-	<#include "/WEB-INF/pages/macros/forms.ftl"> 
 	
 	<#-- BASE URL has not been validated, disable the form -->
 	<#if !validatedBaseURL>
@@ -109,7 +120,7 @@ $(document).ready(function(){
 		<@s.form cssClass="topForm half" action="registration" method="post" id="registrationForm" >
 		
 			<@label i18nkey="admin.organisation.key">
-			<@s.select id="organisation.key" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" size="15" disabled="false"/>
+				<@s.select id="organisation.key" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" size="15" disabled="false"/>
 			</@label>
 		
 			<@input name="organisation.password" i18nkey="admin.organisation.password" type="password" help="i18n"/>
