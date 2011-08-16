@@ -474,9 +474,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     data.add(new BasicNameValuePair("serviceTypes", SERVICE_TYPE_RSS));
     data.add(new BasicNameValuePair("serviceURLs", getRssFeedURL()));
 
-    // data.add(new BasicNameValuePair("primaryContactFirstName", "")); TODO
-    // data.add(new BasicNameValuePair("primaryContactLastName", "")); TODO
-
     try {
       Response resp = http.post(getIptUpdateUri(ipt.getKey().toString()), null, null, iptCredentials,
           new UrlEncodedFormEntity(data));

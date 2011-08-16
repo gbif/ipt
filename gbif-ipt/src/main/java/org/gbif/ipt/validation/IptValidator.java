@@ -12,8 +12,6 @@ package org.gbif.ipt.validation;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.model.Ipt;
 
-import com.google.inject.Inject;
-
 /**
  * @author josecuadra
  */
@@ -23,7 +21,6 @@ public class IptValidator extends BaseValidator {
   }
 
   public void validate(BaseAction action, Ipt ipt) {
-
     if (ipt.getName() == null || ipt.getName().length() < 1) {
       action.addFieldError("ipt.name", action.getText("validation.ipt.name.required"));
     }
@@ -38,6 +35,21 @@ public class IptValidator extends BaseValidator {
     }
     if (ipt.getWsPassword() == null || ipt.getWsPassword().length() < 1) {
       action.addFieldError("ipt.wsPassword", action.getText("validation.ipt.password.required"));
+    }
+  }
+
+  public void validateUpdate(BaseAction action, Ipt ipt) {
+    if (ipt.getName() == null || ipt.getName().length() < 1) {
+      action.addFieldError("registeredIpt.name", action.getText("validation.ipt.name.required"));
+    }
+    if (ipt.getName() != null && ipt.getName().length() < 3) {
+      action.addFieldError("registeredIpt.name", action.getText("validation.ipt.name.short"));
+    }
+    if (ipt.getPrimaryContactEmail() == null || ipt.getPrimaryContactEmail().length() < 1) {
+      action.addFieldError("registeredIpt.primaryContactEmail", action.getText("validation.ipt.contactEmail.required"));
+    }
+    if (!isValidEmail(ipt.getPrimaryContactEmail())) {
+      action.addFieldError("registeredIpt.primaryContactEmail", action.getText("validation.ipt.contactEmail.invalid"));
     }
   }
 }
