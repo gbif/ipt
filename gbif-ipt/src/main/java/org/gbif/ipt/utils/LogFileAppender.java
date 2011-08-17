@@ -16,12 +16,12 @@ import java.io.IOException;
  * TODO: Documentation.
  */
 public class LogFileAppender extends RollingFileAppender {
-  public static String LOGDIR = "";
+  public static String LOGDIR = System.getProperty("user.home");
 
   @Override
   public synchronized void setFile(String fileName, boolean append, boolean bufferedIO, int bufferSize)
       throws IOException {
-	File logfile=new File(fileName);
+    File logfile = new File(fileName);
     // modify fileName if relative
     if (!LOGDIR.equals("") && !logfile.isAbsolute()) {
       fileName = LOGDIR + File.separator + fileName;
