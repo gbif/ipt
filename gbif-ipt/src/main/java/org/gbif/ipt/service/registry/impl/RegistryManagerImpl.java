@@ -13,6 +13,8 @@ import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.RegistryException.TYPE;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.utils.RegistryEntryHandler;
+import org.gbif.ipt.validation.AgentValidator;
+import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.utils.HttpUtil;
 import org.gbif.utils.HttpUtil.Response;
@@ -56,6 +58,9 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   private static final String SERVICE_TYPE_OCCURRENCE = "DWC-ARCHIVE-OCCURRENCE";
   private static final String SERVICE_TYPE_CHECKLIST = "DWC-ARCHIVE-CHECKLIST";
   private static final String SERVICE_TYPE_RSS = "RSS";
+  private static final String CONTACT_TYPE_TECHNICAL = "technical";
+  private static final String CONTACT_TYPE_ADMINISTRATIVE = "administrative";
+
   private HttpUtil http;
   private SAXParser saxParser;
 
@@ -80,15 +85,25 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     data.add(new BasicNameValuePair("homepageURL", StringUtils.trimToEmpty(eml.getDistributionUrl())));
     data.add(new BasicNameValuePair("logoURL", StringUtils.trimToEmpty(eml.getLogoUrl())));
 
-    // TODO: should this not be the eml contact agent instead?
-    data.add(new BasicNameValuePair("primaryContactType", "technical"));
-    data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(resource.getCreator().getEmail())));
-    // the following are not yet supported by the registry at the time of writing, but a request has been logged:
-    // http://code.google.com/p/gbif-registry/issues/detail?id=88
+    // Eml contact agent:
+    Agent primaryContact = getPrimaryContact(resource.getEml());
+    // if primaryContact is null, use resource creator as primary contact.
+    if (primaryContact == null) {
+      primaryContact = new Agent();
+      primaryContact.setEmail(resource.getCreator().getEmail());
+      primaryContact.setFirstName(resource.getCreator().getFirstname());
+      primaryContact.setLastName(resource.getCreator().getLastname());
+      primaryContact.setRole(null);
+    }
+    String primaryContactType = (primaryContact.getRole() == null || primaryContact.getRole().equals("MetadataProvider"))
+        ? CONTACT_TYPE_TECHNICAL : CONTACT_TYPE_ADMINISTRATIVE;
+
+    data.add(new BasicNameValuePair("primaryContactType", primaryContactType));
+    data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(primaryContact.getEmail())));
     data.add(new BasicNameValuePair("primaryContactFirstName",
-        StringUtils.trimToNull(StringUtils.trimToEmpty(resource.getCreator().getFirstname()))));
+        StringUtils.trimToNull(StringUtils.trimToEmpty(primaryContact.getFirstName()))));
     data.add(new BasicNameValuePair("primaryContactLastName",
-        StringUtils.trimToNull(StringUtils.trimToEmpty(resource.getCreator().getLastname()))));
+        StringUtils.trimToNull(StringUtils.trimToEmpty(primaryContact.getLastName()))));
 
     // see if we have a published dwca or if its only metadata
     RegistryServices services = buildServiceTypeParams(resource);
@@ -303,6 +318,30 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    */
   private String getOrganisationsURL(boolean json) {
     return String.format("%s%s%s", cfg.getRegistryUrl(), "/registry/organisation", json ? ".json" : "/");
+  }
+
+  /**
+   * Returns the primary contact agent depending on the following rules:
+   * 1. Resource Contact.
+   * 2. If (1) is incomplete (missing email or last name) use Resource Creator.
+   * 3. if (2) is incomplete, use Metadata Provider.
+   * 4. if (3) is incomplete return null.
+   * 
+   * @param eml
+   * @return
+   */
+  private Agent getPrimaryContact(Eml eml) {
+    Agent[] primaryContacts = new Agent[3];
+    primaryContacts[0] = eml.getContact();
+    primaryContacts[1] = eml.getResourceCreator();
+    primaryContacts[2] = eml.getMetadataProvider();
+
+    for (Agent primaryContact : primaryContacts) {
+      if (primaryContact != null && AgentValidator.hasCompleteContactInfo(primaryContact)) {
+        return primaryContact;
+      }
+    }
+    return null;
   }
 
   /**
