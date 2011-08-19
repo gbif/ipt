@@ -303,6 +303,8 @@ public class MappingAction extends ManagerBaseAction {
   private void readSource() {
     if (mapping.getSource() != null) {
       peek = sourceManager.peek(mapping.getSource(), 5);
+      // If user wants to import a File source without a header lines, the columns should be extracted from mapping
+      // object (meta.xml). Otherwise, read the file/database normally.
       if (mapping.getSource().isFileSource() && ((FileSource) mapping.getSource()).getIgnoreHeaderLines() == 0) {
         columns = mapping.getColumns(mappingCoreid);
       } else {
