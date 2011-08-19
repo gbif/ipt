@@ -12,13 +12,17 @@ package org.gbif.ipt.validation;
 import org.gbif.metadata.eml.Agent;
 
 /**
- * @author hftobon
+ * Perform all kind of validation to the Agent object.
+ * 
+ * @author htobon
  */
 public class AgentValidator extends BaseValidator {
 
   /**
+   * This method validates whether an agent has the minimum information to be contacted.
+   * 
    * @param agent
-   * @return true if name and email exist. Otherwise return false.
+   * @return true if name (at least lastname) and email exist. Otherwise return false.
    */
   public static boolean hasCompleteContactInfo(Agent agent) {
     if (agent != null && agent.getFullName() != null && !agent.getFullName().equals("") && agent.getEmail() != null
