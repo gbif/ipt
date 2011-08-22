@@ -57,7 +57,7 @@ public class ExtensionMapping implements Serializable {
       columns.add("Column #" + count);
     }
     for (PropertyMapping pm : getFields()) {
-      if (pm.getIndex() != null) {
+      if (pm.getIndex() != null && pm.getIndex() > 0) {
         columns.set(pm.getIndex(), pm.getTerm().simpleName());
       }
     }
