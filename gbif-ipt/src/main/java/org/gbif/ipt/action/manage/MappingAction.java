@@ -306,7 +306,7 @@ public class MappingAction extends ManagerBaseAction {
       // If user wants to import a File source without a header lines, the columns should be extracted from mapping
       // object (meta.xml). Otherwise, read the file/database normally.
       if (mapping.getSource().isFileSource() && ((FileSource) mapping.getSource()).getIgnoreHeaderLines() == 0) {
-        columns = mapping.getColumns(mappingCoreid);
+        columns = mapping.getColumns();
       } else {
         columns = sourceManager.columns(mapping.getSource());
       }

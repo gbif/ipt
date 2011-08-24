@@ -45,7 +45,7 @@ public class ExtensionMapping implements Serializable {
    * @param mapping
    * @return list of columns names depending on its mapping.
    */
-  public List<String> getColumns(PropertyMapping mappingCoreID) {
+  public List<String> getColumns() {
     int maxColumnIndex = 0;
     for (PropertyMapping pm : getFields()) {
       if (pm.getIndex() != null && maxColumnIndex < pm.getIndex()) {
@@ -61,7 +61,7 @@ public class ExtensionMapping implements Serializable {
         columns.set(pm.getIndex(), pm.getTerm().simpleName());
       }
     }
-    columns.set(0, mappingCoreID.getTerm().simpleName());
+    columns.set(0, "id");
     return columns;
   }
 
