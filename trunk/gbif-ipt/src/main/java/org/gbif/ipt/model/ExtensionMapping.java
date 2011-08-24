@@ -54,7 +54,7 @@ public class ExtensionMapping implements Serializable {
     }
     ArrayList<String> columns = new ArrayList<String>(maxColumnIndex);
     for (int count = 0; count <= maxColumnIndex; count++) {
-      columns.add("Column #" + count);
+      columns.add("Column #" + (count + 1));
     }
     for (PropertyMapping pm : getFields()) {
       if (pm.getIndex() != null && pm.getIndex() > 0) {

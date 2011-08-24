@@ -260,8 +260,9 @@ public class MappingAction extends ManagerBaseAction {
       if (mappingCoreid == null) {
         // no, create bare mapping field
         mappingCoreid = new PropertyMapping();
+        mappingCoreid.setTerm(coreid);
+        mappingCoreid.setIndex(mapping.getIdColumn());
       }
-      mappingCoreid.setTerm(coreid);
 
       // inspect source
       readSource();
@@ -303,9 +304,10 @@ public class MappingAction extends ManagerBaseAction {
   private void readSource() {
     if (mapping.getSource() != null) {
       peek = sourceManager.peek(mapping.getSource(), 5);
-      // If user wants to import a File source without a header lines, the columns should be extracted from mapping
-      // object (meta.xml). Otherwise, read the file/database normally.
-      if (mapping.getSource().isFileSource() && ((FileSource) mapping.getSource()).getIgnoreHeaderLines() == 0) {
+      // If user wants to import a Darwin Core Archive source without a header lines, the columns should be extracted
+      // from mapping object (meta.xml). Otherwise, read the file/database normally.
+      if (mapping.getSource().isFileSource() && mapping.getFields().size() > 0
+          && ((FileSource) mapping.getSource()).getIgnoreHeaderLines() == 0) {
         columns = mapping.getColumns();
       } else {
         columns = sourceManager.columns(mapping.getSource());
