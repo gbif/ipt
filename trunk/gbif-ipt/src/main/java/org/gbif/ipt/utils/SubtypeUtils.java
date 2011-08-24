@@ -23,19 +23,20 @@ import java.util.Map.Entry;
  *         Temporary class until a vocabulary is created
  */
 public class SubtypeUtils {
+
   public final static Map<String, String> subtypeList = new LinkedHashMap<String, String>();
   static {
     // Checklist
     subtypeList.put("Select Checklist", "");
-    subtypeList.put("Regional inventory", "regional_inventory");
-    subtypeList.put("Thematic inventory", "thematic_inventory");
-    subtypeList.put("Taxonomic authority", "taxonomic_authority");
-    subtypeList.put("Nomenclator authority", "nomenclator_authority");
-    subtypeList.put("Derived from occurrence data", "derived_occurrence");
+    subtypeList.put("Regional inventory", "Regional inventory");
+    subtypeList.put("Thematic inventory", "Thematic inventory");
+    subtypeList.put("Taxonomic authority", "Taxonomic authority");
+    subtypeList.put("Nomenclator authority", "Nomenclator authority");
+    subtypeList.put("Derived from occurrence data", "Derived from occurrence data");
     // Occurrence
     subtypeList.put("Select Occurrence", "");
-    subtypeList.put("Specimen", "specimen");
-    subtypeList.put("Observation", "observation");
+    subtypeList.put("Specimen", "Specimen");
+    subtypeList.put("Observation", "Observation");
   }
 
   public static Map<String, String> checklistSubtypeList() {
@@ -49,6 +50,12 @@ public class SubtypeUtils {
         break;
       }
     }
+    return newSubtypeList;
+  }
+
+  public static Map<String, String> noSubtypeList() {
+    Map<String, String> newSubtypeList = new LinkedHashMap<String, String>();
+    newSubtypeList.put("", "No subtype");
     return newSubtypeList;
   }
 

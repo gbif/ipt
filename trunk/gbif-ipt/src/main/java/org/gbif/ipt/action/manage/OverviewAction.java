@@ -1,9 +1,11 @@
 package org.gbif.ipt.action.manage;
 
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.Resource.CoreRowType;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.model.voc.PublicationStatus;
@@ -19,16 +21,16 @@ import org.gbif.ipt.task.StatusReport;
 import org.gbif.ipt.utils.FileUtils;
 import org.gbif.ipt.validation.EmlValidator;
 
-import com.google.inject.Inject;
-
-import org.apache.commons.lang.StringUtils;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.google.inject.Inject;
+import org.apache.commons.lang.StringUtils;
+
 public class OverviewAction extends ManagerBaseAction {
+
   private static final String PUBLISHING = "publishing";
   @Inject
   private ResourceManager resourceManager;
@@ -54,10 +56,10 @@ public class OverviewAction extends ManagerBaseAction {
     }
     User u = userManager.get(id);
     if (u != null && !potentialManagers.contains(u)) {
-      addActionError(getText("manage.overview.manager.not.available", new String[]{id}));
+      addActionError(getText("manage.overview.manager.not.available", new String[] {id}));
     } else if (u != null) {
       resource.addManager(u);
-      addActionMessage(getText("manage.overview.user.added", new String[]{u.getName()}));
+      addActionMessage(getText("manage.overview.user.added", new String[] {u.getName()}));
       saveResource();
       potentialManagers.remove(u);
     }
@@ -68,13 +70,13 @@ public class OverviewAction extends ManagerBaseAction {
     if (resource != null) {
       try {
         resourceManager.cancelPublishing(resource.getShortname(), this);
-        addActionMessage(getText("manage.overview.stopped.publishing", new String[]{resource.toString()}));
+        addActionMessage(getText("manage.overview.stopped.publishing", new String[] {resource.toString()}));
       } catch (Exception e) {
         String reason = "";
         if (e.getMessage() != null) {
           reason = e.getMessage();
         }
-        addActionError(getText("manage.overview.failed.stop.publishing", new String[]{reason}));
+        addActionError(getText("manage.overview.failed.stop.publishing", new String[] {reason}));
         return ERROR;
       }
     } else {
@@ -91,7 +93,7 @@ public class OverviewAction extends ManagerBaseAction {
     try {
       Resource res = resource;
       resourceManager.delete(res);
-      addActionMessage(getText("manage.overview.resource.deleted", new String[]{res.toString()}));
+      addActionMessage(getText("manage.overview.resource.deleted", new String[] {res.toString()}));
       return HOME;
     } catch (IOException e) {
       String msg = getText("manage.resource.delete.failed");
@@ -114,10 +116,10 @@ public class OverviewAction extends ManagerBaseAction {
     }
     User u = userManager.get(id);
     if (u == null || !resource.getManagers().contains(u)) {
-      addActionError(getText("manage.overview.manager.not.available", new String[]{id}));
+      addActionError(getText("manage.overview.manager.not.available", new String[] {id}));
     } else {
       resource.getManagers().remove(u);
-      addActionMessage(getText("manage.overview.user.removed", new String[]{u.getName()}));
+      addActionMessage(getText("manage.overview.user.removed", new String[] {u.getName()}));
       saveResource();
       potentialManagers.add(u);
     }
@@ -216,18 +218,18 @@ public class OverviewAction extends ManagerBaseAction {
         // makePrivate
         try {
           resourceManager.visibilityToPrivate(resource);
-          addActionMessage(getText("manage.overview.changed.publication.status",
-              new String[]{resource.getStatus().toString()}));
+          addActionMessage(getText("manage.overview.changed.publication.status", new String[] {resource.getStatus()
+            .toString()}));
         } catch (InvalidConfigException e) {
           log.error("Cant unpublish resource " + resource, e);
         }
       } else {
-        addActionWarning(getText("manage.overview.resource.invalid.operation", new String[]{
-            resource.getShortname(), resource.getStatus().toString()}));
+        addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
+          resource.getStatus().toString()}));
       }
     } else {
-      addActionWarning(getText("manage.overview.resource.invalid.operation", new String[]{
-          resource.getShortname(), resource.getStatus().toString()}));
+      addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
+        resource.getStatus().toString()}));
     }
     return execute();
   }
@@ -239,36 +241,17 @@ public class OverviewAction extends ManagerBaseAction {
     if (PublicationStatus.PRIVATE == resource.getStatus()) {
       try {
         resourceManager.visibilityToPublic(resource);
-        addActionMessage(getText("manage.overview.changed.publication.status",
-            new String[]{resource.getStatus().toString()}));
+        addActionMessage(getText("manage.overview.changed.publication.status", new String[] {resource.getStatus()
+          .toString()}));
       } catch (InvalidConfigException e) {
         log.error("Cant publish resource " + resource, e);
       }
 
     } else {
-      addActionWarning(getText("manage.overview.resource.invalid.operation", new String[]{
-          resource.getShortname(), resource.getStatus().toString()}));
+      addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
+        resource.getStatus().toString()}));
     }
     return execute();
-  }
-
-  private boolean minimumRegistryInfo(Resource resource) {
-    if (resource == null) {
-      return false;
-    }
-    if (resource.getEml() == null) {
-      return false;
-    }
-    if (resource.getCreator() == null) {
-      return false;
-    }
-    if (resource.getCreator().getEmail() == null) {
-      return false;
-    }
-    if (!resource.isPublished()) {
-      return false;
-    }
-    return true;
   }
 
   @Override
@@ -292,8 +275,20 @@ public class OverviewAction extends ManagerBaseAction {
         // add core itself
         potentialExtensions.add(0, extensionManager.get(resource.getCoreRowType()));
       } else if (!resource.getSources().isEmpty()) {
-        // show core extensions for mapping
-        potentialExtensions = extensionManager.listCore();
+        // Validating if the resource has a type
+        if (resource.getCoreType() != null
+          && !(resource.getCoreType().equals("Other") || resource.getCoreType().equals(""))) {
+          potentialExtensions = new ArrayList<Extension>();
+          // Comparing the subtype with two static list. The appropiate type is selected depending if the subtype is
+          // in the checklist List or is in the occurrence list and only is enable to do the mapping
+          if (resource.getCoreType().toLowerCase().equals(CoreRowType.CHECKLIST.toString().toLowerCase())) {
+            potentialExtensions.add(extensionManager.get(Constants.DWC_ROWTYPE_TAXON));
+          } else if (resource.getCoreType().toLowerCase().equals(CoreRowType.OCCURRENCE.toString().toLowerCase())) {
+            potentialExtensions.add(extensionManager.get(Constants.DWC_ROWTYPE_OCCURRENCE));
+          }
+        } else {
+          potentialExtensions = extensionManager.listCore();
+        }
       } else {
         potentialExtensions = new ArrayList<Extension>();
       }
@@ -317,8 +312,8 @@ public class OverviewAction extends ManagerBaseAction {
     }
     try {
       if (resourceManager.publish(resource, this)) {
-        addActionMessage(getText("manage.overview.publishing.resource.version", new String[]{resource.getEmlVersion()
-            + ""}));
+        addActionMessage(getText("manage.overview.publishing.resource.version", new String[] {resource.getEmlVersion()
+          + ""}));
         return PUBLISHING;
       } else {
         if (!resource.hasMappedData()) {
@@ -326,7 +321,7 @@ public class OverviewAction extends ManagerBaseAction {
         } else {
           addActionWarning(getText("manage.overview.no.data.archive.generated"));
         }
-        addActionMessage(getText("manage.overview.published.eml", new String[]{resource.getEmlVersion() + ""}));
+        addActionMessage(getText("manage.overview.published.eml", new String[] {resource.getEmlVersion() + ""}));
         return SUCCESS;
       }
     } catch (PublicationException e) {
@@ -348,8 +343,8 @@ public class OverviewAction extends ManagerBaseAction {
     }
     if (PublicationStatus.PUBLIC == resource.getStatus()) {
       if (unpublish) {
-        addActionWarning(getText("manage.overview.resource.invalid.operation", new String[]{
-            resource.getShortname(), resource.getStatus().toString()}));
+        addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
+          resource.getStatus().toString()}));
 
       } else {
         // plain managers are not allowed to register a resource
@@ -376,7 +371,7 @@ public class OverviewAction extends ManagerBaseAction {
 
             resourceManager.register(resource, org, registrationManager.getIpt());
             if (org != null) {
-              addActionMessage(getText("manage.overview.resource.registered", new String[]{org.getName()}));
+              addActionMessage(getText("manage.overview.resource.registered", new String[] {org.getName()}));
             }
           } catch (RegistryException e) {
             log.error("Cant register resource " + resource + " with organisation " + org, e);
@@ -385,8 +380,8 @@ public class OverviewAction extends ManagerBaseAction {
         }
       }
     } else {
-      addActionWarning(getText("manage.overview.resource.invalid.operation", new String[]{
-          resource.getShortname(), resource.getStatus().toString()}));
+      addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
+        resource.getStatus().toString()}));
     }
     return execute();
   }
@@ -404,16 +399,36 @@ public class OverviewAction extends ManagerBaseAction {
       try {
         // org = registrationManager.get(resource.getOrganisation());
         resourceManager.updateRegistration(resource, registrationManager.getIpt());
-        addActionMessage(getText("manage.overview.resource.update.registration", new String[]{resource.getShortname()}));
+        addActionMessage(getText("manage.overview.resource.update.registration", new String[] {resource.getShortname()}));
       } catch (RegistryException e) {
         log.error("Cant update registration of resource " + resource + " with organisation " + org, e);
         addActionError(getText("manage.overview.failed.resource.update"));
       }
     } else {
-      addActionWarning(getText("manage.overview.resource.invalid.operation", new String[]{
-          resource.getShortname(), resource.getStatus().toString()}));
+      addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
+        resource.getStatus().toString()}));
     }
     return execute();
+  }
+
+
+  private boolean minimumRegistryInfo(Resource resource) {
+    if (resource == null) {
+      return false;
+    }
+    if (resource.getEml() == null) {
+      return false;
+    }
+    if (resource.getCreator() == null) {
+      return false;
+    }
+    if (resource.getCreator().getEmail() == null) {
+      return false;
+    }
+    if (!resource.isPublished()) {
+      return false;
+    }
+    return true;
   }
 
 }
