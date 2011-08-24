@@ -14,7 +14,11 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.model.ExtensionMapping;
+import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.Resource.CoreRowType;
+import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.utils.CountryUtils;
 import org.gbif.ipt.utils.LangUtils;
@@ -26,10 +30,6 @@ import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.JGTICuratorialUnitType;
 import org.gbif.metadata.eml.TemporalCoverageType;
 
-import com.google.inject.Inject;
-
-import org.apache.commons.lang.StringUtils;
-
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -37,10 +37,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.inject.Inject;
+import org.apache.commons.lang.StringUtils;
+
 /**
  * @author markus
  */
 public class MetadataAction extends ManagerBaseAction {
+
   private ResourceValidator validatorRes = new ResourceValidator();
   private EmlValidator validatorEml = new EmlValidator();
   private String section = "basic";
@@ -53,9 +57,13 @@ public class MetadataAction extends ManagerBaseAction {
   private Map<String, String> licenses;
   private Map<String, String> preservationMethods;
   private Map<String, String> types;
+  @Inject
+  private ExtensionManager extensionManager;
+  private PropertyMapping mappingCoreid;
+  private ExtensionMapping mapping;
 
   private static final List<String> sections = Arrays.asList("basic", "geocoverage", "taxcoverage", "tempcoverage",
-      "keywords", "parties", "project", "methods", "citations", "collections", "physical", "additional");
+    "keywords", "parties", "project", "methods", "citations", "collections", "physical", "additional");
 
   @Inject
   private VocabulariesManager vocabManager;
@@ -117,6 +125,20 @@ public class MetadataAction extends ManagerBaseAction {
 
   public Map<String, String> getLicenses() {
     return licenses;
+  }
+
+  // Return the static list from SubtypeUtils class
+  public Map<String, String> getListSubtypes() {
+    if (resource.getCoreType() != null) {
+      if (resource.getCoreType().toLowerCase().equals(CoreRowType.CHECKLIST.toString().toLowerCase())) {
+        return SubtypeUtils.checklistSubtypeList();
+      } else if (resource.getCoreType().toLowerCase().equals(CoreRowType.OCCURRENCE.toString().toLowerCase())) {
+        return SubtypeUtils.occurrenceSubtypeList();
+      } else if (resource.getCoreType().toLowerCase().equals("other")) {
+        return SubtypeUtils.noSubtypeList();
+      }
+    }
+    return new LinkedHashMap<String, String>(1);
   }
 
   public String getMetadataLanguageIso3() {
@@ -191,16 +213,16 @@ public class MetadataAction extends ManagerBaseAction {
       next = sections.get(0);
     }
     types = new LinkedHashMap<String, String>();
-    types.put("Select a type", "");
-    types.put(StringUtils.capitalize(("" + Resource.CoreRowType.CHECKLIST).toLowerCase()),
-        StringUtils.capitalize(("" + Resource.CoreRowType.CHECKLIST).toLowerCase()));
-    types.put(StringUtils.capitalize(("" + Resource.CoreRowType.OCCURRENCE).toLowerCase()),
-        StringUtils.capitalize(("" + Resource.CoreRowType.OCCURRENCE).toLowerCase()));
+    types.put("", "Select a type");
+    types.put(StringUtils.capitalize((CoreRowType.CHECKLIST).toString().toLowerCase()),
+      StringUtils.capitalize((Resource.CoreRowType.CHECKLIST).toString().toLowerCase()));
+    types.put(StringUtils.capitalize((CoreRowType.OCCURRENCE).toString().toLowerCase()),
+      StringUtils.capitalize((CoreRowType.OCCURRENCE).toString().toLowerCase()));
     types.put("Other", "Other");
     licenses = new LinkedHashMap<String, String>();
     licenses.put(getText("eml.intellectualRights.nolicenses"), "");
     licenses.put(getText("eml.intellectualRights.license.cczero"),
-        getText("eml.intellectualRights.license.cczero.text"));
+      getText("eml.intellectualRights.license.cczero.text"));
     licenses.put(getText("eml.intellectualRights.license.pddl"), getText("eml.intellectualRights.license.pddl.text"));
     licenses.put(getText("eml.intellectualRights.license.odcby"), getText("eml.intellectualRights.license.odcby.text"));
     licenses.put(getText("eml.intellectualRights.license.odbl"), getText("eml.intellectualRights.license.odbl.text"));
@@ -218,19 +240,19 @@ public class MetadataAction extends ManagerBaseAction {
     preservationMethods = new LinkedHashMap<String, String>();
     preservationMethods.put("", getText("eml.preservation.methods.selection"));
     preservationMethods.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_PRESERVATION_METHOD, getLocaleLanguage(),
-        false));
+      false));
 
     if (resource.getEml().getContact().getAddress().getCountry() != null) {
-      resource.getEml().getContact().getAddress().setCountry(
-          CountryUtils.iso2(resource.getEml().getContact().getAddress().getCountry()));
+      resource.getEml().getContact().getAddress()
+        .setCountry(CountryUtils.iso2(resource.getEml().getContact().getAddress().getCountry()));
     }
     if (resource.getEml().resourceCreator().getAddress().getCountry() != null) {
-      resource.getEml().resourceCreator().getAddress().setCountry(
-          CountryUtils.iso2(resource.getEml().resourceCreator().getAddress().getCountry()));
+      resource.getEml().resourceCreator().getAddress()
+        .setCountry(CountryUtils.iso2(resource.getEml().resourceCreator().getAddress().getCountry()));
     }
     if (resource.getEml().getMetadataProvider().getAddress().getCountry() != null) {
-      resource.getEml().getMetadataProvider().getAddress().setCountry(
-          CountryUtils.iso2(resource.getEml().getMetadataProvider().getAddress().getCountry()));
+      resource.getEml().getMetadataProvider().getAddress()
+        .setCountry(CountryUtils.iso2(resource.getEml().getMetadataProvider().getAddress().getCountry()));
     }
 
     if (resource.getEml().getMetadataProvider() != null && resource.getEml().getMetadataProvider().isEmpty()) {
@@ -279,7 +301,7 @@ public class MetadataAction extends ManagerBaseAction {
     if (section.equals("basic")) {
       resourceManager.save(resource);
     }
-    addActionMessage(getText("manage.success", new String[]{getText("submenu." + section)}));
+    addActionMessage(getText("manage.success", new String[] {getText("submenu." + section)}));
     return SUCCESS;
   }
 

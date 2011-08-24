@@ -119,14 +119,14 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     rs.serviceURLs = cfg.getResourceEmlUrl(resource.getShortname());
     if (resource.hasPublishedData()) {
       rs.serviceURLs += "|" + cfg.getResourceArchiveUrl(resource.getShortname());
-      if (DwcTerm.Occurrence.equals(resource.getCoreType())) {
+      if (DwcTerm.Occurrence.equals(resource.getCoreTypeTerm())) {
         log.debug("Registering EML & DwC-A Occurrence Service");
         rs.serviceTypes += "|" + SERVICE_TYPE_OCCURRENCE;
-      } else if (DwcTerm.Taxon.equals(resource.getCoreType())) {
+      } else if (DwcTerm.Taxon.equals(resource.getCoreTypeTerm())) {
         log.debug("Registering EML & DwC-A Checklist Service");
         rs.serviceTypes += "|" + SERVICE_TYPE_CHECKLIST;
       } else {
-        log.warn("Unknown core resource type " + resource.getCoreType());
+        log.warn("Unknown core resource type " + resource.getCoreTypeTerm());
         log.debug("Registering EML & general DwC-A Service");
         rs.serviceTypes += "|" + SERVICE_TYPE_DWCA;
       }

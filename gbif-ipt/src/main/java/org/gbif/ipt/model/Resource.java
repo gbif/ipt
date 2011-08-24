@@ -6,12 +6,6 @@ import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.metadata.eml.Eml;
 
-import static com.google.common.base.Objects.equal;
-
-import com.google.common.base.Objects;
-
-import org.apache.log4j.Logger;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,6 +15,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import com.google.common.base.Objects;
+import org.apache.log4j.Logger;
+
+import static com.google.common.base.Objects.equal;
+
 /**
  * The main class to represent an IPT resource.
  * Its enumerated type property defines the kind of resource (Metadata, Checklist, Occurrence)
@@ -29,6 +28,7 @@ import java.util.UUID;
  * @author markus
  */
 public class Resource implements Serializable, Comparable<Resource> {
+
   public enum CoreRowType {
     OCCURRENCE, CHECKLIST
   }
@@ -40,9 +40,11 @@ public class Resource implements Serializable, Comparable<Resource> {
   private static final long serialVersionUID = 3832626162173352190L;;
   private String shortname; // unique
   private Eml eml = new Eml();
+  private String coreType;
   private String subtype;
   // publication
   private PublicationStatus status = PublicationStatus.PRIVATE;
+
   private int emlVersion = 0;
   private Date lastPublished;
   private int recordsPublished = 0;
@@ -96,7 +98,6 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   /*
    * (non-Javadoc)
-   * 
    * @see java.lang.Comparable#compareTo(java.lang.Object)
    */
   public int compareTo(Resource o) {
@@ -163,7 +164,11 @@ public class Resource implements Serializable, Comparable<Resource> {
     return null;
   }
 
-  public ConceptTerm getCoreType() {
+  public String getCoreType() {
+    return coreType;
+  }
+
+  public ConceptTerm getCoreTypeTerm() {
     List<ExtensionMapping> cores = getCoreMappings();
     if (cores.size() > 0) {
       return fact.findTerm(cores.get(0).getExtension().getRowType());
@@ -301,6 +306,7 @@ public class Resource implements Serializable, Comparable<Resource> {
     return null;
   }
 
+
   public String getTitleOrShortname() {
     if (eml != null) {
       return eml.getTitle();
@@ -312,7 +318,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    * @return true if this resource is mapped to at least one core extension
    */
   public boolean hasCore() {
-    if (getCoreType() != null) {
+    if (getCoreTypeTerm() != null) {
       return true;
     }
     return false;
@@ -343,6 +349,10 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   public boolean isRegistered() {
     return key != null;
+  }
+
+  public void setCoreType(String coreType) {
+    this.coreType = coreType.equals("") ? null : coreType;
   }
 
   public void setCreated(Date created) {
@@ -414,8 +424,9 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   public void setSubtype(String subtype) {
-    this.subtype = subtype;
+    this.subtype = subtype.equals("") ? null : subtype;
   }
+
 
   public void setTitle(String title) {
     if (eml != null) {

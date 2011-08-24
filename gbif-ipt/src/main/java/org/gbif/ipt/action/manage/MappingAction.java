@@ -20,18 +20,15 @@ import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.RecordFilter;
-import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.RecordFilter.Comparator;
+import org.gbif.ipt.model.Resource.CoreRowType;
+import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.Source.FileSource;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.validation.ExtensionMappingValidator;
 import org.gbif.ipt.validation.ExtensionMappingValidator.ValidationStatus;
-
-import com.google.inject.Inject;
-
-import org.apache.commons.lang.xwork.StringUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,6 +38,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
+
+import com.google.inject.Inject;
+import org.apache.commons.lang.xwork.StringUtils;
 
 /**
  * A rather complex action that deals with a single mapping configuration.
@@ -55,6 +55,7 @@ import java.util.regex.Pattern;
  * @author markus
  */
 public class MappingAction extends ManagerBaseAction {
+
   private static final Pattern normTerm = Pattern.compile("[\\W\\s_0-9]+");
   // the resource manager session is populated by the resource interceptor and kept alive for an entire manager session
   @Inject
@@ -85,46 +86,12 @@ public class MappingAction extends ManagerBaseAction {
           addActionWarning(getText(v.getIdProblem(), v.getIdProblemParams()));
         }
         for (ConceptTerm t : v.getMissingRequiredFields()) {
-          addActionWarning(getText("validation.required", new String[]{t.simpleName()}));
+          addActionWarning(getText("validation.required", new String[] {t.simpleName()}));
         }
         for (ConceptTerm t : v.getWrongDataTypeFields()) {
-          addActionWarning(getText("validation.wrong.datatype", new String[]{t.simpleName()}));
+          addActionWarning(getText("validation.wrong.datatype", new String[] {t.simpleName()}));
         }
       }
-    }
-  }
-
-  private void automap() {
-    int automapped = 0;
-    boolean coreidEvaluated = false;
-    for (PropertyMapping f : fields) {
-      int idx = 0;
-      for (String col : columns) {
-        if (col == null) {
-          continue;
-        }
-        col = normTerm.matcher(col.toLowerCase()).replaceAll("");
-        if (col.contains(":")) {
-          col = StringUtils.substringAfter(col, ":");
-        }
-        if (!coreidEvaluated) {
-          if (mappingCoreid.getTerm().simpleNormalisedName().equalsIgnoreCase(col)) {
-            mappingCoreid.setIndex(idx);
-            automapped++;
-            coreidEvaluated = true;
-          }
-        }
-        if (f.getTerm().simpleNormalisedName().equalsIgnoreCase(col)) {
-          f.setIndex(idx);
-          automapped++;
-          break;
-        }
-        idx++;
-      }
-      coreidEvaluated = true;
-    }
-    if (automapped > 0) {
-      addActionMessage(getText("manage.mapping.automaped", new String[]{automapped + ""}));
     }
   }
 
@@ -137,10 +104,10 @@ public class MappingAction extends ManagerBaseAction {
   @Override
   public String delete() {
     if (resource.deleteMapping(mapping)) {
-      addActionMessage(getText("manage.mapping.deleted", new String[]{id}));
+      addActionMessage(getText("manage.mapping.deleted", new String[] {id}));
       saveResource();
     } else {
-      addActionMessage(getText("manage.mapping.couldnt.delete", new String[]{id}));
+      addActionMessage(getText("manage.mapping.couldnt.delete", new String[] {id}));
     }
     return SUCCESS;
   }
@@ -252,8 +219,10 @@ public class MappingAction extends ManagerBaseAction {
         coreRowType = mapping.getExtension().getRowType();
       }
       String coreIdTerm = Constants.DWC_OCCURRENCE_ID;
+      resource.setCoreType(StringUtils.capitalize((CoreRowType.OCCURRENCE).toString().toLowerCase()));
       if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON)) {
         coreIdTerm = Constants.DWC_TAXON_ID;
+        resource.setCoreType(StringUtils.capitalize((CoreRowType.CHECKLIST).toString().toLowerCase()));
       }
       coreid = extensionManager.get(coreRowType).getProperty(coreIdTerm);
       mappingCoreid = mapping.getField(coreid.getQualname());
@@ -276,8 +245,8 @@ public class MappingAction extends ManagerBaseAction {
         }
         // uses a vocabulary?
         if (p.getVocabulary() != null) {
-          vocabTerms.put(p.getVocabulary().getUri(), vocabManager.getI18nVocab(p.getVocabulary().getUri(),
-              getLocaleLanguage(), true));
+          vocabTerms.put(p.getVocabulary().getUri(),
+            vocabManager.getI18nVocab(p.getVocabulary().getUri(), getLocaleLanguage(), true));
         }
         // mapped already?
         PropertyMapping f = mapping.getField(p.getQualname());
@@ -298,22 +267,6 @@ public class MappingAction extends ManagerBaseAction {
         // save, which does the validation, is not called for GET requests
         addWarnings();
       }
-    }
-  }
-
-  private void readSource() {
-    if (mapping.getSource() != null) {
-      peek = sourceManager.peek(mapping.getSource(), 5);
-      // If user wants to import a Darwin Core Archive source without a header lines, the columns should be extracted
-      // from mapping object (meta.xml). Otherwise, read the file/database normally.
-      if (mapping.getSource().isFileSource() && mapping.getFields().size() > 0
-          && ((FileSource) mapping.getSource()).getIgnoreHeaderLines() == 0) {
-        columns = mapping.getColumns();
-      } else {
-        columns = sourceManager.columns(mapping.getSource());
-      }
-    } else {
-      columns = new ArrayList<String>();
     }
   }
 
@@ -365,5 +318,55 @@ public class MappingAction extends ManagerBaseAction {
 
   public void setMid(Integer mid) {
     this.mid = mid;
+  }
+
+  private void automap() {
+    int automapped = 0;
+    boolean coreidEvaluated = false;
+    for (PropertyMapping f : fields) {
+      int idx = 0;
+      for (String col : columns) {
+        if (col == null) {
+          continue;
+        }
+        col = normTerm.matcher(col.toLowerCase()).replaceAll("");
+        if (col.contains(":")) {
+          col = StringUtils.substringAfter(col, ":");
+        }
+        if (!coreidEvaluated) {
+          if (mappingCoreid.getTerm().simpleNormalisedName().equalsIgnoreCase(col)) {
+            mappingCoreid.setIndex(idx);
+            automapped++;
+            coreidEvaluated = true;
+          }
+        }
+        if (f.getTerm().simpleNormalisedName().equalsIgnoreCase(col)) {
+          f.setIndex(idx);
+          automapped++;
+          break;
+        }
+        idx++;
+      }
+      coreidEvaluated = true;
+    }
+    if (automapped > 0) {
+      addActionMessage(getText("manage.mapping.automaped", new String[] {automapped + ""}));
+    }
+  }
+
+  private void readSource() {
+    if (mapping.getSource() != null) {
+      peek = sourceManager.peek(mapping.getSource(), 5);
+      // If user wants to import a Darwin Core Archive source without a header lines, the columns should be extracted
+      // from mapping object (meta.xml). Otherwise, read the file/database normally.
+      if (mapping.getSource().isFileSource() && mapping.getFields().size() > 0
+        && ((FileSource) mapping.getSource()).getIgnoreHeaderLines() == 0) {
+        columns = mapping.getColumns();
+      } else {
+        columns = sourceManager.columns(mapping.getSource());
+      }
+    } else {
+      columns = new ArrayList<String>();
+    }
   }
 }

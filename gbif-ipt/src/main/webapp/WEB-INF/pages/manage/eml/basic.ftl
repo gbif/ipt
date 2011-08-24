@@ -3,57 +3,32 @@
 <title><@s.text name='manage.metadata.basic.title'/></title>
 <script type="text/javascript">
 	$(document).ready(function(){
-		initHelp();			
-		 	function getList(list){
+		initHelp();	
+		 			 	
+			var resourceType = "${resource.coreTypeTerm!}";
+			if(resourceType!=""){
+				if(resourceType.indexOf("Occurrence")!=-1){					
+					$("#resource\\.coreType").attr('disabled','disabled');	
+				}else{					
+					if (resourceType.indexOf("Taxon")!=-1){						
+						$("#resource\\.coreType").attr('disabled','disabled');	
+					}
+				}
+			}	
+						
+			function getList(list){
 				var arr=  list.split(",");
 				var newlistaOccurrence={};
 				for(index in arr ){
 					var val=arr[index].replace(/{|}/g,'');
 					var arr2=val.split('=');
-					newlistaOccurrence[(arr2[0].trim())]=(arr2[1].trim());
+					newlistaOccurrence[""+(arr2[0]).trim()]=(arr2[1]).trim();
 				}
 				return newlistaOccurrence;
 			}
 			
-			var resourceType = "${resource.coreType!}";	
-			if(resourceType==""){
-				$("#type").attr('selectedIndex', '0');
-				var subtype="${resource.subtype!}";
-				if(subtype!=""){
-					var opcion=getKey(getList("${occurrenceSubtypes}"),subtype);
-					if(opcion!=""){
-						$("#type").attr('selectedIndex', '2');
-					}else{
-						opcion=getKey(getList("${checklistSubtypes}"),subtype);
-						if(opcion!=""){
-							$("#type").attr('selectedIndex', '1');
-						}else{
-							$("#type").attr('selectedIndex', '3');
-						}
-					}
-				}
-			}else{
-				if(resourceType.indexOf("Occurrence")!=-1){					
-					$("#type").attr('disabled','disabled');	
-				}else{					
-					if (resourceType.indexOf("Taxon")!=-1){						
-						$("#type").attr('disabled','disabled');	
-					}
-				}
-			}	
-			
-			function getKey(map, variable){
-				 var val="";
-				$.each(map, function(key, value) {
-					  if(variable==key.trim()){
-						  val = value;
-					  }
-				});
-				return val;
-			}
-			
-			$("#type").change(function(){
-				var optionType=$("#type").val();
+			$("#resource\\.coreType").change(function(){
+				var optionType=$("#resource\\.coreType").val();
 				$("#resource\\.subtype").attr('selectedIndex', '0');
 				switch(optionType)
 		        {
@@ -71,8 +46,13 @@
 		    				$('#resource\\.subtype').append( new Option(value,key) );
 		    			});
 		            break;
+		            case 'Other':
+		            	$('#resource\\.subtype >option').remove();	
+		            	$('#resource\\.subtype').append( new Option("No subtype","") );
+		    		break;	
 		            default:
-		            	$('#resource\\.subtype >option').remove();	            	
+		            	$('#resource\\.subtype >option').remove();
+		            	$('#resource\\.subtype').append( new Option("","") );	            	
 		            break;
 		        }
 			});
@@ -124,56 +104,14 @@
 	  	<@select name="eml.metadataLanguage" help="i18n" options=languages value="${metadataLanguageIso3!'eng'}" />
 	</div>
 	<div class="halfcolumn">
-  	<@select name="eml.language" help="i18n" options=languages value="${languageIso3!'eng'}" />
-	</div>
-
-	<#assign coreType="${resource.coreType!}" />
-	<div class="halfcolumn">
-	<label for="type"><@s.text name="resource.type"/></label>	
-	<div class="infos">	  
-	<img class="infoImg" src="${baseURL}/images/info.gif" />
-	<div class="info">		
-	<span class="idSuffix">
-		<@s.text name='resource.type.help'/>            	
-	</span>         		
-	</div>		
-	
-	<select name="type" id="type">
-		<#list types?keys as type>
-		<#if coreType?contains("Taxon") && ("${types[type]}")=="Checklist"> 
-			<option value="${types[type]}" selected="selected">${type}</option>
-		<#elseif coreType?contains("Occurrence") && ("${types[type]}")=="Occurrence">
-			<option value="${types[type]}" selected="selected">${type}</option>
-		<#else>
-			<option value="${types[type]}">${type}</option>
-		</#if>
-		</#list>
-	</select>
+  		<@select name="eml.language" help="i18n" options=languages value="${languageIso3!'eng'}" />
 	</div>	
+	<div class="halfcolumn">
+		<@select name="resource.coreType" help="i18n" options=types value="${resource.coreType!''}"/>
 	</div>	
 	<div class="halfcolumn" id="selectSubtypeDiv">	
-	<#if coreType?contains("Taxon") >
-		<@select name="resource.subtype" help="i18n" options=checklistSubtypes value="${resource.subtype!''}" />
-	<#elseif coreType?contains("Occurrence")>	
-		<@select name="resource.subtype" help="i18n" options=occurrenceSubtypes value="${resource.subtype!''}" />
-	<#else>
-		<#assign subtype="${resource.subtype!}" />
-		<#assign listChecklist=checklistSubtypes?keys />
-		<#assign listOccurrence=occurrenceSubtypes?keys />
-		<#if subtype?has_content >	
-			<#if listOccurrence?seq_contains(subtype)>
-				<@select name="resource.subtype" help="i18n" options=occurrenceSubtypes value="${resource.subtype!''}" />	
-			<#elseif listChecklist?seq_contains(subtype)>
-				<@select name="resource.subtype" help="i18n" options=checklistSubtypes value="${resource.subtype!''}" />
-			<#else>
-				<@select name="resource.subtype" help="i18n" options={} />
-			</#if>
-		<#else>
-			<@select name="resource.subtype" help="i18n" options={} />
-		</#if>
-	</#if>		
-  	</div>  
-	
+		<@select name="resource.subtype" help="i18n" options=listSubtypes value="${resource.subtype!''}" />	
+  	</div>	
   	<div class="newline"></div>
   	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
   	
