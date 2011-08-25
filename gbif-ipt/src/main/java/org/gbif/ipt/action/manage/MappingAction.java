@@ -95,6 +95,40 @@ public class MappingAction extends ManagerBaseAction {
     }
   }
 
+  private void automap() {
+    int automapped = 0;
+    boolean coreidEvaluated = false;
+    for (PropertyMapping f : fields) {
+      int idx = 0;
+      for (String col : columns) {
+        if (col == null) {
+          continue;
+        }
+        col = normTerm.matcher(col.toLowerCase()).replaceAll("");
+        if (col.contains(":")) {
+          col = StringUtils.substringAfter(col, ":");
+        }
+        if (!coreidEvaluated) {
+          if (mappingCoreid.getTerm().simpleNormalisedName().equalsIgnoreCase(col)) {
+            mappingCoreid.setIndex(idx);
+            automapped++;
+            coreidEvaluated = true;
+          }
+        }
+        if (f.getTerm().simpleNormalisedName().equalsIgnoreCase(col)) {
+          f.setIndex(idx);
+          automapped++;
+          break;
+        }
+        idx++;
+      }
+      coreidEvaluated = true;
+    }
+    if (automapped > 0) {
+      addActionMessage(getText("manage.mapping.automaped", new String[] {automapped + ""}));
+    }
+  }
+
   public String cancel() {
     resource.deleteMapping(mapping);
     saveResource();
@@ -270,6 +304,22 @@ public class MappingAction extends ManagerBaseAction {
     }
   }
 
+  private void readSource() {
+    if (mapping.getSource() != null) {
+      peek = sourceManager.peek(mapping.getSource(), 5);
+      // If user wants to import a Darwin Core Archive source without a header lines, the columns should be extracted
+      // from mapping object (meta.xml). Otherwise, read the file/database normally.
+      if (mapping.getSource().isFileSource() && mapping.getFields().size() > 0
+        && ((FileSource) mapping.getSource()).getIgnoreHeaderLines() == 0) {
+        columns = mapping.getColumns();
+      } else {
+        columns = sourceManager.columns(mapping.getSource());
+      }
+    } else {
+      columns = new ArrayList<String>();
+    }
+  }
+
   @Override
   public String save() throws IOException {
     // a new mapping?
@@ -318,55 +368,5 @@ public class MappingAction extends ManagerBaseAction {
 
   public void setMid(Integer mid) {
     this.mid = mid;
-  }
-
-  private void automap() {
-    int automapped = 0;
-    boolean coreidEvaluated = false;
-    for (PropertyMapping f : fields) {
-      int idx = 0;
-      for (String col : columns) {
-        if (col == null) {
-          continue;
-        }
-        col = normTerm.matcher(col.toLowerCase()).replaceAll("");
-        if (col.contains(":")) {
-          col = StringUtils.substringAfter(col, ":");
-        }
-        if (!coreidEvaluated) {
-          if (mappingCoreid.getTerm().simpleNormalisedName().equalsIgnoreCase(col)) {
-            mappingCoreid.setIndex(idx);
-            automapped++;
-            coreidEvaluated = true;
-          }
-        }
-        if (f.getTerm().simpleNormalisedName().equalsIgnoreCase(col)) {
-          f.setIndex(idx);
-          automapped++;
-          break;
-        }
-        idx++;
-      }
-      coreidEvaluated = true;
-    }
-    if (automapped > 0) {
-      addActionMessage(getText("manage.mapping.automaped", new String[] {automapped + ""}));
-    }
-  }
-
-  private void readSource() {
-    if (mapping.getSource() != null) {
-      peek = sourceManager.peek(mapping.getSource(), 5);
-      // If user wants to import a Darwin Core Archive source without a header lines, the columns should be extracted
-      // from mapping object (meta.xml). Otherwise, read the file/database normally.
-      if (mapping.getSource().isFileSource() && mapping.getFields().size() > 0
-        && ((FileSource) mapping.getSource()).getIgnoreHeaderLines() == 0) {
-        columns = mapping.getColumns();
-      } else {
-        columns = sourceManager.columns(mapping.getSource());
-      }
-    } else {
-      columns = new ArrayList<String>();
-    }
   }
 }
