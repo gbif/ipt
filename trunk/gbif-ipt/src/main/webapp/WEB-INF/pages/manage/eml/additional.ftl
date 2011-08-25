@@ -13,20 +13,18 @@
 		
 		var optionSelected=$(this).find("option:selected").text();
 		if($.trim(optionSelected)=='<@s.text name="eml.intellectualRights.nolicenses"/>'){
-			$('.confirm').unbind('click');
-			if(("${eml.intellectualRights!}")==""){
-				$("#licenseList").val('<@s.text name="eml.intellectualRights.license.cczero.text"/>');
-				$("#eml\\.intellectualRights").val('<@s.text name="eml.intellectualRights.license.cczero.text"/>');
-			}
+			$('.confirm').unbind('click');			
 		}		
 		$("#licenseList").change(function(){
+			$('.confirm').unbind('click');
 			$("#disclaimerRigths").css('display', '');
 			var nameRights=$("#licenseList").val();
 			$("#eml\\.intellectualRights").val(nameRights);	
 			var optionSelected=$(this).find("option:selected").text();
 			if($.trim(optionSelected)=='<@s.text name="eml.intellectualRights.nolicenses"/>'){
-				$("#disclaimerRigths").css('display', 'none');
-				$('.confirm').unbind('click');
+				$("#disclaimerRigths").css('display', 'none');				
+			}else{
+				$('.confirm').jConfirmAction({question : "<@s.text name="eml.intellectualRights.licenses.confirmation"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
 			}
 		});	
 				
