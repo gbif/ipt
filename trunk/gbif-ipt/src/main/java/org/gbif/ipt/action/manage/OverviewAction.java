@@ -254,6 +254,25 @@ public class OverviewAction extends ManagerBaseAction {
     return execute();
   }
 
+  private boolean minimumRegistryInfo(Resource resource) {
+    if (resource == null) {
+      return false;
+    }
+    if (resource.getEml() == null) {
+      return false;
+    }
+    if (resource.getCreator() == null) {
+      return false;
+    }
+    if (resource.getCreator().getEmail() == null) {
+      return false;
+    }
+    if (!resource.isPublished()) {
+      return false;
+    }
+    return true;
+  }
+
   @Override
   public void prepare() throws Exception {
     super.prepare();
@@ -390,6 +409,7 @@ public class OverviewAction extends ManagerBaseAction {
     this.unpublish = StringUtils.trimToNull(unpublish) != null;
   }
 
+
   public String updateRegistered() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
@@ -409,26 +429,6 @@ public class OverviewAction extends ManagerBaseAction {
         resource.getStatus().toString()}));
     }
     return execute();
-  }
-
-
-  private boolean minimumRegistryInfo(Resource resource) {
-    if (resource == null) {
-      return false;
-    }
-    if (resource.getEml() == null) {
-      return false;
-    }
-    if (resource.getCreator() == null) {
-      return false;
-    }
-    if (resource.getCreator().getEmail() == null) {
-      return false;
-    }
-    if (!resource.isPublished()) {
-      return false;
-    }
-    return true;
   }
 
 }
