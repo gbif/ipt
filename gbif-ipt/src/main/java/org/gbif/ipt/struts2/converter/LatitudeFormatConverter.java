@@ -20,7 +20,7 @@ import org.apache.commons.lang.xwork.math.DoubleRange;
 import org.apache.struts2.util.StrutsTypeConverter;
 
 /**
- * This class validate if the longitude field value is a decimal number.
+ * This class validate if the latitude field value is a decimal number.
  * 
  * @author julieth
  */
