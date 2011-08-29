@@ -1,4 +1,4 @@
-<#escape x as x?html>
+ <#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name='manage.metadata.basic.title'/></title>
 <script type="text/javascript">
@@ -22,7 +22,7 @@
 				for(index in arr ){
 					var val=arr[index].replace(/{|}/g,'');
 					var arr2=val.split('=');
-					newlistaOccurrence[""+(arr2[0]).trim()]=(arr2[1]).trim();
+					newlistaOccurrence[""+arr2[0]]=arr2[1];
 				}
 				return newlistaOccurrence;
 			}
@@ -30,29 +30,30 @@
 			$("#resource\\.coreType").change(function(){
 				var optionType=$("#resource\\.coreType").val();
 				$("#resource\\.subtype").attr('selectedIndex', '0');
+				$("#resource\\.subtype").css("width", "310px");
 				switch(optionType)
 		        {
 		            case 'Occurrence':
 		            	$('#resource\\.subtype >option').remove();
 		            	var list=getList("${occurrenceSubtypes}");
 		            	$.each(list, function(key, value) {
-		    				$('#resource\\.subtype').append( new Option(value,key) );
+		    				$('#resource\\.subtype').append('<option value='+key+'>'+value+'</option>');
 		    			});          	
 		            break;
 		            case 'Checklist':
 		            	$('#resource\\.subtype >option').remove();	
 		            	var list=getList("${checklistSubtypes}");
 		            	$.each(list, function(key, value) {
-		    				$('#resource\\.subtype').append( new Option(value,key) );
+		    				$('#resource\\.subtype').append('<option value='+key+'>'+value+'</option>');
 		    			});
 		            break;
 		            case 'Other':
 		            	$('#resource\\.subtype >option').remove();	
-		            	$('#resource\\.subtype').append( new Option("No subtype","") );
+		            	$('#resource\\.subtype').append('<option value="">No subtype</option>');
 		    		break;	
 		            default:
 		            	$('#resource\\.subtype >option').remove();
-		            	$('#resource\\.subtype').append( new Option("","") );	            	
+		            	$('#resource\\.subtype').append('<option value=""></option>');	            	
 		            break;
 		        }
 			});
