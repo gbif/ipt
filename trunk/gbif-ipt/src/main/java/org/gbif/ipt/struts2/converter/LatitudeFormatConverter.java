@@ -15,12 +15,11 @@ package org.gbif.ipt.struts2.converter;
 
 import java.util.Map;
 
-import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang.xwork.math.DoubleRange;
 import org.apache.struts2.util.StrutsTypeConverter;
 
 /**
- * This class validate if the latitude field value is a decimal number.
+ * This class validates if the latitude field value is a decimal number.
  * 
  * @author julieth
  */
@@ -31,8 +30,9 @@ public class LatitudeFormatConverter extends StrutsTypeConverter {
     // The latitude is validating in a range of doubles
     DoubleRange range = new DoubleRange(-90, 90);
     try {
-      if (range.containsDouble(Double.parseDouble(values[0]))) {
-        return NumberUtils.toDouble(values[0]);
+      Double decimal = Double.parseDouble(values[0].replaceAll(",", "."));
+      if (range.containsDouble(decimal)) {
+        return decimal;
       }
     } catch (NumberFormatException e) {
     }
