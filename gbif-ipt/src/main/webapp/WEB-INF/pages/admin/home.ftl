@@ -1,9 +1,13 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
  <title><@s.text name="title"/></title>
- <#assign currentMenu = "admin"/>
+<script type="text/javascript">
+	$(document).ready(function(){
+		initHelp();
+	});
+</script>
+
+<#assign currentMenu = "admin"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
-
-
 <table id="admintable">
 	<tr>
 	  <td>
@@ -13,9 +17,13 @@
 		<@s.text name="admin.home.editConfig"/>
 	  </td>
 	  <td width="250px">
-	  <@s.form cssClass="topForm half" action="updateResourceMetadata.do" method="post">
-			<@s.submit cssClass="button" name="updateMetadata" key="admin.home.updateMetadata"/>
-		</@s.form>
+	  <@s.form cssClass="topForm" action="updateResourceMetadata.do" method="post">	  		
+	        <img class="infoImg" src="${baseURL}/images/info.gif" />
+			<div class="info">
+				<@s.text name="admin.home.publishResources.help"/>
+	        </div>
+		    <@s.submit cssClass="button" name="updateMetadata" key="admin.home.publishResources"/>
+	  </@s.form>
 	  </td>
 	</tr>
 	<tr>
