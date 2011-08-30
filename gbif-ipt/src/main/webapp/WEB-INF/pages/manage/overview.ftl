@@ -273,10 +273,7 @@ $(document).ready(function(){
  	  <#if resource.status=="PRIVATE">
  	    <#assign action>makePublic</#assign>
  	  </#if>
- 	  <#if resource.status=="REGISTERED">
- 	    <#assign action>updateRegistered</#assign>
- 	  </#if>
-      
+ 	  
       <form action='resource-${action}.do' method='post'>
 	    <input name="r" type="hidden" value="${resource.shortname}" />
 	    <#if resource.status=="PUBLIC">
@@ -295,12 +292,10 @@ $(document).ready(function(){
 		<#else>
 		    <#if resource.status=="PRIVATE">
 	       	  <@s.submit name="publish" key="button.public"/>
-			</#if>
-		    <#if resource.status=="REGISTERED">
-	       	  <@s.submit name="update" key="button.update"/>
-			</#if>			
+			</#if>		    		
 		</#if>
   	  </form>
+ 	  
   	  <#if resource.status=="PUBLIC">
  	    <#assign action>makePrivate</#assign>
  	    <form action='resource-${action}.do' method='post'>
