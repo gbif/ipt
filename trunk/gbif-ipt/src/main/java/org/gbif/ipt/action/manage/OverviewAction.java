@@ -5,8 +5,8 @@ import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.Resource.CoreRowType;
 import org.gbif.ipt.model.User;
+import org.gbif.ipt.model.Resource.CoreRowType;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.DeletionNotAllowedException;
@@ -408,27 +408,4 @@ public class OverviewAction extends ManagerBaseAction {
   public void setUnpublish(String unpublish) {
     this.unpublish = StringUtils.trimToNull(unpublish) != null;
   }
-
-
-  public String updateRegistered() throws Exception {
-    if (resource == null) {
-      return NOT_FOUND;
-    }
-    if (PublicationStatus.REGISTERED == resource.getStatus()) {
-      Organisation org = null;
-      try {
-        // org = registrationManager.get(resource.getOrganisation());
-        resourceManager.updateRegistration(resource, registrationManager.getIpt());
-        addActionMessage(getText("manage.overview.resource.update.registration", new String[] {resource.getShortname()}));
-      } catch (RegistryException e) {
-        log.error("Cant update registration of resource " + resource + " with organisation " + org, e);
-        addActionError(getText("manage.overview.failed.resource.update"));
-      }
-    } else {
-      addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
-        resource.getStatus().toString()}));
-    }
-    return execute();
-  }
-
 }
