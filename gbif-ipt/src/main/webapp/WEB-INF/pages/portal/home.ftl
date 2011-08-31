@@ -16,6 +16,7 @@
 		<th><@s.text name="manage.home.subtype"/></th>
 		<th><@s.text name="portal.home.records"/></th>
 		<th><@s.text name="portal.home.modified"/></th>
+		<th><@s.text name="portal.home.last.publication" /></th>
 		<th><@s.text name="portal.home.author"/></th>
 	</tr>
 <#list resources as r>
@@ -35,6 +36,13 @@
 	<td>${r.subtype!"---"}</td>
 	<td>${r.recordsPublished!0}</td>
 	<td>${r.modified?date}</td>
+	<td>
+		<#if r.published>
+			${(r.lastPublished?date)!}
+		<#else>			
+			<@s.text name="portal.home.not.published"/>
+		</#if>	
+	</td>
 	<td>${r.creator.firstname!} ${r.creator.lastname!}</td>
   </tr>
 </#list>
