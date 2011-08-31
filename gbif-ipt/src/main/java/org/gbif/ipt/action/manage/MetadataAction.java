@@ -62,8 +62,9 @@ public class MetadataAction extends ManagerBaseAction {
   private PropertyMapping mappingCoreid;
   private ExtensionMapping mapping;
 
-  private static final List<String> sections = Arrays.asList("basic", "geocoverage", "taxcoverage", "tempcoverage",
-    "keywords", "parties", "project", "methods", "citations", "collections", "physical", "additional");
+  private static final List<String> sections =
+    Arrays.asList("basic", "geocoverage", "taxcoverage", "tempcoverage", "keywords", "parties", "project", "methods",
+      "citations", "collections", "physical", "additional");
 
   @Inject
   private VocabulariesManager vocabManager;
@@ -214,10 +215,10 @@ public class MetadataAction extends ManagerBaseAction {
     }
     types = new LinkedHashMap<String, String>();
     types.put("", "Select a type");
-    types.put(StringUtils.capitalize((CoreRowType.CHECKLIST).toString().toLowerCase()),
-      StringUtils.capitalize((Resource.CoreRowType.CHECKLIST).toString().toLowerCase()));
-    types.put(StringUtils.capitalize((CoreRowType.OCCURRENCE).toString().toLowerCase()),
-      StringUtils.capitalize((CoreRowType.OCCURRENCE).toString().toLowerCase()));
+    types.put(StringUtils.capitalize((CoreRowType.CHECKLIST).toString().toLowerCase()), StringUtils
+      .capitalize((Resource.CoreRowType.CHECKLIST).toString().toLowerCase()));
+    types.put(StringUtils.capitalize((CoreRowType.OCCURRENCE).toString().toLowerCase()), StringUtils
+      .capitalize((CoreRowType.OCCURRENCE).toString().toLowerCase()));
     types.put("Other", "Other");
     licenses = new LinkedHashMap<String, String>();
     licenses.put(getText("eml.intellectualRights.nolicenses"), "");
@@ -243,16 +244,16 @@ public class MetadataAction extends ManagerBaseAction {
       false));
 
     if (resource.getEml().getContact().getAddress().getCountry() != null) {
-      resource.getEml().getContact().getAddress()
-        .setCountry(CountryUtils.iso2(resource.getEml().getContact().getAddress().getCountry()));
+      resource.getEml().getContact().getAddress().setCountry(
+        CountryUtils.iso2(resource.getEml().getContact().getAddress().getCountry()));
     }
     if (resource.getEml().resourceCreator().getAddress().getCountry() != null) {
-      resource.getEml().resourceCreator().getAddress()
-        .setCountry(CountryUtils.iso2(resource.getEml().resourceCreator().getAddress().getCountry()));
+      resource.getEml().resourceCreator().getAddress().setCountry(
+        CountryUtils.iso2(resource.getEml().resourceCreator().getAddress().getCountry()));
     }
     if (resource.getEml().getMetadataProvider().getAddress().getCountry() != null) {
-      resource.getEml().getMetadataProvider().getAddress()
-        .setCountry(CountryUtils.iso2(resource.getEml().getMetadataProvider().getAddress().getCountry()));
+      resource.getEml().getMetadataProvider().getAddress().setCountry(
+        CountryUtils.iso2(resource.getEml().getMetadataProvider().getAddress().getCountry()));
     }
 
     if (resource.getEml().getMetadataProvider() != null && resource.getEml().getMetadataProvider().isEmpty()) {
@@ -298,9 +299,6 @@ public class MetadataAction extends ManagerBaseAction {
   @Override
   public String save() throws Exception {
     resourceManager.saveEml(resource);
-    if (section.equals("basic")) {
-      resourceManager.save(resource);
-    }
     addActionMessage(getText("manage.success", new String[] {getText("submenu." + section)}));
     return SUCCESS;
   }
