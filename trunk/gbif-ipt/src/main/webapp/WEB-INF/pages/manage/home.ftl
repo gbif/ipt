@@ -16,6 +16,7 @@
 		<th><@s.text name="manage.home.subtype"/></th>
 		<th><@s.text name="manage.home.records"/></th>
 		<th><@s.text name="manage.home.last.modified"/></th>
+		<th><@s.text name="manage.home.last.publication" /></th>
 		<th><@s.text name="manage.home.visible"/></th>
 		<#-- see if the ADMIN has enabled registrations -->
 		<#-- if registrationAllowed -->
@@ -30,6 +31,13 @@
 	<td>${r.subtype!"---"}</td>
 	<td>${r.recordsPublished!0}</td>
 	<td>${r.modified?date}</td>
+	<td>
+		<#if r.published>
+			${(r.lastPublished?date)!}
+		<#else>			
+			<@s.text name="portal.home.not.published"/>
+		</#if>	
+	</td>
 	<td>
 		<#if r.status=='PRIVATE'>
 			<@s.text name="manage.home.visible.private"/>
