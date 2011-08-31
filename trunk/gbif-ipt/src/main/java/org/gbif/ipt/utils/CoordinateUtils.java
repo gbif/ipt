@@ -6,8 +6,13 @@ import java.text.DecimalFormat;
  * @author htobon
  */
 public class CoordinateUtils {
+
   public final static String LATITUDE = "LAT";
   public final static String LONGITUDE = "LON";
+  public static final double MIN_LONGITUDE = -180;
+  public static final double MAX_LONGITUDE = 180;
+  public static final double MIN_LATITUDE = -90;
+  public static final double MAX_LATITUDE = 90;
 
   /**
    * This method convert a coordinate from decimal to degrees, minutes, seconds format (DMS).

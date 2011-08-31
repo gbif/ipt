@@ -13,38 +13,22 @@
 
 package org.gbif.ipt.struts2.converter;
 
+import org.gbif.ipt.utils.CoordinateUtils;
+
 import java.util.Map;
 
-import org.apache.commons.lang.xwork.math.DoubleRange;
-import org.apache.struts2.util.StrutsTypeConverter;
 
 /**
  * This class validates if the longitude field value is a decimal number.
  * 
  * @author julieth
  */
-public class LongitudeFormatConverter extends StrutsTypeConverter {
+public class LongitudeFormatConverter extends CoordinateFormatConverter {
 
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {
-    // The longitude is validating in a range of doubles
-    DoubleRange range = new DoubleRange(-180, 180);
-    try {
-      Double decimal = Double.parseDouble(values[0].replaceAll(",", "."));
-      if (range.containsDouble(decimal)) {
-        return decimal;
-      }
-    } catch (NumberFormatException e) {
-    }
-    return null;
-  }
-
-  @Override
-  public String convertToString(Map context, Object o) {
-    if (o instanceof Double) {
-      return ((Double) o).toString();
-    }
-    return null;
+    context.put("coordinate.angle", CoordinateUtils.LONGITUDE);
+    return super.convertFromString(context, values, toClass);
   }
 
 }

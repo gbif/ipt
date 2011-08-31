@@ -14,58 +14,63 @@
 package org.gbif.ipt.validation;
 
 import org.gbif.ipt.struts2.converter.LatitudeFormatConverter;
-import org.gbif.ipt.struts2.converter.LongitudeFormatConverter;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 /**
- * Unit test for latitudeFormatConverter class.
+ * Unit test for LatitudeFormatConverter class.
  * 
  * @author julieth
  */
+@RunWith(value = Parameterized.class)
 public class LatitudeFormatConverterTest {
 
-  @Test
-  public void testConvertFromString() {
-    LatitudeFormatConverter latitudeFormat = new LatitudeFormatConverter();
-    // The decimal will be in the range -90 to 90
-    // The commas are converted in periods
-    assertNotNull((latitudeFormat.convertFromString(null, new String[] {"-90"}, null)));
-    assertNotNull((latitudeFormat.convertFromString(null, new String[] {"90"}, null)));
-    assertNotNull((latitudeFormat.convertFromString(null, new String[] {"-1,1"}, null)));
-    assertNotNull((latitudeFormat.convertFromString(null, new String[] {"1,1"}, null)));
-    assertNotNull((latitudeFormat.convertFromString(null, new String[] {"-1.1"}, null)));
-    assertNotNull((latitudeFormat.convertFromString(null, new String[] {"1.1"}, null)));
-    assertNotNull((latitudeFormat.convertFromString(null, new String[] {"-0,"}, null)));
-    assertNotNull((latitudeFormat.convertFromString(null, new String[] {"0"}, null)));
-    assertNotNull((latitudeFormat.convertFromString(null, new String[] {",7"}, null)));
-    assertNotNull((latitudeFormat.convertFromString(null, new String[] {".7"}, null)));
-    assertNotNull((latitudeFormat.convertFromString(null, new String[] {"87,3"}, null)));
-    // Values outside the range are nulls
-    assertNull((latitudeFormat.convertFromString(null, new String[] {"abc"}, null)));
-    assertNull((latitudeFormat.convertFromString(null, new String[] {";/&@#,."}, null)));
-    assertNull((latitudeFormat.convertFromString(null, new String[] {"0,,56"}, null)));
-    assertNull((latitudeFormat.convertFromString(null, new String[] {""}, null)));
-    assertNull((latitudeFormat.convertFromString(null, new String[] {" "}, null)));
-    assertNull((latitudeFormat.convertFromString(null, new String[] {"-90.01"}, null)));
-    assertNull((latitudeFormat.convertFromString(null, new String[] {"90.01"}, null)));
+  // Variables used in convertFromStringTest method
+  private Double expectedDouble;
+  private String[] firstTestValue;
+
+
+  public LatitudeFormatConverterTest(Double expectedDouble, String[] firstTestValue) {
+    this.expectedDouble = expectedDouble;
+    this.firstTestValue = firstTestValue;
+  }
+
+  @Parameters
+  public static Collection<Object[]> getTestParameters() {
+    // Object list in which each object contains: A expected value (double) and an incoming value to test (String[]).
+    // (expectedDouble, firstTestvalue).
+    ArrayList<Object[]> list = new ArrayList<Object[]>();
+    list.add(new Object[] {4.5, new String[] {"4.5"}});
+    list.add(new Object[] {4.5, new String[] {"4,5"}});
+    list.add(new Object[] {90.0, new String[] {"90.0"}});
+    list.add(new Object[] {-90.0, new String[] {"-90.0"}});
+    list.add(new Object[] {-89.99999, new String[] {"-89.99999"}});
+    list.add(new Object[] {-0.0, new String[] {"-0"}});
+    list.add(new Object[] {0.0, new String[] {"0.0"}});
+    list.add(new Object[] {0.7, new String[] {",7"}});
+    list.add(new Object[] {null, new String[] {""}});
+    list.add(new Object[] {null, new String[] {" "}});
+    list.add(new Object[] {null, new String[] {"abc"}});
+    list.add(new Object[] {null, new String[] {"-90.01"}});
+    list.add(new Object[] {null, new String[] {"90.01"}});
+    list.add(new Object[] {null, new String[] {"@#$%"}});
+
+    return list;
   }
 
   @Test
-  public void testConvertToStringTest() {
-    // Converts Double to String
-    LongitudeFormatConverter longitudeFormat = new LongitudeFormatConverter();
-    assertEquals((longitudeFormat.convertToString(null, new Double("4.5"))), "4.5");
-    assertEquals((longitudeFormat.convertToString(null, new Double("90.0"))), "90.0");
-    assertEquals((longitudeFormat.convertToString(null, new Double("90.00"))), "90.0");
-    assertEquals((longitudeFormat.convertToString(null, new Double("-90.00"))), "-90.0");
-    assertEquals((longitudeFormat.convertToString(null, new Double("-89.9999999999"))), "-89.9999999999");
-    assertEquals((longitudeFormat.convertToString(null, "")), null);
-    assertEquals((longitudeFormat.convertToString(null, "abc")), null);
-    assertEquals((longitudeFormat.convertToString(null, "4.5")), null);
+  public void convertFromStringTest() {
+    LatitudeFormatConverter latitudeFormat = new LatitudeFormatConverter();
+    assertEquals(expectedDouble, (latitudeFormat.convertFromString(new HashMap(), firstTestValue, null)));
   }
+
 }
