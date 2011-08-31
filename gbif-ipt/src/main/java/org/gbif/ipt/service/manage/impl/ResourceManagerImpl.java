@@ -13,6 +13,7 @@ import org.gbif.dwc.text.ArchiveFile;
 import org.gbif.dwc.text.UnsupportedArchiveException;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
@@ -21,6 +22,7 @@ import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.Resource.CoreRowType;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.Source.FileSource;
 import org.gbif.ipt.model.Source.SqlSource;
@@ -277,6 +279,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         FileSource s = importSource(alog, resource, arch.getCore());
         sources.put(arch.getCore().getLocation(), s);
         ExtensionMapping map = importMappings(alog, arch.getCore(), s);
+        String coreRowType = arch.getCore().getRowType();
+        // Set the coreType for the resource
+        if (coreRowType != null) {
+          resource.setCoreType(StringUtils.capitalize((CoreRowType.OCCURRENCE).toString().toLowerCase()));
+          if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON)) {
+            resource.setCoreType(StringUtils.capitalize((CoreRowType.CHECKLIST).toString().toLowerCase()));
+          }
+        }
         resource.addMapping(map);
         // read extension sources+mappings
         for (ArchiveFile ext : arch.getExtensions()) {
