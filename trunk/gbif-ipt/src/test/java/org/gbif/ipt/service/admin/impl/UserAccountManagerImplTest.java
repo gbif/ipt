@@ -26,6 +26,7 @@ import org.gbif.ipt.service.manage.ResourceManager;
 
 import java.io.IOException;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.mockito.Mockito.mock;
@@ -50,6 +51,7 @@ public class UserAccountManagerImplTest {
   }
 
 
+  @Ignore
   @Test
   public void testCreate() {
     User admin = new User();
