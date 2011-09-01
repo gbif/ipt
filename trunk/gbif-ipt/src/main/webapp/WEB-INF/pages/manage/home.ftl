@@ -12,6 +12,7 @@
 <table id="resourcestable" class="sortable">
 	<tr>
 		<th><@s.text name="manage.home.name"/></th>
+		<th><@s.text name="manage.home.organisation"/></th>
 		<th><@s.text name="manage.home.type"/></th>
 		<th><@s.text name="manage.home.subtype"/></th>
 		<th><@s.text name="manage.home.records"/></th>
@@ -20,13 +21,20 @@
 		<th><@s.text name="manage.home.visible"/></th>
 		<#-- see if the ADMIN has enabled registrations -->
 		<#-- if registrationAllowed -->
-		<th><@s.text name="manage.home.organisation"/></th>
 		<th><@s.text name="portal.home.author"/></th>
 		<#-- >/#if -->
 	</tr>
 <#list resources as r>
   <tr>
 	<td><a href="resource.do?r=${r.shortname}"><if><#if r.title?has_content>${r.title}<#else>${r.shortname}</#if></a></td>
+	<#-- if registrationAllowed -->
+	<td>
+		<#if r.status=='REGISTERED'>
+			${r.organisation.name}
+		<#else>
+			<@s.text name="manage.home.not.registered"/>
+		</#if>
+	</td>
 	<td>${r.coreType!"---"}</td>
 	<td>${r.subtype!"---"}</td>
 	<td>${r.recordsPublished!0}</td>
@@ -43,14 +51,6 @@
 			<@s.text name="manage.home.visible.private"/>
 		<#else>
 			<@s.text name="manage.home.visible.public"/>
-		</#if>
-	</td>
-	<#-- if registrationAllowed -->
-	<td>
-		<#if r.status=='REGISTERED'>
-			${r.organisation.name}
-		<#else>
-			<@s.text name="manage.home.not.registered"/>
 		</#if>
 	</td>
 	<td>${r.creator.firstname!} ${r.creator.lastname!}</td>
