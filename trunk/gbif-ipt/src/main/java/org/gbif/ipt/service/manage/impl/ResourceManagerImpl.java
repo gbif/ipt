@@ -889,6 +889,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     File cfgFile = dataDir.resourceFile(resource, PERSISTENCE_FILE);
     Writer writer = null;
     try {
+      // set resource modified date
+      resource.setModified(new Date());
       // make sure resource dir exists
       FileUtils.forceMkdir(cfgFile.getParentFile());
       // persist data
