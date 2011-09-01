@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+import com.opensymphony.xwork2.conversion.TypeConversionException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -27,7 +28,7 @@ import org.junit.runners.Parameterized.Parameters;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Unit test for LongitudeFormatConverter class.
+ * Unit test for convertFromString method in LongitudeFormatConverter class.
  * 
  * @author julieth
  */
@@ -56,13 +57,6 @@ public class LongitudeFormatConverterTest {
     list.add(new Object[] {0.7, new String[] {",7"}});
     list.add(new Object[] {-1.1, new String[] {"-1.1"}});
     list.add(new Object[] {-1.1, new String[] {"-1,1"}});
-    list.add(new Object[] {null, new String[] {"-180.01"}});
-    list.add(new Object[] {null, new String[] {"180.01"}});
-    list.add(new Object[] {null, new String[] {"abc"}});
-    list.add(new Object[] {null, new String[] {"@#$%"}});
-    list.add(new Object[] {null, new String[] {""}});
-    list.add(new Object[] {null, new String[] {" "}});
-
     return list;
   }
 
@@ -72,5 +66,19 @@ public class LongitudeFormatConverterTest {
     assertEquals(expectedDouble, longitudeFormat.convertFromString(new HashMap(), firstTestValue, null));
   }
 
+  @Test(expected = TypeConversionException.class)
+  public void convertFromStringTestTypeConversionException() {
+    LongitudeFormatConverter longitudeFormat = new LongitudeFormatConverter();
+    // Fails if the value exceeds the minimum longitude
+    assertEquals(null, longitudeFormat.convertFromString(new HashMap(), new String[] {"-180.01"}, null));
+    // Fails if the value exceeds the maximum longitude
+    assertEquals(null, longitudeFormat.convertFromString(new HashMap(), new String[] {"180.01"}, null));
+    // Fails if the value is a String
+    assertEquals(null, longitudeFormat.convertFromString(new HashMap(), new String[] {"abc"}, null));
+    assertEquals(null, longitudeFormat.convertFromString(new HashMap(), new String[] {"@#$%"}, null));
+    assertEquals(null, longitudeFormat.convertFromString(new HashMap(), new String[] {" "}, null));
+    // Fails if the value is an empty String
+    assertEquals(null, longitudeFormat.convertFromString(new HashMap(), new String[] {""}, null));
+  }
 
 }

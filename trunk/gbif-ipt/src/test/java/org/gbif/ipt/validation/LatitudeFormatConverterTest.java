@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+import com.opensymphony.xwork2.conversion.TypeConversionException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -27,7 +28,7 @@ import org.junit.runners.Parameterized.Parameters;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Unit test for LatitudeFormatConverter class.
+ * Unit test for the convertFromString method in LatitudeFormatConverter class.
  * 
  * @author julieth
  */
@@ -57,13 +58,6 @@ public class LatitudeFormatConverterTest {
     list.add(new Object[] {-0.0, new String[] {"-0"}});
     list.add(new Object[] {0.0, new String[] {"0.0"}});
     list.add(new Object[] {0.7, new String[] {",7"}});
-    list.add(new Object[] {null, new String[] {""}});
-    list.add(new Object[] {null, new String[] {" "}});
-    list.add(new Object[] {null, new String[] {"abc"}});
-    list.add(new Object[] {null, new String[] {"-90.01"}});
-    list.add(new Object[] {null, new String[] {"90.01"}});
-    list.add(new Object[] {null, new String[] {"@#$%"}});
-
     return list;
   }
 
@@ -73,4 +67,18 @@ public class LatitudeFormatConverterTest {
     assertEquals(expectedDouble, (latitudeFormat.convertFromString(new HashMap(), firstTestValue, null)));
   }
 
+  @Test(expected = TypeConversionException.class)
+  public void convertFromStringTestTypeConvertionException() {
+    LatitudeFormatConverter latitudeFormat = new LatitudeFormatConverter();
+    // Fails if the value exceeds the minimum latitude
+    assertEquals(null, (latitudeFormat.convertFromString(new HashMap(), new String[] {"-90.01"}, null)));
+    // Fails if the value exceeds the maximum latitude
+    assertEquals(null, (latitudeFormat.convertFromString(new HashMap(), new String[] {"90.01"}, null)));
+    // Fails if the value is a String
+    assertEquals(null, (latitudeFormat.convertFromString(new HashMap(), new String[] {"abc"}, null)));
+    assertEquals(null, (latitudeFormat.convertFromString(new HashMap(), new String[] {"@#$%"}, null)));
+    assertEquals(null, (latitudeFormat.convertFromString(new HashMap(), new String[] {" "}, null)));
+    // Fails if the value is an empty String
+    assertEquals(null, (latitudeFormat.convertFromString(new HashMap(), new String[] {""}, null)));
+  }
 }

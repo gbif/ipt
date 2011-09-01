@@ -19,6 +19,7 @@ import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.util.Map;
 
+import com.opensymphony.xwork2.conversion.TypeConversionException;
 import org.apache.commons.lang.math.DoubleRange;
 import org.apache.struts2.util.StrutsTypeConverter;
 
@@ -58,6 +59,8 @@ public abstract class CoordinateFormatConverter extends StrutsTypeConverter {
       // If the value is in the range, returns the double.
       if (range.containsDouble(number)) {
         return number;
+      } else {
+        throw new TypeConversionException("Invalid decimal number: " + values[0]);
       }
     } catch (NumberFormatException e) {
       // Creating a pattern which will convert the comma to period
@@ -71,12 +74,10 @@ public abstract class CoordinateFormatConverter extends StrutsTypeConverter {
           return number;
         }
       } catch (ParseException e1) {
+        throw new TypeConversionException("Invalid decimal number: " + values[0]);
       }
     }
 
-    // TODO - There should be a way to send an error to the user telling that the decimal has a wrong format.
-    // Throwing XWorkException or TypeConversionException doesn't work.
-    //
     return null;
   }
 
@@ -84,8 +85,9 @@ public abstract class CoordinateFormatConverter extends StrutsTypeConverter {
   public String convertToString(Map context, Object o) {
     if (o instanceof Double) {
       return o.toString();
+    } else {
+      throw new TypeConversionException("Invalid decimal number: " + o.toString());
     }
-    return null;
   }
 
 
