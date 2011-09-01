@@ -22,21 +22,24 @@ public class CoordinateUtils {
    * @return an String with the following format: DD°MM'SS''[N, S, W or E]
    */
   public static String decToDms(double decimalCoordinate, String CoordinateType) {
-    String dms = "";
-    double absCoordinate = Math.abs(decimalCoordinate);
-    int integer = (int) Math.floor(absCoordinate);
-    dms += integer + "\u00B0";
-    int min = (int) Math.floor(60.0 * (absCoordinate - integer));
-    dms += min + "'";
-    double sec = ((60.0 * (absCoordinate - integer)) - min) * 60;
-    DecimalFormat f = new DecimalFormat("###.##");
-    dms += f.format(sec) + "''";
-    if (CoordinateType.equals(LATITUDE)) {
-      dms += (Math.signum(decimalCoordinate) < 0 ? "S" : "N");
+    if (CoordinateType != null && !CoordinateType.equals("")) {
+      StringBuffer dms = new StringBuffer();
+      double absCoordinate = Math.abs(decimalCoordinate);
+      int integer = (int) Math.floor(absCoordinate);
+      dms.append(integer + "\u00B0");
+      int min = (int) Math.floor(60.0 * (absCoordinate - integer));
+      dms.append(min + "'");
+      double sec = ((60.0 * (absCoordinate - integer)) - min) * 60;
+      DecimalFormat f = new DecimalFormat("###.##");
+      dms.append(f.format(sec) + "''");
+      if (CoordinateType.equals(LATITUDE)) {
+        dms.append((Math.signum(decimalCoordinate) < 0 ? "S" : "N"));
+      }
+      if (CoordinateType.equals(LONGITUDE)) {
+        dms.append((Math.signum(decimalCoordinate) < 0 ? "W" : "E"));
+      }
+      return dms.toString();
     }
-    if (CoordinateType.equals(LONGITUDE)) {
-      dms += (Math.signum(decimalCoordinate) < 0 ? "W" : "E");
-    }
-    return dms;
+    return "";
   }
 }
