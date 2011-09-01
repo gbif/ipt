@@ -16,6 +16,7 @@ package org.gbif.ipt.service.admin.impl;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.mock.MockAppConfig;
+import org.gbif.ipt.mock.MockDataDir;
 import org.gbif.ipt.mock.MockResourceManager;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
@@ -26,7 +27,7 @@ import org.gbif.ipt.service.manage.ResourceManager;
 
 import java.io.IOException;
 
-import org.junit.Ignore;
+import junit.framework.Assert;
 import org.junit.Test;
 
 import static org.mockito.Mockito.mock;
@@ -41,7 +42,7 @@ public class UserAccountManagerImplTest {
 
   private UserAccountManager getUserAccountManager() {
     AppConfig mockedCfg = MockAppConfig.buildMock();
-    DataDir mockedDataDir = DataDir.buildMock();
+    DataDir mockedDataDir = MockDataDir.buildMock();
     ResourceManager mockedResourceManager = MockResourceManager.buildMock();
 
     UserAccountManager userManager =
@@ -51,7 +52,6 @@ public class UserAccountManagerImplTest {
   }
 
 
-  @Ignore
   @Test
   public void testCreate() {
     User admin = new User();
@@ -60,18 +60,14 @@ public class UserAccountManagerImplTest {
     admin.setFirstname("Hector");
     admin.setLastname("Tobon");
     admin.setPassword("admin");
-
     UserAccountManager userManager = getUserAccountManager();
     try {
       userManager.create(admin);
     } catch (AlreadyExistingException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     } catch (IOException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
-    // TODO To complete
-
+    Assert.assertEquals(admin, userManager.get("admin@ipt.gbif.org"));
   }
 }

@@ -1,15 +1,9 @@
 package org.gbif.ipt.config;
 
+import org.gbif.ipt.mock.MockDataDir;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.utils.InputStreamUtils;
-
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,8 +17,15 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.Properties;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+
 @Singleton
 public class AppConfig {
+
   protected enum REGISTRY_TYPE {
     PRODUCTION, DEVELOPMENT
   }
@@ -57,7 +58,7 @@ public class AppConfig {
 
   public static AppConfig buildMock() {
     AppConfig mock = new AppConfig();
-    mock.dataDir = DataDir.buildMock();
+    mock.dataDir = MockDataDir.buildMock();
     return mock;
   }
 
@@ -146,12 +147,12 @@ public class AppConfig {
     return getBaseURL() + "/eml.do?" + Constants.REQ_PARAM_RESOURCE + "=" + shortname;
   }
 
+  public String getResourceLogoUrl(String shortname) {
+    return getBaseURL() + "/logo.do?" + Constants.REQ_PARAM_RESOURCE + "=" + shortname;
+  }
+
   public String getResourceUrl(String shortname) {
     return getBaseURL() + "/resource.do?" + Constants.REQ_PARAM_RESOURCE + "=" + shortname;
-  }
-  
-  public String getResourceLogoUrl(String shortname) {
-	    return getBaseURL() + "/logo.do?" + Constants.REQ_PARAM_RESOURCE + "=" + shortname;
   }
 
   public String getVersion() {
@@ -199,7 +200,7 @@ public class AppConfig {
             log.debug("Loaded user configuration from " + userCfgFile.getAbsolutePath());
           } catch (IOException e) {
             log.warn("DataDir configured, but failed to load user configuration from " + userCfgFile.getAbsolutePath(),
-                e);
+              e);
           }
         } else {
           log.warn("DataDir configured, but user configuration doesnt exist: " + userCfgFile.getAbsolutePath());
@@ -268,7 +269,7 @@ public class AppConfig {
     if (this.type != null) {
       if (this.type != type) {
         throw new InvalidConfigException(TYPE.DATADIR_ALREADY_REGISTERED, "The datadir is already designated as "
-            + this.type);
+          + this.type);
       } else {
         // already contains the same information. Dont do anything
         return;
