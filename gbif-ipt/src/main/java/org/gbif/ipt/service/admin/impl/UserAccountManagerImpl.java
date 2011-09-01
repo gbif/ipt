@@ -3,6 +3,22 @@
  */
 package org.gbif.ipt.service.admin.impl;
 
+import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.User;
+import org.gbif.ipt.model.User.Role;
+import org.gbif.ipt.model.converter.PasswordConverter;
+import org.gbif.ipt.service.AlreadyExistingException;
+import org.gbif.ipt.service.BaseManager;
+import org.gbif.ipt.service.DeletionNotAllowedException;
+import org.gbif.ipt.service.DeletionNotAllowedException.Reason;
+import org.gbif.ipt.service.InvalidConfigException;
+import org.gbif.ipt.service.InvalidConfigException.TYPE;
+import org.gbif.ipt.service.admin.UserAccountManager;
+import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.utils.FileUtils;
+
 import java.io.EOFException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -17,31 +33,14 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
-
-import org.gbif.ipt.config.AppConfig;
-import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.User;
-import org.gbif.ipt.model.User.Role;
-import org.gbif.ipt.model.converter.PasswordConverter;
-import org.gbif.ipt.service.AlreadyExistingException;
-import org.gbif.ipt.service.BaseManager;
-import org.gbif.ipt.service.DeletionNotAllowedException;
-import org.gbif.ipt.service.InvalidConfigException;
-import org.gbif.ipt.service.DeletionNotAllowedException.Reason;
-import org.gbif.ipt.service.InvalidConfigException.TYPE;
-import org.gbif.ipt.service.admin.UserAccountManager;
-import org.gbif.ipt.service.manage.ResourceManager;
-import org.gbif.ipt.utils.FileUtils;
+import java.util.Set;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.xstream.XStream;
 
 /**
- * 
  * reads user accounts from a simple XStream managed xml file
  * 
  * @author markus
@@ -49,6 +48,7 @@ import com.thoughtworks.xstream.XStream;
 
 @Singleton
 public class UserAccountManagerImpl extends BaseManager implements UserAccountManager {
+
   public static final String PERSISTENCE_FILE = "users.xml";
   public static final String ALGORITHM = "MD5";
   private Map<String, User> users = new LinkedHashMap<String, User>();
@@ -56,20 +56,12 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
   private String onlyAdminEmail;
   private final XStream xstream = new XStream();
   private ResourceManager resourceManager;
-  
+
   private User setupUser;
 
-  public User getSetupUser() {
-	return setupUser;
- }
-
- public void setSetupUser(User setupUser) {
-	this.setupUser = setupUser;
-  }
- 
   @Inject
   public UserAccountManagerImpl(AppConfig cfg, DataDir dataDir, ResourceManager resourceManager,
-      PasswordConverter passwordConverter) {
+    PasswordConverter passwordConverter) {
     super(cfg, dataDir);
     this.resourceManager = resourceManager;
     defineXstreamMapping(passwordConverter);
@@ -153,7 +145,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
       // if manager or admin, last manager of a resource?
       boolean isResourceCreator = false;
       if (remUser.hasManagerRights()) {
-    	Set<String> resourcesWithProblems = new HashSet<String>();
+        Set<String> resourcesWithProblems = new HashSet<String>();
         for (Resource r : resourceManager.list(remUser)) {
           if (r.getCreator().equals(remUser)) {
             isResourceCreator = true;
@@ -161,14 +153,14 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
           Set<User> managers = new HashSet<User>(r.getManagers());
           managers.add(r.getCreator());
           managers.remove(remUser);
-          if (managers.size() == 0) {        	 
+          if (managers.size() == 0) {
             String msg = "Last manager for resource " + r.getShortname() + " cannot be deleted";
             resourcesWithProblems.add(r.getShortname());
             log.warn(msg);
           }
         }
-        if(resourcesWithProblems.size() > 0) {
-        	throw new DeletionNotAllowedException(Reason.LAST_RESOURCE_MANAGER, resourcesWithProblems.toString());
+        if (resourcesWithProblems.size() > 0) {
+          throw new DeletionNotAllowedException(Reason.LAST_RESOURCE_MANAGER, resourcesWithProblems.toString());
         }
       }
 
@@ -199,14 +191,19 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
     return users.get(email.toLowerCase());
   }
 
+  public User getSetupUser() {
+    return setupUser;
+  }
+
   public List<User> list() {
-	  ArrayList<User> userList = new ArrayList<User>(users.values());
-	  Collections.sort(userList, new Comparator<User>() {
-		public int compare(User o1, User o2) {
-			return (o1.getFirstname()+" "+o1.getLastname()).compareTo(o2.getFirstname()+" "+o2.getLastname());
-		}		  
-	  });
-	  return userList;
+    ArrayList<User> userList = new ArrayList<User>(users.values());
+    Collections.sort(userList, new Comparator<User>() {
+
+      public int compare(User o1, User o2) {
+        return (o1.getFirstname() + " " + o1.getLastname()).compareTo(o2.getFirstname() + " " + o2.getLastname());
+      }
+    });
+    return userList;
   }
 
   public List<User> list(Role role) {
@@ -239,7 +236,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
       }
     } catch (FileNotFoundException e) {
       log.warn("User accounts not existing, " + PERSISTENCE_FILE
-          + " file missing  (This is normal when first setting up a new datadir)");
+        + " file missing  (This is normal when first setting up a new datadir)");
     } catch (IOException e) {
       log.error(e.getMessage(), e);
       throw new InvalidConfigException(TYPE.USER_CONFIG, "Couldnt read user accounts: " + e.getMessage());
@@ -270,6 +267,10 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
   public void save(User user) throws IOException {
     addUser(user);
     save();
+  }
+
+  public void setSetupUser(User setupUser) {
+    this.setupUser = setupUser;
   }
 
 }

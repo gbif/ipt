@@ -6,28 +6,27 @@ import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.utils.InputStreamUtils;
 
-import com.google.inject.Singleton;
-import com.google.inject.internal.Nullable;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.inject.Singleton;
+import com.google.inject.internal.Nullable;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+
 /**
  * A very simple utility class to encapsulate the basic layout of the data directory and to configure & persist the path
  * for that directory and make it available to the entire application.
  * 
  * @author markus
- * 
  */
 @Singleton
 public class DataDir {
+
   public static final String LOGGING_DIR = "logs";
   public static final String CONFIG_DIR = "config";
   public static final String RESOURCES_DIR = "resources";
@@ -71,8 +70,7 @@ public class DataDir {
         }
       } catch (IOException e) {
         log.error(
-            "Failed to read the datadir location settings file in WEB-INF at " + dataDirSettingFile.getAbsolutePath(),
-            e);
+          "Failed to read the datadir location settings file in WEB-INF at " + dataDirSettingFile.getAbsolutePath(), e);
       }
     } else {
       log.warn("Datadir location settings file in WEB-INF not found. Continue without data directory.");
@@ -80,9 +78,6 @@ public class DataDir {
     return dd;
   }
 
-  public static DataDir buildMock() {
-    return new DataDir();
-  }
 
   private void assureDirExists(File f) {
     if (f != null && !f.exists()) {
@@ -128,7 +123,7 @@ public class DataDir {
     InputStream input = streamUtils.classpathStream("configDefault/ipt.properties");
     if (input == null) {
       throw new InvalidConfigException(TYPE.CONFIG_WRITE,
-          "Cannot read required classpath resources to create new data dir!");
+        "Cannot read required classpath resources to create new data dir!");
     } else {
       org.gbif.ipt.utils.FileUtils.copyStreamToFile(input, configFile(AppConfig.DATADIR_PROPFILE));
     }
@@ -136,7 +131,7 @@ public class DataDir {
     input = streamUtils.classpathStream("configDefault/about.ftl");
     if (input == null) {
       throw new InvalidConfigException(TYPE.CONFIG_WRITE,
-          "Cannot read required classpath resources to create new data dir!");
+        "Cannot read required classpath resources to create new data dir!");
     } else {
       org.gbif.ipt.utils.FileUtils.copyStreamToFile(input, configFile("about.ftl"));
     }
@@ -219,16 +214,6 @@ public class DataDir {
     }
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
   }
-  
-  public File resourceRtfFile(String resourceName, @Nullable Integer version) {
-	  String fn;
-	  if (version == null) {
-		  fn = resourceName+".rtf";
-	  } else {
-		  fn = resourceName+"-" + version + ".rtf";
-	  }
-	  return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
-  }
 
   public File resourceFile(Resource resource, String path) {
     if (resource == null) {
@@ -265,19 +250,9 @@ public class DataDir {
    * @return
    */
   public File resourcePublicationLogFile(String resourceName) {
-    return dataFile(RESOURCES_DIR + "/" + resourceName + "/publication.log" );
+    return dataFile(RESOURCES_DIR + "/" + resourceName + "/publication.log");
   }
-  
-  /**
-   * 
-   * @param resourceName
-   * @param sourceName
-   * @return
-   */
-  public File sourceLogFile(String resourceName, String sourceName) {
-	return dataFile(RESOURCES_DIR + "/" + resourceName + "/sources/" + sourceName + ".log" );
-  }
-  
+
   /**
    * File for the only & current rtf file representing the eml metadata for data publishers in RTF format
    * 
@@ -286,6 +261,16 @@ public class DataDir {
    */
   public File resourceRtfFile(String resourceName) {
     String fn = resourceName + ".rtf";
+    return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
+  }
+
+  public File resourceRtfFile(String resourceName, @Nullable Integer version) {
+    String fn;
+    if (version == null) {
+      fn = resourceName + ".rtf";
+    } else {
+      fn = resourceName + "-" + version + ".rtf";
+    }
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
   }
 
@@ -312,13 +297,13 @@ public class DataDir {
         if (!dataDir.isDirectory()) {
           this.dataDir = null;
           throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_DATA_DIR, "DataDir "
-              + dataDir.getAbsolutePath() + " is not a directory");
+            + dataDir.getAbsolutePath() + " is not a directory");
         } else {
           // check if this directory contains a config folder - if not copy empty default dir from classpath
           if (!configDir.exists() || !configDir.isDirectory()) {
             this.dataDir = null;
             throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_DATA_DIR, "DataDir "
-                + dataDir.getAbsolutePath() + " exists already and is no IPT data dir.");
+              + dataDir.getAbsolutePath() + " exists already and is no IPT data dir.");
           }
           log.info("Reusing existing data dir.");
           // persist location in WEB-INF
@@ -349,7 +334,7 @@ public class DataDir {
           log.error("New DataDir " + dataDir.getAbsolutePath() + " not writable", e);
           this.dataDir = null;
           throw new InvalidConfigException(InvalidConfigException.TYPE.NON_WRITABLE_DATA_DIR, "DataDir "
-              + dataDir.getAbsolutePath() + " is not writable");
+            + dataDir.getAbsolutePath() + " is not writable");
         }
       }
     }
@@ -360,6 +345,15 @@ public class DataDir {
       return null;
     }
     return resourceFile(resource.getShortname(), "sources/" + source.getName() + ".txt");
+  }
+
+  /**
+   * @param resourceName
+   * @param sourceName
+   * @return
+   */
+  public File sourceLogFile(String resourceName, String sourceName) {
+    return dataFile(RESOURCES_DIR + "/" + resourceName + "/sources/" + sourceName + ".log");
   }
 
   public File tmpDir() {
