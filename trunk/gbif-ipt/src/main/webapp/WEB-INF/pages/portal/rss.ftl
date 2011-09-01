@@ -46,8 +46,8 @@
 	  <#if res.link??>
 	  <foaf:homepage>${res.link}</foaf:homepage>
 	  </#if>
-      <#if res.modified??>
-      <pubDate>${res.modified?string("EEE, dd MMM yyyy HH:mm:ss Z")}</pubDate>
+      <#if res.lastPublished??>
+      <pubDate>${res.lastPublished?string("EEE, dd MMM yyyy HH:mm:ss Z")}</pubDate>
       </#if>
       <#if res.key??>
       <guid isPermaLink="false">${res.key}</guid>
