@@ -17,7 +17,6 @@
 		<th><@s.text name="portal.home.records"/></th>
 		<th><@s.text name="portal.home.modified"/></th>
 		<th><@s.text name="portal.home.last.publication" /></th>
-		<th><@s.text name="portal.home.author"/></th>
 	</tr>
 <#list resources as r>
   <tr>
@@ -43,7 +42,6 @@
 			<@s.text name="portal.home.not.published"/>
 		</#if>	
 	</td>
-	<td>${r.creator.firstname!} ${r.creator.lastname!}</td>
   </tr>
 </#list>
 </table>
