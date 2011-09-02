@@ -1,11 +1,10 @@
 package org.gbif.ipt.mock;
 
 import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.service.admin.impl.UserAccountManagerImpl;
 
 import java.io.File;
-import java.io.IOException;
 
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -27,14 +26,9 @@ public class MockDataDir {
    * All the DataDir methods behavior must be configured in this place.
    */
   private static void setupMock() {
-
-    try {
-      when(dataDir.configFile(anyString())).thenReturn(File.createTempFile("dataDir-", "temp"));
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-
+    // user.xml is going to be located in temp directory.
+    when(dataDir.configFile(UserAccountManagerImpl.PERSISTENCE_FILE)).thenReturn(
+      new File(System.getProperty("java.io.tmpdir") + File.separatorChar + UserAccountManagerImpl.PERSISTENCE_FILE));
   }
 
 }
