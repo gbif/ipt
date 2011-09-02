@@ -1,6 +1,5 @@
 package org.gbif.ipt.config;
 
-import org.gbif.ipt.mock.MockDataDir;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.utils.InputStreamUtils;
@@ -54,12 +53,6 @@ public class AppConfig {
     // also loaded via ConfigManager constructor if datadir was linked at startup already
     // If it wasnt, this is the only place to load at least the default classpath config settings
     loadConfig();
-  }
-
-  public static AppConfig buildMock() {
-    AppConfig mock = new AppConfig();
-    mock.dataDir = MockDataDir.buildMock();
-    return mock;
   }
 
   public boolean debug() {
