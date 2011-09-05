@@ -1,12 +1,9 @@
 /***************************************************************************
  * Copyright 2010 Global Biodiversity Information Facility Secretariat
- * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -21,7 +18,6 @@ import org.gbif.dwc.text.ArchiveFactory;
 import org.gbif.dwc.text.ArchiveFile;
 import org.gbif.dwc.text.UnsupportedArchiveException;
 import org.gbif.file.CSVReader;
-import org.gbif.utils.file.ClosableIterator;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Resource;
@@ -33,12 +29,7 @@ import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.SourceException;
 import org.gbif.ipt.service.manage.SourceManager;
-
-import com.google.inject.Inject;
-import com.google.inject.internal.Nullable;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.xwork.StringUtils;
+import org.gbif.utils.file.ClosableIterator;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -59,12 +50,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.google.inject.Inject;
+import com.google.inject.internal.Nullable;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.xwork.StringUtils;
+
 /**
  * @author markus
- * 
  */
 public class SourceManagerImpl extends BaseManager implements SourceManager {
+
   private class FileColumnIterator implements ClosableIterator<Object> {
+
     private final CSVReader reader;
     private final int column;
 
@@ -97,6 +94,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   }
 
   private class SqlColumnIterator implements ClosableIterator<Object> {
+
     private final Connection conn;
     private final Statement stmt;
     private final ResultSet rs;
@@ -167,6 +165,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   }
 
   private class SqlRowIterator implements ClosableIterator<String[]> {
+
     private final Connection conn;
     private final Statement stmt;
     private final ResultSet rs;
@@ -293,7 +292,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     if (source instanceof FileSource) {
       FileSource fs = (FileSource) source;
       try {
-    	 CSVReader reader = fs.getReader();
+        CSVReader reader = fs.getReader();
         fs.setFileSize(fs.getFile().length());
         fs.setColumns(reader.header.length);
         while (reader.hasNext()) {
@@ -301,25 +300,26 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         }
         fs.setRows(reader.getReadRows());
         fs.setReadable(true);
-        
-        File logFile= dataDir.sourceLogFile(source.getResource().getShortname(), source.getName()) ;
+
+        File logFile = dataDir.sourceLogFile(source.getResource().getShortname(), source.getName());
         FileUtils.deleteQuietly(logFile);
         try {
-        	BufferedWriter logWriter = new BufferedWriter(new FileWriter(logFile));
-        	logWriter.write("Log for source name:"+ source.getName()+" from resource: "+source.getResource().getShortname()+"\n");
-	        if(reader.getEmptyLines().size()>0){
-	        	List<Integer> emptyLines=new ArrayList<Integer>(reader.getEmptyLines());
-	        	Collections.sort(emptyLines);
-	        	for(Integer i: emptyLines){
-	        		logWriter.write("Line: "+i+" [EMPTY LINE]\n");
-	        	}
-        	}else{
-        		logWriter.write("No rows were skipped in this source");
-        	}
-	        logWriter.flush();
-	        logWriter.close();
+          BufferedWriter logWriter = new BufferedWriter(new FileWriter(logFile));
+          logWriter.write("Log for source name:" + source.getName() + " from resource: "
+            + source.getResource().getShortname() + "\n");
+          if (reader.getEmptyLines().size() > 0) {
+            List<Integer> emptyLines = new ArrayList<Integer>(reader.getEmptyLines());
+            Collections.sort(emptyLines);
+            for (Integer i : emptyLines) {
+              logWriter.write("Line: " + i + " [EMPTY LINE]\n");
+            }
+          } else {
+            logWriter.write("No rows were skipped in this source");
+          }
+          logWriter.flush();
+          logWriter.close();
         } catch (IOException e) {
-        	log.warn("Cant write source log file " + logFile.getAbsolutePath(), e);
+          log.warn("Cant write source log file " + logFile.getAbsolutePath(), e);
         }
       } catch (IOException e) {
         problem = e.getMessage();
@@ -327,8 +327,8 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         fs.setReadable(false);
         fs.setRows(-1);
       }
-      
-      
+
+
     } else {
       SqlSource ss = (SqlSource) source;
       try {
@@ -454,17 +454,23 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
 
         SQLWarning warn = conn.getWarnings();
         while (warn != null) {
-          log.warn("SQLWarning: state=" + warn.getSQLState() + ", message=" + warn.getMessage() + ", vendor=" + warn.getErrorCode());
+          log.warn("SQLWarning: state=" + warn.getSQLState() + ", message=" + warn.getMessage() + ", vendor="
+            + warn.getErrorCode());
           warn = warn.getNextWarning();
         }
       } catch (java.lang.ClassNotFoundException e) {
-        String msg = String.format("Couldnt load JDBC driver to create new external datasource connection with JDBC Class=%s and URL=%s. Error: %s",
-            source.getJdbcDriver(), source.getJdbcUrl(), e.getMessage());
+        String msg =
+          String
+            .format(
+              "Couldnt load JDBC driver to create new external datasource connection with JDBC Class=%s and URL=%s. Error: %s",
+              source.getJdbcDriver(), source.getJdbcUrl(), e.getMessage());
         log.warn(msg, e);
         throw new SQLException(msg);
       } catch (Exception e) {
-        String msg = String.format("Couldnt create new external datasource connection with JDBC Class=%s, URL=%s, user=%s. Error: %s", source.getJdbcDriver(),
-            source.getJdbcUrl(), source.getUsername(), e.getMessage());
+        String msg =
+          String.format(
+            "Couldnt create new external datasource connection with JDBC Class=%s, URL=%s, user=%s. Error: %s",
+            source.getJdbcDriver(), source.getJdbcUrl(), source.getUsername(), e.getMessage());
         log.warn(msg, e);
         throw new SQLException(msg);
       }
