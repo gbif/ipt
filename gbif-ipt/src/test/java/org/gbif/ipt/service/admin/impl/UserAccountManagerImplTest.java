@@ -18,6 +18,7 @@ import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.mock.MockAppConfig;
 import org.gbif.ipt.mock.MockDataDir;
 import org.gbif.ipt.mock.MockResourceManager;
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.model.converter.PasswordConverter;
@@ -28,6 +29,10 @@ import org.gbif.ipt.service.manage.ResourceManager;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import junit.framework.Assert;
 import org.junit.After;
@@ -36,7 +41,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author hftobon
@@ -44,6 +51,7 @@ import static org.mockito.Mockito.mock;
 public class UserAccountManagerImplTest {
 
   private PasswordConverter mockedPasswordConverter = mock(PasswordConverter.class);
+  private ResourceManager mockedResourceManager = MockResourceManager.buildMock();
   private static File userFile;
   private User admin, manager, publisher, user;
 
@@ -66,7 +74,6 @@ public class UserAccountManagerImplTest {
   private UserAccountManager getUserAccountManager() {
     AppConfig mockedCfg = MockAppConfig.buildMock();
     DataDir mockedDataDir = MockDataDir.buildMock();
-    ResourceManager mockedResourceManager = MockResourceManager.buildMock();
     return new UserAccountManagerImpl(mockedCfg, mockedDataDir, mockedResourceManager, mockedPasswordConverter);
   }
 
@@ -108,6 +115,31 @@ public class UserAccountManagerImplTest {
   }
 
   /**
+   * Test user authenticate.
+   * 
+   * @throws AlreadyExistingException
+   * @throws IOException
+   */
+  @Test
+  public void testAuthenticate() throws AlreadyExistingException, IOException {
+    // create new instance.
+    UserAccountManager userManager = getUserAccountManager();
+
+    // add users
+    userManager.create(admin);
+    userManager.create(manager);
+    userManager.create(publisher);
+    userManager.create(user);
+
+
+    Assert.assertEquals(admin, userManager.authenticate("admin@ipt.gbif.org", "admin"));
+    Assert.assertEquals(manager, userManager.authenticate("manager@ipt.gbif.org", "manager"));
+    Assert.assertEquals(publisher, userManager.authenticate("publisher@ipt.gbif.org", "publisher"));
+    Assert.assertEquals(user, userManager.authenticate("user@ipt.gbif.org", "user"));
+    Assert.assertNull(userManager.authenticate("invalid-user@ipt.gbif.org", "anyPassword"));
+  }
+
+  /**
    * Test user creation
    * 
    * @throws IOException
@@ -142,7 +174,13 @@ public class UserAccountManagerImplTest {
 
   }
 
-
+  /**
+   * Test user deletion.
+   * 
+   * @throws AlreadyExistingException
+   * @throws IOException
+   * @throws DeletionNotAllowedException
+   */
   @Test
   public void testDelete() throws AlreadyExistingException, IOException, DeletionNotAllowedException {
     // create a new instance only to save into the file.
@@ -169,12 +207,66 @@ public class UserAccountManagerImplTest {
       Assert.assertTrue(true);
     }
 
-    // TODO test if manager or admin is going to be deleted and if is a last manager of a resource.
+    // test if the manager or admin that is going to be deleted, is the last manager of a resource.
+    List<Resource> resources = new ArrayList<Resource>();
+
+    Resource res1 = new Resource();
+    res1.setCreator(manager);
+    Set<User> managers1 = new HashSet<User>();
+    managers1.add(manager);
+    res1.setManagers(managers1);
+    res1.setShortname("res1");
+
+    resources.add(res1);
+
+    when(mockedResourceManager.list(any(User.class))).thenReturn(resources);
+    try {
+      userManager.delete("manager@ipt.gbif.org");
+      fail("Last manager for resource res1 cannot be deleted");
+    } catch (DeletionNotAllowedException e) {
+      Assert.assertTrue(true);
+    }
+
+    // Creator of resources cannot be deleted. Test if user role is changed to a simple user.
+    resources.remove(res1); // 
+    Resource res2 = new Resource();
+    Set<User> managers2 = new HashSet<User>();
+    managers2.add(publisher);
+    res2.setCreator(manager);
+    res2.setManagers(managers2);
+    res2.setShortname("res2");
+    resources.add(res2);
+
+    userManager.delete("manager@ipt.gbif.org");
+    Assert.assertEquals(Role.User, manager.getRole());
 
   }
 
+
   /**
-   * Read user.xml file.
+   * Test get user.
+   * 
+   * @throws AlreadyExistingException
+   * @throws IOException
+   */
+  @Test
+  public void testGet() throws AlreadyExistingException, IOException {
+    // create new instance.
+    UserAccountManager userManager = getUserAccountManager();
+
+    // add users
+    userManager.create(admin);
+    userManager.create(manager);
+    userManager.create(publisher);
+    userManager.create(user);
+
+    Assert.assertEquals(admin, userManager.get("admin@ipt.gbif.org"));
+    Assert.assertEquals(publisher, userManager.get("publisher@ipt.gbif.org"));
+    Assert.assertNull(userManager.get(null));
+  }
+
+  /**
+   * Read from user.xml file.
    * 
    * @throws AlreadyExistingException
    * @throws IOException
