@@ -742,7 +742,8 @@ public class EmlValidator extends BaseValidator {
         int index = 0;
         for (PhysicalData pd : eml.getPhysicalData()) {
           if (!exists(pd.getName())) {
-            action.addFieldError("eml.physicalData[" + index + "].name", action.getText("validation.required"));
+            action.addFieldError("eml.physicalData[" + index + "].name",
+              action.getText("validation.required", new String[] {action.getText("eml.physicalData.name")}));
           }
           /* Validate distribution URL form each Physical data */
           if (pd.getDistributionUrl() != null) {
@@ -769,10 +770,12 @@ public class EmlValidator extends BaseValidator {
         int index = 0;
         for (KeywordSet ks : eml.getKeywords()) {
           if (!exists(ks.getKeywordsString())) {
-            action.addFieldError("eml.keywords[" + index + "].keywordsString", action.getText("validation.required"));
+            action.addFieldError("eml.keywords[" + index + "].keywordsString",
+              action.getText("validation.required", new String[] {action.getText("eml.keywords.keywordsString")}));
           }
           if (!exists(ks.getKeywordThesaurus())) {
-            action.addFieldError("eml.keywords[" + index + "].keywordThesaurus", action.getText("validation.required"));
+            action.addFieldError("eml.keywords[" + index + "].keywordThesaurus",
+              action.getText("validation.required", new String[] {action.getText("eml.keywords.keywordThesaurus")}));
           }
           index++;
         }
