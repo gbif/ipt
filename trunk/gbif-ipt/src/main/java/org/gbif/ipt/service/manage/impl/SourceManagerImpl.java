@@ -272,6 +272,16 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       }
       src.setFile(ddFile);
       src.setLastModified(new Date());
+      // is a new source?
+      if (resource.getSources().contains(src)) {
+        for (Source so : resource.getSources()) {
+          if (so.getName().equals(src.getName())) {
+            // Delete the old source. It will be updated later.
+            resource.deleteSource(so);
+            break;
+          }
+        }
+      }
       // add to resource, allow overwriting existing ones
       // if the file is uploaded not for the first time
       resource.addSource(src, true);
