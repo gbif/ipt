@@ -23,15 +23,18 @@ public class CoordinateUtils {
    */
   public static String decToDms(double decimalCoordinate, String CoordinateType) {
     if (CoordinateType != null && !CoordinateType.equals("")) {
-      StringBuffer dms = new StringBuffer();
+      StringBuilder dms = new StringBuilder();
       double absCoordinate = Math.abs(decimalCoordinate);
       int integer = (int) Math.floor(absCoordinate);
-      dms.append(integer + "\u00B0");
+      dms.append(integer);
+      dms.append("\u00B0");
       int min = (int) Math.floor(60.0 * (absCoordinate - integer));
-      dms.append(min + "'");
+      dms.append(min);
+      dms.append("'");
       double sec = ((60.0 * (absCoordinate - integer)) - min) * 60;
       DecimalFormat f = new DecimalFormat("###.##");
-      dms.append(f.format(sec) + "''");
+      dms.append(f.format(sec));
+      dms.append("''");
       if (CoordinateType.equals(LATITUDE)) {
         dms.append((Math.signum(decimalCoordinate) < 0 ? "S" : "N"));
       }
