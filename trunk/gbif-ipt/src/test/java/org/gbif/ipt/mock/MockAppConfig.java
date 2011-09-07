@@ -3,6 +3,7 @@ package org.gbif.ipt.mock;
 import org.gbif.ipt.config.AppConfig;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class MockAppConfig {
 
@@ -20,6 +21,9 @@ public class MockAppConfig {
     appConfig.setProperty(AppConfig.IPT_LATITUDE, "10");
     appConfig.setProperty(AppConfig.IPT_LONGITUDE, "10");
     appConfig.setProperty(AppConfig.DEBUG, "true");
+
+
+    when(appConfig.getMaxThreads()).thenReturn(3);
 
     // TODO Configure the other properties.
 
