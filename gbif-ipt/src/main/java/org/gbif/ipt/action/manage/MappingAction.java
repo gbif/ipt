@@ -20,9 +20,9 @@ import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.RecordFilter;
+import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.RecordFilter.Comparator;
 import org.gbif.ipt.model.Resource.CoreRowType;
-import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.Source.FileSource;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
@@ -32,6 +32,7 @@ import org.gbif.ipt.validation.ExtensionMappingValidator.ValidationStatus;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -139,6 +140,9 @@ public class MappingAction extends ManagerBaseAction {
   public String delete() {
     if (resource.deleteMapping(mapping)) {
       addActionMessage(getText("manage.mapping.deleted", new String[] {id}));
+      // set modified date
+      resource.setModified(new Date());
+      // save resource
       saveResource();
     } else {
       addActionMessage(getText("manage.mapping.couldnt.delete", new String[] {id}));
@@ -279,8 +283,8 @@ public class MappingAction extends ManagerBaseAction {
         }
         // uses a vocabulary?
         if (p.getVocabulary() != null) {
-          vocabTerms.put(p.getVocabulary().getUri(),
-            vocabManager.getI18nVocab(p.getVocabulary().getUri(), getLocaleLanguage(), true));
+          vocabTerms.put(p.getVocabulary().getUri(), vocabManager.getI18nVocab(p.getVocabulary().getUri(),
+            getLocaleLanguage(), true));
         }
         // mapped already?
         PropertyMapping f = mapping.getField(p.getQualname());
@@ -342,6 +346,8 @@ public class MappingAction extends ManagerBaseAction {
       // back to mapping object
       mapping.setFields(mappedFields);
     }
+    // set modified date
+    resource.setModified(new Date());
     // save entire resource config
     saveResource();
     // report validation without skipping this save
