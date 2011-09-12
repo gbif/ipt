@@ -18,13 +18,6 @@ import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.utils.file.ClosableIterator;
 import org.gbif.utils.file.CompressionUtil;
 
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Level;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -36,9 +29,15 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
 import java.util.regex.Pattern;
 
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import freemarker.template.TemplateException;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Level;
 
 public class GenerateDwca extends ReportingTask implements Callable<Integer> {
+
   private enum STATE {
     WAITING, STARTED, DATAFILES, METADATA, BUNDLING, COMPLETED, STOPPING, FAILED
   };
@@ -58,7 +57,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
   @Inject
   public GenerateDwca(@Assisted Resource resource, @Assisted ReportHandler handler, DataDir dataDir,
-      SourceManager sourceManager) {
+    SourceManager sourceManager) {
     super(1000, resource.getShortname(), handler);
     this.resource = resource;
     this.dataDir = dataDir;
@@ -76,7 +75,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
    *         extension
    */
   private void addDataFile(List<ExtensionMapping> mappings) throws IOException, GeneratorException,
-      IllegalArgumentException {
+    IllegalArgumentException {
     checkForInterruption();
     if (mappings == null || mappings.isEmpty()) {
       return;
@@ -91,7 +90,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     for (ExtensionMapping m : mappings) {
       if (!ext.equals(m.getExtension())) {
         throw new IllegalArgumentException(
-            "All mappings for a single data file need to be mapped to the same extension: " + ext.getRowType());
+          "All mappings for a single data file need to be mapped to the same extension: " + ext.getRowType());
       }
     }
 
@@ -125,7 +124,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
           // check if we have a dynamic mapping
           if (pm.getIndex() != null && pm.getIndex() >= 0) {
             if (!pm.getTerm().qualifiedName().equalsIgnoreCase(Constants.DWC_OCCURRENCE_ID)
-                && !pm.getTerm().qualifiedName().equalsIgnoreCase(Constants.DWC_TAXON_ID)) {
+              && !pm.getTerm().qualifiedName().equalsIgnoreCase(Constants.DWC_TAXON_ID)) {
               af.addField(buildField(pm.getTerm(), dataFileRowSize, pm.getDefaultValue()));
               dataFileRowSize++;
             }
@@ -167,7 +166,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
     // final reporting
     addMessage(Level.INFO, "Data file written for " + currExtension + " with " + currRecords + " records and "
-        + dataFileRowSize + " columns");
+      + dataFileRowSize + " columns");
   }
 
   private void addEmlFile() throws IOException {
@@ -285,7 +284,6 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.task.ReportingTask#currentException()
    */
   @Override
@@ -324,7 +322,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
    * @throws GeneratorException
    */
   private void dumpData(Writer writer, ArchiveFile dataFile, ExtensionMapping mapping, int dataFileRowSize)
-      throws GeneratorException {
+    throws GeneratorException {
     final String idSuffix = StringUtils.trimToEmpty(mapping.getIdSuffix());
     final RecordFilter filter = mapping.getFilter();
     // get maximum column index to check incoming rows for correctness
@@ -355,7 +353,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       FileUtils.deleteQuietly(logFile);
       BufferedWriter logWriter = new BufferedWriter(new FileWriter(logFile));
       logWriter.write("Log Messages for publishing resource " + resource.getShortname() + " version "
-          + resource.getEmlVersion());
+        + resource.getEmlVersion());
       logWriter.write("\n\n");
 
       try {
@@ -393,7 +391,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
           if (in.length <= maxColumnIndex) {
             logWriter.write("Line with less columns than mapped\tSource:" + mapping.getSource().getName() + "\tLine:"
-                + line + in.length + "\tColumns:" + in.length + "\t" + inLine);
+              + line + in.length + "\tColumns:" + in.length + "\t" + inLine);
             logWriter.write("\n");
             // input row is smaller than the highest mapped column. Resize array
             // by adding nulls
@@ -408,7 +406,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
           // filter this record?
           boolean matchesFilter, alreadyTranslated = false;
           if (filter != null && filter.getColumn() != null && filter.getComparator() != null
-              && filter.getParam() != null) {
+            && filter.getParam() != null) {
             if (filter.getFilterTime() == FilterTime.AfterTranslation) {
               int newColumn = translatingRecord(mapping, inCols, in, record);
               matchesFilter = filter.matches(record, newColumn);
@@ -418,7 +416,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
             }
             if (!matchesFilter) {
               logWriter.write("Line did not match the filter criteria and were skipped\tSource:"
-                  + mapping.getSource().getName() + "\tLine:" + line + in.length + "\t" + inLine);
+                + mapping.getSource().getName() + "\tLine:" + line + in.length + "\t" + inLine);
               logWriter.write("\n");
               recordsFiltered++;
               continue;
@@ -451,7 +449,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
         // some error writing this file, report
         log.error("Fatal DwC-A Generator Error", e);
         throw new GeneratorException("Error writing data file for mapping " + mapping.getExtension().getName()
-            + " in source " + mapping.getSource().getName() + ", line " + line, e);
+          + " in source " + mapping.getSource().getName() + ", line " + line, e);
       } finally {
         iter.close();
       }
