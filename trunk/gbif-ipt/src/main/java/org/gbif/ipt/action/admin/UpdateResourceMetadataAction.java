@@ -1,7 +1,9 @@
 package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.POSTAction;
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.Resource.CoreRowType;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.ConfigManager;
@@ -17,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.apache.commons.lang.StringUtils;
 
 public class UpdateResourceMetadataAction extends POSTAction {
 
@@ -51,6 +54,21 @@ public class UpdateResourceMetadataAction extends POSTAction {
     for (Resource res : allResources) {
       if (res.isPublished()) {
         publishedResources.add(res);
+      }
+      // Saving the coreType for all resources
+      if (res.getCoreType() == null) {
+        if (res.getCoreTypeTerm() != null) {
+          String core = res.getCoreTypeTerm().simpleName().toLowerCase();
+          if (Constants.DWC_ROWTYPE_TAXON.toLowerCase().contains(core)) {
+            res.setCoreType(StringUtils.capitalize((CoreRowType.OCCURRENCE).toString().toLowerCase()));
+          } else if (Constants.DWC_ROWTYPE_OCCURRENCE.toLowerCase().contains(core)) {
+            res.setCoreType(StringUtils.capitalize((CoreRowType.CHECKLIST).toString().toLowerCase()));
+          }
+          // Save resource information (resource.xml)
+          resourceManager.save(res);
+          // Set resource modified date
+          res.setModified(new Date());
+        }
       }
     }
     Collections.sort(publishedResources);
@@ -298,8 +316,8 @@ public class UpdateResourceMetadataAction extends POSTAction {
       this.addActionWarning(getText("admin.config.updateMetadata.nonePublished"));
     } else {
       if (successCounter > 0) {
-        this.addActionMessage(getTextWithDynamicArgs("admin.config.updateMetadata.summary", String
-          .valueOf(successCounter), String.valueOf(publishedResources.size())));
+        this.addActionMessage(getTextWithDynamicArgs("admin.config.updateMetadata.summary",
+          String.valueOf(successCounter), String.valueOf(publishedResources.size())));
       }
     }
   }
