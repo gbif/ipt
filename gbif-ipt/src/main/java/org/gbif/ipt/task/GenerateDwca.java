@@ -128,8 +128,6 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
               af.addField(buildField(pm.getTerm(), dataFileRowSize, pm.getDefaultValue()));
               dataFileRowSize++;
             }
-          } else {
-            af.addField(buildField(pm.getTerm(), null, pm.getDefaultValue()));
           }
         }
       }
