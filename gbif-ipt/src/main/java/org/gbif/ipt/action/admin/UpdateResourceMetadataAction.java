@@ -11,6 +11,7 @@ import org.gbif.ipt.service.registry.RegistryManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,6 +73,9 @@ public class UpdateResourceMetadataAction extends POSTAction {
     log.info("Updating resource metadata - eml.xml");
     for (Resource res : publishedResources) {
       try {
+        // set resource modified date
+        res.setModified(new Date());
+
         resourceManager.publishMetadata(res, this);
         resUpdateStatus.put(res.getShortname() + rtf, success);
         resUpdateStatus.put(res.getShortname() + eml, success);
