@@ -31,6 +31,7 @@ import org.gbif.metadata.eml.JGTICuratorialUnitType;
 import org.gbif.metadata.eml.TemporalCoverageType;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -62,9 +63,8 @@ public class MetadataAction extends ManagerBaseAction {
   private PropertyMapping mappingCoreid;
   private ExtensionMapping mapping;
 
-  private static final List<String> sections =
-    Arrays.asList("basic", "geocoverage", "taxcoverage", "tempcoverage", "keywords", "parties", "project", "methods",
-      "citations", "collections", "physical", "additional");
+  private static final List<String> sections = Arrays.asList("basic", "geocoverage", "taxcoverage", "tempcoverage",
+    "keywords", "parties", "project", "methods", "citations", "collections", "physical", "additional");
 
   @Inject
   private VocabulariesManager vocabManager;
@@ -138,8 +138,15 @@ public class MetadataAction extends ManagerBaseAction {
       } else if (resource.getCoreType().toLowerCase().equals("other")) {
         return SubtypeUtils.noSubtypeList();
       }
+    } else if (resource.getCoreTypeTerm() != null) {
+      String core = resource.getCoreTypeTerm().simpleName().toLowerCase();
+      if (Constants.DWC_ROWTYPE_TAXON.toLowerCase().contains(core)) {
+        return SubtypeUtils.checklistSubtypeList();
+      } else if (Constants.DWC_ROWTYPE_OCCURRENCE.toLowerCase().contains(core)) {
+        return SubtypeUtils.occurrenceSubtypeList();
+      }
     }
-    return new LinkedHashMap<String, String>(1);
+    return new LinkedHashMap<String, String>();
   }
 
   public String getMetadataLanguageIso3() {
@@ -215,10 +222,10 @@ public class MetadataAction extends ManagerBaseAction {
     }
     types = new LinkedHashMap<String, String>();
     types.put("", "Select a type");
-    types.put(StringUtils.capitalize((CoreRowType.CHECKLIST).toString().toLowerCase()), StringUtils
-      .capitalize((Resource.CoreRowType.CHECKLIST).toString().toLowerCase()));
-    types.put(StringUtils.capitalize((CoreRowType.OCCURRENCE).toString().toLowerCase()), StringUtils
-      .capitalize((CoreRowType.OCCURRENCE).toString().toLowerCase()));
+    types.put(StringUtils.capitalize((CoreRowType.CHECKLIST).toString().toLowerCase()),
+      StringUtils.capitalize((Resource.CoreRowType.CHECKLIST).toString().toLowerCase()));
+    types.put(StringUtils.capitalize((CoreRowType.OCCURRENCE).toString().toLowerCase()),
+      StringUtils.capitalize((CoreRowType.OCCURRENCE).toString().toLowerCase()));
     types.put("Other", "Other");
     licenses = new LinkedHashMap<String, String>();
     licenses.put(getText("eml.intellectualRights.nolicenses"), "");
@@ -244,16 +251,16 @@ public class MetadataAction extends ManagerBaseAction {
       false));
 
     if (resource.getEml().getContact().getAddress().getCountry() != null) {
-      resource.getEml().getContact().getAddress().setCountry(
-        CountryUtils.iso2(resource.getEml().getContact().getAddress().getCountry()));
+      resource.getEml().getContact().getAddress()
+        .setCountry(CountryUtils.iso2(resource.getEml().getContact().getAddress().getCountry()));
     }
     if (resource.getEml().resourceCreator().getAddress().getCountry() != null) {
-      resource.getEml().resourceCreator().getAddress().setCountry(
-        CountryUtils.iso2(resource.getEml().resourceCreator().getAddress().getCountry()));
+      resource.getEml().resourceCreator().getAddress()
+        .setCountry(CountryUtils.iso2(resource.getEml().resourceCreator().getAddress().getCountry()));
     }
     if (resource.getEml().getMetadataProvider().getAddress().getCountry() != null) {
-      resource.getEml().getMetadataProvider().getAddress().setCountry(
-        CountryUtils.iso2(resource.getEml().getMetadataProvider().getAddress().getCountry()));
+      resource.getEml().getMetadataProvider().getAddress()
+        .setCountry(CountryUtils.iso2(resource.getEml().getMetadataProvider().getAddress().getCountry()));
     }
 
     if (resource.getEml().getMetadataProvider() != null && resource.getEml().getMetadataProvider().isEmpty()) {
@@ -262,6 +269,18 @@ public class MetadataAction extends ManagerBaseAction {
       current.setLastName(getCurrentUser().getLastname());
       current.setEmail(getCurrentUser().getEmail());
       resource.getEml().setMetadataProvider(current);
+    }
+
+    // Save the coreType to the resource when it is null
+    if (resource.getCoreType() == null) {
+      if (resource.getCoreTypeTerm() != null) {
+        String core = resource.getCoreTypeTerm().simpleName().toLowerCase();
+        if (Constants.DWC_ROWTYPE_TAXON.toLowerCase().contains(core)) {
+          resource.setCoreType(StringUtils.capitalize((CoreRowType.OCCURRENCE).toString().toLowerCase()));
+        } else if (Constants.DWC_ROWTYPE_OCCURRENCE.toLowerCase().contains(core)) {
+          resource.setCoreType(StringUtils.capitalize((CoreRowType.CHECKLIST).toString().toLowerCase()));
+        }
+      }
     }
 
     // if it is a submission of the taxonomic coverage, clear the session list
@@ -298,7 +317,12 @@ public class MetadataAction extends ManagerBaseAction {
 
   @Override
   public String save() throws Exception {
+    // Save metadata information (eml.xml)
     resourceManager.saveEml(resource);
+    // Save resource information (resource.xml)
+    resourceManager.save(resource);
+    // Set resource modified date
+    resource.setModified(new Date());
     addActionMessage(getText("manage.success", new String[] {getText("submenu." + section)}));
     return SUCCESS;
   }

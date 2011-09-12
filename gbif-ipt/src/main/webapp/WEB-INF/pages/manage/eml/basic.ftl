@@ -4,17 +4,17 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		initHelp();	
-		 			 	
-			var resourceType = "${resource.coreTypeTerm!}";
-			if(resourceType!=""){
-				if(resourceType.indexOf("Occurrence")!=-1){					
-					$("#resource\\.coreType").attr('disabled','disabled');	
+		 		
+		 	var resourceType="${resource.coreTypeTerm!}";	
+		 	if(resourceType != ""){
+				if(resourceType.indexOf("Occurrence")!=-1){	
+					$("#resource\\.coreType").attr('disabled','disabled');
 				}else{					
-					if (resourceType.indexOf("Taxon")!=-1){						
-						$("#resource\\.coreType").attr('disabled','disabled');	
+					if (resourceType.indexOf("Taxon")!=-1){	
+						$("#resource\\.coreType").attr('disabled','disabled');
 					}
-				}
-			}	
+				}			
+			}
 						
 			function getList(list){
 				var arr=  list.split(",");
@@ -22,7 +22,8 @@
 				for(index in arr ){
 					var val=arr[index].replace(/{|}/g,'');
 					var arr2=val.split('=');
-					newlistaOccurrence[""+arr2[0]]=arr2[1];
+					var str=arr2[0].replace(/^\s*|\s*$/g,"");
+					newlistaOccurrence[str]=arr2[1];
 				}
 				return newlistaOccurrence;
 			}
@@ -37,14 +38,14 @@
 		            	$('#resource\\.subtype >option').remove();
 		            	var list=getList("${occurrenceSubtypes}");
 		            	$.each(list, function(key, value) {
-		    				$('#resource\\.subtype').append('<option value='+key+'>'+value+'</option>');
+		    				$('#resource\\.subtype').append('<option value="'+key+'">'+value+'</option>');
 		    			});          	
 		            break;
 		            case 'Checklist':
 		            	$('#resource\\.subtype >option').remove();	
 		            	var list=getList("${checklistSubtypes}");
 		            	$.each(list, function(key, value) {
-		    				$('#resource\\.subtype').append('<option value='+key+'>'+value+'</option>');
+		    				$('#resource\\.subtype').append('<option value="'+key+'">'+value+'</option>');
 		    			});
 		            break;
 		            case 'Other':
@@ -56,7 +57,7 @@
 		            	$('#resource\\.subtype').append('<option value=""></option>');	            	
 		            break;
 		        }
-			});
+			});			
 			
 		$("#copyDetails").click(function(event) {
 			event.preventDefault();
@@ -87,7 +88,7 @@
 			$("#eml\\.metadataProvider\\.phone").attr("value", $("#eml\\.contact\\.phone").attr("value"));
 			$("#eml\\.metadataProvider\\.email").attr("value", $("#eml\\.contact\\.email").attr("value"));
 			$("#eml\\.metadataProvider\\.homepage").attr("value", $("#eml\\.contact\\.homepage").attr("value"));		
-		});
+		});		
 	});
 	
 </script>
@@ -109,7 +110,7 @@
 	</div>	
 	<div class="halfcolumn">
 		<@select name="resource.coreType" help="i18n" options=types value="${resource.coreType!''}"/>
-	</div>	
+	</div>
 	<div class="halfcolumn" id="selectSubtypeDiv">	
 		<@select name="resource.subtype" help="i18n" options=listSubtypes value="${resource.subtype!''}" />	
   	</div>	
