@@ -73,10 +73,13 @@ public class UpdateResourceMetadataAction extends POSTAction {
     log.info("Updating resource metadata - eml.xml");
     for (Resource res : publishedResources) {
       try {
-        // set resource modified date
-        res.setModified(new Date());
 
         resourceManager.publishMetadata(res, this);
+
+        // save resource
+        res.setLastPublished(new Date());
+        resourceManager.save(res);
+
         resUpdateStatus.put(res.getShortname() + rtf, success);
         resUpdateStatus.put(res.getShortname() + eml, success);
       } catch (PublicationException e) {
@@ -295,8 +298,8 @@ public class UpdateResourceMetadataAction extends POSTAction {
       this.addActionWarning(getText("admin.config.updateMetadata.nonePublished"));
     } else {
       if (successCounter > 0) {
-        this.addActionMessage(getTextWithDynamicArgs("admin.config.updateMetadata.summary",
-          String.valueOf(successCounter), String.valueOf(publishedResources.size())));
+        this.addActionMessage(getTextWithDynamicArgs("admin.config.updateMetadata.summary", String
+          .valueOf(successCounter), String.valueOf(publishedResources.size())));
       }
     }
   }
