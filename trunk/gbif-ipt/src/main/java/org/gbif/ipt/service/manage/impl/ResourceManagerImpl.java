@@ -22,11 +22,11 @@ import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.Resource.CoreRowType;
 import org.gbif.ipt.model.Source;
+import org.gbif.ipt.model.User;
+import org.gbif.ipt.model.Resource.CoreRowType;
 import org.gbif.ipt.model.Source.FileSource;
 import org.gbif.ipt.model.Source.SqlSource;
-import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
@@ -37,12 +37,12 @@ import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.DeletionNotAllowedException;
-import org.gbif.ipt.service.DeletionNotAllowedException.Reason;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidConfigException;
-import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.RegistryException;
+import org.gbif.ipt.service.DeletionNotAllowedException.Reason;
+import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -505,8 +505,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       if (ext.hasProperty(f.getTerm())) {
         fields.add(new PropertyMapping(f));
       } else {
-        alog.warn("manage.resource.create.mapping.concept.skip",
-          new String[] {f.getTerm().qualifiedName(), ext.getRowType()});
+        alog.warn("manage.resource.create.mapping.concept.skip", new String[] {f.getTerm().qualifiedName(),
+          ext.getRowType()});
       }
     }
     map.setFields(fields);
@@ -889,8 +889,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     File cfgFile = dataDir.resourceFile(resource, PERSISTENCE_FILE);
     Writer writer = null;
     try {
-      // set resource modified date
-      resource.setModified(new Date());
       // make sure resource dir exists
       FileUtils.forceMkdir(cfgFile.getParentFile());
       // persist data
@@ -916,6 +914,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   public synchronized void saveEml(Resource resource) throws InvalidConfigException {
     // udpate EML with latest resource basics
     syncEmlWithResource(resource);
+    // set modified date
+    resource.setModified(new Date());
     // save into data dir
     File emlFile = dataDir.resourceEmlFile(resource.getShortname(), null);
     try {
