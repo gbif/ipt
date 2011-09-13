@@ -12,8 +12,9 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import com.google.inject.Singleton;
-import com.google.inject.internal.Nullable;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -69,8 +70,8 @@ public class DataDir {
           dd.dataDir = new File(dataDirPath);
         }
       } catch (IOException e) {
-        log.error(
-          "Failed to read the datadir location settings file in WEB-INF at " + dataDirSettingFile.getAbsolutePath(), e);
+        log.error("Failed to read the datadir location settings file in WEB-INF at "
+          + dataDirSettingFile.getAbsolutePath(), e);
       }
     } else {
       log.warn("Datadir location settings file in WEB-INF not found. Continue without data directory.");
