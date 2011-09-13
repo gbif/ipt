@@ -1,29 +1,28 @@
 package org.gbif.ipt.service.manage;
 
-import org.gbif.utils.file.ClosableIterator;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.Source.FileSource;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.SourceException;
 import org.gbif.ipt.service.manage.impl.SourceManagerImpl;
-
-import com.google.inject.ImplementedBy;
-import com.google.inject.internal.Nullable;
+import org.gbif.utils.file.ClosableIterator;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
+import com.google.inject.ImplementedBy;
+
 /**
  * This interface details ALL methods associated with the main resource entity.
- * 
  * The manager keeps a map of the basic metadata and authorisation information in memory, but further details like the
  * full EML or mapping configuration is stored in files and loaded into manager sessions when needed.
  * 
  * @See ResourceManagerSession
- * 
  * @author markus
  */
 @ImplementedBy(SourceManagerImpl.class)
@@ -31,7 +30,6 @@ public interface SourceManager {
 
   /**
    * Adds one text file as a file source to a resource configuration.
-   * 
    * The file will be analyzed to detect the character encoding and delimiters if not given explicitly in a dwc-a.
    * 
    * @param config the resource configuration to be added to
@@ -43,8 +41,8 @@ public interface SourceManager {
 
   /**
    * Checks if a source is readable and analyzes its file size, number of rows and other source properties which will be
-   * updated. A full analysis might take some time in particular for sql source, so one should use the the quick full=false one as much as possible.
-   * 
+   * updated. A full analysis might take some time in particular for sql source, so one should use the the quick
+   * full=false one as much as possible.
    * For SQL sources the database connection and number of avilable columns will be checked.
    * 
    * @param source the source to analyze
@@ -62,10 +60,8 @@ public interface SourceManager {
 
   /**
    * Imports a darwin core archive (simplest = 1 text file with a header row) to a resource configuration.
-   * 
    * When adding a darwin core archive all data files will be added as file sources and also the existing column
    * mappings will be preserved if the concept terms and extension rowtypes are known to this IPT.
-   * 
    * All files will analyzed to detect the character encoding and delimiters if not given explicitly in a dwc-a.
    * 
    * @param config the resource configuration to be added to
