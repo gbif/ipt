@@ -1,12 +1,9 @@
 /***************************************************************************
  * Copyright 2010 Global Biodiversity Information Facility Secretariat
- * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -27,24 +24,24 @@ import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.SourceManager;
 
-import com.google.inject.Inject;
-import com.google.inject.servlet.SessionScoped;
-
-import org.apache.commons.lang.xwork.StringUtils;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.TreeMap;
+import java.util.Map.Entry;
+
+import com.google.inject.Inject;
+import com.google.inject.servlet.SessionScoped;
+import org.apache.commons.lang.xwork.StringUtils;
 
 /**
  * @author markus
- * 
  */
 public class TranslationAction extends ManagerBaseAction {
+
   @SessionScoped
   static class Translation {
+
     private String rowType;
     private ConceptTerm term;
     private TreeMap<String, String> tmap;
@@ -116,7 +113,7 @@ public class TranslationAction extends ManagerBaseAction {
           }
         }
       }
-      addActionMessage(getText("manage.translation.mapped.terms", new String[]{count+""}));
+      addActionMessage(getText("manage.translation.mapped.terms", new String[] {count + ""}));
     } else {
       addActionError(getText("manage.translation.cantfind.vocabulary"));
     }
@@ -125,9 +122,9 @@ public class TranslationAction extends ManagerBaseAction {
 
   @Override
   public String delete() {
-	field.getTranslation().clear();
-	saveResource();
-	addActionMessage(getText("manage.translation.deleted", new String[]{field.getTerm().toString()}));
+    field.getTranslation().clear();
+    saveResource();
+    addActionMessage(getText("manage.translation.deleted", new String[] {field.getTerm().toString()}));
     id = mapping.getExtension().getRowType();
     return NONE;
   }
@@ -136,14 +133,15 @@ public class TranslationAction extends ManagerBaseAction {
     return field;
   }
 
+  @Override
+  public String getId() {
+    return id;
+  }
+
   public Integer getMid() {
     return mid;
   }
-  
-  public String getId() {
-		return id;
-  }
-  
+
   public ExtensionProperty getProperty() {
     return property;
   }
@@ -216,7 +214,7 @@ public class TranslationAction extends ManagerBaseAction {
       }
     }
 
-    addActionMessage(getText("manage.translation.reloaded.values", new String[]{trans.getTmap().size()+""}));
+    addActionMessage(getText("manage.translation.reloaded.values", new String[] {trans.getTmap().size() + ""}));
   }
 
   @Override
@@ -226,7 +224,7 @@ public class TranslationAction extends ManagerBaseAction {
     // save entire resource config
     saveResource();
     id = mapping.getExtension().getRowType();
-    addActionMessage(getText("manage.translation.saved", new String[]{field.getTerm().toString()}));
+    addActionMessage(getText("manage.translation.saved", new String[] {field.getTerm().toString()}));
     return NONE;
   }
 

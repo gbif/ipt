@@ -27,9 +27,8 @@ import org.gbif.metadata.eml.TemporalCoverageType;
 import java.net.URI;
 import java.util.regex.Pattern;
 
-import javax.annotation.Nullable;
-
 import com.google.inject.Inject;
+import com.google.inject.internal.Nullable;
 
 /**
  * @author markus
