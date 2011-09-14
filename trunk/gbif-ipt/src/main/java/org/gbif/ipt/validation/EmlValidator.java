@@ -423,42 +423,76 @@ public class EmlValidator extends BaseValidator {
          */
         Double coord = 0.0;
         for (int index = 0; index < eml.getGeospatialCoverages().size(); index++) {
-          boolean descriptionNeeded = true;
-          coord = eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMin().getLongitude();
-          if (coord == null || Double.isNaN(coord)) {
-            descriptionNeeded = false;
-            action.addFieldError(
-              "eml.geospatialCoverages[" + index + "].boundingCoordinates.min.longitude",
-              action.getText("validation.invalid",
-                new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.min.longitude")}));
+          // The Bounding coordinates and description are mandatory.
+          // If all fields are empty, the <coverage> label in eml.xml will be removed.
+          if ((eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMin().getLongitude() == null)
+            && (eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLongitude() == null)
+            && (eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMin().getLatitude() == null)
+            && (eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLatitude() == null)
+            && eml.getGeospatialCoverages().get(index).getDescription().equals("")) {
+            eml.getGeospatialCoverages().clear();
           }
-          coord = eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLongitude();
-          if (coord == null || Double.isNaN(coord)) {
-            descriptionNeeded = false;
-            action.addFieldError(
-              "eml.geospatialCoverages[" + index + "].boundingCoordinates.max.longitude",
-              action.getText("validation.invalid",
-                new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.max.longitude")}));
-          }
-          coord = eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLatitude();
-          if (coord == null || Double.isNaN(coord)) {
-            descriptionNeeded = false;
-            action.addFieldError(
-              "eml.geospatialCoverages[" + index + "].boundingCoordinates.max.latitude",
-              action.getText("validation.invalid",
-                new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.max.latitude")}));
-          }
-          coord = eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMin().getLatitude();
-          if (coord == null || Double.isNaN(coord)) {
-            descriptionNeeded = false;
-            action.addFieldError(
-              "eml.geospatialCoverages[" + index + "].boundingCoordinates.min.latitude",
-              action.getText("validation.invalid",
-                new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.min.latitude")}));
-          }
-          if (descriptionNeeded && !exists(eml.getGeospatialCoverages().get(index).getDescription())) {
-            action.addFieldError("eml.geospatialCoverages[" + index + "].description", action.getText(
-              "validation.required", new String[] {action.getText("eml.geospatialCoverages.description")}));
+          if (eml.getGeospatialCoverages().size() > 0) {
+            coord = eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMin().getLongitude();
+            if (coord == null) {
+              action.addFieldError(
+                "eml.geospatialCoverages[" + index + "].boundingCoordinates.min.longitude",
+                action.getText("validation.required",
+                  new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.min.longitude")}));
+            } else if (Double.isNaN(coord)) {
+              action.addFieldError(
+                "eml.geospatialCoverages[" + index + "].boundingCoordinates.min.longitude",
+                action.getText("validation.invalid",
+                  new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.min.longitude")}));
+            }
+            coord = eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLongitude();
+            if (coord == null) {
+              action.addFieldError(
+                "eml.geospatialCoverages[" + index + "].boundingCoordinates.max.longitude",
+                action.getText("validation.required",
+                  new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.max.longitude")}));
+            } else if (Double.isNaN(coord)) {
+              action.addFieldError(
+                "eml.geospatialCoverages[" + index + "].boundingCoordinates.max.longitude",
+                action.getText("validation.invalid",
+                  new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.max.longitude")}));
+            }
+            coord = eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLatitude();
+            if (coord == null) {
+              action.addFieldError(
+                "eml.geospatialCoverages[" + index + "].boundingCoordinates.max.latitude",
+                action.getText("validation.required",
+                  new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.max.latitude")}));
+            } else if (Double.isNaN(coord)) {
+              action.addFieldError(
+                "eml.geospatialCoverages[" + index + "].boundingCoordinates.max.latitude",
+                action.getText("validation.invalid",
+                  new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.max.latitude")}));
+            }
+            coord = eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMin().getLatitude();
+            if (coord == null) {
+              action.addFieldError(
+                "eml.geospatialCoverages[" + index + "].boundingCoordinates.min.latitude",
+                action.getText("validation.required",
+                  new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.min.latitude")}));
+            } else if (Double.isNaN(coord)) {
+              action.addFieldError(
+                "eml.geospatialCoverages[" + index + "].boundingCoordinates.min.latitude",
+                action.getText("validation.invalid",
+                  new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.min.latitude")}));
+            }
+            /* description - mandatory and greater than 2 chars */
+            if (eml.getGeospatialCoverages().get(index).getDescription().equals("")) {
+              action.addFieldError(
+                "eml.geospatialCoverages[" + index + "].description",
+                action.getText("validation.required",
+                  new String[] {action.getText("eml.geospatialCoverages.description")}));
+            } else if (!exists(eml.getGeospatialCoverages().get(index).getDescription(), 2)) {
+              action.addFieldError(
+                "eml.geospatialCoverages[" + index + "].description",
+                action.getText("validation.short", new String[] {action.getText("eml.geospatialCoverages.description"),
+                  "2"}));
+            }
           }
         }
 

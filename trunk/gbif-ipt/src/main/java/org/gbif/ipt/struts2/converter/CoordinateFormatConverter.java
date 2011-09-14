@@ -37,6 +37,10 @@ public abstract class CoordinateFormatConverter extends StrutsTypeConverter {
 
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {
+    // The null value is needed to validate in EmlValidator.java class
+    if (values[0].equals("")) {
+      return null;
+    }
     // The full name of the property which call the method contained in the Map context
     String coordinate = context.get(ANGLE).toString();
     // The latitude is validating in a range of doubles
@@ -72,13 +76,13 @@ public abstract class CoordinateFormatConverter extends StrutsTypeConverter {
         number = decimal.parse(values[0]).doubleValue();
         if (range.containsDouble(number)) {
           return number;
+        } else {
+          throw new TypeConversionException("Invalid decimal number: " + values[0]);
         }
       } catch (ParseException e1) {
         throw new TypeConversionException("Invalid decimal number: " + values[0]);
       }
     }
-
-    return null;
   }
 
   @Override
