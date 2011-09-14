@@ -288,6 +288,9 @@ public class MetadataAction extends ManagerBaseAction {
       if (section.equals("parties")) {
         resource.getEml().getAssociatedParties().clear();
       }
+      if (section.equals("geocoverage")) {
+        resource.getEml().getGeospatialCoverages().clear();
+      }
       if (section.equals("taxcoverage")) {
         resource.getEml().getTaxonomicCoverages().clear();
       }

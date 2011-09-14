@@ -57,6 +57,7 @@ public class LongitudeFormatConverterTest {
     list.add(new Object[] {0.7, new String[] {",7"}});
     list.add(new Object[] {-1.1, new String[] {"-1.1"}});
     list.add(new Object[] {-1.1, new String[] {"-1,1"}});
+    list.add(new Object[] {null, new String[] {""}});
     return list;
   }
 
@@ -77,8 +78,6 @@ public class LongitudeFormatConverterTest {
     assertEquals(null, longitudeFormat.convertFromString(new HashMap(), new String[] {"abc"}, null));
     assertEquals(null, longitudeFormat.convertFromString(new HashMap(), new String[] {"@#$%"}, null));
     assertEquals(null, longitudeFormat.convertFromString(new HashMap(), new String[] {" "}, null));
-    // Fails if the value is an empty String
-    assertEquals(null, longitudeFormat.convertFromString(new HashMap(), new String[] {""}, null));
   }
 
 }

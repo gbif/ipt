@@ -121,21 +121,21 @@
     function redraw() {
 		var tminy;
         var tmaxy;
-        if(marker1.getPosition().lat() < -84.9999){
-        	tminy=-84.9999;
+        if(marker1.getPosition().lat() < -89.9999){
+        	tminy=-89.9999;
         }else{
-        	if(marker1.getPosition().lat() > 84.9999){
-        		tminy=84.9999;
+        	if(marker1.getPosition().lat() > 89.9999){
+        		tminy=89.9999;
         	}else{
         		tminy=marker1.getPosition().lat();
         	}
         }
         
-        if(marker2.getPosition().lat() > 84.9999){
-        	tmaxy=84.9999;
+        if(marker2.getPosition().lat() > 89.9999){
+        	tmaxy=89.9999;
         }else{
-        	if(marker2.getPosition().lat() < -84.9999){
-        		tmaxy=-84.9999;
+        	if(marker2.getPosition().lat() < -89.9999){
+        		tmaxy=-89.9999;
         	}else{
         		tmaxy=marker2.getPosition().lat();
         	}
@@ -178,10 +178,15 @@
        		redrawAndFill();	    			
        		atribute=false;
 		} else {	
+    		  dfminx=-10;
+    	    dfminy=-10;
+    	    dfmaxx=10;
+    	    dfmaxy=10;
        		marker1.setPosition(new google.maps.LatLng(dfminy, dfminx));
       		marker2.setPosition(new google.maps.LatLng(dfmaxy, dfmaxx));       		
        		redrawAndFill();			
        		$("#coordinates").slideDown('slow'); 
+       		map.setCenter(new google.maps.LatLng((dfmaxy+dfminy)/2, (dfmaxx+dfminx)/2));
 	     }		
 	});	
 	

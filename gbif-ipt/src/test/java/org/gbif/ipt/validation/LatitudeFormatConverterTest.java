@@ -58,12 +58,14 @@ public class LatitudeFormatConverterTest {
     list.add(new Object[] {-0.0, new String[] {"-0"}});
     list.add(new Object[] {0.0, new String[] {"0.0"}});
     list.add(new Object[] {0.7, new String[] {",7"}});
+    list.add(new Object[] {null, new String[] {""}});
     return list;
   }
 
   @Test
   public void convertFromStringTest() {
     LatitudeFormatConverter latitudeFormat = new LatitudeFormatConverter();
+    // latitudeFormat.
     assertEquals(expectedDouble, (latitudeFormat.convertFromString(new HashMap(), firstTestValue, null)));
   }
 
@@ -78,7 +80,5 @@ public class LatitudeFormatConverterTest {
     assertEquals(null, (latitudeFormat.convertFromString(new HashMap(), new String[] {"abc"}, null)));
     assertEquals(null, (latitudeFormat.convertFromString(new HashMap(), new String[] {"@#$%"}, null)));
     assertEquals(null, (latitudeFormat.convertFromString(new HashMap(), new String[] {" "}, null)));
-    // Fails if the value is an empty String
-    assertEquals(null, (latitudeFormat.convertFromString(new HashMap(), new String[] {""}, null)));
   }
 }
