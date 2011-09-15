@@ -10,13 +10,26 @@ import org.gbif.ipt.utils.InputStreamUtils;
 import org.gbif.ipt.utils.PBEEncrypt;
 import org.gbif.ipt.utils.PBEEncrypt.EncryptionException;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
+import javax.servlet.ServletContext;
+import javax.xml.parsers.SAXParserFactory;
+
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Scopes;
 import com.google.inject.Singleton;
 import com.google.inject.assistedinject.FactoryProvider;
-
+import freemarker.cache.ClassTemplateLoader;
+import freemarker.cache.MultiTemplateLoader;
+import freemarker.cache.TemplateLoader;
+import freemarker.template.Configuration;
 import org.apache.http.HttpException;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
@@ -39,30 +52,14 @@ import org.apache.http.protocol.ExecutionContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.log4j.Logger;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-
-import javax.servlet.ServletContext;
-import javax.xml.parsers.SAXParserFactory;
-
-import freemarker.cache.ClassTemplateLoader;
-import freemarker.cache.MultiTemplateLoader;
-import freemarker.cache.TemplateLoader;
-import freemarker.template.Configuration;
-
 /**
  * A guice module containing wiring used for both test and production.
  * 
  * @See IPTTestModule which is used in tests and additionally injects a mock servlet context
- * 
  * @author markus
- * 
  */
 public class IPTModule extends AbstractModule {
+
   protected Logger log = Logger.getLogger(this.getClass());
 
   @Override
@@ -79,7 +76,7 @@ public class IPTModule extends AbstractModule {
 
     // assisted inject factories
     bind(GenerateDwcaFactory.class).toProvider(
-        FactoryProvider.newFactory(GenerateDwcaFactory.class, GenerateDwca.class));
+      FactoryProvider.newFactory(GenerateDwcaFactory.class, GenerateDwca.class));
 
   }
 
@@ -142,6 +139,7 @@ public class IPTModule extends AbstractModule {
     // registry currently requires Preemptive authentication
     // add preemptive authentication via this interceptor
     HttpRequestInterceptor preemptiveAuth = new HttpRequestInterceptor() {
+
       private Logger log = Logger.getLogger(this.getClass());
 
       public void process(final HttpRequest request, final HttpContext context) throws HttpException, IOException {

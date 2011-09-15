@@ -50,8 +50,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import com.google.inject.Inject;
-import com.google.inject.internal.Nullable;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.xwork.StringUtils;
 
@@ -479,8 +480,8 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       } catch (Exception e) {
         String msg =
           String.format(
-            "Couldnt create new external datasource connection with JDBC Class=%s, URL=%s, user=%s. Error: %s", source
-              .getJdbcDriver(), source.getJdbcUrl(), source.getUsername(), e.getMessage());
+            "Couldnt create new external datasource connection with JDBC Class=%s, URL=%s, user=%s. Error: %s",
+            source.getJdbcDriver(), source.getJdbcUrl(), source.getUsername(), e.getMessage());
         log.warn(msg, e);
         throw new SQLException(msg);
       }
