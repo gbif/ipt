@@ -5,7 +5,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	initHelp();
-	$('.confirm').jConfirmAction({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
+	$('.confirm').jConfirmAction({question : "<@s.text name="manage.source.confirmation.message"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
 	$("#peekBtn").click(function(e) {
 		e.preventDefault();
 		$("#modalcontent").load("peek.do?r=${resource.shortname}&id=${id!}");
@@ -97,13 +97,17 @@ $(document).ready(function(){
   	</div>
   <div class="newline"></div>	
   <div class="newline"></div>	
-  <div class="buttons">
- 	<@s.submit cssClass="button" name="save" key="button.save"/>
- 	<#if id?exists>
- 	<@s.submit cssClass="confirm" name="delete" key="button.delete"/>
- 	</#if>
- 	<@s.submit cssClass="button" name="cancel" key="button.cancel"/>
-  </div>
+  <div class="buttons">  
+  	<div class="halfcolumn">
+ 		<@s.submit cssClass="button" name="save" key="button.save"/> 	
+ 		<@s.submit cssClass="button" name="cancel" key="button.cancel"/>
+ 	</div>
+ 	<div class="halfcolumn">
+	  	<#if id?exists>
+ 			<@s.submit cssClass="confirm" name="delete" key="button.delete.source.file"/>
+ 		</#if>
+  	</div> 	 	
+  </div>  
 </form>
 
 
