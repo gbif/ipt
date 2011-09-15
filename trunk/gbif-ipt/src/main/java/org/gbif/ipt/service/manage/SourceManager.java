@@ -13,8 +13,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import com.google.inject.ImplementedBy;
-import com.google.inject.internal.Nullable;
 
 /**
  * This interface details ALL methods associated with the main resource entity.
