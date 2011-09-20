@@ -458,10 +458,13 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     data.add(new BasicNameValuePair("wsPassword", StringUtils.trimToEmpty(ipt.getWsPassword()))); // IPT instance
     // password
     data.add(new BasicNameValuePair("primaryContactType", ipt.getPrimaryContactType()));
-    data.add(new BasicNameValuePair("primaryContactFirstName", StringUtils
-      .trimToEmpty(ipt.getPrimaryContactFirstName())));
-    data
-      .add(new BasicNameValuePair("primaryContactLastName", StringUtils.trimToEmpty(ipt.getPrimaryContactLastName())));
+    // TODO: For release 2.0.4
+    // data.add(new BasicNameValuePair("primaryContactFirstName",
+    // StringUtils.trimToEmpty(ipt.getPrimaryContactFirstName())));
+    // data.add(new BasicNameValuePair("primaryContactLastName",
+    // StringUtils.trimToEmpty(ipt.getPrimaryContactLastName())));
+    data.add(new BasicNameValuePair("primaryContactName", StringUtils.trimToEmpty(ipt.getPrimaryContactName())));
+
     data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(ipt.getPrimaryContactEmail())));
     data.add(new BasicNameValuePair("serviceTypes", SERVICE_TYPE_RSS));
     data.add(new BasicNameValuePair("serviceURLs", getRssFeedURL()));
@@ -500,10 +503,13 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     data.add(new BasicNameValuePair("language", StringUtils.trimToEmpty(ipt.getLanguage())));
     data.add(new BasicNameValuePair("homepageURL", StringUtils.trimToEmpty(ipt.getHomepageURL())));
     data.add(new BasicNameValuePair("logoURL", StringUtils.trimToEmpty(ipt.getLogoUrl())));
-    data.add(new BasicNameValuePair("primaryContactFirstName", StringUtils
-      .trimToEmpty(ipt.getPrimaryContactFirstName())));
-    data
-      .add(new BasicNameValuePair("primaryContactLastName", StringUtils.trimToEmpty(ipt.getPrimaryContactLastName())));
+    // TODO: For release 2.0.4
+    // data.add(new BasicNameValuePair("primaryContactFirstName",
+    // StringUtils.trimToEmpty(ipt.getPrimaryContactFirstName())));
+    // data.add(new BasicNameValuePair("primaryContactLastName",
+    // StringUtils.trimToEmpty(ipt.getPrimaryContactLastName())));
+    data.add(new BasicNameValuePair("primaryContactName", StringUtils.trimToEmpty(ipt.getPrimaryContactName())));
+
     data.add(new BasicNameValuePair("primaryContactType", StringUtils.trimToEmpty(ipt.getPrimaryContactType())));
     data.add(new BasicNameValuePair("primaryContactAddress", StringUtils.trimToEmpty(ipt.getPrimaryContactAddress())));
     data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(ipt.getPrimaryContactEmail())));
