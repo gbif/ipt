@@ -19,19 +19,6 @@ import org.gbif.metadata.eml.Eml;
 import org.gbif.utils.HttpUtil;
 import org.gbif.utils.HttpUtil.Response;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.google.inject.Inject;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.http.NameValuePair;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
-import org.xml.sax.SAXException;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,8 +33,22 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.google.inject.Inject;
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.NameValuePair;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
+import org.xml.sax.SAXException;
+
 public class RegistryManagerImpl extends BaseManager implements RegistryManager {
+
   class RegistryServices {
+
     public String serviceURLs = null;
     public String serviceTypes = null;
   }
@@ -68,7 +69,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   @Inject
   public RegistryManagerImpl(AppConfig cfg, DataDir dataDir, DefaultHttpClient client, SAXParserFactory saxFactory)
-      throws ParserConfigurationException, SAXException {
+    throws ParserConfigurationException, SAXException {
     super(cfg, dataDir);
     this.saxParser = saxFactory.newSAXParser();
     this.http = new HttpUtil(client);
@@ -79,8 +80,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     List<NameValuePair> data = new ArrayList<NameValuePair>();
 
     Eml eml = resource.getEml();
-    data.add(new BasicNameValuePair("name", ((resource.getTitle() != null)
-        ? StringUtils.trimToEmpty(resource.getTitle()) : StringUtils.trimToEmpty(resource.getShortname()))));
+    data.add(new BasicNameValuePair("name", ((resource.getTitle() != null) ? StringUtils.trimToEmpty(resource
+      .getTitle()) : StringUtils.trimToEmpty(resource.getShortname()))));
     data.add(new BasicNameValuePair("description", StringUtils.trimToEmpty(resource.getDescription())));
     data.add(new BasicNameValuePair("homepageURL", StringUtils.trimToEmpty(eml.getDistributionUrl())));
     data.add(new BasicNameValuePair("logoURL", StringUtils.trimToEmpty(eml.getLogoUrl())));
@@ -95,15 +96,16 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       primaryContact.setLastName(resource.getCreator().getLastname());
       primaryContact.setRole(null);
     }
-    String primaryContactType = (primaryContact.getRole() == null || primaryContact.getRole().equals("MetadataProvider"))
+    String primaryContactType =
+      (primaryContact.getRole() == null || primaryContact.getRole().equals("MetadataProvider"))
         ? CONTACT_TYPE_TECHNICAL : CONTACT_TYPE_ADMINISTRATIVE;
 
     data.add(new BasicNameValuePair("primaryContactType", primaryContactType));
     data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(primaryContact.getEmail())));
-    data.add(new BasicNameValuePair("primaryContactFirstName",
-        StringUtils.trimToNull(StringUtils.trimToEmpty(primaryContact.getFirstName()))));
-    data.add(new BasicNameValuePair("primaryContactLastName",
-        StringUtils.trimToNull(StringUtils.trimToEmpty(primaryContact.getLastName()))));
+    data.add(new BasicNameValuePair("primaryContactFirstName", StringUtils.trimToNull(StringUtils
+      .trimToEmpty(primaryContact.getFirstName()))));
+    data.add(new BasicNameValuePair("primaryContactLastName", StringUtils.trimToNull(StringUtils
+      .trimToEmpty(primaryContact.getLastName()))));
 
     // see if we have a published dwca or if its only metadata
     RegistryServices services = buildServiceTypeParams(resource);
@@ -138,14 +140,13 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.registry.RegistryManager#deregister(org.gbif.ipt.model.Resource)
    */
   public void deregister(Resource resource) throws RegistryException {
     try {
       if (resource.getOrganisation() != null) {
-        Response resp = http.delete(getDeleteResourceUri(resource.getKey().toString()),
-            orgCredentials(resource.getOrganisation()));
+        Response resp =
+          http.delete(getDeleteResourceUri(resource.getKey().toString()), orgCredentials(resource.getOrganisation()));
         if (http.success(resp)) {
           log.info("The resource has been deleted. Resource key: " + resource.getKey().toString());
         } else {
@@ -173,16 +174,15 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.registry.RegistryManager#getExtensions()
    */
   public List<Extension> getExtensions() throws RegistryException {
     try {
       Response resp = http.get(getExtensionsURL(true));
       if (resp.content != null) {
-        Map<String, List<Extension>> jSONextensions = gson.fromJson(resp.content,
-            new TypeToken<Map<String, List<Extension>>>() {
-            }.getType());
+        Map<String, List<Extension>> jSONextensions =
+          gson.fromJson(resp.content, new TypeToken<Map<String, List<Extension>>>() {
+          }.getType());
         return jSONextensions.get("extensions");
       } else {
         throw new RegistryException(TYPE.BAD_RESPONSE, "Response content is null");
@@ -254,16 +254,15 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.registry.RegistryManager#getOrganisations()
    */
   public List<Organisation> getOrganisations() throws RegistryException {
     try {
       Response resp = http.get(getOrganisationsURL(true));
       if (resp.content != null) {
-        List<Map<String, String>> organisationsTemp = gson.fromJson(resp.content,
-            new TypeToken<List<Map<String, String>>>() {
-            }.getType());
+        List<Map<String, String>> organisationsTemp =
+          gson.fromJson(resp.content, new TypeToken<List<Map<String, String>>>() {
+          }.getType());
         List<Organisation> organisations = new ArrayList<Organisation>();
         int invalid = 0;
         for (Map<String, String> org : organisationsTemp) {
@@ -359,7 +358,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.registry.RegistryManager#getVocabularies()
    */
   public List<Vocabulary> getVocabularies() throws RegistryException {
@@ -397,7 +395,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.registry.RegistryManager#register(org.gbif.ipt.model.Resource,
    * org.gbif.ipt.model.Organisation, org.gbif.ipt.model.Ipt)
    */
@@ -448,7 +445,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.registry.RegistryManager#registerIPT(org.gbif.ipt.model.Ipt)
    */
   public String registerIPT(Ipt ipt, Organisation org) throws RegistryException {
@@ -462,9 +458,10 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     data.add(new BasicNameValuePair("wsPassword", StringUtils.trimToEmpty(ipt.getWsPassword()))); // IPT instance
     // password
     data.add(new BasicNameValuePair("primaryContactType", ipt.getPrimaryContactType()));
-    data.add(new BasicNameValuePair("primaryContactFirstName",
-        StringUtils.trimToEmpty(ipt.getPrimaryContactFirstName())));
-    data.add(new BasicNameValuePair("primaryContactLastName", StringUtils.trimToEmpty(ipt.getPrimaryContactLastName())));
+    data.add(new BasicNameValuePair("primaryContactFirstName", StringUtils
+      .trimToEmpty(ipt.getPrimaryContactFirstName())));
+    data
+      .add(new BasicNameValuePair("primaryContactLastName", StringUtils.trimToEmpty(ipt.getPrimaryContactLastName())));
     data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(ipt.getPrimaryContactEmail())));
     data.add(new BasicNameValuePair("serviceTypes", SERVICE_TYPE_RSS));
     data.add(new BasicNameValuePair("serviceURLs", getRssFeedURL()));
@@ -494,8 +491,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   public void updateIpt(Ipt ipt) {
     log.warn("Updating IPT instance throught GBIF Registry");
-    UsernamePasswordCredentials iptCredentials = new UsernamePasswordCredentials(ipt.getKey().toString(),
-        ipt.getWsPassword());
+    UsernamePasswordCredentials iptCredentials =
+      new UsernamePasswordCredentials(ipt.getKey().toString(), ipt.getWsPassword());
     List<NameValuePair> data = new ArrayList<NameValuePair>();
     data.add(new BasicNameValuePair("organisationKey", StringUtils.trimToEmpty(ipt.getKey().toString())));
     data.add(new BasicNameValuePair("name", StringUtils.trimToEmpty(ipt.getName())));
@@ -503,9 +500,10 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     data.add(new BasicNameValuePair("language", StringUtils.trimToEmpty(ipt.getLanguage())));
     data.add(new BasicNameValuePair("homepageURL", StringUtils.trimToEmpty(ipt.getHomepageURL())));
     data.add(new BasicNameValuePair("logoURL", StringUtils.trimToEmpty(ipt.getLogoUrl())));
-    data.add(new BasicNameValuePair("primaryContactFirstName",
-        StringUtils.trimToEmpty(ipt.getPrimaryContactFirstName())));
-    data.add(new BasicNameValuePair("primaryContactLastName", StringUtils.trimToEmpty(ipt.getPrimaryContactLastName())));
+    data.add(new BasicNameValuePair("primaryContactFirstName", StringUtils
+      .trimToEmpty(ipt.getPrimaryContactFirstName())));
+    data
+      .add(new BasicNameValuePair("primaryContactLastName", StringUtils.trimToEmpty(ipt.getPrimaryContactLastName())));
     data.add(new BasicNameValuePair("primaryContactType", StringUtils.trimToEmpty(ipt.getPrimaryContactType())));
     data.add(new BasicNameValuePair("primaryContactAddress", StringUtils.trimToEmpty(ipt.getPrimaryContactAddress())));
     data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(ipt.getPrimaryContactEmail())));
@@ -514,8 +512,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     data.add(new BasicNameValuePair("serviceURLs", getRssFeedURL()));
 
     try {
-      Response resp = http.post(getIptUpdateUri(ipt.getKey().toString()), null, null, iptCredentials,
-          new UrlEncodedFormEntity(data));
+      Response resp =
+        http.post(getIptUpdateUri(ipt.getKey().toString()), null, null, iptCredentials, new UrlEncodedFormEntity(data));
       if (http.success(resp)) {
         log.debug("Ipt's registration info has been updated");
       } else {
@@ -529,7 +527,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.registry.RegistryManager#updateResource(org.gbif.ipt.model.Resource,
    * org.gbif.ipt.model.Organisation, org.gbif.ipt.model.Ipt)
    */
@@ -547,8 +544,9 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     List<NameValuePair> data = buildRegistryParameters(resource);
 
     try {
-      Response resp = http.post(getIptUpdateResourceUri(resource.getKey().toString()), null, null,
-          orgCredentials(resource.getOrganisation()), new UrlEncodedFormEntity(data));
+      Response resp =
+        http.post(getIptUpdateResourceUri(resource.getKey().toString()), null, null, orgCredentials(resource
+          .getOrganisation()), new UrlEncodedFormEntity(data));
       if (http.success(resp)) {
         log.debug("Resource's registration info has been updated");
       } else {
@@ -561,8 +559,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   public boolean validateOrganisation(String organisationKey, String password) {
     try {
-      Response resp = http.get(getLoginURL(organisationKey), null, new UsernamePasswordCredentials(organisationKey,
-          password));
+      Response resp =
+        http.get(getLoginURL(organisationKey), null, new UsernamePasswordCredentials(organisationKey, password));
       if (http.success(resp)) {
         return true;
       }
