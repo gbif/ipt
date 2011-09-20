@@ -90,9 +90,13 @@ $(document).ready(function(){
 	<!-- p><@s.text name="admin.registration.registered3"/></p -->
 	<form class="topForm half" action="registration.do" method="post">	
 		<@input name="registeredIpt.name" i18nkey="admin.ipt.name" type="text" />
-		<@text name="registeredIpt.description" i18nkey="admin.ipt.description" />
+		<@text name="registeredIpt.description" i18nkey="admin.ipt.description" />	
+		
+		<!-- For release 2.0.4
 		<@input name="registeredIpt.primaryContactFirstName" i18nkey="admin.ipt.primaryContactFirstName" type="text" />
-		<@input name="registeredIpt.primaryContactLastName" i18nkey="admin.ipt.primaryContactLastName" type="text" />
+		<@input name="registeredIpt.primaryContactLastName" i18nkey="admin.ipt.primaryContactLastName" type="text" /> 
+		-->	
+		<@input name="registeredIpt.primaryContactName" i18nkey="admin.ipt.primaryContactName" type="text" />
 		<@input name="registeredIpt.primaryContactEmail" i18nkey="admin.ipt.primaryContactEmail" type="text" />
 		<div class="buttons">
 			<@s.submit cssClass="button" name="update" id="update" key="button.update" method="update"/>
@@ -126,18 +130,21 @@ $(document).ready(function(){
 			<@input name="organisation.password" i18nkey="admin.organisation.password" type="password" help="i18n"/>
 			<div id="requestDetails"></div>
 			<@input name="organisation.alias" i18nkey="admin.organisation.alias" type="text" />
-			<@checkbox name="organisation.canHost" i18nkey="admin.organisation.canHost" value="true" help="i18n"/>	
+			<@checkbox name="organisation.canHost" i18nkey="admin.organisation.canHost" value="true" help="i18n"/>				
 			
-			<@s.hidden id="organisation.primaryContactType" name="organisation.primaryContactType" required="false" />
+			<@s.hidden id="organisation.primaryContactType" name="organisation.primaryContactType" required="false" />			
 			<@s.hidden id="organisation.primaryContactName" name="organisation.primaryContactName" required="false" />
 			<@s.hidden id="organisation.primaryContactEmail" name="organisation.primaryContactEmail" required="false" />
 			<@s.hidden id="organisation.nodeKey" name="organisation.nodeKey" required="false" />
 			<@s.hidden id="organisation.nodeName" name="organisation.nodeName" required="false" />			
 						
 			<@input name="ipt.name" i18nkey="admin.ipt.name" type="text" />
-			<@text name="ipt.description" i18nkey="admin.ipt.description" />
+			<@text name="ipt.description" i18nkey="admin.ipt.description" />			
+			<!-- For Release 2.0.4
 			<@input name="ipt.primaryContactFirstName" i18nkey="admin.ipt.primaryContactFirstName" type="text" />
 			<@input name="ipt.primaryContactLastName" i18nkey="admin.ipt.primaryContactLastName" type="text" />
+			-->			
+			<@input name="ipt.primaryContactName" i18nkey="admin.ipt.primaryContactName" type="text" />
 			<@input name="ipt.primaryContactEmail" i18nkey="admin.ipt.primaryContactEmail" type="text" />
 			<@s.hidden id="admin.ipt.primaryContactType" name="ipt.primaryContactType" value="technical" />
 			
