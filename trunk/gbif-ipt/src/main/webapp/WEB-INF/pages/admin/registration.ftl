@@ -130,7 +130,7 @@ $(document).ready(function(){
 			<@input name="organisation.password" i18nkey="admin.organisation.password" type="password" help="i18n"/>
 			<div id="requestDetails"></div>
 			<@input name="organisation.alias" i18nkey="admin.organisation.alias" type="text" />
-			<@checkbox name="organisation.canHost" i18nkey="admin.organisation.canHost" value="true" help="i18n"/>				
+			<@checkbox name="organisation.canHost" i18nkey="admin.organisation.canPublish" value="true" help="i18n"/>				
 			
 			<@s.hidden id="organisation.primaryContactType" name="organisation.primaryContactType" required="false" />			
 			<@s.hidden id="organisation.primaryContactName" name="organisation.primaryContactName" required="false" />

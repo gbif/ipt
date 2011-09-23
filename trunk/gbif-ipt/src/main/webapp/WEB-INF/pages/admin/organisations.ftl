@@ -32,7 +32,7 @@ $(document).ready(function(){
 	<tr>
 		<th><@s.text name="admin.organisation.name"/></th>
 		<th><@s.text name="admin.organisation.alias"/></th>
-		<th><@s.text name="admin.organisation.canHost"/></th>
+		<th><@s.text name="admin.organisation.canPublish"/></th>
 		<th></th>		
 	</tr>
 	

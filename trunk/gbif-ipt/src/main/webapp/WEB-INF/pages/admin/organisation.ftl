@@ -3,6 +3,7 @@
 <script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	initHelp();
 	
 	var emailContent2 = '<@s.text name="emails.adding.organisation.association1"/>';
 	emailContent2 += '<@s.text name="emails.adding.organisation.association2"/>';
@@ -75,6 +76,7 @@ $(document).ready(function(){
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"> 
 
+
 <@s.form id="organisationsForm" cssClass="topForm half" action="organisation.do" method="post">
 	
 	<#if id?has_content>
@@ -99,9 +101,9 @@ $(document).ready(function(){
 	
 	<@input name="organisation.alias" i18nkey="admin.organisation.alias" type="text"/>
 	<#if id?has_content>
-		<@checkbox name="organisation.canHost" i18nkey="admin.organisation.canHost" value="organisation.canHost"/>
+		<@checkbox name="organisation.canHost" i18nkey="admin.organisation.canPublish" value="organisation.canHost" help="i18n"/>
 	<#else>
-		<@checkbox name="organisation.canHost" i18nkey="admin.organisation.canHost" value="true"/>
+		<@checkbox name="organisation.canHost" i18nkey="admin.organisation.canPublish" value="true" help="i18n"/>
 	</#if>
    <div class="buttons">
  	<@s.submit name="save" key="button.save" cssClass="confirm"/>
