@@ -25,20 +25,20 @@ import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
 
-import com.google.inject.Inject;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import com.google.inject.Inject;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
+
 /**
  * @author markus
  */
 public class SourceAction extends ManagerBaseAction {
+
   @Inject
   private SourceManager sourceManager;
   @Inject
@@ -65,11 +65,11 @@ public class SourceAction extends ManagerBaseAction {
     if (file != null) {
       // uploaded a new file. Is it compressed?
       if (StringUtils.endsWithIgnoreCase(fileContentType, "zip") // application/zip
-          || StringUtils.endsWithIgnoreCase(fileContentType, "gzip")) { // application/x-gzip
+        || StringUtils.endsWithIgnoreCase(fileContentType, "gzip")) { // application/x-gzip
         try {
           File tmpDir = dataDir.tmpDir();
           List<File> files = CompressionUtil.decompressFile(tmpDir, file);
-          addActionMessage(getText("manage.source.compressed.files", new String[]{files.size() + ""}));
+          addActionMessage(getText("manage.source.compressed.files", new String[] {files.size() + ""}));
           // import each file. The last file will become the id parameter,
           // so the new page opens with that source
           for (File f : files) {
@@ -77,7 +77,7 @@ public class SourceAction extends ManagerBaseAction {
           }
         } catch (IOException e) {
           log.error(e);
-          addActionError(getText("manage.source.filesystem.error", new String[]{e.getMessage()}));
+          addActionError(getText("manage.source.filesystem.error", new String[] {e.getMessage()}));
           return ERROR;
         } catch (UnsupportedCompressionType e) {
           addActionError(getText("manage.source.unsupported.compression.format"));
@@ -99,24 +99,24 @@ public class SourceAction extends ManagerBaseAction {
       saveResource();
       id = source.getName();
       if (replaced) {
-        addActionMessage(getText("manage.source.replaced.existing", new String[]{source.getName()}));
+        addActionMessage(getText("manage.source.replaced.existing", new String[] {source.getName()}));
       } else {
-        addActionMessage(getText("manage.source.added.new", new String[]{source.getName()}));
+        addActionMessage(getText("manage.source.added.new", new String[] {source.getName()}));
       }
     } catch (ImportException e) {
       // even though we have problems with this source we'll keep it for manual corrections
       log.error("Cannot add source " + filename + ": " + e.getMessage(), e);
-      addActionError(getText("manage.source.cannot.add", new String[]{filename, e.getMessage()}));
+      addActionError(getText("manage.source.cannot.add", new String[] {filename, e.getMessage()}));
     }
   }
 
   @Override
   public String delete() {
     if (sourceManager.delete(resource, resource.getSource(id))) {
-      addActionMessage(getText("manage.source.deleted", new String[]{id}));
+      addActionMessage(getText("manage.source.deleted", new String[] {id}));
       saveResource();
     } else {
-      addActionMessage(getText("manage.source.deleted.couldnt", new String[]{id}));
+      addActionMessage(getText("manage.source.deleted.couldnt", new String[] {id}));
     }
     return SUCCESS;
   }
@@ -215,18 +215,22 @@ public class SourceAction extends ManagerBaseAction {
         try {
           source = sourceManager.add(resource, file, fileFileName);
           if (resource.getSource(source.getName()) != null) {
-            addActionMessage(getText("manage.source.replaced.existing", new String[]{source.getName()}));
+            addActionMessage(getText("manage.source.replaced.existing", new String[] {source.getName()}));
           } else {
-            addActionMessage(getText("manage.source.added.new", new String[]{source.getName()}));
+            addActionMessage(getText("manage.source.added.new", new String[] {source.getName()}));
           }
         } catch (ImportException e) {
           // even though we have problems with this source we'll keep it for manual corrections
           log.error("Source error: " + e.getMessage(), e);
-          addActionError(getText("manage.source.error", new String[]{e.getMessage()}));
+          addActionError(getText("manage.source.error", new String[] {e.getMessage()}));
         }
       } else {
         try {
           resource.addSource(source, false);
+          id = source.getName();
+          if (this.analyze || !source.isReadable()) {
+            problem = sourceManager.analyze(source);
+          }
         } catch (AlreadyExistingException e) {
           // shouldnt really happen as we validate this beforehand - still catching it here to be safe
           addActionError(getText("manage.source.existing"));
@@ -299,8 +303,10 @@ public class SourceAction extends ManagerBaseAction {
     if (source != null) {
       // ALL SOURCES
       // check if title exists already as a source
-      if (StringUtils.trimToEmpty(source.getName()).length() < 3) {
-        addFieldError("source.name", getText("validation.required", new String[]{getText("source.name")}));
+      if (StringUtils.trimToEmpty(source.getName()).length() == 0) {
+        addFieldError("source.name", getText("validation.required", new String[] {getText("source.name")}));
+      } else if (StringUtils.trimToEmpty(source.getName()).length() < 3) {
+        addFieldError("source.name", getText("validation.short", new String[] {getText("source.name"), "3"}));
       } else if (id == null && resource.getSources().contains(source)) {
         addFieldError("source.name", getText("manage.source.unique"));
       }
@@ -308,12 +314,17 @@ public class SourceAction extends ManagerBaseAction {
         // SQL SOURCE
         SqlSource src = (SqlSource) source;
         // pure ODBC connections need only a DSN, no server
-        if (rdbms != null && !rdbms.equalsIgnoreCase("odbc") && StringUtils.trimToEmpty(src.getHost()).length() < 2) {
-          addFieldError("sqlSource.host", getText("validation.required", new String[]{getText("sqlSource.host")}));
+        if (StringUtils.trimToEmpty(src.getHost()).length() == 0 && rdbms != null && !rdbms.equalsIgnoreCase("odbc")) {
+          addFieldError("sqlSource.host", getText("validation.required", new String[] {getText("sqlSource.host")}));
+        } else if (StringUtils.trimToEmpty(src.getHost()).length() < 2) {
+          addFieldError("sqlSource.host", getText("validation.short", new String[] {getText("sqlSource.host"), "2"}));
         }
-        if (StringUtils.trimToEmpty(src.getDatabase()).length() < 2) {
-          addFieldError("sqlSource.database", getText("validation.required",
-              new String[]{getText("sqlSource.database")}));
+        if (StringUtils.trimToEmpty(src.getDatabase()).length() == 0) {
+          addFieldError("sqlSource.database",
+            getText("validation.required", new String[] {getText("sqlSource.database")}));
+        } else if (StringUtils.trimToEmpty(src.getDatabase()).length() < 2) {
+          addFieldError("sqlSource.database",
+            getText("validation.short", new String[] {getText("sqlSource.database"), "2"}));
         }
       } else {
         // FILE SOURCE
