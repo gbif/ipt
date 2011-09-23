@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.gbif.ipt.action;
 
@@ -29,11 +29,12 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * The base of all IPT actions This handles conditions such as menu items, a custom text provider, sessions, currently
  * logged in user
- * 
+ *
  * @author tim
  */
 public class BaseAction extends ActionSupport implements Action, SessionAware, Preparable, ServletRequestAware {
   private static final long serialVersionUID = -2330991910834399442L;
+  public static final String NOT_MODIFIED = "304";
   public static final String NOT_FOUND = "404";
   public static final String NOT_ALLOWED = "401";
   public static final String NOT_ALLOWED_MANAGER = "401-manager";
@@ -69,7 +70,7 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
 
   /**
    * Adds an exception message, if not null, to the action messages
-   * 
+   *
    * @param e the exception from which the message is taken
    */
   protected void addActionExceptionMessage(Exception e) {
@@ -78,11 +79,11 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
       addActionMessage(msg);
     }
   }
-  
+
 
   /**
    * Adds an exception message, if not null, to the action warnings
-   * 
+   *
    * @param e the exception from which the message is taken
    */
   protected void addActionExceptionWarning(Exception e) {
@@ -96,9 +97,9 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
    * Adds a warning similar to the action errors to the user UI, but does not interact with the validation aware
    * workflow interceptor, therefore no changes to the result name of the action are expected.
    * This is the way to present user warnings/errors others than for form validation.
-   * 
+   *
    * If you want form validation with the workflow interceptor, please @see addActionError instead
-   * 
+   *
    * @param anErrorMessage
    */
   public void addActionWarning(String anErrorMessage) {
@@ -112,7 +113,7 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
 
   /**
    * Easy access to the configured application root for simple use in templates
-   * 
+   *
    * @return
    */
   public String getBase() {
@@ -277,7 +278,7 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
   /**
    * Utility to compare 2 objects for comparison when both converted to strings useful to compare if a submitted value
    * is the same as the persisted value
-   * 
+   *
    * @return true only if o1.equals(o2)
    */
   protected boolean stringEquals(Object o1, Object o2) {

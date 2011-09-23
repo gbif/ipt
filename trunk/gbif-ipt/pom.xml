@@ -262,7 +262,7 @@
     <dependency>
       <groupId>org.gbif</groupId>
       <artifactId>gbif-httputils</artifactId>
-      <version>0.0.3</version>
+      <version>0.1</version>
     </dependency>
     <dependency>
 
