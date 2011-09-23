@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.gbif.ipt.action.portal;
 
@@ -18,10 +18,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Date;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * The Action responsible for serving datadir resource files
- * 
+ *
  */
 public class ResourceFileAction extends BaseAction {
   @Inject
@@ -42,7 +44,21 @@ public class ResourceFileAction extends BaseAction {
     if (resource == null) {
       return NOT_FOUND;
     }
-    // server file as set in prepare method
+    // see if we have a conditional get with If-Modified-Since header
+    try {
+      long since = req.getDateHeader("If-Modified-Since");
+      if (since>0 && resource.getLastPublished()!=null){
+        long last = resource.getLastPublished().getTime();
+        if (last < since) {
+          return NOT_MODIFIED;
+        }
+      }
+    } catch (IllegalArgumentException e) {
+      // headers might not be formed correctly, swallow
+      log.warn("Conditional get with If-Modified-Since header couldnt be interpreted", e);
+    }
+
+    // serve file as set in prepare method
     data = dataDir.resourceDwcaFile(resource.getShortname());
     filename = "dwca-" + resource.getShortname() + ".zip";
     mimeType = "application/zip";
@@ -118,7 +134,7 @@ public class ResourceFileAction extends BaseAction {
     }
     return execute();
   }
-  
+
   public String publicationLog() {
       	data = dataDir.resourcePublicationLogFile(resource.getShortname());
       	if (resource.isPublished() && data.exists()) {
@@ -129,7 +145,7 @@ public class ResourceFileAction extends BaseAction {
 	    }
 	    return execute();
   }
-  
+
   public String sourceLog() {
     	data = dataDir.sourceLogFile(resource.getShortname(), source.getName()) ;
     	if (data.exists()) {
