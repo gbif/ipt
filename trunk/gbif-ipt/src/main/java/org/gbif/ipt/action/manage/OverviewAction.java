@@ -5,8 +5,10 @@ import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.Resource.CoreRowType;
+import org.gbif.ipt.model.Source.FileSource;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.DeletionNotAllowedException;
@@ -43,6 +45,7 @@ public class OverviewAction extends ManagerBaseAction {
   private List<User> potentialManagers;
   private List<Extension> potentialExtensions;
   private List<Organisation> organisations;
+  private List<String> fileSources;
   private final EmlValidator emlValidator = new EmlValidator();
   private boolean missingMetadata = false;
   private boolean missingRegistrationMetadata = false;
@@ -150,6 +153,10 @@ public class OverviewAction extends ManagerBaseAction {
    */
   public String getEmlFormattedSize() {
     return FileUtils.formatSize(resourceManager.getEmlSize(resource), 2);
+  }
+
+  public List<String> getFileSources() {
+    return fileSources;
   }
 
   public boolean getMissingBasicMetadata() {
@@ -322,6 +329,15 @@ public class OverviewAction extends ManagerBaseAction {
         }
       }
 
+      // list file sources
+      fileSources = new ArrayList<String>();
+      for (Source source : resource.getSources()) {
+        if (source.isFileSource()) {
+          FileSource file = (FileSource) source;
+          fileSources.add(file.getFile().getName());
+        }
+      }
+
     }
   }
 
@@ -403,6 +419,10 @@ public class OverviewAction extends ManagerBaseAction {
         resource.getStatus().toString()}));
     }
     return execute();
+  }
+
+  public void setFileSources(List<String> fileSources) {
+    this.fileSources = fileSources;
   }
 
   public void setUnpublish(String unpublish) {

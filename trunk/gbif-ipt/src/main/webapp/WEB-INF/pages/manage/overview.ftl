@@ -11,10 +11,15 @@
 	<script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	var fileNames = new Array();
+	<#list fileSources as fileName>
+		fileNames.push('${fileName}');
+	</#list>	
+	
 	var $registered = false;
 	$('.confirm').jConfirmAction({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
-	$('.confirmRegistration').jConfirmAction({question : '<@s.text name="manage.overview.visibility.confirm.registration"/>', yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", checkboxText:'<@s.text name="manage.overview.visibility.confirm.agreement"/>'});
-	$('.confirmDeletion').jConfirmAction({question : '<#if resource.status=="REGISTERED"><@s.text name="manage.resource.delete.confirm.registered"/><#else><@s.text name="basic.confirm"/></#if>', yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
+	$('.confirmRegistration').jConfirmAction({question : "<@s.text name='manage.overview.visibility.confirm.registration'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", checkboxText:"<@s.text name='manage.overview.visibility.confirm.agreement'/>"});	
+	$('.confirmDeletion').jConfirmAction({question : "<#if resource.status=='REGISTERED'><@s.text name='manage.resource.delete.confirm.registered'/><#else><@s.text name='basic.confirm'/></#if>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
 				
 	var showReport=false;
 	$("#toggleReport").click(function() {
@@ -40,7 +45,14 @@ $(document).ready(function(){
 		});
 	});	
 	$("#file").change(function() {
-		if($("#file").attr("value") != "") {
+		var usedFileName = $("#file").attr("value");		
+		if(usedFileName != "") {
+			if($.inArray(usedFileName, fileNames) >= 0) {
+				$("#add").unbind();				
+				$("#add").jConfirmAction({question : "<@s.text name='manage.resource.addSource.confirm'><@s.param>"+usedFileName+"</@s.param></@s.text>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
+			} else {
+				$("#add").unbind("click");
+			}
 			$("#add").attr("value", '<@s.text name="button.add"/>');
 		}
 	});
