@@ -47,6 +47,9 @@ $(document).ready(function(){
 	$("#file").change(function() {
 		var usedFileName = $("#file").attr("value");		
 		if(usedFileName != "") {
+			if(usedFileName.indexOf(".") >= 0) {
+				usedFileName = usedFileName.substring(0, usedFileName.lastIndexOf(".")).toLowerCase();
+			}
 			if($.inArray(usedFileName, fileNames) >= 0) {
 				$("#add").unbind();				
 				$("#add").jConfirmAction({question : "<@s.text name='manage.resource.addSource.confirm'><@s.param>"+usedFileName+"</@s.param></@s.text>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
