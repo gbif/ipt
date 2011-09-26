@@ -315,7 +315,7 @@ public class MappingAction extends ManagerBaseAction {
       // from mapping object (meta.xml). Otherwise, read the file/database normally.
       if (mapping.getSource().isFileSource() && mapping.getFields().size() > 0
         && ((FileSource) mapping.getSource()).getIgnoreHeaderLines() == 0) {
-        columns = mapping.getColumns();
+        columns = mapping.getColumns(peek);
       } else {
         columns = sourceManager.columns(mapping.getSource());
       }
