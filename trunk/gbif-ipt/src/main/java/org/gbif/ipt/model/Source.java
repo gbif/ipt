@@ -1,12 +1,9 @@
 /***************************************************************************
  * Copyright 2010 Global Biodiversity Information Facility Secretariat
- * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -20,24 +17,24 @@ import org.gbif.file.CSVReader;
 import org.gbif.ipt.config.JdbcSupport.JdbcInfo;
 import org.gbif.ipt.utils.FileUtils;
 
-import static com.google.common.base.Objects.equal;
-
-import com.google.common.base.Objects;
-
-import org.apache.commons.lang.StringUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Iterator;
 
+import com.google.common.base.Objects;
+import org.apache.commons.lang.StringUtils;
+
+import static com.google.common.base.Objects.equal;
+
 /**
  * @author markus
- * 
  */
 public abstract class Source implements Comparable<Source>, Serializable {
+
   public static class FileSource extends Source {
+
     private String fieldsTerminatedBy = "\t";
     private String fieldsEnclosedBy;
     private int ignoreHeaderLines = 0;
@@ -50,7 +47,8 @@ public abstract class Source implements Comparable<Source>, Serializable {
       if (x == null) {
         return null;
       }
-      return x.replaceAll("\\t", "\\\\t").replaceAll("\\n", "\\\\n").replaceAll("\\r", "\\\\r").replaceAll("\\f", "\\\\f");
+      return x.replaceAll("\\t", "\\\\t").replaceAll("\\n", "\\\\n").replaceAll("\\r", "\\\\r")
+        .replaceAll("\\f", "\\\\f");
     }
 
     public Character getFieldQuoteChar() {
@@ -159,12 +157,13 @@ public abstract class Source implements Comparable<Source>, Serializable {
       if (x == null) {
         return null;
       }
-      return x.replaceAll("\\\\t", String.valueOf('\t')).replaceAll("\\\\n", String.valueOf('\n')).replaceAll("\\\\r", String.valueOf('\r')).replaceAll(
-          "\\\\f", String.valueOf('\f'));
+      return x.replaceAll("\\\\t", String.valueOf('\t')).replaceAll("\\\\n", String.valueOf('\n'))
+        .replaceAll("\\\\r", String.valueOf('\r')).replaceAll("\\\\f", String.valueOf('\f'));
     }
 
   }
   public static class SqlSource extends Source {
+
     private String sql;
     private JdbcInfo rdbms;
     private String host;
@@ -201,15 +200,16 @@ public abstract class Source implements Comparable<Source>, Serializable {
       return sql;
     }
 
-    /** The configured sql with an additional limit clause.
+    /**
+     * The configured sql with an additional limit clause.
      * The exact format of this clause depends on the database and is kept in the JdbcSupport.
      * Select TOP ?, Where ROWNUM<? and LIMIT ? are readily supported.
-     *  
+     * 
      * @param limit the number of records to limit this query by
      * @return the final sql string
      */
     public String getSqlLimited(int limit) {
-        return rdbms.addLimit(sql,limit);
+      return rdbms.addLimit(sql, limit);
     }
 
     public String getUsername() {
@@ -302,7 +302,7 @@ public abstract class Source implements Comparable<Source>, Serializable {
 
   @Override
   public int hashCode() {
-//    return Objects.hashCode(resource, name);
+// return Objects.hashCode(resource, name);
     return Objects.hashCode(name);
   }
 
