@@ -5,10 +5,10 @@ import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.Source;
-import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.Resource.CoreRowType;
+import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.Source.FileSource;
+import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.DeletionNotAllowedException;
@@ -334,7 +334,7 @@ public class OverviewAction extends ManagerBaseAction {
       for (Source source : resource.getSources()) {
         if (source.isFileSource()) {
           FileSource file = (FileSource) source;
-          fileSources.add(file.getFile().getName());
+          fileSources.add(Source.normaliseName(file.getFile().getName()));
         }
       }
 
