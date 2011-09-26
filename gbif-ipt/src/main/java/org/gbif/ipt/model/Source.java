@@ -254,7 +254,10 @@ public abstract class Source implements Comparable<Source>, Serializable {
     if (name == null) {
       return null;
     }
-    return StringUtils.substringBeforeLast(name, ".").replaceAll("[\\s\\c\\W\\.\\:/]+", "").toLowerCase();
+    // s: Whitespace characters
+    // Replace the reserved characters with an empty String ("").
+    // Reserved characters ( ,.,:,*,/,?,%,<,>,|)
+    return StringUtils.substringBeforeLast(name, ".").replaceAll("[\\s\\.\\:/\\*\\?\\%\\|\\>\\<]+", "").toLowerCase();
   }
 
   public int compareTo(Source o) {
