@@ -123,13 +123,18 @@ public class SourceTest {
   @Test
   public void testNormaliseName() {
     assertEquals("filename", Source.normaliseName("fileName.txt"));
-    assertEquals("filename", Source.normaliseName("fileName...txt"));
     assertEquals("filename", Source.normaliseName("FILENAME.txt"));
-    assertEquals("filenametxt", Source.normaliseName("filename.txt.txt"));
-    assertEquals("filename-#+@", Source.normaliseName("filename-#+@.txt"));
-    assertEquals("filename", Source.normaliseName("filename /:..txt"));
+    assertEquals("filenametxt", Source.normaliseName("filename txt"));
+    assertEquals("filename", Source.normaliseName("filename%*?/:.<>|"));
+    assertEquals("filenametxt", Source.normaliseName("filename%*?/:<>|.txt.txt"));
+    assertEquals("filename-copy", Source.normaliseName("filename-copy%*?/:.<>|.txt"));
     assertEquals("filename", Source.normaliseName("filename.pdf"));
-    assertEquals("filename", Source.normaliseName("filename.cvs"));
+    assertEquals("filename-copy-2011", Source.normaliseName("filename-copy-2011.cvs"));
     assertEquals("filename", Source.normaliseName("filename"));
+    assertEquals("0", Source.normaliseName("0"));
+    assertEquals("-1", Source.normaliseName("-1"));
+    assertEquals("2147483647", Source.normaliseName("" + Integer.MAX_VALUE));
+    assertEquals("", Source.normaliseName(""));
+    assertEquals(null, Source.normaliseName(null));
   }
 }
