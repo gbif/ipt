@@ -49,6 +49,9 @@ $(document).ready(function(){
 		if(usedFileName != "") {
 			if(usedFileName.indexOf(".") >= 0) {
 				usedFileName = usedFileName.substring(0, usedFileName.lastIndexOf(".")).toLowerCase();
+				if(usedFileName.split("\\").length > 0){
+					usedFileName=usedFileName.split("\\")[usedFileName.split("\\").length - 1];
+				}
 				//Replacing characters like non valid in a filename with an empty string.
 				var regex = /[\s\.\:\\/\*\?\%\|\>\<]+/;
 				var usedFileName= usedFileName.replace(regex,"");
