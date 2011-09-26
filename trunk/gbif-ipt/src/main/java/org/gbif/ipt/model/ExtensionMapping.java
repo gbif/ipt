@@ -25,6 +25,7 @@ import java.util.Set;
  * @author markus
  */
 public class ExtensionMapping implements Serializable {
+
   private static final long serialVersionUID = 23789961641L;
 
   public static final Integer IDGEN_LINE_NUMBER = -1;
@@ -42,27 +43,32 @@ public class ExtensionMapping implements Serializable {
   }
 
   /**
-   * @param mapping
+   * @param peek: Peek of File source.
    * @return list of columns names depending on its mapping.
    */
-  public List<String> getColumns() {
-    int maxColumnIndex = 0;
-    for (PropertyMapping pm : getFields()) {
-      if (pm.getIndex() != null && maxColumnIndex < pm.getIndex()) {
-        maxColumnIndex = pm.getIndex();
+  public List<String> getColumns(List<String[]> peek) {
+    if (peek.size() > 0) {
+      int columnsCount = peek.get(0).length;
+      ArrayList<String> columns = new ArrayList<String>(columnsCount);
+      for (int count = 0; count < columnsCount; count++) {
+        String value = null;
+        for (String[] row : peek) {
+          if (row[count] != null && !row[count].equals("")) {
+            // add column number and first value as example
+            // e.g. Column #2 - Puma conco...
+            value = row[count].length() > 10 ? row[count].substring(0, 10) + "..." : row[count];
+            break;
+          }
+        }
+        if (value != null) {
+          columns.add("Column #" + count + " - " + value);
+        } else {
+          columns.add("Column #" + count);
+        }
       }
+      return columns;
     }
-    ArrayList<String> columns = new ArrayList<String>(maxColumnIndex);
-    for (int count = 0; count <= maxColumnIndex; count++) {
-      columns.add("Column #" + (count + 1));
-    }
-    for (PropertyMapping pm : getFields()) {
-      if (pm.getIndex() != null && pm.getIndex() > 0) {
-        columns.set(pm.getIndex(), pm.getTerm().simpleName());
-      }
-    }
-    columns.set(0, "id");
-    return columns;
+    return new ArrayList<String>();
   }
 
   public Extension getExtension() {
