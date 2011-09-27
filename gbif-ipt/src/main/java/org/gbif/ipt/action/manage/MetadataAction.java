@@ -268,6 +268,7 @@ public class MetadataAction extends ManagerBaseAction {
       current.setFirstName(getCurrentUser().getFirstname());
       current.setLastName(getCurrentUser().getLastname());
       current.setEmail(getCurrentUser().getEmail());
+      current.setRole("MetadataProvider");
       resource.getEml().setMetadataProvider(current);
     }
 
@@ -314,6 +315,19 @@ public class MetadataAction extends ManagerBaseAction {
       }
       if (section.equals("additional")) {
         resource.getEml().getAlternateIdentifiers().clear();
+      }
+      if (section.equals("basic")) {
+        // Changing role for each agent.
+        if (resource.getEml().getContact() != null && resource.getEml().getContact().getRole() == null) {
+          resource.getEml().getContact().setRole("PointOfContact");
+        }
+        if (resource.getEml().getResourceCreator() != null && resource.getEml().getResourceCreator().getRole() == null) {
+          resource.getEml().getResourceCreator().setRole("Originator");
+        }
+        if (resource.getEml().getMetadataProvider() != null
+          && resource.getEml().getMetadataProvider().getRole() == null) {
+          resource.getEml().getMetadataProvider().setRole("MetadataProvider");
+        }
       }
     }
   }

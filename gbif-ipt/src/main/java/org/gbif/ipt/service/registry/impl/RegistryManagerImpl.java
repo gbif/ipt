@@ -97,8 +97,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       primaryContact.setRole(null);
     }
     String primaryContactType =
-      (primaryContact.getRole() == null || primaryContact.getRole().equals("MetadataProvider"))
-        ? CONTACT_TYPE_TECHNICAL : CONTACT_TYPE_ADMINISTRATIVE;
+      (primaryContact.getRole() == null) ? CONTACT_TYPE_TECHNICAL : CONTACT_TYPE_ADMINISTRATIVE;
 
     data.add(new BasicNameValuePair("primaryContactType", primaryContactType));
     data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(primaryContact.getEmail())));
@@ -551,8 +550,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
     try {
       Response resp =
-        http.post(getIptUpdateResourceUri(resource.getKey().toString()), null, null, orgCredentials(resource
-          .getOrganisation()), new UrlEncodedFormEntity(data));
+        http.post(getIptUpdateResourceUri(resource.getKey().toString()), null, null,
+          orgCredentials(resource.getOrganisation()), new UrlEncodedFormEntity(data));
       if (http.success(resp)) {
         log.debug("Resource's registration info has been updated");
       } else {
