@@ -22,11 +22,11 @@ import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.Source;
-import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.Resource.CoreRowType;
+import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.Source.FileSource;
 import org.gbif.ipt.model.Source.SqlSource;
+import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
@@ -37,12 +37,12 @@ import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.DeletionNotAllowedException;
+import org.gbif.ipt.service.DeletionNotAllowedException.Reason;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidConfigException;
+import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.RegistryException;
-import org.gbif.ipt.service.DeletionNotAllowedException.Reason;
-import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -505,8 +505,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       if (ext.hasProperty(f.getTerm())) {
         fields.add(new PropertyMapping(f));
       } else {
-        alog.warn("manage.resource.create.mapping.concept.skip", new String[] {f.getTerm().qualifiedName(),
-          ext.getRowType()});
+        alog.warn("manage.resource.create.mapping.concept.skip",
+          new String[] {f.getTerm().qualifiedName(), ext.getRowType()});
       }
     }
     map.setFields(fields);
@@ -668,6 +668,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     try {
       InputStream in = new FileInputStream(emlFile);
       eml = EmlFactory.build(in);
+      // Initialising roles for the three basic agent types (Contact, Creator and Metadata Provider).
+      eml.getContact().setRole("PointOfContact");
+      eml.getResourceCreator().setRole("Originator");
+      eml.getMetadataProvider().setRole("MetadataProvider");
     } catch (FileNotFoundException e) {
       eml = new Eml();
     } catch (IOException e) {
