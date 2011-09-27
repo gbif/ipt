@@ -250,14 +250,31 @@ public abstract class Source implements Comparable<Source>, Serializable {
   protected int columns;
   protected boolean readable = false;
 
+  /**
+   * This method normalises a file name by removing certain reserved characters.
+   * The reserved characters are:
+   * <ul>
+   * <li>All whitespace characters</li>
+   * <li>All slash character</li>
+   * <li>All backslash character</li>
+   * <li>All question mark character</li>
+   * <li>All percent character</li>
+   * <li>All asterik character</li>
+   * <li>All colon character</li>
+   * <li>All pipe character</li>
+   * <li>All less than character</li>
+   * <li>All greater than character</li>
+   * <li>All quote character</li>
+   * </ul>
+   * 
+   * @param name to normalise, may be null
+   * @return normalised name
+   */
   public static String normaliseName(String name) {
     if (name == null) {
       return null;
     }
-    // s: Whitespace characters
-    // Replace the reserved characters with an empty String ("").
-    // Reserved characters ( ,.,:,*,/,?,%,<,>,|)
-    return StringUtils.substringBeforeLast(name, ".").replaceAll("[\\s\\.\\:/\\*\\?\\%\\|\\>\\<]+", "").toLowerCase();
+    return StringUtils.substringBeforeLast(name, ".").replaceAll("[\\s.:/\\\\*?%|><\"]+", "").toLowerCase();
   }
 
   public int compareTo(Source o) {

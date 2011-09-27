@@ -53,8 +53,8 @@ $(document).ready(function(){
 					usedFileName=usedFileName.split("\\")[usedFileName.split("\\").length - 1];
 				}
 				//Replacing characters like non valid in a filename with an empty string.
-				var regex = /[\s\.\:\\/\*\?\%\|\>\<]+/;
-				var usedFileName= usedFileName.replace(regex,"");
+				var regex = /[\s\.\:\\/\*\?\%\|\>\</"]+/;
+				usedFileName= usedFileName.replace(regex,"");
 			}
 			if($.inArray(usedFileName, fileNames) >= 0) {
 				$("#add").unbind();				
