@@ -361,7 +361,9 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
         String[] headers = new String[inCols.length];
         headers[0] = "id";
         for (int c = 1; c < inCols.length; c++) {
-          headers[c] = inCols[c].getTerm().simpleName();
+          if (inCols[c] != null) {
+            headers[c] = inCols[c].getTerm().simpleName();
+          }
         }
         String headerLine = tabRow(headers);
         dataFile.setIgnoreHeaderLines(1);
