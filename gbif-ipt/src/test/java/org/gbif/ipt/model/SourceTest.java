@@ -23,6 +23,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -133,6 +134,6 @@ public class SourceTest {
     assertEquals("filename", Source.normaliseName("filename"));
     assertEquals("-1", Source.normaliseName("-1"));
     assertEquals("", Source.normaliseName(""));
-    assertEquals(null, Source.normaliseName(null));
+    assertNull(Source.normaliseName(null));
   }
 }
