@@ -23,6 +23,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Iterator;
 
+import javax.annotation.Nullable;
+
 import com.google.common.base.Objects;
 import org.apache.commons.lang.StringUtils;
 
@@ -251,7 +253,8 @@ public abstract class Source implements Comparable<Source>, Serializable {
   protected boolean readable = false;
 
   /**
-   * This method normalises a file name by removing certain reserved characters.
+   * This method normalises a file name by removing certain reserved characters and converting all file name characters
+   * to lowercase.
    * The reserved characters are:
    * <ul>
    * <li>All whitespace characters</li>
@@ -270,7 +273,7 @@ public abstract class Source implements Comparable<Source>, Serializable {
    * @param name to normalise, may be null
    * @return normalised name
    */
-  public static String normaliseName(String name) {
+  public static String normaliseName(@Nullable String name) {
     if (name == null) {
       return null;
     }
