@@ -20,9 +20,9 @@ import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.RecordFilter;
-import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.RecordFilter.Comparator;
 import org.gbif.ipt.model.Resource.CoreRowType;
+import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.Source.FileSource;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
@@ -283,8 +283,8 @@ public class MappingAction extends ManagerBaseAction {
         }
         // uses a vocabulary?
         if (p.getVocabulary() != null) {
-          vocabTerms.put(p.getVocabulary().getUri(), vocabManager.getI18nVocab(p.getVocabulary().getUri(),
-            getLocaleLanguage(), true));
+          vocabTerms.put(p.getVocabulary().getUri(),
+            vocabManager.getI18nVocab(p.getVocabulary().getUri(), getLocaleLanguage(), true));
         }
         // mapped already?
         PropertyMapping f = mapping.getField(p.getQualname());
@@ -311,10 +311,9 @@ public class MappingAction extends ManagerBaseAction {
   private void readSource() {
     if (mapping.getSource() != null) {
       peek = sourceManager.peek(mapping.getSource(), 5);
-      // If user wants to import a Darwin Core Archive source without a header lines, the columns should be extracted
-      // from mapping object (meta.xml). Otherwise, read the file/database normally.
-      if (mapping.getSource().isFileSource() && mapping.getFields().size() > 0
-        && ((FileSource) mapping.getSource()).getIgnoreHeaderLines() == 0) {
+      // If user wants to import a source without a header lines, the columns are going to be numbered with the first
+      // non-null value as an example. Otherwise, read the file/database normally.
+      if (mapping.getSource().isFileSource() && ((FileSource) mapping.getSource()).getIgnoreHeaderLines() == 0) {
         columns = mapping.getColumns(peek);
       } else {
         columns = sourceManager.columns(mapping.getSource());
