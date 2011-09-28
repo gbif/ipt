@@ -668,10 +668,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     try {
       InputStream in = new FileInputStream(emlFile);
       eml = EmlFactory.build(in);
-      // Initialising roles for the three basic agent types (Contact, Creator and Metadata Provider).
-      eml.getContact().setRole("PointOfContact");
-      eml.getResourceCreator().setRole("Originator");
-      eml.getMetadataProvider().setRole("MetadataProvider");
     } catch (FileNotFoundException e) {
       eml = new Eml();
     } catch (IOException e) {

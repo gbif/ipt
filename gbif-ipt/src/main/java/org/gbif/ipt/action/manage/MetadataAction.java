@@ -268,7 +268,6 @@ public class MetadataAction extends ManagerBaseAction {
       current.setFirstName(getCurrentUser().getFirstname());
       current.setLastName(getCurrentUser().getLastname());
       current.setEmail(getCurrentUser().getEmail());
-      current.setRole("MetadataProvider");
       resource.getEml().setMetadataProvider(current);
     }
 

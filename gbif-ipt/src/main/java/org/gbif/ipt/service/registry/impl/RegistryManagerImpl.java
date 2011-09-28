@@ -99,6 +99,9 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     String primaryContactType =
       (primaryContact.getRole() == null) ? CONTACT_TYPE_TECHNICAL : CONTACT_TYPE_ADMINISTRATIVE;
 
+    // Change the role to null like was before.
+    primaryContact.setRole(null);
+
     data.add(new BasicNameValuePair("primaryContactType", primaryContactType));
     data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(primaryContact.getEmail())));
     data.add(new BasicNameValuePair("primaryContactFirstName", StringUtils.trimToNull(StringUtils
@@ -333,11 +336,22 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     primaryContacts[0] = eml.getContact();
     primaryContacts[1] = eml.getResourceCreator();
     primaryContacts[2] = eml.getMetadataProvider();
-
+    int position = 0;
     for (Agent primaryContact : primaryContacts) {
       if (primaryContact != null && AgentValidator.hasCompleteContactInfo(primaryContact)) {
+        // Setting the role to use it only in the primaryContact type validation, then it will return to null.
+        if (position == 0) {
+          primaryContact.setRole("PointOfContact");
+        }
+        if (position == 1) {
+          primaryContact.setRole("Originator");
+        }
+        if (position == 2) {
+          primaryContact.setRole("MetadataProvider");
+        }
         return primaryContact;
       }
+      position++;
     }
     return null;
   }
