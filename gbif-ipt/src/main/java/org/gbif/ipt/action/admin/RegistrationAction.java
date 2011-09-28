@@ -239,12 +239,14 @@ public class RegistrationAction extends POSTAction {
       addActionMessage("success IPT update!");
     } catch (RegistryException e) {
       addActionError(e.getMessage());
+      return INPUT;
     } catch (IOException e) {
       addActionError(e.getMessage());
       // TODO Auto-generated catch block
       e.printStackTrace();
+      return INPUT;
     }
-    return INPUT;
+    return SUCCESS;
   }
 
   @Override
