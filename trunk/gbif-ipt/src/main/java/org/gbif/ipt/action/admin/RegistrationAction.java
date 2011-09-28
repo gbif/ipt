@@ -14,14 +14,14 @@ import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.validation.IptValidator;
 import org.gbif.ipt.validation.OrganisationSupport;
 
-import com.google.inject.Inject;
-import com.google.inject.servlet.SessionScoped;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import com.google.inject.Inject;
+import com.google.inject.servlet.SessionScoped;
 
 /**
  * The Action responsible for all user input relating to the registration options
@@ -30,8 +30,10 @@ import java.util.List;
  * @author josecuadra
  */
 public class RegistrationAction extends POSTAction {
+
   @SessionScoped
   public static class RegisteredOrganisations {
+
     private List<Organisation> organisations = new ArrayList<Organisation>();
     private RegistryManager registryManager;
 
@@ -57,6 +59,7 @@ public class RegistrationAction extends POSTAction {
       organisations.addAll(tempOrganisations);
       // sort by name
       Collections.sort(organisations, new Comparator<Organisation>() {
+
         public int compare(Organisation org1, Organisation org2) {
           if (org1 == null || org1.getName() == null) {
             return 1;
@@ -93,7 +96,7 @@ public class RegistrationAction extends POSTAction {
    */
   @Inject
   public RegistrationAction(OrganisationSupport organisationValidation, RegistrationManager registrationManager,
-      RegistryManager registryManager, IptValidator iptValidation, RegisteredOrganisations orgSession) {
+    RegistryManager registryManager, IptValidator iptValidation, RegisteredOrganisations orgSession) {
     this.registryManager = registryManager;
     this.organisationValidation = organisationValidation;
     this.registrationManager = registrationManager;
