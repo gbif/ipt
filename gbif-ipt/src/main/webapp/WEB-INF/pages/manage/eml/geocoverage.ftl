@@ -28,6 +28,14 @@
        	var miny=parseFloat($("#"+bboxBase+"min\\.latitude").attr("value"));
         var maxx=parseFloat($("#"+bboxBase+"max\\.longitude").attr("value"));
         var minx=parseFloat($("#"+bboxBase+"min\\.longitude").attr("value"));  			
+        
+        if(maxy==90 && miny==-90 && maxx==180 && minx==-180){
+          maxy=89.9999;
+          miny=-89.9999;
+          maxx=179.9999;
+          minx=-179.9999;
+        }
+        
   		var isFilled=true;
   		if(isNaN(maxy)){maxy=dfmaxy;isFilled=false;}
   			else dfmaxy=maxy;
@@ -168,8 +176,7 @@
         $("#"+bboxBase+"min\\.longitude").attr("value",Math.round(minx*100)/100);
         $("#"+bboxBase+"max\\.longitude").attr("value",Math.round(maxx*100)/100);
 	}
-	
-	
+    
 	$(":checkbox").click(function() {
 		if($("#globalCoverage").is(":checked")) {
        		$("#coordinates").slideUp('slow');				
@@ -177,14 +184,33 @@
       		marker2.setPosition(new google.maps.LatLng(89.9999, 179.9999));
        		redrawAndFill();	    			
        		atribute=false;
-		} else {	
-    		  dfminx=-10;
-    	    dfminy=-10;
-    	    dfmaxx=10;
-    	    dfmaxy=10;
+		} else { 
+    		  var dfminx=parseFloat("${(eml.geospatialCoverages[0].boundingCoordinates.min.longitude)!}");
+    		  var dfminy=parseFloat("${(eml.geospatialCoverages[0].boundingCoordinates.min.latitude)!}");
+    		  var dfmaxx=parseFloat("${(eml.geospatialCoverages[0].boundingCoordinates.max.longitude)!}");
+    		  var dfmaxy=parseFloat("${(eml.geospatialCoverages[0].boundingCoordinates.max.latitude)!}");
+    		  
+    		  if(isNaN(dfminx)) dfminx=0;
+    		  if(isNaN(dfminy)) dfminy=0;
+    		  if(isNaN(dfmaxx)) dfmaxx=0;
+    		  if(isNaN(dfmaxy)) dfmaxy=0;
+    		  
+    		  if(dfminx==-180 && dfminy==-90 && dfmaxx==180 && dfmaxy==90){
+            dfminx=-179.9999;
+            dfminy=-89.9999;
+            dfmaxx=179.9999;
+            dfmaxy=89.9999;
+          }
+    		  
        		marker1.setPosition(new google.maps.LatLng(dfminy, dfminx));
       		marker2.setPosition(new google.maps.LatLng(dfmaxy, dfmaxx));       		
-       		redrawAndFill();			
+       		redrawAndFill();		
+       		if(dfminx==0 && dfminy==0 && dfmaxx==0 && dfmaxy==0){
+       		 $("#"+bboxBase+"min\\.latitude").attr("value","");
+           $("#"+bboxBase+"max\\.latitude").attr("value","");
+           $("#"+bboxBase+"min\\.longitude").attr("value","");
+           $("#"+bboxBase+"max\\.longitude").attr("value","");
+       		}       		
        		$("#coordinates").slideDown('slow'); 
        		map.setCenter(new google.maps.LatLng((dfmaxy+dfminy)/2, (dfmaxx+dfminx)/2));
 	     }		
