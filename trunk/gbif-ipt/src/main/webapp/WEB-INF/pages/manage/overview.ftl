@@ -45,7 +45,7 @@ $(document).ready(function(){
 		});
 	});	
 	$("#file").change(function() {
-		var usedFileName = $("#file").attr("value");		
+		var usedFileName = $("#file").attr("value");	
 		if(usedFileName != "") {
 			if(usedFileName.indexOf(".") >= 0) {
 				usedFileName = usedFileName.substring(0, usedFileName.lastIndexOf(".")).toLowerCase();
@@ -53,7 +53,7 @@ $(document).ready(function(){
 					usedFileName=usedFileName.split("\\")[usedFileName.split("\\").length - 1];
 				}
 				//Replacing characters like non valid in a filename with an empty string.
-				var regex = /[\s\.\:\\/\*\?\%\|\>\</"]+/;
+				var regex = /[\s\.\:\\/\*\?\%\|\>\</"]+/g;
 				usedFileName= usedFileName.replace(regex,"");
 			}
 			if($.inArray(usedFileName, fileNames) >= 0) {
