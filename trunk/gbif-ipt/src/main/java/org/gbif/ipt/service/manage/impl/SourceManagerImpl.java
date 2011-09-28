@@ -273,16 +273,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       }
       src.setFile(ddFile);
       src.setLastModified(new Date());
-      // is a new source?
-      if (resource.getSources().contains(src)) {
-        for (Source so : resource.getSources()) {
-          if (so.getName().equals(src.getName())) {
-            // Delete the old source. It will be updated later.
-            resource.deleteSource(so);
-            break;
-          }
-        }
-      }
+
       // add to resource, allow overwriting existing ones
       // if the file is uploaded not for the first time
       resource.addSource(src, true);
@@ -480,8 +471,8 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       } catch (Exception e) {
         String msg =
           String.format(
-            "Couldnt create new external datasource connection with JDBC Class=%s, URL=%s, user=%s. Error: %s",
-            source.getJdbcDriver(), source.getJdbcUrl(), source.getUsername(), e.getMessage());
+            "Couldnt create new external datasource connection with JDBC Class=%s, URL=%s, user=%s. Error: %s", source
+              .getJdbcDriver(), source.getJdbcUrl(), source.getUsername(), e.getMessage());
         log.warn(msg, e);
         throw new SQLException(msg);
       }

@@ -93,6 +93,10 @@ public class Resource implements Serializable, Comparable<Resource> {
     if (!allowOverwrite && sources.contains(src)) {
       throw new AlreadyExistingException();
     }
+    if (allowOverwrite && sources.contains(src)) {
+      // If source file is going to be overwritten, it should be actually re-add it.
+      sources.remove(src);
+    }
     sources.add(src);
   }
 
