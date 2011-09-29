@@ -8,10 +8,6 @@ import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.validation.ResourceValidator;
 
-import com.google.inject.Inject;
-
-import org.apache.commons.io.IOUtils;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -19,7 +15,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import com.google.inject.Inject;
+import org.apache.commons.io.IOUtils;
+
 public class CreateResourceAction extends POSTAction {
+
   @Inject
   private ResourceManager resourceManager;
   @Inject
@@ -45,11 +45,11 @@ public class CreateResourceAction extends POSTAction {
         resource = resourceManager.create(shortname, getCurrentUser());
       }
     } catch (AlreadyExistingException e) {
-      addFieldError("resource.shortname", getText("validation.resource.shortname.exists", new String[]{shortname}));
+      addFieldError("resource.shortname", getText("validation.resource.shortname.exists", new String[] {shortname}));
       return INPUT;
     } catch (ImportException e) {
       log.error("Error importing the dwc archive: " + e.getMessage(), e);
-      addActionError(getText("validation.resource.import.exception") + " Archive Validator: http://tools.gbif.org/dwca-validator/"); // e.getMessage()
+      addActionError(getText("validation.resource.import.exception")); // e.getMessage()
       return INPUT;
     }
     return SUCCESS;
