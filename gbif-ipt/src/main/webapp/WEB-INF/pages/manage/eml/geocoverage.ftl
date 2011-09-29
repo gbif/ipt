@@ -34,7 +34,10 @@
           miny=-89.9999;
           maxx=179.9999;
           minx=-179.9999;
-        }
+          
+          $('input[name=globalCoverage]').attr('checked', true);
+          $("#coordinates").slideUp('slow');
+        } 
         
   		var isFilled=true;
   		if(isNaN(maxy)){maxy=dfmaxy;isFilled=false;}
