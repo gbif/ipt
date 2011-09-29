@@ -68,9 +68,9 @@
 </#macro>
 
 <#macro textWithFormattedLink text>
-        <#assign words = text?word_list>              
-        <#assign res = text?matches("(http(s)?|ftp)://(([\\w-]+\\.)?)+[\\w-]+(/[\\w- ./-?%&=]*)?")>
+        <#assign words = text?word_list>                     
         <#list words as x> 
+        	<#assign res = x?matches("(http(s)?|ftp)://(([\\w-]+\\.)?)+[\\w-]+(/[\\w- ./-?%&=]*)?")>
             <#assign flag=false>
             <#list res as m>
               <#if x?contains(m)><a href="${m}">${x}</a><#assign flag = true><#break></#if>
