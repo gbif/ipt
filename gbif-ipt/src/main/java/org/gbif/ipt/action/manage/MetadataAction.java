@@ -271,6 +271,15 @@ public class MetadataAction extends ManagerBaseAction {
       resource.getEml().setMetadataProvider(current);
     }
 
+    if (resource.getEml().getAssociatedParties().isEmpty()) {
+      Agent user = new Agent();
+      user.setFirstName(getCurrentUser().getFirstname());
+      user.setLastName(getCurrentUser().getLastname());
+      user.setEmail(getCurrentUser().getEmail());
+      user.setRole("user");
+      resource.getEml().getAssociatedParties().add(user);
+    }
+
     // Save the coreType to the resource when it is null
     if (resource.getCoreType() == null) {
       if (resource.getCoreTypeTerm() != null) {
