@@ -14,12 +14,12 @@ import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.task.StatusReport;
 
-import com.google.inject.ImplementedBy;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+
+import com.google.inject.ImplementedBy;
 
 /**
  * This interface details ALL methods associated with the main resource entity.
@@ -35,7 +35,7 @@ public interface ResourceManager {
   public boolean cancelPublishing(String shortname, BaseAction action) throws PublicationException;
 
   public Resource create(String shortname, File dwca, User creator, BaseAction asction)
-      throws AlreadyExistingException, ImportException;
+    throws AlreadyExistingException, ImportException;
 
   public Resource create(String shortname, User creator) throws AlreadyExistingException;
 
@@ -74,6 +74,13 @@ public interface ResourceManager {
    * @return
    */
   public long getRtfSize(Resource resource);
+
+  /**
+   * Validate if the EML file exist for a specific resource in the data directory.
+   * 
+   * @return true if EML File exist. False otherwise.
+   */
+  public boolean isEmlExisting(String shortName);
 
   /**
    * @param shortname
