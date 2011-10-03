@@ -61,20 +61,45 @@ public class SourceAction extends ManagerBaseAction {
   private int analyzeRows = 1000;
 
   public String add() throws IOException {
+    boolean replace = false;
+    // Are we going to overwrite any source file?
+    File ftest = (File) session.get(Constants.SESSION_FILE);
+    if (ftest != null) {
+      file = ftest;
+      fileFileName = (String) session.get(Constants.SESSION_FILE_NAME);
+      fileContentType = (String) session.get(Constants.SESSION_FILE_CONTENT_TYPE);
+      replace = true;
+    }
     // new one
     if (file != null) {
       // uploaded a new file. Is it compressed?
       if (StringUtils.endsWithIgnoreCase(fileContentType, "zip") // application/zip
-        || StringUtils.endsWithIgnoreCase(fileContentType, "gzip")) { // application/x-gzip
+        || StringUtils.endsWithIgnoreCase(fileContentType, "gzip")
+        || StringUtils.endsWithIgnoreCase(fileContentType, "compressed")) { // application/x-gzip
         try {
           File tmpDir = dataDir.tmpDir();
           List<File> files = CompressionUtil.decompressFile(tmpDir, file);
           addActionMessage(getText("manage.source.compressed.files", new String[] {files.size() + ""}));
+
+          // validate if at least one file already exists to ask confirmation
+          if (!replace) {
+            for (File f : files) {
+              if (resource.getSource(f.getName()) != null) {
+                // Since FileUploadInterceptor removes the file once this action is executed,
+                // the file need to be copied in the same directory.
+                copyFileToOverwrite();
+                return INPUT;
+              }
+            }
+          }
+
           // import each file. The last file will become the id parameter,
           // so the new page opens with that source
           for (File f : files) {
             addTextFile(f, f.getName());
           }
+          // manually remove any previous file in session and in temporal directory path
+          removeSessionFile();
         } catch (IOException e) {
           log.error(e);
           addActionError(getText("manage.source.filesystem.error", new String[] {e.getMessage()}));
@@ -84,11 +109,23 @@ public class SourceAction extends ManagerBaseAction {
           return ERROR;
         }
       } else {
+        // validate if file already exists to ask confirmation
+        if (!replace) {
+          if (resource.getSource(fileFileName) != null) {
+            // Since FileUploadInterceptor removes the file once this action is executed,
+            // the file need to be copied in the same directory.
+            copyFileToOverwrite();
+            return INPUT;
+          }
+        }
         // treat as is - hopefully a simple text data file
         addTextFile(file, fileFileName);
+
+        // manually remove any previous file in session and in temporal directory path
+        removeSessionFile();
       }
     }
-    return INPUT;
+    return SUCCESS;
   }
 
   private void addTextFile(File f, String filename) {
@@ -108,6 +145,24 @@ public class SourceAction extends ManagerBaseAction {
       log.error("Cannot add source " + filename + ": " + e.getMessage(), e);
       addActionError(getText("manage.source.cannot.add", new String[] {filename, e.getMessage()}));
     }
+  }
+
+  public String cancelOverwrite() {
+    removeSessionFile();
+    return INPUT;
+  }
+
+  /**
+   * Copy current file to same directory with different name and insert some temporal session variables.
+   * 
+   * @throws IOException
+   */
+  private void copyFileToOverwrite() throws IOException {
+    File fileNew = new File(file.getParent(), Source.normaliseName(file.getName()) + "-copied.tmp");
+    FileUtils.copyFile(file, fileNew);
+    session.put(Constants.SESSION_FILE, fileNew);
+    session.put(Constants.SESSION_FILE_NAME, fileFileName);
+    session.put(Constants.SESSION_FILE_CONTENT_TYPE, fileContentType);
   }
 
   @Override
@@ -191,6 +246,20 @@ public class SourceAction extends ManagerBaseAction {
       source = new Source.FileSource();
       source.setResource(resource);
     }
+  }
+
+  /**
+   * Remove any previous uploaded file in temporal directory.
+   * And clean some session variables used to confirm overwrite action.
+   */
+  private void removeSessionFile() {
+    File fileNew = (File) session.get(Constants.SESSION_FILE);
+    if (fileNew != null && fileNew.exists()) {
+      fileNew.delete();
+    }
+    session.remove(Constants.SESSION_FILE);
+    session.remove(Constants.SESSION_FILE_NAME);
+    session.remove(Constants.SESSION_FILE_CONTENT_TYPE);
   }
 
   @Override
@@ -320,11 +389,11 @@ public class SourceAction extends ManagerBaseAction {
           addFieldError("sqlSource.host", getText("validation.short", new String[] {getText("sqlSource.host"), "2"}));
         }
         if (StringUtils.trimToEmpty(src.getDatabase()).length() == 0) {
-          addFieldError("sqlSource.database",
-            getText("validation.required", new String[] {getText("sqlSource.database")}));
+          addFieldError("sqlSource.database", getText("validation.required",
+            new String[] {getText("sqlSource.database")}));
         } else if (StringUtils.trimToEmpty(src.getDatabase()).length() < 2) {
-          addFieldError("sqlSource.database",
-            getText("validation.short", new String[] {getText("sqlSource.database"), "2"}));
+          addFieldError("sqlSource.database", getText("validation.short", new String[] {getText("sqlSource.database"),
+            "2"}));
         }
       } else {
         // FILE SOURCE

@@ -10,17 +10,15 @@
 	<title><@s.text name="manage.overview.title"/>: ${resource.title!resource.shortname}</title>
 	<script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
 <script type="text/javascript">
-$(document).ready(function(){
-	var fileNames = new Array();
-	<#list fileSources as fileName>
-		fileNames.push('${fileName}');
-	</#list>	
-	
+$(document).ready(function(){	
+	<#if confirmOverwrite>
+		showConfirmOverwrite();
+	<#else>	
 	var $registered = false;
 	$('.confirm').jConfirmAction({question : "<@s.text name='basic.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
 	$('.confirmRegistration').jConfirmAction({question : "<@s.text name='manage.overview.visibility.confirm.registration'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", checkboxText: "<@s.text name='manage.overview.visibility.confirm.agreement'/>"});	
 	$('.confirmDeletion').jConfirmAction({question : "<#if resource.status=='REGISTERED'><@s.text name='manage.resource.delete.confirm.registered'/><#else><@s.text name='basic.confirm'/></#if>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
-				
+	
 	var showReport=false;
 	$("#toggleReport").click(function() {
 		if(showReport){
@@ -43,25 +41,10 @@ $(document).ready(function(){
 		$(this).click(function() {
 			$(this).parent('form').submit();
 		});
-	});	
+	});
 	$("#file").change(function() {
 		var usedFileName = $("#file").attr("value");	
-		if(usedFileName != "") {
-			if(usedFileName.indexOf(".") >= 0) {
-				usedFileName = usedFileName.substring(0, usedFileName.lastIndexOf(".")).toLowerCase();
-				if(usedFileName.split("\\").length > 0){
-					usedFileName=usedFileName.split("\\")[usedFileName.split("\\").length - 1];
-				}
-				//Replacing characters like non valid in a filename with an empty string.
-				var regex = /[\s\.\:\\/\*\?\%\|\>\</"]+/g;
-				usedFileName= usedFileName.replace(regex,"");
-			}
-			if($.inArray(usedFileName, fileNames) >= 0) {
-				$("#add").unbind();				
-				$("#add").jConfirmAction({question : "<@s.text name='manage.resource.addSource.confirm'><@s.param>"+usedFileName+"</@s.param></@s.text>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
-			} else {
-				$("#add").unbind("click");
-			}
+		if(usedFileName != "") {			
 			$("#add").attr("value", '<@s.text name="button.add"/>');
 		}
 	});
@@ -69,7 +52,27 @@ $(document).ready(function(){
 		event.preventDefault();
 		$("#file").attr("value", "");
 		$("#add").attr("value", '<@s.text name="button.connectDB"/>');
-	});
+	});	
+	
+	
+	function showConfirmOverwrite() { 
+	   var question='<p><@s.text name="manage.resource.addSource.confirm"/></p>';
+	   $('#dialog').html(question);
+		$("#dialog").dialog({
+			'modal'     : true,
+			'title'		: '<@s.text name="basic.confirm"/>',
+			'buttons'   : {
+				'<@s.text name="basic.yes"/>': function(){
+					$(this).dialog("close");
+					$("#add").click();
+				},
+				'<@s.text name="basic.no"/>' : function(){					
+					$(this).dialog("close");
+					$("#cancel").click();
+				}
+			}
+		});
+	}
 });
 </script>
 
@@ -133,6 +136,9 @@ $(document).ready(function(){
 	    <div class="newline"></div>
        	<@s.submit name="add" key="button.connectDB"/>
        	<@s.submit name="clear" key="button.clear"/>
+       	<div style="display: none;">
+       		<@s.submit name="cancel" key="button.cancel" method="cancelOverwrite"/>
+       	</div>
        	<div class="newline"></div>
        	<div class="newline"></div>
   	  </form>
@@ -405,6 +411,7 @@ $(document).ready(function(){
    	<@s.submit cssClass="confirmDeletion" name="delete" key="button.delete"/>
   </form>
 </div>
+<div id="dialog"></div>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>
