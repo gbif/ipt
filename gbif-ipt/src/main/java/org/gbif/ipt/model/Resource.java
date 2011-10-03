@@ -96,6 +96,12 @@ public class Resource implements Serializable, Comparable<Resource> {
     if (allowOverwrite && sources.contains(src)) {
       // If source file is going to be overwritten, it should be actually re-add it.
       sources.remove(src);
+      // Changing the Source in the ExtensionMapping object from the mapping list.
+      for (ExtensionMapping ext : this.getMappings()) {
+        if (ext.getSource().equals(src)) {
+          ext.setSource(src);
+        }
+      }
     }
     sources.add(src);
   }
