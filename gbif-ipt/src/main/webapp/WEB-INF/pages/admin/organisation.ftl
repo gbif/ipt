@@ -5,15 +5,15 @@
 $(document).ready(function(){
 	initHelp();
 	
-	var emailContent2 = '<@s.text name="emails.adding.organisation.association1"/>';
-	emailContent2 += '<@s.text name="emails.adding.organisation.association2"/>';
-	emailContent2 += '<@s.text name="emails.adding.organisation.association3"/>';
-	emailContent2 += '<@s.text name="emails.adding.organisation.association4"/>';
-	emailContent2 += '<@s.text name="emails.adding.organisation.association5"/>';
-	emailContent2 += '<@s.text name="emails.adding.organisation.association6"/>';
-	emailContent2 += '<@s.text name="emails.adding.organisation.association7"/>';
-	emailContent2 += '<@s.text name="emails.adding.organisation.association8"/>';
-	emailContent2 += '<@s.text name="emails.adding.organisation.association9"/>';
+	var emailContent2 = "<@s.text name='emails.adding.organisation.association1'/>";
+	emailContent2 += "<@s.text name='emails.adding.organisation.association2'/>";
+	emailContent2 += "<@s.text name='emails.adding.organisation.association3'/>";
+	emailContent2 += "<@s.text name='emails.adding.organisation.association4'/>";
+	emailContent2 += "<@s.text name='emails.adding.organisation.association5'/>";
+	emailContent2 += "<@s.text name='emails.adding.organisation.association6'/>";
+	emailContent2 += "<@s.text name='emails.adding.organisation.association7'/>";
+	emailContent2 += "<@s.text name='emails.adding.organisation.association8'/>";
+	emailContent2 += "<@s.text name='emails.adding.organisation.association9'/>";
 	
 	//Email template for adding an associated organization
 	var contactLink = '<a href=\"mailto:helpdesk@gbif.org';
