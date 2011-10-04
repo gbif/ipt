@@ -50,8 +50,6 @@ public class OverviewAction extends ManagerBaseAction {
   private Date now;
   private boolean unpublish = false;
 
-  // private boolean confirmOverwrite;
-
   public String addmanager() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
@@ -136,6 +134,11 @@ public class OverviewAction extends ManagerBaseAction {
     return SUCCESS;
   }
 
+  /**
+   * Validate whether or not to show a confirmation message to overwrite the file(s) recently uploaded.
+   * 
+   * @return true if a file exist in the user session. False otherwise.
+   */
   public boolean getConfirmOverwrite() {
     return session.get(Constants.SESSION_FILE) != null ? true : false;
   }
