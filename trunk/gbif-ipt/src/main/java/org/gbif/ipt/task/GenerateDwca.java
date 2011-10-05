@@ -122,12 +122,18 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
           }
         } else {
           // check if we have a dynamic mapping
-          if (pm.getIndex() != null && pm.getIndex() >= 0) {
-            if (!pm.getTerm().qualifiedName().equalsIgnoreCase(Constants.DWC_OCCURRENCE_ID)
+          if (pm.getIndex() != null) {
+            if (pm.getIndex() >= 0 && !pm.getTerm().qualifiedName().equalsIgnoreCase(Constants.DWC_OCCURRENCE_ID)
               && !pm.getTerm().qualifiedName().equalsIgnoreCase(Constants.DWC_TAXON_ID)) {
-              af.addField(buildField(pm.getTerm(), dataFileRowSize, pm.getDefaultValue()));
+              // Since all default values ​​will be written in the data file, they won't be expressed in the
+              // archive file (meta.xml). That's why we send a null value.
+              af.addField(buildField(pm.getTerm(), dataFileRowSize, null));
               dataFileRowSize++;
             }
+          } else {
+            // Only with default value.
+            af.addField(buildField(pm.getTerm(), dataFileRowSize, null));
+            dataFileRowSize++;
           }
         }
       }
