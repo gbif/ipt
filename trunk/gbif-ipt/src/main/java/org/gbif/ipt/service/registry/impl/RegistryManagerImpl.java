@@ -104,10 +104,13 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
     data.add(new BasicNameValuePair("primaryContactType", primaryContactType));
     data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(primaryContact.getEmail())));
-    data.add(new BasicNameValuePair("primaryContactFirstName", StringUtils.trimToNull(StringUtils
-      .trimToEmpty(primaryContact.getFirstName()))));
-    data.add(new BasicNameValuePair("primaryContactLastName", StringUtils.trimToNull(StringUtils
-      .trimToEmpty(primaryContact.getLastName()))));
+    data.add(new BasicNameValuePair("primaryContactName", StringUtils.trimToNull(StringUtils.trimToEmpty(primaryContact
+      .getFullName()))));
+    // TODO: For release 2.0.4
+    // data.add(new BasicNameValuePair("primaryContactFirstName",
+    // StringUtils.trimToNull(StringUtils.trimToEmpty(primaryContact.getFirstName()))));
+    // data.add(new BasicNameValuePair("primaryContactLastName",
+    // StringUtils.trimToNull(StringUtils.trimToEmpty(primaryContact.getLastName()))));
 
     // see if we have a published dwca or if its only metadata
     RegistryServices services = buildServiceTypeParams(resource);
@@ -340,14 +343,18 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     for (Agent primaryContact : primaryContacts) {
       if (primaryContact != null && AgentValidator.hasCompleteContactInfo(primaryContact)) {
         // Setting the role to use it only in the primaryContact type validation, then it will return to null.
-        if (position == 0) {
-          primaryContact.setRole("PointOfContact");
-        }
-        if (position == 1) {
-          primaryContact.setRole("Originator");
-        }
-        if (position == 2) {
-          primaryContact.setRole("MetadataProvider");
+        switch (position) {
+          case 0:
+            primaryContact.setRole("PointOfContact");
+            break;
+          case 1:
+            primaryContact.setRole("Originator");
+            break;
+          case 2:
+            primaryContact.setRole("MetadataProvider");
+            break;
+          default:
+            // it should never come here.
         }
         return primaryContact;
       }
@@ -564,8 +571,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
     try {
       Response resp =
-        http.post(getIptUpdateResourceUri(resource.getKey().toString()), null, null,
-          orgCredentials(resource.getOrganisation()), new UrlEncodedFormEntity(data));
+        http.post(getIptUpdateResourceUri(resource.getKey().toString()), null, null, orgCredentials(resource
+          .getOrganisation()), new UrlEncodedFormEntity(data));
       if (http.success(resp)) {
         log.debug("Resource's registration info has been updated");
       } else {
