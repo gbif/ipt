@@ -258,18 +258,19 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
 
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.admin.ConfigManager#setProxy(java.lang.String)
-   * Receive an URL with the format scheme://site:port, if don't, a MalformedURLException is thrown.
+  /**
+   * It Creates a HttpHost object with the string given by the user and verifies if there is a connection with this
+   * host. If there is a connection with this host, it changes the current proxy host with this host.
+   * 
+   * @param proxy an URL with the format http://proxy.my-institution.com:8080, if don't, a MalformedURLException is
+   *        thrown.
    */
   public void setProxy(String proxy) throws InvalidConfigException {
     proxy = StringUtils.trimToNull(proxy);
-    if (proxy == null) {
-      // remove proxy from http client
-      log.info("Removing proxy setting");
-      client.getParams().removeParameter(ConnRoutePNames.DEFAULT_PROXY);
-    } else {
+    // remove proxy from http client
+    log.info("Removing proxy setting");
+    client.getParams().removeParameter(ConnRoutePNames.DEFAULT_PROXY);
+    if (proxy != null) {
       try {
         URL url = new URL(proxy);
         HttpHost host = null;
