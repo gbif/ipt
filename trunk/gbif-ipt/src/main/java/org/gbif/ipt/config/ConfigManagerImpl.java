@@ -17,9 +17,16 @@ import org.gbif.ipt.utils.InputStreamUtils;
 import org.gbif.ipt.utils.LogFileAppender;
 import org.gbif.utils.HttpUtil;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.UnknownHostException;
+
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -30,14 +37,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.xml.DOMConfigurator;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.InetAddress;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.UnknownHostException;
-
 /**
  * A skeleton implementation for the time being....
  * 
@@ -45,6 +44,7 @@ import java.net.UnknownHostException;
  */
 @Singleton
 public class ConfigManagerImpl extends BaseManager implements ConfigManager {
+
   private InputStreamUtils streamUtils;
   private UserAccountManager userManager;
   private ResourceManager resourceManager;
@@ -58,9 +58,9 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
 
   @Inject
   public ConfigManagerImpl(DataDir dataDir, AppConfig cfg, InputStreamUtils streamUtils,
-      UserAccountManager userManager, ResourceManager resourceManager, ExtensionManager extensionManager,
-      VocabulariesManager vocabManager, RegistrationManager registrationManager, ConfigWarnings warnings,
-      DefaultHttpClient client) {
+    UserAccountManager userManager, ResourceManager resourceManager, ExtensionManager extensionManager,
+    VocabulariesManager vocabManager, RegistrationManager registrationManager, ConfigWarnings warnings,
+    DefaultHttpClient client) {
     super(cfg, dataDir);
     this.streamUtils = streamUtils;
     this.userManager = userManager;
@@ -191,7 +191,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     log.info("Updating the baseURL to: " + baseURL);
 
     if (baseURL.getHost().equalsIgnoreCase("localhost") || baseURL.getHost().equalsIgnoreCase("127.0.0.1")
-        || baseURL.getHost().equalsIgnoreCase(this.getHostName())) {
+      || baseURL.getHost().equalsIgnoreCase(this.getHostName())) {
       log.warn("Localhost used as base url, IPT will not be visible to the outside!");
     }
 
@@ -201,7 +201,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
       HttpHost hostTemp = (HttpHost) client.getParams().getParameter(ConnRoutePNames.DEFAULT_PROXY);
       if (hostTemp != null) {
         if (baseURL.getHost().equals("localhost") || baseURL.getHost().equals("127.0.0.1")
-            || baseURL.getHost().equalsIgnoreCase(this.getHostName())) {
+          || baseURL.getHost().equalsIgnoreCase(this.getHostName())) {
           // if local URL is configured, the IPT should do the validation without a proxy.
           setProxy(null);
           validate = false;
@@ -260,9 +260,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.admin.ConfigManager#setProxy(java.lang.String)
-   * 
    * Receive an URL with the format scheme://site:port, if don't, a MalformedURLException is thrown.
    */
   public void setProxy(String proxy) throws InvalidConfigException {
