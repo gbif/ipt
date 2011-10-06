@@ -7,26 +7,39 @@
  */
 package org.gbif.ipt.utils;
 
-import org.apache.log4j.RollingFileAppender;
-
 import java.io.File;
 import java.io.IOException;
+
+import org.apache.log4j.RollingFileAppender;
 
 /**
  * TODO: Documentation.
  */
 public class LogFileAppender extends RollingFileAppender {
-  public static String LOGDIR = System.getProperty("user.home");
 
+  public static String LOGDIR = "";
+ public static String[] DIRECTORIES = new String[] {"", System.getProperty("user.home"),
+ System.getProperty("user.dir"), System.getProperty("java.io.tmpdir")};
+  
   @Override
   public synchronized void setFile(String fileName, boolean append, boolean bufferedIO, int bufferSize)
-      throws IOException {
-    File logfile = new File(fileName);
-    // modify fileName if relative
-    if (!LOGDIR.equals("") && !logfile.isAbsolute()) {
-      fileName = LOGDIR + File.separator + fileName;
+    throws IOException {
+    File logFile = null;
+    for (String dir : DIRECTORIES) {
+      // Creating a File instance.
+      logFile = new File(dir, fileName);
+      
+      // Has the File writing permissions?
+      logFile.createNewFile();
+      if (logFile.canWrite()) {
+        break;
+      }
+    }
+
+    if (logFile != null) {
+      fileName = logFile.getAbsolutePath();
     }
     super.setFile(fileName, append, bufferedIO, bufferSize);
   }
-
 }
+
