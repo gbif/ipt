@@ -350,6 +350,7 @@ public class OverviewAction extends ManagerBaseAction {
           addActionWarning(getText("manage.overview.no.data.archive.generated"));
         }
         addActionMessage(getText("manage.overview.published.eml", new String[] {resource.getEmlVersion() + ""}));
+        missingRegistrationMetadata = !minimumRegistryInfo(resource);
         return SUCCESS;
       }
     } catch (PublicationException e) {
