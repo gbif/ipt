@@ -260,13 +260,16 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
 
   /**
    * It Creates a HttpHost object with the string given by the user and verifies if there is a connection with this
-   * host. If there is a connection with this host, it changes the current proxy host with this host.
+   * host. If there is a connection with this host, it changes the current proxy host with this host. If don't it keeps
+   * the current proxy
    * 
    * @param proxy an URL with the format http://proxy.my-institution.com:8080, if don't, a MalformedURLException is
    *        thrown.
    */
   public void setProxy(String proxy) throws InvalidConfigException {
     proxy = StringUtils.trimToNull(proxy);
+    // save the current proxy
+    HttpHost hostTemp = (HttpHost) client.getParams().getParameter(ConnRoutePNames.DEFAULT_PROXY);
     // remove proxy from http client
     log.info("Removing proxy setting");
     client.getParams().removeParameter(ConnRoutePNames.DEFAULT_PROXY);
@@ -282,13 +285,22 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
         }
         // test that host really exists
         if (!http.verifyHost(host)) {
+          if (hostTemp != null) {
+            client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, hostTemp);
+          }
           throw new InvalidConfigException(TYPE.INVALID_PROXY, "admin.config.error.connectionRefused");
         }
         log.info("Updating the proxy setting to: " + proxy);
         client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, host);
       } catch (NumberFormatException e) {
+        if (hostTemp != null) {
+          client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, hostTemp);
+        }
         throw new InvalidConfigException(TYPE.INVALID_PROXY, "admin.config.error.invalidPort");
       } catch (MalformedURLException e) {
+        if (hostTemp != null) {
+          client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, hostTemp);
+        }
         throw new InvalidConfigException(TYPE.INVALID_PROXY, "admin.config.error.invalidProxyURL");
       }
     }
