@@ -12,6 +12,13 @@
   </div>
 </#macro> 
 
+<#macro textinline name value="-99999" i18nkey="" errorfield="" help="">
+	<div class="textinline">  
+		<div class="textRight"><#include "/WEB-INF/pages/macros/help_icon.ftl"></div>
+		<div class="textLeft"><h2><@s.text name="${name}"/></h2></div>	
+	</div>
+</#macro>
+
 <#macro link name value="" href="" class="" i18nkey="" help="" errorfield="">
 	<div>   
     	<#include "/WEB-INF/pages/macros/help_icon.ftl">

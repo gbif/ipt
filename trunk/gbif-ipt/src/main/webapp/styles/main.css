@@ -421,6 +421,7 @@ div.newline {
 	margin-left:0;
 	margin-right:0;
 	margin-top:0;
+	position: relative;
 }
 .checkbox {
   	padding-top: 1em;
@@ -496,7 +497,7 @@ div.half select{
 
 div.halfcolumn {
 	float: left;
-	margin: 0px 0x 0px 0px;
+	margin: 0px 0px 0px 0px;
 	width: 50%;
 }
 div.halfcolumn select{
@@ -504,6 +505,22 @@ div.halfcolumn select{
 }
 div.halfcolumn input{
 	width: 85%;
+}
+div.textinline {  	
+  	position: relative;
+}
+div.textinline img {
+	padding-right: 1em;
+	padding-top: 1em;
+}
+div.textRight{
+	margin-right: 200px;
+}
+div.textLeft{
+	position:absolute;	
+	width: 720px;
+	right:0;
+	top:0;
 }
 
 /* overlay div for modal views */

@@ -117,8 +117,9 @@
   	<div class="newline"></div>
   	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
   	
-  	<!-- Resource Contact -->   	
-  	<h2><@s.text name="eml.contact"/></h2>
+  	<!-- Resource Contact -->    	
+  	<@textinline name="eml.contact" help="i18n"/>
+  	
 	<div class="halfcolumn">
 	  	<@input name="eml.contact.firstName" />
 	</div>
@@ -165,10 +166,10 @@
 	<div class="newline"></div>
 	
   	<!-- Resource Creator -->
+  	<@textinline name="eml.resourceCreator" help="i18n"/>
   	<div class="right">
   		<a id="copyDetails" href="">[ <@s.text name="eml.resourceCreator.copyLink" />  ]</a>
-  	</div>
-  	<h2><@s.text name="eml.resourceCreator"/></h2>
+  	</div>  	
   	<div class="halfcolumn">
 		<@input name="eml.resourceCreator.firstName" />
 	</div>
@@ -216,11 +217,10 @@
 	<div class="newline"></div>
 	
   	<!-- Metadata Provider -->
+  	<@textinline name="eml.metadataProvider" help="i18n"/>  	
   	<div class="right">
   		<a id="copyDetails2" href="">[ <@s.text name="eml.resourceCreator.copyLink" />  ]</a>
   	</div>
-	<h2><@s.text name="eml.metadataProvider"/></h2>
-	
   	<div class="halfcolumn">
 		<@input name="eml.metadataProvider.firstName" />
 	</div>
