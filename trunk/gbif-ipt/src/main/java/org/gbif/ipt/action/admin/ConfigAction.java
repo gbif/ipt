@@ -8,12 +8,11 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.ConfigManager;
 
-import com.google.inject.Inject;
-
-import org.apache.commons.lang.StringUtils;
-
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import com.google.inject.Inject;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * The Action responsible for all user input relating to the IPT configuration
@@ -21,6 +20,7 @@ import java.net.URL;
  * @author tim
  */
 public class ConfigAction extends POSTAction {
+
   private static final long serialVersionUID = 4726973323043063968L;
   @Inject
   protected ConfigManager configManager;
@@ -96,7 +96,7 @@ public class ConfigAction extends POSTAction {
         addActionMessage(getText("admin.user.login"));
         session.remove(Constants.SESSION_USER);
         if (burl.getHost().equalsIgnoreCase("localhost") || burl.getHost().equalsIgnoreCase("127.0.0.1")
-            || burl.getHost().equalsIgnoreCase(configManager.getHostName())) {
+          || burl.getHost().equalsIgnoreCase(configManager.getHostName())) {
           addActionWarning(getText("admin.config.error.localhostURL"));
         }
         baseUrlChanged = true;
@@ -105,11 +105,11 @@ public class ConfigAction extends POSTAction {
         return INPUT;
       } catch (InvalidConfigException e) {
         if (e.getType() == InvalidConfigException.TYPE.INVALID_BASE_URL) {
-          addActionError(getText("admin.config.baseUrl.invalidBaseURL"));
+          addActionError(getText("admin.config.baseUrl.invalidBaseURL") + " " + baseUrl);
         } else if (e.getType() == InvalidConfigException.TYPE.INACCESSIBLE_BASE_URL) {
-          addActionError(getText("admin.config.baseUrl.inaccessible"));
+          addActionError(getText("admin.config.baseUrl.inaccessible") + " " + baseUrl);
         } else {
-          addActionError(getText("admin.error.invalidConfiguration", new String[]{e.getMessage()}));
+          addActionError(getText("admin.error.invalidConfiguration", new String[] {e.getMessage()}));
         }
         return INPUT;
       }
@@ -120,7 +120,7 @@ public class ConfigAction extends POSTAction {
     try {
       configManager.setProxy(proxy);
     } catch (InvalidConfigException e) {
-      addActionError(getText(e.getMessage()));
+      addActionError(getText(e.getMessage()) + " " + proxy);
       return INPUT;
     }
 

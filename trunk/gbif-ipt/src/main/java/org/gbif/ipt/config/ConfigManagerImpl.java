@@ -84,6 +84,50 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   }
 
   /**
+   * It Creates a HttpHost object with the string given by the user and verifies if there is a connection with this
+   * host. If there is a connection with this host, it changes the current proxy host with this host. If don't it keeps
+   * the current proxy
+   * 
+   * @param proxy an URL with the format http://proxy.my-institution.com:8080, if don't, a MalformedURLException is
+   *        thrown.
+   * @param hostTemp the actual proxy.
+   */
+  private boolean changeProxy(HttpHost hostTemp, String proxy) {
+    if (proxy != null) {
+      try {
+        URL url = new URL(proxy);
+        HttpHost host = null;
+        String var[] = proxy.split(":");
+        if (var.length > 2) {
+          host = new HttpHost(url.getHost(), url.getPort());
+        } else {
+          host = new HttpHost(url.getHost());
+        } // test that host really exists
+        if (!http.verifyHost(host)) {
+          if (hostTemp != null) {
+            client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, hostTemp);
+          }
+          throw new InvalidConfigException(TYPE.INVALID_PROXY, "admin.config.error.connectionRefused");
+        }
+        log.info("Updating the proxy setting to: " + proxy);
+        client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, host);
+      } catch (NumberFormatException e) {
+        if (hostTemp != null) {
+          client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, hostTemp);
+        }
+        throw new InvalidConfigException(TYPE.INVALID_PROXY, "admin.config.error.invalidPort");
+      } catch (MalformedURLException e) {
+        if (hostTemp != null) {
+          client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, hostTemp);
+        }
+        throw new InvalidConfigException(TYPE.INVALID_PROXY, "admin.config.error.invalidProxyURL");
+      }
+      return true;
+    }
+    return false;
+  }
+
+  /**
    * Returns the local host name
    */
   public String getHostName() {
@@ -259,9 +303,10 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   }
 
   /**
-   * It Creates a HttpHost object with the string given by the user and verifies if there is a connection with this
-   * host. If there is a connection with this host, it changes the current proxy host with this host. If don't it keeps
-   * the current proxy
+   * It validates if is the first time that the user saves a proxy, if this is true, the proxy is saved normally (the
+   * first time that the proxy is saved is in the setup page), if not (the second time that the user saves a proxy is in
+   * the config page), it validates if this proxy is the same as current proxy, if this is true, nothing changes, if
+   * not, it removes the current proxy and save the new proxy.
    * 
    * @param proxy an URL with the format http://proxy.my-institution.com:8080, if don't, a MalformedURLException is
    *        thrown.
@@ -269,45 +314,38 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   public void setProxy(String proxy) throws InvalidConfigException {
     proxy = StringUtils.trimToNull(proxy);
     // save the current proxy
-    HttpHost hostTemp = (HttpHost) client.getParams().getParameter(ConnRoutePNames.DEFAULT_PROXY);
-    // remove proxy from http client
-    log.info("Removing proxy setting");
-    client.getParams().removeParameter(ConnRoutePNames.DEFAULT_PROXY);
-    if (proxy != null) {
-      try {
-        URL url = new URL(proxy);
-        HttpHost host = null;
-        String var[] = proxy.split(":");
-        if (var.length > 2) {
-          host = new HttpHost(url.getHost(), url.getPort());
-        } else {
-          host = new HttpHost(url.getHost());
-        }
-        // test that host really exists
-        if (!http.verifyHost(host)) {
-          if (hostTemp != null) {
-            client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, hostTemp);
-          }
-          throw new InvalidConfigException(TYPE.INVALID_PROXY, "admin.config.error.connectionRefused");
-        }
-        log.info("Updating the proxy setting to: " + proxy);
-        client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, host);
-      } catch (NumberFormatException e) {
-        if (hostTemp != null) {
-          client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, hostTemp);
-        }
-        throw new InvalidConfigException(TYPE.INVALID_PROXY, "admin.config.error.invalidPort");
-      } catch (MalformedURLException e) {
-        if (hostTemp != null) {
-          client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, hostTemp);
-        }
-        throw new InvalidConfigException(TYPE.INVALID_PROXY, "admin.config.error.invalidProxyURL");
-      }
+    HttpHost hostTemp = null;
+    try {
+      URL urlTemp = new URL(cfg.getProperty(AppConfig.PROXY));
+      hostTemp = new HttpHost(urlTemp.getHost(), urlTemp.getPort());
+    } catch (MalformedURLException e) {
     }
 
+    if (proxy == null) {
+      // remove proxy from http client
+      // Suddenly the client didn't have proxy host.
+      log.info("Removing proxy setting");
+      client.getParams().removeParameter(ConnRoutePNames.DEFAULT_PROXY);
+    } else {
+      // Changing proxy host
+      if (hostTemp == null) {
+        // First time, before Setup
+        changeProxy(hostTemp, proxy);
+      } else {
+        // After Setup
+        // Validating if the current proxy in the same proxy given by the user
+        if (!hostTemp.toString().equals(proxy)) {
+          // remove proxy from http client
+          log.info("Removing proxy setting");
+          client.getParams().removeParameter(ConnRoutePNames.DEFAULT_PROXY);
+          changeProxy(hostTemp, proxy);
+        }
+      }
+    }
     // store in properties file
     cfg.setProperty(AppConfig.PROXY, proxy);
   }
+
 
   public boolean setupComplete() {
     if (dataDir.isConfigured()) {
@@ -318,7 +356,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     return false;
   }
 
-  private boolean validateBaseURL(URL baseURL) {
+  public boolean validateBaseURL(URL baseURL) {
     if (baseURL == null) {
       return false;
     }
