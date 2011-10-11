@@ -1,3 +1,15 @@
+/***************************************************************************
+ * Copyright 2010 Global Biodiversity Information Facility Secretariat
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ ***************************************************************************/
 package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.config.Constants;
@@ -44,8 +56,8 @@ public class OverviewAction extends ManagerBaseAction {
   private List<Extension> potentialExtensions;
   private List<Organisation> organisations;
   private final EmlValidator emlValidator = new EmlValidator();
-  private boolean missingMetadata = false;
-  private boolean missingRegistrationMetadata = false;
+  private boolean missingMetadata;
+  private boolean missingRegistrationMetadata;
   private StatusReport report;
   private Date now;
   private boolean unpublish = false;
@@ -67,11 +79,13 @@ public class OverviewAction extends ManagerBaseAction {
   }
 
   public String cancel() throws Exception {
-    if (resource != null) {
+    if (resource == null) {
+      return NOT_FOUND;
+    } else {
       try {
         resourceManager.cancelPublishing(resource.getShortname(), this);
         addActionMessage(getText("manage.overview.stopped.publishing", new String[] {resource.toString()}));
-      } catch (Exception e) {
+      } catch (PublicationException e) {
         String reason = "";
         if (e.getMessage() != null) {
           reason = e.getMessage();
@@ -79,8 +93,6 @@ public class OverviewAction extends ManagerBaseAction {
         addActionError(getText("manage.overview.failed.stop.publishing", new String[] {reason}));
         return ERROR;
       }
-    } else {
-      return NOT_FOUND;
     }
     return execute();
   }
@@ -144,18 +156,18 @@ public class OverviewAction extends ManagerBaseAction {
   }
 
   /**
-   * Return the size of the DwC-A file.
+   * Calculate the size of the DwC-A file.
    * 
-   * @return
+   * @return the size (human readable) of the DwC-A file.
    */
   public String getDwcaFormattedSize() {
     return FileUtils.formatSize(resourceManager.getDwcaSize(resource), 2);
   }
 
   /**
-   * Return the EML file size
+   * Calculate the size of the EML file.
    * 
-   * @return
+   * @return the size (human readable) of the EML file.
    */
   public String getEmlFormattedSize() {
     return FileUtils.formatSize(resourceManager.getEmlSize(resource), 2);
@@ -166,7 +178,7 @@ public class OverviewAction extends ManagerBaseAction {
   }
 
   /**
-   * @return the missingRegistrationMetadata
+   * @return true if there are something missing metadata. False otherwise.
    */
   public boolean getMissingRegistrationMetadata() {
     return missingRegistrationMetadata;
@@ -193,9 +205,9 @@ public class OverviewAction extends ManagerBaseAction {
   }
 
   /**
-   * Return the RTF file size
+   * Calculate the size of the RTF file.
    * 
-   * @return
+   * @return return the size (human readable) of the RTF file.
    */
   public String getRtfFormattedSize() {
     return FileUtils.formatSize(resourceManager.getRtfSize(resource), 2);
@@ -340,8 +352,8 @@ public class OverviewAction extends ManagerBaseAction {
     }
     try {
       if (resourceManager.publish(resource, this)) {
-        addActionMessage(getText("manage.overview.publishing.resource.version", new String[] {resource.getEmlVersion()
-          + ""}));
+        addActionMessage(getText("manage.overview.publishing.resource.version", new String[] {new String(Integer
+          .toString(resource.getEmlVersion()))}));
         return PUBLISHING;
       } else {
         if (!resource.hasMappedData()) {
@@ -399,9 +411,8 @@ public class OverviewAction extends ManagerBaseAction {
             }
 
             resourceManager.register(resource, org, registrationManager.getIpt());
-            if (org != null) {
-              addActionMessage(getText("manage.overview.resource.registered", new String[] {org.getName()}));
-            }
+            addActionMessage(getText("manage.overview.resource.registered", new String[] {org.getName()}));
+
           } catch (RegistryException e) {
             log.error("Cant register resource " + resource + " with organisation " + org, e);
             addActionError(getText("manage.overview.failed.resource.registration"));
