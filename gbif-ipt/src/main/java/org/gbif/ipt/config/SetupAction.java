@@ -17,15 +17,14 @@ import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.validation.UserValidator;
 
-import com.google.inject.Inject;
-
-import org.apache.commons.lang.StringUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+
+import com.google.inject.Inject;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * The Action responsible for all user input relating to the IPT configuration
@@ -33,6 +32,7 @@ import java.util.List;
  * @author tim
  */
 public class SetupAction extends BaseAction {
+
   private static final long serialVersionUID = 4726973323043063968L;
   @Inject
   protected ConfigManager configManager;
@@ -94,7 +94,7 @@ public class SetupAction extends BaseAction {
 
   private String getPort() {
     if ("http".equalsIgnoreCase(req.getScheme()) && req.getServerPort() != 80
-        || "https".equalsIgnoreCase(req.getScheme()) && req.getServerPort() != 443) {
+      || "https".equalsIgnoreCase(req.getScheme()) && req.getServerPort() != 443) {
       return (":" + req.getServerPort());
     } else {
       return "";
@@ -174,12 +174,12 @@ public class SetupAction extends BaseAction {
             addActionMessage(getText("admin.config.setup.datadir.reused"));
           }
         } else {
-          addActionError(getText("admin.config.setup.datadir.absolute", new String[]{dataDirPath}));
+          addActionError(getText("admin.config.setup.datadir.absolute", new String[] {dataDirPath}));
         }
       } catch (InvalidConfigException e) {
         log.warn("Failed to setup datadir: " + e.getMessage(), e);
         if (e.getType() == InvalidConfigException.TYPE.NON_WRITABLE_DATA_DIR) {
-          addActionError(getText("admin.config.setup.datadir.writable", new String[]{dataDirPath}));
+          addActionError(getText("admin.config.setup.datadir.writable", new String[] {dataDirPath}));
         } else {
           addActionError(getText("admin.config.setup.datadir.error"));
         }
@@ -238,20 +238,20 @@ public class SetupAction extends BaseAction {
           }
         }
 
-        // set proxy
-        try {
-          configManager.setProxy(proxy);
-        } catch (InvalidConfigException e) {
-          addFieldError("proxy", getText(e.getMessage()));
-          return INPUT;
-        }
-
-        // set baseURL
+        // set baseURL, this have to be before the validation with the proxy
         try {
           URL burl = new URL(baseURL);
           configManager.setBaseURL(burl);
         } catch (MalformedURLException e) {
           // checked in validate() already
+        }
+
+        // set proxy
+        try {
+          configManager.setProxy(proxy);
+        } catch (InvalidConfigException e) {
+          addFieldError("proxy", getText(e.getMessage()) + " " + proxy);
+          return INPUT;
         }
 
         // save config
@@ -273,12 +273,13 @@ public class SetupAction extends BaseAction {
         return SUCCESS;
       } catch (IOException e) {
         log.error(e);
-        addActionError(getText("admin.config.setup2.failed", new String[]{e.getMessage()}));
+        addActionError(getText("admin.config.setup2.failed", new String[] {e.getMessage()}));
       } catch (AlreadyExistingException e) {
         addFieldError("user.email", "User exists as non admin user already");
       } catch (InvalidConfigException e) {
         if (e.getType() == TYPE.INACCESSIBLE_BASE_URL) {
-          addFieldError("baseURL", getText("admin.config.baseUrl.inaccessible"));
+          addFieldError("baseURL", getText("admin.config.baseUrl.inaccessible") + " " + baseURL);
+          setBaseURL(findBaseURL());
         } else {
           log.error(e);
           addActionError(e.getType().toString() + ": " + e.getMessage());
@@ -321,6 +322,7 @@ public class SetupAction extends BaseAction {
         try {
           URL burl = new URL(baseURL);
         } catch (MalformedURLException e) {
+          addFieldError("baseURL", getText("validation.baseURL.invalid") + " " + baseURL);
         }
       }
     }
