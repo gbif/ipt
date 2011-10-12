@@ -27,7 +27,7 @@ import com.google.inject.Inject;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * The Action responsible for all user input relating to the IPT configuration
+ * The Action responsible for all user input relating to the IPT configuration.
  * 
  * @author tim
  */
@@ -90,15 +90,6 @@ public class SetupAction extends BaseAction {
 
   public String getPassword2() {
     return password2;
-  }
-
-  private String getPort() {
-    if ("http".equalsIgnoreCase(req.getScheme()) && req.getServerPort() != 80
-      || "https".equalsIgnoreCase(req.getScheme()) && req.getServerPort() != 443) {
-      return (":" + req.getServerPort());
-    } else {
-      return "";
-    }
   }
 
   public String getProxy() {

@@ -54,7 +54,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   private ConfigWarnings warnings;
   private DefaultHttpClient client;
   private HttpUtil http;
-  private final String pathToCss = "/styles/main.css";
+  private final static String PATH_TO_CSS = "/styles/main.css";
 
   @Inject
   public ConfigManagerImpl(DataDir dataDir, AppConfig cfg, InputStreamUtils streamUtils,
@@ -86,49 +86,47 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   /**
    * It Creates a HttpHost object with the string given by the user and verifies if there is a connection with this
    * host. If there is a connection with this host, it changes the current proxy host with this host. If don't it keeps
-   * the current proxy
+   * the current proxy.
    * 
-   * @param proxy an URL with the format http://proxy.my-institution.com:8080, if don't, a MalformedURLException is
-   *        thrown.
+   * @param proxy an URL with the format http://proxy.my-institution.com:8080.
    * @param hostTemp the actual proxy.
+   * @throws InvalidConfigException If it can not connect to the proxy host or if the port number is no integer or if
+   *         the proxy URL is not with the valid format http://proxy.my-institution.com:8080
    */
   private boolean changeProxy(HttpHost hostTemp, String proxy) {
-    if (proxy != null) {
-      try {
-        URL url = new URL(proxy);
-        HttpHost host = null;
-        String var[] = proxy.split(":");
-        if (var.length > 2) {
-          host = new HttpHost(url.getHost(), url.getPort());
-        } else {
-          host = new HttpHost(url.getHost());
-        } // test that host really exists
-        if (!http.verifyHost(host)) {
-          if (hostTemp != null) {
-            client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, hostTemp);
-          }
-          throw new InvalidConfigException(TYPE.INVALID_PROXY, "admin.config.error.connectionRefused");
-        }
-        log.info("Updating the proxy setting to: " + proxy);
-        client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, host);
-      } catch (NumberFormatException e) {
+    try {
+      URL url = new URL(proxy);
+      HttpHost host = null;
+      String var[] = proxy.split(":");
+      if (var.length > 2) {
+        host = new HttpHost(url.getHost(), url.getPort());
+      } else {
+        host = new HttpHost(url.getHost());
+      } // test that host really exists
+      if (!http.verifyHost(host)) {
         if (hostTemp != null) {
           client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, hostTemp);
         }
-        throw new InvalidConfigException(TYPE.INVALID_PROXY, "admin.config.error.invalidPort");
-      } catch (MalformedURLException e) {
-        if (hostTemp != null) {
-          client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, hostTemp);
-        }
-        throw new InvalidConfigException(TYPE.INVALID_PROXY, "admin.config.error.invalidProxyURL");
+        throw new InvalidConfigException(TYPE.INVALID_PROXY, "admin.config.error.connectionRefused");
       }
-      return true;
+      log.info("Updating the proxy setting to: " + proxy);
+      client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, host);
+    } catch (NumberFormatException e) {
+      if (hostTemp != null) {
+        client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, hostTemp);
+      }
+      throw new InvalidConfigException(TYPE.INVALID_PROXY, "admin.config.error.invalidPort");
+    } catch (MalformedURLException e) {
+      if (hostTemp != null) {
+        client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, hostTemp);
+      }
+      throw new InvalidConfigException(TYPE.INVALID_PROXY, "admin.config.error.invalidProxyURL");
     }
-    return false;
+    return true;
   }
 
   /**
-   * Returns the local host name
+   * Returns the local host name.
    */
   public String getHostName() {
     String hostName = "";
@@ -152,10 +150,9 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   }
 
   /**
-   * Update configuration singleton from config file in data dir
+   * Update configuration singleton from config file in data dir.
    * 
-   * @return true if successful
-   * @throws InvalidConfigException
+   * @throws InvalidConfigException.
    */
   public void loadDataDirConfig() throws InvalidConfigException {
     log.info("Reading DATA DIRECTORY: " + dataDir.dataDir.getAbsolutePath());
@@ -205,14 +202,10 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     }
     LogManager.resetConfiguration();
     DOMConfigurator domConfig = new DOMConfigurator();
-    try {
-      domConfig.doConfigure(log4j, LogManager.getLoggerRepository());
-      log.info("Reloaded log4j for " + (cfg.debug() ? "debugging" : "production"));
-      log.info("Logging to " + LogFileAppender.LOGDIR);
-      log.info("IPT Data Directory: " + dataDir.dataFile(".").getAbsolutePath());
-    } catch (Error e) {
-      log.error("Failed to reload log4j configuration for " + (cfg.debug() ? "debugging" : "production"), e);
-    }
+    domConfig.doConfigure(log4j, LogManager.getLoggerRepository());
+    log.info("Reloaded log4j for " + (cfg.debug() ? "debugging" : "production"));
+    log.info("Logging to " + LogFileAppender.LOGDIR);
+    log.info("IPT Data Directory: " + dataDir.dataFile(".").getAbsolutePath());
   }
 
   public void saveConfig() throws InvalidConfigException {
@@ -234,7 +227,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   public void setBaseURL(URL baseURL) throws InvalidConfigException {
     log.info("Updating the baseURL to: " + baseURL);
 
-    if (baseURL.getHost().equalsIgnoreCase("localhost") || baseURL.getHost().equalsIgnoreCase("127.0.0.1")
+    if (("localhost").equalsIgnoreCase(baseURL.getHost()) || ("127.0.0.1").equalsIgnoreCase(baseURL.getHost())
       || baseURL.getHost().equalsIgnoreCase(this.getHostName())) {
       log.warn("Localhost used as base url, IPT will not be visible to the outside!");
     }
@@ -308,8 +301,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
    * the config page), it validates if this proxy is the same as current proxy, if this is true, nothing changes, if
    * not, it removes the current proxy and save the new proxy.
    * 
-   * @param proxy an URL with the format http://proxy.my-institution.com:8080, if don't, a MalformedURLException is
-   *        thrown.
+   * @param proxy an URL with the format http://proxy.my-institution.com:8080.
    */
   public void setProxy(String proxy) throws InvalidConfigException {
     proxy = StringUtils.trimToNull(proxy);
@@ -319,6 +311,8 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
       URL urlTemp = new URL(cfg.getProperty(AppConfig.PROXY));
       hostTemp = new HttpHost(urlTemp.getHost(), urlTemp.getPort());
     } catch (MalformedURLException e) {
+      // This exception should not be shown, the urlTemp was validated before being saved.
+      log.info("the proxy URL is invalid", e);
     }
 
     if (proxy == null) {
@@ -330,7 +324,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
       // Changing proxy host
       if (hostTemp == null) {
         // First time, before Setup
-        changeProxy(hostTemp, proxy);
+        changeProxy(null, proxy);
       } else {
         // After Setup
         // Validating if the current proxy in the same proxy given by the user
@@ -356,6 +350,12 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     return false;
   }
 
+  /**
+   * It validates if the there is a connection with the baseURL, it executes a request using the baseURL.
+   * 
+   * @param baseURL a URL to validate.
+   * @return true if the response to the request has a status code equal to 200.
+   */
   public boolean validateBaseURL(URL baseURL) {
     if (baseURL == null) {
       return false;
@@ -363,7 +363,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     // ensure there is an ipt listening at the target
     boolean valid = false;
     try {
-      HttpGet get = new HttpGet(baseURL.toString() + pathToCss);
+      HttpGet get = new HttpGet(baseURL.toString() + PATH_TO_CSS);
       HttpResponse response = http.executeGetWithTimeout(get, 4000);
       valid = (response.getStatusLine().getStatusCode() == 200);
     } catch (ClientProtocolException e) {
