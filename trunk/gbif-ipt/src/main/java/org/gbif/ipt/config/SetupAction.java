@@ -74,8 +74,10 @@ public class SetupAction extends BaseAction {
   @Override
   public String getBaseURL() {
     // try to detect default values if not yet configured
-    if (StringUtils.trimToNull(baseURL) == null) {
+    if (StringUtils.trimToNull(cfg.getBaseURL()) == null) {
       baseURL = findBaseURL();
+    } else {
+      baseURL = cfg.getBaseURL();
     }
     return baseURL;
   }
@@ -270,7 +272,6 @@ public class SetupAction extends BaseAction {
       } catch (InvalidConfigException e) {
         if (e.getType() == TYPE.INACCESSIBLE_BASE_URL) {
           addFieldError("baseURL", getText("admin.config.baseUrl.inaccessible") + " " + baseURL);
-          setBaseURL(findBaseURL());
         } else {
           log.error(e);
           addActionError(e.getType().toString() + ": " + e.getMessage());
