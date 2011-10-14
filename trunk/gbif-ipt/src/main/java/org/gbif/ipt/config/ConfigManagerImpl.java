@@ -371,8 +371,6 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
       HttpGet get = new HttpGet(baseURL.toString() + PATH_TO_CSS);
       response = http.executeGetWithTimeout(get, 4000);
       valid = (response.getStatusLine().getStatusCode() == 200);
-      // client.getConnectionManager().closeExpiredConnections();
-      // client.getConnectionManager().closeIdleConnections(1000, TimeUnit.MILLISECONDS);
     } catch (ClientProtocolException e) {
       log.info("Protocol error connecting to new base URL [" + baseURL.toString() + "]", e);
     } catch (IOException e) {
