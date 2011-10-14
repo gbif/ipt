@@ -307,12 +307,14 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     proxy = StringUtils.trimToNull(proxy);
     // save the current proxy
     HttpHost hostTemp = null;
-    try {
-      URL urlTemp = new URL(cfg.getProperty(AppConfig.PROXY));
-      hostTemp = new HttpHost(urlTemp.getHost(), urlTemp.getPort());
-    } catch (MalformedURLException e) {
-      // This exception should not be shown, the urlTemp was validated before being saved.
-      log.info("the proxy URL is invalid", e);
+    if (StringUtils.trimToNull(cfg.getProperty(AppConfig.PROXY)) != null) {
+      try {
+        URL urlTemp = new URL(cfg.getProperty(AppConfig.PROXY));
+        hostTemp = new HttpHost(urlTemp.getHost(), urlTemp.getPort());
+      } catch (MalformedURLException e) {
+        // This exception should not be shown, the urlTemp was validated before being saved.
+        log.info("the proxy URL is invalid", e);
+      }
     }
 
     if (proxy == null) {
@@ -332,6 +334,8 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
           // remove proxy from http client
           log.info("Removing proxy setting");
           client.getParams().removeParameter(ConnRoutePNames.DEFAULT_PROXY);
+          changeProxy(hostTemp, proxy);
+        } else {
           changeProxy(hostTemp, proxy);
         }
       }
@@ -362,10 +366,13 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     }
     // ensure there is an ipt listening at the target
     boolean valid = false;
+    HttpResponse response = null;
     try {
       HttpGet get = new HttpGet(baseURL.toString() + PATH_TO_CSS);
-      HttpResponse response = http.executeGetWithTimeout(get, 4000);
+      response = http.executeGetWithTimeout(get, 4000);
       valid = (response.getStatusLine().getStatusCode() == 200);
+      // client.getConnectionManager().closeExpiredConnections();
+      // client.getConnectionManager().closeIdleConnections(1000, TimeUnit.MILLISECONDS);
     } catch (ClientProtocolException e) {
       log.info("Protocol error connecting to new base URL [" + baseURL.toString() + "]", e);
     } catch (IOException e) {

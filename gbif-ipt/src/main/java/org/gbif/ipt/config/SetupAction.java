@@ -282,8 +282,10 @@ public class SetupAction extends BaseAction {
   }
 
   public String setup3() {
+    configManager.loadDataDirConfig();
     session.put(Constants.SESSION_USER, userManager.getSetupUser());
     List<Extension> list = extensionManager.listCore();
+
     if (list.size() == 0) {
       try {
         extensionManager.installCoreTypes();
