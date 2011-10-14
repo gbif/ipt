@@ -96,10 +96,9 @@
  <#assign currentMenu="manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <h1><@s.text name='manage.metadata.basic.title'/>: <a href="resource.do?r=${resource.shortname}"><em>${resource.title!resource.shortname}</em></a> </h1>
-<p><@s.text name='manage.metadata.basic.intro'/></p>
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <form class="topForm" action="metadata-${section}.do" method="post">
-	<b><@s.text name="manage.metadata.basic.required.message" /></b>
+	<@s.text name="manage.metadata.basic.required.message" />
   	<@input name="eml.title" />
   	<@text name="eml.description"/>
   	<div class="halfcolumn">
