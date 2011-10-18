@@ -4,29 +4,8 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	initHelp();
-	
-	var emailContent2 = "<@s.text name='emails.adding.organisation.association1'/>";
-	emailContent2 += "<@s.text name='emails.adding.organisation.association2'/>";
-	emailContent2 += "<@s.text name='emails.adding.organisation.association3'/>";
-	emailContent2 += "<@s.text name='emails.adding.organisation.association4'/>";
-	emailContent2 += "<@s.text name='emails.adding.organisation.association5'/>";
-	emailContent2 += "<@s.text name='emails.adding.organisation.association6'/>";
-	emailContent2 += "<@s.text name='emails.adding.organisation.association7'/>";
-	emailContent2 += "<@s.text name='emails.adding.organisation.association8'/>";
-	emailContent2 += "<@s.text name='emails.adding.organisation.association9'/>";
-	
-	//Email template for adding an associated organization
-	var contactLink = '<a href=\"mailto:helpdesk@gbif.org';
-	contactLink += '?subject=';
-	contactLink += '<@s.text name="emails.adding.organisation.association.subject"></@s.text>';
-	contactLink += '&body=';
-	contactLink += emailContent2;
-	contactLink += '\">'; 
-	contactLink += '<@s.text name="admin.organisation.contact.helpdesk"/>';  
-	contactLink += '</a> '; 
-	$('#contactHelpdesk').html(contactLink);	
   
-    $('.confirm').jConfirmAction({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
+  $('.confirm').jConfirmAction({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
 
 	$('#organisation\\.key').change(function() {
 		var orgName = $('#organisation\\.key :selected').text();
@@ -86,7 +65,7 @@ $(document).ready(function(){
 		<@s.hidden name="id" id="id" required="true" />
 	<#else>
 <h1><@s.text name="admin.organisation.add.title"/></h1>
-<p><@s.text name="admin.organisation.add.intro"/> <a id='contactHelpdesk' href=""><@s.text name="admin.organisation.contact.helpdesk"/></a></p>
+<p><@s.text name="admin.registration.intro"/></a></p>
 <p><@s.text name="admin.organisation.add.intro2"/></p>
 		<@s.hidden id="organisation.name" name="organisation.name" required="true" />
 		<@s.hidden id="organisation.primaryContactType" name="organisation.primaryContactType" required="false" />
