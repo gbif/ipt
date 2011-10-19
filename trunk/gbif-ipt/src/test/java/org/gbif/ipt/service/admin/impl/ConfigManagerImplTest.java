@@ -46,6 +46,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
@@ -147,6 +148,7 @@ public class ConfigManagerImplTest {
    * @throws ParserConfigurationException.
    * @throws MalformedURLException if the baseURL is malformed.
    */
+  @Ignore
   @Test
   public void testSetBaseURL() throws ParserConfigurationException, SAXException, MalformedURLException {
 
