@@ -454,9 +454,14 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       } catch (Exception e) {
         // some error writing this file, report
         log.error("Fatal DwC-A Generator Error", e);
-        throw new GeneratorException("Error writing data file for mapping " + mapping.getExtension().getName()
-          + " in source " + mapping.getSource().getName() + ", line " + line, e);
+        String errorMessage =
+          "Error writing data file for mapping " + mapping.getExtension().getName() + " in source "
+            + mapping.getSource().getName() + ", line " + line;
+        logWriter.write(errorMessage);
+        logWriter.write("\n");
+        throw new GeneratorException(errorMessage, e);
       } finally {
+        logWriter.flush();
         iter.close();
       }
 
