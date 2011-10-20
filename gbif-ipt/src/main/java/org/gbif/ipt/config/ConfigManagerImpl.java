@@ -227,18 +227,15 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   public void setBaseURL(URL baseURL) throws InvalidConfigException {
     log.info("Updating the baseURL to: " + baseURL);
 
-    if (("localhost").equalsIgnoreCase(baseURL.getHost()) || ("127.0.0.1").equalsIgnoreCase(baseURL.getHost())
+    boolean validate = true;
+    if (("localhost").equals(baseURL.getHost()) || ("127.0.0.1").equals(baseURL.getHost())
       || baseURL.getHost().equalsIgnoreCase(this.getHostName())) {
       log.warn("Localhost used as base url, IPT will not be visible to the outside!");
-    }
 
-    boolean validate = true;
-    // validate if localhost URL is configured only in developer mode.
-    if (cfg.devMode()) {
-      HttpHost hostTemp = (HttpHost) client.getParams().getParameter(ConnRoutePNames.DEFAULT_PROXY);
-      if (hostTemp != null) {
-        if (baseURL.getHost().equals("localhost") || baseURL.getHost().equals("127.0.0.1")
-          || baseURL.getHost().equalsIgnoreCase(this.getHostName())) {
+      // validate if localhost URL is configured only in developer mode.
+      if (cfg.devMode()) {
+        HttpHost hostTemp = (HttpHost) client.getParams().getParameter(ConnRoutePNames.DEFAULT_PROXY);
+        if (hostTemp != null) {
           // if local URL is configured, the IPT should do the validation without a proxy.
           setProxy(null);
           validate = false;
@@ -248,9 +245,12 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
           }
           setProxy(hostTemp.toString());
         }
+      } else {
+        // local URL is not permitted in production mode.
+        throw new InvalidConfigException(TYPE.INACCESSIBLE_BASE_URL, "local URL is not permitted");
       }
     }
-    // for production mode, the validation should be made using proxy. (local URL are not permitted)
+
     if (validate) {
       if (!validateBaseURL(baseURL)) {
         throw new InvalidConfigException(TYPE.INACCESSIBLE_BASE_URL, "No IPT found at new base URL");
