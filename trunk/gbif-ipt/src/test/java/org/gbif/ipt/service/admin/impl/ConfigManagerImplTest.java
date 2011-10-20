@@ -46,11 +46,11 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * This class tests the relevant methods of the ConfigManagerImpl class.
@@ -94,30 +94,6 @@ public class ConfigManagerImplTest {
   }
 
   /**
-   * Test that the method setBaseURL of the ConfigManager throws an InvalidConfigException if the baseURL given by the
-   * user don't exists or the client can't connect with it.
-   * 
-   * @throws SAXException.
-   * @throws ParserConfigurationException.
-   * @throws MalformedURLException if the baseURL is malformed.
-   */
-  @Test(expected = InvalidConfigException.class)
-  public void testBadBaseURL() throws ParserConfigurationException, SAXException, MalformedURLException {
-    // Creating configManager
-    ConfigManager configManager = getConfigManager();
-
-    // Saving bad baseURL
-    URL baseURL = new URL("http://1.1.1.1:7001/ipt");
-    configManager.setBaseURL(baseURL);
-    assertEquals(baseURL.toString(), appConfig.getProperty(AppConfig.BASEURL));
-
-    // Saving bad baseURL
-    baseURL = new URL("1.1.1.1:7001/ipt");
-    configManager.setBaseURL(baseURL);
-    assertEquals(baseURL.toString(), appConfig.getProperty(AppConfig.BASEURL));
-  }
-
-  /**
    * Test that the method setProxy of the ConfigManager throws an InvalidConfigException if the proxy given by the user
    * don't exists or the client can't connect with it.
    * 
@@ -141,28 +117,43 @@ public class ConfigManagerImplTest {
   }
 
   /**
-   * Test that the method setBaseURL of the ConfigManager saves the baseURL in the application properties if the client
-   * can connect with it.
+   * Test that the method setBaseURL of the ConfigManager throws an InvalidConfigException if the baseURL given by the
+   * user doesn't exist or the client can't connect with it.
    * 
    * @throws SAXException.
    * @throws ParserConfigurationException.
    * @throws MalformedURLException if the baseURL is malformed.
    */
-  @Ignore
   @Test
   public void testSetBaseURL() throws ParserConfigurationException, SAXException, MalformedURLException {
-
-    // Creating configManager
+    // Create configManager.
     ConfigManager configManager = getConfigManager();
 
-    // Without proxy
-    URL baseURL = new URL("http://127.0.0.1:7001/ipt");
+    // try to save a nonexistent baseURL.
+    try {
+      URL baseURL2 = new URL("http://1.1.1.1/ipt");
+      configManager.setBaseURL(baseURL2);
+      // the validation should never get here.
+      assertTrue(false);
+    } catch (InvalidConfigException e) {
+      assertTrue(true);
+    }
+
+    // try to save an existent baseURL without an IPT installed.
+    try {
+      URL baseURL2 = new URL("http://www.gbif.org");
+      configManager.setBaseURL(baseURL2);
+      // the validation should never get here.
+      assertEquals(true, false);
+    } catch (InvalidConfigException e) {
+      assertEquals(true, true);
+    }
+
+    // Save good baseURL
+    URL baseURL = new URL("http://ipt.gbif.org");
     configManager.setBaseURL(baseURL);
     assertEquals(baseURL.toString(), appConfig.getProperty(AppConfig.BASEURL));
 
-    baseURL = new URL("http://localhost:7001/ipt");
-    configManager.setBaseURL(baseURL);
-    assertEquals(baseURL.toString(), appConfig.getProperty(AppConfig.BASEURL));
 
     // TODO figure out how to test a proxy
 
@@ -175,6 +166,7 @@ public class ConfigManagerImplTest {
     //
     // assertEquals(baseURL.toString(), appConfig.getProperty(AppConfig.BASEURL));
   }
+
 
   /**
    * Test that the method setProxy of the ConfigManager saves the proxy in the application properties if the client can
