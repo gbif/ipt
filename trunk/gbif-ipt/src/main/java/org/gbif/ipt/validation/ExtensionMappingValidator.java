@@ -22,8 +22,6 @@ import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
 import org.gbif.metadata.DateUtils;
 
-import org.apache.commons.lang.xwork.StringUtils;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -32,11 +30,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.xwork.StringUtils;
+
 /**
  * @author markus
  */
 public class ExtensionMappingValidator {
+
   public static class ValidationStatus {
+
     private List<ConceptTerm> missingRequiredFields = new ArrayList<ConceptTerm>();
     private List<ConceptTerm> wrongDataTypeFields = new ArrayList<ConceptTerm>();
     private String idProblem;
@@ -111,8 +113,6 @@ public class ExtensionMappingValidator {
         if (DataType.bool == dt) {
           if (val.equals("1")) {
             continue;
-          } else {
-            Boolean b = Boolean.parseBoolean(val);
           }
         } else if (DataType.date == dt) {
           Date d = DateUtils.parse(val, DateUtils.isoDateFormat);
@@ -124,7 +124,7 @@ public class ExtensionMappingValidator {
         } else if (DataType.integer == dt) {
           Integer.parseInt(val);
         } else if (DataType.uri == dt) {
-          URI uri = new URI(val);
+          new URI(val);
         }
       } catch (NumberFormatException e) {
         return false;

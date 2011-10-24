@@ -11,8 +11,13 @@ import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.model.VocabularyConcept;
 import org.gbif.ipt.model.VocabularyTerm;
 
-import com.google.inject.Inject;
+import java.io.IOException;
+import java.io.InputStream;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
+
+import com.google.inject.Inject;
 import org.apache.commons.digester.Digester;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -22,18 +27,11 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParserFactory;
-
 /**
  * Building from XML definitions
  */
 public class VocabularyFactory {
+
   public static final String VOCABULARY_NAMESPACE = "http://rs.gbif.org/thesaurus/";
   protected static Logger log = Logger.getLogger(VocabularyFactory.class);
   private HttpClient client;
@@ -94,7 +92,6 @@ public class VocabularyFactory {
 
     // build the terms
     digester.addObjectCreate("*/preferred/term", VocabularyTerm.class);
-    VocabularyTerm t = new VocabularyTerm();
 
     digester.addCallMethod("*/preferred/term", "setLang", 1);
     digester.addRule("*/preferred/term", new CallParamNoNSRule(0, "lang"));
@@ -106,7 +103,6 @@ public class VocabularyFactory {
 
     // build alternative terms
     digester.addObjectCreate("*/alternative/term", VocabularyTerm.class);
-    VocabularyTerm talt = new VocabularyTerm();
 
     digester.addCallMethod("*/alternative/term", "setLang", 1);
     digester.addRule("*/alternative/term", new CallParamNoNSRule(0, "lang"));
@@ -128,8 +124,6 @@ public class VocabularyFactory {
    * @return The thesaurus or null on error
    */
   public Vocabulary build(String url) {
-    List<Vocabulary> thesauri = new LinkedList<Vocabulary>();
-
     HttpGet get = new HttpGet(url);
 
     // execute
