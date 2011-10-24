@@ -268,13 +268,13 @@ public class SetupAction extends BaseAction {
         log.error(e);
         addActionError(getText("admin.config.setup2.failed", new String[] {e.getMessage()}));
       } catch (AlreadyExistingException e) {
-        addFieldError("user.email", "User exists as non admin user already");
+        addFieldError("user.email", getText("admin.config.setup2.nonadmin"));
       } catch (InvalidConfigException e) {
         if (e.getType() == TYPE.INACCESSIBLE_BASE_URL) {
           addFieldError("baseURL", getText("admin.config.baseUrl.inaccessible") + " " + baseURL);
         } else {
           log.error(e);
-          addActionError(e.getType().toString() + ": " + e.getMessage());
+          addActionError(getText("admin.config.setup2.already.registered"));
         }
       }
     }
