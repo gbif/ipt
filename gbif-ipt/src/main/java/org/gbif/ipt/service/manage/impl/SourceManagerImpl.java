@@ -54,6 +54,7 @@ import javax.annotation.Nullable;
 
 import com.google.inject.Inject;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.xwork.StringUtils;
 
 /**
@@ -305,8 +306,9 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
 
         File logFile = dataDir.sourceLogFile(source.getResource().getShortname(), source.getName());
         FileUtils.deleteQuietly(logFile);
+        BufferedWriter logWriter = null;
         try {
-          BufferedWriter logWriter = new BufferedWriter(new FileWriter(logFile));
+          logWriter = new BufferedWriter(new FileWriter(logFile));
           logWriter.write("Log for source name:" + source.getName() + " from resource: "
             + source.getResource().getShortname() + "\n");
           if (reader.getEmptyLines().size() > 0) {
@@ -319,9 +321,13 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
             logWriter.write("No rows were skipped in this source");
           }
           logWriter.flush();
-          logWriter.close();
         } catch (IOException e) {
           log.warn("Cant write source log file " + logFile.getAbsolutePath(), e);
+        } finally {
+          if (logWriter != null) {
+            logWriter.flush();
+            IOUtils.closeQuietly(logWriter);
+          }
         }
       } catch (IOException e) {
         problem = e.getMessage();
@@ -367,10 +373,8 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
           return Arrays.asList(reader.header);
         } else {
           List<String> columns = new ArrayList<String>();
-          int x = 1;
-          for (String col : reader.header) {
+          for (int x = 1; x <= reader.header.length; x++) {
             columns.add("Column #" + x);
-            x++;
           }
           return columns;
         }
@@ -483,7 +487,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   public int importArchive(Resource resource, File file, boolean overwriteEml) throws ImportException {
     // anaylze using the dwca reader
     try {
-      Archive arch = ArchiveFactory.openArchive(file);
+      ArchiveFactory.openArchive(file);
       return 0;
     } catch (UnsupportedArchiveException e) {
       throw new ImportException(e);

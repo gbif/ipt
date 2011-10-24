@@ -397,7 +397,8 @@ public class SourceAction extends ManagerBaseAction {
         }
       } else {
         // FILE SOURCE
-        FileSource src = (FileSource) source;
+        // FileSource src = (FileSource) source;
+        // TODO validate file source
       }
     }
   }

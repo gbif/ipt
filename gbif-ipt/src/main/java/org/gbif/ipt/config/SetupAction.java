@@ -10,8 +10,8 @@ import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.InvalidConfigException;
-import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.RegistryException;
+import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.ConfigManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
@@ -314,7 +314,7 @@ public class SetupAction extends BaseAction {
         addFieldError("baseURL", getText("validation.baseURL.required"));
       } else {
         try {
-          URL burl = new URL(baseURL);
+          new URL(baseURL);
         } catch (MalformedURLException e) {
           addFieldError("baseURL", getText("validation.baseURL.invalid") + " " + baseURL);
         }
