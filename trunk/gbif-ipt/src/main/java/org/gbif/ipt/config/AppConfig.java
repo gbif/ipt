@@ -19,6 +19,7 @@ import java.util.Properties;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -234,21 +235,28 @@ public class AppConfig {
    */
   protected void saveConfig() throws IOException {
     // save property config file
-    File userCfgFile = new File(dataDir.dataDir, "config/" + DATADIR_PROPFILE);
-    if (userCfgFile.exists()) {
-    }
-    OutputStream out = new FileOutputStream(userCfgFile);
+    OutputStream out = null;
+    try {
+      File userCfgFile = new File(dataDir.dataDir, "config/" + DATADIR_PROPFILE);
+      if (userCfgFile.exists()) {
+      }
+      out = new FileOutputStream(userCfgFile);
 
-    Properties props = (Properties) properties.clone();
-    Enumeration<?> e = props.propertyNames();
-    while (e.hasMoreElements()) {
-      String key = (String) e.nextElement();
-      if (key.startsWith("dev.")) {
-        props.remove(key);
+      Properties props = (Properties) properties.clone();
+      Enumeration<?> e = props.propertyNames();
+      while (e.hasMoreElements()) {
+        String key = (String) e.nextElement();
+        if (key.startsWith("dev.")) {
+          props.remove(key);
+        }
+      }
+      props.store(out, "IPT configuration, last saved " + new Date().toString());
+      out.close();
+    } finally {
+      if (out != null) {
+        out.close();
       }
     }
-    props.store(out, "IPT configuration, last saved " + new Date().toString());
-    out.close();
   }
 
   public void setProperty(String key, String value) {
@@ -270,15 +278,20 @@ public class AppConfig {
     }
     // set lock file if not yet existing
     File lockFile = getRegistryTypeLockFile();
+    Writer lock = null;
     try {
-      Writer lock = new FileWriter(lockFile, false);
+      lock = new FileWriter(lockFile, false);
       lock.write(type.name());
-      lock.close();
+      lock.flush();
       this.type = type;
       log.info("Locked DataDir to registry of type " + type);
     } catch (IOException e) {
       log.error("Cannot lock the datadir to registry type " + type, e);
       throw new InvalidConfigException(TYPE.CONFIG_WRITE, "Cannot lock the datadir to registry type " + type);
+    } finally {
+      if (lock != null) {
+        IOUtils.closeQuietly(lock);
+      }
     }
   }
 }
