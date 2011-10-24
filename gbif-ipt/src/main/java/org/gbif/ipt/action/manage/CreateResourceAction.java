@@ -79,18 +79,25 @@ public class CreateResourceAction extends POSTAction {
     File tmpFile = dataDir.tmpFile(shortname, fileFileName);
     log.debug("Uploading dwc archive file for new resource " + shortname + " to " + tmpFile.getAbsolutePath());
     // retrieve the file data
-    InputStream input;
+    InputStream input = null;
+    OutputStream output = null;
     try {
       input = new FileInputStream(file);
       // write the file to the file specified
-      OutputStream output = new FileOutputStream(tmpFile);
+      output = new FileOutputStream(tmpFile);
       IOUtils.copy(input, output);
-      output.close();
-      input.close();
+      output.flush();
       log.debug("Uploaded file " + fileFileName + " with content-type " + fileContentType);
     } catch (IOException e) {
       log.error(e);
       return null;
+    } finally {
+      if (output != null) {
+        IOUtils.closeQuietly(output);
+      }
+      if (input != null) {
+        IOUtils.closeQuietly(input);
+      }
     }
     return tmpFile;
   }
