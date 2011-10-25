@@ -12,16 +12,12 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.DeletionNotAllowedException;
-import org.gbif.ipt.service.DeletionNotAllowedException.Reason;
 import org.gbif.ipt.service.InvalidConfigException;
+import org.gbif.ipt.service.DeletionNotAllowedException.Reason;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.utils.FileUtils;
-
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import com.thoughtworks.xstream.XStream;
 
 import java.io.EOFException;
 import java.io.FileNotFoundException;
@@ -35,12 +31,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.thoughtworks.xstream.XStream;
+
 /**
  * @author tim
  * @author josecuadra
  */
 @Singleton
 public class RegistrationManagerImpl extends BaseManager implements RegistrationManager {
+
   public static final String PERSISTENCE_FILE = "registration.xml";
   private Registration registration = new Registration();
   private final XStream xstream = new XStream();
@@ -108,7 +109,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
       for (Resource resource : resourceManager.list()) {
         if (resource.getOrganisation() != null && resource.getOrganisation().equals(org)) {
           throw new DeletionNotAllowedException(Reason.RESOURCE_REGISTERED_WITH_ORGANISATION, "Resource "
-              + resource.getShortname() + " associated with organisation");
+            + resource.getShortname() + " associated with organisation");
         }
       }
       registration.getAssociatedOrganisations().remove(key);
@@ -206,7 +207,6 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
             log.error(e.getMessage(), e);
           }
         }
-
       } catch (EOFException e) {
         // end of file, expected exception!
       } catch (AlreadyExistingException e) {
@@ -215,18 +215,19 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
     } catch (FileNotFoundException e) {
       log.warn("Registration information not existing, " + PERSISTENCE_FILE
-          + " file missing  (This is normal when IPT is not registered yet)");
+        + " file missing  (This is normal when IPT is not registered yet)");
     } catch (ClassNotFoundException e) {
       log.error(e.getMessage(), e);
     } catch (IOException e) {
       log.error(e.getMessage(), e);
       throw new InvalidConfigException(TYPE.REGISTRATION_CONFIG, "Couldnt read the registration information: "
-          + e.getMessage());
+        + e.getMessage());
     } finally {
       if (in != null) {
         try {
           in.close();
         } catch (IOException e) {
+          log.warn(e.getMessage());
         }
       }
     }

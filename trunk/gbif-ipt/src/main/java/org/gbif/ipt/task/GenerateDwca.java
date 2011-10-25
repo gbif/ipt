@@ -5,7 +5,6 @@ import org.gbif.dwc.text.Archive;
 import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveFile;
 import org.gbif.dwc.text.ArchiveWriter;
-import org.gbif.dwc.text.ArchiveField.DataType;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Extension;
@@ -545,16 +544,18 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
           if (pm.getTranslation() != null && pm.getTranslation().containsKey(val)) {
             val = pm.getTranslation().get(val);
           }
-          DataType type = mapping.getExtension().getProperty(pm.getTerm()).getType();
-          if (type != null) {
-            if (type == DataType.date) {
-              // TODO: parse date type with mapping datetime format
-            } else if (type == DataType.bool) {
-              // TODO: parse date type with mapping boolean format
-            } else if (type == DataType.decimal) {
-              // normalise punctuation
-            }
-          }
+          /*
+           * DataType type = mapping.getExtension().getProperty(pm.getTerm()).getType();
+           * if (type != null) {
+           * if (type == DataType.date) {
+           * // TODO: parse date type with mapping datetime format
+           * } else if (type == DataType.bool) {
+           * // TODO: parse date type with mapping boolean format
+           * } else if (type == DataType.decimal) {
+           * // normalise punctuation
+           * }
+           * }
+           */
         }
         // use default value for null values
         if (val == null) {

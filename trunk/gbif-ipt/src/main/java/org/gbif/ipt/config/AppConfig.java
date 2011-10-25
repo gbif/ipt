@@ -87,6 +87,7 @@ public class AppConfig {
         return Double.valueOf(val);
       }
     } catch (NumberFormatException e) {
+      log.warn(e.getMessage());
     }
     return null;
   }
@@ -98,6 +99,7 @@ public class AppConfig {
         return Double.valueOf(val);
       }
     } catch (NumberFormatException e) {
+      log.warn(e.getMessage());
     }
     return null;
   }
@@ -238,8 +240,8 @@ public class AppConfig {
     OutputStream out = null;
     try {
       File userCfgFile = new File(dataDir.dataDir, "config/" + DATADIR_PROPFILE);
-      if (userCfgFile.exists()) {
-      }
+      // if (userCfgFile.exists()) {
+      // }
       out = new FileOutputStream(userCfgFile);
 
       Properties props = (Properties) properties.clone();
