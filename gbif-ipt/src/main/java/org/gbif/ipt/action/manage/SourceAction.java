@@ -395,11 +395,11 @@ public class SourceAction extends ManagerBaseAction {
           addFieldError("sqlSource.database", getText("validation.short", new String[] {getText("sqlSource.database"),
             "2"}));
         }
-      } else {
-        // FILE SOURCE
-        // FileSource src = (FileSource) source;
-        // TODO validate file source
-      }
+      } // else {
+      // FILE SOURCE
+      // FileSource src = (FileSource) source;
+      // TODO validate file source
+      // }
     }
   }
 }

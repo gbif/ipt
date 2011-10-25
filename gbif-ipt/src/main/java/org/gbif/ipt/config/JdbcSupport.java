@@ -1,12 +1,9 @@
 /***************************************************************************
  * Copyright 2010 Global Biodiversity Information Facility Secretariat
- * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -17,8 +14,6 @@
 package org.gbif.ipt.config;
 
 import org.gbif.ipt.model.Source.SqlSource;
-
-import org.apache.commons.lang.xwork.StringUtils;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -35,11 +30,13 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.xwork.StringUtils;
+
 /**
  * @author markus
- * 
  */
 public class JdbcSupport {
+
   public class JdbcInfo {
 
     protected final String name;
@@ -70,9 +67,9 @@ public class JdbcSupport {
           sql = m.replaceAll(" LIMIT " + limit);
         } else {
           // lets append it then
-        	if(sql.endsWith(";")) {
-        		sql = sql.substring(0, sql.length()- 1);
-        	}
+          if (sql.endsWith(";")) {
+            sql = sql.substring(0, sql.length() - 1);
+          }
           sql += " LIMIT " + limit;
         }
 
@@ -86,9 +83,11 @@ public class JdbcSupport {
           } else {
             sql = m.replaceAll(" SELECT TOP " + limit + " ");
           }
-        } else {
-          // there MUST be a select...should we throw an error?
-        }
+        } /*
+           * else {
+           * // TODO: there MUST be a select...should we throw an error?
+           * }
+           */
 
       } else if (LIMIT_TYPE.ROWNUM == limitType) {
         m = WHERE.matcher(sql);
@@ -204,7 +203,9 @@ public class JdbcSupport {
     for (String name : names) {
       name = name.toLowerCase();
       LIMIT_TYPE lt = LIMIT_TYPE.valueOf(props.getProperty(name + ".limitType"));
-      JdbcInfo info = new JdbcInfo(name, props.getProperty(name + ".title"), props.getProperty(name + ".driver"), props.getProperty(name + ".url"), lt);
+      JdbcInfo info =
+        new JdbcInfo(name, props.getProperty(name + ".title"), props.getProperty(name + ".driver"), props
+          .getProperty(name + ".url"), lt);
       driver.put(name, info);
     }
     return driver.size();

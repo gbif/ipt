@@ -212,9 +212,9 @@ public class ExtensionMappingValidator {
             }
           }
         }
-      } else {
-        // anything to check for regular columns?
-      }
+      } // else {
+      // TODO: anything to check for regular columns?
+      // }
     }
     return v;
   }

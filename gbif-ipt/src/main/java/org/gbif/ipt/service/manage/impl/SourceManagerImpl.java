@@ -352,8 +352,6 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
           ss.setReadable(true);
           rs.close();
           stmt.close();
-        } else {
-
         }
         con.close();
       } catch (SQLException e) {
