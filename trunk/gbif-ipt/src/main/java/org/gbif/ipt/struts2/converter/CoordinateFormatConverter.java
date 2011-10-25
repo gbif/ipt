@@ -46,41 +46,45 @@ public abstract class CoordinateFormatConverter extends StrutsTypeConverter {
     // The latitude is validating in a range of doubles
     DoubleRange range = null;
     Double number = null;
-
-    // Assign the values of the range depending the property who calls the method.
-    if (coordinate.equals(CoordinateUtils.LATITUDE)) {
-      // The range of the latitude coordinate. (-90,90)
-      range = new DoubleRange(CoordinateUtils.MIN_LATITUDE, CoordinateUtils.MAX_LATITUDE);
-    } else if (coordinate.equals(CoordinateUtils.LONGITUDE)) {
-      // The range of the longitude coordinate. (-180,180)
-      range = new DoubleRange(CoordinateUtils.MIN_LONGITUDE, CoordinateUtils.MAX_LONGITUDE);
-    }
-
-    try {
-      // Converts String to double if fails throws a NumberFormatException.
-      // If the String contains a comma, a character, it throws the exception.
-      number = Double.parseDouble(values[0]);
-      // If the value is in the range, returns the double.
-      if (range.containsDouble(number)) {
-        return number;
+    // validate coordinates in case the action context doesn't work properly.
+    if (coordinate == null) {
+      throw new TypeConversionException("Invalid decimal number: " + values[0]);
+    } else {
+      // Assign the values of the range depending the property who calls the method.
+      if (coordinate.equals(CoordinateUtils.LATITUDE)) {
+        // The range of the latitude coordinate. (-90,90)
+        range = new DoubleRange(CoordinateUtils.MIN_LATITUDE, CoordinateUtils.MAX_LATITUDE);
       } else {
-        throw new TypeConversionException("Invalid decimal number: " + values[0]);
+        // The range of the longitude coordinate. (-180,180)
+        range = new DoubleRange(CoordinateUtils.MIN_LONGITUDE, CoordinateUtils.MAX_LONGITUDE);
       }
-    } catch (NumberFormatException e) {
-      // Creating a pattern which will convert the comma to period
-      // It will return a ParseException if the format was wrong.
-      DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-      symbols.setDecimalSeparator(ALTERNATIVE_DECIMAL_SEPARATOR);
-      DecimalFormat decimal = new DecimalFormat(DECIMAL_PATTERN, symbols);
+
       try {
-        number = decimal.parse(values[0]).doubleValue();
+        // Converts String to double if fails throws a NumberFormatException.
+        // If the String contains a comma, a character, it throws the exception.
+        number = Double.parseDouble(values[0]);
+        // If the value is in the range, returns the double.
         if (range.containsDouble(number)) {
           return number;
         } else {
           throw new TypeConversionException("Invalid decimal number: " + values[0]);
         }
-      } catch (ParseException e1) {
-        throw new TypeConversionException("Invalid decimal number: " + values[0]);
+      } catch (NumberFormatException e) {
+        // Creating a pattern which will convert the comma to period
+        // It will return a ParseException if the format was wrong.
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setDecimalSeparator(ALTERNATIVE_DECIMAL_SEPARATOR);
+        DecimalFormat decimal = new DecimalFormat(DECIMAL_PATTERN, symbols);
+        try {
+          number = decimal.parse(values[0]).doubleValue();
+          if (range.containsDouble(number)) {
+            return number;
+          } else {
+            throw new TypeConversionException("Invalid decimal number: " + values[0]);
+          }
+        } catch (ParseException e1) {
+          throw new TypeConversionException("Invalid decimal number: " + values[0]);
+        }
       }
     }
   }

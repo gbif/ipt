@@ -81,7 +81,7 @@ public class RegistrationAction extends POSTAction {
   private OrganisationSupport organisationValidation;
   private IptValidator iptValidation;
 
-  private static boolean validatedBaseURL = false;
+  private boolean validatedBaseURL = false;
 
   private List<Organisation> organisations = new ArrayList<Organisation>();
   private Organisation organisation;
