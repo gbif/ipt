@@ -245,7 +245,7 @@ Clicking on the "Edit" button opens the Basic Metadata page, the first of a seri
 
 Following is a list of the metadata pages and their contents: 
   * *Basic Metadata* - This is the only metadata page that has fields that are required to be entered by the IPT. The title and description of the resource are required, as are one of Last Name, Position, or Organisation for the Resource Contact.
-  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataBasicMetadata.png]
+  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceMetadataBasicMetadata.png]
     * *Title* (required) - the Title for the resource. This title will appear as a the Name of the resource throughout the IPT. The title will also appear in the GBIF Registry.
     * *Description* (required) - text describing the resource. This required field should provide a summary that will help potential users of the data to understand if it may be of interest.
     * *Metadata Language* - the standard English name of the human language in which the metadata are written.
