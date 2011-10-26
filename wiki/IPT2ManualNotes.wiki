@@ -246,7 +246,7 @@ This area of the Resource Overview page allows a user to see basic information a
 
 Clicking on the "Edit" button opens the Basic Metadata page, the first of a series of metadata pages. Each page will appear in sequence as the button labeled "Save" is clicked upon finishing entering data on any given metadata page. Saving the metadata on the last of the metadata pages will transition back to the Basic Metadata page. Cicking on the button labeled "Cancel" on an given metadata page will disregard any changes made on that page and return to the Resoure Overview page. In a column at the right of each metadata page is a list of links to all of the metadata pages for easy reference and navigation. Click on any of the links to open the metadata page for that topic. 
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataPagesList.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceMetadataPagesList.png]
 
 Following is a list of the metadata pages and their contents: 
   * *Basic Metadata* - This is the only metadata page that has fields that are required to be entered by the IPT. The resource title and description are required. The resource's three main contact's must also be described here: Resource contact, resource creator and metadata provider. For each contact you must supply at least a last name, a position or an organisation before you can make the resource public. The person(s) or organisation(s) responsible for the creation of the resource as it appears in the IPT and for effectively publishing the resource should add themselves as an associated party with role 'publisher'.
