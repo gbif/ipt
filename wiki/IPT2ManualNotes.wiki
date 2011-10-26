@@ -120,9 +120,9 @@ Example text box and label for an email address:
 
 *Check boxes* - allow a value to viewed or set to true (when checked) or false (when unchecked).
 
-Example check box and label to indicate that the IPT can host resources:
+Example check box and label to indicate that the IPT can publish resources:
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-CheckboxExample.png]<br>
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/Control-CheckboxExample.png]<br>
 
 *Select boxes* - allows a value to be viewed or selected from a list of predefined values. A select box may contain explanatory text about the selection in place of a selectable value. In this case the selection will begin with "Select " (e.g., "Select a country, territory, or island"). Click on the select box to open it and see the list of possible values. Click on one of the choices to set that value.
 
@@ -619,7 +619,7 @@ If the validation test is unsuccessful, an error message will suggest the nature
 
 If the IPT passes the validation step above, a form showing additional information required for registration is presented. In this step, the organisation with which the IPT instance will be associated must already be registered in the GBIF Registry. 
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminRegistrationStep2.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTAdminRegistrationStep2.png]
 
 Following are explanations of the specific information to select or enter:<br>
 *Organisation* - the select box contains a list of organisations in the GBIF registry. Select the single organisation with which this IPT instance will be associated. If you are unable to find the organisation you seek on the list, use the GBIF Registry (http://gbrds.gbif.org) to determine if the organisation is registered under a name other than what you expected. If the organisation is not yet registered with GBIF, please contact the GBIF Help Desk to register the organisation before proceeding with the registration of the IPT.<br>
