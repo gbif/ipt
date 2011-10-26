@@ -639,11 +639,11 @@ This page is unavailable until the IPT instance has been successfully registered
 ===Edit organisation===
 Click on the button labeled "Edit" to open the page containing the details of the selected organisation. On this page a user having the Admin role can change the Alias and select or de-select the checkbox labeled "Can host resources? The Organisation name, Alias, and "Can host resources?" are explained in the introduction to the "Configure Organisations" section, above, and under the "Configure GBIF registration" heading in the "Administration Menu" section.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminOrgsEditOrg.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTAdminOrgsEditOrg.png]
 ===Add organisation===
 Organisations are not available to be associated with resources until they are added by a user having the Admin role. Click on the button labeled "Add" to open a page on which an additional organisation can be selected from the GBIF Registry to be used in this instance of the IPT. For explanations of the fields and selections on this page, refer to the information under the "Configure GBIF registration" heading in the "Administration Menu" section of this user manual. After the desired organisation is selected and all other data entered, including the password for the organisation, click on the button labeled "Save" to add the selected organisation to the list.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminOrgsAddOrg.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTAdminOrgsAddOrg.png]
 ==Configure Core Types and Extensions==
 This page allows a user having the Admin role to enable the instance of the IPT to import and share various pre-defined types of data from the GBIF Registry. Each type includes properties (fields, terms) that support a specific purpose. For example, the Darwin Core Taxon Core Type supports information pertaining to taxonomic names, taxon name usages, and taxon concepts and allows the IPT to host resources for taxonomic and nomenclatural checklists. A distinction is made between Core Types and extensions. Core types provide the basis for data records, (Occurrence and Taxon, for example) while extensions provide the means to associate additional data with a record of the Core Type. Only one Core Type can be selected for a given resource as explained under the "Darwin Core Mappings" heading of the "Resource Overview" section.
 
