@@ -213,11 +213,13 @@ Clicking on the Name link in the list of resources on the Home page shows a new 
 ==Manage Resources Menu (visible to users with an Admin or Manager role)==
 This page allows users having the appropriate role (managers and administrators) to make changes to existing resources or to create new resources. 
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResources.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResources.png]
 ===Manage Resources Table===
-When the Manage Resources page is first opened, it shows a table of existing resources that the current user has permission to change, including those created by this user and those which this user has been invited to manage by others. Refer to the information under the "Public Resources Table" heading in the "Home Menu" section for detailed explanations of the Name, Organisation, Type, Records, and Last Modified columns. In addition, the Manage Resources Table includes the following column of basic information about the resources:
+When the Manage Resources page is first opened, it shows a table of existing resources that the current user has permission to change, including those created by this user and those which this user has been invited to manage by others. Refer to the information under the "Public Resources Table" heading in the "Home Menu" section for detailed explanations of the Name, Organisation, Type, Subtype, Records, Last Modified, and Last publication columns. In addition, the Manage Resources Table includes the following column of basic information about the resources:
 
 *Visibility* - a category stating who has access to view the resource. If the resource is "Public", all users will be able to see it on the Public Resources table on the Home page. If the resource is "Private", it will be visible in the Manage Resources table only to the user who created it, to those who have been invited to manage it, and to users having the Admin role. Details about inviting others to manage a resource are given in the "Resource Managers" section under the "Resource Overview" heading in the "Manage Resources" section.
+
+*Author* - the IPT user who created the resource.
 
 ===Create New Resource===
 Below the Manage Resource table is a form that can be used to create a new resource. First, a unique "shortname" must be provided for the resource. This short name will be used to uniquely identify the resource within the IPT instance, and will be used within the URL to access the resource via the Internet. The shortname must be at least three characters in length, may contain alphanumeric characters, but must not contain white space or punctuation other than hyphens or underscores (e.g., "firstresource" or "first_resource", but not "first resource" or "firstresource!"). 
