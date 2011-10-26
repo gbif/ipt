@@ -192,7 +192,7 @@ The footer section of the IPT appears along the bottom of most pages and contain
 ==Home Menu (visible to all users)==
 This page allows users to view a list of public resources, if any, and to look at the detailed metadata of any resource on the list. 
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTHome.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTHome.png]
 ===Public Resources Table===
 If there are any public resources, they will appear in a table having the following columns:
 
