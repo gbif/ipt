@@ -258,7 +258,7 @@ Following is a list of the metadata pages and their contents:
     * *Type* - the type of resource. The value of this field depends on the core mapping of the resource and is no longer editable if the Darwin Core mapping has already been made. If a desired type is not found in the list, the field "other" can be selected. Review the information under the "Configure Core Types and Extensions" heading of the "Administration Menu" section.
     * *Subtype* - the subtype of the resource. The options for this field depend on the Type field. If a desired subtype is not found in the list, the field can be left with the default selection. 
     * *Resource Contact* - The resource contact is the person or organisation that should be contacted to get more information about the resource, or to whom putative problems with the resource or its data should be addressed.
-    * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataResourceContact.png]
+    * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceMetadataResourceContact.png]
       * *First Name* - the first or given name of the resource contact.
       * *Last Name* (required if Position and Organisation are empty, required if the first name is not empty) - the last or surname of the resource contact.
       * *Position* (required if Last Name and Organisation are empty) - the relevant title or position held by the resource contact.
