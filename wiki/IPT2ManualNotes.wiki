@@ -376,11 +376,12 @@ Following is a list of the metadata pages and their contents:
       * *Data Format Version* - the version of the document or file format given in the Data Format text box (e.g., 2003, 5.2).
     * *Remove this external link* - click on the link having this label to remove the external link that follows immediately below.
   * *Additional Metadata* - This metadata page contains information about other aspects of the resource not captured on one of the other metadata pages, including alternative identifiers for the resource. Before any alternative identifiers are entered, the page will show text boxes for the additional metadata, a header for the Alternative Identifiers area, and a link labeled "Add new alternative identifier".
-  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataAdditionalMetadata.png]
+  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceMetadataAdditionalMetadata.png]
     * *Hierarchy Level* - designates the level of information to which the metadata applies. For an IPT resource this is always a "dataset", and therefore the text box is populated with this value, but disabled so that it cannot be changed.
     * *Date Published* - the date when the resource was last published. This value is set automatically when publishing (see the "Published Release" section under the "Resource Overview" header of the "Manage Resources" menu). 
+    * *Resource logo URL* - a logo representing the resource. The logo URL can be used to upload the resource. It may also be uploaded from an image file selected from your disk.   
     * *Purpose* - a statement of the purpose or purposes for which the creation of the data set for this resource was intended.
-    * *IP Rights* - a statement of the intellectual property rights associated with the resource or a reference to where to find such a statement.
+    * *IP Rights* - a statement of the intellectual property rights associated with the resource or a reference to where to find such a statement. 4 licenses that apply to data are available to choose from in the drop down above the text box. Only one may be selected, and on saving the page the user is asked to confirm that they have read and understood the license.
     * *Additional Information* - any information of possible interest not recorded anywhere else in the metadata.
     * *Alternative Identifiers* - this section contains a list of additional or alternative identifiers for the resource. When the resource is published, the IPT's URL to the resource is added to the list of identifiers. When a resource is registered with the GBIF Registry, the Registry's unique resource key is also added to the list of identifiers. 
     * *Add new alternative identifier* -  click on this link to add a text box for an alternative identifier for the resource.
