@@ -35,7 +35,16 @@ import org.gbif.metadata.eml.TaxonomicCoverage;
 import org.gbif.metadata.eml.TemporalCoverage;
 import org.gbif.metadata.eml.TemporalCoverageType;
 
-import static com.google.common.base.Objects.equal;
+import java.awt.Color;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Locale;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -50,19 +59,10 @@ import com.lowagie.text.List;
 import com.lowagie.text.ListItem;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 
-import java.awt.Color;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.Locale;
-import java.util.Map;
-import java.util.ResourceBundle;
+import static com.google.common.base.Objects.equal;
 
 /**
  * Populates a RTF document with a resources metadata, mainly derived from its
@@ -73,6 +73,7 @@ import java.util.ResourceBundle;
  */
 @Singleton
 public class Eml2Rtf {
+
   private final Font font = FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.NORMAL, Color.BLACK);
   private final Font fontToComplete = FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.NORMAL, Color.RED);
   private final Font fontTitle = FontFactory.getFont(FontFactory.TIMES_BOLD, 12, Font.BOLD, Color.BLACK);
@@ -130,8 +131,7 @@ public class Eml2Rtf {
           Agent agentB = j.next();
           if (flag) {
             if (equal(agentA.getLastName(), agentB.getLastName())
-                && equal(agentA.getFirstName(), agentB.getFirstName())
-                && equal(agentA.getAddress(), agentB.getAddress())) {
+              && equal(agentA.getFirstName(), agentB.getFirstName()) && equal(agentA.getAddress(), agentB.getAddress())) {
               toRemove.add(countTemp);
             }
           } else if (agentA.equals(agentB)) {
@@ -148,7 +148,8 @@ public class Eml2Rtf {
     p.setFont(font);
     p.setAlignment(Element.ALIGN_CENTER);
     ArrayList<Agent> affiliations = new ArrayList<Agent>();
-    int superStriptCounter = 1;
+    Map<String, Integer> superScriptAgentMap = new HashMap<String, Integer>();
+    int superScriptCounter = 1;
     for (int c = 0; c < agentsArray.length; c++) {
       if (exists(agentsArray[c].getLastName())) {
         if (c != 0) {
@@ -161,18 +162,21 @@ public class Eml2Rtf {
         p.add(agentsArray[c].getLastName());
         // Looking for addresses and organisations of other authors
         // (superscripts should not be repeated).
-        int index = 0;
-        while (index < c) {
-          if (equal(agentsArray[c].getAddress(), agentsArray[index].getAddress())
-              && equal(agentsArray[c].getOrganisation(), agentsArray[index].getOrganisation())) {
+        boolean isRepeated = false;
+        // look into the affiliations array to find any previous repeated agent info.
+        for (int index = 0; index < affiliations.size(); index++) {
+          if (equal(agentsArray[c].getAddress(), affiliations.get(index).getAddress())
+            && equal(agentsArray[c].getOrganisation(), affiliations.get(index).getOrganisation())) {
             p.add(createSuperScript("" + (index + 1)));
+            isRepeated = true;
             break;
           }
-          index++;
         }
-        if (index == c) {
-          p.add(createSuperScript("" + (superStriptCounter++)));
+        // if the agent is not repeated.
+        if (!isRepeated) {
+          p.add(createSuperScript("" + superScriptCounter));
           affiliations.add(agentsArray[c]);
+          superScriptCounter++;
         }
       }
     }
@@ -202,8 +206,9 @@ public class Eml2Rtf {
         p.add(affiliations.get(c).getAddress().getCity());
       }
       if (exists(affiliations.get(c).getAddress().getCountry())) {
-        String country = vocabManager.get(Constants.VOCAB_URI_COUNTRY).findConcept(
-            affiliations.get(c).getAddress().getCountry()).getPreferredTerm("en").getTitle();
+        String country =
+          vocabManager.get(Constants.VOCAB_URI_COUNTRY).findConcept(affiliations.get(c).getAddress().getCountry())
+            .getPreferredTerm("en").getTitle();
         p.add(", " + WordUtils.capitalizeFully(country));
       }
     }
@@ -229,7 +234,8 @@ public class Eml2Rtf {
     if (exists(eml.getMetadataProvider())) {
       boolean sameAsCreator = false;
       if (!isFirst) {
-        sameAsCreator = equal(eml.getMetadataProvider().getAddress(), eml.getResourceCreator().getAddress())
+        sameAsCreator =
+          equal(eml.getMetadataProvider().getAddress(), eml.getResourceCreator().getAddress())
             && equal(eml.getMetadataProvider().getEmail(), eml.getResourceCreator().getEmail());
       }
       if (!sameAsCreator) {
@@ -490,8 +496,8 @@ public class Eml2Rtf {
       p.add(Chunk.NEWLINE);
     }
     if (exists(eml.getMetadataLocale())) {
-      VocabularyConcept vocabConcept = vocabManager.get(Constants.VOCAB_URI_LANGUAGE).findConcept(
-          eml.getMetadataLocale().getLanguage());
+      VocabularyConcept vocabConcept =
+        vocabManager.get(Constants.VOCAB_URI_LANGUAGE).findConcept(eml.getMetadataLocale().getLanguage());
       if (exists(vocabConcept)) {
         p.add(new Phrase(getText("rtf.metadata.locale") + ": ", fontTitle));
         p.add(vocabConcept.getPreferredTerm("en").getTitle());
@@ -505,7 +511,7 @@ public class Eml2Rtf {
 
   private void addMethods(Document doc, Eml eml) throws DocumentException {
     if ((exists(eml.getMethodSteps()) && eml.getMethodSteps().size() > 0) || exists(eml.getStudyExtent())
-        || exists(eml.getStudyExtent()) || exists(eml.getStudyExtent())) {
+      || exists(eml.getStudyExtent()) || exists(eml.getStudyExtent())) {
       Paragraph p = new Paragraph();
       p.setAlignment(Element.ALIGN_JUSTIFIED);
       p.setFont(font);
@@ -548,8 +554,8 @@ public class Eml2Rtf {
 
   private void addNaturalCollections(Document doc, Eml eml) throws DocumentException {
     if (exists(eml.getParentCollectionId()) || exists(eml.getCollectionName()) || exists(eml.getCollectionId())
-        || eml.getTemporalCoverages().size() > 0 || exists(eml.getSpecimenPreservationMethod())
-        || eml.getJgtiCuratorialUnits().size() > 0) {
+      || eml.getTemporalCoverages().size() > 0 || exists(eml.getSpecimenPreservationMethod())
+      || eml.getJgtiCuratorialUnits().size() > 0) {
       Paragraph p = new Paragraph();
       p.setAlignment(Element.ALIGN_JUSTIFIED);
       p.setFont(font);
@@ -587,8 +593,8 @@ public class Eml2Rtf {
       }
       if (exists(eml.getSpecimenPreservationMethod())) {
         p.add(new Phrase(getText("rtf.collections.specimen") + ": ", fontTitle));
-        VocabularyConcept vocabConcept = vocabManager.get(Constants.VOCAB_URI_PRESERVATION_METHOD).findConcept(
-            eml.getSpecimenPreservationMethod());
+        VocabularyConcept vocabConcept =
+          vocabManager.get(Constants.VOCAB_URI_PRESERVATION_METHOD).findConcept(eml.getSpecimenPreservationMethod());
         p.add(vocabConcept.getPreferredTerm("en").getTitle());
         p.add(Chunk.NEWLINE);
       }
@@ -599,7 +605,7 @@ public class Eml2Rtf {
         }
         if (unit.getType().equals(JGTICuratorialUnitType.COUNT_WITH_UNCERTAINTY)) {
           p.add(unit.getRangeMean() + " " + getText("rtf.collections.curatorial.text") + " "
-              + unit.getUncertaintyMeasure());
+            + unit.getUncertaintyMeasure());
         }
         p.add(" (" + unit.getUnitType() + ")");
         p.add(Chunk.NEWLINE);
@@ -625,9 +631,9 @@ public class Eml2Rtf {
 
   private void addProjectData(Document doc, Eml eml) throws DocumentException {
     if (exists(eml.getProject().getTitle()) || exists(eml.getProject().getPersonnel().getFirstName())
-        || exists(eml.getProject().getFunding())
-        || exists(eml.getProject().getStudyAreaDescription().getDescriptorValue())
-        || exists(eml.getProject().getDesignDescription())) {
+      || exists(eml.getProject().getFunding())
+      || exists(eml.getProject().getStudyAreaDescription().getDescriptorValue())
+      || exists(eml.getProject().getDesignDescription())) {
       Paragraph p = new Paragraph();
       p.setAlignment(Element.ALIGN_JUSTIFIED);
       p.setFont(font);
@@ -666,7 +672,7 @@ public class Eml2Rtf {
 
   private void addReferences(Document doc, Eml eml) throws DocumentException {
     if (exists(eml.getBibliographicCitationSet())
-        && eml.getBibliographicCitationSet().getBibliographicCitations().size() > 0) {
+      && eml.getBibliographicCitationSet().getBibliographicCitations().size() > 0) {
       Paragraph p = new Paragraph();
       p.setAlignment(Element.ALIGN_JUSTIFIED);
       p.setFont(font);
@@ -683,7 +689,7 @@ public class Eml2Rtf {
 
   private void addResourceLink(Document doc, Resource resource) throws DocumentException {
     if (resource.getStatus().equals(PublicationStatus.PUBLIC)
-        || resource.getStatus().equals(PublicationStatus.REGISTERED)) {
+      || resource.getStatus().equals(PublicationStatus.REGISTERED)) {
       Paragraph p = new Paragraph();
       p.setFont(font);
       p.add(new Phrase(getText("rtf.resourceLink") + " ", fontTitle));
@@ -755,8 +761,8 @@ public class Eml2Rtf {
         p.add(taxcoverage.getDescription().replace("\r\n", "\n"));
         p.add(Chunk.NEWLINE);
       }
-      Map<String, String> ranks = vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS,
-          Locale.getDefault().getLanguage(), false);
+      Map<String, String> ranks =
+        vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, Locale.getDefault().getLanguage(), false);
       boolean firstRank = true;
       for (String rank : ranks.keySet()) {
         boolean wroteRank = false;
