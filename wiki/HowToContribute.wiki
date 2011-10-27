@@ -1,4 +1,3 @@
-
 = Introduction =
 The core development of the IPT is directed by GBIF, but the coding, the documentation and internationalisation is a community effort and everyone is welcome to join the project. *Please use the [http://lists.gbif.org/mailman/listinfo/ipt mailing list] to get in touch with the developers and project leaders*.
 
@@ -9,7 +8,10 @@ We are always keen on getting a better documentation. The easiest and quickest w
 If you feel there is a lot to modify, please [[http://lists.gbif.org/mailman/listinfo/ipt Mailing List] get in touch with us].
 
 == Translations ==
-The IPT and the documentation both need internationalisation. In the case of the IPT all text is kept in a single property file, one for each language. The [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt/src/main/resources/ApplicationResources_en.properties original] is in english and if you are able and willing to translate it into another language, here's how...
+The IPT and the documentation both need internationalisation. Currently the IPT has been translated into the following languages: 
+  * French
+  * Spanish
+In the case of the IPT all text is kept in a single property file, one for each language. The [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt/src/main/resources/ApplicationResources_en.properties original] is in english and if you are able and willing to translate it into another language, instructions are below.
 
 To add new internationalization follow these steps:
   * Download Attesoro from http://attesoro.org/download.html
