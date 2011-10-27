@@ -59,7 +59,9 @@ Note 1: Do not select a data directory that is vulnerable to inadvertent changes
 
 Note 2: If you have a data directory from a previously running IPT of the same version and want to use that previous configuration (including users and resources), you can enter the absolute path of that data directory in this first step of the IPT setup (see also the "Starting Over" section of this Getting Started Guide). Clicking on "Save" in this case will bypass the page titled IPT setup II and present the IPT Administration page (see the screen image in the "Administration Menu" section of the Quick Reference Guide).
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTSetup1.png]
+Note 3: Click on the flag in the upper right hand corner to see whether your preferred language is available to use the IPT in. 
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTSetup1.png]
 ===IPT setup II===
 If the initial data directory assignment step was successful, the IPT will present a second setup page (see screen image, below) on which the information about the default administrator of the IPT must be entered, along with the information about how the IPT will be accessed from the Internet. The default administrator will have a distinct login and the authority to make changes to all aspects of the IPT installation. The default administrator will be able to make additional user accounts, including other administrators having the same authority to make changes. Though administrators can be added and removed, the IPT must always have at least one. Following are explanations of the fields encountered on the second setup page:
   * *Email* - the full, active email address of the default administrator of the IPT installation. 
