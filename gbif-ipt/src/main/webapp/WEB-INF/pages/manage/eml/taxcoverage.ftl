@@ -41,8 +41,8 @@
 								<@input i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].scientificName" />
 								<@input i18nkey="eml.taxonomicCoverages.taxonKeyword.commonName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].commonName" />
 								<@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].rank" options=ranks value="${eml.taxonomicCoverages[item_index].taxonKeywords[subItem_index].rank!?lower_case}"/>		
-								<br><br>
-								<#if (subItem_index == 0) >
+								<br><br>								
+								<#if (item.taxonKeywords ? size == 1) >
 									<img id="trash-${item_index}-${subItem_index}" src="${baseURL}/images/trash-m.png" style="display: none;">
 								<#else>
 									<img id="trash-${item_index}-${subItem_index}" src="${baseURL}/images/trash-m.png">
@@ -89,8 +89,7 @@
 			<@s.submit cssClass="button" name="add-button" key="button.add"/>
 		</div>
 	</div>
-	<div id="subItems">
-	</div>
+	<div id="subItems"></div>
 	<br>
 	<div class="newline"></div>
 	<a id="plus-subItem" href="" ><@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.taxcoverage.taxon.item' /></a> 	  

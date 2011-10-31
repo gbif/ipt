@@ -98,7 +98,7 @@ $(document).ready(function(){
 				var indexItem = $(this).find("[id^='trash']").attr("id").split("-")[1];
 				$(this).remove();
 				$("#item-"+indexItem+" .sub-item").each(function(index) {
-					var indexItem = $(this).find("[id^='trash']").attr("id").split("-")[1];
+					var indexItem = $(this).find("[id^='trash']").attr("id").split("-")[1];					
 					setSubItemIndex($("#item-"+indexItem), $(this), index);					
 				});
 			});
@@ -129,7 +129,7 @@ $(document).ready(function(){
 			$(this).remove();
 			$("#items .item").each(function(index) { 
 					setItemIndex($(this), index);
-				});
+			});
 			calcNumberOfItems();
 		});
 	}
@@ -300,12 +300,16 @@ $(document).ready(function(){
 				return "eml.alternateIdentifiers["+index+"]"; });		
 			$("#item-"+index+" input").attr("name",function() {return $(this).attr("id"); });
 		<#break>
-		<#case "taxcoverage">
-			$("#item-"+index+" #plus-subItem").attr("id", "plus-subItem-"+index);
+		<#case "taxcoverage">			
+			$("#item-"+index+" [id^='plus-subItem']").attr("id", "plus-subItem-"+index);
+			$("#plus-subItem-"+index).unbind();		
 			$("#plus-subItem-"+index).click(function(event){
 				event.preventDefault();
 				addNewSubItem(event);
-			});			
+			});
+			$("#item-"+index+" #subItems").children(".sub-item").each(function(subindex){				
+				setSubItemIndex($("#item-"+index), $(this), subindex);
+			});
 			$("#item-"+index+" [id$='description']").attr("id", "eml.taxonomicCoverages["+index+"].description").attr("name", function() {return $(this).attr("id");});
 			$("#item-"+index+" [for$='description']").attr("for", "eml.taxonomicCoverages["+index+"].description");
 			
@@ -318,8 +322,8 @@ $(document).ready(function(){
 			$("#item-"+index+" [id^='add-button']").attr("id", "add-button-"+index).attr("name", function() {return $(this).attr("id");});
 			$("#add-button-"+index).click(function(event){
 				createTaxons(event);
-			});
-			if($("#item-"+index+" subItem-0") != null ) {
+			});			
+			if($("#item-"+index+" #subItems").children().size() == 0) {
 				$("#plus-subItem-"+index).click();
 			};
 		<#break>
