@@ -4,15 +4,15 @@ import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.text.Archive;
 import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveFile;
-import org.gbif.dwc.text.ArchiveWriter;
+import org.gbif.dwc.text.MetaDescriptorWriter;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.RecordFilter;
-import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.RecordFilter.FilterTime;
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.utils.file.ClosableIterator;
 import org.gbif.utils.file.CompressionUtil;
@@ -277,10 +277,14 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     report();
   }
 
+  /**
+   * Create meta.xml file.
+   * @throws IOException thrown
+   * @throws TemplateException thrown
+   */
   private void createMetaFile() throws IOException, TemplateException {
     setState(STATE.METADATA);
-    ArchiveWriter writer = new ArchiveWriter();
-    writer.writeMetaFile(new File(dwcaFolder, "meta.xml"), archive);
+    MetaDescriptorWriter.writeMetaFile(new File(dwcaFolder, "meta.xml"), archive);
     // final reporting
     addMessage(Level.INFO, "meta.xml archive descriptor written");
   }
@@ -321,7 +325,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
   /**
    * @param writer
    * @param dataFileRowSize
-   * @param m
+   * @param mapping
    * @throws GeneratorException
    */
   private void dumpData(Writer writer, ArchiveFile dataFile, ExtensionMapping mapping, int dataFileRowSize)
