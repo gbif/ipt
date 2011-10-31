@@ -3,6 +3,14 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name='manage.metadata.methods.title'/></title>
 <#include "/WEB-INF/pages/macros/metadata.ftl"/>
+<script type="text/javascript">
+$(document).ready(function(){
+	 $("#removeLink-0").hide();
+	if("${eml.methodSteps?size}" == 0){		
+		$("#plus").click();
+	}
+});
+</script>
 <#assign sideMenuEml=true />
  <#assign currentMenu="manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
