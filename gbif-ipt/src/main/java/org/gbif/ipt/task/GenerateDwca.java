@@ -354,12 +354,10 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     // get the source iterator
     ClosableIterator<String[]> iter = null;
     int line = 0;
-    BufferedWriter logWriter = null;
     try {
-
       File logFile = dataDir.resourcePublicationLogFile(resource.getShortname());
       FileUtils.deleteQuietly(logFile);
-      logWriter = new BufferedWriter(new FileWriter(logFile));
+      BufferedWriter logWriter = new BufferedWriter(new FileWriter(logFile));
       logWriter.write("Log Messages for publishing resource " + resource.getShortname() + " version "
         + resource.getEmlVersion());
       logWriter.write("\n\n");
@@ -465,10 +463,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
         logWriter.write("\n");
         throw new GeneratorException(errorMessage, e);
       } finally {
-        if (logWriter != null) {
-          logWriter.flush();
-          logWriter.close();
-        }
+        logWriter.flush();
         iter.close();
       }
 
