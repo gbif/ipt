@@ -38,10 +38,10 @@
 
     <jdkLevel>1.5</jdkLevel>
 
-    <commons-digester.version>2.0</commons-digester.version>
-    <commons-lang.version>2.5</commons-lang.version>
+    <commons-digester.version>2.1</commons-digester.version>
+    <commons-lang.version>2.6</commons-lang.version>
     <commons-io.version>1.4</commons-io.version>
-    <dwca-reader.version>1.7.6</dwca-reader.version>
+    <dwca-reader.version>1.9.0-SNAPSHOT</dwca-reader.version>
     <freemarker.version>2.3.18</freemarker.version>
     <gbif-common.version>0.4</gbif-common.version>
     <guava.version>r09</guava.version>
