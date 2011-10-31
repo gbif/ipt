@@ -34,7 +34,7 @@
 						<@s.submit cssClass="button" name="add-button-${item_index}" key="button.add"/>
 					</div>
 				</div>				
-				<div id="subItems">
+				<div id="subItems">					
 					<#list item.taxonKeywords as subItem>
 						<div id="subItem-${subItem_index}" class="sub-item">
 							<div class="third">
@@ -42,7 +42,11 @@
 								<@input i18nkey="eml.taxonomicCoverages.taxonKeyword.commonName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].commonName" />
 								<@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].rank" options=ranks value="${eml.taxonomicCoverages[item_index].taxonKeywords[subItem_index].rank!?lower_case}"/>		
 								<br><br>
-								<img id="trash-${item_index}-${subItem_index}" src="${baseURL}/images/trash-m.png">
+								<#if (subItem_index == 0) >
+									<img id="trash-${item_index}-${subItem_index}" src="${baseURL}/images/trash-m.png" style="display: none;">
+								<#else>
+									<img id="trash-${item_index}-${subItem_index}" src="${baseURL}/images/trash-m.png">
+								</#if>
 							</div>
 							<div class="newline"></div>
 						</div>						
