@@ -81,6 +81,11 @@ $(document).ready(function(){
 				$("#trash-"+baseItem.attr("id").split("-")[1]+"-"+subBaseIndex).click(function(event) {
 					removeSubItem(event);
 				});
+				if(subBaseIndex != 0) {
+					$("#trash-"+baseItem.attr("id").split("-")[1]+"-0").show();
+				} else {
+					$("#trash-"+baseItem.attr("id").split("-")[1]+"-"+subBaseIndex).hide();
+				}				
 				<#break>
 			<#default>
 		</#switch>		
@@ -89,7 +94,7 @@ $(document).ready(function(){
 		function removeSubItem(event) {
 			event.preventDefault();
 			var $target = $(event.target);
-			$("#item-"+$target.attr("id").split("-")[1]+" #subItem-"+$target.attr("id").split("-")[2]).slideUp("slow", function() {
+			$("#item-"+$target.attr("id").split("-")[1]+" #subItem-"+$target.attr("id").split("-")[2]).slideUp("fast", function() {
 				var indexItem = $(this).find("[id^='trash']").attr("id").split("-")[1];
 				$(this).remove();
 				$("#item-"+indexItem+" .sub-item").each(function(index) {
@@ -219,7 +224,7 @@ $(document).ready(function(){
     	<#case "methods">
 			$("#item-"+index+" textarea").attr("id", "eml.methodSteps["+index+"]");	
 			$("#item-"+index+" label").attr("for", "eml.methodSteps["+index+"]");		
-			$("#item-"+index+" textarea").attr("name", "eml.methodSteps["+index+"]");
+			$("#item-"+index+" textarea").attr("name", "eml.methodSteps["+index+"]");					
 		<#break>
  		<#case "citations">
 			$("#item-"+index+" [id$='citation']").attr("id","eml.bibliographicCitationSet.bibliographicCitations["+index+"].citation");
@@ -311,6 +316,9 @@ $(document).ready(function(){
 			$("#add-button-"+index).click(function(event){
 				createTaxons(event);
 			});
+			if($("#item-"+index+" subItem-0") != null ) {
+				$("#plus-subItem-"+index).click();
+			};
 		<#break>
 		<#default>
   	  </#switch>		
