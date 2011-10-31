@@ -657,15 +657,38 @@ public class EmlValidator extends BaseValidator {
          * </methods>
          * </dataset>
          */
+        boolean emptyFields = false;
+        if (eml.getSampleDescription().equals("") && eml.getStudyExtent().equals("")
+          && eml.getQualityControl().equals("")) {
+          eml.setSampleDescription(null);
+          eml.setStudyExtent(null);
+          eml.setQualityControl(null);
+          emptyFields = true;
+        }
         int index = 0;
         for (String method : eml.getMethodSteps()) {
           if (method.trim().equals("")) {
-            action.addFieldError("eml.methodSteps[" + index + "]",
-              action.getText("validation.required", new String[] {action.getText("validation.field.required")}));
+            if (emptyFields && index == 0) {
+              eml.getMethodSteps().clear();
+              break;
+            } else {
+              action.addFieldError("eml.methodSteps[" + index + "]",
+                action.getText("validation.required", new String[] {action.getText("validation.field.required")}));
+            }
           }
           index++;
         }
 
+        if (!emptyFields) {
+          if (!eml.getSampleDescription().equals("") && eml.getStudyExtent().equals("")) {
+            action.addFieldError("eml.studyExtent",
+              action.getText("validation.required", new String[] {action.getText("eml.studyExtent")}));
+          }
+          if (!eml.getStudyExtent().equals("") && eml.getSampleDescription().equals("")) {
+            action.addFieldError("eml.sampleDescription",
+              action.getText("validation.required", new String[] {action.getText("eml.sampleDescription")}));
+          }
+        }
       } else if (part == null || part.equalsIgnoreCase("citations")) {
         /*
          * CITATIONS.FTL - XML Schema Documentation
