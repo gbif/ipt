@@ -5,7 +5,8 @@
 <#include "/WEB-INF/pages/macros/metadata.ftl"/>
 <script type="text/javascript">
 $(document).ready(function(){
-	 $("#removeLink-0").hide();
+	initHelp();	
+	$("#removeLink-0").hide();
 	if("${eml.methodSteps?size}" == 0){		
 		$("#plus").click();
 	}
@@ -19,11 +20,11 @@ $(document).ready(function(){
 <@s.text name='manage.metadata.methods.intro'/>
 <form class="topForm" action="metadata-${section}.do" method="post">
 	<div id="sampling" >
-		<@text name="eml.studyExtent"  i18nkey="eml.studyExtent"/>
-		<@text name="eml.sampleDescription" i18nkey="eml.sampleDescription"/>
+		<@text name="eml.studyExtent"  i18nkey="eml.studyExtent" help="i18n"/>
+		<@text name="eml.sampleDescription" i18nkey="eml.sampleDescription" help="i18n"/>
 	</div>
 	<div id="qualitycontrol" >
-		<@text name="eml.qualityControl" i18nkey="eml.qualityControl"/>
+		<@text name="eml.qualityControl" i18nkey="eml.qualityControl" help="i18n"/>
 		<div class="newline"></div>
 		<div class="horizontal_dotted_line_large_foo" id="separator"></div>
 		<div class="newline"></div>
@@ -37,7 +38,7 @@ $(document).ready(function(){
 				      <a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.methods.item'/> ]</a>
 				    </div>
 				    <div class="newline"></div>
-					<@text name="eml.methodSteps[${item_index}]" i18nkey="eml.methodSteps"/>
+					<@text name="eml.methodSteps[${item_index}]" i18nkey="eml.methodSteps" help="i18n"/>
 				  	<div class="newline"></div>
 					<div class="horizontal_dotted_line_large_foo" id="separator"></div>
 					<div class="newline"></div>
@@ -61,7 +62,7 @@ $(document).ready(function(){
 		<a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.methods.item'/> ]</a>
 	</div>
 	<div class="newline"></div>
-	<@text name="" i18nkey="eml.methodSteps"/>
+	<@text name="" i18nkey="eml.methodSteps" help="i18n"/>
 	<div class="newline"></div>
 	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
 	<div class="newline"></div>
