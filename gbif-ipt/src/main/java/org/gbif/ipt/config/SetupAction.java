@@ -274,7 +274,7 @@ public class SetupAction extends BaseAction {
           addFieldError("baseURL", getText("admin.config.baseUrl.inaccessible") + " " + baseURL);
         } else {
           log.error(e);
-          addActionError(getText("admin.config.setup2.already.registered"));
+          addActionError(getTextWithDynamicArgs("admin.config.setup2.already.registered", cfg.getRegistryType().toString()));
         }
       }
     }
