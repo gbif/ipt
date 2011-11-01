@@ -152,7 +152,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   /**
    * Update configuration singleton from config file in data dir.
    * 
-   * @throws InvalidConfigException.
+   * @throws InvalidConfigException
    */
   public void loadDataDirConfig() throws InvalidConfigException {
     log.info("Reading DATA DIRECTORY: " + dataDir.dataDir.getAbsolutePath());
@@ -233,7 +233,8 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
       log.warn("Localhost used as base url, IPT will not be visible to the outside!");
 
       // validate if localhost URL is configured only in developer mode.
-      if (cfg.devMode()) {
+      // use cfg registryType vs cfg devMode since it takes into account devMode from pom and production from setupPage
+      if (cfg.getRegistryType().equals(AppConfig.REGISTRY_TYPE.DEVELOPMENT)) {
         HttpHost hostTemp = (HttpHost) client.getParams().getParameter(ConnRoutePNames.DEFAULT_PROXY);
         if (hostTemp != null) {
           // if local URL is configured, the IPT should do the validation without a proxy.
