@@ -214,7 +214,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     cfg.setProperty(AppConfig.ANALYTICS_KEY, StringUtils.trimToEmpty(key));
   }
 
-  public void setBaseURL(URL baseURL) throws InvalidConfigException {
+  public void setBaseUrl(URL baseURL) throws InvalidConfigException {
     log.info("Updating the baseURL to: " + baseURL);
 
     boolean validate = true;

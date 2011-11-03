@@ -25,13 +25,13 @@ import com.google.inject.servlet.SessionScoped;
 public class OrganisationsAction extends POSTAction {
 
   /**
-   * A session scoped cache of the organisations from the GBIF registry
+   * A session scoped cache of the organisations from the GBIF registry.
    */
   @SessionScoped
   public static class RegisteredOrganisations {
 
     private List<Organisation> organisations = new ArrayList<Organisation>();
-    private RegistryManager registryManager;
+    private final RegistryManager registryManager;
 
     @Inject
     public RegisteredOrganisations(RegistryManager registryManager) {
@@ -43,7 +43,7 @@ public class OrganisationsAction extends POSTAction {
     }
 
     /**
-     * Invalidates the session scoped cache of organisations
+     * Invalidates the session scoped cache of organisations.
      */
     public void clearCache() {
       organisations = new ArrayList<Organisation>();
@@ -74,20 +74,14 @@ public class OrganisationsAction extends POSTAction {
 
   private static final long serialVersionUID = 7297470324204084809L;
 
-  private RegistrationManager registrationManager;
+  private final RegistrationManager registrationManager;
   private ResourceManager resourceManager;
-  private OrganisationSupport organisationValidation;
+  private final OrganisationSupport organisationValidation;
 
   private Organisation organisation;
   private List<Organisation> linkedOrganisations;
-  private RegisteredOrganisations orgSession;
+  private final RegisteredOrganisations orgSession;
 
-  /**
-   * @param registryManager
-   * @param registrationManager
-   * @param organisationValidation
-   * @param orgSession
-   */
   @Inject
   public OrganisationsAction(RegistrationManager registrationManager, OrganisationSupport organisationValidation,
     RegisteredOrganisations orgSession, ResourceManager resourceManager) {
@@ -225,7 +219,7 @@ public class OrganisationsAction extends POSTAction {
       addActionError(e.getMessage());
       return INPUT;
     } catch (AlreadyExistingException e) {
-      addActionError(getText("admin.organisation.exists", new String[] {id,}));
+      addActionError(getText("admin.organisation.exists", new String[] {id}));
       return INPUT;
     }
 

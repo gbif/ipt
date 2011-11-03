@@ -40,7 +40,7 @@ public class ConfigAction extends POSTAction {
   }
 
   public String getBaseUrl() {
-    return cfg.getBaseURL();
+    return cfg.getBaseUrl();
   }
 
   public String getDataDir() {
@@ -72,7 +72,7 @@ public class ConfigAction extends POSTAction {
   }
 
   /**
-   * This is called when the new configuration is submitted
+   * This is called when the new configuration is submitted.
    *
    * @return SUCCESS if it is valid, or failure with a message if the entered configuration is invalid
    */
@@ -81,11 +81,11 @@ public class ConfigAction extends POSTAction {
     log.info("Changing the IPT configuration");
     boolean baseUrlChanged = false;
     // base URL
-    if (!stringEquals(baseUrl, cfg.getBaseURL())) {
-      log.info("Changing the installation baseURL from [" + cfg.getBaseURL() + "] to [" + baseUrl + "]");
+    if (!stringEquals(baseUrl, cfg.getBaseUrl())) {
+      log.info("Changing the installation baseURL from [" + cfg.getBaseUrl() + "] to [" + baseUrl + "]");
       try {
         URL burl = new URL(baseUrl);
-        configManager.setBaseURL(burl);
+        configManager.setBaseUrl(burl);
         log.info("Installation baseURL successfully changed to[" + baseUrl + "]");
         addActionMessage(getText("admin.config.baseUrl.changed"));
         addActionMessage(getText("admin.user.login"));

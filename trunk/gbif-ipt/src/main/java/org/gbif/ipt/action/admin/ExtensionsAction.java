@@ -65,9 +65,9 @@ public class ExtensionsAction extends POSTAction {
   private String url;
   private Boolean updateVocabs = false;
   private int numVocabs = 0;
-  private Date vocabsLastUpdated = null;
-  private String dateFormat = null;
-  private ArrayList<Extension> newExtensions;
+  private Date vocabsLastUpdated;
+  private String dateFormat;
+  private List<Extension> newExtensions;
 
   @Override
   public String delete() throws Exception {
@@ -93,7 +93,7 @@ public class ExtensionsAction extends POSTAction {
     return extensions;
   }
 
-  public ArrayList<Extension> getNewExtensions() {
+  public List<Extension> getNewExtensions() {
     return newExtensions;
   }
 

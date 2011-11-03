@@ -34,11 +34,11 @@ public class UpdateResourceMetadataAction extends POSTAction {
   @Inject
   protected RegistrationManager registrationManager;
 
-  private final String eml = "EML";
-  private final String registry = "REGISTRY";
-  private final String dwca = "DWCA";
-  private final String success = "SUCCESS";
-  private final String rtf = "RTF";
+  private static final String EML = "EML";
+  private static final String REGISTRY = "REGISTRY";
+  private static final String DWCA = "DWCA";
+  private static final String SUCCESS_TYPE = "SUCCESS";
+  private static final String RTF = "RTF";
 
   @Override
   public String execute() throws Exception {
@@ -56,19 +56,17 @@ public class UpdateResourceMetadataAction extends POSTAction {
         publishedResources.add(res);
       }
       // Saving the coreType for all resources
-      if (res.getCoreType() == null) {
-        if (res.getCoreTypeTerm() != null) {
-          String core = res.getCoreTypeTerm().simpleName().toLowerCase();
-          if (Constants.DWC_ROWTYPE_TAXON.toLowerCase().contains(core)) {
-            res.setCoreType(StringUtils.capitalize((CoreRowType.OCCURRENCE).toString().toLowerCase()));
-          } else if (Constants.DWC_ROWTYPE_OCCURRENCE.toLowerCase().contains(core)) {
-            res.setCoreType(StringUtils.capitalize((CoreRowType.CHECKLIST).toString().toLowerCase()));
-          }
-          // Save resource information (resource.xml)
-          resourceManager.save(res);
-          // Set resource modified date
-          res.setModified(new Date());
+      if (res.getCoreType() == null && res.getCoreTypeTerm() != null) {
+        String core = res.getCoreTypeTerm().simpleName().toLowerCase();
+        if (Constants.DWC_ROWTYPE_TAXON.toLowerCase().contains(core)) {
+          res.setCoreType(StringUtils.capitalize(CoreRowType.OCCURRENCE.toString().toLowerCase()));
+        } else if (Constants.DWC_ROWTYPE_OCCURRENCE.toLowerCase().contains(core)) {
+          res.setCoreType(StringUtils.capitalize(CoreRowType.CHECKLIST.toString().toLowerCase()));
         }
+        // Save resource information (resource.xml)
+        resourceManager.save(res);
+        // Set resource modified date
+        res.setModified(new Date());
       }
     }
     Collections.sort(publishedResources);
@@ -79,13 +77,13 @@ public class UpdateResourceMetadataAction extends POSTAction {
 
     log.info("Updating ipt instance");
     try {
-      if ((registrationManager.getIpt()) != null) {
+      if (registrationManager.getIpt() != null) {
         registryManager.updateIpt(registrationManager.getIpt());
-        resUpdateStatus.put(registrationManager.getIpt().getName() + registry, success);
+        resUpdateStatus.put(registrationManager.getIpt().getName() + REGISTRY, SUCCESS_TYPE);
       }
     } catch (RegistryException e) {
       log.warn("Registry exception updating ipt instance", e);
-      resUpdateStatus.put(registrationManager.getIpt().getName() + registry, e.getMessage());
+      resUpdateStatus.put(registrationManager.getIpt().getName() + REGISTRY, e.getMessage());
     }
 
     log.info("Updating resource metadata - eml.xml");
@@ -98,10 +96,10 @@ public class UpdateResourceMetadataAction extends POSTAction {
         res.setLastPublished(new Date());
         resourceManager.save(res);
 
-        resUpdateStatus.put(res.getShortname() + rtf, success);
-        resUpdateStatus.put(res.getShortname() + eml, success);
+        resUpdateStatus.put(res.getShortname() + RTF, SUCCESS_TYPE);
+        resUpdateStatus.put(res.getShortname() + EML, SUCCESS_TYPE);
       } catch (PublicationException e) {
-        resUpdateStatus.put(res.getShortname() + eml, e.getMessage());
+        resUpdateStatus.put(res.getShortname() + EML, e.getMessage());
       }
     }
 
@@ -110,10 +108,10 @@ public class UpdateResourceMetadataAction extends POSTAction {
       if (res.isRegistered()) {
         try {
           registryManager.updateResource(res, registrationManager.getIpt());
-          resUpdateStatus.put(res.getShortname() + registry, success);
+          resUpdateStatus.put(res.getShortname() + REGISTRY, SUCCESS_TYPE);
         } catch (RegistryException e) {
           log.warn("Registry exception updating resource", e);
-          resUpdateStatus.put(res.getShortname() + registry, e.getMessage());
+          resUpdateStatus.put(res.getShortname() + REGISTRY, e.getMessage());
         }
       }
     }
@@ -122,11 +120,11 @@ public class UpdateResourceMetadataAction extends POSTAction {
     for (Resource res : publishedResources) {
       try {
         resourceManager.updateDwcaEml(res, this);
-        resUpdateStatus.put(res.getShortname() + dwca, success);
+        resUpdateStatus.put(res.getShortname() + DWCA, SUCCESS_TYPE);
       } catch (PublicationException e) {
-        resUpdateStatus.put(res.getShortname() + dwca, e.getMessage());
+        resUpdateStatus.put(res.getShortname() + DWCA, e.getMessage());
       } catch (RegistryException e) {
-        resUpdateStatus.put(res.getShortname() + dwca, e.getMessage());
+        resUpdateStatus.put(res.getShortname() + DWCA, e.getMessage());
       }
     }
 
@@ -140,10 +138,10 @@ public class UpdateResourceMetadataAction extends POSTAction {
   private void logFeedback(List<Resource> publishedResources, Map<String, String> resUpdateStatus) {
     int successCounter = 0;
     for (Resource res : publishedResources) {
-      String emlMsg = resUpdateStatus.get(res.getShortname() + eml);
+      String emlMsg = resUpdateStatus.get(res.getShortname() + EML);
       String registryMsg = "";
-      String dwcaMsg = resUpdateStatus.get(res.getShortname() + dwca);
-      String rtfMsg = resUpdateStatus.get(res.getShortname() + rtf);
+      String dwcaMsg = resUpdateStatus.get(res.getShortname() + DWCA);
+      String rtfMsg = resUpdateStatus.get(res.getShortname() + RTF);
       // Messages states
       // rtfVal 0/1000: 0 is fail, 1000 is success.
       // emlVal 0/100 : 0 is fail, 100 is success.
@@ -151,15 +149,15 @@ public class UpdateResourceMetadataAction extends POSTAction {
       // dwcaVal 0/1 : 0 is fail, 1 is success
       // Each state is calculated as follows: rtfVal + emlVal + registryVal + dwcaVal
       // e.g if everything is satisfactory state= 1000 + 100 + 10 + 1 = 1111
-      int emlVal = 100 * (emlMsg.equals(success) ? 1 : 0);
+      int emlVal = 100 * (emlMsg.equals(SUCCESS_TYPE) ? 1 : 0);
       int registryVal = 20;
       if (res.isRegistered()) {
-        registryMsg = resUpdateStatus.get(res.getShortname() + registry);
-        registryVal = 10 * (registryMsg.equals(success) ? 1 : 0);
+        registryMsg = resUpdateStatus.get(res.getShortname() + REGISTRY);
+        registryVal = 10 * (registryMsg.equals(SUCCESS_TYPE) ? 1 : 0);
       }
-      int dwcaVal = dwcaMsg.equals(success) ? 1 : 0;
+      int dwcaVal = dwcaMsg.equals(SUCCESS_TYPE) ? 1 : 0;
 
-      int rtfVal = 1000 * (rtfMsg.equals(success) ? 1 : 0);
+      int rtfVal = 1000 * (rtfMsg.equals(SUCCESS_TYPE) ? 1 : 0);
 
       int state = emlVal + rtfVal + dwcaVal + registryVal;
       if (log.isDebugEnabled()) {
@@ -289,7 +287,7 @@ public class UpdateResourceMetadataAction extends POSTAction {
         log.debug("User feedback: " + logMsg);
       }
 
-      if (state == 1111 | state == 1121 | state == 1110 | state == 1120) {
+      if (state == 1111 || state == 1121 || state == 1110 || state == 1120) {
         successCounter++;
         this.addActionMessage(logMsg.toString());
       } else {

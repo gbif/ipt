@@ -165,11 +165,9 @@ public class EmlValidator extends BaseValidator {
         }
 
         /* phone is optional. But if it exists, should match the pattern */
-        if (exists(eml.getContact().getPhone())) {
-          if (!isValidPhoneNumber(eml.getContact().getPhone())) {
-            action.addFieldError("eml.contact.phone",
-              action.getText("validation.invalid", new String[] {action.getText("eml.contact.phone")}));
-          }
+        if (exists(eml.getContact().getPhone()) && !isValidPhoneNumber(eml.getContact().getPhone())) {
+          action.addFieldError("eml.contact.phone",
+            action.getText("validation.invalid", new String[] {action.getText("eml.contact.phone")}));
         }
 
         /* Validate the homepage URL form resource contact */
@@ -232,11 +230,9 @@ public class EmlValidator extends BaseValidator {
         }
 
         /* phone is optional. But if it exists, should match the pattern */
-        if (exists(eml.getResourceCreator().getPhone())) {
-          if (!isValidPhoneNumber(eml.getResourceCreator().getPhone())) {
-            action.addFieldError("eml.resourceCreator.phone",
-              action.getText("validation.invalid", new String[] {action.getText("eml.resourceCreator.phone")}));
-          }
+        if (exists(eml.getResourceCreator().getPhone()) && !isValidPhoneNumber(eml.getResourceCreator().getPhone())) {
+          action.addFieldError("eml.resourceCreator.phone",
+            action.getText("validation.invalid", new String[] {action.getText("eml.resourceCreator.phone")}));
         }
 
         /* Validate the homepage URL from resource creator */
@@ -301,11 +297,9 @@ public class EmlValidator extends BaseValidator {
         }
 
         /* phone is optional. But if it exists, should match the pattern */
-        if (exists(eml.getMetadataProvider().getPhone())) {
-          if (!isValidPhoneNumber(eml.getMetadataProvider().getPhone())) {
-            action.addFieldError("eml.metadataProvider.phone",
-              action.getText("validation.invalid", new String[] {action.getText("eml.metadataProvider.phone")}));
-          }
+        if (exists(eml.getMetadataProvider().getPhone()) && !isValidPhoneNumber(eml.getMetadataProvider().getPhone())) {
+          action.addFieldError("eml.metadataProvider.phone",
+            action.getText("validation.invalid", new String[] {action.getText("eml.metadataProvider.phone")}));
         }
 
         /* Validate the homepage URL from metadata provider */
@@ -371,11 +365,10 @@ public class EmlValidator extends BaseValidator {
           }
 
           /* phone is optional. But if it exists, should match the pattern */
-          if (exists(eml.getAssociatedParties().get(index).getPhone())) {
-            if (!isValidPhoneNumber(eml.getAssociatedParties().get(index).getPhone())) {
-              action.addFieldError("eml.associatedParties[" + index + "].phone",
-                action.getText("validation.invalid", new String[] {action.getText("eml.associatedParties.phone")}));
-            }
+          if (exists(eml.getAssociatedParties().get(index).getPhone()) && !isValidPhoneNumber(
+            eml.getAssociatedParties().get(index).getPhone())) {
+            action.addFieldError("eml.associatedParties[" + index + "].phone",
+              action.getText("validation.invalid", new String[] {action.getText("eml.associatedParties.phone")}));
           }
 
           /* Validate the homepage URL from each associated parties */
@@ -527,11 +520,9 @@ public class EmlValidator extends BaseValidator {
          */
         int index = 0;
         for (TemporalCoverage tc : eml.getTemporalCoverages()) {
-          if (tc.getType() == TemporalCoverageType.SINGLE_DATE) {
-            if (!exists(tc.getStartDate())) {
-              action.addFieldError("eml.temporalCoverages[" + index + "].startDate", action
-                .getText("validation.required", new String[] {action.getText("eml.temporalCoverages.startDate")}));
-            }
+          if (tc.getType() == TemporalCoverageType.SINGLE_DATE && !exists(tc.getStartDate())) {
+            action.addFieldError("eml.temporalCoverages[" + index + "].startDate",
+              action.getText("validation.required", new String[] {action.getText("eml.temporalCoverages.startDate")}));
           }
           if (tc.getType() == TemporalCoverageType.DATE_RANGE) {
             if (!exists(tc.getStartDate())) {
@@ -543,19 +534,13 @@ public class EmlValidator extends BaseValidator {
                 action.getText("validation.required", new String[] {action.getText("eml.temporalCoverages.endDate")}));
             }
           }
-          if (tc.getType() == TemporalCoverageType.FORMATION_PERIOD) {
-            if (!exists(tc.getFormationPeriod())) {
-              action.addFieldError("eml.temporalCoverages[" + index + "].formationPeriod", action
-                .getText("validation.required",
-                  new String[] {action.getText("eml.temporalCoverages.formationPeriod")}));
-            }
+          if (tc.getType() == TemporalCoverageType.FORMATION_PERIOD && !exists(tc.getFormationPeriod())) {
+            action.addFieldError("eml.temporalCoverages[" + index + "].formationPeriod", action
+              .getText("validation.required", new String[] {action.getText("eml.temporalCoverages.formationPeriod")}));
           }
-          if (tc.getType() == TemporalCoverageType.LIVING_TIME_PERIOD) {
-            if (!exists(tc.getLivingTimePeriod())) {
-              action.addFieldError("eml.temporalCoverages[" + index + "].livingTimePeriod", action
-                .getText("validation.required",
-                  new String[] {action.getText("eml.temporalCoverages.livingTimePeriod")}));
-            }
+          if (tc.getType() == TemporalCoverageType.LIVING_TIME_PERIOD && !exists(tc.getLivingTimePeriod())) {
+            action.addFieldError("eml.temporalCoverages[" + index + "].livingTimePeriod", action
+              .getText("validation.required", new String[] {action.getText("eml.temporalCoverages.livingTimePeriod")}));
           }
           index++;
         }
