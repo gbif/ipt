@@ -69,7 +69,7 @@ public class ResourceAction extends PortalBaseAction {
   }
 
   /**
-   * Return the RTF size file format
+   * Return the RTF size file format.
    */
   public String getRtfFormattedSize() {
     return FileUtils.formatSize(resourceManager.getRtfSize(resource), 0);

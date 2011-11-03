@@ -68,30 +68,31 @@ public class MappingAction extends ManagerBaseAction {
   // config
   private ExtensionMapping mapping;
   private List<String> columns;
-  private List<String> nonMappedColumns;
-  private Comparator[] comparators = Comparator.values();
+  private final Comparator[] comparators = Comparator.values();
   private List<String[]> peek;
   private List<PropertyMapping> fields;
-  private Map<String, Map<String, String>> vocabTerms = new HashMap<String, Map<String, String>>();
+  private final Map<String, Map<String, String>> vocabTerms = new HashMap<String, Map<String, String>>();
   private ExtensionProperty coreid;
   private Integer mid;
 
   private PropertyMapping mappingCoreid;
 
   public void addWarnings() {
-    if (mapping.getSource() != null) {
-      ExtensionMappingValidator validator = new ExtensionMappingValidator();
-      ValidationStatus v = validator.validate(mapping, resource, peek);
-      if (v != null && !v.isValid()) {
-        if (v.getIdProblem() != null) {
-          addActionWarning(getText(v.getIdProblem(), v.getIdProblemParams()));
-        }
-        for (ConceptTerm t : v.getMissingRequiredFields()) {
-          addActionWarning(getText("validation.required", new String[] {t.simpleName()}));
-        }
-        for (ConceptTerm t : v.getWrongDataTypeFields()) {
-          addActionWarning(getText("validation.wrong.datatype", new String[] {t.simpleName()}));
-        }
+    if (mapping.getSource() == null) {
+      return;
+    }
+
+    ExtensionMappingValidator validator = new ExtensionMappingValidator();
+    ValidationStatus v = validator.validate(mapping, resource, peek);
+    if (v != null && !v.isValid()) {
+      if (v.getIdProblem() != null) {
+        addActionWarning(getText(v.getIdProblem(), v.getIdProblemParams()));
+      }
+      for (ConceptTerm t : v.getMissingRequiredFields()) {
+        addActionWarning(getText("validation.required", new String[] {t.simpleName()}));
+      }
+      for (ConceptTerm t : v.getWrongDataTypeFields()) {
+        addActionWarning(getText("validation.wrong.datatype", new String[] {t.simpleName()}));
       }
     }
   }
@@ -127,7 +128,7 @@ public class MappingAction extends ManagerBaseAction {
       coreidEvaluated = true;
     }
     if (automapped > 0) {
-      addActionMessage(getText("manage.mapping.automaped", new String[] {automapped + ""}));
+      addActionMessage(getText("manage.mapping.automaped", new String[] {String.valueOf(automapped)}));
     }
   }
 
@@ -180,7 +181,7 @@ public class MappingAction extends ManagerBaseAction {
   }
 
   public List<String> getNonMappedColumns() {
-    nonMappedColumns = new ArrayList<String>();
+    List<String> nonMappedColumns = new ArrayList<String>();
     nonMappedColumns.addAll(columns);
     for (int index = 0; index < columns.size(); index++) {
       if (columns.get(index).length() == 0) {
@@ -219,16 +220,15 @@ public class MappingAction extends ManagerBaseAction {
     // id is rowtype
     if (id != null) {
       // mapping id, i.e. list index for the given rowtype, is given
-      if (mid != null) {
-        List<ExtensionMapping> maps = resource.getMappings(id);
-        mapping = maps.get(mid);
-      } else {
+      if (mid == null) {
         Extension ext = extensionManager.get(id);
         if (ext != null) {
           mapping = new ExtensionMapping();
           mapping.setExtension(ext);
         }
-
+      } else {
+        List<ExtensionMapping> maps = resource.getMappings(id);
+        mapping = maps.get(mid);
       }
     }
 
@@ -257,8 +257,8 @@ public class MappingAction extends ManagerBaseAction {
         // not yet set, the current mapping must be the core type
         coreRowType = mapping.getExtension().getRowType();
       }
-      String coreIdTerm = Constants.DWC_OCCURRENCE_ID;
       resource.setCoreType(StringUtils.capitalize(CoreRowType.OCCURRENCE.toString().toLowerCase()));
+      String coreIdTerm = Constants.DWC_OCCURRENCE_ID;
       if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON)) {
         coreIdTerm = Constants.DWC_TAXON_ID;
         resource.setCoreType(StringUtils.capitalize(CoreRowType.CHECKLIST.toString().toLowerCase()));
@@ -310,7 +310,9 @@ public class MappingAction extends ManagerBaseAction {
   }
 
   private void readSource() {
-    if (mapping.getSource() != null) {
+    if (mapping.getSource() == null) {
+      columns = new ArrayList<String>();
+    } else {
       peek = sourceManager.peek(mapping.getSource(), 5);
       // If user wants to import a source without a header lines, the columns are going to be numbered with the first
       // non-null value as an example. Otherwise, read the file/database normally.
@@ -319,8 +321,6 @@ public class MappingAction extends ManagerBaseAction {
       } else {
         columns = sourceManager.columns(mapping.getSource());
       }
-    } else {
-      columns = new ArrayList<String>();
     }
   }
 
