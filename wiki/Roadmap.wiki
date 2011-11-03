@@ -12,6 +12,12 @@ The *best release to use is the highest version of x*, which will be the *featur
 <wiki:toc max_depth="2" />
 
 -----
+= Release 2.0.3 (published  2011-11-03)  =
+Includes translations into French and Spanish. In total, it addressed 76 issues (43 defects, 33 enhancements/patches)
+
+[http://code.google.com/p/gbif-providertoolkit/issues/list?can=1&q=milestone%3DRelease2.0.3 solved issues]
+
+-----
 = Release 2.0.2 (published  2011-06-08)  =
 Includes an output format of the metadata in rich text format.
 
