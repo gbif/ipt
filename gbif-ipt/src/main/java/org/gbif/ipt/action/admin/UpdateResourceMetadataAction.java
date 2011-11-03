@@ -73,8 +73,8 @@ public class UpdateResourceMetadataAction extends POSTAction {
     }
     Collections.sort(publishedResources);
     if (log.isDebugEnabled()) {
-      log.debug("Got [" + publishedResources.size() + "] published resources of [" + allResources.size()
-        + "] total resources");
+      log.debug(
+        "Got [" + publishedResources.size() + "] published resources of [" + allResources.size() + "] total resources");
     }
 
     log.info("Updating ipt instance");
@@ -170,55 +170,47 @@ public class UpdateResourceMetadataAction extends POSTAction {
       switch (state) {
         case 0000:
           // All failed. (DwC-A)
-          logMsg =
-            getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.eml", emlMsg) + " "
-              + getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.rtf", rtfMsg) + " "
-              + getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.registry", registryMsg);
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.eml", emlMsg) + " "
+            + getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.rtf", rtfMsg) + " "
+            + getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.registry", registryMsg);
           break;
         case 0001:
           // Updated: DwC-A. Failed: EML, RTF, registry.
-          logMsg =
-            getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.eml", emlMsg) + " "
-              + getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.rtf", rtfMsg) + " "
-              + getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.registry", registryMsg);
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.eml", emlMsg) + " "
+            + getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.rtf", rtfMsg) + " "
+            + getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.registry", registryMsg);
           break;
         case 0010:
           // Updated: registry. Failed: EML, RTF, (DwC-A).
-          logMsg =
-            getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.eml", emlMsg) + " "
-              + getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.rtf", rtfMsg);
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.eml", emlMsg) + " "
+            + getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.rtf", rtfMsg);
           break;
         case 0011:
           // Updated: registry and DwC-A. Failed: EML, RTF.
-          logMsg =
-            getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.eml", emlMsg) + " "
-              + getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.rtf", rtfMsg);
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.eml", emlMsg) + " "
+            + getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.rtf", rtfMsg);
           break;
         case 0020:
           // Failed: eml, rtf. Not registered.
-          logMsg =
-            getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.eml", emlMsg) + " "
-              + getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.rtf", rtfMsg) + " "
-              + getTextWithDynamicArgs("admin.config.updateMetadata.resource.notRegistered");
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.eml", emlMsg) + " "
+            + getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.rtf", rtfMsg) + " "
+            + getTextWithDynamicArgs("admin.config.updateMetadata.resource.notRegistered");
           break;
         case 0021:
           // Updated DwC-A. Failed: EML, RTF. Not registered.
-          logMsg =
-            getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.eml", emlMsg) + " "
-              + getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.rtf", rtfMsg) + " "
-              + getTextWithDynamicArgs("admin.config.updateMetadata.resource.notRegistered");
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.eml", emlMsg) + " "
+            + getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.rtf", rtfMsg) + " "
+            + getTextWithDynamicArgs("admin.config.updateMetadata.resource.notRegistered");
           break;
         case 0100:
           // Updated: EML. Failed: RTF, registry. (DwC-A)
-          logMsg =
-            getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.rtf", rtfMsg) + " "
-              + getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.registry", registryMsg);
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.rtf", rtfMsg) + " "
+            + getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.registry", registryMsg);
           break;
         // Updated: EML, DwC-A. Failed: RTF, registry.
         case 0101:
-          logMsg =
-            getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.rtf", rtfMsg) + " "
-              + getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.registry", registryMsg);
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.rtf", rtfMsg) + " "
+            + getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.registry", registryMsg);
           break;
         case 0110:
           // Updated: EML, registry. Failed: RTF, (DwC-A).
@@ -234,15 +226,13 @@ public class UpdateResourceMetadataAction extends POSTAction {
           break;
         case 0120:
           // Updated: EML. Failed: RTF, (DwC-A). Not registered.
-          logMsg =
-            getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.rtf", rtfMsg) + " "
-              + getTextWithDynamicArgs("admin.config.updateMetadata.resource.notRegistered");
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.rtf", rtfMsg) + " "
+            + getTextWithDynamicArgs("admin.config.updateMetadata.resource.notRegistered");
           break;
         case 0121:
           // Updated: EML, DwC-A. Failed: RTF. Not registered.
-          logMsg =
-            getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.rtf", rtfMsg) + " "
-              + getTextWithDynamicArgs("admin.config.updateMetadata.resource.notRegistered");
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.rtf", rtfMsg) + " "
+            + getTextWithDynamicArgs("admin.config.updateMetadata.resource.notRegistered");
           break;
         case 1121:
           // Updated: EML, RTF, DwC-A. Not registered.
@@ -250,15 +240,13 @@ public class UpdateResourceMetadataAction extends POSTAction {
           break;
         case 1000:
           // Updated: RTF. Failed: EML, registry, (DwC-A).
-          logMsg =
-            getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.eml", emlMsg) + " "
-              + getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.registry", registryMsg);
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.eml", emlMsg) + " "
+            + getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.registry", registryMsg);
           break;
         case 1001:
           // Updated: RTF, DwC-A. Failed: EML, registry.
-          logMsg =
-            getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.eml", emlMsg) + " "
-              + getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.registry", registryMsg);
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.eml", emlMsg) + " "
+            + getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.registry", registryMsg);
           break;
         case 1010:
           // Updated: RTF, registry. Failed: EML, (DwC-A).
@@ -270,9 +258,8 @@ public class UpdateResourceMetadataAction extends POSTAction {
           break;
         case 1020:
           // Updated RTF. Failed: EML, (DwC-A). Not registered.
-          logMsg =
-            getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.eml", emlMsg) + " "
-              + getTextWithDynamicArgs("admin.config.updateMetadata.resource.notRegistered");
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.eml", emlMsg) + " "
+            + getTextWithDynamicArgs("admin.config.updateMetadata.resource.notRegistered");
           break;
         case 1120:
           // Updated: EML, RTF. Failed: (DwC-A). not registered
@@ -280,9 +267,8 @@ public class UpdateResourceMetadataAction extends POSTAction {
           break;
         case 1021:
           // Updated: RTF, DwC-A. Failed: EML. Not registered.
-          logMsg =
-            getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.eml", emlMsg) + " "
-              + getTextWithDynamicArgs("admin.config.updateMetadata.resource.notRegistered");
+          logMsg = getTextWithDynamicArgs("admin.config.updateMetadata.resource.fail.eml", emlMsg) + " "
+            + getTextWithDynamicArgs("admin.config.updateMetadata.resource.notRegistered");
           break;
         case 1100:
           // Updated: EML, RTF. Failed: (DwC-A), registry
@@ -316,8 +302,9 @@ public class UpdateResourceMetadataAction extends POSTAction {
       this.addActionWarning(getText("admin.config.updateMetadata.nonePublished"));
     } else {
       if (successCounter > 0) {
-        this.addActionMessage(getTextWithDynamicArgs("admin.config.updateMetadata.summary",
-          String.valueOf(successCounter), String.valueOf(publishedResources.size())));
+        this.addActionMessage(
+          getTextWithDynamicArgs("admin.config.updateMetadata.summary", String.valueOf(successCounter),
+            String.valueOf(publishedResources.size())));
       }
     }
   }

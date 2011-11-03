@@ -49,7 +49,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import javax.annotation.Nullable;
 
 import com.google.inject.Inject;
@@ -114,11 +113,10 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
 
     /**
      * SqlColumnIterator constructor
-     * 
+     *
      * @param source of the sql data
      * @param column to inspect, zero based numbering as used in the dwc archives
-     * @param sql statement to query in the sql source
-     * @throws SQLException
+     * @param sql    statement to query in the sql source
      */
     private SqlColumnIterator(SqlSource source, int column, String sql) throws SQLException {
       this.conn = getDbConnection(source);
@@ -309,8 +307,9 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         BufferedWriter logWriter = null;
         try {
           logWriter = new BufferedWriter(new FileWriter(logFile));
-          logWriter.write("Log for source name:" + source.getName() + " from resource: "
-            + source.getResource().getShortname() + "\n");
+          logWriter.write(
+            "Log for source name:" + source.getName() + " from resource: " + source.getResource().getShortname()
+              + "\n");
           if (reader.getEmptyLines().size() > 0) {
             List<Integer> emptyLines = new ArrayList<Integer>(reader.getEmptyLines());
             Collections.sort(emptyLines);
@@ -458,23 +457,20 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
 
         SQLWarning warn = conn.getWarnings();
         while (warn != null) {
-          log.warn("SQLWarning: state=" + warn.getSQLState() + ", message=" + warn.getMessage() + ", vendor="
-            + warn.getErrorCode());
+          log.warn("SQLWarning: state=" + warn.getSQLState() + ", message=" + warn.getMessage() + ", vendor=" + warn
+            .getErrorCode());
           warn = warn.getNextWarning();
         }
       } catch (java.lang.ClassNotFoundException e) {
-        String msg =
-          String
-            .format(
-              "Couldnt load JDBC driver to create new external datasource connection with JDBC Class=%s and URL=%s. Error: %s",
-              source.getJdbcDriver(), source.getJdbcUrl(), e.getMessage());
+        String msg = String.format(
+          "Couldnt load JDBC driver to create new external datasource connection with JDBC Class=%s and URL=%s. Error: %s",
+          source.getJdbcDriver(), source.getJdbcUrl(), e.getMessage());
         log.warn(msg, e);
         throw new SQLException(msg);
       } catch (Exception e) {
-        String msg =
-          String.format(
-            "Couldnt create new external datasource connection with JDBC Class=%s, URL=%s, user=%s. Error: %s", source
-              .getJdbcDriver(), source.getJdbcUrl(), source.getUsername(), e.getMessage());
+        String msg = String
+          .format("Couldnt create new external datasource connection with JDBC Class=%s, URL=%s, user=%s. Error: %s",
+            source.getJdbcDriver(), source.getJdbcUrl(), source.getUsername(), e.getMessage());
         log.warn(msg, e);
         throw new SQLException(msg);
       }
@@ -523,11 +519,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   }
 
   /**
-   * @param source
-   * @param column
    * @param limit limit for the recordset passed into the sql. If negative or zero no limit will be used
-   * @return
-   * @throws Exception
    */
   private ClosableIterator<Object> iterSourceColumn(Source source, int column, int limit) throws Exception {
     if (source instanceof FileSource) {

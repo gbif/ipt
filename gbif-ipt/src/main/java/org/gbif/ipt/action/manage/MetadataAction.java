@@ -63,8 +63,8 @@ public class MetadataAction extends ManagerBaseAction {
   private PropertyMapping mappingCoreid;
   private ExtensionMapping mapping;
 
-  private static final List<String> sections =
-    Arrays.asList("basic", "geocoverage", "taxcoverage", "tempcoverage", "keywords", "parties", "project", "methods",
+  private static final List<String> sections = Arrays
+    .asList("basic", "geocoverage", "taxcoverage", "tempcoverage", "keywords", "parties", "project", "methods",
       "citations", "collections", "physical", "additional");
 
   @Inject
@@ -223,15 +223,15 @@ public class MetadataAction extends ManagerBaseAction {
     }
     types = new LinkedHashMap<String, String>();
     types.put("", "Select a type");
-    types.put(StringUtils.capitalize((CoreRowType.CHECKLIST).toString().toLowerCase()), StringUtils
-      .capitalize((Resource.CoreRowType.CHECKLIST).toString().toLowerCase()));
-    types.put(StringUtils.capitalize((CoreRowType.OCCURRENCE).toString().toLowerCase()), StringUtils
-      .capitalize((CoreRowType.OCCURRENCE).toString().toLowerCase()));
+    types.put(StringUtils.capitalize((CoreRowType.CHECKLIST).toString().toLowerCase()),
+      StringUtils.capitalize((Resource.CoreRowType.CHECKLIST).toString().toLowerCase()));
+    types.put(StringUtils.capitalize((CoreRowType.OCCURRENCE).toString().toLowerCase()),
+      StringUtils.capitalize((CoreRowType.OCCURRENCE).toString().toLowerCase()));
     types.put("Other", "Other");
     licenses = new LinkedHashMap<String, String>();
     licenses.put(getText("eml.intellectualRights.nolicenses"), "");
-    licenses.put(getText("eml.intellectualRights.license.cczero"),
-      getText("eml.intellectualRights.license.cczero.text"));
+    licenses
+      .put(getText("eml.intellectualRights.license.cczero"), getText("eml.intellectualRights.license.cczero.text"));
     licenses.put(getText("eml.intellectualRights.license.pddl"), getText("eml.intellectualRights.license.pddl.text"));
     licenses.put(getText("eml.intellectualRights.license.odcby"), getText("eml.intellectualRights.license.odcby.text"));
     licenses.put(getText("eml.intellectualRights.license.odbl"), getText("eml.intellectualRights.license.odbl.text"));
@@ -248,20 +248,20 @@ public class MetadataAction extends ManagerBaseAction {
     roles.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_ROLES, getLocaleLanguage(), false));
     preservationMethods = new LinkedHashMap<String, String>();
     preservationMethods.put("", getText("eml.preservation.methods.selection"));
-    preservationMethods.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_PRESERVATION_METHOD, getLocaleLanguage(),
-      false));
+    preservationMethods
+      .putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_PRESERVATION_METHOD, getLocaleLanguage(), false));
 
     if (resource.getEml().getContact().getAddress().getCountry() != null) {
-      resource.getEml().getContact().getAddress().setCountry(
-        CountryUtils.iso2(resource.getEml().getContact().getAddress().getCountry()));
+      resource.getEml().getContact().getAddress()
+        .setCountry(CountryUtils.iso2(resource.getEml().getContact().getAddress().getCountry()));
     }
     if (resource.getEml().resourceCreator().getAddress().getCountry() != null) {
-      resource.getEml().resourceCreator().getAddress().setCountry(
-        CountryUtils.iso2(resource.getEml().resourceCreator().getAddress().getCountry()));
+      resource.getEml().resourceCreator().getAddress()
+        .setCountry(CountryUtils.iso2(resource.getEml().resourceCreator().getAddress().getCountry()));
     }
     if (resource.getEml().getMetadataProvider().getAddress().getCountry() != null) {
-      resource.getEml().getMetadataProvider().getAddress().setCountry(
-        CountryUtils.iso2(resource.getEml().getMetadataProvider().getAddress().getCountry()));
+      resource.getEml().getMetadataProvider().getAddress()
+        .setCountry(CountryUtils.iso2(resource.getEml().getMetadataProvider().getAddress().getCountry()));
     }
 
     if (resource.getEml().getMetadataProvider() != null && resource.getEml().getMetadataProvider().isEmpty()) {

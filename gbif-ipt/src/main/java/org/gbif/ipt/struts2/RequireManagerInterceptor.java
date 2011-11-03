@@ -6,22 +6,24 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.service.manage.ResourceManager;
 
+import java.util.Map;
+
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
-
 import org.apache.commons.lang.xwork.StringUtils;
 import org.apache.log4j.Logger;
 
-import java.util.Map;
-
 /**
- * An Interceptor that makes sure a user with manager rights (=admin or manager role) is currently logged in and returns
- * a notAllowed otherwise. It also checks if the resource is currently locked and returns locked in that case regardless
+ * An Interceptor that makes sure a user with manager rights (=admin or manager role) is currently logged in and
+ * returns
+ * a notAllowed otherwise. It also checks if the resource is currently locked and returns locked in that case
+ * regardless
  * of user rights.
  * If a resource is requested it also checks that the logged in user has permissions to manage that specific resource.
  */
 public class RequireManagerInterceptor extends AbstractInterceptor {
+
   private static Logger log = Logger.getLogger(RequireAdminInterceptor.class);
   @Inject
   private ResourceManager resourceManager;
@@ -30,7 +32,7 @@ public class RequireManagerInterceptor extends AbstractInterceptor {
     String requestedResource = null;
     Object requestedResourceName = invocation.getInvocationContext().getParameters().get(Constants.REQ_PARAM_RESOURCE);
     if (requestedResourceName != null && requestedResourceName.getClass().isArray()
-        && ((Object[]) requestedResourceName).length == 1) {
+      && ((Object[]) requestedResourceName).length == 1) {
       requestedResource = StringUtils.trimToNull(((Object[]) requestedResourceName)[0].toString());
     }
     return requestedResource;

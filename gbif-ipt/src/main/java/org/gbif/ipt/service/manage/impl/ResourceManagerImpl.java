@@ -22,11 +22,11 @@ import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.Source;
-import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.Resource.CoreRowType;
+import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.Source.FileSource;
 import org.gbif.ipt.model.Source.SqlSource;
+import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
@@ -37,12 +37,12 @@ import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.DeletionNotAllowedException;
+import org.gbif.ipt.service.DeletionNotAllowedException.Reason;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidConfigException;
+import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.RegistryException;
-import org.gbif.ipt.service.DeletionNotAllowedException.Reason;
-import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -215,8 +215,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return eml;
   }
 
-  public Resource create(String shortname, File dwca, User creator, BaseAction action) throws AlreadyExistingException,
-    ImportException {
+  public Resource create(String shortname, File dwca, User creator, BaseAction action)
+    throws AlreadyExistingException, ImportException {
     ActionLogger alog = new ActionLogger(this.log, action);
     // decompress archive
     File dwcaDir = dataDir.tmpDir();
@@ -309,11 +309,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         save(resource);
 
         if (StringUtils.isBlank(resource.getCoreRowType())) {
-          alog.info("manage.resource.create.success.nocore", new String[] {"" + resource.getSources().size(),
-            "" + (resource.getMappings().size())});
+          alog.info("manage.resource.create.success.nocore",
+            new String[] {"" + resource.getSources().size(), "" + (resource.getMappings().size())});
         } else {
-          alog.info("manage.resource.create.success", new String[] {resource.getCoreRowType(),
-            "" + resource.getSources().size(), "" + (resource.getMappings().size())});
+          alog.info("manage.resource.create.success",
+            new String[] {resource.getCoreRowType(), "" + resource.getSources().size(),
+              "" + (resource.getMappings().size())});
         }
 
       } else {
@@ -505,8 +506,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       if (ext.hasProperty(f.getTerm())) {
         fields.add(new PropertyMapping(f));
       } else {
-        alog.warn("manage.resource.create.mapping.concept.skip", new String[] {f.getTerm().qualifiedName(),
-          ext.getRowType()});
+        alog.warn("manage.resource.create.mapping.concept.skip",
+          new String[] {f.getTerm().qualifiedName(), ext.getRowType()});
       }
     }
     map.setFields(fields);
@@ -691,9 +692,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   /**
    * Reads a complete resource configuration (resource config & eml) from the resource config folder
    * and returns the Resource instance for the internal in memory cache
-   * 
-   * @param resourceDir
-   * @return
    */
   private Resource loadFromDir(File resourceDir) throws InvalidConfigException {
     if (resourceDir.exists()) {
@@ -722,8 +720,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         return resource;
       } catch (FileNotFoundException e) {
         log.error("Cannot read resource configuration for " + shortname, e);
-        throw new InvalidConfigException(TYPE.RESOURCE_CONFIG, "Cannot read resource configuration for " + shortname
-          + ": " + e.getMessage());
+        throw new InvalidConfigException(TYPE.RESOURCE_CONFIG,
+          "Cannot read resource configuration for " + shortname + ": " + e.getMessage());
       }
     }
     return null;
@@ -733,8 +731,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     ActionLogger alog = new ActionLogger(this.log, action);
     // check if publishing task is already running
     if (isLocked(resource.getShortname())) {
-      throw new PublicationException(PublicationException.TYPE.LOCKED, "Resource " + resource.getShortname()
-        + " is currently locked by another process");
+      throw new PublicationException(PublicationException.TYPE.LOCKED,
+        "Resource " + resource.getShortname() + " is currently locked by another process");
     }
 
     // publish EML as well as RTF
@@ -747,7 +745,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       dwca = true;
       // make sure the dwca service is registered
       // this might not have been the case when the first dwca is created, but the resource was already registered
-// before
+      // before
       if (resource.isRegistered()) {
         registryManager.updateResource(resource, registrationManager.getIpt());
       }
@@ -765,8 +763,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     ActionLogger alog = new ActionLogger(this.log, action);
     // check if publishing task is already running
     if (isLocked(resource.getShortname())) {
-      throw new PublicationException(PublicationException.TYPE.LOCKED, "Resource " + resource.getShortname()
-        + " is currently locked by another process");
+      throw new PublicationException(PublicationException.TYPE.LOCKED,
+        "Resource " + resource.getShortname() + " is currently locked by another process");
     }
 
     // increase eml version
@@ -781,8 +779,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       FileUtils.copyFile(trunkFile, versionedFile);
     } catch (IOException e) {
       alog.error("Can't publish resource " + resource.getShortname(), e);
-      throw new PublicationException(PublicationException.TYPE.EML, "Can't publish eml file for resource "
-        + resource.getShortname(), e);
+      throw new PublicationException(PublicationException.TYPE.EML,
+        "Can't publish eml file for resource " + resource.getShortname(), e);
     }
     // publish also as RTF
     publishRtf(resource, action);
@@ -794,8 +792,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       FileUtils.copyFile(trunkRtfFile, versionedRtfFile);
     } catch (IOException e) {
       alog.error("Can't publish resource " + resource.getShortname() + "as RTF", e);
-      throw new PublicationException(PublicationException.TYPE.EML, "Can't publish rtf file for resource "
-        + resource.getShortname(), e);
+      throw new PublicationException(PublicationException.TYPE.EML,
+        "Can't publish rtf file for resource " + resource.getShortname(), e);
     }
   }
 
@@ -875,7 +873,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (PublicationStatus.REGISTERED != resource.getStatus()) {
       UUID key = registryManager.register(resource, organisation, ipt);
       if (key == null) {
-        throw new RegistryException(RegistryException.TYPE.MISSING_METADATA, "No key returned for registered resoruce.");
+        throw new RegistryException(RegistryException.TYPE.MISSING_METADATA,
+          "No key returned for registered resoruce.");
       }
       resource.setStatus(PublicationStatus.REGISTERED);
       save(resource);
@@ -931,8 +930,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       throw new InvalidConfigException(TYPE.CONFIG_WRITE, "IO exception when writing eml for " + resource);
     } catch (TemplateException e) {
       log.error("EML template exception", e);
-      throw new InvalidConfigException(TYPE.EML, "EML template exception when writing eml for " + resource + ": "
-        + e.getMessage());
+      throw new InvalidConfigException(TYPE.EML,
+        "EML template exception when writing eml for " + resource + ": " + e.getMessage());
     }
   }
 
@@ -955,13 +954,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     ActionLogger alog = new ActionLogger(this.log, action);
     // check if publishing task is already running
     if (isLocked(resource.getShortname())) {
-      throw new PublicationException(PublicationException.TYPE.LOCKED, "Resource " + resource.getShortname()
-        + " is currently locked by another process");
+      throw new PublicationException(PublicationException.TYPE.LOCKED,
+        "Resource " + resource.getShortname() + " is currently locked by another process");
     }
 
     if (!resource.hasPublishedData()) {
-      throw new PublicationException(PublicationException.TYPE.DWCA, "Resource " + resource.getShortname()
-        + " has no published data - can't update a non-existent dwca.");
+      throw new PublicationException(PublicationException.TYPE.DWCA,
+        "Resource " + resource.getShortname() + " has no published data - can't update a non-existent dwca.");
     }
 
     try {
@@ -996,8 +995,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       FileUtils.moveFile(zip, dwcaFile);
     } catch (IOException e) {
       alog.error("Can't update dwca for resource " + resource.getShortname(), e);
-      throw new PublicationException(PublicationException.TYPE.DWCA, "Could not process dwca file for resource ["
-        + resource.getShortname() + "]");
+      throw new PublicationException(PublicationException.TYPE.DWCA,
+        "Could not process dwca file for resource [" + resource.getShortname() + "]");
     }
   }
 
@@ -1019,7 +1018,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   public void visibilityToPrivate(Resource resource) throws InvalidConfigException {
     if (PublicationStatus.REGISTERED == resource.getStatus()) {
-      throw new InvalidConfigException(TYPE.RESOURCE_ALREADY_REGISTERED, "The resource is already registered with GBIF");
+      throw new InvalidConfigException(TYPE.RESOURCE_ALREADY_REGISTERED,
+        "The resource is already registered with GBIF");
     } else if (PublicationStatus.PUBLIC == resource.getStatus()) {
       resource.setStatus(PublicationStatus.PRIVATE);
       save(resource);
@@ -1033,7 +1033,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   public void visibilityToPublic(Resource resource) throws InvalidConfigException {
     if (PublicationStatus.REGISTERED == resource.getStatus()) {
-      throw new InvalidConfigException(TYPE.RESOURCE_ALREADY_REGISTERED, "The resource is already registered with GBIF");
+      throw new InvalidConfigException(TYPE.RESOURCE_ALREADY_REGISTERED,
+        "The resource is already registered with GBIF");
     } else if (PublicationStatus.PRIVATE == resource.getStatus()) {
       resource.setStatus(PublicationStatus.PUBLIC);
       save(resource);

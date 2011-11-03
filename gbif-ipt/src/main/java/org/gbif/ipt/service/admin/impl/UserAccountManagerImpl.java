@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.gbif.ipt.service.admin.impl;
 
@@ -42,7 +42,7 @@ import com.thoughtworks.xstream.XStream;
 
 /**
  * reads user accounts from a simple XStream managed xml file
- * 
+ *
  * @author markus
  */
 

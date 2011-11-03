@@ -20,7 +20,7 @@ import java.util.Map;
 
 /**
  * This class validates if the latitude field value is a decimal number.
- * 
+ *
  * @author julieth
  */
 public class LatitudeFormatConverter extends CoordinateFormatConverter {

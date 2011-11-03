@@ -16,7 +16,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-
 import javax.servlet.ServletContext;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -54,8 +53,7 @@ import org.apache.log4j.Logger;
 
 /**
  * A guice module containing wiring used for both test and production.
- * 
- * @See IPTTestModule which is used in tests and additionally injects a mock servlet context
+ *
  * @author markus
  */
 public class IPTModule extends AbstractModule {
@@ -75,8 +73,8 @@ public class IPTModule extends AbstractModule {
     bind(ThesaurusHandlingRule.class).in(Scopes.NO_SCOPE);
 
     // assisted inject factories
-    bind(GenerateDwcaFactory.class).toProvider(
-      FactoryProvider.newFactory(GenerateDwcaFactory.class, GenerateDwca.class));
+    bind(GenerateDwcaFactory.class)
+      .toProvider(FactoryProvider.newFactory(GenerateDwcaFactory.class, GenerateDwca.class));
 
   }
 
@@ -100,9 +98,6 @@ public class IPTModule extends AbstractModule {
   /**
    * Provides a freemarker template loader as a singleton to be used anywhere needed. It is configured to access the
    * utf8 templates folder on the classpath, i.e. /src/resources/templates
-   * 
-   * @param cfg
-   * @return
    */
   @Provides
   @Singleton

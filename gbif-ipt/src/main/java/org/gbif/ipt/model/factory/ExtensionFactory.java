@@ -10,9 +10,16 @@ package org.gbif.ipt.model.factory;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionProperty;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
+
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-
 import org.apache.commons.digester.Digester;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -22,18 +29,9 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParserFactory;
-
 /**
  * Building from XML definitions. Because an extension can reference thesauri, this is a 2 pass parsing process.
- * 
+ * <p/>
  * <pre>
  * - the first pass looks for thesauri, that need built
  * - these are built, and then a map<thesaurusURL, Vocabulary> is put onto the root of the second parse stack
@@ -42,6 +40,7 @@ import javax.xml.parsers.SAXParserFactory;
  */
 @Singleton
 public class ExtensionFactory {
+
   protected static Logger log = Logger.getLogger(ExtensionFactory.class);
   public static final String EXTENSION_NAMESPACE = "http://rs.gbif.org/extension/";
   private ThesaurusHandlingRule thesaurusRule;
@@ -58,8 +57,9 @@ public class ExtensionFactory {
 
   /**
    * Builds extensions from the supplied Strings which should be URLs
-   * 
+   *
    * @param urls To build extensions from
+   *
    * @return The collection of Extensions
    */
   public Collection<Extension> build(Collection<String> urls) {
@@ -83,12 +83,10 @@ public class ExtensionFactory {
 
   /**
    * Builds an extension from the supplied input stream
-   * 
+   *
    * @param is For the XML
+   *
    * @return The extension
-   * @throws SAXException
-   * @throws IOException
-   * @throws ParserConfigurationException
    */
   public Extension build(InputStream is) throws IOException, SAXException, ParserConfigurationException {
 
@@ -163,11 +161,10 @@ public class ExtensionFactory {
 
   /**
    * Builds an extension from the supplied input stream
-   * 
+   *
    * @param is For the XML
+   *
    * @return The extension
-   * @throws SAXException
-   * @throws IOException
    */
   public Extension build(String url) throws IOException, SAXException {
 

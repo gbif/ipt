@@ -11,13 +11,12 @@ import org.gbif.ipt.model.ExtensionProperty;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 
-import com.google.inject.Inject;
+import java.net.URL;
 
+import com.google.inject.Inject;
 import org.apache.commons.digester.Rule;
 import org.apache.log4j.Logger;
 import org.xml.sax.Attributes;
-
-import java.net.URL;
 
 /**
  * This will call the root of the stack to find the url2thesaurus, and then set the appropriate thesaurus on the
@@ -25,6 +24,7 @@ import java.net.URL;
  * is set if found.
  */
 public class ThesaurusHandlingRule extends Rule {
+
   public static final String ATTRIBUTE_THESAURUS = "thesaurus";
   protected static Logger log = Logger.getLogger(ThesaurusHandlingRule.class);
   private VocabulariesManager vocabManager;
@@ -45,7 +45,8 @@ public class ThesaurusHandlingRule extends Rule {
           URL vocabURL = new URL(attributes.getValue(i));
           tv = vocabManager.get(vocabURL);
         } catch (Exception e) {
-          log.error("Vocabulary with location " + attributes.getValue(i) + " couldnt get hold of: " + e.getMessage(), e);
+          log
+            .error("Vocabulary with location " + attributes.getValue(i) + " couldnt get hold of: " + e.getMessage(), e);
         }
 
         if (tv != null) {

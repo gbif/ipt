@@ -9,12 +9,12 @@
  */
 package org.gbif.ipt.model;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.ToStringBuilder;
-
 import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * Encapsulates all the information for an Ipt instance

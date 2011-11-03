@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Iterator;
-
 import javax.annotation.Nullable;
 
 import com.google.common.base.Objects;
@@ -164,6 +163,7 @@ public abstract class Source implements Comparable<Source>, Serializable {
     }
 
   }
+
   public static class SqlSource extends Source {
 
     private String sql;
@@ -206,8 +206,9 @@ public abstract class Source implements Comparable<Source>, Serializable {
      * The configured sql with an additional limit clause.
      * The exact format of this clause depends on the database and is kept in the JdbcSupport.
      * Select TOP ?, Where ROWNUM<? and LIMIT ? are readily supported.
-     * 
+     *
      * @param limit the number of records to limit this query by
+     *
      * @return the final sql string
      */
     public String getSqlLimited(int limit) {
@@ -269,8 +270,9 @@ public abstract class Source implements Comparable<Source>, Serializable {
    * <li>All greater than character</li>
    * <li>All quote character</li>
    * </ul>
-   * 
+   *
    * @param name to normalise, may be null
+   *
    * @return normalised name
    */
   public static String normaliseName(@Nullable String name) {
@@ -325,7 +327,7 @@ public abstract class Source implements Comparable<Source>, Serializable {
 
   @Override
   public int hashCode() {
-// return Objects.hashCode(resource, name);
+    // return Objects.hashCode(resource, name);
     return Objects.hashCode(name);
   }
 

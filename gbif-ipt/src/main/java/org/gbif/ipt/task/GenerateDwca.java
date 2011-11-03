@@ -39,7 +39,9 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
   private enum STATE {
     WAITING, STARTED, DATAFILES, METADATA, BUNDLING, COMPLETED, STOPPING, FAILED
-  };
+  }
+
+  ;
 
   private static final Pattern escapeChars = Pattern.compile("[\t\n\r]");
   private final Resource resource;
@@ -66,15 +68,12 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
   /**
    * Adds a single data file for a list of extension mappings that must all be
    * mapped to the same extension
-   * 
-   * @param mappings
-   * @throws IOException
-   * @throws GeneratorException
+   *
    * @throws IllegalArgumentException if not all mappings are mapped to the same
-   *         extension
+   *                                  extension
    */
-  private void addDataFile(List<ExtensionMapping> mappings) throws IOException, GeneratorException,
-    IllegalArgumentException {
+  private void addDataFile(List<ExtensionMapping> mappings)
+    throws IOException, GeneratorException, IllegalArgumentException {
     checkForInterruption();
     if (mappings == null || mappings.isEmpty()) {
       return;
@@ -122,8 +121,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
         } else {
           // check if we have a dynamic mapping
           if (pm.getIndex() != null) {
-            if (pm.getIndex() >= 0 && !pm.getTerm().qualifiedName().equalsIgnoreCase(Constants.DWC_OCCURRENCE_ID)
-              && !pm.getTerm().qualifiedName().equalsIgnoreCase(Constants.DWC_TAXON_ID)) {
+            if (pm.getIndex() >= 0 && !pm.getTerm().qualifiedName().equalsIgnoreCase(Constants.DWC_OCCURRENCE_ID) && !pm
+              .getTerm().qualifiedName().equalsIgnoreCase(Constants.DWC_TAXON_ID)) {
               // Since all default values ​​will be written in the data file, they won't be expressed in the
               // archive file (meta.xml). That's why we send a null value.
               af.addField(buildField(pm.getTerm(), dataFileRowSize, null));
@@ -168,8 +167,9 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     }
 
     // final reporting
-    addMessage(Level.INFO, "Data file written for " + currExtension + " with " + currRecords + " records and "
-      + dataFileRowSize + " columns");
+    addMessage(Level.INFO,
+      "Data file written for " + currExtension + " with " + currRecords + " records and " + dataFileRowSize
+        + " columns");
   }
 
   private void addEmlFile() throws IOException {
@@ -279,7 +279,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
   /**
    * Create meta.xml file.
-   * @throws IOException thrown
+   *
+   * @throws IOException       thrown
    * @throws TemplateException thrown
    */
   private void createMetaFile() throws IOException, TemplateException {
@@ -358,8 +359,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       File logFile = dataDir.resourcePublicationLogFile(resource.getShortname());
       FileUtils.deleteQuietly(logFile);
       BufferedWriter logWriter = new BufferedWriter(new FileWriter(logFile));
-      logWriter.write("Log Messages for publishing resource " + resource.getShortname() + " version "
-        + resource.getEmlVersion());
+      logWriter.write(
+        "Log Messages for publishing resource " + resource.getShortname() + " version " + resource.getEmlVersion());
       logWriter.write("\n\n");
 
       try {
@@ -398,8 +399,9 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
           }
 
           if (in.length <= maxColumnIndex) {
-            logWriter.write("Line with less columns than mapped\tSource:" + mapping.getSource().getName() + "\tLine:"
-              + line + in.length + "\tColumns:" + in.length + "\t" + inLine);
+            logWriter.write(
+              "Line with less columns than mapped\tSource:" + mapping.getSource().getName() + "\tLine:" + line
+                + in.length + "\tColumns:" + in.length + "\t" + inLine);
             logWriter.write("\n");
             // input row is smaller than the highest mapped column. Resize array
             // by adding nulls
@@ -423,8 +425,9 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
               matchesFilter = filter.matches(in, -1);
             }
             if (!matchesFilter) {
-              logWriter.write("Line did not match the filter criteria and were skipped\tSource:"
-                + mapping.getSource().getName() + "\tLine:" + line + in.length + "\t" + inLine);
+              logWriter.write(
+                "Line did not match the filter criteria and were skipped\tSource:" + mapping.getSource().getName()
+                  + "\tLine:" + line + in.length + "\t" + inLine);
               logWriter.write("\n");
               recordsFiltered++;
               continue;
@@ -456,9 +459,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       } catch (Exception e) {
         // some error writing this file, report
         log.error("Fatal DwC-A Generator Error", e);
-        String errorMessage =
-          "Error writing data file for mapping " + mapping.getExtension().getName() + " in source "
-            + mapping.getSource().getName() + ", line " + line;
+        String errorMessage = "Error writing data file for mapping " + mapping.getExtension().getName() + " in source "
+          + mapping.getSource().getName() + ", line " + line;
         logWriter.write(errorMessage);
         logWriter.write("\n");
         throw new GeneratorException(errorMessage, e);

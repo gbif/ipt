@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.gbif.ipt.service.admin.impl;
 
@@ -12,8 +12,8 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.DeletionNotAllowedException;
-import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.DeletionNotAllowedException.Reason;
+import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -108,8 +108,8 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
       // Check whether the organisation does not have any resources associated
       for (Resource resource : resourceManager.list()) {
         if (resource.getOrganisation() != null && resource.getOrganisation().equals(org)) {
-          throw new DeletionNotAllowedException(Reason.RESOURCE_REGISTERED_WITH_ORGANISATION, "Resource "
-            + resource.getShortname() + " associated with organisation");
+          throw new DeletionNotAllowedException(Reason.RESOURCE_REGISTERED_WITH_ORGANISATION,
+            "Resource " + resource.getShortname() + " associated with organisation");
         }
       }
       registration.getAssociatedOrganisations().remove(key);
@@ -220,8 +220,8 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
       log.error(e.getMessage(), e);
     } catch (IOException e) {
       log.error(e.getMessage(), e);
-      throw new InvalidConfigException(TYPE.REGISTRATION_CONFIG, "Couldnt read the registration information: "
-        + e.getMessage());
+      throw new InvalidConfigException(TYPE.REGISTRATION_CONFIG,
+        "Couldnt read the registration information: " + e.getMessage());
     } finally {
       if (in != null) {
         try {

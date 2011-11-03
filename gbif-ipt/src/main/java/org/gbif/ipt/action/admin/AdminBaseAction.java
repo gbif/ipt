@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.gbif.ipt.action.admin;
 
@@ -8,7 +8,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 
 /**
  * The base of all admin actions.
- * 
+ *
  * @author
  */
 public class AdminBaseAction extends BaseAction {

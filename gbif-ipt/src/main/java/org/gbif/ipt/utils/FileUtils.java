@@ -1,9 +1,5 @@
 package org.gbif.ipt.utils;
 
-import org.apache.commons.io.LineIterator;
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -28,7 +24,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.LineIterator;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+
 public class FileUtils {
+
   public static final Pattern TAB_DELIMITED = Pattern.compile("\t");
   public static final String UTF8 = "UTF8";
   protected static Logger log = Logger.getLogger(FileUtils.class);
@@ -40,12 +41,12 @@ public class FileUtils {
   /**
    * Reads a file and returns a unique set of multiple columns from lines which are no comments (starting with #) and
    * trims whitespace
-   * 
-   * @param source the UTF-8 encoded text file with tab delimited columns
+   *
+   * @param source    the UTF-8 encoded text file with tab delimited columns
    * @param resultSet the set implementation to be used. Will not be cleared before reading!
-   * @param column variable length argument of column indices to process
+   * @param column    variable length argument of column indices to process
+   *
    * @return set of column rows
-   * @throws IOException
    */
   public static Set<String> columnsToSet(InputStream source, Set<String> resultSet, int... column) throws IOException {
     LineIterator lines = getLineIterator(source);
@@ -90,9 +91,8 @@ public class FileUtils {
 
   /**
    * escapes a filename so it is a valid filename on all systems, replacing /. .. \t\r\n
-   * 
+   *
    * @param filename to be escaped
-   * @return
    */
   public static String escapeFilename(String filename) {
     return filename.replaceAll("[\\s./&]", "_");
@@ -121,17 +121,14 @@ public class FileUtils {
 
   /**
    * @param source the source input stream encoded in UTF8
-   * @return
    */
   public static LineIterator getLineIterator(InputStream source) {
     return getLineIterator(source, UTF8);
   }
 
   /**
-   * @param source the source input stream
+   * @param source   the source input stream
    * @param encoding the encoding used by the input stream
-   * @return
-   * @throws UnsupportedEncodingException
    */
   public static LineIterator getLineIterator(InputStream source, String encoding) {
     try {
@@ -203,11 +200,11 @@ public class FileUtils {
 
   /**
    * Reads a file and returns a list of all lines which are no comments (starting with #) and trims whitespace
-   * 
-   * @param source the UTF-8 encoded text file to read
+   *
+   * @param source     the UTF-8 encoded text file to read
    * @param resultList the list implementation to be used. Will not be cleared before reading!
+   *
    * @return list of lines
-   * @throws IOException
    */
   public static List<String> streamToList(InputStream source, List<String> resultList) throws IOException {
     LineIterator lines = getLineIterator(source);
@@ -226,19 +223,18 @@ public class FileUtils {
   }
 
   public static Map<String, String> streamToMap(InputStream source, int key, int value, boolean trimToNull)
-      throws IOException {
+    throws IOException {
     return streamToMap(source, new HashMap<String, String>(), key, value, trimToNull);
   }
 
   /**
-   * Read a hashmap from a tab delimited file using the row number as an integer value, ignoring commented rows starting
+   * Read a hashmap from a tab delimited file using the row number as an integer value, ignoring commented rows
+   * starting
    * with #
-   * 
+   *
    * @param source tab delimited text file to read
-   * @param key column number to use as key
-   * @param value column number to use as value
-   * @return
-   * @throws IOException
+   * @param key    column number to use as key
+   * @param value  column number to use as value
    */
   public static Map<String, String> streamToMap(InputStream source, Map<String, String> result) throws IOException {
     LineIterator lines = getLineIterator(source);
@@ -256,16 +252,14 @@ public class FileUtils {
 
   /**
    * Read a hashmap from a tab delimited file, ignoring commented rows starting with #
-   * 
-   * @param source tab delimited text file to read
-   * @param key column number to use as key
-   * @param value column number to use as value
+   *
+   * @param source     tab delimited text file to read
+   * @param key        column number to use as key
+   * @param value      column number to use as value
    * @param trimToNull if true trims map entries to null
-   * @return
-   * @throws IOException
    */
   public static Map<String, String> streamToMap(InputStream source, Map<String, String> result, int key, int value,
-      boolean trimToNull) throws IOException {
+    boolean trimToNull) throws IOException {
     LineIterator lines = getLineIterator(source);
     int maxCols = key > value ? key : value + 1;
     while (lines.hasNext()) {
@@ -291,11 +285,11 @@ public class FileUtils {
 
   /**
    * Reads a file and returns a unique set of all lines which are no comments (starting with #) and trims whitespace
-   * 
-   * @param source the UTF-8 encoded text file to read
+   *
+   * @param source    the UTF-8 encoded text file to read
    * @param resultSet the set implementation to be used. Will not be cleared before reading!
+   *
    * @return set of unique lines
-   * @throws IOException
    */
   public static Set<String> streamToSet(InputStream source, Set<String> resultSet) throws IOException {
     LineIterator lines = getLineIterator(source);
@@ -310,8 +304,8 @@ public class FileUtils {
   }
 
   public static String toFilePath(URL url) {
-    String protocol = url.getProtocol() == null || url.getProtocol().equalsIgnoreCase("http") ? "" : "/__"
-        + url.getProtocol() + "__";
+    String protocol =
+      url.getProtocol() == null || url.getProtocol().equalsIgnoreCase("http") ? "" : "/__" + url.getProtocol() + "__";
     String domain = url.getAuthority() == null ? "__domainless" : url.getAuthority();
     return domain + protocol + url.getFile();
   }

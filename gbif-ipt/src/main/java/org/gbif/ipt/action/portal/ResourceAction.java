@@ -8,13 +8,14 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.utils.FileUtils;
 import org.gbif.metadata.eml.Eml;
 
-import com.google.inject.Inject;
-
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import com.google.inject.Inject;
+
 public class ResourceAction extends PortalBaseAction {
+
   @Inject
   private RegistrationManager registrationManager;
   private List<Resource> resources;
@@ -33,8 +34,6 @@ public class ResourceAction extends PortalBaseAction {
 
   /**
    * Return the size of the DwC-A file.
-   * 
-   * @return
    */
   public String getDwcaFormattedSize() {
     String size = FileUtils.formatSize(resourceManager.getDwcaSize(resource), 0);
@@ -47,8 +46,6 @@ public class ResourceAction extends PortalBaseAction {
 
   /**
    * Return the size of the EML file.
-   * 
-   * @return
    */
   public String getEmlFormattedSize() {
     String size = FileUtils.formatSize(resourceManager.getEmlSize(resource), 0);
@@ -63,8 +60,8 @@ public class ResourceAction extends PortalBaseAction {
   }
 
   public Map<String, String> getRanks() {
-    Map<String, String> ranks = vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, Locale.getDefault().getLanguage(),
-        false);
+    Map<String, String> ranks =
+      vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, Locale.getDefault().getLanguage(), false);
     return ranks;
   }
 
@@ -77,8 +74,6 @@ public class ResourceAction extends PortalBaseAction {
 
   /**
    * Return the RTF size file format
-   * 
-   * @return
    */
   public String getRtfFormattedSize() {
     String size = FileUtils.formatSize(resourceManager.getRtfSize(resource), 0);

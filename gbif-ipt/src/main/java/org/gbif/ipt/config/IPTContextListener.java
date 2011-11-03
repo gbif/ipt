@@ -23,8 +23,6 @@ public class IPTContextListener extends GuiceServletContextListener {
 
   /**
    * Ensure the injector is created when the web application is deployed.
-   * 
-   * @author htobon
    */
   @Override
   protected Injector getInjector() {

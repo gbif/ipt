@@ -9,15 +9,16 @@
  */
 package org.gbif.ipt.model;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
-
-import java.io.Serializable;
 
 /**
  * Encapsulates all the information for an Organisation
  */
 public class Organisation extends AgentBase implements Serializable {
+
   private static final long serialVersionUID = 2238765436256564L;
 
   private String password;

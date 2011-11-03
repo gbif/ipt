@@ -3,6 +3,7 @@ package org.gbif.ipt.action;
 import org.apache.commons.lang.StringUtils;
 
 public class POSTAction extends BaseAction {
+
   protected boolean delete = false;
   protected boolean notFound = false;
   protected boolean validate = true;
@@ -10,9 +11,6 @@ public class POSTAction extends BaseAction {
 
   /**
    * Override this method if you need to delete entities based on the id value after the PARAM interceptor is called
-   * 
-   * @return
-   * @throws Exception
    */
   public String delete() throws Exception {
     return SUCCESS;
@@ -51,9 +49,6 @@ public class POSTAction extends BaseAction {
 
   /**
    * Override this method if you need to persist entities after the PARAM interceptor is called
-   * 
-   * @return
-   * @throws Exception
    */
   public String save() throws Exception {
     return SUCCESS;

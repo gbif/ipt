@@ -1,10 +1,11 @@
 package org.gbif.ipt.task;
 
-import org.apache.log4j.Level;
-
 import java.util.Date;
 
+import org.apache.log4j.Level;
+
 public class TaskMessage {
+
   public final Level level;
   public final long timestamp;
   public final String message;

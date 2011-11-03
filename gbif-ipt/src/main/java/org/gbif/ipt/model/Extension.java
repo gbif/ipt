@@ -3,14 +3,6 @@ package org.gbif.ipt.model;
 import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.ipt.config.Constants;
 
-import static com.google.common.base.Objects.equal;
-
-import com.google.common.base.Objects;
-import com.google.gson.annotations.SerializedName;
-
-import org.apache.commons.lang.builder.CompareToBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -20,13 +12,20 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.google.common.base.Objects;
+import com.google.gson.annotations.SerializedName;
+import org.apache.commons.lang.builder.CompareToBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
+import static com.google.common.base.Objects.equal;
+
 /**
  * A Darwin Core extension definition
- * 
+ *
  * @author markus
- * 
  */
 public class Extension implements Serializable {
+
   private static final long serialVersionUID = 543543543L;
   private String title; // human title
   private String name; // table, file & xml tag naming. no whitespace allowed
@@ -200,7 +199,8 @@ public class Extension implements Serializable {
   }
 
   public void setRowType(String rowType) {
-    if (Constants.DWC_ROWTYPE_OCCURRENCE.equalsIgnoreCase(rowType) || Constants.DWC_ROWTYPE_TAXON.equalsIgnoreCase(rowType)) {
+    if (Constants.DWC_ROWTYPE_OCCURRENCE.equalsIgnoreCase(rowType) || Constants.DWC_ROWTYPE_TAXON
+      .equalsIgnoreCase(rowType)) {
       core = true;
     } else {
       core = false;

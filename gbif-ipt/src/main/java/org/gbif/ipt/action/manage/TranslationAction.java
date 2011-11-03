@@ -27,8 +27,8 @@ import org.gbif.ipt.service.manage.SourceManager;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import com.google.inject.Inject;
 import com.google.inject.servlet.SessionScoped;
@@ -61,7 +61,8 @@ public class TranslationAction extends ManagerBaseAction {
     }
 
     public boolean isLoaded(String rowType, ConceptTerm term) {
-      return (this.rowType != null && this.rowType.equals(rowType) && this.term != null && this.term.equals(term) && tmap != null);
+      return (this.rowType != null && this.rowType.equals(rowType) && this.term != null && this.term.equals(term)
+        && tmap != null);
     }
 
     public void setTmap(String rowType, ConceptTerm term, TreeMap<String, String> tmap) {

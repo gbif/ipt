@@ -25,6 +25,7 @@ import java.util.Map.Entry;
 public class SubtypeUtils {
 
   public final static Map<String, String> subtypeList = new LinkedHashMap<String, String>();
+
   static {
     // Checklist
     subtypeList.put("Select Checklist", "");

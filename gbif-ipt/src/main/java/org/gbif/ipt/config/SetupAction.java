@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.gbif.ipt.config;
 
@@ -10,8 +10,8 @@ import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.InvalidConfigException;
-import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
+import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.ConfigManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
@@ -28,7 +28,7 @@ import org.apache.commons.lang.StringUtils;
 
 /**
  * The Action responsible for all user input relating to the IPT configuration.
- * 
+ *
  * @author tim
  */
 public class SetupAction extends BaseAction {
@@ -61,7 +61,7 @@ public class SetupAction extends BaseAction {
 
   /**
    * Tries to guess the current baseURL on the running server from the context
-   * 
+   *
    * @return baseURL as string
    */
   public String findBaseURL() {
@@ -108,7 +108,7 @@ public class SetupAction extends BaseAction {
 
   /**
    * If the config is in debug mode, then production settings are not possible
-   * 
+   *
    * @return true if production setting is allowed
    */
   public boolean isProductionSettingAllowed() {
@@ -149,11 +149,9 @@ public class SetupAction extends BaseAction {
   }
 
   /**
-   * Method called when setting up the IPT for the very first time. There might not even be a logged in user, be careful
+   * Method called when setting up the IPT for the very first time. There might not even be a logged in user, be
+   * careful
    * to not require an admin!
-   * 
-   * @return
-   * @throws InvalidConfigException
    */
   public String setup() {
     if (isHttpPost() && dataDirPath != null) {
@@ -274,7 +272,8 @@ public class SetupAction extends BaseAction {
           addFieldError("baseURL", getText("admin.config.baseUrl.inaccessible") + " " + baseURL);
         } else {
           log.error(e);
-          addActionError(getTextWithDynamicArgs("admin.config.setup2.already.registered", cfg.getRegistryType().toString()));
+          addActionError(
+            getTextWithDynamicArgs("admin.config.setup2.already.registered", cfg.getRegistryType().toString()));
         }
       }
     }

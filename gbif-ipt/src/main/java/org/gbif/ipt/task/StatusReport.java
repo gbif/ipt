@@ -1,12 +1,13 @@
 package org.gbif.ipt.task;
 
-import org.apache.commons.lang.xwork.StringUtils;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.xwork.StringUtils;
+
 public class StatusReport {
+
   private final boolean completed;
   private final Exception exception;
   private final long timestamp;

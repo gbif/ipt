@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.gbif.ipt.action.admin;
 
@@ -25,7 +25,7 @@ import com.google.inject.servlet.SessionScoped;
 
 /**
  * The Action responsible for all user input relating to the registration options
- * 
+ *
  * @author tim
  * @author josecuadra
  */

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.gbif.ipt.config;
 
@@ -39,7 +39,7 @@ import org.apache.log4j.xml.DOMConfigurator;
 
 /**
  * A skeleton implementation for the time being....
- * 
+ *
  * @author tim
  */
 @Singleton
@@ -57,10 +57,9 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   private final static String PATH_TO_CSS = "/styles/main.css";
 
   @Inject
-  public ConfigManagerImpl(DataDir dataDir, AppConfig cfg, InputStreamUtils streamUtils,
-    UserAccountManager userManager, ResourceManager resourceManager, ExtensionManager extensionManager,
-    VocabulariesManager vocabManager, RegistrationManager registrationManager, ConfigWarnings warnings,
-    DefaultHttpClient client) {
+  public ConfigManagerImpl(DataDir dataDir, AppConfig cfg, InputStreamUtils streamUtils, UserAccountManager userManager,
+    ResourceManager resourceManager, ExtensionManager extensionManager, VocabulariesManager vocabManager,
+    RegistrationManager registrationManager, ConfigWarnings warnings, DefaultHttpClient client) {
     super(cfg, dataDir);
     this.streamUtils = streamUtils;
     this.userManager = userManager;
@@ -87,11 +86,12 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
    * It Creates a HttpHost object with the string given by the user and verifies if there is a connection with this
    * host. If there is a connection with this host, it changes the current proxy host with this host. If don't it keeps
    * the current proxy.
-   * 
-   * @param proxy an URL with the format http://proxy.my-institution.com:8080.
+   *
+   * @param proxy    an URL with the format http://proxy.my-institution.com:8080.
    * @param hostTemp the actual proxy.
+   *
    * @throws InvalidConfigException If it can not connect to the proxy host or if the port number is no integer or if
-   *         the proxy URL is not with the valid format http://proxy.my-institution.com:8080
+   *                                the proxy URL is not with the valid format http://proxy.my-institution.com:8080
    */
   private boolean changeProxy(HttpHost hostTemp, String proxy) {
     try {
@@ -151,8 +151,6 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
 
   /**
    * Update configuration singleton from config file in data dir.
-   * 
-   * @throws InvalidConfigException
    */
   public void loadDataDirConfig() throws InvalidConfigException {
     log.info("Reading DATA DIRECTORY: " + dataDir.dataDir.getAbsolutePath());
@@ -228,8 +226,8 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     log.info("Updating the baseURL to: " + baseURL);
 
     boolean validate = true;
-    if (("localhost").equals(baseURL.getHost()) || ("127.0.0.1").equals(baseURL.getHost())
-      || baseURL.getHost().equalsIgnoreCase(this.getHostName())) {
+    if (("localhost").equals(baseURL.getHost()) || ("127.0.0.1").equals(baseURL.getHost()) || baseURL.getHost()
+      .equalsIgnoreCase(this.getHostName())) {
       log.warn("Localhost used as base url, IPT will not be visible to the outside!");
 
       // validate if localhost URL is configured only in developer mode.
@@ -298,10 +296,11 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
 
   /**
    * It validates if is the first time that the user saves a proxy, if this is true, the proxy is saved normally (the
-   * first time that the proxy is saved is in the setup page), if not (the second time that the user saves a proxy is in
+   * first time that the proxy is saved is in the setup page), if not (the second time that the user saves a proxy is
+   * in
    * the config page), it validates if this proxy is the same as current proxy, if this is true, nothing changes, if
    * not, it removes the current proxy and save the new proxy.
-   * 
+   *
    * @param proxy an URL with the format http://proxy.my-institution.com:8080.
    */
   public void setProxy(String proxy) throws InvalidConfigException {
@@ -357,8 +356,9 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
 
   /**
    * It validates if the there is a connection with the baseURL, it executes a request using the baseURL.
-   * 
+   *
    * @param baseURL a URL to validate.
+   *
    * @return true if the response to the request has a status code equal to 200.
    */
   public boolean validateBaseURL(URL baseURL) {

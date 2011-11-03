@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -80,8 +79,9 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     List<NameValuePair> data = new ArrayList<NameValuePair>();
 
     Eml eml = resource.getEml();
-    data.add(new BasicNameValuePair("name", ((resource.getTitle() != null) ? StringUtils.trimToEmpty(resource
-      .getTitle()) : StringUtils.trimToEmpty(resource.getShortname()))));
+    data.add(new BasicNameValuePair("name",
+      ((resource.getTitle() != null) ? StringUtils.trimToEmpty(resource.getTitle())
+        : StringUtils.trimToEmpty(resource.getShortname()))));
     data.add(new BasicNameValuePair("description", StringUtils.trimToEmpty(resource.getDescription())));
     data.add(new BasicNameValuePair("homepageURL", StringUtils.trimToEmpty(eml.getDistributionUrl())));
     data.add(new BasicNameValuePair("logoURL", StringUtils.trimToEmpty(eml.getLogoUrl())));
@@ -104,8 +104,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
     data.add(new BasicNameValuePair("primaryContactType", primaryContactType));
     data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(primaryContact.getEmail())));
-    data.add(new BasicNameValuePair("primaryContactName", StringUtils.trimToNull(StringUtils.trimToEmpty(primaryContact
-      .getFullName()))));
+    data.add(new BasicNameValuePair("primaryContactName",
+      StringUtils.trimToNull(StringUtils.trimToEmpty(primaryContact.getFullName()))));
     // TODO: For release 2.0.4
     // data.add(new BasicNameValuePair("primaryContactFirstName",
     // StringUtils.trimToNull(StringUtils.trimToEmpty(primaryContact.getFirstName()))));
@@ -170,8 +170,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   /**
    * Returns the delete resource URL
-   * 
-   * @return
    */
   private String getDeleteResourceUri(String resourceKey) {
     return String.format("%s%s%s", cfg.getRegistryUrl(), "/registry/ipt/resource/", resourceKey);
@@ -203,9 +201,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   /**
    * Returns the Extensions url
-   * 
-   * @param json
-   * @return
    */
   private String getExtensionsURL(boolean json) {
     return String.format("%s%s%s", cfg.getRegistryUrl(), "/registry/extensions", json ? ".json" : "/");
@@ -213,8 +208,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   /**
    * Returns the IPT Resource url
-   * 
-   * @return
    */
   private String getIptResourceUri() {
     return String.format("%s%s", cfg.getRegistryUrl(), "/registry/ipt/resource");
@@ -222,8 +215,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   /**
    * Returns the IPT update Resource url
-   * 
-   * @return
    */
   private String getIptUpdateResourceUri(String resourceKey) {
     return String.format("%s%s%s", cfg.getRegistryUrl(), "/registry/ipt/resource/", resourceKey);
@@ -231,8 +222,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   /**
    * Returns the IPT update url used in GBIF Registry
-   * 
-   * @return
    */
   private String getIptUpdateUri(String iptKey) {
     return String.format("%s%s%s", cfg.getRegistryUrl(), "/registry/ipt/update/", iptKey);
@@ -240,8 +229,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   /**
    * Returns the IPT url
-   * 
-   * @return
    */
   private String getIptUri() {
     return String.format("%s%s", cfg.getRegistryUrl(), "/registry/ipt/register");
@@ -249,9 +236,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   /**
    * Returns the login URL
-   * 
-   * @param organisationKey
-   * @return
    */
   private String getLoginURL(String organisationKey) {
     return String.format("%s%s%s%s", cfg.getRegistryUrl(), "/registry/organisation/", organisationKey, "?op=login");
@@ -316,9 +300,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   /**
    * Returns the Organisations url
-   * 
-   * @param json
-   * @return
    */
   private String getOrganisationsURL(boolean json) {
     return String.format("%s%s%s", cfg.getRegistryUrl(), "/registry/organisation", json ? ".json" : "/");
@@ -330,9 +311,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * 2. If (1) is incomplete (missing email or last name) use Resource Creator.
    * 3. if (2) is incomplete, use Metadata Provider.
    * 4. if (3) is incomplete return null.
-   * 
-   * @param eml
-   * @return
    */
   private Agent getPrimaryContact(Eml eml) {
     Agent[] primaryContacts = new Agent[3];
@@ -365,8 +343,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   /**
    * Returns the ATOM url
-   * 
-   * @return
    */
   private String getRssFeedURL() {
     return String.format("%s/rss.do", cfg.getBaseURL());
@@ -401,9 +377,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   /**
    * Returns the Extensions url
-   * 
-   * @param json
-   * @return
    */
   private String getVocabulariesURL(boolean json) {
     return String.format("%s%s%s", cfg.getRegistryUrl(), "/registry/thesauri", json ? ".json" : "/");
@@ -570,9 +543,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     List<NameValuePair> data = buildRegistryParameters(resource);
 
     try {
-      Response resp =
-        http.post(getIptUpdateResourceUri(resource.getKey().toString()), null, null, orgCredentials(resource
-          .getOrganisation()), new UrlEncodedFormEntity(data));
+      Response resp = http.post(getIptUpdateResourceUri(resource.getKey().toString()), null, null,
+        orgCredentials(resource.getOrganisation()), new UrlEncodedFormEntity(data));
       if (http.success(resp)) {
         log.debug("Resource's registration info has been updated");
       } else {

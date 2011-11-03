@@ -74,8 +74,8 @@ public class SourceAction extends ManagerBaseAction {
     if (file != null) {
       // uploaded a new file. Is it compressed?
       if (StringUtils.endsWithIgnoreCase(fileContentType, "zip") // application/zip
-        || StringUtils.endsWithIgnoreCase(fileContentType, "gzip")
-        || StringUtils.endsWithIgnoreCase(fileContentType, "compressed")) { // application/x-gzip
+        || StringUtils.endsWithIgnoreCase(fileContentType, "gzip") || StringUtils
+        .endsWithIgnoreCase(fileContentType, "compressed")) { // application/x-gzip
         try {
           File tmpDir = dataDir.tmpDir();
           List<File> files = CompressionUtil.decompressFile(tmpDir, file);
@@ -154,8 +154,6 @@ public class SourceAction extends ManagerBaseAction {
 
   /**
    * Copy current file to same directory with different name and insert some temporal session variables.
-   * 
-   * @throws IOException
    */
   private void copyFileToOverwrite() throws IOException {
     File fileNew = new File(file.getParent(), Source.normaliseName(file.getName()) + "-copied.tmp");
@@ -389,11 +387,11 @@ public class SourceAction extends ManagerBaseAction {
           addFieldError("sqlSource.host", getText("validation.short", new String[] {getText("sqlSource.host"), "2"}));
         }
         if (StringUtils.trimToEmpty(src.getDatabase()).length() == 0) {
-          addFieldError("sqlSource.database", getText("validation.required",
-            new String[] {getText("sqlSource.database")}));
+          addFieldError("sqlSource.database",
+            getText("validation.required", new String[] {getText("sqlSource.database")}));
         } else if (StringUtils.trimToEmpty(src.getDatabase()).length() < 2) {
-          addFieldError("sqlSource.database", getText("validation.short", new String[] {getText("sqlSource.database"),
-            "2"}));
+          addFieldError("sqlSource.database",
+            getText("validation.short", new String[] {getText("sqlSource.database"), "2"}));
         }
       } // else {
       // FILE SOURCE

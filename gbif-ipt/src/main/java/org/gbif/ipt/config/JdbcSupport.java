@@ -151,7 +151,10 @@ public class JdbcSupport {
       return url;
     }
 
-  };
+  }
+
+  ;
+
   protected enum LIMIT_TYPE {
     LIMIT, TOP, ROWNUM
   }
@@ -195,7 +198,7 @@ public class JdbcSupport {
     driver.clear();
     // get distinct list of driver names
     Set<String> names = new HashSet<String>();
-    for (Enumeration propertyNames = props.propertyNames(); propertyNames.hasMoreElements();) {
+    for (Enumeration propertyNames = props.propertyNames(); propertyNames.hasMoreElements(); ) {
       String name = StringUtils.substringBefore((String) propertyNames.nextElement(), ".");
       names.add(name);
     }
@@ -203,9 +206,8 @@ public class JdbcSupport {
     for (String name : names) {
       name = name.toLowerCase();
       LIMIT_TYPE lt = LIMIT_TYPE.valueOf(props.getProperty(name + ".limitType"));
-      JdbcInfo info =
-        new JdbcInfo(name, props.getProperty(name + ".title"), props.getProperty(name + ".driver"), props
-          .getProperty(name + ".url"), lt);
+      JdbcInfo info = new JdbcInfo(name, props.getProperty(name + ".title"), props.getProperty(name + ".driver"),
+        props.getProperty(name + ".url"), lt);
       driver.put(name, info);
     }
     return driver.size();

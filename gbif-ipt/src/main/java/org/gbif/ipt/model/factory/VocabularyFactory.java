@@ -13,7 +13,6 @@ import org.gbif.ipt.model.VocabularyTerm;
 
 import java.io.IOException;
 import java.io.InputStream;
-
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -46,12 +45,10 @@ public class VocabularyFactory {
 
   /**
    * Builds a Vocabulary from the supplied input stream
-   * 
+   *
    * @param is For the XML
+   *
    * @return The extension
-   * @throws SAXException
-   * @throws IOException
-   * @throws ParserConfigurationException
    */
   public Vocabulary build(InputStream is) throws IOException, SAXException, ParserConfigurationException {
     Digester digester = new Digester(saxf.newSAXParser());
@@ -121,6 +118,7 @@ public class VocabularyFactory {
 
   /**
    * @param url To build from
+   *
    * @return The thesaurus or null on error
    */
   public Vocabulary build(String url) {

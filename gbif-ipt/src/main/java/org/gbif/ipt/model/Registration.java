@@ -17,6 +17,7 @@ import java.util.TreeMap;
  * Encapsulates all the information for registration
  */
 public class Registration implements Serializable {
+
   private static final long serialVersionUID = 989864521100L;
 
   // private List<Organisation> associatedOrganisations;

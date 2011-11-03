@@ -1,20 +1,21 @@
 package org.gbif.ipt.model;
 
-import static com.google.common.base.Objects.equal;
-
-import com.google.common.base.Objects;
-
-import org.apache.commons.lang.StringUtils;
-
 import java.io.Serializable;
 import java.util.Date;
 
+import com.google.common.base.Objects;
+import org.apache.commons.lang.StringUtils;
+
+import static com.google.common.base.Objects.equal;
+
 public class User implements Serializable, Cloneable {
+
   public enum Role {
     User, Manager, Publisher, Admin
   }
 
-  private static final long serialVersionUID = 3832626162173359411L;;
+  private static final long serialVersionUID = 3832626162173359411L;
+  ;
 
   private String email; // unique
   private Password password = new Password();
@@ -143,15 +144,15 @@ public class User implements Serializable, Cloneable {
     }
   }
 
-//  public void setRole(String role) {
-//    if (role != null && role.equalsIgnoreCase("manager")) {
-//      this.role = Role.Manager;
-//    } else if (role != null && role.equalsIgnoreCase("admin")) {
-//      this.role = Role.Admin;
-//    } else {
-//      this.role = Role.User;
-//    }
-//  }
+  //  public void setRole(String role) {
+  //    if (role != null && role.equalsIgnoreCase("manager")) {
+  //      this.role = Role.Manager;
+  //    } else if (role != null && role.equalsIgnoreCase("admin")) {
+  //      this.role = Role.Admin;
+  //    } else {
+  //      this.role = Role.User;
+  //    }
+  //  }
 
   @Override
   public String toString() {

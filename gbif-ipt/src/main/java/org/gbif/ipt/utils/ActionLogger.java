@@ -7,6 +7,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 public class ActionLogger {
+
   private final Logger log;
   private final BaseAction action;
 
