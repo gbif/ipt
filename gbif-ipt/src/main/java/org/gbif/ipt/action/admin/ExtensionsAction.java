@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.POSTAction;
@@ -27,15 +24,13 @@ import org.apache.commons.lang.StringUtils;
 
 /**
  * The Action responsible for all user input relating to the DarwinCore extension management.
- *
- * @author tim
  */
 public class ExtensionsAction extends POSTAction {
 
   /**
    * A session scoped bean to keep a list of all extensions with basic metadata as exposed by the registry directly.
    * There wont be any properties listed. The reason for keeping this in the session is to load the extension list only
-   * once - but not to store it continuesly in memory. Once the admin has logged out all this info will be removed
+   * once - but not to store it continuously in memory. Once the admin has logged out all this info will be removed
    * again
    * and only the installed extensions remain in memory.
    *
@@ -51,7 +46,6 @@ public class ExtensionsAction extends POSTAction {
 
     @Inject
     public RegisteredExtensions(RegistryManager registryManager) {
-      super();
       this.registryManager = registryManager;
     }
 
@@ -118,10 +112,13 @@ public class ExtensionsAction extends POSTAction {
   public String list() {
     if (updateVocabs) {
       UpdateResult result = vocabManager.updateAll();
-      addActionMessage(getText("admin.extensions.vocabularies.updated", new String[] {result.updated.size() + ""}));
-      addActionMessage(getText("admin.extensions.vocabularies.unchanged", new String[] {result.unchanged.size() + ""}));
+      addActionMessage(
+        getText("admin.extensions.vocabularies.updated", new String[] {String.valueOf(result.updated.size())}));
+      addActionMessage(
+        getText("admin.extensions.vocabularies.unchanged", new String[] {String.valueOf(result.unchanged.size())}));
       if (!result.errors.isEmpty()) {
-        addActionWarning(getText("admin.extensions.vocabularies.errors", new String[] {result.errors.size() + ""}));
+        addActionWarning(
+          getText("admin.extensions.vocabularies.errors", new String[] {String.valueOf(result.errors.size())}));
         for (Entry<String, String> err : result.errors.entrySet()) {
           addActionError(getText("admin.extensions.error.updating", new String[] {err.getKey(), err.getValue()}));
         }

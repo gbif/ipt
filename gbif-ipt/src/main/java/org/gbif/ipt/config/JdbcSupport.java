@@ -32,9 +32,6 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.xwork.StringUtils;
 
-/**
- * @author markus
- */
 public class JdbcSupport {
 
   public class JdbcInfo {
@@ -46,7 +43,6 @@ public class JdbcSupport {
     protected final LIMIT_TYPE limitType;
 
     protected JdbcInfo(String name, String title, String driver, String url, LIMIT_TYPE limitType) {
-      super();
       this.name = name;
       this.title = title;
       this.driver = driver;
@@ -152,8 +148,6 @@ public class JdbcSupport {
     }
 
   }
-
-  ;
 
   protected enum LIMIT_TYPE {
     LIMIT, TOP, ROWNUM

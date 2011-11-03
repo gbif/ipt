@@ -11,7 +11,7 @@ import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 import org.apache.log4j.Logger;
 
 /**
- * An Interceptor that makes sure an admin user is currently logged in and returns a notAllowed otherwise
+ * An Interceptor that makes sure an admin user is currently logged in and returns a notAllowed otherwise.
  */
 public class RequireAdminInterceptor extends AbstractInterceptor {
 
@@ -19,7 +19,7 @@ public class RequireAdminInterceptor extends AbstractInterceptor {
 
   @Override
   public String intercept(ActionInvocation invocation) throws Exception {
-    Map session = invocation.getInvocationContext().getSession();
+    Map<String, Object> session = invocation.getInvocationContext().getSession();
     User user = (User) session.get(Constants.SESSION_USER);
     if (user != null && user.hasAdminRights()) {
       return invocation.invoke();

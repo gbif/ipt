@@ -18,7 +18,6 @@ import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.inject.servlet.ServletModule;
 import com.google.inject.struts2.Struts2GuicePluginModule;
 
-
 public class IPTContextListener extends GuiceServletContextListener {
 
   /**

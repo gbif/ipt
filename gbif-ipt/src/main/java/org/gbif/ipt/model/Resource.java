@@ -24,8 +24,6 @@ import static com.google.common.base.Objects.equal;
  * The main class to represent an IPT resource.
  * Its enumerated type property defines the kind of resource (Metadata, Checklist, Occurrence)
  * A resource can be identified by its short name which has to be unique within an IPT instance.
- *
- * @author markus
  */
 public class Resource implements Serializable, Comparable<Resource> {
 
@@ -35,10 +33,9 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   private static Logger log = Logger.getLogger(Resource.class);
 
-  private static final TermFactory fact = new TermFactory();
+  private static final TermFactory FACT = new TermFactory();
 
   private static final long serialVersionUID = 3832626162173352190L;
-  ;
   private String shortname; // unique
   private Eml eml = new Eml();
   private String coreType;
@@ -169,7 +166,7 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   public String getCoreRowType() {
     List<ExtensionMapping> cores = getCoreMappings();
-    if (cores.size() > 0) {
+    if (!cores.isEmpty()) {
       return cores.get(0).getExtension().getRowType();
     }
     return null;
@@ -181,8 +178,8 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   public ConceptTerm getCoreTypeTerm() {
     List<ExtensionMapping> cores = getCoreMappings();
-    if (cores.size() > 0) {
-      return fact.findTerm(cores.get(0).getExtension().getRowType());
+    if (!cores.isEmpty()) {
+      return FACT.findTerm(cores.get(0).getExtension().getRowType());
     }
     return null;
   }
@@ -331,10 +328,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    * @return true if this resource is mapped to at least one core extension
    */
   public boolean hasCore() {
-    if (getCoreTypeTerm() != null) {
-      return true;
-    }
-    return false;
+    return getCoreTypeTerm() != null;
   }
 
   @Override
@@ -345,7 +339,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   public boolean hasMappedData() {
     for (ExtensionMapping cm : getCoreMappings()) {
       // test each core mapping if there is at least one field mapped
-      if (cm.getFields().size() > 0) {
+      if (!cm.getFields().isEmpty()) {
         return true;
       }
     }
@@ -365,7 +359,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   public void setCoreType(String coreType) {
-    this.coreType = coreType.equals("") ? null : coreType;
+    this.coreType = coreType.length() == 0 ? null : coreType;
   }
 
   public void setCreated(Date created) {
@@ -437,7 +431,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   public void setSubtype(String subtype) {
-    this.subtype = subtype.equals("") ? null : subtype;
+    this.subtype = subtype.length() == 0 ? null : subtype;
   }
 
 

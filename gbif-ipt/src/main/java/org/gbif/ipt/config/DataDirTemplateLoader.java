@@ -22,9 +22,6 @@ import java.io.IOException;
 import freemarker.cache.FileTemplateLoader;
 import org.apache.log4j.Logger;
 
-/**
- * @author markus
- */
 public class DataDirTemplateLoader extends FileTemplateLoader {
 
   private Logger log = Logger.getLogger(DataDirTemplateLoader.class);

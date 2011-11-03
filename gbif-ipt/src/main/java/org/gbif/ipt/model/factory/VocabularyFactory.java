@@ -27,7 +27,7 @@ import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
 /**
- * Building from XML definitions
+ * Building from XML definitions.
  */
 public class VocabularyFactory {
 
@@ -38,7 +38,6 @@ public class VocabularyFactory {
 
   @Inject
   public VocabularyFactory(DefaultHttpClient httpClient, SAXParserFactory saxf) {
-    super();
     this.client = httpClient;
     this.saxf = saxf;
   }

@@ -29,9 +29,6 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import org.apache.log4j.Logger;
 
-/**
- * @author markus
- */
 @Singleton
 public class ConceptTermConverter implements Converter {
 
@@ -40,7 +37,6 @@ public class ConceptTermConverter implements Converter {
 
   @Inject
   public ConceptTermConverter(ExtensionRowTypeConverter extConverter) {
-    super();
     this.extConverter = extConverter;
   }
 

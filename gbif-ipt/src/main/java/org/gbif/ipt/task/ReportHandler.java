@@ -17,11 +17,9 @@
 package org.gbif.ipt.task;
 
 /**
- * A callback handler to report the current state of a concurrent task, ie. Runnable
- *
- * @author markus
+ * A callback handler to report the current state of a concurrent task, ie. Runnable.
  */
 public interface ReportHandler {
 
-  public void report(String resourceShortname, StatusReport report);
+  void report(String resourceShortname, StatusReport report);
 }

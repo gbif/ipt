@@ -36,8 +36,7 @@ public class ResourceAction extends PortalBaseAction {
    * Return the size of the DwC-A file.
    */
   public String getDwcaFormattedSize() {
-    String size = FileUtils.formatSize(resourceManager.getDwcaSize(resource), 0);
-    return size;
+    return FileUtils.formatSize(resourceManager.getDwcaSize(resource), 0);
   }
 
   public Eml getEml() {
@@ -48,8 +47,7 @@ public class ResourceAction extends PortalBaseAction {
    * Return the size of the EML file.
    */
   public String getEmlFormattedSize() {
-    String size = FileUtils.formatSize(resourceManager.getEmlSize(resource), 0);
-    return size;
+    return FileUtils.formatSize(resourceManager.getEmlSize(resource), 0);
   }
 
   public Ipt getIpt() {
@@ -60,9 +58,7 @@ public class ResourceAction extends PortalBaseAction {
   }
 
   public Map<String, String> getRanks() {
-    Map<String, String> ranks =
-      vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, Locale.getDefault().getLanguage(), false);
-    return ranks;
+    return vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, Locale.getDefault().getLanguage(), false);
   }
 
   /**
@@ -76,8 +72,7 @@ public class ResourceAction extends PortalBaseAction {
    * Return the RTF size file format
    */
   public String getRtfFormattedSize() {
-    String size = FileUtils.formatSize(resourceManager.getRtfSize(resource), 0);
-    return size;
+    return FileUtils.formatSize(resourceManager.getRtfSize(resource), 0);
   }
 
   public boolean isRtfFileExisting() {

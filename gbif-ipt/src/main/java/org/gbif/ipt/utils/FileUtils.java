@@ -103,14 +103,13 @@ public class FileUtils {
     if (decimalPos >= 0) {
       fmt.setMaximumFractionDigits(decimalPos);
     }
-    final double size = longSize;
-    double val = size / (1024 * 1024);
+    double val = longSize / (1024 * 1024);
     if (val > 1) {
-      return fmt.format(val).concat(" MB");
+      return fmt.format(val) + " MB";
     }
-    val = size / 1024;
+    val = longSize / 1024;
     if (val > 1) {
-      return fmt.format(val).concat(" KB");
+      return fmt.format(val) + " KB";
     }
     return longSize + " bytes";
   }
@@ -149,20 +148,14 @@ public class FileUtils {
   }
 
   private static boolean ignore(String line) {
-    if (StringUtils.trimToNull(line) == null || line.startsWith("#")) {
-      return true;
-    }
-    return false;
+    return StringUtils.trimToNull(line) == null || line.startsWith("#");
   }
 
   public static boolean isCompressedFile(File source) {
     String suffix = source.getName().substring(source.getName().lastIndexOf(".") + 1);
     if (suffix != null && suffix.length() > 0) {
-      if (suffix.equalsIgnoreCase("zip")) {
+      if (suffix.equalsIgnoreCase("zip") || suffix.equalsIgnoreCase("tgz") || suffix.equalsIgnoreCase("gz")) {
         // try zip
-        return true;
-      } else if (suffix.equalsIgnoreCase("tgz") || suffix.equalsIgnoreCase("gz")) {
-        // try gzip
         return true;
       }
     }
@@ -170,7 +163,6 @@ public class FileUtils {
   }
 
   public static Writer startNewUtf8File(File file) throws IOException {
-    Writer writer = null;
     try {
       org.apache.commons.io.FileUtils.touch(file);
     } catch (IOException e) {
@@ -184,8 +176,7 @@ public class FileUtils {
         throw e;
       }
     }
-    writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, false), UTF8));
-    return writer;
+    return new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, false), UTF8));
   }
 
   public static Writer startNewUtf8XmlFile(File file) throws IOException {

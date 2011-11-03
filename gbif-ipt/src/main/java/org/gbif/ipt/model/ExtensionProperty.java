@@ -40,7 +40,6 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Concept
   private Vocabulary vocabulary;
 
   public ExtensionProperty() {
-    super();
   }
 
   /**
@@ -48,14 +47,11 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Concept
    * slash or #
    */
   public ExtensionProperty(String qualName) {
-    super();
     setQualname(qualName);
   }
 
   /**
-   * Compare by group and qualified name as default sorting order
-   *
-   * @see java.lang.Comparable#compareTo(Object)
+   * Compare by group and qualified name as default sorting order.
    */
   public int compareTo(ExtensionProperty prop) {
     if (group != null) {
@@ -68,9 +64,7 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Concept
   }
 
   /**
-   * Just compare the unique qualified names to see if extension properties are equal
-   *
-   * @see java.lang.Object#equals(Object)
+   * Just compare the unique qualified names to see if extension properties are equal.
    */
   @Override
   public boolean equals(Object other) {
@@ -124,9 +118,6 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Concept
     return vocabulary;
   }
 
-  /**
-   * @see java.lang.Object#hashCode()
-   */
   @Override
   public int hashCode() {
     return Objects.hashCode(extension, qualname);
@@ -140,18 +131,10 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Concept
     return required;
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.dwc.terms.ConceptTerm#qualifiedName()
-   */
   public String qualifiedName() {
     return qualname;
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.dwc.terms.ConceptTerm#qualifiedNormalisedName()
-   */
   public String qualifiedNormalisedName() {
     return TermFactory.normaliseTerm(qualifiedName());
   }
@@ -218,33 +201,18 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Concept
     this.vocabulary = vocabulary;
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.dwc.terms.ConceptTerm#simpleName()
-   */
   public String simpleName() {
     return name;
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.dwc.terms.ConceptTerm#simpleNormalisedAlternativeNames()
-   */
   public String[] simpleNormalisedAlternativeNames() {
     return new String[] {};
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.dwc.terms.ConceptTerm#simpleNormalisedName()
-   */
   public String simpleNormalisedName() {
     return TermFactory.normaliseTerm(simpleName());
   }
 
-  /**
-   * @see java.lang.Object#toString()
-   */
   @Override
   public String toString() {
     return qualname;

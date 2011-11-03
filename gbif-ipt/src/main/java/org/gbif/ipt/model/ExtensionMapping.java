@@ -21,9 +21,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * @author markus
- */
 public class ExtensionMapping implements Serializable {
 
   private static final long serialVersionUID = 23789961641L;
@@ -38,23 +35,19 @@ public class ExtensionMapping implements Serializable {
   private String idSuffix;
   private RecordFilter filter;
 
-  public ExtensionMapping() {
-    super();
-  }
-
   /**
-   * @param peek: Peek of File source.
+   * @param peek Peek of File source.
    *
    * @return list of columns names depending on its mapping.
    */
   public List<String> getColumns(List<String[]> peek) {
-    if (peek.size() > 0) {
+    if (!peek.isEmpty()) {
       int columnsCount = peek.get(0).length;
-      ArrayList<String> columns = new ArrayList<String>(columnsCount);
+      List<String> columns = new ArrayList<String>(columnsCount);
       for (int count = 0; count < columnsCount; count++) {
         String value = null;
         for (String[] row : peek) {
-          if (row[count] != null && !row[count].equals("")) {
+          if (row[count] != null && !(row[count].length() == 0)) {
             // add column number and first value as example
             // e.g. Column #2 - Puma conco...
             value = row[count].length() > 10 ? row[count].substring(0, 10) + "..." : row[count];
@@ -106,22 +99,12 @@ public class ExtensionMapping implements Serializable {
   }
 
   public boolean isCore() {
-    if (extension != null && extension.isCore()) {
-      return true;
-    }
-    return false;
+    return extension != null && extension.isCore();
   }
 
-  /**
-   * @param p
-   * @return
-   */
   public boolean isMapped(ConceptTerm t) {
     PropertyMapping pm = getField(t.qualifiedName());
-    if (pm != null && (pm.getIndex() != null || pm.getDefaultValue() != null)) {
-      return true;
-    }
-    return false;
+    return pm != null && (pm.getIndex() != null || pm.getDefaultValue() != null);
   }
 
   public void setExtension(Extension extension) {

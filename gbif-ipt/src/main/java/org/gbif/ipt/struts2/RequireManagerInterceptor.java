@@ -16,10 +16,8 @@ import org.apache.log4j.Logger;
 
 /**
  * An Interceptor that makes sure a user with manager rights (=admin or manager role) is currently logged in and
- * returns
- * a notAllowed otherwise. It also checks if the resource is currently locked and returns locked in that case
- * regardless
- * of user rights.
+ * returns a notAllowed otherwise. It also checks if the resource is currently locked and returns locked in that case
+ * regardless of user rights.
  * If a resource is requested it also checks that the logged in user has permissions to manage that specific resource.
  */
 public class RequireManagerInterceptor extends AbstractInterceptor {
@@ -58,7 +56,7 @@ public class RequireManagerInterceptor extends AbstractInterceptor {
 
   @Override
   public String intercept(ActionInvocation invocation) throws Exception {
-    Map session = invocation.getInvocationContext().getSession();
+    Map<String, Object> session = invocation.getInvocationContext().getSession();
     User user = (User) session.get(Constants.SESSION_USER);
     if (user != null && user.hasManagerRights()) {
       // now also check if we have rights for a specific resource requested
@@ -71,7 +69,7 @@ public class RequireManagerInterceptor extends AbstractInterceptor {
           return BaseAction.NOT_FOUND;
         }
         // authorized?
-        if (user == null || !isAuthorized(user, resource)) {
+        if (!isAuthorized(user, resource)) {
           return BaseAction.NOT_ALLOWED;
         }
         // locked?

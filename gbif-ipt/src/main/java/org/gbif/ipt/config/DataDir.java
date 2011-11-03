@@ -20,10 +20,7 @@ import org.apache.log4j.Logger;
 
 /**
  * A very simple utility class to encapsulate the basic layout of the data directory and to configure & persist the
- * path
- * for that directory and make it available to the entire application.
- *
- * @author markus
+ * path for that directory and make it available to the entire application.
  */
 @Singleton
 public class DataDir {
@@ -124,23 +121,21 @@ public class DataDir {
     if (input == null) {
       throw new InvalidConfigException(TYPE.CONFIG_WRITE,
         "Cannot read required classpath resources to create new data dir!");
-    } else {
-      org.gbif.ipt.utils.FileUtils.copyStreamToFile(input, configFile(AppConfig.DATADIR_PROPFILE));
     }
+    org.gbif.ipt.utils.FileUtils.copyStreamToFile(input, configFile(AppConfig.DATADIR_PROPFILE));
 
     input = streamUtils.classpathStream("configDefault/about.ftl");
     if (input == null) {
       throw new InvalidConfigException(TYPE.CONFIG_WRITE,
         "Cannot read required classpath resources to create new data dir!");
-    } else {
-      org.gbif.ipt.utils.FileUtils.copyStreamToFile(input, configFile("about.ftl"));
     }
+    org.gbif.ipt.utils.FileUtils.copyStreamToFile(input, configFile("about.ftl"));
 
     log.info("Creating new default data dir");
   }
 
   /**
-   * Basic method to convert a relative path within the data dir to an absolute path on the filesystem
+   * Basic method to convert a relative path within the data dir to an absolute path on the filesystem.
    *
    * @param path the relative path within the data dir
    */
@@ -160,21 +155,18 @@ public class DataDir {
    * @return true if a working data directory is configured
    */
   public boolean isConfigured() {
-    if (dataDir != null && dataDir.exists()) {
-      return true;
-    }
-    return false;
+    return dataDir != null && dataDir.exists();
   }
 
   /**
-   * Constructs an absolute path to the logs folder of the data dir
+   * Constructs an absolute path to the logs folder of the data dir.
    */
   public File loggingDir() {
     return dataFile(LOGGING_DIR);
   }
 
   /**
-   * Constructs an absolute path to a file within the logs folder of the data dir
+   * Constructs an absolute path to a file within the logs folder of the data dir.
    *
    * @param path the relative path within the logs folder
    */
@@ -183,7 +175,7 @@ public class DataDir {
   }
 
   /**
-   * Constructs an absolute path to the main lucene folder in the data dir
+   * Constructs an absolute path to the main lucene folder in the data dir.
    */
   public File luceneDir() {
     return dataFile("lucene");
@@ -236,10 +228,6 @@ public class DataDir {
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/logo." + suffix);
   }
 
-  /**
-   * @param resourceName
-   * @return
-   */
   public File resourcePublicationLogFile(String resourceName) {
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/publication.log");
   }
@@ -280,15 +268,11 @@ public class DataDir {
 
       if (dataDir.exists() && (!dataDir.isDirectory() || dataDir.list().length > 0)) {
         // EXISTING file or directory with content: make sure its an IPT datadir - otherwise break
-        if (!dataDir.isDirectory()) {
-          this.dataDir = null;
-          throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_DATA_DIR,
-            "DataDir " + dataDir.getAbsolutePath() + " is not a directory");
-        } else {
+        if (dataDir.isDirectory()) {
           // check if this directory contains a config folder - if not copy empty default dir from classpath
           if (!configDir.exists() || !configDir.isDirectory()) {
             this.dataDir = null;
-            throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_DATA_DIR,
+            throw new InvalidConfigException(TYPE.INVALID_DATA_DIR,
               "DataDir " + dataDir.getAbsolutePath() + " exists already and is no IPT data dir.");
           }
           log.info("Reusing existing data dir.");
@@ -299,6 +283,10 @@ public class DataDir {
             log.error("Cant persist datadir location in WEBINF webapp folder", e);
           }
           return false;
+        } else {
+          this.dataDir = null;
+          throw new InvalidConfigException(TYPE.INVALID_DATA_DIR,
+            "DataDir " + dataDir.getAbsolutePath() + " is not a directory");
         }
 
       } else {
@@ -333,11 +321,6 @@ public class DataDir {
     return resourceFile(resource.getShortname(), "sources/" + source.getName() + ".txt");
   }
 
-  /**
-   * @param resourceName
-   * @param sourceName
-   * @return
-   */
   public File sourceLogFile(String resourceName, String sourceName) {
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/sources/" + sourceName + ".log");
   }
@@ -379,10 +362,10 @@ public class DataDir {
    */
   public File tmpFile(String prefix, String suffix) {
     String counterKey = prefix + "||" + suffix;
-    if (!tmpPrefixCounter.containsKey(prefix)) {
-      tmpPrefixCounter.put(counterKey, 1);
-    } else {
+    if (tmpPrefixCounter.containsKey(prefix)) {
       tmpPrefixCounter.put(counterKey, tmpPrefixCounter.get(counterKey) + 1);
+    } else {
+      tmpPrefixCounter.put(counterKey, 1);
     }
 
     return tmpFile(prefix + tmpPrefixCounter.get(counterKey) + suffix);

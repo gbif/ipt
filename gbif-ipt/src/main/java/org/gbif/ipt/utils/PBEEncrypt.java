@@ -23,12 +23,9 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
-/**
- * @author markus
- */
 public class PBEEncrypt {
 
-  static public class EncryptionException extends Exception {
+  public static class EncryptionException extends Exception {
 
     private EncryptionException(String text, Exception chain) {
       super(text, chain);
@@ -46,12 +43,11 @@ public class PBEEncrypt {
   private Cipher decryptCipher;
 
   public PBEEncrypt(String passphrase, byte[] salt, int iterationCount) throws EncryptionException {
-    assert (passphrase != null);
-    assert (passphrase.length() >= 6);
-    assert (salt != null);
-    assert (salt.length == 8);
-    assert ((iterationCount > 6) && (iterationCount < 20));
-    assert (characterEncoding != null);
+    assert passphrase != null;
+    assert passphrase.length() >= 6;
+    assert salt != null;
+    assert salt.length == 8;
+    assert iterationCount > 6 && iterationCount < 20;
 
     try {
       PBEParameterSpec params = new PBEParameterSpec(salt, iterationCount);
@@ -60,36 +56,34 @@ public class PBEEncrypt {
       SecretKey key = SecretKeyFactory.getInstance(ALGORITHM, "SunJCE").generateSecret(keySpec);
 
       this.encryptCipher = Cipher.getInstance(ALGORITHM, "SunJCE");
-      this.encryptCipher.init(javax.crypto.Cipher.ENCRYPT_MODE, key, params);
+      this.encryptCipher.init(Cipher.ENCRYPT_MODE, key, params);
 
       this.decryptCipher = Cipher.getInstance(ALGORITHM, "SunJCE");
-      this.decryptCipher.init(javax.crypto.Cipher.DECRYPT_MODE, key, params);
+      this.decryptCipher.init(Cipher.DECRYPT_MODE, key, params);
     } catch (Exception e) {
       throw new EncryptionException("Problem constucting " + this.getClass().getName(), e);
     }
   }
 
-  synchronized public String decrypt(String encodedEncryptedDataString) throws EncryptionException {
+  public synchronized String decrypt(String encodedEncryptedDataString) throws EncryptionException {
     assert encodedEncryptedDataString != null;
 
     try {
       byte[] encryptedDataStringBytes = Base64Coder.decode(encodedEncryptedDataString);
       byte[] dataStringBytes = this.decryptCipher.doFinal(encryptedDataStringBytes);
-      String recoveredDataString = new String(dataStringBytes, characterEncoding);
-      return recoveredDataString;
+      return new String(dataStringBytes, characterEncoding);
     } catch (Exception e) {
       throw new EncryptionException("Problem decrypting string", e);
     }
   }
 
-  synchronized public String encrypt(String dataString) throws EncryptionException {
+  public synchronized String encrypt(String dataString) throws EncryptionException {
     assert dataString != null;
 
     try {
       byte[] dataStringBytes = dataString.getBytes(characterEncoding);
       byte[] encryptedDataStringBytes = this.encryptCipher.doFinal(dataStringBytes);
-      String encodedEncryptedDataString = String.valueOf(Base64Coder.encode(encryptedDataStringBytes));
-      return encodedEncryptedDataString;
+      return String.valueOf(Base64Coder.encode(encryptedDataStringBytes));
     } catch (Exception e) {
       throw new EncryptionException("Problem encrypting string", e);
     }

@@ -41,8 +41,6 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     WAITING, STARTED, DATAFILES, METADATA, BUNDLING, COMPLETED, STOPPING, FAILED
   }
 
-  ;
-
   private static final Pattern escapeChars = Pattern.compile("[\t\n\r]");
   private final Resource resource;
   private final DataDir dataDir;
@@ -323,19 +321,11 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     }
   }
 
-  /**
-   * @param writer
-   * @param dataFileRowSize
-   * @param mapping
-   * @throws GeneratorException
-   */
   private void dumpData(Writer writer, ArchiveFile dataFile, ExtensionMapping mapping, int dataFileRowSize)
     throws GeneratorException {
     final String idSuffix = StringUtils.trimToEmpty(mapping.getIdSuffix());
     final RecordFilter filter = mapping.getFilter();
     // get maximum column index to check incoming rows for correctness
-    int linesWithWrongColumnNumber = 0;
-    int recordsFiltered = 0;
     int maxColumnIndex = mapping.getIdColumn() == null ? -1 : mapping.getIdColumn();
     for (PropertyMapping pm : mapping.getFields()) {
       if (pm.getIndex() != null && maxColumnIndex < pm.getIndex()) {
@@ -353,8 +343,6 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     }
 
     // get the source iterator
-    ClosableIterator<String[]> iter = null;
-    int line = 0;
     try {
       File logFile = dataDir.resourcePublicationLogFile(resource.getShortname());
       FileUtils.deleteQuietly(logFile);
@@ -363,6 +351,10 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
         "Log Messages for publishing resource " + resource.getShortname() + " version " + resource.getEmlVersion());
       logWriter.write("\n\n");
 
+      int linesWithWrongColumnNumber = 0;
+      int recordsFiltered = 0;
+      ClosableIterator<String[]> iter = null;
+      int line = 0;
       try {
         iter = sourceManager.rowIterator(mapping.getSource());
 
@@ -387,11 +379,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
           String[] in = iter.next();
           String inLine = "[";
           for (int i = 0; i < in.length; i++) {
-            if (i == 0) {
-              inLine += in[i];
-            } else {
-              inLine += "; " + in[i];
-            }
+            inLine += i == 0 ? in[i] : "; " + in[i];
           }
           inLine += "]";
           if (in == null || in.length == 0) {
@@ -414,9 +402,10 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
           String[] record = new String[dataFileRowSize];
 
           // filter this record?
-          boolean matchesFilter, alreadyTranslated = false;
+          boolean alreadyTranslated = false;
           if (filter != null && filter.getColumn() != null && filter.getComparator() != null
             && filter.getParam() != null) {
+            boolean matchesFilter;
             if (filter.getFilterTime() == FilterTime.AfterTranslation) {
               int newColumn = translatingRecord(mapping, inCols, in, record);
               matchesFilter = filter.matches(record, newColumn);
@@ -438,7 +427,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
           if (mapping.getIdColumn() == null) {
             record[0] = null;
           } else if (mapping.getIdColumn().equals(ExtensionMapping.IDGEN_LINE_NUMBER)) {
-            record[0] = String.valueOf(line) + idSuffix;
+            record[0] = line + idSuffix;
           } else if (mapping.getIdColumn().equals(ExtensionMapping.IDGEN_UUID)) {
             record[0] = UUID.randomUUID().toString();
           } else if (mapping.getIdColumn() >= 0) {
@@ -524,12 +513,6 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     return StringUtils.join(columns, '\t') + "\n";
   }
 
-  /**
-   * @param mapping
-   * @param inCols
-   * @param in
-   * @param record
-   */
   private int translatingRecord(ExtensionMapping mapping, PropertyMapping[] inCols, String[] in, String[] record) {
     int newColumn = -1;
     for (int i = 1; i < inCols.length; i++) {

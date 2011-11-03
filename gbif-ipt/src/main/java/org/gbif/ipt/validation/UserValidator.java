@@ -16,22 +16,19 @@ package org.gbif.ipt.validation;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.model.User;
 
-/**
- * @author markus
- */
 public class UserValidator extends BaseValidator {
 
   public boolean validate(BaseAction action, User user) {
     boolean valid = true;
     if (user != null) {
-      if (!exists(user.getEmail())) {
-        action.addFieldError("user.email", action.getText("validation.email.required"));
-        valid = false;
-      } else {
+      if (exists(user.getEmail())) {
         if (!isValidEmail(user.getEmail())) {
           valid = false;
           action.addFieldError("user.email", action.getText("validation.email.invalid"));
         }
+      } else {
+        action.addFieldError("user.email", action.getText("validation.email.required"));
+        valid = false;
       }
       if (!exists(user.getFirstname(), 1)) {
         valid = false;

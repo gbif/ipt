@@ -1,17 +1,12 @@
-/**
- *
- */
 package org.gbif.ipt.service;
 
 /**
- * The base class used to indicate types of configuration errors. All configuration must provide a message and a cause
- *
- * @author tim
+ * The base class used to indicate types of configuration errors. All configuration must provide a message and a cause.
  */
 public class InvalidConfigException extends RuntimeException {
 
   /**
-   * Generated
+   * Generated.
    */
   private static final long serialVersionUID = 8568781101282056985L;
 
@@ -20,8 +15,6 @@ public class InvalidConfigException extends RuntimeException {
     REGISTRY_CONFIG, INVALID_EXTENSION, DATADIR_ALREADY_REGISTERED, RESOURCE_ALREADY_REGISTERED, REGISTRATION_CONFIG,
     RESOURCE_CONFIG, EML, INVALID_PROXY, FORMAT_ERROR
   }
-
-  ;
 
   protected TYPE type;
 

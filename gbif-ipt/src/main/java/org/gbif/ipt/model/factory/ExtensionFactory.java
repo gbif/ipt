@@ -49,7 +49,6 @@ public class ExtensionFactory {
 
   @Inject
   public ExtensionFactory(ThesaurusHandlingRule thesaurusRule, SAXParserFactory factory, DefaultHttpClient client) {
-    super();
     this.thesaurusRule = thesaurusRule;
     this.saxf = factory;
     this.client = client;
@@ -82,7 +81,7 @@ public class ExtensionFactory {
   }
 
   /**
-   * Builds an extension from the supplied input stream
+   * Builds an extension from the supplied input stream.
    *
    * @param is For the XML
    *
@@ -162,7 +161,7 @@ public class ExtensionFactory {
   /**
    * Builds an extension from the supplied input stream
    *
-   * @param is For the XML
+   * @param url For the XML
    *
    * @return The extension
    */

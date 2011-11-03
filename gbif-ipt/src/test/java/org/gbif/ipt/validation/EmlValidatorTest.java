@@ -13,18 +13,18 @@
 
 package org.gbif.ipt.validation;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Test;
 
-/**
- * @author markus
- */
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 public class EmlValidatorTest {
+
   /*
-   * Validate the integer
-   */
+  * Validate the integer
+  */
   @Test
   public void testInteger() {
     assertFalse(EmlValidator.isValidInteger("0.1"));
@@ -57,13 +57,13 @@ public class EmlValidatorTest {
    */
   @Test
   public void testURL() {
-    assertFalse(EmlValidator.formatURL("- - - ") != null);
-    assertFalse(EmlValidator.formatURL("//**##") != null);
-    assertFalse(EmlValidator.formatURL("      ") != null);
-    assertFalse(EmlValidator.formatURL("ftp://ftp.gbif.org //h") != null);
-    assertTrue(EmlValidator.formatURL("www.gbif.com") != null);
-    assertTrue(EmlValidator.formatURL("torrent://www.gbif.org") != null);
-    assertTrue(EmlValidator.formatURL("ftp://ftp.gbif.org") != null);
-    assertTrue(EmlValidator.formatURL("http://www.gbif.org") != null);
+    assertNull(EmlValidator.formatURL("- - - "));
+    assertNull(EmlValidator.formatURL("//**##"));
+    assertNull(EmlValidator.formatURL("      "));
+    assertNull(EmlValidator.formatURL("ftp://ftp.gbif.org //h"));
+    assertNotNull(EmlValidator.formatURL("www.gbif.com"));
+    assertNotNull(EmlValidator.formatURL("torrent://www.gbif.org"));
+    assertNotNull(EmlValidator.formatURL("ftp://ftp.gbif.org"));
+    assertNotNull(EmlValidator.formatURL("http://www.gbif.org"));
   }
 }

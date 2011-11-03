@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.gbif.ipt.service.admin.impl;
 
 import org.gbif.ipt.config.AppConfig;
@@ -41,9 +38,7 @@ import com.google.inject.Singleton;
 import com.thoughtworks.xstream.XStream;
 
 /**
- * reads user accounts from a simple XStream managed xml file
- *
- * @author markus
+ * Reads user accounts from a simple XStream managed xml file.
  */
 
 @Singleton
@@ -153,13 +148,13 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
           Set<User> managers = new HashSet<User>(r.getManagers());
           managers.add(r.getCreator());
           managers.remove(remUser);
-          if (managers.size() == 0) {
+          if (managers.isEmpty()) {
             String msg = "Last manager for resource " + r.getShortname() + " cannot be deleted";
             resourcesWithProblems.add(r.getShortname());
             log.warn(msg);
           }
         }
-        if (resourcesWithProblems.size() > 0) {
+        if (!resourcesWithProblems.isEmpty()) {
           throw new DeletionNotAllowedException(Reason.LAST_RESOURCE_MANAGER, resourcesWithProblems.toString());
         }
       }

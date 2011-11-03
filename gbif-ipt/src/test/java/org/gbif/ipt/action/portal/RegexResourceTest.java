@@ -22,14 +22,14 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * Unit test for the regex in the resource page.
- * 
+ *
  * @author julieth
  */
 
 public class RegexResourceTest {
 
   // It Matches for schemes http, https and ftp.
-  private final static String REGEX = "(http(s)?|ftp)://(([\\w-]+\\.)?)+[\\w-]+(:\\d+)?+(/[\\w- ./-?%&=]*)?";
+  private static final String REGEX = "(http(s)?|ftp)://(([\\w-]+\\.)?)+[\\w-]+(:\\d+)?+(/[\\w- ./-?%&=]*)?";
 
   @Test
   public void regexTest() {

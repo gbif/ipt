@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.gbif.ipt.service.admin;
 
 import org.gbif.ipt.model.Ipt;
@@ -18,9 +15,6 @@ import com.google.inject.ImplementedBy;
 
 /**
  * This interface details ALL methods associated with the Organisations associated with the IPT.
- *
- * @author tim
- * @author josecuadra
  */
 @ImplementedBy(RegistrationManagerImpl.class)
 public interface RegistrationManager {
@@ -28,17 +22,17 @@ public interface RegistrationManager {
   /**
    * Associate a new organisation to this IPT installation, but doesnt persist the change.
    */
-  public Organisation addAssociatedOrganisation(Organisation organisation) throws AlreadyExistingException;
+  Organisation addAssociatedOrganisation(Organisation organisation) throws AlreadyExistingException;
 
   /**
-   * Register the IPT against an existing organisation
+   * Register the IPT against an existing organisation.
    */
-  public Organisation addHostingOrganisation(Organisation organisation);
+  Organisation addHostingOrganisation(Organisation organisation);
 
   /**
-   * Add all the IPT specific data
+   * Add all the IPT specific data.
    */
-  public void addIptInstance(Ipt ipt);
+  void addIptInstance(Ipt ipt);
 
   /**
    * Removes the specified organisation from the in memory list of organisations. See save() to persist this change to
@@ -48,53 +42,53 @@ public interface RegistrationManager {
    *
    * @throws DeletionNotAllowedException if organisation is attached to any resource
    */
-  public Organisation delete(String key) throws DeletionNotAllowedException;
+  Organisation delete(String key) throws DeletionNotAllowedException;
 
   /**
-   * Returns a single organisation associated to the key
+   * Returns a single organisation associated to the key.
    */
-  public Organisation get(String key);
+  Organisation get(String key);
 
   /**
-   * Returns a single organisation associated to this UUID
+   * Returns a single organisation associated to this UUID.
    */
-  public Organisation get(UUID key);
+  Organisation get(UUID key);
 
   /**
-   * Returns the hosting organisation of this IPT
+   * Returns the hosting organisation of this IPT.
    */
-  public Organisation getHostingOrganisation();
+  Organisation getHostingOrganisation();
 
   /**
-   * Returns the IPT instance
+   * Returns the IPT instance.
    *
    * @return ipt instance
    */
-  public Ipt getIpt();
+  Ipt getIpt();
 
   /**
-   * Returns list of all organisations able to host resources
+   * Returns list of all organisations able to host resources.
    */
-  public List<Organisation> list();
+  List<Organisation> list();
 
   /**
-   * Returns list of all associated organisations
+   * Returns list of all associated organisations.
    */
-  public List<Organisation> listAll();
+  List<Organisation> listAll();
 
   /**
-   * Loads all user associated organisations from file into the manager
+   * Loads all user associated organisations from file into the manager.
    */
-  public void load() throws InvalidConfigException;
+  void load() throws InvalidConfigException;
 
   /**
    * Saves all organisations (associated to this IPT) from the manager to file. Needs to be manually called if
    * organisation properties have been modified or if organisations have been added or removed.
    */
-  public void save() throws IOException;
+  void save() throws IOException;
 
   /**
-   * Sets the IPT password
+   * Sets the IPT password.
    */
-  public void setIptPassword(String password);
+  void setIptPassword(String password);
 }

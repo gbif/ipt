@@ -19,8 +19,6 @@ import static org.mockito.Mockito.mock;
 
 /**
  * This class simulates a ResourceManager object and must only be used for Unit Tests purposes.
- * 
- * @author hftobon
  */
 public class MockResourceManager {
 

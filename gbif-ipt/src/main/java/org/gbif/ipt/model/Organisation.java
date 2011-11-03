@@ -15,7 +15,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
- * Encapsulates all the information for an Organisation
+ * Encapsulates all the information for an Organisation.
  */
 public class Organisation extends AgentBase implements Serializable {
 
@@ -34,11 +34,7 @@ public class Organisation extends AgentBase implements Serializable {
    */
   @Override
   public boolean equals(Object obj) {
-    if (((Organisation) obj).getKey().equals(this.getKey())) {
-      return true;
-    } else {
-      return false;
-    }
+    return ((Organisation) obj).getKey().equals(this.getKey());
   }
 
   /**
@@ -132,9 +128,6 @@ public class Organisation extends AgentBase implements Serializable {
     this.password = StringUtils.trimToNull(password);
   }
 
-  /**
-   * @see java.lang.Object#toString()
-   */
   @Override
   public String toString() {
     return ToStringBuilder.reflectionToString(this);

@@ -21,16 +21,12 @@ import org.gbif.dwc.text.ArchiveField;
 import java.io.Serializable;
 import java.util.Map;
 
-/**
- * @author markus
- */
 public class PropertyMapping extends ArchiveField implements Serializable {
 
   private static final long serialVersionUID = 775627548L;
   private Map<String, String> translation;
 
   public PropertyMapping() {
-    super();
   }
 
   public PropertyMapping(ArchiveField field) {
@@ -42,7 +38,7 @@ public class PropertyMapping extends ArchiveField implements Serializable {
   }
 
   /*
-   * the mapping doesnt keep track of the data type.
+   * The mapping doesnt keep track of the data type.
    * Use extension and its ExtensionProperty class instead!
    * (non-Javadoc)
    * @see org.gbif.dwc.text.ArchiveField#getType()

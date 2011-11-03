@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.POSTAction;
@@ -15,9 +12,7 @@ import com.google.inject.Inject;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * The Action responsible for all user input relating to the IPT configuration
- *
- * @author tim
+ * The Action responsible for all user input relating to the IPT configuration.
  */
 public class ConfigAction extends POSTAction {
 

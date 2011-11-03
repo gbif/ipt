@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.POSTAction;
@@ -24,10 +21,7 @@ import com.google.inject.Inject;
 import com.google.inject.servlet.SessionScoped;
 
 /**
- * The Action responsible for all user input relating to the registration options
- *
- * @author tim
- * @author josecuadra
+ * The Action responsible for all user input relating to the registration options.
  */
 public class RegistrationAction extends POSTAction {
 
@@ -39,15 +33,11 @@ public class RegistrationAction extends POSTAction {
 
     @Inject
     public RegisteredOrganisations(RegistryManager registryManager) {
-      super();
       this.registryManager = registryManager;
     }
 
     public boolean isLoaded() {
-      if (organisations.size() > 0) {
-        return true;
-      }
-      return false;
+      return !organisations.isEmpty();
     }
 
     public void load() throws RuntimeException {
@@ -119,11 +109,7 @@ public class RegistrationAction extends POSTAction {
    * @return the registered
    */
   public boolean getIsRegistered() {
-    if (registrationManager.getHostingOrganisation() != null) {
-      return true;
-    } else {
-      return false;
-    }
+    return registrationManager.getHostingOrganisation() != null;
   }
 
   /**
@@ -252,11 +238,11 @@ public class RegistrationAction extends POSTAction {
   @Override
   public void validate() {
     if (isHttpPost()) {
-      if (!getIsRegistered()) {
+      if (getIsRegistered()) {
+        iptValidation.validateUpdate(this, getRegisteredIpt());
+      } else {
         validatedBaseURL = true;
         organisationValidation.validate(this, organisation);
-      } else {
-        iptValidation.validateUpdate(this, getRegisteredIpt());
       }
     }
   }

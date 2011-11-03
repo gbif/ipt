@@ -29,7 +29,7 @@ public class ResourceSessionInterceptor extends AbstractInterceptor {
   public String intercept(ActionInvocation invocation) throws Exception {
     String requestedResource = RequireManagerInterceptor.getResourceParam(invocation);
     if (requestedResource != null) {
-      Map session = invocation.getInvocationContext().getSession();
+      Map<String, Object> session = invocation.getInvocationContext().getSession();
       session.put(Constants.SESSION_RESOURCE, requestedResource);
     }
     return invocation.invoke();

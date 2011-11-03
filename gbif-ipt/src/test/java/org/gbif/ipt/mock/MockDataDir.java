@@ -16,7 +16,7 @@ import static org.mockito.Mockito.when;
 
 /**
  * This class simulates a DataDir object and must only be used for Unit Tests purposes.
- * 
+ *
  * @author hftobon
  */
 public class MockDataDir {
@@ -34,8 +34,8 @@ public class MockDataDir {
    */
   private static void setupMock() {
     // user.xml is going to be located in temp directory.
-    when(dataDir.configFile(UserAccountManagerImpl.PERSISTENCE_FILE)).thenReturn(
-      new File(tempDir + File.separatorChar + UserAccountManagerImpl.PERSISTENCE_FILE));
+    when(dataDir.configFile(UserAccountManagerImpl.PERSISTENCE_FILE))
+      .thenReturn(new File(tempDir + File.separatorChar + UserAccountManagerImpl.PERSISTENCE_FILE));
 
     // resource.xml is going to be located in temp directory.
     when(dataDir.resourceFile(any(Resource.class), anyString())).thenAnswer(new Answer<File>() {
@@ -44,7 +44,7 @@ public class MockDataDir {
         // create a file in OS temp directory named as shortName-resource.xml
         Resource resource = (Resource) invocation.getArguments()[0];
         String xmlName = (String) invocation.getArguments()[1];
-        if (resource != null && !xmlName.equals("")) {
+        if (resource != null && !(xmlName.length() == 0)) {
           return new File(tempDir + File.separatorChar + resource.getShortname() + "-" + xmlName);
         } else {
           return null;

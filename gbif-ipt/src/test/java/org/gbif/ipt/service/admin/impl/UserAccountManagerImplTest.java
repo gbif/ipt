@@ -40,6 +40,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -116,9 +118,6 @@ public class UserAccountManagerImplTest {
 
   /**
    * Test user authenticate.
-   * 
-   * @throws AlreadyExistingException
-   * @throws IOException
    */
   @Test
   public void testAuthenticate() throws AlreadyExistingException, IOException {
@@ -140,10 +139,7 @@ public class UserAccountManagerImplTest {
   }
 
   /**
-   * Test user creation
-   * 
-   * @throws IOException
-   * @throws AlreadyExistingException
+   * Test user creation.
    */
   @Test
   public void testCreate() throws AlreadyExistingException, IOException {
@@ -176,10 +172,6 @@ public class UserAccountManagerImplTest {
 
   /**
    * Test user deletion.
-   * 
-   * @throws AlreadyExistingException
-   * @throws IOException
-   * @throws DeletionNotAllowedException
    */
   @Test
   public void testDelete() throws AlreadyExistingException, IOException, DeletionNotAllowedException {
@@ -204,7 +196,6 @@ public class UserAccountManagerImplTest {
       userManager.delete("admin@ipt.gbif.org");
       fail("There must always be at least one user Admin");
     } catch (DeletionNotAllowedException e) {
-      Assert.assertTrue(true);
     }
 
     // test if the manager or admin that is going to be deleted, is the last manager of a resource.
@@ -224,11 +215,10 @@ public class UserAccountManagerImplTest {
       userManager.delete("manager@ipt.gbif.org");
       fail("Last manager for resource res1 cannot be deleted");
     } catch (DeletionNotAllowedException e) {
-      Assert.assertTrue(true);
     }
 
     // Creator of resources cannot be deleted. Test if user role is changed to a simple user.
-    resources.remove(res1); // 
+    resources.remove(res1); //
     Resource res2 = new Resource();
     Set<User> managers2 = new HashSet<User>();
     managers2.add(publisher);
@@ -245,9 +235,6 @@ public class UserAccountManagerImplTest {
 
   /**
    * Test get user.
-   * 
-   * @throws AlreadyExistingException
-   * @throws IOException
    */
   @Test
   public void testGet() throws AlreadyExistingException, IOException {
@@ -267,9 +254,6 @@ public class UserAccountManagerImplTest {
 
   /**
    * Read from user.xml file.
-   * 
-   * @throws AlreadyExistingException
-   * @throws IOException
    */
   @Test
   public void testLoad() throws AlreadyExistingException, IOException {
@@ -283,24 +267,24 @@ public class UserAccountManagerImplTest {
     userManager.create(user);
 
     // validate if the user.xml file was created
-    Assert.assertTrue(userFile.exists());
+    assertTrue(userFile.exists());
 
     // create another userManager instance to test read file method.
     userManager = getUserAccountManager();
 
     // the new userManager should have not any user previously saved.
-    Assert.assertEquals(0, userManager.list().size());
+    assertEquals(0, userManager.list().size());
 
     // load information from user.xml
     userManager.load();
 
     // the 4 users previously added should be in the users list.
-    Assert.assertEquals(4, userManager.list().size());
+    assertEquals(4, userManager.list().size());
 
     // validate if the users from file were included in the list.
-    Assert.assertEquals(admin, userManager.get("admin@ipt.gbif.org"));
-    Assert.assertEquals(manager, userManager.get("manager@ipt.gbif.org"));
-    Assert.assertEquals(publisher, userManager.get("publisher@ipt.gbif.org"));
-    Assert.assertEquals(user, userManager.get("user@ipt.gbif.org"));
+    assertEquals(admin, userManager.get("admin@ipt.gbif.org"));
+    assertEquals(manager, userManager.get("manager@ipt.gbif.org"));
+    assertEquals(publisher, userManager.get("publisher@ipt.gbif.org"));
+    assertEquals(user, userManager.get("user@ipt.gbif.org"));
   }
 }

@@ -15,10 +15,8 @@ import org.apache.log4j.RollingFileAppender;
 
 /**
  * LogFileAppender works to backup the IPT log files (admin.log, debug.log). Plus, it looks for a temporal path
- * location
- * while Tomcat, Jetty, or any other server initialise the project at first time before the user is allowed to
- * configure
- * a properly DataDir.
+ * location while Tomcat, Jetty, or any other server initialise the project at first time before the user is allowed to
+ * configure a properly DataDir.
  */
 public class LogFileAppender extends RollingFileAppender {
 
@@ -54,10 +52,9 @@ public class LogFileAppender extends RollingFileAppender {
    * @return the location of the temporal file.
    */
   private String findTempDir() {
-    File logFile = null;
     for (String path : PATHS) {
       // Create file instance.
-      logFile = new File(path, "admin.log");
+      File logFile = new File(path, "admin.log");
 
       // Has the file writing permissions?
       try {
@@ -78,7 +75,13 @@ public class LogFileAppender extends RollingFileAppender {
     File logfile = new File(fileName);
 
     StringBuilder sb = new StringBuilder();
-    if (!LOGDIR.equals("")) {
+    if (LOGDIR.length() == 0) {
+      // if LOGDIR is not initialised, find a temporal location while user configure the IPT DataDir.
+      sb.append(findTempDir());
+      sb.append(File.separator);
+      sb.append(fileName);
+      fileName = sb.toString();
+    } else {
       // modify fileName if relative
       if (!logfile.isAbsolute()) {
         sb.append(LOGDIR);
@@ -86,12 +89,6 @@ public class LogFileAppender extends RollingFileAppender {
         sb.append(fileName);
         fileName = sb.toString();
       }
-    } else {
-      // if LOGDIR is not initialised, find a temporal location while user configure the IPT DataDir.
-      sb.append(findTempDir());
-      sb.append(File.separator);
-      sb.append(fileName);
-      fileName = sb.toString();
     }
     super.setFile(fileName, append, bufferedIO, bufferSize);
   }

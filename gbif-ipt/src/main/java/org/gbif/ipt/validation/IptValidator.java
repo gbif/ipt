@@ -12,13 +12,7 @@ package org.gbif.ipt.validation;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.model.Ipt;
 
-/**
- * @author josecuadra
- */
 public class IptValidator extends BaseValidator {
-
-  public IptValidator() {
-  }
 
   public void validate(BaseAction action, Ipt ipt) {
     if (ipt.getName() == null || ipt.getName().length() < 1) {

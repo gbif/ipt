@@ -15,15 +15,13 @@ package org.gbif.ipt.model;
 
 import org.gbif.ipt.model.RecordFilter.Comparator;
 
+import org.junit.Test;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Test;
-
-/**
- * @author markus
- */
 public class RecordFilterTest {
+
   @Test
   public void testEquals() {
     RecordFilter f = new RecordFilter();
@@ -31,13 +29,13 @@ public class RecordFilterTest {
     f.setComparator(Comparator.Equals);
     f.setParam("a");
 
-    assertFalse(f.matches(new String[]{}, -1));
-    assertFalse(f.matches(new String[]{"1", null, "2"}, -1));
-    assertFalse(f.matches(new String[]{"1", "", "2"}, -1));
-    assertFalse(f.matches(new String[]{"1", "  ", "2"}, -1));
-    assertFalse(f.matches(new String[]{"1", "A", "2"}, -1));
-    assertFalse(f.matches(new String[]{"1", "aa", "2"}, -1));
-    assertTrue(f.matches(new String[]{"1", "a", "3"}, -1));
+    assertFalse(f.matches(new String[] {}, -1));
+    assertFalse(f.matches(new String[] {"1", null, "2"}, -1));
+    assertFalse(f.matches(new String[] {"1", "", "2"}, -1));
+    assertFalse(f.matches(new String[] {"1", "  ", "2"}, -1));
+    assertFalse(f.matches(new String[] {"1", "A", "2"}, -1));
+    assertFalse(f.matches(new String[] {"1", "aa", "2"}, -1));
+    assertTrue(f.matches(new String[] {"1", "a", "3"}, -1));
   }
 
   @Test
@@ -46,11 +44,11 @@ public class RecordFilterTest {
     f.setColumn(1);
     f.setComparator(Comparator.IsNotNULL);
 
-    assertFalse(f.matches(new String[]{}, -1));
-    assertFalse(f.matches(new String[]{"1", null, "2"}, -1));
-    assertFalse(f.matches(new String[]{"1", "", "2"}, -1));
-    assertFalse(f.matches(new String[]{"1", "  ", "2"}, -1));
-    assertTrue(f.matches(new String[]{"1", "2", "3"}, -1));
+    assertFalse(f.matches(new String[] {}, -1));
+    assertFalse(f.matches(new String[] {"1", null, "2"}, -1));
+    assertFalse(f.matches(new String[] {"1", "", "2"}, -1));
+    assertFalse(f.matches(new String[] {"1", "  ", "2"}, -1));
+    assertTrue(f.matches(new String[] {"1", "2", "3"}, -1));
   }
 
   @Test
@@ -59,11 +57,11 @@ public class RecordFilterTest {
     f.setColumn(1);
     f.setComparator(Comparator.IsNULL);
 
-    assertTrue(f.matches(new String[]{}, -1));
-    assertTrue(f.matches(new String[]{"1", null, "2"}, -1));
-    assertTrue(f.matches(new String[]{"1", "", "2"}, -1));
-    assertTrue(f.matches(new String[]{"1", "  ", "2"}, -1));
-    assertFalse(f.matches(new String[]{"1", "2", "3"}, -1));
+    assertTrue(f.matches(new String[] {}, -1));
+    assertTrue(f.matches(new String[] {"1", null, "2"}, -1));
+    assertTrue(f.matches(new String[] {"1", "", "2"}, -1));
+    assertTrue(f.matches(new String[] {"1", "  ", "2"}, -1));
+    assertFalse(f.matches(new String[] {"1", "2", "3"}, -1));
   }
 
   @Test
@@ -73,13 +71,13 @@ public class RecordFilterTest {
     f.setComparator(Comparator.NotEquals);
     f.setParam("a");
 
-    assertTrue(f.matches(new String[]{}, -1));
-    assertTrue(f.matches(new String[]{"1", null, "2"}, -1));
-    assertTrue(f.matches(new String[]{"1", "", "2"}, -1));
-    assertTrue(f.matches(new String[]{"1", "  ", "2"}, -1));
-    assertTrue(f.matches(new String[]{"1", "A", "2"}, -1));
-    assertTrue(f.matches(new String[]{"1", "aa", "2"}, -1));
-    assertFalse(f.matches(new String[]{"1", "a", "3"}, -1));
+    assertTrue(f.matches(new String[] {}, -1));
+    assertTrue(f.matches(new String[] {"1", null, "2"}, -1));
+    assertTrue(f.matches(new String[] {"1", "", "2"}, -1));
+    assertTrue(f.matches(new String[] {"1", "  ", "2"}, -1));
+    assertTrue(f.matches(new String[] {"1", "A", "2"}, -1));
+    assertTrue(f.matches(new String[] {"1", "aa", "2"}, -1));
+    assertFalse(f.matches(new String[] {"1", "a", "3"}, -1));
   }
 
 }

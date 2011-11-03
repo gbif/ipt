@@ -2,6 +2,10 @@ package org.gbif.ipt.config;
 
 public class Constants {
 
+  private Constants() {
+    throw new UnsupportedOperationException("Can't initialize class");
+  }
+
   public static final String SESSION_USER = "curr_user";
   public static final String SESSION_RESOURCE = "curr_resource";
   public static final String SESSION_FILE = "file";

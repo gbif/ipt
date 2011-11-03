@@ -1,12 +1,12 @@
 /***************************************************************************
  * Copyright 2010 Global Biodiversity Information Facility Secretariat
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -21,29 +21,23 @@ import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.Source.FileSource;
 import org.gbif.ipt.model.Source.SqlSource;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
-
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-/**
- * @author markus
- * 
- */
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 public class ModelMocks {
-	public Source src1;
+
+  public Source src1;
   public Source src2;
   public Source src3;
   public Set<Source> sources;
   public Resource r1;
   public Resource r2;
 
-public ModelMocks() {
+  public ModelMocks() {
     // resources
     r1 = new Resource();
     r1.setTitle("Peterchen");
@@ -61,7 +55,7 @@ public ModelMocks() {
     src3 = new FileSource();
     src3.setName("karl");
     src3.setResource(r2);
-    
+
     assertFalse(src3.equals(src1));
     assertFalse(src3.equals(src2));
     assertFalse(src1.equals(src2));

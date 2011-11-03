@@ -57,7 +57,7 @@ import org.apache.commons.lang.xwork.StringUtils;
  */
 public class MappingAction extends ManagerBaseAction {
 
-  private static final Pattern normTerm = Pattern.compile("[\\W\\s_0-9]+");
+  private static final Pattern NORM_TERM = Pattern.compile("[\\W\\s_0-9]+");
   // the resource manager session is populated by the resource interceptor and kept alive for an entire manager session
   @Inject
   private ExtensionManager extensionManager;
@@ -105,7 +105,7 @@ public class MappingAction extends ManagerBaseAction {
         if (col == null) {
           continue;
         }
-        col = normTerm.matcher(col.toLowerCase()).replaceAll("");
+        col = NORM_TERM.matcher(col.toLowerCase()).replaceAll("");
         if (col.contains(":")) {
           col = StringUtils.substringAfter(col, ":");
         }
@@ -183,14 +183,14 @@ public class MappingAction extends ManagerBaseAction {
     nonMappedColumns = new ArrayList<String>();
     nonMappedColumns.addAll(columns);
     for (int index = 0; index < columns.size(); index++) {
-      if (columns.get(index) == "") {
+      if (columns.get(index).length() == 0) {
         nonMappedColumns.remove(columns.get(index));
       } else {
         if (mappingCoreid.getIndex() != null && mappingCoreid.getIndex() == index) {
           nonMappedColumns.remove(columns.get(index));
         } else {
           for (PropertyMapping field : fields) {
-            if (field.getIndex() != null && (field.getIndex()) == index) {
+            if (field.getIndex() != null && field.getIndex() == index) {
               nonMappedColumns.remove(columns.get(index));
             }
           }
@@ -258,10 +258,10 @@ public class MappingAction extends ManagerBaseAction {
         coreRowType = mapping.getExtension().getRowType();
       }
       String coreIdTerm = Constants.DWC_OCCURRENCE_ID;
-      resource.setCoreType(StringUtils.capitalize((CoreRowType.OCCURRENCE).toString().toLowerCase()));
+      resource.setCoreType(StringUtils.capitalize(CoreRowType.OCCURRENCE.toString().toLowerCase()));
       if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON)) {
         coreIdTerm = Constants.DWC_TAXON_ID;
-        resource.setCoreType(StringUtils.capitalize((CoreRowType.CHECKLIST).toString().toLowerCase()));
+        resource.setCoreType(StringUtils.capitalize(CoreRowType.CHECKLIST.toString().toLowerCase()));
       }
       coreid = extensionManager.get(coreRowType).getProperty(coreIdTerm);
       mappingCoreid = mapping.getField(coreid.getQualname());

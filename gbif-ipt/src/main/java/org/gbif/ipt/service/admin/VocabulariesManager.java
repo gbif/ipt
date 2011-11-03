@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.gbif.ipt.service.admin;
 
 import org.gbif.ipt.model.Vocabulary;
@@ -16,8 +13,6 @@ import com.google.inject.ImplementedBy;
 
 /**
  * This interface details ALL methods associated with the vocabularies within the IPT.
- *
- * @author tim
  */
 @ImplementedBy(VocabulariesManagerImpl.class)
 public interface VocabulariesManager {
@@ -27,7 +22,7 @@ public interface VocabulariesManager {
    *
    * @param uri unique URI identifying the vocabulary as given in the vocabulary definition
    */
-  public void delete(String uri) throws DeletionNotAllowedException;
+  void delete(String uri) throws DeletionNotAllowedException;
 
   /**
    * Retrieve vocabulary by its unique global URI identifier from installed vocabularies.
@@ -36,7 +31,7 @@ public interface VocabulariesManager {
    *
    * @return the installed vocabulary or null if not found
    */
-  public Vocabulary get(String uri);
+  Vocabulary get(String uri);
 
   /**
    * Returns the parsed vocabulary located at the given URL. If downloaded already it will return the cached copy or
@@ -44,7 +39,7 @@ public interface VocabulariesManager {
    *
    * @param url the resolvable URL that locates the xml vocabulary definition
    */
-  public Vocabulary get(URL url);
+  Vocabulary get(URL url);
 
   /**
    * Returns a regular map than can be used to populate html select drop downs with
@@ -55,24 +50,24 @@ public interface VocabulariesManager {
    * @param lang               a 2 character iso language code, e.g. DE
    * @param sortAlphabetically if true sort map values alphabetically, otherwise use native ordering
    */
-  public Map<String, String> getI18nVocab(String uri, String lang, boolean sortAlphabetically);
+  Map<String, String> getI18nVocab(String uri, String lang, boolean sortAlphabetically);
 
   /**
-   * Lists all locally known vocabularies
+   * Lists all locally known vocabularies.
    */
-  public List<Vocabulary> list();
+  List<Vocabulary> list();
 
   /**
-   * Load all known vocabularies from the data dir
+   * Load all known vocabularies from the data dir.
    *
    * @return number of vocabularies that have been loaded successfully
    */
-  public int load();
+  int load();
 
   /**
    * Downloads the latest version for the locally known vocabuarlies by looking up the latest registry entry
-   * for their URI. Udpates all related concepts & terms
+   * for their URI. Updates all related concepts & terms.
    */
-  public UpdateResult updateAll();
+  UpdateResult updateAll();
 
 }

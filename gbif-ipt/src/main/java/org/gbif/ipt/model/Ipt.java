@@ -17,7 +17,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
- * Encapsulates all the information for an Ipt instance
+ * Encapsulates all the information for an IPT instance.
  */
 public class Ipt extends AgentBase implements Serializable {
 
@@ -113,9 +113,6 @@ public class Ipt extends AgentBase implements Serializable {
     this.wsPassword = wsPassword;
   }
 
-  /**
-   * @see java.lang.Object#toString()
-   */
   @Override
   public String toString() {
     return ToStringBuilder.reflectionToString(this);

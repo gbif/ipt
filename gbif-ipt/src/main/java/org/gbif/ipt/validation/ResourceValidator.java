@@ -18,9 +18,6 @@ import org.gbif.ipt.model.Resource;
 
 import java.util.regex.Pattern;
 
-/**
- * @author markus
- */
 public class ResourceValidator {
 
   private static Pattern shortnamePattern = Pattern.compile("^[a-zA-Z0-9_-]+$");
@@ -43,9 +40,7 @@ public class ResourceValidator {
     if (shortname == null) {
       action.addFieldError("resource.shortname", action.getText("validation.resource.shortname.required"));
     } else {
-      if (shortname.length() < 3) {
-        action.addFieldError("resource.shortname", action.getText("validation.resource.shortname.invalid"));
-      } else if (!shortnamePattern.matcher(shortname).matches()) {
+      if (shortname.length() < 3 || !shortnamePattern.matcher(shortname).matches()) {
         action.addFieldError("resource.shortname", action.getText("validation.resource.shortname.invalid"));
       }
     }

@@ -19,12 +19,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- * @author Julieth
- *         Temporary class until a vocabulary is created
+ * Temporary class until a vocabulary is created.
  */
 public class SubtypeUtils {
 
-  public final static Map<String, String> subtypeList = new LinkedHashMap<String, String>();
+  public static final Map<String, String> subtypeList = new LinkedHashMap<String, String>();
 
   static {
     // Checklist
@@ -42,13 +41,11 @@ public class SubtypeUtils {
 
   public static Map<String, String> checklistSubtypeList() {
     Map<String, String> newSubtypeList = new LinkedHashMap<String, String>();
-    Iterator<Entry<String, String>> entries = subtypeList.entrySet().iterator();
-    while (entries.hasNext()) {
-      Entry<String, String> entry = entries.next();
-      if (!entry.getKey().equals("Select Occurrence")) {
-        newSubtypeList.put(entry.getValue(), entry.getKey());
-      } else {
+    for (Entry<String, String> entry : subtypeList.entrySet()) {
+      if (entry.getKey().equals("Select Occurrence")) {
         break;
+      } else {
+        newSubtypeList.put(entry.getValue(), entry.getKey());
       }
     }
     return newSubtypeList;
@@ -66,7 +63,7 @@ public class SubtypeUtils {
     boolean var = false;
     while (entries.hasNext()) {
       Entry<String, String> entry = entries.next();
-      if (entry.getKey().equals("Select Occurrence") | var == true) {
+      if (entry.getKey().equals("Select Occurrence") || var) {
         newSubtypeList.put(entry.getValue(), entry.getKey());
         var = true;
       }

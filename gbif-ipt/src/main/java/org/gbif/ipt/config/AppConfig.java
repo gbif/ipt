@@ -62,7 +62,7 @@ public class AppConfig {
   }
 
   public boolean devMode() {
-    return !("false".equalsIgnoreCase(properties.getProperty("dev.devmode")));
+    return !"false".equalsIgnoreCase(properties.getProperty("dev.devmode"));
   }
 
   public String getAnalyticsKey() {
@@ -219,23 +219,19 @@ public class AppConfig {
   private void readRegistryLock() throws InvalidConfigException {
     // set lock file if not yet existing
     File lockFile = getRegistryTypeLockFile();
-    if (!lockFile.exists()) {
-      log.warn("DataDir is not locked to a registry yet !!!");
-    } else {
-      String regTypeAsString;
+    if (lockFile.exists()) {
       try {
-        regTypeAsString = StringUtils.trimToNull(FileUtils.readFileToString(lockFile));
+        String regTypeAsString = StringUtils.trimToNull(FileUtils.readFileToString(lockFile));
         this.type = REGISTRY_TYPE.valueOf(regTypeAsString);
       } catch (IOException e) {
         log.error("Cannot read datadir registry lock", e);
         throw new InvalidConfigException(TYPE.INVALID_DATA_DIR, "Cannot read datadir registry lock");
       }
+    } else {
+      log.warn("DataDir is not locked to a registry yet !!!");
     }
   }
 
-  /**
-   * @throws IOException
-   */
   protected void saveConfig() throws IOException {
     // save property config file
     OutputStream out = null;
@@ -271,12 +267,12 @@ public class AppConfig {
       throw new NullPointerException("Registry type cannot be null");
     }
     if (this.type != null) {
-      if (this.type != type) {
-        throw new InvalidConfigException(TYPE.DATADIR_ALREADY_REGISTERED,
-          "The datadir is already designated as " + this.type);
-      } else {
+      if (this.type == type) {
         // already contains the same information. Dont do anything
         return;
+      } else {
+        throw new InvalidConfigException(TYPE.DATADIR_ALREADY_REGISTERED,
+          "The datadir is already designated as " + this.type);
       }
     }
     // set lock file if not yet existing

@@ -27,9 +27,6 @@ import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
-/**
- * @author markus
- */
 @Singleton
 public class JdbcInfoConverter implements Converter {
 
@@ -37,7 +34,6 @@ public class JdbcInfoConverter implements Converter {
 
   @Inject
   public JdbcInfoConverter(JdbcSupport jdbcs) {
-    super();
     this.jdbcs = jdbcs;
   }
 

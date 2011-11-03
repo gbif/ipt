@@ -26,11 +26,7 @@ public class HomeAction extends BaseAction {
    * @return the isRegistered
    */
   public boolean getIsRegistered() {
-    if (registrationManager.getHostingOrganisation() != null) {
-      return true;
-    } else {
-      return false;
-    }
+    return registrationManager.getHostingOrganisation() != null;
   }
 
 }

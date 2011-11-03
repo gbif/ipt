@@ -13,7 +13,9 @@ public class MockExtensionManager {
     return extensionManager;
   }
 
-  /** Stubbing some methods and assigning some default configurations. */
+  /**
+   * Stubbing some methods and assigning some default configurations.
+   */
   private static void setupMock() {
 
     // TODO All general stubbing implementations for methods, properties, etc., should be here.

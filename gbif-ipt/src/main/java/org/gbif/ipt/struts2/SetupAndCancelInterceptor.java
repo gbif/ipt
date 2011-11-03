@@ -14,8 +14,7 @@ import org.apache.log4j.Logger;
 /**
  * An Interceptor that checks if the basic IPT setup is complete and redirects to the respective setup page otherwise.
  * It also looks for a request parameter "cancel" and returns a result with the same name in case there is any non
- * empty
- * content existing.
+ * empty content existing.
  * This helps setting up forms to avoid the execution of the params interceptor early on.
  */
 public class SetupAndCancelInterceptor extends AbstractInterceptor {
@@ -50,7 +49,7 @@ public class SetupAndCancelInterceptor extends AbstractInterceptor {
     if (warnings.hasStartupErrors()) {
       Object action = invocation.getAction();
       if (action instanceof BaseAction) {
-        BaseAction ba = ((BaseAction) action);
+        BaseAction ba = (BaseAction) action;
         ba.addActionWarning("IPT startup warnings, please see logs!");
         //        for (String msg : warnings.getStartupErrors()) {
         //          ba.addActionMessage(msg);

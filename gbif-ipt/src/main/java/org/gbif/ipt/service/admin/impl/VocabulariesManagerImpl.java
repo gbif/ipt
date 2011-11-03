@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.gbif.ipt.service.admin.impl;
 
 import org.gbif.ipt.config.AppConfig;
@@ -83,13 +80,10 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   private final ExtensionManager extensionManager;
   // these vocabularies are always updates on startup of the IPT
   private final String[] defaultVocabs =
-    new String[] {Constants.VOCAB_URI_LANGUAGE, Constants.VOCAB_URI_COUNTRY, Constants.VOCAB_URI_RESOURCE_TYPE,
+    {Constants.VOCAB_URI_LANGUAGE, Constants.VOCAB_URI_COUNTRY, Constants.VOCAB_URI_RESOURCE_TYPE,
       Constants.VOCAB_URI_RANKS, Constants.VOCAB_URI_ROLES, Constants.VOCAB_URI_PRESERVATION_METHOD};
   private ConfigWarnings warnings;
 
-  /**
-   *
-   */
   @Inject
   public VocabulariesManagerImpl(AppConfig cfg, DataDir dataDir, VocabularyFactory vocabFactory,
     DefaultHttpClient client, RegistryManager registryManager, ExtensionManager extensionManager,
@@ -174,10 +168,6 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
     return vocabularies.get(url);
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.admin.VocabulariesManager#getI18nVocab(java.lang.String, java.lang.String)
-   */
   public Map<String, String> getI18nVocab(String uri, String lang, boolean sortAlphabetically) {
     Map<String, String> map = new LinkedHashMap<String, String>();
     Vocabulary v = get(uri);
@@ -212,8 +202,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   }
 
   /**
-   * Downloads vocabulary into local file for subsequent IPT startups
-   * and adds the vocab to the internal cache.
+   * Downloads vocabulary into local file for subsequent IPT startups and adds the vocab to the internal cache.
    * Downloads use a conditional GET, i.e. only download the vocabulary files if the content has been changed since the
    * last download.
    * lastModified dates are taken from the filesystem.

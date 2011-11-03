@@ -24,35 +24,30 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.IptMockBaseTest;
 import org.gbif.metadata.eml.EmlFactory;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.PageSize;
-import com.lowagie.text.rtf.RtfWriter2;
-import com.opensymphony.xwork2.LocaleProvider;
-
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.xml.sax.SAXException;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-
 import javax.xml.parsers.ParserConfigurationException;
 
-/**
- * @author htobon
- */
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.rtf.RtfWriter2;
+import com.opensymphony.xwork2.LocaleProvider;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.xml.sax.SAXException;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 @RunWith(MockitoJUnitRunner.class)
 public class Eml2RtfTest extends IptMockBaseTest {
 
@@ -62,7 +57,6 @@ public class Eml2RtfTest extends IptMockBaseTest {
 
   @Test
   public void generateRtfFile() {
-    File rtfTempFile = null;
     try {
       Document doc = new Document(PageSize.LETTER);
       Resource resource = new Resource();
@@ -72,7 +66,7 @@ public class Eml2RtfTest extends IptMockBaseTest {
       creator.setFirstname("Markus");
       creator.setLastname("Doring");
       resource.setCreator(creator);
-      rtfTempFile = File.createTempFile("resource", ".rtf");
+      File rtfTempFile = File.createTempFile("resource", ".rtf");
       System.out.println("Writing temporary test RTF file to " + rtfTempFile.getAbsolutePath());
       OutputStream out = new FileOutputStream(rtfTempFile);
       RtfWriter2.getInstance(doc, out);
@@ -100,9 +94,6 @@ public class Eml2RtfTest extends IptMockBaseTest {
 
   /**
    * This method should be used to configure some Mock class if needed.
-   * 
-   * @throws SAXException
-   * @throws ParserConfigurationException
    */
   @Before
   public void setUp() throws ParserConfigurationException, SAXException {
@@ -115,8 +106,8 @@ public class Eml2RtfTest extends IptMockBaseTest {
     SimpleTextProvider textProvider = mock(SimpleTextProvider.class);
 
     // Stubbing TextProvider
-    when(textProvider.getText(any(LocaleProvider.class), anyString(), anyString(), any(Object[].class))).thenReturn(
-        "i18n-word");
+    when(textProvider.getText(any(LocaleProvider.class), anyString(), anyString(), any(Object[].class)))
+      .thenReturn("i18n-word");
 
     action = new BaseAction(textProvider, cfg);
   }

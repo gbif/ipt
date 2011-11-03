@@ -34,7 +34,6 @@ import org.gbif.ipt.utils.InputStreamUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.http.conn.ClientConnectionManager;
@@ -52,11 +51,10 @@ import org.xml.sax.SAXException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * This class tests the relevant methods of the ConfigManagerImpl class.
- * 
- * @author julieth lopez
  */
 public class ConfigManagerImplTest {
 
@@ -65,8 +63,6 @@ public class ConfigManagerImplTest {
 
   /**
    * @return a new ConfigManager instance.
-   * @throws SAXException.
-   * @throws ParserConfigurationException.
    */
   private ConfigManager getConfigManager() throws ParserConfigurationException, SAXException {
     DataDir mockedDataDir = MockDataDir.buildMock();
@@ -97,9 +93,6 @@ public class ConfigManagerImplTest {
   /**
    * Test that the method setProxy of the ConfigManager throws an InvalidConfigException if the proxy given by the user
    * don't exists or the client can't connect with it.
-   * 
-   * @throws SAXException.
-   * @throws ParserConfigurationException.
    */
   @Test(expected = InvalidConfigException.class)
   public void testBadProxy() throws ParserConfigurationException, SAXException {
@@ -120,9 +113,7 @@ public class ConfigManagerImplTest {
   /**
    * Test that the method setBaseURL of the ConfigManager throws an InvalidConfigException if the baseURL given by the
    * user doesn't exist or the client can't connect with it.
-   * 
-   * @throws SAXException.
-   * @throws ParserConfigurationException.
+   *
    * @throws MalformedURLException if the baseURL is malformed.
    */
   @Ignore
@@ -136,9 +127,8 @@ public class ConfigManagerImplTest {
       URL baseURL2 = new URL("http://1.1.1.1/ipt");
       configManager.setBaseURL(baseURL2);
       // the validation should never get here.
-      assertTrue(false);
+      fail();
     } catch (InvalidConfigException e) {
-      assertTrue(true);
     }
 
     // try to save an existent baseURL without an IPT installed.
@@ -146,9 +136,8 @@ public class ConfigManagerImplTest {
       URL baseURL2 = new URL("http://www.gbif.org");
       configManager.setBaseURL(baseURL2);
       // the validation should never get here.
-      assertEquals(true, false);
+      fail();
     } catch (InvalidConfigException e) {
-      assertEquals(true, true);
     }
 
     // Save good baseURL
@@ -173,9 +162,6 @@ public class ConfigManagerImplTest {
   /**
    * Test that the method setProxy of the ConfigManager saves the proxy in the application properties if the client can
    * connect with it.
-   * 
-   * @throws SAXException.
-   * @throws ParserConfigurationException.
    */
   @Test
   public void testSetProxy() throws ParserConfigurationException, SAXException {

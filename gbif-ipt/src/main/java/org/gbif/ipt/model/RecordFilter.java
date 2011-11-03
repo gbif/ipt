@@ -19,9 +19,6 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
-/**
- * @author markus
- */
 public class RecordFilter implements Serializable {
 
   public enum Comparator {
@@ -33,7 +30,6 @@ public class RecordFilter implements Serializable {
   }
 
   private static final long serialVersionUID = 98709027465L;
-  ;
 
   private Comparator comparator;
   private Integer column;
@@ -68,7 +64,7 @@ public class RecordFilter implements Serializable {
    */
   public boolean matches(String[] record, int newColumn) {
     if (record != null && comparator != null && column != null) {
-      String val = null;
+      String val;
       if (newColumn < 0) {
         val = record.length < column ? null : StringUtils.trimToNull(record[column]);
       } else {
@@ -82,10 +78,7 @@ public class RecordFilter implements Serializable {
         case Equals:
           return val != null && val.equals(param);
         case NotEquals:
-          if (val == null) {
-            return true;
-          }
-          return !val.equals(param);
+          return val == null || !val.equals(param);
       }
     }
     return true;

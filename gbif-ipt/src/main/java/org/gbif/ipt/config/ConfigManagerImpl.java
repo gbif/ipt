@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.gbif.ipt.config;
 
 import org.gbif.ipt.model.User.Role;
@@ -38,9 +35,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.xml.DOMConfigurator;
 
 /**
- * A skeleton implementation for the time being....
- *
- * @author tim
+ * A skeleton implementation for the time being.
  */
 @Singleton
 public class ConfigManagerImpl extends BaseManager implements ConfigManager {
@@ -54,7 +49,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   private ConfigWarnings warnings;
   private DefaultHttpClient client;
   private HttpUtil http;
-  private final static String PATH_TO_CSS = "/styles/main.css";
+  private static final String PATH_TO_CSS = "/styles/main.css";
 
   @Inject
   public ConfigManagerImpl(DataDir dataDir, AppConfig cfg, InputStreamUtils streamUtils, UserAccountManager userManager,
@@ -96,8 +91,8 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   private boolean changeProxy(HttpHost hostTemp, String proxy) {
     try {
       URL url = new URL(proxy);
-      HttpHost host = null;
-      String var[] = proxy.split(":");
+      String[] var = proxy.split(":");
+      HttpHost host;
       if (var.length > 2) {
         host = new HttpHost(url.getHost(), url.getPort());
       } else {
@@ -219,20 +214,17 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     cfg.setProperty(AppConfig.ANALYTICS_KEY, StringUtils.trimToEmpty(key));
   }
 
-  /**
-   * @see org.gbif.ipt.service.admin.ConfigManager#setBaseURL(java.net.URL)
-   */
   public void setBaseURL(URL baseURL) throws InvalidConfigException {
     log.info("Updating the baseURL to: " + baseURL);
 
     boolean validate = true;
-    if (("localhost").equals(baseURL.getHost()) || ("127.0.0.1").equals(baseURL.getHost()) || baseURL.getHost()
+    if ("localhost".equals(baseURL.getHost()) || "127.0.0.1".equals(baseURL.getHost()) || baseURL.getHost()
       .equalsIgnoreCase(this.getHostName())) {
       log.warn("Localhost used as base url, IPT will not be visible to the outside!");
 
       // validate if localhost URL is configured only in developer mode.
       // use cfg registryType vs cfg devMode since it takes into account devMode from pom and production from setupPage
-      if (cfg.getRegistryType().equals(AppConfig.REGISTRY_TYPE.DEVELOPMENT)) {
+      if (cfg.getRegistryType() == AppConfig.REGISTRY_TYPE.DEVELOPMENT) {
         HttpHost hostTemp = (HttpHost) client.getParams().getParameter(ConnRoutePNames.DEFAULT_PROXY);
         if (hostTemp != null) {
           // if local URL is configured, the IPT should do the validation without a proxy.
@@ -281,7 +273,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
 
   public void setIptLocation(Double lat, Double lon) throws InvalidConfigException {
     if (lat != null && lon != null) {
-      if ((lat > 90.0 || lat < -90.0) || (lon > 180.0 || lon < -180.0)) {
+      if (lat > 90.0 || lat < -90.0 || (lon > 180.0 || lon < -180.0)) {
         log.warn("IPT Lat/Lon is not a valid coordinate");
         throw new InvalidConfigException(TYPE.FORMAT_ERROR, "IPT Lat/Lon is not a valid coordinate");
       }
@@ -330,12 +322,12 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
       } else {
         // After Setup
         // Validating if the current proxy in the same proxy given by the user
-        if (!hostTemp.toString().equals(proxy)) {
+        if (hostTemp.toString().equals(proxy)) {
+          changeProxy(hostTemp, proxy);
+        } else {
           // remove proxy from http client
           log.info("Removing proxy setting");
           client.getParams().removeParameter(ConnRoutePNames.DEFAULT_PROXY);
-          changeProxy(hostTemp, proxy);
-        } else {
           changeProxy(hostTemp, proxy);
         }
       }
@@ -367,11 +359,10 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     }
     // ensure there is an ipt listening at the target
     boolean valid = false;
-    HttpResponse response = null;
     try {
       HttpGet get = new HttpGet(baseURL.toString() + PATH_TO_CSS);
-      response = http.executeGetWithTimeout(get, 4000);
-      valid = (response.getStatusLine().getStatusCode() == 200);
+      HttpResponse response = http.executeGetWithTimeout(get, 4000);
+      valid = response.getStatusLine().getStatusCode() == 200;
     } catch (ClientProtocolException e) {
       log.info("Protocol error connecting to new base URL [" + baseURL.toString() + "]", e);
     } catch (IOException e) {

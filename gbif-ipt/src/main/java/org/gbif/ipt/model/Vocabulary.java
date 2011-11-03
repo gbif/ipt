@@ -56,17 +56,11 @@ public class Vocabulary implements Comparable, Serializable {
     concepts.add(concept);
   }
 
-  /**
-   * @see java.lang.Comparable#compareTo(Object)
-   */
   public int compareTo(Object object) {
     Vocabulary myClass = (Vocabulary) object;
     return new CompareToBuilder().append(this.uri, myClass.uri).toComparison();
   }
 
-  /**
-   * @see java.lang.Object#equals(Object)
-   */
   @Override
   public boolean equals(Object other) {
     if (this == other) {
@@ -137,9 +131,6 @@ public class Vocabulary implements Comparable, Serializable {
     return url;
   }
 
-  /**
-   * @see java.lang.Object#hashCode()
-   */
   @Override
   public int hashCode() {
     return Objects.hashCode(uri);
@@ -158,10 +149,8 @@ public class Vocabulary implements Comparable, Serializable {
   }
 
   public void setLink(String link) {
-    URL url;
     try {
-      url = new URL(link);
-      this.link = url;
+      this.link = new URL(link);
     } catch (MalformedURLException e) {
     }
   }

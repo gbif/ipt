@@ -32,9 +32,6 @@ import java.util.Set;
 
 import org.apache.commons.lang.xwork.StringUtils;
 
-/**
- * @author markus
- */
 public class ExtensionMappingValidator {
 
   public static class ValidationStatus {
@@ -202,15 +199,15 @@ public class ExtensionMappingValidator {
         }
       } else if (mapping.getIdColumn().equals(ExtensionMapping.IDGEN_UUID)) {
         // not allowed for extensions
-        if (!ext.isCore()) {
-          v.setIdProblem("validation.mapping.coreid.uuid.extension");
-        } else {
+        if (ext.isCore()) {
           // if there are any extensions existing the cant link to the new UUIDs
           for (ExtensionMapping m : resource.getMappings()) {
             if (!m.isCore()) {
               v.setIdProblem("validation.mapping.coreid.uuid.extensions.exist");
             }
           }
+        } else {
+          v.setIdProblem("validation.mapping.coreid.uuid.extension");
         }
       } // else {
       // TODO: anything to check for regular columns?

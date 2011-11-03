@@ -25,8 +25,6 @@ import org.apache.struts2.util.StrutsTypeConverter;
 
 /**
  * This class provides the method to validate the latitude and longitude coordinates as decimal numbers.
- *
- * @author julieth
  */
 public abstract class CoordinateFormatConverter extends StrutsTypeConverter {
 
@@ -38,19 +36,18 @@ public abstract class CoordinateFormatConverter extends StrutsTypeConverter {
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {
     // The null value is needed to validate in EmlValidator.java class
-    if (values[0].equals("")) {
+    if (values[0].length() == 0) {
       return null;
     }
     // The full name of the property which call the method contained in the Map context
     String coordinate = context.get(ANGLE).toString();
     // The latitude is validating in a range of doubles
-    DoubleRange range = null;
-    Double number = null;
     // validate coordinates in case the action context doesn't work properly.
     if (coordinate == null) {
       throw new TypeConversionException("Invalid decimal number: " + values[0]);
     } else {
       // Assign the values of the range depending the property who calls the method.
+      DoubleRange range;
       if (coordinate.equals(CoordinateUtils.LATITUDE)) {
         // The range of the latitude coordinate. (-90,90)
         range = new DoubleRange(CoordinateUtils.MIN_LATITUDE, CoordinateUtils.MAX_LATITUDE);
@@ -59,6 +56,7 @@ public abstract class CoordinateFormatConverter extends StrutsTypeConverter {
         range = new DoubleRange(CoordinateUtils.MIN_LONGITUDE, CoordinateUtils.MAX_LONGITUDE);
       }
 
+      Double number;
       try {
         // Converts String to double if fails throws a NumberFormatException.
         // If the String contains a comma, a character, it throws the exception.

@@ -14,7 +14,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 /**
- * Encapsulates all the information for registration
+ * Encapsulates all the information for registration.
  */
 public class Registration implements Serializable {
 

@@ -12,7 +12,6 @@ public class ActionLogger {
   private final BaseAction action;
 
   public ActionLogger(Logger log, BaseAction action) {
-    super();
     this.log = log;
     this.action = action;
   }
