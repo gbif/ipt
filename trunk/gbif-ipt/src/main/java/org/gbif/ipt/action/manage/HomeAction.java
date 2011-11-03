@@ -4,12 +4,13 @@ import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.manage.ResourceManager;
 
-import com.google.inject.Inject;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.inject.Inject;
+
 public class HomeAction extends BaseAction {
+
   private List<Resource> resources = new ArrayList<Resource>();
   @Inject
   private ResourceManager resourceManager;
@@ -32,8 +33,6 @@ public class HomeAction extends BaseAction {
   /**
    * method for dealing with the action for a locked resource.
    * Does nothing but the regular home plus an error message
-   * 
-   * @return
    */
   public String locked() {
     addActionError(getText("manage.home.resource.locked"));

@@ -10,28 +10,27 @@ package org.gbif.ipt.struts2;
 
 import org.gbif.ipt.action.BaseAction;
 
-import com.opensymphony.xwork2.ActionInvocation;
-import com.opensymphony.xwork2.Result;
-import com.opensymphony.xwork2.interceptor.MethodFilterInterceptor;
-
-import org.apache.struts2.dispatcher.ServletActionRedirectResult;
-import org.apache.struts2.dispatcher.ServletRedirectResult;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.Result;
+import com.opensymphony.xwork2.interceptor.MethodFilterInterceptor;
+import org.apache.struts2.dispatcher.ServletActionRedirectResult;
+import org.apache.struts2.dispatcher.ServletRedirectResult;
+
 /**
- * An Interceptor to preserve an actions ValidationAware messages across a redirect result. It makes the assumption that
+ * An Interceptor to preserve an actions ValidationAware messages across a redirect result. It makes the assumption
+ * that
  * you always want to preserve messages across a redirect and restore them to the next action if they exist. The way
  * this works is it looks at the result type after a action has executed and if the result was a redirect
  * (ServletRedirectResult) or a redirectAction (ServletActionRedirectResult) and there were any errors, messages, or
  * fieldErrors they are stored in the session. Before the next action executes it will check if there are any messages
  * stored in the session and add them to the next action.
- * 
- * @See http://glindholm.wordpress.com/2008/07/02/preserving-messages-across-a-redirect-in-struts-2/
  */
 public class RedirectMessageInterceptor extends MethodFilterInterceptor {
+
   private static final long serialVersionUID = -1847557437429753540L;
 
   public static final String FIELD_ERRORS_KEY = "RedirectMessageInterceptor_FieldErrors";

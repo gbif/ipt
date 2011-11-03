@@ -25,7 +25,7 @@ import org.apache.struts2.util.StrutsTypeConverter;
 
 /**
  * This class provides the method to validate the latitude and longitude coordinates as decimal numbers.
- * 
+ *
  * @author julieth
  */
 public abstract class CoordinateFormatConverter extends StrutsTypeConverter {

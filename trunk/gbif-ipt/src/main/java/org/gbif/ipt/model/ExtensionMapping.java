@@ -44,6 +44,7 @@ public class ExtensionMapping implements Serializable {
 
   /**
    * @param peek: Peek of File source.
+   *
    * @return list of columns names depending on its mapping.
    */
   public List<String> getColumns(List<String[]> peek) {

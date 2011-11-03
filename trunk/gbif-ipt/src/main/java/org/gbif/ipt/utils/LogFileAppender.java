@@ -14,8 +14,10 @@ import java.util.ArrayList;
 import org.apache.log4j.RollingFileAppender;
 
 /**
- * LogFileAppender works to backup the IPT log files (admin.log, debug.log). Plus, it looks for a temporal path location
- * while Tomcat, Jetty, or any other server initialise the project at first time before the user is allowed to configure
+ * LogFileAppender works to backup the IPT log files (admin.log, debug.log). Plus, it looks for a temporal path
+ * location
+ * while Tomcat, Jetty, or any other server initialise the project at first time before the user is allowed to
+ * configure
  * a properly DataDir.
  */
 public class LogFileAppender extends RollingFileAppender {
@@ -27,7 +29,7 @@ public class LogFileAppender extends RollingFileAppender {
   /**
    * Get possibles temporal paths in which the log files could be temporally created while the user configures a
    * properly Data Directory.
-   * 
+   *
    * @return an array with the temporal paths.
    */
   private static String[] getTempPaths() {
@@ -48,7 +50,7 @@ public class LogFileAppender extends RollingFileAppender {
 
   /**
    * Find temporal path with writing permissions depending on the Operating System.
-   * 
+   *
    * @return the location of the temporal file.
    */
   private String findTempDir() {

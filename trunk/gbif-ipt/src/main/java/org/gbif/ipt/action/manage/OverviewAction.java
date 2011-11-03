@@ -17,8 +17,8 @@ import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.Resource.CoreRowType;
+import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.DeletionNotAllowedException;
@@ -148,7 +148,7 @@ public class OverviewAction extends ManagerBaseAction {
 
   /**
    * Validate whether or not to show a confirmation message to overwrite the file(s) recently uploaded.
-   * 
+   *
    * @return true if a file exist in the user session. False otherwise.
    */
   public boolean getConfirmOverwrite() {
@@ -157,7 +157,7 @@ public class OverviewAction extends ManagerBaseAction {
 
   /**
    * Calculate the size of the DwC-A file.
-   * 
+   *
    * @return the size (human readable) of the DwC-A file.
    */
   public String getDwcaFormattedSize() {
@@ -166,7 +166,7 @@ public class OverviewAction extends ManagerBaseAction {
 
   /**
    * Calculate the size of the EML file.
-   * 
+   *
    * @return the size (human readable) of the EML file.
    */
   public String getEmlFormattedSize() {
@@ -206,7 +206,7 @@ public class OverviewAction extends ManagerBaseAction {
 
   /**
    * Calculate the size of the RTF file.
-   * 
+   *
    * @return return the size (human readable) of the RTF file.
    */
   public String getRtfFormattedSize() {
@@ -239,18 +239,18 @@ public class OverviewAction extends ManagerBaseAction {
         // makePrivate
         try {
           resourceManager.visibilityToPrivate(resource);
-          addActionMessage(getText("manage.overview.changed.publication.status", new String[] {resource.getStatus()
-            .toString()}));
+          addActionMessage(
+            getText("manage.overview.changed.publication.status", new String[] {resource.getStatus().toString()}));
         } catch (InvalidConfigException e) {
           log.error("Cant unpublish resource " + resource, e);
         }
       } else {
-        addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
-          resource.getStatus().toString()}));
+        addActionWarning(getText("manage.overview.resource.invalid.operation",
+          new String[] {resource.getShortname(), resource.getStatus().toString()}));
       }
     } else {
-      addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
-        resource.getStatus().toString()}));
+      addActionWarning(getText("manage.overview.resource.invalid.operation",
+        new String[] {resource.getShortname(), resource.getStatus().toString()}));
     }
     return execute();
   }
@@ -262,15 +262,15 @@ public class OverviewAction extends ManagerBaseAction {
     if (PublicationStatus.PRIVATE == resource.getStatus()) {
       try {
         resourceManager.visibilityToPublic(resource);
-        addActionMessage(getText("manage.overview.changed.publication.status", new String[] {resource.getStatus()
-          .toString()}));
+        addActionMessage(
+          getText("manage.overview.changed.publication.status", new String[] {resource.getStatus().toString()}));
       } catch (InvalidConfigException e) {
         log.error("Cant publish resource " + resource, e);
       }
 
     } else {
-      addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
-        resource.getStatus().toString()}));
+      addActionWarning(getText("manage.overview.resource.invalid.operation",
+        new String[] {resource.getShortname(), resource.getStatus().toString()}));
     }
     return execute();
   }
@@ -316,8 +316,8 @@ public class OverviewAction extends ManagerBaseAction {
         potentialExtensions.add(0, extensionManager.get(resource.getCoreRowType()));
       } else if (!resource.getSources().isEmpty()) {
         // Validating if the resource has a type
-        if (resource.getCoreType() != null
-          && !(resource.getCoreType().equals("Other") || resource.getCoreType().equals(""))) {
+        if (resource.getCoreType() != null && !(resource.getCoreType().equals("Other") || resource.getCoreType()
+          .equals(""))) {
           potentialExtensions = new ArrayList<Extension>();
           // Comparing the subtype with two static list. The appropiate type is selected depending if the subtype is
           // in the checklist List or is in the occurrence list and only is enable to do the mapping
@@ -352,8 +352,8 @@ public class OverviewAction extends ManagerBaseAction {
     }
     try {
       if (resourceManager.publish(resource, this)) {
-        addActionMessage(getText("manage.overview.publishing.resource.version", new String[] {new String(Integer
-          .toString(resource.getEmlVersion()))}));
+        addActionMessage(getText("manage.overview.publishing.resource.version",
+          new String[] {new String(Integer.toString(resource.getEmlVersion()))}));
         return PUBLISHING;
       } else {
         if (!resource.hasMappedData()) {
@@ -384,8 +384,8 @@ public class OverviewAction extends ManagerBaseAction {
     }
     if (PublicationStatus.PUBLIC == resource.getStatus()) {
       if (unpublish) {
-        addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
-          resource.getStatus().toString()}));
+        addActionWarning(getText("manage.overview.resource.invalid.operation",
+          new String[] {resource.getShortname(), resource.getStatus().toString()}));
 
       } else {
         // plain managers are not allowed to register a resource
@@ -420,8 +420,8 @@ public class OverviewAction extends ManagerBaseAction {
         }
       }
     } else {
-      addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
-        resource.getStatus().toString()}));
+      addActionWarning(getText("manage.overview.resource.invalid.operation",
+        new String[] {resource.getShortname(), resource.getStatus().toString()}));
     }
     return execute();
   }

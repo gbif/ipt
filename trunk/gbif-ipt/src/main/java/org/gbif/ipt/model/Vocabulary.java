@@ -7,13 +7,6 @@
  */
 package org.gbif.ipt.model;
 
-import static com.google.common.base.Objects.equal;
-
-import com.google.common.base.Objects;
-import com.google.gson.annotations.SerializedName;
-
-import org.apache.commons.lang.builder.CompareToBuilder;
-
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -21,11 +14,17 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.google.common.base.Objects;
+import com.google.gson.annotations.SerializedName;
+import org.apache.commons.lang.builder.CompareToBuilder;
+
+import static com.google.common.base.Objects.equal;
+
 /**
  * TODO: Documentation.
- * 
  */
 public class Vocabulary implements Comparable, Serializable {
+
   private static final long serialVersionUID = 22000013267L;
   @SerializedName("identifier")
   private String uri; // identifier for JSON.

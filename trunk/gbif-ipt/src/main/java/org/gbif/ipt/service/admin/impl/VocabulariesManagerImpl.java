@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.gbif.ipt.service.admin.impl;
 
@@ -22,17 +22,6 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.utils.HttpUtil;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import com.thoughtworks.xstream.XStream;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOCase;
-import org.apache.commons.io.filefilter.SuffixFileFilter;
-import org.apache.commons.lang.StringUtils;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.xml.sax.SAXException;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -52,17 +41,29 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.xml.parsers.ParserConfigurationException;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.thoughtworks.xstream.XStream;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOCase;
+import org.apache.commons.io.filefilter.SuffixFileFilter;
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.xml.sax.SAXException;
 
 /**
  * Manager for all vocabulary related methods. Keeps an internal map of locally existing and parsed vocabularies which
- * is keyed on a normed filename derived from a vocabularies URL. We use this derived filename instead of the proper URL
+ * is keyed on a normed filename derived from a vocabularies URL. We use this derived filename instead of the proper
+ * URL
  * as we do not persist any additional data than the extension file itself - which doesnt have its own URL embedded.
  */
 @Singleton
 public class VocabulariesManagerImpl extends BaseManager implements VocabulariesManager {
+
   public class UpdateResult {
+
     // key=uri
     public Set<String> updated = new HashSet<String>();
     // key=uri
@@ -81,17 +82,18 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   private final RegistryManager registryManager;
   private final ExtensionManager extensionManager;
   // these vocabularies are always updates on startup of the IPT
-  private final String[] defaultVocabs = new String[]{
-      Constants.VOCAB_URI_LANGUAGE, Constants.VOCAB_URI_COUNTRY, Constants.VOCAB_URI_RESOURCE_TYPE,
+  private final String[] defaultVocabs =
+    new String[] {Constants.VOCAB_URI_LANGUAGE, Constants.VOCAB_URI_COUNTRY, Constants.VOCAB_URI_RESOURCE_TYPE,
       Constants.VOCAB_URI_RANKS, Constants.VOCAB_URI_ROLES, Constants.VOCAB_URI_PRESERVATION_METHOD};
   private ConfigWarnings warnings;
 
   /**
-   * 
+   *
    */
   @Inject
-  public VocabulariesManagerImpl(AppConfig cfg, DataDir dataDir, VocabularyFactory vocabFactory, DefaultHttpClient client,
-      RegistryManager registryManager, ExtensionManager extensionManager, ConfigWarnings warnings) {
+  public VocabulariesManagerImpl(AppConfig cfg, DataDir dataDir, VocabularyFactory vocabFactory,
+    DefaultHttpClient client, RegistryManager registryManager, ExtensionManager extensionManager,
+    ConfigWarnings warnings) {
     super(cfg, dataDir);
     this.vocabFactory = vocabFactory;
     this.downloadUtil = new HttpUtil(client);
@@ -134,7 +136,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
           for (Vocabulary v : ext.listVocabularies()) {
             if (uri.equalsIgnoreCase(v.getUri())) {
               throw new DeletionNotAllowedException(Reason.VOCABULARY_USED_IN_EXTENSION,
-                  "Vocabulary used by extension " + ext.getRowType());
+                "Vocabulary used by extension " + ext.getRowType());
             }
           }
         }
@@ -186,8 +188,8 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
         final String s = lang;
         Collections.sort(concepts, new Comparator<VocabularyConcept>() {
           public int compare(VocabularyConcept o1, VocabularyConcept o2) {
-            return (o1.getPreferredTerm(s) == null ? o1.getIdentifier() : o1.getPreferredTerm(s).getTitle()).compareTo((o2.getPreferredTerm(s) == null
-                ? o2.getIdentifier() : o2.getPreferredTerm(s).getTitle()));
+            return (o1.getPreferredTerm(s) == null ? o1.getIdentifier() : o1.getPreferredTerm(s).getTitle())
+              .compareTo((o2.getPreferredTerm(s) == null ? o2.getIdentifier() : o2.getPreferredTerm(s).getTitle()));
           }
         });
       } else {
@@ -215,10 +217,6 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
    * Downloads use a conditional GET, i.e. only download the vocabulary files if the content has been changed since the
    * last download.
    * lastModified dates are taken from the filesystem.
-   * 
-   * @param url
-   * @return
-   * @throws IOException
    */
   private Vocabulary install(URL url) throws IOException, InvalidConfigException {
     Vocabulary v = null;
@@ -349,8 +347,8 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
     log.debug("Saving uri2url vocabulary map with " + uri2url.size() + " entries ...");
     Writer userWriter;
     try {
-      userWriter = org.gbif.ipt.utils.FileUtils.startNewUtf8File(dataDir.configFile(CONFIG_FOLDER + "/"
-          + PERSISTENCE_FILE));
+      userWriter =
+        org.gbif.ipt.utils.FileUtils.startNewUtf8File(dataDir.configFile(CONFIG_FOLDER + "/" + PERSISTENCE_FILE));
       xstream.toXML(uri2url, userWriter);
     } catch (IOException e) {
       log.error("Cant write uri2url mapping", e);

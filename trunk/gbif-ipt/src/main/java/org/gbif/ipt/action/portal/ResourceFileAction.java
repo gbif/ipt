@@ -10,22 +10,19 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.service.manage.ResourceManager;
 
-import com.google.inject.Inject;
-
-import org.apache.commons.lang.StringUtils;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.Date;
-import javax.servlet.http.HttpServletResponse;
+
+import com.google.inject.Inject;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * The Action responsible for serving datadir resource files
- *
  */
 public class ResourceFileAction extends BaseAction {
+
   @Inject
   private DataDir dataDir;
   @Inject
@@ -47,7 +44,7 @@ public class ResourceFileAction extends BaseAction {
     // see if we have a conditional get with If-Modified-Since header
     try {
       long since = req.getDateHeader("If-Modified-Since");
-      if (since>0 && resource.getLastPublished()!=null){
+      if (since > 0 && resource.getLastPublished() != null) {
         long last = resource.getLastPublished().getTime();
         if (last < since) {
           return NOT_MODIFIED;
@@ -136,25 +133,25 @@ public class ResourceFileAction extends BaseAction {
   }
 
   public String publicationLog() {
-      	data = dataDir.resourcePublicationLogFile(resource.getShortname());
-      	if (resource.isPublished() && data.exists()) {
-	        mimeType = "text/log" ;
-	        filename = "publication.log";
-	    }else{
-	      return NOT_FOUND;
-	    }
-	    return execute();
+    data = dataDir.resourcePublicationLogFile(resource.getShortname());
+    if (resource.isPublished() && data.exists()) {
+      mimeType = "text/log";
+      filename = "publication.log";
+    } else {
+      return NOT_FOUND;
+    }
+    return execute();
   }
 
   public String sourceLog() {
-    	data = dataDir.sourceLogFile(resource.getShortname(), source.getName()) ;
-    	if (data.exists()) {
-	        mimeType = "text/log" ;
-	        filename = source.getName()+".log";
-	    }else{
-	      return NOT_FOUND;
-	    }
-	    return execute();
+    data = dataDir.sourceLogFile(resource.getShortname(), source.getName());
+    if (data.exists()) {
+      mimeType = "text/log";
+      filename = source.getName() + ".log";
+    } else {
+      return NOT_FOUND;
+    }
+    return execute();
   }
 
   @Override

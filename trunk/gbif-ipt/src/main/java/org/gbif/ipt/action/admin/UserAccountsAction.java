@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.gbif.ipt.action.admin;
 
@@ -12,20 +12,20 @@ import org.gbif.ipt.service.DeletionNotAllowedException.Reason;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.validation.UserValidator;
 
-import com.google.inject.Inject;
-
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.StringUtils;
-
 import java.io.IOException;
 import java.util.List;
 
+import com.google.inject.Inject;
+import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
+
 /**
  * The Action responsible for all user input relating to the user accounts in the IPT
- * 
+ *
  * @author tim
  */
 public class UserAccountsAction extends POSTAction {
+
   private static final long serialVersionUID = 8892204508303815998L;
   @Inject
   private UserAccountManager userManager;
@@ -48,14 +48,14 @@ public class UserAccountsAction extends POSTAction {
         if (removedUser == null) {
           return NOT_FOUND;
         }
-        userManager.save();       
+        userManager.save();
         addActionMessage(getText("admin.user.deleted"));
         return SUCCESS;
       } catch (DeletionNotAllowedException e) {
         if (Reason.LAST_ADMIN == e.getReason()) {
           addActionError(getText("admin.user.deleted.lastadmin"));
         } else if (Reason.LAST_RESOURCE_MANAGER == e.getReason()) {
-          addActionError(getText("admin.user.deleted.lastmanager", new String[]{e.getMessage()}));
+          addActionError(getText("admin.user.deleted.lastmanager", new String[] {e.getMessage()}));
         } else {
           addActionError(getText("admin.user.deleted.error"));
         }
@@ -69,9 +69,9 @@ public class UserAccountsAction extends POSTAction {
   public String getPassword2() {
     return password2;
   }
-  
+
   public String getNewUser() {
-	 return newUser?"yes":"no";
+    return newUser ? "yes" : "no";
   }
 
   // Getters / Setters follow
@@ -95,8 +95,8 @@ public class UserAccountsAction extends POSTAction {
       // modify copy of existing user - otherwise we even change the proper instances when canceling the request or
       // submitting non validating data
       user = userManager.get(id);
-    }else{
-    	newUser=true;
+    } else {
+      newUser = true;
     }
     // if no id was submitted we wanted to create a new account
     // if an invalid email was entered, it gets stored in the id field and obviously userManager above cant find a
@@ -109,7 +109,7 @@ public class UserAccountsAction extends POSTAction {
       id = null;
       // create new user
       user = new User();
-      newUser=true;
+      newUser = true;
     }
   }
 
@@ -120,24 +120,25 @@ public class UserAccountsAction extends POSTAction {
         userManager.create(user);
         addActionMessage(getText("admin.user.added"));
       } else if (resetPassword) {
-        String newPassword = RandomStringUtils.random(8,
-            "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
+        String newPassword =
+          RandomStringUtils.random(8, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
         user.setPassword(newPassword);
         userManager.save(user);
-        addActionMessage(getText("admin.user.passwordChanged", new String[]{user.getEmail(),newPassword}));
+        addActionMessage(getText("admin.user.passwordChanged", new String[] {user.getEmail(), newPassword}));
       } else {
-    	  if(userManager.get(user.getEmail()).getRole() == Role.Admin && user.getRole() != Role.Admin && userManager.list(Role.Admin).size() < 2 ) {
-    		  addActionError(getText("admin.user.changed.current"));
-    		  return INPUT;
-    	  }  	  
-    	  if(user.getEmail().equals(getCurrentUser().getEmail())){
-    		  getCurrentUser().setRole(user.getRole());
-    	  }
-    	  userManager.save(user);
-    	  if(getCurrentUser().getRole() != Role.Admin) {    		  
-    		  return HOME;
-          }
-    	  addActionMessage(getText("admin.user.changed"));
+        if (userManager.get(user.getEmail()).getRole() == Role.Admin && user.getRole() != Role.Admin
+          && userManager.list(Role.Admin).size() < 2) {
+          addActionError(getText("admin.user.changed.current"));
+          return INPUT;
+        }
+        if (user.getEmail().equals(getCurrentUser().getEmail())) {
+          getCurrentUser().setRole(user.getRole());
+        }
+        userManager.save(user);
+        if (getCurrentUser().getRole() != Role.Admin) {
+          return HOME;
+        }
+        addActionMessage(getText("admin.user.changed"));
       }
       return SUCCESS;
     } catch (IOException e) {
@@ -145,8 +146,8 @@ public class UserAccountsAction extends POSTAction {
       addActionError(getText("admin.user.saveError"));
       addActionError(e.getMessage());
       return INPUT;
-    } catch (AlreadyExistingException e) {    	
-      addActionError(getText("admin.user.exists", new String[]{user.getEmail()}));
+    } catch (AlreadyExistingException e) {
+      addActionError(getText("admin.user.exists", new String[] {user.getEmail()}));
       // resetting user
       user = new User();
       return INPUT;
@@ -179,7 +180,7 @@ public class UserAccountsAction extends POSTAction {
       addFieldError("password2", getText("validation.password2.wrong"));
       password2 = null;
       user.setPassword(null);
-    }       
-    
+    }
+
   }
 }

@@ -11,20 +11,21 @@ import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.terms.TermFactory;
 import org.gbif.dwc.text.ArchiveField.DataType;
 
-import static com.google.common.base.Objects.equal;
+import java.io.Serializable;
 
 import com.google.common.base.Objects;
 
-import java.io.Serializable;
+import static com.google.common.base.Objects.equal;
 
 /**
  * A single property of an extension. Often also known as concept or term.
  * It implements the ConceptTerm of the dwca reader and its equal method compares only the qualified name, so that any
  * ConceptTerm with the same qualified name is considered equal.
- * 
+ * <p/>
  * Natural sorting is based on the group and then the property name
  */
 public class ExtensionProperty implements Comparable<ExtensionProperty>, ConceptTerm, Serializable {
+
   private static final long serialVersionUID = 698996553L;
   private Extension extension;
   private String name;
@@ -45,8 +46,6 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Concept
   /**
    * Construct a new property with a single qualified name. Parses out the name and sets the namespace to end with a
    * slash or #
-   * 
-   * @param qualName
    */
   public ExtensionProperty(String qualName) {
     super();
@@ -55,7 +54,7 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Concept
 
   /**
    * Compare by group and qualified name as default sorting order
-   * 
+   *
    * @see java.lang.Comparable#compareTo(Object)
    */
   public int compareTo(ExtensionProperty prop) {
@@ -70,7 +69,7 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Concept
 
   /**
    * Just compare the unique qualified names to see if extension properties are equal
-   * 
+   *
    * @see java.lang.Object#equals(Object)
    */
   @Override
@@ -232,7 +231,7 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Concept
    * @see org.gbif.dwc.terms.ConceptTerm#simpleNormalisedAlternativeNames()
    */
   public String[] simpleNormalisedAlternativeNames() {
-    return new String[]{};
+    return new String[] {};
   }
 
   /*

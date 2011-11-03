@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.gbif.ipt.action.admin;
 
@@ -11,10 +11,11 @@ import com.google.inject.Inject;
 
 /**
  * The Action responsible for all user input relating to the vocabularies in use within the IPT
- * 
+ *
  * @author tim
  */
 public class VocabulariesAction extends BaseAction {
+
   private static final long serialVersionUID = 7277675384287096912L;
   @Inject
   private VocabulariesManager vocabManager;

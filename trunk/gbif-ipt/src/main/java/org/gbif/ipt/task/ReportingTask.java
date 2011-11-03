@@ -1,13 +1,14 @@
 package org.gbif.ipt.task;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 public abstract class ReportingTask {
+
   protected Logger log = Logger.getLogger(this.getClass());
   private final String resourceShortname;
   private final ReportHandler handler;
@@ -17,8 +18,6 @@ public abstract class ReportingTask {
 
   /**
    * @param reportingIntervall in milliseconds
-   * @param resourceShortname
-   * @param handler
    */
   protected ReportingTask(int reportingIntervall, String resourceShortname, ReportHandler handler) {
     super();

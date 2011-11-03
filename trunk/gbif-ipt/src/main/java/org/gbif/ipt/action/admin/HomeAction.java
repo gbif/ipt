@@ -6,6 +6,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import com.google.inject.Inject;
 
 public class HomeAction extends BaseAction {
+
   private RegistrationManager registrationManager;
 
   /**

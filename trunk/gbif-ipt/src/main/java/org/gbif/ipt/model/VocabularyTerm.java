@@ -14,17 +14,17 @@ package org.gbif.ipt.model;
 
 import org.gbif.ipt.utils.LangUtils;
 
-import static com.google.common.base.Objects.equal;
+import java.io.Serializable;
 
 import com.google.common.base.Objects;
 
-import java.io.Serializable;
+import static com.google.common.base.Objects.equal;
 
 /**
  * A single literal representation of a vocabulary concept in a given language
- * 
  */
 public class VocabularyTerm implements Serializable {
+
   private static final long serialVersionUID = 9000999000012L;
   private String title;
   private String lang;

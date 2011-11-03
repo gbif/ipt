@@ -39,7 +39,8 @@ public class AppConfig {
   public static final String ANALYTICS_KEY = "analytics.key";
   public static final String IPT_LATITUDE = "location.lat";
   public static final String IPT_LONGITUDE = "location.lon";
-  private static final String PRODUCTION_TYPE_LOCKFILE = ".gbifreg";;
+  private static final String PRODUCTION_TYPE_LOCKFILE = ".gbifreg";
+  ;
   private Properties properties = new Properties();
   private Logger log = Logger.getLogger(this.getClass());
   private DataDir dataDir;
@@ -168,7 +169,7 @@ public class AppConfig {
 
   /**
    * Deprecated in favor over @See getRegistryType()
-   * 
+   *
    * @return true if the datadir is linked to the production registry
    */
   @Deprecated
@@ -213,7 +214,7 @@ public class AppConfig {
   }
 
   /**
-   * 
+   *
    */
   private void readRegistryLock() throws InvalidConfigException {
     // set lock file if not yet existing
@@ -271,8 +272,8 @@ public class AppConfig {
     }
     if (this.type != null) {
       if (this.type != type) {
-        throw new InvalidConfigException(TYPE.DATADIR_ALREADY_REGISTERED, "The datadir is already designated as "
-          + this.type);
+        throw new InvalidConfigException(TYPE.DATADIR_ALREADY_REGISTERED,
+          "The datadir is already designated as " + this.type);
       } else {
         // already contains the same information. Dont do anything
         return;

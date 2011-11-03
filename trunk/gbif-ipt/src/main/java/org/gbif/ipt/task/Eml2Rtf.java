@@ -35,7 +35,7 @@ import org.gbif.metadata.eml.TaxonomicCoverage;
 import org.gbif.metadata.eml.TemporalCoverage;
 import org.gbif.metadata.eml.TemporalCoverageType;
 
-import java.awt.Color;
+import java.awt.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -67,7 +67,7 @@ import static com.google.common.base.Objects.equal;
 /**
  * Populates a RTF document with a resources metadata, mainly derived from its
  * EML.
- * 
+ *
  * @author markus
  * @author htobon
  */
@@ -130,8 +130,8 @@ public class Eml2Rtf {
         for (Iterator<Agent> j = tempAgents.iterator(); j.hasNext(); countTemp++) {
           Agent agentB = j.next();
           if (flag) {
-            if (equal(agentA.getLastName(), agentB.getLastName())
-              && equal(agentA.getFirstName(), agentB.getFirstName()) && equal(agentA.getAddress(), agentB.getAddress())) {
+            if (equal(agentA.getLastName(), agentB.getLastName()) && equal(agentA.getFirstName(), agentB.getFirstName())
+              && equal(agentA.getAddress(), agentB.getAddress())) {
               toRemove.add(countTemp);
             }
           } else if (agentA.equals(agentB)) {
@@ -165,8 +165,8 @@ public class Eml2Rtf {
         boolean isRepeated = false;
         // look into the affiliations array to find any previous repeated agent info.
         for (int index = 0; index < affiliations.size(); index++) {
-          if (equal(agentsArray[c].getAddress(), affiliations.get(index).getAddress())
-            && equal(agentsArray[c].getOrganisation(), affiliations.get(index).getOrganisation())) {
+          if (equal(agentsArray[c].getAddress(), affiliations.get(index).getAddress()) && equal(
+            agentsArray[c].getOrganisation(), affiliations.get(index).getOrganisation())) {
             p.add(createSuperScript("" + (index + 1)));
             isRepeated = true;
             break;
@@ -234,9 +234,8 @@ public class Eml2Rtf {
     if (exists(eml.getMetadataProvider())) {
       boolean sameAsCreator = false;
       if (!isFirst) {
-        sameAsCreator =
-          equal(eml.getMetadataProvider().getAddress(), eml.getResourceCreator().getAddress())
-            && equal(eml.getMetadataProvider().getEmail(), eml.getResourceCreator().getEmail());
+        sameAsCreator = equal(eml.getMetadataProvider().getAddress(), eml.getResourceCreator().getAddress()) && equal(
+          eml.getMetadataProvider().getEmail(), eml.getResourceCreator().getEmail());
       }
       if (!sameAsCreator) {
         p.add(", ");
@@ -604,8 +603,8 @@ public class Eml2Rtf {
           p.add("Between " + unit.getRangeStart() + " and " + unit.getRangeEnd());
         }
         if (unit.getType().equals(JGTICuratorialUnitType.COUNT_WITH_UNCERTAINTY)) {
-          p.add(unit.getRangeMean() + " " + getText("rtf.collections.curatorial.text") + " "
-            + unit.getUncertaintyMeasure());
+          p.add(unit.getRangeMean() + " " + getText("rtf.collections.curatorial.text") + " " + unit
+            .getUncertaintyMeasure());
         }
         p.add(" (" + unit.getUnitType() + ")");
         p.add(Chunk.NEWLINE);
@@ -632,8 +631,8 @@ public class Eml2Rtf {
   private void addProjectData(Document doc, Eml eml) throws DocumentException {
     if (exists(eml.getProject().getTitle()) || exists(eml.getProject().getPersonnel().getFirstName())
       || exists(eml.getProject().getFunding())
-      || exists(eml.getProject().getStudyAreaDescription().getDescriptorValue())
-      || exists(eml.getProject().getDesignDescription())) {
+      || exists(eml.getProject().getStudyAreaDescription().getDescriptorValue()) || exists(
+      eml.getProject().getDesignDescription())) {
       Paragraph p = new Paragraph();
       p.setAlignment(Element.ALIGN_JUSTIFIED);
       p.setFont(font);
@@ -688,8 +687,8 @@ public class Eml2Rtf {
   }
 
   private void addResourceLink(Document doc, Resource resource) throws DocumentException {
-    if (resource.getStatus().equals(PublicationStatus.PUBLIC)
-      || resource.getStatus().equals(PublicationStatus.REGISTERED)) {
+    if (resource.getStatus().equals(PublicationStatus.PUBLIC) || resource.getStatus()
+      .equals(PublicationStatus.REGISTERED)) {
       Paragraph p = new Paragraph();
       p.setFont(font);
       p.add(new Phrase(getText("rtf.resourceLink") + " ", fontTitle));

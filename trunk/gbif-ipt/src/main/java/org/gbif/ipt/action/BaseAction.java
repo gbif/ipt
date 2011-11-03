@@ -8,23 +8,21 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
+import javax.servlet.http.HttpServletRequest;
+
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.util.ValueStack;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.SessionAware;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * The base of all IPT actions This handles conditions such as menu items, a custom text provider, sessions, currently
@@ -33,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author tim
  */
 public class BaseAction extends ActionSupport implements Action, SessionAware, Preparable, ServletRequestAware {
+
   private static final long serialVersionUID = -2330991910834399442L;
   public static final String NOT_MODIFIED = "304";
   public static final String NOT_FOUND = "404";
@@ -97,10 +96,8 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
    * Adds a warning similar to the action errors to the user UI, but does not interact with the validation aware
    * workflow interceptor, therefore no changes to the result name of the action are expected.
    * This is the way to present user warnings/errors others than for form validation.
-   *
+   * <p/>
    * If you want form validation with the workflow interceptor, please @see addActionError instead
-   *
-   * @param anErrorMessage
    */
   public void addActionWarning(String anErrorMessage) {
     warnings.add(anErrorMessage);
@@ -113,8 +110,6 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
 
   /**
    * Easy access to the configured application root for simple use in templates
-   *
-   * @return
    */
   public String getBase() {
     return cfg.getBaseURL();
@@ -249,9 +244,11 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
   }
 
   /**
-   * Override this method if you need to load entities based on the id value before the PARAM interceptor is called. You
+   * Override this method if you need to load entities based on the id value before the PARAM interceptor is called.
+   * You
    * can also use this method to prepare a new, empty instance in case no id was provided. If the id parameter alone is
-   * not sufficient to load your entities, you can access the request object directly like we do here and read any other
+   * not sufficient to load your entities, you can access the request object directly like we do here and read any
+   * other
    * parameter you need to prepare the action for the param phase.
    */
   public void prepare() throws Exception {

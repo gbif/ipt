@@ -8,37 +8,30 @@ package org.gbif.ipt.struts2;
  * governing permissions and limitations under the License.
  */
 
-import com.opensymphony.xwork2.ActionInvocation;
-import com.opensymphony.xwork2.Result;
-import com.opensymphony.xwork2.ValidationAware;
-import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
-import com.opensymphony.xwork2.interceptor.MethodFilterInterceptor;
-
-import org.apache.struts2.dispatcher.ServletActionRedirectResult;
-import org.apache.struts2.dispatcher.ServletRedirectResult;
 import org.gbif.ipt.config.Constants;
-import org.gbif.ipt.model.User;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Map;
+
+import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 
 /**
  * An Interceptor to set the current resource in a users session.
  */
 public class ResourceSessionInterceptor extends AbstractInterceptor {
-	private static final long serialVersionUID = -184757845342974320L;
 
-	public ResourceSessionInterceptor() {
-	}
+  private static final long serialVersionUID = -184757845342974320L;
 
-	@Override
-	public String intercept(ActionInvocation invocation) throws Exception {
-		String requestedResource = RequireManagerInterceptor.getResourceParam(invocation);
-		if (requestedResource!=null){
-			Map session = invocation.getInvocationContext().getSession();
-			session.put(Constants.SESSION_RESOURCE, requestedResource);
-		}
-		return invocation.invoke();
-	}
+  public ResourceSessionInterceptor() {
+  }
+
+  @Override
+  public String intercept(ActionInvocation invocation) throws Exception {
+    String requestedResource = RequireManagerInterceptor.getResourceParam(invocation);
+    if (requestedResource != null) {
+      Map session = invocation.getInvocationContext().getSession();
+      session.put(Constants.SESSION_RESOURCE, requestedResource);
+    }
+    return invocation.invoke();
+  }
 }

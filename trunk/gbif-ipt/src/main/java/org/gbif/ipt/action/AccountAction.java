@@ -6,13 +6,13 @@ import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.validation.UserValidator;
 
-import com.google.inject.Inject;
-
-import org.apache.commons.lang.xwork.StringUtils;
-
 import java.io.IOException;
 
+import com.google.inject.Inject;
+import org.apache.commons.lang.xwork.StringUtils;
+
 public class AccountAction extends POSTAction {
+
   @Inject
   private UserAccountManager userManager;
   private UserValidator userValidation = new UserValidator();
@@ -101,7 +101,7 @@ public class AccountAction extends POSTAction {
     admin = userManager.list(Role.Admin).get(0);
     lostPswdEmailSubject = getText("login.forgottenpassword.mail.subject");
     lostPswdEmailBody = getTextWithDynamicArgs("login.forgottenpassword.mail.body", admin.getName(), "",
-        cfg.getBaseURL() + "/admin/users.do");
+      cfg.getBaseURL() + "/admin/users.do");
     if (getCurrentUser() != null) {
       // modify existing user in session
       user = getCurrentUser();
@@ -129,7 +129,7 @@ public class AccountAction extends POSTAction {
     this.email = StringUtils.trimToNull(email);
     if (email != null) {
       lostPswdEmailBody = getTextWithDynamicArgs("login.forgottenpassword.mail.body", admin.getName(), this.email,
-          cfg.getBaseURL() + "/admin/user.do?id=" + this.email);
+        cfg.getBaseURL() + "/admin/user.do?id=" + this.email);
     }
   }
 
@@ -146,8 +146,8 @@ public class AccountAction extends POSTAction {
     // if we have a request refer back to the originally requested page
     if (req != null) {
       String referer = req.getHeader("Referer");
-      if (referer != null && referer.startsWith(cfg.getBaseURL())
-          && !(referer.endsWith("login.do") || referer.endsWith("login"))) {
+      if (referer != null && referer.startsWith(cfg.getBaseURL()) && !(referer.endsWith("login.do") || referer
+        .endsWith("login"))) {
         redirectUrl = referer;
       }
     }

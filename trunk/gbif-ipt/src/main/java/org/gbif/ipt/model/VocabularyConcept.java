@@ -7,18 +7,17 @@
  */
 package org.gbif.ipt.model;
 
-import static com.google.common.base.Objects.equal;
-
-import com.google.common.base.Objects;
-
-import org.apache.commons.lang.builder.CompareToBuilder;
-import org.apache.log4j.Logger;
-
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
+
+import com.google.common.base.Objects;
+import org.apache.commons.lang.builder.CompareToBuilder;
+import org.apache.log4j.Logger;
+
+import static com.google.common.base.Objects.equal;
 
 /**
  * A single, identifiable concept in a vocabulary. For example "DE" is an identifier for the concept of Germany, while
@@ -27,6 +26,7 @@ import java.util.Set;
  * vocabulary.
  */
 public class VocabularyConcept implements Comparable, Serializable {
+
   private static final long serialVersionUID = 900099923L;
   private static Logger log = Logger.getLogger(VocabularyConcept.class);
 
@@ -52,7 +52,8 @@ public class VocabularyConcept implements Comparable, Serializable {
    */
   public int compareTo(Object object) {
     VocabularyConcept myClass = (VocabularyConcept) object;
-    return new CompareToBuilder().append(this.vocabulary, myClass.vocabulary).append(this.order, myClass.order).append(this.uri, myClass.uri).toComparison();
+    return new CompareToBuilder().append(this.vocabulary, myClass.vocabulary).append(this.order, myClass.order)
+      .append(this.uri, myClass.uri).toComparison();
   }
 
   @Override

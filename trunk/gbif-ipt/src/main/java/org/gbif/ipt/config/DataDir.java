@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.annotation.Nullable;
 
 import com.google.inject.Singleton;
@@ -20,9 +19,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
- * A very simple utility class to encapsulate the basic layout of the data directory and to configure & persist the path
+ * A very simple utility class to encapsulate the basic layout of the data directory and to configure & persist the
+ * path
  * for that directory and make it available to the entire application.
- * 
+ *
  * @author markus
  */
 @Singleton
@@ -101,9 +101,8 @@ public class DataDir {
 
   /**
    * Constructs an absolute path to a file within the config folder of the data dir
-   * 
+   *
    * @param path the relative path within the config folder
-   * @return
    */
   public File configFile(String path) {
     return dataFile(CONFIG_DIR + "/" + path);
@@ -142,9 +141,8 @@ public class DataDir {
 
   /**
    * Basic method to convert a relative path within the data dir to an absolute path on the filesystem
-   * 
+   *
    * @param path the relative path within the data dir
-   * @return
    */
   public File dataFile(String path) {
     if (dataDir == null) {
@@ -170,8 +168,6 @@ public class DataDir {
 
   /**
    * Constructs an absolute path to the logs folder of the data dir
-   * 
-   * @return
    */
   public File loggingDir() {
     return dataFile(LOGGING_DIR);
@@ -179,9 +175,8 @@ public class DataDir {
 
   /**
    * Constructs an absolute path to a file within the logs folder of the data dir
-   * 
+   *
    * @param path the relative path within the logs folder
-   * @return
    */
   public File loggingFile(String path) {
     return dataFile(LOGGING_DIR + "/" + path);
@@ -189,8 +184,6 @@ public class DataDir {
 
   /**
    * Constructs an absolute path to the main lucene folder in the data dir
-   * 
-   * @return
    */
   public File luceneDir() {
     return dataFile("lucene");
@@ -225,18 +218,15 @@ public class DataDir {
 
   /**
    * Constructs an absolute path to a file within a resource folder inside the data dir
-   * 
+   *
    * @param path the relative path within the individual resource folder
-   * @return
    */
   public File resourceFile(String resourceName, String path) {
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + path);
   }
 
   /**
-   * @param resourceName
    * @param suffix the logo file suffix, indicating the format. E.g. jpeg or gif
-   * @return
    */
   public File resourceLogoFile(String resourceName, String suffix) {
     if (suffix == null) {
@@ -256,9 +246,6 @@ public class DataDir {
 
   /**
    * File for the only & current rtf file representing the eml metadata for data publishers in RTF format
-   * 
-   * @param resourceName
-   * @return
    */
   public File resourceRtfFile(String resourceName) {
     String fn = resourceName + ".rtf";
@@ -277,13 +264,11 @@ public class DataDir {
 
   /**
    * Sets the path to the data directory for the entire application and persists it in the /WEB-INF folder. This method
-   * does not reload any configuration though - so normally setting the dataDir should be done through the ConfigManager
+   * does not reload any configuration though - so normally setting the dataDir should be done through the
+   * ConfigManager
    * which calls this method but also reloads all user configurations.
-   * 
-   * @See ConfigManager
-   * @param dataDir
+   *
    * @return true if a new data dir was created, false when an existing was read
-   * @throws InvalidConfigException
    */
   public boolean setDataDir(File dataDir) throws InvalidConfigException {
     if (dataDir == null) {
@@ -297,14 +282,14 @@ public class DataDir {
         // EXISTING file or directory with content: make sure its an IPT datadir - otherwise break
         if (!dataDir.isDirectory()) {
           this.dataDir = null;
-          throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_DATA_DIR, "DataDir "
-            + dataDir.getAbsolutePath() + " is not a directory");
+          throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_DATA_DIR,
+            "DataDir " + dataDir.getAbsolutePath() + " is not a directory");
         } else {
           // check if this directory contains a config folder - if not copy empty default dir from classpath
           if (!configDir.exists() || !configDir.isDirectory()) {
             this.dataDir = null;
-            throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_DATA_DIR, "DataDir "
-              + dataDir.getAbsolutePath() + " exists already and is no IPT data dir.");
+            throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_DATA_DIR,
+              "DataDir " + dataDir.getAbsolutePath() + " exists already and is no IPT data dir.");
           }
           log.info("Reusing existing data dir.");
           // persist location in WEB-INF
@@ -334,8 +319,8 @@ public class DataDir {
         } catch (IOException e) {
           log.error("New DataDir " + dataDir.getAbsolutePath() + " not writable", e);
           this.dataDir = null;
-          throw new InvalidConfigException(InvalidConfigException.TYPE.NON_WRITABLE_DATA_DIR, "DataDir "
-            + dataDir.getAbsolutePath() + " is not writable");
+          throw new InvalidConfigException(InvalidConfigException.TYPE.NON_WRITABLE_DATA_DIR,
+            "DataDir " + dataDir.getAbsolutePath() + " is not writable");
         }
       }
     }
@@ -373,8 +358,6 @@ public class DataDir {
 
   /**
    * Generate a new unique temporary filename inside the datadir based on an autoincremented counter.
-   * 
-   * @return
    */
   public File tmpFile() {
     tmpCounter++;
@@ -385,8 +368,6 @@ public class DataDir {
    * Construct the absolute path for a given relative path within the /tmp subfolder.
    * This method doesnt generate a unique filename - it only assembles what was given.
    * Use one of the other tmpFile(...) methods to generate a unique file handler.
-   * 
-   * @return
    */
   public File tmpFile(String path) {
     return dataFile(TMP_DIR + "/" + path);
@@ -395,10 +376,6 @@ public class DataDir {
   /**
    * Generate an unused temporary filename based on a filename prefix and suffix.
    * In between an autogenerated integer will be placed to assure a unique name
-   * 
-   * @param prefix
-   * @param suffix
-   * @return
    */
   public File tmpFile(String prefix, String suffix) {
     String counterKey = prefix + "||" + suffix;

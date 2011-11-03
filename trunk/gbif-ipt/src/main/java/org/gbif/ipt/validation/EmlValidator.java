@@ -26,7 +26,6 @@ import org.gbif.metadata.eml.TemporalCoverageType;
 
 import java.net.URI;
 import java.util.regex.Pattern;
-
 import javax.annotation.Nullable;
 
 import com.google.inject.Inject;
@@ -41,7 +40,6 @@ public class EmlValidator extends BaseValidator {
   private AppConfig cfg;
 
   /**
-   * @param url
    * @return the URL formatted with the schema component
    */
   public static String formatURL(String url) {
@@ -91,10 +89,6 @@ public class EmlValidator extends BaseValidator {
    * Validate an EML document, optionally only a part of it matching the infividual forms on the metadata editor:
    * "basic","parties","geocoverage","taxcoverage","tempcoverage","project","methods","citations","collections",
    * "physical","keywords","additional"
-   * 
-   * @param action
-   * @param eml
-   * @param part
    */
   public void validate(BaseAction action, Eml eml, @Nullable String part) {
     if (eml != null) {
@@ -153,8 +147,8 @@ public class EmlValidator extends BaseValidator {
          */
 
         /* At least have to exist an organisation or a lastName (or both) */
-        if (!exists(eml.getContact().getOrganisation()) && !exists(eml.getContact().getLastName())
-          && !exists(eml.getContact().getPosition())) {
+        if (!exists(eml.getContact().getOrganisation()) && !exists(eml.getContact().getLastName()) && !exists(
+          eml.getContact().getPosition())) {
           if (!action.getActionErrors().contains(action.getText("validation.lastname.organisation.position"))) {
             action.addActionError(action.getText("validation.lastname.organisation.position"));
           }
@@ -360,18 +354,18 @@ public class EmlValidator extends BaseValidator {
          */
         for (int index = 0; index < eml.getAssociatedParties().size(); index++) {
           /* firstName - optional. But if firstName exists, lastName have to exist */
-          if (exists(eml.getAssociatedParties().get(index).getFirstName())
-            && !exists(eml.getAssociatedParties().get(index).getLastName())) {
+          if (exists(eml.getAssociatedParties().get(index).getFirstName()) && !exists(
+            eml.getAssociatedParties().get(index).getLastName())) {
             action.addFieldError("eml.associatedParties[" + index + "].lastName",
               action.getText("validation.firstname.lastname"));
           }
 
           /* At least have to exist an organisation or a lastName (or both) */
-          if (!exists(eml.getAssociatedParties().get(index).getOrganisation())
-            && !exists(eml.getAssociatedParties().get(index).getLastName())) {
+          if (!exists(eml.getAssociatedParties().get(index).getOrganisation()) && !exists(
+            eml.getAssociatedParties().get(index).getLastName())) {
             action.addActionError(action.getText("validation.lastname.organisation.position"));
-            action.addFieldError("eml.associatedParties[" + index + "].organisation", action.getText(
-              "validation.required", new String[] {action.getText("eml.associatedParties.organisation")}));
+            action.addFieldError("eml.associatedParties[" + index + "].organisation", action
+              .getText("validation.required", new String[] {action.getText("eml.associatedParties.organisation")}));
             action.addFieldError("eml.associatedParties[" + index + "].lastName",
               action.getText("validation.required", new String[] {action.getText("eml.associatedParties.lastName")}));
             action.addFieldError("eml.associatedParties[" + index + "].position",
@@ -379,8 +373,8 @@ public class EmlValidator extends BaseValidator {
           }
 
           /* email is optional. But if it exists, should be a valid email address */
-          if (exists(eml.getAssociatedParties().get(index).getEmail())
-            && !isValidEmail(eml.getAssociatedParties().get(index).getEmail())) {
+          if (exists(eml.getAssociatedParties().get(index).getEmail()) && !isValidEmail(
+            eml.getAssociatedParties().get(index).getEmail())) {
             action.addFieldError("eml.associatedParties[" + index + "].email",
               action.getText("validation.invalid", new String[] {action.getText("eml.associatedParties.email")}));
           }
@@ -429,70 +423,59 @@ public class EmlValidator extends BaseValidator {
           if ((eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMin().getLongitude() == null)
             && (eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLongitude() == null)
             && (eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMin().getLatitude() == null)
-            && (eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLatitude() == null)
-            && eml.getGeospatialCoverages().get(index).getDescription().equals("")) {
+            && (eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLatitude() == null) && eml
+            .getGeospatialCoverages().get(index).getDescription().equals("")) {
             eml.getGeospatialCoverages().clear();
           }
           if (eml.getGeospatialCoverages().size() > 0) {
             coord = eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMin().getLongitude();
             if (coord == null) {
-              action.addFieldError(
-                "eml.geospatialCoverages[" + index + "].boundingCoordinates.min.longitude",
-                action.getText("validation.required",
+              action.addFieldError("eml.geospatialCoverages[" + index + "].boundingCoordinates.min.longitude", action
+                .getText("validation.required",
                   new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.min.longitude")}));
             } else if (Double.isNaN(coord)) {
-              action.addFieldError(
-                "eml.geospatialCoverages[" + index + "].boundingCoordinates.min.longitude",
-                action.getText("validation.invalid",
+              action.addFieldError("eml.geospatialCoverages[" + index + "].boundingCoordinates.min.longitude", action
+                .getText("validation.invalid",
                   new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.min.longitude")}));
             }
             coord = eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLongitude();
             if (coord == null) {
-              action.addFieldError(
-                "eml.geospatialCoverages[" + index + "].boundingCoordinates.max.longitude",
-                action.getText("validation.required",
+              action.addFieldError("eml.geospatialCoverages[" + index + "].boundingCoordinates.max.longitude", action
+                .getText("validation.required",
                   new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.max.longitude")}));
             } else if (Double.isNaN(coord)) {
-              action.addFieldError(
-                "eml.geospatialCoverages[" + index + "].boundingCoordinates.max.longitude",
-                action.getText("validation.invalid",
+              action.addFieldError("eml.geospatialCoverages[" + index + "].boundingCoordinates.max.longitude", action
+                .getText("validation.invalid",
                   new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.max.longitude")}));
             }
             coord = eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLatitude();
             if (coord == null) {
-              action.addFieldError(
-                "eml.geospatialCoverages[" + index + "].boundingCoordinates.max.latitude",
-                action.getText("validation.required",
+              action.addFieldError("eml.geospatialCoverages[" + index + "].boundingCoordinates.max.latitude", action
+                .getText("validation.required",
                   new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.max.latitude")}));
             } else if (Double.isNaN(coord)) {
-              action.addFieldError(
-                "eml.geospatialCoverages[" + index + "].boundingCoordinates.max.latitude",
-                action.getText("validation.invalid",
+              action.addFieldError("eml.geospatialCoverages[" + index + "].boundingCoordinates.max.latitude", action
+                .getText("validation.invalid",
                   new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.max.latitude")}));
             }
             coord = eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMin().getLatitude();
             if (coord == null) {
-              action.addFieldError(
-                "eml.geospatialCoverages[" + index + "].boundingCoordinates.min.latitude",
-                action.getText("validation.required",
+              action.addFieldError("eml.geospatialCoverages[" + index + "].boundingCoordinates.min.latitude", action
+                .getText("validation.required",
                   new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.min.latitude")}));
             } else if (Double.isNaN(coord)) {
-              action.addFieldError(
-                "eml.geospatialCoverages[" + index + "].boundingCoordinates.min.latitude",
-                action.getText("validation.invalid",
+              action.addFieldError("eml.geospatialCoverages[" + index + "].boundingCoordinates.min.latitude", action
+                .getText("validation.invalid",
                   new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.min.latitude")}));
             }
             /* description - mandatory and greater than 2 chars */
             if (eml.getGeospatialCoverages().get(index).getDescription().equals("")) {
-              action.addFieldError(
-                "eml.geospatialCoverages[" + index + "].description",
-                action.getText("validation.required",
-                  new String[] {action.getText("eml.geospatialCoverages.description")}));
+              action.addFieldError("eml.geospatialCoverages[" + index + "].description", action
+                .getText("validation.required", new String[] {action.getText("eml.geospatialCoverages.description")}));
             } else if (!exists(eml.getGeospatialCoverages().get(index).getDescription(), 2)) {
-              action.addFieldError(
-                "eml.geospatialCoverages[" + index + "].description",
-                action.getText("validation.short", new String[] {action.getText("eml.geospatialCoverages.description"),
-                  "2"}));
+              action.addFieldError("eml.geospatialCoverages[" + index + "].description", action
+                .getText("validation.short",
+                  new String[] {action.getText("eml.geospatialCoverages.description"), "2"}));
             }
           }
         }
@@ -518,8 +501,7 @@ public class EmlValidator extends BaseValidator {
           int kw = 0;
           for (TaxonKeyword k : tc.getTaxonKeywords()) {
             if (!exists(k.getScientificName())) {
-              action.addFieldError(
-                "eml.taxonomicCoverages[" + index + "].taxonKeywords[" + kw + "].scientificName",
+              action.addFieldError("eml.taxonomicCoverages[" + index + "].taxonKeywords[" + kw + "].scientificName",
                 action.getText("validation.required",
                   new String[] {action.getText("eml.taxonomicCoverages.taxonKeyword.scientificName")}));
             }
@@ -556,16 +538,14 @@ public class EmlValidator extends BaseValidator {
         for (TemporalCoverage tc : eml.getTemporalCoverages()) {
           if (tc.getType().equals(TemporalCoverageType.SINGLE_DATE)) {
             if (!exists(tc.getStartDate())) {
-              action
-                .addFieldError("eml.temporalCoverages[" + index + "].startDate", action.getText("validation.required",
-                  new String[] {action.getText("eml.temporalCoverages.startDate")}));
+              action.addFieldError("eml.temporalCoverages[" + index + "].startDate", action
+                .getText("validation.required", new String[] {action.getText("eml.temporalCoverages.startDate")}));
             }
           }
           if (tc.getType().equals(TemporalCoverageType.DATE_RANGE)) {
             if (!exists(tc.getStartDate())) {
-              action
-                .addFieldError("eml.temporalCoverages[" + index + "].startDate", action.getText("validation.required",
-                  new String[] {action.getText("eml.temporalCoverages.startDate")}));
+              action.addFieldError("eml.temporalCoverages[" + index + "].startDate", action
+                .getText("validation.required", new String[] {action.getText("eml.temporalCoverages.startDate")}));
             }
             if (!exists(tc.getEndDate())) {
               action.addFieldError("eml.temporalCoverages[" + index + "].endDate",
@@ -574,17 +554,15 @@ public class EmlValidator extends BaseValidator {
           }
           if (tc.getType().equals(TemporalCoverageType.FORMATION_PERIOD)) {
             if (!exists(tc.getFormationPeriod())) {
-              action.addFieldError(
-                "eml.temporalCoverages[" + index + "].formationPeriod",
-                action.getText("validation.required",
+              action.addFieldError("eml.temporalCoverages[" + index + "].formationPeriod", action
+                .getText("validation.required",
                   new String[] {action.getText("eml.temporalCoverages.formationPeriod")}));
             }
           }
           if (tc.getType().equals(TemporalCoverageType.LIVING_TIME_PERIOD)) {
             if (!exists(tc.getLivingTimePeriod())) {
-              action.addFieldError(
-                "eml.temporalCoverages[" + index + "].livingTimePeriod",
-                action.getText("validation.required",
+              action.addFieldError("eml.temporalCoverages[" + index + "].livingTimePeriod", action
+                .getText("validation.required",
                   new String[] {action.getText("eml.temporalCoverages.livingTimePeriod")}));
             }
           }
@@ -621,8 +599,8 @@ public class EmlValidator extends BaseValidator {
          */
 
         /* First Name is optional but if exists, last name must to exist */
-        if (exists(eml.getProject().getPersonnel().getFirstName())
-          && !exists(eml.getProject().getPersonnel().getLastName())) {
+        if (exists(eml.getProject().getPersonnel().getFirstName()) && !exists(
+          eml.getProject().getPersonnel().getLastName())) {
           action.addFieldError("eml.project.personnel.lastName", action.getText("validation.firstname.lastname"));
         } else if (!exists(eml.getProject().getPersonnel().getLastName())) {
           action.addFieldError("eml.project.personnel.lastName",
@@ -658,8 +636,8 @@ public class EmlValidator extends BaseValidator {
          * </dataset>
          */
         boolean emptyFields = false;
-        if (eml.getSampleDescription().equals("") && eml.getStudyExtent().equals("")
-          && eml.getQualityControl().equals("")) {
+        if (eml.getSampleDescription().equals("") && eml.getStudyExtent().equals("") && eml.getQualityControl()
+          .equals("")) {
           eml.setSampleDescription(null);
           eml.setStudyExtent(null);
           eml.setQualityControl(null);
@@ -718,9 +696,8 @@ public class EmlValidator extends BaseValidator {
         int index = 0;
         for (Citation citation : eml.getBibliographicCitations()) {
           if (!citation.getIdentifier().equals("") && !exists(citation.getIdentifier())) {
-            action.addFieldError(
-              "eml.bibliographicCitationSet.bibliographicCitations[" + index + "].identifier",
-              action.getText("validation.field.blank",
+            action.addFieldError("eml.bibliographicCitationSet.bibliographicCitations[" + index + "].identifier", action
+              .getText("validation.field.blank",
                 new String[] {action.getText("eml.bibliographicCitationSet.bibliographicCitations.identifier")}));
           }
           if (!exists(citation.getCitation())) {
@@ -806,9 +783,8 @@ public class EmlValidator extends BaseValidator {
           /* Validate distribution URL form each Physical data */
           if (pd.getDistributionUrl() != null) {
             if (formatURL(pd.getDistributionUrl()) == null) {
-              action
-                .addFieldError("eml.physicalData[" + index + "].distributionUrl", action.getText("validation.invalid",
-                  new String[] {action.getText("eml.physicalData.distributionUrl")}));
+              action.addFieldError("eml.physicalData[" + index + "].distributionUrl", action
+                .getText("validation.invalid", new String[] {action.getText("eml.physicalData.distributionUrl")}));
             } else {
               pd.setDistributionUrl(formatURL(pd.getDistributionUrl()));
             }

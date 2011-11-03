@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.gbif.ipt.action.admin;
 
@@ -16,7 +16,7 @@ import org.apache.commons.lang.StringUtils;
 
 /**
  * The Action responsible for all user input relating to the IPT configuration
- * 
+ *
  * @author tim
  */
 public class ConfigAction extends POSTAction {
@@ -78,7 +78,7 @@ public class ConfigAction extends POSTAction {
 
   /**
    * This is called when the new configuration is submitted
-   * 
+   *
    * @return SUCCESS if it is valid, or failure with a message if the entered configuration is invalid
    */
   @Override
@@ -95,8 +95,8 @@ public class ConfigAction extends POSTAction {
         addActionMessage(getText("admin.config.baseUrl.changed"));
         addActionMessage(getText("admin.user.login"));
         session.remove(Constants.SESSION_USER);
-        if (burl.getHost().equalsIgnoreCase("localhost") || burl.getHost().equalsIgnoreCase("127.0.0.1")
-          || burl.getHost().equalsIgnoreCase(configManager.getHostName())) {
+        if (burl.getHost().equalsIgnoreCase("localhost") || burl.getHost().equalsIgnoreCase("127.0.0.1") || burl
+          .getHost().equalsIgnoreCase(configManager.getHostName())) {
           addActionWarning(getText("admin.config.error.localhostURL"));
         }
         baseUrlChanged = true;

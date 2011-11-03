@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.gbif.ipt.service.admin.impl;
 
@@ -20,16 +20,6 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.utils.HttpUtil;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOCase;
-import org.apache.commons.io.filefilter.SuffixFileFilter;
-import org.apache.commons.lang.StringUtils;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.xml.sax.SAXException;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -42,17 +32,27 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.xml.parsers.ParserConfigurationException;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOCase;
+import org.apache.commons.io.filefilter.SuffixFileFilter;
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.xml.sax.SAXException;
 
 /**
  * @author tim
  */
 @Singleton
 public class ExtensionManagerImpl extends BaseManager implements ExtensionManager {
+
   private Map<String, Extension> extensionsByRowtype = new HashMap<String, Extension>();
   private static final String CONFIG_FOLDER = ".extensions";
-  private ExtensionFactory factory;;
+  private ExtensionFactory factory;
+  ;
   private HttpUtil downloader;
   private final String TAXON_KEYWORD = "dwc:taxon";
   private final String OCCURRENCE_KEYWORD = "dwc:occurrence";
@@ -60,8 +60,9 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   private ConfigWarnings warnings;
   @Inject
   private RegisteredExtensions registered;
-  
+
   public static class RegisteredExtensions {
+
     private List<Extension> extensions = new ArrayList<Extension>();
     private RegistryManager registryManager;
 
@@ -72,38 +73,38 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     }
 
     public boolean isLoaded() {
-        if (extensions.size() > 0) {
-          return true;
-        }
-        return false;
+      if (extensions.size() > 0) {
+        return true;
       }
-    
+      return false;
+    }
+
     public void load() throws RuntimeException {
       extensions = registryManager.getExtensions();
     }
-    
+
     public List<Extension> getCoreTypes() {
-      if(!isLoaded())load();
+      if (!isLoaded()) load();
       List<Extension> coreTypes = new ArrayList<Extension>();
-	  for(Extension ext :extensions){
-		  if(Constants.DWC_ROWTYPE_OCCURRENCE.equals(normalizeRowType(ext.getRowType()))){
-			  coreTypes.add(ext);
-		  }
-		  if(Constants.DWC_ROWTYPE_TAXON.equals(normalizeRowType(ext.getRowType()))){
-			  coreTypes.add(ext);
-		  }
-	  }
-    	return coreTypes;
+      for (Extension ext : extensions) {
+        if (Constants.DWC_ROWTYPE_OCCURRENCE.equals(normalizeRowType(ext.getRowType()))) {
+          coreTypes.add(ext);
+        }
+        if (Constants.DWC_ROWTYPE_TAXON.equals(normalizeRowType(ext.getRowType()))) {
+          coreTypes.add(ext);
+        }
+      }
+      return coreTypes;
     }
-    
+
     public List<Extension> getExtensions() {
-    	return extensions;
+      return extensions;
     }
   }
 
   @Inject
-  public ExtensionManagerImpl(AppConfig cfg, DataDir dataDir, ExtensionFactory factory,
-      ResourceManager resourceManager, ConfigWarnings warnings, DefaultHttpClient client) {
+  public ExtensionManagerImpl(AppConfig cfg, DataDir dataDir, ExtensionFactory factory, ResourceManager resourceManager,
+    ConfigWarnings warnings, DefaultHttpClient client) {
     super(cfg, dataDir);
     this.factory = factory;
     this.warnings = warnings;
@@ -241,9 +242,6 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
 
   /**
    * Reads a local extension file into manager cache
-   * 
-   * @param localFile
-   * @return
    */
   private Extension loadFromFile(File localFile) throws InvalidConfigException {
     InputStream fileIn = null;
@@ -292,8 +290,8 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
         if (!includeCoreExtensions && e.isCore()) {
           continue;
         }
-        if ((includeEmptySubject && StringUtils.trimToNull(e.getSubject()) == null)
-            || StringUtils.containsIgnoreCase(e.getSubject(), keyword)) {
+        if ((includeEmptySubject && StringUtils.trimToNull(e.getSubject()) == null) || StringUtils
+          .containsIgnoreCase(e.getSubject(), keyword)) {
           list.add(e);
         }
       }
@@ -302,12 +300,12 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   }
 
   public void installCoreTypes() {
-	  for(Extension ext :registered.getCoreTypes()){
-		  try {
-			  	install(ext.getUrl());
-			  } catch (Exception e) {
-				  log.debug(e);
-			  }	
-	  }
+    for (Extension ext : registered.getCoreTypes()) {
+      try {
+        install(ext.getUrl());
+      } catch (Exception e) {
+        log.debug(e);
+      }
+    }
   }
 }

@@ -24,7 +24,7 @@ import static com.google.common.base.Objects.equal;
  * The main class to represent an IPT resource.
  * Its enumerated type property defines the kind of resource (Metadata, Checklist, Occurrence)
  * A resource can be identified by its short name which has to be unique within an IPT instance.
- * 
+ *
  * @author markus
  */
 public class Resource implements Serializable, Comparable<Resource> {
@@ -37,7 +37,8 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   private static final TermFactory fact = new TermFactory();
 
-  private static final long serialVersionUID = 3832626162173352190L;;
+  private static final long serialVersionUID = 3832626162173352190L;
+  ;
   private String shortname; // unique
   private Eml eml = new Eml();
   private String coreType;
@@ -70,9 +71,9 @@ public class Resource implements Serializable, Comparable<Resource> {
   /**
    * Adds a new extension mapping to the resource. For non core extensions a core extension must exist already.
    * It returns the list index for this mapping according to getMappings(rowType)
-   * 
-   * @param mapping
+   *
    * @return list index corresponding to getMappings(rowType) or null if the mapping couldnt be added
+   *
    * @throws IllegalArgumentException if no core mapping exists when adding a non core mapping
    */
   public Integer addMapping(ExtensionMapping mapping) throws IllegalArgumentException {
@@ -245,9 +246,11 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   /**
    * Get the list of mappings for the requested extension rowtype.
-   * The order of mappings in the list is guaranteed to be stable and the same as the underlying original mappings list.
-   * 
+   * The order of mappings in the list is guaranteed to be stable and the same as the underlying original mappings
+   * list.
+   *
    * @param rowType identifying the extension
+   *
    * @return the list of mappings for the requested extension rowtype
    */
   public List<ExtensionMapping> getMappings(String rowType) {

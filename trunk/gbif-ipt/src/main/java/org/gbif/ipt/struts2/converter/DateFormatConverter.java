@@ -2,12 +2,12 @@ package org.gbif.ipt.struts2.converter;
 
 import org.gbif.metadata.DateUtils;
 
-import org.apache.struts2.util.StrutsTypeConverter;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+
+import org.apache.struts2.util.StrutsTypeConverter;
 
 public class DateFormatConverter extends StrutsTypeConverter {
 

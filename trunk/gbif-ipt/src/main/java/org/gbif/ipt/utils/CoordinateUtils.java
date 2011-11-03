@@ -16,9 +16,10 @@ public class CoordinateUtils {
 
   /**
    * This method convert a coordinate from decimal to degrees, minutes, seconds format (DMS).
-   * 
+   *
    * @param decimalCoordinate to convert.
-   * @param CoordinateType CoordinateUtils.LATITUDE or CoordinateUtils.LONGITUDE
+   * @param CoordinateType    CoordinateUtils.LATITUDE or CoordinateUtils.LONGITUDE
+   *
    * @return an String with the following format: DD°MM'SS''[N, S, W or E]
    */
   public static String decToDms(double decimalCoordinate, String CoordinateType) {

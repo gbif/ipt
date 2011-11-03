@@ -5,12 +5,13 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.manage.ResourceManager;
 
-import com.google.inject.Inject;
-
 import java.util.Collections;
 import java.util.List;
 
+import com.google.inject.Inject;
+
 public class HomeAction extends BaseAction {
+
   private List<Resource> resources;
   @Inject
   private ResourceManager resourceManager;

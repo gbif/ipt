@@ -19,6 +19,7 @@ import com.google.inject.Inject;
  * @author josecuadra
  */
 public class OrganisationSupport {
+
   @Inject
   private RegistryManager registryManager;
 

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.gbif.ipt.service;
 
@@ -10,10 +10,11 @@ import org.apache.log4j.Logger;
 
 /**
  * Base of all manager implementations
- * 
+ *
  * @author tim
  */
 public abstract class BaseManager {
+
   protected Logger log = Logger.getLogger(this.getClass());
   protected AppConfig cfg;
   protected DataDir dataDir;

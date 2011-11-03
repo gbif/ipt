@@ -13,24 +13,27 @@
 
 package org.gbif.ipt.model;
 
-import org.apache.commons.lang.StringUtils;
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @author markus
  */
 public class RecordFilter implements Serializable {
+
   public enum Comparator {
     IsNULL, IsNotNULL, Equals, NotEquals
   }
+
   public enum FilterTime {
     AfterTranslation, BeforeTranslation
   }
 
-  private static final long serialVersionUID = 98709027465L;;
+  private static final long serialVersionUID = 98709027465L;
+  ;
 
   private Comparator comparator;
   private Integer column;
@@ -61,7 +64,6 @@ public class RecordFilter implements Serializable {
   }
 
   /**
-   * @param record
    * @return true if the record matches this filter criteria
    */
   public boolean matches(String[] record, int newColumn) {
@@ -108,6 +110,6 @@ public class RecordFilter implements Serializable {
   @Override
   public String toString() {
     return "column: " + this.getColumn() + " - comparator: " + this.getComparator() + " - param: " + this.getParam()
-        + " - filter time: " + filterTime;
+      + " - filter time: " + filterTime;
   }
 }

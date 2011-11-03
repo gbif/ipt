@@ -52,7 +52,7 @@ import org.apache.commons.lang.xwork.StringUtils;
  * So the save method is always executed for POST requests, but not for GETs.
  * Please dont add any action errors as this will trigger the validation interceptor and causes problems, use
  * addActionWarning() instead.
- * 
+ *
  * @author markus
  */
 public class MappingAction extends ManagerBaseAction {
