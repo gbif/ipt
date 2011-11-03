@@ -81,18 +81,18 @@ public class OverviewAction extends ManagerBaseAction {
   public String cancel() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
-    } else {
-      try {
-        resourceManager.cancelPublishing(resource.getShortname(), this);
-        addActionMessage(getText("manage.overview.stopped.publishing", new String[] {resource.toString()}));
-      } catch (PublicationException e) {
-        String reason = "";
-        if (e.getMessage() != null) {
-          reason = e.getMessage();
-        }
-        addActionError(getText("manage.overview.failed.stop.publishing", new String[] {reason}));
-        return ERROR;
+    }
+
+    try {
+      resourceManager.cancelPublishing(resource.getShortname(), this);
+      addActionMessage(getText("manage.overview.stopped.publishing", new String[] {resource.toString()}));
+    } catch (PublicationException e) {
+      String reason = "";
+      if (e.getMessage() != null) {
+        reason = e.getMessage();
       }
+      addActionError(getText("manage.overview.failed.stop.publishing", new String[] {reason}));
+      return ERROR;
     }
     return execute();
   }
@@ -152,7 +152,7 @@ public class OverviewAction extends ManagerBaseAction {
    * @return true if a file exist in the user session. False otherwise.
    */
   public boolean getConfirmOverwrite() {
-    return session.get(Constants.SESSION_FILE) != null ? true : false;
+    return session.get(Constants.SESSION_FILE) != null;
   }
 
   /**
@@ -316,8 +316,8 @@ public class OverviewAction extends ManagerBaseAction {
         potentialExtensions.add(0, extensionManager.get(resource.getCoreRowType()));
       } else if (!resource.getSources().isEmpty()) {
         // Validating if the resource has a type
-        if (resource.getCoreType() != null && !(resource.getCoreType().equals("Other") || resource.getCoreType()
-          .equals(""))) {
+        if (resource.getCoreType() != null && !(resource.getCoreType().equals("Other")
+          || resource.getCoreType().length() == 0)) {
           potentialExtensions = new ArrayList<Extension>();
           // Comparing the subtype with two static list. The appropiate type is selected depending if the subtype is
           // in the checklist List or is in the occurrence list and only is enable to do the mapping
@@ -338,7 +338,7 @@ public class OverviewAction extends ManagerBaseAction {
 
       // remove all DwC mappings with 0 terms mapped
       for (ExtensionMapping em : resource.getCoreMappings()) {
-        if (em.getFields().size() == 0) {
+        if (em.getFields().isEmpty()) {
           resource.deleteMapping(em);
         }
       }
@@ -356,10 +356,10 @@ public class OverviewAction extends ManagerBaseAction {
           new String[] {new String(Integer.toString(resource.getEmlVersion()))}));
         return PUBLISHING;
       } else {
-        if (!resource.hasMappedData()) {
-          addActionWarning(getText("manage.overview.data.missing"));
-        } else {
+        if (resource.hasMappedData()) {
           addActionWarning(getText("manage.overview.no.data.archive.generated"));
+        } else {
+          addActionWarning(getText("manage.overview.data.missing"));
         }
         addActionMessage(getText("manage.overview.published.eml", new String[] {resource.getEmlVersion() + ""}));
         missingRegistrationMetadata = !minimumRegistryInfo(resource);
@@ -389,9 +389,7 @@ public class OverviewAction extends ManagerBaseAction {
 
       } else {
         // plain managers are not allowed to register a resource
-        if (!getCurrentUser().hasRegistrationRights()) {
-          addActionError(getText("manage.resource.status.registration.forbidden"));
-        } else {
+        if (getCurrentUser().hasRegistrationRights()) {
           Organisation org = null;
           try {
             org = registrationManager.get(id);
@@ -417,6 +415,8 @@ public class OverviewAction extends ManagerBaseAction {
             log.error("Cant register resource " + resource + " with organisation " + org, e);
             addActionError(getText("manage.overview.failed.resource.registration"));
           }
+        } else {
+          addActionError(getText("manage.resource.status.registration.forbidden"));
         }
       }
     } else {

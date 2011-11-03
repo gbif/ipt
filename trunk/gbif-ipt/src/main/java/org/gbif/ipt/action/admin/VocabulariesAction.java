@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.BaseAction;
@@ -10,9 +7,7 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 import com.google.inject.Inject;
 
 /**
- * The Action responsible for all user input relating to the vocabularies in use within the IPT
- *
- * @author tim
+ * The Action responsible for all user input relating to the vocabularies in use within the IPT.
  */
 public class VocabulariesAction extends BaseAction {
 

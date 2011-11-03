@@ -26,10 +26,11 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Unit test for convertFromString method in LongitudeFormatConverter class.
- * 
+ *
  * @author julieth
  */
 @RunWith(value = Parameterized.class)
@@ -71,13 +72,13 @@ public class LongitudeFormatConverterTest {
   public void convertFromStringTestTypeConversionException() {
     LongitudeFormatConverter longitudeFormat = new LongitudeFormatConverter();
     // Fails if the value exceeds the minimum longitude
-    assertEquals(null, longitudeFormat.convertFromString(new HashMap(), new String[] {"-180.01"}, null));
+    assertNull(longitudeFormat.convertFromString(new HashMap(), new String[] {"-180.01"}, null));
     // Fails if the value exceeds the maximum longitude
-    assertEquals(null, longitudeFormat.convertFromString(new HashMap(), new String[] {"180.01"}, null));
+    assertNull(longitudeFormat.convertFromString(new HashMap(), new String[] {"180.01"}, null));
     // Fails if the value is a String
-    assertEquals(null, longitudeFormat.convertFromString(new HashMap(), new String[] {"abc"}, null));
-    assertEquals(null, longitudeFormat.convertFromString(new HashMap(), new String[] {"@#$%"}, null));
-    assertEquals(null, longitudeFormat.convertFromString(new HashMap(), new String[] {" "}, null));
+    assertNull(longitudeFormat.convertFromString(new HashMap(), new String[] {"abc"}, null));
+    assertNull(longitudeFormat.convertFromString(new HashMap(), new String[] {"@#$%"}, null));
+    assertNull(longitudeFormat.convertFromString(new HashMap(), new String[] {" "}, null));
   }
 
 }

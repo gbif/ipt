@@ -26,9 +26,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-/**
- * @author markus
- */
 public class SourceTest {
 
   @Test
@@ -68,7 +65,7 @@ public class SourceTest {
     // with resources:
     Resource r = new Resource();
     r.setTitle("Peterchen");
-// r.setKey(UUID.randomUUID());
+    // r.setKey(UUID.randomUUID());
     src1.setResource(r);
     src2.setResource(r);
     src3.setResource(r);

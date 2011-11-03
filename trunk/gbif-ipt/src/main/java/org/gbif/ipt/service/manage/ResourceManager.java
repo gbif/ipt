@@ -25,90 +25,88 @@ import com.google.inject.ImplementedBy;
  * This interface details ALL methods associated with the main resource entity.
  * The manager keeps a map of the basic metadata and authorisation information in memory, but further details like the
  * full EML or mapping configuration is stored in files and loaded into manager sessions when needed.
- *
- * @author markus
  */
 @ImplementedBy(ResourceManagerImpl.class)
 public interface ResourceManager {
 
-  public boolean cancelPublishing(String shortname, BaseAction action) throws PublicationException;
+  boolean cancelPublishing(String shortname, BaseAction action) throws PublicationException;
 
-  public Resource create(String shortname, File dwca, User creator, BaseAction asction)
+  Resource create(String shortname, File dwca, User creator, BaseAction asction)
     throws AlreadyExistingException, ImportException;
 
-  public Resource create(String shortname, User creator) throws AlreadyExistingException;
+  Resource create(String shortname, User creator) throws AlreadyExistingException;
 
-  public void delete(Resource resource) throws IOException, DeletionNotAllowedException;
+  void delete(Resource resource) throws IOException, DeletionNotAllowedException;
 
-  public Resource get(String shortname);
+  Resource get(String shortname);
 
   /**
    * Return the size of the generated DwC-A file
    */
-  public long getDwcaSize(Resource resource);
+  long getDwcaSize(Resource resource);
 
   /**
    * Return the size of the generated EML file
    */
-  public long getEmlSize(Resource resource);
+  long getEmlSize(Resource resource);
 
   /**
    * Returns the URL to a public resource in the IPT
    */
-  public URL getResourceLink(String shortname);
+  URL getResourceLink(String shortname);
 
   /**
    * Returns the size of the generated RTF file
    */
-  public long getRtfSize(Resource resource);
+  long getRtfSize(Resource resource);
 
   /**
    * Validate if the EML file exist for a specific resource in the data directory.
    *
    * @return true if EML File exist. False otherwise.
    */
-  public boolean isEmlExisting(String shortName);
+  boolean isEmlExisting(String shortName);
 
   /**
    * @return true if resource is currently locked for any management
    */
-  public boolean isLocked(String shortname);
+  boolean isLocked(String shortname);
 
   /**
    * Validate if the RTF existence for a specific resource in the data directory.
    *
    * @return true if RTF File exist. false in otherwise.
    */
-  public boolean isRtfExisting(String shortName);
+  boolean isRtfExisting(String shortName);
 
   /**
    * Returns the latest resources , order by last modified
    *
    * @return list of resources
    */
-  public List<Resource> latest(int startPage, int pageSize);
+  List<Resource> latest(int startPage, int pageSize);
 
   /**
    * list all resources in the IPT
    */
-  public List<Resource> list();
+  List<Resource> list();
 
   /**
    * list all resources in the IPT having a certain publication status
    */
-  public List<Resource> list(PublicationStatus status);
+  List<Resource> list(PublicationStatus status);
 
   /**
    * list all resource that can be managed by a given user
    */
-  public List<Resource> list(User user);
+  List<Resource> list(User user);
 
   /**
    * Load all configured resources from the datadir into memory.
    * We do not keep the EML or mapping configuration in memory for all resources, but we
    * maintain a map of the basic metadata and authorisation information in this manager.
    */
-  public int load();
+  int load();
 
   /**
    * Publishes a new version of a resource including generating a darwin core archive and issuing a new EML version.
@@ -119,7 +117,7 @@ public interface ResourceManager {
    *
    * @throws PublicationException if resource was already registered
    */
-  public boolean publish(Resource resource, BaseAction action) throws PublicationException;
+  boolean publish(Resource resource, BaseAction action) throws PublicationException;
 
   /**
    * Issues a new EML version for the given resource.
@@ -128,7 +126,7 @@ public interface ResourceManager {
    *
    * @throws PublicationException if resource was already registered
    */
-  public void publishMetadata(Resource resource, BaseAction action) throws PublicationException;
+  void publishMetadata(Resource resource, BaseAction action) throws PublicationException;
 
   /**
    * Registers the resource with gbif
@@ -137,24 +135,24 @@ public interface ResourceManager {
    * @param ipt          the ipt that the resource will be published through
    * @param eml          eml object
    */
-  public void register(Resource resource, Organisation organisation, Ipt ipt) throws InvalidConfigException;
+  void register(Resource resource, Organisation organisation, Ipt ipt) throws InvalidConfigException;
 
   /**
    * Persists the whole resource configuration *but* not the EML file.
    */
-  public void save(Resource resource) throws InvalidConfigException;
+  void save(Resource resource) throws InvalidConfigException;
 
   /**
    * Save the eml file of a resource only. Complementary method to @See save(Resource)
    */
-  public void saveEml(Resource resource) throws InvalidConfigException;
+  void saveEml(Resource resource) throws InvalidConfigException;
 
   /**
    * @param shortname for the resource
    *
    * @return status report of current task either running or on queue for the requested resource or null if none exists
    */
-  public StatusReport status(String shortname);
+  StatusReport status(String shortname);
 
   /**
    * For a published resource, updates its existing dwca with the latest eml (presumably generated by publishEml,
@@ -166,7 +164,7 @@ public interface ResourceManager {
    *
    * @throws PublicationException if the resource is locked or hasn't been published
    */
-  public void updateDwcaEml(Resource resource, BaseAction action) throws PublicationException;
+  void updateDwcaEml(Resource resource, BaseAction action) throws PublicationException;
 
   /**
    * Update the registration of the resource with gbif
@@ -174,20 +172,20 @@ public interface ResourceManager {
    * @param ipt the ipt that the resource is published through
    * @param eml eml object
    */
-  public void updateRegistration(Resource resource, Ipt ipt) throws InvalidConfigException;
+  void updateRegistration(Resource resource, Ipt ipt) throws InvalidConfigException;
 
   /**
    * makes a resource private
    *
    * @throws InvalidConfigException if resource was already registered
    */
-  public void visibilityToPrivate(Resource resource) throws InvalidConfigException;
+  void visibilityToPrivate(Resource resource) throws InvalidConfigException;
 
   /**
    * Makes a resource public
    *
    * @throws InvalidConfigException if resource was already registered
    */
-  public void visibilityToPublic(Resource resource) throws InvalidConfigException;
+  void visibilityToPublic(Resource resource) throws InvalidConfigException;
 
 }

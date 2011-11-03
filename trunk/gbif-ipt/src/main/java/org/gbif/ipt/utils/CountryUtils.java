@@ -19,12 +19,9 @@ package org.gbif.ipt.utils;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
-/**
- * @author Daniel
- */
 public class CountryUtils {
 
-  private final static BiMap<String, String> commonletterCountryCodes = HashBiMap.create();
+  private static final BiMap<String, String> commonletterCountryCodes = HashBiMap.create();
 
   static {
     commonletterCountryCodes.put("AF", "AFG");

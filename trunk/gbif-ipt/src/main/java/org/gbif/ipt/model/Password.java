@@ -18,9 +18,6 @@ package org.gbif.ipt.model;
 
 import java.io.Serializable;
 
-/**
- * @author markus
- */
 public class Password implements Serializable {
 
   private static final long serialVersionUID = 754321489498265436L;

@@ -47,9 +47,6 @@ public class VocabularyConcept implements Comparable, Serializable {
     preferredTerms.add(term);
   }
 
-  /**
-   * @see java.lang.Comparable#compareTo(Object)
-   */
   public int compareTo(Object object) {
     VocabularyConcept myClass = (VocabularyConcept) object;
     return new CompareToBuilder().append(this.vocabulary, myClass.vocabulary).append(this.order, myClass.order)
@@ -89,10 +86,10 @@ public class VocabularyConcept implements Comparable, Serializable {
   }
 
   public VocabularyTerm getPreferredTerm(String lang) {
-    VocabularyTerm tEN = null;
     if (lang == null || lang.length() != 2) {
       throw new IllegalArgumentException("lang argument needs to be a 2 letter language code");
     }
+    VocabularyTerm tEN = null;
     for (VocabularyTerm t : preferredTerms) {
       if (t.getLang().equalsIgnoreCase(lang)) {
         return t;
@@ -124,9 +121,6 @@ public class VocabularyConcept implements Comparable, Serializable {
     return vocabulary;
   }
 
-  /**
-   * @see java.lang.Object#hashCode()
-   */
   @Override
   public int hashCode() {
     return Objects.hashCode(vocabulary, identifier, uri);

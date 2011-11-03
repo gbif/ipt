@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.gbif.ipt.service.admin.impl;
 
 import org.gbif.ipt.config.AppConfig;
@@ -43,16 +40,12 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.xml.sax.SAXException;
 
-/**
- * @author tim
- */
 @Singleton
 public class ExtensionManagerImpl extends BaseManager implements ExtensionManager {
 
   private Map<String, Extension> extensionsByRowtype = new HashMap<String, Extension>();
   private static final String CONFIG_FOLDER = ".extensions";
   private ExtensionFactory factory;
-  ;
   private HttpUtil downloader;
   private final String TAXON_KEYWORD = "dwc:taxon";
   private final String OCCURRENCE_KEYWORD = "dwc:occurrence";
@@ -68,15 +61,11 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
 
     @Inject
     public RegisteredExtensions(RegistryManager registryManager) {
-      super();
       this.registryManager = registryManager;
     }
 
     public boolean isLoaded() {
-      if (extensions.size() > 0) {
-        return true;
-      }
-      return false;
+      return !extensions.isEmpty();
     }
 
     public void load() throws RuntimeException {
@@ -84,7 +73,9 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     }
 
     public List<Extension> getCoreTypes() {
-      if (!isLoaded()) load();
+      if (!isLoaded()) {
+        load();
+      }
       List<Extension> coreTypes = new ArrayList<Extension>();
       for (Extension ext : extensions) {
         if (Constants.DWC_ROWTYPE_OCCURRENCE.equals(normalizeRowType(ext.getRowType()))) {
@@ -114,15 +105,11 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
 
   public static String normalizeRowType(String rowType) {
     // occurrence alternatives
-    if ("http://rs.tdwg.org/dwc/terms/DarwinCore".equalsIgnoreCase(rowType)) {
-      return Constants.DWC_ROWTYPE_OCCURRENCE;
-    } else if ("http://rs.tdwg.org/dwc/xsd/simpledarwincore/".equalsIgnoreCase(rowType)) {
-      return Constants.DWC_ROWTYPE_OCCURRENCE;
-    } else if ("http://rs.tdwg.org/dwc/terms/SimpleDarwinCore".equalsIgnoreCase(rowType)) {
-      return Constants.DWC_ROWTYPE_OCCURRENCE;
-    } else if ("http://rs.tdwg.org/dwc/dwctype/Occurrence".equalsIgnoreCase(rowType)) {
-      return Constants.DWC_ROWTYPE_OCCURRENCE;
-    } else if ("http://rs.tdwg.org/dwc/xsd/simpledarwincore/SimpleDarwinRecord".equalsIgnoreCase(rowType)) {
+    if ("http://rs.tdwg.org/dwc/terms/DarwinCore".equalsIgnoreCase(rowType)
+      || "http://rs.tdwg.org/dwc/xsd/simpledarwincore/".equalsIgnoreCase(rowType)
+      || "http://rs.tdwg.org/dwc/terms/SimpleDarwinCore".equalsIgnoreCase(rowType)
+      || "http://rs.tdwg.org/dwc/dwctype/Occurrence".equalsIgnoreCase(rowType)
+      || "http://rs.tdwg.org/dwc/xsd/simpledarwincore/SimpleDarwinRecord".equalsIgnoreCase(rowType)) {
       return Constants.DWC_ROWTYPE_OCCURRENCE;
     }
 
@@ -167,8 +154,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   }
 
   public synchronized Extension install(URL url) throws InvalidConfigException {
-    Extension ext;
-    ext = null;
+    Extension ext = null;
     // download extension into local file first for subsequent IPT startups
     // final filename is based on rowType which we dont know yet - create a tmp file first
     File tmpFile = dataDir.configFile(CONFIG_FOLDER + "/tmp-extension.xml");
@@ -290,7 +276,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
         if (!includeCoreExtensions && e.isCore()) {
           continue;
         }
-        if ((includeEmptySubject && StringUtils.trimToNull(e.getSubject()) == null) || StringUtils
+        if (includeEmptySubject && StringUtils.trimToNull(e.getSubject()) == null || StringUtils
           .containsIgnoreCase(e.getSubject(), keyword)) {
           list.add(e);
         }

@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.POSTAction;
@@ -20,9 +17,7 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * The Action responsible for all user input relating to the user accounts in the IPT
- *
- * @author tim
+ * The Action responsible for all user input relating to the user accounts in the IPT.
  */
 public class UserAccountsAction extends POSTAction {
 

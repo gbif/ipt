@@ -53,8 +53,6 @@ import org.apache.log4j.Logger;
 
 /**
  * A guice module containing wiring used for both test and production.
- *
- * @author markus
  */
 public class IPTModule extends AbstractModule {
 
@@ -191,7 +189,6 @@ public class IPTModule extends AbstractModule {
   public SAXParserFactory provideNsAwareSaxParserFactory() {
     SAXParserFactory saxf = null;
     try {
-      ;
       saxf = SAXParserFactory.newInstance();
       saxf.setValidating(false);
       saxf.setNamespaceAware(true);

@@ -20,9 +20,6 @@ import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
-/**
- * @author markus
- */
 @Singleton
 public class OrganisationKeyConverter implements Converter {
 
@@ -30,7 +27,6 @@ public class OrganisationKeyConverter implements Converter {
 
   @Inject
   public OrganisationKeyConverter(RegistrationManager registrationManager) {
-    super();
     this.registrationManager = registrationManager;
   }
 
@@ -44,8 +40,7 @@ public class OrganisationKeyConverter implements Converter {
   }
 
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
-    Organisation u = registrationManager.get(reader.getValue());
-    return u;
+    return registrationManager.get(reader.getValue());
   }
 
 }

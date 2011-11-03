@@ -34,9 +34,6 @@ import com.google.inject.Inject;
 import com.google.inject.servlet.SessionScoped;
 import org.apache.commons.lang.xwork.StringUtils;
 
-/**
- * @author markus
- */
 public class TranslationAction extends ManagerBaseAction {
 
   @SessionScoped
@@ -49,7 +46,7 @@ public class TranslationAction extends ManagerBaseAction {
     public Map<String, String> getPersistentMap() {
       Map<String, String> m = new HashMap<String, String>();
       for (String key : tmap.keySet()) {
-        if (tmap.get(key) != null && !tmap.get(key).equals("") && !tmap.get(key).equals(key)) {
+        if (tmap.get(key) != null && !(tmap.get(key).length() == 0) && !tmap.get(key).equals(key)) {
           m.put(key, tmap.get(key));
         }
       }
@@ -95,7 +92,6 @@ public class TranslationAction extends ManagerBaseAction {
   private Translation trans;
 
   public TranslationAction() {
-    super();
     defaultResult = SUCCESS;
   }
 

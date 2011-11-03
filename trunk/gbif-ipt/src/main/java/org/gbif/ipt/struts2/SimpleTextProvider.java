@@ -14,14 +14,10 @@ import com.opensymphony.xwork2.LocaleProvider;
 import com.opensymphony.xwork2.util.LocalizedTextUtil;
 import org.apache.log4j.Logger;
 
-//import org.displaytag.localization.I18nResourceProvider;
-
 /**
  * A basic text provider for internationalised messages that can replace the native struts2 one. It uses only a single
  * bundle name to speed up the lookup which increases performance of page rendering with many text blocks by sometimes
- * more than 100%
- *
- * @author markus
+ * more than 100%.
  */
 
 public class SimpleTextProvider { //implements I18nResourceProvider {
@@ -30,7 +26,6 @@ public class SimpleTextProvider { //implements I18nResourceProvider {
   private Set<String> baseBundleNames = new HashSet<String>();
 
   public SimpleTextProvider() {
-    super();
     baseBundleNames.add(defaultBundle);
   }
 
@@ -76,20 +71,20 @@ public class SimpleTextProvider { //implements I18nResourceProvider {
   }
 
   /**
-   * Gets a message based on a key using the supplied args, as defined in {@link java.text.MessageFormat}, or, if the
+   * Gets a message based on a key using the supplied args, as defined in {@link MessageFormat}, or, if the
    * message is not found, a supplied default value is returned. Instead of using the value stack in the ActionContext
    * this version of the getText() method uses the provided value stack.
    *
    * @param key          the resource bundle key that is to be searched for
    * @param defaultValue the default value which will be returned if no message is found. If null the key name will be
    *                     used instead
-   * @param args         a list args to be used in a {@link java.text.MessageFormat} message
+   * @param args         a list args to be used in a {@link MessageFormat} message
    * @param stack        the value stack to use for finding the text
    *
    * @return the message as found in the resource bundle, or defaultValue if none is found
    */
   public String getText(LocaleProvider localeProvider, String key, String defaultValue, List args) {
-    Object[] argsArray = ((args != null) ? args.toArray() : null);
+    Object[] argsArray = args != null ? args.toArray() : null;
     return getText(localeProvider, key, defaultValue, argsArray);
   }
 

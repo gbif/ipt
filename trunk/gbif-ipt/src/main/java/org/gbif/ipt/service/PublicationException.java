@@ -1,21 +1,14 @@
-/**
- *
- */
 package org.gbif.ipt.service;
 
 /**
  * The base class used to indicate types of resource publication errors. All configuration must provide a message and a
- * cause
- *
- * @author markus
+ * cause.
  */
 public class PublicationException extends RuntimeException {
 
   public enum TYPE {
     DWCA, EML, REGISTRY, LOCKED
   }
-
-  ;
 
   protected TYPE type;
 

@@ -15,16 +15,10 @@ import org.gbif.ipt.service.registry.RegistryManager;
 
 import com.google.inject.Inject;
 
-/**
- * @author josecuadra
- */
 public class OrganisationSupport {
 
   @Inject
   private RegistryManager registryManager;
-
-  public OrganisationSupport() {
-  }
 
   public void validate(BaseAction action, Organisation organisation) {
 

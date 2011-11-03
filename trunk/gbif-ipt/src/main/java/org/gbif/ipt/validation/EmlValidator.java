@@ -30,9 +30,6 @@ import javax.annotation.Nullable;
 
 import com.google.inject.Inject;
 
-/**
- * @author markus
- */
 public class EmlValidator extends BaseValidator {
 
   protected static Pattern phonePattern = Pattern.compile("[0-9 ()/+-]+");
@@ -70,19 +67,13 @@ public class EmlValidator extends BaseValidator {
   }
 
   public static boolean isValidPhoneNumber(String phone) {
-    if (phone == null) {
-      return false;
-    }
-    return phonePattern.matcher(phone).matches();
+    return phone != null && phonePattern.matcher(phone).matches();
   }
 
   public boolean isValid(Eml eml, @Nullable String part) {
     BaseAction action = new BaseAction(new SimpleTextProvider(), cfg);
     validate(action, eml, part);
-    if (action.hasActionErrors() || action.hasFieldErrors()) {
-      return false;
-    }
-    return true;
+    return !(action.hasActionErrors() || action.hasFieldErrors());
   }
 
   /**
@@ -107,7 +98,7 @@ public class EmlValidator extends BaseValidator {
          */
 
         /* Title - mandatory */
-        if (!exists(eml.getTitle()) || eml.getTitle().trim().equals("")) {
+        if (!exists(eml.getTitle()) || eml.getTitle().trim().length() == 0) {
           action.addFieldError("eml.title",
             action.getText("validation.required", new String[] {action.getText("eml.title")}));
         }
@@ -420,14 +411,14 @@ public class EmlValidator extends BaseValidator {
         for (int index = 0; index < eml.getGeospatialCoverages().size(); index++) {
           // The Bounding coordinates and description are mandatory.
           // If all fields are empty, the <coverage> label in eml.xml will be removed.
-          if ((eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMin().getLongitude() == null)
-            && (eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLongitude() == null)
-            && (eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMin().getLatitude() == null)
-            && (eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLatitude() == null) && eml
+          if (eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMin().getLongitude() == null
+            && eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLongitude() == null
+            && eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMin().getLatitude() == null
+            && eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLatitude() == null && eml
             .getGeospatialCoverages().get(index).getDescription().equals("")) {
             eml.getGeospatialCoverages().clear();
           }
-          if (eml.getGeospatialCoverages().size() > 0) {
+          if (!eml.getGeospatialCoverages().isEmpty()) {
             coord = eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMin().getLongitude();
             if (coord == null) {
               action.addFieldError("eml.geospatialCoverages[" + index + "].boundingCoordinates.min.longitude", action
@@ -469,7 +460,7 @@ public class EmlValidator extends BaseValidator {
                   new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.min.latitude")}));
             }
             /* description - mandatory and greater than 2 chars */
-            if (eml.getGeospatialCoverages().get(index).getDescription().equals("")) {
+            if (eml.getGeospatialCoverages().get(index).getDescription().length() == 0) {
               action.addFieldError("eml.geospatialCoverages[" + index + "].description", action
                 .getText("validation.required", new String[] {action.getText("eml.geospatialCoverages.description")}));
             } else if (!exists(eml.getGeospatialCoverages().get(index).getDescription(), 2)) {
@@ -536,13 +527,13 @@ public class EmlValidator extends BaseValidator {
          */
         int index = 0;
         for (TemporalCoverage tc : eml.getTemporalCoverages()) {
-          if (tc.getType().equals(TemporalCoverageType.SINGLE_DATE)) {
+          if (tc.getType() == TemporalCoverageType.SINGLE_DATE) {
             if (!exists(tc.getStartDate())) {
               action.addFieldError("eml.temporalCoverages[" + index + "].startDate", action
                 .getText("validation.required", new String[] {action.getText("eml.temporalCoverages.startDate")}));
             }
           }
-          if (tc.getType().equals(TemporalCoverageType.DATE_RANGE)) {
+          if (tc.getType() == TemporalCoverageType.DATE_RANGE) {
             if (!exists(tc.getStartDate())) {
               action.addFieldError("eml.temporalCoverages[" + index + "].startDate", action
                 .getText("validation.required", new String[] {action.getText("eml.temporalCoverages.startDate")}));
@@ -552,14 +543,14 @@ public class EmlValidator extends BaseValidator {
                 action.getText("validation.required", new String[] {action.getText("eml.temporalCoverages.endDate")}));
             }
           }
-          if (tc.getType().equals(TemporalCoverageType.FORMATION_PERIOD)) {
+          if (tc.getType() == TemporalCoverageType.FORMATION_PERIOD) {
             if (!exists(tc.getFormationPeriod())) {
               action.addFieldError("eml.temporalCoverages[" + index + "].formationPeriod", action
                 .getText("validation.required",
                   new String[] {action.getText("eml.temporalCoverages.formationPeriod")}));
             }
           }
-          if (tc.getType().equals(TemporalCoverageType.LIVING_TIME_PERIOD)) {
+          if (tc.getType() == TemporalCoverageType.LIVING_TIME_PERIOD) {
             if (!exists(tc.getLivingTimePeriod())) {
               action.addFieldError("eml.temporalCoverages[" + index + "].livingTimePeriod", action
                 .getText("validation.required",
@@ -636,8 +627,8 @@ public class EmlValidator extends BaseValidator {
          * </dataset>
          */
         boolean emptyFields = false;
-        if (eml.getSampleDescription().equals("") && eml.getStudyExtent().equals("") && eml.getQualityControl()
-          .equals("")) {
+        if (eml.getSampleDescription().length() == 0 && eml.getStudyExtent().length() == 0
+          && eml.getQualityControl().length() == 0) {
           eml.setSampleDescription(null);
           eml.setStudyExtent(null);
           eml.setQualityControl(null);
@@ -645,7 +636,7 @@ public class EmlValidator extends BaseValidator {
         }
         int index = 0;
         for (String method : eml.getMethodSteps()) {
-          if (method.trim().equals("")) {
+          if (method.trim().length() == 0) {
             if (emptyFields && index == 0) {
               eml.getMethodSteps().clear();
               break;
@@ -658,11 +649,11 @@ public class EmlValidator extends BaseValidator {
         }
 
         if (!emptyFields) {
-          if (!eml.getSampleDescription().equals("") && eml.getStudyExtent().equals("")) {
+          if (!(eml.getSampleDescription().length() == 0) && eml.getStudyExtent().length() == 0) {
             action.addFieldError("eml.studyExtent",
               action.getText("validation.required", new String[] {action.getText("eml.studyExtent")}));
           }
-          if (!eml.getStudyExtent().equals("") && eml.getSampleDescription().equals("")) {
+          if (!(eml.getStudyExtent().length() == 0) && eml.getSampleDescription().length() == 0) {
             action.addFieldError("eml.sampleDescription",
               action.getText("validation.required", new String[] {action.getText("eml.sampleDescription")}));
           }
@@ -681,7 +672,7 @@ public class EmlValidator extends BaseValidator {
          * </metadata>
          * </additionalMetadata>
          */
-        if (!eml.getCitation().getIdentifier().equals("") && !exists(eml.getCitation().getIdentifier())) {
+        if (!(eml.getCitation().getIdentifier().length() == 0) && !exists(eml.getCitation().getIdentifier())) {
           action.addFieldError("eml.citation.identifier",
             action.getText("validation.field.blank", new String[] {action.getText("eml.citation.identifier")}));
         } else {
@@ -695,7 +686,7 @@ public class EmlValidator extends BaseValidator {
 
         int index = 0;
         for (Citation citation : eml.getBibliographicCitations()) {
-          if (!citation.getIdentifier().equals("") && !exists(citation.getIdentifier())) {
+          if (!(citation.getIdentifier().length() == 0) && !exists(citation.getIdentifier())) {
             action.addFieldError("eml.bibliographicCitationSet.bibliographicCitations[" + index + "].identifier", action
               .getText("validation.field.blank",
                 new String[] {action.getText("eml.bibliographicCitationSet.bibliographicCitations.identifier")}));
@@ -744,7 +735,7 @@ public class EmlValidator extends BaseValidator {
         }
         int index = 0;
         for (JGTICuratorialUnit jcu : eml.getJgtiCuratorialUnits()) {
-          if (jcu.getType().equals(JGTICuratorialUnitType.COUNT_RANGE)) {
+          if (jcu.getType() == JGTICuratorialUnitType.COUNT_RANGE) {
             if (!exists(jcu.getRangeStart())) {
               action.addFieldError("eml.jgtiCuratorialUnits[" + index + "].rangeStart",
                 action.getText("validation.required", new String[] {action.getText("validation.field.required")}));
@@ -754,7 +745,7 @@ public class EmlValidator extends BaseValidator {
                 action.getText("validation.required", new String[] {action.getText("validation.field.required")}));
             }
           }
-          if (jcu.getType().equals(JGTICuratorialUnitType.COUNT_WITH_UNCERTAINTY)) {
+          if (jcu.getType() == JGTICuratorialUnitType.COUNT_WITH_UNCERTAINTY) {
             if (!exists(jcu.getRangeMean())) {
               action.addFieldError("eml.jgtiCuratorialUnits[" + index + "].rangeMean",
                 action.getText("validation.required", new String[] {action.getText("validation.field.required")}));

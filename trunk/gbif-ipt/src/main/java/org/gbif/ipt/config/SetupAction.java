@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.gbif.ipt.config;
 
 import org.gbif.ipt.action.BaseAction;
@@ -28,8 +25,6 @@ import org.apache.commons.lang.StringUtils;
 
 /**
  * The Action responsible for all user input relating to the IPT configuration.
- *
- * @author tim
  */
 public class SetupAction extends BaseAction {
 
@@ -199,7 +194,7 @@ public class SetupAction extends BaseAction {
         baseURL = cfg.getBaseURL();
         proxy = cfg.getProxy();
         List<User> admins = userManager.list(User.Role.Admin);
-        if (admins != null && admins.size() > 0) {
+        if (admins != null && !admins.isEmpty()) {
           user = admins.get(0);
         }
         ignoreUserValidation = 1;
@@ -210,7 +205,7 @@ public class SetupAction extends BaseAction {
       // we have submitted the form
       try {
         boolean gotValidUser = false;
-        if (ignoreUserValidation.intValue() == 0) {
+        if (ignoreUserValidation == 0) {
           user.setRole(Role.Admin);
 
           // do user validation, but don't create user yet
@@ -249,7 +244,7 @@ public class SetupAction extends BaseAction {
         configManager.saveConfig();
 
         // everything else is valid, now create the user
-        if (ignoreUserValidation.intValue() == 0 && gotValidUser) {
+        if (ignoreUserValidation == 0 && gotValidUser) {
           // confirm password
           userManager.create(user);
           user.setLastLoginToNow();
@@ -285,7 +280,7 @@ public class SetupAction extends BaseAction {
     session.put(Constants.SESSION_USER, userManager.getSetupUser());
     List<Extension> list = extensionManager.listCore();
 
-    if (list.size() == 0) {
+    if (list.isEmpty()) {
       try {
         extensionManager.installCoreTypes();
       } catch (RegistryException e) {

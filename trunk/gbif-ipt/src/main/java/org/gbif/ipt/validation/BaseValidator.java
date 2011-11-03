@@ -18,9 +18,6 @@ import java.util.regex.Pattern;
 
 import com.opensymphony.xwork2.validator.validators.EmailValidator;
 
-/**
- * @author markus
- */
 public abstract class BaseValidator {
 
   protected static Pattern emailPattern = Pattern.compile(EmailValidator.emailAddressPattern);
@@ -42,9 +39,6 @@ public abstract class BaseValidator {
   }
 
   protected boolean isValidEmail(String email) {
-    if (email == null) {
-      return false;
-    }
-    return emailPattern.matcher(email).matches();
+    return email != null && emailPattern.matcher(email).matches();
   }
 }

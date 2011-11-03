@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.gbif.ipt.service.admin;
 
 import org.gbif.ipt.model.User;
@@ -17,26 +14,24 @@ import com.google.inject.ImplementedBy;
 
 /**
  * This interface details ALL methods associated with the User accounts within the IPT.
- *
- * @author tim
  */
 @ImplementedBy(UserAccountManagerImpl.class)
 public interface UserAccountManager {
 
   /**
-   * Authenticate a user checking his password & email
+   * Authenticate a user checking his password & email.
    *
    * @param email    the unique email address that works as the identifier for a user
    * @param password the users password in clear text
    *
    * @return the user instance if exists or null if user doesnt exist or password doesnt match
    */
-  public User authenticate(String email, String password);
+  User authenticate(String email, String password);
 
   /**
    * Adds a new user account and persists the change.
    */
-  public void create(User user) throws AlreadyExistingException, IOException;
+  void create(User user) throws AlreadyExistingException, IOException;
 
   /**
    * Removes the specified user from the in memory list of users.
@@ -48,7 +43,7 @@ public interface UserAccountManager {
    *
    * @throws DeletionNotAllowedException if its the last admin or a manager linked to a resource
    */
-  public User delete(String email) throws DeletionNotAllowedException;
+  User delete(String email) throws DeletionNotAllowedException;
 
   /**
    * Get a user object by its unique, case insensitive email.
@@ -57,39 +52,39 @@ public interface UserAccountManager {
    *
    * @return the user object or null if no user with the given email is known
    */
-  public User get(String email);
+  User get(String email);
 
   /**
-   * User objects are references to the persistent instances, so changes have global impact
+   * User objects are references to the persistent instances, so changes have global impact.
    *
    * @return list of all users.
    */
-  public List<User> list();
+  List<User> list();
 
   /**
-   * User objects are references to the persistent instances, so changes have global impact
+   * User objects are references to the persistent instances, so changes have global impact.
    *
    * @return list of all users with the given role.
    */
-  public List<User> list(Role role);
+  List<User> list(Role role);
 
   /**
-   * Loads all user accounts from file into the manager
+   * Loads all user accounts from file into the manager.
    */
-  public void load() throws InvalidConfigException;
+  void load() throws InvalidConfigException;
 
   /**
    * Saves all user accounts from manager to file.
    * Needs to be manually called if user properties have been modified or if users have been added or removed.
    */
-  public void save() throws IOException;
+  void save() throws IOException;
 
   /**
-   * Updates the internal cache with this user and persists the change
+   * Updates the internal cache with this user and persists the change.
    */
-  public void save(User user) throws IOException;
+  void save(User user) throws IOException;
 
-  public User getSetupUser();
+  User getSetupUser();
 
-  public void setSetupUser(User setupLogin);
+  void setSetupUser(User setupLogin);
 }

@@ -23,15 +23,11 @@ import org.mortbay.jetty.webapp.WebAppContext;
 import org.mortbay.jetty.webapp.WebInfConfiguration;
 import org.mortbay.jetty.webapp.WebXmlConfiguration;
 
-/**
- * @author markus
- */
 public class Server {
 
   private static final org.mortbay.jetty.Server SERVER = new org.mortbay.jetty.Server();
 
   public static void main(String[] args) throws Exception {
-    String webapp = "webapp";
     Integer port = 7001;
     if (args.length > 0) {
       try {
@@ -42,6 +38,7 @@ public class Server {
     }
     WebAppContext app = new WebAppContext();
     app.setContextPath("/");
+    String webapp = "webapp";
     app.setWar(webapp);
     // Avoid the taglib configuration because its a PITA if you don't have a net connection
     app

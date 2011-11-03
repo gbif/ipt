@@ -19,12 +19,9 @@ package org.gbif.ipt.utils;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author markus
- */
 public class LangUtils {
 
-  private final static Map<String, String> common3letterLangCodes = new HashMap<String, String>();
+  private static final Map<String, String> common3letterLangCodes = new HashMap<String, String>();
 
   static {
     common3letterLangCodes.put("eng", "en");
@@ -37,7 +34,7 @@ public class LangUtils {
     common3letterLangCodes.put("por", "pt");
   }
 
-  private final static Map<String, String> common2letterLangCodes = new HashMap<String, String>();
+  private static final Map<String, String> common2letterLangCodes = new HashMap<String, String>();
 
   static {
     common2letterLangCodes.put("en", "eng");

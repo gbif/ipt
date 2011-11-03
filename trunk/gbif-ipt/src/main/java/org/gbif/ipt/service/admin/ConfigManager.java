@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.gbif.ipt.service.admin;
 
 import org.gbif.ipt.config.ConfigManagerImpl;
@@ -15,8 +12,6 @@ import com.google.inject.ImplementedBy;
  * This interface details ALL methods associated with an IPT configuration.
  * This includes configuration such as the deployment URL, the data directory
  * etc.
- *
- * @author tim
  */
 @ImplementedBy(ConfigManagerImpl.class)
 public interface ConfigManager {
@@ -24,36 +19,36 @@ public interface ConfigManager {
   /**
    * @return the local host name
    */
-  public String getHostName();
+  String getHostName();
 
   /**
-   * Checks for an existing base URL from the AppConfig, and ensures that it is accessible over http.
+   * Checks for an existing base URL from the AppConfig, and ensures that it is accessible over HTTP.
    *
    * @return false if there is no base URL set or if it is inaccessible
    */
-  public boolean isBaseURLValid();
+  boolean isBaseURLValid();
 
   /**
-   * Loads all in memory configuration persisting in the datadir. This is:
+   * Loads all in memory configuration persisting in the datadir.This is:
    * - main IPT configuration, AppConfig
    * - user accounts
    * - list of configured resources
    * - reload lucene indices
    */
-  public void loadDataDirConfig() throws InvalidConfigException;
+  void loadDataDirConfig() throws InvalidConfigException;
 
   /**
    * Persists the main IPT AppConfig configuration which can be modified for simple properties independently of this
    * manager as its a singleton.
    * Highly recommended is to use the setConfigProperty method in this manager though to edit the configuration.
    */
-  public void saveConfig() throws InvalidConfigException;
+  void saveConfig() throws InvalidConfigException;
 
   /**
    * Simple wrapper around AppConfig to set the google analytics key for the IPT
    * The modified AppConfig is not immediately persisted - remember to call save() at some point!
    */
-  public void setAnalyticsKey(String key) throws InvalidConfigException;
+  void setAnalyticsKey(String key) throws InvalidConfigException;
 
   /**
    * Sets the base URL for the IPT installation.
@@ -69,12 +64,12 @@ public interface ConfigManager {
    * @throws InvalidConfigException If the URL appears to be localhost, 127.0.0.1 or something that clearly
    *                                will not be addressable from the internet.
    */
-  public void setBaseURL(URL baseURL) throws InvalidConfigException;
+  void setBaseURL(URL baseURL) throws InvalidConfigException;
 
   /**
-   * Generic method to set an appconfig property in memory without persisting it
+   * Generic method to set an appconfig property in memory without persisting it.
    */
-  public void setConfigProperty(String key, String value);
+  void setConfigProperty(String key, String value);
 
   /**
    * Tries to assign a new data directory to the IPT.
@@ -87,30 +82,27 @@ public interface ConfigManager {
    *
    * @return true if a new data dir was created, false when an existing was read
    */
-  public boolean setDataDir(File dataDir) throws InvalidConfigException;
+  boolean setDataDir(File dataDir) throws InvalidConfigException;
 
   /**
    * Simple wrapper around AppConfig to set the IPT debug mode.
    * The modified AppConfig is not immediately persisted - remember to call save() at some point!
    */
-  public void setDebugMode(boolean debug) throws InvalidConfigException;
+  void setDebugMode(boolean debug) throws InvalidConfigException;
 
   /**
    * Simple wrapper around AppConfig to en/disable google analytics for all IPTs monitored by gbif
    * The modified AppConfig is not immediately persisted - remember to call save() at some point!
    */
-  public void setGbifAnalytics(boolean useGbifAnalytics) throws InvalidConfigException;
+  void setGbifAnalytics(boolean useGbifAnalytics) throws InvalidConfigException;
 
-  public void setIptLocation(Double lat, Double lon) throws InvalidConfigException;
+  void setIptLocation(Double lat, Double lon) throws InvalidConfigException;
 
-  /**
-   * @param proxy
-   */
-  public void setProxy(String proxy) throws InvalidConfigException;
+  void setProxy(String proxy) throws InvalidConfigException;
 
   /**
    * @return true if the basic setup routine is completed, false otherwise
    */
-  public boolean setupComplete();
+  boolean setupComplete();
 
 }

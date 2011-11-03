@@ -29,9 +29,6 @@ import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
-/**
- * @author markus
- */
 @Singleton
 public class ExtensionMappingConverter implements Converter {
 
@@ -39,7 +36,6 @@ public class ExtensionMappingConverter implements Converter {
 
   @Inject
   public ExtensionMappingConverter(ExtensionManager extManager) {
-    super();
     this.extManager = extManager;
   }
 

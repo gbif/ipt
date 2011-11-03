@@ -20,8 +20,6 @@ import java.util.Map;
 
 /**
  * This class validates if the longitude field value is a decimal number.
- *
- * @author julieth
  */
 public class LongitudeFormatConverter extends CoordinateFormatConverter {
 

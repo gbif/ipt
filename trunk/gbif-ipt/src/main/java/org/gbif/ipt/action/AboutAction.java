@@ -25,9 +25,6 @@ import com.google.inject.Inject;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 
-/**
- * @author markus
- */
 public class AboutAction extends BaseAction {
 
   @Inject

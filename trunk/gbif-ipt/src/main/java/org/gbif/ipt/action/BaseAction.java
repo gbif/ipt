@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.gbif.ipt.action;
 
 import org.gbif.ipt.config.AppConfig;
@@ -26,9 +23,7 @@ import org.apache.struts2.interceptor.SessionAware;
 
 /**
  * The base of all IPT actions This handles conditions such as menu items, a custom text provider, sessions, currently
- * logged in user
- *
- * @author tim
+ * logged in user.
  */
 public class BaseAction extends ActionSupport implements Action, SessionAware, Preparable, ServletRequestAware {
 
@@ -62,7 +57,6 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
 
   @Inject
   public BaseAction(SimpleTextProvider textProvider, AppConfig cfg) {
-    super();
     this.textProvider = textProvider;
     this.cfg = cfg;
   }

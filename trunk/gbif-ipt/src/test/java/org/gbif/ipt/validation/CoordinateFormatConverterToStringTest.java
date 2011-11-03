@@ -27,7 +27,7 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * Unit test for convertToString method in LatitudetudeFormatConverter and LongitudeFormatConverter classes.
- * 
+ *
  * @author julieth
  */
 @RunWith(value = Parameterized.class)

@@ -39,7 +39,9 @@ import java.awt.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Locale;
@@ -65,11 +67,7 @@ import org.apache.commons.lang.WordUtils;
 import static com.google.common.base.Objects.equal;
 
 /**
- * Populates a RTF document with a resources metadata, mainly derived from its
- * EML.
- *
- * @author markus
- * @author htobon
+ * Populates a RTF document with a resources metadata, mainly derived from its EML.
  */
 @Singleton
 public class Eml2Rtf {
@@ -80,7 +78,7 @@ public class Eml2Rtf {
   private final Font fontHeader = FontFactory.getFont(FontFactory.TIMES_BOLD, 14, Font.BOLD, Color.BLACK);
   private final Font fontLinkTitle = FontFactory.getFont(FontFactory.TIMES_BOLD, 12, Font.UNDERLINE, Color.BLUE);
   private final Font fontLink = FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.UNDERLINE, Color.BLUE);
-  private ResourceBundle resourceBoundle;
+  private ResourceBundle resourceBundle;
   // private BaseAction action;
 
   @Inject
@@ -106,7 +104,7 @@ public class Eml2Rtf {
   private void addAuthors(Document doc, Eml eml) throws DocumentException {
     // <AUTHORS>
     // Creating set of authors with different names. (first names + last names).
-    LinkedHashSet<Agent> tempAgents = new LinkedHashSet<Agent>();
+    HashSet<Agent> tempAgents = new LinkedHashSet<Agent>();
     if (exists(eml.getResourceCreator()) && exists(eml.getResourceCreator().getLastName())) {
       tempAgents.add(eml.getResourceCreator());
     }
@@ -117,7 +115,7 @@ public class Eml2Rtf {
 
     // comparing and removing those repeated agents with same name and same
     // address.
-    ArrayList<Integer> toRemove = new ArrayList<Integer>();
+    Collection<Integer> toRemove = new ArrayList<Integer>();
     int counter = 0;
     for (Iterator<Agent> i = tempAgents.iterator(); i.hasNext(); counter++) {
       if (toRemove.contains(counter)) {
@@ -147,7 +145,7 @@ public class Eml2Rtf {
     Paragraph p = new Paragraph();
     p.setFont(font);
     p.setAlignment(Element.ALIGN_CENTER);
-    ArrayList<Agent> affiliations = new ArrayList<Agent>();
+    java.util.List<Agent> affiliations = new ArrayList<Agent>();
     Map<String, Integer> superScriptAgentMap = new HashMap<String, Integer>();
     int superScriptCounter = 1;
     for (int c = 0; c < agentsArray.length; c++) {
@@ -167,14 +165,14 @@ public class Eml2Rtf {
         for (int index = 0; index < affiliations.size(); index++) {
           if (equal(agentsArray[c].getAddress(), affiliations.get(index).getAddress()) && equal(
             agentsArray[c].getOrganisation(), affiliations.get(index).getOrganisation())) {
-            p.add(createSuperScript("" + (index + 1)));
+            p.add(createSuperScript(String.valueOf(index + 1)));
             isRepeated = true;
             break;
           }
         }
         // if the agent is not repeated.
         if (!isRepeated) {
-          p.add(createSuperScript("" + superScriptCounter));
+          p.add(createSuperScript(String.valueOf(superScriptCounter)));
           affiliations.add(agentsArray[c]);
           superScriptCounter++;
         }
@@ -327,7 +325,7 @@ public class Eml2Rtf {
       // ------ External Datasets ------
       addExternalLinks(doc, eml);
     } else {
-      if (eml.getPhysicalData().size() > 0) {
+      if (!eml.getPhysicalData().isEmpty()) {
         /*
          * If no data is uploaded/published through the IPT but there are one or
          * more "External links", the "Dataset description" reads:
@@ -388,7 +386,7 @@ public class Eml2Rtf {
   }
 
   private void addExternalLinks(Document doc, Eml eml) throws DocumentException {
-    if (eml.getPhysicalData().size() > 0) {
+    if (!eml.getPhysicalData().isEmpty()) {
       Paragraph p = new Paragraph();
       p.setAlignment(Element.ALIGN_JUSTIFIED);
       p.setFont(font);
@@ -458,7 +456,7 @@ public class Eml2Rtf {
   }
 
   private void addKeywords(Document doc, String keys) throws DocumentException {
-    if (keys != null && !keys.equals("")) {
+    if (keys != null && !(keys.length() == 0)) {
       Paragraph p = new Paragraph();
       p.setAlignment(Element.ALIGN_JUSTIFIED);
       p.setFont(font);
@@ -509,7 +507,7 @@ public class Eml2Rtf {
   }
 
   private void addMethods(Document doc, Eml eml) throws DocumentException {
-    if ((exists(eml.getMethodSteps()) && eml.getMethodSteps().size() > 0) || exists(eml.getStudyExtent())
+    if (exists(eml.getMethodSteps()) && !eml.getMethodSteps().isEmpty() || exists(eml.getStudyExtent())
       || exists(eml.getStudyExtent()) || exists(eml.getStudyExtent())) {
       Paragraph p = new Paragraph();
       p.setAlignment(Element.ALIGN_JUSTIFIED);
@@ -553,8 +551,8 @@ public class Eml2Rtf {
 
   private void addNaturalCollections(Document doc, Eml eml) throws DocumentException {
     if (exists(eml.getParentCollectionId()) || exists(eml.getCollectionName()) || exists(eml.getCollectionId())
-      || eml.getTemporalCoverages().size() > 0 || exists(eml.getSpecimenPreservationMethod())
-      || eml.getJgtiCuratorialUnits().size() > 0) {
+      || !eml.getTemporalCoverages().isEmpty() || exists(eml.getSpecimenPreservationMethod()) || !eml
+      .getJgtiCuratorialUnits().isEmpty()) {
       Paragraph p = new Paragraph();
       p.setAlignment(Element.ALIGN_JUSTIFIED);
       p.setFont(font);
@@ -577,14 +575,14 @@ public class Eml2Rtf {
         p.add(Chunk.NEWLINE);
       }
       for (TemporalCoverage coverage : eml.getTemporalCoverages()) {
-        if (coverage.getType().equals(TemporalCoverageType.FORMATION_PERIOD)) {
+        if (coverage.getType() == TemporalCoverageType.FORMATION_PERIOD) {
           p.add(new Phrase(getText("rtf.collections.formatPeriod") + ": ", fontTitle));
           p.add(coverage.getFormationPeriod());
           p.add(Chunk.NEWLINE);
         }
       }
       for (TemporalCoverage coverage : eml.getTemporalCoverages()) {
-        if (coverage.getType().equals(TemporalCoverageType.LIVING_TIME_PERIOD)) {
+        if (coverage.getType() == TemporalCoverageType.LIVING_TIME_PERIOD) {
           p.add(new Phrase(getText("rtf.collections.livingPeriod") + ": ", fontTitle));
           p.add(coverage.getLivingTimePeriod());
           p.add(Chunk.NEWLINE);
@@ -599,10 +597,10 @@ public class Eml2Rtf {
       }
       for (JGTICuratorialUnit unit : eml.getJgtiCuratorialUnits()) {
         p.add(new Phrase(getText("rtf.collections.curatorial") + ": ", fontTitle));
-        if (unit.getType().equals(JGTICuratorialUnitType.COUNT_RANGE)) {
+        if (unit.getType() == JGTICuratorialUnitType.COUNT_RANGE) {
           p.add("Between " + unit.getRangeStart() + " and " + unit.getRangeEnd());
         }
-        if (unit.getType().equals(JGTICuratorialUnitType.COUNT_WITH_UNCERTAINTY)) {
+        if (unit.getType() == JGTICuratorialUnitType.COUNT_WITH_UNCERTAINTY) {
           p.add(unit.getRangeMean() + " " + getText("rtf.collections.curatorial.text") + " " + unit
             .getUncertaintyMeasure());
         }
@@ -670,8 +668,8 @@ public class Eml2Rtf {
   }
 
   private void addReferences(Document doc, Eml eml) throws DocumentException {
-    if (exists(eml.getBibliographicCitationSet())
-      && eml.getBibliographicCitationSet().getBibliographicCitations().size() > 0) {
+    if (exists(eml.getBibliographicCitationSet()) && !eml.getBibliographicCitationSet().getBibliographicCitations()
+      .isEmpty()) {
       Paragraph p = new Paragraph();
       p.setAlignment(Element.ALIGN_JUSTIFIED);
       p.setFont(font);
@@ -687,8 +685,7 @@ public class Eml2Rtf {
   }
 
   private void addResourceLink(Document doc, Resource resource) throws DocumentException {
-    if (resource.getStatus().equals(PublicationStatus.PUBLIC) || resource.getStatus()
-      .equals(PublicationStatus.REGISTERED)) {
+    if (resource.getStatus() == PublicationStatus.PUBLIC || resource.getStatus() == PublicationStatus.REGISTERED) {
       Paragraph p = new Paragraph();
       p.setFont(font);
       p.add(new Phrase(getText("rtf.resourceLink") + " ", fontTitle));
@@ -712,10 +709,10 @@ public class Eml2Rtf {
     p.setFont(font);
     boolean firstCoverage = true;
     for (GeospatialCoverage coverage : eml.getGeospatialCoverages()) {
-      if (!firstCoverage) {
-        p.add(Chunk.NEWLINE);
-      } else {
+      if (firstCoverage) {
         firstCoverage = false;
+      } else {
+        p.add(Chunk.NEWLINE);
       }
       if (exists(coverage.getDescription())) {
         p.add(new Phrase(getText("rtf.spatialCoverage"), fontTitle));
@@ -728,13 +725,13 @@ public class Eml2Rtf {
       p.add(new Phrase(getText("rtf.spatialCoverage.coordinates") + ": ", fontTitle));
       BBox coordinates = coverage.getBoundingCoordinates();
       p.add(CoordinateUtils.decToDms(coordinates.getMin().getLatitude(), CoordinateUtils.LATITUDE));
-      p.add((" ") + getText("rtf.spatialCoverage.and") + (" "));
+      p.add(" " + getText("rtf.spatialCoverage.and") + " ");
       p.add(CoordinateUtils.decToDms(coordinates.getMax().getLatitude(), CoordinateUtils.LATITUDE));
-      p.add((" ") + getText("rtf.spatialCoverage.latitude") + ("; "));
+      p.add(" " + getText("rtf.spatialCoverage.latitude") + "; ");
       p.add(CoordinateUtils.decToDms(coordinates.getMin().getLongitude(), CoordinateUtils.LONGITUDE));
-      p.add((" ") + getText("rtf.spatialCoverage.and") + (" "));
+      p.add(" " + getText("rtf.spatialCoverage.and") + " ");
       p.add(CoordinateUtils.decToDms(coordinates.getMax().getLongitude(), CoordinateUtils.LONGITUDE));
-      p.add((" ") + getText("rtf.spatialCoverage.longitude") + (" "));
+      p.add(" " + getText("rtf.spatialCoverage.longitude") + " ");
       p.add(Chunk.NEWLINE);
     }
     doc.add(p);
@@ -786,10 +783,10 @@ public class Eml2Rtf {
       boolean isFirst = true;
       for (TaxonKeyword keyword : taxcoverage.getTaxonKeywords()) {
         if (exists(keyword.getCommonName())) {
-          if (!isFirst) {
-            p.add(", ");
-          } else {
+          if (isFirst) {
             p.add(new Phrase(getText("rtf.taxcoverage.common") + ": ", fontTitle));
+          } else {
+            p.add(", ");
           }
           isFirst = false;
           p.add(keyword.getCommonName());
@@ -811,10 +808,10 @@ public class Eml2Rtf {
     boolean firstCoverage = true;
     for (TemporalCoverage coverage : eml.getTemporalCoverages()) {
       if (coverage.getType().equals(TemporalCoverageType.SINGLE_DATE)) {
-        if (!firstCoverage) {
-          p.add(Chunk.NEWLINE);
-        } else {
+        if (firstCoverage) {
           firstCoverage = false;
+        } else {
+          p.add(Chunk.NEWLINE);
         }
         p.add(new Phrase(getText("rtf.tempcoverage") + ": ", fontTitle));
         if (timeFormat.format(coverage.getStartDate()).equals("001")) {
@@ -823,11 +820,11 @@ public class Eml2Rtf {
           p.add(dateFormat.format(coverage.getStartDate()));
         }
         p.add(Chunk.NEWLINE);
-      } else if (coverage.getType().equals(TemporalCoverageType.DATE_RANGE)) {
-        if (!firstCoverage) {
-          p.add(Chunk.NEWLINE);
-        } else {
+      } else if (coverage.getType() == TemporalCoverageType.DATE_RANGE) {
+        if (firstCoverage) {
           firstCoverage = false;
+        } else {
+          p.add(Chunk.NEWLINE);
         }
         p.add(new Phrase(getText("rtf.tempcoverage") + ": ", fontTitle));
         if (timeFormat.format(coverage.getStartDate()).equals("001")) {
@@ -857,7 +854,7 @@ public class Eml2Rtf {
       return false;
     }
     if (obj instanceof String) {
-      if (((String) obj).equals("")) {
+      if (((String) obj).length() == 0) {
         return false;
       }
     }
@@ -865,7 +862,7 @@ public class Eml2Rtf {
   }
 
   public String getText(String key) {
-    return resourceBoundle.getString(key);
+    return resourceBundle.getString(key);
     // return action.getText(key);
   }
 
@@ -878,8 +875,8 @@ public class Eml2Rtf {
   }
 
   public void writeEmlIntoRtf(Document doc, Resource resource, BaseAction action) throws DocumentException {
-    // initialising english resourceBoundle.
-    resourceBoundle = ResourceBundle.getBundle("ApplicationResources", new Locale("en"));
+    // initialising english resourceBundle.
+    resourceBundle = ResourceBundle.getBundle("ApplicationResources", new Locale("en"));
     // this.action = action;
     Eml eml = resource.getEml();
     // configure page

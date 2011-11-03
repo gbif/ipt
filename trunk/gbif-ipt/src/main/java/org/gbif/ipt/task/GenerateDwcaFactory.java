@@ -4,5 +4,5 @@ import org.gbif.ipt.model.Resource;
 
 public interface GenerateDwcaFactory {
 
-  public GenerateDwca create(Resource resource, ReportHandler handler);
+  GenerateDwca create(Resource resource, ReportHandler handler);
 }

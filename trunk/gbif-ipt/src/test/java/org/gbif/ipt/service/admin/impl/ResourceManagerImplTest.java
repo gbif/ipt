@@ -41,16 +41,13 @@ import org.gbif.ipt.task.GenerateDwcaFactory;
 import java.io.File;
 import java.io.FileFilter;
 
-import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
-/**
- * @author hftobon
- */
 public class ResourceManagerImplTest {
 
   private DataDir mockedDataDir = MockDataDir.buildMock();
@@ -104,13 +101,10 @@ public class ResourceManagerImplTest {
   @Test
   public void testCreateFromZippedFile() {
     // TODO: write test
-    assertTrue(true);
   }
 
   /**
    * Test simple resource creation
-   * 
-   * @throws AlreadyExistingException
    */
   @Test
   public void testSimpleCreate() throws AlreadyExistingException {
@@ -129,17 +123,17 @@ public class ResourceManagerImplTest {
     resourceManager.create("math", creator);
 
     // test if new resource was added to the resources list.
-    Assert.assertEquals(1, resourceManager.list().size());
+    assertEquals(1, resourceManager.list().size());
 
     // get added resource.
     Resource addedResource = resourceManager.get("math");
 
     // test if resource was added correctly.
-    Assert.assertEquals("math", addedResource.getShortname());
-    Assert.assertEquals(creator, addedResource.getCreator());
+    assertEquals("math", addedResource.getShortname());
+    assertEquals(creator, addedResource.getCreator());
 
     // test if resource.xml was created.
-    Assert.assertTrue(mockedDataDir.resourceFile("math", ResourceManagerImpl.PERSISTENCE_FILE).exists());
+    assertTrue(mockedDataDir.resourceFile("math", ResourceManagerImpl.PERSISTENCE_FILE).exists());
 
   }
 }

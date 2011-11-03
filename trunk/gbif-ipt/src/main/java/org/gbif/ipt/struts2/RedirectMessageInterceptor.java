@@ -22,9 +22,8 @@ import org.apache.struts2.dispatcher.ServletRedirectResult;
 
 /**
  * An Interceptor to preserve an actions ValidationAware messages across a redirect result. It makes the assumption
- * that
- * you always want to preserve messages across a redirect and restore them to the next action if they exist. The way
- * this works is it looks at the result type after a action has executed and if the result was a redirect
+ * that you always want to preserve messages across a redirect and restore them to the next action if they exist.
+ * The way this works is it looks at the result type after a action has executed and if the result was a redirect
  * (ServletRedirectResult) or a redirectAction (ServletActionRedirectResult) and there were any errors, messages, or
  * fieldErrors they are stored in the session. Before the next action executes it will check if there are any messages
  * stored in the session and add them to the next action.
@@ -38,9 +37,6 @@ public class RedirectMessageInterceptor extends MethodFilterInterceptor {
   public static final String ACTION_MESSAGES_KEY = "RedirectMessageInterceptor_ActionMessages";
   public static final String ACTION_WARNINGS_KEY = "RedirectMessageInterceptor_ActionWarnings";
 
-  public RedirectMessageInterceptor() {
-  }
-
   /**
    * If the result is a redirect then store error and messages in the session.
    */
@@ -51,22 +47,22 @@ public class RedirectMessageInterceptor extends MethodFilterInterceptor {
       Map<String, Object> session = invocation.getInvocationContext().getSession();
 
       Collection<String> actionWarnings = action.getWarnings();
-      if (actionWarnings != null && actionWarnings.size() > 0) {
+      if (actionWarnings != null && !actionWarnings.isEmpty()) {
         session.put(ACTION_WARNINGS_KEY, actionWarnings);
       }
 
       Collection<String> actionErrors = action.getActionErrors();
-      if (actionErrors != null && actionErrors.size() > 0) {
+      if (actionErrors != null && !actionErrors.isEmpty()) {
         session.put(ACTION_ERRORS_KEY, actionErrors);
       }
 
       Collection<String> actionMessages = action.getActionMessages();
-      if (actionMessages != null && actionMessages.size() > 0) {
+      if (actionMessages != null && !actionMessages.isEmpty()) {
         session.put(ACTION_MESSAGES_KEY, actionMessages);
       }
 
       Map<String, List<String>> fieldErrors = action.getFieldErrors();
-      if (fieldErrors != null && fieldErrors.size() > 0) {
+      if (fieldErrors != null && !fieldErrors.isEmpty()) {
         session.put(FIELD_ERRORS_KEY, fieldErrors);
       }
     }
@@ -81,7 +77,7 @@ public class RedirectMessageInterceptor extends MethodFilterInterceptor {
 
     @SuppressWarnings("unchecked")
     Collection<String> actionErrors = (Collection) session.remove(ACTION_ERRORS_KEY);
-    if (actionErrors != null && actionErrors.size() > 0) {
+    if (actionErrors != null && !actionErrors.isEmpty()) {
       for (String error : actionErrors) {
         action.addActionError(error);
       }
@@ -89,7 +85,7 @@ public class RedirectMessageInterceptor extends MethodFilterInterceptor {
 
     @SuppressWarnings("unchecked")
     Collection<String> actionWarnings = (Collection) session.remove(ACTION_WARNINGS_KEY);
-    if (actionWarnings != null && actionWarnings.size() > 0) {
+    if (actionWarnings != null && !actionWarnings.isEmpty()) {
       for (String error : actionWarnings) {
         action.addActionWarning(error);
       }
@@ -100,7 +96,7 @@ public class RedirectMessageInterceptor extends MethodFilterInterceptor {
     // if (actionMessages!=null){
     // System.out.println("Found "+actionMessages.size()+" actionMessages in session");
     // }
-    if (actionMessages != null && actionMessages.size() > 0) {
+    if (actionMessages != null && !actionMessages.isEmpty()) {
       for (String message : actionMessages) {
         action.addActionMessage(message);
       }
@@ -108,7 +104,7 @@ public class RedirectMessageInterceptor extends MethodFilterInterceptor {
 
     @SuppressWarnings("unchecked")
     Map<String, List<String>> fieldErrors = (Map) session.remove(FIELD_ERRORS_KEY);
-    if (fieldErrors != null && fieldErrors.size() > 0) {
+    if (fieldErrors != null && !fieldErrors.isEmpty()) {
       for (Map.Entry<String, List<String>> fieldError : fieldErrors.entrySet()) {
         for (String message : fieldError.getValue()) {
           action.addFieldError(fieldError.getKey(), message);

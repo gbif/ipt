@@ -1,9 +1,7 @@
 package org.gbif.ipt.service;
 
 /**
- * Exception thrown when adding a file or importing a dwc archive has failed
- *
- * @author markus
+ * Exception thrown when adding a file or importing a dwc archive has failed.
  */
 public class ImportException extends Exception {
 

@@ -34,9 +34,6 @@ import com.google.inject.Inject;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 
-/**
- * @author markus
- */
 public class SourceAction extends ManagerBaseAction {
 
   @Inject
@@ -79,7 +76,7 @@ public class SourceAction extends ManagerBaseAction {
         try {
           File tmpDir = dataDir.tmpDir();
           List<File> files = CompressionUtil.decompressFile(tmpDir, file);
-          addActionMessage(getText("manage.source.compressed.files", new String[] {files.size() + ""}));
+          addActionMessage(getText("manage.source.compressed.files", new String[] {String.valueOf(files.size())}));
 
           // validate if at least one file already exists to ask confirmation
           if (!replace) {
@@ -263,11 +260,11 @@ public class SourceAction extends ManagerBaseAction {
   @Override
   public String save() throws IOException {
     // treat jdbc special
-    String result = INPUT;
     if (source != null && rdbms != null) {
       ((SqlSource) source).setRdbms(jdbcSupport.get(rdbms));
     }
     // existing source
+    String result = INPUT;
     if (id != null && source != null) {
       if (this.analyze || !source.isReadable()) {
         problem = sourceManager.analyze(source);

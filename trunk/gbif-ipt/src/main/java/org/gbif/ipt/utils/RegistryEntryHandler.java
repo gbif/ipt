@@ -39,9 +39,7 @@ public class RegistryEntryHandler extends DefaultHandler {
   public void endElement(String uri, String localName, String name) throws SAXException {
     if (name.equalsIgnoreCase("key")) {
       key = content.replaceAll("\\s", "");
-    } else if (name.equalsIgnoreCase("organisationKey")) {
-      organisationKey = content.replaceAll("\\s", "");
-    } else if (name.equalsIgnoreCase("organizationKey")) {
+    } else if (name.equalsIgnoreCase("organisationKey") || name.equalsIgnoreCase("organizationKey")) {
       organisationKey = content.replaceAll("\\s", "");
     } else if (name.equalsIgnoreCase("resourceKey")) {
       resourceKey = content.replaceAll("\\s", "");

@@ -12,7 +12,6 @@ public class TaskMessage {
   public final String[] params;
 
   public TaskMessage(Level level, String message) {
-    super();
     this.level = level;
     this.message = message;
     this.params = new String[0];
@@ -20,7 +19,6 @@ public class TaskMessage {
   }
 
   public TaskMessage(Level level, String message, String[] params) {
-    super();
     this.level = level;
     this.message = message;
     this.params = params;

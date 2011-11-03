@@ -29,9 +29,6 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import org.apache.log4j.Logger;
 
-/**
- * @author markus
- */
 @Singleton
 public class PasswordConverter implements Converter {
 
@@ -40,7 +37,6 @@ public class PasswordConverter implements Converter {
 
   @Inject
   public PasswordConverter(PBEEncrypt cipher) {
-    super();
     this.encrypter = cipher;
   }
 
@@ -65,11 +61,7 @@ public class PasswordConverter implements Converter {
     Password pass = new Password();
     String val = reader.getValue();
     try {
-      if (val == null) {
-        pass.password = null;
-      } else {
-        pass.password = encrypter.decrypt(val);
-      }
+      pass.password = val == null ? null : encrypter.decrypt(val);
     } catch (EncryptionException e) {
       log.error("Cannot decrypt sql source password", e);
     }

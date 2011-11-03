@@ -79,9 +79,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     List<NameValuePair> data = new ArrayList<NameValuePair>();
 
     Eml eml = resource.getEml();
-    data.add(new BasicNameValuePair("name",
-      ((resource.getTitle() != null) ? StringUtils.trimToEmpty(resource.getTitle())
-        : StringUtils.trimToEmpty(resource.getShortname()))));
+    data.add(new BasicNameValuePair("name", resource.getTitle() != null ? StringUtils.trimToEmpty(resource.getTitle())
+      : StringUtils.trimToEmpty(resource.getShortname())));
     data.add(new BasicNameValuePair("description", StringUtils.trimToEmpty(resource.getDescription())));
     data.add(new BasicNameValuePair("homepageURL", StringUtils.trimToEmpty(eml.getDistributionUrl())));
     data.add(new BasicNameValuePair("logoURL", StringUtils.trimToEmpty(eml.getLogoUrl())));
@@ -96,8 +95,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       primaryContact.setLastName(resource.getCreator().getLastname());
       primaryContact.setRole(null);
     }
-    String primaryContactType =
-      (primaryContact.getRole() == null) ? CONTACT_TYPE_TECHNICAL : CONTACT_TYPE_ADMINISTRATIVE;
+    String primaryContactType = primaryContact.getRole() == null ? CONTACT_TYPE_TECHNICAL : CONTACT_TYPE_ADMINISTRATIVE;
 
     // Change the role to null like was before.
     primaryContact.setRole(null);
@@ -126,10 +124,10 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     rs.serviceURLs = cfg.getResourceEmlUrl(resource.getShortname());
     if (resource.hasPublishedData()) {
       rs.serviceURLs += "|" + cfg.getResourceArchiveUrl(resource.getShortname());
-      if (DwcTerm.Occurrence.equals(resource.getCoreTypeTerm())) {
+      if (DwcTerm.Occurrence == resource.getCoreTypeTerm()) {
         log.debug("Registering EML & DwC-A Occurrence Service");
         rs.serviceTypes += "|" + SERVICE_TYPE_OCCURRENCE;
-      } else if (DwcTerm.Taxon.equals(resource.getCoreTypeTerm())) {
+      } else if (DwcTerm.Taxon == resource.getCoreTypeTerm()) {
         log.debug("Registering EML & DwC-A Checklist Service");
         rs.serviceTypes += "|" + SERVICE_TYPE_CHECKLIST;
       } else {
@@ -200,51 +198,47 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   }
 
   /**
-   * Returns the Extensions url
+   * Returns the Extensions url.
    */
   private String getExtensionsURL(boolean json) {
     return String.format("%s%s%s", cfg.getRegistryUrl(), "/registry/extensions", json ? ".json" : "/");
   }
 
   /**
-   * Returns the IPT Resource url
+   * Returns the IPT Resource url.
    */
   private String getIptResourceUri() {
     return String.format("%s%s", cfg.getRegistryUrl(), "/registry/ipt/resource");
   }
 
   /**
-   * Returns the IPT update Resource url
+   * Returns the IPT update Resource url.
    */
   private String getIptUpdateResourceUri(String resourceKey) {
     return String.format("%s%s%s", cfg.getRegistryUrl(), "/registry/ipt/resource/", resourceKey);
   }
 
   /**
-   * Returns the IPT update url used in GBIF Registry
+   * Returns the IPT update url used in GBIF Registry.
    */
   private String getIptUpdateUri(String iptKey) {
     return String.format("%s%s%s", cfg.getRegistryUrl(), "/registry/ipt/update/", iptKey);
   }
 
   /**
-   * Returns the IPT url
+   * Returns the IPT url.
    */
   private String getIptUri() {
     return String.format("%s%s", cfg.getRegistryUrl(), "/registry/ipt/register");
   }
 
   /**
-   * Returns the login URL
+   * Returns the login URL.
    */
   private String getLoginURL(String organisationKey) {
     return String.format("%s%s%s%s", cfg.getRegistryUrl(), "/registry/organisation/", organisationKey, "?op=login");
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.registry.RegistryManager#getOrganisations()
-   */
   public List<Organisation> getOrganisations() throws RegistryException {
     try {
       Response resp = http.get(getOrganisationsURL(true));
@@ -352,10 +346,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return new ByteArrayInputStream(source.getBytes());
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.registry.RegistryManager#getVocabularies()
-   */
   public List<Vocabulary> getVocabularies() throws RegistryException {
     try {
       Response resp = http.get(getVocabulariesURL(true));
@@ -376,7 +366,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   }
 
   /**
-   * Returns the Extensions url
+   * Returns the Extensions url.
    */
   private String getVocabulariesURL(boolean json) {
     return String.format("%s%s%s", cfg.getRegistryUrl(), "/registry/thesauri", json ? ".json" : "/");
@@ -386,11 +376,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return new UsernamePasswordCredentials(org.getKey().toString(), org.getPassword());
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.registry.RegistryManager#register(org.gbif.ipt.model.Resource,
-   * org.gbif.ipt.model.Organisation, org.gbif.ipt.model.Ipt)
-   */
   public UUID register(Resource resource, Organisation org, Ipt ipt) throws RegistryException {
     if (!resource.isPublished()) {
       log.warn("Cannot register, resource not published yet");
@@ -415,9 +400,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
         if (StringUtils.trimToNull(key) == null) {
           key = newRegistryEntryHandler.resourceKey;
         }
-        UUID uuidKey;
         try {
-          uuidKey = UUID.fromString(key);
+          UUID uuidKey = UUID.fromString(key);
           if (uuidKey != null) {
             resource.setKey(uuidKey);
             resource.setOrganisation(org);
@@ -524,11 +508,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     }
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.registry.RegistryManager#updateResource(org.gbif.ipt.model.Resource,
-   * org.gbif.ipt.model.Organisation, org.gbif.ipt.model.Ipt)
-   */
   public void updateResource(Resource resource, Ipt ipt) throws RegistryException, IllegalArgumentException {
     if (!resource.isRegistered()) {
       throw new IllegalArgumentException("Resource is not registered");
@@ -559,10 +538,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     try {
       Response resp =
         http.get(getLoginURL(organisationKey), null, new UsernamePasswordCredentials(organisationKey, password));
-      if (http.success(resp)) {
-        return true;
-      }
-      return false;
+      return http.success(resp);
     } catch (Exception e) {
       log.warn(e);
     }

@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.BaseAction;
@@ -8,8 +5,6 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 
 /**
  * The base of all admin actions.
- *
- * @author
  */
 public class AdminBaseAction extends BaseAction {
 
@@ -23,11 +18,7 @@ public class AdminBaseAction extends BaseAction {
    * @return the registered
    */
   public boolean getRegistered() {
-    if (registrationManager.getHostingOrganisation() != null) {
-      return true;
-    } else {
-      return false;
-    }
+    return registrationManager.getHostingOrganisation() != null;
   }
 
 }

@@ -1,13 +1,8 @@
-/**
- *
- */
 package org.gbif.ipt.service;
 
 /**
  * The base class used to indicate types of errors occurring during interaction with the GBIF registry.
- * All exceptions must provide a message and a cause
- *
- * @author markus
+ * All exceptions must provide a message and a cause.
  */
 public class RegistryException extends RuntimeException {
 
@@ -15,8 +10,6 @@ public class RegistryException extends RuntimeException {
     NOT_AUTHORISED, RESOURCE_EXISTS_ALREADY, MISSING_METADATA, BAD_RESPONSE, IO_ERROR, FAILED, UNKNOWN, PROXY,
     SITE_DOWN, NO_INTERNET
   }
-
-  ;
 
   protected TYPE type;
 

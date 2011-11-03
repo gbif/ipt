@@ -20,9 +20,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import static com.google.common.base.Objects.equal;
 
 /**
- * A Darwin Core extension definition
- *
- * @author markus
+ * A Darwin Core extension definition.
  */
 public class Extension implements Serializable {
 
@@ -46,16 +44,10 @@ public class Extension implements Serializable {
     properties.add(property);
   }
 
-  /**
-   * @see java.lang.Comparable#compareTo(Object)
-   */
   public int compareTo(Extension object) {
     return new CompareToBuilder().append(this.rowType, object.rowType).toComparison();
   }
 
-  /**
-   * @see java.lang.Object#equals(Object)
-   */
   @Override
   public boolean equals(Object other) {
     if (this == other) {
@@ -124,9 +116,6 @@ public class Extension implements Serializable {
     return url;
   }
 
-  /**
-   * @see java.lang.Object#hashCode()
-   */
   @Override
   public int hashCode() {
     return Objects.hashCode(rowType);
@@ -170,10 +159,8 @@ public class Extension implements Serializable {
   }
 
   public void setLink(String link) {
-    URL url;
     try {
-      url = new URL(link);
-      this.link = url;
+      this.link = new URL(link);
     } catch (MalformedURLException e) {
     }
   }
@@ -199,12 +186,8 @@ public class Extension implements Serializable {
   }
 
   public void setRowType(String rowType) {
-    if (Constants.DWC_ROWTYPE_OCCURRENCE.equalsIgnoreCase(rowType) || Constants.DWC_ROWTYPE_TAXON
-      .equalsIgnoreCase(rowType)) {
-      core = true;
-    } else {
-      core = false;
-    }
+    core = Constants.DWC_ROWTYPE_OCCURRENCE.equalsIgnoreCase(rowType) || Constants.DWC_ROWTYPE_TAXON
+      .equalsIgnoreCase(rowType);
     this.rowType = rowType;
   }
 
@@ -220,9 +203,6 @@ public class Extension implements Serializable {
     this.url = url;
   }
 
-  /**
-   * @see java.lang.Object#toString()
-   */
   @Override
   public String toString() {
     return new ToStringBuilder(this).append("name", this.name).append("rowType", this.rowType).toString();

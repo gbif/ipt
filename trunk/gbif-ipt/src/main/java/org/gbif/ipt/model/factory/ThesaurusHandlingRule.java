@@ -31,7 +31,6 @@ public class ThesaurusHandlingRule extends Rule {
 
   @Inject
   public ThesaurusHandlingRule(VocabulariesManager vocabManager) {
-    super();
     this.vocabManager = vocabManager;
   }
 

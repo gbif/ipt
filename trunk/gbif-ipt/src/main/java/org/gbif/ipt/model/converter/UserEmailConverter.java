@@ -27,9 +27,6 @@ import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
-/**
- * @author markus
- */
 @Singleton
 public class UserEmailConverter implements Converter {
 
@@ -37,7 +34,6 @@ public class UserEmailConverter implements Converter {
 
   @Inject
   public UserEmailConverter(UserAccountManager userManager) {
-    super();
     this.userManager = userManager;
   }
 
@@ -51,8 +47,7 @@ public class UserEmailConverter implements Converter {
   }
 
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
-    User u = userManager.get(reader.getValue());
-    return u;
+    return userManager.get(reader.getValue());
   }
 
 }

@@ -15,7 +15,6 @@ public class StatusReport {
   private final List<TaskMessage> messages;
 
   public StatusReport(boolean completed, String state, List<TaskMessage> messages) {
-    super();
     this.completed = completed;
     this.state = state;
     this.messages = messages;
@@ -25,7 +24,6 @@ public class StatusReport {
   }
 
   public StatusReport(Exception exception, String state, List<TaskMessage> messages) {
-    super();
     this.completed = true;
     this.state = state;
     this.messages = messages;
@@ -34,7 +32,6 @@ public class StatusReport {
   }
 
   public StatusReport(String state, List<TaskMessage> messages) {
-    super();
     this.completed = false;
     this.state = state;
     this.messages = messages;

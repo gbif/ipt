@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.gbif.ipt.service.admin.impl;
 
 import org.gbif.ipt.config.AppConfig;
@@ -35,10 +32,6 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.xstream.XStream;
 
-/**
- * @author tim
- * @author josecuadra
- */
 @Singleton
 public class RegistrationManagerImpl extends BaseManager implements RegistrationManager {
 
@@ -54,10 +47,6 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     defineXstreamMapping();
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.admin.RegistrationManager#addAssociatedOrganisation(org.gbif.ipt.model.Organisation)
-   */
   public Organisation addAssociatedOrganisation(Organisation organisation) throws AlreadyExistingException {
     if (organisation != null) {
       log.debug("Adding associated organisation " + organisation.getKey() + " - " + organisation.getName());
@@ -66,10 +55,6 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     return organisation;
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.admin.RegistrationManager#addHostingOrganisation(org.gbif.ipt.model.Organisation)
-   */
   public Organisation addHostingOrganisation(Organisation organisation) {
     if (organisation != null) {
       log.debug("Adding hosting organisation " + organisation.getKey() + " - " + organisation.getName());
@@ -78,10 +63,6 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     return organisation;
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.admin.RegistrationManager#addIptInstance(org.gbif.ipt.model.Ipt)
-   */
   public void addIptInstance(Ipt ipt) {
     if (ipt != null) {
       if (ipt.getCreated() == null) {
@@ -95,13 +76,8 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     xstream.omitField(Registration.class, "associatedOrganisations");
     xstream.alias("organisation", Organisation.class);
     xstream.alias("registry", Registration.class);
-
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.admin.RegistrationManager#delete(java.lang.String)
-   */
   public Organisation delete(String key) throws DeletionNotAllowedException {
     Organisation org = get(key);
     if (org != null) {
@@ -117,10 +93,6 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     return org;
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.admin.OrganisationsManager#get(java.lang.String)
-   */
   public Organisation get(String key) {
     if (key == null) {
       return null;
@@ -128,10 +100,6 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     return registration.getAssociatedOrganisations().get(key);
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.admin.OrganisationsManager#get(java.util.UUID)
-   */
   public Organisation get(UUID key) {
     if (key == null) {
       return null;
@@ -139,26 +107,14 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     return registration.getAssociatedOrganisations().get(key.toString());
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.admin.OrganisationsManager#getHostingOrganisation()
-   */
   public Organisation getHostingOrganisation() {
     return registration.getHostingOrganisation();
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.admin.RegistrationManager#getIpt()
-   */
   public Ipt getIpt() {
     return registration.getIpt();
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.admin.RegistrationManager#list()
-   */
   public List<Organisation> list() {
     List<Organisation> organisationList = new ArrayList<Organisation>();
     for (Organisation organisation : registration.getAssociatedOrganisations().values()) {
@@ -169,18 +125,10 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     return organisationList;
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.admin.RegistrationManager#listAll()
-   */
   public List<Organisation> listAll() {
     return new ArrayList<Organisation>(registration.getAssociatedOrganisations().values());
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.admin.RegistrationManager#load()
-   */
   public void load() throws InvalidConfigException {
     Reader registrationReader;
     ObjectInputStream in = null;
@@ -233,10 +181,6 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     }
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.admin.OrganisationManager#save()
-   */
   public synchronized void save() throws IOException {
     log.debug("Saving all user organisations associated to this IPT...");
     Writer organisationWriter = FileUtils.startNewUtf8File(dataDir.configFile(PERSISTENCE_FILE));
@@ -250,10 +194,6 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     out.close();
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.admin.RegistrationManager#setIptPassword(java.lang.String)
-   */
   public void setIptPassword(String password) {
     registration.setIptPassword(password);
   }

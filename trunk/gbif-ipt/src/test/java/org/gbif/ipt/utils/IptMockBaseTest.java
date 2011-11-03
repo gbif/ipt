@@ -24,9 +24,6 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.http.impl.client.DefaultHttpClient;
 
-/**
- * @author markus
- */
 public abstract class IptMockBaseTest {
 
   protected IPTModule guice = new IPTModule();
@@ -36,7 +33,6 @@ public abstract class IptMockBaseTest {
   protected DefaultHttpClient client;
 
   public IptMockBaseTest() {
-    super();
     this.dataDir = MockDataDir.buildMock();
     this.cfg = new AppConfig(dataDir);
   }

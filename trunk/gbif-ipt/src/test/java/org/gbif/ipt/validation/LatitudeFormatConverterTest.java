@@ -26,11 +26,10 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Unit test for the convertFromString method in LatitudeFormatConverter class.
- * 
- * @author julieth
  */
 @RunWith(value = Parameterized.class)
 public class LatitudeFormatConverterTest {
@@ -49,7 +48,7 @@ public class LatitudeFormatConverterTest {
   public static Collection<Object[]> getTestParameters() {
     // Object list in which each object contains: A expected value (double) and an incoming value to test (String[]).
     // (expectedDouble, firstTestvalue).
-    ArrayList<Object[]> list = new ArrayList<Object[]>();
+    Collection<Object[]> list = new ArrayList<Object[]>();
     list.add(new Object[] {4.5, new String[] {"4.5"}});
     list.add(new Object[] {4.5, new String[] {"4,5"}});
     list.add(new Object[] {90.0, new String[] {"90.0"}});
@@ -66,19 +65,19 @@ public class LatitudeFormatConverterTest {
   public void convertFromStringTest() {
     LatitudeFormatConverter latitudeFormat = new LatitudeFormatConverter();
     // latitudeFormat.
-    assertEquals(expectedDouble, (latitudeFormat.convertFromString(new HashMap(), firstTestValue, null)));
+    assertEquals(expectedDouble, latitudeFormat.convertFromString(new HashMap(), firstTestValue, null));
   }
 
   @Test(expected = TypeConversionException.class)
   public void convertFromStringTestTypeConvertionException() {
     LatitudeFormatConverter latitudeFormat = new LatitudeFormatConverter();
     // Fails if the value exceeds the minimum latitude
-    assertEquals(null, (latitudeFormat.convertFromString(new HashMap(), new String[] {"-90.01"}, null)));
+    assertNull(latitudeFormat.convertFromString(new HashMap(), new String[] {"-90.01"}, null));
     // Fails if the value exceeds the maximum latitude
-    assertEquals(null, (latitudeFormat.convertFromString(new HashMap(), new String[] {"90.01"}, null)));
+    assertNull(latitudeFormat.convertFromString(new HashMap(), new String[] {"90.01"}, null));
     // Fails if the value is a String
-    assertEquals(null, (latitudeFormat.convertFromString(new HashMap(), new String[] {"abc"}, null)));
-    assertEquals(null, (latitudeFormat.convertFromString(new HashMap(), new String[] {"@#$%"}, null)));
-    assertEquals(null, (latitudeFormat.convertFromString(new HashMap(), new String[] {" "}, null)));
+    assertNull(latitudeFormat.convertFromString(new HashMap(), new String[] {"abc"}, null));
+    assertNull(latitudeFormat.convertFromString(new HashMap(), new String[] {"@#$%"}, null));
+    assertNull(latitudeFormat.convertFromString(new HashMap(), new String[] {" "}, null));
   }
 }

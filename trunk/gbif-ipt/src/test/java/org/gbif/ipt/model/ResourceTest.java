@@ -1,12 +1,12 @@
 /***************************************************************************
  * Copyright 2010 Global Biodiversity Information Facility Secretariat
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -20,16 +20,14 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Source.FileSource;
 import org.gbif.ipt.service.AlreadyExistingException;
 
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Test;
-
-/**
- * @author markus
- * 
- */
 public class ResourceTest {
+
   private final Extension OCC;
   private final Extension EXT;
 
@@ -83,8 +81,8 @@ public class ResourceTest {
     res.addMapping(getOccExtensionMapping());
     res.addMapping(getExtExtensionMapping());
 
-    assertTrue(res.getMappings().size() == 4);
-    assertTrue(res.getCoreMappings().size() == 2);
+    assertEquals(4, res.getMappings().size());
+    assertEquals(2, res.getCoreMappings().size());
 
   }
 
@@ -103,29 +101,29 @@ public class ResourceTest {
     res.addMapping(em4);
     res.addMapping(em5);
 
-    assertTrue(res.getMappings().size() == 5);
-    assertTrue(res.getCoreMappings().size() == 2);
+    assertEquals(5, res.getMappings().size());
+    assertEquals(2, res.getCoreMappings().size());
 
     // delete first core
     assertTrue(res.deleteMapping(em1));
-    assertTrue(res.getMappings().size() == 4);
-    assertTrue(res.getCoreMappings().size() == 1);
+    assertEquals(4, res.getMappings().size());
+    assertEquals(1, res.getCoreMappings().size());
 
     // try againt to remove the same ext - should not work
     assertFalse(res.deleteMapping(em1));
-    assertTrue(res.getMappings().size() == 4);
-    assertTrue(res.getCoreMappings().size() == 1);
+    assertEquals(4, res.getMappings().size());
+    assertEquals(1, res.getCoreMappings().size());
 
     // remove an extension
     assertTrue(res.deleteMapping(em5));
-    assertTrue(res.getMappings().size() == 3);
-    assertTrue(res.getCoreMappings().size() == 1);
+    assertEquals(3, res.getMappings().size());
+    assertEquals(1, res.getCoreMappings().size());
 
     // remove the last core, should remove all
     assertTrue(res.deleteMapping(em2));
     assertFalse(res.hasCore());
-    assertTrue(res.getMappings().size() == 0);
-    assertTrue(res.getCoreMappings().size() == 0);
+    assertEquals(0, res.getMappings().size());
+    assertEquals(0, res.getCoreMappings().size());
   }
 
   @Test
@@ -152,18 +150,18 @@ public class ResourceTest {
     res.addMapping(emE1);
     res.addMapping(emE2);
 
-    assertTrue(res.getMappings().size() == 3);
-    assertTrue(res.getCoreMappings().size() == 1);
+    assertEquals(3, res.getMappings().size());
+    assertEquals(1, res.getCoreMappings().size());
 
     // delete source mapped only to 1 extension
     assertTrue(res.deleteSource(src2));
-    assertTrue(res.getMappings().size() == 2);
-    assertTrue(res.getCoreMappings().size() == 1);
+    assertEquals(2, res.getMappings().size());
+    assertEquals(1, res.getCoreMappings().size());
 
     // delete other source
     assertTrue(res.deleteSource(src1));
-    assertTrue(res.getMappings().size() == 0);
-    assertTrue(res.getCoreMappings().size() == 0);
+    assertEquals(0, res.getMappings().size());
+    assertEquals(0, res.getCoreMappings().size());
   }
 
 }

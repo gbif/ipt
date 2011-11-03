@@ -57,10 +57,10 @@ public class InputStreamUtils {
     }
     StringBuilder sb = new StringBuilder();
 
-    String line = null;
     try {
+      String line;
       while ((line = reader.readLine()) != null) {
-        sb.append(line + "\n");
+        sb.append(line).append("\n");
       }
     } catch (IOException e) {
       e.printStackTrace();

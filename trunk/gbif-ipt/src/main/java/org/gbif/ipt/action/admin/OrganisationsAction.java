@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.POSTAction;
@@ -23,9 +20,7 @@ import com.google.inject.Inject;
 import com.google.inject.servlet.SessionScoped;
 
 /**
- * The Action responsible for all user input relating to the organisations allowed in the IPT
- *
- * @author tim
+ * The Action responsible for all user input relating to the organisations allowed in the IPT.
  */
 public class OrganisationsAction extends POSTAction {
 
@@ -40,15 +35,11 @@ public class OrganisationsAction extends POSTAction {
 
     @Inject
     public RegisteredOrganisations(RegistryManager registryManager) {
-      super();
       this.registryManager = registryManager;
     }
 
     public boolean isLoaded() {
-      if (organisations.size() > 0) {
-        return true;
-      }
-      return false;
+      return !organisations.isEmpty();
     }
 
     /**

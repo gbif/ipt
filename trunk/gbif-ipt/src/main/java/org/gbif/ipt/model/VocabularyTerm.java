@@ -21,7 +21,7 @@ import com.google.common.base.Objects;
 import static com.google.common.base.Objects.equal;
 
 /**
- * A single literal representation of a vocabulary concept in a given language
+ * A single literal representation of a vocabulary concept in a given language.
  */
 public class VocabularyTerm implements Serializable {
 

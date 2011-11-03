@@ -14,7 +14,9 @@ public class MockAppConfig {
     return appConfig;
   }
 
-  /** Stubbing some methods and assigning some default configurations. */
+  /**
+   * Stubbing some methods and assigning some default configurations.
+   */
   private static void setUpMock() {
     // configuring properties:
     appConfig.setProperty(AppConfig.BASEURL, "http://localhost:7001/ipt");

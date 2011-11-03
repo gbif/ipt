@@ -19,7 +19,7 @@ import org.apache.commons.digester.CallParamRule;
 import org.xml.sax.Attributes;
 
 /**
- * Will not honor namespaces in attributes in any way
+ * Will not honor namespaces in attributes in any way.
  * <p/>
  * This class allows for getting access to attributes in elements where the
  * namespaces differ, but will ignore the namespace of the attribute
@@ -52,7 +52,7 @@ public class CallParamNoNSRule extends CallParamRule {
     }
     // add to the params stack
     if (param != null) {
-      Object parameters[] = (Object[]) digester.peekParams();
+      Object[] parameters = (Object[]) digester.peekParams();
       parameters[paramIndex] = param;
     }
   }

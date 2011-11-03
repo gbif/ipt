@@ -17,9 +17,6 @@ import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 
-/**
- * @author markus
- */
 public abstract class AgentBase {
 
   private UUID key;

@@ -26,7 +26,7 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * Unit test for decToDms method in CoordinateUtils class.
- * 
+ *
  * @author julieth
  */
 @RunWith(value = Parameterized.class)

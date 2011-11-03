@@ -13,8 +13,6 @@ import org.gbif.metadata.eml.Agent;
 
 /**
  * Perform all kind of validation to the Agent object.
- *
- * @author htobon
  */
 public class AgentValidator extends BaseValidator {
 
@@ -24,11 +22,8 @@ public class AgentValidator extends BaseValidator {
    * @return true if name (at least lastname) and email exist. Otherwise return false.
    */
   public static boolean hasCompleteContactInfo(Agent agent) {
-    if (agent != null && agent.getFullName() != null && !agent.getFullName().equals("") && agent.getEmail() != null
-      && !agent.getEmail().equals("")) {
-      return true;
-    }
+    return agent != null && agent.getFullName() != null && !(agent.getFullName().length() == 0)
+      && agent.getEmail() != null && !(agent.getEmail().length() == 0);
 
-    return false;
   }
 }

@@ -20,7 +20,6 @@ public abstract class ReportingTask {
    * @param reportingIntervall in milliseconds
    */
   protected ReportingTask(int reportingIntervall, String resourceShortname, ReportHandler handler) {
-    super();
     this.resourceShortname = resourceShortname;
     this.handler = handler;
     this.reportingIntervall = reportingIntervall;
@@ -39,11 +38,11 @@ public abstract class ReportingTask {
     messages.add(new TaskMessage(lvl, msg));
   }
 
-  abstract protected boolean completed();
+  protected abstract boolean completed();
 
-  abstract protected Exception currentException();
+  protected abstract Exception currentException();
 
-  abstract protected String currentState();
+  protected abstract String currentState();
 
   /**
    * Reports back the state of the task to the reporting handler configured.
@@ -65,7 +64,7 @@ public abstract class ReportingTask {
    * the last reporting.
    */
   public void reportIfNeeded() {
-    if (lastReport == null || (new Date().getTime() - lastReport.getTimestamp() > reportingIntervall)) {
+    if (lastReport == null || new Date().getTime() - lastReport.getTimestamp() > reportingIntervall) {
       report();
     }
   }

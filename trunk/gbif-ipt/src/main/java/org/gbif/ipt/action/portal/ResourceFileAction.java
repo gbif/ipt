@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.gbif.ipt.action.portal;
 
 import org.gbif.ipt.action.BaseAction;
@@ -19,7 +16,7 @@ import com.google.inject.Inject;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * The Action responsible for serving datadir resource files
+ * The Action responsible for serving datadir resource files.
  */
 public class ResourceFileAction extends BaseAction {
 

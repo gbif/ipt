@@ -29,9 +29,6 @@ import org.apache.commons.lang.StringUtils;
 
 import static com.google.common.base.Objects.equal;
 
-/**
- * @author markus
- */
 public abstract class Source implements Comparable<Source>, Serializable {
 
   public static class FileSource extends Source {
@@ -53,7 +50,7 @@ public abstract class Source implements Comparable<Source>, Serializable {
     }
 
     public Character getFieldQuoteChar() {
-      if (fieldsEnclosedBy == null || fieldsEnclosedBy.equals("")) {
+      if (fieldsEnclosedBy == null || fieldsEnclosedBy.length() == 0) {
         return null;
       }
       return fieldsEnclosedBy.charAt(0);
@@ -108,9 +105,8 @@ public abstract class Source implements Comparable<Source>, Serializable {
      * @see java.lang.Iterable#iterator()
      */
     public Iterator<String[]> iterator() {
-      CSVReader reader;
       try {
-        reader = getReader();
+        CSVReader reader = getReader();
         return reader.iterator();
       } catch (IOException e) {
         e.printStackTrace();
@@ -332,10 +328,7 @@ public abstract class Source implements Comparable<Source>, Serializable {
   }
 
   public boolean isFileSource() {
-    if (FileSource.class.isInstance(this)) {
-      return true;
-    }
-    return false;
+    return FileSource.class.isInstance(this);
   }
 
   public boolean isReadable() {

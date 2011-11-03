@@ -13,14 +13,13 @@ import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 
-import com.google.inject.Inject;
+import javax.xml.parsers.SAXParserFactory;
 
+import com.google.inject.Inject;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import javax.xml.parsers.SAXParserFactory;
 
 @RunWith(InjectingTestClassRunner.class)
 public class VocabulariesManagerImplTest {
@@ -56,8 +55,9 @@ public class VocabulariesManagerImplTest {
     ConfigWarnings warnings = new ConfigWarnings();
 
     // initialise the VocabularyManager instance.
-    VocabulariesManager vocabManager = new VocabulariesManagerImpl(appConfig, dataDir, vocabFactory, client,
-        registryManager, extensionManager, warnings);
+    VocabulariesManager vocabManager =
+      new VocabulariesManagerImpl(appConfig, dataDir, vocabFactory, client, registryManager, extensionManager,
+        warnings);
 
     // All general stubbing functionalities should be in the corresponding mock classes.
     // If an specific stub configuration is needed only for this tests, the methods should be implemented here.

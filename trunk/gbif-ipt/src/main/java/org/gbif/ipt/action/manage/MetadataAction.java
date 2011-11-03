@@ -41,9 +41,6 @@ import java.util.Set;
 import com.google.inject.Inject;
 import org.apache.commons.lang.StringUtils;
 
-/**
- * @author markus
- */
 public class MetadataAction extends ManagerBaseAction {
 
   private ResourceValidator validatorRes = new ResourceValidator();
@@ -63,7 +60,7 @@ public class MetadataAction extends ManagerBaseAction {
   private PropertyMapping mappingCoreid;
   private ExtensionMapping mapping;
 
-  private static final List<String> sections = Arrays
+  private static final List<String> SECTIONS = Arrays
     .asList("basic", "geocoverage", "taxcoverage", "tempcoverage", "keywords", "parties", "project", "methods",
       "citations", "collections", "physical", "additional");
 
@@ -212,21 +209,17 @@ public class MetadataAction extends ManagerBaseAction {
     // somehow the action params in struts.xml dont seem to work right
     // we therefore take the section parameter from the requested url
     section = StringUtils.substringBetween(req.getRequestURI(), "metadata-", ".");
-    int idx = sections.indexOf(section);
-    if (idx < 0 || idx == sections.size()) {
+    int idx = SECTIONS.indexOf(section);
+    if (idx < 0 || idx == SECTIONS.size()) {
       idx = 0;
     }
-    if (idx + 1 < sections.size()) {
-      next = sections.get(idx + 1);
-    } else {
-      next = sections.get(0);
-    }
+    next = idx + 1 < SECTIONS.size() ? SECTIONS.get(idx + 1) : SECTIONS.get(0);
     types = new LinkedHashMap<String, String>();
     types.put("", "Select a type");
-    types.put(StringUtils.capitalize((CoreRowType.CHECKLIST).toString().toLowerCase()),
-      StringUtils.capitalize((Resource.CoreRowType.CHECKLIST).toString().toLowerCase()));
-    types.put(StringUtils.capitalize((CoreRowType.OCCURRENCE).toString().toLowerCase()),
-      StringUtils.capitalize((CoreRowType.OCCURRENCE).toString().toLowerCase()));
+    types.put(StringUtils.capitalize(CoreRowType.CHECKLIST.toString().toLowerCase()),
+      StringUtils.capitalize(CoreRowType.CHECKLIST.toString().toLowerCase()));
+    types.put(StringUtils.capitalize(CoreRowType.OCCURRENCE.toString().toLowerCase()),
+      StringUtils.capitalize(CoreRowType.OCCURRENCE.toString().toLowerCase()));
     types.put("Other", "Other");
     licenses = new LinkedHashMap<String, String>();
     licenses.put(getText("eml.intellectualRights.nolicenses"), "");
@@ -286,9 +279,9 @@ public class MetadataAction extends ManagerBaseAction {
       if (resource.getCoreTypeTerm() != null) {
         String core = resource.getCoreTypeTerm().simpleName().toLowerCase();
         if (Constants.DWC_ROWTYPE_TAXON.toLowerCase().contains(core)) {
-          resource.setCoreType(StringUtils.capitalize((CoreRowType.OCCURRENCE).toString().toLowerCase()));
+          resource.setCoreType(StringUtils.capitalize(CoreRowType.OCCURRENCE.toString().toLowerCase()));
         } else if (Constants.DWC_ROWTYPE_OCCURRENCE.toLowerCase().contains(core)) {
-          resource.setCoreType(StringUtils.capitalize((CoreRowType.CHECKLIST).toString().toLowerCase()));
+          resource.setCoreType(StringUtils.capitalize(CoreRowType.CHECKLIST.toString().toLowerCase()));
         }
       }
     }

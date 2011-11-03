@@ -56,9 +56,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.xwork.StringUtils;
 
-/**
- * @author markus
- */
 public class SourceManagerImpl extends BaseManager implements SourceManager {
 
   private class FileColumnIterator implements ClosableIterator<Object> {
@@ -234,10 +231,6 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     to.setDateFormat(from.getDateFormat());
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.manage.ResourceConfigManager#add(org.gbif.ipt.model.ResourceConfiguration, java.io.File)
-   */
   public FileSource add(Resource resource, File file, @Nullable String sourceName) throws ImportException {
     return addOneFile(resource, file, sourceName);
   }
@@ -284,10 +277,6 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     return src;
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.manage.SourceManager#analyze(org.gbif.ipt.model.Source)
-   */
   public String analyze(Source source) {
     String problem = null;
     if (source instanceof FileSource) {
@@ -310,7 +299,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
           logWriter.write(
             "Log for source name:" + source.getName() + " from resource: " + source.getResource().getShortname()
               + "\n");
-          if (reader.getEmptyLines().size() > 0) {
+          if (!reader.getEmptyLines().isEmpty()) {
             List<Integer> emptyLines = new ArrayList<Integer>(reader.getEmptyLines());
             Collections.sort(emptyLines);
             for (Integer i : emptyLines) {

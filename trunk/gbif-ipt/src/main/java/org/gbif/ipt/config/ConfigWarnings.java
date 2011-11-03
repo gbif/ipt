@@ -22,9 +22,6 @@ import java.util.List;
 import com.google.inject.Singleton;
 import org.apache.log4j.Logger;
 
-/**
- * @author markus
- */
 @Singleton
 public class ConfigWarnings {
 
@@ -52,10 +49,7 @@ public class ConfigWarnings {
   }
 
   public boolean hasStartupErrors() {
-    if (startupErrors.isEmpty()) {
-      return false;
-    }
-    return true;
+    return !startupErrors.isEmpty();
   }
 
 }

@@ -1,9 +1,7 @@
 package org.gbif.ipt.task;
 
 /**
- * Exception thrown when generating a dwc archive fails
- *
- * @author markus
+ * Exception thrown when generating a dwc archive fails.
  */
 public class GeneratorException extends Exception {
 

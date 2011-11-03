@@ -27,9 +27,6 @@ import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
-/**
- * @author markus
- */
 @Singleton
 public class ExtensionRowTypeConverter implements Converter {
 
@@ -38,7 +35,6 @@ public class ExtensionRowTypeConverter implements Converter {
 
   @Inject
   public ExtensionRowTypeConverter(ExtensionManager extManager) {
-    super();
     this.extManager = extManager;
   }
 

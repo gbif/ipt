@@ -36,7 +36,7 @@ public enum ServiceType {
   public String code;
   public String link;
 
-  private ServiceType(String code, String link) {
+  ServiceType(String code, String link) {
     this.code = code;
     this.link = link;
   }
