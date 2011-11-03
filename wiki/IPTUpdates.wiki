@@ -10,3 +10,5 @@ of the existing IPT data directory and pressing the "continue" button.
 
 It is always a good idea to take the precaution of backing up the existing IPT data directory before
 performing an upgrade.
+
+_These upgrade instructions, and other important information for the 2.0.3 version is included in the [http://gbif-providertoolkit.googlecode.com/files/Release%20Notes%20-%20IPT%202.0.3.txt Release Notes]._
