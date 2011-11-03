@@ -141,6 +141,15 @@
     <defaultGoal>jetty:run</defaultGoal>
     <plugins>
 
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <configuration>
+          <useReleaseProfile>false</useReleaseProfile>
+          <arguments>-Pgbif-release,release</arguments>
+        </configuration>
+      </plugin>
+
       <!-- To simplify development, allows developers to use "mvn jetty:run" -->
       <plugin>
         <groupId>org.mortbay.jetty</groupId>
