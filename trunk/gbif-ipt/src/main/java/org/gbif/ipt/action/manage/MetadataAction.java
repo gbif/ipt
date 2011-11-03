@@ -43,8 +43,8 @@ import org.apache.commons.lang.StringUtils;
 
 public class MetadataAction extends ManagerBaseAction {
 
-  private ResourceValidator validatorRes = new ResourceValidator();
-  private EmlValidator validatorEml = new EmlValidator();
+  private final ResourceValidator validatorRes = new ResourceValidator();
+  private final EmlValidator validatorEml = new EmlValidator();
   private String section = "basic";
   private String next = "geocoverage";
   private Map<String, String> resourceTypes;
@@ -114,7 +114,7 @@ public class MetadataAction extends ManagerBaseAction {
       licenseText = licenseText.trim().toLowerCase();
       while (it.hasNext()) {
         String licenseName = it.next();
-        if (licenses.get(licenseName).trim().toLowerCase().equals(licenseText)) {
+        if (licenses.get(licenseName).equalsIgnoreCase(licenseText)) {
           return licenseName;
         }
       }
@@ -128,20 +128,22 @@ public class MetadataAction extends ManagerBaseAction {
 
   // Return the static list from SubtypeUtils class
   public Map<String, String> getListSubtypes() {
-    if (resource.getCoreType() != null) {
-      if (resource.getCoreType().toLowerCase().equals(CoreRowType.CHECKLIST.toString().toLowerCase())) {
-        return SubtypeUtils.checklistSubtypeList();
-      } else if (resource.getCoreType().toLowerCase().equals(CoreRowType.OCCURRENCE.toString().toLowerCase())) {
-        return SubtypeUtils.occurrenceSubtypeList();
-      } else if (resource.getCoreType().toLowerCase().equals("other")) {
-        return SubtypeUtils.noSubtypeList();
+    if (resource.getCoreType() == null) {
+      if (resource.getCoreTypeTerm() != null) {
+        String core = resource.getCoreTypeTerm().simpleName().toLowerCase();
+        if (Constants.DWC_ROWTYPE_TAXON.toLowerCase().contains(core)) {
+          return SubtypeUtils.checklistSubtypeList();
+        } else if (Constants.DWC_ROWTYPE_OCCURRENCE.toLowerCase().contains(core)) {
+          return SubtypeUtils.occurrenceSubtypeList();
+        }
       }
-    } else if (resource.getCoreTypeTerm() != null) {
-      String core = resource.getCoreTypeTerm().simpleName().toLowerCase();
-      if (Constants.DWC_ROWTYPE_TAXON.toLowerCase().contains(core)) {
+    } else {
+      if (resource.getCoreType().equalsIgnoreCase(CoreRowType.CHECKLIST.toString())) {
         return SubtypeUtils.checklistSubtypeList();
-      } else if (Constants.DWC_ROWTYPE_OCCURRENCE.toLowerCase().contains(core)) {
+      } else if (resource.getCoreType().equalsIgnoreCase(CoreRowType.OCCURRENCE.toString())) {
         return SubtypeUtils.occurrenceSubtypeList();
+      } else if ("other".equalsIgnoreCase(resource.getCoreType())) {
+        return SubtypeUtils.noSubtypeList();
       }
     }
     return new LinkedHashMap<String, String>();
@@ -275,47 +277,45 @@ public class MetadataAction extends ManagerBaseAction {
     }
 
     // Save the coreType to the resource when it is null
-    if (resource.getCoreType() == null) {
-      if (resource.getCoreTypeTerm() != null) {
-        String core = resource.getCoreTypeTerm().simpleName().toLowerCase();
-        if (Constants.DWC_ROWTYPE_TAXON.toLowerCase().contains(core)) {
-          resource.setCoreType(StringUtils.capitalize(CoreRowType.OCCURRENCE.toString().toLowerCase()));
-        } else if (Constants.DWC_ROWTYPE_OCCURRENCE.toLowerCase().contains(core)) {
-          resource.setCoreType(StringUtils.capitalize(CoreRowType.CHECKLIST.toString().toLowerCase()));
-        }
+    if (resource.getCoreType() == null && resource.getCoreTypeTerm() != null) {
+      String core = resource.getCoreTypeTerm().simpleName().toLowerCase();
+      if (Constants.DWC_ROWTYPE_TAXON.toLowerCase().contains(core)) {
+        resource.setCoreType(StringUtils.capitalize(CoreRowType.OCCURRENCE.toString().toLowerCase()));
+      } else if (Constants.DWC_ROWTYPE_OCCURRENCE.toLowerCase().contains(core)) {
+        resource.setCoreType(StringUtils.capitalize(CoreRowType.CHECKLIST.toString().toLowerCase()));
       }
     }
 
     // if it is a submission of the taxonomic coverage, clear the session list
     if (isHttpPost()) {
-      if (section.equals("parties")) {
+      if ("parties".equals(section)) {
         resource.getEml().getAssociatedParties().clear();
       }
-      if (section.equals("geocoverage")) {
+      if ("geocoverage".equals(section)) {
         resource.getEml().getGeospatialCoverages().clear();
       }
-      if (section.equals("taxcoverage")) {
+      if ("taxcoverage".equals(section)) {
         resource.getEml().getTaxonomicCoverages().clear();
       }
-      if (section.equals("tempcoverage")) {
+      if ("tempcoverage".equals(section)) {
         resource.getEml().getTemporalCoverages().clear();
       }
-      if (section.equals("methods")) {
+      if ("methods".equals(section)) {
         resource.getEml().getMethodSteps().clear();
       }
-      if (section.equals("citations")) {
+      if ("citations".equals(section)) {
         resource.getEml().getBibliographicCitationSet().getBibliographicCitations().clear();
       }
-      if (section.equals("physical")) {
+      if ("physical".equals(section)) {
         resource.getEml().getPhysicalData().clear();
       }
-      if (section.equals("keywords")) {
+      if ("keywords".equals(section)) {
         resource.getEml().getKeywords().clear();
       }
-      if (section.equals("collections")) {
+      if ("collections".equals(section)) {
         resource.getEml().getJgtiCuratorialUnits().clear();
       }
-      if (section.equals("additional")) {
+      if ("additional".equals(section)) {
         resource.getEml().getAlternateIdentifiers().clear();
       }
     }

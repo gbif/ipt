@@ -58,8 +58,8 @@ public class TranslationAction extends ManagerBaseAction {
     }
 
     public boolean isLoaded(String rowType, ConceptTerm term) {
-      return (this.rowType != null && this.rowType.equals(rowType) && this.term != null && this.term.equals(term)
-        && tmap != null);
+      return this.rowType != null && this.rowType.equals(rowType) && this.term != null && this.term.equals(term)
+        && tmap != null;
     }
 
     public void setTmap(String rowType, ConceptTerm term, TreeMap<String, String> tmap) {
@@ -97,7 +97,9 @@ public class TranslationAction extends ManagerBaseAction {
 
   public String automap() {
     // try to lookup vocabulary synonyms and terms
-    if (property != null && property.getVocabulary() != null) {
+    if (property == null || property.getVocabulary() == null) {
+      addActionError(getText("manage.translation.cantfind.vocabulary"));
+    } else {
       Vocabulary vocab = property.getVocabulary();
       int count = 0;
       for (String src : trans.getTmap().keySet()) {
@@ -110,9 +112,7 @@ public class TranslationAction extends ManagerBaseAction {
           }
         }
       }
-      addActionMessage(getText("manage.translation.mapped.terms", new String[] {count + ""}));
-    } else {
-      addActionError(getText("manage.translation.cantfind.vocabulary"));
+      addActionMessage(getText("manage.translation.mapped.terms", new String[] {String.valueOf(count)}));
     }
     return SUCCESS;
   }
@@ -211,7 +211,8 @@ public class TranslationAction extends ManagerBaseAction {
       }
     }
 
-    addActionMessage(getText("manage.translation.reloaded.values", new String[] {trans.getTmap().size() + ""}));
+    addActionMessage(
+      getText("manage.translation.reloaded.values", new String[] {String.valueOf(trans.getTmap().size())}));
   }
 
   @Override

@@ -314,23 +314,23 @@ public class OverviewAction extends ManagerBaseAction {
         potentialExtensions = extensionManager.list(resource.getCoreRowType());
         // add core itself
         potentialExtensions.add(0, extensionManager.get(resource.getCoreRowType()));
-      } else if (!resource.getSources().isEmpty()) {
+      } else if (resource.getSources().isEmpty()) {
+        potentialExtensions = new ArrayList<Extension>();
+      } else {
         // Validating if the resource has a type
-        if (resource.getCoreType() != null && !(resource.getCoreType().equals("Other")
-          || resource.getCoreType().length() == 0)) {
+        if (resource.getCoreType() == null || "Other".equals(resource.getCoreType())
+          || resource.getCoreType().length() == 0) {
+          potentialExtensions = extensionManager.listCore();
+        } else {
           potentialExtensions = new ArrayList<Extension>();
           // Comparing the subtype with two static list. The appropiate type is selected depending if the subtype is
           // in the checklist List or is in the occurrence list and only is enable to do the mapping
-          if (resource.getCoreType().toLowerCase().equals(CoreRowType.CHECKLIST.toString().toLowerCase())) {
+          if (resource.getCoreType().equalsIgnoreCase(CoreRowType.CHECKLIST.toString())) {
             potentialExtensions.add(extensionManager.get(Constants.DWC_ROWTYPE_TAXON));
-          } else if (resource.getCoreType().toLowerCase().equals(CoreRowType.OCCURRENCE.toString().toLowerCase())) {
+          } else if (resource.getCoreType().equalsIgnoreCase(CoreRowType.OCCURRENCE.toString())) {
             potentialExtensions.add(extensionManager.get(Constants.DWC_ROWTYPE_OCCURRENCE));
           }
-        } else {
-          potentialExtensions = extensionManager.listCore();
         }
-      } else {
-        potentialExtensions = new ArrayList<Extension>();
       }
       // check EML
       missingMetadata = !emlValidator.isValid(resource.getEml(), null);
@@ -353,7 +353,7 @@ public class OverviewAction extends ManagerBaseAction {
     try {
       if (resourceManager.publish(resource, this)) {
         addActionMessage(getText("manage.overview.publishing.resource.version",
-          new String[] {new String(Integer.toString(resource.getEmlVersion()))}));
+          new String[] {Integer.toString(resource.getEmlVersion())}));
         return PUBLISHING;
       } else {
         if (resource.hasMappedData()) {
@@ -361,7 +361,8 @@ public class OverviewAction extends ManagerBaseAction {
         } else {
           addActionWarning(getText("manage.overview.data.missing"));
         }
-        addActionMessage(getText("manage.overview.published.eml", new String[] {resource.getEmlVersion() + ""}));
+        addActionMessage(
+          getText("manage.overview.published.eml", new String[] {String.valueOf(resource.getEmlVersion())}));
         missingRegistrationMetadata = !minimumRegistryInfo(resource);
         return SUCCESS;
       }

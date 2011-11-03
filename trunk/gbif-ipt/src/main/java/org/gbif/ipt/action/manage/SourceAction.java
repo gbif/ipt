@@ -107,13 +107,11 @@ public class SourceAction extends ManagerBaseAction {
         }
       } else {
         // validate if file already exists to ask confirmation
-        if (!replace) {
-          if (resource.getSource(fileFileName) != null) {
-            // Since FileUploadInterceptor removes the file once this action is executed,
-            // the file need to be copied in the same directory.
-            copyFileToOverwrite();
-            return INPUT;
-          }
+        if (!replace && resource.getSource(fileFileName) != null) {
+          // Since FileUploadInterceptor removes the file once this action is executed,
+          // the file need to be copied in the same directory.
+          copyFileToOverwrite();
+          return INPUT;
         }
         // treat as is - hopefully a simple text data file
         addTextFile(file, fileFileName);
@@ -176,7 +174,7 @@ public class SourceAction extends ManagerBaseAction {
   }
 
   public FileSource getFileSource() {
-    if (source != null && source instanceof FileSource) {
+    if (source instanceof FileSource) {
       return (FileSource) source;
     }
     return null;
@@ -211,7 +209,7 @@ public class SourceAction extends ManagerBaseAction {
   }
 
   public SqlSource getSqlSource() {
-    if (source != null && source instanceof SqlSource) {
+    if (source instanceof SqlSource) {
       return (SqlSource) source;
     }
     return null;
@@ -273,7 +271,18 @@ public class SourceAction extends ManagerBaseAction {
       }
     } else {
       // new one
-      if (file != null) {
+      if (file == null) {
+        try {
+          resource.addSource(source, false);
+          id = source.getName();
+          if (this.analyze || !source.isReadable()) {
+            problem = sourceManager.analyze(source);
+          }
+        } catch (AlreadyExistingException e) {
+          // shouldnt really happen as we validate this beforehand - still catching it here to be safe
+          addActionError(getText("manage.source.existing"));
+        }
+      } else {
         // uploaded a new file
         // create a new file source
         try {
@@ -287,17 +296,6 @@ public class SourceAction extends ManagerBaseAction {
           // even though we have problems with this source we'll keep it for manual corrections
           log.error("Source error: " + e.getMessage(), e);
           addActionError(getText("manage.source.error", new String[] {e.getMessage()}));
-        }
-      } else {
-        try {
-          resource.addSource(source, false);
-          id = source.getName();
-          if (this.analyze || !source.isReadable()) {
-            problem = sourceManager.analyze(source);
-          }
-        } catch (AlreadyExistingException e) {
-          // shouldnt really happen as we validate this beforehand - still catching it here to be safe
-          addActionError(getText("manage.source.existing"));
         }
       }
       id = source.getName();

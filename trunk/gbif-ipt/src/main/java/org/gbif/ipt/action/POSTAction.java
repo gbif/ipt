@@ -10,7 +10,7 @@ public class POSTAction extends BaseAction {
   protected String defaultResult = INPUT;
 
   /**
-   * Override this method if you need to delete entities based on the id value after the PARAM interceptor is called
+   * Override this method if you need to delete entities based on the id value after the PARAM interceptor is called.
    */
   public String delete() throws Exception {
     return SUCCESS;
@@ -39,7 +39,7 @@ public class POSTAction extends BaseAction {
   }
 
   /**
-   * Override this method if you need to persist entities after the PARAM interceptor is called
+   * Override this method if you need to persist entities after the PARAM interceptor is called.
    */
   public String save() throws Exception {
     return SUCCESS;

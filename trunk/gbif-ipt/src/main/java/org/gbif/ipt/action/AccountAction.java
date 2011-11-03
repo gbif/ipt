@@ -15,7 +15,7 @@ public class AccountAction extends POSTAction {
 
   @Inject
   private UserAccountManager userManager;
-  private UserValidator userValidation = new UserValidator();
+  private final UserValidator userValidation = new UserValidator();
 
   private String redirectUrl;
   private String email;
@@ -72,7 +72,10 @@ public class AccountAction extends POSTAction {
     // login
     if (email != null) {
       User user = userManager.authenticate(email, password);
-      if (user != null) {
+      if (user == null) {
+        addActionError(getText("admin.user.wrong.email.password.combination"));
+        log.info("User " + email + " failed to log in");
+      } else {
         log.info("User " + email + " logged in successfully");
         user.setLastLoginToNow();
         userManager.save();
@@ -80,9 +83,6 @@ public class AccountAction extends POSTAction {
         // remember previous URL to redirect back to
         setRedirectUrl();
         return SUCCESS;
-      } else {
-        addActionError(getText("admin.user.wrong.email.password.combination"));
-        log.info("User " + email + " failed to log in");
       }
     }
     return INPUT;
@@ -163,11 +163,9 @@ public class AccountAction extends POSTAction {
     if (user != null) {
       userValidation.validate(this, user);
       // update passwords?
-      if (password != null) {
-        if (!password.equals(password2)) {
-          addFieldError("password2", getText("validation.password2.wrong"));
-          password2 = null;
-        }
+      if (password != null && !password.equals(password2)) {
+        addFieldError("password2", getText("validation.password2.wrong"));
+        password2 = null;
       }
     }
   }

@@ -37,7 +37,7 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
   public static final String LOCKED = "locked";
 
   /**
-   * Occassionally Struts2 complains with it's own logging which seems like a Struts2 issue
+   * Occassionally Struts2 complains with it's own logging which seems like a Struts2 issue.
    */
   protected static Logger log = Logger.getLogger(BaseAction.class);
 
@@ -49,7 +49,7 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
   protected AppConfig cfg;
   protected HttpServletRequest req;
   // a generic identifier for loading an object BEFORE the param interceptor sets values
-  protected String id = null;
+  protected String id;
 
   public BaseAction() {
 
@@ -62,7 +62,7 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
   }
 
   /**
-   * Adds an exception message, if not null, to the action messages
+   * Adds an exception message, if not null, to the action messages.
    *
    * @param e the exception from which the message is taken
    */
@@ -75,7 +75,7 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
 
 
   /**
-   * Adds an exception message, if not null, to the action warnings
+   * Adds an exception message, if not null, to the action warnings.
    *
    * @param e the exception from which the message is taken
    */
@@ -239,11 +239,9 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
 
   /**
    * Override this method if you need to load entities based on the id value before the PARAM interceptor is called.
-   * You
-   * can also use this method to prepare a new, empty instance in case no id was provided. If the id parameter alone is
-   * not sufficient to load your entities, you can access the request object directly like we do here and read any
-   * other
-   * parameter you need to prepare the action for the param phase.
+   * You can also use this method to prepare a new, empty instance in case no id was provided. If the id parameter alone
+   * is not sufficient to load your entities, you can access the request object directly like we do here and read any
+   * other parameter you need to prepare the action for the param phase.
    */
   public void prepare() throws Exception {
     // see if an id was provided in the request.
@@ -268,7 +266,7 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
 
   /**
    * Utility to compare 2 objects for comparison when both converted to strings useful to compare if a submitted value
-   * is the same as the persisted value
+   * is the same as the persisted value.
    *
    * @return true only if o1.equals(o2)
    */

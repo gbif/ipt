@@ -17,10 +17,6 @@ public class PortalBaseAction extends BaseAction {
   protected ResourceManager resourceManager;
   protected Resource resource;
 
-  public PortalBaseAction() {
-
-  }
-
   public Resource getResource() {
     return resource;
   }
