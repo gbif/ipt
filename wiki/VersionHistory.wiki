@@ -6,7 +6,10 @@
 -----
 
 = IPT 2.x =
-
+== IPT 2.0.3 ==
+ * http://code.google.com/p/gbif-providertoolkit/downloads/detail?name=ipt-2.0.3.war
+== IPT 2.0.2 ==
+ * http://code.google.com/p/gbif-providertoolkit/downloads/detail?name=ipt-2.0.2.war
 == IPT 2.0.1 ==
  * http://code.google.com/p/gbif-providertoolkit/downloads/detail?name=ipt-2.0.1.war
 == IPT 2.0 General Availability (GA) ==
