@@ -290,7 +290,7 @@ public class Eml2Rtf {
       p.add("1.0");
       p.add(Chunk.NEWLINE);
       p.add(new Phrase(getText("rtf.datasets.distribution") + ": ", fontTitle));
-      String dwcaLink = appConfig.getBaseURL() + "/archive.do?r=" + resource.getShortname();
+      String dwcaLink = appConfig.getBaseUrl() + "/archive.do?r=" + resource.getShortname();
       Anchor distributionLink = new Anchor(dwcaLink, fontLink);
       distributionLink.setReference(dwcaLink);
       p.add(distributionLink);
@@ -693,7 +693,7 @@ public class Eml2Rtf {
       gbifLink.setReference("http://www.gbif.org");
       p.add(gbifLink);
       p.add(": ");
-      String link = appConfig.getBaseURL() + "/resource.do?r=" + resource.getShortname();
+      String link = appConfig.getBaseUrl() + "/resource.do?r=" + resource.getShortname();
       Anchor resourceLink = new Anchor(link, fontLink);
       resourceLink.setReference(link);
       p.add(resourceLink);

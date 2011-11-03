@@ -29,7 +29,7 @@ public class RegistrationAction extends POSTAction {
   public static class RegisteredOrganisations {
 
     private List<Organisation> organisations = new ArrayList<Organisation>();
-    private RegistryManager registryManager;
+    private final RegistryManager registryManager;
 
     @Inject
     public RegisteredOrganisations(RegistryManager registryManager) {
@@ -66,10 +66,10 @@ public class RegistrationAction extends POSTAction {
   }
 
   private static final long serialVersionUID = -6522969037528106704L;
-  private RegistryManager registryManager;
-  private RegistrationManager registrationManager;
-  private OrganisationSupport organisationValidation;
-  private IptValidator iptValidation;
+  private final RegistryManager registryManager;
+  private final RegistrationManager registrationManager;
+  private final OrganisationSupport organisationValidation;
+  private final IptValidator iptValidation;
 
   private boolean validatedBaseURL = false;
 
@@ -146,22 +146,20 @@ public class RegistrationAction extends POSTAction {
   public void prepare() throws Exception {
     // will not be session scoping the list of organisations from the registry as this is basically a 1 time step
     super.prepare();
-    if (!getIsRegistered()) {
-      if (!orgSession.isLoaded()) {
-        try {
-          orgSession.load();
-        } catch (RegistryException e) {
-          String msg = getText("admin.registration.error.registry");
-          if (e.getType() == TYPE.PROXY) {
-            msg = getText("admin.registration.error.proxy");
-          } else if (e.getType() == TYPE.SITE_DOWN) {
-            msg = getText("admin.registration.error.siteDown");
-          } else if (e.getType() == TYPE.NO_INTERNET) {
-            msg = getText("admin.registration.error.internetConnection");
-          }
-          log.error(msg, e);
-          addActionError(msg);
+    if (!getIsRegistered() && !orgSession.isLoaded()) {
+      try {
+        orgSession.load();
+      } catch (RegistryException e) {
+        String msg = getText("admin.registration.error.registry");
+        if (e.getType() == TYPE.PROXY) {
+          msg = getText("admin.registration.error.proxy");
+        } else if (e.getType() == TYPE.SITE_DOWN) {
+          msg = getText("admin.registration.error.siteDown");
+        } else if (e.getType() == TYPE.NO_INTERNET) {
+          msg = getText("admin.registration.error.internetConnection");
         }
+        log.error(msg, e);
+        addActionError(msg);
       }
     }
   }
@@ -228,8 +226,7 @@ public class RegistrationAction extends POSTAction {
       return INPUT;
     } catch (IOException e) {
       addActionError(e.getMessage());
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      log.error("Exception caught", e);
       return INPUT;
     }
     return SUCCESS;

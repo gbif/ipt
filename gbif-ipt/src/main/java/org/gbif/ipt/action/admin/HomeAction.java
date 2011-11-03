@@ -7,7 +7,7 @@ import com.google.inject.Inject;
 
 public class HomeAction extends BaseAction {
 
-  private RegistrationManager registrationManager;
+  private final RegistrationManager registrationManager;
 
   /**
    * @param registrationManager

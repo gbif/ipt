@@ -111,7 +111,7 @@ public class ConfigManagerImplTest {
   }
 
   /**
-   * Test that the method setBaseURL of the ConfigManager throws an InvalidConfigException if the baseURL given by the
+   * Test that the method setBaseUrl of the ConfigManager throws an InvalidConfigException if the baseURL given by the
    * user doesn't exist or the client can't connect with it.
    *
    * @throws MalformedURLException if the baseURL is malformed.
@@ -125,7 +125,7 @@ public class ConfigManagerImplTest {
     // try to save a nonexistent baseURL.
     try {
       URL baseURL2 = new URL("http://1.1.1.1/ipt");
-      configManager.setBaseURL(baseURL2);
+      configManager.setBaseUrl(baseURL2);
       // the validation should never get here.
       fail();
     } catch (InvalidConfigException e) {
@@ -134,7 +134,7 @@ public class ConfigManagerImplTest {
     // try to save an existent baseURL without an IPT installed.
     try {
       URL baseURL2 = new URL("http://www.gbif.org");
-      configManager.setBaseURL(baseURL2);
+      configManager.setBaseUrl(baseURL2);
       // the validation should never get here.
       fail();
     } catch (InvalidConfigException e) {
@@ -142,7 +142,7 @@ public class ConfigManagerImplTest {
 
     // Save good baseURL
     URL baseURL = new URL("http://ipt.gbif.org");
-    configManager.setBaseURL(baseURL);
+    configManager.setBaseUrl(baseURL);
     assertEquals(baseURL.toString(), appConfig.getProperty(AppConfig.BASEURL));
 
 
@@ -153,7 +153,7 @@ public class ConfigManagerImplTest {
     // configManager.setProxy(proxy);
     //
     // baseURL = new URL("http://127.0.0.1:7001/ipt");
-    // configManager.setBaseURL(baseURL);
+    // configManager.setBaseUrl(baseURL);
     //
     // assertEquals(baseURL.toString(), appConfig.getProperty(AppConfig.BASEURL));
   }

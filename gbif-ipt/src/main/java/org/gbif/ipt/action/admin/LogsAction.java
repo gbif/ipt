@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.BaseAction;
@@ -14,7 +11,7 @@ import java.io.InputStream;
 import com.google.inject.Inject;
 
 /**
- * The Action responsible for showing IPT logs to the admin
+ * The Action responsible for showing IPT logs to the admin.
  */
 public class LogsAction extends BaseAction {
 
@@ -39,7 +36,7 @@ public class LogsAction extends BaseAction {
   public String logfile() throws IOException {
     // server file as set in prepare method
     File f = dataDir.loggingFile(log + ".log");
-    super.log.debug("Serving logfile " + f.getAbsolutePath());
+    BaseAction.log.debug("Serving logfile " + f.getAbsolutePath());
     inputStream = new FileInputStream(f);
     return SUCCESS;
   }

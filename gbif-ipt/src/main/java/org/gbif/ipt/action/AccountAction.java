@@ -101,7 +101,7 @@ public class AccountAction extends POSTAction {
     admin = userManager.list(Role.Admin).get(0);
     lostPswdEmailSubject = getText("login.forgottenpassword.mail.subject");
     lostPswdEmailBody = getTextWithDynamicArgs("login.forgottenpassword.mail.body", admin.getName(), "",
-      cfg.getBaseURL() + "/admin/users.do");
+      cfg.getBaseUrl() + "/admin/users.do");
     if (getCurrentUser() != null) {
       // modify existing user in session
       user = getCurrentUser();
@@ -129,7 +129,7 @@ public class AccountAction extends POSTAction {
     this.email = StringUtils.trimToNull(email);
     if (email != null) {
       lostPswdEmailBody = getTextWithDynamicArgs("login.forgottenpassword.mail.body", admin.getName(), this.email,
-        cfg.getBaseURL() + "/admin/user.do?id=" + this.email);
+        cfg.getBaseUrl() + "/admin/user.do?id=" + this.email);
     }
   }
 
@@ -146,7 +146,7 @@ public class AccountAction extends POSTAction {
     // if we have a request refer back to the originally requested page
     if (req != null) {
       String referer = req.getHeader("Referer");
-      if (referer != null && referer.startsWith(cfg.getBaseURL()) && !(referer.endsWith("login.do") || referer
+      if (referer != null && referer.startsWith(cfg.getBaseUrl()) && !(referer.endsWith("login.do") || referer
         .endsWith("login"))) {
         redirectUrl = referer;
       }

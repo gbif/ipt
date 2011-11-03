@@ -22,9 +22,10 @@ import org.apache.commons.lang.StringUtils;
 public class UserAccountsAction extends POSTAction {
 
   private static final long serialVersionUID = 8892204508303815998L;
+  private static final int PASSWORD_LENGTH = 8;
   @Inject
   private UserAccountManager userManager;
-  private UserValidator validator = new UserValidator();
+  private final UserValidator validator = new UserValidator();
 
   private User user;
   private String password2;
@@ -86,25 +87,26 @@ public class UserAccountsAction extends POSTAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
-    if (id != null) {
+    if (id == null) {
+      newUser = true;
+    } else {
       // modify copy of existing user - otherwise we even change the proper instances when canceling the request or
       // submitting non validating data
       user = userManager.get(id);
-    } else {
-      newUser = true;
     }
+
     // if no id was submitted we wanted to create a new account
     // if an invalid email was entered, it gets stored in the id field and obviously userManager above cant find a
     // matching user.
     // in that case again provide a new, empty user instance
-    if (user != null) {
-      user = (User) user.clone();
-    } else {
+    if (user == null) {
       // reset id
       id = null;
       // create new user
       user = new User();
       newUser = true;
+    } else {
+      user = (User) user.clone();
     }
   }
 
@@ -116,7 +118,7 @@ public class UserAccountsAction extends POSTAction {
         addActionMessage(getText("admin.user.added"));
       } else if (resetPassword) {
         String newPassword =
-          RandomStringUtils.random(8, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
+          RandomStringUtils.random(PASSWORD_LENGTH, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
         user.setPassword(newPassword);
         userManager.save(user);
         addActionMessage(getText("admin.user.passwordChanged", new String[] {user.getEmail(), newPassword}));

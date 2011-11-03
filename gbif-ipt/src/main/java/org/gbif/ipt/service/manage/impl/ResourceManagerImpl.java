@@ -443,7 +443,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   public URL getResourceLink(String shortname) {
     URL url = null;
     try {
-      url = new URL(cfg.getBaseURL() + "/resource.do?id=" + shortname);
+      url = new URL(cfg.getBaseUrl() + "/resource.do?id=" + shortname);
     } catch (MalformedURLException e) {
       log.error(e);
     }

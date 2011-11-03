@@ -339,7 +339,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * Returns the ATOM url
    */
   private String getRssFeedURL() {
-    return String.format("%s/rss.do", cfg.getBaseURL());
+    return String.format("%s/rss.do", cfg.getBaseUrl());
   }
 
   protected InputStream getStream(String source) {

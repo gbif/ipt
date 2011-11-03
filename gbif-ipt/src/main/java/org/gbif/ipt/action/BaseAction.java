@@ -91,7 +91,7 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
    * workflow interceptor, therefore no changes to the result name of the action are expected.
    * This is the way to present user warnings/errors others than for form validation.
    * <p/>
-   * If you want form validation with the workflow interceptor, please @see addActionError instead
+   * If you want form validation with the workflow interceptor, please {@link #addActionError(String)} instead.
    */
   public void addActionWarning(String anErrorMessage) {
     warnings.add(anErrorMessage);
@@ -106,11 +106,11 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
    * Easy access to the configured application root for simple use in templates
    */
   public String getBase() {
-    return cfg.getBaseURL();
+    return cfg.getBaseUrl();
   }
 
   public String getBaseURL() {
-    return cfg.getBaseURL();
+    return cfg.getBaseUrl();
   }
 
   public AppConfig getCfg() {

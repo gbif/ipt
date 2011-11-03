@@ -69,10 +69,10 @@ public class SetupAction extends BaseAction {
   @Override
   public String getBaseURL() {
     // try to detect default values if not yet configured
-    if (StringUtils.trimToNull(cfg.getBaseURL()) == null) {
+    if (StringUtils.trimToNull(cfg.getBaseUrl()) == null) {
       baseURL = findBaseURL();
     } else {
-      baseURL = cfg.getBaseURL();
+      baseURL = cfg.getBaseUrl();
     }
     return baseURL;
   }
@@ -191,7 +191,7 @@ public class SetupAction extends BaseAction {
         return SUCCESS;
       } else if (!isHttpPost()) {
         // the only way here is if this is a new deploy over an old data dir and the old base URL is bad
-        baseURL = cfg.getBaseURL();
+        baseURL = cfg.getBaseUrl();
         proxy = cfg.getProxy();
         List<User> admins = userManager.list(User.Role.Admin);
         if (admins != null && !admins.isEmpty()) {
@@ -227,7 +227,7 @@ public class SetupAction extends BaseAction {
         // set baseURL, this have to be before the validation with the proxy
         try {
           URL burl = new URL(baseURL);
-          configManager.setBaseURL(burl);
+          configManager.setBaseUrl(burl);
         } catch (MalformedURLException e) {
           // checked in validate() already
         }

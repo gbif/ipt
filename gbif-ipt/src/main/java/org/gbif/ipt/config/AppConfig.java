@@ -40,7 +40,6 @@ public class AppConfig {
   public static final String IPT_LATITUDE = "location.lat";
   public static final String IPT_LONGITUDE = "location.lon";
   private static final String PRODUCTION_TYPE_LOCKFILE = ".gbifreg";
-  ;
   private Properties properties = new Properties();
   private Logger log = Logger.getLogger(this.getClass());
   private DataDir dataDir;
@@ -69,7 +68,7 @@ public class AppConfig {
     return properties.getProperty(ANALYTICS_KEY);
   }
 
-  public String getBaseURL() {
+  public String getBaseUrl() {
     String base = properties.getProperty(BASEURL);
     while (base != null && base.endsWith("/")) {
       base = base.substring(0, base.length() - 1);
@@ -137,19 +136,19 @@ public class AppConfig {
   }
 
   public String getResourceArchiveUrl(String shortname) {
-    return getBaseURL() + "/archive.do?" + Constants.REQ_PARAM_RESOURCE + "=" + shortname;
+    return getBaseUrl() + "/archive.do?" + Constants.REQ_PARAM_RESOURCE + "=" + shortname;
   }
 
   public String getResourceEmlUrl(String shortname) {
-    return getBaseURL() + "/eml.do?" + Constants.REQ_PARAM_RESOURCE + "=" + shortname;
+    return getBaseUrl() + "/eml.do?" + Constants.REQ_PARAM_RESOURCE + "=" + shortname;
   }
 
   public String getResourceLogoUrl(String shortname) {
-    return getBaseURL() + "/logo.do?" + Constants.REQ_PARAM_RESOURCE + "=" + shortname;
+    return getBaseUrl() + "/logo.do?" + Constants.REQ_PARAM_RESOURCE + "=" + shortname;
   }
 
   public String getResourceUrl(String shortname) {
-    return getBaseURL() + "/resource.do?" + Constants.REQ_PARAM_RESOURCE + "=" + shortname;
+    return getBaseUrl() + "/resource.do?" + Constants.REQ_PARAM_RESOURCE + "=" + shortname;
   }
 
   public String getVersion() {

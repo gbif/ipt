@@ -64,7 +64,7 @@ public interface ConfigManager {
    * @throws InvalidConfigException If the URL appears to be localhost, 127.0.0.1 or something that clearly
    *                                will not be addressable from the internet.
    */
-  void setBaseURL(URL baseURL) throws InvalidConfigException;
+  void setBaseUrl(URL baseURL) throws InvalidConfigException;
 
   /**
    * Generic method to set an appconfig property in memory without persisting it.
