@@ -32,9 +32,9 @@ import org.xml.sax.SAXException;
 public class VocabularyFactory {
 
   public static final String VOCABULARY_NAMESPACE = "http://rs.gbif.org/thesaurus/";
-  protected static Logger log = Logger.getLogger(VocabularyFactory.class);
-  private HttpClient client;
-  private SAXParserFactory saxf;
+  private static final Logger LOG = Logger.getLogger(VocabularyFactory.class);
+  private final HttpClient client;
+  private final SAXParserFactory saxf;
 
   @Inject
   public VocabularyFactory(DefaultHttpClient httpClient, SAXParserFactory saxf) {
@@ -132,11 +132,11 @@ public class VocabularyFactory {
         InputStream is = entity.getContent();
         try {
           Vocabulary tv = build(is);
-          log.info("Successfully parsed Thesaurus: " + tv.getTitle());
+          LOG.info("Successfully parsed Thesaurus: " + tv.getTitle());
           return tv;
 
         } catch (SAXException e) {
-          log.error("Unable to parse XML for extension: " + e.getMessage(), e);
+          LOG.error("Unable to parse XML for extension: " + e.getMessage(), e);
         } finally {
           is.close();
         }
@@ -144,7 +144,7 @@ public class VocabularyFactory {
         entity.consumeContent();
       }
     } catch (Exception e) {
-      log.error(e);
+      LOG.error(e);
     }
 
     return null;

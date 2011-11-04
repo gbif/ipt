@@ -23,7 +23,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 @Singleton
 public class OrganisationKeyConverter implements Converter {
 
-  private RegistrationManager registrationManager;
+  private final RegistrationManager registrationManager;
 
   @Inject
   public OrganisationKeyConverter(RegistrationManager registrationManager) {

@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
 @Singleton
 public class PasswordConverter implements Converter {
 
-  private Logger log = Logger.getLogger(this.getClass());
+  private static final Logger LOG = Logger.getLogger(PasswordConverter.class);
   private final PBEEncrypt encrypter;
 
   @Inject
@@ -53,7 +53,7 @@ public class PasswordConverter implements Converter {
         writer.setValue(encrypter.encrypt(pass.password));
       }
     } catch (EncryptionException e) {
-      log.error("Cannot encrypt sql source password", e);
+      LOG.error("Cannot encrypt sql source password", e);
     }
   }
 
@@ -63,7 +63,7 @@ public class PasswordConverter implements Converter {
     try {
       pass.password = val == null ? null : encrypter.decrypt(val);
     } catch (EncryptionException e) {
-      log.error("Cannot decrypt sql source password", e);
+      LOG.error("Cannot decrypt sql source password", e);
     }
     return pass;
   }

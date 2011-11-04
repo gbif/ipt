@@ -11,6 +11,7 @@ package org.gbif.ipt.model;
 
 import java.io.Serializable;
 
+import com.google.common.base.Objects;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
@@ -28,13 +29,18 @@ public class Organisation extends AgentBase implements Serializable {
   private String nodeContactEmail;
   private boolean canHost;
 
-  /*
-   * (non-Javadoc)
-   * @see java.lang.Object#equals(java.lang.Object)
-   */
   @Override
   public boolean equals(Object obj) {
-    return ((Organisation) obj).getKey().equals(this.getKey());
+    if (obj == this) {
+      return true;
+    }
+
+    if (!(obj instanceof Organisation)) {
+      return false;
+    }
+
+    Organisation other = (Organisation) obj;
+    return Objects.equal(this.getKey(), other.getKey());
   }
 
   /**

@@ -32,8 +32,8 @@ import org.apache.log4j.Logger;
 @Singleton
 public class ConceptTermConverter implements Converter {
 
-  private Logger log = Logger.getLogger(this.getClass());
-  private ExtensionRowTypeConverter extConverter;
+  private static final Logger LOG = Logger.getLogger(ConceptTermConverter.class);
+  private final ExtensionRowTypeConverter extConverter;
 
   @Inject
   public ConceptTermConverter(ExtensionRowTypeConverter extConverter) {
@@ -61,7 +61,7 @@ public class ConceptTermConverter implements Converter {
       t = extension.getProperty(reader.getValue());
     }
     if (t == null) {
-      log.warn("Cant unmarshall concept " + reader.getValue());
+      LOG.warn("Cant unmarshall concept " + reader.getValue());
       t = new UnknownTerm(reader.getValue(), reader.getValue());
     }
 
