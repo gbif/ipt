@@ -25,14 +25,14 @@ import org.apache.log4j.Logger;
 @Singleton
 public class ConfigWarnings {
 
-  private Logger log = Logger.getLogger(ConfigWarnings.class);
-  private List<String> startupErrors = new ArrayList<String>();
+  private static final Logger LOG = Logger.getLogger(ConfigWarnings.class);
+  private final List<String> startupErrors = new ArrayList<String>();
 
   public void addStartupError(Exception e) {
     if (e.getMessage() != null) {
       startupErrors.add(e.getMessage());
     }
-    log.warn(e);
+    LOG.warn(e);
   }
 
   public void addStartupError(String message) {
@@ -41,7 +41,7 @@ public class ConfigWarnings {
 
   public void addStartupError(String message, Exception e) {
     startupErrors.add(message);
-    log.warn(message, e);
+    LOG.warn(message, e);
   }
 
   public List<String> getStartupErrors() {

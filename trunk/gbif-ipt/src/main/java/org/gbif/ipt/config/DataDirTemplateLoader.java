@@ -20,11 +20,8 @@ import java.io.File;
 import java.io.IOException;
 
 import freemarker.cache.FileTemplateLoader;
-import org.apache.log4j.Logger;
 
 public class DataDirTemplateLoader extends FileTemplateLoader {
-
-  private Logger log = Logger.getLogger(DataDirTemplateLoader.class);
 
   public DataDirTemplateLoader(File baseDir) throws IOException {
     super(baseDir);

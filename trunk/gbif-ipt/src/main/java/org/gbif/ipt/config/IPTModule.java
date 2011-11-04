@@ -56,7 +56,7 @@ import org.apache.log4j.Logger;
  */
 public class IPTModule extends AbstractModule {
 
-  protected Logger log = Logger.getLogger(this.getClass());
+  private static final Logger LOG = Logger.getLogger(IPTModule.class);
 
   @Override
   protected void configure() {
@@ -81,14 +81,14 @@ public class IPTModule extends AbstractModule {
   @Inject
   public DataDir provideDataDir(ServletContext ctx) {
     File dataDirSettingFile = new File(ctx.getRealPath("/") + "/WEB-INF/datadir.location");
-    log.info("provide servlet context data dir location file at " + dataDirSettingFile.getAbsolutePath());
+    LOG.info("provide servlet context data dir location file at " + dataDirSettingFile.getAbsolutePath());
     DataDir dd = DataDir.buildFromLocationFile(dataDirSettingFile);
     try {
       if (dd != null && dd.isConfigured()) {
         dd.clearTmp();
       }
     } catch (IOException e) {
-      log.warn("Couldnt clear temporary data dir folder", e);
+      LOG.warn("Couldnt clear temporary data dir folder", e);
     }
     return dd;
   }
@@ -109,7 +109,7 @@ public class IPTModule extends AbstractModule {
       TemplateLoader tlDataDir = new DataDirTemplateLoader(datadir.dataFile(""));
       tLoader.add(tlDataDir);
     } catch (IOException e) {
-      log.warn("Cannot load custom templates from data dir: " + e.getMessage(), e);
+      LOG.warn("Cannot load custom templates from data dir: " + e.getMessage(), e);
     }
     TemplateLoader tl = new MultiTemplateLoader(tLoader.toArray(new TemplateLoader[tLoader.size()]));
     fm.setDefaultEncoding("utf8");
@@ -168,17 +168,17 @@ public class IPTModule extends AbstractModule {
     JdbcSupport jdbcs = new JdbcSupport();
     InputStreamUtils streamUtils = new InputStreamUtils();
     InputStream configStream = streamUtils.classpathStream(JdbcSupport.CLASSPATH_PROPFILE);
-    if (configStream != null) {
+    if (configStream == null) {
+      LOG.error("Could not find supported jdbc driver information file " + JdbcSupport.CLASSPATH_PROPFILE);
+    } else {
       try {
         Properties props = new Properties();
         props.load(configStream);
         jdbcs.setProperties(props);
-        log.debug("Loaded supported jdbc driver information from " + JdbcSupport.CLASSPATH_PROPFILE);
+        LOG.debug("Loaded supported jdbc driver information from " + JdbcSupport.CLASSPATH_PROPFILE);
       } catch (IOException e) {
-        log.error("Could not load supported jdbc driver information from " + JdbcSupport.CLASSPATH_PROPFILE, e);
+        LOG.error("Could not load supported jdbc driver information from " + JdbcSupport.CLASSPATH_PROPFILE, e);
       }
-    } else {
-      log.error("Could not find supported jdbc driver information file " + JdbcSupport.CLASSPATH_PROPFILE);
     }
     return jdbcs;
   }
@@ -193,7 +193,7 @@ public class IPTModule extends AbstractModule {
       saxf.setValidating(false);
       saxf.setNamespaceAware(true);
     } catch (Exception e) {
-      log.error("Cant create namespace aware SAX Parser Factory: " + e.getMessage(), e);
+      LOG.error("Cant create namespace aware SAX Parser Factory: " + e.getMessage(), e);
     }
     return saxf;
   }
@@ -207,7 +207,7 @@ public class IPTModule extends AbstractModule {
     try {
       enc = new PBEEncrypt("Carla Maria Luise", salt, 9);
     } catch (EncryptionException e) {
-      log.error("Cannot create password encryption", e);
+      LOG.error("Cannot create password encryption", e);
     }
     return enc;
   }
