@@ -40,15 +40,15 @@ import org.apache.log4j.xml.DOMConfigurator;
 @Singleton
 public class ConfigManagerImpl extends BaseManager implements ConfigManager {
 
-  private InputStreamUtils streamUtils;
-  private UserAccountManager userManager;
-  private ResourceManager resourceManager;
-  private ExtensionManager extensionManager;
-  private VocabulariesManager vocabManager;
-  private RegistrationManager registrationManager;
-  private ConfigWarnings warnings;
-  private DefaultHttpClient client;
-  private HttpUtil http;
+  private final InputStreamUtils streamUtils;
+  private final UserAccountManager userManager;
+  private final ResourceManager resourceManager;
+  private final ExtensionManager extensionManager;
+  private final VocabulariesManager vocabManager;
+  private final RegistrationManager registrationManager;
+  private final ConfigWarnings warnings;
+  private final DefaultHttpClient client;
+  private final HttpUtil http;
   private static final String PATH_TO_CSS = "/styles/main.css";
 
   @Inject
@@ -242,10 +242,8 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
       }
     }
 
-    if (validate) {
-      if (!validateBaseURL(baseURL)) {
-        throw new InvalidConfigException(TYPE.INACCESSIBLE_BASE_URL, "No IPT found at new base URL");
-      }
+    if (validate && !validateBaseURL(baseURL)) {
+      throw new InvalidConfigException(TYPE.INACCESSIBLE_BASE_URL, "No IPT found at new base URL");
     }
 
     // store in properties file
@@ -272,16 +270,16 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   }
 
   public void setIptLocation(Double lat, Double lon) throws InvalidConfigException {
-    if (lat != null && lon != null) {
+    if (lat == null || lon == null) {
+      cfg.setProperty(AppConfig.IPT_LATITUDE, "");
+      cfg.setProperty(AppConfig.IPT_LONGITUDE, "");
+    } else {
       if (lat > 90.0 || lat < -90.0 || (lon > 180.0 || lon < -180.0)) {
         log.warn("IPT Lat/Lon is not a valid coordinate");
         throw new InvalidConfigException(TYPE.FORMAT_ERROR, "IPT Lat/Lon is not a valid coordinate");
       }
       cfg.setProperty(AppConfig.IPT_LATITUDE, Double.toString(lat));
       cfg.setProperty(AppConfig.IPT_LONGITUDE, Double.toString(lon));
-    } else {
-      cfg.setProperty(AppConfig.IPT_LATITUDE, "");
-      cfg.setProperty(AppConfig.IPT_LONGITUDE, "");
     }
 
   }
@@ -338,12 +336,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
 
 
   public boolean setupComplete() {
-    if (dataDir.isConfigured()) {
-      if (cfg.getRegistryType() != null && !userManager.list(Role.Admin).isEmpty()) {
-        return true;
-      }
-    }
-    return false;
+    return dataDir.isConfigured() && cfg.getRegistryType() != null && !userManager.list(Role.Admin).isEmpty();
   }
 
   /**

@@ -97,7 +97,7 @@ public class DataDir {
   }
 
   /**
-   * Constructs an absolute path to a file within the config folder of the data dir
+   * Constructs an absolute path to a file within the config folder of the data dir.
    *
    * @param path the relative path within the config folder
    */
@@ -233,7 +233,7 @@ public class DataDir {
   }
 
   /**
-   * File for the only & current rtf file representing the eml metadata for data publishers in RTF format
+   * File for the only & current rtf file representing the eml metadata for data publishers in RTF format.
    */
   public File resourceRtfFile(String resourceName) {
     String fn = resourceName + ".rtf";

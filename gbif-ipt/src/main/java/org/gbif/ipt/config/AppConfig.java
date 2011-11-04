@@ -41,7 +41,7 @@ public class AppConfig {
   public static final String IPT_LONGITUDE = "location.lon";
   private static final String PRODUCTION_TYPE_LOCKFILE = ".gbifreg";
   private Properties properties = new Properties();
-  private Logger log = Logger.getLogger(this.getClass());
+  private static final Logger LOG = Logger.getLogger(AppConfig.class);
   private DataDir dataDir;
   private REGISTRY_TYPE type;
 
@@ -87,7 +87,7 @@ public class AppConfig {
         return Double.valueOf(val);
       }
     } catch (NumberFormatException e) {
-      log.warn(e.getMessage());
+      LOG.warn(e.getMessage());
     }
     return null;
   }
@@ -99,7 +99,7 @@ public class AppConfig {
         return Double.valueOf(val);
       }
     } catch (NumberFormatException e) {
-      log.warn(e.getMessage());
+      LOG.warn(e.getMessage());
     }
     return null;
   }
@@ -167,9 +167,9 @@ public class AppConfig {
   }
 
   /**
-   * Deprecated in favor over @See getRegistryType()
-   *
    * @return true if the datadir is linked to the production registry
+   *
+   * @deprecated Deprecated in favor of {@link #getRegistryType()}
    */
   @Deprecated
   public boolean isTestInstallation() {
@@ -181,11 +181,11 @@ public class AppConfig {
     InputStream configStream = streamUtils.classpathStream(CLASSPATH_PROPFILE);
     try {
       Properties props = new Properties();
-      if (configStream != null) {
-        props.load(configStream);
-        log.debug("Loaded default configuration from application.properties in classpath");
+      if (configStream == null) {
+        LOG.error("Could not load default configuration from application.properties in classpath");
       } else {
-        log.error("Could not load default configuration from application.properties in classpath");
+        props.load(configStream);
+        LOG.debug("Loaded default configuration from application.properties in classpath");
       }
       if (dataDir.dataDir != null && dataDir.dataDir.exists()) {
         // read user configuration from data dir if it exists
@@ -193,13 +193,13 @@ public class AppConfig {
         if (userCfgFile.exists()) {
           try {
             props.load(new FileInputStream(userCfgFile));
-            log.debug("Loaded user configuration from " + userCfgFile.getAbsolutePath());
+            LOG.debug("Loaded user configuration from " + userCfgFile.getAbsolutePath());
           } catch (IOException e) {
-            log.warn("DataDir configured, but failed to load user configuration from " + userCfgFile.getAbsolutePath(),
+            LOG.warn("DataDir configured, but failed to load user configuration from " + userCfgFile.getAbsolutePath(),
               e);
           }
         } else {
-          log.warn("DataDir configured, but user configuration doesnt exist: " + userCfgFile.getAbsolutePath());
+          LOG.warn("DataDir configured, but user configuration doesnt exist: " + userCfgFile.getAbsolutePath());
         }
         // check if this datadir is a production or test installation
         // we use a hidden file to indicate the production type
@@ -208,7 +208,7 @@ public class AppConfig {
       // without error replace existing config with new one
       this.properties = props;
     } catch (IOException e) {
-      log.error("Failed to load the default application configuration from application.properties", e);
+      LOG.error("Failed to load the default application configuration from application.properties", e);
     }
   }
 
@@ -223,11 +223,11 @@ public class AppConfig {
         String regTypeAsString = StringUtils.trimToNull(FileUtils.readFileToString(lockFile));
         this.type = REGISTRY_TYPE.valueOf(regTypeAsString);
       } catch (IOException e) {
-        log.error("Cannot read datadir registry lock", e);
+        LOG.error("Cannot read datadir registry lock", e);
         throw new InvalidConfigException(TYPE.INVALID_DATA_DIR, "Cannot read datadir registry lock");
       }
     } else {
-      log.warn("DataDir is not locked to a registry yet !!!");
+      LOG.warn("DataDir is not locked to a registry yet !!!");
     }
   }
 
@@ -282,9 +282,9 @@ public class AppConfig {
       lock.write(type.name());
       lock.flush();
       this.type = type;
-      log.info("Locked DataDir to registry of type " + type);
+      LOG.info("Locked DataDir to registry of type " + type);
     } catch (IOException e) {
-      log.error("Cannot lock the datadir to registry type " + type, e);
+      LOG.error("Cannot lock the datadir to registry type " + type, e);
       throw new InvalidConfigException(TYPE.CONFIG_WRITE, "Cannot lock the datadir to registry type " + type);
     } finally {
       if (lock != null) {

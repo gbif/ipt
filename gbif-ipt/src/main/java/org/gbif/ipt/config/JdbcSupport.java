@@ -115,14 +115,6 @@ public class JdbcSupport {
       }
     }
 
-    private Pattern findClause(String clause, boolean requireWhitespace) {
-      String white = " *";
-      if (requireWhitespace) {
-        white = " +";
-      }
-      return Pattern.compile(clause.replace(" ", white).replace("?", "(\\d*)"), Pattern.CASE_INSENSITIVE);
-    }
-
     public String getDriver() {
       return driver;
     }

@@ -37,7 +37,7 @@ public class SetupAction extends BaseAction {
   private DataDir dataDir;
   @Inject
   private ExtensionManager extensionManager;
-  private UserValidator userValidation = new UserValidator();
+  private final UserValidator userValidation = new UserValidator();
 
   // action attributes to be set
   protected String dataDirPath;
@@ -102,17 +102,12 @@ public class SetupAction extends BaseAction {
   }
 
   /**
-   * If the config is in debug mode, then production settings are not possible
+   * If the config is in debug mode, then production settings are not possible.
    *
    * @return true if production setting is allowed
    */
   public boolean isProductionSettingAllowed() {
     return !cfg.debug();
-  }
-
-  @Override
-  public void prepare() throws Exception {
-    super.prepare();
   }
 
   public void setBaseURL(String baseUrlVerbatim) {
@@ -144,8 +139,7 @@ public class SetupAction extends BaseAction {
   }
 
   /**
-   * Method called when setting up the IPT for the very first time. There might not even be a logged in user, be
-   * careful
+   * Method called when setting up the IPT for the very first time. There might not even be a logged in user, be careful
    * to not require an admin!
    */
   public String setup() {
