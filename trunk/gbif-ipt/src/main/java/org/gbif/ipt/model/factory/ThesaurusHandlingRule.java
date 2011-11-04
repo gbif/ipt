@@ -26,8 +26,8 @@ import org.xml.sax.Attributes;
 public class ThesaurusHandlingRule extends Rule {
 
   public static final String ATTRIBUTE_THESAURUS = "thesaurus";
-  protected static Logger log = Logger.getLogger(ThesaurusHandlingRule.class);
-  private VocabulariesManager vocabManager;
+  private static final Logger LOG = Logger.getLogger(ThesaurusHandlingRule.class);
+  private final VocabulariesManager vocabManager;
 
   @Inject
   public ThesaurusHandlingRule(VocabulariesManager vocabManager) {
@@ -44,19 +44,19 @@ public class ThesaurusHandlingRule extends Rule {
           URL vocabURL = new URL(attributes.getValue(i));
           tv = vocabManager.get(vocabURL);
         } catch (Exception e) {
-          log
+          LOG
             .error("Vocabulary with location " + attributes.getValue(i) + " couldnt get hold of: " + e.getMessage(), e);
         }
 
-        if (tv != null) {
+        if (tv == null) {
+          LOG.warn("No Vocabulary object exists for the URL[" + attributes.getValue(i) + "] so cannot be set");
+        } else {
           Object extensionPropertyAsObject = getDigester().peek();
           if (extensionPropertyAsObject instanceof ExtensionProperty) {
             ExtensionProperty eProperty = (ExtensionProperty) extensionPropertyAsObject;
             eProperty.setVocabulary(tv);
-            log.debug("Vocabulary with URI[" + tv.getUri() + "] added to extension property");
+            LOG.debug("Vocabulary with URI[" + tv.getUri() + "] added to extension property");
           }
-        } else {
-          log.warn("No Vocabulary object exists for the URL[" + attributes.getValue(i) + "] so cannot be set");
         }
 
         break; // since we found the attribute

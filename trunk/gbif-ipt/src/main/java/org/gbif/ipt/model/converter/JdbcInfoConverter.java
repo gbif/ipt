@@ -30,7 +30,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 @Singleton
 public class JdbcInfoConverter implements Converter {
 
-  private JdbcSupport jdbcs;
+  private final JdbcSupport jdbcs;
 
   @Inject
   public JdbcInfoConverter(JdbcSupport jdbcs) {
@@ -47,8 +47,7 @@ public class JdbcInfoConverter implements Converter {
   }
 
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
-    JdbcInfo info = jdbcs.get(reader.getValue());
-    return info;
+    return jdbcs.get(reader.getValue());
   }
 
 }

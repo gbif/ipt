@@ -30,7 +30,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 @Singleton
 public class UserEmailConverter implements Converter {
 
-  private UserAccountManager userManager;
+  private final UserAccountManager userManager;
 
   @Inject
   public UserEmailConverter(UserAccountManager userManager) {

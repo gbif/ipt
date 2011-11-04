@@ -15,7 +15,6 @@ import java.util.Set;
 
 import com.google.common.base.Objects;
 import org.apache.commons.lang.builder.CompareToBuilder;
-import org.apache.log4j.Logger;
 
 import static com.google.common.base.Objects.equal;
 
@@ -28,7 +27,6 @@ import static com.google.common.base.Objects.equal;
 public class VocabularyConcept implements Comparable, Serializable {
 
   private static final long serialVersionUID = 900099923L;
-  private static Logger log = Logger.getLogger(VocabularyConcept.class);
 
   private Vocabulary vocabulary;
   private String identifier; // usually short, e.g. DE

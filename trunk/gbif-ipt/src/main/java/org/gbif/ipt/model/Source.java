@@ -26,12 +26,15 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.Objects;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 import static com.google.common.base.Objects.equal;
 
 public abstract class Source implements Comparable<Source>, Serializable {
 
   public static class FileSource extends Source {
+
+    private static final Logger LOG = Logger.getLogger(FileSource.class);
 
     private String fieldsTerminatedBy = "\t";
     private String fieldsEnclosedBy;
@@ -100,16 +103,12 @@ public abstract class Source implements Comparable<Source>, Serializable {
       return rows;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Iterable#iterator()
-     */
     public Iterator<String[]> iterator() {
       try {
         CSVReader reader = getReader();
         return reader.iterator();
       } catch (IOException e) {
-        e.printStackTrace();
+        LOG.warn("Exception caught", e);
       }
       return null;
     }
@@ -293,6 +292,7 @@ public abstract class Source implements Comparable<Source>, Serializable {
     if (this == other) {
       return true;
     }
+
     if (!Source.class.isInstance(other)) {
       return false;
     }

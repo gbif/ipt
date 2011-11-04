@@ -30,7 +30,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 @Singleton
 public class ExtensionRowTypeConverter implements Converter {
 
-  private ExtensionManager extManager;
+  private final ExtensionManager extManager;
   private Extension lastExtensionConverted;
 
   @Inject

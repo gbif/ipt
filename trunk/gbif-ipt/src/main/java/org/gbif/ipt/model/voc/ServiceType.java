@@ -33,8 +33,8 @@ public enum ServiceType {
   DWC_ARCHIVE("DWC-ARCHIVE", "http://wiki.tdwg.org/twiki/bin/view/DarwinCore/WebHome"),
   GWC("GWC", "http://geowebcache.org");
 
-  public String code;
-  public String link;
+  private String code;
+  private String link;
 
   ServiceType(String code, String link) {
     this.code = code;
@@ -44,5 +44,21 @@ public enum ServiceType {
   @Override
   public String toString() {
     return this.code;
+  }
+
+  public String getCode() {
+    return code;
+  }
+
+  public void setCode(String code) {
+    this.code = code;
+  }
+
+  public String getLink() {
+    return link;
+  }
+
+  public void setLink(String link) {
+    this.link = link;
   }
 }

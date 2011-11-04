@@ -32,7 +32,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 @Singleton
 public class ExtensionMappingConverter implements Converter {
 
-  private ExtensionManager extManager;
+  private final ExtensionManager extManager;
 
   @Inject
   public ExtensionMappingConverter(ExtensionManager extManager) {

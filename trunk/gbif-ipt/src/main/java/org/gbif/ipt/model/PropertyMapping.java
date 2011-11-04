@@ -37,11 +37,10 @@ public class PropertyMapping extends ArchiveField implements Serializable {
     return translation;
   }
 
-  /*
-   * The mapping doesnt keep track of the data type.
-   * Use extension and its ExtensionProperty class instead!
-   * (non-Javadoc)
-   * @see org.gbif.dwc.text.ArchiveField#getType()
+  /**
+   * The mapping doesn't keep track of the data type.
+   *
+   * @deprecated Use extension and its ExtensionProperty class instead!
    */
   @Override
   @Deprecated

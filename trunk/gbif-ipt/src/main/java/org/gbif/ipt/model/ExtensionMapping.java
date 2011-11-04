@@ -54,10 +54,10 @@ public class ExtensionMapping implements Serializable {
             break;
           }
         }
-        if (value != null) {
-          columns.add("Column #" + (count + 1) + " - " + value);
-        } else {
+        if (value == null) {
           columns.add("Column #" + (count + 1));
+        } else {
+          columns.add("Column #" + (count + 1) + " - " + value);
         }
       }
       return columns;

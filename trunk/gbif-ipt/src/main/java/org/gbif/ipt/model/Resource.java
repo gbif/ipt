@@ -116,11 +116,9 @@ public class Resource implements Serializable, Comparable<Resource> {
     boolean result = false;
     if (mapping != null) {
       result = mappings.remove(mapping);
-      if (result && mapping.isCore()) {
-        // if last core gets deleted, delete all other mappings too!
-        if (getCoreMappings().isEmpty()) {
-          mappings.clear();
-        }
+      // if last core gets deleted, delete all other mappings too!
+      if (result && mapping.isCore() && getCoreMappings().isEmpty()) {
+        mappings.clear();
       }
     }
     return result;

@@ -41,11 +41,11 @@ import org.xml.sax.SAXException;
 @Singleton
 public class ExtensionFactory {
 
-  protected static Logger log = Logger.getLogger(ExtensionFactory.class);
+  private static final Logger LOG = Logger.getLogger(ExtensionFactory.class);
   public static final String EXTENSION_NAMESPACE = "http://rs.gbif.org/extension/";
-  private ThesaurusHandlingRule thesaurusRule;
-  private SAXParserFactory saxf;
-  private HttpClient client;
+  private final ThesaurusHandlingRule thesaurusRule;
+  private final SAXParserFactory saxf;
+  private final HttpClient client;
 
   @Inject
   public ExtensionFactory(ThesaurusHandlingRule thesaurusRule, SAXParserFactory factory, DefaultHttpClient client) {
@@ -55,7 +55,7 @@ public class ExtensionFactory {
   }
 
   /**
-   * Builds extensions from the supplied Strings which should be URLs
+   * Builds extensions from the supplied Strings which should be URLs.
    *
    * @param urls To build extensions from
    *
@@ -71,9 +71,9 @@ public class ExtensionFactory {
           extensions.add(e);
         }
       } catch (IOException e) {
-        log.error("Unable to access extension definition defined at " + urlAsString, e);
+        LOG.error("Unable to access extension definition defined at " + urlAsString, e);
       } catch (SAXException e) {
-        log.error("Unable to parse extension definition defined at " + urlAsString, e);
+        LOG.error("Unable to parse extension definition defined at " + urlAsString, e);
       }
     }
 
@@ -178,18 +178,18 @@ public class ExtensionFactory {
         InputStream is = entity.getContent();
         try {
           Extension e = build(is);
-          log.info("Successfully parsed extension: " + e.getTitle());
+          LOG.info("Successfully parsed extension: " + e.getTitle());
           return e;
 
         } catch (SAXException e) {
-          log.error("Unable to parse XML for extension: " + e.getMessage(), e);
+          LOG.error("Unable to parse XML for extension: " + e.getMessage(), e);
         } finally {
           is.close();
         }
         entity.consumeContent();
       }
     } catch (Exception e) {
-      log.error(e);
+      LOG.error(e);
     }
 
     // close http connection
