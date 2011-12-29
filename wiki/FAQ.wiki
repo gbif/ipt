@@ -6,6 +6,25 @@ In this page you will find answers for the most frequent asked questions about t
 
 <wiki:toc max_depth="2" />
 
+= Upgrading to 2.0.3 =
+
+== After upgrading the IPT to version 2.0.3 from version 2.0.2, the resources were changed from taxonomic checklist resources to occurrence resources ==
+
+In version 2.0.3, the IPT rigidly controls how data publishers define the resource type (Occurrence vs Taxonomic). Based on the resource type chosen in the Basic Metadata page, the corresponding set of core terms will be available for mapping. Conversely, in the case a core mapping has been made, the resource type will be automatically selected and frozen in the Basic Metadata page. 
+
+If you encounter the resource type changing during the upgrade, you can enforce the resource type by adding the following line to the resource's resource.xml file ( located at: /ipt_data_directry/resources/myResource/resource.xml ) at the top, directly under {{{<resource>:}}}
+{{{
+<resource>
+  <!-- for resource type = Taxonomic Checklist -->
+  <coreType>Checklist</coreType>
+}}}
+or
+{{{
+<resource>
+  <!-- for resource type = Taxonomic Checklist -->
+  <coreType>Occurrence</coreType>
+}}}
+Furthermore, if there is a {{{<subtype>}}} element, just delete it. Restart the upgrade from the beginning, and be sure to press the publish all resources button immediately after selecting the IPT's data directory. 
 
 = Installation =
 
