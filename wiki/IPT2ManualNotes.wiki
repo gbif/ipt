@@ -628,7 +628,7 @@ If the validation test is unsuccessful, an error message will suggest the nature
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminRegistrationStep1.png]
 
-If the IPT passes the validation step above, a form showing additional information required for registration is presented. In this step, the organisation with which the IPT instance will be associated must already be registered in the GBIF Registry. 
+If the IPT passes the validation step above, a form showing additional information required for registration is presented. In this step, the IPT instance is associated to an organization. *The organization must already be registered in the GBIF Registry, and its password must be known.*  For explanations of the fields and selections on this form, refer to the information below.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTAdminRegistrationStep2.png]
 
