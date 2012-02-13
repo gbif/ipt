@@ -203,8 +203,8 @@ If there are any public resources, they will appear in a table having the follow
 *Logo* - the resource logo (configurable in Additional Metadata page of the resource metadata)<br>
 *Name* - the title of the resource as given in the Title entry of the resource metadata. The Name appears as a link, which will open a Metadata Overview page (see below) for the selected resource.<br>
 *Organisation* - the organisation under which the resource has been registered, if any. If the resource is not registered, the value in the Organisation column will be "Not registered". Review the information under the "Organisations" heading in the "Administration Menu" section for more information about registering organisations and registering a resource under an organisation.<br>
-*Type* - the type of the resource as given in the Type drop down on the Basic Metadata page of the resource metadata<br>
-*Subtype* - the subtype of the resource as given in the Subtype drop down on the Basic Metadata page of the resource metadata<br>
+*Type* - the type of the resource as given in the Type drop down on the [IPT2ManualNotes#Basic_Metadata Basic Metadata] page of the resource metadata<br>
+*Subtype* - the subtype of the resource as given in the Subtype drop down on the [IPT2ManualNotes#Basic_Metadata Basic Metadata] page of the resource metadata<br>
 *Records* - the number of rows of data in the core data file that were successfully loaded into the IPT for the resource.<br>
 *Last modified* - either the date the resource was created or the date on which the data or metadata were last modified, whichever is more recent.<br>
 *Last publication* - the date the resource was last published.
@@ -248,7 +248,7 @@ This area of the Resource Overview page allows a user to see basic information a
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataMissing.png]
 
-Clicking on the "Edit" button opens the [IPT2ManualNotes#Basic_Metadata Basic Metadata] page, the first of a series of metadata pages. Each page will appear in sequence as the button labeled "Save" is clicked upon finishing entering data on any given metadata page. Saving the metadata on the last of the metadata pages will transition back to the Basic Metadata page. Cicking on the button labeled "Cancel" on an given metadata page will disregard any changes made on that page and return to the Resoure Overview page. In a column at the right of each metadata page is a list of links to all of the metadata pages for easy reference and navigation. Click on any of the links to open the metadata page for that topic. 
+Clicking on the "Edit" button opens the [IPT2ManualNotes#Basic_Metadata Basic Metadata] page, the first of a series of metadata pages. Each page will appear in sequence as the button labeled "Save" is clicked upon finishing entering data on any given metadata page. Saving the metadata on the last of the metadata pages will transition back to the [IPT2ManualNotes#Basic_Metadata Basic Metadata] page. Clicking on the button labeled "Cancel" on an given metadata page will disregard any changes made on that page and return to the Resource Overview page. In a column at the right of each metadata page is a list of links to all of the metadata pages for easy reference and navigation. Click on any of the links to open the metadata page for that topic. 
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceMetadataPagesList.png]
 
@@ -325,7 +325,7 @@ This metadata page allows the user to create one or more sets of keywords about 
     * *Keyword List* - enter a list of keywords, separated by commas, that describe or are related to the resource.
     * *Add new keyword set* - click on this link to initiate a form for an additional keyword set.
 ====Associated Parties====
-This metadata pages contains information about one or more people or organisations associated with the resource in addition to those already covered on the Basic Metadata page. Many of the controls on this page are in common with those for the Resource Contact on the "Basic Metadata" page. Explanations for the remainder of the controls are given below.
+This metadata pages contains information about one or more people or organisations associated with the resource in addition to those already covered on the Basic Metadata page. Many of the controls on this page are in common with those for the Resource Contact on the [IPT2ManualNotes#Basic_Metadata Basic Metadata] page. Explanations for the remainder of the controls are given below.
   * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataAssociatedParties.png]
     * *Copy details from contact* - if this person or organisation is the same as the Resource Contact on the Basic Metadata page, all of the details can be copied into the equivalent fields for the associated party by clicking on this link.
     * *Remove this associated party* - click on this link to remove the associated party that follows immediately below the link.
