@@ -3,9 +3,7 @@ The core development of the IPT is directed by GBIF, but the coding, the documen
 
 = How To Contribute =
 == Documentation ==
-We are always keen on getting a better documentation. The easiest and quickest way to help us improving the user manual is to [http://code.google.com/p/gbif-providertoolkit/issues/entry?template=Documentation%20issue submit documentation issues] into our issue tracker and mark them with "Documentation". This will be picked up by our technical writer and finally end up in the [IPT2ManualNotes user manual].
-
-If you feel there is a lot to modify, please [[http://lists.gbif.org/mailman/listinfo/ipt Mailing List] get in touch with us].
+We are always keen on getting better documentation. The easiest and quickest way to help us improve the user manual is to [http://code.google.com/p/gbif-providertoolkit/issues/entry?template=Documentation%20issue submit documentation issues] into our issue tracker and mark them with "Documentation". This will be picked up by our technical writer and finally end up in the [IPT2ManualNotes user manual].
 
 == Translations ==
 The IPT and the documentation both need internationalisation. Currently the IPT has been translated into the following languages: 
