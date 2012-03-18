@@ -7,7 +7,7 @@ body {
     font-family: arial, helvetica, verdana, sans-serif;
     font-size: 12px;
     line-height: 1.2em;
-    color: #666666;	
+    color: #666666;
 }
 .resourceminilogo{
 	max-width: 30px;
@@ -65,11 +65,11 @@ hr {
 	bottom:-6px;
 }
 
-#topmenu {	
+#topmenu {
 	margin: 0px 0px 0px 0px;
 	padding: 0px 0px 0px 0px;
 }
-	
+
 #topmenu li
 {	float: left;
 	list-style: none;
@@ -86,7 +86,7 @@ hr {
 }
 #topmenu li.current{
 	font-weight:bold !important;
-}	
+}
 #topmenu li ul {
 	margin: 0;
 	padding: 0;
@@ -100,7 +100,7 @@ hr {
 }
 
 /*
-#availableLocales{   
+#availableLocales{
 	display: none;
 	padding: 0;
 }
@@ -113,13 +113,13 @@ hr {
 	margin: 0px;
 }
 */
-   
-   
+
+
 #reports{
     position:absolute;
     right: 6px;
     top: 50px;
-    padding:5px; 
+    padding:5px;
 }
 
 #menu {
@@ -142,7 +142,7 @@ hr {
     height: 35px;
     text-align:center;
     font-family: arial, helvetica, verdana, sans-serif;
-	background: #aaa; 
+	background: #aaa;
 }
 
 #menu a{
@@ -160,10 +160,10 @@ hr {
 	height: 26px;
 	width: 144px;
 	color: #FFF;
-	background: transparent url(../images/menubtn.gif) no-repeat; 
+	background: transparent url(../images/menubtn.gif) no-repeat;
 }
 #menu li.current{
-	background: #4ea226; 
+	background: #4ea226;
 }
 #menu li:hover {
     opacity: 0.8;
@@ -179,15 +179,15 @@ hr {
 	height: expression(this.height > 100 ? "100px" : true);
 }
 #search {
-	position: relative; 
-	top:-40px; 
-	right:0; 
-	width:250px; 
-	padding:7px; 
+	position: relative;
+	top:-40px;
+	right:0;
+	width:250px;
+	padding:7px;
 	float: right;
 }
 #search #search-input {
-	width:190px; 
+	width:190px;
 	padding:3px;
 	border:1px solid #AFAFAF;
 }
@@ -202,23 +202,23 @@ hr {
 	float:right;
 }
 #sidebar:after{
-    /*Having something in the content such as a period 
+    /*Having something in the content such as a period
     gives a more consistent results across browsers.*/
-    content: "."; 
-    display: block; 
-    height: 10px; 
-    font-size:0;	
-    clear: both; 
+    content: ".";
+    display: block;
+    height: 10px;
+    font-size:0;
+    clear: both;
     visibility:hidden;
 }
 ul.sidebar {
-	margin:0; 
-	padding:0; 
-	list-style:none; 
+	margin:0;
+	padding:0;
+	list-style:none;
 }
 li.sidebar {
-	margin:0px; 
-	padding: 2px; 
+	margin:0px;
+	padding: 2px;
 	padding-left:5px;
 }
 li.current {
@@ -226,23 +226,23 @@ li.current {
 }
 
 
-#content { 
+#content {
 	padding: 10px;
 }
-#content.fixed { 
+#content.fixed {
 	position: relative;
-	/*top: -3em;*/	
+	/*top: -3em;*/
 	width: 750px;
 	float:left;
 }
 #content:after{
-    /*Having something in the content such as a period 
+    /*Having something in the content such as a period
     gives a more consistent results across browsers.*/
-    content: "."; 
-    display: block; 
-    height: 10px; 
-    font-size:0;	
-    clear: both; 
+    content: ".";
+    display: block;
+    height: 10px;
+    font-size:0;
+    clear: both;
     visibility:hidden;
 }
 
@@ -255,14 +255,14 @@ li.current {
 	margin-right:-10px;
 }
 #footer ul {
-	margin:0; 
-	padding:5px; 
-	list-style:none; 
+	margin:0;
+	padding:5px;
+	list-style:none;
 }
 #footer li {
-	display:inline; 
-	margin:0; 
-	padding: 0px 10px; 
+	display:inline;
+	margin:0;
+	padding: 0px 10px;
 }
 
 
@@ -270,7 +270,7 @@ li.current {
 /* other classes */
 
 ul.fielderror{
-	list-style:none; 
+	list-style:none;
 	color: #d8424f;
 	margin: 10px 15px 5px 0px;
 	border: 1px solid;
@@ -284,7 +284,7 @@ ul.fielderror{
 	color: #d8424f;
 	background-color: #ffdddd;
 	background-image: url('../images/minus.png');
-	list-style:none; 
+	list-style:none;
 	margin: 10px 15px 5px 0px;
 	border: 1px solid;
 	padding:5px 15px 5px 25px;
@@ -295,7 +295,7 @@ ul.fielderror{
 	color: #9F6000;
 	background-color: #FEEFB3;
 	background-image: url('../images/warning.gif');
-	list-style:none; 
+	list-style:none;
 	margin: 10px 15px 5px 0px;
 	border: 1px solid;
 	padding:5px 15px 5px 25px;
@@ -306,7 +306,7 @@ ul.fielderror{
 	color: #4ea226;
 	background-color: #dff2bf;
 	background-image: url('../images/good.gif');
-	list-style:none; 
+	list-style:none;
 	margin: 10px 15px 5px 0px;
 	border: 1px solid;
 	padding:5px 15px 5px 25px;
@@ -361,13 +361,13 @@ ul.fielderror{
 div.info{
 	display: none;
     position:absolute;
-    z-index:9999;  
-    max-width:350px;  
-    padding:7px; 
-    color: black;  
-    background-color:#e7f1fa; 
-    font-size:12px;  
-    border:1px solid #ccc; 
+    z-index:9999;
+    max-width:350px;
+    padding:7px;
+    color: black;
+    background-color:#e7f1fa;
+    font-size:12px;
+    border:1px solid #ccc;
 }
 div.info ol{
 	color: red;
@@ -396,7 +396,7 @@ div.newline {
 	margin-left: 0.5em;
 	width: 90%;
 }
-.topForm input.button {	
+.topForm input.button {
 	width: auto;
 }
 .topForm select{
@@ -426,13 +426,13 @@ div.newline {
 .checkbox {
   	padding-top: 1em;
 }
-.checkbox input {	
+.checkbox input {
 	display: inline;
 	width: 5%;
 	margin-left: 0.5em;
 }
 .checkbox label {
-	display: inline-block;	
+	display: inline-block;
 }
 .checkbox img {
 	display: inline;
@@ -444,13 +444,25 @@ div.newline {
 	width: 200px;
 }
 
+.radio input {
+  display: inline;
+  width: 5%;
+}
+.radio label {
+  display: inline-block;
+  font-weight:bold;
+}
+.radioText {
+  padding-top: 1em;
+}
+
 form h2 {
 	clear:left;
 	font-size:1.6em;
 	font-weight:normal;
 }
-form.half{		
-	width: 50%;		
+form.half{
+	width: 50%;
 }
 div.third{
 	clear: both;
@@ -463,7 +475,7 @@ div.third select{
 	width: 85%;
 }
 div.third img{
-	max-width:90%;	
+	max-width:90%;
 	vertical-align: middle;
 }
 div.third > div{
@@ -471,16 +483,16 @@ div.third > div{
 	float: left;
 }
 div.half{
-	clear: both;	
+	clear: both;
 }
 div.half:after{
-    /*Having something in the content such as a period 
+    /*Having something in the content such as a period
     gives a more consistent results across browsers.*/
-    content: "."; 
-    display: block; 
-    height: 0; 
-    font-size:0;	
-    clear: both; 
+    content: ".";
+    display: block;
+    height: 0;
+    font-size:0;
+    clear: both;
     visibility:hidden;
 }
 div.half > div{
@@ -506,7 +518,7 @@ div.halfcolumn select{
 div.halfcolumn input{
 	width: 85%;
 }
-div.textinline {  	
+div.textinline {
   	position: relative;
 }
 div.textinline img {
@@ -517,49 +529,49 @@ div.textRight{
 	margin-right: 200px;
 }
 div.textLeft{
-	position:absolute;	
+	position:absolute;
 	width: 720px;
 	right:0;
 	top:0;
 }
 
 /* overlay div for modal views */
-#modalbox { 
+#modalbox {
 	display: none;
-	position: absolute; 
-	left: 0px; 
-	top: 0px; 
-	width:100%; 
-	height:100%; 
-	text-align:center; 
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width:100%;
+	height:100%;
+	text-align:center;
 	z-index: 999;
 }
 #modalback {
-	position: absolute; 
-	left: 0px; 
-	top: 0px; 
-	width:100%; 
-	height:100%; 
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width:100%;
+	height:100%;
 	background-color: #000;
 	filter:alpha(opacity=80);
 	opacity: 0.8;
-	-moz-opacity:0.8; 
+	-moz-opacity:0.8;
 }
 #modalcontainer{
 	position: relative;
 	display: block;
-	width: 100%; 
-	margin-top: 80px; 
+	width: 100%;
+	margin-top: 80px;
 	min-height: 50px;
-	text-align:center; 
+	text-align:center;
 }
 #modalcontent {
 	display: inline-block;
-	margin: 0px auto; 
+	margin: 0px auto;
 	min-width: 100px;
-	background-color: #fff; 
-	border:1px solid #000; 
-	padding:15px; 
+	background-color: #fff;
+	border:1px solid #000;
+	padding:15px;
 }
 
 
@@ -602,43 +614,43 @@ table.sortable tr.even{
 	background-color: #fff;
 }
 
-#resourcestable {	
+#resourcestable {
 	width: 100%;
 }
 
-#taxonKeywords th{	
+#taxonKeywords th{
 		min-width: 60px;
 		width: 60px;
 }
 
 /* horizontal list */
 ul.horizontal {
-	margin:0; 
-	padding:0; 
-	list-style:none; 
+	margin:0;
+	padding:0;
+	list-style:none;
 }
 li.horizontal {
-	display:inline; 
-	margin:0; 
-	padding: 0px 10px 0px 0px; 
+	display:inline;
+	margin:0;
+	padding: 0px 10px 0px 0px;
 }
 
 ul.simple {
-	margin:0; 
-	padding:0; 
+	margin:0;
+	padding:0;
 	list-style:none;
-    text-align: left;	 
+    text-align: left;
 }
 
 
-/* 
+/*
 	2 column layout used for definitions with first column being the title, second the body for a nested table with more details
-	the actions div inside the title is SUPPOSED to stay at the bottom of the title div - but that needs to be FIXED !!! 
+	the actions div inside the title is SUPPOSED to stay at the bottom of the title div - but that needs to be FIXED !!!
 */
 div.definition {
 	width: 100%;
 	overflow: hidden;
-	margin-bottom: 10px; 
+	margin-bottom: 10px;
 }
 
 div.definition div.title{
@@ -646,27 +658,27 @@ div.definition div.title{
 	float: left;
     background-color: #f1f1f1;
 	padding: 5px 0 5px 5px;
-	margin-bottom: -100000px; 
-	padding-bottom: 100000px; 
+	margin-bottom: -100000px;
+	padding-bottom: 100000px;
 }
 div.definition div.head{
 	font-weight: bold;
 }
-div.definition div.actions { 
+div.definition div.actions {
 	margin: 10px 0 0 0;
 }
-div.definition div.actions form{ 
+div.definition div.actions form{
 	margin: 0;
 }
-div.definition div.body{ 
+div.definition div.body{
 	width: 78%;
 	float: right;
     font-size: 12px;
 	padding: 5px 0px;
-	margin-bottom: -2000px; 
-	padding-bottom: 2000px; 
+	margin-bottom: -2000px;
+	padding-bottom: 2000px;
 }
-div.definition div.body > div{ 
+div.definition div.body > div{
     padding-bottom: 10px;
 }
 div.definition div.titleOverview{
@@ -674,8 +686,8 @@ div.definition div.titleOverview{
 	float: left;
     background-color: #f1f1f1;
 	padding: 5px 0 5px 5px;
-	margin-bottom: -100000px; 
-	padding-bottom: 100000px; 
+	margin-bottom: -100000px;
+	padding-bottom: 100000px;
 }
 div.titleOverview input[type="submit"], div.titleOverview button{
 	float: right;
@@ -686,8 +698,8 @@ div.definition div.bodyOverview{
 	float: right;
     font-size: 12px;
 	padding: 5px 0px;
-	margin-bottom: -2000px; 
-	padding-bottom: 2000px; 
+	margin-bottom: -2000px;
+	padding-bottom: 2000px;
 }
 
 div.details{
@@ -701,7 +713,7 @@ div.details div.subitem{
 	padding-left:20px;
 }
 
-div.details table th, 
+div.details table th,
 div.details td{
     color: #999;
     font-size: 11px;
@@ -710,7 +722,7 @@ div.details td{
     vertical-align:text-top;
 }
 
-div.details table th.title, 
+div.details table th.title,
 div.details td{
     color: #666;
 }
@@ -722,7 +734,7 @@ div.detailsSource table{
     margin: 0;
     padding: 0;
 }
-div.detailsSource table th, 
+div.detailsSource table th,
 div.detailsSource td{
     color: #999;
     font-size: 11px;
@@ -730,7 +742,7 @@ div.detailsSource td{
     padding:0px 10px 0px 0px;
     vertical-align:text-top;
 }
-div.detailsSource table th.title, 
+div.detailsSource table th.title,
 div.detailsSource td{
     color: #666;
 }
@@ -799,7 +811,7 @@ img.info{
 .report{
 	background-color: #f3f3f3;
 	color: #111;
-	padding: 10px;	
+	padding: 10px;
 }
 .actions select, .actions input[type="file"]{
 	width: 200px;

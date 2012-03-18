@@ -18,15 +18,19 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 /**
  * The Action responsible for all user input relating to the IPT configuration.
  */
 public class SetupAction extends BaseAction {
+  protected static Logger log = Logger.getLogger(SetupAction.class);
 
   private static final long serialVersionUID = 4726973323043063968L;
   @Inject
@@ -43,12 +47,27 @@ public class SetupAction extends BaseAction {
   protected String dataDirPath;
   protected User user = new User();
   private String password2;
-  protected Boolean production;
+  protected String modeSelected;
   protected String baseURL;
   protected String proxy;
   // can't pass a literal boolean to ftl, using int instead...
   protected Integer ignoreUserValidation = 0;
   private boolean setup2 = false;
+
+  private static final String MODE_DEVELOPMENT = "Test";
+  private static final String MODE_PRODUCTION = "Production";
+  private static List<String> MODES = new ArrayList<String>();
+
+  static {
+    List<String> ls = new ArrayList<String>();
+    ls.add(MODE_DEVELOPMENT);
+    ls.add(MODE_PRODUCTION);
+    MODES = Collections.unmodifiableList(ls);
+  }
+
+  public List getModes(){
+    return MODES;
+  }
 
   public String continueHome() {
     return SUCCESS;
@@ -97,10 +116,6 @@ public class SetupAction extends BaseAction {
     return user;
   }
 
-  public Boolean isProduction() {
-    return production;
-  }
-
   /**
    * If the config is in debug mode, then production settings are not possible.
    *
@@ -124,10 +139,6 @@ public class SetupAction extends BaseAction {
 
   public void setPassword2(String password2) {
     this.password2 = password2;
-  }
-
-  public void setProduction(Boolean production) {
-    this.production = production;
   }
 
   public void setProxy(String proxy) {
@@ -172,6 +183,11 @@ public class SetupAction extends BaseAction {
     return INPUT;
   }
 
+  /**
+   * Method called when setting up the IPT for the very first time. The admin user, mode, base URL, and proxy are set.
+   *
+   * @return Struts Action String
+   */
   public String setup2() {
     // first check if a data directory exists.
     if (!dataDir.isConfigured()) {
@@ -206,15 +222,17 @@ public class SetupAction extends BaseAction {
           gotValidUser = userValidation.validate(this, user);
 
           // when in dev mode, production is disabled in the form
-          if (production == null) {
-            production = false;
+          if (modeSelected == null) {
+            modeSelected = MODE_DEVELOPMENT;
           }
 
           // set IPT type: registry URL
-          if (production && !cfg.devMode()) {
+          if (modeSelected.equalsIgnoreCase(MODE_PRODUCTION) && !cfg.devMode()) {
             cfg.setRegistryType(REGISTRY_TYPE.PRODUCTION);
+            log.info("Production mode has been selected");
           } else {
             cfg.setRegistryType(REGISTRY_TYPE.DEVELOPMENT);
+            log.info("Test mode has been selected");
           }
         }
 
@@ -310,4 +328,16 @@ public class SetupAction extends BaseAction {
     }
   }
 
+  public String getModeSelected() {
+    return modeSelected;
+  }
+
+  /**
+   * The mode the IPT will run in: test or production.
+   *
+   * @param modeSelected mode that has been selected to run the IPT in
+   */
+  public void setModeSelected(String modeSelected) {
+    this.modeSelected = modeSelected;
+  }
 }
