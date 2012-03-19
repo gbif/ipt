@@ -1,5 +1,5 @@
 [#ftl]
-<script type="text/javascript">	
+<script type="text/javascript">
 	$(document).ready(function(){
   		langs("${localeLanguage}","${baseURL}");
 	});
@@ -9,7 +9,7 @@
 		<div id="wrapper">
 		    <div id="topwrapper">
 		   		 <ul id="topmenu">
-		      [#if (Session.curr_user)??] 
+		      [#if (Session.curr_user)??]
 		        	<li>[@s.text name="menu.loggedin"/] <em>${Session.curr_user.email}</em></li>
 		        	<li[#if currentMenu=="account"] class="current"[/#if] ><a href="${baseURL}/account.do">[@s.text name="menu.account"/]</a></li>
 		        	<li[#if currentMenu=="logout"] class="current"[/#if]><a href="${baseURL}/logout.do">[@s.text name="menu.logout"/]</a></li>
@@ -24,16 +24,20 @@
 			  [/#if]
 				    <li>
 				    	<a href="#"><img src="${baseURL}/images/flags/flag_${localeLanguage}.gif"/></a>
-					    <ul id=languages>					     
-					    	<!-- add more languages as translations become available. -->					    	
-				        	<!-- To see more information go to langs method in global.js -->				        	
+					    <ul id=languages>
+					    	<!-- add more languages as translations become available. -->
+				        	<!-- To see more information go to langs method in global.js -->
 					    </ul>
 				    </li>
 				 </ul>
 		    </div>
-
+      <!-- show production logo only if ipt 1) .war was not built in test mode and 2) run in production mode -->
 			<div id="logo">
-				<img src="${baseURL}/styles/logo.jpg">					
+        [#if !cfg.devMode() && cfg.getRegistryType()=='PRODUCTION']
+          <img src="${baseURL}/styles/logo.jpg">
+        [#else]
+          <img src="${baseURL}/styles/logo-test-mode.png">
+        [/#if]
 			</div>
 
 			<div id="menu">
@@ -41,14 +45,14 @@
 			    	<li[#if currentMenu=='home'] class="current"[/#if]><a href="${baseURL}/">[@s.text name="menu.home"/]</a></li>
 			    	[#if managerRights]
 			    	<li[#if currentMenu=='manage'] class="current"[/#if]><a href="${baseURL}/manage/">[@s.text name="menu.manage"/]</a></li>
-			    	[/#if] 
+			    	[/#if]
 			    	[#if adminRights]
 			    	<li[#if currentMenu=='admin'] class="current"[/#if]><a href="${baseURL}/admin/">[@s.text name="menu.admin"/]</a></li>
 			    	[/#if]
 			    	<li[#if currentMenu=='about'] class="current"[/#if]><a href="${baseURL}/about.do">[@s.text name="menu.about"/]</a></li>
-		        </ul>    
+		        </ul>
 		    </div>
-		    
+
 		    <div id="search">
 		     [#--
 		        <form action="${baseURL}/search" method="get">
@@ -60,7 +64,7 @@
 		     --]
 		    </div>
 
-[#if sideMenuEml!false]		    
+[#if sideMenuEml!false]
 			<div id="sidebar">
 				<h2>[@s.text name='manage.metadata.section' /]</h2>
 				<ul class="sidebar">
@@ -69,16 +73,16 @@
 				[/#list]
 				</ul>
 			</div>
-			
-			<div id="content" class="fixed">			
+
+			<div id="content" class="fixed">
 [#else]
 
-			<div id="content">			
+			<div id="content">
 [/#if]
 
 
 			[@s.actionmessage/]
-			[#if warnings?size>0]		    
+			[#if warnings?size>0]
 			 <ul class="warnMessage">
 			 [#list warnings as w]
 	          <li><span>${w!}</span></li>
@@ -86,6 +90,6 @@
              </ul>
             [/#if]
 			[@s.actionerror/]
-            
+
             <div id="dialog-confirm" title="[@s.text name="basic.confirm"/]" style="display: none;">
 			</div>
