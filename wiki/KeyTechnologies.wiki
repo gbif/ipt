@@ -1,8 +1,0 @@
-#summary Key Technologies used
-#sidebar TableOfContents
-
-= Key Technologies =
- * [http://struts.apache.org/2.x/index.html Struts2]
- * [http://code.google.com/p/google-guice/ Google Guice]
- * [http://freemarker.sourceforge.net/docs/ Freemarker] templating
- * [http://jquery.com/ JQuery] for javascript and ajax
