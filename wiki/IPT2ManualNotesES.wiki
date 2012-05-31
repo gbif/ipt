@@ -4,7 +4,7 @@
 ¡Página en construcción!
 ----
 
-Si desea consultar la versión en Inglés del manual de usuario del IPT versión 2.0.2, por favor visite [IPTUserManualv202 here]_
+Si desea consultar la versión en Inglés del manual de usuario del IPT versión 2.0.2, por favor visite [IPTUserManualv202 esta página]_
 
 <wiki:toc max_depth="4" />
 ----
