@@ -1,6 +1,6 @@
 #summary One-sentence summary of this page.
 
- * [IPT2ManualNotes User Manual]
+ * [IPT2ManualNotes Manual de Usuario]
    * [IPTServerPreparation Server Preparation]
      * [TomcatInstallationMacOSX Install Tomcat on Mac OS X]
      * [TomcatInstallationWindows7 Install Tomcat on Windows 7]
@@ -13,7 +13,7 @@
    * [IPT2ManualNotes#Resources Resources]
    * [IPT2ManualNotes#Glossary Glossary]
    * [FAQ]
- * [IPT2ManualNotes?wl=es User Manual (Spanish)]
+ * [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes?wl=en User Manual (inglés)]
  * Tutorials & Resources
    * [DarwinCore]
    * [DataPreparation Data Preparation]
