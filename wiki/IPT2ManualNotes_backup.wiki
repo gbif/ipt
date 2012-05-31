@@ -804,4 +804,4 @@ Réveillon, A. 2009. The GBIF Integrated Publishing Toolkit User Manual, version
 *RSS* - the acronym for Really Simple Syndication, a type of subscription format for tracking changes to a web site.<br>
 *Shortname* - a short unique name used for resource identification within the IPT and services that access the IPT.<br>
 *Source Data* - in this user manual, the source data are the data that are mapped to core types and extensions within a resource and may consist of text files or a database.<br>
-*Visibility* - a term describing how a resource may be viewed (private, public, or registered). 
+*Visibility* - a term describing how a resource may be viewed (private, public, or registered).
