@@ -1,0 +1,22 @@
+#summary Getting started with IPT development
+
+= Developers Getting Started =
+
+== Introduction  ==
+
+The GBIF IPT is an open source struts2 web application in Java, see KeyTechnologies. Its software architecture and important use cases are described in detail in the [http://code.google.com/p/gbif-providertoolkit/downloads/list?can=2&q=IPT+Architecture IPT Architecture document].
+
+== Getting the source, Maven & Eclipse ==
+We use Maven extensively to manage dependencies and the build process. 
+To checkout the source code and setup an eclipse project simply do the following (it will create an eclipse project folder _gbif-ipt_ in your current dir):
+{{{
+svn checkout http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt
+cd gbif-ipt
+mvn eclipse:eclipse
+mvn
+}}}
+
+The command mvn eclipse:eclipse should have created the project artifacts for eclipse so you can import this folder into your eclipse editor if thats what you are using.
+
+The last command starts up the IPT via the Jetty plugin on port 7001. 
+You should be able to see the IPT running by opening the addess http://localhost:7001 in your browser.

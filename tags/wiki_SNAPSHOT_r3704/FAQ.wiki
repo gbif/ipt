@@ -1,0 +1,78 @@
+#summary Frequently Asked Questions about the GBIF IPT
+#labels Phase-Support
+#sidebar TableOfContents
+
+In this page you will find answers for the most frequent asked questions about the GBIF IPT by installers and users. Please check the contents of this page before contacting the helpdesk.
+
+<wiki:toc max_depth="2" />
+
+= Upgrading to 2.0.3 =
+
+== After upgrading the IPT to version 2.0.3 from version 2.0.2, the resources were changed from taxonomic checklist resources to occurrence resources ==
+
+In version 2.0.3, the IPT rigidly controls how data publishers define the resource type (Occurrence vs Taxonomic). Based on the resource type chosen in the Basic Metadata page, the corresponding set of core terms will be available for mapping. Conversely, in the case a core mapping has been made, the resource type will be automatically selected and frozen in the Basic Metadata page. 
+
+If you encounter the resource type changing during the upgrade, you can enforce the resource type by adding the following line to the resource's resource.xml file ( located at: /ipt_data_directry/resources/myResource/resource.xml ) at the top, directly under {{{<resource>:}}}
+{{{
+<resource>
+  <!-- for resource type = Taxonomic Checklist -->
+  <coreType>Checklist</coreType>
+}}}
+or
+{{{
+<resource>
+  <!-- for resource type = Taxonomic Checklist -->
+  <coreType>Occurrence</coreType>
+}}}
+Furthermore, if there is a {{{<subtype>}}} element, just delete it. Restart the upgrade from the beginning, and be sure to press the publish all resources button immediately after selecting the IPT's data directory. 
+
+= Installation =
+
+== After installing the IPT, I receive a message "FAIL - Application at context path /ipt could not be started" and the application does not launch. ==
+
+Some Linux distributions, like [http://www.centos.org/ CentOS] or [http://www.redhat.com/ Red Hat Linux] include Tomcat incorrectly shipped with two libraries, xml-apis.jar and/or xalan.jar, in the Tomcat directories (../tomcat5/shared/, ../tomcat5/common/).
+
+These libraries are not needed for the GBIF IPT operation so make a backup copy of them and then remove them. If that does not solve your problem, put the files back into place from the backup copy.
+
+_If your server admin won't allow these libraries to be removed_, another known solution reported in Issue 851 is to include the xalan.jar in the IPT's /lib directory located at $tomcat/webapps/ipt/WEB-INF. Just copy the jar file to that folder, restart Tomcat, and the error should disappear.
+
+= Usage =
+== Yikes when deleting a resource ==
+Sometimes deleting a resource causes an error and leaves a corrupted resource behind that cannot be modified again and causes the resource listing in Explore and Manage to fail. Apart from a fresh reinstall the only way to fix this is to enable the H2 Console and modify the database manually like this, with `77` being the resource number to be deleted:
+
+{{{
+  DELETE RESOURCE WHERE ID=77;
+}}}
+
+== DwC-A file doesn't include all records ==
+=== Caused by invalid DATETIME value ===
+If the published DwC-A file doesn't have records in the expected counts, and you see there is a message in Administration > Logs, which says
+
+{{{
+java.sql.SQLException: Cannot convert value '0000-00-00 00:00:00' from column 65 to TIMESTAMP
+}}}
+
+that means you have invalid date value in your data source, which, in this case, is "0000-00-00 00:00:00."
+
+To solve this, you can update the value with "Null" value, and update the resource.
+Usually, you can rely on the log message to identify the column of interest, like in the example above, it says "column 65," which is the 65th column in the data source.
+
+The "0000-00-00 00:00:00" value in your SQL table could be resulted when importing, while having defined the column with "Not Null" and default value as "0000-00-00 00:00:00."
+= Performance =
+
+== My GBIF IPT instance is slow. What can I do to improve performance? ==
+
+Apache Tomcat comes with very little allocated memory. In order to increase performance, this amount should be increased depending on the amount of physical memory on the server. If the server has at least 2GB of RAM, the available memory should be increased to 1GB. For more information on how to do it, see the following links:
+  * [http://explanatorygap.net/2005/03/06/configuring-tomcat-under-os-x-server-for-more-memory/]
+  * http://wiki.apache.org/tomcat/FAQ/Memory
+
+The following is known to run:
+{{{export CATALINA_OPTS="-Xms512M -Xmx1024M -XX:PermSize=512M -XX:MaxPermSize=1024M"}}}
+
+= Features =
+== TAPIR support in IPT ==
+The [http://www.tdwg.org/activities/tapir/specification/ TDGW Access Protocol for Information Retrieval (TAPIR) specification] by TDWG is an advanced XML based querying mechanism for datasources.
+
+*For IPT 2.0, TAPIR support is removed.*
+
+The IPT 1.0RC3 supports [http://www.tdwg.org/dav/subgroups/tapir/1.0/docs/TAPIRNetworkBuildersGuide_2008-09-18.html#toc19 TAPIR intermediate], i.e. it has a fixed [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-providertool/resources/tapir_dwc_model.xml darwin core output model] but does understand [http://www.tdwg.org/dav/subgroups/tapir/1.0/docs/tdwg_tapir_specification_2009-09-08.htm#toc65 KVP encoded] custom [http://www.tdwg.org/dav/subgroups/tapir/1.0/docs/tdwg_tapir_specification_2009-09-08.htm#toc47 filters]. It uses [http://www.tdwg.org/dav/subgroups/tapir/1.0/docs/tdwg_tapir_specification_2009-09-08.htm#toc57 URL encoded KVP requests] and does not support XML request documents.

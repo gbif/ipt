@@ -1,0 +1,52 @@
+#summary For command line users
+<font color=red>
+_Warning: This page relates to the deprecated version 1 of the IPT_
+</font>
+
+=Getting started as a developer=
+
+# Prerequisites:
+  * install Java SDK 1.6+
+  * install apache maven
+  * install svn client
+
+
+http://code.google.com/p/gbif-providertoolkit/source/browse/#svn/trunk/motherpom
+
+# Get the code
+
+- create a project folder
+
+- in a terminal:
+  * cd into the project folder
+  * $ svn checkout http://gbif-providertoolkit.googlecode.com/svn/trunk/motherpom motherpom
+  * $ svn checkout http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-providertool gbif-providertool
+
+# build the projects
+  * cd motherpom/
+  * mvn install
+  * cd gbif-providertool/
+
+# the following will take a LONG time the first execution (grab a coffee / lunch)
+
+  * mvn install -Dmaven.test.skip=true
+
+# HINT: if you know you have all the libraries on the machine (e.g. after the first build), use the following:
+
+  * mvn install -o -npu
+
+# this will start a Jetty Server running the application
+
+  * mvn jetty:run-war -Dmaven.test.skip=true
+
+# set up eclipse
+
+  * mvn eclipse:eclipse
+
+# some environments have issues with the above
+
+  * mvn org.apache.maven.plugins:maven-eclipse-plugin:2.6:eclipse
+
+# open eclipse and do an "import existing project into the workspace" 
+
+# select the project folder as the root and it should show the gbif-providertool

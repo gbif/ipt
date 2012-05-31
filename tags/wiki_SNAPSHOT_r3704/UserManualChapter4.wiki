@@ -1,0 +1,246 @@
+#summary GBIF IPT User manual - Chapter 4
+<font color=red>
+_Warning: This page relates to the deprecated version 1 of the IPT_
+</font>
+= The GBIF Integrated Publishing Toolkit User Manual =
+
+<wiki:toc max_depth="3" />
+
+= 4 Configuration =
+
+
+Once the IPT has been installed, it is accessible in a web browser at the following URL: http://localhost:8080/ipt/
+
+To be able to configure the software, one must login as administrator by clicking on the Login button in the main menu and entering a username and password. By default, the administrative username is admin and the password is also admin.
+
+Once logged in, a new Admin section appears in the menu. The subsequent drop-down menu offers the following choices:
+
+  * Configuration
+  * Extensions
+  * Thesaurus
+  * Manage Users
+  * Current Users
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/GBIF_IPT_User_Manual_1.00x.png]
+
+== 4.1  Configuration ==
+
+The Configuration section is divided into three configuration options available via the menu on the right hand side of the page:
+
+  * Settings
+  * Organisation
+  * IPT Instance [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/GBIF_IPT_User_Manual_1.01x.png]
+
+=== 4.1.1  Settings ===
+
+The Settings page allows the administrator to define a number of parameters that are essential for the IPT to function correctly.
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/GBIF_IPT_User_Manual_1.02x.png]
+
+IPT Base URL
+
+This is the URL of the IPT. It is filled in by default with the local URL (http://localhost:8080/ipt). ). In order to make the IPT instance accessible by distant users on a network, the parameter should be changed to the public URL (e.g. http://67.233.45.122:8080/ipt or http://example.com:8080/ipt).
+
+IPT Data Directory
+
+This field defines the location of the IPT data folder in the file system. It is filled in by default and does not need to be changed. It is followed by a button that must be clicked for the Geoserver to know where to access the IPT. If the IPT is moved or renamed, it is necessary to renew the location by pressing the Update Geoserver button.
+
+Logging
+
+This option is used for debugging purposes. It should be left on production.xml except in case of bugs and errors, in which case it can be moved to help developers in their debugging.
+
+Before changing this setting, the administrator should contact the IPT developpers.
+
+Enable GBIF Usage Tracking
+
+The GBIF usage tracking box is used to track the usage of all IPT instances.
+
+Google Maps API Key
+
+In order to use Google Maps (TM) feature embedded in the IPT pages, it is necessary to own a Google Maps API Key. This free key is specific to a server and needs to be requested for each public installation. The administrator can get such a key for free by clicking on the ’Get Google Maps API key’ link and following instructions provided by Google.
+
+Additional raw HTML headers
+
+This field allows the manager to add some HTML headers to all pages of the IPT instance. It can be useful to add keywords or usage tracking (e.g. Google Analytics).
+
+The content must be XHTML compliant and will be included in the HEAD section of every single HTML page.
+
+=== 4.1.2  Geoserver Settings ===
+
+The Settings page also allows the administrator to define some parameters for the Geoserver. For more information about the Geoserver, see its users guide: http://geoserver.org/display/GEOSDOC/Users+Guide
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/GBIF_IPT_User_Manual_1.03x.png]
+
+Base URL
+
+The Base URL is the URL of the Geoserver. It is filled in by default with the local Geoserver URL (http://localhost:8080/geoserver). In order to make the Geoserver accessible by distant users on a network, the parameter should be changed to a public URL (e.g. http://67.233.45.122:8080/geoserver or http://example.com:8080/geoserver).
+
+Data Directory
+
+The Data Directory is the location in the server file system of the directory where data reside. It is filled in by default but can be modified manually.
+
+Admin User and password
+
+By default, the administrative username is admin and the administrative password is geoserver. These parameters must be changed if the server is to be used for production and/or accessible to the public.
+
+=== 4.1.3  Organisation ===
+
+This page allows the administrator to define the GBIF organisation hosting the IPT installation. It is necessary to define the organisation in order to register the IPT. The GBIF keeps a directory of organisations, resources and services and a password is necessary to register the organisation or to access its data.
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/GBIF_IPT_User_Manual_1.04x.png]
+
+The following fields must filled in:
+
+*Title* Full name of the organisation 
+
+*Organisation Identifier Code* provided automatically by the GBIF once the organisation is registered filling and sending this form 
+
+*GBIF Node* GBIF Participant Node that endorses the publication of the data in this installation to be connected to the GBIF Network
+
+*Organisation password* This password can be used by other members of the organisation to retrieve the information 
+
+*Contact Name* Name of the contact person 
+
+*Contact Email* Email of the contact person 
+
+*Homepage* URL of the organisation’s website 
+
+*Description* Description of the organisation 
+
+*Cancel / Save / Register* The three buttons allow the administrator to respectively delete what was just typed, save the information in the form or register the organisation with the GBIF. When doing so, an Organisation Identifier will be sent that will automatically fill the right field. The Register button is only available if the organisation is not yet registered. 
+
+*Clear form* This link is only available if a registered organisation is already defined. It allows the administrator to clear the form in order to register a new organisation. 
+
+*Resend Password* This link is only available if a registered organisation is already defined. An e-mail with the organisation’s password is sent to the organisation’s contact person when the link is clicked.
+
+=== 4.1.4  IPT Instance ===
+
+This page allows the administrator to define some parameters regarding the IPT instance that is being run. The information filled in on this page will be used to feed the homepage of this IPT instance.
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/GBIF_IPT_User_Manual_1.05x.png]
+
+*Resource Identifier* This is a code provided by the GBIF when the IPT instance is registered. 
+
+*Title* This is the name given to the IPT instance. It can be the name of an organisation, a project, a natural history collection, etc.
+
+*Contact Name* Name of the contact person
+
+*Contact Email* Email of the contact person 
+
+*Homepage* URL of the organisation’s website
+
+*Latitude and Longitude* The coordinates will be used to display the right portion of the Google Maps. 
+
+*Description* Description of the organisation 
+
+*Image URL* URL of the image used on the front page of the IPT instance. This URL must be public.
+
+== 4.2  Extensions ==
+
+Extensions allow for serving additional data types, such as multiple identifications or descriptive data about species.
+
+The page provides a list of available extensions and shows whether they are installed or not. Each extension can be installed or uninstalled by clicking on its name.
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/GBIF_IPT_User_Manual_1.06x.png]
+
+By default, available extensions are:
+
+  * ResourceRelationship
+  * SampleAttribute
+  * EventAttribute
+  * Identification
+  * Description
+  * Multimedia
+  * CommonName
+  * Distribution
+  * MaterialExamined
+  * DarwinCore
+  * Taxon
+  * VernacularName
+
+Clicking on an extension name will open a new page with information about the extension, including a list of properties. The administrator can get more information about a property by clicking on its name. It is also possible on this page to install or remove an extension.
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/GBIF_IPT_User_Manual_1.07x.png]
+
+It is also possible to define custom extensions, but the process is not automated in version 1.0 of the IPT.
+
+== 4.3  Thesaurus ==
+
+Thesaurus vocabularies allow for specifying controlled vocabularies to help standardise concepts. This page shows a list of the available thesauruses.
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/GBIF_IPT_User_Manual_1.08x.png]
+
+By default, the available thesauruses are:
+
+  * ISO 639-1 Languages
+  * Country Codes
+  * Language Vocabulary
+  * Darwin Core Type Vocabulary
+  * Nomenclatural Codes
+  * Taxonomic Ranks
+
+Clicking on a thesaurus name will open a new page with information about the thesaurus, including a list of terms.
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/GBIF_IPT_User_Manual_1.09x.png]
+
+It is also possible to define custom vocabularies, but the process is not automated in version 1.0 of the IPT.
+
+== 4.4  Manage Users ==
+
+This page allows the administrator to manage users. It displays a list of users with their usernames, full names and emails. Clicking on the username edits the user profile. The list can also be exported using different formats (CSV, Excel, XML and PDF).
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/GBIF_IPT_User_Manual_1.010x.png]
+
+The administrator can also add a new user through the Add button at the bottom of the page.
+
+=== 4.4.1  User Profile ===
+
+The User Profile page allows the administrator to add a new user or to edit or delete an existing user.
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/GBIF_IPT_User_Manual_1.011x.png]
+
+To add a new user, the following fields must be filled in:
+
+*Username* (mandatory field)
+
+*Password* (mandatory field) needs to be filled in twice for confirmation 
+
+*E-mail* (mandatory field)
+
+*Password hint* (mandatory field) will be e-mailed to the user who forgot his/her password
+
+*First name* (mandatory field)
+
+*Last name* (mandatory field)
+
+The administrator must also apply some settings to the account:
+
+*Enabled* The account is enabled and ready to be used 
+
+*Expired* The account is no longer valid and cannot be used to login to the IPT 
+
+*Locked* The account is locked and cannot be used to login to the IPT 
+
+*Password Expired* Expired the password must be changed at next login.
+
+Finally, the administrator must assign one or several roles to the account. The following roles are available:
+
+* ROLE ADMIN* the user is given administrative rights and has access to all the features of the IPT, in particular its technical settings. The administrator can also manage the data recorded in the IPT. This role supersedes all the other roles and can do anything any other role can do.
+
+*ROLE MANAGER * the user is given manager rights and can manage the data recorded in the IPT, and can create, edit, delete, or publish data.
+
+*ROLE USER* the user role is the most basic role of the IPT. The user can explore the site, browse the published information and annotate resources.
+
+To assign a user a role, the administrator must select it in the Available Roles column and click on the arrow to move it in the Current Roles column.
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/GBIF_IPT_User_Manual_1.012x.png]
+
+Conversely, to remove a role from a user, the administrator must select it in the Current Roles column and click on the arrow to move it back to the Available Roles column.
+
+A visitor that is not logged in is considered to be an anonymous user. Such a user can explore the site and browse the published information.
+
+== 4.5  Current Users ==
+
+This page displays a list of the currently logged in users on the IPT. The administrator is offered the possibility to send them an e-mail.
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/GBIF_IPT_User_Manual_1.013x.png]

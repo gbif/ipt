@@ -1,0 +1,112 @@
+#summary Eclipse environment and checkstyles
+<font color=red>
+_Warning: This page relates to the deprecated version 1 of the IPT_
+</font>
+
+= Eclipse Environment and Checkstyles  =
+
+These instructions describe how to configure the Eclipse environment for IPT development and checkstyles (that enforce good programming style). 
+
+=== Required IPT variables ===
+{{{
+Eclipse (Window)->Preferences->General->Workspace->Linked Resources
+# Create a variable named "M2_REPOS" pointing to your local Maven repository (i.e. ~/.m2/repository).
+}}}
+
+=== Spelling ===
+{{{
+Eclipse (Window)->Preferences->General->Editors->Text Editors->Spelling
+# Enable spell checking and use "eclipse/settings/english.dictionary".
+}}}
+
+=== Output Filtering ===
+{{{
+Eclipse (Window)->Preferences->Java->Compiler->Building
+# Make sure "Filtered Resources" includes ".svn/"
+}}}
+
+=== Code style/formatting ===
+{{{
+Eclipse (Window)->Preferences->Java->Code Style->Formatter->Import
+# Use eclipse/settings/code-style/ipt-format.xml
+}}}
+
+=== Import organization ===
+{{{
+Eclipse (Window)->Preferences->Java->Code Style->Organize Imports->Import
+# Use eclipse/settings/code-style/ipt.importorder
+}}}
+
+=== Member sort order ===
+{{{
+Eclipse (Window)->Preferences->Java->Appearance->Members Sort Order
+# There is no import here, so make your settings match eclipse/settings/code-style/ipt-sort-order.png
+}}}
+
+First, members should be sorted by category:
+ # Types 
+ # Static Fields 
+ # Static Initializers
+ # Static Methods
+ # Fields
+ # Initializers
+ # Constructors
+ # Methods
+
+Second, members in the same category should be sorted by visibility:
+ # Public 
+ # Protected
+ # Default
+ # Private
+
+Third, within a category/visibility combination, members should be sorted alphabetically.
+ 
+=== Compiler settings ===
+{{{
+Eclipse (Window)->Preferences->Java->Compiler
+# Set the compiler compliance level to 1.6.
+}}}
+
+=== Compiler errors & warnings ===
+{{{
+Eclipse (Window)->Preferences->Java->Compiler->Errors/Warnings
+}}}
+
+The following warnings are suggested:
+ * Code Style - Method with a constructor name
+ * Potential programming problems:
+  # Assignment has no effect
+  # Possible accidental boolean assignment
+  # 'finally' does not complete normally
+  # Using a char array in string concatentation
+  # Hidden catch block
+  # Inexact type match for vararg arguments
+ * Name shadowing and conflicts - all except "Local variable" hiding
+ * Deprecated and restricted API - all
+ * Unnecessary code - all except "Unnecessary 'else' statement"
+ * Generic types - all except "Generic type parameter declared with final type bound"
+ * Annotations:
+  # Annotation is used as super interface
+  # Enable @SuppressWarnings annotations
+
+=== Checkstyle ===
+
+Checkstyle is an Eclipse plugin that's used to enforce good programming style.
+ # Install Checkstyle version 4.4.2 (newer versions will not work):
+ # Copy "eclipse/settings/code-style/gwt-customchecks.jar" into: eclipse/plugins/com.atlassw.tools.eclipse.checkstyle_x.x.x/extension-libraries
+ # Restart Eclipse
+
+Import IPT Checks:
+{{{
+Eclipse (Window)->Preferences->Checkstyle->New...
+}}}
+ # Set the Type to "External Configuration File"
+ # Set the Name to "IPT Checks" (important)
+ # Set the location to "settings/code-style/ipt-checkstyle.xml".
+ # Suggested: Check "Protect Checkstyle configuration file".
+ # Click "Ok".
+
+Import IPT Checks for Tests:
+Repeat step 2, except:
+ # Set the Name to "IPT Checks for Tests" (important)
+ # Set the location to "settings/code-style/ipt-checkstyle-tests.xml".
