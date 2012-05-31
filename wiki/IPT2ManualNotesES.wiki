@@ -1,15 +1,15 @@
 =Manual de Usuario para el GBIF Integrated Publishing Toolkit=
-*IPT versión: 2.0.3*
+*Versión del IPT: 2.0.3*
 
-Esta pagina esta bajo construcción
+¡Página en construcción!
 ----
 
-Para el manual de usuario (en inglés) que corresponde al IPT versión 2.0.2, por favor visite [IPTUserManualv202 here]_
+Si desea consultar la versión en Inglés del manual de usuario del IPT versión 2.0.2, por favor visite [IPTUserManualv202 here]_
 
 <wiki:toc max_depth="4" />
 ----
-=Introduction=
-==About the GBIF Integrated Publishing Toolkit==
+=Introducción=
+==Acerca del GBIF Integrated Publishing Toolkit==
 The GBIF Integrated Publishing Toolkit (IPT) is a freely available open source web application that makes it easy to share three types of biodiversity-related information: primary taxon occurrence data, taxon checklists, and general metadata about data sources. An IPT instance as well as the data and metadata registered through the IPT are connected to the Global Biodiversity Resources Discovery System (GBRDS - also known as the GBIF Registry), are indexed for consultation via the GBIF network and portal, and are made accessible for public use. More information about the GBIF IPT can be found at http://www.gbif.org/informatics/infrastructure/publishing/.
 
 Founded and funded by governments in 2001, The Global Biodiversity Information Facility (GBIF) is the world's largest multi-lateral initiative for enabling free access to biodiversity data via the
@@ -23,7 +23,7 @@ Several factors have provided motivation for GBIF to lead the development of the
   * the need to offer additional benefits and services to the data publishers to encourage data publication;
   * the lack of appropriate tools to publish certain types of biodiversity data, such as names checklists and data set metadata.
 
-==How to Use this Manual==
+==Cómo utilizar este manual==
 This manual has three main components: an introduction with background  information, a number of step-by-step tutorials and a complete reference guide including a "getting started" section and sections describing in detail the different elements of the tool.
 
 All users are encouraged to review this introductory part and then refer to the different specific sections depending on their role(s) regarding the IPT installation. The IPT (and this manual) differentiates three type of users:
@@ -32,32 +32,32 @@ All users are encouraged to review this introductory part and then refer to the 
   * Basic users: They can only browse the resources published in an IPT installation. In future releases of the IPT they will acquire further rights. For basic users the IPT works as a simple web application so no further explanation is included in this manual.
 
 ----
-=Getting Started Guide=
+=Guía básica=
 This Getting Started Guide is meant for those wishing to install and run an IPT instance for the first time. If you would like to see a functional installation of the IPT in action, you may use the public test instance of the latest general release version at http://ipt.gbif.org/. If you do so, refer to Quick Reference Guide for details on how to use the screens you will see. Developers who wish to work with the latest revision of the source code should consult the "Developers" section of the GBIF IPT Google Code site wiki (http://code.google.com/p/gbif-providertoolkit/wiki/HowToContribute).
-==Requirements==
-===Internet Connectivity===
+==Requerimientos==
+===Conexión a Internet===
 The IPT is designed under the assumption that the server on which it is run has consistent Internet connectivity. Though many functions of the IPT work even when offline, some aspects of the IPT (GBIF registration, extension installation, controlled vocabularies, and external databases for source data), require communication with external Internet resources. From the perspective of IPT administration and management, the speed of the Internet connection affects only such communications. Access to the IPT web application and its services from beyond a local intranet also requires consistent connectivity, and slow connectivity may have an adverse affect on these aspects, especially when transferring large data sets.
-===Stable URL===
+===URL estable===
 Though it can be used simply as a tool to generate Darwin Core Archives (see http://rs.tdwg.org/dwc/terms/guides/text/), the IPT is meant to be a discoverable and accessible Internet-based application and service. To support this functionality, the server on which the IPT is installed must be able to support access to the application and services through a stable URL.
-===Memory===
+===Memoria===
 The server hosting the IPT installation must make at least 256 MB RAM memory available to the application.
-===Disk space===
+===Espacio en disco===
 The space required by the IPT application is less then 20MB. The contents of the IPT data directory after installation require less than 1MB of disk storage, writable by the IPT. However, the content of the data directory will grow as resources are created, and will require space roughly equal to the size of the files or tables containing the imported data sets. A reasonable estimate for the size of a relatively rich occurrence data set is one kilobyte per record. Normal usage of the IPT appends information to the log files, which will grow over time, but which generally require minimal disk space.
 ===Java===
 The server hosting the IPT must have a version no less than Java 5 installed and functional prior to the installation of the IPT.
 ===Servlet container===
 The IPT application comes packaged with Jetty and therefore requires no further servlet container. Nevertheless, the IPT can be deployed in another servlet container (e.g., Tomcat) that is already in use. Information about how to use various servlet containers with the IPT can be found at http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation.
-==Install the IPT==
-===Prepare the server===
+==Instalación del IPT==
+===Praparación del servidor===
 Before installing the IPT, be sure that the intended hosting server meets the minimum specifications described in the sections under "Requirements", above. 
-===Download the IPT===
+===Descarga del IPT===
 The latest release of the IPT software is available for download as a file named ipt.war from http://code.google.com/p/gbif-providertoolkit/downloads/list. Download this file to the server on which the IPT will run. Developers or those wishing to use the latest revision of the source code should consult the "Developers" section of the GBIF IPT Google Code site wiki at http://code.google.com/p/gbif-providertoolkit/wiki/HowToContribute.
 ===Deploy the IPT to the servlet container===
 Follow the normal process for deploying a web application to a servlet container. A wiki page with further information about specific installations can be found at http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation.
-===Run the IPT application===
+===Arrancar la aplicación IPT===
 Successful deployment of the IPT to the servlet container will make the IPT accessible through a web browser at a URL determined by the servlet's base URL followed by /ipt (e.g., http://localhost:8080/ipt). If the installation was successful, the initial IPT setup page will appear in a web browser using the IPT's URL.
-==Set up the IPT for the first time==
-===IPT setup===
+==Configuración inicial del IPT==
+===Configuración del IPT===
 The first time the IPT is run, you will be presented with a few simple steps to prepare the IPT for use. The IPT setup page (see screen image, below) is the first of two setup pages and requires a location where the data for the IPT installation can be stored. The format of the location entered on the page must conform with the standard for an absolute path to a directory on the operating system where the IPT is installed; relative paths are not supported. For example, use a path such as "c:\datadir" for Windows environments or "/usr/datadir" for Unix and MacOSX environments. The IPT must have write permission to the selected location. If it does, the path can be entered in the text box provided and then click on the button labeled "Save" - the directory will be created if it doesn't already exist. It is permissible to create the data directory first with the appropriate write permissions, then enter the absolute path to the directory in the text box and click on the "Save" button. 
 
 Note 1: Do not select a data directory that is vulnerable to inadvertent changes or removal. Do not use /tmp, for example, on systems where this folder may be emptied on a system restart. The data directory should be backed up regularly in keeping with an appropriate disaster recovery plan. Loss of the contents of the data directory will result in the loss of resource, user, and other configuration information and customizations to the IPT installation.
@@ -67,7 +67,7 @@ Note 2: If you have a data directory from a previously running IPT of the same v
 Note 3: Click on the flag in the upper right hand corner to see whether your preferred language is available to use the IPT in. 
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTSetup1.png]
-===IPT setup II===
+===Configuración del IPT (II)===
 If the initial data directory assignment step was successful, the IPT will present a second setup page (see screen image, below) on which the information about the default administrator of the IPT must be entered, along with the information about how the IPT will be accessed from the Internet. The default administrator will have a distinct login and the authority to make changes to all aspects of the IPT installation. The default administrator will be able to make additional user accounts, including other administrators having the same authority to make changes. Though administrators can be added and removed, the IPT must always have at least one. Following are explanations of the fields encountered on the second setup page:
   * *Email* - the full, active email address of the default administrator of the IPT installation. 
   * *First name* - the first name of the default administrator. 
@@ -89,7 +89,7 @@ Click on the button labeled "Continue" to open the IPT Administration page (see 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTAdminBeforeRegistration.png]
 
 Once you have completed the steps in this Getting Started Guide, your IPT is ready to add resources (data sets and metadata). You may want to complete one or more of the tutorials to understand how common IPT tasks are accomplished. For detailed explanations of any further aspects of the IPT, consult the Quick Reference Guide of this user manual.
-==Starting Over==
+==Recomenzar==
 It is relatively easy to re-initiate the IPT and begin again with the first setup page by doing the following:
   * Every user who is logged in to the IPT should first log out. 
   * Remove the file called datadir.location from the folder where it was created by the IPT (normally WEB-INF within the IPT base installation directory - not within the IPT data directory configured in the first setup step).
@@ -98,11 +98,11 @@ It is relatively easy to re-initiate the IPT and begin again with the first setu
     * If the same data directory location is desired, but without the previous IPT configuration, then the contents of that data directory should be moved to a different location or removed entirely before clicking on "Save" in the initial IPT setup page. 
     * If an entirely new data directory is used, then the setup will proceed exactly as described in the "IPT setup" section of this Getting Started Guide.
 ----
-=Quick Reference Guide=
-==Introduction==
+=Guía de referencia rápida=
+==Introducción==
 This Quick Reference Guide explains in detail the capabilities of an IPT instance that has been installed, run for the first time, and tested to be functional as explained in the Getting Started Guide. The details of this guide are presented in four sections corresponding to the four "menus" available in the IPT user interface. Some tabs are only visible when a user having the appropriate rights to see them is logged in.
-==Common features==
-===User interface controls===
+==Características comunes==
+===Controles del interfaz de usuario===
 Most user interface controls have both enabled and disabled modes. If the control is enabled, it will either commit an action when clicked (a button, for example), or it will allow changes to be made to the value bound to the control (a text, check, or select box, for example). In the latter case the changes will be saved, if possible, when the form on which they appear is saved, which is generally accomplished on a given page by clicking on a button labeled "Save". Disabled controls show the value of the associated information, but do not allow that information to be saved under the conditions in effect at the time they appear. The purpose for most user interface controls is indicated by an associated label that appears above and/or to the left of the control. Sometimes supplemental information is also accessible from an associated information icon.
 
 *Menus* - in the IPT, a menu bar appears below the GBIF logo on nearly every page. The menu bar is populated with menus that guide users to fundamental topics. Menu items appear only for the pages that are authorized to be seen based on the current user's role. The currently active menu is colored brightly, while inactive menus are grey. Click on a menu to open and activate the page for that topic.
@@ -168,9 +168,9 @@ Example table sorted in ascending order by the column labeled "Name".
 Example table sorted in descending order by the column labeled "Type".
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TableSortedDescending.png]
 
-===Controls that appear on all pages===
+===Controles que aparecen en todas las páginas===
 This section describes several features that are accessible in the header and footer of most of the pages of the IPT.
-====Header====
+====Encabezado====
 The header section of the IPT appears in the upper right of most pages and allows basic control over the IPT, including the who is using it, and in what language. Following are two screen images showing the two possible states in which the header may be found - logged in, and not logged in.
 
 Header, not logged in, English language chosen for the user interface: 
@@ -185,7 +185,7 @@ Header, logged in, English language chosen for the user interface:
 *Logout* - If someone is logged in to the IPT, the email address of the person who is logged in is given in the upper right-hand corner of the of the page along with a "Logout" link.<br>
 *Account* - To see this link and the page to which it leads, you must be logged in the the IPT. The page shows the details of the account information for the person who is logged in to the IPT and allows them to be changed. The details of the fields found on this page can be found under the "Configure User accounts" heading in the "Administration Menu" section.<br>
 *Language selection flag* - In the upper right-hand corner of the page is a flag depicting the language in which the IPT is currently being presented. The default language for the IPT is English. The language of the user interface can be changed by clicking on the flag and selecting a flag for the desired language, if available. GBIF actively seeks translations for the IPT into additional languages. For more information, consult the "How To Contribute" page of the GBIF IPT Google Code site wiki (http://code.google.com/p/gbif-providertoolkit/wiki/HowToContribute ).<br>
-====Footer====
+====Pie de página====
 The footer section of the IPT appears along the bottom of most pages and contains information about the IPT version and links to important resources. 
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTFooter.png]
@@ -200,7 +200,7 @@ The footer section of the IPT appears along the bottom of most pages and contain
 This page allows users to view a list of public resources, if any, and to look at the detailed metadata of any resource on the list. 
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTHome.png]
-===Public Resources Table===
+===Tabla de recursos de acceso público===
 If there are any public resources, they will appear in a table having the following columns:
 
 *Logo* - the resource logo (configurable in Additional Metadata page of the resource metadata)<br>
@@ -213,40 +213,40 @@ If there are any public resources, they will appear in a table having the follow
 *Last publication* - the date the resource was last published.
 ===RSS feed===
 The IPT supports syndication via RSS for those who wish to monitor resource configuration changes. The RSS feed is accessible by clicking on the link provided below the list of public hosted resources. The RSS feed can be read in any standard RSS client.
-===Metadata Overview page===
+===Página de resumen de metadatos===
 Clicking on the Name link in the list of resources on the Home page shows a new page having all of the metadata about the selected resource. This is the one page where you can easily review all of the metadata for a resource. A user having the Admin role or one of the Manager roles can edit the metadata. Refer to the information under the "Edit an existing resource" heading in the "Manage Resources Menu" section.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTHomeMetadataOverview.png]
-==Manage Resources Menu (visible to users with an Admin or Manager role)==
+==Menu de gestión de recursos (sólo visible para usuarios con el rol de administrador o gestor)==
 This page allows users having the appropriate role (managers and administrators) to make changes to existing resources or to create new resources. 
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResources.png]
-===Manage Resources Table===
+===Tabla de gestión de recursos===
 When the Manage Resources page is first opened, it shows a table of existing resources that the current user has permission to change, including those created by this user and those which this user has been invited to manage by others. Refer to the information under the "Public Resources Table" heading in the "Home Menu" section for detailed explanations of the Name, Organisation, Type, Subtype, Records, Last Modified, and Last publication columns. In addition, the Manage Resources Table includes the following column of basic information about the resources:
 
 *Visibility* - a category stating who has access to view the resource. If the resource is "Public", all users will be able to see it on the Public Resources table on the Home page. If the resource is "Private", it will be visible in the Manage Resources table only to the user who created it, to those who have been invited to manage it, and to users having the Admin role. Details about inviting others to manage a resource are given in the "Resource Managers" section under the "Resource Overview" heading in the "Manage Resources" section.
 
 *Author* - the IPT user who created the resource.
 
-===Create New Resource===
+===Creación de un nuevo recurso===
 Below the Manage Resource table is a form that can be used to create a new resource. First, a unique "shortname" must be provided for the resource. This short name will be used to uniquely identify the resource within the IPT instance, and will be used within the URL to access the resource via the Internet. The shortname must be at least three characters in length, may contain alphanumeric characters, but must not contain white space or punctuation other than hyphens or underscores (e.g., "firstresource" or "first_resource", but not "first resource" or "firstresource!"). 
 
 There are several ways to create a new resource in the IPT as described in the following sections.
-====Upload a Darwin Core Archive====
+====Cargar un Archivo de Darwin Core====
 The IPT is able to import and export valid Darwin Core Archive files up to 100MB in size. Information about Darwin Core Archives can be found on the Darwin Core web site (http://rs.tdwg.org/dwc/terms/guides/text/), with further information about the IPT's use of them on the GBIF IPT Google Code site wiki (http://code.google.com/p/gbif-providertoolkit/wiki/DarwinCore ). To import a Darwin Core Archive, click on the button labeled "Choose File", then navigate to and select the intended archive file. After selecting the file, its name will appear next to the "Choose File" button. Click on the button labeled "Create". If there is a problem importing the selected file, an error message will alert the user. If the import is successful, a Resource Overview page will appear with an informational message at the top describing the results of the import process.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceUploadDwCASuccess.png]
-====Integrate an existing resource configuration folder (advanced users only)====
+====Integración de una carpeta de configuración de recursos existente (sólo para usuarios avanzados)====
 It is possible to integrate a resource from a configuration folder created under a compatible version of the IPT. To do so requires that the IPT be restarted during the process. First enter a new resource shortname as described in the introduction under the "Create New Resource" heading in the "Manage Resource Menu" section and then click on the button labeled "Create". This will open the Resource Overview page and create a folder having the same name as the shortname within the resources folder of the IPT data directory. Shut down the IPT using the method appropriate to the servlet container in which it is installed. See the IPT server preparation page (http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation) for more information on restarting the IPT. With the IPT shut down, copy the contents of the resource folder you wish to integrate into the folder that was just created for the new resource, making sure to replace the newer resource.xml file with the original from the resource being integrated. After the files have been copied, restart the IPT. The new resource will be available in the IPT with the same settings that it had in the previous IPT installation.
-====Create an entirely new resource====
+====Creación de un recurso completamente nuevo====
 With this option the resource configuration will have to be created in its entirety through the IPT forms, including loading a source data file (100MB limit) or database and mapping the fields therein to terms in the appropriate extension or extensions. Begin by entering a new resource shortname as described in the introduction under the "Create New Resource" heading above and then click on the button labeled "Create". This will open the Resource Overview page. Proceed by completing the various sections of the page based on the descriptions under the "Resource Overview" heading of the "Manage Resources Menu" section.
-===Edit an existing resource===
+===Edición de un recurso existente===
 The table of existing resources shows only those resources that can be edited by the current user. To edit a resource, click on the name of the resource in the table of resources. The link will open the Resource Overview page for the selected resource. Refer to the descriptions under the "Resource Overview" heading of the "Manage Resources Menu" section for details on how to edit various aspects of the resource.
-===Resource Overview===
+===Resumen de un recurso===
 This page allows users having managerial permission to make changes to various aspects of a resource's configuration. The name of the resource is given at the top of the page under the menu bar. If the resource has not been given a title, the resource shortname will appear at the top of the page and will act as a title instead. Below the resource name is a table showing categories of the resource configuration on the left with corresponding summary information on the right. Each of these categories is configured separately as explained in detail in the following sections.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceOverview.png]
-====Metadata====
+====Metadatos====
 This area of the Resource Overview page allows a user to see basic information about the resource metadata in the panel to the right, and to view and edit these and other metadata in detail by clicking on the button labeled "Edit" in the panel to the left. For more information about resource metadata in the GBIF context, see http://www.gbif.org/informatics/discoverymetadata/. Every resource requires a minimal set of descriptive metadata in order to be published in the GBIF network. If any of the required metadata are missing, the Resource Overview page will open with a warning message in the Metadata area of the page.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataMissing.png]
@@ -256,7 +256,7 @@ Clicking on the "Edit" button opens the [IPT2ManualNotes#Basic_Metadata Basic Me
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceMetadataPagesList.png]
 
 Following is a list of the metadata pages and their contents: 
-====Basic Metadata====
+====Metadatos básicos====
 This is the only metadata page that has fields that are required to be entered by the IPT. The resource title and description are required. The resource's three main contact's must also be described here: Resource contact, resource creator and metadata provider. For each contact you must supply at least a last name, a position or an organisation before you can make the resource public. The person(s) or organisation(s) responsible for the creation of the resource as it appears in the IPT and for effectively publishing the resource should add themselves as an associated party with role 'publisher'.
   * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceMetadataBasicMetadata.png]
     * *Title* (required) - the Title for the resource. This title will appear as a the Name of the resource throughout the IPT. The title will also appear in the GBIF Registry.
@@ -288,7 +288,7 @@ This metadata page contains information about the geographic area covered by the
     * *Set global coverage?* - click on this check box to change the geographic coverage to cover the entire earth.
     * *West/East/South/North* - these four text boxes correspond to the corners of the box bounding the area covered by the resource. The values to enter in these text boxes are decimal degrees (e.g. 45.2345), with the standard limiting values of -90 to +90 latitude (South/North) and -180 to +180 longitude (West/East), with positive latitude in the northern hemisphere and positive longitude east of the Greenwich Meridian to the International Dateline. These values will be set by manipulating the bounding box markers on the map, but valid values can all be entered in these text boxes directly if desired. The map will update when the information on the page is saved by clicking on the button labeled "Save". 
     * *Description* - a textual description of the geographic coverage. This information can be provided in place of, or to augment the information in the other fields on the page.
-====Taxonomic Coverage====
+====Cobertura taxonómica====
 This metadata page allows the user to enter information about one of more groups of taxa covered by the resource, each of which is called a taxonomic coverage. Each coverage consists of a description and list of taxa, where each taxon consists of a taxon name (either scientific or common) and a taxon rank. Before any taxonomic coverages are created, the page shows only a link labeled "Add new taxonomic coverage". Clicking on this link will show a text box for the description and several links. Below is a screen image showing the Taxonomic Coverage page before any data have been entered, followed by explanations of the controls seen on the page in this state.
   * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceMetadataTaxonomic.png]
     * *Remove this taxonomic coverage* - click on this link to remove the taxonomic coverage that follows immediately below the link, including the description, the list, and all single taxon entries.
@@ -304,7 +304,7 @@ This metadata page allows the user to enter information about one of more groups
       * *Rank* - this text box is meant to contain the taxonomic rank of the taxon.
       * *Trash Icon* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TrashIcon.png] - clicking on this icon will remove the taxon (scientific name, common name, and rank) to the left of the icon from the taxonomic coverage.
     * *Add new taxonomic coverage* - click on this link to initiate a form for a new taxonomic coverage with a text box labeled "Description" and links to "Add several taxa" and "Add new taxon" as described above.
-====Temporal Coverage====
+====Cobertura temporal====
 This metadata page contains information about one of more dates, date ranges, or named periods of time covered by the resource, each of which is called a temporal coverage. Coverages may refer to the times during which the collection or data set was assembled (Single Date, Date Range, and Formation Period), or to times during which the subjects of the data set or collection were alive (Living Time Period). Before the first temporal coverage for the resource is created, the page shows only a link labeled "Add new temporal coverage". Clicking on this link will show the default temporal coverage type "Single Date" in a select box, a text box labeled "Start Date", a calendar icon, and two links. Below is a screen image showing the default Temporal Coverage page before any data have been entered, followed by explanations of the controls seen on the page in this state.
   * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceMetadataTemporalCoverages.png]
     * *Remove this temporal coverage* - click on this link to remove the temporal coverage that follows immediately below the link.
