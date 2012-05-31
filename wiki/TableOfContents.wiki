@@ -13,6 +13,7 @@
    * [IPT2ManualNotes#Resources Resources]
    * [IPT2ManualNotes#Glossary Glossary]
    * [FAQ]
+ * [IPT2ManualNotesES User Manual (Spanish)]
  * Tutorials & Resources
    * [DarwinCore]
    * [DataPreparation Data Preparation]
