@@ -16,11 +16,11 @@ El Integrated Publishing Toolkit (IPT) de GBIF es una aplicación web de código
 
 Fundada y financiada por los gobiernos en el año 2001, la Infraestructura Mundial de Información en Biodiversidad (GBIF) es la iniciativa multilateral más grande del mundo, creada para facilitar el acceso libre a datos sobre biodiversidad a través de Internet. Entre los diversos aliados de GBIF se incluyen principalmente países y organizaciones internacionales. GBIF también ha constituido alianzas formales con importantes organismos de tratados internacionales. La misión de GBIF es promover y facilitar el acceso libre y gratuito a datos sobre biodiversidad en todo el mundo a través de Internet para apoyar a la ciencia, la conservación y el desarrollo sostenible. Más información acerca de GBIF se puede encontrar en http://www.gbif.org/.
 
-Several factors have provided motivation for GBIF to lead the development of the IPT:
-  * limitations of previous applications and protocols (DiGIR, TAPIR, ABCD) to easily publish and transfer large data sets;
-  * the need to decentralise and speed up the process of indexing biodiversity occurrence data sets;
-  * the need to offer additional benefits and services to the data publishers to encourage data publication;
-  * the lack of appropriate tools to publish certain types of biodiversity data, such as names checklists and data set metadata.
+Múltiples factores han servido como motivación para que GBIF lidere el desarrollo del IPT:
+  * las limitaciones de aplicaciones y protocolos anteriores (DiGIR, TAPIR, ABCD) para publicar y transferir fácilmente conjuntos de datos de gran tamaño;
+  * la necesidad de descentralizar y agilizar el proceso de indexar los conjuntos de datos de biodiversidad y registros biológicos;
+  * la necesidad de ofrecer beneficios y servicios adicionales a los publicadores de datos para incentivar la publicación;
+  * la carencia de herramientas apropiadas para la publicación de determinado tipo de datos de biodiversidad tales como nombres, listas y metadatos.
 
 ==Cómo utilizar este manual==
 This manual has three main components: an introduction with background  information, a number of step-by-step tutorials and a complete reference guide including a "getting started" section and sections describing in detail the different elements of the tool.
