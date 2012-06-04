@@ -774,10 +774,15 @@ div.groupmenu ul li a:hover {
 /* Administration */
 
 table#admintable td {
-vertical-align:middle;
+  vertical-align:middle;
 }
 table#admintable td img.infoImg {
-  margin-top: 35px;
+  top: -2px;
+  left: 5px;
+  vertical-align: middle;
+}
+input#updateResourceMetadata_do_updateMetadata.button {
+  margin-top: 8px;
   margin-left: 5px;
 }
 table#admintable tr {
