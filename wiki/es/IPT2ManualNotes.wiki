@@ -39,7 +39,7 @@ El IPT está diseñado bajo el supuesto de que el servidor desde el cual se ejec
 ===URL estable===
 A pesar de que puede ser utilizado simplemente como una herramienta para generar archivos Darwin Core (ver http://rs.tdwg.org/dwc/terms/guides/text/) el IPT fue diseñado para ser una aplicación y un servicio web de descubrimiento y acceso. Para apoyar esta funcionalidad, el servidor en el que está instalado el IPT debe facilitar el acceso a las aplicaciones y servicios a través de una URL estable.
 ===Memoria===
-The server hosting the IPT installation must make at least 256 MB RAM memory available to the application.
+El servidor que aloja la instalación del IPT debe tener como mínimo, 256 MB de memoria RAM disponibles para la aplicación.
 ===Espacio en disco===
 The space required by the IPT application is less then 20MB. The contents of the IPT data directory after installation require less than 1MB of disk storage, writable by the IPT. However, the content of the data directory will grow as resources are created, and will require space roughly equal to the size of the files or tables containing the imported data sets. A reasonable estimate for the size of a relatively rich occurrence data set is one kilobyte per record. Normal usage of the IPT appends information to the log files, which will grow over time, but which generally require minimal disk space.
 ===Java===
