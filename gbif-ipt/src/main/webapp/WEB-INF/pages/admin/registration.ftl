@@ -75,20 +75,21 @@ $(document).ready(function(){
 <#include "/WEB-INF/pages/macros/forms.ftl"> 
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
+<div class="grid_18 suffix_6">
 <h1><@s.text name="admin.home.editRegistration"/></h1>
 
 <#-- If the hosting institution already exists, this IP has been registered. Don't present the register form -->
 
 <#if hostingOrganisation?exists>
-	<p><@s.text name="admin.registration.registered1"/></p>
-	<h3><@s.text name="admin.registration.registered2"><@s.param>${hostingOrganisation.name!"???"}</@s.param></@s.text></h3>
-	<p><@s.text name="admin.registration.links"/></p>
-	<ul>
-	 <li><a href="${cfg.registryUrl}/browse/agent?uuid=${registeredIpt.key}">${registeredIpt.name!"IPT"}</a></li>
-	 <li><a href="${cfg.registryUrl}/browse/agent?uuid=${hostingOrganisation.key}">${hostingOrganisation.name!"Organisation"}</a></li>
-	</ul>
+    <form class="topForm half" action="registration.do" method="post">	
+    	<p><@s.text name="admin.registration.registered1"/><br />
+    	<@s.text name="admin.registration.registered2"><@s.param>${hostingOrganisation.name!"???"}</@s.param></@s.text></p>
+    	<h3 class="subTitle"><@s.text name="admin.registration.links"/></h3>
+    	<ul>
+    	 <li><a href="${cfg.registryUrl}/browse/agent?uuid=${registeredIpt.key}">${registeredIpt.name!"IPT"}</a></li>
+    	 <li><a href="${cfg.registryUrl}/browse/agent?uuid=${hostingOrganisation.key}">${hostingOrganisation.name!"Organisation"}</a></li>
+    	</ul>
 	<!-- p><@s.text name="admin.registration.registered3"/></p -->
-	<form class="topForm half" action="registration.do" method="post">	
 		<@input name="registeredIpt.name" i18nkey="admin.ipt.name" type="text" />
 		<@text name="registeredIpt.description" i18nkey="admin.ipt.description" />	
 		
@@ -158,5 +159,6 @@ $(document).ready(function(){
 		</@s.form>
 	</div>
 </#if>
+</div>
 <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>

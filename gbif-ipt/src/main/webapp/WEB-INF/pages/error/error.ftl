@@ -27,6 +27,6 @@
   [@s.property value="%{exceptionStack}"/]
 </p>
 
-
+</div>
 
 [#include "/WEB-INF/pages/inc/footer.ftl"/]

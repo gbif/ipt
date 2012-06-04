@@ -98,137 +98,127 @@ $(document).ready(function(){
 });   
 </script>
 <style>
-	div.definition div.title{
-		width: 26%;
-	}
-	div.definition div.body{
-		width: 72%;
-	}
-	div.body select{
-		width: 200px;
-	}
-	div.body input{
-		width: 375px;
-	}
-	div.required div.title{
-		color:#bc5e5b;
-		font-weight: normal;
-	}
-	div.infos img.vocabImg {
-		top: 2px !important;
-		position: relative;
-	}
-	div.buttons{
-		margin-top: 1em !important;
-		margin-bottom: 2em !important;
-	}
-	#filter{
-		color: #0080FF;
-	}	
 </style>
  <#assign currentMenu = "manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
-
-<h1>${mapping.extension.title}</h1>
-<p>${mapping.extension.description}</p>
-<#if mapping.extension.link?has_content>
-<p><@s.text name="basic.link"/>: <a href="${mapping.extension.link}">${mapping.extension.link}</a></p>
-</#if>
-
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
+
+<h1><span class="superscript">Data Source</span>
+    <a class="tooltip" href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${mapping.source.name}
+        <span class="classic">Click the title to go to the <em>resource overview</em> page.<div class="arrow-wrap"><div class="arrow"></div></div></span>
+    </a>
+</h1>
 <form class="topForm" action="mapping.do" method="post">
-  	<input type="hidden" name="r" value="${resource.shortname}" />
-  	<input type="hidden" name="id" value="${mapping.extension.rowType}" />
-  	<input type="hidden" name="mid" value="${mid!}" />
-  	<input id="showAllValue" type="hidden" name="showAll" value="${Parameters.showAll!"true"}" />
-<a href="resource.do?r=${resource.shortname}"><@s.text name='manage.mapping.backToOverview'/></a>
-<h1><@s.text name='manage.mapping.title'/> <span class="small">${mapping.source.name}</span></h1>
-<p><@s.text name='manage.mapping.intro'><@s.param name="source">${mapping.source.name}</@s.param></@s.text></p>
-
-<p><a id="toggleFields" href="#"><@s.text name='manage.mapping.hideEmpty'/></a></p>
-
-<div class="definition required">	
-  <div class="title">
-  	<div class="head">
-		${coreid.name!"Record ID"}			
-  	</div>
-  </div>
-  <div class="body">
-  <div>
-  	<div class="infos">
-  	  <#if coreid??>
-  		<img class="infoImg" src="${baseURL}/images/info.gif" />
-		<div class="info">		
-			<#if coreid.description?has_content>${coreid.description}<br/><br/></#if>              	
-			<#if coreid.link?has_content><@s.text name="basic.seealso"/> <a href="${coreid.link}">${coreid.link}</a><br/><br/></#if>
-			<span class="idSuffix">
-				<@s.text name='manage.mapping.info.linenumbers'/>            	
-			</span>              	
-			<#if coreid.examples?has_content>
-			<em><@s.text name="basic.examples"/></em>: ${coreid.examples}
-			</#if>
-		</div>		
-      </#if>  
-		<select name="mapping.idColumn" id="idColumn">		
-		<#if mapping.isCore()>
-		  <option value="" <#if !mapping.idColumn??> selected="selected"</#if>><@s.text name="manage.mapping.noid"/></option>
-		  <option value="-2" <#if (mapping.idColumn!-99)==-2> selected="selected"</#if>><@s.text name="manage.mapping.uuid"/></option>
-		</#if>
-		  <option value="-1" <#if (mapping.idColumn!-99)==-1> selected="selected"</#if>><@s.text name="manage.mapping.lineNumber"/></option>
-		<#list columns as col>
-		  <option value="${col_index}" <#if (mappingCoreid.index!-1)==col_index> selected="selected"</#if>>${col}</option>		  		  
-		</#list>
-		</select>
-		<input type="text" name="mapping.idSuffix" style="width:200px" value="${mapping.idSuffix!}" class="idSuffix" />
+    <div class="grid_17 suffix_7">
+        <h3 class="subTitle">${mapping.extension.title}</h3>
+        <p>${mapping.extension.description}</p>
+        <#if mapping.extension.link?has_content>
+        <p><@s.text name="basic.link"/>: <a href="${mapping.extension.link}">${mapping.extension.link}</a></p>
+        </#if>
+      	<input type="hidden" name="r" value="${resource.shortname}" />
+      	<input type="hidden" name="id" value="${mapping.extension.rowType}" />
+      	<input type="hidden" name="mid" value="${mid!}" />
+      	<input id="showAllValue" type="hidden" name="showAll" value="${Parameters.showAll!"true"}" />
     </div>
-    <div>
-	    <@s.text name='manage.mapping.idColumn' />
+    <div class="grid_17 suffix_7">
+        <h3 class="subTitle"><@s.text name='manage.mapping.title'/></h3>
+        <p><@s.text name='manage.mapping.intro'><@s.param name="source"><em>${mapping.source.name}</em></@s.param></@s.text></p>
+
+        <p><a id="toggleFields" href="#"><@s.text name='manage.mapping.hideEmpty'/></a></p>
     </div>
-  	<#if ((mapping.idColumn!-99)>=0)>
-  	<div>
-  		<em><@s.text name='manage.mapping.sourceSample' /></em>:	      		
-  		<#assign first=true/>
-  		<#list peek as row><#if row??><#if row[mapping.idColumn]?has_content><#if !first> | </#if><#assign first=false/>${row[mapping.idColumn]}</#if></#if></#list>
-  	</div>
-  	</#if>
-  </div>
-  </div>
+
+<div class="grid_23">
+<div class="conceptItem">
+<div class="definition required">
+        <div class="title grid_7">
+        	<div class="head">
+        	${coreid.name!"Record ID"}			
+        	</div>
+        </div>
+        <div class="body grid_15">
+        <div>
+        	<div class="infos">
+        	  <#if coreid??>
+        		<img class="infoImg" src="${baseURL}/images/info.gif" />
+            	<div class="info">		
+            		<#if coreid.description?has_content>${coreid.description}</#if>
+            		<#if coreid.link?has_content><@s.text name="basic.seealso"/> <a href="${coreid.link}">${coreid.link}</a></#if>
+            		<span class="idSuffix">
+            			<@s.text name='manage.mapping.info.linenumbers'/>            	
+            		</span>              	
+            		<#if coreid.examples?has_content>
+            		<em><@s.text name="basic.examples"/></em>: ${coreid.examples}
+            		</#if>
+                </div>		
+              </#if>  
+            	<select name="mapping.idColumn" id="idColumn">		
+            	<#if mapping.isCore()>
+            	  <option value="" <#if !mapping.idColumn??> selected="selected"</#if>><@s.text name="manage.mapping.noid"/></option>
+            	  <option value="-2" <#if (mapping.idColumn!-99)==-2> selected="selected"</#if>><@s.text name="manage.mapping.uuid"/></option>
+            	</#if>
+            	  <option value="-1" <#if (mapping.idColumn!-99)==-1> selected="selected"</#if>><@s.text name="manage.mapping.lineNumber"/></option>
+            	<#list columns as col>
+            	  <option value="${col_index}" <#if (mappingCoreid.index!-1)==col_index> selected="selected"</#if>>${col}</option>		  		  
+            	</#list>
+            	</select>
+                <input type="text" name="mapping.idSuffix" style="width:200px" value="${mapping.idSuffix!}" class="idSuffix" />
+            </div>
+            <div>
+                <p><@s.text name='manage.mapping.idColumn' /></p>
+            </div>
+        	<#if ((mapping.idColumn!-99)>=0)>
+        	<div>
+        	    <p>
+        		<em><@s.text name='manage.mapping.sourceSample' /></em>:	      		
+        		<#assign first=true/>
+        		<#list peek as row><#if row??><#if row[mapping.idColumn]?has_content><#if !first> | </#if><#assign first=false/>${row[mapping.idColumn]}</#if></#if></#list>
+        		</p>
+        	</div>
+        	</#if>
+        </div>
+        </div>
+</div>
+    <div class="clearfix"></div>
+</div>
 </div>
 	
-
+<div class="grid_23">
+<div class="conceptItem">
 <div id="filterSection" class="definition">	
-  <div class="title">
+  <div class="title grid_7">
   	<div class="head" id="filter">
 		<!-- Filter -->
 		<@select name="mapping.filter.filterTime" i18nkey="manage.mapping.filter" options=mapping.filter.filterTimes value="${mapping.filter.filterTime!}" />	
-  		
-  	</div>  	
+  	</div>
   </div>
-  <div class="body">
+  <div class="body grid_15">
   	<div class="infos">
   		<img class="infoImg" src="${baseURL}/images/info.gif" />
 		<div class="info">		
 			<@s.text name='manage.mapping.info'/>
 		</div>	
-		<select id="filterName" name="mapping.filter.column">
-		  <option value="" <#if !mapping.filter.column??> selected="selected"</#if>></option>
-		<#list columns as c>
-		  <option value="${c_index}" <#if c_index==mapping.filter.column!-999> selected="selected"</#if>>${c}</option>
-		</#list>
-		</select>
+    		<select id="filterName" name="mapping.filter.column">
+    		  <option value="" <#if !mapping.filter.column??> selected="selected"</#if>></option>
+    		<#list columns as c>
+    		  <option value="${c_index}" <#if c_index==mapping.filter.column!-999> selected="selected"</#if>>${c}</option>
+    		</#list>
+    		</select>
 		
-		<select id="filterComp" name="mapping.filter.comparator">
-		  <option value="" <#if !mapping.filter.comparator??> selected="selected"</#if>></option>
-		<#list comparators as c>
-		  <option value="${c}" <#if c==mapping.filter.comparator!""> selected="selected"</#if>>${c}</option>
-		</#list>
-		</select>
-		<input id="filterParam" name="mapping.filter.param" style="width:190px;" value="${mapping.filter.param!}" />
+    		<select id="filterComp" name="mapping.filter.comparator">
+    		  <option value="" <#if !mapping.filter.comparator??> selected="selected"</#if>></option>
+    		<#list comparators as c>
+    		  <option value="${c}" <#if c==mapping.filter.comparator!""> selected="selected"</#if>>${c}</option>
+    		</#list>
+    		</select>
+		    <input id="filterParam" name="mapping.filter.param" style="width:190px;" value="${mapping.filter.param!}" />
     </div>
-    <div>
-    	<@s.text name='manage.mapping.filter.text' />
-    </div>
+        <div>
+        	<p><@s.text name='manage.mapping.filter.text' /></p>
+        </div>
   </div>
+</div>
+    <div class="clearfix"></div>
+</div>
 </div>
 
   <div class="buttons">
@@ -236,7 +226,8 @@ $(document).ready(function(){
  	<@s.submit cssClass="confirm" name="delete" key="button.delete"/>
  	<@s.submit cssClass="button" name="cancel" key="button.cancel"/>
   </div>
-
+  <p></p>
+<hr />
 
 	<#assign group=""/>
 	<#assign groupMenu>
@@ -252,6 +243,7 @@ $(document).ready(function(){
 
 	<#assign group=""/>
 	<#--list mapping.extension.properties as p-->
+
 	<#list fields as field>
 	<#assign p=field.term/>
 	
@@ -266,16 +258,18 @@ $(document).ready(function(){
 		  <#noescape>${groupMenu}</#noescape>
 		  <#assign group=p.group/>
 		  <a name="${p.group?url}"></a>
-		  <h2>${p.group}</h2>
-	  </div>
+          <h3 class="subTitle">${p.group}</h3>
+      </div>
 	</#if>
+
+<div class="conceptItem grid_23 suffix_1">
 	<div class="definition<#if p.required> required</#if>">	
-	  <div class="title">
+	  <div class="title grid_7">
 	  	<div class="head">
 			${p.name}			
 	  	</div>
 	  </div>
-	  <div class="body">
+	  <div class="body grid_15">
 	  <div>
 	  	<div class="infos">
 	  		<img class="infoImg" src="${baseURL}/images/info.gif" />
@@ -327,28 +321,31 @@ $(document).ready(function(){
 	      	</div>
 	  </div>
 	</div>
-
+	<div class="clearfix"></div>
+</div>
 	<#if !field_has_next>
+    <div id="unmapped-columns" class="grid_24">
 	  <#if (nonMappedColumns.size()>0)>
-		<br/><b><@s.text name="manage.mapping.no.mapped.title"/></b><br/><br/>
-		<@s.text name="manage.mapping.no.mapped.columns"/>:<br/>
-		<em>
+		<h3 class="subTitle"><@s.text name="manage.mapping.no.mapped.title"/></h3>
+		<p><@s.text name="manage.mapping.no.mapped.columns"/>:</p>
 		<ul>
 			<#list nonMappedColumns as col>
 				<li>${col}</li>
 			</#list>
 		</ul>
-		</em>
 	  </#if>
-	
-	  <div class="buttons">
+	</div>
+    <div class="grid_24">
+    <div class="buttons">
 	 	<@s.submit cssClass="button" name="save" key="button.save"/>
 	 	<@s.submit cssClass="button" name="cancel" key="button.cancel"/>
-	  </div>
+	</div>
+	</div>
 	</#if>
-
 	</#list>
 
 </form>
+</div>
+
 <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>

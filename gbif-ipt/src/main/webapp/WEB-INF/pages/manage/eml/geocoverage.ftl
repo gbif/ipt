@@ -225,10 +225,16 @@
 
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
-<h1><@s.text name='manage.metadata.geocoverage.title'/>: <a href="resource.do?r=${resource.shortname}"><em>${resource.title!resource.shortname}</em></a> </h1>
-<@s.text name='manage.metadata.geocoverage.intro'/>
-<div id="map"></div>
+<h1><span class="superscript">Resource Title</span>
+    <a class="tooltip" href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}
+        <span class="classic">Click the title to go to the <em>resource overview</em> page.<div class="arrow-wrap"><div class="arrow"></div></div></span>
+    </a>
+</h1>
+<div class="grid_17 suffix_1">
+<h2 class="subTitle"><@s.text name='manage.metadata.geocoverage.title'/></h2>
 <form class="topForm" action="metadata-${section}.do" method="post">
+<p><@s.text name='manage.metadata.geocoverage.intro'/></p>
+<div id="map"></div>
 	<div id="bbox">
 		<@checkbox name="globalCoverage" help="i18n" i18nkey="eml.geospatialCoverages.globalCoverage"/>
 	 <div id="coordinates">
@@ -238,7 +244,6 @@
   		<div class="halfcolumn">
   		<@input name="eml.geospatialCoverages[0].boundingCoordinates.max.longitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.max.longitude)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.max.longitude"/>
   		</div>
-  		<div class="newline"></div>	
   		<div class="halfcolumn">
   			<@input name="eml.geospatialCoverages[0].boundingCoordinates.min.latitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.min.latitude)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.min.latitude"/>
   		</div>
@@ -247,7 +252,6 @@
   		</div>
   	 </div>	
 	</div>
-	<div class="newline"></div>
 		<@text name="eml.geospatialCoverages[0].description" value="${(eml.geospatialCoverages[0].description)!}" i18nkey="eml.geospatialCoverages.description"/>
 	<div class="buttons">
   		<@s.submit cssClass="button" name="save" key="button.save" />
@@ -257,6 +261,7 @@
 	<!-- internal parameter -->
 	<input name="r" type="hidden" value="${resource.shortname}" />
 </form>
+</div>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>

@@ -3,6 +3,7 @@
  <#assign currentMenu = "admin"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
+<div class="grid_24">
 <h1><@s.text name="admin.extension.coreTypes"/></h1>
 
 <#assign count=0>
@@ -11,8 +12,8 @@
 <#if ext.core>
 <#assign count=count+1>
 <a name="${ext.rowType}"></a>          
-<div class="definition">	
-  <div class="title">
+<div class="definition clearfix">	
+  <div class="title grid_6">
   	<div class="head">
         <a href="extension.do?id=${ext.rowType}">${ext.title}</a>
   	</div>
@@ -23,10 +24,10 @@
   	  </form>
   	</div>
   </div>
-  <div class="body">
+  <div class="body grid_16">
       	<div>
-			${ext.description!}
-			<#if ext.link?has_content><br/><@s.text name="basic.seealso"/> <a href="${ext.link}">${ext.link}</a></#if>              	
+			<p>${ext.description!}
+			<#if ext.link?has_content><br/><@s.text name="basic.seealso"/> <a href="${ext.link}">${ext.link}</a></#if></p>             	
       	</div>
       	<div class="details">
       		<table>
@@ -38,15 +39,16 @@
       		</table>
       	</div>
   </div>
+  <div class="clearfix"></div>
 </div>
 </#if>
 </#list>
 <#if count=0>
 	<@s.text name="admin.extension.no.coreTypes.installed"/>
 </#if>
+</div>
 
-<div class="newline"></div>
-<div class="newline"></div>
+<div class="grid_23">
 <h1><@s.text name="admin.extension.extensions"/></h1>
 
 <#assign count=0>
@@ -55,7 +57,7 @@
 <#assign count=count+1>
 <a name="${ext.rowType}"></a>          
 <div class="definition">	
-  <div class="title">
+  <div class="title grid_6">
   	<div class="head">
         <a href="extension.do?id=${ext.rowType}">${ext.title}</a>
   	</div>
@@ -66,10 +68,10 @@
   	  </form>
   	</div>
   </div>
-  <div class="body">
+  <div class="body grid_16">
       	<div>
-			${ext.description!}
-			<#if ext.link?has_content><br/><@s.text name="basic.seealso"/> <a href="${ext.link}">${ext.link}</a></#if>              	
+      	    <p>${ext.description!}
+			<#if ext.link?has_content><br/><@s.text name="basic.seealso"/> <a href="${ext.link}">${ext.link}</a></#if></p>             	
       	</div>
       	<div class="details">
       		<table>
@@ -81,6 +83,7 @@
       		</table>
       	</div>
   </div>
+  <div class="clearfix"></div>
 </div>
 </#if>
 </#list>
@@ -89,7 +92,9 @@
 </#if>
 
 <#if (numVocabs>0)>
+</div>
 <hr/>
+<div class="grid_23">
 <h3><@s.text name="extension.vocabularies.title"/></h3>
 <p>
 	<@s.text name="extension.vocabularies.last.update"><@s.param>${dateFormat}</@s.param></@s.text>
@@ -99,15 +104,18 @@
   	  </form>
 </p>
 </#if>
+
+</div>
 <hr/>
 
+<div class="grid_23">
 <h3><@s.text name="extension.further.title"/></h3>
 
 <#assign count=0>
 <#list newExtensions as ext>
 <#assign count=count+1>
 <div class="definition">	
-  <div class="title">
+  <div class="title grid_6">
   	<div class="head">
 		${ext.title}
   	</div>
@@ -118,9 +126,9 @@
   	  </form>
   	</div>
   </div>
-  <div class="body">
+  <div class="body grid_16">
       	<div>
-		${ext.description!}
+		<p>${ext.description!}</p>
       	</div>
       	<div class="details">
       		<table>
@@ -129,10 +137,11 @@
       		</table>
       	</div>
   </div>
+  <div class="clearfix"></div>
 </div>
 </#list>
 <#if count=0>
 	<@s.text name="extension.already.installed"/>
 </#if>
-
+</div>
 <#include "/WEB-INF/pages/inc/footer.ftl">

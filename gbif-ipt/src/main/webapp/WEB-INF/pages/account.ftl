@@ -3,6 +3,7 @@
  <#assign currentMenu = "account"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
+<div class="grid_18 suffix_6">
 <h1><@s.text name="account.title"/></h1>
 
 <p><@s.text name="account.intro"/></p>
@@ -25,5 +26,5 @@
  	<@s.submit cssClass="button" name="save" key="button.save"/>
   </div>	
 </@s.form>
-
+</div>
 <#include "/WEB-INF/pages/inc/footer.ftl">

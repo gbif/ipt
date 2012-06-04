@@ -8,43 +8,57 @@
 
 <#if (resources?size>0)>
 <table id="resourcestable" class="sortable">
+	<thead>
 	<tr>
-		<th class="sorttable_nosort"><@s.text name="portal.home.logo"/></th>
-		<th><@s.text name="portal.home.name"/></th>
-		<th><@s.text name="portal.home.organisation"/></th>
-		<th><@s.text name="portal.home.type"/></th>
-		<th><@s.text name="manage.home.subtype"/></th>
-		<th><@s.text name="portal.home.records"/></th>
-		<th><@s.text name="portal.home.modified"/></th>
-		<th><@s.text name="portal.home.last.publication" /></th>
+		<th id="resourceLogo" class="sorttable_nosort"><@s.text name="portal.home.logo"/></th>
+		<th id="resourceName"><@s.text name="portal.home.name"/></th>
+		<th id="resourceOrganisation"><@s.text name="portal.home.organisation"/></th>
+		<th id="resourceType"><@s.text name="portal.home.type"/></th>
+		<th id="resourceSubType"><@s.text name="manage.home.subtype"/></th>
+		<th id="resourceRecords"><@s.text name="portal.home.records"/></th>
+		<th id="resourceLastModified"><@s.text name="portal.home.modified"/></th>
+		<th id="resourceLastPublication"><@s.text name="portal.home.last.publication" /></th>
 	</tr>
-<#list resources as r>
-  <tr>
-  	<td><#if r.eml.logoUrl?has_content><img class="resourceminilogo" src="${r.eml.logoUrl}" /></#if></td>
-	<td><a href="resource.do?r=${r.shortname}"><#if r.title?has_content>${r.title}<#else>${r.shortname}</#if></a></td>
-	<#-- if registrationAllowed -->
-	<td>
-		<#if r.status=='REGISTERED'>
-			${r.organisation.name}
-		<#else>
-			<@s.text name="manage.home.not.registered"/>
-		</#if>
-	</td>
-	<#-- >/#if -->
-	<td>${r.coreType!"---"}</td>
-	<td>${r.subtype!"---"}</td>
-	<td>${r.recordsPublished!0}</td>
-	<td>${r.modified?date}</td>
-	<td>
-		<#if r.published>
-			${(r.lastPublished?date)!}
-		<#else>			
-			<@s.text name="portal.home.not.published"/>
-		</#if>	
-	</td>
-  </tr>
-</#list>
-</table>
+	</thead>
+	<tbody>
+    <#-- for counting even or odd rows -->
+    <#function zebra index>
+      <#if (index % 2) == 0>
+        <#return "even" />
+      <#else>
+        <#return "odd" />
+      </#if>
+    </#function>
+    
+    <#list resources as r>
+    
+      <tr class="${zebra(r_index)}">
+      	<td id="resourceLogo"><#if r.eml.logoUrl?has_content><img class="resourceminilogo" src="${r.eml.logoUrl}" /></#if></td>
+    	<td id="resourceName"><a href="resource.do?r=${r.shortname}"><#if r.title?has_content>${r.title}<#else>${r.shortname}</#if></a></td>
+    	<#-- if registrationAllowed -->
+    	<td id="resourceOrganisation">
+    		<#if r.status=='REGISTERED'>
+    			${r.organisation.name}
+    		<#else>
+    			<@s.text name="manage.home.not.registered"/>
+    		</#if>
+    	</td>
+    	<#-- >/#if -->
+    	<td id="resourceType">${r.coreType!"---"}</td>
+    	<td id="resourceSubType">${r.subtype!"---"}</td>
+    	<td id="resourceRecords">${r.recordsPublished!0}</td>
+    	<td id="resourceLastModified">${r.modified?date}</td>
+    	<td id="resourceLastPublication">
+    		<#if r.published>
+    			${(r.lastPublished?date)!}
+    		<#else>			
+    			<@s.text name="portal.home.not.published"/>
+    		</#if>	
+    	</td>
+      </tr>
+    </#list>
+    </tbody>
+    </table>
 
 <p><@s.text name="portal.home.feed"><@s.param>${baseURL}/rss.do</@s.param></@s.text> <img id="rssImage" src="${baseURL}/images/rss.png"/>.</p>
 

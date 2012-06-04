@@ -28,6 +28,7 @@ $(document).ready(function(){
  <#assign currentMenu = "admin"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
+<div class="grid_18 suffix_6">
 <h1><@s.text name="admin.home.editConfig"/></h1>
 
 <#include "/WEB-INF/pages/macros/forms.ftl">
@@ -44,9 +45,6 @@ $(document).ready(function(){
   	<@readonly name="registryUrl" i18nkey="admin.config.registry.url" value="${registryUrl}" help="i18n"/>
 
   <div id="location">
-	<div class="newline"></div>
-	<div class="newline"></div>
-	<div class="newline"></div>
 	<label for="latitude"><@s.text name="admin.config.server.location"/></label>
 	<div class="halfcolumn">
 		<@input name="latitude" i18nkey="admin.config.server.latitude" help="i18n" />
@@ -64,13 +62,13 @@ $(document).ready(function(){
 	<img src="${baseURL}/images/ipt_no_location_map.gif" />
 	</#if>
   </div>
-
-		
   <div class="buttons">
  	<@s.submit cssClass="button" name="save" key="button.save"/>
  	<@s.submit cssClass="button" name="cancel" key="button.cancel"/>
   </div>	
 
 </@s.form>
+</div>
+</div>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">

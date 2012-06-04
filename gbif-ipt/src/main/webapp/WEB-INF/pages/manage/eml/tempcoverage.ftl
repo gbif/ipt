@@ -156,22 +156,27 @@
 <#assign sideMenuEml=true />
 <#assign currentMenu="manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
-<h1><@s.text name='manage.metadata.tempcoverage.title'/>: <a href="resource.do?r=${resource.shortname}"><em>${resource.title!resource.shortname}</em></a> </h1>
-<p><@s.text name='manage.metadata.tempcoverage.intro'/></p>
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
+
+<h1><span class="superscript">Resource Title</span>
+    <a class="tooltip" href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}
+        <span class="classic">Click the title to go to the <em>resource overview</em> page.<div class="arrow-wrap"><div class="arrow"></div></div></span>
+    </a>
+</h1>
+<div class="grid_17 suffix_1">
+<h2 class="subTitle"><@s.text name='manage.metadata.tempcoverage.title'/></h2>
 <form class="topForm" action="metadata-${section}.do" method="post">
+    <p><@s.text name='manage.metadata.tempcoverage.intro'/></p>
 	<div id="temporals">
 		<!-- Adding the temporal coverages that already exists on the file -->
 		<#assign next_agent_index=0 />
 		<#list eml.temporalCoverages as temporalCoverage>
-			<div id="temporal-${temporalCoverage_index}" class="tempo" >
+			<div id="temporal-${temporalCoverage_index}" class="tempo clearfix" >
 				<div class="right">
 					<a id="removeLink-${temporalCoverage_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.tempcoverage.item'/> ]</a>
 				</div>
-			<div class="newline"></div>	
 			<@select i18nkey="eml.temporalCoverages.type"  name="tempTypes-${temporalCoverage_index}" options=tempTypes value="${temporalCoverage.type}" />
 			<!-- Adding new subform -->
-			<br>
 			<#if "${temporalCoverage.type}" == "DATE_RANGE" >
 				<div id="date-${temporalCoverage_index}" class="typeForm" >
 					<div class="halfcolumn">
@@ -196,12 +201,8 @@
 						<@input i18nkey="eml.temporalCoverages.livingTimePeriod" name="eml.temporalCoverages[${temporalCoverage_index}].livingTimePeriod" help="i18n" />
 					</div>
 			</#if>
-					<div class="newline"></div>      
-					<div class="horizontal_dotted_line_large_foo" id="separator"></div>
-					<div class="newline"></div>
-					<div class="newline"></div>
 				</div>
-			<div class="newline"></div>	
+			<div class="clearfix"></div>
 			</div>
 		</#list>
 	</div>	
@@ -214,15 +215,14 @@
 	<!-- internal parameter -->
 	<input name="r" type="hidden" value="${resource.shortname}" />	
 </form>
+</div>
 
-<!-- The base form that is going to be cloned every time an user clic in the 'add' link -->
-<div id="temporal-99999" class="tempo" style="display:none">
+<!-- The base form that is going to be cloned every time an user click in the 'add' link -->
+<div id="temporal-99999" class="tempo clearfix" style="display:none">
 	<div class="right">		
 		<a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.tempcoverage.item'/> ]</a>
 	</div>
-	<div class="newline"></div>	
 	<@select i18nkey="eml.temporalCoverages.type"  name="tempTypes" options=tempTypes />  
-	<div class="newline"></div>	
 </div>
 
 <!-- DATE RANGE -->
@@ -233,10 +233,6 @@
 	<div class="halfcolumn">
 		<@input date=true i18nkey="eml.temporalCoverages.endDate" name="endDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD",  "MM/DD/YYYY":"MM/DD/YYYY"}/>
 	</div>		  
-	<div class="newline"></div>      
-	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
-	<div class="newline"></div>
-	<div class="newline"></div>
 </div>
 
 <!-- SINGLE DATE -->
@@ -244,10 +240,6 @@
 	<div class="halfcolumn">
 		<@input date=true i18nkey="eml.temporalCoverages.startDate" name="startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD",  "MM/DD/YYYY":"MM/DD/YYYY"} />
 	</div>
-	<div class="newline"></div>
-	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
-	<div class="newline"></div>
-	<div class="newline"></div>
 </div>
 
 <!-- FORMATION PERIOD -->
@@ -255,10 +247,6 @@
 	<div class="halfcolumn">
 		<@input i18nkey="eml.temporalCoverages.formationPeriod" name="formationPeriod" help="i18n" />
 	</div>
-	<div class="newline"></div>
-	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
-	<div class="newline"></div>
-	<div class="newline"></div>
 </div>
 
 <!-- LIVING TIME PERIOD -->
@@ -266,10 +254,6 @@
 	<div class="halfcolumn">
 		<@input i18nkey="eml.temporalCoverages.livingTimePeriod" name="livingTimePeriod" help="i18n" />
 	</div>
-	<div class="newline"></div>
-	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
-	<div class="newline"></div>
-	<div class="newline"></div>
 </div>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">

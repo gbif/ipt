@@ -23,21 +23,32 @@ $(document).ready(function(){
 </script>	
  <#assign currentMenu = "admin"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
-
-<h1><@s.text name="admin.home.editOrganisations"/></h1>
-
 <#include "/WEB-INF/pages/macros/forms.ftl"> 
 
-<table class="simple" width="100%">
+<div class="grid_24">
+<h1><@s.text name="admin.home.editOrganisations"/></h1>
+
+<table id="user-list" class="simple" width="100%">
+    <thead>
 	<tr>
 		<th><@s.text name="admin.organisation.name"/></th>
 		<th><@s.text name="admin.organisation.alias"/></th>
 		<th><@s.text name="admin.organisation.canPublish"/></th>
 		<th></th>		
 	</tr>
-	
+	</thead>
+	<tbody>
+	<#-- for counting even or odd rows -->
+    <#function zebra index>
+      <#if (index % 2) == 0>
+        <#return "even" />
+      <#else>
+        <#return "odd" />
+      </#if>
+    </#function>
+
 	<#list linkedOrganisations as o>	
-	<tr>
+	<tr class="${zebra(o_index)}">
 		<td><a id="editLink_${o.key}" href="organisation?id=${o.key}">${o.name!"???"}</a></td>
 		<td>${o.alias!}</td>
 		<td>
@@ -45,6 +56,7 @@ $(document).ready(function(){
 		</td>
 	</tr>
 	</#list>
+	</tbody>
 </table>
 
 
@@ -52,6 +64,7 @@ $(document).ready(function(){
 	<button id="add"><@s.text name="button.add"/></button>
 	<button id="cancel"><@s.text name="button.cancel"/></button>
 </p>
+</div>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>

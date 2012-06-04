@@ -1,6 +1,5 @@
 [#ftl]
 [#include "/WEB-INF/pages/inc/header_setup.ftl"]
-
 		<h1>[@s.text name="admin.config.setup.title"/]</h1>
 		<p>[@s.text name="admin.config.setup.welcome"/]</p>
 		
@@ -18,5 +17,5 @@
 			[@s.textfield key="admin.config.setup.datadir" name="dataDirPath" size="80" required="true"/]
 		 	[@s.submit cssClass="button" name="save" key="button.save"/]
 		[/@s.form]
-
+</div>
 [#include "/WEB-INF/pages/inc/footer.ftl"]

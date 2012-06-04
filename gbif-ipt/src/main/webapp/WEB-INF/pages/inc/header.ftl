@@ -9,14 +9,20 @@
 [/#if]
 --]
 [#setting url_escaping_charset="UTF-8"]
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-	    <meta name="copyright" lang="en" content="GBIF" />
- 		<link rel="stylesheet" type="text/css" href="${baseURL}/styles/main.css"/>
+    <meta name="copyright" lang="en" content="GBIF" />
+    <meta name="description" lang="en" content="The Integrated Publishing Toolkit is a tool of GBIF to provide an easy and efficient way of making biodiversity data available on the GBIF Data Portal. It supports occurrence , checklist, and metadata publishing" />
+    <meta name="keywords" lang="en" content="GBIF, Global Biodiversity Information Facility, IPT, Integrated Publishing Toolkit, checklist, occurrence, metadata, DwC-A, Darwin Core, Darwin Core Archive, biodiversity data, data paper, EML" />
+    <link rel="stylesheet" type="text/css" media="all" href="${baseURL}/styles/reset.css" />
+		<link rel="stylesheet" type="text/css" media="all" href="${baseURL}/styles/text.css" />
+		<link rel="stylesheet" type="text/css" media="all" href="${baseURL}/styles/960_24_col.css" />
+ 		<link rel="stylesheet" type="text/css" href="${baseURL}/styles/main.css" />
  		<link rel="shortcut icon" href="${baseURL}/images/icons/favicon.ico" type="image/x-icon" />
 		<script type="text/javascript" src="${baseURL}/js/jquery/jquery.min-1.5.1.js"></script>				
 		<script type="text/javascript" src="${baseURL}/js/jquery/jquery-ui.min-1.8.3.js"></script>
-		<link media="all" type="text/css" href="${baseURL}/styles/jquery/jquery-ui-1.8.3.css" rel="stylesheet">
+		<link media="all" type="text/css" href="${baseURL}/styles/jquery/jquery-ui-1.8.3.css" rel="stylesheet" />
 		<script type="text/javascript" src="${baseURL}/js/global.js"></script>
 		<script type="text/javascript" src="${baseURL}/js/sorttable.js"></script>
 	    <link href="${baseURL}/rss.do" title="Latest Resources" rel="alternate" type="application/rss+xml" />
