@@ -207,20 +207,49 @@
 			<#list eml.taxonomicCoverages as item>			
 			<#assign size=eml.taxonomicCoverages[item_index].taxonKeywords?size/>
 			<table>
-				<tr><th><@s.text name='eml.taxonomicCoverages.description'/></th><td><@textWithFormattedLink eml.taxonomicCoverages[item_index].description!no_description/></td></tr>
+				<tr>
+				    <th><@s.text name='eml.taxonomicCoverages.description'/></th>
+				    <td><@textWithFormattedLink eml.taxonomicCoverages[item_index].description!no_description/></td>
+				</tr>
 	      	</table>
 	      	<table id="taxonKeywords"> 	
 				<#assign firstRank=false/>
 				<#list ranks?keys as rank>
 				<#assign wroteRank=false/>
-				<#list eml.taxonomicCoverages[item_index].taxonKeywords as subitem><#if subitem.rank?has_content && subitem.rank=rank><#if wroteRank=false><tr><th><#assign wroteRank=true/>${subitem.rank!?cap_first}</th><td><#if subitem.scientificName?has_content>${subitem.scientificName!}</#if><#if subitem.commonName?has_content> (${subitem.commonName!})</#if><#else><#if subitem.scientificName?has_content>, ${subitem.scientificName!}</#if><#if subitem.commonName?has_content> (${subitem.commonName!})</#if></#if></#if></#list>
-				</td></tr>
+				<#list eml.taxonomicCoverages[item_index].taxonKeywords as subitem>
+				    <#if subitem.rank?has_content && subitem.rank=rank>
+				        <#if wroteRank=false>
+				            <tr>
+				            <th><#assign wroteRank=true/>${subitem.rank!?cap_first}</th>
+				            <td>
+				                <#if subitem.scientificName?has_content>${subitem.scientificName!}</#if>
+				                <#if subitem.commonName?has_content> (${subitem.commonName!})</#if>
+				                <#else>
+				                <#if subitem.scientificName?has_content>, ${subitem.scientificName!}
+				                </#if>
+				                <#if subitem.commonName?has_content> (${subitem.commonName!})</#if>
+				            </td>
+				            </tr>
+			                </#if>
+				        </#if>
+				    </#list>
 				</#list>
 				<#assign first=false/>
-				<#list eml.taxonomicCoverages[item_index].taxonKeywords as subitem><#if subitem.rank?has_content=false && subitem.scientificName?has_content><#if first=false><tr><th><@s.text name='manage.metadata.taxcoverage.unranked'/></th><td><#assign first=true/>${subitem.scientificName!}<#if subitem.commonName?has_content> (${subitem.commonName!})</#if><#else>, ${subitem.scientificName!}<#if subitem.commonName?has_content> (${subitem.commonName!})</#if></#if></#if></#list></td></tr>								
+				<#list eml.taxonomicCoverages[item_index].taxonKeywords as subitem>
+				    <#if subitem.rank?has_content=false && subitem.scientificName?has_content>
+				        <#if first=false>
+				            <tr><th><@s.text name='manage.metadata.taxcoverage.unranked'/></th>
+				                <td><#assign first=true/>${subitem.scientificName!}
+				                    <#if subitem.commonName?has_content> (${subitem.commonName!})</#if>
+				                    <#else>, ${subitem.scientificName!}
+				                    <#if subitem.commonName?has_content> (${subitem.commonName!})</#if>
+				                </td>
+				            </tr>
+				        </#if>
+				    </#if>
+				</#list>								
+      		    </#list>
 	      	</table>
-      		
-      		</#list>
       	</div>
   </div>
   <div class="clearfix"></div>
