@@ -123,6 +123,6 @@ function jsddm_canceltimer() {
 function initMenu() {  
 	// Simple Drop-Down Menu
 	// taken from http://javascript-array.com/scripts/jquery_simple_drop_down_menu/
-	$('#topmenu > li').bind('mouseover', jsddm_open);
-	$('#topmenu > li').bind('mouseout',  jsddm_timer);	
+	$('#language-menu > li').bind('mouseover', jsddm_open);
+	$('#language-menu > li').bind('mouseout',  jsddm_timer);	
 }

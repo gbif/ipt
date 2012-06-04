@@ -12,9 +12,17 @@ $(document).ready(function(){
 </script>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
-<h1><@s.text name='manage.metadata.keywords.title'/>: <a href="resource.do?r=${resource.shortname}"><em>${resource.title!resource.shortname}</em></a> </h1>
-<@s.text name='manage.metadata.keywords.intro'/>
+
+
+<h1><span class="superscript">Resource Title</span>
+    <a class="tooltip" href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}
+        <span class="classic">Click the title to go to the <em>resource overview</em> page.<div class="arrow-wrap"><div class="arrow"></div></div></span>
+    </a>
+</h1>
+<div class="grid_17 suffix_1">
+<h2 class="subTitle"><@s.text name='manage.metadata.keywords.title'/></h2>
 <form class="topForm" action="metadata-${section}.do" method="post">
+    <p><@s.text name='manage.metadata.keywords.intro'/></p>
 	<div id="items">
 		<#list eml.keywords as item>
 			<div id="item-${item_index}" class="item">
@@ -41,6 +49,7 @@ $(document).ready(function(){
 	<!-- internal parameter -->
 	<input name="r" type="hidden" value="${resource.shortname}" />
 </form>
+</div>
 <div id="baseItem" class="item" style="display:none;">
 	<div class="newline"></div>
 	<div class="right">

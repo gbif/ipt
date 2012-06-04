@@ -8,14 +8,14 @@
 <#macro text name value="-99999" i18nkey="" errorfield="" size=40 rows=5 disabled=false help="">
   <div>
 	<#include "/WEB-INF/pages/macros/form_field_common.ftl">
-	<textarea id="${name}" name="${name}" cols=${size} rows=${rows} <#if disabled>readonly="readonly"</#if>><#if value=="-99999"><@s.property value="${name}"/><#else>${value}</#if></textarea>
+	<textarea id="${name}" name="${name}" cols="${size}" rows="${rows}" <#if disabled>readonly="readonly"</#if>><#if value=="-99999"><@s.property value="${name}"/><#else>${value}</#if></textarea>
   </div>
 </#macro> 
 
 <#macro textinline name value="-99999" i18nkey="" errorfield="" help="">
 	<div class="textinline">  
 		<div class="textRight"><#include "/WEB-INF/pages/macros/help_icon.ftl"></div>
-		<div class="textLeft"><h2><@s.text name="${name}"/></h2></div>	
+		<div class="textLeft"><h2 class="headerLine"><span><@s.text name="${name}"/></span></h2></div>	
 	</div>
 </#macro>
 

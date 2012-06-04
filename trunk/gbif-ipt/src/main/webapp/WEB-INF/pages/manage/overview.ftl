@@ -79,14 +79,17 @@ $(document).ready(function(){
  <#assign currentMenu = "manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
+<div class="container_24">
+    <div class="grid_18 suffix_6">
+        <h1>${resource.title!resource.shortname}</h1>
+        <p>
+        <@s.text name="manage.overview.intro"><@s.param>${resource.title!resource.shortname}</@s.param></@s.text>
+        </p>
+    </div>
+</div>
 
-<h1>${resource.title!resource.shortname}</h1>
-<p>
-<@s.text name="manage.overview.intro"><@s.param>${resource.title!resource.shortname}</@s.param></@s.text>
-</p>
-
-<div class="definition" id="metadata">	
-  <div class="titleOverview">
+<div class="resourceOverview container_24" id="metadata">	
+  <div class="titleOverview grid_8">
   	<div class="head">
         <@s.text name='manage.overview.metadata'/>
   	</div>
@@ -94,23 +97,23 @@ $(document).ready(function(){
 	  <form action='metadata-basic.do' method='get'>
 	    <input name="r" type="hidden" value="${resource.shortname}" />
        	<@s.submit name="edit" key="button.edit"/>
-       	<div class="newline"></div>
-       	<div class="newline"></div>
+       	
+       	
   	  </form>
   	</div>
   	<#if missingMetadata>
   	<div class="warn">
 		<@s.text name='manage.overview.missing.metadata'/>
-		<div class="newline"></div>
-       	<div class="newline"></div>
+		
+       	
   	</div>
   	</#if>
   </div>
-  <div class="bodyOverview">
-      	<div>
+  <div class="bodyOverview grid_16">
+      	<p>
       		<#assign no_description><@s.text name='manage.overview.no.description'/></#assign>
 			<@description resource.description!no_description 100/>
-      	</div>
+      	</p>
       	<div class="details">
       		<table>
           		<#if resource.eml.subject?has_content><tr><th><@s.text name='portal.resource.summary.keywords'/></th><td><@description resource.eml.subject!no_description 90/></td></tr></#if>
@@ -123,8 +126,8 @@ $(document).ready(function(){
   </div>
 </div>
 
-<div class="definition" id="sources">	
-  <div class="titleOverview">
+<div class="resourceOverview container_24" id="sources">	
+  <div class="titleOverview grid_8">
   	<div class="head">
         <@s.text name='manage.overview.source.data'/>
   	</div>
@@ -133,24 +136,24 @@ $(document).ready(function(){
 	    <input name="r" type="hidden" value="${resource.shortname}" />
 	    <input name="validate" type="hidden" value="false" />
 	    <@s.file name="file" key="manage.resource.create.file" />
-	    <div class="newline"></div>
+	    
        	<@s.submit name="add" key="button.connectDB"/>
        	<@s.submit name="clear" key="button.clear"/>
        	<div style="display: none;">
        		<@s.submit name="cancel" key="button.cancel" method="cancelOverwrite"/>
        	</div>
-       	<div class="newline"></div>
-       	<div class="newline"></div>
+       	
+       	
   	  </form>
   	</div>
   </div>
-  <div class="bodyOverview">
-      	<div>
+  <div class="bodyOverview grid_16">
+      	<p>
       		<@s.text name='manage.overview.source.description1'><@s.param><@s.text name="button.add"/></@s.param></@s.text>      		
-       		<div class="newline"></div>
-       		<div class="newline"></div>
+       		
+       		
        		<@s.text name='manage.overview.source.description2'/> "<@s.text name="button.connectDB"/>" <@s.text name='manage.overview.source.description3'/> 
-      	</div>
+      	</p>
       	<div class="details">
       		<table>
       		  <#list resource.sources as src>
@@ -161,16 +164,16 @@ $(document).ready(function(){
           		 ${src.name} <@s.text name='manage.overview.source.sql'/></th><td>db=${src.database!"..."}, ${src.columns} <@s.text name='manage.overview.source.columns'/>. 
           		</#if>
           		<#if !src.readable><img src="${baseURL}/images/warning.gif" /></#if> 
-          		<a href="source.do?r=${resource.shortname}&id=${src.name}"><button class="edit"><@s.text name='button.edit'/></button></a>
-          		</td></tr>
+          		</a>
+          		</td><td><a href="source.do?r=${resource.shortname}&id=${src.name}"><button class="edit"><@s.text name='button.edit'/></button></td></tr>
           	  </#list>
       		</table>
       	</div>
   </div>
 </div>
 
-<div class="definition" id="mappings">	
-  <div class="titleOverview">
+<div class="resourceOverview container_24" id="mappings">	
+  <div class="titleOverview grid_8">
   	<div class="head">
         <@s.text name='manage.overview.DwC.Mappings'/>
   	</div>
@@ -184,8 +187,8 @@ $(document).ready(function(){
 	    </#list>
 		</select>
 		 <@s.submit name="add" key="button.add"/>
-		<div class="newline"></div>
-		<div class="newline"></div>
+		
+		
   	  </form>
   	  <#else>
   	  	<#if (resource.sources?size>0) && !resource.hasCore()>
@@ -196,23 +199,23 @@ $(document).ready(function(){
   	  </#if>
   	</div>
   </div>
-  <div class="bodyOverview">
-      	<div>
+  <div class="bodyOverview grid_16">
+      	<p>
       		<@s.text name='manage.overview.DwC.Mappings.description'/>
-      	</div>
+      	</p>
       	<div class="details">
       		<table>
 	      		  <#list resource.coreMappings as m>
 	          		<tr><th><#if m_index==0>${m.extension.title}</#if></th><td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!} 
-	          		<a href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType}&mid=${m_index}"><button class="edit"><@s.text name='button.edit'/></button></a>
-	          		</td></tr>
+	          		</a>
+	          		</td><td><a href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType}&mid=${m_index}"><button class="edit"><@s.text name='button.edit'/></button></td></tr>
 	          	  </#list>
       		  <#list resource.getMappedExtensions() as ext>
       		  	<#if !ext.isCore()>
 	      		  <#list resource.getMappings(ext.rowType) as m>
 	          		<tr><th><#if m_index==0>${ext.title}</#if></th><td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!} 
-	          		<a href="mapping.do?r=${resource.shortname}&id=${ext.rowType}&mid=${m_index}"><button class="edit"><@s.text name='button.edit'/></button></a>
-	          		</td></tr>
+	          		</a>
+	          		</td><td><a href="mapping.do?r=${resource.shortname}&id=${ext.rowType}&mid=${m_index}"><button class="edit"><@s.text name='button.edit'/></button></td></tr>
 	          	  </#list>
 	          	</#if>
           	  </#list>
@@ -223,8 +226,8 @@ $(document).ready(function(){
 
 
 
-<div class="definition" id="publish">	
-  <div class="titleOverview">
+<div class="resourceOverview container_24" id="publish">	
+  <div class="titleOverview grid_8">
   	<div class="head">
         <@s.text name="manage.overview.published"/>
   	</div>
@@ -233,16 +236,16 @@ $(document).ready(function(){
 	  <form action='publish.do' method='post'>
 	    <input name="r" type="hidden" value="${resource.shortname}" />
 	    <@s.submit name="publish" key="button.publish" />
-	    <div class="newline"></div>
-	    <div class="newline"></div>
+	    
+	    
   	  </form>
   	  </#if>
   	</div>
   </div>
-  <div class="bodyOverview">
-      	<div>
+  <div class="bodyOverview grid_16">
+      	<p>
       		<@s.text name="manage.overview.published.description"/>
-      	</div>
+      	</p>
    	  <#if missingMetadata>
       	<div>
           	<img class="info"src="${baseURL}/images/info.gif" /> 
@@ -289,8 +292,8 @@ $(document).ready(function(){
   </div>
 </div>
 
-<div class="definition" id="visibility">	
-  <div class="titleOverview">
+<div class="resourceOverview container_24" id="visibility">	
+  <div class="titleOverview grid_8">
   	<div class="head">
         <@s.text name='manage.overview.visibility'/>
         <em class="<#if resource.status=="PRIVATE">RED<#else>green</#if>"><@s.text name="resource.status.${resource.status?lower_case}"/></em>
@@ -310,7 +313,7 @@ $(document).ready(function(){
 		          <option value="${o.key}">${o.alias!o.name}</option>
 		        </#list>
 			  </select>
-			  <div class="newline"></div>
+			  
 	       	  <@s.submit cssClass="confirmRegistration" name="publish" key="button.register" disabled="${missingRegistrationMetadata?string}"/>
 	       	  <#if missingRegistrationMetadata>
 	       		<div class="warn"><@s.text name="manage.overview.visibility.missing.metadata"><@s.param>${baseURL}/manage/metadata-basic.do?r=${resource.shortname}</@s.param></@s.text></div>
@@ -329,12 +332,12 @@ $(document).ready(function(){
  	      <@s.submit cssClass="confirm" name="unpublish" key="button.private" />
         </form>
       </#if>
-      <div class="newline"></div>
-      <div class="newline"></div>
+      
+      
   	</div>
   </div>
-  <div class="bodyOverview">
-      	<div>
+  <div class="bodyOverview grid_16">
+      	<p>
 			<@s.text name="manage.resource.status.intro.${resource.status?lower_case}"/> 
 		    <#if resource.status=="PUBLIC">
 			  <#if currentUser.hasRegistrationRights()>
@@ -352,7 +355,7 @@ $(document).ready(function(){
 	      		</div>
 			  </#if>
 		    </#if>
-      	</div>
+      	</p>
       	<div class="details">
       		<table>
 		      	<#if resource.status=="REGISTERED" && resource.key??>
@@ -369,8 +372,8 @@ $(document).ready(function(){
   </div>
 </div>
 
-<div class="definition" id="managers">	
-  <div class="titleOverview">
+<div class="resourceOverview container_24" id="managers">	
+  <div class="titleOverview grid_8">
   	<div class="head">
         <@s.text name="manage.overview.resource.managers"/>
   	</div>
@@ -389,10 +392,10 @@ $(document).ready(function(){
   	  </#if>
   	</div>
   </div>
-  <div class="bodyOverview">
-      	<div>
+  <div class="bodyOverview grid_16">
+      	<p>
       		<@s.text name="manage.overview.resource.managers.description"><@s.param>${resource.shortname}</@s.param></@s.text>
-		</div>
+		</p>
       	<div class="details">
       		<table>
           		<tr><th><@s.text name="manage.overview.resource.managers.creator"/></th><td>${resource.creator.name}, ${resource.creator.email}</td></tr>

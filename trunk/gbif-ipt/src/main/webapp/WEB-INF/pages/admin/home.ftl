@@ -8,6 +8,7 @@
 
 <#assign currentMenu = "admin"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
+<div class="grid_18 suffix_6">
 <table id="admintable">
 	<tr>
 	  <td>
@@ -16,7 +17,7 @@
 	  <td>
 		<@s.text name="admin.home.editConfig"/>
 	  </td>
-	  <td width="250px">
+	  <td>
 	  <@s.form cssClass="topForm" action="updateResourceMetadata.do" method="post">	  		
 	        <img class="infoImg" src="${baseURL}/images/info.gif" />
 			<div class="info">
@@ -49,7 +50,7 @@
 	  </td>
 	  <td colspan="2">
 		<@s.text name="admin.home.editOrganisations"/>
-		<#if !isRegistered><div class="small"><@s.text name="admin.home.editOrganisations.disabled"/></div></#if>
+		<#if !isRegistered><div id="un-registered"><@s.text name="admin.home.editOrganisations.disabled"/></div></#if>
 	  </td>
 	</tr>
 
@@ -70,5 +71,6 @@
 	  </td>
 	</tr>
 </table>
-
+</div>
+</div>
 <#include "/WEB-INF/pages/inc/footer.ftl">

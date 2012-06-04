@@ -8,38 +8,37 @@
 	});
 </script>		
 <#include "/WEB-INF/pages/macros/metadata.ftl"/>
- <#assign sideMenuEml=true />
- <#assign currentMenu="manage"/>
+<#assign sideMenuEml=true />
+<#assign currentMenu="manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
-<h1><@s.text name='manage.metadata.citations.title'/>: <a href="resource.do?r=${resource.shortname}"><em>${resource.title!resource.shortname}</em></a> </h1>
-<@s.text name='manage.metadata.citations.intro'/>
-<form class="topForm" action="metadata-${section}.do" method="post"> 
-	<div class="newline"></div>
+
+<h1><span class="superscript">Resource Title</span>
+    <a class="tooltip" href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}
+        <span class="classic">Click the title to go to the <em>resource overview</em> page.<div class="arrow-wrap"><div class="arrow"></div></div></span>
+    </a>
+</h1>
+<div class="grid_17 suffix_1">
+<h2 class="subTitle"><@s.text name='manage.metadata.citations.title'/></h2>
+<form class="topForm" action="metadata-${section}.do" method="post">
+    <p><@s.text name='manage.metadata.citations.intro'/></p>
+	
 	<div>
 		<@input name="eml.citation.identifier" help="i18n"/>
   		<@text name="eml.citation.citation" />
 	</div>
-	<div class="newline"></div>
-	<h2><@s.text name="manage.metadata.citations.bibliography"/></h2>
-	<div id="separator" class="horizontal_dotted_line_large_foo"></div>
+	<h3 class="subTitle"><@s.text name="manage.metadata.citations.bibliography"/></h3>
 	<div id="items">
 		<#list eml.bibliographicCitationSet.bibliographicCitations as item>
 			<div id="item-${item_index}" class="item">
-				<div class="newline"></div>
 				<div class="right">
       				<a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.citations.item'/> ]</a>
     			</div>
-    			<div class="newline"></div>
     				<@input name="eml.bibliographicCitationSet.bibliographicCitations[${item_index}].identifier" i18nkey="eml.bibliographicCitationSet.bibliographicCitations.identifier" />
 					<@text name="eml.bibliographicCitationSet.bibliographicCitations[${item_index}].citation" i18nkey="eml.bibliographicCitationSet.bibliographicCitations.citation" size=40/>
-  				<div class="newline"></div>
-				<div class="horizontal_dotted_line_large_foo" id="separator"></div>
-				<div class="newline"></div>
   			</div>
 		</#list>
 	</div>
-	<div class="newline"></div>
 	<a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.citations.item'/></a>
 	<div class="buttons">
 		<@s.submit cssClass="button" name="save" key="button.save" />
@@ -48,17 +47,15 @@
 	<!-- internal parameter -->
 	<input name="r" type="hidden" value="${resource.shortname}" />	
 </form>
+</div>
+
 <div id="baseItem" class="item" style="display:none;">
-	<div class="newline"></div>
 	<div class="right">
 		<a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.citations.item'/> ]</a>
 	</div>
-	<div class="newline"></div>
 		<@input name="identifier" i18nkey="eml.bibliographicCitationSet.bibliographicCitations.identifier" />
 		<@text name="citation" i18nkey="eml.bibliographicCitationSet.bibliographicCitations.citation"  value="" size=40/>
-	<div class="newline"></div>
-	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
-	<div class="newline"></div>
 </div>
+
 <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>

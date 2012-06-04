@@ -16,15 +16,19 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 	<title>${resource.title!resource.shortname!}</title>	
 <#include "/WEB-INF/pages/inc/menu.ftl">
+
+<div class="grid_18 suffix_6">
 <h1>${resource.title!resource.shortname}</h1>
 <div id="resourcelogo">
 	<#if resource.eml.logoUrl?has_content>
 	<img src="${resource.eml.logoUrl}" />
 	</#if>
 </div>
+<p>
 <#assign no_description><@s.text name='portal.resource.no.description'/></#assign>
 <@textWithFormattedLink resource.description!no_description/>
-<div class="definition" id="metadata">	
+</p>
+<div class="resourceOverviewPortal" id="metadata">	
   <div class="title">
   	<div class="head">
         <@s.text name='portal.resource.summary'/>
@@ -60,10 +64,11 @@
       		</table>
       	</div>
   </div>
+  <div class="clearfix"></div>
 </div>
 
 <#if eml.distributionUrl?? || eml.physicalData?has_content >
-<div class="definition">	
+<div class="resourceOverviewPortal">	
   <div class="title">
   	<div class="head">
         <@s.text name='manage.metadata.physical.title'/>
@@ -86,11 +91,12 @@
       		</table>
       	</div>
   </div>
+  <div class="clearfix"></div>
 </div>
 </#if>
 
 <#if eml.contact.organisation?has_content || eml.contact.lastName?has_content || eml.contact.position?has_content>
-<div class="definition">	
+<div class="resourceOverviewPortal">	
   <div class="title">
   	<div class="head">
         <@s.text name='eml.contact'/>
@@ -101,11 +107,13 @@
       		<@agentTable eml.contact />
       	</div>
   </div>
+  <div class="clearfix"></div>
+  
 </div>
 </#if>
 
 <#if eml.getResourceCreator().organisation?has_content || eml.getResourceCreator().lastName?has_content || eml.getResourceCreator().position?has_content>
-<div class="definition">	
+<div class="resourceOverviewPortal">	
   <div class="title">
   	<div class="head">
         <@s.text name='portal.resource.creator'/>
@@ -116,11 +124,13 @@
       		<@agentTable eml.getResourceCreator() />
       	</div>
   </div>
+  <div class="clearfix"></div>
+  
 </div>
 </#if>
 
 <#if eml.getMetadataProvider().organisation?has_content || eml.getMetadataProvider().lastName?has_content || eml.getMetadataProvider().position?has_content>
-<div class="definition">	
+<div class="resourceOverviewPortal">	
   <div class="title">
   	<div class="head">
         <@s.text name='portal.metadata.provider'/>
@@ -131,12 +141,14 @@
       		<@agentTable eml.getMetadataProvider() />
       	</div>
   </div>
+  <div class="clearfix"></div>
+  
 </div>
 </#if>
 
 <#assign size=eml.associatedParties?size/>
 <#if (size > 0 )>
-<div class="definition">	
+<div class="resourceOverviewPortal">	
   <div class="title">
   	<div class="head">
         <@s.text name='manage.metadata.parties.title'/>
@@ -153,16 +165,17 @@
 				</div>
 			<#if (item_index % 2) == 1 || eml.associatedParties?size=item_index+1>
 			</div>
-      		<div class="newline"> <br/><br/> </div>
 			</#if>
 			</#list>
       	</div>
   </div>
+  <div class="clearfix"></div>
+  
 </div>
 </#if>
 
 <#if eml.geospatialCoverages[0]??>
-<div class="definition">	
+<div class="resourceOverviewPortal">	
   <div class="title">
   	<div class="head">
         <@s.text name='manage.metadata.geocoverage.title'/>
@@ -176,12 +189,14 @@
       		</table>
       	</div>
   </div>
+  <div class="clearfix"></div>
+  
 </div>
 </#if>
 
 <#assign size=eml.taxonomicCoverages?size/>
 <#if (size > 0 )>
-<div class="definition">	
+<div class="resourceOverviewPortal">	
   <div class="title">
   	<div class="head">
         <@s.text name='manage.metadata.taxcoverage.title'/>
@@ -204,16 +219,17 @@
 				<#assign first=false/>
 				<#list eml.taxonomicCoverages[item_index].taxonKeywords as subitem><#if subitem.rank?has_content=false && subitem.scientificName?has_content><#if first=false><tr><th><@s.text name='manage.metadata.taxcoverage.unranked'/></th><td><#assign first=true/>${subitem.scientificName!}<#if subitem.commonName?has_content> (${subitem.commonName!})</#if><#else>, ${subitem.scientificName!}<#if subitem.commonName?has_content> (${subitem.commonName!})</#if></#if></#if></#list></td></tr>								
 	      	</table>
-      		<div class="newline"></div>
+      		
       		</#list>
       	</div>
   </div>
+  <div class="clearfix"></div>
 </div>
 </#if>
 
 <#assign size=eml.temporalCoverages?size/>
 <#if (size > 0 )>
-<div class="definition">	
+<div class="resourceOverviewPortal">	
   <div class="title">
   	<div class="head">
         <@s.text name='manage.metadata.tempcoverage.title'/>
@@ -237,7 +253,7 @@
 						<tr><th><@s.text name='eml.temporalCoverages.livingTimePeriod'/></th><td>${eml.temporalCoverages[item_index].livingTimePeriod!}</td></tr>
 					</#if>
 				</table>
-				<div class="newline"></div>
+				
 				</div>
 			</td>
 			</tr>
@@ -245,11 +261,12 @@
 		</table>
       	</div>
   </div>
+  <div class="clearfix"></div>
 </div>
 </#if>
 
 <#if eml.project.personnel.lastName??>
-<div class="definition">	
+<div class="resourceOverviewPortal">	
   <div class="title">
   	<div class="head">
         <@s.text name='manage.metadata.project.title'/>
@@ -267,11 +284,12 @@
       		</table>
       	</div>
   </div>
+  <div class="clearfix"></div>
 </div>
 </#if>
 
 <#if eml.studyExtent?has_content || eml.sampleDescription?has_content || eml.qualityControl?has_content || eml.methodSteps?has_content>
-<div class="definition">	
+<div class="resourceOverviewPortal">	
   <div class="title">
   	<div class="head">
         <@s.text name='manage.metadata.methods.title'/>
@@ -289,11 +307,12 @@
       		</table>
       	</div>
   </div>
+  <div class="clearfix"></div>
 </div>
 </#if>
 
 <#if (eml.citation?? && (eml.citation.citation?has_content || eml.citation.identifier?has_content)) || eml.bibliographicCitationSet.bibliographicCitations?has_content>
-<div class="definition">	
+<div class="resourceOverviewPortal">	
   <div class="title">
   	<div class="head">
         <@s.text name='manage.metadata.citations.title'/>
@@ -307,7 +326,7 @@
           			<tr><th><@s.text name='eml.citation.citation'/></th><td><@textWithFormattedLink eml.citation.citation/></td></tr>
           		</#if>
           	</table>
-          	<div class="newline"></div>
+          	
    			<#assign itemTitle><@s.text name='eml.bibliographicCitationSet.bibliographicCitations.citation'/></#assign>
           	<table>
        		<#list eml.bibliographicCitationSet.bibliographicCitations as item>
@@ -316,18 +335,19 @@
           			<tr><th><@s.text name='eml.bibliographicCitationSet.bibliographicCitations.identifier'/></th><td><@textWithFormattedLink item.identifier!/></td></tr>
           			<tr><th><@s.text name='eml.bibliographicCitationSet.bibliographicCitations.citation'/></th><td><@textWithFormattedLink item.citation/></td></tr>
 	      		</table>
-	      		<div class="newline"></div>
-	      		<div class="newline"></div>
+	      		
+	      		
 				</tr>
        		</#list>
        		</table>
       	</div>
   </div>
+  <div class="clearfix"></div>
 </div>
 </#if>
 
 <#if eml.collectionName?has_content || eml.collectionId?has_content || eml.parentCollectionId?has_content || eml.specimenPreservationMethod?has_content || eml.jgtiCuratorialUnits?has_content >
-<div class="definition">	
+<div class="resourceOverviewPortal">	
   <div class="title">
   	<div class="head">
         <@s.text name='manage.metadata.collections.title'/>
@@ -341,7 +361,7 @@
           		<#if eml.parentCollectionId?has_content><tr><th><@s.text name='eml.parentCollectionId'/></th><td>${eml.parentCollectionId!}</td></tr></#if>
           		<#if eml.specimenPreservationMethod?has_content><tr><th><@s.text name='eml.specimenPreservationMethod'/></th><td>${eml.specimenPreservationMethod!}</td></tr></#if>
           	</table>
-          	<div class="newline"></div>
+          	
         	<table>
         	<#list eml.jgtiCuratorialUnits as item>
 				<tr>				
@@ -359,19 +379,20 @@
     						<tr><th><@s.text name='eml.jgtiCuratorialUnits.unitType'/></th><td>${eml.jgtiCuratorialUnits[item_index].unitType}</td></tr>
    						</#if>
     	  			</table>
-					<div class="newline"></div>				
+									
 				</td>
 				</tr>
 	   		</#list>
 	   		</table>
       	</div>
   </div>
+  <div class="clearfix"></div>
 </div>
 </#if>
 
 <#--
 <#if (eml.keywords?size > 0 )>
-<div class="definition">	
+<div class="resourceOverviewPortal">	
   <div class="title">
   	<div class="head">
         <@s.text name='manage.metadata.keywords.title'/>
@@ -387,17 +408,18 @@
 				<tr><th><@s.text name='eml.keywords.keywordThesaurus'/></th><td>${eml.keywords[item_index].keywordThesaurus!}</td></tr>
 				<tr><th><@s.text name='eml.keywords.keywordsString'/></th><td>${eml.keywords[item_index].keywordsString!}</td></tr>
 			</table>
-      		<div class="newline"></div>
+      		
 			</div>
 		</#list>
       	</div>
   </div>
+  <div class="clearfix"></div>
 </div>
 </#if>
 -->
 
 <#if (eml.alternateIdentifiers?size > 0 )>
-<div class="definition">	
+<div class="resourceOverviewPortal">	
   <div class="title">
   	<div class="head">
         <@s.text name='manage.metadata.alternateIdentifiers.title'/>
@@ -412,10 +434,11 @@
       		</table>
       	</div>
   </div>
+  <div class="clearfix"></div>
 </div>
 </#if>
 
-<div class="definition">	
+<div class="resourceOverviewPortal">	
   <div class="title">
   	<div class="head">
         <@s.text name='manage.metadata.additional.title'/>
@@ -432,6 +455,9 @@
       		</table>
       	</div>
   </div>
+  <div class="clearfix"></div>
+</div>
+
 </div>
 <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>

@@ -19,12 +19,18 @@ $(document).ready(function(){
 </script>	
  <#assign currentMenu = "manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
-
-<h1><@s.text name='manage.source.title'/>: <a href="resource.do?r=${resource.shortname}"><em>${resource.title!resource.shortname}</em></a></h1>
-<p><@s.text name='manage.source.intro'/></p>
-
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
+
+<h1><span class="superscript">Resource Title</span>
+    <a class="tooltip" href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}
+        <span class="classic">Click the title to go to the <em>resource overview</em> page.<div class="arrow-wrap"><div class="arrow"></div></div></span>
+    </a>
+</h1>
+<div class="grid_24">
 <form class="topForm" action="source.do" method="post">
+<h2 class="subTitle"><@s.text name='manage.source.title'/></h2>
+    <p><@s.text name='manage.source.intro'/></p>
+  	<div class="clearfix">
   	<input type="hidden" name="r" value="${resource.shortname}" />
   	<input type="hidden" name="id" value="${id!}" />  	
   	<div class="halfcolumn">
@@ -32,7 +38,7 @@ $(document).ready(function(){
 	</div>
 	<div class="halfcolumn">
 		<div class="detailsSource">
-			<table>
+			<table id="source-properties">
 			  	<tr><th><@s.text name='manage.source.readable'/></th><td><img src="${baseURL}/images/<#if source.readable>good.gif" /><#else>bad.gif" /> ${problem!}</#if></td></tr>
 			  	<tr><th><@s.text name='manage.source.columns'/></th><td>${source.columns!}</td></tr>
 		  	  	<#if source.fieldsTerminatedBy?exists>
@@ -50,6 +56,8 @@ $(document).ready(function(){
 			</div>
 		</div>
   	</div>
+  	</div>
+  	<div class="clearfix" style="margin-top: 40px;">
   	<#if source.isFileSource()>
 	  	<#-- only for file sources -->
 	  <div class="halfcolumn">
@@ -57,7 +65,6 @@ $(document).ready(function(){
   	  </div>
 	  <div class="halfcolumn">
   	  </div>
-  	  <div class="newline"></div>	
 	  <div class="halfcolumn">
 	  	<@input name="fileSource.fieldsTerminatedByEscaped" help="i18n" helpOptions={"\\t":"[ \\t ] Tab",",":"[ , ] Comma",";":"[ ; ] Semicolon","|":"[ | ] Pipe"}/>
 	  </div>
@@ -95,21 +102,19 @@ $(document).ready(function(){
 	<div class="halfcolumn">
 	  	<@input name="source.dateFormat" help="i18n" helpOptions={"YYYY-MM-DD":"ISO format: YYYY-MM-DD","MM/DD/YYYY":"US dates: MM/DD/YYYY","DD.MM.YYYY":"DD.MM.YYYY"}/>
   	</div>
-  <div class="newline"></div>	
-  <div class="newline"></div>	
+  	</div>
+  	
   <div class="buttons">  
   	<div class="halfcolumn">
  		<@s.submit cssClass="button" name="save" key="button.save"/> 	
  		<@s.submit cssClass="button" name="cancel" key="button.cancel"/>
- 	</div>
- 	<div class="halfcolumn">
 	  	<#if id?exists>
  			<@s.submit cssClass="confirm" name="delete" key="button.delete.source.file"/>
  		</#if>
-  	</div> 	 	
+ 	</div>
   </div>  
 </form>
-
+</div>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>

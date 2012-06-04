@@ -16,26 +16,39 @@ $(document).ready(function(){
  <#assign currentMenu = "admin"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
+<div class="grid_24">
 <h1><@s.text name="admin.home.manageUsers"/></h1>
 
 <p><@s.text name="admin.users.intro"/></p>
 
-<table class="simple" width="100%">
+<table id="user-list" class="simple" width="100%">
+    <thead>
 	<tr>
 		<th><@s.text name="admin.users.name"/></th>
 		<th><@s.text name="admin.users.email"/></th>
 		<th><@s.text name="admin.users.role"/></th>
 		<th><@s.text name="admin.users.last.login"/></th>
 	</tr>
+	</thead>
+	<tbody>
+    <#-- for counting even or odd rows -->
+    <#function zebra index>
+      <#if (index % 2) == 0>
+        <#return "even" />
+      <#else>
+        <#return "odd" />
+      </#if>
+    </#function>
 
 	<#list users as u>	
-	<tr>
+	<tr class="${zebra(u_index)}">
 		<td><a href="user?id=${u.email}">${u.name}</a></td>
 		<td>${u.email}</td>
 		<td><@s.text name="user.roles.${u.role?lower_case}"/></td>
 		<td>${(u.lastLogin?datetime?string.short)!"never"}</td>
 	</tr>
 	</#list>
+	</tbody>
 	
 </table>
 
@@ -43,7 +56,7 @@ $(document).ready(function(){
 	<button id="create"><@s.text name="button.create"/></button>
 	<button id="cancel"><@s.text name="button.cancel"/></button>
 </p>
-
+</div>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>

@@ -93,12 +93,19 @@
 	
 </script>
 <#assign sideMenuEml=true />
- <#assign currentMenu="manage"/>
+<#assign currentMenu="manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
-<h1><@s.text name='manage.metadata.basic.title'/>: <a href="resource.do?r=${resource.shortname}"><em>${resource.title!resource.shortname}</em></a> </h1>
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
-<form class="topForm" action="metadata-${section}.do" method="post">
-	<@s.text name="manage.metadata.basic.required.message" />
+
+<h1><span class="superscript">Resource Title</span>
+    <a class="tooltip" href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}
+        <span class="classic">Click the title to go to the <em>resource overview</em> page.<div class="arrow-wrap"><div class="arrow"></div></div></span>
+    </a>
+</h1>
+<div class="grid_17 suffix_1">
+<h2 class="subTitle"><@s.text name='manage.metadata.basic.title'/></h2>
+    <form class="topForm" action="metadata-${section}.do" method="post">
+    <p><@s.text name="manage.metadata.basic.required.message" /></p>
   	<@input name="eml.title" />
   	<@text name="eml.description"/>
   	<div class="halfcolumn">
@@ -113,155 +120,136 @@
 	<div class="halfcolumn" id="selectSubtypeDiv">	
 		<@select name="resource.subtype" help="i18n" options=listSubtypes value="${resource.subtype!''}" />	
   	</div>	
-  	<div class="newline"></div>
-  	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
   	
   	<!-- Resource Contact -->    	
-  	<@textinline name="eml.contact" help="i18n"/>
-  	
-	<div class="halfcolumn">
-	  	<@input name="eml.contact.firstName" />
-	</div>
-  	<div class="halfcolumn">	  	
-	  	<@input name="eml.contact.lastName" />
-  	</div>
-  	<div class="newline" ></div>
-  	<div class="halfcolumn">
-  		<@input name="eml.contact.position" />
-	</div>
-  	<div class="halfcolumn">			
-  		<@input name="eml.contact.organisation" />
-  	</div>
-  	<div class="newline" ></div>
-  	<div class="halfcolumn">
-  		<@input name="eml.contact.address.address" />
-	</div>
-  	<div class="halfcolumn">			  		
-  		<@input name="eml.contact.address.city" />
-  	</div>
-  	<div class="newline" ></div>
-  	<div class="halfcolumn">
-  		<@input name="eml.contact.address.province" />
-	</div>
-  	<div class="halfcolumn">		  		
-  		<@select name="eml.contact.address.country" help="i18n" options=countries value="${eml.contact.address.country!}"/>
-   	</div>
-  	<div class="newline" ></div>   	
-  	<div class="halfcolumn">
-  		<@input name="eml.contact.address.postalCode" />
-	</div>
-  	<div class="halfcolumn">	  		
-  		<@input name="eml.contact.phone" />
-  	</div>
-	<div class="halfcolumn">
-	  	<@input name="eml.contact.email" />
-	</div>
-  	<div class="halfcolumn">		  	
-	  	<@input name="eml.contact.homepage" />
-  	</div> 	
-	<div class="newline"></div>
-  	<div class="horizontal_dotted_line_large_foo" id="separator"></div>  	
-	<div class="newline"></div>
-	<div class="newline"></div>
+  	<div class="basicMetadata grid_17 suffix_1">
+      	<@textinline name="eml.contact" help="i18n"/>
+    	<div class="halfcolumn">
+    	  	<@input name="eml.contact.firstName" />
+    	</div>
+      	<div class="halfcolumn">	  	
+    	  	<@input name="eml.contact.lastName" />
+      	</div>
+      	<div class="halfcolumn">
+      		<@input name="eml.contact.position" />
+    	</div>
+      	<div class="halfcolumn">			
+      		<@input name="eml.contact.organisation" />
+      	</div>
+      	<div class="halfcolumn">
+      		<@input name="eml.contact.address.address" />
+    	</div>
+      	<div class="halfcolumn">			  		
+      		<@input name="eml.contact.address.city" />
+      	</div>
+      	<div class="halfcolumn">
+      		<@input name="eml.contact.address.province" />
+    	</div>
+      	<div class="halfcolumn">		  		
+      		<@select name="eml.contact.address.country" help="i18n" options=countries value="${eml.contact.address.country!}"/>
+       	</div>
+      	<div class="halfcolumn">
+      		<@input name="eml.contact.address.postalCode" />
+    	</div>
+      	<div class="halfcolumn">	  		
+      		<@input name="eml.contact.phone" />
+      	</div>
+    	<div class="halfcolumn">
+    	  	<@input name="eml.contact.email" />
+    	</div>
+      	<div class="halfcolumn">		  	
+    	  	<@input name="eml.contact.homepage" />
+      	</div> 	
+  	</div>  	
 	
   	<!-- Resource Creator -->
-  	<@textinline name="eml.resourceCreator" help="i18n"/>
-  	<div class="right">
-  		<a id="copyDetails" href="">[ <@s.text name="eml.resourceCreator.copyLink" />  ]</a>
+	<div class="basicMetadata grid_17 suffix_1">
+      	<@textinline name="eml.resourceCreator" help="i18n"/>
+      	<div class="right">
+      		<a id="copyDetails" href="">[ <@s.text name="eml.resourceCreator.copyLink" />  ]</a>
+      	</div>  	
+      	<div class="halfcolumn">
+    		<@input name="eml.resourceCreator.firstName" />
+    	</div>
+      	<div class="halfcolumn">
+    		<@input name="eml.resourceCreator.lastName" />
+    	</div>
+      	<div class="halfcolumn">
+    		<@input name="eml.resourceCreator.position" />
+    	</div>
+      	<div class="halfcolumn">		
+    		<@input name="eml.resourceCreator.organisation" />
+    	</div>
+      	<div class="halfcolumn">
+    		<@input name="eml.resourceCreator.address.address" />
+    	</div>
+      	<div class="halfcolumn">		
+    		<@input name="eml.resourceCreator.address.city" />
+    	</div>
+      	<div class="halfcolumn">
+    		<@input name="eml.resourceCreator.address.province" />
+    	</div>
+      	<div class="halfcolumn">		
+    		<@select name="eml.resourceCreator.address.country" help="i18n" options=countries value="${eml.getResourceCreator().address.country!}"/>
+    	</div>		
+      	<div class="halfcolumn">
+    		<@input name="eml.resourceCreator.address.postalCode" />
+    	</div>
+      	<div class="halfcolumn">		
+    		<@input name="eml.resourceCreator.phone" />
+    	</div>
+      	<div class="halfcolumn">
+    		<@input name="eml.resourceCreator.email" />
+    	</div>
+      	<div class="halfcolumn">		
+    		<@input name="eml.resourceCreator.homepage" />
+    	</div>
   	</div>  	
-  	<div class="halfcolumn">
-		<@input name="eml.resourceCreator.firstName" />
-	</div>
-  	<div class="halfcolumn">
-		<@input name="eml.resourceCreator.lastName" />
-	</div>
-	<div class="newline"></div>
-  	<div class="halfcolumn">
-		<@input name="eml.resourceCreator.position" />
-	</div>
-  	<div class="halfcolumn">		
-		<@input name="eml.resourceCreator.organisation" />
-	</div>
-	<div class="newline"></div>
-  	<div class="halfcolumn">
-		<@input name="eml.resourceCreator.address.address" />
-	</div>
-  	<div class="halfcolumn">		
-		<@input name="eml.resourceCreator.address.city" />
-	</div>
-	<div class="newline"></div>
-  	<div class="halfcolumn">
-		<@input name="eml.resourceCreator.address.province" />
-	</div>
-  	<div class="halfcolumn">		
-		<@select name="eml.resourceCreator.address.country" help="i18n" options=countries value="${eml.getResourceCreator().address.country!}"/>
-	</div>		
-	<div class="newline"></div>
-  	<div class="halfcolumn">
-		<@input name="eml.resourceCreator.address.postalCode" />
-	</div>
-  	<div class="halfcolumn">		
-		<@input name="eml.resourceCreator.phone" />
-	</div>
-	<div class="newline"></div>
-  	<div class="halfcolumn">
-		<@input name="eml.resourceCreator.email" />
-	</div>
-  	<div class="halfcolumn">		
-		<@input name="eml.resourceCreator.homepage" />
-	</div>
-	<div class="newline"></div>	
-  	<div class="horizontal_dotted_line_large_foo" id="separator"></div>  	
-  	<div class="newline"></div>
-	<div class="newline"></div>
-	
+
   	<!-- Metadata Provider -->
-  	<@textinline name="eml.metadataProvider" help="i18n"/>  	
-  	<div class="right">
-  		<a id="copyDetails2" href="">[ <@s.text name="eml.resourceCreator.copyLink" />  ]</a>
-  	</div>
-  	<div class="halfcolumn">
-		<@input name="eml.metadataProvider.firstName" />
-	</div>
-  	<div class="halfcolumn">				
-		<@input name="eml.metadataProvider.lastName" />
-	</div>
-	<div class="newline"></div>	
-	<div class="halfcolumn">
-		<@input name="eml.metadataProvider.position" />
-	</div>
-  	<div class="halfcolumn">				
-		<@input name="eml.metadataProvider.organisation" />
-	</div>
-	<div class="newline"></div>	
-	<div class="halfcolumn">
-		<@input name="eml.metadataProvider.address.address" />
-	</div>
-  	<div class="halfcolumn">				
-		<@input name="eml.metadataProvider.address.city" />
-	</div>
-	<div class="newline"></div>	
-	<div class="halfcolumn">
-		<@input name="eml.metadataProvider.address.province" />
-	</div>
-  	<div class="halfcolumn">			
-		<@select name="eml.metadataProvider.address.country" help="i18n" options=countries value="${eml.metadataProvider.address.country!}"/>
-	</div>		
-	<div class="newline"></div>	
-	<div class="halfcolumn">
-		<@input name="eml.metadataProvider.address.postalCode" />
-	</div>
-  	<div class="halfcolumn">				
-		<@input name="eml.metadataProvider.phone" />
-	</div>
-	<div class="newline"></div>	
-	<div class="halfcolumn">
-		<@input name="eml.metadataProvider.email" />
-	</div>
-  	<div class="halfcolumn">				
-		<@input name="eml.metadataProvider.homepage" />
-	</div>
-	<div class="newline"></div>	
+	<div class="basicMetadata grid_17 suffix_1">
+      	<@textinline name="eml.metadataProvider" help="i18n"/>  	
+      	<div class="right">
+      		<a id="copyDetails2" href="">[ <@s.text name="eml.resourceCreator.copyLink" />  ]</a>
+      	</div>
+      	<div class="halfcolumn">
+    		<@input name="eml.metadataProvider.firstName" />
+    	</div>
+      	<div class="halfcolumn">				
+    		<@input name="eml.metadataProvider.lastName" />
+    	</div>
+    	<div class="halfcolumn">
+    		<@input name="eml.metadataProvider.position" />
+    	</div>
+      	<div class="halfcolumn">				
+    		<@input name="eml.metadataProvider.organisation" />
+    	</div>
+    	<div class="halfcolumn">
+    		<@input name="eml.metadataProvider.address.address" />
+    	</div>
+      	<div class="halfcolumn">				
+    		<@input name="eml.metadataProvider.address.city" />
+    	</div>
+    	<div class="halfcolumn">
+    		<@input name="eml.metadataProvider.address.province" />
+    	</div>
+      	<div class="halfcolumn">			
+    		<@select name="eml.metadataProvider.address.country" help="i18n" options=countries value="${eml.metadataProvider.address.country!}"/>
+    	</div>		
+    	<div class="halfcolumn">
+    		<@input name="eml.metadataProvider.address.postalCode" />
+    	</div>
+      	<div class="halfcolumn">				
+    		<@input name="eml.metadataProvider.phone" />
+    	</div>
+    	<div class="halfcolumn">
+    		<@input name="eml.metadataProvider.email" />
+    	</div>
+      	<div class="halfcolumn">				
+    		<@input name="eml.metadataProvider.homepage" />
+    	</div>
+    </div>		
+
 	<div class="buttons">
  		<@s.submit cssClass="button" name="save" key="button.save"/>
  		<@s.submit cssClass="button" name="cancel" key="button.cancel"/>
@@ -269,5 +257,8 @@
 	<!-- internal parameter -->
 	<input name="r" type="hidden" value="${resource.shortname}" />  
 </form>
+</div>
+</div>
+
 <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>

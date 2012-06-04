@@ -13,42 +13,40 @@ $(document).ready(function(){
 });
 </script>
 <#assign sideMenuEml=true />
- <#assign currentMenu="manage"/>
+<#assign currentMenu="manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
-<h1><@s.text name='manage.metadata.methods.title'/>: <a href="resource.do?r=${resource.shortname}"><em>${resource.title!resource.shortname}</em></a> </h1>
-<@s.text name='manage.metadata.methods.intro'/>
+
+
+<h1><span class="superscript">Resource Title</span>
+    <a class="tooltip" href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}
+        <span class="classic">Click the title to go to the <em>resource overview</em> page.<div class="arrow-wrap"><div class="arrow"></div></div></span>
+    </a>
+</h1>
+<div class="grid_17 suffix_1">
+<h2 class="subTitle"><@s.text name='manage.metadata.methods.title'/></h2>
 <form class="topForm" action="metadata-${section}.do" method="post">
+    <p><@s.text name='manage.metadata.methods.intro'/></p>
 	<div id="sampling" >
 		<@text name="eml.studyExtent"  i18nkey="eml.studyExtent" help="i18n"/>
 		<@text name="eml.sampleDescription" i18nkey="eml.sampleDescription" help="i18n"/>
 	</div>
 	<div id="qualitycontrol" >
 		<@text name="eml.qualityControl" i18nkey="eml.qualityControl" help="i18n"/>
-		<div class="newline"></div>
-		<div class="horizontal_dotted_line_large_foo" id="separator"></div>
-		<div class="newline"></div>
 	</div>
 	<div id="items">
 		<#if eml.methodSteps??>
 			<#list eml.methodSteps as item>
 				<div id="item-${item_index}" class="item">
-					<div class="newline"></div>
 					<div class="right">
 				      <a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.methods.item'/> ]</a>
 				    </div>
-				    <div class="newline"></div>
 					<@text name="eml.methodSteps[${item_index}]" i18nkey="eml.methodSteps" help="i18n"/>
-				  	<div class="newline"></div>
-					<div class="horizontal_dotted_line_large_foo" id="separator"></div>
-					<div class="newline"></div>
 				</div>
 			</#list>
 		</#if>
 	</div>
 	<a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.methods.item'/></a></br></br>
-	    <div class="newline"></div>
-	    <div class="newline"></div>
 	<div class="buttons">
 		<@s.submit cssClass="button" name="save" key="button.save" />
 		<@s.submit cssClass="button" name="cancel" key="button.cancel" />
@@ -56,16 +54,12 @@ $(document).ready(function(){
 	<!-- internal parameter -->
 	<input name="r" type="hidden" value="${resource.shortname}" />
 <form>
+</div>
 <div id="baseItem" class="item" style="display:none">
-	<div class="newline"></div>
 	<div class="right">
 		<a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.methods.item'/> ]</a>
 	</div>
-	<div class="newline"></div>
 	<@text name="" i18nkey="eml.methodSteps" help="i18n"/>
-	<div class="newline"></div>
-	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
-	<div class="newline"></div>
 </div>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">

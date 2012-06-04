@@ -10,17 +10,14 @@ $(document).ready(function(){
 </script>	
  <#assign currentMenu = "admin"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
-
-
+<#include "/WEB-INF/pages/macros/forms.ftl">
+<div class="grid_18 suffix_6">
 
 <h1><#if "${newUser!}"=="no"><@s.text name="admin.user.title.edit"/><#else><@s.text name="admin.user.title.new"/></#if></h1>
-
+<@s.form cssClass="topForm half" action="user.do" method="post">
 <p><@s.text name="admin.user.intro"/></p>
 <p><@s.text name="admin.user.intro2"/></p>
 
- 
-<#include "/WEB-INF/pages/macros/forms.ftl">
-<@s.form cssClass="topForm half" action="user.do" method="post">
 	<@s.hidden name="id" value="${user.email!}" required="true"/>
 
 	<@input name="user.email" disabled=id?has_content/>  
@@ -44,6 +41,7 @@ $(document).ready(function(){
  	<@s.submit cssClass="button" name="cancel" key="button.cancel"/>
   </div>	
 </@s.form>
+</div>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>
