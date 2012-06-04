@@ -41,7 +41,7 @@ A pesar de que puede ser utilizado simplemente como una herramienta para generar
 ===Memoria===
 El servidor que aloja la instalación del IPT debe tener como mínimo, 256 MB de memoria RAM disponibles para la aplicación.
 ===Espacio en disco===
-The space required by the IPT application is less then 20MB. The contents of the IPT data directory after installation require less than 1MB of disk storage, writable by the IPT. However, the content of the data directory will grow as resources are created, and will require space roughly equal to the size of the files or tables containing the imported data sets. A reasonable estimate for the size of a relatively rich occurrence data set is one kilobyte per record. Normal usage of the IPT appends information to the log files, which will grow over time, but which generally require minimal disk space.
+El espacio requerido por la aplicación del IPT es menor a 20 MB. El contenido del directorio de datos del IPT después de la instalación, requiere menos de 1 MB de almacenamiento en disco, generados por el IPT. No obstante, el contenido del directorio de datos crecerá a medida que se creen recursos, y requerirá un espacio equivalente al tamaño de los archivos o tablas que contienen los conjuntos de datos importados. Una estimación razonable para el tamaño de un conjunto de datos relativamente nutrido, es de un kilobyte por registro. El uso normal del IPT anexa información a los archivos de registro, que crecerán con el tiempo, pero que generalmente requieren un mínimo espacio en disco.
 ===Java===
 The server hosting the IPT must have a version no less than Java 5 installed and functional prior to the installation of the IPT.
 ===Servlet container===
