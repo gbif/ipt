@@ -43,12 +43,12 @@ El servidor que aloja la instalación del IPT debe tener como mínimo, 256 MB de
 ===Espacio en disco===
 El espacio requerido por la aplicación del IPT es menor a 20 MB. El contenido del directorio de datos del IPT después de la instalación, requiere menos de 1 MB de almacenamiento en disco, generados por el IPT. No obstante, el contenido del directorio de datos crecerá a medida que se creen recursos, y requerirá un espacio equivalente al tamaño de los archivos o tablas que contienen los conjuntos de datos importados. Una estimación razonable para el tamaño de un conjunto de datos relativamente nutrido, es de un kilobyte por registro. El uso normal del IPT anexa información a los archivos de registro, que crecerán con el tiempo, pero que generalmente requieren un mínimo espacio en disco.
 ===Java===
-The server hosting the IPT must have a version no less than Java 5 installed and functional prior to the installation of the IPT.
+El servidor que aloja el IPT debe tener una versión Java 5 o más reciente, instalada y en funcionamiento antes de la instalación del IPT.
 ===Servlet container===
-The IPT application comes packaged with Jetty and therefore requires no further servlet container. Nevertheless, the IPT can be deployed in another servlet container (e.g., Tomcat) that is already in use. Information about how to use various servlet containers with the IPT can be found at http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation.
+La aplicación IPT viene junto con el paquete Jetty y por lo tanto no requiere un Servlet container adicional. No obstante, el IPT puede ser desplegado en otro Servlet container (por ejemplo Tomcat) que ya esté en uso. Información acerca de cómo utilizar diferentes Servlet containers con el IPT se puede encontrar en http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation.
 ==Instalación del IPT==
-===Praparación del servidor===
-Before installing the IPT, be sure that the intended hosting server meets the minimum specifications described in the sections under "Requirements", above. 
+===Preparación del servidor===
+Antes de instalar el IPT, asegúrese de que el servidor de alojamiento previsto cumpla con las especificaciones mínimas que se describen en las secciones del capítulo de "Requerimientos".
 ===Descarga del IPT===
 The latest release of the IPT software is available for download as a file named ipt.war from http://code.google.com/p/gbif-providertoolkit/downloads/list. Download this file to the server on which the IPT will run. Developers or those wishing to use the latest revision of the source code should consult the "Developers" section of the GBIF IPT Google Code site wiki at http://code.google.com/p/gbif-providertoolkit/wiki/HowToContribute.
 ===Deploy the IPT to the servlet container===
