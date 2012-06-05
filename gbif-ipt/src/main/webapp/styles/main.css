@@ -506,6 +506,14 @@ div.halfcolumn {
 	margin: 0px 0px 0px 0px;
 	width: 50%;
 }
+div.halfcolumn a[id*='copyDetails-'] {
+  float: right;
+  font-size: 0.9em;
+}
+div.halfcolumn a[id*='removeLink-'] {
+  float: right;
+  font-size: 0.9em;
+}
 div.halfcolumn select{
 	width: 85%;
 }
