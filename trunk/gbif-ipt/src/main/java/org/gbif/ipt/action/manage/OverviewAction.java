@@ -351,6 +351,14 @@ public class OverviewAction extends ManagerBaseAction {
       return NOT_FOUND;
     }
     try {
+      // Update the Resource's Registration, if the Resource has been registered. If successful, broadcast with a msg.
+      // It could be the resource is a metadata-only resource, but its registration should always be updated on publish.
+      if (resource.isRegistered()) {
+        resourceManager.updateRegistration(resource);
+        addActionMessage(getText("manage.overview.resource.update.registration", new String[] {resource.getTitle()}));
+      }
+
+      // Publish the Resource
       if (resourceManager.publish(resource, this)) {
         addActionMessage(getText("manage.overview.publishing.resource.version",
           new String[] {Integer.toString(resource.getEmlVersion())}));
@@ -366,6 +374,7 @@ public class OverviewAction extends ManagerBaseAction {
         missingRegistrationMetadata = !minimumRegistryInfo(resource);
         return SUCCESS;
       }
+
     } catch (PublicationException e) {
       if (PublicationException.TYPE.LOCKED == e.getType()) {
         addActionWarning(getText("manage.overview.resource.being.published"));

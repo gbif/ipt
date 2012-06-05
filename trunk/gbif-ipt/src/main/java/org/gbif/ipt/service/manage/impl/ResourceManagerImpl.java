@@ -696,12 +696,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (resource.hasMappedData()) {
       generateDwca(resource, alog);
       dwca = true;
-      // make sure the dwca service is registered
-      // this might not have been the case when the first dwca is created, but the resource was already registered
-      // before
-      if (resource.isRegistered()) {
-        registryManager.updateResource(resource, registrationManager.getIpt());
-      }
     } else {
       resource.setRecordsPublished(0);
     }
@@ -948,10 +942,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
-  public void updateRegistration(Resource resource, Ipt ipt) throws InvalidConfigException {
+  public void updateRegistration(Resource resource) throws InvalidConfigException {
     if (PublicationStatus.REGISTERED == resource.getStatus()) {
       log.debug("Updating resource with key: " + resource.getKey().toString());
-      registryManager.updateResource(resource, ipt);
+      registryManager.updateResource(resource);
     }
   }
 
