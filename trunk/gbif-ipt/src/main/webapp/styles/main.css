@@ -762,6 +762,13 @@ div.conceptItem div.body {
 #unmapped-columns ul li {
   width: 950px;
 }
+#filter {
+  color: #0080FF;
+}
+div.required div.title {
+  color: #bc5e5b;
+  font-weight: bold;
+}
 div.groupmenu ul {
   list-style: none;
   margin-bottom: 0px;
