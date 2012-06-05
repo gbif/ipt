@@ -53,11 +53,14 @@ public interface RegistryManager {
   void updateIpt(Ipt ipt) throws RegistryException;
 
   /**
-   * Updates a resource's metadata with the GBIF registry and associate with to the given organisation.
+   * Updates a resource's registration in the GBIF Registry. This means that the resource's metadata is updated,
+   * including its services. The resource's owning organization is used to authenticate the update with the Registry.
+   * The resource's owning organization, and hosting organization are set only during initial registration, and will
+   * never change during the update.
    *
    * @throws IllegalArgumentException is resource is not registered yet
    */
-  void updateResource(Resource resource, Ipt ipt) throws RegistryException, IllegalArgumentException;
+  void updateResource(Resource resource) throws RegistryException, IllegalArgumentException;
 
   boolean validateOrganisation(String organisationKey, String password);
 

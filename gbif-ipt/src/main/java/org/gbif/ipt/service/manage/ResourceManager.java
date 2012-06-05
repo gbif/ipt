@@ -129,11 +129,11 @@ public interface ResourceManager {
   void publishMetadata(Resource resource, BaseAction action) throws PublicationException;
 
   /**
-   * Registers the resource with gbif
+   * Registers the resource with the GBIF Registry.
    *
-   * @param organisation the org that the resource will be associated with
+   * @param resource the published resource
+   * @param organisation the organization that owns the resource
    * @param ipt          the ipt that the resource will be published through
-   * @param eml          eml object
    */
   void register(Resource resource, Organisation organisation, Ipt ipt) throws InvalidConfigException;
 
@@ -167,12 +167,11 @@ public interface ResourceManager {
   void updateDwcaEml(Resource resource, BaseAction action) throws PublicationException;
 
   /**
-   * Update the registration of the resource with gbif
+   * Update the registration of the resource with the GBIF Registry.
    *
-   * @param ipt the ipt that the resource is published through
-   * @param eml eml object
+   * @param resource the published resource
    */
-  void updateRegistration(Resource resource, Ipt ipt) throws InvalidConfigException;
+  void updateRegistration(Resource resource) throws InvalidConfigException;
 
   /**
    * makes a resource private

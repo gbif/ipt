@@ -19,6 +19,9 @@ import org.gbif.metadata.eml.Eml;
 import org.gbif.utils.HttpUtil;
 import org.gbif.utils.HttpUtil.Response;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,9 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -508,7 +508,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     }
   }
 
-  public void updateResource(Resource resource, Ipt ipt) throws RegistryException, IllegalArgumentException {
+  public void updateResource(Resource resource) throws RegistryException, IllegalArgumentException {
     if (!resource.isRegistered()) {
       throw new IllegalArgumentException("Resource is not registered");
     }

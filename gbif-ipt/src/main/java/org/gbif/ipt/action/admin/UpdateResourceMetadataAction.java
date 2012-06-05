@@ -107,7 +107,7 @@ public class UpdateResourceMetadataAction extends POSTAction {
     for (Resource res : publishedResources) {
       if (res.isRegistered()) {
         try {
-          registryManager.updateResource(res, registrationManager.getIpt());
+          registryManager.updateResource(res);
           resUpdateStatus.put(res.getShortname() + REGISTRY, SUCCESS_TYPE);
         } catch (RegistryException e) {
           log.warn("Registry exception updating resource", e);
