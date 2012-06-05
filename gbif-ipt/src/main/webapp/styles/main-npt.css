@@ -332,18 +332,26 @@ table.simple tr.linebreak{
 table.simple tr.even{
 	background-color: #fff;
 }
-
-
-
 #new-resource {
   padding: 20px;
   border: 2px dotted grey;
   border-radius: 10px;
 }
-
 #create-button {
   margin-top: 20px;
 }
+
+/* RESOURCE LIST HOME */
+div.resourceOverviewPortal {
+  margin-bottom: 5px;
+}
+div.resourceOverviewPortal div.title { border-bottom: 1px solid #aaa;}
+div.resourceOverviewPortal div.head { font-weight: bold; }
+div.resourceOverviewPortal div.body { font-size: 0.85em; width: 510px; }
+div.resourceOverviewPortal div.body table { margin-bottom: 0px; }
+div.resourceOverviewPortal div.body th { width: 120px;padding: 0px 3px; }
+div.resourceOverviewPortal div.body td { color: #666;padding: 0px 3px; }
+
 
 /* RESOURCE LIST */
 div.resourceOverview div.title { border-bottom: 1px solid #CCC; }
@@ -370,8 +378,6 @@ div.resourceOverview div.bodyOverview div.details {
 }
 div.resourceOverview div.bodyOverview div.details table {
 	width: 100%;
-	border-top: 1px dotted grey;
-	border-bottom: 1px dotted grey;
 }
 div.resourceOverview div.bodyOverview div.details table th {
 	width: 250px;
@@ -697,8 +703,11 @@ div.definition div.body table th {
 	width: 150px;
 }
 div.conceptItem {
-	height: 30px;
 	margin-bottom: 5px;
+}
+div.conceptItem div.body {
+  color: #666;
+  font-size: 0.9em;
 }
 #conceptItemWrapper {
   height: 960px;
@@ -735,7 +744,12 @@ table#admintable td {
 vertical-align:middle;
 }
 table#admintable td img.infoImg {
-  margin-top: 35px;
+  top: -2px;
+  left: 5px;
+  vertical-align: middle;
+}
+input#updateResourceMetadata_do_updateMetadata.button {
+  margin-top: 8px;
   margin-left: 5px;
 }
 table#admintable tr {

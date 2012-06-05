@@ -353,8 +353,6 @@ table.sortable th{
 	padding-bottom: 10px;
 }
 
-
-
 /* simple table */
 table.simple th{
 	background-color: #fff;
@@ -371,14 +369,10 @@ table.simple tr.linebreak{
 table.simple tr.even{
 	background-color: #fff;
 }
-
-
-
 #new-resource {
   padding: 20px;
   border-radius: 10px;
 }
-
 #create-button {
   margin-top: 20px;
 }
