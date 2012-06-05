@@ -50,7 +50,7 @@ La aplicación IPT viene junto con el paquete Jetty y por lo tanto no requiere u
 ===Preparación del servidor===
 Antes de instalar el IPT, asegúrese de que el servidor de alojamiento previsto cumpla con las especificaciones mínimas que se describen en las secciones del capítulo de "Requerimientos".
 ===Descarga del IPT===
-The latest release of the IPT software is available for download as a file named ipt.war from http://code.google.com/p/gbif-providertoolkit/downloads/list. Download this file to the server on which the IPT will run. Developers or those wishing to use the latest revision of the source code should consult the "Developers" section of the GBIF IPT Google Code site wiki at http://code.google.com/p/gbif-providertoolkit/wiki/HowToContribute.
+La última versión del software del IPT está disponible para su descarga como un archivo con el nombre ipt.war de http://code.google.com/p/gbif-providertoolkit/downloads/list. Se deberá descargar este archivo en el servidor en el que se ejecutará el IPT. Los desarrolladores o quienes deseen utilizar la última revisión del código fuente deberán consultar la sección  “Desarrolladores” del sitio de la wiki del IPT de GBIF en Google Code http://code.google.com/p/gbif-providertoolkit/wiki/HowToContribute.
 ===Deploy the IPT to the servlet container===
 Follow the normal process for deploying a web application to a servlet container. A wiki page with further information about specific installations can be found at http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation.
 ===Arrancar la aplicación IPT===
