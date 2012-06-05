@@ -440,7 +440,7 @@ div.resourceOverview div.bodyOverview div.details table td {
 }
 .tooltip:hover span {
 	position: absolute;
-	left: 10em; top: -2.5em; right: -10em; z-index: 99;
+	left: 10em; top: -3.5em; right: -15em; z-index: 99;
 	border-radius: 3px 3px;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px; 
@@ -458,7 +458,7 @@ div.resourceOverview div.bodyOverview div.details table td {
 	border-right: 16px solid transparent;
 	border-top: 20px solid #FFFFAA;
 	border-bottom: 0px;
-	margin-top: -1.5em;
+	margin-top: -1.9em;
 	margin-left: 0.15em;
 }
 .arrow-wrap {
