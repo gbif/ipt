@@ -80,7 +80,7 @@ Si el paso inicial de asignación de directorio de datos se realizó correctamen
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTSetup2.png]
 
-When all of the information on the page is complete and correct, click on the button labeled "Save" to complete the IPT setup process. If a problem occurs, an error message will appear at the top of the page with recommendations about how to resolve the issue. If the setup is successful, a page confirming the success of the setup will appear. 
+Cuando toda la información en la página esté completa y correcta, haga clic en el botón "Guardar" para completar el proceso de configuración del IPT. Si se presenta algún problema, aparecerá un mensaje de error en la parte superior de la página con recomendaciones acerca de cómo resolverlo. Si la configuración fue exitosa, aparecerá una página de confirmación de la configuración.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTSetupFinished.png]
 
