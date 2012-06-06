@@ -9,6 +9,8 @@ import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.utils.InputStreamUtils;
 import org.gbif.ipt.utils.PBEEncrypt;
 import org.gbif.ipt.utils.PBEEncrypt.EncryptionException;
+import org.gbif.utils.HttpUtil;
+import org.gbif.utils.PreemptiveAuthenticationInterceptor;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,26 +31,7 @@ import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.MultiTemplateLoader;
 import freemarker.cache.TemplateLoader;
 import freemarker.template.Configuration;
-import org.apache.http.HttpException;
-import org.apache.http.HttpHost;
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpRequestInterceptor;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.AuthState;
-import org.apache.http.auth.Credentials;
-import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.protocol.ClientContext;
-import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.conn.scheme.PlainSocketFactory;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.protocol.ExecutionContext;
-import org.apache.http.protocol.HttpContext;
 import org.apache.log4j.Logger;
 
 /**
@@ -122,43 +105,13 @@ public class IPTModule extends AbstractModule {
   @Singleton
   @Inject
   public DefaultHttpClient provideHttpClient() {
-    HttpParams params = new BasicHttpParams();
-    SchemeRegistry schemeRegistry = new SchemeRegistry();
-    schemeRegistry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-
-    ClientConnectionManager cm = new ThreadSafeClientConnManager(params, schemeRegistry);
-    DefaultHttpClient client = new DefaultHttpClient(cm, params);
+    // This client instance, available from httputils 0.3-SNAPSHOT onward, supports both http and https protocols
+    DefaultHttpClient client = HttpUtil.newMultithreadedClientHttps();
 
     // registry currently requires Preemptive authentication
-    // add preemptive authentication via this interceptor
-    HttpRequestInterceptor preemptiveAuth = new HttpRequestInterceptor() {
-
-      private Logger log = Logger.getLogger(this.getClass());
-
-      public void process(final HttpRequest request, final HttpContext context) throws HttpException, IOException {
-
-        log.debug(request.getRequestLine());
-        AuthState authState = (AuthState) context.getAttribute(ClientContext.TARGET_AUTH_STATE);
-        CredentialsProvider credsProvider = (CredentialsProvider) context.getAttribute(ClientContext.CREDS_PROVIDER);
-        HttpHost targetHost = (HttpHost) context.getAttribute(ExecutionContext.HTTP_TARGET_HOST);
-
-        // If not auth scheme has been initialized yet
-        if (authState.getAuthScheme() == null && credsProvider != null) {
-          AuthScope authScope = new AuthScope(targetHost.getHostName(), targetHost.getPort());
-          // Obtain credentials matching the target host
-          Credentials creds = credsProvider.getCredentials(authScope);
-          // If found, generate BasicScheme preemptively
-          if (creds != null) {
-            log.debug("Authentication used for scope " + authScope.getHost());
-            authState.setAuthScheme(new BasicScheme());
-            authState.setCredentials(creds);
-          }
-        }
-      }
-    };
-
     // Add as the very first interceptor in the protocol chain
-    client.addRequestInterceptor(preemptiveAuth, 0);
+    client.addRequestInterceptor(new PreemptiveAuthenticationInterceptor(), 0);
+
     return client;
   }
 
