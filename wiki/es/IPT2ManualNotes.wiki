@@ -89,16 +89,17 @@ Haga clic en el botón "Continuar" para abrir la página de Administración del 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTAdminBeforeRegistration.png]
 
 Una vez usted haya completado los pasos de esta Guía Básica, el IPT estará listo para agregar recursos (conjuntos de datos y metadatos). Es recomendable revisar los tutoriales para entender cómo se llevan a cabo las tareas comunes del IPT. Para una explicación detallada de cualquier otro aspecto del IPT, consulte la Guía de Referencia Rápida de este manual de usuario.
-==Recomenzar==
-It is relatively easy to re-initiate the IPT and begin again with the first setup page by doing the following:
-  * Every user who is logged in to the IPT should first log out. 
-  * Remove the file called datadir.location from the folder where it was created by the IPT (normally WEB-INF within the IPT base installation directory - not within the IPT data directory configured in the first setup step).
-  * The person having the default administrator information and knowledge of the IPT installation should open the IPT in a web browser. This will show the initial IPT setup page again (see the "IPT setup" section in this Getting Started Guide). 
-    * If the user enters the same absolute path to the data directory as before, the previous configuration will be completely restored, assuming that there has been no incompatible upgrade in IPT versions between the time when the data directory was last used and when it is used to re-initiate the IPT. 
-    * If the same data directory location is desired, but without the previous IPT configuration, then the contents of that data directory should be moved to a different location or removed entirely before clicking on "Save" in the initial IPT setup page. 
-    * If an entirely new data directory is used, then the setup will proceed exactly as described in the "IPT setup" section of this Getting Started Guide.
+==Reiniciar==
+Es relativamente fácil reiniciar el IPT y comenzar nuevamente con la primera página de configuración siguiendo estos pasos:  
+  * Cerrar la sesión de los usuarios que hayan ingresado al IPT y tengan la sesión activa.  
+  * Eliminar el archivo llamado datadir.location de la carpeta en la que fue creado por el IPT (normalmente WEB-INF en el directorio base de instalación del IPT - no en el directorio de datos del IPT que fue conformado en el paso inicial de la configuración).  
+  * La persona que tenga la información y conocimiento del administrador por defecto de la instalación del IPT debe abrir el IPT en un navegador web. Esto le mostrará nuevamente la página de configuración inicial del IPT (consulte la sección "Configurar el IPT" sección de esta Guía Básica).    
+    * Si el usuario entra por la misma ruta absoluta al directorio de datos como lo hizo anteriormente, la configuración anterior será completamente restaurada, suponiendo que las actualizaciones de las versiones del IPT han sido compatibles entre el momento en que el directorio de datos se utilizó por última vez y cuando se utiliza para volver a iniciar el IPT.
+    * Si se prefiere que la ubicación del directorio de datos sea la misma, pero sin que presente la configuración anterior del IPT, se deberá trasladar el contenido de ese directorio de datos a una ubicación diferente o eliminarlo completamente antes de hacer clic en "Guardar" en la página de la configuración inicial del IPT.    
+    * Si se utiliza un nuevo directorio de datos, entonces la configuración procederá tal y como se describe en la sección "Configurar el IPT" de esta Guía Básica.
+
 ----
-=Guía de referencia rápida=
+=Guía de Referencia Rápida=
 ==Introducción==
 This Quick Reference Guide explains in detail the capabilities of an IPT instance that has been installed, run for the first time, and tested to be functional as explained in the Getting Started Guide. The details of this guide are presented in four sections corresponding to the four "menus" available in the IPT user interface. Some tabs are only visible when a user having the appropriate rights to see them is logged in.
 ==Características comunes==
