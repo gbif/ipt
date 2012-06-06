@@ -67,8 +67,8 @@ Nota 3: Haga clic en la bandera en la esquina superior derecha para verificar si
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTSetup1.png]
 
-===Configuración del IPT (II)===
-If the initial data directory assignment step was successful, the IPT will present a second setup page (see screen image, below) on which the information about the default administrator of the IPT must be entered, along with the information about how the IPT will be accessed from the Internet. The default administrator will have a distinct login and the authority to make changes to all aspects of the IPT installation. The default administrator will be able to make additional user accounts, including other administrators having the same authority to make changes. Though administrators can be added and removed, the IPT must always have at least one. Following are explanations of the fields encountered on the second setup page:
+===Configurar el IPT (II)===
+Si el paso inicial de asignación de directorio de datos se realizó correctamente, el IPT presentará una segunda página de configuración (ver imagen de la pantalla, a continuación) en la que deberá ser ingresada la información sobre el administrador por defecto del IPT, junto con la información acerca de cómo acceder al IPT a través de Internet. El administrador por defecto tendrá un nombre de usuario distintivo y la autoridad para realizar cambios en todos los aspectos de la instalación del IPT. El administrador por defecto será capaz de crear cuentas adicionales para usuarios, incluyendo a los administradores que tengan la misma autoridad para hacer cambios. Aunque los administradores pueden ser añadidos y eliminados, el IPT siempre debe tener al menos un responsable asignado. A continuación se presenta la explicación de los elementos de la segunda página de configuración:  
   * *Email* - the full, active email address of the default administrator of the IPT installation. 
   * *First name* - the first name of the default administrator. 
   * *Last name* - the last name of the default administrator.
