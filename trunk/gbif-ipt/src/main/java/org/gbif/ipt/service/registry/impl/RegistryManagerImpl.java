@@ -19,9 +19,6 @@ import org.gbif.metadata.eml.Eml;
 import org.gbif.utils.HttpUtil;
 import org.gbif.utils.HttpUtil.Response;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,6 +28,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -54,7 +54,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   private RegistryEntryHandler newRegistryEntryHandler = new RegistryEntryHandler();
   private static final String SERVICE_TYPE_EML = "EML";
-  private static final String SERVICE_TYPE_DWCA = "DWC-ARCHIVE";
   private static final String SERVICE_TYPE_OCCURRENCE = "DWC-ARCHIVE-OCCURRENCE";
   private static final String SERVICE_TYPE_CHECKLIST = "DWC-ARCHIVE-CHECKLIST";
   private static final String SERVICE_TYPE_RSS = "RSS";
@@ -118,25 +117,37 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return data;
   }
 
+  /**
+   * Builds service type parameters used in push or post to Registry. There can only be 3 different types of Services
+   * that the IPT registers: EML, DWC-ARCHIVE-OCCURRENCE or DWC-ARCHIVE-CHECKLIST - that's it.
+   *
+   * @param resource published resource
+   *
+   * @return RegistryServices object, with urls and types strings
+   */
   private RegistryServices buildServiceTypeParams(Resource resource) {
     RegistryServices rs = new RegistryServices();
+
+    // the EML service is mandatory, so add the type and URL
     rs.serviceTypes = SERVICE_TYPE_EML;
     rs.serviceURLs = cfg.getResourceEmlUrl(resource.getShortname());
-    if (resource.hasPublishedData()) {
-      rs.serviceURLs += "|" + cfg.getResourceArchiveUrl(resource.getShortname());
+
+    // now check if there are any other services: either DWC-ARCHIVE-OCCURRENCE or DWC-ARCHIVE-CHECKLIST
+    if (resource.hasPublishedData() && resource.getCoreTypeTerm() != null) {
       if (DwcTerm.Occurrence == resource.getCoreTypeTerm()) {
         log.debug("Registering EML & DwC-A Occurrence Service");
+        rs.serviceURLs += "|" + cfg.getResourceArchiveUrl(resource.getShortname());
         rs.serviceTypes += "|" + SERVICE_TYPE_OCCURRENCE;
       } else if (DwcTerm.Taxon == resource.getCoreTypeTerm()) {
         log.debug("Registering EML & DwC-A Checklist Service");
+        rs.serviceURLs += "|" + cfg.getResourceArchiveUrl(resource.getShortname());
         rs.serviceTypes += "|" + SERVICE_TYPE_CHECKLIST;
       } else {
         log.warn("Unknown core resource type " + resource.getCoreTypeTerm());
-        log.debug("Registering EML & general DwC-A Service");
-        rs.serviceTypes += "|" + SERVICE_TYPE_DWCA;
+        log.debug("Registering EML service only");
       }
     } else {
-      log.debug("Registering EML Service only");
+      log.debug("Resource has no published data, therefore only the EML Service will be registered");
     }
     return rs;
   }
