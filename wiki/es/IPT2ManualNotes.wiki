@@ -84,7 +84,7 @@ Cuando toda la información en la página esté completa y correcta, haga clic e
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTSetupFinished.png]
 
-Click on the button labeled "Continue" to open the IPT Administration page (see the screen image, below), from which further configuration of the IPT can be accomplished. Please review the explanations of all of the Administration functions before continuing. Details about the options presented on this screen are given in the "Administration Menu" section of the Quick Reference Guide. Before adding data resources to the IPT, the administrator must, at a minimum, verify the IPT settings, set the GBIF registration options, and associate the IPT with an organisation. The Organisations button is disabled by default until the GBIF registration options have been set.
+Haga clic en el botón "Continuar" para abrir la página de Administración del IPT (véase la imagen de la pantalla, a continuación), en la que se podrá realizar configuraciones adicionales al IPT. Por favor revise la explicación de todas las funciones de Administración antes de continuar. Detalles sobre las opciones presentadas en esta pantalla se muestran en la sección “Menú de Administración" de la Guía de Referencia Rápida. Antes de añadir fuentes de datos al IPT, el administrador debe, como mínimo, verificar la configuración del IPT, definir las opciones de registro en GBIF, y asociar el IPT con una organización. El botón “Organizaciones” estará desactivado por defecto hasta que se hayan establecido las opciones de registro en GBIF.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTAdminBeforeRegistration.png]
 
