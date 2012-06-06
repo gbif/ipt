@@ -88,7 +88,7 @@ Haga clic en el botón "Continuar" para abrir la página de Administración del 
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTAdminBeforeRegistration.png]
 
-Once you have completed the steps in this Getting Started Guide, your IPT is ready to add resources (data sets and metadata). You may want to complete one or more of the tutorials to understand how common IPT tasks are accomplished. For detailed explanations of any further aspects of the IPT, consult the Quick Reference Guide of this user manual.
+Una vez usted haya completado los pasos de esta Guía Básica, el IPT estará listo para agregar recursos (conjuntos de datos y metadatos). Es recomendable revisar los tutoriales para entender cómo se llevan a cabo las tareas comunes del IPT. Para una explicación detallada de cualquier otro aspecto del IPT, consulte la Guía de Referencia Rápida de este manual de usuario.
 ==Recomenzar==
 It is relatively easy to re-initiate the IPT and begin again with the first setup page by doing the following:
   * Every user who is logged in to the IPT should first log out. 
