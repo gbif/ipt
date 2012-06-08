@@ -108,21 +108,21 @@ La mayoría de los controles de la interfaz de usuario tienen los modos “habil
 
 *Menús* - en el IPT, una barra de menú aparece bajo el logotipo de GBIF, en casi todas las páginas. En la barra de menú se encuentran los menús que orientan al usuario en cuanto a temas fundamentales. Los ítems del menú aparecerán sólo en las páginas con permisos de visualización según la función del usuario. El menú activo es de color notorio, mientras que los menús inactivos son de color gris. Haga clic en un menú para abrir y activar la página para esa temática.
 
-Menu bar before login or after a user having no special role logs in, with the Home menu active:
+Barra de menú antes de iniciar sesión o después de que un usuario sin una función especial inicia sesión, con el menú de Inicio activo:
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTMenuBarHomeAbout.png]
 
-Menu after a user having a Manager role logs in, with the Manage Resources menu active:
+Menú después de que un usuario con función de Administrador inicia sesión, con el menú para Administrar Recursos activo:
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTMenuBarHomeManageAbout.png]
 
-Menu after a user having the Admin role logs in, with the Administration menu active:
+Menú después de que un usuario con función de Administrador inicia sesión, con el menú de Administración activo:
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTMenuBarHomeManageAdminAbout.png]
 
-*Text boxes* - allow textual information to be viewed or entered. 
+*Cuadros de texto* - permiten la visualización o ingreso de información textual.
 
-Example text box and label for an email address:
+Ejemplo de cuadro de texto y etiqueta para una dirección de correo electrónico:
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TextBoxExample.png]
 
