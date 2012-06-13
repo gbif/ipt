@@ -126,9 +126,9 @@ Ejemplo de cuadro de texto y etiqueta para una dirección de correo electrónico
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TextBoxExample.png]
 
-*Check boxes* - allow a value to viewed or set to true (when checked) or false (when unchecked).
+*Casillas de verificación* - permiten establecer un valor como visto, como verdadero (cuando es marcado) o falso (cuando no ha sido marcado).
 
-Example check box and label to indicate that the IPT can publish resources:
+Ejemplo de casilla de verificación y de etiqueta para indicar que el IPT puede publicar los recursos:
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/Control-CheckboxExample.png]<br>
 
