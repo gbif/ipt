@@ -126,15 +126,15 @@ Ejemplo de cuadro de texto y etiqueta para una dirección de correo electrónico
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TextBoxExample.png]
 
-*Casillas de verificación* - permiten establecer un valor como visto, como verdadero (cuando es marcado) o falso (cuando no ha sido marcado).
+*Casillas de verificación* - permiten establecer un valor como visto, como verdadero (cuando es marcada) o falso (cuando no ha sido marcada).
 
 Ejemplo de casilla de verificación y de etiqueta para indicar que el IPT puede publicar los recursos:
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/Control-CheckboxExample.png]<br>
 
-*Select boxes* - allows a value to be viewed or selected from a list of predefined values. A select box may contain explanatory text about the selection in place of a selectable value. In this case the selection will begin with "Select " (e.g., "Select a country, territory, or island"). Click on the select box to open it and see the list of possible values. Click on one of the choices to set that value.
+*Casillas de selección* - permiten visualizar o seleccionar un valor de una lista de valores predefinidos. Una casilla de selección puede contener un texto explicativo acerca de la escogencia de un valor seleccionable. En este caso, la selección iniciará con la palabra "Seleccione" (por ejemplo, "Seleccione un país, territorio o isla"). Haga clic en la casilla de selección para desplegar la lista de posibles valores. Haga clic en una de las opciones para fijar ese valor.
 
-Example select box and label for the user role, with Admin selected:
+Ejemplo de casilla de selección y de etiqueta para la función del usuario, con la opción _Administrador_:
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-SelectBoxExample.png]
 
