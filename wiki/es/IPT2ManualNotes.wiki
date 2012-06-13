@@ -138,15 +138,15 @@ Ejemplo de casilla de selección y de etiqueta para la función del usuario, con
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-SelectBoxExample.png]
 
-*Links* - opens a page other than the one on which the link occurs. Links may open the new page in the same browser window (or tab) or in a separate window (or tab).
+*Enlaces* - abre una página diferente a la que contiene el enlace. Los enlaces pueden abrir la nueva página en la misma ventana del navegador (o pestaña) o en una ventana separada (o pestaña).
 
-Example link to the account information page for the logged in user:
+Ejemplo de enlace a la página de información de la cuenta del usuario conectado:
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-LinkExample.png]
 
-*Information icon* - shows a message explaining the intention of the control next to which it appears. Click on the icon next to any field to see a help message about that control. Click on it again to make the message disappear. Some information messages include a link, which, if selected, will populate the control with the appropriate value for the selection.
+*Ícono de Información* - muestra un mensaje que explica la intención del control junto al que aparece. Haga clic en el ícono situado junto a cualquier elemento para ver un mensaje de ayuda acerca de ese control. Haga clic de nuevo para que el mensaje desaparezca. Algunos mensajes de información incluyen un enlace, que de ser seleccionado ingresará en el control, el valor apropiado para la selección.
 
-Example information icon for character encoding after the UTF-8 link was selected:
+Ejemplo de ícono de información para la codificación de caracteres después de seleccionar el enlace de UTF-8:
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Information-CharacterEncoding.png]
 
