@@ -150,23 +150,21 @@ Ejemplo de ícono de información para la codificación de caracteres después d
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Information-CharacterEncoding.png]
 
-*Documentation icon* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-DocumentationIcon.png] - this icon indicates that there is a detailed information page about the subject with which the icon is associated. Click on the icon to open the page in a new browser window.
+*Ícono de Documentación* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-DocumentationIcon.png] - este ícono indica que hay una página de información detallada acerca del tema asociado con ese ícono. Haga clic en el ícono para abrir la página en una nueva ventana del navegador.
 
-*Trash icon* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TrashIcon.png] - this icon is associated with other controls on the page. Clicking on the icon will delete the associated data.
+*Ícono de Papelera* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TrashIcon.png] - este ícono se asocia con otros controles en la página. Al hacer clic en el ícono se eliminarán los datos asociados.
 
-*Calendar icon* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-CalendarIcon.png] - this icon is associated with a text field meant to contain a date. Clicking on the icon opens a small calendar with controls that allow the user to scroll forward and backward from the currently selected month and year, select boxes to choose a different month or year, and days of the week arranged in a standard New Era calendar. Selecting a specific day will place the date in the correct format into the associated text box.
+*Ícono de Calendario* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-CalendarIcon.png] - este ícono se asocia con un elemento de texto destinado a contener una fecha. Al hacer clic en el ícono, se abrirá un pequeño calendario con controles que permiten al usuario desplazarse hacia adelante y hacia atrás a partir del mes y año seleccionado. Seleccione las casillas para elegir otro mes, año y día de la semana según el calendario estándar de la Nueva Era. La selección de un día concreto transformará la fecha al formato correcto en el cuadro de texto asociado.
 
-Example calendar associated with an text box labeled "End Date" in which 31 Dec 2010 is the current date but not yet selected:
-
+Ejemplo del calendario asociado a un cuadro de texto llamado "Fecha Final" en el que 31 de diciembre 2010 es la fecha actual, pero aún no ha sido seleccionada:
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TextBoxWithCalendarOpen.png]
 
+*Tabla ordenable* - una tabla que permite ordenar las filas según los valores de una columna seleccionada en orden ascendente o descendente. Los encabezados de las columnas son las etiquetas de las columnas que aparecen como enlaces. Haga clic en un encabezado de columna para ordenar la tabla con los valores de esa columna. Haga clic nuevamente en el encabezado de la misma columna para ordenar la tabla en la dirección opuesta.
 
-*Sortable Table* - a table that allows the rows to be sorted by the values of a selected column in ascending or descending order. The column headers are the labels for the columns, which appear as links. Click on a column header to sort the table using the values in that column. Click again on the same column header to sort the the table in the opposite direction.
-
-Example table sorted in ascending order by the column labeled "Name".
+Ejemplo de tabla ordenable en orden ascendente según la columna etiquetada "Nombre".
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TableSortedAscending.png]
 
-Example table sorted in descending order by the column labeled "Type".
+Ejemplo de tabla ordenable en orden descendente según la columna etiquetada "Tipo".
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TableSortedDescending.png]
 
 ===Controles que aparecen en todas las páginas===
