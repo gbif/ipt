@@ -200,16 +200,16 @@ Esta página permite a los usuarios ver una lista de los recursos públicos, si 
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTHome.png]
 ===Tabla de recursos de acceso público===
-If there are any public resources, they will appear in a table having the following columns:
+Si hay recursos públicos, estos serán relacionados en una tabla que tiene las siguientes columnas:
 
-*Logo* - the resource logo (configurable in Additional Metadata page of the resource metadata)<br>
-*Name* - the title of the resource as given in the Title entry of the resource metadata. The Name appears as a link, which will open a Metadata Overview page (see below) for the selected resource.<br>
-*Organisation* - the organisation under which the resource has been registered, if any. If the resource is not registered, the value in the Organisation column will be "Not registered". Review the information under the "Organisations" heading in the "Administration Menu" section for more information about registering organisations and registering a resource under an organisation.<br>
-*Type* - the type of the resource as given in the Type drop down on the [IPT2ManualNotes#Basic_Metadata Basic Metadata] page of the resource metadata<br>
-*Subtype* - the subtype of the resource as given in the Subtype drop down on the [IPT2ManualNotes#Basic_Metadata Basic Metadata] page of the resource metadata<br>
-*Records* - the number of rows of data in the core data file that were successfully loaded into the IPT for the resource.<br>
-*Last modified* - either the date the resource was created or the date on which the data or metadata were last modified, whichever is more recent.<br>
-*Last publication* - the date the resource was last published.
+*Logo* - el logo del recurso (se puede configurar en la página de Metadatos Adicionales del metadato del recurso).<br>
+*Nombre* - el título del recurso tal como figura en el Título de la entrada del metadato del recurso. El nombre aparece como un enlace, que abrirá una página de Visualización de Metadatos (ver más adelante) para el recurso seleccionado.<br>
+*Organización* - la organización bajo la cual el recurso ha sido registrado. Si el recurso no está registrado, el valor en la columna de Organización será "No registrado". Revise la información en el encabezado “Organización”, en la sección de "Menú de Administración" para obtener más información acerca del registro de las organizaciones y del registro de un recurso en una organización.<br>
+*Tipo* - el tipo de recurso como figura en la lista desplegable de _Tipo_ en la página [IPT2ManualNotes#Basic_Metadata Basic Metadata] del metadato del recurso.<br>
+*Subtipo* - el subtipo del recurso como figura en la lista desplegable de _Subtipo_ en la página [IPT2ManualNotes#Basic_Metadata Basic Metadata] del metadato del recurso.<br>
+*Registros* - el número de filas de datos en el archivo central de datos que se cargaron con éxito en el IPT, para el recurso.<br>
+*Última modificación* - ya sea la fecha en la que fue creado el recurso o la fecha en la que los datos o los metadatos fueron modificados, aquella que sea más reciente.<br>
+*Última publicación* - la fecha en la que el recurso fue publicado por última vez.
 ===RSS feed===
 The IPT supports syndication via RSS for those who wish to monitor resource configuration changes. The RSS feed is accessible by clicking on the link provided below the list of public hosted resources. The RSS feed can be read in any standard RSS client.
 ===Página de resumen de metadatos===
