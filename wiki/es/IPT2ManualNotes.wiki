@@ -211,17 +211,17 @@ Si hay recursos públicos, estos serán relacionados en una tabla que tiene las 
 *Última modificación* - ya sea la fecha en la que fue creado el recurso o la fecha en la que los datos o los metadatos fueron modificados, aquella que sea más reciente.<br>
 *Última publicación* - la fecha en la que el recurso fue publicado por última vez.
 ===RSS feed===
-The IPT supports syndication via RSS for those who wish to monitor resource configuration changes. The RSS feed is accessible by clicking on the link provided below the list of public hosted resources. The RSS feed can be read in any standard RSS client.
+El IPT apoya la sindicación a través de RSS para aquellos que desean monitorear los cambios en la configuración de los recursos. La  fuente RSS está disponible haciendo clic en el enlace que aparece debajo de la lista de recursos públicos alojados. La fuente RSS puede ser leída en cualquier cliente estándar de RSS.
 ===Página de resumen de metadatos===
-Clicking on the Name link in the list of resources on the Home page shows a new page having all of the metadata about the selected resource. This is the one page where you can easily review all of the metadata for a resource. A user having the Admin role or one of the Manager roles can edit the metadata. Refer to the information under the "Edit an existing resource" heading in the "Manage Resources Menu" section.
+Al hacer clic en el enlace de Nombre en la lista de recursos de la página de Inicio muestra una nueva página con todos los metadatos del recurso seleccionado. Esta es la página en la que fácilmente se podrán revisar todos los metadatos de un recurso. Un usuario que cumple la función de Administrador podrá editar los metadatos. Consulte la información en el encabezado "Editar un recurso existente" en la sección "Menú de Administración de Recursos".
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTHomeMetadataOverview.png]
-==Menu de gestión de recursos (sólo visible para usuarios con el rol de administrador o gestor)==
-This page allows users having the appropriate role (managers and administrators) to make changes to existing resources or to create new resources. 
+==Menú de administración de recursos (sólo visible para usuarios con la función de administrador o gestor)==
+Esta página permite, a usuarios que cumplan la función que corresponde (administradores), realizar cambios en los recursos existentes o crear nuevos recursos.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResources.png]
-===Tabla de gestión de recursos===
-When the Manage Resources page is first opened, it shows a table of existing resources that the current user has permission to change, including those created by this user and those which this user has been invited to manage by others. Refer to the information under the "Public Resources Table" heading in the "Home Menu" section for detailed explanations of the Name, Organisation, Type, Subtype, Records, Last Modified, and Last publication columns. In addition, the Manage Resources Table includes the following column of basic information about the resources:
+===Tabla de administración de recursos===
+Cuando la página Administrar Recursos se abre por primera vez, muestra una tabla de los recursos existentes que el usuario actual tiene permiso para modificar, incluidos los creados por este usuario y aquellos que este usuario pueda administrar por invitación de otros usuarios. Consulte la información en la "Tabla de Recursos Públicos" en la sección "Menú de Inicio" para obtener una explicación detallada acerca de las columnas Nombre, Organización, Tipo, Subtipo, Registros, Última modificación, y Última publicación. Además, la Tabla para Administración de Recursos incluye las siguientes columnas de información básica sobre los recursos:
 
 *Visibility* - a category stating who has access to view the resource. If the resource is "Public", all users will be able to see it on the Public Resources table on the Home page. If the resource is "Private", it will be visible in the Manage Resources table only to the user who created it, to those who have been invited to manage it, and to users having the Admin role. Details about inviting others to manage a resource are given in the "Resource Managers" section under the "Resource Overview" heading in the "Manage Resources" section.
 
