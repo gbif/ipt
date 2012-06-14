@@ -185,7 +185,7 @@ Encabezado, sesión iniciada, idioma inglés seleccionado para la interfaz de us
 *Cuenta* - Para visualizar este enlace y la página a la que conduce, debe iniciar sesión en el IPT. La página muestra los detalles de la información de la cuenta para la persona que inicia sesión en el IPT y permite que estos sean cambiados. Los detalles de los elementos de esta página se podrán encontrar en el encabezado "Configurar Cuentas de Usuario" en la sección "Menú de Administración".<br>
 *Indicador de selección de idioma* - En la esquina superior derecha de la página hay una bandera que representa el idioma en el que se visualiza actualmente el IPT. El IPT se visualizará por defecto en idioma inglés. El idioma de la interfaz del usuario se puede cambiar haciendo clic en la bandera y seleccionando la bandera del idioma deseado, si está disponible. GBIF busca activamente que el IPT sea traducido a otros idiomas. Para obtener más información, consulte la sección "Cómo contribuir" del sitio de la wiki del IPT de GBIF en Google Code (http://code.google.com/p/gbif-providertoolkit/wiki/HowToContribute).<br>
 ====Pie de página====
-The footer section of the IPT appears along the bottom of most pages and contains information about the IPT version and links to important resources. 
+La sección de pie de página del IPT aparece en la parte inferior de la mayoría de las páginas y contiene información acerca de la versión del IPT y de enlaces a recursos importantes. 
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTFooter.png]
 
