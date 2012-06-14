@@ -168,15 +168,15 @@ Ejemplo de tabla ordenable en orden descendente según la columna etiquetada "Ti
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TableSortedDescending.png]
 
 ===Controles que aparecen en todas las páginas===
-This section describes several features that are accessible in the header and footer of most of the pages of the IPT.
-====Encabezado====
-The header section of the IPT appears in the upper right of most pages and allows basic control over the IPT, including the who is using it, and in what language. Following are two screen images showing the two possible states in which the header may be found - logged in, and not logged in.
+  Esta sección describe diversas características que son accesibles en el encabezado y el pie de página de la mayoría de las páginas del IPT.
+  ====Encabezado====
+La sección de encabezado del IPT aparece en la esquina superior derecha de la mayoría de las páginas y permite un control básico del IPT, incluyendo el quién lo usa y en qué idioma. A continuación, se presentan dos imágenes de la pantalla que muestran los dos posibles estados en los que puede se puede encontrar el encabezado – sesión iniciada, y no iniciada.
 
-Header, not logged in, English language chosen for the user interface: 
+Encabezado, no ha iniciado sesión, idioma inglés seleccionado para la interfaz de usuario:
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTHeaderNotLoggedIn.png]
 
-Header, logged in, English language chosen for the user interface: 
+Encabezado, sesión iniciada, idioma inglés seleccionado para la interfaz de usuario: 
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTHeaderLoggedIn.png]
 
