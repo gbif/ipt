@@ -432,9 +432,9 @@ Haga clic en el botón "Borrar" para eliminar  el archivo seleccionado y volver 
  * *Vista previa* - haga clic en este botón para ver una interpretación de los datos, basada en la configuración de conexión de la base de datos, de esta página.
  * *Número de Filas de Encabezado* - 0 si el archivo no contiene una fila con los nombres de columna, 1 si el archivo contiene una fila de encabezado. 
  * *Delimitador de Elemento* - el o los caracteres que indican una ruptura entre columnas de datos. 
- * *Character Encoding* - the system that defines byte-wise definitions of the characters in the data (e.g., ISO 8859-5 refers to the Cyrillic alphabet).
- * *Field Quotes* - a single character (or none) that is used to enclose the contents of a column in the data (e.g., ' or ").
- * *Date Format* - a code describing the format of fields having a date data type (e.g., YYYY-MM-DD for four-digit year, two-digit month, and two-digit day separated by dashes).
+ * *Codificación de caracteres* - el sistema que determina definiciones en términos de byte, de los caracteres en los datos (por ejemplo, la norma ISO 8859-5 se refiere al alfabeto cirílico). 
+ * *Citación de Elemento* - sólo un carácter (o ninguno) utilizado para delimitar el contenido de una columna en los datos (por ejemplo, "o").
+ * *Formato de Fecha* - un código que describe el formato de los elementos que tienen un tipo de datos de fecha (por ejemplo, AAAA-MM-DD para año de cuatro dígitos, mes de dos dígitos, y día de dos dígitos, separados por guiones).
 
 After the parameters for the data source have been set so that the file is interpreted correctly, click on the button labeled "Save" to store this configuration. If the save is successful, the Resource Overview page will appear, with summary information about the file in the right-hand column of the Source Data area. A button labeled "Edit" will also appear with the source data file summary information in the right-hand column, allowing the user to reopen the Source Data File detail page. 
 
