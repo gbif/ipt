@@ -420,13 +420,14 @@ Después de seleccionar el archivo, el nombre del mismo aparecerá a la derecha 
 Haga clic en el botón "Borrar" para eliminar  el archivo seleccionado y volver al estado anterior a la selección del archivo fuente. Haga clic en el botón "Añadir" para abrir la página detallada Archivo de Datos Fuente (si existe el riesgo de sobreescribir un archivo con el mismo nombre, se abre un diálogo que pide al usuario confirmar que realmente desea sobrescribir). Esta página mostrará el nombre del recurso, junto con un resumen de las características del archivo (opción de lectura, número de columnas detectadas, ruta absoluta de acceso al archivo, tamaño del archivo, tamaño de filas, y fecha en la que el archivo se cargó en el IPT). El archivo de datos fuente de la página de detalles permite al usuario ver y editar los parámetros que describen el contenido del archivo seleccionado, y utilizar estos ajustes para analizar y obtener una vista previa del archivo. 
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceSourceDataFormat.png]
- * *Source Name* - the name of the file selected, without the file extension.
- * *Readable* - this icon indicates whether data are accessible using the file format information provided on this page.
- * *Columns* - the number of columns in the dataset as configured using the parameters on this page. 
- * *File* - the full path to the location of the file to use as the data source.
- * *Size* - the file size.
- * *Rows* - the number of rows found in the data file. (Note: This number helps check if all records are identified.)
- * *Modified* - the date stamp of the file indicating when it was last saved.
+ * *Nombre de origen* - el nombre del archivo seleccionado, sin la extensión de archivo. 
+ * *Lectura* - este ícono indica si los datos están disponibles utilizando la información de formato del archivo provisto en esta página. 
+ * *Columnas* - el número de columnas en el conjunto de datos como se ha configurado usando los parámetros en esta página. 
+ * *Archivo* - la ruta completa a la ubicación del archivo que desea utilizar como fuente de datos. 
+ * *Tamaño* - el tamaño del archivo. 
+ * *Filas* - el número de filas que se encuentran en el archivo de datos. (Nota: Este número ayuda a comprobar si todos los registros fueron identificados.) 
+ * *Modificado* - el sello de la fecha que indica el momento en el que el archivo se guardó por última vez.
+
  * *Source log* - this link downloads the file containing the log produced when processing the file using the information contained on this page. Any problems encountered while processing the file, such as missing data and unexpected formatting will be in this log file.
  * *Analyze* - click on the this button to generate a data summary based on the database connection settings on this page. The analysis will indicate whether the database is readable, and if so, how many columns there are in the results of the SQL Statement.
  * *Preview* - click on this button to see an interpretation of the data based on the database connection settings on this page. 
