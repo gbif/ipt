@@ -439,9 +439,9 @@ Haga clic en el botón "Borrar" para eliminar  el archivo seleccionado y volver 
 Después de ajustar los parámetros de la fuente de datos para que el archivo se interprete correctamente, haga clic en el botón "Guardar" para almacenar esta configuración. Si el almacenamiento se realiza correctamente, aparecerá la página Visualización del Recurso, con información resumida acerca del archivo en la columna de la derecha del área de Datos Fuente. El botón "Editar" también aparecerá con el resumen de la información del archivo de datos fuente en la columna de la derecha, permitiendo al usuario volver a abrir la página detallada de Archivo de Datos Fuente.
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceSourceSummary.png]
 
-Should the user want to delete this source, they can reopen the Source Data File detail page and press the "Delete source file" button. Be aware though, that any mappings associated to this file will also be deleted.
+En caso de que el usuario desee eliminar esta fuente, podrá volver a abrir la página detallada Archivo de Datos Fuente y hacer clic en el botón "Eliminar archivo fuente". Tenga en cuenta sin embargo, que el mapeo asociado a este archivo también será eliminado.
 
-If the source data are contained in multiple text files, the process described in this section can be repeated for each of the files to import. A zipped folder with multiple text files can also be imported to add multiple source files in one go. 
+Si los datos fuente se encuentran en varios archivos de texto, el proceso descrito en esta sección se podrá repetir para cada uno de los archivos que desea importar. Un archivo comprimido con varios archivos de texto también podrá ser importado para añadir varios archivos fuente en un mismo intento.
 
 *Database as data source*<br>
 The IPT can use database connections to import data from tables or views. A list of supported database connections is given on the [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2DatabaseConnection Supported databases] page of the IPT Project wiki. To configure a database as a data source, click on the button labeled "Connect to DB" in the left-hand column of the Source Data area of the Resource Overview page. This will open a Source Database detail page. 
