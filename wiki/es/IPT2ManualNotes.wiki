@@ -405,19 +405,19 @@ This metadata page contains information about other aspects of the resource not 
     * *Add new alternative identifier* -  click on this link to add a text box for an alternative identifier for the resource.
       * *Alternative Identifier* - the text for the alternative identifier for the resource (e.g., a URL, UUID, or any other unique key value).
     * *Remove this alternative identifier* - click on this link to remove the alternative identifier that follows immediately below.
-====Source Data====
-Esta área de la página de Visualización del Recurso permite al usuario importar datos primarios al IPT a partir de archivos o bases de datos. Si un recurso no tiene datos fuente se considera un metadato, con información acerca de un conjunto de datos o una colección, pero sin ningún tipo de datos primarios. Es posible conectar un recurso a más de una fuente de datos si estas están relacionadas entre sí. Encontrará más información sobre la relación entre múltiples fuentes de datos en la sección [http://rs.tdwg.org/dwc/terms/guides/text/index.htm#implement Implementation Guide] de la Guía de Texto de _Darwin Core_. A continuación se encuentran las explicaciones de la etapa preliminar para seleccionar los datos fuente ya sea de archivos de texto o de fuentes de bases de datos:
+====Datos Fuente====
+Esta área de la página de Visualización del Recurso permite al usuario importar datos primarios al IPT a partir de archivos o bases de datos. Si un recurso no tiene datos fuente se considera un metadato, con información acerca de un conjunto de datos o una colección, pero sin ningún tipo de datos primarios. Es posible conectar un recurso a más de una fuente de datos si estas están relacionadas entre sí. Encontrará más información sobre la relación entre múltiples fuentes de datos en la sección [http://rs.tdwg.org/dwc/terms/guides/text/index.htm#implement Guía de Implementación] de la Guía de Texto de _Darwin Core_. A continuación se encuentran las explicaciones de la etapa preliminar para seleccionar los datos fuente ya sea de archivos de texto o de fuentes de bases de datos:
 
-*File as data source*<br>
-The IPT can import uncompressed delimited text files (csv, tab, and files using any other delimiter) or equivalent files compressed with zip or gzip. Click on the button labeled "Choose File" to navigate to and select the file to import.
+*Archivo como fuente de datos* <br>
+El IPT puede importar archivos de texto delimitado no comprimidos (csv, tab, y archivos con cualquier otro delimitador) o archivos comprimidos con zip o gzip. Haga clic en el botón "Seleccionar Archivo" para buscar y seleccionar el archivo que desea importar.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceSourceData.png]
 
-After selecting the file, its name will appear to the right of the "Choose File" button. 
+Después de seleccionar el archivo, el nombre del mismo aparecerá a la derecha del botón "Seleccionar Archivo". 
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceSourceDataFileSelected.png]
 
-Click on the button labeled "Clear" to remove the choice of selected file and return to the previous state before any data source was selected. Or, click on the button labeled "Add" to open the Source Data File detail page (if there is the risk of overwriting a file with the same name, a dialog opens that asks the user to confirm they actually want to overwrite it). This page shows the name of the resource along with a summary of the file characteristics (readability, number of columns detected, absolute path to the file, the file size, the number of rows detected, and the date the file was last loaded into the IPT). The Source Data File detail page allows the user to view and edit the parameters that describe the content of the selected file, and to use these settings to analyze and preview the file. 
+Haga clic en el botón "Borrar" para eliminar  el archivo seleccionado y volver al estado anterior a la selección del archivo fuente. Haga clic en el botón "Añadir" para abrir la página detallada Archivo de Datos Fuente (si existe el riesgo de sobreescribir un archivo con el mismo nombre, se abre un diálogo que pide al usuario confirmar que realmente desea sobrescribir). Esta página mostrará el nombre del recurso, junto con un resumen de las características del archivo (opción de lectura, número de columnas detectadas, ruta absoluta de acceso al archivo, tamaño del archivo, tamaño de filas, y fecha en la que el archivo se cargó en el IPT). El archivo de datos fuente de la página de detalles permite al usuario ver y editar los parámetros que describen el contenido del archivo seleccionado, y utilizar estos ajustes para analizar y obtener una vista previa del archivo. 
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceSourceDataFormat.png]
  * *Source Name* - the name of the file selected, without the file extension.
