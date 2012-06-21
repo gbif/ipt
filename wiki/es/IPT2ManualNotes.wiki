@@ -427,12 +427,11 @@ Haga clic en el botón "Borrar" para eliminar  el archivo seleccionado y volver 
  * *Tamaño* - el tamaño del archivo. 
  * *Filas* - el número de filas que se encuentran en el archivo de datos. (Nota: Este número ayuda a comprobar si todos los registros fueron identificados.) 
  * *Modificado* - el sello de la fecha que indica el momento en el que el archivo se guardó por última vez.
-
- * *Source log* - this link downloads the file containing the log produced when processing the file using the information contained on this page. Any problems encountered while processing the file, such as missing data and unexpected formatting will be in this log file.
- * *Analyze* - click on the this button to generate a data summary based on the database connection settings on this page. The analysis will indicate whether the database is readable, and if so, how many columns there are in the results of the SQL Statement.
- * *Preview* - click on this button to see an interpretation of the data based on the database connection settings on this page. 
- * *Number of Header Rows* - 0 if the file does not contain a row of column names, 1 if the file does contain a header row.
- * *Field Delimiter* - the character or characters that signify a break between columns of data.
+ * *Registro Fuente* - este enlace descarga el archivo que contiene el registro generado al procesar el archivo utilizando la información contenida en esta página. Cualquier problema que surja durante el procesamiento del archivo, tal como datos faltantes y formateo inesperado, estarán en este archivo de registro. 
+ * *Analizar* - haga clic en este botón para generar un resumen de los datos basado en la configuración de la conexión de la base de datos, en esta página. El análisis indicará si la base de datos tiene posibilidad de lectura, y si es así, el número de columnas que hay en los resultados del documento SQL. 
+ * *Vista previa* - haga clic en este botón para ver una interpretación de los datos, basada en la configuración de conexión de la base de datos, de esta página.
+ * *Número de Filas de Encabezado* - 0 si el archivo no contiene una fila con los nombres de columna, 1 si el archivo contiene una fila de encabezado. 
+ * *Delimitador de Elemento* - el o los caracteres que indican una ruptura entre columnas de datos. 
  * *Character Encoding* - the system that defines byte-wise definitions of the characters in the data (e.g., ISO 8859-5 refers to the Cyrillic alphabet).
  * *Field Quotes* - a single character (or none) that is used to enclose the contents of a column in the data (e.g., ' or ").
  * *Date Format* - a code describing the format of fields having a date data type (e.g., YYYY-MM-DD for four-digit year, two-digit month, and two-digit day separated by dashes).
