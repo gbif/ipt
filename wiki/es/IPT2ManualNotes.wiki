@@ -456,12 +456,12 @@ La página detallada de Base de Datos Fuente muestra el nombre del recurso, junt
  * *Opción de lectura* - este ícono indica si los datos están disponibles usando la información de conexión proporcionada en esta página. 
  * *Columnas* - El número de columnas en el conjunto de datos como se configuró usando los parámetros en esta página. 
  * *Analizar* - haga clic en este botón para generar un resumen de datos basado en la configuración de conexión de bases de datos en esta página. El análisis indicará si la base de datos tiene opción de lectura, y si es así, el número de columnas que figura en los resultados del documento SQL. 
- * *Preview* - click on this button to see an interpretation of the data based on the database connection settings on this page. 
- * *Database System* - the relational database management system to which the IPT must connect to retrieve the data.
- * *Host* - The database server address, optionally including the non default port number (e.g., localhost or mysql.gbif.org:1336). For ODBC connections, this is not needed.
- * *Database* - The name of the database in the database management system, or the DSN for an ODBC connection.
- * *Database User* - the name of the database user to use when connecting to the database.
- * *Database Password* - the password for the database user to connect to the database.
+ * *Vista Previa* - haga clic en este botón para ver una interpretación de los datos basada en los ajustes de conexión de base de datos en esta página. 
+ * *Sistema de Base de Datos* - el sistema de administración de base de datos relacional al que el IPT debe conectarse para recuperar los datos. 
+ * *Anfitrión* - La dirección del servidor de la base de datos, que opcionalmente incluye el número de puerto no por defecto (por ejemplo, anfitriónlocal o mysql.gbif.org: 1336). Para las conexiones ODBC, esto no es necesario. 
+ * *Base de Datos* - El nombre de la base de datos en el sistema de administración de base de datos, o el DSN para una conexión ODBC. 
+ * *Usuario de base de datos* - el nombre del usuario de la base de datos utilizado cuando este se conecta a la base de datos. 
+ * *Contraseña de la Base de datos* - La contraseña utilizada por el usuario para conectarse a la base de datos. 
  * *SQL Statement* - The Structured Query Language statement used to read data from the source database. The statement will be sent as-is to the configured database, so you can use any native feature of the database such as functions, group by statements, limits, or unions, if supported. Example:{{{`SELECT * from specimen join taxon on taxon_fk=taxon.id`}}}. While testing a large data source it is a good idea to include the appropriate language in the SELECT statement to limit the number of rows returned by the query - for example, in MySQL, {{{`SELECT * from specimen join taxon on taxon_fk=taxon.id` LIMIT 10}}}. When the statement has been fully tested with the Darwin Core Mappings (see the following section of the Quick Reference Guide), change the SQL Statement to return the full intended data set.
  * *Character Encoding* - the system that defines byte-wise definitions of the characters in the data (e.g., Latin1, UTF-8 ).
  * *Date Format* - a code describing the format of fields having a date data type (e.g., YYYY-MM-DD for four-digit year, two-digit month, and two-digit day separated by dashes).
