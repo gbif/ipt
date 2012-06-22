@@ -428,7 +428,7 @@ Haga clic en el botón "Borrar" para eliminar  el archivo seleccionado y volver 
  * *Filas* - el número de filas que se encuentran en el archivo de datos. (Nota: Este número ayuda a comprobar si todos los registros fueron identificados.) 
  * *Modificado* - el sello de la fecha que indica el momento en el que el archivo se guardó por última vez.
  * *Registro Fuente* - este enlace descarga el archivo que contiene el registro generado al procesar el archivo utilizando la información contenida en esta página. Cualquier problema que surja durante el procesamiento del archivo, tal como datos faltantes y formateo inesperado, estarán en este archivo de registro. 
- * *Analizar* - haga clic en este botón para generar un resumen de los datos basado en la configuración de la conexión de la base de datos, en esta página. El análisis indicará si la base de datos tiene posibilidad de lectura, y si es así, el número de columnas que hay en los resultados del documento SQL. 
+ * *Analizar* - haga clic en este botón para generar un resumen de los datos basado en la configuración de la conexión de la base de datos, en esta página. El análisis indicará si la base de datos tiene posibilidad de lectura, y si es así, el número de columnas que hay en los resultados de la sentencia SQL. 
  * *Vista previa* - haga clic en este botón para ver una interpretación de los datos, basada en la configuración de conexión de la base de datos, de esta página.
  * *Número de Filas de Encabezado* - 0 si el archivo no contiene una fila con los nombres de columna, 1 si el archivo contiene una fila de encabezado. 
  * *Delimitador de Elemento* - el o los caracteres que indican una ruptura entre columnas de datos. 
@@ -455,7 +455,7 @@ La página detallada de Base de Datos Fuente muestra el nombre del recurso, junt
  * *Nombre de la Fuente* - el nombre de la fuente de datos. A diferencia de una fuente de datos de archivo, esto puede ser editado y dado cualquier nombre por el usuario. 
  * *Opción de lectura* - este ícono indica si los datos están disponibles usando la información de conexión proporcionada en esta página. 
  * *Columnas* - El número de columnas en el conjunto de datos como se configuró usando los parámetros en esta página. 
- * *Analizar* - haga clic en este botón para generar un resumen de datos basado en la configuración de conexión de bases de datos en esta página. El análisis indicará si la base de datos tiene opción de lectura, y si es así, el número de columnas que figura en los resultados del documento SQL. 
+ * *Analizar* - haga clic en este botón para generar un resumen de datos basado en la configuración de conexión de bases de datos en esta página. El análisis indicará si la base de datos tiene opción de lectura, y si es así, el número de columnas que figura en los resultados de la sentencia SQL. 
  * *Vista Previa* - haga clic en este botón para ver una interpretación de los datos basada en los ajustes de conexión de base de datos en esta página. 
  * *Sistema de Base de Datos* - el sistema de administración de base de datos relacional al que el IPT debe conectarse para recuperar los datos. 
  * *Anfitrión* - La dirección del servidor de la base de datos, que opcionalmente incluye el número de puerto no por defecto (por ejemplo, anfitriónlocal o mysql.gbif.org: 1336). Para las conexiones ODBC, esto no es necesario. 
