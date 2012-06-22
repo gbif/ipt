@@ -443,12 +443,12 @@ En caso de que el usuario desee eliminar esta fuente, podrá volver a abrir la p
 
 Si los datos fuente se encuentran en varios archivos de texto, el proceso descrito en esta sección se podrá repetir para cada uno de los archivos que desea importar. Un archivo comprimido con varios archivos de texto también podrá ser importado para añadir varios archivos fuente en un mismo intento.
 
-*Database as data source*<br>
-The IPT can use database connections to import data from tables or views. A list of supported database connections is given on the [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2DatabaseConnection Supported databases] page of the IPT Project wiki. To configure a database as a data source, click on the button labeled "Connect to DB" in the left-hand column of the Source Data area of the Resource Overview page. This will open a Source Database detail page. 
+*Base de Datos como fuente de datos*<br>
+El IPT puede utilizar conexiones de bases de datos para importar datos de tablas o vistas. Una lista de las conexiones de bases de datos soportados está disponible a través del sitio de la wiki del IPT de GBIF en Google Code [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2DatabaseConnection Supported databases]. Para configurar una base de datos como fuente de datos, haga clic en el botón "Conectar a BD" en la columna de la izquierda del área Datos Fuente de la página Visualización de Recursos. Esto abrirá una página detallada de Base de Datos Fuente.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceSourceData.png]
 
-The Source Database Detail page shows the name of the resource along with a summary of the database characteristics (readability, number of columns detected) and allows the user to view and edit the parameters that describe how to access the data from the database, and to use these settings to analyze and preview the data. 
+La página detallada de Base de Datos Fuente muestra el nombre del recurso, junto con un resumen de las características de la base de datos (opción de lectura, número de columnas detectadas) y permite al usuario ver y editar los parámetros que describen cómo acceder a los datos de la base de datos, y utilizar estas opciones para analizar y obtener una vista previa de los datos. 
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceSourceDatabase.png]
 
