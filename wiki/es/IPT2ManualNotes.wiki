@@ -205,8 +205,8 @@ Si hay recursos públicos, estos serán relacionados en una tabla que tiene las 
 *Logo* - el logo del recurso (se puede configurar en la página de Metadatos Adicionales del metadato del recurso).<br>
 *Nombre* - el título del recurso tal como figura en el Título de la entrada del metadato del recurso. El nombre aparece como un enlace, que abrirá una página de Visualización de Metadatos (ver más adelante) para el recurso seleccionado.<br>
 *Organización* - la organización bajo la cual el recurso ha sido registrado. Si el recurso no está registrado, el valor en la columna de Organización será "No registrado". Revise la información en el encabezado “Organización”, en la sección de "Menú de Administración" para obtener más información acerca del registro de las organizaciones y del registro de un recurso en una organización.<br>
-*Tipo* - el tipo de recurso como figura en la lista desplegable de _Tipo_ en la página [IPT2ManualNotes#Basic_Metadata Metadatos Básicos] del metadato del recurso.<br>
-*Subtipo* - el subtipo del recurso como figura en la lista desplegable de _Subtipo_ en la página [IPT2ManualNotes#Basic_Metadata Metadatos Básicos] del metadato del recurso.<br>
+*Tipo* - el tipo de recurso como figura en la lista desplegable de _Tipo_ en la página [IPT2ManualNotes#Basic_Metadata Basic Metadata] del metadato del recurso.<br>
+*Subtipo* - el subtipo del recurso como figura en la lista desplegable de _Subtipo_ en la página [IPT2ManualNotes#Basic_Metadata Basic Metadata] del metadato del recurso.<br>
 *Registros* - el número de filas de datos en el archivo central de datos que se cargaron con éxito en el IPT, para el recurso.<br>
 *Última modificación* - ya sea la fecha en la que fue creado el recurso o la fecha en la que los datos o los metadatos fueron modificados, aquella que sea más reciente.<br>
 *Última publicación* - la fecha en la que el recurso fue publicado por última vez.
@@ -259,28 +259,28 @@ A continuación se encuentra una lista de las páginas de metadatos y sus conten
 ====Metadatos Básicos====
 Esta es la única página de metadatos que contiene campos que son obligatorios para el IPT. El título y la descripción del recurso son obligatorios. Los tres principales contactos del recurso también deben ser descritos aquí: Contacto del Recurso, Creador del Recurso y Proveedor de los Metadatos. Para cada contacto, se debe suministrar mínimo el apellido, una posición o una organización, antes de lograr hacer público el recurso. Para que el recurso sea publicado efectivamente, la(s) persona(s) u organización(es) responsable(s) de la creación del recurso también deben ser adicionadas como una parte asociada bajo el rol “publicador”.
   * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceMetadataBasicMetadata.png]
-    * *Title* (required) - the Title for the resource. This title will appear as a the Name of the resource throughout the IPT. The title will also appear in the GBIF Registry.
-    * *Description* (required) - text describing the resource. This required field should provide a summary that will help potential users of the data to understand if it may be of interest.
-    * *Metadata Language* - the standard English name of the human language in which the metadata are written.
-    * *Resource Language* - the standard English name of the human language in which the data for the resource are written.
-    * *Type* - the type of resource. The value of this field depends on the core mapping of the resource and is no longer editable if the Darwin Core mapping has already been made. If a desired type is not found in the list, the field "other" can be selected. Review the information under the "Configure Core Types and Extensions" heading of the "Administration Menu" section.
-    * *Subtype* - the subtype of the resource. The options for this field depend on the Type field. If a desired subtype is not found in the list, the field can be left with the default selection. 
-    * *Resource Contact* - The resource contact is the person or organisation that should be contacted to get more information about the resource, or to whom putative problems with the resource or its data should be addressed.
+    * *Título* (obligatorio) - El título del recurso. Este título aparecerá como el Nombre del recurso en todo el IPT. El título también aparecerá en el registro GBIF.
+    * *Descripción* (obligatorio) - Un texto describiendo el recurso. En este campo obligatorio se debe proveer un resumen que ayudará a los usuarios potenciales de los datos, a entender si este puede ser de interés.
+    * *Idioma de los Metadatos* - El idioma en el cual están escritos los metadatos.
+    * *Idioma del Recurso* - El idioma en el cual están escritos los datos del recurso.
+    * *Tipo* - El tipo de recurso. El valor de este campo depende del mapeo base del recurso y no es editable si el mapeo del _Darwin Core_ ya ha sido realizado. Si un tipo de recurso deseado no se encuentra en la lista, se debe seleccionar “Otro”. La información puede ser revisada en “Configurar Tipos Básicos y Extensiones” que se encuentra dentro del menú, sección “Administrar”.
+    * *Subtipo* - El subtipo del recurso. Las opciones para este campo dependen del campo Tipo. Si un subtipo deseado no se encuentra en la lista, el campo puede ser dejado con la selección por defecto.
+    * *Contacto del Recurso* - El contacto del recurso es la persona u organización que debe ser contactada para obtener mas información acerca del recurso, o a quien se deben dirigir los posibles problemas con el recurso o los datos.
     * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceMetadataResourceContact.png]
-      * *First Name* - the first or given name of the resource contact.
-      * *Last Name* (required if Position and Organisation are empty, required if the first name is not empty) - the last or surname of the resource contact.
-      * *Position* (required if Last Name and Organisation are empty) - the relevant title or position held by the resource contact.
-      * *Organisation* (required if Last Name and Position are empty) - the organisation or institution with which the resource contact is associated. Though the organisation may be one of those registered in the GBIF Registry, this is not required. Thus, the organisation must be entered in the text box rather than selected from a list of registered organisations.
-      * *Address* - the physical street or building address of the resource contact.
-      * *City* - the city, town, municipality or similar physical location of the resource contact's address.
-      * *State/Province* - the state, province, or similar geographic region of the resource contact's address.
-      * *Country* - the standard English name of the country or other first level administrative region of the resource contact's address.
-      * *Postal Code* - the postal code (e.g., zip code) of the resource contact's address.
-      * *Phone* - the preferred full international telephone number at which to reach the resource contact.
-      * *Email* - the preferred email address at which to reach the resource contact.
-      * *Home Page* - the URL to a worldwide web page for the resource contact.
-    * *Resource Creator* - The resource creator is the person or organisation responsible for the original creation of the resource content. When there are multiple creators, the one that bears the greatest responsibility is the resource creator and others should be added as associated parties with role 'originator' or 'content provider'. If this person or organisation is the same as the resource contact, all of the details of the latter can be copied into the equivalent fields for the resource creator by clicking on the link labeled "copy details from contact". The resource creator has all of the same fields and requirements as the resource contact. Refer to the field explanations under Resource Contact, above.
-    * *Metadata Provider* - The metadata provider is the person or organisation responsible for producing the resource metadata. If this person or organisation is the same as the resource contact, all of the details of the latter can be copied into the equivalent fields for the resource creator by clicking on the link labeled "copy details from contact". The metadata provider has all of the same fields and requirements as the resource contact. Refer to the field explanations under Resource Contact, above.
+      * *Nombre* - El nombre del contacto del recurso.
+      * *Apellido* (obligatorio si se dejan vacíos la Posición y la Organización, obligatorio si es suministrado el Nombre) - El apellido del contacto del recurso.
+      * *Posición* (obligatorio si se dejan vacíos el Apellido y la Organización) - El título relevante o cargo que tiene el contacto del recurso.
+      * *Organización* (obligatorio si se dejan vacíos el Apellido y la Posición) - La organización o institución con la cual está asociado  el contacto del recurso. Si la organización o institución es una de las registradas en el Registro GBIF, esta no será obligatoria. De lo contrario, la organización debe ser ingresada en el cuadro de texto en vez de seleccionarla de una lista de organizaciones registradas.
+      * *Dirección* - Dirección física del contacto del recurso.
+      * *Ciudad* - La ciudad, municipio o localidad física similar de la dirección del contacto del recurso.
+      * *Estado/Provincia* - El departamento, estado, provincia o región geográfica similar de la dirección del contacto del recurso.
+      * *País* - El país o región administrativa de primer nivel de la dirección del contacto del recurso.
+      * *Código Postal* - El código postal (e.g., código zip) de la dirección del contacto del recurso.
+      * *Teléfono* - El número de teléfono internacional preferido del contacto del recurso.
+      * *Correo Electrónico* - La dirección de correo electrónica preferida del contacto del recurso.
+      * *Página Web* - La URL a una página Web del contacto del recurso.
+    * *Creador del Recurso* - El creador del recurso es la persona u organización responsable de la creación original del contenido del recurso. Cuando hay múltiples creadores, aquel que tenga la mayor responsabilidad es el creador del recurso y los otros creadores deben ser adicionados como partes asociadas bajo el rol “originador” o “proveedor de contenido”. Si esta persona u organización es la misma del contacto del recurso, todos los detalles de este último pueden ser copiados en los campos equivalentes para el creador del recurso, haciendo clic sobre el enlace llamado “copiar datos del contacto”. El creador del recurso tiene los mismos campos y requerimientos del contacto del recurso. Véase las explicaciones para cada campo, arriba en los detalles del Contacto del Recurso.
+    * *Proveedor de los Metadatos* - El proveedor de los metadatos es la persona u organización responsable de producir los metadatos del recurso. Si la persona u organización es la misma del contacto del recurso, todos los detalles de este último pueden ser copiados en los campos equivalentes para el proveedor de los metadatos, haciendo clic sobre el enlace llamado “copiar datos del contacto”. El proveedor de los metadatos tiene los mismos campos y requerimientos del contacto del recurso. Véase las explicaciones para cada campo, arriba en los detalles del Contacto del Recurso.
 ====Geographic Coverage==== 
 This metadata page contains information about the geographic area covered by the resource. The page contains a map and associated controls that allow the user to set the geographic coverage. Below is a screen image showing the contents of the Geographic Coverage page, followed by explanations of the controls.
   * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceMetadataGeographicCoverage.png]
@@ -445,7 +445,7 @@ En caso de que el usuario desee eliminar esta fuente, podrá volver a abrir la p
 Si los datos fuente se encuentran en varios archivos de texto, el proceso descrito en esta sección se podrá repetir para cada uno de los archivos que desea importar. Un archivo comprimido con varios archivos de texto también podrá ser importado para añadir varios archivos fuente en un mismo intento.
 
 *Base de Datos como fuente de datos*<br>
-El IPT puede utilizar conexiones de bases de datos para importar datos de tablas o vistas. Una lista de las conexiones de bases de datos soportados está disponible a través del sitio de la wiki del IPT de GBIF en Google Code [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2DatabaseConnection Bases de Datos Soportadas]. Para configurar una base de datos como fuente de datos, haga clic en el botón "Conectar a BD" en la columna de la izquierda del área Datos Fuente de la página Visualización de Recursos. Esto abrirá una página detallada de Base de Datos Fuente.
+El IPT puede utilizar conexiones de bases de datos para importar datos de tablas o vistas. Una lista de las conexiones de bases de datos soportados está disponible a través del sitio de la wiki del IPT de GBIF en Google Code [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2DatabaseConnection Supported databases]. Para configurar una base de datos como fuente de datos, haga clic en el botón "Conectar a BD" en la columna de la izquierda del área Datos Fuente de la página Visualización de Recursos. Esto abrirá una página detallada de Base de Datos Fuente.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceSourceData.png]
 
