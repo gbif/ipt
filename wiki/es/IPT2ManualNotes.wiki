@@ -246,7 +246,8 @@ Esta página permite a los usuarios con permiso de administración, realizar cam
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceOverview.png]
 ====Metadatos====
-This area of the Resource Overview page allows a user to see basic information about the resource metadata in the panel to the right, and to view and edit these and other metadata in detail by clicking on the button labeled "Edit" in the panel to the left. For more information about resource metadata in the GBIF context, see http://www.gbif.org/informatics/discoverymetadata/. Every resource requires a minimal set of descriptive metadata in order to be published in the GBIF network. If any of the required metadata are missing, the Resource Overview page will open with a warning message in the Metadata area of the page.
+Esta área de la página de Resumen del Recurso permite al usuario ver la información básica de los metadatos del recurso en el panel de la derecha, además de examinar  y editar estos y otros metadatos en detalle, haciendo clic sobre el botón “Editar” que se encuentra en el panel izquierdo. Para más información acerca de los metadatos del recurso en el contexto GBIF, véase http://www.gbif.org/informatics/discoverymetadata/.
+Todos los recursos requieren de un conjunto mínimo de metadatos descriptivos para ser publicados en la red del GBIF. Si alguno de los metadatos requeridos  falta, la página del Resumen del Recurso se abrirá con un mensaje de advertencia en el área de los Metadatos.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataMissing.png]
 
