@@ -474,7 +474,7 @@ Esta área de la página Visualización del Recurso permite al usuario mapear lo
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceDwCMapping.png]
 
-After the desired core type or extension is selected, click on the button labeled "Add" to open the Data Source selection page. This page gives an explanation of the type of data the extension is meant to support, and shows a select box containing a list of all of the configured data sources. 
+Después de que el tipo _core_ o la extensión deseada haya sido seleccionado, haga clic en el botón "Añadir" para abrir la página de selección Fuente de Datos. Esta página ofrece una explicación del tipo de datos que la extensión soporta, y muestra un cuadro de selección que contiene una lista de todas las fuentes de datos configuradas.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceSourceSelect.png]
 
