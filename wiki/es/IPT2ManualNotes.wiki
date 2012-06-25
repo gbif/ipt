@@ -490,7 +490,7 @@ La columna de la derecha contiene íconos de información y controles (cuadros d
   
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMappingConstant.png]
 
-  * *Constant controlled value select box* - If the right-hand column for the extension field contains a second select box instead of a text box, this means that the field is governed by a controlled vocabulary. In this case, choose a value from the vocabulary list to use as a constant value in place of typing a constant into a text box.
+  * *Cuadro de selección de Valor constante controlado* - Si la columna de la derecha para el elemento de la extensión contiene un segundo cuadro de selección en lugar de un cuadro de texto, esto significa que el elemento se rige por un vocabulario controlado. En este caso, escoja un valor de la lista de vocabulario para utilizar como un valor constante en lugar de simplemente introducir una constante en un cuadro de texto.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMappingSelectConstant.png]
 
