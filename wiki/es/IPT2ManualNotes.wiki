@@ -231,7 +231,7 @@ Cuando la página Administrar Recursos se abre por primera vez, muestra una tabl
 Debajo de la Tabla de Administrar Recursos hay un formulario que puede ser utilizado para crear un nuevo recurso. Antes que nada, se deberá proporcionar un "nombre corto" único para el recurso. Este nombre corto se utilizará para identificar de manera única, el recurso en la instancia del IPT, y será utilizado en la URL para acceder al recurso a través de Internet. El nombre corto deberá contener al menos tres caracteres, estos podrán ser caracteres alfanuméricos, pero no deberá incluir espacios en blanco o puntuación excepto guiones o guiones bajos (por ejemplo, "primerrecurso" o "primer_recurso", pero no "primer recurso" o “primerrecurso!").
 
 Hay varias formas de crear un nuevo recurso en el IPT que serán descritas en las siguientes secciones.
-====Cargar un Archivo de _Darwin Core Archive_====
+====Cargar un Archivo de Darwin Core====
 El IPT puede importar y exportar archivos válidos del tipo _Darwin Core Archive_ de hasta 100MB. Podrá encontrar más información sobre archivos _Darwin Core Archive_ en el sitio web de _Darwin Core_ (http://rs.tdwg.org/dwc/terms/guides/text/), junto con información sobre su uso en el IPT, del sitio de la wiki del IPT de GBIF en Google Code ((http://code.google.com/p/gbif-providertoolkit/wiki/DarwinCore). Para importar un archivo _Darwin Core Archive_, haga clic en el botón "Seleccionar archivo", a continuación busque y seleccione el archivo. Después de seleccionar el archivo, el nombre aparecerá junto al botón "Seleccionar archivo". Haga clic en el botón "Crear". Si surge algún problema al importar el archivo seleccionado, un mensaje de error notificará al usuario. Si la importación es exitosa, una página de Visualización del Recurso aparecerá con un mensaje informativo en la parte superior, que describe los resultados del proceso de importación.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceUploadDwCASuccess.png]
@@ -344,15 +344,15 @@ Esta página de metadatos contiene información acerca de un proyecto bajo el cu
     * *Fuentes de Financiación* - Información acerca de la(s) fuente(s) de financiación del proyecto y sus detalles (títulos y números de las becas, números de contrato, nombres y direcciones, periodo activo, etc.).
     * *Descripción del Área de Estudio* - Una descripción del área física donde ocurrió el proyecto (ubicación física, hábitat, cobertura temporal, etc.).
     * *Descripción del Diseño* - Una descripción del diseño y los objetivos del proyecto (qué preguntas fueron investigadas, por qué fue seleccionada el área, etc).
-====Sampling Methods====
-This metadata page contains information about sampling methods in general, and about specific sampling steps. if appropriate. Before any Sampling Method data are entered for the resource, the page will show text boxes for three aspects of the sampling methods (Study Extent, Sampling Description, and Quality Control) and a link labeled "Add new method step".
+====Métodos de Muestreo====
+Esta página de metadatos contiene información acerca de los métodos de muestreo en general, y acerca de los pasos específicos del muestreo. Antes que sea ingresado algún dato de los Métodos de Muestreo para el recurso, la página de los métodos de muestreo mostrará campos de texto para tres aspectos (Área de Estudio, Descripción del Muestreo y Control de Calidad) y un enlace llamado “Añadir nuevo paso metodológico”.
   * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataSamplingMethods.png]
-    * *Study Extent* - a description of the physical and temporal conditions under which the sampling occurred.
-    * *Sampling Description* - a description of the protocol used during sampling that resulted in the data in the resource.
-    * *Quality Control* - a description of methods taken to measure and report the quality of the data produced by the sampling methods.
-    * *Add new method step* -  click on this link to add a text box labeled "Step Description" to the page. A method step is one in a series of steps taken to accomplish the sampling. One may add as many method steps as desired.
-      * *Step Description* - a description of one step in the sampling methods used. The description is meant clarify how the data were acquired and processed so that other researchers can understand the suitability of the data for other uses. 
-    * *Remove this method step* - click on this link to remove the method step (Step Description text box) that follows immediately below the link.
+    * *Área de Estudio* - Una descripción de las condiciones físicas y temporales bajo las cuales ocurrió el muestreo.
+    * *Descripción del Muestreo* - Una descripción del protocolo usado durante el muestreo, que dio resultado a los datos del recurso.
+    * *Control de Calidad* - Una descripción de los métodos adoptados para medir y reportar la calidad de los datos producidos por los métodos de muestreo.
+    * *Añadir nuevo paso metodológico* -  Haciendo clic sobre este enlace, se adiciona a la página un cuadro de texto llamado “Descripción del Paso Metodológico”. Un paso metodológico es uno de una serie de pasos llevados acabo para el muestreo. Se pueden adicionar tantos pasos metodológicos como se desee.
+      * *Descripción del Paso Metodológico* - Descripción de un paso de la serie llevada a cabo en los métodos de muestreo usados. La descripción está destinada a clarificar cómo fueron adquiridos y procesados los datos, de tal forma que otros investigadores puedan entender la idoneidad de estos para otros usos.
+    * *Remover paso metodológico* - Haciendo clic sobre este enlace, se elimina el paso metodológico (cuadro de texto Descripción del Paso Metodológico) que está inmediatamente debajo del enlace.
 ====Citations====
 This metadata page contains information about how to cite the resource as well as a bibliography of citations related to the data set, such as publications that were used in or resulted from the production of the data. Each Citation, whether for the resource or in the bibliography, consists of an optional unique Citation Identifier allowing the citation to be found among digital sources and a traditional textual citation. Before any Citation data are entered, the page will show a text box for the Citation Identifier for the resource, a text box for the Resource Citation, a heading labeled "Bibliography", and a link labeled "Add new citation".
   * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataCitations.png]
@@ -445,7 +445,7 @@ En caso de que el usuario desee eliminar esta fuente, podrá volver a abrir la p
 Si los datos fuente se encuentran en varios archivos de texto, el proceso descrito en esta sección se podrá repetir para cada uno de los archivos que desea importar. Un archivo comprimido con varios archivos de texto también podrá ser importado para añadir varios archivos fuente en un mismo intento.
 
 *Base de Datos como fuente de datos*<br>
-El IPT puede utilizar conexiones de bases de datos para importar datos de tablas o vistas. Una lista de las conexiones de bases de datos soportados está disponible a través del sitio de la wiki del IPT de GBIF en Google Code [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2DatabaseConnection Bases de Datos Soportadas]. Para configurar una base de datos como fuente de datos, haga clic en el botón "Conectar a BD" en la columna de la izquierda del área Datos Fuente de la página Visualización de Recursos. Esto abrirá una página detallada de Base de Datos Fuente.
+El IPT puede utilizar conexiones de bases de datos para importar datos de tablas o vistas. Una lista de las conexiones de bases de datos soportados está disponible a través del sitio de la wiki del IPT de GBIF en Google Code [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2DatabaseConnection Supported databases]. Para configurar una base de datos como fuente de datos, haga clic en el botón "Conectar a BD" en la columna de la izquierda del área Datos Fuente de la página Visualización de Recursos. Esto abrirá una página detallada de Base de Datos Fuente.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceSourceData.png]
 
