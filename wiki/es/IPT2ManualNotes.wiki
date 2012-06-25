@@ -255,9 +255,9 @@ Haciendo clic en el botón “Editar”, se abre la página de Metadatos Básico
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceMetadataPagesList.png]
 
-Following is a list of the metadata pages and their contents: 
-====Metadatos básicos====
-This is the only metadata page that has fields that are required to be entered by the IPT. The resource title and description are required. The resource's three main contact's must also be described here: Resource contact, resource creator and metadata provider. For each contact you must supply at least a last name, a position or an organisation before you can make the resource public. The person(s) or organisation(s) responsible for the creation of the resource as it appears in the IPT and for effectively publishing the resource should add themselves as an associated party with role 'publisher'.
+A continuación se encuentra una lista de las páginas de metadatos y sus contenidos: 
+====Metadatos Básicos====
+Esta es la única página de metadatos que contiene campos que son obligatorios para el IPT. El título y la descripción del recurso son obligatorios. Los tres principales contactos del recurso también deben ser descritos aquí: Contacto del Recurso, Creador del Recurso y Proveedor de los Metadatos. Para cada contacto, se debe suministrar mínimo el apellido, una posición o una organización, antes de lograr hacer público el recurso. Para que el recurso sea publicado efectivamente, la(s) persona(s) u organización(es) responsable(s) de la creación del recurso también deben ser adicionadas como una parte asociada bajo el rol “publicador”.
   * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceMetadataBasicMetadata.png]
     * *Title* (required) - the Title for the resource. This title will appear as a the Name of the resource throughout the IPT. The title will also appear in the GBIF Registry.
     * *Description* (required) - text describing the resource. This required field should provide a summary that will help potential users of the data to understand if it may be of interest.
