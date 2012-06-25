@@ -334,16 +334,16 @@ Esta página de metadatos contiene información acerca de uno o más personas u 
     * *Remover parte asociada* - Haciendo clic sobre este enlace, se elimina la parte asociada que está inmediatamente debajo del enlace.
     * *Rol* - Este cuadro de texto contiene una lista de posibles roles que la parte asociada pueda tener en relación al recurso. Haciendo clic sobre el icono de información que está a la izquierda, se pueden ver las descripciones de los posibles roles. En el cuadro de selección, elija el rol mas apropiado para la parte asociada.
     * *Añadir nueva parte asociada* - Haciendo clic sobre este enlace, se adiciona una nueva parte asociada.
-====Project Data====
-This metadata page contains information about a project under which the data in the resource were produced. Appropriate only if the data were produced under a single project.
+====Datos del Proyecto====
+Esta página de metadatos contiene información acerca de un proyecto bajo el cual fueron producidos los datos del recurso. Esto es apropiado únicamente si los datos fueron producidos bajo un solo proyecto.
   * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataProjectData.png]
-    * *Title* - the title of the project.
-    * *Personnel First Name* - the first name of the most relevant person associated with the project.
-    * *Personnel Last Name* - the first name of the most relevant person associated with the project.
-    * *Personnel Role* - the role of the person named above in relation to the project. Click on the information icon to the left of the select box to see descriptions of the possible roles. Choose the most appropriate role in the select box for the person named above.
-    * *Funding* - information about project funding and its sources (grant titles and numbers, contract numbers, names and addresses, active period, etc.).
-    * *Study Area Description* - a description of the physical area where the project occurred (physical location, habitat, temporal coverage, etc.).
-    * *Design Description* - a description of the design and objectives of the project (what questions were being investigated, why the area was selected, etc.).
+    * *Título* - El título del proyecto.
+    * *Nombre* - Nombre de la persona más relevante asociada con el proyecto.
+    * *Apellido* - Apellido de la persona más relevante asociada con el proyecto.
+    * *Rol dentro del Proyecto* - El rol de la persona mencionada anteriormente en relación al proyecto. Haciendo clic sobre el icono de información de la izquierda, se pueden ver las descripciones de los posibles roles. En el cuadro de selección, elija el rol mas apropiado para la persona mencionada anteriormente.
+    * *Fuentes de Financiación* - Información acerca de la(s) fuente(s) de financiación del proyecto y sus detalles (títulos y números de las becas, números de contrato, nombres y direcciones, periodo activo, etc.).
+    * *Descripción del Área de Estudio* - Una descripción del área física donde ocurrió el proyecto (ubicación física, hábitat, cobertura temporal, etc.).
+    * *Descripción del Diseño* - Una descripción del diseño y los objetivos del proyecto (qué preguntas fueron investigadas, por qué fue seleccionada el área, etc).
 ====Sampling Methods====
 This metadata page contains information about sampling methods in general, and about specific sampling steps. if appropriate. Before any Sampling Method data are entered for the resource, the page will show text boxes for three aspects of the sampling methods (Study Extent, Sampling Description, and Quality Control) and a link labeled "Add new method step".
   * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataSamplingMethods.png]
