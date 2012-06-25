@@ -478,7 +478,7 @@ Después de que el tipo _core_ o la extensión deseada haya sido seleccionado, h
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceSourceSelect.png]
 
-Select the data source to map, and then click on the button labeled "Save". This will open the Data Mapping detail page and display a status message showing how many fields from the data source were automatically mapped to the fields in the extensions. Fields are automatically mapped if the field names, converted to all lower case, match each other.
+Seleccione la fuente de datos a mapear y luego haga clic en el botón "Guardar". Esto abrirá la página detallada de Mapeo de Datos y mostrará un mensaje de estado indicando cuántos elementos de la fuente de los datos se mapearon automáticamente a los elementos de las extensiones. Los elementos se mapearán automáticamente, si los nombres de los elementos, convertidos a minúsculas, coinciden entre sí.
 
 The Data Mapping page allows a user to specify exactly how the data accessible through this IPT resource are to be configured based on the selected extension. At the top of the page is the name of the extension to which the source data are being mapped, along with a description of the purpose of the extension. Below the extension description are two columns of information, potentially with labels separating sets of related fields in the extension and links to jump to specific labeled sets of fields on the page. The left-hand column contains the names of fields in the extension as well as a special row labeled Filter.
 
