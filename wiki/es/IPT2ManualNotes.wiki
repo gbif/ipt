@@ -327,13 +327,13 @@ Esta página de metadatos permite a los usuarios crear uno o más conjuntos de p
     * *Tesauro* - Se ingresa el nombre de un tesauro o vocabulario controlado desde el cual se derivó el conjunto de palabras clave. Si las palabras clave no están regidas por un tesauro, se ingresa “n/a”, que indica, no aplica. Ejemplo: Tesauro IRIS.
     * *Lista de Palabras Clave* - Se ingresa una lista de palabras clave separadas por comas, que describen o están relacionadas al recurso.
     * *Añadir nuevo conjunto de palabras clave* - Haciendo clic sobre este enlace, se adiciona un nuevo conjunto de palabras clave.
-====Associated Parties====
-This metadata pages contains information about one or more people or organisations associated with the resource in addition to those already covered on the Basic Metadata page. Many of the controls on this page are in common with those for the Resource Contact on the [IPT2ManualNotes#Basic_Metadata Basic Metadata] page. Explanations for the remainder of the controls are given below.
+====Partes Asociadas====
+Esta página de metadatos contiene información acerca de uno o más personas u organizaciones asociadas con el recurso, además que aquellas ya incluidas en la página de Metadatos Básicos. Muchos de los campos en esta página son comunes con aquellos para el Contacto del Recurso en la página de [IPT2ManualNotes#Basic_Metadata Basic Metadata]. Las explicaciones para el resto de los campos son dadas a continuación.
   * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataAssociatedParties.png]
-    * *Copy details from contact* - if this person or organisation is the same as the Resource Contact on the Basic Metadata page, all of the details can be copied into the equivalent fields for the associated party by clicking on this link.
-    * *Remove this associated party* - click on this link to remove the associated party that follows immediately below the link.
-    * *Role* - this select box contains a list of possible roles that the associated party might have in relation to the resource. Click on the information icon to the left of the select box to see descriptions of the possible roles. Choose the most appropriate role for the associated party in the select box.
-    * *Add new associated party* - click on this link to initiate a form for an additional associated party.
+    * *Copiar datos del contacto* - Si esta persona u organización es la misma del Contacto del Recurso en la página de Metadatos Básicos, entonces haciendo clic sobre este enlace pueden ser copiados en los campos equivalentes, todos los detalles para la parte asociada.
+    * *Remover parte asociada* - Haciendo clic sobre este enlace, se elimina la parte asociada que está inmediatamente debajo del enlace.
+    * *Rol* - Este cuadro de texto contiene una lista de posibles roles que la parte asociada pueda tener en relación al recurso. Haciendo clic sobre el icono de información que está a la izquierda, se pueden ver las descripciones de los posibles roles. En el cuadro de selección, elija el rol mas apropiado para la parte asociada.
+    * *Añadir nueva parte asociada* - Haciendo clic sobre este enlace, se adiciona una nueva parte asociada.
 ====Project Data====
 This metadata page contains information about a project under which the data in the resource were produced. Appropriate only if the data were produced under a single project.
   * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataProjectData.png]
