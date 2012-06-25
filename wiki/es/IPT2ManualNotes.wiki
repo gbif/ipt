@@ -328,7 +328,7 @@ Esta página de metadatos permite a los usuarios crear uno o más conjuntos de p
     * *Lista de Palabras Clave* - Se ingresa una lista de palabras clave separadas por comas, que describen o están relacionadas al recurso.
     * *Añadir nuevo conjunto de palabras clave* - Haciendo clic sobre este enlace, se adiciona un nuevo conjunto de palabras clave.
 ====Partes Asociadas====
-Esta página de metadatos contiene información acerca de uno o más personas u organizaciones asociadas con el recurso, además que aquellas ya incluidas en la página de Metadatos Básicos. Muchos de los campos en esta página son comunes con aquellos para el Contacto del Recurso en la página de [IPT2ManualNotes#Basic_Metadata Basic Metadata]. Las explicaciones para el resto de los campos son dadas a continuación.
+Esta página de metadatos contiene información acerca de uno o más personas u organizaciones asociadas con el recurso, además que aquellas ya incluidas en la página de Metadatos Básicos. Muchos de los campos en esta página son comunes con aquellos para el Contacto del Recurso en la página de [IPT2ManualNotes#Metadatos_Básicos Metadatos Básicos]. Las explicaciones para el resto de los campos son dadas a continuación.
   * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataAssociatedParties.png]
     * *Copiar datos del contacto* - Si esta persona u organización es la misma del Contacto del Recurso en la página de Metadatos Básicos, entonces haciendo clic sobre este enlace pueden ser copiados en los campos equivalentes, todos los detalles para la parte asociada.
     * *Remover parte asociada* - Haciendo clic sobre este enlace, se elimina la parte asociada que está inmediatamente debajo del enlace.
