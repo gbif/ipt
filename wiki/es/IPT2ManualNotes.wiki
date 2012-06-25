@@ -320,13 +320,13 @@ Esta página de metadatos contiene información acerca de una o mas fechas, rang
       * *Época de Existencia* - Este tipo de cobertura temporal está destinado para alojar un periodo de tiempo denominado u otro durante el cual se encontraban vivas las entidades biológicas de la colección o conjunto de datos, incluyendo periodos de tiempo paleontológicos. Ejemplos: “1900-1950”. “Dinastía Ming”, “Pleistoceno”.
       * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataTemporalCoverageLivingTimePeriod.png]
     * *Añadir nueva cobertura temporal* - Haciendo clic sobre este enlace, se adiciona una nueva cobertura temporal.
-====Keywords====
-This metadata page allows the user to create one or more sets of keywords about the resource. Each set of keywords can be be associated with a thesaurus that governs the terms in the list.
+====Palabras Clave====
+Esta página de metadatos permite a los usuarios crear uno o más conjuntos de palabras clave acerca del recurso. Cada conjunto de palabras clave puede ser asociado con un tesauro que rige los términos en la lista.
   * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceMetadataKeywords.png]
-    * *Remove this keyword set* - click on this link to remove the keyword set that follows immediately below the link.
-    * *Thesaurus* - enter the name of a thesaurus or controlled vocabulary from which the keywords in the set are derived. If the keywords are not governed by a thesaurus, enter "n/a" indicating that it is not applicable in this text box. Example: IRIS keyword thesaurus.
-    * *Keyword List* - enter a list of keywords, separated by commas, that describe or are related to the resource.
-    * *Add new keyword set* - click on this link to initiate a form for an additional keyword set.
+    * *Remover conjunto de palabras clave* - Haciendo clic sobre este enlace, se elimina el conjunto de palabras clave que está inmediatamente debajo del enlace.
+    * *Tesauro* - Se ingresa el nombre de un tesauro o vocabulario controlado desde el cual se derivó el conjunto de palabras clave. Si las palabras clave no están regidas por un tesauro, se ingresa “n/a”, que indica, no aplica. Ejemplo: Tesauro IRIS.
+    * *Lista de Palabras Clave* - Se ingresa una lista de palabras clave separadas por comas, que describen o están relacionadas al recurso.
+    * *Añadir nuevo conjunto de palabras clave* - Haciendo clic sobre este enlace, se adiciona un nuevo conjunto de palabras clave.
 ====Associated Parties====
 This metadata pages contains information about one or more people or organisations associated with the resource in addition to those already covered on the Basic Metadata page. Many of the controls on this page are in common with those for the Resource Contact on the [IPT2ManualNotes#Basic_Metadata Basic Metadata] page. Explanations for the remainder of the controls are given below.
   * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataAssociatedParties.png]
