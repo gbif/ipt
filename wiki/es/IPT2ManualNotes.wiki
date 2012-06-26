@@ -594,26 +594,26 @@ Esta página permite a los usuarios con el rol Administrador, realizar y cambiar
 *Modo Corrección de Errores* - Marque esta casilla si desea iniciar el IPT en modo corrección de errores. El Modo Corrección de Errores generalmente es innecesario, a menos que esté tratando de monitorear un problema con el IPT. La bitácora del IPT esta ubicada en el archivo _debug.log_ del directorio de datos del IPT. El directorio de datos se establece durante el primer paso del proceso de instalación (véase el _Getting Started Guide_). Si tiene el rol Administrador, consulte la información en “Ver bitácora del IPT” de la sección “Menú Administración” para ver fácilmente el archivo _debug.log_.<br>
 *Ubicación del Servidor IPT* - Esta área de la página permite al administrador establecer las coordenadas geográficas (latitud y longitud) de la ubicación de servidor en el cual se instaló el IPT. El establecimiento de estas coordenadas permite al GBIF georeferenciar la ubicación de este, con las otras instalaciones del IPT registradas alrededor del mundo.
 
-===Publish all resources===
-This option is an administrative action just like the Publish button, only it publishes ALL resources. Therefore for each resource, it creates a new DwC-A, EML, and RTF, and broadcasts the update to the Registry and via RSS. In addition, it also updates the IPTs metadata in the Registry. If any of the following conditions have been met since the last time the resources were updated, click on this button to make the necessary updates: 
- * Multiple resources have been updated, and you want to publish a new release for all of them instead of publishing them individually.
- * The Base URL or Proxy URL have been changed and you want to update the IPTs registered services to reflect the change.
+===Publicar todos los recursos===
+Esta opción es una acción administrativa al igual que el botón Publicar, solo que este publica TODOS los recursos. Por lo tanto para cada recurso, se crea un nuevo DwC-A, EML y RTF, y transmite las actualizaciones al Registro y a través del RSS. Además, actualiza en el Registro los metadatos del IPT. Si alguna de las siguientes condiciones se cumple desde la última vez que fueron actualizados los recursos, haga clic sobre este botón para realizar las actualizaciones necesarias:
+ * Múltiples recursos han sido actualizados y desea publicar una nueva versión para todos en vez de publicarlos individualmente.
+ * La URL Base o Dirección del Proxy ha sido cambiada y para reflejar el cambio desea actualizar los servicios registrados del IPT.
 
-===Configure User accounts===
-This page allows users having the Admin role to create, modify, and delete user accounts. When the page is opened, it shows a table of existing users and basic information about them including their names, email addresses, roles, and the date and time of their last logins.
+===Configurar Cuentas de Usuario===
+Esta página permite al usuario con rol Administrador, crear, modificar y eliminar cuentas de usuario. Cuando se abre la página, muestra una tabla de usuarios existentes e información básica acerca de ellos, incluyendo sus nombres, direcciones de correo electrónico, roles y la fecha y hora de su ultimo inicio de sesión.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminUserAccounts.png]
-====Create a new user====
-A new user can be created by clicking on the button labeled "Create" below the list of existing users. This will open a page on which the information about the user can be entered, after which the new user can be created by clicking on the button labeled "Save". 
+====Crear un usuario nuevo====
+Un usuario nuevo puede ser creado haciendo clic en el botón “Crear” que está debajo de la lista de usuarios actuales. Se abrirá una página en la cual puede ser ingresada la información del usuario y luego el usuario nuevo puede ser creado haciendo clic en el botón “Guardar”.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminUserCreateUser.png]
 
-*Email* - The current email address of the user is used as an identifier to log in within the IPT and can not be changed.<br>*Note*: If the user requires a change of email address, the recommended procedure is to create a new user account with the new email address, then delete the user account having the antiquated email address.<br>
-*First name* - The first name of the user.<br>
-*Last name* - The last name of the user.<br>
-*Role* - The role the user will have with respect to this installation of the IPT. Admin users can make changes to all aspects of the instance of the IPT. Users having the role "Manager without registration rights" are able to create, edit, remove, and manage resources they have created or have been invited to manage within the IPT instance. Users having the role "Manager with registration rights" have the additional capability to register resources with the GBIF network. Other users can log in to the IPT and view resources, but cannot make any changes.<br>
-*Password* - The password for the user must consist of at least four characters and should be made secure and safe from loss, as it is not recoverable from the IPT application.<br>*Note*: If a user's password is lost, it can be reset to an automatically generated new value by a user having the Admin role. It is the responsibility of the Admin user to communicate this new password to the user for whom it was reset. The user can then change the password to the desired value by entering it in the IPT Account page accessible through the "Account" link in the header in the upper right corner of every page after logging in.<br>
-*Verify password* - An exact copy of the password as entered in the Password text box to confirm that it was entered as intended.
+*Correo* - La dirección de correo electrónico del usuario es usada como un identificador para ingresar al IPT y no puede ser cambiada.<br>*Nota*: Si el usuario requiere un cambio de correo electrónico, el procedimiento recomendado es crear una nueva cuenta de usuario con la nueva dirección de correo electrónico y luego eliminar la cuenta de usuario que tiene el correo electrónico viejo.<br>
+*Nombre* - El nombre del usuario.<br>
+*Last name* - El apellido del usuario.<br>
+*Rol* - El rol que tendrá el usuario dentro del IPT. Usuarios con el rol “Administrador” pueden hacer cambios en todos los aspectos del IPT. Usuarios con el rol “Administrador sin derechos de registrar” están en la capacidad de crear, editar, eliminar y administrar los recursos que ellos crearon o aquellos a los que fueron invitados para administrar dentro del IPT. Usuarios con el rol “Administrador con derechos de registrar” están en la capacidad adicional de registrar los recursos en la red GBIF. Otros usuarios pueden ingresar al IPT y ver los recursos, pero no podrán hacer cambios.<br>
+*Contraseña* - La contraseña del usuario debe contener al menos 4 caracteres y debe ser segura y evitar la perdida, por que desde la aplicación del IPT esta contraseña no es recuperable.<br>*Nota*: Si la contraseña de un usuario se pierde, puede ser restablecida a través de un usuario que tenga el rol Administrador, generando automáticamente un nuevo valor. Es responsabilidad del usuario Administrador comunicar esta nueva contraseña al usuario que le fue restablecida. Una vez el usuario haya ingresado, puede cambiar la contraseña a través del enlace “Cuenta” que está en la esquina superior derecha de todas las páginas.<br>
+*Verificar Contraseña* - Una copia exacta de la contraseña que fue ingresada anteriormente para confirmar que esta fue ingresada como se pretende.
 
 ====Modify an existing user====
 Information about users can be changed in the user details page after selecting the name of the user you wish to modify from the list of existing users. The user detail page shows all of the information about that user. The first name, last name, and role for the user can be changed by entering the new values and clicking on the button labeled "Save". Details of the information to be entered on this page can be found in the explanations in the "Create a new user" section, above.
