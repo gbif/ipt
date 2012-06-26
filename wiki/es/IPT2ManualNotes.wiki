@@ -494,8 +494,8 @@ La columna de la derecha contiene íconos de información y controles (cuadros d
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMappingSelectConstant.png]
 
-  * *Vocabulary detail button* - Extension fields that are governed by a controlled vocabulary will have an icon between the information icon and the source field selection box. Click on this icon to open a Vocabulary Detail page in a new browser window (or tab) on which is a list of accepted values for the extension field with explanations and alternative synonyms in various languages.
-  * *Source Sample* - This area shows actual values from the first few records of the selected field of the source data, separated by spaces and the character '|'. This helps the user understand if the contents of the source data field are appropriate for the extension field to which it has been mapped.
+  * *Botón de Detalle del Vocabulario* - Los elementos de extensión que se rigen por un vocabulario controlado tendrán un ícono entre el ícono de información y el cuadro de selección del elemento fuente. Haga clic en este ícono para abrir una página de Detalle de Vocabulario en una nueva ventana del navegador (o pestaña) en la que se encuentra una lista de los valores aceptados para el elemento de extensión con explicaciones y sinónimos alternativos en varios idiomas.  
+  * *Muestra Fuente* - Esta área muestra los valores reales de los primeros registros del elemento seleccionado de los datos fuente, separados por espacios y el carácter “|”. Esto ayuda al usuario a comprender si el contenido del elemento de los datos fuente es apropiado para el elemento de extensión al que ha sido mapeado.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMappingSourceSample.png]
 
