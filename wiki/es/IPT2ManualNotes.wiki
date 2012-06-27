@@ -381,7 +381,7 @@ Esta página de metadatos contiene información acerca de la historia natural f�
           * *Conteo* - En este cuadro de texto se ingresa el número de unidades promedio aproximado.
           * *+/-* - Se ingresa el número de unidades en incertidumbre respecto al número ingresado en el campo de conteo, para crear un rango de posibles conteos del tipo de unidad en particular.
         * *Tipo de unidad* - Un solo tipo de unidad (ejemplar, lote, placa, caja, frasco, etc.) representado por el tipo de método y conteo.
-    * *Remover lote* - Haciendo clic sobre este enlace, se elimina el lote que está inmediatamente debajo del enlace.
+    * *Remover unidad curatorial* - Haciendo clic sobre este enlace, se elimina la unidad curatorial que está inmediatamente debajo del enlace.
 ====Enlaces Externos====
 Esta página de metadatos contiene enlaces a la página Web del recurso, así como enlaces alternos al recurso (archivos de bases de datos, hojas de cálculo, datos relacionados, etc.) y la información acerca de ellos. Antes que sea ingresado algún enlace externo, la página mostrará un campo de texto para la URL del Recurso y un enlace llamado “Añadir nuevo enlace externo”.
   * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataExternalLinks.png]
