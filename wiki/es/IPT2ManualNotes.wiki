@@ -545,8 +545,8 @@ Esta área de la página Visualización de Recursos permite a un usuario para pu
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourcePublishingStatus.png]
 
-  * *Published* - After a resource has been published, summary information about the published release will appear in the right-hand column of the Published Release area of the Resource Overview page. The summary includes the serial integer version and date of the latest publication, a link entitled "See Report" to view the publication log summary, a link to download the Publication Log file, a link to download the Darwin Core Archive file, a link download the EML file, a link to view the metadata contained in the EML file in the Metadata Overview page as described under the heading of the same name in the "Home Menu" section, and a link to download the RTF data publication document. A helpful feature for each downloadable file, is that its size is indicated beside it.
-
+  * *Publicado* - Después de que un recurso ha sido publicado, la información de resumen acerca de la versión publicada, aparecerá en la columna de la derecha del área Versión Publicada de la página de Visualización del Recurso. El resumen incluye la versión de serie y la fecha de la última publicación, un enlace titulado "Ver informe" para ver el resumen del registro de publicación, un enlace para descargar el archivo de registro de publicación, un enlace para descargar el archivo _Darwin Core Archive_, un enlace de descarga del archivo EML, un enlace para ver los metadatos contenidos en el archivo EML en la página Descripción de Metadatos como se describe bajo el título del mismo nombre en el "Menú de Inicio", y un enlace para descargar el documento RTF de publicación de datos. Una característica útil de cada archivo descargable, es que su tamaño se especifica junto a este.
+  
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourcePublished.png]
 
 ====Visibility====
