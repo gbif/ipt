@@ -530,7 +530,7 @@ Adicional a la información explicativa acerca de la extensión en la parte supe
   * *Cancelar* - al hacer clic en este botón, se abandonará todos los cambios que se han hecho en esta página desde que fue abierta por última vez y volverá a la página Visualización de Recursos.
 
 <wiki:comment>
-  * *Unmapped columns* - this section contains a list of columns in the source file, table, or view that have not been mapped. This list can help to determine if everything from the source has been mapped that should be mapped.
+  * *Columnas no Mapeadas* - esta sección contiene una lista de columnas en el archivo fuente, una tabla o vista que no ha sido mapeada. Esta lista puede ayudar a determinar si todo aquello que debía ser mapeado en la fuente fue mapeado.
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMappingUnmappedColumns.png]
 </wiki:comment>
 
