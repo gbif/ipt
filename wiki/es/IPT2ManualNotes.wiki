@@ -549,8 +549,8 @@ Esta área de la página Visualización de Recursos permite a un usuario para pu
   
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourcePublished.png]
 
-====Visibility====
-The Visibility area of the Manage Resources page allows users having manager rights for the resource to change its visibility state. The visibility of a resource determines who will be able to view it, whether viewing is limited (private), open (public), or discoverable through the GBIF Registry (registered). By default, each resource is visible only to the user who created it and any other users who have the Admin role on the IPT where the resource is created.
+====Visibilidad====
+El área de visibilidad de la página Administración de Recursos permite a los usuarios, que tengan derechos de administrador sobre el recurso, cambiar su estado de visibilidad. La visibilidad de un recurso determina quién puede verlo, ya sea visibilidad limitada (privado), abierta (público), o detectable a través del Registro GBIF (registrado). De forma predeterminada, cada recurso sólo es visible para el usuario que lo creó, y para otros usuarios que tienen la función de administrador en el IPT donde se crea el recurso.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceVisibilityPrivate.png]
 
