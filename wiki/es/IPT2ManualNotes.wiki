@@ -560,10 +560,10 @@ El área de visibilidad de la página Administración de Recursos permite a los 
   
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceVisibilityRegisterAgreement.png]
 
-If the attempt to register is successful, a message will appear at the top of the page saying that the status has been changed to "Registered".
+Si el intento de registro es exitoso, aparecerá un mensaje en la parte superior de la página especificando que el estado ha cambiado a "Registrado".
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceVisibilityRegistered.png]
-  * *Registered* - A resource that has been registered with the GBIF network is discoverable through that system and the data from the resource can be indexed by and accessed from the GBIF portal. If the resource has already been registered, every time the "Publish" button is clicked, it will also send new information about the resource to the GBIF Registry if any of the following have changed since the registry was last updated: title, description, primary contact name or email. A summary of information registered with GBIF will appear in the right-hand column when registration is complete.<p>The visibility of a registered resource can not be changed to private. If a resource must be removed from the GBIF Registry, follow the procedure described in the "Delete a Resource" section under the "Resource Overview" heading in the "Manage Resources Menu" section.
+  * *Registrado* - Un recurso que ha sido registrado en la red de GBIF se puede detectar a través de ese sistema y los datos de los recursos pueden ser indexados y se puede acceder a estos desde el portal de GBIF. Si el recurso ya ha sido registrado, cada vez que se haga clic en el botón "Publicar", enviará nueva información sobre el recurso al Registro GBIF, si alguno de los siguientes ha cambiado desde que el registro se actualizó por última vez: título, descripción, contacto principal o correo electrónico. Un resumen de la información registrada en GBIF aparecerá en la columna de la derecha cuando el registro se haya completado.<p> La visibilidad de un recurso registrado no puede ser cambiada a privada. Si un recurso debe ser eliminado del Registro GBIF, siga el procedimiento descrito en la sección "Eliminar un Recurso" del encabezado "Visualización de los Recursos" de la sección "Menú de Administración de Recursos".
 
 ====Resource Managers====
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceManagers.png]
