@@ -765,10 +765,10 @@ Utilice esta aplicación en línea para encontrar información acerca de organiz
 El sitio del código es el repositorio del proyecto para todo el código de fuente abierta, administración y documentación del IPT: http://code.google.com/p/gbif-providertoolkit/source/checkout/.
 ==Listado de direcciones de los colaboradores del IPT==
 Suscríbase a la lista de distribución de colaboradores IPT para recibir los mensajes generados por las contribuciones a la página del IPT de GBIF en Google Code. Este grupo es para los colaboradores del IPT y para aquellos quienes mantengan un registro de los cambios en el sitio del código a medida que estos se realizan: http://groups.google.com/group/gbif-ipt-contributors/.
-==IPT developer documentation==
-Developers who wish to contribute, or to use the latest revision of the source code for their installation should consult the "Developers" section of the GBIF IPT Google Code site wiki: http://code.google.com/p/gbif-providertoolkit/wiki/HowToContribute.
-==IPT experts group in the GBIF Community Site==
-The GBIF Community Site hosts a group for those interested in participating in helpdesk, promotion, and training activities related to the GBIF IPT. This is a place to exchange experiences, ask for help, and post opportunities, with the objective of a wider uptake of the tool inside and outside of the GBIF Network: http://community.gbif.org/pg/groups/3529/gbif-ipt-helpdesk-and-training-experts/.
+==Documentación para desarrolladores del IPT==
+Los desarrolladores que deseen contribuir, o utilizar la última revisión del código fuente para su instalación deberán consultar la sección "Desarrolladores" del sitio de la wiki del IPT de GBIF en Google Code: http://code.google.com/p/gbif-providertoolkit/wiki/HowToContribute.
+==Grupo de expertos en IPT en el sitio de la comunidad de GBIF==
+El sitio de la comunidad de GBIF organiza un grupo para los interesados en participar en la mesa de ayuda, promoción y actividades de formación relacionadas con el IPT de GBIF. Este es un lugar para intercambiar experiencias, pedir ayuda, y publicar oportunidades, con el objetivo de una mayor apropiación de la herramienta dentro y fuera de la red de GBIF: http://community.gbif.org/pg/groups/3529/gbif-ipt-helpdesk-and-training-experts/.
 ==IPT issue tracker==
 The issue tracker is the bug report and feature request management system for the IPT software and documentation: http://code.google.com/p/gbif-providertoolkit/issues/list/.
 ==IPT mailing list==
