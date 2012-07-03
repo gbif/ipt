@@ -736,14 +736,14 @@ This IPT installation has not been registered yet.
 </#if>
 }}}
 ----
-=About the IPT=
-==Citation==
-This user manual adapts and builds upon the previous IPT User Manual (Réveillon 2009). The recommended citation for this user Manual is as follows:
+=Acerca del IPT=
+==Citación==
+Este manual de usuario se adaptó y elaboró a partir del Manual de Usuario del IPT previamente publicado. (Réveillon 2009). La citación recomendada para este manual de usuario es la siguiente:
 
 Wieczorek, J. 2011. The GBIF Integrated Publishing Toolkit User Manual, version 2.0. Copenhagen: Global Biodiversity Information Facility.
 
-==Copyright==
-The GBIF Integrated Publishing Toolkit and this user manual are Copyright 2011 by the Global Biodiversity Information Facility Secretariat.
+==Derechos de autor==
+GBIF Integrated Publishing Toolkit y este manual de usuario son Copyright 2011 de la Secretaría de _Global Biodiversity Information Facility_.
 
 ==License==
 The GBIF Integrated Publishing Toolkit is open source software released under the Apache License Version 2.0. You may obtain a copy of this License at http://www.apache.org/licenses/LICENSE-2.0. Unless required by applicable law or agreed to in writing, software distributed under this License is distributed on an "as is" basis, without warranties of conditions of any kind, either express or implied. See the License for the specific language governing rights and limitations under the License.
