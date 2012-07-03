@@ -800,14 +800,14 @@ Réveillon, A. 2009. The GBIF Integrated Publishing Toolkit User Manual, version
 *Metadatos* - en este manual del usuario, los metadatos se refieren a la información sobre un conjunto de datos en lugar de los datos primarios del conjunto de datos.<br>
 *Recurso de Metadatos* - un recurso que tiene información sobre un conjunto de datos, pero sin tener los datos primarios. Por ejemplo, un recurso de metadatos puede dar información acerca de una colección que aún no se ha digitalizado.<br>
 *Recurso de Registro Biológico* - un recurso que tiene información acerca de Registros Biológicos tal como se define en el _Darwin Core_.<br>
-*Private* - a state of a resource in which only the creator, invited managers, and IPT administrators can view it.<br>
-*Public* - a state of a resource in which anyone can view it.<br>
-*Published Release* - the latest version of the Darwin Core Archive produced for a resource in the IPT and registered in the GBIF Registry.<br>
-*Registered* - a state of a public resource or of an IPT instance in which anyone can discover it through the GBIF Registry.<br>
-*Resource* - in this user manual, resource refers to a data set and the metadata about it.<br>
-*Resource Managers* - IPT users having a role that allows them to create, change, and remove resources.<br>
-*!RowType* - the category of information represented in an extension. The !RowType is generally the URI of the Class that best fits the information contained in the extension.<br>
-*RSS* - the acronym for Really Simple Syndication, a type of subscription format for tracking changes to a web site.<br>
-*Shortname* - a short unique name used for resource identification within the IPT and services that access the IPT.<br>
-*Source Data* - in this user manual, the source data are the data that are mapped to core types and extensions within a resource and may consist of text files or a database.<br>
-*Visibility* - a term describing how a resource may be viewed (private, public, or registered).
+*Privado* - un estado de un recurso en el que este sólo puede ser visualizado por el creador, los administradores invitados y los administradores del IPT.<br>
+*Público* - un estado de un recurso que permite la visualización a cualquier usuario.<br>
+*Versión Publicada* - La última versión del Archivo _Darwin Core Archive_ producido por un recurso en el IPT y registrado en el Registro de GBIF.<br>
+* Registrados * - un estado de un recurso público o de una instancia del IPT que implica que cualquier usuario lo puede detectar del Registro de GBIF.<br>
+*Recurso* - en este manual de usuario, un recurso se refiere a un conjunto de datos y sus respectivos metadatos.<br>
+*Administradores de Recursos* - los  usuarios del IPT cuya función les permite crear, modificar y eliminar recursos.<br>
+*!Tipo de fila* - la categoría de información representada en una extensión. El !Tipo de fila es generalmente el URI de la clase que mejor se adapte a la información contenida en la extensión.<br>
+*RSS* - el acrónimo de _Really Simple Syndication_, un tipo de formato de suscripción de seguimiento de los cambios a un sitio web.<br>
+*Nombre corto* - un nombre corto único que se utiliza para la identificación de un recurso dentro del IPT y los servicios que acceden al IPT.<br>
+*Datos Fuente* - en este manual de usuario, los datos fuente son los datos que se mapean con los tipos _core_ y las extensiones dentro de un recurso y pueden consistir en archivos de texto o una base de datos.<br>
+*Visibilidad* - un término que describe cómo un recurso puede ser visualizado (privado, público o registrado).
