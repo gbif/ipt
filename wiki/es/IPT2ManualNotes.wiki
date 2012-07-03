@@ -759,8 +759,8 @@ Este manual del usuario se publica bajo la Licencia Creative Commons Atribución
 Los detalles sobre la estructura de un archivo _Darwin Core Archive_, abreviado DWCA, se pueden encontrar en la sección "Guía de texto" de la página web de Darwin Core: http://rs.tdwg.org/dwc/terms/guides/text/. Para más información sobre el uso de DWCA por parte del IPT, remítase al sitio de la wiki del IPT de GBIF en Google Code: (http://code.google.com/p/gbif-providertoolkit/wiki/DarwinCore ).
 ==Mesa de Ayuda GBIF==
 Envíe mensajes de correo electrónico a helpdesk@gbif.org para reportar problemas con los servicios de GBIF, tales como el Registro de GBIF. No envíe preguntas específicas de ayuda del IPT a la Mesa de Ayuda. En su lugar, envíelas a la lista de correo del IPT (ver más abajo).
-==GBIF Registry==
-Use this online application to find information about organisations, IPT instances, and resources registered with GBIF: http://gbrds.gbif.org.
+==Registro GBIF==
+Utilice esta aplicación en línea para encontrar información acerca de organizaciones, instancias del IPT, y recursos registrados en GBIF: http://gbrds.gbif.org.
 ==IPT code site==
 The code site is the project repository for all of the open source code, management, and documentation of the IPT: http://code.google.com/p/gbif-providertoolkit/source/checkout/.
 ==IPT contributors mailing list==
