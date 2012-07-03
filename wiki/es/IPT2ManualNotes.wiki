@@ -754,11 +754,11 @@ Este manual del usuario se publica bajo la Licencia Creative Commons Atribución
   * si usted altera, transforma, o crea a partir de esta obra, podrá distribuir la obra derivada bajo una licencia idéntica a ésta.
 
 ----
-=Resources=
-==Darwin Core Archive documentation==
-Details about the structure of a Darwin Core Archive, abbreviated DWCA, can be found in the "Text Guide" section of the Darwin Core web site: http://rs.tdwg.org/dwc/terms/guides/text/. Further information about the IPT's use of DWCAs can be found on the GBIF IPT Google Code site wiki: (http://code.google.com/p/gbif-providertoolkit/wiki/DarwinCore ).
-==GBIF Help Desk==
-Send email messages to helpdesk@gbif.org to report problems with GBIF services, such as the GBIF Registry. Do not send IPT-specific help question to the Help Desk. Instead send them to the IPT mailing list (see below).
+=Recursos=
+==Documentación _Darwin Core Archive_==
+Los detalles sobre la estructura de un archivo _Darwin Core Archive_, abreviado DWCA, se pueden encontrar en la sección "Guía de texto" de la página web de Darwin Core: http://rs.tdwg.org/dwc/terms/guides/text/. Para más información sobre el uso de DWCA por parte del IPT, remítase al sitio de la wiki del IPT de GBIF en Google Code: (http://code.google.com/p/gbif-providertoolkit/wiki/DarwinCore ).
+==Mesa de Ayuda GBIF==
+Envíe mensajes de correo electrónico a helpdesk@gbif.org para reportar problemas con los servicios de GBIF, tales como el Registro de GBIF. No envíe preguntas específicas de ayuda del IPT a la Mesa de Ayuda. En su lugar, envíelas a la lista de correo del IPT (ver más abajo).
 ==GBIF Registry==
 Use this online application to find information about organisations, IPT instances, and resources registered with GBIF: http://gbrds.gbif.org.
 ==IPT code site==
