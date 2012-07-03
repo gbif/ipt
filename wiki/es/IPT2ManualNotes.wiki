@@ -745,13 +745,14 @@ Wieczorek, J. 2011. The GBIF Integrated Publishing Toolkit User Manual, version 
 ==Derechos de autor==
 GBIF Integrated Publishing Toolkit y este manual de usuario son Copyright 2011 de la Secretaría de _Global Biodiversity Information Facility_.
 
-==License==
-The GBIF Integrated Publishing Toolkit is open source software released under the Apache License Version 2.0. You may obtain a copy of this License at http://www.apache.org/licenses/LICENSE-2.0. Unless required by applicable law or agreed to in writing, software distributed under this License is distributed on an "as is" basis, without warranties of conditions of any kind, either express or implied. See the License for the specific language governing rights and limitations under the License.
+==Licencia==
+El _Integrated Publishing Toolkit_ de GBIF es un software de código abierto publicado bajo la licencia Apache versión 2.0. Usted podrá obtener una copia de esta licencia en http://www.apache.org/licenses/LICENSE-2.0. A menos que se requiera por ley o se acuerde por escrito, el software distribuido bajo esta licencia se distribuye tal cual es, sin garantías de condiciones de ningún tipo, ni explícitas ni implícitas. Consulte la licencia para el idioma específico que rige los derechos y limitaciones de la licencia.
 
-This user manual is released under the Creative Commons Attribution-Noncommercial-Share Alike 3.0 Unported License. You may obtain a copy of this license at http://creativecommons.org/licenses/by-nc-sa/3.0/. Though you should consult the actual license document for details, in general terms the license states that you are free to copy, distribute, transmit, remix and adapt the work, under the following conditions:
- * you must cite the work in the manner specified on this page (but not in a way that suggests that GBIF or the GBIF Secretariat endorses you or your use of the work);
- * you may not use this work for commercial purposes;
- * if you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
+Este manual del usuario se publica bajo la Licencia Creative Commons Atribución-No comercial-Compartir igual 3.0 Unported. Usted podrá obtener una copia de esta licencia en http://creativecommons.org/licenses/by-nc-sa/3.0/. Aunque deberá consultar el documento de licencia para obtener más información, en términos generales, la licencia dice que usted es libre de copiar, distribuir, transmitir, reutilizar y adaptar el trabajo, bajo las siguientes condiciones: 
+  * deberá citar el trabajo de la manera especificada en esta página (pero no de una manera que sugiera que GBIF, o la Secretaría de GBIF lo respalda a usted o a su uso de la obra); 
+  * no podrá utilizar esta obra para fines comerciales; 
+  * si usted altera, transforma, o crea a partir de esta obra, podrá distribuir la obra derivada bajo una licencia idéntica a ésta.
+
 ----
 =Resources=
 ==Darwin Core Archive documentation==
