@@ -775,14 +775,15 @@ El seguimiento de problemas es un sistema de administración de informes de erro
 Suscríbase a la lista de correo del IPT para enviar y recibir mensajes relacionados con el uso del _Integrated Publishing Toolkit_. Este grupo es para que los usuarios se apoyan mutuamente en el uso del IPT: http://lists.gbif.org/mailman/listinfo/ipt/.
 ==Preparación del servidor del IPT==
 Esta página wiki da detalles acerca de la preparación de un servidor para ejecutar el IPT y se puede encontrar en el sitio en código de la wiki del proyecto IPT en http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation.
-==IPT software updates==
-This wiki page gives details about updating aspects of the IPT, including upgrading an older installation of the IPT to a new version: http://code.google.com/p/gbif-providertoolkit/wiki/IPTUpdates.
-==IPT supported databases==
-This wiki page gives details about the database management systems to which the IPT can connect for a data source. The page can be found on the IPT project code site at http://code.google.com/p/gbif-providertoolkit/wiki/IPT2DatabaseConnection.
-==IPT test installation==
-GBIF provides a functional installation of the IPT for evaluation and testing purposes. The test installation of the latest release can be found at http://ipt.gbif.org.
+==Actualizaciones del software IPT==
+Esta página wiki da detalles acerca de la actualización de aspectos del IPT, incluyendo la actualización de una instalación anterior del IPT por una nueva versión: http://code.google.com/p/gbif-providertoolkit/wiki/IPTUpdates.
+==Bases de datos del IPT soportadas==
+Esta página wiki da detalles acerca de los sistemas de administración de bases de datos a los que el IPT se pueden conectar para obtener una fuente de datos. La página se puede encontrar en el sitio en código del proyecto IPT http://code.google.com/p/gbif-providertoolkit/wiki/IPT2DatabaseConnection.
+==Instalación de prueba del IPT==
+GBIF proporciona una instalación funcional del IPT para fines de evaluación y prueba. La instalación de prueba de la última versión se puede encontrar en http://ipt.gbif.org.
+
 ----
-=References=
+=Referencias=
 Réveillon, A. 2009. The GBIF Integrated Publishing Toolkit User Manual, version 1.0. Copenhagen: Global Biodiversity Information Facility. 37 pp.
 
 ----
