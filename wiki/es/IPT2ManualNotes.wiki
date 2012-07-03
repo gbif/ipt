@@ -769,12 +769,12 @@ Suscríbase a la lista de distribución de colaboradores IPT para recibir los me
 Los desarrolladores que deseen contribuir, o utilizar la última revisión del código fuente para su instalación deberán consultar la sección "Desarrolladores" del sitio de la wiki del IPT de GBIF en Google Code: http://code.google.com/p/gbif-providertoolkit/wiki/HowToContribute.
 ==Grupo de expertos en IPT en el sitio de la comunidad de GBIF==
 El sitio de la comunidad de GBIF organiza un grupo para los interesados en participar en la mesa de ayuda, promoción y actividades de formación relacionadas con el IPT de GBIF. Este es un lugar para intercambiar experiencias, pedir ayuda, y publicar oportunidades, con el objetivo de una mayor apropiación de la herramienta dentro y fuera de la red de GBIF: http://community.gbif.org/pg/groups/3529/gbif-ipt-helpdesk-and-training-experts/.
-==IPT issue tracker==
-The issue tracker is the bug report and feature request management system for the IPT software and documentation: http://code.google.com/p/gbif-providertoolkit/issues/list/.
-==IPT mailing list==
-Subscribe to the IPT mailing list to send and receive messages related to the use of the Integrated Publishing Toolkit. This group is for users to support each other in the use of the IPT: http://lists.gbif.org/mailman/listinfo/ipt/.
-==IPT server preparation==
-This wiki page gives details about preparing a server to run the IPT and can be found on the IPT project code site wiki at http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation.
+==Seguimiento a problemas del IPT==
+El seguimiento de problemas es un sistema de administración de informes de error y solicitud de características para el software y la documentación del IPT: http://code.google.com/p/gbif-providertoolkit/issues/list/.
+==Lista de correo del IPT==
+Suscríbase a la lista de correo del IPT para enviar y recibir mensajes relacionados con el uso del _Integrated Publishing Toolkit_. Este grupo es para que los usuarios se apoyan mutuamente en el uso del IPT: http://lists.gbif.org/mailman/listinfo/ipt/.
+==Preparación del servidor del IPT==
+Esta página wiki da detalles acerca de la preparación de un servidor para ejecutar el IPT y se puede encontrar en el sitio en código de la wiki del proyecto IPT en http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation.
 ==IPT software updates==
 This wiki page gives details about updating aspects of the IPT, including upgrading an older installation of the IPT to a new version: http://code.google.com/p/gbif-providertoolkit/wiki/IPTUpdates.
 ==IPT supported databases==
