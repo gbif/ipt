@@ -788,26 +788,26 @@ Réveillon, A. 2009. The GBIF Integrated Publishing Toolkit User Manual, version
 
 ----
 =Glosario=
-*Lista de Comprobación de Recursos* - un recurso que tiene información acerca de uno de los muchos tipos de listas relacionadas con el taxón.<br>
-*Tipo _Core_* - una categoría de conjuntos predefinidos de las propiedades de los datos (Taxón y Registro Biológico) que se utilizan como base de un recurso. Extensiones adicionales podrían estar vinculadas a estos Tipos _Core_ para hacer el mapeo de los datos en el IPT.<br>
+*Administradores de Recursos* - los  usuarios del IPT cuya función les permite crear, modificar y eliminar recursos.<br>
 *Archivo CSV* - un archivo de texto que contiene datos en formato de valores separados por comas.<br>
+*Archivo _Darwin Core Archive_* - un archivo comprimido para un conjunto de datos que consta de uno o más archivos de texto de datos, un archivo XML (meta.xml) que describe el contenido de los archivos de texto y cómo se relacionan entre sí, y un archivo XML (eml.xml) que contiene los metadatos en EML sobre el conjunto de datos.<br>
 *Datos del directorio* - la ruta (ubicación) completa (en vez de relativa) en la estructura del archivo, en el que se encuentran los datos asociados con la instancia IPT.<br>
 *_Darwin Core_* - un estándar consistente de elementos y clases de elementos utilizados para compartir datos sobre biodiversidad.<br>
-*Archivo _Darwin Core Archive_* - un archivo comprimido para un conjunto de datos que consta de uno o más archivos de texto de datos, un archivo XML (meta.xml) que describe el contenido de los archivos de texto y cómo se relacionan entre sí, y un archivo XML (eml.xml) que contiene los metadatos en EML sobre el conjunto de datos.<br>
+*Datos Fuente* - en este manual de usuario, los datos fuente son los datos que se mapean con los tipos _core_ y las extensiones dentro de un recurso y pueden consistir en archivos de texto o una base de datos.<br>
 * EML* - el _Ecological Markup Language_ es un perfil basado en XML utilizado para codificar los metadatos de un conjunto de datos.<br
 *Extensión* - en este manual de usuario, una extensión es un conjunto de elementos que corresponden a una categoría específica de datos. Una extensión debe ser considerada como una extensión de las capacidades del IPT, más que como una extensión de cualquier estándar en particular.<br>
-*Registro de GBIF* - el _Global Biodiversity Resources Discovery System_ (GBRDS) es una aplicación de administración de los nodos, las organizaciones, los recursos e instalaciones del IPT registrados en GBIF, haciéndolos detectables e interoperables.<br>
+*Lista de Comprobación de Recursos* - un recurso que tiene información acerca de uno de los muchos tipos de listas relacionadas con el taxón.<br>
 *Metadatos* - en este manual del usuario, los metadatos se refieren a la información sobre un conjunto de datos en lugar de los datos primarios del conjunto de datos.<br>
-*Recurso de Metadatos* - un recurso que tiene información sobre un conjunto de datos, pero sin tener los datos primarios. Por ejemplo, un recurso de metadatos puede dar información acerca de una colección que aún no se ha digitalizado.<br>
-*Recurso de Registro Biológico* - un recurso que tiene información acerca de Registros Biológicos tal como se define en el _Darwin Core_.<br>
+*Nombre corto* - un nombre corto único que se utiliza para la identificación de un recurso dentro del IPT y los servicios que acceden al IPT.<br>
 *Privado* - un estado de un recurso en el que este sólo puede ser visualizado por el creador, los administradores invitados y los administradores del IPT.<br>
 *Público* - un estado de un recurso que permite la visualización a cualquier usuario.<br>
-*Versión Publicada* - La última versión del Archivo _Darwin Core Archive_ producido por un recurso en el IPT y registrado en el Registro de GBIF.<br>
-* Registrados * - un estado de un recurso público o de una instancia del IPT que implica que cualquier usuario lo puede detectar del Registro de GBIF.<br>
 *Recurso* - en este manual de usuario, un recurso se refiere a un conjunto de datos y sus respectivos metadatos.<br>
-*Administradores de Recursos* - los  usuarios del IPT cuya función les permite crear, modificar y eliminar recursos.<br>
-*!Tipo de fila* - la categoría de información representada en una extensión. El !Tipo de fila es generalmente el URI de la clase que mejor se adapte a la información contenida en la extensión.<br>
+*Recurso de Metadatos* - un recurso que tiene información sobre un conjunto de datos, pero sin tener los datos primarios. Por ejemplo, un recurso de metadatos puede dar información acerca de una colección que aún no se ha digitalizado.<br>
+*Recurso de Registro Biológico* - un recurso que tiene información acerca de Registros Biológicos tal como se define en el _Darwin Core_.<br>
+* Registrados* - un estado de un recurso público o de una instancia del IPT que implica que cualquier usuario lo puede detectar del Registro de GBIF.<br>
+*Registro de GBIF* - el _Global Biodiversity Resources Discovery System_ (GBRDS) es una aplicación de administración de los nodos, las organizaciones, los recursos e instalaciones del IPT registrados en GBIF, haciéndolos detectables e interoperables.<br>
 *RSS* - el acrónimo de _Really Simple Syndication_, un tipo de formato de suscripción de seguimiento de los cambios a un sitio web.<br>
-*Nombre corto* - un nombre corto único que se utiliza para la identificación de un recurso dentro del IPT y los servicios que acceden al IPT.<br>
-*Datos Fuente* - en este manual de usuario, los datos fuente son los datos que se mapean con los tipos _core_ y las extensiones dentro de un recurso y pueden consistir en archivos de texto o una base de datos.<br>
+*!Tipo de fila* - la categoría de información representada en una extensión. El !Tipo de fila es generalmente el URI de la clase que mejor se adapte a la información contenida en la extensión.<br>
+*Tipo _Core_* - una categoría de conjuntos predefinidos de las propiedades de los datos (Taxón y Registro Biológico) que se utilizan como base de un recurso. Extensiones adicionales podrían estar vinculadas a estos Tipos _Core_ para hacer el mapeo de los datos en el IPT.<br>
+*Versión Publicada* - La última versión del Archivo _Darwin Core Archive_ producido por un recurso en el IPT y registrado en el Registro de GBIF.<br>
 *Visibilidad* - un término que describe cómo un recurso puede ser visualizado (privado, público o registrado).
