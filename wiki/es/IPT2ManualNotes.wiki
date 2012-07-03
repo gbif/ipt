@@ -793,13 +793,13 @@ Réveillon, A. 2009. The GBIF Integrated Publishing Toolkit User Manual, version
 *Archivo CSV* - un archivo de texto que contiene datos en formato de valores separados por comas.<br>
 *Datos del directorio* - la ruta (ubicación) completa (en vez de relativa) en la estructura del archivo, en el que se encuentran los datos asociados con la instancia IPT.<br>
 *_Darwin Core_* - un estándar consistente de elementos y clases de elementos utilizados para compartir datos sobre biodiversidad.<br>
-*Darwin Core Archive* - a single zipped archive for a data set consisting of one or more text files of data, an XML file (meta.xml) describing the contents of the text files and how they relate to each other, and an XML file (eml.xml) containing the metadata in EML about the data set.<br>
-*EML* - the Ecological Markup Language is a XML-based profile used to encode metadata about a data set. <br>
-*Extension* - in this user manual, an extension is a set of terms corresponding to a specific category of data. An extension should be thought of as an extension of the capabilities of the IPT rather than as an extension of any particular standard.<br>
-*GBIF Registry* - the Global Biodiversity Resources Discovery System (GBRDS) is an application that manages the nodes, organisations, resources, and IPT installations registered with GBIF, making them discoverable and interoperable.<br>
-*Metadata* - in this user manual, metadata refers to the information about a data set as opposed the the primary data in the data set.<br>
-*Metadata Resource* - a resource having information about a data sets, but without having the actual primary data. A metadata resource might give information about a collection that has not yet been digitized, for example.<br>
-*Occurrence Resource* - a resource having information about Occurrences as defined in the Darwin Core.<br>
+*Archivo _Darwin Core Archive_* - un archivo comprimido para un conjunto de datos que consta de uno o más archivos de texto de datos, un archivo XML (meta.xml) que describe el contenido de los archivos de texto y cómo se relacionan entre sí, y un archivo XML (eml.xml) que contiene los metadatos en EML sobre el conjunto de datos.<br>
+* EML* - el _Ecological Markup Language_ es un perfil basado en XML utilizado para codificar los metadatos de un conjunto de datos.<br
+*Extensión* - en este manual de usuario, una extensión es un conjunto de elementos que corresponden a una categoría específica de datos. Una extensión debe ser considerada como una extensión de las capacidades del IPT, más que como una extensión de cualquier estándar en particular.<br>
+*Registro de GBIF* - el _Global Biodiversity Resources Discovery System_ (GBRDS) es una aplicación de administración de los nodos, las organizaciones, los recursos e instalaciones del IPT registrados en GBIF, haciéndolos detectables e interoperables.<br>
+*Metadatos* - en este manual del usuario, los metadatos se refieren a la información sobre un conjunto de datos en lugar de los datos primarios del conjunto de datos.<br>
+*Recurso de Metadatos* - un recurso que tiene información sobre un conjunto de datos, pero sin tener los datos primarios. Por ejemplo, un recurso de metadatos puede dar información acerca de una colección que aún no se ha digitalizado.<br>
+*Recurso de Registro Biológico* - un recurso que tiene información acerca de Registros Biológicos tal como se define en el _Darwin Core_.<br>
 *Private* - a state of a resource in which only the creator, invited managers, and IPT administrators can view it.<br>
 *Public* - a state of a resource in which anyone can view it.<br>
 *Published Release* - the latest version of the Darwin Core Archive produced for a resource in the IPT and registered in the GBIF Registry.<br>
