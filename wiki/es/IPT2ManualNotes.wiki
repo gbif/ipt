@@ -1,4 +1,4 @@
-=Manual de Usuario para el GBIF Integrated Publishing Toolkit=
+=Manual de Usuario para el Integrated Publishing Toolkit de GBIF=
 *Versión del IPT: 2.0.3*
 
 <font color=red>
