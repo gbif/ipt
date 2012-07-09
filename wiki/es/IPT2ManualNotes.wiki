@@ -6,21 +6,21 @@ _¡Página en construcción!_
 </font>
 ----
 
-Si desea consultar la versión en Inglés del Manual de Usuario del IPT versión 2.0.2, por favor visite [IPTUserManualv202 esta página]_
+Si desea consultar la versión en idioma inglés del Manual de Usuario del IPT versión 2.0.2, por favor visite [IPTUserManualv202 esta página]_
 
 <wiki:toc max_depth="4" />
 ----
 =Introducción=
 ==Acerca del _Integrated Publishing Toolkit_ de GBIF==
-El _Integrated Publishing Toolkit_ (IPT) de GBIF es una aplicación web de código abierto disponible de forma gratuita que facilita compartir tres tipos de información sobre biodiversidad: datos primarios sobre registro de taxones, listas taxonómicas y metadatos sobre las fuentes de los datos. Una instancia del IPT, así como los datos y metadatos registrados a través del IPT están conectados al Sistema Global de Descubrimiento de Recursos sobre Biodiversidad (GBRDS, conocido también como el Registro de GBIF), están indexados por consulta a través de la red y el portal de GBIF, y están disponibles para uso público. Más información sobre el IPT de GBIF se puede consultar en http://www.gbif.org/informatics/infrastructure/publishing/.
+El _Integrated Publishing Toolkit_ (IPT) de GBIF es una aplicación web de código abierto, disponible de forma gratuita, que facilita compartir tres tipos de información sobre biodiversidad: datos primarios sobre registro de taxones, listas taxonómicas y metadatos sobre las fuentes de los datos. Una instancia del IPT, así como los datos y metadatos registrados a través del IPT, están conectados al Sistema Global de Descubrimiento de Recursos sobre Biodiversidad (GBRDS, conocido también como el Registro GBIF), están indexados por consulta a través de la red y el portal GBIF, y están disponibles para uso público. Podrá encontrar más información sobre el IPT de GBIF en http://www.gbif.org/informatics/infrastructure/publishing/.
 
-Fundada y financiada por los gobiernos en el año 2001, la Infraestructura Mundial de Información en Biodiversidad (GBIF) es la iniciativa multilateral más grande del mundo, creada para facilitar el acceso libre a datos sobre biodiversidad a través de Internet. Entre los diversos aliados de GBIF se incluyen principalmente países y organizaciones internacionales. GBIF también ha constituido alianzas formales con importantes organismos de tratados internacionales. La misión de GBIF consiste en promover y facilitar el acceso libre y gratuito a datos sobre biodiversidad en todo el mundo a través de Internet para apoyar a la ciencia, la conservación y el desarrollo sostenible. Más información acerca de GBIF se puede encontrar en http://www.gbif.org/.
+Fundada y financiada por los gobiernos en el año 2001, la Infraestructura Mundial de Información en Biodiversidad (GBIF) es la iniciativa multilateral más grande del mundo, creada para facilitar el acceso libre a datos sobre biodiversidad a través de Internet. Entre los diversos aliados de GBIF se incluyen principalmente países y organizaciones internacionales. GBIF también ha constituido alianzas formales con importantes organismos de tratados internacionales. La misión de GBIF consiste en promover y facilitar el acceso libre y gratuito a datos sobre biodiversidad en todo el mundo, a través de Internet, para apoyar a la ciencia, la conservación y el desarrollo sostenible. Podrá obtener más información acerca de GBIF en http://www.gbif.org/.
 
 Múltiples factores han servido como motivación para que GBIF lidere el desarrollo del IPT:
   * las limitaciones de aplicaciones y protocolos anteriores (DiGIR, TAPIR, ABCD) para publicar y transferir fácilmente conjuntos de datos de gran tamaño;
-  * la necesidad de descentralizar y agilizar el proceso de indexar los conjuntos de datos de biodiversidad y registros biológicos;
+  * la necesidad de descentralizar y agilizar el proceso de indexar los conjuntos de datos sobre biodiversidad y registros biológicos;
   * la necesidad de ofrecer beneficios y servicios adicionales a los publicadores de datos para incentivar la publicación;
-  * la carencia de herramientas apropiadas para la publicación de determinado tipo de datos de biodiversidad tales como nombres, listas y metadatos.
+  * la carencia de herramientas apropiadas para la publicación de determinado tipo de datos sobre biodiversidad, tales como nombres, listas y metadatos.
 
 ==Cómo utilizar este manual==
 Este manual consta de tres componentes principales: una introducción con información de contexto, una serie de tutoriales y una completa guía de referencia, incluyendo la sección Guía Básica y unas secciones que describen detalladamente los diferentes elementos de la herramienta.
@@ -28,14 +28,14 @@ Este manual consta de tres componentes principales: una introducción con inform
 Se invita a todos los usuarios a revisar esta sección introductoria y a que posteriormente, dependiendo del papel que cumplan en la instalación del IPT, se dirijan a las secciones específicas. El IPT (y este manual) distingue tres tipos de usuarios:
    * Administradores: a cargo de la instalación y configuración del IPT. Estos usuarios podrán hacer cambios a cualquier instancia del IPT. Los administradores deberán remitirse a las secciones "Guía Básica" y "Menú de Administración" de la Guía de Referencia Rápida.
    * Administradores de recursos: tienen la posibilidad de crear, editar, eliminar y manejar los recursos (conjuntos de datos y metadatos). Dependiendo de los ajustes, estos usuarios pueden tener o no, derechos de registro para publicar recursos a través de la red de GBIF. Los administradores de recursos deberán consultar los diferentes tutoriales, dependiendo del tipo de datos que deban administrar (metadatos, registros biológicos, tipos especiales de datos a través de extensiones, etc.). El "Menú de Administración de Recursos" en la Guía de Referencia Rápida también será útil para los administradores de recursos.
-   * Usuarios básicos: sólo podrán navegar a través de los recursos publicados en una instalación de IPT. En futuras versiones del IPT, estos usuarios adquirirán derechos adicionales. Para los usuarios básicos, el IPT funcionará como una aplicación web sencilla, de manera que no se incluirá una explicación más detallada en este manual.
+   * Usuarios básicos: sólo podrán navegar a través de los recursos publicados en una instalación del IPT. En futuras versiones del IPT, estos usuarios adquirirán derechos adicionales. Para los usuarios básicos, el IPT funcionará como una aplicación web sencilla, de manera que no se incluirá una explicación más detallada en este manual.
 
 ----
 =Guía básica=
 Esta Guía Básica está dirigida a aquellos interesados quienes por primera vez, instalarán y ejecutarán una instancia IPT. Si desea ver una instalación funcional del IPT, puede utilizar el ejemplo de prueba para el público de la última versión general en http://ipt.gbif.org/. De ser así, deberán consultar la Guía de Referencia Rápida para obtener detalles sobre cómo utilizar las pantallas que visualizarán. Los desarrolladores que deseen trabajar con la última revisión del código fuente deberán consultar la sección “Desarrolladores” del sitio de la wiki del IPT de GBIF en _Google Code_ (http://code.google.com/p/gbif-providertoolkit/wiki/HowToContribute).
 ==Requerimientos==
 ===Conexión a Internet===
-El IPT está diseñado bajo el supuesto de que el servidor desde el cual se ejecuta cuenta con una conexión constante a Internet. Aunque muchas de las funciones del IPT trabajan incluso cuando no hay conexión, algunos aspectos del IPT (registro en GBIF, instalación de una extensión, vocabularios controlados, y bases de datos externas para datos de origen), requieren comunicación con recursos externos de Internet. Desde la perspectiva de la administración del IPT, la velocidad de la conexión a Internet sólo afecta a este tipo de comunicaciones. El acceso a la aplicación web del IPT y sus servicios por fuera de una intranet local también requiere conectividad constante, y una conexión lenta puede tener efectos adversos sobre estos aspectos, sobre todo cuando se transfieran conjuntos de datos de gran tamaño.
+El IPT está diseñado bajo el supuesto de que el servidor desde el cual se ejecuta, cuenta con una conexión constante a Internet. Aunque muchas de las funciones del IPT trabajan incluso cuando no hay conexión, algunos aspectos del IPT (registro en GBIF, instalación de una extensión, vocabularios controlados, y bases de datos externas para datos de origen), requieren comunicación con recursos externos de Internet. Desde la perspectiva de la administración del IPT, la velocidad de la conexión a Internet sólo afecta a este tipo de comunicaciones. El acceso a la aplicación web del IPT y sus servicios por fuera de una intranet local también requiere conectividad constante, y una conexión lenta puede tener efectos adversos sobre estos aspectos, sobre todo cuando se transfieran conjuntos de datos de gran tamaño.
 ===URL estable===
 A pesar de que puede ser utilizado simplemente como una herramienta para generar archivos _Darwin Core Archive_ (ver http://rs.tdwg.org/dwc/terms/guides/text/) el IPT fue diseñado para ser una aplicación y un servicio web de descubrimiento y acceso. Para apoyar esta funcionalidad, el servidor en el que está instalado el IPT debe facilitar el acceso a las aplicaciones y servicios a través de una URL estable.
 ===Memoria===
@@ -61,7 +61,7 @@ La primera vez que el IPT es ejecutado, se presentarán unos pasos simples para 
 
 Nota 1: no seleccione un directorio de datos que sea vulnerable a cambios o eliminaciones accidentales. No utilice /tmp, por ejemplo, en sistemas en los que se elimine el contenido de esta carpeta en un reinicio del sistema. Se deberá realizar una copia de seguridad del directorio de datos con regularidad de acuerdo con un plan apropiado de recuperación de desastres. La pérdida de los contenidos del directorio de datos tendrá como resultado la pérdida de recursos, del usuario y de otra información de configuración y personalizaciones a la instalación IPT.
 
-Nota 2: si usted tiene un directorio de datos de un IPT de la misma versión, previamente ejecutado, y desea utilizar esa configuración anterior (incluyendo a usuarios y recursos), puede introducir la ruta absoluta del mismo directorio de datos en este primer paso de la configuración del IPT (véase también la sección "Reiniciar" de esta Guía Básica). En este caso, al hacer clic en "Guardar" se pasará por alto la página titulada Configurar el IPT (II) y se presentará la página de Administración del IPT (véase la imagen de la pantalla en el “Menú de Administración" de la Guía de Referencia Rápida).
+Nota 2: si usted tiene un directorio de datos de un IPT de la misma versión, previamente ejecutado, y desea utilizar esa configuración anterior (incluyendo a usuarios y recursos), puede introducir la ruta absoluta del mismo directorio de datos en este primer paso de la configuración del IPT (véase también la sección "Reiniciar" de esta Guía Básica). En este caso, al hacer clic en "Guardar" se pasará por alto la página titulada Configurar el IPT (II) y se presentará la página de Administración del IPT (véase la imagen de la pantalla en el “Menú Administración" de la Guía de Referencia Rápida).
 
 Nota 3: haga clic en la bandera en la esquina superior derecha para verificar si el idioma de su preferencia está disponible para usar el IPT.
 
@@ -199,7 +199,7 @@ La sección de pie de página del IPT aparece en la parte inferior de la mayorí
 Esta página permite a los usuarios ver una lista de los recursos públicos, si los hay, y ver los metadatos detallados de cualquier recurso en la lista.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTHome.png]
-===Tabla de recursos de acceso público===
+===Tabla de Recursos Públicos===
 Si hay recursos públicos, estos serán relacionados en una tabla que tiene las siguientes columnas:
 
 *Logo* - el logo del recurso (se puede configurar en la página de Metadatos Adicionales del metadato del recurso).<br>
@@ -212,32 +212,32 @@ Si hay recursos públicos, estos serán relacionados en una tabla que tiene las 
 *Última publicación* - la fecha en la que el recurso fue publicado por última vez.
 ===RSS feed===
 El IPT apoya la sindicación a través de RSS para aquellos que desean monitorear los cambios en la configuración de los recursos. La  fuente RSS está disponible haciendo clic en el enlace que aparece debajo de la lista de recursos públicos alojados. La fuente RSS puede ser leída en cualquier cliente estándar de RSS.
-===Página de resumen de metadatos===
-Al hacer clic en el enlace de Nombre en la lista de recursos de la página de Inicio muestra una nueva página con todos los metadatos del recurso seleccionado. Esta es la página en la que fácilmente se podrán revisar todos los metadatos de un recurso. Un usuario que cumple la función de Administrador podrá editar los metadatos. Consulte la información en el encabezado "Editar un recurso existente" en la sección "Menú de Administración de Recursos".
+===Página de Resumen de Metadatos===
+Al hacer clic en el enlace de Nombre en la lista de recursos de la página de Inicio muestra una nueva página con todos los metadatos del recurso seleccionado. Esta es la página en la que fácilmente se podrán revisar todos los metadatos de un recurso. Un usuario que cumple la función de Administrador podrá editar los metadatos. Consulte la información en el encabezado "Editar un recurso existente" en la sección "Menú de Recursos".
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTHomeMetadataOverview.png]
-==Menú de administración de recursos (sólo visible para usuarios con la función de administrador o gestor)==
+==Menú de Recursos (visible para usuarios con la función de Administrador)==
 Esta página permite, a usuarios que cumplan la función que corresponde (administradores), realizar cambios en los recursos existentes o crear nuevos recursos.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResources.png]
-===Tabla de administración de recursos===
+===Tabla de recursos===
 Cuando la página Administrar Recursos se abre por primera vez, muestra una tabla de los recursos existentes que el usuario actual tiene permiso para modificar, incluidos los creados por este usuario y aquellos que este usuario pueda administrar por invitación de otros usuarios. Consulte la información en la "Tabla de Recursos Públicos" en la sección "Menú de Inicio" para obtener una explicación detallada acerca de las columnas Nombre, Organización, Tipo, Subtipo, Registros, Última modificación, y Última publicación. Además, la Tabla para Administración de Recursos incluye las siguientes columnas de información básica sobre los recursos:
 
 *Visibilidad* - una categoría que establece quién tiene acceso a la visualización del recurso. Si el recurso es "Público", todos los usuarios podrán verlo en la tabla de Recursos Públicos en la página de Inicio. Si el recurso es "Privado", será visible en la tabla de Administrar Recursos sólo para el usuario que lo creó, para quienes han sido invitados a administrarlo, y para los usuarios que tienen la función de administradores. Detalles acerca de cómo invitar a otros a administrar un recurso se encuentran en la sección "Administradores de Recursos" bajo el encabezado "Visualización de los Recursos" en la sección "Administrar Recursos".
 
 *Autor* - el usuario del IPT que creó el recurso.
 
-===Creación de un nuevo recurso===
+===Creación de un Nuevo Recurso===
 Debajo de la Tabla de Administrar Recursos hay un formulario que puede ser utilizado para crear un nuevo recurso. Antes que nada, se deberá proporcionar un "nombre corto" único para el recurso. Este nombre corto se utilizará para identificar de manera única, el recurso en la instancia del IPT, y será utilizado en la URL para acceder al recurso a través de Internet. El nombre corto deberá contener al menos tres caracteres, estos podrán ser caracteres alfanuméricos, pero no deberá incluir espacios en blanco o puntuación excepto guiones o guiones bajos (por ejemplo, "primerrecurso" o "primer_recurso", pero no "primer recurso" o “primerrecurso!").
 
 Hay varias formas de crear un nuevo recurso en el IPT que serán descritas en las siguientes secciones.
-====Cargar un Archivo de Darwin Core====
+====Cargar un Archivo Darwin Core====
 El IPT puede importar y exportar archivos válidos del tipo _Darwin Core Archive_ de hasta 100MB. Podrá encontrar más información sobre archivos _Darwin Core Archive_ en el sitio web de _Darwin Core_ (http://rs.tdwg.org/dwc/terms/guides/text/), junto con información sobre su uso en el IPT, del sitio de la wiki del IPT de GBIF en Google Code ((http://code.google.com/p/gbif-providertoolkit/wiki/DarwinCore). Para importar un archivo _Darwin Core Archive_, haga clic en el botón "Seleccionar archivo", a continuación busque y seleccione el archivo. Después de seleccionar el archivo, el nombre aparecerá junto al botón "Seleccionar archivo". Haga clic en el botón "Crear". Si surge algún problema al importar el archivo seleccionado, un mensaje de error notificará al usuario. Si la importación es exitosa, una página de Visualización del Recurso aparecerá con un mensaje informativo en la parte superior, que describe los resultados del proceso de importación.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceUploadDwCASuccess.png]
-====Integración de una carpeta de configuración de recursos existente (sólo para usuarios avanzados)====
+====Integrar una carpeta de configuración de recursos existente (sólo para usuarios avanzados)====
 Es posible integrar un recurso a partir de una carpeta de configuración creada en una versión compatible del IPT. Para esto se requiere que el IPT sea reiniciado durante el proceso. Primero, deberá asignar un nuevo nombre corto al recurso como se describe en la introducción en el encabezado "Crear nuevo recurso" en la sección "Menú de Administración de Recursos" y después, hacer clic en el botón "Crear". Esto abrirá la página Visualización de Recursos y creará una carpeta denominada con el mismo nombre corto dentro de la carpeta de recursos del directorio de datos del IPT. Cierre el IPT utilizando el método apropiado para el contenedor de _servlets_ en el que está instalado. Vea la página de preparación del servidor (http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation) para obtener más información acerca del proceso de reinicio del IPT. Con el IPT cerrado, copie el contenido de la carpeta de recursos que desea integrar, en la carpeta que acaba de crear para el nuevo recurso, asegurándose de reemplazar el archivo recurso.xml por el original del recurso que se requiere integrar. Después de que los archivos se han copiado, reinicie el IPT. El nuevo recurso estará disponible en el IPT con la misma configuración que tenía en la instalación anterior del IPT.
-====Creación de un recurso completamente nuevo====
+====Crear un recurso completamente nuevo====
 Con esta opción, la configuración del recurso tendrá que ser creada en su totalidad a través de los formularios del IPT, incluyendo la carga de un archivo de datos (límite 100 MB) o base de datos fuente y el mapeo de los elementos de ese archivo con los de la extensión o extensiones. Inicie con el ingreso de un nuevo nombre corto de un recurso como se describe en la introducción en el encabezado "Crear nuevo recurso", y a continuación haga clic en el botón "Crear". Esto abrirá la página de Visualización de Recursos. Proceda a completar las diferentes secciones de la página basándose en las descripciones que figuran en el encabezado "Visualización de los Recursos", en la sección "Menú de Administración de Recursos".
 ===Edición de un recurso existente===
 La tabla de recursos existentes muestra sólo aquellos recursos que pueden ser editados por el usuario actual. Para editar un recurso, haga clic en el nombre del recurso en la tabla de recursos. El enlace abrirá la página de Visualización de Recursos del recurso seleccionado. Consulte las descripciones en el encabezado "Visualización de Recursos", de la sección "Menú de Administración de Recursos" para conocer los detalles acerca de cómo editar diversos aspectos del recurso.
@@ -768,11 +768,11 @@ El sitio del código es el repositorio del proyecto para todo el código de fuen
 Suscríbase a la lista de distribución de colaboradores IPT para recibir los mensajes generados por las contribuciones a la página del IPT de GBIF en Google Code. Este grupo es para los colaboradores del IPT y para aquellos quienes mantengan un registro de los cambios en el sitio del código a medida que estos se realizan: http://groups.google.com/group/gbif-ipt-contributors/.
 ==Documentación para desarrolladores del IPT==
 Los desarrolladores que deseen contribuir, o utilizar la última revisión del código fuente para su instalación deberán consultar la sección "Desarrolladores" del sitio de la wiki del IPT de GBIF en Google Code: http://code.google.com/p/gbif-providertoolkit/wiki/HowToContribute.
-==Grupo de expertos en IPT en el sitio de la comunidad de GBIF==
+==Grupo de expertos del IPT en el sitio de la comunidad de GBIF==
 El sitio de la comunidad de GBIF organiza un grupo para los interesados en participar en la mesa de ayuda, promoción y actividades de formación relacionadas con el IPT de GBIF. Este es un lugar para intercambiar experiencias, pedir ayuda, y publicar oportunidades, con el objetivo de una mayor apropiación de la herramienta dentro y fuera de la red de GBIF: http://community.gbif.org/pg/groups/3529/gbif-ipt-helpdesk-and-training-experts/.
 ==Seguimiento a problemas del IPT==
 El seguimiento de problemas es un sistema de administración de informes de error y solicitud de características para el software y la documentación del IPT: http://code.google.com/p/gbif-providertoolkit/issues/list/.
-==Lista de correo del IPT==
+==Lista de correos del IPT==
 Suscríbase a la lista de correo del IPT para enviar y recibir mensajes relacionados con el uso del _Integrated Publishing Toolkit_. Este grupo es para que los usuarios se apoyan mutuamente en el uso del IPT: http://lists.gbif.org/mailman/listinfo/ipt/.
 ==Preparación del servidor del IPT==
 Esta página wiki da detalles acerca de la preparación de un servidor para ejecutar el IPT y se puede encontrar en el sitio en código de la wiki del proyecto IPT en http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation.
