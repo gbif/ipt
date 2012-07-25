@@ -65,7 +65,7 @@ Nota 2: si usted tiene un directorio de datos de un IPT de la misma versión, pr
 
 Nota 3: haga clic en la bandera en la esquina superior derecha para verificar si el idioma de su preferencia está disponible para usar el IPT.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTSetup1.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/IPTSetup1.PNG]
 
 ===Configurar el IPT (II)===
 Si el paso inicial de asignación de directorio de datos se realizó correctamente, el IPT presentará una segunda página de configuración (ver imagen de la pantalla, a continuación) en la que deberá ser ingresada la información sobre el administrador predeterminado del IPT, junto con la información acerca de cómo acceder al IPT a través de Internet. El administrador predeterminado tendrá un nombre de usuario distintivo y la autoridad para realizar cambios en todos los aspectos de la instalación del IPT. El administrador predeterminado será capaz de crear cuentas adicionales para usuarios, incluyendo a los administradores que tengan la misma autoridad para hacer cambios. Aunque los administradores pueden ser añadidos y eliminados, el IPT siempre debe tener al menos un responsable asignado. A continuación se presenta la explicación de los elementos de la segunda página de configuración:  
@@ -78,15 +78,15 @@ Si el paso inicial de asignación de directorio de datos se realizó correctamen
   * *URL Base para este IPT* - la URL que dirige a la raíz de esta instalación del IPT. La dirección URL se detecta automáticamente en la medida de lo posible, pero debe ser cambiada en los sistemas de producción para ser accesible a través de Internet, de manera que el IPT pueda funcionar plenamente. Configurar la URL base del IPT para utilizar el _localhost_, por ejemplo, no permitirá que la instancia del IPT sea registrada en GBIF, no permitirá que el IPT esté asociado con una organización, y no permitirá que los recursos sean de acceso público.
   * *Dirección del _Proxy_* - si el servidor en el que ha sido instalado el IPT dirige a través de un servidor _proxy_ o un _host_ virtual, ingrese la dirección del _host_ y el número de puerto mediante los cuales se podrá acceder al IPT, usando una URL en el formato protocolo:host:puerto, por ejemplo, http://proxy.gbif.org:8080.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTSetup2.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTSetup2.PNG]
 
 Cuando toda la información en la página esté completa y correcta, haga clic en el botón "Guardar" para completar el proceso de configuración del IPT. Si se presenta algún problema, aparecerá un mensaje de error en la parte superior de la página con recomendaciones acerca de cómo resolverlo. Si la configuración fue exitosa, aparecerá una página de confirmación de la configuración.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTSetupFinished.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTSetupFinished.PNG]
 
 Haga clic en el botón "Continuar" para abrir la página de Administración del IPT (véase la imagen de la pantalla, a continuación), en la que se podrá realizar configuraciones adicionales. Por favor revise la explicación de todas las funciones de Administración antes de continuar. Detalles sobre las opciones presentadas en esta pantalla se muestran en la sección “Menú Administración" de la "Guía de Referencia Rápida". Antes de añadir fuentes de datos al IPT, el administrador debe, como mínimo, verificar la configuración del IPT, definir las opciones de registro en GBIF, y asociar el IPT con una organización. El botón “Organizaciones” estará desactivado predeterminadamente hasta que se hayan establecido las opciones de registro en GBIF.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTAdminBeforeRegistration.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/IPTAdminBeforeRegistration.PNG]
 
 Una vez haya completado los pasos de esta "Guía Básica", el IPT estará listo para agregar recursos (conjuntos de datos y metadatos). Es recomendable revisar los tutoriales para entender cómo se llevan a cabo las tareas comunes del IPT. Para una explicación detallada de cualquier otro aspecto del IPT, consulte la "Guía de Referencia Rápida" de este manual de usuario.
 ==Reiniciar==
@@ -110,62 +110,62 @@ La mayoría de los controles de la interfaz del usuario tienen los modos “habi
 
 Barra de menú antes de iniciar sesión o después de que un usuario sin una función especial inicia sesión, con el "Menú Inicio" activo:
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTMenuBarHomeAbout.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTMenuBarHomeAbout.PNG]
 
 Menú después de que inicia sesión, un usuario con función de Administrador, con o sin derechos para registrar recursos, con el "Menú Recursos" activo:
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTMenuBarHomeManageAbout.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTMenuBarHomeManageAbout.PNG]
 
 Menú después de que inicia sesión, un usuario con función de Administrador, con o sin derechos para registrar recursos, con el "Menú Administración" activo:
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTMenuBarHomeManageAdminAbout.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTMenuBarHomeManageAdminAbout.PNG]
 
 *Cuadros de texto* - permiten la visualización o ingreso de información textual.
 
 Ejemplo de cuadro de texto y etiqueta para una dirección de correo electrónico:
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TextBoxExample.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TextBoxExample.PNG]
 
 *Cuadros de verificación* - permiten establecer un valor como visto, como verdadero (cuando es marcada) o falso (cuando no ha sido marcada).
 
 Ejemplo de cuadros de verificación y de etiqueta para indicar que el IPT puede publicar los recursos:
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/Control-CheckboxExample.png]<br>
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/Control-CheckboxExample.PNG]<br>
 
 *Cuadros de selección* - permiten visualizar o seleccionar un valor de una lista de valores predefinidos. Un cuadro de selección puede contener un texto explicativo acerca de la escogencia de un valor seleccionable. En este caso, la selección iniciará con la palabra "Seleccione" (por ejemplo, "Seleccione un país, territorio o isla"). Haga clic en el cuadro de selección para desplegar la lista de posibles valores. Haga clic en una de las opciones para fijar ese valor.
 
 Ejemplo de cuadro de selección y de etiqueta para el rol del usuario, con la opción _Administrador_ seleccionada:
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-SelectBoxExample.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-SelectBoxExample.PNG]
 
 *Enlaces* - abre una página diferente a la que contiene el enlace. Los enlaces pueden abrir la nueva página en la misma ventana del navegador (o pestaña) o en una ventana separada (o pestaña).
 
 Ejemplo de enlace a la página de información de la cuenta del usuario conectado:
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-LinkExample.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-LinkExample.PNG]
 
 *Ícono de Información* - muestra un mensaje que explica la intención del control junto al que aparece. Haga clic en el ícono situado junto a cualquier elemento para ver un mensaje de ayuda acerca de ese control. Haga clic de nuevo para que el mensaje desaparezca. Algunos mensajes de información incluyen un enlace, que de ser seleccionado, ingresará el valor apropiado para la selección.
 
 Ejemplo de ícono de información para la codificación de caracteres, después de seleccionar el enlace de UTF-8:
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Information-CharacterEncoding.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Information-CharacterEncoding.PNG]
 
-*Ícono de Documentación* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-DocumentationIcon.png] - este ícono indica que hay una página de información detallada acerca del tema asociado con ese ícono. Haga clic en el ícono para abrir la página en una nueva ventana del navegador.
+*Ícono de Documentación* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-DocumentationIcon.PNG] - este ícono indica que hay una página de información detallada acerca del tema asociado con ese ícono. Haga clic en el ícono para abrir la página en una nueva ventana del navegador.
 
-*Ícono de Papelera* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TrashIcon.png] - este ícono se asocia con otros controles en la página. Al hacer clic en el ícono se eliminarán los datos asociados.
+*Ícono de Papelera* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TrashIcon.PNG] - este ícono se asocia con otros controles en la página. Al hacer clic en el ícono se eliminarán los datos asociados.
 
-*Ícono de Calendario* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-CalendarIcon.png] - este ícono se asocia con un elemento de texto destinado a contener una fecha. Al hacer clic en el ícono, se abrirá un pequeño calendario con controles que permiten al usuario desplazarse hacia adelante y hacia atrás a partir del mes y año seleccionado. Seleccione los cuadros para elegir otro mes, año y día de la semana según el calendario estándar de la Nueva Era. La selección de un día concreto transformará la fecha al formato correcto en el cuadro de texto asociado.
+*Ícono de Calendario* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-CalendarIcon.PNG] - este ícono se asocia con un elemento de texto destinado a contener una fecha. Al hacer clic en el ícono, se abrirá un pequeño calendario con controles que permiten al usuario desplazarse hacia adelante y hacia atrás a partir del mes y año seleccionado. Seleccione los cuadros para elegir otro mes, año y día de la semana según el calendario estándar de la Nueva Era. La selección de un día concreto transformará la fecha al formato correcto en el cuadro de texto asociado.
 
 Ejemplo del calendario asociado a un cuadro de texto llamado "Fecha Final" en el que 31 de diciembre 2010 es la fecha actual, pero aún no ha sido seleccionada:
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TextBoxWithCalendarOpen.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TextBoxWithCalendarOpen.PNG]
 
 *Tabla ordenable* - una tabla que permite ordenar las filas según los valores de una columna seleccionada en orden ascendente o descendente. Los encabezados de las columnas son las etiquetas de las columnas que aparecen como enlaces. Haga clic en un encabezado de columna para ordenar la tabla con los valores de esa columna. Haga clic nuevamente en el encabezado de la misma columna para ordenar la tabla en la dirección opuesta.
 
 Ejemplo de tabla ordenable en orden ascendente según la columna etiquetada "Nombre".
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TableSortedAscending.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TableSortedAscending.PNG]
 
 Ejemplo de tabla ordenable en orden descendente según la columna etiquetada "Tipo".
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TableSortedDescending.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TableSortedDescending.PNG]
 
 ===Controles que aparecen en todas las páginas===
   Esta sección describe diversas características que son accesibles en el encabezado y el pie de página de la mayoría de las páginas del IPT.
@@ -174,11 +174,11 @@ La sección "Encabezado" del IPT aparece en la esquina superior derecha de la ma
 
 Encabezado, no ha iniciado sesión, idioma inglés seleccionado para la interfaz de usuario:
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTHeaderNotLoggedIn.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTHeaderNotLoggedIn.PNG]
 
 Encabezado, sesión iniciada, idioma inglés seleccionado para la interfaz de usuario: 
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTHeaderLoggedIn.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTHeaderLoggedIn.PNG]
 
 *Iniciar sesión* - un usuario que se ha creado en esta instancia del IPT, podrá iniciar sesión ingresando la dirección de correo electrónico y contraseña en la esquina superior derecha de la página, y haciendo clic en el vínculo "Iniciar sesión". Nuevos usuarios podrán ser creados únicamente por un usuario existente que tiene el rol Administrador. El proceso de creación de los nuevos usuarios se explica en el encabezado "Configurar Cuentas de Usuario" en la sección "Menú Administración". El proceso de iniciar el IPT asignará el rol Administrador al primer usuario.<br>
 *Cerrar sesión* - si alguien inicia sesión en el IPT, la dirección de correo electrónico de la persona que se registra se mostrará en la esquina superior derecha de la página, junto con el enlace "Cerrar sesión".<br>
@@ -187,7 +187,7 @@ Encabezado, sesión iniciada, idioma inglés seleccionado para la interfaz de us
 ====Pie de Página====
 La sección "Pie de Página" del IPT aparece en la parte inferior de la mayoría de las páginas y contiene información acerca de la versión del IPT y de enlaces a recursos importantes. 
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTFooter.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/IPTFooter.PNG]
 
 *Versión* - a la izquierda de "Pie de Página" en la parte inferior de la página se encuentra la versión del IPT que se está ejecutando en el momento. La información de la versión se puede utilizar para determinar qué características están incluidas en el IPT y los errores existentes. Esta es la información de la versión que se solicita al momento de generar los informes de error.<br>
 *Acerca del proyecto IPT* - este enlace lleva al sitio en Google Code (http://code.google.com/p/gbif-providertoolkit/), donde podrá obtener información adicional sobre el IPT, incluyendo la última versión de este manual, temas pendientes, código fuente, y documentación relacionada.<br>
@@ -198,7 +198,7 @@ La sección "Pie de Página" del IPT aparece en la parte inferior de la mayoría
 ==Menú Inicio (visible para todos los usuarios)==
 Esta página permite a los usuarios ver una lista de los recursos públicos, si los hay, y ver los metadatos detallados de cualquier recurso en la lista.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTHome.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/IPTHome.PNG]
 ===Tabla de Recursos Públicos===
 Si hay recursos públicos, estos serán relacionados en una tabla que tiene las siguientes columnas:
 
@@ -215,11 +215,11 @@ El IPT apoya la agremiación a través de RSS para aquellos que desean monitorea
 ===Página Visualización de Metadatos===
 Al hacer clic en el enlace de Nombre en la lista de recursos de la página de Inicio, se muestra una nueva página con todos los metadatos del recurso seleccionado. Esta es la página en la que fácilmente se podrán revisar todos los metadatos de un recurso. Un usuario que cumple el rol Administrador podrá editar los metadatos. Consulte la información en el encabezado "Editar un recurso existente" en la sección "Menú Recursos".
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTHomeMetadataOverview.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTHomeMetadataOverview.PNG]
 ==Menú Recursos (visible para usuarios con el rol Administrador)==
 Esta página permite, a usuarios que cumplan el rol que corresponde (administradores), realizar cambios en los recursos existentes o crear nuevos recursos.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResources.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/IPTManageResources.PNG]
 ===Tabla de Recursos===
 Cuando la página "Recursos" se abre por primera vez, muestra una tabla de los recursos existentes que el usuario actual tiene permiso para modificar, incluidos los creados por este usuario y aquellos que este usuario pueda administrar por invitación de otros usuarios. Consulte la información en la "Tabla de Recursos Públicos" en la sección "Menú Inicio" para obtener una explicación detallada acerca de las columnas Nombre, Organización, Tipo, Subtipo, Registros, Última modificación, y Última publicación. Además, la "Tabla de Recursos" incluye las siguientes columnas de información básica sobre los recursos:
 
@@ -234,7 +234,7 @@ Hay varias formas de crear un nuevo recurso en el IPT, que serán descritas en l
 ====Cargar un Archivo _Darwin Core_====
 El IPT puede importar y exportar archivos válidos del tipo _Darwin Core Archive_ de hasta 100MB. Podrá encontrar más información sobre archivos _Darwin Core Archive_ en el sitio web de _Darwin Core_ (http://rs.tdwg.org/dwc/terms/guides/text/), junto con información sobre su uso en el IPT, del sitio de la wiki del IPT de GBIF en Google Code ((http://code.google.com/p/gbif-providertoolkit/wiki/DarwinCore). Para importar un archivo _Darwin Core Archive_, haga clic en el botón "Seleccionar archivo", a continuación busque y seleccione el archivo. Después de seleccionar el archivo, el nombre aparecerá junto al botón "Seleccionar archivo". Haga clic en el botón "Crear". Si surge algún problema al importar el archivo seleccionado, un mensaje de error notificará al usuario. Si la importación es exitosa, una página "Vista General del Recurso" aparecerá con un mensaje informativo en la parte superior, que describe los resultados del proceso de importación.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceUploadDwCASuccess.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceUploadDwCASuccess.PNG]
 ====Integrar una carpeta de configuración de recursos existentes (sólo para usuarios avanzados)====
 Es posible integrar un recurso a partir de una carpeta de configuración creada en una versión compatible del IPT. Para esto se requiere que el IPT sea reiniciado durante el proceso. Primero, deberá asignar un nuevo nombre corto al recurso como se describe en la introducción en el encabezado "Crear nuevo recurso" en la sección "Menú Recursos" y después, hacer clic en el botón "Crear". Esto abrirá la página "Vista General del Recurso" y creará una carpeta denominada con el mismo nombre corto dentro de la carpeta de recursos del directorio de datos del IPT. Cierre el IPT utilizando el método apropiado para el contenedor de _servlets_ en el que está instalado. Vea la página "Preparación del Servidor" (http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation) para obtener más información acerca del proceso de reinicio del IPT. Con el IPT cerrado, copie el contenido de la carpeta de recursos que desea integrar, en la carpeta que acaba de crear para el nuevo recurso, asegurándose de reemplazar el archivo recurso.xml por el original del recurso que se requiere integrar. Después de que los archivos se han copiado, reinicie el IPT. El nuevo recurso estará disponible en el IPT con la misma configuración que tenía en la instalación anterior del IPT.
 ====Crear un recurso completamente nuevo====
@@ -244,21 +244,21 @@ La tabla de recursos existentes muestra sólo aquellos recursos que pueden ser e
 ===Vista General del Recurso===
 Esta página permite a los usuarios con permiso de administración, realizar cambios en varios aspectos de la configuración de un recurso. El nombre del recurso se encuentra en la parte superior de la página, debajo de la barra de menú. Si no se ha asignado un nombre al recurso, el nombre corto del mismo estará en la parte superior de la página y funcionará a manera de título. A continuación del nombre del recurso, en el costado izquierdo, hay una tabla que muestra las categorías de la configuración del recurso con información resumida a la derecha. Cada una de estas categorías está configurada separadamente, como se explica en detalle en las secciones siguientes.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceOverview.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/IPTManageResourceOverview.PNG]
 ====Metadatos====
 Esta área de la página "Vista General del Recurso" permite al usuario ver en el panel de la derecha la información básica de los metadatos del recurso, además de examinar  y editar estos y otros metadatos en detalle, haciendo clic sobre el botón “Editar” que se encuentra en el panel izquierdo. Para más información acerca de los metadatos del recurso en el contexto GBIF, véase http://www.gbif.org/informatics/discoverymetadata/.
 Para ser publicados en la Red GBIF, todos los recursos requieren de un conjunto mínimo de metadatos descriptivos. Si falta alguno de los metadatos requeridos, la página "Vista General del Recurso" se abrirá con un mensaje de advertencia en el área de los "Metadatos".
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataMissing.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataMissing.PNG]
 
 Haciendo clic en el botón “Editar”, se abre la página "Metadatos Básicos", la primera de una serie de páginas de metadatos. Cada página aparecerá en secuencia cuando se hace clic en el botón “Guardar”, una vez haya finalizado el ingreso de los datos en cualquiera de las páginas de metadatos. Guardando los metadatos al final de las páginas de metadatos, regresará nuevamente a la página "Metadatos Básicos". En cualquiera de las páginas de metadatos, al hacer clic sobre el botón “Cancelar”, no se tendrá en cuenta los cambios hechos en aquella página y retornará a la página "Vista General del Recurso". Para una referencia y navegación fácil, a la derecha de cada página de metadatos hay una columna con la lista de enlaces a todas las páginas de metadatos. Haciendo clic en los enlaces indicados, se puede abrir cualquiera de las páginas de metadatos. 
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceMetadataPagesList.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/IPTManageResourceMetadataPagesList.PNG]
 
 A continuación se encuentra una lista de las páginas de metadatos y sus contenidos: 
 ====Metadatos Básicos====
 Esta es la única página de metadatos que contiene campos que son obligatorios para el IPT. El título y la descripción del recurso son obligatorios. Los tres principales contactos del recurso también deben ser descritos aquí: Contacto del Recurso, Creador del Recurso y Proveedor de los Metadatos. Para cada contacto, se debe suministrar mínimo el apellido, una posición o una organización, antes de lograr hacer público el recurso. Para que el recurso sea publicado efectivamente, la(s) persona(s) u organización(es) responsable(s) de la creación del recurso, también deben ser adicionadas como una parte asociada bajo el rol “publicador”.
-  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceMetadataBasicMetadata.png]
+  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/IPTManageResourceMetadataBasicMetadata.PNG]
     * *Título* (obligatorio) - el título del recurso. Este título aparecerá como el Nombre del recurso en todo el IPT. El título también aparecerá en el Registro GBIF.
     * *Descripción* (obligatorio) - un texto describiendo el recurso. En este campo obligatorio se debe proveer un resumen que ayudará a los usuarios potenciales de los datos, a entender si este puede ser de interés.
     * *Idioma de los Metadatos* - el idioma en el cual están escritos los metadatos.
@@ -266,7 +266,7 @@ Esta es la única página de metadatos que contiene campos que son obligatorios 
     * *Tipo* - el tipo de recurso. El valor de este campo depende del enlace base del recurso y no es editable si el enlace del _Darwin Core_ ya ha sido realizado. Si un tipo de recurso deseado no se encuentra en la lista, se debe seleccionar “Otro”. La información puede ser revisada en “Configurar Tipos Básicos y Extensiones” que se encuentra dentro del menú, sección “Administrar”.
     * *Subtipo* - el subtipo del recurso. Las opciones para este campo dependen del campo Tipo. Si un subtipo deseado no se encuentra en la lista, el campo puede ser dejado con la selección predeterminada.
     * *Contacto del Recurso* - el contacto del recurso es la persona u organización que debe ser contactada para obtener más información acerca del recurso, o a quien deben dirigirse los posibles problemas con el recurso o los datos.
-    * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceMetadataResourceContact.png]
+    * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/IPTManageResourceMetadataResourceContact.PNG]
       * *Nombre* - el nombre del contacto del recurso.
       * *Apellido* (obligatorio si se dejan vacíos la Posición y la Organización, obligatorio si es suministrado el Nombre) - el apellido del contacto del recurso.
       * *Posición* (obligatorio si se dejan vacíos el Apellido y la Organización) - el título relevante o cargo que tiene el contacto del recurso.
@@ -283,30 +283,30 @@ Esta es la única página de metadatos que contiene campos que son obligatorios 
     * *Proveedor de los Metadatos* - el proveedor de los metadatos es la persona u organización responsable de producir los metadatos del recurso. Si la persona u organización es la misma del contacto del recurso, todos los detalles de este último pueden ser copiados en los campos equivalentes para el proveedor de los metadatos, haciendo clic sobre el enlace llamado “copiar datos del contacto”. El proveedor de los metadatos tiene los mismos campos y requerimientos del contacto del recurso. Véase las explicaciones para cada campo, arriba en los detalles del Contacto del Recurso.
 ====Cobertura Geográfica==== 
 Esta página de metadatos contiene información acerca del área geográfica cubierta por el recurso. La página contiene un mapa y campos asociados que permiten al usuario establecer la cobertura geográfica. A continuación se muestra una imagen del contenido de la página "Cobertura Geográfica", seguida por una explicación de los campos.
-  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceMetadataGeographicCoverage.png]
+  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/IPTManageResourceMetadataGeographicCoverage.PNG]
     * *Mapa de cobertura* - si está conectado a Internet, aparecerá en la página "Cobertura Geográfica", un Mapa Google de la Tierra. Este mapa muestra un recuadro con puntos de control (marcadores) en las esquinas opuestas. Las esquinas corresponden a los valores de Latitud y Longitud de los campos explicados a continuación. Haciendo clic sobre uno de los marcadores y desplazándolo a una nueva posición, se podrán establecer los límites geográficos del recuadro. Los valores correspondientes a latitud y longitud cambiarán a los establecidos en el mapa con el recuadro. Ambos marcadores pueden ser desplazados en este sentido. El mapa tiene características de visualización comunes a las de un Mapa Google, incluyendo una barra de escala, un menú para seleccionar los diferentes estilos de visualización (mapa, imagen satélite, etc.), y botones para acercar (+) y alejar (-).
     * *Establecer cobertura global* - haciendo clic en este cuadro, la cobertura geográfica cambia a una cobertura entera de la Tierra.
     * *Longitud Mínima/Longitud Máxima/Latitud Mínima/Latitud Máxima* - estos cuatro cuadros de texto corresponden a las esquinas del recuadro que delimitan el área cubierta por el recurso. Los valores a ingresar en estos campos deben ser grados decimales (e.g., 45.2345), con los valores limites estándar de latitud -90 a +90 (Latitud Mínima/Latitud Máxima) y longitud -180 a +180 (Longitud Mínima/Longitud Máxima), con latitudes positivas en el hemisferio norte y longitudes positivas al oriente del Meridiano de Greenwich de la Línea internacional de cambio de fecha. Estos valores podrán ser establecidos en el mapa manipulando los marcadores del recuadro delimitador, pero si se desea, valores válidos pueden ser ingresados en los campos de texto directamente. El mapa se actualizará cuando la información en la página haya sido guardada, haciendo clic en “Guardar”.
     * *Descripción* - una descripción textual de la cobertura geográfica. Esta información puede ser provista en lugar de, o para argumentar la información contenida en los otros campos de la página.
 ====Cobertura Taxonómica====
 Esta página de metadatos permite al usuario ingresar información acerca de uno o más grupos de taxones cubiertos por el recurso, donde cada uno es llamado como una cobertura taxonómica. Cada cobertura consiste en una descripción y lista de taxones, donde cada taxón consta de un nombre del taxón (nombre científico o común) y una categoría taxonómica. Antes que sea creada alguna cobertura taxonómica, la página mostrará un enlace denominado “Añadir nuevo cobertura taxonómica”. Haciendo clic sobre este enlace, se mostrará un cuadro de texto para la descripción y varios enlaces. A continuación se muestra una imagen de la página "Cobertura Taxonómica" antes de ingresar algún dato, seguida por explicaciones para los campos vistos en la página en este estado.
-  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceMetadataTaxonomic.png]
+  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/IPTManageResourceMetadataTaxonomic.PNG]
     * *Remover cobertura taxonómica* - haciendo clic en este enlace, se elimina la cobertura taxonómica que está inmediatamente debajo del enlace, incluyendo la descripción, la lista y todos los taxones ingresados.
     * *Descripción* - una descripción textual de una categoría taxonómica de los taxones representados por el recurso. Cada cobertura taxonómica tiene su propia descripción. Esta información puede ser proveída en lugar de, o para argumentar la información contenida en los otros campos de la página.
     * *Añadir varios taxones* - este enlace adiciona un cuadro de texto a la página, llamado “Lista taxonómica”.
-    * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataTaxonList.png]
+    * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataTaxonList.PNG]
       * *Lista taxonómica* - este cuadro de texto permite a los usuarios ingresar una lista de taxones con un taxón por línea, usando la tecla ENTER dentro del cuadro de texto. Los taxones ingresados en esta lista son tratados como nombres científicos.
       * *Agregar* - este botón procesa los valores ingresados en el cuadro de texto “Lista taxonómica” y crea nombres científicos para cada uno de ellos dentro de la cobertura taxonómica.
     * *Añadir nuevo taxonomía* - este enlace adiciona campos para ingresar un solo taxón a la cobertura geográfica - cuadros de texto para el Nombre Científico y Nombre Común, un cuadro de selección para la Categoría Taxonómica y un ícono de papelera. El taxón puede contener alguna combinación de nombre científico y común con una categoría taxonómica opcional.
-    * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataSingleTaxon.png]
+    * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataSingleTaxon.PNG]
       * *Nombre Científico* - este cuadro de texto está destinado para el nombre científico del taxón.
       * *Nombre Común* - este cuadro de texto está destinado para el nombre común del taxón.
       * *Rango* - este cuadro de texto está destinado para la categoría taxonómica del taxón.
-      * *Ícono de Papelera* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TrashIcon.png] - haciendo clic sobre este ícono, se eliminará el taxón (nombre científico, nombre común y rango) que está a la izquierda del ícono, en esa cobertura taxonómica.
+      * *Ícono de Papelera* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TrashIcon.PNG] - haciendo clic sobre este ícono, se eliminará el taxón (nombre científico, nombre común y rango) que está a la izquierda del ícono, en esa cobertura taxonómica.
     * *Añadir nuevo cobertura taxonómica* - haciendo clic sobre este enlace, se inicia una nueva cobertura taxonómica como se describió anteriormente, con un cuadro de texto marcado como “Descripción” y enlaces a “Añada varios taxones” y “Añadir nuevo taxonomía”.
 ====Cobertura Temporal====
 Esta página de metadatos contiene información acerca de una o más fechas, rangos de fechas o nombres de periodos de tiempo cubiertos por el recurso, donde cada uno es llamado una cobertura temporal. Las coberturas pueden referirse a tiempos durante el cual la colección o conjunto de datos fue ensamblado (Fecha Simple, Rango de Fechas y Periodo de Formación) o a tiempos durante los cuales estaban vivas las entidades biológicas del conjunto de datos o colección (Periodo de Tiempo de Vida). Antes que sea creada alguna cobertura temporal para el recurso, la página mostrará únicamente un enlace marcado como “Añadir nuevo cobertura temporal”. Haciendo clic sobre este enlace se mostrará, en el cuadro de selección, el tipo de cobertura temporal predeterminado “Fecha Simple”, un cuadro de texto marcado como “Fecha Inicial”, un ícono de calendario y dos enlaces. A continuación se muestra una imagen de la página "Cobertura Temporal" antes de ingresar algún dato, seguida por explicaciones para los campos vistos en la página en este estado.
-  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceMetadataTemporalCoverages.png]
+  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/IPTManageResourceMetadataTemporalCoverages.PNG]
     * *Remover cobertura temporal* - haciendo clic sobre este enlace, se elimina la cobertura temporal que está inmediatamente debajo del enlace.
     * *Tipo de Cobertura Temporal* - elija una de las opciones en el cuadro de selección para establecer el tipo de cobertura temporal, el cual puede consistir de una fecha simple, un rango de fechas, un periodo de formación, o un periodo de vida. Seleccionado un tipo, se revelarán los campos apropiados para la elección como se explica a continuación.
       * *Fecha Simple* - cuando una cobertura temporal es creada por primera vez, este es el tipo de cobertura temporal que se muestra predeterminadamente. Este tipo está destinado para representar una cobertura que abarca un día. Seleccionando este tipo, se revela un cuadro de texto para una Fecha Inicial.
@@ -314,29 +314,29 @@ Esta página de metadatos contiene información acerca de una o más fechas, ran
       * *Rango de Fechas* - seleccionando este tipo de cobertura temporal, se revela un cuadro de texto para una Fecha Inicial y otro para un Fecha Final, cada uno con un ícono de calendario a la derecha, en el cual puede ser seleccionada la fecha deseada. La explicación para Fecha Inicial fue dada anteriormente.
         * *Fecha Inicial* - este cuadro de texto está destinado para la fecha en que comenzó la cobertura, en uno de los formatos de fecha soportados. Abriendo el ícono información se puede ver la lista de formatos soportados. Ejemplo: 2012-12-31 para el 31 de Diciembre de 2012 en el calendario de la nueva era.
         * *Fecha Final* - este cuadro de texto está destinado para la fecha en que finalizó la cobertura, en uno de los formatos de fecha soportados. Abriendo el ícono información se puede ver la lista de formatos soportados. Ejemplo: 2012-12-31 para el 31 de Diciembre de 2012 en el calendario de la nueva era.
-        * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataTemporalCoverageDateRange.png]
+        * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataTemporalCoverageDateRange.PNG]
       * *Periodo de Formación* - este tipo de cobertura temporal está destinado para alojar un periodo de tiempo determinado u otro durante el cual una colección o conjunto de datos fue creado. Ejemplos: “Victoriano”, “1922-1932”, “c. 1750”.
-      * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataTemporalCoverageFormationPeriod.png]
+      * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataTemporalCoverageFormationPeriod.PNG]
       * *Periodo de Tiempo de Vida* - este tipo de cobertura temporal está destinado para alojar un periodo de tiempo determinado u otro durante el cual se encontraban vivas las entidades biológicas de la colección o conjunto de datos, incluyendo periodos de tiempo paleontológicos. Ejemplos: “1900-1950”. “Dinastía Ming”, “Pleistoceno”.
-      * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataTemporalCoverageLivingTimePeriod.png]
+      * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataTemporalCoverageLivingTimePeriod.PNG]
     * *Añadir nuevo cobertura temporal* - haciendo clic sobre este enlace, se adiciona una nueva cobertura temporal.
 ====Conjunto de Palabras Clave====
 Esta página de metadatos permite a los usuarios crear uno o más conjuntos de palabras clave acerca del recurso. Cada conjunto de palabras clave puede ser asociado con un tesauro que rige los términos en la lista.
-  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceMetadataKeywords.png]
+  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/IPTManageResourceMetadataKeywords.PNG]
     * *Remover conjunto de palabras clave* - haciendo clic sobre este enlace, se elimina el conjunto de palabras clave que está inmediatamente debajo del enlace.
     * *Tesauro* - se ingresa el nombre de un tesauro o vocabulario controlado, desde el cual se derivó el conjunto de palabras clave. Si las palabras clave no están regidas por un tesauro, se ingresa “n/a”, que indica, no aplica. Ejemplo: Tesauro IRIS.
     * *Lista de Palabras Clave* - se ingresa una lista de palabras clave separadas por comas, que describen o están relacionadas al recurso.
     * *Añadir nuevo conjunto de palabras clave* - haciendo clic sobre este enlace, se adiciona un nuevo conjunto de palabras clave.
 ====Partes Asociadas====
 Esta página de metadatos contiene información acerca de una o más personas u organizaciones asociadas con el recurso, además de las ya incluidas en la página "Metadatos Básicos". Muchos de los campos en esta página son comunes con aquellos para el Contacto del Recurso en la página de [IPT2ManualNotes#Basic_Metadata Metadatos Básicos]. Las explicaciones para el resto de los campos son dadas a continuación.
-  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataAssociatedParties.png]
+  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataAssociatedParties.PNG]
     * *Copiar datos del contacto* - si esta persona u organización es la misma del Contacto del Recurso en la página "Metadatos Básicos", entonces haciendo clic sobre este enlace pueden ser copiados en los campos equivalentes, todos los detalles para la parte asociada.
     * *Remover parte asociada* - haciendo clic sobre este enlace, se elimina la parte asociada que está inmediatamente debajo del enlace.
     * *Rol* - este cuadro de texto contiene una lista de posibles roles que la parte asociada pueda tener en relación al recurso. Haciendo clic sobre el ícono de información que está a la izquierda, se pueden ver las descripciones de los posibles roles. En el cuadro de selección, elija el rol más apropiado para la parte asociada.
     * *Añadir nuevo parte asociada* - haciendo clic sobre este enlace, se adiciona una nueva parte asociada.
 ====Datos del Proyecto====
 Esta página de metadatos contiene información acerca de un proyecto bajo el cual fueron producidos los datos del recurso. Esto es apropiado únicamente si los datos fueron producidos bajo un solo proyecto.
-  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataProjectData.png]
+  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataProjectData.PNG]
     * *Título* - el título del proyecto.
     * *Nombre del Personal* - nombre de la persona más relevante asociada con el proyecto.
     * *Apellido del Personal* - apellido de la persona más relevante asociada con el proyecto.
@@ -346,7 +346,7 @@ Esta página de metadatos contiene información acerca de un proyecto bajo el cu
     * *Descripción del Diseño* - una descripción del diseño y los objetivos del proyecto (qué preguntas fueron investigadas, por qué fue seleccionada el área, etc.).
 ====Métodos de Muestreo====
 Esta página de metadatos contiene información acerca de los métodos de muestreo en general, y acerca de los pasos específicos del muestreo. Antes que sea ingresado algún dato de los "Métodos de Muestreo" para el recurso, la página mostrará campos de texto para tres aspectos (Extensión del Estudio, Descripción del Muestreo y Control de Calidad) y un enlace llamado “Añadir nuevo paso del método”.
-  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataSamplingMethods.png]
+  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataSamplingMethods.PNG]
     * *Extensión del Estudio* - una descripción de las condiciones físicas y temporales bajo las cuales ocurrió el muestreo.
     * *Descripción del Muestreo* - una descripción del protocolo usado durante el muestreo, que dio resultado a los datos del recurso.
     * *Control de Calidad* - una descripción de los métodos adoptados para medir y reportar la calidad de los datos producidos por los métodos de muestreo.
@@ -355,7 +355,7 @@ Esta página de metadatos contiene información acerca de los métodos de muestr
     * *Remover paso del método* - haciendo clic sobre este enlace, se elimina el paso metodológico (cuadro de texto Descripción del Paso) que está inmediatamente debajo del enlace.
 ====Referencias====
 Esta página de metadatos contiene información acerca de como citar el recurso, así como la bibliografía relacionada al conjunto de datos como publicaciones que fueron usadas en, o resultaron de la producción de los datos. Cada Referencia, ya sea para el recurso o para la bibliografía, consta de un Identificador de la Referencia único y opcional, y de una citación textual tradicional. El Identificador de la Referencia permite que la cita pueda ser encontrada en fuentes digitales. Antes que sea ingresado algún dato de las "Referencias", la página mostrará campos de texto para el Identificador de la Referencia del recurso, para la Referencia del Recurso, un encabezado denominado “Bibliografía” y un enlace llamado “Añadir nueva referencia”.
-  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataCitations.png]
+  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataCitations.PNG]
     * *Identificación de la Referencia* - la URL u otro identificador único que pueda ser usado para citar el recurso.
     * *Referencia del Recurso* - una cita textual tradicional para el recurso con autor, fecha e información de la editorial.
     * *Bibliografía* - este encabezado separa la referencia del recurso, de las referencias adicionales usadas para producir los resultados o que resultaron de esta producción.
@@ -365,7 +365,7 @@ Esta página de metadatos contiene información acerca de como citar el recurso,
     * *Remover Referencia* - haciendo clic sobre este enlace, se elimina la referencia que está inmediatamente debajo del enlace.
 ====Datos de la Colección====
 Esta página de metadatos contiene información acerca de la historia natural física de colección asociada al recurso (si la hay), así como la lista de tipos de unidades en la colección, llamados Lotes y una información resumida acerca de estos. Antes que sea ingresado algún dato de la Colección, la página mostrará campos de texto y de selección para cuatro aspectos de la colección (Nombre de la Colección, Identificador de la Colección, Identificador de la Colección Padre y Método de Preservación de Espécimen), un encabezado para la sección de los Lotes y un enlace llamado “Añadir nueva unidad curatorial”.
-  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataCollectionData.png]
+  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataCollectionData.PNG]
     * *Nombre de la Colección* - nombre completo estándar con el cual la colección es conocida o citada.
     * *Identificador de la Colección* - URL u otro identificador único para la colección.
     * *Identificador de la Colección Padre* - URL u otro identificador único para la colección en la cual se encuentra contenida esta colección.
@@ -377,14 +377,14 @@ Esta página de metadatos contiene información acerca de la historia natural f�
           * *Entre* - en este cuadro de texto se ingresa el límite inferior del número de unidades.
           * *y* - en este cuadro de texto se ingresa el límite superior del número de unidades.
         * *Conteo con incertidumbre* - este método permite al usuario establecer un número de unidades de un tipo de unidad en particular, con una incertidumbre por encima o debajo de aquel número.
-        * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataCollectionDataCountWithUncertainty.png]
+        * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataCollectionDataCountWithUncertainty.PNG]
           * *Conteo* - en este cuadro de texto se ingresa el número de unidades promedio aproximado.
           * *+/-* - se ingresa el número de unidades en incertidumbre respecto al número ingresado en el campo de conteo, para crear un rango de posibles conteos del tipo de unidad en particular.
         * *Tipo de unidad* - un solo tipo de unidad (espécimen, lote, placa, caja, frasco, etc.) representado por el tipo de método y conteo.
     * *Remover lote* - haciendo clic sobre este enlace, se elimina el lote que está inmediatamente debajo del enlace.
 ====Datos Físicos====
 Esta página de metadatos contiene enlaces a la página web del recurso, así como enlaces alternos al recurso (archivos de bases de datos, hojas de cálculo, datos relacionados, etc.) y la información acerca de ellos. Antes que sea ingresado algún enlace externo, la página mostrará un campo de texto para la URL de Distribución y un enlace llamado “Añadir nuevo datos físicos”.
-  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataExternalLinks.png]
+  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataExternalLinks.PNG]
     * *URL de Distribución* - se ingresa la URL completa y actualizada de la página web que contiene información acerca del recurso o conjunto de datos.
     * *Añadir nuevo datos físicos* - haciendo clic sobre este enlace, se adicionan cuadros de texto requeridos para un enlace externo adicional.
       * *Nombre* - el nombre del archivo o conjunto de datos.
@@ -395,7 +395,7 @@ Esta página de metadatos contiene enlaces a la página web del recurso, así co
     * *Remover datos físicos* - haciendo clic sobre este enlace, se elimina el enlace externo que está inmediatamente debajo del enlace.
 ====Metadatos Adicionales====
 Esta página de metadatos contiene información acerca de otros aspectos del recurso que no fueron capturados con las otras páginas de metadatos, incluyendo identificadores alternativos para este. Antes que sea ingresado algún identificador alternativo, la página mostrará campos de texto para los metadatos adicionales, un encabezado para el área de identificadores alternativos y un enlace llamado “Añadir nuevo Identificador Alternativo”.
-  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceMetadataAdditionalMetadata.png]
+  * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/IPTManageResourceMetadataAdditionalMetadata.PNG]
     * *Nivel de Jerarquía* - resalta el nivel de información para el cual aplican los metadatos. Para un recurso IPT, siempre será un “conjunto de datos”, y por lo tanto el cuadro de texto es llenado con este valor, de tal forma que no puede ser cambiado.
     * *Fecha de Publicación* - la fecha cuando el recurso fue publicado por última vez. Este valor es establecido automáticamente cuando se publica (véase “Versión Publicada” sección dentro del encabezado “Vista General del Recurso” del "Menú Recursos”).
     * *URL del Logo del Recurso* - un logo que represente al recurso. La URL del logo puede ser usada para cargar el recurso. Si no se posee una URL para el logo del recurso, se puede subir un archivo de imagen desde el disco duro.   
@@ -412,15 +412,15 @@ Esta área de la página "Vista General del Recurso" permite al usuario importar
 *Archivo como fuente de datos* <br>
 El IPT puede importar archivos de texto delimitado no comprimidos (csv, tab, y archivos con cualquier otro delimitador) o archivos comprimidos con zip o gzip. Haga clic en el botón "Seleccionar Archivo" para buscar y seleccionar el archivo que desea importar.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceSourceData.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceSourceData.PNG]
 
 Después de seleccionar el archivo, el nombre del mismo aparecerá a la derecha del botón "Seleccionar Archivo". 
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceSourceDataFileSelected.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceSourceDataFileSelected.PNG]
 
 Haga clic en el botón "Borrar" para eliminar  el archivo seleccionado y volver al estado anterior a la selección del archivo fuente. Haga clic en el botón "Añadir" para abrir la página detallada "Archivo de Fuente de Datos" (si existe el riesgo de sobreescribir un archivo con el mismo nombre, se abre un diálogo que pide al usuario confirmar que realmente desea sobrescribir). Esta página mostrará el nombre del recurso, junto con un resumen de las características del archivo (opción de lectura, número de columnas detectadas, ruta absoluta de acceso al archivo, tamaño del archivo, tamaño de filas, y fecha en la que el archivo se cargó en el IPT). El archivo de fuente de datos de la página de detalles permite al usuario ver y editar los parámetros que describen el contenido del archivo seleccionado, y utilizar estos ajustes para analizar y obtener una vista previa del archivo. 
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceSourceDataFormat.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/IPTManageResourceSourceDataFormat.PNG]
  * *Nombre de la Fuente* - el nombre del archivo seleccionado, sin la extensión de archivo. 
  * *Se puede leer* - este ícono indica si los datos están disponibles utilizando la información de formato del archivo provisto en esta página. 
  * *Columnas* - el número de columnas en el conjunto de datos como se ha configurado usando los parámetros en esta página. 
@@ -438,7 +438,7 @@ Haga clic en el botón "Borrar" para eliminar  el archivo seleccionado y volver 
  * *Formato de Fechas* - un código que describe el formato de los elementos que tienen un tipo de datos de fecha (por ejemplo, AAAA-MM-DD para año de cuatro dígitos, mes de dos dígitos, y día de dos dígitos, separados por guiones).
 
 Después de ajustar los parámetros de la fuente de datos para que el archivo se interprete correctamente, haga clic en el botón "Guardar" para almacenar esta configuración. Si el almacenamiento se realiza correctamente, aparecerá la página "Vista General del Recurso", con información resumida acerca del archivo en la columna de la derecha del área "Fuente de Datos". El botón "Editar" también aparecerá con el resumen de la información del archivo de la fuente de datos en la columna de la derecha, permitiendo al usuario volver a abrir la página detallada "Archivo de Fuente de Datos".
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceSourceSummary.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceSourceSummary.PNG]
 
 En caso de que el usuario desee eliminar esta fuente, podrá volver a abrir la página detallada "Archivo de Fuente de Datos" y hacer clic en el botón "Eliminar el archivo fuente". Tenga en cuenta sin embargo, que el enlace asociado a este archivo también será eliminado.
 
@@ -446,11 +446,11 @@ Si la fuente de datos se encuentra en varios archivos de texto, el proceso descr
 
 *Base de Datos como fuente de datos*<br>
 El IPT puede utilizar conexiones de bases de datos para importar datos de tablas o vistas. Una lista de las conexiones de bases de datos soportados está disponible a través del sitio de la wiki del IPT de GBIF en Google Code [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2DatabaseConnection Supported databases]. Para configurar una base de datos como fuente de datos, haga clic en el botón "Conectar a BD" en la columna de la izquierda del área "Fuente de Datos" de la página "Vista General del Recurso". Esto abrirá una página detallada de Fuente de Base de Datos.
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceSourceData.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceSourceData.PNG]
 
 La página detallada de Fuente de Base de Datos muestra el nombre del recurso, junto con un resumen de las características de la base de datos (opción de lectura, número de columnas detectadas) y permite al usuario ver y editar los parámetros que describen cómo acceder a los datos de la base de datos, y utilizar estas opciones para analizar y obtener una vista previa de los datos. 
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceSourceDatabase.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceSourceDatabase.PNG]
 
  * *Nombre de la Fuente* - el nombre de la fuente de datos. A diferencia de una fuente de datos de archivo, esto puede ser editado y dado cualquier nombre por el usuario. 
  * *Se puede leer* - este ícono indica si los datos están disponibles usando la información de conexión proporcionada en esta página. 
@@ -470,11 +470,11 @@ Después de establecer los parámetros de la fuente de datos de manera que haya 
 ====Enlace _Darwin Core_====
 Esta área de la página "Vista General del Recurso", permite al usuario enlazar los elementos de los datos de entrada con los elementos de las extensiones instaladas, e identificar los elementos que aún no han sido enlazados. Esta opción no estará disponible hasta que por lo menos, una fuente de datos haya sido agregada con éxito y por lo menos una extensión haya sido instalada. Una vez cumplidas estas condiciones, la columna de la izquierda del área de Enlace de _Darwin Core_ contendrá un cuadro de selección con una lista de Estándar y Extensiones que hayan sido instaladas. Seleccione un Estándar_ y realice el enlace antes de seleccionar una extensión para enlazar. Seleccione la extensión adecuada que contenga los elementos que coincidan con aquellos a enlazar en la fuente de los datos. Si el estándar o la extensión adecuada no aparecen en el cuadro de selección, tendrá que ser instalado antes de proceder. Consulte la información del encabezado "Configuración de Estándar y Extensiones" en la sección "Menú Administración" para obtener una explicación de cómo instalar las extensiones. 
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceDwCMapping.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceDwCMapping.PNG]
 
 Después de que el estándar o la extensión deseada haya sido seleccionada, haga clic en el botón "Añadir" para abrir la página de selección "Fuente de Datos". Esta página ofrece una explicación del tipo de datos que la extensión soporta, y muestra un cuadro de selección que contiene una lista de todas las fuentes de datos configuradas.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceSourceSelect.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceSourceSelect.PNG]
 
 Seleccione la fuente de datos a enlazar y luego haga clic en el botón "Guardar". Esto abrirá la página detallada de Enlace de Datos y mostrará un mensaje de estado indicando cuántos elementos de la fuente de los datos se enlazaron automáticamente a los elementos de las extensiones. Los elementos se enlazarán automáticamente, si los nombres de los elementos, convertidos a minúsculas, coinciden entre sí.
 
@@ -482,25 +482,25 @@ La página Enlace de Datos permite al usuario especificar exactamente cómo se c
 
 La columna de la derecha contiene íconos de información y controles (cuadros de selección, cuadros de texto) para establecer el valor que debería tener el elemento de la extensión. En los cuadros de selección y de texto puede haber un texto de explicación acerca del elemento de la extensión. Adicionalmente, si el nombre de un elemento ha sido elegido en el cuadro de selección de elemento de fuente de datos, aparecerá un texto etiquetado como "Ejemplo de Fuente" y un botón "Traducir". Las descripciones de los controles que pueden aparecer en la columna al costado derecho de la tabla de enlace de los datos, estará por debajo de la imagen de la pantalla.  
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceSourceMapping.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/IPTManageResourceSourceMapping.PNG]
 
   * *Cuadro de selección del elemento de la fuente de los datos* - el cuadro de selección de la izquierda está en blanco o contiene el nombre de un campo del origen de datos. El IPT diligencia tantas selecciones como sea posible a partir de los nombres de elementos de la extensión que coincidan con el nombre del elemento de la fuente de los datos. Todos los cuadros restantes de selección del elemento fuente, se dejarán en blanco, lo que significa que el elemento de la extensión no se ha enlazado a un elemento de la fuente de los datos. Si un nombre de elemento es seleccionado cuando se publique el recurso, el recurso utilizará el valor de ese elemento en la fuente de datos como el valor para el elemento de la extensión en el Archivo _Darwin Core Archive_ creado por el IPT.
   * *Cuadro de texto de Valor Constante* - para establecer el valor publicado de cualquier elemento no identificador de la extensión como valor único para cada registro de la fuente de los datos, asegúrese de que ningún valor sea seleccionado en el cuadro de selección del elemento fuente, e ingrese el valor constante deseado para el elemento de la extensión en el cuadro de texto a la derecha del cuadro de selección del elemento fuente. Ejemplo:
   
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMappingConstant.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMappingConstant.PNG]
 
   * *Cuadro de selección de Valor constante controlado* - si la columna de la derecha para el elemento de la extensión contiene un segundo cuadro de selección en lugar de un cuadro de texto, esto significa que el elemento se rige por un vocabulario controlado. En este caso, escoja un valor de la lista de vocabulario para utilizar como un valor constante en lugar de simplemente introducir una constante en un cuadro de texto.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMappingSelectConstant.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMappingSelectConstant.PNG]
 
   * *Botón Detalle del Vocabulario* - los elementos de extensión que se rigen por un vocabulario controlado, tendrán un ícono entre el ícono de información y el cuadro de selección del elemento fuente. Haga clic en este ícono para abrir una página de Detalle de Vocabulario en una nueva ventana del navegador (o pestaña) en la que se encuentra una lista de los valores aceptados para el elemento de extensión con explicaciones y sinónimos alternativos en varios idiomas.  
   * *Origen de Muestra* - esta área muestra los valores reales de los primeros registros del elemento seleccionado de la fuente de datos, separados por espacios y el carácter “|”. Esto ayuda al usuario a comprender si el contenido del elemento de la fuente de datos es apropiado para el elemento de extensión al que ha sido enlazado.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMappingSourceSample.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMappingSourceSample.PNG]
 
   * *Traducción* - haga clic en este botón para abrir una página de Traducción del Valor, en la que distintos valores del elemento seleccionado de la fuente de datos, pueden ser traducidos a nuevos valores en el archivo generado por el IPT para este recurso de datos. Después de que las traducciones se han ingresado y guardado, la página Enlace de Datos volverá a aparecer, y mostrará el texto como un enlace en lugar del botón "Traducción" para mostrar el número de valores que han sido traducidos con valores diferentes de los originales. Haga clic en este enlace para volver a abrir la página de Traducción del Valor, para este elemento de extensión.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceSourceTranslation.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceSourceTranslation.PNG]
 
   * *Página de Traducción del Valor* - cuando esta página se abre por primera vez, se muestra un mensaje en la parte superior que indica el número de valores de los elementos  seleccionados en la fuente de datos, hasta 1000 valores. La página muestra el nombre y la descripción de la extensión de campo para el que se están realizando traducciones. Si el elemento se rige por un vocabulario controlado, aparecerá en la descripción del elemento, información sobre dicho vocabulario y un ícono para abrir una página de Detalle de Vocabulario (vea la explicación del botón Detalle de Vocabulario, arriba). Debajo de la descripción del elemento hay una tabla que muestra los distintos valores del elemento que se encuentra en la fuente de datos con el encabezado "Fuente de Valor" con cuadros de texto con el encabezado "Valor Traducido". Ingrese el valor al que debe ser traducido la Fuente de Valor en el cuadro de texto. Vinculando la tabla de arriba y abajo con el siguiente conjunto de botones:
     * *Guardar* - haga clic en este botón para guardar todos los cambios que se han hecho en esta página y volver a la página Enlace de Datos.    
@@ -509,9 +509,9 @@ La columna de la derecha contiene íconos de información y controles (cuadros d
    * *Autoasignar* - este botón aparece sólo si el elemento se rige por un vocabulario controlado. Haga clic en este botón para diligenciar los Valores Traducidos automáticamente con los valores estándar, basados en sinónimos conocidos. Los valores de la fuente de datos para los cuales no existen sinónimos conocidos, permanecerán en blanco.   
     * *Cancelar* - haga clic en este botón para cerrar la página Traducción del Valor sin guardar ninguno de los cambios que se han realizado. 
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceSourceFilter.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/IPTManageResourceSourceFilter.PNG]
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceSourceFilterEquals.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/IPTManageResourceSourceFilterEquals.PNG]
 
  * *Filtro* - el filtro permite al usuario incluir sólo los registros que coincidan con un criterio establecido para uno de los elementos de la fuente de datos. Para utilizar el filtro, primero seleccione en la lista desplegable, si desea que el filtro se aplique *Después de traducción* o *Antes de traducción* (en otras palabras, después de aplicar la traducción en la fuente de datos, o antes – consulte la sección Traducción para obtener más detalles acerca de la traducción). A continuación, seleccione el elemento en el que se basa el criterio, utilizando el cuadro de selección a la izquierda. El cuadro de texto a la derecha puede contener un valor para comparar el valor del elemento en la fuente de datos. No incluya el valor con signos de puntuación. El segundo cuadro de selección permite al usuario elegir un operador de comparación entre los que figuran:
     * *!IsNull * - este operador es verdadero si el elemento de la fuente de datos está vacío. En este caso no se necesita un valor en el cuadro de texto de la derecha. Si hay un valor en el cuadro de texto, se ignorará. 
@@ -530,11 +530,11 @@ Adicional a la información explicativa acerca de la extensión en la parte supe
 
 <wiki:comment>
   * *Columnas no Enlazadas* - esta sección contiene una lista de columnas en el archivo fuente, una tabla o vista que no ha sido enlazada. Esta lista puede ayudar a determinar si todo aquello que debía ser enlazado en la fuente fue enlazado.
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMappingUnmappedColumns.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMappingUnmappedColumns.PNG]
 </wiki:comment>
 
 ====Versión Publicada====
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourcePublish.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourcePublish.PNG]
 
 Esta área de la página "Vista General del Recurso", permite a un usuario publicar una nueva versión del recurso simplemente haciendo clic en el botón "Publicar". Esta acción permite varias cosas: en primer lugar, los metadatos actuales se escriben en un archivo eml.xml en el directorio correspondiente, con el nombre corto del recurso en el directorio llamado "Recursos" en el directorio de datos del IPT. Los metadatos actuales también se guardan en la misma ubicación como versión incrementada del archivo EML denominado eml-n.xml, donde n es el número de versión incrementada que refleja el número de veces que el archivo EML se ha publicado. En segundo lugar, los datos de recursos primarios actuales como fueron configurados a través del enlace  (vea la sección "Enlace _Darwin Core_" bajo el encabezado "Vista General del Recurso" en la sección "Menú Recursos") se escriben en el archivo _Darwin Core Archive_ llamado dwca.zip en el mismo directorio de recursos del directorio de datos del IPT. En tercer lugar, se genera un documento de publicación de datos en formato de texto enriquecido (RTF). Por último, la información acerca del recurso se actualiza en el Registro GBIF, si el recurso se ha registrado. 
   * *Página de Publicando Estatus* - una página denominada Publicando Estatus mostrará mensajes de estado, destacando el éxito o falla de la publicación de cada uno de los documentos, así como los resultados detallados del proceso de publicación. 
@@ -542,34 +542,34 @@ Esta área de la página "Vista General del Recurso", permite a un usuario publi
     * *Reporte de publicación* - este enlace inicia una descarga de un archivo llamado "publication.log", que contiene el resultado detallado del proceso de publicación. Este archivo contendrá información específica acerca de los registros cuya carga pudo haber fallado. Por ejemplo, el archivo de reporte mostrará el contenido de los registros que tienen un número de columnas que no coincida con las columnas enlazadas.
     * *Mensaje del sistema* - la página Publicando Estatus presenta un resumen de la información que fue enviada al archivo publication.log, que se almacena en el directorio para el recurso dentro del directorio de datos del IPT y que estará disponible a través del enlace a la página "Reporte de publicación" que se encuentra sobre el mensaje de resumen de registro. 
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourcePublishingStatus.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourcePublishingStatus.PNG]
 
   * *Publicado* - después de que un recurso ha sido publicado, la información de resumen acerca de la versión publicada, aparecerá en la columna de la derecha del área "Versión Publicada" de la página "Vista General del Recurso". El resumen incluye la versión de serie y la fecha de la última publicación, un enlace titulado "Ver informe" para ver el resumen del registro de publicación, un enlace para descargar el archivo del reporte de publicación, un enlace para descargar el archivo _Darwin Core Archive_, un enlace de descarga del archivo EML, un enlace para ver los metadatos contenidos en el archivo EML en la página "Descripción de Metadatos" como se describe bajo el título del mismo nombre en el "Menú Inicio", y un enlace para descargar el documento RTF de publicación de datos. Una característica útil de cada archivo descargable, es que su tamaño se especifica junto a este.
   
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourcePublished.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/IPTManageResourcePublished.PNG]
 
 ====Visibilidad====
 El área "Visibilidad" de la página "Recursos" permite a los usuarios, que tengan derechos de administrador sobre el recurso, cambiar su estado de visibilidad. La visibilidad de un recurso determina quién puede verlo, ya sea visibilidad limitada (privado), abierta (público), o detectable a través del Registro GBIF (registrado). De forma predeterminada, cada recurso sólo es visible para el usuario que lo creó, y para otros usuarios que tienen el rol Administrador en el IPT donde se crea el recurso.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceVisibilityPrivate.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceVisibilityPrivate.PNG]
 
   * *Privado* - un recurso privado es visible sólo para aquellos que lo crearon, o aquellos a quienes se concede permiso para administrarlo en el IPT, o por un usuario que tiene el rol Administrador. El objetivo es mantener el recurso como privado hasta que haya sido completamente y correctamente configurado. Cuando el recurso esté listo para ser público, haga clic en el botón "Público". Aparecerá un mensaje en la parte superior de la página diciendo que el estado ha cambiado a "Público".
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceVisibilityPublic.png] [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceVisibilityPublicNeedToPublish.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceVisibilityPublic.PNG] [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceVisibilityPublicNeedToPublish.PNG]
   * *Público* - un recurso público es visible para cualquier persona que utilice la instancia del IPT, donde se instala el recurso (en la "Tabla de Recursos Públicos" en la página de Inicio del IPT). El recurso también está disponible a través de Internet para cualquier persona que conoce su ubicación y nombre corto. Sin embargo, el recurso podrá ser detectado una vez haya sido inscrito en el Registro GBIF.<p> Si el recurso es público, un cuadro de selección que contiene una lista de organizaciones, con las que puede estar relacionado el recurso, aparece en el área "Visibilidad" de la página "Vista General del Recurso". Dos botones también aparecen en esta área. Al hacer clic en el botón "privado" se retirará por completo el recurso de la visibilidad pública y lo devolverá al estado privado.<p> El botón "Registro" se activará si: 1) los metadatos necesarios para el recurso están completos, 2) el recurso ha sido publicado (ver explicación del área "Versión Publicada" de la página "Vista General del Recurso", más adelante), y 3) el usuario tiene el rol "Administrador con derechos de registro" (ver explicación de Función en la sección "Crear un Nuevo Usuario" en el encabezado "Configuración de Cuentas de Usuario" de la sección "Menú Administración”). Un usuario que tiene el rol Administrador puede otorgar la posición "Administrador con Derechos de Registro" a cualquier usuario. <p>  Para registrar el recurso y hacerlo detectable a través del Registro GBIF, primero asegúrese de que los metadatos necesarios hayan sido ingresados (ver la sección "Metadatos" en el encabezado "Vista General del Recurso", de la sección "Menú Recursos"); a continuación, elija la organización con la que está asociado el recurso, del cuadro de selección. Si la organización no aparece en la lista, puede ser añadida por un usuario que tiene el rol Administrador (ver información en el encabezado “Configurar Organizaciones” en la sección "Menú Administración").<p> Cuando los metadatos estén completos y la organización se haya seleccionado, publique el recurso siguiendo el procedimiento descrito en la sección "Versión Publicada" en el encabezado "Vista General del Recurso", de la sección "Menú Recursos". <p> Por último, haga clic en el botón "Registro" para registrar el recurso en el Registro GBIF. Al hacer clic en este botón, se abrirá un cuadro de diálogo con el que se confirma que usted ha leído y entendido el acuerdo de intercambio de datos de GBIF, al cual se da un enlace. Haga clic en el cuadro de verificación para indicar que está de acuerdo con estos términos. Si lo hace, un botón "Sí" aparecerá en la parte inferior del cuadro de diálogo. Haga clic en "Sí" para registrar el recurso, o en "No" para aplazar la decisión y cerrar el cuadro de diálogo.
   
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceVisibilityRegisterAgreement.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceVisibilityRegisterAgreement.PNG]
 
 Si el intento de registro es exitoso, aparecerá un mensaje en la parte superior de la página especificando que el estado ha cambiado a "Registrado".
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceVisibilityRegistered.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceVisibilityRegistered.PNG]
   * *Registrado* - un recurso que ha sido registrado en la red de GBIF, se puede detectar a través de ese sistema y los datos de los recursos pueden ser indexados y se puede acceder a estos desde el portal de GBIF. Si el recurso ya ha sido registrado, cada vez que se haga clic en el botón "Publicar", enviará nueva información sobre el recurso al Registro GBIF, si alguno de los siguientes ha cambiado desde que el registro se actualizó por última vez: título, descripción, contacto principal o correo electrónico. Un resumen de la información registrada en GBIF aparecerá en la columna de la derecha cuando el registro se haya completado.<p> La visibilidad de un recurso registrado no puede ser cambiada a privada. Si un recurso debe ser eliminado del Registro GBIF, siga el procedimiento descrito en la sección "Eliminar un Recurso" del encabezado "Vista General del Recurso" de la sección "Menú Recursos".
 
 ====Administradores de Recursos====
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceManagers.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceManagers.PNG]
 
 Cada recurso tiene uno o más administradores asignados de forma explícita a quienes les es permitido ver, cambiar y eliminar el recurso. El usuario que crea un recurso, cuenta con estas capacidades de forma automática. Los administradores adicionales pueden estar asociados con un recurso y tener estas mismas capacidades, seleccionando su nombre en el cuadro de selección en esta área de la página "Vista General del Recurso", y haciendo clic en el botón "Añadir". Cualquier administrador asociado con un recurso y que tiene el rol "Administrador con derechos de registro", también puede registrar el recurso y actualizarlo en el Registro GBIF. Todos los usuarios que tienen función de administrador adquieren, de forma automática, completa funcionalidad de administración sobre todos los recursos de la instancia IPT. La columna de la derecha de esta área muestra el nombre y la dirección de correo electrónico del creador de este recurso. Si alguno de los administradores ha sido añadido, su nombre y dirección de correo electrónico aparecerá listado debajo del creador del recurso. El rol Administración de los recursos de cualquier administrador puede ser removida haciendo clic en el botón "Eliminar", a la derecha de la dirección de correo electrónico en el listado de administrador.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceManagerAdded.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceManagerAdded.PNG]
 
 ==== Eliminar un Recurso====
 Al hacer clic en el botón "Eliminar" en la página "Vista General del Recurso", se eliminará el recurso del IPT y todos los documentos relacionados del sistema de archivos. Si va a quitar un recurso que ha sido registrado en GBIF, también debe informar a la "Mesa de Ayuda GBIF" (helpdesk@gbif.org) para que sea eliminado del registro. Si desea conservar la información del recurso, y eliminar el recurso del IPT, haga una copia de la carpeta del recurso en un lugar seguro fuera de la estructura del directorio IPT. El nombre de la carpeta para el recurso es el mismo que el nombre corto del recurso, y se puede encontrar en la carpeta denominada "Recursos" en el directorio de datos del IPT. Un recurso guardado de esta manera se puede volver a integrar en el IPT o en una instancia distinta del IPT, siguiendo el procedimiento descrito en la sección "Carpeta de configuración de la integración de un recurso existente" bajo el encabezado "Crear nuevo recurso" en la sección “Menú Recursos".
@@ -577,11 +577,11 @@ Al hacer clic en el botón "Eliminar" en la página "Vista General del Recurso",
 ==Menú Administración (visible únicamente para usuarios que tienen el rol Administrador)==
 Esta sección describe cada una de las funciones que están disponibles desde el "Menú Administración". Haciendo clic sobre Administración, se abre una página (ver imagen a continuación) desde la cual cada una de estas tareas administrativas puede ser revisada, haciendo clic sobre el botón apropiado. Note que el botón marcado como “Organizaciones”, predeterminadamente permanecerá deshabilitado hasta que las opciones de Registro GBIF hayan sido establecidas.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTAdminBeforeRegistration.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/IPTAdminBeforeRegistration.PNG]
 ===Configuración de las opciones del IPT===
 Esta página permite a los usuarios con el rol Administrador, realizar y cambiar la configuración del IPT.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminConfigIPT.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminConfigIPT.PNG]
 
 *URL Base* - esta es la URL que indica la raíz de instalación de este IPT. La URL se establece automáticamente durante la instalación del IPT. Para que el IPT funcione completamente, la URL Base debe estar disponible vía Internet. Si la URL Base se configura para usar un localhost, no permitirá que el IPT sea registrado en GBIF, tampoco permitirá que pueda ser asociado con una organización y que los recursos estén disponibles al público.<br>*Nota*: cuando la configuración del IPT es guardada, el IPT prueba la disponibilidad de la URL Base desde el computador del cliente. Si el IPT no está disponible en la URL Base establecida, el IPT mostrará un mensaje de advertencia y los cambios no podrán ser guardados. Si la nueva URL aun no es funcional (tal como un cambio de puerto que requiere un reinicio del IPT), a continuación se explica el procedimiento para cambiar la URL Base:<br>
   * Salga del IPT y ciérrelo.
@@ -603,11 +603,11 @@ Esta opción es una acción administrativa al igual que el botón Publicar, solo
 ===Configurar Cuentas de Usuario===
 Esta página permite al usuario con rol Administrador, crear, modificar y eliminar cuentas de usuario. Cuando se abre la página, muestra una tabla de usuarios existentes e información básica acerca de ellos, incluyendo sus nombres, direcciones de correo electrónico, roles y la fecha y hora de su ultimo inicio de sesión.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminUserAccounts.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminUserAccounts.PNG]
 ====Crear un Nuevo Usuario====
 Un usuario nuevo puede ser creado haciendo clic en el botón “Crear” que está debajo de la lista de usuarios actuales. Se abrirá una página en la cual puede ser ingresada la información del usuario y luego el usuario nuevo puede ser creado haciendo clic en el botón “Guardar”.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminUserCreateUser.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminUserCreateUser.PNG]
 
 *Correo* - la dirección de correo electrónico del usuario, es usada como un identificador para ingresar al IPT y no puede ser cambiada.<br>*Nota*: si el usuario requiere un cambio de correo electrónico, el procedimiento recomendado es crear una nueva cuenta de usuario con la nueva dirección de correo electrónico, y luego eliminar la cuenta de usuario que tiene el correo electrónico viejo.<br>
 *Nombre* - el nombre del usuario.<br>
@@ -619,7 +619,7 @@ Un usuario nuevo puede ser creado haciendo clic en el botón “Crear” que est
 ====Modificar un Usuario Existente====
 La información acerca de los usuarios puede ser cambiada en la página de los detalles del usuario después de seleccionar, de la lista de usuarios existentes, el nombre del usuario que se desea modificar. La página de detalles del usuario muestra toda la información acerca del usuario. Pueden ser cambiados el nombre, apellido y rol del usuario, ingresando nuevos valores y haciendo clic en el botón “Guardar”. Los detalles de la información ingresada en esta página, puede ser encontrada en las explicaciones de la sección anterior “Crear un Nuevo Usuario”.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminUserEditUser.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminUserEditUser.PNG]
 
 *Restablecer Contraseña* - si un usuario olvida la contraseña, se puede generar una nueva haciendo clic en el botón “Restablecer Contraseña”. Después de esto, una nueva contraseña es generada en un mensaje de información en la parte superior de la página.<br>*Nota*: el IPT no informa del cambio al usuario afectado, por lo tanto es responsabilidad del Administrador que restablece la contraseña, informar al usuario la nueva contraseña.
 
@@ -641,11 +641,11 @@ Si la prueba de validación no es exitosa, un mensaje de error sugerirá la natu
 
 *Registro GBIF sin acceso* - si un mensaje de error sugiere que ninguno de los errores previos ha ocurrido y aún hay una falla con la comunicación al Registro GBIF, por favor reporte a la "Mesa de Ayuda" que hay problemas con la conexión al Registro GBIF (helpdesk@gbif.org).
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminRegistrationStep1.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminRegistrationStep1.PNG]
 
 Si el IPT pasa la etapa de validación mencionada anteriormente, aparecerá un formato que requiere información adicional para el registro. En esta etapa, el IPT es asociado con una organización. La organización ya debe estar registrada en el Registro GBIF, y su contraseña debe ser conocida. A continuación se encuentran las explicaciones de los campos y selecciones de este formato.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTAdminRegistrationStep2.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/IPTAdminRegistrationStep2.PNG]
 
 A continuación se encuentran las explicaciones de la información específica que debe ser seleccionada o ingresada:<br>
 *Organización* - el cuadro seleccionado contiene una lista de organizaciones en el Registro GBIF. Seleccione una organización con la cual será asociado este IPT. Si la organización deseada no se encuentra en la lista, use el Registro GBIF (http://gbrds.gbif.org) para determinar si la organización está registrada bajo otro nombre que no esperaba. Si la organización aun no está registrada ante GBIF, por favor contacte a la "Mesa de Ayuda" para registrar la organización, antes de proceder con el registro del IPT. Haga clic sobre el enlace de ayuda “GBIF Help Desk” para abrir un correo electrónico predeterminado, en donde podrá completarlo con la información necesaria antes de enviarlo.<br>
@@ -661,19 +661,19 @@ A continuación se encuentran las explicaciones de la información específica q
 ==Editar el Registro GBIF==
 Una vez el IPT haya sido registrado en el Registro GBIF, la página permitirá a los usuarios editar el título, la descripción, el nombre del contacto y el correo electrónico del contacto. Cambios de la organización asociada no son posibles. Como ayuda para cambiar otros campos mostrados en el Registro GBIF, el Administrador puede contactar la "Mesa de Ayuda GBIF" (helpdesk@gbif.org).
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTAdminEditRegistration.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/IPTAdminEditRegistration.PNG]
 ==Configurar Organizaciones==
 La página no está disponible hasta que el IPT haya sido registrado exitosamente en el Registro GBIF (véase información bajo el encabezado “Configurar Opciones para el Registro GBIF” de la sección “Menú Administración”). Una vez registrado, esta página muestra una lista de organizaciones que pueden ser asociadas con los recursos en este IPT. Un IPT tiene datos alojados para otras organizaciones y para que estas puedan ser asociadas, deben configurarse antes que puedan ser usadas. La lista muestra columnas para “Nombre de la Organización”, “Alias”, y “¿Puede publicar recursos?”. El Nombre de la Organización es el título de la organización como quedó registrada en el Registro GBIF. El Alias es un nombre dado a la organización por conveniencia dentro del IPT; los alias, en vez del nombre completo de la organización, aparecen en la lista de selección de organizaciones en el IPT. El cuadro de verificación, debajo de la columna marcada como “¿Puede publicar recursos?”, indica si la organización puede ser asociada con recursos en el IPT. Solamente aquellas organizaciones que tiene el cuadro marcado, aparecerán en la lista para ser asociadas con recursos.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTAdminOrgs.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/IPTAdminOrgs.PNG]
 ===Editar una Organización===
 Clic sobre el botón “Editar” para abrir la página que contiene los detalles de la organización seleccionada. En esta página, un usuario que tenga el rol Administrador, puede cambiar el alias y seleccionar o deseleccionar el cuadro de verificación marcado como “¿Puede publicar recursos?”. El Nombre de la Organización, el Alias y “¿Puede publicar recursos?” son explicados en la introducción de la sección anterior “Configurar Organizaciones”, y bajo el encabezado “Configurar Opciones para el Registro GBIF” en la sección “Menú Administración”.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTAdminOrgsEditOrg.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/IPTAdminOrgsEditOrg.PNG]
 ===Adicionar una Organización===
 Las organizaciones no están disponibles para ser asociadas con los recursos hasta que no sean adicionadas por un usuario con el rol Administrador. Haga clic sobre el botón “Añadir”, para abrir una página en la cual una organización adicional puede ser seleccionada desde el Registro GBIF, para ser usada en el IPT. Para las explicaciones sobre los campos y selecciones en esta página, refiérase a la información bajo el encabezado “Configurar Opciones para el Registro GBIF” en la sección “Menú Administración” de este manual del usuario. Después que la organización deseada ha sido seleccionada y todos los datos han sido ingresados, incluyendo la contraseña para la organización, haga clic sobre el botón “Guardar” para adicionar la organización seleccionada a la lista.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTAdminOrgsAddOrg.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/IPTAdminOrgsAddOrg.PNG]
 ==Configurar Estándares y Extensiones==
 Esta página permite a un usuario con rol Administrador, importar y compartir varios tipos de datos predefinidos desde el Registro GBIF. Cada tipo incluye propiedades (campos, elementos) que soportan un propósito específico. Por ejemplo, el estándar _Darwin Core Taxon_, soporta información pertinente a nombres taxonómicos, nombre comunes, y conceptos del taxón, permitiendo al IPT alojar recursos para listas de chequeo taxonómico y nomenclatural. Hay una diferencia entre Estándares y Extensiones. Los estándares proveen la base para el registro de los datos (por ejemplo, Registros biológicos y Nombres taxonómicos), mientras que las extensiones facilitan los medios para asociar datos adicionales con un registro del estándar.
 Solamente un estándar puede ser seleccionado para un recurso de datos, como se explicó en el encabezado “Enlace _Darwin Core_” de la sección “Vista General del Recurso”.
@@ -682,7 +682,7 @@ Los vocabularios contienen una lista de valores válidos que un elemento particu
 
 Antes de instalar una extensión, la página Extensiones comienza con una sección marcada como “Vocabularios” con un solo botón marcado como “Actualizar registro”. Los estándares y extensiones que existen en el Registro GBIF, pero que aún no han sido instalados, son listados debajo de la sección vocabularios. Cuando una extensión es instalada exitosamente, aparecerá por encima de la sección Vocabularios.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminExtensions.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminExtensions.PNG]
 
 Cada lista de extensiones (instaladas y no instaladas) tiene dos columnas. La columna de la izquierda muestra el nombre de la extensión como un enlace y un botón “Instalar” o “Eliminar”. En la columna de la derecha hay un resumen de la información acerca de la extensión, el número de propiedades (campos, elementos) en la extensión, el nombre de la extensión, su namespace, tipo de fila y palabras clave. Para más información acerca de estos atributos de una extensión, véase la documentación sobre Archivos Darwin Core en http://rs.tdwg.org/dwc/terms/guides/text/.
 A continuación están las acciones que pueden ser tomadas respecto a las extensiones.
@@ -691,11 +691,11 @@ Una extensión puede hacer uso de una lista de términos predefinidos, conocidos
 ===Ver Detalles de una Extensión===
 En la primera columna, el título de cada extensión es un enlace a una página de detalles para aquella extensión. La página de detalles muestra toda la información resumida que puede ser vista en la columna de la derecha de la lista de extensiones, así como la descripción detallada, referencias y ejemplos para cada una de las propiedades de la extensión.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminExtensionsDetail.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminExtensionsDetail.PNG]
 
 Para propiedades que tienen vocabularios controlados, la información sobre las propiedades, en la columna de la derecha, contendrá el nombre del vocabulario como un enlace al lado de "Vocabulario". Haciendo clic sobre este enlace, se abrirá una página de detalles para el vocabulario, con un resumen de este en la parte superior y una tabla de valores válidos con información más detallada, como los términos preferidos y alternos y, los identificadores.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminExtensionsDetailVocabulary.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminExtensionsDetailVocabulary.PNG]
 ===Instalar una Extensión===
 Para cualquiera de las extensiones que aún no ha sido instalada en el IPT, hay un botón “Instalar” debajo del nombre de la extensión en la columna de la izquierda. Haga clic sobre este botón para adquirir la extensión desde el Registro GBIF e instalarla en el IPT.
 ===Eliminar una Extensión===
@@ -703,11 +703,11 @@ Cualquiera de las extensiones que ya haya sido instalada en el IPT, puede ser el
 ==Ver Bitácora del IPT==
 Mensajes generados de las acciones tomadas mientras se estaba corriendo el IPT, son registradas por referencia en archivos, en el directorio llamado “bitácora” dentro del directorio de datos del IPT (véase la información bajo el encabezado “Configuración del IPT” en la sección “Menú Administración"). La página de la Bitácora muestra mensajes desde el archivo llamado admin.log, el cual contiene solamente aquellos mensajes que tienen una severidad mayor o igual a “ADVERTENCIA”. Los mensajes completos (contenidos en el archivo llamado debug.log) pueden ser abiertos o visualizados, haciendo clic sobre el enlace “archivo log completo”. El contenido del archivo log completo, puede ser útil cuando se reporte un aparente error.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminLogs.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminLogs.PNG]
 ==Menú Acerca de (visible para todos los usuarios)==
 La página "Acerca de", predeterminadamente muestra información sobre la actual instalación del IPT, incluyendo información de la organización que lo aloja y si aquel IPT ha sido registrado. Esta página está diseñada para ser personalizada en cada IPT, editando el archivo llamado about.ftl en el directorio llamado “config”, dentro del directorio de datos del IPT (véase la información bajo el encabezado “Configuración del IPT” en la sección “Menú Administración"). El archivo about.ftl es una plantilla Freemarker que puede contener una combinación de HTML y referencias variables de la forma ${host.variable!"alternate value if null"}. Después de realizar los cambios en el archivo about.ftl, la página "Acerca de", deberá ser actualizada para mostrar los cambios. Revise el archivo about.ftl predeterminado, para ejemplos de las variables que pueden ser incluidas.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAbout.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAbout.PNG]
 
 Aquí está el contenido del archivo about.ftl que resulta en la página que se ve en la imagen anterior.
 {{{
