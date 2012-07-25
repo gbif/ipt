@@ -124,7 +124,7 @@ Menú después de que inicia sesión, un usuario con función de Administrador, 
 
 Ejemplo de cuadro de texto y etiqueta para una dirección de correo electrónico:
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TextBoxExample.PNG]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/Control-TextBoxExample.PNG]
 
 *Cuadros de verificación* - permiten establecer un valor como visto, como verdadero (cuando es marcada) o falso (cuando no ha sido marcada).
 
@@ -136,13 +136,13 @@ Ejemplo de cuadros de verificación y de etiqueta para indicar que el IPT puede 
 
 Ejemplo de cuadro de selección y de etiqueta para el rol del usuario, con la opción _Administrador_ seleccionada:
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-SelectBoxExample.PNG]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/Control-SelectBoxExample.PNG]
 
 *Enlaces* - abre una página diferente a la que contiene el enlace. Los enlaces pueden abrir la nueva página en la misma ventana del navegador (o pestaña) o en una ventana separada (o pestaña).
 
 Ejemplo de enlace a la página de información de la cuenta del usuario conectado:
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-LinkExample.PNG]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/Control-LinkExample.PNG]
 
 *Ícono de Información* - muestra un mensaje que explica la intención del control junto al que aparece. Haga clic en el ícono situado junto a cualquier elemento para ver un mensaje de ayuda acerca de ese control. Haga clic de nuevo para que el mensaje desaparezca. Algunos mensajes de información incluyen un enlace, que de ser seleccionado, ingresará el valor apropiado para la selección.
 
@@ -150,22 +150,22 @@ Ejemplo de ícono de información para la codificación de caracteres, después 
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/Information-CharacterEncoding.PNG]
 
-*Ícono de Documentación* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-DocumentationIcon.PNG] - este ícono indica que hay una página de información detallada acerca del tema asociado con ese ícono. Haga clic en el ícono para abrir la página en una nueva ventana del navegador.
+*Ícono de Documentación* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/Control-DocumentationIcon.PNG] - este ícono indica que hay una página de información detallada acerca del tema asociado con ese ícono. Haga clic en el ícono para abrir la página en una nueva ventana del navegador.
 
-*Ícono de Papelera* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TrashIcon.PNG] - este ícono se asocia con otros controles en la página. Al hacer clic en el ícono se eliminarán los datos asociados.
+*Ícono de Papelera* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/Control-TrashIcon.PNG] - este ícono se asocia con otros controles en la página. Al hacer clic en el ícono se eliminarán los datos asociados.
 
-*Ícono de Calendario* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-CalendarIcon.PNG] - este ícono se asocia con un elemento de texto destinado a contener una fecha. Al hacer clic en el ícono, se abrirá un pequeño calendario con controles que permiten al usuario desplazarse hacia adelante y hacia atrás a partir del mes y año seleccionado. Seleccione los cuadros para elegir otro mes, año y día de la semana según el calendario estándar de la Nueva Era. La selección de un día concreto transformará la fecha al formato correcto en el cuadro de texto asociado.
+*Ícono de Calendario* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/Control-CalendarIcon.PNG] - este ícono se asocia con un elemento de texto destinado a contener una fecha. Al hacer clic en el ícono, se abrirá un pequeño calendario con controles que permiten al usuario desplazarse hacia adelante y hacia atrás a partir del mes y año seleccionado. Seleccione los cuadros para elegir otro mes, año y día de la semana según el calendario estándar de la Nueva Era. La selección de un día concreto transformará la fecha al formato correcto en el cuadro de texto asociado.
 
 Ejemplo del calendario asociado a un cuadro de texto llamado "Fecha Final" en el que 31 de diciembre 2010 es la fecha actual, pero aún no ha sido seleccionada:
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TextBoxWithCalendarOpen.PNG]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/Control-TextBoxWithCalendarOpen.PNG]
 
 *Tabla ordenable* - una tabla que permite ordenar las filas según los valores de una columna seleccionada en orden ascendente o descendente. Los encabezados de las columnas son las etiquetas de las columnas que aparecen como enlaces. Haga clic en un encabezado de columna para ordenar la tabla con los valores de esa columna. Haga clic nuevamente en el encabezado de la misma columna para ordenar la tabla en la dirección opuesta.
 
 Ejemplo de tabla ordenable en orden ascendente según la columna etiquetada "Nombre".
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TableSortedAscending.PNG]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/Control-TableSortedAscending.PNG]
 
 Ejemplo de tabla ordenable en orden descendente según la columna etiquetada "Tipo".
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TableSortedDescending.PNG]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/Control-TableSortedDescending.PNG]
 
 ===Controles que aparecen en todas las páginas===
   Esta sección describe diversas características que son accesibles en el encabezado y el pie de página de la mayoría de las páginas del IPT.
@@ -302,7 +302,7 @@ Esta página de metadatos permite al usuario ingresar información acerca de uno
       * *Nombre Científico* - este cuadro de texto está destinado para el nombre científico del taxón.
       * *Nombre Común* - este cuadro de texto está destinado para el nombre común del taxón.
       * *Rango* - este cuadro de texto está destinado para la categoría taxonómica del taxón.
-      * *Ícono de Papelera* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TrashIcon.PNG] - haciendo clic sobre este ícono, se eliminará el taxón (nombre científico, nombre común y rango) que está a la izquierda del ícono, en esa cobertura taxonómica.
+      * *Ícono de Papelera* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/Control-TrashIcon.PNG] - haciendo clic sobre este ícono, se eliminará el taxón (nombre científico, nombre común y rango) que está a la izquierda del ícono, en esa cobertura taxonómica.
     * *Añadir nuevo cobertura taxonómica* - haciendo clic sobre este enlace, se inicia una nueva cobertura taxonómica como se describió anteriormente, con un cuadro de texto marcado como “Descripción” y enlaces a “Añada varios taxones” y “Añadir nuevo taxonomía”.
 ====Cobertura Temporal====
 Esta página de metadatos contiene información acerca de una o más fechas, rangos de fechas o nombres de periodos de tiempo cubiertos por el recurso, donde cada uno es llamado una cobertura temporal. Las coberturas pueden referirse a tiempos durante el cual la colección o conjunto de datos fue ensamblado (Fecha Simple, Rango de Fechas y Periodo de Formación) o a tiempos durante los cuales estaban vivas las entidades biológicas del conjunto de datos o colección (Periodo de Tiempo de Vida). Antes que sea creada alguna cobertura temporal para el recurso, la página mostrará únicamente un enlace marcado como “Añadir nuevo cobertura temporal”. Haciendo clic sobre este enlace se mostrará, en el cuadro de selección, el tipo de cobertura temporal predeterminado “Fecha Simple”, un cuadro de texto marcado como “Fecha Inicial”, un ícono de calendario y dos enlaces. A continuación se muestra una imagen de la página "Cobertura Temporal" antes de ingresar algún dato, seguida por explicaciones para los campos vistos en la página en este estado.
