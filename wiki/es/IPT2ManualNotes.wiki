@@ -205,8 +205,8 @@ Si hay recursos públicos, estos serán relacionados en una tabla que tiene las 
 *Logo* - el logo del recurso (se puede configurar en la página "Metadatos Adicionales" de los metadatos del recurso).<br>
 *Nombre* - el título del recurso tal como figura en el Título de la entrada de los metadatos del recurso. El nombre aparece como un enlace, que abrirá una "Página Visualización de Metadatos" (ver más adelante) para el recurso seleccionado.<br>
 *Organización* - la organización bajo la cual el recurso ha sido registrado. Si el recurso no está registrado, el valor en la columna de Organización será "No registrado". Revise la información en el encabezado “Organizaciones”, en la sección de "Menú Administración" para obtener más información acerca del registro de las organizaciones y del registro de un recurso en una organización.<br>
-*Tipo* - el tipo de recurso como figura en la lista desplegable de _Tipo_ en la página [IPT2ManualNotes#Basic_Metadata Basic Metadata] de los metadatos del recurso.<br>
-*Subtipo* - el subtipo del recurso como figura en la lista desplegable de _Subtipo_ en la página [IPT2ManualNotes#Basic_Metadata Basic Metadata] de los metadatos del recurso.<br>
+*Tipo* - el tipo de recurso como figura en la lista desplegable de _Tipo_ en la página [IPT2ManualNotes#Metadatos_Básicos Basic Metadata] de los metadatos del recurso.<br>
+*Subtipo* - el subtipo del recurso como figura en la lista desplegable de _Subtipo_ en la página [IPT2ManualNotes#Metadatos_Básicos Basic Metadata] de los metadatos del recurso.<br>
 *Registros* - el número de filas de datos en el archivo central de datos para el recurso que se cargaron con éxito en el IPT.<br>
 *Última modificación* - ya sea la fecha en la que fue creado el recurso o la fecha en la que los datos o los metadatos fueron modificados, aquella que sea más reciente.<br>
 *Última publicación* - la fecha en la que el recurso fue publicado por última vez.
@@ -328,7 +328,7 @@ Esta página de metadatos permite a los usuarios crear uno o más conjuntos de p
     * *Lista de Palabras Clave* - se ingresa una lista de palabras clave separadas por comas, que describen o están relacionadas al recurso.
     * *Añadir nuevo conjunto de palabras clave* - haciendo clic sobre este enlace, se adiciona un nuevo conjunto de palabras clave.
 ====Partes Asociadas====
-Esta página de metadatos contiene información acerca de una o más personas u organizaciones asociadas con el recurso, además de las ya incluidas en la página "Metadatos Básicos". Muchos de los campos en esta página son comunes con aquellos para el Contacto del Recurso en la página de [IPT2ManualNotes#Basic_Metadata Metadatos Básicos]. Las explicaciones para el resto de los campos son dadas a continuación.
+Esta página de metadatos contiene información acerca de una o más personas u organizaciones asociadas con el recurso, además de las ya incluidas en la página "Metadatos Básicos". Muchos de los campos en esta página son comunes con aquellos para el Contacto del Recurso en la página de [IPT2ManualNotes#Metadatos_Básicos Metadatos Básicos]. Las explicaciones para el resto de los campos son dadas a continuación.
   * [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/IPTManageResourceMetadataAssociatedParties.PNG]
     * *Copiar datos del contacto* - si esta persona u organización es la misma del Contacto del Recurso en la página "Metadatos Básicos", entonces haciendo clic sobre este enlace pueden ser copiados en los campos equivalentes, todos los detalles para la parte asociada.
     * *Remover parte asociada* - haciendo clic sobre este enlace, se elimina la parte asociada que está inmediatamente debajo del enlace.
