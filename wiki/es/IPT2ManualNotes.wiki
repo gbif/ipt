@@ -806,8 +806,8 @@ Réveillon, A. 2009. The GBIF Integrated Publishing Toolkit User Manual, version
 *Recurso de Registro Biológico* - un recurso que tiene información acerca de Registros Biológicos tal como se define en el _Darwin Core_.<br>
 * Registrados* - un estado de un recurso público o de una instancia del IPT que implica que cualquier usuario lo puede detectar del Registro GBIF.<br>
 *Registro GBIF* - el _Global Biodiversity Resources Discovery System_ (GBRDS) es una aplicación de administración de los nodos, las organizaciones, los recursos e instalaciones del IPT registrados en GBIF, haciéndolos detectables e interoperables.<br>
+*RowType* - la categoría de información representada en una extensión. El RowType es generalmente el URI de la clase que mejor se adapte a la información contenida en la extensión.<br>
 *RSS* - el acrónimo de _Really Simple Syndication_, un tipo de formato de suscripción de seguimiento de los cambios a un sitio web.<br>
-*!Tipo de fila* - la categoría de información representada en una extensión. El !Tipo de fila es generalmente el URI de la clase que mejor se adapte a la información contenida en la extensión.<br>
 *Estándar* - una categoría de conjuntos predefinidos de las propiedades de los datos (Taxón y Registro Biológico) que se utilizan como base de un recurso. Extensiones adicionales podrían estar vinculadas a estos estándares para hacer el enlace de los datos en el IPT.<br>
 *Versión Publicada* - la última versión del Archivo _Darwin Core Archive_ producido por un recurso en el IPT y registrado en el Registro GBIF.<br>
 *Visibilidad* - un término que describe cómo un recurso puede ser visualizado (privado, público o registrado).
