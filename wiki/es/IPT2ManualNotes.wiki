@@ -1,9 +1,6 @@
 =Manual de Usuario para el Integrated Publishing Toolkit de GBIF=
 *Versión del IPT: 2.0.3*
 
-<font color=red>
-_¡Página en construcción!_
-</font>
 ----
 
 Si desea consultar la versión en idioma inglés del Manual de Usuario del IPT versión 2.0.2, por favor visite [IPTUserManualv202 esta página]_
