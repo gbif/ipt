@@ -19,6 +19,8 @@ Múltiples factores han servido como motivación para que GBIF lidere el desarro
   * la necesidad de ofrecer beneficios y servicios adicionales a los publicadores de datos para incentivar la publicación;
   * la carencia de herramientas apropiadas para la publicación de determinado tipo de datos sobre biodiversidad, tales como nombres, listas y metadatos.
 
+NOTA sobre la traducción: esta traducción al Español desde el original en Inglés es una contribución desinteresada del equipo del Sistema de Información sobre la Biodiversidad de Colombia (SIB Colombia, http://www.siac.net.co/web/sib), en particular de Daniel Amariles, Laura Roldán Gómez y Dairo Escobar. 
+
 ==¿Cómo utilizar este manual?==
 Este manual consta de tres componentes principales: una introducción con información de contexto, una serie de tutoriales y una completa guía de referencia, incluyendo la sección "Guía Básica" y unas secciones que describen detalladamente los diferentes elementos de la herramienta.
 
