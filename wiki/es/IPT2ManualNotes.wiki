@@ -19,8 +19,6 @@ Múltiples factores han servido como motivación para que GBIF lidere el desarro
   * la necesidad de ofrecer beneficios y servicios adicionales a los publicadores de datos para incentivar la publicación;
   * la carencia de herramientas apropiadas para la publicación de determinado tipo de datos sobre biodiversidad, tales como nombres, listas y metadatos.
 
-NOTA sobre la traducción: esta traducción al Español desde el original en Inglés es una contribución desinteresada del equipo del Sistema de Información sobre la Biodiversidad de Colombia (SIB Colombia, http://www.siac.net.co/web/sib), en particular de Daniel Amariles, Laura Roldán Gómez y Dairo Escobar. 
-
 ==¿Cómo utilizar este manual?==
 Este manual consta de tres componentes principales: una introducción con información de contexto, una serie de tutoriales y una completa guía de referencia, incluyendo la sección "Guía Básica" y unas secciones que describen detalladamente los diferentes elementos de la herramienta.
 
@@ -737,9 +735,13 @@ This IPT installation has not been registered yet.
 ----
 =Acerca del IPT=
 ==Citación==
-Este manual de usuario se adaptó y elaboró a partir del Manual de Usuario del IPT previamente publicado. (Réveillon 2009). La citación recomendada para este manual de usuario es la siguiente:
+El manual de usuario original en Inglés (Wieczorek, J. 2011. The GBIF Integrated Publishing Toolkit User Manual, version 2.0. Copenhagen: Global Biodiversity Information Facility) se adaptó y elaboró a partir del Manual de Usuario del IPT previamente publicado. (Réveillon 2009). 
 
-Wieczorek, J. 2011. The GBIF Integrated Publishing Toolkit User Manual, version 2.0. Copenhagen: Global Biodiversity Information Facility.
+Esta traducción al Español es una contribución desinteresada del equipo del Sistema de Información sobre la Biodiversidad de Colombia (SIB Colombia, http://www.siac.net.co/web/sib), en particular de Dairo Escobar, Laura Roldán Gómez y Daniel Amariles. 
+
+La citación recomendada para esta traducción al Español es la siguiente:
+
+Wieczorek, J. (2011). Manual de usuario para el Integrated Publishing Toolkit de GBIF. Trad:  Escobar, D., Roldán Gómez, L. & Amariles, D. Copenhague: Global Biodiversity Information Facility. Disponible en Internet en http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes?wl=es.
 
 ==Derechos de Autor==
 El _Integrated Publishing Toolkit_ de GBIF y este manual de usuario son Copyright 2011 de la Secretaría de _Global Biodiversity Information Facility_.
