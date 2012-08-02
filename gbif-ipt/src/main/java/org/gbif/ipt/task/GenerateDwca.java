@@ -65,12 +65,14 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
   /**
    * Adds a single data file for a list of extension mappings that must all be
-   * mapped to the same extension
+   * mapped to the same extension.
    *
-   * @throws IllegalArgumentException if not all mappings are mapped to the same
-   *                                  extension
+   * @param mappings list of ExtensionMapping
+   * @param coreRowType row type of core file
+   *
+   * @throws IllegalArgumentException if not all mappings are mapped to the same extension
    */
-  private void addDataFile(List<ExtensionMapping> mappings)
+  private void addDataFile(List<ExtensionMapping> mappings, String coreRowType)
     throws IOException, GeneratorException, IllegalArgumentException {
     checkForInterruption();
     if (mappings == null || mappings.isEmpty()) {
@@ -90,8 +92,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       }
     }
 
-    // create new meta.xml with the help of the Archive class
-    // create archive file representing this extensions
+    // create new tab file with the help of the Archive class representing the core file or an extension
     ArchiveFile af = ArchiveFile.buildTabFile();
     af.setRowType(ext.getRowType());
     af.setEncoding("utf-8");
@@ -119,8 +120,15 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
         } else {
           // check if we have a dynamic mapping
           if (pm.getIndex() != null) {
-            if (pm.getIndex() >= 0 && !pm.getTerm().qualifiedName().equalsIgnoreCase(Constants.DWC_OCCURRENCE_ID) && !pm
-              .getTerm().qualifiedName().equalsIgnoreCase(Constants.DWC_TAXON_ID)) {
+            // Avoid redundant columns being included in core data file or extension:
+            // no extension should ever include column occurrenceID when the archive has core row type occurrence
+            // no extension should ever include column taxonID when the archive has core row type taxon
+            // At same time ensure taxonId column can be written for core data file, when core row type is occurrence
+            if (pm.getIndex() >= 0 &&
+                ((coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_OCCURRENCE) &&
+                  !pm.getTerm().qualifiedName().equalsIgnoreCase(Constants.DWC_OCCURRENCE_ID)) ||
+                 (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON) &&
+                  !pm.getTerm().qualifiedName().equalsIgnoreCase(Constants.DWC_TAXON_ID)))) {
               // Since all default values ​​will be written in the data file, they won't be expressed in the
               // archive file (meta.xml). That's why we send a null value.
               af.addField(buildField(pm.getTerm(), dataFileRowSize, null));
@@ -268,7 +276,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     }
     for (Extension ext : resource.getMappedExtensions()) {
       report();
-      addDataFile(resource.getMappings(ext.getRowType()));
+      addDataFile(resource.getMappings(ext.getRowType()), resource.getCoreRowType());
     }
     // final reporting
     addMessage(Level.INFO, "All data files completed");
