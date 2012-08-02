@@ -49,15 +49,15 @@
   	</div>
   </div>
   <div class="body">
-      	<div>
-			${p.description}
-			<#if p.description?has_content><br/></#if>              	
-			<#if p.link?has_content><@s.text name="basic.seealso"/> <a href="${p.link}">${p.link}</a></#if>              	
-      	</div>
-      	<div>
-          	<em><@s.text name="basic.examples"/></em>: 
-			${p.examples}
-      	</div>
+    <div>
+			<#if p.description?has_content>${p.description}<br/></#if>
+			<#if p.link?has_content><@s.text name="basic.seealso"/> <a href="${p.link}">${p.link}</a></#if>
+    </div>
+    <#if p.examples?has_content>
+      <div>
+        <em><@s.text name="basic.examples"/></em>: ${p.examples}
+      </div>
+    </#if>
       	<#if p.vocabulary?exists>
       	<div>
 	      	<em><@s.text name="extension.vocabulary"/></em>: 
