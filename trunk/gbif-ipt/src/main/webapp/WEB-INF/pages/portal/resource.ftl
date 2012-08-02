@@ -18,7 +18,7 @@
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
 <div class="grid_18 suffix_6">
-<h1>${resource.title!resource.shortname}</h1>
+<h1>${resource.title!resource.shortname}<#if managerRights> <a class="edit" href="${baseURL}/manage/resource.do?r=${resource.shortname}"><@s.text name='button.edit'/></a></#if></h1>
 <div id="resourcelogo">
 	<#if resource.eml.logoUrl?has_content>
 	<img src="${resource.eml.logoUrl}" />
