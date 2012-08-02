@@ -892,3 +892,8 @@ table#user-list tbody {
   margin: 0px;
   padding: 0px;
 }
+
+.edit {
+  float: right;
+  font-size: 15px;
+}
