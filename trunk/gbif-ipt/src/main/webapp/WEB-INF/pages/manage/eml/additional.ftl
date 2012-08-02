@@ -4,7 +4,7 @@
 <#include "/WEB-INF/pages/macros/metadata.ftl"/>
 <script type="text/javascript" src="${baseURL}/js/ajaxfileupload.js"></script>
 <script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
-<title><@s.text name='manage.metadata.basic.title'/></title>
+<title><@s.text name='manage.metadata.additional.title'/></title>
 <script type="text/javascript">
 	$(document).ready(function(){
 		initHelp();			
