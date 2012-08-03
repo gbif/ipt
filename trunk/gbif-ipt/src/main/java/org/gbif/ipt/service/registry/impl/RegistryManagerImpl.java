@@ -103,7 +103,11 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(primaryContact.getEmail())));
     data.add(new BasicNameValuePair("primaryContactName",
       StringUtils.trimToNull(StringUtils.trimToEmpty(primaryContact.getFullName()))));
-    // TODO: For release 2.0.4
+    data.add(new BasicNameValuePair("primaryContactAddress",
+      StringUtils.trimToEmpty(primaryContact.getAddress().toFormattedString())));
+    data.add(new BasicNameValuePair("primaryContactPhone", StringUtils.trimToEmpty(primaryContact.getPhone())));
+
+    // TODO: For a future release - depends on modification to Registry WS
     // data.add(new BasicNameValuePair("primaryContactFirstName",
     // StringUtils.trimToNull(StringUtils.trimToEmpty(primaryContact.getFirstName()))));
     // data.add(new BasicNameValuePair("primaryContactLastName",
