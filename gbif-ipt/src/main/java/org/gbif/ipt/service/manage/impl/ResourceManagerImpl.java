@@ -4,7 +4,6 @@ import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.terms.DcTerm;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.terms.GbifTerm;
-import org.gbif.dwc.terms.IptTerm;
 import org.gbif.dwc.terms.IucnTerm;
 import org.gbif.dwc.text.Archive;
 import org.gbif.dwc.text.ArchiveFactory;
@@ -178,7 +177,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         eml = new Eml();
         eml.setTitle(metadata.getTitle());
         eml.setDescription(metadata.getDescription());
-        eml.setHomeUrl(metadata.getHomepageUrl());
+        eml.setHomepageUrl(metadata.getHomepageUrl());
         eml.setLogoUrl(metadata.getLogoUrl());
         eml.setSubject(metadata.getSubject());
         eml.setPubDate(metadata.getPublished());
@@ -378,7 +377,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     xstream.addDefaultImplementation(DcTerm.class, ConceptTerm.class);
     xstream.addDefaultImplementation(GbifTerm.class, ConceptTerm.class);
     xstream.addDefaultImplementation(IucnTerm.class, ConceptTerm.class);
-    xstream.addDefaultImplementation(IptTerm.class, ConceptTerm.class);
+    // TODO: Find out what happened to IptTerm after Dwca-reader 1.9
+    // xstream.addDefaultImplementation(IptTerm.class, ConceptTerm.class);
     xstream.registerConverter(orgConverter);
     xstream.registerConverter(jdbcInfoConverter);
   }
