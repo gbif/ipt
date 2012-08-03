@@ -88,7 +88,7 @@ public class MetadataAction extends ManagerBaseAction {
   }
 
   public Map<String, String> getJGTICuratorialUnitTypeOptions() {
-    return JGTICuratorialUnitType.htmlSelectMap;
+    return JGTICuratorialUnitType.HTML_SELECT_MAP;
   }
 
   public String getLanguageIso3() {
@@ -198,7 +198,7 @@ public class MetadataAction extends ManagerBaseAction {
   }
 
   public Map<String, String> getTempTypes() {
-    return TemporalCoverageType.htmlSelectMap;
+    return TemporalCoverageType.HTML_SELECT_MAP;
   }
 
   public Map<String, String> getTypes() {

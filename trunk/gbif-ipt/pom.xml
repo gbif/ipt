@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.gbif</groupId>
     <artifactId>motherpom</artifactId>
-    <version>6</version>
+    <version>8</version>
   </parent>
 
   <groupId>org.gbif</groupId>
@@ -42,10 +42,11 @@
     <commons-digester.version>2.1</commons-digester.version>
     <commons-lang.version>2.6</commons-lang.version>
     <commons-io.version>1.4</commons-io.version>
-    <dwca-reader.version>1.9.0-SNAPSHOT</dwca-reader.version>
+    <dwca-reader.version>1.11</dwca-reader.version>
+    <gbif-metadata-profile.version>0.2-SNAPSHOT</gbif-metadata-profile.version>
     <freemarker.version>2.3.18</freemarker.version>
     <gbif-common.version>0.4</gbif-common.version>
-    <guava.version>r09</guava.version>
+    <guava.version>11.0.2</guava.version>
     <gson.version>1.7.1</gson.version>
     <guice.version>3.0</guice.version>
     <httpclient.version>4.1.2</httpclient.version>
@@ -263,7 +264,12 @@
     <dependency>
       <groupId>org.gbif</groupId>
       <artifactId>dwca-reader</artifactId>
-      <version>1.9.0</version>
+      <version>${dwca-reader.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.gbif</groupId>
+      <artifactId>gbif-metadata-profile</artifactId>
+      <version>${gbif-metadata-profile.version}</version>
     </dependency>
     <dependency>
       <groupId>org.gbif</groupId>

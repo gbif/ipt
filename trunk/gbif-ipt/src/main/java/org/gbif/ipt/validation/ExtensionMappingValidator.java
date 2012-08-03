@@ -112,7 +112,7 @@ public class ExtensionMappingValidator {
             continue;
           }
         } else if (DataType.date == dt) {
-          Date d = DateUtils.parse(val, DateUtils.isoDateFormat);
+          Date d = DateUtils.parse(val, DateUtils.ISO_DATE_FORMAT);
           if (d == null) {
             return false;
           }
