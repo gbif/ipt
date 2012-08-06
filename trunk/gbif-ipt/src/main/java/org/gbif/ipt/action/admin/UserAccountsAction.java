@@ -13,8 +13,8 @@ import java.io.IOException;
 import java.util.List;
 
 import com.google.inject.Inject;
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * The Action responsible for all user input relating to the user accounts in the IPT.

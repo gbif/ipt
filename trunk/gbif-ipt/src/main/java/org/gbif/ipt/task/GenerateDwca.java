@@ -32,7 +32,7 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import freemarker.template.TemplateException;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Level;
 
 public class GenerateDwca extends ReportingTask implements Callable<Integer> {

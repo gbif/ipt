@@ -9,7 +9,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import com.google.inject.Inject;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * The Action responsible for all user input relating to the IPT configuration.

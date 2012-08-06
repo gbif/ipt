@@ -13,7 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import com.google.inject.Inject;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * The Action responsible for serving datadir resource files.

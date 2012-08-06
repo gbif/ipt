@@ -39,7 +39,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.google.inject.Inject;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class OverviewAction extends ManagerBaseAction {
 

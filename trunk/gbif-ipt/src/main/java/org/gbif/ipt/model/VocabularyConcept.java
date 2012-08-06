@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.google.common.base.Objects;
-import org.apache.commons.lang.builder.CompareToBuilder;
+import org.apache.commons.lang3.builder.CompareToBuilder;
 
 import static com.google.common.base.Objects.equal;
 

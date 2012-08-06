@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.google.common.base.Objects;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import static com.google.common.base.Objects.equal;
 

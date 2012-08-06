@@ -20,7 +20,7 @@ import java.text.ParseException;
 import java.util.Map;
 
 import com.opensymphony.xwork2.conversion.TypeConversionException;
-import org.apache.commons.lang.math.DoubleRange;
+import org.apache.commons.lang3.Range;
 import org.apache.struts2.util.StrutsTypeConverter;
 
 /**
@@ -47,13 +47,13 @@ public abstract class CoordinateFormatConverter extends StrutsTypeConverter {
       throw new TypeConversionException("Invalid decimal number: " + values[0]);
     } else {
       // Assign the values of the range depending the property who calls the method.
-      DoubleRange range;
+      Range<Double> range;
       if (coordinate.equals(CoordinateUtils.LATITUDE)) {
         // The range of the latitude coordinate. (-90,90)
-        range = new DoubleRange(CoordinateUtils.MIN_LATITUDE, CoordinateUtils.MAX_LATITUDE);
+        range = Range.between(CoordinateUtils.MIN_LATITUDE, CoordinateUtils.MAX_LATITUDE);
       } else {
         // The range of the longitude coordinate. (-180,180)
-        range = new DoubleRange(CoordinateUtils.MIN_LONGITUDE, CoordinateUtils.MAX_LONGITUDE);
+        range = Range.between(CoordinateUtils.MIN_LONGITUDE, CoordinateUtils.MAX_LONGITUDE);
       }
 
       Double number;
@@ -62,7 +62,7 @@ public abstract class CoordinateFormatConverter extends StrutsTypeConverter {
         // If the String contains a comma, a character, it throws the exception.
         number = Double.parseDouble(values[0]);
         // If the value is in the range, returns the double.
-        if (range.containsDouble(number)) {
+        if (range.contains(number)) {
           return number;
         } else {
           throw new TypeConversionException("Invalid decimal number: " + values[0]);
@@ -75,7 +75,7 @@ public abstract class CoordinateFormatConverter extends StrutsTypeConverter {
         DecimalFormat decimal = new DecimalFormat(DECIMAL_PATTERN, symbols);
         try {
           number = decimal.parse(values[0]).doubleValue();
-          if (range.containsDouble(number)) {
+          if (range.contains(number)) {
             return number;
           } else {
             throw new TypeConversionException("Invalid decimal number: " + values[0]);
