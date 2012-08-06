@@ -23,7 +23,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.google.inject.Inject;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 /**

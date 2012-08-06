@@ -16,7 +16,7 @@ import java.util.List;
 
 import com.google.common.base.Objects;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang.builder.CompareToBuilder;
+import org.apache.commons.lang3.builder.CompareToBuilder;
 
 import static com.google.common.base.Objects.equal;
 

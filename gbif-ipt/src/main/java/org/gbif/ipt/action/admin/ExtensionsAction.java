@@ -20,7 +20,7 @@ import java.util.Map.Entry;
 
 import com.google.inject.Inject;
 import com.google.inject.servlet.SessionScoped;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * The Action responsible for all user input relating to the DarwinCore extension management.

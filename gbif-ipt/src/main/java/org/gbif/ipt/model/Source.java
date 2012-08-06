@@ -25,7 +25,7 @@ import java.util.Iterator;
 import javax.annotation.Nullable;
 
 import com.google.common.base.Objects;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import static com.google.common.base.Objects.equal;

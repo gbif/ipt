@@ -39,7 +39,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.google.inject.Inject;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class MetadataAction extends ManagerBaseAction {
 

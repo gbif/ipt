@@ -1,6 +1,6 @@
 package org.gbif.ipt.action;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class POSTAction extends BaseAction {
 

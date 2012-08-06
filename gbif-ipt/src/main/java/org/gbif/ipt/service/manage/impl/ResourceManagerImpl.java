@@ -97,7 +97,7 @@ import com.lowagie.text.rtf.RtfWriter2;
 import com.thoughtworks.xstream.XStream;
 import freemarker.template.TemplateException;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.xml.sax.SAXException;
 
 @Singleton

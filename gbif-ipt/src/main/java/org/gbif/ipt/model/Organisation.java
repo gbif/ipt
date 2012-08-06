@@ -12,8 +12,8 @@ package org.gbif.ipt.model;
 import java.io.Serializable;
 
 import com.google.common.base.Objects;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * Encapsulates all the information for an Organisation.
