@@ -377,8 +377,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     xstream.addDefaultImplementation(DcTerm.class, ConceptTerm.class);
     xstream.addDefaultImplementation(GbifTerm.class, ConceptTerm.class);
     xstream.addDefaultImplementation(IucnTerm.class, ConceptTerm.class);
-    // TODO: Find out what happened to IptTerm after Dwca-reader 1.9
-    // xstream.addDefaultImplementation(IptTerm.class, ConceptTerm.class);
     xstream.registerConverter(orgConverter);
     xstream.registerConverter(jdbcInfoConverter);
   }
