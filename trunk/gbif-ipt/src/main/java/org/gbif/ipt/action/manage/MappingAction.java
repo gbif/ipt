@@ -40,6 +40,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import org.apache.commons.lang.xwork.StringUtils;
 
@@ -97,39 +98,67 @@ public class MappingAction extends ManagerBaseAction {
     }
   }
 
-  private void automap() {
+  /**
+   * This method automaps a source's columns. First it tries to automap the mappingCoreId column, and then it tries
+   * to automap the source's remaining fields against the core/extension.
+   *
+   * @return the number of terms that have been automapped
+   */
+  int automap() {
+    // keep track of how many terms were automapped
     int automapped = 0;
-    boolean coreidEvaluated = false;
+
+    // start by trying to automap the mappingCoreId (occurrenceId/taxonId) to a column in source
+    int idx1 = 0;
+    for (String col : columns) {
+      col = normalizeColumnName(col);
+      if (col != null && mappingCoreid.getTerm().simpleNormalisedName().equalsIgnoreCase(col)) {
+        // mappingCoreId and mapping id column must both be set (and have the same index) to automap successfully.
+        mappingCoreid.setIndex(idx1);
+        mapping.setIdColumn(idx1);
+        // we have automapped the core id column, so increment automapped counter and exit
+        automapped++;
+        break;
+      }
+      idx1++;
+    }
+
+    // next, try to automap the source's remaining columns against the extensions fields
     for (PropertyMapping f : fields) {
-      int idx = 0;
+      int idx2 = 0;
       for (String col : columns) {
-        if (col == null) {
-          continue;
-        }
-        col = NORM_TERM.matcher(col.toLowerCase()).replaceAll("");
-        if (col.contains(":")) {
-          col = StringUtils.substringAfter(col, ":");
-        }
-        if (!coreidEvaluated) {
-          if (mappingCoreid.getTerm().simpleNormalisedName().equalsIgnoreCase(col)) {
-            mappingCoreid.setIndex(idx);
-            mapping.setIdColumn(idx);
-            automapped++;
-            coreidEvaluated = true;
-          }
-        }
-        if (f.getTerm().simpleNormalisedName().equalsIgnoreCase(col)) {
-          f.setIndex(idx);
+        col = normalizeColumnName(col);
+        if (col != null && f.getTerm().simpleNormalisedName().equalsIgnoreCase(col)) {
+          f.setIndex(idx2);
+          // we have automapped the term, so increment automapped counter and exit
           automapped++;
           break;
         }
-        idx++;
+        idx2++;
       }
-      coreidEvaluated = true;
     }
-    if (automapped > 0) {
-      addActionMessage(getText("manage.mapping.automaped", new String[] {String.valueOf(automapped)}));
+
+    return automapped;
+  }
+
+  /**
+   * Normalizes an incoming column name so that it can later be compared against a ConceptTerm's simpleNormalizedName.
+   * This method converts the incoming string to lower case, and will take the substring up to, but no including the
+   * first ":".
+   *
+   * @param col column name
+   *
+   * @return the normalized column name, or null if the incoming name was null or empty
+   */
+  String normalizeColumnName(String col) {
+    if (!Strings.isNullOrEmpty(col)) {
+      col = NORM_TERM.matcher(col.toLowerCase()).replaceAll("");
+      if (col.contains(":")) {
+        col = StringUtils.substringAfter(col, ":");
+      }
+      return col;
     }
+    return null;
   }
 
   public String cancel() {
@@ -299,7 +328,10 @@ public class MappingAction extends ManagerBaseAction {
 
       // finally do automapping if no fields are found
       if (mapping.getFields().isEmpty()) {
-        automap();
+        int automapped = automap();
+        if (automapped > 0) {
+          addActionMessage(getText("manage.mapping.automaped", new String[] {String.valueOf(automapped)}));
+        }
       }
 
       if (!isHttpPost()) {
@@ -374,5 +406,9 @@ public class MappingAction extends ManagerBaseAction {
 
   public void setMid(Integer mid) {
     this.mid = mid;
+  }
+
+  public void setColumns(List<String> columns) {
+    this.columns = columns;
   }
 }
