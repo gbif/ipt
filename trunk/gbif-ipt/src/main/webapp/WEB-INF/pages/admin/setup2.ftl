@@ -19,6 +19,8 @@
 	<input type="hidden" name="setup2" value="true" />
 
 	<input type="hidden" name="ignoreUserValidation" value="${ignoreUserValidation}" />
+  <h2 class="subTitle">[@s.text name="admin.config.setup2.administrator"/]</h2>
+  [@s.text name="admin.config.setup2.administrator.help"/]<br/>
 	[@input name="user.email" disabled=(ignoreUserValidation==1) /]
 	[@input name="user.firstname" disabled=(ignoreUserValidation==1) /]
 	[@input name="user.lastname" disabled=(ignoreUserValidation==1) /]
@@ -27,13 +29,15 @@
 
 <div id="iptMode" class="clearfix">
   <div class="radio">
-    <h2 class="subTitle">[@s.text name="admin.config.setup2.production.title"/]</h2>
-    [@s.text name="admin.config.setup2.production.help"/]<br/>
-    [@s.text name="admin.config.setup2.production.mode"/]<br/>
+    <h2 class="subTitle">[@s.text name="admin.config.setup2.mode.title"/]</h2>
+    [@s.text name="admin.config.setup2.mode.help"/]<br/><br/>
+    [@s.text name="admin.config.setup2.mode.test"/]<br/>
+    [@s.text name="admin.config.setup2.mode.production"/]<br/><br/>
     [@s.text name="admin.config.setup2.mode"/]
     [@s.radio name="modeSelected" list="modes" disabled=(cfg.devMode()) value="Test" /]
   </div>
 </div>
+  <h2 class="subTitle">[@s.text name="admin.registration.baseURL"/]</h2>
 	[@input name="baseURL" help="i18n" i18nkey="admin.config.baseUrl"/]
 	[@input name="proxy" help="i18n" i18nkey="admin.config.proxy" /]
 
