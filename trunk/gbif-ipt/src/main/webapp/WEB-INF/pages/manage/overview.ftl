@@ -102,11 +102,9 @@ $(document).ready(function(){
   	  </form>
   	</div>
   	<#if missingMetadata>
-  	<div class="warn">
-		<@s.text name='manage.overview.missing.metadata'/>
-		
-       	
-  	</div>
+  	  <p class="warn">
+		    <@s.text name='manage.overview.missing.metadata'/>
+  	  </p>
   	</#if>
   </div>
   <div class="bodyOverview grid_16">
@@ -229,7 +227,12 @@ $(document).ready(function(){
 <div class="resourceOverview container_24" id="publish">	
   <div class="titleOverview grid_8">
   	<div class="head">
-        <@s.text name="manage.overview.published"/>
+      <@s.text name="manage.overview.published"/>
+      <#if cfg.devMode() && cfg.getRegistryType()!='PRODUCTION'>
+        <p class="warn">
+          <@s.text name="manage.overview.published.testmode.warning"/>
+        </p>
+      </#if>
   	</div>
    	<div class="actions">
    	  <#if !missingMetadata>
@@ -243,15 +246,15 @@ $(document).ready(function(){
   	</div>
   </div>
   <div class="bodyOverview grid_16">
-      	<p>
-      		<@s.text name="manage.overview.published.description"/>
-      	</p>
-   	  <#if missingMetadata>
-      	<div>
-          	<img class="info"src="${baseURL}/images/info.gif" /> 
-			<em><@s.text name="manage.overview.published.missing.metadata"/></em>
-      	</div>
-  	  </#if>
+    <p>
+      <@s.text name="manage.overview.published.description"/>
+    </p>
+   	<#if missingMetadata>
+    	<div>
+        <img class="info"src="${baseURL}/images/info.gif" />
+		    <em><@s.text name="manage.overview.published.missing.metadata"/></em>
+    	</div>
+  	</#if>
       	<div class="details">
       		<table>
 			  	<#if resource.lastPublished??>
