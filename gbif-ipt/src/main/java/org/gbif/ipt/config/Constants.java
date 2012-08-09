@@ -23,6 +23,9 @@ public final class Constants {
   public static final String VOCAB_URI_RANKS = "http://rs.gbif.org/vocabulary/gbif/rank";
   public static final String VOCAB_URI_ROLES = "http://rs.gbif.org/vocabulary/gbif/agentRole";
   public static final String VOCAB_URI_PRESERVATION_METHOD = "http://rs.gbif.org/vocabulary/gbif/preservation_method";
+  public static final String VOCAB_URI_DATASET_SUBTYPES = "http://rs.gbif.org/vocabulary/gbif/datasetSubtype";
   public static final String[] IMAGE_TYPES = {"jpeg", "gif", "png"};
 
+  // resource types
+  public static final String RESOURCE_TYPE_OTHER = "Other";
 }

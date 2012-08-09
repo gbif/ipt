@@ -13,6 +13,8 @@
 
 package org.gbif.ipt.action.manage;
 
+import org.gbif.api.model.vocabulary.DatasetSubtype;
+import org.gbif.api.model.vocabulary.DatasetType;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.PropertyMapping;
@@ -22,7 +24,6 @@ import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.utils.CountryUtils;
 import org.gbif.ipt.utils.LangUtils;
-import org.gbif.ipt.utils.SubtypeUtils;
 import org.gbif.ipt.validation.EmlValidator;
 import org.gbif.ipt.validation.ResourceValidator;
 import org.gbif.metadata.eml.Agent;
@@ -31,9 +32,11 @@ import org.gbif.metadata.eml.JGTICuratorialUnitType;
 import org.gbif.metadata.eml.TemporalCoverageType;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -55,6 +58,7 @@ public class MetadataAction extends ManagerBaseAction {
   private Map<String, String> licenses;
   private Map<String, String> preservationMethods;
   private Map<String, String> types;
+  private Map<String, String> datasetSubtypes;
   @Inject
   private ExtensionManager extensionManager;
   private PropertyMapping mappingCoreid;
@@ -67,10 +71,9 @@ public class MetadataAction extends ManagerBaseAction {
   @Inject
   private VocabulariesManager vocabManager;
 
-  // Return the static list from SubtypeUtils class
-  public Map<String, String> getChecklistSubtypes() {
-    return SubtypeUtils.checklistSubtypeList();
-  }
+  // to group dataset subtype vocabulary keys
+  private List<String> checklistSubtypeKeys;
+  private List<String> occurrenceSubtypeKeys;
 
   /**
    * @return a map of countries
@@ -126,24 +129,31 @@ public class MetadataAction extends ManagerBaseAction {
     return licenses;
   }
 
-  // Return the static list from SubtypeUtils class
+  /**
+   * Returns a Map containing dataset subtype entries. The entries returned depending on the core type.
+   * For exmaple, if the core type is Occurrence, the Map will only contain occurrence dataset subtypes.
+   * This method is called by Struts.
+   *
+   * @return Map of dataset subtypes
+   */
   public Map<String, String> getListSubtypes() {
     if (resource.getCoreType() == null) {
       if (resource.getCoreTypeTerm() != null) {
         String core = resource.getCoreTypeTerm().simpleName().toLowerCase();
         if (Constants.DWC_ROWTYPE_TAXON.toLowerCase().contains(core)) {
-          return SubtypeUtils.checklistSubtypeList();
+          return getChecklistSubtypesMap();
         } else if (Constants.DWC_ROWTYPE_OCCURRENCE.toLowerCase().contains(core)) {
-          return SubtypeUtils.occurrenceSubtypeList();
+          return getOccurrenceSubtypesMap();
         }
       }
     } else {
       if (resource.getCoreType().equalsIgnoreCase(CoreRowType.CHECKLIST.toString())) {
-        return SubtypeUtils.checklistSubtypeList();
+        return getChecklistSubtypesMap();
       } else if (resource.getCoreType().equalsIgnoreCase(CoreRowType.OCCURRENCE.toString())) {
-        return SubtypeUtils.occurrenceSubtypeList();
-      } else if ("other".equalsIgnoreCase(resource.getCoreType())) {
-        return SubtypeUtils.noSubtypeList();
+        return getOccurrenceSubtypesMap();
+      }
+      else if (Constants.RESOURCE_TYPE_OTHER.equalsIgnoreCase(resource.getCoreType())) {
+        return getEmptySubtypeMap();
       }
     }
     return new LinkedHashMap<String, String>();
@@ -159,11 +169,6 @@ public class MetadataAction extends ManagerBaseAction {
 
   public String getNext() {
     return next;
-  }
-
-  // Return the static list from SubtypeUtils class
-  public Map<String, String> getOccurrenceSubtypes() {
-    return SubtypeUtils.occurrenceSubtypeList();
   }
 
   /**
@@ -241,6 +246,17 @@ public class MetadataAction extends ManagerBaseAction {
     roles = new LinkedHashMap<String, String>();
     roles.put("", getText("eml.agent.role.selection"));
     roles.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_ROLES, getLocaleLanguage(), false));
+
+    // load list of Dataset Subtypes, derived from XML vocabulary, and displayed in dropdown on Basic Metadata page
+    datasetSubtypes = new LinkedHashMap<String, String>();
+    datasetSubtypes.put("", getText("resource.subtype.selection"));
+    datasetSubtypes.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_SUBTYPES, getLocaleLanguage(), false));
+    // convert all keys in Map to lowercase, in order to standardize keys across different versions of the IPT, as well
+    // as to facilitate grouping of subtypes, please see groupDatasetSubtypes()
+    datasetSubtypes = getSubtypeMapWithLowercaseKeys();
+    // group subtypes into Checklist and Occurrence - used for getOccurrenceSubtypeKeys() and getChecklistSubtypeKeys()
+    groupDatasetSubtypes();
+
     preservationMethods = new LinkedHashMap<String, String>();
     preservationMethods.put("", getText("eml.preservation.methods.selection"));
     preservationMethods
@@ -341,5 +357,110 @@ public class MetadataAction extends ManagerBaseAction {
   public void validateHttpPostOnly() {
     validatorRes.validate(this, resource);
     validatorEml.validate(this, resource.getEml(), section);
+  }
+
+  /**
+   * A list of dataset subtypes used to populate the dataset subtype dropdown on the Basic Metadata page.
+   *
+   * @return list of dataset subtypes
+   */
+  public Map<String, String> getDatasetSubtypes() {
+    return datasetSubtypes;
+  }
+
+  /**
+   * Exclude all known Checklist subtypes from the complete Map of Occurrence dataset subtypes, and return it. To
+   * exclude a newly added Checklist subtype, just extend the static list above. Called from Struts, so must be public.
+   *
+   * @return Occurrence subtypes Map
+   */
+  public Map<String, String> getOccurrenceSubtypesMap() {
+    // exclude subtypes known to relate to Checklist type
+    Map<String, String> datasetSubtypesCopy = new LinkedHashMap<String, String>(datasetSubtypes);
+    for (String key: checklistSubtypeKeys) {
+      if (datasetSubtypesCopy.containsKey(key)) {
+        datasetSubtypesCopy.remove(key);
+      }
+    }
+    return datasetSubtypesCopy;
+  }
+
+  /**
+   * Exclude all known Occurrence subtypes from the complete Map of Checklist dataset subtypes, and return it. To
+   * exclude a newly added Occurrence subtype, just extend the static list above. Called from Struts, so must be
+   * public.
+   *
+   * @return Checklist subtypes Map
+   */
+  public Map<String, String> getChecklistSubtypesMap() {
+    // exclude subtypes known to relate to Checklist type
+    Map<String, String> datasetSubtypesCopy = new LinkedHashMap<String, String>(datasetSubtypes);
+    for (String key: occurrenceSubtypeKeys) {
+      if (datasetSubtypesCopy.containsKey(key)) {
+        datasetSubtypesCopy.remove(key);
+      }
+    }
+    return datasetSubtypesCopy;
+  }
+
+  /**
+   * Returns a Map representing with only a single entry indicating that there is no subtype to choose from. Called
+   * from Struts, so must be public.
+   *
+   * @return a Map representing an empty set of dataset subtypes.
+   */
+  public Map<String, String> getEmptySubtypeMap() {
+    Map<String, String> subtypeMap = new LinkedHashMap<String, String>();
+    subtypeMap.put("", getText("resource.subtype.none"));
+    return subtypeMap;
+  }
+
+  /**
+   * Iterates over the datasetSubtypes map, and copies each entry to a new Map. The only difference, is that the
+   * key is replaced with an all lowercase key instead.
+   *
+   * @return modified datasetSubtypes map
+   */
+  Map<String, String> getSubtypeMapWithLowercaseKeys() {
+    Map<String, String> copy = new LinkedHashMap<String, String>();
+    for (Map.Entry<String, String> entry: datasetSubtypes.entrySet()) {
+      copy.put(entry.getKey().toLowerCase(), entry.getValue());
+    }
+    return copy;
+  }
+
+  /**
+   * Group dataset subtypes into 2 lists: one for checklist subtypes and the other for occurrence subtype keys.
+   * The way this grouping is done, is that DatasetSubtype Enum.name gets converted into vocabulary.identifier,
+   * for ex: TAXONOMIC_IDENTIFIER -> taxonomiciIdentifier
+   * As long as the DatasetSubtype is extended properly in accordance with the DatasetSubtype vocabulary, simply
+   * updating the version of gbif-common-api dependency is the only change needed to update the subtype list.
+   * This is a workaround to the limitation we currently have with our XML vocabularies, in that concepts can't be
+   * grouped.
+   */
+  void groupDatasetSubtypes()   {
+    List<String> checklistKeys = new LinkedList<String>();
+    List<String> occurrenceKeys = new LinkedList<String>();
+    for (DatasetSubtype type: DatasetSubtype.values()) {
+      if (type.getType().compareTo(DatasetType.CHECKLIST) == 0) {
+        checklistKeys.add(type.name().replaceAll("_", "").toLowerCase());
+      } else if (type.getType().compareTo(DatasetType.OCCURRENCE) == 0) {
+        occurrenceKeys.add(type.name().replaceAll("_", "").toLowerCase());
+      }
+    }
+    checklistSubtypeKeys = Collections.unmodifiableList(checklistKeys);
+    occurrenceSubtypeKeys = Collections.unmodifiableList(occurrenceKeys);
+  }
+
+  void setDatasetSubtypes(Map<String, String> datasetSubtypes) {
+    this.datasetSubtypes = datasetSubtypes;
+  }
+
+  List<String> getChecklistSubtypeKeys() {
+    return checklistSubtypeKeys;
+  }
+
+  List<String> getOccurrenceSubtypeKeys() {
+    return occurrenceSubtypeKeys;
   }
 }

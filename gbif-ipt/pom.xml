@@ -44,6 +44,7 @@
     <commons-io.version>2.4</commons-io.version>
     <dwca-reader.version>1.11</dwca-reader.version>
     <gbif-metadata-profile.version>0.2-SNAPSHOT</gbif-metadata-profile.version>
+    <gbif-common-api.version>0.2</gbif-common-api.version>
     <dwc-api.version>1.0</dwc-api.version>
     <freemarker.version>2.3.19</freemarker.version>
     <gbif-common.version>0.6</gbif-common.version>
@@ -284,6 +285,11 @@
       <groupId>org.gbif</groupId>
       <artifactId>gbif-httputils</artifactId>
       <version>${httputils.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.gbif</groupId>
+      <artifactId>gbif-common-api</artifactId>
+      <version>${gbif-common-api.version}</version>
     </dependency>
     <dependency>
 

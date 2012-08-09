@@ -34,28 +34,28 @@
 				$("#resource\\.subtype").css("width", "310px");
 				switch(optionType)
 		        {
-		            case 'Occurrence':
-		            	$('#resource\\.subtype >option').remove();
-		            	var list=getList("${occurrenceSubtypes}");
-		            	$.each(list, function(key, value) {
-		    				$('#resource\\.subtype').append('<option value="'+key+'">'+value+'</option>');
-		    			});          	
-		            break;
-		            case 'Checklist':
-		            	$('#resource\\.subtype >option').remove();	
-		            	var list=getList("${checklistSubtypes}");
-		            	$.each(list, function(key, value) {
-		    				$('#resource\\.subtype').append('<option value="'+key+'">'+value+'</option>');
-		    			});
-		            break;
-		            case 'Other':
-		            	$('#resource\\.subtype >option').remove();	
-		            	$('#resource\\.subtype').append('<option value="">No subtype</option>');
-		    		break;	
-		            default:
-		            	$('#resource\\.subtype >option').remove();
-		            	$('#resource\\.subtype').append('<option value=""></option>');	            	
-		            break;
+              case 'Occurrence':
+                $('#resource\\.subtype >option').remove();
+                var list=getList("${occurrenceSubtypesMap}");
+                $.each(list, function(key, value) {
+                  $('#resource\\.subtype').append('<option value="'+key+'">'+value+'</option>');
+                });
+              break;
+              case 'Checklist':
+                $('#resource\\.subtype >option').remove();
+                var list=getList("${checklistSubtypesMap}");
+                $.each(list, function(key, value) {
+                  $('#resource\\.subtype').append('<option value="'+key+'">'+value+'</option>');
+                });
+              break;
+              case 'Other':
+                $('#resource\\.subtype >option').remove();
+                $('#resource\\.subtype').append('<option value="">No subtype</option>');
+              break;
+              default:
+                $('#resource\\.subtype >option').remove();
+                $('#resource\\.subtype').append('<option value=""></option>');
+              break;
 		        }
 			});			
 			
@@ -117,9 +117,9 @@
 	<div class="halfcolumn">
 		<@select name="resource.coreType" help="i18n" options=types value="${resource.coreType!''}"/>
 	</div>
-	<div class="halfcolumn" id="selectSubtypeDiv">	
-		<@select name="resource.subtype" help="i18n" options=listSubtypes value="${resource.subtype!''}" />	
-  	</div>	
+	<div class="halfcolumn" id="selectSubtypeDiv">
+    <@select name="resource.subtype" i18nkey="resource.subtype" help="i18n" value="${resource.subtype!''}" options=listSubtypes />
+  </div>
   	
   	<!-- Resource Contact -->    	
   	<div class="basicMetadata grid_17 suffix_1">
