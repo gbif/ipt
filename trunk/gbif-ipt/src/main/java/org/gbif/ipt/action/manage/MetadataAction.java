@@ -292,16 +292,6 @@ public class MetadataAction extends ManagerBaseAction {
       resource.getEml().getAssociatedParties().add(user);
     }
 
-    // Save the coreType to the resource when it is null
-    if (resource.getCoreType() == null && resource.getCoreTypeTerm() != null) {
-      String core = resource.getCoreTypeTerm().simpleName().toLowerCase();
-      if (Constants.DWC_ROWTYPE_TAXON.toLowerCase().contains(core)) {
-        resource.setCoreType(StringUtils.capitalize(CoreRowType.OCCURRENCE.toString().toLowerCase()));
-      } else if (Constants.DWC_ROWTYPE_OCCURRENCE.toLowerCase().contains(core)) {
-        resource.setCoreType(StringUtils.capitalize(CoreRowType.CHECKLIST.toString().toLowerCase()));
-      }
-    }
-
     // if it is a submission of the taxonomic coverage, clear the session list
     if (isHttpPost()) {
       if ("parties".equals(section)) {

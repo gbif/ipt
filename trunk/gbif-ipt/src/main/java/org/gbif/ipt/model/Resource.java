@@ -16,6 +16,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Strings;
 import org.apache.log4j.Logger;
 
 import static com.google.common.base.Objects.equal;
@@ -162,6 +163,13 @@ public class Resource implements Serializable, Comparable<Resource> {
     return cores;
   }
 
+  /**
+   * Get the rowType of the core mapping. This method first iterates through a list of the core mappings if there
+   * are any. Then, since they will all be of the same core rowType, the first mapping is read for its rowType and
+   * this String is returned.
+   *
+   * @return core rowType
+   */
   public String getCoreRowType() {
     List<ExtensionMapping> cores = getCoreMappings();
     if (!cores.isEmpty()) {
@@ -428,10 +436,15 @@ public class Resource implements Serializable, Comparable<Resource> {
     this.status = status;
   }
 
+  /**
+   * Sets the resource subtype. If it is null or an empty string, it is set to null. Otherwise, it is simply set
+   * in lowercase.
+   *
+   * @param subtype subtype String
+   */
   public void setSubtype(String subtype) {
-    this.subtype = subtype.length() == 0 ? null : subtype;
+    this.subtype = (Strings.isNullOrEmpty(subtype)) ? null : subtype.toLowerCase();
   }
-
 
   public void setTitle(String title) {
     if (eml != null) {

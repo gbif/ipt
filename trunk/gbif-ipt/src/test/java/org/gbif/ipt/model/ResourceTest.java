@@ -164,4 +164,18 @@ public class ResourceTest {
     assertEquals(0, res.getCoreMappings().size());
   }
 
+  @Test
+  public void testCoreRowTypeSet() {
+    // create test resource
+    Resource resource = new Resource();
+    // add mapping to taxon core
+    ExtensionMapping mapping = new ExtensionMapping();
+    Extension ext = new Extension();
+    ext.setRowType(Constants.DWC_ROWTYPE_TAXON);
+    mapping.setExtension(ext);
+    resource.addMapping(mapping);
+    // assert correct core row type has been determined from core mapping
+    assertEquals(Constants.DWC_ROWTYPE_TAXON, resource.getCoreRowType());
+  }
+
 }

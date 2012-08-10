@@ -44,6 +44,7 @@ import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
@@ -80,6 +81,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -116,13 +118,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private Map<String, Future<Integer>> processFutures = new HashMap<String, Future<Integer>>();
   private Map<String, StatusReport> processReports = new HashMap<String, StatusReport>();
   private Eml2Rtf eml2Rtf;
+  private VocabulariesManager vocabManager;
 
   @Inject
   public ResourceManagerImpl(AppConfig cfg, DataDir dataDir, UserEmailConverter userConverter,
     OrganisationKeyConverter orgConverter, ExtensionRowTypeConverter extensionConverter,
     JdbcInfoConverter jdbcInfoConverter, SourceManager sourceManager, ExtensionManager extensionManager,
     RegistryManager registryManager, ConceptTermConverter conceptTermConverter, GenerateDwcaFactory dwcaFactory,
-    PasswordConverter passwordConverter, RegistrationManager registrationManager, Eml2Rtf eml2Rtf) {
+    PasswordConverter passwordConverter, RegistrationManager registrationManager, Eml2Rtf eml2Rtf,
+    VocabulariesManager vocabManager) {
     super(cfg, dataDir);
     this.sourceManager = sourceManager;
     this.extensionManager = extensionManager;
@@ -130,6 +134,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     this.registrationManager = registrationManager;
     this.dwcaFactory = dwcaFactory;
     this.eml2Rtf = eml2Rtf;
+    this.vocabManager = vocabManager;
     this.executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(cfg.getMaxThreads());
     defineXstreamMapping(userConverter, orgConverter, extensionConverter, conceptTermConverter, jdbcInfoConverter,
       passwordConverter);
@@ -658,6 +663,17 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
         // shortname persists as folder name, so xstream doesnt handle this:
         resource.setShortname(shortname);
+
+        // infer coreType if null
+        if (resource.getCoreType() == null) {
+          inferCoreType(resource);
+        }
+
+        // standardize subtype if not null
+        if (resource.getSubtype() != null) {
+          standardizeSubtype(resource);
+        }
+
         // add proper source file pointer
         for (Source src : resource.getSources()) {
           src.setResource(resource);
@@ -676,6 +692,60 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       }
     }
     return null;
+  }
+
+  /**
+   * The resource's coreType could be null. This could happen because before 2.0.3 it was not saved to resource.xml.
+   * During upgrades to 2.0.3, a bug in MetadataAction would (wrongly) automatically set the coreType:
+   * Checklist resources became Occurrence, and vice versa. This method will try to infer the coreType by matching
+   * the coreRowType against the taxon and occurrence rowTypes.
+   *
+   * @param resource Resource
+   *
+   * @return resource with coreType set if it could be inferred, or unchanged if it couldn't be inferred.
+   */
+  Resource inferCoreType(Resource resource) {
+    if (resource != null && resource.getCoreRowType() != null) {
+      if (Constants.DWC_ROWTYPE_OCCURRENCE.equalsIgnoreCase(resource.getCoreRowType())) {
+        resource.setCoreType(StringUtils.capitalize(CoreRowType.OCCURRENCE.toString().toLowerCase()));
+      } else if (Constants.DWC_ROWTYPE_TAXON.equalsIgnoreCase(resource.getCoreRowType())) {
+        resource.setCoreType(StringUtils.capitalize(CoreRowType.CHECKLIST.toString().toLowerCase()));
+      }
+    } else {
+      // don't do anything - no taxon or occurrence mapping has been done yet
+    }
+    return resource;
+  }
+
+  /**
+   * The resource's subType might not have been set using a standardized term from the dataset_subtype vocabulary.
+   * All versions before 2.0.4 didn't use the vocabulary, so this method is particularly important during upgrades
+   * to 2.0.4 and later. Basically, if the subType isn't recognized as belonging to the vocabulary, it is reset as
+   * null. That would mean the user would then have to reselect the subtype from the Basic Metadata page.
+   *
+   * @param resource Resource
+   *
+   * @return resource with subtype set using term from dataset_subtype vocabulary (assuming it has been set).
+   */
+  Resource standardizeSubtype(Resource resource) {
+    if (resource != null && resource.getSubtype() != null) {
+      // the vocabulary key names are identifiers and standard across Locales
+      // it's this key we want to persist as the subtype
+      Map<String, String> subtypes =
+        vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_SUBTYPES, Locale.ENGLISH.getLanguage(), false);
+      boolean usesVocab = false;
+      for (Map.Entry<String, String> entry : subtypes.entrySet()) {
+        // remember to do comparison regardless of case, since the subtype is stored in lowercase
+        if (resource.getSubtype().equalsIgnoreCase(entry.getKey())) {
+          usesVocab = true;
+        }
+      }
+      // if the subtype doesn't use a standardized term from the vocab, it's reset to null
+      if (!usesVocab) {
+        resource.setSubtype(null);
+      }
+    }
+    return resource;
   }
 
   public boolean publish(Resource resource, BaseAction action) throws PublicationException {
