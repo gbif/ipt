@@ -37,7 +37,10 @@
       </#if>
     </#function>
 
-    <#list resources as r>
+    <#assign emptyString="---">
+    <#assign dotDot="..">
+
+      <#list resources as r>
 
       <tr class="${zebra(r_index)}">
     	<td id="resourceName"><a href="resource.do?r=${r.shortname}"><if><#if r.title?has_content>${r.title}<#else>${r.shortname}</#if></a></td>
@@ -49,8 +52,14 @@
     			<@s.text name="manage.home.not.registered"/>
     		</#if>
     	</td>
-    	<td id="resourceType">${r.coreType!"---"}</td>
-    	<td id="resourceSubType">${r.subtype!"---"}</td>
+    	<td id="resourceType">${r.coreType!emptyString}</td>
+    	<td id="resourceSubType">
+        <#if (r.subtype?has_content) && (r.subtype?length >= 8) >
+          ${r.subtype?upper_case?substring(0,7)}${dotDot}
+        <#else>
+          ${emptyString}
+        </#if>
+      </td>
     	<td id="resourceRecords">${r.recordsPublished!0}</td>
     	<td id="resourceLastModified">${r.modified?date}</td>
     	<td id="resourceLastPublication">
