@@ -16,8 +16,6 @@ package org.gbif.ipt.action.manage;
 import org.gbif.api.model.vocabulary.DatasetSubtype;
 import org.gbif.api.model.vocabulary.DatasetType;
 import org.gbif.ipt.config.Constants;
-import org.gbif.ipt.model.ExtensionMapping;
-import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Resource.CoreRowType;
 import org.gbif.ipt.service.admin.ExtensionManager;
@@ -50,7 +48,6 @@ public class MetadataAction extends ManagerBaseAction {
   private final EmlValidator validatorEml = new EmlValidator();
   private String section = "basic";
   private String next = "geocoverage";
-  private Map<String, String> resourceTypes;
   private Map<String, String> languages;
   private Map<String, String> countries;
   private Map<String, String> ranks;
@@ -61,8 +58,6 @@ public class MetadataAction extends ManagerBaseAction {
   private Map<String, String> datasetSubtypes;
   @Inject
   private ExtensionManager extensionManager;
-  private PropertyMapping mappingCoreid;
-  private ExtensionMapping mapping;
 
   private static final List<String> SECTIONS = Arrays
     .asList("basic", "geocoverage", "taxcoverage", "tempcoverage", "keywords", "parties", "project", "methods",
@@ -107,7 +102,7 @@ public class MetadataAction extends ManagerBaseAction {
   }
 
   /*
-   * Return the text of the license through the value of the map
+   * Return the text of the license through the value of the map.
    */
   public String getLicenseName() {
     String licenseText = resource.getEml().getIntellectualRights();
@@ -152,7 +147,7 @@ public class MetadataAction extends ManagerBaseAction {
       } else if (resource.getCoreType().equalsIgnoreCase(CoreRowType.OCCURRENCE.toString())) {
         return getOccurrenceSubtypesMap();
       }
-      else if (Constants.RESOURCE_TYPE_OTHER.equalsIgnoreCase(resource.getCoreType())) {
+      else if (CoreRowType.OTHER.toString().equalsIgnoreCase(resource.getCoreType())) {
         return getEmptySubtypeMap();
       }
     }
@@ -190,10 +185,6 @@ public class MetadataAction extends ManagerBaseAction {
     return resource;
   }
 
-  public Map<String, String> getResourceTypes() {
-    return resourceTypes;
-  }
-
   public Map<String, String> getRoles() {
     return roles;
   }
@@ -221,13 +212,8 @@ public class MetadataAction extends ManagerBaseAction {
       idx = 0;
     }
     next = idx + 1 < SECTIONS.size() ? SECTIONS.get(idx + 1) : SECTIONS.get(0);
-    types = new LinkedHashMap<String, String>();
-    types.put("", "Select a type");
-    types.put(StringUtils.capitalize(CoreRowType.CHECKLIST.toString().toLowerCase()),
-      StringUtils.capitalize(CoreRowType.CHECKLIST.toString().toLowerCase()));
-    types.put(StringUtils.capitalize(CoreRowType.OCCURRENCE.toString().toLowerCase()),
-      StringUtils.capitalize(CoreRowType.OCCURRENCE.toString().toLowerCase()));
-    types.put("Other", "Other");
+
+    // licenses - Additional Metadata Page
     licenses = new LinkedHashMap<String, String>();
     licenses.put(getText("eml.intellectualRights.nolicenses"), "");
     licenses
@@ -235,28 +221,44 @@ public class MetadataAction extends ManagerBaseAction {
     licenses.put(getText("eml.intellectualRights.license.pddl"), getText("eml.intellectualRights.license.pddl.text"));
     licenses.put(getText("eml.intellectualRights.license.odcby"), getText("eml.intellectualRights.license.odcby.text"));
     licenses.put(getText("eml.intellectualRights.license.odbl"), getText("eml.intellectualRights.license.odbl.text"));
-    resourceTypes = vocabManager.getI18nVocab(Constants.VOCAB_URI_RESOURCE_TYPE, getLocaleLanguage(), true);
+
+    // Dataset core type list, derived from XML vocabulary, and displayed in drop-down on Basic Metadata page
+    types = new LinkedHashMap<String, String>();
+    types.put("", getText("resource.coreType.selection"));
+    types.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_TYPE, getLocaleLanguage(), false));
+    // convert all keys in Map to lowercase, in order to standardize keys across different versions of the IPT, as well
+    // as to facilitate grouping of subtypes, please see groupDatasetSubtypes()
+    types = getMapWithLowercaseKeys(types);
+
+    // languages list, derived from XML vocabulary, and displayed in drop-down on Basic Metadata page
     languages = vocabManager.getI18nVocab(Constants.VOCAB_URI_LANGUAGE, getLocaleLanguage(), true);
+
+    // countries list, derived from XML vocabulary, and displayed in drop-down where new contacts are created
     countries = new LinkedHashMap<String, String>();
     countries.put("", getText("eml.country.selection"));
     countries.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_COUNTRY, getLocaleLanguage(), true));
+
+    // ranks list, derived from XML vocabulary, and displayed on Taxonomic Coverage Page
     ranks = new LinkedHashMap<String, String>();
     ranks.put("", getText("eml.rank.selection"));
     ranks.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, getLocaleLanguage(), false));
+
+    // roles list, derived from XML vocabulary, and displayed in drop-down where new contacts are created
     roles = new LinkedHashMap<String, String>();
     roles.put("", getText("eml.agent.role.selection"));
     roles.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_ROLES, getLocaleLanguage(), false));
 
-    // load list of Dataset Subtypes, derived from XML vocabulary, and displayed in dropdown on Basic Metadata page
+    // Dataset Subtypes list, derived from XML vocabulary, and displayed in drop-down on Basic Metadata page
     datasetSubtypes = new LinkedHashMap<String, String>();
     datasetSubtypes.put("", getText("resource.subtype.selection"));
     datasetSubtypes.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_SUBTYPES, getLocaleLanguage(), false));
     // convert all keys in Map to lowercase, in order to standardize keys across different versions of the IPT, as well
     // as to facilitate grouping of subtypes, please see groupDatasetSubtypes()
-    datasetSubtypes = getSubtypeMapWithLowercaseKeys();
+    datasetSubtypes = getMapWithLowercaseKeys(datasetSubtypes);
     // group subtypes into Checklist and Occurrence - used for getOccurrenceSubtypeKeys() and getChecklistSubtypeKeys()
     groupDatasetSubtypes();
 
+    // preservation methods list, derived from XML vocabulary, and displayed in drop-down on Collections Data Page.
     preservationMethods = new LinkedHashMap<String, String>();
     preservationMethods.put("", getText("eml.preservation.methods.selection"));
     preservationMethods
@@ -411,9 +413,9 @@ public class MetadataAction extends ManagerBaseAction {
    *
    * @return modified datasetSubtypes map
    */
-  Map<String, String> getSubtypeMapWithLowercaseKeys() {
+  Map<String, String> getMapWithLowercaseKeys(Map<String, String> m) {
     Map<String, String> copy = new LinkedHashMap<String, String>();
-    for (Map.Entry<String, String> entry: datasetSubtypes.entrySet()) {
+    for (Map.Entry<String, String> entry: m.entrySet()) {
       copy.put(entry.getKey().toLowerCase(), entry.getValue());
     }
     return copy;

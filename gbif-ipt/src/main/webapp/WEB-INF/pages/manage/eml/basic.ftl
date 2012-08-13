@@ -3,14 +3,14 @@
 <title><@s.text name='manage.metadata.basic.title'/></title>
 <script type="text/javascript">
 	$(document).ready(function(){
-		initHelp();	
-		 		
+		initHelp();
+      // Ensure core type can't be changed after core mapping has been done
 		 	var resourceType="${resource.coreTypeTerm!}";	
 		 	if(resourceType != ""){
-				if(resourceType.indexOf("Occurrence")!=-1){	
+				if(resourceType.indexOf("Occurrence")!=-1){
 					$("#resource\\.coreType").attr('disabled','disabled');
 				}else{					
-					if (resourceType.indexOf("Taxon")!=-1){	
+					if (resourceType.indexOf("Taxon")!=-1){
 						$("#resource\\.coreType").attr('disabled','disabled');
 					}
 				}			
@@ -27,28 +27,28 @@
 				}
 				return newlistaOccurrence;
 			}
-			
+      // Populate subtype list depending on core type selected
 			$("#resource\\.coreType").change(function(){
 				var optionType=$("#resource\\.coreType").val();
 				$("#resource\\.subtype").attr('selectedIndex', '0');
 				$("#resource\\.subtype").css("width", "310px");
 				switch(optionType)
 		        {
-              case 'Occurrence':
+              case 'occurrence':
                 $('#resource\\.subtype >option').remove();
                 var list=getList("${occurrenceSubtypesMap}");
                 $.each(list, function(key, value) {
                   $('#resource\\.subtype').append('<option value="'+key+'">'+value+'</option>');
                 });
               break;
-              case 'Checklist':
+              case 'checklist':
                 $('#resource\\.subtype >option').remove();
                 var list=getList("${checklistSubtypesMap}");
                 $.each(list, function(key, value) {
                   $('#resource\\.subtype').append('<option value="'+key+'">'+value+'</option>');
                 });
               break;
-              case 'Other':
+              case 'other':
                 $('#resource\\.subtype >option').remove();
                 $('#resource\\.subtype').append('<option value="">No subtype</option>');
               break;

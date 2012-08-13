@@ -707,9 +707,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   Resource inferCoreType(Resource resource) {
     if (resource != null && resource.getCoreRowType() != null) {
       if (Constants.DWC_ROWTYPE_OCCURRENCE.equalsIgnoreCase(resource.getCoreRowType())) {
-        resource.setCoreType(StringUtils.capitalize(CoreRowType.OCCURRENCE.toString().toLowerCase()));
+        resource.setCoreType(CoreRowType.OCCURRENCE.toString().toLowerCase());
       } else if (Constants.DWC_ROWTYPE_TAXON.equalsIgnoreCase(resource.getCoreRowType())) {
-        resource.setCoreType(StringUtils.capitalize(CoreRowType.CHECKLIST.toString().toLowerCase()));
+        resource.setCoreType(CoreRowType.CHECKLIST.toString().toLowerCase());
       }
     } else {
       // don't do anything - no taxon or occurrence mapping has been done yet

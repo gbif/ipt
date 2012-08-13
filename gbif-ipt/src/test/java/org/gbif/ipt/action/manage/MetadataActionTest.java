@@ -32,7 +32,7 @@ public class MetadataActionTest {
     // set Map
     action.setDatasetSubtypes(datasetSubtypes);
     // make all keys lower case in datasetSubtypes Map
-    action.setDatasetSubtypes(action.getSubtypeMapWithLowercaseKeys());
+    action.setDatasetSubtypes(action.getMapWithLowercaseKeys(datasetSubtypes));
   }
 
    @Test

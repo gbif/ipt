@@ -80,7 +80,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   private final ExtensionManager extensionManager;
   // these vocabularies are always updates on startup of the IPT
   private final String[] defaultVocabs =
-    {Constants.VOCAB_URI_LANGUAGE, Constants.VOCAB_URI_COUNTRY, Constants.VOCAB_URI_RESOURCE_TYPE,
+    {Constants.VOCAB_URI_LANGUAGE, Constants.VOCAB_URI_COUNTRY, Constants.VOCAB_URI_DATASET_TYPE,
       Constants.VOCAB_URI_RANKS, Constants.VOCAB_URI_ROLES, Constants.VOCAB_URI_PRESERVATION_METHOD,
       Constants.VOCAB_URI_DATASET_SUBTYPES};
   private ConfigWarnings warnings;

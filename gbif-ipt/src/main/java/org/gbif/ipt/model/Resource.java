@@ -29,7 +29,7 @@ import static com.google.common.base.Objects.equal;
 public class Resource implements Serializable, Comparable<Resource> {
 
   public enum CoreRowType {
-    OCCURRENCE, CHECKLIST
+    OCCURRENCE, CHECKLIST, METADATA, OTHER
   }
 
   private static Logger log = Logger.getLogger(Resource.class);
