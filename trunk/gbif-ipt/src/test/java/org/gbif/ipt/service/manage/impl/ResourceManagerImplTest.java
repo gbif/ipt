@@ -31,6 +31,7 @@ import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
 import org.gbif.ipt.model.converter.PasswordConverter;
 import org.gbif.ipt.model.converter.UserEmailConverter;
+import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
@@ -40,11 +41,14 @@ import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.task.Eml2Rtf;
 import org.gbif.ipt.task.GenerateDwcaFactory;
+import org.gbif.metadata.eml.Eml;
 
 import java.io.File;
 import java.io.FileFilter;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.UUID;
 
 import org.junit.After;
 import org.junit.Test;
@@ -118,6 +122,8 @@ public class ResourceManagerImplTest {
     datasetSubtypes.put("observation", "Observation");
     // mock getting the vocabulary
     when(mockedVocabulariesManager.getI18nVocab(anyString(),anyString(), anyBoolean())).thenReturn(datasetSubtypes);
+    // mock the cfg
+    when(mockedAppConfig.getBaseUrl()).thenReturn("http://localhost:7001/ipt");
 
     ResourceManagerImpl resourceManager =
       new ResourceManagerImpl(mockedAppConfig, mockedDataDir, mockedUserEmailConverter, mockedOrgKeyConverter,
@@ -200,5 +206,84 @@ public class ResourceManagerImplTest {
     resource = manager.standardizeSubtype(resource);
     // assert the subtype has been set to "specimen", since it does correspond to the known vocab term "specimen"
     assertEquals("specimen", resource.getSubtype());
+  }
+
+  @Test
+  public void testUpdateAlternateIdentifierForIPTURLToResource() {
+    ResourceManagerImpl manager = getResourceManagerImpl();
+
+    // create PRIVATE test resource
+    Resource resource = new Resource();
+    resource.setShortname("bees");
+    Eml eml = new Eml();
+    eml.setTitle("Bees of Kansas");
+    eml.setAlternateIdentifiers(new LinkedList<String>());
+    resource.setEml(eml);
+    resource.setStatus(PublicationStatus.PRIVATE);
+
+    // update alt. id
+    manager.updateAlternateIdentifierForIPTURLToResource(resource);
+
+    // update the alt. id - it should not have been set, since the resource is Private
+    assertTrue(resource.getEml().getAlternateIdentifiers().size()==0);
+
+    // change resource to PUBLIC
+    resource.setStatus(PublicationStatus.PUBLIC);
+
+    // update alt. id
+    manager.updateAlternateIdentifierForIPTURLToResource(resource);
+    // assert it has been set
+    assertEquals("http://localhost:7001/ipt/resource.do?r=bees",
+      resource.getEml().getAlternateIdentifiers().get(0));
+
+    // create PRIVATE test resource, with existing alt id
+    resource.setStatus(PublicationStatus.PRIVATE);
+
+    // update alt. id
+    manager.updateAlternateIdentifierForIPTURLToResource(resource);
+
+    // update the alt. id - it should disapear since the resource is Private now
+    assertTrue(resource.getEml().getAlternateIdentifiers().size()==0);
+  }
+
+  @Test
+  public void testUpdateAlternateIdentifierForRegistry() {
+    ResourceManagerImpl manager = getResourceManagerImpl();
+
+    // create PRIVATE test resource
+    Resource resource = new Resource();
+    resource.setShortname("bees");
+    Eml eml = new Eml();
+    eml.setTitle("Bees of Kansas");
+    eml.setAlternateIdentifiers(new LinkedList<String>());
+    resource.setEml(eml);
+    resource.setStatus(PublicationStatus.PRIVATE);
+
+    // update alt. id
+    manager.updateAlternateIdentifierForRegistry(resource);
+    // update the alt. id - it should not have been set, since the resource isn't registered yet
+    assertTrue(resource.getEml().getAlternateIdentifiers().size()==0);
+
+    // change resource to PUBLIC
+    resource.setStatus(PublicationStatus.PUBLIC);
+    // update alt. id
+    manager.updateAlternateIdentifierForRegistry(resource);
+    // update the alt. id - it should not have been set, since the resource isn't registered yet
+    assertTrue(resource.getEml().getAlternateIdentifiers().size()==0);
+
+    // change resource to Registered and give it a Registry UUID
+    resource.setStatus(PublicationStatus.PUBLIC);
+    UUID key = UUID.randomUUID();
+    resource.setKey(key);
+
+    // update alt. id
+    manager.updateAlternateIdentifierForRegistry(resource);
+    // assert it has been set
+    assertEquals(key.toString(), resource.getEml().getAlternateIdentifiers().get(0));
+
+    // try to update alt. id again
+    manager.updateAlternateIdentifierForRegistry(resource);
+    // there should still only be 1
+    assertTrue(resource.getEml().getAlternateIdentifiers().size()==1);
   }
 }
