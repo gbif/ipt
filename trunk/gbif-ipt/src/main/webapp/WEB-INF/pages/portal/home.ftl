@@ -47,14 +47,20 @@
     		</#if>
     	</td>
     	<#-- >/#if -->
-    	<td id="resourceType">${r.coreType!emptyString}</td>
-        <td id="resourceSubType">
-          <#if (r.subtype?has_content) && (r.subtype?length >= 8) >
+      <td id="resourceType">
+        <#if r.coreType?has_content >
+          ${r.coreType?upper_case}
+        <#else>
+          ${emptyString}
+        </#if>
+      </td>
+      <td id="resourceSubType">
+        <#if (r.subtype?has_content) && (r.subtype?length >= 8) >
           ${r.subtype?upper_case?substring(0,7)}${dotDot}
         <#else>
           ${emptyString}
-          </#if>
-        </td>
+        </#if>
+      </td>
     	<td id="resourceRecords">${r.recordsPublished!0}</td>
     	<td id="resourceLastModified">${r.modified?date}</td>
     	<td id="resourceLastPublication">
