@@ -41,63 +41,84 @@ public interface ResourceManager {
   Resource get(String shortname);
 
   /**
-   * Return the size of the generated DwC-A file
+   * Return the size of the generated DwC-A file.
+   *
+   * @param resource Resource
    */
   long getDwcaSize(Resource resource);
 
   /**
-   * Return the size of the generated EML file
+   * Return the size of the generated EML file.
+   *
+   * @param resource Resource
    */
   long getEmlSize(Resource resource);
 
   /**
-   * Returns the URL to a public resource in the IPT
+   * Returns the URL to a public resource in the IPT.
+   *
+   * @param shortname Resource shortname
    */
   URL getResourceLink(String shortname);
 
   /**
-   * Returns the size of the generated RTF file
+   * Returns the size of the generated RTF file.
+   *
+   * @param resource Resource
    */
   long getRtfSize(Resource resource);
 
   /**
    * Validate if the EML file exist for a specific resource in the data directory.
    *
+   * @param shortName Resource shortname
+   *
    * @return true if EML File exist. False otherwise.
    */
   boolean isEmlExisting(String shortName);
 
   /**
-   * @return true if resource is currently locked for any management
+   * @param shortname Resource shortname
+   *
+   * @return true if resource is currently locked for any management.
    */
   boolean isLocked(String shortname);
 
   /**
    * Validate if the RTF existence for a specific resource in the data directory.
    *
+   * @param shortName Resource shortname
+   *
    * @return true if RTF File exist. false in otherwise.
    */
   boolean isRtfExisting(String shortName);
 
   /**
-   * Returns the latest resources , order by last modified
+   * Returns the latest resources , order by last modified.
+   *
+   * @param startPage start page
+   * @param pageSize  page size
    *
    * @return list of resources
    */
   List<Resource> latest(int startPage, int pageSize);
 
   /**
-   * list all resources in the IPT
+   * list all resources in the IPT.
    */
   List<Resource> list();
 
   /**
-   * list all resources in the IPT having a certain publication status
+   * list all resources in the IPT having a certain publication status.
+   *
+   * @param status PublicationStatus
    */
   List<Resource> list(PublicationStatus status);
 
   /**
-   * list all resource that can be managed by a given user
+   * list all resource that can be managed by a given user.
+   *
+   * @param user User
    */
   List<Resource> list(User user);
 
@@ -111,7 +132,8 @@ public interface ResourceManager {
   /**
    * Publishes a new version of a resource including generating a darwin core archive and issuing a new EML version.
    *
-   * @param action the action to use for logging messages to
+   * @param resource Resource
+   * @param action   the action to use for logging messages to
    *
    * @return true if a new asynchroneous dwca generation job has been issued which requires some mapped data
    *
@@ -122,7 +144,8 @@ public interface ResourceManager {
   /**
    * Issues a new EML version for the given resource.
    *
-   * @param action the action to use for logging messages
+   * @param resource Resource
+   * @param action   the action to use for logging messages
    *
    * @throws PublicationException if resource was already registered
    */
@@ -131,7 +154,7 @@ public interface ResourceManager {
   /**
    * Registers the resource with the GBIF Registry.
    *
-   * @param resource the published resource
+   * @param resource     the published resource
    * @param organisation the organization that owns the resource
    * @param ipt          the ipt that the resource will be published through
    */
@@ -139,11 +162,15 @@ public interface ResourceManager {
 
   /**
    * Persists the whole resource configuration *but* not the EML file.
+   *
+   * @param resource Resource
    */
   void save(Resource resource) throws InvalidConfigException;
 
   /**
-   * Save the eml file of a resource only. Complementary method to @See save(Resource)
+   * Save the eml file of a resource only. Complementary method to @See save(Resource).
+   *
+   * @param resource Resource
    */
   void saveEml(Resource resource) throws InvalidConfigException;
 
@@ -174,14 +201,18 @@ public interface ResourceManager {
   void updateRegistration(Resource resource) throws InvalidConfigException;
 
   /**
-   * makes a resource private
+   * Makes a resource private.
+   *
+   * @param resource Resource
    *
    * @throws InvalidConfigException if resource was already registered
    */
   void visibilityToPrivate(Resource resource) throws InvalidConfigException;
 
   /**
-   * Makes a resource public
+   * Makes a resource public.
+   *
+   * @param resource Resource
    *
    * @throws InvalidConfigException if resource was already registered
    */
