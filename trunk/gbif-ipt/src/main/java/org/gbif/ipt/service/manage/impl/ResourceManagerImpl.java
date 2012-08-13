@@ -108,6 +108,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   // key=shortname in lower case, value=resource
   private Map<String, Resource> resources = new HashMap<String, Resource>();
   public static final String PERSISTENCE_FILE = "resource.xml";
+  public static final String RESOURCE_IDENTIFIER_LINK_PART = "/resource.do?id=";
+  public static final String RESOURCE_PUBLIC_LINK_PART = "/resource.do?r=";
   private final XStream xstream = new XStream();
   private SourceManager sourceManager;
   private ExtensionManager extensionManager;
@@ -443,10 +445,34 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return data.length();
   }
 
+  /**
+   * Construct a resource link (identifier) using its shortname and return it.
+   *
+   * @param shortname resource shortname
+   *
+   * @return resource (identifier) link
+   */
   public URL getResourceLink(String shortname) {
     URL url = null;
     try {
-      url = new URL(cfg.getBaseUrl() + "/resource.do?id=" + shortname);
+      url = new URL(cfg.getBaseUrl() + RESOURCE_IDENTIFIER_LINK_PART + shortname);
+    } catch (MalformedURLException e) {
+      log.error(e);
+    }
+    return url;
+  }
+
+  /**
+   * Construct a public resource link using its shortname and return it.
+   *
+   * @param shortname resource shortname
+   *
+   * @return public resource link
+   */
+  public URL getPublicResourceLink(String shortname) {
+    URL url = null;
+    try {
+      url = new URL(cfg.getBaseUrl() + RESOURCE_PUBLIC_LINK_PART + shortname);
     } catch (MalformedURLException e) {
       log.error(e);
     }
@@ -770,8 +796,98 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
     // persist any resource object changes
     resource.setLastPublished(new Date());
+
+    // ensure alternate identifier for Registry UUID is set
+    updateAlternateIdentifierForRegistry(resource);
+    // ensure alternate identifier for IPT URL to resource is set
+    updateAlternateIdentifierForIPTURLToResource(resource);
+
     save(resource);
     return dwca;
+  }
+
+  /**
+   * Updates the resource's alternate identifier for its corresponding Registry UUID.
+   * If registered the method ensures that it won't be added a second time, with only 1 ever being set. Ideally this
+   * would happen the very first time that the resource gets registered, however, to accommodate updates from older
+   * versions of the IPT, it can updated every time the resource gets published.
+   *
+   * @param resource resource
+   *
+   * @return resource with Registry UUID for the resource updated
+   */
+  public Resource updateAlternateIdentifierForRegistry(Resource resource) {
+    // retrieve a list of the resource's alternate identifiers
+    List<String> ids = null;
+    if (resource.getEml() != null) {
+      ids = resource.getEml().getAlternateIdentifiers();
+    } else {
+      resource.setEml(new Eml());
+    }
+
+    if (resource.isRegistered()) {
+      // GBIF Registry UUID
+      UUID key = resource.getKey();
+      if (key != null && ids != null && !ids.contains(key.toString())) {
+        resource.getEml().getAlternateIdentifiers().add(key.toString());
+        log.info("GBIF Registry UUID added to Resource's list of alternate identifiers");
+      }
+    }
+    return resource;
+  }
+
+  /**
+   * Updates the resource's alternative identifier for the IPT URL to the resource.
+   * This identifier should only exist for the resource, if its visibility is public.
+   * If the resource visibility is set to private, this method should be called to ensure the identifier is removed.
+   * Any time the baseURL changes, all resources will need to be republished and in this case, this identifier
+   * will be updated. This method will remove an IPT URL identifier with the wrong baseURL by matching the
+   * RESOURCE_PUBLIC_LINK_PART, updating it with one having the latest baseURL.
+   *
+   * @param resource resource
+   *
+   * @return resource with the IPT URL alternate identifier for the resource updated
+   */
+  public Resource updateAlternateIdentifierForIPTURLToResource(Resource resource) {
+    // retrieve a list of the resource's alternate identifiers
+    List<String> ids = null;
+    if (resource.getEml() != null) {
+      ids = resource.getEml().getAlternateIdentifiers();
+    } else {
+      resource.setEml(new Eml());
+    }
+
+    // has this been added before, perhaps with a different baseURL?
+    boolean exists = false;
+    String existingId = null;
+    if (ids != null) {
+      for (String id : ids) {
+        // try to match resource.do?r=shortname
+        if (id.contains(RESOURCE_PUBLIC_LINK_PART)) {
+          exists = true;
+          existingId = id;
+        }
+      }
+    }
+
+    // if the resource is PUBLIC, or REGISTERED
+    if (resource.getStatus().compareTo(PublicationStatus.PRIVATE) != 0) {
+      URL url = getPublicResourceLink(resource.getShortname());
+      // if the URL is not null, and the identifier does not exist yet - add it!
+      if (url != null && !exists) {
+        resource.getEml().getAlternateIdentifiers().add(url.toString());
+        log.info("IPT URL to resource added to Resource's list of alternate ids");
+      }
+    }
+    // otherwise if the resource is PRIVATE
+    else if (resource.getStatus().compareTo(PublicationStatus.PRIVATE) == 0) {
+      // no public resource alternate identifier can exist if the resource visibility is private - remove it if app.
+      if (exists) {
+        ids.remove(existingId);
+        log.warn("Following visibility change, IPT URL to resource removed from Resource's list of alternate ids");
+      }
+    }
+    return resource;
   }
 
   public void publishMetadata(Resource resource, BaseAction action) throws PublicationException {
@@ -891,6 +1007,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           "No key returned for registered resoruce.");
       }
       resource.setStatus(PublicationStatus.REGISTERED);
+
+      // ensure alternate identifier for Registry UUID set
+      updateAlternateIdentifierForRegistry(resource);
+
+      // save all changes to resource
       save(resource);
     }
   }
@@ -1022,7 +1143,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       throw new InvalidConfigException(TYPE.RESOURCE_ALREADY_REGISTERED,
         "The resource is already registered with GBIF");
     } else if (PublicationStatus.PUBLIC == resource.getStatus()) {
+      // update visibility to public
       resource.setStatus(PublicationStatus.PRIVATE);
+
+      // ensure the alternate id for the IPT URL to the resource is removed!
+      updateAlternateIdentifierForIPTURLToResource(resource);
+
+      // save all changes to resource
       save(resource);
     }
   }
@@ -1032,7 +1159,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       throw new InvalidConfigException(TYPE.RESOURCE_ALREADY_REGISTERED,
         "The resource is already registered with GBIF");
     } else if (PublicationStatus.PRIVATE == resource.getStatus()) {
+      // update visibility to public
       resource.setStatus(PublicationStatus.PUBLIC);
+
+      // ensure the alternate id for the IPT URL to the resource is updated
+      updateAlternateIdentifierForIPTURLToResource(resource);
+
+      // save all changes to resource
       save(resource);
     }
   }
