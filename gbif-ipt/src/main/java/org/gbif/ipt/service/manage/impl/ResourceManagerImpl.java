@@ -11,6 +11,7 @@ import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveFile;
 import org.gbif.dwc.text.UnsupportedArchiveException;
 import org.gbif.ipt.action.BaseAction;
+import org.gbif.ipt.action.manage.OverviewAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
@@ -772,11 +773,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // persist any resource object changes
     resource.setLastPublished(new Date());
 
-    // ensure alternate identifier for Registry UUID is set
-    updateAlternateIdentifierForRegistry(resource);
-    // ensure alternate identifier for IPT URL to resource is set
-    updateAlternateIdentifierForIPTURLToResource(resource);
-
     save(resource);
     return dwca;
   }
@@ -849,7 +845,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (resource.getStatus().compareTo(PublicationStatus.PRIVATE) != 0) {
       URL url = getPublicResourceLink(resource.getShortname());
       // if the URL is not null, and the identifier does not exist yet - add it!
-      if (url != null && !exists) {
+      if (url != null) {
+        // if it already exists, then replace it just in case the baseURL has changed, for example
+        if (exists) {
+          resource.getEml().getAlternateIdentifiers().remove(existingId);
+        }
+        // lastly, be sure to add it
         resource.getEml().getAlternateIdentifiers().add(url.toString());
         log.info("IPT URL to resource added to Resource's list of alternate ids");
       }
@@ -858,7 +859,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     else if (resource.getStatus().compareTo(PublicationStatus.PRIVATE) == 0) {
       // no public resource alternate identifier can exist if the resource visibility is private - remove it if app.
       if (exists) {
-        ids.remove(existingId);
+        resource.getEml().getAlternateIdentifiers().remove(existingId);
         log.warn("Following visibility change, IPT URL to resource removed from Resource's list of alternate ids");
       }
     }
@@ -873,11 +874,19 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         "Resource " + resource.getShortname() + " is currently locked by another process");
     }
 
+    // ensure alternate identifier for Registry UUID is set - if resource is registered
+    updateAlternateIdentifierForRegistry(resource);
+    // ensure alternate identifier for IPT URL to resource is set - if resource is public
+    updateAlternateIdentifierForIPTURLToResource(resource);
+
     // increase eml version
     int version = resource.getEmlVersion();
     version++;
     resource.setEmlVersion(version);
+
+    // save all changes to Eml
     saveEml(resource);
+
     // copy stable version of the eml file
     File trunkFile = dataDir.resourceEmlFile(resource.getShortname(), null);
     File versionedFile = dataDir.resourceEmlFile(resource.getShortname(), version);
@@ -1111,8 +1120,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       // update visibility to public
       resource.setStatus(PublicationStatus.PRIVATE);
 
-      // ensure the alternate id for the IPT URL to the resource is removed!
-      updateAlternateIdentifierForIPTURLToResource(resource);
+      // Changing the visibility, means some public things now need to be removed, e.g. IPT URL alt. id for resource!
+      // This means a new version of the metadata (EML + RTF) needs to be saved
+      publishMetadata(resource, new OverviewAction());
 
       // save all changes to resource
       save(resource);
@@ -1127,8 +1137,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       // update visibility to public
       resource.setStatus(PublicationStatus.PUBLIC);
 
-      // ensure the alternate id for the IPT URL to the resource is updated
-      updateAlternateIdentifierForIPTURLToResource(resource);
+      // Changing the visibility, means some public things now need to be added, e.g. IPT URL alt. id for resource!
+      // This means a new version of the metadata (EML + RTF) needs to be saved
+      publishMetadata(resource, new OverviewAction());
 
       // save all changes to resource
       save(resource);
