@@ -89,6 +89,7 @@ public class ConfigAction extends POSTAction {
         log.info("Installation baseURL successfully changed to[" + baseUrl + "]");
         addActionMessage(getText("admin.config.baseUrl.changed"));
         addActionMessage(getText("admin.user.login"));
+        addActionMessage(getText("admin.config.baseUrl.changed.reminder"));
         session.remove(Constants.SESSION_USER);
         if (burl.getHost().equalsIgnoreCase("localhost") || burl.getHost().equalsIgnoreCase("127.0.0.1") || burl
           .getHost().equalsIgnoreCase(configManager.getHostName())) {
