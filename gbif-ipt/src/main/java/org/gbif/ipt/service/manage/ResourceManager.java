@@ -29,21 +29,71 @@ import com.google.inject.ImplementedBy;
 @ImplementedBy(ResourceManagerImpl.class)
 public interface ResourceManager {
 
+  /**
+   * Cancels publishing.
+   *
+   * @param shortname Resource shortName
+   * @param action    action
+   *
+   * @return result of trying to cancel publishing: was successful or not
+   *
+   * @throws PublicationException if publishing couldn't be cancelled
+   */
   boolean cancelPublishing(String shortname, BaseAction action) throws PublicationException;
 
-  Resource create(String shortname, File dwca, User creator, BaseAction asction)
+  /**
+   * Create a new Resource.
+   *
+   * @param shortname Resource's shortName
+   * @param dwca      DwC-A file
+   * @param creator   Creator User
+   * @param action    action
+   *
+   * @return Resource newly created, or null if it couldn't be created successfully
+   *
+   * @throws AlreadyExistingException if Resource already existed
+   * @throws ImportException          if a problem occurred importing the DwC-A file
+   */
+  Resource create(String shortname, File dwca, User creator, BaseAction action)
     throws AlreadyExistingException, ImportException;
 
+  /**
+   * Create a new Resource.
+   *
+   * @param shortname Resource's shortName
+   * @param creator   Creator User
+   *
+   * @return Resource newly created, or null if it couldn't be created successfully
+   *
+   * @throws AlreadyExistingException if Resource already existed
+   */
   Resource create(String shortname, User creator) throws AlreadyExistingException;
 
+  /**
+   * Deletes a Resource.
+   *
+   * @param resource Resource
+   *
+   * @throws IOException                 if deletion could not be completed
+   * @throws DeletionNotAllowedException if deletion was not allowed to be completed
+   */
   void delete(Resource resource) throws IOException, DeletionNotAllowedException;
 
+  /**
+   * Gets a resource by its shortName.
+   *
+   * @param shortname Resource shortName
+   *
+   * @return Resource, or null if none was found for this shortName
+   */
   Resource get(String shortname);
 
   /**
    * Return the size of the generated DwC-A file.
    *
    * @param resource Resource
+   *
+   * @return size of DwC-A file
    */
   long getDwcaSize(Resource resource);
 
@@ -51,20 +101,35 @@ public interface ResourceManager {
    * Return the size of the generated EML file.
    *
    * @param resource Resource
+   *
+   * @return size of EML file
    */
   long getEmlSize(Resource resource);
 
   /**
-   * Returns the URL to a public resource in the IPT.
+   * Construct a resource link (identifier) using its shortname and return it.
    *
    * @param shortname Resource shortname
+   *
+   * @return Link (identifier) to resource, or null if none could be constructed
    */
   URL getResourceLink(String shortname);
+
+  /**
+   * Construct a public resource link using its shortname and return it.
+   *
+   * @param shortname Resource shortname
+   *
+   * @return Public URL to resource, or null if none could be constructed
+   */
+  URL getPublicResourceLink(String shortname);
 
   /**
    * Returns the size of the generated RTF file.
    *
    * @param resource Resource
+   *
+   * @return size of RTF file
    */
   long getRtfSize(Resource resource);
 
@@ -73,11 +138,13 @@ public interface ResourceManager {
    *
    * @param shortName Resource shortname
    *
-   * @return true if EML File exist. False otherwise.
+   * @return true if EML File exists, and false otherwise.
    */
   boolean isEmlExisting(String shortName);
 
   /**
+   * Check whether the resource is currently locked or not.
+   *
    * @param shortname Resource shortname
    *
    * @return true if resource is currently locked for any management.
@@ -89,22 +156,24 @@ public interface ResourceManager {
    *
    * @param shortName Resource shortname
    *
-   * @return true if RTF File exist. false in otherwise.
+   * @return true if RTF File exists, and false otherwise.
    */
   boolean isRtfExisting(String shortName);
 
   /**
-   * Returns the latest resources , order by last modified.
+   * Returns the latest resources ,ordered by last modified date.
    *
    * @param startPage start page
    * @param pageSize  page size
    *
-   * @return list of resources
+   * @return list of resources, or an empty list if none were found
    */
   List<Resource> latest(int startPage, int pageSize);
 
   /**
    * list all resources in the IPT.
+   *
+   * @return list of resources, or an empty list if none were found
    */
   List<Resource> list();
 
@@ -112,6 +181,8 @@ public interface ResourceManager {
    * list all resources in the IPT having a certain publication status.
    *
    * @param status PublicationStatus
+   *
+   * @return list of resources, or an empty list if none were found
    */
   List<Resource> list(PublicationStatus status);
 
@@ -119,13 +190,24 @@ public interface ResourceManager {
    * list all resource that can be managed by a given user.
    *
    * @param user User
+   *
+   * @return list of resources, or an empty list if none were found
    */
   List<Resource> list(User user);
+
+  /**
+   * list all resources that have been published in the IPT.
+   *
+   * @return list of resources, or an empty list if none were found
+   */
+  List<Resource> listPublished();
 
   /**
    * Load all configured resources from the datadir into memory.
    * We do not keep the EML or mapping configuration in memory for all resources, but we
    * maintain a map of the basic metadata and authorisation information in this manager.
+   *
+   * @return number of configured resource loaded into memory
    */
   int load();
 
@@ -135,7 +217,7 @@ public interface ResourceManager {
    * @param resource Resource
    * @param action   the action to use for logging messages to
    *
-   * @return true if a new asynchroneous dwca generation job has been issued which requires some mapped data
+   * @return true if a new asynchronous DwC-A generation job has been issued which requires some mapped data
    *
    * @throws PublicationException if resource was already registered
    */
@@ -175,6 +257,8 @@ public interface ResourceManager {
   void saveEml(Resource resource) throws InvalidConfigException;
 
   /**
+   * Return status report of current task either running or on queue for the requested resource or null if none exists.
+   *
    * @param shortname for the resource
    *
    * @return status report of current task either running or on queue for the requested resource or null if none exists
@@ -182,8 +266,8 @@ public interface ResourceManager {
   StatusReport status(String shortname);
 
   /**
-   * For a published resource, updates its existing dwca with the latest eml (presumably generated by publishEml,
-   * above). Note that this method does not republish the dwca (so no data is refreshed, and no load hits any
+   * For a published resource, updates its existing DwC-A with the latest eml (presumably generated by publishEml,
+   * above). Note that this method does not republish the DwC-A (so no data is refreshed, and no load hits any
    * databases), only repackages with the new eml.
    *
    * @param resource the published resource
@@ -217,5 +301,4 @@ public interface ResourceManager {
    * @throws InvalidConfigException if resource was already registered
    */
   void visibilityToPublic(Resource resource) throws InvalidConfigException;
-
 }
