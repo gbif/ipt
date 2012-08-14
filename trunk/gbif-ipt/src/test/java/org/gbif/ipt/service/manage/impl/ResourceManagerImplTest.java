@@ -34,7 +34,6 @@ import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.admin.ExtensionManager;
-import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
@@ -73,7 +72,6 @@ public class ResourceManagerImplTest {
   private ConceptTermConverter mockedConceptTermConverter = mock(ConceptTermConverter.class);
   private GenerateDwcaFactory mockedDwcaFactory = mock(GenerateDwcaFactory.class);
   private PasswordConverter mockedPasswordConverter = mock(PasswordConverter.class);
-  private RegistrationManager mockedRegistrationManager = mock(RegistrationManager.class);
   private Eml2Rtf mockedEml2Rtf = mock(Eml2Rtf.class);
   private VocabulariesManager mockedVocabulariesManager = mock(VocabulariesManager.class);
 
@@ -99,12 +97,10 @@ public class ResourceManagerImplTest {
   }
 
   private ResourceManager getResourceManager() {
-    ResourceManager resourceManager =
-      new ResourceManagerImpl(mockedAppConfig, mockedDataDir, mockedUserEmailConverter, mockedOrgKeyConverter,
+    return new ResourceManagerImpl(mockedAppConfig, mockedDataDir, mockedUserEmailConverter, mockedOrgKeyConverter,
         mockedExtensionConverter, mockedJdbcConverter, mockedSourceManager, mockedExtensionManager,
-        mockedRegistryManager, mockedConceptTermConverter, mockedDwcaFactory, mockedPasswordConverter,
-        mockedRegistrationManager, mockedEml2Rtf, mockedVocabulariesManager);
-    return resourceManager;
+        mockedRegistryManager, mockedConceptTermConverter, mockedDwcaFactory, mockedPasswordConverter, mockedEml2Rtf,
+        mockedVocabulariesManager);
   }
 
   private ResourceManagerImpl getResourceManagerImpl() {
@@ -125,12 +121,10 @@ public class ResourceManagerImplTest {
     // mock the cfg
     when(mockedAppConfig.getBaseUrl()).thenReturn("http://localhost:7001/ipt");
 
-    ResourceManagerImpl resourceManager =
-      new ResourceManagerImpl(mockedAppConfig, mockedDataDir, mockedUserEmailConverter, mockedOrgKeyConverter,
+    return new ResourceManagerImpl(mockedAppConfig, mockedDataDir, mockedUserEmailConverter, mockedOrgKeyConverter,
         mockedExtensionConverter, mockedJdbcConverter, mockedSourceManager, mockedExtensionManager,
-        mockedRegistryManager, mockedConceptTermConverter, mockedDwcaFactory, mockedPasswordConverter,
-        mockedRegistrationManager, mockedEml2Rtf, mockedVocabulariesManager);
-    return resourceManager;
+        mockedRegistryManager, mockedConceptTermConverter, mockedDwcaFactory, mockedPasswordConverter, mockedEml2Rtf,
+        mockedVocabulariesManager);
   }
 
   /**

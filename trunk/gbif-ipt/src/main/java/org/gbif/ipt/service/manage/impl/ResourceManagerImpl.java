@@ -43,7 +43,6 @@ import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.ExtensionManager;
-import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
@@ -56,8 +55,6 @@ import org.gbif.ipt.task.ReportHandler;
 import org.gbif.ipt.task.StatusReport;
 import org.gbif.ipt.utils.ActionLogger;
 import org.gbif.metadata.BasicMetadata;
-import org.gbif.metadata.MetadataException;
-import org.gbif.metadata.MetadataFactory;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlFactory;
 import org.gbif.metadata.eml.EmlWriter;
@@ -114,7 +111,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private SourceManager sourceManager;
   private ExtensionManager extensionManager;
   private RegistryManager registryManager;
-  private RegistrationManager registrationManager;
   private ThreadPoolExecutor executor;
   private GenerateDwcaFactory dwcaFactory;
   private Map<String, Future<Integer>> processFutures = new HashMap<String, Future<Integer>>();
@@ -127,13 +123,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     OrganisationKeyConverter orgConverter, ExtensionRowTypeConverter extensionConverter,
     JdbcInfoConverter jdbcInfoConverter, SourceManager sourceManager, ExtensionManager extensionManager,
     RegistryManager registryManager, ConceptTermConverter conceptTermConverter, GenerateDwcaFactory dwcaFactory,
-    PasswordConverter passwordConverter, RegistrationManager registrationManager, Eml2Rtf eml2Rtf,
+    PasswordConverter passwordConverter, Eml2Rtf eml2Rtf,
     VocabulariesManager vocabManager) {
     super(cfg, dataDir);
     this.sourceManager = sourceManager;
     this.extensionManager = extensionManager;
     this.registryManager = registryManager;
-    this.registrationManager = registrationManager;
     this.dwcaFactory = dwcaFactory;
     this.eml2Rtf = eml2Rtf;
     this.vocabManager = vocabManager;
@@ -278,7 +273,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       Map<String, FileSource> sources = new HashMap<String, FileSource>();
       if (arch.getCore() != null) {
         // read core source+mappings
-        FileSource s = importSource(alog, resource, arch.getCore());
+        FileSource s = importSource(resource, arch.getCore());
         sources.put(arch.getCore().getLocation(), s);
         ExtensionMapping map = importMappings(alog, arch.getCore(), s);
         String coreRowType = arch.getCore().getRowType();
@@ -296,7 +291,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             s = sources.get(ext.getLocation());
             log.debug("Source " + s.getName() + " shared by multiple extensions");
           } else {
-            s = importSource(alog, resource, ext);
+            s = importSource(resource, ext);
             sources.put(ext.getLocation(), s);
           }
           map = importMappings(alog, ext, s);
@@ -407,7 +402,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   /**
    * @see #isLocked(String) for removing jobs from internal maps
    */
-  private void generateDwca(Resource resource, ActionLogger alog) {
+  private void generateDwca(Resource resource) {
     // use threads to run in the background as sql sources might take a long time
     GenerateDwca worker = dwcaFactory.create(resource, this);
     Future<Integer> f = executor.submit(worker);
@@ -423,35 +418,16 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return resources.get(shortname.toLowerCase());
   }
 
-  /**
-   * Returns the size of the DwC-A file using the dataDir.
-   */
   public long getDwcaSize(Resource resource) {
     File data = dataDir.resourceDwcaFile(resource.getShortname());
     return data.length();
   }
 
-  private int getEmlHash(Resource resource, Eml eml) {
-    // TODO: replace by hashing the eml xml file content?
-    // Alternatively code a proper hashCode method for Eml that needs to be maintained - might be too much effort
-    return eml.hashCode();
-  }
-
-  /**
-   * Returns the size of the EML file using the dataDir.
-   */
   public long getEmlSize(Resource resource) {
     File data = dataDir.resourceEmlFile(resource.getShortname(), resource.getEmlVersion());
     return data.length();
   }
 
-  /**
-   * Construct a resource link (identifier) using its shortname and return it.
-   *
-   * @param shortname resource shortname
-   *
-   * @return resource (identifier) link
-   */
   public URL getResourceLink(String shortname) {
     URL url = null;
     try {
@@ -462,13 +438,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return url;
   }
 
-  /**
-   * Construct a public resource link using its shortname and return it.
-   *
-   * @param shortname resource shortname
-   *
-   * @return public resource link
-   */
   public URL getPublicResourceLink(String shortname) {
     URL url = null;
     try {
@@ -479,9 +448,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return url;
   }
 
-  /**
-   * Returns the size of the RTF file using the dataDir.
-   */
   public long getRtfSize(Resource resource) {
     File data = dataDir.resourceRtfFile(resource.getShortname());
     return data.length();
@@ -515,7 +481,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return map;
   }
 
-  private FileSource importSource(ActionLogger alog, Resource config, ArchiveFile af) throws ImportException {
+  private FileSource importSource(Resource config, ArchiveFile af) throws ImportException {
     File extFile = af.getLocationFile();
     FileSource s = sourceManager.add(config, extFile, af.getLocation());
     SourceManagerImpl.copyArchiveFileProperties(af, s);
@@ -618,6 +584,16 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     for (Resource res : resources.values()) {
       if (RequireManagerInterceptor.isAuthorized(user, res)) {
         result.add(res);
+      }
+    }
+    return result;
+  }
+
+  public List<Resource> listPublished() {
+    List<Resource> result = new ArrayList<Resource>();
+    for (Resource r : resources.values()) {
+      if (r.isPublished()) {
+        result.add(r);
       }
     }
     return result;
@@ -775,7 +751,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   public boolean publish(Resource resource, BaseAction action) throws PublicationException {
-    ActionLogger alog = new ActionLogger(this.log, action);
     // check if publishing task is already running
     if (isLocked(resource.getShortname())) {
       throw new PublicationException(PublicationException.TYPE.LOCKED,
@@ -788,7 +763,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // regenerate dwca asynchronously
     boolean dwca = false;
     if (resource.hasMappedData()) {
-      generateDwca(resource, alog);
+      generateDwca(resource);
       dwca = true;
     } else {
       resource.setRecordsPublished(0);
@@ -946,16 +921,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
-  private Eml readMetadata(File file, ActionLogger alog) {
-    MetadataFactory fact = new MetadataFactory();
-    try {
-      return convertMetadataToEml(fact.read(file), alog);
-    } catch (MetadataException e) {
-      // swallow;
-    }
-    return null;
-  }
-
   private Eml readMetadata(String shortname, Archive archive, ActionLogger alog) {
     Eml eml;
     File emlFile = archive.getMetadataLocationFile();
@@ -1004,7 +969,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       UUID key = registryManager.register(resource, organisation, ipt);
       if (key == null) {
         throw new RegistryException(RegistryException.TYPE.MISSING_METADATA,
-          "No key returned for registered resoruce.");
+          "No key returned for registered resoruce");
       }
       resource.setStatus(PublicationStatus.REGISTERED);
 
@@ -1091,7 +1056,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
     if (!resource.hasPublishedData()) {
       throw new PublicationException(PublicationException.TYPE.DWCA,
-        "Resource " + resource.getShortname() + " has no published data - can't update a non-existent dwca.");
+        "Resource " + resource.getShortname() + " has no published data - can't update a non-existent DwC-Archive");
     }
 
     try {
