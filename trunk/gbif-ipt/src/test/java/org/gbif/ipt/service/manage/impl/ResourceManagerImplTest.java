@@ -230,6 +230,19 @@ public class ResourceManagerImplTest {
     assertEquals("http://localhost:7001/ipt/resource.do?r=bees",
       resource.getEml().getAlternateIdentifiers().get(0));
 
+    // change the baseURL now
+    when(mockedAppConfig.getBaseUrl()).thenReturn("http://192.38.28.24:7001/ipt");
+    manager = new ResourceManagerImpl(mockedAppConfig, mockedDataDir, mockedUserEmailConverter, mockedOrgKeyConverter,
+      mockedExtensionConverter, mockedJdbcConverter, mockedSourceManager, mockedExtensionManager,
+      mockedRegistryManager, mockedConceptTermConverter, mockedDwcaFactory, mockedPasswordConverter, mockedEml2Rtf,
+      mockedVocabulariesManager);
+
+    // update alt. id
+    manager.updateAlternateIdentifierForIPTURLToResource(resource);
+    // assert it has been set
+    assertEquals("http://192.38.28.24:7001/ipt/resource.do?r=bees",
+      resource.getEml().getAlternateIdentifiers().get(0));
+
     // create PRIVATE test resource, with existing alt id
     resource.setStatus(PublicationStatus.PRIVATE);
 
