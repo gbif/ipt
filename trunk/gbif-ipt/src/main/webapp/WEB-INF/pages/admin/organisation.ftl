@@ -84,10 +84,10 @@ $(document).ready(function(){
 	<#else>
 		<@checkbox name="organisation.canHost" i18nkey="admin.organisation.canPublish" value="true" help="i18n"/>
 	</#if>
-   <div class="buttons">
- 	<@s.submit name="save" key="button.save" cssClass="confirm"/>
+   <div>
+ 	<@s.submit name="save" key="button.save" cssClass="button confirm"/>
  	<#if id?has_content>
-	<@s.submit name="delete" key="button.delete" cssClass="confirm"/>
+	<@s.submit name="delete" key="button.delete" cssClass="button confirm"/>
 	</#if>		   	
  	<@s.submit name="cancel" key="button.cancel" cssClass="button"/>
   </div>
