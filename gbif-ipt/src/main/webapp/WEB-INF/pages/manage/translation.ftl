@@ -23,12 +23,12 @@ $(document).ready(function(){
 		$(this).click(function() { 
  				window.location = $(this).parent('a').attr('href');
  		});
-	});	
-	$('.cancelb').each(function() {
-		$(this).click(function() { 
+	});
+	$('.cancel').each(function() {
+		$(this).click(function() {
  				window.location = $(this).parent('a').attr('href');
  		});
-	});	
+	});
 	// end hack
 	<#-- use vocabulary -->
 	<#if (vocabTerms?size>0)>
@@ -71,18 +71,27 @@ $(document).ready(function(){
   <table id="translation" class="simple">
     <colgroup>
       <col width="400">
-      <col width="16">
+      <!-- do not show column if term does not relate to vocabulary -->
+      <#if (vocabTerms?size>0)>
+        <col width="16">
+      </#if>
       <col width="400">
     </colgroup>
     <tr>
       <th><@s.text name="manage.translation.source.value"/></th>
-      <th></th>
+      <!-- do not show column if term does not relate to vocabulary -->
+      <#if (vocabTerms?size>0)>
+        <th></th>
+      </#if>
       <th><@s.text name="manage.translation.translated.value"/></th>
     </tr>
     <#list tmap?keys as k>
       <tr<#if (k_index % 2) == 1> class="even"</#if>>
         <td>${k}</td>
-        <td><img src="${baseURL}/images/<#if vocabTerms[tmap.get(k)!k]??>good<#else>bad</#if>.gif"/></td>
+        <!-- do not show column if term does not relate to vocabulary -->
+        <#if (vocabTerms?size>0)>
+          <td><img src="${baseURL}/images/<#if vocabTerms[tmap.get(k)!k]??>good<#else>bad</#if>.gif"/></td>
+        </#if>
         <td><input type="text" name="tmap['${k}']" size="50" value="${tmap.get(k)!}"/></td>
       </tr>
     </#list>
