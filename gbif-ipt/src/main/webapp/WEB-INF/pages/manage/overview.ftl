@@ -509,7 +509,7 @@ $(document).ready(function(){
 <div>
   <form action='resource-delete.do' method='post'>
     <input name="r" type="hidden" value="${resource.shortname}" />
-   	<@s.submit cssClass="button" name="delete" key="button.delete"/>
+   	<@s.submit cssClass="button confirmDeletion" name="delete" key="button.delete"/>
   </form>
 </div>
 <div id="dialog"></div>
