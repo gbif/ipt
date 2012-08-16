@@ -550,10 +550,26 @@ div.textRight div.info{
 	margin-left: 0.5em;
 	width: 93%;
 }
-.topForm input.button {	
+.topForm input.button {
 	width: auto;
-	margin-top: 30px;
 }
+/* So that a button wrapped inside an <a> doesn't appear underlined */
+div a.button {
+  text-decoration: none;
+}
+/* Used for buttons appearing above a table for example - give some space between them and the table */
+.topButtons {
+  margin-bottom: 20px;
+}
+/* Used for buttons appearing below a table for example - give some space between them and the table */
+.bottomButtons {
+  margin-top: 10px;
+}
+/* To indicate the width should be cut 50% - used for example on the create new resource template */
+.half input {
+  width: 50%;
+}
+
 .topForm img.infoImg {
 	position: relative;
 	top: 6px;
