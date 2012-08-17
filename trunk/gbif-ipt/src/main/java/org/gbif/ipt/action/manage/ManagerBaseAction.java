@@ -1,19 +1,26 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.action.POSTAction;
+import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 
 public class ManagerBaseAction extends POSTAction {
 
-  @Inject
   protected ResourceManager resourceManager;
   protected Resource resource;
 
+  @Inject
+  public ManagerBaseAction(SimpleTextProvider textProvider, AppConfig cfg, ResourceManager resourceManager) {
+    this.textProvider = textProvider;
+    this.cfg = cfg;
+    this.resourceManager = resourceManager;
+  }
 
   @Override
   public void prepare() throws Exception {

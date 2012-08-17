@@ -14,6 +14,7 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
@@ -26,7 +27,9 @@ import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.Source.FileSource;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.validation.ExtensionMappingValidator;
 import org.gbif.ipt.validation.ExtensionMappingValidator.ValidationStatus;
 
@@ -60,11 +63,8 @@ public class MappingAction extends ManagerBaseAction {
 
   private static final Pattern NORM_TERM = Pattern.compile("[\\W\\s_0-9]+");
   // the resource manager session is populated by the resource interceptor and kept alive for an entire manager session
-  @Inject
   private ExtensionManager extensionManager;
-  @Inject
   private SourceManager sourceManager;
-  @Inject
   private VocabulariesManager vocabManager;
   // config
   private ExtensionMapping mapping;
@@ -77,6 +77,15 @@ public class MappingAction extends ManagerBaseAction {
   private Integer mid;
 
   private PropertyMapping mappingCoreid;
+
+  @Inject
+  public MappingAction(SimpleTextProvider textProvider, AppConfig cfg, ResourceManager resourceManager,
+    ExtensionManager extensionManager, SourceManager sourceManager, VocabulariesManager vocabManager) {
+    super(textProvider, cfg, resourceManager);
+    this.extensionManager = extensionManager;
+    this.sourceManager = sourceManager;
+    this.vocabManager = vocabManager;
+  }
 
   public void addWarnings() {
     if (mapping.getSource() == null) {

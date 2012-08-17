@@ -11,7 +11,6 @@ import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveFile;
 import org.gbif.dwc.text.UnsupportedArchiveException;
 import org.gbif.ipt.action.BaseAction;
-import org.gbif.ipt.action.manage.OverviewAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
@@ -124,8 +123,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     OrganisationKeyConverter orgConverter, ExtensionRowTypeConverter extensionConverter,
     JdbcInfoConverter jdbcInfoConverter, SourceManager sourceManager, ExtensionManager extensionManager,
     RegistryManager registryManager, ConceptTermConverter conceptTermConverter, GenerateDwcaFactory dwcaFactory,
-    PasswordConverter passwordConverter, Eml2Rtf eml2Rtf,
-    VocabulariesManager vocabManager) {
+    PasswordConverter passwordConverter, Eml2Rtf eml2Rtf, VocabulariesManager vocabManager) {
     super(cfg, dataDir);
     this.sourceManager = sourceManager;
     this.extensionManager = extensionManager;
@@ -491,7 +489,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // make an adjustment now that the exact number of header rows are known
     if (s.getIgnoreHeaderLines() != 1) {
       log.info("Adjusting row count to " + (s.getRows() + 1 - s.getIgnoreHeaderLines()) + " from " + s.getRows()
-        + " since header count is declared as " + s.getIgnoreHeaderLines());
+               + " since header count is declared as " + s.getIgnoreHeaderLines());
     }
     s.setRows(s.getRows() + 1 - s.getIgnoreHeaderLines());
 
@@ -977,8 +975,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (PublicationStatus.REGISTERED != resource.getStatus()) {
       UUID key = registryManager.register(resource, organisation, ipt);
       if (key == null) {
-        throw new RegistryException(RegistryException.TYPE.MISSING_METADATA,
-          "No key returned for registered resoruce");
+        throw new RegistryException(RegistryException.TYPE.MISSING_METADATA, "No key returned for registered resoruce");
       }
       resource.setStatus(PublicationStatus.REGISTERED);
 
@@ -1089,7 +1086,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       CompressionUtil.unzipFile(dwcaFolder, dwcaFile);
       if (log.isDebugEnabled()) {
         log.debug("Copying new eml file [" + emlFile.getAbsolutePath() + "] to [" + dwcaFolder.getAbsolutePath()
-          + "] as eml.xml");
+                  + "] as eml.xml");
       }
       FileUtils.copyFile(emlFile, new File(dwcaFolder, "eml.xml"));
       File zip = dataDir.tmpFile("dwca", ".zip");
@@ -1112,7 +1109,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
-  public void visibilityToPrivate(Resource resource) throws InvalidConfigException {
+  public void visibilityToPrivate(Resource resource, BaseAction action) throws InvalidConfigException {
     if (PublicationStatus.REGISTERED == resource.getStatus()) {
       throw new InvalidConfigException(TYPE.RESOURCE_ALREADY_REGISTERED,
         "The resource is already registered with GBIF");
@@ -1122,14 +1119,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
       // Changing the visibility, means some public things now need to be removed, e.g. IPT URL alt. id for resource!
       // This means a new version of the metadata (EML + RTF) needs to be saved
-      publishMetadata(resource, new OverviewAction());
+      publishMetadata(resource, action);
 
       // save all changes to resource
       save(resource);
     }
   }
 
-  public void visibilityToPublic(Resource resource) throws InvalidConfigException {
+  public void visibilityToPublic(Resource resource, BaseAction action) throws InvalidConfigException {
     if (PublicationStatus.REGISTERED == resource.getStatus()) {
       throw new InvalidConfigException(TYPE.RESOURCE_ALREADY_REGISTERED,
         "The resource is already registered with GBIF");
@@ -1139,7 +1136,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
       // Changing the visibility, means some public things now need to be added, e.g. IPT URL alt. id for resource!
       // This means a new version of the metadata (EML + RTF) needs to be saved
-      publishMetadata(resource, new OverviewAction());
+      publishMetadata(resource, action);
 
       // save all changes to resource
       save(resource);
