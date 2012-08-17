@@ -15,11 +15,13 @@ package org.gbif.ipt.action.manage;
 
 import org.gbif.api.model.vocabulary.DatasetSubtype;
 import org.gbif.api.model.vocabulary.DatasetType;
+import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Resource.CoreRowType;
-import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.CountryUtils;
 import org.gbif.ipt.utils.LangUtils;
 import org.gbif.ipt.validation.EmlValidator;
@@ -56,19 +58,22 @@ public class MetadataAction extends ManagerBaseAction {
   private Map<String, String> preservationMethods;
   private Map<String, String> types;
   private Map<String, String> datasetSubtypes;
-  @Inject
-  private ExtensionManager extensionManager;
+  private VocabulariesManager vocabManager;
+
+  // to group dataset subtype vocabulary keys
+  private List<String> checklistSubtypeKeys;
+  private List<String> occurrenceSubtypeKeys;
 
   private static final List<String> SECTIONS = Arrays
     .asList("basic", "geocoverage", "taxcoverage", "tempcoverage", "keywords", "parties", "project", "methods",
       "citations", "collections", "physical", "additional");
 
   @Inject
-  private VocabulariesManager vocabManager;
-
-  // to group dataset subtype vocabulary keys
-  private List<String> checklistSubtypeKeys;
-  private List<String> occurrenceSubtypeKeys;
+  public MetadataAction(SimpleTextProvider textProvider, AppConfig cfg, ResourceManager resourceManager,
+    VocabulariesManager vocabManager) {
+    super(textProvider, cfg, resourceManager);
+    this.vocabManager = vocabManager;
+  }
 
   /**
    * @return a map of countries
@@ -146,8 +151,7 @@ public class MetadataAction extends ManagerBaseAction {
         return getChecklistSubtypesMap();
       } else if (resource.getCoreType().equalsIgnoreCase(CoreRowType.OCCURRENCE.toString())) {
         return getOccurrenceSubtypesMap();
-      }
-      else if (CoreRowType.OTHER.toString().equalsIgnoreCase(resource.getCoreType())) {
+      } else if (CoreRowType.OTHER.toString().equalsIgnoreCase(resource.getCoreType())) {
         return getEmptySubtypeMap();
       }
     }
@@ -295,6 +299,7 @@ public class MetadataAction extends ManagerBaseAction {
     }
 
     // if it is a submission of the taxonomic coverage, clear the session list
+    // TODO: figure out if this is correct
     if (isHttpPost()) {
       if ("parties".equals(section)) {
         resource.getEml().getAssociatedParties().clear();
@@ -369,7 +374,7 @@ public class MetadataAction extends ManagerBaseAction {
   public Map<String, String> getOccurrenceSubtypesMap() {
     // exclude subtypes known to relate to Checklist type
     Map<String, String> datasetSubtypesCopy = new LinkedHashMap<String, String>(datasetSubtypes);
-    for (String key: checklistSubtypeKeys) {
+    for (String key : checklistSubtypeKeys) {
       if (datasetSubtypesCopy.containsKey(key)) {
         datasetSubtypesCopy.remove(key);
       }
@@ -387,7 +392,7 @@ public class MetadataAction extends ManagerBaseAction {
   public Map<String, String> getChecklistSubtypesMap() {
     // exclude subtypes known to relate to Checklist type
     Map<String, String> datasetSubtypesCopy = new LinkedHashMap<String, String>(datasetSubtypes);
-    for (String key: occurrenceSubtypeKeys) {
+    for (String key : occurrenceSubtypeKeys) {
       if (datasetSubtypesCopy.containsKey(key)) {
         datasetSubtypesCopy.remove(key);
       }
@@ -415,7 +420,7 @@ public class MetadataAction extends ManagerBaseAction {
    */
   Map<String, String> getMapWithLowercaseKeys(Map<String, String> m) {
     Map<String, String> copy = new LinkedHashMap<String, String>();
-    for (Map.Entry<String, String> entry: m.entrySet()) {
+    for (Map.Entry<String, String> entry : m.entrySet()) {
       copy.put(entry.getKey().toLowerCase(), entry.getValue());
     }
     return copy;
@@ -430,10 +435,10 @@ public class MetadataAction extends ManagerBaseAction {
    * This is a workaround to the limitation we currently have with our XML vocabularies, in that concepts can't be
    * grouped.
    */
-  void groupDatasetSubtypes()   {
+  void groupDatasetSubtypes() {
     List<String> checklistKeys = new LinkedList<String>();
     List<String> occurrenceKeys = new LinkedList<String>();
-    for (DatasetSubtype type: DatasetSubtype.values()) {
+    for (DatasetSubtype type : DatasetSubtype.values()) {
       if (type.getType().compareTo(DatasetType.CHECKLIST) == 0) {
         checklistKeys.add(type.name().replaceAll("_", "").toLowerCase());
       } else if (type.getType().compareTo(DatasetType.OCCURRENCE) == 0) {

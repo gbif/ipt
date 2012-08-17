@@ -12,6 +12,7 @@
  ***************************************************************************/
 package org.gbif.ipt.action.manage;
 
+import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
@@ -29,6 +30,7 @@ import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.StatusReport;
 import org.gbif.ipt.utils.FileUtils;
 import org.gbif.ipt.validation.EmlValidator;
@@ -44,13 +46,8 @@ import org.apache.commons.lang3.StringUtils;
 public class OverviewAction extends ManagerBaseAction {
 
   private static final String PUBLISHING = "publishing";
-  @Inject
-  private ResourceManager resourceManager;
-  @Inject
   private UserAccountManager userManager;
-  @Inject
   private RegistrationManager registrationManager;
-  @Inject
   private ExtensionManager extensionManager;
   private List<User> potentialManagers;
   private List<Extension> potentialExtensions;
@@ -61,6 +58,15 @@ public class OverviewAction extends ManagerBaseAction {
   private StatusReport report;
   private Date now;
   private boolean unpublish = false;
+
+  @Inject
+  public OverviewAction(SimpleTextProvider textProvider, AppConfig cfg, ResourceManager resourceManager,
+    UserAccountManager userAccountManager, RegistrationManager registrationManager, ExtensionManager extensionManager) {
+    super(textProvider, cfg, resourceManager);
+    this.userManager = userAccountManager;
+    this.registrationManager = registrationManager;
+    this.extensionManager = extensionManager;
+  }
 
   public String addmanager() throws Exception {
     if (resource == null) {
@@ -238,7 +244,7 @@ public class OverviewAction extends ManagerBaseAction {
       if (unpublish) {
         // makePrivate
         try {
-          resourceManager.visibilityToPrivate(resource);
+          resourceManager.visibilityToPrivate(resource, this);
           addActionMessage(
             getText("manage.overview.changed.publication.status", new String[] {resource.getStatus().toString()}));
         } catch (InvalidConfigException e) {
@@ -261,7 +267,7 @@ public class OverviewAction extends ManagerBaseAction {
     }
     if (PublicationStatus.PRIVATE == resource.getStatus()) {
       try {
-        resourceManager.visibilityToPublic(resource);
+        resourceManager.visibilityToPublic(resource, this);
         addActionMessage(
           getText("manage.overview.changed.publication.status", new String[] {resource.getStatus().toString()}));
       } catch (InvalidConfigException e) {
@@ -319,7 +325,7 @@ public class OverviewAction extends ManagerBaseAction {
       } else {
         // Validating if the resource has a type
         if (resource.getCoreType() == null || "Other".equals(resource.getCoreType())
-          || resource.getCoreType().length() == 0) {
+            || resource.getCoreType().length() == 0) {
           potentialExtensions = extensionManager.listCore();
         } else {
           potentialExtensions = new ArrayList<Extension>();

@@ -1,9 +1,15 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.dwc.terms.DwcTerm;
+import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.PropertyMapping;
+import org.gbif.ipt.service.admin.ExtensionManager;
+import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.SourceManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +18,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 public class MappingActionTest {
 
@@ -19,7 +26,9 @@ public class MappingActionTest {
 
   @Before
   public void setup() {
-    action = new MappingAction();
+    // mock action
+    action = new MappingAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mock(ResourceManager.class),
+      mock(ExtensionManager.class), mock(SourceManager.class), mock(VocabulariesManager.class));
 
     // set small list of source column names representing a source file to be mapped
     List<String> columns = new ArrayList<String>();

@@ -288,17 +288,19 @@ public interface ResourceManager {
    * Makes a resource private.
    *
    * @param resource Resource
+   * @param action the action to use for logging messages
    *
    * @throws InvalidConfigException if resource was already registered
    */
-  void visibilityToPrivate(Resource resource) throws InvalidConfigException;
+  void visibilityToPrivate(Resource resource, BaseAction action) throws InvalidConfigException;
 
   /**
    * Makes a resource public.
    *
    * @param resource Resource
+   * @param action the action to use for logging messages
    *
    * @throws InvalidConfigException if resource was already registered
    */
-  void visibilityToPublic(Resource resource) throws InvalidConfigException;
+  void visibilityToPublic(Resource resource, BaseAction action) throws InvalidConfigException;
 }

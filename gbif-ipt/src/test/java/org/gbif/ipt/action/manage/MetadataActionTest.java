@@ -1,5 +1,10 @@
 package org.gbif.ipt.action.manage;
 
+import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -7,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 public class MetadataActionTest {
 
@@ -15,8 +21,10 @@ public class MetadataActionTest {
 
   @Before
   public void setup() {
+
     // initiate action
-    action = new MetadataAction();
+    action = new MetadataAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mock(ResourceManager.class),
+      mock(VocabulariesManager.class));
 
     // mock creation of datasetSubtypes Map, with 2 occurrence subtypes, and 6 checklist subtypes
     datasetSubtypes = new LinkedHashMap<String, String>();
@@ -35,12 +43,12 @@ public class MetadataActionTest {
     action.setDatasetSubtypes(action.getMapWithLowercaseKeys(datasetSubtypes));
   }
 
-   @Test
+  @Test
   public void testGroupChecklistSubtypeKeysatasetSubtypes() {
-     action.groupDatasetSubtypes();
-     assertEquals(2, action.getOccurrenceSubtypeKeys().size());
-     assertEquals(6, action.getChecklistSubtypeKeys().size());
-   }
+    action.groupDatasetSubtypes();
+    assertEquals(2, action.getOccurrenceSubtypeKeys().size());
+    assertEquals(6, action.getChecklistSubtypeKeys().size());
+  }
 
   @Test
   public void testGetOccurrenceSubtypesMap() {

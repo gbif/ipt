@@ -13,6 +13,7 @@
 
 package org.gbif.ipt.action.manage;
 
+import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.config.JdbcSupport;
@@ -21,7 +22,9 @@ import org.gbif.ipt.model.Source.FileSource;
 import org.gbif.ipt.model.Source.SqlSource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
+import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
 
@@ -36,11 +39,8 @@ import org.apache.commons.lang3.StringUtils;
 
 public class SourceAction extends ManagerBaseAction {
 
-  @Inject
   private SourceManager sourceManager;
-  @Inject
   private JdbcSupport jdbcSupport;
-  @Inject
   private DataDir dataDir;
   // config
   private Source source;
@@ -57,6 +57,15 @@ public class SourceAction extends ManagerBaseAction {
   private int peekRows = 10;
   private int analyzeRows = 1000;
 
+  @Inject
+  public SourceAction(SimpleTextProvider textProvider, AppConfig cfg, ResourceManager resourceManager,
+    SourceManager sourceManager, JdbcSupport jdbcSupport, DataDir dataDir) {
+    super(textProvider, cfg, resourceManager);
+    this.sourceManager = sourceManager;
+    this.jdbcSupport = jdbcSupport;
+    this.dataDir = dataDir;
+  }
+
   public String add() throws IOException {
     boolean replace = false;
     // Are we going to overwrite any source file?
@@ -71,7 +80,7 @@ public class SourceAction extends ManagerBaseAction {
     if (file != null) {
       // uploaded a new file. Is it compressed?
       if (StringUtils.endsWithIgnoreCase(fileContentType, "zip") // application/zip
-        || StringUtils.endsWithIgnoreCase(fileContentType, "gzip") || StringUtils
+          || StringUtils.endsWithIgnoreCase(fileContentType, "gzip") || StringUtils
         .endsWithIgnoreCase(fileContentType, "compressed")) { // application/x-gzip
         try {
           File tmpDir = dataDir.tmpDir();
