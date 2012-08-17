@@ -28,7 +28,7 @@ import static org.junit.Assert.fail;
 
 public class ExtensionFactoryTest {
 
-  private ExtensionFactory getFactory() throws ParserConfigurationException, SAXException {
+  public static ExtensionFactory getFactory() throws ParserConfigurationException, SAXException {
     IPTModule mod = new IPTModule();
     SAXParserFactory sax = mod.provideNsAwareSaxParserFactory();
     DefaultHttpClient client = new DefaultHttpClient();
