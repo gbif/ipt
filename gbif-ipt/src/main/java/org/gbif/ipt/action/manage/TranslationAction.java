@@ -76,7 +76,7 @@ public class TranslationAction extends ManagerBaseAction {
   private VocabulariesManager vocabManager;
   private Translation trans;
 
-  private static final String REQ_PARAM_TERM = "term";
+  protected static final String REQ_PARAM_TERM = "term";
   protected static final String REQ_PARAM_ROWTYPE = "rowtype";
   protected static final String REQ_PARAM_MAPPINGID = "mid";
   // config
@@ -164,6 +164,7 @@ public class TranslationAction extends ManagerBaseAction {
         mapping = resource.getMapping(req.getParameter(REQ_PARAM_ROWTYPE), mid);
       }
     } catch (Exception e) {
+      log.error("An exception was encountered: "+e.getMessage(), e);
     }
     if (mapping != null) {
       field = mapping.getField(req.getParameter(REQ_PARAM_TERM));
