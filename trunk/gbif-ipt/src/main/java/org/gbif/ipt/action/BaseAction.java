@@ -7,6 +7,7 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletRequest;
@@ -134,14 +135,15 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
     return id;
   }
 
-  // ////////////////////////////////////////////////////////////////
-  // CUSTOM SIMPLE TEXT PROVIDER FOR MUCH FASTER LOOKUPS !!!
-  // this increases page rendering with lots of <@s:text> tags by nearly 100%
-  // ////////////////////////////////////////////////////////////////
+  /**
+   * Custom simple text provider for much faster lookups.
+   * This increases page rendering with lots of <@s:text> tags by nearly 100%.
+   * Struts2 manages the locale in the session param WW_TRANS_I18N_LOCALE via the i18n interceptor.
+   * If the Locale is null, the default language "en" is returned.
+   * @return Locale language, or default language string "en" if Locale was null
+   */
   public String getLocaleLanguage() {
-    // struts2 manages the locale in the session param WW_TRANS_I18N_LOCALE via
-    // the i18n interceptor
-    return getLocale().getLanguage();
+    return (getLocale() != null) ? getLocale().getLanguage() : Locale.ENGLISH.getLanguage();
   }
 
   @Override
