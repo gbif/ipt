@@ -910,6 +910,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
+  /**
+   * Publishes RTF file. Uses Eml2RTF writer to carry out the work.
+   *
+   * @param resource Resource
+   * @param action Action
+   */
   private void publishRtf(Resource resource, BaseAction action) {
     ActionLogger alog = new ActionLogger(this.log, action);
     Document doc = new Document();
@@ -917,7 +923,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     try {
       OutputStream out = new FileOutputStream(rtfFile);
       RtfWriter2.getInstance(doc, out);
-      eml2Rtf.writeEmlIntoRtf(doc, resource, action);
+      eml2Rtf.writeEmlIntoRtf(doc, resource);
       out.close();
     } catch (FileNotFoundException e) {
       alog.error("Cant find rtf file to write metadata to: " + rtfFile.getAbsolutePath(), e);

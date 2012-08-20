@@ -105,6 +105,8 @@ public class MockVocabulariesManager extends IptMockBaseTest implements Vocabula
       vocabMap.put("spa", "Spanish");
       vocabMap.put("ger", "German");
       vocabMap.put("fre", "French");
+      vocabMap.put("dut", "Dutch");
+      vocabMap.put("est", "Estonian");
     } else if (uri.equals(Constants.VOCAB_URI_PRESERVATION_METHOD)) {
       vocabMap.put("noTreatment", "No treatment");
       vocabMap.put("alcohol", "Alcohol");
