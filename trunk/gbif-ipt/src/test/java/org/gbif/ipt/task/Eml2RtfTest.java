@@ -13,19 +13,15 @@
 
 package org.gbif.ipt.task;
 
-import org.gbif.ipt.action.BaseAction;
-import org.gbif.ipt.config.AppConfig;
-import org.gbif.ipt.mock.MockAppConfig;
 import org.gbif.ipt.mock.MockVocabulariesManager;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.service.admin.VocabulariesManager;
-import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.IptMockBaseTest;
+import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlFactory;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -36,31 +32,25 @@ import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.rtf.RtfWriter2;
-import com.opensymphony.xwork2.LocaleProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.xml.sax.SAXException;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 @RunWith(MockitoJUnitRunner.class)
 public class Eml2RtfTest extends IptMockBaseTest {
 
   private VocabulariesManager mockedVocabManager;
   private Eml2Rtf eml2Rtf;
-  private BaseAction action;
 
   @Test
   public void generateRtfFile() {
     try {
       Document doc = new Document(PageSize.LETTER);
       Resource resource = new Resource();
-      resource.setEml(EmlFactory.build(new FileInputStream("./src/test/resources/data/eml.xml"))); // or eml2.xml
+      Eml eml = EmlFactory.build(Eml2RtfTest.class.getResourceAsStream("/data/eml3.xml"));
+      resource.setEml(eml);
       resource.setShortname("resource");
       User creator = new User();
       creator.setFirstname("Markus");
@@ -70,15 +60,9 @@ public class Eml2RtfTest extends IptMockBaseTest {
       System.out.println("Writing temporary test RTF file to " + rtfTempFile.getAbsolutePath());
       OutputStream out = new FileOutputStream(rtfTempFile);
       RtfWriter2.getInstance(doc, out);
-      eml2Rtf.writeEmlIntoRtf(doc, resource, action);
+      eml2Rtf.writeEmlIntoRtf(doc, resource);
       out.close();
-      /*
-       * FOR WINDOWS XP TEST ONLY
-       * Runtime.getRuntime().exec(
-       * "C:/Program Files/Microsoft Office/Office12/WINWORD.EXE " + rtfTempFile.getAbsolutePath());
-       */
-
-      // Do not comment the following line if you are going to commit this code.
+      // clean-up tmp file
       rtfTempFile.deleteOnExit();
     } catch (FileNotFoundException e) {
       e.printStackTrace();
@@ -89,26 +73,12 @@ public class Eml2RtfTest extends IptMockBaseTest {
     } catch (SAXException e) {
       e.printStackTrace();
     }
-
   }
 
-  /**
-   * This method should be used to configure some Mock class if needed.
-   */
   @Before
   public void setUp() throws ParserConfigurationException, SAXException {
     eml2Rtf = new Eml2Rtf();
     mockedVocabManager = new MockVocabulariesManager();
     eml2Rtf.setVocabManager(mockedVocabManager);
-
-    // Building mocks.
-    AppConfig cfg = MockAppConfig.buildMock();
-    SimpleTextProvider textProvider = mock(SimpleTextProvider.class);
-
-    // Stubbing TextProvider
-    when(textProvider.getText(any(LocaleProvider.class), anyString(), anyString(), any(Object[].class)))
-      .thenReturn("i18n-word");
-
-    action = new BaseAction(textProvider, cfg);
   }
 }
