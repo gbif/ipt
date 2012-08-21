@@ -1,6 +1,7 @@
 package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.POSTAction;
+import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.RegistryException;
@@ -8,6 +9,7 @@ import org.gbif.ipt.service.admin.ConfigManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -15,24 +17,33 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.apache.log4j.Logger;
 
 public class UpdateResourceMetadataAction extends POSTAction {
 
+  // logging
+  private static final Logger log = Logger.getLogger(UpdateResourceMetadataAction.class);
+
   private static final long serialVersionUID = -2717994514136947049L;
 
-  @Inject
   protected ConfigManager configManager;
-  @Inject
   protected ResourceManager resourceManager;
-  @Inject
   protected RegistryManager registryManager;
-  @Inject
-  protected RegistrationManager registrationManager;
 
   private static final String EML = "EML";
   private static final String REGISTRY = "REGISTRY";
   private static final String DWCA = "DWCA";
   private static final String SUCCESS_TYPE = "SUCCESS";
+
+  @Inject
+  public UpdateResourceMetadataAction(SimpleTextProvider textProvider, AppConfig cfg,
+    RegistrationManager registrationManager, ConfigManager configManager, ResourceManager resourceManager,
+    RegistryManager registryManager) {
+    super(textProvider, cfg, registrationManager);
+    this.configManager = configManager;
+    this.resourceManager = resourceManager;
+    this.registryManager = registryManager;
+  }
 
   @Override
   public String execute() throws Exception {

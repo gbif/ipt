@@ -12,6 +12,7 @@ package org.gbif.ipt.validation;
 
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.metadata.eml.Citation;
 import org.gbif.metadata.eml.Eml;
@@ -35,6 +36,8 @@ public class EmlValidator extends BaseValidator {
   protected static Pattern phonePattern = Pattern.compile("[0-9 ()/+-]+");
   @Inject
   private AppConfig cfg;
+  @Inject
+  private RegistrationManager regManager;
 
   /**
    * @return the URL formatted with the schema component
@@ -71,7 +74,7 @@ public class EmlValidator extends BaseValidator {
   }
 
   public boolean isValid(Eml eml, @Nullable String part) {
-    BaseAction action = new BaseAction(new SimpleTextProvider(), cfg);
+    BaseAction action = new BaseAction(new SimpleTextProvider(), cfg, regManager);
     validate(action, eml, part);
     return !(action.hasActionErrors() || action.hasFieldErrors());
   }
@@ -204,7 +207,7 @@ public class EmlValidator extends BaseValidator {
 
         /* At least have to exist an organisation, a lastName or a position */
         if (!exists(eml.getResourceCreator().getOrganisation()) && !exists(eml.getResourceCreator().getLastName())
-          && !exists(eml.getResourceCreator().getPosition())) {
+            && !exists(eml.getResourceCreator().getPosition())) {
           if (!action.getActionErrors().contains(action.getText("validation.lastname.organisation.position"))) {
             action.addActionError(action.getText("validation.lastname.organisation.position"));
           }
@@ -271,7 +274,7 @@ public class EmlValidator extends BaseValidator {
 
         /* At least have to exist an organisation, a lastName or a position */
         if (!exists(eml.getMetadataProvider().getOrganisation()) && !exists(eml.getMetadataProvider().getLastName())
-          && !exists(eml.getMetadataProvider().getPosition())) {
+            && !exists(eml.getMetadataProvider().getPosition())) {
           if (!action.getActionErrors().contains(action.getText("validation.lastname.organisation.position"))) {
             action.addActionError(action.getText("validation.lastname.organisation.position"));
           }
@@ -405,9 +408,9 @@ public class EmlValidator extends BaseValidator {
           // The Bounding coordinates and description are mandatory.
           // If all fields are empty, the <coverage> label in eml.xml will be removed.
           if (eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMin().getLongitude() == null
-            && eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLongitude() == null
-            && eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMin().getLatitude() == null
-            && eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLatitude() == null && eml
+              && eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLongitude() == null
+              && eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMin().getLatitude() == null
+              && eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLatitude() == null && eml
             .getGeospatialCoverages().get(index).getDescription().equals("")) {
             eml.getGeospatialCoverages().clear();
           }
@@ -613,7 +616,7 @@ public class EmlValidator extends BaseValidator {
          */
         boolean emptyFields = false;
         if (eml.getSampleDescription().length() == 0 && eml.getStudyExtent().length() == 0
-          && eml.getQualityControl().length() == 0) {
+            && eml.getQualityControl().length() == 0) {
           eml.setSampleDescription(null);
           eml.setStudyExtent(null);
           eml.setQualityControl(null);

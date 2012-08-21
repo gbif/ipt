@@ -1,8 +1,11 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.action.BaseAction;
+import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +15,16 @@ import com.google.inject.Inject;
 public class HomeAction extends BaseAction {
 
   private List<Resource> resources = new ArrayList<Resource>();
-  @Inject
+
   private ResourceManager resourceManager;
   private boolean registrationAllowed = false;
+
+  @Inject
+  public HomeAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
+    ResourceManager resourceManager) {
+    super(textProvider, cfg, registrationManager);
+    this.resourceManager = resourceManager;
+  }
 
   @Override
   public String execute() {

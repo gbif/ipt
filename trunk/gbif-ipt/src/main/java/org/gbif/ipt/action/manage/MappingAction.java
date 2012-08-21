@@ -26,6 +26,7 @@ import org.gbif.ipt.model.Resource.CoreRowType;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.Source.FileSource;
 import org.gbif.ipt.service.admin.ExtensionManager;
+import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
@@ -62,7 +63,7 @@ import org.apache.commons.lang.xwork.StringUtils;
 public class MappingAction extends ManagerBaseAction {
 
   private static final Pattern NORM_TERM = Pattern.compile("[\\W\\s_0-9]+");
-  // the resource manager session is populated by the resource interceptor and kept alive for an entire manager session
+
   private ExtensionManager extensionManager;
   private SourceManager sourceManager;
   private VocabulariesManager vocabManager;
@@ -75,13 +76,13 @@ public class MappingAction extends ManagerBaseAction {
   private final Map<String, Map<String, String>> vocabTerms = new HashMap<String, Map<String, String>>();
   private ExtensionProperty coreid;
   private Integer mid;
-
   private PropertyMapping mappingCoreid;
 
   @Inject
-  public MappingAction(SimpleTextProvider textProvider, AppConfig cfg, ResourceManager resourceManager,
-    ExtensionManager extensionManager, SourceManager sourceManager, VocabulariesManager vocabManager) {
-    super(textProvider, cfg, resourceManager);
+  public MappingAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
+    ResourceManager resourceManager, ExtensionManager extensionManager, SourceManager sourceManager,
+    VocabulariesManager vocabManager) {
+    super(textProvider, cfg, registrationManager, resourceManager);
     this.extensionManager = extensionManager;
     this.sourceManager = sourceManager;
     this.vocabManager = vocabManager;
@@ -248,7 +249,7 @@ public class MappingAction extends ManagerBaseAction {
   }
 
   @Override
-  public void prepare() throws Exception {
+  public void prepare() {
     super.prepare();
     // get mapping sequence id from parameters as setters are not called yet
     String midStr = StringUtils.trimToNull(req.getParameter("mid"));

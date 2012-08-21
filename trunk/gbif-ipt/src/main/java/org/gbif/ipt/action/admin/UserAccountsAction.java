@@ -1,12 +1,15 @@
 package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.POSTAction;
+import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.DeletionNotAllowedException.Reason;
+import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.validation.UserValidator;
 
 import java.io.IOException;
@@ -15,15 +18,19 @@ import java.util.List;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 /**
  * The Action responsible for all user input relating to the user accounts in the IPT.
  */
 public class UserAccountsAction extends POSTAction {
 
+  // logging
+  private static final Logger log = Logger.getLogger(UserAccountsAction.class);
+
   private static final long serialVersionUID = 8892204508303815998L;
   private static final int PASSWORD_LENGTH = 8;
-  @Inject
+
   private UserAccountManager userManager;
   private final UserValidator validator = new UserValidator();
 
@@ -32,6 +39,13 @@ public class UserAccountsAction extends POSTAction {
   private boolean resetPassword;
   private boolean newUser;
   private List<User> users;
+
+  @Inject
+  public UserAccountsAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
+    UserAccountManager userManager) {
+    super(textProvider, cfg, registrationManager);
+    this.userManager = userManager;
+  }
 
   @Override
   public String delete() {
@@ -85,7 +99,7 @@ public class UserAccountsAction extends POSTAction {
   }
 
   @Override
-  public void prepare() throws Exception {
+  public void prepare() {
     super.prepare();
     if (id == null) {
       newUser = true;
@@ -106,7 +120,11 @@ public class UserAccountsAction extends POSTAction {
       user = new User();
       newUser = true;
     } else {
-      user = (User) user.clone();
+      try {
+        user = (User) user.clone();
+      } catch (CloneNotSupportedException e) {
+        log.error("An exception occurred while retrieving user: " + e.getMessage(), e);
+      }
     }
   }
 
@@ -124,7 +142,7 @@ public class UserAccountsAction extends POSTAction {
         addActionMessage(getText("admin.user.passwordChanged", new String[] {user.getEmail(), newPassword}));
       } else {
         if (userManager.get(user.getEmail()).getRole() == Role.Admin && user.getRole() != Role.Admin
-          && userManager.list(Role.Admin).size() < 2) {
+            && userManager.list(Role.Admin).size() < 2) {
           addActionError(getText("admin.user.changed.current"));
           return INPUT;
         }

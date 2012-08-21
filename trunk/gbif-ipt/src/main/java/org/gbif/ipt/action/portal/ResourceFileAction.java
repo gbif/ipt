@@ -1,11 +1,14 @@
 package org.gbif.ipt.action.portal;
 
 import org.gbif.ipt.action.BaseAction;
+import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
+import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,16 +17,19 @@ import java.io.InputStream;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 /**
  * The Action responsible for serving datadir resource files.
  */
 public class ResourceFileAction extends BaseAction {
 
-  @Inject
+  // logging
+  private static final Logger log = Logger.getLogger(ResourceFileAction.class);
+
   private DataDir dataDir;
-  @Inject
   protected ResourceManager resourceManager;
+
   protected String r;
   protected String s;
   protected Integer version;
@@ -33,6 +39,14 @@ public class ResourceFileAction extends BaseAction {
   protected File data;
   protected String mimeType = "text/plain";
   protected String filename;
+
+  @Inject
+  public ResourceFileAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
+    DataDir dataDir, ResourceManager resourceManager) {
+    super(textProvider, cfg, registrationManager);
+    this.dataDir = dataDir;
+    this.resourceManager = resourceManager;
+  }
 
   public String dwca() {
     if (resource == null) {

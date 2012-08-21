@@ -11,7 +11,9 @@ import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.ConfigManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
+import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.validation.UserValidator;
 
 import java.io.File;
@@ -30,17 +32,17 @@ import org.apache.log4j.Logger;
  * The Action responsible for all user input relating to the IPT configuration.
  */
 public class SetupAction extends BaseAction {
+
+  // logging
   protected static Logger log = Logger.getLogger(SetupAction.class);
 
   private static final long serialVersionUID = 4726973323043063968L;
-  @Inject
+
   protected ConfigManager configManager;
-  @Inject
   protected UserAccountManager userManager;
-  @Inject
   private DataDir dataDir;
-  @Inject
   private ExtensionManager extensionManager;
+
   private final UserValidator userValidation = new UserValidator();
 
   // action attributes to be set
@@ -58,6 +60,16 @@ public class SetupAction extends BaseAction {
   private static final String MODE_PRODUCTION = "Production";
   private static List<String> MODES = new ArrayList<String>();
 
+  @Inject
+  public SetupAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager regManager,
+    ConfigManager configManager, UserAccountManager userManager, DataDir dataDir, ExtensionManager extensionManager) {
+    super(textProvider, cfg, regManager);
+    this.configManager = configManager;
+    this.userManager = userManager;
+    this.dataDir = dataDir;
+    this.extensionManager = extensionManager;
+  }
+
   static {
     List<String> ls = new ArrayList<String>();
     ls.add(MODE_DEVELOPMENT);
@@ -65,7 +77,7 @@ public class SetupAction extends BaseAction {
     MODES = Collections.unmodifiableList(ls);
   }
 
-  public List getModes(){
+  public List getModes() {
     return MODES;
   }
 
@@ -150,7 +162,8 @@ public class SetupAction extends BaseAction {
   }
 
   /**
-   * Method called when setting up the IPT for the very first time. There might not even be a logged in user, be careful
+   * Method called when setting up the IPT for the very first time. There might not even be a logged in user, be
+   * careful
    * to not require an admin!
    */
   public String setup() {

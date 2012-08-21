@@ -1,19 +1,25 @@
 package org.gbif.ipt.action;
 
+import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
+import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.validation.UserValidator;
 
 import java.io.IOException;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang.xwork.StringUtils;
+import org.apache.log4j.Logger;
 
 public class AccountAction extends POSTAction {
 
-  @Inject
+  // logging
+  private static final Logger log = Logger.getLogger(AccountAction.class);
+
   private UserAccountManager userManager;
   private final UserValidator userValidation = new UserValidator();
 
@@ -26,6 +32,13 @@ public class AccountAction extends POSTAction {
   private User admin;
   private String lostPswdEmailSubject;
   private String lostPswdEmailBody;
+
+  @Inject
+  public AccountAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
+    UserAccountManager userManager) {
+    super(textProvider, cfg, registrationManager);
+    this.userManager = userManager;
+  }
 
   @Override
   public String execute() throws Exception {
@@ -95,7 +108,7 @@ public class AccountAction extends POSTAction {
   }
 
   @Override
-  public void prepare() throws Exception {
+  public void prepare() {
     super.prepare();
     // populate admin user
     admin = userManager.list(Role.Admin).get(0);

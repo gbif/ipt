@@ -1,6 +1,7 @@
 package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.POSTAction;
+import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.DeletionNotAllowedException;
@@ -8,6 +9,7 @@ import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.validation.OrganisationSupport;
 
 import java.io.IOException;
@@ -18,11 +20,15 @@ import java.util.List;
 
 import com.google.inject.Inject;
 import com.google.inject.servlet.SessionScoped;
+import org.apache.log4j.Logger;
 
 /**
  * The Action responsible for all user input relating to the organisations allowed in the IPT.
  */
 public class OrganisationsAction extends POSTAction {
+
+  // logging
+  private static final Logger log = Logger.getLogger(OrganisationsAction.class);
 
   /**
    * A session scoped cache of the organisations from the GBIF registry.
@@ -74,7 +80,6 @@ public class OrganisationsAction extends POSTAction {
 
   private static final long serialVersionUID = 7297470324204084809L;
 
-  private final RegistrationManager registrationManager;
   private ResourceManager resourceManager;
   private final OrganisationSupport organisationValidation;
 
@@ -83,9 +88,9 @@ public class OrganisationsAction extends POSTAction {
   private final RegisteredOrganisations orgSession;
 
   @Inject
-  public OrganisationsAction(RegistrationManager registrationManager, OrganisationSupport organisationValidation,
-    RegisteredOrganisations orgSession, ResourceManager resourceManager) {
-    this.registrationManager = registrationManager;
+  public OrganisationsAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
+    OrganisationSupport organisationValidation, RegisteredOrganisations orgSession, ResourceManager resourceManager) {
+    super(textProvider, cfg, registrationManager);
     this.organisationValidation = organisationValidation;
     this.orgSession = orgSession;
     this.resourceManager = resourceManager;
@@ -156,7 +161,7 @@ public class OrganisationsAction extends POSTAction {
   }
 
   @Override
-  public void prepare() throws Exception {
+  public void prepare() {
     super.prepare();
     // load orgs from registry if not done yet
     if (!orgSession.isLoaded()) {

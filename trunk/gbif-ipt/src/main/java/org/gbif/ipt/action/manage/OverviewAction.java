@@ -42,12 +42,15 @@ import java.util.List;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 public class OverviewAction extends ManagerBaseAction {
 
+  // logging
+  private static final Logger log = Logger.getLogger(OverviewAction.class);
+
   private static final String PUBLISHING = "publishing";
   private UserAccountManager userManager;
-  private RegistrationManager registrationManager;
   private ExtensionManager extensionManager;
   private List<User> potentialManagers;
   private List<Extension> potentialExtensions;
@@ -60,11 +63,10 @@ public class OverviewAction extends ManagerBaseAction {
   private boolean unpublish = false;
 
   @Inject
-  public OverviewAction(SimpleTextProvider textProvider, AppConfig cfg, ResourceManager resourceManager,
-    UserAccountManager userAccountManager, RegistrationManager registrationManager, ExtensionManager extensionManager) {
-    super(textProvider, cfg, resourceManager);
+  public OverviewAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
+    ResourceManager resourceManager, UserAccountManager userAccountManager, ExtensionManager extensionManager) {
+    super(textProvider, cfg, registrationManager, resourceManager);
     this.userManager = userAccountManager;
-    this.registrationManager = registrationManager;
     this.extensionManager = extensionManager;
   }
 
@@ -301,7 +303,7 @@ public class OverviewAction extends ManagerBaseAction {
   }
 
   @Override
-  public void prepare() throws Exception {
+  public void prepare() {
     super.prepare();
     if (resource != null) {
       // get last archive report
@@ -348,7 +350,6 @@ public class OverviewAction extends ManagerBaseAction {
           resource.deleteMapping(em);
         }
       }
-
     }
   }
 

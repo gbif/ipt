@@ -1,10 +1,13 @@
 package org.gbif.ipt.action.portal;
 
+import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.FileUtils;
 import org.gbif.metadata.eml.Eml;
 
@@ -16,13 +19,16 @@ import com.google.inject.Inject;
 
 public class ResourceAction extends PortalBaseAction {
 
-  @Inject
-  private RegistrationManager registrationManager;
+  private VocabulariesManager vocabManager;
   private List<Resource> resources;
   private Integer page = 1;
 
   @Inject
-  private VocabulariesManager vocabManager;
+  public ResourceAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
+    ResourceManager resourceManager, VocabulariesManager vocabManager) {
+    super(textProvider, cfg, registrationManager, resourceManager);
+    this.vocabManager = vocabManager;
+  }
 
   @Override
   public String execute() throws Exception {
