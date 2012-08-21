@@ -6,6 +6,7 @@ import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.service.admin.ExtensionManager;
+import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
@@ -27,8 +28,9 @@ public class MappingActionTest {
   @Before
   public void setup() {
     // mock action
-    action = new MappingAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mock(ResourceManager.class),
-      mock(ExtensionManager.class), mock(SourceManager.class), mock(VocabulariesManager.class));
+    action = new MappingAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mock(RegistrationManager.class),
+      mock(ResourceManager.class), mock(ExtensionManager.class), mock(SourceManager.class),
+      mock(VocabulariesManager.class));
 
     // set small list of source column names representing a source file to be mapped
     List<String> columns = new ArrayList<String>();

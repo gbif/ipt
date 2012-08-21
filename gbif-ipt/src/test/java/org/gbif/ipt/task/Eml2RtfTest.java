@@ -49,7 +49,7 @@ public class Eml2RtfTest extends IptMockBaseTest {
     try {
       Document doc = new Document(PageSize.LETTER);
       Resource resource = new Resource();
-      Eml eml = EmlFactory.build(Eml2RtfTest.class.getResourceAsStream("/data/eml3.xml"));
+      Eml eml = EmlFactory.build(Eml2RtfTest.class.getResourceAsStream("/data/eml.xml"));
       resource.setEml(eml);
       resource.setShortname("resource");
       User creator = new User();

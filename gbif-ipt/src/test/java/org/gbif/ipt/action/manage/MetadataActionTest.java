@@ -1,6 +1,7 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -23,8 +24,8 @@ public class MetadataActionTest {
   public void setup() {
 
     // initiate action
-    action = new MetadataAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mock(ResourceManager.class),
-      mock(VocabulariesManager.class));
+    action = new MetadataAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mock(RegistrationManager.class),
+      mock(ResourceManager.class), mock(VocabulariesManager.class));
 
     // mock creation of datasetSubtypes Map, with 2 occurrence subtypes, and 6 checklist subtypes
     datasetSubtypes = new LinkedHashMap<String, String>();

@@ -1,23 +1,30 @@
 package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.POSTAction;
+import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.ConfigManager;
+import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 /**
  * The Action responsible for all user input relating to the IPT configuration.
  */
 public class ConfigAction extends POSTAction {
 
+  // logging
+  private static final Logger log = Logger.getLogger(ConfigAction.class);
+
   private static final long serialVersionUID = 4726973323043063968L;
-  @Inject
+
   protected ConfigManager configManager;
 
   // these are transient properties that are set on a per request basis
@@ -30,6 +37,13 @@ public class ConfigAction extends POSTAction {
   protected String analyticsKey;
   protected Double latitude;
   protected Double longitude;
+
+  @Inject
+  public ConfigAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
+    ConfigManager configManager) {
+    super(textProvider, cfg, registrationManager);
+    this.configManager = configManager;
+  }
 
   public Boolean getAnalyticsGbif() {
     return cfg.isGbifAnalytics();

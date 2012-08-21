@@ -1,6 +1,7 @@
 package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.POSTAction;
+import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.service.AlreadyExistingException;
@@ -8,6 +9,7 @@ import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.RegistryException.TYPE;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.registry.RegistryManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.validation.IptValidator;
 import org.gbif.ipt.validation.OrganisationSupport;
 
@@ -19,11 +21,15 @@ import java.util.List;
 
 import com.google.inject.Inject;
 import com.google.inject.servlet.SessionScoped;
+import org.apache.log4j.Logger;
 
 /**
  * The Action responsible for all user input relating to the registration options.
  */
 public class RegistrationAction extends POSTAction {
+
+  // logging
+  private static final Logger log = Logger.getLogger(RegistrationAction.class);
 
   @SessionScoped
   public static class RegisteredOrganisations {
@@ -67,7 +73,6 @@ public class RegistrationAction extends POSTAction {
 
   private static final long serialVersionUID = -6522969037528106704L;
   private final RegistryManager registryManager;
-  private final RegistrationManager registrationManager;
   private final OrganisationSupport organisationValidation;
   private final IptValidator iptValidation;
 
@@ -75,21 +80,16 @@ public class RegistrationAction extends POSTAction {
 
   private List<Organisation> organisations = new ArrayList<Organisation>();
   private Organisation organisation;
-  private String iptPassword;
   private Ipt ipt;
   private RegisteredOrganisations orgSession;
 
-  /**
-   * @param registryManager
-   * @param organisationValidation
-   * @param registrationManager
-   */
   @Inject
-  public RegistrationAction(OrganisationSupport organisationValidation, RegistrationManager registrationManager,
-    RegistryManager registryManager, IptValidator iptValidation, RegisteredOrganisations orgSession) {
+  public RegistrationAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
+    RegistryManager registryManager, OrganisationSupport organisationValidation, IptValidator iptValidation,
+    RegisteredOrganisations orgSession) {
+    super(textProvider, cfg, registrationManager);
     this.registryManager = registryManager;
     this.organisationValidation = organisationValidation;
-    this.registrationManager = registrationManager;
     this.iptValidation = iptValidation;
     this.orgSession = orgSession;
   }
@@ -143,9 +143,10 @@ public class RegistrationAction extends POSTAction {
   }
 
   @Override
-  public void prepare() throws Exception {
-    // will not be session scoping the list of organisations from the registry as this is basically a 1 time step
+  public void prepare() {
+    // load hosting organization - call superclass' prepare()
     super.prepare();
+    // will not be session scoping the list of organisations from the registry as this is basically a 1 time step
     if (!getIsRegistered() && !orgSession.isLoaded()) {
       try {
         orgSession.load();

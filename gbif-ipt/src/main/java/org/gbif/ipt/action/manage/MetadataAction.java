@@ -19,6 +19,7 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Resource.CoreRowType;
+import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -69,9 +70,9 @@ public class MetadataAction extends ManagerBaseAction {
       "citations", "collections", "physical", "additional");
 
   @Inject
-  public MetadataAction(SimpleTextProvider textProvider, AppConfig cfg, ResourceManager resourceManager,
-    VocabulariesManager vocabManager) {
-    super(textProvider, cfg, resourceManager);
+  public MetadataAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
+    ResourceManager resourceManager, VocabulariesManager vocabManager) {
+    super(textProvider, cfg, registrationManager, resourceManager);
     this.vocabManager = vocabManager;
   }
 
@@ -206,7 +207,7 @@ public class MetadataAction extends ManagerBaseAction {
   }
 
   @Override
-  public void prepare() throws Exception {
+  public void prepare() {
     super.prepare();
     // somehow the action params in struts.xml dont seem to work right
     // we therefore take the section parameter from the requested url

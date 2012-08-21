@@ -4,6 +4,7 @@ import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
@@ -12,18 +13,19 @@ import org.apache.commons.lang3.StringUtils;
 
 public class ManagerBaseAction extends POSTAction {
 
+  // the resourceManager session is populated by the resource interceptor and kept alive for an entire manager session
   protected ResourceManager resourceManager;
   protected Resource resource;
 
   @Inject
-  public ManagerBaseAction(SimpleTextProvider textProvider, AppConfig cfg, ResourceManager resourceManager) {
-    this.textProvider = textProvider;
-    this.cfg = cfg;
+  public ManagerBaseAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
+    ResourceManager resourceManager) {
+    super(textProvider, cfg, registrationManager);
     this.resourceManager = resourceManager;
   }
 
   @Override
-  public void prepare() throws Exception {
+  public void prepare() {
     super.prepare();
     // look for resource parameter
     String res = StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_RESOURCE));

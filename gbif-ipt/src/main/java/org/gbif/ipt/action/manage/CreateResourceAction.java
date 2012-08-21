@@ -1,10 +1,13 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.action.POSTAction;
+import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
+import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.validation.ResourceValidator;
 
 import java.io.File;
@@ -16,18 +19,28 @@ import java.io.OutputStream;
 
 import com.google.inject.Inject;
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
 
 public class CreateResourceAction extends POSTAction {
 
-  @Inject
+  // logging
+  private static final Logger log = Logger.getLogger(CreateResourceAction.class);
+
   private ResourceManager resourceManager;
-  @Inject
   private DataDir dataDir;
   private File file;
   private String fileContentType;
   private String fileFileName;
   private String shortname;
   private final ResourceValidator validator = new ResourceValidator();
+
+  @Inject
+  public CreateResourceAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
+    ResourceManager resourceManager, DataDir dataDir) {
+    super(textProvider, cfg, registrationManager);
+    this.resourceManager = resourceManager;
+    this.dataDir = dataDir;
+  }
 
   public String getShortname() {
     return shortname;

@@ -14,6 +14,7 @@ import org.gbif.ipt.model.VocabularyConcept;
 import org.gbif.ipt.model.VocabularyTerm;
 import org.gbif.ipt.model.factory.ExtensionFactory;
 import org.gbif.ipt.model.factory.ExtensionFactoryTest;
+import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
@@ -59,6 +60,7 @@ public class TranslationActionTest {
     SourceManager mockSourceManager = mock(SourceManager.class);
     VocabulariesManager mockVocabManager = mock(VocabulariesManager.class);
     TranslationAction.Translation translation = new TranslationAction.Translation();
+    RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
 
     // mock getting list of values back for BasisOfRecord field/column in source
     Set<String> values = new LinkedHashSet<String>();
@@ -119,8 +121,9 @@ public class TranslationActionTest {
     when(mockResourceManager.get(anyString())).thenReturn(resource);
 
     // create mock Action
-    action = new TranslationAction(mockTextProvider, mockCfg, mockResourceManager, mockSourceManager, mockVocabManager,
-      translation);
+    action =
+      new TranslationAction(mockTextProvider, mockCfg, mockRegistrationManager, mockResourceManager, mockSourceManager,
+        mockVocabManager, translation);
 
     // initialize ExtensionProperty representing BasisOfRecord field on Occurrence core Extension
     ExtensionProperty property = mapping.getExtension().getProperty(field.getTerm());
@@ -171,7 +174,7 @@ public class TranslationActionTest {
     // the mapping id is 0 - relates to resource's List<ExtensionMapping> mappings
     when(mockRequest.getParameter(TranslationAction.REQ_PARAM_MAPPINGID)).thenReturn("0");
     when(mockRequest.getParameter(TranslationAction.REQ_PARAM_ROWTYPE)).thenReturn(Constants.DWC_ROWTYPE_OCCURRENCE);
-    when(mockRequest.getParameter(TranslationAction.REQ_PARAM_TERM )).thenReturn(DwcTerm.basisOfRecord.qualifiedName());
+    when(mockRequest.getParameter(TranslationAction.REQ_PARAM_TERM)).thenReturn(DwcTerm.basisOfRecord.qualifiedName());
     when(mockRequest.getParameter(Constants.REQ_PARAM_RESOURCE)).thenReturn(resourceShortName);
     action.setServletRequest(mockRequest);
 
@@ -190,7 +193,7 @@ public class TranslationActionTest {
 
     // check 1. there are 3 key-only sessionScoped translations (represent values read from source with no translations
     assertEquals(3, action.getTrans().getTmap().size());
-    for (String val: action.getTrans().getTmap().values()) {
+    for (String val : action.getTrans().getTmap().values()) {
       assertNull(val);
     }
 
@@ -252,7 +255,7 @@ public class TranslationActionTest {
     // assert 3 have been auto-mapped (removing any null mapping values) and they are all equal to the vocab identifier
     action.getTrans().getTmap().values().remove(null);
     assertEquals(3, action.getTrans().getTmap().keySet().size());
-    for (String val: action.getTrans().getTmap().values()) {
+    for (String val : action.getTrans().getTmap().values()) {
       assertEquals("PreservedSpecimen", val);
     }
   }

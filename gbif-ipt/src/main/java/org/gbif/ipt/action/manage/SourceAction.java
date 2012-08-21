@@ -22,6 +22,7 @@ import org.gbif.ipt.model.Source.FileSource;
 import org.gbif.ipt.model.Source.SqlSource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
+import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -36,8 +37,12 @@ import java.util.Map;
 import com.google.inject.Inject;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 public class SourceAction extends ManagerBaseAction {
+
+  // logging
+  private static final Logger log = Logger.getLogger(SourceAction.class);
 
   private SourceManager sourceManager;
   private JdbcSupport jdbcSupport;
@@ -58,9 +63,9 @@ public class SourceAction extends ManagerBaseAction {
   private int analyzeRows = 1000;
 
   @Inject
-  public SourceAction(SimpleTextProvider textProvider, AppConfig cfg, ResourceManager resourceManager,
-    SourceManager sourceManager, JdbcSupport jdbcSupport, DataDir dataDir) {
-    super(textProvider, cfg, resourceManager);
+  public SourceAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
+    ResourceManager resourceManager, SourceManager sourceManager, JdbcSupport jdbcSupport, DataDir dataDir) {
+    super(textProvider, cfg, registrationManager, resourceManager);
     this.sourceManager = sourceManager;
     this.jdbcSupport = jdbcSupport;
     this.dataDir = dataDir;
@@ -234,7 +239,7 @@ public class SourceAction extends ManagerBaseAction {
   }
 
   @Override
-  public void prepare() throws Exception {
+  public void prepare() {
     super.prepare();
     if (id != null) {
       source = resource.getSource(id);

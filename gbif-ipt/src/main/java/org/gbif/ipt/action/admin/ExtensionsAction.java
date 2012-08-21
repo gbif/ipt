@@ -1,13 +1,16 @@
 package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.POSTAction;
+import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.admin.ExtensionManager;
+import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl.UpdateResult;
 import org.gbif.ipt.service.registry.RegistryManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.net.URL;
 import java.text.DateFormat;
@@ -21,18 +24,22 @@ import java.util.Map.Entry;
 import com.google.inject.Inject;
 import com.google.inject.servlet.SessionScoped;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 /**
  * The Action responsible for all user input relating to the DarwinCore extension management.
  */
 public class ExtensionsAction extends POSTAction {
 
+  // logging
+  private static final Logger log = Logger.getLogger(ExtensionsAction.class);
+
   /**
    * A session scoped bean to keep a list of all extensions with basic metadata as exposed by the registry directly.
-   * There wont be any properties listed. The reason for keeping this in the session is to load the extension list only
+   * There won't be any properties listed. The reason for keeping this in the session is to load the extension list
+   * only
    * once - but not to store it continuously in memory. Once the admin has logged out all this info will be removed
-   * again
-   * and only the installed extensions remain in memory.
+   * again and only the installed extensions remain in memory.
    *
    * @author markus
    */
@@ -54,12 +61,10 @@ public class ExtensionsAction extends POSTAction {
     }
   }
 
-  @Inject
   private ExtensionManager extensionManager;
-  @Inject
   private VocabulariesManager vocabManager;
-  @Inject
   private RegisteredExtensions registered;
+
   private List<Extension> extensions;
   private Extension extension;
   private String url;
@@ -68,6 +73,15 @@ public class ExtensionsAction extends POSTAction {
   private Date vocabsLastUpdated;
   private String dateFormat;
   private List<Extension> newExtensions;
+
+  @Inject
+  public ExtensionsAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
+    ExtensionManager extensionManager, VocabulariesManager vocabManager, RegisteredExtensions registered) {
+    super(textProvider, cfg, registrationManager);
+    this.extensionManager = extensionManager;
+    this.vocabManager = vocabManager;
+    this.registered = registered;
+  }
 
   @Override
   public String delete() throws Exception {
@@ -145,7 +159,7 @@ public class ExtensionsAction extends POSTAction {
   }
 
   @Override
-  public void prepare() throws Exception {
+  public void prepare() {
     super.prepare();
     // in case session just started
     if (registered.extensions.isEmpty()) {

@@ -16,38 +16,40 @@
 
 package org.gbif.ipt.action;
 
-import org.gbif.ipt.model.Organisation;
+import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.io.StringWriter;
 
 import com.google.inject.Inject;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import org.apache.log4j.Logger;
 
 public class AboutAction extends BaseAction {
 
-  @Inject
+  // logging
+  private static final Logger log = Logger.getLogger(AboutAction.class);
+
   private Configuration ftl;
-  @Inject
-  private RegistrationManager regManager;
   private String content;
-  private Organisation host;
+
+  @Inject
+  public AboutAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
+    Configuration ftl) {
+    super(textProvider, cfg, registrationManager);
+    this.ftl = ftl;
+  }
 
   public String getContent() {
     return content;
   }
 
-  public Organisation getHost() {
-    return host;
-  }
-
   @Override
-  public void prepare() throws Exception {
-    host = regManager.getHostingOrganisation();
-    if (host == null) {
-      host = new Organisation();
-    }
+  public void prepare() {
+    // load hosting organization - call superclass' prepare()
+    super.prepare();
     try {
       StringWriter result = new StringWriter();
       Template tmpl = ftl.getTemplate("datadir::config/about.ftl");
@@ -57,6 +59,5 @@ public class AboutAction extends BaseAction {
       log.warn("Cannot render custom about.ftl template from data dir", e);
       content = "";
     }
-
   }
 }

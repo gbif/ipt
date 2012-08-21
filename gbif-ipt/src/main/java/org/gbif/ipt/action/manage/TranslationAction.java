@@ -22,6 +22,7 @@ import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.model.VocabularyConcept;
 import org.gbif.ipt.service.SourceException;
+import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
@@ -36,8 +37,12 @@ import java.util.TreeMap;
 import com.google.inject.Inject;
 import com.google.inject.servlet.SessionScoped;
 import org.apache.commons.lang.xwork.StringUtils;
+import org.apache.log4j.Logger;
 
 public class TranslationAction extends ManagerBaseAction {
+
+  // logging
+  private static final Logger log = Logger.getLogger(TranslationAction.class);
 
   @SessionScoped
   static class Translation {
@@ -88,9 +93,9 @@ public class TranslationAction extends ManagerBaseAction {
   private String id;
 
   @Inject
-  public TranslationAction(SimpleTextProvider textProvider, AppConfig cfg, ResourceManager resourceManager,
-    SourceManager sourceManager, VocabulariesManager vocabManager, Translation trans) {
-    super(textProvider, cfg, resourceManager);
+  public TranslationAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
+    ResourceManager resourceManager, SourceManager sourceManager, VocabulariesManager vocabManager, Translation trans) {
+    super(textProvider, cfg, registrationManager, resourceManager);
     this.sourceManager = sourceManager;
     this.vocabManager = vocabManager;
     this.trans = trans;
@@ -152,7 +157,7 @@ public class TranslationAction extends ManagerBaseAction {
   }
 
   @Override
-  public void prepare() throws Exception {
+  public void prepare() {
     super.prepare();
     notFound = true;
 
@@ -164,7 +169,7 @@ public class TranslationAction extends ManagerBaseAction {
         mapping = resource.getMapping(req.getParameter(REQ_PARAM_ROWTYPE), mid);
       }
     } catch (Exception e) {
-      log.error("An exception was encountered: "+e.getMessage(), e);
+      log.error("An exception was encountered: " + e.getMessage(), e);
     }
     if (mapping != null) {
       field = mapping.getField(req.getParameter(REQ_PARAM_TERM));

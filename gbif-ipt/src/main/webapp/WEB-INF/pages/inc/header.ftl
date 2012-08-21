@@ -12,9 +12,15 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
+    [#assign iptIntro = "The Integrated Publishing Toolkit (IPT) is a tool developed by the Global Biodiversity Information Facility (GBIF) to provide an easy and efficient way of publishing biodiversity data." /]
+    [#assign keywords = "GBIF, Global Biodiversity Information Facility, IPT, Integrated Publishing Toolkit, checklist, occurrence, metadata, DwC-A, Darwin Core, Darwin Core Archive, biodiversity data, data paper, EML" /]
+    [#if hostingOrganisation?exists && hostingOrganisation.name??]
+      [#assign hostDescription = " This IPT is hosted by" + hostingOrganisation.name + "."/]
+      [#assign hostKeyword = ", " + hostingOrganisation.name + "." /]
+    [/#if]
     <meta name="copyright" lang="en" content="GBIF" />
-    <meta name="description" lang="en" content="The Integrated Publishing Toolkit is a tool of GBIF to provide an easy and efficient way of making biodiversity data available on the GBIF Data Portal. It supports occurrence , checklist, and metadata publishing" />
-    <meta name="keywords" lang="en" content="GBIF, Global Biodiversity Information Facility, IPT, Integrated Publishing Toolkit, checklist, occurrence, metadata, DwC-A, Darwin Core, Darwin Core Archive, biodiversity data, data paper, EML" />
+    <meta name="description" lang="en" content="${iptIntro}${hostDescription!""}" />
+    <meta name="keywords" lang="en" content="${keywords}${hostKeyword!"."}" />
     <link rel="stylesheet" type="text/css" media="all" href="${baseURL}/styles/reset.css" />
 		<link rel="stylesheet" type="text/css" media="all" href="${baseURL}/styles/text.css" />
 		<link rel="stylesheet" type="text/css" media="all" href="${baseURL}/styles/960_24_col.css" />
@@ -25,7 +31,7 @@
 		<link media="all" type="text/css" href="${baseURL}/styles/jquery/jquery-ui-1.8.3.css" rel="stylesheet" />
 		<script type="text/javascript" src="${baseURL}/js/global.js"></script>
 		<script type="text/javascript" src="${baseURL}/js/sorttable.js"></script>
-	    <link href="${baseURL}/rss.do" title="Latest Resources" rel="alternate" type="application/rss+xml" />
+	  <link href="${baseURL}/rss.do" title="Latest Resources" rel="alternate" type="application/rss+xml" />
  		
 [#-- GOOGLE ANALYTICS - asynchroneous: http://code.google.com/apis/analytics/docs/tracking/asyncTracking.html --]
 [#if cfg.gbifAnalytics || (cfg.analyticsKey!"")?length>1] 

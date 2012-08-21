@@ -2,7 +2,9 @@ package org.gbif.ipt.action;
 
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.User;
+import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.util.ArrayList;
@@ -13,7 +15,6 @@ import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletRequest;
 
 import com.google.inject.Inject;
-import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.util.ValueStack;
@@ -23,57 +24,41 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.SessionAware;
 
 /**
- * The base of all IPT actions This handles conditions such as menu items, a custom text provider, sessions, currently
- * logged in user.
+ * The base of all IPT actions. This handles conditions such as menu items, a custom text provider, sessions, currently
+ * logged in user, and hosting organization information.
  */
-public class BaseAction extends ActionSupport implements Action, SessionAware, Preparable, ServletRequestAware {
+public class BaseAction extends ActionSupport implements SessionAware, Preparable, ServletRequestAware {
+
+  // logging
+  private static final Logger log = Logger.getLogger(BaseAction.class);
 
   private static final long serialVersionUID = -2330991910834399442L;
   public static final String NOT_MODIFIED = "304";
   public static final String NOT_FOUND = "404";
   public static final String NOT_ALLOWED = "401";
   public static final String NOT_ALLOWED_MANAGER = "401-manager";
-  public static final String NOT_IMPLEMENTED = "notImplemented";
   public static final String HOME = "home";
   public static final String LOCKED = "locked";
 
-  /**
-   * Occassionally Struts2 complains with it's own logging which seems like a Struts2 issue.
-   */
-  protected static Logger log = Logger.getLogger(BaseAction.class);
-
   protected List<String> warnings = new ArrayList<String>();
   protected Map<String, Object> session;
-  @Inject
-  protected SimpleTextProvider textProvider;
-  @Inject
-  protected AppConfig cfg;
   protected HttpServletRequest req;
   // a generic identifier for loading an object BEFORE the param interceptor sets values
   protected String id;
 
-  public BaseAction() {
+  protected SimpleTextProvider textProvider;
+  protected AppConfig cfg;
+  protected RegistrationManager registrationManager;
 
-  }
+  // the hosting organization
+  private Organisation hostingOrganisation;
 
   @Inject
-  public BaseAction(SimpleTextProvider textProvider, AppConfig cfg) {
+  public BaseAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager) {
     this.textProvider = textProvider;
     this.cfg = cfg;
+    this.registrationManager = registrationManager;
   }
-
-  /**
-   * Adds an exception message, if not null, to the action messages.
-   *
-   * @param e the exception from which the message is taken
-   */
-  protected void addActionExceptionMessage(Exception e) {
-    String msg = e.getMessage();
-    if (msg != null) {
-      addActionMessage(msg);
-    }
-  }
-
 
   /**
    * Adds an exception message, if not null, to the action warnings.
@@ -91,7 +76,6 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
    * Adds a warning similar to the action errors to the user UI, but does not interact with the validation aware
    * workflow interceptor, therefore no changes to the result name of the action are expected.
    * This is the way to present user warnings/errors others than for form validation.
-   * <p/>
    * If you want form validation with the workflow interceptor, please {@link #addActionError(String)} instead.
    */
   public void addActionWarning(String anErrorMessage) {
@@ -104,7 +88,7 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
   }
 
   /**
-   * Easy access to the configured application root for simple use in templates
+   * Easy access to the configured application root for simple use in templates.
    */
   public String getBase() {
     return cfg.getBaseUrl();
@@ -119,6 +103,8 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
   }
 
   /**
+   * Return the currently logged in (session) user.
+   *
    * @return the currently logged in (session) user or null if not logged in
    */
   public User getCurrentUser() {
@@ -126,7 +112,7 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
     try {
       u = (User) session.get(Constants.SESSION_USER);
     } catch (Exception e) {
-      // swallow. if session is not yet opened we get an exception here...
+      log.warn("A problem occurred retrieving current user. This can happen if the session is not yet opened");
     }
     return u;
   }
@@ -140,10 +126,11 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
    * This increases page rendering with lots of <@s:text> tags by nearly 100%.
    * Struts2 manages the locale in the session param WW_TRANS_I18N_LOCALE via the i18n interceptor.
    * If the Locale is null, the default language "en" is returned.
+   *
    * @return Locale language, or default language string "en" if Locale was null
    */
   public String getLocaleLanguage() {
-    return (getLocale() != null) ? getLocale().getLanguage() : Locale.ENGLISH.getLanguage();
+    return (getLocale() == null) ? Locale.ENGLISH.getLanguage() : getLocale().getLanguage();
   }
 
   @Override
@@ -225,10 +212,12 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
   }
 
   /**
+   * Determine whether some user is logged in or not.
+   *
    * @return true if some user is logged in or false otherwise
    */
   public boolean isLoggedIn() {
-    return getCurrentUser() == null ? false : true;
+    return getCurrentUser() != null;
   }
 
   public boolean isManagerRights() {
@@ -241,16 +230,20 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
 
   /**
    * Override this method if you need to load entities based on the id value before the PARAM interceptor is called.
-   * You can also use this method to prepare a new, empty instance in case no id was provided. If the id parameter alone
+   * You can also use this method to prepare a new, empty instance in case no id was provided. If the id parameter
+   * alone
    * is not sufficient to load your entities, you can access the request object directly like we do here and read any
    * other parameter you need to prepare the action for the param phase.
    */
-  public void prepare() throws Exception {
+  public void prepare() {
     // see if an id was provided in the request.
     // we dont use the PARAM - PREPARE - PARAM interceptor stack
     // so we investigate the request object directly BEFORE the param interceptor is called
     // this allows us to load any existing instances that should be modified
     id = StringUtils.trimToNull(req.getParameter("id"));
+
+    // set hosting organization
+    setHostingOrganisation(registrationManager.getHostingOrganisation());
   }
 
   public void setServletRequest(HttpServletRequest req) {
@@ -283,4 +276,30 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
     return false;
   }
 
+  /**
+   * Get the hosting organization of the IPT.
+   *
+   * @return hosting organization
+   */
+  public Organisation getHostingOrganisation() {
+    return hostingOrganisation;
+  }
+
+  /**
+   * Set the hosting organization variable, or set it to null if it doesn't exist.
+   *
+   * @param hostingOrganisation hosting organization
+   */
+  public void setHostingOrganisation(Organisation hostingOrganisation) {
+    this.hostingOrganisation = (hostingOrganisation != null) ? hostingOrganisation : null;
+  }
+
+  /**
+   * Determined if the IPT has been registered to an organization yet or not.
+   *
+   * @return whether the IPT has been registered or not
+   */
+  public boolean getIsRegistered() {
+    return getHostingOrganisation() != null;
+  }
 }
