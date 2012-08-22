@@ -284,7 +284,8 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       try {
         CSVReader reader = fs.getReader();
         fs.setFileSize(fs.getFile().length());
-        fs.setColumns(reader.header.length);
+        // careful - the reader.header can be null. In this case set number of columns to 0
+        fs.setColumns((reader.header == null) ? 0 : reader.header.length);
         while (reader.hasNext()) {
           reader.next();
         }
@@ -359,7 +360,9 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
           return Arrays.asList(reader.header);
         } else {
           List<String> columns = new ArrayList<String>();
-          for (int x = 1; x <= reader.header.length; x++) {
+          // careful - the reader.header can be null. In this case set number of columns to 0
+          int numColumns = (reader.header == null) ? 0 : reader.header.length;
+          for (int x = 1; x <= numColumns; x++) {
             columns.add("Column #" + x);
           }
           return columns;

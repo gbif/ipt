@@ -1,0 +1,77 @@
+1	TDWG:NSW	New South Wales
+1	TDWG:QLD	Queensland
+1	TDWG:TAS	Tasmania
+1	TDWG:VIC	Victoria
+1	TDWG:NZS	New Zealand South I
+1	TDWG:NWC	New Caledonia
+1	TDWG:CLS	Chile South
+2	TDWG:AGW	Argentina Northwest
+2	TDWG:CHI	Inner Mongolia
+2	TDWG:GRB	Great Britain
+5	TDWG:NSW	New South Wales
+5	TDWG:TAS	Tasmania
+5	TDWG:QLD	Queensland
+5	TDWG:CLS	Chile South
+5	TDWG:NWC	New Caledonia
+5	TDWG:NZS	New Zealand South I
+5	TDWG:VIC	Victoria
+6	TDWG:AGW	Argentina Northwest
+7	TDWG:CHI	Inner Mongolia
+7	TDWG:GRB	Great Britain
+30	TDWG:NSW	New South Wales
+30	TDWG:QLD	Queensland
+30	TDWG:TAS	Tasmania
+30	TDWG:CLS	Chile South
+30	TDWG:NWC	New Caledonia
+30	TDWG:VIC	Victoria
+30	TDWG:NZS	New Zealand South I
+36	TDWG:GRB	Great Britain
+37	TDWG:GRB	Great Britain
+38	TDWG:GRB	Great Britain
+39	TDWG:GRB	Great Britain
+40	TDWG:GRB	Great Britain
+41	TDWG:CHI	Inner Mongolia
+54	TDWG:AGW	Argentina Northwest
+66	TDWG:AGW	Argentina Northwest
+67	TDWG:AGW	Argentina Northwest
+68	TDWG:AGW	Argentina Northwest
+73	TDWG:GRB	Great Britain
+74	TDWG:GRB	Great Britain
+75	TDWG:GRB	Great Britain
+76	TDWG:GRB	Great Britain
+80	TDWG:CHI	Inner Mongolia
+111	TDWG:QLD	Queensland
+112	TDWG:CLS	Chile South
+113	TDWG:QLD	Queensland
+114	TDWG:QLD	Queensland
+115	TDWG:NSW	New South Wales
+115	TDWG:QLD	Queensland
+116	TDWG:TAS	Tasmania
+117	TDWG:VIC	Victoria
+117	TDWG:NSW	New South Wales
+118	TDWG:VIC	Victoria
+119	TDWG:NSW	New South Wales
+120	TDWG:CLS	Chile South
+121	TDWG:NWC	New Caledonia
+122	TDWG:NZS	New Zealand South I
+124	TDWG:NZS	New Zealand South I
+131	TDWG:QLD	Queensland
+132	TDWG:CLS	Chile South
+133	TDWG:QLD	Queensland
+134	TDWG:NSW	New South Wales
+135	TDWG:NSW	New South Wales
+136	TDWG:VIC	Victoria
+137	TDWG:NSW	New South Wales
+138	TDWG:NZS	New Zealand South I
+139	TDWG:NWC	New Caledonia
+140	TDWG:NWC	New Caledonia
+141	TDWG:NWC	New Caledonia
+142	TDWG:NZS	New Zealand South I
+143	TDWG:QLD	Queensland
+144	TDWG:QLD	Queensland
+145	TDWG:TAS	Tasmania
+147	TDWG:VIC	Victoria
+148	TDWG:NSW	New South Wales
+151	TDWG:CLS	Chile South
+152	TDWG:NZS	New Zealand South I
+157	TDWG:NWC	New Caledonia

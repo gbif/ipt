@@ -17,7 +17,6 @@ import org.gbif.ipt.mock.MockVocabulariesManager;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.service.admin.VocabulariesManager;
-import org.gbif.ipt.utils.IptMockBaseTest;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlFactory;
 
@@ -34,15 +33,19 @@ import com.lowagie.text.PageSize;
 import com.lowagie.text.rtf.RtfWriter2;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.xml.sax.SAXException;
 
-@RunWith(MockitoJUnitRunner.class)
-public class Eml2RtfTest extends IptMockBaseTest {
+public class Eml2RtfTest {
 
   private VocabulariesManager mockedVocabManager;
   private Eml2Rtf eml2Rtf;
+
+  @Before
+  public void setUp() throws ParserConfigurationException, SAXException {
+    eml2Rtf = new Eml2Rtf();
+    mockedVocabManager = new MockVocabulariesManager();
+    eml2Rtf.setVocabManager(mockedVocabManager);
+  }
 
   @Test
   public void generateRtfFile() {
@@ -73,12 +76,5 @@ public class Eml2RtfTest extends IptMockBaseTest {
     } catch (SAXException e) {
       e.printStackTrace();
     }
-  }
-
-  @Before
-  public void setUp() throws ParserConfigurationException, SAXException {
-    eml2Rtf = new Eml2Rtf();
-    mockedVocabManager = new MockVocabulariesManager();
-    eml2Rtf.setVocabManager(mockedVocabManager);
   }
 }
