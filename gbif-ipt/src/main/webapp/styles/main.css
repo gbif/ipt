@@ -729,9 +729,14 @@ table#source-properties th {
 	padding: 0 5px;
 	font-weight: bold;
 }
-.detailsSource {
-  overflow: scroll;
+table#source-properties td {
+  width: 360px;
+  word-wrap: break-word;
 }
+.detailsSource {
+  overflow: hidden;
+}
+
 
 /* Source Mapping */
 
