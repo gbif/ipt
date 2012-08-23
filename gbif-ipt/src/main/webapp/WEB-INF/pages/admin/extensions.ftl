@@ -5,7 +5,9 @@
 
 <div class="grid_23">
 <h1><@s.text name="admin.extension.coreTypes"/></h1>
-
+  <p>
+  <@s.text name="admin.extension.no.coreTypes.installed.help"><@s.param>${cfg.registryUrl}</@s.param></@s.text>
+  </p>
 <#assign count=0>
 
 <#list extensions as ext>
@@ -43,13 +45,21 @@
 </#if>
 </#list>
 <#if count=0>
-	<@s.text name="admin.extension.no.coreTypes.installed"/>
+  <p class="warn">
+    <@s.text name="admin.extension.no.coreTypes.installed"/>
+  </p>
+  <p>
+    <img src="${baseURL}/images/warning.gif"/>
+    <@s.text name="admin.extension.no.coreTypes.installed.debug"><@s.param>${cfg.registryUrl}</@s.param></@s.text>
+  </p>
 </#if>
 </div>
 
 <div class="grid_23">
 <h1><@s.text name="admin.extension.extensions"/></h1>
-
+  <p>
+  <@s.text name="admin.extension.no.extensions.installed.help"><@s.param>${cfg.registryUrl}</@s.param></@s.text>
+  </p>
 <#assign count=0>
 <#list extensions as ext>
 <#if !ext.core>
@@ -87,7 +97,9 @@
 </#if>
 </#list>
 <#if count=0>
-	<@s.text name="admin.extension.no.extensions.installed"/>
+  <p class="warn">
+    <@s.text name="admin.extension.no.extensions.installed"/>
+  </p>
 </#if>
 
 <#if (numVocabs>0)>
@@ -95,13 +107,18 @@
 <hr/>
 <div class="grid_23">
 <h3><@s.text name="extension.vocabularies.title"/></h3>
-<p>
-	<@s.text name="extension.vocabularies.last.update"><@s.param>${dateFormat}</@s.param></@s.text>
-	  <form action='extensions.do' method='post'>
-	  	<@s.submit name="updateVocabs" key="button.update"/>
+
+  <p>
+    <@s.text name="admin.extensions.vocabularies.update.help"/>
+  </p>
+  <p>
+  <@s.text name="extension.vocabularies.last.update"><@s.param>${dateFormat}</@s.param></@s.text>
+
+  <form action='extensions.do' method='post'>
+    <@s.submit name="updateVocabs" key="button.update"/>
 	<@s.text name="extension.vocabularies.number"><@s.param>${numVocabs}</@s.param></@s.text>
-  	  </form>
-</p>
+  </form>
+  </p>
 </#if>
 
 </div>
@@ -109,6 +126,9 @@
 
 <div class="grid_23">
 <h3><@s.text name="extension.further.title"/></h3>
+  <p>
+    <@s.text name="extension.further.title.help"/>
+  </p>
 
 <#assign count=0>
 <#list newExtensions as ext>

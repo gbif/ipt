@@ -100,7 +100,7 @@ $(document).ready(function(){
 		<@input name="registeredIpt.primaryContactName" i18nkey="admin.ipt.primaryContactName" type="text" />
 		<@input name="registeredIpt.primaryContactEmail" i18nkey="admin.ipt.primaryContactEmail" type="text" />
 		<div class="buttons">
-			<@s.submit cssClass="button" name="update" id="update" key="button.update" method="update"/>
+			<@s.submit cssClass="button" name="update" id="update" key="button.updateRegistration" method="update"/>
 		 	<@s.submit cssClass="button" name="cancel" id="cancel" key="button.cancel"/>
 		</div>		
 	</form>

@@ -1,5 +1,6 @@
 package org.gbif.ipt.service.admin.impl;
 
+import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.Constants;
@@ -12,9 +13,12 @@ import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.DeletionNotAllowedException.Reason;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
+import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.ExtensionManager;
+import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.utils.HttpUtil;
 
 import java.io.File;
@@ -38,10 +42,14 @@ import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
 @Singleton
 public class ExtensionManagerImpl extends BaseManager implements ExtensionManager {
+
+  // logging
+  private static final Logger log = Logger.getLogger(ExtensionManagerImpl.class);
 
   private Map<String, Extension> extensionsByRowtype = new HashMap<String, Extension>();
   private static final String CONFIG_FOLDER = ".extensions";
@@ -51,8 +59,23 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   private final String OCCURRENCE_KEYWORD = "dwc:occurrence";
   private ResourceManager resourceManager;
   private ConfigWarnings warnings;
-  @Inject
   private RegisteredExtensions registered;
+
+  // create instance of BaseAction - allows class to retrieve i18n terms via getText()
+  private BaseAction baseAction;
+
+  @Inject
+  public ExtensionManagerImpl(AppConfig cfg, DataDir dataDir, ExtensionFactory factory, ResourceManager resourceManager,
+    DefaultHttpClient client, RegisteredExtensions registered, ConfigWarnings warnings, SimpleTextProvider textProvider,
+    RegistrationManager registrationManager) {
+    super(cfg, dataDir);
+    this.factory = factory;
+    this.resourceManager = resourceManager;
+    this.downloader = new HttpUtil(client);
+    this.registered = registered;
+    this.warnings = warnings;
+    baseAction = new BaseAction(textProvider, cfg, registrationManager);
+  }
 
   public static class RegisteredExtensions {
 
@@ -68,14 +91,14 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
       return !extensions.isEmpty();
     }
 
-    public void load() throws RuntimeException {
-      extensions = registryManager.getExtensions();
+    /**
+     * Load list of registered extensions from Registry.
+     */
+    public void load() throws RegistryException {
+       extensions = registryManager.getExtensions();
     }
 
     public List<Extension> getCoreTypes() {
-      if (!isLoaded()) {
-        load();
-      }
       List<Extension> coreTypes = new ArrayList<Extension>();
       for (Extension ext : extensions) {
         if (Constants.DWC_ROWTYPE_OCCURRENCE.equals(normalizeRowType(ext.getRowType()))) {
@@ -91,16 +114,6 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     public List<Extension> getExtensions() {
       return extensions;
     }
-  }
-
-  @Inject
-  public ExtensionManagerImpl(AppConfig cfg, DataDir dataDir, ExtensionFactory factory, ResourceManager resourceManager,
-    ConfigWarnings warnings, DefaultHttpClient client) {
-    super(cfg, dataDir);
-    this.factory = factory;
-    this.warnings = warnings;
-    this.resourceManager = resourceManager;
-    this.downloader = new HttpUtil(client);
   }
 
   public static String normalizeRowType(String rowType) {
@@ -285,13 +298,34 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     return list;
   }
 
+  /**
+   *  Load all registered extensions from registry (if they haven't been loaded yet), and install core extensions.
+   */
   public void installCoreTypes() {
-    for (Extension ext : registered.getCoreTypes()) {
-      try {
-        install(ext.getUrl());
-      } catch (Exception e) {
-        log.debug(e);
+    List<Extension> extensions;
+    try {
+      if (!registered.isLoaded()) {
+        registered.load();
       }
+      extensions = registered.getCoreTypes();
+      for (Extension ext: extensions) {
+        try {
+          install(ext.getUrl());
+        } catch (Exception e) {
+          log.debug(e);
+        }
+      }
+    } catch (RegistryException e) {
+      // log as specific error message as possible about why the Registry error occurred
+      String msg = RegistryException.logRegistryException(e.getType(), baseAction);
+      // add startup error message about Registry error
+      warnings.addStartupError(msg);
+      log.error(msg);
+
+      // add startup error message that explains the consequence of the Registry error
+      msg = baseAction.getText("admin.extensions.couldnt.load", new String[] {cfg.getRegistryUrl()});
+      warnings.addStartupError(msg);
+      log.error(msg);
     }
   }
 }

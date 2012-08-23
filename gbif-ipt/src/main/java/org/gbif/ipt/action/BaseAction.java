@@ -88,6 +88,15 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
   }
 
   /**
+   * Return a list of action warning strings.
+   *
+   * @return list of action warning strings.
+   */
+  public List<String> getActionWarnings() {
+    return warnings;
+  }
+
+  /**
    * Easy access to the configured application root for simple use in templates.
    */
   public String getBase() {

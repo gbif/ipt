@@ -1,5 +1,6 @@
 package org.gbif.ipt.service.admin.impl;
 
+import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.Constants;
@@ -15,8 +16,10 @@ import org.gbif.ipt.service.DeletionNotAllowedException.Reason;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.ExtensionManager;
+import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.registry.RegistryManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.utils.HttpUtil;
 
 import java.io.File;
@@ -71,7 +74,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
 
   private Map<URL, Vocabulary> vocabularies = new HashMap<URL, Vocabulary>();
   private Map<String, URL> uri2url = new HashMap<String, URL>();
-  private static final String CONFIG_FOLDER = ".vocabularies";
+  protected static final String CONFIG_FOLDER = ".vocabularies";
   public static final String PERSISTENCE_FILE = "vocabularies.xml";
   private VocabularyFactory vocabFactory;
   private HttpUtil downloadUtil;
@@ -85,10 +88,13 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       Constants.VOCAB_URI_DATASET_SUBTYPES};
   private ConfigWarnings warnings;
 
+  // create instance of BaseAction - allows class to retrieve i18n terms via getText()
+  private BaseAction baseAction;
+
   @Inject
   public VocabulariesManagerImpl(AppConfig cfg, DataDir dataDir, VocabularyFactory vocabFactory,
     DefaultHttpClient client, RegistryManager registryManager, ExtensionManager extensionManager,
-    ConfigWarnings warnings) {
+    ConfigWarnings warnings, SimpleTextProvider textProvider, RegistrationManager registrationManager) {
     super(cfg, dataDir);
     this.vocabFactory = vocabFactory;
     this.downloadUtil = new HttpUtil(client);
@@ -96,6 +102,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
     this.extensionManager = extensionManager;
     this.warnings = warnings;
     defineXstreamMapping();
+    baseAction = new BaseAction(textProvider, cfg, registrationManager);
   }
 
   private boolean addToCache(Vocabulary v, URL url) {
@@ -263,24 +270,27 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       }
     }
 
-    // we could be starting up for the very first time. Try to load default vocabs with URLs from registry
-    // load mandatory vocabs
+    // we could be starting up for the very first time. Try to load mandatory/default vocabs with URLs from registry
     Map<String, URL> registeredVocabs = null;
     for (String vuri : defaultVocabs) {
       if (!uri2url.containsKey(vuri.toLowerCase())) {
-        if (registeredVocabs == null) {
-          // lazy load list of all registered vocabularies
-          registeredVocabs = registeredVocabs();
-        }
-        try {
-          URL vurl = registeredVocabs.get(vuri);
-          if (vurl == null) {
-            log.warn("Default vocabulary " + vuri + " unknown to GBIF registry");
-          } else {
-            install(vurl);
+        // lazy load list of all registered vocabularies
+        registeredVocabs = registeredVocabs();
+        // provided that at least some vocabularies were loaded, proceed loading default vocabularies
+        if (!registeredVocabs.isEmpty()) {
+          try {
+            URL vurl = registeredVocabs.get(vuri);
+            if (vurl == null) {
+              log.warn("Default vocabulary " + vuri + " unknown to GBIF registry");
+            } else {
+              install(vurl);
+              // increment counter, since these haven't been loaded yet
+              counter++;
+            }
+          } catch (Exception e) {
+            warnings.addStartupError(baseAction.getTextWithDynamicArgs("admin.extensions.vocabulary.couldnt.load",
+              new String[] {vuri, cfg.getRegistryUrl()}));
           }
-        } catch (Exception e) {
-          warnings.addStartupError("Cant load default vocabulary " + vuri, e);
         }
       }
     }
@@ -318,6 +328,12 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
     return v;
   }
 
+  /**
+   * Retrieves a Map of registered vocabularies. The key is equal to the vocabulary URI. The value is equal to the
+   * vocabulary URL.
+   *
+   * @return Map of registered vocabularies
+   */
   private Map<String, URL> registeredVocabs() {
     Map<String, URL> registeredVocabs = new HashMap<String, URL>();
     try {
@@ -327,7 +343,16 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
         }
       }
     } catch (RegistryException e) {
-      warnings.addStartupError("Failed to retrieve list of registered vocabularies from GBIF registry", e);
+      // log as specific error message as possible about why the Registry error occurred
+      String msg = RegistryException.logRegistryException(e.getType(), baseAction);
+      // add startup error message about Registry error
+      warnings.addStartupError(msg);
+      log.error(msg);
+
+      // add startup error message that explains the consequence of the Registry error
+      msg = baseAction.getText("admin.extensions.vocabularies.couldnt.load", new String[] {cfg.getRegistryUrl()});
+      warnings.addStartupError(msg);
+      log.error(msg);
     }
     return registeredVocabs;
   }

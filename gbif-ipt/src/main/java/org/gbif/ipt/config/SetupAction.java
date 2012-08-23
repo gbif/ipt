@@ -8,7 +8,6 @@ import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
-import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.ConfigManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
@@ -306,11 +305,8 @@ public class SetupAction extends BaseAction {
     List<Extension> list = extensionManager.listCore();
 
     if (list.isEmpty()) {
-      try {
-        extensionManager.installCoreTypes();
-      } catch (RegistryException e) {
-        log.error(e);
-      }
+      // load all registered extensions from registry, and install core extensions
+      extensionManager.installCoreTypes();
     }
     return INPUT;
   }

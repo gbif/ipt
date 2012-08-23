@@ -1,7 +1,9 @@
 package org.gbif.ipt.service.registry.impl;
 
 import org.gbif.dwc.terms.DwcTerm;
+import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Ipt;
@@ -11,7 +13,9 @@ import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.RegistryException.TYPE;
+import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.registry.RegistryManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.RegistryEntryHandler;
 import org.gbif.ipt.validation.AgentValidator;
 import org.gbif.metadata.eml.Agent;
@@ -65,13 +69,21 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   private Gson gson;
 
+  private ConfigWarnings warnings;
+
+  // create instance of BaseAction - allows class to retrieve i18n terms via getText()
+  private BaseAction baseAction;
+
   @Inject
-  public RegistryManagerImpl(AppConfig cfg, DataDir dataDir, DefaultHttpClient client, SAXParserFactory saxFactory)
+  public RegistryManagerImpl(AppConfig cfg, DataDir dataDir, DefaultHttpClient client, SAXParserFactory saxFactory,
+    ConfigWarnings warnings, SimpleTextProvider textProvider, RegistrationManager registrationManager)
     throws ParserConfigurationException, SAXException {
     super(cfg, dataDir);
     this.saxParser = saxFactory.newSAXParser();
     this.http = new HttpUtil(client);
     this.gson = new Gson();
+    this.warnings = warnings;
+    baseAction = new BaseAction(textProvider, cfg, registrationManager);
   }
 
   private List<NameValuePair> buildRegistryParameters(Resource resource) {
@@ -182,7 +194,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   }
 
   /**
-   * Returns the delete resource URL
+   * Returns the delete resource URL.
    */
   private String getDeleteResourceUri(String resourceKey) {
     return String.format("%s%s%s", cfg.getRegistryUrl(), "/registry/ipt/resource/", resourceKey);
@@ -193,23 +205,11 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * @see org.gbif.ipt.service.registry.RegistryManager#getExtensions()
    */
   public List<Extension> getExtensions() throws RegistryException {
-    try {
-      Response resp = http.get(getExtensionsURL(true));
-      if (resp.content != null) {
-        Map<String, List<Extension>> jSONextensions =
-          gson.fromJson(resp.content, new TypeToken<Map<String, List<Extension>>>() {
-          }.getType());
-        return jSONextensions.get("extensions");
-      } else {
-        throw new RegistryException(TYPE.BAD_RESPONSE, "Response content is null");
-      }
-    } catch (ClassCastException e) {
-      throw new RegistryException(TYPE.BAD_RESPONSE, e);
-    } catch (IOException e) {
-      throw new RegistryException(TYPE.IO_ERROR, e);
-    } catch (Exception e) {
-      throw new RegistryException(TYPE.IO_ERROR, e);
-    }
+    Map<String, List<Extension>> jSONextensions = gson
+      .fromJson(requestHttpGetFromRegistry(getExtensionsURL(true)).content,
+        new TypeToken<Map<String, List<Extension>>>() {
+        }.getType());
+    return (jSONextensions.get("extensions") == null) ? new ArrayList<Extension>() : jSONextensions.get("extensions");
   }
 
   /**
@@ -254,57 +254,51 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return String.format("%s%s%s%s", cfg.getRegistryUrl(), "/registry/organisation/", organisationKey, "?op=login");
   }
 
-  public List<Organisation> getOrganisations() throws RegistryException {
+  /*
+  * (non-Javadoc)
+  * @see org.gbif.ipt.service.registry.RegistryManager#getOrganisations()
+  */
+  public List<Organisation> getOrganisations() {
+    List<Map<String, String>> organisationsTemp = new ArrayList<Map<String, String>>();
     try {
-      Response resp = http.get(getOrganisationsURL(true));
-      if (resp.content != null) {
-        List<Map<String, String>> organisationsTemp =
-          gson.fromJson(resp.content, new TypeToken<List<Map<String, String>>>() {
+      organisationsTemp = gson
+        .fromJson(requestHttpGetFromRegistry(getOrganisationsURL(true)).content,
+          new TypeToken<List<Map<String, String>>>() {
           }.getType());
-        List<Organisation> organisations = new ArrayList<Organisation>();
-        int invalid = 0;
-        for (Map<String, String> org : organisationsTemp) {
-          if (org.isEmpty() || StringUtils.isBlank(org.get("key")) || StringUtils.isBlank(org.get("name"))) {
-            invalid++;
-          } else {
-            Organisation o = new Organisation();
-            o.setName(org.get("name"));
-            try {
-              o.setKey(org.get("key"));
-              organisations.add(o);
-            } catch (IllegalArgumentException e) {
-              // this is not a uuid...
-              invalid++;
-            }
-          }
-          if (invalid > 0) {
-            log.debug("Skipped " + invalid + " invalid organisation JSON objects");
-          }
-        }
-        return organisations;
-        // return gson.fromJson(resp.content, new TypeToken<List<Organisation>>() {}.getType());
-      } else {
-        throw new RegistryException(TYPE.BAD_RESPONSE, "Response content is null");
-      }
-    } catch (ClassCastException e) {
-      throw new RegistryException(TYPE.BAD_RESPONSE, e);
-    } catch (ConnectException e) {
-      // This normally happend when a time out appear. Probably is a problem of firewall or proxy.
-      throw new RegistryException(TYPE.PROXY, e);
-    } catch (UnknownHostException e) {
-      try {
-        // if server can not connect to google. Probably the internet connection is not active.
-        http.get("http://www.google.com");
-      } catch (Exception e1) {
-        throw new RegistryException(TYPE.NO_INTERNET, e);
-      }
-      // if server could connect to google. Probably GBIF Registry page is down.
-      throw new RegistryException(TYPE.SITE_DOWN, e);
-    } catch (IOException e) {
-      throw new RegistryException(TYPE.IO_ERROR, e);
-    } catch (Exception e) {
-      throw new RegistryException(TYPE.UNKNOWN, e);
+    } catch (RegistryException e) {
+      // log as specific error message as possible about why the Registry error occurred
+      String msg = RegistryException.logRegistryException(e.getType(), baseAction);
+      // add startup error message about Registry error
+      warnings.addStartupError(msg);
+      log.error(msg);
+
+      // add startup error message that explains the consequence of the Registry error
+      msg = baseAction.getText("admin.organisations.couldnt.load", new String[] {cfg.getRegistryUrl()});
+      warnings.addStartupError(msg);
+      log.error(msg);
     }
+    // populate Organisation list
+    List<Organisation> organisations = new ArrayList<Organisation>();
+    int invalid = 0;
+    for (Map<String, String> org : organisationsTemp) {
+      if (org.isEmpty() || StringUtils.isBlank(org.get("key")) || StringUtils.isBlank(org.get("name"))) {
+        invalid++;
+      } else {
+        Organisation o = new Organisation();
+        o.setName(org.get("name"));
+        try {
+          o.setKey(org.get("key"));
+          organisations.add(o);
+        } catch (IllegalArgumentException e) {
+          // this is not a uuid...
+          invalid++;
+        }
+      }
+      if (invalid > 0) {
+        log.debug("Skipped " + invalid + " invalid organisation JSON objects");
+      }
+    }
+    return organisations;
   }
 
   /**
@@ -361,22 +355,53 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return new ByteArrayInputStream(source.getBytes());
   }
 
+  /*
+  * (non-Javadoc)
+  * @see org.gbif.ipt.service.registry.RegistryManager#getVocabularies()
+  */
   public List<Vocabulary> getVocabularies() throws RegistryException {
+    Map<String, List<Vocabulary>> map = gson.fromJson(requestHttpGetFromRegistry(getVocabulariesURL(true)).content,
+      new TypeToken<Map<String, List<Vocabulary>>>() {
+      }.getType());
+    return (map.get("thesauri") == null) ? new ArrayList<Vocabulary>() : map.get("thesauri") ;
+  }
+
+  /**
+   * Executes an HTTP Get Request against the GBIF Registry. If the content is not null, the Response is returned.
+   * Otherwise, if the content was null, or an exception occurred, it throws the appropriate type of RegistryException.
+   *
+   * @param url Get request URL
+   *
+   * @return Response if the content was not null, or a RegistryException
+   *
+   * @throws RegistryException (with RegistryException.type) if the content was null or an exception occurred
+   */
+  private Response requestHttpGetFromRegistry(String url) throws RegistryException {
     try {
-      Response resp = http.get(getVocabulariesURL(true));
-      if (resp.content != null) {
-        Map<String, List<Vocabulary>> map = gson.fromJson(resp.content, new TypeToken<Map<String, List<Vocabulary>>>() {
-        }.getType());
-        return map.get("thesauri");
+      Response resp = http.get(url);
+      if (resp != null && resp.content != null) {
+        return resp;
       } else {
         throw new RegistryException(TYPE.BAD_RESPONSE, "Response content is null");
       }
     } catch (ClassCastException e) {
       throw new RegistryException(TYPE.BAD_RESPONSE, e);
+    } catch (ConnectException e) {
+      // normally happens when a timeout appears - probably a firewall or proxy problem.
+      throw new RegistryException(TYPE.PROXY, e);
+    } catch (UnknownHostException e) {
+      try {
+        // if server cannot connect to Google - probably the Internet connection is not active.
+        http.get("http://www.google.com");
+      } catch (Exception e1) {
+        throw new RegistryException(TYPE.NO_INTERNET, e1);
+      }
+      // if server can connect to Google - probably the GBIF Registry page is down.
+      throw new RegistryException(TYPE.SITE_DOWN, e);
     } catch (IOException e) {
       throw new RegistryException(TYPE.IO_ERROR, e);
     } catch (Exception e) {
-      throw new RegistryException(TYPE.IO_ERROR, e);
+      throw new RegistryException(TYPE.UNKNOWN, e);
     }
   }
 

@@ -13,11 +13,14 @@
 
 package org.gbif.ipt.service.registry.impl;
 
+import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
+import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.registry.RegistryManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.IptMockBaseTest;
 import org.gbif.metadata.eml.Eml;
 
@@ -32,6 +35,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
 
 public class RegistryManagerImplTest extends IptMockBaseTest {
 
@@ -44,7 +48,8 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
   }
 
   public RegistryManager getManager() throws ParserConfigurationException, SAXException {
-    RegistryManager man = new RegistryManagerImpl(cfg, dataDir, buildHttpClient(), buildSaxFactory());
+    RegistryManager man = new RegistryManagerImpl(cfg, dataDir, buildHttpClient(), buildSaxFactory(),
+      mock(ConfigWarnings.class), mock(SimpleTextProvider.class), mock(RegistrationManager.class));
     return man;
   }
 

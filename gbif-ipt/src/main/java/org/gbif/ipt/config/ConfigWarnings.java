@@ -52,4 +52,11 @@ public class ConfigWarnings {
     return !startupErrors.isEmpty();
   }
 
+  /**
+   * Clear startup errors.
+   */
+  public void clearStartupErrors() {
+    getStartupErrors().clear();
+  }
+
 }

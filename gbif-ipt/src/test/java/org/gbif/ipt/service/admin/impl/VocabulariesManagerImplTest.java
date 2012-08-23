@@ -4,73 +4,72 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.config.IPTModule;
-import org.gbif.ipt.config.InjectingTestClassRunner;
-import org.gbif.ipt.mock.MockAppConfig;
-import org.gbif.ipt.mock.MockExtensionManager;
-import org.gbif.ipt.mock.MockRegistryManager;
 import org.gbif.ipt.model.factory.VocabularyFactory;
 import org.gbif.ipt.service.admin.ExtensionManager;
+import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.registry.RegistryManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.utils.file.FileUtils;
 
+import java.io.File;
 import javax.xml.parsers.SAXParserFactory;
 
-import com.google.inject.Inject;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.servlet.ServletModule;
+import com.google.inject.struts2.Struts2GuicePluginModule;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-@RunWith(InjectingTestClassRunner.class)
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 public class VocabulariesManagerImplTest {
 
-  @Inject
-  private DataDir dataDir;
+  VocabulariesManager manager;
 
-  /* for test only */
-  public static void main(String[] args) {
-    new VocabulariesManagerImplTest().getVocabManager();
-  }
+  @Before
+  public void setup() {
 
-  private VocabulariesManager getVocabManager() {
-    // AppConfig
-    AppConfig appConfig = MockAppConfig.buildMock();
+    Injector injector = Guice.createInjector(new ServletModule(), new Struts2GuicePluginModule(), new IPTModule());
 
-    // DataDir
-    // DataDir dataDir = DataDir.buildMock();
+    // construct VocabularyFactory
+    DefaultHttpClient httpClient = injector.getInstance(DefaultHttpClient.class);
+    SAXParserFactory saxf = injector.getInstance(SAXParserFactory.class);
+    VocabularyFactory vocabularyFactory = new VocabularyFactory(httpClient, saxf);
 
-    // Client and VocabularyFactory
-    IPTModule mod = new IPTModule();
-    SAXParserFactory sax = mod.provideNsAwareSaxParserFactory();
-    DefaultHttpClient client = new DefaultHttpClient();
-    VocabularyFactory vocabFactory = new VocabularyFactory(client, sax);
+    AppConfig cfg = mock(AppConfig.class);
+    DataDir dataDir = mock(DataDir.class);
 
-    // RegistryManager
-    RegistryManager registryManager = MockRegistryManager.buildMock();
-
-    // ExtensionManager
-    ExtensionManager extensionManager = MockExtensionManager.buildMock();
-
-    // ConfigWarnings
+    DefaultHttpClient client = mock(DefaultHttpClient.class);
+    RegistryManager registryManager = mock(RegistryManager.class);
+    ExtensionManager extensionManager = mock(ExtensionManager.class);
     ConfigWarnings warnings = new ConfigWarnings();
+    SimpleTextProvider textProvider = mock(SimpleTextProvider.class);
+    RegistrationManager registrationManager = mock(RegistrationManager.class);
 
-    // initialise the VocabularyManager instance.
-    VocabulariesManager vocabManager =
-      new VocabulariesManagerImpl(appConfig, dataDir, vocabFactory, client, registryManager, extensionManager,
-        warnings);
+    // mock data directory's .vocabularies folder
+    File myTmpVocabDir = FileUtils.getClasspathFile("vocabularies");
+    assertTrue(myTmpVocabDir.isDirectory());
+    when(dataDir.configFile(VocabulariesManagerImpl.CONFIG_FOLDER)).thenReturn(myTmpVocabDir);
 
-    // All general stubbing functionalities should be in the corresponding mock classes.
-    // If an specific stub configuration is needed only for this tests, the methods should be implemented here.
+    // mock vocabularies.xml from actual test resources file
+    File vocabulariesXml = org.gbif.utils.file.FileUtils.getClasspathFile("vocabularies/vocabularies.xml");
+    when(dataDir.configFile(VocabulariesManagerImpl.CONFIG_FOLDER + "/" + VocabulariesManagerImpl.PERSISTENCE_FILE)).thenReturn(vocabulariesXml);
 
-    return vocabManager;
+    // mock VocabularyFactory.build - that returns a Vocabulary object from input stream on the supplied .vocab file
+
+    manager = new VocabulariesManagerImpl(cfg, dataDir, vocabularyFactory,
+      client, registryManager, extensionManager, warnings, textProvider, registrationManager);
   }
 
-  @Ignore
   @Test
-  public void loadVocabularies() {
-    VocabulariesManager vocabManager = getVocabManager();
-    int num = vocabManager.load();
-    System.out.println(num);
+  public void testLoad() {
+    assertEquals(1, manager.load());
   }
 
 }

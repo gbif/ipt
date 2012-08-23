@@ -7,18 +7,12 @@
  */
 package org.gbif.ipt.mock;
 
-import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.model.VocabularyConcept;
 import org.gbif.ipt.model.VocabularyTerm;
-import org.gbif.ipt.model.factory.VocabularyFactory;
-import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
-import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl.UpdateResult;
-import org.gbif.ipt.service.registry.RegistryManager;
-import org.gbif.ipt.service.registry.impl.RegistryManagerImpl;
 import org.gbif.ipt.utils.IptMockBaseTest;
 
 import java.net.URL;
@@ -27,34 +21,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParserFactory;
-
-import org.xml.sax.SAXException;
-
-import static org.mockito.Mockito.mock;
 
 /**
- * TODO: Documentation.
+ * Mocked VocabulariesManager, for use in TestClasses.
  */
 public class MockVocabulariesManager extends IptMockBaseTest implements VocabulariesManager {
 
-
-  private VocabulariesManager vocabManager;
-  private ConfigWarnings warnings;
-  private ExtensionManager mockedExtensionManager;
-
-  public MockVocabulariesManager() throws ParserConfigurationException, SAXException {
-    SAXParserFactory sax = guice.provideNsAwareSaxParserFactory();
-    VocabularyFactory vocabFactory = new VocabularyFactory(buildHttpClient(), sax);
-    RegistryManager registryManager = new RegistryManagerImpl(cfg, dataDir, buildHttpClient(), buildSaxFactory());
-    warnings = new ConfigWarnings();
-    mockedExtensionManager = mock(ExtensionManager.class);
-    vocabManager = new VocabulariesManagerImpl(cfg, dataDir, vocabFactory, buildHttpClient(), registryManager,
-      mockedExtensionManager, warnings);
-  }
-
   public void delete(String uri) {
+    // TODO
   }
 
   public Vocabulary get(String uri) {
@@ -137,5 +111,4 @@ public class MockVocabulariesManager extends IptMockBaseTest implements Vocabula
   public UpdateResult updateAll() {
     return null;
   }
-
 }
