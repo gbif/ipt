@@ -2,27 +2,27 @@ package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.service.DeletionNotAllowedException;
+import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.service.admin.impl.ExtensionManagerImpl;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl.UpdateResult;
-import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.net.URL;
 import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map.Entry;
 
 import com.google.inject.Inject;
-import com.google.inject.servlet.SessionScoped;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -34,36 +34,9 @@ public class ExtensionsAction extends POSTAction {
   // logging
   private static final Logger log = Logger.getLogger(ExtensionsAction.class);
 
-  /**
-   * A session scoped bean to keep a list of all extensions with basic metadata as exposed by the registry directly.
-   * There won't be any properties listed. The reason for keeping this in the session is to load the extension list
-   * only
-   * once - but not to store it continuously in memory. Once the admin has logged out all this info will be removed
-   * again and only the installed extensions remain in memory.
-   *
-   * @author markus
-   */
-  @SessionScoped
-  public static class RegisteredExtensions {
-
-    // public List<GbrdsExtension> extensions = new ArrayList<GbrdsExtension>();
-    public List<Extension> extensions = new ArrayList<Extension>();
-    // private Gbrds client;
-    private RegistryManager registryManager;
-
-    @Inject
-    public RegisteredExtensions(RegistryManager registryManager) {
-      this.registryManager = registryManager;
-    }
-
-    public void load() throws RuntimeException {
-      extensions = registryManager.getExtensions();
-    }
-  }
-
   private ExtensionManager extensionManager;
   private VocabulariesManager vocabManager;
-  private RegisteredExtensions registered;
+  private ExtensionManagerImpl.RegisteredExtensions registered;
 
   private List<Extension> extensions;
   private Extension extension;
@@ -73,14 +46,17 @@ public class ExtensionsAction extends POSTAction {
   private Date vocabsLastUpdated;
   private String dateFormat;
   private List<Extension> newExtensions;
+  private ConfigWarnings warnings;
 
   @Inject
   public ExtensionsAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    ExtensionManager extensionManager, VocabulariesManager vocabManager, RegisteredExtensions registered) {
+    ExtensionManager extensionManager, VocabulariesManager vocabManager,
+    ExtensionManagerImpl.RegisteredExtensions registered, ConfigWarnings warnings) {
     super(textProvider, cfg, registrationManager);
     this.extensionManager = extensionManager;
     this.vocabManager = vocabManager;
     this.registered = registered;
+    this.warnings = warnings;
   }
 
   @Override
@@ -139,15 +115,20 @@ public class ExtensionsAction extends POSTAction {
       }
     }
 
+    // retrieve all extensions
     extensions = extensionManager.list();
-    newExtensions = new ArrayList<Extension>(registered.extensions);
-    // remove allready installed ones
+    // load any new extensions
+    loadRegisteredExtensions();
+
+    newExtensions = new ArrayList<Extension>(registered.getExtensions());
+    // remove already installed ones
     for (Extension e : extensions) {
       newExtensions.remove(e);
     }
-    Collection<Vocabulary> vocabs = vocabManager.list();
+
+    // find latest update data of all vocabularies
+    List<Vocabulary> vocabs = vocabManager.list();
     numVocabs = vocabs.size();
-    // find latest update data of any of all vocabularies
     for (Vocabulary v : vocabs) {
       if (vocabsLastUpdated == null || vocabsLastUpdated.before(v.getLastUpdate())) {
         Locale locale = getLocale();
@@ -162,20 +143,45 @@ public class ExtensionsAction extends POSTAction {
   public void prepare() {
     super.prepare();
     // in case session just started
-    if (registered.extensions.isEmpty()) {
-      try {
-        registered.load();
-      } catch (Exception e) {
-        log.error("Couldnt load registered extensions", e);
-        addActionWarning(getText("admin.extensions.couldnt.load", new String[] {e.getMessage()}));
-      }
+    if (!registered.isLoaded()) {
+      // load all registered extensions from registry
+      loadRegisteredExtensions();
     }
+    // ensure mandatory vocabs are always loaded
+    vocabManager.load();
+
     if (id != null) {
       extension = extensionManager.get(id);
       if (extension == null) {
         // set notFound flag to true so POSTAction will return a NOT_FOUND 404 result name
         notFound = true;
       }
+    }
+    // the only warnings that can still hang around after startup, have to do with vocabs and extensions not loading
+    // if both  have loaded, ensure the warnings are cleared
+    if (registered.isLoaded() && !vocabManager.list().isEmpty()) {
+      warnings.clearStartupErrors();
+      this.getActionWarnings().clear();
+    }
+  }
+
+  /**
+   * Reload all the list of registered extensions. Used in case the session just started.
+   */
+  private void loadRegisteredExtensions() {
+    try {
+      registered.load();
+    } catch (RegistryException e) {
+      // log as specific error message as possible about why the Registry error occurred
+      String msg = RegistryException.logRegistryException(e.getType(), this);
+      // add startup error message about Registry error
+      warnings.addStartupError(msg);
+      log.error(msg);
+
+      // add startup error message that explains the consequence of the Registry error
+      msg = getText("admin.extensions.couldnt.load", new String[] {cfg.getRegistryUrl()});
+      warnings.addStartupError(msg);
+      log.error(msg);
     }
   }
 

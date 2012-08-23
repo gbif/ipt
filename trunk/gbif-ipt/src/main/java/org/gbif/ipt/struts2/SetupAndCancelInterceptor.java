@@ -5,6 +5,9 @@ import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.SetupAction;
 import org.gbif.ipt.service.admin.ConfigManager;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
@@ -50,10 +53,27 @@ public class SetupAndCancelInterceptor extends AbstractInterceptor {
       Object action = invocation.getAction();
       if (action instanceof BaseAction) {
         BaseAction ba = (BaseAction) action;
-        ba.addActionWarning("IPT startup warnings, please see logs!");
-        //        for (String msg : warnings.getStartupErrors()) {
-        //          ba.addActionMessage(msg);
-        //        }
+        // ensure a 'unique' list of startup warnings gets displayed using i18n keys if possible
+
+        // keep track of unique set of ActionWarnings
+        Set<String> existing = new HashSet<String>();
+        for (String warning : ba.getActionWarnings()) {
+          // find out if the ActionWarning has been added to the list of action warnings yet
+          if (!existing.contains(StringUtils.trimToEmpty(warning))) {
+            existing.add(warning);
+          }
+        }
+        // keep track of unique set of warnings coming from managers
+        for (String msg : warnings.getStartupErrors()) {
+          // find out if the warning has been added to the list of action warnings yet
+          if (!existing.contains(StringUtils.trimToEmpty(msg))) {
+            existing.add(msg);
+          }
+        }
+        // clear, then repopulate ActionWarnings from the unique Set combining ActionWarnings + warnings from managers
+        ba.getActionWarnings().clear();
+        ba.addActionWarning(ba.getText("admin.startup.warnings"));
+        ba.getActionWarnings().addAll(existing);
       }
     }
 

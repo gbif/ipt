@@ -58,7 +58,8 @@ public interface VocabulariesManager {
   List<Vocabulary> list();
 
   /**
-   * Load all known vocabularies from the data dir.
+   * Load all known vocabularies from the data dir. It also ensures that all default vocabularies
+   * get installed and loaded also.
    *
    * @return number of vocabularies that have been loaded successfully
    */
