@@ -3,7 +3,7 @@
  <#assign currentMenu = "admin"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
-<div class="grid_24">
+<div class="grid_23">
 <h1><@s.text name="admin.extension.coreTypes"/></h1>
 
 <#assign count=0>
@@ -12,8 +12,8 @@
 <#if ext.core>
 <#assign count=count+1>
 <a name="${ext.rowType}"></a>          
-<div class="definition clearfix">	
-  <div class="title grid_6">
+<div class="definition">	
+  <div class="title">
   	<div class="head">
         <a href="extension.do?id=${ext.rowType}">${ext.title}</a>
   	</div>
@@ -24,7 +24,7 @@
   	  </form>
   	</div>
   </div>
-  <div class="body grid_16">
+  <div class="body">
       	<div>
 			<p>${ext.description!}
 			<#if ext.link?has_content><br/><@s.text name="basic.seealso"/> <a href="${ext.link}">${ext.link}</a></#if></p>             	
@@ -39,7 +39,6 @@
       		</table>
       	</div>
   </div>
-  <div class="clearfix"></div>
 </div>
 </#if>
 </#list>
@@ -57,7 +56,7 @@
 <#assign count=count+1>
 <a name="${ext.rowType}"></a>          
 <div class="definition">	
-  <div class="title grid_6">
+  <div class="title">
   	<div class="head">
         <a href="extension.do?id=${ext.rowType}">${ext.title}</a>
   	</div>
@@ -68,7 +67,7 @@
   	  </form>
   	</div>
   </div>
-  <div class="body grid_16">
+  <div class="body">
       	<div>
       	    <p>${ext.description!}
 			<#if ext.link?has_content><br/><@s.text name="basic.seealso"/> <a href="${ext.link}">${ext.link}</a></#if></p>             	
@@ -115,7 +114,7 @@
 <#list newExtensions as ext>
 <#assign count=count+1>
 <div class="definition">	
-  <div class="title grid_6">
+  <div class="title">
   	<div class="head">
 		${ext.title}
   	</div>
@@ -126,7 +125,7 @@
   	  </form>
   	</div>
   </div>
-  <div class="body grid_16">
+  <div class="body">
       	<div>
 		<p>${ext.description!}</p>
       	</div>
@@ -137,7 +136,6 @@
       		</table>
       	</div>
   </div>
-  <div class="clearfix"></div>
 </div>
 </#list>
 <#if count=0>

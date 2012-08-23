@@ -29,7 +29,7 @@
 		</td>
     </tr>
     </#if>
-   </table>
+</table>
 
 	
    

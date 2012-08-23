@@ -354,13 +354,18 @@ table.sortable th{
 }
 
 /* simple table */
-table.simple th{
-	background-color: #fff;
-	text-align: left;
-	padding-bottom: 10px;
+table.simple {
+  width: auto;
+  padding: 10px;
 }
-table.simple tr{
+table.simple th{
 	background-color: #f1f1f1;
+	text-align: left;
+	padding: 0 5px 0 5px;
+	width: 25%;
+}
+table.simple td {
+	padding: 0 5px 0 5px;
 }
 table.simple tr.linebreak{
 	background-color: #fff;
@@ -379,38 +384,58 @@ table.simple tr.even{
 
 /* RESOURCE LIST HOME */
 div.resourceOverviewPortal {
-  background: url("gray-column-190.png") repeat-y;
   margin-bottom: 5px;
+  display: table;
 }
-div.resourceOverviewPortal div.title { width: 190px; padding: 5px; float: left; }
+div.resourceOverviewPortal div.title {
+	width: 190px;
+	padding: 5px;
+	background-color: #eee;
+	display: table-cell;
+	height: 100%;
+}
 div.resourceOverviewPortal div.head { font-weight: bold; font-size: 0.8em; }
-div.resourceOverviewPortal div.body { font-size: 0.85em; width: 510px; float: right; }
+div.resourceOverviewPortal div.body {
+	font-size: 0.85em;
+	width: 510px;
+	display: table-cell;
+	height: 100%;
+	padding: 5px;
+}
 div.resourceOverviewPortal div.body table { margin-bottom: 0px; }
 div.resourceOverviewPortal div.body th { width: 120px;padding: 0px 3px; }
 div.resourceOverviewPortal div.body td { color: #666;padding: 0px 3px; }
 
 /* RESOURCE OVERVIEW */
 div.resourceOverview {
-  background: url("gray-column.png") repeat-y;
+  margin-bottom: 5px;
+  display: table;
 }
 div.resourceOverview div.titleOverview {
 	font-weight: bold;
-	border-radius: 5px;
 	padding-top: 5px;
+	height: 100%;
+	width: 320px;
+	background-color: #eee;
+	display: table-cell;
 }
 div.resourceOverview div.titleOverview div.head {
 }
 div.resourceOverview div.bodyOverview {
 	font-size: 0.85em;
-	padding-top: 5px;
+	padding: 10px;
+	width: 600px;
+	height: 100%;
+	display: table-cell;
 }
 div.resourceOverview div.bodyOverview div.details {
+	width: 500px;
 }
 div.resourceOverview div.bodyOverview div.details table {
 	width: 100%;
 }
 div.resourceOverview div.bodyOverview div.details table th {
-	width: 250px;
+	width: 170px;
 	font-weight: bold;
 }
 div.resourceOverview div.bodyOverview div.details table td {
@@ -715,18 +740,26 @@ div.textRight img.infoImg {
 	margin-top: 3px;
 }
 div.definition {
-  background: url("gray-column-240.png") repeat-y;
   margin-bottom: 5px;
+  padding: 0px;
+  width: auto;
+  display: table;
 }
-
 div.definition div.title {
+	background: #eee;
 	border-bottom: none;
+	height: 100%;
 	font-size: 0.9em;
 	font-weight: bold;
 	padding: 5px;
+	width: 220px;
+	display:table-cell;
 }
 div.definition div.body {
 	border-bottom: none;
+	padding: 10px;
+	width: 600px;
+	display:table-cell;
 }
 div.definition div.body select{
 	width: 200px;
