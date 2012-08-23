@@ -89,8 +89,8 @@ $(document).ready(function(){
   </div>
 </div>
 
-<div class="resourceOverview container_24" id="metadata">
-  <div class="titleOverview grid_8">
+<div class="resourceOverview" id="metadata">
+  <div class="titleOverview">
     <div class="head">
       <@s.text name='manage.overview.metadata'/>
     </div>
@@ -106,7 +106,7 @@ $(document).ready(function(){
       </p>
     </#if>
   </div>
-  <div class="bodyOverview grid_16">
+  <div class="bodyOverview">
     <p>
       <#assign no_description><@s.text name='manage.overview.no.description'/></#assign>
 			<@description resource.description!no_description 100/>
@@ -149,8 +149,8 @@ $(document).ready(function(){
   </div>
 </div>
 
-<div class="resourceOverview container_24" id="sources">
-  <div class="titleOverview grid_8">
+<div class="resourceOverview" id="sources">
+  <div class="titleOverview">
     <div class="head">
       <@s.text name='manage.overview.source.data'/>
     </div>
@@ -167,7 +167,7 @@ $(document).ready(function(){
       </form>
     </div>
   </div>
-  <div class="bodyOverview grid_16">
+  <div class="bodyOverview">
     <p>
       <@s.text name='manage.overview.source.description1'><@s.param><@s.text name="button.add"/></@s.param></@s.text>
       &nbsp;
@@ -197,8 +197,8 @@ $(document).ready(function(){
   </div>
 </div>
 
-<div class="resourceOverview container_24" id="mappings">
-  <div class="titleOverview grid_8">
+<div class="resourceOverview" id="mappings">
+  <div class="titleOverview">
     <div class="head">
       <@s.text name='manage.overview.DwC.Mappings'/>
     </div>
@@ -222,7 +222,7 @@ $(document).ready(function(){
       </#if>
     </div>
   </div>
-  <div class="bodyOverview grid_16">
+  <div class="bodyOverview">
     <p>
       <@s.text name='manage.overview.DwC.Mappings.description'/>
     </p>
@@ -260,8 +260,8 @@ $(document).ready(function(){
   </div>
 </div>
 
-<div class="resourceOverview container_24" id="publish">
-  <div class="titleOverview grid_8">
+<div class="resourceOverview" id="publish">
+  <div class="titleOverview">
     <div class="head">
       <@s.text name="manage.overview.published"/>
       <#if cfg.devMode() && cfg.getRegistryType()!='PRODUCTION'>
@@ -279,7 +279,7 @@ $(document).ready(function(){
       </#if>
     </div>
   </div>
-  <div class="bodyOverview grid_16">
+  <div class="bodyOverview">
     <p>
       <@s.text name="manage.overview.published.description"/>
     </p>
@@ -363,8 +363,8 @@ $(document).ready(function(){
   </div>
 </div>
 
-<div class="resourceOverview container_24" id="visibility">
-  <div class="titleOverview grid_8">
+<div class="resourceOverview" id="visibility">
+  <div class="titleOverview">
     <div class="head">
       <@s.text name='manage.overview.visibility'/>
       <em class="<#if resource.status=="PRIVATE">RED<#else>green</#if>"><@s.text name="resource.status.${resource.status?lower_case}"/></em>
@@ -407,7 +407,7 @@ $(document).ready(function(){
       </#if>
     </div>
   </div>
-  <div class="bodyOverview grid_16">
+  <div class="bodyOverview">
   <p>
     <@s.text name="manage.resource.status.intro.${resource.status?lower_case}"/>
     <#if resource.status=="PUBLIC">
@@ -459,8 +459,8 @@ $(document).ready(function(){
   </div>
 </div>
 
-<div class="resourceOverview container_24" id="managers">
-  <div class="titleOverview grid_8">
+<div class="resourceOverview" id="managers">
+  <div class="titleOverview">
     <div class="head">
       <@s.text name="manage.overview.resource.managers"/>
     </div>
@@ -479,7 +479,7 @@ $(document).ready(function(){
       </#if>
     </div>
   </div>
-  <div class="bodyOverview grid_16">
+  <div class="bodyOverview">
     <p>
       <@s.text name="manage.overview.resource.managers.description"><@s.param>${resource.shortname}</@s.param></@s.text>
     </p>
