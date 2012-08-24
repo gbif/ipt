@@ -86,7 +86,7 @@ public class TranslationActionTest {
     mapping.setSource(new Source.FileSource());
 
     ExtensionFactory factory = ExtensionFactoryTest.getFactory();
-    Extension e = factory.build(ExtensionFactoryTest.class.getResourceAsStream("/extensions/dwc-core-occurrence.xml"));
+    Extension e = factory.build(ExtensionFactoryTest.class.getResourceAsStream("/extensions/dwc_occurrence.xml"));
     // ensure rowType for Extension is set
     if (e.getRowType() == null) {
       e.setRowType(Constants.DWC_ROWTYPE_TAXON);

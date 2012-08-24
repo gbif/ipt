@@ -1,0 +1,100 @@
+{"extensions": [
+    {
+        "title": "Darwin Core Occurrence",
+        "description": "The category of information pertaining to evidence of an occurrence in nature, in a collection, or in a dataset (specimen, observation, etc.). Updated Nov 20011 with newly ratified terms.",
+        "subject": "",
+        "identifier": "http://rs.tdwg.org/dwc/terms/Occurrence",
+        "url": "http://rs.gbif.org/core/dwc_occurrence.xml"
+    },
+    {
+        "title": "Darwin Core Taxon",
+        "description": "The category of information pertaining to taxonomic names, taxon name usages, or taxon concepts. Updated Nov 20011 with newly ratified terms.",
+        "subject": "",
+        "identifier": "http://rs.tdwg.org/dwc/terms/Taxon",
+        "url": "http://rs.gbif.org/core/dwc_taxon.xml"
+    },
+    {
+        "title": "Germplasm (0.1)",
+        "description": "Development of the Darwin Core Germplasm Extension was started during the Darwin Core workshop in January 2009 (in Copenhagen). This Germplasm Extension is modelled directly from the Multi-Crop Passport standard and the (proposed) EPGRIS3 trait data standard for characterisation and evaluation data (C&E). The purpose of building this germplasm extension for Darwin Core is for the development of an application schema for the GBIF IPT data publishing toolkit. The DwC Germplasm extension could also stimulate a process of further improved compatibility of the terms for documentation of germplasm and the terms and concepts used for documentation in other sub-domains of biodiversity informatics.",
+        "subject": "dwc:Occurrence",
+        "identifier": "http://rs.nordgen.org/dwc/germplasm/0.1/terms/GermplasmSample",
+        "url": "http://rs.gbif.org/extension/nordgen/0.1/germplasm.xml"
+    },
+    {
+        "title": "Darwin Core Measurement Or Facts",
+        "description": "Support for generic measurements or facts as defined in Darwin Core.",
+        "subject": "dwc:Occurrence dwc:Taxon",
+        "identifier": "http://rs.tdwg.org/dwc/terms/MeasurementOrFact",
+        "url": "http://rs.gbif.org/extension/dwc/measurements_or_facts.xml"
+    },
+    {
+        "title": "Darwin Core Identification History",
+        "description": "Support for multiple identification/determinations of species occurrences such as specimens. All identifications including the current one should be listed, while the current should also be repeated in the occurrence core for simple access.",
+        "subject": "dwc:Occurrence",
+        "identifier": "http://rs.tdwg.org/dwc/terms/Identification",
+        "url": "http://rs.gbif.org/extension/dwc/identification.xml"
+    },
+    {
+        "title": "Darwin Core Resource Relationship",
+        "description": "Support for generic resource rleations according to Darwin Core terms.",
+        "subject": "dwc:Occurrence dwc:Taxon",
+        "identifier": "http://rs.tdwg.org/dwc/terms/ResourceRelationship",
+        "url": "http://rs.gbif.org/extension/dwc/resource_relation.xml"
+    },
+    {
+        "title": "Types and Specimen",
+        "description": "An extension for specimens and types, including type specimens, type species and type genera and simple specimens unrelated to types.",
+        "subject": "dwc:Taxon",
+        "identifier": "http://rs.gbif.org/terms/1.0/TypesAndSpecimen",
+        "url": "http://rs.gbif.org/extension/gbif/1.0/typesandspecimen.xml"
+    },
+    {
+        "title": "Vernacular Names",
+        "description": "Extension to core taxa that lists vernacular names for a scientific taxon",
+        "subject": "dwc:Taxon",
+        "identifier": "http://rs.gbif.org/terms/1.0/VernacularName",
+        "url": "http://rs.gbif.org/extension/gbif/1.0/vernacularname.xml"
+    },
+    {
+        "title": "Alternative Identifiers",
+        "description": "",
+        "subject": "dwc:Taxon dwc:Occurrence",
+        "identifier": "http://rs.gbif.org/terms/1.0/Identifier",
+        "url": "http://rs.gbif.org/extension/gbif/1.0/identifier.xml"
+    },
+    {
+        "title": "Species Profile",
+        "description": "A basic species profile with characteristics in addition to textural description which are covered by the description extension.",
+        "subject": "dwc:Taxon",
+        "identifier": "http://rs.gbif.org/terms/1.0/SpeciesProfile",
+        "url": "http://rs.gbif.org/extension/gbif/1.0/speciesprofile.xml"
+    },
+    {
+        "title": "Literature References",
+        "description": "Bibliography, i.e. list of literature references. For example a taxon or occurrence/specimen.",
+        "subject": "dwc:Taxon dwc:Occurrence",
+        "identifier": "http://rs.gbif.org/terms/1.0/Reference",
+        "url": "http://rs.gbif.org/extension/gbif/1.0/references.xml"
+    },
+    {
+        "title": "Taxon Description",
+        "description": "DwC Taxon extension to exchange simple text/paragraph based taxon descriptions. Not suitable for structured descriptions and keys, but useful for creating species pages.",
+        "subject": "dwc:Taxon checklist",
+        "identifier": "http://rs.gbif.org/terms/1.0/Description",
+        "url": "http://rs.gbif.org/extension/gbif/1.0/description.xml"
+    },
+    {
+        "title": "Species Distribution",
+        "description": "Geographic distribution of a taxon",
+        "subject": "dwc:Taxon",
+        "identifier": "http://rs.gbif.org/terms/1.0/Distribution",
+        "url": "http://rs.gbif.org/extension/gbif/1.0/distribution.xml"
+    },
+    {
+        "title": "Simple Images",
+        "description": "Simple extension for exchanging metadata, in particular links, for species or occurrence images",
+        "subject": "dwc:Taxon dwc:Occurrence",
+        "identifier": "http://rs.gbif.org/terms/1.0/Image",
+        "url": "http://rs.gbif.org/extension/gbif/1.0/images.xml"
+    }
+]}

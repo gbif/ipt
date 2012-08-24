@@ -22,6 +22,10 @@ public class RegistryException extends RuntimeException {
      */
     BAD_RESPONSE,
     /**
+     * The request to the Registry used an invalid syntax.
+     */
+    BAD_REQUEST,
+    /**
      * Some kind of IO error occurred.
      */
     IO_ERROR,
@@ -80,28 +84,32 @@ public class RegistryException extends RuntimeException {
 
   /**
    * Depending on the RegistryException TYPE, retrieves an i18n message, and returns it. Ideally, the message returned
-   * will be the most specific error possible as to why the exception was thrown.
+   * will be the most specific error possible as to why the exception was thrown. Such a specific message will shielf
+   * the IPT admin, from having to interpret complex stacktrace exceptions.
    *
    * @param type   RegistryException.TYPE
    * @param action BaseAtion
    *
    * @return log message
    */
-  public static String logRegistryException(RegistryException.TYPE type, BaseAction action) {
+  public static String logRegistryException(TYPE type, BaseAction action) {
     // retrieve specific log message, depending on TYPE
     String msg = action.getText("admin.registration.error.registry");
     if (type != null) {
-      if (type == RegistryException.TYPE.PROXY) {
+      if (type == TYPE.PROXY) {
         msg = action.getText("admin.registration.error.proxy");
-      } else if (type == RegistryException.TYPE.SITE_DOWN) {
+      } else if (type == TYPE.SITE_DOWN) {
         msg = action.getText("admin.registration.error.siteDown");
-      } else if (type == RegistryException.TYPE.NO_INTERNET) {
+      } else if (type == TYPE.NO_INTERNET) {
         msg = action.getText("admin.registration.error.internetConnection");
-      } else if (type == RegistryException.TYPE.BAD_RESPONSE) {
+      } else if (type == TYPE.BAD_RESPONSE) {
         msg = action.getText("admin.registration.error.badResponse");
-      } else if (type == RegistryException.TYPE.IO_ERROR) {
+      } else if (type == TYPE.IO_ERROR) {
         msg = action.getText("admin.registration.error.io");
-      } else if (type == RegistryException.TYPE.UNKNOWN) {
+      } else if (type == TYPE.BAD_REQUEST) {
+        // this is will only ever occur internally during devlopment, no need to i18n it
+        msg = "A bad request was issued, please check the syntax of the URL used";
+      } else if (type == TYPE.UNKNOWN) {
         msg = action.getText("admin.registration.error.unknown");
       }
     }

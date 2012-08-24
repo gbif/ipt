@@ -116,6 +116,15 @@ public class IPTModule extends AbstractModule {
   }
 
   @Provides
+  @Inject
+  public HttpUtil provideHttpUtil() {
+    // Retrieve the same client instance as configured in this module
+    DefaultHttpClient client = provideHttpClient();
+    // Return a singleton instance of HttpUtil
+    return new HttpUtil(client);
+  }
+
+  @Provides
   @Singleton
   public JdbcSupport provideJdbcSupport() {
     JdbcSupport jdbcs = new JdbcSupport();
