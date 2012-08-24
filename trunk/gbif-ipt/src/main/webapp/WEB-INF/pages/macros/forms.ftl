@@ -74,15 +74,20 @@
   </div>
 </#macro>
 
+<#--
+  In the textWithFormattedLink macro, each word in view source will appear on a separate line. This fix this issue
+  http://code.google.com/p/gbif-providertoolkit/issues/detail?id=856 the <#t> trim directive is used to ensure that
+  the word list gets displayed as a complete line instead.
+-->
 <#macro textWithFormattedLink text>
         <#assign words = text?word_list>                     
         <#list words as x> 
         	<#assign res = x?matches("(http(s)?|ftp)://(([\\w-]+\\.)?)+[\\w-]+(:\\d+)?+(/[\\w- ./-?%&=]*)?")>
             <#assign flag=false>
             <#list res as m>
-              <#if x?contains(m)><a href="${m}">${x}</a><#assign flag = true><#break></#if>
+              <#if x?contains(m)><a href="${m}">${x}</a> <#t><#assign flag = true><#break></#if>
             </#list>
-            <#if flag==false>${x}</#if>
+            <#if flag==false>${x}</#if> <#t>
         </#list>          
 </#macro>
 
