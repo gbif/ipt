@@ -42,10 +42,9 @@ public class VocabulariesManagerImplTest {
     SAXParserFactory saxf = injector.getInstance(SAXParserFactory.class);
     VocabularyFactory vocabularyFactory = new VocabularyFactory(httpClient, saxf);
 
-    AppConfig cfg = mock(AppConfig.class);
-    DataDir dataDir = mock(DataDir.class);
+    AppConfig mockAppCfg = mock(AppConfig.class);
+    DataDir mockDataDir = mock(DataDir.class);
 
-    DefaultHttpClient client = mock(DefaultHttpClient.class);
     RegistryManager registryManager = mock(RegistryManager.class);
     ExtensionManager extensionManager = mock(ExtensionManager.class);
     ConfigWarnings warnings = new ConfigWarnings();
@@ -55,16 +54,16 @@ public class VocabulariesManagerImplTest {
     // mock data directory's .vocabularies folder
     File myTmpVocabDir = FileUtils.getClasspathFile("vocabularies");
     assertTrue(myTmpVocabDir.isDirectory());
-    when(dataDir.configFile(VocabulariesManagerImpl.CONFIG_FOLDER)).thenReturn(myTmpVocabDir);
+    when(mockDataDir.configFile(VocabulariesManagerImpl.CONFIG_FOLDER)).thenReturn(myTmpVocabDir);
 
     // mock vocabularies.xml from actual test resources file
     File vocabulariesXml = org.gbif.utils.file.FileUtils.getClasspathFile("vocabularies/vocabularies.xml");
-    when(dataDir.configFile(VocabulariesManagerImpl.CONFIG_FOLDER + "/" + VocabulariesManagerImpl.PERSISTENCE_FILE)).thenReturn(vocabulariesXml);
+    when(mockDataDir.configFile(VocabulariesManagerImpl.CONFIG_FOLDER + "/" + VocabulariesManagerImpl.PERSISTENCE_FILE)).thenReturn(vocabulariesXml);
 
     // mock VocabularyFactory.build - that returns a Vocabulary object from input stream on the supplied .vocab file
 
-    manager = new VocabulariesManagerImpl(cfg, dataDir, vocabularyFactory,
-      client, registryManager, extensionManager, warnings, textProvider, registrationManager);
+    manager = new VocabulariesManagerImpl(mockAppCfg, mockDataDir, vocabularyFactory,
+      httpClient, registryManager, extensionManager, warnings, textProvider, registrationManager);
   }
 
   @Test

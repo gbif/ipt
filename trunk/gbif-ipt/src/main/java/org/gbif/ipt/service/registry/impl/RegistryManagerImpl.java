@@ -27,6 +27,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ConnectException;
+import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +44,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.xml.sax.SAXException;
@@ -75,12 +75,12 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   private BaseAction baseAction;
 
   @Inject
-  public RegistryManagerImpl(AppConfig cfg, DataDir dataDir, DefaultHttpClient client, SAXParserFactory saxFactory,
+  public RegistryManagerImpl(AppConfig cfg, DataDir dataDir, HttpUtil httpUtil, SAXParserFactory saxFactory,
     ConfigWarnings warnings, SimpleTextProvider textProvider, RegistrationManager registrationManager)
     throws ParserConfigurationException, SAXException {
     super(cfg, dataDir);
     this.saxParser = saxFactory.newSAXParser();
-    this.http = new HttpUtil(client);
+    this.http = httpUtil;
     this.gson = new Gson();
     this.warnings = warnings;
     baseAction = new BaseAction(textProvider, cfg, registrationManager);
@@ -400,8 +400,9 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       throw new RegistryException(TYPE.SITE_DOWN, e);
     } catch (IOException e) {
       throw new RegistryException(TYPE.IO_ERROR, e);
-    } catch (Exception e) {
-      throw new RegistryException(TYPE.UNKNOWN, e);
+    } catch (URISyntaxException e) {
+      throw new RegistryException(TYPE.BAD_REQUEST,
+        "Please check the request URL: " + ((url != null) ? url : "empty URL used!"));
     }
   }
 

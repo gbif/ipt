@@ -41,7 +41,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
@@ -52,7 +51,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   private static final Logger log = Logger.getLogger(ExtensionManagerImpl.class);
 
   private Map<String, Extension> extensionsByRowtype = new HashMap<String, Extension>();
-  private static final String CONFIG_FOLDER = ".extensions";
+  protected static final String CONFIG_FOLDER = ".extensions";
   private ExtensionFactory factory;
   private HttpUtil downloader;
   private final String TAXON_KEYWORD = "dwc:taxon";
@@ -66,12 +65,12 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
 
   @Inject
   public ExtensionManagerImpl(AppConfig cfg, DataDir dataDir, ExtensionFactory factory, ResourceManager resourceManager,
-    DefaultHttpClient client, RegisteredExtensions registered, ConfigWarnings warnings, SimpleTextProvider textProvider,
+    HttpUtil httpUtil, RegisteredExtensions registered, ConfigWarnings warnings, SimpleTextProvider textProvider,
     RegistrationManager registrationManager) {
     super(cfg, dataDir);
     this.factory = factory;
     this.resourceManager = resourceManager;
-    this.downloader = new HttpUtil(client);
+    this.downloader = httpUtil;
     this.registered = registered;
     this.warnings = warnings;
     baseAction = new BaseAction(textProvider, cfg, registrationManager);
@@ -172,6 +171,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     // final filename is based on rowType which we dont know yet - create a tmp file first
     File tmpFile = dataDir.configFile(CONFIG_FOLDER + "/tmp-extension.xml");
     try {
+      // TODO: use StatusLine to determine if download was successful
       downloader.download(url, tmpFile);
       log.info("Successfully downloaded Extension " + url);
       // finally read in the new file and create the extension object
@@ -240,7 +240,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   }
 
   /**
-   * Reads a local extension file into manager cache
+   * Reads a local extension file into manager cache.
    */
   private Extension loadFromFile(File localFile) throws InvalidConfigException {
     InputStream fileIn = null;

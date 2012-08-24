@@ -41,7 +41,7 @@ public class ExtensionFactoryTest {
   public void testBuild() {
     try {
       ExtensionFactory factory = getFactory();
-      Extension e = factory.build(ExtensionFactoryTest.class.getResourceAsStream("/extensions/dwc-core-extension.xml"));
+      Extension e = factory.build(ExtensionFactoryTest.class.getResourceAsStream("/extensions/dwc_taxon.xml"));
 
       /*
        * dc:title="Darwin Core Taxon" name="Taxon" namespace="http://rs.tdwg.org/dwc/terms/"
@@ -54,12 +54,13 @@ public class ExtensionFactoryTest {
       assertEquals("Taxon", e.getName());
       assertEquals("http://rs.tdwg.org/dwc/terms/", e.getNamespace());
       assertEquals("http://rs.tdwg.org/dwc/terms/Taxon", e.getRowType());
-      assertEquals("The category of information pertaining to taxonomic names, taxon name usages, or taxon concepts.",
+      assertEquals(
+        "The category of information pertaining to taxonomic names, taxon name usages, or taxon concepts. Updated Nov 20011 with newly ratified terms.",
         e.getDescription());
       assertEquals("http://rs.tdwg.org/dwc/terms/index.htm#Taxon", e.getLink().toString());
 
       assertNotNull(e.getProperties());
-      assertEquals(40, e.getProperties().size());
+      assertEquals(44, e.getProperties().size());
       for (ExtensionProperty p : e.getProperties()) {
         if (p.getName().equalsIgnoreCase("kingdom")) {
           assertEquals("http://rs.tdwg.org/dwc/terms/kingdom", p.getQualname());
