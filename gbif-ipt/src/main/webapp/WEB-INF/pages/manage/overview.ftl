@@ -470,7 +470,7 @@ $(document).ready(function(){
           <input name="r" type="hidden" value="${resource.shortname}"/>
           <select name="id" id="manager" size="1">
             <option value=""></option>
-            <#list potentialManagers as u>
+            <#list potentialManagers?sort_by("name") as u>
               <option value="${u.email}">${u.name}</option>
             </#list>
           </select>
