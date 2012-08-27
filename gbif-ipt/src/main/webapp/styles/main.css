@@ -347,10 +347,11 @@ td#resourceLastPublication { font-size: 0.8em; }
 td#resourceVisible { font-size: 0.8em; }
 td#resourceAuthor { font-size: 0.8em; }
 
-/* sortable table */
+/* sortable table with pointer cursor indicating columns can be clicked to sort table */
 table.sortable th{
 	text-align: left;
 	padding-bottom: 10px;
+  cursor: pointer;
 }
 
 /* simple table */
