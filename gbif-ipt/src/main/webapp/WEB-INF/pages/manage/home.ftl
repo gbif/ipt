@@ -40,7 +40,7 @@
     <#assign emptyString="---">
     <#assign dotDot="..">
 
-      <#list resources as r>
+      <#list resources?sort_by("modified")?reverse as r>
 
       <tr class="${zebra(r_index)}">
     	<td id="resourceName"><a href="resource.do?r=${r.shortname}"><if><#if r.title?has_content>${r.title}<#else>${r.shortname}</#if></a></td>
