@@ -352,7 +352,7 @@
   <div class="body">
       	<div class="details">
       		<table>
-          		<#if eml.citation.citation?has_content>
+          		<#if eml.citation?has_content>
           			<#if eml.citation.identifier?has_content><tr><th><@s.text name='eml.citation.identifier'/></th><td><@textWithFormattedLink eml.citation.identifier!/></td></tr></#if>
           			<tr><th><@s.text name='eml.citation.citation'/></th><td><@textWithFormattedLink eml.citation.citation/></td></tr>
           		</#if>
