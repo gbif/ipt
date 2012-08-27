@@ -33,7 +33,7 @@
     <#assign emptyString="---">
     <#assign dotDot="..">
 
-    <#list resources as r>
+    <#list resources?sort_by("title") as r>
     
       <tr class="${zebra(r_index)}">
       	<td id="resourceLogo"><#if r.eml.logoUrl?has_content><img class="resourceminilogo" src="${r.eml.logoUrl}" /></#if></td>
