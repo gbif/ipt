@@ -13,14 +13,32 @@
 
 package org.gbif.ipt.validation;
 
+import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.metadata.eml.Eml;
+import org.gbif.metadata.eml.PhysicalData;
+
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 
 public class EmlValidatorTest {
+
+  private EmlValidator validator;
+
+  @Before
+  public void before() {
+    AppConfig mockCfg = mock(AppConfig.class);
+    SimpleTextProvider mockTextProvider = mock(SimpleTextProvider.class);
+    RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
+    validator = new EmlValidator(mockCfg, mockRegistrationManager, mockTextProvider);
+  }
 
   /*
   * Validate the integer
@@ -69,5 +87,22 @@ public class EmlValidatorTest {
     assertNotNull(EmlValidator.formatURL("torrent://www.gbif.org"));
     assertNotNull(EmlValidator.formatURL("ftp://ftp.gbif.org"));
     assertNotNull(EmlValidator.formatURL("http://www.gbif.org"));
+  }
+
+  @Test
+  public void testPhysicalPart() {
+    Eml eml = new Eml();
+    PhysicalData data1 = new PhysicalData();
+    data1.setCharset("UTF-8");
+    data1.setDistributionUrl("http://download.org/excel/1");
+    data1.setFormat("Excel");
+    data1.setFormatVersion("9.0");
+    data1.setName("Excel spreadsheet complete copy");
+    eml.getPhysicalData().add(data1);
+    assertTrue(validator.isValid(eml, "physical"));
+    // change the format version to be invalid (non decimal)
+    data1.setFormatVersion("9.0.27");
+    eml.getPhysicalData().add(data1);
+    assertFalse(validator.isValid(eml, "physical"));
   }
 }

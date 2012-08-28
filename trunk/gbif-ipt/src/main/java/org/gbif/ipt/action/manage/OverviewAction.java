@@ -55,7 +55,7 @@ public class OverviewAction extends ManagerBaseAction {
   private List<User> potentialManagers;
   private List<Extension> potentialExtensions;
   private List<Organisation> organisations;
-  private final EmlValidator emlValidator = new EmlValidator();
+  private EmlValidator emlValidator;
   private boolean missingMetadata;
   private boolean missingRegistrationMetadata;
   private StatusReport report;
@@ -68,6 +68,7 @@ public class OverviewAction extends ManagerBaseAction {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.userManager = userAccountManager;
     this.extensionManager = extensionManager;
+    this.emlValidator = new EmlValidator(cfg, registrationManager, textProvider);
   }
 
   public String addmanager() throws Exception {

@@ -25,6 +25,7 @@ import org.gbif.metadata.eml.TaxonomicCoverage;
 import org.gbif.metadata.eml.TemporalCoverage;
 import org.gbif.metadata.eml.TemporalCoverageType;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
@@ -34,10 +35,16 @@ import com.google.inject.Inject;
 public class EmlValidator extends BaseValidator {
 
   protected static Pattern phonePattern = Pattern.compile("[\\w ()/+-\\.]+");
-  @Inject
   private AppConfig cfg;
-  @Inject
   private RegistrationManager regManager;
+  private SimpleTextProvider simpleTextProvider;
+
+  @Inject
+  public EmlValidator(AppConfig cfg, RegistrationManager registrationManager, SimpleTextProvider simpleTextProvider) {
+    this.cfg = cfg;
+    this.regManager = registrationManager;
+    this.simpleTextProvider = simpleTextProvider;
+  }
 
   /**
    * @return the URL formatted with the schema component
@@ -74,15 +81,15 @@ public class EmlValidator extends BaseValidator {
   }
 
   public boolean isValid(Eml eml, @Nullable String part) {
-    BaseAction action = new BaseAction(new SimpleTextProvider(), cfg, regManager);
+    BaseAction action = new BaseAction(simpleTextProvider, cfg, regManager);
     validate(action, eml, part);
     return !(action.hasActionErrors() || action.hasFieldErrors());
   }
 
   /**
-   * Validate an EML document, optionally only a part of it matching the infividual forms on the metadata editor:
-   * "basic","parties","geocoverage","taxcoverage","tempcoverage","project","methods","citations","collections",
-   * "physical","keywords","additional"
+   * Validate an EML document, optionally only a part of it matching the individual forms on the metadata editor:
+   * "basic","geocoverage","taxcoverage","tempcoverage", "keywords", "parties", "project", "methods", "citations",
+   * "collections", "physical", "additional".
    */
   public void validate(BaseAction action, Eml eml, @Nullable String part) {
     if (eml != null) {
@@ -105,7 +112,7 @@ public class EmlValidator extends BaseValidator {
           action.addFieldError("eml.title",
             action.getText("validation.required", new String[] {action.getText("eml.title")}));
         }
-        /* languaje - optional */
+        /* language - optional */
 
         /* description - mandatory and greater than 5 chars */
         if (!exists(eml.getDescription())) {
@@ -751,13 +758,36 @@ public class EmlValidator extends BaseValidator {
         }
       } else if (part == null || part.equalsIgnoreCase("physical")) {
         /*
-         * PHYSICAL.FTL - XML Schema Documentation
+         * PHYSICAL.FTL AKA External Links - According to the schema, all values in an additional external link must be
+         * included anyways. Please make name, character set, download URL, data format, and data format version all
+         * required on save.
          */
         int index = 0;
         for (PhysicalData pd : eml.getPhysicalData()) {
+          // name required
           if (!exists(pd.getName())) {
             action.addFieldError("eml.physicalData[" + index + "].name",
               action.getText("validation.required", new String[] {action.getText("eml.physicalData.name")}));
+          }
+          // character set required
+          if (!exists(pd.getCharset())) {
+            action.addFieldError("eml.physicalData[" + index + "].charset",
+              action.getText("validation.required", new String[] {action.getText("eml.physicalData.charset")}));
+          }
+          // download URL required
+          if (!exists(pd.getDistributionUrl())) {
+            action.addFieldError("eml.physicalData[" + index + "].distributionUrl",
+              action.getText("validation.required", new String[] {action.getText("eml.physicalData.distributionUrl")}));
+          }
+          // data format required
+          if (!exists(pd.getFormat())) {
+            action.addFieldError("eml.physicalData[" + index + "].format",
+              action.getText("validation.required", new String[] {action.getText("eml.physicalData.format")}));
+          }
+          // data format version
+          if (!exists(pd.getFormatVersion())) {
+            action.addFieldError("eml.physicalData[" + index + "].formatVersion",
+              action.getText("validation.required", new String[] {action.getText("eml.physicalData.formatVersion")}));
           }
           /* Validate distribution URL form each Physical data */
           if (pd.getDistributionUrl() != null) {
@@ -766,6 +796,17 @@ public class EmlValidator extends BaseValidator {
                 .getText("validation.invalid", new String[] {action.getText("eml.physicalData.distributionUrl")}));
             } else {
               pd.setDistributionUrl(formatURL(pd.getDistributionUrl()));
+            }
+          }
+          // Validate format version - according to eml-gbif-profile v. 1.0.1 must be valid decimal.
+          // I anticipate a change to the schema being made for IPT 2.0.4, however, to make this field a string
+          // TODO: if we don't change the schema for 2.0.4, ensure that the examples given correspond to the field type!
+          if (pd.getFormatVersion() != null) {
+            try {
+              new BigDecimal(pd.getFormatVersion());
+            } catch (NumberFormatException e) {
+              action.addFieldError("eml.physicalData[" + index + "].formatVersion", action
+                .getText("validation.invalid", new String[] {action.getText("eml.physicalData.formatVersion")}));
             }
           }
           index++;
