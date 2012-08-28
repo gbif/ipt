@@ -48,7 +48,7 @@ import org.apache.commons.lang3.StringUtils;
 public class MetadataAction extends ManagerBaseAction {
 
   private final ResourceValidator validatorRes = new ResourceValidator();
-  private final EmlValidator validatorEml = new EmlValidator();
+  private EmlValidator emlValidator;
   private String section = "basic";
   private String next = "geocoverage";
   private Map<String, String> languages;
@@ -74,6 +74,7 @@ public class MetadataAction extends ManagerBaseAction {
     ResourceManager resourceManager, VocabulariesManager vocabManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.vocabManager = vocabManager;
+    this.emlValidator = new EmlValidator(cfg, registrationManager, textProvider);
   }
 
   /**
@@ -354,7 +355,7 @@ public class MetadataAction extends ManagerBaseAction {
   @Override
   public void validateHttpPostOnly() {
     validatorRes.validate(this, resource);
-    validatorEml.validate(this, resource.getEml(), section);
+    emlValidator.validate(this, resource.getEml(), section);
   }
 
   /**
