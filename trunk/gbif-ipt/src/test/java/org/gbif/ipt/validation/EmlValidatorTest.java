@@ -47,9 +47,13 @@ public class EmlValidatorTest {
     assertTrue(EmlValidator.isValidPhoneNumber("0049 (162) 130 5624 - 0"));
     assertTrue(EmlValidator.isValidPhoneNumber("+49 (162) 130 5624 - 0"));
     assertTrue(EmlValidator.isValidPhoneNumber("001/432/4342321233"));
-    assertFalse(EmlValidator.isValidPhoneNumber("+49 (30) alpha"));
-    assertFalse(EmlValidator.isValidPhoneNumber("3210049,33"));
-    assertFalse(EmlValidator.isValidPhoneNumber("32134214."));
+    assertTrue(EmlValidator.isValidPhoneNumber("+49 (30) 567-9876 ext 55"));
+    assertTrue(EmlValidator.isValidPhoneNumber("+49 (30) 999-0000 Ext. 55"));
+    assertTrue(EmlValidator.isValidPhoneNumber("3210049,33"));
+    assertTrue(EmlValidator.isValidPhoneNumber("32134214."));
+    // bad numbers
+    assertFalse(EmlValidator.isValidPhoneNumber("675343545 && 788789977"));
+    assertFalse(EmlValidator.isValidPhoneNumber("*45 2117 8990"));
   }
 
   /*

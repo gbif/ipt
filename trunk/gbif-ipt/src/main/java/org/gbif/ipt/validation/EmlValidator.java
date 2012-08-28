@@ -33,7 +33,7 @@ import com.google.inject.Inject;
 
 public class EmlValidator extends BaseValidator {
 
-  protected static Pattern phonePattern = Pattern.compile("[0-9 ()/+-]+");
+  protected static Pattern phonePattern = Pattern.compile("[\\w ()/+-\\.]+");
   @Inject
   private AppConfig cfg;
   @Inject
