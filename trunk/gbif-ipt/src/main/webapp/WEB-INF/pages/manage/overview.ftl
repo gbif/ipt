@@ -207,6 +207,10 @@ $(document).ready(function(){
         <form action='mapping.do' method='post'>
           <input name="r" type="hidden" value="${resource.shortname}"/>
           <select name="id" id="rowType" size="1">
+            <#-- if core hasn't been selected yet add help text to help user choose core type -->
+            <#if !resource.coreType?has_content || resource.coreType?lower_case == "other" >
+              <option><@s.text name='manage.overview.DwC.Mappings.select'/></option>
+            </#if>
             <#list potentialExtensions as e>
               <option value="${e.rowType}">${e.title}</option>
             </#list>
@@ -226,6 +230,13 @@ $(document).ready(function(){
     <p>
       <@s.text name='manage.overview.DwC.Mappings.description'/>
     </p>
+    <#-- if core hasn't been selected yet add help text to help user understand how to choose core type -->
+    <#if (potentialExtensions?size>0) && (!resource.coreType?has_content || resource.coreType?lower_case == "other") >
+      <p>
+        <img class="info" src="${baseURL}/images/info.gif"/>
+        <em><@s.text name='manage.overview.DwC.Mappings.coretype.description'/>
+      </p>
+    </#if>
 
     <div class="details">
       <table>

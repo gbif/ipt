@@ -113,6 +113,14 @@ public class Resource implements Serializable, Comparable<Resource> {
     return shortname.compareToIgnoreCase(o.shortname);
   }
 
+  /**
+   * Delete a Resource's mapping. If the mapping gets successfully deleted, and the mapping is a core type mapping,
+   * and there are no additional core type mappings, all other mappings are also cleared.
+   *
+   * @param mapping ExtensionMapping
+   *
+   * @return if deletion was successful or not
+   */
   public boolean deleteMapping(ExtensionMapping mapping) {
     boolean result = false;
     if (mapping != null) {
@@ -365,7 +373,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   public void setCoreType(String coreType) {
-    this.coreType = coreType.length() == 0 ? null : coreType;
+    this.coreType = Strings.isNullOrEmpty(coreType) ? null : coreType;
   }
 
   public void setCreated(Date created) {

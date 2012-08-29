@@ -47,6 +47,7 @@ import java.util.regex.Pattern;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import org.apache.commons.lang.xwork.StringUtils;
+import org.apache.log4j.Logger;
 
 /**
  * A rather complex action that deals with a single mapping configuration.
@@ -61,6 +62,9 @@ import org.apache.commons.lang.xwork.StringUtils;
  * @author markus
  */
 public class MappingAction extends ManagerBaseAction {
+
+  // logging
+  private static final Logger log = Logger.getLogger(MappingAction.class);
 
   private static final Pattern NORM_TERM = Pattern.compile("[\\W\\s_0-9]+");
 
@@ -181,6 +185,8 @@ public class MappingAction extends ManagerBaseAction {
   public String delete() {
     if (resource.deleteMapping(mapping)) {
       addActionMessage(getText("manage.mapping.deleted", new String[] {id}));
+      // reset core type to null if the core type mapping is deleted
+      updateResourceCoreType(mapping, 0);
       // set modified date
       resource.setModified(new Date());
       // save resource
@@ -265,15 +271,25 @@ public class MappingAction extends ManagerBaseAction {
           mapping = new ExtensionMapping();
           mapping.setExtension(ext);
         }
+        // The extension could have been null if:
+        // 1. The user tried to add a core mapping with the select help option, no extension would have been found
+        // 2. No extension could be retrieved for the id (rowtype)
+        // The result should be the user stays on the overview page, and displays a warning informing them that they
+        // need to perform another selection.
+        else {
+          addActionWarning("Invalid selection: the Core Type or Extension you have selected does not exist");
+          defaultResult = "error";
+        }
       } else {
         List<ExtensionMapping> maps = resource.getMappings(id);
         mapping = maps.get(mid);
       }
+    } else {
+      // worst case, just redirect to resource not found page
+      notFound = true;
     }
 
-    if (mapping == null || mapping.getExtension() == null) {
-      notFound = true;
-    } else {
+    if (mapping != null || mapping.getExtension() != null) {
       // is source assigned yet?
       if (mapping.getSource() == null) {
         // get source parameter as setters are not called yet
@@ -290,17 +306,16 @@ public class MappingAction extends ManagerBaseAction {
       if (mapping.getFilter() == null) {
         mapping.setFilter(new RecordFilter());
       }
-      // setup the core record id term
+      // determine the core row type
       String coreRowType = resource.getCoreRowType();
       if (coreRowType == null) {
         // not yet set, the current mapping must be the core type
         coreRowType = mapping.getExtension().getRowType();
       }
-      resource.setCoreType(StringUtils.capitalize(CoreRowType.OCCURRENCE.toString().toLowerCase()));
+      // setup the core record id term
       String coreIdTerm = Constants.DWC_OCCURRENCE_ID;
       if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON)) {
         coreIdTerm = Constants.DWC_TAXON_ID;
-        resource.setCoreType(StringUtils.capitalize(CoreRowType.CHECKLIST.toString().toLowerCase()));
       }
       coreid = extensionManager.get(coreRowType).getProperty(coreIdTerm);
       mappingCoreid = mapping.getField(coreid.getQualname());
@@ -387,7 +402,11 @@ public class MappingAction extends ManagerBaseAction {
       }
       // back to mapping object
       mapping.setFields(mappedFields);
+
+      // update core type
+      updateResourceCoreType(mapping, mappedFields.size());
     }
+
     // set modified date
     resource.setModified(new Date());
     // save entire resource config
@@ -396,6 +415,30 @@ public class MappingAction extends ManagerBaseAction {
     addWarnings();
 
     return defaultResult;
+  }
+
+  /**
+   * Update resource core type. This must be done every time the resource's core type mapping is being modified, or
+   * deleted. If it is the 1st mapping of the core type, the core type won't have been set yet. Only if 1 or more
+   * mapped fields were saved, can we consider the mapping to have been legitimate. Furthermore, if the
+   * core type mapping is being deleted, then the resource must reset its core type to null.
+   *
+   * @param mapping      ExtensionMapping
+   * @param mappedFields the number of mapped fields in the mapping - set to 0 if the mapping is to be deleted
+   */
+  void updateResourceCoreType(ExtensionMapping mapping, int mappedFields) {
+    // proceed only if we're dealing with the core type mapping
+    if (mapping.isCore()) {
+      // must be 1 or more mapped fields for mapping to be legitimate
+      if (mappedFields > 0) {
+        resource.setCoreType(resource.getCoreRowType().equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON) ? StringUtils
+          .capitalize(CoreRowType.CHECKLIST.toString()) : StringUtils.capitalize(CoreRowType.OCCURRENCE.toString()));
+      }
+      // otherwise, reset core type!
+      else {
+        resource.setCoreType(null);
+      }
+    }
   }
 
   public String saveSetSource() {
