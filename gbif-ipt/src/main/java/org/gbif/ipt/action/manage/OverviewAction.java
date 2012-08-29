@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -327,8 +328,8 @@ public class OverviewAction extends ManagerBaseAction {
         potentialExtensions = new ArrayList<Extension>();
       } else {
         // Validating if the resource has a type
-        if (resource.getCoreType() == null || "Other".equals(resource.getCoreType())
-            || resource.getCoreType().length() == 0) {
+        if (Strings.isNullOrEmpty(resource.getCoreType()) || "Other".equals(resource.getCoreType())) {
+          // populate list of potential list of extensions with core types
           potentialExtensions = extensionManager.listCore();
         } else {
           potentialExtensions = new ArrayList<Extension>();
