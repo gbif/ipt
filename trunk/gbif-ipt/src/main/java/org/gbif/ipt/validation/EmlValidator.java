@@ -482,8 +482,8 @@ public class EmlValidator extends BaseValidator {
          * <taxonomicCoverage> - mandatory - many
          * <generalTaxonomicCoverage>{eml.taxonomicCoverages[i].description}</generalTaxonomicCoverage> - optional
          * <taxonomicClassification> - mandatory - many
-         * <taxonRankName>{eml.taxonomicCoverages[i].taxonKeywords[j].scientificName}</taxonRankName> - optional
-         * <taxonRankValue>{eml.taxonomicCoverages[i].taxonKeywords[j].rank}</taxonRankValue> - mandatory
+         * <taxonRankName>{eml.taxonomicCoverages[i].taxonKeywords[j].rank}</taxonRankName> - optional
+         * <taxonRankValue>{eml.taxonomicCoverages[i].taxonKeywords[j].scientificName}</taxonRankValue> - mandatory
          * <commonName>{eml.taxonomicCoverages[i].taxonKeywords[j].commonName}</commonName> - optional
          * </taxonomicClassification>
          * </taxonomicCoverage>
