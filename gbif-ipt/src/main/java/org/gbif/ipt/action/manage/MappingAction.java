@@ -277,7 +277,7 @@ public class MappingAction extends ManagerBaseAction {
         // The result should be the user stays on the overview page, and displays a warning informing them that they
         // need to perform another selection.
         else {
-          addActionWarning("Invalid selection: the Core Type or Extension you have selected does not exist");
+          addActionError(getText("manage.overview.DwC.Mappings.select.invalid"));
           defaultResult = "error";
         }
       } else {
