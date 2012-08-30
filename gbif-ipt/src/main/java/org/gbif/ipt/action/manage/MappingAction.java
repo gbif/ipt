@@ -338,8 +338,8 @@ public class MappingAction extends ManagerBaseAction {
         }
         // uses a vocabulary?
         if (p.getVocabulary() != null) {
-          vocabTerms.put(p.getVocabulary().getUri(),
-            vocabManager.getI18nVocab(p.getVocabulary().getUri(), getLocaleLanguage(), true));
+          vocabTerms.put(p.getVocabulary().getUriString(),
+            vocabManager.getI18nVocab(p.getVocabulary().getUriString(), getLocaleLanguage(), true));
         }
         // mapped already?
         PropertyMapping f = mapping.getField(p.getQualname());

@@ -15,7 +15,7 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl.UpdateResult;
 import org.gbif.ipt.utils.IptMockBaseTest;
 
-import java.net.URL;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -46,7 +46,7 @@ public class MockVocabulariesManager extends IptMockBaseTest implements Vocabula
     return v;
   }
 
-  public Vocabulary get(URL url) {
+  public Vocabulary get(URI uri) {
     return new Vocabulary();
   }
 

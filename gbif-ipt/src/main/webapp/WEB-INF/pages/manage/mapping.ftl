@@ -281,7 +281,7 @@ $(document).ready(function(){
 				</#if>              	
 			</div>
 	      	<#if p.vocabulary?exists>	  		
-	      	<a href="vocabulary.do?id=${p.vocabulary.uri}" target="_blank"><img class="vocabImg" src="${baseURL}/images/vocabulary.png" /></a>
+	      	<a href="vocabulary.do?id=${p.vocabulary.uriString}" target="_blank"><img class="vocabImg" src="${baseURL}/images/vocabulary.png" /></a>
 	      	</#if>
 				<select id="fIdx${field_index}" class="fidx" name="fields[${field_index}].index">
 				  <option value="" <#if !field.index??> selected="selected"</#if>></option>
@@ -290,7 +290,7 @@ $(document).ready(function(){
 				</#list>
 				</select>
 		      	<#if p.vocabulary?exists>
-		      		<#assign vocab=vocabTerms[p.vocabulary.uri] />
+		      		<#assign vocab=vocabTerms[p.vocabulary.uriString] />
 					<select id="fVal${field_index}" class="fval" name="fields[${field_index}].defaultValue">
 					  <option value="" <#if !field.defaultValue??> selected="selected"</#if>></option>
 					<#list vocab?keys as code>

@@ -43,7 +43,7 @@ public class VocabularyFactoryTest {
       Vocabulary tv =
         getFactory().build(VocabularyFactoryTest.class.getResourceAsStream("/thesauri/type-vocabulary.xml"));
       assertEquals("Dublin Core Type Vocabulary", tv.getTitle());
-      assertEquals("http://dublincore.org/documents/dcmi-type-vocabulary/", tv.getUri());
+      assertEquals("http://dublincore.org/documents/dcmi-type-vocabulary/", tv.getUriString());
       assertEquals(
         "The DCMI Type Vocabulary provides a general, cross-domain list of approved terms that may be used as values for the Resource Type element to identify the genre of a resource. The terms documented here are also included in the more comprehensive document \"DCMI Metadata Terms\" at http://dublincore.org/documents/dcmi-terms/.",
         tv.getDescription());

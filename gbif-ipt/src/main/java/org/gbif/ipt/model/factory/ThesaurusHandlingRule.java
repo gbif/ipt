@@ -11,7 +11,7 @@ import org.gbif.ipt.model.ExtensionProperty;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 
-import java.net.URL;
+import java.net.URI;
 
 import com.google.inject.Inject;
 import org.apache.commons.digester.Rule;
@@ -41,8 +41,8 @@ public class ThesaurusHandlingRule extends Rule {
       if (ThesaurusHandlingRule.ATTRIBUTE_THESAURUS.equals(attributes.getQName(i))) {
         Vocabulary tv = null;
         try {
-          URL vocabURL = new URL(attributes.getValue(i));
-          tv = vocabManager.get(vocabURL);
+          URI vocabURIObject = new URI(attributes.getValue(i));
+          tv = vocabManager.get(vocabURIObject);
         } catch (Exception e) {
           LOG
             .error("Vocabulary with location " + attributes.getValue(i) + " couldnt get hold of: " + e.getMessage(), e);
@@ -55,7 +55,7 @@ public class ThesaurusHandlingRule extends Rule {
           if (extensionPropertyAsObject instanceof ExtensionProperty) {
             ExtensionProperty eProperty = (ExtensionProperty) extensionPropertyAsObject;
             eProperty.setVocabulary(tv);
-            LOG.debug("Vocabulary with URI[" + tv.getUri() + "] added to extension property");
+            LOG.debug("Vocabulary with URI[" + tv.getUriString() + "] added to extension property");
           }
         }
 

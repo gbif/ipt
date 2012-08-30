@@ -9,6 +9,7 @@ package org.gbif.ipt.model;
 
 import java.io.Serializable;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.Date;
 import java.util.LinkedList;
@@ -21,14 +22,15 @@ import org.apache.commons.lang3.builder.CompareToBuilder;
 import static com.google.common.base.Objects.equal;
 
 /**
- * TODO: Documentation.
+ * Class represents a Vocabulary.
  */
 public class Vocabulary implements Comparable, Serializable {
 
   private static final long serialVersionUID = 22000013267L;
   @SerializedName("identifier")
-  private String uri; // identifier for JSON.
-  private URL url; // url to its definition
+  private String uriString; // identifier
+  @SerializedName("url")
+  private URI uriResolvable; // resolvable URI to its definition
   private String title;
   private String description;
   private String subject;
@@ -58,7 +60,7 @@ public class Vocabulary implements Comparable, Serializable {
 
   public int compareTo(Object object) {
     Vocabulary myClass = (Vocabulary) object;
-    return new CompareToBuilder().append(this.uri, myClass.uri).toComparison();
+    return new CompareToBuilder().append(this.uriString, myClass.uriString).toComparison();
   }
 
   @Override
@@ -70,7 +72,7 @@ public class Vocabulary implements Comparable, Serializable {
       return false;
     }
     Vocabulary o = (Vocabulary) other;
-    return equal(uri, o.uri);
+    return equal(uriString, o.uriString);
   }
 
   public VocabularyConcept findConcept(String term) {
@@ -123,17 +125,9 @@ public class Vocabulary implements Comparable, Serializable {
     return title;
   }
 
-  public String getUri() {
-    return uri;
-  }
-
-  public URL getUrl() {
-    return url;
-  }
-
   @Override
   public int hashCode() {
-    return Objects.hashCode(uri);
+    return Objects.hashCode(uriString);
   }
 
   public void setConcepts(List<VocabularyConcept> concepts) {
@@ -167,12 +161,29 @@ public class Vocabulary implements Comparable, Serializable {
     this.title = title;
   }
 
-  public void setUri(String uri) {
-    this.uri = uri;
+  /**
+   * Identifier for Vocabulary. E.g. http://dublincore.org/documents/dcmi-type-vocabulary/
+   *
+   * @return identifier for Vocabulary
+   */
+  public String getUriString() {
+    return uriString;
   }
 
-  public void setUrl(URL url) {
-    this.url = url;
+  public void setUriString(String uriString) {
+    this.uriString = uriString;
   }
 
+  /**
+   * Resolvable URL to Vocabulary. E.g. http://rs.gbif.org/vocabulary/dcterms/type.xml
+   *
+   * @return resolvable URL to Vocabulary
+   */
+  public URI getUriResolvable() {
+    return uriResolvable;
+  }
+
+  public void setUriResolvable(URI uriResolvable) {
+    this.uriResolvable = uriResolvable;
+  }
 }

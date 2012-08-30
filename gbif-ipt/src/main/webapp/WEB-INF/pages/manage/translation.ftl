@@ -56,8 +56,8 @@ $(document).ready(function(){
 <@s.text name="manage.translation.vocabulary.required.intro"/>
 </p>
 <p>
-<em>${property.vocabulary.title!property.vocabulary.uri}</em>:
-<a href="vocabulary.do?id=${property.vocabulary.uri}" target="_blank"><img class="vocabImg" src="${baseURL}/images/vocabulary.png" /></a>
+<em>${property.vocabulary.title!property.vocabulary.uriString}</em>:
+<a href="vocabulary.do?id=${property.vocabulary.uriString}" target="_blank"><img class="vocabImg" src="${baseURL}/images/vocabulary.png" /></a>
 &quot;${property.vocabulary.description!}&quot;</p>
 </#if>
 

@@ -61,7 +61,7 @@
       	<#if p.vocabulary?exists>
       	<div>
 	      	<em><@s.text name="extension.vocabulary"/></em>: 
-	      	<a href="vocabulary.do?id=${p.vocabulary.uri}">${p.vocabulary.title}</a>
+	      	<a href="vocabulary.do?id=${p.vocabulary.uriString}">${p.vocabulary.title}</a>
       	</div>
       	</#if>
       	<div class="details">
