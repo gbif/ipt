@@ -157,7 +157,7 @@ public class TranslationActionTest {
     concepts.add(concept);
 
     vocab.setConcepts(concepts);
-    vocab.setUri("http://rs.gbif.org/vocabulary/dwc/basis_of_record.xml");
+    vocab.setUriString("http://rs.gbif.org/vocabulary/dwc/basis_of_record");
     property.setVocabulary(vocab);
 
     // create sessionScoped Translation

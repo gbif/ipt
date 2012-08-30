@@ -68,7 +68,7 @@ public class VocabularyFactory {
     digester.addCallMethod("*/thesaurus", "setLink", 1);
     digester.addRule("*/thesaurus", new CallParamNoNSRule(0, "relation"));
 
-    digester.addCallMethod("*/thesaurus", "setUri", 1);
+    digester.addCallMethod("*/thesaurus", "setUriString", 1);
     digester.addRule("*/thesaurus", new CallParamNoNSRule(0, "URI"));
 
     // build the concept

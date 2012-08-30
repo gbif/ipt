@@ -10,7 +10,7 @@
          <th><@s.text name="basic.title"/></th><td>${vocabulary.title}</td>
     </tr>
     <tr>
-         <th><@s.text name="basic.identifier"/></th><td>${vocabulary.uri}</td>
+         <th><@s.text name="basic.identifier"/></th><td>${vocabulary.uriString}</td>
     </tr>
     <tr>
          <th><@s.text name="basic.description"/></th><td>${vocabulary.description!}</td>
