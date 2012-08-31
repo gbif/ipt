@@ -25,7 +25,6 @@ import org.gbif.metadata.eml.TaxonomicCoverage;
 import org.gbif.metadata.eml.TemporalCoverage;
 import org.gbif.metadata.eml.TemporalCoverageType;
 
-import java.math.BigDecimal;
 import java.net.URI;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
@@ -784,11 +783,9 @@ public class EmlValidator extends BaseValidator {
             action.addFieldError("eml.physicalData[" + index + "].format",
               action.getText("validation.required", new String[] {action.getText("eml.physicalData.format")}));
           }
-          // data format version
-          if (!exists(pd.getFormatVersion())) {
-            action.addFieldError("eml.physicalData[" + index + "].formatVersion",
-              action.getText("validation.required", new String[] {action.getText("eml.physicalData.formatVersion")}));
-          }
+
+          // data format version is optional - so skip
+
           /* Validate distribution URL form each Physical data */
           if (pd.getDistributionUrl() != null) {
             if (formatURL(pd.getDistributionUrl()) == null) {
@@ -796,17 +793,6 @@ public class EmlValidator extends BaseValidator {
                 .getText("validation.invalid", new String[] {action.getText("eml.physicalData.distributionUrl")}));
             } else {
               pd.setDistributionUrl(formatURL(pd.getDistributionUrl()));
-            }
-          }
-          // Validate format version - according to eml-gbif-profile v. 1.0.1 must be valid decimal.
-          // I anticipate a change to the schema being made for IPT 2.0.4, however, to make this field a string
-          // TODO: if we don't change the schema for 2.0.4, ensure that the examples given correspond to the field type!
-          if (pd.getFormatVersion() != null) {
-            try {
-              new BigDecimal(pd.getFormatVersion());
-            } catch (NumberFormatException e) {
-              action.addFieldError("eml.physicalData[" + index + "].formatVersion", action
-                .getText("validation.invalid", new String[] {action.getText("eml.physicalData.formatVersion")}));
             }
           }
           index++;
