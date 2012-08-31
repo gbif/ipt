@@ -2,6 +2,11 @@
 <#setting number_format="#####.##">
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name='manage.metadata.collections.title'/></title>
+<script type="text/javascript">
+  $(document).ready(function(){
+    initHelp();
+  });
+</script>
 <#include "/WEB-INF/pages/macros/metadata.ftl"/>
 <#assign sideMenuEml=true />
  <#assign currentMenu="manage"/>
@@ -14,24 +19,24 @@
     </a>
 </h1>
 <div class="grid_17 suffix_1">
-<form class="topForm" action="metadata-${section}.do" method="post">
-    <div id="Collection-Data" class="clearfix">
-    <h2 class="subTitle"><@s.text name='manage.metadata.collections.title'/></h2>
+  <h2 class="subTitle"><@s.text name='manage.metadata.collections.title'/></h2>
+  <form class="topForm" action="metadata-${section}.do" method="post">
     <p><@s.text name='manage.metadata.collections.intro'/></p>
-    	<div class="halfcolumn">
-    		<@input name="eml.collectionName" />
-    	</div>
-    	<div class="halfcolumn">
-    		<@input name="eml.collectionId" />
-    	</div>
-    	<div class="halfcolumn">
-    		<@input name="eml.parentCollectionId" />
-    	</div>
-    	<div class="halfcolumn">
-    		<@select name="eml.specimenPreservationMethod" value="${eml.specimenPreservationMethod!}" options=preservationMethods />
-    	</div>
-	</div>
 
+    <div class="clearfix">
+      <div class="halfcolumn">
+        <@input name="eml.collectionName" help="i18n"/>
+      </div>
+      <div class="halfcolumn">
+        <@input name="eml.collectionId" help="i18n"/>
+      </div>
+      <div class="halfcolumn">
+        <@input name="eml.parentCollectionId" help="i18n"/>
+      </div>
+      <div class="halfcolumn">
+        <@select name="eml.specimenPreservationMethod" help="i18n" options=preservationMethods value="${eml.specimenPreservationMethod!}"/>
+      </div>
+    </div>
 	<div id="Curatorial-Units">
 	<h2 class="subTitle"><@s.text name="manage.metadata.collections.curatorialUnits.title"/></h2>
 	<p><@s.text name="manage.metadata.collections.curatorialUnits.intro"/></p>
