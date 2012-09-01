@@ -7,38 +7,38 @@
 <title><@s.text name='manage.metadata.additional.title'/></title>
 <script type="text/javascript">
 	$(document).ready(function(){
-		initHelp();			
-		
+		initHelp();
+
 		$('.confirm').jConfirmAction({question : "<@s.text name="eml.intellectualRights.licenses.confirmation"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
-		
+
 		var optionSelected=$(this).find("option:selected").text();
 		if($.trim(optionSelected)=='<@s.text name="eml.intellectualRights.nolicenses"/>'){
-			$('.confirm').unbind('click');			
-		}		
+			$('.confirm').unbind('click');
+		}
 		$("#licenseList").change(function(){
 			$('.confirm').unbind('click');
 			$("#disclaimerRigths").css('display', '');
 			var nameRights=$("#licenseList").val();
-			$("#eml\\.intellectualRights").val(nameRights);	
+			$("#eml\\.intellectualRights").val(nameRights);
 			var optionSelected=$(this).find("option:selected").text();
 			if($.trim(optionSelected)=='<@s.text name="eml.intellectualRights.nolicenses"/>'){
-				$("#disclaimerRigths").css('display', 'none');				
+				$("#disclaimerRigths").css('display', 'none');
 			}else{
 				$('.confirm').jConfirmAction({question : "<@s.text name="eml.intellectualRights.licenses.confirmation"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
 			}
-		});	
-				
+		});
+
 		$("#buttonUpload").click(function() {
   			return ajaxFileUpload();
 		});
-		
+
 		function ajaxFileUpload()
     {
         var logourl=$("#resourcelogo img").attr("src");
         $.ajaxFileUpload
         (
             {
-                url:'uploadlogo.do', 
+                url:'uploadlogo.do',
                 secureuri:false,
                 fileElementId:'file',
                 dataType: 'json',
@@ -69,7 +69,7 @@
 			$("#resourcelogo img").show('slow', function() {
     			$("[id$='eml.logoUrl']").attr("value",logourl);
 				$("#resourcelogo img").attr("src", logourl+"&t="+(new Date()).getTime());
-  			});			
+  			});
         }else{
         	$("#resourcelogo img").hide('slow').removeAttr("src");
          	logourl=$("#baseimg").attr("src");
@@ -80,16 +80,16 @@
         }
         return false;
 
-    }    
-        
-	});	
-	
-	
-</script>	
+    }
+
+	});
+
+
+</script>
 <#assign sideMenuEml=true />
 <#assign currentMenu="manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
-<#include "/WEB-INF/pages/macros/forms.ftl"/>  	 
+<#include "/WEB-INF/pages/macros/forms.ftl"/>
 
 <h1><span class="superscript">Resource Title</span>
     <a class="tooltip" href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}
@@ -105,9 +105,9 @@
     	  	<@input name="eml.hierarchyLevel" i18nkey="eml.hierarchyLevel" help="i18n" disabled=true />
     	</div>
     	<div class="halfcolumn">
-    	  	<@input date=true name="eml.pubDate" i18nkey="eml.pubDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD",  "MM/DD/YYYY":"MM/DD/YYYY"} />
+    	  	<@input name="eml.pubDate" i18nkey="eml.pubDate" help="i18n" disabled=true />
     	</div>
-	
+
     	<div id="logofields">
     		<div class="halfcolumn">
     			<@input name="eml.logoUrl" i18nkey="eml.logoUrl" help="i18n"/>
@@ -126,24 +126,24 @@
     		<div class="clearfix"></div>
     	</div>
   	  	<@text name="eml.purpose" i18nkey="eml.purpose" help="i18n"/>
-      	<div class="infos">	  
+      	<div class="infos">
     		<img class="infoImg" src="${baseURL}/images/info.gif" />
-    		<div class="info">		
+    		<div class="info">
     			<span class="idSuffix">
-    				<@s.text name='eml.intellectualRights.license.help'/>            	
-    			</span>         		
-    		</div>	
+    				<@s.text name='eml.intellectualRights.license.help'/>
+    			</span>
+    		</div>
     		<select name="licenseList" id="licenseList">
     			<#list licenses?keys as licenseN>
     				<option value="${licenses[licenseN]}" <#if (licenseN!"")=="${licenseName!}"> selected="selected"</#if>>
-    					${licenseN}					
+    					${licenseN}
     				</option>
     			</#list>
-    		</select>   
-    	</div>  
+    		</select>
+    	</div>
       	<div id='disclaimerRigths' style='display: none'><p><@s.text name='eml.intellectualRights.license.disclaimer'/></p></div>
-      	<@text name="eml.intellectualRights" i18nkey="eml.intellectualRights" help="i18n" />  		
-    	<@text name="eml.additionalInfo" i18nkey="eml.additionalInfo" help="i18n"/>	
+      	<@text name="eml.intellectualRights" i18nkey="eml.intellectualRights" help="i18n" />
+    	<@text name="eml.additionalInfo" i18nkey="eml.additionalInfo" help="i18n"/>
   	</div>
     <div id="Alternative-Identifiers">
   	    <h2 class="subTitle"><@s.text name='manage.metadata.alternateIdentifiers.title'/></h2>
@@ -159,7 +159,7 @@
     		</#list>
     	</div>
       	<a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/></a>
-	
+
       	<div class="buttons">
      		<@s.submit cssClass="button" name="save" key="button.save" cssClass="confirm" />
      		<@s.submit cssClass="button" name="cancel" key="button.cancel"/>
