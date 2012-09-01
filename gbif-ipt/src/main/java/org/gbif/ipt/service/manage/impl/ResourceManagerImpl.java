@@ -756,6 +756,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         "Resource " + resource.getShortname() + " is currently locked by another process");
     }
 
+    // update eml pubDate (represents date when the resource was last published)
+    resource.getEml().setPubDate(new Date());
+
     // publish EML as well as RTF
     publishMetadata(resource, action);
 
