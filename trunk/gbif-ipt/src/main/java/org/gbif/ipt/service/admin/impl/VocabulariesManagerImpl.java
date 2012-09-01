@@ -22,6 +22,7 @@ import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.utils.HttpUtil;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -30,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -41,7 +43,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.xml.parsers.ParserConfigurationException;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -77,6 +78,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   private Map<String, URI> id2uri = new HashMap<String, URI>();
   protected static final String CONFIG_FOLDER = ".vocabularies";
   public static final String PERSISTENCE_FILE = "vocabularies.xml";
+  private static final String VOCAB_FILE_SUFFIX = ".vocab";
   private VocabularyFactory vocabFactory;
   private HttpUtil downloadUtil;
   private final XStream xstream = new XStream();
@@ -206,7 +208,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   }
 
   private File getVocabFile(URI uriObject) {
-    String filename = uriObject.toString().replaceAll("[/.:]+", "_") + ".vocab";
+    String filename = uriObject.toString().replaceAll("[/.:]+", "_") + VOCAB_FILE_SUFFIX;
     return dataDir.configFile(CONFIG_FOLDER + "/" + filename);
   }
 
@@ -244,21 +246,72 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
     return new ArrayList<Vocabulary>(vocabularies.values());
   }
 
-  public int load() {
-    File dir = dataDir.configFile(CONFIG_FOLDER);
-    // first load peristent id2uri map
+  /**
+   * First, the vocabularies.xml file, that stores information about the list of installed vocabularies, previous to
+   * 2.0.4, the IPT stored the resolvable vocabulary address in a URL object. Now, it stores it as a URI. To avoid
+   * startup errors updating existing IPT installations, this method should be called to help transition
+   * the vocabularies.xml to use this new format.
+   * </p>
+   * Second, any vocabularies that are deprecated and will never be referenced again from any extension or used again
+   * in the IPT, must be removed. Otherwise, the IPT will try to download the vocabulary which no loner exists.
+   */
+  private void transitionVocabulariesBetweenVersions() {
+    // first load persistent id2uri map
+    InputStream in = null;
     try {
-      InputStream in = new FileInputStream(dataDir.configFile(CONFIG_FOLDER + "/" + PERSISTENCE_FILE));
-      id2uri = (Map<String, URI>) xstream.fromXML(in);
-      log.debug("Loaded id2uri vocabulary map with " + id2uri.size() + " entries");
+      in = new FileInputStream(dataDir.configFile(CONFIG_FOLDER + "/" + PERSISTENCE_FILE));
+      // as of 2.0.4, need to transition id2url from Map<String, URL -> Map<String, URI>
+      Map<String, Object> tempId2uri = (Map<String, Object>) xstream.fromXML(in);
+      for (String id : tempId2uri.keySet()) {
+        try {
+          String st = tempId2uri.get(id).toString();
+          URI uri = new URI(st);
+          id2uri.put(id, uri);
+        } catch (URISyntaxException e1) {
+          // log error, clear vocabs dir, try download them all again
+          log.error("URL could not be converted to URI - check vocabularies.xml");
+        }
+      }
     } catch (IOException e) {
       log.warn("Cannot load the id2uri mapping from datadir (This is normal when first setting up a new datadir)");
+    } finally {
+      if (in != null) {
+        try {
+          in.close();
+        } catch (IOException e) {
+          log.error("InputStream on vocabularies.xml could not be closed");
+        }
+      }
     }
+    // remove the old vocabularies.xml file - it will soon get rewritten..
+    FileUtils.deleteQuietly(dataDir.configFile(CONFIG_FOLDER + "/" + PERSISTENCE_FILE));
+
+    // before rewriting, take the chance to remove any deprecated vocabularies that no longer should be persisted/loaded
+    if (id2uri.containsKey(Constants.DEPRECATED_VOCAB_URI_RESOURCE_TYPE)) {
+      id2uri.remove(Constants.DEPRECATED_VOCAB_URI_RESOURCE_TYPE);
+    }
+    // ensure the actual deprecated vocab file is also removed
+    File dep1 = dataDir.configFile(CONFIG_FOLDER + "/" + "http_rs_gbif_org_vocabulary_gbif_resource_type_xml.vocab");
+    if (dep1.exists()) {
+      FileUtils.deleteQuietly(dep1);
+    }
+    // rewrite vocabularies.xml
+    save();
+  }
+
+  public int load() {
+    File vocabularies = dataDir.configFile(CONFIG_FOLDER + "/" + PERSISTENCE_FILE);
+    // for IPTs version 2.0.3 or earlier: must transition vocabularies.xml to store vocabulary address as URI vs URL
+    if (vocabularies.exists()) {
+      transitionVocabulariesBetweenVersions();
+    }
+
     // now iterate over all vocab files and load them
+    File dir = dataDir.configFile(CONFIG_FOLDER);
     int counter = 0;
     if (dir.isDirectory()) {
       List<File> files = new ArrayList<File>();
-      FilenameFilter ff = new SuffixFileFilter(".vocab", IOCase.INSENSITIVE);
+      FilenameFilter ff = new SuffixFileFilter(VOCAB_FILE_SUFFIX, IOCase.INSENSITIVE);
       files.addAll(Arrays.asList(dir.listFiles(ff)));
       for (File ef : files) {
         try {
@@ -272,7 +325,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       }
     }
 
-    // we could be starting up for the very first time. Try to load mandatory/default vocabs with URLs from registry
+    // we could be starting up for the very first time. Try to load mandatory/default vocabs with URIs from registry
     Map<String, URI> registeredVocabs = null;
     for (String vuriString : defaultVocabs) {
       if (!id2uri.containsKey(vuriString.toLowerCase())) {
@@ -304,6 +357,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
     Vocabulary v = null;
     // finally read in the new file and create the vocabulary object
     InputStream fileIn = null;
+    String fileName = (vocabFile.exists()) ? vocabFile.getName() : "";
     try {
       fileIn = new FileInputStream(vocabFile);
       v = vocabFactory.build(fileIn);
@@ -312,11 +366,11 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       v.setLastUpdate(modified);
       log.info("Successfully loaded Vocabulary: " + v.getTitle());
     } catch (FileNotFoundException e) {
-      warnings.addStartupError("Cant find local vocabulary file", e);
+      warnings.addStartupError("Cant find local vocabulary file: " + fileName, e);
     } catch (IOException e) {
-      warnings.addStartupError("Cant access local vocabulary file", e);
+      warnings.addStartupError("Cant access local vocabulary file: " + fileName, e);
     } catch (SAXException e) {
-      warnings.addStartupError("Cant parse local vocabulary file", e);
+      warnings.addStartupError("Cant parse local vocabulary file: " + fileName, e);
     } catch (ParserConfigurationException e) {
       warnings.addStartupError("Cant create sax parser", e);
     } finally {
