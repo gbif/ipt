@@ -25,22 +25,22 @@
 
     <div class="clearfix">
       <div class="halfcolumn">
-        <@input name="eml.collectionName" help="i18n"/>
+        <@input name="eml.collectionName" help="i18n" requiredField=true />
       </div>
       <div class="halfcolumn">
-        <@input name="eml.collectionId" help="i18n"/>
+        <@input name="eml.collectionId" help="i18n" requiredField=true />
       </div>
       <div class="halfcolumn">
-        <@input name="eml.parentCollectionId" help="i18n"/>
+        <@input name="eml.parentCollectionId" help="i18n" requiredField=true />
       </div>
       <div class="halfcolumn">
-        <@select name="eml.specimenPreservationMethod" help="i18n" options=preservationMethods value="${eml.specimenPreservationMethod!}"/>
+        <@select name="eml.specimenPreservationMethod" help="i18n" options=preservationMethods value="${eml.specimenPreservationMethod!}" requiredField=true />
       </div>
     </div>
 	<div id="Curatorial-Units">
 	<h2 class="subTitle"><@s.text name="manage.metadata.collections.curatorialUnits.title"/></h2>
 	<p><@s.text name="manage.metadata.collections.curatorialUnits.intro"/></p>
-	<div id="items">	
+	<div id="items">
 		<#list eml.jgtiCuratorialUnits as item>
 			<#assign type="${eml.jgtiCuratorialUnits[item_index].type}"/>
 			<div id="item-${item_index}" class="item">
@@ -73,7 +73,7 @@
     				<@input name="eml.jgtiCuratorialUnits[${item_index}].unitType" i18nkey="eml.jgtiCuratorialUnits.unitType" size=40/>
     			</div>
 			</div>
-		</#list>  	
+		</#list>
 	</div>
 	<a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.collections.curatorialUnits.item'/></a>
 	<div class="buttons">
@@ -100,7 +100,7 @@
 				</div>
 				<div class="halfcolumn">
    					<@input name="rangeEnd" i18nkey="eml.jgtiCuratorialUnits.rangeEnd" size=40/>
-				</div>	
+				</div>
 			</div>
     	</div>
     	<@input name="unitType" i18nkey="eml.jgtiCuratorialUnits.unitType" size=40/>

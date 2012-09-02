@@ -6,7 +6,7 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		initHelp();
-	});   
+	});
 </script>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
@@ -19,14 +19,15 @@
 </h1>
 <div class="grid_17 suffix_1">
 <h2 class="subTitle"><@s.text name='manage.metadata.project.title'/></h2>
-<form class="topForm" action="metadata-${section}.do" method="post"> 
+<form class="topForm" action="metadata-${section}.do" method="post">
     <p><@s.text name='manage.metadata.project.intro'/></p>
 	<@input name="eml.project.title"/>
 	<div class="halfcolumn">
 		<@input name="eml.project.personnel.firstName" />
 	</div>
+  <#-- required field -->
 	<div class="halfcolumn">
-		<@input name="eml.project.personnel.lastName" />
+		<@input name="eml.project.personnel.lastName" requiredField=true />
 	</div>
 	<div class="halfcolumn">
 		<@select name="eml.project.personnel.role" value="${(eml.project.personnel.role)!}" help="i18n" options=roles />
