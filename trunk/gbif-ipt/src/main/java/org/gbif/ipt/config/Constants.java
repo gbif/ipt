@@ -25,6 +25,7 @@ public final class Constants {
   public static final String VOCAB_URI_PRESERVATION_METHOD = "http://rs.gbif.org/vocabulary/gbif/preservation_method";
   public static final String VOCAB_URI_DATASET_SUBTYPES = "http://rs.gbif.org/vocabulary/gbif/datasetSubtype";
   public static final String DEPRECATED_VOCAB_URI_RESOURCE_TYPE = "http://rs.gbif.org/vocabulary/gbif/resource_type";
+  public static final String DEPRECATED_VOCAB_URL_RESOLVABLE_RESOURCE_TYPE = "http_rs_gbif_org_vocabulary_gbif_resource_type_xml.vocab";
   public static final String[] IMAGE_TYPES = {"jpeg", "gif", "png"};
   public static final String GBIF_HOME_PAGE_URL = "http://www.gbif.org";
 }

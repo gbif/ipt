@@ -100,8 +100,12 @@ public class EmlValidatorTest {
     data1.setName("Excel spreadsheet complete copy");
     eml.getPhysicalData().add(data1);
     assertTrue(validator.isValid(eml, "physical"));
-    // change the format version to be invalid (non decimal)
+    // change the format version to be string (non decimal)
     data1.setFormatVersion("9.0.27");
+    eml.getPhysicalData().add(data1);
+    assertTrue(validator.isValid(eml, "physical"));
+    // change the format version to be string (non decimal)
+    data1.setDistributionUrl("[hppt]");
     eml.getPhysicalData().add(data1);
     assertFalse(validator.isValid(eml, "physical"));
   }

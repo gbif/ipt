@@ -291,7 +291,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       id2uri.remove(Constants.DEPRECATED_VOCAB_URI_RESOURCE_TYPE);
     }
     // ensure the actual deprecated vocab file is also removed
-    File dep1 = dataDir.configFile(CONFIG_FOLDER + "/" + "http_rs_gbif_org_vocabulary_gbif_resource_type_xml.vocab");
+    File dep1 = dataDir.configFile(CONFIG_FOLDER + "/" + Constants.DEPRECATED_VOCAB_URL_RESOLVABLE_RESOURCE_TYPE);
     if (dep1.exists()) {
       FileUtils.deleteQuietly(dep1);
     }
