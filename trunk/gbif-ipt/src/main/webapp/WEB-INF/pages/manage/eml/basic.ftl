@@ -4,16 +4,16 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		initHelp();
-      // Ensure core type can't be changed after core mapping has been done
-		 	var resourceType="${resource.coreTypeTerm!}";	
-		 	if(resourceType != ""){
-				if(resourceType.indexOf("Occurrence")!=-1){
+      // Ensure core type cannot be changed once set (e.g., after core mapping is done)
+		 	var resourceType="${resource.coreType!}";
+		 	if(resourceType != "") {
+				if(resourceType.toLowerCase() == "occurrence") {
+          $("#resource\\.coreType").val('occurrence');
 					$("#resource\\.coreType").attr('disabled','disabled');
-				}else{					
-					if (resourceType.indexOf("Taxon")!=-1){
-						$("#resource\\.coreType").attr('disabled','disabled');
-					}
-				}			
+				} else if (resourceType.toLowerCase() == "checklist") {
+          $("#resource\\.coreType").val('checklist');
+				  $("#resource\\.coreType").attr('disabled','disabled');
+				}
 			}
 						
 			function getList(list){
@@ -115,10 +115,10 @@
   		<@select name="eml.language" help="i18n" options=languages value="${languageIso3!'eng'}" />
 	</div>	
 	<div class="halfcolumn">
-		<@select name="resource.coreType" help="i18n" options=types value="${resource.coreType!''}"/>
+		<@select name="resource.coreType" i18nkey="resource.coreType" help="i18n" options=types value="${resource.coreType!''}" />
 	</div>
 	<div class="halfcolumn" id="selectSubtypeDiv">
-    <@select name="resource.subtype" i18nkey="resource.subtype" help="i18n" value="${resource.subtype!''}" options=listSubtypes />
+    <@select name="resource.subtype" i18nkey="resource.subtype" help="i18n" options=listSubtypes value="${resource.subtype!''}" />
   </div>
   	
   	<!-- Resource Contact -->    	
