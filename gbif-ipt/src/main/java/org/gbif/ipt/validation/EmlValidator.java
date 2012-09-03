@@ -89,31 +89,22 @@ public class EmlValidator extends BaseValidator {
    * Validate an EML document, optionally only a part of it matching the individual forms on the metadata editor:
    * "basic","geocoverage","taxcoverage","tempcoverage", "keywords", "parties", "project", "methods", "citations",
    * "collections", "physical", "additional".
+   *
+   * @param action BaseAction
+   * @param eml    EML
+   * @param part   EML document part name
    */
   public void validate(BaseAction action, Eml eml, @Nullable String part) {
     if (eml != null) {
       if (part == null || part.equalsIgnoreCase("basic")) {
-        /* BASIC.FTL - XML Schema Documentation */
 
-        /*
-         * Principal Fields
-         * <dataset>
-         * <title>{eml.title}</title> - mandatory
-         * <language>{eml.language}</language> - optional
-         * <abstract> - mandatory
-         * <para>{eml.description}</para> - mandatory
-         * </abstract>
-         * </dataset>
-         */
-
-        /* Title - mandatory */
+        // Title - mandatory
         if (!exists(eml.getTitle()) || eml.getTitle().trim().length() == 0) {
           action.addFieldError("eml.title",
             action.getText("validation.required", new String[] {action.getText("eml.title")}));
         }
-        /* language - optional */
 
-        /* description - mandatory and greater than 5 chars */
+        // description - mandatory and greater than 5 chars
         if (!exists(eml.getDescription())) {
           action.addFieldError("eml.description",
             action.getText("validation.required", new String[] {action.getText("eml.description")}));
@@ -122,33 +113,9 @@ public class EmlValidator extends BaseValidator {
             action.getText("validation.short", new String[] {action.getText("eml.description"), "5"}));
         }
 
-        /*
-         * RESOURCE CONTACT
-         * <dataset>
-         * <contact> - mandatory
-         * <organizationName>{eml.contact.organisation}</organizationName> |
-         * <individualName> |
-         * <givenName>{eml.contact.firstName}</givenName> - optional | - mandatory (at least one of them)
-         * <surName>{eml.contact.lastName}</surName> - mandatory |
-         * </individualName> |
-         * <positionName>{eml.contact.position}</positionName> - optional |
-         * <address> - optional
-         * <deliveryPoint>{eml.contact.address.address}</deliveryPoint> - optional
-         * <city>{eml.contact.address.city}</city> - optional
-         * <administrativeArea>{eml.contact.address.province}</administrativeArea> - optional
-         * <postalCode>{eml.contact.address.postalCode}</postalCode> - optional
-         * <country>{eml.contact.country}</country> - optional
-         * </address>
-         * <phone>{eml.creator.phone}</phone> - optional
-         * <electronicMailAddress>{eml.creator.email}</electronicMailAddress> - optional
-         * <onlineUrl>{eml.creator.homepage}</onlineUrl> - optional
-         * </contact>
-         * </dataset>
-         */
-
-        /* At least have to exist an organisation or a lastName (or both) */
-        if (!exists(eml.getContact().getOrganisation()) && !exists(eml.getContact().getLastName()) && !exists(
-          eml.getContact().getPosition())) {
+        // Contact: At least have to exist an organisation or a lastName (or both)
+        if (!exists(eml.getContact().getOrganisation()) && !exists(eml.getContact().getLastName()) &&
+            !exists(eml.getContact().getPosition())) {
           if (!action.getActionErrors().contains(action.getText("validation.lastname.organisation.position"))) {
             action.addActionError(action.getText("validation.lastname.organisation.position"));
           }
@@ -159,27 +126,25 @@ public class EmlValidator extends BaseValidator {
           action.addFieldError("eml.contact.position",
             action.getText("validation.required", new String[] {action.getText("eml.contact.position")}));
         } else {
-          /* firstName - optional. But if firstName exists, lastName have to exist. */
+          // firstName - optional. But if firstName exists, lastName have to exist
           if (exists(eml.getContact().getFirstName()) && !exists(eml.getContact().getLastName())) {
             action.addFieldError("eml.contact.lastName", action.getText("validation.firstname.lastname"));
           }
         }
 
-        /* address and all its sub-elements are optional */
-
-        /* email is optional. But if exists, should be valid. */
+        // email is optional. But if exists, should be valid
         if (exists(eml.getContact().getEmail()) && !isValidEmail(eml.getContact().getEmail())) {
           action.addFieldError("eml.contact.email",
             action.getText("validation.invalid", new String[] {action.getText("eml.contact.email")}));
         }
 
-        /* phone is optional. But if it exists, should match the pattern */
+        // phone is optional. But if it exists, should match the pattern
         if (exists(eml.getContact().getPhone()) && !isValidPhoneNumber(eml.getContact().getPhone())) {
           action.addFieldError("eml.contact.phone",
             action.getText("validation.invalid", new String[] {action.getText("eml.contact.phone")}));
         }
 
-        /* Validate the homepage URL form resource contact */
+        // Validate the homepage URL form resource contact
         if (eml.getContact().getHomepage() != null) {
           if (formatURL(eml.getContact().getHomepage()) == null) {
             action.addFieldError("eml.contact.homepage",
@@ -189,31 +154,9 @@ public class EmlValidator extends BaseValidator {
           }
         }
 
-        /*
-         * RESOURCE CREATOR
-         * <dataset>
-         * <creator> - mandatory
-         * <organizationName>{eml.creator.organisation}</organizationName> |
-         * <individualName> - mandatory |
-         * <givenName>{eml.creator.firstName}</givenName> - optional | - mandatory (at least one of them)
-         * <surName>{eml.creator.lastName}</surName> - mandatory |
-         * </individualName> |
-         * <positionName>{eml.creator.position}</positionName> - optional
-         * <address> - optional
-         * <deliveryPoint>{eml.creator.address.address}</deliveryPoint> - optional
-         * <city>{eml.creator.address.city}</city> - optional
-         * <administrativeArea>{eml.creator.address.province}</administrativeArea> - optional
-         * <postalCode>{eml.creator.address.postalCode}</postalCode> - optional
-         * <country>{eml.creator.country}</country> - optional
-         * </address>
-         * <phone>{eml.creator.phone}</phone> - optional
-         * </creator>
-         * </dataset>
-         */
-
-        /* At least have to exist an organisation, a lastName or a position */
-        if (!exists(eml.getResourceCreator().getOrganisation()) && !exists(eml.getResourceCreator().getLastName())
-            && !exists(eml.getResourceCreator().getPosition())) {
+        // Creator: at least have to exist an organisation, a lastName or a position
+        if (!exists(eml.getResourceCreator().getOrganisation()) && !exists(eml.getResourceCreator().getLastName()) &&
+            !exists(eml.getResourceCreator().getPosition())) {
           if (!action.getActionErrors().contains(action.getText("validation.lastname.organisation.position"))) {
             action.addActionError(action.getText("validation.lastname.organisation.position"));
           }
@@ -224,27 +167,25 @@ public class EmlValidator extends BaseValidator {
           action.addFieldError("eml.resourceCreator.position",
             action.getText("validation.required", new String[] {action.getText("eml.resourceCreator.position")}));
         } else {
-          /* firstName - optional. But if firstName exists, lastName have to exist too. */
+          // firstName - optional. But if firstName exists, lastName have to exist too
           if (exists(eml.getResourceCreator().getFirstName()) && !exists(eml.getResourceCreator().getLastName())) {
             action.addFieldError("eml.resourceCreator.lastName", action.getText("validation.firstname.lastname"));
           }
         }
 
-        /* address and all its sub-elements are optional */
-
-        /* email is optional. But if it exists, should be a valid email address */
+        // email is optional. But if it exists, should be a valid email address
         if (exists(eml.getResourceCreator().getEmail()) && !isValidEmail(eml.getResourceCreator().getEmail())) {
           action.addFieldError("eml.resourceCreator.email",
             action.getText("validation.invalid", new String[] {action.getText("eml.resourceCreator.email")}));
         }
 
-        /* phone is optional. But if it exists, should match the pattern */
+        // phone is optional. But if it exists, should match the pattern
         if (exists(eml.getResourceCreator().getPhone()) && !isValidPhoneNumber(eml.getResourceCreator().getPhone())) {
           action.addFieldError("eml.resourceCreator.phone",
             action.getText("validation.invalid", new String[] {action.getText("eml.resourceCreator.phone")}));
         }
 
-        /* Validate the homepage URL from resource creator */
+        // Validate the homepage URL from resource creator
         if (eml.getResourceCreator().getHomepage() != null) {
           if (formatURL(eml.getResourceCreator().getHomepage()) == null) {
             action.addFieldError("eml.resourceCreator.homepage",
@@ -254,33 +195,9 @@ public class EmlValidator extends BaseValidator {
           }
         }
 
-        /*
-         * METADATA PROVIDER
-         * <dataset>
-         * <metadataProvider> - mandatory
-         * <organizationName>{eml.metadataProvider.organisation}</organizationName> |
-         * <individualName> - mandatory |
-         * <givenName>{eml.metadataProvider.firstName}</givenName> - optional | - mandatory (at least one of them)
-         * <surName>{eml.metadataProvider.lastName}</surName> - mandatory |
-         * </individualName> |
-         * <positionName>{eml.metadataProvider.position}</positionName> - optional |
-         * <address> - optional
-         * <deliveryPoint>{eml.metadataProvider.address.address}</deliveryPoint> - optional
-         * <city>{eml.metadataProvider.address.city}</city> - optional
-         * <administrativeArea>{eml.metadataProvider.address.province}</administrativeArea> - optional
-         * <postalCode>{eml.metadataProvider.address.postalCode}</postalCode> - optional
-         * <country>{eml.metadataProvider.address.country}</country> - optional
-         * </address>
-         * <phone>{eml.metadataProvider.phone}</phone> - optional
-         * <electronicMailAddress>{eml.metadataProvider.email}</electronicMailAddress> - optional
-         * <onlineUrl>{eml.metadataProvider.homepage}</onlineUrl> - optional
-         * </metadataProvider>
-         * </dataset>
-         */
-
-        /* At least have to exist an organisation, a lastName or a position */
-        if (!exists(eml.getMetadataProvider().getOrganisation()) && !exists(eml.getMetadataProvider().getLastName())
-            && !exists(eml.getMetadataProvider().getPosition())) {
+        // Metadata provider: at least have to exist an organisation, a lastName or a position
+        if (!exists(eml.getMetadataProvider().getOrganisation()) && !exists(eml.getMetadataProvider().getLastName()) &&
+            !exists(eml.getMetadataProvider().getPosition())) {
           if (!action.getActionErrors().contains(action.getText("validation.lastname.organisation.position"))) {
             action.addActionError(action.getText("validation.lastname.organisation.position"));
           }
@@ -291,15 +208,13 @@ public class EmlValidator extends BaseValidator {
           action.addFieldError("eml.metadataProvider.position",
             action.getText("validation.required", new String[] {action.getText("eml.metadataProvider.position")}));
         } else {
-          /* firstName - optional. But if firstName exists, lastName have to exist too. */
+          // firstName - optional. But if firstName exists, lastName have to exist too
           if (exists(eml.getMetadataProvider().getFirstName()) && !exists(eml.getMetadataProvider().getLastName())) {
             action.addFieldError("eml.metadataProvider.lastName", action.getText("validation.firstname.lastname"));
           }
         }
 
-        /* address is optional. */
-
-        /* email is optional. But if it exists, should be a valid email address */
+        // email is optional. But if it exists, should be a valid email address
         if (exists(eml.getMetadataProvider().getEmail()) && !isValidEmail(eml.getMetadataProvider().getEmail())) {
           action.addFieldError("eml.metadataProvider.email",
             action.getText("validation.invalid", new String[] {action.getText("eml.metadataProvider.email")}));
@@ -322,41 +237,18 @@ public class EmlValidator extends BaseValidator {
         }
 
       } else if (part == null || part.equalsIgnoreCase("parties")) {
-        /*
-         * PARTIES.FTL - XML Schema Documentation
-         * <dataset>
-         * <associatedParty> - optional - many
-         * <organizationName>{eml.associatedParties[i].organisation}</organizationName> |
-         * <individualName> |
-         * <givenName>{eml.associatedParties[i].firstName}</givenName> | - mandatory (at least one of them)
-         * <surName>{eml.associatedParties[i].lastName}</surName> |
-         * </individualName> |
-         * <positionName>{eml.associatedParties[i].position}</positionName> |
-         * <address> - optional
-         * <deliveryPoint>{eml.associatedParties[i].address.address}</deliveryPoint> - optional
-         * <city>{eml.associatedParties[i].address.city}</city> - optional
-         * <administrativeArea>{eml.associatedParties[i].address.province}</administrativeArea> - optional
-         * <postalCode>{eml.associatedParties[i].address.postalCode}</postalCode> - optional
-         * <country>{eml.associatedParties[i].address.country}</country> - optional
-         * </address>
-         * <phone>{eml.associatedParties[i].phone}</phone> - optional
-         * <electronicMailAddress>{eml.associatedParties[i].email}</electronicMailAddress> - optional - valid format
-         * <onlineUrl>{eml.associatedParties[i].homePage}</onlineUrl> - optional
-         * <role>eml.associatedParties[i].role</role> - optional
-         * </associatedParty>
-         * </dataset>
-         */
         for (int index = 0; index < eml.getAssociatedParties().size(); index++) {
           /* firstName - optional. But if firstName exists, lastName have to exist */
-          if (exists(eml.getAssociatedParties().get(index).getFirstName()) && !exists(
-            eml.getAssociatedParties().get(index).getLastName())) {
+          if (exists(eml.getAssociatedParties().get(index).getFirstName()) &&
+              !exists(eml.getAssociatedParties().get(index).getLastName())) {
             action.addFieldError("eml.associatedParties[" + index + "].lastName",
               action.getText("validation.firstname.lastname"));
           }
 
-          /* At least have to exist an organisation or a lastName (or both) */
-          if (!exists(eml.getAssociatedParties().get(index).getOrganisation()) && !exists(
-            eml.getAssociatedParties().get(index).getLastName())) {
+          // At least one of organisation, position, or a lastName have to exist
+          if (!exists(eml.getAssociatedParties().get(index).getOrganisation()) &&
+              !exists(eml.getAssociatedParties().get(index).getLastName()) &&
+              !exists(eml.getAssociatedParties().get(index).getPosition())) {
             action.addActionError(action.getText("validation.lastname.organisation.position"));
             action.addFieldError("eml.associatedParties[" + index + "].organisation", action
               .getText("validation.required", new String[] {action.getText("eml.associatedParties.organisation")}));
@@ -367,15 +259,15 @@ public class EmlValidator extends BaseValidator {
           }
 
           /* email is optional. But if it exists, should be a valid email address */
-          if (exists(eml.getAssociatedParties().get(index).getEmail()) && !isValidEmail(
-            eml.getAssociatedParties().get(index).getEmail())) {
+          if (exists(eml.getAssociatedParties().get(index).getEmail()) &&
+              !isValidEmail(eml.getAssociatedParties().get(index).getEmail())) {
             action.addFieldError("eml.associatedParties[" + index + "].email",
               action.getText("validation.invalid", new String[] {action.getText("eml.associatedParties.email")}));
           }
 
           /* phone is optional. But if it exists, should match the pattern */
-          if (exists(eml.getAssociatedParties().get(index).getPhone()) && !isValidPhoneNumber(
-            eml.getAssociatedParties().get(index).getPhone())) {
+          if (exists(eml.getAssociatedParties().get(index).getPhone()) &&
+              !isValidPhoneNumber(eml.getAssociatedParties().get(index).getPhone())) {
             action.addFieldError("eml.associatedParties[" + index + "].phone",
               action.getText("validation.invalid", new String[] {action.getText("eml.associatedParties.phone")}));
           }
@@ -390,34 +282,17 @@ public class EmlValidator extends BaseValidator {
                 .setHomepage(formatURL(eml.getAssociatedParties().get(index).getHomepage()));
             }
           }
-
         }
       } else if (part == null || part.equalsIgnoreCase("geocoverage")) {
-        /*
-         * GEOCOVERAGE.FTL - XML Schema Documentation
-         * <dataset>
-         * <coverage>
-         * <geographicCoverage> - mandatory - many
-         * <geographicDescription>{geocoverage.description}</geographicDescription> - optional
-         * <boundingCoordinates> - mandatory
-         * <westBoundingCoordinate>{geocoverage.boundingCoordinates.min.longitude}</westBoundingCoordinate> - mandatory
-         * <eastBoundingCoordinate>{geocoverage.boundingCoordinates.max.longitude}</eastBoundingCoordinate> - mandatory
-         * <northBoundingCoordinate>{geocoverage.boundingCoordinates.max.latitude}</northBoundingCoordinate> - mandatory
-         * <southBoundingCoordinate>{geocoverage.boundingCoordinates.min.latitude}</southBoundingCoordinate> - mandatory
-         * </boundingCoordinates>
-         * </geographicCoverage>
-         * </coverage>
-         * </dataset>
-         */
         Double coord = 0.0;
         for (int index = 0; index < eml.getGeospatialCoverages().size(); index++) {
           // The Bounding coordinates and description are mandatory.
           // If all fields are empty, the <coverage> label in eml.xml will be removed.
-          if (eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMin().getLongitude() == null
-              && eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLongitude() == null
-              && eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMin().getLatitude() == null
-              && eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLatitude() == null && eml
-            .getGeospatialCoverages().get(index).getDescription().equals("")) {
+          if (eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMin().getLongitude() == null &&
+              eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLongitude() == null &&
+              eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMin().getLatitude() == null &&
+              eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLatitude() == null &&
+              eml.getGeospatialCoverages().get(index).getDescription().equals("")) {
             eml.getGeospatialCoverages().clear();
           }
           if (!eml.getGeospatialCoverages().isEmpty()) {
@@ -472,23 +347,8 @@ public class EmlValidator extends BaseValidator {
             }
           }
         }
-
       } else if (part == null || part.equalsIgnoreCase("taxcoverage")) {
-        /*
-         * TAXCOVERAGE.FTL - XML Schema Documentation
-         * <dataset>
-         * <coverage> - optional
-         * <taxonomicCoverage> - mandatory - many
-         * <generalTaxonomicCoverage>{eml.taxonomicCoverages[i].description}</generalTaxonomicCoverage> - optional
-         * <taxonomicClassification> - mandatory - many
-         * <taxonRankName>{eml.taxonomicCoverages[i].taxonKeywords[j].rank}</taxonRankName> - optional
-         * <taxonRankValue>{eml.taxonomicCoverages[i].taxonKeywords[j].scientificName}</taxonRankValue> - mandatory
-         * <commonName>{eml.taxonomicCoverages[i].taxonKeywords[j].commonName}</commonName> - optional
-         * </taxonomicClassification>
-         * </taxonomicCoverage>
-         * </coverage>
-         * </dataset>
-         */
+        // scientific name is required
         int index = 0;
         for (TaxonomicCoverage tc : eml.getTaxonomicCoverages()) {
           int kw = 0;
@@ -503,30 +363,6 @@ public class EmlValidator extends BaseValidator {
           index++;
         }
       } else if (part == null || part.equalsIgnoreCase("tempcoverage")) {
-        /*
-         * TEMPCOVERAGE.FTL - XML Schema Documentation
-         * <dataset>
-         * <coverage> - optional
-         * <temporalCoverage> - mandatory - many
-         * <rangeOfDates> - mandatory |
-         * <beginDate><calendarDate>{eml.temporalCoverages[i].startDate}</calendarDate></beginDate> - mandatory |
-         * <endDate><calendarDate>{eml.temporalCoverages[i].endDate}</calendarDate></endDate> - mandatory | - mandatory
-         * (but only should appear one of them)
-         * </rangeOfDates> | "rangeOfDates or singleDateTime"
-         * <singleDateTime><calendarDate>{eml.temporalCoverages[i].startDate}</calendarDate></singleDateTime> -
-         * mandatory |
-         * </temporalCoverage>
-         * </coverage>
-         * </dataset>
-         * <additionalMetadata> - optional
-         * <metadata> - mandatory
-         * <gbif> - mandatory
-         * <formationPeriod>{eml.temporalCoverages[i].formationPeriod}</formationPeriod> - optional - many
-         * <livingTimePeriod>{eml.temporalCoverages[i].livingTimePeriod}</livingTimePeriod> - optional - many
-         * </gbif>
-         * </metadata>
-         * </additionalMetadata>
-         */
         int index = 0;
         for (TemporalCoverage tc : eml.getTemporalCoverages()) {
           if (tc.getType() == TemporalCoverageType.SINGLE_DATE && !exists(tc.getStartDate())) {
@@ -554,38 +390,15 @@ public class EmlValidator extends BaseValidator {
           index++;
         }
       } else if (part == null || part.equalsIgnoreCase("project")) {
-        /*
-         * PROJECT.FTL - XML Schema Documentation
-         * <dataset>
-         * <project> - optional
-         * <title>{eml.project.title}</title> - mandatory
-         * <personnel> - mandatory
-         * <individualName> - mandatory
-         * <givenName>{eml.project.personnel.firstName}</givenName> - optional
-         * <surName>{eml.project.personnel.lastName}</surName> - mandatory
-         * </individualName>
-         * <role>{eml.project.personnel.role}</role> - mandatory
-         * </personnel>
-         * <funding> - mandatory
-         * <para>{eml.project.funding}</para> - mandatory
-         * </funding>
-         * <studyAreaDescription> - mandatory
-         * <descriptor name="generic" citableClassificationSystem="false"> - mandatory
-         * <descriptorValue>{eml.project.studyAreaDescription.descriptorValue}</descriptorValue> - mandatory
-         * </descriptor>
-         * </studyAreaDescription>
-         * <designDescription> - mandatory
-         * <description> - mandatory
-         * <para>{eml.project.designDescription}</para> - optional
-         * </description>
-         * </designDescription>
-         * </project>
-         * </dataset>
-         */
+        // title is required
+        if (!exists(eml.getProject().getTitle()) || eml.getProject().getTitle().trim().length() == 0) {
+          action.addFieldError("eml.project.title",
+            action.getText("validation.required", new String[] {action.getText("eml.project.title")}));
+        }
 
-        /* First Name is optional but if exists, last name must to exist */
-        if (exists(eml.getProject().getPersonnel().getFirstName()) && !exists(
-          eml.getProject().getPersonnel().getLastName())) {
+        // First Name is optional but if exists, last name must to exist, and so too must the role
+        if (exists(eml.getProject().getPersonnel().getFirstName()) &&
+            !exists(eml.getProject().getPersonnel().getLastName())) {
           action.addFieldError("eml.project.personnel.lastName", action.getText("validation.firstname.lastname"));
         } else if (!exists(eml.getProject().getPersonnel().getLastName())) {
           action.addFieldError("eml.project.personnel.lastName",
@@ -593,41 +406,16 @@ public class EmlValidator extends BaseValidator {
         }
 
       } else if (part == null || part.equalsIgnoreCase("methods")) {
-        /*
-         * METHODS.FTL - XML Schema Documentation
-         * <dataset>
-         * <methods> - optional
-         * <methodStep> - mandatory - many
-         * <description> - mandatory
-         * <para>{eml.methodSteps[i]}</para> - mandatory
-         * </description>
-         * </methodStep>
-         * <qualityControl> - mandatory
-         * <description> - mandatory
-         * <para>{eml.qualityControl}</para> - mandatory
-         * </description>
-         * </qualityControl>
-         * <sampling> - mandatory
-         * <studyExtent> - mandatory
-         * <description> - mandatory
-         * <para>{eml.studyExtent}</para> - mandatory
-         * </description>
-         * </studyExtent>
-         * <samplingDescription> - mandatory
-         * <para>{eml.sampleDescription}</para> - mandatory
-         * </samplingDescription>
-         * </sampling>
-         * </methods>
-         * </dataset>
-         */
+
         boolean emptyFields = false;
-        if (eml.getSampleDescription().length() == 0 && eml.getStudyExtent().length() == 0
-            && eml.getQualityControl().length() == 0) {
+        if (eml.getSampleDescription().length() == 0 && eml.getStudyExtent().length() == 0 &&
+            eml.getQualityControl().length() == 0) {
           eml.setSampleDescription(null);
           eml.setStudyExtent(null);
           eml.setQualityControl(null);
           emptyFields = true;
         }
+        // method step required
         int index = 0;
         for (String method : eml.getMethodSteps()) {
           if (method.trim().length() == 0) {
@@ -641,7 +429,7 @@ public class EmlValidator extends BaseValidator {
           }
           index++;
         }
-
+        // both study extent and sampling description required if either one is present
         if (!emptyFields) {
           if (!(eml.getSampleDescription().length() == 0) && eml.getStudyExtent().length() == 0) {
             action.addFieldError("eml.studyExtent",
@@ -653,19 +441,7 @@ public class EmlValidator extends BaseValidator {
           }
         }
       } else if (part == null || part.equalsIgnoreCase("citations")) {
-        /*
-         * CITATIONS.FTL - XML Schema Documentation
-         * <additionalMetadata>
-         * <metadata>
-         * <gbif>
-         * <citation>{eml.citation}</citation> - optional
-         * <bibliography> - optional
-         * <citation>{eml.bibliographicCitationSet.bibliographicCitations[i]}</citation> - mandatory - many
-         * </bibliography>
-         * </gbif>
-         * </metadata>
-         * </additionalMetadata>
-         */
+        // citation text is required, while identifier attribute is optional
         if (!(eml.getCitation().getIdentifier().length() == 0) && !exists(eml.getCitation().getIdentifier())) {
           action.addFieldError("eml.citation.identifier",
             action.getText("validation.field.blank", new String[] {action.getText("eml.citation.identifier")}));
@@ -693,28 +469,7 @@ public class EmlValidator extends BaseValidator {
         }
 
       } else if (part == null || part.equalsIgnoreCase("collections")) {
-        /*
-         * COLLECTIONS.FTL - XML Schema Documentation
-         * <metadata>
-         * <gbif>
-         * <collection> - optional
-         * <parentCollectionIdentifier>{eml.parentCollectionId}</parentCollectionIdentifier> - mandatory
-         * <collectionIdentifier>{eml.collectionId}</collectionIdentifier> - mandatory
-         * <collectionName>{eml.collectionName}</collectionName> - mandatory
-         * </collection>
-         * <jgtiCuratorialUnit> - optional - many
-         * <jgtiUnitType>{eml.jgtiCuratorialUnits[i].unitType}</jgtiUnitType> - optional
-         * <jgtiUnits
-         * uncertaintyMeasure="{eml.jgtiCuratorialUnits[i].uncertaintyMeasure}">{eml.jgtiCuratorialUnits[i].rangeMean
-         * }</jgtiUnits> - mandatory (xs:integer) | <jgtiUnitRange> - mandatory |
-         * <beginRange>{eml.jgtiCuratorialUnits[i].rangeStart}</beginRange> - mandatory (xs:integer) | It has to be only
-         * one of them. <jgtiUnits> or <jgtiUnitRange>.
-         * <endRange>{eml.jgtiCuratorialUnits[i].rangeEnd}</endRange> - mandatory (xs:integer) |
-         * </jgtiUnitType>
-         * </jgtiCuratorialUnit>
-         * </gbif>
-         * </metadata>
-         */
+        // collection id, parent collection id, and collection name are all required
         if (!exists(eml.getParentCollectionId())) {
           action.addFieldError("eml.parentCollectionId",
             action.getText("validation.required", new String[] {action.getText("eml.parentCollectionId")}));
@@ -756,11 +511,7 @@ public class EmlValidator extends BaseValidator {
           index++;
         }
       } else if (part == null || part.equalsIgnoreCase("physical")) {
-        /*
-         * PHYSICAL.FTL AKA External Links - According to the schema, all values in an additional external link must be
-         * included anyways. Please make name, character set, download URL, data format, and data format version all
-         * required on save.
-         */
+        // character set, download URL, and data format are required
         int index = 0;
         for (PhysicalData pd : eml.getPhysicalData()) {
           // name required

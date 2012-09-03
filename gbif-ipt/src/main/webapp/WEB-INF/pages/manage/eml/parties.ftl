@@ -34,40 +34,40 @@ $(document).ready(function(){
 				<div class="halfcolumn">
 		  			<@input name="eml.associatedParties[${item_index}].firstName" i18nkey="eml.associatedParties.firstName"/>
 				</div>
-			  	<div class="halfcolumn">			  			
-		  			<@input name="eml.associatedParties[${item_index}].lastName" i18nkey="eml.associatedParties.lastName"/>
+			  	<div class="halfcolumn">
+		  			<@input name="eml.associatedParties[${item_index}].lastName" i18nkey="eml.associatedParties.lastName" requiredField=true/>
 		  		</div>
 		  		<div class="halfcolumn">
-		  			<@input name="eml.associatedParties[${item_index}].position" i18nkey="eml.associatedParties.position" />
+		  			<@input name="eml.associatedParties[${item_index}].position" i18nkey="eml.associatedParties.position" requiredField=true />
 		  		</div>
-  				<div class="halfcolumn">	
-		  			<@input name="eml.associatedParties[${item_index}].organisation" i18nkey="eml.associatedParties.organisation" />
+  				<div class="halfcolumn">
+		  			<@input name="eml.associatedParties[${item_index}].organisation" i18nkey="eml.associatedParties.organisation" requiredField=true />
 		  		</div>
 		  		<div class="halfcolumn">
 		  			<@input name="eml.associatedParties[${item_index}].address.address" i18nkey="eml.associatedParties.address.address" />
 				</div>
-			  	<div class="halfcolumn">			  			
+			  	<div class="halfcolumn">
 		  			<@input name="eml.associatedParties[${item_index}].address.city" i18nkey="eml.associatedParties.address.city" />
 		  		</div>
 		  		<div class="halfcolumn">
 		  			<@input name="eml.associatedParties[${item_index}].address.province" i18nkey="eml.associatedParties.address.province" />
 				</div>
-  				<div class="halfcolumn">			  			
+  				<div class="halfcolumn">
 		  			<@select name="eml.associatedParties[${item_index}].address.country" help="i18n" options=countries i18nkey="eml.associatedParties.address.country" value="${eml.associatedParties[item_index].address.country!}"/>
 		  		</div>
 		  		<div class="halfcolumn">
 		  			<@input name="eml.associatedParties[${item_index}].address.postalCode" i18nkey="eml.associatedParties.address.postalCode" />
 				</div>
-  				<div class="halfcolumn">			  			
+  				<div class="halfcolumn">
 		  			<@input name="eml.associatedParties[${item_index}].phone" i18nkey="eml.associatedParties.phone" />
 		  		</div>
 		  		<div class="halfcolumn">
 		  			<@input name="eml.associatedParties[${item_index}].email" i18nkey="eml.associatedParties.email" />
 				</div>
-  				<div class="halfcolumn">			  			
+  				<div class="halfcolumn">
 		  			<@input name="eml.associatedParties[${item_index}].homepage" i18nkey="eml.associatedParties.homepage" />
-		  		</div> 
-	  				<@select name="eml.associatedParties[${item_index}].role" i18nkey="eml.associatedParties.role" help="i18n" value="${eml.associatedParties[item_index].role!}" options=roles />  		
+		  		</div>
+	  				<@select name="eml.associatedParties[${item_index}].role" i18nkey="eml.associatedParties.role" help="i18n" value="${eml.associatedParties[item_index].role!}" options=roles />
 		  	</div>
 		</#list>
 	</div>
@@ -77,7 +77,7 @@ $(document).ready(function(){
 		<@s.submit cssClass="button" name="cancel" key="button.cancel"/>
 	</div>
 	<!-- internal parameter -->
-	<input name="r" type="hidden" value="${resource.shortname}" />		
+	<input name="r" type="hidden" value="${resource.shortname}" />
 </form>
 </div>
 
@@ -92,39 +92,39 @@ $(document).ready(function(){
   		<@input name="firstName" i18nkey="eml.associatedParties.firstName" />
   	</div>
   	<div class="halfcolumn">
-  		<@input name="lastName" i18nkey="eml.associatedParties.lastName"  />
+  		<@input name="lastName" i18nkey="eml.associatedParties.lastName" requiredField=true />
   	</div>
   	<div class="halfcolumn">
-  		<@input name="position" i18nkey="eml.associatedParties.position" />
+  		<@input name="position" i18nkey="eml.associatedParties.position" requiredField=true />
   	</div>
-  	<div class="halfcolumn">  		
-  		<@input name="organisation" i18nkey="eml.associatedParties.organisation" />
+  	<div class="halfcolumn">
+  		<@input name="organisation" i18nkey="eml.associatedParties.organisation" requiredField=true />
   	</div>
   	<div class="halfcolumn">
   		<@input name="address" i18nkey="eml.associatedParties.address.address" />
   	</div>
-  	<div class="halfcolumn">  		
+  	<div class="halfcolumn">
   		<@input name="city" i18nkey="eml.associatedParties.address.city" />
   	</div>
   	<div class="halfcolumn">
   		<@input name="province" i18nkey="eml.associatedParties.address.province" />
   	</div>
-  	<div class="halfcolumn">  		
+  	<div class="halfcolumn">
   		<@select name="country" options=countries help="i18n" i18nkey="eml.associatedParties.address.country" />
   	</div>
-	<div class="halfcolumn">  		
+	<div class="halfcolumn">
   		<@input name="postalCode" i18nkey="eml.associatedParties.address.postalCode" />
   	</div>
   	<div class="halfcolumn">
   		<@input name="phone" i18nkey="eml.associatedParties.phone" />
   	</div>
-  	<div class="halfcolumn">  		
+  	<div class="halfcolumn">
   		<@input name="email" i18nkey="eml.associatedParties.email" />
   	</div>
 	<div class="halfcolumn">
   		<@input name="homepage" i18nkey="eml.associatedParties.homepage" />
   	</div>
-  	<div class="halfcolumn">  		
+  	<div class="halfcolumn">
   		<@select name="role" i18nkey="eml.associatedParties.role" help="i18n" options=roles />
   	</div>
 </div>

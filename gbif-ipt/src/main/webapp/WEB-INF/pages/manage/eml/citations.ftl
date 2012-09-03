@@ -6,7 +6,7 @@
 	$(document).ready(function(){
 		initHelp();
 	});
-</script>		
+</script>
 <#include "/WEB-INF/pages/macros/metadata.ftl"/>
 <#assign sideMenuEml=true />
 <#assign currentMenu="manage"/>
@@ -22,10 +22,10 @@
 <h2 class="subTitle"><@s.text name='manage.metadata.citations.title'/></h2>
 <form class="topForm" action="metadata-${section}.do" method="post">
     <p><@s.text name='manage.metadata.citations.intro'/></p>
-	
+
 	<div>
 		<@input name="eml.citation.identifier" help="i18n"/>
-  		<@text name="eml.citation.citation" />
+    <@text name="eml.citation.citation" requiredField=true />
 	</div>
 	<h3 class="subTitle"><@s.text name="manage.metadata.citations.bibliography"/></h3>
 	<div id="items">
@@ -35,7 +35,7 @@
       				<a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.citations.item'/> ]</a>
     			</div>
     				<@input name="eml.bibliographicCitationSet.bibliographicCitations[${item_index}].identifier" i18nkey="eml.bibliographicCitationSet.bibliographicCitations.identifier" />
-					<@text name="eml.bibliographicCitationSet.bibliographicCitations[${item_index}].citation" i18nkey="eml.bibliographicCitationSet.bibliographicCitations.citation" size=40/>
+					<@text name="eml.bibliographicCitationSet.bibliographicCitations[${item_index}].citation" i18nkey="eml.bibliographicCitationSet.bibliographicCitations.citation" size=40 requiredField=true />
   			</div>
 		</#list>
 	</div>
@@ -45,7 +45,7 @@
 		<@s.submit cssClass="button" name="cancel" key="button.cancel" />
 	</div>
 	<!-- internal parameter -->
-	<input name="r" type="hidden" value="${resource.shortname}" />	
+	<input name="r" type="hidden" value="${resource.shortname}" />
 </form>
 </div>
 
@@ -54,7 +54,7 @@
 		<a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.citations.item'/> ]</a>
 	</div>
 		<@input name="identifier" i18nkey="eml.bibliographicCitationSet.bibliographicCitations.identifier" />
-		<@text name="citation" i18nkey="eml.bibliographicCitationSet.bibliographicCitations.citation"  value="" size=40/>
+		<@text name="citation" i18nkey="eml.bibliographicCitationSet.bibliographicCitations.citation"  value="" size=40 requiredField=true />
 </div>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">

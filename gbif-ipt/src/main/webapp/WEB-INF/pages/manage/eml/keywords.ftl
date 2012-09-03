@@ -3,12 +3,12 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name='manage.metadata.keywords.title'/></title>
 <#include "/WEB-INF/pages/macros/metadata.ftl"/>
- <#assign sideMenuEml=true /> 
+ <#assign sideMenuEml=true />
  <#assign currentMenu="manage"/>
 <script type="text/javascript">
 $(document).ready(function(){
 	initHelp();
-});   
+});
 </script>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
@@ -31,8 +31,8 @@ $(document).ready(function(){
 				<a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.keywords.item'/> ]</a>
 		    </div>
 		    <div class="newline"></div>
-			<@input name="eml.keywords[${item_index}].keywordThesaurus" i18nkey="eml.keywords.keywordThesaurus" help="i18n"/>
-			<@text name="eml.keywords[${item_index}].keywordsString" i18nkey="eml.keywords.keywordsString" help="i18n"/>
+			<@input name="eml.keywords[${item_index}].keywordThesaurus" i18nkey="eml.keywords.keywordThesaurus" help="i18n" requiredField=true />
+			<@text name="eml.keywords[${item_index}].keywordsString" i18nkey="eml.keywords.keywordsString" help="i18n" requiredField=true/>
 		  	<div class="newline"></div>
 			<div class="horizontal_dotted_line_large_foo" id="separator"></div>
 			<div class="newline"></div>
@@ -55,8 +55,8 @@ $(document).ready(function(){
 	<div class="right">
       <a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.keywords.item'/> ]</a>
     </div>
-	<@input name="keywordThesaurus" i18nkey="eml.keywords.keywordThesaurus" help="i18n"/>
-	<@text name="keywordsString" i18nkey="eml.keywords.keywordsString" help="i18n"/>
+	<@input name="keywordThesaurus" i18nkey="eml.keywords.keywordThesaurus" help="i18n" requiredField=true/>
+	<@text name="keywordsString" i18nkey="eml.keywords.keywordsString" help="i18n" requiredField=true/>
   	<div class="newline"></div>
 	<div class="horizontal_dotted_line_large_foo" id="separator"></div>
 	<div class="newline"></div>
