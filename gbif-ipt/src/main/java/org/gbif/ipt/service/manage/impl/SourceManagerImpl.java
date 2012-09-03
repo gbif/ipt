@@ -328,8 +328,9 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
 
     } else {
       SqlSource ss = (SqlSource) source;
+      Connection con = null;
       try {
-        Connection con = getDbConnection(ss);
+        con = getDbConnection(ss);
         // test sql
         if (StringUtils.trimToNull(ss.getSql()) != null) {
           Statement stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
@@ -342,11 +343,18 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
           rs.close();
           stmt.close();
         }
-        con.close();
       } catch (SQLException e) {
         log.warn("Cant read sql source " + ss, e);
         problem = e.getMessage();
         ss.setReadable(false);
+      } finally {
+        if (con != null) {
+          try {
+            con.close();
+          } catch (SQLException e) {
+            log.error("Connection could not be closed: " + e.getMessage(), e);
+          }
+        }
       }
     }
     return problem;
@@ -388,8 +396,9 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
 
   private List<String> columns(SqlSource source) {
     List<String> columns = new ArrayList<String>();
+    Connection con = null;
     try {
-      Connection con = getDbConnection(source);
+      con = getDbConnection(source);
       if (con != null) {
         // test sql
         Statement stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
@@ -405,7 +414,6 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         }
         rs.close();
         stmt.close();
-        con.close();
       } else {
         String msg = "Can't read sql source, the connection couldn't be created with the current parameters";
         columns.add(msg);
@@ -413,6 +421,14 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       }
     } catch (SQLException e) {
       log.warn("Cant read sql source " + source, e);
+    } finally {
+      if (con != null) {
+        try {
+          con.close();
+        } catch (SQLException e) {
+          log.error("Connection could not be closed: " + e.getMessage(), e);
+        }
+      }
     }
     return columns;
   }
@@ -557,8 +573,9 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
 
   private List<String[]> peek(SqlSource source, int rows) {
     List<String[]> preview = new ArrayList<String[]>();
+    Connection con = null;
     try {
-      Connection con = getDbConnection(source);
+      con = getDbConnection(source);
       if (con != null) {
         // test sql
         Statement stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
@@ -575,10 +592,15 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         }
         rs.close();
         stmt.close();
-        con.close();
       }
     } catch (SQLException e) {
       log.warn("Cant read sql source " + source, e);
+    } finally {
+      try {
+        con.close();
+      } catch (SQLException e) {
+        log.error("Connection could not be closed: " + e.getMessage(), e);
+      }
     }
     return preview;
   }
