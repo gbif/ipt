@@ -21,7 +21,7 @@
 <h2 class="subTitle"><@s.text name='manage.metadata.project.title'/></h2>
 <form class="topForm" action="metadata-${section}.do" method="post">
     <p><@s.text name='manage.metadata.project.intro'/></p>
-	<@input name="eml.project.title"/>
+	<@input name="eml.project.title" requiredField=true/>
 	<div class="halfcolumn">
 		<@input name="eml.project.personnel.firstName" />
 	</div>

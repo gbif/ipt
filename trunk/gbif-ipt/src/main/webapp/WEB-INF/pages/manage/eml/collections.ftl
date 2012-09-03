@@ -34,7 +34,7 @@
         <@input name="eml.parentCollectionId" help="i18n" requiredField=true />
       </div>
       <div class="halfcolumn">
-        <@select name="eml.specimenPreservationMethod" help="i18n" options=preservationMethods value="${eml.specimenPreservationMethod!}" requiredField=true />
+        <@select name="eml.specimenPreservationMethod" help="i18n" options=preservationMethods value="${eml.specimenPreservationMethod!}" />
       </div>
     </div>
 	<div id="Curatorial-Units">

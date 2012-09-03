@@ -5,9 +5,9 @@
 <#include "/WEB-INF/pages/macros/metadata.ftl"/>
 <script type="text/javascript">
 $(document).ready(function(){
-	initHelp();	
+	initHelp();
 	$("#removeLink-0").hide();
-	if("${eml.methodSteps?size}" == 0){		
+	if("${eml.methodSteps?size}" == 0){
 		$("#plus").click();
 	}
 });
@@ -28,8 +28,8 @@ $(document).ready(function(){
 <form class="topForm" action="metadata-${section}.do" method="post">
     <p><@s.text name='manage.metadata.methods.intro'/></p>
 	<div id="sampling" >
-		<@text name="eml.studyExtent"  i18nkey="eml.studyExtent" help="i18n"/>
-		<@text name="eml.sampleDescription" i18nkey="eml.sampleDescription" help="i18n"/>
+		<@text name="eml.studyExtent"  i18nkey="eml.studyExtent" help="i18n" requiredField=true />
+		<@text name="eml.sampleDescription" i18nkey="eml.sampleDescription" help="i18n" requiredField=true />
 	</div>
 	<div id="qualitycontrol" >
 		<@text name="eml.qualityControl" i18nkey="eml.qualityControl" help="i18n"/>
@@ -41,7 +41,7 @@ $(document).ready(function(){
 					<div class="right">
 				      <a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.methods.item'/> ]</a>
 				    </div>
-					<@text name="eml.methodSteps[${item_index}]" i18nkey="eml.methodSteps" help="i18n"/>
+					<@text name="eml.methodSteps[${item_index}]" i18nkey="eml.methodSteps" help="i18n" requiredField=true/>
 				</div>
 			</#list>
 		</#if>
@@ -59,7 +59,7 @@ $(document).ready(function(){
 	<div class="right">
 		<a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.methods.item'/> ]</a>
 	</div>
-	<@text name="" i18nkey="eml.methodSteps" help="i18n"/>
+	<@text name="" i18nkey="eml.methodSteps" help="i18n" requiredField=true />
 </div>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
