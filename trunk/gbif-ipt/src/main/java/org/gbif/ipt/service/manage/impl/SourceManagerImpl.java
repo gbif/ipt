@@ -218,6 +218,11 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     }
   }
 
+  // default fetch sized used in SQL statements
+  private static final int FETCH_SIZE = 10;
+  // the maximum time in seconds that a driver will wait while attempting to connect to a database
+  private static final int CONNECTION_TIMEOUT_SECS = 5;
+
   @Inject
   public SourceManagerImpl(AppConfig cfg, DataDir dataDir) {
     super(cfg, dataDir);
@@ -329,25 +334,40 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     } else {
       SqlSource ss = (SqlSource) source;
       Connection con = null;
+      Statement stmt = null;
+      ResultSet rs = null;
       try {
         con = getDbConnection(ss);
         // test sql
         if (StringUtils.trimToNull(ss.getSql()) != null) {
-          Statement stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-          stmt.setFetchSize(10);
-          ResultSet rs = stmt.executeQuery(ss.getSqlLimited(10));
+          stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+          stmt.setFetchSize(FETCH_SIZE);
+          rs = stmt.executeQuery(ss.getSqlLimited(FETCH_SIZE));
           // get number of columns
           ResultSetMetaData meta = rs.getMetaData();
           ss.setColumns(meta.getColumnCount());
           ss.setReadable(true);
-          rs.close();
-          stmt.close();
         }
       } catch (SQLException e) {
         log.warn("Cant read sql source " + ss, e);
         problem = e.getMessage();
         ss.setReadable(false);
       } finally {
+        // close result set, statement, and connection in that order
+        if (rs != null) {
+          try {
+            rs.close();
+          } catch (SQLException e) {
+            log.error("ResultSet could not be closed: " + e.getMessage(), e);
+          }
+        }
+        if (stmt != null) {
+          try {
+            stmt.close();
+          } catch (SQLException e) {
+            log.error("Statement could not be closed: " + e.getMessage(), e);
+          }
+        }
         if (con != null) {
           try {
             con.close();
@@ -397,13 +417,15 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   private List<String> columns(SqlSource source) {
     List<String> columns = new ArrayList<String>();
     Connection con = null;
+    Statement stmt = null;
+    ResultSet rs = null;
     try {
       con = getDbConnection(source);
       if (con != null) {
         // test sql
-        Statement stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+        stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
         stmt.setFetchSize(1);
-        ResultSet rs = stmt.executeQuery(source.getSqlLimited(1));
+        rs = stmt.executeQuery(source.getSqlLimited(1));
         // get column metadata
         ResultSetMetaData meta = rs.getMetaData();
         int idx = 1;
@@ -412,8 +434,6 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
           columns.add(meta.getColumnLabel(idx));
           idx++;
         }
-        rs.close();
-        stmt.close();
       } else {
         String msg = "Can't read sql source, the connection couldn't be created with the current parameters";
         columns.add(msg);
@@ -422,6 +442,21 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     } catch (SQLException e) {
       log.warn("Cant read sql source " + source, e);
     } finally {
+      // close result set, statement, and connection in that order
+      if (rs != null) {
+        try {
+          rs.close();
+        } catch (SQLException e) {
+          log.error("ResultSet could not be closed: " + e.getMessage(), e);
+        }
+      }
+      if (stmt != null) {
+        try {
+          stmt.close();
+        } catch (SQLException e) {
+          log.error("Statement could not be closed: " + e.getMessage(), e);
+        }
+      }
       if (con != null) {
         try {
           con.close();
@@ -456,7 +491,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     // try to connect to db via simple JDBC
     if (source.getHost() != null && source.getJdbcUrl() != null && source.getJdbcDriver() != null) {
       try {
-        DriverManager.setLoginTimeout(5);
+        DriverManager.setLoginTimeout(CONNECTION_TIMEOUT_SECS);
         Class.forName(source.getJdbcDriver());
         conn = DriverManager.getConnection(source.getJdbcUrl(), source.getUsername(), source.getPassword());
 
@@ -574,13 +609,15 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   private List<String[]> peek(SqlSource source, int rows) {
     List<String[]> preview = new ArrayList<String[]>();
     Connection con = null;
+    Statement stmt = null;
+    ResultSet rs = null;
     try {
       con = getDbConnection(source);
       if (con != null) {
         // test sql
-        Statement stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+        stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
         stmt.setFetchSize(rows);
-        ResultSet rs = stmt.executeQuery(source.getSqlLimited(rows + 1));
+        rs = stmt.executeQuery(source.getSqlLimited(rows + 1));
         // loop over result
         while (rows > 0 && rs.next()) {
           rows--;
@@ -590,16 +627,31 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
           }
           preview.add(row);
         }
-        rs.close();
-        stmt.close();
       }
     } catch (SQLException e) {
       log.warn("Cant read sql source " + source, e);
     } finally {
-      try {
-        con.close();
-      } catch (SQLException e) {
-        log.error("Connection could not be closed: " + e.getMessage(), e);
+      // close result set, statement, and connection in that order
+      if (rs != null) {
+        try {
+          rs.close();
+        } catch (SQLException e) {
+          log.error("ResultSet could not be closed: " + e.getMessage(), e);
+        }
+      }
+      if (stmt != null) {
+        try {
+          stmt.close();
+        } catch (SQLException e) {
+          log.error("Statement could not be closed: " + e.getMessage(), e);
+        }
+      }
+      if (con != null) {
+        try {
+          con.close();
+        } catch (SQLException e) {
+          log.error("Connection could not be closed: " + e.getMessage(), e);
+        }
       }
     }
     return preview;
