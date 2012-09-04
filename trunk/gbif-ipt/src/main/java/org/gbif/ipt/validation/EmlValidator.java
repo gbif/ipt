@@ -29,6 +29,7 @@ import java.net.URI;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 
 public class EmlValidator extends BaseValidator {
@@ -431,18 +432,18 @@ public class EmlValidator extends BaseValidator {
         }
         // both study extent and sampling description required if either one is present
         if (!emptyFields) {
-          if (!(eml.getSampleDescription().length() == 0) && eml.getStudyExtent().length() == 0) {
+          if (!Strings.isNullOrEmpty(eml.getSampleDescription()) && Strings.isNullOrEmpty(eml.getStudyExtent())) {
             action.addFieldError("eml.studyExtent",
               action.getText("validation.required", new String[] {action.getText("eml.studyExtent")}));
           }
-          if (!(eml.getStudyExtent().length() == 0) && eml.getSampleDescription().length() == 0) {
+          if (!Strings.isNullOrEmpty(eml.getStudyExtent()) && Strings.isNullOrEmpty(eml.getSampleDescription())) {
             action.addFieldError("eml.sampleDescription",
               action.getText("validation.required", new String[] {action.getText("eml.sampleDescription")}));
           }
         }
       } else if (part == null || part.equalsIgnoreCase("citations")) {
         // citation text is required, while identifier attribute is optional
-        if (!(eml.getCitation().getIdentifier().length() == 0) && !exists(eml.getCitation().getIdentifier())) {
+        if (!Strings.isNullOrEmpty(eml.getCitation().getIdentifier()) && !exists(eml.getCitation().getIdentifier())) {
           action.addFieldError("eml.citation.identifier",
             action.getText("validation.field.blank", new String[] {action.getText("eml.citation.identifier")}));
         } else {
@@ -456,7 +457,7 @@ public class EmlValidator extends BaseValidator {
 
         int index = 0;
         for (Citation citation : eml.getBibliographicCitations()) {
-          if (!(citation.getIdentifier().length() == 0) && !exists(citation.getIdentifier())) {
+          if (!Strings.isNullOrEmpty(citation.getIdentifier()) && !exists(citation.getIdentifier())) {
             action.addFieldError("eml.bibliographicCitationSet.bibliographicCitations[" + index + "].identifier", action
               .getText("validation.field.blank",
                 new String[] {action.getText("eml.bibliographicCitationSet.bibliographicCitations.identifier")}));
@@ -511,6 +512,17 @@ public class EmlValidator extends BaseValidator {
           index++;
         }
       } else if (part == null || part.equalsIgnoreCase("physical")) {
+        // Validate the resource homepage URL
+        if (eml.getHomepageUrl() != null) {
+          if (formatURL(eml.getHomepageUrl()) == null) {
+            action.addFieldError("eml.resourceCreator.homepage",
+              action.getText("validation.invalid", new String[] {action.getText("eml.resourceCreator.homepage")}));
+          } else {
+            eml.setHomepageUrl(formatURL(eml.getHomepageUrl()));
+          }
+        }
+
+
         // character set, download URL, and data format are required
         int index = 0;
         for (PhysicalData pd : eml.getPhysicalData()) {
@@ -571,10 +583,7 @@ public class EmlValidator extends BaseValidator {
           index++;
         }
       } else if (part == null || part.equalsIgnoreCase("additional")) {
-        if (eml.getPubDate() == null) {
-          action.addFieldError("eml.pubDate",
-            action.getText("validation.required", new String[] {action.getText("eml.pubDate")}));
-        }
+        // ensure each alternative id is longer than min length
         int index = 0;
         for (String ai : eml.getAlternateIdentifiers()) {
           if (!exists(ai)) {
