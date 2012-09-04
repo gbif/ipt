@@ -18,7 +18,6 @@ import org.gbif.ipt.config.ConfigManagerImpl;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.mock.MockDataDir;
-import org.gbif.ipt.mock.MockExtensionManager;
 import org.gbif.ipt.mock.MockRegistrationManager;
 import org.gbif.ipt.mock.MockResourceManager;
 import org.gbif.ipt.mock.MockUserAccountManager;
@@ -50,8 +49,8 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
 
 /**
  * This class tests the relevant methods of the ConfigManagerImpl class.
@@ -68,7 +67,7 @@ public class ConfigManagerImplTest {
     DataDir mockedDataDir = MockDataDir.buildMock();
     InputStreamUtils streamUtils = new InputStreamUtils();
     ResourceManager mockedResourceManager = MockResourceManager.buildMock();
-    ExtensionManager mockedExtensionManager = MockExtensionManager.buildMock();
+    ExtensionManager mockedExtensionManager = mock(ExtensionManager.class);
     VocabulariesManager mockedVocabularies = new MockVocabulariesManager();
     RegistrationManager mockedRegistrationManager = MockRegistrationManager.buildMock();
     UserAccountManager mockedUserManager = MockUserAccountManager.buildMock();
