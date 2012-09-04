@@ -236,7 +236,11 @@ public class Resource implements Serializable, Comparable<Resource> {
   public List<Extension> getMappedExtensions() {
     Set<Extension> exts = new HashSet<Extension>();
     for (ExtensionMapping em : mappings) {
-      exts.add(em.getExtension());
+      if (em.getExtension() != null) {
+        exts.add(em.getExtension());
+      } else {
+        log.error("Encountered an ExtensionMapping referencing NULL Extension for resource: " + getShortname());
+      }
     }
     return new ArrayList<Extension>(exts);
   }

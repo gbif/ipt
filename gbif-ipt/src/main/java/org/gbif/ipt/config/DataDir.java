@@ -30,6 +30,7 @@ public class DataDir {
   public static final String RESOURCES_DIR = "resources";
   public static final String LUCENE_DIR = "lucene";
   public static final String TMP_DIR = "tmp";
+  public static final String EML_XML_FILENAME = "eml.xml";
   private int tmpCounter = 0;
   private Map<String, Integer> tmpPrefixCounter = new HashMap<String, Integer>();
 
@@ -194,7 +195,7 @@ public class DataDir {
   public File resourceEmlFile(String resourceName, @Nullable Integer version) {
     String fn;
     if (version == null) {
-      fn = "eml.xml";
+      fn = EML_XML_FILENAME;
     } else {
       fn = "eml-" + version + ".xml";
     }

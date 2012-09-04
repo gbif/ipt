@@ -18,7 +18,6 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.mock.MockAppConfig;
 import org.gbif.ipt.mock.MockDataDir;
-import org.gbif.ipt.mock.MockExtensionManager;
 import org.gbif.ipt.mock.MockRegistryManager;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
@@ -34,10 +33,12 @@ import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.admin.ExtensionManager;
+import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.Eml2Rtf;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.metadata.eml.Eml;
@@ -67,13 +68,15 @@ public class ResourceManagerImplTest {
   private ExtensionRowTypeConverter mockedExtensionConverter = mock(ExtensionRowTypeConverter.class);
   private JdbcInfoConverter mockedJdbcConverter = mock(JdbcInfoConverter.class);
   private SourceManager mockedSourceManager = mock(SourceManager.class);
-  private ExtensionManager mockedExtensionManager = MockExtensionManager.buildMock();
+  private ExtensionManager mockedExtensionManager = mock(ExtensionManager.class);
   private RegistryManager mockedRegistryManager = MockRegistryManager.buildMock();
   private ConceptTermConverter mockedConceptTermConverter = mock(ConceptTermConverter.class);
   private GenerateDwcaFactory mockedDwcaFactory = mock(GenerateDwcaFactory.class);
   private PasswordConverter mockedPasswordConverter = mock(PasswordConverter.class);
   private Eml2Rtf mockedEml2Rtf = mock(Eml2Rtf.class);
   private VocabulariesManager mockedVocabulariesManager = mock(VocabulariesManager.class);
+  private SimpleTextProvider mockSimpleTextProvider = mock(SimpleTextProvider.class);
+  private RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
 
   private DataDir mockedDataDir = MockDataDir.buildMock();
 
@@ -100,7 +103,7 @@ public class ResourceManagerImplTest {
     return new ResourceManagerImpl(mockedAppConfig, mockedDataDir, mockedUserEmailConverter, mockedOrgKeyConverter,
         mockedExtensionConverter, mockedJdbcConverter, mockedSourceManager, mockedExtensionManager,
         mockedRegistryManager, mockedConceptTermConverter, mockedDwcaFactory, mockedPasswordConverter, mockedEml2Rtf,
-        mockedVocabulariesManager);
+        mockedVocabulariesManager, mockSimpleTextProvider, mockRegistrationManager);
   }
 
   private ResourceManagerImpl getResourceManagerImpl() {
@@ -124,7 +127,7 @@ public class ResourceManagerImplTest {
     return new ResourceManagerImpl(mockedAppConfig, mockedDataDir, mockedUserEmailConverter, mockedOrgKeyConverter,
         mockedExtensionConverter, mockedJdbcConverter, mockedSourceManager, mockedExtensionManager,
         mockedRegistryManager, mockedConceptTermConverter, mockedDwcaFactory, mockedPasswordConverter, mockedEml2Rtf,
-        mockedVocabulariesManager);
+        mockedVocabulariesManager, mockSimpleTextProvider, mockRegistrationManager);
   }
 
   /**
@@ -235,7 +238,7 @@ public class ResourceManagerImplTest {
     manager = new ResourceManagerImpl(mockedAppConfig, mockedDataDir, mockedUserEmailConverter, mockedOrgKeyConverter,
       mockedExtensionConverter, mockedJdbcConverter, mockedSourceManager, mockedExtensionManager,
       mockedRegistryManager, mockedConceptTermConverter, mockedDwcaFactory, mockedPasswordConverter, mockedEml2Rtf,
-      mockedVocabulariesManager);
+      mockedVocabulariesManager, mockSimpleTextProvider, mockRegistrationManager);
 
     // update alt. id
     manager.updateAlternateIdentifierForIPTURLToResource(resource);

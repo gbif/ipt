@@ -43,11 +43,13 @@ import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.ExtensionManager;
+import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.RequireManagerInterceptor;
+import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.Eml2Rtf;
 import org.gbif.ipt.task.GenerateDwca;
 import org.gbif.ipt.task.GenerateDwcaFactory;
@@ -65,6 +67,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -117,13 +120,16 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private Map<String, StatusReport> processReports = new HashMap<String, StatusReport>();
   private Eml2Rtf eml2Rtf;
   private VocabulariesManager vocabManager;
+  private SimpleTextProvider textProvider;
+  private RegistrationManager registrationManager;
 
   @Inject
   public ResourceManagerImpl(AppConfig cfg, DataDir dataDir, UserEmailConverter userConverter,
     OrganisationKeyConverter orgConverter, ExtensionRowTypeConverter extensionConverter,
     JdbcInfoConverter jdbcInfoConverter, SourceManager sourceManager, ExtensionManager extensionManager,
     RegistryManager registryManager, ConceptTermConverter conceptTermConverter, GenerateDwcaFactory dwcaFactory,
-    PasswordConverter passwordConverter, Eml2Rtf eml2Rtf, VocabulariesManager vocabManager) {
+    PasswordConverter passwordConverter, Eml2Rtf eml2Rtf, VocabulariesManager vocabManager,
+    SimpleTextProvider textProvider, RegistrationManager registrationManager) {
     super(cfg, dataDir);
     this.sourceManager = sourceManager;
     this.extensionManager = extensionManager;
@@ -134,6 +140,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     this.executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(cfg.getMaxThreads());
     defineXstreamMapping(userConverter, orgConverter, extensionConverter, conceptTermConverter, jdbcInfoConverter,
       passwordConverter);
+    this.textProvider = textProvider;
+    this.registrationManager = registrationManager;
   }
 
   private void addResource(Resource res) {
@@ -221,10 +229,18 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // decompress archive
     File dwcaDir = dataDir.tmpDir();
     try {
-      CompressionUtil.decompressFile(dwcaDir, dwca);
-      return createFromArchive(shortname, dwcaDir, creator, alog);
+      // decompress the incoming file
+      CompressionUtil.decompressFile(dwcaDir, dwca, true);
+      // check: was the decompressed folder actually an IPT Resource Folder?
+      if (isIPTResourceFolder(dwcaDir)) {
+        // if so, build a resource from the folder, preserving the source files and mappings
+        return createFromIPTResourceFolder(shortname, dwcaDir.listFiles()[0], creator, alog);
+      } else {
+        // otherwise, it must be a DwC-A
+        return createFromArchive(shortname, dwcaDir, creator, alog);
+      }
     } catch (UnsupportedCompressionType e) {
-      // try to read single eml file
+      // worst case, try to read single eml file
       return createFromEml(shortname, dwca, creator, alog);
     } catch (AlreadyExistingException e) {
       throw e;
@@ -233,6 +249,121 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     } catch (Exception e) {
       alog.warn(e);
       throw new ImportException(e);
+    }
+  }
+
+  /**
+   * Creates a resource from an IPT Resource folder. The purpose is to preserve the original source files and mappings.
+   * The managers, created date, last publication date, and registration info is all cleared. The creator and modifier
+   * are set to the current creator.
+   * </p>
+   * This method must ensure that the folder has a unique name relative to the other resource's shortnames, otherwise
+   * it tries to rename the folder using the supplied shortname. If neither of these yield a unique shortname,
+   * an exception is thrown alerting the user they should try again with a unique name.
+   *
+   * @param shortname resource shortname
+   * @param folder    IPT resource folder (in tmp directory of IPT data_dir)
+   * @param creator   Creator
+   * @param alog      action logging
+   *
+   * @return Resource created or null if it was unsuccessful
+   *
+   * @throws AlreadyExistingException if a unique shortname could not be determined
+   * @throws ImportException if a problem occurred trying to create the new Resource
+   */
+  private Resource createFromIPTResourceFolder(String shortname, File folder, User creator, ActionLogger alog)
+    throws AlreadyExistingException, ImportException {
+    Resource res = null;
+    try {
+
+      // shortname supplied is unique?
+      if (resources.containsKey(shortname)) {
+        throw new AlreadyExistingException();
+      }
+
+      // copy folder (renamed using shortname) to resources directory in data_dir
+      File dest = new File(dataDir.dataFile(DataDir.RESOURCES_DIR), shortname);
+      FileUtils.copyDirectory(folder, dest);
+
+      // proceed with resource creation (using destination folder in data_dir)
+      res = loadFromDir(dest, alog);
+
+      // ensure this resource is safe to import!
+      if (res != null) {
+        // remove all managers associated to resource
+        res.getManagers().clear();
+        // change creator to the User that uploaded resource
+        res.setCreator(creator);
+        // change modifier to User that uploaded resource
+        res.setModifier(creator);
+        // change creation date
+        res.setCreated(new Date());
+        // resource has never been published - set last published date to null
+        res.setLastPublished(null);
+        // reset organization
+        res.setOrganisation(null);
+        // reset isRegistered, do this by resetting key
+        res.setKey(null);
+        // set publication status to Private
+        res.setStatus(PublicationStatus.PRIVATE);
+
+        // add resource to IPT
+        save(res);
+      }
+
+    } catch (InvalidConfigException e) {
+      alog.error(e.getMessage(), e);
+      throw new ImportException(e);
+    } catch (IOException e) {
+      alog.error("Could not copy resource folder into data directory: " + e.getMessage(), e);
+      throw new ImportException(e);
+    }
+
+    return res;
+  }
+
+  /**
+   * Determine whether the decompressed file represents an IPT Resource folder or not. To qualify, the root
+   * folder must contain at the very least a resource.xml file, and an eml.xml file.
+   *
+   * @param tmpDir folder where compressed file was decompressed
+   *
+   * @return if there is an IPT Resource folder or not that has been extracted in the tmpDir
+   */
+  private boolean isIPTResourceFolder(File tmpDir) {
+    boolean foundResourceFile = false;
+    boolean foundEmlFile = false;
+    if (tmpDir.exists() && tmpDir.isDirectory()) {
+      // get the compressed folder's root folder
+      File[] contents = tmpDir.listFiles();
+      if (contents.length != 1) {
+        return false;
+      } else {
+        File root = contents[0];
+        // return all files in root directory, and filter by .xml files
+        for (File f : root.listFiles(new XmlFilenameFilter())) {
+          // have we found the resource.xml file?
+          if (f.getName().equalsIgnoreCase(PERSISTENCE_FILE)) {
+            foundResourceFile = true;
+          }
+          // have we found the eml.xml file?
+          if (f.getName().equalsIgnoreCase(DataDir.EML_XML_FILENAME)) {
+            foundEmlFile = true;
+          }
+        }
+      }
+    }
+    return (foundEmlFile && foundResourceFile);
+  }
+
+  /**
+   * Filter those files with suffixes ending in .xml.
+   */
+  private class XmlFilenameFilter implements FilenameFilter
+  {
+    public boolean accept(File dir, String name)
+    {
+      return (name != null && name.toLowerCase().endsWith(".xml"));
     }
   }
 
@@ -647,10 +778,21 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   /**
+   * Calls loadFromDir(File, ActionLogger), inserting a new instance of ActionLogger.
+   *
+   * @param resourceDir resource directory
+   *
+   * @return loaded Resource
+   */
+  private Resource loadFromDir(File resourceDir) {
+    return loadFromDir(resourceDir, new ActionLogger(log, new BaseAction(textProvider, cfg, registrationManager)));
+  }
+
+  /**
    * Reads a complete resource configuration (resource config & eml) from the resource config folder
    * and returns the Resource instance for the internal in memory cache.
    */
-  private Resource loadFromDir(File resourceDir) throws InvalidConfigException {
+  private Resource loadFromDir(File resourceDir, ActionLogger alog) throws InvalidConfigException {
     if (resourceDir.exists()) {
       // load full configuration from resource.xml and eml.xml files
       String shortname = resourceDir.getName();
@@ -661,6 +803,19 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // non existing users end up being a NULL in the set, so remove them
         // shouldnt really happen - but people can even manually cause a mess
         resource.getManagers().remove(null);
+
+        // non existent Extension end up being NULL
+        // for ex, a user is trying to import a resource from one IPT to another without all required exts installed.
+        for (ExtensionMapping ext: resource.getMappings()) {
+          Extension x = ext.getExtension();
+          if (x == null) {
+            alog.warn("manage.resource.create.extension.null");
+            throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Resource references non-existent extension");
+          } else if (extensionManager.get(x.getRowType()) == null) {
+            alog.warn("manage.resource.create.rowType.null", new String[] {x.getRowType()});
+            throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Resource references non-installed extension");
+          }
+        }
 
         // shortname persists as folder name, so xstream doesnt handle this:
         resource.setShortname(shortname);
@@ -944,7 +1099,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       if (emlFile == null || !emlFile.exists()) {
         // some archives dont indicate the name of the eml metadata file
         // so we also try with the default eml.xml name
-        emlFile = new File(archive.getLocation(), "eml.xml");
+        emlFile = new File(archive.getLocation(), DataDir.EML_XML_FILENAME);
       }
       if (emlFile.exists()) {
         // InputStream emlIn = new FileInputStream(emlFile);
@@ -1097,7 +1252,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         log.debug("Copying new eml file [" + emlFile.getAbsolutePath() + "] to [" + dwcaFolder.getAbsolutePath()
                   + "] as eml.xml");
       }
-      FileUtils.copyFile(emlFile, new File(dwcaFolder, "eml.xml"));
+      FileUtils.copyFile(emlFile, new File(dwcaFolder, DataDir.EML_XML_FILENAME));
       File zip = dataDir.tmpFile("dwca", ".zip");
       CompressionUtil.zipDir(dwcaFolder, zip);
 
