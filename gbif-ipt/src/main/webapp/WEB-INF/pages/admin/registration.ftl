@@ -89,14 +89,15 @@ $(document).ready(function(){
     	 <li><a href="${cfg.registryUrl}/browse/agent?uuid=${registeredIpt.key}">${registeredIpt.name!"IPT"}</a></li>
     	 <li><a href="${cfg.registryUrl}/browse/agent?uuid=${hostingOrganisation.key}">${hostingOrganisation.name!"Organisation"}</a></li>
     	</ul>
-	<!-- p><@s.text name="admin.registration.registered3"/></p -->
+
 		<@input name="registeredIpt.name" i18nkey="admin.ipt.name" type="text" />
 		<@text name="registeredIpt.description" i18nkey="admin.ipt.description" />	
 		
-		<!-- For release 2.0.4
+		<#-- For future release. Will replace contact name below
 		<@input name="registeredIpt.primaryContactFirstName" i18nkey="admin.ipt.primaryContactFirstName" type="text" />
 		<@input name="registeredIpt.primaryContactLastName" i18nkey="admin.ipt.primaryContactLastName" type="text" /> 
-		-->	
+		-->
+
 		<@input name="registeredIpt.primaryContactName" i18nkey="admin.ipt.primaryContactName" type="text" />
 		<@input name="registeredIpt.primaryContactEmail" i18nkey="admin.ipt.primaryContactEmail" type="text" />
 		<div class="buttons">
@@ -141,7 +142,8 @@ $(document).ready(function(){
 						
 			<@input name="ipt.name" i18nkey="admin.ipt.name" type="text" />
 			<@text name="ipt.description" i18nkey="admin.ipt.description" />			
-			<!-- For Release 2.0.4
+
+			<#-- For future release. Will replace contact name below
 			<@input name="ipt.primaryContactFirstName" i18nkey="admin.ipt.primaryContactFirstName" type="text" />
 			<@input name="ipt.primaryContactLastName" i18nkey="admin.ipt.primaryContactLastName" type="text" />
 			-->			
