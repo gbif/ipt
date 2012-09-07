@@ -26,7 +26,7 @@ $(document).ready(function(){
 	<@select name="user.role" value=user.role javaGetter=false options={"User":"user.roles.user", "Manager":"user.roles.manager", "Publisher":"user.roles.publisher", "Admin":"user.roles.admin"}/>
 
 	<#if "${newUser!}"=="no">
-	  <div class="buttons">
+	  <div class="userPasswordButtons">
 		<@label i18nkey="user.password">
 			<@s.submit cssClass="button" name="resetPassword" key="button.resetPassword" />
 		</@label>
@@ -35,7 +35,7 @@ $(document).ready(function(){
 		<@input name="user.password" type="password" />
 		<@input name="password2" i18nkey="user.password2" type="password"/>  
 	</#if>
-  <div class="buttons">
+  <div class="userManageButtons">
  	<@s.submit cssClass="button" name="save" key="button.save"/>
  	<#if "${newUser!}"=="no"><@s.submit cssClass="confirm" name="delete" key="button.delete"/></#if>
  	<@s.submit cssClass="button" name="cancel" key="button.cancel"/>

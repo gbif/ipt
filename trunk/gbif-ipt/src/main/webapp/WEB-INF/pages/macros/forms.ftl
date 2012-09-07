@@ -14,8 +14,8 @@
 
 <#macro textinline name value="-99999" i18nkey="" errorfield="" help="">
 	<div class="textinline">
-		<div class="textRight"><#include "/WEB-INF/pages/macros/help_icon.ftl"></div>
-		<div class="textLeft"><h2 class="headerLine"><span><@s.text name="${name}"/></span></h2></div>
+		<#include "/WEB-INF/pages/macros/help_icon.ftl">
+		<h2 class="headerLine"><span><@s.text name="${name}"/></span></h2>
 	</div>
 </#macro>
 

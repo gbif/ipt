@@ -127,15 +127,14 @@ $(document).ready(function(){
         <p><a id="toggleFields" href="#"><@s.text name='manage.mapping.hideEmpty'/></a></p>
     </div>
 
-<div class="grid_23">
 <div class="conceptItem">
 <div class="definition required">
-        <div class="title grid_7">
+        <div class="title">
         	<div class="head">
         	${coreid.name!"Record ID"}			
         	</div>
         </div>
-        <div class="body grid_15">
+        <div class="body">
         <div>
         	<div class="infos">
         	  <#if coreid??>
@@ -180,18 +179,16 @@ $(document).ready(function(){
 </div>
     <div class="clearfix"></div>
 </div>
-</div>
 	
-<div class="grid_23">
 <div class="conceptItem">
 <div id="filterSection" class="definition">	
-  <div class="title grid_7">
+  <div class="title">
   	<div class="head" id="filter">
 		<!-- Filter -->
 		<@select name="mapping.filter.filterTime" i18nkey="manage.mapping.filter" options=mapping.filter.filterTimes value="${mapping.filter.filterTime!}" />	
   	</div>
   </div>
-  <div class="body grid_15">
+  <div class="body">
   	<div class="infos">
   		<img class="infoImg" src="${baseURL}/images/info.gif" />
 		<div class="info">		
@@ -218,7 +215,6 @@ $(document).ready(function(){
   </div>
 </div>
     <div class="clearfix"></div>
-</div>
 </div>
 
   <div class="buttons">
@@ -258,18 +254,18 @@ $(document).ready(function(){
 		  <#noescape>${groupMenu}</#noescape>
 		  <#assign group=p.group/>
 		  <a name="${p.group?url}"></a>
-          <h3 class="subTitle">${p.group}</h3>
-      </div>
+      <h3 class="subTitle">${p.group}</h3>
+    </div>
 	</#if>
 
-<div class="conceptItem grid_23 suffix_1">
+<div class="conceptItem">
 	<div class="definition<#if p.required> required</#if>">	
-	  <div class="title grid_7">
+	  <div class="title">
 	  	<div class="head">
 			${p.name}			
 	  	</div>
 	  </div>
-	  <div class="body grid_15">
+	  <div class="body">
 	  <div>
 	  	<div class="infos">
 	  		<img class="infoImg" src="${baseURL}/images/info.gif" />

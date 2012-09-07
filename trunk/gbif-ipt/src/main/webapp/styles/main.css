@@ -72,7 +72,7 @@ Header {
 ul.fielderror{
 	list-style:none; 
 	color: #d8424f;
-	margin: 10px 15px 5px 0px;
+	margin: 10px 0px 5px 0px;
 	border: 1px solid;
 	padding:5px 15px 5px 25px;
 	background-repeat: no-repeat;
@@ -86,7 +86,7 @@ ul.fielderror{
 	background-color: #ffdddd;
 	background-image: url('../images/minus.png');
 	list-style:none; 
-	margin: 10px 15px 5px 0px;
+	margin: 10px 0px 5px 0px;
 	border: 1px solid;
 	padding:5px 15px 5px 25px;
 	background-repeat: no-repeat;
@@ -97,7 +97,7 @@ ul.fielderror{
 	background-color: #FEEFB3;
 	background-image: url('../images/warning.gif');
 	list-style:none; 
-	margin: 10px 15px 5px 0px;
+	margin: 10px 0px 5px 0px;
 	border: 1px solid;
 	padding:5px 15px 5px 25px;
 	background-repeat: no-repeat;
@@ -108,7 +108,7 @@ ul.fielderror{
 	background-color: #dff2bf;
 	background-image: url('../images/good.gif');
 	list-style:none; 
-	margin: 10px 15px 5px 0px;
+	margin: 10px 0px 5px 0px;
 	border: 1px solid;
 	padding:5px 15px 5px 25px;
 	background-repeat: no-repeat;
@@ -334,6 +334,7 @@ table#resourcestable { margin-bottom: 40px; width: 950px; }
 table#resourcestable thead { table-layout: fixed; }
 table#resourcestable thead tr th { vertical-align: middle; padding:0 3px; font-size: 0.95em; color: #666; font-weight: bold; text-decoration:underline; }
 table#resourcestable tbody tr td { vertical-align: middle; padding:0 3px; border:2px solid #fff; background-color: #eee; }
+table#resourcestable tbody tr td img { max-height: 50px;}
 table#resourcestable tbody tr {  }
 table#resourcestable tbody {  }
 th#resourceName { width: 250px; overflow: auto; }
@@ -368,7 +369,7 @@ table.simple th{
 table.simple td {
 	padding: 0 5px 0 5px;
 }
-table.simple tr.linebreak{
+table.simple tr.linebreak {
 	background-color: #fff;
 	height: 1em;
 }
@@ -395,17 +396,28 @@ div.resourceOverviewPortal div.title {
 	display: table-cell;
 	height: 100%;
 }
-div.resourceOverviewPortal div.head { font-weight: bold; font-size: 0.8em; }
+div.resourceOverviewPortal div.head {
+	font-weight: bold; font-size: 0.9em;
+	position: absolute;
+}
 div.resourceOverviewPortal div.body {
 	font-size: 0.85em;
-	width: 510px;
 	display: table-cell;
 	height: 100%;
 	padding: 5px;
 }
 div.resourceOverviewPortal div.body table { margin-bottom: 0px; }
-div.resourceOverviewPortal div.body th { width: 120px;padding: 0px 3px; }
+div.resourceOverviewPortal div.body th { width: 120px;padding: 0px 3px; font-weight: bold; }
 div.resourceOverviewPortal div.body td { color: #666;padding: 0px 3px; }
+div.resourceOverviewPortal div.body div.details div.halfcolumn { border-top: 1px solid #ddd; padding-top: 5px; margin-bottom: 10px; }
+
+#resourcelogo {
+  float:right;
+  margin: 10px;
+}
+#resourcelogo img {
+  max-width: 100px;
+}
 
 /* RESOURCE OVERVIEW */
 div.resourceOverview {
@@ -442,52 +454,17 @@ div.resourceOverview div.bodyOverview div.details table th {
 div.resourceOverview div.bodyOverview div.details table td {
 	color: #666;
 }
+select#rowType {
+  width: 310px;
+}
+div.buttons {
+  height: 25px;
+  margin-top: 20px;
+  float: left;
+}
 
-/* TOOLTIP */
-
-.tooltip {
-	outline: none;
-	cursor: help;
-	position: relative;
-	text-decoration: underline;
-	color: ##077A2D;
-}
-.tooltip span {
-	margin-left: -999em;
-	position: absolute;
-	color: #000;
-	font-size: 0.7em;
-}
-.tooltip:hover span {
-	position: absolute;
-	left: 10em; top: -3.5em; right: -15em; z-index: 99;
-	border-radius: 3px 3px;
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px; 
-	box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
-	-webkit-box-shadow: 2px 2px rgba(0, 0, 0, 0.1);
-	-moz-box-shadow: 2px 2px rgba(0, 0, 0, 0.1);
-	font-family: Calibri, Tahoma, Geneva, sans-serif;
-	margin-left: 0px;
-}
-.classic { padding: 5px 10px; background: #FFFFAA; border: 2px solid #FFAD33; height:1.5em;}
-
-.arrow {
-	width:0; 
-	height:0; 
-	border-right: 16px solid transparent;
-	border-top: 20px solid #FFFFAA;
-	border-bottom: 0px;
-	margin-top: -1.9em;
-	margin-left: 0.15em;
-}
-.arrow-wrap {
-	width:0; 
-	height:0; 
-	border-right: 18px solid transparent;
-	border-top: 22px solid #FFAD33;
-	border-bottom: 0px;
-	margin-top:5px;
+.resourceOverviewTitle {
+  color: #666;
 }
 
 div.resourceOverview {
@@ -607,7 +584,7 @@ div a.button {
 div.basicMetadata {
   margin-top: 40px;
 }
-div.textRight img.infoImg {
+div.textinline img.infoImg {
 	float: left;
 	margin-top: 3px;
 }
@@ -694,7 +671,8 @@ div#qualitycontrol {
   margin-bottom: 35px;
 }
 h3.subTitle {
-  margin-top: 10px;
+  display: block;
+  margin-top: 40px;
   font-family: "Arial", sans-serif;
   font-size: 1.2em;
 }
@@ -757,13 +735,13 @@ div.definition div.title {
 	height: 100%;
 	font-size: 0.9em;
 	font-weight: bold;
-	padding: 5px;
-	width: 220px;
+	padding-left: 10px;
+	width: 280px;
 	display:table-cell;
 }
 div.definition div.body {
 	border-bottom: none;
-	padding: 10px;
+	padding: 5px 10px 5px 10px;
 	width: 600px;
 	display:table-cell;
 }
@@ -793,10 +771,7 @@ div.definition div.body table th {
 div.definition div.body div.details {
   font-size: 0.9em;
 }
-div.conceptItem {
-margin-bottom: 5px;
-  background: url("gray-column-240.png") repeat-y;
-}
+div.conceptItem { margin-bottom: 3px; }
 div.conceptItem div.body {
   color: #666;
   font-size: 0.9em;
@@ -852,18 +827,20 @@ input#updateResourceMetadata_do_updateMetadata.button {
 table#admintable tr {
   height: 100px;
 }
-table#user-list {
-  width: 950px;
-}
-table#user-list thead {
-}
-table#user-list tbody {
-}
+table#user-list { width: 940px; }
+table#user-list thead { background-color: #eee; }
+table#user-list tbody tr td { display: table-cell; }
+
+.userPasswordButtons {}
+.userManageButtons { margin-top: 20px;}
+.userManageButtons input { width: auto;}
+
 #logs {
   overflow: auto;
   font-family: "Andale Mono", monospace;
   font-size: 0.8em; 
 }
+
 /* FOOTER */
 
 #section-footer {

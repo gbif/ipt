@@ -21,7 +21,7 @@ $(document).ready(function(){
 
 <p><@s.text name="admin.users.intro"/></p>
 
-<table id="user-list" class="simple" width="100%">
+<table id="user-list">
     <thead>
 	<tr>
 		<th><@s.text name="admin.users.name"/></th>
