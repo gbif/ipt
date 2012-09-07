@@ -17,6 +17,7 @@
 	<title>${resource.title!resource.shortname!}</title>	
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
+<div class="grid_24">
 <div class="grid_18 suffix_6">
 <h1>${resource.title!resource.shortname}<#if managerRights> <a class="edit" href="${baseURL}/manage/resource.do?r=${resource.shortname}"><@s.text name='button.edit'/></a></#if></h1>
 <div id="resourcelogo">
@@ -28,6 +29,7 @@
 <#assign no_description><@s.text name='portal.resource.no.description'/></#assign>
 <@textWithFormattedLink resource.description!no_description/>
 </p>
+</div>
 <div class="resourceOverviewPortal" id="metadata">	
   <div class="title">
   	<div class="head">

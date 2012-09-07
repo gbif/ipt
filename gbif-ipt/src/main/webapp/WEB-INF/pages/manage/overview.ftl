@@ -81,8 +81,7 @@ $(document).ready(function(){
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <div class="container_24">
   <div class="grid_18 suffix_6">
-    <h1>${resource.title!resource.shortname}</h1>
-
+    <h1><span class="resourceOverviewTitle"><@s.text name="manage.overview.title"/>: </span>${resource.title!resource.shortname}</h1>
     <p>
       <@s.text name="manage.overview.intro"><@s.param>${resource.title!resource.shortname}</@s.param></@s.text>
     </p>
