@@ -709,7 +709,7 @@ table#source-properties th {
 	font-weight: bold;
 }
 table#source-properties td {
-  width: 360px;
+  max-width: 350px;
   word-wrap: break-word;
 }
 .detailsSource {
