@@ -104,9 +104,7 @@ $(document).ready(function(){
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
 <h1><span class="superscript">Data Source</span>
-    <a class="tooltip" href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${mapping.source.name}
-        <span class="classic">Click the title to go to the <em>resource overview</em> page.<div class="arrow-wrap"><div class="arrow"></div></div></span>
-    </a>
+    <a class="tooltip" href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${mapping.source.name}</a>
 </h1>
 <form class="topForm" action="mapping.do" method="post">
     <div class="grid_17 suffix_7">

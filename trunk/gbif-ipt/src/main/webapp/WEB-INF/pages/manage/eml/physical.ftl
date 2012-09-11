@@ -14,9 +14,7 @@
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
 <h1><span class="superscript">Resource Title</span>
-    <a class="tooltip" href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}
-        <span class="classic">Click the title to go to the <em>resource overview</em> page.<div class="arrow-wrap"><div class="arrow"></div></div></span>
-    </a>
+    <a class="tooltip" href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
 </h1>
 <div class="grid_17 suffix_1">
   <h2 class="subTitle"><@s.text name='manage.metadata.physical.title'/></h2>
