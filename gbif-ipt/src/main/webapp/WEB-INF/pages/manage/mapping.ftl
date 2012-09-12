@@ -252,7 +252,7 @@ $(document).ready(function(){
 		  <#noescape>${groupMenu}</#noescape>
 		  <#assign group=p.group/>
 		  <a name="${p.group?url}"></a>
-      <h3 class="subTitle">${p.group}</h3>
+      <h3 class="groupTitle">${p.group}</h3>
     </div>
 	</#if>
 
