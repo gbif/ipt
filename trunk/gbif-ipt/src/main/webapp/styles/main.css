@@ -672,9 +672,16 @@ div#qualitycontrol {
 }
 h3.subTitle {
   display: block;
+  margin-top: 10px;
+  font-family: "Arial", sans-serif;
+  font-size: 1.2em;
+}
+h3.groupTitle {
+  display: block;
   margin-top: 40px;
   font-family: "Arial", sans-serif;
   font-size: 1.2em;
+  color: #000;
 }
 div#Collection-Data {
   padding-bottom: 40px;
@@ -771,7 +778,7 @@ div.definition div.body table th {
 div.definition div.body div.details {
   font-size: 0.9em;
 }
-div.conceptItem { margin-bottom: 3px; }
+div.conceptItem { margin-bottom: 3px; float: left; }
 div.conceptItem div.body {
   color: #666;
   font-size: 0.9em;
