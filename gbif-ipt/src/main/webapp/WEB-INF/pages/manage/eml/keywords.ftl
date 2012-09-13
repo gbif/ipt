@@ -15,7 +15,7 @@ $(document).ready(function(){
 
 
 <h1><span class="superscript">Resource Title</span>
-    <a class="tooltip" href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
+    <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
 </h1>
 <div class="grid_17 suffix_1">
 <h2 class="subTitle"><@s.text name='manage.metadata.keywords.title'/></h2>

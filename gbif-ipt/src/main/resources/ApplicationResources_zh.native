@@ -673,6 +673,7 @@ manage.source.source.log=來源日誌檔
 manage.source.download=下載
 manage.source.confirmation.message=您確定要刪除此資料來源檔案？請注意任何與此檔案關聯的欄位對應也會一併刪除。
 
+manage.overview.title.label=資源標題
 manage.overview.title=總覽
 manage.overview.intro=這是資源<em>{0}</em>的總覽頁面。請至少填入必填性質的元數據。之後您可上傳並對應來源資料以產生並發布達爾文核心集檔案。發布的資源能註冊於 GBIF 網絡中。已註冊的資源可被移除，但無法恢復至私有狀態。
 manage.overview.no.description=無資料描述
