@@ -9,7 +9,12 @@
 	</td></tr></#if>
 	<#if agent.email?? || agent.phone??><tr><th><@s.text name='portal.resource.contact'/></th><td><a href="mailto:${agent.email!}">${agent.email!}</a> <#if agent.phone??><@s.text name='portal.resource.tel'/>: ${agent.phone!}</#if></td></tr></#if>
 	<#if agent.homepage?? ><tr><th><@s.text name='eml.associatedParties.homepage'/></th><td><a href="${agent.homepage!}">${agent.homepage!}</a></td></tr></#if>
-  <#if withRole && agent.role?has_content><tr><th><@s.text name='eml.associatedParties.role'/></th><td>${agent.role}</td></tr></#if>
+  <#if withRole && roles[agent.role]?has_content>
+    <tr>
+      <th><@s.text name='eml.associatedParties.role'/></th>
+      <td>${roles[agent.role]}</td>
+    </tr>
+  </#if>
 </table>
 </#macro>
 <#include "/WEB-INF/pages/macros/forms.ftl"/>

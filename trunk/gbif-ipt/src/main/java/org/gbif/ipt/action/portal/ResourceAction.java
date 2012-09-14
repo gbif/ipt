@@ -15,6 +15,7 @@ import org.gbif.metadata.eml.TaxonomicCoverage;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -30,6 +31,7 @@ public class ResourceAction extends PortalBaseAction {
   private Integer page = 1;
   // for conveniently displaying taxonomic coverages in freemarker template
   private List<OrganizedTaxonomicCoverage> organizedCoverages;
+  private Map<String, String> roles;
 
   @Inject
   public ResourceAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -93,6 +95,15 @@ public class ResourceAction extends PortalBaseAction {
     return resourceManager.isRtfExisting(resource.getShortname());
   }
 
+  /**
+   * Return the list of Agent Roles specific to the current locale.
+   *
+   * @return the list of Agent Roles specific to the current locale
+   */
+  public Map<String, String> getRoles() {
+    return roles;
+  }
+
   public String rss() {
     resources = resourceManager.latest(page, 25);
     return SUCCESS;
@@ -105,6 +116,9 @@ public class ResourceAction extends PortalBaseAction {
     if (resource != null && resource.getEml() != null && resource.getEml().getTaxonomicCoverages() != null) {
       organizedCoverages = constructOrganizedTaxonomicCoverages(resource.getEml().getTaxonomicCoverages());
     }
+    // roles list, derived from XML vocabulary, and displayed in drop-down where new contacts are created
+    roles = new LinkedHashMap<String, String>();
+    roles.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_ROLES, getLocaleLanguage(), false));
   }
 
   /**
