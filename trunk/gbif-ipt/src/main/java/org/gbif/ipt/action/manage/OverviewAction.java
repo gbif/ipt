@@ -379,7 +379,7 @@ public class OverviewAction extends ManagerBaseAction {
           addActionWarning(getText("manage.overview.data.missing"));
         }
         addActionMessage(
-          getText("manage.overview.published.eml", new String[] {String.valueOf(resource.getEmlVersion())}));
+          getText("manage.overview.published.eml.version", new String[] {String.valueOf(resource.getEmlVersion())}));
         missingRegistrationMetadata = !minimumRegistryInfo(resource);
         return SUCCESS;
       }
