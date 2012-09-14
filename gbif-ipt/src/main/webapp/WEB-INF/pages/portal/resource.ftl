@@ -1,7 +1,6 @@
 <#escape x as x?html>
 <#macro agentTable agent withRole=false>
 <table>
-	<#if withRole & agent.role?? ><tr><th><@s.text name='eml.associatedParties.role'/></th><td>${agent.role!}</td></tr></#if>
 	<#if agent.firstName?? || agent.lastName??><tr><th><@s.text name='portal.resource.name'/></th><td>${agent.firstName!} ${agent.lastName!}</td></tr></#if>
 	<#if agent.position?? ><tr><th><@s.text name='eml.associatedParties.position'/></th><td>${agent.position!}</td></tr></#if>
 	<#if agent.organisation?? ><tr><th><@s.text name='eml.contact.organisation'/></th><td>${agent.organisation!}</td></tr></#if>
@@ -10,6 +9,7 @@
 	</td></tr></#if>
 	<#if agent.email?? || agent.phone??><tr><th><@s.text name='portal.resource.contact'/></th><td><a href="mailto:${agent.email!}">${agent.email!}</a> <#if agent.phone??><@s.text name='portal.resource.tel'/>: ${agent.phone!}</#if></td></tr></#if>
 	<#if agent.homepage?? ><tr><th><@s.text name='eml.associatedParties.homepage'/></th><td><a href="${agent.homepage!}">${agent.homepage!}</a></td></tr></#if>
+  <#if withRole && agent.role?has_content><tr><th><@s.text name='eml.associatedParties.role'/></th><td>${agent.role}</td></tr></#if>
 </table>
 </#macro>
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
@@ -150,33 +150,25 @@
 </div>
 </#if>
 
-<#assign size=eml.associatedParties?size/>
-<#if (size > 0 )>
-<div class="resourceOverviewPortal">	
-  <div class="title">
-  	<div class="head">
-        <@s.text name='manage.metadata.parties.title'/>
-  	</div>
-  </div>
-  <div class="body">
-      	<div class="details">
-			<#list eml.associatedParties as item>
-			<#if (item_index % 2) == 0>
-			<div>
-			</#if>
-				<div class="halfcolumn">
-		      		<@agentTable item true />
-				</div>
-			<#if (item_index % 2) == 1 || eml.associatedParties?size=item_index+1>
-			</div>
-			</#if>
-			</#list>
-      	</div>
-  </div>
-  <div class="clearfix"></div>
-  
-</div>
-</#if>
+  <#if (eml.associatedParties?size > 0 )>
+    <#list eml.associatedParties as item>
+
+    <div class="resourceOverviewPortal">
+      <div class="title">
+        <div class="head">
+          <#assign num = item_index + 1 />
+          <@s.text name="manage.metadata.parties.title.numbered"><@s.param>${num}</@s.param></@s.text>
+        </div>
+      </div>
+      <div class="body">
+        <div class="details">
+          <@agentTable item true/>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+    </#list>
+  </#if>
 
 <#if eml.geospatialCoverages[0]??>
 <div class="resourceOverviewPortal">	
