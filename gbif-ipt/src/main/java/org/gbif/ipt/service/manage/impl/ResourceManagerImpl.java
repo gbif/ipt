@@ -306,6 +306,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         res.setKey(null);
         // set publication status to Private
         res.setStatus(PublicationStatus.PRIVATE);
+        // set records published to 0
+        res.setRecordsPublished(0);
+        // set isPublished to false
+        res.isPublished();
 
         // add resource to IPT
         save(res);
