@@ -394,11 +394,11 @@ div.resourceOverviewPortal div.title {
 	padding: 5px;
 	background-color: #eee;
 	display: table-cell;
+	vertical-align: top;
 	height: 100%;
 }
-div.resourceOverviewPortal div.head {
+div.resourceOverviewPortal div.title div.head {
 	font-weight: bold; font-size: 0.9em;
-	position: absolute;
 }
 div.resourceOverviewPortal div.body {
 	font-size: 0.85em;
