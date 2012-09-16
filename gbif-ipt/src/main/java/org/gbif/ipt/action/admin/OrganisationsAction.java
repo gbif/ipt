@@ -109,7 +109,11 @@ public class OrganisationsAction extends POSTAction {
       addActionMessage(getText("admin.organisation.deleted"));
       return SUCCESS;
     } catch (DeletionNotAllowedException e) {
-      addActionError(getText("admin.organisation.deleted.notempty"));
+      if (e.getReason().equals(DeletionNotAllowedException.Reason.RESOURCE_REGISTERED_WITH_ORGANISATION)) {
+        addActionError(getText("admin.organisation.deleted.cant.resources"));
+      } else if (e.getReason().equals(DeletionNotAllowedException.Reason.IPT_REGISTERED_WITH_ORGANISATION)) {
+        addActionError(getText("admin.organisation.deleted.cant.ipt"));
+      }
       addActionExceptionWarning(e);
     } catch (IOException e) {
       addActionError(getText("admin.organisation.cantSave") + ": " + e.getMessage());
