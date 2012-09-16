@@ -1134,25 +1134,81 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return null;
   }
 
+
   /*
    * (non-Javadoc)
    * @see org.gbif.ipt.service.manage.ResourceManager#register(org.gbif.ipt.model.Resource,
    * org.gbif.ipt.model.Organisation)
    */
-  public void register(Resource resource, Organisation organisation, Ipt ipt) throws RegistryException {
+  public void register(Resource resource, Organisation organisation, Ipt ipt, BaseAction action)
+    throws RegistryException {
+    ActionLogger alog = new ActionLogger(this.log, action);
+
     if (PublicationStatus.REGISTERED != resource.getStatus()) {
-      UUID key = registryManager.register(resource, organisation, ipt);
-      if (key == null) {
-        throw new RegistryException(RegistryException.TYPE.MISSING_METADATA, "No key returned for registered resoruce");
+      // populate set of UUIDs from resource's eml.alternateIdentifiers that could represent existing registered
+      // resource UUIDs
+      Set<UUID> candidateResourceUUIDs = collectCandidateResourceUUIDsFromAlternateIds(resource);
+      // Is there a chance this resource is being migrated from DiGIR, BioCASE, TAPIR to the IPT?
+      // Migration can happen if an alternate identifier corresponding to an existing resource owned by the
+      // organization has been set
+      if (organisation.getKey() != null && organisation.getName() != null && candidateResourceUUIDs.size() > 0) {
+        // collect list of registered resources associated to organization
+        List<Resource> existingResources = registryManager.getOrganisationsResources(organisation.getKey().toString());
+        for (Resource entry : existingResources) {
+          UUID existingResourceUUID = entry.getKey();
+          // does the set of candidate UUIDs contain the UUUID from an existing registered resource owned by the
+          // organization? There should only be one match, and the first one encountered will be used for migration.
+          if (candidateResourceUUIDs.contains(entry.getKey())) {
+            log.debug("Resource matched to existing registered resource, UUID=" + String.valueOf(existingResourceUUID));
+            // fill in registration info - we've found the original resource being migrated to the IPT
+            resource.setStatus(PublicationStatus.REGISTERED);
+            resource.setKey(existingResourceUUID);
+            resource.setOrganisation(organisation);
+            alog.info("manage.resource.migrate",
+              new String[] {String.valueOf(existingResourceUUID), organisation.getName()});
+            // update the resource, adding the new service(s)
+            updateRegistration(resource);
+          }
+        }
+      } else {
+        UUID key = registryManager.register(resource, organisation, ipt);
+        if (key == null) {
+          throw new RegistryException(RegistryException.TYPE.MISSING_METADATA,
+            "No key returned for registered resoruce");
+        }
+        // change status to registered
+        resource.setStatus(PublicationStatus.REGISTERED);
+
+        // ensure alternate identifier for Registry UUID set
+        updateAlternateIdentifierForRegistry(resource);
       }
-      resource.setStatus(PublicationStatus.REGISTERED);
-
-      // ensure alternate identifier for Registry UUID set
-      updateAlternateIdentifierForRegistry(resource);
-
       // save all changes to resource
       save(resource);
     }
+  }
+
+  /**
+   * Collect a set of UUIDs from the resource's list of alternate identifiers that could qualify as GBIF Registry
+   * Dataset UUIDs.
+   *
+   * @param resource resource
+   *
+   * @return set of UUIDs that could qualify as GBIF Registry Dataset UUIDs
+   */
+  private Set<UUID> collectCandidateResourceUUIDsFromAlternateIds(Resource resource) {
+    Set<UUID> ls = new HashSet<UUID>();
+    if (resource.getEml() != null) {
+      List<String> ids = resource.getEml().getAlternateIdentifiers();
+      for (String id : ids) {
+        try {
+          UUID uuid = UUID.fromString(id);
+          ls.add(uuid);
+        } catch (IllegalArgumentException e) {
+          // skip, isn't a candidate UUID
+        }
+      }
+    }
+    return ls;
   }
 
   public synchronized void report(String shortname, StatusReport report) {

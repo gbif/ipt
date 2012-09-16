@@ -76,4 +76,14 @@ public interface RegistryManager {
 
   boolean validateOrganisation(String organisationKey, String password);
 
+  /**
+   * Retrieves a list of all registered Resources associated to an Organization. If the name and UUID of the resource
+   * cannot be populated, it isn't returned with the list.
+   *
+   * @param key organization key (UUID in String format)
+   *
+   * @return list of all registered Resources associated to an Organization
+   */
+  List<Resource> getOrganisationsResources(String key);
+
 }

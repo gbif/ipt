@@ -254,6 +254,13 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return String.format("%s%s%s%s", cfg.getRegistryUrl(), "/registry/organisation/", organisationKey, "?op=login");
   }
 
+  /**
+   * Returns the URI that will return a list of Resources associated to an Organization in JSON.
+   */
+  private String getOrganisationsResourcesUri(final String organisationKey) {
+    return String.format("%s%s%s", cfg.getRegistryUrl(), "/registry/resource.json?organisationKey=", organisationKey);
+  }
+
   /*
   * (non-Javadoc)
   * @see org.gbif.ipt.service.registry.RegistryManager#getOrganisations()
@@ -364,6 +371,53 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       new TypeToken<Map<String, List<Vocabulary>>>() {
       }.getType());
     return (map.get("thesauri") == null) ? new ArrayList<Vocabulary>() : map.get("thesauri") ;
+  }
+
+  public List<Resource> getOrganisationsResources(String organisationKey) throws RegistryException {
+    List<Map<String, String>> resourcesTemp = new ArrayList<Map<String, String>>();
+    try {
+      resourcesTemp = gson.fromJson(requestHttpGetFromRegistry(getOrganisationsResourcesUri(organisationKey)).content,
+        new TypeToken<List<Map<String, String>>>() {
+        }.getType());
+    } catch (RegistryException e) {
+      // log as specific error message as possible about why the Registry error occurred
+      String msg = RegistryException.logRegistryException(e.getType(), baseAction);
+      // add startup error message about Registry error
+      warnings.addStartupError(msg);
+      log.error(msg);
+
+      // add startup error message that explains the consequence of the Registry error
+      msg = baseAction.getText("organisations.resources.couldnt.load", new String[] {cfg.getRegistryUrl()});
+      warnings.addStartupError(msg);
+      log.error(msg);
+    }
+    // populate Resources list
+    List<Resource> resources = new ArrayList<Resource>();
+    int invalid = 0;
+    for (Map<String, String> res : resourcesTemp) {
+      if (res.isEmpty() || StringUtils.isBlank(res.get("key")) || StringUtils.isBlank(res.get("name"))) {
+        invalid++;
+      } else {
+        Resource r = new Resource();
+        r.setShortname(res.get("name"));
+        r.setTitle(res.get("name"));
+
+        String key = res.get("key");
+        // key must be UUID - convert from String to UUID
+        try {
+          UUID uuid = UUID.fromString(key);
+          r.setKey(uuid);
+        } catch (IllegalArgumentException e) {
+          invalid++;
+        }
+        resources.add(r);
+
+      }
+      if (invalid > 0) {
+        log.debug("Skipped " + invalid + " invalid dataset JSON objects");
+      }
+    }
+    return resources;
   }
 
   /**
