@@ -35,12 +35,15 @@ public interface RegistrationManager {
   void addIptInstance(Ipt ipt);
 
   /**
-   * Removes the specified organisation from the in memory list of organisations. See save() to persist this change to
-   * files. An organisation can only be deleted if not linked with any resoruces
+   * Delete an organisation. Will remove the specified organisation from the in memory list of organisations.
+   * See save() to persist this change to files. In order to delete the organisation, the IPT cannot be registered
+   * against it (it cannot be the hosting organisation), nor can there be any resource registered against it.
    *
-   * @return organisation that has been removed or null if not existing
+   * @param key key of organisation to be deleted
    *
-   * @throws DeletionNotAllowedException if organisation is attached to any resource
+   * @return Organisation if it was not null and was deleted successfully, or null if it couldn't be found
+   *
+   * @throws DeletionNotAllowedException if the deletion was not allowed for some reason
    */
   Organisation delete(String key) throws DeletionNotAllowedException;
 

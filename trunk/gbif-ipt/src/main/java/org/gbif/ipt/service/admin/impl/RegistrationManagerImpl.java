@@ -88,6 +88,12 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
             "Resource " + resource.getShortname() + " associated with organisation");
         }
       }
+      // Check that the organization is not the hosting organization (IPT is not registered against the organization)
+      Organisation host = registration.getHostingOrganisation();
+      if (host != null && host.getKey() != null && host.getKey().toString().equals(key)) {
+        throw new DeletionNotAllowedException(Reason.IPT_REGISTERED_WITH_ORGANISATION,
+          "The IPT instance is associated with this organisation");
+      }
       registration.getAssociatedOrganisations().remove(key);
     }
     return org;
