@@ -23,6 +23,8 @@ import org.gbif.ipt.mock.MockDataDir;
 import org.gbif.ipt.mock.MockRegistryManager;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
+import org.gbif.ipt.model.Ipt;
+import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.User;
@@ -55,8 +57,10 @@ import org.gbif.utils.file.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import javax.xml.parsers.ParserConfigurationException;
@@ -104,6 +108,9 @@ public class ResourceManagerImplTest {
   private BaseAction baseAction = new BaseAction(mockSimpleTextProvider, mockAppConfig, mockRegistrationManager);
 
   private User creator;
+  private Resource resource;
+  private Ipt ipt;
+  private Organisation organisation;
 
   @Before
   public void setup() {
@@ -115,6 +122,17 @@ public class ResourceManagerImplTest {
     creator.setLastLoginToNow();
     creator.setRole(Role.Manager);
     creator.setPassword("011235813");
+
+    resource = new Resource();
+    resource.setShortname("res2");
+
+    organisation = new Organisation();
+    organisation.setKey("f9b67ad0-9c9b-11d9-b9db-b8a03c50a862");
+    organisation.setName("Academy of Natural Sciences");
+
+    ipt = new Ipt();
+    ipt.setKey("27c24cba-13c5-47d1-96a1-16abd8f11437");
+    ipt.setName("Test IPT");
 
     when(mockedDataDir.tmpDir()).thenReturn(Files.createTempDir());
   }
@@ -412,5 +430,34 @@ public class ResourceManagerImplTest {
     manager.updateAlternateIdentifierForRegistry(resource);
     // there should still only be 1
     assertTrue(resource.getEml().getAlternateIdentifiers().size()==1);
+  }
+
+  @Test
+  public void testRegisterMigratedResource() throws IOException, SAXException, ParserConfigurationException {
+    ResourceManager manager = getResourceManagerImpl();
+
+    String registeredDigirResourceUUID = "f9b67ad0-9c9b-11d9-b9db-b8a03c50a862";
+
+    // indicate resource is migrated from DiGIR, by supplying the Registry UUID for the existing resource in the
+    // resource's eml.alternateIdentifiers
+    resource.getEml().getAlternateIdentifiers().add(registeredDigirResourceUUID);
+
+    // mock returning list of resources that are associated to the Academy of Natural Sciences organization
+    List<Resource> organisationsResources = new ArrayList<Resource>();
+    Resource r1 = new Resource();
+    r1.setKey(UUID.fromString(registeredDigirResourceUUID));
+    r1.setTitle("Herpetology");
+    organisationsResources.add(r1);
+
+    when(mockRegistryManager.getOrganisationsResources(anyString())).thenReturn(organisationsResources);
+
+    manager.register(resource, organisation, ipt, baseAction);
+
+    // get registered resource.
+    Resource registered = manager.get(resource.getShortname());
+
+    assertEquals(PublicationStatus.REGISTERED, registered.getStatus());
+    assertEquals(registeredDigirResourceUUID, registered.getKey().toString());
+    assertEquals(organisation, registered.getOrganisation());
   }
 }

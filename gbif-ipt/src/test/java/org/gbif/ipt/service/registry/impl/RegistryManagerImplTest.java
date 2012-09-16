@@ -251,4 +251,23 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
     List<Vocabulary> vocabularies = manager.getVocabularies();
     assertEquals(45, vocabularies.size());
   }
+
+  @Test
+  public void testGetOrganisationsResoruces()
+    throws IOException, URISyntaxException, SAXException, ParserConfigurationException {
+    // mock response from Registry with local test resource
+    String response =
+      IOUtils.toString(RegistryManagerImplTest.class.getResourceAsStream("/responses/organisations_resources.json"), "UTF-8");
+
+    mockResponse.content = response;
+    when(mockHttpUtil.get(anyString())).thenReturn(mockResponse);
+
+    // create instance of RegistryManager
+    RegistryManager manager =
+      new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpUtil, mockSAXParserFactory, mockConfigWarnings,
+        mockSimpleTextProvider, mockRegistrationManager);
+
+    List<Resource> resources = manager.getOrganisationsResources("f9b67ad0-9c9b-11d9-b9db-b8a03c50a862");
+    assertEquals(3, resources.size());
+  }
 }

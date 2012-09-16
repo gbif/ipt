@@ -239,8 +239,9 @@ public interface ResourceManager {
    * @param resource     the published resource
    * @param organisation the organization that owns the resource
    * @param ipt          the ipt that the resource will be published through
+   * @param action       Action used to show log messages on UI
    */
-  void register(Resource resource, Organisation organisation, Ipt ipt) throws InvalidConfigException;
+  void register(Resource resource, Organisation organisation, Ipt ipt, BaseAction action) throws InvalidConfigException;
 
   /**
    * Persists the whole resource configuration *but* not the EML file.

@@ -423,6 +423,10 @@ $(document).ready(function(){
     <#if resource.status=="PUBLIC">
       <#if currentUser.hasRegistrationRights()>
         <@s.text name="manage.resource.status.registration.intro"/>
+        <div>
+          <img class="info" src="${baseURL}/images/info.gif"/>
+          <em><@s.text name="manage.resource.status.intro.public.migration"/></em>
+        </div>
         <#if organisations?size==0>
           <div>
             <img class="info" src="${baseURL}/images/info.gif"/>
@@ -437,6 +441,7 @@ $(document).ready(function(){
       </#if>
     </#if>
     </p>
+
     <div class="details">
       <table>
         <#if resource.status=="REGISTERED" && resource.key??>

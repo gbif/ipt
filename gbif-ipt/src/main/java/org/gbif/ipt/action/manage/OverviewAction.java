@@ -427,7 +427,7 @@ public class OverviewAction extends ManagerBaseAction {
               return execute();
             }
 
-            resourceManager.register(resource, org, registrationManager.getIpt());
+            resourceManager.register(resource, org, registrationManager.getIpt(), this);
             addActionMessage(getText("manage.overview.resource.registered", new String[] {org.getName()}));
 
           } catch (RegistryException e) {
