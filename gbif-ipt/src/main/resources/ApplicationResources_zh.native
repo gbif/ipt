@@ -775,7 +775,7 @@ manage.metadata.basic.title=基本的元數據
 manage.metadata.basic.required.message=您必須提供此資料的標題及描述。此資源的三個主要連絡資訊也必須在此描述：資源聯絡人、資源創建者及元數據提供者。在每個聯絡資訊中，在將資源公開之前，您至少必須提供連絡人的姓氏、職務或組織。對此資源創建及公開有責的個人或組織，應該在「相關團體」一節中以「發佈者」的角色列出。
 
 manage.metadata.parties.title=相關團體
-manage.metadata.parties.title.numbered=Associated Party {0}
+manage.metadata.parties.title.numbered=相關團體 {0}
 manage.metadata.parties.intro=與此資源相關的團體（例如：典藏機構）
 manage.metadata.parties.item=相關團體
 
