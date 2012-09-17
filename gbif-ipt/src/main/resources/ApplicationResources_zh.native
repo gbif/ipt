@@ -549,13 +549,14 @@ admin.organisation.cantSave=無法儲存組織檔案
 organisation.key=Key/UUID
 
 admin.organisation.deleted=組織的關聯已被刪除。
-admin.organisation.deleted.cant.resources=The organisation cannot be deleted, because it has been associated to one or more resources.
-admin.organisation.deleted.cant.ipt=The organisation cannot be deleted, because this IPT instance is registered against it.
+admin.organisation.deleted.cant.resources=無法刪除此單位組織，因為已經有一或一個以上的資源與其關聯。
+admin.organisation.deleted.cant.ipt=無法刪除此單位組織，因為此 IPT 註冊在其之下。
 admin.organisation.add.title=新增關聯的組織
 admin.organisation.add.intro2=如果您需要密碼，以便將你發布於此 IPT 中的資源與你的單位組織關聯，IPT 於密碼欄位下方提供一個連結，供您點選聯繫此組織的主要聯絡人。
 admin.organisation.associated.ipt=該組織已與此 IPT 關聯。
 admin.organisation.updated.ipt=組織已被更新。
 admin.organisations.couldnt.load=無法從登錄載入已註冊之單位組織：{0}。
+organisations.resources.couldnt.load=無法從登錄載入已註冊至單位組織之資源: {0}。
 
 #predefined emails - request organisation password for IPT registration
 emails.request.ipt.registration.subject=請求提供 {0} 的密碼
@@ -618,7 +619,7 @@ manage.resource.delete.confirm.registered=刪除 GBIF 登錄的已註冊資源�
 manage.resource.delete.failed=無法移除資資源。
 manage.resource.status.intro.private=資料管理者尚未公開此資源。為使所有人均能獲取此資源，請將其設定為公開狀態。
 manage.resource.status.intro.public=此資源已公開，所有人均可使用。
-manage.resource.status.intro.public.migration=If you want this resource to update an existing registered DiGIR, BioCASE, or TAPIR resource, please ensure the resource is registered against the same owning organization, and that the existing registered resource UUID has been added to the resource''s list of alternative identifiers on the additional metadata page.
+manage.resource.status.intro.public.migration=如果您想要以此資源更新已經由 DiGIR, BioCASE 或 TAPIR 發布之同一資源，請確認此資源註冊至同一單位組織，並請到「其它元數據」頁面，在「替代的識別碼」中填入 已註冊的 UUID。
 manage.resource.status.intro.registered=此資源已向 GBIF 註冊。欲刪除註冊狀態，必須刪除整份資源並以電子郵件連繫 <a href="mailto:helpdesk@gbif.org">GBIF Help Desk</a>。
 manage.resource.status.registration.intro=要使資料集可公開存取，請選擇資源所屬的單位組織向 GBIF 註冊。若資源僅供資料管理員存取，則將資源設為不公開。
 manage.resource.status.registration.forbidden=您不具有向 GBIF 註冊此資源的角色權限。若您認為應擁有此權限，請聯繫 IPT 管理員。
@@ -627,7 +628,7 @@ manage.resource.read.eml.metadata=讀取 EML 元數據
 manage.resource.read.basic.metadata=讀取基本元數據
 manage.resource.read.problem=無法讀取達爾文核心集檔案元數據。
 manage.resource.addSource.confirm=一或多個檔案已經存在。您確定要覆寫？
-manage.resource.migrate=Resource matched an existing registered resource (UUID={0}) owned by {1}. Consequently, this resource will be associated to the existing registered resource, instead of registering a new resource.
+manage.resource.migrate=此資源對應到一已註冊在 {1} 之下的資源 (UUID = {0})。此資源將被關聯至已註冊的資源，而非建立新資源。
 
 manage.mapping.title=對應資料來源
 manage.mapping.intro=對於每個屬性，您可以指定一個取自您的資料來源{0}中的特定欄位中的動態值，或是為所有記錄提供單一固定的靜態值。
