@@ -949,9 +949,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   public Resource updateAlternateIdentifierForRegistry(Resource resource) {
     // retrieve a list of the resource's alternate identifiers
-    List<String> ids = null;
+    List<String> ids = new ArrayList<String>();
     if (resource.getEml() != null) {
-      ids = resource.getEml().getAlternateIdentifiers();
+      // add each to list, but in lower case so comparison is done in lower case only
+      for(String id: resource.getEml().getAlternateIdentifiers()) {
+        ids.add(id.toLowerCase());
+      }
     } else {
       resource.setEml(new Eml());
     }
@@ -959,7 +962,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (resource.isRegistered()) {
       // GBIF Registry UUID
       UUID key = resource.getKey();
-      if (key != null && ids != null && !ids.contains(key.toString())) {
+      // has the Registry UUID been added as an alternative identifier yet? If not, add it!
+      if (key != null && (ids.size() > 0) && !ids.contains(key.toString().toLowerCase())) {
         resource.getEml().getAlternateIdentifiers().add(key.toString());
         log.info("GBIF Registry UUID added to Resource's list of alternate identifiers");
       }
