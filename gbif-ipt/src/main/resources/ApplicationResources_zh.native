@@ -7,6 +7,12 @@
 ##
 
 ##
+# IMPORTANT!! In the coming future, the conversation to ascii described below will be
+# picked up automatically. Please from now only provide edits ONLY TO THIS native file
+# in Traditional Chinese.
+##
+
+##
 # Recommended practice of translation without using Attesoro:
 #
 # Attesoro breaks the grouping of this properties file and makes maintenance cumbersome among
@@ -35,10 +41,6 @@
 #
 # Please note if using double-byte characters for punctuation, then it shouldn't
 # be escaped by back-slash.
-##
-
-##
-# Last update: 18 September 2012
 ##
 
 ####
@@ -517,14 +519,14 @@ admin.registration.validate.success=基礎網址有效
 admin.registration.validate.failed.development=基礎網址無效，因為呼叫回傳失敗！請檢查這個 IPT 的基礎網址。由於此 IPT 正運行於測試模式，下方欄位無論如何將會顯示。
 admin.registration.validate.failed=驗證失敗！請檢查您的網路連線。假如已經連線，檢查基礎網址與代理伺服器網址（假如此伺服器需要的話）。
 admin.registration.intro=假如您在上列清單中找不到您的組織機構，請連繫： <a href="mailto:helpdesk@gbif.org?subject=To add an organisation to the GBRDS registry&amp;body=Dear GBIF Helpdesk,%0D%0A%0D%0AI am an IPT administrator. In order to have our IPT registered under our organisation, we need to see it on the list of organisations while configuring the IPT. As I know, our organisation needs to be endorsed first, so please help us with the process.%0D%0A%0D%0AWe would like our organisation to be endorsed by [Node name].%0D%0A%0D%0AOR%0D%0A%0D%0AWe need help determining the endorsing Node.%0D%0A%0D%0AHere is the full name of our organisation [your organisation name].%0D%0A%0D%0AHere are the details for our organisation''s technical contact:%0D%0A%0D%0A[technical contact first name, last name]%0D%0A[technical contact email]%0D%0A%0D%0AHere are the details for our organisation''s administrative contact:%0D%0A%0D%0A[administrative contact first name, last name]%0D%0A[administrative contact email]%0D%0A%0D%0AThanks!%0D%0ABest regards,%0D%0A[Your name]">GBIF Help Desk</a>。請注意預設內容為英文，亦請在送出郵件之前確認您瞭解郵件內容以利後續連繫。
-admin.registration.intro2=一旦 IPT 完成註冊，此註冊即不能更改，除非連絡<a href="mailto:helpdesk@gbif.org">GBIF Help Desk</a>。在儲存之前請確認註冊資訊的完整與正確。
+admin.registration.intro2=一旦 IPT 完成註冊，此註冊即不能更改，除非連絡<a href=''mailto:helpdesk@gbif.org''>GBIF Help Desk</a>。在儲存之前請確認註冊資訊的完整與正確。
 admin.registration.registered1=此 IPT 已於 GBIF 網絡上註冊。
 admin.registration.registered2=管轄此 IPT 的機構是<strong>{0}</strong>。
 admin.registration.links=GBIF 登錄連結
 admin.registration.test1=在 GBIF 網絡上註冊此 IPT 的第一個步驟是驗證顯示於下方的基礎網址，點擊按鈕標籤「驗證」開始測試。假如測試成功，您將可以繼續進行註冊的下一步驟。假如測試失敗，請到 <a href="config.do">IPT 設定</a>頁面來更改伺服器的網址配置設定。\n\
 admin.registration.success=IPT 已註冊於該組織之下。
 admin.registration.error.alreadyRegistered1=此 IPT 已註冊在一組織之下。
-admin.registration.error.alreadyRegistered2=要變更組織的關聯，請聯絡 <a href="mailto:helpdesk@gbif.org">GBIF Help Desk</a>。
+admin.registration.error.alreadyRegistered2=要變更組織的關聯，請聯絡 <a href=''mailto:helpdesk@gbif.org''>GBIF Help Desk</a>。
 admin.registration.error.registry=在嘗試與 GBIF 登錄溝通時發生問題
 admin.registration.error.internetConnection=檢查您的網路連線是否有效。
 admin.registration.error.proxy=檢查您的防火牆是否允許連結。假如不行，檢查是否需要使用代理伺服器網址，且網址正確。
@@ -615,12 +617,12 @@ manage.resource.create.failed=無法讀取上傳檔案
 manage.resource.create.rowType.null=IPT 不支援此資料記錄格式{0}
 manage.resource.create.extension.null=您上傳的達爾文核心集檔案包含此 IPT 未安裝的延伸集。請確認所需的延伸集均已安裝後，再嘗試上傳一次。
 manage.resource.create.mapping.concept.skip=忽略延伸集 {1} 未定義的資料欄位 {0} 對應
-manage.resource.delete.confirm.registered=刪除 GBIF 登錄的已註冊資源資訊無法自動完成。必須以電子郵件明確的告知 <a href="mailto:helpdesk@gbif.org">GBIF Help Desk</a>。您是否仍要刪除此已註冊的資源？
+manage.resource.delete.confirm.registered=刪除 GBIF 登錄的已註冊資源資訊無法自動完成。必須以電子郵件明確的告知 <a href=''mailto:helpdesk@gbif.org''>GBIF Help Desk</a>。您是否仍要刪除此已註冊的資源？
 manage.resource.delete.failed=無法移除資資源。
 manage.resource.status.intro.private=資料管理者尚未公開此資源。為使所有人均能獲取此資源，請將其設定為公開狀態。
 manage.resource.status.intro.public=此資源已公開，所有人均可使用。
 manage.resource.status.intro.public.migration=如果您想要以此資源更新已經由 DiGIR, BioCASE 或 TAPIR 發布之同一資源，請確認此資源註冊至同一單位組織，並請到「其它元數據」頁面，在「替代的識別碼」中填入 已註冊的 UUID。
-manage.resource.status.intro.registered=此資源已向 GBIF 註冊。欲刪除註冊狀態，必須刪除整份資源並以電子郵件連繫 <a href="mailto:helpdesk@gbif.org">GBIF Help Desk</a>。
+manage.resource.status.intro.registered=此資源已向 GBIF 註冊。欲刪除註冊狀態，必須刪除整份資源並以電子郵件連繫 <a href=''mailto:helpdesk@gbif.org''>GBIF Help Desk</a>。
 manage.resource.status.registration.intro=要使資料集可公開存取，請選擇資源所屬的單位組織向 GBIF 註冊。若資源僅供資料管理員存取，則將資源設為不公開。
 manage.resource.status.registration.forbidden=您不具有向 GBIF 註冊此資源的角色權限。若您認為應擁有此權限，請聯繫 IPT 管理員。
 manage.resource.status.restrict=僅供資料管理員存取
@@ -711,8 +713,8 @@ manage.overview.visibility.organisation=單位組織
 manage.overview.visibility.organisation.contact=組織聯絡資訊
 manage.overview.visibility.organisation.key=單位組織註冊碼
 manage.overview.visibility.endorsing.node=認可節點
-manage.overview.visibility.confirm.registration=您即將向 GBIF 註冊此資源。請注意，之後若要從 GBIF 登錄中刪除此資源無法自動完成，您需要向<a href="mailto:helpdesk@gbif.org">GBIF Helpdesk</a>申請。您確定要繼續嗎？
-manage.overview.visibility.confirm.agreement=請確認您已讀過並了解 <a target="_blank" href="http://data.gbif.org/tutorial/datasharingagreement">GBIF 資料共享同意書</a>
+manage.overview.visibility.confirm.registration=您即將向 GBIF 註冊此資源。請注意，之後若要從 GBIF 登錄中刪除此資源無法自動完成，您需要向<a href=''mailto:helpdesk@gbif.org''>GBIF Helpdesk</a>申請。您確定要繼續嗎？
+manage.overview.visibility.confirm.agreement=請確認您已讀過並了解 <a target=''_blank'' href=''http://data.gbif.org/tutorial/datasharingagreement''>GBIF 資料共享同意書</a>
 
 manage.overview.published=公開發布一版本
 manage.overview.published.see.report=請見報告
