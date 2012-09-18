@@ -156,7 +156,7 @@
     		  	</div>
     		</#list>
     	</div>
-      	<a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/></a>
+      	<div style="margin-top:10px;font-size:0.92em;"><a id="plus" href="">[ <@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/> ]</a></div>
 
       	<div class="buttons">
      		<@s.submit cssClass="button" name="save" key="button.save" cssClass="confirm" />
