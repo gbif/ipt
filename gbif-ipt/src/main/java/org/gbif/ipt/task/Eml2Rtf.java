@@ -1061,7 +1061,7 @@ public class Eml2Rtf {
     // write metadata
     doc.addAuthor(resource.getCreator().getName());
     doc.addCreationDate();
-    doc.addTitle(eml.getTitle());
+    doc.addTitle((eml.getTitle() == null) ? resource.getShortname(): eml.getTitle());
     // add the keywords to the document
     String keys = "";
     for (KeywordSet kw : eml.getKeywords()) {
