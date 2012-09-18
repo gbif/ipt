@@ -157,12 +157,6 @@ public class ExtensionsAction extends POSTAction {
         notFound = true;
       }
     }
-    // the only warnings that can still hang around after startup, have to do with vocabs and extensions not loading
-    // if both  have loaded, ensure the warnings are cleared
-    if (registered.isLoaded() && !vocabManager.list().isEmpty()) {
-      warnings.clearStartupErrors();
-      this.getActionWarnings().clear();
-    }
   }
 
   /**
