@@ -417,9 +417,9 @@ public class ResourceManagerImplTest {
     assertTrue(resource.getEml().getAlternateIdentifiers().size()==0);
 
     // change resource to Registered and give it a Registry UUID
-    resource.setStatus(PublicationStatus.PUBLIC);
     UUID key = UUID.randomUUID();
     resource.setKey(key);
+    resource.setStatus(PublicationStatus.REGISTERED);
 
     // update alt. id
     manager.updateAlternateIdentifierForRegistry(resource);

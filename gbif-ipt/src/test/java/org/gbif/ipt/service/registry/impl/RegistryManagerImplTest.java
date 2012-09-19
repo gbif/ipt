@@ -59,9 +59,9 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
   // logging
   private static final Logger LOG = Logger.getLogger(RegistryManagerImplTest.class);
 
-  private static final String ORG_UUID = "3780d048-8e18-4c0c-afcd-cb6389df56de";
-  private static final String ORG_PASSWORD = "password";
-  private static final String ORG_NAME = "MyOrg";
+  private static final String ORG_UUID = "62922b92-69d1-4c4b-831c-b23d5412a124";
+  private static final String ORG_PASSWORD = "aaa4";
+  private static final String ORG_NAME = "AAA4Organisation";
 
   private RegistryManager manager;
 
@@ -105,10 +105,10 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
   @Test
   public void testBuild() {
     try {
-      // test organisation "MyOrg"
+      // test organisation "AAA4Organisation"
       assertTrue(manager.validateOrganisation(ORG_UUID, ORG_PASSWORD));
       assertFalse(manager.validateOrganisation(ORG_UUID, ORG_NAME));
-      assertFalse(manager.validateOrganisation("3780d048-8e18-4c0c-afcd-cb6389df56df", ORG_PASSWORD));
+      assertFalse(manager.validateOrganisation("INVALID92-69d1-4c4b-831c-b23d5412a124", ORG_PASSWORD));
 
     } catch (Exception e) {
       e.printStackTrace();
@@ -253,7 +253,7 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
   }
 
   @Test
-  public void testGetOrganisationsResoruces()
+  public void testGetOrganisationsResources()
     throws IOException, URISyntaxException, SAXException, ParserConfigurationException {
     // mock response from Registry with local test resource
     String response =
