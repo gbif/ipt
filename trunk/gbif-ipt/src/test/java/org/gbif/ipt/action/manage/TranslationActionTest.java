@@ -30,14 +30,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
@@ -267,5 +270,25 @@ public class TranslationActionTest {
     assertEquals(DwcTerm.basisOfRecord.qualifiedName(), action.getProperty().getQualname());
     assertEquals(2, action.getVocabTerms().size());
     assertEquals(3, action.getTrans().getTmap().size());
+  }
+
+  @Ignore("Not relevant until struts2/xwork is upgraded to 2.3.5")
+  public void testAcceptedParamNames() {
+    // Allowed names of parameters xWork 2.2.1
+    String acceptedParamNames = "[a-zA-Z0-9\\.\\]\\[\\(\\)_'\\s]+";
+    Pattern acceptedPattern = Pattern.compile(acceptedParamNames);
+    assertTrue(acceptedPattern.matcher("Valid").matches());
+    assertFalse(acceptedPattern.matcher("Vali:d").matches());
+    assertFalse(acceptedPattern.matcher("Vali-d").matches());
+    assertFalse(acceptedPattern.matcher("Vali%d").matches());
+    assertFalse(acceptedPattern.matcher("tmap['TDWG:AGW']").matches());
+
+    // Modified version of accepted pattern
+    acceptedParamNames = "[a-zA-Z0-9\\.\\]\\[\\(\\)_\\-\\:\\%'\\s]+";
+    acceptedPattern = Pattern.compile(acceptedParamNames);
+    assertTrue(acceptedPattern.matcher("Valid").matches());
+    assertTrue(acceptedPattern.matcher("Vali:d").matches());
+    assertTrue(acceptedPattern.matcher("Vali-----d").matches());
+    assertTrue(acceptedPattern.matcher("tmap['TDWG:AGW']").matches());
   }
 }
