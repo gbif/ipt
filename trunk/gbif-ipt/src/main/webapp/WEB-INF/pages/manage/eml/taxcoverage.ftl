@@ -55,12 +55,12 @@
 					</#list>
 				</div>
 				<div class="clearfix"></div>
-				<a id="plus-subItem-${item_index}" href="" ><@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.taxcoverage.taxon.item' /></a>
+				<div style="margin-top:10px;font-size:0.92em;"><a id="plus-subItem-${item_index}" href="" ><@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.taxcoverage.taxon.item' /></a></div>
 			</div>
 		</#list>
 	</div>
 	<br />
-	<a id="plus" href="" ><@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.taxcoverage.item' /></a>
+	<div class="addNew"><a id="plus" href="" ><@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.taxcoverage.item' /></a></div>
 
 	<div class="buttons">
 		<@s.submit cssClass="button" name="save" key="button.save"/>
@@ -80,16 +80,16 @@
 	<@text i18nkey="eml.taxonomicCoverages.description" help="i18n" name="description" />
 
 	<!-- Taxon list-->
-	<a id="taxonsLink" class="show-taxonList" href="" ><@s.text name='manage.metadata.taxcoverage.addSeveralTaxa' /></a>
+	<div class="addNew"><a id="taxonsLink" class="show-taxonList" href="" ><@s.text name='manage.metadata.taxcoverage.addSeveralTaxa' /></a></div>
 	<div id="list" class="half" style="display:none">
 		<@text i18nkey="eml.taxonomicCoverages.taxonList" help="i18n" name="taxon-list" value="" />
+	<div class="addNew"><a id="plus-subItem" href="" ><@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.taxcoverage.taxon.item' /></a></div>
+	</div>
 		<div class="buttons">
 			<@s.submit cssClass="button" name="add-button" key="button.add"/>
 		</div>
-	</div>
 	<div id="subItems"></div>
 	<br />
-	<a id="plus-subItem" href="" ><@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.taxcoverage.taxon.item' /></a>
 	<div class="clearfix"></div>
 </div>
 <div id='subItem-9999' class="sub-item grid_17 suffix_1 clearfix" style="display:none">
