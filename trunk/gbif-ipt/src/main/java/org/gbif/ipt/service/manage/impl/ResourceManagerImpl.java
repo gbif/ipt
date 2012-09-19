@@ -963,7 +963,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       // GBIF Registry UUID
       UUID key = resource.getKey();
       // has the Registry UUID been added as an alternative identifier yet? If not, add it!
-      if (key != null && (ids.size() > 0) && !ids.contains(key.toString().toLowerCase())) {
+      if (key != null && !ids.contains(key.toString().toLowerCase())) {
         resource.getEml().getAlternateIdentifiers().add(key.toString());
         log.info("GBIF Registry UUID added to Resource's list of alternate identifiers");
       }
