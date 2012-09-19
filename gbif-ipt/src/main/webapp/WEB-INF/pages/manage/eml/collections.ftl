@@ -73,7 +73,7 @@
 			</div>
 		</#list>
 	</div>
-	<a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.collections.curatorialUnits.item'/></a>
+	<div class="addNew"><a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.collections.curatorialUnits.item'/></a></div>
 	<div class="buttons">
   		<@s.submit cssClass="button" name="save" key="button.save" />
   		<@s.submit cssClass="button" name="cancel" key="button.cancel" />

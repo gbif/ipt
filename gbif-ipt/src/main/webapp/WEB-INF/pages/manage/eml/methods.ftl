@@ -44,7 +44,7 @@ $(document).ready(function(){
 			</#list>
 		</#if>
 	</div>
-	<a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.methods.item'/></a></br></br>
+	<div class="addNew"><a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.methods.item'/></a></div>
 	<div class="buttons">
 		<@s.submit cssClass="button" name="save" key="button.save" />
 		<@s.submit cssClass="button" name="cancel" key="button.cancel" />
