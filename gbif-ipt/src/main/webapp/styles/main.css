@@ -59,6 +59,7 @@ Header {
   height: 75px;
 }
 
+
 /* MESSAGING CLASS*/
 .warn{
 	color: red;
@@ -459,7 +460,7 @@ select#rowType {
 }
 div.buttons {
   height: 25px;
-  margin-top: 20px;
+  margin-top: 10px;
   float: left;
 }
 
@@ -654,6 +655,7 @@ img.trash-icon {
 	margin-top: 34px;
 	margin-left: -10px;
 }
+
 div.item {
   padding-bottom: 20px;
   border-bottom: 1px dotted #999;
@@ -681,10 +683,11 @@ h3.subTitle {
 }
 h3.groupTitle {
   display: block;
-  margin-top: 40px;
+  margin-top: 10px;
   font-family: "Arial", sans-serif;
   font-size: 1.2em;
   color: #000;
+  float: left;
 }
 div#Collection-Data {
   padding-bottom: 40px;
@@ -720,7 +723,7 @@ table#source-properties th {
 }
 table#source-properties td {
   max-width: 350px;
-  word-wrap: break-word;
+  word-break: break-all;
 }
 .detailsSource {
   overflow: hidden;
@@ -752,8 +755,9 @@ div.definition div.title {
 div.definition div.body {
 	border-bottom: none;
 	padding: 5px 10px 5px 10px;
-	width: 600px;
+	max-width: 600px;
 	display:table-cell;
+	word-break: break-all;
 }
 div.definition div.body select{
 	width: 200px;
@@ -791,7 +795,7 @@ div.conceptItem div.body {
   overflow: scroll;
 }
 #unmapped-columns {
-  overflow: auto;
+  overflow: normal;
 }
 #unmapped-columns ul li {
   width: 950px;
@@ -803,11 +807,16 @@ div.required div.title {
   color: #bc5e5b;
   font-weight: bold;
 }
+
+div.groupmenu {
+  float: left;
+}
 div.groupmenu ul {
   list-style: none;
   margin-bottom: 0px;
   font-weight: normal;
   font-size: 0.9em;
+  margin-top: 50px;
 }
 div.groupmenu ul li {
   display: inline-block;
