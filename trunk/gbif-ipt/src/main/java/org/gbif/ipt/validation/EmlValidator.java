@@ -1072,33 +1072,6 @@ public class EmlValidator extends BaseValidator {
     List<Agent> parties = eml.getAssociatedParties();
     Agent party1 = (parties.size() > 0) ? parties.get(0) : null;
 
-    if (party1 != null) {
-      return isAgentEmpty(party1);
-    }
-    return true;
-  }
-
-  /**
-   * Determine if the Basic page is empty. In other words, the user hasn't entered any information for a single
-   * field yet. The party can be multiple.
-   *
-   * @param eml EML
-   *
-   * @return whether the Parties page is empty or not.
-   */
-  private boolean isBasicPageEmpty(Eml eml) {
-    Agent contact = eml.getContact();
-    Agent creator = eml.getResourceCreator();
-    Agent provider = eml.getMetadataProvider();
-
-    String title = eml.getTitle();
-    String description = eml.getDescription();
-    // language, meta language, type, and subtype are excluded from this check
-
-    return (isAgentEmpty(contact) &&
-            isAgentEmpty(creator) &&
-            isAgentEmpty(provider) &&
-            Strings.isNullOrEmpty(title) &&
-            Strings.isNullOrEmpty(description));
+    return (party1 == null || isAgentEmpty(party1));
   }
 }
