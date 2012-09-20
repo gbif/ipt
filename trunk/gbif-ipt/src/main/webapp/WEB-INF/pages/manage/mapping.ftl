@@ -318,7 +318,7 @@ $(document).ready(function(){
 	<div class="clearfix"></div>
 </div>
 	<#if !field_has_next>
-    <div id="unmapped-columns" class="grid_24">
+    <div id="unmapped-columns" class="grid_23">
 	  <#if (nonMappedColumns.size()>0)>
 		<h3 class="subTitle"><@s.text name="manage.mapping.no.mapped.title"/></h3>
 		<p><@s.text name="manage.mapping.no.mapped.columns"/>:</p>
@@ -329,7 +329,7 @@ $(document).ready(function(){
 		</ul>
 	  </#if>
 	</div>
-    <div class="grid_24">
+    <div>
     <div class="buttons">
 	 	<@s.submit cssClass="button" name="save" key="button.save"/>
 	 	<@s.submit cssClass="button" name="cancel" key="button.cancel"/>
