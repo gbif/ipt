@@ -373,7 +373,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return (map.get("thesauri") == null) ? new ArrayList<Vocabulary>() : map.get("thesauri") ;
   }
 
-  public List<Resource> getOrganisationsResources(String organisationKey) throws RegistryException {
+  public List<Resource> getOrganisationsResources(String organisationKey) {
     List<Map<String, String>> resourcesTemp = new ArrayList<Map<String, String>>();
     try {
       resourcesTemp = gson.fromJson(requestHttpGetFromRegistry(getOrganisationsResourcesUri(organisationKey)).content,
