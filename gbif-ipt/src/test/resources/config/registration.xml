@@ -2,7 +2,7 @@
   <registry>
     <hostingOrganisation>
       <key>f3e8e9a9-df60-40ca-bb71-7f49313b3150</key>
-      <name>AAA1Organisation</name>
+      <name>Old Name AAA1Organisation</name>
       <primaryContactType>technical</primaryContactType>
       <primaryContactName>GBIF guy</primaryContactName>
       <primaryContactEmail>gbifregistry@mailinator.com</primaryContactEmail>
@@ -26,7 +26,7 @@
   </registry>
   <organisation>
     <key>f3e8e9a9-df60-40ca-bb71-7f49313b3150</key>
-    <name>AAA1Organisation</name>
+    <name>Old Name AAA1Organisation</name>
     <primaryContactType>technical</primaryContactType>
     <primaryContactName>GBIF guy</primaryContactName>
     <primaryContactEmail>gbifregistry@mailinator.com</primaryContactEmail>
@@ -38,7 +38,7 @@
   </organisation>
   <organisation>
     <key>f9b67ad0-9c9b-11d9-b9db-b8a03c50a862</key>
-    <name>Academy of Natural Sciences</name>
+    <name>Old Name Academy of Natural Sciences</name>
     <password>CU7a0fujX4</password>
     <alias>Academy of Natural Sciences</alias>
     <canHost>true</canHost>

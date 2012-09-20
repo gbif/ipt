@@ -65,11 +65,11 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
 
   private RegistryManager manager;
 
-  private AppConfig mockAppConfig = mock(AppConfig.class);
-  private DataDir mockDataDir = mock(DataDir.class);
-  private SAXParserFactory mockSAXParserFactory = mock(SAXParserFactory.class);
-  private ConfigWarnings mockConfigWarnings = mock(ConfigWarnings.class);
-  private SimpleTextProvider mockSimpleTextProvider = mock(SimpleTextProvider.class);
+  private AppConfig mockAppConfig;
+  private DataDir mockDataDir;
+  private SAXParserFactory mockSAXParserFactory;
+  private ConfigWarnings mockConfigWarnings;
+  private SimpleTextProvider mockSimpleTextProvider;
   private RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
   private HttpUtil mockHttpUtil;
   private HttpUtil.Response mockResponse;
@@ -159,9 +159,8 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
   @Test
   public void testGetExtensions() throws SAXException, ParserConfigurationException, IOException, URISyntaxException {
     // mock response from Registry with local test resource
-    String response =
+    mockResponse.content =
       IOUtils.toString(RegistryManagerImplTest.class.getResourceAsStream("/responses/extensions.json"), "UTF-8");
-    mockResponse.content = response;
     when(mockHttpUtil.get(anyString())).thenReturn(mockResponse);
 
     // create instance of RegistryManager

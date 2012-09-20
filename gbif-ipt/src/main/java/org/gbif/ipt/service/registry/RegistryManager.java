@@ -34,7 +34,7 @@ public interface RegistryManager {
    *
    * @throws RegistryException if the list of Organisation couldn't be populated
    */
-  List<Organisation> getOrganisations() throws RegistryException;
+  List<Organisation> getOrganisations();
 
   /**
    * Retrieves a list of Vocabulary from the Registry, but only the basic metadata, i.e. each without the list concepts.
@@ -74,6 +74,14 @@ public interface RegistryManager {
    */
   void updateResource(Resource resource) throws RegistryException, IllegalArgumentException;
 
+  /**
+   * Validate whether an Organization identified by its key and password is registered.
+   *
+   * @param organisationKey Organisation key
+   * @param password Organisation password (in Registry)
+   *
+   * @return whether the Organisation is registered having this key and password
+   */
   boolean validateOrganisation(String organisationKey, String password);
 
   /**
