@@ -338,13 +338,16 @@ public class MetadataAction extends ManagerBaseAction {
 
   @Override
   public String save() throws Exception {
-    // Save metadata information (eml.xml)
-    resourceManager.saveEml(resource);
-    // Save resource information (resource.xml)
-    resourceManager.save(resource);
-    // Set resource modified date
-    resource.setModified(new Date());
-    addActionMessage(getText("manage.success", new String[] {getText("submenu." + section)}));
+    //before saving, ALL metadata sections must be valid, otherwise an error is displayed
+    if (emlValidator.areAllSectionsValid(this, resource.getEml())) {
+      // Save metadata information (eml.xml)
+      resourceManager.saveEml(resource);
+      // Save resource information (resource.xml)
+      resourceManager.save(resource);
+      // Set resource modified date
+      resource.setModified(new Date());
+      addActionMessage(getText("manage.success", new String[] {getText("submenu." + section)}));
+    }
     return SUCCESS;
   }
 
