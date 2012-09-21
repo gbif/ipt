@@ -705,6 +705,16 @@ div#Additional-Metadata {
 div#Alternative-Identifiers {
   margin-top: 20px;  
 }
+.horizontal_dotted_line_large_foo {
+	border-bottom-color:#666666;
+	border-bottom-style:dotted;
+	border-bottom-width:1px;
+	line-height:1px;
+	margin-bottom:0;
+	margin-left:-7px;
+	margin-top:8px;
+	width:100%;
+}
 
 input#save.confirm {	
   width: auto;
@@ -712,6 +722,8 @@ input#save.confirm {
 input#delete.confirm {
   width: auto;
 }
+
+/* Source Mapping */
 table#source-properties {
 	margin-top: 10px;
 	margin-bottom: 0px;
@@ -728,9 +740,6 @@ table#source-properties td {
 .detailsSource {
   overflow: hidden;
 }
-
-
-/* Source Mapping */
 
 div.textRight img.infoImg {
 	float: left;
