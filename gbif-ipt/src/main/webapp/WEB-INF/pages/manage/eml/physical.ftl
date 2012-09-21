@@ -24,8 +24,7 @@
 	<br/>
 	<div id="items">
 		<#list eml.physicalData as item>
-			<div id="item-${item_index}" class="clearfix">
-			  <hr/>
+			<div id="item-${item_index}" class="item clearfix">
 				<div class="right">
 					<a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.physical.item'/> ]</a>
 			    </div>
@@ -42,6 +41,7 @@
 				<div class="halfcolumn">
 					<@input name="eml.physicalData[${item_index}].formatVersion" i18nkey="eml.physicalData.formatVersion" help="i18n"/>
 				</div>
+				<div class="horizontal_dotted_line_large_foo" id="separator"></div>
 		  	</div>
 		</#list>
 	</div>
@@ -56,7 +56,6 @@
 </div>
 
 <div id="baseItem" class="item clearfix" style="display:none;">
-	<hr/>
 	<div class="right">
 		<a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.physical.item'/> ]</a>
     </div>
