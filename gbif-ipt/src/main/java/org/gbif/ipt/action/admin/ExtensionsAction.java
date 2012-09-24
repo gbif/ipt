@@ -27,7 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
- * The Action responsible for all user input relating to the DarwinCore extension management.
+ * The Action responsible for all user input relating to extension management.
  */
 public class ExtensionsAction extends POSTAction {
 
@@ -99,6 +99,12 @@ public class ExtensionsAction extends POSTAction {
     return vocabsLastUpdated;
   }
 
+  /**
+   * Handles the population of installed and uninstalled extensions on the "Core Types and Extensions" page.
+   * Optionally, the user may have triggered an update vocabularies. This method always tries to pick up newly
+   * registered extensions from the Registry.
+   * @return struts2 result
+   */
   public String list() {
     if (updateVocabs) {
       UpdateResult result = vocabManager.updateAll();
@@ -115,18 +121,17 @@ public class ExtensionsAction extends POSTAction {
       }
     }
 
-    // retrieve all extensions
+    // retrieve all extensions that have been installed already
     extensions = extensionManager.list();
-    // load any new extensions
+    // load all registered extensions, in order to pick up any newly registered extensions from Registry
     loadRegisteredExtensions();
-
+    // populate list of uninstalled extensions, removing extensions installaed already
     newExtensions = new ArrayList<Extension>(registered.getExtensions());
-    // remove already installed ones
     for (Extension e : extensions) {
       newExtensions.remove(e);
     }
 
-    // find latest update data of all vocabularies
+    // find latest update date of all vocabularies
     List<Vocabulary> vocabs = vocabManager.list();
     numVocabs = vocabs.size();
     for (Vocabulary v : vocabs) {
@@ -142,7 +147,7 @@ public class ExtensionsAction extends POSTAction {
   @Override
   public void prepare() {
     super.prepare();
-    // in case session just started
+    // in case extensions list hasn't been populated yet
     if (!registered.isLoaded()) {
       // load all registered extensions from registry
       loadRegisteredExtensions();
@@ -160,7 +165,7 @@ public class ExtensionsAction extends POSTAction {
   }
 
   /**
-   * Reload all the list of registered extensions. Used in case the session just started.
+   * Reload all the list of registered extensions.
    */
   private void loadRegisteredExtensions() {
     try {
