@@ -13,8 +13,8 @@
 
 package org.gbif.ipt.action.manage;
 
-import org.gbif.api.vocabulary.DatasetSubtype;
-import org.gbif.api.vocabulary.DatasetType;
+import org.gbif.api.model.vocabulary.DatasetSubtype;
+import org.gbif.api.model.vocabulary.DatasetType;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
