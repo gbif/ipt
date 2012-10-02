@@ -305,8 +305,13 @@ public class SetupAction extends BaseAction {
     List<Extension> list = extensionManager.listCore();
 
     if (list.isEmpty()) {
-      // load all registered extensions from registry, and install core extensions
-      extensionManager.installCoreTypes();
+      try {
+        // install core type extensions
+        extensionManager.installCoreTypes();
+      } catch (InvalidConfigException e) {
+        log.debug(e);
+        addActionWarning(getText("admin.extension.couldnt.install.coreTypes"), e);
+      }
     }
     return INPUT;
   }

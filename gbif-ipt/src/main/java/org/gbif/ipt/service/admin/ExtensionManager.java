@@ -63,12 +63,7 @@ public interface ExtensionManager {
   int load();
 
   /**
-   * List all available extensions matching a registered keyword.
-   *
-   * @param keyword to filter by, e.g. dwc:Taxon for all taxonomic extensions
+   * Install all core type extensions.
    */
-  List<Extension> search(String keyword);
-
-  void installCoreTypes();
-
+  void installCoreTypes() throws InvalidConfigException;
 }

@@ -29,6 +29,8 @@ import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
 import com.google.inject.struts2.Struts2GuicePluginModule;
 import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.junit.Before;
 import org.junit.Test;
@@ -76,10 +78,6 @@ public class ExtensionManagerImplTest {
       new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpUtil, saxf, warnings, mockSimpleTextProvider,
         mockRegistrationManager);
 
-    // construct RegisteredExtensions
-    ExtensionManagerImpl.RegisteredExtensions mockRegisteredExtensions =
-      new ExtensionManagerImpl.RegisteredExtensions(mockRegistryManager);
-
     File myTmpDir = Files.createTempDir();
     assertTrue(myTmpDir.isDirectory());
 
@@ -90,9 +88,11 @@ public class ExtensionManagerImplTest {
     assertTrue(tmpOccCore.exists());
 
     when(mockDataDir.configFile(ExtensionManagerImpl.CONFIG_FOLDER + "/tmp-extension.xml")).thenReturn(tmpOccCore);
-    // mock downloading extension into tmpFile - we're cheating by handling the actual file already as if it
-    // were downloaded already
-    when(mockHttpUtil.download(any(URL.class), any(File.class))).thenReturn(null);
+    // Mock downloading extension into tmpFile - we're cheating by handling the actual file already as if it
+    // were downloaded already. Furthermore, mock download() response with StatusLine with 200 OK response code
+    StatusLine sl = mock(StatusLine.class);
+    when(sl.getStatusCode()).thenReturn(HttpStatus.SC_OK);
+    when(mockHttpUtil.download(any(URL.class), any(File.class))).thenReturn(sl);
     // mock returning newly created extension file
     File newOccCoreExtension = new File(myTmpDir, "http_rs_tdwg_org_dwc_terms_Occurrence.xml");
     when(mockDataDir.configFile(ExtensionManagerImpl.CONFIG_FOLDER + "/http_rs_tdwg_org_dwc_terms_Occurrence.xml"))
@@ -101,7 +101,7 @@ public class ExtensionManagerImplTest {
     // create instance
     extensionManager =
       new ExtensionManagerImpl(mockAppConfig, mockDataDir, extensionFactory, mockResourceManager, mockHttpUtil,
-        mockRegisteredExtensions, warnings, mockSimpleTextProvider, mockRegistrationManager);
+        warnings, mockSimpleTextProvider, mockRegistrationManager, mockRegistryManager);
   }
 
   @Test
@@ -112,6 +112,5 @@ public class ExtensionManagerImplTest {
     Extension ext = extensionManager.get("http://rs.tdwg.org/dwc/terms/Occurrence");
     assertEquals(161, ext.getProperties().size());
     assertEquals("Darwin Core Occurrence", ext.getTitle());
-
   }
 }
