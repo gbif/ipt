@@ -218,7 +218,7 @@ $(document).ready(function(){
   <div class="buttons">
  	<@s.submit cssClass="button" name="save" key="button.save"/>
  	<@s.submit cssClass="confirm" name="delete" key="button.delete"/>
- 	<@s.submit cssClass="button" name="cancel" key="button.cancel"/>
+ 	<@s.submit cssClass="button" name="cancel" key="button.back"/>
   </div>
   <p></p>
 <hr />
@@ -246,7 +246,7 @@ $(document).ready(function(){
 		  <#if group!="">
 		  <div class="buttons">
 		 	<@s.submit cssClass="button" name="save" key="button.save"/>
-		 	<@s.submit cssClass="button" name="cancel" key="button.cancel"/>
+		 	<@s.submit cssClass="button" name="cancel" key="button.back"/>
 		  </div>
 		  </#if>
 		  <#noescape>${groupMenu}</#noescape>
@@ -332,7 +332,7 @@ $(document).ready(function(){
     <div>
     <div class="buttons">
 	 	<@s.submit cssClass="button" name="save" key="button.save"/>
-	 	<@s.submit cssClass="button" name="cancel" key="button.cancel"/>
+	 	<@s.submit cssClass="button" name="cancel" key="button.back"/>
 	</div>
 	</div>
 	</#if>
