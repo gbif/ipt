@@ -37,10 +37,13 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import org.apache.commons.io.FileExistsException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
@@ -49,70 +52,30 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
 
   // logging
   private static final Logger log = Logger.getLogger(ExtensionManagerImpl.class);
-
-  private Map<String, Extension> extensionsByRowtype = new HashMap<String, Extension>();
   protected static final String CONFIG_FOLDER = ".extensions";
+  private final static String TAXON_KEYWORD = "dwc:taxon";
+  private final static String OCCURRENCE_KEYWORD = "dwc:occurrence";
+  private Map<String, Extension> extensionsByRowtype = new HashMap<String, Extension>();
   private ExtensionFactory factory;
   private HttpUtil downloader;
-  private final String TAXON_KEYWORD = "dwc:taxon";
-  private final String OCCURRENCE_KEYWORD = "dwc:occurrence";
   private ResourceManager resourceManager;
   private ConfigWarnings warnings;
-  private RegisteredExtensions registered;
+  private RegistryManager registryManager;
 
   // create instance of BaseAction - allows class to retrieve i18n terms via getText()
   private BaseAction baseAction;
 
   @Inject
   public ExtensionManagerImpl(AppConfig cfg, DataDir dataDir, ExtensionFactory factory, ResourceManager resourceManager,
-    HttpUtil httpUtil, RegisteredExtensions registered, ConfigWarnings warnings, SimpleTextProvider textProvider,
-    RegistrationManager registrationManager) {
+    HttpUtil httpUtil, ConfigWarnings warnings, SimpleTextProvider textProvider,
+    RegistrationManager registrationManager, RegistryManager registryManager) {
     super(cfg, dataDir);
     this.factory = factory;
     this.resourceManager = resourceManager;
     this.downloader = httpUtil;
-    this.registered = registered;
     this.warnings = warnings;
     baseAction = new BaseAction(textProvider, cfg, registrationManager);
-  }
-
-  public static class RegisteredExtensions {
-
-    private List<Extension> extensions = new ArrayList<Extension>();
-    private RegistryManager registryManager;
-
-    @Inject
-    public RegisteredExtensions(RegistryManager registryManager) {
-      this.registryManager = registryManager;
-    }
-
-    public boolean isLoaded() {
-      return !extensions.isEmpty();
-    }
-
-    /**
-     * Load list of registered extensions from Registry.
-     */
-    public void load() throws RegistryException {
-       extensions = registryManager.getExtensions();
-    }
-
-    public List<Extension> getCoreTypes() {
-      List<Extension> coreTypes = new ArrayList<Extension>();
-      for (Extension ext : extensions) {
-        if (Constants.DWC_ROWTYPE_OCCURRENCE.equals(normalizeRowType(ext.getRowType()))) {
-          coreTypes.add(ext);
-        }
-        if (Constants.DWC_ROWTYPE_TAXON.equals(normalizeRowType(ext.getRowType()))) {
-          coreTypes.add(ext);
-        }
-      }
-      return coreTypes;
-    }
-
-    public List<Extension> getExtensions() {
-      return extensions;
-    }
+    this.registryManager = registryManager;
   }
 
   public static String normalizeRowType(String rowType) {
@@ -165,30 +128,50 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     return dataDir.configFile(CONFIG_FOLDER + "/" + filename);
   }
 
+  /**
+   * Download extension into local file. The final filename is based on the extension's rowType. This isn't known until
+   * the download is complete, so a temporary file is stored first.
+   *
+   * @param url the url that returns the xml based extension definition
+   *
+   * @return the installed extension
+   */
   public synchronized Extension install(URL url) throws InvalidConfigException {
     Extension ext = null;
-    // download extension into local file first for subsequent IPT startups
-    // final filename is based on rowType which we dont know yet - create a tmp file first
     File tmpFile = dataDir.configFile(CONFIG_FOLDER + "/tmp-extension.xml");
+    String address = (url == null) ? "null" : url.toString();
+    String rowType = "";
     try {
-      // TODO: use StatusLine to determine if download was successful
-      downloader.download(url, tmpFile);
-      log.info("Successfully downloaded Extension " + url);
-      // finally read in the new file and create the extension object
-      ext = loadFromFile(tmpFile);
-      if (ext != null && ext.getRowType() != null) {
-        // rename tmp file into final version
-        File localFile = getExtensionFile(ext.getRowType());
-        FileUtils.moveFile(tmpFile, localFile);
+      StatusLine statusLine = downloader.download(url, tmpFile);
+      if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
+        log.info("Successfully downloaded Extension " + url);
+        // finally read in the new file and create the extension object
+        ext = loadFromFile(tmpFile);
+        if (ext != null && ext.getRowType() != null) {
+          rowType = ext.getRowType();
+          // rename tmp file into final version
+          File localFile = getExtensionFile(rowType);
+          FileUtils.moveFile(tmpFile, localFile);
+        } else {
+          log.error("Extension could not be loaded. Is required rowType missing?");
+        }
       } else {
-        log.error("Extension lacking required rowType!");
+
+        log.error("Download of extension with url ( " + address + ") failed, the response code was " + String
+          .valueOf(statusLine.getStatusCode()));
       }
     } catch (InvalidConfigException e) {
       throw e;
-    } catch (Exception e) {
+    } catch (FileExistsException e) {
+      String msg = baseAction.getText("admin.extension.install.duplicate", new String[] {rowType});
       e.printStackTrace();
-      log.error(e);
-      throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Error installing extension " + url, e);
+      log.error(msg);
+      throw new InvalidConfigException(TYPE.ROWTYPE_ALREADY_INSTALLED, msg, e);
+    } catch (Exception e) {
+      String msg = baseAction.getText("admin.extension.install.error", new String[] {address});
+      e.printStackTrace();
+      log.error(msg);
+      throw new InvalidConfigException(TYPE.INVALID_EXTENSION, msg, e);
     }
     return ext;
   }
@@ -245,41 +228,49 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   private Extension loadFromFile(File localFile) throws InvalidConfigException {
     InputStream fileIn = null;
     Extension ext = null;
-    try {
-      fileIn = new FileInputStream(localFile);
-      ext = factory.build(fileIn);
-      // normalise rowtype
-      ext.setRowType(normalizeRowType(ext.getRowType()));
-      // keep vocab in local lookup
-      extensionsByRowtype.put(ext.getRowType(), ext);
-      log.info("Successfully loaded extension " + ext.getRowType());
-    } catch (FileNotFoundException e) {
-      log.error("Cant find local extension file", e);
-      throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Cant find local extension file");
-    } catch (IOException e) {
-      log.error("Cant access local extension file", e);
-      throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Cant access local extension file");
-    } catch (SAXException e) {
-      log.error("Cant parse local extension file", e);
-      throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Cant parse local extension file");
-    } catch (ParserConfigurationException e) {
-      log.error("Cant create sax parser", e);
-      throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Cant create sax parser");
-    } finally {
-      if (fileIn != null) {
-        try {
-          fileIn.close();
-        } catch (IOException e) {
+    if (localFile != null && localFile.exists()) {
+      try {
+        fileIn = new FileInputStream(localFile);
+        ext = factory.build(fileIn);
+        // normalise rowtype
+        ext.setRowType(normalizeRowType(ext.getRowType()));
+        // keep vocab in local lookup
+        extensionsByRowtype.put(ext.getRowType(), ext);
+        log.info("Successfully loaded extension " + ext.getRowType());
+      } catch (FileNotFoundException e) {
+        log.error("Cant find local extension file (" + localFile.getAbsolutePath() + ")", e);
+        throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Cant find local extension file");
+      } catch (IOException e) {
+        log.error("Cant access local extension file (" + localFile.getAbsolutePath() + ")", e);
+        throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Cant access local extension file");
+      } catch (SAXException e) {
+        log.error("Cant parse local extension file (" + localFile.getAbsolutePath() + ")", e);
+        throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Cant parse local extension file");
+      } catch (ParserConfigurationException e) {
+        log.error("Cant create sax parser", e);
+        throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Cant create sax parser");
+      } finally {
+        if (fileIn != null) {
+          try {
+            fileIn.close();
+          } catch (IOException e) {
+            log.error("Input stream on extension file (" + localFile.getAbsolutePath() + ") could not be closed.");
+          }
         }
       }
+    } else {
+      log.error("Tried to load local extension file that doesn't exist");
     }
     return ext;
   }
 
-  public List<Extension> search(String keyword) {
-    return search(keyword, false, false);
-  }
-
+  /**
+   * List all available extensions matching a registered keyword.
+   *
+   * @param keyword               to filter by, e.g. dwc:Taxon for all taxonomic extensions
+   * @param includeEmptySubject   must the subject be empty
+   * @param includeCoreExtensions must the extension be a core type
+   */
   private List<Extension> search(String keyword, boolean includeEmptySubject, boolean includeCoreExtensions) {
     List<Extension> list = new ArrayList<Extension>();
     keyword = StringUtils.trimToNull(keyword);
@@ -299,20 +290,32 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   }
 
   /**
-   *  Load all registered extensions from registry (if they haven't been loaded yet), and install core extensions.
+   * Install core type extensions.
+   *
+   * @throws InvalidConfigException if installation of a core type extension failed
    */
-  public void installCoreTypes() {
-    List<Extension> extensions;
+  public void installCoreTypes() throws InvalidConfigException {
+    List<Extension> extensions = getCoreTypes();
+    for (Extension ext : extensions) {
+      install(ext.getUrl());
+    }
+  }
+
+
+  /**
+   * Retrieve a list containing all core type extensions.
+   *
+   * @return list containing all core type extensions
+   */
+  private List<Extension> getCoreTypes() {
+    List<Extension> coreTypes = new ArrayList<Extension>();
     try {
-      if (!registered.isLoaded()) {
-        registered.load();
-      }
-      extensions = registered.getCoreTypes();
-      for (Extension ext: extensions) {
-        try {
-          install(ext.getUrl());
-        } catch (Exception e) {
-          log.debug(e);
+      for (Extension ext : registryManager.getExtensions()) {
+        if (Constants.DWC_ROWTYPE_OCCURRENCE.equals(normalizeRowType(ext.getRowType()))) {
+          coreTypes.add(ext);
+        }
+        if (Constants.DWC_ROWTYPE_TAXON.equals(normalizeRowType(ext.getRowType()))) {
+          coreTypes.add(ext);
         }
       }
     } catch (RegistryException e) {
@@ -327,5 +330,6 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
       warnings.addStartupError(msg);
       log.error(msg);
     }
+    return coreTypes;
   }
 }

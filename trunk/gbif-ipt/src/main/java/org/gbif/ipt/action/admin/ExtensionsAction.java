@@ -10,8 +10,8 @@ import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
-import org.gbif.ipt.service.admin.impl.ExtensionManagerImpl;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl.UpdateResult;
+import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.net.URL;
@@ -36,8 +36,9 @@ public class ExtensionsAction extends POSTAction {
 
   private ExtensionManager extensionManager;
   private VocabulariesManager vocabManager;
-  private ExtensionManagerImpl.RegisteredExtensions registered;
-
+  private RegistryManager registryManager;
+  // list of all registered extensions
+  private List<Extension> registeredExtensions;
   private List<Extension> extensions;
   private Extension extension;
   private String url;
@@ -51,11 +52,11 @@ public class ExtensionsAction extends POSTAction {
   @Inject
   public ExtensionsAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
     ExtensionManager extensionManager, VocabulariesManager vocabManager,
-    ExtensionManagerImpl.RegisteredExtensions registered, ConfigWarnings warnings) {
+    RegistryManager registryManager, ConfigWarnings warnings) {
     super(textProvider, cfg, registrationManager);
     this.extensionManager = extensionManager;
     this.vocabManager = vocabManager;
-    this.registered = registered;
+    this.registryManager = registryManager;
     this.warnings = warnings;
   }
 
@@ -123,10 +124,9 @@ public class ExtensionsAction extends POSTAction {
 
     // retrieve all extensions that have been installed already
     extensions = extensionManager.list();
-    // load all registered extensions, in order to pick up any newly registered extensions from Registry
-    loadRegisteredExtensions();
-    // populate list of uninstalled extensions, removing extensions installaed already
-    newExtensions = new ArrayList<Extension>(registered.getExtensions());
+
+    // populate list of uninstalled extensions, removing extensions installed already
+    newExtensions = getRegisteredExtensions();
     for (Extension e : extensions) {
       newExtensions.remove(e);
     }
@@ -147,11 +147,10 @@ public class ExtensionsAction extends POSTAction {
   @Override
   public void prepare() {
     super.prepare();
-    // in case extensions list hasn't been populated yet
-    if (!registered.isLoaded()) {
-      // load all registered extensions from registry
-      loadRegisteredExtensions();
-    }
+
+    // load all registered extensions from registry
+    loadRegisteredExtensions();
+
     // ensure mandatory vocabs are always loaded
     vocabManager.load();
 
@@ -169,7 +168,7 @@ public class ExtensionsAction extends POSTAction {
    */
   private void loadRegisteredExtensions() {
     try {
-      registered.load();
+      setRegisteredExtensions(registryManager.getExtensions());
     } catch (RegistryException e) {
       // log as specific error message as possible about why the Registry error occurred
       String msg = RegistryException.logRegistryException(e.getType(), this);
@@ -181,6 +180,11 @@ public class ExtensionsAction extends POSTAction {
       msg = getText("admin.extensions.couldnt.load", new String[] {cfg.getRegistryUrl()});
       warnings.addStartupError(msg);
       log.error(msg);
+    } finally {
+      // initialize list as empty list had the list not been populated
+      if (getRegisteredExtensions() == null) {
+        setRegisteredExtensions(new ArrayList<Extension>());
+      }
     }
   }
 
@@ -214,4 +218,11 @@ public class ExtensionsAction extends POSTAction {
     this.url = url;
   }
 
+  public List<Extension> getRegisteredExtensions() {
+    return registeredExtensions;
+  }
+
+  public void setRegisteredExtensions(List<Extension> registeredExtensions) {
+    this.registeredExtensions = registeredExtensions;
+  }
 }

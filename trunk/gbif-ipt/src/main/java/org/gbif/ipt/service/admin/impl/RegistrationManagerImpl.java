@@ -212,7 +212,9 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
       // 2. check hosting Organisation - IPT Organisation
       Organisation hostingOrganisation = registration.getHostingOrganisation();
-      updateOrganizationName(hostingOrganisation, registryOrganisations);
+      if (hostingOrganisation != null) {
+        updateOrganizationName(hostingOrganisation, registryOrganisations);
+      }
 
       // ensure changes are persisted to registration.xml
       save();
@@ -230,42 +232,45 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
    */
   private void updateOrganizationName(Organisation organisation,
     List<Organisation> registryOrganisations) {
+    if (organisation != null && registryOrganisations != null) {
+      // the organization key
+      String key = (organisation.getKey() == null) ? null : organisation.getKey().toString();
+      // the old organization name
+      String oldName = organisation.getName();
+      // the updated organization name
+      String newName;
 
-    // the organization key
-    String key = (organisation.getKey() == null) ? null : organisation.getKey().toString();
-    // the old organization name
-    String oldName = organisation.getName();
-    // the updated organization name
-    String newName;
-
-    for (Organisation registered : registryOrganisations) {
-      if (key != null && key.equalsIgnoreCase(registered.getKey().toString())) {
-        // compare names, if different, perform update
-        if (!oldName.equals(registered.getName())) {
-          newName = registered.getName();
-          organisation.setName(newName);
-          registration.getAssociatedOrganisations().put(key, organisation);
-          log.debug("Organisation (" + key + ") name updated from " + oldName + " -> " + newName);
-          // now, since the name is different, update all resources associated with it
-          List<Resource> resources = resourceManager.list();
-          for (Resource resource : resources) {
-            Organisation resourcesOrganisation = resource.getOrganisation();
-            // compare keys, if matched, perform update
-            UUID resourcesOrganisationKey = resourcesOrganisation.getKey();
-            if (resourcesOrganisationKey != null) {
-              if (resourcesOrganisationKey.toString().equalsIgnoreCase(key)) {
-                resourcesOrganisation.setName(newName);
-                resource.setOrganisation(resourcesOrganisation);
-                // ensure the change to the resource is persisted
-                resourceManager.save(resource);
-                log.debug(
-                  "Resource (" + resource.getShortname() + ") updated: Organisation (" + key + ") name updated from "
-                  + oldName + " -> " + newName);
+      for (Organisation registered : registryOrganisations) {
+        if (key != null && key.equalsIgnoreCase(registered.getKey().toString())) {
+          // compare names, if different, perform update
+          if (!oldName.equals(registered.getName())) {
+            newName = registered.getName();
+            organisation.setName(newName);
+            registration.getAssociatedOrganisations().put(key, organisation);
+            log.debug("Organisation (" + key + ") name updated from " + oldName + " -> " + newName);
+            // now, since the name is different, update all resources associated with it
+            List<Resource> resources = resourceManager.list();
+            for (Resource resource : resources) {
+              Organisation resourcesOrganisation = resource.getOrganisation();
+              // compare keys, if matched, perform update
+              UUID resourcesOrganisationKey = resourcesOrganisation.getKey();
+              if (resourcesOrganisationKey != null) {
+                if (resourcesOrganisationKey.toString().equalsIgnoreCase(key)) {
+                  resourcesOrganisation.setName(newName);
+                  resource.setOrganisation(resourcesOrganisation);
+                  // ensure the change to the resource is persisted
+                  resourceManager.save(resource);
+                  log.debug(
+                    "Resource (" + resource.getShortname() + ") updated: Organisation (" + key + ") name updated from "
+                    + oldName + " -> " + newName);
+                }
               }
             }
           }
         }
       }
+    } else {
+      log.debug("Update of organisation name failed: organisation or list of registered organisations was null");
     }
   }
 
