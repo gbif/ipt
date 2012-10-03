@@ -402,7 +402,7 @@ div.resourceOverviewPortal div.title div.head {
 	font-weight: bold; font-size: 0.9em;
 }
 div.resourceOverviewPortal div.body {
-	font-size: 0.85em;
+	font-size: 0.8em;
 	display: table-cell;
 	height: 100%;
 	padding: 5px;
@@ -444,6 +444,7 @@ div.resourceOverview div.bodyOverview {
 }
 div.resourceOverview div.bodyOverview div.details {
 	width: 500px;
+	font-size: 0.9em;
 }
 div.resourceOverview div.bodyOverview div.details table {
 	width: 100%;
@@ -898,7 +899,7 @@ table#user-list tbody tr td { display: table-cell; }
 #zone-footer ul li a {
   color: #005418;
   text-decoration: underline;
-  font-size: 1.1em;
+  font-size: 1em;
 }
 
 #zone-footer a:hover {
