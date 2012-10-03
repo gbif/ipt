@@ -477,7 +477,7 @@ This area of the Resource Overview page allows a user to map the fields in the i
 
 After the desired core type or extension is selected, click on the button labeled "Add" to open the Data Source selection page. This page gives an explanation of the type of data the extension is meant to support, and shows a select box containing a list of all of the configured data sources. 
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceSourceSelect.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v204/IPTManageResourceSourceSelect.png]
 
 Select the data source to map, and then click on the button labeled "Save". This will open the Data Mapping detail page and display a status message showing how many fields from the data source were automatically mapped to the fields in the extensions. Fields are automatically mapped if the field names, converted to all lower case, match each other.
 
