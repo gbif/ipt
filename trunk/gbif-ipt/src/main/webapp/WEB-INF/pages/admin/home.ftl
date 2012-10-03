@@ -10,23 +10,19 @@
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <div class="grid_18 suffix_6">
 <table id="admintable">
+	  <@s.form cssClass="topForm" action="updateResourceMetadata.do" method="post">	  		
 	<tr>
 	  <td>
 		<a href="${baseURL}/admin/config.do"><img src="${baseURL}/images/icons/settings.png" /></a>
 	  </td>
 	  <td>
-		<@s.text name="admin.home.editConfig"/>
-	  </td>
-	  <td>
-	  <@s.form cssClass="topForm" action="updateResourceMetadata.do" method="post">	  		
-	        <img class="infoImg" src="${baseURL}/images/info.gif" />
-			<div class="info">
-				<@s.text name="admin.home.publishResources.help"/>
-	        </div>
-		    <@s.submit cssClass="button" name="updateMetadata" key="admin.home.publishResources"/>
-	  </@s.form>
+	  <@s.text name="admin.home.editConfig"/>
+	  <img class="infoImg" src="${baseURL}/images/info.gif" />
+	  <div class="info"><@s.text name="admin.home.publishResources.help"/></div>
+	  <@s.submit cssClass="button" name="updateMetadata" key="admin.home.publishResources"/>
 	  </td>
 	</tr>
+	  </@s.form>
 	<tr>
 	  <td>
 		<a href="${baseURL}/admin/users.do"><img src="${baseURL}/images/icons/users.png" /></a>
