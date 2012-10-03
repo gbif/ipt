@@ -503,6 +503,10 @@ div#sidebar ul li.current a {
 }
 .superscript { color: #666 ; vertical-align: top; font-size: 0.6em; font-family: "Arial", sans-serif;}
 .subTitle {  margin-bottom: 5px; color: #333; }
+
+
+
+
 div.halfcolumn {
 	float: left;
 	margin: 0px 0px 0px 0px;
@@ -575,7 +579,7 @@ div a.button {
 }
 /* To indicate the width should be cut 50% - used for example on the create new resource template */
 .half input {
-  width: 50%;
+  width: 45%;
 }
 
 .topForm img.infoImg {
@@ -720,11 +724,29 @@ div#Alternative-Identifiers {
 	width:100%;
 }
 
+/* temporary vertical line for collection data page */
+div#Curatorial-Units div#items{
+  border-top: 1px dotted #999;
+}
+
 input#save.confirm {	
   width: auto;
 }
 input#delete.confirm {
   width: auto;
+}
+
+/* Collection Data */
+.subitem {
+  width: 49%;
+}
+
+div.subitem div.halfcolumn input {
+  width: 80%;
+}
+
+.subitem label {
+  margin-top: 0px;
 }
 
 /* Source Mapping */
