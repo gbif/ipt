@@ -421,7 +421,7 @@ After selecting the file, its name will appear to the right of the "Choose File"
 
 Click on the button labeled "Clear" to remove the choice of selected file and return to the previous state before any data source was selected. Or, click on the button labeled "Add" to open the Source Data File detail page (if there is the risk of overwriting a file with the same name, a dialog opens that asks the user to confirm they actually want to overwrite it). This page shows the name of the resource along with a summary of the file characteristics (readability, number of columns detected, absolute path to the file, the file size, the number of rows detected, and the date the file was last loaded into the IPT). The Source Data File detail page allows the user to view and edit the parameters that describe the content of the selected file, and to use these settings to analyze and preview the file. 
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceSourceDataFormat.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v204/IPTManageResourceSourceDataFormat.png]
  * *Source Name* - the name of the file selected, without the file extension.
  * *Readable* - this icon indicates whether data are accessible using the file format information provided on this page.
  * *Columns* - the number of columns in the dataset as configured using the parameters on this page. 
