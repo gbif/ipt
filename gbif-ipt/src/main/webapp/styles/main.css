@@ -767,7 +767,7 @@ div.definition div.body {
 	padding: 5px 10px 5px 10px;
 	max-width: 600px;
 	display:table-cell;
-	word-break: break-all;
+	word-break: hyphenate;
 }
 div.definition div.body select{
 	width: 200px;
