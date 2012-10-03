@@ -453,7 +453,7 @@ The IPT can use database connections to import data from tables or views. A list
 
 The Source Database Detail page shows the name of the resource along with a summary of the database characteristics (readability, number of columns detected) and allows the user to view and edit the parameters that describe how to access the data from the database, and to use these settings to analyze and preview the data. 
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceSourceDatabase.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v204/IPTManageResourceSourceDatabase.png]
 
  * *Source Name* - the name of the data source. Unlike a file data source, this can be edited and given any name by the user.
  * *Readable* - this icon indicates whether data are accessible using the connection information provided on this page.
