@@ -38,6 +38,7 @@
 	<div id="Curatorial-Units">
 	<h2 class="subTitle"><@s.text name="manage.metadata.collections.curatorialUnits.title"/></h2>
 	<p><@s.text name="manage.metadata.collections.curatorialUnits.intro"/></p>
+
 	<div id="items">
 		<#list eml.jgtiCuratorialUnits as item>
 			<#assign type="${eml.jgtiCuratorialUnits[item_index].type}"/>
