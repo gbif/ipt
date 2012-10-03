@@ -20,10 +20,11 @@ $(document).ready(function(){
  <#assign currentMenu = "manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
-
+<div class="grid_18 suffix_6">
 <h1><span class="superscript"><@s.text name='manage.overview.title.label'/></span>
     <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
 </h1>
+</div>
 <div class="grid_24">
 <form class="topForm" action="source.do" method="post">
 <h2 class="subTitle"><@s.text name='manage.source.title'/></h2>
