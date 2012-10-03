@@ -328,7 +328,7 @@ img.testmode {
 }
 
 #region-content p {
-  font-size: 0.9em;
+  font-size: 0.8em;
 }
 
 table#resourcestable { margin-bottom: 40px; width: 950px; }
@@ -789,6 +789,7 @@ div.definition div.body table {
 }
 div.definition div.body table th {
 	font-weight: bold;
+	font-size: 0.9em;
 	width: 150px;
 }
 div.definition div.body div.details {
