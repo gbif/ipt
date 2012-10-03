@@ -568,7 +568,15 @@ If the attempt to register is successful, a message will appear at the top of th
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceVisibilityRegistered.png]
   * *Registered* - A resource that has been registered with the GBIF network is discoverable through that system and the data from the resource can be indexed by and accessed from the GBIF portal. If the resource has already been registered, every time the "Publish" button is clicked, it will also send new information about the resource to the GBIF Registry if any of the following have changed since the registry was last updated: title, description, primary contact name or email. A summary of information registered with GBIF will appear in the right-hand column when registration is complete.<p>The visibility of a registered resource can not be changed to private. If a resource must be removed from the GBIF Registry, follow the procedure described in the "Delete a Resource" section under the "Resource Overview" heading in the "Manage Resources Menu" section.
+====Migrate a Resource====
+There is now a way to migrate registered DiGIR, BioCASE, and TAPIR resources to an IPT. The way this works, is that the IPT resource is configured to update the existing registered DiGIR, BioCASE, or TAPIR resource that it corresponds to in the GBIF Registry. This allows the resource to preserve its GBIF Registry UUID. 
 
+To migrate an *existing registered resource* to your *IPT resource*, simply follow these instructions:
+  # Ensure that the *IPT resource's* visibility is public and NOT registered.   
+  # Determine the owning organisation of the *existing registered resource*, and ensure that it is added to the IPT as an organisation, and that it is configured to publish datasets. To do so, please refer to the section "Add Organisation". 
+  # Determine the GBIF Registry UUID of the *existing registered resource* (it will have a format similar to the following: "5d637678-cb64-4863-a12b-78b4e1a56628"). Depending on whether you are running the IPT in test or production mode, you would visit http://gbrdsdev.gbif.org or http://gbrds.gbif.org respectively. 
+  # Add this UUID to the list of the *IPT resource's* alternative identifiers on the Additional Metadata page. Don't forget to save the Additional Metadata page. 
+  # Finally, select the owning organisation from the drop-down list on the resource overview page, and click the register button. Similar to any other registration, you will have to confirm that you have read and understood the GBIF data sharing agreement before the registration will be executed.
 ====Resource Managers====
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceManagers.png]
 
