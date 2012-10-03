@@ -1,6 +1,10 @@
 =The GBIF Integrated Publishing Toolkit User Manual=
-*IPT Version: 2.0.3*
+----
+*Under construction in preparation for release of version 2.0.4*
+----
+* IPT Version: 2.0.4*
 
+_For the IPT Version 2.0.3 User Manual, please go [IPTUserManualv203 here]_
 _For the IPT Version 2.0.2 User Manual, please go [IPTUserManualv202 here]_
 
 <wiki:toc max_depth="4" />
