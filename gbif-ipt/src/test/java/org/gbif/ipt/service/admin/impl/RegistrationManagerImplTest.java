@@ -30,14 +30,15 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class RegistrationManagerImplTest extends IptMockBaseTest {
 
-  // Key of AAA1Organisation - Organisation IPT is associated to
-  private static final String HOSTING_ORGANISATION_KEY = "f3e8e9a9-df60-40ca-bb71-7f49313b3150";
+  // Key of Academy of Natural Sciences - Organisation IPT is associated to
+  private static final String HOSTING_ORGANISATION_KEY = "f9b67ad0-9c9b-11d9-b9db-b8a03c50a862";
   // Key of Academy of Natural Sciences - Organisation Resource is associated to
   private static final String RESOURCE_ORGANISATION_KEY = "f9b67ad0-9c9b-11d9-b9db-b8a03c50a862";
 
@@ -62,7 +63,7 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
     r1.setShortname("Test Resource");
     Organisation r1Org = new Organisation();
     r1Org.setName("Old Name Academy of Natural Sciences");
-    r1Org.setKey("f9b67ad0-9c9b-11d9-b9db-b8a03c50a862");
+    r1Org.setKey(RESOURCE_ORGANISATION_KEY);
     r1.setStatus(PublicationStatus.REGISTERED);
     r1.setOrganisation(r1Org);
 
@@ -79,7 +80,7 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
     mockHttpUtil = mock(HttpUtil.class);
     mockResponse = mock(HttpUtil.Response.class);
     mockResponse.content = IOUtils
-      .toString(RegistrationManagerImplTest.class.getResourceAsStream("/responses/organisations.json"), "UTF-8");
+      .toString(RegistrationManagerImplTest.class.getResourceAsStream("/responses/organisation.json"), "UTF-8");
     when(mockHttpUtil.get(anyString())).thenReturn(mockResponse);
 
     // create instance of RegistryManager
@@ -88,7 +89,7 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
         mockSimpleTextProvider, mock(RegistrationManager.class));
 
     // make sure the list of organisations is fully populated
-    assertEquals(545, mockRegistryManager.getOrganisations().size());
+    assertNotNull(mockRegistryManager.getRegisteredOrganisation(RESOURCE_ORGANISATION_KEY));
 
     // create instance of manager
     registrationManager = new RegistrationManagerImpl(mockAppConfig, mockDataDir, mockResourceManager,
@@ -96,25 +97,6 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
 
     // load associatedOrganisations, hostingOrganisation, etc
     registrationManager.load();
-
-    // mock returning list of resources, including one whose owning organization is a the Academy of Natural Sciences
-    Organisation orgResIsAssociatedTo = registrationManager.get(RESOURCE_ORGANISATION_KEY);
-    List<Resource> ls = new ArrayList<Resource>();
-    Resource res1 = new Resource();
-    res1.setOrganisation(orgResIsAssociatedTo);
-    ls.add(res1);
-    when(mockResourceManager.list()).thenReturn(ls);
-  }
-
-  @Test
-  public void testDeleteHostingOrganization() {
-    // try deleting the organisation AAA1Organisation - it will throw a DeletionNotAllowedException since it is the
-    // hosting organisation
-    try {
-      registrationManager.delete(HOSTING_ORGANISATION_KEY);
-    } catch (DeletionNotAllowedException e) {
-      assertEquals(DeletionNotAllowedException.Reason.IPT_REGISTERED_WITH_ORGANISATION, e.getReason());
-    }
   }
 
   @Test
@@ -130,16 +112,17 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
 
   @Test
   public void updateOrganisationNamesOnLoad() {
-    // Hosting organisation name: changed from "Old Name AAA1Organisation" as per latest registry response mocked
-    // from organisations.json
+    // Hosting organisation name: changed from "Old Name Academy of Natural Sciences" as per latest registry response
+    // mocked from organisation/<key>.json
     Organisation host = registrationManager.getHostingOrganisation();
-    assertEquals("f3e8e9a9-df60-40ca-bb71-7f49313b3150", host.getKey().toString());
-    assertEquals("New Name AAA1Organisation", host.getName());
+    assertEquals(HOSTING_ORGANISATION_KEY, host.getKey().toString());
+    assertEquals("New Name Academy of Natural Sciences", host.getName());
+    assertEquals(HOSTING_ORGANISATION_KEY, host.getKey().toString());
 
     // Associated organisation name: changed from "Old Name Academy of Natural Sciences" as per latest registry
-    // response mocked from organisations.json
-    Organisation associated = registrationManager.get("f9b67ad0-9c9b-11d9-b9db-b8a03c50a862");
+    // response mocked from organisation/<key>.json
+    Organisation associated = registrationManager.get(RESOURCE_ORGANISATION_KEY);
     assertEquals("New Name Academy of Natural Sciences", associated.getName());
-    assertEquals("f9b67ad0-9c9b-11d9-b9db-b8a03c50a862", associated.getKey().toString());
+    assertEquals(RESOURCE_ORGANISATION_KEY, associated.getKey().toString());
   }
 }

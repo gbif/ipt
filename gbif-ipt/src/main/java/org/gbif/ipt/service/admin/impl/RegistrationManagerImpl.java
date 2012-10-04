@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.xstream.XStream;
@@ -191,29 +192,26 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
       }
     }
 
-    // it could be organisations have changed their name in the Registry, so update all organisation names
-    updateOrganisationNames();
+    // it could be organisations have changed their name or node in the Registry, so update all organisation metadata
+    updateAssociatedOrganisationsMetadata();
   }
 
   /**
-   * Update the name of each organization that has been added to the IPT with the latest version coming from the
+   * Update the metadata of each organization that has been added to the IPT with the latest version coming from the
    * Registry.
    */
-  private void updateOrganisationNames() {
+  private void updateAssociatedOrganisationsMetadata() {
     try {
-      // retrieve complete list of Organisations from Registry
-      List<Organisation> registryOrganisations = registryManager.getOrganisations();
-
       // 1. check associated Organisations
       for (Map.Entry<String, Organisation> entry : registration.getAssociatedOrganisations().entrySet()) {
         // search for that particular organisation, has the name changed?
-        updateOrganizationName(entry.getValue(), registryOrganisations);
+        updateOrganisationMetadata(entry.getValue());
       }
 
       // 2. check hosting Organisation - IPT Organisation
       Organisation hostingOrganisation = registration.getHostingOrganisation();
       if (hostingOrganisation != null) {
-        updateOrganizationName(hostingOrganisation, registryOrganisations);
+        updateOrganisationMetadata(hostingOrganisation);
       }
 
       // ensure changes are persisted to registration.xml
@@ -224,53 +222,54 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
   }
 
   /**
-   * For a single organization, update its name if it has changed. Then, update each resource it is associated with
-   * ensuring that the updated name is used.
+   * For a single organization, update its metadata. Only updates the metadata for an organisation coming from the
+   * registry, not the metadata set by the IPT administrator like can host data, etc.
    *
    * @param organisation          Organisation
-   * @param registryOrganisations list of the latest registered organisations from the Registry
    */
-  private void updateOrganizationName(Organisation organisation,
-    List<Organisation> registryOrganisations) {
-    if (organisation != null && registryOrganisations != null) {
+  private void updateOrganisationMetadata(Organisation organisation) {
+    if (organisation != null) {
       // the organization key
       String key = (organisation.getKey() == null) ? null : organisation.getKey().toString();
-      // the old organization name
-      String oldName = organisation.getName();
-      // the updated organization name
-      String newName;
 
-      for (Organisation registered : registryOrganisations) {
-        if (key != null && key.equalsIgnoreCase(registered.getKey().toString())) {
-          // compare names, if different, perform update
-          if (!oldName.equals(registered.getName())) {
-            newName = registered.getName();
-            organisation.setName(newName);
-            registration.getAssociatedOrganisations().put(key, organisation);
-            log.debug("Organisation (" + key + ") name updated from " + oldName + " -> " + newName);
-            // now, since the name is different, update all resources associated with it
-            List<Resource> resources = resourceManager.list();
-            for (Resource resource : resources) {
-              Organisation resourcesOrganisation = resource.getOrganisation();
-              // compare keys, if matched, perform update
-              UUID resourcesOrganisationKey = resourcesOrganisation.getKey();
-              if (resourcesOrganisationKey != null) {
-                if (resourcesOrganisationKey.toString().equalsIgnoreCase(key)) {
-                  resourcesOrganisation.setName(newName);
-                  resource.setOrganisation(resourcesOrganisation);
-                  // ensure the change to the resource is persisted
-                  resourceManager.save(resource);
-                  log.debug(
-                    "Resource (" + resource.getShortname() + ") updated: Organisation (" + key + ") name updated from "
-                    + oldName + " -> " + newName);
-                }
-              }
-            }
-          }
+      // retrieve the latest copy of the organisation from the Registry
+      Organisation o = registryManager.getRegisteredOrganisation(key);
+
+      if (o != null) {
+
+        String oKey = (o.getKey() == null) ? null : o.getKey().toString();
+        String oName = (o.getName() == null) ? null : o.getName();
+
+        // sanity check - only the key must be exactly the same, and at least the name must not be null
+        if (oKey != null && key.equalsIgnoreCase(oKey) && !Strings.isNullOrEmpty(oName)) {
+          // organisation
+          organisation.setName(oName);
+          organisation.setDescription((o.getDescription() == null) ? null : o.getDescription());
+          organisation.setHomepageURL((o.getHomepageURL() == null) ? null : o.getHomepageURL());
+          // organisation node
+          organisation.setNodeKey((o.getNodeKey() == null) ? null : o.getNodeKey());
+          organisation.setNodeName((o.getNodeName() == null) ? null : o.getNodeName());
+          organisation.setNodeContactEmail((o.getNodeContactEmail() == null) ? null : o.getNodeContactEmail());
+          // organisation primary contact
+          organisation.setPrimaryContactName((o.getPrimaryContactName() == null) ? null : o.getPrimaryContactName());
+          organisation.setPrimaryContactFirstName((o.getPrimaryContactFirstName() == null) ? null : o.getPrimaryContactFirstName());
+          organisation.setPrimaryContactLastName((o.getPrimaryContactLastName() == null) ? null : o.getPrimaryContactLastName());
+          organisation.setPrimaryContactAddress((o.getPrimaryContactAddress() == null) ? null : o.getPrimaryContactAddress());
+          organisation.setPrimaryContactDescription((o.getPrimaryContactDescription() == null) ? null : o.getPrimaryContactDescription());
+          organisation.setPrimaryContactEmail((o.getPrimaryContactEmail() == null) ? null : o.getPrimaryContactEmail());
+          organisation.setPrimaryContactPhone((o.getPrimaryContactPhone() == null) ? null : o.getPrimaryContactPhone());
+          organisation.setPrimaryContactType((o.getPrimaryContactType() == null) ? null : o.getPrimaryContactType());
+          // replace organisation in list of associated organisations now
+          registration.getAssociatedOrganisations().put(key, organisation);
+          log.debug("Organisation (" + key + ") updated with latest metadata from Registry");
+        } else {
+          log.debug("Update of organisation failed: organisation retrieved from Registry was missing name");
         }
+      } else {
+        log.debug("Update of organisation failed: organisation retrieved from Registry was null");
       }
     } else {
-      log.debug("Update of organisation name failed: organisation or list of registered organisations was null");
+      log.debug("Update of organisation failed: organisation was null");
     }
   }
 

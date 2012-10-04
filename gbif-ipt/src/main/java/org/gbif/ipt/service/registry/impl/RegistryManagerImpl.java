@@ -37,6 +37,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
@@ -261,6 +262,13 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return String.format("%s%s%s", cfg.getRegistryUrl(), "/registry/resource.json?organisationKey=", organisationKey);
   }
 
+  /**
+   * Returns the URI that will return a single Organization in JSON.
+   */
+  private String getOrganisationUri(final String organisationKey) {
+    return String.format("%s%s%s", cfg.getRegistryUrl(), "/registry/organisation/", organisationKey + ".json");
+  }
+
   /*
   * (non-Javadoc)
   * @see org.gbif.ipt.service.registry.RegistryManager#getOrganisations()
@@ -306,6 +314,34 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       }
     }
     return organisations;
+  }
+
+  /*
+  * (non-Javadoc)
+  * @see org.gbif.ipt.service.registry.RegistryManager#getOrganisation()
+  */
+  public Organisation getRegisteredOrganisation(String key) throws RegistryException {
+    Organisation organisation = null;
+    if (!Strings.isNullOrEmpty(key)) {
+      try {
+        organisation =
+          gson.fromJson(requestHttpGetFromRegistry(getOrganisationUri(key)).content, new TypeToken<Organisation>() {
+          }.getType());
+      } catch (RegistryException e) {
+        // log as specific error message as possible about why the Registry error occurred
+        String msg = RegistryException.logRegistryException(e.getType(), baseAction);
+        // add startup error message about Registry error
+        warnings.addStartupError(msg);
+        log.error(msg);
+
+        // add startup error message that explains the consequence of the Registry error
+        msg = baseAction.getText("admin.organisation.couldnt.load", new String[] {key, cfg.getRegistryUrl()});
+        warnings.addStartupError(msg);
+        log.error(msg);
+      }
+    }
+
+    return organisation;
   }
 
   /**
