@@ -269,4 +269,35 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
     List<Resource> resources = manager.getOrganisationsResources("f9b67ad0-9c9b-11d9-b9db-b8a03c50a862");
     assertEquals(3, resources.size());
   }
+
+  @Test
+  public void testGetOrganisation()
+    throws IOException, URISyntaxException, SAXException, ParserConfigurationException {
+    // mock response from Registry with local test resource
+    String response =
+      IOUtils.toString(RegistryManagerImplTest.class.getResourceAsStream("/responses/organisation.json"), "UTF-8");
+
+    mockResponse.content = response;
+    when(mockHttpUtil.get(anyString())).thenReturn(mockResponse);
+
+    // create instance of RegistryManager
+    RegistryManager manager =
+      new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpUtil, mockSAXParserFactory, mockConfigWarnings,
+        mockSimpleTextProvider, mockRegistrationManager);
+
+    Organisation organisation = manager.getRegisteredOrganisation("f9b67ad0-9c9b-11d9-b9db-b8a03c50a862");
+    assertNotNull(organisation);
+
+    // individual fields now
+    assertEquals("us", organisation.getNodeKey());
+    assertEquals("USA", organisation.getNodeName());
+    assertEquals("f9b67ad0-9c9b-11d9-b9db-b8a03c50a862", organisation.getKey().toString());
+    assertEquals("http://www.acnatsci.org/", organisation.getDescription());
+    assertEquals("New Name Academy of Natural Sciences", organisation.getName());
+    assertEquals("http://www.acnatsci.org/", organisation.getHomepageURL());
+    assertEquals("technical", organisation.getPrimaryContactType());
+    assertEquals("Paul J. Morris ", organisation.getPrimaryContactName());
+    assertEquals("mole@morris.net", organisation.getPrimaryContactEmail());
+    assertEquals("1-215-299-1161", organisation.getPrimaryContactPhone());
+  }
 }

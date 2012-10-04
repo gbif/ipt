@@ -37,6 +37,17 @@ public interface RegistryManager {
   List<Organisation> getOrganisations();
 
   /**
+   * Retrieves an Organisation from the Registry using its key.
+   *
+   * @param key Organisation key
+   *
+   * @return a single Organisation, or null if no organisation was retrieved
+   *
+   * @throws RegistryException if the Organisation couldn't be retrieved
+   */
+  Organisation getRegisteredOrganisation(String key);
+
+  /**
    * Retrieves a list of Vocabulary from the Registry, but only the basic metadata, i.e. each without the list concepts.
    *
    * @return list of thesauri, or an empty list if none were retrieved from valid response

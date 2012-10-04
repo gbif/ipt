@@ -1,13 +1,13 @@
 <registration>
   <registry>
     <hostingOrganisation>
-      <key>f3e8e9a9-df60-40ca-bb71-7f49313b3150</key>
-      <name>Old Name AAA1Organisation</name>
+      <key>f9b67ad0-9c9b-11d9-b9db-b8a03c50a862</key>
+      <name>Old Name Academy of Natural Sciences</name>
       <primaryContactType>technical</primaryContactType>
       <primaryContactName>GBIF guy</primaryContactName>
       <primaryContactEmail>gbifregistry@mailinator.com</primaryContactEmail>
-      <password>aaa1</password>
-      <alias>AAA1Organisation</alias>
+      <password>password</password>
+      <alias>ACNS</alias>
       <nodeKey>dk</nodeKey>
       <nodeName>Denmark</nodeName>
       <canHost>true</canHost>
@@ -39,8 +39,8 @@
   <organisation>
     <key>f9b67ad0-9c9b-11d9-b9db-b8a03c50a862</key>
     <name>Old Name Academy of Natural Sciences</name>
-    <password>CU7a0fujX4</password>
-    <alias>Academy of Natural Sciences</alias>
+    <password>password</password>
+    <alias>ACNS</alias>
     <canHost>true</canHost>
   </organisation>
 </registration>
