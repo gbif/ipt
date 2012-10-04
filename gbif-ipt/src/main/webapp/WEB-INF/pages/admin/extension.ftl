@@ -5,7 +5,7 @@
 
 <h1><@s.text name="admin.extension.title"/> ${extension.title}</h1>
 
-<table class="simple">
+<table id="extension-intro" class="simple">
     <tr>
          <th><@s.text name="basic.title"/></th><td>${extension.title}</td>
     </tr>
@@ -49,20 +49,20 @@
   	</div>
   </div>
   <div class="body">
-    <div>
+    <p>
 			<#if p.description?has_content>${p.description}<br/></#if>
 			<#if p.link?has_content><@s.text name="basic.seealso"/> <a href="${p.link}">${p.link}</a></#if>
-    </div>
+    </p>
     <#if p.examples?has_content>
-      <div>
+      <p>
         <em><@s.text name="basic.examples"/></em>: ${p.examples}
-      </div>
+      </p>
     </#if>
       	<#if p.vocabulary?exists>
-      	<div>
+      	<p>
 	      	<em><@s.text name="extension.vocabulary"/></em>: 
 	      	<a href="vocabulary.do?id=${p.vocabulary.uriString}">${p.vocabulary.title}</a>
-      	</div>
+      	</p>
       	</#if>
       	<div class="details">
       		<table>
