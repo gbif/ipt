@@ -5,7 +5,7 @@
 
 <h1><@s.text name="admin.vocabulary.title"/> ${vocabulary.title}</h1>
 
-<table class="simple">
+<table id="extension-intro" class="simple">
     <tr>
          <th><@s.text name="basic.title"/></th><td>${vocabulary.title}</td>
     </tr>
@@ -44,19 +44,19 @@
   </div>
   <div class="body">
   		<#if c.description?has_content || c.link?has_content>
-      	<div>
+      	<p>
 			${c.description!}
 			<#if c.link?has_content><br/><a href="${c.link}"><@s.text name="basic.seealso"/> ${c.link}</a></#if>              	
-      	</div>
+      	</p>
       	</#if>
-      	<div>
+      	<p>
           	<@s.text name="vocabulary.terms.pref"/>:
           	<em><#list c.preferredTerms as t>${t.title} <span class="small">[${t.lang}]</span>; </#list></em>
-      	</div>
-      	<div>
+      	</p>
+      	<p>
           	<@s.text name="vocabulary.terms.alt"/>: 
           	<em><#list c.alternativeTerms as t>${t.title} <span class="small">[${t.lang}]</span>; </#list></em>
-      	</div>
+      	</p>
       	<div class="details">
       		<table>
           		<tr><th><@s.text name="basic.identifier"/></th><td>${c.identifier}</td></tr>

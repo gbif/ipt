@@ -771,6 +771,19 @@ div.textRight img.infoImg {
 	float: left;
 	margin-top: 3px;
 }
+
+#extension-intro tr {
+  border-bottom: 2px solid #FFFFFF;
+}
+#extension-intro th {
+  width: 280px;
+  font-size: 0.9em;
+  font-weight: bold;
+  padding: 0 5px;
+}
+#extension-intro td {
+  font-size: 0.85em;
+}
 div.definition {
   margin-bottom: 5px;
   padding: 0px;
