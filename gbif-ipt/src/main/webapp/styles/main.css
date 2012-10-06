@@ -529,7 +529,6 @@ div.halfcolumn select{
 div.halfcolumn input{
 	width: 85%;
 }
-
 div.info{
 	display: none;
     position:absolute;
@@ -790,7 +789,7 @@ div.textRight img.infoImg {
 div.definition {
   margin-bottom: 5px;
   padding: 0px;
-  width: auto;
+  width: 100%;
   display: table;
 }
 div.definition div.title {
@@ -799,16 +798,18 @@ div.definition div.title {
 	height: 100%;
 	font-size: 0.9em;
 	font-weight: bold;
-	padding-left: 10px;
+	padding-left: 5px;
 	width: 280px;
 	display:table-cell;
 }
 div.definition div.body {
 	border-bottom: none;
 	padding: 5px 10px 5px 10px;
-	max-width: 600px;
+	width: 600px;
 	display:table-cell;
 	word-break: hyphenate;
+	color: #666;
+	font-size: 0.9em;
 }
 div.definition div.body select{
 	width: 200px;
@@ -838,10 +839,6 @@ div.definition div.body div.details {
   font-size: 0.9em;
 }
 div.conceptItem { margin-bottom: 3px; float: left; }
-div.conceptItem div.body {
-  color: #666;
-  font-size: 0.9em;
-}
 #conceptItemWrapper {
   height: 960px;
   overflow: scroll;
