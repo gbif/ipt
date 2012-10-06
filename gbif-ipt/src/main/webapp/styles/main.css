@@ -768,12 +768,13 @@ table#source-properties td {
 .detailsSource {
   overflow: hidden;
 }
-
 div.textRight img.infoImg {
 	float: left;
 	margin-top: 3px;
 }
-
+#filterComp {
+  width: 100px;
+}
 #extension-intro tr {
   border-bottom: 2px solid #FFFFFF;
 }
