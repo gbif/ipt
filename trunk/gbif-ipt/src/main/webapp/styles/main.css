@@ -1,8 +1,9 @@
 /*
-	This version of IPT contains all new style settings that, by default,
-	provide	design elements shared with the new data portal.
-	Also, in order to make it easier for styling as part of any modern CMS
-	system, 960.gs grid system is introduced.
+	Since IPT v2.0.4, in order to make it easier for styling as part of 	any modern CMS system, 960.gs grid system is introduced.
+	If you consider the CSS and HTML could be improved for convenience
+	of theming, please report an enhancement request in the IPT project
+	site at http://code.google.com/p/gbif-providertoolkit/
+	Thank you very much!
 */
 
 @font-face {
@@ -251,15 +252,17 @@ img#logo {
 }
 
 img.testmode {
-  margin-top: -60px;
-  margin-left: 180px;
+  margin-top: -50px;
+  margin-left: 280px;
+  position: absolute;
+  float:left;
 }
 
 /* HEADER: Menu */
 
 #region-menu {
   font-size: 1.15em;
-  margin-top: 5px;
+  margin-top: 20px;
   background-color: #eee;
   height: 50px;
   width: 950px;
@@ -312,7 +315,7 @@ img.testmode {
 
 #zone-content {
   background-color: #fff;
-  margin-top: 37px;
+  margin-top: 32px;
 }
 #section-content {
   padding-top: 20px;
