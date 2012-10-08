@@ -34,7 +34,9 @@
 				<div class="halfcolumn">
 					<@input name="eml.physicalData[${item_index}].charset" i18nkey="eml.physicalData.charset" help="i18n" requiredField=true />
 				</div>
-				<@input name="eml.physicalData[${item_index}].distributionUrl" i18nkey="eml.physicalData.distributionUrl" help="i18n" requiredField=true />
+				<div class="fullcolumn">
+					<@input name="eml.physicalData[${item_index}].distributionUrl" i18nkey="eml.physicalData.distributionUrl" help="i18n" requiredField=true />
+			  	</div>
 			  	<div class="halfcolumn">
 					<@input name="eml.physicalData[${item_index}].format" i18nkey="eml.physicalData.format" help="i18n" requiredField=true />
 				</div>
