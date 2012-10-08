@@ -41,7 +41,6 @@
 				<div class="halfcolumn">
 					<@input name="eml.physicalData[${item_index}].formatVersion" i18nkey="eml.physicalData.formatVersion" help="i18n"/>
 				</div>
-				<div class="horizontal_dotted_line_large_foo" id="separator"></div>
 		  	</div>
 		</#list>
 	</div>
