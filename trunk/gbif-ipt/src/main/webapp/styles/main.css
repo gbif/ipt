@@ -81,8 +81,13 @@ ul.fielderror{
 	background-position: 5px center;
 	background-color: #ffdddd;
 	background-image: url('../images/minus.png');
-	font-size:0.9em;
+	font-size:0.85em;
+	display: block;
 }
+ul.fielderror li {
+  margin-left: 0px;
+}
+
 .errorMessage{
 	color: #d8424f;
 	background-color: #ffdddd;
@@ -253,7 +258,7 @@ img#logo {
 
 img.testmode {
   margin-top: -50px;
-  margin-left: 280px;
+  margin-left: 240px;
   position: absolute;
   float:left;
 }
@@ -730,7 +735,13 @@ div#Alternative-Identifiers {
 div#Curatorial-Units div#items{
   border-top: 1px dotted #999;
 }
-
+.unittype {
+  width: 49%;
+  display: inline-block;
+  float: left;
+}
+.unittype label { margin-top: 0px; }
+.unittype input { width: 90%; }
 input#save.confirm {	
   width: auto;
 }
@@ -741,6 +752,8 @@ input#delete.confirm {
 /* Collection Data */
 .subitem {
   width: 49%;
+  display: inline-block;
+  float: left;
 }
 
 div.subitem div.halfcolumn input {

@@ -42,7 +42,7 @@
 	<div id="items">
 		<#list eml.jgtiCuratorialUnits as item>
 			<#assign type="${eml.jgtiCuratorialUnits[item_index].type}"/>
-			<div id="item-${item_index}" class="item">
+			<div id="item-${item_index}" class="item clearfix">
 				<div class="right">
      		 		<a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.collections.curatorialUnits.item'/> ]</a>
    		 		</div>
@@ -69,7 +69,9 @@
     						</div>
     					</#if>
     				</div>
-    				<@input name="eml.jgtiCuratorialUnits[${item_index}].unitType" i18nkey="eml.jgtiCuratorialUnits.unitType" size=40/>
+    				<div class="unittype">
+    					<@input name="eml.jgtiCuratorialUnits[${item_index}].unitType" i18nkey="eml.jgtiCuratorialUnits.unitType" size=40/>
+    				</div>
     			</div>
 			</div>
 		</#list>
@@ -102,7 +104,9 @@
 				</div>
 			</div>
     	</div>
-    	<@input name="unitType" i18nkey="eml.jgtiCuratorialUnits.unitType" size=40/>
+		<div class="unittype">
+		   	<@input name="unitType" i18nkey="eml.jgtiCuratorialUnits.unitType" size=40/>
+		</div>
     </div>
 </div>
 
