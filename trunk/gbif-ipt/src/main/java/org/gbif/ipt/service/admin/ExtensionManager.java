@@ -52,6 +52,8 @@ public interface ExtensionManager {
 
   /**
    * List only the available core extensions.
+   *
+   * @return list including only core extensions, or an empty list if no core extensions have been installed yet
    */
   List<Extension> listCore();
 

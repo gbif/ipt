@@ -60,6 +60,7 @@ public class MetadataAction extends ManagerBaseAction {
   private Map<String, String> types;
   private Map<String, String> datasetSubtypes;
   private VocabulariesManager vocabManager;
+  private String resourceHasCore;
 
   // to group dataset subtype vocabulary keys
   private List<String> checklistSubtypeKeys;
@@ -464,5 +465,15 @@ public class MetadataAction extends ManagerBaseAction {
 
   List<String> getOccurrenceSubtypeKeys() {
     return occurrenceSubtypeKeys;
+  }
+
+  /**
+   * On the basic metadata page, this variable determines whether the core type dropdown is
+   * disabled or not.
+   *
+   * @return "true" or "false" - does the resource have a core mapping yet?
+   */
+  public String getResourceHasCore() {
+    return (resource.hasCore()) ? "true" : "false";
   }
 }
