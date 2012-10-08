@@ -74,7 +74,7 @@ Header {
 ul.fielderror{
 	list-style:none; 
 	color: #d8424f;
-	margin: 10px 0px 5px 0px;
+	margin: 10px 5px 5px 0px;
 	border: 1px solid;
 	padding:5px 15px 5px 25px;
 	background-repeat: no-repeat;
