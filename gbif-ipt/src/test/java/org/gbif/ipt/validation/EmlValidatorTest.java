@@ -211,6 +211,16 @@ public class EmlValidatorTest {
   }
 
   @Test
+  public void testTempCovPartSingleDateIncomplete() throws ParseException {
+    // 1st is empty, but next 3 aren't = INVALID
+    eml.getTemporalCoverages().get(0).setStartDate(null);
+    eml.getTemporalCoverages().get(0).setEndDate(null);
+    eml.getTemporalCoverages().get(0).setFormationPeriod(null);
+    eml.getTemporalCoverages().get(0).setLivingTimePeriod(null);
+    assertFalse(validator.isValid(eml, EmlValidator.TEMPCOVERAGE_SECTION));
+  }
+
+  @Test
   public void testKeywordsPart() {
     // valid
     assertTrue(validator.isValid(eml, EmlValidator.KEYWORDS_SECTION));
@@ -241,6 +251,13 @@ public class EmlValidatorTest {
     // invalid
     eml.getAssociatedParties().clear();
     eml.getAssociatedParties().add(badAgent);
+    assertFalse(validator.isValid(eml, EmlValidator.PARTIES_SECTION));
+  }
+
+  @Test
+  public void testPartiesPartFirstPartyIncomplete() {
+    // add emtpy party at top, with remaining 13 valid parties
+    eml.getAssociatedParties().add(0, new Agent());
     assertFalse(validator.isValid(eml, EmlValidator.PARTIES_SECTION));
   }
 

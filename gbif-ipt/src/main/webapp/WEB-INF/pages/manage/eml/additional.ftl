@@ -166,7 +166,6 @@
   	</div>
   	<!-- internal parameter -->
 	<input id="r" name="r" type="hidden" value="${resource.shortname}" />
-	<input id="validate" name="validate" type="hidden" value="false" />
 </form>
 </div>
 

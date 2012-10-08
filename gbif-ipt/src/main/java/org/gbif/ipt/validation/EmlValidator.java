@@ -750,12 +750,17 @@ public class EmlValidator extends BaseValidator {
     String sample = eml.getSampleDescription();
     String quality = eml.getQualityControl();
     List<String> methods = eml.getMethodSteps();
-    String method1 = (methods.size() > 0) ? methods.get(0) : null;
+
+    // there must be absolutely nothing entered for any method steps
+    for (String method: methods) {
+      if (!Strings.isNullOrEmpty(method)) {
+        return false;
+      }
+    }
 
     return (Strings.isNullOrEmpty(studyExtent) &&
             Strings.isNullOrEmpty(sample) &&
-            Strings.isNullOrEmpty(quality) &&
-            Strings.isNullOrEmpty(method1));
+            Strings.isNullOrEmpty(quality));
   }
 
   /**
@@ -767,19 +772,38 @@ public class EmlValidator extends BaseValidator {
    * @return whether the Citations page is empty or not.
    */
   private boolean isCitationsPageEmpty(Eml eml) {
-    // total of 4 fields on page
-    Citation citation = eml.getCitation();
-    Citation bibCitation = (eml.getBibliographicCitations().size() > 0) ? eml.getBibliographicCitations().get(0) : null;
-    if (citation != null && bibCitation != null) {
+    // is the Citation empty?
+    boolean citationIsEmpty = isCitationEmpty(eml.getCitation());
+    if (!citationIsEmpty) {
+      return false;
+    }
+    // are all the bibliographic citations empty?
+    for (Citation bibCitation: eml.getBibliographicCitations()) {
+      boolean isBibCitationEmpty = isCitationEmpty(bibCitation);
+      if (!isBibCitationEmpty) {
+        return false;
+      }
+    }
+    // otherwise
+    return true;
+  }
+
+  /**
+   * Determine if a Citation is empty. In other words, the user hasn't entered any information for a single
+   * field yet. There is a total of 2 fields.
+   *
+   * @param citation citation
+   *
+   * @return whether the Citation is empty or not.
+   */
+  private boolean isCitationEmpty(Citation citation) {
+
+    if (citation != null) {
       String citationId = citation.getIdentifier();
       String citationText = citation.getCitation();
-      String bibCitationId = bibCitation.getIdentifier();
-      String bibCitationText = bibCitation.getCitation();
 
       return (Strings.isNullOrEmpty(citationId) &&
-              Strings.isNullOrEmpty(citationText) &&
-              Strings.isNullOrEmpty(bibCitationId) &&
-              Strings.isNullOrEmpty(bibCitationText));
+              Strings.isNullOrEmpty(citationText));
     }
     return true;
   }
@@ -798,31 +822,44 @@ public class EmlValidator extends BaseValidator {
     String collectionId = eml.getCollectionId();
     String parentCollectionId = eml.getParentCollectionId();
     String preservation = eml.getSpecimenPreservationMethod();
-    List<JGTICuratorialUnit> ls = eml.getJgtiCuratorialUnits();
-    JGTICuratorialUnit unit1 = (ls.size() > 0) ? ls.get(0) : null;
 
-    if (unit1 != null) {
-      String unitType = unit1.getUnitType();
-      int rangeEnd = (unit1.getRangeEnd() == null) ? 0 : unit1.getRangeEnd();
-      int rangeStart = (unit1.getRangeStart() == null) ? 0 : unit1.getRangeStart();
-      int uncertainty = (unit1.getUncertaintyMeasure() == null) ? 0 : unit1.getUncertaintyMeasure();
-      int mean = (unit1.getRangeMean() == null) ? 0 : unit1.getRangeMean();
+    // check whether all curatorial units are empty
+    for (JGTICuratorialUnit unit: eml.getJgtiCuratorialUnits()) {
+      boolean isUnitEmpty = isJGTICuratorialUnitEmpty(unit);
+      if (!isUnitEmpty) {
+        return false;
+      }
+    }
 
-      return (Strings.isNullOrEmpty(collectionName) &&
-              Strings.isNullOrEmpty(collectionId) &&
-              Strings.isNullOrEmpty(parentCollectionId) &&
-              Strings.isNullOrEmpty(preservation) &&
-              Strings.isNullOrEmpty(unitType) &&
+    return (Strings.isNullOrEmpty(collectionName) &&
+            Strings.isNullOrEmpty(collectionId) &&
+            Strings.isNullOrEmpty(parentCollectionId) &&
+            Strings.isNullOrEmpty(preservation));
+  }
+
+  /**
+   * Determine if a JGTICuratorialUnit is empty. In other words, the user hasn't entered any information for a
+   * single field yet.
+   *
+   * @param unit JGTICuratorialUnit
+   *
+   * @return whether the JGTICuratorialUnit page is empty or not.
+   */
+  private boolean isJGTICuratorialUnitEmpty(JGTICuratorialUnit unit) {
+    if (unit != null) {
+      String unitType = unit.getUnitType();
+      int rangeEnd = (unit.getRangeEnd() == null) ? 0 : unit.getRangeEnd();
+      int rangeStart = (unit.getRangeStart() == null) ? 0 : unit.getRangeStart();
+      int uncertainty = (unit.getUncertaintyMeasure() == null) ? 0 : unit.getUncertaintyMeasure();
+      int mean = (unit.getRangeMean() == null) ? 0 : unit.getRangeMean();
+
+      return (Strings.isNullOrEmpty(unitType) &&
               rangeEnd == 0 &&
               rangeStart == 0 &&
               uncertainty == 0 &&
               mean == 0);
-    } else {
-      return (Strings.isNullOrEmpty(collectionName) &&
-              Strings.isNullOrEmpty(collectionId) &&
-              Strings.isNullOrEmpty(parentCollectionId) &&
-              Strings.isNullOrEmpty(preservation));
     }
+    return true;
   }
 
   /**
@@ -837,25 +874,40 @@ public class EmlValidator extends BaseValidator {
     // total of 8 fields on page
     String homepageUrl = eml.getHomepageUrl();
 
-    List<PhysicalData> ls = eml.getPhysicalData();
-    PhysicalData data1 = (ls.size() > 0) ? ls.get(0) : null;
+    // check all external links
+    for (PhysicalData data: eml.getPhysicalData()) {
+      boolean isLinkEmpty = isExternalLinkEmpty(data);
+      if (!isLinkEmpty) {
+        return false;
+      }
+    }
+    // otherwise it all comes down to the homepage URL
+    return Strings.isNullOrEmpty(homepageUrl);
+  }
 
-    if (data1 != null) {
-      String charset = data1.getCharset();
-      String format = data1.getFormat();
-      String formatVersion = data1.getFormatVersion();
-      String distributionUrl = data1.getDistributionUrl();
-      String name = data1.getName();
+  /**
+   * Determine if a PhysicalData is empty. In other words, the user hasn't entered any information for a single
+   * field yet.
+   *
+   * @param data PhysicalData
+   *
+   * @return whether the PhysicalData is empty or not.
+   */
+  private boolean isExternalLinkEmpty(PhysicalData data) {
+    if (data != null) {
+      String charset = data.getCharset();
+      String format = data.getFormat();
+      String formatVersion = data.getFormatVersion();
+      String distributionUrl = data.getDistributionUrl();
+      String name = data.getName();
 
-      return (Strings.isNullOrEmpty(homepageUrl) &&
-              Strings.isNullOrEmpty(charset) &&
+      return (Strings.isNullOrEmpty(charset) &&
               Strings.isNullOrEmpty(format) &&
               Strings.isNullOrEmpty(formatVersion) &&
               Strings.isNullOrEmpty(distributionUrl) &&
               Strings.isNullOrEmpty(name));
-    } else {
-      return Strings.isNullOrEmpty(homepageUrl);
     }
+    return true;
   }
 
   /**
@@ -889,25 +941,25 @@ public class EmlValidator extends BaseValidator {
    * @return whether the Additional page is empty or not.
    */
   private boolean isAdditionalPageEmpty(Eml eml) {
-    // total of 5 editable fields on page
+    // total of 5 editable fields on page, including repeating alt. id
     String logo = eml.getLogoUrl();
     String rights = eml.getRights();
     String info = eml.getAdditionalInfo();
     String purpose = eml.getPurpose();
     // skip pubDate - it's auto-set
     // skip hierarchy - it's auto-set
-    List<String> ids = eml.getAlternateIdentifiers();
-    String id1 = (ids.size() > 0) ? ids.get(0) : null;
 
-    if (id1 != null) {
-      return (Strings.isNullOrEmpty(logo) &&
-              Strings.isNullOrEmpty(rights) &&
-              Strings.isNullOrEmpty(info) &&
-              Strings.isNullOrEmpty(purpose) &&
-              Strings.isNullOrEmpty(id1));
-    } else {
-      return Strings.isNullOrEmpty(id1);
+    for (String id : eml.getAlternateIdentifiers()) {
+      if (!Strings.isNullOrEmpty(id)) {
+        return false;
+      }
     }
+
+    return (Strings.isNullOrEmpty(logo) &&
+            Strings.isNullOrEmpty(rights) &&
+            Strings.isNullOrEmpty(info) &&
+            Strings.isNullOrEmpty(purpose));
+
   }
 
   /**
@@ -921,14 +973,33 @@ public class EmlValidator extends BaseValidator {
   private boolean isTemporalPageEmpty(Eml eml) {
     // total of 1 editable repeatable section on page
     List<TemporalCoverage> coverages = eml.getTemporalCoverages();
-    TemporalCoverage cov1 = (coverages.size() > 0) ? coverages.get(0) : null;
+    // iterate through them, they all must be empty, otherwise they all get validated
+    for (TemporalCoverage coverage: coverages) {
+      boolean isEmtpy = isTemporalCoverageEmpty(coverage);
+      // have we found a non-empty coverage?
+      if (!isEmtpy) {
+        return false;
+      }
+    }
+    // otherwise, at least one coverage was not empty, and they must all be validated
+    return true;
+  }
 
-    if (cov1 != null) {
+  /**
+   * Determine if a single TemporalCoverage is empty. In other words, the user hasn't entered any information for a
+   * single field yet.
+   *
+   * @param cov TemporalCoverage
+   *
+   * @return whether the TemporalCoverage is empty or not.
+   */
+  private boolean isTemporalCoverageEmpty(TemporalCoverage cov) {
+    if (cov != null) {
 
-      String formationPeriod = cov1.getFormationPeriod();
-      Date end = cov1.getEndDate();
-      String period = cov1.getLivingTimePeriod();
-      Date start = cov1.getStartDate();
+      String formationPeriod = cov.getFormationPeriod();
+      Date end = cov.getEndDate();
+      String period = cov.getLivingTimePeriod();
+      Date start = cov.getStartDate();
 
       return (Strings.isNullOrEmpty(formationPeriod) &&
               end == null &&
@@ -948,26 +1019,55 @@ public class EmlValidator extends BaseValidator {
    */
   private boolean isTaxonomicPageEmpty(Eml eml) {
     // total of 1 editable repeatable section on page
-    List<TaxonomicCoverage> coverages = eml.getTaxonomicCoverages();
-    TaxonomicCoverage cov1 = (coverages.size() > 0) ? coverages.get(0) : null;
-
-    if (cov1 != null) {
-
-      String description = cov1.getDescription();
-      List<TaxonKeyword> words = cov1.getTaxonKeywords();
-      TaxonKeyword word1 = (words.size() > 0) ? words.get(0) : null;
-
-      if (word1 != null) {
-        String scientificName = word1.getScientificName();
-        String common = word1.getCommonName();
-        String rank = word1.getRank();
-        return (Strings.isNullOrEmpty(scientificName) &&
-                Strings.isNullOrEmpty(common) &&
-                Strings.isNullOrEmpty(rank) &&
-                Strings.isNullOrEmpty(description));
-      } else {
-        return Strings.isNullOrEmpty(description);
+    for (TaxonomicCoverage cov: eml.getTaxonomicCoverages()) {
+      boolean isTaxonomicCoverageEmpty = isTaxonomicCoverageEmpty(cov);
+      if (!isTaxonomicCoverageEmpty) {
+        return false;
       }
+    }
+    return true;
+  }
+
+  /**
+   * Determine if a TaxonomicCoverage is empty. In other words, the user hasn't entered any information for a single
+   * field yet.
+   *
+   * @param cov TaxonomicCoverage
+   *
+   * @return whether the TaxonomicCoverage is empty or not.
+   */
+  private boolean isTaxonomicCoverageEmpty(TaxonomicCoverage cov) {
+    if (cov != null) {
+      String description = cov.getDescription();
+      // check all TaxonKeyword are empty
+      for (TaxonKeyword word: cov.getTaxonKeywords()) {
+        boolean isTaxonKeywordEmpty = isTaxonKeywordEmpty(word);
+        if (!isTaxonKeywordEmpty) {
+          return false;
+        }
+      }
+      // gotten here means all TaxonKeyword were empty, therefore the only thing left to check is the description
+      return Strings.isNullOrEmpty(description);
+    }
+    return true;
+  }
+
+  /**
+   * Determine if a TaxonKeyword is empty. In other words, the user hasn't entered any information for a single
+   * field yet.
+   *
+   * @param word TaxonKeyword
+   *
+   * @return whether the TaxonKeyword is empty or not.
+   */
+  private boolean isTaxonKeywordEmpty(TaxonKeyword word) {
+    if (word != null) {
+      String scientificName = word.getScientificName();
+      String common = word.getCommonName();
+      String rank = word.getRank();
+      return (Strings.isNullOrEmpty(scientificName) &&
+              Strings.isNullOrEmpty(common) &&
+              Strings.isNullOrEmpty(rank));
     }
     return true;
   }
@@ -1018,44 +1118,47 @@ public class EmlValidator extends BaseValidator {
    * @return whether the Agent is empty or not.
    */
   private boolean isAgentEmpty(Agent agent) {
-    String first = agent.getFirstName();
-    String last = agent.getLastName();
-    String email = agent.getEmail();
-    String home = agent.getHomepage();
-    String org = agent.getOrganisation();
-    String phone = agent.getPhone();
-    String position = agent.getPosition();
+    if (agent != null) {
+      String first = agent.getFirstName();
+      String last = agent.getLastName();
+      String email = agent.getEmail();
+      String home = agent.getHomepage();
+      String org = agent.getOrganisation();
+      String phone = agent.getPhone();
+      String position = agent.getPosition();
 
-    Address address = agent.getAddress();
+      Address address = agent.getAddress();
 
-    if (address != null) {
-      String city = address.getCity();
-      String street = address.getAddress();
-      String country = address.getCountry();
-      String code = address.getPostalCode();
-      String province = address.getProvince();
+      if (address != null) {
+        String city = address.getCity();
+        String street = address.getAddress();
+        String country = address.getCountry();
+        String code = address.getPostalCode();
+        String province = address.getProvince();
 
-      return (Strings.isNullOrEmpty(city) &&
-              Strings.isNullOrEmpty(street) &&
-              Strings.isNullOrEmpty(country) &&
-              Strings.isNullOrEmpty(code) &&
-              Strings.isNullOrEmpty(province) &&
-              Strings.isNullOrEmpty(first) &&
-              Strings.isNullOrEmpty(last) &&
-              Strings.isNullOrEmpty(email) &&
-              Strings.isNullOrEmpty(home) &&
-              Strings.isNullOrEmpty(org) &&
-              Strings.isNullOrEmpty(phone) &&
-              Strings.isNullOrEmpty(position));
-    } else {
-      return (Strings.isNullOrEmpty(first) &&
-              Strings.isNullOrEmpty(last) &&
-              Strings.isNullOrEmpty(email) &&
-              Strings.isNullOrEmpty(home) &&
-              Strings.isNullOrEmpty(org) &&
-              Strings.isNullOrEmpty(phone) &&
-              Strings.isNullOrEmpty(position));
+        return (Strings.isNullOrEmpty(city) &&
+                Strings.isNullOrEmpty(street) &&
+                Strings.isNullOrEmpty(country) &&
+                Strings.isNullOrEmpty(code) &&
+                Strings.isNullOrEmpty(province) &&
+                Strings.isNullOrEmpty(first) &&
+                Strings.isNullOrEmpty(last) &&
+                Strings.isNullOrEmpty(email) &&
+                Strings.isNullOrEmpty(home) &&
+                Strings.isNullOrEmpty(org) &&
+                Strings.isNullOrEmpty(phone) &&
+                Strings.isNullOrEmpty(position));
+      } else {
+        return (Strings.isNullOrEmpty(first) &&
+                Strings.isNullOrEmpty(last) &&
+                Strings.isNullOrEmpty(email) &&
+                Strings.isNullOrEmpty(home) &&
+                Strings.isNullOrEmpty(org) &&
+                Strings.isNullOrEmpty(phone) &&
+                Strings.isNullOrEmpty(position));
+      }
     }
+    return true;
   }
 
   /**
@@ -1068,8 +1171,14 @@ public class EmlValidator extends BaseValidator {
    */
   private boolean isPartiesPageEmpty(Eml eml) {
     List<Agent> parties = eml.getAssociatedParties();
-    Agent party1 = (parties.size() > 0) ? parties.get(0) : null;
 
-    return (party1 == null || isAgentEmpty(party1));
+    for (Agent party: parties) {
+      boolean isEmpty = isAgentEmpty(party);
+      // we are interested in finding a non-empty party
+      if (!isEmpty) {
+        return false;
+      }
+    }
+    return true;
   }
 }
