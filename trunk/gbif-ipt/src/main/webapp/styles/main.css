@@ -534,6 +534,10 @@ div.halfcolumn select{
 div.halfcolumn input{
 	width: 85%;
 }
+.fullcolumn {
+  width: 100%;
+  float: left;
+}
 div.info{
 	display: none;
     position:absolute;
