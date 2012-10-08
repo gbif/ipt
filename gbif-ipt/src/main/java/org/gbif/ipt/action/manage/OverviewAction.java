@@ -317,28 +317,51 @@ public class OverviewAction extends ManagerBaseAction {
       for (User u : resource.getManagers()) {
         potentialManagers.remove(u);
       }
+
       // enabled registry organisations
       organisations = registrationManager.list();
+
+      // does the resource already have a source mapped to core type?
       if (resource.hasCore()) {
         // show extensions suited for this core
         potentialExtensions = extensionManager.list(resource.getCoreRowType());
         // add core itself
-        potentialExtensions.add(0, extensionManager.get(resource.getCoreRowType()));
-      } else if (resource.getSources().isEmpty()) {
+        Extension core = extensionManager.get(resource.getCoreRowType());
+        if (core == null) {
+          addActionError(getText("manage.overview.no.DwC.extension", new String[] {resource.getCoreRowType()}));
+        } else {
+          potentialExtensions.add(0, core);
+        }
+      }
+      // has no source been added yet that can be mapped? If not, return empty list of Extensions
+      else if (resource.getSources().isEmpty()) {
         potentialExtensions = new ArrayList<Extension>();
-      } else {
-        // Validating if the resource has a type
-        if (Strings.isNullOrEmpty(resource.getCoreType()) || "Other".equals(resource.getCoreType())) {
+      }
+      // does the resource have no core type, but at least one source file ready to be mapped?
+      else {
+        if (Strings.isNullOrEmpty(resource.getCoreType()) || "Other".equalsIgnoreCase(resource.getCoreType())) {
           // populate list of potential list of extensions with core types
           potentialExtensions = extensionManager.listCore();
+          if (potentialExtensions.size() == 0) {
+            addActionError(getText("manage.overview.no.DwC.extensions"));
+          }
         } else {
           potentialExtensions = new ArrayList<Extension>();
-          // Comparing the subtype with two static list. The appropiate type is selected depending if the subtype is
-          // in the checklist List or is in the occurrence list and only is enable to do the mapping
+          // the core type (from metadata pages) determines which core type extension to include
           if (resource.getCoreType().equalsIgnoreCase(CoreRowType.CHECKLIST.toString())) {
-            potentialExtensions.add(extensionManager.get(Constants.DWC_ROWTYPE_TAXON));
+            Extension ext = extensionManager.get(Constants.DWC_ROWTYPE_TAXON);
+            if (ext == null) {
+              addActionError(getText("manage.overview.no.DwC.extension", new String[] {Constants.DWC_ROWTYPE_TAXON}));
+            } else {
+              potentialExtensions.add(ext);
+            }
           } else if (resource.getCoreType().equalsIgnoreCase(CoreRowType.OCCURRENCE.toString())) {
-            potentialExtensions.add(extensionManager.get(Constants.DWC_ROWTYPE_OCCURRENCE));
+            Extension ext = extensionManager.get(Constants.DWC_ROWTYPE_OCCURRENCE);
+            if (ext == null) {
+              addActionError(getText("manage.overview.no.DwC.extension", new String[] {Constants.DWC_ROWTYPE_OCCURRENCE}));
+            } else {
+              potentialExtensions.add(ext);
+            }
           }
         }
       }

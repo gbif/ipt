@@ -9,12 +9,16 @@
 		 	if(resourceType != "") {
 				if(resourceType.toLowerCase() == "occurrence") {
           $("#resource\\.coreType").val('occurrence');
-					$("#resource\\.coreType").attr('disabled','disabled');
 				} else if (resourceType.toLowerCase() == "checklist") {
           $("#resource\\.coreType").val('checklist');
-				  $("#resource\\.coreType").attr('disabled','disabled');
 				}
 			}
+
+      // core type selection is only disabled, if resource has core
+      var hasCore="${resourceHasCore!}";
+      if (hasCore == "true") {
+        $("#resource\\.coreType").attr('disabled','disabled');
+      }
 
 			function getList(list){
 				var arr=  list.split(",");
