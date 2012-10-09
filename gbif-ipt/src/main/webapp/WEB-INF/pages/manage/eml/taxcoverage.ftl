@@ -80,7 +80,7 @@
 
 	<!-- Taxon list-->
 	<div class="addNew"><a id="taxonsLink" class="show-taxonList" href="" ><@s.text name='manage.metadata.taxcoverage.addSeveralTaxa' /></a></div>
-	<div id="list" class="half" style="display:none">
+	<div id="list" class="half clearfix" style="display:none">
 		<@text i18nkey="eml.taxonomicCoverages.taxonList" help="i18n" name="taxon-list" value="" />
 		<div class="buttons taxon-list">
 			<@s.submit cssClass="button" name="add-button" key="button.add"/>
