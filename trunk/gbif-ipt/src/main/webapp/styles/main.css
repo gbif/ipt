@@ -593,16 +593,6 @@ div a.button {
 div.half{
 	clear: both;	
 }
-div.half:after{
-    /*Having something in the content such as a period 
-    gives a more consistent results across browsers.*/
-    content: "."; 
-    display: block; 
-    height: 0; 
-    font-size:0;	
-    clear: both; 
-    visibility:hidden;
-}
 div.half > div{
 	width: 49%;
 	float: left;
@@ -614,7 +604,6 @@ div.half select{
 	max-width:90%;
 	width: auto;
 }
-
 .topForm img.infoImg {
 	position: relative;
 	top: 6px;
