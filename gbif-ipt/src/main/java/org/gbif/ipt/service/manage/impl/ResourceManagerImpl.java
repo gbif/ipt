@@ -91,6 +91,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.lowagie.text.Document;
@@ -534,7 +535,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   /**
-   * @see #isLocked(String) for removing jobs from internal maps
+   * @see #isLocked(String, BaseAction) for removing jobs from internal maps
    */
   private void generateDwca(Resource resource) {
     // use threads to run in the background as sql sources might take a long time
@@ -637,11 +638,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   /**
-   * Checks if a resource is locked due some background processing.
-   * While doing so it checks the known futures for completion.
-   * If completed the resource is updated with the status messages and the lock is removed.
+   * Checks if a resource is locked due some background processing. While doing so it checks the known futures for
+   * completion. If completed the resource is updated with the status messages, registration is updated in order to push
+   * any new Archive endpoint, and the lock is removed.
    */
-  public boolean isLocked(String shortname) {
+  public boolean isLocked(String shortname, BaseAction action) {
     if (processFutures.containsKey(shortname)) {
       // is listed as locked but task might be finished, check
       Future<Integer> f = processFutures.get(shortname);
@@ -651,6 +652,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           Resource res = get(shortname);
           res.setRecordsPublished(coreRecords);
           save(res);
+          // ensure registration is updated if DwC-A exists so that DwC-A endpoint gets added/updated
+          // note, any action messages/errors won't appear on published report page
+          if (res.isRegistered() && res.hasPublishedData()) {
+            updateRegistration(res, action);
+          }
           return false;
         } catch (InterruptedException e) {
           log.info("Process interrupted for resource " + shortname);
@@ -665,6 +671,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       return true;
     }
     return false;
+  }
+
+  /**
+   * Defaults BaseAction to null.
+   *
+   * @see org.gbif.ipt.service.manage.ResourceManager#isLocked(String, org.gbif.ipt.action.BaseAction)
+   */
+  public boolean isLocked(String shortname) {
+    return isLocked(shortname, new BaseAction(textProvider, cfg, registrationManager));
   }
 
   public boolean isRtfExisting(String shortName) {
@@ -910,7 +925,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   public boolean publish(Resource resource, BaseAction action) throws PublicationException {
     // check if publishing task is already running
-    if (isLocked(resource.getShortname())) {
+    if (isLocked(resource.getShortname(), action)) {
       throw new PublicationException(PublicationException.TYPE.LOCKED,
         "Resource " + resource.getShortname() + " is currently locked by another process");
     }
@@ -1033,7 +1048,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   public void publishMetadata(Resource resource, BaseAction action) throws PublicationException {
     ActionLogger alog = new ActionLogger(this.log, action);
     // check if publishing task is already running
-    if (isLocked(resource.getShortname())) {
+    if (isLocked(resource.getShortname(), action)) {
       throw new PublicationException(PublicationException.TYPE.LOCKED,
         "Resource " + resource.getShortname() + " is currently locked by another process");
     }
@@ -1171,7 +1186,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             alog.info("manage.resource.migrate",
               new String[] {String.valueOf(existingResourceUUID), organisation.getName()});
             // update the resource, adding the new service(s)
-            updateRegistration(resource);
+            updateRegistration(resource, action);
           }
         }
       } else {
@@ -1283,7 +1298,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   public void updateDwcaEml(Resource resource, BaseAction action) throws PublicationException {
     ActionLogger alog = new ActionLogger(this.log, action);
     // check if publishing task is already running
-    if (isLocked(resource.getShortname())) {
+    if (isLocked(resource.getShortname(), action)) {
       throw new PublicationException(PublicationException.TYPE.LOCKED,
         "Resource " + resource.getShortname() + " is currently locked by another process");
     }
@@ -1330,10 +1345,36 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
-  public void updateRegistration(Resource resource) throws InvalidConfigException {
-    if (PublicationStatus.REGISTERED == resource.getStatus()) {
-      log.debug("Updating resource with key: " + resource.getKey().toString());
-      registryManager.updateResource(resource);
+  public void updateRegistration(Resource resource, BaseAction action) {
+    if (resource.isRegistered()) {
+      // prevent null action from being handled
+      if (action == null) {
+        action = new BaseAction(textProvider, cfg, registrationManager);
+      }
+      try {
+        log.debug("Updating registration of resource with key: " + resource.getKey().toString());
+        registryManager.updateResource(resource);
+        // log
+        String msg = action.getText("manage.overview.resource.update.registration", new String[] {resource.getTitle()});
+        action.addActionMessage(msg);
+        log.debug(msg);
+      } catch (RegistryException e) {
+        // log as specific error message as possible about why the Registry error occurred
+        String msg = RegistryException.logRegistryException(e.getType(), action);
+        action.addActionError(msg);
+        log.error(msg);
+
+        // add error message that explains the consequence of the Registry error to user
+        msg = action.getText("admin.config.updateMetadata.resource.fail.registry", new String[] {cfg.getRegistryUrl()});
+        action.addActionError(msg);
+        log.error(msg);
+      } catch (InvalidConfigException e) {
+        String msg = action.getText("manage.overview.failed.resource.update");
+        // concatenate reason
+        msg = (Strings.isNullOrEmpty(msg)) ? e.getMessage() : msg + ": " + e.getMessage();
+        action.addActionError(msg);
+        log.error(msg);
+      }
     }
   }
 

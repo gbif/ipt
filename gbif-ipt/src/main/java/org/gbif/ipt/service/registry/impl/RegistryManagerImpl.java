@@ -601,11 +601,11 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   }
 
   public void updateIpt(Ipt ipt) {
-    log.warn("Updating IPT instance throught GBIF Registry");
+    log.warn("Updating IPT instance through GBIF Registry");
     UsernamePasswordCredentials iptCredentials =
       new UsernamePasswordCredentials(ipt.getKey().toString(), ipt.getWsPassword());
     List<NameValuePair> data = new ArrayList<NameValuePair>();
-    data.add(new BasicNameValuePair("organisationKey", StringUtils.trimToEmpty(ipt.getKey().toString())));
+    data.add(new BasicNameValuePair("organisationKey", StringUtils.trimToEmpty(ipt.getOrganisationKey().toString())));
     data.add(new BasicNameValuePair("name", StringUtils.trimToEmpty(ipt.getName())));
     data.add(new BasicNameValuePair("description", StringUtils.trimToEmpty(ipt.getDescription())));
     data.add(new BasicNameValuePair("language", StringUtils.trimToEmpty(ipt.getLanguage())));

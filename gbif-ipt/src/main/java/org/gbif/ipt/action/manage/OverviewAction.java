@@ -386,8 +386,7 @@ public class OverviewAction extends ManagerBaseAction {
       // Update the Resource's Registration, if the Resource has been registered. If successful, broadcast with a msg.
       // It could be the resource is a metadata-only resource, but its registration should always be updated on publish.
       if (resource.isRegistered()) {
-        resourceManager.updateRegistration(resource);
-        addActionMessage(getText("manage.overview.resource.update.registration", new String[] {resource.getTitle()}));
+        resourceManager.updateRegistration(resource, this);
       }
 
       // Publish the Resource
