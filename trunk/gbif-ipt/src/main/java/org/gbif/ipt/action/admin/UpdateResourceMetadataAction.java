@@ -70,6 +70,10 @@ public class UpdateResourceMetadataAction extends POSTAction {
     log.info("Updating resource metadata - eml.xml");
     for (Resource res : publishedResources) {
       try {
+
+        // update eml pubDate (represents date when the resource was last published)
+        res.getEml().setPubDate(new Date());
+
         // publishes both the EML and the RTF
         resourceManager.publishMetadata(res, this);
 
