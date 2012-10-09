@@ -16,6 +16,7 @@
       	color: #077A2D;
       	font-size: 30px;
       }
+	  #region-user-second { line-height: 18px; }
 		</style>
     <script type="text/javascript">
       $(document).ready(function(){
