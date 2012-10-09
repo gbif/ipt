@@ -108,7 +108,7 @@ $(document).ready(function(){
 </h1>
 <form class="topForm" action="mapping.do" method="post">
     <div class="grid_17 suffix_7">
-        <h3 class="subTitle"><@s.text name='manage.mapping.title'/>: <a href="source.do?r=${resource.shortname}&id=${mapping.source.name}" title="${resource.title!resource.shortname}">${mapping.source.name}</a></h3>
+        <h3 class="subTitle"><@s.text name='manage.mapping.title'/>: <a href="source.do?r=${resource.shortname}&id=${mapping.source.name}" title="<@s.text name='manage.overview.source.data'/>">${mapping.source.name}</a></h3>
         <p><@s.text name='manage.mapping.intro'><@s.param name="source"><em>${mapping.source.name}</em></@s.param></@s.text></p>
 
         <p><a id="toggleFields" href="#"><@s.text name='manage.mapping.hideEmpty'/></a></p>
