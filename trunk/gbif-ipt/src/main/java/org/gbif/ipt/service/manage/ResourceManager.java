@@ -146,6 +146,16 @@ public interface ResourceManager {
    * Check whether the resource is currently locked or not.
    *
    * @param shortname Resource shortname
+   * @param action    the action to use for logging messages
+   *
+   * @return true if resource is currently locked for any management.
+   */
+  boolean isLocked(String shortname, BaseAction action);
+
+  /**
+   * Check whether the resource is currently locked or not.
+   *
+   * @param shortname Resource shortname
    *
    * @return true if resource is currently locked for any management.
    */
@@ -282,8 +292,9 @@ public interface ResourceManager {
    * Update the registration of the resource with the GBIF Registry.
    *
    * @param resource the published resource
+   * @param action   the action to use for logging messages
    */
-  void updateRegistration(Resource resource) throws InvalidConfigException;
+  void updateRegistration(Resource resource, BaseAction action);
 
   /**
    * Makes a resource private.
