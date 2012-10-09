@@ -932,6 +932,10 @@ table#admintable td {
 table#admintable tr {
   height: 100px;
 }
+
+table#admintable td div.info {
+  white-space: normal;
+}
 table#user-list { width: 940px; }
 table#user-list thead { background-color: #eee; }
 table#user-list tbody tr td { display: table-cell; }
