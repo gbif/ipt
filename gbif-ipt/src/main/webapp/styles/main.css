@@ -567,7 +567,8 @@ div.textRight div.info{
 }
 .topForm textarea {
 	margin-left: 0.5em;
-	width: 93%;
+	width: 90%;
+	overflow: auto;
 }
 .topForm input {
 	margin-left: 0.5em;
@@ -589,8 +590,29 @@ div a.button {
   margin-top: 10px;
 }
 /* To indicate the width should be cut 50% - used for example on the create new resource template */
-.half input {
-  width: 45%;
+div.half{
+	clear: both;	
+}
+div.half:after{
+    /*Having something in the content such as a period 
+    gives a more consistent results across browsers.*/
+    content: "."; 
+    display: block; 
+    height: 0; 
+    font-size:0;	
+    clear: both; 
+    visibility:hidden;
+}
+div.half > div{
+	width: 49%;
+	float: left;
+}
+div.half input{
+	width: 85%;
+}
+div.half select{
+	max-width:90%;
+	width: auto;
 }
 
 .topForm img.infoImg {
@@ -662,6 +684,12 @@ div.right {
 	width: 200px;
 }
 /* Taxonomic/Temporal Coverage */
+#subItems {
+  margin-bottom: 10px;
+}
+.taxon-list {
+  padding-top:14px;
+}
 div.third > div{
 	width: 30%;
 	float: left;
@@ -674,7 +702,6 @@ img.trash-icon {
 	margin-top: 34px;
 	margin-left: -10px;
 }
-
 div.item {
   padding-bottom: 20px;
   border-bottom: 1px dotted #999;
