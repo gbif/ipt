@@ -120,12 +120,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       StringUtils.trimToEmpty(primaryContact.getAddress().toFormattedString())));
     data.add(new BasicNameValuePair("primaryContactPhone", StringUtils.trimToEmpty(primaryContact.getPhone())));
 
-    // TODO: For a future release - depends on modification to Registry WS
-    // data.add(new BasicNameValuePair("primaryContactFirstName",
-    // StringUtils.trimToNull(StringUtils.trimToEmpty(primaryContact.getFirstName()))));
-    // data.add(new BasicNameValuePair("primaryContactLastName",
-    // StringUtils.trimToNull(StringUtils.trimToEmpty(primaryContact.getLastName()))));
-
     // see if we have a published dwca or if its only metadata
     RegistryServices services = buildServiceTypeParams(resource);
     data.add(new BasicNameValuePair("serviceTypes", services.serviceTypes));
@@ -189,7 +183,9 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     } catch (IOException e) {
       throw new RegistryException(TYPE.IO_ERROR, e);
     } catch (Exception e) {
-      throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, e);
+      String msg = "Bad registry response: " + e.getMessage();
+      log.error(msg, e);
+      throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, msg);
     }
 
   }
@@ -503,6 +499,13 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return String.format("%s%s%s", cfg.getRegistryUrl(), "/registry/thesauri", json ? ".json" : "/");
   }
 
+  /**
+   * Populate credentials for Organisation ws request.
+   *
+   * @param org Organisation
+   *
+   * @return credentials
+   */
   private UsernamePasswordCredentials orgCredentials(Organisation org) {
     return new UsernamePasswordCredentials(org.getKey().toString(), org.getPassword());
   }
@@ -547,7 +550,9 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       }
       throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, "Empty registry response");
     } catch (Exception e) {
-      throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, e);
+      String msg = "Bad registry response: " + e.getMessage();
+      log.error(msg, e);
+      throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, msg);
     }
   }
 
@@ -557,27 +562,16 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    */
   public String registerIPT(Ipt ipt, Organisation org) throws RegistryException {
     // registering IPT resource
+    log.info("Registering IPT instance...");
 
-    List<NameValuePair> data = new ArrayList<NameValuePair>();
-    data.add(new BasicNameValuePair("organisationKey", StringUtils.trimToEmpty(org.getKey().toString())));
-    data.add(new BasicNameValuePair("name", StringUtils.trimToEmpty(ipt.getName()))); // name
-    data.add(new BasicNameValuePair("description", StringUtils.trimToEmpty(ipt.getDescription()))); // description
-    // IPT password used for updating the IPT's own metadata & issuing atomic updateURL operations
+    // populate params for ws
+    String orgKey = (org != null && org.getKey() != null) ? org.getKey().toString() : null;
+    List<NameValuePair> data = buildIPTParameters(ipt, orgKey);
+
+    // add IPT password used for updating the IPT's own metadata & issuing atomic updateURL operations
     data.add(new BasicNameValuePair("wsPassword", StringUtils.trimToEmpty(ipt.getWsPassword()))); // IPT instance
-    // password
-    data.add(new BasicNameValuePair("primaryContactType", ipt.getPrimaryContactType()));
-    // TODO: For release 2.0.4
-    // data.add(new BasicNameValuePair("primaryContactFirstName",
-    // StringUtils.trimToEmpty(ipt.getPrimaryContactFirstName())));
-    // data.add(new BasicNameValuePair("primaryContactLastName",
-    // StringUtils.trimToEmpty(ipt.getPrimaryContactLastName())));
-    data.add(new BasicNameValuePair("primaryContactName", StringUtils.trimToEmpty(ipt.getPrimaryContactName())));
 
-    data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(ipt.getPrimaryContactEmail())));
-    data.add(new BasicNameValuePair("serviceTypes", SERVICE_TYPE_RSS));
-    data.add(new BasicNameValuePair("serviceURLs", getRssFeedURL()));
-
-    String key = null;
+    String key;
     try {
       UrlEncodedFormEntity uefe = new UrlEncodedFormEntity(data, HTTP.UTF_8);
       Response result = http.post(getIptUri(), null, null, orgCredentials(org), uefe);
@@ -585,57 +579,89 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
         // read new UDDI ID
         saxParser.parse(getStream(result.content), newRegistryEntryHandler);
         key = newRegistryEntryHandler.key;
+        // ensure key was found, otherwise throw Exception
         if (StringUtils.trimToNull(key) == null) {
-          key = newRegistryEntryHandler.resourceKey;
+          String msg = "Newly registered IPT Key not found";
+          log.error(msg);
+          throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, msg);
         }
         log.info("A new ipt has been registered with GBIF. Key = " + key);
         ipt.setKey(key);
       } else {
-        throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, "Bad registry response");
+        String msg = "Bad registry response, response was null";
+        log.error(msg);
+        throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, msg);
       }
     } catch (Exception e) {
-      log.error("Bad registry response", e);
-      throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, "Bad registry response");
+      String msg = "Bad registry response: " + e.getMessage();
+      log.error(msg, e);
+      throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, msg);
     }
     return key;
   }
 
-  public void updateIpt(Ipt ipt) {
-    log.warn("Updating IPT instance through GBIF Registry");
-    UsernamePasswordCredentials iptCredentials =
-      new UsernamePasswordCredentials(ipt.getKey().toString(), ipt.getWsPassword());
-    List<NameValuePair> data = new ArrayList<NameValuePair>();
-    data.add(new BasicNameValuePair("organisationKey", StringUtils.trimToEmpty(ipt.getOrganisationKey().toString())));
-    data.add(new BasicNameValuePair("name", StringUtils.trimToEmpty(ipt.getName())));
-    data.add(new BasicNameValuePair("description", StringUtils.trimToEmpty(ipt.getDescription())));
-    data.add(new BasicNameValuePair("language", StringUtils.trimToEmpty(ipt.getLanguage())));
-    data.add(new BasicNameValuePair("homepageURL", StringUtils.trimToEmpty(ipt.getHomepageURL())));
-    data.add(new BasicNameValuePair("logoURL", StringUtils.trimToEmpty(ipt.getLogoUrl())));
-    // TODO: For release 2.0.4
-    // data.add(new BasicNameValuePair("primaryContactFirstName",
-    // StringUtils.trimToEmpty(ipt.getPrimaryContactFirstName())));
-    // data.add(new BasicNameValuePair("primaryContactLastName",
-    // StringUtils.trimToEmpty(ipt.getPrimaryContactLastName())));
-    data.add(new BasicNameValuePair("primaryContactName", StringUtils.trimToEmpty(ipt.getPrimaryContactName())));
+  /**
+   * Populate credentials for IPT ws request.
+   *
+   * @param ipt IPT
+   *
+   * @return credentials
+   */
+  private UsernamePasswordCredentials iptCredentials(Ipt ipt) {
+    return new UsernamePasswordCredentials(ipt.getKey().toString(), ipt.getWsPassword());
+  }
 
-    data.add(new BasicNameValuePair("primaryContactType", StringUtils.trimToEmpty(ipt.getPrimaryContactType())));
-    data.add(new BasicNameValuePair("primaryContactAddress", StringUtils.trimToEmpty(ipt.getPrimaryContactAddress())));
-    data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(ipt.getPrimaryContactEmail())));
-    data.add(new BasicNameValuePair("primaryContactPhone", StringUtils.trimToEmpty(ipt.getPrimaryContactPhone())));
-    data.add(new BasicNameValuePair("serviceTypes", SERVICE_TYPE_RSS));
-    data.add(new BasicNameValuePair("serviceURLs", getRssFeedURL()));
+  /**
+   * Populate a list of name value pairs used in the common ws requests for IPT registrations and updates.
+   *
+   * @param ipt             IPT
+   * @param organisationKey Organisation key string
+   *
+   * @return list of name value pairs, or an empty list if the IPT or organisation key were null
+   */
+  private List<NameValuePair> buildIPTParameters(Ipt ipt, String organisationKey) {
+    List<NameValuePair> data = new ArrayList<NameValuePair>();
+    if (ipt != null && organisationKey != null) {
+      // main
+      data.add(new BasicNameValuePair("organisationKey", StringUtils.trimToEmpty(organisationKey)));
+      data.add(new BasicNameValuePair("name", StringUtils.trimToEmpty(ipt.getName())));
+      data.add(new BasicNameValuePair("description", StringUtils.trimToEmpty(ipt.getDescription())));
+
+      // primary contact
+      data.add(new BasicNameValuePair("primaryContactType", StringUtils.trimToEmpty(ipt.getPrimaryContactType())));
+      data.add(new BasicNameValuePair("primaryContactName", StringUtils.trimToEmpty(ipt.getPrimaryContactName())));
+      data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(ipt.getPrimaryContactEmail())));
+
+      // service/endpoint
+      data.add(new BasicNameValuePair("serviceTypes", SERVICE_TYPE_RSS));
+      data.add(new BasicNameValuePair("serviceURLs", getRssFeedURL()));
+    } else {
+      log.debug("One or both of IPT and Organisation key were null. Params needed for ws will be empty");
+    }
+    return data;
+  }
+
+  public void updateIpt(Ipt ipt) throws RegistryException {
+    log.info("Updating IPT registration...");
+
+    // populate params for ws
+    String orgKey = (ipt != null && ipt.getOrganisationKey() != null) ? ipt.getOrganisationKey().toString() : null;
+    List<NameValuePair> data = buildIPTParameters(ipt, orgKey);
 
     try {
-      Response resp =
-        http.post(getIptUpdateUri(ipt.getKey().toString()), null, null, iptCredentials, new UrlEncodedFormEntity(data));
+      Response resp = http.post(getIptUpdateUri(ipt.getKey().toString()), null, null, iptCredentials(ipt),
+        new UrlEncodedFormEntity(data));
       if (http.success(resp)) {
-        log.debug("Ipt's registration info has been updated");
+        log.info("IPT registration update was successful");
       } else {
-        throw new RegistryException(RegistryException.TYPE.FAILED, "Registration update failed");
+        String msg = "Bad registry response";
+        log.error(msg);
+        throw new RegistryException(RegistryException.TYPE.FAILED, msg);
       }
     } catch (Exception e) {
+      String msg = "Bad registry response: " + e.getMessage();
+      log.error(msg, e);
       throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, "Bad registry response");
-
     }
   }
 
@@ -661,7 +687,9 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
         throw new RegistryException(RegistryException.TYPE.FAILED, "Registration update failed");
       }
     } catch (Exception e) {
-      throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, "Bad registry response");
+      String msg = "Bad registry response: " + e.getMessage();
+      log.error(msg, e);
+      throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, msg);
     }
   }
 
@@ -671,7 +699,9 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
         http.get(getLoginURL(organisationKey), null, new UsernamePasswordCredentials(organisationKey, password));
       return http.success(resp);
     } catch (Exception e) {
-      log.warn(e);
+      log.warn(
+        "The organisation could not be validated using key (" + organisationKey + ") and password (" + password + ")",
+        e);
     }
     return false;
   }

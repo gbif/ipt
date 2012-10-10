@@ -530,6 +530,9 @@ admin.registration.registered2=管轄此 IPT 的機構是<strong>{0}</strong>。
 admin.registration.links=GBIF 登錄連結
 admin.registration.test1=在 GBIF 網絡上註冊此 IPT 的第一個步驟是驗證顯示於下方的基礎網址，點擊按鈕標籤「驗證」開始測試。假如測試成功，您將可以繼續進行註冊的下一步驟。假如測試失敗，請到 <a href="config.do">IPT 設定</a>頁面來更改伺服器的網址配置設定。\n\
 admin.registration.success=IPT 已註冊於該組織之下。
+admin.registration.failed=TODO
+admin.registration.success.update=TODO
+admin.registration.failed.update=TODO IPT 註冊更新失敗！
 admin.registration.error.alreadyRegistered1=此 IPT 已註冊在一組織之下。
 admin.registration.error.alreadyRegistered2=要變更組織的關聯，請聯絡 <a href=''mailto:helpdesk@gbif.org''>GBIF Help Desk</a>。
 admin.registration.error.registry=在嘗試與 GBIF 登錄溝通時發生問題
