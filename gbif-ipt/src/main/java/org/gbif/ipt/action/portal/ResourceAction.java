@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -32,6 +31,10 @@ public class ResourceAction extends PortalBaseAction {
   // for conveniently displaying taxonomic coverages in freemarker template
   private List<OrganizedTaxonomicCoverage> organizedCoverages;
   private Map<String, String> roles;
+  private Map<String, String> preservationMethods;
+  private Map<String, String> languages;
+  private Map<String, String> countries;
+  private Map<String, String> ranks;
 
   @Inject
   public ResourceAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -73,10 +76,6 @@ public class ResourceAction extends PortalBaseAction {
     return registrationManager.getIpt();
   }
 
-  public Map<String, String> getRanks() {
-    return vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, Locale.getDefault().getLanguage(), false);
-  }
-
   /**
    * @return the resources
    */
@@ -104,6 +103,42 @@ public class ResourceAction extends PortalBaseAction {
     return roles;
   }
 
+  /**
+   * Return the list of Preservation Methods specific to the current locale.
+   *
+   * @return the list of Preservation Methods specific to the current locale
+   */
+  public Map<String, String> getPreservationMethods() {
+    return preservationMethods;
+  }
+
+  /**
+   * Return the list of ISO 3 letter language codes specific to the current locale.
+   *
+   * @return the list of ISO 3 letter language codes specific to the current locale
+   */
+  public Map<String, String> getLanguages() {
+    return languages;
+  }
+
+  /**
+   * Return the list of 2-letter country codes specific to the current locale.
+   *
+   * @return the list of 2-letter country codes specific to the current locale
+   */
+  public Map<String, String> getCountries() {
+    return countries;
+  }
+
+  /**
+   * Return the list Ranks specific to the current locale.
+   *
+   * @return the list of Ranks specific to the current locale
+   */
+  public Map<String, String> getRanks() {
+    return ranks;
+  }
+
   public String rss() {
     resources = resourceManager.latest(page, 25);
     return SUCCESS;
@@ -119,6 +154,22 @@ public class ResourceAction extends PortalBaseAction {
     // roles list, derived from XML vocabulary, and displayed in drop-down where new contacts are created
     roles = new LinkedHashMap<String, String>();
     roles.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_ROLES, getLocaleLanguage(), false));
+
+    // preservation methods list, derived from XML vocabulary, and displayed in drop-down on Collections Data Page.
+    preservationMethods = new LinkedHashMap<String, String>();
+    preservationMethods
+      .putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_PRESERVATION_METHOD, getLocaleLanguage(), false));
+
+    // languages list, derived from XML vocabulary, and displayed in drop-down on Basic Metadata page
+    languages = vocabManager.getI18nVocab(Constants.VOCAB_URI_LANGUAGE, getLocaleLanguage(), true);
+
+    // countries list, derived from XML vocabulary, and displayed in drop-down where new contacts are created
+    countries = new LinkedHashMap<String, String>();
+    countries.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_COUNTRY, getLocaleLanguage(), true));
+
+    // ranks list, derived from XML vocabulary, and displayed on Taxonomic Coverage Page
+    ranks = new LinkedHashMap<String, String>();
+    ranks.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, getLocaleLanguage(), false));
   }
 
   /**
@@ -140,11 +191,9 @@ public class ResourceAction extends PortalBaseAction {
 
   /**
    * For each unique rank, this method constructs a new OrganizedTaxonomicKeywords that contains a list of display
-   * names
-   * coming from a resource's TaxonomicCoverage's TaxonKeywords corresponding to that rank. The display nane consists
-   * of
-   * "scientific name (common name)". Another OrganizedTaxonomicKeywords is also created for the unknown rank, that is
-   * a TaxonomicKeyword not having a rank.
+   * names coming from a resource's TaxonomicCoverage's TaxonKeywords corresponding to that rank. The display nane
+   * consists of "scientific name (common name)". Another OrganizedTaxonomicKeywords is also created for the unknown
+   * rank, that is a TaxonomicKeyword not having a rank.
    *
    * @param keywords list of resource's TaxonomicCoverage's TaxonKeywords
    *
@@ -156,7 +205,10 @@ public class ResourceAction extends PortalBaseAction {
     // also we want a unique set of names corresponding to empty rank
     Set<String> uniqueNamesForEmptyRank = new HashSet<String>();
 
-    for (String rank : getRanks().keySet()) {
+    ranks = new LinkedHashMap<String, String>();
+    ranks.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, getLocaleLanguage(), false));
+
+    for (String rank : ranks.keySet()) {
       OrganizedTaxonomicKeywords organizedKeywords = new OrganizedTaxonomicKeywords();
       // set rank
       organizedKeywords.setRank(rank);

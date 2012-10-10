@@ -5,14 +5,14 @@
 	<#if agent.position?? ><tr><th><@s.text name='eml.associatedParties.position'/></th><td>${agent.position!}</td></tr></#if>
 	<#if agent.organisation?? ><tr><th><@s.text name='eml.contact.organisation'/></th><td>${agent.organisation!}</td></tr></#if>
 	<#if !agent.address.isEmpty()><tr><th><@s.text name='eml.contact.address.address'/></th><td>
-	<#if agent.address.address??>${agent.address.address}</#if><#if agent.address.city??>, ${agent.address.city}</#if><#if agent.address.province??>, ${agent.address.province}</#if><#if agent.address.country??>, ${agent.address.country}</#if><#if agent.address.postalCode??>, <@s.text name='eml.contact.address.postalCode'/>: ${agent.address.postalCode}</#if>
+	<#if agent.address.address??>${agent.address.address}</#if><#if agent.address.city??>, ${agent.address.city}</#if><#if agent.address.province??>, ${agent.address.province}</#if><#if agent.address.country?? && countries[agent.address.country]?has_content>, ${countries[agent.address.country]!}</#if><#if agent.address.postalCode??>, <@s.text name='eml.contact.address.postalCode'/>: ${agent.address.postalCode}</#if>
 	</td></tr></#if>
 	<#if agent.email?? || agent.phone??><tr><th><@s.text name='portal.resource.contact'/></th><td><a href="mailto:${agent.email!}">${agent.email!}</a> <#if agent.phone??><@s.text name='portal.resource.tel'/>: ${agent.phone!}</#if></td></tr></#if>
 	<#if agent.homepage?? ><tr><th><@s.text name='eml.associatedParties.homepage'/></th><td><a href="${agent.homepage!}">${agent.homepage!}</a></td></tr></#if>
   <#if withRole && roles[agent.role]?has_content>
     <tr>
       <th><@s.text name='eml.associatedParties.role'/></th>
-      <td>${roles[agent.role]}</td>
+      <td>${roles[agent.role]!}</td>
     </tr>
   </#if>
 </table>
@@ -44,10 +44,20 @@
   <div class="body">
       	<div class="details">
       		<table>
-          		<#if resource.eml.subject?has_content><tr><th><@s.text name='portal.resource.summary.keywords'/></th><td><@textWithFormattedLink resource.eml.subject!no_description/></td></tr></#if>
-          		<tr><th><@s.text name='eml.language'/></th><td>${eml.language!}</td></tr>
-
-          		<tr><th><@s.text name='portal.resource.last.publication'/></th>
+            <#if resource.eml.subject?has_content><tr><th><@s.text name='portal.resource.summary.keywords'/></th><td><@textWithFormattedLink resource.eml.subject!no_description/></td></tr></#if>
+            <#if eml.metadataLanguage?has_content && languages[eml.metadataLanguage]?has_content>
+              <tr>
+                <th><@s.text name='eml.metadataLanguage'/></th>
+                <td>${languages[eml.metadataLanguage]!}</td>
+              </tr>
+            </#if>
+            <#if eml.language?has_content && languages[eml.language]?has_content>
+              <tr>
+                <th><@s.text name='eml.language'/></th>
+                <td>${languages[eml.language]!}</td>
+              </tr>
+          	</#if>
+            <tr><th><@s.text name='portal.resource.last.publication'/></th>
 			  	<#if resource.lastPublished??>
 			  	    <td><@s.text name='portal.resource.version'/> ${resource.eml.emlVersion} <@s.text name='portal.resource.version.from'/> ${resource.lastPublished?date?string.medium}</td></tr>
 			  	<#if (resource.recordsPublished>0)>
@@ -213,10 +223,14 @@
           </table>
           <table id="taxonKeywords">
             <#list item.keywords as k>
-              <#if k.rank?has_content && (k.displayNames?size > 0) >
+              <#if k.rank?has_content && ranks[k.rank?string]?has_content && (k.displayNames?size > 0) >
                 <tr>
-                <#-- 1st col, write rank name once -->
-                  <th>${k.rank?cap_first}</th>
+                <#-- 1st col, write rank name once. Avoid problem accessing "class" from map - it displays "java.util.LinkedHashMap" -->
+                  <#if k.rank?lower_case == "class">
+                    <th>Class</th>
+                  <#else>
+                    <th>${ranks[k.rank?html]?cap_first!}</th>
+                  </#if>
                 <#-- 2nd col, write comma separated list of names in format: scientific name (common name) -->
                   <td>
                     <#list k.displayNames as name>
@@ -284,8 +298,16 @@
       	<div class="details">
       		<table>
           		<#if eml.project.title?has_content><tr><th><@s.text name='eml.project.title'/></th><td><@textWithFormattedLink eml.project.title!/></td></tr></#if>
-          		<#if eml.project.personnel.lastName?has_content><tr><th><@s.text name='portal.resource.name'/></th><td>${eml.project.personnel.firstName!} ${eml.project.personnel.lastName!}</td></tr></#if>
-	          	<#if eml.project.personnel.role??><tr><th><@s.text name='eml.project.personnel.role'/></th><td>${eml.project.personnel.role!}</td></tr></#if>
+              <#if eml.project.personnel??>
+                <#assign personnel = eml.project.personnel>
+                <#if personnel.lastName?has_content><tr><th><@s.text name='portal.resource.name'/></th><td>${personnel.firstName!} ${personnel.lastName!}</td></tr></#if>
+                <#if roles[personnel.role?string]?has_content>
+                  <tr>
+                    <th><@s.text name='eml.project.personnel.role'/></th>
+                    <td>${roles[personnel.role?string]!}</td>
+                  </tr>
+                </#if>
+              </#if>
           		<#if eml.project.funding?has_content><tr><th><@s.text name='eml.project.funding'/></th><td><@textWithFormattedLink eml.project.funding/></td></tr></#if>
           		<#if eml.project.studyAreaDescription.descriptorValue?has_content><tr><th><@s.text name='eml.project.studyAreaDescription.descriptorValue'/></th><td><@textWithFormattedLink eml.project.studyAreaDescription.descriptorValue/></td></tr></#if>
           		<#if eml.project.designDescription?has_content><tr><th><@s.text name='eml.project.designDescription'/></th><td><@textWithFormattedLink eml.project.designDescription/></td></tr></#if>
@@ -369,7 +391,12 @@
           		<#if eml.collectionName?has_content><tr><th><@s.text name='eml.collectionName'/></th><td>${eml.collectionName!}</td></tr></#if>
           		<#if eml.collectionId?has_content><tr><th><@s.text name='eml.collectionId'/></th><td>${eml.collectionId!}</td></tr></#if>
           		<#if eml.parentCollectionId?has_content><tr><th><@s.text name='eml.parentCollectionId'/></th><td>${eml.parentCollectionId!}</td></tr></#if>
-          		<#if eml.specimenPreservationMethod?has_content><tr><th><@s.text name='eml.specimenPreservationMethod'/></th><td>${eml.specimenPreservationMethod!}</td></tr></#if>
+          		<#if preservationMethods[eml.specimenPreservationMethod]?has_content >
+                <tr>
+                  <th><@s.text name='eml.specimenPreservationMethod'/></th>
+                  <td>${preservationMethods[eml.specimenPreservationMethod]!}</td>
+                </tr>
+              </#if>
           	</table>
           	
         	<table>
