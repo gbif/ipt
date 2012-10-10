@@ -180,7 +180,16 @@ public class RegistrationAction extends POSTAction {
         addActionMessage(getText("admin.registration.success"));
         return SUCCESS;
       } catch (RegistryException re) {
-        addActionError(getText("admin.registration.error.registry"));
+        // log as specific error message as possible about why the Registry error occurred
+        String msg = RegistryException.logRegistryException(re.getType(), this);
+        // add error message about Registry error
+        addActionError(msg);
+        log.error(msg);
+
+        // add error message that explains the consequence of the Registry error
+        msg = getText("admin.registration.failed");
+        addActionError(msg);
+        log.error(msg);
         return INPUT;
       } catch (AlreadyExistingException e) {
         log.error(e);
@@ -221,9 +230,18 @@ public class RegistrationAction extends POSTAction {
     try {
       registryManager.updateIpt(getRegisteredIpt());
       registrationManager.save();
-      addActionMessage("success IPT update!");
+      addActionMessage(getText("admin.registration.success.update"));
     } catch (RegistryException e) {
-      addActionError(e.getMessage());
+      // log as specific error message as possible about why the Registry error occurred
+      String msg = RegistryException.logRegistryException(e.getType(), this);
+      // add error message about Registry error
+      addActionError(msg);
+      log.error(msg);
+
+      // add error message that explains the consequence of the Registry error
+      msg = getText("admin.registration.failed.update");
+      addActionError(msg);
+      log.error(msg);
       return INPUT;
     } catch (IOException e) {
       addActionError(e.getMessage());
