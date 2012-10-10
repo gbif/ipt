@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 
@@ -271,70 +272,98 @@ public class MetadataAction extends ManagerBaseAction {
     preservationMethods
       .putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_PRESERVATION_METHOD, getLocaleLanguage(), false));
 
-    if (resource.getEml().getContact().getAddress().getCountry() != null) {
-      resource.getEml().getContact().getAddress()
-        .setCountry(CountryUtils.iso2(resource.getEml().getContact().getAddress().getCountry()));
-    }
-    if (resource.getEml().resourceCreator().getAddress().getCountry() != null) {
-      resource.getEml().resourceCreator().getAddress()
-        .setCountry(CountryUtils.iso2(resource.getEml().resourceCreator().getAddress().getCountry()));
-    }
-    if (resource.getEml().getMetadataProvider().getAddress().getCountry() != null) {
-      resource.getEml().getMetadataProvider().getAddress()
-        .setCountry(CountryUtils.iso2(resource.getEml().getMetadataProvider().getAddress().getCountry()));
-    }
+    if (resource.getEml() != null) {
+      // contact
+      Agent contact = resource.getEml().getContact();
+      if (contact != null) {
+        if (contact.getAddress().getCountry() != null) {
+          contact.getAddress().setCountry(CountryUtils.iso2(contact.getAddress().getCountry()));
+        }
+      }
+      // creator
+      Agent creator = resource.getEml().resourceCreator();
+      if (creator != null) {
+        if (creator.getAddress().getCountry() != null) {
+          creator.getAddress().setCountry(CountryUtils.iso2(creator.getAddress().getCountry()));
+        }
+      }
 
-    if (resource.getEml().getMetadataProvider() != null && resource.getEml().getMetadataProvider().isEmpty()) {
+      // metadata provider
+      Agent metadataProvider = resource.getEml().getMetadataProvider();
+
+      // create Agent equal to current user
       Agent current = new Agent();
       current.setFirstName(getCurrentUser().getFirstname());
       current.setLastName(getCurrentUser().getLastname());
       current.setEmail(getCurrentUser().getEmail());
-      resource.getEml().setMetadataProvider(current);
-    }
 
-    if (!resourceManager.isEmlExisting(resource.getShortname()) && resource.getEml().getAssociatedParties().isEmpty()) {
-      Agent user = new Agent();
-      user.setFirstName(getCurrentUser().getFirstname());
-      user.setLastName(getCurrentUser().getLastname());
-      user.setEmail(getCurrentUser().getEmail());
-      user.setRole("user");
-      resource.getEml().getAssociatedParties().add(user);
-    }
+      if (!isAgentWithoutRoleEmpty(metadataProvider)) {
+        if (metadataProvider.getAddress().getCountry() != null) {
+          metadataProvider.getAddress().setCountry(CountryUtils.iso2(metadataProvider.getAddress().getCountry()));
+        }
+      } else {
+        // auto populate with current user
+        resource.getEml().setMetadataProvider(current);
+      }
 
-    // if it is a submission of the taxonomic coverage, clear the session list
-    // TODO: figure out if this is correct
-    if (isHttpPost()) {
-      if ("parties".equals(section)) {
-        resource.getEml().getAssociatedParties().clear();
+      // auto populate user with current user
+      if (!resourceManager.isEmlExisting(resource.getShortname()) && resource.getEml().getAssociatedParties().isEmpty()) {
+        current.setRole("user");
+        resource.getEml().getAssociatedParties().add(current);
       }
-      if ("geocoverage".equals(section)) {
-        resource.getEml().getGeospatialCoverages().clear();
-      }
-      if ("taxcoverage".equals(section)) {
-        resource.getEml().getTaxonomicCoverages().clear();
-      }
-      if ("tempcoverage".equals(section)) {
-        resource.getEml().getTemporalCoverages().clear();
-      }
-      if ("methods".equals(section)) {
-        resource.getEml().getMethodSteps().clear();
-      }
-      if ("citations".equals(section)) {
-        resource.getEml().getBibliographicCitationSet().getBibliographicCitations().clear();
-      }
-      if ("physical".equals(section)) {
-        resource.getEml().getPhysicalData().clear();
-      }
-      if ("keywords".equals(section)) {
-        resource.getEml().getKeywords().clear();
-      }
-      if ("collections".equals(section)) {
-        resource.getEml().getJgtiCuratorialUnits().clear();
-      }
-      if ("additional".equals(section)) {
-        resource.getEml().getAlternateIdentifiers().clear();
+
+      // if it is a submission of the taxonomic coverage, clear the session list
+      if (isHttpPost()) {
+        if ("parties".equals(section)) {
+          resource.getEml().getAssociatedParties().clear();
+        }
+        if ("geocoverage".equals(section)) {
+          resource.getEml().getGeospatialCoverages().clear();
+        }
+        if ("taxcoverage".equals(section)) {
+          resource.getEml().getTaxonomicCoverages().clear();
+        }
+        if ("tempcoverage".equals(section)) {
+          resource.getEml().getTemporalCoverages().clear();
+        }
+        if ("methods".equals(section)) {
+          resource.getEml().getMethodSteps().clear();
+        }
+        if ("citations".equals(section)) {
+          resource.getEml().getBibliographicCitationSet().getBibliographicCitations().clear();
+        }
+        if ("physical".equals(section)) {
+          resource.getEml().getPhysicalData().clear();
+        }
+        if ("keywords".equals(section)) {
+          resource.getEml().getKeywords().clear();
+        }
+        if ("collections".equals(section)) {
+          resource.getEml().getJgtiCuratorialUnits().clear();
+        }
+        if ("additional".equals(section)) {
+          resource.getEml().getAlternateIdentifiers().clear();
+        }
       }
     }
+  }
+
+  /**
+   * Determine if all fields for an agent of type agentType (not agentWithRoleType) are empty.
+   *
+   * @param agent Agent
+   *
+   * @return if agent is empty or not
+   */
+  private boolean isAgentWithoutRoleEmpty(Agent agent) {
+    if (agent != null) {
+      return Strings.nullToEmpty(agent.getFirstName()).trim().isEmpty() && Strings.nullToEmpty(agent.getLastName())
+        .trim().isEmpty() && Strings.nullToEmpty(agent.getOrganisation()).trim().isEmpty() && Strings
+        .nullToEmpty(agent.getPosition()).trim().isEmpty() && agent.getAddress().isEmpty() && Strings
+        .nullToEmpty(agent.getPhone()).trim().isEmpty() && Strings.nullToEmpty(agent.getEmail()).trim().isEmpty()
+             && Strings.nullToEmpty(agent.getHomepage()).trim().isEmpty();
+    }
+    return true;
   }
 
   @Override
