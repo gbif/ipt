@@ -81,7 +81,7 @@ $(document).ready(function(){
 <#-- If the hosting institution already exists, this IP has been registered. Don't present the register form -->
 
 <#if hostingOrganisation?exists>
-    <form class="topForm half" action="registration.do" method="post">	
+    <form id="registration" class="topForm half" action="registration.do" method="post">	
     	<p><@s.text name="admin.registration.registered1"/><br />
     	<@s.text name="admin.registration.registered2"><@s.param>${hostingOrganisation.name!"???"}</@s.param></@s.text></p>
     	<h3 class="subTitle"><@s.text name="admin.registration.links"/></h3>

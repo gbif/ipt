@@ -593,6 +593,19 @@ div a.button {
 .bottomButtons {
   margin-top: 10px;
 }
+/* Not all half column are suppose to be half, so a new class introduced */
+#registration div {width: 60%;}
+#registration input {width: 85%;}
+#registration div.buttons input {width: auto;}
+
+#newuser div {width: 60%;}
+#newuser input {width: 85%;}
+#newuser div.userManageButtons input {width: auto;}
+
+#organisationsForm div {width: 60%;}
+#organisationsForm input {width: 85%;}
+#organisationsForm div.buttons input {width: auto;}
+
 /* To indicate the width should be cut 50% - used for example on the create new resource template */
 div.half{
 	clear: both;	
