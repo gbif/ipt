@@ -512,13 +512,17 @@ div#sidebar ul li.current a {
 .superscript { color: #666 ; vertical-align: top; font-size: 0.6em; font-family: "Arial", sans-serif;}
 .subTitle {  margin-bottom: 5px; color: #333; }
 
-
-
-
 div.halfcolumn {
 	float: left;
 	margin: 0px 0px 0px 0px;
-	width: 50%;
+	width: 49%;
+}
+
+div.basicMetadata div.halfcolumn {
+  height: 3.5em;
+}
+div.associateParties div.halfcolumn {
+  height: 3.5em;
 }
 div.halfcolumn a[id*='copyDetails-'] {
   float: right;

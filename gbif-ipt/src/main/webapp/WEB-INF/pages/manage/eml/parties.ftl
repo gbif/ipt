@@ -22,7 +22,7 @@ $(document).ready(function(){
     <p><@s.text name='manage.metadata.parties.intro'/></p>
 	<div id="items">
 		<#list eml.associatedParties as item>
-			<div id="item-${item_index}" class="item clearfix">
+			<div id="item-${item_index}" class="item associateParties clearfix">
 				<div class="halfcolumn">
   	  				<a id="copyDetails-${item_index}" href="">[ <@s.text name="eml.resourceCreator.copyLink" />  ]</a>
     			</div>
@@ -79,7 +79,7 @@ $(document).ready(function(){
 </form>
 </div>
 
-<div id="baseItem" class="item clearfix" style="display:none;">
+<div id="baseItem" class="item associateParties clearfix" style="display:none;">
 	<div class="halfcolumn">
   	  <a id="copyDetails" href="">[ <@s.text name="eml.resourceCreator.copyLink" />  ]</a>
     </div>
