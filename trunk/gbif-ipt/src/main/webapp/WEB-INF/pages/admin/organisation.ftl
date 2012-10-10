@@ -54,7 +54,7 @@ $(document).ready(function(){
  <#assign currentMenu = "admin"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"> 
-
+<div class="grid_18 suffix_6">
 
 <@s.form id="organisationsForm" cssClass="topForm half" action="organisation.do" method="post">
 	
@@ -84,7 +84,7 @@ $(document).ready(function(){
 	<#else>
 		<@checkbox name="organisation.canHost" i18nkey="admin.organisation.canPublish" value="true" help="i18n"/>
 	</#if>
-   <div>
+   <div class="buttons">
  	<@s.submit name="save" key="button.save" cssClass="button confirm"/>
  	<#if id?has_content>
 	<@s.submit name="delete" key="button.delete" cssClass="button confirm"/>
@@ -92,5 +92,6 @@ $(document).ready(function(){
  	<@s.submit name="cancel" key="button.cancel" cssClass="button"/>
   </div>
 </@s.form>
+</div>
 <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>
