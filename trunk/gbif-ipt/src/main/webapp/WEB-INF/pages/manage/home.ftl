@@ -82,7 +82,13 @@
     			<@s.text name="manage.home.visible.public"/>
     		</#if>
     	</td>
-    	<td id="resourceAuthor">${r.creator.firstname!} ${r.creator.lastname!}</td>
+    	<td id="resourceAuthor">
+        <#if r.creator??>
+          ${r.creator.firstname!} ${r.creator.lastname!}
+        <#else>
+          ${emptyString}
+        </#if>
+      </td>
     	<#-- >/#if -->
       </tr>
     </#list>
