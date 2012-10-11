@@ -391,7 +391,7 @@
           		<#if eml.collectionName?has_content><tr><th><@s.text name='eml.collectionName'/></th><td>${eml.collectionName!}</td></tr></#if>
           		<#if eml.collectionId?has_content><tr><th><@s.text name='eml.collectionId'/></th><td>${eml.collectionId!}</td></tr></#if>
           		<#if eml.parentCollectionId?has_content><tr><th><@s.text name='eml.parentCollectionId'/></th><td>${eml.parentCollectionId!}</td></tr></#if>
-          		<#if preservationMethods[eml.specimenPreservationMethod]?has_content >
+          		<#if eml.specimenPreservationMethod?has_content && preservationMethods[eml.specimenPreservationMethod]?has_content >
                 <tr>
                   <th><@s.text name='eml.specimenPreservationMethod'/></th>
                   <td>${preservationMethods[eml.specimenPreservationMethod]?cap_first!}</td>
