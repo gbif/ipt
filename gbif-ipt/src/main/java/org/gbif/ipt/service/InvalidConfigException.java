@@ -11,9 +11,70 @@ public class InvalidConfigException extends RuntimeException {
   private static final long serialVersionUID = 8568781101282056985L;
 
   public enum TYPE {
-    INVALID_BASE_URL, INACCESSIBLE_BASE_URL, INVALID_DATA_DIR, NON_WRITABLE_DATA_DIR, CONFIG_WRITE, USER_CONFIG,
-    REGISTRY_CONFIG, INVALID_EXTENSION, DATADIR_ALREADY_REGISTERED, RESOURCE_ALREADY_REGISTERED, REGISTRATION_CONFIG,
-    RESOURCE_CONFIG, EML, INVALID_PROXY, FORMAT_ERROR, ROWTYPE_ALREADY_INSTALLED
+    /**
+     * Invalid Base URL specified.
+     */
+    INVALID_BASE_URL,
+    /**
+     * Base URL specified is inaccessible.
+     */
+    INACCESSIBLE_BASE_URL,
+    /**
+     * Data directory is invalid.
+     */
+    INVALID_DATA_DIR,
+    /**
+     * Data directory is not writable.
+     */
+    NON_WRITABLE_DATA_DIR,
+    /**
+     * Configuration changes failed to be written.
+     */
+    CONFIG_WRITE,
+    /**
+     * User account configuration could not be read.
+     */
+    USER_CONFIG,
+    /**
+     * Extension is invalid for some reason. For example it has XML breaking characters and can't be parsed.
+     */
+    INVALID_EXTENSION,
+    /**
+     * The IPT mode (test or production) has been set, and this cannot change.
+     */
+    DATADIR_ALREADY_REGISTERED,
+    /**
+     * Visibility change not permitted: registered status is final.
+     */
+    RESOURCE_ALREADY_REGISTERED,
+    /**
+     * Registration configuration cannot be read.
+     */
+    REGISTRATION_CONFIG,
+    /**
+     * Resource configuration cannot be read.
+     */
+    RESOURCE_CONFIG,
+    /**
+     * An EML template exception has been encountered.
+     */
+    EML,
+    /**
+     * Proxy specified is invalid.
+     */
+    INVALID_PROXY,
+    /**
+     * Latitude/longitude are in invalid format.
+     */
+    FORMAT_ERROR,
+    /**
+     * An extension with given rowType has already been installed.
+     */
+    ROWTYPE_ALREADY_INSTALLED,
+    /**
+     * The resource cannot be migrated as configured.
+     */
+    INVALID_RESOURCE_MIGRATION
   }
 
   protected TYPE type;

@@ -436,25 +436,39 @@ public class OverviewAction extends ManagerBaseAction {
             org = registrationManager.get(id);
 
             // http://code.google.com/p/gbif-providertoolkit/issues/detail?id=594
-            // It is safe to test the Organisation here. A resource
-            // cannot be registered
-            // without an organisation being provided, and the issue
-            // 594 is an example
-            // how one can produce this sequence of events. A more
-            // robust improvement
-            // would might be to submit a state transition from the
-            // form "makePublic",
+            // It is safe to test the Organisation here. A resource cannot be registered without an organisation being
+            // provided, and the issue 594 is an example how one can produce this sequence of events. A more
+            // robust improvement might be to submit a state transition from the form "makePublic",
             // "makePrivate" which would be more atomic.
             if (org == null) {
               return execute();
             }
 
+            // perform registration
             resourceManager.register(resource, org, registrationManager.getIpt(), this);
-            addActionMessage(getText("manage.overview.resource.registered", new String[] {org.getName()}));
-
+          } catch (InvalidConfigException e) {
+            if (e.getType() == InvalidConfigException.TYPE.INVALID_RESOURCE_MIGRATION) {
+              String msg = getText("manage.resource.migrate.failed");
+              // concatenate reason
+              msg = (Strings.isNullOrEmpty(msg)) ? e.getMessage() : msg + ": " + e.getMessage();
+              addActionError(msg);
+              log.error(msg);
+            } else {
+              String msg = getText("manage.overview.failed.resource.registration");
+              addActionError(msg);
+              log.error(msg);
+            }
           } catch (RegistryException e) {
-            log.error("Cant register resource " + resource + " with organisation " + org, e);
-            addActionError(getText("manage.overview.failed.resource.registration"));
+            // log as specific error message as possible about why the Registry error occurred
+            String msg = RegistryException.logRegistryException(e.getType(), this);
+            // add error message about Registry error
+            addActionError(msg);
+            log.error(msg);
+
+            // add error message that explains the consequence of the Registry error
+            msg = getText("manage.overview.failed.resource.registration");
+            addActionError(msg);
+            log.error(msg);
           }
         } else {
           addActionError(getText("manage.resource.status.registration.forbidden"));

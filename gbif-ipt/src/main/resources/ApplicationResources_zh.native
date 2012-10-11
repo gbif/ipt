@@ -641,6 +641,10 @@ manage.resource.read.basic.metadata=讀取基本元數據
 manage.resource.read.problem=無法讀取達爾文核心集檔案元數據。
 manage.resource.addSource.confirm=一或多個檔案已經存在。您確定要覆寫？
 manage.resource.migrate=此資源對應到一已註冊在 {1} 之下的資源 (UUID = {0})。此資源將被關聯至已註冊的資源，而非建立新資源。
+manage.resource.migrate.failed=TODO
+manage.resource.migrate.failed.multipleUUIDs=TODO
+manage.resource.migrate.failed.badUUID=TODO
+manage.resource.migrate.failed.help=TODO
 
 manage.mapping.title=對應資料來源
 manage.mapping.intro=對於每個屬性，您可以指定一個取自您的資料來源{0}中的特定欄位中的動態值，或是為所有記錄提供單一固定的靜態值。

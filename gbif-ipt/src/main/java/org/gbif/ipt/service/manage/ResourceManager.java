@@ -244,7 +244,9 @@ public interface ResourceManager {
   void publishMetadata(Resource resource, BaseAction action) throws PublicationException;
 
   /**
-   * Registers the resource with the GBIF Registry.
+   * Registers the resource with the GBIF Registry. Instead of registering a new resource, the resource can instead
+   * update an existing registered resource if a UUID corresponding to an existing registered resource (owned by the
+   * specified organization) is found in the resource's alternate identifiers list.
    *
    * @param resource     the published resource
    * @param organisation the organization that owns the resource
