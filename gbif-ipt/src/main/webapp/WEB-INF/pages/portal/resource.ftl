@@ -12,7 +12,7 @@
   <#if withRole && roles[agent.role]?has_content>
     <tr>
       <th><@s.text name='eml.associatedParties.role'/></th>
-      <td>${roles[agent.role]!}</td>
+      <td>${roles[agent.role]?cap_first!}</td>
     </tr>
   </#if>
 </table>
@@ -48,13 +48,13 @@
             <#if eml.metadataLanguage?has_content && languages[eml.metadataLanguage]?has_content>
               <tr>
                 <th><@s.text name='eml.metadataLanguage'/></th>
-                <td>${languages[eml.metadataLanguage]!}</td>
+                <td>${languages[eml.metadataLanguage]?cap_first!}</td>
               </tr>
             </#if>
             <#if eml.language?has_content && languages[eml.language]?has_content>
               <tr>
                 <th><@s.text name='eml.language'/></th>
-                <td>${languages[eml.language]!}</td>
+                <td>${languages[eml.language]?cap_first!}</td>
               </tr>
           	</#if>
             <tr><th><@s.text name='portal.resource.last.publication'/></th>
@@ -394,7 +394,7 @@
           		<#if preservationMethods[eml.specimenPreservationMethod]?has_content >
                 <tr>
                   <th><@s.text name='eml.specimenPreservationMethod'/></th>
-                  <td>${preservationMethods[eml.specimenPreservationMethod]!}</td>
+                  <td>${preservationMethods[eml.specimenPreservationMethod]?cap_first!}</td>
                 </tr>
               </#if>
           	</table>
