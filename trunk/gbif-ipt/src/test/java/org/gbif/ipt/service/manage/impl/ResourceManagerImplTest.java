@@ -40,6 +40,7 @@ import org.gbif.ipt.model.factory.ThesaurusHandlingRule;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
+import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
@@ -461,5 +462,48 @@ public class ResourceManagerImplTest {
     assertEquals(PublicationStatus.REGISTERED, registered.getStatus());
     assertEquals(registeredDigirResourceUUID, registered.getKey().toString());
     assertEquals(organisation, registered.getOrganisation());
+  }
+
+  @Test(expected = InvalidConfigException.class)
+  public void testRegisterMigratedResourceTooManyUUID() throws IOException, SAXException, ParserConfigurationException {
+    ResourceManager manager = getResourceManagerImpl();
+
+    String registeredDigirResourceUUID = "f9b67ad0-9c9b-11d9-b9db-b8a03c50a862";
+    String extraUUID = "7615e6d1-9ebd-4302-9a7e-4913ca8b2bb4";
+
+    resource.getEml().getAlternateIdentifiers().clear();
+    // indicate resource is migrated from DiGIR, by supplying the Registry UUID for the existing resource in the
+    // resource's eml.alternateIdentifiers
+    resource.getEml().getAlternateIdentifiers().add(registeredDigirResourceUUID);
+    // add the extra (unwanted) UUID to list of alternate identifiers - at most there should be 1 only before reg.
+    resource.getEml().getAlternateIdentifiers().add(extraUUID);
+
+    // indicate resource is ready to be published, by setting its status to Public
+    resource.setStatus(PublicationStatus.PUBLIC);
+
+    manager.register(resource, organisation, ipt, baseAction);
+  }
+
+  @Test(expected = InvalidConfigException.class)
+  public void testRegisterMigratedResourceWithBadUUID() throws IOException, SAXException, ParserConfigurationException {
+    ResourceManager manager = getResourceManagerImpl();
+
+    // supply random UUID in the resource's eml.alternateIdentifiers that won't match one of organisation's resources
+    resource.getEml().getAlternateIdentifiers().clear();
+    resource.getEml().getAlternateIdentifiers().add(UUID.randomUUID().toString());
+    // indicate resource is ready to be published, by setting its status to Public
+    resource.setStatus(PublicationStatus.PUBLIC);
+
+    // mock returning list of resources that are associated to the Academy of Natural Sciences organization
+    List<Resource> organisationsResources = new ArrayList<Resource>();
+    Resource r1 = new Resource();
+    // resource has different UUID than the one in the alternate identifiers list - interpreted as failed migration
+    r1.setKey(UUID.fromString(UUID.randomUUID().toString()));
+    r1.setTitle("Herpetology");
+    organisationsResources.add(r1);
+
+    when(mockRegistryManager.getOrganisationsResources(anyString())).thenReturn(organisationsResources);
+
+    manager.register(resource, organisation, ipt, baseAction);
   }
 }
