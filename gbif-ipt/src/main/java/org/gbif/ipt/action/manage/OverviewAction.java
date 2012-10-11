@@ -321,6 +321,15 @@ public class OverviewAction extends ManagerBaseAction {
       // enabled registry organisations
       organisations = registrationManager.list();
 
+      // remove all DwC mappings with 0 terms mapped
+      // this is important do do before populating potential extensions since an empty mapping to occurrence can
+      // indicate the resource hasCore is true
+      for (ExtensionMapping em : resource.getCoreMappings()) {
+        if (em.getFields().isEmpty()) {
+          resource.deleteMapping(em);
+        }
+      }
+
       // does the resource already have a source mapped to core type?
       if (resource.hasCore()) {
         // show extensions suited for this core
@@ -368,13 +377,6 @@ public class OverviewAction extends ManagerBaseAction {
       // check EML
       missingMetadata = !emlValidator.isValid(resource.getEml(), null);
       missingRegistrationMetadata = !minimumRegistryInfo(resource);
-
-      // remove all DwC mappings with 0 terms mapped
-      for (ExtensionMapping em : resource.getCoreMappings()) {
-        if (em.getFields().isEmpty()) {
-          resource.deleteMapping(em);
-        }
-      }
     }
   }
 
