@@ -1163,38 +1163,67 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     throws RegistryException {
     ActionLogger alog = new ActionLogger(this.log, action);
 
-    if (PublicationStatus.REGISTERED != resource.getStatus()) {
-      // populate set of UUIDs from resource's eml.alternateIdentifiers that could represent existing registered
-      // resource UUIDs
+    if (PublicationStatus.REGISTERED != resource.getStatus() && PublicationStatus.PUBLIC == resource.getStatus()) {
+
+      // Check: is there a chance this resource is meant to update an existing registered resource?
+      // Populate set of UUIDs from eml.alternateIdentifiers that could represent existing registered resource UUIDs
       Set<UUID> candidateResourceUUIDs = collectCandidateResourceUUIDsFromAlternateIds(resource);
-      // Is there a chance this resource is being migrated from DiGIR, BioCASE, TAPIR to the IPT?
-      // Migration can happen if an alternate identifier corresponding to an existing resource owned by the
-      // organization has been set
+
+      // At the time of registration, there can be max 1 candidate UUID. This safeguards against migration errors
+      if (candidateResourceUUIDs.size() > 1) {
+        String reason = action.getText("manage.resource.migrate.failed.multipleUUIDs", new String[] {organisation.getName()});
+        String help = action.getText("manage.resource.migrate.failed.help");
+        throw new InvalidConfigException(TYPE.INVALID_RESOURCE_MIGRATION, reason + " " + help);
+      }
+
+      // So-called resource migration can happen if a UUID corresponding to the resource UUID of an existing
+      // registered resource owned by the specified organization has been found in the resource's alternate ids
       if (organisation.getKey() != null && organisation.getName() != null && candidateResourceUUIDs.size() > 0) {
+        boolean matched = false;
         // collect list of registered resources associated to organization
         List<Resource> existingResources = registryManager.getOrganisationsResources(organisation.getKey().toString());
         for (Resource entry : existingResources) {
-          UUID existingResourceUUID = entry.getKey();
-          // does the set of candidate UUIDs contain the UUUID from an existing registered resource owned by the
+
+          // does the set of candidate UUIDs contain the UUID from an existing registered resource owned by the
           // organization? There should only be one match, and the first one encountered will be used for migration.
-          if (candidateResourceUUIDs.contains(entry.getKey())) {
-            log.debug("Resource matched to existing registered resource, UUID=" + String.valueOf(existingResourceUUID));
+          if (entry.getKey() != null && candidateResourceUUIDs.contains(entry.getKey())) {
+
+            log.debug("Resource matched to existing registered resource, UUID=" + entry.getKey().toString());
+
             // fill in registration info - we've found the original resource being migrated to the IPT
             resource.setStatus(PublicationStatus.REGISTERED);
-            resource.setKey(existingResourceUUID);
+            resource.setKey(entry.getKey());
             resource.setOrganisation(organisation);
-            alog.info("manage.resource.migrate",
-              new String[] {String.valueOf(existingResourceUUID), organisation.getName()});
+
+            // display update about migration to user
+            alog.info("manage.resource.migrate", new String[] {entry.getKey().toString(), organisation.getName()});
+
             // update the resource, adding the new service(s)
             updateRegistration(resource, action);
+
+            // indicate a match was found
+            matched = true;
+
+            // just in case, ensure only a single existing resource is updated
+            break;
           }
+        }
+        // if no match was ever found, this is considered a failed resource migration
+        if (!matched) {
+          String reason =
+            action.getText("manage.resource.migrate.failed.badUUID", new String[] {organisation.getName()});
+          String help = action.getText("manage.resource.migrate.failed.help");
+          throw new InvalidConfigException(TYPE.INVALID_RESOURCE_MIGRATION, reason + " " + help);
         }
       } else {
         UUID key = registryManager.register(resource, organisation, ipt);
         if (key == null) {
           throw new RegistryException(RegistryException.TYPE.MISSING_METADATA,
-            "No key returned for registered resoruce");
+            "No key returned for registered resource");
         }
+        // display success to user
+        alog.info("manage.overview.resource.registered", new String[] {organisation.getName()});
+
         // change status to registered
         resource.setStatus(PublicationStatus.REGISTERED);
 
@@ -1203,6 +1232,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       }
       // save all changes to resource
       save(resource);
+    } else {
+      log.error("Registration request failed: the resource must be public. Status=" + resource.getStatus().toString());
     }
   }
 

@@ -424,16 +424,16 @@ $(document).ready(function(){
     <#if resource.status=="PUBLIC">
       <#if currentUser.hasRegistrationRights()>
         <@s.text name="manage.resource.status.registration.intro"/>
-        <div>
-          <img class="info" src="${baseURL}/images/info.gif"/>
-          <em><@s.text name="manage.resource.status.intro.public.migration"/></em>
-        </div>
         <#if organisations?size==0>
           <div>
             <img class="info" src="${baseURL}/images/info.gif"/>
             <em><@s.text name="manage.overview.visibility.no.organisations"/></em>
           </div>
         </#if>
+        <div>
+          <img class="info" src="${baseURL}/images/info.gif"/>
+          <em><@s.text name="manage.resource.status.intro.public.migration"/></em>
+        </div>
       <#else>
         <div>
           <img class="info" src="${baseURL}/images/info.gif"/>

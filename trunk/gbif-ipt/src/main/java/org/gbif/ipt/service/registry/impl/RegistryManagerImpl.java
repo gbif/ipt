@@ -516,7 +516,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       return null;
     }
 
-    // registering a new IPT resource
+    // registering a new resource
     log.debug("Last published: " + resource.getLastPublished());
 
     List<NameValuePair> data = buildRegistryParameters(resource);
@@ -542,17 +542,17 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
             log.info("A new resource has been registered with GBIF. Key = " + key);
             return uuidKey;
           } else {
-            throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, "Missing UUID key in response");
+            throw new RegistryException(TYPE.BAD_RESPONSE, "Missing UUID key in response");
           }
         } catch (IllegalArgumentException e) {
-          throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, "Invalid UUID key in response");
+          throw new RegistryException(TYPE.BAD_RESPONSE, "Invalid UUID key in response");
         }
       }
-      throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, "Empty registry response");
+      throw new RegistryException(TYPE.BAD_RESPONSE, "Empty registry response");
     } catch (Exception e) {
       String msg = "Bad registry response: " + e.getMessage();
       log.error(msg, e);
-      throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, msg);
+      throw new RegistryException(TYPE.BAD_RESPONSE, msg);
     }
   }
 
@@ -583,19 +583,19 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
         if (StringUtils.trimToNull(key) == null) {
           String msg = "Newly registered IPT Key not found";
           log.error(msg);
-          throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, msg);
+          throw new RegistryException(TYPE.BAD_RESPONSE, msg);
         }
         log.info("A new ipt has been registered with GBIF. Key = " + key);
         ipt.setKey(key);
       } else {
         String msg = "Bad registry response, response was null";
         log.error(msg);
-        throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, msg);
+        throw new RegistryException(TYPE.BAD_RESPONSE, msg);
       }
     } catch (Exception e) {
       String msg = "Bad registry response: " + e.getMessage();
       log.error(msg, e);
-      throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, msg);
+      throw new RegistryException(TYPE.BAD_RESPONSE, msg);
     }
     return key;
   }
@@ -656,12 +656,12 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       } else {
         String msg = "Bad registry response";
         log.error(msg);
-        throw new RegistryException(RegistryException.TYPE.FAILED, msg);
+        throw new RegistryException(TYPE.BAD_RESPONSE, msg);
       }
     } catch (Exception e) {
       String msg = "Bad registry response: " + e.getMessage();
       log.error(msg, e);
-      throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, "Bad registry response");
+      throw new RegistryException(TYPE.BAD_RESPONSE, "Bad registry response");
     }
   }
 
@@ -684,12 +684,12 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       if (http.success(resp)) {
         log.debug("Resource's registration info has been updated");
       } else {
-        throw new RegistryException(RegistryException.TYPE.FAILED, "Registration update failed");
+        throw new RegistryException(TYPE.BAD_RESPONSE, "Registration update failed");
       }
     } catch (Exception e) {
       String msg = "Bad registry response: " + e.getMessage();
       log.error(msg, e);
-      throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, msg);
+      throw new RegistryException(TYPE.BAD_RESPONSE, msg);
     }
   }
 

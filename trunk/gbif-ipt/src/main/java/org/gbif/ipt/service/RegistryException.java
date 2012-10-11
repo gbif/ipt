@@ -30,10 +30,6 @@ public class RegistryException extends RuntimeException {
      */
     IO_ERROR,
     /**
-     * Generic exception: Registration/update with Registry failed.
-     */
-    FAILED,
-    /**
      * Unknown failure occurred while communicating with Registry.
      */
     UNKNOWN,
@@ -107,7 +103,7 @@ public class RegistryException extends RuntimeException {
       } else if (type == TYPE.IO_ERROR) {
         msg = action.getText("admin.registration.error.io");
       } else if (type == TYPE.BAD_REQUEST) {
-        // this is will only ever occur internally during devlopment, no need to i18n it
+        // this is will only ever occur internally during development, no need to i18n it
         msg = "A bad request was issued, please check the syntax of the URL used";
       } else if (type == TYPE.UNKNOWN) {
         msg = action.getText("admin.registration.error.unknown");
