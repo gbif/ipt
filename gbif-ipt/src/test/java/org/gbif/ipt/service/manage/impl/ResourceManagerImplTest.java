@@ -441,6 +441,8 @@ public class ResourceManagerImplTest {
     // indicate resource is migrated from DiGIR, by supplying the Registry UUID for the existing resource in the
     // resource's eml.alternateIdentifiers
     resource.getEml().getAlternateIdentifiers().add(registeredDigirResourceUUID);
+    // indicate resource is ready to be published, by setting its status to Public
+    resource.setStatus(PublicationStatus.PUBLIC);
 
     // mock returning list of resources that are associated to the Academy of Natural Sciences organization
     List<Resource> organisationsResources = new ArrayList<Resource>();
