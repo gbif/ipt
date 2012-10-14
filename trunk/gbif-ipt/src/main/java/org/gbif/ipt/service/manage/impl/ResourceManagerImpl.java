@@ -345,16 +345,21 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         return false;
       } else {
         File root = contents[0];
-        // return all files in root directory, and filter by .xml files
-        for (File f : root.listFiles(new XmlFilenameFilter())) {
-          // have we found the resource.xml file?
-          if (f.getName().equalsIgnoreCase(PERSISTENCE_FILE)) {
-            foundResourceFile = true;
+        // differentiate between single file and potential resource folder
+        if (root.isDirectory()) {
+          // return all files in root directory, and filter by .xml files
+          for (File f : root.listFiles(new XmlFilenameFilter())) {
+            // have we found the resource.xml file?
+            if (f.getName().equalsIgnoreCase(PERSISTENCE_FILE)) {
+              foundResourceFile = true;
+            }
+            // have we found the eml.xml file?
+            if (f.getName().equalsIgnoreCase(DataDir.EML_XML_FILENAME)) {
+              foundEmlFile = true;
+            }
           }
-          // have we found the eml.xml file?
-          if (f.getName().equalsIgnoreCase(DataDir.EML_XML_FILENAME)) {
-            foundEmlFile = true;
-          }
+        } else {
+          log.debug("A single file has been encountered");
         }
       }
     }
