@@ -53,8 +53,11 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.Eml2Rtf;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.metadata.eml.Eml;
+import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.FileUtils;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -64,8 +67,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParserFactory;
 
 import com.google.common.io.Files;
 import com.google.inject.Guice;
@@ -82,6 +83,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
@@ -171,6 +173,7 @@ public class ResourceManagerImplTest {
 
     // mock ExtensionManager returning occurrence core Extension
     when(extensionManager.get("http://rs.tdwg.org/dwc/terms/Occurrence")).thenReturn(occurrenceCore);
+    when(extensionManager.get("http://rs.tdwg.org/dwc/xsd/simpledarwincore/SimpleDarwinRecord")).thenReturn(occurrenceCore);
 
     ExtensionRowTypeConverter extensionRowTypeConverter = new ExtensionRowTypeConverter(extensionManager);
     ConceptTermConverter conceptTermConverter = new ConceptTermConverter(extensionRowTypeConverter);
@@ -257,6 +260,86 @@ public class ResourceManagerImplTest {
     // eml properties loaded from eml.xml
     assertEquals("TEST RESOURCE", res.getEml().getTitle());
     assertEquals("Test description", res.getEml().getDescription());
+  }
+
+  /**
+   * test resource creation from single DwC-A zipped file.
+   */
+  @Test
+  public void testCreateFromSingleZippedFile()
+    throws AlreadyExistingException, ImportException, SAXException, ParserConfigurationException, IOException {
+
+    // create instance of manager
+    ResourceManager resourceManager = getResourceManagerImpl();
+
+    // retrieve sample DwC-A file
+    File dwca = FileUtils.getClasspathFile("resources/occurrence.txt.zip");
+
+    // create copy of DwC-A file in tmp dir, used to mock saving source resource filesource
+    File tmpDir = FileUtils.createTempDir();
+    List<File> files = CompressionUtil.decompressFile(tmpDir, dwca);
+    File uncompressed = files.get(0);
+    Source.FileSource fileSource = new Source.FileSource();
+    fileSource.setFile(uncompressed);
+    // it has 16 rows, plus 1 header line
+    fileSource.setRows(16);
+    fileSource.setIgnoreHeaderLines(1);
+    fileSource.setEncoding("UTF-8");
+    fileSource.setFieldsTerminatedByEscaped("/t");
+    fileSource.setName("singleTxt");
+
+    when(mockSourceManager.add(any(Resource.class), any(File.class), anyString())).thenReturn(fileSource);
+
+    // create a new resource.
+    resourceManager.create("res2", dwca, creator, baseAction);
+
+    // test if new resource was added to the resources list.
+    assertEquals(1, resourceManager.list().size());
+
+    // get added resource.
+    Resource res = resourceManager.get("res2");
+
+    // test if resource was added correctly.
+    assertEquals("res2", res.getShortname());
+    assertEquals(creator, res.getCreator());
+    assertEquals(creator, res.getModifier());
+
+    // test if resource.xml was created.
+    assertTrue(mockedDataDir.resourceFile("res2", ResourceManagerImpl.PERSISTENCE_FILE).exists());
+
+    // properties that get preserved
+    assertEquals(0, res.getEmlVersion());
+
+    // note: source gets added to resource in sourceManager.add, and since we're mocking this call we can't set source
+
+    // there is 1 mapping
+    assertEquals(1, res.getMappings().size());
+    assertEquals("singletxt", res.getMappings().get(0).getSource().getName());
+    assertEquals(Constants.DWC_ROWTYPE_OCCURRENCE, res.getMappings().get(0).getExtension().getRowType());
+    assertEquals(22, res.getMappings().get(0).getFields().size());
+    assertEquals(0, res.getMappings().get(0).getIdColumn().intValue());
+
+    // there are no eml properties except default shortname as title since there was no eml.xml file included
+    assertEquals("res2", res.getEml().getTitle());
+    assertEquals(null, res.getEml().getDescription());
+
+    // properties that never get set on new resource creation
+
+    // the resource shouldn't be registered
+    assertFalse(res.isRegistered());
+    // the resource shouldn't have any managers
+    assertEquals(0, res.getManagers().size());
+    // the resource shouldn't have a last published date
+    assertNull(res.getLastPublished());
+    // the resource shouldn't be registered (no org, no key)
+    assertNull(res.getKey());
+    assertNull(res.getOrganisation());
+    // the status should be private
+    assertEquals(PublicationStatus.PRIVATE, res.getStatus());
+    // the resource should have a created date
+    assertNotNull(res.getCreated());
+    // the num records published is 0
+    assertEquals(0, res.getRecordsPublished());
   }
 
   /**
