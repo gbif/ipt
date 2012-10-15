@@ -351,24 +351,40 @@
   	</div>
   </div>
   <div class="body">
-      	<div class="details">
-      		<table>
-          		<#if eml.citation?has_content>
-          			<#if eml.citation.identifier?has_content><tr><th><@s.text name='eml.citation.identifier'/></th><td><@textWithFormattedLink eml.citation.identifier!/></td></tr></#if>
-          			<tr><th><@s.text name='eml.citation.citation'/></th><td><@textWithFormattedLink eml.citation.citation/></td></tr>
-          		</#if>
-          	</table>
+    <div class="details">
+      <table>
+        <#if eml.citation?has_content>
+          <#if eml.citation.identifier?has_content>
+            <tr>
+              <th><@s.text name='eml.citation.identifier'/></th>
+                <td><@textWithFormattedLink eml.citation.identifier!/></td>
+            </tr>
+          </#if>
+          <tr>
+            <th><@s.text name='eml.citation.citation'/></th>
+            <td><@textWithFormattedLink eml.citation.citation/></td>
+          </tr>
+        </#if>
+      </table>
           	
    			<#assign itemTitle><@s.text name='eml.bibliographicCitationSet.bibliographicCitations.citation'/></#assign>
           	<table>
        		<#list eml.bibliographicCitationSet.bibliographicCitations as item>
        			<tr>				
 	          	<table>
-          			<tr><th><@s.text name='eml.bibliographicCitationSet.bibliographicCitations.identifier'/></th><td><@textWithFormattedLink item.identifier!/></td></tr>
-          			<tr><th><@s.text name='eml.bibliographicCitationSet.bibliographicCitations.citation'/></th><td><@textWithFormattedLink item.citation/></td></tr>
-	      		</table>
-	      		
-	      		
+             <#if item.citation?has_content>
+               <#if item.identifier?has_content>
+                 <tr>
+                   <th><@s.text name='eml.bibliographicCitationSet.bibliographicCitations.identifier'/></th>
+                   <td><@textWithFormattedLink item.identifier!/></td>
+                 </tr>
+               </#if>
+               <tr>
+                 <th><@s.text name='eml.bibliographicCitationSet.bibliographicCitations.citation'/></th>
+                 <td><@textWithFormattedLink item.citation/></td>
+               </tr>
+            </#if>
+	      	</table>
 				</tr>
        		</#list>
        		</table>
