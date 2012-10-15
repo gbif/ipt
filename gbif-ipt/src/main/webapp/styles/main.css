@@ -728,6 +728,9 @@ div.tempo div.right {
   margin-top: 10px;
   margin-bottom: -25px;
 }
+
+#ui-datepicker-div { display: none; }
+
 div#qualitycontrol {
   margin-bottom: 35px;
 }
