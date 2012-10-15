@@ -605,7 +605,9 @@ div a.button {
 
 #organisationsForm div {width: 60%;}
 #organisationsForm input {width: 85%;}
-#organisationsForm div.buttons input {width: auto;}
+#organisationsForm div.buttons input { width: auto; }
+#organisationsForm div.checkbox input { width: auto; }
+#organisationsForm div.checkbox div { width: auto; }
 
 #create_do input { width: 50%; }
 #create_do div.buttons input {width: auto;}
