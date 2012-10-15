@@ -23,11 +23,13 @@ $(document).ready(function(){
 	<div id="items">
 		<#list eml.associatedParties as item>
 			<div id="item-${item_index}" class="item associateParties clearfix">
-				<div class="halfcolumn">
-  	  				<a id="copyDetails-${item_index}" href="">[ <@s.text name="eml.resourceCreator.copyLink" />  ]</a>
-    			</div>
-				<div class="halfcolumn">
-		      		<a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.parties.item'/> ]</a>
+				<div class="columnLinks">
+					<div class="halfcolumn">
+  	  					<a id="copyDetails-${item_index}" href="">[ <@s.text name="eml.resourceCreator.copyLink" />  ]</a>
+    				</div>
+					<div class="halfcolumn">
+		      			<a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.parties.item'/> ]</a>
+		    		</div>
 		    	</div>
 				<div class="halfcolumn">
 		  			<@input name="eml.associatedParties[${item_index}].firstName" i18nkey="eml.associatedParties.firstName"/>
@@ -80,11 +82,13 @@ $(document).ready(function(){
 </div>
 
 <div id="baseItem" class="item associateParties clearfix" style="display:none;">
-	<div class="halfcolumn">
-  	  <a id="copyDetails" href="">[ <@s.text name="eml.resourceCreator.copyLink" />  ]</a>
-    </div>
-    <div class="halfcolumn">
-      <a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.parties.item'/> ]</a>
+	<div class="columnLinks">
+		<div class="halfcolumn">
+  			<a id="copyDetails" href="">[ <@s.text name="eml.resourceCreator.copyLink" />  ]</a>
+    	</div>
+    	<div class="halfcolumn">
+      		<a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.parties.item'/> ]</a>
+    	</div>
     </div>
 	<div class="halfcolumn">
   		<@input name="firstName" i18nkey="eml.associatedParties.firstName" />
