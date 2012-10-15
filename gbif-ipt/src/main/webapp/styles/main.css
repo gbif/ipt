@@ -601,6 +601,7 @@ div a.button {
 #newuser div {width: 60%;}
 #newuser input {width: 85%;}
 #newuser div.userManageButtons input {width: auto;}
+#newuser div.userPasswordButtons input { width: auto;}
 
 #organisationsForm div {width: 60%;}
 #organisationsForm input {width: 85%;}
@@ -951,7 +952,6 @@ table#user-list { width: 940px; }
 table#user-list thead { background-color: #eee; }
 table#user-list tbody tr td { display: table-cell; }
 
-.userPasswordButtons {}
 .userManageButtons { margin-top: 20px;}
 .userManageButtons input { width: auto;}
 
