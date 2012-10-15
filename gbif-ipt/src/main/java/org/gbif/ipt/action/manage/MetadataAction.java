@@ -272,7 +272,7 @@ public class MetadataAction extends ManagerBaseAction {
     preservationMethods
       .putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_PRESERVATION_METHOD, getLocaleLanguage(), false));
 
-    if (resource.getEml() != null) {
+    if (resource != null && resource.getEml() != null) {
       // contact
       Agent contact = resource.getEml().getContact();
       if (contact != null) {
