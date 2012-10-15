@@ -964,6 +964,18 @@ table#user-list tbody tr td { display: table-cell; }
   font-size: 0.8em; 
 }
 
+#location {
+  height: 80px;
+}
+
+#locationMap {
+	clear:both;
+	margin-top: 1em;
+	margin-left: 1.7em;
+	height: 95px;
+	width: 325px;
+}
+
 /* FOOTER */
 
 #section-footer {
