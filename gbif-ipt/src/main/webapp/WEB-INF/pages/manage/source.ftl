@@ -72,7 +72,7 @@ $(document).ready(function(){
   	  </div>
   	<#else>
 	  	<#-- only for sql sources -->
-	  <div class="half">
+	  <div class="fullcolumn">
 	    <@select name="rdbms" options=jdbcOptions value="${source.rdbms.name!}" i18nkey="sqlSource.rdbms" />  	  
 	  </div>
 	  <div class="halfcolumn">
@@ -87,11 +87,13 @@ $(document).ready(function(){
 	  <div class="halfcolumn">
 	  	<@input name="sqlSource.password" type="password" />
   	  </div>
+  	  <div class="fullcolumn">
   	  <@text name="sqlSource.sql" help="i18n"/>
   	  <#if sqlSource.sql?has_content>
   	  <@label i18nkey="sqlSource.sqlLimited" >
   	  ${sqlSource.getSqlLimited(10)}
   	  </@label>
+  	  </div>
   	  </#if>
   	  
   	</#if>
