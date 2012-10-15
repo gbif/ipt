@@ -717,7 +717,7 @@ div.item {
 }
 div.item div.right {
   margin-top: 10px;
-  margin-bottom: -25px;
+  margin-bottom: 0px;
 }
 div.tempo {
   padding-bottom: 30px;
