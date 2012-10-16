@@ -802,8 +802,8 @@ input#delete.confirm {
   float: left;
 }
 
-div.subitem div.halfcolumn input {
-  width: 80%;
+.subitem div.halfcolumn input {
+  width: 70%;
 }
 
 .subitem label {
