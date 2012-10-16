@@ -52,7 +52,7 @@ $(document).ready(function(){
 		  		<div class="halfcolumn">
 		  			<@input name="eml.associatedParties[${item_index}].address.province" i18nkey="eml.associatedParties.address.province" />
 				</div>
-  				<div class="halfcolumn">
+  				<div class="halfcolumn countryList">
 		  			<@select name="eml.associatedParties[${item_index}].address.country" help="i18n" options=countries i18nkey="eml.associatedParties.address.country" value="${eml.associatedParties[item_index].address.country!}"/>
 		  		</div>
 		  		<div class="halfcolumn">
@@ -111,7 +111,7 @@ $(document).ready(function(){
   	<div class="halfcolumn">
   		<@input name="province" i18nkey="eml.associatedParties.address.province" />
   	</div>
-  	<div class="halfcolumn">
+  	<div class="halfcolumn countryList">
   		<@select name="country" options=countries help="i18n" i18nkey="eml.associatedParties.address.country" />
   	</div>
 	<div class="halfcolumn">

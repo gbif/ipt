@@ -517,11 +517,7 @@ div.halfcolumn {
 	margin: 0px 0px 0px 0px;
 	width: 49%;
 }
-
-div.basicMetadata div.halfcolumn {
-  height: 3.5em;
-}
-div.associateParties div.halfcolumn {
+.countryList {
   height: 3.5em;
 }
 div.halfcolumn a[id*='copyDetails-'] {
