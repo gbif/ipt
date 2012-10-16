@@ -147,7 +147,7 @@
       	<div class="halfcolumn">
       		<@input name="eml.contact.address.province" />
     	</div>
-      	<div class="halfcolumn">
+      	<div class="halfcolumn countryList">
       		<@select name="eml.contact.address.country" help="i18n" options=countries value="${eml.contact.address.country!}"/>
        	</div>
       	<div class="halfcolumn">
@@ -191,7 +191,7 @@
       	<div class="halfcolumn">
     		<@input name="eml.resourceCreator.address.province" />
     	</div>
-      	<div class="halfcolumn">
+      	<div class="halfcolumn countryList">
     		<@select name="eml.resourceCreator.address.country" help="i18n" options=countries value="${eml.getResourceCreator().address.country!}"/>
     	</div>
       	<div class="halfcolumn">
@@ -235,7 +235,7 @@
     	<div class="halfcolumn">
     		<@input name="eml.metadataProvider.address.province" />
     	</div>
-      	<div class="halfcolumn">
+      	<div class="halfcolumn countryList">
     		<@select name="eml.metadataProvider.address.country" help="i18n" options=countries value="${eml.metadataProvider.address.country!}"/>
     	</div>
     	<div class="halfcolumn">
