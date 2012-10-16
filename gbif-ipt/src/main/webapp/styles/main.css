@@ -697,6 +697,13 @@ div.columnLinks div.halfcolumn {
 #subItems {
   margin-bottom: 10px;
 }
+
+.addSeveralTaxa textarea {
+  width: 85%;
+}
+#addSeveralTaxaButtons {
+  margin-top: 25px;
+}
 .taxon-list {
   padding-top:14px;
 }

@@ -32,9 +32,9 @@
   				<!-- Taxon list-->
 				<!-- a id="taxonsLink-${item_index}" class="show-taxonList" href="" ><@s.text name='manage.metadata.addseveral' /> <@s.text name='manage.metadata.taxcoverage.taxon.items' /></a> -->
 				<@link name="taxonsLink-${item_index}" class="show-taxonList" value="manage.metadata.taxcoverage.addSeveralTaxa" help="i18n" i18nkey="manage.metadata.taxcoverage.addSeveralTaxa"/>
-				<div id="list-${item_index}" class="half" style="display:none">
+				<div id="list-${item_index}" class="half addSeveralTaxa" style="display:none">
 					<@text i18nkey="eml.taxonomicCoverages.taxonList" help="i18n" name="taxon-list-${item_index}" value="" />
-					<div class="buttons">
+					<div id="addSeveralTaxaButtons" class="buttons">
 						<@s.submit cssClass="button" name="add-button-${item_index}" key="button.add"/>
 					</div>
 				</div>
