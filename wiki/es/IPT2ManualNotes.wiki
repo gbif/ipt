@@ -1,4 +1,4 @@
-=Manual de Usuario para el Integrated Publishing Toolkit de GBIF=
+=Manual de Usuario del Integrated Publishing Toolkit de GBIF=
 ----
 *En construcción para el lanzamiento de la versión 2.0.4*
 ----
