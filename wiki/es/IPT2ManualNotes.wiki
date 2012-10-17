@@ -53,7 +53,7 @@ Antes de instalar el IPT, asegúrese de que el servidor previsto para el alojami
 La última versión del software del IPT está disponible para su descarga como un archivo con el nombre ipt.war EN http://code.google.com/p/gbif-providertoolkit/downloads/list. Se deberá descargar este archivo en el servidor en el que se ejecutará el IPT. Los desarrolladores o quienes deseen utilizar la última revisión del código fuente, deberán consultar la sección  “Desarrolladores” del sitio de la wiki del IPT de GBIF en _Google Code_ http://code.google.com/p/gbif-providertoolkit/wiki/HowToContribute.
 ===Desplegar el IPT en el Contenedor de _Servlets_===
 Siga el proceso habitual para desplegar una aplicación web en un contenedor de _servlets_. Una página wiki con mayor información acerca de instalaciones específicas está disponible en http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation.
-===Iniciar la Aplicación del IPT===
+===Ejecutar la Aplicación del IPT===
 Un despliegue exitoso del IPT en el contenedor de _servlets_, hará que el IPT esté disponible a través  de un buscador web en una URL determinada por la URL base del _servlet_, seguida de /ipt (por ejemplo, http://localhost:8080/ipt). Si la instalación fue exitosa, la página de inicio de la configuración del IPT aparecerá en un buscador utilizando la URL del IPT.
 ==Configuración Inicial del IPT==
 ===Instalación del IPT===
