@@ -1,0 +1,46 @@
+<registration>
+  <registry>
+    <hostingOrganisation>
+      <key>f9b67ad0-9c9b-11d9-b9db-b8a03c50a862</key>
+      <name>Old Name Academy of Natural Sciences</name>
+      <primaryContactType>technical</primaryContactType>
+      <primaryContactName>GBIF guy</primaryContactName>
+      <primaryContactEmail>gbifregistry@mailinator.com</primaryContactEmail>
+      <password>password</password>
+      <alias>ACNS</alias>
+      <nodeKey>dk</nodeKey>
+      <nodeName>Denmark</nodeName>
+      <canHost>true</canHost>
+    </hostingOrganisation>
+    <ipt>
+      <key>812b7589-dac1-492c-bc77-4cc81ee2f339</key>
+      <description>description</description>
+      <name>Test IPT 15 Sept 2012</name>
+      <primaryContactType>technical</primaryContactType>
+      <primaryContactName>kyle Braak</primaryContactName>
+      <primaryContactEmail>kbraak@gbif.org</primaryContactEmail>
+      <organisationKey>f3e8e9a9-df60-40ca-bb71-7f49313b3150</organisationKey>
+      <created>2012-09-15 13:41:04.514 UTC</created>
+      <wsPassword>password</wsPassword>
+    </ipt>
+  </registry>
+  <organisation>
+    <key>f3e8e9a9-df60-40ca-bb71-7f49313b3150</key>
+    <name>Old Name AAA1Organisation</name>
+    <primaryContactType>technical</primaryContactType>
+    <primaryContactName>GBIF guy</primaryContactName>
+    <primaryContactEmail>gbifregistry@mailinator.com</primaryContactEmail>
+    <password>aaa1</password>
+    <alias>AAA1Organisation</alias>
+    <nodeKey>dk</nodeKey>
+    <nodeName>Denmark</nodeName>
+    <canHost>true</canHost>
+  </organisation>
+  <organisation>
+    <key>f9b67ad0-9c9b-11d9-b9db-b8a03c50a862</key>
+    <name>Old Name Academy of Natural Sciences</name>
+    <password>password</password>
+    <alias>ACNS</alias>
+    <canHost>true</canHost>
+  </organisation>
+</registration>
