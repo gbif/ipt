@@ -6,6 +6,7 @@
 
 ----
 _Si desea consultar la versión 2.0.3 del Manual de Usuario del IPT, por favor visite [IPTUserManualv203 esta página]_
+
 _Si desea consultar la versión 2.0.2 del Manual de Usuario del IPT en inglés, por favor visite [IPTUserManualv202 esta página]_
 
 <wiki:toc max_depth="4" />
