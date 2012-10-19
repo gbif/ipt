@@ -65,7 +65,7 @@ Nota 2: si usted tiene un directorio de datos de un IPT de la misma versión, pr
 
 Nota 3: haga clic en la bandera en la esquina superior derecha para verificar si el idioma de su preferencia está disponible para usar el IPT.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/IPTSetup1.PNG]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v204/es/IPTSetup1.PNG]
 
 ===Instalación del IPT (II)===
 Si el paso inicial de asignación de directorio de datos se realizó correctamente, el IPT presentará una segunda página de instalación (véase imagen de la pantalla a continuación) en la que deberá ser ingresada la información del administrador predeterminado en el IPT, junto con la información acerca del modo en el que debe ser ejecutado y cómo acceder al IPT a través de Internet. A continuación están las explicaciones de los elementos encontrados en la segunda página de instalación:
@@ -81,11 +81,11 @@ Si el paso inicial de asignación de directorio de datos se realizó correctamen
   * *URL Base para este IPT* - la URL que dirige a la raíz de instalación de este IPT. La dirección URL es detectada automáticamente en la medida de lo posible, pero debe ser cambiada en los sistemas de producción para ser accesible a través de Internet, de manera que el IPT pueda funcionar plenamente. Configurando la URL base del IPT para utilizar el _localhost_, por ejemplo, no permitirá que la instancia del IPT sea registrada en GBIF, no permitirá que el IPT esté asociado con una organización y que los recursos sean de acceso público.
   * *Dirección del _Proxy_* - si el servidor en el que ha sido instalado el IPT es dirigido a través de un servidor _proxy_ o un _host_ virtual. Ingrese la dirección del _host_ y el número de puerto mediante los cuales se podrá acceder al IPT via Internet, usando una URL en el formato protocolo:host:puerto, por ejemplo, http://proxy.gbif.org:8080.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/IPTSetup2.PNG]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v204/es/IPTSetup2.PNG]
 
 Cuando toda la información en la página esté completa y correcta, haga clic en el botón "Guardar" para completar el proceso de instalación del IPT. Si se presenta algún problema, aparecerá un mensaje de error en la parte superior de la página con recomendaciones acerca de cómo resolverlo. Siempre y cuando el problema haya sido resuelto, al reiniciar el servidor web este mensaje de error desaparecerá. Si la configuración fue exitosa, aparecerá una página de confirmación de la configuración.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/es/IPTSetupFinished.PNG]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v204/es/IPTSetupFinished.PNG]
 
 Haga clic en el botón "Continuar" para abrir la página de Administración del IPT (véase a continuación la imagen de la pantalla), en la que se podrá realizar configuraciones adicionales. Por favor revise la explicación de todas las funciones de Administración antes de continuar. Detalles sobre las opciones presentadas en esta pantalla se muestran en la sección “Menú Administración" de la "Guía de Referencia Rápida". Antes de añadir fuentes de datos al IPT, el administrador debe, como mínimo, verificar la configuración del IPT, definir las opciones de registro en GBIF, y asociar el IPT con una organización. El botón “Organizaciones” estará desactivado predeterminadamente hasta que se hayan establecido las opciones de registro en GBIF.
 
