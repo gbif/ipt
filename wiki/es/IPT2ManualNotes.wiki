@@ -153,11 +153,11 @@ Ejemplo de ícono de información para la codificación de caracteres, después 
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v204/es/Information-CharacterEncoding.PNG]
 
-*Ícono de Documentación* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v204/es/Control-DocumentationIcon.PNG] - este ícono indica que hay una página de información detallada acerca del tema asociado con ese ícono. Haga clic en el ícono para abrir la página en una nueva ventana del navegador.
+*Ícono de Documentación* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v204/es/Control-DocumentationIcon.png] - este ícono indica que hay una página de información detallada acerca del tema asociado con ese ícono. Haga clic en el ícono para abrir la página en una nueva ventana del navegador.
 
-*Ícono de Papelera* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v204/es/Control-TrashIcon.PNG] - este ícono se asocia con otros controles en la página. Al hacer clic en el ícono se eliminarán los datos asociados.
+*Ícono de Papelera* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v204/es/Control-TrashIcon.png] - este ícono se asocia con otros controles en la página. Al hacer clic en el ícono se eliminarán los datos asociados.
 
-*Ícono de Calendario* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v204/es/Control-CalendarIcon.PNG] - este ícono se asocia con un elemento de texto destinado a contener una fecha. Al hacer clic en el ícono, se abrirá un pequeño calendario con controles que permiten al usuario desplazarse hacia adelante y hacia atrás a partir del mes y año seleccionado. Seleccione los cuadros para elegir otro mes, año y día de la semana según el calendario estándar de la Nueva Era. La selección de un día concreto transformará la fecha al formato correcto en el cuadro de texto asociado.
+*Ícono de Calendario* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v204/es/Control-CalendarIcon.png] - este ícono se asocia con un elemento de texto destinado a contener una fecha. Al hacer clic en el ícono, se abrirá un pequeño calendario con controles que permiten al usuario desplazarse hacia adelante y hacia atrás a partir del mes y año seleccionado. Seleccione los cuadros para elegir otro mes, año y día de la semana según el calendario estándar de la Nueva Era. La selección de un día concreto transformará la fecha al formato correcto en el cuadro de texto asociado.
 
 Ejemplo del calendario asociado a un cuadro de texto llamado "Fecha Final" en el que 31 de Octubre de 2012 es la fecha actual, pero aún no ha sido seleccionada:
 
