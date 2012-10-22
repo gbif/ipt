@@ -584,7 +584,12 @@ Para migrar un *recurso registrado existente* a su *recurso IPT*, simplemente si
   # Determine la organización propietaria del *recurso registrado existente*, y asegurese que esta ha sido adicionada al IPT como una organización y que está configurada para publicar conjuntos de datos. Para realizar esto, por favor refierase a la sección "Adicionar una Organización".
   # Determine el UUID del *recurso registrado existente* ante el Registro GBIF (este tendrá un formato similar al siguiente: "5d637678-cb64-4863-a12b-78b4e1a56628"). Dependiendo del modo en el que esté ejecutando el IPT (Modo Prueba o Producción), visite las siguientes páginas web http://gbrdsdev.gbif.org o http://gbrds.gbif.org respectivamente.
   # Adicione este UUID a las lista de los identificadores alternativos del *recurso IPT* en la página de Metadatos Adicionales. No olvide guardar la página de Metadatos Adicionales.
-  # Finalmente, seleccione la organización propietaria de la lista desplegable en la página Vista General del Recurso, y haga clic en el botón registrar. Al igual que cualquier otro registro, antes de que el registro sea ejecutado, deberá confirmar que leyó y entendió el acuerdo GBIF para compartir datos.
+  # Seleccione la organización propietaria de la lista desplegable en la página Vista General del Recurso, y haga clic en el botón registrar. Al igual que cualquier otro registro, antes de que el registro sea ejecutado, deberá confirmar que leyó y entendió el acuerdo GBIF para compartir datos.
+  # *Envie un correo electrónico a helpdesk@gbif.org comunicando la actualización hecha.* En su correo electrónico por favor incluya:
+    # El nombre y URL (o UUID del Registro GBIF) de su IPT
+    # El nomnbre y UUID del Registro GBIF de su Recurso actualizado (véase la linea Clave del Recurso en la página vista general del recurso, por ejemplo: Clave del recurso: d990532f-6783-4871-b2d3-cae3d0cb872b)
+    # Si la instalación técnica DiGIR/BioCASE/TAPIR que usó ha quedado en desuso y si puede ser eliminada del Registro GBIF (solo si aplica).
+    
 ====Administradores de Recursos====
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v204/es/IPTManageResourceManagers.PNG]
 
