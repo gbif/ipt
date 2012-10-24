@@ -22,17 +22,30 @@
     <meta name="description" lang="en" content="${iptIntro}${hostDescription!""}" />
     <meta name="keywords" lang="en" content="${keywords}${hostKeyword!"."}" />
     <link rel="stylesheet" type="text/css" media="all" href="${baseURL}/styles/reset.css" />
-		<link rel="stylesheet" type="text/css" media="all" href="${baseURL}/styles/text.css" />
-		<link rel="stylesheet" type="text/css" media="all" href="${baseURL}/styles/960_24_col.css" />
- 		<link rel="stylesheet" type="text/css" href="${baseURL}/styles/main.css" />
- 		<link rel="shortcut icon" href="${baseURL}/images/icons/favicon.ico" type="image/x-icon" />
-		<script type="text/javascript" src="${baseURL}/js/jquery/jquery.min-1.5.1.js"></script>				
-		<script type="text/javascript" src="${baseURL}/js/jquery/jquery-ui.min-1.8.3.js"></script>
-		<link media="all" type="text/css" href="${baseURL}/styles/jquery/jquery-ui-1.8.3.css" rel="stylesheet" />
-		<script type="text/javascript" src="${baseURL}/js/global.js"></script>
-		<script type="text/javascript" src="${baseURL}/js/sorttable.js"></script>
-	  <link href="${baseURL}/rss.do" title="Latest Resources" rel="alternate" type="application/rss+xml" />
- 		
+	<link rel="stylesheet" type="text/css" media="all" href="${baseURL}/styles/text.css" />
+	<link rel="stylesheet" type="text/css" media="all" href="${baseURL}/styles/960_24_col.css" />
+ 	<link rel="stylesheet" type="text/css" href="${baseURL}/styles/main.css" />
+ 	<link rel="shortcut icon" href="${baseURL}/images/icons/favicon.ico" type="image/x-icon" />
+	<link href="${baseURL}/rss.do" title="Latest Resources" rel="alternate" type="application/rss+xml" />
+	<link media="all" type="text/css" href="${baseURL}/styles/jquery/jquery-ui-1.8.3.css" rel="stylesheet" />
+
+ <!--[if IE 8]>
+   <script type="text/javascript">
+      document.createElement('header');
+      document.createElement('nav');
+      document.createElement('section');
+      document.createElement('article');
+      document.createElement('aside');
+      document.createElement('footer');
+   </script>
+<![endif]-->	
+
+	<script type="text/javascript" src="${baseURL}/js/jquery/jquery.min-1.5.1.js"></script>				
+	<script type="text/javascript" src="${baseURL}/js/jquery/jquery-ui.min-1.8.3.js"></script>
+	<script type="text/javascript" src="${baseURL}/js/global.js"></script>
+	<script type="text/javascript" src="${baseURL}/js/sorttable.js"></script>
+ 
+
 [#-- GOOGLE ANALYTICS - asynchroneous: http://code.google.com/apis/analytics/docs/tracking/asyncTracking.html --]
 [#if cfg.gbifAnalytics || (cfg.analyticsKey!"")?length>1] 
 <script type="text/javascript">
