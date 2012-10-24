@@ -470,6 +470,9 @@ div.resourceOverview div.bodyOverview div.details table td {
 select#rowType {
   width: 310px;
 }
+select#selectSubtypeDiv {
+  width: 310px;
+}
 div.buttons {
   height: 25px;
   margin-top: 10px;
