@@ -164,8 +164,9 @@
       	</div>
       	<div class="clearfix"></div>
   	</div>
-  	<!-- internal parameter -->
-	<input id="r" name="r" type="hidden" value="${resource.shortname}" />
+    <!-- internal parameters needed by ajaxFileUpload.js - do not remove -->
+	  <input id="r" name="r" type="hidden" value="${resource.shortname}" />
+    <input id="validate" name="validate" type="hidden" value="false" />
 </form>
 </div>
 
