@@ -49,7 +49,6 @@
 title=IPT
 
 basic.seealso=參見
-basic.backto=返回至
 basic.identifier=識別碼
 basic.link=連結
 basic.title=標題
@@ -160,7 +159,7 @@ extension.prop.type=資料型態
 extension.prop.required=必要
 extension.prop.group=群組
 extension.vocabularies.title=字彙
-extension.vocabularies.last.update=最後更新： {0}<br/>
+extension.vocabularies.last.update=最後更新： {0}<br />
 extension.vocabularies.number=所有{0}字彙與其最新的註冊版本
 extension.further.title=更多的核心類型和延伸集可從 GBIF 登錄取得。
 extension.further.title.help=左欄顯示核心集類型或延伸集的名稱。右欄顯示該核心集或延伸集的摘要資訊，以及描述其中應著錄何種資料。
@@ -192,7 +191,7 @@ resource.subtype.none=無
 source.name=資料庫來源名稱
 source.name.help=辨識資料庫來源的簡稱，不含空白字元及標點符號。
 source.encoding=字元編碼
-source.encoding.help=資料庫字元編碼系統。若不知何種編碼，嘗試使用 UTF8，Latin1 或 Windows1252。
+source.encoding.help=資料庫字元編碼系統。若不知何種編碼，嘗試使用 UTF-8，Latin-1 或 Windows-1252。
 source.dateFormat=日期格式
 source.dateFormat.help=資料庫使用日期的紀錄格式。
 sqlSource.host=資料庫伺服器
@@ -297,7 +296,7 @@ account.email.cantChange=使用者帳一旦建立，電子郵件地址即不可�
 404.title=找不到頁面
 404.body=抱歉，您要求瀏覽的頁面不存在。
 401.title=未經授權
-401.body=您無瀏覽此頁面的權限。<br/>請先以適當權限的帳號<a href="{0}">登入</a>。
+401.body=您無瀏覽此頁面的權限。<br />請先以適當權限的帳號<a href="{0}">登入</a>。
 401.manager.title=必須以使用管理者權限登入
 401.manager.body=您必須以「管理者」角色登入，方能使用 IPT 此部分之功能。請以使用管理者帳號 <a href="{0}">登入</a>，或連繫 IPT 管理者提供您此角色。
 help.options=點選以下任何選項
@@ -398,9 +397,9 @@ admin.config.server.log.dir=IPT 日誌目錄
 admin.config.server.log.dir.help=IPT 寫入日誌檔的伺服器目錄
 admin.config.server.location=IPT 伺服器位置：
 admin.config.server.longitude=經度
-admin.config.server.longitude.help=經度必須輸入以 WGS84 為基準的十進位格式。<br/>當表明西經時請使用減號( - )<br/>例如：-86.64
+admin.config.server.longitude.help=經度必須輸入以 WGS84 為基準的十進位格式。<br />當表明西經時請使用減號( - )<br />例如：-86.64
 admin.config.server.latitude=緯度
-admin.config.server.latitude.help=緯度必須輸入以 WGS84 為基準的十進位格式。<br />當表明南緯時請使用減號( - )<br/>例如：-10.15
+admin.config.server.latitude.help=緯度必須輸入以 WGS84 為基準的十進位格式。<br />當表明南緯時請使用減號( - )<br />例如：-10.15
 admin.config.server.location.error=IPT伺服器的緯度/經度位置不是有效的十進位制坐標（緯度介於-90與90之間，經度介於-180與180之間）。
 
 admin.config.googleMapsKey=Google Maps Key
@@ -657,7 +656,7 @@ manage.mapping.uuid=UUID 產生器
 manage.mapping.backToOverview=回到資源總覽頁面
 manage.mapping.hideEmpty=隱藏未對應之欄位
 manage.mapping.showAll=全部顯示
-manage.mapping.info.linenumbers=對於行號, 你可以選擇性指定一個非數字的後綴字，加在識別碼的後面。當你要多次對應同一個資源的時候，這個做法對於產生唯一識別碼來說是很有用的<br/><br/>
+manage.mapping.info.linenumbers=對於行號, 你可以選擇性指定一個非數字的後綴字，加在識別碼的後面。當你要多次對應同一個資源的時候，這個做法對於產生唯一識別碼來說是很有用的<br /><br />
 manage.mapping.info=過濾器會將符合的記錄從產生的壓縮檔中獨立出來。例如說指定「ColumnA IsNotNull」，將只會得到在 ColumnA 中有值的記錄。<br /><br />若相同的原始檔案會與同一延伸集多次對應以進行樞紐分析，過濾器將會很有用。如果你有兩個欄位用來存放物種的俗名（vernacular name），一個是英語，一個是西班牙語，使用該原始檔案，您可將該資源對應至俗名的延伸集兩次。每一次對應兩欄之一，並將針對那一欄的過濾器設定為IsNotNull，這樣一來，只有具俗名的欄位, 會出現在最終的資料檔案中。
 manage.mapping.filter=過濾器
 manage.mapping.filter.text=過濾器供您設定過濾條件，只有符合之資料將被選出。
