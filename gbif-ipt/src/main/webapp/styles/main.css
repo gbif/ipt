@@ -474,7 +474,7 @@ select#selectSubtypeDiv {
   width: 310px;
 }
 div.buttons {
-  height: 25px;
+  min-width:200px;
   margin-top: 10px;
   float: left;
 }
