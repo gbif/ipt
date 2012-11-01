@@ -1,0 +1,7 @@
+/*
+ For css overrides needed for customizations.
+ By having this separate file for css overrides, it should be easier to backup and restore customizations.
+ If some organization want to style the IPT to their own branding and they want to support more backward compatibility
+ they can create their own modernizr.js with the desired supported elements. They only have to replace the 'default'
+ file with their own.
+*/
