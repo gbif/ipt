@@ -54,14 +54,14 @@
     	</td>
       <td id="resourceType">
         <#if r.coreType?has_content >
-          ${r.coreType?upper_case}
+          ${r.coreType?lower_case}
         <#else>
           ${emptyString}
         </#if>
       </td>
     	<td id="resourceSubType">
         <#if (r.subtype?has_content) && (r.subtype?length >= 8) >
-          ${r.subtype?upper_case?substring(0,7)}${dotDot}
+          ${r.subtype?lower_case?substring(0,7)}${dotDot}
         <#else>
           ${emptyString}
         </#if>
