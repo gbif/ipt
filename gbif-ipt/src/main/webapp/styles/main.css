@@ -388,6 +388,10 @@ table.simple tr.linebreak {
 table.simple tr.even{
 	background-color: #fff;
 }
+table td#resourceType, table td#resourceSubType {
+  text-transform: uppercase;
+}
+
 #new-resource {
   padding: 20px;
   border-radius: 10px;
