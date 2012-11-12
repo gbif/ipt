@@ -109,7 +109,7 @@ menu.manage=管理資源
 menu.admin=系統管理
 menu.account=帳號
 menu.logout=登出
-menu.loggedin=登入身分
+menu.loggedin=登入身分 {0}
 
 # submenus
 submenu.basic=基本元數據

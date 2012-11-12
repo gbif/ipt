@@ -14,7 +14,7 @@
             <div class="region-inner region-user-second-inner">
       		    <ul id="language-menu">
       		      [#if (Session.curr_user)??]
-      		      <li>[@s.text name="menu.loggedin"/] <em>${Session.curr_user.email}</em></li>
+                <li>[@s.text name="menu.loggedin"][@s.param]${Session.curr_user.email}[/@s.param][/@s.text]</li>
       		      <li[#if currentMenu=="account"] class="current"[/#if] ><a href="${baseURL}/account.do">[@s.text name="menu.account"/]</a></li>
       		      <li[#if currentMenu=="logout"] class="current"[/#if]><a href="${baseURL}/logout.do">[@s.text name="menu.logout"/]</a></li>
       			    [#else]
@@ -49,14 +49,14 @@
                     <img src="${baseURL}/styles/logo.png" />
                   </a>
                 </div>
-                <hgroup class="site-name-slogan">        
+                <hgroup class="site-name-slogan">
                   <h1 class="site-name"><a href="/" rel="home" title="Home" class="active">GBIF Integrated Publishing Toolkit</a><span class="logoSuperscript">(IPT)</span></h1>
                   <h6 class="site-slogan">free and open access to biodiversity data</h6>
                 [#if !cfg.devMode() && cfg.getRegistryType()=='PRODUCTION']
                 [#else]
                   <img class="testmode" src="${baseURL}/styles/testmode.png" />
                 [/#if]
-                  
+
                 </hgroup>
               </div>
             </div>
@@ -89,8 +89,8 @@
       	</div>
 		    </header>
 		    <section id="section-content" class="section section-content">
-          <div id="zone-content-wrapper" class="zone-wrapper zone-content-wrapper clearfix">  
-            <div id="zone-content" class="zone zone-content clearfix container_24">    
+          <div id="zone-content-wrapper" class="zone-wrapper zone-content-wrapper clearfix">
+            <div id="zone-content" class="zone zone-content clearfix container_24">
 
 [#if sideMenuEml!false]
 
