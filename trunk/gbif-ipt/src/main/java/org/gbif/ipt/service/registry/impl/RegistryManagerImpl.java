@@ -650,7 +650,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
     try {
       Response resp = http.post(getIptUpdateUri(ipt.getKey().toString()), null, null, iptCredentials(ipt),
-        new UrlEncodedFormEntity(data));
+        new UrlEncodedFormEntity(data, HTTP.UTF_8));
       if (http.success(resp)) {
         log.info("IPT registration update was successful");
       } else {
@@ -665,7 +665,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     }
   }
 
-  public void updateResource(Resource resource) throws RegistryException, IllegalArgumentException {
+  public void updateResource(Resource resource, String iptKey) throws RegistryException, IllegalArgumentException {
     if (!resource.isRegistered()) {
       throw new IllegalArgumentException("Resource is not registered");
     }
@@ -678,9 +678,12 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     log.debug("Last published: " + resource.getLastPublished());
     List<NameValuePair> data = buildRegistryParameters(resource);
 
+    // ensure IPT serves relationship always gets created/updated
+    data.add(new BasicNameValuePair("iptKey", StringUtils.trimToEmpty(iptKey)));
+
     try {
       Response resp = http.post(getIptUpdateResourceUri(resource.getKey().toString()), null, null,
-        orgCredentials(resource.getOrganisation()), new UrlEncodedFormEntity(data));
+        orgCredentials(resource.getOrganisation()), new UrlEncodedFormEntity(data, HTTP.UTF_8));
       if (http.success(resp)) {
         log.debug("Resource's registration info has been updated");
       } else {

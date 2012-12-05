@@ -57,8 +57,12 @@ public class UpdateResourceMetadataAction extends POSTAction {
     Map<String, String> resUpdateStatus = new HashMap<String, String>();
 
     log.info("Updating ipt instance");
+    String iptKey = null;
     try {
       if (registrationManager.getIpt() != null) {
+        // retrieve IPT key, used later in resource updates
+        iptKey = (registrationManager.getIpt().getKey() == null) ? null : registrationManager.getIpt().toString();
+        // update IPT
         registryManager.updateIpt(registrationManager.getIpt());
         resUpdateStatus.put(registrationManager.getIpt().getName() + REGISTRY, SUCCESS_TYPE);
       }
@@ -91,7 +95,7 @@ public class UpdateResourceMetadataAction extends POSTAction {
     for (Resource res : publishedResources) {
       if (res.isRegistered()) {
         try {
-          registryManager.updateResource(res);
+          registryManager.updateResource(res, iptKey);
           resUpdateStatus.put(res.getShortname() + REGISTRY, SUCCESS_TYPE);
         } catch (RegistryException e) {
           log.warn("Registry exception updating resource", e);
