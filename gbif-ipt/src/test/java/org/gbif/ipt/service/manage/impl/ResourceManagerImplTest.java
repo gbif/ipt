@@ -18,6 +18,7 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.config.IPTModule;
+import org.gbif.ipt.config.JdbcSupport;
 import org.gbif.ipt.mock.MockAppConfig;
 import org.gbif.ipt.mock.MockDataDir;
 import org.gbif.ipt.mock.MockRegistryManager;
@@ -56,8 +57,6 @@ import org.gbif.metadata.eml.Eml;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.FileUtils;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -67,6 +66,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
 
 import com.google.common.io.Files;
 import com.google.inject.Guice;
@@ -114,6 +115,7 @@ public class ResourceManagerImplTest {
   private Resource resource;
   private Ipt ipt;
   private Organisation organisation;
+  private JdbcSupport support;
 
   @Before
   public void setup() {
@@ -165,6 +167,9 @@ public class ResourceManagerImplTest {
     ThesaurusHandlingRule thesaurusRule = new ThesaurusHandlingRule(mock(VocabulariesManagerImpl.class));
     SAXParserFactory saxf = injector.getInstance(SAXParserFactory.class);
     ExtensionFactory extensionFactory = new ExtensionFactory(thesaurusRule, saxf, httpClient);
+    support = injector.getInstance(JdbcSupport.class);
+    PasswordConverter passwordConverter = injector.getInstance(PasswordConverter.class);
+    JdbcInfoConverter jdbcConverter = new JdbcInfoConverter(support);
 
     // construct occurrence core Extension
     InputStream occurrenceCoreIs = ResourceManagerImplTest.class.getResourceAsStream("/extensions/dwc_occurrence.xml");
@@ -178,9 +183,11 @@ public class ResourceManagerImplTest {
     ExtensionRowTypeConverter extensionRowTypeConverter = new ExtensionRowTypeConverter(extensionManager);
     ConceptTermConverter conceptTermConverter = new ConceptTermConverter(extensionRowTypeConverter);
 
+    // create
+
     return new ResourceManagerImpl(mockAppConfig, mockedDataDir, mockEmailConverter, mockOrganisationKeyConverter,
-        extensionRowTypeConverter, mockJdbcConverter, mockSourceManager, extensionManager,
-        mockRegistryManager, conceptTermConverter, mockDwcaFactory, mockPasswordConverter, mockEml2Rtf,
+        extensionRowTypeConverter, jdbcConverter, mockSourceManager, extensionManager,
+        mockRegistryManager, conceptTermConverter, mockDwcaFactory, passwordConverter, mockEml2Rtf,
         mockVocabulariesManager, mockSimpleTextProvider, mockRegistrationManager);
   }
 
@@ -386,6 +393,87 @@ public class ResourceManagerImplTest {
 
     // test if resource.xml was created.
     assertTrue(mockedDataDir.resourceFile("math", ResourceManagerImpl.PERSISTENCE_FILE).exists());
+
+  }
+
+  /**
+   * Test resource retrieval from resource.xml file. The loadFromDir method is responsible for this retrieval.
+   */
+  @Test
+  public void testLoadFromDir() throws IOException, SAXException, ParserConfigurationException,
+    AlreadyExistingException {
+    ResourceManagerImpl resourceManager = getResourceManagerImpl();
+
+    String shortName = "ants";
+
+    // create a new resource.
+    resourceManager.create(shortName, creator);
+
+    // get added resource.
+    Resource addedResource = resourceManager.get(shortName);
+
+    // add SQL source, and save resource
+    Source.SqlSource source = new Source.SqlSource();
+    // connection/db params
+    source.setName("danbif_db_source");
+    source.setDatabase("DanBIF");
+    source.setHost("50.19.64.6");
+    source.setPassword("Dan=bif=17=5321");
+    source.setUsername("DanBIFUser");
+    source.setColumns(44);
+
+    // query
+    source.setSql("SELECT * FROM occurrence_record where datasetID=1");
+
+    // other params
+    source.setEncoding("UTF-8");
+    source.setDateFormat("YYYY-MM-DD");
+    source.setReadable(true);
+
+    // rdbms param
+    JdbcSupport.JdbcInfo info = support.get("mysql");
+    source.setRdbms(info);
+
+    // set resource on source
+    source.setResource(addedResource);
+
+    // add source to resource
+    addedResource.addSource(source, true);
+
+    // save
+    resourceManager.save(addedResource);
+
+    // retrieve resource file
+    File resourceFile = mockedDataDir.resourceFile(shortName, "resource.xml");
+    assertTrue(resourceFile.exists());
+
+    // retrieve resource directory
+    File resourceDir = resourceFile.getParentFile();
+    assertTrue(resourceDir.exists());
+
+    // load resource
+    Resource persistedResource = resourceManager.loadFromDir(resourceDir);
+
+    // make some assertions about resource
+    assertEquals(shortName, persistedResource.getShortname());
+    assertEquals(PublicationStatus.PRIVATE, persistedResource.getStatus());
+    assertEquals(1, persistedResource.getSources().size());
+    assertEquals(0, persistedResource.getEmlVersion());
+    assertEquals(0, persistedResource.getRecordsPublished());
+
+    // make some assertions about SQL source
+    Source.SqlSource persistedSource = (Source.SqlSource) persistedResource.getSources().get(0);
+    assertEquals("Dan=bif=17=5321", persistedSource.getPassword());
+    assertEquals("danbif_db_source", persistedSource.getName());
+    assertEquals("DanBIF", persistedSource.getDatabase());
+    assertEquals("50.19.64.6", persistedSource.getHost());
+    assertEquals("DanBIFUser", persistedSource.getUsername());
+    assertEquals(44, persistedSource.getColumns());
+    assertEquals("SELECT * FROM occurrence_record where datasetID=1", persistedSource.getSql());
+    assertEquals("com.mysql.jdbc.Driver", persistedSource.getJdbcDriver());
+    assertEquals("UTF-8", persistedSource.getEncoding());
+    assertEquals("YYYY-MM-DD", persistedSource.getDateFormat());
+    assertTrue(persistedSource.isReadable());
 
   }
 

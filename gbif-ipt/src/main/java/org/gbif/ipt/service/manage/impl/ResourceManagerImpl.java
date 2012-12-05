@@ -808,7 +808,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    *
    * @return loaded Resource
    */
-  private Resource loadFromDir(File resourceDir) {
+  protected Resource loadFromDir(File resourceDir) {
     return loadFromDir(resourceDir, new ActionLogger(log, new BaseAction(textProvider, cfg, registrationManager)));
   }
 
@@ -1389,7 +1389,16 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       }
       try {
         log.debug("Updating registration of resource with key: " + resource.getKey().toString());
-        registryManager.updateResource(resource);
+
+        // get IPT key
+        String iptKey = null;
+        if (registrationManager.getIpt() != null) {
+          iptKey = (registrationManager.getIpt().getKey() == null) ? null : registrationManager.getIpt().toString();
+        }
+
+        // perform update
+        registryManager.updateResource(resource, iptKey);
+
         // log
         String msg = action.getText("manage.overview.resource.update.registration", new String[] {resource.getTitle()});
         action.addActionMessage(msg);

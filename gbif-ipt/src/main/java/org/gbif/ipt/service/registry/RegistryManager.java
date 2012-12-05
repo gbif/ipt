@@ -105,11 +105,12 @@ public interface RegistryManager {
    * never change during the update.
    *
    * @param resource Resource whose registration is being updated
+   * @param iptKey key of IPT whose registration is being updated
    *
    * @throws RegistryException        if update was unsuccessful for any reason
    * @throws IllegalArgumentException is resource is not registered yet
    */
-  void updateResource(Resource resource) throws RegistryException, IllegalArgumentException;
+  void updateResource(Resource resource, String iptKey) throws RegistryException, IllegalArgumentException;
 
   /**
    * Validate whether an Organization identified by its key and password is registered.
