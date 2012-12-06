@@ -129,6 +129,8 @@ public interface RegistryManager {
    * @param key organization key (UUID in String format)
    *
    * @return list of all registered Resources associated to an Organization, or an empty list if none were retrieved
+   *
+   * @throws RegistryException if the list could not be retrieved for any reason
    */
-  List<Resource> getOrganisationsResources(String key);
+  List<Resource> getOrganisationsResources(String key) throws RegistryException;
 }
