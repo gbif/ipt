@@ -39,6 +39,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import com.google.common.base.Strings;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -405,23 +406,22 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return (map.get("thesauri") == null) ? new ArrayList<Vocabulary>() : map.get("thesauri") ;
   }
 
-  public List<Resource> getOrganisationsResources(String organisationKey) {
-    List<Map<String, String>> resourcesTemp = new ArrayList<Map<String, String>>();
+  /*
+  * (non-Javadoc)
+  * @see org.gbif.ipt.service.registry.RegistryManager#getOrganisationsResources
+  */
+  public List<Resource> getOrganisationsResources(String organisationKey) throws RegistryException {
+    List<Map<String, String>> resourcesTemp;
     try {
       resourcesTemp = gson.fromJson(requestHttpGetFromRegistry(getOrganisationsResourcesUri(organisationKey)).content,
         new TypeToken<List<Map<String, String>>>() {
         }.getType());
+    } catch (JsonSyntaxException e) {
+      // throw new RegistryException if a non-parsable response was encountered
+      throw new RegistryException(TYPE.BAD_RESPONSE, "Unexpected, non-parsable response format encountered.");
     } catch (RegistryException e) {
-      // log as specific error message as possible about why the Registry error occurred
-      String msg = RegistryException.logRegistryException(e.getType(), baseAction);
-      // add startup error message about Registry error
-      warnings.addStartupError(msg);
-      log.error(msg);
-
-      // add startup error message that explains the consequence of the Registry error
-      msg = baseAction.getText("organisations.resources.couldnt.load", new String[] {cfg.getRegistryUrl()});
-      warnings.addStartupError(msg);
-      log.error(msg);
+      // just rethrow if a RegistryException was encountered
+      throw e;
     }
     // populate Resources list
     List<Resource> resources = new ArrayList<Resource>();

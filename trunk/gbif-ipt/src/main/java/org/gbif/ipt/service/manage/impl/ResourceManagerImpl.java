@@ -1186,7 +1186,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       if (organisation.getKey() != null && organisation.getName() != null && candidateResourceUUIDs.size() > 0) {
         boolean matched = false;
         // collect list of registered resources associated to organization
-        List<Resource> existingResources = registryManager.getOrganisationsResources(organisation.getKey().toString());
+        List<Resource> existingResources;
+        try {
+          existingResources = registryManager.getOrganisationsResources(organisation.getKey().toString());
+        } catch (RegistryException e) {
+          throw e;
+        }
         for (Resource entry : existingResources) {
 
           // does the set of candidate UUIDs contain the UUID from an existing registered resource owned by the
