@@ -61,7 +61,7 @@ public class UpdateResourceMetadataAction extends POSTAction {
     try {
       if (registrationManager.getIpt() != null) {
         // retrieve IPT key, used later in resource updates
-        iptKey = (registrationManager.getIpt().getKey() == null) ? null : registrationManager.getIpt().toString();
+        iptKey = (registrationManager.getIpt().getKey() == null) ? null : registrationManager.getIpt().getKey().toString();
         // update IPT
         registryManager.updateIpt(registrationManager.getIpt());
         resUpdateStatus.put(registrationManager.getIpt().getName() + REGISTRY, SUCCESS_TYPE);

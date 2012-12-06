@@ -1393,7 +1393,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // get IPT key
         String iptKey = null;
         if (registrationManager.getIpt() != null) {
-          iptKey = (registrationManager.getIpt().getKey() == null) ? null : registrationManager.getIpt().toString();
+          iptKey =
+            (registrationManager.getIpt().getKey() == null) ? null : registrationManager.getIpt().getKey().toString();
         }
 
         // perform update
