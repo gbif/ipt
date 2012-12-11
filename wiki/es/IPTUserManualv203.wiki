@@ -14,10 +14,11 @@ El _Integrated Publishing Toolkit_ (IPT) de GBIF es una aplicación web de códi
 Fundada y financiada por los gobiernos en el año 2001, la Infraestructura Mundial de Información en Biodiversidad (GBIF) es la iniciativa multilateral más grande del mundo, creada para facilitar el acceso libre a datos sobre biodiversidad a través de Internet. Entre los diversos aliados de GBIF se incluyen principalmente países y organizaciones internacionales. GBIF también ha constituido alianzas formales con importantes organismos de tratados internacionales. La misión de GBIF consiste en promover y facilitar el acceso libre y gratuito a datos sobre biodiversidad en todo el mundo, a través de Internet, para apoyar a la ciencia, la conservación y el desarrollo sostenible. Podrá obtener más información acerca de GBIF en http://www.gbif.org/.
 
 Múltiples factores han servido como motivación para que GBIF lidere el desarrollo del IPT:
-  * las limitaciones de aplicaciones y protocolos anteriores (DiGIR, TAPIR, ABCD) para publicar y transferir fácilmente conjuntos de datos de gran tamaño;
-  * la necesidad de descentralizar y agilizar el proceso de indexar los conjuntos de datos sobre biodiversidad y registros biológicos;
+  * las limitaciones que presentaban aplicaciones y protocolos anteriores (DiGIR, TAPIR, ABCD) al momento de publicar y transferir fácilmente conjuntos de datos de gran tamaño;
+  * la necesidad de reducir la carga del servidor del publicador y del servidor de GBIF durante la indexación. Esto se debe a que la indexación de DiGIR, TAPIR o BioCase causaba cargas pesadas a razón de las repetidas interacciones de solicitud-respuesta del HTTP;
+  * la necesidad de agilizar el proceso de indexación de conjuntos de datos de registros biológicos;
   * la necesidad de ofrecer beneficios y servicios adicionales a los publicadores de datos para incentivar la publicación;
-  * la carencia de herramientas apropiadas para la publicación de determinado tipo de datos sobre biodiversidad, tales como nombres, listas y metadatos.
+  * la carencia de herramientas apropiadas para la publicación de determinado tipo de datos sobre biodiversidad, tal como nombres, listas y metadatos.
 
 ==¿Cómo utilizar este manual?==
 Este manual consta de tres componentes principales: una introducción con información de contexto, una serie de tutoriales y una completa guía de referencia, incluyendo la sección "Guía Básica" y unas secciones que describen detalladamente los diferentes elementos de la herramienta.
