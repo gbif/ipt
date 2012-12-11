@@ -17,8 +17,9 @@ international organisations. GBIF also has formal partnerships with
 relevant international treaty bodies. GBIF's mission is to promote and enable free and open access to biodiversity data worldwide via the Internet to underpin science, conservation and sustainable development. More information about GBIF can be found at http://www.gbif.org/.
 
 Several factors have provided motivation for GBIF to lead the development of the IPT:
-  * limitations of previous applications and protocols (DiGIR, TAPIR, ABCD) to easily publish and transfer large data sets;
-  * the need to decentralise and speed up the process of indexing biodiversity occurrence data sets;
+  * limitations of previous publishing tools (DiGIR, TAPIR, BioCASE) to easily publish and transfer large datasets;
+  * the need to reduce the load on both the publisher's server, and GBIF's server during indexing. The reason being that indexing from DiGIR, TAPIR, or BioCASE caused heavy loads due to repeated HTTP request-response interactions.
+  * the need to speed up the process of indexing biodiversity occurrence datasets;
   * the need to offer additional benefits and services to the data publishers to encourage data publication;
   * the lack of appropriate tools to publish certain types of biodiversity data, such as names checklists and data set metadata.
 
