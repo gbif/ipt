@@ -9,7 +9,7 @@ This section contains information about IPT installations that may vary between 
 
 The IPT has been tested and works well with Tomcat 5.5, Tomcat 6.0 and Tomcat 7.0. The Apache Tomcat documentation can be found on http://tomcat.apache.org/. Also, minimal instructions for Tomcat installations on various operating systems can be found in associated Server Preparation pages: 
 
-[Install Tomcat on Mac OS X]
+[Install_Tomcat_on_Mac_OS_X Install Tomcat on Mac OS X]
 
 Download the ipt.war file of the latest release of the IPT from http://code.google.com/p/gbif-providertoolkit/downloads/list. Copy the ipt.war file to the Tomcat webapps folder and then start Tomcat, or restart Tomcat if it is already running. You can then invoke the IPT in a web browser running on the same server by using the following URL:
 
