@@ -738,7 +738,7 @@ This IPT installation has not been registered yet.
 ==Citación==
 El manual de usuario original en Inglés (Wieczorek, J. 2011. The GBIF Integrated Publishing Toolkit User Manual, version 2.0. Copenhagen: Global Biodiversity Information Facility) se adaptó y elaboró a partir del Manual de Usuario del IPT previamente publicado. (Réveillon 2009). 
 
-Esta traducción al Español es una contribución desinteresada del equipo del Sistema de Información sobre la Biodiversidad de Colombia (SIB Colombia, http://www.siac.net.co/web/sib), en particular de Dairo Escobar, Laura Roldán Gómez y Daniel Amariles. 
+Esta traducción al Español es una contribución desinteresada del equipo del Sistema de Información sobre la Biodiversidad de Colombia (SIB Colombia, http://www.sibcolombia.net/), en particular de Dairo Escobar, Laura Roldán Gómez y Daniel Amariles. 
 
 La citación recomendada para esta traducción al Español es la siguiente:
 
