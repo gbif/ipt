@@ -50,7 +50,7 @@
                   </a>
                 </div>
                 <hgroup class="site-name-slogan">
-                  <h1 class="site-name"><a href="/" rel="home" title="Home" class="active">GBIF Integrated Publishing Toolkit</a><span class="logoSuperscript">(IPT)</span></h1>
+                  <h1 class="site-name"><a href="${baseURL}" rel="home" title="Home" class="active">GBIF Integrated Publishing Toolkit</a><span class="logoSuperscript">(IPT)</span></h1>
                   <h6 class="site-slogan">free and open access to biodiversity data</h6>
                 [#if !cfg.devMode() && cfg.getRegistryType()=='PRODUCTION']
                 [#else]
