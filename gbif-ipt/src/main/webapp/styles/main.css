@@ -342,31 +342,6 @@ img.testmode {
   font-size: 0.8em;
 }
 
-table#resourcestable { margin-bottom: 40px; width: 950px; }
-table#resourcestable thead { table-layout: fixed; }
-table#resourcestable thead tr th { vertical-align: middle; padding:0 3px; font-size: 0.95em; color: #666; font-weight: bold; text-decoration:underline; }
-table#resourcestable tbody tr td { vertical-align: middle; padding:0 3px; border:2px solid #fff; background-color: #eee; }
-table#resourcestable tbody tr td img { max-height: 50px;}
-table#resourcestable tbody tr {  }
-table#resourcestable tbody {  }
-th#resourceName { width: 250px; overflow: auto; }
-td#resourceName { font-size: 0.8em; width: 250px; }
-td#resourceOrganisation { font-size: 0.8em; }
-td#resourceType { font-size: 0.8em; }
-td#resourceSubType { font-size: 0.8em; }
-td#resourceRecords { font-size: 0.8em; }
-td#resourceLastModified { font-size: 0.8em; }
-td#resourceLastPublication { font-size: 0.8em; }
-td#resourceVisible { font-size: 0.8em; }
-td#resourceAuthor { font-size: 0.8em; }
-
-/* sortable table with pointer cursor indicating columns can be clicked to sort table */
-table.sortable th{
-	text-align: left;
-	padding-bottom: 10px;
-  cursor: pointer;
-}
-
 /* simple table */
 table.simple {
   width: auto;
@@ -1116,4 +1091,17 @@ table#user-list tbody tr td { display: table-cell; }
 	background-color: #fff;
 	border:1px solid #000;
 	padding:15px;
+}
+
+table#rtable {
+  width: 100%;
+}
+
+div#rtableContainer {
+  margin-bottom: 40px;
+  font-size:13px;
+}
+
+tr.name_column, th.name_column {
+  width: 250px;
 }

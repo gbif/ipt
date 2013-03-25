@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="${baseURL}/styles/custom.css" />
     <!-- for support of old browsers, like IE8. See http://modernizr.com/docs/#html5inie -->
     <script type="text/javascript" src="${baseURL}/js/modernizr.js"></script>
-		<script type="text/javascript" src="${baseURL}/js/jquery/jquery.min-1.5.1.js"></script>				
+		<script type="text/javascript" src="${baseURL}/js/jquery/jquery.min-1.5.1.js"></script>
 		<script type="text/javascript" src="${baseURL}/js/global.js"></script>
 		<style>
       h1 {
@@ -45,7 +45,7 @@
                     <!-- add more languages as translations become available. -->                           
                     <!-- #list ["en","es","fr","de"] as lang -->
                     <!-- modify global.js langs() also -->
-                    [#list ["en","fr","es", "zh"] as lang]
+                    [#list ["en","fr","es", "zh", "pt"] as lang]
                       [#if localeLanguage!=lang]
                       <li><a href="?request_locale=${lang}"><img src="${baseURL}/images/flags/flag_${lang}.gif"/></a></li>
                       [/#if]
