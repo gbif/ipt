@@ -126,8 +126,6 @@ submenu.keywords=其他關鍵詞
 submenu.additional=其他元數據
 
 # pager
-pager.page=頁
-pager.first=第一
 pager.previous=往前
 pager.next=往後
 
@@ -415,8 +413,6 @@ admin.config.baseUrl.help=這個網址指向您 IPT 裝置的根網址。如果�
 admin.config.baseUrl.changed=基礎網址已成功更新
 admin.config.baseUrl.changed.reminder=登入時，點選「發布所有資料集」按鈕（管理頁面）以更新所有已註冊資源的服務網址。
 admin.config.baseUrl.inaccessible=此基礎網址無法讓您的電腦訪問任何 IPT 網站。
-
-admin.config.Url.invalidBaseURL=基礎網址必須是可從網際網路上存取的網址（例如：localhost 或 127.0.0.1 是無效的）。
 
 admin.config.error.invalidBaseURL=輸入的基礎網址格式不正確 (例如，http://www.my-institution.com/ipt)
 admin.config.error.invalidPort=埠號應為整數
@@ -1074,7 +1070,6 @@ rtf.project.personnel=人員
 rtf.project.funding=經費來源
 rtf.project.area=研究區域描述
 rtf.project.design=研究設計描述
-rtf.project.description=計畫描述
 rtf.collections.description=自然蒐藏描述
 rtf.collections.parent=總採集蒐藏辨識碼
 rtf.collections.name=採集蒐藏名稱
@@ -1128,3 +1123,11 @@ format.date={yyyy-MM-dd}
 
 # This message appears when the field value is invalid  according to the *Converter.java class
 xwork.default.invalid.fieldvalue=無效的欄位值
+
+# Data Tables. Warning: don't translate any word beginning and ending in underscores, e.g. _MENU_
+dataTables.sInfo=Showing _START_ to _END_ of _TOTAL_ resources
+dataTables.sInfoEmpty=Showing 0 to 0 of 0 resources
+dataTables.sInfoFiltered=(filtered from _MAX_ total)
+dataTables.search=Search
+dataTables.sEmptyTable=No resources are currently available
+dataTables.sZeroRecords=No resources were found
