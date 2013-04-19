@@ -23,11 +23,11 @@ $(document).ready(function(){
 	$("#toggleReport").click(function() {
 		if(showReport){
 			showReport=false;
-			$("#toggleReport").text("Show Report");
+			$("#toggleReport").text("<@s.text name='manage.overview.published.see.report'/>");
 			$('#dwcaReport').hide();
 		}else{
 			showReport=true;
-			$("#toggleReport").text("Hide Report");
+			$("#toggleReport").text("<@s.text name='manage.overview.published.hide.report'/>");
 			$('#dwcaReport').show();
 		}
 	});
@@ -306,11 +306,15 @@ $(document).ready(function(){
           <tr>
             <th><@s.text name="manage.overview.published.last.publication"/></th>
             <td>
-              <@s.text name="manage.overview.published.version"/>
-              ${resource.eml.emlVersion}
-              <@s.text name="manage.overview.published.from"/>
-              ${resource.lastPublished?datetime?string}
-              <!-- reserve a little extra space here to highlight see report link -->
+              <!-- show either "Version #" or report state, e.g. "Failed. Fatal error" -->
+              <#if report?? && (report.state?contains('cancelled') || report.exception?has_content) >
+                <em>${report.state}</em>
+              <#else>
+                <@s.text name="manage.overview.published.version"/>
+                ${resource.emlVersion}
+                <@s.text name="manage.overview.published.from"/>
+                ${resource.lastPublished?datetime?string}
+              </#if>
               &nbsp;
               <#if report??>
                 <a id="toggleReport" href="#">

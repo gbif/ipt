@@ -1,10 +1,8 @@
 package org.gbif.ipt.action.portal;
 
-import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -15,6 +13,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -22,18 +21,13 @@ import org.apache.log4j.Logger;
 /**
  * The Action responsible for serving datadir resource files.
  */
-public class ResourceFileAction extends BaseAction {
+public class ResourceFileAction extends PortalBaseAction {
 
   // logging
   private static final Logger log = Logger.getLogger(ResourceFileAction.class);
 
   private DataDir dataDir;
   protected ResourceManager resourceManager;
-
-  protected String r;
-  protected String s;
-  protected Integer version;
-  protected Resource resource;
   protected Source source;
   private InputStream inputStream;
   protected File data;
@@ -43,11 +37,18 @@ public class ResourceFileAction extends BaseAction {
   @Inject
   public ResourceFileAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
     DataDir dataDir, ResourceManager resourceManager) {
-    super(textProvider, cfg, registrationManager);
+    super(textProvider, cfg, registrationManager, resourceManager);
     this.dataDir = dataDir;
-    this.resourceManager = resourceManager;
   }
 
+  /**
+   * Handles DwC-A file download request. The method checks if the request is a conditional get with If-Modified-Since
+   * header. If the If-Modified-Since date is greater than the last published date, the NOT_MODIFIED string is returned.
+   * Specific versions can also be resolved depending on the optional parameter version "v". If no specific version is
+   * requested the latest published version is used.
+   *
+   * @return Struts2 result string
+   */
   public String dwca() {
     if (resource == null) {
       return NOT_FOUND;
@@ -65,28 +66,47 @@ public class ResourceFileAction extends BaseAction {
       // headers might not be formed correctly, swallow
       log.warn("Conditional get with If-Modified-Since header couldnt be interpreted", e);
     }
-
     // serve file as set in prepare method
-    data = dataDir.resourceDwcaFile(resource.getShortname());
-    filename = "dwca-" + resource.getShortname() + ".zip";
+    data = dataDir.resourceDwcaFile(resource.getShortname(), version);
+
+    // construct download filename
+    StringBuilder sb = new StringBuilder();
+    sb.append("dwca-" + resource.getShortname());
+    if (version != null) {
+      sb.append("-v" + String.valueOf(version));
+    }
+    sb.append(".zip");
+    filename = sb.toString();
+
     mimeType = "application/zip";
     return execute();
   }
 
+  /**
+   * Handles EML file download request. Specific versions can also be resolved depending on the optional parameter
+   * "version". If no specific version is requested the latest published version is used.
+   *
+   * @return Struts2 result string
+   */
   public String eml() {
-    // if no specific version is requested use the latest published
-    if (version == null) {
-      version = resource.getEmlVersion();
-    }
     data = dataDir.resourceEmlFile(resource.getShortname(), version);
     mimeType = "text/xml";
-    filename = "eml-" + resource.getShortname() + "-v" + version + ".xml";
+
+    // construct download filename
+    StringBuilder sb = new StringBuilder();
+    sb.append("eml-" + resource.getShortname());
+    if (version != null) {
+      sb.append("-v" + String.valueOf(version));
+    }
+    sb.append(".xml");
+    filename = sb.toString();
+
     return execute();
   }
 
   @Override
   public String execute() {
-    // make sure we have a downlaod filename
+    // make sure we have a download filename
     if (filename == null) {
       filename = data.getName();
     }
@@ -113,18 +133,6 @@ public class ResourceFileAction extends BaseAction {
 
   public String getMimeType() {
     return mimeType;
-  }
-
-  public String getR() {
-    return r;
-  }
-
-  public Resource getResource() {
-    return resource;
-  }
-
-  public Integer getVersion() {
-    return version;
   }
 
   public String logo() {
@@ -167,28 +175,33 @@ public class ResourceFileAction extends BaseAction {
 
   @Override
   public void prepare() {
-    r = StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_RESOURCE));
-    s = StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_SOURCE));
-    if (r == null) {
-      // try session instead
-      try {
-        r = (String) session.get(Constants.SESSION_RESOURCE);
-      } catch (Exception e) {
-        // swallow. if session is not yet opened we get an exception here...
-      }
+    super.prepare();
+    // look for source parameter
+    String src = StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_SOURCE));
+    if (!Strings.isNullOrEmpty(src)) {
+      source = resource.getSource(src);
     }
-    resource = resourceManager.get(r);
-    source = resource.getSource(s);
   }
 
+  /**
+   * Handles RTF file download request. Specific versions can also be resolved depending on the optional parameter
+   * version "v". If no specific version is requested the latest published version is used.
+   *
+   * @return Struts2 result string
+   */
   public String rtf() {
-    data = dataDir.resourceRtfFile(resource.getShortname());
+    data = dataDir.resourceRtfFile(resource.getShortname(), version);
     mimeType = "application/rtf";
-    filename = resource.getShortname() + "-metadata.rtf";
-    return execute();
-  }
 
-  public void setVersion(Integer version) {
-    this.version = version;
+    // construct download filename
+    StringBuilder sb = new StringBuilder();
+    sb.append("rtf-" + resource.getShortname());
+    if (version != null) {
+      sb.append("-v" + String.valueOf(version));
+    }
+    sb.append(".rtf");
+    filename = sb.toString();
+
+    return execute();
   }
 }

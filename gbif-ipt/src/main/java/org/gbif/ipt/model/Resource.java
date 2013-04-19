@@ -43,7 +43,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   private String subtype;
   // publication
   private PublicationStatus status = PublicationStatus.PRIVATE;
-
+  // resource version and eml version are the same
   private int emlVersion = 0;
   private Date lastPublished;
   private int recordsPublished = 0;
@@ -217,6 +217,11 @@ public class Resource implements Serializable, Comparable<Resource> {
     return eml;
   }
 
+  /**
+   * Get resource version. Same as EML version.
+   *
+   * @return resource version
+   */
   public int getEmlVersion() {
     return emlVersion;
   }
@@ -334,12 +339,21 @@ public class Resource implements Serializable, Comparable<Resource> {
     return null;
   }
 
-
-  public String getTitleOrShortname() {
+  /**
+   * Build and return string composed of resource title and shortname in brackets if the title and shortname are
+   * different. This string can be called to construct log messages.
+   *
+   * @return constructed string
+   */
+  public String getTitleAndShortname() {
+    StringBuilder sb = new StringBuilder();
     if (eml != null) {
-      return eml.getTitle();
+      sb.append(eml.getTitle());
+      if (!shortname.equalsIgnoreCase(eml.getTitle())) {
+        sb.append(" (").append(shortname).append(")");
+      }
     }
-    return shortname;
+    return sb.toString();
   }
 
   /**

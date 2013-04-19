@@ -10,7 +10,7 @@
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <div class="grid_18 suffix_6">
 <table id="admintable">
-	  <@s.form cssClass="topForm" action="updateResourceMetadata.do" method="post">	  		
+	<@s.form cssClass="topForm" action="publishAll.do" method="post">
 	<tr>
 	  <td>
 		<a href="${baseURL}/admin/config.do"><img src="${baseURL}/images/icons/settings.png" /></a>
@@ -19,7 +19,7 @@
 	  <@s.text name="admin.home.editConfig"/>
 	  <img class="infoImg" src="${baseURL}/images/info.gif" />
 	  <div class="info"><@s.text name="admin.home.publishResources.help"/></div>
-	  <@s.submit cssClass="button" name="updateMetadata" key="admin.home.publishResources"/>
+	  <@s.submit cssClass="button" name="publishAll" key="admin.home.publishResources"/>
 	  </td>
 	</tr>
 	  </@s.form>

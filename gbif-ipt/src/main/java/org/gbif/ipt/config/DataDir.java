@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import javax.annotation.Nullable;
 
 import com.google.inject.Singleton;
@@ -28,11 +29,12 @@ public class DataDir {
   public static final String LOGGING_DIR = "logs";
   public static final String CONFIG_DIR = "config";
   public static final String RESOURCES_DIR = "resources";
-  public static final String LUCENE_DIR = "lucene";
   public static final String TMP_DIR = "tmp";
   public static final String EML_XML_FILENAME = "eml.xml";
+  public static final String DWCA_FILENAME = "dwca.zip";
   private int tmpCounter = 0;
   private Map<String, Integer> tmpPrefixCounter = new HashMap<String, Integer>();
+  private static final Random RANDOM = new Random();
 
   private static Logger log = Logger.getLogger(DataDir.class);
 
@@ -41,18 +43,6 @@ public class DataDir {
   private InputStreamUtils streamUtils = new InputStreamUtils();
 
   private DataDir() {
-  }
-
-  public static DataDir buildFromDataDirFile(File dataDir) {
-    if (dataDir != null) {
-      DataDir dd = new DataDir();
-      // a datadir has been configured already. Lets see where that is
-      log.info("IPT Data Directory configured at " + dataDir.getAbsolutePath());
-      dd.dataDir = dataDir;
-      dd.dataDirSettingFile = null;
-      return dd;
-    }
-    return null;
   }
 
   public static DataDir buildFromLocationFile(File dataDirSettingFile) {
@@ -107,15 +97,12 @@ public class DataDir {
   }
 
   private void createDefaultDir() throws IOException {
-    // create config, resources and lucene directories
+    // create config, resources
     File configDir = dataFile(CONFIG_DIR);
     File resourcesDir = dataFile(RESOURCES_DIR);
     File loggingDir = dataFile(LOGGING_DIR);
     FileUtils.forceMkdir(configDir);
     FileUtils.forceMkdir(resourcesDir);
-    // placeholder for the future
-    // File luceneDir = dataFile(LUCENE_DIR);
-    // FileUtils.forceMkdir(luceneDir);
     FileUtils.forceMkdir(loggingDir);
     // copy default config files
     InputStream input = streamUtils.classpathStream("configDefault/ipt.properties");
@@ -144,9 +131,6 @@ public class DataDir {
     if (dataDir == null) {
       throw new IllegalStateException("No data dir has been configured yet");
     }
-    // if (path.startsWith("/")){
-    // return new File(path);
-    // }
     File f = new File(dataDir, path);
     assureParentExists(f);
     return f;
@@ -175,23 +159,53 @@ public class DataDir {
     return dataFile(LOGGING_DIR + "/" + path);
   }
 
-  /**
-   * Constructs an absolute path to the main lucene folder in the data dir.
-   */
-  public File luceneDir() {
-    return dataFile("lucene");
-  }
-
   private void persistLocation() throws IOException {
     // persist location in WEB-INF
     FileUtils.writeStringToFile(dataDirSettingFile, dataDir.getAbsolutePath());
     log.info("IPT DataDir location file in /WEB-INF changed to " + dataDir.getAbsolutePath());
   }
 
+  /**
+   * Retrieves DwC-A file for the latest published version of the resource.
+   *
+   * @param resourceName resource short name
+   *
+   * @return latest published version of DwC-A file
+   */
   public File resourceDwcaFile(String resourceName) {
-    return dataFile(RESOURCES_DIR + "/" + resourceName + "/dwca.zip");
+    return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + DWCA_FILENAME);
   }
 
+  /**
+   * Retrieves published DwC-A file for a resource.
+   * Specific versions can also be requested depending on the parameter "version". If no specific version is
+   * requested, the latest published version (dwca.zip) is used.
+   *
+   * @param resourceName resource short name
+   * @param version      version
+   *
+   * @return DwC-A file having specific version, defaulting to latest published version if no version specified
+   */
+  public File resourceDwcaFile(String resourceName, @Nullable Integer version) {
+    String fn;
+    if (version == null) {
+      fn = DWCA_FILENAME;
+    } else {
+      fn = "dwca-" + version + ".zip";
+    }
+    return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
+  }
+
+  /**
+   * Retrieves file for the latest published version of the EML file representing the resource metadata in XML format.
+   * Specific versions can also be resolved depending on the parameter "version". If no specific version is
+   * requested, or if the version requested is 0, the interim eml.xml without a version number is used.
+   *
+   * @param resourceName resource short name
+   * @param version      version
+   *
+   * @return EML file having specific version, defaulting to interim eml.xml without a version number if none specified
+   */
   public File resourceEmlFile(String resourceName, @Nullable Integer version) {
     String fn;
     if (version == null) {
@@ -234,13 +248,27 @@ public class DataDir {
   }
 
   /**
-   * File for the only & current rtf file representing the eml metadata for data publishers in RTF format.
+   * Retrieves file for the latest published version of the RFT file representing the EML metadata in RTF format.
+   *
+   * @param resourceName resource short name
+   *
+   * @return latest published version of RTF file
    */
   public File resourceRtfFile(String resourceName) {
     String fn = resourceName + ".rtf";
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
   }
 
+  /**
+   * Retrieves file for the latest published version of the RFT file representing the EML metadata in RTF format.
+   * Specific versions can also be resolved depending on the parameter "version". If no specific version is
+   * requested, the latest published version is used.
+   *
+   * @param resourceName resource short name
+   * @param version      version
+   *
+   * @return RTF file having specific version, defaulting to latest published version if no version specified
+   */
   public File resourceRtfFile(String resourceName, @Nullable Integer version) {
     String fn;
     if (version == null) {
@@ -326,49 +354,40 @@ public class DataDir {
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/sources/" + sourceName + ".log");
   }
 
-  public File tmpDir() {
-    tmpCounter++;
-    File dir = tmpFile("dir-" + tmpCounter);
-    assureDirExists(dir);
-    return dir;
-  }
-
-  public File tmpDir(String name) {
-    tmpCounter++;
-    File dir = tmpFile("dir-" + tmpCounter + "/" + name);
-    assureDirExists(dir);
-    return dir;
-  }
-
   /**
-   * Generate a new unique temporary filename inside the datadir based on an autoincremented counter.
+   * Return a temporary directory with randomly-generated number added to name to uniquely identifier it.
+   *
+   * @return temporary directory
    */
-  public File tmpFile() {
-    tmpCounter++;
-    return tmpFile("file-" + tmpCounter + ".tmp");
+  public File tmpDir() {
+    String random = String.valueOf(RANDOM.nextLong());
+    File dir = tmpFile("dir" + random);
+    assureDirExists(dir);
+    return dir;
   }
 
   /**
-   * Construct the absolute path for a given relative path within the /tmp subfolder.
-   * This method doesnt generate a unique filename - it only assembles what was given.
-   * Use one of the other tmpFile(...) methods to generate a unique file handler.
+   * Construct the absolute path for a given relative path within the temporary folder. This method doesn't generate a
+   * unique filename - it only uses the path provided.
+   *
+   * @param path relative file path within temporary folder
+   *
+   * @return temporary file within relative file path
    */
   public File tmpFile(String path) {
     return dataFile(TMP_DIR + "/" + path);
   }
 
   /**
-   * Generate an unused temporary filename based on a filename prefix and suffix.
-   * In between an autogenerated integer will be placed to assure a unique name
+   * Generates an unused temporary filename, using an auto-generated number in the name. The File handle gets returned.
+   *
+   * @param prefix file name prefix, e.g. "dwca"
+   * @param suffix file name suffix, e.g. ".zip"
+   *
+   * @return temporary File handle with unique filename
    */
   public File tmpFile(String prefix, String suffix) {
-    String counterKey = prefix + "||" + suffix;
-    if (tmpPrefixCounter.containsKey(prefix)) {
-      tmpPrefixCounter.put(counterKey, tmpPrefixCounter.get(counterKey) + 1);
-    } else {
-      tmpPrefixCounter.put(counterKey, 1);
-    }
-
-    return tmpFile(prefix + tmpPrefixCounter.get(counterKey) + suffix);
+    String random = String.valueOf(RANDOM.nextLong());
+    return tmpFile(prefix + random + suffix);
   }
 }

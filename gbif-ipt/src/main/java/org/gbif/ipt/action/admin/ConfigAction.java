@@ -37,6 +37,7 @@ public class ConfigAction extends POSTAction {
   protected String analyticsKey;
   protected Double latitude;
   protected Double longitude;
+  protected Boolean archivalMode;
 
   @Inject
   public ConfigAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -83,6 +84,15 @@ public class ConfigAction extends POSTAction {
 
   public String getRegistryUrl() {
     return cfg.getRegistryUrl();
+  }
+
+  /**
+   * Check if the IPT is configured to use archival mode.
+   *
+   * @return is in archival mode
+   */
+  public Boolean getArchivalMode() {
+    return cfg.isArchivalMode();
   }
 
   /**
@@ -140,6 +150,16 @@ public class ConfigAction extends POSTAction {
         configManager.setDebugMode(debug);
       } catch (InvalidConfigException e) {
         addActionError(getText("admin.config.debug.error"));
+        return INPUT;
+      }
+    }
+
+    // ipt archival mode
+    if (archivalMode != null) {
+      try {
+        configManager.setArchivalMode(archivalMode);
+      } catch (InvalidConfigException e) {
+        addActionError(getText("admin.config.archival.error"));
         return INPUT;
       }
     }
@@ -215,4 +235,7 @@ public class ConfigAction extends POSTAction {
     this.proxy = StringUtils.trimToNull(proxy);
   }
 
+  public void setArchivalMode(Boolean archivalMode) {
+    this.archivalMode = archivalMode;
+  }
 }

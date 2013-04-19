@@ -265,6 +265,10 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     reloadLogger();
   }
 
+  public void setArchivalMode(boolean archivalMode) throws InvalidConfigException {
+    cfg.setProperty(AppConfig.ARCHIVAL_MODE, Boolean.toString(archivalMode));
+  }
+
   public void setGbifAnalytics(boolean useGbifAnalytics) throws InvalidConfigException {
     cfg.setProperty(AppConfig.ANALYTICS_GBIF, Boolean.toString(useGbifAnalytics));
   }

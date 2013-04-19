@@ -8,6 +8,9 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
+import javax.annotation.Nullable;
+
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 
@@ -18,6 +21,8 @@ public class PortalBaseAction extends BaseAction {
 
   protected ResourceManager resourceManager;
   protected Resource resource;
+  protected Integer version;
+  public static final String UNSPECIFIED_VERSION = "unspecified";
 
   @Inject
   public PortalBaseAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -26,6 +31,11 @@ public class PortalBaseAction extends BaseAction {
     this.resourceManager = resourceManager;
   }
 
+  /**
+   * Return the resource.
+   *
+   * @return the resource
+   */
   public Resource getResource() {
     return resource;
   }
@@ -46,5 +56,46 @@ public class PortalBaseAction extends BaseAction {
     if (res != null) {
       resource = resourceManager.get(res);
     }
+    // look for version parameter
+    String v = StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_VERSION));
+    if (!Strings.isNullOrEmpty(v)) {
+      try {
+        setVersion(Integer.valueOf(v));
+      } catch (NumberFormatException e) {
+        LOG.error("Parameter version (v) was not a valid number: " + String.valueOf(v));
+      }
+    }
+    // if version is equal to the resource's last published version, then just set to null
+    if (version != null && version.intValue() == resource.getEmlVersion()) {
+      setVersion(null);
+    }
+  }
+
+  /**
+   * Return the version number requested. Null version is equal to the latest published version.
+   *
+   * @return the version number requested
+   */
+  @Nullable
+  public Integer getVersion() {
+    return version;
+  }
+
+  /**
+   * Version number of the resource requested. Null version is equal to the latest published version.
+   *
+   * @param version version number requested
+   */
+  public void setVersion(Integer version) {
+    this.version = version;
+  }
+
+  /**
+   * Return the version as a string. If it is null, return "unspecified".
+   *
+   * @return the version as a string
+   */
+  protected String getStringVersion() {
+    return (version == null) ? UNSPECIFIED_VERSION : String.valueOf(version);
   }
 }
