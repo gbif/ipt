@@ -11,13 +11,20 @@
   <!-- The entry to the administration section -->
   <package name="portal" extends="ipt-default" namespace="/">
     <default-interceptor-ref name="portalStack"/>
-
     <default-action-ref name="home"/>
+    <global-results>
+      <result name="404">
+        <param name="location">/WEB-INF/pages/portal/404.ftl</param>
+      </result>
+      <result name="home" type="redirect">home.do</result>
+    </global-results>
+
     <action name="home" class="org.gbif.ipt.action.portal.HomeAction">
+      <result name="input">/WEB-INF/pages/portal/home.ftl</result>
       <result>/WEB-INF/pages/portal/home.ftl</result>
     </action>
 
-    <action name="resource" class="org.gbif.ipt.action.portal.ResourceAction">
+    <action name="resource" class="org.gbif.ipt.action.portal.ResourceAction" method="detail">
       <result>/WEB-INF/pages/portal/resource.ftl</result>
     </action>
 

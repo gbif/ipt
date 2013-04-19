@@ -27,11 +27,16 @@ public class HomeAction extends BaseAction {
 
   @Override
   public String execute() {
+    return SUCCESS;
+  }
+
+  @Override
+  public void prepare() {
+    super.prepare();
     resources = resourceManager.list(PublicationStatus.PUBLIC);
     resources.addAll(resourceManager.list(PublicationStatus.REGISTERED));
     // sort alphabetically
     Collections.sort(resources);
-    return SUCCESS;
   }
 
   public List<Resource> getResources() {

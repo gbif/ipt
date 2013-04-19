@@ -35,24 +35,23 @@ $(document).ready(function(){
 
 <@s.form cssClass="topForm half" action="config" method="post">
 
-  	<@readonly name="dataDir" i18nkey="admin.config.server.data.dir" value="${dataDir}" help="i18n"/>
+   <@readonly name="dataDir" i18nkey="admin.config.server.data.dir" value="${dataDir}" help="i18n"/>
 	<@input name="baseUrl" i18nkey="admin.config.baseUrl" help="i18n" size=80/>
 	<@input name="proxy" i18nkey="admin.config.proxy" help="i18n" size=80/>
-	<@input name="analyticsKey" i18nkey="admin.config.analyticsKey" help="i18n" size=80/>  
-	<@checkbox name="analyticsGbif" i18nkey="admin.config.analyticsGbif" help="i18n"/>  
+  <@input name="analyticsKey" i18nkey="admin.config.analyticsKey" help="i18n" size=80/>
+	<@checkbox name="analyticsGbif" i18nkey="admin.config.analyticsGbif" help="i18n"/>
 	<@checkbox name="debug" i18nkey="admin.config.debug" help="i18n"/>
-  	<@readonly name="logDir" i18nkey="admin.config.server.log.dir" value="${logDir}" help="i18n"/>
-  	<@readonly name="registryUrl" i18nkey="admin.config.registry.url" value="${registryUrl}" help="i18n"/>
+  <@checkbox name="archivalMode" i18nkey="admin.config.archivalMode" help="i18n"/>
+  <@readonly name="logDir" i18nkey="admin.config.server.log.dir" value="${logDir}" help="i18n"/>
+  <@readonly name="registryUrl" i18nkey="admin.config.registry.url" value="${registryUrl}" help="i18n"/>
 
   <div id="location">
 	<label for="latitude"><@s.text name="admin.config.server.location"/></label>
 	<div class="halfcolumn">
 		<@input name="latitude" i18nkey="admin.config.server.latitude" help="i18n" />
-		<!-- input type="text" id="latitude" name="latitude" value="${latitude!}" size="10" /-->
 	</div>
 	<div class="halfcolumn">
 		<@input name="longitude" i18nkey="admin.config.server.longitude" help="i18n" />
-		<!-- input type="text" id="longitude" name="longitude" value="${longitude!}" size="10" / -->
 	</div>
   </div>
   <div id="locationMap">

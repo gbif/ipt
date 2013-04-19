@@ -1105,3 +1105,10 @@ div#rtableContainer {
 tr.name_column, th.name_column {
   width: 250px;
 }
+
+h1.withVersion {
+  margin-bottom: 0px;
+}
+div.versionTitle {
+  margin-bottom: 20px;
+}

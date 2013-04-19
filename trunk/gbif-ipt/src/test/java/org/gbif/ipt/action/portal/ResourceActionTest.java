@@ -1,6 +1,7 @@
 package org.gbif.ipt.action.portal;
 
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
@@ -34,6 +35,7 @@ public class ResourceActionTest {
     RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
     ResourceManager mockResourceManager = mock(ResourceManager.class);
     VocabulariesManager mockVocabManager = mock(VocabulariesManager.class);
+    DataDir dataDir = mock(DataDir.class);
 
     // mock: vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, Locale.getDefault().getLanguage(), false);
     Map<String, String> ranks = new HashMap<String, String>();
@@ -42,7 +44,7 @@ public class ResourceActionTest {
     when(mockVocabManager.getI18nVocab(anyString(), anyString(), anyBoolean())).thenReturn(ranks);
 
     action = new ResourceAction(mockTextProvider, mockCfg, mockRegistrationManager, mockResourceManager,
-      mockVocabManager);
+      mockVocabManager, dataDir);
 
     // setup Resource with TaxonomicCoverage with 3 TaxonKeyword
     resource = new Resource();

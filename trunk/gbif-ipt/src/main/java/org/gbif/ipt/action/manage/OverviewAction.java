@@ -31,6 +31,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.task.GenerateDwca;
 import org.gbif.ipt.task.StatusReport;
 import org.gbif.ipt.utils.FileUtils;
 import org.gbif.ipt.validation.EmlValidator;
@@ -88,23 +89,36 @@ public class OverviewAction extends ManagerBaseAction {
     return execute();
   }
 
+  /**
+   * Cancel resource publication. Publication is all or nothing. If incomplete, the version number of the resource
+   * must be rolled back.
+   *
+   * @return Struts2 result string
+   */
   public String cancel() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
     }
+    boolean cancelled = resourceManager.cancelPublishing(resource.getShortname(), this);
+    if (cancelled) {
 
-    try {
-      resourceManager.cancelPublishing(resource.getShortname(), this);
-      addActionMessage(getText("manage.overview.stopped.publishing", new String[] {resource.toString()}));
-    } catch (PublicationException e) {
-      String reason = "";
-      if (e.getMessage() != null) {
-        reason = e.getMessage();
-      }
-      addActionError(getText("manage.overview.failed.stop.publishing", new String[] {reason}));
-      return ERROR;
+      // final logging
+      String sVersion = String.valueOf(resource.getEmlVersion());
+      String msg = getText("publishing.cancelled", new String[] {sVersion, resource.getShortname()});
+      log.warn(msg);
+      addActionError(msg);
+
+      // restore the previous version of the resource
+      resourceManager.restoreVersion(resource, resource.getEmlVersion() - 1, this);
+
+      // Struts finishes before callable has a finish to update status report, therefore,
+      // temporarily override StatusReport so that Overview page report displaying up-to-date STATE and Exception
+      StatusReport tmpReport = new StatusReport(true, GenerateDwca.CANCELLED_STATE_MSG, report.getMessages());
+      report = tmpReport;
+      return execute();
     }
-    return execute();
+    addActionError(getText("manage.overview.failed.stop.publishing"));
+    return ERROR;
   }
 
   @Override
@@ -285,7 +299,14 @@ public class OverviewAction extends ManagerBaseAction {
     return execute();
   }
 
-  private boolean minimumRegistryInfo(Resource resource) {
+  /**
+   * Checks if the resource meets all the conditions required in order to be registered. For example, the resource needs
+   * to be published prior to registering with the GBIF Network.
+   *
+   * @param resource resource
+   * @return true if the resource meets the minimum requirements to be published
+   */
+  private boolean hasMinimumRegistryInfo(Resource resource) {
     if (resource == null) {
       return false;
     }
@@ -376,7 +397,7 @@ public class OverviewAction extends ManagerBaseAction {
       }
       // check EML
       missingMetadata = !emlValidator.isValid(resource.getEml(), null);
-      missingRegistrationMetadata = !minimumRegistryInfo(resource);
+      missingRegistrationMetadata = !hasMinimumRegistryInfo(resource);
     }
   }
 
@@ -384,39 +405,29 @@ public class OverviewAction extends ManagerBaseAction {
     if (resource == null) {
       return NOT_FOUND;
     }
-    try {
-      // Update the Resource's Registration, if the Resource has been registered. If successful, broadcast with a msg.
-      // It could be the resource is a metadata-only resource, but its registration should always be updated on publish.
-      if (resource.isRegistered()) {
-        resourceManager.updateRegistration(resource, this);
-      }
+    // increment version number - this will be the version of newly published resource (all of eml/rtf/dwca)
+    int v = resource.getEmlVersion() + 1;
 
-      // Publish the Resource
-      if (resourceManager.publish(resource, this)) {
-        addActionMessage(getText("manage.overview.publishing.resource.version",
-          new String[] {Integer.toString(resource.getEmlVersion())}));
+    try {
+      // publish a new version of the resource
+      if (resourceManager.publish(resource, v, this)) {
+        addActionMessage(getText("publishing.started", new String[] {String.valueOf(v), resource.getShortname()}));
         return PUBLISHING;
       } else {
-        if (resource.hasMappedData()) {
-          addActionWarning(getText("manage.overview.no.data.archive.generated"));
-        } else {
-          addActionWarning(getText("manage.overview.data.missing"));
-        }
-        addActionMessage(
-          getText("manage.overview.published.eml.version", new String[] {String.valueOf(resource.getEmlVersion())}));
-        missingRegistrationMetadata = !minimumRegistryInfo(resource);
+        addActionWarning(getText("manage.overview.data.missing"));
+        missingRegistrationMetadata = !hasMinimumRegistryInfo(resource);
         return SUCCESS;
       }
-
     } catch (PublicationException e) {
       if (PublicationException.TYPE.LOCKED == e.getType()) {
         addActionWarning(getText("manage.overview.resource.being.published"));
       } else {
-        addActionWarning(getText("manage.overview.publishing.error"), e);
+        // alert user publication failed
+        addActionError(
+          getText("publishing.failed", new String[] {String.valueOf(v), resource.getShortname(), e.getMessage()}));
+        // restore the previous version since publication was unsuccessful
+        resourceManager.restoreVersion(resource, v - 1, this);
       }
-    } catch (Exception e) {
-      log.error("Error publishing resource", e);
-      addActionWarning(getText("manage.overview.publishing.error"), e);
     }
     return ERROR;
   }

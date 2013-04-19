@@ -33,7 +33,6 @@ public interface ConfigManager {
    * - main IPT configuration, AppConfig
    * - user accounts
    * - list of configured resources
-   * - reload lucene indices
    */
   void loadDataDirConfig() throws InvalidConfigException;
 
@@ -89,6 +88,12 @@ public interface ConfigManager {
    * The modified AppConfig is not immediately persisted - remember to call save() at some point!
    */
   void setDebugMode(boolean debug) throws InvalidConfigException;
+
+  /**
+   * Simple wrapper around AppConfig to set the IPT archival mode.
+   * The modified AppConfig is not immediately persisted - remember to call save() at some point!
+   */
+  void setArchivalMode(boolean archivalMode) throws InvalidConfigException;
 
   /**
    * Simple wrapper around AppConfig to en/disable google analytics for all IPTs monitored by gbif

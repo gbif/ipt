@@ -13,6 +13,7 @@ public final class Constants {
   public static final String SESSION_FILE_CONTENT_TYPE = "contentType";
   public static final String REQ_PARAM_RESOURCE = "r";
   public static final String REQ_PARAM_SOURCE = "s";
+  public static final String REQ_PARAM_VERSION = "v";
   public static final String DWC_ROWTYPE_OCCURRENCE = "http://rs.tdwg.org/dwc/terms/Occurrence";
   public static final String DWC_ROWTYPE_TAXON = "http://rs.tdwg.org/dwc/terms/Taxon";
   public static final String DWC_OCCURRENCE_ID = "http://rs.tdwg.org/dwc/terms/OccurrenceID";

@@ -27,7 +27,7 @@
       <result name="home" type="redirect">/home.do</result>
       <result type="redirect">home.do</result>
     </action>
-    <action name="updateResourceMetadata" class="org.gbif.ipt.action.admin.UpdateResourceMetadataAction">
+    <action name="publishAll" class="org.gbif.ipt.action.admin.PublishAllResourcesAction">
       <result type="redirect">home.do</result>
     </action>
 

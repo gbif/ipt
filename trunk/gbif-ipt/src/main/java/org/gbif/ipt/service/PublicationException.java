@@ -7,7 +7,7 @@ package org.gbif.ipt.service;
 public class PublicationException extends RuntimeException {
 
   public enum TYPE {
-    DWCA, EML, REGISTRY, LOCKED
+    DWCA, METADATA, REGISTRY, LOCKED
   }
 
   protected TYPE type;

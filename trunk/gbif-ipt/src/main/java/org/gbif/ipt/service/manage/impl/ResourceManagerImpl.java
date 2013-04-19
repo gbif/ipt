@@ -53,8 +53,10 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.Eml2Rtf;
 import org.gbif.ipt.task.GenerateDwca;
 import org.gbif.ipt.task.GenerateDwcaFactory;
+import org.gbif.ipt.task.GeneratorException;
 import org.gbif.ipt.task.ReportHandler;
 import org.gbif.ipt.task.StatusReport;
+import org.gbif.ipt.task.TaskMessage;
 import org.gbif.ipt.utils.ActionLogger;
 import org.gbif.metadata.BasicMetadata;
 import org.gbif.metadata.eml.Eml;
@@ -85,13 +87,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
+import javax.annotation.Nullable;
 
-import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.lowagie.text.Document;
@@ -101,6 +102,7 @@ import com.thoughtworks.xstream.XStream;
 import freemarker.template.TemplateException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Level;
 import org.xml.sax.SAXException;
 
 @Singleton
@@ -149,25 +151,29 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     resources.put(res.getShortname().toLowerCase(), res);
   }
 
-  public boolean cancelPublishing(String shortname, BaseAction action) throws PublicationException {
+  public boolean cancelPublishing(String shortname, BaseAction action) {
     boolean canceled = false;
     // get future
     Future<Integer> f = processFutures.get(shortname);
     if (f != null) {
+      // cancel job, even if it's running
       canceled = f.cancel(true);
       if (canceled) {
-        log.info("Publication of resource " + shortname + " canceled");
         // remove process from locking list
         processFutures.remove(shortname);
       } else {
         log.warn("Canceling publication of resource " + shortname + " failed");
       }
     }
-
     return canceled;
   }
 
-  public synchronized void closeWriter(Writer writer) {
+  /**
+   * Close file writer if the writer is not null.
+   *
+   * @param writer file writer
+   */
+  private void closeWriter(Writer writer) {
     if (writer != null) {
       try {
         writer.close();
@@ -177,14 +183,19 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
-  private Eml convertMetadataToEml(BasicMetadata metadata, ActionLogger alog) {
-    Eml eml = null;
+  /**
+   * Read other metadata formats like Dublin Core, and populate an Eml instance from all corresponding fields possible.
+   *
+   * @param metadata BasicMetadata object
+   * @return Eml instance
+   */
+  private Eml convertMetadataToEml(BasicMetadata metadata) {
+    Eml eml = new Eml();
     if (metadata != null) {
       if (metadata instanceof Eml) {
         eml = (Eml) metadata;
       } else {
         // copy properties
-        eml = new Eml();
         eml.setTitle(metadata.getTitle());
         eml.setDescription(metadata.getDescription());
         eml.setHomepageUrl(metadata.getHomepageUrl());
@@ -192,20 +203,29 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         eml.setSubject(metadata.getSubject());
         eml.setPubDate(metadata.getPublished());
       }
-      alog.info("Metadata imported.");
     }
     return eml;
   }
 
+  /**
+   * Copies incoming eml file to data directory with name eml.xml.
+   * </br>
+   * Thie method retrieves a file handle to the eml.xml file in data directory. It then copies the incoming emlFile to
+   * over to this file. From this file an Eml instance is then populated and returned.
+   *
+   * @param shortname shortname
+   * @param emlFile eml file
+   * @return populated Eml instance
+   * @throws ImportException if eml file could not be read/parsed
+   */
   private Eml copyMetadata(String shortname, File emlFile) throws ImportException {
-
     File emlFile2 = dataDir.resourceEmlFile(shortname, null);
     try {
       FileUtils.copyFile(emlFile, emlFile2);
     } catch (IOException e1) {
       log.error("Unnable to copy EML File", e1);
     }
-    Eml eml = null;
+    Eml eml;
     try {
       InputStream in = new FileInputStream(emlFile2);
       eml = EmlFactory.build(in);
@@ -213,14 +233,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       eml = new Eml();
     } catch (IOException e) {
       log.error(e);
+      throw new ImportException("Invalid EML document");
     } catch (SAXException e) {
       log.error("Invalid EML document", e);
-    }
-
-    if (eml == null) {
       throw new ImportException("Invalid EML document");
     }
-
     return eml;
   }
 
@@ -274,7 +291,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   private Resource createFromIPTResourceFolder(String shortname, File folder, User creator, ActionLogger alog)
     throws AlreadyExistingException, ImportException {
-    Resource res = null;
+    Resource res;
     try {
 
       // shortname supplied is unique?
@@ -380,13 +397,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   public Resource create(String shortname, User creator) throws AlreadyExistingException {
     Resource res = null;
     if (shortname != null) {
+      // convert short name to lower case
+      String lower = shortname.toLowerCase();
       // check if existing already
-      shortname = shortname.toLowerCase();
-      if (resources.containsKey(shortname)) {
+      if (resources.containsKey(lower)) {
         throw new AlreadyExistingException();
       }
       res = new Resource();
-      res.setShortname(shortname);
+      res.setShortname(lower);
       res.setCreated(new Date());
       res.setCreator(creator);
       // create dir
@@ -470,27 +488,38 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return resource;
   }
 
+  /**
+   * Create new resource from eml file.
+   *
+   * @param shortname resource shortname
+   * @param emlFile   eml file
+   * @param creator   User creating resource
+   * @param alog      ActionLogger
+   *
+   * @return resource created
+   *
+   * @throws AlreadyExistingException if the resource created uses a shortname that already exists
+   * @throws ImportException          if the eml file could not be read/parsed
+   */
   private Resource createFromEml(String shortname, File emlFile, User creator, ActionLogger alog)
     throws AlreadyExistingException, ImportException {
-    // Eml eml = readMetadata(emlFile, alog);
-    Eml eml = copyMetadata(shortname, emlFile);
-
-    if (eml != null) {
-      // create resource with imorted metadata
-      Resource resource = create(shortname, creator);
-      resource.setEml(eml);
-      return resource;
-    } else {
+    Eml eml;
+    try {
+      // copy eml file to data directory (with name eml.xml) and populate Eml instance
+      eml = copyMetadata(shortname, emlFile);
+    } catch (ImportException e) {
       alog.error("manage.resource.create.failed");
-      throw new ImportException("Cant read the uploaded file");
+      throw e;
     }
+    // create resource with Eml instance
+    Resource resource = create(shortname, creator);
+    resource.setEml(eml);
+    return resource;
   }
 
   private void defineXstreamMapping(UserEmailConverter userConverter, OrganisationKeyConverter orgConverter,
     ExtensionRowTypeConverter extensionConverter, ConceptTermConverter conceptTermConverter,
     JdbcInfoConverter jdbcInfoConverter, PasswordConverter passwordConverter) {
-    // xstream.setMode(XStream.NO_REFERENCES);
-
     xstream.alias("resource", Resource.class);
     xstream.alias("user", User.class);
     xstream.alias("filesource", FileSource.class);
@@ -642,47 +671,72 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return emlFile.exists();
   }
 
-  /**
-   * Checks if a resource is locked due some background processing. While doing so it checks the known futures for
-   * completion. If completed the resource is updated with the status messages, registration is updated in order to push
-   * any new Archive endpoint, and the lock is removed.
-   */
   public boolean isLocked(String shortname, BaseAction action) {
     if (processFutures.containsKey(shortname)) {
+      Resource resource = get(shortname);
+      String sVersion = String.valueOf(resource.getEmlVersion());
+
       // is listed as locked but task might be finished, check
       Future<Integer> f = processFutures.get(shortname);
+      // if this task finished
       if (f.isDone()) {
+        boolean succeeded = false;
+        String reasonFailed = null;
+        Throwable cause = null;
         try {
-          Integer coreRecords = f.get();
-          Resource res = get(shortname);
-          res.setRecordsPublished(coreRecords);
-          save(res);
-          // ensure registration is updated if DwC-A exists so that DwC-A endpoint gets added/updated
-          // note, any action messages/errors won't appear on published report page
-          if (res.isRegistered() && res.hasPublishedData()) {
-            updateRegistration(res, action);
-          }
-          return false;
-        } catch (InterruptedException e) {
-          log.info("Process interrupted for resource " + shortname);
-        } catch (CancellationException e) {
-          log.info("Process canceled for resource " + shortname);
+          // retrieve resource record count (number of records published in DwC-A)
+          Integer recordCount = f.get();
+          // finish publication (update registration, persist resource changes)
+          publishEnd(resource, recordCount, action);
+          // important: indicate publishing finished successfully!
+          succeeded = true;
         } catch (ExecutionException e) {
-          log.error("Process for resource " + shortname + " aborted due to error: " + e.getMessage());
+          // getCause holds the actual exception our callable (GenerateDwca) threw
+          cause = e.getCause();
+          if (cause instanceof GeneratorException) {
+            reasonFailed = action.getText("dwca.failed", new String[] {shortname, cause.getMessage()});
+          } else if (cause instanceof InterruptedException) {
+            reasonFailed = action.getText("dwca.interrupted", new String[] {shortname, cause.getMessage()});
+          } else {
+            reasonFailed = action.getText("dwca.failed", new String[] {shortname, cause.getMessage()});
+          }
+        } catch (InterruptedException e) {
+          reasonFailed = action.getText("dwca.interrupted", new String[] {shortname, e.getMessage()});
+          cause = e;
+        } catch (PublicationException e) {
+          reasonFailed = action.getText("publishing.error", new String[] {e.getType().toString(), e.getMessage()});
+          cause = e;
+          // this type of exception happens outside GenerateDwca - so add reason to StatusReport
+          getTaskMessages(shortname).add(new TaskMessage(Level.ERROR, reasonFailed));
         } finally {
+          // if publication was unsuccessful
+          if (succeeded) {
+            // update StatusReport on publishing page
+            String msg = action.getText("publishing.success", new String[] {sVersion, resource.getShortname()});
+            StatusReport updated = new StatusReport(true, msg, getTaskMessages(shortname));
+            processReports.put(shortname, updated);
+          } else {
+            // alert user publication failed
+            String msg = action.getText("publishing.failed", new String[] {sVersion, shortname, reasonFailed});
+            action.addActionError(msg);
+
+            // update StatusReport on publishing page
+            StatusReport updated = new StatusReport(new Exception(cause), msg, getTaskMessages(shortname));
+            processReports.put(shortname, updated);
+
+            // the previous version needs to be rolled back
+            restoreVersion(resource, resource.getEmlVersion() - 1, action);
+          }
+          // remove process from locking list
           processFutures.remove(shortname);
         }
+        return false;
       }
       return true;
     }
     return false;
   }
 
-  /**
-   * Defaults BaseAction to null.
-   *
-   * @see org.gbif.ipt.service.manage.ResourceManager#isLocked(String, org.gbif.ipt.action.BaseAction)
-   */
   public boolean isLocked(String shortname) {
     return isLocked(shortname, new BaseAction(textProvider, cfg, registrationManager));
   }
@@ -758,9 +812,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     resources.clear();
     int counter = 0;
     if (resourcesDir != null) {
-      File[] resources = resourcesDir.listFiles();
-      if (resources != null) {
-        for (File resourceDir : resources) {
+      File[] files = resourcesDir.listFiles();
+      if (files != null) {
+        for (File resourceDir : files) {
           if (resourceDir.isDirectory()) {
             try {
               addResource(loadFromDir(resourceDir));
@@ -770,7 +824,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             }
           }
         }
-        log.info("Loaded " + counter + " resources into memory alltogether.");
+        log.info("Loaded " + counter + " resources into memory altogether.");
       } else {
         log.info("Data directory does not hold a resources directory: " + dataDir.dataFile(""));
       }
@@ -780,6 +834,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return counter;
   }
 
+  /**
+   * Loads a resource's metadata from its eml.xml file located inside its resource directory. If no eml.xml file was
+   * found, the resource is loaded with an empty EML instance.
+   *
+   * @param resource resource
+   * @return EML object loaded from eml.xml file or a new EML instance if none found
+   */
   private Eml loadEml(Resource resource) {
     File emlFile = dataDir.resourceEmlFile(resource.getShortname(), null);
     Eml eml = null;
@@ -796,7 +857,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     } catch (Exception e) {
       eml = new Eml();
     }
+    // load resource metadata
     resource.setEml(eml);
+    // udpate EML with latest resource basics (version and GUID)
     syncEmlWithResource(resource);
     return eml;
   }
@@ -891,8 +954,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       } else if (Constants.DWC_ROWTYPE_TAXON.equalsIgnoreCase(resource.getCoreRowType())) {
         resource.setCoreType(CoreRowType.CHECKLIST.toString().toLowerCase());
       }
-    } else {
-      // don't do anything - no taxon or occurrence mapping has been done yet
     }
     return resource;
   }
@@ -928,33 +989,104 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return resource;
   }
 
-  public boolean publish(Resource resource, BaseAction action) throws PublicationException {
-    // check if publishing task is already running
-    if (isLocked(resource.getShortname(), action)) {
-      throw new PublicationException(PublicationException.TYPE.LOCKED,
-        "Resource " + resource.getShortname() + " is currently locked by another process");
-    }
-
-    // update eml pubDate (represents date when the resource was last published)
-    resource.getEml().setPubDate(new Date());
-
-    // publish EML as well as RTF
-    publishMetadata(resource, action);
-
-    // regenerate dwca asynchronously
+  public boolean publish(Resource resource, int version, BaseAction action) throws PublicationException {
+    // publish metadata (EML as well as RTF)
+    publishMetadata(resource, version, action);
+    // (re)generate dwca asynchronously
     boolean dwca = false;
     if (resource.hasMappedData()) {
       generateDwca(resource);
       dwca = true;
     } else {
-      resource.setRecordsPublished(0);
+      // finish publication now
+      publishEnd(resource, 0, action);
     }
-
-    // persist any resource object changes
-    resource.setLastPublished(new Date());
-
-    save(resource);
     return dwca;
+  }
+
+  /**
+   * Update the resource's registration (if registered) and persist any changes to the resource.
+   * </br>
+   * Publishing is split into 2 parts because DwC-A generation is asynchronous. This 2nd part of publishing can only
+   * be called after DwC-A has completed successfully.
+   *
+   * @param resource    resource
+   * @param recordCount number of records publishes (core file record count)
+   * @param action      action
+   *
+   * @throws PublicationException if publication was unsuccessful
+   */
+  private void publishEnd(Resource resource, int recordCount, BaseAction action) {
+    // update the resource's registration (if registered), even if it is a metadata-only resource.
+    updateRegistration(resource, action);
+    // set last published date
+    resource.setLastPublished(new Date());
+    // set number of records published
+    resource.setRecordsPublished(recordCount);
+    // persist resource object changes
+    save(resource);
+    // final logging
+    String msg = action
+      .getText("publishing.success", new String[] {String.valueOf(resource.getEmlVersion()), resource.getShortname()});
+    action.addActionMessage(msg);
+    log.info(msg);
+  }
+
+  public void restoreVersion(Resource resource, int version, BaseAction action) {
+    String shortname = resource.getShortname();
+    String sVersion = String.valueOf(version);
+    log.info("Restoring version #" + sVersion + " of resource " + shortname);
+
+    if (version >= 0) {
+      int versionToRollback = version + 1;
+      try {
+        // delete eml-1.xml if it exists (eml.xml must remain)
+        File versionedEMLFile = dataDir.resourceEmlFile(shortname, versionToRollback);
+        if (versionedEMLFile.exists()) {
+          FileUtils.forceDelete(versionedEMLFile);
+        }
+        // delete shortname-1.rtf if it exists
+        File versionedRTFFile = dataDir.resourceRtfFile(shortname, versionToRollback);
+        if (versionedRTFFile.exists()) {
+          FileUtils.forceDelete(versionedRTFFile);
+        }
+        // delete dwca-1.zip if it exists
+        File versionedDwcaFile = dataDir.resourceDwcaFile(shortname, versionToRollback);
+        if (versionedDwcaFile.exists()) {
+          FileUtils.forceDelete(versionedDwcaFile);
+        }
+        // dwca.zip should be replaced with dwca-version.zip - if it exists
+        File versionedDwcaFileToRestore = dataDir.resourceDwcaFile(shortname, version);
+        if (versionedDwcaFileToRestore.exists()) {
+          // proceed with overwriting/replacing dwca.zip with dwca-version.zip
+          File dwca = dataDir.resourceDwcaFile(resource.getShortname(), null);
+          FileUtils.copyFile(versionedDwcaFileToRestore, dwca);
+        }
+
+        // update resource.xml
+        resource.setEmlVersion(version);
+        save(resource);
+
+        // update eml.xml and persist changes
+        resource.getEml().setPubDate(resource.getLastPublished());
+        saveEml(resource);
+
+      } catch (IOException e) {
+        String msg = action.getText("restore.resource.failed", new String[] {sVersion, shortname, e.getMessage()});
+        log.error(msg, e);
+        action.addActionError(msg);
+      }
+      // alert user version rollback was successful
+      String msg = action.getText("restore.resource.success", new String[] {sVersion, shortname});
+      log.info(msg);
+      action.addActionMessage(msg);
+      // update StatusReport on publishing page
+      // Warning: don't retrieve status report using status() otherwise a cyclical call to isLocked results
+      StatusReport report = processReports.get(shortname);
+      if (report != null) {
+        report.getMessages().add(new TaskMessage(Level.INFO, msg));
+      }
+    }
   }
 
   /**
@@ -968,26 +1100,30 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @return resource with Registry UUID for the resource updated
    */
   public Resource updateAlternateIdentifierForRegistry(Resource resource) {
-    // retrieve a list of the resource's alternate identifiers
-    List<String> ids = new ArrayList<String>();
-    if (resource.getEml() != null) {
-      // add each to list, but in lower case so comparison is done in lower case only
-      for(String id: resource.getEml().getAlternateIdentifiers()) {
-        ids.add(id.toLowerCase());
+    Eml eml = resource.getEml();
+    if (eml != null) {
+      // retrieve a list of the resource's alternate identifiers
+      List<String> currentIds = eml.getAlternateIdentifiers();
+      if (currentIds != null) {
+        // make new list of alternative identifiers in lower case so comparison is done in lower case only
+        List<String> ids = new ArrayList<String>();
+        for(String id: currentIds) {
+          ids.add(id.toLowerCase());
+        }
+        if (resource.isRegistered()) {
+          // GBIF Registry UUID
+          UUID key = resource.getKey();
+          // has the Registry UUID been added as an alternative identifier yet? If not, add it!
+          if (key != null && !ids.contains(key.toString().toLowerCase())) {
+            currentIds.add(key.toString());
+            log.info("GBIF Registry UUID added to Resource's list of alternate identifiers");
+          }
+        }
       }
     } else {
       resource.setEml(new Eml());
     }
 
-    if (resource.isRegistered()) {
-      // GBIF Registry UUID
-      UUID key = resource.getKey();
-      // has the Registry UUID been added as an alternative identifier yet? If not, add it!
-      if (key != null && !ids.contains(key.toString().toLowerCase())) {
-        resource.getEml().getAlternateIdentifiers().add(key.toString());
-        log.info("GBIF Registry UUID added to Resource's list of alternate identifiers");
-      }
-    }
     return resource;
   }
 
@@ -1012,45 +1148,44 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       resource.setEml(new Eml());
     }
 
-    // has this been added before, perhaps with a different baseURL?
-    boolean exists = false;
-    String existingId = null;
     if (ids != null) {
+      // has this been added before, perhaps with a different baseURL?
+      boolean exists = false;
+      String existingId = null;
       for (String id : ids) {
-        // try to match resource.do?r=shortname
+        // try to match resource.do?r=
         if (id.contains(RESOURCE_PUBLIC_LINK_PART)) {
           exists = true;
           existingId = id;
         }
       }
-    }
-
-    // if the resource is PUBLIC, or REGISTERED
-    if (resource.getStatus().compareTo(PublicationStatus.PRIVATE) != 0) {
-      URL url = getPublicResourceLink(resource.getShortname());
-      // if the URL is not null, and the identifier does not exist yet - add it!
-      if (url != null) {
-        // if it already exists, then replace it just in case the baseURL has changed, for example
-        if (exists) {
-          resource.getEml().getAlternateIdentifiers().remove(existingId);
+      // if the resource is PUBLIC, or REGISTERED
+      if (resource.getStatus().compareTo(PublicationStatus.PRIVATE) != 0) {
+        URL url = getPublicResourceLink(resource.getShortname());
+        // if the URL is not null, and the identifier does not exist yet - add it!
+        if (url != null) {
+          // if it already exists, then replace it just in case the baseURL has changed, for example
+          if (exists) {
+            ids.remove(existingId);
+          }
+          // lastly, be sure to add it
+          ids.add(url.toString());
+          log.info("IPT URL to resource added to Resource's list of alternate ids");
         }
-        // lastly, be sure to add it
-        resource.getEml().getAlternateIdentifiers().add(url.toString());
-        log.info("IPT URL to resource added to Resource's list of alternate ids");
       }
-    }
-    // otherwise if the resource is PRIVATE
-    else if (resource.getStatus().compareTo(PublicationStatus.PRIVATE) == 0) {
-      // no public resource alternate identifier can exist if the resource visibility is private - remove it if app.
-      if (exists) {
-        resource.getEml().getAlternateIdentifiers().remove(existingId);
-        log.warn("Following visibility change, IPT URL to resource removed from Resource's list of alternate ids");
+      // otherwise if the resource is PRIVATE
+      else if (resource.getStatus().compareTo(PublicationStatus.PRIVATE) == 0) {
+        // no public resource alternate identifier can exist if the resource visibility is private - remove it if app.
+        if (exists) {
+          ids.remove(existingId);
+          log.warn("Following visibility change, IPT URL to resource removed from Resource's list of alternate ids");
+        }
       }
     }
     return resource;
   }
 
-  public void publishMetadata(Resource resource, BaseAction action) throws PublicationException {
+  public void publishMetadata(Resource resource, int version, BaseAction action) throws PublicationException {
     ActionLogger alog = new ActionLogger(this.log, action);
     // check if publishing task is already running
     if (isLocked(resource.getShortname(), action)) {
@@ -1062,11 +1197,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     updateAlternateIdentifierForRegistry(resource);
     // ensure alternate identifier for IPT URL to resource is set - if resource is public
     updateAlternateIdentifierForIPTURLToResource(resource);
-
-    // increase eml version
-    int version = resource.getEmlVersion();
-    version++;
+    // update eml version
     resource.setEmlVersion(version);
+    // update eml pubDate (represents date when the resource was last published)
+    resource.getEml().setPubDate(new Date());
 
     // save all changes to Eml
     saveEml(resource);
@@ -1078,7 +1212,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       FileUtils.copyFile(trunkFile, versionedFile);
     } catch (IOException e) {
       alog.error("Can't publish resource " + resource.getShortname(), e);
-      throw new PublicationException(PublicationException.TYPE.EML,
+      throw new PublicationException(PublicationException.TYPE.METADATA,
         "Can't publish eml file for resource " + resource.getShortname(), e);
     }
     // publish also as RTF
@@ -1091,7 +1225,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       FileUtils.copyFile(trunkRtfFile, versionedRtfFile);
     } catch (IOException e) {
       alog.error("Can't publish resource " + resource.getShortname() + "as RTF", e);
-      throw new PublicationException(PublicationException.TYPE.EML,
+      throw new PublicationException(PublicationException.TYPE.METADATA,
         "Can't publish rtf file for resource " + resource.getShortname(), e);
     }
   }
@@ -1120,6 +1254,16 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
+  /**
+   * Try to read metadata file for a DwC-Archive.
+   *
+   * @param shortname resource shortname
+   * @param archive   archive
+   * @param alog      ActionLogger
+   *
+   * @return Eml instance or null if none could be created because the metadata file did not exist or was invalid
+   */
+  @Nullable
   private Eml readMetadata(String shortname, Archive archive, ActionLogger alog) {
     Eml eml;
     File emlFile = archive.getMetadataLocationFile();
@@ -1130,8 +1274,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         emlFile = new File(archive.getLocation(), DataDir.EML_XML_FILENAME);
       }
       if (emlFile.exists()) {
-        // InputStream emlIn = new FileInputStream(emlFile);
-        // eml = EmlFactory.build(emlIn);
+        // read metadata and populate Eml instance
         eml = copyMetadata(shortname, emlFile);
         alog.info("manage.resource.read.eml.metadata");
         return eml;
@@ -1148,7 +1291,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
     // try to read other metadata formats like dc
     try {
-      eml = convertMetadataToEml(archive.getMetadata(), alog);
+      eml = convertMetadataToEml(archive.getMetadata());
       alog.info("manage.resource.read.basic.metadata");
       return eml;
     } catch (Exception e) {
@@ -1186,12 +1329,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       if (organisation.getKey() != null && organisation.getName() != null && candidateResourceUUIDs.size() > 0) {
         boolean matched = false;
         // collect list of registered resources associated to organization
-        List<Resource> existingResources;
-        try {
-          existingResources = registryManager.getOrganisationsResources(organisation.getKey().toString());
-        } catch (RegistryException e) {
-          throw e;
-        }
+        List<Resource> existingResources = registryManager.getOrganisationsResources(organisation.getKey().toString());
+
         for (Resource entry : existingResources) {
 
           // does the set of candidate UUIDs contain the UUID from an existing registered resource owned by the
@@ -1293,7 +1432,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       if (writer != null) {
         closeWriter(writer);
       }
-      System.gc();
     }
   }
 
@@ -1302,7 +1440,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @see org.gbif.ipt.service.manage.ResourceManager#save(java.lang.String, org.gbif.metadata.eml.Eml)
    */
   public synchronized void saveEml(Resource resource) throws InvalidConfigException {
-    // udpate EML with latest resource basics
+    // udpate EML with latest resource basics (version and GUID)
     syncEmlWithResource(resource);
     // set modified date
     resource.setModified(new Date());
@@ -1326,6 +1464,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return processReports.get(shortname);
   }
 
+  /**
+   * Updates the EML version and EML GUID. The GUID is set to the Registry UUID if the resource is
+   * registered, otherwise it is set to the resource URL.
+   * </br>
+   * This method must be called before persisting the EML file to ensure that the EML file and resource are in sync.
+   *
+   * @param resource Resource
+   */
   private void syncEmlWithResource(Resource resource) {
     resource.getEml().setEmlVersion(resource.getEmlVersion());
     // we need some GUID. If we have use the registry key, if not use the resource URL
@@ -1336,57 +1482,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
-  public void updateDwcaEml(Resource resource, BaseAction action) throws PublicationException {
-    ActionLogger alog = new ActionLogger(this.log, action);
-    // check if publishing task is already running
-    if (isLocked(resource.getShortname(), action)) {
-      throw new PublicationException(PublicationException.TYPE.LOCKED,
-        "Resource " + resource.getShortname() + " is currently locked by another process");
-    }
-
-    if (!resource.hasPublishedData()) {
-      throw new PublicationException(PublicationException.TYPE.DWCA,
-        "Resource " + resource.getShortname() + " has no published data - can't update a non-existent DwC-Archive");
-    }
-
-    try {
-      // tmp directory to work in
-      File dwcaFolder = dataDir.tmpDir();
-      if (log.isDebugEnabled()) {
-        log.debug("Using tmp dir [" + dwcaFolder.getAbsolutePath() + "]");
-      }
-
-      // the latest files
-      File dwcaFile = dataDir.resourceDwcaFile(resource.getShortname());
-      if (log.isDebugEnabled()) {
-        log.debug("Using dwca file [" + dwcaFile.getAbsolutePath() + "]");
-      }
-      File emlFile = dataDir.resourceEmlFile(resource.getShortname(), resource.getEmlVersion());
-      if (log.isDebugEnabled()) {
-        log.debug("Using eml file [" + emlFile.getAbsolutePath() + "]");
-      }
-
-      // unzip, copy the eml file in, rezip
-      CompressionUtil.unzipFile(dwcaFolder, dwcaFile);
-      if (log.isDebugEnabled()) {
-        log.debug("Copying new eml file [" + emlFile.getAbsolutePath() + "] to [" + dwcaFolder.getAbsolutePath()
-                  + "] as eml.xml");
-      }
-      FileUtils.copyFile(emlFile, new File(dwcaFolder, DataDir.EML_XML_FILENAME));
-      File zip = dataDir.tmpFile("dwca", ".zip");
-      CompressionUtil.zipDir(dwcaFolder, zip);
-
-      // move to data dir
-      dwcaFile.delete();
-      FileUtils.moveFile(zip, dwcaFile);
-    } catch (IOException e) {
-      alog.error("Can't update dwca for resource " + resource.getShortname(), e);
-      throw new PublicationException(PublicationException.TYPE.DWCA,
-        "Could not process dwca file for resource [" + resource.getShortname() + "]");
-    }
-  }
-
-  public void updateRegistration(Resource resource, BaseAction action) {
+  public void updateRegistration(Resource resource, BaseAction action) throws PublicationException {
     if (resource.isRegistered()) {
       // prevent null action from being handled
       if (action == null) {
@@ -1419,12 +1515,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         msg = action.getText("admin.config.updateMetadata.resource.fail.registry", new String[] {cfg.getRegistryUrl()});
         action.addActionError(msg);
         log.error(msg);
+        throw new PublicationException(PublicationException.TYPE.REGISTRY, msg, e);
       } catch (InvalidConfigException e) {
-        String msg = action.getText("manage.overview.failed.resource.update");
-        // concatenate reason
-        msg = (Strings.isNullOrEmpty(msg)) ? e.getMessage() : msg + ": " + e.getMessage();
+        String msg = action.getText("manage.overview.failed.resource.update", new String[] {e.getMessage()});
         action.addActionError(msg);
         log.error(msg);
+        throw new PublicationException(PublicationException.TYPE.REGISTRY, msg, e);
       }
     }
   }
@@ -1438,8 +1534,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       resource.setStatus(PublicationStatus.PRIVATE);
 
       // Changing the visibility, means some public things now need to be removed, e.g. IPT URL alt. id for resource!
-      // This means a new version of the metadata (EML + RTF) needs to be saved
-      publishMetadata(resource, action);
+      // This means the EML needs to be updated and saved
+      updateAlternateIdentifierForIPTURLToResource(resource);
+      saveEml(resource);
 
       // save all changes to resource
       save(resource);
@@ -1455,11 +1552,25 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       resource.setStatus(PublicationStatus.PUBLIC);
 
       // Changing the visibility, means some public things now need to be added, e.g. IPT URL alt. id for resource!
-      // This means a new version of the metadata (EML + RTF) needs to be saved
-      publishMetadata(resource, action);
+      // This means the EML needs to be updated and saved
+      updateAlternateIdentifierForIPTURLToResource(resource);
+      saveEml(resource);
 
       // save all changes to resource
       save(resource);
     }
+  }
+
+  /**
+   * Return a resource's StatusReport's list of TaskMessage. If no report exists for the resource, return an empty
+   * list of TaskMessage.
+   *
+   * @param shortname resource shortname
+   *
+   * @return resource's StatusReport's list of TaskMessage or an empty list if no StatusReport exists for resource
+   */
+  private List<TaskMessage> getTaskMessages(String shortname) {
+    return ((processReports.get(shortname)) == null) ? new ArrayList<TaskMessage>()
+      : processReports.get(shortname).getMessages();
   }
 }

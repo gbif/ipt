@@ -24,10 +24,16 @@
 
 <div class="grid_24">
 <div class="grid_18 suffix_6">
-<h1>${resource.title!resource.shortname}<#if managerRights> <a class="edit" href="${baseURL}/manage/resource.do?r=${resource.shortname}"><@s.text name='button.edit'/></a></#if></h1>
+<div class="versionTitle">
+  <h1 class="withVersion">${eml.title!resource.shortname}<#if managerRights> <a class="edit" href="${baseURL}/manage/resource.do?r=${resource.shortname}"><@s.text name='button.edit'/></a></#if></h1>
+  <#if resource.lastPublished??>
+    <#-- the existence of parameter version means the version is not equal to the latest published version -->
+    <em class="warn"><#if version??><@s.text name='portal.resource.version'/> ${version} - <a href="${baseURL}/resource.do?r=${resource.shortname}">view latest</a></#if></em>
+  </#if>
+</div>
 <div id="resourcelogo">
-	<#if resource.eml.logoUrl?has_content>
-	<img src="${resource.eml.logoUrl}" />
+	<#if eml.logoUrl?has_content>
+	<img src="${eml.logoUrl}" />
 	</#if>
 </div>
 <p>
@@ -44,7 +50,69 @@
   <div class="body">
       	<div class="details">
       		<table>
-            <#if resource.eml.subject?has_content><tr><th><@s.text name='portal.resource.summary.keywords'/></th><td><@textWithFormattedLink resource.eml.subject!no_description/></td></tr></#if>
+            <#if resource.lastPublished??>
+                <tr>
+                    <th><@s.text name='eml.pubDate'/></th>
+                  <#if resource.lastPublished??>
+                      <td>${resource.lastPublished?date?string.medium}</td>
+                  </#if>
+                </tr>
+                <tr>
+                    <th><@s.text name='portal.resource.version'/></th>
+                    <td><#if version??>${version} - <a href="${baseURL}/resource.do?r=${resource.shortname}">view latest</a><#else>${resource.emlVersion} (Latest)</#if></td>
+                </tr>
+              <#if metadataOnly>
+              <#-- Archive, EML, and RTF download links include Google Analytics event tracking -->
+              <#-- e.g. Archive event tracking includes components: _trackEvent method, category, action, label, (int) value -->
+                  <tr>
+                      <th><@s.text name='portal.resource.published.archive'/></th>
+                      <td><a href="${baseURL}/archive.do?r=${resource.shortname}<#if version??>&v=${version}</#if>"
+                             onClick="_gaq.push(['_trackEvent', 'Archive', 'Download', '${resource.shortname}', ${resource.recordsPublished?c!0} ]);"><@s.text name='portal.resource.download'/></a>
+                          (${dwcaFormattedSize}) ${resource.recordsPublished} <@s.text name='portal.resource.records'/>
+                      </td>
+                  </tr>
+              </#if>
+                <tr>
+                    <th><@s.text name='portal.resource.published.eml'/></th>
+                    <td><a href="${baseURL}/eml.do?r=${resource.shortname}<#if version??>&v=${version}</#if>"
+                           onClick="_gaq.push(['_trackEvent', 'EML', 'Download', '${resource.shortname}']);"><@s.text name='portal.resource.download'/></a>
+                        (${emlFormattedSize})
+                    </td>
+                </tr>
+
+                <tr>
+                    <th><@s.text name='portal.resource.published.rtf'/></th>
+                    <td><a href="${baseURL}/rtf.do?r=${resource.shortname}<#if version??>&v=${version}</#if>"
+                           onClick="_gaq.push(['_trackEvent', 'RTF', 'Download', '${resource.shortname}']);"><@s.text name='portal.resource.download'/></a>
+                        (${rtfFormattedSize})
+                    </td>
+                </tr>
+
+            <#else>
+                <th><@s.text name='eml.pubDate'/></th>
+                <td><@s.text name='portal.resource.published.never'/></td>
+                </tr>
+            </#if>
+
+            <#if resource.status=="REGISTERED">
+                <tr>
+                    <th><@s.text name='portal.resource.organisation.key'/></th>
+                    <td><a href="${cfg.registryUrl}/browse/agent?uuid=${resource.key}">${resource.key}</a></td>
+                </tr>
+              <#if resource.organisation?exists>
+                  <tr>
+                      <th><@s.text name='portal.resource.organisation.name'/></th>
+                      <td>
+                          <a href="${cfg.registryUrl}/browse/agent?uuid=${resource.organisation.key}">${resource.organisation.name!}</a>
+                      </td>
+                  </tr>
+                  <tr>
+                      <th><@s.text name='portal.resource.organisation.node'/></th>
+                      <td>${resource.organisation.nodeName!}</td>
+                  </tr>
+              </#if>
+            </#if>
+
             <#if eml.metadataLanguage?has_content && languages[eml.metadataLanguage]?has_content>
               <tr>
                 <th><@s.text name='eml.metadataLanguage'/></th>
@@ -57,29 +125,12 @@
                 <td>${languages[eml.language]?cap_first!}</td>
               </tr>
           	</#if>
-            <tr><th><@s.text name='portal.resource.last.publication'/></th>
-			  	<#if resource.lastPublished??>
-			  	    <td><@s.text name='portal.resource.version'/> ${resource.eml.emlVersion} <@s.text name='portal.resource.version.from'/> ${resource.lastPublished?date?string.medium}</td></tr>
-			  	<#if (resource.recordsPublished>0)>
-              <#-- Archive, EML, and RTF download links include Google Analytics event tracking -->
-              <#-- e.g. Archive event tracking includes components: _trackEvent method, category, action, label, (int) value -->
-          		<tr><th><@s.text name='portal.resource.published.archive'/></th><td><a href="${baseURL}/archive.do?r=${resource.shortname}" onClick="_gaq.push(['_trackEvent', 'Archive', 'Download', '${resource.shortname}', ${resource.recordsPublished?c!0} ]);"><@s.text name='portal.resource.download'/></a> (${dwcaFormattedSize}) ${resource.recordsPublished} <@s.text name='portal.resource.records'/></td></tr>
-			  	</#if>
-          		<tr><th><@s.text name='portal.resource.published.eml'/></th><td><a href="${baseURL}/eml.do?r=${resource.shortname}" onClick="_gaq.push(['_trackEvent', 'EML', 'Download', '${resource.shortname}']);"><@s.text name='portal.resource.download'/></a> (${emlFormattedSize})</td></tr>
-          		
-          		<tr><th><@s.text name='portal.resource.published.rtf'/></th><td><a href="${baseURL}/rtf.do?r=${resource.shortname}" onClick="_gaq.push(['_trackEvent', 'RTF', 'Download', '${resource.shortname}']);"><@s.text name='portal.resource.download'/></a> (${rtfFormattedSize})</td></tr>
-          		
-          		<#else>
-          		    <td><@s.text name='portal.resource.published.never'/></td></tr>
-			  	</#if>
-				
-      		   	<#if resource.status=="REGISTERED">
-	          		<tr><th><@s.text name='portal.resource.organisation.key'/></th><td><a href="${cfg.registryUrl}/browse/agent?uuid=${resource.key}">${resource.key}</a></td></tr>
-	          		<#if resource.organisation?exists>
-	          		<tr><th><@s.text name='portal.resource.organisation.name'/></th><td><a href="${cfg.registryUrl}/browse/agent?uuid=${resource.organisation.key}">${resource.organisation.name!}</a> </td></tr>
-	          		<tr><th><@s.text name='portal.resource.organisation.node'/></th><td>${resource.organisation.nodeName!}</td></tr>
-	          		</#if>
-          		</#if>
+            <#if eml.subject?has_content>
+              <tr>
+                <th><@s.text name='portal.resource.summary.keywords'/></th>
+                <td><@textWithFormattedLink eml.subject!no_description/></td>
+              </tr>
+            </#if>
       		</table>
       	</div>
   </div>
@@ -501,7 +552,6 @@
       	<div class="details">
       		<table>
           		<#if eml.hierarchyLevel?has_content><tr><th><@s.text name='eml.hierarchyLevel'/></th><td>${eml.hierarchyLevel!}</td></tr></#if>
-          		<#if eml.pubDate?has_content><tr><th><@s.text name='eml.pubDate'/></th><td>${eml.pubDate?date!}</td></tr></#if>
           		<#if eml.purpose?has_content><tr><th><@s.text name='eml.purpose'/></th><td><@textWithFormattedLink eml.purpose/></td></tr></#if>
           		<#if eml.intellectualRights?has_content><tr><th><@s.text name='eml.intellectualRights'/></th><td><@textWithFormattedLink eml.intellectualRights!no_description/></td></tr></#if>
           		<#if eml.additionalInfo?has_content><tr><th><@s.text name='eml.additionalInfo'/></th><td><@textWithFormattedLink eml.additionalInfo/></td></tr></#if>

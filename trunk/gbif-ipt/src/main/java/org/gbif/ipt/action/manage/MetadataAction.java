@@ -34,7 +34,6 @@ import org.gbif.metadata.eml.TemporalCoverageType;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -374,8 +373,7 @@ public class MetadataAction extends ManagerBaseAction {
       resourceManager.saveEml(resource);
       // Save resource information (resource.xml)
       resourceManager.save(resource);
-      // Set resource modified date
-      resource.setModified(new Date());
+      // Alert user of successful save
       addActionMessage(getText("manage.success", new String[] {getText("submenu." + section)}));
     }
     return SUCCESS;

@@ -2,6 +2,7 @@ package org.gbif.ipt.action.portal;
 
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.admin.RegistrationManager;
@@ -10,18 +11,26 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.FileUtils;
 import org.gbif.metadata.eml.Eml;
+import org.gbif.metadata.eml.EmlFactory;
 import org.gbif.metadata.eml.TaxonKeyword;
 import org.gbif.metadata.eml.TaxonomicCoverage;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.annotation.Nullable;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang.xwork.StringUtils;
+import org.xml.sax.SAXException;
 
 public class ResourceAction extends PortalBaseAction {
 
@@ -35,12 +44,16 @@ public class ResourceAction extends PortalBaseAction {
   private Map<String, String> languages;
   private Map<String, String> countries;
   private Map<String, String> ranks;
+  private DataDir dataDir;
+  private Eml eml;
+  private boolean metadataOnly;
 
   @Inject
   public ResourceAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    ResourceManager resourceManager, VocabulariesManager vocabManager) {
+    ResourceManager resourceManager, VocabulariesManager vocabManager, DataDir dataDir) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.vocabManager = vocabManager;
+    this.dataDir = dataDir;
   }
 
   @Override
@@ -58,8 +71,23 @@ public class ResourceAction extends PortalBaseAction {
     return FileUtils.formatSize(resourceManager.getDwcaSize(resource), 0);
   }
 
-  public Eml getEml() {
-    return resource.getEml();
+  /**
+   * Loads a specific version of a resource's metadata from its eml-v.xml file located inside its resource directory.
+   * If no eml-v.xml file was found (there have been no published versions yet), the resource is loaded from the
+   * default eml.xml file. If no eml.xml file exists yet, an empty EML instance is loaded.
+   *
+   * @param shortname resource shortname
+   * @param version resource version (eml version)
+   * @return EML object loaded from eml.xml file with specific version or a new EML instance if none found
+   *
+   * @throws IOException           if problem occurred loading eml file (e.g. it doesn't exist)
+   * @throws SAXException          if problem occurred parsing eml file
+   */
+  private Eml loadEmlFromFile(String shortname, @Nullable Integer version) throws IOException, SAXException {
+    File emlFile = dataDir.resourceEmlFile(shortname, version);
+    LOG.debug("Loading EML from file: " + emlFile.getAbsolutePath());
+    InputStream in = new FileInputStream(emlFile);
+    return EmlFactory.build(in);
   }
 
   /**
@@ -144,12 +172,42 @@ public class ResourceAction extends PortalBaseAction {
     return SUCCESS;
   }
 
-  @Override
-  public void prepare() {
-    super.prepare();
+  /**
+   * Handle everything needed to load resource detail (public portal) page.
+   *
+   * @return Struts2 result string
+   */
+  public String detail() {
+    // load EML instance for version requested
+    String name = resource.getShortname();
+    try {
+      setEml(loadEmlFromFile(name, version));
+    } catch (FileNotFoundException e) {
+      LOG.error("EML file version #" + getStringVersion() + " for resource " + name + " not found");
+      return NOT_FOUND;
+    } catch (IOException e) {
+      String msg = getText("portal.resource.eml.error.load", new String[] {getStringVersion(), name});
+      LOG.error(msg);
+      addActionError(msg);
+      return ERROR;
+    } catch (SAXException e) {
+      String msg = getText("portal.resource.eml.error.parse", new String[] {getStringVersion(), name});
+      LOG.error(msg);
+      addActionError(msg);
+      return ERROR;
+    }
+
+    // determine whether version of resource requested is metadata-only or not (has published DwC-A or not)
+    if (version == null) {
+      setMetadataOnly(resource.getRecordsPublished() > 0);
+    } else {
+      File dwcaFile = dataDir.resourceDwcaFile(name, version);
+      setMetadataOnly(dwcaFile.exists());
+    }
+
     // now prepare organized taxonomic coverages, facilitating UI display
-    if (resource != null && resource.getEml() != null && resource.getEml().getTaxonomicCoverages() != null) {
-      organizedCoverages = constructOrganizedTaxonomicCoverages(resource.getEml().getTaxonomicCoverages());
+    if (resource != null && eml != null && eml.getTaxonomicCoverages() != null) {
+      organizedCoverages = constructOrganizedTaxonomicCoverages(eml.getTaxonomicCoverages());
     }
     // roles list, derived from XML vocabulary, and displayed in drop-down where new contacts are created
     roles = new LinkedHashMap<String, String>();
@@ -170,6 +228,8 @@ public class ResourceAction extends PortalBaseAction {
     // ranks list, derived from XML vocabulary, and displayed on Taxonomic Coverage Page
     ranks = new LinkedHashMap<String, String>();
     ranks.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, getLocaleLanguage(), false));
+
+    return SUCCESS;
   }
 
   /**
@@ -269,5 +329,42 @@ public class ResourceAction extends PortalBaseAction {
    */
   public List<OrganizedTaxonomicCoverage> getOrganizedCoverages() {
     return organizedCoverages;
+  }
+
+  /**
+   * Get the EML instance to display on Resource Portal page.
+   *
+   * @return EML instance
+   */
+  public Eml getEml() {
+    return eml;
+  }
+
+  /**
+   * Set the EML instance to display on Resource Portal page.
+   *
+   * @param eml EML instance
+   */
+  public void setEml(Eml eml) {
+    this.eml = eml;
+  }
+
+  /**
+   * Returns whether the version of the resource is a metadata-only resource. This is determined by the existence of
+   * a DwC-A. This method is only really of importance for versions of the resource that are not the latest. For the
+   * latest published version of the resource, one can just call resource.recordsPublished() and see if it's > 0.
+   * @return true if resource is metadata-only
+   */
+  public boolean isMetadataOnly() {
+    return metadataOnly;
+  }
+
+  /**
+   * Set whether resource is metadata-only or not.
+   *
+   * @param metadataOnly is the resource metadata-only
+   */
+  public void setMetadataOnly(boolean metadataOnly) {
+    this.metadataOnly = metadataOnly;
   }
 }

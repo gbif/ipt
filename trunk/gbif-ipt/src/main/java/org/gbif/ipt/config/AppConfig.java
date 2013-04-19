@@ -35,6 +35,7 @@ public class AppConfig {
   public static final String BASEURL = "ipt.baseURL";
   public static final String PROXY = "proxy";
   public static final String DEBUG = "debug";
+  public static final String ARCHIVAL_MODE = "archivalMode";
   public static final String ANALYTICS_GBIF = "analytics.gbif";
   public static final String ANALYTICS_KEY = "analytics.key";
   public static final String IPT_LATITUDE = "location.lat";
@@ -58,6 +59,15 @@ public class AppConfig {
 
   public boolean debug() {
     return "true".equalsIgnoreCase(properties.getProperty(DEBUG));
+  }
+
+  /**
+   * Checks whether the IPT has been configured to use archival mode.
+   *
+   * @return whether the IPT is used in archival mode
+   */
+  public boolean isArchivalMode() {
+    return "true".equalsIgnoreCase(properties.getProperty(ARCHIVAL_MODE));
   }
 
   public boolean devMode() {
