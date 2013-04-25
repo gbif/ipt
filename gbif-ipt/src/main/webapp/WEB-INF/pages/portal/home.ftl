@@ -13,7 +13,7 @@
 <!-- RSS Feed shown if there are resources -->
   <#if (resources?size>0)>
   <p>
-    <@s.text name="portal.home.feed"><@s.param>${baseURL}/rss.do</@s.param></@s.text> <img id="rssImage"                                                                                        src="${baseURL}/images/rss.png"/>.
+    <@s.text name="portal.home.feed"><@s.param>${baseURL}/rss.do</@s.param></@s.text> <img id="rssImage" src="${baseURL}/images/rss.png"/>.
   </p>
   <#else>
   <p><@s.text name="portal.home.no.public"/></p>

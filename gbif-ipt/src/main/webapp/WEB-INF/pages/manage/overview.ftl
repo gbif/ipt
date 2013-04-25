@@ -9,17 +9,24 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 	<title><@s.text name="manage.overview.title"/>: ${resource.title!resource.shortname}</title>
 	<script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
+  <script type="text/javascript" src="${baseURL}/js/jconfirmation_publish.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){	
 	<#if confirmOverwrite>
 		showConfirmOverwrite();
 	</#if>	
 	var $registered = false;
+
 	$('.confirm').jConfirmAction({question : "<@s.text name='basic.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
 	$('.confirmRegistration').jConfirmAction({question : "<@s.text name='manage.overview.visibility.confirm.registration'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", checkboxText: "<@s.text name='manage.overview.visibility.confirm.agreement'/>"});	
 	$('.confirmDeletion').jConfirmAction({question : "<#if resource.status=='REGISTERED'><@s.text name='manage.resource.delete.confirm.registered'/><#else><@s.text name='basic.confirm'/></#if>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
-	
-	var showReport=false;
+
+  // dialog used to configure auto-publishing
+  <#if action.qualifiesForAutoPublishing()>
+      $('.confirmAutoPublish').jConfirmPublishAction({checkboxTextOff : "<@s.text name='autopublish.never'/>", checkboxText : "<@s.text name='autopublish.on'/>", yesAnswerChecked : "<@s.text name="autopublish.yesChecked"><@s.param>${resource.emlVersion + 1}</@s.param></@s.text>", question : "<@s.text name="autopublish.confirm"><@s.param>${resource.updateFrequency.identifier}</@s.param></@s.text>", yesAnswer : "<@s.text name="autopublish.yes"><@s.param>${resource.emlVersion + 1}</@s.param></@s.text>", cancelAnswer : "<@s.text name='button.cancel'/>"});
+  </#if>
+
+    var showReport=false;
 	$("#toggleReport").click(function() {
 		if(showReport){
 			showReport=false;
@@ -76,7 +83,7 @@ $(document).ready(function(){
 });
 </script>
 
- <#assign currentMenu = "manage"/>
+<#assign currentMenu = "manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <div class="container_24">
@@ -285,7 +292,33 @@ $(document).ready(function(){
       <#if !missingMetadata>
         <form action='publish.do' method='post'>
           <input name="r" type="hidden" value="${resource.shortname}"/>
-          <@s.submit name="publish" key="button.publish" />
+          <input id="pubMode" name="pubMode" type="hidden" value=""/>
+          <#if action.qualifiesForAutoPublishing()>
+            <@s.submit cssClass="confirmAutoPublish" name="publish" key="button.publish" disabled="false"/>
+          <#else>
+            <@s.submit name="publish" key="button.publish" disabled="false"/>
+          </#if>
+        </form>
+        <br/>
+        <br/>
+        <#-- Auto-publishing section-->
+        <form action='resource-autoPublicationOff.do' method='post'>
+          <input name="r" type="hidden" value="${resource.shortname}"/>
+          <#if resource.usesAutoPublishing() || resource.hasDisabledAutoPublishing()>
+              <div class="head">
+                <@s.text name='autopublish'/>
+                <#if resource.usesAutoPublishing()>
+                  <em class="green"><@s.text name="autopublish.status.on"/></em>
+                  <@s.submit name="publish" key="autopublish.off" disabled="false"/>
+                  <p>
+                    <#if resource.nextPublished??><@s.text name='manage.home.next.publication'/>: ${resource.nextPublished?date?string.medium}</#if>
+                  </p>
+                <#else>
+                  <em class="warn"><@s.text name="autopublish.status.disabled"/></em>
+                  <@s.submit name="publish" key="autopublish.undo" disabled="false"/>
+                </#if>
+              </div>
+          </#if>
         </form>
       </#if>
     </div>
@@ -375,6 +408,12 @@ $(document).ready(function(){
         </#if>
       </table>
     </div>
+    <#if !resource.usesAutoPublishing() && !resource.hasDisabledAutoPublishing()>
+      <div>
+        <img class="info" src="${baseURL}/images/info.gif"/>
+          <em><@s.text name='autopublish.intro'><@s.param><a href="${baseURL}/manage/metadata-basic.do?r=${resource.shortname}&amp;edit=Edit"><@s.text name="submenu.basic"/></a></@s.param></@s.text></em>
+      </div>
+    </#if>
   </div>
 </div>
 
@@ -436,7 +475,7 @@ $(document).ready(function(){
         </#if>
         <div>
           <img class="info" src="${baseURL}/images/info.gif"/>
-          <em><@s.text name="manage.resource.status.intro.public.migration"/></em>
+          <em><@s.text name='manage.resource.status.intro.public.migration'><@s.param><a href="${baseURL}/manage/metadata-additional.do?r=${resource.shortname}&amp;edit=Edit"><@s.text name="submenu.additional"/></a></@s.param></@s.text></em>
         </div>
       <#else>
         <div>

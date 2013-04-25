@@ -327,4 +327,11 @@ public interface ResourceManager {
    * @param action   action
    */
   void restoreVersion(Resource resource, int version, BaseAction action);
+
+  /**
+   * Turn resource publicationMode to OFF.
+   *
+   * @param resource resource
+   */
+  void publicationModeToOff(Resource resource);
 }

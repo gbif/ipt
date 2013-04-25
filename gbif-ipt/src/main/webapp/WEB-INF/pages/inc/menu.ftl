@@ -123,5 +123,6 @@
             [/#if]
 			[@s.actionerror/]
 
-            <div id="dialog-confirm" title="[@s.text name="basic.confirm"/]" style="display: none;">
-			</div>
+            <div id="dialog-confirm" title="[@s.text name="basic.confirm"/]" style="display: none;"></div>
+            <div id="dialog-confirm-publish" title="[@s.text name="autopublish.confirm.header"/]" style="display: none;"></div>
+

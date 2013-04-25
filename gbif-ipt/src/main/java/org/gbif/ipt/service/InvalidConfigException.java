@@ -74,7 +74,11 @@ public class InvalidConfigException extends RuntimeException {
     /**
      * The resource cannot be migrated as configured.
      */
-    INVALID_RESOURCE_MIGRATION
+    INVALID_RESOURCE_MIGRATION,
+    /**
+     * The resource cannot be migrated as configured.
+     */
+    AUTO_PUBLISHING_ALREADY_OFF
   }
 
   protected TYPE type;

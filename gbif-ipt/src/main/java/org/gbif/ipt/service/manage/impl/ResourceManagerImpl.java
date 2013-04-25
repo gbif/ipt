@@ -32,6 +32,7 @@ import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
 import org.gbif.ipt.model.converter.PasswordConverter;
 import org.gbif.ipt.model.converter.UserEmailConverter;
+import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.BaseManager;
@@ -77,6 +78,7 @@ import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -1021,6 +1023,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     updateRegistration(resource, action);
     // set last published date
     resource.setLastPublished(new Date());
+    // set next published date (if resource configured for auto-publishing)
+    updateNextPublishedDate(resource);
     // set number of records published
     resource.setRecordsPublished(recordCount);
     // persist resource object changes
@@ -1572,5 +1576,68 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private List<TaskMessage> getTaskMessages(String shortname) {
     return ((processReports.get(shortname)) == null) ? new ArrayList<TaskMessage>()
       : processReports.get(shortname).getMessages();
+  }
+
+  /**
+   * Updates the date the resource is scheduled to be published next. The resource must have been configured with
+   * a maintenance update frequency that is suitable for auto-publishing (annually, biannually, monthly, weekly,
+   * daily),
+   * and have auto-publishing mode turned on for this update to take place.
+   *
+   * @param resource resource
+   *
+   * @throws PublicationException if the next published date cannot be set for any reason
+   */
+  private void updateNextPublishedDate(Resource resource) throws PublicationException {
+    if (resource.usesAutoPublishing() && resource.getLastPublished() != null) {
+      try {
+        log.debug("Updating next published date of resource: " + resource.getShortname());
+
+        // get last published date (make sure this has been set from the publish that triggered the call to this method)
+        Date lastPublished = resource.getLastPublished();
+
+        // get update period in days
+        int days = resource.getUpdateFrequency().getPeriodInDays();
+
+        // calculate next published date
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(lastPublished);
+        cal.add(Calendar.DATE, days);
+        Date nextPublished = cal.getTime();
+
+        // alert user that auto publishing has been turned on
+        if (resource.getNextPublished() == null) {
+          log.debug("Auto-publishing turned on");
+        }
+
+        // set next published date
+        resource.setNextPublished(nextPublished);
+
+        // log
+        log.debug("The next publication date is: " + nextPublished.toString());
+      } catch (Exception e) {
+        // add error message that explains the consequence of the error to user
+        String msg = "Auto-publishing failed: " + e.getMessage();
+        log.error(msg, e);
+        throw new PublicationException(PublicationException.TYPE.SCHEDULING, msg, e);
+      }
+    } else {
+      log.debug("Resource: " + resource.getShortname() + " has not been configured to use auto-publishing");
+    }
+  }
+
+  public void publicationModeToOff(Resource resource) {
+    if (PublicationMode.AUTO_PUBLISH_OFF == resource.getPublicationMode()) {
+      throw new InvalidConfigException(TYPE.AUTO_PUBLISHING_ALREADY_OFF,
+        "Auto-publishing mode has already been switched off");
+    } else if (PublicationMode.AUTO_PUBLISH_ON == resource.getPublicationMode() ||
+               PublicationMode.AUTO_PUBLISH_NEVER == resource.getPublicationMode()) {
+      // update publicationMode to OFF
+      resource.setPublicationMode(PublicationMode.AUTO_PUBLISH_OFF);
+      // clear next published date
+      resource.setNextPublished(null);
+      // save change to resource
+      save(resource);
+    }
   }
 }
