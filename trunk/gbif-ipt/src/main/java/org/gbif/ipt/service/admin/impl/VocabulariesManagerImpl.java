@@ -22,7 +22,6 @@ import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.utils.HttpUtil;
 
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -43,6 +42,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.xml.parsers.ParserConfigurationException;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -84,11 +84,11 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   private final XStream xstream = new XStream();
   private final RegistryManager registryManager;
   private final ExtensionManager extensionManager;
-  // these vocabularies are always updates on startup of the IPT
+  // these vocabularies are always updated on startup of the IPT
   private final String[] defaultVocabs =
     {Constants.VOCAB_URI_LANGUAGE, Constants.VOCAB_URI_COUNTRY, Constants.VOCAB_URI_DATASET_TYPE,
       Constants.VOCAB_URI_RANKS, Constants.VOCAB_URI_ROLES, Constants.VOCAB_URI_PRESERVATION_METHOD,
-      Constants.VOCAB_URI_DATASET_SUBTYPES};
+      Constants.VOCAB_URI_DATASET_SUBTYPES, Constants.VOCAB_URI_UPDATE_FREQUENCIES};
   private ConfigWarnings warnings;
 
   // create instance of BaseAction - allows class to retrieve i18n terms via getText()

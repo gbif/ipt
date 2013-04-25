@@ -16,8 +16,21 @@
 package org.gbif.ipt.model.voc;
 
 /**
- * TODO: Documentation.
+ * Enumeration of possible publication statuses for the dataset. The status or visibility of a resource determines who
+ * will be able to view it, whether viewing is limited (PRIVATE), open (PUBLIC), or discoverable through the GBIF
+ * Registry (REGISTERED).
  */
 public enum PublicationStatus {
-  PRIVATE, PUBLIC, REGISTERED
+  /**
+   * The resource can only be seen by managers with rights.
+   */
+  PRIVATE,
+  /**
+   * The resource can be seen by the public.
+   */
+  PUBLIC,
+  /**
+   * The resource has been registered in the GBIF Registry and made globally discoverable.
+   */
+  REGISTERED
 }

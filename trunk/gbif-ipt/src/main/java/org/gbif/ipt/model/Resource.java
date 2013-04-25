@@ -2,6 +2,8 @@ package org.gbif.ipt.model;
 
 import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.terms.TermFactory;
+import org.gbif.ipt.model.voc.MaintUpFreqType;
+import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.metadata.eml.Eml;
@@ -14,6 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import javax.annotation.Nullable;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
@@ -41,11 +44,18 @@ public class Resource implements Serializable, Comparable<Resource> {
   private Eml eml = new Eml();
   private String coreType;
   private String subtype;
-  // publication
+  // update frequency
+  private MaintUpFreqType updateFrequency;
+  // publication status
   private PublicationStatus status = PublicationStatus.PRIVATE;
+  // publication mode
+  private PublicationMode publicationMode;
   // resource version and eml version are the same
   private int emlVersion = 0;
+  // last time resource was successfully published
   private Date lastPublished;
+  // next time resource is scheduled to be pubished
+  private Date nextPublished;
   private int recordsPublished = 0;
   // registry data - only exists when status=REGISTERED
   private UUID key;
@@ -230,8 +240,22 @@ public class Resource implements Serializable, Comparable<Resource> {
     return key;
   }
 
+  /**
+   * Return the date the resource was last published successfully.
+   *
+   * @return the date the resource was last published successfully
+   */
   public Date getLastPublished() {
     return lastPublished;
+  }
+
+  /**
+   * Return the date the resource is scheduled to be published next.
+   *
+   * @return the date the resource is scheduled to be published next.
+   */
+  public Date getNextPublished() {
+    return nextPublished;
   }
 
   public Set<User> getManagers() {
@@ -328,8 +352,29 @@ public class Resource implements Serializable, Comparable<Resource> {
     return status;
   }
 
+  /**
+   * Return the PublicationMode of the resource. Default is PublicationMode.AUTO_PUBLISH_OFF meaning that the
+   * resource must be republished manually, and that the resource has not been configured yet for auto-publishing.
+   *
+   * @return the PublicationMode of the resource, or PublicationMode.AUTO_PUBLISH_OFF if not set yet
+   */
+  public PublicationMode getPublicationMode() {
+    return (publicationMode == null) ? PublicationMode.AUTO_PUBLISH_OFF: publicationMode;
+  }
+
   public String getSubtype() {
     return subtype;
+  }
+
+  /**
+   * Return the frequency with which changes and additions are made to the dataset after the initial dataset is
+   * completed.
+   *
+   * @return the maintenance update frequency
+   */
+  @Nullable
+  public MaintUpFreqType getUpdateFrequency() {
+    return updateFrequency;
   }
 
   public String getTitle() {
@@ -427,6 +472,10 @@ public class Resource implements Serializable, Comparable<Resource> {
     this.lastPublished = lastPublished;
   }
 
+  public void setNextPublished(Date nextPublished) {
+    this.nextPublished = nextPublished;
+  }
+
   public void setManagers(Set<User> managers) {
     this.managers = managers;
   }
@@ -463,6 +512,15 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   /**
+   * Sets the resource PublicationMode. Its value must come from the Enumeration PublicationMode.
+   *
+   * @param publicationMode PublicationMode
+   */
+  public void setPublicationMode(PublicationMode publicationMode) {
+    this.publicationMode = publicationMode;
+  }
+
+  /**
    * Sets the resource subtype. If it is null or an empty string, it is set to null. Otherwise, it is simply set
    * in lowercase.
    *
@@ -470,6 +528,16 @@ public class Resource implements Serializable, Comparable<Resource> {
    */
   public void setSubtype(String subtype) {
     this.subtype = (Strings.isNullOrEmpty(subtype)) ? null : subtype.toLowerCase();
+  }
+
+  /**
+   * Sets the maintenance update frequency. Its value comes in as a String, and gets matched to the Enumeration
+   * MainUpFreqType. If no match occurs, the value is set to null.
+   *
+   * @param updateFrequency MainUpFreqType Enum
+   */
+  public void setUpdateFrequency(String updateFrequency) {
+    this.updateFrequency = MaintUpFreqType.inferType(updateFrequency);
   }
 
   public void setTitle(String title) {
@@ -483,4 +551,25 @@ public class Resource implements Serializable, Comparable<Resource> {
     return "Resource " + shortname;
   }
 
+  /**
+   * Check if the resource has been configured for auto-publishing. To qualify, the resource must have an update
+   * frequency suitable for auto-publishing (annually, biannually, monthly, weekly, daily) or have a next published
+   * date that isn't null, and must have auto-publishing mode turned on.
+   *
+   * @return true if the resource uses auto-publishing
+   */
+  public boolean usesAutoPublishing() {
+    return ((MaintUpFreqType.AUTO_PUBLISHING_TYPES.contains(updateFrequency) || nextPublished != null)
+            && publicationMode == PublicationMode.AUTO_PUBLISH_ON);
+  }
+
+  /**
+   * Check if the resource has had auto-publishing disabled. To qualify, the resource must have auto-publishing mode
+   * set to AUTO_PUBLISH_NEVER.
+   *
+   * @return true if the resource uses auto-publishing
+   */
+  public boolean hasDisabledAutoPublishing() {
+    return publicationMode == PublicationMode.AUTO_PUBLISH_NEVER;
+  }
 }

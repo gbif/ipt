@@ -1106,6 +1106,10 @@ tr.name_column, th.name_column {
   width: 250px;
 }
 
+.resourceminilogo {
+  width: 30px;
+}
+
 h1.withVersion {
   margin-bottom: 0px;
 }

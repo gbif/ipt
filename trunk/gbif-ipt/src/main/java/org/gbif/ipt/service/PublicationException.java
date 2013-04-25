@@ -7,7 +7,26 @@ package org.gbif.ipt.service;
 public class PublicationException extends RuntimeException {
 
   public enum TYPE {
-    DWCA, METADATA, REGISTRY, LOCKED
+    /**
+     * Exception occurred while publishing DwC-A.
+     */
+    DWCA,
+    /**
+     * Exception occurred while publishing either the EML or RTF file.
+     */
+    METADATA,
+    /**
+     * Exception occurred while communicating with the GBIF Registry.
+     */
+    REGISTRY,
+    /**
+     * Exception occurred while trying to schedule the resource for its next publication.
+     */
+    SCHEDULING,
+    /**
+     * Exception occurred while trying to publish the resource even though it is already being published.
+     */
+    LOCKED
   }
 
   protected TYPE type;

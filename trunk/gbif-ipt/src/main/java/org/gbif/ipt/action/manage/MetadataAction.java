@@ -61,6 +61,7 @@ public class MetadataAction extends ManagerBaseAction {
   private Map<String, String> datasetSubtypes;
   private VocabulariesManager vocabManager;
   private String resourceHasCore;
+  private Map<String, String> frequencies;
 
   // to group dataset subtype vocabulary keys
   private List<String> checklistSubtypeKeys;
@@ -270,6 +271,11 @@ public class MetadataAction extends ManagerBaseAction {
     preservationMethods.put("", getText("eml.preservation.methods.selection"));
     preservationMethods
       .putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_PRESERVATION_METHOD, getLocaleLanguage(), false));
+
+    // update frequencies list, derived from XML vocabulary, and displayed in drop-down on basic metadata page
+    frequencies = new LinkedHashMap<String, String>();
+    frequencies.put("", getText("resource.updateFrequency.selection"));
+    frequencies.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES, getLocaleLanguage(), false));
 
     if (resource != null && resource.getEml() != null) {
       // contact
@@ -502,5 +508,15 @@ public class MetadataAction extends ManagerBaseAction {
    */
   public String getResourceHasCore() {
     return (resource.hasCore()) ? "true" : "false";
+  }
+
+  /**
+   * On the basic metadata page, this map populates the update frequencies dropdown. The map is derived from the
+   * vocabulary {@link -linkoffline http://rs.gbif.org/vocabulary/eml/update_frequency.xml}.
+   *
+   * @return update frequencies map
+   */
+  public Map<String, String> getFrequencies() {
+    return frequencies;
   }
 }

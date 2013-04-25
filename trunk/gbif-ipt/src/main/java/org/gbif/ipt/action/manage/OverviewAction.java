@@ -21,6 +21,8 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Resource.CoreRowType;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
+import org.gbif.ipt.model.voc.MaintUpFreqType;
+import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.InvalidConfigException;
@@ -401,10 +403,31 @@ public class OverviewAction extends ManagerBaseAction {
     }
   }
 
+  /**
+   * Executes the instruction to publish the resource.
+   * </br>
+   * In addition, the method must check if resource has been configured to be auto-published.
+   *
+   * @return Struts2 result string
+   *
+   * @throws Exception if method fails
+   */
   public String publish() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
     }
+
+    // look for parameter publication mode
+    String pm = StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_PUBLICATION_MODE));
+    if (!Strings.isNullOrEmpty(pm)) {
+      try {
+        // set on resource
+        resource.setPublicationMode(PublicationMode.valueOf(pm));
+      } catch (IllegalArgumentException e) {
+        LOG.error("Parameter publication mode (pubMode) was not a valid enumeration: " + String.valueOf(pm));
+      }
+    }
+
     // increment version number - this will be the version of newly published resource (all of eml/rtf/dwca)
     int v = resource.getEmlVersion() + 1;
 
@@ -496,5 +519,53 @@ public class OverviewAction extends ManagerBaseAction {
 
   public void setUnpublish(String unpublish) {
     this.unpublish = StringUtils.trimToNull(unpublish) != null;
+  }
+
+  /**
+   * Check if the resource qualifies for auto-publishing. To qualify, the resource must have an update frequency
+   * suitable for auto-publishing, and must not have been configured for auto-publishing already, or been configured
+   * never to use auto-publishing.
+   *
+   * @return true if the resource qualifies for auto-publishing
+   */
+  public boolean qualifiesForAutoPublishing() {
+    if (resource.getUpdateFrequency() != null && resource.getPublicationMode() != null) {
+      return MaintUpFreqType.AUTO_PUBLISHING_TYPES.contains(resource.getUpdateFrequency())
+             && resource.getPublicationMode() != PublicationMode.AUTO_PUBLISH_NEVER
+             && resource.getPublicationMode() != PublicationMode.AUTO_PUBLISH_ON;
+    }
+    return false;
+  }
+
+  /**
+   * Turn auto-publishing off.
+   *
+   * @return Struts2 result string
+   *
+   * @throws Exception thrown if method fails
+   */
+  public String autoPublicationOff() throws Exception {
+    if (resource == null) {
+      return NOT_FOUND;
+    }
+    if (PublicationMode.AUTO_PUBLISH_ON == resource.getPublicationMode()
+        || PublicationMode.AUTO_PUBLISH_NEVER == resource.getPublicationMode()) {
+      try {
+
+        // construct log appropriately
+        String msg = PublicationMode.AUTO_PUBLISH_ON == resource.getPublicationMode() ? getText(
+          "autopublish.switched.off") : getText("autopublish.disable.undo");
+        // make change
+        resourceManager.publicationModeToOff(resource);
+        // log
+        addActionMessage(msg);
+        log.debug(msg);
+      } catch (InvalidConfigException e) {
+        log.error("Cant turn off auto-publishing for resource: " + resource.getShortname(), e);
+      }
+    } else {
+      addActionWarning(getText("autopublish.invalid.operation"));
+    }
+    return execute();
   }
 }

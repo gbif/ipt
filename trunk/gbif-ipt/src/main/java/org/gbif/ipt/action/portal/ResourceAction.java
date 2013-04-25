@@ -47,6 +47,7 @@ public class ResourceAction extends PortalBaseAction {
   private DataDir dataDir;
   private Eml eml;
   private boolean metadataOnly;
+  private Map<String, String> frequencies;
 
   @Inject
   public ResourceAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -229,6 +230,10 @@ public class ResourceAction extends PortalBaseAction {
     ranks = new LinkedHashMap<String, String>();
     ranks.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, getLocaleLanguage(), false));
 
+    // update frequencies list, derived from XML vocabulary, and displayed on Basic Metadata Page
+    frequencies = new LinkedHashMap<String, String>();
+    frequencies.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES, getLocaleLanguage(), false));
+
     return SUCCESS;
   }
 
@@ -366,5 +371,15 @@ public class ResourceAction extends PortalBaseAction {
    */
   public void setMetadataOnly(boolean metadataOnly) {
     this.metadataOnly = metadataOnly;
+  }
+
+  /**
+   * This map populates the update frequencies. The map is derived from the vocabulary {@link -linkoffline
+   * http://rs.gbif.org/vocabulary/eml/update_frequency.xml}.
+   *
+   * @return update frequencies map
+   */
+  public Map<String, String> getFrequencies() {
+    return frequencies;
   }
 }
