@@ -186,7 +186,7 @@
 			<#elseif "${temporalCoverage.type}" == "SINGLE_DATE" >
 				<div id="single-${temporalCoverage_index}" class="typeForm" >
 					<div class="halfcolumn">
-						<@input date=true i18nkey="eml.temporalCoverages.startDate" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD",  "MM/DD/YYYY":"MM/DD/YYYY"}/>
+						<@input date=true i18nkey="eml.temporalCoverages.singleDate" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD",  "MM/DD/YYYY":"MM/DD/YYYY"}/>
 					</div>
 			<#elseif "${temporalCoverage.type}" == "FORMATION_PERIOD" >
 				<div id="formation-${temporalCoverage_index}" class="typeForm" >
@@ -236,7 +236,7 @@
 <!-- SINGLE DATE -->
 <div id="single-99999" class="typeForm" style="display:none">
 	<div class="halfcolumn">
-		<@input date=true i18nkey="eml.temporalCoverages.startDate" name="startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD",  "MM/DD/YYYY":"MM/DD/YYYY"} />
+		<@input date=true i18nkey="eml.temporalCoverages.singleDate" name="startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD",  "MM/DD/YYYY":"MM/DD/YYYY"} />
 	</div>
 </div>
 
