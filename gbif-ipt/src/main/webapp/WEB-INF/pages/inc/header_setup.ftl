@@ -40,14 +40,14 @@
           <aside class="prefix_12 grid_12 region region-user-second account" id="region-user-second">
             <div class="region-inner region-user-second-inner">
               <ul id="language-menu">       
-                <li><a href="#"><img src="${baseURL}/images/flags/flag_${localeLanguage}.gif"/></a>
-                  <ul>                                                
+                <li><a href="#"><img src="${baseURL}/images/flags/flag_${localeLanguage}.png"/></a>
+                  <ul>
                     <!-- add more languages as translations become available. -->                           
                     <!-- #list ["en","es","fr","de"] as lang -->
                     <!-- modify global.js langs() also -->
                     [#list ["en","fr","es", "zh", "pt"] as lang]
                       [#if localeLanguage!=lang]
-                      <li><a href="?request_locale=${lang}"><img src="${baseURL}/images/flags/flag_${lang}.gif"/></a></li>
+                      <li><a href="?request_locale=${lang}"><img src="${baseURL}/images/flags/flag_${lang}.png"/></a></li>
                       [/#if]
                     [/#list]
                   </ul>

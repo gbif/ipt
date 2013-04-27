@@ -27,7 +27,7 @@
       					</li>
       			    [/#if]
       				  <li>
-      				  	<a href="#"><img src="${baseURL}/images/flags/flag_${localeLanguage}.gif"/></a>
+      				  	<a href="#"><img src="${baseURL}/images/flags/flag_${localeLanguage}.png"/></a>
       					  <ul id="languages">
       						<!-- add more languages as translations become available. -->
       				  	<!-- To see more information go to langs method in global.js -->
