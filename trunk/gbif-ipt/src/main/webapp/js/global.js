@@ -36,7 +36,7 @@ function langs(localLanguage,baseUrl) {
   	var lan=  ["en","fr","es", "zh", "pt"];
 	$.each(lan, function() {
 	  if ( localLanguage != this){
-	  	$("#languages").append('<li><a href="'+location+request+'='+this+'"><img src="'+baseUrl+'/images/flags/flag_'+this+'.gif"/></a></li>');
+	  	$("#languages").append('<li><a href="'+location+request+'='+this+'"><img src="'+baseUrl+'/images/flags/flag_'+this+'.png"/></a></li>');
 	  }
 	});
 }
