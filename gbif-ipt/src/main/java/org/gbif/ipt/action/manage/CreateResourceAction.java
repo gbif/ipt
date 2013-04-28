@@ -8,6 +8,7 @@ import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.utils.FileUtils;
 import org.gbif.ipt.validation.ResourceValidator;
 
 import java.io.File;
@@ -82,9 +83,20 @@ public class CreateResourceAction extends POSTAction {
     this.shortname = shortname;
   }
 
-  private File uploadToTmp() {
+  /**
+   * Upload file to temp file.
+   *
+   * @return uploaded file
+   *
+   * @throws ImportException if file type was invalid
+   */
+  private File uploadToTmp() throws ImportException {
     if (fileFileName == null) {
       return null;
+    }
+    // excel files are commonly uploaded by mistake
+    if (FileUtils.isExcelFile(fileFileName)) {
+      throw new ImportException("Excel files cannot be uploaded!");
     }
     // the file to upload to
     File tmpFile = dataDir.tmpFile(shortname, fileFileName);
