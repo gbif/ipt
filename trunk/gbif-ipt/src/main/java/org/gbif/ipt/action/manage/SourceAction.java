@@ -83,6 +83,12 @@ public class SourceAction extends ManagerBaseAction {
     }
     // new one
     if (file != null) {
+      // excel files are commonly uploaded by mistake
+      if (org.gbif.ipt.utils.FileUtils.isExcelFile(fileFileName)) {
+        log.error("Excel files cannot be uploaded as source files!");
+        addActionError(getText("manage.source.unsupported.excel"));
+        return ERROR;
+      }
       // uploaded a new file. Is it compressed?
       if (StringUtils.endsWithIgnoreCase(fileContentType, "zip") // application/zip
           || StringUtils.endsWithIgnoreCase(fileContentType, "gzip") || StringUtils
