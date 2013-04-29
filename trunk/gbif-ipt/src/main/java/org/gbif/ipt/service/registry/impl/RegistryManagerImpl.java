@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.net.ConnectException;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +48,6 @@ import org.apache.http.NameValuePair;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
 import org.xml.sax.SAXException;
 
 public class RegistryManagerImpl extends BaseManager implements RegistryManager {
@@ -525,7 +525,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     data.add(new BasicNameValuePair("iptKey", StringUtils.trimToEmpty(ipt.getKey().toString())));
 
     try {
-      UrlEncodedFormEntity uefe = new UrlEncodedFormEntity(data, HTTP.UTF_8);
+      UrlEncodedFormEntity uefe = new UrlEncodedFormEntity(data, Charset.forName("UTF-8"));
       Response result = http.post(getIptResourceUri(), null, null, orgCredentials(org), uefe);
       if (result != null) {
         // read new UDDI ID
@@ -573,7 +573,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
     String key;
     try {
-      UrlEncodedFormEntity uefe = new UrlEncodedFormEntity(data, HTTP.UTF_8);
+      UrlEncodedFormEntity uefe = new UrlEncodedFormEntity(data, Charset.forName("UTF-8"));
       Response result = http.post(getIptUri(), null, null, orgCredentials(org), uefe);
       if (result != null) {
         // read new UDDI ID
@@ -650,7 +650,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
     try {
       Response resp = http.post(getIptUpdateUri(ipt.getKey().toString()), null, null, iptCredentials(ipt),
-        new UrlEncodedFormEntity(data, HTTP.UTF_8));
+        new UrlEncodedFormEntity(data, Charset.forName("UTF-8")));
       if (http.success(resp)) {
         log.info("IPT registration update was successful");
       } else {
@@ -683,7 +683,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
     try {
       Response resp = http.post(getIptUpdateResourceUri(resource.getKey().toString()), null, null,
-        orgCredentials(resource.getOrganisation()), new UrlEncodedFormEntity(data, HTTP.UTF_8));
+        orgCredentials(resource.getOrganisation()), new UrlEncodedFormEntity(data, Charset.forName("UTF-8")));
       if (http.success(resp)) {
         log.debug("Resource's registration info has been updated");
       } else {

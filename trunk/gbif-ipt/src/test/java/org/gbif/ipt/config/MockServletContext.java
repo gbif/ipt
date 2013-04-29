@@ -42,10 +42,20 @@ public class MockServletContext implements ServletContext {
     return null;
   }
 
-  /*
+  /**
    * (non-Javadoc)
-   * @see javax.servlet.ServletContext#getContext(java.lang.String)
+   *
+   * @see javax.servlet.http.HttpServletRequest#getContextPath()
+   * @since Servlet 2.5
    */
+  public String getContextPath() {
+    return null;
+  }
+
+  /*
+     * (non-Javadoc)
+     * @see javax.servlet.ServletContext#getContext(java.lang.String)
+     */
   public ServletContext getContext(String uripath) {
     return null;
   }
@@ -152,6 +162,7 @@ public class MockServletContext implements ServletContext {
    * (non-Javadoc)
    * @see javax.servlet.ServletContext#getServlet(java.lang.String)
    */
+  @Deprecated
   public Servlet getServlet(String name) throws ServletException {
     return null;
   }
@@ -168,6 +179,7 @@ public class MockServletContext implements ServletContext {
    * (non-Javadoc)
    * @see javax.servlet.ServletContext#getServletNames()
    */
+  @Deprecated
   public Enumeration getServletNames() {
     return null;
   }
@@ -176,6 +188,7 @@ public class MockServletContext implements ServletContext {
    * (non-Javadoc)
    * @see javax.servlet.ServletContext#getServlets()
    */
+  @Deprecated
   public Enumeration getServlets() {
     return null;
   }
@@ -184,6 +197,7 @@ public class MockServletContext implements ServletContext {
    * (non-Javadoc)
    * @see javax.servlet.ServletContext#log(java.lang.Exception, java.lang.String)
    */
+  @Deprecated
   public void log(Exception exception, String msg) {
 
   }
@@ -219,5 +233,4 @@ public class MockServletContext implements ServletContext {
   public void setAttribute(String name, Object object) {
 
   }
-
 }
