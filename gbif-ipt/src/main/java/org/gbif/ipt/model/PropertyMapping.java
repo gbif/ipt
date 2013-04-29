@@ -21,7 +21,7 @@ import org.gbif.dwc.text.ArchiveField;
 import java.io.Serializable;
 import java.util.Map;
 
-public class PropertyMapping extends ArchiveField implements Serializable {
+public class PropertyMapping extends ArchiveField implements Serializable, Comparable<PropertyMapping> {
 
   private static final long serialVersionUID = 775627548L;
   private Map<String, String> translation;
@@ -55,5 +55,19 @@ public class PropertyMapping extends ArchiveField implements Serializable {
   @Override
   public String toString() {
     return "PM:" + getTerm() + ";Idx=" + getIndex() + ";Val=" + getDefaultValue();
+  }
+
+  /**
+   * Compares two PropertyMapping lexicographically based on their qualified normalized names,
+   * e.g. "http://purl.org/dc/terms/modified". This way, if 2 terms from 2 namespaces contain the same name, they will
+   * still be consistently sorted each time via their namespace to avoid conflict. For example,
+   * "http://purl.org/dc/terms/modified" lexicographically comes before "http://rs.tdwg.org/dwc/terms/basisofrecord".
+   *
+   * @param propertyMapping PropertyMapping
+   *
+   * @return 0 if names are equal, -1 if argument is lexicographically less, 1 if argument is lexicographically greater
+   */
+  public int compareTo(PropertyMapping propertyMapping) {
+    return this.getTerm().qualifiedNormalisedName().compareTo(propertyMapping.getTerm().qualifiedNormalisedName());
   }
 }
