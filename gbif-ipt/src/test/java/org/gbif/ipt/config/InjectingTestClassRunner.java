@@ -3,12 +3,11 @@ package org.gbif.ipt.config;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import org.junit.internal.runners.InitializationError;
-import org.junit.internal.runners.JUnit4ClassRunner;
+import org.junit.runners.BlockJUnit4ClassRunner;
 
-public class InjectingTestClassRunner extends JUnit4ClassRunner {
+public class InjectingTestClassRunner extends BlockJUnit4ClassRunner {
 
-  public InjectingTestClassRunner(Class<?> klass) throws InitializationError {
+  public InjectingTestClassRunner(Class<?> klass) throws org.junit.runners.model.InitializationError {
     super(klass);
   }
 

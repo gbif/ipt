@@ -26,6 +26,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
@@ -186,7 +187,8 @@ public class ExtensionFactory {
         } finally {
           is.close();
         }
-        entity.consumeContent();
+        // close http connection
+        EntityUtils.consume(entity);
       }
     } catch (Exception e) {
       LOG.error(e);

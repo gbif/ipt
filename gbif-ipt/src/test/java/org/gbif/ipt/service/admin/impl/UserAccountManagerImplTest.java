@@ -34,13 +34,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
@@ -131,11 +131,11 @@ public class UserAccountManagerImplTest {
     userManager.create(user);
 
 
-    Assert.assertEquals(admin, userManager.authenticate("admin@ipt.gbif.org", "admin"));
-    Assert.assertEquals(manager, userManager.authenticate("manager@ipt.gbif.org", "manager"));
-    Assert.assertEquals(publisher, userManager.authenticate("publisher@ipt.gbif.org", "publisher"));
-    Assert.assertEquals(user, userManager.authenticate("user@ipt.gbif.org", "user"));
-    Assert.assertNull(userManager.authenticate("invalid-user@ipt.gbif.org", "anyPassword"));
+    assertEquals(admin, userManager.authenticate("admin@ipt.gbif.org", "admin"));
+    assertEquals(manager, userManager.authenticate("manager@ipt.gbif.org", "manager"));
+    assertEquals(publisher, userManager.authenticate("publisher@ipt.gbif.org", "publisher"));
+    assertEquals(user, userManager.authenticate("user@ipt.gbif.org", "user"));
+    assertNull(userManager.authenticate("invalid-user@ipt.gbif.org", "anyPassword"));
   }
 
   /**
@@ -153,20 +153,20 @@ public class UserAccountManagerImplTest {
     userManager.create(user);
 
     // validate if the users were added to the users list.
-    Assert.assertEquals(admin, userManager.get("admin@ipt.gbif.org"));
-    Assert.assertEquals(manager, userManager.get("manager@ipt.gbif.org"));
-    Assert.assertEquals(publisher, userManager.get("publisher@ipt.gbif.org"));
-    Assert.assertEquals(user, userManager.get("user@ipt.gbif.org"));
+    assertEquals(admin, userManager.get("admin@ipt.gbif.org"));
+    assertEquals(manager, userManager.get("manager@ipt.gbif.org"));
+    assertEquals(publisher, userManager.get("publisher@ipt.gbif.org"));
+    assertEquals(user, userManager.get("user@ipt.gbif.org"));
 
     // add an already existent user.
     try {
       userManager.create(admin);
       fail("An exception should be thrown if user try to add an already added user");
     } catch (AlreadyExistingException e) {
-      Assert.assertTrue(true);
+      assertTrue(true);
     }
 
-    Assert.assertEquals(4, userManager.list().size());
+    assertEquals(4, userManager.list().size());
 
   }
 
@@ -188,8 +188,8 @@ public class UserAccountManagerImplTest {
     User deletedUser = userManager.delete("user@ipt.gbif.org");
 
     // test if user was deleted
-    Assert.assertEquals(3, userManager.list().size());
-    Assert.assertEquals(user, deletedUser);
+    assertEquals(3, userManager.list().size());
+    assertEquals(user, deletedUser);
 
     // There must always be at least one user Admin.
     try {
@@ -228,7 +228,7 @@ public class UserAccountManagerImplTest {
     resources.add(res2);
 
     userManager.delete("manager@ipt.gbif.org");
-    Assert.assertEquals(Role.User, manager.getRole());
+    assertEquals(Role.User, manager.getRole());
 
   }
 
@@ -247,9 +247,9 @@ public class UserAccountManagerImplTest {
     userManager.create(publisher);
     userManager.create(user);
 
-    Assert.assertEquals(admin, userManager.get("admin@ipt.gbif.org"));
-    Assert.assertEquals(publisher, userManager.get("publisher@ipt.gbif.org"));
-    Assert.assertNull(userManager.get(null));
+    assertEquals(admin, userManager.get("admin@ipt.gbif.org"));
+    assertEquals(publisher, userManager.get("publisher@ipt.gbif.org"));
+    assertNull(userManager.get(null));
   }
 
   /**

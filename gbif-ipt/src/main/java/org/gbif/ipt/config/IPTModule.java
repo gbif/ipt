@@ -6,6 +6,7 @@ import org.gbif.ipt.model.factory.VocabularyFactory;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.GenerateDwca;
 import org.gbif.ipt.task.GenerateDwcaFactory;
+import org.gbif.ipt.task.ReportingTask;
 import org.gbif.ipt.utils.InputStreamUtils;
 import org.gbif.ipt.utils.PBEEncrypt;
 import org.gbif.ipt.utils.PBEEncrypt.EncryptionException;
@@ -26,7 +27,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Scopes;
 import com.google.inject.Singleton;
-import com.google.inject.assistedinject.FactoryProvider;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.MultiTemplateLoader;
 import freemarker.cache.TemplateLoader;
@@ -40,6 +41,10 @@ import org.apache.log4j.Logger;
 public class IPTModule extends AbstractModule {
 
   private static final Logger LOG = Logger.getLogger(IPTModule.class);
+  // 2 minute timeout
+  protected static final int CONNECTION_TIMEOUT_MSEC = 120000;
+  protected static final int MAX_CONNECTIONS = 100;
+  protected static final int MAX_PER_ROUTE = 10;
 
   @Override
   protected void configure() {
@@ -54,8 +59,8 @@ public class IPTModule extends AbstractModule {
     bind(ThesaurusHandlingRule.class).in(Scopes.NO_SCOPE);
 
     // assisted inject factories
-    bind(GenerateDwcaFactory.class)
-      .toProvider(FactoryProvider.newFactory(GenerateDwcaFactory.class, GenerateDwca.class));
+    install(
+      new FactoryModuleBuilder().implement(ReportingTask.class, GenerateDwca.class).build(GenerateDwcaFactory.class));
 
   }
 
@@ -105,8 +110,8 @@ public class IPTModule extends AbstractModule {
   @Singleton
   @Inject
   public DefaultHttpClient provideHttpClient() {
-    // This client instance, available from httputils 0.3-SNAPSHOT onward, supports both http and https protocols
-    DefaultHttpClient client = HttpUtil.newMultithreadedClientHttps();
+    // new threadsafe, multithreaded http client with support for http and https.
+    DefaultHttpClient client = HttpUtil.newMultithreadedClient(CONNECTION_TIMEOUT_MSEC, MAX_CONNECTIONS, MAX_PER_ROUTE);
 
     // registry currently requires Preemptive authentication
     // Add as the very first interceptor in the protocol chain
