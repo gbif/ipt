@@ -154,14 +154,35 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     // ready to go though each mapping and dump the data
     addMessage(Level.INFO, "Start writing data file for " + currExtension);
     try {
+      boolean headerWritten = false;
       for (ExtensionMapping m : mappings) {
-        // write to data file
-        dumpData(writer, af, m, dataFileRowSize);
+        // prepare index ordered list of all output columns apart from id column
+        PropertyMapping[] inCols = new PropertyMapping[dataFileRowSize];
+        for (ArchiveField f : af.getFields().values()) {
+          if (f.getIndex() != null && f.getIndex() > 0) {
+            inCols[f.getIndex()] = m.getField(f.getTerm().qualifiedName());
+          }
+        }
+
+        // write header line 1 time only to file
+        if (!headerWritten) {
+          writeHeaderLine(inCols, af, writer);
+          headerWritten = true;
+        }
+
+        // write data (records) to file
+        dumpData(writer, inCols, m, dataFileRowSize);
         // remember core record number
         if (ext.isCore()) {
           coreRecords = currRecords;
         }
       }
+    } catch (IOException e) {
+      // some error writing this file, report
+      log.error("Fatal DwC-A Generator Error encountered while writing header line to data file", e);
+      // set last error report!
+      setState(e);
+      throw new GeneratorException("Error writing header line to data file", e);
     } finally {
       writer.close();
     }
@@ -177,6 +198,31 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     addMessage(Level.INFO,
       "Data file written for " + currExtension + " with " + currRecords + " records and " + dataFileRowSize
       + " columns");
+  }
+
+  /**
+   * Write the header column line to file.
+   *
+   * @param inCols index ordered list of all output columns apart from id column
+   * @param af     tab file with representing the core file or an extension
+   * @param writer file writer
+   *
+   * @throws IOException if writing the header line failed
+   */
+  private void writeHeaderLine(PropertyMapping[] inCols, ArchiveFile af, Writer writer) throws IOException {
+    // generating headers
+    String[] headers = new String[inCols.length];
+    headers[0] = "id";
+    for (int c = 1; c < inCols.length; c++) {
+      if (inCols[c] != null) {
+        headers[c] = inCols[c].getTerm().simpleName();
+      }
+    }
+
+    // write header line - once per mapping
+    String headerLine = tabRow(headers);
+    af.setIgnoreHeaderLines(1);
+    writer.write(headerLine);
   }
 
   /**
@@ -451,15 +497,14 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
    * Write data file for mapping.
    *
    * @param writer          file writer for single data file
-   * @param dataFile        tab file created with the help of the Archive class representing the core file or an
-   *                        extension
+   * @param inCols          index ordered list of all output columns apart from id column
    * @param mapping         mapping
    * @param dataFileRowSize number of columns in data file
    *
    * @throws GeneratorException   if there was an error writing data file for mapping.
    * @throws InterruptedException if the thread was interrupted
    */
-  private void dumpData(Writer writer, ArchiveFile dataFile, ExtensionMapping mapping, int dataFileRowSize)
+  private void dumpData(Writer writer, PropertyMapping[] inCols, ExtensionMapping mapping, int dataFileRowSize)
     throws GeneratorException, InterruptedException {
     final String idSuffix = StringUtils.trimToEmpty(mapping.getIdSuffix());
     final RecordFilter filter = mapping.getFilter();
@@ -471,15 +516,6 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       }
     }
 
-    // prepare index ordered list of all output columns apart from id column, so
-    // its fast to iterate
-    PropertyMapping[] inCols = new PropertyMapping[dataFileRowSize];
-    for (ArchiveField f : dataFile.getFields().values()) {
-      if (f.getIndex() != null && f.getIndex() > 0) {
-        inCols[f.getIndex()] = mapping.getField(f.getTerm().qualifiedName());
-      }
-    }
-
     int linesWithWrongColumnNumber = 0;
     int recordsFiltered = 0;
     ClosableIterator<String[]> iter = null;
@@ -487,18 +523,6 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     try {
       // get the source iterator
       iter = sourceManager.rowIterator(mapping.getSource());
-
-      // generating headers
-      String[] headers = new String[inCols.length];
-      headers[0] = "id";
-      for (int c = 1; c < inCols.length; c++) {
-        if (inCols[c] != null) {
-          headers[c] = inCols[c].getTerm().simpleName();
-        }
-      }
-      String headerLine = tabRow(headers);
-      dataFile.setIgnoreHeaderLines(1);
-      writer.write(headerLine);
 
       while (iter.hasNext()) {
         line++;
@@ -556,7 +580,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
           record[0] = in[mapping.getIdColumn()] + idSuffix;
         }
 
-        // go thru all archive fields
+        // go through all archive fields
         if (!alreadyTranslated) {
           translatingRecord(mapping, inCols, in, record);
         }
