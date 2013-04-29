@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.ParserConfigurationException;
@@ -111,7 +112,7 @@ public class TranslationActionTest {
     // add translations to field
     field.setTranslation(translations);
     // add set of PropertyMapping, including field, to ExtensionMapping
-    Set<PropertyMapping> fields = new HashSet<PropertyMapping>();
+    Set<PropertyMapping> fields = new TreeSet<PropertyMapping>();
     fields.add(field);
     mapping.setFields(fields);
 

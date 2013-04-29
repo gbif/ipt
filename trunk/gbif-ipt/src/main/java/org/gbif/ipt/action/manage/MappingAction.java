@@ -38,10 +38,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.regex.Pattern;
 
 import com.google.common.base.Strings;
@@ -388,7 +388,7 @@ public class MappingAction extends ManagerBaseAction {
       mid = resource.addMapping(mapping);
     } else {
       // save field mappings
-      Set<PropertyMapping> mappedFields = new HashSet<PropertyMapping>();
+      Set<PropertyMapping> mappedFields = new TreeSet<PropertyMapping>();
       for (PropertyMapping f : fields) {
         if (f.getIndex() != null || StringUtils.trimToNull(f.getDefaultValue()) != null) {
           mappedFields.add(f);

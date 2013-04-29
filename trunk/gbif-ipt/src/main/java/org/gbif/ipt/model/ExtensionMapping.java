@@ -17,9 +17,9 @@ import org.gbif.dwc.terms.ConceptTerm;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class ExtensionMapping implements Serializable {
 
@@ -30,7 +30,8 @@ public class ExtensionMapping implements Serializable {
 
   private Source source;
   private Extension extension; // persist only the rowType
-  private Set<PropertyMapping> fields = new HashSet<PropertyMapping>();
+  // TreeSet will ensure set of PropertyMappings remain ordered
+  private Set<PropertyMapping> fields = new TreeSet<PropertyMapping>();
   private Integer idColumn;
   private String idSuffix;
   private RecordFilter filter;

@@ -88,6 +88,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
@@ -637,7 +638,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // set ID column
     map.setIdColumn(af.getId().getIndex());
 
-    Set<PropertyMapping> fields = new HashSet<PropertyMapping>();
+    Set<PropertyMapping> fields = new TreeSet<PropertyMapping>();
     // iterate over each field to make sure its part of the extension we know
     for (ArchiveField f : af.getFields().values()) {
       if (ext.hasProperty(f.getTerm())) {
