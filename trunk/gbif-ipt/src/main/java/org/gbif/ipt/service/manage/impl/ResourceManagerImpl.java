@@ -361,7 +361,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (tmpDir.exists() && tmpDir.isDirectory()) {
       // get the compressed folder's root folder
       File[] contents = tmpDir.listFiles();
-      if (contents.length != 1) {
+      if (contents == null) {
+        return false;
+      } else if (contents.length != 1) {
         return false;
       } else {
         File root = contents[0];
@@ -384,6 +386,37 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       }
     }
     return (foundEmlFile && foundResourceFile);
+  }
+
+  /**
+   * Try to locate a DwC-A located inside a parent folder, open it, and return the Archive.
+   *
+   * @param tmpDir folder where compressed file was decompressed
+   *
+   * @return the Archive, or null if none exists
+   *
+   * @throws UnsupportedArchiveException if the DwC-A was invalid
+   * @throws IOException                 if the DwC-A could not be opened
+   */
+  protected Archive openArchiveInsideParentFolder(File tmpDir) throws UnsupportedArchiveException, IOException {
+    if (tmpDir.exists() && tmpDir.isDirectory()) {
+      // get the compressed folder's root folder
+      File[] contents = tmpDir.listFiles();
+      if (contents == null) {
+        return null;
+      } else if (contents.length != 1) {
+        return null;
+      } else {
+        File root = contents[0];
+        // differentiate between single file and potential DwC-A folder
+        if (root.isDirectory()) {
+          return ArchiveFactory.openArchive(root);
+        } else {
+          log.debug("A single file has been encountered");
+        }
+      }
+    }
+    return null;
   }
 
   /**
@@ -426,8 +459,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     throws AlreadyExistingException, ImportException {
     Resource resource;
     try {
-      // open the dwca with dwca reader
-      Archive arch = ArchiveFactory.openArchive(dwca);
+      // open the dwca, assuming it is located inside a parent folder
+      Archive arch = openArchiveInsideParentFolder(dwca);
+      if (arch == null) {
+        // otherwise, open the dwca with dwca reader
+        arch = ArchiveFactory.openArchive(dwca);
+      }
       // create new resource once we know the archive can be read
       resource = create(shortname, creator);
       // keep track of source files as an dwc archive might refer to the same source file multiple times
