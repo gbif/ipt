@@ -33,6 +33,7 @@ import org.gbif.metadata.eml.TemporalCoverage;
 import org.gbif.metadata.eml.TemporalCoverageType;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -89,6 +90,8 @@ public class EmlValidator extends BaseValidator {
   }
 
   /**
+   * The URL must be a valid URI.
+   *
    * @return the URL formatted with the schema component
    */
   public static String formatURL(String url) {
@@ -106,6 +109,24 @@ public class EmlValidator extends BaseValidator {
       }
     } else {
       return null;
+    }
+  }
+
+  /**
+   * Checks if the incoming string representing a URL, is in fact a well-formed URI.
+   *
+   * @return true if the string is a well-formed URI
+   */
+  public static boolean isWellFormedURI(String url) {
+    if (url != null) {
+      try {
+        new URI(url);
+        return true;
+      } catch (URISyntaxException e) {
+        return false;
+      }
+    } else {
+      return false;
     }
   }
 
@@ -612,13 +633,12 @@ public class EmlValidator extends BaseValidator {
         // at least one field has to have had data entered into it to qualify for validation
         if (!isPhysicalPageEmpty(eml)) {
           // Validate the resource homepage URL
-          if (eml.getHomepageUrl() != null) {
-            if (formatURL(eml.getHomepageUrl()) == null) {
-              action.addFieldError("eml.resourceCreator.homepage",
-                action.getText("validation.invalid", new String[] {action.getText("eml.resourceCreator.homepage")}));
-            } else {
-              eml.setHomepageUrl(formatURL(eml.getHomepageUrl()));
-            }
+          String formattedUrl = formatURL(eml.getDistributionUrl());
+          if (formattedUrl == null || !isWellFormedURI(formattedUrl)) {
+            action.addFieldError("eml.distributionUrl",
+              action.getText("validation.invalid", new String[] {action.getText("eml.distributionUrl")}));
+          } else {
+            eml.setDistributionUrl(formattedUrl);
           }
 
           // character set, download URL, and data format are required
@@ -636,8 +656,8 @@ public class EmlValidator extends BaseValidator {
             }
             // download URL required
             if (!exists(pd.getDistributionUrl())) {
-              action.addFieldError("eml.physicalData[" + index + "].distributionUrl",
-                action.getText("validation.required", new String[] {action.getText("eml.physicalData.distributionUrl")}));
+              action.addFieldError("eml.physicalData[" + index + "].distributionUrl", action
+                .getText("validation.required", new String[] {action.getText("eml.physicalData.distributionUrl")}));
             }
             // data format required
             if (!exists(pd.getFormat())) {
@@ -648,24 +668,14 @@ public class EmlValidator extends BaseValidator {
             // data format version is optional - so skip
 
             /* Validate distribution URL form each Physical data */
-            if (pd.getDistributionUrl() != null) {
-              if (formatURL(pd.getDistributionUrl()) == null) {
-                action.addFieldError("eml.physicalData[" + index + "].distributionUrl", action
-                  .getText("validation.invalid", new String[] {action.getText("eml.physicalData.distributionUrl")}));
-              } else {
-                pd.setDistributionUrl(formatURL(pd.getDistributionUrl()));
-              }
+            String formattedDistributionUrl = formatURL(pd.getDistributionUrl());
+            if (formattedDistributionUrl == null || !isWellFormedURI(formattedDistributionUrl)) {
+              action.addFieldError("eml.physicalData[" + index + "].distributionUrl", action
+                .getText("validation.invalid", new String[] {action.getText("eml.physicalData.distributionUrl")}));
+            } else {
+              pd.setDistributionUrl(formattedDistributionUrl);
             }
             index++;
-          }
-          /* Validate the distribution URL */
-          if (eml.getDistributionUrl() != null) {
-            if (formatURL(eml.getDistributionUrl()) == null) {
-              action.addFieldError("eml.distributionUrl",
-                action.getText("validation.invalid", new String[] {action.getText("eml.distributionUrl")}));
-            } else {
-              eml.setDistributionUrl(formatURL(eml.getDistributionUrl()));
-            }
           }
         }
       } else if (part == null || part.equalsIgnoreCase(KEYWORDS_SECTION)) {
@@ -872,7 +882,7 @@ public class EmlValidator extends BaseValidator {
    */
   private boolean isPhysicalPageEmpty(Eml eml) {
     // total of 8 fields on page
-    String homepageUrl = eml.getHomepageUrl();
+    String homepageUrl = eml.getDistributionUrl();
 
     // check all external links
     for (PhysicalData data: eml.getPhysicalData()) {
