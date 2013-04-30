@@ -517,6 +517,9 @@ public class ResourceManagerImplTest {
     throws IOException, SAXException, ParserConfigurationException {
     ResourceManagerImpl manager = getResourceManagerImpl();
 
+    // mock finding eml.xml file
+    when(mockedDataDir.resourceEmlFile(anyString(), anyInt())).thenReturn(File.createTempFile("eml", "xml"));
+
     // create PRIVATE test resource
     Resource resource = new Resource();
     resource.setShortname("bees");
@@ -569,10 +572,8 @@ public class ResourceManagerImplTest {
     throws IOException, SAXException, ParserConfigurationException {
     ResourceManagerImpl manager = getResourceManagerImpl();
 
-    // retrieve sample zipped resource folder
-    File emlXML = FileUtils.getClasspathFile("resources/res1/eml.xml");
     // mock finding eml.xml file
-    when(mockedDataDir.resourceEmlFile(anyString(), anyInt())).thenReturn(emlXML);
+    when(mockedDataDir.resourceEmlFile(anyString(), anyInt())).thenReturn(File.createTempFile("eml", "xml"));
 
     // create PRIVATE test resource
     Resource resource = new Resource();
