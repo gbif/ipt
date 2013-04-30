@@ -96,6 +96,7 @@ public class EmlValidatorTest {
 
   @Test
   public void testURL() {
+    assertNull(EmlValidator.formatURL(null));
     assertNull(EmlValidator.formatURL("- - - "));
     assertNull(EmlValidator.formatURL("//**##"));
     assertNull(EmlValidator.formatURL("      "));
@@ -104,6 +105,19 @@ public class EmlValidatorTest {
     assertNotNull(EmlValidator.formatURL("torrent://www.gbif.org"));
     assertNotNull(EmlValidator.formatURL("ftp://ftp.gbif.org"));
     assertNotNull(EmlValidator.formatURL("http://www.gbif.org"));
+  }
+
+  @Test
+  public void testURI() {
+    assertFalse(EmlValidator.isWellFormedURI(null));
+    assertFalse(EmlValidator.isWellFormedURI("http://ipt.bio.aq/resource.do?r=fossil_ diversity_ of_ the_ Early_ Cr"));
+    assertFalse(EmlValidator.isWellFormedURI("//**##"));
+    assertFalse(EmlValidator.isWellFormedURI("      "));
+    assertFalse(EmlValidator.isWellFormedURI("ftp://ftp.gbif.org //h"));
+    assertTrue(EmlValidator.isWellFormedURI("www.gbif.com"));
+    assertTrue(EmlValidator.isWellFormedURI("torrent://www.gbif.org"));
+    assertTrue(EmlValidator.isWellFormedURI("ftp://ftp.gbif.org"));
+    assertTrue(EmlValidator.isWellFormedURI("http://www.gbif.org"));
   }
 
   @Test
@@ -410,7 +424,7 @@ public class EmlValidatorTest {
   @Test
   public void testPhysicalResourceHomepageInvalid() {
     // invalid
-    eml.setHomepageUrl("[]");
+    eml.setDistributionUrl("[]");
     assertFalse(validator.isValid(eml, EmlValidator.PHYSICAL_SECTION));
   }
 
