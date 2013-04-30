@@ -1095,10 +1095,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   /**
-   * Updates the resource's alternate identifier for its corresponding Registry UUID.
-   * If registered the method ensures that it won't be added a second time, with only 1 ever being set. Ideally this
-   * would happen the very first time that the resource gets registered, however, to accommodate updates from older
-   * versions of the IPT, it can updated every time the resource gets published.
+   * Updates the resource's alternate identifier for its corresponding Registry UUID and saves the EML.
+   * If called on a resource that is already registered, the method ensures that it won't be added a second time.
+   * To accommodate updates from older versions of the IPT, the identifier is added by calling this method every
+   * time the resource gets re-published.
    *
    * @param resource resource
    *
@@ -1121,7 +1121,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           // has the Registry UUID been added as an alternative identifier yet? If not, add it!
           if (key != null && !ids.contains(key.toString().toLowerCase())) {
             currentIds.add(key.toString());
-            log.info("GBIF Registry UUID added to Resource's list of alternate identifiers");
+            // save all changes to Eml
+            saveEml(resource);
+            if (cfg.debug()) {
+              log.info("GBIF Registry UUID added to Resource's list of alternate identifiers");
+            }
           }
         }
       }
@@ -1132,18 +1136,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return resource;
   }
 
-  /**
-   * Updates the resource's alternative identifier for the IPT URL to the resource.
-   * This identifier should only exist for the resource, if its visibility is public.
-   * If the resource visibility is set to private, this method should be called to ensure the identifier is removed.
-   * Any time the baseURL changes, all resources will need to be republished and in this case, this identifier
-   * will be updated. This method will remove an IPT URL identifier with the wrong baseURL by matching the
-   * RESOURCE_PUBLIC_LINK_PART, updating it with one having the latest baseURL.
-   *
-   * @param resource resource
-   *
-   * @return resource with the IPT URL alternate identifier for the resource updated
-   */
   public Resource updateAlternateIdentifierForIPTURLToResource(Resource resource) {
     // retrieve a list of the resource's alternate identifiers
     List<String> ids = null;
@@ -1175,7 +1167,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           }
           // lastly, be sure to add it
           ids.add(url.toString());
-          log.info("IPT URL to resource added to Resource's list of alternate ids");
+          // save all changes to Eml
+          saveEml(resource);
+          if (cfg.debug()) {
+            log.info("IPT URL to resource added to (or updated in) Resource's list of alt ids");
+          }
         }
       }
       // otherwise if the resource is PRIVATE
@@ -1183,7 +1179,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // no public resource alternate identifier can exist if the resource visibility is private - remove it if app.
         if (exists) {
           ids.remove(existingId);
-          log.warn("Following visibility change, IPT URL to resource removed from Resource's list of alternate ids");
+          // save all changes to Eml
+          saveEml(resource);
+          if (cfg.debug()) {
+            log.info("Following visibility change, IPT URL to resource was removed from Resource's list of alt ids");
+          }
         }
       }
     }
@@ -1541,7 +1541,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       // Changing the visibility, means some public things now need to be removed, e.g. IPT URL alt. id for resource!
       // This means the EML needs to be updated and saved
       updateAlternateIdentifierForIPTURLToResource(resource);
-      saveEml(resource);
 
       // save all changes to resource
       save(resource);
@@ -1559,7 +1558,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       // Changing the visibility, means some public things now need to be added, e.g. IPT URL alt. id for resource!
       // This means the EML needs to be updated and saved
       updateAlternateIdentifierForIPTURLToResource(resource);
-      saveEml(resource);
 
       // save all changes to resource
       save(resource);

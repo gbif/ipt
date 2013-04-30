@@ -334,4 +334,18 @@ public interface ResourceManager {
    * @param resource resource
    */
   void publicationModeToOff(Resource resource);
+
+  /**
+   * Updates the resource's alternative identifier for the IPT URL to the resource, and saves the EML afterward.
+   * This identifier should only exist for the resource, if its visibility is public.
+   * If the resource visibility is set to private, this method should be called to ensure the identifier is removed.
+   * Any time the baseURL changes, this method must be called for all public resources so that this identifier
+   * will be updated. This method will remove an IPT URL identifier with the wrong baseURL by matching the
+   * RESOURCE_PUBLIC_LINK_PART, updating it with one having the latest baseURL.
+   *
+   * @param resource resource
+   *
+   * @return resource with the IPT URL alternate identifier for the resource updated
+   */
+  Resource updateAlternateIdentifierForIPTURLToResource(Resource resource);
 }
