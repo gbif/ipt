@@ -3,13 +3,17 @@ package org.gbif.ipt.action.admin;
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.ConfigManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -26,6 +30,7 @@ public class ConfigAction extends POSTAction {
   private static final long serialVersionUID = 4726973323043063968L;
 
   protected ConfigManager configManager;
+  private ResourceManager resourceManager;
 
   // these are transient properties that are set on a per request basis
   // getters and setters are called by the Struts2 interceptors based on the
@@ -41,9 +46,10 @@ public class ConfigAction extends POSTAction {
 
   @Inject
   public ConfigAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    ConfigManager configManager) {
+    ConfigManager configManager, ResourceManager resourceManager) {
     super(textProvider, cfg, registrationManager);
     this.configManager = configManager;
+    this.resourceManager = resourceManager;
   }
 
   public Boolean getAnalyticsGbif() {
@@ -110,6 +116,10 @@ public class ConfigAction extends POSTAction {
       try {
         URL burl = new URL(baseUrl);
         configManager.setBaseUrl(burl);
+
+        // ensure any public resource URL (alternative identifiers) are updated also
+        updateAllAlternateIdentifiersForIPTURLToResource();
+
         log.info("Installation baseURL successfully changed to[" + baseUrl + "]");
         addActionMessage(getText("admin.config.baseUrl.changed"));
         addActionMessage(getText("admin.user.login"));
@@ -237,5 +247,24 @@ public class ConfigAction extends POSTAction {
 
   public void setArchivalMode(Boolean archivalMode) {
     this.archivalMode = archivalMode;
+  }
+
+  /**
+   * Updates all public resource's alternative identifier for the IPT URL to the resource. This identifier should only
+   * exist for the resource, if its visibility is public. Any time the baseURL changes, all resources will need this
+   * identifier to be updated.
+   */
+  private void updateAllAlternateIdentifiersForIPTURLToResource() {
+    // collect all public resources
+    List<Resource> resources = resourceManager.list(PublicationStatus.PUBLIC);
+    resources.addAll(resourceManager.list(PublicationStatus.REGISTERED));
+    // log
+    if (resources.size() > 0) {
+      log.debug("Updating all public resources' IPT URL to resource alternate identifier");
+    }
+    // update resource IPT URLs
+    for (Resource resource : resources) {
+      resourceManager.updateAlternateIdentifierForIPTURLToResource(resource);
+    }
   }
 }
