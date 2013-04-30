@@ -13,6 +13,8 @@
 
 package org.gbif.ipt.service.manage.impl;
 
+import org.gbif.dwc.text.Archive;
+import org.gbif.dwc.text.UnsupportedArchiveException;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
@@ -567,6 +569,11 @@ public class ResourceManagerImplTest {
     throws IOException, SAXException, ParserConfigurationException {
     ResourceManagerImpl manager = getResourceManagerImpl();
 
+    // retrieve sample zipped resource folder
+    File emlXML = FileUtils.getClasspathFile("resources/res1/eml.xml");
+    // mock finding eml.xml file
+    when(mockedDataDir.resourceEmlFile(anyString(), anyInt())).thenReturn(emlXML);
+
     // create PRIVATE test resource
     Resource resource = new Resource();
     resource.setShortname("bees");
@@ -676,5 +683,59 @@ public class ResourceManagerImplTest {
     when(mockRegistryManager.getOrganisationsResources(anyString())).thenReturn(organisationsResources);
 
     manager.register(resource, organisation, ipt, baseAction);
+  }
+
+  /**
+   * test open archive of zipped file, with DwC-A located inside parent folder.
+   */
+  @Test
+  public void testOpenArchiveInsideParentFolder() throws ParserConfigurationException, SAXException, IOException {
+    // create instance of manager
+    ResourceManagerImpl resourceManager = getResourceManagerImpl();
+    // decompress archive
+    File dwcaDir = FileUtils.createTempDir();
+    // DwC-A located inside parent folder
+    File dwca = FileUtils.getClasspathFile("resources/dwca-inside-parent.zip");
+    // decompress the incoming file
+    CompressionUtil.decompressFile(dwcaDir, dwca, true);
+    // open DwC-A located inside parent folder
+    Archive archive = resourceManager.openArchiveInsideParentFolder(dwcaDir);
+    assertNotNull(archive);
+    assertEquals(Constants.DWC_ROWTYPE_OCCURRENCE, archive.getCore().getRowType());
+  }
+
+  /**
+   * test failure, opening archive of zipped file, with invalid DwC-A located inside parent folder.
+   */
+  @Test(expected= UnsupportedArchiveException.class)
+  public void testOpenArchiveInsideParentFolderFails() throws ParserConfigurationException, SAXException, IOException {
+    // create instance of manager
+    ResourceManagerImpl resourceManager = getResourceManagerImpl();
+    // decompress archive
+    File dwcaDir = FileUtils.createTempDir();
+    // DwC-A located inside parent folder, with invalid meta.xml
+    File dwca = FileUtils.getClasspathFile("resources/dwca-inside-parent-invalid.zip");
+    // decompress the incoming file
+    CompressionUtil.decompressFile(dwcaDir, dwca, true);
+    // open DwC-A located inside parent folder, which throws UnsupportedArchiveException wrapping SaxParseException
+    resourceManager.openArchiveInsideParentFolder(dwcaDir);
+  }
+
+  /**
+   * test null result, opening archive of zipped file not located inside parent folder.
+   */
+  @Test
+  public void testOpenArchiveInsideParentFolderNull() throws ParserConfigurationException, SAXException, IOException {
+    // create instance of manager
+    ResourceManagerImpl resourceManager = getResourceManagerImpl();
+    // decompress archive
+    File dwcaDir = FileUtils.createTempDir();
+    // DwC-A located inside parent folder, with invalid meta.xml
+    File dwca = FileUtils.getClasspathFile("resources/occurrence.txt.zip");
+    // decompress the incoming file
+    CompressionUtil.decompressFile(dwcaDir, dwca, true);
+    // open DwC-A, not located inside parent folder, which throws UnsupportedArchiveException wrapping SaxParseException
+    Archive archive = resourceManager.openArchiveInsideParentFolder(dwcaDir);
+    assertNull(archive);
   }
 }
