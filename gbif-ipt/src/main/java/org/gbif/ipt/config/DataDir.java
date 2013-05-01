@@ -387,7 +387,7 @@ public class DataDir {
    * @return temporary File handle with unique filename
    */
   public File tmpFile(String prefix, String suffix) {
-    String random = String.valueOf(RANDOM.nextLong());
+    String random = String.valueOf(RANDOM.nextInt());
     return tmpFile(prefix + random + suffix);
   }
 }

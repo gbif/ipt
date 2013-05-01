@@ -248,28 +248,31 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     throws AlreadyExistingException, ImportException {
     ActionLogger alog = new ActionLogger(this.log, action);
     // decompress archive
+    List<File> decompressed = null;
     File dwcaDir = dataDir.tmpDir();
     try {
-      // decompress the incoming file
-      CompressionUtil.decompressFile(dwcaDir, dwca, true);
-      // check: was the decompressed folder actually an IPT Resource Folder?
-      if (isIPTResourceFolder(dwcaDir)) {
-        // if so, build a resource from the folder, preserving the source files and mappings
-        return createFromIPTResourceFolder(shortname, dwcaDir.listFiles()[0], creator, alog);
-      } else {
-        // otherwise, it must be a DwC-A
-        return createFromArchive(shortname, dwcaDir, creator, alog);
-      }
+      decompressed = CompressionUtil.decompressFile(dwcaDir, dwca, true);
     } catch (UnsupportedCompressionType e) {
-      // worst case, try to read single eml file
-      return createFromEml(shortname, dwca, creator, alog);
-    } catch (AlreadyExistingException e) {
-      throw e;
-    } catch (ImportException e) {
-      throw e;
+      log.debug("1st attempt to decompress file failed: " + e.getMessage(), e);
+      // try again as single gzip file
+      try {
+        decompressed = CompressionUtil.ungzipFile(dwcaDir, dwca, false);
+      } catch (Exception e2) {
+        log.debug("2nd attempt to decompress file failed: " + e.getMessage(), e);
+      }
     } catch (Exception e) {
-      alog.warn(e);
-      throw new ImportException(e);
+      log.debug("Decompression failed: " + e.getMessage(), e);
+    }
+
+    // create resource:
+    // if decompression failed, create resource from single eml file
+    if (decompressed == null) {
+      return createFromEml(shortname, dwca, creator, alog);
+    }
+    // if decompression succeeded, create resource depending on whether file was 'IPT Resource Folder' or a 'DwC-A'
+    else {
+      return (isIPTResourceFolder(dwcaDir)) ? createFromIPTResourceFolder(shortname, dwcaDir.listFiles()[0], creator,
+        alog) : createFromArchive(shortname, dwcaDir, creator, alog);
     }
   }
 

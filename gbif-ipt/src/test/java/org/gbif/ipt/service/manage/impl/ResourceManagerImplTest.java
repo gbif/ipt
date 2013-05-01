@@ -352,6 +352,65 @@ public class ResourceManagerImplTest {
   }
 
   /**
+   * test resource creation from single DwC-A gzipped file.
+   */
+  @Test
+  public void testCreateFromSingleGzipFile()
+    throws AlreadyExistingException, ImportException, SAXException, ParserConfigurationException, IOException {
+
+    // create instance of manager
+    ResourceManager resourceManager = getResourceManagerImpl();
+
+    // retrieve sample gzip DwC-A file
+    File dwca = FileUtils.getClasspathFile("resources/occurrence.txt.gz");
+
+    // create copy of DwC-A file in tmp dir, used to mock saving source resource filesource
+    File tmpDir = FileUtils.createTempDir();
+    List<File> files = CompressionUtil.ungzipFile(tmpDir, dwca, false);
+    File uncompressed = files.get(0);
+    Source.FileSource fileSource = new Source.FileSource();
+    fileSource.setFile(uncompressed);
+    // it has 16 rows, plus 1 header line
+    fileSource.setRows(16);
+    fileSource.setIgnoreHeaderLines(1);
+    fileSource.setEncoding("UTF-8");
+    fileSource.setFieldsTerminatedByEscaped("/t");
+    fileSource.setName("singleTxt");
+
+    when(mockSourceManager.add(any(Resource.class), any(File.class), anyString())).thenReturn(fileSource);
+
+    // create a new resource.
+    resourceManager.create("res-single-gz", dwca, creator, baseAction);
+
+    // test if new resource was added to the resources list.
+    assertEquals(1, resourceManager.list().size());
+
+    // get added resource.
+    Resource res = resourceManager.get("res-single-gz");
+
+    // test if resource was added correctly.
+    assertEquals("res-single-gz", res.getShortname());
+    assertEquals(creator, res.getCreator());
+    assertEquals(creator, res.getModifier());
+
+    // test if resource.xml was created.
+    assertTrue(mockedDataDir.resourceFile("res-single-gz", ResourceManagerImpl.PERSISTENCE_FILE).exists());
+
+    // note: source gets added to resource in sourceManager.add, and since we're mocking this call we can't set source
+
+    // there is 1 mapping
+    assertEquals(1, res.getMappings().size());
+    assertEquals("singletxt", res.getMappings().get(0).getSource().getName());
+    assertEquals(Constants.DWC_ROWTYPE_OCCURRENCE, res.getMappings().get(0).getExtension().getRowType());
+    assertEquals(22, res.getMappings().get(0).getFields().size());
+    assertEquals(0, res.getMappings().get(0).getIdColumn().intValue());
+
+    // there are no eml properties except default shortname as title since there was no eml.xml file included
+    assertEquals("res-single-gz", res.getEml().getTitle());
+    assertEquals(null, res.getEml().getDescription());
+  }
+
+  /**
    * test resource creation from zipped file, but resource.xml references non-existent extension.
    */
   @Test(expected=ImportException.class)
