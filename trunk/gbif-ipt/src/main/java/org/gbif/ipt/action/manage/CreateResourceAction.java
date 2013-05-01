@@ -61,7 +61,7 @@ public class CreateResourceAction extends POSTAction {
       return INPUT;
     } catch (ImportException e) {
       log.error("Error importing the dwc archive: " + e.getMessage(), e);
-      addActionError(getText("validation.resource.import.exception")); // e.getMessage()
+      addActionError(getText("validation.resource.import.exception"));
       return INPUT;
     }
     return SUCCESS;

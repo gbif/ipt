@@ -32,9 +32,7 @@ public class PBEEncrypt {
     }
   }
 
-  // private static final String ALGORITHM = "PBEWithMD5AndDes";
   private static final String ALGORITHM = "PBEWithSHA1AndDESede";
-  // private static final String ALGORITHM = "PBEWithMD5AndTripleDES";
 
   private final String characterEncoding = "UTF-8";
 
