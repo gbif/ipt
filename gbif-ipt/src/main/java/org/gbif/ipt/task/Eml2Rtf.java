@@ -112,6 +112,42 @@ public class Eml2Rtf {
   }
 
   /**
+   * Add resource citation section. This corresponds to combination of resource's citation and citation identifier.
+   *
+   * @param doc Document
+   * @param eml EML
+   *
+   * @throws DocumentException if problem occurs during add
+   */
+  private void addResourceCitation(Document doc, Eml eml) throws DocumentException {
+    if (exists(eml.getCitation())) {
+      // start new paragraph
+      Paragraph p = new Paragraph();
+      p.setAlignment(Element.ALIGN_JUSTIFIED);
+      p.setFont(font);
+      p.add(new Phrase(getText("eml.citation.citation"), fontTitle));
+      p.add(Chunk.NEWLINE);
+      p.add(Chunk.NEWLINE);
+
+      // add citation text
+      if (exists(eml.getCitation().getCitation())) {
+        p.add(eml.getCitation().getCitation().replace("\r\n", "\n"));
+      }
+
+      // add optional identifier attribute
+      if (exists(eml.getCitation().getIdentifier())) {
+        p.add(" ");
+        p.add(eml.getCitation().getIdentifier());
+      }
+
+      // add new paragraph
+      p.add(Chunk.NEWLINE);
+      doc.add(p);
+      p.clear();
+    }
+  }
+
+  /**
    * Add authors section.
    *
    * @param doc Document
@@ -754,7 +790,8 @@ public class Eml2Rtf {
   }
 
   /**
-   * Add references section.
+   * Add Biobliography section. For each Bibliography listed in the References section, include the Citation identifier
+   * after the Citation. If there is no Citation, only a Citation Identifier, then it will appear by itself.
    *
    * @param doc Document
    * @param eml EML
@@ -764,15 +801,28 @@ public class Eml2Rtf {
   private void addReferences(Document doc, Eml eml) throws DocumentException {
     if (exists(eml.getBibliographicCitationSet()) && !eml.getBibliographicCitationSet().getBibliographicCitations()
       .isEmpty()) {
+      // start new paragraph
       Paragraph p = new Paragraph();
       p.setAlignment(Element.ALIGN_JUSTIFIED);
       p.setFont(font);
       p.add(new Phrase(getText("rtf.references"), fontTitle));
       p.add(Chunk.NEWLINE);
+
+      // for each Bibliography listed in the References section, include the Citation identifier after the Citation
       for (Citation citation : eml.getBibliographicCitationSet().getBibliographicCitations()) {
-        p.add(citation.getCitation().replace("\r\n", "\n"));
+        // add citation text
+        if (exists(citation.getCitation())) {
+          p.add(citation.getCitation().replace("\r\n", "\n"));
+        }
+        // add optional identifier attribute
+        if (exists(citation.getIdentifier())) {
+          p.add(" ");
+          p.add(citation.getIdentifier());
+        }
+        // separate each citation by a new line
         p.add(Chunk.NEWLINE);
       }
+      // add to document
       doc.add(p);
       p.clear();
     }
@@ -1082,6 +1132,8 @@ public class Eml2Rtf {
     // Other various sections..
     addDates(doc);
     addCitations(doc);
+    // Section called "Resource Citation" above "Abstract"
+    addResourceCitation(doc, eml);
     addAbstract(doc, eml);
     addKeywords(doc, keys);
     addGeneralDescription(doc, eml);
