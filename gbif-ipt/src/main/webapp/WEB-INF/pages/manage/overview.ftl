@@ -86,6 +86,7 @@ $(document).ready(function(){
 <#assign currentMenu = "manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
+<#include "/WEB-INF/pages/macros/manage/publish.ftl"/>
 <div class="container_24">
   <div class="grid_18 suffix_6">
     <h1><span class="resourceOverviewTitle"><@s.text name="manage.overview.title"/>: </span>${resource.title!resource.shortname}</h1>
@@ -290,36 +291,13 @@ $(document).ready(function(){
     </div>
     <div class="actions">
       <#if !missingMetadata>
-        <form action='publish.do' method='post'>
-          <input name="r" type="hidden" value="${resource.shortname}"/>
-          <input id="pubMode" name="pubMode" type="hidden" value=""/>
-          <#if action.qualifiesForAutoPublishing()>
-            <@s.submit cssClass="confirmAutoPublish" name="publish" key="button.publish" disabled="false"/>
-          <#else>
-            <@s.submit name="publish" key="button.publish" disabled="false"/>
+        <#if resource.status=="REGISTERED">
+          <#if currentUser.hasRegistrationRights()>
+            <@publish resource/>
           </#if>
-        </form>
-        <br/>
-        <br/>
-        <#-- Auto-publishing section-->
-        <form action='resource-autoPublicationOff.do' method='post'>
-          <input name="r" type="hidden" value="${resource.shortname}"/>
-          <#if resource.usesAutoPublishing() || resource.hasDisabledAutoPublishing()>
-              <div class="head">
-                <@s.text name='autopublish'/>
-                <#if resource.usesAutoPublishing()>
-                  <em class="green"><@s.text name="autopublish.status.on"/></em>
-                  <@s.submit name="publish" key="autopublish.off" disabled="false"/>
-                  <p>
-                    <#if resource.nextPublished??><@s.text name='manage.home.next.publication'/>: ${resource.nextPublished?date?string.medium}</#if>
-                  </p>
-                <#else>
-                  <em class="warn"><@s.text name="autopublish.status.disabled"/></em>
-                  <@s.submit name="publish" key="autopublish.undo" disabled="false"/>
-                </#if>
-              </div>
-          </#if>
-        </form>
+        <#else>
+          <@publish resource/>
+        </#if>
       </#if>
     </div>
   </div>
@@ -328,12 +306,32 @@ $(document).ready(function(){
       <@s.text name="manage.overview.published.description"/>
     </p>
     <#if missingMetadata>
-      <div>
-        <img class="info" src="${baseURL}/images/info.gif"/>
-        <em><@s.text name="manage.overview.published.missing.metadata"/></em>
-      </div>
+        <div>
+            <img class="info" src="${baseURL}/images/info.gif"/>
+            <em><@s.text name="manage.overview.published.missing.metadata"/></em>
+        </div>
+    <#else>
+      <#if resource.status=="REGISTERED">
+        <#if !currentUser.hasRegistrationRights()>
+            <div>
+                <img class="info" src="${baseURL}/images/info.gif"/>
+                <em><@s.text name="manage.resource.status.registration.forbidden"/>
+                    &nbsp;<@s.text name="manage.resource.publish.forbidden"/>
+                    &nbsp;<@s.text name="manage.resource.role.change"/></em>
+            </div>
+        </#if>
+      </#if>
+      <#if !resource.usesAutoPublishing() && !resource.hasDisabledAutoPublishing()>
+          <div>
+              <img class="info" src="${baseURL}/images/info.gif"/>
+              <em><@s.text name='autopublish.intro'><@s.param><a
+                      href="${baseURL}/manage/metadata-basic.do?r=${resource.shortname}&amp;edit=Edit"><@s.text name="submenu.basic"/></a></@s.param></@s.text>
+              </em>
+          </div>
+      </#if>
     </#if>
-    <div class="details">
+      <br/>
+      <div class="details">
       <table>
         <#if resource.lastPublished??>
           <tr>
@@ -408,12 +406,6 @@ $(document).ready(function(){
         </#if>
       </table>
     </div>
-    <#if !resource.usesAutoPublishing() && !resource.hasDisabledAutoPublishing()>
-      <div>
-        <img class="info" src="${baseURL}/images/info.gif"/>
-          <em><@s.text name='autopublish.intro'><@s.param><a href="${baseURL}/manage/metadata-basic.do?r=${resource.shortname}&amp;edit=Edit"><@s.text name="submenu.basic"/></a></@s.param></@s.text></em>
-      </div>
-    </#if>
   </div>
 </div>
 
@@ -480,7 +472,7 @@ $(document).ready(function(){
       <#else>
         <div>
           <img class="info" src="${baseURL}/images/info.gif"/>
-          <em><@s.text name="manage.resource.status.registration.forbidden"/></em>
+          <em><@s.text name="manage.resource.status.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/></em>
         </div>
       </#if>
     </#if>

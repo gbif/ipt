@@ -507,7 +507,11 @@ public class OverviewAction extends ManagerBaseAction {
             log.error(msg);
           }
         } else {
-          addActionError(getText("manage.resource.status.registration.forbidden"));
+          StringBuilder sb = new StringBuilder();
+          sb.append(getText("manage.resource.status.registration.forbidden"));
+          sb.append(" ");
+          sb.append(getText("manage.resource.role.change"));
+          addActionError(sb.toString());
         }
       }
     } else {
