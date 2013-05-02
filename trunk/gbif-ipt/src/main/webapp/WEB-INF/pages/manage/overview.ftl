@@ -96,188 +96,14 @@ $(document).ready(function(){
   </div>
 </div>
 
-<div class="resourceOverview" id="metadata">
-  <div class="titleOverview">
-    <div class="head">
-      <@s.text name='manage.overview.metadata'/>
-    </div>
-    <div class="actions">
-      <form action='metadata-basic.do' method='get'>
-        <input name="r" type="hidden" value="${resource.shortname}"/>
-        <@s.submit name="edit" key="button.edit"/>
-      </form>
-    </div>
-    <#if missingMetadata>
-      <p class="warn">
-        <@s.text name='manage.overview.missing.metadata'/>
-      </p>
-    </#if>
-  </div>
-  <div class="bodyOverview">
-    <p>
-      <#assign no_description><@s.text name='manage.overview.no.description'/></#assign>
-			<@description resource.description!no_description 100/>
-    </p>
-
-    <div class="details">
-      <table>
-        <#if resource.eml.subject?has_content>
-          <tr>
-            <th><@s.text name='portal.resource.summary.keywords'/></th>
-            <td><@description resource.eml.subject!no_description 90/></td>
-          </tr>
-        </#if>
-        <#assign text>
-          <#list resource.eml.taxonomicCoverages as tc>
-            <#list tc.taxonKeywords as k>
-              ${k.scientificName!}<#if k_has_next>, </#if>
-            </#list>
-            <#if tc_has_next>; </#if>
-          </#list>
-        </#assign>
-        <#if resource.eml.taxonomicCoverages?has_content>
-          <tr>
-            <th><@s.text name='portal.resource.summary.taxcoverage'/></th>
-            <td><@description text!no_description 90/></td>
-          </tr>
-        </#if>
-        <#assign text>
-          <#list resource.eml.geospatialCoverages as geo>
-            ${geo.description!}<#if geo_has_next>; </#if>
-          </#list>
-        </#assign>
-        <#if resource.eml.geospatialCoverages?has_content>
-          <tr>
-            <th><@s.text name='portal.resource.summary.geocoverage'/></th>
-            <td><@description text!no_description 90/></td>
-          </tr></#if>
-      </table>
-    </div>
-  </div>
-</div>
-
-<div class="resourceOverview" id="sources">
-  <div class="titleOverview">
-    <div class="head">
-      <@s.text name='manage.overview.source.data'/>
-    </div>
-    <div class="actions">
-      <form action='addsource.do' method='post' enctype="multipart/form-data">
-        <input name="r" type="hidden" value="${resource.shortname}"/>
-        <input name="validate" type="hidden" value="false"/>
-        <@s.file name="file" key="manage.resource.create.file"/>
-        <@s.submit name="add" key="button.connectDB"/>
-        <@s.submit name="clear" key="button.clear"/>
-        <div style="display: none;">
-          <@s.submit name="cancel" key="button.cancel" method="cancelOverwrite"/>
-        </div>
-      </form>
-    </div>
-  </div>
-  <div class="bodyOverview">
-    <p>
-      <@s.text name='manage.overview.source.description1'><@s.param><@s.text name="button.add"/></@s.param></@s.text>
-      &nbsp;
-      <@s.text name='manage.overview.source.description2'><@s.param><@s.text name="button.connectDB"/></@s.param></@s.text>
-    </p>
-
-    <div class="details">
-      <table>
-        <#list resource.sources as src>
-          <tr>
-            <#if src.rows?exists>
-              <th>${src.name} <@s.text name='manage.overview.source.file'/></th>
-              <td>${src.fileSizeFormatted},&nbsp;${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>,&nbsp;${src.columns}&nbsp;<@s.text name='manage.overview.source.columns'/>.&nbsp;${(src.lastModified?datetime?string)!}<#if !src.readable>&nbsp;<img src="${baseURL}/images/warning.gif"/></#if></td>
-            <#else>
-              <th>${src.name} <@s.text name='manage.overview.source.sql'/></th>
-              <td>db=${src.database!"..."},&nbsp;${src.columns}&nbsp;<@s.text name='manage.overview.source.columns'/>.<#if !src.readable>&nbsp;<img src="${baseURL}/images/warning.gif"/></#if></td>
-            </#if>
-            <td>
-              <a class="button" href="source.do?r=${resource.shortname}&id=${src.name}">
-                <input class="button" type="button" value='<@s.text name='button.edit'/>'/>
-              </a>
-            </td>
-          </tr>
-        </#list>
-      </table>
-    </div>
-  </div>
-</div>
-
-<div class="resourceOverview" id="mappings">
-  <div class="titleOverview">
-    <div class="head">
-      <@s.text name='manage.overview.DwC.Mappings'/>
-    </div>
-    <div class="actions">
-      <#if (potentialExtensions?size>0)>
-        <form action='mapping.do' method='post'>
-          <input name="r" type="hidden" value="${resource.shortname}"/>
-          <select name="id" id="rowType" size="1">
-            <#-- if core hasn't been selected yet add help text to help user choose core type -->
-            <#if (!resource.coreType?has_content || resource.coreType?lower_case == "other") && (potentialExtensions?size > 1) >
-              <option><@s.text name='manage.overview.DwC.Mappings.select'/></option>
-            </#if>
-            <#list potentialExtensions as e>
-              <#if e?has_content>
-                <option value="${e.rowType}">${e.title}</option>
-              </#if>
-            </#list>
-          </select>
-          <@s.submit name="add" key="button.add"/>
-        </form>
-      </#if>
-    </div>
-  </div>
-  <div class="bodyOverview">
-    <p>
-      <#if (potentialExtensions?size>0)>
-        <@s.text name='manage.overview.DwC.Mappings.description'/>
-      <#else>
-        <@s.text name='manage.overview.DwC.Mappings.cantdo'/>
-      </#if>
-    </p>
-
-    <#-- if core hasn't been selected yet add help text to help user understand how to choose core type -->
-    <#if (potentialExtensions?size>1) && (!resource.coreType?has_content || resource.coreType?lower_case == "other") >
-      <p>
-        <img class="info" src="${baseURL}/images/info.gif"/>
-        <em><@s.text name='manage.overview.DwC.Mappings.coretype.description'/>
-      </p>
-    </#if>
-
-    <div class="details">
-      <table>
-        <#list resource.coreMappings as m>
-          <tr>
-            <th><#if m_index==0>${m.extension.title}</#if></th>
-            <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}</td>
-            <td>
-              <a class="button" href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType}&mid=${m_index}">
-                <input class="button" type="button" value='<@s.text name='button.edit'/>'/>
-              </a>
-            </td>
-          </tr>
-        </#list>
-        <#list resource.getMappedExtensions() as ext>
-          <#if !ext.isCore()>
-            <#list resource.getMappings(ext.rowType) as m>
-              <tr>
-                <th><#if m_index==0>${ext.title}</#if></th>
-                <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}</td>
-                <td>
-                  <a class="button" href="mapping.do?r=${resource.shortname}&id=${ext.rowType}&mid=${m_index}">
-                    <input class="button" type="button" value='<@s.text name='button.edit'/>'/>
-                  </a>
-                </td>
-              </tr>
-            </#list>
-          </#if>
-        </#list>
-      </table>
-    </div>
-  </div>
-</div>
+<!-- when resource is of type metadata-only, there is no need to show source data and mapping sections -->
+<#assign metadataType = "metadata"/>
+<#if resource.coreType?has_content && resource.coreType==metadataType>
+  <#include "/WEB-INF/pages/manage/overview_metadata.ftl"/>
+<#else>
+  <#include "/WEB-INF/pages/manage/overview_data.ftl"/>
+  <#include "/WEB-INF/pages/manage/overview_metadata.ftl"/>
+</#if>
 
 <div class="resourceOverview" id="publish">
   <div class="titleOverview">
@@ -303,8 +129,13 @@ $(document).ready(function(){
   </div>
   <div class="bodyOverview">
     <p>
-      <@s.text name="manage.overview.published.description"/>
+      <#if resource.coreType?has_content && resource.coreType==metadataType>
+        <@s.text name="manage.overview.published.description.metadataOnly"/>
+      <#else>
+        <@s.text name="manage.overview.published.description"/>
+      </#if>
     </p>
+
     <#if missingMetadata>
         <div>
             <img class="info" src="${baseURL}/images/info.gif"/>
@@ -353,8 +184,8 @@ $(document).ready(function(){
                 </a>
                 <!-- ensure a space separates see report link, and publication log link-->
                 &nbsp;
+                <a href="${baseURL}/publicationlog.do?r=${resource.shortname}"><@s.text name='portal.publication.log'/></a>
               </#if>
-              <a href="${baseURL}/publicationlog.do?r=${resource.shortname}"><@s.text name='portal.publication.log'/></a>
             </td>
           </tr>
           <#if report??>
@@ -486,7 +317,7 @@ $(document).ready(function(){
             <td>${resource.key} <a href="${cfg.registryUrl}/browse/agent?uuid=${resource.key}" target="_blank">GBRDS</a>
             </td>
           </tr>
-          <#if resource.organisation?exists>
+          <#if resource.organisation??>
             <tr>
               <th><@s.text name="manage.overview.visibility.organisation"/></th>
               <td>${resource.organisation.name!}</td>

@@ -76,6 +76,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
 import com.google.inject.struts2.Struts2GuicePluginModule;
+import org.apache.commons.lang.xwork.StringUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.junit.Before;
 import org.junit.Test;
@@ -119,6 +120,9 @@ public class ResourceManagerImplTest {
   private Organisation organisation;
   private JdbcSupport support;
 
+  private static final String DATASET_TYPE_OCCURRENCE_IDENTIFIER = "occurrence";
+  private static final String DATASET_SUBTYPE_SPECIMEN_IDENTIFIER = "specimen";
+
   @Before
   public void setup() {
     // create user.
@@ -155,7 +159,7 @@ public class ResourceManagerImplTest {
     datasetSubtypes.put("inventoryRegional", "Inventory Regional");
     datasetSubtypes.put("globalSpeciesDataset", "Global Species Dataset");
     datasetSubtypes.put("derivedFromOccurrence", "Derived from Occurrence");
-    datasetSubtypes.put("specimen", "Specimen");
+    datasetSubtypes.put(DATASET_SUBTYPE_SPECIMEN_IDENTIFIER, "Specimen");
     datasetSubtypes.put("observation", "Observation");
     // mock getting the vocabulary
     when(mockVocabulariesManager.getI18nVocab(anyString(),anyString(), anyBoolean())).thenReturn(datasetSubtypes);
@@ -216,7 +220,7 @@ public class ResourceManagerImplTest {
     File zippedResourceFolder = FileUtils.getClasspathFile("resources/res1.zip");
 
     // create a new resource.
-    resourceManager.create("res1", zippedResourceFolder, creator, baseAction);
+    resourceManager.create("res1", null, zippedResourceFolder, creator, baseAction);
 
     // test if new resource was added to the resources list.
     assertEquals(1, resourceManager.list().size());
@@ -300,7 +304,7 @@ public class ResourceManagerImplTest {
     when(mockSourceManager.add(any(Resource.class), any(File.class), anyString())).thenReturn(fileSource);
 
     // create a new resource.
-    resourceManager.create("res2", dwca, creator, baseAction);
+    resourceManager.create("res2", null, dwca, creator, baseAction);
 
     // test if new resource was added to the resources list.
     assertEquals(1, resourceManager.list().size());
@@ -380,7 +384,7 @@ public class ResourceManagerImplTest {
     when(mockSourceManager.add(any(Resource.class), any(File.class), anyString())).thenReturn(fileSource);
 
     // create a new resource.
-    resourceManager.create("res-single-gz", dwca, creator, baseAction);
+    resourceManager.create("res-single-gz", null, dwca, creator, baseAction);
 
     // test if new resource was added to the resources list.
     assertEquals(1, resourceManager.list().size());
@@ -428,7 +432,7 @@ public class ResourceManagerImplTest {
     File zippedResourceFolder = FileUtils.getClasspathFile("resources/res1.zip");
 
     // create a new resource.
-    resourceManager.create("res1", zippedResourceFolder, creator, baseAction);
+    resourceManager.create("res1", null, zippedResourceFolder, creator, baseAction);
   }
 
   /**
@@ -440,7 +444,7 @@ public class ResourceManagerImplTest {
     ResourceManager resourceManager = getResourceManagerImpl();
 
     // create a new resource.
-    resourceManager.create("math", creator);
+    resourceManager.create("math", Constants.DATASET_TYPE_METADATA_IDENTIFIER, creator);
 
     // test if new resource was added to the resources list.
     assertEquals(1, resourceManager.list().size());
@@ -451,10 +455,10 @@ public class ResourceManagerImplTest {
     // test if resource was added correctly.
     assertEquals("math", addedResource.getShortname());
     assertEquals(creator, addedResource.getCreator());
+    assertEquals(Constants.DATASET_TYPE_METADATA_IDENTIFIER, addedResource.getCoreType());
 
     // test if resource.xml was created.
     assertTrue(mockedDataDir.resourceFile("math", ResourceManagerImpl.PERSISTENCE_FILE).exists());
-
   }
 
   /**
@@ -468,14 +472,11 @@ public class ResourceManagerImplTest {
     String shortName = "ants";
 
     // create a new resource.
-    resourceManager.create(shortName, creator);
-
+    resourceManager.create(shortName, DATASET_TYPE_OCCURRENCE_IDENTIFIER, creator);
     // get added resource.
     Resource addedResource = resourceManager.get(shortName);
-    // indicate it is a dataset with type Occurrence
-    addedResource.setCoreType("occurrence");
     // indicate it is a dataset subtype Specimen
-    addedResource.setSubtype("specimen");
+    addedResource.setSubtype(DATASET_SUBTYPE_SPECIMEN_IDENTIFIER);
 
     // add SQL source, and save resource
     Source.SqlSource source = new Source.SqlSource();
@@ -521,14 +522,17 @@ public class ResourceManagerImplTest {
 
     // make some assertions about resource
     assertEquals(shortName, persistedResource.getShortname());
+    assertEquals(DATASET_TYPE_OCCURRENCE_IDENTIFIER, persistedResource.getCoreType());
     assertEquals(PublicationStatus.PRIVATE, persistedResource.getStatus());
     assertEquals(1, persistedResource.getSources().size());
     assertEquals(0, persistedResource.getEmlVersion());
     assertEquals(0, persistedResource.getRecordsPublished());
     // should be 1 KeywordSet corresponding to Dataset Type vocabulary
     assertEquals(2, persistedResource.getEml().getKeywords().size());
-    assertEquals("Occurrence", persistedResource.getEml().getKeywords().get(0).getKeywordsString());
-    assertEquals("Specimen", persistedResource.getEml().getKeywords().get(1).getKeywordsString());
+    assertEquals(StringUtils.capitalize(DATASET_TYPE_OCCURRENCE_IDENTIFIER),
+      persistedResource.getEml().getKeywords().get(0).getKeywordsString());
+    assertEquals(StringUtils.capitalize(DATASET_SUBTYPE_SPECIMEN_IDENTIFIER),
+      persistedResource.getEml().getKeywords().get(1).getKeywordsString());
 
     // make some assertions about SQL source
     Source.SqlSource persistedSource = (Source.SqlSource) persistedResource.getSources().get(0);
@@ -573,10 +577,10 @@ public class ResourceManagerImplTest {
     // assert the subtype has been set to null, since it doesn't correspond to a known vocab term
     assertEquals(null, resource.getSubtype());
 
-    resource.setSubtype("specimen");
+    resource.setSubtype(DATASET_SUBTYPE_SPECIMEN_IDENTIFIER);
     resource = manager.standardizeSubtype(resource);
     // assert the subtype has been set to "specimen", since it does correspond to the known vocab term "specimen"
-    assertEquals("specimen", resource.getSubtype());
+    assertEquals(DATASET_SUBTYPE_SPECIMEN_IDENTIFIER, resource.getSubtype());
   }
 
   @Test

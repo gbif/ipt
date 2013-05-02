@@ -25,6 +25,7 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.CountryUtils;
 import org.gbif.ipt.utils.LangUtils;
+import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.validation.EmlValidator;
 import org.gbif.ipt.validation.ResourceValidator;
 import org.gbif.metadata.eml.Agent;
@@ -236,7 +237,7 @@ public class MetadataAction extends ManagerBaseAction {
     types.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_TYPE, getLocaleLanguage(), false));
     // convert all keys in Map to lowercase, in order to standardize keys across different versions of the IPT, as well
     // as to facilitate grouping of subtypes, please see groupDatasetSubtypes()
-    types = getMapWithLowercaseKeys(types);
+    types = MapUtils.getMapWithLowercaseKeys(types);
 
     // languages list, derived from XML vocabulary, and displayed in drop-down on Basic Metadata page
     languages = vocabManager.getI18nVocab(Constants.VOCAB_URI_LANGUAGE, getLocaleLanguage(), true);
@@ -262,7 +263,7 @@ public class MetadataAction extends ManagerBaseAction {
     datasetSubtypes.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_SUBTYPES, getLocaleLanguage(), false));
     // convert all keys in Map to lowercase, in order to standardize keys across different versions of the IPT, as well
     // as to facilitate grouping of subtypes, please see groupDatasetSubtypes()
-    datasetSubtypes = getMapWithLowercaseKeys(datasetSubtypes);
+    datasetSubtypes = MapUtils.getMapWithLowercaseKeys(datasetSubtypes);
     // group subtypes into Checklist and Occurrence - used for getOccurrenceSubtypeKeys() and getChecklistSubtypeKeys()
     groupDatasetSubtypes();
 
@@ -449,20 +450,6 @@ public class MetadataAction extends ManagerBaseAction {
     Map<String, String> subtypeMap = new LinkedHashMap<String, String>();
     subtypeMap.put("", getText("resource.subtype.none"));
     return subtypeMap;
-  }
-
-  /**
-   * Iterates over the datasetSubtypes map, and copies each entry to a new Map. The only difference, is that the
-   * key is replaced with an all lowercase key instead.
-   *
-   * @return modified datasetSubtypes map
-   */
-  Map<String, String> getMapWithLowercaseKeys(Map<String, String> m) {
-    Map<String, String> copy = new LinkedHashMap<String, String>();
-    for (Map.Entry<String, String> entry : m.entrySet()) {
-      copy.put(entry.getKey().toLowerCase(), entry.getValue());
-    }
-    return copy;
   }
 
   /**

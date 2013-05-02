@@ -17,6 +17,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import javax.annotation.Nullable;
 
 import com.google.inject.Inject;
 import org.apache.commons.io.IOUtils;
@@ -33,6 +34,7 @@ public class CreateResourceAction extends POSTAction {
   private String fileContentType;
   private String fileFileName;
   private String shortname;
+  private String resourceType;
   private final ResourceValidator validator = new ResourceValidator();
 
   @Inject
@@ -52,9 +54,9 @@ public class CreateResourceAction extends POSTAction {
     try {
       File tmpFile = uploadToTmp();
       if (tmpFile == null) {
-        resourceManager.create(shortname, getCurrentUser());
+        resourceManager.create(shortname, resourceType, getCurrentUser());
       } else {
-        resourceManager.create(shortname, tmpFile, getCurrentUser(), this);
+        resourceManager.create(shortname, resourceType, tmpFile, getCurrentUser(), this);
       }
     } catch (AlreadyExistingException e) {
       addFieldError("resource.shortname", getText("validation.resource.shortname.exists", new String[] {shortname}));
@@ -132,4 +134,17 @@ public class CreateResourceAction extends POSTAction {
     }
   }
 
+  /**
+   * Resource (core) type.
+   *
+   * @return resource core type
+   */
+  @Nullable
+  public String getResourceType() {
+    return resourceType;
+  }
+
+  public void setResourceType(String resourceType) {
+    this.resourceType = resourceType;
+  }
 }

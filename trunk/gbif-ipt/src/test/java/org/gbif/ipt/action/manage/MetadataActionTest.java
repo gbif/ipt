@@ -5,6 +5,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.utils.MapUtils;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -41,7 +42,7 @@ public class MetadataActionTest {
     // set Map
     action.setDatasetSubtypes(datasetSubtypes);
     // make all keys lower case in datasetSubtypes Map
-    action.setDatasetSubtypes(action.getMapWithLowercaseKeys(datasetSubtypes));
+    action.setDatasetSubtypes(MapUtils.getMapWithLowercaseKeys(datasetSubtypes));
   }
 
   @Test
