@@ -43,6 +43,7 @@ public interface ResourceManager {
    * Create a new Resource.
    *
    * @param shortname Resource's shortName
+   * @param type      resource type
    * @param dwca      DwC-A file
    * @param creator   Creator User
    * @param action    action
@@ -52,20 +53,21 @@ public interface ResourceManager {
    * @throws AlreadyExistingException if Resource already existed
    * @throws ImportException          if a problem occurred importing the DwC-A file
    */
-  Resource create(String shortname, File dwca, User creator, BaseAction action)
+  Resource create(String shortname, String type, File dwca, User creator, BaseAction action)
     throws AlreadyExistingException, ImportException;
 
   /**
    * Create a new Resource.
    *
    * @param shortname Resource's shortName
+   * @param type      resource type
    * @param creator   Creator User
    *
    * @return Resource newly created, or null if it couldn't be created successfully
    *
    * @throws AlreadyExistingException if Resource already existed
    */
-  Resource create(String shortname, User creator) throws AlreadyExistingException;
+  Resource create(String shortname, String type, User creator) throws AlreadyExistingException;
 
   /**
    * Deletes a Resource.

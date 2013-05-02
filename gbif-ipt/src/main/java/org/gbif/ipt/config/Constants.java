@@ -34,4 +34,5 @@ public final class Constants {
   public static final String THESAURUS_DATASET_TYPE = "GBIF Dataset Type Vocabulary: " + VOCAB_URI_DATASET_TYPE;
   public static final String THESAURUS_DATASET_SUBTYPE =
     "GBIF Dataset Subtype Vocabulary: " + VOCAB_URI_DATASET_SUBTYPES;
+  public static final String DATASET_TYPE_METADATA_IDENTIFIER = "metadata";
 }

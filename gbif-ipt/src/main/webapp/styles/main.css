@@ -621,6 +621,8 @@ div a.button {
 
 #create_do input { width: 50%; }
 #create_do div.buttons input {width: auto;}
+#create_do div.checkbox input { width: auto; }
+#create_do div.checkbox div { width: 20%; }
 
 /* To indicate the width should be cut 50% - used for example on the create new resource template */
 div.half{

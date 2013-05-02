@@ -35,7 +35,7 @@ public class POSTAction extends BaseAction {
     // if this is a GET request we request the INPUT form
     if (isHttpPost()) {
       // if its a POST we either save or delete
-      // suplied default methods which be overridden
+      // supplied default methods which be overridden
       String result = delete ? delete() : save();
       // check again if notFound was set
       // this also allows the load() or delete() method to set the flag

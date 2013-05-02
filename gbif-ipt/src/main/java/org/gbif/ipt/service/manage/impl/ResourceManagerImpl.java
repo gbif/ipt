@@ -247,9 +247,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return eml;
   }
 
-  public Resource create(String shortname, File dwca, User creator, BaseAction action)
+  public Resource create(String shortname, String type, File dwca, User creator, BaseAction action)
     throws AlreadyExistingException, ImportException {
     ActionLogger alog = new ActionLogger(this.log, action);
+    Resource resource;
     // decompress archive
     List<File> decompressed = null;
     File dwcaDir = dataDir.tmpDir();
@@ -270,13 +271,20 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // create resource:
     // if decompression failed, create resource from single eml file
     if (decompressed == null) {
-      return createFromEml(shortname, dwca, creator, alog);
+      resource = createFromEml(shortname, dwca, creator, alog);
     }
     // if decompression succeeded, create resource depending on whether file was 'IPT Resource Folder' or a 'DwC-A'
     else {
-      return (isIPTResourceFolder(dwcaDir)) ? createFromIPTResourceFolder(shortname, dwcaDir.listFiles()[0], creator,
+      resource = (isIPTResourceFolder(dwcaDir)) ? createFromIPTResourceFolder(shortname, dwcaDir.listFiles()[0], creator,
         alog) : createFromArchive(shortname, dwcaDir, creator, alog);
     }
+
+    // set resource type, if it hasn't been set already
+    if (type != null && Strings.isNullOrEmpty(resource.getCoreType()) ) {
+      resource.setCoreType(type);
+    }
+
+    return resource;
   }
 
   /**
@@ -436,7 +444,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
-  public Resource create(String shortname, User creator) throws AlreadyExistingException {
+  public Resource create(String shortname, String type, User creator) throws AlreadyExistingException {
     Resource res = null;
     if (shortname != null) {
       // convert short name to lower case
@@ -449,6 +457,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       res.setShortname(lower);
       res.setCreated(new Date());
       res.setCreator(creator);
+      if (type != null) {
+        res.setCoreType(type);
+      }
       // create dir
       try {
         save(res);
@@ -471,23 +482,25 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // otherwise, open the dwca with dwca reader
         arch = ArchiveFactory.openArchive(dwca);
       }
-      // create new resource once we know the archive can be read
-      resource = create(shortname, creator);
-      // keep track of source files as an dwc archive might refer to the same source file multiple times
+
+      // keep track of source files as a dwca might refer to the same source file multiple times
       Map<String, FileSource> sources = new HashMap<String, FileSource>();
       if (arch.getCore() != null) {
+
+        // determine coreType for the resource
+        String coreRowType = StringUtils.trimToNull(arch.getCore().getRowType());
+        coreRowType = (coreRowType != null && coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON)) ?
+          StringUtils.capitalize(CoreRowType.CHECKLIST.toString().toLowerCase()) :
+          StringUtils.capitalize(CoreRowType.OCCURRENCE.toString().toLowerCase());
+
+        // create new resource
+        resource = create(shortname, coreRowType, creator);
+
         // read core source+mappings
         FileSource s = importSource(resource, arch.getCore());
         sources.put(arch.getCore().getLocation(), s);
         ExtensionMapping map = importMappings(alog, arch.getCore(), s);
-        String coreRowType = arch.getCore().getRowType();
-        // Set the coreType for the resource
-        if (coreRowType != null) {
-          resource.setCoreType(StringUtils.capitalize(CoreRowType.OCCURRENCE.toString().toLowerCase()));
-          if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON)) {
-            resource.setCoreType(StringUtils.capitalize(CoreRowType.CHECKLIST.toString().toLowerCase()));
-          }
-        }
+
         resource.addMapping(map);
         // read extension sources+mappings
         for (ArchiveFile ext : arch.getExtensions()) {
@@ -557,8 +570,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       alog.error("manage.resource.create.failed");
       throw e;
     }
-    // create resource with Eml instance
-    Resource resource = create(shortname, creator);
+    // create resource of type metadata, with Eml instance
+    Resource resource = create(shortname, Constants.DATASET_TYPE_METADATA_IDENTIFIER, creator);
     resource.setEml(eml);
     return resource;
   }

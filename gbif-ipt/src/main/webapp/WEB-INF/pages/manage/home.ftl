@@ -8,6 +8,11 @@
 <link rel="stylesheet" type="text/css" media="all" href="${baseURL}/styles/jquery/dataTable.css"/>
 <script type="text/javascript" language="javascript" src="${baseURL}/js/jquery/jquery.js"></script>
 <script type="text/javascript" language="javascript" src="${baseURL}/js/jquery/jquery.dataTables.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        initHelp();
+    });
+</script>
   <@resourcesTable shownPublicly=false numResourcesShown=10 sEmptyTable="manage.home.resources.none" columnToSortOn=6 sortOrder="desc"/>
 
 <h1><@s.text name="manage.home.title"/></h1>
@@ -15,7 +20,7 @@
 
 <div id="new-resource" class="grid_18">
 
-    <h2><@s.text name="manage.resource.create.title"/></h2>
+  <h2><@s.text name="manage.resource.create.title"/></h2>
   <#include "inc/create_new_resource.ftl"/>
 
 </div>
