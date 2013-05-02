@@ -472,6 +472,10 @@ public class ResourceManagerImplTest {
 
     // get added resource.
     Resource addedResource = resourceManager.get(shortName);
+    // indicate it is a dataset with type Occurrence
+    addedResource.setCoreType("occurrence");
+    // indicate it is a dataset subtype Specimen
+    addedResource.setSubtype("specimen");
 
     // add SQL source, and save resource
     Source.SqlSource source = new Source.SqlSource();
@@ -521,6 +525,10 @@ public class ResourceManagerImplTest {
     assertEquals(1, persistedResource.getSources().size());
     assertEquals(0, persistedResource.getEmlVersion());
     assertEquals(0, persistedResource.getRecordsPublished());
+    // should be 1 KeywordSet corresponding to Dataset Type vocabulary
+    assertEquals(2, persistedResource.getEml().getKeywords().size());
+    assertEquals("Occurrence", persistedResource.getEml().getKeywords().get(0).getKeywordsString());
+    assertEquals("Specimen", persistedResource.getEml().getKeywords().get(1).getKeywordsString());
 
     // make some assertions about SQL source
     Source.SqlSource persistedSource = (Source.SqlSource) persistedResource.getSources().get(0);

@@ -31,4 +31,7 @@ public final class Constants {
   public static final String DEPRECATED_VOCAB_URL_RESOLVABLE_RESOURCE_TYPE = "http_rs_gbif_org_vocabulary_gbif_resource_type_xml.vocab";
   public static final String[] IMAGE_TYPES = {"jpeg", "gif", "png"};
   public static final String GBIF_HOME_PAGE_URL = "http://www.gbif.org";
+  public static final String THESAURUS_DATASET_TYPE = "GBIF Dataset Type Vocabulary: " + VOCAB_URI_DATASET_TYPE;
+  public static final String THESAURUS_DATASET_SUBTYPE =
+    "GBIF Dataset Subtype Vocabulary: " + VOCAB_URI_DATASET_SUBTYPES;
 }

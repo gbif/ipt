@@ -59,10 +59,12 @@ import org.gbif.ipt.task.ReportHandler;
 import org.gbif.ipt.task.StatusReport;
 import org.gbif.ipt.task.TaskMessage;
 import org.gbif.ipt.utils.ActionLogger;
+import org.gbif.ipt.utils.EmlUtils;
 import org.gbif.metadata.BasicMetadata;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlFactory;
 import org.gbif.metadata.eml.EmlWriter;
+import org.gbif.metadata.eml.KeywordSet;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
 
@@ -96,6 +98,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import javax.annotation.Nullable;
 
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.lowagie.text.Document;
@@ -1513,11 +1516,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * Updates the EML version and EML GUID. The GUID is set to the Registry UUID if the resource is
    * registered, otherwise it is set to the resource URL.
    * </br>
+   * This method also updates the EML list of KeywordSet with the dataset type and subtype.
+   * </br>
    * This method must be called before persisting the EML file to ensure that the EML file and resource are in sync.
    *
    * @param resource Resource
    */
   private void syncEmlWithResource(Resource resource) {
+    // set EML version
     resource.getEml().setEmlVersion(resource.getEmlVersion());
     // we need some GUID. If we have use the registry key, if not use the resource URL
     if (resource.getKey() != null) {
@@ -1525,6 +1531,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     } else {
       resource.getEml().setGuid(getResourceLink(resource.getShortname()).toString());
     }
+    // add/update KeywordSet for dataset type and subtype
+    updateKeywordsWithDatasetTypeAndSubtype(resource);
   }
 
   public void updateRegistration(Resource resource, BaseAction action) throws PublicationException {
@@ -1678,5 +1686,46 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       // save change to resource
       save(resource);
     }
+  }
+
+  /**
+   * Try to add/update/remove KeywordSet for dataset type and subtype.
+   *
+   * @param resource resource
+   *
+   * @return resource whose Eml list of KeywordSet has been updated depending on presence of dataset type or subtype
+   */
+  protected Resource updateKeywordsWithDatasetTypeAndSubtype(Resource resource) {
+    Eml eml = resource.getEml();
+    if (eml != null) {
+      // retrieve a list of the resource's keywords
+      List<KeywordSet> keywords = eml.getKeywords();
+      if (keywords != null) {
+        // add or update KeywordSet for dataset type
+        String type = resource.getCoreType();
+        if (!Strings.isNullOrEmpty(type)) {
+          EmlUtils.addOrUpdateKeywordSet(keywords, type, Constants.THESAURUS_DATASET_TYPE);
+          log.debug("GBIF Dataset Type Vocabulary added/updated to Resource's list of keywords");
+        }
+        // its absence means that it must removed (if it exists)
+        else {
+          EmlUtils.removeKeywordSet(keywords, Constants.THESAURUS_DATASET_TYPE);
+          log.debug("GBIF Dataset Type Vocabulary removed from Resource's list of keywords");
+        }
+
+        // add or update KeywordSet for dataset subtype
+        String subtype = resource.getSubtype();
+        if (!Strings.isNullOrEmpty(subtype)) {
+          EmlUtils.addOrUpdateKeywordSet(keywords, subtype, Constants.THESAURUS_DATASET_SUBTYPE);
+          log.debug("GBIF Dataset Subtype Vocabulary added/updated to Resource's list of keywords");
+        }
+        // its absence means that it must be removed (if it exists)
+        else {
+          EmlUtils.removeKeywordSet(keywords, Constants.THESAURUS_DATASET_SUBTYPE);
+          log.debug("GBIF Dataset Type Vocabulary removed from Resource's list of keywords");
+        }
+      }
+    }
+    return resource;
   }
 }
