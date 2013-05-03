@@ -170,6 +170,10 @@ resource.coreType.help=El tipo del recurso. El valor de este campo depende del m
 resource.subtype.help=El subtipo del recurso. Las opciones de este elemento dependen del elemento Tipo. <ul><li><b>Autoridad Taxonómica:</b> una lista de chequeo taxonómica que es autoridad en su clasificación y sinonimia<br /></li><li><b>Autoridad Nomenclatural:</b> una lista de chequeo nomenclatural que es autoridad en los nombres y la información de publicación<br /></li><li><b>Inventario Temático:</b> una lista de chequeo temática que contiene un tema por nombres de agrupación, e.g. parásitos de elefantes<br /></li><li><b>Inventario Regional:</b> una lista de chequeo regional que contiene una comunidad regional en nombres de agrupación, e.g. especies en un área protegida<br /></li><li><b> Conjunto de Datos de Especies Globales:</b> una lista taxonómica con cobertura espacial global. Este subtipo es usado particularmente por el catálogo de la vida para ensamblar sus agregados<br /></li><li><b>Derivado del Registro Biológico:</b> una lista de chequeo taxonómica que se deriva de los datos que fueron originalmente datos de registros biológicos<br /></li><li><b>Espécimen:</b> datos de los especímenes. Posible colección de museo<br /></li><li><b>Observación:</b> datos de observaciones. Posibles monitoreos y observaciones de campo<br /></li></ul>
 resource.subtype.selection=Seleccione un subtipo
 resource.subtype.none=Sin subtipo
+resource.updateFrequency.selection=TODO: Select an update frequency
+resource.updateFrequency=TODO: Update Frequency
+resource.updateFrequency.help=TODO: The frequency with which changes and additions are made to the dataset after the initial dataset is completed. Choosing daily, weekly, monthly, biannually, or annually qualifies the resource to be configured to use auto-publishing mode: <ul><li><b>Annually:</b> updated 1 time each year<br /></li><li><b>As needed:</b> updated as needed<br /></li><li><b>Biannually:</b> updated 2 times each year<br /></li><li><b>Continually:</b> updated continually<br /></li><li><b>Daily:</b> updated 1 time each day<br /></li><li><b>Irregular:</b> updated at irregular intervals<br /></li><li><b>Monthly:</b> updated 1 time each month<br /></li><li><b>Not planned:</b> further updates are not planned<br /></li><li><b>Weekly:</b> updated 1 time each week<br /></li><li><b>Unknown:</b>further updates may still happen, but it is not known for sure<br /></li><li><b>Other maintenance period:</b> updated according to some other interval.<br /></li></ul>
+
 
 # sources
 source.name=Nombre de la Fuente
@@ -300,6 +304,7 @@ portal.home.type=Tipo
 portal.home.records=Registros
 portal.home.modified=Última modificación
 portal.home.last.publication=Última publicación
+manage.home.next.publication=TODO: Next publication
 portal.home.not.published=No publicado
 portal.home.author=Autor
 portal.login=Iniciar Sesión
@@ -619,7 +624,7 @@ manage.resource.delete.confirm.registered=La eliminación del Índice de GBIF no
 manage.resource.delete.failed=Error al borrar el recurso.
 manage.resource.status.intro.private=Este recurso es privado para los administradores. Para hacer este recurso disponible a todo el mundo, hágalo publico.
 manage.resource.status.intro.public=Este recurso es publico y disponible para todo el mundo.
-manage.resource.status.intro.public.migration=Si desea que este recurso actualice un recurso DiGIR, BioCASE o TAPIR existente, por favor asegúrese que el recurso esté registrado con la misma organización propietaria, y que el UUID del recurso existente registrado, haya sido adicionado a la lista de identificadores alternativos del recurso en la página de metadatos adicionales.
+manage.resource.status.intro.public.migration=Si desea que este recurso actualice un recurso DiGIR, BioCASE o TAPIR existente, por favor asegúrese que el recurso esté registrado con la misma organización propietaria, y que el UUID del recurso existente registrado, haya sido adicionado a la lista de identificadores alternativos del recurso en la página de {0}.
 manage.resource.status.intro.registered=Este recurso publico es registrado en GBIF. Para cambiar este estado, debe borrar todo el recurso y contactar al <a href=''mailto:helpdesk@gbif.org''>GBIF Help Desk</a>.
 manage.resource.status.registration.intro=Para que se pueda descubrir el recurso, por favor seleccione la organización a la cual el recurso esta asociado y regístrelo en GBIF. Para que sea accesible solo a los administradores, hágalo privado.
 manage.resource.status.registration.forbidden=No tiene el permiso necesario para registrar este recurso con GBIF. Por favor contacte al administrador del IPT si cree que debería tener dichos permisos.
@@ -746,6 +751,23 @@ publishing.error=TODO: An error of type {0} was encountered during publishing: {
 publishing.failed=TODO: Publishing version #{0} of resource {1} failed: {2}
 restore.resource.success=TODO: Restored version #{0} of resource {1} after publishing failure
 restore.resource.failed=TODO: Restoring version #{0} of resource {1} failed: {2}
+
+# Auto-publishing
+autopublish=TODO: Auto-publishing
+autopublish.intro=TODO: The resource can be auto-published daily, weekly, monthly, biannually, or annually. To do so, first select one of these 5 update frequencies in your {0}, then press publish and confirm auto-publishing in the dialog that appears.
+autopublish.confirm=TODO: You have indicated in your metadata that the resource is updated {0}. Do you want to turn on auto-publishing mode for this resource?
+autopublish.yes=TODO: Publish version #{0}
+autopublish.yesChecked=TODO: Publish version #{0}, and auto-publish future versions
+autopublish.confirm.header=TODO: Publish new version?
+autopublish.never=TODO: Disable, and don''t ask again
+autopublish.off=TODO: Turn off
+autopublish.on=TODO: Turn on
+autopublish.switched.off=TODO: Auto-publishing turned off
+autopublish.disable.undo=TODO: Auto-publishing no longer disabled
+autopublish.invalid.operation=TODO: The requested change was an invalid. Please refresh the resource page to see the correct current state.
+autopublish.status.on=TODO: On
+autopublish.status.disabled=TODO: Disabled
+autopublish.undo=TODO: Undo
 
 manage.overview.resource.managers=Administradores de Recursos
 manage.overview.resource.managers.description=Los recursos pueden ser gestionados por varios administradores. Puede dar permisos a otros administradores para modificar {0}.
@@ -1129,6 +1151,5 @@ xwork.default.invalid.fieldvalue=Valor inválido
 dataTables.sInfo=Mostrando _START_ a _END_ de _TOTAL_ recursos
 dataTables.sInfoEmpty=Mostrando 0 a 0 de 0 recursos
 dataTables.sInfoFiltered=(filtrado de _MAX_ en total)
-dataTables.search=Buscar
 dataTables.sEmptyTable=Actualmente no hay recursos disponibles
 dataTables.sZeroRecords=No se han encontrado recursos

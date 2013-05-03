@@ -184,6 +184,10 @@ resource.coreType.help=資源的類型。此欄位的值取決於此資源的核
 resource.subtype.help=資源的次類型。此欄位的選項取決於核心集類型。
 resource.subtype.selection=選擇一種次類型
 resource.subtype.none=無
+resource.updateFrequency.selection=TODO: Select an update frequency
+resource.updateFrequency=TODO: Update Frequency
+resource.updateFrequency.help=TODO: The frequency with which changes and additions are made to the dataset after the initial dataset is completed. Choosing daily, weekly, monthly, biannually, or annually qualifies the resource to be configured to use auto-publishing mode: <ul><li><b>Annually:</b> updated 1 time each year<br /></li><li><b>As needed:</b> updated as needed<br /></li><li><b>Biannually:</b> updated 2 times each year<br /></li><li><b>Continually:</b> updated continually<br /></li><li><b>Daily:</b> updated 1 time each day<br /></li><li><b>Irregular:</b> updated at irregular intervals<br /></li><li><b>Monthly:</b> updated 1 time each month<br /></li><li><b>Not planned:</b> further updates are not planned<br /></li><li><b>Weekly:</b> updated 1 time each week<br /></li><li><b>Unknown:</b>further updates may still happen, but it is not known for sure<br /></li><li><b>Other maintenance period:</b> updated according to some other interval.<br /></li></ul>
+
 
 # sources
 source.name=資料庫來源名稱
@@ -313,6 +317,7 @@ portal.home.organisation=單位組織
 portal.home.records=紀錄筆數
 portal.home.modified=最後修改時間
 portal.home.last.publication=上次發布
+manage.home.next.publication=TODO: Next publication
 portal.home.not.published=尚未發布
 portal.home.author=作者
 portal.login=登入
@@ -627,7 +632,7 @@ manage.resource.delete.confirm.registered=刪除 GBIF 登錄的已註冊資源�
 manage.resource.delete.failed=無法移除資資源。
 manage.resource.status.intro.private=資料管理者尚未公開此資源。為使所有人均能獲取此資源，請將其設定為公開狀態。
 manage.resource.status.intro.public=此資源已公開，所有人均可使用。
-manage.resource.status.intro.public.migration=如果您想要以此資源更新已經由 DiGIR, BioCASE 或 TAPIR 發布之同一資源，請確認此資源註冊至同一單位組織，並請到「其它元數據」頁面，在「替代的識別碼」中填入已註冊的 UUID。
+manage.resource.status.intro.public.migration=TODO: replace "additional metadata" with "{0}" 如果您想要以此資源更新已經由 DiGIR, BioCASE 或 TAPIR 發布之同一資源，請確認此資源註冊至同一單位組織，並請到「其它元數據」頁面，在「替代的識別碼」中填入已註冊的 UUID。
 manage.resource.status.intro.registered=此資源已向 GBIF 註冊。欲刪除註冊狀態，必須刪除整份資源並以電子郵件連繫 <a href=''mailto:helpdesk@gbif.org''>GBIF Help Desk</a>。
 manage.resource.status.registration.intro=要使資料集可公開存取，請選擇資源所屬的單位組織向 GBIF 註冊。若資源僅供資料管理員存取，則將資源設為不公開。
 manage.resource.status.registration.forbidden=您不具有向 GBIF 註冊此資源的角色權限。若您認為應擁有此權限，請聯繫 IPT 管理員。
@@ -755,6 +760,23 @@ publishing.error=TODO: An error of type {0} was encountered during publishing: {
 publishing.failed=TODO: Publishing version #{0} of resource {1} failed: {2}
 restore.resource.success=TODO: Restored version #{0} of resource {1} after publishing failure
 restore.resource.failed=TODO: Restoring version #{0} of resource {1} failed: {2}
+
+# Auto-publishing
+autopublish=TODO: Auto-publishing
+autopublish.intro=TODO: The resource can be auto-published daily, weekly, monthly, biannually, or annually. To do so, first select one of these 5 update frequencies in your {0}, then press publish and confirm auto-publishing in the dialog that appears.
+autopublish.confirm=TODO: You have indicated in your metadata that the resource is updated {0}. Do you want to turn on auto-publishing mode for this resource?
+autopublish.yes=TODO: Publish version #{0}
+autopublish.yesChecked=TODO: Publish version #{0}, and auto-publish future versions
+autopublish.confirm.header=TODO: Publish new version?
+autopublish.never=TODO: Disable, and don''t ask again
+autopublish.off=TODO: Turn off
+autopublish.on=TODO: Turn on
+autopublish.switched.off=TODO: Auto-publishing turned off
+autopublish.disable.undo=TODO: Auto-publishing no longer disabled
+autopublish.invalid.operation=TODO: The requested change was an invalid. Please refresh the resource page to see the correct current state.
+autopublish.status.on=TODO: On
+autopublish.status.disabled=TODO: Disabled
+autopublish.undo=TODO: Undo
 
 manage.overview.resource.managers=資源管理者
 manage.overview.resource.managers.description=資源能由多位管理者所管理。您可以授與其他管理者修改{0}之權限。
@@ -1137,6 +1159,5 @@ xwork.default.invalid.fieldvalue=無效的欄位值
 dataTables.sInfo=Showing _START_ to _END_ of _TOTAL_ resources
 dataTables.sInfoEmpty=Showing 0 to 0 of 0 resources
 dataTables.sInfoFiltered=(filtered from _MAX_ total)
-dataTables.search=Search
 dataTables.sEmptyTable=No resources are currently available
 dataTables.sZeroRecords=No resources were found
