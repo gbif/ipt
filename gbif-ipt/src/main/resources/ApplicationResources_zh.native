@@ -1024,6 +1024,7 @@ eml.qualityControl.help=此欄位提供關於控制或評估資料品質方法�
 eml.methodSteps=實驗步驟描述
 eml.methodSteps.help=此欄位提供一系列的表單用以紀錄產生資料的步驟。這些包含步驟本身的說明、相關文獻、軟體、儀器，來源資料以及任何的品質控管工作。
 eml.citation.citation=資源引用文字
+eml.citation.citation.help=TODO (do not translate the actual citation strings though please): A single citation for use when citing the dataset.<br /><br />Example in case where the dataset is owned by an organization:<br /><br />"Bombay Natural History Society (2011). Literature based species occurrence data of birds of northeast India. 2400 records, Contributed by Narwade S, Karla M, and Varier D, Online:http://ibif.gov.in:8080/ipt/resource.do?r=BNHS-NEW, released on 01/09/2011, doi:10.9999/ibif.150.2011."<br /><br />Example in case when the dataset is owned by a group of people:<br /><br />"Narwade S, Karla M, Varier D (2011) Literature based species occurrence data of birds of northeast India. 2400 records. Online:http://ibif.gov.in:8080/ipt/resource.do?r=BNHS-NEW, released on 01/09/2011, doi:10.9999/ibif.150.2011."
 eml.citation.identifier=引用識別碼
 eml.citation.identifier.help=引用文獻的 URI、DOI 或其他永久識別碼。
 eml.bibliographicCitationSet.bibliographicCitations.citation=引用文獻

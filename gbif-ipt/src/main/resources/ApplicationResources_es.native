@@ -1016,6 +1016,7 @@ eml.qualityControl.help=Una descripción de acciones tomadas para controlar o ev
 eml.methodSteps=Descripción del Paso Metodológico
 eml.methodSteps.help=Permite documentar un serie de pasos seguidos para crear los datos representados por el recurso. Puede consistir de descripciones textuales de los pasos, literatura relevante, software, instrumentación, datos de origen y cualquier control de calidad.
 eml.citation.citation=Referencia del Recurso
+eml.citation.citation.help=TODO (do not translate the actual citation strings though please): A single citation for use when citing the dataset.<br /><br />Example in case where the dataset is owned by an organization:<br /><br />"Bombay Natural History Society (2011). Literature based species occurrence data of birds of northeast India. 2400 records, Contributed by Narwade S, Karla M, and Varier D, Online:http://ibif.gov.in:8080/ipt/resource.do?r=BNHS-NEW, released on 01/09/2011, doi:10.9999/ibif.150.2011."<br /><br />Example in case when the dataset is owned by a group of people:<br /><br />"Narwade S, Karla M, Varier D (2011) Literature based species occurrence data of birds of northeast India. 2400 records. Online:http://ibif.gov.in:8080/ipt/resource.do?r=BNHS-NEW, released on 01/09/2011, doi:10.9999/ibif.150.2011."
 eml.citation.identifier=Identificador de la Referencia
 eml.citation.identifier.help=Una URI, DOI u otro identificador persistente para la citación.
 eml.bibliographicCitationSet.bibliographicCitations.citation=Referencia

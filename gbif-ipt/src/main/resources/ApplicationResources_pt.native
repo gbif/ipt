@@ -313,6 +313,7 @@ eml.associatedParties.role.help=<ul><li><b>Autor:</b> um agente associado com a 
 eml.bibliographicCitationSet.bibliographicCitations.citation=Referência
 eml.bibliographicCitationSet.bibliographicCitations.identifier=Identificador da Referência
 eml.citation.citation=Referência do Recurso
+eml.citation.citation.help=TODO (do not translate the actual citation strings though please): A single citation for use when citing the dataset.<br /><br />Example in case where the dataset is owned by an organization:<br /><br />"Bombay Natural History Society (2011). Literature based species occurrence data of birds of northeast India. 2400 records, Contributed by Narwade S, Karla M, and Varier D, Online:http://ibif.gov.in:8080/ipt/resource.do?r=BNHS-NEW, released on 01/09/2011, doi:10.9999/ibif.150.2011."<br /><br />Example in case when the dataset is owned by a group of people:<br /><br />"Narwade S, Karla M, Varier D (2011) Literature based species occurrence data of birds of northeast India. 2400 records. Online:http://ibif.gov.in:8080/ipt/resource.do?r=BNHS-NEW, released on 01/09/2011, doi:10.9999/ibif.150.2011."
 eml.citation.identifier=Identificador da Referência
 eml.citation.identifier.help=Uma URI, DOI ou outro identificador persistente para a citação.
 eml.collectionId=Identificador da Coleção
