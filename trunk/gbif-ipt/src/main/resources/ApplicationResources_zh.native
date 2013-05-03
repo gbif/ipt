@@ -980,14 +980,17 @@ eml.taxonomicCoverages.taxonList=分類清單
 eml.taxonomicCoverages.taxonList.help=增加幾個分類群（一行一個）
 
 eml.temporalCoverages.type=時間範圍類型
+eml.temporalCoverages.singleDate=TODO: Single Date
+eml.temporalCoverages.singleDate.help=TODO: This date is meant to represent a coverage spanning one day. Use one of these date formats:
+
 eml.temporalCoverages.startDate=起始日期
-eml.temporalCoverages.startDate.help=請選用以下日期格式之一：
+eml.temporalCoverages.startDate.help=請選用以下日期格式之一： TODO: The date the coverage began. Use one of these date formats:
 eml.temporalCoverages.endDate=結束日期
-eml.temporalCoverages.endDate.help=請選用以下日期格式之一：
+eml.temporalCoverages.endDate.help=請選用以下日期格式之一： TODO: The date the coverage ended. Use one of these date formats:
 eml.temporalCoverages.formationPeriod=彙整期間
-eml.temporalCoverages.formationPeriod.help=以文字描述採集品彙整的時間是哪個時期。（例如：維多利亞女王時代、1922 - 1932、c. 1750）
+eml.temporalCoverages.formationPeriod.help=以文字描述採集品彙整的時間是哪個時期。（例如：維多利亞女王時代、1922 - 1932、c. 1750）TODO: Text description of the time period during which the collection was assembled (e.g., "Victorian", "1922-1932", "c. 1750"). Use this type to indicate an ongoing collection (e.g., "2010-current").
 eml.temporalCoverages.livingTimePeriod=生物存活的時期
-eml.temporalCoverages.livingTimePeriod.help=該物種存活的時期，可包含古生物生存時期或是其他期間的文字描述。
+eml.temporalCoverages.livingTimePeriod.help=該物種存活的時期，可包含古生物生存時期或是其他期間的文字描述。TODO: Time period during which biological material was alive. Includes palaeontological time periods or other text phrases (e.g., "1900-1950", "Ming Dynasty", "Pleistocene")
 
 eml.project.title=計畫名稱
 eml.project.personnel.firstName=人員名字
