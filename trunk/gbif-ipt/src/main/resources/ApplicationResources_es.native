@@ -675,6 +675,7 @@ manage.source.rows=Filas
 manage.source.modified=Modificado
 manage.source.filesystem.error=Error en el sistema de archivos: {0}
 manage.source.unsupported.compression.format=Formato de compresión no soportado. Por favor use zip, gzip o archivos de texto plano.
+manage.source.unsupported.excel=TODO: Excel files are not supported. Please use delimited text files.
 manage.source.replaced.existing=Fuente existente >>{0}<< reemplazada.
 manage.source.added.new=Añadido nuevo archivo fuente >>{0}<<.
 manage.source.deleted=Fuente eliminada {0}.
