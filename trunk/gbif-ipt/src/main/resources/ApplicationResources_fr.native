@@ -726,7 +726,10 @@ manage.resource.status.intro.private=Cette ressource est privée, et n''est donc
 manage.resource.status.intro.public=Cette ressource est publique et est donc visible par tout le monde.
 manage.resource.status.intro.public.migration=Si vous désirez que cette ressource remplace une ressource existante (DiGIR, BioCASE ou TAPIR), veuillez vous assurer 1) que cette ressource est associée à la même institution et 2) que l'UUID de la ressource préexistante a été ajouté à la section "identifiants alternatifs" sur la page {0}.
 manage.resource.status.intro.registered=Cette ressource publique est enregistrée auprès du GBIF. Pour changer ce status, vous devez supprimer cette ressource et prendre contact avec le <a href="mailto:helpdesk@gbif.org">support GBIF (en Anglais)</a>.
-manage.resource.status.registration.forbidden=Vous ne disposez pas des droits nécessaires pour enregistrer cette ressource auprès du GBIF. Veuillez contacter votre administrateur IPT si vous désirez qu''il/elle vous délègue ce pouvoir.
+manage.resource.status.registration.forbidden=Vous ne disposez pas des droits nécessaires pour enregistrer cette ressource auprès du GBIF.
+manage.resource.role.change=Veuillez contacter votre administrateur IPT si vous désirez qu''il/elle vous délègue ce pouvoir.
+manage.resource.publish.forbidden=TODO: Since this resource is registered with GBIF already, and the resource''s registration gets updated during each publication, you can no longer publish this resource.
+
 manage.resource.status.registration.intro=Pour rendre cette ressource facilement accessible (discoverable), veuillez sélectionner l''institution auquelle la ressource est associée, puis l''enregistrer auprès du GBIF. Si vous désirez la rendre accessible uniquement aux managers de cette instance IPT, veuillez changer son status au moyen du boutton "Privé".
 manage.resource.status.restrict=Limiter aux managers uniquement
 manage.resource.migrate=Cette ressource semble déjà enregistrée (UUID: {0}, appartenant à: {1}). Par conséquent, cette ressource sera associée à la ressource préexistante, au lieu d'être enregistrée en tant que nouvelle ressource.

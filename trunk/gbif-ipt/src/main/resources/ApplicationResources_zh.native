@@ -635,7 +635,10 @@ manage.resource.status.intro.public=此資源已公開，所有人均可使用�
 manage.resource.status.intro.public.migration=TODO: replace "additional metadata" with "{0}" 如果您想要以此資源更新已經由 DiGIR, BioCASE 或 TAPIR 發布之同一資源，請確認此資源註冊至同一單位組織，並請到「其它元數據」頁面，在「替代的識別碼」中填入已註冊的 UUID。
 manage.resource.status.intro.registered=此資源已向 GBIF 註冊。欲刪除註冊狀態，必須刪除整份資源並以電子郵件連繫 <a href=''mailto:helpdesk@gbif.org''>GBIF Help Desk</a>。
 manage.resource.status.registration.intro=要使資料集可公開存取，請選擇資源所屬的單位組織向 GBIF 註冊。若資源僅供資料管理員存取，則將資源設為不公開。
-manage.resource.status.registration.forbidden=您不具有向 GBIF 註冊此資源的角色權限。若您認為應擁有此權限，請聯繫 IPT 管理員。
+manage.resource.status.registration.forbidden=您不具有向 GBIF 註冊此資源的角色權限。
+manage.resource.role.change=若您認為應擁有此權限，請聯繫 IPT 管理員。
+manage.resource.publish.forbidden=TODO: Since this resource is registered with GBIF already, and the resource''s registration gets updated during each publication, you can no longer publish this resource.
+
 manage.resource.status.restrict=僅供資料管理員存取
 manage.resource.read.eml.metadata=讀取 EML 元數據
 manage.resource.read.basic.metadata=讀取基本元數據

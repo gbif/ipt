@@ -627,7 +627,10 @@ manage.resource.status.intro.public=Este recurso es publico y disponible para to
 manage.resource.status.intro.public.migration=Si desea que este recurso actualice un recurso DiGIR, BioCASE o TAPIR existente, por favor asegúrese que el recurso esté registrado con la misma organización propietaria, y que el UUID del recurso existente registrado, haya sido adicionado a la lista de identificadores alternativos del recurso en la página de {0}.
 manage.resource.status.intro.registered=Este recurso publico es registrado en GBIF. Para cambiar este estado, debe borrar todo el recurso y contactar al <a href=''mailto:helpdesk@gbif.org''>GBIF Help Desk</a>.
 manage.resource.status.registration.intro=Para que se pueda descubrir el recurso, por favor seleccione la organización a la cual el recurso esta asociado y regístrelo en GBIF. Para que sea accesible solo a los administradores, hágalo privado.
-manage.resource.status.registration.forbidden=No tiene el permiso necesario para registrar este recurso con GBIF. Por favor contacte al administrador del IPT si cree que debería tener dichos permisos.
+manage.resource.status.registration.forbidden=No tiene el permiso necesario para registrar este recurso con GBIF.
+manage.resource.role.change=Por favor contacte al administrador del IPT si cree que debería tener dichos permisos.
+manage.resource.publish.forbidden=TODO: Since this resource is registered with GBIF already, and the resource''s registration gets updated during each publication, you can no longer publish this resource.
+
 manage.resource.status.restrict=Restringido sólo a administradores
 manage.resource.read.eml.metadata=Metadatos EML leídos
 manage.resource.read.basic.metadata=Metadatos básicos leídos

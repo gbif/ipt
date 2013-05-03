@@ -737,7 +737,11 @@ manage.resource.status.intro.private=Esse recurso está privado para gestores. P
 manage.resource.status.intro.public=Esse recurso está público e disponível para todos.
 manage.resource.status.intro.public.migration=Se você quiser esse recurso para atualizar um recurso do DiGIR, BioCASE ou TAPIR, por favor, certifique-se de que o recurso está registrado com o mesmo proprietário da organização e que o recurso UUID registrado foi adicionado à lista de recurso com um identificador alternativo na página de {0}.
 manage.resource.status.intro.registered=Esse recurso publico está registrado no GBIF. Para alterar essa situação é necessário excluir o recurso inteiro e entrar em contato com o <a href="mailto:helpdesk@gbif.org">GBIF Help Desk</a>.
-manage.resource.status.registration.forbidden=O seu usuário não possui direitos necessários para registrar esse recurso no GBIF. Por favor, entre em contato com o administrador do IPT para receber os direto necessários.
+manage.resource.status.registration.forbidden=O seu usuário não possui direitos necessários para registrar esse recurso no GBIF.
+manage.resource.role.change=Por favor, entre em contato com o administrador do IPT para receber os direto necessários.
+manage.resource.publish.forbidden=TODO: Since this resource is registered with GBIF already, and the resource''s registration gets updated during each publication, you can no longer publish this resource.
+
+manage.resource.role.change=Por favor, entre em contato com o administrador do IPT para receber os direto necessários.
 manage.resource.status.registration.intro=Para torná-lo visível, selecione a organização à qual o recurso está associado e registre-o no GBIF. Para torná-lo acessível somente para gestores, deixe-o privado.
 manage.resource.status.restrict=Restrito para gestores somente
 manage.source.added.new=Adicionado nov arquivo de fonte >>{0}<<.
