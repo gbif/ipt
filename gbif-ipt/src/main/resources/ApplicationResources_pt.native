@@ -762,6 +762,7 @@ manage.source.source.log=Fonte de log
 manage.source.title=Fonte de Dados
 manage.source.unique=O nome da fonte já existe. Por favor, escolha um nome único.
 manage.source.unsupported.compression.format=Formato de compressão não suportada. Por favor, utilize arquivos zip, gzip ou texto plano.
+manage.source.unsupported.excel=TODO: Excel files are not supported. Please use delimited text files.
 manage.success={0} seção salva com sucesso!
 manage.translation.cantfind.vocabulary=Não foi possível encontrar um vocabulário para mapear automaticamente a tradução.
 manage.translation.deleted=Tradução excluída para o termo {0}.

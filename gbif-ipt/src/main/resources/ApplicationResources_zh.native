@@ -683,6 +683,7 @@ manage.source.rows=列
 manage.source.modified=修改
 manage.source.filesystem.error=檔案系統錯誤：{0}
 manage.source.unsupported.compression.format=不支援的壓縮格式。請使用 zip、gzip 或純文字格式。
+manage.source.unsupported.excel=TODO: Excel files are not supported. Please use delimited text files.
 manage.source.replaced.existing=置換現有資料來源 >>{0}<<。
 manage.source.added.new=新增檔案來源 >>{0}<<。
 manage.source.deleted=刪除來源 {0}。
