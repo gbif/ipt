@@ -23,7 +23,7 @@
 
 	<div>
 		<@input name="eml.citation.identifier" help="i18n"/>
-    <@text name="eml.citation.citation" requiredField=true />
+    <@text name="eml.citation.citation" help="i18n" requiredField=true />
 	</div>
 	<h3 class="subTitle"><@s.text name="manage.metadata.citations.bibliography"/></h3>
 	<div id="items">
