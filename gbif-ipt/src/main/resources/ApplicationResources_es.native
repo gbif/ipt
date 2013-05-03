@@ -973,14 +973,16 @@ eml.taxonomicCoverages.taxonList=Lista taxonómica
 eml.taxonomicCoverages.taxonList.help=Adicione los taxones que sean necesarios (uno por línea).
 
 eml.temporalCoverages.type=Tipo de cobertura temporal
+eml.temporalCoverages.singleDate=TODO: Single Date
+eml.temporalCoverages.singleDate.help=TODO: This date is meant to represent a coverage spanning one day. Use one of these date formats:
 eml.temporalCoverages.startDate=Fecha inicial
-eml.temporalCoverages.startDate.help=Use uno de estos formatos:
+eml.temporalCoverages.startDate.help=Use uno de estos formatos: TODO: The date the coverage began. Use one of these date formats:
 eml.temporalCoverages.endDate=Fecha final
-eml.temporalCoverages.endDate.help=Use uno de estos formatos:
+eml.temporalCoverages.endDate.help=Use uno de estos formatos: TODO: The date the coverage ended. Use one of these date formats:
 eml.temporalCoverages.formationPeriod=Periodo de Formación
-eml.temporalCoverages.formationPeriod.help=Descripción textual del lapso durante el cual se constituyó la colección (p. ej. "Victoriano", "1922-1932", "c. 1750")
+eml.temporalCoverages.formationPeriod.help=Descripción textual del lapso durante el cual se constituyó la colección (p. ej. "Victoriano", "1922-1932", "c. 1750") TODO: Text description of the time period during which the collection was assembled (e.g., "Victorian", "1922-1932", "c. 1750"). Use this type to indicate an ongoing collection (e.g., "2010-current").
 eml.temporalCoverages.livingTimePeriod=Época de Existencia
-eml.temporalCoverages.livingTimePeriod.help=Un nombre o periodo de tiempo durante el cual las entidades biológicas en la colección o conjunto de datos, estaban vivas. Incluye períodos de tiempo paleontológicos. Ejemplos(s):"1900-1950", "Dinastía Ming", "Pleistoceno".
+eml.temporalCoverages.livingTimePeriod.help=Un nombre o periodo de tiempo durante el cual las entidades biológicas en la colección o conjunto de datos, estaban vivas. Incluye períodos de tiempo paleontológicos. Ejemplos(s):"1900-1950", "Dinastía Ming", "Pleistoceno". TODO: Time period during which biological material was alive. Includes palaeontological time periods or other text phrases (e.g., "1900-1950", "Ming Dynasty", "Pleistocene")
 
 eml.project.title=Título
 eml.project.personnel.firstName=Nombre
