@@ -1154,3 +1154,9 @@ div.versionTitle {
 a img {
   border: 0 none;
 }
+.autop {
+  font-weight: normal;
+}
+.actions select {
+  width: 150px;
+}

@@ -1,33 +1,44 @@
 <#macro publish resource>
 <form action='publish.do' method='post'>
-    <input name="r" type="hidden" value="${resource.shortname}"/>
-    <input id="pubMode" name="pubMode" type="hidden" value=""/>
-  <#if action.qualifiesForAutoPublishing()>
-    <@s.submit cssClass="confirmAutoPublish" name="publish" key="button.publish" disabled="false"/>
-  <#else>
-    <@s.submit name="publish" key="button.publish" disabled="false"/>
+  <input name="r" type="hidden" value="${resource.shortname}"/>
+
+  <#-- Auto-publishing mode-->
+  <#assign puMo="">
+    <#if resource.publicationMode??>
+    <#assign puMo=resource.publicationMode>
   </#if>
-</form>
-<br/>
-<br/>
-<#-- Auto-publishing section-->
-<form action='resource-autoPublicationOff.do' method='post'>
-    <input name="r" type="hidden" value="${resource.shortname}"/>
-  <#if resource.usesAutoPublishing() || resource.hasDisabledAutoPublishing()>
-      <div class="head">
-        <@s.text name='autopublish'/>
-        <#if resource.usesAutoPublishing()>
-            <em class="green"><@s.text name="autopublish.status.on"/></em>
-          <@s.submit name="publish" key="autopublish.off" disabled="false"/>
-            <p>
-              <#if resource.nextPublished??><@s.text name='manage.home.next.publication'/>
-                  : ${resource.nextPublished?date?string.medium}</#if>
-            </p>
-        <#else>
-            <em class="warn"><@s.text name="autopublish.status.disabled"/></em>
-          <@s.submit name="publish" key="autopublish.undo" disabled="false"/>
-        </#if>
+  <input id="currPubMode" name="currPubMode" type="hidden" value="${puMo}"/>
+  <input id="pubMode" name="pubMode" type="hidden" value=""/>
+
+  <#-- Auto-publishing frequency-->
+  <#assign upFr="">
+  <#if resource.updateFrequency??>
+    <#assign upFr=resource.updateFrequency.identifier>
+  </#if>
+  <input id="currPubFreq" name="currPubFreq" type="hidden" value="${upFr}"/>
+  <input id="pubFreq" name="pubFreq" type="hidden" value=""/>
+
+  <input type="submit" id="publishButton" value="<@s.text name='button.publish'/>"/>
+  <br/>
+  <br/>
+  <div id="actions" class="autop">
+      <label for="autopublish"><@s.text name="autopublish"/></label>
+      <select id="autopublish" name="autopublish" size="1">
+        <#list frequencies?keys as val>
+            <option value="${val}" <#if (upFr!"")==val> selected="selected"</#if>>
+              <@s.text name="${frequencies.get(val)}"/>
+            </option>
+        </#list>
+      </select>
+      <img class="infoImg" src="${baseURL}/images/info.gif" />
+      <div class="info">
+        <@s.text name="autopublish.help"/>
       </div>
-  </#if>
+    <#if resource.usesAutoPublishing()>
+      <p>
+        <#if resource.nextPublished??><@s.text name='manage.home.next.publication'/>: <em class="green">${resource.nextPublished?date?string.medium}</#if></em>
+      </p>
+    </#if>
+  </div>
 </form>
 </#macro>

@@ -206,13 +206,6 @@ public interface ResourceManager {
   List<Resource> list(User user);
 
   /**
-   * list all resources that have been published in the IPT.
-   *
-   * @return list of resources, or an empty list if none were found
-   */
-  List<Resource> listPublished();
-
-  /**
    * Load all configured resources from the datadir into memory.
    * We do not keep the EML or mapping configuration in memory for all resources, but we
    * maintain a map of the basic metadata and authorisation information in this manager.

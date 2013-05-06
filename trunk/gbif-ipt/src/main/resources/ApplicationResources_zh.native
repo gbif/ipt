@@ -774,20 +774,12 @@ restore.resource.failed=TODO: Restoring version #{0} of resource {1} failed: {2}
 
 # Auto-publishing
 autopublish=TODO: Auto-publishing
-autopublish.intro=TODO: The resource can be auto-published daily, weekly, monthly, biannually, or annually. To do so, first select one of these 5 update frequencies in your {0}, then press publish and confirm auto-publishing in the dialog that appears.
-autopublish.confirm=TODO: You have indicated in your metadata that the resource is updated {0}. Do you want to turn on auto-publishing mode for this resource?
-autopublish.yes=TODO: Publish version #{0}
-autopublish.yesChecked=TODO: Publish version #{0}, and auto-publish future versions
-autopublish.confirm.header=TODO: Publish new version?
-autopublish.never=TODO: Disable, and don''t ask again
 autopublish.off=TODO: Turn off
-autopublish.on=TODO: Turn on
-autopublish.switched.off=TODO: Auto-publishing turned off
-autopublish.disable.undo=TODO: Auto-publishing no longer disabled
-autopublish.invalid.operation=TODO: The requested change was an invalid. Please refresh the resource page to see the correct current state.
-autopublish.status.on=TODO: On
-autopublish.status.disabled=TODO: Disabled
-autopublish.undo=TODO: Undo
+autopublish.update=TODO: Publish & change auto-publishing interval
+autopublish.activate=TODO: Publish & turn on auto-publishing
+autopublish.disable=TODO: Publish & turn off auto-publishing
+autopublish.interval=TODO: Select interval
+autopublish.help=TODO: To <strong>turn on</strong> automated publishing, select one of the 5 publishing intervals and then press publish. To <strong>change</strong> the automated publishing interval, select a different publishing interval and press publish. To <strong>turn off</strong> automated publishing, select "Turn off" and then press publish.
 
 manage.overview.resource.managers=資源管理者
 manage.overview.resource.managers.description=資源能由多位管理者所管理。您可以授與其他管理者修改{0}之權限。

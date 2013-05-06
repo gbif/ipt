@@ -31,17 +31,21 @@ import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
+import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.GenerateDwca;
 import org.gbif.ipt.task.StatusReport;
 import org.gbif.ipt.utils.FileUtils;
+import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.validation.EmlValidator;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
@@ -56,6 +60,7 @@ public class OverviewAction extends ManagerBaseAction {
   private static final String PUBLISHING = "publishing";
   private UserAccountManager userManager;
   private ExtensionManager extensionManager;
+  private VocabulariesManager vocabManager;
   private List<User> potentialManagers;
   private List<Extension> potentialExtensions;
   private List<Organisation> organisations;
@@ -65,14 +70,17 @@ public class OverviewAction extends ManagerBaseAction {
   private StatusReport report;
   private Date now;
   private boolean unpublish = false;
+  private Map<String, String> frequencies;
 
   @Inject
   public OverviewAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    ResourceManager resourceManager, UserAccountManager userAccountManager, ExtensionManager extensionManager) {
+    ResourceManager resourceManager, UserAccountManager userAccountManager, ExtensionManager extensionManager,
+    VocabulariesManager vocabManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.userManager = userAccountManager;
     this.extensionManager = extensionManager;
     this.emlValidator = new EmlValidator(cfg, registrationManager, textProvider);
+    this.vocabManager = vocabManager;
   }
 
   public String addmanager() throws Exception {
@@ -400,7 +408,32 @@ public class OverviewAction extends ManagerBaseAction {
       // check EML
       missingMetadata = !emlValidator.isValid(resource.getEml(), null);
       missingRegistrationMetadata = !hasMinimumRegistryInfo(resource);
+
+      // populate frequencies map
+      populateFrequencies();
     }
+  }
+
+  /**
+   * Populate frequencies map, representing the publishing interval choices uses have when configuring
+   * auto-publishing. The frequencies list is derived from an XML vocabulary, and will contain values in the requested
+   * locale, defaulting to English.
+
+   */
+  private void populateFrequencies() {
+    frequencies = new LinkedHashMap<String, String>();
+
+    if (resource.usesAutoPublishing()) {
+      frequencies.put("off", getText("autopublish.off"));
+    } else {
+      frequencies.put("", getText("autopublish.interval"));
+    }
+
+    // update frequencies list, that qualify for auto-publishing
+    Map<String, String> filteredFrequencies = vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES,
+      getLocaleLanguage(), false);
+    MapUtils.removeNonMatchingKeys(filteredFrequencies, MaintUpFreqType.AUTO_PUBLISHING_TYPES);
+    frequencies.putAll(filteredFrequencies);
   }
 
   /**
@@ -417,14 +450,29 @@ public class OverviewAction extends ManagerBaseAction {
       return NOT_FOUND;
     }
 
-    // look for parameter publication mode
+    // look for parameters publication mode and publication frequency
     String pm = StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_PUBLICATION_MODE));
     if (!Strings.isNullOrEmpty(pm)) {
       try {
-        // set on resource
-        resource.setPublicationMode(PublicationMode.valueOf(pm));
+        // auto-publishing being turned OFF
+        if (PublicationMode.AUTO_PUBLISH_OFF == PublicationMode.valueOf(pm) && resource.usesAutoPublishing()) {
+            resourceManager.publicationModeToOff(resource);
+        }
+        // auto-publishing being turned ON, or auto-publishing settings being updated
+        else {
+          String pf = StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_PUBLICATION_FREQUENCY));
+          if (!Strings.isNullOrEmpty(pf)) {
+            resource.setUpdateFrequency(pf);
+            resource.setPublicationMode(PublicationMode.valueOf(pm));
+          } else {
+            log.debug("No change to auto-publishing settings");
+          }
+        }
       } catch (IllegalArgumentException e) {
-        LOG.error("Parameter publication mode (pubMode) was not a valid enumeration: " + String.valueOf(pm));
+        LOG.error("Exception encountered while parsing parameters: " + e.getMessage(), e);
+      } finally {
+        // update frequencies map
+        populateFrequencies();
       }
     }
 
@@ -526,50 +574,11 @@ public class OverviewAction extends ManagerBaseAction {
   }
 
   /**
-   * Check if the resource qualifies for auto-publishing. To qualify, the resource must have an update frequency
-   * suitable for auto-publishing, and must not have been configured for auto-publishing already, or been configured
-   * never to use auto-publishing.
+   * On the manage resource page page, this map is used to populate the publishing intervals dropdown.
    *
-   * @return true if the resource qualifies for auto-publishing
+   * @return update frequencies map
    */
-  public boolean qualifiesForAutoPublishing() {
-    if (resource.getUpdateFrequency() != null && resource.getPublicationMode() != null) {
-      return MaintUpFreqType.AUTO_PUBLISHING_TYPES.contains(resource.getUpdateFrequency())
-             && resource.getPublicationMode() != PublicationMode.AUTO_PUBLISH_NEVER
-             && resource.getPublicationMode() != PublicationMode.AUTO_PUBLISH_ON;
-    }
-    return false;
-  }
-
-  /**
-   * Turn auto-publishing off.
-   *
-   * @return Struts2 result string
-   *
-   * @throws Exception thrown if method fails
-   */
-  public String autoPublicationOff() throws Exception {
-    if (resource == null) {
-      return NOT_FOUND;
-    }
-    if (PublicationMode.AUTO_PUBLISH_ON == resource.getPublicationMode()
-        || PublicationMode.AUTO_PUBLISH_NEVER == resource.getPublicationMode()) {
-      try {
-
-        // construct log appropriately
-        String msg = PublicationMode.AUTO_PUBLISH_ON == resource.getPublicationMode() ? getText(
-          "autopublish.switched.off") : getText("autopublish.disable.undo");
-        // make change
-        resourceManager.publicationModeToOff(resource);
-        // log
-        addActionMessage(msg);
-        log.debug(msg);
-      } catch (InvalidConfigException e) {
-        log.error("Cant turn off auto-publishing for resource: " + resource.getShortname(), e);
-      }
-    } else {
-      addActionWarning(getText("autopublish.invalid.operation"));
-    }
-    return execute();
+  public Map<String, String> getFrequencies() {
+    return frequencies;
   }
 }

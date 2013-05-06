@@ -122,14 +122,6 @@
 	<div class="halfcolumn" id="selectSubtypeDiv">
     <@select name="resource.subtype" i18nkey="resource.subtype" help="i18n" options=listSubtypes value="${resource.subtype!''}" />
   </div>
-  <div class="halfcolumn">
-    <!-- update frequency coming from Enumeration MaintUpFreqType, using property identifier as the value in the select -->
-    <#if resource.updateFrequency??>
-      <@select name="resource.updateFrequency" i18nkey="resource.updateFrequency" help="i18n" options=frequencies value="${resource.updateFrequency.identifier}" />
-    <#else>
-      <@select name="resource.updateFrequency" i18nkey="resource.updateFrequency" help="i18n" options=frequencies value="${''}" />
-    </#if>
-  </div>
 
   	<!-- Resource Contact -->
   	<div class="basicMetadata grid_17 suffix_1">

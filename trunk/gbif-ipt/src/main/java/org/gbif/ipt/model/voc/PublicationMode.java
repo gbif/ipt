@@ -6,15 +6,11 @@ package org.gbif.ipt.model.voc;
  */
 public enum PublicationMode {
   /**
-   * The dataset will be auto-published. The resource manager has made a decision to auto-publish the dataset0.
+   * The dataset will be auto-published. The resource manager has made a decision to auto-publish the dataset.
    */
   AUTO_PUBLISH_ON,
   /**
-   * The dataset will not be auto-published. The resource manager has not made a decision to auto-publish or not yet.
+   * The dataset will not be auto-published.
    */
-  AUTO_PUBLISH_OFF,
-  /**
-   * The dataset should never be auto-published. The resource manager has made this decision.
-   */
-  AUTO_PUBLISH_NEVER
+  AUTO_PUBLISH_OFF
 }

@@ -9,9 +9,9 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 	<title><@s.text name="manage.overview.title"/>: ${resource.title!resource.shortname}</title>
 	<script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
-  <script type="text/javascript" src="${baseURL}/js/jconfirmation_publish.js"></script>
 <script type="text/javascript">
-$(document).ready(function(){	
+$(document).ready(function(){
+  initHelp();
 	<#if confirmOverwrite>
 		showConfirmOverwrite();
 	</#if>	
@@ -20,11 +20,6 @@ $(document).ready(function(){
 	$('.confirm').jConfirmAction({question : "<@s.text name='basic.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
 	$('.confirmRegistration').jConfirmAction({question : "<@s.text name='manage.overview.visibility.confirm.registration'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", checkboxText: "<@s.text name='manage.overview.visibility.confirm.agreement'/>"});	
 	$('.confirmDeletion').jConfirmAction({question : "<#if resource.status=='REGISTERED'><@s.text name='manage.resource.delete.confirm.registered'/><#else><@s.text name='basic.confirm'/></#if>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
-
-  // dialog used to configure auto-publishing
-  <#if action.qualifiesForAutoPublishing()>
-      $('.confirmAutoPublish').jConfirmPublishAction({checkboxTextOff : "<@s.text name='autopublish.never'/>", checkboxText : "<@s.text name='autopublish.on'/>", yesAnswerChecked : "<@s.text name="autopublish.yesChecked"><@s.param>${resource.emlVersion + 1}</@s.param></@s.text>", question : "<@s.text name="autopublish.confirm"><@s.param>${resource.updateFrequency.identifier}</@s.param></@s.text>", yesAnswer : "<@s.text name="autopublish.yes"><@s.param>${resource.emlVersion + 1}</@s.param></@s.text>", cancelAnswer : "<@s.text name='button.cancel'/>"});
-  </#if>
 
     var showReport=false;
 	$("#toggleReport").click(function() {
@@ -59,10 +54,47 @@ $(document).ready(function(){
 		event.preventDefault();
 		$("#file").attr("value", "");
 		$("#add").attr("value", '<@s.text name="button.connectDB"/>');
-	});	
-	
-	
-	function showConfirmOverwrite() { 
+	});
+
+
+    // on select of publishing frequency set parameter for publishing frequency
+    $('#autopublish').change(function () {
+        var str = "";
+        $("#autopublish option:selected").each(function () {
+            str += $(this).val();
+        });
+        // set selected frequency
+        $("#pubFreq").val(str);
+
+        // gather current publishing frequency
+        var currFreq = $("#currPubFreq").val();
+
+        // gather current auto-publishing mode
+        var currMode = $("#currPubMode").val();
+
+        // when auto-publishing is off, and a frequency is selected
+        if (currMode=="AUTO_PUBLISH_OFF" && currMode !="" && str!="") {
+            $('#publishButton').val("<@s.text name='autopublish.activate'/>");
+            $("#pubMode").val("AUTO_PUBLISH_ON");
+        }
+        // when auto-publishing is on, and the user wants to disable auto-publishing
+        else if(currMode=="AUTO_PUBLISH_ON" && str=="off") {
+            $('#publishButton').val("<@s.text name='autopublish.disable'/>");
+            $("#pubMode").val("AUTO_PUBLISH_OFF");
+        }
+        // when auto-publishing is on, and the user wants to change the frequency
+        else if(currMode=="AUTO_PUBLISH_ON" && currFreq!=str) {
+            $('#publishButton').val("<@s.text name='autopublish.update'/>");
+            $("#pubMode").val("AUTO_PUBLISH_ON");
+        }
+        // when either auto-publishing is on, and the user is happy with the current settings,
+        // or when auto-publishing is off and no frequency selected
+        else {
+            $('#publishButton').val("<@s.text name='button.publish'/>");
+        }
+    }).change();
+
+	function showConfirmOverwrite() {
 	   var question='<p><@s.text name="manage.resource.addSource.confirm"/></p>';
 	   $('#dialog').html(question);
 		$("#dialog").dialog({
@@ -152,14 +184,6 @@ $(document).ready(function(){
             </div>
         </#if>
       </#if>
-      <#if !resource.usesAutoPublishing() && !resource.hasDisabledAutoPublishing()>
-          <div>
-              <img class="info" src="${baseURL}/images/info.gif"/>
-              <em><@s.text name='autopublish.intro'><@s.param><a
-                      href="${baseURL}/manage/metadata-basic.do?r=${resource.shortname}&amp;edit=Edit"><@s.text name="submenu.basic"/></a></@s.param></@s.text>
-              </em>
-          </div>
-      </#if>
     </#if>
       <br/>
       <div class="details">
@@ -175,7 +199,7 @@ $(document).ready(function(){
                 <@s.text name="manage.overview.published.version"/>
                 ${resource.emlVersion}
                 <@s.text name="manage.overview.published.from"/>
-                ${resource.lastPublished?datetime?string}
+                ${resource.lastPublished?date?string.medium}
               </#if>
               &nbsp;
               <#if report??>
