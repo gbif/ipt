@@ -71,7 +71,7 @@ public enum MaintUpFreqType {
   /**
    * List of frequency type Enumerations that are suitable as periods used for auto-publishing.
    */
-  public static final List<MaintUpFreqType> AUTO_PUBLISHING_TYPES;
+  public static final List<String> AUTO_PUBLISHING_TYPES;
 
   static {
     // populate map
@@ -90,12 +90,12 @@ public enum MaintUpFreqType {
     TYPE_LOOKUP = ImmutableMap.copyOf(lookup);
 
     // populate list
-    List<MaintUpFreqType> ls = new ArrayList<MaintUpFreqType>();
-    ls.add(MaintUpFreqType.ANNUALLY);
-    ls.add(MaintUpFreqType.BIANNUALLY);
-    ls.add(MaintUpFreqType.MONTHLY);
-    ls.add(MaintUpFreqType.WEEKLY);
-    ls.add(MaintUpFreqType.DAILY);
+    List<String> ls = new ArrayList<String>();
+    ls.add(MaintUpFreqType.ANNUALLY.getIdentifier().toLowerCase());
+    ls.add(MaintUpFreqType.BIANNUALLY.getIdentifier().toLowerCase());
+    ls.add(MaintUpFreqType.MONTHLY.getIdentifier().toLowerCase());
+    ls.add(MaintUpFreqType.WEEKLY.getIdentifier().toLowerCase());
+    ls.add(MaintUpFreqType.DAILY.getIdentifier().toLowerCase());
     AUTO_PUBLISHING_TYPES = ImmutableList.copyOf(ls);
   }
 

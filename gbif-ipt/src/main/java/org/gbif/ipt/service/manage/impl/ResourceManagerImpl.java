@@ -856,16 +856,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return result;
   }
 
-  public List<Resource> listPublished() {
-    List<Resource> result = new ArrayList<Resource>();
-    for (Resource r : resources.values()) {
-      if (r.isPublished()) {
-        result.add(r);
-      }
-    }
-    return result;
-  }
-
   public int load() {
     File resourcesDir = dataDir.dataFile(DataDir.RESOURCES_DIR);
     resources.clear();
@@ -1690,12 +1680,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (PublicationMode.AUTO_PUBLISH_OFF == resource.getPublicationMode()) {
       throw new InvalidConfigException(TYPE.AUTO_PUBLISHING_ALREADY_OFF,
         "Auto-publishing mode has already been switched off");
-    } else if (PublicationMode.AUTO_PUBLISH_ON == resource.getPublicationMode() ||
-               PublicationMode.AUTO_PUBLISH_NEVER == resource.getPublicationMode()) {
+    } else if (PublicationMode.AUTO_PUBLISH_ON == resource.getPublicationMode()) {
       // update publicationMode to OFF
       resource.setPublicationMode(PublicationMode.AUTO_PUBLISH_OFF);
+      // clear frequency
+      resource.setUpdateFrequency(null);
       // clear next published date
       resource.setNextPublished(null);
+      log.debug("Auto-publishing turned off");
       // save change to resource
       save(resource);
     }

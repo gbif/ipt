@@ -559,17 +559,6 @@ public class Resource implements Serializable, Comparable<Resource> {
    * @return true if the resource uses auto-publishing
    */
   public boolean usesAutoPublishing() {
-    return ((MaintUpFreqType.AUTO_PUBLISHING_TYPES.contains(updateFrequency) || nextPublished != null)
-            && publicationMode == PublicationMode.AUTO_PUBLISH_ON);
-  }
-
-  /**
-   * Check if the resource has had auto-publishing disabled. To qualify, the resource must have auto-publishing mode
-   * set to AUTO_PUBLISH_NEVER.
-   *
-   * @return true if the resource uses auto-publishing
-   */
-  public boolean hasDisabledAutoPublishing() {
-    return publicationMode == PublicationMode.AUTO_PUBLISH_NEVER;
+    return publicationMode == PublicationMode.AUTO_PUBLISH_ON;
   }
 }
