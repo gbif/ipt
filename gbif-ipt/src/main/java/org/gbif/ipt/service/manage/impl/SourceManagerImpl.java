@@ -521,18 +521,6 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     return conn;
   }
 
-  public int importArchive(Resource resource, File file, boolean overwriteEml) throws ImportException {
-    // anaylze using the dwca reader
-    try {
-      ArchiveFactory.openArchive(file);
-      return 0;
-    } catch (UnsupportedArchiveException e) {
-      throw new ImportException(e);
-    } catch (IOException e) {
-      throw new ImportException(e);
-    }
-  }
-
   /*
    * (non-Javadoc)
    * @see org.gbif.ipt.service.manage.SourceManager#inspectColumn(org.gbif.ipt.model.Source, int, int)

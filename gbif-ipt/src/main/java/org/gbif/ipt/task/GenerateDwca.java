@@ -10,6 +10,7 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
+import org.gbif.ipt.model.ExtensionProperty;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.RecordFilter;
 import org.gbif.ipt.model.RecordFilter.FilterTime;
@@ -23,7 +24,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.regex.Pattern;
@@ -54,6 +59,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
   private Exception exception;
   private AppConfig cfg;
   public static final String CANCELLED_STATE_MSG = "Archive generation cancelled";
+  public static final String ID_COLUMN_NAME = "id";
 
   @Inject
   public GenerateDwca(@Assisted Resource resource, @Assisted ReportHandler handler, DataDir dataDir,
@@ -156,13 +162,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     try {
       boolean headerWritten = false;
       for (ExtensionMapping m : mappings) {
-        // prepare index ordered list of all output columns apart from id column
-        PropertyMapping[] inCols = new PropertyMapping[dataFileRowSize];
-        for (ArchiveField f : af.getFields().values()) {
-          if (f.getIndex() != null && f.getIndex() > 0) {
-            inCols[f.getIndex()] = m.getField(f.getTerm().qualifiedName());
-          }
-        }
+        // prepare list of all output columns (apart from id column) ordered according to order of terms in Extension
+        PropertyMapping[] inCols = getExtensionOrderedColumnList(ext, dataFileRowSize, af, m);
 
         // write header line 1 time only to file
         if (!headerWritten) {
@@ -212,7 +213,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
   private void writeHeaderLine(PropertyMapping[] inCols, ArchiveFile af, Writer writer) throws IOException {
     // generating headers
     String[] headers = new String[inCols.length];
-    headers[0] = "id";
+    headers[0] = ID_COLUMN_NAME;
     for (int c = 1; c < inCols.length; c++) {
       if (inCols[c] != null) {
         headers[c] = inCols[c].getTerm().simpleName();
@@ -736,5 +737,57 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
     // write to publication log file
     writePublicationLogMessage(sb.toString());
+  }
+
+  /**
+   * Prepare list of all output columns (apart from id column) ordered according to order of terms in Extension.
+   *
+   * @param ext             Extension
+   * @param dataFileRowSize number of columns in data file
+   * @param af              ArchiveFile
+   * @param m               ExtensionMapping
+   *
+   * @return list of all output columns, ordered by extension
+   */
+  private PropertyMapping[] getExtensionOrderedColumnList(Extension ext, int dataFileRowSize, ArchiveFile af,
+    ExtensionMapping m) {
+    // retrieve the ordered list of the Extension's ExtensionProperty
+    List<ExtensionProperty> propertyList = new ArrayList<ExtensionProperty>();
+    propertyList.addAll(ext.getProperties());
+
+    // populate set of conceptTerms that have been mapped
+    Set<ConceptTerm> conceptTerms = new HashSet<ConceptTerm>();
+    for (ArchiveField f : af.getFields().values()) {
+      if (f.getIndex() != null && f.getIndex() > 0) {
+        conceptTerms.add(m.getField(f.getTerm().qualifiedName()).getTerm());
+      }
+    }
+
+    // remove all ExtensionProperty that have not been mapped, leaving the ordered list of those that have been
+    for (Iterator<ExtensionProperty> iterator = propertyList.iterator(); iterator.hasNext(); ) {
+      ExtensionProperty extensionProperty = iterator.next();
+      if (!conceptTerms.contains(extensionProperty)) {
+        iterator.remove();
+      }
+    }
+
+    // populate the ordered list of columns indexed (PropertyMapping), reserving index 0 for the ID column
+    PropertyMapping[] extensionOrderedCols = new PropertyMapping[dataFileRowSize];
+    // iterate through ordered list of those ExtensionProperty that have been mapped
+    for (int propertyIndex = 0; propertyIndex < propertyList.size(); propertyIndex++) {
+      // retrieve field corresponding to ExtensionProperty
+      ArchiveField f = af.getField(propertyList.get(propertyIndex));
+      if (f.getIndex() != null && f.getIndex() > 0) {
+        // create new field index corresponding to its position in ordered list of columns indexed
+        // +1 because index 0 is reserved for ID column
+        int fieldIndex = propertyIndex+1;
+        // assign ArchiveField new index so that meta.xml file mirrors the same field order
+        f.setIndex(fieldIndex);
+        // add PropertyMapping to list
+        extensionOrderedCols[fieldIndex] = m.getField(f.getTerm().qualifiedName());
+      }
+    }
+
+    return extensionOrderedCols;
   }
 }
