@@ -35,9 +35,14 @@
 }
 
 .dataTables_filter {
-	width: 50%;
-	float: right;
+	width: 21%;
+  background-color: #E6F5EB;
+  float: right;
 	text-align: right;
+  border-bottom: none;
+  border-color: rgba(200, 200, 200, 0.4);
+  border-radius:12px 0 0 0;
+  padding: 10px 5px 0 0;
 }
 
 .dataTables_info {
@@ -160,10 +165,14 @@ table.display td.center {
 
 .sorting_asc {
 	background: url('../../images/dataTables/sort_asc.png') no-repeat center right;
+  -webkit-box-shadow: -1px 4px 10px 0px rgba(200, 200, 200, 0.4) inset;
+  box-shadow:  -1px 4px 10px 0px rgba(200, 200, 200, 0.4) inset;
 }
 
 .sorting_desc {
 	background: url('../../images/dataTables/sort_desc.png') no-repeat center right;
+  -webkit-box-shadow: -1px 4px 10px 0px rgba(200, 200, 200, 0.4) inset;
+  box-shadow:  -1px 4px 10px 0px rgba(200, 200, 200, 0.4) inset;
 }
 
 .sorting {
