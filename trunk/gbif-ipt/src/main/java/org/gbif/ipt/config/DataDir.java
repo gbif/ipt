@@ -9,8 +9,6 @@ import org.gbif.ipt.utils.InputStreamUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 import javax.annotation.Nullable;
 
@@ -32,8 +30,7 @@ public class DataDir {
   public static final String TMP_DIR = "tmp";
   public static final String EML_XML_FILENAME = "eml.xml";
   public static final String DWCA_FILENAME = "dwca.zip";
-  private int tmpCounter = 0;
-  private Map<String, Integer> tmpPrefixCounter = new HashMap<String, Integer>();
+  public static final String PUBLICATION_LOG_FILENAME = "publication.log";
   private static final Random RANDOM = new Random();
 
   private static Logger log = Logger.getLogger(DataDir.class);
@@ -244,7 +241,7 @@ public class DataDir {
   }
 
   public File resourcePublicationLogFile(String resourceName) {
-    return dataFile(RESOURCES_DIR + "/" + resourceName + "/publication.log");
+    return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + PUBLICATION_LOG_FILENAME);
   }
 
   /**

@@ -155,7 +155,7 @@ public class ResourceFileAction extends PortalBaseAction {
     data = dataDir.resourcePublicationLogFile(resource.getShortname());
     if (resource.isPublished() && data.exists()) {
       mimeType = "text/log";
-      filename = "publication.log";
+      filename = DataDir.PUBLICATION_LOG_FILENAME;
     } else {
       return NOT_FOUND;
     }
