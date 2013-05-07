@@ -1131,6 +1131,10 @@ table#rtable {
   width: 100%;
 }
 
+table#rtable thead{
+  background-color: #E6F5EB;
+}
+
 div#rtableContainer {
   margin-bottom: 40px;
   font-size:13px;
