@@ -654,20 +654,20 @@ dwca.failed=TODO: Archive generation for resource {0} failed: {1}
 dwca.interrupted=TODO: Archive generation for resource {0} was interrupted: {1}
 publishing.started=TODO: Publishing version #{0} of resource {1} started
 publishing.success=TODO: Publishing version #{0} of resource {1} finished successfully
-publishing.cancelled=TODO: Publishing version #{0} of resource {1} was cancelled!
-publishing.error=TODO: An error of type {0} was encountered during publishing: {1}
-publishing.failed=TODO: Publishing version #{0} of resource {1} failed: {2}
-restore.resource.success=TODO: Restored version #{0} of resource {1} after publishing failure
-restore.resource.failed=TODO: Restoring version #{0} of resource {1} failed: {2}
+publishing.cancelled= Publicação da versão #{0} do recurso {1} foi cancelada!
+publishing.error= Foi encontrado um erro do tipo {0} durante a publicação: {1}
+publishing.failed= Publicação da versão #{0} do recurso {1} falhou: {2}
+restore.resource.success= Versão #{0} do recurso {1} restaurada após a falha de publicação
+restore.resource.failed= A restauração da versão #{0} do recurso {1} falhou: {2}
 
 # Auto-publishing
-autopublish=TODO: Auto-publishing
-autopublish.off=TODO: Turn off
-autopublish.update=TODO: Publish & change auto-publishing interval
-autopublish.activate=TODO: Publish & turn on auto-publishing
-autopublish.disable=TODO: Publish & turn off auto-publishing
-autopublish.interval=TODO: Select interval
-autopublish.help=TODO: To <strong>turn on</strong> automated publishing, select one of the 5 publishing intervals and then press publish. To <strong>change</strong> the automated publishing interval, select a different publishing interval and press publish. To <strong>turn off</strong> automated publishing, select "Turn off" and then press publish.
+autopublish= Auto-publicação
+autopublish.off= Desativar
+autopublish.update= Publicar & modificar intervalo de auto-publicação
+autopublish.activate= Publicar & ativar auto-publicação
+autopublish.disable= Publicar & desativar auto-publicação
+autopublish.interval= Selecionar intervalo
+autopublish.help= Para <strong>ativar</strong> a publicação automática, selecione uma das 5 opções de intervalos de publicação e clique em publicar. Para <strong>alterar</strong> o intervalo de publicação, selecione uma opção diferente de intervalo de publicação e clique em publicar. Para <strong>desativar</strong> a publicação automática, selecione "Desativar" e clique em publicar. 
 
 manage.overview.resource.being.published=Recurso {0} está atualmente sendo publicado. Por favor, aguarde.
 manage.overview.resource.deleted=Deletado {0}
@@ -734,7 +734,7 @@ manage.resource.status.intro.public.migration=Se você quiser esse recurso para 
 manage.resource.status.intro.registered=Esse recurso publico está registrado no GBIF. Para alterar essa situação é necessário excluir o recurso inteiro e entrar em contato com o <a href="mailto:helpdesk@gbif.org">GBIF Help Desk</a>.
 manage.resource.status.registration.forbidden=O seu usuário não possui direitos necessários para registrar esse recurso no GBIF.
 manage.resource.role.change=Por favor, entre em contato com o administrador do IPT para receber os direto necessários.
-manage.resource.publish.forbidden=TODO: Since this resource is registered with GBIF already, and the resource''s registration gets updated during each publication, you can no longer publish this resource.
+manage.resource.publish.forbidden= Uma vez que esse recurso já econtra-se registrado no GBIF, e recursos registrados são atualizados a acada publicação, você não pode publicar esse recurso.
 
 manage.resource.role.change=Por favor, entre em contato com o administrador do IPT para receber os direto necessários.
 manage.resource.status.registration.intro=Para torná-lo visível, selecione a organização à qual o recurso está associado e registre-o no GBIF. Para torná-lo acessível somente para gestores, deixe-o privado.
@@ -761,7 +761,7 @@ manage.source.source.log=Fonte de log
 manage.source.title=Fonte de Dados
 manage.source.unique=O nome da fonte já existe. Por favor, escolha um nome único.
 manage.source.unsupported.compression.format=Formato de compressão não suportada. Por favor, utilize arquivos zip, gzip ou texto plano.
-manage.source.unsupported.excel=TODO: Excel files are not supported. Please use delimited text files.
+manage.source.unsupported.excel= Arquivos Excel não são suportados. Por favor, utilize arquivos de texto delimitados (CSV).
 manage.success={0} seção salva com sucesso!
 manage.translation.cantfind.vocabulary=Não foi possível encontrar um vocabulário para mapear automaticamente a tradução.
 manage.translation.deleted=Tradução excluída para o termo {0}.
@@ -823,8 +823,8 @@ portal.resource.summary.geocoverage=Cobertura Geográfica
 portal.resource.summary.keywords=Palavras-chave
 portal.resource.summary.taxcoverage=Cobertura Taxonômica
 portal.resource.tel=Telefone
-portal.resource.eml.error.load=TODO: EML file version #{0} for resource {1} failed to load
-portal.resource.eml.error.parse=TODO: EML file version #{0} for resource {1} couldn''t be parsed
+portal.resource.eml.error.load= Falha ao carregar o arquivo EML de versão #{0} para o recurso {1} 
+portal.resource.eml.error.parse= Arquivo EML de versão #{0} para o recurso {1} não pode ser interpretado 
 portal.resource.version=Versão
 rank.class=Classe
 rank.family=Família
@@ -837,8 +837,8 @@ resource.coreType.help=O tipo de recurso. O valor desse campo depende do esquema
 resource.coreType.selection=Selecione um tipo
 
 manage.resource.create.coreType=Tipo
-manage.resource.create.coreType.selection=Selecione um tipo TODO: Select a type (optional)
-manage.resource.create.coreType.help=TODO: The type of resource. If optional archived resource is loaded, the type will be determined automatically and overwrite your selection. <ul><li><b>Occurrence:</b> the basis of the resource is occurrences in nature (observations) or in a collection (specimens).<br /></li><li><b>Checklist:</b> the basis of the resource is taxon names.<br /></li><li><b>Metadata:</b> a resource having information about a dataset, but without having the actual primary data. A metadata resource might give information about a collection that has not yet been digitized, for example.<br /></li><li><b>Other:</b> another type of resource.<br /></li></ul>
+manage.resource.create.coreType.selection=Selecione um tipo (opcional)
+manage.resource.create.coreType.help=O tipo de recurso. Se o recurso opcionalmente arquivado for carregado, o tipo será deterimnado automaticamente e sobrescrevera sua seleção. <ul><li><b>Ocorrência:</b> a base do recurso é ocorrências na natureza (observações) ou em coleções (espécimes).<br /></li><li><b>Checklist:</b> a base do recurso é nomes de táxons.<br /></li><li><b>Metadados:</b> um recurso tendo informações sobre um dataset, mas sem ter os dados primários. Um recurso de metadados pode ter informações sobre uma coleção que nao foi digitalizada ainda, por exemplo.<br /></li><li><b>Outro:</b> outro tipo de recurso.<br /></li></ul>
 
 resource.creator.email=Email
 resource.creator.firstname=Primeiro Nome
@@ -850,9 +850,9 @@ resource.status.registered=Registrado
 resource.subtype=Subtipo
 resource.subtype.help=O subtipo do recurso. As opções para esse campo depende do Tipo de campo. <ul><li><b>Autoridade Taxonômica:</b> um checklist oficial de classificações e sinônimos taxonômicos<br /></li><li><b>Autoridade de Nomenclatura:</b> um checklist oficial de nomenclautras e informações sobre publicações<br /></li><li><b>Invetório Temático:</b> um checklist temático que tem um tema por nomes de agrupamento, ex. parasitas de elefantes<br /></li><li><b>Inventório Regional:</b> um checklist regional que tem uma região comum em agrupamento de nomes, ex. espécies em áreas protegidas<br /></li><li><b>Dataset Global de Espécies:</b> um checklist taxonômico com uma cobertural espacial global. Esse subtipo é usado em particular por catálagos agregados sobre a vida<br /></li><li><b>Derivado de Ocorrência:</b> um checklist taxonômico que foi derivado de dados originados de dados de ocorrências<br /></li><li><b>Espécime:</b> Dados de espécime. Normalmente de coleções de museus<br /></li><li><b>Observações:</b> Dados de observações. Normalmente de monitoramento e de observações de campo<br /></li></ul>
 resource.subtype.none=Nenhum subtipo
-resource.updateFrequency.selection=TODO: Select an update frequency
-resource.updateFrequency=TODO: Update Frequency
-resource.updateFrequency.help=TODO: The frequency with which changes and additions are made to the dataset after the initial dataset is completed. Choosing daily, weekly, monthly, biannually, or annually qualifies the resource to be configured to use auto-publishing mode: <ul><li><b>Annually:</b> updated 1 time each year<br /></li><li><b>As needed:</b> updated as needed<br /></li><li><b>Biannually:</b> updated 2 times each year<br /></li><li><b>Continually:</b> updated continually<br /></li><li><b>Daily:</b> updated 1 time each day<br /></li><li><b>Irregular:</b> updated at irregular intervals<br /></li><li><b>Monthly:</b> updated 1 time each month<br /></li><li><b>Not planned:</b> further updates are not planned<br /></li><li><b>Weekly:</b> updated 1 time each week<br /></li><li><b>Unknown:</b>further updates may still happen, but it is not known for sure<br /></li><li><b>Other maintenance period:</b> updated according to some other interval.<br /></li></ul>
+resource.updateFrequency.selection= Selecione uma atualização 
+resource.updateFrequency=Frequência de atualização
+resource.updateFrequency.help= A freqüência com que as mudanças e adições são feitas no dataset após a conclusão do dataset inicial. A escolha de diário, semanal, mensal, semestral ou anualmente qualifica o recurso no modo auto-publicação: <ul><li><b>Atualmente:</b> atualizado 1 vez ao ano<br /></li><li><b>Quando necessário:</b> atualizado quando necessário<br /></li><li><b>Bianual:</b> atualizado 2 vezes ao ano<br /></li><li><b>Continuamente:</b> atualizado continuamente<br /></li><li><b>Diariamente:</b> atualziado 1 vez por dia<br /></li><li><b>Irregular:</b> atualizado em intervalos irregulares<br /></li><li><b>Mensalmente:</b> atualizado 1 por mês<br /></li><li><b>Não plenejado:</b> novas atualizações não são planejadas<br /></li><li><b>Semanalmente:</b> atualizado 1 vez por semana<br /></li><li><b>Desconhecido:</b> novas atualizações podem acontecer, mas sem previsão<br /></li><li><b>Outro período de manutenção:</b> atualizado de acordo com algum outro intervalo de tempo.<br /></li></ul>
 
 resource.subtype.selection=Selecione um subtipo
 rtf.abstract=Resumo
