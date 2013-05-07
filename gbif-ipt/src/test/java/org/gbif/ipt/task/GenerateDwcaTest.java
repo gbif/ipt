@@ -125,8 +125,6 @@ public class GenerateDwcaTest {
 
   /**
    * A resource with no core is expected to throw a GeneratorException.
-   *
-   * @throws Exception
    */
   @Test(expected = GeneratorException.class)
   public void testResourceWithNoCore() throws Exception {
@@ -166,16 +164,6 @@ public class GenerateDwcaTest {
     assertEquals("basisOfRecord", archive.getCore().getFieldsSorted().get(0).getTerm().simpleName());
     assertEquals("scientificName", archive.getCore().getFieldsSorted().get(1).getTerm().simpleName());
     assertEquals("kingdom", archive.getCore().getFieldsSorted().get(2).getTerm().simpleName());
-  }
-
-  @Test
-  public void testGenerateCoreFromTwoMappings() {
-    // TODO: write test
-  }
-
-  @Test
-  public void testGenerateExtensionsFromMultipleMappings() {
-    // TODO: write test
   }
 
   private Resource getResource()
