@@ -1006,8 +1006,8 @@ vocabulary.uri=URI
 xwork.default.invalid.fieldvalue=Valor inválido
 
 # Data Tables. Warning: don't translate any word beginning and ending in underscores, e.g. _MENU_
-dataTables.sInfo=Showing _START_ to _END_ of _TOTAL_ resources
-dataTables.sInfoEmpty=Showing 0 to 0 of 0 resources
-dataTables.sInfoFiltered=(filtered from _MAX_ total)
-dataTables.sEmptyTable=No resources are currently available
-dataTables.sZeroRecords=No resources were found
+dataTables.sInfo=TODO: Showing _START_ to _END_ of _TOTAL_ resources
+dataTables.sInfoEmpty=TODO: Showing 0 to 0 of 0 resources
+dataTables.sInfoFiltered=TODO: (filtered from _MAX_ total)
+dataTables.sEmptyTable=TODO: No resources are currently available
+dataTables.sZeroRecords=TODO: No resources were found
