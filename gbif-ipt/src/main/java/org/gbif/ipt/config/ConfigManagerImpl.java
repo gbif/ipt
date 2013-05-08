@@ -49,12 +49,14 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   private final ConfigWarnings warnings;
   private final DefaultHttpClient client;
   private final HttpUtil http;
+  private final PublishingMonitor publishingMonitor;
   private static final String PATH_TO_CSS = "/styles/main.css";
 
   @Inject
   public ConfigManagerImpl(DataDir dataDir, AppConfig cfg, InputStreamUtils streamUtils, UserAccountManager userManager,
     ResourceManager resourceManager, ExtensionManager extensionManager, VocabulariesManager vocabManager,
-    RegistrationManager registrationManager, ConfigWarnings warnings, DefaultHttpClient client) {
+    RegistrationManager registrationManager, ConfigWarnings warnings, DefaultHttpClient client, PublishingMonitor
+    publishingMonitor) {
     super(cfg, dataDir);
     this.streamUtils = streamUtils;
     this.userManager = userManager;
@@ -65,6 +67,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     this.warnings = warnings;
     this.client = client;
     this.http = new HttpUtil(client);
+    this.publishingMonitor = publishingMonitor;
     if (dataDir.isConfigured()) {
       log.info("IPT DataDir configured - loading its configuration");
       try {
@@ -180,6 +183,9 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     log.info("Loading resource configurations ...");
     resourceManager.load();
 
+    // start publishing monitor
+    log.info("Starting Publishing Monitor...");
+    publishingMonitor.start();
   }
 
   private void reloadLogger() {

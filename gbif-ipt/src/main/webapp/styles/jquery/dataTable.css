@@ -35,14 +35,22 @@
 }
 
 .dataTables_filter {
-	width: 21%;
+	width: 215px;
   background-color: #E6F5EB;
   float: right;
 	text-align: right;
   border-bottom: none;
   border-color: rgba(200, 200, 200, 0.4);
   border-radius:12px 0 0 0;
-  padding: 10px 5px 0 0;
+  padding: 10px 5px 7px 0;
+}
+
+#rtable_filter label {
+  width: auto;
+}
+
+#rtable_filter input {
+  width: 150px;
 }
 
 .dataTables_info {

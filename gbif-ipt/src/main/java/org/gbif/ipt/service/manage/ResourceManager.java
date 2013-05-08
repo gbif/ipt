@@ -18,6 +18,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadPoolExecutor;
+import javax.annotation.Nullable;
 
 import com.google.inject.ImplementedBy;
 
@@ -225,7 +229,7 @@ public interface ResourceManager {
    *
    * @throws PublicationException if resource was already registered
    */
-  boolean publish(Resource resource, int version, BaseAction action) throws PublicationException;
+  boolean publish(Resource resource, int version, @Nullable BaseAction action) throws PublicationException;
 
   /**
    * Publishes a new version of the EML file for the given resource. After publishing the new version, it copies a
@@ -321,7 +325,7 @@ public interface ResourceManager {
    * @param version  version to restore
    * @param action   action
    */
-  void restoreVersion(Resource resource, int version, BaseAction action);
+  void restoreVersion(Resource resource, int version, @Nullable BaseAction action);
 
   /**
    * Turn resource publicationMode to OFF.
@@ -343,4 +347,18 @@ public interface ResourceManager {
    * @return resource with the IPT URL alternate identifier for the resource updated
    */
   Resource updateAlternateIdentifierForIPTURLToResource(Resource resource);
+
+  /**
+   * Return the ThreadPoolExecutor.
+   *
+   * @return the ThreadPoolExecutor
+   */
+  public ThreadPoolExecutor getExecutor();
+
+  /**
+   * Return the Futures map, representing all publishing jobs that have been fired.
+   *
+   * @return the Futures map
+   */
+  public Map<String, Future<Integer>> getProcessFutures();
 }

@@ -780,11 +780,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             action.addActionError(msg);
 
             // update StatusReport on publishing page
-            StatusReport updated = new StatusReport(new Exception(cause), msg, getTaskMessages(shortname));
-            processReports.put(shortname, updated);
+            if (cause != null) {
+              StatusReport updated = new StatusReport(new Exception(cause), msg, getTaskMessages(shortname));
+              processReports.put(shortname, updated);
+            }
 
             // the previous version needs to be rolled back
-            restoreVersion(resource, resource.getEmlVersion() - 1, action);
+            restoreVersion(resource, resource.getLastVersion(), action);
           }
           // remove process from locking list
           processFutures.remove(shortname);
@@ -1039,6 +1041,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   public boolean publish(Resource resource, int version, BaseAction action) throws PublicationException {
+    // prevent null action from being handled
+    if (action == null) {
+      action = new BaseAction(textProvider, cfg, registrationManager);
+    }
     // publish metadata (EML as well as RTF)
     publishMetadata(resource, version, action);
     // (re)generate dwca asynchronously
@@ -1066,6 +1072,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @throws PublicationException if publication was unsuccessful
    */
   private void publishEnd(Resource resource, int recordCount, BaseAction action) {
+    // prevent null action from being handled
+    if (action == null) {
+      action = new BaseAction(textProvider, cfg, registrationManager);
+    }
     // update the resource's registration (if registered), even if it is a metadata-only resource.
     updateRegistration(resource, action);
     // set last published date
@@ -1084,6 +1094,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   public void restoreVersion(Resource resource, int version, BaseAction action) {
+    // prevent null action from being handled
+    if (action == null) {
+      action = new BaseAction(textProvider, cfg, registrationManager);
+    }
     String shortname = resource.getShortname();
     String sVersion = String.valueOf(version);
     log.info("Restoring version #" + sVersion + " of resource " + shortname);
@@ -1631,27 +1645,26 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   /**
    * Updates the date the resource is scheduled to be published next. The resource must have been configured with
    * a maintenance update frequency that is suitable for auto-publishing (annually, biannually, monthly, weekly,
-   * daily),
-   * and have auto-publishing mode turned on for this update to take place.
+   * daily), and have auto-publishing mode turned on for this update to take place.
    *
    * @param resource resource
    *
    * @throws PublicationException if the next published date cannot be set for any reason
    */
   private void updateNextPublishedDate(Resource resource) throws PublicationException {
-    if (resource.usesAutoPublishing() && resource.getLastPublished() != null) {
+    if (resource.usesAutoPublishing()) {
       try {
         log.debug("Updating next published date of resource: " + resource.getShortname());
 
-        // get last published date (make sure this has been set from the publish that triggered the call to this method)
-        Date lastPublished = resource.getLastPublished();
+        // get the time now, from this the next published date will be calculated
+        Date now = new Date();
 
         // get update period in days
         int days = resource.getUpdateFrequency().getPeriodInDays();
 
         // calculate next published date
         Calendar cal = Calendar.getInstance();
-        cal.setTime(lastPublished);
+        cal.setTime(now);
         cal.add(Calendar.DATE, days);
         Date nextPublished = cal.getTime();
 
@@ -1732,5 +1745,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       }
     }
     return resource;
+  }
+
+  public ThreadPoolExecutor getExecutor() {
+    return executor;
+  }
+
+  public Map<String, Future<Integer>> getProcessFutures() {
+    return processFutures;
   }
 }
