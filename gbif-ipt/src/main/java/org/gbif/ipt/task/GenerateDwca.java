@@ -32,6 +32,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.regex.Pattern;
+import javax.annotation.Nullable;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -107,48 +108,21 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     af.setEncoding("utf-8");
     af.setDateFormat("YYYY-MM-DD");
     // in the generated file column 0 will be the id row
-    af.setId(buildField(null, 0, null));
+    ArchiveField idField = new ArchiveField();
+    idField.setIndex(0);
+    af.setId(idField);
 
-    // first we need to find the union of all terms mapped and make them a field in the final archive
-    // we keep a static mapping only if it applies to ALL mappings of the same term
-    int dataFileRowSize = 1; // first column will become the id column
-    for (ExtensionMapping m : mappings) {
-      for (PropertyMapping pm : m.getFields()) {
-        if (af.hasTerm(pm.getTerm())) {
-          // different default value?
-          ArchiveField field = af.getField(pm.getTerm());
-          if (field.getDefaultValue() != null && !field.getDefaultValue().equals(pm.getDefaultValue())) {
-            // different values, reset to null - we will have to explicitly
-            // write the values into the data file
-            field.setDefaultValue(null);
-            field.setIndex(dataFileRowSize);
-            dataFileRowSize++;
-          }
-        } else {
-          // check if we have a dynamic mapping
-          if (pm.getIndex() != null) {
-            // Avoid redundant columns being included in core data file or extension:
-            // no extension should ever include column occurrenceID when the archive has core row type occurrence
-            // no extension should ever include column taxonID when the archive has core row type taxon
-            // At same time ensure taxonId column can be written for core data file, when core row type is occurrence
-            if (pm.getIndex() >= 0 && (
-              (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_OCCURRENCE) && !pm.getTerm().qualifiedName()
-                .equalsIgnoreCase(Constants.DWC_OCCURRENCE_ID)) || (
-                coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON) && !pm.getTerm().qualifiedName()
-                  .equalsIgnoreCase(Constants.DWC_TAXON_ID)))) {
-              // Since all default values ​​will be written in the data file, they won't be expressed in the
-              // archive file (meta.xml). That's why we send a null value.
-              af.addField(buildField(pm.getTerm(), dataFileRowSize, null));
-              dataFileRowSize++;
-            }
-          } else {
-            // Only with default value.
-            af.addField(buildField(pm.getTerm(), dataFileRowSize, null));
-            dataFileRowSize++;
-          }
-        }
-      }
-    }
+    // find the union of all terms mapped and make them a field in the final archive
+    Set<ConceptTerm> mappedConceptTerms = addFieldsToArchive(mappings, af, coreRowType);
+
+    // retrieve the ordered list of mapped ExtensionProperty
+    List<ExtensionProperty> propertyList = getOrderedMappedExtensionProperties(ext, mappedConceptTerms);
+
+    // reassign indexes ordered by Extension
+    assignIndexesOrderedByExtension(propertyList, af);
+
+    // total column count is equal to id column + mapped columns
+    int totalColumns = 1 + propertyList.size();
 
     // open new file writer for single data file
     String fn = ext.getName().toLowerCase().replaceAll("\\s", "_") + ".txt";
@@ -162,17 +136,22 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     try {
       boolean headerWritten = false;
       for (ExtensionMapping m : mappings) {
-        // prepare list of all output columns (apart from id column) ordered according to order of terms in Extension
-        PropertyMapping[] inCols = getExtensionOrderedColumnList(ext, dataFileRowSize, af, m);
+        // prepare index ordered list of all output columns apart from id column
+        PropertyMapping[] inCols = new PropertyMapping[totalColumns];
+        for (ArchiveField f : af.getFields().values()) {
+          if (f.getIndex() != null && f.getIndex() > 0) {
+            inCols[f.getIndex()] = m.getField(f.getTerm().qualifiedName());
+          }
+        }
 
         // write header line 1 time only to file
         if (!headerWritten) {
-          writeHeaderLine(inCols, af, writer);
+          writeHeaderLine(propertyList, totalColumns, af, writer);
           headerWritten = true;
         }
 
         // write data (records) to file
-        dumpData(writer, inCols, m, dataFileRowSize);
+        dumpData(writer, inCols, m, totalColumns);
         // remember core record number
         if (ext.isCore()) {
           coreRecords = currRecords;
@@ -197,29 +176,31 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
     // final reporting
     addMessage(Level.INFO,
-      "Data file written for " + currExtension + " with " + currRecords + " records and " + dataFileRowSize
-      + " columns");
+      "Data file written for " + currExtension + " with " + currRecords + " records and " + totalColumns + " columns");
   }
 
   /**
    * Write the header column line to file.
    *
-   * @param inCols index ordered list of all output columns apart from id column
-   * @param af     tab file with representing the core file or an extension
-   * @param writer file writer
+   * @param propertyList ordered list of all ExtensionProperty that have been mapped across all mappings for a single
+   *                     Extension
+   * @param totalColumns total number of columns in header
+   * @param af           tab file with representing the core file or an extension
+   * @param writer       file writer
    *
    * @throws IOException if writing the header line failed
    */
-  private void writeHeaderLine(PropertyMapping[] inCols, ArchiveFile af, Writer writer) throws IOException {
-    // generating headers
-    String[] headers = new String[inCols.length];
+  private void writeHeaderLine(List<ExtensionProperty> propertyList, int totalColumns, ArchiveFile af, Writer writer)
+    throws IOException {
+    String[] headers = new String[totalColumns];
+    // reserve 1st column for "id"
     headers[0] = ID_COLUMN_NAME;
-    for (int c = 1; c < inCols.length; c++) {
-      if (inCols[c] != null) {
-        headers[c] = inCols[c].getTerm().simpleName();
-      }
+    // add remaining mapped-column names
+    int c = 1;
+    for (ExtensionProperty property : propertyList) {
+      headers[c] = property.simpleName();
+      c++;
     }
-
     // write header line - once per mapping
     String headerLine = tabRow(headers);
     af.setIgnoreHeaderLines(1);
@@ -246,10 +227,17 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     addMessage(Level.INFO, "EML file added");
   }
 
-  private ArchiveField buildField(ConceptTerm term, Integer column, String defaultValue) {
+  /**
+   * Build a new ArchiveField having a ConceptTerm and defaultValue.
+   *
+   * @param term ConceptTerm
+   * @param defaultValue default value
+   *
+   * @return ArchiveField created
+   */
+  private ArchiveField buildField(ConceptTerm term, @Nullable String defaultValue) {
     ArchiveField f = new ArchiveField();
     f.setTerm(term);
-    f.setIndex(column);
     f.setDefaultValue(defaultValue);
     return f;
   }
@@ -740,54 +728,100 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
   }
 
   /**
-   * Prepare list of all output columns (apart from id column) ordered according to order of terms in Extension.
+   * First we need to find the union of all terms mapped and make them a field in the final archive. We keep a static
+   * mapping only if it applies to ALL mappings of the same term. While doing this, populate set of conceptTerms that
+   * have been mapped (in all files) for a single Extension.
    *
-   * @param ext             Extension
-   * @param dataFileRowSize number of columns in data file
-   * @param af              ArchiveFile
-   * @param m               ExtensionMapping
+   * @param mappings    list of ExtensionMapping
+   * @param af          ArchiveFile
+   * @param coreRowType core row type
    *
-   * @return list of all output columns, ordered by extension
+   * @return set of conceptTerms that have been mapped (in all files) for a single Extension
    */
-  private PropertyMapping[] getExtensionOrderedColumnList(Extension ext, int dataFileRowSize, ArchiveFile af,
-    ExtensionMapping m) {
-    // retrieve the ordered list of the Extension's ExtensionProperty
-    List<ExtensionProperty> propertyList = new ArrayList<ExtensionProperty>();
-    propertyList.addAll(ext.getProperties());
+  private Set<ConceptTerm> addFieldsToArchive(List<ExtensionMapping> mappings, ArchiveFile af, String coreRowType) {
 
-    // populate set of conceptTerms that have been mapped
-    Set<ConceptTerm> conceptTerms = new HashSet<ConceptTerm>();
-    for (ArchiveField f : af.getFields().values()) {
-      if (f.getIndex() != null && f.getIndex() > 0) {
-        conceptTerms.add(m.getField(f.getTerm().qualifiedName()).getTerm());
+    Set<ConceptTerm> mappedConceptTerms = new HashSet<ConceptTerm>();
+    for (ExtensionMapping m : mappings) {
+      for (PropertyMapping pm : m.getFields()) {
+        if (af.hasTerm(pm.getTerm())) {
+          // different default value?
+          ArchiveField field = af.getField(pm.getTerm());
+          if (field.getDefaultValue() != null && !field.getDefaultValue().equals(pm.getDefaultValue())) {
+            // different values, reset to null - we will have to explicitly write the values into the data file
+            field.setDefaultValue(null);
+            mappedConceptTerms.add(pm.getTerm());
+          }
+        } else {
+          // check if we have a dynamic mapping
+          if (pm.getIndex() != null) {
+            // Avoid redundant columns being included in core data file or extension:
+            // no extension should ever include column occurrenceID when the archive has core row type occurrence
+            // no extension should ever include column taxonID when the archive has core row type taxon
+            // At same time ensure taxonId column can be written for core data file, when core row type is occurrence
+            if (pm.getIndex() >= 0 && (
+              (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_OCCURRENCE) && !pm.getTerm().qualifiedName()
+                .equalsIgnoreCase(Constants.DWC_OCCURRENCE_ID)) || (
+                coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON) && !pm.getTerm().qualifiedName()
+                  .equalsIgnoreCase(Constants.DWC_TAXON_ID)))) {
+              // Since all default values ​​will be written in the data file, they won't be expressed in the
+              // archive file (meta.xml). That's why we send a null value.
+              af.addField(buildField(pm.getTerm(), null));
+              mappedConceptTerms.add(pm.getTerm());
+            }
+          } else {
+            // Only with default value.
+            af.addField(buildField(pm.getTerm(), null));
+            mappedConceptTerms.add(pm.getTerm());
+          }
+        }
       }
     }
+    return mappedConceptTerms;
+  }
+
+  /**
+   * Iterate through ordered list of those ExtensionProperty that have been mapped, and reassign the ArchiveFile
+   * ArchiveField indexes, based on the order of their appearance in the ordered list be careful to reserve index 0 for
+   * the ID column
+   *
+   * @param propertyList ordered list of those ExtensionProperty that have been mapped
+   * @param af           ArchiveFile
+   */
+  private void assignIndexesOrderedByExtension(List<ExtensionProperty> propertyList, ArchiveFile af) {
+    for (int propertyIndex = 0; propertyIndex < propertyList.size(); propertyIndex++) {
+      // retrieve field corresponding to ExtensionProperty
+      ArchiveField f = af.getField(propertyList.get(propertyIndex));
+      if (f.getIndex() == null) {
+        // create new field index corresponding to its position in ordered list of columns indexed
+        // +1 because index 0 is reserved for ID column
+        int fieldIndex = propertyIndex + 1;
+        // assign ArchiveField new index so that meta.xml file mirrors the ordered field order
+        f.setIndex(fieldIndex);
+      }
+    }
+  }
+
+  /**
+   * Retrieve the ordered list of all Extension's mapped ExtensionProperty. Ordering is done according to Extension.
+   *
+   * @param ext                Extension
+   * @param mappedConceptTerms set of all mapped ConceptTerm
+   *
+   * @return ordered list of mapped ExtensionProperty
+   */
+  private List<ExtensionProperty> getOrderedMappedExtensionProperties(Extension ext,
+    Set<ConceptTerm> mappedConceptTerms) {
+    List<ExtensionProperty> propertyList = new ArrayList<ExtensionProperty>();
+    // start with all Extension's ExtensionProperty, in natural order
+    propertyList.addAll(ext.getProperties());
 
     // remove all ExtensionProperty that have not been mapped, leaving the ordered list of those that have been
     for (Iterator<ExtensionProperty> iterator = propertyList.iterator(); iterator.hasNext(); ) {
       ExtensionProperty extensionProperty = iterator.next();
-      if (!conceptTerms.contains(extensionProperty)) {
+      if (!mappedConceptTerms.contains(extensionProperty)) {
         iterator.remove();
       }
     }
-
-    // populate the ordered list of columns indexed (PropertyMapping), reserving index 0 for the ID column
-    PropertyMapping[] extensionOrderedCols = new PropertyMapping[dataFileRowSize];
-    // iterate through ordered list of those ExtensionProperty that have been mapped
-    for (int propertyIndex = 0; propertyIndex < propertyList.size(); propertyIndex++) {
-      // retrieve field corresponding to ExtensionProperty
-      ArchiveField f = af.getField(propertyList.get(propertyIndex));
-      if (f.getIndex() != null && f.getIndex() > 0) {
-        // create new field index corresponding to its position in ordered list of columns indexed
-        // +1 because index 0 is reserved for ID column
-        int fieldIndex = propertyIndex+1;
-        // assign ArchiveField new index so that meta.xml file mirrors the same field order
-        f.setIndex(fieldIndex);
-        // add PropertyMapping to list
-        extensionOrderedCols[fieldIndex] = m.getField(f.getTerm().qualifiedName());
-      }
-    }
-
-    return extensionOrderedCols;
+    return propertyList;
   }
 }

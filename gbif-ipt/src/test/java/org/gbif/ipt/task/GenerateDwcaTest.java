@@ -18,6 +18,7 @@ package org.gbif.ipt.task;
 
 import org.gbif.dwc.text.Archive;
 import org.gbif.dwc.text.ArchiveFactory;
+import org.gbif.file.CSVReader;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
@@ -164,6 +165,15 @@ public class GenerateDwcaTest {
     assertEquals("basisOfRecord", archive.getCore().getFieldsSorted().get(0).getTerm().simpleName());
     assertEquals("scientificName", archive.getCore().getFieldsSorted().get(1).getTerm().simpleName());
     assertEquals("kingdom", archive.getCore().getFieldsSorted().get(2).getTerm().simpleName());
+
+    // confirm data written to file
+    CSVReader reader = archive.getCore().getCSVReader();
+    String[] row = reader.next();
+    assertEquals("1", row[0]);
+    assertEquals("Animalia", row[1]);
+    assertEquals("puma concolor", row[2]);
+    assertEquals("Animalia", row[3]);
+    reader.close();
   }
 
   private Resource getResource()
