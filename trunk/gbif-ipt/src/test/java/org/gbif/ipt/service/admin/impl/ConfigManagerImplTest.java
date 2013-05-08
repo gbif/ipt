@@ -17,6 +17,7 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigManagerImpl;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.config.PublishingMonitor;
 import org.gbif.ipt.mock.MockDataDir;
 import org.gbif.ipt.mock.MockRegistrationManager;
 import org.gbif.ipt.mock.MockResourceManager;
@@ -66,15 +67,13 @@ public class ConfigManagerImplTest {
     RegistrationManager mockedRegistrationManager = MockRegistrationManager.buildMock();
     UserAccountManager mockedUserManager = MockUserAccountManager.buildMock();
     ConfigWarnings warnings = new ConfigWarnings();
+    PublishingMonitor mockPublishingMonitor = mock(PublishingMonitor.class);
 
     client = HttpUtil.newMultithreadedClient(1000, 1, 1);
     appConfig = new AppConfig(mockedDataDir);
 
-    ConfigManager config =
-      new ConfigManagerImpl(mockedDataDir, appConfig, streamUtils, mockedUserManager, mockedResourceManager,
-        mockedExtensionManager, mockedVocabularies, mockedRegistrationManager, warnings, client);
-
-    return config;
+    return new ConfigManagerImpl(mockedDataDir, appConfig, streamUtils, mockedUserManager, mockedResourceManager,
+        mockedExtensionManager, mockedVocabularies, mockedRegistrationManager, warnings, client, mockPublishingMonitor);
   }
 
   /**

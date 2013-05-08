@@ -236,6 +236,24 @@ public class Resource implements Serializable, Comparable<Resource> {
     return emlVersion;
   }
 
+  /**
+   * Get the next resource version.
+   *
+   * @return next resource version
+   */
+  public int getNextVersion() {
+    return emlVersion + 1;
+  }
+
+  /**
+   * Get the last resource version.
+   *
+   * @return last resource version
+   */
+  public int getLastVersion() {
+    return emlVersion - 1;
+  }
+
   public UUID getKey() {
     return key;
   }
@@ -559,6 +577,6 @@ public class Resource implements Serializable, Comparable<Resource> {
    * @return true if the resource uses auto-publishing
    */
   public boolean usesAutoPublishing() {
-    return publicationMode == PublicationMode.AUTO_PUBLISH_ON;
+    return publicationMode == PublicationMode.AUTO_PUBLISH_ON && updateFrequency != null;
   }
 }

@@ -10,8 +10,6 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -41,7 +39,6 @@ public class PublishAllResourcesAction extends BaseAction {
     try {
       if (registrationManager.getIpt() != null) {
         registryManager.updateIpt(registrationManager.getIpt());
-        addActionMessage(getText("admin.registration.success.update"));
       }
     } catch (RegistryException e) {
       // log as specific error message as possible about why the Registry error occurred
@@ -56,23 +53,18 @@ public class PublishAllResourcesAction extends BaseAction {
       return SUCCESS;
     }
 
-    // capture resources waiting to finish publishing
-    List<String> resourcesWaiting = new ArrayList<String>();
-
     // kick off publishing for all resources
     for (Resource resource : resources) {
       int v = 0;
       try {
         // increment version number - this will be the version of newly published eml/rtf/archive
-        v = resource.getEmlVersion() + 1;
-        // publish a new version of the resource
-        if (resourceManager.publish(resource, v, this)) {
-          // if dwca still needs to get published (asynchronously), add resource to waiting list
-          resourcesWaiting.add(resource.getShortname());
-        }
+        v = resource.getNextVersion();
+        // publish a new version of the resource - dwca gets published asynchronously
+        resourceManager.publish(resource, v, this);
       } catch (PublicationException e) {
         if (PublicationException.TYPE.LOCKED == e.getType()) {
-          addActionError(getText("manage.overview.resource.being.published"));
+          addActionError(
+            getText("manage.overview.resource.being.published", new String[] {resource.getTitleAndShortname()}));
         } else {
           // alert user publication failed
           addActionError(
@@ -84,25 +76,16 @@ public class PublishAllResourcesAction extends BaseAction {
     }
 
     // wait around for all resources to finish publishing
-    Iterator<String> iterator = resourcesWaiting.iterator();
-    while (iterator.hasNext()) {
-      String shortname = iterator.next();
-
-      // wait a second before polling to give tasks a chance to finish
+    // PublishingMonitor thread is running in the background completing asynchronous publishing tasks
+    while (resourceManager.getProcessFutures().size() > 0) {
       try {
         Thread.sleep(1000);
       } catch (InterruptedException e) {
         log.error("Thread waiting during publish all resources was interrupted", e);
       }
-
-      // method isLocked takes care of all logging and rolling version back in case of failure
-      if (resourceManager.isLocked(shortname, this)) {
-        log.debug("Resource " + shortname + " is still locked - will check again so to wait");
-      } else {
-        iterator.remove();
-        log.debug("Resource " + shortname + " finished");
-      }
     }
+    // only display sinlge message: that publish all finished
+    clearMessages();
     addActionMessage(getText("admin.config.updateMetadata.summary"));
     return SUCCESS;
   }

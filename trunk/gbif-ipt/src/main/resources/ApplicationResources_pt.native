@@ -111,7 +111,7 @@ admin.config.setup3.title=Configuração do IPT está completa
 admin.config.setup3.welcome=Parabéns! Você instalou com sucesso o seu IPT. Por favor, pressione "continuar" para começar a usá-lo.
 admin.config.updateMetadata.none=Não existem recursos para serem atualizados.
 admin.config.updateMetadata.resource.fail.registry=Ocorreu um erro na atualização do Registro GBIF - {0}.
-admin.config.updateMetadata.summary=A publicação de todos os recursos está completa
+admin.config.updateMetadata.summary=A publicação de todos os recursos está completa. Para ajuda adicional, por favor, veja os logs.
 
 admin.error.invalidConfiguration=Configuração fornecida inválida: {0}
 admin.extension.coreTypes=Padrões

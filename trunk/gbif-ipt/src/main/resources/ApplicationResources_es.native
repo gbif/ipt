@@ -434,7 +434,7 @@ admin.config.registry.url.help=La URL del Registro de GBIF en donde el directori
 
 admin.config.updateMetadata.none=No existe ningún recurso para actualizar.
 admin.config.updateMetadata.resource.fail.registry=Ocurrió un error en la actualización en el Registro GBIF - {0}.
-admin.config.updateMetadata.summary=TODO: Publish all resources completed
+admin.config.updateMetadata.summary=TODO: Publish all resources completed. For additional information, please see logs.
 
 
 # invalid fields

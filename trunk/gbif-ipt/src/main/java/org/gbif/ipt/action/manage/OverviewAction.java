@@ -119,7 +119,7 @@ public class OverviewAction extends ManagerBaseAction {
       addActionError(msg);
 
       // restore the previous version of the resource
-      resourceManager.restoreVersion(resource, resource.getEmlVersion() - 1, this);
+      resourceManager.restoreVersion(resource, resource.getLastVersion(), this);
 
       // Struts finishes before callable has a finish to update status report, therefore,
       // temporarily override StatusReport so that Overview page report displaying up-to-date STATE and Exception
@@ -477,7 +477,7 @@ public class OverviewAction extends ManagerBaseAction {
     }
 
     // increment version number - this will be the version of newly published resource (all of eml/rtf/dwca)
-    int v = resource.getEmlVersion() + 1;
+    int v = resource.getNextVersion();
 
     try {
       // publish a new version of the resource
@@ -491,7 +491,8 @@ public class OverviewAction extends ManagerBaseAction {
       }
     } catch (PublicationException e) {
       if (PublicationException.TYPE.LOCKED == e.getType()) {
-        addActionWarning(getText("manage.overview.resource.being.published"));
+        addActionError(
+          getText("manage.overview.resource.being.published", new String[] {resource.getTitleAndShortname()}));
       } else {
         // alert user publication failed
         addActionError(
