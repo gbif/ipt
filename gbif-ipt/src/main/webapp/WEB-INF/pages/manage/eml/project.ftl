@@ -28,7 +28,7 @@
 		<@input name="eml.project.personnel.lastName" requiredField=true />
 	</div>
 	<div class="halfcolumn">
-		<@select name="eml.project.personnel.role" value="${(eml.project.personnel.role)!}" help="i18n" options=roles />
+		<@select name="eml.project.personnel.role" i18nkey="eml.associatedParties.role" value="${(eml.project.personnel.role)!}" help="i18n" options=roles />
 	</div>
 	<div class="clearfix"></div>
 	<@text name="eml.project.funding" help="i18n"/>
