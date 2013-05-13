@@ -175,8 +175,8 @@ resource.coreType=核心集類型
 resource.coreType.selection=選擇一種核心集類型
 
 manage.resource.create.coreType=核心集類型
-manage.resource.create.coreType.selection=選擇一種核心集類型 TODO: Select a type (optional)
-manage.resource.create.coreType.help=TODO: The type of resource. If optional archived resource is loaded, the type will be determined automatically and overwrite your selection. <ul><li><b>Occurrence:</b> the basis of the resource is occurrences in nature (observations) or in a collection (specimens).<br /></li><li><b>Checklist:</b> the basis of the resource is taxon names.<br /></li><li><b>Metadata:</b> a resource having information about a dataset, but without having the actual primary data. A metadata resource might give information about a collection that has not yet been digitized, for example.<br /></li><li><b>Other:</b> another type of resource.<br /></li></ul>
+manage.resource.create.coreType.selection=選擇一種核心集類型（額外選項）
+manage.resource.create.coreType.help=資源類型。若載入額外倉儲的資源，資源類型將自動決定並覆蓋你的選擇。<ul><li><b>出現資料：</b>此資源的基礎是自然的出現（觀察）紀錄或採集（標本）紀錄。<br /></li><li><b>名錄：</b> 此資源的基礎是分類名稱。<br /></li><li><b>元數據：</b> 有描述資料集的資訊，但無實際的原始資料的資源。例如，元數據可提供尚未數位化的採集相關資訊<br /></li><li><b>其他：</b>其他資源類型。<br /></li></ul>
 
 resource.subtype=次類型
 resource.status.private=未公開
@@ -189,9 +189,9 @@ resource.coreType.help=資源的類型。此欄位的值取決於此資源的核
 resource.subtype.help=資源的次類型。此欄位的選項取決於核心集類型。
 resource.subtype.selection=選擇一種次類型
 resource.subtype.none=無
-resource.updateFrequency.selection=TODO: Select an update frequency
-resource.updateFrequency=TODO: Update Frequency
-resource.updateFrequency.help=TODO: The frequency with which changes and additions are made to the dataset after the initial dataset is completed. Choosing daily, weekly, monthly, biannually, or annually qualifies the resource to be configured to use auto-publishing mode: <ul><li><b>Annually:</b> updated 1 time each year<br /></li><li><b>As needed:</b> updated as needed<br /></li><li><b>Biannually:</b> updated 2 times each year<br /></li><li><b>Continually:</b> updated continually<br /></li><li><b>Daily:</b> updated 1 time each day<br /></li><li><b>Irregular:</b> updated at irregular intervals<br /></li><li><b>Monthly:</b> updated 1 time each month<br /></li><li><b>Not planned:</b> further updates are not planned<br /></li><li><b>Weekly:</b> updated 1 time each week<br /></li><li><b>Unknown:</b>further updates may still happen, but it is not known for sure<br /></li><li><b>Other maintenance period:</b> updated according to some other interval.<br /></li></ul>
+resource.updateFrequency.selection=選擇更新頻率
+resource.updateFrequency=更新頻率
+resource.updateFrequency.help=資料集最初編輯完成後，資料修改或增加的頻率。使用自動發佈模式，請選擇設定每日、每周、每月、每年兩次或每年一次更新資料集：<ul><li><b>每年</b>每年更新一次<br /></li><li><b>需要時：</b>依需要更新<br /></li><li><b>每年兩次：</b>每年更新兩次<br /></li><li><b>持續：</b>持續更新<br /></li><li><b>每日：</b>每日更新一次<br /></li><li><b>不定期：</b>不定期更新<br /></li><li><b>每月：</b>每月更新一次<br /></li><li><b>無計畫：</b>無計畫更新<br /></li><li><b>每周：</b>每周更新一次<br /></li><li><b>不確定：</b>有可能更新，但不確知何時<br /></li><li><b>其他更新週期：</b>依其他週期更新。<br /></li></ul>
 
 
 # sources
@@ -322,7 +322,7 @@ portal.home.organisation=單位組織
 portal.home.records=紀錄筆數
 portal.home.modified=最後修改時間
 portal.home.last.publication=上次發布
-manage.home.next.publication=TODO: Next publication
+manage.home.next.publication=下次發佈
 portal.home.not.published=尚未發布
 portal.home.author=作者
 portal.login=登入
@@ -347,8 +347,8 @@ portal.resource.creator=資源創建者
 portal.resource.name=資源名稱
 portal.resource.contact=聯絡資訊
 portal.resource.tel=電話
-portal.resource.eml.error.load=TODO: EML file version #{0} for resource {1} failed to load
-portal.resource.eml.error.parse=TODO: EML file version #{0} for resource {1} couldn''t be parsed
+portal.resource.eml.error.load=資料集 {1} EML 檔版本 #{0} 載入失敗
+portal.resource.eml.error.parse=資料集 {1} EML 檔版本 #{0} 無法解析
 portal.publication.download.log=完整下載
 portal.publication.log=發布日誌檔
 
@@ -398,11 +398,11 @@ admin.config.setup3.welcome=恭喜！您已經成功地安裝您的 IPT。請按
 
 admin.config.debug=除錯模式
 admin.config.debug.help=如果您在您的 IPT 上遭遇問題，並且希望啟用提供為除錯目的而增加資訊記錄功能時，請勾選此核取框。如果您需要 helpdesk 的幫助，您可能會被要求提供除錯記錄資訊。
-admin.config.debug.error=TODO: Invalid Debug Mode (must be true or false)
-admin.config.save.error=TODO: Couldtn''t write config settings - an error was encountered
-admin.config.archivalMode=TODO: Archival Mode
-admin.config.archivalMode.help=TODO: Please check this box if you want your IPT to archive all published versions for all resources. It will enable you to track a resource''s version history. If unchecked, older versions will be overwritten with the latest. Beware not to run out of disk space.
-admin.config.archivalMode.error=TODO: Invalid Archival Mode (must be true or false)
+admin.config.debug.error=無效的除錯模式（必須為是或否）
+admin.config.save.error=無法寫入設定值－遭遇錯誤
+admin.config.archivalMode=倉儲模式
+admin.config.archivalMode.help=若希望 IPT 保存所有資料集已發佈的所有版本，請選取此方塊；此功能將讓你可以追溯資料集的版本歷史。若不選取此方塊，舊版本將會被新版本複寫。請特別注意保留足夠的磁碟儲存空間。
+admin.config.archivalMode.error=無效的倉儲模式（必須為是或否）
 
 admin.config.server.data.dir=IPT 資料目錄
 admin.config.server.data.dir.help=IPT 用以寫入資料的伺服器目錄
@@ -419,7 +419,7 @@ admin.config.googleMapsKey=Google Maps Key
 
 admin.config.analyticsGbif=啟用 GBIF 分析
 admin.config.analyticsGbif.help=如果您想讓 GBIF 將您的 IPT 納入全球 IPT 的使用情況監測，請勾取此核取框。
-admin.config.analyticsGbif.error=TODO: Invalid GBIF Analytics Mode (must be true or false)
+admin.config.analyticsGbif.error=無效的 GBIF Analytics 模式（必須為是或否）
 admin.config.analyticsKey=您的 Google Analytics Key
 admin.config.analyticsKey.help=Google Analytics 是由 Google 提供監測網站應用程式的服務。請輸入您的 Google Analytics key 以便追蹤您的 IPT 使用狀況。
 admin.config.analyticsKey.error=無效的 Google Analytics Key
@@ -446,7 +446,7 @@ admin.config.registry.url.help=這個資料目錄所關連的 GBIF 登錄網址�
 
 admin.config.updateMetadata.none=沒有資源需要更新。。。
 admin.config.updateMetadata.resource.fail.registry=在更新至 GBIF 登錄時發生錯誤 - {0}。
-admin.config.updateMetadata.summary=TODO: Publish all resources completed. For additional information, please see logs.
+admin.config.updateMetadata.summary=已完成發佈所有資料集。 若需要更多資訊，請見日誌檔。
 
 # invalid fields
 invalid.fieldvalue.latitude=無效的緯度
@@ -636,12 +636,12 @@ manage.resource.delete.confirm.registered=刪除 GBIF 登錄的已註冊資源�
 manage.resource.delete.failed=無法移除資資源。
 manage.resource.status.intro.private=資料管理者尚未公開此資源。為使所有人均能獲取此資源，請將其設定為公開狀態。
 manage.resource.status.intro.public=此資源已公開，所有人均可使用。
-manage.resource.status.intro.public.migration=TODO: replace "additional metadata" with "{0}" 如果您想要以此資源更新已經由 DiGIR, BioCASE 或 TAPIR 發布之同一資源，請確認此資源註冊至同一單位組織，並請到「其它元數據」頁面，在「替代的識別碼」中填入已註冊的 UUID。
+manage.resource.status.intro.public.migration=以 "{0}" 取代 "額外的元數據"。如果您想要以此資源更新已經由 DiGIR, BioCASE 或 TAPIR 發布之同一資源，請確認此資源註冊至同一單位組織，並請到「其它元數據」頁面，在「替代的識別碼」中填入已註冊的 UUID。
 manage.resource.status.intro.registered=此資源已向 GBIF 註冊。欲刪除註冊狀態，必須刪除整份資源並以電子郵件連繫 <a href=''mailto:helpdesk@gbif.org''>GBIF Help Desk</a>。
 manage.resource.status.registration.intro=要使資料集可公開存取，請選擇資源所屬的單位組織向 GBIF 註冊。若資源僅供資料管理員存取，則將資源設為不公開。
 manage.resource.status.registration.forbidden=您不具有向 GBIF 註冊此資源的角色權限。
 manage.resource.role.change=若您認為應擁有此權限，請聯繫 IPT 管理員。
-manage.resource.publish.forbidden=TODO: Since this resource is registered with GBIF already, and the resource''s registration gets updated during each publication, you can no longer publish this resource.
+manage.resource.publish.forbidden=此資料集已向 GBIF 註冊，每次發佈資料時，系統會更新註冊，因此你無法再發佈此資料集。
 
 manage.resource.status.restrict=僅供資料管理員存取
 manage.resource.read.eml.metadata=讀取 EML 元數據
@@ -690,7 +690,7 @@ manage.source.rows=列
 manage.source.modified=修改
 manage.source.filesystem.error=檔案系統錯誤：{0}
 manage.source.unsupported.compression.format=不支援的壓縮格式。請使用 zip、gzip 或純文字格式。
-manage.source.unsupported.excel=TODO: Excel files are not supported. Please use delimited text files.
+manage.source.unsupported.excel=不支援 Excel 檔。請使用逗號分隔 (csv) 文字檔。
 manage.source.replaced.existing=置換現有資料來源 >>{0}<<。
 manage.source.added.new=新增檔案來源 >>{0}<<。
 manage.source.deleted=刪除來源 {0}。
@@ -712,7 +712,7 @@ manage.overview.taxcoverage=分類群涵蓋範圍
 manage.overview.geocoverage=地理涵蓋範圍
 manage.overview.metadata=元數據
 manage.overview.missing.metadata=此資源缺少必填性質的元數據！
-manage.overview.source.hidden=TODO: Since this is a metadata-only resource, the source data and mapping sections are hidden. To add actual primary data, just change the resource type in your {0}.
+manage.overview.source.hidden=因為此資料集只有元數據，原始資料和欄位對應部分已被隱藏。若要增加實際的原始資料，僅需改變你的 {0} 資料集類型。
 manage.overview.source.data=來源資料
 manage.overview.source.description1=您用來產生達爾文核心集檔案的資料來源。你可以上傳壓縮檔 (zip, gzip) 或未壓縮的文字分檔（csv, tab及使用其他分隔符號的文字檔案）。如欲（再次）上傳，請選擇您電腦中的檔案並點擊「{0}」
 manage.overview.source.description2=或者是，您可以設定 <i>SQL views</i> 對應至區域網路中的資料庫。欲建立新的 SQL 資料來源，請點擊 "{0}" 沒有選擇任何文件。
@@ -744,9 +744,9 @@ manage.overview.visibility.confirm.agreement=請確認您已讀過並了解 <a t
 
 manage.overview.published=公開發布一版本
 manage.overview.published.see.report=請見報告
-manage.overview.published.hide.report=TODO: Hide report
-manage.overview.published.description=發布新版本時，一個新的 EML 版本以及達爾文核心集檔案(DwC-A)將被建立。<br />DwC-A 將所有資料來源、對應與元數據都包裝在在一個 zip 壓縮檔中。TODO: When publishing a new release, a new EML version, RTF version, and a Darwin Core Archive (DwC-A) will be created. A DwC-A bundles all source files with mappings and metadata in one zipped archive.
-manage.overview.published.description.metadataOnly=TODO: When publishing a new release of a metadata-only resource, a new EML version and RTF version will be created.
+manage.overview.published.hide.report=隱藏報告
+manage.overview.published.description=發布新版本時，一個新的 EML 版本以及達爾文核心集檔案(DwC-A)將被建立。<br />DwC-A 將所有資料來源、對應與元數據都包裝在在一個 zip 壓縮檔中。發佈新版本時，將會建立一新版本的EML、RTF、達爾文核心檔案 (DwC-A)。DwC-A 為一壓縮檔，包含了元數據、所有的原始資料及其欄位對應關係。
+manage.overview.published.description.metadataOnly=發佈只有元數據的新版本資料集時，將建立一新版本的 EML、RTF 檔。
 manage.overview.published.testmode.warning=由於此 IPT 設定在測試模式，您的資料集將無法為 GBIF 索引。
 manage.overview.published.missing.metadata=在您發佈資源之前請至少提供必填性質的基本元數據資料。
 manage.overview.published.last.publication=最新發佈
@@ -760,25 +760,25 @@ manage.overview.published.eml=EML
 manage.overview.published.resource.version=已發布的資源版本{0}
 manage.overview.publishing=發布中
 manage.overview.publishing.resource.version=發布中的資源版本{0}
-manage.overview.publishing.error=TODO: {0}: Publishing resource failed at step {1}. Reason: {2}
-dwca.failed=TODO: Archive generation for resource {0} failed: {1}
-dwca.interrupted=TODO: Archive generation for resource {0} was interrupted: {1}
-publishing.started=TODO: Publishing version #{0} of resource {1} started
-publishing.success=TODO: Publishing version #{0} of resource {1} finished successfully
-publishing.cancelled=TODO: Publishing version #{0} of resource {1} was cancelled!
-publishing.error=TODO: An error of type {0} was encountered during publishing: {1}
-publishing.failed=TODO: Publishing version #{0} of resource {1} failed: {2}
-restore.resource.success=TODO: Restored version #{0} of resource {1} after publishing failure
-restore.resource.failed=TODO: Restoring version #{0} of resource {1} failed: {2}
+manage.overview.publishing.error={0}: 在第 {1} 步驟發佈資料集失敗。原因：{2}
+dwca.failed=資料集 {0} 壓縮檔產生失敗：{1}
+dwca.interrupted=資料集 {0} 壓縮檔產生中斷：{1}
+publishing.started=發佈資料集 {1} 版本 #{0} 開始
+publishing.success=成功發佈資料集 {1} 版本 #{0}
+publishing.cancelled=取消發佈資料集 {1} 版本 #{0}！
+publishing.error=發佈資料集時，發生類型錯誤 {0}：{1}
+publishing.failed=發佈資料集 {1} 版本 #{0} 失敗：{2}
+restore.resource.success=由於發佈失敗，還原資料集 {1} 至版本 #{0}
+restore.resource.failed=還原資料集 {1} 版本 #{0} 失敗：{2}
 
 # Auto-publishing
-autopublish=TODO: Auto-publishing
-autopublish.off=TODO: Turn off
-autopublish.update=TODO: Publish & change auto-publishing interval
-autopublish.activate=TODO: Publish & turn on auto-publishing
-autopublish.disable=TODO: Publish & turn off auto-publishing
-autopublish.interval=TODO: Select interval
-autopublish.help=TODO: To <strong>turn on</strong> automated publishing, select one of the 5 publishing intervals and then press publish. To <strong>change</strong> the automated publishing interval, select a different publishing interval and press publish. To <strong>turn off</strong> automated publishing, select "Turn off" and then press publish.
+autopublish=自動定期發布
+autopublish.off=關閉
+autopublish.update=改變發布週期並發布
+autopublish.activate=發布並開啟自動定期發布
+autopublish.disable=發布並關閉自動定期發布
+autopublish.interval=選擇發布週期
+autopublish.help=欲 <strong>開啟</strong> 自動定期發布，請選擇一發布週期（共有五個選項）後點選發布。欲 <strong>改變</strong> 自動定期發布之週期，選擇一新選項後點選發布。欲 <strong>關閉</strong> 自動定期更新，選擇「關閉」後點選發布。 
 
 manage.overview.resource.managers=資源管理者
 manage.overview.resource.managers.description=資源能由多位管理者所管理。您可以授與其他管理者修改{0}之權限。
@@ -951,7 +951,7 @@ eml.associatedParties.firstName=名字
 eml.associatedParties.lastName=姓氏
 eml.associatedParties.phone=電話
 eml.associatedParties.role=角色
-eml.associatedParties.role.help=<ul><li><b>作者：</b>編寫著作資料集或資料論文相關的人員<br /></li><li><b>內容提供者：</b>對資料集內容提供有所貢獻的人員<br /></li><li><b>資料保管者：</b>負責保管及給予資料的人員<br /></li><li><b>資料發布者：</b>與公開發布此資料集有關之人員<br /></li><li><b>編輯：</b>使用此資料集編輯相關出版品之人員<br /></li><li><b>元數據提供者：</b>有責任提供資料集元數據的人員<br /></li><li><b>資料彙整者：</b>負責彙整此資料集的人員<br /></li><li><b>資料擁有者：</b>擁有此資料集之人員（可能是或可能不是資料保管者）<br /></li><li><b>聯絡人：</b>可聯絡並獲得此資料集更多資訊的人員<br /></li><li><b>主要研究人員：</b>此資料集主要的科學研究人員<br /></li><li><b>資料處理人員：</b>負責進行資料後續處理分析的人員<br /></li><li><b>出版者：</b>與出版此資料集出版品相關之人員<br /></li><li><b>使用者：</b>使用此資料集之人員<br /></li><li><b>資訊工程師：</b>提供資訊或應用程式支援之人員<br /></li><li><b>Curator:</b> an agent that maintains and documents the specimens in a collection. Some of their duties include preparing and labeling specimens so they are ready for identification, and protecting the specimens<br /></li></ul>
+eml.associatedParties.role.help=<ul><li><b>作者：</b>編寫著作資料集或資料論文相關的人員<br /></li><li><b>內容提供者：</b>對資料集內容提供有所貢獻的人員<br /></li><li><b>資料保管者：</b>負責保管及給予資料的人員<br /></li><li><b>資料發布者：</b>與公開發布此資料集有關之人員<br /></li><li><b>編輯：</b>使用此資料集編輯相關出版品之人員<br /></li><li><b>元數據提供者：</b>有責任提供資料集元數據的人員<br /></li><li><b>資料彙整者：</b>負責彙整此資料集的人員<br /></li><li><b>資料擁有者：</b>擁有此資料集之人員（可能是或可能不是資料保管者）<br /></li><li><b>聯絡人：</b>可聯絡並獲得此資料集更多資訊的人員<br /></li><li><b>主要研究人員：</b>此資料集主要的科學研究人員<br /></li><li><b>資料處理人員：</b>負責進行資料後續處理分析的人員<br /></li><li><b>出版者：</b>與出版此資料集出版品相關之人員<br /></li><li><b>使用者：</b>使用此資料集之人員<br /></li><li><b>資訊工程師：</b>提供資訊或應用程式支援之人員<br /></li><li><b>標本管理員：</b>紀錄或維護標本的人員。有些人的職務包含準備標本標籤以供鑑定以及保護標本。<br /></li></ul>
 eml.associatedParties.position=職稱
 eml.associatedParties.organisation=組織
 eml.associatedParties.address.address=地址
@@ -982,17 +982,17 @@ eml.taxonomicCoverages.taxonList=分類清單
 eml.taxonomicCoverages.taxonList.help=增加幾個分類群（一行一個）
 
 eml.temporalCoverages.type=時間範圍類型
-eml.temporalCoverages.singleDate=TODO: Single Date
-eml.temporalCoverages.singleDate.help=TODO: This date is meant to represent a coverage spanning one day. Use one of these date formats:
+eml.temporalCoverages.singleDate=單一日期
+eml.temporalCoverages.singleDate.help=此日期用以表示時間涵蓋範圍在一天以內。請使用下列格式之一：
 
 eml.temporalCoverages.startDate=起始日期
-eml.temporalCoverages.startDate.help=請選用以下日期格式之一： TODO: The date the coverage began. Use one of these date formats:
+eml.temporalCoverages.startDate.help=時間涵蓋範圍之始。請選用以下日期格式之一：
 eml.temporalCoverages.endDate=結束日期
-eml.temporalCoverages.endDate.help=請選用以下日期格式之一： TODO: The date the coverage ended. Use one of these date formats:
+eml.temporalCoverages.endDate.help=時間涵蓋範圍之末。請選用以下日期格式之一：
 eml.temporalCoverages.formationPeriod=彙整期間
-eml.temporalCoverages.formationPeriod.help=以文字描述採集品彙整的時間是哪個時期。（例如：維多利亞女王時代、1922 - 1932、c. 1750）TODO: Text description of the time period during which the collection was assembled (e.g., "Victorian", "1922-1932", "c. 1750"). Use this type to indicate an ongoing collection (e.g., "2010-current").
+eml.temporalCoverages.formationPeriod.help=以文字描述採集品彙整的時間是哪個時期（例如：維多利亞女王時代、1922 - 1932、c. 1750）。使用此方式表示持續累積的採集蒐藏（例如：2010 年至今）。
 eml.temporalCoverages.livingTimePeriod=生物存活的時期
-eml.temporalCoverages.livingTimePeriod.help=該物種存活的時期，可包含古生物生存時期或是其他期間的文字描述。TODO: Time period during which biological material was alive. Includes palaeontological time periods or other text phrases (e.g., "1900-1950", "Ming Dynasty", "Pleistocene")
+eml.temporalCoverages.livingTimePeriod.help=該物種存活的時期，可包含古生物生存時期或是其他期間的文字描述（例如："1900-1950"，"明朝"，"更新世"）。
 
 eml.project.title=計畫名稱
 eml.project.personnel.firstName=人員名字
@@ -1013,7 +1013,7 @@ eml.qualityControl.help=此欄位提供關於控制或評估資料品質方法�
 eml.methodSteps=實驗步驟描述
 eml.methodSteps.help=此欄位提供一系列的表單用以紀錄產生資料的步驟。這些包含步驟本身的說明、相關文獻、軟體、儀器，來源資料以及任何的品質控管工作。
 eml.citation.citation=資源引用文字
-eml.citation.citation.help=TODO (do not translate the actual citation strings though please): A single citation for use when citing the dataset.<br /><br />Example in case where the dataset is owned by an organization:<br /><br />"Bombay Natural History Society (2011). Literature based species occurrence data of birds of northeast India. 2400 records, Contributed by Narwade S, Karla M, and Varier D, Online:http://ibif.gov.in:8080/ipt/resource.do?r=BNHS-NEW, released on 01/09/2011, doi:10.9999/ibif.150.2011."<br /><br />Example in case when the dataset is owned by a group of people:<br /><br />"Narwade S, Karla M, Varier D (2011) Literature based species occurrence data of birds of northeast India. 2400 records. Online:http://ibif.gov.in:8080/ipt/resource.do?r=BNHS-NEW, released on 01/09/2011, doi:10.9999/ibif.150.2011."
+eml.citation.citation.help=引用資料集時之引用文字。<br /><br />當資料集為組織或機構所有時的範例：<br /><br />"Bombay Natural History Society (2011). Literature based species occurrence data of birds of northeast India. 2400 records, Contributed by Narwade S, Karla M, and Varier D, Online:http://ibif.gov.in:8080/ipt/resource.do?r=BNHS-NEW, released on 01/09/2011, doi:10.9999/ibif.150.2011."<br /><br />當資料集為數人所有時的範例：<br /><br />"Narwade S, Karla M, Varier D (2011) Literature based species occurrence data of birds of northeast India. 2400 records. Online:http://ibif.gov.in:8080/ipt/resource.do?r=BNHS-NEW, released on 01/09/2011, doi:10.9999/ibif.150.2011."
 eml.citation.identifier=引用識別碼
 eml.citation.identifier.help=引用文獻的 URI、DOI 或其他永久識別碼。
 eml.bibliographicCitationSet.bibliographicCitations.citation=引用文獻
@@ -1160,8 +1160,8 @@ format.date={yyyy-MM-dd}
 xwork.default.invalid.fieldvalue=無效的欄位值
 
 # Data Tables. Warning: don't translate any word beginning and ending in underscores, e.g. _MENU_
-dataTables.sInfo=TODO: Showing _START_ to _END_ of _TOTAL_ resources
-dataTables.sInfoEmpty=TODO: Showing 0 to 0 of 0 resources
-dataTables.sInfoFiltered=TODO: (filtered from _MAX_ total)
-dataTables.sEmptyTable=TODO: No resources are currently available
-dataTables.sZeroRecords=TODO: No resources were found
+dataTables.sInfo=顯示 _START_ 至 _END_ 共 _TOTAL_ 資料集
+dataTables.sInfoEmpty=顯示 0 至 0 共 0 資料集
+dataTables.sInfoFiltered=(過濾自 _MAX_ 總數)
+dataTables.sEmptyTable=目前沒有任何資料集
+dataTables.sZeroRecords=沒有找到任何資料集
