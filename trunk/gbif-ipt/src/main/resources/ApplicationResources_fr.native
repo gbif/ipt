@@ -654,10 +654,10 @@ restore.resource.failed=La restauration de la ressource {1} en version {0} a éc
 # Auto-publishing
 autopublish=Publication automatique
 autopublish.off=Désactiver
-autopublish.update=Publier & modifier publication automatique
-autopublish.activate=Publier & activer publication automatique
-autopublish.disable=Publier & désactiver publication automatique
-autopublish.interval=Sélectionnez le intervalle
+autopublish.update=Publier & modifier la publication automatique
+autopublish.activate=Publier & activer la publication automatique
+autopublish.disable=Publier & désactiver la publication automatique
+autopublish.interval=Sélectionnez l''intervalle
 autopublish.help=Pour <strong>activer</strong> la publication automatique, sélectionnez l''un des 5 intervalles de publication, puis appuyez sur publier. Pour <strong>modifier</strong> l''intervalle de publication automatique, sélectionnez un intervalle de publication différent et appuyez sur publier. Pour <strong>désactiver</strong> la publication automatique, sélectionnez "Désactiver" puis appuyez sur publier.
 
 manage.overview.publishing.resource.version=Publication de la ressource (version #{0})
