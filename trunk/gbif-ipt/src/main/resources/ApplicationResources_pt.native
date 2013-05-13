@@ -516,7 +516,6 @@ manage.home.name=Nome
 manage.home.not.published=Não publicado
 manage.home.not.registered=Não registrado
 manage.home.organisation=Organização
-manage.home.records=Registros
 manage.home.resource.locked=Este recurso está bloqueado devido a um preocessamento em execução. Por favor, tente mais tarde.
 manage.home.resources.none=Nenhum, por favor criar um recurso ou perguntar a um gerenciador para adicionar você a esse(s) recurso(s).
 manage.home.subtype=Subtipo
