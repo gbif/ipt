@@ -216,7 +216,8 @@ If there are any public resources, they will appear in a table having the follow
 *Subtype* - the subtype of the resource as given in the Subtype drop down on the [IPT2ManualNotes#Basic_Metadata Basic Metadata] page of the resource metadata<br>
 *Records* - the number of rows of data in the core data file that were successfully loaded into the IPT for the resource.<br>
 *Last modified* - either the date the resource was created or the date on which the data or metadata were last modified, whichever is more recent.<br>
-*Last publication* - the date the resource was last published.
+*Last publication* - the date the resource was last published.<br>
+*Next publication* - the date the resource will be published next.
 ===RSS feed===
 The IPT supports syndication via RSS for those who wish to monitor resource configuration changes. The RSS feed is accessible by clicking on the link provided below the list of public hosted resources. The RSS feed can be read in any standard RSS client.
 ===Metadata Overview page===
@@ -228,7 +229,7 @@ This page allows users having the appropriate role (managers and administrators)
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResources.png]
 ===Manage Resources Table===
-When the Manage Resources page is first opened, it shows a table of existing resources that the current user has permission to change, including those created by this user and those which this user has been invited to manage by others. Refer to the information under the "Public Resources Table" heading in the "Home Menu" section for detailed explanations of the Name, Organisation, Type, Subtype, Records, Last Modified, Last publication, and Next publication columns. In addition, the Manage Resources Table includes the following column of basic information about the resources:
+When the Manage Resources page is first opened, it shows a table of existing resources that the current user has permission to change, including those created by this user and those which this user has been invited to manage by others. Refer to the information under the [IPT2ManualNotes#Public_Resources_Table Public Resources Table] section for detailed explanations of the Name, Organisation, Type, Subtype, Records, Last Modified, Last publication, and Next publication columns. In addition, the Manage Resources Table includes the following column of basic information about the resources:
 
 *Visibility* - a category stating who has access to view the resource. If the resource is "Public", all users will be able to see it on the Public Resources table on the Home page. If the resource is "Private", it will be visible in the Manage Resources table only to the user who created it, to those who have been invited to manage it, and to users having the Admin role. Details about inviting others to manage a resource are given in the "Resource Managers" section under the "Resource Overview" heading in the "Manage Resources" section.
 
