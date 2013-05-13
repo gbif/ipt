@@ -391,10 +391,14 @@
           		<#if eml.project.title?has_content><tr><th><@s.text name='eml.project.title'/></th><td><@textWithFormattedLink eml.project.title!/></td></tr></#if>
               <#if eml.project.personnel??>
                 <#assign personnel = eml.project.personnel>
-                <#if personnel.lastName?has_content><tr><th><@s.text name='portal.resource.name'/></th><td>${personnel.firstName!} ${personnel.lastName!}</td></tr></#if>
+                <#if personnel.lastName?has_content><tr>
+                    <th>&#40;<@s.text name='rtf.project.personnel'/>&#41;&nbsp;<@s.text name='portal.resource.name'/></th>
+                    <td>${personnel.firstName!} ${personnel.lastName!}</td>
+                </tr>
+                </#if>
                 <#if roles[personnel.role?string]?has_content>
                   <tr>
-                    <th><@s.text name='eml.project.personnel.role'/></th>
+                    <th>&#40;<@s.text name='rtf.project.personnel'/>&#41;&nbsp;<@s.text name='eml.associatedParties.role'/></th>
                     <td>${roles[personnel.role?string]!}</td>
                   </tr>
                 </#if>
