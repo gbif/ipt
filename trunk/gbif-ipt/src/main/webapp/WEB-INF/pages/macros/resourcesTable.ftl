@@ -59,7 +59,7 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
                 { "sTitle": "<@s.text name="manage.home.last.publication" />", "bSearchable": false},
                 { "sTitle": "<@s.text name="manage.home.next.publication" />", "bSearchable": false},
                 { "sTitle": "<@s.text name="manage.home.visible"/>", "bSearchable": false, "bVisible": <#if shownPublicly>false<#else>true</#if>},
-                { "sTitle": "<@s.text name="portal.home.author"/>", "bVisible": <#if shownPublicly>true<#else>false</#if>}
+                { "sTitle": "<@s.text name="portal.home.author"/>", "bVisible": <#if shownPublicly>false<#else>true</#if>}
             ],
             "aaSorting": [[ ${columnToSortOn}, "${sortOrder}" ]],
             "aoColumnDefs": [
