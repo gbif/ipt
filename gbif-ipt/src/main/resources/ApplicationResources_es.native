@@ -601,7 +601,6 @@ manage.home.title=Recursos que puede manipular
 manage.home.name=Nombre
 manage.home.type=Tipo
 manage.home.subtype=Subtipo
-manage.home.records=Registros
 manage.home.last.modified=Última modificación
 manage.home.last.publication=Última publicación
 manage.home.visible=Visibilidad

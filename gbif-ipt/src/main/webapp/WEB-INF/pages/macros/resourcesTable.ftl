@@ -54,7 +54,7 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
                 { "sTitle": "<@s.text name="manage.home.organisation"/>"},
                 { "sTitle": "<@s.text name="manage.home.type"/>"},
                 { "sTitle": "<@s.text name="manage.home.subtype"/>"},
-                { "sTitle": "<@s.text name="manage.home.records"/>", "bSearchable": false},
+                { "sTitle": "<@s.text name="portal.home.records"/>", "bSearchable": false},
                 { "sTitle": "<@s.text name="manage.home.last.modified"/>", "bSearchable": false},
                 { "sTitle": "<@s.text name="manage.home.last.publication" />", "bSearchable": false},
                 { "sTitle": "<@s.text name="manage.home.next.publication" />", "bSearchable": false},

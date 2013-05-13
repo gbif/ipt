@@ -518,7 +518,6 @@ manage.home.name=Nom
 manage.home.not.published=Non publié
 manage.home.not.registered=Non enregistré
 manage.home.organisation=Organisation
-manage.home.records=Enregistrements
 manage.home.resource.locked=Cette ressource est verouillée car un service fonctionnant en tâche de fond y accède actuellement. Merci de réessayer plus tard.
 manage.home.resources.none=Aucune. Vous pouvez créer une ressource, ou demander à d''autres managers de vous donner les droits sur les ressources dont ils sont responsables.
 manage.home.subtype=Sous-type

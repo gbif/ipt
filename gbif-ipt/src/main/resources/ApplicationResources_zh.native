@@ -610,7 +610,6 @@ manage.home.title=您有管理權限的資源
 manage.home.name=名稱
 manage.home.type=資料集類別
 manage.home.subtype=資料集子類別
-manage.home.records=記錄
 manage.home.last.modified=最後修改
 manage.home.last.publication=上次發佈
 manage.home.visible=可見度
