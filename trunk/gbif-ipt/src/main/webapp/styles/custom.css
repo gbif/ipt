@@ -27,6 +27,9 @@ table#rtable thead{
 .dataTables_filter {
   background-color: #dbf0e8;
 }
+tr.even td.sorting_1 {
+  background-color: #E6F5EB;
+}
 .actionMessage{
   color: #008959;
   background-color: #dbf0e8;
