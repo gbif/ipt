@@ -6,7 +6,7 @@
 <script type="text/javascript" language="javascript" src="${baseURL}/js/jquery/jquery.js"></script>
 <script type="text/javascript" language="javascript" src="${baseURL}/js/jquery/jquery.dataTables.js"></script>
   <@resourcesTable shownPublicly=true numResourcesShown=20 sEmptyTable="dataTables.sEmptyTable" columnToSortOn=1 sortOrder="asc" />
-<h1><@s.text name="portal.home.title"/></h1>
+<h1 class="rtableTitle"><@s.text name="portal.home.title"/></h1>
 <div id="rtableContainer"></div>
 
 <!-- RSS Feed shown if there are resources -->
