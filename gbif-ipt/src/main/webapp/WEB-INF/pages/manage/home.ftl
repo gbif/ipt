@@ -5,7 +5,6 @@
   <#include "/WEB-INF/pages/inc/menu.ftl">
   <#include "/WEB-INF/pages/macros/forms.ftl"/>
   <#include "/WEB-INF/pages/macros/resourcesTable.ftl"/>
-<link rel="stylesheet" type="text/css" media="all" href="${baseURL}/styles/jquery/dataTable.css"/>
 <script type="text/javascript" language="javascript" src="${baseURL}/js/jquery/jquery.js"></script>
 <script type="text/javascript" language="javascript" src="${baseURL}/js/jquery/jquery.dataTables.js"></script>
 <script type="text/javascript">

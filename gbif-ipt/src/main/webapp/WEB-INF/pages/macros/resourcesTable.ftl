@@ -16,7 +16,7 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
       <#list resources as r>
           [<#if r.eml.logoUrl?has_content>'<img class="resourceminilogo" src="${r.eml.logoUrl}" />'<#else>'${emptyString}'</#if>,
            '<a href="${baseURL}<#if !shownPublicly>/manage</#if>/resource.do?r=${r.shortname}"><if><#if r.title?has_content>${r.title}<#else>${r.shortname}</#if></a>',
-           <#if r.status=='REGISTERED'>'${r.organisation.name}'<#else>'<@s.text name="manage.home.not.registered"/>'</#if>,
+           <#if r.status=='REGISTERED'>'${r.organisation.alias!r.organisation.name}'<#else>'<@s.text name="manage.home.not.registered"/>'</#if>,
            <#if r.coreType?has_content >'${r.coreType?lower_case}'<#else>'${emptyString}'</#if>,
            <#if (r.subtype?has_content) && (r.subtype?length >= 8) >'${r.subtype?lower_case?substring(0,7)}${dotDot}'<#else>'${emptyString}'</#if>,
            '${r.recordsPublished!0}',
@@ -50,7 +50,7 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
             },
             "aoColumns": [
                 { "sTitle": "<@s.text name="portal.home.logo"/>", "bSearchable": false, "bVisible": <#if shownPublicly>true<#else>false</#if> },
-                { "sTitle": "<@s.text name="manage.home.name"/>", "sClass": "name_column"},
+                { "sTitle": "<@s.text name="manage.home.name"/>"},
                 { "sTitle": "<@s.text name="manage.home.organisation"/>"},
                 { "sTitle": "<@s.text name="manage.home.type"/>"},
                 { "sTitle": "<@s.text name="manage.home.subtype"/>"},
