@@ -69,7 +69,7 @@ Note 2: If you have a data directory from a previously running IPT of the same v
 
 Note 3: Click on the language name in the upper right hand corner to see whether your preferred language is available to use the IPT in. 
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v204/IPTSetup1.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/IPTSetup1.png]
 ===IPT setup II===
 If the initial data directory assignment step was successful, the IPT will present a second setup page (see screen image, below) on which the information about the default administrator of the IPT must be entered, along with the information about what mode the IPT should run in, and how the IPT will be accessed from the Internet. Following are explanations of the fields encountered on the second setup page:
   * Default administrator - The default administrator will have a distinct login and the authority to make changes to all aspects of the IPT installation. The default administrator will be able to make additional user accounts, including other administrators having the same authority to make changes. Though administrators can be added and removed, the IPT must always have at least one.
@@ -84,7 +84,7 @@ If the initial data directory assignment step was successful, the IPT will prese
    * *Base URL for this IPT* - the URL that points to the root of this IPT installation. The URL is detected automatically if possible, but should be changed in production systems to be accessible via the Internet in order for the IPT to function fully. Configuring the IPT Base URL to use localhost, for example, will not allow the instance of the IPT to be registered with GBIF, will not allow the IPT to be associated with an organisation, and will not allow resources to be publicly accessible.
    * *Proxy URL* - if the server on which the IPT is installed is routed through a proxy server or virtual host, enter the host address and port number through which the IPT will be accessible via the Internet as a URL in the format protocol:host:port, for example, http://proxy.gbif.org:8080.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v204/IPTSetup2.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/IPTSetup2.png]
 
 When all of the information on the page is complete and correct, click on the button labeled "Save" to complete the IPT setup process. If a problem occurs, an error message will appear at the top of the page with recommendations about how to resolve the issue. Provided the issue has been resolved, restarting the web server will make it disappear. If the setup is successful, a page confirming the success of the setup will appear. 
 
@@ -92,7 +92,7 @@ When all of the information on the page is complete and correct, click on the bu
 
 Click on the button labeled "Continue" to open the IPT Administration page (see the screen image, below), from which further configuration of the IPT can be accomplished. Please review the explanations of all of the Administration functions before continuing. Details about the options presented on this screen are given in the "Administration Menu" section of the Quick Reference Guide. Before adding data resources to the IPT, the administrator must, at a minimum, verify the IPT settings, set the GBIF registration options, and associate the IPT with an organisation. The Organisations button is disabled by default until the GBIF registration options have been set.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTAdminBeforeRegistration.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/IPTAdminBeforeRegistration.png]
 
 Once you have completed the steps in this Getting Started Guide, your IPT is ready to add resources (data sets and metadata). You may want to complete one or more of the tutorials to understand how common IPT tasks are accomplished. For detailed explanations of any further aspects of the IPT, consult the Quick Reference Guide of this user manual.
 ==Starting Over==
@@ -181,11 +181,11 @@ The header section of the IPT appears in the upper right of most pages and allow
 
 Header, not logged in, English language chosen for the user interface: 
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTHeaderNotLoggedIn.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/IPTHeaderNotLoggedIn.png]
 
 Header, logged in, English language chosen for the user interface: 
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTHeaderLoggedIn.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/IPTHeaderLoggedIn.png]
 
 *Login* - A user who has already been created in this IPT instance can log in by entering the email address and password in the upper right-hand corner of the page, and then click on the "Login" link. New users can be created only by an existing user having the Admin role. The process for creating new users is explained under the "Configure User accounts" heading in the "Administration Menu" section. The process of initializing the IPT creates the first user having the Admin role.<br>
 *Logout* - If someone is logged in to the IPT, the email address of the person who is logged in is given in the upper right-hand corner of the of the page along with a "Logout" link.<br>
@@ -205,7 +205,7 @@ The footer section of the IPT appears along the bottom of most pages and contain
 ==Home Menu (visible to all users)==
 This page allows users to view a list of public resources, if any, and to look at the detailed metadata of any resource on the list. 
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTHome.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/IPTHome.png]
 ===Public Resources Table===
 If there are any public resources, they will appear in a table having the following columns:
 
@@ -233,7 +233,7 @@ To view an older version of the metadata about the resource, just add the traili
 ==Manage Resources Menu (visible to users with an Admin or Manager role)==
 This page allows users having the appropriate role (managers and administrators) to make changes to existing resources or to create new resources. 
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResources.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/IPTManageResources.png]
 ===Manage Resources Table===
 When the Manage Resources page is first opened, it shows a table of existing resources that the current user has permission to change, including those created by this user and those which this user has been invited to manage by others. Refer to the information under the [IPT2ManualNotes#Public_Resources_Table Public Resources Table] section for detailed explanations of the Name, Organisation, Type, Subtype, Records, Last Modified, Last publication, and Next publication columns. In addition, the Manage Resources Table includes the following column of basic information about the resources:
 
@@ -266,7 +266,7 @@ The table of existing resources shows only those resources that can be edited by
 ===Resource Overview===
 This page allows users having managerial permission to make changes to various aspects of a resource's configuration. The name of the resource is given at the top of the page under the menu bar. If the resource has not been given a title, the resource shortname will appear at the top of the page and will act as a title instead. Below the resource name is a table showing categories of the resource configuration on the left with corresponding summary information on the right. Each of these categories is configured separately as explained in detail in the following sections.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourceOverview.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/IPTManageResourceOverview.png]
 ====Metadata====
 This area of the Resource Overview page allows a user to see basic information about the resource metadata in the panel to the right, and to view and edit these and other metadata in detail by clicking on the button labeled "Edit" in the panel to the left. For more information about resource metadata in the GBIF context, see http://www.gbif.org/informatics/discoverymetadata/. Every resource requires a minimal set of descriptive metadata in order to be published in the GBIF network. If any of the required metadata are missing, the Resource Overview page will open with a warning message in the Metadata area of the page.
 
@@ -571,7 +571,7 @@ This area of the Resource Overview page allows a user to publish a release (vers
 
   * *Published* - After a resource has been published, summary information about the published release (version) will appear in the right-hand column of the Published Release area of the Resource Overview page. The summary includes the serial integer version and date of the latest publication, a link entitled "See Report" to view the publication log summary, a link to download the Publication Log file, a link to download the Darwin Core Archive file, a link download the EML file, a link to view the metadata contained in the EML file in the Metadata Overview page as described under the heading of the same name in the "Home Menu" section, and a link to download the RTF data publication document. A helpful feature for each downloadable file, is that its size is indicated beside it.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTManageResourcePublished.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/IPTManageResourcePublished.png]
 
 ====Visibility====
 The Visibility area of the Manage Resources page allows users having manager rights for the resource to change its visibility state. The visibility of a resource determines who will be able to view it, whether viewing is limited (private), open (public), or discoverable through the GBIF Registry (registered). By default, each resource is visible only to the user who created it and any other users who have the Admin role on the IPT where the resource is created.
@@ -586,7 +586,7 @@ The Visibility area of the Manage Resources page allows users having manager rig
 
 If the attempt to register is successful, a message will appear at the top of the page saying that the status has been changed to "Registered".
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceVisibilityRegistered.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/IPTManageResourceVisibilityRegistered.png]
   * *Registered* - A resource that has been registered with the GBIF network is discoverable through that system and the data from the resource can be indexed by and accessed from the GBIF portal. If the resource has already been registered, every time the "Publish" button is clicked, it will also send new information about the resource to the GBIF Registry if any of the following have changed since the registry was last updated: title, description, primary contact name or email. A summary of information registered with GBIF will appear in the right-hand column when registration is complete.<p>The visibility of a registered resource can not be changed to private. If a resource must be removed from the GBIF Registry, follow the procedure described in the "Delete a Resource" section under the "Resource Overview" heading in the "Manage Resources Menu" section.
 ====Migrate a Resource====
 There is now a way to migrate registered DiGIR, BioCASE, and TAPIR resources to an IPT. The way this works, is that the IPT resource is configured to update the existing registered DiGIR, BioCASE, or TAPIR resource that it corresponds to in the GBIF Registry. This allows the resource to preserve its GBIF Registry UUID. 
@@ -613,7 +613,7 @@ Clicking on the button labeled "Delete" on the Resource Overview page will remov
 ==Administration Menu (visible only to users having the Admin role)==
 This section describes each of the functions that are accessible from the Administration menu. Clicking on the Administration menu opens a page (see screen image, below) from which each of these specific administrative tasks can be accessed by clicking on the appropriate button. Note that the button labeled "Organisations" will remain disabled by default until the GBIF registration options have been set.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTAdminBeforeRegistration.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/IPTAdminBeforeRegistration.png]
 ===Configure IPT settings===
 This page allows a user having the Admin role to make and change settings for the characteristics of this IPT instance.
 
