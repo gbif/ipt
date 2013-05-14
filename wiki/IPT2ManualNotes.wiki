@@ -223,7 +223,13 @@ The IPT supports syndication via RSS for those who wish to monitor resource conf
 ===Metadata Overview page===
 Clicking on the Name link in the list of resources on the Home page shows a new page having all of the metadata about the selected resource. This is the one page where you can easily review all of the metadata for a resource. A user having the Admin role or one of the Manager roles can edit the metadata. Refer to the information under the "Edit an existing resource" heading in the "Manage Resources Menu" section.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTHomeMetadataOverview.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/IPTHomeMetadataOverview.png]
+
+====Versioned page====
+To view an older version of the metadata about the resource, just add the trailing parameter '&v=n' to the URL where v stands for 'version', and n gets replaced by the version number, e.g., "http://ipt.gbif.org/resource.do?r=occ&v=5". In this way, specific versions of a resource's EML, RTF, and DWCA files can be retrieved. Please note, the IPT's Archival Mode must be turned on in order for old versions of DWCA to be stored (see [IPT2ManualNotes#Configure_IPT_settings Configure IPT settings] section).
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/IPTHomeMetadataOverviewVersioned.png]
+
 ==Manage Resources Menu (visible to users with an Admin or Manager role)==
 This page allows users having the appropriate role (managers and administrators) to make changes to existing resources or to create new resources. 
 
@@ -627,7 +633,7 @@ This page allows a user having the Admin role to make and change settings for th
 *IPT Server Location* - This area of the page allows the Admin to set the geographic coordinates (latitude and longitude) of the location of the server on which the IPT is installed. Setting these coordinates allows GBIF to map the location of this among other registered IPT installations around the world.
 
 ===Publish all resources===
-This option is an administrative action just like the Publish button, only it publishes ALL resources. Therefore for each resource, it creates a new DwC-A, EML, and RTF, and broadcasts the update to the Registry and via RSS. In addition, it also updates the IPTs metadata in the Registry. If any of the following conditions have been met since the last time the resources were updated, click on this button to make the necessary updates: 
+This option is an administrative action just like the Publish button, only it publishes ALL resources. Therefore for each resource, it creates a new DWCA, EML, and RTF, and broadcasts the update to the Registry and via RSS. In addition, it also updates the IPTs metadata in the Registry. If any of the following conditions have been met since the last time the resources were updated, click on this button to make the necessary updates: 
  * Multiple resources have been updated, and you want to publish a new release for all of them instead of publishing them individually.
  * The Base URL or Proxy URL have been changed and you want to update the IPTs registered services to reflect the change.
 
