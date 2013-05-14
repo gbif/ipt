@@ -1,7 +1,7 @@
 #summary Guide explaining how to customize the IPT interface.
 #labels Featured,Phase-Deploy
 
-= How to Customize the IPT =
+= How to Style Your IPT =
 
 == Introduction ==
 
