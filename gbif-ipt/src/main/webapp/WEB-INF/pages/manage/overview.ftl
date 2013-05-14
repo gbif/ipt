@@ -145,6 +145,11 @@ $(document).ready(function(){
   <div class="titleOverview">
     <div class="head">
       <@s.text name="manage.overview.published"/>
+      <#if cfg.devMode() && cfg.getRegistryType()!='PRODUCTION'>
+          <p class="warn">
+            <@s.text name="manage.overview.published.testmode.warning"/>
+          </p>
+      </#if>
     </div>
     <div class="actions">
       <#if !missingMetadata>
