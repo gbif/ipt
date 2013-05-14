@@ -119,17 +119,21 @@ $(document).ready(function(){
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <#include "/WEB-INF/pages/macros/manage/publish.ftl"/>
+<#assign metadataType = "metadata"/>
 <div class="container_24">
   <div class="grid_18 suffix_6">
     <h1><span class="resourceOverviewTitle"><@s.text name="manage.overview.title"/>: </span>${resource.title!resource.shortname}</h1>
     <p>
-      <@s.text name="manage.overview.intro"><@s.param>${resource.title!resource.shortname}</@s.param></@s.text>
+      <#if resource.coreType?has_content && resource.coreType==metadataType>
+        <@s.text name="manage.overview.intro.metadataOnly"><@s.param>${resource.title!resource.shortname}</@s.param></@s.text>
+      <#else>
+        <@s.text name="manage.overview.intro"><@s.param>${resource.title!resource.shortname}</@s.param></@s.text>
+      </#if>
     </p>
   </div>
 </div>
 
 <!-- when resource is of type metadata-only, there is no need to show source data and mapping sections -->
-<#assign metadataType = "metadata"/>
 <#if resource.coreType?has_content && resource.coreType==metadataType>
   <#include "/WEB-INF/pages/manage/overview_metadata.ftl"/>
 <#else>
@@ -141,11 +145,6 @@ $(document).ready(function(){
   <div class="titleOverview">
     <div class="head">
       <@s.text name="manage.overview.published"/>
-      <#if cfg.devMode() && cfg.getRegistryType()!='PRODUCTION'>
-        <p class="warn">
-          <@s.text name="manage.overview.published.testmode.warning"/>
-        </p>
-      </#if>
     </div>
     <div class="actions">
       <#if !missingMetadata>
@@ -173,6 +172,7 @@ $(document).ready(function(){
             <img class="info" src="${baseURL}/images/info.gif"/>
             <em><@s.text name="manage.overview.published.missing.metadata"/></em>
         </div>
+        <br/>
     <#else>
       <#if resource.status=="REGISTERED">
         <#if !currentUser.hasRegistrationRights()>
@@ -182,10 +182,10 @@ $(document).ready(function(){
                     &nbsp;<@s.text name="manage.resource.publish.forbidden"/>
                     &nbsp;<@s.text name="manage.resource.role.change"/></em>
             </div>
+            <br/>
         </#if>
       </#if>
     </#if>
-      <br/>
       <div class="details">
       <table>
         <#if resource.lastPublished??>
@@ -268,7 +268,7 @@ $(document).ready(function(){
   <div class="titleOverview">
     <div class="head">
       <@s.text name='manage.overview.visibility'/>
-      <em class="<#if resource.status=="PRIVATE">RED<#else>green</#if>"><@s.text name="resource.status.${resource.status?lower_case}"/></em>
+      <em class="<#if resource.status=="PRIVATE">red<#else>green</#if>"><@s.text name="resource.status.${resource.status?lower_case}"/></em>
     </div>
     <div class="actions">
       <#assign action>registerResource</#assign>

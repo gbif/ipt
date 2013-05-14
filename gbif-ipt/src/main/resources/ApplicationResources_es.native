@@ -697,7 +697,8 @@ manage.source.confirmation.message=¿Está seguro que desea eliminar este archiv
 
 manage.overview.title.label=Título del Recurso
 manage.overview.title=Vista general
-manage.overview.intro=Esto es la página general para el recurso <em>{0}</em>. Por favor suministre por lo menos los metadatos obligatorios. Después puede cargar y mapear la fuente de datos para generar y publicar un archivo Darwin Core. Los recursos publicados pueden ser registrados con la red GBIF. Los recursos registrados pueden ser eliminados, pero no pueden revertirse a estado privado.
+manage.overview.intro=Esto es la página general para el recurso <em>{0}</em>. Por favor inicie cargando y mapeando la fuente de datos para generar y publicar un archivo Darwin Core. Por favor suministre por lo menos los metadatos obligatorios. Los recursos publicados pueden ser registrados con la red GBIF. Los recursos registrados pueden ser eliminados, pero no pueden revertirse a estado privado.
+manage.overview.intro.metadataOnly=Esto es la página general para el recurso <em>{0}</em>. Por favor suministre por lo menos los metadatos obligatorios. Los recursos publicados pueden ser registrados con la red GBIF. Los recursos registrados pueden ser eliminados, pero no pueden revertirse a estado privado.
 manage.overview.no.description=Sin Descripción.
 manage.overview.keywords=Palabras clave
 manage.overview.taxcoverage=Cobertura Taxonómica
@@ -857,7 +858,7 @@ manage.metadata.physical.intro=Por favor suministre los enlaces externos a la p�
 manage.metadata.physical.item=enlaces externos
 
 manage.metadata.keywords.title=Conjunto de Palabras Clave
-manage.metadata.keywords.intro=Por favor ingrese los conjuntos de palabras clave para el recurso, cada uno con un tesauro.
+manage.metadata.keywords.intro=Por favor ingrese los conjuntos de palabras clave para el recurso, cada uno con un tesauro/vocabulario.
 manage.metadata.keywords.item=conjunto de palabras clave
 
 manage.metadata.additional.title=Metadatos Adicionales
@@ -1031,8 +1032,8 @@ eml.physicalData.format=Formato del archivo
 eml.physicalData.format.help=Nombre del formato del archivo.
 eml.physicalData.formatVersion=Versión del formato del archivo.
 eml.physicalData.formatVersion.help=Nombre de la versión del formato del archivo.
-eml.keywords.keywordThesaurus=Tesauro
-eml.keywords.keywordThesaurus.help=Un nombre del tesauro de donde la palabra clave fue derivada. Los tesauros de palabras clave son por lo general específicos de la disciplina y puede ser personalizado u oficial. Si las palabras claves no se han extraído de un tesauro específico, ingrese <i>'n/a'</i><br /><br /><b>Ejemplo(s): </b><br /><i>"Tesauro IRIS de palabras clave"</i>
+eml.keywords.keywordThesaurus=Tesauro/Vocabulario
+eml.keywords.keywordThesaurus.help=Un nombre del tesauro/vocabulario de donde la palabra clave fue derivada. Los tesauros de palabras clave son por lo general específicos de la disciplina y puede ser personalizado u oficial. Si las palabras claves no se han extraído de un tesauro/vocabulario específico, ingrese <i>'n/a'</i><br /><br /><b>Ejemplo(s): </b><br /><i>"Tesauro IRIS de palabras clave"</i>
 eml.keywords.keywordsString=Lista de palabras clave
 eml.keywords.keywordsString.help=Palabras clave que describen de manera concisa el recurso o se relacionan con el recurso. Separe cada palabra clave con comas.
 eml.hierarchyLevel=Nivel de jerarquía
