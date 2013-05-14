@@ -1166,3 +1166,6 @@ a img {
 .actions select {
   width: 150px;
 }
+.rtableTitle {
+  margin-bottom:0px;
+}
