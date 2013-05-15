@@ -333,6 +333,8 @@ portal.resource.summary.keywords=關鍵字
 portal.resource.summary.taxcoverage=分類群涵蓋範圍
 portal.resource.summary.geocoverage=地理涵蓋範圍
 portal.resource.version=版本
+portal.resource.version.latest=TODO: view latest
+portal.resource.latest=TODO: Latest
 portal.resource.download=下載
 portal.resource.records=紀錄
 portal.resource.published.archive=達爾文核心集檔案
@@ -429,7 +431,7 @@ admin.config.baseUrl.help=這個網址指向您 IPT 裝置的根網址。如果�
 admin.config.baseUrl.changed=基礎網址已成功更新
 admin.config.baseUrl.changed.reminder=登入時，點選「發布所有資料集」按鈕（管理頁面）以更新所有已註冊資源的服務網址。
 admin.config.baseUrl.inaccessible=此基礎網址無法讓您的電腦訪問任何 IPT 網站。
-
+admin.config.baseUrl.invalidBaseURL=TODO: The Base URL must be visible on the Internet (e.g., localhost and 127.0.0.1 are not valid).
 admin.config.error.invalidBaseURL=輸入的基礎網址格式不正確 (例如，http://www.my-institution.com/ipt)
 admin.config.error.invalidPort=埠號應為整數
 admin.config.error.connectionRefused=無法連上代理伺服器主機
@@ -504,6 +506,7 @@ admin.user.deleted.error=無法刪除使用者。
 admin.user.deleted.current=使用者登入後無法刪除自己。請使用不同的管理員帳號登入後刪除此帳號。
 admin.user.changed.current=您不能變更最後的管理員角色。
 admin.user.cantSave=無法儲存使用者檔案
+admin.user.passwordChanged=TODO: The password for {0} has been changed to {1}.
 admin.user.wrong.email.password.combination=電子郵件 - 密碼組合不存在
 admin.logs.warn=嚴重性大於或等於「警告」的訊息
 admin.logs.download=下載完整的 <a href="{0}">日誌檔案</a>
@@ -534,7 +537,7 @@ admin.registration.intro2=一旦 IPT 完成註冊，此註冊即不能更改，�
 admin.registration.registered1=此 IPT 已於 GBIF 網絡上註冊。
 admin.registration.registered2=管轄此 IPT 的機構是<b>{0}</b>。
 admin.registration.links=GBIF 登錄連結
-admin.registration.test1=在 GBIF 網絡上註冊此 IPT 的第一個步驟是驗證顯示於下方的基礎網址，點擊按鈕標籤「驗證」開始測試。假如測試成功，您將可以繼續進行註冊的下一步驟。假如測試失敗，請到 <a href="config.do">IPT 設定</a>頁面來更改伺服器的網址配置設定。\n\
+admin.registration.test1=在 GBIF 網絡上註冊此 IPT 的第一個步驟是驗證顯示於下方的基礎網址，點擊按鈕標籤「驗證」開始測試。假如測試成功，您將可以繼續進行註冊的下一步驟。假如測試失敗，請到 <a href="config.do">IPT 設定</a>頁面來更改伺服器的網址配置設定。
 admin.registration.success=IPT 已註冊於該組織之下。
 admin.registration.failed=IPT 註冊失敗！
 admin.registration.success.update=IPT 註冊資訊更新成功！

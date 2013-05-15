@@ -28,7 +28,7 @@
   <h1 class="withVersion">${eml.title!resource.shortname}<#if managerRights> <a class="edit" href="${baseURL}/manage/resource.do?r=${resource.shortname}"><@s.text name='button.edit'/></a></#if></h1>
   <#if resource.lastPublished??>
     <#-- the existence of parameter version means the version is not equal to the latest published version -->
-    <em class="warn"><#if version??><@s.text name='portal.resource.version'/> ${version} - <a href="${baseURL}/resource.do?r=${resource.shortname}">view latest</a></#if></em>
+    <#if version?? && version!=resource.emlVersion><em class="warn"><@s.text name='portal.resource.version'/> ${version}</em> - <a href="${baseURL}/resource.do?r=${resource.shortname}"><@s.text name='portal.resource.version.latest'/></a></#if>
   </#if>
 </div>
 <div id="resourcelogo">
@@ -60,8 +60,7 @@
                     </tr>
                     <tr>
                         <th><@s.text name='portal.resource.version'/></th>
-                        <td><#if version??>${version} - <a href="${baseURL}/resource.do?r=${resource.shortname}">view
-                            latest</a><#else>${resource.emlVersion} (Latest)</#if></td>
+                        <td><#if version?? && version!=resource.emlVersion>${version} - <a href="${baseURL}/resource.do?r=${resource.shortname}"><@s.text name='portal.resource.version.latest'/></a><#else>${resource.emlVersion} (<@s.text name='portal.resource.latest'/>)</#if></td>
                     </tr>
                   <#if resource.updateFrequency?has_content && frequencies[resource.updateFrequency.identifier]?has_content>
                       <tr>
