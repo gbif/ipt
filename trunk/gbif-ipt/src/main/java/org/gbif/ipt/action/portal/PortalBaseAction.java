@@ -65,10 +65,6 @@ public class PortalBaseAction extends BaseAction {
         LOG.error("Parameter version (v) was not a valid number: " + String.valueOf(v));
       }
     }
-    // if version is equal to the resource's last published version, then just set to null
-    if (version != null && version.intValue() == resource.getEmlVersion()) {
-      setVersion(null);
-    }
   }
 
   /**
