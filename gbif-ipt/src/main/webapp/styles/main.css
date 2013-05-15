@@ -228,7 +228,7 @@ form#login-form {  display: inline-block; }
 #languages a{
   display:inline-block;
   background:white;
-  padding-top:3px;
+  padding:2px 3px;
 }
 #languages a:hover{
   opacity:0.7;
