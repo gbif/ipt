@@ -58,18 +58,29 @@ public class PublishingMonitor {
       running.set(true);
       while (running.get()) {
         try {
-          ThreadPoolExecutor executor = resourceManager.getExecutor();
+          // monitor resources that are currently being published or have finished
+          Map<String, Future<Integer>> processFutures = resourceManager.getProcessFutures();
+          Set<String> shortNames = new HashSet<String>();
+          if (processFutures.size() > 0) {
+            // copy futures into new set, to avoid concurrent modification exception
+            shortNames.addAll(processFutures.keySet());
+            // in order for publishing to finish entirely, resourceManager.isLocked() must be called
+            for (String shortName : shortNames) {
+              resourceManager.isLocked(shortName, baseAction);
+            }
+          }
 
           // might as well check if we can handle more publishing jobs
+          ThreadPoolExecutor executor = resourceManager.getExecutor();
           if (executor.getMaximumPoolSize() - executor.getActiveCount() > 0) {
             Date now = new Date();
             List<Resource> resources = resourceManager.list();
-            // monitor for resources due to be auto-published
+            // monitor for resources due to be auto-published, and not already queued (when shortName is in futures)
             for (Resource resource : resources) {
               Date next = resource.getNextPublished();
               int v = resource.getNextVersion();
               if (next != null) {
-                if (next.before(now)) {
+                if (next.before(now) && !shortNames.contains(resource.getShortname())) {
                   try {
                     log.debug(
                       "Monitor: " + resource.getTitleAndShortname() + " v# " + v + " due to be auto-published: " + next
@@ -93,19 +104,7 @@ public class PublishingMonitor {
             }
           }
 
-          // monitor resources that are currently being published or have finished
-          // in order for publishing to finish entirely, resourceManager.isLocked() must be called
-          Map<String, Future<Integer>> processFutures = resourceManager.getProcessFutures();
-          if (processFutures.size() > 0) {
-            // copy futures into new set, to avoid concurrent modification exception
-            Set<String> shortNames = new HashSet<String>();
-            shortNames.addAll(processFutures.keySet());
-            for (String shortName : shortNames) {
-              resourceManager.isLocked(shortName, baseAction);
-            }
-          }
-
-          // these jobs take some time, so just poll once every 'interval' milliseconds
+          // just poll once every 'interval' milliseconds
           Thread.sleep(MONITOR_INTERVAL_MS);
         } catch (InterruptedException e) {
           // should the thread have been interrupted, encountered when trying to sleep
