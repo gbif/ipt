@@ -23,8 +23,8 @@ public class HomeAction extends BaseAction {
 
   private ResourceManager resourceManager;
   private VocabulariesManager vocabManager;
-  private boolean registrationAllowed = false;
   private Map<String, String> types;
+  private Map<String, String> datasetSubtypes;
 
   @Inject
   public HomeAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -44,15 +44,16 @@ public class HomeAction extends BaseAction {
     types.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_TYPE, getLocaleLanguage(), false));
     types = MapUtils.getMapWithLowercaseKeys(types);
 
+    // Dataset Subtypes list, derived from XML vocabulary
+    datasetSubtypes = new LinkedHashMap<String, String>();
+    datasetSubtypes.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_SUBTYPES, getLocaleLanguage(), false));
+    datasetSubtypes = MapUtils.getMapWithLowercaseKeys(datasetSubtypes);
+
     return SUCCESS;
   }
 
   public List<Resource> getResources() {
     return resources;
-  }
-
-  public boolean isRegistrationAllowed() {
-    return registrationAllowed;
   }
 
   /**
@@ -62,6 +63,15 @@ public class HomeAction extends BaseAction {
    */
   public Map<String, String> getTypes() {
     return types;
+  }
+
+  /**
+   * A map of dataset subtypes keys to internationalized values.
+   *
+   * @return map of dataset subtypes
+   */
+  public Map<String, String> getDatasetSubtypes() {
+    return datasetSubtypes;
   }
 
   /**
