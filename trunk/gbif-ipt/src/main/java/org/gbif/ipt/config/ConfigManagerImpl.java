@@ -82,11 +82,11 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
 
   /**
    * It Creates a HttpHost object with the string given by the user and verifies if there is a connection with this
-   * host. If there is a connection with this host, it changes the current proxy host with this host. If don't it keeps
+   * host. If there is a connection with this host, it changes the current proxy host with this host. If not it keeps
    * the current proxy.
    *
-   * @param proxy    an URL with the format http://proxy.my-institution.com:8080.
    * @param hostTemp the actual proxy.
+   * @param proxy    an URL with the format http://proxy.my-institution.com:8080.
    *
    * @throws InvalidConfigException If it can not connect to the proxy host or if the port number is no integer or if
    *                                the proxy URL is not with the valid format http://proxy.my-institution.com:8080
@@ -100,22 +100,31 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
         host = new HttpHost(url.getHost(), url.getPort());
       } else {
         host = new HttpHost(url.getHost());
-      } // test that host really exists
+      }
+      // test that host really exists
+      log.info("Validating proxy by sending HTTP HEAD method to: " + host.toURI());
+
       if (!http.verifyHost(host)) {
         if (hostTemp != null) {
+          log.info(
+            "Proxy could not be validated, reverting to previous proxy setting on http client: " + hostTemp.toString());
           client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, hostTemp);
         }
         throw new InvalidConfigException(TYPE.INVALID_PROXY, "admin.config.error.connectionRefused");
       }
-      log.info("Updating the proxy setting to: " + proxy);
+      log.info("Proxy validated, updating the proxy setting on http client to: " + proxy);
       client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, host);
     } catch (NumberFormatException e) {
       if (hostTemp != null) {
+        log.info("NumberFormatException encountered, reverting to previous proxy setting on http client: " + hostTemp
+          .toString());
         client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, hostTemp);
       }
       throw new InvalidConfigException(TYPE.INVALID_PROXY, "admin.config.error.invalidPort");
     } catch (MalformedURLException e) {
       if (hostTemp != null) {
+        log.info("MalformedURLException encountered, reverting to previous proxy setting on http client: " + hostTemp
+          .toString());
         client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, hostTemp);
       }
       throw new InvalidConfigException(TYPE.INVALID_PROXY, "admin.config.error.invalidProxyURL");
@@ -141,7 +150,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
       URL baseURL = new URL(cfg.getProperty(AppConfig.BASEURL));
       return validateBaseURL(baseURL);
     } catch (MalformedURLException e) {
-
+      log.error("MalformedURLException encountered while validating baseURL");
     }
 
     return false;
@@ -221,8 +230,6 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   }
 
   public void setBaseUrl(URL baseURL) throws InvalidConfigException {
-    log.info("Updating the baseURL to: " + baseURL);
-
     boolean validate = true;
     if ("localhost".equals(baseURL.getHost()) || "127.0.0.1".equals(baseURL.getHost()) || baseURL.getHost()
       .equalsIgnoreCase(this.getHostName())) {
@@ -253,6 +260,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     }
 
     // store in properties file
+    log.info("Updating the baseURL to: " + baseURL);
     cfg.setProperty(AppConfig.BASEURL, baseURL.toString());
   }
 
@@ -320,7 +328,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     if (proxy == null) {
       // remove proxy from http client
       // Suddenly the client didn't have proxy host.
-      log.info("Removing proxy setting");
+      log.info("No proxy entered, so removing proxy setting on http client");
       client.getParams().removeParameter(ConnRoutePNames.DEFAULT_PROXY);
     } else {
       // Changing proxy host
@@ -329,12 +337,12 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
         changeProxy(null, proxy);
       } else {
         // After Setup
-        // Validating if the current proxy in the same proxy given by the user
+        // Validating if the current proxy is the same proxy given by the user
         if (hostTemp.toString().equals(proxy)) {
           changeProxy(hostTemp, proxy);
         } else {
           // remove proxy from http client
-          log.info("Removing proxy setting");
+          log.info("A change of proxy detected so starting by removing proxy setting on http client");
           client.getParams().removeParameter(ConnRoutePNames.DEFAULT_PROXY);
           changeProxy(hostTemp, proxy);
         }
@@ -363,7 +371,9 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     // ensure there is an ipt listening at the target
     boolean valid = false;
     try {
-      HttpGet get = new HttpGet(baseURL.toString() + PATH_TO_CSS);
+      String testURL = baseURL.toString() + PATH_TO_CSS;
+      HttpGet get = new HttpGet(testURL);
+      log.info("Validating BaseURL with get request (having 4 second timeout) to: " + testURL);
       HttpResponse response = http.executeGetWithTimeout(get, 4000);
       valid = response.getStatusLine().getStatusCode() == 200;
     } catch (ClientProtocolException e) {
