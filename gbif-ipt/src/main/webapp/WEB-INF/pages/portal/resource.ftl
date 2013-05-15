@@ -72,6 +72,7 @@
                   <#if metadataOnly>
                   <#-- Archive, EML, and RTF download links include Google Analytics event tracking -->
                   <#-- e.g. Archive event tracking includes components: _trackEvent method, category, action, label, (int) value -->
+                  <#-- EML and RTF versions can always be retrieved by version number but DWCA versions are only stored if IPT Archive Mode is on -->
                       <tr>
                           <th><@s.text name='portal.resource.published.archive'/></th>
                           <td><a href="${baseURL}/archive.do?r=${resource.shortname}<#if version??>&v=${version}</#if>"
@@ -83,7 +84,7 @@
                   </#if>
                     <tr>
                         <th><@s.text name='portal.resource.published.eml'/></th>
-                        <td><a href="${baseURL}/eml.do?r=${resource.shortname}<#if version??>&v=${version}</#if>"
+                        <td><a href="${baseURL}/eml.do?r=${resource.shortname}&v=<#if version??>${version}<#else>${resource.emlVersion}</#if>"
                                onClick="_gaq.push(['_trackEvent', 'EML', 'Download', '${resource.shortname}']);"><@s.text name='portal.resource.download'/></a>
                             (${emlFormattedSize})
                         </td>
@@ -91,7 +92,7 @@
 
                     <tr>
                         <th><@s.text name='portal.resource.published.rtf'/></th>
-                        <td><a href="${baseURL}/rtf.do?r=${resource.shortname}<#if version??>&v=${version}</#if>"
+                        <td><a href="${baseURL}/rtf.do?r=${resource.shortname}&v=<#if version??>${version}<#else>${resource.emlVersion}</#if>"
                                onClick="_gaq.push(['_trackEvent', 'RTF', 'Download', '${resource.shortname}']);"><@s.text name='portal.resource.download'/></a>
                             (${rtfFormattedSize})
                         </td>
