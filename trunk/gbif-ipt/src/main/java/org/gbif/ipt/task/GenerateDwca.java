@@ -815,11 +815,19 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     // start with all Extension's ExtensionProperty, in natural order
     propertyList.addAll(ext.getProperties());
 
+    // matching (below) should be done on the qualified Normalised Name
+    Set<String> names = new HashSet<String>();
+    for (ConceptTerm conceptTerm: mappedConceptTerms) {
+      names.add(conceptTerm.qualifiedNormalisedName());
+    }
+
     // remove all ExtensionProperty that have not been mapped, leaving the ordered list of those that have been
     for (Iterator<ExtensionProperty> iterator = propertyList.iterator(); iterator.hasNext(); ) {
       ExtensionProperty extensionProperty = iterator.next();
-      if (!mappedConceptTerms.contains(extensionProperty)) {
-        iterator.remove();
+      if (extensionProperty.qualifiedNormalisedName() != null) {
+        if (!names.contains(extensionProperty.qualifiedNormalisedName())) {
+          iterator.remove();
+        }
       }
     }
     return propertyList;
