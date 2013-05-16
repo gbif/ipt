@@ -228,20 +228,9 @@ public interface ResourceManager {
    * @return true if a new asynchronous DwC-A generation job has been issued which requires some mapped data
    *
    * @throws PublicationException if resource was already registered
+   * @throws InvalidConfigException if resource or metadata could not be saved
    */
   boolean publish(Resource resource, int version, @Nullable BaseAction action) throws PublicationException;
-
-  /**
-   * Publishes a new version of the EML file for the given resource. After publishing the new version, it copies a
-   * stable version of the EML file for archival purposes. Next it publishes a new version of the RTF file and
-   * copies a stable version of it for archival purposes.
-   *
-   * @param resource Resource
-   * @param action   the action to use for logging messages
-   *
-   * @throws PublicationException if resource was already registered
-   */
-  void publishMetadata(Resource resource, int version, BaseAction action) throws PublicationException;
 
   /**
    * Registers the resource with the GBIF Registry. Instead of registering a new resource, the resource can instead

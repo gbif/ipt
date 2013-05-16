@@ -12,9 +12,13 @@ public class PublicationException extends RuntimeException {
      */
     DWCA,
     /**
-     * Exception occurred while publishing either the EML or RTF file.
+     * Exception occurred while publishing either the EML file.
      */
-    METADATA,
+    EML,
+    /**
+     * Exception occurred while publishing either the RTF file.
+     */
+    RTF,
     /**
      * Exception occurred while communicating with the GBIF Registry.
      */
