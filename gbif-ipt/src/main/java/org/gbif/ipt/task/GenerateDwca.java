@@ -789,14 +789,18 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
    */
   private void assignIndexesOrderedByExtension(List<ExtensionProperty> propertyList, ArchiveFile af) {
     for (int propertyIndex = 0; propertyIndex < propertyList.size(); propertyIndex++) {
+      ExtensionProperty extensionProperty = propertyList.get(propertyIndex);
       // retrieve field corresponding to ExtensionProperty
-      ArchiveField f = af.getField(propertyList.get(propertyIndex));
-      if (f.getIndex() == null) {
+      // the qualified normalised name is used for the lookup
+      ArchiveField f = af.getField(extensionProperty.qualifiedNormalisedName());
+      if (f != null && f.getIndex() == null) {
         // create new field index corresponding to its position in ordered list of columns indexed
         // +1 because index 0 is reserved for ID column
         int fieldIndex = propertyIndex + 1;
         // assign ArchiveField new index so that meta.xml file mirrors the ordered field order
         f.setIndex(fieldIndex);
+      } else {
+        log.warn("Skipping ExtensionProperty: " + extensionProperty.qualifiedNormalisedName());
       }
     }
   }
