@@ -828,7 +828,7 @@ resource.coreType.selection=Selecione um tipo
 
 manage.resource.create.coreType=Tipo
 manage.resource.create.coreType.selection=Selecione um tipo (opcional)
-manage.resource.create.coreType.help=O tipo de recurso. Se o recurso opcionalmente arquivado for carregado, o tipo será deterimnado automaticamente e sobrescrevera sua seleção. <ul><li><b>Ocorrência:</b> a base do recurso é ocorrências na natureza (observações) ou em coleções (espécimes).<br /></li><li><b>Checklist:</b> a base do recurso é nomes de táxons.<br /></li><li><b>Metadados:</b> um recurso tendo informações sobre um dataset, mas sem ter os dados primários. Um recurso de metadados pode ter informações sobre uma coleção que nao foi digitalizada ainda, por exemplo.<br /></li><li><b>Outro:</b> outro tipo de recurso.<br /></li></ul>
+manage.resource.create.coreType.help=O tipo de recurso. Se o recurso opcionalmente arquivado for carregado, o tipo será deterimnado automaticamente e sobrescrevera sua seleção. <ul><li><b>Ocorrência:</b> a base do recurso é ocorrências na natureza (observações) ou em coleções (espécimes).<br /></li><li><b>Checklist:</b> a base do recurso é nomes de táxons.<br /></li><li><b>Somente metadatos:</b> um recurso tendo informações sobre um dataset, mas sem ter os dados primários. Um recurso de metadados pode ter informações sobre uma coleção que nao foi digitalizada ainda, por exemplo.<br /></li><li><b>Outro:</b> outro tipo de recurso.<br /></li></ul>
 
 resource.creator.email=Email
 resource.creator.firstname=Primeiro Nome
