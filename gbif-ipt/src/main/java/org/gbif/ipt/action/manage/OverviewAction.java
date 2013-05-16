@@ -485,7 +485,10 @@ public class OverviewAction extends ManagerBaseAction {
         addActionMessage(getText("publishing.started", new String[] {String.valueOf(v), resource.getShortname()}));
         return PUBLISHING;
       } else {
-        addActionWarning(getText("manage.overview.data.missing"));
+        // show action warning there is no source data and mapping, as long as resource isn't metadata-only
+        if (!resource.getCoreType().equalsIgnoreCase(Constants.DATASET_TYPE_METADATA_IDENTIFIER)) {
+          addActionWarning(getText("manage.overview.data.missing"));
+        }
         missingRegistrationMetadata = !hasMinimumRegistryInfo(resource);
         return SUCCESS;
       }
