@@ -2,13 +2,16 @@ package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.FileUtils;
+import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.validation.ResourceValidator;
 
 import java.io.File;
@@ -17,6 +20,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import javax.annotation.Nullable;
 
 import com.google.inject.Inject;
@@ -35,14 +40,17 @@ public class CreateResourceAction extends POSTAction {
   private String fileFileName;
   private String shortname;
   private String resourceType;
+  private Map<String, String> types;
+  private VocabulariesManager vocabManager;
   private final ResourceValidator validator = new ResourceValidator();
 
   @Inject
   public CreateResourceAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    ResourceManager resourceManager, DataDir dataDir) {
+    ResourceManager resourceManager, DataDir dataDir, VocabulariesManager vocabManager) {
     super(textProvider, cfg, registrationManager);
     this.resourceManager = resourceManager;
     this.dataDir = dataDir;
+    this.vocabManager = vocabManager;
   }
 
   public String getShortname() {
@@ -146,5 +154,19 @@ public class CreateResourceAction extends POSTAction {
 
   public void setResourceType(String resourceType) {
     this.resourceType = resourceType;
+  }
+
+  /**
+   * Get map of resource types to populate resource type selection.
+   * Dataset core type list, derived from XML vocabulary, and displayed in drop-down on Basic Metadata page
+   *
+   * @return map of resource types
+   */
+  public Map<String, String> getTypes() {
+    types = new LinkedHashMap<String, String>();
+    types.put("", getText("manage.resource.create.coreType.selection"));
+    types.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_TYPE, getLocaleLanguage(), false));
+    types = MapUtils.getMapWithLowercaseKeys(types);
+    return types;
   }
 }
