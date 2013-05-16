@@ -556,8 +556,7 @@ manage.metadata.addnew=Adicionar novo
 manage.metadata.alternateIdentifiers.intro=Identificadores alternativos que são usados para rotular este recurso, possivelmente de diferentes sistemas de gerenciamento de dados, podem ser listadas aqui.
 manage.metadata.alternateIdentifiers.item=identificador alternativo
 manage.metadata.alternateIdentifiers.title=Identificadores alternativos
-manage.metadata.basic.required.message=O título e a descrição do recurso são obrigatórios. \n\
-		O três principais contatos do recurso devem também ser descritos aqui: o contato do recursos, o criador do recurso e o provedor do metadados. Para cada contato que você fornecer pelo menos um sobrenome, uma cargo ou uma organização deve ser fornecido para que o recurso possa ser público. A(s) pessoa(s) ou organização(ões) responsável(eis) pela criação do recurso como aparece no IPT e para a efetiva publicação do recurso, deve ser adicionado como um usuário com o perfil de "Publicador".
+manage.metadata.basic.required.message=O título e a descrição do recurso são obrigatórios. O três principais contatos do recurso devem também ser descritos aqui: o contato do recursos, o criador do recurso e o provedor do metadados. Para cada contato que você fornecer pelo menos um sobrenome, uma cargo ou uma organização deve ser fornecido para que o recurso possa ser público. A(s) pessoa(s) ou organização(ões) responsável(eis) pela criação do recurso como aparece no IPT e para a efetiva publicação do recurso, deve ser adicionado como um usuário com o perfil de "Publicador".
 manage.metadata.basic.title=Metadados Básicos
 manage.metadata.citations.bibliography=Bibliografia
 manage.metadata.citations.intro=Por favor, insira como este recurso deve ser citado. Opcionalmente, também pode ser inserido bibliografias relacionadas a outros recursos relacionados ou usados por este conjunto de dados.
