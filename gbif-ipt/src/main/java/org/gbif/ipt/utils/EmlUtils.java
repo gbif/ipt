@@ -17,7 +17,8 @@ public class EmlUtils {
   }
 
   /**
-   * Add or update KeywordSet identified by thesaurus name.
+   * Add or update KeywordSet identified by thesaurus name. If the KeywordSet is found and already contains a
+   * a non empty and not null keywordString, its value is not overwritten.
    *
    * @param keywords list of KeywordSet to add/update to
    * @param keyword keyword string
@@ -26,19 +27,22 @@ public class EmlUtils {
   public static void addOrUpdateKeywordSet(List<KeywordSet> keywords, String keyword, String thesaurus) {
     if (!Strings.isNullOrEmpty(keyword) && !Strings.isNullOrEmpty(thesaurus)) {
       // capitalize incoming keyword, i.e., Occurrence, Specimen
-      String capped = StringUtils.capitalize(keyword);
-      boolean foundType = false;
+      String capped = StringUtils.capitalize(keyword.toLowerCase());
+      boolean found = false;
       for (KeywordSet ks : keywords) {
         String keywordThesaurus = ks.getKeywordThesaurus();
         if (!Strings.isNullOrEmpty(keywordThesaurus) && keywordThesaurus.equalsIgnoreCase(thesaurus)) {
-          // update type just in case it changed, and break
-          ks.setKeywordsString(capped);
-          foundType = true;
+          String keywordString = ks.getKeywordsString();
+          // update keywordString, only if empty
+          if (Strings.isNullOrEmpty(keywordString)) {
+            ks.setKeywordsString(capped);
+          }
+          found = true;
           break;
         }
       }
       // if no match, add new KeywordSet
-      if (!foundType) {
+      if (!found) {
         KeywordSet ks = new KeywordSet();
         ks.setKeywordThesaurus(thesaurus);
         ks.setKeywordsString(capped);

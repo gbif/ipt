@@ -26,13 +26,14 @@ public class EmlUtilsTest {
     // start with empty List
     List<KeywordSet> keywords = eml.getKeywords();
     // add KeywordSet for dataset type Occurrence
-    EmlUtils.addOrUpdateKeywordSet(keywords, "occurrence", Constants.THESAURUS_DATASET_TYPE);
+    EmlUtils.addOrUpdateKeywordSet(keywords, "Occurrencia", Constants.THESAURUS_DATASET_TYPE);
     assertEquals(1, keywords.size());
-    assertEquals("Occurrence", keywords.get(0).getKeywordsString());
+    assertEquals("Occurrencia", keywords.get(0).getKeywordsString());
     assertEquals(Constants.THESAURUS_DATASET_TYPE, keywords.get(0).getKeywordThesaurus());
-    // ensure calling same method, doesn't add duplicate
+    // ensure calling same method, doesn't replace keywordString
     EmlUtils.addOrUpdateKeywordSet(keywords, "Occurrence", Constants.THESAURUS_DATASET_TYPE);
     assertEquals(1, keywords.size());
+    assertEquals("Occurrencia", keywords.get(0).getKeywordsString());
   }
 
   @Test
