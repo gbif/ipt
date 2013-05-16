@@ -213,8 +213,8 @@ $(document).ready(function(){
                 </a>
                 <!-- ensure a space separates see report link, and publication log link-->
                 &nbsp;
-                <a href="${baseURL}/publicationlog.do?r=${resource.shortname}"><@s.text name='portal.publication.log'/></a>
               </#if>
+              <a href="${baseURL}/publicationlog.do?r=${resource.shortname}"><@s.text name='portal.publication.log'/></a>
             </td>
           </tr>
           <#if report??>
