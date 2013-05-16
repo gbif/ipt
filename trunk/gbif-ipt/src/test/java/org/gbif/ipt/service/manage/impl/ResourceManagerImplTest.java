@@ -40,6 +40,7 @@ import org.gbif.ipt.model.converter.PasswordConverter;
 import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.factory.ExtensionFactory;
 import org.gbif.ipt.model.factory.ThesaurusHandlingRule;
+import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
@@ -63,6 +64,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -71,7 +73,6 @@ import java.util.UUID;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
-import com.google.common.io.Files;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
@@ -80,10 +81,12 @@ import org.apache.commons.lang.xwork.StringUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.xml.sax.SAXException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -91,6 +94,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -120,11 +124,15 @@ public class ResourceManagerImplTest {
   private Organisation organisation;
   private JdbcSupport support;
 
+  private File tmpDataDir;
+  private File resourceDir;
+
   private static final String DATASET_TYPE_OCCURRENCE_IDENTIFIER = "occurrence";
   private static final String DATASET_SUBTYPE_SPECIMEN_IDENTIFIER = "specimen";
+  private static final String RESOURCE_SHORTNAME = "res2";
 
   @Before
-  public void setup() {
+  public void setup() throws IOException {
     // create user.
     creator = new User();
     creator.setFirstname("Leonardo");
@@ -135,7 +143,14 @@ public class ResourceManagerImplTest {
     creator.setPassword("011235813");
 
     resource = new Resource();
-    resource.setShortname("res2");
+    resource.setShortname(RESOURCE_SHORTNAME);
+
+    // resource directory
+    resourceDir = FileUtils.createTempDir();
+
+    // tmp directory
+    tmpDataDir = FileUtils.createTempDir();
+    when(mockedDataDir.tmpDir()).thenReturn(tmpDataDir);
 
     organisation = new Organisation();
     organisation.setKey("f9b67ad0-9c9b-11d9-b9db-b8a03c50a862");
@@ -144,8 +159,6 @@ public class ResourceManagerImplTest {
     ipt = new Ipt();
     ipt.setKey("27c24cba-13c5-47d1-96a1-16abd8f11437");
     ipt.setName("Test IPT");
-
-    when(mockedDataDir.tmpDir()).thenReturn(Files.createTempDir());
   }
 
   private ResourceManagerImpl getResourceManagerImpl() throws IOException, SAXException, ParserConfigurationException {
@@ -304,21 +317,21 @@ public class ResourceManagerImplTest {
     when(mockSourceManager.add(any(Resource.class), any(File.class), anyString())).thenReturn(fileSource);
 
     // create a new resource.
-    resourceManager.create("res2", null, dwca, creator, baseAction);
+    resourceManager.create(RESOURCE_SHORTNAME, null, dwca, creator, baseAction);
 
     // test if new resource was added to the resources list.
     assertEquals(1, resourceManager.list().size());
 
     // get added resource.
-    Resource res = resourceManager.get("res2");
+    Resource res = resourceManager.get(RESOURCE_SHORTNAME);
 
     // test if resource was added correctly.
-    assertEquals("res2", res.getShortname());
+    assertEquals(RESOURCE_SHORTNAME, res.getShortname());
     assertEquals(creator, res.getCreator());
     assertEquals(creator, res.getModifier());
 
     // test if resource.xml was created.
-    assertTrue(mockedDataDir.resourceFile("res2", ResourceManagerImpl.PERSISTENCE_FILE).exists());
+    assertTrue(mockedDataDir.resourceFile(RESOURCE_SHORTNAME, ResourceManagerImpl.PERSISTENCE_FILE).exists());
 
     // properties that get preserved
     assertEquals(0, res.getEmlVersion());
@@ -333,7 +346,7 @@ public class ResourceManagerImplTest {
     assertEquals(0, res.getMappings().get(0).getIdColumn().intValue());
 
     // there are no eml properties except default shortname as title since there was no eml.xml file included
-    assertEquals("res2", res.getEml().getTitle());
+    assertEquals(RESOURCE_SHORTNAME, res.getEml().getTitle());
     assertEquals(null, res.getEml().getDescription());
 
     // properties that never get set on new resource creation
@@ -809,5 +822,90 @@ public class ResourceManagerImplTest {
     // open DwC-A, not located inside parent folder, which throws UnsupportedArchiveException wrapping SaxParseException
     Archive archive = resourceManager.openArchiveInsideParentFolder(dwcaDir);
     assertNull(archive);
+  }
+
+  @Test
+  public void testPublishNonRegisteredMetadataOnlyResource()
+    throws ParserConfigurationException, SAXException, IOException, AlreadyExistingException, ImportException {
+    // create instance of manager
+    ResourceManagerImpl resourceManager = getResourceManagerImpl();
+    // prepare resource
+    Resource resource = getNonRegisteredMetadataOnlyResource();
+    // configure turning auto-publishing daily
+    resource.setUpdateFrequency("daily");
+    resource.setPublicationMode(PublicationMode.AUTO_PUBLISH_ON);
+
+    // make a few pre-publication assertions
+    assertEquals(3, resource.getEml().getEmlVersion());
+    Date created = resource.getCreated();
+    assertNotNull(created);
+    Date pubDate = resource.getEml().getPubDate();
+    assertNotNull(pubDate);
+    Date lastPublished = resource.getLastPublished();
+    assertNull(lastPublished);
+    assertNull(resource.getNextPublished());
+    assertEquals(Constants.DATASET_TYPE_METADATA_IDENTIFIER, resource.getCoreType());
+
+    // publish
+    resourceManager.publish(resource, 4, baseAction);
+
+    // make some post-publication assertions
+    assertEquals(4, resource.getEml().getEmlVersion());
+    assertNotNull(resource.getNextPublished());
+    assertEquals(created.toString(), resource.getCreated().toString());
+    assertNotEquals(pubDate.toString(), resource.getEml().getPubDate());
+    assertNotNull(resource.getLastPublished().toString());
+    assertTrue(new File(resourceDir, DataDir.EML_XML_FILENAME).exists());
+    assertTrue(new File(resourceDir, "eml-4.xml").exists());
+    assertTrue(new File(resourceDir, "rtf-res2.rtf").exists());
+    assertTrue(new File(resourceDir, "rtf-res2-4.rtf").exists());
+  }
+
+  /**
+   * Return a Non Registered Metadata Only Resource used for testing.
+   *
+   * @return a Non Registered Metadata Only Resource used for testing
+   */
+  private Resource getNonRegisteredMetadataOnlyResource()
+    throws IOException, SAXException, ParserConfigurationException, AlreadyExistingException, ImportException {
+    // retrieve resource configuration file
+    File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
+    // copy to resource folder
+    File copiedResourceXML = new File(resourceDir, ResourceManagerImpl.PERSISTENCE_FILE);
+    org.apache.commons.io.FileUtils.copyFile(resourceXML, copiedResourceXML);
+    // mock finding resource.xml file from resource directory
+    when(mockedDataDir.resourceFile(anyString(), anyString())).thenReturn(copiedResourceXML);
+
+    // retrieve sample eml.xml
+    File emlXML = FileUtils.getClasspathFile("resources/res1/eml.xml");
+    // copy to resource folder
+    File copiedEmlXML = new File(resourceDir, DataDir.EML_XML_FILENAME);
+    org.apache.commons.io.FileUtils.copyFile(emlXML, copiedEmlXML);
+    // mock new saved eml.xml file being versioned.. useless for testing needed for compilation
+    File versionedEmlXML = new File(resourceDir, "eml-4.xml");
+    org.apache.commons.io.FileUtils.copyFile(emlXML, versionedEmlXML);
+    // mock finding versioned eml.xml file
+    when(mockedDataDir.resourceEmlFile(anyString(), eq(4))).thenReturn(versionedEmlXML);
+    // mock finding eml.xml file
+    when(mockedDataDir.resourceEmlFile(anyString(), Matchers.<Integer>eq(null))).thenReturn(copiedEmlXML);
+
+    // retrieve sample rtf.xml
+    File rtfXML = FileUtils.getClasspathFile("resources/res1/rtf-res1.rtf");
+    // copy to resource folder
+    File copiedRtfXML = new File(resourceDir, "rtf-res2.rtf");
+    org.apache.commons.io.FileUtils.copyFile(rtfXML, copiedRtfXML);
+    // mock new saved eml.xml file being versioned.. useless for testing needed for compilation
+    File versionedRtfXML = new File(resourceDir, "rtf-res2-4.rtf");
+    org.apache.commons.io.FileUtils.copyFile(rtfXML, versionedRtfXML);
+    // mock finding versioned eml.xml file
+    when(mockedDataDir.resourceRtfFile(anyString(), eq(4))).thenReturn(versionedRtfXML);
+    // mock finding eml.xml file
+    when(mockedDataDir.resourceRtfFile(anyString())).thenReturn(copiedRtfXML);
+
+    // create ResourceManagerImpl
+    ResourceManagerImpl resourceManager = getResourceManagerImpl();
+
+    // create a new resource.
+    return resourceManager.create(RESOURCE_SHORTNAME, null, copiedEmlXML, creator, baseAction);
   }
 }

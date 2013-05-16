@@ -2,6 +2,7 @@ package org.gbif.ipt.config;
 
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -98,6 +99,11 @@ public class PublishingMonitor {
                       // restore the previous version since publication was unsuccessful
                       resourceManager.restoreVersion(resource, resource.getLastVersion(), null);
                     }
+                  }catch (InvalidConfigException e) {
+                    // with this type of error, the version cannot be rolled back - just alert user publication failed
+                    log.error(
+                      "Publishing version #" + String.valueOf(v) + "of resource " + resource.getShortname() + "failed:"
+                      + e.getMessage(), e);
                   }
                 }
               }

@@ -503,6 +503,12 @@ public class OverviewAction extends ManagerBaseAction {
         // restore the previous version since publication was unsuccessful
         resourceManager.restoreVersion(resource, v - 1, this);
       }
+    } catch (InvalidConfigException e) {
+      // with this type of error, the version cannot be rolled back - just alert user publication failed
+      String msg =
+        getText("publishing.failed", new String[] {String.valueOf(v), resource.getShortname(), e.getMessage()});
+      log.error(msg, e);
+      addActionError(msg);
     }
     return ERROR;
   }

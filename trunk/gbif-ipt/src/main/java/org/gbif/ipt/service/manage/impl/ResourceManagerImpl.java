@@ -1040,13 +1040,18 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return resource;
   }
 
-  public boolean publish(Resource resource, int version, BaseAction action) throws PublicationException {
+  public boolean publish(Resource resource, int version, BaseAction action)
+    throws PublicationException, InvalidConfigException {
     // prevent null action from being handled
     if (action == null) {
       action = new BaseAction(textProvider, cfg, registrationManager);
     }
-    // publish metadata (EML as well as RTF)
-    publishMetadata(resource, version, action);
+    // publish EML
+    publishEml(resource, version);
+
+    // publish RTF
+    publishRtf(resource, version);
+
     // (re)generate dwca asynchronously
     boolean dwca = false;
     if (resource.hasMappedData()) {
@@ -1070,8 +1075,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @param action      action
    *
    * @throws PublicationException if publication was unsuccessful
+   * @throws InvalidConfigException if resource configuration could not be saved
    */
-  private void publishEnd(Resource resource, int recordCount, BaseAction action) {
+  private void publishEnd(Resource resource, int recordCount, BaseAction action)
+    throws PublicationException, InvalidConfigException {
     // prevent null action from being handled
     if (action == null) {
       action = new BaseAction(textProvider, cfg, registrationManager);
@@ -1250,10 +1257,18 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return resource;
   }
 
-  public void publishMetadata(Resource resource, int version, BaseAction action) throws PublicationException {
-    ActionLogger alog = new ActionLogger(this.log, action);
+  /**
+   * Publishes a new version of the EML file for the given resource. After publishing the new version, it copies a
+   * stable version of the EML file for archival purposes.
+   *
+   * @param resource Resource
+   * @param version  version number to publish
+   *
+   * @throws PublicationException if resource was already being published, or if publishing failed for any reason
+   */
+  private void publishEml(Resource resource, int version) throws PublicationException {
     // check if publishing task is already running
-    if (isLocked(resource.getShortname(), action)) {
+    if (isLocked(resource.getShortname())) {
       throw new PublicationException(PublicationException.TYPE.LOCKED,
         "Resource " + resource.getShortname() + " is currently locked by another process");
     }
@@ -1276,12 +1291,52 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     try {
       FileUtils.copyFile(trunkFile, versionedFile);
     } catch (IOException e) {
-      alog.error("Can't publish resource " + resource.getShortname(), e);
-      throw new PublicationException(PublicationException.TYPE.METADATA,
+      throw new PublicationException(PublicationException.TYPE.EML,
         "Can't publish eml file for resource " + resource.getShortname(), e);
     }
-    // publish also as RTF
-    publishRtf(resource, action);
+  }
+
+  /**
+   * Publishes a new version of the RTF file for the given resource. After publishing the new version, it copies a
+   * stable version of the RTF file for archival purposes.
+   *
+   * @param resource Resource
+   * @param version  version number to publish
+   *
+   * @throws PublicationException if resource was already being published, or if publishing failed for any reason
+   */
+  private void publishRtf(Resource resource, int version) throws PublicationException {
+    // check if publishing task is already running
+    if (isLocked(resource.getShortname())) {
+      throw new PublicationException(PublicationException.TYPE.LOCKED,
+        "Resource " + resource.getShortname() + " is currently locked by another process");
+    }
+
+    Document doc = new Document();
+    File rtfFile = dataDir.resourceRtfFile(resource.getShortname());
+    OutputStream out = null;
+    try {
+      out = new FileOutputStream(rtfFile);
+      RtfWriter2.getInstance(doc, out);
+      eml2Rtf.writeEmlIntoRtf(doc, resource);
+    } catch (FileNotFoundException e) {
+      throw new PublicationException(PublicationException.TYPE.RTF,
+        "Can't find rtf file to write metadata to: " + rtfFile.getAbsolutePath(), e);
+    } catch (DocumentException e) {
+      throw new PublicationException(PublicationException.TYPE.RTF,
+        "RTF DocumentException while writing to file: " + rtfFile.getAbsolutePath(), e);
+    } catch (Exception e) {
+      throw new PublicationException(PublicationException.TYPE.RTF,
+        "An unexpected error occurred while writing RTF file: " + e.getMessage(), e);
+    } finally {
+      if (out != null) {
+        try {
+          out.close();
+        } catch (IOException e) {
+          log.warn("FileOutputStream to RTF file could not be closed");
+        }
+      }
+    }
 
     // copy current rtf version.
     File trunkRtfFile = dataDir.resourceRtfFile(resource.getShortname());
@@ -1289,33 +1344,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     try {
       FileUtils.copyFile(trunkRtfFile, versionedRtfFile);
     } catch (IOException e) {
-      alog.error("Can't publish resource " + resource.getShortname() + "as RTF", e);
-      throw new PublicationException(PublicationException.TYPE.METADATA,
+      throw new PublicationException(PublicationException.TYPE.RTF,
         "Can't publish rtf file for resource " + resource.getShortname(), e);
-    }
-  }
-
-  /**
-   * Publishes RTF file. Uses Eml2RTF writer to carry out the work.
-   *
-   * @param resource Resource
-   * @param action Action
-   */
-  private void publishRtf(Resource resource, BaseAction action) {
-    ActionLogger alog = new ActionLogger(this.log, action);
-    Document doc = new Document();
-    File rtfFile = dataDir.resourceRtfFile(resource.getShortname());
-    try {
-      OutputStream out = new FileOutputStream(rtfFile);
-      RtfWriter2.getInstance(doc, out);
-      eml2Rtf.writeEmlIntoRtf(doc, resource);
-      out.close();
-    } catch (FileNotFoundException e) {
-      alog.error("Cant find rtf file to write metadata to: " + rtfFile.getAbsolutePath(), e);
-    } catch (DocumentException e) {
-      alog.error("RTF DocumentException while writing to file " + rtfFile.getAbsolutePath(), e);
-    } catch (IOException e) {
-      alog.error("Cant write to rtf file " + rtfFile.getAbsolutePath(), e);
     }
   }
 
@@ -1716,7 +1746,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   protected Resource updateKeywordsWithDatasetTypeAndSubtype(Resource resource) {
     Eml eml = resource.getEml();
     if (eml != null) {
-      // retrieve a list of the resource's keywords
+      // retrieve a list of the resource's KeywordSet
       List<KeywordSet> keywords = eml.getKeywords();
       if (keywords != null) {
         // add or update KeywordSet for dataset type

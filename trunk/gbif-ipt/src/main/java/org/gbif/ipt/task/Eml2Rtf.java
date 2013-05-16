@@ -256,10 +256,14 @@ public class Eml2Rtf {
         p.add(affiliations.get(c).getAddress().getCity());
       }
       if (exists(affiliations.get(c).getAddress().getCountry())) {
-        String country =
-          vocabManager.get(Constants.VOCAB_URI_COUNTRY).findConcept(affiliations.get(c).getAddress().getCountry())
-            .getPreferredTerm(DEFAULT_LANGUAGE).getTitle();
-        p.add(", " + WordUtils.capitalizeFully(country));
+        VocabularyConcept concept =
+          vocabManager.get(Constants.VOCAB_URI_COUNTRY).findConcept(affiliations.get(c).getAddress().getCountry());
+        // write country in default language as matched from vocabulary or original value
+        if (exists(concept)) {
+          p.add(", " + WordUtils.capitalizeFully(concept.getPreferredTerm(DEFAULT_LANGUAGE).getTitle()));
+        } else {
+          p.add(", " + WordUtils.capitalizeFully(affiliations.get(c).getAddress().getCountry()));
+        }
       }
     }
     doc.add(p);
@@ -696,7 +700,12 @@ public class Eml2Rtf {
         p.add(new Phrase(getText("rtf.collections.specimen") + ": ", fontTitle));
         VocabularyConcept vocabConcept =
           vocabManager.get(Constants.VOCAB_URI_PRESERVATION_METHOD).findConcept(eml.getSpecimenPreservationMethod());
-        p.add(vocabConcept.getPreferredTerm(DEFAULT_LANGUAGE).getTitle());
+        // write preservation method in default language as matched from vocabulary or original value
+        if (exists(vocabConcept)) {
+          p.add(vocabConcept.getPreferredTerm(DEFAULT_LANGUAGE).getTitle());
+        } else {
+          p.add(eml.getSpecimenPreservationMethod().replace("\r\n", "\n"));
+        }
         p.add(Chunk.NEWLINE);
       }
       for (JGTICuratorialUnit unit : eml.getJgtiCuratorialUnits()) {
