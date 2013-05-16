@@ -832,7 +832,7 @@ resource.coreType.help=Le type de ressource. La valeur de ce champ dépends du m
 
 manage.resource.create.coreType=Type
 manage.resource.create.coreType.selection=Sélectionner le type (optionnel)
-manage.resource.create.coreType.help=Le type de la ressource. Si vous chargez une ressource archivée, le type sera automatiquement déterminé et écrasera votre sélection. <ul><li><b>Occurrence:</b> les noms de taxon sont la base de la ressource.<br /></li><li><b>Métadonnée:</b> une ressource ayant les informations du dataset sans avoir les données primaires. Une ressource de métadonnée peut vous donner des informations à propos d''une collection qui n''a pas encore été numérisée, par exemple.<br /></li><li><b>Autre:</b> un autre type de ressource.<br /></li></ul>
+manage.resource.create.coreType.help=Le type de la ressource. Si vous chargez une ressource archivée, le type sera automatiquement déterminé et écrasera votre sélection. <ul><li><b>Occurrence:</b> les occurrences dans la nature (observations) ou dans une collection (spécimens) sont la base de la ressource.<br /></li><li><b>Checklist:</b> les noms de taxon sont la base de la ressource.<br /></li><li><b>Métadonnées uniquement:</b> une ressource ayant les informations du dataset sans avoir les données primaires. Une ressource de métadonnée peut vous donner des informations à propos d''une collection qui n''a pas encore été numérisée, par exemple.<br /></li><li><b>Autre:</b> un autre type de ressource.<br /></li></ul>
 
 resource.creator.email=Courriel
 resource.creator.firstname=Prénom

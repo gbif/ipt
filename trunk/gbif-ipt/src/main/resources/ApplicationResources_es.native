@@ -162,7 +162,7 @@ resource.coreType.selection=Seleccione un tipo
 
 manage.resource.create.coreType=Tipo
 manage.resource.create.coreType.selection=Seleccione un tipo (opcional)
-manage.resource.create.coreType.help=El tipo de recurso. Si el archivo del recurso es cargado, el tipo será determinado automáticamente y se sobreescribe en su selección. <ul><li><b>Registro biológico:</b> la base del recurso son registros biológicos en la naturaleza (observaciones) o en una colección (ejemplares).<br /></li><li><b>Lista de chequeo:</b> la base del recurso son nombres taxonómicos.<br /></li><li><b>Metadatos:</b> un recurso que contiene información acerca de un conjunto de datos, pero sin los datos primarios. Por ejemplo, un recurso de metadatos puede dar información acerca de una colección que aun no ha sido digitalizada.<br /></li><li><b>Otro:</b> Otro tipo de recurso.<br /></li></ul>
+manage.resource.create.coreType.help=El tipo de recurso. Si el archivo del recurso es cargado, el tipo será determinado automáticamente y se sobreescribe en su selección. <ul><li><b>Registro biológico:</b> la base del recurso son registros biológicos en la naturaleza (observaciones) o en una colección (ejemplares).<br /></li><li><b>Lista de chequeo:</b> la base del recurso son nombres taxonómicos.<br /></li><li><b>Solamente metadatos:</b> un recurso que contiene información acerca de un conjunto de datos, pero sin los datos primarios. Por ejemplo, un recurso de metadatos puede dar información acerca de una colección que aun no ha sido digitalizada.<br /></li><li><b>Otro:</b> Otro tipo de recurso.<br /></li></ul>
 
 resource.subtype=Subtipo
 resource.status.private=Privado
