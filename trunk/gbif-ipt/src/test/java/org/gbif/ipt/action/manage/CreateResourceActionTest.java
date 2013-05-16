@@ -3,6 +3,7 @@ package org.gbif.ipt.action.manage;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
@@ -23,7 +24,7 @@ public class CreateResourceActionTest {
     // mock action
     action =
       new CreateResourceAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mock(RegistrationManager.class),
-        mock(ResourceManager.class), mock(DataDir.class));
+        mock(ResourceManager.class), mock(DataDir.class), mock(VocabulariesManager.class));
   }
 
   @Test
