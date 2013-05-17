@@ -201,12 +201,21 @@ public class AppConfig {
         // read user configuration from data dir if it exists
         File userCfgFile = new File(dataDir.dataDir, "config/" + DATADIR_PROPFILE);
         if (userCfgFile.exists()) {
+          FileInputStream fis = null;
           try {
-            props.load(new FileInputStream(userCfgFile));
+            fis = new FileInputStream(userCfgFile);
+            props.load(fis);
             LOG.debug("Loaded user configuration from " + userCfgFile.getAbsolutePath());
           } catch (IOException e) {
-            LOG.warn("DataDir configured, but failed to load user configuration from " + userCfgFile.getAbsolutePath(),
-              e);
+            LOG.warn("DataDir configured, but failed to load ipt.properties from " + userCfgFile.getAbsolutePath(), e);
+          } finally {
+            if (fis != null) {
+              try {
+                fis.close();
+              } catch (IOException e) {
+                LOG.debug("Failed to close input stream on ipt.properties file");
+              }
+            }
           }
         } else {
           LOG.warn("DataDir configured, but user configuration doesnt exist: " + userCfgFile.getAbsolutePath());
