@@ -1,0 +1,2182 @@
+[
+    {
+        "name": "New Name AAA1Organisation",
+        "key": "f3e8e9a9-df60-40ca-bb71-7f49313b3150"
+    },
+    {
+        "name": "New Name Academy of Natural Sciences",
+        "key": "f9b67ad0-9c9b-11d9-b9db-b8a03c50a862"
+    },
+    {
+        "name": "ACOI - Coimbra Collection of Algae - University of Coimbra",
+        "key": "e92e0710-24c4-11dc-a625-b8a03c50a862"
+    },
+    {
+        "name": "Administración de Parques Nacionales, Argentina",
+        "key": "979dd240-16f7-11df-b5b3-b8a03c50a862"
+    },
+    {
+        "name": "Alabama Museum of Natural History",
+        "key": "045f6b80-812c-11de-86fd-b8a03c50a862"
+    },
+    {
+        "name": "Alaska Ocean Observing System",
+        "key": "18377e40-63a3-11da-b5f3-b8a03c50a862"
+    },
+    {
+        "name": "American Museum of Natural History",
+        "key": "ccd1ddc0-6c21-11de-8224-b8a03c50a862"
+    },
+    {
+        "name": "Arbeitsgemeinschaft Heuschrecken Österreichs",
+        "key": "723e80e0-bd38-11dd-b15e-b8a03c50a862"
+    },
+    {
+        "name": "Arctos",
+        "key": "3988de20-0560-11d8-b851-b8a03c50a862"
+    },
+    {
+        "name": "Arizona State University, Global Institute for Sustainability",
+        "key": "edd92410-ac77-11de-90e0-b8a03c50a862"
+    },
+    {
+        "name": "Association for Nature WOLF",
+        "key": "787e5bf0-bdcb-11dc-9a6c-b8a03c50a862"
+    },
+    {
+        "name": "Auburn University Museum DiGIR Provider",
+        "key": "34cc6c50-812c-11de-86fe-b8a03c50a862"
+    },
+    {
+        "name": "Australian Antarctic Data Centre",
+        "key": "3693ff90-4c16-11d8-b290-b8a03c50a862"
+    },
+    {
+        "name": "Australian Biological Resources Study",
+        "key": "8692e460-6783-11d8-b9b2-b8a03c50a862"
+    },
+    {
+        "name": "Australian National Herbarium (CANB)",
+        "key": "14c5f0f0-1dab-11d9-8435-b8a03c50a862"
+    },
+    {
+        "name": "Australian National Insect Collection, CSIRO Entomology",
+        "key": "06bbd2a0-671b-11d8-b9b2-b8a03c50a862"
+    },
+    {
+        "name": "Avian Knowledge Network",
+        "key": "95f1c5d0-8996-11d9-a962-b8a03c50a862"
+    },
+    {
+        "name": "Banc de dades de biodiversitat de Catalunya",
+        "key": "7b4f2f30-a456-11d9-8049-b8a03c50a862"
+    },
+    {
+        "name": "BeBIF Provider",
+        "key": "37E82B90-1E21-11DE-AB90-F72009D2669B"
+    },
+    {
+        "name": "Berkeley Natural History Museums",
+        "key": "0dc9c7a0-b5c6-11d9-a0b8-b8a03c50a862"
+    },
+    {
+        "name": "Bernice Pauahi Bishop Museum",
+        "key": "90cc71b0-055b-11d8-b84e-b8a03c50a862"
+    },
+    {
+        "name": "Białowieża National Park",
+        "key": "8face560-fd52-11db-ace1-b8a03c50a862"
+    },
+    {
+        "name": "Biologiezentrum Linz Oberoesterreich",
+        "key": "2d6e0e40-2aee-11d8-aa2d-b8a03c50a862"
+    },
+    {
+        "name": "Biologische Anstalt Helgoland in the Foundation Alfred-Wegener Institute for Polar and Marine Research",
+        "key": "497688a0-59d6-11db-893e-b8a03c50a862"
+    },
+    {
+        "name": "Bioresource Collection and Research Center (BCRC)",
+        "key": "6b4fc310-4452-11de-87a1-b8a03c50a862"
+    },
+    {
+        "name": "Bioversity International",
+        "key": "a3c228d0-3110-11db-abb8-b8a03c50a862"
+    },
+    {
+        "name": "Bird Studies Canada",
+        "key": "7b3aa470-605f-11d8-b9b2-b8a03c50a862"
+    },
+    {
+        "name": "Bodensee-Naturmuseum Konstanz",
+        "key": "bfb257e0-b415-11da-967e-b8a03c50a862"
+    },
+    {
+        "name": "Borror Laboratory of Bioacoustics",
+        "key": "9b2452f0-1b68-11dc-8e60-b8a03c50a862"
+    },
+    {
+        "name": "Botanical Research Institute of Texas",
+        "key": "c4cbb860-e9c7-11da-8113-b8a03c50a862"
+    },
+    {
+        "name": "Botanic Garden and Botanical Museum Berlin-Dahlem",
+        "key": "57254bd0-8256-11d8-b7ed-b8a03c50a862"
+    },
+    {
+        "name": "Botanic Garden, National Museum of Natural History, University of Lisbon",
+        "key": "315127e0-d7bb-11db-9885-b8a03c50a862"
+    },
+    {
+        "name": "British Antarctic Survey",
+        "key": "94458240-4e38-11db-985b-b8a03c50a862"
+    },
+    {
+        "name": "Bundesamt für Naturschutz / Netzwerk Phytodiversität Deutschland",
+        "key": "43cab2b0-0653-11d9-acb2-b8a03c50a862"
+    },
+    {
+        "name": "CABIDiGIR Provider",
+        "key": "29817330-5d61-11d8-b9b2-b8a03c50a862"
+    },
+    {
+        "name": "California Academy of Sciences",
+        "key": "66522820-055c-11d8-b84e-b8a03c50a862"
+    },
+    {
+        "name": "Cameroon National Herbarium",
+        "key": "24266ce0-38be-11d9-8439-b8a03c50a862"
+    },
+    {
+        "name": "Canadian Biodiversity Information Facility",
+        "key": "09871350-0a23-11d8-b854-b8a03c50a862"
+    },
+    {
+        "name": "Canadian Museum of Nature",
+        "key": "a41250f0-7c3e-11d8-a19c-b8a03c50a862"
+    },
+    {
+        "name": "Carnegie Museums",
+        "key": "c1da06f0-580e-11dc-8a9e-b8a03c50a862"
+    },
+    {
+        "name": "CBS Fungal Biodiversity Centre",
+        "key": "6a430540-7f09-11d8-a1a0-b8a03c50a862"
+    },
+    {
+        "name": "Centre de Ressources Biologiques de l Institut Pasteur",
+        "key": "30d2bd90-12aa-11dc-80c8-b8a03c50a862"
+    },
+    {
+        "name": "Centre for Genetic Resources, The Netherlands",
+        "key": "efc2ae40-9880-11da-89b4-b8a03c50a862"
+    },
+    {
+        "name": "Centre International de Ressources Microbiennes-Levures",
+        "key": "8db8c070-3628-11dd-a88d-b8a03c50a862"
+    },
+    {
+        "name": "Centro de Ecologia Aplicada",
+        "key": "229d4040-7e98-11d9-add9-b8a03c50a862"
+    },
+    {
+        "name": "Centro de Referência em Informação Ambiental",
+        "key": "8595cd50-87c0-11dc-bb35-b8a03c50a862"
+    },
+    {
+        "name": "Centro Nacional Patagonico - CONICET",
+        "key": "b62390e0-0e35-11d9-8431-b8a03c50a862"
+    },
+    {
+        "name": "Charles R. Conner Museum",
+        "key": "7c7b6440-94d1-11dd-bdb1-b8a03c50a862"
+    },
+    {
+        "name": "Chengdu Institute of Biology, Chinese Academy of Science",
+        "key": "cb1987f0-8661-11dc-ace4-b8a03c50a862"
+    },
+    {
+        "name": "Chungnam University Natural History Museum",
+        "key": "7d1bc440-e60c-11dc-af9e-b8a03c50a862"
+    },
+    {
+        "name": "Instituto de Investigación de Recursos Biológicos Alexander von Humboldt",
+        "key": "2a7e3080-28a9-11dd-97cd-b8a03c50a862"
+    },
+    {
+        "name": "Colección Herpetológica de la UNNE",
+        "key": "0f56ac70-81c1-11d9-b6d0-b8a03c50a862"
+    },
+    {
+        "name": "Collection Française de Bactéries Phytopathogènes - CFBP",
+        "key": "cbe8b310-360e-11dd-a88d-b8a03c50a862"
+    },
+    {
+        "name": "Colorado State University Herbarium (CSU)",
+        "key": "0da0bbb0-633f-11dd-9199-b8a03c50a862"
+    },
+    {
+        "name": "Comisión nacional para el conocimiento y uso de la biodiversidad",
+        "key": "ff90b050-c256-11db-b71b-b8a03c50a862"
+    },
+    {
+        "name": "Conservation International",
+        "key": "335880a0-e2e1-11dd-8102-b8a03c50a862"
+    },
+    {
+        "name": "Conservatoire botanique national du Bassin parisien",
+        "key": "6bcc0290-6e76-11db-bcd5-b8a03c50a862"
+    },
+    {
+        "name": "Consortium of California Herbaria",
+        "key": "fb702600-a84e-11de-978d-b8a03c50a862"
+    },
+    {
+        "name": "Cornell University Museum of Vertebrates",
+        "key": "cf9ceb80-9f3d-11da-b791-b8a03c50a862"
+    },
+    {
+        "name": "CRICYT - CONICET",
+        "key": "778b4aa0-7067-11d9-b13a-b8a03c50a862"
+    },
+    {
+        "name": "Delaware Museum of Natural History",
+        "key": "a42867f0-813a-11dc-82e0-b8a03c50a862"
+    },
+    {
+        "name": "Department of Plant Sciences, University of Oxford",
+        "key": "aeb25010-c36e-11d8-84ea-b8a03c50a862"
+    },
+    {
+        "name": "Dept. Of Biology, University of Trieste",
+        "key": "d48116e0-281e-11d9-8436-b8a03c50a862"
+    },
+    {
+        "name": "University of Louisiana at Monroe",
+        "key": "57324530-812c-11de-86fe-b8a03c50a862"
+    },
+    {
+        "name": "Discover Life",
+        "key": "7ff14f90-946d-11dd-a03f-b8a03c50a862"
+    },
+    {
+        "name": "Leibniz Institute DSMZ - German Collection of Microorganisms and Cell Cultures",
+        "key": "463555b0-d081-11da-ae8f-b8a03c50a862"
+    },
+    {
+        "name": "Duke University Herbarium",
+        "key": "ead371f0-f93d-11dd-af50-b8a03c50a862"
+    },
+    {
+        "name": "ECOCEAN",
+        "key": "5daa3840-20bc-11dd-bc28-b8a03c50a862"
+    },
+    {
+        "name": "EMAN Provider",
+        "key": "ca2d0ad0-45e0-11d8-aa2e-b8a03c50a862"
+    },
+    {
+        "name": "European Environment Agency",
+        "key": "ec469dc0-9530-11d9-8902-b8a03c50a862"
+    },
+    {
+        "name": "Ewha Womans University Natural History Museum",
+        "key": "79e0b850-b280-11db-b710-b8a03c50a862"
+    },
+    {
+        "name": "Facultad de Ciencias Naturales y Museo - U.N.L.P.",
+        "key": "610414e0-8040-11d9-8294-b8a03c50a862"
+    },
+    {
+        "name": "Facultad de Ciencias, UNAM",
+        "key": "49355de0-eb1f-11dc-ad06-b8a03c50a862"
+    },
+    {
+        "name": "Fairchild Tropical Botanic Garden",
+        "key": "bd561840-efdc-11d9-a329-b8a03c50a862"
+    },
+    {
+        "name": "Field Museum",
+        "key": "7b8aff00-a9f8-11d8-944b-b8a03c50a862"
+    },
+    {
+        "name": "Finnish Museum of Natural History",
+        "key": "e5585950-488e-11db-a1c2-b8a03c50a862"
+    },
+    {
+        "name": "Finsiel",
+        "key": "80388cc0-ea72-11d7-8a6f-b8a03c50a862"
+    },
+    {
+        "name": "FishBase",
+        "key": "192a9ab0-5565-11d8-b290-b8a03c50a862"
+    },
+    {
+        "name": "Floraine",
+        "key": "38222b00-9911-11dd-9689-b8a03c50a862"
+    },
+    {
+        "name": "Florida Museum of Natural History",
+        "key": "8483a1f0-1032-11db-ae00-b8a03c50a862"
+    },
+    {
+        "name": "Folklore and Natural History Museum",
+        "key": "21074610-6c06-11db-a819-b8a03c50a862"
+    },
+    {
+        "name": "Forest Research Institute, Department of Natural Forests",
+        "key": "63c6de50-9274-11da-8901-b8a03c50a862"
+    },
+    {
+        "name": "Taiwan Forestry Research Institute",
+        "key": "898ba450-1627-11df-bd84-b8a03c50a862"
+    },
+    {
+        "name": "Fundacion Miguel Lillo Provider",
+        "key": "afa44940-5a60-11d9-bbdd-b8a03c50a862"
+    },
+    {
+        "name": "GBIF New Zealand",
+        "key": "2760d7b0-767c-11d8-a198-b8a03c50a862"
+    },
+    {
+        "name": "GBIF-Spain",
+        "key": "6c4a0bb0-2a4d-11d8-aa2d-b8a03c50a862"
+    },
+    {
+        "name": "GBIF-Sweden",
+        "key": "4C415E40-1E21-11DE-9E40-A0D6ECEBB8BF"
+    },
+    {
+        "name": "GBIF Swiss Node",
+        "key": "23e067c0-a255-11da-beae-b8a03c50a862"
+    },
+    {
+        "name": "Georgia Museum of Natural History (GMNH)",
+        "key": "df5031f0-5813-11dc-8a9e-b8a03c50a862"
+    },
+    {
+        "name": "GEO-Tag der Artenvielfalt",
+        "key": "ef69a030-3940-11dd-b168-b8a03c50a862"
+    },
+    {
+        "name": "GTI Japan",
+        "key": "29e30490-219f-11d8-a2da-b8a03c50a862"
+    },
+    {
+        "name": "Gyeongsangnam-do forest environment Research Institute",
+        "key": "f7023470-0211-11de-8f36-b8a03c50a862"
+    },
+    {
+        "name": "Gyeryonsan Natural History Museum",
+        "key": "d8bca410-a773-11da-95cd-b8a03c50a862"
+    },
+    {
+        "name": "Halla Arboretum",
+        "key": "193bb600-f1d3-11dd-b2d5-b8a03c50a862"
+    },
+    {
+        "name": "Hannam University Natural History Museum",
+        "key": "02b15320-934e-11dc-8e7d-b8a03c50a862"
+    },
+    {
+        "name": "Harvard University Herbaria",
+        "key": "485ff490-e3b7-11db-9acc-b8a03c50a862"
+    },
+    {
+        "name": "Haus der Natur Salzburg",
+        "key": "7a070ba0-bafb-11d9-8e53-b8a03c50a862"
+    },
+    {
+        "name": "Herbaria of the University and ETH Zürich (Z+ZT)",
+        "key": "605e7170-1123-11d9-8433-b8a03c50a862"
+    },
+    {
+        "name": "Herbario de la Universidad de Granada",
+        "key": "d68c4230-a271-11d8-a9b3-b8a03c50a862"
+    },
+    {
+        "name": "Herbario de la Universidad de Leon",
+        "key": "db7c0100-1a6f-11da-88d4-b8a03c50a862"
+    },
+    {
+        "name": "Herbario SANT, Universidade de Santiago de Compostela",
+        "key": "def87a70-0837-11d9-acb2-b8a03c50a862"
+    },
+    {
+        "name": "HERBARIUM AMAZONENSE \u2013 AMAZ",
+        "key": "2783f1f0-8ef2-11db-af3b-b8a03c50a862"
+    },
+    {
+        "name": "Herbarium Hamburgense",
+        "key": "f739aef0-8a5b-11d9-bc8d-b8a03c50a862"
+    },
+    {
+        "name": "Herbarium of the University of Aarhus",
+        "key": "8e1a97a0-3ca8-11d9-8439-b8a03c50a862"
+    },
+    {
+        "name": "Herbarium RNG,  School of Plant Sciences, The University of Reading",
+        "key": "da182250-8257-11d8-b7ed-b8a03c50a862"
+    },
+    {
+        "name": "Université de Strasbourg",
+        "key": "a6de8f30-d931-11db-973c-b8a03c50a862"
+    },
+    {
+        "name": "Humboldt-Universität Berlin",
+        "key": "4c4920d0-61a5-11da-9136-b8a03c50a862"
+    },
+    {
+        "name": "Hungarian Natural History Museum",
+        "key": "be11c6a0-7cf5-11dc-92cb-b8a03c50a862"
+    },
+    {
+        "name": "Icelandic Institute of Natural History",
+        "key": "12308e00-4b80-11da-8809-b8a03c50a862"
+    },
+    {
+        "name": "IHAR",
+        "key": "24c3dc90-822b-11d8-b7ed-b8a03c50a862"
+    },
+    {
+        "name": "Illinois Natural History Survey",
+        "key": "fd0038d0-3e7b-11d9-8439-b8a03c50a862"
+    },
+    {
+        "name": "inatura - Erlebnis Naturschau Dornbirn",
+        "key": "fccc6740-bbb1-11d9-839f-b8a03c50a862"
+    },
+    {
+        "name": "Institute of Agricultural and Food Biotechnology, Dept. of  Microbiology",
+        "key": "81b4aef0-af9d-11db-ad75-b8a03c50a862"
+    },
+    {
+        "name": "Institute of Biochemistry and Biophysics, Polish Academy of Sciences",
+        "key": "974a24e0-4f8e-11da-a57c-b8a03c50a862"
+    },
+    {
+        "name": "INSTITUTE OF BOTANY S.A.S.",
+        "key": "e2ce7dc0-a8b5-11d8-9534-b8a03c50a862"
+    },
+    {
+        "name": "Institute of Botany, University of Hohenheim",
+        "key": "5353b120-c0bc-11db-b2dd-b8a03c50a862"
+    },
+    {
+        "name": "Institute of Dendrology, Polish Academy of Sciences",
+        "key": "f7259790-9300-11da-8596-b8a03c50a862"
+    },
+    {
+        "name": "Geocollections of Estonia",
+        "key": "70488160-b003-11d8-a8af-b8a03c50a862"
+    },
+    {
+        "name": "Institute of Nature Conservation, Polish Academy of Sciences",
+        "key": "f121e450-78ba-11d8-a19c-b8a03c50a862"
+    },
+    {
+        "name": "Institute of Systematics and Evolution of Animals, Polish Academy of Sciences",
+        "key": "a8ab3400-6739-11da-8f8a-b8a03c50a862"
+    },
+    {
+        "name": "Institute of Zoology and Botany of EAU",
+        "key": "3fa69630-8256-11d8-b7ed-b8a03c50a862"
+    },
+    {
+        "name": "Instituto de Botánica Darwinion - CONICET",
+        "key": "b6f05cf0-43ce-11d9-8439-b8a03c50a862"
+    },
+    {
+        "name": "Instituto de Ciencias Naturales",
+        "key": "23b946e0-4e2d-11d9-bbdd-b8a03c50a862"
+    },
+    {
+        "name": "Instituto de Investigação Científica Tropical",
+        "key": "9fdb5a90-a5a6-11dd-8d5f-b8a03c50a862"
+    },
+    {
+        "name": "Instituto de Investigaciones de la Amazonía Peruana",
+        "key": "3c1d3550-c688-11da-bc3f-b8a03c50a862"
+    },
+    {
+        "name": "Instituto Nacional de Biodiversidad (INBio), Costa Rica",
+        "key": "5c7a5c20-1bd0-11d8-a2da-b8a03c50a862"
+    },
+    {
+        "name": "International Centre for Insect Physiology and Ecology",
+        "key": "43c1d5e0-0a24-11dd-953d-b8a03c50a862"
+    },
+    {
+        "name": "Israel Nature and Parks Authority",
+        "key": "4f160e00-329d-11d9-8439-b8a03c50a862"
+    },
+    {
+        "name": "Jagiellonian University, Institute of Environmental Sciences",
+        "key": "8f01b340-b2f3-11d8-a8af-b8a03c50a862"
+    },
+    {
+        "name": "Jagiellonian University, Institute of Zoology",
+        "key": "97a3ce10-3e54-11d9-8439-b8a03c50a862"
+    },
+    {
+        "name": "James R. Slater Museum of Natural History",
+        "key": "f56c5f80-055c-11d8-b84e-b8a03c50a862"
+    },
+    {
+        "name": "JEOLLANAMDO MARITIME & FISHERIES SCIENCE MUSEUM",
+        "key": "01a3b990-c4b6-11da-98ad-b8a03c50a862"
+    },
+    {
+        "name": "Jyvaskyla University Museum - The Section of Natural Sciences",
+        "key": "ff3a2000-b2ac-11db-b710-b8a03c50a862"
+    },
+    {
+        "name": "Karl Franzens University of Graz, Insitute for Botany - Herbarium GZU",
+        "key": "43587ad0-bafb-11d9-8e53-b8a03c50a862"
+    },
+    {
+        "name": "KBIF Data Repository",
+        "key": "a98e4f40-fa3b-11d8-a1a1-b8a03c50a862"
+    },
+    {
+        "name": "KBRC (Korean Biological Resource Center) - KBIF Node",
+        "key": "569a9110-cb1d-11d8-bf68-b8a03c50a862"
+    },
+    {
+        "name": "Korea Institute of Science and Technology Information",
+        "key": "657b7bf0-766b-11d9-9f77-b8a03c50a862"
+    },
+    {
+        "name": "Korea Institutie of Water and Enviroment",
+        "key": "4e0835d0-f1d2-11dd-b2d5-b8a03c50a862"
+    },
+    {
+        "name": "Korean Aquatic Plant Resources and Information Bank",
+        "key": "822ae110-d90e-11dc-8e3b-b8a03c50a862"
+    },
+    {
+        "name": "Korea National Arboretum (Korea Forest Service)",
+        "key": "ce3cfcc0-6d56-11db-a819-b8a03c50a862"
+    },
+    {
+        "name": "Korean Bioinformation Center",
+        "key": "7acb3000-c181-11db-adfe-b8a03c50a862"
+    },
+    {
+        "name": "Kunsan Passage Bird Research Institute",
+        "key": "34829730-f1d3-11dd-b2d5-b8a03c50a862"
+    },
+    {
+        "name": "Kyung Hee University Natural History Museum",
+        "key": "0ee09980-b280-11db-b70f-b8a03c50a862"
+    },
+    {
+        "name": "Laboratoire de Paléobotanique et Paléoécologie",
+        "key": "9c6afd40-4d63-11db-9eae-b8a03c50a862"
+    },
+    {
+        "name": "Leibniz Institute of Plant Genetics and Crop Plant Research (IPK)",
+        "key": "19a3a4e0-1908-11dc-a07b-b8a03c50a862"
+    },
+    {
+        "name": "Natural History Museum of Los Angeles County",
+        "key": "493fe050-055d-11d8-b84f-b8a03c50a862"
+    },
+    {
+        "name": "Louisiana State University Herbarium",
+        "key": "38a69420-bd2a-11dd-b15e-b8a03c50a862"
+    },
+    {
+        "name": "Louisiana State University Museum of Natural Science",
+        "key": "c361e830-181e-11da-9544-b8a03c50a862"
+    },
+    {
+        "name": "MACOI - Portuguese Seaweeds",
+        "key": "03e90890-8b28-11de-b647-b8a03c50a862"
+    },
+    {
+        "name": "Mammal Research Institute, Polish Academy of Sciences",
+        "key": "2e66c910-6bbd-11da-8cf2-b8a03c50a862"
+    },
+    {
+        "name": "Marine Biology Laboratory",
+        "key": "e3e307d0-1637-11da-a5ec-b8a03c50a862"
+    },
+    {
+        "name": "Marine Biology Section Ugent",
+        "key": "05c249d0-dfa0-11d8-b22e-b8a03c50a862"
+    },
+    {
+        "name": "Marine Science Institute, UCSB",
+        "key": "c96dd940-165d-11da-a5ec-b8a03c50a862"
+    },
+    {
+        "name": "Michigan State University Herbarium",
+        "key": "41d6acb0-48b5-11db-a1c2-b8a03c50a862"
+    },
+    {
+        "name": "Michigan State University Museum",
+        "key": "311e2740-f15a-11d8-b22f-b8a03c50a862"
+    },
+    {
+        "name": "Micoteca da Universidade do Minho",
+        "key": "30b6eaa0-21c9-11dd-9858-b8a03c50a862"
+    },
+    {
+        "name": "Milwaukee Public Museum",
+        "key": "845f3630-812c-11de-86fe-b8a03c50a862"
+    },
+    {
+        "name": "Missouri Botanical Garden",
+        "key": "90fd6680-349f-11d8-aa2d-b8a03c50a862"
+    },
+    {
+        "name": "Mokpo Museum of Natural History",
+        "key": "422412e0-b280-11db-b710-b8a03c50a862"
+    },
+    {
+        "name": "Mongolia Natural History Museum",
+        "key": "79acbdd0-f405-11dc-ae6d-b8a03c50a862"
+    },
+    {
+        "name": "Monty L. Bean Museum, Brigham Young University",
+        "key": "fd70f580-4ce2-11db-b80e-b8a03c50a862"
+    },
+    {
+        "name": "Musée national d'histoire naturelle Luxembourg",
+        "key": "75642970-f855-11dd-8235-b8a03c50a862"
+    },
+    {
+        "name": "Musée Zoologique de la Ville de Strasbourg",
+        "key": "609d49d0-78fe-11dd-b871-b8a03c50a862"
+    },
+    {
+        "name": "Museo Argentino de Ciencias Naturales",
+        "key": "2e4af590-37d0-11d9-8439-b8a03c50a862"
+    },
+    {
+        "name": "Museo de Zoología de la Facultad de Ciencias, UNAM",
+        "key": "4f48f140-38a5-11d9-8439-b8a03c50a862"
+    },
+    {
+        "name": "Museo Nacional de Costa Rica",
+        "key": "036cdc50-e7f5-11d9-9a0e-b8a03c50a862"
+    },
+    {
+        "name": "Museum and Institute of Zoology, Polish Academy of Sciences",
+        "key": "e147be40-75eb-11d9-b257-b8a03c50a862"
+    },
+    {
+        "name": "Museum für Naturkunde Berlin",
+        "key": "10980920-6dad-11da-ad13-b8a03c50a862"
+    },
+    {
+        "name": "Museum of Comparative Zoology, Harvard University",
+        "key": "b4640710-8e03-11d8-b956-b8a03c50a862"
+    },
+    {
+        "name": "Museum of Southwestern Biology, Division of Amphibians and Reptiles",
+        "key": "939ed180-aa7b-11db-8edf-b8a03c50a862"
+    },
+    {
+        "name": "Museum of Texas Tech University (TTU)",
+        "key": "acac73b0-055d-11d8-b84f-b8a03c50a862"
+    },
+    {
+        "name": "Museum of Vertebrate Zoology",
+        "key": "8edbbde0-055e-11d8-b850-b8a03c50a862"
+    },
+    {
+        "name": "National Botanical Research Institute",
+        "key": "af3a7b70-8fe1-11da-956e-b8a03c50a862"
+    },
+    {
+        "name": "National Chemical Laboratory",
+        "key": "ff6a9550-c5c3-11d9-b4b2-b8a03c50a862"
+    },
+    {
+        "name": "National Herbarium of New South Wales",
+        "key": "c4254a00-cb2b-11d8-bf68-b8a03c50a862"
+    },
+    {
+        "name": "National Institute of Genetics, ROIS",
+        "key": "c3367060-856b-11d9-8486-b8a03c50a862"
+    },
+    {
+        "name": "National Inventory of Swiss bryophytes",
+        "key": "6d8dec90-656a-11de-85b2-b8a03c50a862"
+    },
+    {
+        "name": "National Medicines Institute, Poland",
+        "key": "0f727d00-b29a-11da-94a7-b8a03c50a862"
+    },
+    {
+        "name": "National Museum of Natural History, Smithsonian Institution",
+        "key": "bc092ff0-02e4-11dc-991f-b8a03c50a862"
+    },
+    {
+        "name": "National Museum of Nature and Science, Japan",
+        "key": "4fd82480-ea1c-11da-8db4-b8a03c50a862"
+    },
+    {
+        "name": "National Science Museum of Korea",
+        "key": "eb07eeb0-3db9-11d9-8439-b8a03c50a862"
+    },
+    {
+        "name": "Natural History Museum",
+        "key": "19456090-b49a-11d8-abeb-b8a03c50a862"
+    },
+    {
+        "name": "Natural History Museum, University of Oslo",
+        "key": "f314b0b0-e3dc-11d9-8d81-b8a03c50a862"
+    },
+    {
+        "name": "Natural History Museum, Vienna - Herbarium W",
+        "key": "4e11d750-bafb-11d9-8e53-b8a03c50a862"
+    },
+    {
+        "name": "NCB Naturalis",
+        "key": "396d5f30-dea9-11db-8ab4-b8a03c50a862"
+    },
+    {
+        "name": "NatureServe",
+        "key": "aa40a1e0-818b-11d9-b6d0-b8a03c50a862"
+    },
+    {
+        "name": "NCL Center for Biodiversity Informatics",
+        "key": "1eadc140-5b3c-11da-9b50-b8a03c50a862"
+    },
+    {
+        "name": "Nearctic Spider Database",
+        "key": "1b02b980-027a-11da-87cd-b8a03c50a862"
+    },
+    {
+        "name": "New Brunswick Museum",
+        "key": "9c7737c0-359c-11da-9a82-b8a03c50a862"
+    },
+    {
+        "name": "New Mexico Biodiversity Collections Consortium",
+        "key": "0fbd3740-5703-11dd-b927-b8a03c50a862"
+    },
+    {
+        "name": "New Mexico Museum of Natural History and Science",
+        "key": "ac1a4340-812c-11de-86fe-b8a03c50a862"
+    },
+    {
+        "name": "Nicolaus Copernicus University of Toruń",
+        "key": "6ea466a0-925e-11da-8900-b8a03c50a862"
+    },
+    {
+        "name": "Netherlands Biodiversity Information Facility (NLBIF)",
+        "key": "cace8d10-2646-11d8-a2da-b8a03c50a862"
+    },
+    {
+        "name": "Nordic Genetic Resource Center (NORDGEN)",
+        "key": "B9C5F740-34D9-11DE-BAF5-E00D96B185EF"
+    },
+    {
+        "name": "North Carolina State Museum of Natural Sciences",
+        "key": "69e7f900-ed5b-11dd-ac7e-b8a03c50a862"
+    },
+    {
+        "name": "Norwegian Institute for Nature Research",
+        "key": "46fec380-8e1d-11dd-8679-b8a03c50a862"
+    },
+    {
+        "name": "Observatoire Océanologique de Banyuls sur mer",
+        "key": "3857ca00-7aaa-11de-927e-b8a03c50a862"
+    },
+    {
+        "name": "Ocean Biogeographic Information System",
+        "key": "0e0fc0f0-828e-11d8-b7ed-b8a03c50a862"
+    },
+    {
+        "name": "Ohio State University Acarology Collection",
+        "key": "0242b530-1a22-11de-ab70-b8a03c50a862"
+    },
+    {
+        "name": "Ohio State University Insect Collection",
+        "key": "038205f0-dcaf-11d8-b22e-b8a03c50a862"
+    },
+    {
+        "name": "Oklahoma Vascular Plants Database Provider",
+        "key": "8ef49720-e6dc-11dc-8b77-b8a03c50a862"
+    },
+    {
+        "name": "Oregon State University",
+        "key": "ac5e8480-3714-11da-bc2e-b8a03c50a862"
+    },
+    {
+        "name": "Österreichische Mykologische Gesellschaft",
+        "key": "839f8ed0-bafb-11d9-8e53-b8a03c50a862"
+    },
+    {
+        "name": "CSIRO",
+        "key": "602f0aa0-1f3e-11da-9ae9-b8a03c50a862"
+    },
+    {
+        "name": "PAKISTAN MUSEUM OF NATURAL HISTORY Provider",
+        "key": "2c7d9b50-a845-11da-ae09-b8a03c50a862"
+    },
+    {
+        "name": "PANGAEA - Publishing Network for Geoscientific and Environmental Data",
+        "key": "d5778510-eb28-11da-8629-b8a03c50a862"
+    },
+    {
+        "name": "Plazi.org taxonomic treatments database",
+        "key": "7ce8aef0-9e92-11dc-8738-b8a03c50a862"
+    },
+    {
+        "name": "Prirodoslovni muzej Slovenije",
+        "key": "3b331240-abea-11d9-a96c-b8a03c50a862"
+    },
+    {
+        "name": "Queen Mary University of London",
+        "key": "3c552c40-1fda-11de-a7f3-b8a03c50a862"
+    },
+    {
+        "name": "Raffles Museum of Biodiversity Research",
+        "key": "f53a51c0-88cf-11dc-a32a-b8a03c50a862"
+    },
+    {
+        "name": "Redpath Museum, McGill University",
+        "key": "d9207260-812c-11de-86fe-b8a03c50a862"
+    },
+    {
+        "name": "Royal Botanic Garden Edinburgh",
+        "key": "98e934b0-5f31-11de-b67e-b8a03c50a862"
+    },
+    {
+        "name": "Royal Botanic Gardens, Kew",
+        "key": "061b4f20-f241-11da-a328-b8a03c50a862"
+    },
+    {
+        "name": "Royal Museum for Central Africa, Belgium",
+        "key": "575c52b0-a742-11db-a6ff-b8a03c50a862"
+    },
+    {
+        "name": "Royal Ontario Museum",
+        "key": "ff418020-1d67-11d9-8435-b8a03c50a862"
+    },
+    {
+        "name": "Sam Noble Oklahoma Museum of Natural History",
+        "key": "609765e0-4ce8-11db-b80e-b8a03c50a862"
+    },
+    {
+        "name": "San Diego Natural History Museum",
+        "key": "8a471700-4ce8-11db-b80e-b8a03c50a862"
+    },
+    {
+        "name": "Santa Barbara Museum of Natural History",
+        "key": "78678140-1815-11da-9544-b8a03c50a862"
+    },
+    {
+        "name": "Scientific Committee on Antarctic Research - Marine Biodiversity Information Network (SCAR-MarBIN)",
+        "key": "d0080730-e6ad-11dc-8b77-b8a03c50a862"
+    },
+    {
+        "name": "Scientific Research Centre of the Slovenian Academy of Sciences and Arts, Institute of Biology",
+        "key": "a5586d20-0f7c-11dd-9d45-b8a03c50a862"
+    },
+    {
+        "name": "Senckenberg",
+        "key": "c76cf030-2a95-11da-9cc1-b8a03c50a862"
+    },
+    {
+        "name": "Senckenberg - CeDAMar Provider",
+        "key": "48490260-8fc0-11dd-be72-b8a03c50a862"
+    },
+    {
+        "name": "Seodaemun Museum of Natural History",
+        "key": "a2936bd0-b280-11db-b710-b8a03c50a862"
+    },
+    {
+        "name": "SPN - Service du Patrimoine naturel, Muséum national d'Histoire naturelle, Paris",
+        "key": "1928bdf0-f5d2-11dc-8c12-b8a03c50a862"
+    },
+    {
+        "name": "Siamazonia Provider",
+        "key": "79914a60-cb99-11d9-b772-b8a03c50a862"
+    },
+    {
+        "name": "Slovenian Forestry Institute",
+        "key": "5796fe40-1516-11dd-9fa4-b8a03c50a862"
+    },
+    {
+        "name": "Société Botanique de Franche-Comté/Conservatoire Botanique National de Franche-Comté",
+        "key": "8fd192b0-734f-11dd-8fc0-b8a03c50a862"
+    },
+    {
+        "name": "South African National Biodiversity Institute",
+        "key": "c5f7ef70-e233-11d9-a4d6-b8a03c50a862"
+    },
+    {
+        "name": "Staatliche Naturwissenschaftliche Sammlungen Bayerns",
+        "key": "0674aea0-a7e1-11d8-9534-b8a03c50a862"
+    },
+    {
+        "name": "Staatliches Museum für Naturkunde Stuttgart",
+        "key": "99ea0c90-61e5-11dc-a64c-b8a03c50a862"
+    },
+    {
+        "name": "Steiermärkisches Landesmuseum Joanneum - Herbarium GJO",
+        "key": "32ceedc0-bafb-11d9-8e53-b8a03c50a862"
+    },
+    {
+        "name": "Sternberg Museum of Natural History",
+        "key": "976af1e0-ca25-11da-bfed-b8a03c50a862"
+    },
+    {
+        "name": "SysTax",
+        "key": "021121c0-f040-11d8-b22f-b8a03c50a862"
+    },
+    {
+        "name": "Taiwan Biodiversity Information Facility (TaiBIF)",
+        "key": "12b1df00-3f75-11d8-aa2d-b8a03c50a862"
+    },
+    {
+        "name": "TanBIF",
+        "key": "76905CA0-1E21-11DE-9CA0-CD203B273F5D"
+    },
+    {
+        "name": "TELDAP",
+        "key": "7050ce20-c75e-11dd-87ef-b8a03c50a862"
+    },
+    {
+        "name": "Texas A&M University Insect Collection",
+        "key": "352bdfe0-c57b-11dd-a8eb-b8a03c50a862"
+    },
+    {
+        "name": "Texas Cooperative Wildlife Collection",
+        "key": "2b8e48b0-812d-11de-86fe-b8a03c50a862"
+    },
+    {
+        "name": "Texas Natural Science Center",
+        "key": "3c6ad080-bdbe-11da-ac59-b8a03c50a862"
+    },
+    {
+        "name": "Danish Biodiversity Information Facility",
+        "key": "299958e0-4c06-11d8-b290-b8a03c50a862"
+    },
+    {
+        "name": "The Hong Kong University Herbarium",
+        "key": "988a0d00-34b5-11da-9a7b-b8a03c50a862"
+    },
+    {
+        "name": "Thematic Networks",
+        "key": "f2965760-c5d3-11d8-bf61-b8a03c50a862"
+    },
+    {
+        "name": "The Museum of Biology, Sun Yatsen Univ",
+        "key": "c304b410-dee6-11d9-b1d4-b8a03c50a862"
+    },
+    {
+        "name": "The New York Botanical Garden",
+        "key": "ae447c50-b8a8-11d8-92a4-b8a03c50a862"
+    },
+    {
+        "name": "Tiroler Landesmuseum Ferdinandeum",
+        "key": "f9912a00-84a9-11d9-8952-b8a03c50a862"
+    },
+    {
+        "name": "Tulane University Museum of Natural History",
+        "key": "039f44e0-e712-11dd-9cd2-b8a03c50a862"
+    },
+    {
+        "name": "UCLA-Dickey Collection (UCLA-Dickey)",
+        "key": "c0dc3c80-23f9-11dc-98d1-b8a03c50a862"
+    },
+    {
+        "name": "UC Riverside Entomology Collection",
+        "key": "2b831170-8265-11dc-9e45-b8a03c50a862"
+    },
+    {
+        "name": "UK National Biodiversity Network",
+        "key": "07f617d0-c688-11d8-bf62-b8a03c50a862"
+    },
+    {
+        "name": "UNIBIO, IBUNAM",
+        "key": "b459e790-0d3c-11d9-8431-b8a03c50a862"
+    },
+    {
+        "name": "Universität Salzburg",
+        "key": "b0a2cd60-4059-11de-9f59-b8a03c50a862"
+    },
+    {
+        "name": "Universitatsherbarium Göttingen; Gesellschaft fur wissenschaftliche Datenverarbeitung mbH Göttingen GWDG.",
+        "key": "59c81290-df0e-11d8-b22e-b8a03c50a862"
+    },
+    {
+        "name": "University Museum of Zoology Cambridge",
+        "key": "d9ccac00-9bc7-11de-a329-b8a03c50a862"
+    },
+    {
+        "name": "University Museums of Norway (MUSIT)",
+        "key": "da879c20-98e7-11dc-80b1-b8a03c50a862"
+    },
+    {
+        "name": "University of Alabama Biodiversity and Systematics",
+        "key": "79324e30-d4c7-11d8-bf69-b8a03c50a862"
+    },
+    {
+        "name": "University of Alberta Museums",
+        "key": "03cb9700-6cee-11d8-922d-b8a03c50a862"
+    },
+    {
+        "name": "University of Arizona Herbarium",
+        "key": "60d24660-7054-11dd-b804-b8a03c50a862"
+    },
+    {
+        "name": "University of Arizona Museum of Natural History",
+        "key": "84d451a0-644d-11de-b910-b8a03c50a862"
+    },
+    {
+        "name": "University of Arkansas",
+        "key": "af00f590-cb78-11d9-b772-b8a03c50a862"
+    },
+    {
+        "name": "University of Białystok, Institute of Biology",
+        "key": "83af6510-a704-11dc-80be-b8a03c50a862"
+    },
+    {
+        "name": "University of California, Davis",
+        "key": "f0b6a090-a4c6-11d8-9534-b8a03c50a862"
+    },
+    {
+        "name": "University of Colorado Museum of Natural History",
+        "key": "4cadac10-3e7b-11d9-8439-b8a03c50a862"
+    },
+    {
+        "name": "University of Connecticut",
+        "key": "1ef55060-54da-11dd-9d47-b8a03c50a862"
+    },
+    {
+        "name": "University of Gdańsk, Bird Migration Research Station",
+        "key": "814254c0-925e-11da-8900-b8a03c50a862"
+    },
+    {
+        "name": "University of Gdańsk, Dept. of Plant Taxonomy and Nature Conservation",
+        "key": "e3f07310-a215-11da-beae-b8a03c50a862"
+    },
+    {
+        "name": "University of Hawaii",
+        "key": "58172c10-1dc5-11de-be11-b8a03c50a862"
+    },
+    {
+        "name": "University of Helsinki, Department of Applied Biology",
+        "key": "2f462930-4d96-11d8-b290-b8a03c50a862"
+    },
+    {
+        "name": "University of Kansas Biodiversity Institute",
+        "key": "b554c320-0560-11d8-b851-b8a03c50a862"
+    },
+    {
+        "name": "University of Malaga",
+        "key": "7fadb370-f921-11dd-af50-b8a03c50a862"
+    },
+    {
+        "name": "University of Michigan Museum of Zoology",
+        "key": "6ea87510-0561-11d8-b851-b8a03c50a862"
+    },
+    {
+        "name": "University of Minnesota Bell Museum of Natural History",
+        "key": "927f1e70-cf74-11d8-bf68-b8a03c50a862"
+    },
+    {
+        "name": "University of Mons-Hainaut",
+        "key": "d02b7f80-1b78-11dd-be3c-b8a03c50a862"
+    },
+    {
+        "name": "University of Navarra, Museum of Zoology",
+        "key": "2f390a80-56f3-11da-880b-b8a03c50a862"
+    },
+    {
+        "name": "University of Nebraska - Lincoln",
+        "key": "1afe9ab0-5a80-11dd-aac6-b8a03c50a862"
+    },
+    {
+        "name": "University of Nebraska State Museum",
+        "key": "9b049850-d958-11da-9047-b8a03c50a862"
+    },
+    {
+        "name": "University of Nevada, Reno",
+        "key": "470365d0-812d-11de-86fe-b8a03c50a862"
+    },
+    {
+        "name": "University of Opole, Dept. of Biosystematics",
+        "key": "08106730-ae7d-11dc-b3c6-b8a03c50a862"
+    },
+    {
+        "name": "University of Oxford",
+        "key": "bf722320-bea2-11dc-9113-b8a03c50a862"
+    },
+    {
+        "name": "University of Silesia, Laboratory of Botanical Documentation - Herbarium KTU",
+        "key": "4668d6a0-130d-11db-a7d3-b8a03c50a862"
+    },
+    {
+        "name": "University of Tennessee - Chattanooga (UTC)",
+        "key": "efcf5460-a06a-11d9-8ec2-b8a03c50a862"
+    },
+    {
+        "name": "University of Tennessee, Knoxville",
+        "key": "c654fe80-188b-11d9-8435-b8a03c50a862"
+    },
+    {
+        "name": "University of Texas-Arlington",
+        "key": "d003dd60-94fa-11da-a99f-b8a03c50a862"
+    },
+    {
+        "name": "University of Texas at El Paso",
+        "key": "52c8f620-1816-11da-9544-b8a03c50a862"
+    },
+    {
+        "name": "University of Texas-Austin",
+        "key": "5553cf70-8fa6-11da-956e-b8a03c50a862"
+    },
+    {
+        "name": "University of Turku",
+        "key": "3ee55840-1f1d-11d8-a2da-b8a03c50a862"
+    },
+    {
+        "name": "University of Vienna, Institute for Botany - Herbarium WU",
+        "key": "58520c30-bafb-11d9-8e53-b8a03c50a862"
+    },
+    {
+        "name": "University of Vienna, Institute for Botany, Research Group for Plant Biogeography",
+        "key": "64995bb0-bafb-11d9-8e53-b8a03c50a862"
+    },
+    {
+        "name": "University of Warsaw, Białowieża Geobotanical Station of the Biological Faculty",
+        "key": "85f9aba0-af9d-11db-ad75-b8a03c50a862"
+    },
+    {
+        "name": "University of Warsaw, Botanic Garden",
+        "key": "e2475770-5046-11da-8af1-b8a03c50a862"
+    },
+    {
+        "name": "University of Warsaw, Dept. of Ecology",
+        "key": "04665d80-7e5f-11d8-a1a0-b8a03c50a862"
+    },
+    {
+        "name": "University of Washington Burke Museum",
+        "key": "06fcbbf0-0562-11d8-b851-b8a03c50a862"
+    },
+    {
+        "name": "Upper Silesian Museum, Bytom",
+        "key": "41cce8a0-925e-11da-8900-b8a03c50a862"
+    },
+    {
+        "name": "USDA-ARS Bee Biology and Systematics Laboratory",
+        "key": "1e26a630-7203-11dc-a0d8-b8a03c50a862"
+    },
+    {
+        "name": "USDA PLANTS",
+        "key": "58b5fc00-5ba3-11db-8a89-b8a03c50a862"
+    },
+    {
+        "name": "US National Plant Germplasm System",
+        "key": "83E105D0-1E21-11DE-85D0-FE7FA1DF8EE2"
+    },
+    {
+        "name": "Utah Museum of Natural History",
+        "key": "2d6267a0-0561-11d8-b851-b8a03c50a862"
+    },
+    {
+        "name": "Utah State University",
+        "key": "4c0e9f60-c489-11d8-bf60-b8a03c50a862"
+    },
+    {
+        "name": "Utah Valley University (UVSC)",
+        "key": "4b37eb40-10e6-11db-939a-b8a03c50a862"
+    },
+    {
+        "name": "Walter Reed Biosystematics Unit, Smithsonian Institution",
+        "key": "5ab24120-de25-11dc-9a41-b8a03c50a862"
+    },
+    {
+        "name": "Warsaw University of Life Sciences, Fac. Forestry, Dept. of Forest Protection and Ecology",
+        "key": "5bbd4d00-a75e-11dd-b1b2-b8a03c50a862"
+    },
+    {
+        "name": "Warsaw University of Life Sciences, Fac. Horticulture and Landscape Architecture, Dept. of Applied Entomology",
+        "key": "ac2273c0-0516-11db-a8cf-b8a03c50a862"
+    },
+    {
+        "name": "Western Australian Herbarium",
+        "key": "9d23a1e0-5388-11df-a59b-b8a03c50a862"
+    },
+    {
+        "name": "Western Foundation of Vertebrate Zoology",
+        "key": "80960f60-ad5e-11da-9c37-b8a03c50a862"
+    },
+    {
+        "name": "WFCC-MIRCEN World Data Centre for Microorganisms (WDCM)",
+        "key": "8273e420-46f3-11d8-aa2e-b8a03c50a862"
+    },
+    {
+        "name": "Wooseokheon Natural History Museum",
+        "key": "f5c46d20-f1d2-11dd-b2d5-b8a03c50a862"
+    },
+    {
+        "name": "Wrocław University, Fac. Natural Sciences",
+        "key": "3890bfb0-b461-11dc-bc42-b8a03c50a862"
+    },
+    {
+        "name": "Wrocław University, Museum of Natural History",
+        "key": "218534d0-925e-11da-8900-b8a03c50a862"
+    },
+    {
+        "name": "Yale University Peabody Museum",
+        "key": "2e167bb0-4441-11db-9ba2-b8a03c50a862"
+    },
+    {
+        "name": "York University",
+        "key": "719e2ab0-91c8-11dc-8602-b8a03c50a862"
+    },
+    {
+        "name": "Zoologisches Forschungsinstitut und Museum Alexander Koenig",
+        "key": "6e1cad80-bdf5-11d8-84ea-b8a03c50a862"
+    },
+    {
+        "name": "Wildlife Conservation Society - Madagascar Program (WCS - Mad)",
+        "key": "643FE8A0-BD8A-11DE-B279-8C1F280C453E"
+    },
+    {
+        "name": "Endangered Wildlife Trust",
+        "key": "40ECE160-5362-11DE-A160-D8AA0EE066B0"
+    },
+    {
+        "name": "Research Institute for Nature and Forest (INBO)",
+        "key": "1CD669D0-80EA-11DE-A9D0-F1765F95F18B"
+    },
+    {
+        "name": "National Biodiversity Data Centre",
+        "key": "D2B97690-BFD6-11DE-B279-D52977ACE833"
+    },
+    {
+        "name": "ZooKeys",
+        "key": "BB922300-7DDB-11DE-A300-90AC77AA923F"
+    },
+    {
+        "name": "Wildlife Institute of India",
+        "key": "4a19e429-8f13-478e-86d7-93adb7534524"
+    },
+    {
+        "name": "Herbier National de Mauritanie",
+        "key": "247e7360-5f30-11df-9ae1-b8a03c50a862"
+    },
+    {
+        "name": "Crop Research Institute (CRI)",
+        "key": "417c3159-419c-4325-a257-c482371860c6"
+    },
+    {
+        "name": "INRA Antilles-Guyane",
+        "key": "4bce8f23-20a5-48a7-b25a-83700caad2db"
+    },
+    {
+        "name": "International Centre for Integrated Mountain Development",
+        "key": "d33a9c4e-e33c-4311-a2fe-88dbdff7b4b9"
+    },
+    {
+        "name": "IFREMER -  French Research Institute for Exploitation of the Sea",
+        "key": "61e40671-1a75-4bcd-9a0d-63515057d39d"
+    },
+    {
+        "name": "Netherlands Centre for Biodiversity Naturalis, section National Herbarium of the Netherlands",
+        "key": "ade229f5-9bd5-471d-946f-f34723b9222c"
+    },
+    {
+        "name": "Tela-Botanica",
+        "key": "b2dbd210-90c2-11df-86a3-b8a03c50a862"
+    },
+    {
+        "name": "Birdlife Finland",
+        "key": "8f152af7-8ecb-42b0-8471-32841a75cb2d"
+    },
+    {
+        "name": "GBIF France",
+        "key": "5d5e5d82-076c-4e9a-b5b0-c88d1b691a6a"
+    },
+    {
+        "name": "The Norwegian Biodiversity Information Centre (NBIC)",
+        "key": "d3978a37-635a-4ae3-bb85-7b4d41bc0b88"
+    },
+    {
+        "name": "Illinois State University",
+        "key": "2e4967ed-fd35-4d34-ae4d-e8731d366e97"
+    },
+    {
+        "name": "Museum of Evolution, Uppsala University",
+        "key": "3c78d4fa-d0b1-4949-9883-be8482b5b222"
+    },
+    {
+        "name": "Parc Botanique et Zoologique de Tsimbazaza (P.B.Z.T.)",
+        "key": "7bec6457-78d6-416f-a185-00ae45e1d9a0"
+    },
+    {
+        "name": "Madagascar Biodiversity Information Facility (MadBIF)",
+        "key": "c8ce072d-9c61-4ec8-b8e7-0c36a8122791"
+    },
+    {
+        "name": "Centre National pour le Développement Rural - Madagascar (FOFIFA)",
+        "key": "c0e25223-5b55-4e02-8556-178781709720"
+    },
+    {
+        "name": "Birds Australia",
+        "key": "75ed4c27-9997-41c4-81a4-675b4282ffad"
+    },
+    {
+        "name": "NSW Department of Environment, Climate Change, and Water representing the State of New South Wales",
+        "key": "09644437-7734-42d9-b759-c40c03d953f8"
+    },
+    {
+        "name": "South Australia, Department of Environment and Natural Resources",
+        "key": "526a57bd-769c-4cc9-94ae-1eb9bdfa5d6c"
+    },
+    {
+        "name": "Eremaea",
+        "key": "633f217c-c007-48dc-86ed-f8fdae6fd0d8"
+    },
+    {
+        "name": "Department of Natural Resources, Environment, The Arts and Sport, Northern Territory of Australia",
+        "key": "24f26321-3960-4a16-a8e9-b3dfb401a9a4"
+    },
+    {
+        "name": "IRD - Institute of Research for Development",
+        "key": "3b5161b7-9831-4444-9822-a60df4df107d"
+    },
+    {
+        "name": "Centre d'Etude et de Recherche en Médecine Traditionnelle Appliquée (CERMETRA)",
+        "key": "0ae87169-51d1-4b71-85d4-ee04748811ae"
+    },
+    {
+        "name": "Office de Developpement et d'Exploitation des Forets (ODEF)",
+        "key": "002983e1-7120-4bfb-964f-1ada5f1d41c3"
+    },
+    {
+        "name": "European Molecular Biology Laboratory Australia",
+        "key": "9ae14314-8a89-499b-97b9-f5e4585f69ce"
+    },
+    {
+        "name": "DanBIF Data Hosting Centre",
+        "key": "fb5277cb-51bc-4b25-ae27-179a4836e53a"
+    },
+    {
+        "name": "EWT Data Hosting Centre",
+        "key": "d1811559-91f8-4360-9766-61881d666630"
+    },
+    {
+        "name": "Natural History Museum, University of Tartu",
+        "key": "0870a77b-587c-4369-a8ed-bc3d347b8e1c"
+    },
+    {
+        "name": "Université de Lomé",
+        "key": "d2583793-e5c1-41ae-83bd-86300d34e2cb"
+    },
+    {
+        "name": "Museum of Natural and Cultural History - University of Oregon",
+        "key": "0ba220e1-77cf-487a-8d91-494167240f5d"
+    },
+    {
+        "name": "Direction Generale de la Statistique et de la Comptabilite Nationale (DGSCN)",
+        "key": "2287329c-5f67-4681-abbe-47e8bfeaae20"
+    },
+    {
+        "name": "Institut Togolais de Recherche Agronomique (ITRA)",
+        "key": "4e33ac76-1db6-423c-a241-b12e8bef24e8"
+    },
+    {
+        "name": "University of Eastern Finland",
+        "key": "42fdc1e2-f7be-454f-9672-b8bd44e1ba31"
+    },
+    {
+        "name": "Digitisation Centre of the Finnish Museum of Natural History and the University of Eastern Finland",
+        "key": "1eacbaf3-ce23-4cfb-98d5-a51a7a574562"
+    },
+    {
+        "name": "Species File Group",
+        "key": "47a779a6-a230-4edd-b787-19c3d2c80ab5"
+    },
+    {
+        "name": "Centre d'estudis de la neu i de la muntanya d'Andorra (CENMA), Institut d'Estudis Andorrans",
+        "key": "b4370195-ab86-42a1-822a-96809e3d0384"
+    },
+    {
+        "name": "Consortium of Pacific Northwest Herbaria",
+        "key": "6567af74-d231-4588-a123-5d0b7a095fda"
+    },
+    {
+        "name": "The Catalogue of Life Partnership",
+        "key": "f4ce3c03-7b38-445e-86e6-5f6b04b649d4"
+    },
+    {
+        "name": "The International Plant Names Index Collaborators",
+        "key": "72da316f-62b4-451e-9238-cf72289e6372"
+    },
+    {
+        "name": "Kuopio Natural History Museum",
+        "key": "7f65a925-b9ce-4c1c-9d9f-5d32c4e76ae1"
+    },
+    {
+        "name": "Index Fungorum Partnership",
+        "key": "1ce482ab-14e3-48f0-8b70-b58b14625902"
+    },
+    {
+        "name": "The Global Biodiversity Information Facility",
+        "key": "e196c8d6-f795-463c-80c4-310dd14ee50b"
+    },
+    {
+        "name": "Wildscreen",
+        "key": "07e58d67-c090-4703-aada-3b88b10355f7"
+    },
+    {
+        "name": "University of Oulu",
+        "key": "d1146fd8-35d2-4264-a569-8f88cc29d0c8"
+    },
+    {
+        "name": "Zoological Institute, Russian Academy of Sciences, St. Petersburg",
+        "key": "c14b9ce2-9545-4376-8a3b-6741558c256a"
+    },
+    {
+        "name": "ArtDatabanken",
+        "key": "b8323864-602a-4a7d-9127-bb903054e97d"
+    },
+    {
+        "name": "GBIF Cameroon",
+        "key": "14c9828d-3f1f-4be2-8598-cd0861d69081"
+    },
+    {
+        "name": "Ecole de Faune de Garoua",
+        "key": "01ea5fd7-42b3-42a0-aa34-2fe0a50167ef"
+    },
+    {
+        "name": "IRAD Cameroun (Institut de Recherche Agronomique pour le Développement Cameroun)",
+        "key": "a4e7734f-58a3-4833-b7bd-20bb470bce0f"
+    },
+    {
+        "name": "Sir Alister Hardy Foundation for Ocean Science (SAHFOS)",
+        "key": "09b17aee-d3fb-48ca-a30b-303d671a8155"
+    },
+    {
+        "name": "ECAT development publisher",
+        "key": "fbca90e3-8aed-48b1-84e3-369afbd000ce"
+    },
+    {
+        "name": "Enciclopedia de la Flora Chilena",
+        "key": "1a3d9bef-baf1-4eb3-814e-f6e9ba670c04"
+    },
+    {
+        "name": "Innvista",
+        "key": "772eb820-a0de-402a-8c5e-ac9bdb33f2c4"
+    },
+    {
+        "name": "Department of National Parks, Wildlife and Plant Conservation",
+        "key": "d5ddb6a4-2ad0-4928-8682-f9d5d12be1eb"
+    },
+    {
+        "name": "ASEAN Centre for Biodiversity (ACB)",
+        "key": "a30d7f59-d3d4-4e89-97dc-de9cf837f591"
+    },
+    {
+        "name": "Université de Montréal Biodiversity Centre",
+        "key": "ff7bd5db-b724-4932-b496-10ea298851f9"
+    },
+    {
+        "name": "Humboldt State University",
+        "key": "c10e9f64-38b0-4cb9-98d3-92b82cb7256a"
+    },
+    {
+        "name": "University of Arkansas Collections Facility, UAFMC",
+        "key": "9a367b8c-22dd-402d-9161-d3c64c6d6a94"
+    },
+    {
+        "name": "N.I. Vavilov Research Institute of Plant Industry",
+        "key": "8d30d714-63f5-4f6f-a1a4-d73d09aa60c4"
+    },
+    {
+        "name": "Universidad Nacional de San Agustín (Herbarium Areqvipense HUSA)",
+        "key": "28d17f8f-39f3-4041-9734-67c4f1e7693e"
+    },
+    {
+        "name": "Muhimbili University of Health and Allied Sciences, Institute of Traditional Medicine",
+        "key": "7a617d01-4c93-4a27-848d-65e3d28008ed"
+    },
+    {
+        "name": "National Environmental Management Council",
+        "key": "8458558e-ea65-4a67-8cbf-ad8b0d86cb81"
+    },
+    {
+        "name": "Sokoine University of Agriculture, Department of Animal Science Production",
+        "key": "7bbc88c6-8b4b-42d0-ab88-b8c4db060983"
+    },
+    {
+        "name": "Sokoine University of Agriculture, Department of Forest Biology",
+        "key": "a8864fd2-f4f9-40b1-bd9d-a8767e12b9ab"
+    },
+    {
+        "name": "Sokoine University of Agriculture, Institute of Development Studies",
+        "key": "379cd73c-66c6-42e4-8f21-b686dc27e37c"
+    },
+    {
+        "name": "Tanzania Fisheries Research Institute",
+        "key": "c1052b9b-ee1b-4ab4-aeec-af2b3712b1d9"
+    },
+    {
+        "name": "University of Dar es Salaam, Department of Aquatic Sciences and Fisheries ",
+        "key": "b7bbfc47-7c56-44e5-8595-3a0e9d345074"
+    },
+    {
+        "name": "University of Dar es Salaam, Department of Botany",
+        "key": "3c1ff1ce-cc3b-4637-b86f-2766ca452c89"
+    },
+    {
+        "name": "University of Dar es Salaam, Department of Chemistry",
+        "key": "ddb14329-f8ec-41b6-83ee-5701be7c9e5d"
+    },
+    {
+        "name": "University of Dar es Salaam, Department of Zoology",
+        "key": "00aa4e95-ff37-445f-99a8-636afe047a59"
+    },
+    {
+        "name": "University of Dodoma, School of Medicine",
+        "key": "a4e33a0e-4a5b-40b6-b2f6-283b2ccc3084"
+    },
+    {
+        "name": "Department of Forest & Non Renewable Natural Resources, Zanzibar",
+        "key": "062b48a9-42f9-4e3e-b7a8-2b1032367270"
+    },
+    {
+        "name": "Department of Marine Resources, Zanzibar",
+        "key": "afb561be-a2f4-4aaa-af67-860001244fd4"
+    },
+    {
+        "name": "Institute of Agricultural Research, Zanzibar",
+        "key": "426ace3a-c500-4c9f-8353-6386630cd746"
+    },
+    {
+        "name": "Lindi Forest Limited",
+        "key": "bed6ea92-0adc-439d-bd1d-b7a033a41156"
+    },
+    {
+        "name": "National  Institute for Medical Research",
+        "key": "89471f04-a263-4e61-a2de-30030f63a39f"
+    },
+    {
+        "name": "WWF - Tanzania",
+        "key": "779b1aa0-afeb-4186-9464-a1ab1286d8c8"
+    },
+    {
+        "name": "National Museums of Kenya",
+        "key": "fd515d3a-b237-42de-bba6-760008580da5"
+    },
+    {
+        "name": "Kokkola Nature Collection Kieppi",
+        "key": "5d18805e-7810-4aa4-aad8-8447f236dcc5"
+    },
+    {
+        "name": "New York State Museum (NYSM)",
+        "key": "baa8ccb1-8d9d-4940-93a6-2241c8a04ba5"
+    },
+    {
+        "name": "Réseau de la Biodiversité de Madagascar (REBIOMA)",
+        "key": "a3789606-e6b8-4b4a-b058-44804d448633"
+    },
+    {
+        "name": "United States Geological Survey",
+        "key": "c3ad790a-d426-4ac1-8e32-da61f81f0117"
+    },
+    {
+        "name": "International Compositae Alliance",
+        "key": "a9485c7e-f399-47c8-9c8c-f7a03a4e94b0"
+    },
+    {
+        "name": "Royal Belgian Institute of Natural Sciences",
+        "key": "e88c96a3-5884-4e51-a580-e417ca4c9eed"
+    },
+    {
+        "name": "US NBII",
+        "key": "316cf4af-e4f6-4b60-a719-c1301fbfdad7"
+    },
+    {
+        "name": "US GBIF mirror",
+        "key": "c5ed1b0d-5898-40d1-a5b4-5626bab2192a"
+    },
+    {
+        "name": "Antarctic Biodiversity Information Facility (ANTABIF)",
+        "key": "fb10a11f-4417-41c8-be6a-13a5c8535122"
+    },
+    {
+        "name": "International Union for Conservation of Nature",
+        "key": "d44af9a3-e779-40c0-a186-79e7717c6d2b"
+    },
+    {
+        "name": "Centre d'Observation de Surveillance et d'Information Environnementales (COSIE)",
+        "key": "1c905e09-830d-43d6-bea7-32b9275364bf"
+    },
+    {
+        "name": "Inter-American Biodiversity Information Network - Species and Specimen Thematic Network",
+        "key": "614053e2-79b2-40db-9e73-07ff944da7c6"
+    },
+    {
+        "name": "Association des Naturalistes de la Vallée du Loing et du massif de Fontainebleau",
+        "key": "79e9459f-bf2f-408c-acf5-d69766a39e06"
+    },
+    {
+        "name": "Herbier de l'université de Limoges",
+        "key": "514d4c44-45f9-4f49-83d1-aff5f973d880"
+    },
+    {
+        "name": "Conservatoire Botanique National Alpin",
+        "key": "8d8c424d-9ab0-4b82-811e-900577f93f66"
+    },
+    {
+        "name": "Herbier des conservatoires et jardins botaniques de Nancy",
+        "key": "131217d6-04ff-4682-9bc2-e418f961fc0d"
+    },
+    {
+        "name": "Herbiers Universitaires de Clermont-Ferrand",
+        "key": "c4b8c992-bc88-4b19-87c3-f89a19604e25"
+    },
+    {
+        "name": "Lycée Félix Esclangon. Comité du Patrimoine Manosquin. Herbier G. Fenoul",
+        "key": "196893ee-8103-4ac7-9977-cb136b253a7f"
+    },
+    {
+        "name": "MNHN - Museum national d'Histoire naturelle",
+        "key": "2cd829bb-b713-433d-99cf-64bef11e5b3e"
+    },
+    {
+        "name": "Institut Scientifique, Mohamed V University",
+        "key": "899dccde-1e1b-4da0-953d-3be7d31f2da7"
+    },
+    {
+        "name": "Société des Sciences Naturelles et Mathématiques de Cherbourg",
+        "key": "dca4d666-c9e0-4712-b658-0d1bc3f39d48"
+    },
+    {
+        "name": "Herbarium of Université de Montpellier 2, Institut de Botanique",
+        "key": "2853c0e7-c758-4c9c-83a2-7c2d18967fb9"
+    },
+    {
+        "name": "Herbarium specimens of Bamboo collection Prafrance Générargue (BAMBO)",
+        "key": "cc364fce-e436-4c77-8b37-289a0e837681"
+    },
+    {
+        "name": "Muséum d'Histoire Naturelle d'Autun, Herbarium",
+        "key": "743b654c-be54-4ba1-94ef-2b874f160395"
+    },
+    {
+        "name": "Museum d'Histoire Naturelle of Aix-en-Provence, Herbarium",
+        "key": "c2c3be16-01fe-4255-a8dd-cfcdf285d721"
+    },
+    {
+        "name": "Museo Entomológico de León \u2013 MEL",
+        "key": "60f8ce17-065e-40ff-bac6-4f85f5edaedd"
+    },
+    {
+        "name": "Museo de Historia Natural Marina de Colombia \u2013 INVEMAR",
+        "key": "1d512cd8-810c-4afc-b1ef-bd1a25bfd3fa"
+    },
+    {
+        "name": "Red Nacional de Observadores de Aves de Colombia",
+        "key": "dc282b9d-8f3b-4197-b174-ba5272721a6f"
+    },
+    {
+        "name": "Universidad Nacional Agraria La Molina",
+        "key": "2dca9222-b262-44c4-b50d-b9e1940df062"
+    },
+    {
+        "name": "Círculo Herpetológico de Panamá",
+        "key": "2d9c9af1-308d-4d9d-9dd5-8035407ca868"
+    },
+    {
+        "name": "Universidad de Panamá",
+        "key": "4d4d6a25-ae9c-4f4a-92fa-b9f3ddee2f7a"
+    },
+    {
+        "name": "Fundación Óga",
+        "key": "7003947c-e302-49de-97c5-f1ebefc6b9a1"
+    },
+    {
+        "name": "Aves & Conservación - BirdLife Ecuador",
+        "key": "82a1f7be-8264-4270-99c5-951d987d0949"
+    },
+    {
+        "name": "Pronatura Veracruz A. C.",
+        "key": "c7217cd2-4113-4190-ad3a-bc8ff812b017"
+    },
+    {
+        "name": "Universidad Central de Venezuela",
+        "key": "3eeffcbd-0e84-4223-ac65-3d32e7cc8511"
+    },
+    {
+        "name": "Museo Nacional de Historia Natural",
+        "key": "5c0a7589-beee-4f9c-a954-3121af64298b"
+    },
+    {
+        "name": "Universidad de Santiago de Chile",
+        "key": "74c88464-26e0-4bc1-ac4a-2687504e61c9"
+    },
+    {
+        "name": "Laboratorio de Biologia Vegetal",
+        "key": "129c7813-b018-42ae-962a-b9a026926bc4"
+    },
+    {
+        "name": "Universidad Autónoma Gabriel Rene Moreno",
+        "key": "a15633ae-746f-4ed2-880e-f8ebfd1f1efb"
+    },
+    {
+        "name": "Institute of Jamaica",
+        "key": "b207e0d6-d8e9-461a-afdf-84e2197a29db"
+    },
+    {
+        "name": "Ministerio de recursos naturales y ambiente \u2013 MARENA",
+        "key": "aebd53d6-20fb-4817-8c8f-bf6580b46506"
+    },
+    {
+        "name": "GBIF Benin",
+        "key": "b2db85d5-c5fe-4125-9e36-590a5f651829"
+    },
+    {
+        "name": "Université d'Abomey-Calavi, Faculté des Sciences Agronomiques",
+        "key": "2afeb273-cbbc-4fcf-a10f-7baf271b62c5"
+    },
+    {
+        "name": "Wildlife Sightings",
+        "key": "dce7a3c9-ea78-4be7-9abc-e3838de70dc5"
+    },
+    {
+        "name": "Agricultural Research Council",
+        "key": "149b9411-e994-4416-a218-f2ef21173e44"
+    },
+    {
+        "name": "Albany Museum",
+        "key": "f6adbffd-6f7d-4c49-a26b-8dc18b2e5e65"
+    },
+    {
+        "name": "The South African Institute for Aquatic Biodiversity",
+        "key": "cecc196e-f262-4986-a88a-6adf035dca0e"
+    },
+    {
+        "name": "Iziko South African Museum",
+        "key": "f4cda68c-9398-4e21-9ea1-0068da75ca35"
+    },
+    {
+        "name": "Animal Demography Unit, Department of Zoology, University of Cape Town",
+        "key": "dd862d06-e6e9-4ab9-bc86-c875cc148c1f"
+    },
+    {
+        "name": "Ditsong Museums of South Africa",
+        "key": "0257d0e6-a308-4177-a600-75704ec4f191"
+    },
+    {
+        "name": "Bolus Herbarium",
+        "key": "6442b29a-201e-44b5-a164-0a4d69bb2a8f"
+    },
+    {
+        "name": "Southern Cape Herbarium",
+        "key": "6a040ed7-65d3-4895-9944-8e74d6a4f0ab"
+    },
+    {
+        "name": "ECOCEAN USA",
+        "key": "39b7b3bc-3dc2-4c64-8de6-aa6ece25c1d9"
+    },
+    {
+        "name": "Swedish Museum of Natural History",
+        "key": "6ba9a8cc-513a-4a51-bf93-6f5de8040a96"
+    },
+    {
+        "name": "Lund Museum of Zoology",
+        "key": "ee6a779a-dce6-4f16-ae3d-84f495def86e"
+    },
+    {
+        "name": "Ministerio de Ciencia, Tecnología e Innovación Productiva",
+        "key": "497c081b-8157-4287-bb5c-291a4c71439c"
+    },
+    {
+        "name": "Facultad de Agronomía de la Universidad Nacional de La Pampa",
+        "key": "9ffd491b-f56b-408d-8a9c-723a310501e5"
+    },
+    {
+        "name": "Instituto Nacional de Tecnologia Agropecuaria - Instituto de Recursos Biológicos",
+        "key": "4c43ef1b-b005-4ed5-840b-7886d53fb069"
+    },
+    {
+        "name": "Cincinnati Museum Center",
+        "key": "1afc3a83-38f8-4282-90ae-d377ded4b628"
+    },
+    {
+        "name": "Muséum d'Histoire Naturelle de Bourges",
+        "key": "32b45fb7-1992-4f30-95c8-1604a38a57fa"
+    },
+    {
+        "name": "Musée cantonal de zoologie, Lausanne - MZL",
+        "key": "1354d651-e529-4a8e-95be-faa807639461"
+    },
+    {
+        "name": "Sistema de Información sobre Biodiversidad de Colombia - SiB",
+        "key": "c4f66525-4d36-4c18-82ac-98e088f54db4"
+    },
+    {
+        "name": "Asociación de Becarios del Casanare - ABC",
+        "key": "c803f6f5-2c6a-4b41-8c15-768d48ef1c8c"
+    },
+    {
+        "name": "Isagen",
+        "key": "04ce62dd-30ec-4d98-8b30-b09cafc3ac38"
+    },
+    {
+        "name": "Corantioquia",
+        "key": "15b278a8-1356-4f7b-ba32-3c733c3d0aac"
+    },
+    {
+        "name": "Red de Reservas de la Sociedad Civil - Resnatur",
+        "key": "38c1ea4f-4ce4-4dbb-8d01-7e0149f16bcd"
+    },
+    {
+        "name": "Asociación Selva",
+        "key": "567cdb5e-5bb3-42e1-ae07-ffa6fc60b56e"
+    },
+    {
+        "name": "Universidad del Valle",
+        "key": "85be57ed-f187-49c9-b7ff-eaa622e06217"
+    },
+    {
+        "name": "Ohio State University Fish Division",
+        "key": "1d9ee036-c4e8-4c29-a33a-608da32db564"
+    },
+    {
+        "name": "PhytoKeys",
+        "key": "fc871c4a-bb5e-4db6-b332-487bc23797f1"
+    },
+    {
+        "name": "MycoKeys",
+        "key": "b0e7edd4-d8b5-4b1c-bb5f-f6484e16c21c"
+    },
+    {
+        "name": "BioRisk",
+        "key": "9fca5b21-463f-4e73-b0c0-3423eeba9f54"
+    },
+    {
+        "name": "NeoBiota",
+        "key": "45c9a2eb-b8f9-4d9f-a0e3-6ccd898f557b"
+    },
+    {
+        "name": "Nature Conservation",
+        "key": "98d5cff1-dad6-48c1-a4e7-11461c71b4fa"
+    },
+    {
+        "name": "Journal of Hymenoptera Research",
+        "key": "4a99b0fe-19ca-4e28-9682-4ea0e3bec4e0"
+    },
+    {
+        "name": "International Journal of Myriapodology",
+        "key": "2a4eddf4-6e01-491c-8e59-c7948dfb943e"
+    },
+    {
+        "name": "Universidad de la Salle",
+        "key": "478a9e81-e716-42dc-a68d-03487953a32e"
+    },
+    {
+        "name": "Muséum d'Histoire Naturelle de Nice",
+        "key": "3fed8a70-5eb1-4d47-a580-92ce393a4a3e"
+    },
+    {
+        "name": "Naturkundemuseum im Ottoneum Kassel",
+        "key": "fe9d23a5-5514-4d6e-b05b-d115425cd159"
+    },
+    {
+        "name": "University of Puerto Rico - Invertebrate Collection",
+        "key": "45346344-bad3-4a45-8563-98955464b3ca"
+    },
+    {
+        "name": "Museum  Henri-Lecoq de Clermont-Ferrand",
+        "key": "ef05e4c5-43a3-4686-af2a-528684b228ae"
+    },
+    {
+        "name": "Acadia University",
+        "key": "6491ad8c-8e49-4bd4-a089-0ddb3bbe0890"
+    },
+    {
+        "name": "iNaturalist.org",
+        "key": "28eb1a3f-1c15-4a95-931a-4af90ecb574d"
+    },
+    {
+        "name": "University of British Columbia",
+        "key": "b542788f-0dc2-4a2b-b652-fceced449591"
+    },
+    {
+        "name": "Organization for Tropical Studies",
+        "key": "a4d6cc6b-4c62-4015-ad7b-1ba69847a616"
+    },
+    {
+        "name": "European Forest Institute",
+        "key": "634deee3-2c0b-4698-b634-23096802abe6"
+    },
+    {
+        "name": "BRC Forage and turf, INRA Lusignan",
+        "key": "0b5846f7-20b5-410a-93c5-5de83b522deb"
+    },
+    {
+        "name": "University of Toronto Mississauga",
+        "key": "95aba44b-121f-41fe-9f16-4515b826ce54"
+    },
+    {
+        "name": "Australian Coral Ecoregions",
+        "key": "1bce0a01-a3d8-4ee3-825a-d1be104caa82"
+    },
+    {
+        "name": "Chevron Australia",
+        "key": "d49251f5-379f-43b4-b747-9d8240334fa5"
+    },
+    {
+        "name": "Citizen Science - ALA Website",
+        "key": "adc174cd-c752-4eee-9630-7c1209eb1c4a"
+    },
+    {
+        "name": "CSIRO National Fish Collection",
+        "key": "e5f79c10-3cae-4233-b5ca-7b96133dde7b"
+    },
+    {
+        "name": "Canberra Ornithologists Group",
+        "key": "4e1336c8-6101-44ef-8dc1-8af45ba7178a"
+    },
+    {
+        "name": "Kangawalla Pastoral Co Pty Ltd",
+        "key": "3f8e73d6-5f4c-4e42-98b6-8487b890dccf"
+    },
+    {
+        "name": "Queensland Department of Environment and Resource Management",
+        "key": "ee9a9cbf-d62d-4d6d-a46a-769e0b1714d1"
+    },
+    {
+        "name": "Office of Environment and Heritage, Department of Premier and Cabinet representing the State of New South Wales",
+        "key": "25fe2ec4-4405-4b37-9386-8cc80e337abb"
+    },
+    {
+        "name": "Alterra, Wageningen UR",
+        "key": "2498d55c-dcd2-4caf-abb7-14f2ffe05c37"
+    },
+    {
+        "name": "Natural History Museum Rotterdam",
+        "key": "3ead5cf3-2840-482e-bbd9-76380825be63"
+    },
+    {
+        "name": "Nijmegen Natural History Museum",
+        "key": "16fd28c4-e4be-40e5-a551-139e573cfe68"
+    },
+    {
+        "name": "Natural History Museum Maastricht",
+        "key": "01d38e13-944c-4f4b-96a2-25ecf1751140"
+    },
+    {
+        "name": "NIOZ Royal Netherlands Institute for Sea Research",
+        "key": "5ed21d03-f836-45bd-a554-0a4791108798"
+    },
+    {
+        "name": "The Netherlands Institute of Ecology (NIOO-KNAW) ",
+        "key": "9871e68e-0cc6-41c0-850e-39602ecbbe2f"
+    },
+    {
+        "name": "Field Study Group of the Dutch Mammal Society",
+        "key": "baa855b0-a010-4240-9adf-98c810a6ccf5"
+    },
+    {
+        "name": "Dutch Mammal Society",
+        "key": "8d5f7d67-9132-41e9-a068-a907aa03b907"
+    },
+    {
+        "name": "Dutch Foundation for Applied Water Research ",
+        "key": "68a216ee-f721-40cd-932c-84153afd9451"
+    },
+    {
+        "name": "Royal Dutch Angling Association",
+        "key": "224c2985-c87e-4330-bc0d-da0c8067fac4"
+    },
+    {
+        "name": "University of Amsterdam / IBED",
+        "key": "1f55bd0a-6ebe-49a1-8a9c-9258702b6f46"
+    },
+    {
+        "name": "Museon",
+        "key": "67d0a68e-90b4-4760-9269-49e80e017e10"
+    },
+    {
+        "name": "Australian Museum",
+        "key": "770c30d2-c2a8-4bb2-8056-6167297cddae"
+    },
+    {
+        "name": "Museum and Art Gallery of the Northern Territory",
+        "key": "8cdd9232-84eb-4bad-9d9b-a36910cd524b"
+    },
+    {
+        "name": "Museum Victoria",
+        "key": "4cff2aca-5ce5-4028-88e6-d79b6449173a"
+    },
+    {
+        "name": "Queen Victoria Museum and Art Gallery",
+        "key": "14209842-b56e-40ae-b95d-b13224d0411c"
+    },
+    {
+        "name": "Queensland Museum",
+        "key": "f9d3db7d-6ee9-4fbf-bd4c-e5d0f0bd26c6"
+    },
+    {
+        "name": "South Australian Museum",
+        "key": "4d0539cd-a2e0-4a2c-8b7d-ec6718eef764"
+    },
+    {
+        "name": "Tasmanian Museum and Art Gallery",
+        "key": "8a226609-56b9-4b87-a0a2-767c38edd572"
+    },
+    {
+        "name": "Western Australian Museum",
+        "key": "b36f3505-f2d9-499f-a669-fa418a127b9d"
+    },
+    {
+        "name": "Department of Environment and Conservation, Western Australia",
+        "key": "e6e855d7-9775-400f-883b-c4e04e517d79"
+    },
+    {
+        "name": "Australian Institute of Marine Science",
+        "key": "ee87a3ad-dd8d-4d3c-9549-bc6589d2406a"
+    },
+    {
+        "name": "Service Public de Wallonie \u2013 Département d\u2019Etude du Milieu Naturel et Agricole (SPW \u2013 DEMNA)",
+        "key": "a6f344b0-1944-4354-8376-272495c9135e"
+    },
+    {
+        "name": "Flanders Marine Institute",
+        "key": "2089ce96-4fb5-4a20-999c-3ccf45a27a4d"
+    },
+    {
+        "name": "Society for the Management of Electronic Biodiversity Data",
+        "key": "6c821c6d-1936-41a0-8dd9-74e2c4ab38bd"
+    },
+    {
+        "name": "The Knowledge Network for Biocomplexity (KNB)",
+        "key": "7879e569-4a13-4643-b833-d1a564675b86"
+    },
+    {
+        "name": "Tall Timbers Research Station and Land Conservancy",
+        "key": "132fe0d8-aa85-40a0-af20-52f48fae7bd6"
+    },
+    {
+        "name": "Bioinformatics Research Group, Biological Science Department, Faculty of Bioscience & Bioengineering",
+        "key": "63a08e67-8d4e-4653-82d7-c133b136527f"
+    },
+    {
+        "name": "Jardin Botanique de Montréal",
+        "key": "38c97c54-2ff1-42f1-aeff-0d40c8d16cdb"
+    },
+    {
+        "name": "University of Manitoba",
+        "key": "38105fdf-4886-4c2e-9c7c-2bcb091411a5"
+    },
+    {
+        "name": "Senckenberg Museum für Naturkunde Görlitz",
+        "key": "98dbab03-09e5-4ceb-988e-04f3e803decb"
+    },
+    {
+        "name": "Biodiversitäts-Monitoring Schweiz - BDMCH",
+        "key": "7aec3384-574d-4058-ab36-337cad184999"
+    },
+    {
+        "name": "Centre Suisse de Cartographie de la Faune - CSCF",
+        "key": "dc8aab12-94a0-47ce-b188-8fe30b91bb23"
+    },
+    {
+        "name": "Conservatoire et Jardin botaniques de la Ville de Genève - G",
+        "key": "43a26bbf-466a-4335-96cc-01d0656c614a"
+    },
+    {
+        "name": "Scratchpads",
+        "key": "315b3c03-4a0a-424e-83a5-d25aa748e666"
+    },
+    {
+        "name": "Global Mountain Biodiversity Assessment - GMBA",
+        "key": "dc3f994e-bd32-4714-8d88-6fb895fb48cc"
+    },
+    {
+        "name": "Muséum d'histoire naturelle de la Ville de Genève - MHNG",
+        "key": "23539a57-1347-4dd3-af2a-cf9478563baa"
+    },
+    {
+        "name": "Mountain Invasion Research Network - MIREN_ETH",
+        "key": "76388ab6-61ca-439a-ab09-e1fe73eb224a"
+    },
+    {
+        "name": "Naturhistorisches Museum Basel - NMB",
+        "key": "6505c875-003c-472d-879f-2624c00070e5"
+    },
+    {
+        "name": "Naturhistorisches Museum Bern - NMBE",
+        "key": "593527a0-d2e9-4365-a583-cc683125dbb7"
+    },
+    {
+        "name": "Zoologisches Museum Zürich - ZMZ",
+        "key": "2c603438-cfb1-4025-9daa-73311b8db2e4"
+    },
+    {
+        "name": "Scripps Institution of Oceanography",
+        "key": "b1b3786f-e9b0-4da6-8472-a21a2d7fe48c"
+    },
+    {
+        "name": "Ghana Biodiversity Information Facility (GhaBIF)",
+        "key": "4bc4943a-c94f-4bd4-9aa3-2a9cae94398a"
+    },
+    {
+        "name": "Estonian Environment Information Centre",
+        "key": "6d2a7654-1ed0-4924-b22e-9bc221ab2124"
+    },
+    {
+        "name": "The Marine Biological Association of the United Kingdom",
+        "key": "f6b48504-1651-4a49-a88d-c2bc6178694d"
+    },
+    {
+        "name": "Université Laval",
+        "key": "b52e9a80-8cb7-4d37-9324-46032fd69237"
+    },
+    {
+        "name": "Museum George Sand et de la Vallee Noire",
+        "key": "6f0517c4-913a-401a-95f1-144f724f424e"
+    },
+    {
+        "name": "Norwegian Polar Institute",
+        "key": "ad07600d-5425-43e2-9175-0353bb6d40a2"
+    },
+    {
+        "name": "Ministerio del Medio Ambiente de Chile",
+        "key": "bf0d80b3-46da-4e60-b1cf-39f2320acb43"
+    },
+    {
+        "name": "Ocean Biogeographic Information System (OBIS Canada)",
+        "key": "09a9c196-cb5b-4fa1-afc2-3499b868b225"
+    },
+    {
+        "name": "FasoBIF",
+        "key": "9764f31c-f399-4912-97fd-01ebf8b8141c"
+    },
+    {
+        "name": "Gothenburg Natural History Museum (GNM)",
+        "key": "45e5c621-df96-4ea7-bbc6-aa3e53b90bb8"
+    },
+    {
+        "name": "Regional Euro-Asian Biological Invasions Centre (REABIC)",
+        "key": "9fdbfd6e-e727-4188-a864-6f499d484c81"
+    },
+    {
+        "name": "AIT Austrian Institute of Technology GmbH",
+        "key": "81bfa2a5-22a8-4bea-b91c-d54bda1365b9"
+    },
+    {
+        "name": "Grupo Interinstitucional para el monitoreo de la biodiversidad en el Valle del Cauca",
+        "key": "1ee0beb6-8a8c-4390-9f2b-f76259dd911a"
+    },
+    {
+        "name": "Musee Vert, Museum d'Histoire Naturelle du Mans",
+        "key": "34ad60e6-3bfb-4bdd-acd6-420523a38d09"
+    }
+]

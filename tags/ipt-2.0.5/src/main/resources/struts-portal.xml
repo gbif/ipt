@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+  "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<!--
+	Actions related to the data browse/search area of the IPT
+	These will be accessible by everyone for resources that have been published, but
+	some of the resources will only be accessible to the owning user or the administrator
+ -->
+<struts>
+  <!-- The entry to the administration section -->
+  <package name="portal" extends="ipt-default" namespace="/">
+    <default-interceptor-ref name="portalStack"/>
+    <default-action-ref name="home"/>
+    <global-results>
+      <result name="404">
+        <param name="location">/WEB-INF/pages/portal/404.ftl</param>
+      </result>
+      <result name="home" type="redirect">home.do</result>
+    </global-results>
+
+    <action name="home" class="org.gbif.ipt.action.portal.HomeAction">
+      <result name="input">/WEB-INF/pages/portal/home.ftl</result>
+      <result>/WEB-INF/pages/portal/home.ftl</result>
+    </action>
+
+    <action name="resource" class="org.gbif.ipt.action.portal.ResourceAction" method="detail">
+      <result>/WEB-INF/pages/portal/resource.ftl</result>
+    </action>
+
+    <!-- data dir files -->
+    <action name="eml" class="org.gbif.ipt.action.portal.ResourceFileAction" method="eml">
+      <result name="success" type="stream">
+        <param name="contentType">${mimeType}</param>
+        <param name="contentCharSet">UTF-8</param>
+        <param name="inputName">inputStream</param>
+        <param name="contentDisposition">filename="${filename}"</param>
+        <param name="bufferSize">1024</param>
+      </result>
+    </action>
+    <action name="logo" class="org.gbif.ipt.action.portal.ResourceFileAction" method="logo">
+      <result name="success" type="stream">
+        <param name="contentType">${mimeType}</param>
+        <param name="contentCharSet">UTF-8</param>
+        <param name="inputName">inputStream</param>
+        <param name="contentDisposition">filename="${filename}"</param>
+        <param name="bufferSize">1024</param>
+      </result>
+    </action>
+    <action name="publicationlog" class="org.gbif.ipt.action.portal.ResourceFileAction" method="publicationLog">
+      <result name="success" type="stream">
+        <param name="contentType">${mimeType}</param>
+        <param name="contentCharSet">UTF-8</param>
+        <param name="inputName">inputStream</param>
+        <param name="contentDisposition">filename="${filename}"</param>
+        <param name="bufferSize">1024</param>
+      </result>
+    </action>
+    <action name="sourcelog" class="org.gbif.ipt.action.portal.ResourceFileAction" method="sourceLog">
+      <result name="success" type="stream">
+        <param name="contentType">${mimeType}</param>
+        <param name="contentCharSet">UTF-8</param>
+        <param name="inputName">inputStream</param>
+        <param name="contentDisposition">filename="${filename}"</param>
+        <param name="bufferSize">1024</param>
+      </result>
+    </action>
+    <action name="rtf" class="org.gbif.ipt.action.portal.ResourceFileAction" method="rtf">
+      <result name="success" type="stream">
+        <param name="contentType">${mimeType}</param>
+        <param name="inputName">inputStream</param>
+        <param name="contentDisposition">filename="${filename}"</param>
+        <param name="bufferSize">1024</param>
+      </result>
+    </action>
+    <action name="archive" class="org.gbif.ipt.action.portal.ResourceFileAction" method="dwca">
+      <result name="success" type="stream">
+        <param name="contentType">${mimeType}</param>
+        <param name="inputName">inputStream</param>
+        <param name="contentDisposition">filename="${filename}"</param>
+        <param name="bufferSize">1024</param>
+      </result>
+    </action>
+  </package>
+</struts>
