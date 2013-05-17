@@ -214,7 +214,10 @@ $(document).ready(function(){
                 <!-- ensure a space separates see report link, and publication log link-->
                 &nbsp;
               </#if>
-              <a href="${baseURL}/publicationlog.do?r=${resource.shortname}"><@s.text name='portal.publication.log'/></a>
+              <!-- ensure publication log not shown for metadata-only resources because the log reflects dwca generation only-->
+              <#if resource.coreType?has_content && resource.coreType!=metadataType>
+                  <a href="${baseURL}/publicationlog.do?r=${resource.shortname}"><@s.text name='portal.publication.log'/></a>
+              </#if>
             </td>
           </tr>
           <#if report??>
