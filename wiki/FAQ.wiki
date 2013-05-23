@@ -6,6 +6,21 @@ In this page you will find answers for the most frequent asked questions about t
 
 <wiki:toc max_depth="2" />
 
+= Upgrading to 2.0.5 =
+
+== After upgrading the IPT to version 2.0.5, the public resource table and manage resource tables no longer display. How can I fix this? ==
+
+The root of this problem is one or more single quotation character " ' " in either the resource title, user name, organization name, or organization alias. The character isn't being properly escaped, and breaks the array syntax in javascript. 
+
+Evidence of the problem can be found by opening your browser's error console.
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/FAQSingleQuoteProblem.png]
+
+To fix this problem a small fix must be applied to the following file:
+
+$tomcat/webapps/ipt/WEB-INF/pages/macros/resourcesTable.ftl
+
+
 = Moving an IPT installation between servers =
 
 == After having the IPT installed on the same server for a couple years, I want to move my IPT to a different server.  What is the best way to do this without losing any data? ==
