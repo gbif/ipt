@@ -10,16 +10,16 @@ In this page you will find answers for the most frequent asked questions about t
 
 == After upgrading the IPT to version 2.0.5, the public resource table and manage resource tables no longer display. How can I fix this? ==
 
-The root of this problem is one or more single quotation character " ' " in either the resource title, user name, organization name, or organization alias. The character isn't being properly escaped, and breaks the array syntax in javascript. 
+The root of this problem is one or more single quotation character " ' " in either the resource title, user name, organization name, or organization alias. The character isn't being properly escaped, and breaks the resource array (syntax) in javascript. 
 
 Evidence of the problem can be found by opening your browser's error console.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/FAQSingleQuoteProblem.png]
 
-To fix this problem a small fix must be applied to the following file:
+===To fix the problem===
 
-$tomcat/webapps/ipt/WEB-INF/pages/macros/resourcesTable.ftl
-
+ # Download the new [https://gbif-providertoolkit.googlecode.com/issues/attachment?aid=9750002000&name=resourcesTable.ftl&token=xxTOXTdrd-8XwENbHto7hMRuadY%3A1369312993081 resourcesTable.ftl] and replace the buggy one located here: $tomcat/webapps/ipt/WEB-INF/pages/macros/resourcesTable.ftl
+ # Check the file permissions are the same as other files inside $tomcat/webapps/ipt/WEB-INF/pages/macros/
 
 = Moving an IPT installation between servers =
 
