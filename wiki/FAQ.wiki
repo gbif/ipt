@@ -19,7 +19,7 @@ Evidence of the problem can be found by opening your browser's error console.
 ===To fix the problem===
 
  # Download the new [https://gbif-providertoolkit.googlecode.com/issues/attachment?aid=9750002000&name=resourcesTable.ftl&token=xxTOXTdrd-8XwENbHto7hMRuadY%3A1369312993081 resourcesTable.ftl] and replace the buggy one located here: $tomcat/webapps/ipt/WEB-INF/pages/macros/resourcesTable.ftl
- # Check the file permissions are the same as other files inside $tomcat/webapps/ipt/WEB-INF/pages/macros/
+ # Ensure the file permissions are the same as other files inside $tomcat/webapps/ipt/WEB-INF/pages/macros/
 
 = Moving an IPT installation between servers =
 
