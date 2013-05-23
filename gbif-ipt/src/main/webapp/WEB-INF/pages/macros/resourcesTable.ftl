@@ -15,8 +15,8 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
     var aDataSet = [
       <#list resources as r>
           [<#if r.eml.logoUrl?has_content>'<img class="resourceminilogo" src="${r.eml.logoUrl}" />'<#else>'${emptyString}'</#if>,
-           '<a href="${baseURL}<#if !shownPublicly>/manage</#if>/resource.do?r=${r.shortname}"><if><#if r.title?has_content>${r.title}<#else>${r.shortname}</#if></a>',
-           <#if r.status=='REGISTERED'>'${r.organisation.alias!r.organisation.name}'<#else>'<@s.text name="manage.home.not.registered"/>'</#if>,
+           "<a href='${baseURL}<#if !shownPublicly>/manage</#if>/resource.do?r=${r.shortname}'><if><#if r.title?has_content>${r.title?replace("\'", "\\'")}<#else>${r.shortname}</#if></a>",
+           <#if r.status=='REGISTERED'>'${r.organisation.alias?replace("\'", "\\'")!r.organisation.name?replace("'", "\'")}'<#else>'<@s.text name="manage.home.not.registered"/>'</#if>,
            <#if r.coreType?has_content && types[r.coreType?lower_case]?has_content>'${types[r.coreType?lower_case]?cap_first!}'<#else>'${emptyString}'</#if>,
            <#if r.subtype?has_content && datasetSubtypes[r.subtype?lower_case]?has_content >'${datasetSubtypes[r.subtype?lower_case]?cap_first!}'<#else>'${emptyString}'</#if>,
            '${r.recordsPublished!0}',
@@ -24,7 +24,7 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
            <#if r.published>'${(r.lastPublished?date)!}'<#else>'<@s.text name="portal.home.not.published"/>'</#if>,
            '${(r.nextPublished?date)!'${emptyString}'}',
            <#if r.status=='PRIVATE'>'<@s.text name="manage.home.visible.private"/>'<#else>'<@s.text name="manage.home.visible.public"/>'</#if>,
-           <#if r.creator??>'${r.creator.firstname!} ${r.creator.lastname!}'<#else>'${emptyString}'</#if>]<#if r_has_next>,</#if>
+           <#if r.creator??>'${r.creator.firstname?replace("\'", "\\'")!} ${r.creator.lastname?replace("\'", "\\'")!}'<#else>'${emptyString}'</#if>]<#if r_has_next>,</#if>
       </#list>
     ];
 
