@@ -457,6 +457,7 @@ Haga clic en el botón "Limpiar" para eliminar  el archivo seleccionado y volver
  * *Formato de Fechas* - un código que describe el formato de los elementos que tienen un tipo de datos de fecha (por ejemplo, AAAA-MM-DD para año de cuatro dígitos, mes de dos dígitos, y día de dos dígitos, separados por guiones).
 
 Después de ajustar los parámetros de la fuente de datos para que el archivo se interprete correctamente, haga clic en el botón "Guardar" para almacenar esta configuración. Si el almacenamiento se realiza correctamente, aparecerá la página "Vista General del Recurso", con información resumida acerca del archivo en la columna de la derecha del área "Fuente de Datos". El botón "Editar" también aparecerá con el resumen de la información del archivo de la fuente de datos en la columna de la derecha, permitiendo al usuario volver a abrir la página detallada "Archivo de Fuente de Datos".
+
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/es/IPTManageResourceSourceSummary.PNG]
 
 En caso de que el usuario desee eliminar esta fuente, puede volver a abrir la página detallada "Archivo de Fuente de Datos" y hacer clic en el botón "Eliminar el archivo fuente". Tenga en cuenta sin embargo, que el enlace asociado a este archivo también será eliminado.
