@@ -212,7 +212,7 @@ Si hay recursos públicos, estos serán relacionados en una tabla que tiene las 
 *Subtipo* - el subtipo del recurso como figura en la lista desplegable de _Subtipo_ en la página [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes?wl=es#Metadatos_Básicos Metadatos Básicos] de los metadatos del recurso.<br>
 *Registros* - el número de filas de datos en el archivo central de datos para el recurso que se cargaron con éxito en el IPT.<br>
 *Última modificación* - ya sea la fecha en la que fue creado el recurso o la fecha en la que los datos o los metadatos fueron modificados, aquella que sea más reciente.<br>
-*Última publicación* - la fecha en la que el recurso fue publicado por última vez.
+*Última publicación* - la fecha en la que el recurso fue publicado por última vez.<br>
 *Próxima publicación* - la fecha en la que el recurso será publicado proximamente.
 ===_RSS Feed_===
 El IPT apoya la agremiación a través de _RSS_ para aquellos que desean monitorear los cambios en la configuración de los recursos. La  fuente _RSS_ está disponible haciendo clic en el enlace que aparece debajo de la lista de recursos públicos alojados. Puede ser leída en cualquier cliente estándar de _RSS_.
