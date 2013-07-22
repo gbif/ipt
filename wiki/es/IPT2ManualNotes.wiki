@@ -151,9 +151,9 @@ Ejemplo de enlace a la página de información de la cuenta del usuario conectad
 
 Ejemplo de ícono de información para la codificación de caracteres, después de seleccionar el enlace de UTF-8:
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/es/Information-CharacterEncoding.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/es/Information-CharacterEncoding.PNG]
 
-*Ícono de Documentación* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/es/Control-DocumentationIcon.PNG] - este ícono indica que hay una página de información detallada acerca del tema asociado con ese ícono. Haga clic en el ícono para abrir la página en una nueva ventana del navegador.
+*Ícono de Documentación* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/es/Control-DocumentationIcon.png] - este ícono indica que hay una página de información detallada acerca del tema asociado con ese ícono. Haga clic en el ícono para abrir la página en una nueva ventana del navegador.
 
 *Ícono de Papelera* [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/es/Control-TrashIcon.png] - este ícono se asocia con otros controles en la página. Al hacer clic en el ícono se eliminarán los datos asociados.
 
