@@ -2,9 +2,11 @@ package org.gbif.ipt.service.manage.impl;
 
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.model.FileSource;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
-import org.gbif.ipt.model.Source.SqlSource;
+import org.gbif.ipt.model.SqlSource;
+import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.manage.SourceManager;
@@ -27,7 +29,7 @@ public class SourceManagerImplTest {
 
   private SourceManager manager;
   private Resource resource;
-  private Source.FileSource src1;
+  private TextFileSource src1;
   private SqlSource src2;
 
   @Before
@@ -35,7 +37,7 @@ public class SourceManagerImplTest {
     File ddFile = File.createTempFile("distribution", ".txt");
     File logFile = File.createTempFile("distribution", "log");
     DataDir mockDataDir = mock(DataDir.class);
-    when(mockDataDir.sourceFile(any(Resource.class), any(Source.class))).thenReturn(ddFile);
+    when(mockDataDir.sourceFile(any(Resource.class), any(FileSource.class))).thenReturn(ddFile);
     when(mockDataDir.sourceLogFile(anyString(), anyString())).thenReturn(logFile);
     // create instance of SourceManager, using mocked AppConfig and DataDir
     manager = new SourceManagerImpl(mock(AppConfig.class), mockDataDir);
@@ -43,7 +45,7 @@ public class SourceManagerImplTest {
     resource = new Resource();
     resource.setShortname("testResource");
     // creates test sources
-    src1 = new Source.FileSource();
+    src1 = new TextFileSource();
     src1.setName("Taxon");
     src1.setResource(resource);
     src1.setFile(File.createTempFile("tmp", ".txt"));
@@ -69,7 +71,7 @@ public class SourceManagerImplTest {
     resource.addSource(src2, false);
     assertEquals(2, resource.getSources().size());
 
-    // perform deletion of FileSource
+    // perform deletion of TextFileSource
     manager.delete(resource, src1);
     assertEquals(1, resource.getSources().size());
   }
@@ -93,7 +95,7 @@ public class SourceManagerImplTest {
     // analyze individual source file with no header row, and 77 real rows of source data
     File srcFile = FileUtils.getClasspathFile("data/distribution.txt");
     // add source file to test Resource
-    Source.FileSource fileSource = manager.add(resource, srcFile, null);
+    FileSource fileSource = manager.add(resource, srcFile, null);
     assertEquals("distribution", fileSource.getName());
 
     // As of dwca-reader 1.11, ArchiveFactory.openArchive(file) / ArchiveFactory.readFileHeaders
@@ -103,9 +105,10 @@ public class SourceManagerImplTest {
     assertEquals(3, fileSource.getColumns());
     assertEquals(76, fileSource.getRows());
     assertEquals(2018, fileSource.getFileSize());
-    assertEquals(null, fileSource.getFieldsEnclosedBy());
     assertTrue(fileSource.isReadable());
-    assertEquals("\t", fileSource.getFieldsTerminatedBy());
+    assertTrue(fileSource.isFileSource());
+    assertEquals(null, ((TextFileSource) fileSource).getFieldsEnclosedBy());
+    assertEquals("\t", ((TextFileSource) fileSource).getFieldsTerminatedBy());
   }
 
   @Test
@@ -113,15 +116,16 @@ public class SourceManagerImplTest {
     // analyze individual source file absolutely no data inside at all
     File srcFile = FileUtils.getClasspathFile("data/image_empty.txt");
     // add source file to test Resource
-    Source.FileSource fileSource = manager.add(resource, srcFile, null);
+    FileSource fileSource = manager.add(resource, srcFile, null);
     assertEquals("image_empty", fileSource.getName());
     // ensure all properties reflect the fact there is no data in this file
     assertEquals(0, fileSource.getIgnoreHeaderLines());
     assertEquals(0, fileSource.getColumns());
     assertEquals(0, fileSource.getRows());
     assertEquals(0, fileSource.getFileSize());
-    assertEquals(null, fileSource.getFieldsEnclosedBy());
     assertTrue(fileSource.isReadable());
-    assertEquals("\t", fileSource.getFieldsTerminatedBy());
+    assertTrue(fileSource.isFileSource());
+    assertEquals(null, ((TextFileSource) fileSource).getFieldsEnclosedBy());
+    assertEquals("\t", ((TextFileSource) fileSource).getFieldsTerminatedBy());
   }
 }

@@ -1,7 +1,7 @@
 package org.gbif.ipt.config;
 
+import org.gbif.ipt.model.FileSource;
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.Source;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.utils.InputStreamUtils;
@@ -340,11 +340,11 @@ public class DataDir {
     }
   }
 
-  public File sourceFile(Resource resource, Source source) {
+  public File sourceFile(Resource resource, FileSource source) {
     if (resource == null) {
       return null;
     }
-    return resourceFile(resource.getShortname(), "sources/" + source.getName() + ".txt");
+    return resourceFile(resource.getShortname(), "sources/" + source.getName() + source.getPreferredFileSuffix());
   }
 
   public File sourceLogFile(String resourceName, String sourceName) {

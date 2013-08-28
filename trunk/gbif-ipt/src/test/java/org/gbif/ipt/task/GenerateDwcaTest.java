@@ -29,8 +29,8 @@ import org.gbif.ipt.mock.MockAppConfig;
 import org.gbif.ipt.mock.MockDataDir;
 import org.gbif.ipt.mock.MockRegistryManager;
 import org.gbif.ipt.model.Extension;
+import org.gbif.ipt.model.FileSource;
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
@@ -141,7 +141,7 @@ public class GenerateDwcaTest {
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig);
     int recordCount = generateDwca.call();
 
-    // 2 records in core file
+    // 2 rowIterator in core file
     assertEquals(2, recordCount);
 
     // confirm existence of DwC-A
@@ -246,7 +246,7 @@ public class GenerateDwcaTest {
     File copied = new File(resourceDir, "source.txt");
 
     // mock file to which source file gets copied to
-    when(mockDataDir.sourceFile(any(Resource.class), any(Source.class))).thenReturn(copied);
+    when(mockDataDir.sourceFile(any(Resource.class), any(FileSource.class))).thenReturn(copied);
 
     // mock log file
     when(mockDataDir.sourceLogFile(anyString(), anyString())).thenReturn(new File(resourceDir, "log.txt"));
@@ -261,8 +261,8 @@ public class GenerateDwcaTest {
     when(mockDataDir.resourceDwcaFile(anyString(), anyInt()))
       .thenReturn(new File(resourceDir, VERSIONED_ARCHIVE_FILENAME));
 
-    // add Source.FileSource fileSource to test Resource
-    Source.FileSource fileSource = mockSourceManager.add(resource, occurrence, "occurrence.txt");
+    // add SourceBase.TextFileSource fileSource to test Resource
+    FileSource fileSource = mockSourceManager.add(resource, occurrence, "occurrence.txt");
     resource.getMappings().get(0).setSource(fileSource);
     return resource;
   }

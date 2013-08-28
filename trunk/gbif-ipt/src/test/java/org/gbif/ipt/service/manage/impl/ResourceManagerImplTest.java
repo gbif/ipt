@@ -26,10 +26,11 @@ import org.gbif.ipt.mock.MockDataDir;
 import org.gbif.ipt.mock.MockRegistryManager;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
+import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.Source;
+import org.gbif.ipt.model.SqlSource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
@@ -255,8 +256,8 @@ public class ResourceManagerImplTest {
     assertEquals(1, res.getSources().size());
     assertEquals("occurrence", res.getSources().get(0).getName());
     assertEquals(18, res.getSource("occurrence").getColumns());
-    assertEquals(1, ((Source.FileSource) res.getSource("occurrence")).getIgnoreHeaderLines());
-    assertEquals(15, ((Source.FileSource) res.getSource("occurrence")).getRows());
+    assertEquals(1, ((TextFileSource) res.getSource("occurrence")).getIgnoreHeaderLines());
+    assertEquals(15, ((TextFileSource) res.getSource("occurrence")).getRows());
 
     // there is 1 mapping
     assertEquals(1, res.getMappings().size());
@@ -280,7 +281,7 @@ public class ResourceManagerImplTest {
     assertEquals(PublicationStatus.PRIVATE, res.getStatus());
     // the resource should have a created date
     assertNotNull(res.getCreated());
-    // the num records published is 0
+    // the num rowIterator published is 0
     assertEquals(0, res.getRecordsPublished());
 
     // eml properties loaded from eml.xml
@@ -305,7 +306,7 @@ public class ResourceManagerImplTest {
     File tmpDir = FileUtils.createTempDir();
     List<File> files = CompressionUtil.decompressFile(tmpDir, dwca);
     File uncompressed = files.get(0);
-    Source.FileSource fileSource = new Source.FileSource();
+    TextFileSource fileSource = new TextFileSource();
     fileSource.setFile(uncompressed);
     // it has 16 rows, plus 1 header line
     fileSource.setRows(16);
@@ -364,7 +365,7 @@ public class ResourceManagerImplTest {
     assertEquals(PublicationStatus.PRIVATE, res.getStatus());
     // the resource should have a created date
     assertNotNull(res.getCreated());
-    // the num records published is 0
+    // the num rowIterator published is 0
     assertEquals(0, res.getRecordsPublished());
   }
 
@@ -385,7 +386,7 @@ public class ResourceManagerImplTest {
     File tmpDir = FileUtils.createTempDir();
     List<File> files = CompressionUtil.ungzipFile(tmpDir, dwca, false);
     File uncompressed = files.get(0);
-    Source.FileSource fileSource = new Source.FileSource();
+    TextFileSource fileSource = new TextFileSource();
     fileSource.setFile(uncompressed);
     // it has 16 rows, plus 1 header line
     fileSource.setRows(16);
@@ -492,7 +493,7 @@ public class ResourceManagerImplTest {
     addedResource.setSubtype(DATASET_SUBTYPE_SPECIMEN_IDENTIFIER);
 
     // add SQL source, and save resource
-    Source.SqlSource source = new Source.SqlSource();
+    SqlSource source = new SqlSource();
     // connection/db params
     source.setName("danbif_db_source");
     source.setDatabase("DanBIF");
@@ -548,7 +549,7 @@ public class ResourceManagerImplTest {
       persistedResource.getEml().getKeywords().get(1).getKeywordsString());
 
     // make some assertions about SQL source
-    Source.SqlSource persistedSource = (Source.SqlSource) persistedResource.getSources().get(0);
+    SqlSource persistedSource = (SqlSource) persistedResource.getSources().get(0);
     assertEquals("Dan=bif=17=5321", persistedSource.getPassword());
     assertEquals("danbif_db_source", persistedSource.getName());
     assertEquals("DanBIF", persistedSource.getDatabase());

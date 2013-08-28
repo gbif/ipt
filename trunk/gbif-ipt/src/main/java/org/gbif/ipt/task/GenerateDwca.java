@@ -526,7 +526,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
         if (in.length <= maxColumnIndex) {
           writePublicationLogMessage(
-            "Line with less columns than mapped. Source:" + mapping.getSource().getName() + " Line #" + line + " has "
+            "Line with less columns than mapped. SourceBase:" + mapping.getSource().getName() + " Line #" + line + " has "
             + in.length + " Columns: " + printLine(in));
           // input row is smaller than the highest mapped column. Resize array by adding nulls
           String[] in2 = new String[maxColumnIndex + 1];
@@ -551,7 +551,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
           }
           if (!matchesFilter) {
             writePublicationLogMessage(
-              "Line did not match the filter criteria and was skipped. Source:" + mapping.getSource().getName()
+              "Line did not match the filter criteria and was skipped. SourceBase:" + mapping.getSource().getName()
               + " Line #" + line + ": " + printLine(in));
             recordsFiltered++;
             continue;

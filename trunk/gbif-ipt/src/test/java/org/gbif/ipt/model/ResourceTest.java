@@ -17,7 +17,6 @@
 package org.gbif.ipt.model;
 
 import org.gbif.ipt.config.Constants;
-import org.gbif.ipt.model.Source.FileSource;
 import org.gbif.ipt.service.AlreadyExistingException;
 
 import org.junit.Test;
@@ -130,11 +129,11 @@ public class ResourceTest {
   public void testDeleteSource() throws AlreadyExistingException {
     Resource res = getResource();
 
-    Source src1 = new FileSource();
+    Source src1 = new TextFileSource();
     src1.setName("Peter");
     res.addSource(src1, false);
 
-    Source src2 = new FileSource();
+    Source src2 = new TextFileSource();
     src2.setName("Carla");
     res.addSource(src2, false);
 

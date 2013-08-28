@@ -17,9 +17,10 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.config.JdbcSupport;
+import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.model.Source;
-import org.gbif.ipt.model.Source.FileSource;
-import org.gbif.ipt.model.Source.SqlSource;
+import org.gbif.ipt.model.SourceBase;
+import org.gbif.ipt.model.SqlSource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.admin.RegistrationManager;
@@ -83,12 +84,6 @@ public class SourceAction extends ManagerBaseAction {
     }
     // new one
     if (file != null) {
-      // excel files are commonly uploaded by mistake
-      if (org.gbif.ipt.utils.FileUtils.isExcelFile(fileFileName)) {
-        log.error("Excel files cannot be uploaded as source files!");
-        addActionError(getText("manage.source.unsupported.excel"));
-        return ERROR;
-      }
       // uploaded a new file. Is it compressed?
       if (StringUtils.endsWithIgnoreCase(fileContentType, "zip") // application/zip
           || StringUtils.endsWithIgnoreCase(fileContentType, "gzip") || StringUtils
@@ -113,7 +108,7 @@ public class SourceAction extends ManagerBaseAction {
           // import each file. The last file will become the id parameter,
           // so the new page opens with that source
           for (File f : files) {
-            addTextFile(f, f.getName());
+            addDataFile(f, f.getName());
           }
           // manually remove any previous file in session and in temporal directory path
           removeSessionFile();
@@ -133,8 +128,8 @@ public class SourceAction extends ManagerBaseAction {
           copyFileToOverwrite();
           return INPUT;
         }
-        // treat as is - hopefully a simple text data file
-        addTextFile(file, fileFileName);
+        // treat as is - hopefully a simple text or excel file
+        addDataFile(file, fileFileName);
 
         // manually remove any previous file in session and in temporal directory path
         removeSessionFile();
@@ -143,7 +138,7 @@ public class SourceAction extends ManagerBaseAction {
     return SUCCESS;
   }
 
-  private void addTextFile(File f, String filename) {
+  private void addDataFile(File f, String filename) {
     // create a new file source
     boolean replaced = resource.getSource(filename) != null;
     try {
@@ -171,7 +166,7 @@ public class SourceAction extends ManagerBaseAction {
    * Copy current file to same directory with different name and insert some temporal session variables.
    */
   private void copyFileToOverwrite() throws IOException {
-    File fileNew = new File(file.getParent(), Source.normaliseName(file.getName()) + "-copied.tmp");
+    File fileNew = new File(file.getParent(), SourceBase.normaliseName(file.getName()) + "-copied.tmp");
     FileUtils.copyFile(file, fileNew);
     session.put(Constants.SESSION_FILE, fileNew);
     session.put(Constants.SESSION_FILE_NAME, fileFileName);
@@ -193,9 +188,9 @@ public class SourceAction extends ManagerBaseAction {
     return columns;
   }
 
-  public FileSource getFileSource() {
-    if (source instanceof FileSource) {
-      return (FileSource) source;
+  public TextFileSource getFileSource() {
+    if (source instanceof TextFileSource) {
+      return (TextFileSource) source;
     }
     return null;
   }
@@ -251,12 +246,12 @@ public class SourceAction extends ManagerBaseAction {
       source = resource.getSource(id);
     } else if (file == null) {
       // prepare a new, empty sql source
-      source = new Source.SqlSource();
+      source = new SqlSource();
       source.setResource(resource);
       ((SqlSource) source).setRdbms(jdbcSupport.get("mysql"));
     } else {
       // prepare a new, empty file source
-      source = new Source.FileSource();
+      source = new TextFileSource();
       source.setResource(resource);
     }
   }
@@ -314,7 +309,7 @@ public class SourceAction extends ManagerBaseAction {
           }
         } catch (ImportException e) {
           // even though we have problems with this source we'll keep it for manual corrections
-          log.error("Source error: " + e.getMessage(), e);
+          log.error("SourceBase error: " + e.getMessage(), e);
           addActionError(getText("manage.source.error", new String[] {e.getMessage()}));
         }
       }
@@ -410,7 +405,7 @@ public class SourceAction extends ManagerBaseAction {
         }
       } // else {
       // FILE SOURCE
-      // FileSource src = (FileSource) source;
+      // TextFileSource src = (TextFileSource) source;
       // TODO validate file source
       // }
     }

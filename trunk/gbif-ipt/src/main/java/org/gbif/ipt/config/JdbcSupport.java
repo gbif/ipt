@@ -13,7 +13,7 @@
 
 package org.gbif.ipt.config;
 
-import org.gbif.ipt.model.Source.SqlSource;
+import org.gbif.ipt.model.SqlSource;
 
 import java.sql.SQLException;
 import java.sql.Statement;

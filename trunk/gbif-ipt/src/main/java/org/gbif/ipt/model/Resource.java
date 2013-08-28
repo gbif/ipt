@@ -10,7 +10,6 @@ import org.gbif.metadata.eml.Eml;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -18,8 +17,10 @@ import java.util.Set;
 import java.util.UUID;
 import javax.annotation.Nullable;
 
+import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
+import com.google.common.collect.Ordering;
 import org.apache.log4j.Logger;
 
 import static com.google.common.base.Objects.equal;
@@ -105,7 +106,7 @@ public class Resource implements Serializable, Comparable<Resource> {
     if (allowOverwrite && sources.contains(src)) {
       // If source file is going to be overwritten, it should be actually re-add it.
       sources.remove(src);
-      // Changing the Source in the ExtensionMapping object from the mapping list.
+      // Changing the SourceBase in the ExtensionMapping object from the mapping list.
       for (ExtensionMapping ext : this.getMappings()) {
         if (ext.getSource().equals(src)) {
           ext.setSource(src);
@@ -351,7 +352,7 @@ public class Resource implements Serializable, Comparable<Resource> {
     if (name == null) {
       return null;
     }
-    name = Source.normaliseName(name);
+    name = SourceBase.normaliseName(name);
     for (Source s : sources) {
       if (s.getName().equals(name)) {
         return s;
@@ -361,9 +362,12 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   public List<Source> getSources() {
-    List<Source> srcs = new ArrayList<Source>(sources);
-    Collections.sort(srcs);
-    return srcs;
+    return Ordering.natural().nullsLast().onResultOf(new Function<Source, String>() {
+      @Nullable
+      public String apply(@Nullable Source src) {
+        return src.getName();
+      }
+    }).sortedCopy(sources);
   }
 
   public PublicationStatus getStatus() {
