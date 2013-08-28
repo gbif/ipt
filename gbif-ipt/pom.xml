@@ -38,6 +38,7 @@
 
     <jdkLevel>1.5</jdkLevel>
 
+    <apache-poi.version>3.9</apache-poi.version>
     <commons-digester.version>2.1</commons-digester.version>
     <commons-lang3.version>3.1</commons-lang3.version>
     <commons-io.version>2.4</commons-io.version>
@@ -444,6 +445,18 @@
       <artifactId>ojdbc</artifactId>
       <version>${ojdbc.version}</version>
       <scope>runtime</scope>
+    </dependency>
+
+    <!-- excel parsing -->
+    <dependency>
+        <groupId>org.apache.poi</groupId>
+        <artifactId>poi</artifactId>
+        <version>${apache-poi.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.poi</groupId>
+        <artifactId>poi-ooxml</artifactId>
+      <version>${apache-poi.version}</version>
     </dependency>
 
     <!--

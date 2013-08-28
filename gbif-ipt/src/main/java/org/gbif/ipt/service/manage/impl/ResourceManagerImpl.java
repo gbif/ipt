@@ -14,17 +14,19 @@ import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.model.ExcelFileSource;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;
+import org.gbif.ipt.model.FileSource;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Resource.CoreRowType;
 import org.gbif.ipt.model.Source;
-import org.gbif.ipt.model.Source.FileSource;
-import org.gbif.ipt.model.Source.SqlSource;
+import org.gbif.ipt.model.SqlSource;
+import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
@@ -341,7 +343,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         res.setKey(null);
         // set publication status to Private
         res.setStatus(PublicationStatus.PRIVATE);
-        // set records published to 0
+        // set rowIterator published to 0
         res.setRecordsPublished(0);
         // set isPublished to false
         res.isPublished();
@@ -484,7 +486,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       }
 
       // keep track of source files as a dwca might refer to the same source file multiple times
-      Map<String, FileSource> sources = new HashMap<String, FileSource>();
+      Map<String, TextFileSource> sources = new HashMap<String, TextFileSource>();
       if (arch.getCore() != null) {
 
         // determine coreType for the resource
@@ -497,7 +499,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         resource = create(shortname, coreRowType, creator);
 
         // read core source+mappings
-        FileSource s = importSource(resource, arch.getCore());
+        TextFileSource s = importSource(resource, arch.getCore());
         sources.put(arch.getCore().getLocation(), s);
         ExtensionMapping map = importMappings(alog, arch.getCore(), s);
 
@@ -506,7 +508,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         for (ArchiveFile ext : arch.getExtensions()) {
           if (sources.containsKey(ext.getLocation())) {
             s = sources.get(ext.getLocation());
-            log.debug("Source " + s.getName() + " shared by multiple extensions");
+            log.debug("SourceBase " + s.getName() + " shared by multiple extensions");
           } else {
             s = importSource(resource, ext);
             sources.put(ext.getLocation(), s);
@@ -581,7 +583,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     JdbcInfoConverter jdbcInfoConverter, PasswordConverter passwordConverter) {
     xstream.alias("resource", Resource.class);
     xstream.alias("user", User.class);
-    xstream.alias("filesource", FileSource.class);
+    xstream.alias("filesource", TextFileSource.class);
+    xstream.alias("excelsource", ExcelFileSource.class);
     xstream.alias("sqlsource", SqlSource.class);
     xstream.alias("mapping", ExtensionMapping.class);
     xstream.alias("field", PropertyMapping.class);
@@ -591,7 +594,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     xstream.omitField(Resource.class, "eml");
     xstream.omitField(Resource.class, "type");
     // make files transient to allow moving the datadir
-    xstream.omitField(FileSource.class, "file");
+    xstream.omitField(TextFileSource.class, "file");
 
     // persist only emails for users
     xstream.registerConverter(userConverter);
@@ -709,9 +712,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return map;
   }
 
-  private FileSource importSource(Resource config, ArchiveFile af) throws ImportException {
+  private TextFileSource importSource(Resource config, ArchiveFile af) throws ImportException {
     File extFile = af.getLocationFile();
-    FileSource s = sourceManager.add(config, extFile, af.getLocation());
+    TextFileSource s = (TextFileSource) sourceManager.add(config, extFile, af.getLocation());
     SourceManagerImpl.copyArchiveFileProperties(af, s);
 
     // the number of rows was calculated using the standard file importer
@@ -972,7 +975,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         for (Source src : resource.getSources()) {
           src.setResource(resource);
           if (src instanceof FileSource) {
-            ((FileSource) src).setFile(dataDir.sourceFile(resource, src));
+            FileSource frSrc = (FileSource) src;
+            frSrc.setFile(dataDir.sourceFile(resource, frSrc));
           }
         }
         // load eml

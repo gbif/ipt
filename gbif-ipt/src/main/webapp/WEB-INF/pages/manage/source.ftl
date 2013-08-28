@@ -39,7 +39,7 @@ $(document).ready(function(){
 		<div class="detailsSource">
 			<table id="source-properties">
 			  	<tr><th><@s.text name='manage.source.readable'/></th><td><img src="${baseURL}/images/<#if source.readable>good.gif" /><#else>bad.gif" /> ${problem!}</#if></td></tr>
-			  	<tr><th><@s.text name='manage.source.columns'/></th><td>${source.columns!}</td></tr>
+			  	<tr><th><@s.text name='manage.source.columns'/></th><td>${source.getColumns()}</td></tr>
 		  	  	<#if source.fieldsTerminatedBy?exists>
 			  	<tr><th><@s.text name='manage.source.file'/></th><td>${(source.file.getAbsolutePath())!}</td></tr>
 			  	<tr><th><@s.text name='manage.source.size'/></th><td>${source.fileSizeFormatted!"???"}</td></tr>
@@ -57,52 +57,72 @@ $(document).ready(function(){
   	</div>
   	</div>
   	<div class="clearfix" style="margin-top: 40px;">
-  	<#if source.isFileSource()>
-	  	<#-- only for file sources -->
-	  <div class="halfcolumn">
-	  	<@input name="fileSource.ignoreHeaderLines" help="i18n" helpOptions={"0":"None","1":"Single Header row"}/>
-  	  </div>
-	  <div class="halfcolumn">
-  	  </div>
-	  <div class="halfcolumn">
-	  	<@input name="fileSource.fieldsTerminatedByEscaped" help="i18n" helpOptions={"\\t":"[ \\t ] Tab",",":"[ , ] Comma",";":"[ ; ] Semicolon","|":"[ | ] Pipe"}/>
-	  </div>
-	  <div class="halfcolumn">
-	  	<@input name="fileSource.fieldsEnclosedByEscaped" help="i18n" helpOptions={"":"None","&quot;":"Double Quote","'":"Single Quote"}/>
-  	  </div>
-  	<#else>
+
+  	<#if source.isSqlSource()>
 	  	<#-- only for sql sources -->
-	  <div class="fullcolumn">
-	    <@select name="rdbms" options=jdbcOptions value="${source.rdbms.name!}" i18nkey="sqlSource.rdbms" />  	  
-	  </div>
-	  <div class="halfcolumn">
-	  	<@input name="sqlSource.host" help="i18n"/>
-	  </div>
-	  <div class="halfcolumn">
-	  	<@input name="sqlSource.database" help="i18n"/>
-	  </div>
-	  <div class="halfcolumn">
-	  	<@input name="sqlSource.username" />
-	  </div>
-	  <div class="halfcolumn">
-	  	<@input name="sqlSource.password" type="password" />
+      <div class="fullcolumn">
+        <@select name="rdbms" options=jdbcOptions value="${source.rdbms.name!}" i18nkey="sqlSource.rdbms" />
+      </div>
+      <div class="halfcolumn">
+        <@input name="sqlSource.host" help="i18n"/>
+      </div>
+      <div class="halfcolumn">
+        <@input name="sqlSource.database" help="i18n"/>
+      </div>
+      <div class="halfcolumn">
+        <@input name="sqlSource.username" />
+      </div>
+      <div class="halfcolumn">
+        <@input name="sqlSource.password" type="password" />
+      </div>
+      <div class="fullcolumn">
+        <@text name="sqlSource.sql" help="i18n"/>
+        <#if sqlSource.sql?has_content>
+          <@label i18nkey="sqlSource.sqlLimited" >
+          ${sqlSource.getSqlLimited(10)}
+          </@label>
+          </div>
+        </#if>
+      <div class="halfcolumn">
+        <@input name="source.encoding" help="i18n" helpOptions={"UTF-8":"UTF-8","Latin1":"Latin 1","Cp1252":"Windows1252"}/>
+      </div>
+      <div class="halfcolumn">
+        <@input name="source.dateFormat" help="i18n" helpOptions={"YYYY-MM-DD":"ISO format: YYYY-MM-DD","MM/DD/YYYY":"US dates: MM/DD/YYYY","DD.MM.YYYY":"DD.MM.YYYY"}/>
+      </div>
+    <#elseif source.isExcelSource()>
+	  	<#-- excel source -->
+        <div class="halfcolumn">
+   	    	<@input name="source.ignoreHeaderLines" help="i18n" helpOptions={"0":"None","1":"Single Header row"} i18nkey="fileSource.ignoreHeaderLines"/>
+     	  </div>
+     	  <div class="halfcolumn">
+          <@select name="source.sheetIdx" options=source.sheets() value="${source.sheetIdx}" i18nkey="excelSource.sheets" />
+     	  </div>
+   	    <div class="halfcolumn">
+   	    </div>
+         <div class="halfcolumn">
+     	  </div>
+
+    <#else>
+	  	<#-- file source -->
+  	  <div class="halfcolumn">
+	    	<@input name="fileSource.ignoreHeaderLines" help="i18n" helpOptions={"0":"None","1":"Single Header row"}/>
   	  </div>
-  	  <div class="fullcolumn">
-  	  <@text name="sqlSource.sql" help="i18n"/>
-  	  <#if sqlSource.sql?has_content>
-  	  <@label i18nkey="sqlSource.sqlLimited" >
-  	  ${sqlSource.getSqlLimited(10)}
-  	  </@label>
+  	  <div class="halfcolumn">
   	  </div>
-  	  </#if>
-  	  
+	    <div class="halfcolumn">
+	    	<@input name="fileSource.fieldsTerminatedByEscaped" help="i18n" helpOptions={"\\t":"[ \\t ] Tab",",":"[ , ] Comma",";":"[ ; ] Semicolon","|":"[ | ] Pipe"}/>
+	    </div>
+      <div class="halfcolumn">
+        <@input name="fileSource.fieldsEnclosedByEscaped" help="i18n" helpOptions={"":"None","&quot;":"Double Quote","'":"Single Quote"}/>
+  	  </div>
+        <div class="halfcolumn">
+    	  	<@input name="source.encoding" help="i18n" helpOptions={"UTF-8":"UTF-8","Latin1":"Latin 1","Cp1252":"Windows1252"}/>
+    	  </div>
+    	  <div class="halfcolumn">
+    	  	<@input name="source.dateFormat" help="i18n" helpOptions={"YYYY-MM-DD":"ISO format: YYYY-MM-DD","MM/DD/YYYY":"US dates: MM/DD/YYYY","DD.MM.YYYY":"DD.MM.YYYY"}/>
+      	</div>
   	</#if>
-    <div class="halfcolumn">
-	  	<@input name="source.encoding" help="i18n" helpOptions={"UTF-8":"UTF-8","Latin1":"Latin 1","Cp1252":"Windows1252"}/>
-	</div>
-	<div class="halfcolumn">
-	  	<@input name="source.dateFormat" help="i18n" helpOptions={"YYYY-MM-DD":"ISO format: YYYY-MM-DD","MM/DD/YYYY":"US dates: MM/DD/YYYY","DD.MM.YYYY":"DD.MM.YYYY"}/>
-  	</div>
+
   	</div>
   	
   <div class="buttons">  

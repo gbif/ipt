@@ -34,7 +34,7 @@
       <option value="" <#if (value!"")==""> selected="selected"</#if>></option>
 	</#if>
     <#list options?keys as val>
-      <option value="${val}" <#if (value!"")==val> selected="selected"</#if>>
+      <option value="${val}" <#if (value!"")==""+val> selected="selected"</#if>>
 	  <#if javaGetter><@s.text name="${options.get(val)}"/><#else><@s.text name="${options[val]}"/></#if>
 	  </option>
     </#list>

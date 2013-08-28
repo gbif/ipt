@@ -1,3 +1,4 @@
+
 <!-- Represents source data and mapping data sections on resource overview page -->
 <div class="resourceOverview" id="sources">
     <div class="titleOverview">
@@ -28,9 +29,12 @@
             <table>
             <#list resource.sources as src>
                 <tr>
-                  <#if src.rows?exists>
+                  <#if src.isFileSource()>
                       <th>${src.name} <@s.text name='manage.overview.source.file'/></th>
-                      <td>${src.fileSizeFormatted},&nbsp;${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>,&nbsp;${src.columns}&nbsp;<@s.text name='manage.overview.source.columns'/>.&nbsp;${(src.lastModified?datetime?string)!}<#if !src.readable>&nbsp;<img src="${baseURL}/images/warning.gif"/></#if></td>
+                      <td>${src.fileSizeFormatted},&nbsp;${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>,&nbsp;${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/>.&nbsp;${(src.lastModified?datetime?string)!}<#if !src.readable>&nbsp;<img src="${baseURL}/images/warning.gif"/></#if></td>
+                  <#elseif src.isExcelSource()>
+                      <th>${src.name} <@s.text name='manage.overview.source.excel'/></th>
+                      <td>${src.fileSizeFormatted},&nbsp;${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>,&nbsp;${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/>.&nbsp;${(src.lastModified?datetime?string)!}<#if !src.readable>&nbsp;<img src="${baseURL}/images/warning.gif"/></#if></td>
                   <#else>
                       <th>${src.name} <@s.text name='manage.overview.source.sql'/></th>
                       <td>db=${src.database!"..."},&nbsp;${src.columns}&nbsp;<@s.text name='manage.overview.source.columns'/>.<#if !src.readable>&nbsp;<img src="${baseURL}/images/warning.gif"/></#if></td>

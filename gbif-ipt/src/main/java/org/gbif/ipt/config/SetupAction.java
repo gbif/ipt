@@ -19,10 +19,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -57,7 +57,7 @@ public class SetupAction extends BaseAction {
 
   private static final String MODE_DEVELOPMENT = "Test";
   private static final String MODE_PRODUCTION = "Production";
-  private static List<String> MODES = new ArrayList<String>();
+  private static List<String> MODES = ImmutableList.of(MODE_DEVELOPMENT, MODE_PRODUCTION);
 
   @Inject
   public SetupAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager regManager,
@@ -69,14 +69,7 @@ public class SetupAction extends BaseAction {
     this.extensionManager = extensionManager;
   }
 
-  static {
-    List<String> ls = new ArrayList<String>();
-    ls.add(MODE_DEVELOPMENT);
-    ls.add(MODE_PRODUCTION);
-    MODES = Collections.unmodifiableList(ls);
-  }
-
-  public List getModes() {
+  public List<String> getModes() {
     return MODES;
   }
 
@@ -98,11 +91,13 @@ public class SetupAction extends BaseAction {
 
   @Override
   public String getBaseURL() {
-    // try to detect default values if not yet configured
-    if (StringUtils.trimToNull(cfg.getBaseUrl()) == null) {
-      baseURL = findBaseURL();
-    } else {
-      baseURL = cfg.getBaseUrl();
+    if (Strings.isNullOrEmpty(baseURL)) {
+      // try to detect default values if not yet configured
+      if (StringUtils.trimToNull(cfg.getBaseUrl()) == null) {
+        baseURL = findBaseURL();
+      } else {
+        baseURL = cfg.getBaseUrl();
+      }
     }
     return baseURL;
   }

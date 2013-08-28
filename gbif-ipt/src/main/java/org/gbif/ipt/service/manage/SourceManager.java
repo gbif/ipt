@@ -1,8 +1,8 @@
 package org.gbif.ipt.service.manage;
 
+import org.gbif.ipt.model.FileSource;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
-import org.gbif.ipt.model.Source.FileSource;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.SourceException;
 import org.gbif.ipt.service.manage.impl.SourceManagerImpl;
@@ -24,14 +24,14 @@ import com.google.inject.ImplementedBy;
 public interface SourceManager {
 
   /**
-   * Adds one text file as a file source to a resource configuration. The file will be analyzed to detect the character
-   * encoding and delimiters if not given explicitly in a dwc-a.
+   * Adds one text or excel file as a file source to a resource configuration.
+   * The file will be analyzed to detect the character encoding and delimiters if not given explicitly in a dwc-a.
    *
    * @param resource   resource
-   * @param file       the source file to be added to this resource
+   * @param file       the text or excel source file to be added to this resource
    * @param sourceName the preferred sourcename. If null the filename will be used
    *
-   * @return file source that has been added
+   * @return file or excel source that has been added
    *
    * @throws ImportException if the file cant be copied or read
    */

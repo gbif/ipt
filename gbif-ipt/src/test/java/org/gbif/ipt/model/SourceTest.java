@@ -13,9 +13,6 @@
 
 package org.gbif.ipt.model;
 
-import org.gbif.ipt.model.Source.FileSource;
-import org.gbif.ipt.model.Source.SqlSource;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,20 +27,20 @@ public class SourceTest {
 
   @Test
   public void testEquals() {
-    Source src1 = new FileSource();
+    Source src1 = new TextFileSource();
     src1.setName("Peter");
     Source src2 = new SqlSource();
     src2.setName(" peter");
-    Source src3 = new FileSource();
+    Source src3 = new TextFileSource();
     src3.setName("karl");
 
     assertEquals(src1, src2);
     assertFalse(src3.equals(src1));
     assertFalse(src3.equals(src2));
-    assertTrue(Source.class.isInstance(src1));
-    assertTrue(Source.class.isInstance(src2));
-    assertTrue(Source.class.isInstance(src3));
-    assertFalse(FileSource.class.isInstance(src2));
+    assertTrue(SourceBase.class.isInstance(src1));
+    assertTrue(SourceBase.class.isInstance(src2));
+    assertTrue(SourceBase.class.isInstance(src3));
+    assertFalse(TextFileSource.class.isInstance(src2));
 
     Set<Source> sources = new HashSet<Source>();
     sources.add(src1);
@@ -73,10 +70,10 @@ public class SourceTest {
     assertEquals(src1, src2);
     assertFalse(src3.equals(src1));
     assertFalse(src3.equals(src2));
-    assertTrue(Source.class.isInstance(src1));
-    assertTrue(Source.class.isInstance(src2));
-    assertTrue(Source.class.isInstance(src3));
-    assertFalse(FileSource.class.isInstance(src2));
+    assertTrue(SourceBase.class.isInstance(src1));
+    assertTrue(SourceBase.class.isInstance(src2));
+    assertTrue(SourceBase.class.isInstance(src3));
+    assertFalse(TextFileSource.class.isInstance(src2));
 
     sources = new HashSet<Source>();
     sources.add(src1);
@@ -101,7 +98,7 @@ public class SourceTest {
 
   @Test
   public void testName() {
-    Source src = new FileSource();
+    Source src = new TextFileSource();
     src.setName("Peter");
     assertEquals("peter", src.getName());
 
@@ -120,17 +117,17 @@ public class SourceTest {
 
   @Test
   public void testNormaliseName() {
-    assertEquals("filename", Source.normaliseName("fileName.txt"));
-    assertEquals("filename", Source.normaliseName("FILENAME.txt"));
-    assertEquals("filenametxt", Source.normaliseName("filename txt"));
-    assertEquals("filename", Source.normaliseName("filename%*?/:.<>|"));
-    assertEquals("filenametxt", Source.normaliseName("filename\\/\"%*?/:<>|.txt.txt"));
-    assertEquals("filename-copy", Source.normaliseName("filename-copy%*?/:.<>|.txt"));
-    assertEquals("filename", Source.normaliseName("filename.pdf"));
-    assertEquals("filename-copy-2011", Source.normaliseName("filename-copy-2011.cvs"));
-    assertEquals("filename", Source.normaliseName("filename"));
-    assertEquals("-1", Source.normaliseName("-1"));
-    assertEquals("", Source.normaliseName(""));
-    assertNull(Source.normaliseName(null));
+    assertEquals("filename", SourceBase.normaliseName("fileName.txt"));
+    assertEquals("filename", SourceBase.normaliseName("FILENAME.txt"));
+    assertEquals("filenametxt", SourceBase.normaliseName("filename txt"));
+    assertEquals("filename", SourceBase.normaliseName("filename%*?/:.<>|"));
+    assertEquals("filenametxt", SourceBase.normaliseName("filename\\/\"%*?/:<>|.txt.txt"));
+    assertEquals("filename-copy", SourceBase.normaliseName("filename-copy%*?/:.<>|.txt"));
+    assertEquals("filename", SourceBase.normaliseName("filename.pdf"));
+    assertEquals("filename-copy-2011", SourceBase.normaliseName("filename-copy-2011.cvs"));
+    assertEquals("filename", SourceBase.normaliseName("filename"));
+    assertEquals("-1", SourceBase.normaliseName("-1"));
+    assertEquals("", SourceBase.normaliseName(""));
+    assertNull(SourceBase.normaliseName(null));
   }
 }

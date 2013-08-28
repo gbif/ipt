@@ -16,7 +16,6 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.text.NumberFormat;
 
-import com.google.common.base.Strings;
 import org.apache.log4j.Logger;
 
 public class FileUtils {
@@ -65,25 +64,6 @@ public class FileUtils {
       e.printStackTrace();
     }
     return reader;
-  }
-
-  /**
-   * Check whether the file type is Excel based on the extension.
-   *
-   * @param name file name
-   *
-   * @return true if file type is Excel
-   */
-  public static boolean isExcelFile(String name) {
-    if (!Strings.isNullOrEmpty(name)) {
-      String suffix = name.substring(name.lastIndexOf(".") + 1);
-      if (suffix != null && suffix.length() > 0) {
-        if (suffix.equalsIgnoreCase("xls") || suffix.equalsIgnoreCase("xlsx")) {
-          return true;
-        }
-      }
-    }
-    return false;
   }
 
   public static Writer startNewUtf8File(File file) throws IOException {

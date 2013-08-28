@@ -6,9 +6,10 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;
+import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.Source;
+import org.gbif.ipt.model.SourceBase;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.model.VocabularyConcept;
 import org.gbif.ipt.model.VocabularyTerm;
@@ -71,7 +72,7 @@ public class TranslationActionTest {
     values.add("spe");
     values.add("obs");
     values.add("fos");
-    when(mockSourceManager.inspectColumn(any(Source.class), anyInt(), anyInt(), anyInt())).thenReturn(values);
+    when(mockSourceManager.inspectColumn(any(SourceBase.class), anyInt(), anyInt(), anyInt())).thenReturn(values);
 
     // mock getI18nVocab - only called in prepare()
     Map<String, String> mockVocab = new HashMap<String, String>();
@@ -87,7 +88,7 @@ public class TranslationActionTest {
     // initialize new ExtensionMapping
     ExtensionMapping mapping = new ExtensionMapping();
     // add source to mapping
-    mapping.setSource(new Source.FileSource());
+    mapping.setSource(new TextFileSource());
 
     ExtensionFactory factory = ExtensionFactoryTest.getFactory();
     Extension e = factory.build(ExtensionFactoryTest.class.getResourceAsStream("/extensions/dwc_occurrence.xml"));
