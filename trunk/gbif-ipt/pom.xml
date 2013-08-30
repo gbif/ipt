@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.gbif</groupId>
     <artifactId>motherpom</artifactId>
-    <version>9</version>
+    <version>10</version>
   </parent>
 
   <groupId>org.gbif</groupId>
@@ -28,11 +28,13 @@
       -->
     <devMode>true</devMode>
     <devModeNegated>false</devModeNegated>
+    <jetty.port>7001</jetty.port>
 
     <analytics.key />
     <ipt.frontPageImageURL />
     <google.maps.key />
     <ipt.baseURL />
+
     <!-- The datadir for tests that use a guice injected DataDir object -->
     <test.datadir>/tmp/test-datadir</test.datadir>
 
@@ -43,30 +45,31 @@
     <commons-lang3.version>3.1</commons-lang3.version>
     <commons-io.version>2.4</commons-io.version>
     <dwca-reader.version>1.14</dwca-reader.version>
+    <gbif-api.version>0.4</gbif-api.version>
     <gbif-metadata-profile.version>1.0.2.3</gbif-metadata-profile.version>
-    <gbif-common-api.version>0.3</gbif-common-api.version>
-    <dwc-api.version>1.3</dwc-api.version>
-    <freemarker.version>2.3.19</freemarker.version>
     <gbif-common.version>0.10</gbif-common.version>
-    <guava.version>13.0.1</guava.version>
+    <dwc-api.version>1.3</dwc-api.version>
+    <guava.version>14.0.1</guava.version>
+    <freemarker.version>2.3.20</freemarker.version>
     <gson.version>2.2.3</gson.version>
     <guice.version>3.0</guice.version>
     <httpclient.version>4.2.3</httpclient.version>
     <httpcore.version>4.2.3</httpcore.version>
     <itext.version>2.1.7</itext.version>
     <javassist.version>3.12.1.GA</javassist.version>
-    <jetty.version>6.1.26</jetty.version>
+    <!-- jetty 7 is the latest version supported with Java 5 -->
+    <jetty-maven-plugin.version>7.6.12.v20130726</jetty-maven-plugin.version>
     <jsp-api.version>2.0</jsp-api.version>
-    <jtds.version>1.2.5</jtds.version>
+    <jtds.version>1.3.1</jtds.version>
     <junit.version>4.11</junit.version>
     <log4j.version>1.2.17</log4j.version>
     <mockito-all.version>1.9.5</mockito-all.version>
-    <mysql-connector-java.version>5.1.25</mysql-connector-java.version>
+    <mysql-connector-java.version>5.1.26</mysql-connector-java.version>
     <ojdbc.version>14</ojdbc.version>
-    <postgresql.version>8.4-702.jdbc3</postgresql.version>
+    <postgresql.version>9.2-1003-jdbc4</postgresql.version>
     <servlet-api.version>2.5</servlet-api.version>
-    <slf4j.version>1.7.2</slf4j.version>
-    <struts2.version>2.2.1</struts2.version>
+    <slf4j.version>1.7.5</slf4j.version>
+    <struts2.version>2.3.15.1</struts2.version>
     <xstream.version>1.4.4</xstream.version>
     <jsr305.version>2.0.1</jsr305.version>
     <httputils.version>0.4</httputils.version>
@@ -78,12 +81,12 @@
       <email>trobertson@gbif.org</email>
     </developer>
     <developer>
-      <name>Jose Cuadra Morales</name>
-      <email>jcuadra@gbif.org</email>
-    </developer>
-    <developer>
       <name>Markus Döring</name>
       <email>mdoering@gbif.org</email>
+    </developer>
+    <developer>
+      <name>Kyle Braak</name>
+      <email>kbraak@gbif.org</email>
     </developer>
     <developer>
       <name>Héctor Tobón</name>
@@ -155,20 +158,35 @@
         </configuration>
       </plugin>
 
-      <!-- To simplify development, allows developers to use "mvn jetty:run" -->
+      <!--
+      To simplify development, allows developers to use "mvn jetty:run"
+       Change the port on commandline with -D jetty.port=8080
+      -->
+
       <plugin>
+        <!--
+          http://wiki.eclipse.org/Jetty/Feature/Jetty_Maven_Plugin
+        -->
         <groupId>org.mortbay.jetty</groupId>
-        <artifactId>maven-jetty-plugin</artifactId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <version>${jetty-maven-plugin.version}</version>
         <configuration>
-          <scanIntervalSeconds>10</scanIntervalSeconds>
-          <connectors>
-            <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-              <port>7001</port>
-              <maxIdleTime>60000</maxIdleTime>
-            </connector>
-          </connectors>
+          <webAppConfig>
+            <contextPath>/</contextPath>
+          </webAppConfig>
+          <!-- no scan, don't detect changed classes -->
+          <scanIntervalSeconds>0</scanIntervalSeconds>
+          <stopKey>stop</stopKey>
+          <stopPort>9362</stopPort>
+          <systemProperties>
+            <systemProperty>
+              <name>servername</name>
+              <value>http://localhost:${jetty.port}</value>
+            </systemProperty>
+          </systemProperties>
         </configuration>
       </plugin>
+
       <!--
          small plugin that allows to access the projects SVN revision number.
          Useful to keep the pom ipt version at 1.x-SNAPSHOT while still having a unique build number
@@ -177,7 +195,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>buildnumber-maven-plugin</artifactId>
-        <version>1.0-beta-4</version>
+        <version>1.2</version>
         <executions>
           <execution>
             <phase>validate</phase>
@@ -191,6 +209,7 @@
           <doUpdate>${devModeNegated}</doUpdate>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>
@@ -207,6 +226,7 @@
           </additionalConfig>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
@@ -288,8 +308,8 @@
     </dependency>
     <dependency>
       <groupId>org.gbif</groupId>
-      <artifactId>gbif-common-api</artifactId>
-      <version>${gbif-common-api.version}</version>
+      <artifactId>gbif-api</artifactId>
+      <version>${gbif-api.version}</version>
     </dependency>
     <dependency>
 
@@ -394,14 +414,6 @@
       <scope>provided</scope>
     </dependency>
 
-
-    <!-- Jetty to use as an embedded server-->
-    <dependency>
-      <groupId>org.mortbay.jetty</groupId>
-      <artifactId>jetty</artifactId>
-      <version>${jetty.version}</version>
-    </dependency>
-
     <!-- Google base libraries, e.g. collections
       Used for equals & hash method a lot and in EML by Aaron
       -->
@@ -410,15 +422,6 @@
       <artifactId>guava</artifactId>
       <version>${guava.version}</version>
     </dependency>
-
-    <!-- H2 is a lightweight embedded Java database. We consider using it for the portal webapp -->
-    <!--
-      <dependency>
-      <groupId>com.h2database</groupId>
-      <artifactId>h2</artifactId>
-      <version>1.2.138</version>
-      </dependency>
-      -->
 
     <!-- Accessing different external databases to suck in data alternatively to text files -->
     <!-- JDBC driver to support a variety of external datasources -->
@@ -429,7 +432,7 @@
       <scope>runtime</scope>
     </dependency>
     <dependency>
-      <groupId>postgresql</groupId>
+      <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
       <version>${postgresql.version}</version>
       <scope>runtime</scope>
@@ -457,6 +460,12 @@
         <groupId>org.apache.poi</groupId>
         <artifactId>poi-ooxml</artifactId>
       <version>${apache-poi.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>dom4j</groupId>
+          <artifactId>dom4j</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <!--
@@ -503,15 +512,6 @@
       <artifactId>xstream</artifactId>
       <version>${xstream.version}</version>
     </dependency>
-
-    <!-- for reading compressed archives -->
-    <!--
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-compress</artifactId>
-      <version>1.0</version>
-    </dependency>
-    -->
 
     <!-- file utils -->
     <dependency>
@@ -560,14 +560,6 @@
       <version>${jsr305.version}</version>
     </dependency>
 
-    <!-- testing only. Shows the struts2 configuration in the browser at /config-browser/index.do -->
-    <!--
-      <dependency>
-      <groupId>org.apache.struts</groupId>
-      <artifactId>struts2-config-browser-plugin</artifactId>
-      <version>2.1.8</version>
-      </dependency>
-      -->
   </dependencies>
 
   <profiles>

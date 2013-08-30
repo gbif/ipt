@@ -36,7 +36,7 @@ import java.util.TreeMap;
 
 import com.google.inject.Inject;
 import com.google.inject.servlet.SessionScoped;
-import org.apache.commons.lang.xwork.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 public class TranslationAction extends ManagerBaseAction {

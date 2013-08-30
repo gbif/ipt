@@ -95,8 +95,12 @@ public class SourceManagerImplTest {
     // analyze individual source file with no header row, and 77 real rows of source data
     File srcFile = FileUtils.getClasspathFile("data/distribution.txt");
     // add source file to test Resource
-    FileSource fileSource = manager.add(resource, srcFile, null);
-    assertEquals("distribution", fileSource.getName());
+    FileSource src = manager.add(resource, srcFile, null);
+    assertEquals("distribution", src.getName());
+
+    assertTrue(src.isFileSource());
+    TextFileSource fileSource = (TextFileSource) src;
+
 
     // As of dwca-reader 1.11, ArchiveFactory.openArchive(file) / ArchiveFactory.readFileHeaders
     // assigns the default ignoreHeaderLines = 1, even if the first line contains purely UnknownTerms
@@ -106,7 +110,6 @@ public class SourceManagerImplTest {
     assertEquals(76, fileSource.getRows());
     assertEquals(2018, fileSource.getFileSize());
     assertTrue(fileSource.isReadable());
-    assertTrue(fileSource.isFileSource());
     assertEquals(null, ((TextFileSource) fileSource).getFieldsEnclosedBy());
     assertEquals("\t", ((TextFileSource) fileSource).getFieldsTerminatedBy());
   }
@@ -116,8 +119,12 @@ public class SourceManagerImplTest {
     // analyze individual source file absolutely no data inside at all
     File srcFile = FileUtils.getClasspathFile("data/image_empty.txt");
     // add source file to test Resource
-    FileSource fileSource = manager.add(resource, srcFile, null);
-    assertEquals("image_empty", fileSource.getName());
+    FileSource src = manager.add(resource, srcFile, null);
+    assertEquals("image_empty", src.getName());
+
+    assertTrue(src.isFileSource());
+    TextFileSource fileSource = (TextFileSource) src;
+
     // ensure all properties reflect the fact there is no data in this file
     assertEquals(0, fileSource.getIgnoreHeaderLines());
     assertEquals(0, fileSource.getColumns());
