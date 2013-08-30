@@ -29,7 +29,7 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import com.google.inject.Inject;
-import org.apache.commons.lang.xwork.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.xml.sax.SAXException;
 
 public class ResourceAction extends PortalBaseAction {

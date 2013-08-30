@@ -20,7 +20,7 @@ import com.opensymphony.xwork2.validator.validators.EmailValidator;
 
 public abstract class BaseValidator {
 
-  protected static Pattern emailPattern = Pattern.compile(EmailValidator.emailAddressPattern);
+  protected static Pattern emailPattern = Pattern.compile(EmailValidator.EMAIL_ADDRESS_PATTERN);
 
   protected boolean exists(String x) {
     return exists(x, 2);
