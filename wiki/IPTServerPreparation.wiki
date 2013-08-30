@@ -38,7 +38,7 @@ The IPT comes equipped with a Jetty web server and servlet container. The IPT ca
 
 First, change the working directory to the location where you would like to put the IPT source code. Then issue the following commands (please check if 2.0.5 is still the latest stable version):
 
-`$ svn checkout http://gbif-providertoolkit.googlecode.com/svn/tags/ipt-2.0.5`<br>
+`$ svn checkout http://gbif-providertoolkit.googlecode.com/svn/tags/ipt-2.0.5 gbif-ipt`<br>
 `$ cd gbif-ipt`<br>
 `$ mvn`<br>
 
