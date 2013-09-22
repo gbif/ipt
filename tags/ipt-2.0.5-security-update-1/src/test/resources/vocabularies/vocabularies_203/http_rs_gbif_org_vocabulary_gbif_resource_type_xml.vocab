@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/style/human.xsl"?>
+<thesaurus
+    dc:URI="http://rs.gbif.org/vocabulary/gbif/resource_type"
+	dc:description="A vocabulary classifying resources indexed by GBIF"
+	dc:title="GBIF Resource Type Vocabulary"
+	xmlns="http://rs.gbif.org/thesaurus/" xmlns:dc="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://rs.gbif.org/thesaurus/  http://rs.gbif.org/schema/thesaurus.xsd">
+
+
+	<!-- Occurrence types -->
+    <concept dc:identifier="occurrence" dc:URI="http://rs.gbif.org/vocabulary/gbif/resource_type/occurrence"
+        dc:relation="http://rs.gbif.org/vocabulary/gbif/resource_type/occurrence"
+        dc:description="Generic Occurrence resource">
+        <preferred>
+            <term dc:title="occurrence resource" xml:lang="en"/>
+        </preferred>
+        <alternative>
+            <term dc:title="occ" xml:lang="en"/>
+        </alternative>
+    </concept>
+    <concept dc:identifier="specimen" dc:URI="http://rs.gbif.org/vocabulary/gbif/resource_type/specimen"
+        dc:relation="http://rs.gbif.org/vocabulary/gbif/resource_type/specimen"
+        dc:description="Specimen resource">
+        <preferred>
+            <term dc:title="specimen resource" xml:lang="en"/>
+        </preferred>
+        <alternative>
+        </alternative>
+    </concept>
+    <concept dc:identifier="observation" dc:URI="http://rs.gbif.org/vocabulary/gbif/resource_type/observation"
+        dc:relation="http://rs.gbif.org/vocabulary/gbif/resource_type/observation"
+        dc:description="Observation resource">
+        <preferred>
+            <term dc:title="observations resource" xml:lang="en"/>
+        </preferred>
+        <alternative>
+        </alternative>
+    </concept>
+
+
+    <!-- Checklist types -->
+    <concept dc:identifier="checklist" dc:URI="http://rs.gbif.org/vocabulary/gbif/resource_type/checklist"
+        dc:relation="http://rs.gbif.org/vocabulary/gbif/resource_type/checklist"
+        dc:description="Generic checklist resource">
+        <preferred>
+            <term dc:title="checklist resource" xml:lang="en"/>
+        </preferred>
+        <alternative>
+        </alternative>
+    </concept>
+    <concept dc:identifier="taxonomic" dc:URI="http://rs.gbif.org/vocabulary/gbif/resource_type/taxonomic"
+        dc:relation="http://rs.gbif.org/vocabulary/gbif/resource_type/taxonomic"
+        dc:description="A taxonomic resource with authoritative information about taxonomic classification or status information">
+        <preferred>
+            <term dc:title="taxonomic checklist" xml:lang="en"/>
+        </preferred>
+        <alternative>
+            <term dc:title="taxonomic checklist" xml:lang="en"/>
+            <term dc:title="taxonomic" xml:lang="en"/>
+            <term dc:title="tax" xml:lang="en"/>
+        </alternative>
+    </concept>
+    <concept dc:identifier="nomenclature" dc:URI="http://rs.gbif.org/vocabulary/gbif/resource_type/nomenclature"
+        dc:relation="http://rs.gbif.org/vocabulary/gbif/resource_type/nomenclature"
+        dc:description="A nomenclatural resource with authoritative information about names">
+        <preferred>
+            <term dc:title="nomenclator checklist" xml:lang="en"/>
+        </preferred>
+        <alternative>
+            <term dc:title="nomenclature" xml:lang="en"/>
+            <term dc:title="nomenclator" xml:lang="en"/>
+            <term dc:title="nomen" xml:lang="en"/>
+            <term dc:title="nom" xml:lang="en"/>
+        </alternative>
+    </concept>
+    <concept dc:identifier="inventory" dc:URI="http://rs.gbif.org/vocabulary/gbif/resource_type/inventory"
+        dc:relation="http://rs.gbif.org/vocabulary/gbif/resource_type/inventory"
+        dc:description="Checklist used for thematic or inventory purposes of some kind, e.g. vernacular names of Portugal">
+        <preferred>
+            <term dc:title="inventory checklist" xml:lang="en"/>
+        </preferred>
+        <alternative>
+            <term dc:title="inventory" xml:lang="en"/>
+        </alternative>
+    </concept>
+    <concept dc:identifier="occurrence_checklist" dc:URI="http://rs.gbif.org/vocabulary/gbif/resource_type/occurrence_checklist"
+        dc:relation="http://rs.gbif.org/vocabulary/gbif/resource_type/occurrence_checklist"
+        dc:description="A synthetic checklist automatically derived from occurrence datasets">
+        <preferred>
+            <term dc:title="occurrence checklist" xml:lang="en"/>
+        </preferred>
+        <alternative>
+        </alternative>
+    </concept>
+</thesaurus>
