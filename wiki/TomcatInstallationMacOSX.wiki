@@ -170,7 +170,7 @@ sleep 2
 wait_for_death `cat $CATALINA_PID`
 }}}
 
-2. Create a launchd plist at {{{/Library/LaunchDaemon/org.apache.tomcat.plist}}}
+2. Create a launchd plist at {{{/Library/LaunchDaemons/org.apache.tomcat.plist}}}
 
 {{{
 <?xml version="1.0" encoding="UTF-8"?>
