@@ -83,7 +83,7 @@ nano tomcat-users.xml
 In the file, add the two lines below into the file above the line that says {{{</tomcat-users>}}} and outside of any comments (delimited with {{{<!--}}} and {{{-->}}}). Substitute the name you want as the admin's username for "admin" and enter a password for that user to log in to the Tomcat Manager in place of "password". 
 
 {{{
-<roll rollname="manager"/>
+<role rolename="manager"/>
 <user username="admin" password="password" roles="standard,manager,admin"/>
 }}}
 
