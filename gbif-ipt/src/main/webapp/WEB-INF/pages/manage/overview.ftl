@@ -346,7 +346,7 @@ $(document).ready(function(){
         <#if resource.status=="REGISTERED" && resource.key??>
           <tr>
             <th><@s.text name="manage.overview.visibility.resource.key"/></th>
-            <td>${resource.key} <a href="${cfg.registryUrl}/browse/agent?uuid=${resource.key}" target="_blank">GBRDS</a>
+            <td>${resource.key} <a href="${cfg.registryUrl}/browse/agent?uuid=${resource.key}" target="_blank">GBIF Registration</a>
             </td>
           </tr>
           <#if resource.organisation??>

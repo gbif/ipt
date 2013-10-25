@@ -60,7 +60,7 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
   private static final Logger LOG = Logger.getLogger(RegistryManagerImplTest.class);
 
   private static final String ORG_UUID = "62922b92-69d1-4c4b-831c-b23d5412a124";
-  private static final String ORG_PASSWORD = "aaa4";
+  private static final String ORG_PASSWORD = "password";
   private static final String ORG_NAME = "AAA4Organisation";
 
   private RegistryManager manager;
@@ -121,6 +121,7 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
     try {
       ipt.setCreated(new Date());
       ipt.setDescription("a unit test mock IPT");
+      ipt.setPrimaryContactName("Ms. IPT Admin");
       ipt.setPrimaryContactEmail("gbif@mailinator.com");
       ipt.setPrimaryContactType("technical");
       ipt.setLanguage("en");
