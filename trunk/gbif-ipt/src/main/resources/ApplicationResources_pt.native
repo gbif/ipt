@@ -187,7 +187,7 @@ admin.registration.error.siteDown=Ocorreram problemas durante a tentativa de com
 admin.registration.error.unknown=Uma falha desconhecida aconteceu durante a tentativa de comunição com o Registro GBIF.
 admin.registration.failed=O registro do IPT falhou!
 admin.registration.failed.update=A atualização do registro falhou!
-admin.registration.intro=Se você não encontrar a organização na lista, por favor contate o <a href="mailto:helpdesk@gbif.org?subject=To add an organisation to the GBRDS registry&amp;body=Dear GBIF Helpdesk,%0D%0A%0D%0AI am an IPT administrator. In order to have our IPT registered under our organisation, we need to see it on the list of organisations while configuring the IPT. As I know, our organisation needs to be endorsed first, so please help us with the process.%0D%0A%0D%0AWe would like our organisation to be endorsed by [Node name].%0D%0A%0D%0AOR%0D%0A%0D%0AWe need help determining the endorsing Node.%0D%0A%0D%0AHere is the full name of our organisation [your organisation name].%0D%0A%0D%0AHere are the details for our organisation''s technical contact:%0D%0A%0D%0A[technical contact first name, last name]%0D%0A[technical contact email]%0D%0A%0D%0AHere are the details for our organisation''s administrative contact:%0D%0A%0D%0A[administrative contact first name, last name]%0D%0A[administrative contact email]%0D%0A%0D%0AThanks!%0D%0ABest regards,%0D%0A[Your name]">GBIF Help Desk</a>.
+admin.registration.intro=Se você não encontrar a organização na lista, por favor contate o <a href="mailto:helpdesk@gbif.org?subject=To add an organisation to the GBIF registry&amp;body=Dear GBIF Helpdesk,%0D%0A%0D%0AI am an IPT administrator. In order to have our IPT registered under our organisation, we need to see it on the list of organisations while configuring the IPT. As I know, our organisation needs to be endorsed first, so please help us with the process.%0D%0A%0D%0AWe would like our organisation to be endorsed by [Node name].%0D%0A%0D%0AOR%0D%0A%0D%0AWe need help determining the endorsing Node.%0D%0A%0D%0AHere is the full name of our organisation [your organisation name].%0D%0A%0D%0AHere are the details for our organisation''s technical contact:%0D%0A%0D%0A[technical contact first name, last name]%0D%0A[technical contact email]%0D%0A%0D%0AHere are the details for our organisation''s administrative contact:%0D%0A%0D%0A[administrative contact first name, last name]%0D%0A[administrative contact email]%0D%0A%0D%0AThanks!%0D%0ABest regards,%0D%0A[Your name]">GBIF Help Desk</a>.
 admin.registration.intro2=Uma vez que o IPT está registrado, o registro não pode ser mudado exceto se você contatar o <a href="mailto:helpdesk@gbif.org">GBIF Help Desk</a>. Por favor, assegure que a informação de registro está completa e correta antes de salvar.
 admin.registration.links=Links do Registro GBIF
 admin.registration.organisationKey=Este IPT é hospedado pelas seguintes organizações/instituições
@@ -273,7 +273,7 @@ emails.request.ipt.registration1=Dear sir/madam,%0d%0d
 emails.request.ipt.registration2=I am trying to install an Integrated Publishing Toolkit (IPT), which is going to be hosted under your institution/organisation.%0d
 emails.request.ipt.registration3=To continue with the installation, I will need to kindly ask you to provide me with your organisation\\''s password, as this is needed to complete the process%0d
 emails.request.ipt.registration4=In case you don\\''t know this information, you can open the following link in your browser to receive this information%0d%0d
-emails.request.ipt.registration5=http://gbrds.gbif.org/registry/organisation/{0}?op=password%0d%0d
+emails.request.ipt.registration5=http://registry.gbif.org/registry/organisation/{0}?op=password%0d%0d
 emails.request.ipt.registration6=Thank you for your attention.
 emails.request.organisation.association.footer=Clique aqui para contatar
 emails.request.organisation.association.subject=Senha requerida para {0}
@@ -282,7 +282,7 @@ emails.request.organisation.association2=I am installing an Integrated Publishin
 emails.request.organisation.association3=This tool allows me to create resources and assign these resources to organisations. %0d
 emails.request.organisation.association4=I would like to link your organisation with my IPT, but for this I will need you to provide me with your organisation\\'' password%0d
 emails.request.organisation.association5=In case you don\\''t know this information, you can open the following link in your browser to receive this information%0d%0d
-emails.request.organisation.association6=http://gbrds.gbif.org/registry/organisation/{0}?op=password%0d%0d
+emails.request.organisation.association6=http://registry.gbif.org/registry/organisation/{0}?op=password%0d%0d
 emails.request.organisation.association7=Thank you for your attention.
 eml.additionalInfo=Informação adicional
 eml.additionalInfo.help=Qualquer informação que não está descrita nos demais campos do metadado, ex. história do projeto, publicações que utilizaram os dados associados a este metadado, informações sobre dados relacionados publicados, etc.

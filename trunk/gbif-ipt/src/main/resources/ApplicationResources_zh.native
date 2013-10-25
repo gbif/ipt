@@ -531,7 +531,7 @@ admin.registration.validate=驗證
 admin.registration.validate.success=基礎網址有效
 admin.registration.validate.failed.development=基礎網址無效，因為呼叫回傳失敗！請檢查這個 IPT 的基礎網址。由於此 IPT 正運行於測試模式，下方欄位無論如何將會顯示。
 admin.registration.validate.failed=驗證失敗！請檢查您的網路連線。假如已經連線，檢查基礎網址與代理伺服器網址（假如此伺服器需要的話）。
-admin.registration.intro=假如您在上列清單中找不到您的組織機構，請連繫： <a href="mailto:helpdesk@gbif.org?subject=To add an organisation to the GBRDS registry&amp;body=Dear GBIF Helpdesk,%0D%0A%0D%0AI am an IPT administrator. In order to have our IPT registered under our organisation, we need to see it on the list of organisations while configuring the IPT. As I know, our organisation needs to be endorsed first, so please help us with the process.%0D%0A%0D%0AWe would like our organisation to be endorsed by [Node name].%0D%0A%0D%0AOR%0D%0A%0D%0AWe need help determining the endorsing Node.%0D%0A%0D%0AHere is the full name of our organisation [your organisation name].%0D%0A%0D%0AHere are the details for our organisation''s technical contact:%0D%0A%0D%0A[technical contact first name, last name]%0D%0A[technical contact email]%0D%0A%0D%0AHere are the details for our organisation''s administrative contact:%0D%0A%0D%0A[administrative contact first name, last name]%0D%0A[administrative contact email]%0D%0A%0D%0AThanks!%0D%0ABest regards,%0D%0A[Your name]">GBIF Help Desk</a>。請注意預設內容為英文，亦請在送出郵件之前確認您瞭解郵件內容以利後續連繫。
+admin.registration.intro=假如您在上列清單中找不到您的組織機構，請連繫： <a href="mailto:helpdesk@gbif.org?subject=To add an organisation to the GBIF registry&amp;body=Dear GBIF Helpdesk,%0D%0A%0D%0AI am an IPT administrator. In order to have our IPT registered under our organisation, we need to see it on the list of organisations while configuring the IPT. As I know, our organisation needs to be endorsed first, so please help us with the process.%0D%0A%0D%0AWe would like our organisation to be endorsed by [Node name].%0D%0A%0D%0AOR%0D%0A%0D%0AWe need help determining the endorsing Node.%0D%0A%0D%0AHere is the full name of our organisation [your organisation name].%0D%0A%0D%0AHere are the details for our organisation''s technical contact:%0D%0A%0D%0A[technical contact first name, last name]%0D%0A[technical contact email]%0D%0A%0D%0AHere are the details for our organisation''s administrative contact:%0D%0A%0D%0A[administrative contact first name, last name]%0D%0A[administrative contact email]%0D%0A%0D%0AThanks!%0D%0ABest regards,%0D%0A[Your name]">GBIF Help Desk</a>。請注意預設內容為英文，亦請在送出郵件之前確認您瞭解郵件內容以利後續連繫。
 admin.registration.intro2=一旦 IPT 完成註冊，此註冊即不能更改，除非連絡<a href=''mailto:helpdesk@gbif.org''>GBIF Help Desk</a>。在儲存之前請確認註冊資訊的完整與正確。
 admin.registration.registered1=此 IPT 已於 GBIF 網絡上註冊。
 admin.registration.registered2=管轄此 IPT 的機構是<b>{0}</b>。
@@ -583,7 +583,7 @@ emails.request.ipt.registration1=親愛的 %0d%0d 先生/女士：
 emails.request.ipt.registration2=我正試圖安裝位於您所屬組織/研究機構的整合發布資訊工具套件(Integrated Publishing Toolkit, IPT)。%0d
 emails.request.ipt.registration3=為了能繼續安裝，我需要請求您提供貴單位的密碼，以完成程序。%0d
 emails.request.ipt.registration4=如果您不了解此訊息，可以利用您的瀏覽器開啟以下連結來接收此訊息。%0d%0d
-emails.request.ipt.registration5=http://gbrds.gbif.org/registry/organisation/{0}?op=password%0d%0d
+emails.request.ipt.registration5=http://registry.gbif.org/registry/organisation/{0}?op=password%0d%0d
 emails.request.ipt.registration6=感謝您撥冗處理。
 emails.request.ipt.registration.footer=點擊此以聯絡
 
@@ -594,7 +594,7 @@ emails.request.organisation.association2=我正試圖安裝整合發布資訊工
 emails.request.organisation.association3=這個工具讓我可以建立資源，並且歸屬這些資源到您的組織之下。%0d
 emails.request.organisation.association4=我希望能利用我的 IPT 連結到您的組織，因此需要請您提供您組織的密碼。%0d
 emails.request.organisation.association5=如果您不了解此訊息，可以利用您的瀏覽器開啟以下連結來接收此訊息。%0d%0d
-emails.request.organisation.association6=http://gbrds.gbif.org/registry/organisation/{0}?op=password%0d%0d
+emails.request.organisation.association6=http://registry.gbif.org/registry/organisation/{0}?op=password%0d%0d
 emails.request.organisation.association7=感謝您撥冗處理。
 emails.request.organisation.association.footer=點擊此以聯絡
 

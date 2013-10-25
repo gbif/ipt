@@ -95,7 +95,7 @@ public class SourceManagerImplTest {
     // analyze individual source file with no header row, and 77 real rows of source data
     File srcFile = FileUtils.getClasspathFile("data/distribution.txt");
     // add source file to test Resource
-    FileSource src = manager.add(resource, srcFile, null);
+    FileSource src = manager.add(resource, srcFile, srcFile.getName());
     assertEquals("distribution", src.getName());
 
     assertTrue(src.isFileSource());
@@ -119,7 +119,7 @@ public class SourceManagerImplTest {
     // analyze individual source file absolutely no data inside at all
     File srcFile = FileUtils.getClasspathFile("data/image_empty.txt");
     // add source file to test Resource
-    FileSource src = manager.add(resource, srcFile, null);
+    FileSource src = manager.add(resource, srcFile, srcFile.getName());
     assertEquals("image_empty", src.getName());
 
     assertTrue(src.isFileSource());
