@@ -118,7 +118,7 @@ public class CreateResourceAction extends POSTAction {
       log.debug("Uploaded file " + fileFileName + " with content-type " + fileContentType);
     } catch (IOException e) {
       log.error(e);
-      return null;
+      throw new ImportException("Failed to upload file to tmp file", e);
     } finally {
       if (output != null) {
         IOUtils.closeQuietly(output);
