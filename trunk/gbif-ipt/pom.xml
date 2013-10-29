@@ -222,15 +222,6 @@
           </additionalConfig>
         </configuration>
       </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
-        <configuration>
-          <!-- don't bundle local datadir.location file with generated war -->
-          <excludes>**/datadir.location</excludes>
-        </configuration>
-      </plugin>
     </plugins>
 
     <resources>
@@ -566,16 +557,49 @@
         <devMode>false</devMode>
         <devModeNegated>true</devModeNegated>
       </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-war-plugin</artifactId>
+            <configuration>
+              <!-- don't bundle local datadir.location file with generated war -->
+              <excludes>**/datadir.location</excludes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
 
-    <!-- Settings used for the IPT demo installation -->
+    <!-- Settings used for the Staging IPT installation -->
+    <!-- Bundles datadir.location in war so Staging IPT doesn't have to reconfigure datadir on each redeploy -->
     <profile>
-      <id>gbif</id>
+      <id>staging</id>
       <properties>
-        <devMode>false</devMode>
-        <devModeNegated>true</devModeNegated>
-        <ipt.baseURL>http://ipt.gbif.org/</ipt.baseURL>
+        <devMode>true</devMode>
+        <devModeNegated>false</devModeNegated>
+        <staging.datadir>/var/lib/tomcat7/ipt-data</staging.datadir>
       </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-war-plugin</artifactId>
+            <configuration>
+              <webResources>
+                <resource>
+                  <filtering>true</filtering>
+                  <targetPath>WEB-INF</targetPath>
+                  <directory>src/main/webapp/WEB-INF</directory>
+                  <includes>
+                    <include>datadir.location</include>
+                  </includes>
+                </resource>
+              </webResources>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
   </profiles>
 </project>
