@@ -80,15 +80,17 @@
   the word list gets displayed as a complete line instead.
 -->
 <#macro textWithFormattedLink text>
-        <#assign words = text?word_list>
-        <#list words as x>
-        	<#assign res = x?matches("(http(s)?|ftp)://(([\\w-]+\\.)?)+[\\w-]+(:\\d+)?+(/[\\w- ./-?%&=]*)?")>
-            <#assign flag=false>
-            <#list res as m>
-              <#if x?contains(m)><a href="${m}">${x}</a> <#t><#assign flag = true><#break></#if>
-            </#list>
-            <#if flag==false>${x}</#if> <#t>
-        </#list>
+  <#-- replace less than and greater than characters -->
+  <#assign sanitized = text?replace("<", "&lt;")?replace(">", "&gt;")>
+  <#assign words = sanitized?word_list>
+  <#list words as x>
+    <#assign res = x?matches("(http(s)?|ftp)://(([\\w-]+\\.)?)+[\\w-]+(:\\d+)?+(/[\\w- ./-?%&=]*)?")>
+    <#assign flag=false>
+    <#list res as m>
+      <#if x?contains(m)><a href="${m}">${x}</a> <#t><#assign flag = true><#break></#if>
+    </#list>
+    <#if flag==false>${x}</#if> <#t>
+  </#list>
 </#macro>
 
 <#macro showMore text maxLength>
