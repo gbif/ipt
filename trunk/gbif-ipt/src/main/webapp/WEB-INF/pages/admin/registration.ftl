@@ -134,11 +134,11 @@ $(document).ready(function(){
 			<@input name="organisation.alias" i18nkey="admin.organisation.alias" type="text" />
 			<@checkbox name="organisation.canHost" i18nkey="admin.organisation.canPublish" value="true" help="i18n"/>				
 			
-			<@s.hidden id="organisation.primaryContactType" name="organisation.primaryContactType" required="false" />			
-			<@s.hidden id="organisation.primaryContactName" name="organisation.primaryContactName" required="false" />
-			<@s.hidden id="organisation.primaryContactEmail" name="organisation.primaryContactEmail" required="false" />
-			<@s.hidden id="organisation.nodeKey" name="organisation.nodeKey" required="false" />
-			<@s.hidden id="organisation.nodeName" name="organisation.nodeName" required="false" />			
+			<@s.hidden id="organisation.primaryContactType" name="organisation.primaryContactType" />
+			<@s.hidden id="organisation.primaryContactName" name="organisation.primaryContactName" />
+			<@s.hidden id="organisation.primaryContactEmail" name="organisation.primaryContactEmail" />
+			<@s.hidden id="organisation.nodeKey" name="organisation.nodeKey" />
+			<@s.hidden id="organisation.nodeName" name="organisation.nodeName" />
 						
 			<@input name="ipt.name" i18nkey="admin.ipt.name" type="text" />
 			<@text name="ipt.description" i18nkey="admin.ipt.description" />			

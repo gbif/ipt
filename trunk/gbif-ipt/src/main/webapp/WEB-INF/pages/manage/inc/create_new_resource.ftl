@@ -6,7 +6,7 @@
   <div>
 	  <@s.fielderror cssClass="fielderror" fieldName="file"/>
 	  <label for="file"><@s.text name="manage.resource.create.file"/>: </label>
-    <@s.file name="file" key="manage.resource.create.file" required="false"/>
+    <@s.file name="file" key="manage.resource.create.file" />
   </div>
 
 <div id="create-button" class="buttons">

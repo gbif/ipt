@@ -69,7 +69,7 @@
     <postgresql.version>9.2-1003-jdbc4</postgresql.version>
     <servlet-api.version>2.5</servlet-api.version>
     <slf4j.version>1.7.5</slf4j.version>
-    <struts2.version>2.3.15.1</struts2.version>
+    <struts2.version>2.3.15.3</struts2.version>
     <xstream.version>1.4.4</xstream.version>
     <jsr305.version>2.0.1</jsr305.version>
     <httputils.version>0.4</httputils.version>
