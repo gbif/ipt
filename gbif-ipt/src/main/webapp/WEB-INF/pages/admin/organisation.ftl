@@ -68,11 +68,11 @@ $(document).ready(function(){
 <p><@s.text name="admin.registration.intro"/></a></p>
 <p><@s.text name="admin.organisation.add.intro2"/></p>
 		<@s.hidden id="organisation.name" name="organisation.name" required="true" />
-		<@s.hidden id="organisation.primaryContactType" name="organisation.primaryContactType" required="false" />
-		<@s.hidden id="organisation.primaryContactName" name="organisation.primaryContactName" required="false" />
-		<@s.hidden id="organisation.primaryContactEmail" name="organisation.primaryContactEmail" required="false" />
-		<@s.hidden id="organisation.nodeKey" name="organisation.nodeKey" required="false" />
-		<@s.hidden id="organisation.nodeName" name="organisation.nodeName" required="false" />
+		<@s.hidden id="organisation.primaryContactType" name="organisation.primaryContactType" />
+		<@s.hidden id="organisation.primaryContactName" name="organisation.primaryContactName" />
+		<@s.hidden id="organisation.primaryContactEmail" name="organisation.primaryContactEmail" />
+		<@s.hidden id="organisation.nodeKey" name="organisation.nodeKey" />
+		<@s.hidden id="organisation.nodeName" name="organisation.nodeName" />
 		<@s.select id="organisation.key" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" size="15" disabled="false"/>		
 	</#if>		  
 	<@input name="organisation.password" i18nkey="admin.organisation.password" type="password"/>
