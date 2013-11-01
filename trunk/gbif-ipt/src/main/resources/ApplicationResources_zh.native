@@ -583,7 +583,7 @@ emails.request.ipt.registration1=親愛的 %0d%0d 先生/女士：
 emails.request.ipt.registration2=我正試圖安裝位於您所屬組織/研究機構的整合發布資訊工具套件(Integrated Publishing Toolkit, IPT)。%0d
 emails.request.ipt.registration3=為了能繼續安裝，我需要請求您提供貴單位的密碼，以完成程序。%0d
 emails.request.ipt.registration4=如果您不了解此訊息，可以利用您的瀏覽器開啟以下連結來接收此訊息。%0d%0d
-emails.request.ipt.registration5=http://registry.gbif.org/registry/organisation/{0}?op=password%0d%0d
+emails.request.ipt.registration5=http://gbrds.gbif.org/registry/organisation/{0}?op=password%0d%0d
 emails.request.ipt.registration6=感謝您撥冗處理。
 emails.request.ipt.registration.footer=點擊此以聯絡
 
@@ -594,7 +594,7 @@ emails.request.organisation.association2=我正試圖安裝整合發布資訊工
 emails.request.organisation.association3=這個工具讓我可以建立資源，並且歸屬這些資源到您的組織之下。%0d
 emails.request.organisation.association4=我希望能利用我的 IPT 連結到您的組織，因此需要請您提供您組織的密碼。%0d
 emails.request.organisation.association5=如果您不了解此訊息，可以利用您的瀏覽器開啟以下連結來接收此訊息。%0d%0d
-emails.request.organisation.association6=http://registry.gbif.org/registry/organisation/{0}?op=password%0d%0d
+emails.request.organisation.association6=http://gbrds.gbif.org/registry/organisation/{0}?op=password%0d%0d
 emails.request.organisation.association7=感謝您撥冗處理。
 emails.request.organisation.association.footer=點擊此以聯絡
 
