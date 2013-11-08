@@ -92,9 +92,10 @@ In the file, add the two lines below into the file above the line that says {{{<
 If you're setting up Tomcat 7, the role is defined differently:
 
 {{{
-<role rolename="manager-gui"/>
 <user username="admin" password="password" roles="manager-gui"/>
 }}}
+
+In Tomcat 7, role names are automatically created.
 
 Save the tomcat-users.xml file and exit from the editor.
 
