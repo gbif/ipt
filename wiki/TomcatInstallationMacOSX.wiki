@@ -2,7 +2,9 @@
 =Table of Contents=
 <wiki:toc max_depth="3" />
 
-This tutorial explains how to install the Apache Tomcat Java Servlet 6 on Mac OS X. This document is not tested to work with other versions of Tomcat or Java. For complete details, consult the specific documentation for those software installations.
+This tutorial explains how to install the Apache Tomcat 6.0.x on Mac OS X 10.5 or 10.6. This document is not tested to work with other versions of Tomcat or Java. For complete details, please consult the specific documentation for those software installations.
+
+This tutorial is for now 'partially' tested with Tomcat 7.
 
 ==Prerequisites==
 Following are the conditions assumed to be true in order to follow this tutorial.
@@ -85,6 +87,12 @@ In the file, add the two lines below into the file above the line that says {{{<
 {{{
 <role rolename="manager"/>
 <user username="admin" password="password" roles="standard,manager,admin"/>
+}}}
+
+If you're setting up Tomcat 7, the role is defined differently:
+
+{{{
+<user username="admin" password="password" roles="manager-gui"/>
 }}}
 
 Save the tomcat-users.xml file and exit from the editor.
