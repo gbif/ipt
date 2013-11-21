@@ -15,7 +15,7 @@ $(document).ready(function(){
 	emailContent += '<@s.text name="emails.request.organisation.association3"/>';
 	emailContent += '<@s.text name="emails.request.organisation.association4"/>';
 	emailContent += '<@s.text name="emails.request.organisation.association5"/>';
-	emailContent += '<@s.text name="emails.request.organisation.association6"><@s.param>'
+	emailContent += '<@s.text name="emails.request.organisation.association6"><@s.param>';
 	emailContent += $("#organisation\\.key :selected").val();
 	emailContent += '</@s.param></@s.text>';
 	emailContent += '<@s.text name="emails.request.organisation.association7"/>';
