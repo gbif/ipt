@@ -14,7 +14,6 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.api.vocabulary.DatasetSubtype;
-import org.gbif.api.vocabulary.DatasetType;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
@@ -462,17 +461,17 @@ public class MetadataAction extends ManagerBaseAction {
    * grouped.
    */
   void groupDatasetSubtypes() {
-    List<String> checklistKeys = new LinkedList<String>();
     List<String> occurrenceKeys = new LinkedList<String>();
-    for (DatasetSubtype type : DatasetSubtype.values()) {
-      if (type.getType().compareTo(DatasetType.CHECKLIST) == 0) {
-        checklistKeys.add(type.name().replaceAll("_", "").toLowerCase());
-      } else if (type.getType().compareTo(DatasetType.OCCURRENCE) == 0) {
-        occurrenceKeys.add(type.name().replaceAll("_", "").toLowerCase());
-      }
+    for (DatasetSubtype type : DatasetSubtype.OCCURRENCE_DATASET_SUBTYPES) {
+      occurrenceKeys.add(type.name().replaceAll("_", "").toLowerCase());
+    }
+    occurrenceSubtypeKeys = Collections.unmodifiableList(occurrenceKeys);
+
+    List<String> checklistKeys = new LinkedList<String>();
+    for (DatasetSubtype type : DatasetSubtype.CHECKLIST_DATASET_SUBTYPES) {
+      checklistKeys.add(type.name().replaceAll("_", "").toLowerCase());
     }
     checklistSubtypeKeys = Collections.unmodifiableList(checklistKeys);
-    occurrenceSubtypeKeys = Collections.unmodifiableList(occurrenceKeys);
   }
 
   void setDatasetSubtypes(Map<String, String> datasetSubtypes) {
