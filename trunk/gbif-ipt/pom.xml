@@ -46,6 +46,8 @@
     <commons-io.version>2.4</commons-io.version>
     <dwca-reader.version>1.14</dwca-reader.version>
     <gbif-api.version>0.11-SNAPSHOT</gbif-api.version>
+    <gbif-registry.version>2.11-SNAPSHOT</gbif-registry.version>
+    <gbif-common-ws.version>0.11</gbif-common-ws.version>
     <gbif-metadata-profile.version>1.0.2.3</gbif-metadata-profile.version>
     <gbif-common.version>0.14</gbif-common.version>
     <dwc-api.version>1.3</dwc-api.version>
@@ -299,7 +301,18 @@
       <version>${gbif-api.version}</version>
     </dependency>
     <dependency>
-
+      <groupId>org.gbif.registry</groupId>
+      <artifactId>registry-ws-client</artifactId>
+      <version>${gbif-registry.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.gbif</groupId>
+      <artifactId>gbif-common-ws</artifactId>
+      <version>0.11</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <!-- To redirect calls to SLF4J from dwca-reader & gbif-common to Log4J -->
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
