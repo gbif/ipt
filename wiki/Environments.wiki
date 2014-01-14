@@ -8,5 +8,7 @@ Please post a comment with known environments and they will be added to the matr
 || Mac OS X 10.6.5 || Java 1.6.0_22 || Tomcat 6.0_29 || 2.0RC1+ ||
 || Mac OS X 10.6.5 || Java 1.6.0_22 || Tomcat 5.5_31 || 2.0RC1+ ||
 || Mac OS X 10.6.4 || Java 1.6.0_20 || Tomcat 6.0_24 || 2.0RC1+ ||
+|| Mac OS X 10.8.5 || Java 1.7.0_45-b18 || Tomcat 7.0.34 || 2.0.5 ||
 || Windows XP SP3 || Java 1.6.0_24 || Tomcat 6.0_24 || 2.0.1 r3048 ||
 || Windows Server 2003 Enterprise SP2 || Java 1.6.0_23 || Tomcat 6.0.30 || 2.0GA r3039 ||
+|| Red Hat 4.6.3-2 || OpenJDK (IcedTea 1.11.9) || Tomcat 7.0.37 || 2.0.5 r4398 ||
