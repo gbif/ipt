@@ -28,7 +28,6 @@
  * Versions
    * [Roadmap]
    * [VersionHistory Version History]
-   * [IPTUpdates IPT Updates]
    * New Features Considered
      * [DataTransformations Data transformations]
  * Older IPT versions
