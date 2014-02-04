@@ -13,7 +13,7 @@ Following are the conditions assumed to be true in order to follow this tutorial
 
 2) The latest security upgrades.
 
-3) JAVA 5 or JAVA 6 Framework installed. 
+3) JAVA 5 or JAVA 6 Framework installed. See [http://docs.oracle.com/javase/7/docs/webnotes/install/mac/mac-install-faq.html this FAQ] for Java installation on Mac OS X.
 
 4) Logged in as an administrator.
 
@@ -111,7 +111,7 @@ Remove all of the scripts ending with {{{.bat}}}.
 rm *.bat
 }}}
 
-Execute the Tomcat startup script:
+Execute the Tomcat startup script. Please note at this point you should have JDK or JRE installed as Java is required by Tomcat, which is then required by IPT.
 {{{
 ./startup.sh
 }}}
