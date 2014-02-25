@@ -11,6 +11,21 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
     <#assign emptyString="--">
     <#assign dotDot="..">
 
+    /* Sorts columns having "sType": "number". It should handle numbers with locale specific separators, e.g. 1,000 */
+    jQuery.extend( jQuery.fn.dataTableExt.oSort, {
+        "number-pre": function ( a )
+        {
+            var x = String(String(a).replace( /<[\s\S]*?>/g, "" )).replace( /,/, '' );
+            return parseFloat( x );
+        },
+        "number-asc": function ( a, b ) {
+            return ((a < b) ? -1 : ((a > b) ? 1 : 0));
+        },
+        "number-desc": function ( a, b ) {
+            return ((a < b) ? 1 : ((a > b) ? -1 : 0));
+        }
+    } );
+
     /* resources list */
     var aDataSet = [
       <#list resources as r>
@@ -54,7 +69,7 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
                 { "sTitle": "<@s.text name="manage.home.organisation"/>"},
                 { "sTitle": "<@s.text name="manage.home.type"/>"},
                 { "sTitle": "<@s.text name="manage.home.subtype"/>"},
-                { "sTitle": "<@s.text name="portal.home.records"/>", "bSearchable": false},
+                { "sTitle": "<@s.text name="portal.home.records"/>", "bSearchable": false, "sType": "number"},
                 { "sTitle": "<@s.text name="manage.home.last.modified"/>", "bSearchable": false},
                 { "sTitle": "<@s.text name="manage.home.last.publication" />", "bSearchable": false},
                 { "sTitle": "<@s.text name="manage.home.next.publication" />", "bSearchable": false},
