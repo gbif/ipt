@@ -58,13 +58,13 @@ public class OverviewAction extends ManagerBaseAction {
   private static final Logger log = Logger.getLogger(OverviewAction.class);
 
   private static final String PUBLISHING = "publishing";
-  private UserAccountManager userManager;
-  private ExtensionManager extensionManager;
-  private VocabulariesManager vocabManager;
+  private final UserAccountManager userManager;
+  private final ExtensionManager extensionManager;
+  private final VocabulariesManager vocabManager;
   private List<User> potentialManagers;
   private List<Extension> potentialExtensions;
   private List<Organisation> organisations;
-  private EmlValidator emlValidator;
+  private final EmlValidator emlValidator;
   private boolean missingMetadata;
   private boolean missingRegistrationMetadata;
   private StatusReport report;
@@ -102,7 +102,7 @@ public class OverviewAction extends ManagerBaseAction {
   /**
    * Cancel resource publication. Publication is all or nothing. If incomplete, the version number of the resource
    * must be rolled back.
-   *
+   * 
    * @return Struts2 result string
    */
   public String cancel() throws Exception {
@@ -182,7 +182,7 @@ public class OverviewAction extends ManagerBaseAction {
 
   /**
    * Validate whether or not to show a confirmation message to overwrite the file(s) recently uploaded.
-   *
+   * 
    * @return true if a file exist in the user session. False otherwise.
    */
   public boolean getConfirmOverwrite() {
@@ -191,7 +191,7 @@ public class OverviewAction extends ManagerBaseAction {
 
   /**
    * Calculate the size of the DwC-A file.
-   *
+   * 
    * @return the size (human readable) of the DwC-A file.
    */
   public String getDwcaFormattedSize() {
@@ -200,11 +200,20 @@ public class OverviewAction extends ManagerBaseAction {
 
   /**
    * Calculate the size of the EML file.
-   *
+   * 
    * @return the size (human readable) of the EML file.
    */
   public String getEmlFormattedSize() {
     return FileUtils.formatSize(resourceManager.getEmlSize(resource), 2);
+  }
+
+  /**
+   * On the manage resource page page, this map is used to populate the publishing intervals dropdown.
+   * 
+   * @return update frequencies map
+   */
+  public Map<String, String> getFrequencies() {
+    return frequencies;
   }
 
   public boolean getMissingBasicMetadata() {
@@ -240,11 +249,37 @@ public class OverviewAction extends ManagerBaseAction {
 
   /**
    * Calculate the size of the RTF file.
-   *
+   * 
    * @return return the size (human readable) of the RTF file.
    */
   public String getRtfFormattedSize() {
     return FileUtils.formatSize(resourceManager.getRtfSize(resource), 2);
+  }
+
+  /**
+   * Checks if the resource meets all the conditions required in order to be registered. For example, the resource needs
+   * to be published prior to registering with the GBIF Network.
+   * 
+   * @param resource resource
+   * @return true if the resource meets the minimum requirements to be published
+   */
+  private boolean hasMinimumRegistryInfo(Resource resource) {
+    if (resource == null) {
+      return false;
+    }
+    if (resource.getEml() == null) {
+      return false;
+    }
+    if (resource.getCreator() == null) {
+      return false;
+    }
+    if (resource.getCreator().getEmail() == null) {
+      return false;
+    }
+    if (!resource.isPublished()) {
+      return false;
+    }
+    return true;
   }
 
   public boolean isMissingMetadata() {
@@ -273,18 +308,18 @@ public class OverviewAction extends ManagerBaseAction {
         // makePrivate
         try {
           resourceManager.visibilityToPrivate(resource, this);
-          addActionMessage(
-            getText("manage.overview.changed.publication.status", new String[] {resource.getStatus().toString()}));
+          addActionMessage(getText("manage.overview.changed.publication.status", new String[] {resource.getStatus()
+            .toString()}));
         } catch (InvalidConfigException e) {
           log.error("Cant unpublish resource " + resource, e);
         }
       } else {
-        addActionWarning(getText("manage.overview.resource.invalid.operation",
-          new String[] {resource.getShortname(), resource.getStatus().toString()}));
+        addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
+          resource.getStatus().toString()}));
       }
     } else {
-      addActionWarning(getText("manage.overview.resource.invalid.operation",
-        new String[] {resource.getShortname(), resource.getStatus().toString()}));
+      addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
+        resource.getStatus().toString()}));
     }
     return execute();
   }
@@ -296,43 +331,38 @@ public class OverviewAction extends ManagerBaseAction {
     if (PublicationStatus.PRIVATE == resource.getStatus()) {
       try {
         resourceManager.visibilityToPublic(resource, this);
-        addActionMessage(
-          getText("manage.overview.changed.publication.status", new String[] {resource.getStatus().toString()}));
+        addActionMessage(getText("manage.overview.changed.publication.status", new String[] {resource.getStatus()
+          .toString()}));
       } catch (InvalidConfigException e) {
         log.error("Cant publish resource " + resource, e);
       }
 
     } else {
-      addActionWarning(getText("manage.overview.resource.invalid.operation",
-        new String[] {resource.getShortname(), resource.getStatus().toString()}));
+      addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
+        resource.getStatus().toString()}));
     }
     return execute();
   }
 
   /**
-   * Checks if the resource meets all the conditions required in order to be registered. For example, the resource needs
-   * to be published prior to registering with the GBIF Network.
-   *
-   * @param resource resource
-   * @return true if the resource meets the minimum requirements to be published
+   * Populate frequencies map, representing the publishing interval choices uses have when configuring
+   * auto-publishing. The frequencies list is derived from an XML vocabulary, and will contain values in the requested
+   * locale, defaulting to English.
    */
-  private boolean hasMinimumRegistryInfo(Resource resource) {
-    if (resource == null) {
-      return false;
+  private void populateFrequencies() {
+    frequencies = new LinkedHashMap<String, String>();
+
+    if (resource.usesAutoPublishing()) {
+      frequencies.put("off", getText("autopublish.off"));
+    } else {
+      frequencies.put("", getText("autopublish.interval"));
     }
-    if (resource.getEml() == null) {
-      return false;
-    }
-    if (resource.getCreator() == null) {
-      return false;
-    }
-    if (resource.getCreator().getEmail() == null) {
-      return false;
-    }
-    if (!resource.isPublished()) {
-      return false;
-    }
-    return true;
+
+    // update frequencies list, that qualify for auto-publishing
+    Map<String, String> filteredFrequencies =
+      vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES, getLocaleLanguage(), false);
+    MapUtils.removeNonMatchingKeys(filteredFrequencies, MaintUpFreqType.AUTO_PUBLISHING_TYPES);
+    frequencies.putAll(filteredFrequencies);
   }
 
   @Override
@@ -365,6 +395,12 @@ public class OverviewAction extends ManagerBaseAction {
       if (resource.hasCore()) {
         // show extensions suited for this core
         potentialExtensions = extensionManager.list(resource.getCoreRowType());
+        log.debug("Resource has a core of type " + resource.getCoreRowType() + ".  Suitable extensions: "
+          + potentialExtensions);
+
+        log.debug("Resource has a core of type " + resource.getCoreType() + ".  Suitable extensions: "
+          + potentialExtensions);
+
         // add core itself
         Extension core = extensionManager.get(resource.getCoreRowType());
         if (core == null) {
@@ -379,9 +415,12 @@ public class OverviewAction extends ManagerBaseAction {
       }
       // does the resource have no core type, but at least one source file ready to be mapped?
       else {
+        log.debug("Resource has core type: " + resource.getCoreType());
+
         if (Strings.isNullOrEmpty(resource.getCoreType()) || "Other".equalsIgnoreCase(resource.getCoreType())) {
           // populate list of potential list of extensions with core types
           potentialExtensions = extensionManager.listCore();
+          log.debug("Cores suitable for Other resources: " + potentialExtensions);
           if (potentialExtensions.size() == 0) {
             addActionError(getText("manage.overview.no.DwC.extensions"));
           }
@@ -398,7 +437,8 @@ public class OverviewAction extends ManagerBaseAction {
           } else if (resource.getCoreType().equalsIgnoreCase(CoreRowType.OCCURRENCE.toString())) {
             Extension ext = extensionManager.get(Constants.DWC_ROWTYPE_OCCURRENCE);
             if (ext == null) {
-              addActionError(getText("manage.overview.no.DwC.extension", new String[] {Constants.DWC_ROWTYPE_OCCURRENCE}));
+              addActionError(getText("manage.overview.no.DwC.extension",
+                new String[] {Constants.DWC_ROWTYPE_OCCURRENCE}));
             } else {
               potentialExtensions.add(ext);
             }
@@ -415,34 +455,11 @@ public class OverviewAction extends ManagerBaseAction {
   }
 
   /**
-   * Populate frequencies map, representing the publishing interval choices uses have when configuring
-   * auto-publishing. The frequencies list is derived from an XML vocabulary, and will contain values in the requested
-   * locale, defaulting to English.
-
-   */
-  private void populateFrequencies() {
-    frequencies = new LinkedHashMap<String, String>();
-
-    if (resource.usesAutoPublishing()) {
-      frequencies.put("off", getText("autopublish.off"));
-    } else {
-      frequencies.put("", getText("autopublish.interval"));
-    }
-
-    // update frequencies list, that qualify for auto-publishing
-    Map<String, String> filteredFrequencies = vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES,
-      getLocaleLanguage(), false);
-    MapUtils.removeNonMatchingKeys(filteredFrequencies, MaintUpFreqType.AUTO_PUBLISHING_TYPES);
-    frequencies.putAll(filteredFrequencies);
-  }
-
-  /**
    * Executes the instruction to publish the resource.
    * </br>
    * In addition, the method must check if resource has been configured to be auto-published.
-   *
+   * 
    * @return Struts2 result string
-   *
    * @throws Exception if method fails
    */
   public String publish() throws Exception {
@@ -456,7 +473,7 @@ public class OverviewAction extends ManagerBaseAction {
       try {
         // auto-publishing being turned OFF
         if (PublicationMode.AUTO_PUBLISH_OFF == PublicationMode.valueOf(pm) && resource.usesAutoPublishing()) {
-            resourceManager.publicationModeToOff(resource);
+          resourceManager.publicationModeToOff(resource);
         }
         // auto-publishing being turned ON, or auto-publishing settings being updated
         else {
@@ -494,12 +511,12 @@ public class OverviewAction extends ManagerBaseAction {
       }
     } catch (PublicationException e) {
       if (PublicationException.TYPE.LOCKED == e.getType()) {
-        addActionError(
-          getText("manage.overview.resource.being.published", new String[] {resource.getTitleAndShortname()}));
+        addActionError(getText("manage.overview.resource.being.published",
+          new String[] {resource.getTitleAndShortname()}));
       } else {
         // alert user publication failed
-        addActionError(
-          getText("publishing.failed", new String[] {String.valueOf(v), resource.getShortname(), e.getMessage()}));
+        addActionError(getText("publishing.failed",
+          new String[] {String.valueOf(v), resource.getShortname(), e.getMessage()}));
         // restore the previous version since publication was unsuccessful
         resourceManager.restoreVersion(resource, v - 1, this);
       }
@@ -519,8 +536,8 @@ public class OverviewAction extends ManagerBaseAction {
     }
     if (PublicationStatus.PUBLIC == resource.getStatus()) {
       if (unpublish) {
-        addActionWarning(getText("manage.overview.resource.invalid.operation",
-          new String[] {resource.getShortname(), resource.getStatus().toString()}));
+        addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
+          resource.getStatus().toString()}));
 
       } else {
         // plain managers are not allowed to register a resource
@@ -573,22 +590,13 @@ public class OverviewAction extends ManagerBaseAction {
         }
       }
     } else {
-      addActionWarning(getText("manage.overview.resource.invalid.operation",
-        new String[] {resource.getShortname(), resource.getStatus().toString()}));
+      addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
+        resource.getStatus().toString()}));
     }
     return execute();
   }
 
   public void setUnpublish(String unpublish) {
     this.unpublish = StringUtils.trimToNull(unpublish) != null;
-  }
-
-  /**
-   * On the manage resource page page, this map is used to populate the publishing intervals dropdown.
-   *
-   * @return update frequencies map
-   */
-  public Map<String, String> getFrequencies() {
-    return frequencies;
   }
 }

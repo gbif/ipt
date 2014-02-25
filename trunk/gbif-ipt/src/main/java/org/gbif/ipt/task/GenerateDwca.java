@@ -73,17 +73,16 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
   /**
    * Adds a single data file for a list of extension mappings that must all be mapped to the same extension.
-   *
-   * @param mappings    list of ExtensionMapping
+   * 
+   * @param mappings list of ExtensionMapping
    * @param coreRowType row type of core file
-   *
    * @throws IllegalArgumentException if not all mappings are mapped to the same extension
-   * @throws InterruptedException     if the thread was interrupted
-   * @throws IOException              if problems occurred while persisting new data files
-   * @throws GeneratorException       if any problem was encountered writing data file
+   * @throws InterruptedException if the thread was interrupted
+   * @throws IOException if problems occurred while persisting new data files
+   * @throws GeneratorException if any problem was encountered writing data file
    */
-  private void addDataFile(List<ExtensionMapping> mappings, String coreRowType)
-    throws IOException, IllegalArgumentException, InterruptedException, GeneratorException {
+  private void addDataFile(List<ExtensionMapping> mappings, String coreRowType) throws IOException,
+    IllegalArgumentException, InterruptedException, GeneratorException {
     checkForInterruption();
     if (mappings == null || mappings.isEmpty()) {
       return;
@@ -175,19 +174,18 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     }
 
     // final reporting
-    addMessage(Level.INFO,
-      "Data file written for " + currExtension + " with " + currRecords + " records and " + totalColumns + " columns");
+    addMessage(Level.INFO, "Data file written for " + currExtension + " with " + currRecords + " records and "
+      + totalColumns + " columns");
   }
 
   /**
    * Write the header column line to file.
-   *
+   * 
    * @param propertyList ordered list of all ExtensionProperty that have been mapped across all mappings for a single
-   *                     Extension
+   *        Extension
    * @param totalColumns total number of columns in header
-   * @param af           tab file with representing the core file or an extension
-   * @param writer       file writer
-   *
+   * @param af tab file with representing the core file or an extension
+   * @param writer file writer
    * @throws IOException if writing the header line failed
    */
   private void writeHeaderLine(List<ExtensionProperty> propertyList, int totalColumns, ArchiveFile af, Writer writer)
@@ -209,16 +207,16 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
   /**
    * Adds EML file to DwC-A folder.
-   *
-   * @throws GeneratorException   if EML file could not be copied to DwC-A folder
+   * 
+   * @throws GeneratorException if EML file could not be copied to DwC-A folder
    * @throws InterruptedException if executing thread was interrupted
    */
   private void addEmlFile() throws GeneratorException, InterruptedException {
     checkForInterruption();
     setState(STATE.METADATA);
     try {
-      FileUtils.copyFile(dataDir.resourceEmlFile(resource.getShortname(), null),
-        new File(dwcaFolder, DataDir.EML_XML_FILENAME));
+      FileUtils.copyFile(dataDir.resourceEmlFile(resource.getShortname(), null), new File(dwcaFolder,
+        DataDir.EML_XML_FILENAME));
       archive.setMetadataLocation(DataDir.EML_XML_FILENAME);
     } catch (IOException e) {
       throw new GeneratorException("Problem occurred while adding EML file to DwC-A folder", e);
@@ -229,10 +227,9 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
   /**
    * Build a new ArchiveField having a ConceptTerm and defaultValue.
-   *
+   * 
    * @param term ConceptTerm
    * @param defaultValue default value
-   *
    * @return ArchiveField created
    */
   private ArchiveField buildField(ConceptTerm term, @Nullable String defaultValue) {
@@ -245,8 +242,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
   /**
    * Zips the DwC-A folder. A temp version is created first, and when successful, it it moved into the resource's
    * data directory.
-   *
-   * @throws GeneratorException   if DwC-A could not be zipped or moved
+   * 
+   * @throws GeneratorException if DwC-A could not be zipped or moved
    * @throws InterruptedException if executing thread was interrupted
    */
   private void bundleArchive() throws GeneratorException, InterruptedException {
@@ -276,7 +273,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
   /**
    * This method copies a stable version of the latest bundled DwC-A file for archival purposes. This method should
    * only be called if the IPT has been configured in "archival mode".
-   *
+   * 
    * @throws GeneratorException if the archival couldn't complete for any reason
    */
   private void archiveArchive() throws GeneratorException {
@@ -284,8 +281,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
     File target = dataDir.resourceDwcaFile(resource.getShortname());
     if (!target.exists()) {
-      throw new GeneratorException(
-        "Can't archive DwC-A file for resource " + resource.getShortname() + "Published DwC-A file doesn't exist");
+      throw new GeneratorException("Can't archive DwC-A file for resource " + resource.getShortname()
+        + "Published DwC-A file doesn't exist");
     }
 
     // copy stable version of the DwC-A file
@@ -303,9 +300,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
   /**
    * Method responsible for all stages of DwC-A file generation.
-   *
+   * 
    * @return number of records published in core file
-   *
    * @throws GeneratorException if DwC-A generation fails for any reason
    */
   public Integer call() throws Exception {
@@ -367,7 +363,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
   /**
    * Checks if the executing thread has been interrupted, i.e. DwC-A generation was cancelled.
-   *
+   * 
    * @throws InterruptedException if the thread was found to be interrupted
    */
   private void checkForInterruption() throws InterruptedException {
@@ -381,9 +377,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
   /**
    * Checks if the executing thread has been interrupted, i.e. DwC-A generation was cancelled.
-   *
+   * 
    * @param line number of lines currently processed at the time of the check
-   *
    * @throws InterruptedException if the thread was found to be interrupted
    */
   private void checkForInterruption(int line) throws InterruptedException {
@@ -402,8 +397,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
   /**
    * Create data files.
-   *
-   * @throws GeneratorException   if the resource had no core file that was mapped
+   * 
+   * @throws GeneratorException if the resource had no core file that was mapped
    * @throws InterruptedException if the thread was interrupted
    */
   private void createDataFiles() throws GeneratorException, InterruptedException {
@@ -429,8 +424,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
   /**
    * Create meta.xml file.
-   *
-   * @throws GeneratorException   if meta.xml file creation failed
+   * 
+   * @throws GeneratorException if meta.xml file creation failed
    * @throws InterruptedException if the thread was interrupted
    */
   private void createMetaFile() throws GeneratorException, InterruptedException {
@@ -484,13 +479,12 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
   /**
    * Write data file for mapping.
-   *
-   * @param writer          file writer for single data file
-   * @param inCols          index ordered list of all output columns apart from id column
-   * @param mapping         mapping
+   * 
+   * @param writer file writer for single data file
+   * @param inCols index ordered list of all output columns apart from id column
+   * @param mapping mapping
    * @param dataFileRowSize number of columns in data file
-   *
-   * @throws GeneratorException   if there was an error writing data file for mapping.
+   * @throws GeneratorException if there was an error writing data file for mapping.
    * @throws InterruptedException if the thread was interrupted
    */
   private void dumpData(Writer writer, PropertyMapping[] inCols, ExtensionMapping mapping, int dataFileRowSize)
@@ -525,9 +519,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
         }
 
         if (in.length <= maxColumnIndex) {
-          writePublicationLogMessage(
-            "Line with less columns than mapped. SourceBase:" + mapping.getSource().getName() + " Line #" + line + " has "
-            + in.length + " Columns: " + printLine(in));
+          writePublicationLogMessage("Line with less columns than mapped. SourceBase:" + mapping.getSource().getName()
+            + " Line #" + line + " has " + in.length + " Columns: " + printLine(in));
           // input row is smaller than the highest mapped column. Resize array by adding nulls
           String[] in2 = new String[maxColumnIndex + 1];
           System.arraycopy(in, 0, in2, 0, in.length);
@@ -539,8 +532,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
         // filter this record?
         boolean alreadyTranslated = false;
-        if (filter != null && filter.getColumn() != null && filter.getComparator() != null
-            && filter.getParam() != null) {
+        if (filter != null && filter.getColumn() != null && filter.getComparator() != null && filter.getParam() != null) {
           boolean matchesFilter;
           if (filter.getFilterTime() == FilterTime.AfterTranslation) {
             int newColumn = translatingRecord(mapping, inCols, in, record);
@@ -550,9 +542,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
             matchesFilter = filter.matches(in, -1);
           }
           if (!matchesFilter) {
-            writePublicationLogMessage(
-              "Line did not match the filter criteria and was skipped. SourceBase:" + mapping.getSource().getName()
-              + " Line #" + line + ": " + printLine(in));
+            writePublicationLogMessage("Line did not match the filter criteria and was skipped. SourceBase:"
+              + mapping.getSource().getName() + " Line #" + line + ": " + printLine(in));
             recordsFiltered++;
             continue;
           }
@@ -588,9 +579,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       log.error("Fatal DwC-A Generator Error encountered", e);
       // set last error report!
       setState(e);
-      throw new GeneratorException(
-        "Error writing data file for mapping " + mapping.getExtension().getName() + " in source " + mapping.getSource()
-          .getName() + ", line " + line, e);
+      throw new GeneratorException("Error writing data file for mapping " + mapping.getExtension().getName()
+        + " in source " + mapping.getSource().getName() + ", line " + line, e);
     } finally {
       if (iter != null) {
         iter.close();
@@ -606,8 +596,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
     // add filter message
     if (recordsFiltered > 0) {
-      addMessage(Level.INFO,
-        String.valueOf(recordsFiltered) + " lines did not match the filter criteria and were skipped");
+      addMessage(Level.INFO, String.valueOf(recordsFiltered)
+        + " lines did not match the filter criteria and were skipped");
     } else {
       writePublicationLogMessage("All lines match the filter criteria.");
     }
@@ -615,7 +605,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
   /**
    * Sets an exception and state of the worker to FAILED. The final StatusReport is generated at the end.
-   *
+   * 
    * @param e exception
    */
   private void setState(Exception e) {
@@ -626,7 +616,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
   /**
    * Sets only the state of the worker. The final StatusReport is generated at the end.
-   *
+   * 
    * @param s STATE of worker
    */
   private void setState(STATE s) {
@@ -691,9 +681,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
   /**
    * Print a line representation of a string array used for logging.
-   *
+   * 
    * @param in String array
-   *
    * @return line
    */
   private String printLine(String[] in) {
@@ -711,7 +700,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
   /**
    * Write message from exception to publication log file as a new line but suffocate any exception thrown.
-   *
+   * 
    * @param e exception to write message from
    */
   private void writeFailureToPublicationLog(Throwable e) {
@@ -731,11 +720,10 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
    * First we need to find the union of all terms mapped and make them a field in the final archive. We keep a static
    * mapping only if it applies to ALL mappings of the same term. While doing this, populate set of conceptTerms that
    * have been mapped (in all files) for a single Extension.
-   *
-   * @param mappings    list of ExtensionMapping
-   * @param af          ArchiveFile
+   * 
+   * @param mappings list of ExtensionMapping
+   * @param af ArchiveFile
    * @param coreRowType core row type
-   *
    * @return set of conceptTerms that have been mapped (in all files) for a single Extension
    */
   private Set<ConceptTerm> addFieldsToArchive(List<ExtensionMapping> mappings, ArchiveFile af, String coreRowType) {
@@ -754,15 +742,11 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
         } else {
           // check if we have a dynamic mapping
           if (pm.getIndex() != null) {
-            // Avoid redundant columns being included in core data file or extension:
-            // no extension should ever include column occurrenceID when the archive has core row type occurrence
-            // no extension should ever include column taxonID when the archive has core row type taxon
-            // At same time ensure taxonId column can be written for core data file, when core row type is occurrence
-            if (pm.getIndex() >= 0 && (
-              (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_OCCURRENCE) && !pm.getTerm().qualifiedName()
-                .equalsIgnoreCase(Constants.DWC_OCCURRENCE_ID)) || (
-                coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON) && !pm.getTerm().qualifiedName()
-                  .equalsIgnoreCase(Constants.DWC_TAXON_ID)))) {
+
+            log.debug("Handling property mapping for term: " + pm.getTerm().qualifiedName() + " (index "
+              + pm.getIndex() + ")");
+
+            if (pm.getIndex() >= 0) {
               // Since all default values ​​will be written in the data file, they won't be expressed in the
               // archive file (meta.xml). That's why we send a null value.
               af.addField(buildField(pm.getTerm(), null));
@@ -783,9 +767,9 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
    * Iterate through ordered list of those ExtensionProperty that have been mapped, and reassign the ArchiveFile
    * ArchiveField indexes, based on the order of their appearance in the ordered list be careful to reserve index 0 for
    * the ID column
-   *
+   * 
    * @param propertyList ordered list of those ExtensionProperty that have been mapped
-   * @param af           ArchiveFile
+   * @param af ArchiveFile
    */
   private void assignIndexesOrderedByExtension(List<ExtensionProperty> propertyList, ArchiveFile af) {
     for (int propertyIndex = 0; propertyIndex < propertyList.size(); propertyIndex++) {
@@ -807,26 +791,25 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
   /**
    * Retrieve the ordered list of all Extension's mapped ExtensionProperty. Ordering is done according to Extension.
-   *
-   * @param ext                Extension
+   * 
+   * @param ext Extension
    * @param mappedConceptTerms set of all mapped ConceptTerm
-   *
    * @return ordered list of mapped ExtensionProperty
    */
-  private List<ExtensionProperty> getOrderedMappedExtensionProperties(Extension ext,
-    Set<ConceptTerm> mappedConceptTerms) {
+  private List<ExtensionProperty>
+    getOrderedMappedExtensionProperties(Extension ext, Set<ConceptTerm> mappedConceptTerms) {
     List<ExtensionProperty> propertyList = new ArrayList<ExtensionProperty>();
     // start with all Extension's ExtensionProperty, in natural order
     propertyList.addAll(ext.getProperties());
 
     // matching (below) should be done on the qualified Normalised Name
     Set<String> names = new HashSet<String>();
-    for (ConceptTerm conceptTerm: mappedConceptTerms) {
+    for (ConceptTerm conceptTerm : mappedConceptTerms) {
       names.add(conceptTerm.qualifiedNormalisedName());
     }
 
     // remove all ExtensionProperty that have not been mapped, leaving the ordered list of those that have been
-    for (Iterator<ExtensionProperty> iterator = propertyList.iterator(); iterator.hasNext(); ) {
+    for (Iterator<ExtensionProperty> iterator = propertyList.iterator(); iterator.hasNext();) {
       ExtensionProperty extensionProperty = iterator.next();
       if (extensionProperty.qualifiedNormalisedName() != null) {
         if (!names.contains(extensionProperty.qualifiedNormalisedName())) {

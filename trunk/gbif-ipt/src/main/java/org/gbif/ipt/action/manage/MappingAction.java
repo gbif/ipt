@@ -58,7 +58,7 @@ import org.apache.log4j.Logger;
  * So the save method is always executed for POST requests, but not for GETs.
  * Please dont add any action errors as this will trigger the validation interceptor and causes problems, use
  * addActionWarning() instead.
- *
+ * 
  * @author markus
  */
 public class MappingAction extends ManagerBaseAction {
@@ -68,9 +68,9 @@ public class MappingAction extends ManagerBaseAction {
 
   private static final Pattern NORM_TERM = Pattern.compile("[\\W\\s_0-9]+");
 
-  private ExtensionManager extensionManager;
-  private SourceManager sourceManager;
-  private VocabulariesManager vocabManager;
+  private final ExtensionManager extensionManager;
+  private final SourceManager sourceManager;
+  private final VocabulariesManager vocabManager;
   // config
   private ExtensionMapping mapping;
   private List<String> columns;
@@ -115,7 +115,7 @@ public class MappingAction extends ManagerBaseAction {
   /**
    * This method automaps a source's columns. First it tries to automap the mappingCoreId column, and then it tries
    * to automap the source's remaining fields against the core/extension.
-   *
+   * 
    * @return the number of terms that have been automapped
    */
   int automap() {
@@ -153,26 +153,6 @@ public class MappingAction extends ManagerBaseAction {
     }
 
     return automapped;
-  }
-
-  /**
-   * Normalizes an incoming column name so that it can later be compared against a ConceptTerm's simpleNormalizedName.
-   * This method converts the incoming string to lower case, and will take the substring up to, but no including the
-   * first ":".
-   *
-   * @param col column name
-   *
-   * @return the normalized column name, or null if the incoming name was null or empty
-   */
-  String normalizeColumnName(String col) {
-    if (!Strings.isNullOrEmpty(col)) {
-      col = NORM_TERM.matcher(col.toLowerCase()).replaceAll("");
-      if (col.contains(":")) {
-        col = StringUtils.substringAfter(col, ":");
-      }
-      return col;
-    }
-    return null;
   }
 
   public String cancel() {
@@ -254,9 +234,29 @@ public class MappingAction extends ManagerBaseAction {
     return vocabTerms;
   }
 
+  /**
+   * Normalizes an incoming column name so that it can later be compared against a ConceptTerm's simpleNormalizedName.
+   * This method converts the incoming string to lower case, and will take the substring up to, but no including the
+   * first ":".
+   * 
+   * @param col column name
+   * @return the normalized column name, or null if the incoming name was null or empty
+   */
+  String normalizeColumnName(String col) {
+    if (!Strings.isNullOrEmpty(col)) {
+      col = NORM_TERM.matcher(col.toLowerCase()).replaceAll("");
+      if (col.contains(":")) {
+        col = StringUtils.substringAfter(col, ":");
+      }
+      return col;
+    }
+    return null;
+  }
+
   @Override
   public void prepare() {
     super.prepare();
+
     // get mapping sequence id from parameters as setters are not called yet
     String midStr = StringUtils.trimToNull(req.getParameter("mid"));
     if (midStr != null) {
@@ -289,7 +289,9 @@ public class MappingAction extends ManagerBaseAction {
       notFound = true;
     }
 
+
     if (mapping != null || mapping.getExtension() != null) {
+
       // is source assigned yet?
       if (mapping.getSource() == null) {
         // get source parameter as setters are not called yet
@@ -312,12 +314,13 @@ public class MappingAction extends ManagerBaseAction {
         // not yet set, the current mapping must be the core type
         coreRowType = mapping.getExtension().getRowType();
       }
+      log.info("Core row type: " + coreRowType);
+
       // setup the core record id term
-      String coreIdTerm = Constants.DWC_OCCURRENCE_ID;
-      if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON)) {
-        coreIdTerm = Constants.DWC_TAXON_ID;
-      }
+      String coreIdTerm = AppConfig.coreIdTerm(coreRowType);
+
       coreid = extensionManager.get(coreRowType).getProperty(coreIdTerm);
+      log.info("Field representing the id for the core: " + coreid);
       mappingCoreid = mapping.getField(coreid.getQualname());
       if (mappingCoreid == null) {
         // no, create bare mapping field
@@ -328,6 +331,9 @@ public class MappingAction extends ManagerBaseAction {
 
       // inspect source
       readSource();
+
+      log.info("Core ID field determined as " + coreid);
+
 
       // prepare all other fields
       fields = new ArrayList<PropertyMapping>(mapping.getExtension().getProperties().size());
@@ -417,32 +423,12 @@ public class MappingAction extends ManagerBaseAction {
     return defaultResult;
   }
 
-  /**
-   * Update resource core type. This must be done every time the resource's core type mapping is being modified, or
-   * deleted. If it is the 1st mapping of the core type, the core type won't have been set yet. Only if 1 or more
-   * mapped fields were saved, can we consider the mapping to have been legitimate. Furthermore, if the
-   * core type mapping is being deleted, then the resource must reset its core type to null.
-   *
-   * @param mapping      ExtensionMapping
-   * @param mappedFields the number of mapped fields in the mapping - set to 0 if the mapping is to be deleted
-   */
-  void updateResourceCoreType(ExtensionMapping mapping, int mappedFields) {
-    // proceed only if we're dealing with the core type mapping
-    if (mapping.isCore()) {
-      // must be 1 or more mapped fields for mapping to be legitimate
-      if (mappedFields > 0) {
-        resource.setCoreType(resource.getCoreRowType().equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON) ? StringUtils
-          .capitalize(CoreRowType.CHECKLIST.toString()) : StringUtils.capitalize(CoreRowType.OCCURRENCE.toString()));
-      }
-      // otherwise, reset core type!
-      else {
-        resource.setCoreType(null);
-      }
-    }
-  }
-
   public String saveSetSource() {
     return INPUT;
+  }
+
+  public void setColumns(List<String> columns) {
+    this.columns = columns;
   }
 
   public void setFields(List<PropertyMapping> fields) {
@@ -461,7 +447,27 @@ public class MappingAction extends ManagerBaseAction {
     this.mid = mid;
   }
 
-  public void setColumns(List<String> columns) {
-    this.columns = columns;
+  /**
+   * Update resource core type. This must be done every time the resource's core type mapping is being modified, or
+   * deleted. If it is the 1st mapping of the core type, the core type won't have been set yet. Only if 1 or more
+   * mapped fields were saved, can we consider the mapping to have been legitimate. Furthermore, if the
+   * core type mapping is being deleted, then the resource must reset its core type to null.
+   * 
+   * @param mapping ExtensionMapping
+   * @param mappedFields the number of mapped fields in the mapping - set to 0 if the mapping is to be deleted
+   */
+  void updateResourceCoreType(ExtensionMapping mapping, int mappedFields) {
+    // proceed only if we're dealing with the core type mapping
+    if (mapping.isCore()) {
+      // must be 1 or more mapped fields for mapping to be legitimate
+      if (mappedFields > 0) {
+        resource.setCoreType(resource.getCoreRowType().equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON) ? StringUtils
+          .capitalize(CoreRowType.CHECKLIST.toString()) : StringUtils.capitalize(CoreRowType.OCCURRENCE.toString()));
+      }
+      // otherwise, reset core type!
+      else {
+        resource.setCoreType(null);
+      }
+    }
   }
 }
