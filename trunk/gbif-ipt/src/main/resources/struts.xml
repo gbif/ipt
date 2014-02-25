@@ -138,6 +138,8 @@
     </action>
     <action name="setup3" class="org.gbif.ipt.config.SetupAction" method="setup3">
       <result name="input">/WEB-INF/pages/admin/setup3.ftl</result>
+    </action>
+    <action name="setupComplete">
       <result type="redirect">/admin/</result>
     </action>
 
