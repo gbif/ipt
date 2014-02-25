@@ -14,8 +14,16 @@ import java.io.OutputStream;
 import java.io.Writer;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
+import com.google.common.base.Splitter;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.gson.annotations.Since;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.commons.io.FileUtils;
@@ -33,6 +41,9 @@ public class AppConfig {
   protected static final String DATADIR_PROPFILE = "ipt.properties";
   private static final String CLASSPATH_PROPFILE = "application.properties";
   public static final String BASEURL = "ipt.baseURL";
+  @Since(2.1)
+  public static final String CORE_ROW_TYPES = "ipt.core_rowTypes";
+  public static final String CORE_ROW_ID_TERMS = "ipt.core_idTerms";
   public static final String PROXY = "proxy";
   public static final String DEBUG = "debug";
   public static final String ARCHIVAL_MODE = "archivalMode";
@@ -46,6 +57,19 @@ public class AppConfig {
   private DataDir dataDir;
   private REGISTRY_TYPE type;
 
+  // to support compatibility with historical data directories, we default to the original hard coded
+  // types that were scattered across the code.
+  private static final List<String> DEFAULT_CORE_ROW_TYPES = ImmutableList.of(Constants.DWC_ROWTYPE_OCCURRENCE,
+    Constants.DWC_ROWTYPE_TAXON);
+  // mapping of the id to the term that is the row ID
+  private static final Map<String, String> DEFAULT_CORE_ROW_TYPES_ID_TERMS = Maps
+    .newHashMap((ImmutableMap.of(Constants.DWC_ROWTYPE_OCCURRENCE, Constants.DWC_OCCURRENCE_ID,
+      Constants.DWC_ROWTYPE_TAXON, Constants.DWC_TAXON_ID)));
+
+
+  private static List<String> coreRowTypes = DEFAULT_CORE_ROW_TYPES;
+  private static Map<String, String> coreRowTypeIdTerms = DEFAULT_CORE_ROW_TYPES_ID_TERMS;
+
   private AppConfig() {
   }
 
@@ -53,21 +77,43 @@ public class AppConfig {
   public AppConfig(DataDir dataDir) throws InvalidConfigException {
     this.dataDir = dataDir;
     // also loaded via ConfigManager constructor if datadir was linked at startup already
-    // If it wasnt, this is the only place to load at least the default classpath config settings
+    // If it wasn't, this is the only place to load at least the default classpath config settings
     loadConfig();
+
+  }
+
+  /**
+   * Returns the term to use as the ID for core.
+   * 
+   * @return The expected field for the given core.
+   */
+  public static String coreIdTerm(String rowType) {
+    if (coreRowTypeIdTerms.containsKey(rowType)) {
+      return coreRowTypeIdTerms.get(rowType);
+    } else {
+      throw new IllegalArgumentException("IPT is not configured correctly to support rowType[" + rowType
+        + "].  Hint: are you missing mappings for the row type and id term in the properties?");
+    }
+  }
+
+  /**
+   * Returns the core types that the application is configured to support.
+   * Exposed with static accessor to allow model objects to access this without the need for dependency
+   * injection. This is set during
+   */
+  public static List<String> getCoreRowTypes() {
+    return coreRowTypes;
+  }
+
+  /**
+   * @return true if the row type is suitable for use as a core.
+   */
+  public static boolean isCore(String rowType) {
+    return coreRowTypes.contains(rowType);
   }
 
   public boolean debug() {
     return "true".equalsIgnoreCase(properties.getProperty(DEBUG));
-  }
-
-  /**
-   * Checks whether the IPT has been configured to use archival mode.
-   *
-   * @return whether the IPT is used in archival mode
-   */
-  public boolean isArchivalMode() {
-    return "true".equalsIgnoreCase(properties.getProperty(ARCHIVAL_MODE));
   }
 
   public boolean devMode() {
@@ -172,13 +218,21 @@ public class AppConfig {
     return false;
   }
 
+  /**
+   * Checks whether the IPT has been configured to use archival mode.
+   * 
+   * @return whether the IPT is used in archival mode
+   */
+  public boolean isArchivalMode() {
+    return "true".equalsIgnoreCase(properties.getProperty(ARCHIVAL_MODE));
+  }
+
   public boolean isGbifAnalytics() {
     return "true".equalsIgnoreCase(properties.getProperty(ANALYTICS_GBIF));
   }
 
   /**
    * @return true if the datadir is linked to the production registry
-   *
    * @deprecated Deprecated in favor of {@link #getRegistryType()}
    */
   @Deprecated
@@ -226,9 +280,45 @@ public class AppConfig {
       }
       // without error replace existing config with new one
       this.properties = props;
+
+      populateCoreConfiguration();
+
     } catch (IOException e) {
       LOG.error("Failed to load the default application configuration from application.properties", e);
     }
+  }
+
+  /**
+   * Reads the configuration and populates the cores supported and mapping between core and the ID term to use
+   * for the core.
+   */
+  private void populateCoreConfiguration() {
+    String cores = properties.getProperty(CORE_ROW_TYPES);
+    String ids = properties.getProperty(CORE_ROW_ID_TERMS);
+    if (cores != null && ids != null) {
+      LOG.info("Using custom core mapping");
+      List<String> configCores = Lists.newArrayList(Splitter.on('|').trimResults().omitEmptyStrings().split(cores));
+      List<String> configIDs = Lists.newArrayList(Splitter.on('|').trimResults().omitEmptyStrings().split(ids));
+
+      if (configCores.size() == configIDs.size()) {
+        coreRowTypes = Lists.newArrayList(DEFAULT_CORE_ROW_TYPES);
+        coreRowTypes.addAll(configCores);
+
+        coreRowTypeIdTerms = Maps.newHashMap(DEFAULT_CORE_ROW_TYPES_ID_TERMS);
+        for (int i = 0; i < configCores.size(); i++) {
+          coreRowTypeIdTerms.put(configCores.get(i), configIDs.get(i));
+        }
+        LOG.info("IPT configured to support cores and id terms: " + coreRowTypeIdTerms);
+        return;
+
+      } else {
+        LOG.error("Invalid configuration of [" + CORE_ROW_TYPES + "," + CORE_ROW_ID_TERMS
+          + "].  Should have same number of elements - using defaults");
+      }
+    }
+
+    coreRowTypes = DEFAULT_CORE_ROW_TYPES;
+    coreRowTypeIdTerms = DEFAULT_CORE_ROW_TYPES_ID_TERMS;
   }
 
   /**
@@ -289,8 +379,8 @@ public class AppConfig {
         // already contains the same information. Dont do anything
         return;
       } else {
-        throw new InvalidConfigException(TYPE.DATADIR_ALREADY_REGISTERED,
-          "The datadir is already designated as " + this.type);
+        throw new InvalidConfigException(TYPE.DATADIR_ALREADY_REGISTERED, "The datadir is already designated as "
+          + this.type);
       }
     }
     // set lock file if not yet existing

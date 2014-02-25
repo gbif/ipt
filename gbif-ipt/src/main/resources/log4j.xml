@@ -52,6 +52,12 @@
   <logger name="com.opensymphony.xwork2">
     <level value="WARN"/>
   </logger>
+  <!-- Avoid the terrible:
+       "Developer Notification (set struts.devMode to false to disable this message):"
+  -->
+  <logger name="com.opensymphony.xwork2.interceptor.ParametersInterceptor">
+    <level value="FATAL"/>
+  </logger>
   <logger name="freemarker">
     <level value="WARN"/>
   </logger>

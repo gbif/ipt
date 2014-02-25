@@ -489,12 +489,18 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       Map<String, TextFileSource> sources = new HashMap<String, TextFileSource>();
       if (arch.getCore() != null) {
 
-        // determine coreType for the resource
+        // determine coreType for the resource based on the rowType
         String coreRowType = StringUtils.trimToNull(arch.getCore().getRowType());
-        coreRowType = (coreRowType != null && coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON)) ?
-          StringUtils.capitalize(CoreRowType.CHECKLIST.toString().toLowerCase()) :
-          StringUtils.capitalize(CoreRowType.OCCURRENCE.toString().toLowerCase());
-
+        if (Constants.DWC_ROWTYPE_TAXON.equalsIgnoreCase(coreRowType)) {
+          // Taxon
+          coreRowType = StringUtils.capitalize(CoreRowType.CHECKLIST.toString().toLowerCase());
+        } else if (Constants.DWC_ROWTYPE_OCCURRENCE.equalsIgnoreCase(coreRowType)) {
+          // Occurrence
+          coreRowType = StringUtils.capitalize(CoreRowType.OCCURRENCE.toString().toLowerCase());
+        } else {
+          coreRowType = StringUtils.capitalize(CoreRowType.OTHER.toString().toLowerCase());
+        }
+        
         // create new resource
         resource = create(shortname, coreRowType, creator);
 

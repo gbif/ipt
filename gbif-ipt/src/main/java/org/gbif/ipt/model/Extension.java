@@ -1,7 +1,7 @@
 package org.gbif.ipt.model;
 
 import org.gbif.dwc.terms.ConceptTerm;
-import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.config.AppConfig;
 
 import java.io.Serializable;
 import java.net.MalformedURLException;
@@ -36,7 +36,6 @@ public class Extension implements Serializable {
   private URL link; // to documentation
   private boolean installed;
   private List<ExtensionProperty> properties = new ArrayList<ExtensionProperty>();
-  private boolean core = false;
   private Date modified = new Date();
 
   public void addProperty(ExtensionProperty property) {
@@ -130,7 +129,9 @@ public class Extension implements Serializable {
   }
 
   public boolean isCore() {
-    return core;
+    // the IPT can be configured to support different core types
+    // Remember that being a core does not exclude the use as a leaf in the star schema
+    return AppConfig.isCore(rowType);
   }
 
   public boolean isInstalled() {
@@ -186,8 +187,6 @@ public class Extension implements Serializable {
   }
 
   public void setRowType(String rowType) {
-    core = Constants.DWC_ROWTYPE_OCCURRENCE.equalsIgnoreCase(rowType) || Constants.DWC_ROWTYPE_TAXON
-      .equalsIgnoreCase(rowType);
     this.rowType = rowType;
   }
 

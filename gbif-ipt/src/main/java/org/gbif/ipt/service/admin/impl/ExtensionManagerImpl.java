@@ -31,10 +31,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import javax.xml.parsers.ParserConfigurationException;
 
+import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.commons.io.FileExistsException;
@@ -55,26 +58,26 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   protected static final String CONFIG_FOLDER = ".extensions";
   private final static String TAXON_KEYWORD = "dwc:taxon";
   private final static String OCCURRENCE_KEYWORD = "dwc:occurrence";
-  private Map<String, Extension> extensionsByRowtype = new HashMap<String, Extension>();
-  private ExtensionFactory factory;
-  private HttpUtil downloader;
-  private ResourceManager resourceManager;
-  private ConfigWarnings warnings;
-  private RegistryManager registryManager;
+  private final Map<String, Extension> extensionsByRowtype = new HashMap<String, Extension>();
+  private final ExtensionFactory factory;
+  private final HttpUtil downloader;
+  private final ResourceManager resourceManager;
+  private final ConfigWarnings warnings;
+  private final RegistryManager registryManager;
 
   // create instance of BaseAction - allows class to retrieve i18n terms via getText()
-  private BaseAction baseAction;
+  private final BaseAction baseAction;
 
   @Inject
-  public ExtensionManagerImpl(AppConfig cfg, DataDir dataDir, ExtensionFactory factory, ResourceManager resourceManager,
-    HttpUtil httpUtil, ConfigWarnings warnings, SimpleTextProvider textProvider,
+  public ExtensionManagerImpl(AppConfig cfg, DataDir dataDir, ExtensionFactory factory,
+    ResourceManager resourceManager, HttpUtil httpUtil, ConfigWarnings warnings, SimpleTextProvider textProvider,
     RegistrationManager registrationManager, RegistryManager registryManager) {
     super(cfg, dataDir);
     this.factory = factory;
     this.resourceManager = resourceManager;
     this.downloader = httpUtil;
     this.warnings = warnings;
-    baseAction = new BaseAction(textProvider, cfg, registrationManager);
+    this.baseAction = new BaseAction(textProvider, cfg, registrationManager);
     this.registryManager = registryManager;
   }
 
@@ -123,6 +126,53 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     return extensionsByRowtype.get(normalizeRowType(rowType));
   }
 
+  /**
+   * Retrieve a list containing all core type extensions from the registry.
+   * 
+   * @return list containing all core type extensions.
+   */
+  private List<Extension> getCoreTypes() {
+    List<Extension> coreTypes = new ArrayList<Extension>();
+
+    // copy used to allow a warning message for anything not mapped
+    List<String> coreTypesCopy = Lists.newArrayList(AppConfig.getCoreRowTypes());
+    try {
+
+      for (Extension ext : registryManager.getExtensions()) {
+        log.debug("Extension from registry: " + ext.getRowType());
+
+        Iterator<String> iter = coreTypesCopy.iterator();
+        while (iter.hasNext()) {
+          String rowType = iter.next();
+          if (rowType.equals(normalizeRowType(ext.getRowType()))) {
+            coreTypes.add(ext);
+            iter.remove(); // it's mapped
+            break;
+          }
+        }
+      }
+    } catch (RegistryException e) {
+      // log as specific error message as possible about why the Registry error occurred
+      String msg = RegistryException.logRegistryException(e.getType(), baseAction);
+      // add startup error message about Registry error
+      warnings.addStartupError(msg);
+      log.error(msg);
+
+      // add startup error message that explains the consequence of the Registry error
+      msg = baseAction.getText("admin.extensions.couldnt.load", new String[] {cfg.getRegistryUrl()});
+      warnings.addStartupError(msg);
+      log.error(msg);
+    }
+
+    // Warn users if there are any core types that do not have a mapping to a type
+    if (!coreTypesCopy.isEmpty()) {
+      log.error("The IPT appears to be misconfigured.  The following core types are not mapped to an ID field: "
+        + coreTypesCopy);
+    }
+
+    return coreTypes;
+  }
+
   private File getExtensionFile(String rowType) {
     String filename = rowType.replaceAll("[/.:]+", "_") + ".xml";
     return dataDir.configFile(CONFIG_FOLDER + "/" + filename);
@@ -131,9 +181,8 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   /**
    * Download extension into local file. The final filename is based on the extension's rowType. This isn't known until
    * the download is complete, so a temporary file is stored first.
-   *
+   * 
    * @param url the url that returns the xml based extension definition
-   *
    * @return the installed extension
    */
   public synchronized Extension install(URL url) throws InvalidConfigException {
@@ -157,8 +206,8 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
         }
       } else {
 
-        log.error("Download of extension with url ( " + address + ") failed, the response code was " + String
-          .valueOf(statusLine.getStatusCode()));
+        log.error("Download of extension with url ( " + address + ") failed, the response code was "
+          + String.valueOf(statusLine.getStatusCode()));
       }
     } catch (InvalidConfigException e) {
       throw e;
@@ -176,6 +225,18 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     return ext;
   }
 
+  /**
+   * Install core type extensions.
+   * 
+   * @throws InvalidConfigException if installation of a core type extension failed
+   */
+  public void installCoreTypes() throws InvalidConfigException {
+    List<Extension> extensions = getCoreTypes();
+    for (Extension ext : extensions) {
+      install(ext.getUrl());
+    }
+  }
+
   public List<Extension> list() {
     return new ArrayList<Extension>(extensionsByRowtype.values());
   }
@@ -185,20 +246,28 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
       return search(OCCURRENCE_KEYWORD, true, false);
     } else if (coreRowType != null && coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON)) {
       return search(TAXON_KEYWORD, true, false);
+    } else if (coreRowType != null) {
+      // search using the fully qualified core name (e.g. with http://rs.tdwg.org/dwc/terms/Occurrence)
+      // and include any with no scoping
+      return search(coreRowType, true, false);
     } else {
+      // no core type
       return list();
     }
   }
 
+  /**
+   * Returns those extensions that are suitable for use as a core.
+   * 
+   * @return The extensions or an empty list
+   */
   public List<Extension> listCore() {
-    List<Extension> list = new ArrayList<Extension>();
-    Extension e = get(Constants.DWC_ROWTYPE_OCCURRENCE);
-    if (e != null) {
-      list.add(e);
-    }
-    e = get(Constants.DWC_ROWTYPE_TAXON);
-    if (e != null) {
-      list.add(e);
+    List<Extension> list = Lists.newArrayList();
+    for (String rowType : AppConfig.getCoreRowTypes()) {
+      Extension e = get(rowType);
+      if (e != null) {
+        list.add(e);
+      }
     }
     return list;
   }
@@ -264,11 +333,12 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     return ext;
   }
 
+
   /**
    * List all available extensions matching a registered keyword.
-   *
-   * @param keyword               to filter by, e.g. dwc:Taxon for all taxonomic extensions
-   * @param includeEmptySubject   must the subject be empty
+   * 
+   * @param keyword to filter by, e.g. dwc:Taxon for all taxonomic extensions
+   * @param includeEmptySubject must the subject be empty
    * @param includeCoreExtensions must the extension be a core type
    */
   private List<Extension> search(String keyword, boolean includeEmptySubject, boolean includeCoreExtensions) {
@@ -280,56 +350,12 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
         if (!includeCoreExtensions && e.isCore()) {
           continue;
         }
-        if (includeEmptySubject && StringUtils.trimToNull(e.getSubject()) == null || StringUtils
-          .containsIgnoreCase(e.getSubject(), keyword)) {
+        if (includeEmptySubject && StringUtils.trimToNull(e.getSubject()) == null
+          || StringUtils.containsIgnoreCase(e.getSubject(), keyword)) {
           list.add(e);
         }
       }
     }
     return list;
-  }
-
-  /**
-   * Install core type extensions.
-   *
-   * @throws InvalidConfigException if installation of a core type extension failed
-   */
-  public void installCoreTypes() throws InvalidConfigException {
-    List<Extension> extensions = getCoreTypes();
-    for (Extension ext : extensions) {
-      install(ext.getUrl());
-    }
-  }
-
-
-  /**
-   * Retrieve a list containing all core type extensions.
-   *
-   * @return list containing all core type extensions
-   */
-  private List<Extension> getCoreTypes() {
-    List<Extension> coreTypes = new ArrayList<Extension>();
-    try {
-      for (Extension ext : registryManager.getExtensions()) {
-        if (Constants.DWC_ROWTYPE_OCCURRENCE.equals(normalizeRowType(ext.getRowType()))) {
-          coreTypes.add(ext);
-        }
-        if (Constants.DWC_ROWTYPE_TAXON.equals(normalizeRowType(ext.getRowType()))) {
-          coreTypes.add(ext);
-        }
-      }
-    } catch (RegistryException e) {
-      // log as specific error message as possible about why the Registry error occurred
-      String msg = RegistryException.logRegistryException(e.getType(), baseAction);
-      // add startup error message about Registry error
-      warnings.addStartupError(msg);
-      log.error(msg);
-
-      // add startup error message that explains the consequence of the Registry error
-      msg = baseAction.getText("admin.extensions.couldnt.load", new String[] {cfg.getRegistryUrl()});
-      warnings.addStartupError(msg);
-      log.error(msg);
-    }
-    return coreTypes;
   }
 }
