@@ -31,6 +31,7 @@ import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.SourceException;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.utils.file.ClosableIterator;
+import org.gbif.utils.file.ClosableReportingIterator;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -161,7 +162,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     }
   }
 
-  private class SqlRowIterator implements ClosableIterator<String[]> {
+  private class SqlRowIterator implements ClosableReportingIterator<String[]> {
 
     private final Connection conn;
     private final Statement stmt;
@@ -169,6 +170,9 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     private boolean hasNext;
     private final String sourceName;
     private final int rowSize;
+    private boolean rowError;
+    private String errorMessage;
+    private Exception exception;
 
     SqlRowIterator(SqlSource source) throws SQLException {
       this.conn = getDbConnection(source);
@@ -178,6 +182,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       this.rowSize = rs.getMetaData().getColumnCount();
       this.hasNext = rs.next();
       sourceName = source.getName();
+      this.rowError = false;
     }
 
     public void close() {
@@ -201,20 +206,66 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       String[] val = new String[rowSize];
       if (hasNext) {
         try {
-          for (int i = 1; i <= rowSize; i++) {
-            val[i - 1] = rs.getString(i);
+          resetReportingIterator();
+          int gotTo = 0; // field reached in row
+          try {
+            for (int i = 1; i <= rowSize; i++) {
+              val[i - 1] = rs.getString(i);
+              gotTo = i;
+            }
+          } catch (SQLException exOnRow) {
+            log.debug("Exception caught reading row: " + exOnRow.getMessage(), exOnRow);
+            rowError = true;
+            exception = exOnRow;
+
+            // construct error message showing exception and problem row
+            StringBuilder msg = new StringBuilder();
+            msg.append("Exception caught reading row: ");
+            msg.append(exOnRow.getMessage());
+            msg.append("\n");
+            msg.append("Row: ");
+            for (int i=0; i<gotTo; i++) {
+              msg.append("[").append(val[i]).append("]");
+            }
+            errorMessage = msg.toString();
+          } finally {
+            // forward rs cursor
+            hasNext = rs.next();
           }
-          // forward rs cursor
-          hasNext = rs.next();
         } catch (SQLException e2) {
+          // Exception on advancing cursor, assume no more rows.
+          log.debug("Exception caught advancing cursor: " + e2.getMessage(), e2);
           hasNext = false;
+          exception = e2;
+          errorMessage = e2.getMessage();
         }
       }
       return val;
     }
 
+    /**
+     * Reset all iterator reporting parameters.
+     */
+    private void resetReportingIterator() {
+      rowError = false;
+      exception = null;
+      errorMessage = null;
+    }
+
     public void remove() {
       // unsupported
+    }
+
+    public boolean hasRowError() {
+      return rowError;
+    }
+
+    public String getErrorMessage() {
+      return errorMessage;
+    }
+
+    public Exception getException() {
+      return exception;
     }
   }
 
@@ -653,7 +704,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     return preview;
   }
 
-  public ClosableIterator<String[]> rowIterator(Source source) throws SourceException {
+  public ClosableReportingIterator<String[]> rowIterator(Source source) throws SourceException {
     if (source == null) {
       return null;
     }
@@ -661,11 +712,11 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       if (source instanceof SqlSource) {
         return new SqlRowIterator((SqlSource) source);
       }
-    // both excel and file implement FileSource
+      // both excel and file implement FileSource
       return ((FileSource) source).rowIterator();
 
     } catch (Exception e) {
-      log.error(e);
+      log.error("Exception while reading source " + source.getName(), e);
       throw new SourceException("Cant build iterator for source " + source.getName() + " :" + e.getMessage());
     }
   }

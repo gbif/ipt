@@ -1,6 +1,6 @@
 package org.gbif.ipt.model;
 
-import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
 import org.gbif.ipt.model.voc.MaintUpFreqType;
 import org.gbif.ipt.model.voc.PublicationMode;
@@ -38,7 +38,7 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   private static Logger log = Logger.getLogger(Resource.class);
 
-  private static final TermFactory FACT = new TermFactory();
+  private static final TermFactory TERM_FACTORY = TermFactory.instance();
 
   private static final long serialVersionUID = 3832626162173352190L;
   private String shortname; // unique
@@ -201,10 +201,10 @@ public class Resource implements Serializable, Comparable<Resource> {
     return coreType;
   }
 
-  public ConceptTerm getCoreTypeTerm() {
+  public Term getCoreTypeTerm() {
     List<ExtensionMapping> cores = getCoreMappings();
     if (!cores.isEmpty()) {
-      return FACT.findTerm(cores.get(0).getExtension().getRowType());
+      return TERM_FACTORY.findTerm(cores.get(0).getExtension().getRowType());
     }
     return null;
   }

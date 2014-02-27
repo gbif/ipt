@@ -7,8 +7,7 @@
  */
 package org.gbif.ipt.model;
 
-import org.gbif.dwc.terms.ConceptTerm;
-import org.gbif.dwc.terms.TermFactory;
+import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.text.ArchiveField.DataType;
 
 import java.io.Serializable;
@@ -24,7 +23,7 @@ import static com.google.common.base.Objects.equal;
  * <p/>
  * Natural sorting is based on the group and then the property name
  */
-public class ExtensionProperty implements Comparable<ExtensionProperty>, ConceptTerm, Serializable {
+public class ExtensionProperty implements Comparable<ExtensionProperty>, Term, Serializable {
 
   private static final long serialVersionUID = 698996553L;
   private Extension extension;
@@ -135,10 +134,6 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Concept
     return qualname;
   }
 
-  public String qualifiedNormalisedName() {
-    return TermFactory.normaliseTerm(qualifiedName());
-  }
-
   public void setDescription(String description) {
     this.description = description;
   }
@@ -203,14 +198,6 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Concept
 
   public String simpleName() {
     return name;
-  }
-
-  public String[] simpleNormalisedAlternativeNames() {
-    return new String[] {};
-  }
-
-  public String simpleNormalisedName() {
-    return TermFactory.normaliseTerm(simpleName());
   }
 
   @Override

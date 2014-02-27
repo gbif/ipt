@@ -1,6 +1,6 @@
 package org.gbif.ipt.model;
 
-import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.terms.Term;
 import org.gbif.ipt.config.AppConfig;
 
 import java.io.Serializable;
@@ -83,7 +83,7 @@ public class Extension implements Serializable {
     return properties;
   }
 
-  public ExtensionProperty getProperty(ConceptTerm term) {
+  public ExtensionProperty getProperty(Term term) {
     return getProperty(term.qualifiedName());
   }
 
@@ -120,7 +120,7 @@ public class Extension implements Serializable {
     return Objects.hashCode(rowType);
   }
 
-  public boolean hasProperty(ConceptTerm term) {
+  public boolean hasProperty(Term term) {
     return getProperty(term) != null;
   }
 

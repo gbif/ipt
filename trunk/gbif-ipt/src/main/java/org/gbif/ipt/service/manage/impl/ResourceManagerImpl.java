@@ -1,6 +1,6 @@
 package org.gbif.ipt.service.manage.impl;
 
-import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.DcTerm;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.terms.GbifTerm;
@@ -611,11 +611,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // encrypt passwords
     xstream.registerConverter(passwordConverter);
 
-    xstream.addDefaultImplementation(ExtensionProperty.class, ConceptTerm.class);
-    xstream.addDefaultImplementation(DwcTerm.class, ConceptTerm.class);
-    xstream.addDefaultImplementation(DcTerm.class, ConceptTerm.class);
-    xstream.addDefaultImplementation(GbifTerm.class, ConceptTerm.class);
-    xstream.addDefaultImplementation(IucnTerm.class, ConceptTerm.class);
+    xstream.addDefaultImplementation(ExtensionProperty.class, Term.class);
+    xstream.addDefaultImplementation(DwcTerm.class, Term.class);
+    xstream.addDefaultImplementation(DcTerm.class, Term.class);
+    xstream.addDefaultImplementation(GbifTerm.class, Term.class);
+    xstream.addDefaultImplementation(IucnTerm.class, Term.class);
     xstream.registerConverter(orgConverter);
     xstream.registerConverter(jdbcInfoConverter);
   }
