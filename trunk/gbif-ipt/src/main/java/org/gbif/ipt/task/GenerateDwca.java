@@ -250,9 +250,10 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
   private void bundleArchive() throws GeneratorException, InterruptedException {
     checkForInterruption();
     setState(STATE.BUNDLING);
+    File zip = null;
     try {
       // create zip
-      File zip = dataDir.tmpFile("dwca", ".zip");
+      zip = dataDir.tmpFile("dwca", ".zip");
       CompressionUtil.zipDir(dwcaFolder, zip);
       if (zip.exists()) {
         // move to data dir
@@ -266,6 +267,12 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       }
     } catch (IOException e) {
       throw new GeneratorException("Problem occurred while bundling DwC-A", e);
+    } finally {
+      // cleanup zip directory, if compression was incomplete for example due to Exception
+      // if moving zip to data dir was successful, it won't exist any more and cleanup will be skipped
+      if (zip != null && zip.exists()) {
+        FileUtils.deleteQuietly(zip);
+      }
     }
     // final reporting
     addMessage(Level.INFO, "Archive compressed");
@@ -357,6 +364,10 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       writeFailureToPublicationLog(e);
       throw new GeneratorException(e);
     } finally {
+      // cleanup temp dir that was used to store dwca files
+      if (dwcaFolder != null && dwcaFolder.exists()) {
+        FileUtils.deleteQuietly(dwcaFolder);
+      }
       // ensure publication log writer is closed
       closePublicationLogWriter();
     }
