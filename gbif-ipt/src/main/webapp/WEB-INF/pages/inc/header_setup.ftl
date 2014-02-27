@@ -45,7 +45,7 @@
                     <!-- add more languages as translations become available. -->                           
                     <!-- #list ["en","es","fr","de"] as lang -->
                     <!-- modify global.js langs() also -->
-                    [#list ["en","fr","es", "zh", "pt"] as lang]
+                    [#list ["en","fr","es", "zh", "pt", "ja"] as lang]
                       [#if localeLanguage!=lang]
                       <li><a href="?request_locale=${lang}"><img src="${baseURL}/images/flags/flag_${lang}.png"/></a></li>
                       [/#if]
