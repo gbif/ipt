@@ -1,6 +1,6 @@
 package org.gbif.ipt.model;
 
-import org.gbif.utils.file.ClosableIterator;
+import org.gbif.utils.file.ClosableReportingIterator;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +32,7 @@ public interface FileSource extends Source {
    */
   Set<Integer> analyze() throws IOException;
 
-  ClosableIterator<String[]> rowIterator();
+  ClosableReportingIterator<String[]> rowIterator();
 
   List<String> columns();
 }

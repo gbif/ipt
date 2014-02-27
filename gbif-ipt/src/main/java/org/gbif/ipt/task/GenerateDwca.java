@@ -1,12 +1,12 @@
 package org.gbif.ipt.task;
 
-import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.terms.Term;
+import org.gbif.dwc.terms.TermFactory;
 import org.gbif.dwc.text.Archive;
 import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveFile;
 import org.gbif.dwc.text.MetaDescriptorWriter;
 import org.gbif.ipt.config.AppConfig;
-import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
@@ -16,7 +16,7 @@ import org.gbif.ipt.model.RecordFilter;
 import org.gbif.ipt.model.RecordFilter.FilterTime;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.manage.SourceManager;
-import org.gbif.utils.file.ClosableIterator;
+import org.gbif.utils.file.ClosableReportingIterator;
 import org.gbif.utils.file.CompressionUtil;
 
 import java.io.File;
@@ -59,6 +59,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
   private final SourceManager sourceManager;
   private Exception exception;
   private AppConfig cfg;
+  private static final TermFactory TERM_FACTORY = TermFactory.instance();
   public static final String CANCELLED_STATE_MSG = "Archive generation cancelled";
   public static final String ID_COLUMN_NAME = "id";
 
@@ -112,7 +113,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     af.setId(idField);
 
     // find the union of all terms mapped and make them a field in the final archive
-    Set<ConceptTerm> mappedConceptTerms = addFieldsToArchive(mappings, af, coreRowType);
+    Set<Term> mappedConceptTerms = addFieldsToArchive(mappings, af);
 
     // retrieve the ordered list of mapped ExtensionProperty
     List<ExtensionProperty> propertyList = getOrderedMappedExtensionProperties(ext, mappedConceptTerms);
@@ -232,7 +233,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
    * @param defaultValue default value
    * @return ArchiveField created
    */
-  private ArchiveField buildField(ConceptTerm term, @Nullable String defaultValue) {
+  private ArchiveField buildField(Term term, @Nullable String defaultValue) {
     ArchiveField f = new ArchiveField();
     f.setTerm(term);
     f.setDefaultValue(defaultValue);
@@ -501,7 +502,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
     int linesWithWrongColumnNumber = 0;
     int recordsFiltered = 0;
-    ClosableIterator<String[]> iter = null;
+    ClosableReportingIterator<String[]> iter = null;
     int line = 0;
     try {
       // get the source iterator
@@ -509,6 +510,10 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
       while (iter.hasNext()) {
         line++;
+        // Exception on reading row was encountered
+        if (iter.hasRowError()) {
+          writePublicationLogMessage("Error reading line #" + line + "\n" + iter.getErrorMessage());
+        }
         if (line % 1000 == 0) {
           checkForInterruption(line);
           reportIfNeeded();
@@ -519,7 +524,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
         }
 
         if (in.length <= maxColumnIndex) {
-          writePublicationLogMessage("Line with less columns than mapped. SourceBase:" + mapping.getSource().getName()
+          writePublicationLogMessage("Line with fewer columns than mapped. SourceBase:" + mapping.getSource().getName()
             + " Line #" + line + " has " + in.length + " Columns: " + printLine(in));
           // input row is smaller than the highest mapped column. Resize array by adding nulls
           String[] in2 = new String[maxColumnIndex + 1];
@@ -583,15 +588,19 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
         + " in source " + mapping.getSource().getName() + ", line " + line, e);
     } finally {
       if (iter != null) {
+        // Exception on advancing cursor was encountered
+        if (!iter.hasRowError()) {
+          writePublicationLogMessage("Error reading data: " + iter.getErrorMessage());
+        }
         iter.close();
       }
     }
 
     // add wrong lines user message
     if (linesWithWrongColumnNumber > 0) {
-      addMessage(Level.INFO, String.valueOf(linesWithWrongColumnNumber) + " lines with less columns than mapped");
+      addMessage(Level.INFO, String.valueOf(linesWithWrongColumnNumber) + " lines with fewer columns than mapped");
     } else {
-      writePublicationLogMessage("No lines with less columns than mapped");
+      writePublicationLogMessage("No lines with fewer columns than mapped");
     }
 
     // add filter message
@@ -723,39 +732,43 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
    * 
    * @param mappings list of ExtensionMapping
    * @param af ArchiveFile
-   * @param coreRowType core row type
    * @return set of conceptTerms that have been mapped (in all files) for a single Extension
    */
-  private Set<ConceptTerm> addFieldsToArchive(List<ExtensionMapping> mappings, ArchiveFile af, String coreRowType) {
+  private Set<Term> addFieldsToArchive(List<ExtensionMapping> mappings, ArchiveFile af) {
 
-    Set<ConceptTerm> mappedConceptTerms = new HashSet<ConceptTerm>();
+    Set<Term> mappedConceptTerms = new HashSet<Term>();
     for (ExtensionMapping m : mappings) {
       for (PropertyMapping pm : m.getFields()) {
-        if (af.hasTerm(pm.getTerm())) {
+
+        // ArchiveFile.ArchiveField must be dwc-api Term such as DcTerm, DwcTerm, etc.
+        // Therefore, find Term corresponding to ExtensionProperty
+        Term term = TERM_FACTORY.findTerm(pm.getTerm().qualifiedName());
+
+        if (af.hasTerm(term)) {
           // different default value?
-          ArchiveField field = af.getField(pm.getTerm());
+          ArchiveField field = af.getField(term);
           if (field.getDefaultValue() != null && !field.getDefaultValue().equals(pm.getDefaultValue())) {
             // different values, reset to null - we will have to explicitly write the values into the data file
             field.setDefaultValue(null);
-            mappedConceptTerms.add(pm.getTerm());
+            mappedConceptTerms.add(term);
           }
         } else {
           // check if we have a dynamic mapping
           if (pm.getIndex() != null) {
 
-            log.debug("Handling property mapping for term: " + pm.getTerm().qualifiedName() + " (index "
+            log.debug("Handling property mapping for term: " + term.qualifiedName() + " (index "
               + pm.getIndex() + ")");
 
             if (pm.getIndex() >= 0) {
               // Since all default values ​​will be written in the data file, they won't be expressed in the
               // archive file (meta.xml). That's why we send a null value.
-              af.addField(buildField(pm.getTerm(), null));
-              mappedConceptTerms.add(pm.getTerm());
+              af.addField(buildField(term, null));
+              mappedConceptTerms.add(term);
             }
           } else {
             // Only with default value.
-            af.addField(buildField(pm.getTerm(), null));
-            mappedConceptTerms.add(pm.getTerm());
+            af.addField(buildField(term, null));
+            mappedConceptTerms.add(term);
           }
         }
       }
@@ -774,9 +787,10 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
   private void assignIndexesOrderedByExtension(List<ExtensionProperty> propertyList, ArchiveFile af) {
     for (int propertyIndex = 0; propertyIndex < propertyList.size(); propertyIndex++) {
       ExtensionProperty extensionProperty = propertyList.get(propertyIndex);
-      // retrieve field corresponding to ExtensionProperty
-      // the qualified normalised name is used for the lookup
-      ArchiveField f = af.getField(extensionProperty.qualifiedNormalisedName());
+      // retrieve the dwc-api Term corresponding to ExtensionProperty
+      Term term = TERM_FACTORY.findTerm(extensionProperty.getQualname());
+      // lookup ArchiveField using dwc-api Term
+      ArchiveField f = af.getField(term);
       if (f != null && f.getIndex() == null) {
         // create new field index corresponding to its position in ordered list of columns indexed
         // +1 because index 0 is reserved for ID column
@@ -784,7 +798,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
         // assign ArchiveField new index so that meta.xml file mirrors the ordered field order
         f.setIndex(fieldIndex);
       } else {
-        log.warn("Skipping ExtensionProperty: " + extensionProperty.qualifiedNormalisedName());
+        log.warn("Skipping ExtensionProperty: " + extensionProperty.getQualname());
       }
     }
   }
@@ -797,22 +811,22 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
    * @return ordered list of mapped ExtensionProperty
    */
   private List<ExtensionProperty>
-    getOrderedMappedExtensionProperties(Extension ext, Set<ConceptTerm> mappedConceptTerms) {
+    getOrderedMappedExtensionProperties(Extension ext, Set<Term> mappedConceptTerms) {
     List<ExtensionProperty> propertyList = new ArrayList<ExtensionProperty>();
     // start with all Extension's ExtensionProperty, in natural order
     propertyList.addAll(ext.getProperties());
 
     // matching (below) should be done on the qualified Normalised Name
     Set<String> names = new HashSet<String>();
-    for (ConceptTerm conceptTerm : mappedConceptTerms) {
-      names.add(conceptTerm.qualifiedNormalisedName());
+    for (Term conceptTerm : mappedConceptTerms) {
+      names.add(conceptTerm.qualifiedName());
     }
 
     // remove all ExtensionProperty that have not been mapped, leaving the ordered list of those that have been
     for (Iterator<ExtensionProperty> iterator = propertyList.iterator(); iterator.hasNext();) {
       ExtensionProperty extensionProperty = iterator.next();
-      if (extensionProperty.qualifiedNormalisedName() != null) {
-        if (!names.contains(extensionProperty.qualifiedNormalisedName())) {
+      if (extensionProperty.qualifiedName() != null) {
+        if (!names.contains(extensionProperty.qualifiedName())) {
           iterator.remove();
         }
       }

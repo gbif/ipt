@@ -13,7 +13,7 @@
 
 package org.gbif.ipt.action.manage;
 
-import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.terms.Term;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
@@ -48,7 +48,7 @@ public class TranslationAction extends ManagerBaseAction {
   static class Translation {
 
     private String rowType;
-    private ConceptTerm term;
+    private Term term;
     private TreeMap<String, String> tmap;
 
     public Map<String, String> getPersistentMap() {
@@ -65,12 +65,12 @@ public class TranslationAction extends ManagerBaseAction {
       return tmap;
     }
 
-    public boolean isLoaded(String rowType, ConceptTerm term) {
+    public boolean isLoaded(String rowType, Term term) {
       return this.rowType != null && this.rowType.equals(rowType) && this.term != null && this.term.equals(term)
              && tmap != null;
     }
 
-    public void setTmap(String rowType, ConceptTerm term, TreeMap<String, String> tmap) {
+    public void setTmap(String rowType, Term term, TreeMap<String, String> tmap) {
       this.tmap = tmap;
       this.rowType = rowType;
       this.term = term;

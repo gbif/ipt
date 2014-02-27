@@ -2,7 +2,7 @@ package org.gbif.ipt.model;
 
 import org.gbif.file.CSVReader;
 import org.gbif.ipt.utils.FileUtils;
-import org.gbif.utils.file.ClosableIterator;
+import org.gbif.utils.file.ClosableReportingIterator;
 
 import java.io.File;
 import java.io.IOException;
@@ -89,7 +89,7 @@ public class TextFileSource extends SourceBase implements FileSource {
     return rows;
   }
 
-  public ClosableIterator<String[]> rowIterator() {
+  public ClosableReportingIterator<String[]> rowIterator() {
     try {
       CSVReader reader = getReader();
       return reader.iterator();

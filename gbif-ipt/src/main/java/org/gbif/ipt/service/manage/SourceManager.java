@@ -6,7 +6,7 @@ import org.gbif.ipt.model.Source;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.SourceException;
 import org.gbif.ipt.service.manage.impl.SourceManagerImpl;
-import org.gbif.utils.file.ClosableIterator;
+import org.gbif.utils.file.ClosableReportingIterator;
 
 import java.io.File;
 import java.util.List;
@@ -92,12 +92,12 @@ public interface SourceManager {
   List<String[]> peek(Source source, int rows);
 
   /**
-   * Create a closable row iterator for a source.
+   * Create a ClosableReportingIterator iterator for a source.
    *
    * @param source source
    *
-   * @return a closable row iterator for a source
+   * @return a ClosableReportingIterator for a source
    */
-  ClosableIterator<String[]> rowIterator(Source source) throws SourceException;
+  ClosableReportingIterator<String[]> rowIterator(Source source) throws SourceException;
 
 }

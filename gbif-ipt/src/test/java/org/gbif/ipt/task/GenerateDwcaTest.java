@@ -159,20 +159,35 @@ public class GenerateDwcaTest {
     Archive archive = ArchiveFactory.openArchive(dir);
     assertEquals(Constants.DWC_ROWTYPE_OCCURRENCE, archive.getCore().getRowType());
     assertEquals(0, archive.getCore().getId().getIndex().intValue());
-    assertEquals(3, archive.getCore().getFieldsSorted().size());
+    assertEquals(4, archive.getCore().getFieldsSorted().size());
 
-    // confirm order of fields appear in order of Occurrence Core Extension
+    System.out.println(archive.getCore().getFieldsSorted().get(0).getTerm().simpleName());
+    System.out.println(archive.getCore().getFieldsSorted().get(1).getTerm().simpleName());
+    System.out.println(archive.getCore().getFieldsSorted().get(2).getTerm().simpleName());
+    System.out.println(archive.getCore().getFieldsSorted().get(3).getTerm().simpleName());
+
+    // confirm order of fields appear honors order of Occurrence Core Extension
     assertEquals("basisOfRecord", archive.getCore().getFieldsSorted().get(0).getTerm().simpleName());
-    assertEquals("scientificName", archive.getCore().getFieldsSorted().get(1).getTerm().simpleName());
-    assertEquals("kingdom", archive.getCore().getFieldsSorted().get(2).getTerm().simpleName());
+    assertEquals("occurrenceID", archive.getCore().getFieldsSorted().get(1).getTerm().simpleName());
+    assertEquals("scientificName", archive.getCore().getFieldsSorted().get(2).getTerm().simpleName());
+    assertEquals("kingdom", archive.getCore().getFieldsSorted().get(3).getTerm().simpleName());
 
     // confirm data written to file
     CSVReader reader = archive.getCore().getCSVReader();
+    // 1st record
     String[] row = reader.next();
     assertEquals("1", row[0]);
     assertEquals("Animalia", row[1]);
-    assertEquals("puma concolor", row[2]);
-    assertEquals("Animalia", row[3]);
+    assertEquals("1", row[2]);
+    assertEquals("puma concolor", row[3]);
+    assertEquals("Animalia", row[4]);
+    // 2nd record
+    row = reader.next();
+    assertEquals("2", row[0]);
+    assertEquals("Animalia", row[1]);
+    assertEquals("2", row[2]);
+    assertEquals("pumm:concolor", row[3]);
+    assertEquals("Animalia", row[4]);
     reader.close();
   }
 
@@ -221,7 +236,7 @@ public class GenerateDwcaTest {
     // retrieve sample zipped resource folder
     File zippedResourceFolder = FileUtils.getClasspathFile("resources/res1.zip");
 
-    // retrieve sample zipped resource folder
+    // retrieve sample eml.xml file
     File emlXML = FileUtils.getClasspathFile("resources/res1/eml.xml");
     // mock finding eml.xml file
     when(mockDataDir.resourceEmlFile(anyString(), anyInt())).thenReturn(emlXML);

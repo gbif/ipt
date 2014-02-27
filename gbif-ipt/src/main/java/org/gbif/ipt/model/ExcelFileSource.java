@@ -1,7 +1,7 @@
 package org.gbif.ipt.model;
 
 import org.gbif.ipt.utils.FileUtils;
-import org.gbif.utils.file.ClosableIterator;
+import org.gbif.utils.file.ClosableReportingIterator;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -105,12 +105,14 @@ public class ExcelFileSource extends SourceBase implements FileSource {
     return cell.toString();
   }
 
-  private class RowIterator implements ClosableIterator<String[]> {
+  private class RowIterator implements ClosableReportingIterator<String[]> {
 
     private final Sheet sheet;  // 0 based
     private final Iterator<Row> iter;
     private final int rowSize;
-
+    private boolean rowError;
+    private String errorMessage;
+    private Exception exception;
 
     RowIterator(ExcelFileSource source) throws IOException, InvalidFormatException {
       sheet = getSheet();
@@ -135,28 +137,56 @@ public class ExcelFileSource extends SourceBase implements FileSource {
     }
 
     public String[] next() {
-      //TODO: log empty or irregular rows
+      //TODO: log empty or irregular rows, setting rowError to true and populating errorMessage
       String[] val = new String[rowSize];
       if (hasNext()) {
-        Row row = iter.next();
-        for (int i = 0; i < rowSize; i++) {
-          Cell c = row.getCell(i, Row.CREATE_NULL_AS_BLANK);
-          val[i] = cellToString(c);
+        resetReportingIterator();
+        try {
+          Row row = iter.next();
+          for (int i = 0; i < rowSize; i++) {
+            Cell c = row.getCell(i, Row.CREATE_NULL_AS_BLANK);
+            val[i] = cellToString(c);
+          }
+        } catch (Exception e) {
+          LOG.debug("Exception caught: " + e.getMessage(), e);
+          exception = e;
+          errorMessage = e.getMessage();
         }
       }
       return val;
     }
 
+    /**
+     * Reset all reporting parameters.
+     */
+    private void resetReportingIterator() {
+      rowError = false;
+      exception = null;
+      errorMessage = null;
+    }
+
     public void remove() {
       // unsupported
     }
+
+    public boolean hasRowError() {
+      return rowError;
+    }
+
+    public String getErrorMessage() {
+      return errorMessage;
+    }
+
+    public Exception getException() {
+      return exception;
+    }
   }
 
-  public ClosableIterator<String[]> rowIterator() {
+  public ClosableReportingIterator<String[]> rowIterator() {
     try {
       return new RowIterator(this, ignoreHeaderLines);
     } catch (Exception e) {
-      LOG.warn("Exception while reading excel source "+ name, e);
+      LOG.error("Exception while reading excel source "+ name, e);
     }
     return null;
   }

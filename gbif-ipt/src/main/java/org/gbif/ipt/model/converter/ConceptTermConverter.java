@@ -16,7 +16,7 @@
 
 package org.gbif.ipt.model.converter;
 
-import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.UnknownTerm;
 import org.gbif.ipt.model.Extension;
 
@@ -41,11 +41,11 @@ public class ConceptTermConverter implements Converter {
   }
 
   public boolean canConvert(Class clazz) {
-    return ConceptTerm.class.isAssignableFrom(clazz);
+    return Term.class.isAssignableFrom(clazz);
   }
 
   public void marshal(Object value, HierarchicalStreamWriter writer, MarshallingContext context) {
-    ConceptTerm t = (ConceptTerm) value;
+    Term t = (Term) value;
     writer.setValue(t.qualifiedName());
   }
 
@@ -56,13 +56,13 @@ public class ConceptTermConverter implements Converter {
     // other far more complex solution is to create an full blown ExtensionMapping converter
     // that could make use of existing local converters for composite objects parts
     Extension extension = extConverter.getLastExtensionConverted();
-    ConceptTerm t = null;
+    Term t = null;
     if (extension != null) {
       t = extension.getProperty(reader.getValue());
     }
     if (t == null) {
       LOG.warn("Cant unmarshall concept " + reader.getValue());
-      t = new UnknownTerm(reader.getValue(), reader.getValue());
+      t = UnknownTerm.build(reader.getValue(), reader.getValue());
     }
 
     return t;

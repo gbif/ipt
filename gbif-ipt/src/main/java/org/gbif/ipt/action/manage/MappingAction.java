@@ -13,7 +13,8 @@
 
 package org.gbif.ipt.action.manage;
 
-import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.terms.Term;
+import org.gbif.dwc.terms.TermFactory;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Extension;
@@ -103,10 +104,10 @@ public class MappingAction extends ManagerBaseAction {
       if (v.getIdProblem() != null) {
         addActionWarning(getText(v.getIdProblem(), v.getIdProblemParams()));
       }
-      for (ConceptTerm t : v.getMissingRequiredFields()) {
+      for (Term t : v.getMissingRequiredFields()) {
         addActionWarning(getText("validation.required", new String[] {t.simpleName()}));
       }
-      for (ConceptTerm t : v.getWrongDataTypeFields()) {
+      for (Term t : v.getWrongDataTypeFields()) {
         addActionWarning(getText("validation.wrong.datatype", new String[] {t.simpleName()}));
       }
     }
@@ -126,7 +127,7 @@ public class MappingAction extends ManagerBaseAction {
     int idx1 = 0;
     for (String col : columns) {
       col = normalizeColumnName(col);
-      if (col != null && mappingCoreid.getTerm().simpleNormalisedName().equalsIgnoreCase(col)) {
+      if (col != null && TermFactory.normaliseTerm(mappingCoreid.getTerm().simpleName()).equalsIgnoreCase(col)) {
         // mappingCoreId and mapping id column must both be set (and have the same index) to automap successfully.
         mappingCoreid.setIndex(idx1);
         mapping.setIdColumn(idx1);
@@ -142,7 +143,7 @@ public class MappingAction extends ManagerBaseAction {
       int idx2 = 0;
       for (String col : columns) {
         col = normalizeColumnName(col);
-        if (col != null && f.getTerm().simpleNormalisedName().equalsIgnoreCase(col)) {
+        if (col != null && TermFactory.normaliseTerm(f.getTerm().simpleName()).equalsIgnoreCase(col)) {
           f.setIndex(idx2);
           // we have automapped the term, so increment automapped counter and exit
           automapped++;
@@ -235,7 +236,7 @@ public class MappingAction extends ManagerBaseAction {
   }
 
   /**
-   * Normalizes an incoming column name so that it can later be compared against a ConceptTerm's simpleNormalizedName.
+   * Normalizes an incoming column name so that it can later be compared against a ConceptTerm's simpleName.
    * This method converts the incoming string to lower case, and will take the substring up to, but no including the
    * first ":".
    * 

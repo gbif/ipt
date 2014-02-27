@@ -13,7 +13,7 @@
 
 package org.gbif.ipt.validation;
 
-import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.text.ArchiveField.DataType;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
@@ -36,16 +36,16 @@ public class ExtensionMappingValidator {
 
   public static class ValidationStatus {
 
-    private List<ConceptTerm> missingRequiredFields = new ArrayList<ConceptTerm>();
-    private List<ConceptTerm> wrongDataTypeFields = new ArrayList<ConceptTerm>();
+    private List<Term> missingRequiredFields = new ArrayList<Term>();
+    private List<Term> wrongDataTypeFields = new ArrayList<Term>();
     private String idProblem;
     private String[] idProblemParams;
 
-    public void addMissingRequiredField(ConceptTerm missingRequiredField) {
+    public void addMissingRequiredField(Term missingRequiredField) {
       this.missingRequiredFields.add(missingRequiredField);
     }
 
-    public void addWrongDataTypeField(ConceptTerm wrongDataTypeField) {
+    public void addWrongDataTypeField(Term wrongDataTypeField) {
       this.wrongDataTypeFields.add(wrongDataTypeField);
     }
 
@@ -63,11 +63,11 @@ public class ExtensionMappingValidator {
       return idProblemParams;
     }
 
-    public List<ConceptTerm> getMissingRequiredFields() {
+    public List<Term> getMissingRequiredFields() {
       return missingRequiredFields;
     }
 
-    public List<ConceptTerm> getWrongDataTypeFields() {
+    public List<Term> getWrongDataTypeFields() {
       return wrongDataTypeFields;
     }
 

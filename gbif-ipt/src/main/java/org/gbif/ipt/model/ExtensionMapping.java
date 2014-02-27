@@ -13,7 +13,7 @@
 
 package org.gbif.ipt.model;
 
-import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.terms.Term;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -103,7 +103,7 @@ public class ExtensionMapping implements Serializable {
     return extension != null && extension.isCore();
   }
 
-  public boolean isMapped(ConceptTerm t) {
+  public boolean isMapped(Term t) {
     PropertyMapping pm = getField(t.qualifiedName());
     return pm != null && (pm.getIndex() != null || pm.getDefaultValue() != null);
   }
