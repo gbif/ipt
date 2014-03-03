@@ -14,6 +14,7 @@
 package org.gbif.ipt.model;
 
 import org.gbif.dwc.terms.Term;
+import org.gbif.ipt.config.Constants;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -101,6 +102,15 @@ public class ExtensionMapping implements Serializable {
 
   public boolean isCore() {
     return extension != null && extension.isCore();
+  }
+
+  /**
+   * Return true if the extension has core type Taxon.
+   *
+   * @return true if the extension has core type Taxon.
+   */
+  public boolean isTaxonCore() {
+    return isCore() && extension.getRowType().equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON);
   }
 
   public boolean isMapped(Term t) {
