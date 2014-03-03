@@ -151,9 +151,12 @@ $(document).ready(function(){
             	<select name="mapping.idColumn" id="idColumn">		
             	<#if mapping.isCore()>
             	  <option value="" <#if !mapping.idColumn??> selected="selected"</#if>><@s.text name="manage.mapping.noid"/></option>
-            	  <option value="-2" <#if (mapping.idColumn!-99)==-2> selected="selected"</#if>><@s.text name="manage.mapping.uuid"/></option>
             	</#if>
-            	  <option value="-1" <#if (mapping.idColumn!-99)==-1> selected="selected"</#if>><@s.text name="manage.mapping.lineNumber"/></option>
+                <!-- auto generating identifiers is only available for the Taxon core -->
+              <#if mapping.isTaxonCore()>
+                <option value="-2" <#if (mapping.idColumn!-99)==-2> selected="selected"</#if>><@s.text name="manage.mapping.uuid"/></option>
+                <option value="-1" <#if (mapping.idColumn!-99)==-1> selected="selected"</#if>><@s.text name="manage.mapping.lineNumber"/></option>
+              </#if>
             	<#list columns as col>
             	  <option value="${col_index}" <#if (mappingCoreid.index!-1)==col_index> selected="selected"</#if>>${col}</option>		  		  
             	</#list>
