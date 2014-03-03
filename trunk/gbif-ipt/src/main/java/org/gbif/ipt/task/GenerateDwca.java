@@ -3,9 +3,12 @@ package org.gbif.ipt.task;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
 import org.gbif.dwc.text.Archive;
+import org.gbif.dwc.text.ArchiveFactory;
 import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveFile;
 import org.gbif.dwc.text.MetaDescriptorWriter;
+import org.gbif.file.CSVReader;
+import org.gbif.file.CSVReaderFactory;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Extension;
@@ -34,6 +37,7 @@ import java.util.concurrent.Callable;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import freemarker.template.TemplateException;
@@ -44,7 +48,7 @@ import org.apache.log4j.Level;
 public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
   private enum STATE {
-    WAITING, STARTED, DATAFILES, METADATA, BUNDLING, COMPLETED, ARCHIVING, CANCELLED, FAILED
+    WAITING, STARTED, DATAFILES, METADATA, BUNDLING, COMPLETED, ARCHIVING, VALIDATING, CANCELLED, FAILED
   }
 
   private static final Pattern escapeChars = Pattern.compile("[\t\n\r]");
@@ -59,7 +63,10 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
   private final SourceManager sourceManager;
   private Exception exception;
   private AppConfig cfg;
+  private static final int ID_COLUMN_INDEX = 0;
+  private static final String CHARACTER_ENCODING = "UTF-8";
   private static final TermFactory TERM_FACTORY = TermFactory.instance();
+  private static final org.gbif.utils.file.FileUtils GBIF_FILE_UTILS = new org.gbif.utils.file.FileUtils();
   public static final String CANCELLED_STATE_MSG = "Archive generation cancelled";
   public static final String ID_COLUMN_NAME = "id";
 
@@ -74,6 +81,10 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
   /**
    * Adds a single data file for a list of extension mappings that must all be mapped to the same extension.
+   * </br>
+   * The ID column is always the 1st column (index 0) and is always equal to the core record identifier that has been
+   * mapped (e.g. occurrenceID, taxonID, etc). The ID gets converted into lower case to facilitate sorting the file
+   * by ID which is an intermediary step performed during validation.
    * 
    * @param mappings list of ExtensionMapping
    * @param coreRowType row type of core file
@@ -105,11 +116,11 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     // create new tab file with the help of the Archive class representing the core file or an extension
     ArchiveFile af = ArchiveFile.buildTabFile();
     af.setRowType(ext.getRowType());
-    af.setEncoding("utf-8");
+    af.setEncoding(CHARACTER_ENCODING);
     af.setDateFormat("YYYY-MM-DD");
     // in the generated file column 0 will be the id row
     ArchiveField idField = new ArchiveField();
-    idField.setIndex(0);
+    idField.setIndex(ID_COLUMN_INDEX);
     af.setId(idField);
 
     // find the union of all terms mapped and make them a field in the final archive
@@ -139,7 +150,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
         // prepare index ordered list of all output columns apart from id column
         PropertyMapping[] inCols = new PropertyMapping[totalColumns];
         for (ArchiveField f : af.getFields().values()) {
-          if (f.getIndex() != null && f.getIndex() > 0) {
+          if (f.getIndex() != null && f.getIndex() > ID_COLUMN_INDEX) {
             inCols[f.getIndex()] = m.getField(f.getTerm().qualifiedName());
           }
         }
@@ -193,7 +204,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     throws IOException {
     String[] headers = new String[totalColumns];
     // reserve 1st column for "id"
-    headers[0] = ID_COLUMN_NAME;
+    headers[ID_COLUMN_INDEX] = ID_COLUMN_NAME;
     // add remaining mapped-column names
     int c = 1;
     for (ExtensionProperty property : propertyList) {
@@ -279,6 +290,181 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
   }
 
   /**
+   * Validate the DwC-A:
+   * -ensure that if the core record identifier is mapped (e.g. occurrenceID, taxonID, etc) its present on all
+   * rows, and is unique
+   *
+   * @throws GeneratorException   if DwC-A could not be validated
+   * @throws InterruptedException if executing thread was interrupted
+   */
+  private void validate() throws GeneratorException, InterruptedException {
+    checkForInterruption();
+    setState(STATE.VALIDATING);
+
+    try {
+      // retrieve newly generated archive - decompressed
+      Archive arch = ArchiveFactory.openArchive(dwcaFolder);
+      // perform validation
+      validateCoreDataFile(arch);
+    } catch (IOException e) {
+      throw new GeneratorException("Problem occurred while validating DwC-A", e);
+    }
+    // final reporting
+    addMessage(Level.INFO, "Archive validated");
+  }
+
+  /**
+   * Sort the core data file of a Darwin Core Archive by its ID column (always index 0 or 1st column). Sorting is case
+   * sensitive, therefore it is expected that all IDs have been converted into lower case.
+   *
+   * @param arch Archive
+   *
+   * @return the core data file of the Archive sorted by its ID column 0
+   *
+   * @throws IOException if the sort fails for whatever reason
+   */
+  private File sortCoreDataFile(Archive arch) throws IOException {
+    // retrieve the core file
+    File unsorted = arch.getCore().getLocationFile();
+
+    // create a new file that will store the records sorted by ID
+    File sorted = File.createTempFile("sorted", ".txt");
+
+    // get the ignore column rows, delimiter, enclosed by, newline character
+    int headerLines = arch.getCore().getIgnoreHeaderLines();
+    String columnDelimiter = arch.getCore().getFieldsTerminatedBy();
+    Character enclosedBy = arch.getCore().getFieldsEnclosedBy();
+    String newlineDelimiter = arch.getCore().getLinesTerminatedBy();
+
+    // keep track of how long the sort takes
+    long time = System.currentTimeMillis();
+
+    // sort by ID column: always index 0
+    GBIF_FILE_UTILS
+      .sort(unsorted, sorted, CHARACTER_ENCODING, ID_COLUMN_INDEX, columnDelimiter, enclosedBy, newlineDelimiter,
+        headerLines);
+    log.debug("Finished sorting core file in " + String.valueOf((System.currentTimeMillis() - time) / 1000) + " secs, check: " + sorted
+      .getAbsoluteFile().toString());
+
+    return sorted;
+  }
+
+  /**
+   * Validate the Archive's core data file has an ID for each row, and that each ID is unique. Perform this check
+   * only if the core record ID term (e.g. occurrenceID, taxonID, etc) has actually been mapped.
+   *
+   * @param arch Archive
+   *
+   * @throws GeneratorException   if validation was interrupted due to an error
+   * @throws InterruptedException if the thread was interrupted
+   */
+  private void validateCoreDataFile(Archive arch) throws GeneratorException, InterruptedException, IOException {
+    // get the core record ID term
+    String coreIdTerm = AppConfig.coreIdTerm(resource.getCoreRowType());
+
+    // only validate the core data file, if the core record identifier (e.g. occurrenceID, taxonID) has been mapped
+    if (arch.getCore().hasTerm(coreIdTerm)) {
+      writePublicationLogMessage(
+        "The core record ID " + coreIdTerm + " was mapped, so validate it is always present and unique");
+
+      // create a new core data file sorted by ID column 0
+      File sortedCore = sortCoreDataFile(arch);
+
+      // create an iterator on the new sorted core data file
+      CSVReader reader = CSVReaderFactory.build(sortedCore, CHARACTER_ENCODING, arch.getCore().getFieldsTerminatedBy(),
+        arch.getCore().getFieldsEnclosedBy(), arch.getCore().getIgnoreHeaderLines());
+
+      int recordsWithNoId = 0;
+      int recordsWithDuplicateId = 0;
+      ClosableReportingIterator<String[]> iter = null;
+      int line = 0;
+      String id;
+      String lastId = null;
+      try {
+        iter = reader.iterator();
+        while (iter.hasNext()) {
+          line++;
+          // Exception on reading row was encountered
+          if (iter.hasRowError()) {
+            log.error("Error reading line #" + line + "\n" + iter.getErrorMessage());
+          }
+          if (line % 1000 == 0) {
+            checkForInterruption(line);
+            reportIfNeeded();
+          }
+          String[] record = iter.next();
+          if (record == null || record.length == 0) {
+            continue;
+          }
+
+          id = record[ID_COLUMN_INDEX];
+
+          // check id exists
+          if (Strings.isNullOrEmpty(id)) {
+            log.debug("Null or empty id found");
+            recordsWithNoId++;
+          }
+
+          // check id is unique, using case insensitive comparison. E.g. FISHES:1 and fishes:1 are equal
+          if (!Strings.isNullOrEmpty(lastId) && !Strings.isNullOrEmpty(id)) {
+            if (id.equalsIgnoreCase(lastId)) {
+              log.debug("Duplicate id found: " + id);
+              recordsWithDuplicateId++;
+            }
+          }
+          // set so id gets compared on next iteration
+          lastId = id;
+        }
+      } catch (InterruptedException e) {
+        // set last error report!
+        setState(e);
+        throw e;
+      } catch (Exception e) {
+        // some error validating this file, report
+        log.error("Exception caught while validating archive", e);
+        // set last error report!
+        setState(e);
+        throw new GeneratorException("Error while validating archive occurred on line " + line, e);
+      } finally {
+        if (iter != null) {
+          // Exception on advancing cursor was encountered?
+          if (!iter.hasRowError() && iter.getErrorMessage() != null) {
+            writePublicationLogMessage("Error reading data: " + iter.getErrorMessage());
+          }
+          iter.close();
+        }
+      }
+
+      // add empty ids user message
+      if (recordsWithNoId > 0) {
+        addMessage(Level.ERROR, String.valueOf(recordsWithNoId) + " line(s) missing an ID");
+      } else {
+        writePublicationLogMessage("No lines are missing an ID");
+      }
+
+      // add duplicate ids user message
+      if (recordsWithDuplicateId > 0) {
+        addMessage(Level.ERROR, String.valueOf(recordsWithDuplicateId) + " line(s) having a duplicate ID (please note comparisons are case insensitive)");
+      } else {
+        writePublicationLogMessage("No lines have duplicate IDs");
+      }
+
+      // if there was 1 or more records missing an ID, or having a duplicate ID, validation fails
+      if (recordsWithNoId == 0 && recordsWithDuplicateId == 0) {
+        addMessage(Level.INFO, "Archive was validated");
+      } else {
+        addMessage(Level.ERROR, "Archive validation failed, because not every row has a unique ID (please note comparisons are case insensitive");
+        throw new GeneratorException("Can't validate DwC-A for resource " + resource.getShortname()
+                                     + ". Each row must have an ID, and each ID must be unique (please note comparisons are case insensitive)");
+
+      }
+    } else {
+      writePublicationLogMessage(
+        "The core record ID " + coreIdTerm + " was not mapped, so there is no need to validate it");
+    }
+  }
+
+  /**
    * This method copies a stable version of the latest bundled DwC-A file for archival purposes. This method should
    * only be called if the IPT has been configured in "archival mode".
    * 
@@ -333,10 +519,13 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       // create meta.xml
       createMetaFile();
 
+      // perform some validation, e.g. ensure all core record identifiers are present and unique
+      validate();
+
       // zip archive and copy to resource folder
       bundleArchive();
 
-      // final reporting
+      // reporting
       addMessage(Level.INFO, "Archive generated successfully!");
 
       // archive version of archive (if archival mode is turned on)
@@ -491,6 +680,9 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
   /**
    * Write data file for mapping.
+   * </br>
+   * The ID column (index 0) gets converted into lower case to facilitate sorting the file by ID which is an
+   * intermediary step performed during validation.
    * 
    * @param writer file writer for single data file
    * @param inCols index ordered list of all output columns apart from id column
@@ -566,14 +758,16 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
         }
 
         // add id column - either an existing column or the line number
+        // the id value is converted to lowercase - important for sorting the file by id (a step during validation)
         if (mapping.getIdColumn() == null) {
-          record[0] = null;
+          record[ID_COLUMN_INDEX] = null;
         } else if (mapping.getIdColumn().equals(ExtensionMapping.IDGEN_LINE_NUMBER)) {
-          record[0] = line + idSuffix;
+          record[ID_COLUMN_INDEX] = line + idSuffix;
         } else if (mapping.getIdColumn().equals(ExtensionMapping.IDGEN_UUID)) {
-          record[0] = UUID.randomUUID().toString();
+          record[ID_COLUMN_INDEX] = UUID.randomUUID().toString();
         } else if (mapping.getIdColumn() >= 0) {
-          record[0] = in[mapping.getIdColumn()] + idSuffix;
+          record[ID_COLUMN_INDEX] = (Strings.isNullOrEmpty(in[mapping.getIdColumn()])) ? idSuffix
+            : in[mapping.getIdColumn()].toLowerCase() + idSuffix;
         }
 
         // go through all archive fields
@@ -599,8 +793,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
         + " in source " + mapping.getSource().getName() + ", line " + line, e);
     } finally {
       if (iter != null) {
-        // Exception on advancing cursor was encountered
-        if (!iter.hasRowError()) {
+        // Exception on advancing cursor encountered?
+        if (!iter.hasRowError() && iter.getErrorMessage() != null) {
           writePublicationLogMessage("Error reading data: " + iter.getErrorMessage());
         }
         iter.close();

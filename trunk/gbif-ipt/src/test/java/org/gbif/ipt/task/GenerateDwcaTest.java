@@ -58,6 +58,7 @@ import org.gbif.utils.file.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import javax.validation.constraints.NotNull;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -135,13 +136,16 @@ public class GenerateDwcaTest {
 
   @Test
   public void testGenerateCoreFromSingleSourceFile() throws Exception {
-    // create resource
-    Resource resource = getResource();
+    // retrieve sample zipped resource XML configuration file
+    File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
+    // create resource from single source file
+    File occurrence = FileUtils.getClasspathFile("resources/res1/occurrence.txt");
+    Resource resource = getResource(resourceXML, occurrence);
 
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig);
     int recordCount = generateDwca.call();
 
-    // 2 rowIterator in core file
+    // 2 rows in core file
     assertEquals(2, recordCount);
 
     // confirm existence of DwC-A
@@ -160,11 +164,6 @@ public class GenerateDwcaTest {
     assertEquals(Constants.DWC_ROWTYPE_OCCURRENCE, archive.getCore().getRowType());
     assertEquals(0, archive.getCore().getId().getIndex().intValue());
     assertEquals(4, archive.getCore().getFieldsSorted().size());
-
-    System.out.println(archive.getCore().getFieldsSorted().get(0).getTerm().simpleName());
-    System.out.println(archive.getCore().getFieldsSorted().get(1).getTerm().simpleName());
-    System.out.println(archive.getCore().getFieldsSorted().get(2).getTerm().simpleName());
-    System.out.println(archive.getCore().getFieldsSorted().get(3).getTerm().simpleName());
 
     // confirm order of fields appear honors order of Occurrence Core Extension
     assertEquals("basisOfRecord", archive.getCore().getFieldsSorted().get(0).getTerm().simpleName());
@@ -191,7 +190,125 @@ public class GenerateDwcaTest {
     reader.close();
   }
 
-  private Resource getResource()
+  @Test
+  public void testGenerateCoreFromSingleSourceFileNoIdMapped() throws Exception {
+    // retrieve sample zipped resource XML configuration file, with no id mapped
+    File resourceXML = FileUtils.getClasspathFile("resources/res1/resource_no_id_mapped.xml");
+    // create resource from single source file with an id column with non unique values (mapped to individual ID).
+    // since the non unique ids aren't mapped to the core record identifier (occurrenceID) validation isn't triggered.
+    File occurrence = FileUtils.getClasspathFile("resources/res1/occurrence_non_unique_ids.txt");
+    Resource resource = getResource(resourceXML, occurrence);
+
+    generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig);
+    int recordCount = generateDwca.call();
+
+    // 4 rows in core file
+    assertEquals(4, recordCount);
+
+    // confirm existence of DwC-A
+    File dwca = new File(resourceDir, DataDir.DWCA_FILENAME);
+    assertTrue(dwca.exists());
+
+    // investigate the DwC-A
+    File dir = FileUtils.createTempDir();
+    CompressionUtil.decompressFile(dir, dwca, true);
+
+    Archive archive = ArchiveFactory.openArchive(dir);
+    assertEquals(Constants.DWC_ROWTYPE_OCCURRENCE, archive.getCore().getRowType());
+    assertEquals(0, archive.getCore().getId().getIndex().intValue());
+    assertEquals(4, archive.getCore().getFieldsSorted().size());
+
+    // confirm order of fields appear honors order of Occurrence Core Extension
+    assertEquals("basisOfRecord", archive.getCore().getFieldsSorted().get(0).getTerm().simpleName());
+    assertEquals("individualID", archive.getCore().getFieldsSorted().get(1).getTerm().simpleName());
+    assertEquals("scientificName", archive.getCore().getFieldsSorted().get(2).getTerm().simpleName());
+    assertEquals("kingdom", archive.getCore().getFieldsSorted().get(3).getTerm().simpleName());
+
+    // confirm data written to file
+    CSVReader reader = archive.getCore().getCSVReader();
+    // 1st record
+    String[] row = reader.next();
+    // no id was mapped, so the first column (ID column, index 0) is empty
+    assertEquals("", row[0]);
+    assertEquals("Observation", row[1]);
+    assertEquals("1", row[2]);
+    assertEquals("puma concolor", row[3]);
+    assertEquals("Animalia", row[4]);
+    // 2nd record
+    row = reader.next();
+    assertEquals("", row[0]);
+    assertEquals("Observation", row[1]);
+    assertEquals("2", row[2]);
+    assertEquals("Panthera onca", row[3]);
+    assertEquals("Animalia", row[4]);
+    reader.close();
+  }
+
+  /**
+   * A generated DwC-a with occurrenceID mapped, but missing one or more occurrenceID values, is expected to
+   * throw a GeneratorException.
+   */
+  @Test(expected = GeneratorException.class)
+  public void testValidateCoreFromSingleSourceFileMissingIds() throws Exception {
+    // retrieve sample zipped resource XML configuration file
+    File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
+    // create resource, with single source file that is missing occurrenceIDs
+    File occurrence = FileUtils.getClasspathFile("resources/res1/occurrence_missing_ids.txt");
+    Resource resource = getResource(resourceXML, occurrence);
+
+    generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig);
+    generateDwca.call();
+  }
+
+  /**
+   * A generated DwC-a with occurrenceID mapped, but having non unique occurrenceID values, is expected to
+   * throw a GeneratorException.
+   */
+  @Test(expected = GeneratorException.class)
+  public void testValidateCoreFromSingleSourceFileNonUniqueIds() throws Exception {
+    // retrieve sample zipped resource XML configuration file
+    File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
+    // create resource, with single source file that has non-unique occurrenceIDs, regardless of case
+    File occurrence = FileUtils.getClasspathFile("resources/res1/occurrence_non_unique_ids.txt");
+    Resource resource = getResource(resourceXML, occurrence);
+
+    generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig);
+    generateDwca.call();
+  }
+
+  /**
+   * A generated DwC-a with occurrenceID mapped, but with occurrenceID values that are non unique when compared with
+   * case insensitivity, is expected to throw a GeneratorException. E.g. FISHES:1 and fishes:1 are considered equal.
+   */
+  @Test(expected = GeneratorException.class)
+  public void testValidateCoreFromSingleSourceFileNonUniqueIdsCase() throws Exception {
+    // retrieve sample zipped resource XML configuration file
+    File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
+    // create resource, with single source file that has unique occurrenceIDs due when compared with case sensitivity
+    // and non-unique occurrenceIDs when compared with case sensitivity
+    File occurrence = FileUtils.getClasspathFile("resources/res1/occurrence_non_unique_ids_case.txt");
+    Resource resource = getResource(resourceXML, occurrence);
+
+    generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig);
+    generateDwca.call();
+  }
+
+  /**
+   * Generates a test Resource.
+   * </br>
+   * The test resource is built from the test occurrence resource /res1 (res1/resource.xml, res1/eml.xml) mocking all
+   * necessary methods executed by GenerateDwca.call().
+   * </br>
+   * For flexibility, the source file used to generate the core data file can be changed. The columns of this
+   * source file must match the resourceXML configuration file passed in. By changing the source file and resource
+   * configuration file, multiple scenarios can be created for testing.
+   *
+   * @param resourceXML resource (XML) configuration file defining column mapping of sourceFile
+   * @param sourceFile source file
+   *
+   * @return test Resource
+   */
+  private Resource getResource(@NotNull File resourceXML, @NotNull File sourceFile)
     throws IOException, SAXException, ParserConfigurationException, AlreadyExistingException, ImportException {
     UserAccountManager mockUserAccountManager = mock(UserAccountManager.class);
     UserEmailConverter mockEmailConverter = new UserEmailConverter(mockUserAccountManager);
@@ -228,8 +345,6 @@ public class GenerateDwcaTest {
     ExtensionRowTypeConverter extensionRowTypeConverter = new ExtensionRowTypeConverter(extensionManager);
     ConceptTermConverter conceptTermConverter = new ConceptTermConverter(extensionRowTypeConverter);
 
-    // retrieve sample zipped resource folder
-    File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
     // mock finding resource.xml file
     when(mockDataDir.resourceFile(anyString(), anyString())).thenReturn(resourceXML);
 
@@ -254,9 +369,6 @@ public class GenerateDwcaTest {
     // create a new resource.
     resource = resourceManager.create(RESOURCE_SHORTNAME, null, zippedResourceFolder, creator, baseAction);
 
-    // retrieve source file
-    File occurrence = FileUtils.getClasspathFile("resources/res1/occurrence.txt");
-
     // copy source file to tmp folder
     File copied = new File(resourceDir, "source.txt");
 
@@ -277,9 +389,8 @@ public class GenerateDwcaTest {
       .thenReturn(new File(resourceDir, VERSIONED_ARCHIVE_FILENAME));
 
     // add SourceBase.TextFileSource fileSource to test Resource
-    FileSource fileSource = mockSourceManager.add(resource, occurrence, "occurrence.txt");
+    FileSource fileSource = mockSourceManager.add(resource, sourceFile, "occurrence.txt");
     resource.getMappings().get(0).setSource(fileSource);
     return resource;
   }
-
 }
