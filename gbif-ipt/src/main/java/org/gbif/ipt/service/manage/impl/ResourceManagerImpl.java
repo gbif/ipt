@@ -1,10 +1,10 @@
 package org.gbif.ipt.service.manage.impl;
 
-import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.DcTerm;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.terms.GbifTerm;
 import org.gbif.dwc.terms.IucnTerm;
+import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.text.Archive;
 import org.gbif.dwc.text.ArchiveFactory;
 import org.gbif.dwc.text.ArchiveField;
@@ -951,9 +951,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // shouldnt really happen - but people can even manually cause a mess
         resource.getManagers().remove(null);
 
-        // non existent Extension end up being NULL
-        // for ex, a user is trying to import a resource from one IPT to another without all required exts installed.
-        for (ExtensionMapping ext: resource.getMappings()) {
+        // 1. Non existent Extension end up being NULL
+        // E.g. a user is trying to import a resource from one IPT to another without all required exts installed.
+        // 2. Auto-generating IDs is only available for Taxon core extension since IPT v2.1,
+        // therefore if a non-Taxon core extension is using auto-generated IDs, the coreID is set to No ID (-99)
+        for (ExtensionMapping ext : resource.getMappings()) {
           Extension x = ext.getExtension();
           if (x == null) {
             alog.warn("manage.resource.create.extension.null");
@@ -961,6 +963,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           } else if (extensionManager.get(x.getRowType()) == null) {
             alog.warn("manage.resource.create.rowType.null", new String[] {x.getRowType()});
             throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Resource references non-installed extension");
+          }
+          // is the ExtensionMapping of core type, not taxon core type, and uses a coreIdColumn mapping?
+          if (ext.isCore() && !ext.isTaxonCore() && ext.getIdColumn() != null) {
+            if (ext.getIdColumn().equals(ExtensionMapping.IDGEN_LINE_NUMBER) || ext.getIdColumn()
+              .equals(ExtensionMapping.IDGEN_UUID)) {
+              ext.setIdColumn(ExtensionMapping.NO_ID);
+            }
           }
         }
 
