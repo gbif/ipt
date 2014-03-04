@@ -14,13 +14,14 @@
 package org.gbif.ipt.validation;
 
 import java.util.Date;
-import java.util.regex.Pattern;
+import javax.mail.internet.InternetAddress;
 
-import com.opensymphony.xwork2.validator.validators.EmailValidator;
+import com.google.common.base.Strings;
+import org.apache.log4j.Logger;
 
 public abstract class BaseValidator {
 
-  protected static Pattern emailPattern = Pattern.compile(EmailValidator.EMAIL_ADDRESS_PATTERN);
+  private static final Logger LOG = Logger.getLogger(BaseValidator.class);
 
   protected boolean exists(String x) {
     return exists(x, 2);
@@ -39,6 +40,15 @@ public abstract class BaseValidator {
   }
 
   protected boolean isValidEmail(String email) {
-    return email != null && emailPattern.matcher(email).matches();
+    if (email != null) {
+      try {
+        InternetAddress internetAddress = new InternetAddress(email);
+        internetAddress.validate();
+        return true;
+      } catch (javax.mail.internet.AddressException e) {
+        LOG.debug("Email address was invalid: " + Strings.nullToEmpty(email));
+      }
+    }
+    return false;
   }
 }
