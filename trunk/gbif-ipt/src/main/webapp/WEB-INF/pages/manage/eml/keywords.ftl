@@ -24,13 +24,20 @@ $(document).ready(function(){
 	<div id="items">
 		<#list eml.keywords as item>
 			<div id="item-${item_index}" class="item">
-			<div class="newline"></div>
-			<div class="right">
-				<a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.keywords.item'/> ]</a>
+			  <div class="newline"></div>
+			  <div class="right">
+				  <a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.keywords.item'/> ]</a>
 		    </div>
-			<@input name="eml.keywords[${item_index}].keywordThesaurus" i18nkey="eml.keywords.keywordThesaurus" help="i18n" requiredField=true />
-			<@text name="eml.keywords[${item_index}].keywordsString" i18nkey="eml.keywords.keywordsString" help="i18n" requiredField=true/>
-		  	</div>
+        <@input name="eml.keywords[${item_index}].keywordThesaurus" i18nkey="eml.keywords.keywordThesaurus" help="i18n" requiredField=true />
+        <#-- work around for a bug that converts empty keywordsList into string "null". In this case, nothing should appear in text box -->
+        <#-- TODO: remove work around after upgrading gbif-metadata-profile to 1.0.2.4 (est. for IPT v2.1.1) -->
+        <#assign keywordList = item.keywordsString />
+        <#if keywordList?has_content && keywordList?lower_case == "null">
+          <@text value="" name="eml.keywords[${item_index}].keywordsString" i18nkey="eml.keywords.keywordsString" help="i18n" requiredField=true/>
+        <#else>
+          <@text name="eml.keywords[${item_index}].keywordsString" i18nkey="eml.keywords.keywordsString" help="i18n" requiredField=true/>
+        </#if>
+		  </div>
 		</#list>
 	</div>
 	<div class="addNew"><a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.keywords.item'/></a></div>
