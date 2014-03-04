@@ -687,7 +687,8 @@ public class EmlValidator extends BaseValidator {
         if (!isKeywordsPageEmpty(eml)) {
           int index = 0;
           for (KeywordSet ks : eml.getKeywords()) {
-            if (!exists(ks.getKeywordsString())) {
+            // TODO: remove check for "null" below after upgrading gbif-metadata-profile to 1.0.2.4 (est for IPT v2.1.1)
+            if (!exists(ks.getKeywordsString()) || ks.getKeywordsString().equalsIgnoreCase("null")) {
               action.addFieldError("eml.keywords[" + index + "].keywordsString",
                 action.getText("validation.required", new String[] {action.getText("eml.keywords.keywordsString")}));
             }
