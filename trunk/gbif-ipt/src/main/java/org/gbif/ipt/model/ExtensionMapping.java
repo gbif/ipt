@@ -28,6 +28,7 @@ public class ExtensionMapping implements Serializable {
 
   public static final Integer IDGEN_LINE_NUMBER = -1;
   public static final Integer IDGEN_UUID = -2;
+  public static final Integer NO_ID = -3;
 
   private Source source;
   private Extension extension; // persist only the rowType

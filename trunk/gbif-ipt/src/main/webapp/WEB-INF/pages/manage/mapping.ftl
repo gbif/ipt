@@ -150,7 +150,7 @@ $(document).ready(function(){
               </#if>  
             	<select name="mapping.idColumn" id="idColumn">		
             	<#if mapping.isCore()>
-            	  <option value="" <#if !mapping.idColumn??> selected="selected"</#if>><@s.text name="manage.mapping.noid"/></option>
+            	  <option value="" <#if !mapping.idColumn??> selected="selected"<#elseif (mapping.idColumn!-99)==-3> selected="selected"</#if>><@s.text name="manage.mapping.noid"/></option>
             	</#if>
                 <!-- auto generating identifiers is only available for the Taxon core -->
               <#if mapping.isTaxonCore()>
