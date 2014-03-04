@@ -90,12 +90,12 @@ public class EmlValidator extends BaseValidator {
   }
 
   /**
-   * The URL must be a valid URI.
+   * Returns a formatted URL string, prefixing it with a default scheme component if its not an absolute URL.
    *
-   * @return the URL formatted with the schema component
+   * @return the URL always having a scheme component, or null if incoming URL string was null or empty
    */
   public static String formatURL(String url) {
-    if (url != null) {
+    if (!Strings.isNullOrEmpty(url)) {
       try {
         URI uri = URI.create(url);
         if (uri.isAbsolute()) {
@@ -632,13 +632,16 @@ public class EmlValidator extends BaseValidator {
 
         // at least one field has to have had data entered into it to qualify for validation
         if (!isPhysicalPageEmpty(eml)) {
-          // Validate the resource homepage URL
-          String formattedUrl = formatURL(eml.getDistributionUrl());
-          if (formattedUrl == null || !isWellFormedURI(formattedUrl)) {
-            action.addFieldError("eml.distributionUrl",
-              action.getText("validation.invalid", new String[] {action.getText("eml.distributionUrl")}));
-          } else {
-            eml.setDistributionUrl(formattedUrl);
+          // null or empty URLs bypass validation
+          if (!Strings.isNullOrEmpty(eml.getDistributionUrl())) {
+            // retrieve a formatted homepage URL including scheme component
+            String formattedUrl = formatURL(eml.getDistributionUrl());
+            if (formattedUrl == null || !isWellFormedURI(formattedUrl)) {
+              action.addFieldError("eml.distributionUrl",
+                action.getText("validation.invalid", new String[] {action.getText("eml.distributionUrl")}));
+            } else {
+              eml.setDistributionUrl(formattedUrl);
+            }
           }
 
           // character set, download URL, and data format are required
