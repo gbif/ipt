@@ -515,8 +515,8 @@ public class EmlValidator extends BaseValidator {
         if (!isMethodsPageEmpty(eml)) {
 
           boolean emptyFields = false;
-          if (eml.getSampleDescription().length() == 0 && eml.getStudyExtent().length() == 0 &&
-              eml.getQualityControl().length() == 0) {
+          if (Strings.isNullOrEmpty(eml.getSampleDescription()) && Strings.isNullOrEmpty(eml.getStudyExtent()) &&
+              Strings.isNullOrEmpty(eml.getQualityControl())) {
             eml.setSampleDescription(null);
             eml.setStudyExtent(null);
             eml.setQualityControl(null);
