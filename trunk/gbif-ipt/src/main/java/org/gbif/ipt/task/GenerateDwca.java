@@ -66,6 +66,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
   private static final int ID_COLUMN_INDEX = 0;
   private static final String CHARACTER_ENCODING = "UTF-8";
   private static final TermFactory TERM_FACTORY = TermFactory.instance();
+  private static final String SORTED_FILE_PREFIX = "sorted_";
   private static final org.gbif.utils.file.FileUtils GBIF_FILE_UTILS = new org.gbif.utils.file.FileUtils();
   public static final String CANCELLED_STATE_MSG = "Archive generation cancelled";
   public static final String ID_COLUMN_NAME = "id";
@@ -328,8 +329,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     File unsorted = arch.getCore().getLocationFile();
 
     // create a new file that will store the records sorted by ID
-    File sorted = File.createTempFile("sorted", ".txt");
-
+    File sorted = new File(unsorted.getParentFile(), SORTED_FILE_PREFIX + unsorted.getName());
     // get the ignore column rows, delimiter, enclosed by, newline character
     int headerLines = arch.getCore().getIgnoreHeaderLines();
     String columnDelimiter = arch.getCore().getFieldsTerminatedBy();
@@ -343,8 +343,9 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     GBIF_FILE_UTILS
       .sort(unsorted, sorted, CHARACTER_ENCODING, ID_COLUMN_INDEX, columnDelimiter, enclosedBy, newlineDelimiter,
         headerLines);
-    log.debug("Finished sorting core file in " + String.valueOf((System.currentTimeMillis() - time) / 1000) + " secs, check: " + sorted
-      .getAbsoluteFile().toString());
+    log.debug(
+      "Finished sorting core file in " + String.valueOf((System.currentTimeMillis() - time) / 1000) + " secs, check: "
+      + sorted.getAbsoluteFile().toString());
 
     return sorted;
   }
@@ -432,6 +433,10 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
             writePublicationLogMessage("Error reading data: " + iter.getErrorMessage());
           }
           iter.close();
+        }
+        // always cleanup the sorted file, it must not be included in the dwca directory when compressed
+        if (sortedCore != null) {
+          FileUtils.deleteQuietly(sortedCore);
         }
       }
 
