@@ -771,6 +771,7 @@ publishing.success=成功發布資料集 {1} 版本 #{0}
 publishing.cancelled=取消發布資料集 {1} 版本 #{0}！
 publishing.error=發布資料集時，發生類型錯誤 {0}：{1}
 publishing.failed=發布資料集 {1} 版本 #{0} 失敗：{2}
+publishing.skipping=TODO: Publishing version #{0} of resource {1} skipped: the maximum number of failed publish attempts has been reached. Please try to publish this resource separately
 restore.resource.success=由於發布失敗，還原資料集 {1} 至版本 #{0}
 restore.resource.failed=還原資料集 {1} 版本 #{0} 失敗：{2}
 

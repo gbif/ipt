@@ -43,13 +43,16 @@ import org.gbif.ipt.validation.EmlValidator;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.log4j.Logger;
 
 public class OverviewAction extends ManagerBaseAction {
@@ -395,11 +398,6 @@ public class OverviewAction extends ManagerBaseAction {
       if (resource.hasCore()) {
         // show extensions suited for this core
         potentialExtensions = extensionManager.list(resource.getCoreRowType());
-        log.debug("Resource has a core of type " + resource.getCoreRowType() + ".  Suitable extensions: "
-          + potentialExtensions);
-
-        log.debug("Resource has a core of type " + resource.getCoreType() + ".  Suitable extensions: "
-          + potentialExtensions);
 
         // add core itself
         Extension core = extensionManager.get(resource.getCoreRowType());
@@ -458,6 +456,11 @@ public class OverviewAction extends ManagerBaseAction {
    * Executes the instruction to publish the resource.
    * </br>
    * In addition, the method must check if resource has been configured to be auto-published.
+   * </br>
+   * In addition, the method must clear the processFailures for the resource being published. If a resource has
+   * exceeded the maximum number of failed publish events during auto-publication, auto-publication for the resource is
+   * suspended. By publishing the resource manually, it is assumed the manager is trying to debug the problem. Without
+   * this safeguard in place, a resource can auto-publish in an endless number of failures.
    * 
    * @return Struts2 result string
    * @throws Exception if method fails
@@ -465,6 +468,13 @@ public class OverviewAction extends ManagerBaseAction {
   public String publish() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
+    }
+
+    // clear the processFailures for the resource, allowing auto-publication to proceed
+    if (resourceManager.getProcessFailures().containsKey(resource.getShortname())) {
+      logProcessFailures(resource);
+      log.info("Clearing publish event failures for resource: " + resource.getTitleAndShortname());
+      resourceManager.getProcessFailures().removeAll(resource.getShortname());
     }
 
     // look for parameters publication mode and publication frequency
@@ -519,6 +529,8 @@ public class OverviewAction extends ManagerBaseAction {
           new String[] {String.valueOf(v), resource.getShortname(), e.getMessage()}));
         // restore the previous version since publication was unsuccessful
         resourceManager.restoreVersion(resource, v - 1, this);
+        // keep track of how many failures on auto publication have happened
+        resourceManager.getProcessFailures().put(resource.getShortname(), new Date());
       }
     } catch (InvalidConfigException e) {
       // with this type of error, the version cannot be rolled back - just alert user publication failed
@@ -598,5 +610,35 @@ public class OverviewAction extends ManagerBaseAction {
 
   public void setUnpublish(String unpublish) {
     this.unpublish = StringUtils.trimToNull(unpublish) != null;
+  }
+
+  /**
+   * Log how many times publication has failed for a resource, also detailing when the failures occurred.
+   *
+   * @param resource resource
+   */
+  @VisibleForTesting
+  protected void logProcessFailures(Resource resource) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("Resource [");
+    sb.append(resource.getTitleAndShortname());
+    sb.append("] has ");
+    if (resourceManager.getProcessFailures().containsKey(resource.getShortname())) {
+      List<Date> failures = resourceManager.getProcessFailures().get(resource.getShortname());
+      sb.append(String.valueOf(failures.size()));
+      sb.append(" failed publications on: ");
+      Iterator<Date> iter = failures.iterator();
+      while (iter.hasNext()) {
+        sb.append(DateFormatUtils.format(iter.next(), "yyyy-MM-dd HH:mm:SS"));
+        if (iter.hasNext()) {
+          sb.append(", ");
+        } else {
+          sb.append(".");
+        }
+      }
+    } else {
+      sb.append("0 failed publications");
+    }
+    log.debug(sb.toString());
   }
 }

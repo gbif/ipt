@@ -76,34 +76,50 @@ public class PublishingMonitor {
           if (executor.getMaximumPoolSize() - executor.getActiveCount() > 0) {
             Date now = new Date();
             List<Resource> resources = resourceManager.list();
-            // monitor for resources due to be auto-published, and not already queued (when shortName is in futures)
             for (Resource resource : resources) {
               Date next = resource.getNextPublished();
               int v = resource.getNextVersion();
               if (next != null) {
-                if (next.before(now) && !shortNames.contains(resource.getShortname())) {
-                  try {
-                    log.debug(
-                      "Monitor: " + resource.getTitleAndShortname() + " v# " + v + " due to be auto-published: " + next
-                        .toString());
-                    resourceManager.publish(resource, v, null);
-                  } catch (PublicationException e) {
-                    if (PublicationException.TYPE.LOCKED == e.getType()) {
-                      log.error("Monitor: " + resource.getTitleAndShortname() + " cannot be auto-published, because "
-                                + "it is currently being published");
+                // ensure resource is due to be auto-published
+                if (next.before(now)) {
+                  // ensure resource isn't already being published
+                  if (!shortNames.contains(resource.getShortname())) {
+                    // ensure resource has not exceeded the maximum number of publication failures
+                    if (!resourceManager.hasMaxProcessFailures(resource)) {
+                      try {
+                        log.debug(
+                          "Monitor: " + resource.getTitleAndShortname() + " v# " + v + " due to be auto-published: " + next
+                            .toString());
+                        resourceManager.publish(resource, v, null);
+                      } catch (PublicationException e) {
+                        if (PublicationException.TYPE.LOCKED == e.getType()) {
+                          log.error("Monitor: " + resource.getTitleAndShortname() + " cannot be auto-published, because "
+                                    + "it is currently being published");
+                        } else {
+                          // alert user publication failed
+                          log.error(
+                            "Publishing version #" + String.valueOf(v) + " of resource " + resource.getTitleAndShortname()
+                            + " failed: " + e.getMessage());
+                          // restore the previous version since publication was unsuccessful
+                          resourceManager.restoreVersion(resource, resource.getLastVersion(), null);
+                          // keep track of how many failures on auto publication have happened
+                          resourceManager.getProcessFailures().put(resource.getShortname(), new Date());
+                        }
+                      } catch (InvalidConfigException e) {
+                        // with this type of error, the version cannot be rolled back - just alert user publication failed
+                        log.error(
+                          "Publishing version #" + String.valueOf(v) + "of resource " + resource.getShortname() + "failed:"
+                          + e.getMessage(), e);
+                      }
+
                     } else {
-                      // alert user publication failed
-                      log.error(
-                        "Publishing version #" + String.valueOf(v) + " of resource " + resource.getTitleAndShortname()
-                        + " failed: " + e.getMessage());
-                      // restore the previous version since publication was unsuccessful
-                      resourceManager.restoreVersion(resource, resource.getLastVersion(), null);
+                      log.debug("Skipping auto-publication for [" + resource.getTitleAndShortname()
+                                + "] since it has exceeded the maximum number of failed publish attempts. Please try "
+                                + "to publish this resource individually to fix the problem(s)");
                     }
-                  }catch (InvalidConfigException e) {
-                    // with this type of error, the version cannot be rolled back - just alert user publication failed
-                    log.error(
-                      "Publishing version #" + String.valueOf(v) + "of resource " + resource.getShortname() + "failed:"
-                      + e.getMessage(), e);
+                  } else {
+                    log.debug("Skipping auto-publication for [" + resource.getTitleAndShortname()
+                              + "] since it is already in progress");
                   }
                 }
               }

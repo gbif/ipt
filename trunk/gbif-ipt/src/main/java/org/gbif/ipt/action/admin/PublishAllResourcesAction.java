@@ -11,6 +11,7 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
+import java.util.Date;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -54,14 +55,19 @@ public class PublishAllResourcesAction extends BaseAction {
       return SUCCESS;
     }
 
-    // kick off publishing for all resources
+    // kick off publishing for all resources, unless the resource has exceeded the maximum number of failed publications
     for (Resource resource : resources) {
       int v = 0;
       try {
-        // increment version number - this will be the version of newly published eml/rtf/archive
-        v = resource.getNextVersion();
-        // publish a new version of the resource - dwca gets published asynchronously
-        resourceManager.publish(resource, v, this);
+        if (!resourceManager.hasMaxProcessFailures(resource)) {
+          // increment version number - this will be the version of newly published eml/rtf/archive
+          v = resource.getNextVersion();
+          // publish a new version of the resource - dwca gets published asynchronously
+          resourceManager.publish(resource, v, this);
+        } else {
+          addActionError(getText("publishing.skipping",
+            new String[] {String.valueOf(resource.getNextVersion()), resource.getTitleAndShortname()}));
+        }
       } catch (PublicationException e) {
         if (PublicationException.TYPE.LOCKED == e.getType()) {
           addActionError(
@@ -72,6 +78,8 @@ public class PublishAllResourcesAction extends BaseAction {
             getText("publishing.failed", new String[] {String.valueOf(v), resource.getShortname(), e.getMessage()}));
           // restore the previous version since publication was unsuccessful
           resourceManager.restoreVersion(resource, v - 1, this);
+          // keep track of how many failures on auto publication have happened
+          resourceManager.getProcessFailures().put(resource.getShortname(), new Date());
         }
       } catch (InvalidConfigException e) {
         // with this type of error, the version cannot be rolled back - just alert user publication failed

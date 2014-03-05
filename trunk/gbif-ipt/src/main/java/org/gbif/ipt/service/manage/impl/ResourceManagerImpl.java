@@ -100,7 +100,10 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import javax.annotation.Nullable;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.lowagie.text.Document;
@@ -121,6 +124,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   public static final String PERSISTENCE_FILE = "resource.xml";
   public static final String RESOURCE_IDENTIFIER_LINK_PART = "/resource.do?id=";
   public static final String RESOURCE_PUBLIC_LINK_PART = "/resource.do?r=";
+  private static final int MAX_PROCESS_FAILURES = 3;
   private final XStream xstream = new XStream();
   private SourceManager sourceManager;
   private ExtensionManager extensionManager;
@@ -128,6 +132,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private ThreadPoolExecutor executor;
   private GenerateDwcaFactory dwcaFactory;
   private Map<String, Future<Integer>> processFutures = new HashMap<String, Future<Integer>>();
+  private ListMultimap<String, Date> processFailures = ArrayListMultimap.create();
   private Map<String, StatusReport> processReports = new HashMap<String, StatusReport>();
   private Eml2Rtf eml2Rtf;
   private VocabulariesManager vocabManager;
@@ -777,7 +782,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           // this type of exception happens outside GenerateDwca - so add reason to StatusReport
           getTaskMessages(shortname).add(new TaskMessage(Level.ERROR, reasonFailed));
         } finally {
-          // if publication was unsuccessful
+          // if publication was successful..
           if (succeeded) {
             // update StatusReport on publishing page
             String msg = action.getText("publishing.success", new String[] {sVersion, resource.getShortname()});
@@ -796,6 +801,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
             // the previous version needs to be rolled back
             restoreVersion(resource, resource.getLastVersion(), action);
+
+            // keep track of how many failures on auto publication have happened
+            processFailures.put(resource.getShortname(), new Date());
           }
           // remove process from locking list
           processFutures.remove(shortname);
@@ -1802,5 +1810,26 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   public Map<String, Future<Integer>> getProcessFutures() {
     return processFutures;
+  }
+
+  public ListMultimap<String, Date> getProcessFailures() {
+    return processFailures;
+  }
+
+  public boolean hasMaxProcessFailures(Resource resource) {
+    if (processFailures.containsKey(resource.getShortname())) {
+      List<Date> failures = processFailures.get(resource.getShortname());
+      log.debug("Publication has failed " + String.valueOf(failures.size()) + " time(s) for resource: " + resource
+        .getTitleAndShortname());
+      if (failures.size() >= MAX_PROCESS_FAILURES) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  @VisibleForTesting
+  public GenerateDwcaFactory getDwcaFactory() {
+    return dwcaFactory;
   }
 }
