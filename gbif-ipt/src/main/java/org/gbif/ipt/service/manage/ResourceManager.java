@@ -17,12 +17,14 @@ import org.gbif.ipt.task.StatusReport;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import javax.annotation.Nullable;
 
+import com.google.common.collect.ListMultimap;
 import com.google.inject.ImplementedBy;
 
 /**
@@ -342,12 +344,33 @@ public interface ResourceManager {
    *
    * @return the ThreadPoolExecutor
    */
-  public ThreadPoolExecutor getExecutor();
+  ThreadPoolExecutor getExecutor();
 
   /**
    * Return the Futures map, representing all publishing jobs that have been fired.
    *
    * @return the Futures map
    */
-  public Map<String, Future<Integer>> getProcessFutures();
+  Map<String, Future<Integer>> getProcessFutures();
+
+  /**
+   * Return the failures map, representing all publishing jobs that have failed.
+   * </br>
+   * This map can be queried, to find out which resources have failed publishing jobs.
+   * </br>
+   * Auto-publication for a resource halts, if there have been 3 failed publish events. A successful publish event run
+   * manually, is needed to clear the failed publish events for the resource.
+   *
+   * @return map of resource name (key) to List of Date when publishing job failed
+   */
+  ListMultimap<String, Date> getProcessFailures();
+
+  /**
+   * Check if the maximum number of publish event failures has occurred for a resource.
+   *
+   * @param resource resource
+   *
+   * @return true if publication has failed the maximum allowed times for a given resource
+   */
+  boolean hasMaxProcessFailures(Resource resource);
 }

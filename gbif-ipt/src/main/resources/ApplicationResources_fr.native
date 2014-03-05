@@ -648,6 +648,7 @@ publishing.success=La publication de la ressource {1} en version #{0} s''est ter
 publishing.cancelled=La publication de la ressource {1} en version #{0} a été annulée!
 publishing.error=Une erreur de type {0} a été rencontrée lors de la publication: {1}
 publishing.failed=La publication de la ressource {1} en version #{0} a échoué: {2}
+publishing.skipping=TODO: Publishing version #{0} of resource {1} skipped: the maximum number of failed publish attempts has been reached. Please try to publish this resource separately
 restore.resource.success=La ressource {1} en version #{0} a été restaurée après l''échec de publication
 restore.resource.failed=La restauration de la ressource {1} en version {0} a échoué: {2}
 

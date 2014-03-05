@@ -26,11 +26,11 @@ import org.gbif.ipt.mock.MockDataDir;
 import org.gbif.ipt.mock.MockRegistryManager;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
-import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.SqlSource;
+import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
@@ -46,6 +46,7 @@ import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidConfigException;
+import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
@@ -71,9 +72,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
@@ -162,7 +166,7 @@ public class ResourceManagerImplTest {
     ipt.setName("Test IPT");
   }
 
-  private ResourceManagerImpl getResourceManagerImpl() throws IOException, SAXException, ParserConfigurationException {
+  public ResourceManagerImpl getResourceManagerImpl() throws IOException, SAXException, ParserConfigurationException {
 
     // mock creation of datasetSubtypes Map, with 2 occurrence subtypes, and 6 checklist subtypes
     Map<String, String> datasetSubtypes = new LinkedHashMap<String, String>();
@@ -202,8 +206,6 @@ public class ResourceManagerImplTest {
 
     ExtensionRowTypeConverter extensionRowTypeConverter = new ExtensionRowTypeConverter(extensionManager);
     ConceptTermConverter conceptTermConverter = new ConceptTermConverter(extensionRowTypeConverter);
-
-    // create
 
     return new ResourceManagerImpl(mockAppConfig, mockedDataDir, mockEmailConverter, mockOrganisationKeyConverter,
         extensionRowTypeConverter, jdbcConverter, mockSourceManager, extensionManager,
@@ -885,12 +887,52 @@ public class ResourceManagerImplTest {
     assertTrue(new File(resourceDir, "rtf-res2-4.rtf").exists());
   }
 
+  @Test
+  public void testHasMaxProcessFailures() throws ParserConfigurationException, SAXException, IOException {
+    ResourceManagerImpl resourceManager = getResourceManagerImpl();
+
+    ListMultimap<String, Date> processFailures = ArrayListMultimap.create();
+    processFailures.put("res1", new Date());
+    processFailures.put("res1", new Date());
+    processFailures.put("res2", new Date());
+    processFailures.put("res2", new Date());
+    processFailures.put("res2", new Date());
+    resourceManager.getProcessFailures().putAll(processFailures);
+
+    Resource resource = new Resource();
+    resource.setShortname("res1");
+    resource.setTitle("Mammals");
+    assertFalse(resourceManager.hasMaxProcessFailures(resource));
+    resource.setShortname("res2");
+    assertTrue(resourceManager.hasMaxProcessFailures(resource));
+  }
+
+  @Test(expected= PublicationException.class)
+  public void testPublishNonRegisteredMetadataOnlyResourceFailure()
+    throws ParserConfigurationException, SAXException, IOException, AlreadyExistingException, ImportException {
+    // create instance of manager
+    ResourceManagerImpl resourceManager = getResourceManagerImpl();
+    // prepare resource
+    Resource resource = getNonRegisteredMetadataOnlyResource();
+    // save resource
+    resourceManager.save(resource);
+
+    // make pre-publication assertions
+    assertEquals(3, resource.getEml().getEmlVersion());
+
+    //to trigger PublicationException, indicate publication already in progress (add Future to processFutures)
+    resourceManager.getProcessFutures().put(resource.getShortname(), mock(Future.class));
+
+    // publish, catching expected Exception
+    resourceManager.publish(resource, 4, baseAction);
+  }
+
   /**
    * Return a Non Registered Metadata Only Resource used for testing.
    *
    * @return a Non Registered Metadata Only Resource used for testing
    */
-  private Resource getNonRegisteredMetadataOnlyResource()
+  public Resource getNonRegisteredMetadataOnlyResource()
     throws IOException, SAXException, ParserConfigurationException, AlreadyExistingException, ImportException {
     // retrieve resource configuration file
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
@@ -912,6 +954,12 @@ public class ResourceManagerImplTest {
     when(mockedDataDir.resourceEmlFile(anyString(), eq(4))).thenReturn(versionedEmlXML);
     // mock finding eml.xml file
     when(mockedDataDir.resourceEmlFile(anyString(), Matchers.<Integer>eq(null))).thenReturn(copiedEmlXML);
+    // mock finding versioned dwca file
+    when(mockedDataDir.resourceDwcaFile(anyString(), eq(4))).thenReturn(File.createTempFile("dwca-4", "zip"));
+    // mock finding previous versioned dwca file
+    when(mockedDataDir.resourceDwcaFile(anyString(), eq(3))).thenReturn(File.createTempFile("dwca-3", "zip"));
+    // mock finding dwca file
+    when(mockedDataDir.resourceDwcaFile(anyString(), Matchers.<Integer>eq(null))).thenReturn(File.createTempFile("dwca", "zip"));
 
     // retrieve sample rtf.xml
     File rtfXML = FileUtils.getClasspathFile("resources/res1/rtf-res1.rtf");
@@ -930,6 +978,8 @@ public class ResourceManagerImplTest {
     ResourceManagerImpl resourceManager = getResourceManagerImpl();
 
     // create a new resource.
-    return resourceManager.create(RESOURCE_SHORTNAME, null, copiedEmlXML, creator, baseAction);
+    Resource resource = resourceManager.create(RESOURCE_SHORTNAME, null, copiedEmlXML, creator, baseAction);
+    resource.setEmlVersion(3);
+    return resource;
   }
 }

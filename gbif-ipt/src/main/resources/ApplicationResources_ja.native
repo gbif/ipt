@@ -1111,6 +1111,7 @@ publishing.success=リソース{1}のヴァージョン#{0}の公開は成功し
 publishing.cancelled=リソース{1}のヴァージョン#{0}の公開はキャンセルされました。
 publishing.error=公開中にタイプ{0}のエラーが発生しました：{1}
 publishing.failed=リソース{1}のヴァージョン#{0}の公開に失敗しました：{2}
+publishing.skipping=TODO: Publishing version #{0} of resource {1} skipped: the maximum number of failed publish attempts has been reached. Please try to publish this resource separately
 
 restore.resource.success=公開失敗の後、リソース{1}のヴァージョン#{0}を修復しました。
 restore.resource.failed=リソース{1}のヴァージョン#{0}の修復に失敗しました。
