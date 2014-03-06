@@ -71,6 +71,9 @@ Header {
 .red{
 	color: red;
 }
+tr.rowInError {
+  color: #d8424f;
+}
 ul.fielderror{
 	list-style:none; 
 	color: #d8424f;
