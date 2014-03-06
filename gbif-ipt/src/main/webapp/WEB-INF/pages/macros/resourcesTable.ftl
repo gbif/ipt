@@ -28,9 +28,9 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
 
     // parse a date in yyyy-mm-dd format
     function parseDate(input) {
-        var parts = input.match(/(\d+)/g);
-        return new Date(parts[0], parts[1]-1, parts[2], parts[3], parts[4], parts[5]); // months are 0-based
-    }
+            var parts = input.match(/(\d+)/g);
+            return new Date(parts[0], parts[1]-1, parts[2], parts[3], parts[4], parts[5]); // months are 0-based
+        }
 
     /* resources list */
     var aDataSet = [
@@ -92,7 +92,7 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
                 var today = new Date();
                 for ( var i=0, iLen=oSettings.aoData.length ; i<iLen ; i++ ) {
                   // warning fragile: index 8 must always equal next published date on both home page and manage page
-                  var nextPublishedDate = parseDate(oSettings.aoData[i]._aData[8]);
+                  var nextPublishedDate = (oSettings.aoData[i]._aData[8] == '${emptyString}') ? today : parseDate(oSettings.aoData[i]._aData[8]);
                   if (today > nextPublishedDate) {
                     oSettings.aoData[i].nTr.className += " rowInError";
                   }
