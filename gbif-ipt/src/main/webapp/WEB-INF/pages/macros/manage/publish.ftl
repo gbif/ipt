@@ -36,7 +36,7 @@
       </div>
     <#if resource.usesAutoPublishing()>
       <p>
-        <#if resource.nextPublished??><@s.text name='manage.home.next.publication'/>: <em class="green">${resource.nextPublished?date?string.medium}</#if></em>
+        <#if resource.nextPublished??><@s.text name='manage.home.next.publication'/>: <em class="green">${resource.nextPublished?date?string("MMM d, yyyy, HH:mm:ss")}</#if></em>
       </p>
     </#if>
   </div>

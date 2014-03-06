@@ -26,6 +26,12 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
         }
     } );
 
+    // parse a date in yyyy-mm-dd format
+    function parseDate(input) {
+        var parts = input.match(/(\d+)/g);
+        return new Date(parts[0], parts[1]-1, parts[2], parts[3], parts[4], parts[5]); // months are 0-based
+    }
+
     /* resources list */
     var aDataSet = [
       <#list resources as r>
@@ -37,7 +43,7 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
            '${r.recordsPublished!0}',
            '${r.modified?date}',
            <#if r.published>'${(r.lastPublished?date)!}'<#else>'<@s.text name="portal.home.not.published"/>'</#if>,
-           '${(r.nextPublished?date)!'${emptyString}'}',
+           '${(r.nextPublished?date?string("yyyy-MM-dd HH:mm:ss"))!'${emptyString}'}',
            <#if r.status=='PRIVATE'>'<@s.text name="manage.home.visible.private"/>'<#else>'<@s.text name="manage.home.visible.public"/>'</#if>,
            <#if r.creator??>'${r.creator.firstname?replace("\'", "\\'")?replace("\"", '\\"')!} ${r.creator.lastname?replace("\'", "\\'")?replace("\"", '\\"')!}'<#else>'${emptyString}'</#if>]<#if r_has_next>,</#if>
       </#list>
@@ -79,7 +85,19 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
             "aaSorting": [[ ${columnToSortOn}, "${sortOrder}" ]],
             "aoColumnDefs": [
                 { 'bSortable': false, 'aTargets': [ 0 ] }
-            ]
+            ],
+            "fnInitComplete": function(oSettings) {
+                /* Next published date should never be before today's date, otherwise auto-publication must have failed.
+                   In this case, highlight the row to bring the problem to the resource manager's attention. */
+                var today = new Date();
+                for ( var i=0, iLen=oSettings.aoData.length ; i<iLen ; i++ ) {
+                  // warning fragile: index 8 must always equal next published date on both home page and manage page
+                  var nextPublishedDate = parseDate(oSettings.aoData[i]._aData[8]);
+                  if (today > nextPublishedDate) {
+                    oSettings.aoData[i].nTr.className += " rowInError";
+                  }
+                }
+            }
         } );
     } );
 </script>
