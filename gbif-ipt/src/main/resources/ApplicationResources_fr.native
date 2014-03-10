@@ -731,6 +731,8 @@ manage.resource.migrate.failed=La migration de la ressource a échoué.
 manage.resource.migrate.failed.multipleUUIDs=Lors de l''enregistrement, plusieurs UUIDs ont été trouvés dans la liste des identifiants alternatifs.
 manage.resource.migrate.failed.badUUID=Au moins un UUID a été trouvé dans la liste des identifiants alternatifs, mais celui ne correspond pas à une ressource de {0}.
 manage.resource.migrate.failed.help=Afin de pouvoir terminer l''enregistrement, veuillez 1) retirer les UUID de la liste des identifiants alternatifs s''il s'agit d''une nouvelle ressource (à créer), ou 2) si vous désirez mettre à jour une ressource existante, placez l''UUID de celle-ci dans le champ de identifiants alternatifs.
+manage.resource.migrate.failed.duplicate=TODO: The UUID {0} found in the list of alternate identifiers is already assigned to one or more public or registered resources: {1}
+manage.resource.migrate.failed.duplicate.help=TODO: If you are trying to replace a registered resource that already exists in your IPT, the other resource has to be deleted first. In this case, please notify helpdesk@gbif.org that the resource has been replaced, and not deleted, since deleting a registered resource causes it to be flagged as deleted in the GBIF Registry.
 
 manage.source.added.new=Nouveau fichier source ajouté  >>{0}<<.
 manage.source.cannot.add=Impossible d''ajouter la source {0}: {1}

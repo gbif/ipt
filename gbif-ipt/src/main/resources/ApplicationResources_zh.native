@@ -655,6 +655,8 @@ manage.resource.migrate.failed=資源遷移失敗
 manage.resource.migrate.failed.multipleUUIDs=在註冊此資源時發現替代的識別碼列表中已有多個 UUID。
 manage.resource.migrate.failed.badUUID=在替代的識別碼中發現至少有一個 UUID，但它並未對應到 {0} 所擁有的資源。
 manage.resource.migrate.failed.help=欲進行註冊程序，請循下列任一步驟：1) 若您欲發布此資源為一新資源，請移除所有替代的識別碼；2) 輸入一 UUID，且此 UUID 必須與既有、已註冊的資源相同，此將使用正發布的資源取代既有的已註冊資源。
+manage.resource.migrate.failed.duplicate=TODO: The UUID {0} found in the list of alternate identifiers is already assigned to one or more public or registered resources: {1}
+manage.resource.migrate.failed.duplicate.help=TODO: If you are trying to replace a registered resource that already exists in your IPT, the other resource has to be deleted first. In this case, please notify helpdesk@gbif.org that the resource has been replaced, and not deleted, since deleting a registered resource causes it to be flagged as deleted in the GBIF Registry.
 
 manage.mapping.title=對應資料來源
 manage.mapping.intro=對於每個屬性，您可以指定一個取自您的資料來源{0}中的特定欄位中的動態值，或是為所有記錄提供單一固定的靜態值。
