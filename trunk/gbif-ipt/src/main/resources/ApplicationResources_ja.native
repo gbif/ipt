@@ -612,6 +612,8 @@ manage.resource.migrate.failed=Resource migration failed
 manage.resource.migrate.failed.multipleUUIDs=Multiple UUIDs were found in the list of alternate identifiers at the time of registration.
 manage.resource.migrate.failed.badUUID=At least one UUID was found in the list of alternate identifiers, but it does not correspond to a resource owned by {0}.
 manage.resource.migrate.failed.help=In order to proceed with registration either: 1) remove all UUID alternate identifiers if this resource is meant to be a brand new resource, or 2) add a single UUID alternate identifier equal to the UUID of the existing registered resource that it is meant to update.
+manage.resource.migrate.failed.duplicate=TODO: The UUID {0} found in the list of alternate identifiers is already assigned to one or more public or registered resources: {1}
+manage.resource.migrate.failed.duplicate.help=TODO: If you are trying to replace a registered resource that already exists in your IPT, the other resource has to be deleted first. In this case, please notify helpdesk@gbif.org that the resource has been replaced, and not deleted, since deleting a registered resource causes it to be flagged as deleted in the GBIF Registry.
 
 manage.mapping.title=マッピングソースデータ
 manage.mapping.intro=それぞれのプロパテイについては、ソースデータファイル{0}の指定したカラムから動的に値を割り当てることができます。あるいはすべてのレコードに固定値を入力することもできます。

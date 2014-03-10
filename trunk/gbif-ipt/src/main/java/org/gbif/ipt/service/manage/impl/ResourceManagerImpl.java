@@ -103,6 +103,7 @@ import javax.annotation.Nullable;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.ListMultimap;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -1439,52 +1440,62 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       // Populate set of UUIDs from eml.alternateIdentifiers that could represent existing registered resource UUIDs
       Set<UUID> candidateResourceUUIDs = collectCandidateResourceUUIDsFromAlternateIds(resource);
 
-      // At the time of registration, there can be max 1 candidate UUID. This safeguards against migration errors
+      // there can be max 1 candidate UUID. This safeguards against migration errors
       if (candidateResourceUUIDs.size() > 1) {
         String reason = action.getText("manage.resource.migrate.failed.multipleUUIDs", new String[] {organisation.getName()});
         String help = action.getText("manage.resource.migrate.failed.help");
         throw new InvalidConfigException(TYPE.INVALID_RESOURCE_MIGRATION, reason + " " + help);
       }
+      // resource migration can happen if a single UUID corresponding to the resource UUID of an existing registered
+      // resource owned by the specified organization has been found in the resource's alternate ids
+      else if (candidateResourceUUIDs.size() == 1) {
 
-      // So-called resource migration can happen if a UUID corresponding to the resource UUID of an existing
-      // registered resource owned by the specified organization has been found in the resource's alternate ids
-      if (organisation.getKey() != null && organisation.getName() != null && candidateResourceUUIDs.size() > 0) {
-        boolean matched = false;
-        // collect list of registered resources associated to organization
-        List<Resource> existingResources = registryManager.getOrganisationsResources(organisation.getKey().toString());
+        // there cannot be any public res with the same alternate identifier UUID, or registered res with the same UUID
+        UUID candidate = Iterables.getOnlyElement(candidateResourceUUIDs);
+        List<String> duplicateUses = detectDuplicateUsesOfUUID(candidate, resource.getShortname());
+        if (duplicateUses.isEmpty()) {
+          if (organisation.getKey() != null && organisation.getName() != null) {
+            boolean matched = false;
+            // collect list of registered resources associated to organization
+            List<Resource> existingResources = registryManager.getOrganisationsResources(organisation.getKey().toString());
+            for (Resource entry : existingResources) {
+              // is the candidate UUID equal to the UUID from an existing registered resource owned by the
+              // organization? There should only be one match, and the first one encountered will be used for migration.
+              if (entry.getKey() != null && candidate.equals(entry.getKey())) {
+                log.debug("Resource matched to existing registered resource, UUID=" + entry.getKey().toString());
 
-        for (Resource entry : existingResources) {
+                // fill in registration info - we've found the original resource being migrated to the IPT
+                resource.setStatus(PublicationStatus.REGISTERED);
+                resource.setKey(entry.getKey());
+                resource.setOrganisation(organisation);
 
-          // does the set of candidate UUIDs contain the UUID from an existing registered resource owned by the
-          // organization? There should only be one match, and the first one encountered will be used for migration.
-          if (entry.getKey() != null && candidateResourceUUIDs.contains(entry.getKey())) {
+                // display update about migration to user
+                alog.info("manage.resource.migrate", new String[] {entry.getKey().toString(), organisation.getName()});
 
-            log.debug("Resource matched to existing registered resource, UUID=" + entry.getKey().toString());
+                // update the resource, adding the new service(s)
+                updateRegistration(resource, action);
 
-            // fill in registration info - we've found the original resource being migrated to the IPT
-            resource.setStatus(PublicationStatus.REGISTERED);
-            resource.setKey(entry.getKey());
-            resource.setOrganisation(organisation);
+                // indicate a match was found
+                matched = true;
 
-            // display update about migration to user
-            alog.info("manage.resource.migrate", new String[] {entry.getKey().toString(), organisation.getName()});
-
-            // update the resource, adding the new service(s)
-            updateRegistration(resource, action);
-
-            // indicate a match was found
-            matched = true;
-
-            // just in case, ensure only a single existing resource is updated
-            break;
+                // just in case, ensure only a single existing resource is updated
+                break;
+              }
+            }
+            // if no match was ever found, this is considered a failed resource migration
+            if (!matched) {
+              String reason =
+                action.getText("manage.resource.migrate.failed.badUUID", new String[] {organisation.getName()});
+              String help = action.getText("manage.resource.migrate.failed.help");
+              throw new InvalidConfigException(TYPE.INVALID_RESOURCE_MIGRATION, reason + " " + help);
+            }
           }
-        }
-        // if no match was ever found, this is considered a failed resource migration
-        if (!matched) {
-          String reason =
-            action.getText("manage.resource.migrate.failed.badUUID", new String[] {organisation.getName()});
-          String help = action.getText("manage.resource.migrate.failed.help");
-          throw new InvalidConfigException(TYPE.INVALID_RESOURCE_MIGRATION, reason + " " + help);
+        } else {
+          String reason = action.getText("manage.resource.migrate.failed.duplicate",
+            new String[] {candidate.toString(), duplicateUses.toString()});
+          String help1 = action.getText("manage.resource.migrate.failed.help");
+          String help2 = action.getText("manage.resource.migrate.failed.duplicate.help");
+          throw new InvalidConfigException(TYPE.INVALID_RESOURCE_MIGRATION, reason + " " + help1 + " " + help2);
         }
       } else {
         UUID key = registryManager.register(resource, organisation, ipt);
@@ -1506,6 +1517,44 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     } else {
       log.error("Registration request failed: the resource must be public. Status=" + resource.getStatus().toString());
     }
+  }
+
+  /**
+   * For a candidate UUID, find out:
+   * -how many public resources have a matching alternate identifier UUID
+   * -how many registered resources have the same UUID
+   *
+   * @param candidate UUID
+   * @param shortname shortname of resource to exclude from matching
+   *
+   * @return list of names of resources that have matched candidate UUID
+   */
+  @VisibleForTesting
+  protected List<String> detectDuplicateUsesOfUUID(UUID candidate, String shortname) {
+    ListMultimap<UUID, String> duplicateUses = ArrayListMultimap.create();
+    for (Resource other : resources.values()) {
+      // only resources having a different shortname should be matched against
+      if (!other.getShortname().equalsIgnoreCase(shortname)) {
+        // are there public resources with this alternate identifier?
+        if (other.getStatus().equals(PublicationStatus.PUBLIC)) {
+          Set<UUID> otherCandidateUUIDs = collectCandidateResourceUUIDsFromAlternateIds(other);
+          if (!otherCandidateUUIDs.isEmpty()) {
+            for (UUID otherCandidate : otherCandidateUUIDs) {
+              if (otherCandidate.equals(candidate)) {
+                duplicateUses.put(candidate, other.getTitleAndShortname());
+              }
+            }
+          }
+        }
+        // are there registered resources with this UUID?
+        else if (other.getStatus().equals(PublicationStatus.REGISTERED)) {
+          if (other.getKey().equals(candidate)) {
+            duplicateUses.put(candidate, other.getTitleAndShortname());
+          }
+        }
+      }
+    }
+    return duplicateUses.get(candidate);
   }
 
   /**

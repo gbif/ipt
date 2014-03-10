@@ -796,6 +796,78 @@ public class ResourceManagerImplTest {
     manager.register(resource, organisation, ipt, baseAction);
   }
 
+  @Test(expected = InvalidConfigException.class)
+  public void testRegisterMigratedResourceWithDuplicateUUIDCase1()
+    throws IOException, SAXException, ParserConfigurationException, AlreadyExistingException {
+    ResourceManagerImpl manager = getResourceManagerImpl();
+
+    String registeredDigirResourceUUID = "f9b67ad0-9c9b-11d9-b9db-b8a03c50a862";
+
+    // indicate resource is migrated from DiGIR, by supplying the Registry UUID for the existing resource in the
+    // resource's eml.alternateIdentifiers
+    resource.getEml().getAlternateIdentifiers().add(registeredDigirResourceUUID);
+    // indicate resource is ready to be published, by setting its status to Public
+    resource.setStatus(PublicationStatus.PUBLIC);
+
+    // ensure there is at least one public resource already having an alternate identifier with this UUID
+    manager.create("res1", Constants.DATASET_TYPE_METADATA_IDENTIFIER, creator);
+    manager.get("res1").getEml().getAlternateIdentifiers().add(registeredDigirResourceUUID);
+    manager.get("res1").setStatus(PublicationStatus.PUBLIC);
+
+    // should throw InvalidConfigException
+    manager.register(resource, organisation, ipt, baseAction);
+  }
+
+  @Test(expected = InvalidConfigException.class)
+  public void testRegisterMigratedResourceWithDuplicateUUIDCase2()
+    throws IOException, SAXException, ParserConfigurationException, AlreadyExistingException {
+    ResourceManagerImpl manager = getResourceManagerImpl();
+
+    String registeredDigirResourceUUID = "f9b67ad0-9c9b-11d9-b9db-b8a03c50a862";
+
+    // indicate resource is migrated from DiGIR, by supplying the Registry UUID for the existing resource in the
+    // resource's eml.alternateIdentifiers
+    resource.getEml().getAlternateIdentifiers().add(registeredDigirResourceUUID);
+    // indicate resource is ready to be published, by setting its status to Public
+    resource.setStatus(PublicationStatus.PUBLIC);
+
+    // ensure there is at least one registered resource already having this UUID
+    manager.create("res1", Constants.DATASET_TYPE_METADATA_IDENTIFIER, creator);
+    manager.get("res1").setKey(UUID.fromString(registeredDigirResourceUUID));
+    manager.get("res1").setStatus(PublicationStatus.REGISTERED);
+
+    // should throw InvalidConfigException
+    manager.register(resource, organisation, ipt, baseAction);
+  }
+
+  @Test
+  public void testDetectDuplicateUsesOfUUID()
+    throws AlreadyExistingException, ParserConfigurationException, SAXException, IOException {
+    ResourceManagerImpl manager = getResourceManagerImpl();
+
+    UUID candidate = UUID.fromString("f9b67ad0-9c9b-11d9-b9db-b8a03c50a862");
+
+    // ensure there is at least one public resource already having an alternate identifier with this UUID
+    manager.create("res1", Constants.DATASET_TYPE_METADATA_IDENTIFIER, creator);
+    manager.get("res1").getEml().getAlternateIdentifiers().add(candidate.toString());
+    manager.get("res1").setStatus(PublicationStatus.PUBLIC);
+
+    // ensure there is at least one registered resource already having this UUID
+    manager.create("res2", Constants.DATASET_TYPE_METADATA_IDENTIFIER, creator);
+    manager.get("res2").setKey(UUID.fromString(candidate.toString()));
+    manager.get("res2").setStatus(PublicationStatus.REGISTERED);
+
+    // create the resource that is to be registered
+    manager.create("res3", Constants.DATASET_TYPE_METADATA_IDENTIFIER, creator);
+    manager.get("res3").setKey(UUID.fromString(candidate.toString()));
+    manager.get("res3").setStatus(PublicationStatus.PUBLIC);
+
+    // detect the number of duplicate usages of the UUID assigned to the resource about to get registered
+    List<String> names = manager.detectDuplicateUsesOfUUID(candidate, "res3");
+
+    assertEquals(2, names.size());
+  }
+
   /**
    * test open archive of zipped file, with DwC-A located inside parent folder.
    */
