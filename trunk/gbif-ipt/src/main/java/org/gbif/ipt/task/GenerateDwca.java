@@ -708,6 +708,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       }
     }
 
+    int recordsWithError = 0;
     int linesWithWrongColumnNumber = 0;
     int recordsFiltered = 0;
     ClosableReportingIterator<String[]> iter = null;
@@ -718,9 +719,10 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
       while (iter.hasNext()) {
         line++;
-        // Exception on reading row was encountered
+        // Exception on reading row was encountered, meaning line is incomplete
         if (iter.hasRowError()) {
           writePublicationLogMessage("Error reading line #" + line + "\n" + iter.getErrorMessage());
+          recordsWithError++;
         }
         if (line % 1000 == 0) {
           checkForInterruption(line);
@@ -806,6 +808,11 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       }
     }
 
+    // add lines incomplete message
+    if (recordsWithError > 0) {
+      addMessage(Level.WARN, String.valueOf(recordsWithError) + " records are incomplete due to errors reading line");
+    }
+
     // add wrong lines user message
     if (linesWithWrongColumnNumber > 0) {
       addMessage(Level.INFO, String.valueOf(linesWithWrongColumnNumber) + " lines with fewer columns than mapped");
@@ -818,7 +825,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       addMessage(Level.INFO, String.valueOf(recordsFiltered)
         + " lines did not match the filter criteria and were skipped");
     } else {
-      writePublicationLogMessage("All lines match the filter criteria.");
+      writePublicationLogMessage("All lines match the filter criteria");
     }
   }
 
