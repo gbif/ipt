@@ -317,7 +317,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   * (non-Javadoc)
   * @see org.gbif.ipt.service.registry.RegistryManager#getOrganisation()
   */
-  public Organisation getRegisteredOrganisation(String key) throws RegistryException {
+  public Organisation getRegisteredOrganisation(String key) {
     Organisation organisation = null;
     if (!Strings.isNullOrEmpty(key)) {
       try {
@@ -333,6 +333,11 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
         // add startup error message that explains the consequence of the Registry error
         msg = baseAction.getText("admin.organisation.couldnt.load", new String[] {key, cfg.getRegistryUrl()});
+        warnings.addStartupError(msg);
+        log.error(msg);
+      } catch (JsonSyntaxException e) {
+        // add startup error message that explains the consequence of the error
+        String msg = baseAction.getText("admin.organisation.couldnt.load", new String[] {key, cfg.getRegistryUrl()});
         warnings.addStartupError(msg);
         log.error(msg);
       }
