@@ -16,7 +16,7 @@ public class VocabulariesAction extends BaseAction {
 
   private static final long serialVersionUID = 7277675384287096912L;
 
-  private VocabulariesManager vocabManager;
+  private final VocabulariesManager vocabManager;
   private Vocabulary vocabulary;
 
   @Inject

@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
 public class SourceAction extends ManagerBaseAction {
 
   // logging
-  private static final Logger log = Logger.getLogger(SourceAction.class);
+  private static final Logger LOG = Logger.getLogger(SourceAction.class);
 
   private SourceManager sourceManager;
   private JdbcSupport jdbcSupport;
@@ -113,7 +113,7 @@ public class SourceAction extends ManagerBaseAction {
           // manually remove any previous file in session and in temporal directory path
           removeSessionFile();
         } catch (IOException e) {
-          log.error(e);
+          LOG.error(e);
           addActionError(getText("manage.source.filesystem.error", new String[] {e.getMessage()}));
           return ERROR;
         } catch (UnsupportedCompressionType e) {
@@ -152,7 +152,7 @@ public class SourceAction extends ManagerBaseAction {
       }
     } catch (ImportException e) {
       // even though we have problems with this source we'll keep it for manual corrections
-      log.error("Cannot add source " + filename + ": " + e.getMessage(), e);
+      LOG.error("Cannot add source " + filename + ": " + e.getMessage(), e);
       addActionError(getText("manage.source.cannot.add", new String[] {filename, e.getMessage()}));
     }
   }
@@ -309,7 +309,7 @@ public class SourceAction extends ManagerBaseAction {
           }
         } catch (ImportException e) {
           // even though we have problems with this source we'll keep it for manual corrections
-          log.error("SourceBase error: " + e.getMessage(), e);
+          LOG.error("SourceBase error: " + e.getMessage(), e);
           addActionError(getText("manage.source.error", new String[] {e.getMessage()}));
         }
       }
@@ -368,7 +368,7 @@ public class SourceAction extends ManagerBaseAction {
       try {
         FileUtils.copyFile(file, logoFile);
       } catch (IOException e) {
-        log.warn(e.getMessage());
+        LOG.warn(e.getMessage());
       }
       // resource.getEml().setLogoUrl(cfg.getResourceLogoUrl(resource.getShortname()));
     }

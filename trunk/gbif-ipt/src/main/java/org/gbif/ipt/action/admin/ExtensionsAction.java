@@ -32,11 +32,11 @@ import org.apache.log4j.Logger;
 public class ExtensionsAction extends POSTAction {
 
   // logging
-  private static final Logger log = Logger.getLogger(ExtensionsAction.class);
+  private static final Logger LOG = Logger.getLogger(ExtensionsAction.class);
 
-  private ExtensionManager extensionManager;
-  private VocabulariesManager vocabManager;
-  private RegistryManager registryManager;
+  private final ExtensionManager extensionManager;
+  private final VocabulariesManager vocabManager;
+  private final RegistryManager registryManager;
   // list of all registered extensions
   private List<Extension> registeredExtensions;
   private List<Extension> extensions;
@@ -104,18 +104,19 @@ public class ExtensionsAction extends POSTAction {
    * Handles the population of installed and uninstalled extensions on the "Core Types and Extensions" page.
    * Optionally, the user may have triggered an update vocabularies. This method always tries to pick up newly
    * registered extensions from the Registry.
+   * 
    * @return struts2 result
    */
   public String list() {
     if (updateVocabs) {
       UpdateResult result = vocabManager.updateAll();
-      addActionMessage(
-        getText("admin.extensions.vocabularies.updated", new String[] {String.valueOf(result.updated.size())}));
-      addActionMessage(
-        getText("admin.extensions.vocabularies.unchanged", new String[] {String.valueOf(result.unchanged.size())}));
+      addActionMessage(getText("admin.extensions.vocabularies.updated",
+        new String[] {String.valueOf(result.updated.size())}));
+      addActionMessage(getText("admin.extensions.vocabularies.unchanged",
+        new String[] {String.valueOf(result.unchanged.size())}));
       if (!result.errors.isEmpty()) {
-        addActionWarning(
-          getText("admin.extensions.vocabularies.errors", new String[] {String.valueOf(result.errors.size())}));
+        addActionWarning(getText("admin.extensions.vocabularies.errors",
+          new String[] {String.valueOf(result.errors.size())}));
         for (Entry<String, String> err : result.errors.entrySet()) {
           addActionError(getText("admin.extensions.error.updating", new String[] {err.getKey(), err.getValue()}));
         }
@@ -174,12 +175,12 @@ public class ExtensionsAction extends POSTAction {
       String msg = RegistryException.logRegistryException(e.getType(), this);
       // add startup error message about Registry error
       warnings.addStartupError(msg);
-      log.error(msg);
+      LOG.error(msg);
 
       // add startup error message that explains the consequence of the Registry error
       msg = getText("admin.extensions.couldnt.load", new String[] {cfg.getRegistryUrl()});
       warnings.addStartupError(msg);
-      log.error(msg);
+      LOG.error(msg);
     } finally {
       // initialize list as empty list had the list not been populated
       if (getRegisteredExtensions() == null) {
@@ -194,7 +195,7 @@ public class ExtensionsAction extends POSTAction {
       extensionManager.install(new URL(url));
       addActionMessage(getText("admin.extension.install.success", new String[] {url}));
     } catch (Exception e) {
-      log.debug(e);
+      LOG.debug(e);
       addActionWarning(getText("admin.extension.install.error", new String[] {url}), e);
     }
     return SUCCESS;

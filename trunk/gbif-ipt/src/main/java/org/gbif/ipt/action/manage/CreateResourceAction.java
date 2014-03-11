@@ -30,7 +30,7 @@ import org.apache.log4j.Logger;
 public class CreateResourceAction extends POSTAction {
 
   // logging
-  private static final Logger log = Logger.getLogger(CreateResourceAction.class);
+  private static final Logger LOG = Logger.getLogger(CreateResourceAction.class);
 
   private ResourceManager resourceManager;
   private DataDir dataDir;
@@ -40,7 +40,7 @@ public class CreateResourceAction extends POSTAction {
   private String shortname;
   private String resourceType;
   private Map<String, String> types;
-  private VocabulariesManager vocabManager;
+  private final VocabulariesManager vocabManager;
   private final ResourceValidator validator = new ResourceValidator();
 
   @Inject
@@ -69,7 +69,7 @@ public class CreateResourceAction extends POSTAction {
       addFieldError("resource.shortname", getText("validation.resource.shortname.exists", new String[] {shortname}));
       return INPUT;
     } catch (ImportException e) {
-      log.error("Error importing the dwc archive: " + e.getMessage(), e);
+      LOG.error("Error importing the dwc archive: " + e.getMessage(), e);
       addActionError(getText("validation.resource.import.exception"));
       return INPUT;
     }
@@ -105,7 +105,7 @@ public class CreateResourceAction extends POSTAction {
     }
     // the file to upload to
     File tmpFile = dataDir.tmpFile(shortname, fileFileName);
-    log.debug("Uploading dwc archive file for new resource " + shortname + " to " + tmpFile.getAbsolutePath());
+    LOG.debug("Uploading dwc archive file for new resource " + shortname + " to " + tmpFile.getAbsolutePath());
     // retrieve the file data
     InputStream input = null;
     OutputStream output = null;
@@ -115,9 +115,9 @@ public class CreateResourceAction extends POSTAction {
       output = new FileOutputStream(tmpFile);
       IOUtils.copy(input, output);
       output.flush();
-      log.debug("Uploaded file " + fileFileName + " with content-type " + fileContentType);
+      LOG.debug("Uploaded file " + fileFileName + " with content-type " + fileContentType);
     } catch (IOException e) {
-      log.error(e);
+      LOG.error(e);
       throw new ImportException("Failed to upload file to tmp file", e);
     } finally {
       if (output != null) {

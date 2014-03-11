@@ -26,12 +26,12 @@ import org.apache.log4j.Logger;
 public class UserAccountsAction extends POSTAction {
 
   // logging
-  private static final Logger log = Logger.getLogger(UserAccountsAction.class);
+  private static final Logger LOG = Logger.getLogger(UserAccountsAction.class);
 
   private static final long serialVersionUID = 8892204508303815998L;
   private static final int PASSWORD_LENGTH = 8;
 
-  private UserAccountManager userManager;
+  private final UserAccountManager userManager;
   private final UserValidator validator = new UserValidator();
 
   private User user;
@@ -123,7 +123,7 @@ public class UserAccountsAction extends POSTAction {
       try {
         user = (User) user.clone();
       } catch (CloneNotSupportedException e) {
-        log.error("An exception occurred while retrieving user: " + e.getMessage(), e);
+        LOG.error("An exception occurred while retrieving user: " + e.getMessage(), e);
       }
     }
   }
@@ -142,7 +142,7 @@ public class UserAccountsAction extends POSTAction {
         addActionMessage(getText("admin.user.passwordChanged", new String[] {user.getEmail(), newPassword}));
       } else {
         if (userManager.get(user.getEmail()).getRole() == Role.Admin && user.getRole() != Role.Admin
-            && userManager.list(Role.Admin).size() < 2) {
+          && userManager.list(Role.Admin).size() < 2) {
           addActionError(getText("admin.user.changed.current"));
           return INPUT;
         }
@@ -157,7 +157,7 @@ public class UserAccountsAction extends POSTAction {
       }
       return SUCCESS;
     } catch (IOException e) {
-      log.error("The user change couldnt be saved: " + e.getMessage(), e);
+      LOG.error("The user change couldnt be saved: " + e.getMessage(), e);
       addActionError(getText("admin.user.saveError"));
       addActionError(e.getMessage());
       return INPUT;

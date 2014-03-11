@@ -42,7 +42,7 @@ import org.apache.log4j.Logger;
 public class TranslationAction extends ManagerBaseAction {
 
   // logging
-  private static final Logger log = Logger.getLogger(TranslationAction.class);
+  private static final Logger LOG = Logger.getLogger(TranslationAction.class);
 
   @SessionScoped
   static class Translation {
@@ -145,7 +145,7 @@ public class TranslationAction extends ManagerBaseAction {
       // 5. reload source values, so they aren't empty on next page visit
       reloadSourceValues();
     } else {
-      log.error("User wanted to deleted translation for propertyMapping field, but field was null");
+      LOG.error("User wanted to deleted translation for propertyMapping field, but field was null");
     }
 
     // capture rowType, needed in redirect
@@ -169,7 +169,7 @@ public class TranslationAction extends ManagerBaseAction {
         mapping = resource.getMapping(req.getParameter(REQ_PARAM_ROWTYPE), mid);
       }
     } catch (Exception e) {
-      log.error("An exception was encountered: " + e.getMessage(), e);
+      LOG.error("An exception was encountered: " + e.getMessage(), e);
     }
     if (mapping != null) {
       field = mapping.getField(req.getParameter(REQ_PARAM_TERM));

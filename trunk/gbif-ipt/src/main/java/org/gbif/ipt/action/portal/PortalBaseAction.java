@@ -13,6 +13,7 @@ import javax.annotation.Nullable;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 /**
  * The base of all portal actions.
@@ -23,6 +24,7 @@ public class PortalBaseAction extends BaseAction {
   protected Resource resource;
   protected Integer version;
   public static final String UNSPECIFIED_VERSION = "unspecified";
+  private static final Logger LOG = Logger.getLogger(PortalBaseAction.class);
 
   @Inject
   public PortalBaseAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -33,7 +35,7 @@ public class PortalBaseAction extends BaseAction {
 
   /**
    * Return the resource.
-   *
+   * 
    * @return the resource
    */
   public Resource getResource() {
@@ -69,7 +71,7 @@ public class PortalBaseAction extends BaseAction {
 
   /**
    * Return the version number requested. Null version is equal to the latest published version.
-   *
+   * 
    * @return the version number requested
    */
   @Nullable
@@ -79,7 +81,7 @@ public class PortalBaseAction extends BaseAction {
 
   /**
    * Version number of the resource requested. Null version is equal to the latest published version.
-   *
+   * 
    * @param version version number requested
    */
   public void setVersion(Integer version) {
@@ -88,7 +90,7 @@ public class PortalBaseAction extends BaseAction {
 
   /**
    * Return the version as a string. If it is null, return "unspecified".
-   *
+   * 
    * @return the version as a string
    */
   protected String getStringVersion() {

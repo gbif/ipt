@@ -58,7 +58,7 @@ import org.apache.log4j.Logger;
 public class OverviewAction extends ManagerBaseAction {
 
   // logging
-  private static final Logger log = Logger.getLogger(OverviewAction.class);
+  private static final Logger LOG = Logger.getLogger(OverviewAction.class);
 
   private static final String PUBLISHING = "publishing";
   private final UserAccountManager userManager;
@@ -118,7 +118,7 @@ public class OverviewAction extends ManagerBaseAction {
       // final logging
       String sVersion = String.valueOf(resource.getEmlVersion());
       String msg = getText("publishing.cancelled", new String[] {sVersion, resource.getShortname()});
-      log.warn(msg);
+      LOG.warn(msg);
       addActionError(msg);
 
       // restore the previous version of the resource
@@ -146,12 +146,12 @@ public class OverviewAction extends ManagerBaseAction {
       return HOME;
     } catch (IOException e) {
       String msg = getText("manage.resource.delete.failed");
-      log.error(msg, e);
+      LOG.error(msg, e);
       addActionError(msg);
       addActionExceptionWarning(e);
     } catch (DeletionNotAllowedException e) {
       String msg = getText("manage.resource.delete.failed");
-      log.error(msg, e);
+      LOG.error(msg, e);
       addActionError(msg);
       addActionExceptionWarning(e);
     }
@@ -314,7 +314,7 @@ public class OverviewAction extends ManagerBaseAction {
           addActionMessage(getText("manage.overview.changed.publication.status", new String[] {resource.getStatus()
             .toString()}));
         } catch (InvalidConfigException e) {
-          log.error("Cant unpublish resource " + resource, e);
+          LOG.error("Cant unpublish resource " + resource, e);
         }
       } else {
         addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
@@ -337,7 +337,7 @@ public class OverviewAction extends ManagerBaseAction {
         addActionMessage(getText("manage.overview.changed.publication.status", new String[] {resource.getStatus()
           .toString()}));
       } catch (InvalidConfigException e) {
-        log.error("Cant publish resource " + resource, e);
+        LOG.error("Cant publish resource " + resource, e);
       }
 
     } else {
@@ -413,12 +413,12 @@ public class OverviewAction extends ManagerBaseAction {
       }
       // does the resource have no core type, but at least one source file ready to be mapped?
       else {
-        log.debug("Resource has core type: " + resource.getCoreType());
+        LOG.debug("Resource has core type: " + resource.getCoreType());
 
         if (Strings.isNullOrEmpty(resource.getCoreType()) || "Other".equalsIgnoreCase(resource.getCoreType())) {
           // populate list of potential list of extensions with core types
           potentialExtensions = extensionManager.listCore();
-          log.debug("Cores suitable for Other resources: " + potentialExtensions);
+          LOG.debug("Cores suitable for Other resources: " + potentialExtensions);
           if (potentialExtensions.size() == 0) {
             addActionError(getText("manage.overview.no.DwC.extensions"));
           }
@@ -473,7 +473,7 @@ public class OverviewAction extends ManagerBaseAction {
     // clear the processFailures for the resource, allowing auto-publication to proceed
     if (resourceManager.getProcessFailures().containsKey(resource.getShortname())) {
       logProcessFailures(resource);
-      log.info("Clearing publish event failures for resource: " + resource.getTitleAndShortname());
+      LOG.info("Clearing publish event failures for resource: " + resource.getTitleAndShortname());
       resourceManager.getProcessFailures().removeAll(resource.getShortname());
     }
 
@@ -492,7 +492,7 @@ public class OverviewAction extends ManagerBaseAction {
             resource.setUpdateFrequency(pf);
             resource.setPublicationMode(PublicationMode.valueOf(pm));
           } else {
-            log.debug("No change to auto-publishing settings");
+            LOG.debug("No change to auto-publishing settings");
           }
         }
       } catch (IllegalArgumentException e) {
@@ -536,7 +536,7 @@ public class OverviewAction extends ManagerBaseAction {
       // with this type of error, the version cannot be rolled back - just alert user publication failed
       String msg =
         getText("publishing.failed", new String[] {String.valueOf(v), resource.getShortname(), e.getMessage()});
-      log.error(msg, e);
+      LOG.error(msg, e);
       addActionError(msg);
     }
     return ERROR;
@@ -575,23 +575,23 @@ public class OverviewAction extends ManagerBaseAction {
               // concatenate reason
               msg = (Strings.isNullOrEmpty(msg)) ? e.getMessage() : msg + ": " + e.getMessage();
               addActionError(msg);
-              log.error(msg);
+              LOG.error(msg);
             } else {
               String msg = getText("manage.overview.failed.resource.registration");
               addActionError(msg);
-              log.error(msg);
+              LOG.error(msg);
             }
           } catch (RegistryException e) {
             // log as specific error message as possible about why the Registry error occurred
             String msg = RegistryException.logRegistryException(e.getType(), this);
             // add error message about Registry error
             addActionError(msg);
-            log.error(msg);
+            LOG.error(msg);
 
             // add error message that explains the consequence of the Registry error
             msg = getText("manage.overview.failed.resource.registration");
             addActionError(msg);
-            log.error(msg);
+            LOG.error(msg);
           }
         } else {
           StringBuilder sb = new StringBuilder();
@@ -614,7 +614,7 @@ public class OverviewAction extends ManagerBaseAction {
 
   /**
    * Log how many times publication has failed for a resource, also detailing when the failures occurred.
-   *
+   * 
    * @param resource resource
    */
   @VisibleForTesting
@@ -639,6 +639,6 @@ public class OverviewAction extends ManagerBaseAction {
     } else {
       sb.append("0 failed publications");
     }
-    log.debug(sb.toString());
+    LOG.debug(sb.toString());
   }
 }

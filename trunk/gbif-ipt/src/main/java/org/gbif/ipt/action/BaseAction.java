@@ -30,7 +30,7 @@ import org.apache.struts2.interceptor.SessionAware;
 public class BaseAction extends ActionSupport implements SessionAware, Preparable, ServletRequestAware {
 
   // logging
-  private static final Logger log = Logger.getLogger(BaseAction.class);
+  private static final Logger LOG = Logger.getLogger(BaseAction.class);
 
   private static final long serialVersionUID = -2330991910834399442L;
   public static final String NOT_MODIFIED = "304";
@@ -121,7 +121,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
     try {
       u = (User) session.get(Constants.SESSION_USER);
     } catch (Exception e) {
-      log.warn("A problem occurred retrieving current user. This can happen if the session is not yet opened");
+      LOG.warn("A problem occurred retrieving current user. This can happen if the session is not yet opened");
     }
     return u;
   }

@@ -30,7 +30,7 @@ public class ConfigAction extends POSTAction {
   private static final long serialVersionUID = 4726973323043063968L;
 
   protected ConfigManager configManager;
-  private ResourceManager resourceManager;
+  private final ResourceManager resourceManager;
 
   // these are transient properties that are set on a per request basis
   // getters and setters are called by the Struts2 interceptors based on the
@@ -94,7 +94,7 @@ public class ConfigAction extends POSTAction {
 
   /**
    * Check if the IPT is configured to use archival mode.
-   *
+   * 
    * @return is in archival mode
    */
   public Boolean getArchivalMode() {
@@ -103,7 +103,7 @@ public class ConfigAction extends POSTAction {
 
   /**
    * This is called when the new configuration is submitted.
-   *
+   * 
    * @return SUCCESS if it is valid, or failure with a message if the entered configuration is invalid
    */
   @Override

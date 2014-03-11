@@ -24,9 +24,9 @@ import org.apache.log4j.Logger;
 public class ResourceFileAction extends PortalBaseAction {
 
   // logging
-  private static final Logger log = Logger.getLogger(ResourceFileAction.class);
+  private static final Logger LOG = Logger.getLogger(ResourceFileAction.class);
 
-  private DataDir dataDir;
+  private final DataDir dataDir;
   protected ResourceManager resourceManager;
   protected Source source;
   private InputStream inputStream;
@@ -46,7 +46,7 @@ public class ResourceFileAction extends PortalBaseAction {
    * header. If the If-Modified-Since date is greater than the last published date, the NOT_MODIFIED string is returned.
    * Specific versions can also be resolved depending on the optional parameter version "v". If no specific version is
    * requested the latest published version is used.
-   *
+   * 
    * @return Struts2 result string
    */
   public String dwca() {
@@ -64,7 +64,7 @@ public class ResourceFileAction extends PortalBaseAction {
       }
     } catch (IllegalArgumentException e) {
       // headers might not be formed correctly, swallow
-      log.warn("Conditional get with If-Modified-Since header couldnt be interpreted", e);
+      LOG.warn("Conditional get with If-Modified-Since header couldnt be interpreted", e);
     }
     // serve file as set in prepare method
     data = dataDir.resourceDwcaFile(resource.getShortname(), version);
@@ -85,7 +85,7 @@ public class ResourceFileAction extends PortalBaseAction {
   /**
    * Handles EML file download request. Specific versions can also be resolved depending on the optional parameter
    * "version". If no specific version is requested the latest published version is used.
-   *
+   * 
    * @return Struts2 result string
    */
   public String eml() {
@@ -113,7 +113,7 @@ public class ResourceFileAction extends PortalBaseAction {
     try {
       inputStream = new FileInputStream(data);
     } catch (FileNotFoundException e) {
-      log.warn("Data dir file not found", e);
+      LOG.warn("Data dir file not found", e);
       return NOT_FOUND;
     }
     return SUCCESS;
@@ -186,7 +186,7 @@ public class ResourceFileAction extends PortalBaseAction {
   /**
    * Handles RTF file download request. Specific versions can also be resolved depending on the optional parameter
    * version "v". If no specific version is requested the latest published version is used.
-   *
+   * 
    * @return Struts2 result string
    */
   public String rtf() {

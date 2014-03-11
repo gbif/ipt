@@ -20,11 +20,13 @@ import com.google.inject.Inject;
 
 public class HomeAction extends BaseAction {
 
+  private final ResourceManager resourceManager;
+  private final VocabulariesManager vocabManager;
+
   private List<Resource> resources;
-  private ResourceManager resourceManager;
   private Map<String, String> types;
   private Map<String, String> datasetSubtypes;
-  private VocabulariesManager vocabManager;
+
 
   @Inject
   public HomeAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -60,7 +62,7 @@ public class HomeAction extends BaseAction {
 
   /**
    * A list of all public or registered resources.
-   *
+   * 
    * @return a list of resources
    */
   public List<Resource> getResources() {
@@ -69,7 +71,7 @@ public class HomeAction extends BaseAction {
 
   /**
    * A map of dataset types keys to internationalized values.
-   *
+   * 
    * @return map of dataset subtypes
    */
   public Map<String, String> getTypes() {
@@ -78,7 +80,7 @@ public class HomeAction extends BaseAction {
 
   /**
    * A map of dataset subtypes keys to internationalized values.
-   *
+   * 
    * @return map of dataset subtypes
    */
   public Map<String, String> getDatasetSubtypes() {

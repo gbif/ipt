@@ -19,12 +19,15 @@ import org.apache.log4j.Logger;
  */
 public class LogsAction extends BaseAction {
 
-  // logging
-  private static final Logger logger = Logger.getLogger(LogsAction.class);
+  private static final long serialVersionUID = -5038153790552063249L;
 
-  private DataDir dataDir;
+  // logging
+  private static final Logger LOG = Logger.getLogger(LogsAction.class);
+
+  private final DataDir dataDir;
   private InputStream inputStream;
-  protected String log;
+  private String log;
+
 
   @Inject
   public LogsAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -48,10 +51,15 @@ public class LogsAction extends BaseAction {
 
   public String logfile() throws IOException {
     // server file as set in prepare method
-    File f = dataDir.loggingFile(log + ".log");
-    logger.debug("Serving logfile " + f.getAbsolutePath());
-    inputStream = new FileInputStream(f);
-    return SUCCESS;
+    File logFile = dataDir.loggingFile(log + ".log");
+    // Log file must exist and be a file inside the ipt data directory/log
+    if (logFile.exists() && dataDir.loggingDir().equals(logFile.getParentFile())) {
+      LOG.debug("Serving logfile " + logFile.getAbsolutePath());
+      inputStream = new FileInputStream(logFile);
+      return SUCCESS;
+    } else {
+      return NOT_FOUND;
+    }
   }
 
   public void setLog(String log) {

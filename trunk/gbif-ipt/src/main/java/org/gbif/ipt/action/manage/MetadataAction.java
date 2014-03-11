@@ -48,7 +48,9 @@ import org.apache.commons.lang3.StringUtils;
 public class MetadataAction extends ManagerBaseAction {
 
   private final ResourceValidator validatorRes = new ResourceValidator();
-  private EmlValidator emlValidator;
+  private final EmlValidator emlValidator;
+  private final VocabulariesManager vocabManager;
+
   private String section = "basic";
   private String next = "geocoverage";
   private Map<String, String> languages;
@@ -59,7 +61,6 @@ public class MetadataAction extends ManagerBaseAction {
   private Map<String, String> preservationMethods;
   private Map<String, String> types;
   private Map<String, String> datasetSubtypes;
-  private VocabulariesManager vocabManager;
   private String resourceHasCore;
   private Map<String, String> frequencies;
 
@@ -137,7 +138,7 @@ public class MetadataAction extends ManagerBaseAction {
    * Returns a Map containing dataset subtype entries. The entries returned depending on the core type.
    * For exmaple, if the core type is Occurrence, the Map will only contain occurrence dataset subtypes.
    * This method is called by Struts.
-   *
+   * 
    * @return Map of dataset subtypes
    */
   public Map<String, String> getListSubtypes() {
@@ -355,9 +356,8 @@ public class MetadataAction extends ManagerBaseAction {
 
   /**
    * Determine if all fields for an agent of type agentType (not agentWithRoleType) are empty.
-   *
+   * 
    * @param agent Agent
-   *
    * @return if agent is empty or not
    */
   private boolean isAgentWithoutRoleEmpty(Agent agent) {
@@ -366,14 +366,14 @@ public class MetadataAction extends ManagerBaseAction {
         .trim().isEmpty() && Strings.nullToEmpty(agent.getOrganisation()).trim().isEmpty() && Strings
         .nullToEmpty(agent.getPosition()).trim().isEmpty() && agent.getAddress().isEmpty() && Strings
         .nullToEmpty(agent.getPhone()).trim().isEmpty() && Strings.nullToEmpty(agent.getEmail()).trim().isEmpty()
-             && Strings.nullToEmpty(agent.getHomepage()).trim().isEmpty();
+        && Strings.nullToEmpty(agent.getHomepage()).trim().isEmpty();
     }
     return true;
   }
 
   @Override
   public String save() throws Exception {
-    //before saving, ALL metadata sections must be valid, otherwise an error is displayed
+    // before saving, ALL metadata sections must be valid, otherwise an error is displayed
     if (emlValidator.areAllSectionsValid(this, resource.getEml())) {
       // Save metadata information (eml.xml)
       resourceManager.saveEml(resource);
@@ -397,7 +397,7 @@ public class MetadataAction extends ManagerBaseAction {
 
   /**
    * A list of dataset subtypes used to populate the dataset subtype dropdown on the Basic Metadata page.
-   *
+   * 
    * @return list of dataset subtypes
    */
   public Map<String, String> getDatasetSubtypes() {
@@ -407,7 +407,7 @@ public class MetadataAction extends ManagerBaseAction {
   /**
    * Exclude all known Checklist subtypes from the complete Map of Occurrence dataset subtypes, and return it. To
    * exclude a newly added Checklist subtype, just extend the static list above. Called from Struts, so must be public.
-   *
+   * 
    * @return Occurrence subtypes Map
    */
   public Map<String, String> getOccurrenceSubtypesMap() {
@@ -425,7 +425,7 @@ public class MetadataAction extends ManagerBaseAction {
    * Exclude all known Occurrence subtypes from the complete Map of Checklist dataset subtypes, and return it. To
    * exclude a newly added Occurrence subtype, just extend the static list above. Called from Struts, so must be
    * public.
-   *
+   * 
    * @return Checklist subtypes Map
    */
   public Map<String, String> getChecklistSubtypesMap() {
@@ -442,7 +442,7 @@ public class MetadataAction extends ManagerBaseAction {
   /**
    * Returns a Map representing with only a single entry indicating that there is no subtype to choose from. Called
    * from Struts, so must be public.
-   *
+   * 
    * @return a Map representing an empty set of dataset subtypes.
    */
   public Map<String, String> getEmptySubtypeMap() {
@@ -489,7 +489,7 @@ public class MetadataAction extends ManagerBaseAction {
   /**
    * On the basic metadata page, this variable determines whether the core type dropdown is
    * disabled or not.
-   *
+   * 
    * @return "true" or "false" - does the resource have a core mapping yet?
    */
   public String getResourceHasCore() {
@@ -499,7 +499,7 @@ public class MetadataAction extends ManagerBaseAction {
   /**
    * On the basic metadata page, this map populates the update frequencies dropdown. The map is derived from the
    * vocabulary {@link -linkoffline http://rs.gbif.org/vocabulary/eml/update_frequency.xml}.
-   *
+   * 
    * @return update frequencies map
    */
   public Map<String, String> getFrequencies() {
