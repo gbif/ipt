@@ -26,13 +26,17 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.annotation.Nullable;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
 public class ResourceAction extends PortalBaseAction {
+
+  private static final Logger LOG = Logger.getLogger(ResourceAction.class);
 
   private VocabulariesManager vocabManager;
   private List<Resource> resources;
@@ -76,13 +80,12 @@ public class ResourceAction extends PortalBaseAction {
    * Loads a specific version of a resource's metadata from its eml-v.xml file located inside its resource directory.
    * If no eml-v.xml file was found (there have been no published versions yet), the resource is loaded from the
    * default eml.xml file. If no eml.xml file exists yet, an empty EML instance is loaded.
-   *
+   * 
    * @param shortname resource shortname
    * @param version resource version (eml version)
    * @return EML object loaded from eml.xml file with specific version or a new EML instance if none found
-   *
-   * @throws IOException           if problem occurred loading eml file (e.g. it doesn't exist)
-   * @throws SAXException          if problem occurred parsing eml file
+   * @throws IOException if problem occurred loading eml file (e.g. it doesn't exist)
+   * @throws SAXException if problem occurred parsing eml file
    */
   private Eml loadEmlFromFile(String shortname, @Nullable Integer version) throws IOException, SAXException {
     File emlFile = dataDir.resourceEmlFile(shortname, version);
@@ -125,7 +128,7 @@ public class ResourceAction extends PortalBaseAction {
 
   /**
    * Return the list of Agent Roles specific to the current locale.
-   *
+   * 
    * @return the list of Agent Roles specific to the current locale
    */
   public Map<String, String> getRoles() {
@@ -134,7 +137,7 @@ public class ResourceAction extends PortalBaseAction {
 
   /**
    * Return the list of Preservation Methods specific to the current locale.
-   *
+   * 
    * @return the list of Preservation Methods specific to the current locale
    */
   public Map<String, String> getPreservationMethods() {
@@ -143,7 +146,7 @@ public class ResourceAction extends PortalBaseAction {
 
   /**
    * Return the list of ISO 3 letter language codes specific to the current locale.
-   *
+   * 
    * @return the list of ISO 3 letter language codes specific to the current locale
    */
   public Map<String, String> getLanguages() {
@@ -152,7 +155,7 @@ public class ResourceAction extends PortalBaseAction {
 
   /**
    * Return the list of 2-letter country codes specific to the current locale.
-   *
+   * 
    * @return the list of 2-letter country codes specific to the current locale
    */
   public Map<String, String> getCountries() {
@@ -161,7 +164,7 @@ public class ResourceAction extends PortalBaseAction {
 
   /**
    * Return the list Ranks specific to the current locale.
-   *
+   * 
    * @return the list of Ranks specific to the current locale
    */
   public Map<String, String> getRanks() {
@@ -175,10 +178,13 @@ public class ResourceAction extends PortalBaseAction {
 
   /**
    * Handle everything needed to load resource detail (public portal) page.
-   *
+   * 
    * @return Struts2 result string
    */
   public String detail() {
+    if (resource == null) {
+      return NOT_FOUND;
+    }
     // load EML instance for version requested
     String name = resource.getShortname();
     try {
@@ -240,7 +246,7 @@ public class ResourceAction extends PortalBaseAction {
   /**
    * Takes a list of the resource's TaxonomicCoverages, and for each one, creates a new OrganizedTaxonomicCoverage
    * that gets added to the class' list of OrganizedTaxonomicCoverage.
-   *
+   * 
    * @param coverages list of resource's TaxonomicCoverage
    */
   List<OrganizedTaxonomicCoverage> constructOrganizedTaxonomicCoverages(List<TaxonomicCoverage> coverages) {
@@ -259,9 +265,8 @@ public class ResourceAction extends PortalBaseAction {
    * names coming from a resource's TaxonomicCoverage's TaxonKeywords corresponding to that rank. The display nane
    * consists of "scientific name (common name)". Another OrganizedTaxonomicKeywords is also created for the unknown
    * rank, that is a TaxonomicKeyword not having a rank.
-   *
+   * 
    * @param keywords list of resource's TaxonomicCoverage's TaxonKeywords
-   *
    * @return list of OrganizedTaxonomicKeywords (one for each rank + unknown rank), or an empty list if none were added
    */
   private List<OrganizedTaxonomicKeywords> setOrganizedTaxonomicKeywords(List<TaxonKeyword> keywords) {
@@ -307,7 +312,7 @@ public class ResourceAction extends PortalBaseAction {
   /**
    * Construct display name from TaxonKeyword's scientific name and common name properties. It will look like:
    * scientific name (common name) provided both properties are not null.
-   *
+   * 
    * @return constructed display name or an empty string if none could be constructed
    */
   private String createKeywordDisplayName(TaxonKeyword keyword) {
@@ -329,7 +334,7 @@ public class ResourceAction extends PortalBaseAction {
   /**
    * Returns a list of OrganizedTaxonomicCoverage that facilitate the display of the resource's TaxonomicCoverage on
    * the UI.
-   *
+   * 
    * @return list of OrganizedTaxonomicCoverage or an empty list if none were added
    */
   public List<OrganizedTaxonomicCoverage> getOrganizedCoverages() {
@@ -338,7 +343,7 @@ public class ResourceAction extends PortalBaseAction {
 
   /**
    * Get the EML instance to display on Resource Portal page.
-   *
+   * 
    * @return EML instance
    */
   public Eml getEml() {
@@ -347,7 +352,7 @@ public class ResourceAction extends PortalBaseAction {
 
   /**
    * Set the EML instance to display on Resource Portal page.
-   *
+   * 
    * @param eml EML instance
    */
   public void setEml(Eml eml) {
@@ -358,6 +363,7 @@ public class ResourceAction extends PortalBaseAction {
    * Returns whether the version of the resource is a metadata-only resource. This is determined by the existence of
    * a DwC-A. This method is only really of importance for versions of the resource that are not the latest. For the
    * latest published version of the resource, one can just call resource.recordsPublished() and see if it's > 0.
+   * 
    * @return true if resource is metadata-only
    */
   public boolean isMetadataOnly() {
@@ -366,7 +372,7 @@ public class ResourceAction extends PortalBaseAction {
 
   /**
    * Set whether resource is metadata-only or not.
-   *
+   * 
    * @param metadataOnly is the resource metadata-only
    */
   public void setMetadataOnly(boolean metadataOnly) {
@@ -376,7 +382,7 @@ public class ResourceAction extends PortalBaseAction {
   /**
    * This map populates the update frequencies. The map is derived from the vocabulary {@link -linkoffline
    * http://rs.gbif.org/vocabulary/eml/update_frequency.xml}.
-   *
+   * 
    * @return update frequencies map
    */
   public Map<String, String> getFrequencies() {

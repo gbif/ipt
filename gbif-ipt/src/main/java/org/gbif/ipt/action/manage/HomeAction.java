@@ -21,8 +21,8 @@ public class HomeAction extends BaseAction {
 
   private List<Resource> resources = new ArrayList<Resource>();
 
-  private ResourceManager resourceManager;
-  private VocabulariesManager vocabManager;
+  private final ResourceManager resourceManager;
+  private final VocabulariesManager vocabManager;
   private Map<String, String> types;
   private Map<String, String> datasetSubtypes;
 
@@ -58,7 +58,7 @@ public class HomeAction extends BaseAction {
 
   /**
    * Get map of resource types to populate resource type selection.
-   *
+   * 
    * @return map of resource types
    */
   public Map<String, String> getTypes() {
@@ -67,7 +67,7 @@ public class HomeAction extends BaseAction {
 
   /**
    * A map of dataset subtypes keys to internationalized values.
-   *
+   * 
    * @return map of dataset subtypes
    */
   public Map<String, String> getDatasetSubtypes() {

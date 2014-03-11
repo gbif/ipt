@@ -18,9 +18,9 @@ import org.apache.log4j.Logger;
 public class AccountAction extends POSTAction {
 
   // logging
-  private static final Logger log = Logger.getLogger(AccountAction.class);
+  private static final Logger LOG = Logger.getLogger(AccountAction.class);
 
-  private UserAccountManager userManager;
+  private final UserAccountManager userManager;
   private final UserValidator userValidation = new UserValidator();
 
   private String redirectUrl;
@@ -84,15 +84,15 @@ public class AccountAction extends POSTAction {
   public String login() throws IOException {
     // login
     if (email != null) {
-      User user = userManager.authenticate(email, password);
-      if (user == null) {
+      User authUser = userManager.authenticate(email, password);
+      if (authUser == null) {
         addActionError(getText("admin.user.wrong.email.password.combination"));
-        log.info("User " + email + " failed to log in");
+        LOG.info("User " + email + " failed to log in");
       } else {
-        log.info("User " + email + " logged in successfully");
-        user.setLastLoginToNow();
+        LOG.info("User " + email + " logged in successfully");
+        authUser.setLastLoginToNow();
         userManager.save();
-        session.put(Constants.SESSION_USER, user);
+        session.put(Constants.SESSION_USER, authUser);
         // remember previous URL to redirect back to
         setRedirectUrl();
         return SUCCESS;
@@ -164,7 +164,7 @@ public class AccountAction extends POSTAction {
         redirectUrl = referer;
       }
     }
-    log.info("Redirecting to " + redirectUrl);
+    LOG.info("Redirecting to " + redirectUrl);
   }
 
   public void setUser(User user) {

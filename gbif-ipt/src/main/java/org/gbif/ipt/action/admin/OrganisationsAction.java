@@ -28,7 +28,7 @@ import org.apache.log4j.Logger;
 public class OrganisationsAction extends POSTAction {
 
   // logging
-  private static final Logger log = Logger.getLogger(OrganisationsAction.class);
+  private static final Logger LOG = Logger.getLogger(OrganisationsAction.class);
 
   /**
    * A session scoped cache of the organisations from the GBIF registry.
@@ -56,7 +56,7 @@ public class OrganisationsAction extends POSTAction {
     }
 
     public void load() throws RuntimeException {
-      log.debug("getting list of organisations from registry");
+      LOG.debug("getting list of organisations from registry");
 
       List<Organisation> tempOrganisations;
       tempOrganisations = registryManager.getOrganisations();
@@ -73,7 +73,7 @@ public class OrganisationsAction extends POSTAction {
           return org1.getName().compareToIgnoreCase(org2.getName());
         }
       });
-      log.debug("organisations returned: " + organisations.size());
+      LOG.debug("organisations returned: " + organisations.size());
     }
 
   }
@@ -173,7 +173,7 @@ public class OrganisationsAction extends POSTAction {
         orgSession.load();
       } catch (RegistryException e) {
         String msg = getText("admin.registration.error.registry");
-        log.error(msg, e);
+        LOG.error(msg, e);
         addActionError(msg);
       }
     }
@@ -197,7 +197,7 @@ public class OrganisationsAction extends POSTAction {
     try {
       if (id == null) {
         if (registrationManager.get(organisation.getKey()) != null) {
-          log.error("The organisation association already exists");
+          LOG.error("The organisation association already exists");
           addActionError(getText("admin.organisation.error.existing"));
           return INPUT;
         }
@@ -223,7 +223,7 @@ public class OrganisationsAction extends POSTAction {
       registrationManager.save();
       return SUCCESS;
     } catch (IOException e) {
-      log.error("The organisation association couldnt be saved: " + e.getMessage(), e);
+      LOG.error("The organisation association couldnt be saved: " + e.getMessage(), e);
       addActionError(getText("admin.organisation.error.save"));
       addActionError(e.getMessage());
       return INPUT;

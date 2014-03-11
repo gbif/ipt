@@ -65,7 +65,7 @@ import org.apache.log4j.Logger;
 public class MappingAction extends ManagerBaseAction {
 
   // logging
-  private static final Logger log = Logger.getLogger(MappingAction.class);
+  private static final Logger LOG = Logger.getLogger(MappingAction.class);
 
   private static final Pattern NORM_TERM = Pattern.compile("[\\W\\s_0-9]+");
 
@@ -315,13 +315,13 @@ public class MappingAction extends ManagerBaseAction {
         // not yet set, the current mapping must be the core type
         coreRowType = mapping.getExtension().getRowType();
       }
-      log.info("Core row type: " + coreRowType);
+      LOG.info("Core row type: " + coreRowType);
 
       // setup the core record id term
       String coreIdTerm = AppConfig.coreIdTerm(coreRowType);
 
       coreid = extensionManager.get(coreRowType).getProperty(coreIdTerm);
-      log.info("Field representing the id for the core: " + coreid);
+      LOG.info("Field representing the id for the core: " + coreid);
       mappingCoreid = mapping.getField(coreid.getQualname());
       if (mappingCoreid == null) {
         // no, create bare mapping field
@@ -333,7 +333,7 @@ public class MappingAction extends ManagerBaseAction {
       // inspect source
       readSource();
 
-      log.info("Core ID field determined as " + coreid);
+      LOG.info("Core ID field determined as " + coreid);
 
 
       // prepare all other fields

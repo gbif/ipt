@@ -29,7 +29,7 @@ import org.apache.log4j.Logger;
 public class RegistrationAction extends POSTAction {
 
   // logging
-  private static final Logger log = Logger.getLogger(RegistrationAction.class);
+  private static final Logger LOG = Logger.getLogger(RegistrationAction.class);
 
   @SessionScoped
   public static class RegisteredOrganisations {
@@ -47,7 +47,7 @@ public class RegistrationAction extends POSTAction {
     }
 
     public void load() throws RuntimeException {
-      log.debug("getting list of organisations from registry");
+      LOG.debug("getting list of organisations from registry");
 
       List<Organisation> tempOrganisations;
       tempOrganisations = registryManager.getOrganisations();
@@ -66,7 +66,7 @@ public class RegistrationAction extends POSTAction {
           return org1.getName().compareToIgnoreCase(org2.getName());
         }
       });
-      log.debug("organisations returned: " + organisations.size());
+      LOG.debug("organisations returned: " + organisations.size());
     }
 
   }
@@ -159,7 +159,7 @@ public class RegistrationAction extends POSTAction {
         } else if (e.getType() == TYPE.NO_INTERNET) {
           msg = getText("admin.registration.error.internetConnection");
         }
-        log.error(msg, e);
+        LOG.error(msg, e);
         addActionError(msg);
       }
     }
@@ -184,17 +184,17 @@ public class RegistrationAction extends POSTAction {
         String msg = RegistryException.logRegistryException(re.getType(), this);
         // add error message about Registry error
         addActionError(msg);
-        log.error(msg);
+        LOG.error(msg);
 
         // add error message that explains the consequence of the Registry error
         msg = getText("admin.registration.failed");
         addActionError(msg);
-        log.error(msg);
+        LOG.error(msg);
         return INPUT;
       } catch (AlreadyExistingException e) {
-        log.error(e);
+        LOG.error(e);
       } catch (IOException e) {
-        log.error("The organisation association couldnt be saved: " + e.getMessage(), e);
+        LOG.error("The organisation association couldnt be saved: " + e.getMessage(), e);
         addActionError(getText("admin.organisation.saveError"));
         addActionError(e.getMessage());
         return INPUT;
@@ -236,16 +236,16 @@ public class RegistrationAction extends POSTAction {
       String msg = RegistryException.logRegistryException(e.getType(), this);
       // add error message about Registry error
       addActionError(msg);
-      log.error(msg);
+      LOG.error(msg);
 
       // add error message that explains the consequence of the Registry error
       msg = getText("admin.registration.failed.update");
       addActionError(msg);
-      log.error(msg);
+      LOG.error(msg);
       return INPUT;
     } catch (IOException e) {
       addActionError(e.getMessage());
-      log.error("Exception caught", e);
+      LOG.error("Exception caught", e);
       return INPUT;
     }
     return SUCCESS;

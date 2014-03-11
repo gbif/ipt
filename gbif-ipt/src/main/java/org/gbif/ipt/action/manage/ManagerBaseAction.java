@@ -14,7 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 public class ManagerBaseAction extends POSTAction {
 
   // the resourceManager session is populated by the resource interceptor and kept alive for an entire manager session
-  protected ResourceManager resourceManager;
+  protected final ResourceManager resourceManager;
   protected Resource resource;
 
   @Inject

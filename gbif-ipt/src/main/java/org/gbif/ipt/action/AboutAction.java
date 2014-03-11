@@ -1,12 +1,9 @@
 /***************************************************************************
  * Copyright 2010 Global Biodiversity Information Facility Secretariat
- *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- *
  * http://www.apache.org/licenses/LICENSE-2.0
- *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -30,9 +27,9 @@ import org.apache.log4j.Logger;
 public class AboutAction extends BaseAction {
 
   // logging
-  private static final Logger log = Logger.getLogger(AboutAction.class);
+  private static final Logger LOG = Logger.getLogger(AboutAction.class);
 
-  private Configuration ftl;
+  private final Configuration ftl;
   private String content;
 
   @Inject
@@ -56,7 +53,7 @@ public class AboutAction extends BaseAction {
       tmpl.process(this, result);
       content = result.toString();
     } catch (Exception e) {
-      log.warn("Cannot render custom about.ftl template from data dir", e);
+      LOG.warn("Cannot render custom about.ftl template from data dir", e);
       content = "";
     }
   }
