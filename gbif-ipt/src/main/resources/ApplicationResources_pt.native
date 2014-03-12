@@ -101,6 +101,7 @@ admin.config.setup2.mode.test=O Modo de <strong>Teste</strong> é para avaliaç�
 admin.config.setup2.mode.title=Modo do IPT
 admin.config.setup2.next=Por favor, primeiro revise a seção de admnistração, crie novos administradores e instale as extensões adequadas antes você gerenciar os recursos.
 admin.config.setup2.nonadmin=O usuário já existe como um usuário sem permissões de administrador.
+admin.config.setup2.nomode=TODO_Please select the mode you would like to run the IPT in.
 admin.config.setup2.success=Parabéns! A configuração do seu IPT está completa.
 admin.config.setup2.title=Configuração do IPT - Parte II
 admin.config.setup2.welcome=Por favor, forneça informação adicional para a instalação básica do IPT.

@@ -13,6 +13,7 @@ import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.utils.URLUtils;
 import org.gbif.ipt.validation.UserValidator;
 
 import java.io.File;
@@ -33,14 +34,14 @@ import org.apache.log4j.Logger;
 public class SetupAction extends BaseAction {
 
   // logging
-  protected static Logger log = Logger.getLogger(SetupAction.class);
+  private static final Logger LOG = Logger.getLogger(SetupAction.class);
 
   private static final long serialVersionUID = 4726973323043063968L;
 
-  protected ConfigManager configManager;
-  protected UserAccountManager userManager;
-  private DataDir dataDir;
-  private ExtensionManager extensionManager;
+  private final ConfigManager configManager;
+  private final UserAccountManager userManager;
+  private final DataDir dataDir;
+  private final ExtensionManager extensionManager;
 
   private final UserValidator userValidation = new UserValidator();
 
@@ -57,7 +58,7 @@ public class SetupAction extends BaseAction {
 
   private static final String MODE_DEVELOPMENT = "Test";
   private static final String MODE_PRODUCTION = "Production";
-  private static List<String> MODES = ImmutableList.of(MODE_DEVELOPMENT, MODE_PRODUCTION);
+  private static final List<String> MODES = ImmutableList.of(MODE_DEVELOPMENT, MODE_PRODUCTION);
 
   @Inject
   public SetupAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager regManager,
@@ -79,13 +80,13 @@ public class SetupAction extends BaseAction {
 
   /**
    * Tries to guess the current baseURL on the running server from the context
-   *
+   * 
    * @return baseURL as string
    */
   public String findBaseURL() {
     // try to detect the baseURL if not configured yet!
     String appBase = req.getRequestURL().toString().replaceAll(req.getServletPath(), "");
-    log.info("Auto-Detected IPT BaseURL=" + appBase);
+    LOG.info("Auto-Detected IPT BaseURL=" + appBase);
     return appBase;
   }
 
@@ -124,7 +125,7 @@ public class SetupAction extends BaseAction {
 
   /**
    * If the config is in debug mode, then production settings are not possible.
-   *
+   * 
    * @return true if production setting is allowed
    */
   public boolean isProductionSettingAllowed() {
@@ -175,7 +176,7 @@ public class SetupAction extends BaseAction {
           addActionError(getText("admin.config.setup.datadir.absolute", new String[] {dataDirPath}));
         }
       } catch (InvalidConfigException e) {
-        log.warn("Failed to setup datadir: " + e.getMessage(), e);
+        LOG.warn("Failed to setup datadir: " + e.getMessage(), e);
         if (e.getType() == InvalidConfigException.TYPE.NON_WRITABLE_DATA_DIR) {
           addActionError(getText("admin.config.setup.datadir.writable", new String[] {dataDirPath}));
         } else {
@@ -192,7 +193,7 @@ public class SetupAction extends BaseAction {
 
   /**
    * Method called when setting up the IPT for the very first time. The admin user, mode, base URL, and proxy are set.
-   *
+   * 
    * @return Struts Action String
    */
   public String setup2() {
@@ -222,34 +223,40 @@ public class SetupAction extends BaseAction {
       // we have submitted the form
       try {
         boolean gotValidUser = false;
+        URL burl = null;
         if (ignoreUserValidation == 0) {
           user.setRole(Role.Admin);
 
           // do user validation, but don't create user yet
           gotValidUser = userValidation.validate(this, user);
 
-          // when in dev mode, production is disabled in the form
-          if (modeSelected == null) {
-            modeSelected = MODE_DEVELOPMENT;
+          try {
+            burl = new URL(baseURL);
+          } catch (MalformedURLException e) {
+            // checked in validate() already
+          }
+
+          if (getModeSelected() == null) {
+            addFieldError("modeSelected", getText("admin.config.setup2.nomode"));
+            return INPUT;
           }
 
           // set IPT type: registry URL
-          if (modeSelected.equalsIgnoreCase(MODE_PRODUCTION) && !cfg.devMode()) {
+          if (getModeSelected().equalsIgnoreCase(MODE_PRODUCTION) && !cfg.devMode()) {
+            if (URLUtils.isLocalhost(burl)) {
+              addFieldError("baseURL", getText("admin.config.baseUrl.invalidBaseURL"));
+              return INPUT;
+            }
             cfg.setRegistryType(REGISTRY_TYPE.PRODUCTION);
-            log.info("Production mode has been selected");
+            LOG.info("Production mode has been selected");
           } else {
             cfg.setRegistryType(REGISTRY_TYPE.DEVELOPMENT);
-            log.info("Test mode has been selected");
+            LOG.info("Test mode has been selected");
           }
         }
 
         // set baseURL, this have to be before the validation with the proxy
-        try {
-          URL burl = new URL(baseURL);
-          configManager.setBaseUrl(burl);
-        } catch (MalformedURLException e) {
-          // checked in validate() already
-        }
+        configManager.setBaseUrl(burl);
 
         // set proxy
         try {
@@ -277,7 +284,7 @@ public class SetupAction extends BaseAction {
         userManager.setSetupUser(user);
         return SUCCESS;
       } catch (IOException e) {
-        log.error(e);
+        LOG.error(e);
         addActionError(getText("admin.config.setup2.failed", new String[] {e.getMessage()}));
       } catch (AlreadyExistingException e) {
         addFieldError("user.email", getText("admin.config.setup2.nonadmin"));
@@ -285,9 +292,9 @@ public class SetupAction extends BaseAction {
         if (e.getType() == TYPE.INACCESSIBLE_BASE_URL) {
           addFieldError("baseURL", getText("admin.config.baseUrl.inaccessible") + " " + baseURL);
         } else {
-          log.error(e);
-          addActionError(
-            getTextWithDynamicArgs("admin.config.setup2.already.registered", cfg.getRegistryType().toString()));
+          LOG.error(e);
+          addActionError(getTextWithDynamicArgs("admin.config.setup2.already.registered", cfg.getRegistryType()
+            .toString()));
         }
       }
     }
@@ -304,7 +311,7 @@ public class SetupAction extends BaseAction {
         // install core type extensions
         extensionManager.installCoreTypes();
       } catch (InvalidConfigException e) {
-        log.debug(e);
+        LOG.debug(e);
         addActionWarning(getText("admin.extension.couldnt.install.coreTypes"), e);
       }
     }
@@ -338,12 +345,15 @@ public class SetupAction extends BaseAction {
   }
 
   public String getModeSelected() {
+    if (cfg != null && cfg.devMode()) {
+      return MODE_DEVELOPMENT;
+    }
     return modeSelected;
   }
 
   /**
    * The mode the IPT will run in: test or production.
-   *
+   * 
    * @param modeSelected mode that has been selected to run the IPT in
    */
   public void setModeSelected(String modeSelected) {

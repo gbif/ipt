@@ -381,6 +381,7 @@ admin.config.setup2.datadir.notExist=Por favor, configure un directorio de datos
 admin.config.setup2.already.registered=El IPT ya ha sido designado para ejecutarse en modo {0}. Para proceder en modo PRODUCTION, por favor ingrese una URL base para que el IPT esté disponible públicamente y asegúrese que la casilla de producción esté marcada. Si por el contrario, desea ejecutar el IPT en otro modo, por favor detenga su servidor y reinicie la instalación especificando un nuevo directorio de datos.
 admin.config.setup2.nonadmin=El usuario ya existe como un usuario sin derechos de administrador.
 admin.config.setup2.mode=Modo del IPT:
+admin.config.setup2.nomode=Por favor, seleccione el modo en que desea ejecutar el IPT.
 
 admin.config.setup3.title=Configuración del IPT finalizada
 admin.config.setup3.welcome=¡Felicitaciones! Ha instalado satisfactoriamente su IPT. Por favor oprima "continuar" para empezar a usarlo.

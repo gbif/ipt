@@ -23,7 +23,7 @@ public interface ConfigManager {
 
   /**
    * Checks for an existing base URL from the AppConfig, and ensures that it is accessible over HTTP.
-   *
+   * 
    * @return false if there is no base URL set or if it is inaccessible
    */
   boolean isBaseURLValid();
@@ -57,11 +57,10 @@ public interface ConfigManager {
    * into play in the deployment. If any services have been registered, then this will communicate through
    * the registryAPI to update those URLs that have changed.
    * The modified AppConfig is not immediately persisted - remember to call save() at some point!
-   *
+   * 
    * @param baseURL The new baseURL for the IPT
-   *
    * @throws InvalidConfigException If the URL appears to be localhost, 127.0.0.1 or something that clearly
-   *                                will not be addressable from the internet.
+   *         will not be addressable from the internet.
    */
   void setBaseUrl(URL baseURL) throws InvalidConfigException;
 
@@ -75,10 +74,9 @@ public interface ConfigManager {
    * This has huge a impact as all configuration apart the data dirs location itself is stored in the data directory.
    * If the directory provided is empty a new skeleton dir will be setup.
    * If the data dir is valid and writable the configuration is loaded via loadDataDirConfig().
-   *
+   * 
    * @param dataDir a valid, writable directory. If empty a new skeleton will be used, if its an existing, valid IPT
-   *                data dir it will be read.
-   *
+   *        data dir it will be read.
    * @return true if a new data dir was created, false when an existing was read
    */
   boolean setDataDir(File dataDir) throws InvalidConfigException;
