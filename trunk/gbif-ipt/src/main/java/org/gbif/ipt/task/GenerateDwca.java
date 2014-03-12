@@ -16,7 +16,6 @@ import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.RecordFilter;
-import org.gbif.ipt.model.RecordFilter.FilterTime;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.utils.file.ClosableReportingIterator;
@@ -58,6 +57,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
   private File dwcaFolder;
   // status reporting
   private int currRecords = 0;
+  private int currRecordsSkipped = 0;
   private String currExtension;
   private STATE state = STATE.WAITING;
   private final SourceManager sourceManager;
@@ -103,6 +103,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
     // update reporting
     currRecords = 0;
+    currRecordsSkipped = 0;
     Extension ext = mappings.get(0).getExtension();
     currExtension = ext.getTitle();
 
@@ -189,6 +190,10 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     // final reporting
     addMessage(Level.INFO, "Data file written for " + currExtension + " with " + currRecords + " records and "
       + totalColumns + " columns");
+    // how many records were skipped?
+    if (currRecordsSkipped > 0) {
+      addMessage(Level.WARN, "!!! " + currRecordsSkipped + " records were skipped for " + currExtension + " due to errors interpreting line");
+    }
   }
 
   /**
@@ -719,11 +724,6 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
       while (iter.hasNext()) {
         line++;
-        // Exception on reading row was encountered, meaning line is incomplete
-        if (iter.hasRowError()) {
-          writePublicationLogMessage("Error reading line #" + line + "\n" + iter.getErrorMessage());
-          recordsWithError++;
-        }
         if (line % 1000 == 0) {
           checkForInterruption(line);
           reportIfNeeded();
@@ -733,58 +733,66 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
           continue;
         }
 
-        if (in.length <= maxColumnIndex) {
-          writePublicationLogMessage("Line with fewer columns than mapped. SourceBase:" + mapping.getSource().getName()
-            + " Line #" + line + " has " + in.length + " Columns: " + printLine(in));
-          // input row is smaller than the highest mapped column. Resize array by adding nulls
-          String[] in2 = new String[maxColumnIndex + 1];
-          System.arraycopy(in, 0, in2, 0, in.length);
-          in = in2;
-          linesWithWrongColumnNumber++;
-        }
+        // Exception on reading row was encountered, meaning record is incomplete and not written
+        if (iter.hasRowError()) {
+          writePublicationLogMessage("Error reading line #" + line + "\n" + iter.getErrorMessage());
+          recordsWithError++;
+          currRecordsSkipped++;
+        } else {
 
-        String[] record = new String[dataFileRowSize];
-
-        // filter this record?
-        boolean alreadyTranslated = false;
-        if (filter != null && filter.getColumn() != null && filter.getComparator() != null && filter.getParam() != null) {
-          boolean matchesFilter;
-          if (filter.getFilterTime() == FilterTime.AfterTranslation) {
-            int newColumn = translatingRecord(mapping, inCols, in, record);
-            matchesFilter = filter.matches(record, newColumn);
-            alreadyTranslated = true;
-          } else {
-            matchesFilter = filter.matches(in, -1);
+          if (in.length <= maxColumnIndex) {
+            writePublicationLogMessage("Line with fewer columns than mapped. SourceBase:" + mapping.getSource().getName()
+                                       + " Line #" + line + " has " + in.length + " Columns: " + printLine(in));
+            // input row is smaller than the highest mapped column. Resize array by adding nulls
+            String[] in2 = new String[maxColumnIndex + 1];
+            System.arraycopy(in, 0, in2, 0, in.length);
+            in = in2;
+            linesWithWrongColumnNumber++;
           }
-          if (!matchesFilter) {
-            writePublicationLogMessage("Line did not match the filter criteria and was skipped. SourceBase:"
-              + mapping.getSource().getName() + " Line #" + line + ": " + printLine(in));
-            recordsFiltered++;
-            continue;
+
+          String[] record = new String[dataFileRowSize];
+
+          // filter this record?
+          boolean alreadyTranslated = false;
+          if (filter != null && filter.getColumn() != null && filter.getComparator() != null && filter.getParam() != null) {
+            boolean matchesFilter;
+            if (filter.getFilterTime() == RecordFilter.FilterTime.AfterTranslation) {
+              int newColumn = translatingRecord(mapping, inCols, in, record);
+              matchesFilter = filter.matches(record, newColumn);
+              alreadyTranslated = true;
+            } else {
+              matchesFilter = filter.matches(in, -1);
+            }
+            if (!matchesFilter) {
+              writePublicationLogMessage("Line did not match the filter criteria and was skipped. SourceBase:"
+                                         + mapping.getSource().getName() + " Line #" + line + ": " + printLine(in));
+              recordsFiltered++;
+              continue;
+            }
           }
-        }
 
-        // add id column - either an existing column or the line number
-        // the id value is converted to lowercase - important for sorting the file by id (a step during validation)
-        if (mapping.getIdColumn() == null) {
-          record[ID_COLUMN_INDEX] = null;
-        } else if (mapping.getIdColumn().equals(ExtensionMapping.IDGEN_LINE_NUMBER)) {
-          record[ID_COLUMN_INDEX] = line + idSuffix;
-        } else if (mapping.getIdColumn().equals(ExtensionMapping.IDGEN_UUID)) {
-          record[ID_COLUMN_INDEX] = UUID.randomUUID().toString();
-        } else if (mapping.getIdColumn() >= 0) {
-          record[ID_COLUMN_INDEX] = (Strings.isNullOrEmpty(in[mapping.getIdColumn()])) ? idSuffix
-            : in[mapping.getIdColumn()].toLowerCase() + idSuffix;
-        }
+          // add id column - either an existing column or the line number
+          // the id value is converted to lowercase - important for sorting the file by id (a step during validation)
+          if (mapping.getIdColumn() == null) {
+            record[ID_COLUMN_INDEX] = null;
+          } else if (mapping.getIdColumn().equals(ExtensionMapping.IDGEN_LINE_NUMBER)) {
+            record[ID_COLUMN_INDEX] = line + idSuffix;
+          } else if (mapping.getIdColumn().equals(ExtensionMapping.IDGEN_UUID)) {
+            record[ID_COLUMN_INDEX] = UUID.randomUUID().toString();
+          } else if (mapping.getIdColumn() >= 0) {
+            record[ID_COLUMN_INDEX] = (Strings.isNullOrEmpty(in[mapping.getIdColumn()])) ? idSuffix
+              : in[mapping.getIdColumn()].toLowerCase() + idSuffix;
+          }
 
-        // go through all archive fields
-        if (!alreadyTranslated) {
-          translatingRecord(mapping, inCols, in, record);
-        }
-        String newRow = tabRow(record);
-        if (newRow != null) {
-          writer.write(newRow);
-          currRecords++;
+          // go through all archive fields
+          if (!alreadyTranslated) {
+            translatingRecord(mapping, inCols, in, record);
+          }
+          String newRow = tabRow(record);
+          if (newRow != null) {
+            writer.write(newRow);
+            currRecords++;
+          }
         }
       }
     } catch (InterruptedException e) {
@@ -796,7 +804,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       log.error("Fatal DwC-A Generator Error encountered", e);
       // set last error report!
       setState(e);
-      throw new GeneratorException("Error writing data file for mapping " + mapping.getExtension().getName()
+      throw new GeneratorException("Error writing data file for mapping " + mapping.getExtension().getTitle()
         + " in source " + mapping.getSource().getName() + ", line " + line, e);
     } finally {
       if (iter != null) {
@@ -810,12 +818,16 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
     // add lines incomplete message
     if (recordsWithError > 0) {
-      addMessage(Level.WARN, String.valueOf(recordsWithError) + " records are incomplete due to errors reading line");
+      addMessage(Level.WARN, String.valueOf(recordsWithError) + " records were skipped due to errors " +
+      "for mapping " + mapping.getExtension().getTitle() + " in source " + mapping.getSource().getName());
+    } else {
+      writePublicationLogMessage("No lines were skipped due to errors");
     }
 
     // add wrong lines user message
     if (linesWithWrongColumnNumber > 0) {
-      addMessage(Level.INFO, String.valueOf(linesWithWrongColumnNumber) + " lines with fewer columns than mapped");
+      addMessage(Level.WARN, String.valueOf(linesWithWrongColumnNumber) + " lines with fewer columns than mapped " +
+      "for mapping " + mapping.getExtension().getTitle() + " in source " + mapping.getSource().getName());
     } else {
       writePublicationLogMessage("No lines with fewer columns than mapped");
     }
@@ -823,7 +835,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     // add filter message
     if (recordsFiltered > 0) {
       addMessage(Level.INFO, String.valueOf(recordsFiltered)
-        + " lines did not match the filter criteria and were skipped");
+        + " lines did not match the filter criteria and were skipped " +
+        "for mapping " + mapping.getExtension().getTitle() + " in source " + mapping.getSource().getName());
     } else {
       writePublicationLogMessage("All lines match the filter criteria");
     }
