@@ -26,7 +26,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.annotation.Nullable;
 
 import com.google.inject.Inject;
@@ -51,6 +50,7 @@ public class ResourceAction extends PortalBaseAction {
   private DataDir dataDir;
   private Eml eml;
   private boolean metadataOnly;
+  private int recordsPublishedForVersion;
   private Map<String, String> frequencies;
 
   @Inject
@@ -188,7 +188,7 @@ public class ResourceAction extends PortalBaseAction {
     // load EML instance for version requested
     String name = resource.getShortname();
     try {
-      setEml(loadEmlFromFile(name, version));
+      eml = loadEmlFromFile(name, version);
     } catch (FileNotFoundException e) {
       LOG.error("EML file version #" + getStringVersion() + " for resource " + name + " not found");
       return NOT_FOUND;
@@ -209,7 +209,11 @@ public class ResourceAction extends PortalBaseAction {
       setMetadataOnly(resource.getRecordsPublished() > 0);
     } else {
       File dwcaFile = dataDir.resourceDwcaFile(name, version);
-      setMetadataOnly(dwcaFile.exists());
+      if (dwcaFile.exists()) {
+        setMetadataOnly(true);
+        // determine record count for the version being requested (read from hidden file .count-version)
+        setRecordsPublished(resource.getShortname(), version);
+      }
     }
 
     // now prepare organized taxonomic coverages, facilitating UI display
@@ -387,5 +391,46 @@ public class ResourceAction extends PortalBaseAction {
    */
   public Map<String, String> getFrequencies() {
     return frequencies;
+  }
+
+  /**
+   * Look for .count-version file, and parse its contents for published record count.
+   *
+   * @param version resource version to retrieve published record count for
+   *
+   * @return published record count for version or null if file not found or could not be parsed
+   */
+  public int setRecordsPublished(String shortname, int version) {
+    int count = 0;
+    File file = dataDir.resourceCountFile(shortname, version);
+    if (file != null && file.exists()) {
+      try {
+        String countAsString = StringUtils.trimToNull(org.apache.commons.io.FileUtils.readFileToString(file));
+        setRecordsPublishedForVersion(Integer.valueOf(countAsString));
+      } catch (IOException e) {
+        LOG.error("Cannot read .count-version file", e);
+      } catch (NumberFormatException e) {
+        LOG.error("Number read from .count-version file not valid: " + count);
+      }
+    } else {
+      LOG.warn(".count-version file not existing for version: " + version);
+    }
+    return count;
+  }
+
+  /**
+   * @return the number of records published for version of resource requested.
+   */
+  public int getRecordsPublishedForVersion() {
+    return recordsPublishedForVersion;
+  }
+
+  /**
+   * Set the number of record published for version of resource requested.
+   *
+   * @param number the number of record published for version of resource.
+   */
+  public void setRecordsPublishedForVersion(int number) {
+    this.recordsPublishedForVersion = number;
   }
 }

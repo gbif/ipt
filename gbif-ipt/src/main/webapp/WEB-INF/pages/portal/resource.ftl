@@ -54,8 +54,8 @@
                 <#if resource.lastPublished??>
                     <tr>
                         <th><@s.text name='eml.pubDate'/></th>
-                      <#if resource.lastPublished??>
-                          <td>${resource.lastPublished?date?string.medium}</td>
+                      <#if eml.pubDate??>
+                          <td>${eml.pubDate?date?string.medium}</td>
                       </#if>
                     </tr>
                     <tr>
@@ -77,7 +77,13 @@
                           <td><a href="${baseURL}/archive.do?r=${resource.shortname}<#if version??>&v=${version}</#if>"
                                  onClick="_gaq.push(['_trackEvent', 'Archive', 'Download', '${resource.shortname}', ${resource.recordsPublished?c!0} ]);"><@s.text name='portal.resource.download'/></a>
                               (${dwcaFormattedSize}
-                              ) ${resource.recordsPublished} <@s.text name='portal.resource.records'/>
+                              ) <#if version?? && version!=resource.emlVersion>
+                                  <#if recordsPublishedForVersion?? && recordsPublishedForVersion!= 0>
+                                    ${recordsPublishedForVersion?c} <@s.text name='portal.resource.records'/>
+                                  </#if>
+                                <#else>
+                                  ${resource.recordsPublished?c!0} <@s.text name='portal.resource.records'/>
+                                </#if>
                           </td>
                       </tr>
                   </#if>
