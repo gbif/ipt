@@ -194,6 +194,25 @@ public class DataDir {
   }
 
   /**
+   * Retrieves file that stores information about how many records were published for a version of a resource.
+   * If no specific version is requested, null is returned.
+   *
+   * @param resourceName resource short name
+   * @param version      version
+   *
+   * @return file for version, or null if no version number was specified
+   */
+  public File resourceCountFile(String resourceName, @Nullable Integer version) {
+    String fn;
+    if (version == null) {
+      return null;
+    } else {
+      fn = ".count-" + version;
+    }
+    return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
+  }
+
+  /**
    * Retrieves file for the latest published version of the EML file representing the resource metadata in XML format.
    * Specific versions can also be resolved depending on the parameter "version". If no specific version is
    * requested, or if the version requested is 0, the interim eml.xml without a version number is used.

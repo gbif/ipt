@@ -1119,6 +1119,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     updateNextPublishedDate(resource);
     // set number of records published
     resource.setRecordsPublished(recordCount);
+    // save the number of records published for version file (needed to display record count on resource version page)
+    saveVersionCount(resource);
     // persist resource object changes
     save(resource);
     // final logging
@@ -1161,6 +1163,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           // proceed with overwriting/replacing dwca.zip with dwca-version.zip
           File dwca = dataDir.resourceDwcaFile(resource.getShortname(), null);
           FileUtils.copyFile(versionedDwcaFileToRestore, dwca);
+        }
+        // delete .count-1 if it exists
+        File versionedCountFile = dataDir.resourceCountFile(shortname, versionToRollback);
+        if (versionedCountFile != null && versionedCountFile.exists()) {
+          FileUtils.forceDelete(versionedCountFile);
         }
 
         // update resource.xml
@@ -1585,6 +1592,35 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     processReports.put(shortname, report);
   }
 
+  /**
+   * Store the number of records published for version v of resource to a hidden file called .count-v needed
+   * to display the record number on the resource homepage for that particular version.
+   *
+   * @param resource resource
+   */
+  private synchronized void saveVersionCount(Resource resource) {
+    Writer writer = null;
+    try {
+      File file = dataDir.resourceCountFile(resource.getShortname(), resource.getEmlVersion());
+      if (file != null) {
+        writer = org.gbif.utils.file.FileUtils.startNewUtf8File(file);
+        writer.write(String.valueOf(resource.getRecordsPublished()));
+      } else {
+        log.error("Count file for resource " + resource.getShortname() + " and version " + resource.getEmlVersion() + " non existing");
+      }
+    } catch (IOException e) {
+      log.error("Problem writing to count file", e);
+    } finally {
+      if (writer != null) {
+        try {
+          writer.close();
+        } catch (IOException e) {
+          log.error("Problem closing count file");
+        }
+      }
+    }
+  }
+
   public synchronized void save(Resource resource) throws InvalidConfigException {
     File cfgFile = dataDir.resourceFile(resource, PERSISTENCE_FILE);
     Writer writer = null;
@@ -1611,7 +1647,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @see org.gbif.ipt.service.manage.ResourceManager#save(java.lang.String, org.gbif.metadata.eml.Eml)
    */
   public synchronized void saveEml(Resource resource) throws InvalidConfigException {
-    // udpate EML with latest resource basics (version and GUID)
+    // update EML with latest resource basics (version and GUID)
     syncEmlWithResource(resource);
     // set modified date
     resource.setModified(new Date());
