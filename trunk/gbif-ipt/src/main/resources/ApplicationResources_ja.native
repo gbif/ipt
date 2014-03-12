@@ -346,6 +346,7 @@ admin.config.setup2.datadir.notExist=defaultの管理責任者(administrator)を
 admin.config.setup2.already.registered=IPTはすでに｛0｝モードで動いています。PRODUCTIONモードではIPT用の公開可能なbase URLを入力し、productionのチェックボックスが選択されていなくてはいけないことを忘れないでください。他のモードに変更したい場合には、サーバーを停止し、新たなデータデイレクトリを指定してインストールを再開してください。
 admin.config.setup2.nonadmin=非管理責任ユーザーとして既に存在します。
 admin.config.setup2.mode=IPTモード
+admin.config.setup2.nomode=TODO_Please select the mode you would like to run the IPT in.
 
 admin.config.setup3.title=IPT設定完了
 admin.config.setup3.welcome=Congratulations! IPTのインストールに成功しました。Please press continue to start using it.

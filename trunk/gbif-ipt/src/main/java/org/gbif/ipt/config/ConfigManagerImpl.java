@@ -12,15 +12,16 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.utils.InputStreamUtils;
 import org.gbif.ipt.utils.LogFileAppender;
+import org.gbif.ipt.utils.URLUtils;
 import org.gbif.utils.HttpUtil;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.UnknownHostException;
+
+import javax.servlet.http.HttpServletResponse;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -52,8 +53,11 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   private final PublishingMonitor publishingMonitor;
   private static final String PATH_TO_CSS = "/styles/main.css";
 
+  private static final int DEFAULT_TO = 4000; // Default time out
+
   @Inject
-  public ConfigManagerImpl(DataDir dataDir, AppConfig cfg, InputStreamUtils streamUtils, UserAccountManager userManager,
+  public ConfigManagerImpl(DataDir dataDir, AppConfig cfg, InputStreamUtils streamUtils,
+    UserAccountManager userManager,
     ResourceManager resourceManager, ExtensionManager extensionManager, VocabulariesManager vocabManager,
     RegistrationManager registrationManager, ConfigWarnings warnings, DefaultHttpClient client, PublishingMonitor
     publishingMonitor) {
@@ -84,19 +88,17 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
    * It Creates a HttpHost object with the string given by the user and verifies if there is a connection with this
    * host. If there is a connection with this host, it changes the current proxy host with this host. If not it keeps
    * the current proxy.
-   *
+   * 
    * @param hostTemp the actual proxy.
-   * @param proxy    an URL with the format http://proxy.my-institution.com:8080.
-   *
+   * @param proxy an URL with the format http://proxy.my-institution.com:8080.
    * @throws InvalidConfigException If it can not connect to the proxy host or if the port number is no integer or if
-   *                                the proxy URL is not with the valid format http://proxy.my-institution.com:8080
+   *         the proxy URL is not with the valid format http://proxy.my-institution.com:8080
    */
   private boolean changeProxy(HttpHost hostTemp, String proxy) {
     try {
       URL url = new URL(proxy);
-      String[] var = proxy.split(":");
       HttpHost host;
-      if (var.length > 2) {
+      if (URLUtils.hasPort(proxy)) {
         host = new HttpHost(url.getHost(), url.getPort());
       } else {
         host = new HttpHost(url.getHost());
@@ -136,13 +138,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
    * Returns the local host name.
    */
   public String getHostName() {
-    String hostName = "";
-    try {
-      hostName = InetAddress.getLocalHost().getHostName();
-    } catch (UnknownHostException e) {
-      log.info("No IP address for the local hostname could be found", e);
-    }
-    return hostName;
+    return URLUtils.getHostName();
   }
 
   public boolean isBaseURLValid() {
@@ -231,8 +227,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
 
   public void setBaseUrl(URL baseURL) throws InvalidConfigException {
     boolean validate = true;
-    if ("localhost".equals(baseURL.getHost()) || "127.0.0.1".equals(baseURL.getHost()) || baseURL.getHost()
-      .equalsIgnoreCase(this.getHostName())) {
+    if (URLUtils.isLocalhost(baseURL)) {
       log.info("Localhost or machine name used in base URL");
 
       // validate if localhost URL is configured only in developer mode.
@@ -312,7 +307,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
    * in
    * the config page), it validates if this proxy is the same as current proxy, if this is true, nothing changes, if
    * not, it removes the current proxy and save the new proxy.
-   *
+   * 
    * @param proxy an URL with the format http://proxy.my-institution.com:8080.
    */
   public void setProxy(String proxy) throws InvalidConfigException {
@@ -363,23 +358,19 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
 
   /**
    * It validates if the there is a connection with the baseURL, it executes a request using the baseURL.
-   *
+   * 
    * @param baseURL a URL to validate.
-   *
    * @return true if the response to the request has a status code equal to 200.
    */
   public boolean validateBaseURL(URL baseURL) {
     if (baseURL == null) {
       return false;
     }
-    // ensure there is an ipt listening at the target
-    boolean valid = false;
     try {
       String testURL = baseURL.toString() + PATH_TO_CSS;
-      HttpGet get = new HttpGet(testURL);
       log.info("Validating BaseURL with get request (having 4 second timeout) to: " + testURL);
-      HttpResponse response = http.executeGetWithTimeout(get, 4000);
-      valid = response.getStatusLine().getStatusCode() == 200;
+      HttpResponse response = http.executeGetWithTimeout(new HttpGet(testURL), DEFAULT_TO);
+      return HttpServletResponse.SC_OK == response.getStatusLine().getStatusCode();
     } catch (ClientProtocolException e) {
       log.info("Protocol error connecting to new base URL [" + baseURL.toString() + "]", e);
     } catch (IOException e) {
@@ -387,8 +378,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     } catch (Exception e) {
       log.info("Unknown error connecting to new base URL [" + baseURL.toString() + "]", e);
     }
-
-    return valid;
+    return false;
   }
 
 }

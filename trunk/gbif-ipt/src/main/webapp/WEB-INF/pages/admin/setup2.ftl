@@ -34,7 +34,10 @@
     [@s.text name="admin.config.setup2.mode.test"/]<br/>
     [@s.text name="admin.config.setup2.mode.production"/]<br/><br/>
     [@s.text name="admin.config.setup2.mode"/]
-    [@s.radio name="modeSelected" list="modes" disabled=(cfg.devMode()) value="Test" /]
+    [@s.fielderror]
+    	[@s.param value="%{'modeSelected'}" /]
+    [/@s.fielderror]
+    [@s.radio name="modeSelected" list="modes" disabled=(cfg.devMode()) value="modeSelected" /]
   </div>
 </div>
   <h2 class="subTitle">[@s.text name="admin.registration.baseURL"/]</h2>

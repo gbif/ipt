@@ -18,16 +18,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.io.Closer;
 import com.google.gson.annotations.Since;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -370,12 +371,10 @@ public class AppConfig {
     properties.setProperty(key, StringUtils.trimToEmpty(value));
   }
 
-  protected void setRegistryType(REGISTRY_TYPE type) throws InvalidConfigException {
-    if (type == null) {
-      throw new NullPointerException("Registry type cannot be null");
-    }
+  protected void setRegistryType(REGISTRY_TYPE newType) throws InvalidConfigException {
+    Preconditions.checkNotNull(newType, "Registry type cannot be null");
     if (this.type != null) {
-      if (this.type == type) {
+      if (this.type == newType) {
         // already contains the same information. Dont do anything
         return;
       } else {
@@ -383,22 +382,26 @@ public class AppConfig {
           + this.type);
       }
     }
-    // set lock file if not yet existing
-    File lockFile = getRegistryTypeLockFile();
-    Writer lock = null;
     try {
-      lock = new FileWriter(lockFile, false);
-      lock.write(type.name());
-      lock.flush();
-      this.type = type;
-      LOG.info("Locked DataDir to registry of type " + type);
+      writeRegistryLockFile(newType);
+      this.type = newType;
     } catch (IOException e) {
-      LOG.error("Cannot lock the datadir to registry type " + type, e);
-      throw new InvalidConfigException(TYPE.CONFIG_WRITE, "Cannot lock the datadir to registry type " + type);
+      LOG.error("Cannot lock the datadir to registry type " + newType, e);
+      throw new InvalidConfigException(TYPE.CONFIG_WRITE, "Cannot lock the datadir to registry type " + newType);
+    }
+  }
+
+  private void writeRegistryLockFile(REGISTRY_TYPE registryType) throws IOException {
+    Closer closer = Closer.create();
+    try {
+      // set lock file if not yet existing
+      File lockFile = getRegistryTypeLockFile();
+      Writer lock = closer.register(new FileWriter(lockFile, false));
+      lock.write(registryType.name());
+      lock.flush();
+      LOG.info("Locked DataDir to registry of type " + registryType);
     } finally {
-      if (lock != null) {
-        IOUtils.closeQuietly(lock);
-      }
+      closer.close();
     }
   }
 }
