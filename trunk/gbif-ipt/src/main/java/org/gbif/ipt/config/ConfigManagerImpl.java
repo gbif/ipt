@@ -233,7 +233,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     boolean validate = true;
     if ("localhost".equals(baseURL.getHost()) || "127.0.0.1".equals(baseURL.getHost()) || baseURL.getHost()
       .equalsIgnoreCase(this.getHostName())) {
-      log.warn("Localhost used as base url, IPT will not be visible to the outside!");
+      log.info("Localhost or machine name used in base URL");
 
       // validate if localhost URL is configured only in developer mode.
       // use cfg registryType vs cfg devMode since it takes into account devMode from pom and production from setupPage
@@ -250,8 +250,12 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
           setProxy(hostTemp.toString());
         }
       } else {
-        // local URL is not permitted in production mode.
-        throw new InvalidConfigException(TYPE.INACCESSIBLE_BASE_URL, "local URL is not permitted");
+        // we want to allow baseURL equal the machine name in production mode, but not localhost
+        if (!baseURL.getHost().equalsIgnoreCase(this.getHostName())) {
+          // local URL is not permitted in production mode.
+          throw new InvalidConfigException(TYPE.INACCESSIBLE_BASE_URL,
+            "Localhost base URL not permitted in production mode, since the IPT will not be visible to the outside!");
+        }
       }
     }
 
