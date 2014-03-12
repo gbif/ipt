@@ -860,7 +860,7 @@ manage.metadata.collections.curatorialUnits.item=unidad curatorial
 
 manage.metadata.physical.title=Enlaces Externos
 manage.metadata.physical.intro=Por favor suministre los enlaces externos a la página web del recurso o a otros formatos disponibles (e.g., archivos de bases de datos, hojas de cálculo, archivos nexus, datos relacionados, etc.).
-manage.metadata.physical.item=enlaces externos
+manage.metadata.physical.item=enlace externo
 
 manage.metadata.keywords.title=Conjunto de Palabras Clave
 manage.metadata.keywords.intro=Por favor ingrese los conjuntos de palabras clave para el recurso, cada uno con un tesauro/vocabulario.
