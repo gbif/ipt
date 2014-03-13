@@ -207,7 +207,7 @@ public class DataDir {
     if (version == null) {
       return null;
     } else {
-      fn = ".count-" + version;
+      fn = ".recordspublished-" + version;
     }
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
   }

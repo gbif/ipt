@@ -1164,7 +1164,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           File dwca = dataDir.resourceDwcaFile(resource.getShortname(), null);
           FileUtils.copyFile(versionedDwcaFileToRestore, dwca);
         }
-        // delete .count-1 if it exists
+        // delete .recordspublished-1 if it exists
         File versionedCountFile = dataDir.resourceCountFile(shortname, versionToRollback);
         if (versionedCountFile != null && versionedCountFile.exists()) {
           FileUtils.forceDelete(versionedCountFile);
@@ -1593,12 +1593,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   /**
-   * Store the number of records published for version v of resource to a hidden file called .count-v needed
+   * Store the number of records published for version v of resource to a hidden file called .recordspublished-v needed
    * to display the record number on the resource homepage for that particular version.
    *
    * @param resource resource
    */
-  private synchronized void saveVersionCount(Resource resource) {
+  @VisibleForTesting
+  protected synchronized void saveVersionCount(Resource resource) {
     Writer writer = null;
     try {
       File file = dataDir.resourceCountFile(resource.getShortname(), resource.getEmlVersion());
@@ -1606,7 +1607,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         writer = org.gbif.utils.file.FileUtils.startNewUtf8File(file);
         writer.write(String.valueOf(resource.getRecordsPublished()));
       } else {
-        log.error("Count file for resource " + resource.getShortname() + " and version " + resource.getEmlVersion() + " non existing");
+        log.error("Count file for resource " + resource.getShortname() + " and version " + resource.getEmlVersion()
+                  + " non existing");
       }
     } catch (IOException e) {
       log.error("Problem writing to count file", e);
