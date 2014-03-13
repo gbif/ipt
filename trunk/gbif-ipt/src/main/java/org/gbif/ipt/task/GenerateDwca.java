@@ -20,6 +20,7 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.utils.file.ClosableReportingIterator;
 import org.gbif.utils.file.CompressionUtil;
+import org.gbif.utils.text.LineComparator;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +28,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -34,9 +36,11 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.regex.Pattern;
+
 import javax.annotation.Nullable;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Ordering;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import freemarker.template.TemplateException;
@@ -70,6 +74,13 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
   private static final org.gbif.utils.file.FileUtils GBIF_FILE_UTILS = new org.gbif.utils.file.FileUtils();
   public static final String CANCELLED_STATE_MSG = "Archive generation cancelled";
   public static final String ID_COLUMN_NAME = "id";
+
+  private static final Comparator<String> IGNORE_CASE_COMPARATOR = Ordering.from(new Comparator<String>() {
+
+    public int compare(String o1, String o2) {
+      return o1.compareToIgnoreCase(o2);
+    }
+  }).nullsFirst();
 
   @Inject
   public GenerateDwca(@Assisted Resource resource, @Assisted ReportHandler handler, DataDir dataDir,
@@ -192,7 +203,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       + totalColumns + " columns");
     // how many records were skipped?
     if (currRecordsSkipped > 0) {
-      addMessage(Level.WARN, "!!! " + currRecordsSkipped + " records were skipped for " + currExtension + " due to errors interpreting line");
+      addMessage(Level.WARN, "!!! " + currRecordsSkipped + " records were skipped for " + currExtension
+        + " due to errors interpreting line");
     }
   }
 
@@ -299,8 +311,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
    * Validate the DwC-A:
    * -ensure that if the core record identifier is mapped (e.g. occurrenceID, taxonID, etc) its present on all
    * rows, and is unique
-   *
-   * @throws GeneratorException   if DwC-A could not be validated
+   * 
+   * @throws GeneratorException if DwC-A could not be validated
    * @throws InterruptedException if executing thread was interrupted
    */
   private void validate() throws GeneratorException, InterruptedException {
@@ -322,11 +334,9 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
   /**
    * Sort the core data file of a Darwin Core Archive by its ID column (always index 0 or 1st column). Sorting is case
    * sensitive, therefore it is expected that all IDs have been converted into lower case.
-   *
+   * 
    * @param arch Archive
-   *
    * @return the core data file of the Archive sorted by its ID column 0
-   *
    * @throws IOException if the sort fails for whatever reason
    */
   private File sortCoreDataFile(Archive arch) throws IOException {
@@ -345,12 +355,14 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     long time = System.currentTimeMillis();
 
     // sort by ID column: always index 0
+    LineComparator lineComparator =
+      new LineComparator(ID_COLUMN_INDEX, columnDelimiter, enclosedBy, IGNORE_CASE_COMPARATOR);
     GBIF_FILE_UTILS
       .sort(unsorted, sorted, CHARACTER_ENCODING, ID_COLUMN_INDEX, columnDelimiter, enclosedBy, newlineDelimiter,
-        headerLines);
+        headerLines, lineComparator);
     log.debug(
       "Finished sorting core file in " + String.valueOf((System.currentTimeMillis() - time) / 1000) + " secs, check: "
-      + sorted.getAbsoluteFile().toString());
+        + sorted.getAbsoluteFile().toString());
 
     return sorted;
   }
@@ -358,10 +370,9 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
   /**
    * Validate the Archive's core data file has an ID for each row, and that each ID is unique. Perform this check
    * only if the core record ID term (e.g. occurrenceID, taxonID, etc) has actually been mapped.
-   *
+   * 
    * @param arch Archive
-   *
-   * @throws GeneratorException   if validation was interrupted due to an error
+   * @throws GeneratorException if validation was interrupted due to an error
    * @throws InterruptedException if the thread was interrupted
    */
   private void validateCoreDataFile(Archive arch) throws GeneratorException, InterruptedException, IOException {
@@ -370,8 +381,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
     // only validate the core data file, if the core record identifier (e.g. occurrenceID, taxonID) has been mapped
     if (arch.getCore().hasTerm(coreIdTerm)) {
-      writePublicationLogMessage(
-        "The core record ID " + coreIdTerm + " was mapped, so validate it is always present and unique");
+      writePublicationLogMessage("The core record ID " + coreIdTerm
+        + " was mapped, so validate it is always present and unique");
 
       // create a new core data file sorted by ID column 0
       File sortedCore = sortCoreDataFile(arch);
@@ -454,7 +465,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
       // add duplicate ids user message
       if (recordsWithDuplicateId > 0) {
-        addMessage(Level.ERROR, String.valueOf(recordsWithDuplicateId) + " line(s) having a duplicate ID (please note comparisons are case insensitive)");
+        addMessage(Level.ERROR, String.valueOf(recordsWithDuplicateId)
+          + " line(s) having a duplicate ID (please note comparisons are case insensitive)");
       } else {
         writePublicationLogMessage("No lines have duplicate IDs");
       }
@@ -463,14 +475,15 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       if (recordsWithNoId == 0 && recordsWithDuplicateId == 0) {
         addMessage(Level.INFO, "Archive was validated");
       } else {
-        addMessage(Level.ERROR, "Archive validation failed, because not every row has a unique ID (please note comparisons are case insensitive");
+        addMessage(Level.ERROR,
+          "Archive validation failed, because not every row has a unique ID (please note comparisons are case insensitive");
         throw new GeneratorException("Can't validate DwC-A for resource " + resource.getShortname()
-                                     + ". Each row must have an ID, and each ID must be unique (please note comparisons are case insensitive)");
+          + ". Each row must have an ID, and each ID must be unique (please note comparisons are case insensitive)");
 
       }
     } else {
-      writePublicationLogMessage(
-        "The core record ID " + coreIdTerm + " was not mapped, so there is no need to validate it");
+      writePublicationLogMessage("The core record ID " + coreIdTerm
+        + " was not mapped, so there is no need to validate it");
     }
   }
 
@@ -741,8 +754,9 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
         } else {
 
           if (in.length <= maxColumnIndex) {
-            writePublicationLogMessage("Line with fewer columns than mapped. SourceBase:" + mapping.getSource().getName()
-                                       + " Line #" + line + " has " + in.length + " Columns: " + printLine(in));
+            writePublicationLogMessage("Line with fewer columns than mapped. SourceBase:"
+              + mapping.getSource().getName()
+              + " Line #" + line + " has " + in.length + " Columns: " + printLine(in));
             // input row is smaller than the highest mapped column. Resize array by adding nulls
             String[] in2 = new String[maxColumnIndex + 1];
             System.arraycopy(in, 0, in2, 0, in.length);
@@ -754,7 +768,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
           // filter this record?
           boolean alreadyTranslated = false;
-          if (filter != null && filter.getColumn() != null && filter.getComparator() != null && filter.getParam() != null) {
+          if (filter != null && filter.getColumn() != null && filter.getComparator() != null
+            && filter.getParam() != null) {
             boolean matchesFilter;
             if (filter.getFilterTime() == RecordFilter.FilterTime.AfterTranslation) {
               int newColumn = translatingRecord(mapping, inCols, in, record);
@@ -765,7 +780,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
             }
             if (!matchesFilter) {
               writePublicationLogMessage("Line did not match the filter criteria and was skipped. SourceBase:"
-                                         + mapping.getSource().getName() + " Line #" + line + ": " + printLine(in));
+                + mapping.getSource().getName() + " Line #" + line + ": " + printLine(in));
               recordsFiltered++;
               continue;
             }
@@ -781,7 +796,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
             record[ID_COLUMN_INDEX] = UUID.randomUUID().toString();
           } else if (mapping.getIdColumn() >= 0) {
             record[ID_COLUMN_INDEX] = (Strings.isNullOrEmpty(in[mapping.getIdColumn()])) ? idSuffix
-              : in[mapping.getIdColumn()].toLowerCase() + idSuffix;
+              : in[mapping.getIdColumn()] + idSuffix;
           }
 
           // go through all archive fields
@@ -819,7 +834,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     // add lines incomplete message
     if (recordsWithError > 0) {
       addMessage(Level.WARN, String.valueOf(recordsWithError) + " records were skipped due to errors " +
-      "for mapping " + mapping.getExtension().getTitle() + " in source " + mapping.getSource().getName());
+        "for mapping " + mapping.getExtension().getTitle() + " in source " + mapping.getSource().getName());
     } else {
       writePublicationLogMessage("No lines were skipped due to errors");
     }
@@ -827,7 +842,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     // add wrong lines user message
     if (linesWithWrongColumnNumber > 0) {
       addMessage(Level.WARN, String.valueOf(linesWithWrongColumnNumber) + " lines with fewer columns than mapped " +
-      "for mapping " + mapping.getExtension().getTitle() + " in source " + mapping.getSource().getName());
+        "for mapping " + mapping.getExtension().getTitle() + " in source " + mapping.getSource().getName());
     } else {
       writePublicationLogMessage("No lines with fewer columns than mapped");
     }
