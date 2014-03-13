@@ -757,6 +757,7 @@ manage.translation.deleted=Translation deleted for term {0}.
 manage.translation.reloaded.values=Reloaded {0} distinct value(s) from source (for translation) for term {1}.
 manage.translation.reloaded.fail=Source values could not be reloaded for term {0}: {1}
 manage.translation.saved=Translation saved for term {0}.
+manage.translation.saved.failed.values=TODO: Translation failed for values: {0}. For security reasons, a value can only be translated if it is composed of alpha-numeric characters, colons(:), semi-colons(;), hyphens(-), periods(.), or spaces(" ").
 
 manage.metadata.section=セクション
 manage.metadata.removethis=削除

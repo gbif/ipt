@@ -6,10 +6,10 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;
-import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.SourceBase;
+import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.model.VocabularyConcept;
 import org.gbif.ipt.model.VocabularyTerm;
@@ -32,12 +32,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
@@ -274,23 +272,28 @@ public class TranslationActionTest {
     assertEquals(3, action.getTrans().getTmap().size());
   }
 
-  @Ignore("Not relevant until struts2/xwork is upgraded to 2.3.5")
+  @Test
   public void testAcceptedParamNames() {
-    // Allowed names of parameters xWork 2.2.1
-    String acceptedParamNames = "[a-zA-Z0-9\\.\\]\\[\\(\\)_'\\s]+";
-    Pattern acceptedPattern = Pattern.compile(acceptedParamNames);
-    assertTrue(acceptedPattern.matcher("Valid").matches());
-    assertFalse(acceptedPattern.matcher("Vali:d").matches());
-    assertFalse(acceptedPattern.matcher("Vali-d").matches());
-    assertFalse(acceptedPattern.matcher("Vali%d").matches());
-    assertFalse(acceptedPattern.matcher("tmap['TDWG:AGW']").matches());
+    // IPT accepted parameter names
+    // can have alpha-numeric characters plus  ":", ";", ".", " ", "-"
+    assertTrue(action.acceptableParameterName("tmap['Valid']"));
+    assertTrue(action.acceptableParameterName("tmap['Vali:d']"));
+    assertTrue(action.acceptableParameterName("tmap['Valid.']"));
+    assertTrue(action.acceptableParameterName("tmap['within 6-20 km']"));
+    assertTrue(action.acceptableParameterName("tmap['within 5 km;']"));
+    assertTrue(action.acceptableParameterName("tmap['1969-02-22 00:00:00.0']"));
 
-    // Modified version of accepted pattern
-    acceptedParamNames = "[a-zA-Z0-9\\.\\]\\[\\(\\)_\\-\\:\\%'\\s]+";
-    acceptedPattern = Pattern.compile(acceptedParamNames);
-    assertTrue(acceptedPattern.matcher("Valid").matches());
-    assertTrue(acceptedPattern.matcher("Vali:d").matches());
-    assertTrue(acceptedPattern.matcher("Vali-----d").matches());
-    assertTrue(acceptedPattern.matcher("tmap['TDWG:AGW']").matches());
+    // IPT non-accepted parameter names
+    // cannot have malicious characters such as "<", ">", "&", """, "%", "'", "="
+    assertFalse(action.acceptableParameterName("tmap['<Valid>']"));
+    assertFalse(action.acceptableParameterName("tmap['Valid & valid']"));
+    assertFalse(action.acceptableParameterName("tmap['Valid \"valid\" valid']"));
+    assertFalse(action.acceptableParameterName("tmap['Valid%valid']"));
+    assertFalse(action.acceptableParameterName("tmap['Valid=4']"));
+  }
+
+  @Test
+  public void testStripBrackets() {
+     assertEquals("Valid", action.stripBrackets("tmap['Valid']"));
   }
 }

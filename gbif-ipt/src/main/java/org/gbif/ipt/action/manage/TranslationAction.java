@@ -30,19 +30,52 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
+import java.util.regex.Pattern;
 
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.servlet.SessionScoped;
+import com.opensymphony.xwork2.interceptor.ParameterNameAware;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-public class TranslationAction extends ManagerBaseAction {
+public class TranslationAction extends ManagerBaseAction implements ParameterNameAware {
 
   // logging
   private static final Logger LOG = Logger.getLogger(TranslationAction.class);
+
+  private static final String ACCEPTED_PARAM_NAMES = "\\w+((\\.\\w+)|(\\[\\d+\\])|(\\(\\d+\\))|(\\['[\\w:.\\-\\s\\;]+'\\])|(\\('\\w+'\\)))*";
+
+  // Allowed names of parameters
+  private Pattern acceptedPattern = Pattern.compile(ACCEPTED_PARAM_NAMES);
+  private List<String> failedTranslations;
+
+  /**
+   * Tests if the the action will accept the parameter with the given name.
+   * </br>
+   * For security reasons, the value can only be composed of alpha-numeric or characters ":", ".", " ", ";", "-"
+   * </br>
+   * Pattern adapted from {@link com.opensymphony.xwork2.interceptor.ParametersInterceptor#ACCEPTED_PARAM_NAMES}
+   * v2.3.15.
+   *
+   * @param parameterName the parameter name (value to be translated) in the following format: "tmap['value']"
+   *
+   * @return <tt> if accepted, <tt>false</tt> otherwise
+   */
+  public boolean acceptableParameterName(String parameterName) {
+    boolean matches = acceptedPattern.matcher(parameterName).matches();
+    if (!matches) {
+      parameterName = stripBrackets(parameterName);
+      LOG.debug("Value failed to be translated: " + parameterName);
+      failedTranslations.add(parameterName);
+    }
+    return matches;
+  }
 
   @SessionScoped
   static class Translation {
@@ -160,6 +193,7 @@ public class TranslationAction extends ManagerBaseAction {
   public void prepare() {
     super.prepare();
     notFound = true;
+    failedTranslations = Lists.newArrayList();
 
     try {
       // get mapping sequence id from parameters as setters are not called yet
@@ -237,6 +271,10 @@ public class TranslationAction extends ManagerBaseAction {
     saveResource();
     id = mapping.getExtension().getRowType();
     addActionMessage(getText("manage.translation.saved", new String[] {field.getTerm().toString()}));
+    // if some values couldn't be translated, bring it to the user's attention
+    if (!failedTranslations.isEmpty()) {
+      addActionError(getText("manage.translation.saved.failed.values", new String[] {failedTranslations.toString()}));
+    }
     return NONE;
   }
 
@@ -288,5 +326,19 @@ public class TranslationAction extends ManagerBaseAction {
    */
   public void setExtensionMapping(ExtensionMapping mapping) {
     this.mapping = mapping;
+  }
+
+  /**
+   * @return Parse and return the value enclosed in tmap[], e.g. return value for "tmap[value]", or the original value
+   * if it isn't enclosed in tmap[].
+   */
+  @VisibleForTesting
+  protected String stripBrackets(String parameterName) {
+    String start = "tmap['";
+    String end = "']";
+    if (parameterName.startsWith(start) && parameterName.endsWith(end)) {
+      parameterName = parameterName.substring(start.length(), parameterName.length()-end.length());
+    }
+    return parameterName;
   }
 }
