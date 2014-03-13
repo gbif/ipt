@@ -21,14 +21,22 @@ import org.apache.log4j.Logger;
 public class FileUtils {
 
   public static final String UTF8 = "UTF8";
-  protected static Logger log = Logger.getLogger(FileUtils.class);
+
+  private static final Logger LOG = Logger.getLogger(FileUtils.class);
+
+  private static final int BUFFER_SIZE = 8192;
+
+
+  private FileUtils() {
+    // private constructor.
+  }
 
   public static void copyStreams(InputStream in, OutputStream out) throws IOException {
     // write the file to the file specified
     int bytesRead;
-    byte[] buffer = new byte[8192];
+    byte[] buffer = new byte[BUFFER_SIZE];
 
-    while ((bytesRead = in.read(buffer, 0, 8192)) != -1) {
+    while ((bytesRead = in.read(buffer, 0, BUFFER_SIZE)) != -1) {
       out.write(buffer, 0, bytesRead);
     }
 
@@ -74,8 +82,8 @@ public class FileUtils {
       // see http://commons.apache.org/io/api-1.4/org/apache/commons/io/FileUtils.html#touch(java.io.File)
       // we catch this and check if the file was created
       if (file.exists() && file.canWrite()) {
-        log.warn("Cant touch file, but it was created: " + e.getMessage());
-        log.debug(e);
+        LOG.warn("Cant touch file, but it was created: " + e.getMessage());
+        LOG.debug(e);
       } else {
         throw e;
       }
