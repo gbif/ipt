@@ -65,7 +65,6 @@ import org.gbif.ipt.utils.EmlUtils;
 import org.gbif.metadata.BasicMetadata;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlFactory;
-import org.gbif.metadata.eml.EmlWriter;
 import org.gbif.metadata.eml.KeywordSet;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
@@ -98,6 +97,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
+
 import javax.annotation.Nullable;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -111,7 +111,6 @@ import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.rtf.RtfWriter2;
 import com.thoughtworks.xstream.XStream;
-import freemarker.template.TemplateException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Level;
@@ -184,7 +183,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /**
    * Close file writer if the writer is not null.
-   *
+   * 
    * @param writer file writer
    */
   private void closeWriter(Writer writer) {
@@ -199,7 +198,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /**
    * Read other metadata formats like Dublin Core, and populate an Eml instance from all corresponding fields possible.
-   *
+   * 
    * @param metadata BasicMetadata object
    * @return Eml instance
    */
@@ -226,7 +225,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * </br>
    * Thie method retrieves a file handle to the eml.xml file in data directory. It then copies the incoming emlFile to
    * over to this file. From this file an Eml instance is then populated and returned.
-   *
+   * 
    * @param shortname shortname
    * @param emlFile eml file
    * @return populated Eml instance
@@ -283,12 +282,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
     // if decompression succeeded, create resource depending on whether file was 'IPT Resource Folder' or a 'DwC-A'
     else {
-      resource = (isIPTResourceFolder(dwcaDir)) ? createFromIPTResourceFolder(shortname, dwcaDir.listFiles()[0], creator,
-        alog) : createFromArchive(shortname, dwcaDir, creator, alog);
+      resource =
+        (isIPTResourceFolder(dwcaDir)) ? createFromIPTResourceFolder(shortname, dwcaDir.listFiles()[0], creator,
+          alog) : createFromArchive(shortname, dwcaDir, creator, alog);
     }
 
     // set resource type, if it hasn't been set already
-    if (type != null && Strings.isNullOrEmpty(resource.getCoreType()) ) {
+    if (type != null && Strings.isNullOrEmpty(resource.getCoreType())) {
       resource.setCoreType(type);
     }
 
@@ -303,14 +303,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * This method must ensure that the folder has a unique name relative to the other resource's shortnames, otherwise
    * it tries to rename the folder using the supplied shortname. If neither of these yield a unique shortname,
    * an exception is thrown alerting the user they should try again with a unique name.
-   *
+   * 
    * @param shortname resource shortname
-   * @param folder    IPT resource folder (in tmp directory of IPT data_dir)
-   * @param creator   Creator
-   * @param alog      action logging
-   *
+   * @param folder IPT resource folder (in tmp directory of IPT data_dir)
+   * @param creator Creator
+   * @param alog action logging
    * @return Resource created or null if it was unsuccessful
-   *
    * @throws AlreadyExistingException if a unique shortname could not be determined
    * @throws ImportException if a problem occurred trying to create the new Resource
    */
@@ -372,9 +370,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   /**
    * Determine whether the decompressed file represents an IPT Resource folder or not. To qualify, the root
    * folder must contain at the very least a resource.xml file, and an eml.xml file.
-   *
+   * 
    * @param tmpDir folder where compressed file was decompressed
-   *
    * @return if there is an IPT Resource folder or not that has been extracted in the tmpDir
    */
   private boolean isIPTResourceFolder(File tmpDir) {
@@ -412,13 +409,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /**
    * Try to locate a DwC-A located inside a parent folder, open it, and return the Archive.
-   *
+   * 
    * @param tmpDir folder where compressed file was decompressed
-   *
    * @return the Archive, or null if none exists
-   *
    * @throws UnsupportedArchiveException if the DwC-A was invalid
-   * @throws IOException                 if the DwC-A could not be opened
+   * @throws IOException if the DwC-A could not be opened
    */
   protected Archive openArchiveInsideParentFolder(File tmpDir) throws UnsupportedArchiveException, IOException {
     if (tmpDir.exists() && tmpDir.isDirectory()) {
@@ -446,6 +441,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   private class XmlFilenameFilter implements FilenameFilter
   {
+
     public boolean accept(File dir, String name)
     {
       return (name != null && name.toLowerCase().endsWith(".xml"));
@@ -506,7 +502,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         } else {
           coreRowType = StringUtils.capitalize(CoreRowType.OTHER.toString().toLowerCase());
         }
-        
+
         // create new resource
         resource = create(shortname, coreRowType, creator);
 
@@ -563,16 +559,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /**
    * Create new resource from eml file.
-   *
+   * 
    * @param shortname resource shortname
-   * @param emlFile   eml file
-   * @param creator   User creating resource
-   * @param alog      ActionLogger
-   *
+   * @param emlFile eml file
+   * @param creator User creating resource
+   * @param alog ActionLogger
    * @return resource created
-   *
    * @throws AlreadyExistingException if the resource created uses a shortname that already exists
-   * @throws ImportException          if the eml file could not be read/parsed
+   * @throws ImportException if the eml file could not be read/parsed
    */
   private Resource createFromEml(String shortname, File emlFile, User creator, ActionLogger alog)
     throws AlreadyExistingException, ImportException {
@@ -733,7 +727,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // make an adjustment now that the exact number of header rows are known
     if (s.getIgnoreHeaderLines() != 1) {
       log.info("Adjusting row count to " + (s.getRows() + 1 - s.getIgnoreHeaderLines()) + " from " + s.getRows()
-               + " since header count is declared as " + s.getIgnoreHeaderLines());
+        + " since header count is declared as " + s.getIgnoreHeaderLines());
     }
     s.setRows(s.getRows() + 1 - s.getIgnoreHeaderLines());
 
@@ -906,26 +900,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   /**
    * Loads a resource's metadata from its eml.xml file located inside its resource directory. If no eml.xml file was
    * found, the resource is loaded with an empty EML instance.
-   *
+   * 
    * @param resource resource
    * @return EML object loaded from eml.xml file or a new EML instance if none found
    */
   private Eml loadEml(Resource resource) {
     File emlFile = dataDir.resourceEmlFile(resource.getShortname(), null);
-    Eml eml = null;
-    try {
-      InputStream in = new FileInputStream(emlFile);
-      eml = EmlFactory.build(in);
-    } catch (FileNotFoundException e) {
-      eml = new Eml();
-    } catch (IOException e) {
-      log.error(e);
-    } catch (SAXException e) {
-      log.error("Invalid EML document", e);
-      eml = new Eml();
-    } catch (Exception e) {
-      eml = new Eml();
-    }
+    // US Locale is used because uses '.' for decimal separator
+    Eml eml = EmlUtils.loadWithLocale(emlFile, Locale.US);
     // load resource metadata
     resource.setEml(eml);
     // udpate EML with latest resource basics (version and GUID)
@@ -935,9 +917,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /**
    * Calls loadFromDir(File, ActionLogger), inserting a new instance of ActionLogger.
-   *
+   * 
    * @param resourceDir resource directory
-   *
    * @return loaded Resource
    */
   protected Resource loadFromDir(File resourceDir) {
@@ -1021,9 +1002,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * During upgrades to 2.0.3, a bug in MetadataAction would (wrongly) automatically set the coreType:
    * Checklist resources became Occurrence, and vice versa. This method will try to infer the coreType by matching
    * the coreRowType against the taxon and occurrence rowTypes.
-   *
+   * 
    * @param resource Resource
-   *
    * @return resource with coreType set if it could be inferred, or unchanged if it couldn't be inferred.
    */
   Resource inferCoreType(Resource resource) {
@@ -1042,9 +1022,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * All versions before 2.0.4 didn't use the vocabulary, so this method is particularly important during upgrades
    * to 2.0.4 and later. Basically, if the subType isn't recognized as belonging to the vocabulary, it is reset as
    * null. That would mean the user would then have to reselect the subtype from the Basic Metadata page.
-   *
+   * 
    * @param resource Resource
-   *
    * @return resource with subtype set using term from dataset_subtype vocabulary (assuming it has been set).
    */
   Resource standardizeSubtype(Resource resource) {
@@ -1097,11 +1076,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * </br>
    * Publishing is split into 2 parts because DwC-A generation is asynchronous. This 2nd part of publishing can only
    * be called after DwC-A has completed successfully.
-   *
-   * @param resource    resource
+   * 
+   * @param resource resource
    * @param recordCount number of records publishes (core file record count)
-   * @param action      action
-   *
+   * @param action action
    * @throws PublicationException if publication was unsuccessful
    * @throws InvalidConfigException if resource configuration could not be saved
    */
@@ -1201,9 +1179,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * If called on a resource that is already registered, the method ensures that it won't be added a second time.
    * To accommodate updates from older versions of the IPT, the identifier is added by calling this method every
    * time the resource gets re-published.
-   *
+   * 
    * @param resource resource
-   *
    * @return resource with Registry UUID for the resource updated
    */
   public Resource updateAlternateIdentifierForRegistry(Resource resource) {
@@ -1214,7 +1191,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       if (currentIds != null) {
         // make new list of alternative identifiers in lower case so comparison is done in lower case only
         List<String> ids = new ArrayList<String>();
-        for(String id: currentIds) {
+        for (String id : currentIds) {
           ids.add(id.toLowerCase());
         }
         if (resource.isRegistered()) {
@@ -1295,10 +1272,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   /**
    * Publishes a new version of the EML file for the given resource. After publishing the new version, it copies a
    * stable version of the EML file for archival purposes.
-   *
+   * 
    * @param resource Resource
-   * @param version  version number to publish
-   *
+   * @param version version number to publish
    * @throws PublicationException if resource was already being published, or if publishing failed for any reason
    */
   private void publishEml(Resource resource, int version) throws PublicationException {
@@ -1334,10 +1310,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   /**
    * Publishes a new version of the RTF file for the given resource. After publishing the new version, it copies a
    * stable version of the RTF file for archival purposes.
-   *
+   * 
    * @param resource Resource
-   * @param version  version number to publish
-   *
+   * @param version version number to publish
    * @throws PublicationException if resource was already being published, or if publishing failed for any reason
    */
   private void publishRtf(Resource resource, int version) throws PublicationException {
@@ -1386,11 +1361,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /**
    * Try to read metadata file for a DwC-Archive.
-   *
+   * 
    * @param shortname resource shortname
-   * @param archive   archive
-   * @param alog      ActionLogger
-   *
+   * @param archive archive
+   * @param alog ActionLogger
    * @return Eml instance or null if none could be created because the metadata file did not exist or was invalid
    */
   @Nullable
@@ -1449,7 +1423,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
       // there can be max 1 candidate UUID. This safeguards against migration errors
       if (candidateResourceUUIDs.size() > 1) {
-        String reason = action.getText("manage.resource.migrate.failed.multipleUUIDs", new String[] {organisation.getName()});
+        String reason =
+          action.getText("manage.resource.migrate.failed.multipleUUIDs", new String[] {organisation.getName()});
         String help = action.getText("manage.resource.migrate.failed.help");
         throw new InvalidConfigException(TYPE.INVALID_RESOURCE_MIGRATION, reason + " " + help);
       }
@@ -1464,7 +1439,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           if (organisation.getKey() != null && organisation.getName() != null) {
             boolean matched = false;
             // collect list of registered resources associated to organization
-            List<Resource> existingResources = registryManager.getOrganisationsResources(organisation.getKey().toString());
+            List<Resource> existingResources =
+              registryManager.getOrganisationsResources(organisation.getKey().toString());
             for (Resource entry : existingResources) {
               // is the candidate UUID equal to the UUID from an existing registered resource owned by the
               // organization? There should only be one match, and the first one encountered will be used for migration.
@@ -1530,10 +1506,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * For a candidate UUID, find out:
    * -how many public resources have a matching alternate identifier UUID
    * -how many registered resources have the same UUID
-   *
+   * 
    * @param candidate UUID
    * @param shortname shortname of resource to exclude from matching
-   *
    * @return list of names of resources that have matched candidate UUID
    */
   @VisibleForTesting
@@ -1567,9 +1542,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   /**
    * Collect a set of UUIDs from the resource's list of alternate identifiers that could qualify as GBIF Registry
    * Dataset UUIDs.
-   *
+   * 
    * @param resource resource
-   *
    * @return set of UUIDs that could qualify as GBIF Registry Dataset UUIDs
    */
   private Set<UUID> collectCandidateResourceUUIDsFromAlternateIds(Resource resource) {
@@ -1655,17 +1629,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     resource.setModified(new Date());
     // save into data dir
     File emlFile = dataDir.resourceEmlFile(resource.getShortname(), null);
-    try {
-      EmlWriter.writeEmlFile(emlFile, resource.getEml());
-      log.debug("Updated EML file for " + resource);
-    } catch (IOException e) {
-      log.error(e);
-      throw new InvalidConfigException(TYPE.CONFIG_WRITE, "IO exception when writing eml for " + resource);
-    } catch (TemplateException e) {
-      log.error("EML template exception", e);
-      throw new InvalidConfigException(TYPE.EML,
-        "EML template exception when writing eml for " + resource + ": " + e.getMessage());
-    }
+    // Locale.US it's used because uses '.' as the decimal separator
+    EmlUtils.writeWithLocale(emlFile, resource, Locale.US);
+    log.debug("Updated EML file for " + resource);
   }
 
   public StatusReport status(String shortname) {
@@ -1680,7 +1646,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * This method also updates the EML list of KeywordSet with the dataset type and subtype.
    * </br>
    * This method must be called before persisting the EML file to ensure that the EML file and resource are in sync.
-   *
+   * 
    * @param resource Resource
    */
   private void syncEmlWithResource(Resource resource) {
@@ -1776,9 +1742,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   /**
    * Return a resource's StatusReport's list of TaskMessage. If no report exists for the resource, return an empty
    * list of TaskMessage.
-   *
+   * 
    * @param shortname resource shortname
-   *
    * @return resource's StatusReport's list of TaskMessage or an empty list if no StatusReport exists for resource
    */
   private List<TaskMessage> getTaskMessages(String shortname) {
@@ -1790,9 +1755,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * Updates the date the resource is scheduled to be published next. The resource must have been configured with
    * a maintenance update frequency that is suitable for auto-publishing (annually, biannually, monthly, weekly,
    * daily), and have auto-publishing mode turned on for this update to take place.
-   *
+   * 
    * @param resource resource
-   *
    * @throws PublicationException if the next published date cannot be set for any reason
    */
   private void updateNextPublishedDate(Resource resource) throws PublicationException {
@@ -1852,9 +1816,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /**
    * Try to add/update/remove KeywordSet for dataset type and subtype.
-   *
+   * 
    * @param resource resource
-   *
    * @return resource whose Eml list of KeywordSet has been updated depending on presence of dataset type or subtype
    */
   protected Resource updateKeywordsWithDatasetTypeAndSubtype(Resource resource) {
