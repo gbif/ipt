@@ -25,18 +25,27 @@ import java.io.ObjectOutputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Ordering;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.xstream.XStream;
 
 @Singleton
 public class RegistrationManagerImpl extends BaseManager implements RegistrationManager {
+
+  private static final Comparator<Organisation> ORG_BY_NAME_ORD = new Comparator<Organisation>() {
+
+    public int compare(Organisation left, Organisation right) {
+      return left.getName().compareTo(right.getName());
+    }
+  };
 
   public static final String PERSISTENCE_FILE = "registration.xml";
   private Registration registration = new Registration();
@@ -129,7 +138,8 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
   public List<Organisation> list() {
     List<Organisation> organisationList = new ArrayList<Organisation>();
-    for (Organisation organisation : registration.getAssociatedOrganisations().values()) {
+    for (Organisation organisation : Ordering.from(ORG_BY_NAME_ORD).sortedCopy(
+      registration.getAssociatedOrganisations().values())) {
       if (organisation.isCanHost()) {
         organisationList.add(organisation);
       }
@@ -138,7 +148,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
   }
 
   public List<Organisation> listAll() {
-    return new ArrayList<Organisation>(registration.getAssociatedOrganisations().values());
+    return Ordering.from(ORG_BY_NAME_ORD).sortedCopy(registration.getAssociatedOrganisations().values());
   }
 
   public void load() throws InvalidConfigException {
@@ -224,8 +234,8 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
   /**
    * For a single organization, update its metadata. Only updates the metadata for an organisation coming from the
    * registry, not the metadata set by the IPT administrator like can host data, etc.
-   *
-   * @param organisation          Organisation
+   * 
+   * @param organisation Organisation
    */
   private void updateOrganisationMetadata(Organisation organisation) {
     if (organisation != null) {
@@ -252,10 +262,14 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
           organisation.setNodeContactEmail((o.getNodeContactEmail() == null) ? null : o.getNodeContactEmail());
           // organisation primary contact
           organisation.setPrimaryContactName((o.getPrimaryContactName() == null) ? null : o.getPrimaryContactName());
-          organisation.setPrimaryContactFirstName((o.getPrimaryContactFirstName() == null) ? null : o.getPrimaryContactFirstName());
-          organisation.setPrimaryContactLastName((o.getPrimaryContactLastName() == null) ? null : o.getPrimaryContactLastName());
-          organisation.setPrimaryContactAddress((o.getPrimaryContactAddress() == null) ? null : o.getPrimaryContactAddress());
-          organisation.setPrimaryContactDescription((o.getPrimaryContactDescription() == null) ? null : o.getPrimaryContactDescription());
+          organisation.setPrimaryContactFirstName((o.getPrimaryContactFirstName() == null) ? null : o
+            .getPrimaryContactFirstName());
+          organisation.setPrimaryContactLastName((o.getPrimaryContactLastName() == null) ? null : o
+            .getPrimaryContactLastName());
+          organisation.setPrimaryContactAddress((o.getPrimaryContactAddress() == null) ? null : o
+            .getPrimaryContactAddress());
+          organisation.setPrimaryContactDescription((o.getPrimaryContactDescription() == null) ? null : o
+            .getPrimaryContactDescription());
           organisation.setPrimaryContactEmail((o.getPrimaryContactEmail() == null) ? null : o.getPrimaryContactEmail());
           organisation.setPrimaryContactPhone((o.getPrimaryContactPhone() == null) ? null : o.getPrimaryContactPhone());
           organisation.setPrimaryContactType((o.getPrimaryContactType() == null) ? null : o.getPrimaryContactType());
