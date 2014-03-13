@@ -811,6 +811,7 @@ manage.translation.deleted=Traducción eliminada para el elemento {0}.
 manage.translation.reloaded.values={0} diferentes valores actualizados para el elemento desde la fuente (para traducción) {1}.
 manage.translation.reloaded.fail=Valores de la fuente no se pueden actualizar para el elemento {0}: {1}
 manage.translation.saved=Traducción guardada para el elemento {0}.
+manage.translation.saved.failed.values=TODO: Translation failed for values: {0}. For security reasons, a value can only be translated if it is composed of alpha-numeric characters, colons(:), semi-colons(;), hyphens(-), periods(.), or spaces(" ").
 
 manage.metadata.section=Sección
 manage.metadata.removethis=Remover

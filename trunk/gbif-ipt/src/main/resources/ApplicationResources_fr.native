@@ -768,6 +768,7 @@ manage.translation.property=Propriété
 manage.translation.reloaded.values={0} valeurs distinctes ont été recharchées (pour la traduction) depuis la source de données pour le terme {1}.
 manage.translation.reloaded.fail=Les valuers n''a pas pu être recharchée pour le terme {0}: {1}
 manage.translation.saved=Traduction enregistrée pour le terme {0}.
+manage.translation.saved.failed.values=TODO: Translation failed for values: {0}. For security reasons, a value can only be translated if it is composed of alpha-numeric characters, colons(:), semi-colons(;), hyphens(-), periods(.), or spaces(" ").
 manage.translation.source.value=Valeur source
 manage.translation.title=Value Translation
 manage.translation.translated.value=Valeur traduite
