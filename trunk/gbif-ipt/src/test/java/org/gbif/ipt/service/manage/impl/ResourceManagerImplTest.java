@@ -157,6 +157,10 @@ public class ResourceManagerImplTest {
     tmpDataDir = FileUtils.createTempDir();
     when(mockedDataDir.tmpDir()).thenReturn(tmpDataDir);
 
+    // mock retrieval of sample resource version count file, for version 3 of resource
+    File countFile = FileUtils.getClasspathFile("resources/res1/.recordspublished-3");
+    when(mockedDataDir.resourceCountFile(eq(RESOURCE_SHORTNAME), eq(3))).thenReturn(countFile);
+
     organisation = new Organisation();
     organisation.setKey("f9b67ad0-9c9b-11d9-b9db-b8a03c50a862");
     organisation.setName("Academy of Natural Sciences");
@@ -997,6 +1001,27 @@ public class ResourceManagerImplTest {
 
     // publish, catching expected Exception
     resourceManager.publish(resource, 4, baseAction);
+  }
+
+  @Test
+  public void testSaveVersionCount() throws ParserConfigurationException, SAXException, IOException {
+    // create instance of manager
+    ResourceManagerImpl resourceManager = getResourceManagerImpl();
+    // prepare resource, with published record count and version 3
+    resource.setEmlVersion(3);
+    resource.setRecordsPublished(4000);
+
+    // assure count file exists unchanged
+    File countFile = mockedDataDir.resourceCountFile(resource.getShortname(), resource.getEmlVersion());
+    String countAsString = StringUtils.trimToNull(org.apache.commons.io.FileUtils.readFileToString(countFile));
+    assertEquals("1234", countAsString);
+
+    // save count file, persisting count 4000
+    resourceManager.saveVersionCount(resource);
+
+    // assure count file reflects new count
+    countAsString = StringUtils.trimToNull(org.apache.commons.io.FileUtils.readFileToString(countFile));
+    assertEquals("4000", countAsString);
   }
 
   /**

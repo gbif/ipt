@@ -211,8 +211,8 @@ public class ResourceAction extends PortalBaseAction {
       File dwcaFile = dataDir.resourceDwcaFile(name, version);
       if (dwcaFile.exists()) {
         setMetadataOnly(true);
-        // determine record count for the version being requested (read from hidden file .count-version)
-        setRecordsPublished(resource.getShortname(), version);
+        // determine record count for the version being requested (read from hidden file .recordspublished-version)
+        setRecordsPublishedForVersion(resource.getShortname(), version);
       }
     }
 
@@ -394,28 +394,29 @@ public class ResourceAction extends PortalBaseAction {
   }
 
   /**
-   * Look for .count-version file, and parse its contents for published record count.
+   * Look for .recordspublished-version file, and parse its contents for published record count.
    *
+   * @param shortname resource shortname
    * @param version resource version to retrieve published record count for
    *
    * @return published record count for version or null if file not found or could not be parsed
    */
-  public int setRecordsPublished(String shortname, int version) {
-    int count = 0;
+  public int setRecordsPublishedForVersion(String shortname, int version) {
+    recordsPublishedForVersion = 0;
     File file = dataDir.resourceCountFile(shortname, version);
     if (file != null && file.exists()) {
       try {
         String countAsString = StringUtils.trimToNull(org.apache.commons.io.FileUtils.readFileToString(file));
-        setRecordsPublishedForVersion(Integer.valueOf(countAsString));
+        recordsPublishedForVersion = Integer.valueOf(countAsString);
       } catch (IOException e) {
-        LOG.error("Cannot read .count-version file", e);
+        LOG.error("Cannot read file: " + file.getAbsolutePath(), e);
       } catch (NumberFormatException e) {
-        LOG.error("Number read from .count-version file not valid: " + count);
+        LOG.error("Number read from file not valid: " + file.getAbsolutePath());
       }
     } else {
-      LOG.warn(".count-version file not existing for version: " + version);
+      LOG.warn(".recordspublished-version file not existing for version: " + version);
     }
-    return count;
+    return recordsPublishedForVersion;
   }
 
   /**
@@ -423,14 +424,5 @@ public class ResourceAction extends PortalBaseAction {
    */
   public int getRecordsPublishedForVersion() {
     return recordsPublishedForVersion;
-  }
-
-  /**
-   * Set the number of record published for version of resource requested.
-   *
-   * @param number the number of record published for version of resource.
-   */
-  public void setRecordsPublishedForVersion(int number) {
-    this.recordsPublishedForVersion = number;
   }
 }
