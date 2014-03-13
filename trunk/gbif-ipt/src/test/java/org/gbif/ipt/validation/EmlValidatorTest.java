@@ -148,7 +148,7 @@ public class EmlValidatorTest {
   }
 
   /**
-   * Tests that a EML file with coordinates that use ',' as decimal separator is interpreted incorrectly as world bbox.
+   * Tests that aN EML file with coordinates that use ',' as decimal separator is interpreted incorrectly as world bbox.
    */
   @Test
   public void testDecimalGeographicIssues() {
