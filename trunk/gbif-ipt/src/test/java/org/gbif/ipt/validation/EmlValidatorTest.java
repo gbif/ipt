@@ -32,10 +32,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 
 public class EmlValidatorTest {
@@ -143,6 +145,21 @@ public class EmlValidatorTest {
     // valid
     eml.setDescription("long_enough");
     assertTrue(validator.isValid(eml, EmlValidator.BASIC_SECTION));
+  }
+
+  /**
+   * Tests that a EML file with coordinates that use ',' as decimal separator is interpreted incorrectly as world bbox.
+   */
+  @Test
+  public void testDecimalGeographicIssues() {
+    try {
+      Eml emlWithIssues = EmlFactory.build(FileUtils.classpathStream("data/emlGeographicIssues.xml"));
+      assertEquals(emlWithIssues.getGeospatialCoverages().get(0).getBoundingCoordinates(), BBox.newWorldInstance());
+    } catch (IOException e) {
+      fail();
+    } catch (SAXException e) {
+      fail();
+    }
   }
 
   @Test
