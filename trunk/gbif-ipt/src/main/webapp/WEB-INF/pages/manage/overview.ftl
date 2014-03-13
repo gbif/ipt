@@ -290,7 +290,7 @@ $(document).ready(function(){
           <#if currentUser.hasRegistrationRights() && (organisations?size>0)>
             <select name="id" id="org" size="1">
               <#list organisations as o>
-                <option value="${o.key}">${o.alias!o.name}</option>
+                <option value="${o.key}">${o.name}</option>
               </#list>
             </select>
 

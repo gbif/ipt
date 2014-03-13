@@ -15,8 +15,6 @@ import org.gbif.ipt.validation.OrganisationSupport;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -48,24 +46,10 @@ public class RegistrationAction extends POSTAction {
 
     public void load() throws RuntimeException {
       LOG.debug("getting list of organisations from registry");
-
       List<Organisation> tempOrganisations;
       tempOrganisations = registryManager.getOrganisations();
       organisations.clear();
       organisations.addAll(tempOrganisations);
-      // sort by name
-      Collections.sort(organisations, new Comparator<Organisation>() {
-
-        public int compare(Organisation org1, Organisation org2) {
-          if (org1 == null || org1.getName() == null) {
-            return 1;
-          }
-          if (org2 == null || org2.getName() == null) {
-            return -1;
-          }
-          return org1.getName().compareToIgnoreCase(org2.getName());
-        }
-      });
       LOG.debug("organisations returned: " + organisations.size());
     }
 
