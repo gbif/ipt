@@ -694,7 +694,6 @@ manage.overview.visibility.missing.registration.metadata=Pour pouvoir enregistre
 manage.overview.visibility.no.organisations=Afin d''enregistrer cette ressource auprès du GBIF, un administrateur doit au préalable associer cette instance IPT à une institution/organisation.
 manage.overview.visibility.organisation=Institution / organisation
 manage.overview.visibility.organisation.contact=Contact de l''institution
-manage.overview.visibility.organisation.key=Clé de l''institution
 manage.overview.visibility.resource.key=Clé de la ressource
 manage.report.continueTo=Retourner vers <a href="resource.do?r={0}">la vue d''ensemble de cette ressource</a>.
 manage.report.exception=Exception

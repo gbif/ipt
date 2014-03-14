@@ -743,7 +743,6 @@ manage.overview.visibility.no.organisations=為了將此資源發布並註冊至
 manage.overview.visibility.resource.key=資源註冊碼
 manage.overview.visibility.organisation=單位組織
 manage.overview.visibility.organisation.contact=組織聯絡資訊
-manage.overview.visibility.organisation.key=單位組織註冊碼
 manage.overview.visibility.endorsing.node=認可節點
 manage.overview.visibility.confirm.registration=您即將向 GBIF 註冊此資源。請注意，之後若要從 GBIF 登錄中刪除此資源無法自動完成，您需要向<a href=''mailto:helpdesk@gbif.org''>GBIF Helpdesk</a>申請。您確定要繼續嗎？
 manage.overview.visibility.confirm.agreement=請確認您已讀過並了解 <a target=''_blank'' href=''http://data.gbif.org/tutorial/datasharingagreement''>GBIF 資料共享同意書</a>

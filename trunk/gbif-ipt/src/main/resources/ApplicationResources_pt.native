@@ -692,7 +692,6 @@ manage.overview.visibility.missing.registration.metadata=Para registrar este rec
 manage.overview.visibility.no.organisations=Para registrar este recurso no GBIF o administrador do IPT deve primeiro associar uma organização com este IPT.
 manage.overview.visibility.organisation=Organização
 manage.overview.visibility.organisation.contact=Contato da Organização
-manage.overview.visibility.organisation.key=Chave da Organização
 manage.overview.visibility.resource.key=Chave do Recurso
 manage.report.continueTo=Continue para <a href="resource.do?r={0}">visão global do recurso</a>.
 manage.report.exception=Exceção
