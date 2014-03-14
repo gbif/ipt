@@ -583,7 +583,7 @@
       	<div class="details">
       		<table>
           		<#list eml.alternateIdentifiers as item>
-          			<tr><td>${eml.alternateIdentifiers[item_index]!}</td></tr>
+          			<tr><td><@textWithFormattedLink eml.alternateIdentifiers[item_index]!/></td></tr>
           		</#list>
       		</table>
       	</div>
