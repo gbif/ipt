@@ -38,7 +38,7 @@ public class URLUtils {
    * Validates if the url contains a Port section "path:port".
    */
   public static boolean hasPort(String url) {
-    return Strings.isNullOrEmpty(url) && url.contains(":");
+    return !Strings.isNullOrEmpty(url) && url.split(":").length > 2;
   }
 
 }
