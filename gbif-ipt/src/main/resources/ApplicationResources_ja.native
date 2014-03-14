@@ -700,7 +700,6 @@ manage.overview.visibility.no.organisations=このデータをGBIFに登録す�
 manage.overview.visibility.resource.key=リソースキー
 manage.overview.visibility.organisation=機関
 manage.overview.visibility.organisation.contact=機関の窓口
-manage.overview.visibility.organisation.key=機関キー
 manage.overview.visibility.endorsing.node=担当ノード名
 manage.overview.visibility.confirm.registration=You are about to register the resource with GBIF. Be aware that later deletion from the GBIF Index is not automatic and will require communication with the <a href="''mailto:helpdesk@gbif.org''>GBIF Help Desk</a>. Do you still want to register?
 manage.overview.visibility.confirm.agreement=Confirm that you have read and understood the <a target=''_blank'' href="http://data.gbif.org/tutorial/datasharingagreement''>GBIF data sharing agreement</a>

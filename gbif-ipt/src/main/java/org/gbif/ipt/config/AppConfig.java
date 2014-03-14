@@ -192,6 +192,16 @@ public class AppConfig {
     return getProperty("dev.registrydev.url");
   }
 
+  /**
+   * @return the GBIF Data Portal base URL, different depending on the IPT's mode
+   */
+  public String getPortalUrl() {
+    if (REGISTRY_TYPE.PRODUCTION == type) {
+      return getProperty("dev.portal.url");
+    }
+    return getProperty("dev.portaldev.url");
+  }
+
   public String getResourceArchiveUrl(String shortname) {
     return getBaseUrl() + "/archive.do?" + Constants.REQ_PARAM_RESOURCE + "=" + shortname;
   }

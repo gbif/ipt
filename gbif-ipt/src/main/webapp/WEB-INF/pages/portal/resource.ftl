@@ -105,18 +105,16 @@
                   <#if resource.status=="REGISTERED">
                       <tr>
                           <th><@s.text name='portal.resource.organisation.key'/></th>
-                          <td><a href="${cfg.registryUrl}/browse/agent?uuid=${resource.key}">${resource.key}</a></td>
+                          <td><a href="${cfg.portalUrl}/dataset/${resource.key}" target="_blank">${resource.key}</a></td>
                       </tr>
                     <#if resource.organisation??>
                         <tr>
                             <th><@s.text name='portal.resource.organisation.name'/></th>
-                            <td>
-                                <a href="${cfg.registryUrl}/browse/agent?uuid=${resource.organisation.key}">${resource.organisation.name!}</a>
-                            </td>
+                            <td><a href="${cfg.portalUrl}/organization/${resource.organisation.key}" target="_blank">${resource.organisation.name!}</a></td>
                         </tr>
                         <tr>
-                            <th><@s.text name='portal.resource.organisation.node'/></th>
-                            <td>${resource.organisation.nodeName!}</td>
+                          <th><@s.text name='portal.resource.organisation.node'/></th>
+                          <td><a href="${cfg.portalUrl}/node/${resource.organisation.nodeKey!"#"}" target="_blank">${resource.organisation.nodeName!}</a></td>
                         </tr>
                     </#if>
                   <#else>

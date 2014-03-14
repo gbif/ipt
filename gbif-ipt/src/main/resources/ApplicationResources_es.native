@@ -733,7 +733,6 @@ manage.overview.visibility.missing.metadata=El recurso necesita ser publicado an
 manage.overview.visibility.missing.registration.metadata=Para poder registrar este recurso en GBIF, debe suministrar los metadatos necesarios.
 manage.overview.visibility.no.organisations=Para poder registrar este recurso en GBIF, su administrador del IPT debe primero asociar una organización con este IPT.
 manage.overview.visibility.resource.key=Clave del Recurso
-manage.overview.visibility.organisation.key=Clave de la Organización
 manage.overview.visibility.organisation=Organización
 manage.overview.visibility.organisation.contact=Contacto en la Organización
 manage.overview.visibility.endorsing.node=Nodo aprobado

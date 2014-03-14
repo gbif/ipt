@@ -345,26 +345,22 @@ $(document).ready(function(){
       <table>
         <#if resource.status=="REGISTERED" && resource.key??>
           <tr>
-            <th><@s.text name="manage.overview.visibility.resource.key"/></th>
-            <td>${resource.key} <a href="${cfg.registryUrl}/browse/agent?uuid=${resource.key}" target="_blank">GBIF Registration</a>
+            <th><@s.text name='portal.resource.organisation.key'/></th>
+            <td><a href="${cfg.portalUrl}/dataset/${resource.key}" target="_blank">${resource.key}</a>
             </td>
           </tr>
           <#if resource.organisation??>
             <tr>
               <th><@s.text name="manage.overview.visibility.organisation"/></th>
-              <td>${resource.organisation.name!}</td>
+              <td><a href="${cfg.portalUrl}/organization/${resource.organisation.key}" target="_blank">${resource.organisation.name!}</a></td>
             </tr>
             <tr>
               <th><@s.text name="manage.overview.visibility.organisation.contact"/></th>
               <td>${resource.organisation.primaryContactName!}, ${resource.organisation.primaryContactEmail!}</td>
             </tr>
             <tr>
-              <th><@s.text name="manage.overview.visibility.organisation.key"/></th>
-              <td>${resource.organisation.key!}</td>
-            </tr>
-            <tr>
               <th><@s.text name="manage.overview.visibility.endorsing.node"/></th>
-              <td>${resource.organisation.nodeName!}</td>
+              <td><a href="${cfg.portalUrl}/node/${resource.organisation.nodeKey!"#"}" target="_blank">${resource.organisation.nodeName!}</a></td>
             </tr>
           </#if>
         </#if>
