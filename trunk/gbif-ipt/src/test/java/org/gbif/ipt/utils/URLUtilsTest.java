@@ -26,8 +26,20 @@ public class URLUtilsTest {
   @Test
   public void hasPortTest() {
     Assert.assertTrue(URLUtils.hasPort("http://localhost:8080"));
-    Assert.assertTrue(URLUtils.hasPort("http://gbif.nothing.iii:9932"));
-    Assert.assertFalse(URLUtils.hasPort("http://gbif.nothing.iii/eee/oo"));
+    Assert.assertTrue(URLUtils.hasPort("http://gbif.nothing.org:9932"));
+    Assert.assertFalse(URLUtils.hasPort("http://gbif.nothing.org/eee/oo"));
+  }
+
+
+  @Test
+  public void isURLValidTest() {
+    Assert.assertTrue(URLUtils.isURLValid("http://localhost:8080"));
+    Assert.assertTrue(URLUtils.isURLValid("https://gbif.nothing.com:9932"));
+    Assert.assertTrue(URLUtils.isURLValid("http://gbif.nothing.org/eee/oo"));
+    Assert.assertFalse(URLUtils.isURLValid("ftp://gbif.nothing.org/eee/oo"));
+    Assert.assertFalse(URLUtils.isURLValid("file://gbif.nothing.org/eee/oo"));
+    Assert.assertFalse(URLUtils.isURLValid("//gbif.nothing.org/eee/oo"));
+    Assert.assertFalse(URLUtils.isURLValid("nothing.com/eee/oo"));
   }
 
 }

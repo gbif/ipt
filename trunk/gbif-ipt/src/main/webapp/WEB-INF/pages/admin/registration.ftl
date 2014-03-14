@@ -124,12 +124,14 @@ $(document).ready(function(){
 		<p><@s.text name="admin.registration.intro2"/></p>
 		
 		<@s.form cssClass="topForm half" action="registration" method="post" id="registrationForm" >
-		
+			<@s.fielderror>
+		    	<@s.param value="%{'organisation.key'}" />
+		    </@s.fielderror>
 			<@label i18nkey="admin.organisation.key">
 				<@s.select id="organisation.key" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" size="15" disabled="false"/>
 			</@label>
 		
-			<@input name="organisation.password" i18nkey="admin.organisation.password" type="password" help="i18n"/>
+			<@input name="organisation.password" i18nkey="admin.organisation.password" type="password" help="i18n" />
 			<div id="requestDetails"></div>
 			<@input name="organisation.alias" i18nkey="admin.organisation.alias" type="text" />
 			<@checkbox name="organisation.canHost" i18nkey="admin.organisation.canPublish" value="true" help="i18n"/>				
@@ -140,18 +142,18 @@ $(document).ready(function(){
 			<@s.hidden id="organisation.nodeKey" name="organisation.nodeKey" />
 			<@s.hidden id="organisation.nodeName" name="organisation.nodeName" />
 						
-			<@input name="ipt.name" i18nkey="admin.ipt.name" type="text" />
-			<@text name="ipt.description" i18nkey="admin.ipt.description" />			
+			<@input name="ipt.name" i18nkey="admin.ipt.name" type="text" maxlength=255 size=150/>
+			<@text name="ipt.description" i18nkey="admin.ipt.description" maxlength=300 />			
 
 			<#-- For future release. Will replace contact name below
 			<@input name="ipt.primaryContactFirstName" i18nkey="admin.ipt.primaryContactFirstName" type="text" />
 			<@input name="ipt.primaryContactLastName" i18nkey="admin.ipt.primaryContactLastName" type="text" />
 			-->			
-			<@input name="ipt.primaryContactName" i18nkey="admin.ipt.primaryContactName" type="text" />
-			<@input name="ipt.primaryContactEmail" i18nkey="admin.ipt.primaryContactEmail" type="text" />
-			<@s.hidden id="admin.ipt.primaryContactType" name="ipt.primaryContactType" value="technical" />
+			<@input name="ipt.primaryContactName" i18nkey="admin.ipt.primaryContactName" type="text" maxlength=255/>
+			<@input name="ipt.primaryContactEmail" i18nkey="admin.ipt.primaryContactEmail" type="text" maxlength=255 />
+			<@s.hidden id="admin.ipt.primaryContactType" name="ipt.primaryContactType" value="technical"/>
 			
-			<@input name="ipt.wsPassword" i18nkey="admin.ipt.password" type="password" help="i18n"/>
+			<@input name="ipt.wsPassword" i18nkey="admin.ipt.password" type="password" help="i18n" maxlength=15 size=18/>
 			<@s.hidden id="organisation.name" name="organisation.name" />
 			<@s.hidden id="ipt.organisationKey" name="ipt.organisationKey" />
 		   <div class="buttons">
