@@ -334,12 +334,18 @@ public class SetupAction extends BaseAction {
 
       if (StringUtils.trimToNull(baseURL) == null) {
         addFieldError("baseURL", getText("validation.baseURL.required"));
+      } else if (!URLUtils.isURLValid(baseURL)) {
+        addFieldError("baseURL", getText("validation.baseURL.invalid") + " " + baseURL);
       } else {
         try {
           new URL(baseURL);
         } catch (MalformedURLException e) {
           addFieldError("baseURL", getText("validation.baseURL.invalid") + " " + baseURL);
         }
+      }
+
+      if (StringUtils.trimToNull(proxy) != null && !URLUtils.isURLValid(proxy)) {
+        addFieldError("proxy", getText("admin.config.proxy.error") + " " + proxy);
       }
     }
   }

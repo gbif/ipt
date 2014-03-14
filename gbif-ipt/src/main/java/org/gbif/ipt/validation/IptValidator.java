@@ -15,35 +15,34 @@ import org.gbif.ipt.model.Ipt;
 public class IptValidator extends BaseValidator {
 
   public void validate(BaseAction action, Ipt ipt) {
-    if (ipt.getName() == null || ipt.getName().length() < 1) {
-      action.addFieldError("ipt.name", action.getText("validation.ipt.name.required"));
-    }
-    if (ipt.getName() != null && ipt.getName().length() < 3) {
-      action.addFieldError("ipt.name", action.getText("validation.ipt.name.short"));
-    }
-    if (ipt.getPrimaryContactEmail() == null || ipt.getPrimaryContactEmail().length() < 1) {
-      action.addFieldError("ipt.primaryContactEmail", action.getText("validation.ipt.contactEmail.required"));
-    }
-    if (!isValidEmail(ipt.getPrimaryContactEmail())) {
-      action.addFieldError("ipt.primaryContactEmail", action.getText("validation.ipt.contactEmail.invalid"));
-    }
+    validateBasic(action, ipt, "ipt");
     if (ipt.getWsPassword() == null || ipt.getWsPassword().length() < 1) {
       action.addFieldError("ipt.wsPassword", action.getText("validation.ipt.password.required"));
     }
   }
 
   public void validateUpdate(BaseAction action, Ipt ipt) {
+    validateBasic(action, ipt, "registeredIpt");
+  }
+
+
+  private void validateBasic(BaseAction action, Ipt ipt, String fieldPrefix) {
     if (ipt.getName() == null || ipt.getName().length() < 1) {
-      action.addFieldError("registeredIpt.name", action.getText("validation.ipt.name.required"));
+      action.addFieldError(fieldPrefix + ".name", action.getText("validation.ipt.name.required"));
     }
     if (ipt.getName() != null && ipt.getName().length() < 3) {
-      action.addFieldError("registeredIpt.name", action.getText("validation.ipt.name.short"));
+      action.addFieldError(fieldPrefix + ".name", action.getText("validation.ipt.name.short"));
+    }
+    if (ipt.getDescription() == null || ipt.getDescription().length() < 1) {
+      action.addFieldError(fieldPrefix + ".description",
+        action.getText("validation.required", new String[] {action.getText("basic.description")}));
     }
     if (ipt.getPrimaryContactEmail() == null || ipt.getPrimaryContactEmail().length() < 1) {
-      action.addFieldError("registeredIpt.primaryContactEmail", action.getText("validation.ipt.contactEmail.required"));
+      action
+        .addFieldError(fieldPrefix + ".primaryContactEmail", action.getText("validation.ipt.contactEmail.required"));
     }
     if (!isValidEmail(ipt.getPrimaryContactEmail())) {
-      action.addFieldError("registeredIpt.primaryContactEmail", action.getText("validation.ipt.contactEmail.invalid"));
+      action.addFieldError(fieldPrefix + ".primaryContactEmail", action.getText("validation.ipt.contactEmail.invalid"));
     }
   }
 }

@@ -359,7 +359,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       new LineComparator(ID_COLUMN_INDEX, columnDelimiter, enclosedBy, IGNORE_CASE_COMPARATOR);
     GBIF_FILE_UTILS
       .sort(unsorted, sorted, CHARACTER_ENCODING, ID_COLUMN_INDEX, columnDelimiter, enclosedBy, newlineDelimiter,
-        headerLines, lineComparator);
+        headerLines, lineComparator, true);
     log.debug(
       "Finished sorting core file in " + String.valueOf((System.currentTimeMillis() - time) / 1000) + " secs, check: "
         + sorted.getAbsoluteFile().toString());

@@ -1,14 +1,14 @@
-<#macro input name value="-99999" i18nkey="" errorfield="" type="text" size=-1 disabled=false help="" helpOptions=[] date=false requiredField=false>
+<#macro input name value="-99999" i18nkey="" errorfield="" type="text" size=-1 disabled=false help="" helpOptions=[] date=false requiredField=false maxlength=-1>
   <#if date><div class="calendarInfo"><#else><div></#if>
 	<#include "/WEB-INF/pages/macros/form_field_common.ftl">
-	<input type="${type}" id="${name}" name="${name}" value="<#if value=="-99999"><@s.property value="${name}"/><#else>${value}</#if>" <#if (size>0)>size="${size}"</#if> <#if disabled>readonly="readonly"</#if>/>
+	<input type="${type}" id="${name}" name="${name}" value="<#if value=="-99999"><@s.property value="${name}"/><#else>${value}</#if>" <#if (size>0)>size="${size}"</#if> <#if (maxlength>0)>maxlength="${maxlength}"</#if> <#if disabled>readonly="readonly"</#if>/>
   </div>
 </#macro>
 
-<#macro text name value="-99999" i18nkey="" errorfield="" size=40 rows=5 disabled=false help="" requiredField=false>
+<#macro text name value="-99999" i18nkey="" errorfield="" size=40 rows=5 disabled=false help="" requiredField=false maxlength=-1>
   <div>
 	<#include "/WEB-INF/pages/macros/form_field_common.ftl">
-	<textarea id="${name}" name="${name}" cols="${size}" rows="${rows}" <#if disabled>readonly="readonly"</#if>><#if value=="-99999"><@s.property value="${name}"/><#else>${value}</#if></textarea>
+	<textarea id="${name}" name="${name}" cols="${size}" rows="${rows}" <#if (maxlength>0)>maxlength="${maxlength}"</#if><#if disabled>readonly="readonly"</#if>><#if value=="-99999"><@s.property value="${name}"/><#else>${value}</#if></textarea>
   </div>
 </#macro>
 

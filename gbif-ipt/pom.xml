@@ -44,6 +44,8 @@
     <commons-digester.version>2.1</commons-digester.version>
     <commons-lang3.version>3.1</commons-lang3.version>
     <commons-io.version>2.4</commons-io.version>
+    <commons-validator.version>1.4.0</commons-validator.version>
+    <validation-api.version>1.1.0.Final</validation-api.version>
     <dwca-reader.version>1.16-SNAPSHOT</dwca-reader.version>
     <gbif-api.version>0.11-SNAPSHOT</gbif-api.version>
     <gbif-registry.version>2.11-SNAPSHOT</gbif-registry.version>
@@ -493,6 +495,11 @@
       <artifactId>commons-lang3</artifactId>
       <version>${commons-lang3.version}</version>
     </dependency>
+    <dependency>
+      <groupId>commons-validator</groupId>
+	  <artifactId>commons-validator</artifactId>
+	  <version>${commons-validator.version}</version>
+	</dependency>
 
     <!-- native java io cannot handle redirects -->
     <dependency>
@@ -505,6 +512,11 @@
       <artifactId>httpcore</artifactId>
       <version>${httpcore.version}</version>
     </dependency>
+    <dependency>
+      <groupId>javax.validation</groupId>
+      <artifactId>validation-api</artifactId>
+      <version>${validation-api.version}</version>
+    </dependency>    
 
     <!-- Simple XML Parsing -->
     <dependency>

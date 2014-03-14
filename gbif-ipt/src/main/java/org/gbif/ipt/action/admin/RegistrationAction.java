@@ -241,6 +241,7 @@ public class RegistrationAction extends POSTAction {
       if (getIsRegistered()) {
         iptValidation.validateUpdate(this, getRegisteredIpt());
       } else {
+        iptValidation.validate(this, ipt);
         validatedBaseURL = true;
         organisationValidation.validate(this, organisation);
       }

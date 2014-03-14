@@ -5,12 +5,16 @@ import java.net.URL;
 import java.net.UnknownHostException;
 
 import com.google.common.base.Strings;
+import org.apache.commons.validator.routines.UrlValidator;
 import org.apache.log4j.Logger;
 
 
 public class URLUtils {
 
   private static final Logger LOG = Logger.getLogger(URLUtils.class);
+
+  private static final UrlValidator URL_VALIDATOR = new UrlValidator(new String[] {"http", "https"},
+    UrlValidator.ALLOW_LOCAL_URLS);
 
   private URLUtils() {
 
@@ -39,6 +43,14 @@ public class URLUtils {
    */
   public static boolean hasPort(String url) {
     return !Strings.isNullOrEmpty(url) && url.split(":").length > 2;
+  }
+
+
+  /**
+   * Validates if the parameter is a valid HTTP URL.
+   */
+  public static boolean isURLValid(String url) {
+    return URL_VALIDATOR.isValid(url);
   }
 
 }
