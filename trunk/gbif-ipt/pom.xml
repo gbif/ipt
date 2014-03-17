@@ -40,15 +40,15 @@
 
     <jdkLevel>1.6</jdkLevel>
 
-    <apache-poi.version>3.9</apache-poi.version>
+    <apache-poi.version>3.10-FINAL</apache-poi.version>
     <commons-digester.version>2.1</commons-digester.version>
-    <commons-lang3.version>3.1</commons-lang3.version>
+    <commons-lang3.version>3.3</commons-lang3.version>
     <commons-io.version>2.4</commons-io.version>
     <commons-validator.version>1.4.0</commons-validator.version>
     <validation-api.version>1.1.0.Final</validation-api.version>
     <dwca-reader.version>1.16-SNAPSHOT</dwca-reader.version>
     <gbif-api.version>0.11-SNAPSHOT</gbif-api.version>
-    <gbif-registry.version>2.11-SNAPSHOT</gbif-registry.version>
+    <gbif-registry.version>2.11</gbif-registry.version>
     <gbif-common-ws.version>0.11</gbif-common-ws.version>
     <gbif-metadata-profile.version>1.0.2.3</gbif-metadata-profile.version>
     <gbif-common.version>0.15-SNAPSHOT</gbif-common.version>
@@ -59,7 +59,8 @@
     <guice.version>3.0</guice.version>
     <httpclient.version>4.2.3</httpclient.version>
     <httpcore.version>4.2.3</httpcore.version>
-    <itext.version>2.1.7</itext.version>
+    <itext.version>4.2.1</itext.version>
+    <itext-rtf.version>2.1.7</itext-rtf.version>
     <javassist.version>3.12.1.GA</javassist.version>
     <!-- jetty 7 is the latest version supported with Java 5 -->
     <jetty-maven-plugin.version>7.6.12.v20130726</jetty-maven-plugin.version>
@@ -68,15 +69,15 @@
     <junit.version>4.11</junit.version>
     <log4j.version>1.2.17</log4j.version>
     <mockito-all.version>1.9.5</mockito-all.version>
-    <mysql-connector-java.version>5.1.27</mysql-connector-java.version>
+    <mysql-connector-java.version>5.1.29</mysql-connector-java.version>
     <ojdbc.version>14</ojdbc.version>
-    <postgresql.version>9.3-1100-jdbc41</postgresql.version>
+    <postgresql.version>9.3-1101-jdbc41</postgresql.version>
     <javax.mail.version>1.4.7</javax.mail.version>
     <servlet-api.version>2.5</servlet-api.version>
-    <slf4j.version>1.7.5</slf4j.version>
-    <struts2.version>2.3.15.3</struts2.version>
-    <xstream.version>1.4.5</xstream.version>
-    <jsr305.version>2.0.2</jsr305.version>
+    <slf4j.version>1.7.6</slf4j.version>
+    <struts2.version>2.3.16.1</struts2.version>
+    <xstream.version>1.4.7</xstream.version>
+    <jsr305.version>2.0.3</jsr305.version>
     <httputils.version>0.5</httputils.version>
   </properties>
 
@@ -548,7 +549,7 @@
     <dependency>
       <groupId>com.lowagie</groupId>
       <artifactId>itext-rtf</artifactId>
-      <version>${itext.version}</version>
+      <version>${itext-rtf.version}</version>
     </dependency>
 
     <!-- testing -->
