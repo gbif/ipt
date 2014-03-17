@@ -86,7 +86,7 @@ public class OverviewAction extends ManagerBaseAction {
     this.vocabManager = vocabManager;
   }
 
-  public String addmanager() throws Exception {
+  public String addManager() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
     }
@@ -419,7 +419,7 @@ public class OverviewAction extends ManagerBaseAction {
           // populate list of potential list of extensions with core types
           potentialExtensions = extensionManager.listCore();
           LOG.debug("Cores suitable for Other resources: " + potentialExtensions);
-          if (potentialExtensions.size() == 0) {
+          if (potentialExtensions.isEmpty()) {
             addActionError(getText("manage.overview.no.DwC.extensions"));
           }
         } else {

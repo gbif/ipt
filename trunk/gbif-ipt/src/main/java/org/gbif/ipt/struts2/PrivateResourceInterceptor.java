@@ -20,7 +20,11 @@ import org.apache.log4j.Logger;
  */
 public class PrivateResourceInterceptor extends AbstractInterceptor {
 
-  private static Logger log = Logger.getLogger(RequireAdminInterceptor.class);
+  private static final long serialVersionUID = 2340800191217429210L;
+
+  private static final Logger LOG = Logger.getLogger(RequireAdminInterceptor.class);
+
+
   @Inject
   private ResourceManager resourceManager;
 
@@ -38,7 +42,7 @@ public class PrivateResourceInterceptor extends AbstractInterceptor {
         Map<String, Object> session = invocation.getInvocationContext().getSession();
         User user = (User) session.get(Constants.SESSION_USER);
         // user authorised?
-        if (user == null || !isAuthorized(user, resource, invocation)) {
+        if (user == null || !isAuthorized(user, resource)) {
           return BaseAction.NOT_ALLOWED;
         }
       }
@@ -46,7 +50,7 @@ public class PrivateResourceInterceptor extends AbstractInterceptor {
     return invocation.invoke();
   }
 
-  private boolean isAuthorized(User user, Resource resource, ActionInvocation invocation) {
+  private boolean isAuthorized(User user, Resource resource) {
     if (user.hasAdminRights()) {
       return true;
     }

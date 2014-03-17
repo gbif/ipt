@@ -53,11 +53,11 @@ public class FileUtils {
     if (decimalPos >= 0) {
       fmt.setMaximumFractionDigits(decimalPos);
     }
-    double val = longSize / (1024 * 1024);
+    double val = longSize / (1024f * 1024f);
     if (val > 1) {
       return fmt.format(val) + " MB";
     }
-    val = longSize / 1024;
+    val = longSize / 1024f;
     if (val > 1) {
       return fmt.format(val) + " KB";
     }

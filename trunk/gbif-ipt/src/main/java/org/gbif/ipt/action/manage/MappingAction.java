@@ -64,6 +64,8 @@ import org.apache.log4j.Logger;
  */
 public class MappingAction extends ManagerBaseAction {
 
+  private static final long serialVersionUID = -831969146160030857L;
+
   // logging
   private static final Logger LOG = Logger.getLogger(MappingAction.class);
 
@@ -126,8 +128,8 @@ public class MappingAction extends ManagerBaseAction {
     // start by trying to automap the mappingCoreId (occurrenceId/taxonId) to a column in source
     int idx1 = 0;
     for (String col : columns) {
-      col = normalizeColumnName(col);
-      if (col != null && TermFactory.normaliseTerm(mappingCoreid.getTerm().simpleName()).equalsIgnoreCase(col)) {
+      String normCol = normalizeColumnName(col);
+      if (normCol != null && TermFactory.normaliseTerm(mappingCoreid.getTerm().simpleName()).equalsIgnoreCase(normCol)) {
         // mappingCoreId and mapping id column must both be set (and have the same index) to automap successfully.
         mappingCoreid.setIndex(idx1);
         mapping.setIdColumn(idx1);
@@ -142,8 +144,8 @@ public class MappingAction extends ManagerBaseAction {
     for (PropertyMapping f : fields) {
       int idx2 = 0;
       for (String col : columns) {
-        col = normalizeColumnName(col);
-        if (col != null && TermFactory.normaliseTerm(f.getTerm().simpleName()).equalsIgnoreCase(col)) {
+        String normCol = normalizeColumnName(col);
+        if (normCol != null && TermFactory.normaliseTerm(f.getTerm().simpleName()).equalsIgnoreCase(normCol)) {
           f.setIndex(idx2);
           // we have automapped the term, so increment automapped counter and exit
           automapped++;
@@ -291,7 +293,7 @@ public class MappingAction extends ManagerBaseAction {
     }
 
 
-    if (mapping != null || mapping.getExtension() != null) {
+    if (mapping != null && mapping.getExtension() != null) {
 
       // is source assigned yet?
       if (mapping.getSource() == null) {

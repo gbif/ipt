@@ -46,10 +46,13 @@ import org.apache.log4j.Logger;
 
 public class TranslationAction extends ManagerBaseAction implements ParameterNameAware {
 
+  private static final long serialVersionUID = -8350422710092468050L;
+
   // logging
   private static final Logger LOG = Logger.getLogger(TranslationAction.class);
 
-  private static final String ACCEPTED_PARAM_NAMES = "\\w+((\\.\\w+)|(\\[\\d+\\])|(\\(\\d+\\))|(\\['[\\w:.\\-\\s\\;]+'\\])|(\\('\\w+'\\)))*";
+  private static final String ACCEPTED_PARAM_NAMES =
+    "\\w+((\\.\\w+)|(\\[\\d+\\])|(\\(\\d+\\))|(\\['[\\w:.\\-\\s\\;]+'\\])|(\\('\\w+'\\)))*";
 
   // Allowed names of parameters
   private Pattern acceptedPattern = Pattern.compile(ACCEPTED_PARAM_NAMES);
@@ -62,9 +65,8 @@ public class TranslationAction extends ManagerBaseAction implements ParameterNam
    * </br>
    * Pattern adapted from {@link com.opensymphony.xwork2.interceptor.ParametersInterceptor#ACCEPTED_PARAM_NAMES}
    * v2.3.15.
-   *
+   * 
    * @param parameterName the parameter name (value to be translated) in the following format: "tmap['value']"
-   *
    * @return <tt> if accepted, <tt>false</tt> otherwise
    */
   public boolean acceptableParameterName(String parameterName) {
@@ -94,13 +96,13 @@ public class TranslationAction extends ManagerBaseAction implements ParameterNam
       return m;
     }
 
-    public TreeMap<String, String> getTmap() {
+    public Map<String, String> getTmap() {
       return tmap;
     }
 
     public boolean isLoaded(String rowType, Term term) {
       return this.rowType != null && this.rowType.equals(rowType) && this.term != null && this.term.equals(term)
-             && tmap != null;
+        && tmap != null;
     }
 
     public void setTmap(String rowType, Term term, TreeMap<String, String> tmap) {
@@ -160,7 +162,7 @@ public class TranslationAction extends ManagerBaseAction implements ParameterNam
   /**
    * Deletes the translation for the PropertyTerm. The sessionScoped translation must also be deleted, otherwise it
    * will reappear on the next page visit.
-   *
+   * 
    * @return NONE result, going back to mapping page
    */
   @Override
@@ -222,7 +224,7 @@ public class TranslationAction extends ManagerBaseAction implements ParameterNam
 
   /**
    * Reload the source values, and display to the User this has happened.
-   *
+   * 
    * @return SUCCESS regardless of outcome
    */
   public String reload() {
@@ -258,8 +260,8 @@ public class TranslationAction extends ManagerBaseAction implements ParameterNam
 
     } catch (SourceException e) {
       // if an error has occurred, bring it to the user's attention
-      addActionError(
-        getText("manage.translation.reloaded.fail", new String[] {field.getTerm().toString(), e.getMessage()}));
+      addActionError(getText("manage.translation.reloaded.fail",
+        new String[] {field.getTerm().toString(), e.getMessage()}));
     }
   }
 
@@ -321,7 +323,7 @@ public class TranslationAction extends ManagerBaseAction implements ParameterNam
 
   /**
    * setMapping method name interrupts with Struts2/freemarker page.
-   *
+   * 
    * @param mapping ExtensionMapping
    */
   public void setExtensionMapping(ExtensionMapping mapping) {
@@ -330,14 +332,14 @@ public class TranslationAction extends ManagerBaseAction implements ParameterNam
 
   /**
    * @return Parse and return the value enclosed in tmap[], e.g. return value for "tmap[value]", or the original value
-   * if it isn't enclosed in tmap[].
+   *         if it isn't enclosed in tmap[].
    */
   @VisibleForTesting
   protected String stripBrackets(String parameterName) {
     String start = "tmap['";
     String end = "']";
     if (parameterName.startsWith(start) && parameterName.endsWith(end)) {
-      parameterName = parameterName.substring(start.length(), parameterName.length()-end.length());
+      parameterName = parameterName.substring(start.length(), parameterName.length() - end.length());
     }
     return parameterName;
   }

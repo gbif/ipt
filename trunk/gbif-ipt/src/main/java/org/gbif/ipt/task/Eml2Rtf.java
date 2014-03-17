@@ -35,7 +35,7 @@ import org.gbif.metadata.eml.TaxonomicCoverage;
 import org.gbif.metadata.eml.TemporalCoverage;
 import org.gbif.metadata.eml.TemporalCoverageType;
 
-import java.awt.*;
+import java.awt.Color;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -90,10 +90,9 @@ public class Eml2Rtf {
 
   /**
    * Add abstract section. This corresponds to resource's description.
-   *
+   * 
    * @param doc Document
    * @param eml EML
-   *
    * @throws DocumentException if problem occurs during add
    */
   private void addAbstract(Document doc, Eml eml) throws DocumentException {
@@ -113,10 +112,9 @@ public class Eml2Rtf {
 
   /**
    * Add resource citation section. This corresponds to combination of resource's citation and citation identifier.
-   *
+   * 
    * @param doc Document
    * @param eml EML
-   *
    * @throws DocumentException if problem occurs during add
    */
   private void addResourceCitation(Document doc, Eml eml) throws DocumentException {
@@ -149,10 +147,9 @@ public class Eml2Rtf {
 
   /**
    * Add authors section.
-   *
+   * 
    * @param doc Document
    * @param eml EML
-   *
    * @throws DocumentException if problem occurs during add
    */
   private void addAuthors(Document doc, Eml eml) throws DocumentException {
@@ -181,8 +178,9 @@ public class Eml2Rtf {
         for (Iterator<Agent> j = tempAgents.iterator(); j.hasNext(); countTemp++) {
           Agent agentB = j.next();
           if (flag) {
-            if (equal(agentA.getLastName(), agentB.getLastName()) && equal(agentA.getFirstName(), agentB.getFirstName())
-                && equal(agentA.getAddress(), agentB.getAddress())) {
+            if (equal(agentA.getLastName(), agentB.getLastName())
+              && equal(agentA.getFirstName(), agentB.getFirstName())
+              && equal(agentA.getAddress(), agentB.getAddress())) {
               toRemove.add(countTemp);
             }
           } else if (agentA.equals(agentB)) {
@@ -313,9 +311,8 @@ public class Eml2Rtf {
    * Issue number (in parentheses), and DOI of the data paper.
    * </p>
    * This section is intended to be manually entered by the author, following publication of the data paper.
-   *
+   * 
    * @param doc Document
-   *
    * @throws DocumentException if problem occurs during add
    */
   private void addCitations(Document doc) throws DocumentException {
@@ -333,10 +330,9 @@ public class Eml2Rtf {
    * Add Dataset Description section. The "Dataset description" describes the DwC-A being published by the IPT.
    * If there is no data uploaded/published through the IPT, and no "External links", then that means
    * only the metadata is being published and no "Dataset" and "Dataset description" sections will appear at all.
-   *
-   * @param doc      Document
+   * 
+   * @param doc Document
    * @param resource Resource
-   *
    * @throws DocumentException if problem occurs during add
    */
   private void addDatasetDescriptions(Document doc, Resource resource) throws DocumentException {
@@ -417,7 +413,7 @@ public class Eml2Rtf {
         doc.add(p);
       }
     }
-    //  Add external datasets
+    // Add external datasets
     addExternalLinks(doc, eml);
     p.clear();
   }
@@ -429,7 +425,7 @@ public class Eml2Rtf {
    * These are to be manually inserted by the Publisher of the Data Paper to indicate the dates of the original
    * manuscript submission, revised manuscript submission, acceptance of manuscript and publishing of the manuscript as
    * a Data Paper in the journal.
-   *
+   * 
    * @param doc Document
    */
   private void addDates(Document doc) throws DocumentException {
@@ -451,10 +447,9 @@ public class Eml2Rtf {
 
   /**
    * Add external links section.
-   *
+   * 
    * @param doc Document
    * @param eml EML
-   *
    * @throws DocumentException if problem occurs during add
    */
   private void addExternalLinks(Document doc, Eml eml) throws DocumentException {
@@ -505,7 +500,7 @@ public class Eml2Rtf {
 
   /**
    * Add general description section.
-   *
+   * 
    * @throws DocumentException if problem occurs during add
    */
   private void addGeneralDescription(Document doc, Eml eml) throws DocumentException {
@@ -534,10 +529,9 @@ public class Eml2Rtf {
 
   /**
    * Add keywords section.
-   *
-   * @param doc  Document
+   * 
+   * @param doc Document
    * @param keys keywords Strings
-   *
    * @throws DocumentException if problem occurs during add
    */
   private void addKeywords(Document doc, String keys) throws DocumentException {
@@ -555,10 +549,9 @@ public class Eml2Rtf {
 
   /**
    * Add metadata description section.
-   *
+   * 
    * @param doc Document
    * @param eml EML
-   *
    * @throws DocumentException if problem occurs during add
    */
   private void addMetadataDescriptions(Document doc, Eml eml) throws DocumentException {
@@ -600,10 +593,9 @@ public class Eml2Rtf {
 
   /**
    * Add methods section.
-   *
+   * 
    * @param doc Document
    * @param eml EML
-   *
    * @throws DocumentException if problem occurs during add
    */
   private void addMethods(Document doc, Eml eml) throws DocumentException {
@@ -651,10 +643,9 @@ public class Eml2Rtf {
 
   /**
    * Add natural collections section.
-   *
+   * 
    * @param doc Document
    * @param eml EML
-   *
    * @throws DocumentException if problem occurs during add
    */
   private void addNaturalCollections(Document doc, Eml eml) throws DocumentException {
@@ -729,13 +720,12 @@ public class Eml2Rtf {
 
   /**
    * Add paragraph to Document.
-   *
-   * @param doc       Document
-   * @param text      text of paragraph
-   * @param font      Font to be used
-   * @param spacing   number of spaces before the paragraph
+   * 
+   * @param doc Document
+   * @param text text of paragraph
+   * @param font Font to be used
+   * @param spacing number of spaces before the paragraph
    * @param alignType alignment of the paragraph
-   *
    * @throws DocumentException if problem occurs during add
    */
   private void addPara(Document doc, String text, Font font, int spacing, int alignType) throws DocumentException {
@@ -752,16 +742,15 @@ public class Eml2Rtf {
 
   /**
    * Add project data section.
-   *
+   * 
    * @param doc Document
    * @param eml EML
-   *
    * @throws DocumentException if problem occurs during add
    */
   private void addProjectData(Document doc, Eml eml) throws DocumentException {
     if (exists(eml.getProject().getTitle()) || exists(eml.getProject().getPersonnel().getFirstName()) || exists(
       eml.getProject().getFunding()) || exists(eml.getProject().getStudyAreaDescription().getDescriptorValue())
-        || exists(eml.getProject().getDesignDescription())) {
+      || exists(eml.getProject().getDesignDescription())) {
       Paragraph p = new Paragraph();
       p.setAlignment(Element.ALIGN_JUSTIFIED);
       p.setFont(font);
@@ -801,10 +790,9 @@ public class Eml2Rtf {
   /**
    * Add Biobliography section. For each Bibliography listed in the References section, include the Citation identifier
    * after the Citation. If there is no Citation, only a Citation Identifier, then it will appear by itself.
-   *
+   * 
    * @param doc Document
    * @param eml EML
-   *
    * @throws DocumentException if problem occurs during add
    */
   private void addReferences(Document doc, Eml eml) throws DocumentException {
@@ -842,10 +830,9 @@ public class Eml2Rtf {
    * have a public resource link.
    * </p>
    * e.g. Data published through GBIF: http://localhost:8090/ipt/resource.do?r=shortName
-   *
-   * @param doc      Document
+   * 
+   * @param doc Document
    * @param resource Resource
-   *
    * @throws DocumentException if an error in adding to the document was encountered
    */
   private void addResourceLink(Document doc, Resource resource) throws DocumentException {
@@ -878,10 +865,9 @@ public class Eml2Rtf {
 
   /**
    * Add Spatial coverage section.
-   *
+   * 
    * @param doc Document
    * @param eml EML
-   *
    * @throws DocumentException if problem occurs during add
    */
   private void addSpatialCoverage(Document doc, Eml eml) throws DocumentException {
@@ -923,10 +909,9 @@ public class Eml2Rtf {
 
   /**
    * Add taxonomic coverages, writing in this order: description, ranks, then common names.
-   *
+   * 
    * @param doc Document
    * @param eml EML object
-   *
    * @throws DocumentException if an error occurred adding to the Document
    */
   private void addTaxonomicCoverages(Document doc, Eml eml) throws DocumentException {
@@ -995,10 +980,9 @@ public class Eml2Rtf {
 
   /**
    * Add temporal coverages section.
-   *
+   * 
    * @param doc Document
    * @param eml EML
-   *
    * @throws DocumentException if problem occurs during add
    */
   private void addTemporalCoverages(Document doc, Eml eml) throws DocumentException {
@@ -1052,9 +1036,8 @@ public class Eml2Rtf {
 
   /**
    * Converts text to superscript text.
-   *
+   * 
    * @param text text to be superscripted
-   *
    * @return superscripted text
    */
   private Chunk createSuperScript(String text) {
@@ -1064,28 +1047,24 @@ public class Eml2Rtf {
   /**
    * Checks whether a given object is null. If the object is an instance of String, it checks if the String is an empty
    * String. Only if the object is not null, and not an empty String, will the method return true.
-   *
+   * 
    * @param obj Object
-   *
    * @return whether true if the object is not null, or not an empty string
    */
   private boolean exists(Object obj) {
     if (obj == null) {
       return false;
     }
-    if (obj instanceof String) {
-      if (StringUtils.isEmpty((String) obj)) {
-        return false;
-      }
+    if (obj instanceof String && StringUtils.isEmpty((String) obj)) {
+      return false;
     }
     return true;
   }
 
   /**
    * Get text for resource bundle property key.
-   *
+   * 
    * @param key key
-   *
    * @return text corresponding to key in property file
    */
   public String getText(String key) {
@@ -1103,10 +1082,9 @@ public class Eml2Rtf {
   /**
    * Construct RTF document, mainly out of information extracted from Resource's EML object. Currently, the decision
    * has been made to always do this in English.
-   *
-   * @param doc      Document
+   * 
+   * @param doc Document
    * @param resource Resource
-   *
    * @throws DocumentException if problem occurs during add
    */
   public void writeEmlIntoRtf(Document doc, Resource resource) throws DocumentException {
@@ -1120,17 +1098,18 @@ public class Eml2Rtf {
     // write metadata
     doc.addAuthor(resource.getCreator().getName());
     doc.addCreationDate();
-    doc.addTitle((eml.getTitle() == null) ? resource.getShortname(): eml.getTitle());
+    doc.addTitle((eml.getTitle() == null) ? resource.getShortname() : eml.getTitle());
     // add the keywords to the document
-    String keys = "";
+    StringBuilder keys = new StringBuilder();
     for (KeywordSet kw : eml.getKeywords()) {
       if (keys.length() == 0) {
-        keys = kw.getKeywordsString(", ");
+        keys.append(kw.getKeywordsString(", "));
       } else {
-        keys += ", " + kw.getKeywordsString(", ");
+        keys.append(", " + kw.getKeywordsString(", "));
       }
     }
-    doc.addKeywords(keys);
+    String keysValue = keys.toString();
+    doc.addKeywords(keysValue);
     // write proper doc
     doc.open();
     // title
@@ -1144,7 +1123,7 @@ public class Eml2Rtf {
     // Section called "Resource Citation" above "Abstract"
     addResourceCitation(doc, eml);
     addAbstract(doc, eml);
-    addKeywords(doc, keys);
+    addKeywords(doc, keysValue);
     addGeneralDescription(doc, eml);
     addProjectData(doc, eml);
     addResourceLink(doc, resource);
