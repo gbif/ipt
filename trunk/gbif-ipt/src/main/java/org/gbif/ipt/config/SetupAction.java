@@ -15,6 +15,7 @@ import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.URLUtils;
 import org.gbif.ipt.validation.UserValidator;
+import org.gbif.utils.HttpUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +27,8 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpHost;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 
 /**
@@ -55,6 +58,7 @@ public class SetupAction extends BaseAction {
   // can't pass a literal boolean to ftl, using int instead...
   protected Integer ignoreUserValidation = 0;
   private boolean setup2 = false;
+  private final HttpUtil httpUtil;
 
   private static final String MODE_DEVELOPMENT = "Test";
   private static final String MODE_PRODUCTION = "Production";
@@ -62,12 +66,14 @@ public class SetupAction extends BaseAction {
 
   @Inject
   public SetupAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager regManager,
-    ConfigManager configManager, UserAccountManager userManager, DataDir dataDir, ExtensionManager extensionManager) {
+    ConfigManager configManager, UserAccountManager userManager, DataDir dataDir,
+    ExtensionManager extensionManager, DefaultHttpClient client) {
     super(textProvider, cfg, regManager);
     this.configManager = configManager;
     this.userManager = userManager;
     this.dataDir = dataDir;
     this.extensionManager = extensionManager;
+    this.httpUtil = new HttpUtil(client);
   }
 
   public List<String> getModes() {
@@ -344,8 +350,19 @@ public class SetupAction extends BaseAction {
         }
       }
 
-      if (StringUtils.trimToNull(proxy) != null && !URLUtils.isURLValid(proxy)) {
-        addFieldError("proxy", getText("admin.config.proxy.error") + " " + proxy);
+      if (StringUtils.trimToNull(proxy) != null) {
+        if (!URLUtils.isURLValid(proxy)) {
+          addFieldError("proxy", getText("admin.config.proxy.error") + " " + proxy);
+        } else {
+          try {
+            HttpHost host = URLUtils.getHost(proxy);
+            if (!httpUtil.verifyHost(host)) {
+              addFieldError("proxy", getText("admin.config.error.connectionRefused") + " " + proxy);
+            }
+          } catch (MalformedURLException e) {
+            addFieldError("proxy", getText("admin.config.error.invalidProxyURL") + " " + proxy);
+          }
+        }
       }
     }
   }
