@@ -29,6 +29,7 @@ import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,6 +75,9 @@ public class TranslationAction extends ManagerBaseAction implements ParameterNam
     if (!matches) {
       parameterName = stripBrackets(parameterName);
       LOG.debug("Value failed to be translated: " + parameterName);
+      if (failedTranslations == null) {
+        failedTranslations = new ArrayList<String>();
+      }
       failedTranslations.add(parameterName);
     }
     return matches;
@@ -274,7 +278,7 @@ public class TranslationAction extends ManagerBaseAction implements ParameterNam
     id = mapping.getExtension().getRowType();
     addActionMessage(getText("manage.translation.saved", new String[] {field.getTerm().toString()}));
     // if some values couldn't be translated, bring it to the user's attention
-    if (!failedTranslations.isEmpty()) {
+    if (failedTranslations != null && !failedTranslations.isEmpty()) {
       addActionError(getText("manage.translation.saved.failed.values", new String[] {failedTranslations.toString()}));
     }
     return NONE;
