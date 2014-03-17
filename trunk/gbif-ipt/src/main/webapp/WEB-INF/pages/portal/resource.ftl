@@ -417,8 +417,8 @@
 </div>
 </#if>
 
-<#if eml.studyExtent?has_content || eml.sampleDescription?has_content || eml.qualityControl?has_content || eml.methodSteps?has_content>
-<div class="resourceOverviewPortal">	
+<#if eml.studyExtent?has_content || eml.sampleDescription?has_content || eml.qualityControl?has_content || (eml.methodSteps?? && (eml.methodSteps?size>=1) && eml.methodSteps[0]?has_content) >
+<div class="resourceOverviewPortal">
   <div class="title">
   	<div class="head">
         <@s.text name='manage.metadata.methods.title'/>

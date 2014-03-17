@@ -401,10 +401,6 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
         iter = reader.iterator();
         while (iter.hasNext()) {
           line++;
-          // Exception on reading row was encountered
-          if (iter.hasRowError()) {
-            log.error("Error reading line #" + line + "\n" + iter.getErrorMessage());
-          }
           if (line % 1000 == 0) {
             checkForInterruption(line);
             reportIfNeeded();
@@ -413,24 +409,29 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
           if (record == null || record.length == 0) {
             continue;
           }
+          // Exception on reading row was encountered
+          if (iter.hasRowError() && iter.getException() != null)  {
+            throw new GeneratorException(
+              "A fatal error was encountered while trying to validate sorted core data file: " + iter.getErrorMessage(),
+              iter.getException());
+          } else {
+            id = record[ID_COLUMN_INDEX];
 
-          id = record[ID_COLUMN_INDEX];
-
-          // check id exists
-          if (Strings.isNullOrEmpty(id)) {
-            log.debug("Null or empty id found");
-            recordsWithNoId++;
-          }
-
-          // check id is unique, using case insensitive comparison. E.g. FISHES:1 and fishes:1 are equal
-          if (!Strings.isNullOrEmpty(lastId) && !Strings.isNullOrEmpty(id)) {
-            if (id.equalsIgnoreCase(lastId)) {
-              log.debug("Duplicate id found: " + id);
-              recordsWithDuplicateId++;
+            // check id exists
+            if (Strings.isNullOrEmpty(id)) {
+              recordsWithNoId++;
             }
+
+            // check id is unique, using case insensitive comparison. E.g. FISHES:1 and fishes:1 are equal
+            if (!Strings.isNullOrEmpty(lastId) && !Strings.isNullOrEmpty(id)) {
+              if (id.equalsIgnoreCase(lastId)) {
+                writePublicationLogMessage("Duplicate id found: " + id);
+                recordsWithDuplicateId++;
+              }
+            }
+            // set so id gets compared on next iteration
+            lastId = id;
           }
-          // set so id gets compared on next iteration
-          lastId = id;
         }
       } catch (InterruptedException e) {
         // set last error report!
@@ -473,13 +474,12 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
       // if there was 1 or more records missing an ID, or having a duplicate ID, validation fails
       if (recordsWithNoId == 0 && recordsWithDuplicateId == 0) {
-        addMessage(Level.INFO, "Archive was validated");
+        addMessage(Level.INFO, "Validated: each line has an ID, and each ID is unique");
       } else {
         addMessage(Level.ERROR,
           "Archive validation failed, because not every row has a unique ID (please note comparisons are case insensitive");
         throw new GeneratorException("Can't validate DwC-A for resource " + resource.getShortname()
           + ". Each row must have an ID, and each ID must be unique (please note comparisons are case insensitive)");
-
       }
     } else {
       writePublicationLogMessage("The core record ID " + coreIdTerm
