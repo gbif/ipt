@@ -29,7 +29,7 @@
     </#list>
   </ul>
 
-  <#if report.hasException()>
+  <#if cfg.debug() && report.hasException()>
     <br/>
     <strong><@s.text name='manage.report.exception'/></strong>: ${report.exceptionMessage!}
     <ul class="simple">

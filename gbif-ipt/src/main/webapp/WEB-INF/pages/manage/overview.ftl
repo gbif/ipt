@@ -229,7 +229,7 @@ $(document).ready(function(){
                       <li>${msg.message} <span class="small">${msg.date?time?string}</span></li>
                     </#list>
                   </ul>
-                  <#if report.hasException()>
+                  <#if cfg.debug() && report.hasException()>
                     <br/>
                     <ul class="simple">
                       <li><strong>Exception</strong> ${report.exceptionMessage!}</li>

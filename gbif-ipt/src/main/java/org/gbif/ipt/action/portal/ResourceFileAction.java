@@ -151,9 +151,12 @@ public class ResourceFileAction extends PortalBaseAction {
     return execute();
   }
 
+  /**
+   * Retrieve the publication log file for the resource, or return NOT_FOUND if it could not be located.
+   */
   public String publicationLog() {
     data = dataDir.resourcePublicationLogFile(resource.getShortname());
-    if (resource.isPublished() && data.exists()) {
+    if (data.exists()) {
       mimeType = "text/log";
       filename = DataDir.PUBLICATION_LOG_FILENAME;
     } else {
