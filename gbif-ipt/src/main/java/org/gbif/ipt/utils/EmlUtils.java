@@ -16,7 +16,6 @@ import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Locale.Category;
 
 import com.google.common.base.Strings;
 import freemarker.template.TemplateException;
@@ -24,6 +23,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
+/**
+ * Utility class for common operation on EML documents/files.
+ */
 public class EmlUtils {
 
   protected static final Logger LOG = Logger.getLogger(EmlUtils.class);
@@ -92,12 +94,12 @@ public class EmlUtils {
    * formats.
    */
   public static void writeWithLocale(File emlFile, Resource resource, Locale locale) {
-    Locale currentLocale = Locale.getDefault(Category.FORMAT);
+    Locale currentLocale = Locale.getDefault();
     try {
       synchronized (currentLocale) {
-        Locale.setDefault(Category.FORMAT, locale);
+        Locale.setDefault(locale);
         EmlWriter.writeEmlFile(emlFile, resource.getEml());
-        Locale.setDefault(Category.FORMAT, currentLocale);
+        Locale.setDefault(currentLocale);
       }
     } catch (IOException e) {
       LOG.error(e);
@@ -107,7 +109,7 @@ public class EmlUtils {
       throw new InvalidConfigException(TYPE.EML,
         "EML template exception when writing eml for " + resource + ": " + e.getMessage());
     } finally {
-      Locale.setDefault(Category.FORMAT, currentLocale);
+      Locale.setDefault(currentLocale);
     }
   }
 
@@ -116,13 +118,13 @@ public class EmlUtils {
    */
   public static Eml loadWithLocale(File emlFile, Locale locale) {
     Eml eml = null;
-    Locale currentLocale = Locale.getDefault(Category.FORMAT);
+    Locale currentLocale = Locale.getDefault();
     try {
       InputStream in = new FileInputStream(emlFile);
       synchronized (currentLocale) {
-        Locale.setDefault(Category.FORMAT, locale);
+        Locale.setDefault(locale);
         eml = EmlFactory.build(in);
-        Locale.setDefault(Category.FORMAT, currentLocale);
+        Locale.setDefault(currentLocale);
       }
     } catch (FileNotFoundException e) {
       eml = new Eml();
@@ -134,7 +136,7 @@ public class EmlUtils {
     } catch (Exception e) {
       eml = new Eml();
     } finally {
-      Locale.setDefault(Category.FORMAT, currentLocale);
+      Locale.setDefault(currentLocale);
     }
     return eml;
   }
