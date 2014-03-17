@@ -66,11 +66,11 @@
 	<input type="text" value="${value}" <#if (size>0)>size="${size}"</#if> readonly="readonly" />
 </#macro>
 
-<#macro label i18nkey help="">
+<#macro label i18nkey help="" requiredField=false>
   <div>
-	<label><@s.text name="${i18nkey}"/></label>
-	<img style="visibility:hidden" src="${baseURL}/images/info.gif" />
-	<#nested>
+	<label><@s.text name="${i18nkey}"/><#if requiredField>&#42;</#if></label>
+	  <img style="visibility:hidden" src="${baseURL}/images/info.gif" />
+	  <#nested>
   </div>
 </#macro>
 
@@ -95,7 +95,7 @@
 
 <#macro showMore text maxLength>
     <#if (text?length>maxLength)>
-    	<div id= "visibleContent"><@textWithFormattedLink (text)?substring(0,maxLength)/>... <a id="showMore" href=""><@s.text name='basic.showMore'/></a></div>
+    	<div id="visibleContent"><@textWithFormattedLink (text)?substring(0,maxLength)/>... <a id="showMore" href=""><@s.text name='basic.showMore'/></a></div>
     	<div id="hiddenContent" style="display: none"><@textWithFormattedLink text/><a id="showLess" href=""><@s.text name='basic.showLess'/></a></div>
     <#else>
     	<@textWithFormattedLink text/>

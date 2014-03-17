@@ -80,28 +80,28 @@ $(document).ready(function(){
 
 <#-- If the hosting institution already exists, this IP has been registered. Don't present the register form -->
 
-<#if hostingOrganisation?exists>
-    <form id="registration" class="topForm half" action="registration.do" method="post">	
+<#if hostingOrganisation?has_content>
+    <form id="registration" class="topForm half" action="updateRegistration" method="post">
     	<p><@s.text name="admin.registration.registered1"/><br />
     	<@s.text name="admin.registration.registered2"><@s.param>${hostingOrganisation.name!"???"}</@s.param></@s.text></p>
     	<h3 class="subTitle"><@s.text name="admin.registration.links"/></h3>
     	<ul>
-    	 <li><a href="${cfg.registryUrl}/browse/agent?uuid=${registeredIpt.key}">${registeredIpt.name!"IPT"}</a></li>
-    	 <li><a href="${cfg.registryUrl}/browse/agent?uuid=${hostingOrganisation.key}">${hostingOrganisation.name!"Organisation"}</a></li>
+    	 <li><a href="${cfg.portalUrl}/installation/${registeredIpt.key}">${registeredIpt.name!"IPT"}</a></li>
+    	 <li><a href="${cfg.portalUrl}/organization/${hostingOrganisation.key}">${hostingOrganisation.name!"Organisation"}</a></li>
     	</ul>
 
-		<@input name="registeredIpt.name" i18nkey="admin.ipt.name" type="text" />
-		<@text name="registeredIpt.description" i18nkey="admin.ipt.description" />	
+		<@input name="registeredIpt.name" i18nkey="admin.ipt.name" type="text" requiredField=true />
+		<@text name="registeredIpt.description" i18nkey="admin.ipt.description" requiredField=true />
 		
 		<#-- For future release. Will replace contact name below
 		<@input name="registeredIpt.primaryContactFirstName" i18nkey="admin.ipt.primaryContactFirstName" type="text" />
 		<@input name="registeredIpt.primaryContactLastName" i18nkey="admin.ipt.primaryContactLastName" type="text" /> 
 		-->
 
-		<@input name="registeredIpt.primaryContactName" i18nkey="admin.ipt.primaryContactName" type="text" />
-		<@input name="registeredIpt.primaryContactEmail" i18nkey="admin.ipt.primaryContactEmail" type="text" />
+		<@input name="registeredIpt.primaryContactName" i18nkey="admin.ipt.primaryContactName" type="text" requiredField=true />
+		<@input name="registeredIpt.primaryContactEmail" i18nkey="admin.ipt.primaryContactEmail" type="text" requiredField=true />
 		<div class="buttons">
-			<@s.submit cssClass="button" name="update" id="update" key="button.updateRegistration" method="update"/>
+			<@s.submit cssClass="button" name="update" id="update" key="button.updateRegistration" />
 		 	<@s.submit cssClass="button" name="cancel" id="cancel" key="button.cancel"/>
 		</div>		
 	</form>
@@ -112,7 +112,7 @@ $(document).ready(function(){
 
 		<p><@s.text name="admin.registration.test1"/></p>
 		
-			<@input name="registration.baseURL" i18nkey="admin.registration.baseURL" type="text" value="${baseURL}" size=70 disabled=true/>
+			<@input name="registration.baseURL" i18nkey="admin.registration.baseURL" type="text" value="${baseURL}" size=70 disabled=true requiredField=true/>
 			<@s.submit cssClass="button" name="validate" id="validate" key="admin.registration.validate"/>
 		
 		<div id="baseURLStatus"></div>
@@ -125,13 +125,13 @@ $(document).ready(function(){
 		
 		<@s.form cssClass="topForm half" action="registration" method="post" id="registrationForm" >
 			<@s.fielderror>
-		    	<@s.param value="%{'organisation.key'}" />
-		    </@s.fielderror>
-			<@label i18nkey="admin.organisation.key">
-				<@s.select id="organisation.key" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" size="15" disabled="false"/>
+		    <@s.param value="%{'organisation.key'}" />
+		  </@s.fielderror>
+			<@label i18nkey="admin.organisation.key" requiredField=true>
+			<@s.select id="organisation.key" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" size="15" disabled="false"/>
 			</@label>
 		
-			<@input name="organisation.password" i18nkey="admin.organisation.password" type="password" help="i18n" />
+			<@input name="organisation.password" i18nkey="admin.organisation.password" type="password" help="i18n" maxlength=15 size=18 requiredField=true />
 			<div id="requestDetails"></div>
 			<@input name="organisation.alias" i18nkey="admin.organisation.alias" type="text" />
 			<@checkbox name="organisation.canHost" i18nkey="admin.organisation.canPublish" value="true" help="i18n"/>				
@@ -142,18 +142,18 @@ $(document).ready(function(){
 			<@s.hidden id="organisation.nodeKey" name="organisation.nodeKey" />
 			<@s.hidden id="organisation.nodeName" name="organisation.nodeName" />
 						
-			<@input name="ipt.name" i18nkey="admin.ipt.name" type="text" maxlength=255 size=150/>
-			<@text name="ipt.description" i18nkey="admin.ipt.description" maxlength=300 />			
+			<@input name="ipt.name" i18nkey="admin.ipt.name" type="text" maxlength=255 size=150 requiredField=true />
+			<@text name="ipt.description" i18nkey="admin.ipt.description" requiredField=true />
 
 			<#-- For future release. Will replace contact name below
 			<@input name="ipt.primaryContactFirstName" i18nkey="admin.ipt.primaryContactFirstName" type="text" />
 			<@input name="ipt.primaryContactLastName" i18nkey="admin.ipt.primaryContactLastName" type="text" />
 			-->			
-			<@input name="ipt.primaryContactName" i18nkey="admin.ipt.primaryContactName" type="text" maxlength=255/>
-			<@input name="ipt.primaryContactEmail" i18nkey="admin.ipt.primaryContactEmail" type="text" maxlength=255 />
+			<@input name="ipt.primaryContactName" i18nkey="admin.ipt.primaryContactName" type="text" maxlength=255 requiredField=true />
+			<@input name="ipt.primaryContactEmail" i18nkey="admin.ipt.primaryContactEmail" type="text" maxlength=254 requiredField=true />
 			<@s.hidden id="admin.ipt.primaryContactType" name="ipt.primaryContactType" value="technical"/>
 			
-			<@input name="ipt.wsPassword" i18nkey="admin.ipt.password" type="password" help="i18n" maxlength=15 size=18/>
+			<@input name="ipt.wsPassword" i18nkey="admin.ipt.password" type="password" help="i18n" maxlength=15 size=18 requiredField=true />
 			<@s.hidden id="organisation.name" name="organisation.name" />
 			<@s.hidden id="ipt.organisationKey" name="ipt.organisationKey" />
 		   <div class="buttons">

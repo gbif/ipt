@@ -209,9 +209,12 @@ validation.organisation.key.required=リストから機関を１つ選んでく�
 # ipt=　
 validation.ipt.name.required=IPTタイトルが必要です。
 validation.ipt.name.short=IPTタイトルは２文字以上です。
+validation.ipt.contactName.required=TODO: Contact name is required.
 validation.ipt.contactEmail.required=問い合わせメールアドレスが必要です。
+validation.ipt.contactEmail.short=TODO: Contact email must be longer than 5 characters.
 validation.ipt.contactEmail.invalid=メールアドレスのフォーマットは正しく。（name@organization.org)
 validation.ipt.password.required=IPTパスワードが必要です。
+validation.ipt.password.short=TODO: IPT password must be longer than 5 characters.
 
 # resources=　
 validation.resource.shortname.required=省略名が必要です。

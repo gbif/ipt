@@ -257,9 +257,12 @@ validation.organisation.key.required=請從列表中選擇一單位組織。
 # ipt
 validation.ipt.name.required=需要 IPT 標題名稱。
 validation.ipt.name.short=IPT 標題名稱必須多於 2 個字元。
-validation.ipt.contactEmail.required=聯絡資訊電子郵件為必要。
+validation.ipt.contactName.required=TODO: Contact name is required.
+validation.ipt.contactEmail.required=聯絡資訊電子郵件為必要
+validation.ipt.contactEmail.short=TODO: Contact email must be longer than 5 characters.。
 validation.ipt.contactEmail.invalid=電子郵址必須為有效格式（例如： name@organisation.org）。
 validation.ipt.password.required=需要 IPT 使用者密碼。
+validation.ipt.password.short=TODO: IPT password must be longer than 5 characters.
 
 # resources
 validation.resource.shortname.required=需要簡稱。

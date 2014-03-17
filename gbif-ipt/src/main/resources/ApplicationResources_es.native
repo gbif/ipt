@@ -243,9 +243,12 @@ validation.organisation.key.required=Por favor seleccione una organización de l
 # ipt
 validation.ipt.name.required=El título del IPT es requerido.
 validation.ipt.name.short=El título del IPT debe tener más de 2 caracteres.
+validation.ipt.contactName.required=TODO: Contact name is required.
 validation.ipt.contactEmail.required=El correo electrónico de contacto es requerido.
+validation.ipt.contactEmail.short=TODO: Contact email must be longer than 5 characters.
 validation.ipt.contactEmail.invalid=El correo electrónico debe tener un formato válido (e.j., nombre@organizacion.org).
 validation.ipt.password.required=La contraseña del IPT es requerida.
+validation.ipt.password.short=TODO: IPT password must be longer than 5 characters.
 
 # resources
 validation.resource.shortname.required=Nombre corto requerido.

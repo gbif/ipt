@@ -19,6 +19,9 @@ public class IptValidator extends BaseValidator {
     if (ipt.getWsPassword() == null || ipt.getWsPassword().length() < 1) {
       action.addFieldError("ipt.wsPassword", action.getText("validation.ipt.password.required"));
     }
+    if (ipt.getWsPassword() != null && ipt.getWsPassword().length() < 6) {
+      action.addFieldError("ipt.wsPassword", action.getText("validation.ipt.password.short"));
+    }
   }
 
   public void validateUpdate(BaseAction action, Ipt ipt) {
@@ -37,9 +40,14 @@ public class IptValidator extends BaseValidator {
       action.addFieldError(fieldPrefix + ".description",
         action.getText("validation.required", new String[] {action.getText("basic.description")}));
     }
+    if (ipt.getPrimaryContactName() == null || ipt.getPrimaryContactName().length() < 1) {
+      action.addFieldError(fieldPrefix + ".primaryContactName", action.getText("validation.ipt.contactName.required"));
+    }
     if (ipt.getPrimaryContactEmail() == null || ipt.getPrimaryContactEmail().length() < 1) {
-      action
-        .addFieldError(fieldPrefix + ".primaryContactEmail", action.getText("validation.ipt.contactEmail.required"));
+      action.addFieldError(fieldPrefix + ".primaryContactEmail", action.getText("validation.ipt.contactEmail.required"));
+    }
+    if (ipt.getPrimaryContactEmail() != null && ipt.getPrimaryContactEmail().length() < 6) {
+      action.addFieldError(fieldPrefix + ".primaryContactEmail", action.getText("validation.ipt.contactEmail.short"));
     }
     if (!isValidEmail(ipt.getPrimaryContactEmail())) {
       action.addFieldError(fieldPrefix + ".primaryContactEmail", action.getText("validation.ipt.contactEmail.invalid"));
