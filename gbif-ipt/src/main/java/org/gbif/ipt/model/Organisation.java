@@ -31,16 +31,11 @@ public class Organisation extends AgentBase implements Serializable {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj == this) {
-      return true;
+    if (obj instanceof Organisation) {
+      Organisation other = (Organisation) obj;
+      return Objects.equal(this.getKey(), other.getKey());
     }
-
-    if (!(obj instanceof Organisation)) {
-      return false;
-    }
-
-    Organisation other = (Organisation) obj;
-    return Objects.equal(this.getKey(), other.getKey());
+    return false;
   }
 
   /**

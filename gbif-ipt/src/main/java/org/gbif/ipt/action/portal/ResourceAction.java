@@ -26,6 +26,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.annotation.Nullable;
 
 import com.google.inject.Inject;
@@ -254,14 +255,14 @@ public class ResourceAction extends PortalBaseAction {
    * @param coverages list of resource's TaxonomicCoverage
    */
   List<OrganizedTaxonomicCoverage> constructOrganizedTaxonomicCoverages(List<TaxonomicCoverage> coverages) {
-    List<OrganizedTaxonomicCoverage> organizedCoverages = new ArrayList<OrganizedTaxonomicCoverage>();
+    List<OrganizedTaxonomicCoverage> organizedTaxonomicCoverages = new ArrayList<OrganizedTaxonomicCoverage>();
     for (TaxonomicCoverage coverage : coverages) {
       OrganizedTaxonomicCoverage organizedCoverage = new OrganizedTaxonomicCoverage();
       organizedCoverage.setDescription(coverage.getDescription());
       organizedCoverage.setKeywords(setOrganizedTaxonomicKeywords(coverage.getTaxonKeywords()));
-      organizedCoverages.add(organizedCoverage);
+      organizedTaxonomicCoverages.add(organizedCoverage);
     }
-    return organizedCoverages;
+    return organizedTaxonomicCoverages;
   }
 
   /**
@@ -302,7 +303,7 @@ public class ResourceAction extends PortalBaseAction {
       organizedTaxonomicKeywordsList.add(organizedKeywords);
     }
     // if there were actually some names with empty ranks, add the special OrganizedTaxonomicKeywords for empty rank
-    if (uniqueNamesForEmptyRank.size() > 0) {
+    if (!uniqueNamesForEmptyRank.isEmpty()) {
       // create special OrganizedTaxonomicKeywords for empty rank
       OrganizedTaxonomicKeywords emptyRankKeywords = new OrganizedTaxonomicKeywords();
       emptyRankKeywords.setRank("Unranked");
@@ -395,10 +396,9 @@ public class ResourceAction extends PortalBaseAction {
 
   /**
    * Look for .recordspublished-version file, and parse its contents for published record count.
-   *
+   * 
    * @param shortname resource shortname
    * @param version resource version to retrieve published record count for
-   *
    * @return published record count for version or null if file not found or could not be parsed
    */
   public int setRecordsPublishedForVersion(String shortname, int version) {

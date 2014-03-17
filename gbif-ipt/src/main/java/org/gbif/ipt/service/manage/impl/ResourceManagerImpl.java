@@ -439,12 +439,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   /**
    * Filter those files with suffixes ending in .xml.
    */
-  private class XmlFilenameFilter implements FilenameFilter
-  {
+  private static class XmlFilenameFilter implements FilenameFilter {
 
     public boolean accept(File dir, String name)
     {
-      return (name != null && name.toLowerCase().endsWith(".xml"));
+      return name != null && name.toLowerCase().endsWith(".xml");
     }
   }
 
@@ -1569,7 +1568,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   /**
    * Store the number of records published for version v of resource to a hidden file called .recordspublished-v needed
    * to display the record number on the resource homepage for that particular version.
-   *
+   * 
    * @param resource resource
    */
   @VisibleForTesting
@@ -1582,7 +1581,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         writer.write(String.valueOf(resource.getRecordsPublished()));
       } else {
         log.error("Count file for resource " + resource.getShortname() + " and version " + resource.getEmlVersion()
-                  + " non existing");
+          + " non existing");
       }
     } catch (IOException e) {
       log.error("Problem writing to count file", e);

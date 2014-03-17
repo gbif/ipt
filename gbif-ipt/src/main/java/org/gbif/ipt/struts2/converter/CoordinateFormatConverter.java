@@ -40,12 +40,13 @@ public abstract class CoordinateFormatConverter extends StrutsTypeConverter {
       return null;
     }
     // The full name of the property which call the method contained in the Map context
-    String coordinate = context.get(ANGLE).toString();
+    Object coordObject = context.get(ANGLE);
     // The latitude is validating in a range of doubles
     // validate coordinates in case the action context doesn't work properly.
-    if (coordinate == null) {
+    if (coordObject == null) {
       throw new TypeConversionException("Invalid decimal number: " + values[0]);
     } else {
+      String coordinate = context.get(ANGLE).toString();
       // Assign the values of the range depending the property who calls the method.
       Range<Double> range;
       if (coordinate.equals(CoordinateUtils.LATITUDE)) {

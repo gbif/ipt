@@ -34,14 +34,14 @@ import org.gbif.metadata.eml.TemporalCoverageType;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
+
 import javax.annotation.Nullable;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 
 public class EmlValidator extends BaseValidator {
@@ -62,25 +62,10 @@ public class EmlValidator extends BaseValidator {
   protected static final String KEYWORDS_SECTION = "keywords";
   protected static final String ADDITIONAL_SECTION = "additional";
   protected static final String PARTIES_SECTION = "parties";
-  private static List<String> SECTIONS_LIST = null;
-
-  {
-    List<String> ls = new ArrayList<String>();
-    ls.add(BASIC_SECTION);
-    ls.add(GEOCOVERAGE_SECTION);
-    ls.add(TAXCOVERAGE_SECTION);
-    ls.add(TEMPCOVERAGE_SECTION);
-    ls.add(KEYWORDS_SECTION);
-    ls.add(PARTIES_SECTION);
-    ls.add(PROJECT_SECTION);
-    ls.add(METHODS_SECTION);
-    ls.add(CITATIONS_SECTION);
-    ls.add(COLLECTIONS_SECTION);
-    ls.add(PHYSICAL_SECTION);
-    ls.add(ADDITIONAL_SECTION);
-    // establish unmodifiable list now
-    SECTIONS_LIST = Collections.unmodifiableList(ls);
-  }
+  private static final List<String> SECTIONS_LIST = new ImmutableList.Builder<String>().add(BASIC_SECTION)
+    .add(GEOCOVERAGE_SECTION).add(TAXCOVERAGE_SECTION).add(TEMPCOVERAGE_SECTION).add(KEYWORDS_SECTION)
+    .add(PARTIES_SECTION).add(PROJECT_SECTION).add(METHODS_SECTION).add(CITATIONS_SECTION).add(COLLECTIONS_SECTION)
+    .add(PHYSICAL_SECTION).add(ADDITIONAL_SECTION).build();
 
   @Inject
   public EmlValidator(AppConfig cfg, RegistrationManager registrationManager, SimpleTextProvider simpleTextProvider) {
@@ -91,7 +76,7 @@ public class EmlValidator extends BaseValidator {
 
   /**
    * Returns a formatted URL string, prefixing it with a default scheme component if its not an absolute URL.
-   *
+   * 
    * @return the URL always having a scheme component, or null if incoming URL string was null or empty
    */
   public static String formatURL(String url) {
@@ -114,7 +99,7 @@ public class EmlValidator extends BaseValidator {
 
   /**
    * Checks if the incoming string representing a URL, is in fact a well-formed URI.
-   *
+   * 
    * @return true if the string is a well-formed URI
    */
   public static boolean isWellFormedURI(String url) {
@@ -152,10 +137,9 @@ public class EmlValidator extends BaseValidator {
   /**
    * Validate if all metadata sections are valid. For the first section encountered that doesn't validate, an
    * error message will appear for that section only.
-   *
+   * 
    * @param action Action
-   * @param eml    EML
-   *
+   * @param eml EML
    * @return whether all sections validated or not
    */
   public boolean areAllSectionsValid(BaseAction action, Eml eml) {
@@ -177,10 +161,10 @@ public class EmlValidator extends BaseValidator {
    * "collections", "physical", "additional".
    * </p>
    * For each section, validation only proceeds if at least one field has been entered.
-   *
+   * 
    * @param action BaseAction
-   * @param eml    EML
-   * @param part   EML document part name
+   * @param eml EML
+   * @param part EML document part name
    */
   public void validate(BaseAction action, Eml eml, @Nullable String part) {
     if (eml != null) {
@@ -205,7 +189,7 @@ public class EmlValidator extends BaseValidator {
 
         // Contact: At least have to exist an organisation or a lastName (or both)
         if (!exists(eml.getContact().getOrganisation()) && !exists(eml.getContact().getLastName()) &&
-            !exists(eml.getContact().getPosition())) {
+          !exists(eml.getContact().getPosition())) {
           if (!action.getActionErrors().contains(action.getText("validation.lastname.organisation.position"))) {
             action.addActionError(action.getText("validation.lastname.organisation.position"));
           }
@@ -246,7 +230,7 @@ public class EmlValidator extends BaseValidator {
 
         // Creator: at least have to exist an organisation, a lastName or a position
         if (!exists(eml.getResourceCreator().getOrganisation()) && !exists(eml.getResourceCreator().getLastName()) &&
-            !exists(eml.getResourceCreator().getPosition())) {
+          !exists(eml.getResourceCreator().getPosition())) {
           if (!action.getActionErrors().contains(action.getText("validation.lastname.organisation.position"))) {
             action.addActionError(action.getText("validation.lastname.organisation.position"));
           }
@@ -287,7 +271,7 @@ public class EmlValidator extends BaseValidator {
 
         // Metadata provider: at least have to exist an organisation, a lastName or a position
         if (!exists(eml.getMetadataProvider().getOrganisation()) && !exists(eml.getMetadataProvider().getLastName()) &&
-            !exists(eml.getMetadataProvider().getPosition())) {
+          !exists(eml.getMetadataProvider().getPosition())) {
           if (!action.getActionErrors().contains(action.getText("validation.lastname.organisation.position"))) {
             action.addActionError(action.getText("validation.lastname.organisation.position"));
           }
@@ -331,15 +315,15 @@ public class EmlValidator extends BaseValidator {
           for (int index = 0; index < eml.getAssociatedParties().size(); index++) {
             /* firstName - optional. But if firstName exists, lastName have to exist */
             if (exists(eml.getAssociatedParties().get(index).getFirstName()) &&
-                !exists(eml.getAssociatedParties().get(index).getLastName())) {
+              !exists(eml.getAssociatedParties().get(index).getLastName())) {
               action.addFieldError("eml.associatedParties[" + index + "].lastName",
                 action.getText("validation.firstname.lastname"));
             }
 
             // At least one of organisation, position, or a lastName have to exist
             if (!exists(eml.getAssociatedParties().get(index).getOrganisation()) &&
-                !exists(eml.getAssociatedParties().get(index).getLastName()) &&
-                !exists(eml.getAssociatedParties().get(index).getPosition())) {
+              !exists(eml.getAssociatedParties().get(index).getLastName()) &&
+              !exists(eml.getAssociatedParties().get(index).getPosition())) {
               action.addActionError(action.getText("validation.lastname.organisation.position"));
               action.addFieldError("eml.associatedParties[" + index + "].organisation", action
                 .getText("validation.required", new String[] {action.getText("eml.associatedParties.organisation")}));
@@ -351,14 +335,14 @@ public class EmlValidator extends BaseValidator {
 
             /* email is optional. But if it exists, should be a valid email address */
             if (exists(eml.getAssociatedParties().get(index).getEmail()) &&
-                !isValidEmail(eml.getAssociatedParties().get(index).getEmail())) {
+              !isValidEmail(eml.getAssociatedParties().get(index).getEmail())) {
               action.addFieldError("eml.associatedParties[" + index + "].email",
                 action.getText("validation.invalid", new String[] {action.getText("eml.associatedParties.email")}));
             }
 
             /* phone is optional. But if it exists, should match the pattern */
             if (exists(eml.getAssociatedParties().get(index).getPhone()) &&
-                !isValidPhoneNumber(eml.getAssociatedParties().get(index).getPhone())) {
+              !isValidPhoneNumber(eml.getAssociatedParties().get(index).getPhone())) {
               action.addFieldError("eml.associatedParties[" + index + "].phone",
                 action.getText("validation.invalid", new String[] {action.getText("eml.associatedParties.phone")}));
             }
@@ -366,8 +350,10 @@ public class EmlValidator extends BaseValidator {
             /* Validate the homepage URL from each associated parties */
             if (eml.getAssociatedParties().get(index).getHomepage() != null) {
               if (formatURL(eml.getAssociatedParties().get(index).getHomepage()) == null) {
-                action.addFieldError("eml.associatedParties[" + index + "].homepage",
-                  action.getText("validation.invalid", new String[] {action.getText("eml.associatedParties.homepage")}));
+                action
+                  .addFieldError("eml.associatedParties[" + index + "].homepage",
+                    action.getText("validation.invalid",
+                      new String[] {action.getText("eml.associatedParties.homepage")}));
               } else {
                 eml.getAssociatedParties().get(index)
                   .setHomepage(formatURL(eml.getAssociatedParties().get(index).getHomepage()));
@@ -425,8 +411,12 @@ public class EmlValidator extends BaseValidator {
               }
               /* description - mandatory and greater than 2 chars */
               if (Strings.isNullOrEmpty(eml.getGeospatialCoverages().get(index).getDescription())) {
-                action.addFieldError("eml.geospatialCoverages[" + index + "].description", action
-                  .getText("validation.required", new String[] {action.getText("eml.geospatialCoverages.description")}));
+                action
+                  .addFieldError(
+                    "eml.geospatialCoverages[" + index + "].description",
+                    action
+                      .getText("validation.required",
+                        new String[] {action.getText("eml.geospatialCoverages.description")}));
               } else if (!exists(eml.getGeospatialCoverages().get(index).getDescription(), 2)) {
                 action.addFieldError("eml.geospatialCoverages[" + index + "].description", action
                   .getText("validation.short",
@@ -464,8 +454,10 @@ public class EmlValidator extends BaseValidator {
           int index = 0;
           for (TemporalCoverage tc : eml.getTemporalCoverages()) {
             if (tc.getType() == TemporalCoverageType.SINGLE_DATE && !exists(tc.getStartDate())) {
-              action.addFieldError("eml.temporalCoverages[" + index + "].startDate",
-                action.getText("validation.required", new String[] {action.getText("eml.temporalCoverages.startDate")}));
+              action
+                .addFieldError("eml.temporalCoverages[" + index + "].startDate",
+                  action.getText("validation.required",
+                    new String[] {action.getText("eml.temporalCoverages.startDate")}));
             }
             if (tc.getType() == TemporalCoverageType.DATE_RANGE) {
               if (!exists(tc.getStartDate())) {
@@ -473,17 +465,26 @@ public class EmlValidator extends BaseValidator {
                   .getText("validation.required", new String[] {action.getText("eml.temporalCoverages.startDate")}));
               }
               if (!exists(tc.getEndDate())) {
-                action.addFieldError("eml.temporalCoverages[" + index + "].endDate",
-                  action.getText("validation.required", new String[] {action.getText("eml.temporalCoverages.endDate")}));
+                action
+                  .addFieldError("eml.temporalCoverages[" + index + "].endDate",
+                    action.getText("validation.required",
+                      new String[] {action.getText("eml.temporalCoverages.endDate")}));
               }
             }
             if (tc.getType() == TemporalCoverageType.FORMATION_PERIOD && !exists(tc.getFormationPeriod())) {
-              action.addFieldError("eml.temporalCoverages[" + index + "].formationPeriod", action
-                .getText("validation.required", new String[] {action.getText("eml.temporalCoverages.formationPeriod")}));
+              action
+                .addFieldError(
+                  "eml.temporalCoverages[" + index + "].formationPeriod",
+                  action
+                    .getText("validation.required",
+                      new String[] {action.getText("eml.temporalCoverages.formationPeriod")}));
             }
             if (tc.getType() == TemporalCoverageType.LIVING_TIME_PERIOD && !exists(tc.getLivingTimePeriod())) {
-              action.addFieldError("eml.temporalCoverages[" + index + "].livingTimePeriod", action
-                .getText("validation.required", new String[] {action.getText("eml.temporalCoverages.livingTimePeriod")}));
+              action.addFieldError(
+                "eml.temporalCoverages[" + index + "].livingTimePeriod",
+                action
+                  .getText("validation.required",
+                    new String[] {action.getText("eml.temporalCoverages.livingTimePeriod")}));
             }
             index++;
           }
@@ -501,7 +502,7 @@ public class EmlValidator extends BaseValidator {
 
           // First Name is optional but if exists, last name must to exist, and so too must the role
           if (exists(eml.getProject().getPersonnel().getFirstName()) &&
-              !exists(eml.getProject().getPersonnel().getLastName())) {
+            !exists(eml.getProject().getPersonnel().getLastName())) {
             action.addFieldError("eml.project.personnel.lastName", action.getText("validation.firstname.lastname"));
           } else if (!exists(eml.getProject().getPersonnel().getLastName())) {
             action.addFieldError("eml.project.personnel.lastName",
@@ -516,7 +517,7 @@ public class EmlValidator extends BaseValidator {
 
           boolean emptyFields = false;
           if (Strings.isNullOrEmpty(eml.getSampleDescription()) && Strings.isNullOrEmpty(eml.getStudyExtent()) &&
-              Strings.isNullOrEmpty(eml.getQualityControl())) {
+            Strings.isNullOrEmpty(eml.getQualityControl())) {
             eml.setSampleDescription(null);
             eml.setStudyExtent(null);
             eml.setQualityControl(null);
@@ -570,9 +571,10 @@ public class EmlValidator extends BaseValidator {
           int index = 0;
           for (Citation citation : eml.getBibliographicCitations()) {
             if (!Strings.isNullOrEmpty(citation.getIdentifier()) && !exists(citation.getIdentifier())) {
-              action.addFieldError("eml.bibliographicCitationSet.bibliographicCitations[" + index + "].identifier", action
-                .getText("validation.field.blank",
-                  new String[] {action.getText("eml.bibliographicCitationSet.bibliographicCitations.identifier")}));
+              action.addFieldError("eml.bibliographicCitationSet.bibliographicCitations[" + index + "].identifier",
+                action
+                  .getText("validation.field.blank",
+                    new String[] {action.getText("eml.bibliographicCitationSet.bibliographicCitations.identifier")}));
             }
             if (!exists(citation.getCitation())) {
               action.addFieldError("eml.bibliographicCitationSet.bibliographicCitations[" + index + "].citation",
@@ -622,8 +624,11 @@ public class EmlValidator extends BaseValidator {
               }
             }
             if (!exists(jcu.getUnitType())) {
-              action.addFieldError("eml.jgtiCuratorialUnits[" + index + "].unitType",
-                action.getText("validation.required", new String[] {action.getText("eml.jgtiCuratorialUnits.unitType")}));
+              action
+                .addFieldError(
+                  "eml.jgtiCuratorialUnits[" + index + "].unitType",
+                  action.getText("validation.required",
+                    new String[] {action.getText("eml.jgtiCuratorialUnits.unitType")}));
             }
             index++;
           }
@@ -721,9 +726,8 @@ public class EmlValidator extends BaseValidator {
   /**
    * Determine if the Project page is empty. In other words, the user hasn't entered any information for a single field
    * yet. There is a total of 7 fields on this page.
-   *
+   * 
    * @param eml EML
-   *
    * @return whether the Project page is empty or not.
    */
   private boolean isProjectPageEmpty(Eml eml) {
@@ -741,11 +745,10 @@ public class EmlValidator extends BaseValidator {
       String last = personnel.getLastName();
 
       return (Strings.isNullOrEmpty(title) &&
-              Strings.isNullOrEmpty(funding) &&
-              Strings.isNullOrEmpty(design) &&
-              Strings.isNullOrEmpty(desc) &&
-              Strings.isNullOrEmpty(first) &&
-              Strings.isNullOrEmpty(last));
+        Strings.isNullOrEmpty(funding) &&
+        Strings.isNullOrEmpty(design) &&
+        Strings.isNullOrEmpty(desc) &&
+        Strings.isNullOrEmpty(first) && Strings.isNullOrEmpty(last));
     }
     return false;
   }
@@ -753,9 +756,8 @@ public class EmlValidator extends BaseValidator {
   /**
    * Determine if the Methods page is empty. In other words, the user hasn't entered any information for a single field
    * yet. There is a total of 4 fields on this page. The step description can be multiple.
-   *
+   * 
    * @param eml EML
-   *
    * @return whether the Methods page is empty or not.
    */
   private boolean isMethodsPageEmpty(Eml eml) {
@@ -766,23 +768,21 @@ public class EmlValidator extends BaseValidator {
     List<String> methods = eml.getMethodSteps();
 
     // there must be absolutely nothing entered for any method steps
-    for (String method: methods) {
+    for (String method : methods) {
       if (!Strings.isNullOrEmpty(method)) {
         return false;
       }
     }
 
     return (Strings.isNullOrEmpty(studyExtent) &&
-            Strings.isNullOrEmpty(sample) &&
-            Strings.isNullOrEmpty(quality));
+      Strings.isNullOrEmpty(sample) && Strings.isNullOrEmpty(quality));
   }
 
   /**
    * Determine if the Citations page is empty. In other words, the user hasn't entered any information for a single
    * field yet. There is a total of 4 fields on this page. The bibliographic citation can be multiple.
-   *
+   * 
    * @param eml EML
-   *
    * @return whether the Citations page is empty or not.
    */
   private boolean isCitationsPageEmpty(Eml eml) {
@@ -792,7 +792,7 @@ public class EmlValidator extends BaseValidator {
       return false;
     }
     // are all the bibliographic citations empty?
-    for (Citation bibCitation: eml.getBibliographicCitations()) {
+    for (Citation bibCitation : eml.getBibliographicCitations()) {
       boolean isBibCitationEmpty = isCitationEmpty(bibCitation);
       if (!isBibCitationEmpty) {
         return false;
@@ -805,9 +805,8 @@ public class EmlValidator extends BaseValidator {
   /**
    * Determine if a Citation is empty. In other words, the user hasn't entered any information for a single
    * field yet. There is a total of 2 fields.
-   *
+   * 
    * @param citation citation
-   *
    * @return whether the Citation is empty or not.
    */
   private boolean isCitationEmpty(Citation citation) {
@@ -816,8 +815,7 @@ public class EmlValidator extends BaseValidator {
       String citationId = citation.getIdentifier();
       String citationText = citation.getCitation();
 
-      return (Strings.isNullOrEmpty(citationId) &&
-              Strings.isNullOrEmpty(citationText));
+      return (Strings.isNullOrEmpty(citationId) && Strings.isNullOrEmpty(citationText));
     }
     return true;
   }
@@ -825,9 +823,8 @@ public class EmlValidator extends BaseValidator {
   /**
    * Determine if the Collections page is empty. In other words, the user hasn't entered any information for a single
    * field yet. There is a total of 8 fields on this page. The curatorial section can be multiple.
-   *
+   * 
    * @param eml EML
-   *
    * @return whether the Collections page is empty or not.
    */
   private boolean isCollectionsPageEmpty(Eml eml) {
@@ -838,7 +835,7 @@ public class EmlValidator extends BaseValidator {
     String preservation = eml.getSpecimenPreservationMethod();
 
     // check whether all curatorial units are empty
-    for (JGTICuratorialUnit unit: eml.getJgtiCuratorialUnits()) {
+    for (JGTICuratorialUnit unit : eml.getJgtiCuratorialUnits()) {
       boolean isUnitEmpty = isJGTICuratorialUnitEmpty(unit);
       if (!isUnitEmpty) {
         return false;
@@ -846,17 +843,15 @@ public class EmlValidator extends BaseValidator {
     }
 
     return (Strings.isNullOrEmpty(collectionName) &&
-            Strings.isNullOrEmpty(collectionId) &&
-            Strings.isNullOrEmpty(parentCollectionId) &&
-            Strings.isNullOrEmpty(preservation));
+      Strings.isNullOrEmpty(collectionId) &&
+      Strings.isNullOrEmpty(parentCollectionId) && Strings.isNullOrEmpty(preservation));
   }
 
   /**
    * Determine if a JGTICuratorialUnit is empty. In other words, the user hasn't entered any information for a
    * single field yet.
-   *
+   * 
    * @param unit JGTICuratorialUnit
-   *
    * @return whether the JGTICuratorialUnit page is empty or not.
    */
   private boolean isJGTICuratorialUnitEmpty(JGTICuratorialUnit unit) {
@@ -868,10 +863,9 @@ public class EmlValidator extends BaseValidator {
       int mean = (unit.getRangeMean() == null) ? 0 : unit.getRangeMean();
 
       return (Strings.isNullOrEmpty(unitType) &&
-              rangeEnd == 0 &&
-              rangeStart == 0 &&
-              uncertainty == 0 &&
-              mean == 0);
+        rangeEnd == 0 &&
+        rangeStart == 0 &&
+        uncertainty == 0 && mean == 0);
     }
     return true;
   }
@@ -879,9 +873,8 @@ public class EmlValidator extends BaseValidator {
   /**
    * Determine if the Physical page is empty. In other words, the user hasn't entered any information for a single
    * field yet. There is a total of 6 fields on this page. The link section can be multiple.
-   *
+   * 
    * @param eml EML
-   *
    * @return whether the Physical page is empty or not.
    */
   private boolean isPhysicalPageEmpty(Eml eml) {
@@ -889,7 +882,7 @@ public class EmlValidator extends BaseValidator {
     String homepageUrl = eml.getDistributionUrl();
 
     // check all external links
-    for (PhysicalData data: eml.getPhysicalData()) {
+    for (PhysicalData data : eml.getPhysicalData()) {
       boolean isLinkEmpty = isExternalLinkEmpty(data);
       if (!isLinkEmpty) {
         return false;
@@ -902,9 +895,8 @@ public class EmlValidator extends BaseValidator {
   /**
    * Determine if a PhysicalData is empty. In other words, the user hasn't entered any information for a single
    * field yet.
-   *
+   * 
    * @param data PhysicalData
-   *
    * @return whether the PhysicalData is empty or not.
    */
   private boolean isExternalLinkEmpty(PhysicalData data) {
@@ -916,10 +908,9 @@ public class EmlValidator extends BaseValidator {
       String name = data.getName();
 
       return (Strings.isNullOrEmpty(charset) &&
-              Strings.isNullOrEmpty(format) &&
-              Strings.isNullOrEmpty(formatVersion) &&
-              Strings.isNullOrEmpty(distributionUrl) &&
-              Strings.isNullOrEmpty(name));
+        Strings.isNullOrEmpty(format) &&
+        Strings.isNullOrEmpty(formatVersion) &&
+        Strings.isNullOrEmpty(distributionUrl) && Strings.isNullOrEmpty(name));
     }
     return true;
   }
@@ -927,21 +918,15 @@ public class EmlValidator extends BaseValidator {
   /**
    * Determine if the Keywords page is empty. In other words, the user hasn't entered any information for a single
    * field yet. There is a total of 2 fields on this page. The 2 fields together can be multiple.
-   *
+   * 
    * @param eml EML
-   *
    * @return whether the Keywords page is empty or not.
    */
   private boolean isKeywordsPageEmpty(Eml eml) {
     // total of 2 fields on page
-    List<KeywordSet> ls = eml.getKeywords();
-    KeywordSet set1 = (ls.size() > 0) ? ls.get(0) : null;
-
-    if (set1 != null) {
-      String keywords = set1.getKeywordsString();
-      String thesaurus = set1.getKeywordThesaurus();
-
-      return (Strings.isNullOrEmpty(keywords) && Strings.isNullOrEmpty(thesaurus));
+    if (!eml.getKeywords().isEmpty()) {
+      KeywordSet set1 = eml.getKeywords().get(0);
+      return Strings.isNullOrEmpty(set1.getKeywordsString()) && Strings.isNullOrEmpty(set1.getKeywordThesaurus());
     }
     return true;
   }
@@ -949,9 +934,8 @@ public class EmlValidator extends BaseValidator {
   /**
    * Determine if the Additional page is empty. In other words, the user hasn't entered any information for a single
    * field yet. The alternate identifier can be multiple.
-   *
+   * 
    * @param eml EML
-   *
    * @return whether the Additional page is empty or not.
    */
   private boolean isAdditionalPageEmpty(Eml eml) {
@@ -970,25 +954,23 @@ public class EmlValidator extends BaseValidator {
     }
 
     return (Strings.isNullOrEmpty(logo) &&
-            Strings.isNullOrEmpty(rights) &&
-            Strings.isNullOrEmpty(info) &&
-            Strings.isNullOrEmpty(purpose));
+      Strings.isNullOrEmpty(rights) &&
+      Strings.isNullOrEmpty(info) && Strings.isNullOrEmpty(purpose));
 
   }
 
   /**
    * Determine if the Temporal page is empty. In other words, the user hasn't entered any information for a single
    * field yet. The temporal coverages can be multiple.
-   *
+   * 
    * @param eml EML
-   *
    * @return whether the Temporal page is empty or not.
    */
   private boolean isTemporalPageEmpty(Eml eml) {
     // total of 1 editable repeatable section on page
     List<TemporalCoverage> coverages = eml.getTemporalCoverages();
     // iterate through them, they all must be empty, otherwise they all get validated
-    for (TemporalCoverage coverage: coverages) {
+    for (TemporalCoverage coverage : coverages) {
       boolean isEmtpy = isTemporalCoverageEmpty(coverage);
       // have we found a non-empty coverage?
       if (!isEmtpy) {
@@ -1002,9 +984,8 @@ public class EmlValidator extends BaseValidator {
   /**
    * Determine if a single TemporalCoverage is empty. In other words, the user hasn't entered any information for a
    * single field yet.
-   *
+   * 
    * @param cov TemporalCoverage
-   *
    * @return whether the TemporalCoverage is empty or not.
    */
   private boolean isTemporalCoverageEmpty(TemporalCoverage cov) {
@@ -1016,9 +997,8 @@ public class EmlValidator extends BaseValidator {
       Date start = cov.getStartDate();
 
       return (Strings.isNullOrEmpty(formationPeriod) &&
-              end == null &&
-              Strings.isNullOrEmpty(period) &&
-              start == null);
+        end == null &&
+        Strings.isNullOrEmpty(period) && start == null);
     }
     return true;
   }
@@ -1026,14 +1006,13 @@ public class EmlValidator extends BaseValidator {
   /**
    * Determine if the Taxonomic page is empty. In other words, the user hasn't entered any information for a single
    * field yet. The taxonomic coverages can be multiple.
-   *
+   * 
    * @param eml EML
-   *
    * @return whether the Taxonomic page is empty or not.
    */
   private boolean isTaxonomicPageEmpty(Eml eml) {
     // total of 1 editable repeatable section on page
-    for (TaxonomicCoverage cov: eml.getTaxonomicCoverages()) {
+    for (TaxonomicCoverage cov : eml.getTaxonomicCoverages()) {
       boolean isTaxonomicCoverageEmpty = isTaxonomicCoverageEmpty(cov);
       if (!isTaxonomicCoverageEmpty) {
         return false;
@@ -1045,16 +1024,15 @@ public class EmlValidator extends BaseValidator {
   /**
    * Determine if a TaxonomicCoverage is empty. In other words, the user hasn't entered any information for a single
    * field yet.
-   *
+   * 
    * @param cov TaxonomicCoverage
-   *
    * @return whether the TaxonomicCoverage is empty or not.
    */
   private boolean isTaxonomicCoverageEmpty(TaxonomicCoverage cov) {
     if (cov != null) {
       String description = cov.getDescription();
       // check all TaxonKeyword are empty
-      for (TaxonKeyword word: cov.getTaxonKeywords()) {
+      for (TaxonKeyword word : cov.getTaxonKeywords()) {
         boolean isTaxonKeywordEmpty = isTaxonKeywordEmpty(word);
         if (!isTaxonKeywordEmpty) {
           return false;
@@ -1069,9 +1047,8 @@ public class EmlValidator extends BaseValidator {
   /**
    * Determine if a TaxonKeyword is empty. In other words, the user hasn't entered any information for a single
    * field yet.
-   *
+   * 
    * @param word TaxonKeyword
-   *
    * @return whether the TaxonKeyword is empty or not.
    */
   private boolean isTaxonKeywordEmpty(TaxonKeyword word) {
@@ -1079,9 +1056,7 @@ public class EmlValidator extends BaseValidator {
       String scientificName = word.getScientificName();
       String common = word.getCommonName();
       String rank = word.getRank();
-      return (Strings.isNullOrEmpty(scientificName) &&
-              Strings.isNullOrEmpty(common) &&
-              Strings.isNullOrEmpty(rank));
+      return Strings.isNullOrEmpty(scientificName) && Strings.isNullOrEmpty(common) && Strings.isNullOrEmpty(rank);
     }
     return true;
   }
@@ -1089,17 +1064,13 @@ public class EmlValidator extends BaseValidator {
   /**
    * Determine if the Geo page is empty. In other words, the user hasn't entered any information for a single
    * field yet. The geo coverages can be multiple.
-   *
+   * 
    * @param eml EML
-   *
    * @return whether the Geo page is empty or not.
    */
   private boolean isGeoPageEmpty(Eml eml) {
-    List<GeospatialCoverage> coverages = eml.getGeospatialCoverages();
-    GeospatialCoverage cov1 = (coverages.size() > 0) ? coverages.get(0) : null;
-
-    if (cov1 != null) {
-
+    if (!eml.getGeospatialCoverages().isEmpty()) {
+      GeospatialCoverage cov1 = eml.getGeospatialCoverages().get(0);
       String description = cov1.getDescription();
       BBox bbox = cov1.getBoundingCoordinates();
       Point p1 = bbox.getMin();
@@ -1111,11 +1082,7 @@ public class EmlValidator extends BaseValidator {
         Double lat2 = p2.getLatitude();
         Double lon2 = p2.getLongitude();
 
-        return (lat1 == null &&
-                lon1 == null &&
-                lat2 == null &&
-                lon2 == null &&
-                Strings.isNullOrEmpty(description));
+        return (lat1 == null && lon1 == null && lat2 == null && lon2 == null && Strings.isNullOrEmpty(description));
       } else {
         return Strings.isNullOrEmpty(description);
       }
@@ -1126,9 +1093,8 @@ public class EmlValidator extends BaseValidator {
   /**
    * Determine if the Agent is empty. In other words, the user hasn't entered any information for a single
    * field yet.
-   *
+   * 
    * @param agent Agent
-   *
    * @return whether the Agent is empty or not.
    */
   private boolean isAgentEmpty(Agent agent) {
@@ -1151,25 +1117,23 @@ public class EmlValidator extends BaseValidator {
         String province = address.getProvince();
 
         return (Strings.isNullOrEmpty(city) &&
-                Strings.isNullOrEmpty(street) &&
-                Strings.isNullOrEmpty(country) &&
-                Strings.isNullOrEmpty(code) &&
-                Strings.isNullOrEmpty(province) &&
-                Strings.isNullOrEmpty(first) &&
-                Strings.isNullOrEmpty(last) &&
-                Strings.isNullOrEmpty(email) &&
-                Strings.isNullOrEmpty(home) &&
-                Strings.isNullOrEmpty(org) &&
-                Strings.isNullOrEmpty(phone) &&
-                Strings.isNullOrEmpty(position));
+          Strings.isNullOrEmpty(street) &&
+          Strings.isNullOrEmpty(country) &&
+          Strings.isNullOrEmpty(code) &&
+          Strings.isNullOrEmpty(province) &&
+          Strings.isNullOrEmpty(first) &&
+          Strings.isNullOrEmpty(last) &&
+          Strings.isNullOrEmpty(email) &&
+          Strings.isNullOrEmpty(home) &&
+          Strings.isNullOrEmpty(org) &&
+          Strings.isNullOrEmpty(phone) && Strings.isNullOrEmpty(position));
       } else {
         return (Strings.isNullOrEmpty(first) &&
-                Strings.isNullOrEmpty(last) &&
-                Strings.isNullOrEmpty(email) &&
-                Strings.isNullOrEmpty(home) &&
-                Strings.isNullOrEmpty(org) &&
-                Strings.isNullOrEmpty(phone) &&
-                Strings.isNullOrEmpty(position));
+          Strings.isNullOrEmpty(last) &&
+          Strings.isNullOrEmpty(email) &&
+          Strings.isNullOrEmpty(home) &&
+          Strings.isNullOrEmpty(org) &&
+          Strings.isNullOrEmpty(phone) && Strings.isNullOrEmpty(position));
       }
     }
     return true;
@@ -1178,15 +1142,14 @@ public class EmlValidator extends BaseValidator {
   /**
    * Determine if the Parties page is empty. In other words, the user hasn't entered any information for a single
    * field yet. The party can be multiple.
-   *
+   * 
    * @param eml EML
-   *
    * @return whether the Parties page is empty or not.
    */
   private boolean isPartiesPageEmpty(Eml eml) {
     List<Agent> parties = eml.getAssociatedParties();
 
-    for (Agent party: parties) {
+    for (Agent party : parties) {
       boolean isEmpty = isAgentEmpty(party);
       // we are interested in finding a non-empty party
       if (!isEmpty) {

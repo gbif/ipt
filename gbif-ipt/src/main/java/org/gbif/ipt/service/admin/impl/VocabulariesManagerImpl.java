@@ -42,8 +42,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.xml.parsers.ParserConfigurationException;
 
+import com.google.common.io.Closer;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.xstream.XStream;
@@ -63,7 +65,7 @@ import org.xml.sax.SAXException;
 @Singleton
 public class VocabulariesManagerImpl extends BaseManager implements VocabulariesManager {
 
-  public class UpdateResult {
+  public static class UpdateResult {
 
     // key=uri
     public Set<String> updated = new HashSet<String>();
@@ -86,9 +88,9 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   private final ExtensionManager extensionManager;
   // these vocabularies are always updated on startup of the IPT
   private final String[] defaultVocabs =
-    {Constants.VOCAB_URI_LANGUAGE, Constants.VOCAB_URI_COUNTRY, Constants.VOCAB_URI_DATASET_TYPE,
-      Constants.VOCAB_URI_RANKS, Constants.VOCAB_URI_ROLES, Constants.VOCAB_URI_PRESERVATION_METHOD,
-      Constants.VOCAB_URI_DATASET_SUBTYPES, Constants.VOCAB_URI_UPDATE_FREQUENCIES};
+  {Constants.VOCAB_URI_LANGUAGE, Constants.VOCAB_URI_COUNTRY, Constants.VOCAB_URI_DATASET_TYPE,
+    Constants.VOCAB_URI_RANKS, Constants.VOCAB_URI_ROLES, Constants.VOCAB_URI_PRESERVATION_METHOD,
+    Constants.VOCAB_URI_DATASET_SUBTYPES, Constants.VOCAB_URI_UPDATE_FREQUENCIES};
   private ConfigWarnings warnings;
 
   // create instance of BaseAction - allows class to retrieve i18n terms via getText()
@@ -116,7 +118,8 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
     id2uri.put(v.getUriString().toLowerCase(), uriObject);
     // keep vocab in local lookup
     if (vocabularies.containsKey(uriObject)) {
-      log.warn("Vocabulary URI " + v.getUriString() + " exists already - overwriting with new vocabulary from " + uriObject);
+      log.warn("Vocabulary URI " + v.getUriString() + " exists already - overwriting with new vocabulary from "
+        + uriObject);
     }
     vocabularies.put(uriObject, v);
     return true;
@@ -188,6 +191,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
         concepts = new ArrayList<VocabularyConcept>(v.getConcepts());
         final String s = lang;
         Collections.sort(concepts, new Comparator<VocabularyConcept>() {
+
           public int compare(VocabularyConcept o1, VocabularyConcept o2) {
             return (o1.getPreferredTerm(s) == null ? o1.getIdentifier() : o1.getPreferredTerm(s).getTitle())
               .compareTo((o2.getPreferredTerm(s) == null ? o2.getIdentifier() : o2.getPreferredTerm(s).getTitle()));
@@ -262,11 +266,11 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       in = new FileInputStream(dataDir.configFile(CONFIG_FOLDER + "/" + PERSISTENCE_FILE));
       // as of 2.0.4, need to transition id2url from Map<String, URL -> Map<String, URI>
       Map<String, Object> tempId2uri = (Map<String, Object>) xstream.fromXML(in);
-      for (String id : tempId2uri.keySet()) {
+      for (Map.Entry<String, Object> entry : tempId2uri.entrySet()) {
         try {
-          String st = tempId2uri.get(id).toString();
+          String st = entry.getValue().toString();
           URI uri = new URI(st);
-          id2uri.put(id, uri);
+          id2uri.put(entry.getKey(), uri);
         } catch (URISyntaxException e1) {
           // log error, clear vocabs dir, try download them all again
           log.error("URL could not be converted to URI - check vocabularies.xml");
@@ -356,10 +360,10 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   private Vocabulary loadFromFile(File vocabFile) throws InvalidConfigException {
     Vocabulary v = null;
     // finally read in the new file and create the vocabulary object
-    InputStream fileIn = null;
+    Closer closer = Closer.create();
     String fileName = (vocabFile.exists()) ? vocabFile.getName() : "";
     try {
-      fileIn = new FileInputStream(vocabFile);
+      InputStream fileIn = closer.register(new FileInputStream(vocabFile));
       v = vocabFactory.build(fileIn);
       // read filesystem date
       Date modified = new Date(vocabFile.lastModified());
@@ -374,20 +378,19 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
     } catch (ParserConfigurationException e) {
       warnings.addStartupError("Cant create sax parser", e);
     } finally {
-      if (fileIn != null) {
-        try {
-          fileIn.close();
-        } catch (IOException e) {
-        }
+      try {
+        closer.close();
+      } catch (IOException e) {
       }
     }
     return v;
   }
 
   /**
-   * Retrieves a Map of registered vocabularies. The key is equal to the vocabulary URI String. The value is equal to the
+   * Retrieves a Map of registered vocabularies. The key is equal to the vocabulary URI String. The value is equal to
+   * the
    * vocabulary URI object.
-   *
+   * 
    * @return Map of registered vocabularies
    */
   private Map<String, URI> registeredVocabs() {
@@ -439,7 +442,8 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       log.debug("Updating vocabulary " + v.getUriString());
       URI uriObject = id2uri.get(v.getUriString().toLowerCase());
       if (uriObject == null) {
-        String msg = "Dont know the vocabulary URL to retrieve update from for vocabulary Identifier " + v.getUriString();
+        String msg =
+          "Dont know the vocabulary URL to retrieve update from for vocabulary Identifier " + v.getUriString();
         result.errors.put(v.getUriString(), msg);
         log.error(msg);
         continue;

@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -52,13 +53,13 @@ import org.xml.sax.SAXException;
 
 public class RegistryManagerImpl extends BaseManager implements RegistryManager {
 
-  class RegistryServices {
+  private static class RegistryServices {
 
     public String serviceURLs = null;
     public String serviceTypes = null;
   }
 
-  private RegistryEntryHandler newRegistryEntryHandler = new RegistryEntryHandler();
+  private final RegistryEntryHandler newRegistryEntryHandler = new RegistryEntryHandler();
   private static final String SERVICE_TYPE_EML = "EML";
   private static final String SERVICE_TYPE_OCCURRENCE = "DWC-ARCHIVE-OCCURRENCE";
   private static final String SERVICE_TYPE_CHECKLIST = "DWC-ARCHIVE-CHECKLIST";
@@ -132,9 +133,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   /**
    * Builds service type parameters used in push or post to Registry. There can only be 3 different types of Services
    * that the IPT registers: EML, DWC-ARCHIVE-OCCURRENCE or DWC-ARCHIVE-CHECKLIST - that's it.
-   *
+   * 
    * @param resource published resource
-   *
    * @return RegistryServices object, with urls and types strings
    */
   private RegistryServices buildServiceTypeParams(Resource resource) {
@@ -173,7 +173,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       if (resource.getOrganisation() != null) {
         Response resp =
           http.delete(getDeleteResourceUri(resource.getKey().toString()), orgCredentials(resource.getOrganisation()));
-        if (http.success(resp)) {
+        if (HttpUtil.success(resp)) {
           log.info("The resource has been deleted. Resource key: " + resource.getKey().toString());
         } else {
           throw new RegistryException(TYPE.BAD_RESPONSE, "Empty registry response");
@@ -267,9 +267,9 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   }
 
   /*
-  * (non-Javadoc)
-  * @see org.gbif.ipt.service.registry.RegistryManager#getOrganisations()
-  */
+   * (non-Javadoc)
+   * @see org.gbif.ipt.service.registry.RegistryManager#getOrganisations()
+   */
   public List<Organisation> getOrganisations() {
     List<Map<String, String>> organisationsTemp = new ArrayList<Map<String, String>>();
     try {
@@ -314,9 +314,9 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   }
 
   /*
-  * (non-Javadoc)
-  * @see org.gbif.ipt.service.registry.RegistryManager#getOrganisation()
-  */
+   * (non-Javadoc)
+   * @see org.gbif.ipt.service.registry.RegistryManager#getOrganisation()
+   */
   public Organisation getRegisteredOrganisation(String key) {
     Organisation organisation = null;
     if (!Strings.isNullOrEmpty(key)) {
@@ -401,20 +401,20 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   }
 
   /*
-  * (non-Javadoc)
-  * @see org.gbif.ipt.service.registry.RegistryManager#getVocabularies()
-  */
+   * (non-Javadoc)
+   * @see org.gbif.ipt.service.registry.RegistryManager#getVocabularies()
+   */
   public List<Vocabulary> getVocabularies() throws RegistryException {
     Map<String, List<Vocabulary>> map = gson.fromJson(requestHttpGetFromRegistry(getVocabulariesURL(true)).content,
       new TypeToken<Map<String, List<Vocabulary>>>() {
       }.getType());
-    return (map.get("thesauri") == null) ? new ArrayList<Vocabulary>() : map.get("thesauri") ;
+    return (map.get("thesauri") == null) ? new ArrayList<Vocabulary>() : map.get("thesauri");
   }
 
   /*
-  * (non-Javadoc)
-  * @see org.gbif.ipt.service.registry.RegistryManager#getOrganisationsResources
-  */
+   * (non-Javadoc)
+   * @see org.gbif.ipt.service.registry.RegistryManager#getOrganisationsResources
+   */
   public List<Resource> getOrganisationsResources(String organisationKey) throws RegistryException {
     List<Map<String, String>> resourcesTemp;
     try {
@@ -460,11 +460,9 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   /**
    * Executes an HTTP Get Request against the GBIF Registry. If the content is not null, the Response is returned.
    * Otherwise, if the content was null, or an exception occurred, it throws the appropriate type of RegistryException.
-   *
+   * 
    * @param url Get request URL
-   *
    * @return Response if the content was not null, or a RegistryException
-   *
    * @throws RegistryException (with RegistryException.type) if the content was null or an exception occurred
    */
   private Response requestHttpGetFromRegistry(String url) throws RegistryException {
@@ -506,9 +504,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   /**
    * Populate credentials for Organisation ws request.
-   *
+   * 
    * @param org Organisation
-   *
    * @return credentials
    */
   private UsernamePasswordCredentials orgCredentials(Organisation org) {
@@ -607,9 +604,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   /**
    * Populate credentials for IPT ws request.
-   *
+   * 
    * @param ipt IPT
-   *
    * @return credentials
    */
   private UsernamePasswordCredentials iptCredentials(Ipt ipt) {
@@ -618,10 +614,9 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   /**
    * Populate a list of name value pairs used in the common ws requests for IPT registrations and updates.
-   *
-   * @param ipt             IPT
+   * 
+   * @param ipt IPT
    * @param organisationKey Organisation key string
-   *
    * @return list of name value pairs, or an empty list if the IPT or organisation key were null
    */
   private List<NameValuePair> buildIPTParameters(Ipt ipt, String organisationKey) {
@@ -656,7 +651,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     try {
       Response resp = http.post(getIptUpdateUri(ipt.getKey().toString()), null, null, iptCredentials(ipt),
         new UrlEncodedFormEntity(data, Charset.forName("UTF-8")));
-      if (http.success(resp)) {
+      if (HttpUtil.success(resp)) {
         log.info("IPT registration update was successful");
       } else {
         String msg = "Bad registry response";
@@ -689,7 +684,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     try {
       Response resp = http.post(getIptUpdateResourceUri(resource.getKey().toString()), null, null,
         orgCredentials(resource.getOrganisation()), new UrlEncodedFormEntity(data, Charset.forName("UTF-8")));
-      if (http.success(resp)) {
+      if (HttpUtil.success(resp)) {
         log.debug("Resource's registration info has been updated");
       } else {
         throw new RegistryException(TYPE.BAD_RESPONSE, "Registration update failed");
@@ -705,7 +700,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     try {
       Response resp =
         http.get(getLoginURL(organisationKey), null, new UsernamePasswordCredentials(organisationKey, password));
-      return http.success(resp);
+      return HttpUtil.success(resp);
     } catch (Exception e) {
       log.warn(
         "The organisation could not be validated using key (" + organisationKey + ") and password (" + password + ")",

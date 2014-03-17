@@ -27,10 +27,11 @@ import org.apache.log4j.Logger;
  */
 @Singleton
 public class PublishingMonitor {
+
   // 10 second interval
   public static final int MONITOR_INTERVAL_MS = 10000;
   private static Thread monitorThread;
-  protected Logger log = Logger.getLogger(this.getClass());
+  private static final Logger LOG = Logger.getLogger(PublishingMonitor.class);
   private AtomicBoolean running;
   private final ResourceManager resourceManager;
   private final BaseAction baseAction;
@@ -62,7 +63,7 @@ public class PublishingMonitor {
           // monitor resources that are currently being published or have finished
           Map<String, Future<Integer>> processFutures = resourceManager.getProcessFutures();
           Set<String> shortNames = new HashSet<String>();
-          if (processFutures.size() > 0) {
+          if (!processFutures.isEmpty()) {
             // copy futures into new set, to avoid concurrent modification exception
             shortNames.addAll(processFutures.keySet());
             // in order for publishing to finish entirely, resourceManager.isLocked() must be called
@@ -87,39 +88,44 @@ public class PublishingMonitor {
                     // ensure resource has not exceeded the maximum number of publication failures
                     if (!resourceManager.hasMaxProcessFailures(resource)) {
                       try {
-                        log.debug(
-                          "Monitor: " + resource.getTitleAndShortname() + " v# " + v + " due to be auto-published: " + next
-                            .toString());
+                        LOG.debug(
+                          "Monitor: " + resource.getTitleAndShortname() + " v# " + v + " due to be auto-published: "
+                            + next
+                              .toString());
                         resourceManager.publish(resource, v, null);
                       } catch (PublicationException e) {
                         if (PublicationException.TYPE.LOCKED == e.getType()) {
-                          log.error("Monitor: " + resource.getTitleAndShortname() + " cannot be auto-published, because "
-                                    + "it is currently being published");
+                          LOG.error("Monitor: " + resource.getTitleAndShortname()
+                            + " cannot be auto-published, because "
+                            + "it is currently being published");
                         } else {
                           // alert user publication failed
-                          log.error(
-                            "Publishing version #" + String.valueOf(v) + " of resource " + resource.getTitleAndShortname()
-                            + " failed: " + e.getMessage());
+                          LOG.error(
+                            "Publishing version #" + String.valueOf(v) + " of resource "
+                              + resource.getTitleAndShortname()
+                              + " failed: " + e.getMessage());
                           // restore the previous version since publication was unsuccessful
                           resourceManager.restoreVersion(resource, resource.getLastVersion(), null);
                           // keep track of how many failures on auto publication have happened
                           resourceManager.getProcessFailures().put(resource.getShortname(), new Date());
                         }
                       } catch (InvalidConfigException e) {
-                        // with this type of error, the version cannot be rolled back - just alert user publication failed
-                        log.error(
-                          "Publishing version #" + String.valueOf(v) + "of resource " + resource.getShortname() + "failed:"
-                          + e.getMessage(), e);
+                        // with this type of error, the version cannot be rolled back - just alert user publication
+// failed
+                        LOG.error(
+                          "Publishing version #" + String.valueOf(v) + "of resource " + resource.getShortname()
+                            + "failed:"
+                            + e.getMessage(), e);
                       }
 
                     } else {
-                      log.debug("Skipping auto-publication for [" + resource.getTitleAndShortname()
-                                + "] since it has exceeded the maximum number of failed publish attempts. Please try "
-                                + "to publish this resource individually to fix the problem(s)");
+                      LOG.debug("Skipping auto-publication for [" + resource.getTitleAndShortname()
+                        + "] since it has exceeded the maximum number of failed publish attempts. Please try "
+                        + "to publish this resource individually to fix the problem(s)");
                     }
                   } else {
-                    log.debug("Skipping auto-publication for [" + resource.getTitleAndShortname()
-                              + "] since it is already in progress");
+                    LOG.debug("Skipping auto-publication for [" + resource.getTitleAndShortname()
+                      + "] since it is already in progress");
                   }
                 }
               }
@@ -130,7 +136,7 @@ public class PublishingMonitor {
           Thread.sleep(MONITOR_INTERVAL_MS);
         } catch (InterruptedException e) {
           // should the thread have been interrupted, encountered when trying to sleep
-          log.error("Monitor thread has been interrupted!", e);
+          LOG.error("Monitor thread has been interrupted!", e);
         }
       }
     }
@@ -142,7 +148,7 @@ public class PublishingMonitor {
   private void startMonitorThread() {
     monitorThread = new Thread(new QueueMonitor(resourceManager));
     monitorThread.start();
-    log.debug("The monitor thread has started.");
+    LOG.debug("The monitor thread has started.");
   }
 
   /**
@@ -153,7 +159,7 @@ public class PublishingMonitor {
       if (!monitorThread.isAlive()) {
         startMonitorThread();
       } else {
-        log.error("The monitor thread is already running");
+        LOG.error("The monitor thread is already running");
       }
     } else {
       startMonitorThread();

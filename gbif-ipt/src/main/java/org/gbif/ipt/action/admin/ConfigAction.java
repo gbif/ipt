@@ -10,6 +10,7 @@ import org.gbif.ipt.service.admin.ConfigManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.utils.URLUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -125,8 +126,7 @@ public class ConfigAction extends POSTAction {
         addActionMessage(getText("admin.user.login"));
         addActionMessage(getText("admin.config.baseUrl.changed.reminder"));
         session.remove(Constants.SESSION_USER);
-        if (burl.getHost().equalsIgnoreCase("localhost") || burl.getHost().equalsIgnoreCase("127.0.0.1") || burl
-          .getHost().equalsIgnoreCase(configManager.getHostName())) {
+        if (URLUtils.isLocalhost(burl)) {
           addActionWarning(getText("admin.config.error.localhostURL"));
         }
         baseUrlChanged = true;
@@ -259,7 +259,7 @@ public class ConfigAction extends POSTAction {
     List<Resource> resources = resourceManager.list(PublicationStatus.PUBLIC);
     resources.addAll(resourceManager.list(PublicationStatus.REGISTERED));
     // log
-    if (resources.size() > 0) {
+    if (!resources.isEmpty()) {
       log.debug("Updating all public resources' IPT URL to resource alternate identifier");
     }
     // update resource IPT URLs

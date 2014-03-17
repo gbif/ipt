@@ -61,7 +61,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class SourceManagerImpl extends BaseManager implements SourceManager {
 
-  private class ColumnIterator implements ClosableIterator<Object> {
+  private static class ColumnIterator implements ClosableIterator<Object> {
 
     private final ClosableIterator<String[]> rows;
     private final int column;
@@ -111,10 +111,10 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
 
     /**
      * SqlColumnIterator constructor
-     *
+     * 
      * @param source of the sql data
      * @param column to inspect, zero based numbering as used in the dwc archives
-     * @param sql    statement to query in the sql source
+     * @param sql statement to query in the sql source
      */
     private SqlColumnIterator(SqlSource source, int column, String sql) throws SQLException {
       this.conn = getDbConnection(source);
@@ -224,7 +224,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
             msg.append(exOnRow.getMessage());
             msg.append("\n");
             msg.append("Row: ");
-            for (int i=0; i<gotTo; i++) {
+            for (int i = 0; i < gotTo; i++) {
               msg.append("[").append(val[i]).append("]");
             }
             errorMessage = msg.toString();
@@ -287,14 +287,14 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     to.setDateFormat(from.getDateFormat());
   }
 
-  private ExcelFileSource addExcelFile(File file, String fileName) throws ImportException {
+  private ExcelFileSource addExcelFile() throws ImportException {
     ExcelFileSource src = new ExcelFileSource();
-    //TODO: encoding, header rows, date format?
+    // TODO: encoding, header rows, date format?
     src.setSheetIdx(0);
     return src;
   }
 
-  private TextFileSource addTextFile(File file, String fileName) throws ImportException {
+  private TextFileSource addTextFile(File file) throws ImportException {
     TextFileSource src = new TextFileSource();
     try {
       // anaylze individual files using the dwca reader
@@ -316,9 +316,9 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     FileSource src;
     String suffix = FilenameUtils.getExtension(fileName);
     if (suffix != null && (suffix.equalsIgnoreCase("xls") || suffix.equalsIgnoreCase("xlsx"))) {
-      src = addExcelFile(file, fileName);
+      src = addExcelFile();
     } else {
-      src = addTextFile(file, fileName);
+      src = addTextFile(file);
     }
 
     src.setName(fileName);
@@ -411,7 +411,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       FileUtils.deleteQuietly(logFile);
 
       Set<Integer> emptyLines;
-      try{
+      try {
         emptyLines = src.analyze();
       } catch (IOException e) {
         return e.getMessage();
@@ -563,11 +563,13 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
           warn = warn.getNextWarning();
         }
       } catch (java.lang.ClassNotFoundException e) {
-        String msg = String.format(
-          "Couldnt load JDBC driver to create new external datasource connection with JDBC Class=%s and URL=%s. Error: %s",
-          source.getJdbcDriver(), source.getJdbcUrl(), e.getMessage());
+        String msg =
+          String
+            .format(
+              "Couldnt load JDBC driver to create new external datasource connection with JDBC Class=%s and URL=%s. Error: %s",
+              source.getJdbcDriver(), source.getJdbcUrl(), e.getMessage());
         log.warn(msg, e);
-        throw new SQLException(msg);
+        throw new SQLException(msg, e);
       } catch (Exception e) {
         String msg = String
           .format("Couldnt create new external datasource connection with JDBC Class=%s, URL=%s, user=%s. Error: %s",

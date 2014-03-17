@@ -11,16 +11,20 @@ public class CoordinateUtils {
   public static final double MIN_LATITUDE = -90;
   public static final double MAX_LATITUDE = 90;
 
+
+  private CoordinateUtils() {
+    // private constructor
+  }
+
   /**
    * This method convert a coordinate from decimal to degrees, minutes, seconds format (DMS).
-   *
+   * 
    * @param decimalCoordinate to convert.
-   * @param CoordinateType    CoordinateUtils.LATITUDE or CoordinateUtils.LONGITUDE
-   *
+   * @param coordinateType CoordinateUtils.LATITUDE or CoordinateUtils.LONGITUDE
    * @return an String with the following format: DD°MM'SS''[N, S, W or E]
    */
-  public static String decToDms(double decimalCoordinate, String CoordinateType) {
-    if (CoordinateType != null && !(CoordinateType.length() == 0)) {
+  public static String decToDms(double decimalCoordinate, String coordinateType) {
+    if (coordinateType != null && !(coordinateType.length() == 0)) {
       StringBuilder dms = new StringBuilder();
       double absCoordinate = Math.abs(decimalCoordinate);
       int integer = (int) Math.floor(absCoordinate);
@@ -33,10 +37,10 @@ public class CoordinateUtils {
       DecimalFormat f = new DecimalFormat("###.##");
       dms.append(f.format(sec));
       dms.append("''");
-      if (CoordinateType.equals(LATITUDE)) {
+      if (coordinateType.equals(LATITUDE)) {
         dms.append(Math.signum(decimalCoordinate) < 0 ? "S" : "N");
       }
-      if (CoordinateType.equals(LONGITUDE)) {
+      if (coordinateType.equals(LONGITUDE)) {
         dms.append(Math.signum(decimalCoordinate) < 0 ? "W" : "E");
       }
       return dms.toString();

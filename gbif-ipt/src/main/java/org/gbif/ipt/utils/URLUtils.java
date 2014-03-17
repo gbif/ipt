@@ -21,12 +21,15 @@ public class URLUtils {
   private static final UrlValidator URL_VALIDATOR = new UrlValidator(new String[] {"http", "https"},
     UrlValidator.ALLOW_LOCAL_URLS);
 
+  private static final String LOCAL_IP = "127.0.0.1";
+  private static final String LOCAL_HOST = "localhost";
+
   private URLUtils() {
 
   }
 
   public static boolean isLocalhost(URL url) {
-    return "localhost".equals(url.getHost()) || "127.0.0.1".equals(url.getHost())
+    return LOCAL_HOST.equalsIgnoreCase(url.getHost()) || LOCAL_IP.equalsIgnoreCase(url.getHost())
       || url.getHost().equalsIgnoreCase(getHostName());
   }
 
