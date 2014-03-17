@@ -96,16 +96,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
    */
   private boolean changeProxy(HttpHost hostTemp, String proxy) {
     try {
-      URL url = new URL(proxy);
-      HttpHost host;
-      if (URLUtils.hasPort(proxy)) {
-        host = new HttpHost(url.getHost(), url.getPort());
-      } else {
-        host = new HttpHost(url.getHost());
-      }
-      // test that host really exists
-      log.info("Validating proxy by sending HTTP HEAD method to: " + host.toURI());
-
+      HttpHost host = URLUtils.getHost(proxy);
       if (!http.verifyHost(host)) {
         if (hostTemp != null) {
           log.info(

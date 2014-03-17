@@ -1,14 +1,19 @@
 package org.gbif.ipt.utils;
 
 import java.net.InetAddress;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 
 import com.google.common.base.Strings;
 import org.apache.commons.validator.routines.UrlValidator;
+import org.apache.http.HttpHost;
 import org.apache.log4j.Logger;
 
 
+/**
+ * Class with utility functions for URL validation and handling.
+ */
 public class URLUtils {
 
   private static final Logger LOG = Logger.getLogger(URLUtils.class);
@@ -51,6 +56,21 @@ public class URLUtils {
    */
   public static boolean isURLValid(String url) {
     return URL_VALIDATOR.isValid(url);
+  }
+
+
+  /**
+   * Extracts the HttpHost from the httpUrl parameter.
+   */
+  public static HttpHost getHost(String httpUrl) throws MalformedURLException {
+    URL url = new URL(httpUrl);
+    HttpHost host;
+    if (URLUtils.hasPort(httpUrl)) {
+      host = new HttpHost(url.getHost(), url.getPort());
+    } else {
+      host = new HttpHost(url.getHost());
+    }
+    return host;
   }
 
 }
