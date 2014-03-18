@@ -24,6 +24,12 @@
             &nbsp;
         <@s.text name='manage.overview.source.description2'><@s.param><@s.text name="button.connectDB"/></@s.param></@s.text>
         </p>
+        <p>
+        <div>
+            <img class="info" src="${baseURL}/images/info.gif"/>
+            <em><@s.text name='manage.overview.source.description15'/></em>
+        </div>
+        </p>
 
         <div class="details">
             <table>

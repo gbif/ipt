@@ -9,7 +9,7 @@ import org.gbif.ipt.model.SqlSource;
 import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
-import org.gbif.ipt.service.manage.SourceManager;
+import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.utils.file.FileUtils;
 
 import java.io.File;
@@ -19,6 +19,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -27,7 +28,7 @@ import static org.mockito.Mockito.when;
 
 public class SourceManagerImplTest {
 
-  private SourceManager manager;
+  private SourceManagerImpl manager;
   private Resource resource;
   private TextFileSource src1;
   private SqlSource src2;
@@ -90,8 +91,13 @@ public class SourceManagerImplTest {
     resource.addSource(src3, false);
   }
 
+  @Test (expected=InvalidFilenameException.class)
+  public void testAddSourceWithInvalidFilename() throws IOException, InvalidFilenameException, ImportException {
+    manager.add(resource, File.createTempFile("taxøn", "txt"), "taxøn.txt");
+  }
+
   @Test
-  public void testAnalyze() throws ImportException, IOException {
+  public void testAnalyze() throws ImportException, IOException, InvalidFilenameException {
     // analyze individual source file with no header row, and 77 real rows of source data
     File srcFile = FileUtils.getClasspathFile("data/distribution.txt");
     // add source file to test Resource
@@ -115,7 +121,7 @@ public class SourceManagerImplTest {
   }
 
   @Test
-  public void testAnalyzeEmptyFile() throws ImportException, IOException {
+  public void testAnalyzeEmptyFile() throws ImportException, IOException, InvalidFilenameException {
     // analyze individual source file absolutely no data inside at all
     File srcFile = FileUtils.getClasspathFile("data/image_empty.txt");
     // add source file to test Resource
@@ -134,5 +140,20 @@ public class SourceManagerImplTest {
     assertTrue(fileSource.isFileSource());
     assertEquals(null, ((TextFileSource) fileSource).getFieldsEnclosedBy());
     assertEquals("\t", ((TextFileSource) fileSource).getFieldsTerminatedBy());
+  }
+
+  @Test
+  public void testAcceptableFileName() {
+    // accepted names
+    assertTrue(manager.acceptableFileName("taxon.txt"));
+    assertTrue(manager.acceptableFileName("taxon 1.csv"));
+    assertTrue(manager.acceptableFileName("taxon (1).tab"));
+    assertTrue(manager.acceptableFileName("taxon-1.xls"));
+    assertTrue(manager.acceptableFileName("taxon_2.xls"));
+
+    // non accepted names
+    assertFalse(manager.acceptableFileName("taxøn.txt"));
+    assertFalse(manager.acceptableFileName("taxoñ.txt"));
+    assertFalse(manager.acceptableFileName("taxon & aves.txt"));
   }
 }

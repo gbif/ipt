@@ -28,6 +28,7 @@ import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.ImportException;
+import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.SourceException;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.utils.file.ClosableIterator;
@@ -50,7 +51,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import com.google.inject.Inject;
@@ -274,6 +277,11 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   // the maximum time in seconds that a driver will wait while attempting to connect to a database
   private static final int CONNECTION_TIMEOUT_SECS = 5;
 
+  private static final String ACCEPTED_FILE_NAMES = "[\\w.\\-\\s\\)\\(]+";
+
+  // Allowed characters in file names: alpha-numeric characters, plus ".", "-", "_", ")", "(", and " "
+  private Pattern acceptedPattern = Pattern.compile(ACCEPTED_FILE_NAMES);
+
   @Inject
   public SourceManagerImpl(AppConfig cfg, DataDir dataDir) {
     super(cfg, dataDir);
@@ -285,6 +293,22 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     to.setFieldsTerminatedBy(from.getFieldsTerminatedBy());
     to.setIgnoreHeaderLines(from.getIgnoreHeaderLines());
     to.setDateFormat(from.getDateFormat());
+  }
+
+  /**
+   * Tests if the the file name is composed of alpha-numeric characters, plus ".", "-", "_", ")", "(", and " ".
+   *
+   * @param fileName the file name
+   *
+   * @return <tt> if accepted, <tt>false</tt> otherwise
+   */
+  @VisibleForTesting
+  protected boolean acceptableFileName(String fileName) {
+    boolean matches = acceptedPattern.matcher(fileName).matches();
+    if (!matches) {
+      log.error("File name contains illegal characters: " + fileName);
+    }
+    return matches;
   }
 
   private ExcelFileSource addExcelFile() throws ImportException {
@@ -310,41 +334,46 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     return src;
   }
 
-  public FileSource add(Resource resource, File file, String fileName) throws ImportException {
+  public FileSource add(Resource resource, File file, String fileName) throws ImportException,
+    InvalidFilenameException {
     log.debug("ADDING SOURCE " + fileName + " FROM " + file.getAbsolutePath());
 
-    FileSource src;
-    String suffix = FilenameUtils.getExtension(fileName);
-    if (suffix != null && (suffix.equalsIgnoreCase("xls") || suffix.equalsIgnoreCase("xlsx"))) {
-      src = addExcelFile();
-    } else {
-      src = addTextFile(file);
-    }
-
-    src.setName(fileName);
-    src.setResource(resource);
-
-    try {
-      // copy file
-      File ddFile = dataDir.sourceFile(resource, src);
-      try {
-        FileUtils.copyFile(file, ddFile);
-      } catch (IOException e1) {
-        throw new ImportException(e1);
+    if (acceptableFileName(fileName)) {
+      FileSource src;
+      String suffix = FilenameUtils.getExtension(fileName);
+      if (suffix != null && (suffix.equalsIgnoreCase("xls") || suffix.equalsIgnoreCase("xlsx"))) {
+        src = addExcelFile();
+      } else {
+        src = addTextFile(file);
       }
-      src.setFile(ddFile);
-      src.setLastModified(new Date());
 
-      // add to resource, allow overwriting existing ones
-      // if the file is uploaded not for the first time
-      resource.addSource(src, true);
-    } catch (AlreadyExistingException e) {
-      throw new ImportException(e);
+      src.setName(fileName);
+      src.setResource(resource);
+
+      try {
+        // copy file
+        File ddFile = dataDir.sourceFile(resource, src);
+        try {
+          FileUtils.copyFile(file, ddFile);
+        } catch (IOException e1) {
+          throw new ImportException(e1);
+        }
+        src.setFile(ddFile);
+        src.setLastModified(new Date());
+
+        // add to resource, allow overwriting existing ones
+        // if the file is uploaded not for the first time
+        resource.addSource(src, true);
+      } catch (AlreadyExistingException e) {
+        throw new ImportException(e);
+      }
+
+      // analyze file
+      analyze(src);
+      return src;
+    } else {
+      throw new InvalidFilenameException("Filename contains illegal characters");
     }
-
-    // analyze file
-    analyze(src);
-    return src;
   }
 
   public String analyze(Source source) {

@@ -46,6 +46,7 @@ import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidConfigException;
+import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
@@ -78,6 +79,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
+import com.google.common.io.Files;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
@@ -129,7 +131,6 @@ public class ResourceManagerImplTest {
   private Organisation organisation;
   private JdbcSupport support;
 
-  private File tmpDataDir;
   private File resourceDir;
 
   private static final String DATASET_TYPE_OCCURRENCE_IDENTIFIER = "occurrence";
@@ -154,12 +155,15 @@ public class ResourceManagerImplTest {
     resourceDir = FileUtils.createTempDir();
 
     // tmp directory
-    tmpDataDir = FileUtils.createTempDir();
+    File tmpDataDir = FileUtils.createTempDir();
     when(mockedDataDir.tmpDir()).thenReturn(tmpDataDir);
 
     // mock retrieval of sample resource version count file, for version 3 of resource
     File countFile = FileUtils.getClasspathFile("resources/res1/.recordspublished-3");
-    when(mockedDataDir.resourceCountFile(eq(RESOURCE_SHORTNAME), eq(3))).thenReturn(countFile);
+    // want to return copy of test resource file since its contents gets overwritten
+    File tmpCountFile = File.createTempFile(".recordspublished-3", "");
+    Files.copy(countFile, tmpCountFile);
+    when(mockedDataDir.resourceCountFile(eq(RESOURCE_SHORTNAME), eq(3))).thenReturn(tmpCountFile);
 
     organisation = new Organisation();
     organisation.setKey("f9b67ad0-9c9b-11d9-b9db-b8a03c50a862");
@@ -222,7 +226,8 @@ public class ResourceManagerImplTest {
    */
   @Test
   public void testCreateFromZippedFile()
-    throws AlreadyExistingException, ImportException, SAXException, ParserConfigurationException, IOException {
+    throws AlreadyExistingException, ImportException, SAXException, ParserConfigurationException, IOException,
+    InvalidFilenameException {
     // retrieve sample zipped resource folder
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
     // mock finding resource.xml file
@@ -300,7 +305,8 @@ public class ResourceManagerImplTest {
    */
   @Test
   public void testCreateFromSingleZippedFile()
-    throws AlreadyExistingException, ImportException, SAXException, ParserConfigurationException, IOException {
+    throws AlreadyExistingException, ImportException, SAXException, ParserConfigurationException, IOException,
+    InvalidFilenameException {
 
     // create instance of manager
     ResourceManager resourceManager = getResourceManagerImpl();
@@ -380,7 +386,8 @@ public class ResourceManagerImplTest {
    */
   @Test
   public void testCreateFromSingleGzipFile()
-    throws AlreadyExistingException, ImportException, SAXException, ParserConfigurationException, IOException {
+    throws AlreadyExistingException, ImportException, SAXException, ParserConfigurationException, IOException,
+    InvalidFilenameException {
 
     // create instance of manager
     ResourceManager resourceManager = getResourceManagerImpl();
@@ -439,7 +446,8 @@ public class ResourceManagerImplTest {
    */
   @Test(expected=ImportException.class)
   public void testCreateFromZippedFileNonexistentExtension()
-    throws AlreadyExistingException, ImportException, SAXException, ParserConfigurationException, IOException {
+    throws AlreadyExistingException, ImportException, SAXException, ParserConfigurationException, IOException,
+    InvalidFilenameException {
     // retrieve sample zipped resource folder
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource_nonexistent_ext.xml");
     // mock finding resource.xml file
@@ -456,13 +464,32 @@ public class ResourceManagerImplTest {
   }
 
   /**
+   * test resource creation from file, but filename presumed to contain an illegal non-alphanumeric character
+   */
+  @Test(expected = InvalidFilenameException.class)
+  public void testCreateFromZippedFileWithInvalidFilename()
+    throws AlreadyExistingException, ImportException, SAXException, ParserConfigurationException, IOException,
+    InvalidFilenameException {
+    // create instance of manager
+    ResourceManager resourceManager = getResourceManagerImpl();
+    // mock SourceManager trying to add file with illegal character in filename
+    when(mockSourceManager.add(any(Resource.class), any(File.class), anyString()))
+      .thenThrow(new InvalidFilenameException("Bad filename!"));
+    // retrieve sample gzip DwC-A file
+    File dwca = FileUtils.getClasspathFile("resources/occurrence.txt.gz");
+    // create a new resource, triggering exception
+    resourceManager.create("res-single-gz", null, dwca, creator, baseAction);
+  }
+
+  /**
    * Create a resource from zipped file, but using a resource.xml whose occurrence core coreIdColumn mapping uses
    * auto-generated IDs. Since the auto-generating IDs feature is only available for taxon core extension since IPT 2.1
    * test that the occurrence core coreIdColumn mapping is reset to NO ID instead.
    */
   @Test
   public void testLoadFromDirResetAutoGeneratedIds()
-    throws ParserConfigurationException, SAXException, IOException, AlreadyExistingException, ImportException {
+    throws ParserConfigurationException, SAXException, IOException, AlreadyExistingException, ImportException,
+    InvalidFilenameException {
     // retrieve resource.xml configuration file with occurrence core coreIdColumn mapping using auto-generated IDs
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource_auto_ids.xml");
     // mock finding resource.xml file
@@ -928,7 +955,8 @@ public class ResourceManagerImplTest {
 
   @Test
   public void testPublishNonRegisteredMetadataOnlyResource()
-    throws ParserConfigurationException, SAXException, IOException, AlreadyExistingException, ImportException {
+    throws ParserConfigurationException, SAXException, IOException, AlreadyExistingException, ImportException,
+    InvalidFilenameException {
     // create instance of manager
     ResourceManagerImpl resourceManager = getResourceManagerImpl();
     // prepare resource
@@ -985,7 +1013,8 @@ public class ResourceManagerImplTest {
 
   @Test(expected= PublicationException.class)
   public void testPublishNonRegisteredMetadataOnlyResourceFailure()
-    throws ParserConfigurationException, SAXException, IOException, AlreadyExistingException, ImportException {
+    throws ParserConfigurationException, SAXException, IOException, AlreadyExistingException, ImportException,
+    InvalidFilenameException {
     // create instance of manager
     ResourceManagerImpl resourceManager = getResourceManagerImpl();
     // prepare resource
@@ -1030,7 +1059,8 @@ public class ResourceManagerImplTest {
    * @return a Non Registered Metadata Only Resource used for testing
    */
   public Resource getNonRegisteredMetadataOnlyResource()
-    throws IOException, SAXException, ParserConfigurationException, AlreadyExistingException, ImportException {
+    throws IOException, SAXException, ParserConfigurationException, AlreadyExistingException, ImportException,
+    InvalidFilenameException {
     // retrieve resource configuration file
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
     // copy to resource folder

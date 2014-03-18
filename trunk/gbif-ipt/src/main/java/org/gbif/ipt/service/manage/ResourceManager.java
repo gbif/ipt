@@ -10,6 +10,7 @@ import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidConfigException;
+import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.task.StatusReport;
@@ -58,9 +59,10 @@ public interface ResourceManager {
    *
    * @throws AlreadyExistingException if Resource already existed
    * @throws ImportException          if a problem occurred importing the DwC-A file
+   * @throws org.gbif.ipt.service.InvalidFilenameException if source filename contained an illegal character
    */
   Resource create(String shortname, String type, File dwca, User creator, BaseAction action)
-    throws AlreadyExistingException, ImportException;
+    throws AlreadyExistingException, ImportException, InvalidFilenameException;
 
   /**
    * Create a new Resource.

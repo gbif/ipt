@@ -43,6 +43,7 @@ import org.gbif.ipt.service.DeletionNotAllowedException.Reason;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
+import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.ExtensionManager;
@@ -255,7 +256,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   public Resource create(String shortname, String type, File dwca, User creator, BaseAction action)
-    throws AlreadyExistingException, ImportException {
+    throws AlreadyExistingException, ImportException, InvalidFilenameException {
     ActionLogger alog = new ActionLogger(this.log, action);
     Resource resource;
     // decompress archive
@@ -476,7 +477,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   private Resource createFromArchive(String shortname, File dwca, User creator, ActionLogger alog)
-    throws AlreadyExistingException, ImportException {
+    throws AlreadyExistingException, ImportException, InvalidFilenameException {
     Resource resource;
     try {
       // open the dwca, assuming it is located inside a parent folder
@@ -717,7 +718,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return map;
   }
 
-  private TextFileSource importSource(Resource config, ArchiveFile af) throws ImportException {
+  private TextFileSource importSource(Resource config, ArchiveFile af) throws ImportException,
+    InvalidFilenameException {
     File extFile = af.getLocationFile();
     TextFileSource s = (TextFileSource) sourceManager.add(config, extFile, af.getLocation());
     SourceManagerImpl.copyArchiveFileProperties(af, s);

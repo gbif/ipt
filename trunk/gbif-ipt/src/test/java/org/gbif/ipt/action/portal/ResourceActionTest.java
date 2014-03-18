@@ -12,11 +12,13 @@ import org.gbif.metadata.eml.TaxonomicCoverage;
 import org.gbif.utils.file.FileUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.io.Files;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,7 +36,7 @@ public class ResourceActionTest {
   private static final int RESOURCE_VERSION = 3;
 
   @Before
-  public void setup() {
+  public void setup() throws IOException {
     SimpleTextProvider mockTextProvider = mock(SimpleTextProvider.class);
     AppConfig mockCfg = mock(AppConfig.class);
     RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
@@ -55,7 +57,10 @@ public class ResourceActionTest {
 
     // mock retrieval of sample resource version count file, for version 3 of resource
     File countFile = FileUtils.getClasspathFile("resources/res1/.recordspublished-3");
-    when(mockDataDir.resourceCountFile(eq(RESOURCE_SHORT_NAME), eq(RESOURCE_VERSION))).thenReturn(countFile);
+    // want to return copy of test resource file since its contents gets overwritten
+    File tmpCountFile = File.createTempFile(".recordspublished-3", "");
+    Files.copy(countFile, tmpCountFile);
+    when(mockDataDir.resourceCountFile(eq(RESOURCE_SHORT_NAME), eq(RESOURCE_VERSION))).thenReturn(tmpCountFile);
 
     action = new ResourceAction(mockTextProvider, mockCfg, mockRegistrationManager, mockResourceManager,
       mockVocabManager, mockDataDir);
