@@ -464,8 +464,15 @@ public class MappingAction extends ManagerBaseAction {
     if (mapping.isCore()) {
       // must be 1 or more mapped fields for mapping to be legitimate
       if (mappedFields > 0) {
-        resource.setCoreType(resource.getCoreRowType().equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON) ? StringUtils
-          .capitalize(CoreRowType.CHECKLIST.toString()) : StringUtils.capitalize(CoreRowType.OCCURRENCE.toString()));
+        // set resource core type, based on core extension's coreRowType
+        String coreRowType = StringUtils.trimToNull(mapping.getExtension().getRowType());
+        if (Constants.DWC_ROWTYPE_TAXON.equalsIgnoreCase(coreRowType)) {
+          resource.setCoreType(StringUtils.capitalize(CoreRowType.CHECKLIST.toString()));
+        } else if (Constants.DWC_ROWTYPE_OCCURRENCE.equalsIgnoreCase(coreRowType)) {
+          resource.setCoreType(StringUtils.capitalize(CoreRowType.OCCURRENCE.toString()));
+        } else {
+          resource.setCoreType(StringUtils.capitalize(CoreRowType.OTHER.toString()));
+        }
       }
       // otherwise, reset core type!
       else {
