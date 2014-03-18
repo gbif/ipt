@@ -17,12 +17,13 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.config.JdbcSupport;
-import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.SourceBase;
 import org.gbif.ipt.model.SqlSource;
+import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
+import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
@@ -119,6 +120,9 @@ public class SourceAction extends ManagerBaseAction {
         } catch (UnsupportedCompressionType e) {
           addActionError(getText("manage.source.unsupported.compression.format"));
           return ERROR;
+        } catch (InvalidFilenameException e) {
+          addActionError(getText("manage.source.invalidFileName"));
+          return ERROR;
         }
       } else {
         // validate if file already exists to ask confirmation
@@ -128,8 +132,13 @@ public class SourceAction extends ManagerBaseAction {
           copyFileToOverwrite();
           return INPUT;
         }
-        // treat as is - hopefully a simple text or excel file
-        addDataFile(file, fileFileName);
+        try {
+          // treat as is - hopefully a simple text or excel file
+          addDataFile(file, fileFileName);
+        } catch (InvalidFilenameException e) {
+          addActionError(getText("manage.source.invalidFileName"));
+          return ERROR;
+        }
 
         // manually remove any previous file in session and in temporal directory path
         removeSessionFile();
@@ -138,7 +147,7 @@ public class SourceAction extends ManagerBaseAction {
     return SUCCESS;
   }
 
-  private void addDataFile(File f, String filename) {
+  private void addDataFile(File f, String filename) throws InvalidFilenameException {
     // create a new file source
     boolean replaced = resource.getSource(filename) != null;
     try {
@@ -154,6 +163,10 @@ public class SourceAction extends ManagerBaseAction {
       // even though we have problems with this source we'll keep it for manual corrections
       LOG.error("Cannot add source " + filename + ": " + e.getMessage(), e);
       addActionError(getText("manage.source.cannot.add", new String[] {filename, e.getMessage()}));
+    } catch (InvalidFilenameException e) {
+      // clean session variables used for confirming file overwrite
+      removeSessionFile();
+      throw e;
     }
   }
 
@@ -244,6 +257,10 @@ public class SourceAction extends ManagerBaseAction {
     super.prepare();
     if (id != null) {
       source = resource.getSource(id);
+      if (source == null) {
+        LOG.error("No source with id " + id + " found!");
+        addActionError(getText("manage.source.cannot.load", new String[] {id}));
+      }
     } else if (file == null) {
       // prepare a new, empty sql source
       source = new SqlSource();
@@ -311,6 +328,9 @@ public class SourceAction extends ManagerBaseAction {
           // even though we have problems with this source we'll keep it for manual corrections
           LOG.error("SourceBase error: " + e.getMessage(), e);
           addActionError(getText("manage.source.error", new String[] {e.getMessage()}));
+        } catch (InvalidFilenameException e) {
+          addActionError(getText("manage.source.invalidFileName"));
+          return ERROR;
         }
       }
       id = source.getName();

@@ -6,6 +6,7 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
+import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -71,6 +72,9 @@ public class CreateResourceAction extends POSTAction {
     } catch (ImportException e) {
       LOG.error("Error importing the dwc archive: " + e.getMessage(), e);
       addActionError(getText("validation.resource.import.exception"));
+      return INPUT;
+    } catch (InvalidFilenameException e) {
+      addActionError(getText("manage.source.invalidFileName"));
       return INPUT;
     }
     return SUCCESS;

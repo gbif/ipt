@@ -9,6 +9,7 @@ import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
+import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
@@ -40,7 +41,8 @@ public class PublishAllResourcesActionTest {
 
   @Before
   public void setup()
-    throws IOException, ParserConfigurationException, SAXException, AlreadyExistingException, ImportException {
+    throws IOException, ParserConfigurationException, SAXException, AlreadyExistingException, ImportException,
+    InvalidFilenameException {
 
     ResourceManagerImplTest test = new ResourceManagerImplTest();
     ResourceManagerImpl mockResourceManager = test.getResourceManagerImpl();

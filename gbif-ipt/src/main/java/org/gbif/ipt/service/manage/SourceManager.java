@@ -4,6 +4,7 @@ import org.gbif.ipt.model.FileSource;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.service.ImportException;
+import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.SourceException;
 import org.gbif.ipt.service.manage.impl.SourceManagerImpl;
 import org.gbif.utils.file.ClosableReportingIterator;
@@ -34,8 +35,10 @@ public interface SourceManager {
    * @return file or excel source that has been added
    *
    * @throws ImportException if the file cant be copied or read
+   * @throws org.gbif.ipt.service.InvalidFilenameException if the source filename contained illegal characters
    */
-  FileSource add(Resource resource, File file, @Nullable String sourceName) throws ImportException;
+  FileSource add(Resource resource, File file, @Nullable String sourceName)
+    throws ImportException, InvalidFilenameException;
 
   /**
    * Checks if a source is readable and analyzes its file size, number of rows and other source properties which will

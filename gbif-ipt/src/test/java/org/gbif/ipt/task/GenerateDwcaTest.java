@@ -42,6 +42,7 @@ import org.gbif.ipt.model.factory.ExtensionFactory;
 import org.gbif.ipt.model.factory.ThesaurusHandlingRule;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
+import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
@@ -309,7 +310,8 @@ public class GenerateDwcaTest {
    * @return test Resource
    */
   private Resource getResource(@NotNull File resourceXML, @NotNull File sourceFile)
-    throws IOException, SAXException, ParserConfigurationException, AlreadyExistingException, ImportException {
+    throws IOException, SAXException, ParserConfigurationException, AlreadyExistingException, ImportException,
+    InvalidFilenameException {
     UserAccountManager mockUserAccountManager = mock(UserAccountManager.class);
     UserEmailConverter mockEmailConverter = new UserEmailConverter(mockUserAccountManager);
     RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
