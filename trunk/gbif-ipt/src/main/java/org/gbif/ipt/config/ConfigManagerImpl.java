@@ -9,6 +9,7 @@ import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.service.admin.impl.RegistrationManagerImpl;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.utils.InputStreamUtils;
 import org.gbif.ipt.utils.LogFileAppender;
@@ -172,6 +173,11 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
 
     log.info("Loading dwc extensions ...");
     extensionManager.load();
+
+    if (dataDir.configFile(RegistrationManagerImpl.PERSISTENCE_FILE_V1).exists()) {
+      log.info("Perform 1-time event: migrate registration.xml into registration2.xml with passwords encrypted");
+      registrationManager.encryptRegistration();
+    }
 
     log.info("Loading registration configuration...");
     registrationManager.load();
