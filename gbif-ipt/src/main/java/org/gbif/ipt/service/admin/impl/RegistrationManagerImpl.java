@@ -6,6 +6,10 @@ import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Registration;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.converter.PasswordConverter;
+import org.gbif.ipt.model.legacy.LegacyIpt;
+import org.gbif.ipt.model.legacy.LegacyOrganisation;
+import org.gbif.ipt.model.legacy.LegacyRegistration;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.DeletionNotAllowedException;
@@ -18,6 +22,7 @@ import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.utils.FileUtils;
 
 import java.io.EOFException;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -33,6 +38,7 @@ import java.util.UUID;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Ordering;
+import com.google.common.io.Closer;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.xstream.XStream;
@@ -47,18 +53,22 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     }
   };
 
-  public static final String PERSISTENCE_FILE = "registration.xml";
+  public static final String PERSISTENCE_FILE_V1 = "registration.xml";
+  public static final String PERSISTENCE_FILE_V2 = "registration2.xml";
   private Registration registration = new Registration();
-  private final XStream xstream = new XStream();
+  private final XStream xstreamV1 = new XStream();
+  private final XStream xstreamV2 = new XStream();
   private ResourceManager resourceManager;
   private RegistryManager registryManager;
 
+
   @Inject
   public RegistrationManagerImpl(AppConfig cfg, DataDir dataDir, ResourceManager resourceManager,
-    RegistryManager registryManager) {
+    RegistryManager registryManager, PasswordConverter passwordConverter) {
     super(cfg, dataDir);
     this.resourceManager = resourceManager;
-    defineXstreamMapping();
+    defineXstreamMappingV1();
+    defineXstreamMappingV2(passwordConverter);
     this.registryManager = registryManager;
   }
 
@@ -87,10 +97,80 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     }
   }
 
-  private void defineXstreamMapping() {
-    xstream.omitField(Registration.class, "associatedOrganisations");
-    xstream.alias("organisation", Organisation.class);
-    xstream.alias("registry", Registration.class);
+  /**
+   * Populate ipt instance from LegacyIpt, for all fields.
+   *
+   * @param ipt LegacyOrganisation
+   *
+   * @return Ipt populated from LegacyIpt
+   */
+  private Ipt createIptFromLegacyIpt(LegacyIpt ipt) {
+    Ipt i = null;
+    if (ipt != null) {
+      i = new Ipt();
+      String key = (ipt.getKey() == null) ? null : ipt.getKey().toString();
+      i.setKey(key);
+      i.setDescription(Strings.emptyToNull(ipt.getDescription()));
+      i.setWsPassword(Strings.emptyToNull(ipt.getWsPassword()));
+      i.setName(Strings.emptyToNull(ipt.getName()));
+      i.setCreated(ipt.getCreated());
+      i.setLanguage(Strings.emptyToNull(ipt.getLanguage()));
+      i.setLogoUrl(Strings.emptyToNull(ipt.getLogoUrl()));
+      i.setHomepageURL(Strings.emptyToNull(ipt.getHomepageURL()));
+      i.setOrganisationKey(Strings.emptyToNull(ipt.getOrganisationKey().toString()));
+      i.setPrimaryContactType(Strings.emptyToNull(ipt.getPrimaryContactType()));
+      i.setPrimaryContactPhone(Strings.emptyToNull(ipt.getPrimaryContactPhone()));
+      i.setPrimaryContactLastName(Strings.emptyToNull(ipt.getPrimaryContactLastName()));
+      i.setPrimaryContactFirstName(Strings.emptyToNull(ipt.getPrimaryContactFirstName()));
+      i.setPrimaryContactAddress(Strings.emptyToNull(ipt.getPrimaryContactAddress()));
+      i.setPrimaryContactEmail(Strings.emptyToNull(ipt.getPrimaryContactEmail()));
+      i.setPrimaryContactDescription(Strings.emptyToNull(ipt.getPrimaryContactDescription()));
+      i.setPrimaryContactName(Strings.emptyToNull(ipt.getPrimaryContactName()));
+    }
+    return i;
+  }
+
+  /**
+   * Populate Organisation instance from LegacyOrganisation for only the key, plus fields not coming from registry.
+   *
+   * @param organisation LegacyOrganisation
+   *
+   * @return Organisation populated from LegacyOrganisation
+   */
+  private Organisation createOrganisationFromLegacyOrganisation(LegacyOrganisation organisation) {
+    Organisation o = null;
+    if (organisation != null) {
+      o = new Organisation();
+      String key = (organisation.getKey() == null) ? null : organisation.getKey().toString();
+      o.setKey(key);
+      o.setName(organisation.getName());
+      o.setAlias(organisation.getAlias());
+      o.setCanHost(organisation.isCanHost());
+      o.setPassword(organisation.getPassword());
+    }
+    return o;
+  }
+
+  /**
+   * Define XStream used to parse former registration (registration.xml).
+   */
+  private void defineXstreamMappingV1() {
+    xstreamV1.omitField(LegacyRegistration.class, "associatedOrganisations");
+    xstreamV1.alias("organisation", LegacyOrganisation.class);
+    xstreamV1.alias("registry", LegacyRegistration.class);
+  }
+
+  /**
+   * Define XStream used to parse encrypted registration (registration2.xml) with passwords encrypted.
+   *
+   * @param passwordConverter PasswordConverter
+   */
+  private void defineXstreamMappingV2(PasswordConverter passwordConverter) {
+    xstreamV2.omitField(Registration.class, "associatedOrganisations");
+    xstreamV2.alias("organisation", Organisation.class);
+    xstreamV2.alias("registry", Registration.class);
+    // encrypt passwords
+    xstreamV2.registerConverter(passwordConverter);
   }
 
   public Organisation delete(String key) throws DeletionNotAllowedException {
@@ -152,11 +232,11 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
   }
 
   public void load() throws InvalidConfigException {
-    Reader registrationReader;
-    ObjectInputStream in = null;
+    Closer closer = Closer.create();
     try {
-      registrationReader = FileUtils.getUtf8Reader(dataDir.configFile(PERSISTENCE_FILE));
-      in = xstream.createObjectInputStream(registrationReader);
+      Reader registrationReader = FileUtils.getUtf8Reader(dataDir.configFile(PERSISTENCE_FILE_V2));
+      ObjectInputStream in = closer.register(xstreamV2.createObjectInputStream(registrationReader));
+
       registration.getAssociatedOrganisations().clear();
 
       try {
@@ -184,7 +264,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
       }
 
     } catch (FileNotFoundException e) {
-      log.warn("Registration information not existing, " + PERSISTENCE_FILE
+      log.warn("Registration information not existing, " + PERSISTENCE_FILE_V2
         + " file missing  (This is normal when IPT is not registered yet)");
     } catch (ClassNotFoundException e) {
       log.error(e.getMessage(), e);
@@ -193,17 +273,84 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
       throw new InvalidConfigException(TYPE.REGISTRATION_CONFIG,
         "Couldnt read the registration information: " + e.getMessage());
     } finally {
-      if (in != null) {
-        try {
-          in.close();
-        } catch (IOException e) {
-          log.warn(e.getMessage());
-        }
+      try {
+        closer.close();
+      } catch (IOException e) {
       }
     }
 
     // it could be organisations have changed their name or node in the Registry, so update all organisation metadata
     updateAssociatedOrganisationsMetadata();
+  }
+
+  public void encryptRegistration() throws InvalidConfigException {
+    Closer closer = Closer.create();
+    File registrationV1 = dataDir.configFile(PERSISTENCE_FILE_V1);
+    if (registrationV1.exists())  {
+      try {
+        Reader registrationReader = FileUtils.getUtf8Reader(dataDir.configFile(PERSISTENCE_FILE_V1));
+        ObjectInputStream in = closer.register(xstreamV1.createObjectInputStream(registrationReader));
+        registration.getAssociatedOrganisations().clear();
+
+        try {
+          LegacyRegistration reg = (LegacyRegistration) in.readObject();
+          // load the organisation this IPT is registered against
+          LegacyOrganisation legacyHostingOrganisation = reg.getHostingOrganisation();
+          if (legacyHostingOrganisation != null) {
+            Organisation hostingOrganisation = createOrganisationFromLegacyOrganisation(legacyHostingOrganisation);
+            addHostingOrganisation(hostingOrganisation);
+          }
+
+          // load the IPT installation
+          LegacyIpt legacyIpt = reg.getIpt();
+          if (legacyIpt != null) {
+            Ipt ipt = createIptFromLegacyIpt(legacyIpt);
+            addIptInstance(ipt);
+          }
+
+          // load the associated organisations
+          while (true) {
+            try {
+              LegacyOrganisation legacyOrganisation = (LegacyOrganisation) in.readObject();
+              if (legacyOrganisation != null) {
+                Organisation organisation = createOrganisationFromLegacyOrganisation(legacyOrganisation);
+                addAssociatedOrganisation(organisation);
+              }
+            } catch (EOFException e) {
+              // end of file, expected exception!
+              break;
+            } catch (ClassNotFoundException e) {
+              log.error(e.getMessage(), e);
+            }
+          }
+        } catch (EOFException e) {
+          // end of file, expected exception!
+        } catch (AlreadyExistingException e) {
+          log.error(e);
+        }
+
+        // ensure changes are persisted to registration.xml
+        save();
+
+        // delete former registration configuration (registration.xml)
+        org.apache.commons.io.FileUtils.deleteQuietly(registrationV1);
+
+      } catch (FileNotFoundException e) {
+        log.warn("Registration information not existing, " + PERSISTENCE_FILE_V1
+                 + " file missing  (This is normal when IPT is not registered yet)");
+      } catch (ClassNotFoundException e) {
+        log.error(e.getMessage(), e);
+      } catch (IOException e) {
+        log.error(e.getMessage(), e);
+        throw new InvalidConfigException(TYPE.REGISTRATION_CONFIG,
+          "Couldnt read the registration information: " + e.getMessage());
+      } finally {
+        try {
+          closer.close();
+        } catch (IOException e) {
+        }
+      }
+    }
   }
 
   /**
@@ -248,31 +395,27 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
       if (o != null) {
 
         String oKey = (o.getKey() == null) ? null : o.getKey().toString();
-        String oName = (o.getName() == null) ? null : o.getName();
+        String oName = Strings.emptyToNull(o.getName());
 
         // sanity check - only the key must be exactly the same, and at least the name must not be null
-        if (oKey != null && key.equalsIgnoreCase(oKey) && !Strings.isNullOrEmpty(oName)) {
+        if (oKey != null && oKey.equalsIgnoreCase(key) && oName != null ) {
           // organisation
           organisation.setName(oName);
-          organisation.setDescription((o.getDescription() == null) ? null : o.getDescription());
-          organisation.setHomepageURL((o.getHomepageURL() == null) ? null : o.getHomepageURL());
+          organisation.setDescription(Strings.emptyToNull(o.getDescription()));
+          organisation.setHomepageURL(Strings.emptyToNull(o.getHomepageURL()));
           // organisation node
-          organisation.setNodeKey((o.getNodeKey() == null) ? null : o.getNodeKey());
-          organisation.setNodeName((o.getNodeName() == null) ? null : o.getNodeName());
-          organisation.setNodeContactEmail((o.getNodeContactEmail() == null) ? null : o.getNodeContactEmail());
+          organisation.setNodeKey(Strings.emptyToNull(o.getNodeKey()));
+          organisation.setNodeName(Strings.emptyToNull(o.getNodeName()));
+          organisation.setNodeContactEmail(Strings.emptyToNull(o.getNodeContactEmail()));
           // organisation primary contact
-          organisation.setPrimaryContactName((o.getPrimaryContactName() == null) ? null : o.getPrimaryContactName());
-          organisation.setPrimaryContactFirstName((o.getPrimaryContactFirstName() == null) ? null : o
-            .getPrimaryContactFirstName());
-          organisation.setPrimaryContactLastName((o.getPrimaryContactLastName() == null) ? null : o
-            .getPrimaryContactLastName());
-          organisation.setPrimaryContactAddress((o.getPrimaryContactAddress() == null) ? null : o
-            .getPrimaryContactAddress());
-          organisation.setPrimaryContactDescription((o.getPrimaryContactDescription() == null) ? null : o
-            .getPrimaryContactDescription());
-          organisation.setPrimaryContactEmail((o.getPrimaryContactEmail() == null) ? null : o.getPrimaryContactEmail());
-          organisation.setPrimaryContactPhone((o.getPrimaryContactPhone() == null) ? null : o.getPrimaryContactPhone());
-          organisation.setPrimaryContactType((o.getPrimaryContactType() == null) ? null : o.getPrimaryContactType());
+          organisation.setPrimaryContactName(Strings.emptyToNull(o.getPrimaryContactName()));
+          organisation.setPrimaryContactFirstName(Strings.emptyToNull(o.getPrimaryContactFirstName()));
+          organisation.setPrimaryContactLastName(Strings.emptyToNull(o.getPrimaryContactLastName()));
+          organisation.setPrimaryContactAddress(Strings.emptyToNull(o.getPrimaryContactAddress()));
+          organisation.setPrimaryContactDescription(Strings.emptyToNull(o.getPrimaryContactDescription()));
+          organisation.setPrimaryContactEmail(Strings.emptyToNull(o.getPrimaryContactEmail()));
+          organisation.setPrimaryContactPhone(Strings.emptyToNull(o.getPrimaryContactPhone()));
+          organisation.setPrimaryContactType(Strings.emptyToNull(o.getPrimaryContactType()));
           // replace organisation in list of associated organisations now
           registration.getAssociatedOrganisations().put(key, organisation);
           log.debug("Organisation (" + key + ") updated with latest metadata from Registry");
@@ -289,18 +432,12 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
   public synchronized void save() throws IOException {
     log.debug("Saving all user organisations associated to this IPT...");
-    Writer organisationWriter = FileUtils.startNewUtf8File(dataDir.configFile(PERSISTENCE_FILE));
-    // registration.setAssociatedOrganisations(new ArrayList<Organisation>(organisations.values()));
-    ObjectOutputStream out = xstream.createObjectOutputStream(organisationWriter, "registration");
-    // out.writeObject(registration.getAssociatedOrganisations());
+    Writer organisationWriter = FileUtils.startNewUtf8File(dataDir.configFile(PERSISTENCE_FILE_V2));
+    ObjectOutputStream out = xstreamV2.createObjectOutputStream(organisationWriter, "registration");
     out.writeObject(registration);
     for (Organisation organisation : registration.getAssociatedOrganisations().values()) {
       out.writeObject(organisation);
     }
     out.close();
-  }
-
-  public void setIptPassword(String password) {
-    registration.setIptPassword(password);
   }
 }

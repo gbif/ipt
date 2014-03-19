@@ -1,15 +1,9 @@
-/*
- * Copyright 2009 GBIF.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
- * the License. You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
- * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations under the License.
- */
-package org.gbif.ipt.model;
+package org.gbif.ipt.model.legacy;
+
+import org.gbif.ipt.model.AgentBase;
 
 import java.io.Serializable;
+
 import javax.annotation.Nullable;
 
 import com.google.common.base.Objects;
@@ -17,13 +11,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
- * Encapsulates all the information for an Organisation.
+ * Encapsulates all the information for a legacy Organisation, with password that is String and not Password object
+ * that can be encrypted when persisted to registration configuration.
  */
-public class Organisation extends AgentBase implements Serializable {
+public class LegacyOrganisation extends AgentBase implements Serializable {
 
   private static final long serialVersionUID = 2238765436256564L;
 
-  private Password password = new Password();
+  private String password;
   private String alias;
   private String nodeKey;
   private String nodeName;
@@ -32,8 +27,8 @@ public class Organisation extends AgentBase implements Serializable {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof Organisation) {
-      Organisation other = (Organisation) obj;
+    if (obj instanceof LegacyOrganisation) {
+      LegacyOrganisation other = (LegacyOrganisation) obj;
       return Objects.equal(this.getKey(), other.getKey());
     }
     return false;
@@ -76,10 +71,7 @@ public class Organisation extends AgentBase implements Serializable {
    */
   @Nullable
   public String getPassword() {
-    if (password != null) {
-      return password.password;
-    }
-    return null;
+    return password;
   }
 
   /**
@@ -135,10 +127,7 @@ public class Organisation extends AgentBase implements Serializable {
    * @param password the password to set
    */
   public void setPassword(@Nullable String password) {
-    if (password == null) {
-      this.password = new Password();
-    }
-    this.password.password = password;
+    this.password = StringUtils.trimToNull(password);
   }
 
   @Override
@@ -147,3 +136,4 @@ public class Organisation extends AgentBase implements Serializable {
   }
 
 }
+

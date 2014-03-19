@@ -45,7 +45,6 @@ import com.thoughtworks.xstream.XStream;
 public class UserAccountManagerImpl extends BaseManager implements UserAccountManager {
 
   public static final String PERSISTENCE_FILE = "users.xml";
-  public static final String ALGORITHM = "MD5";
   private Map<String, User> users = new LinkedHashMap<String, User>();
   private boolean allowSimplifiedAdminLogin = true;
   private String onlyAdminEmail;

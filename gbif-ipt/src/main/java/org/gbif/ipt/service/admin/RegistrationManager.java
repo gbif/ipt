@@ -91,7 +91,7 @@ public interface RegistrationManager {
   void save() throws IOException;
 
   /**
-   * Sets the IPT password.
+   * Migrate former registration (registration.xml) into new registration (registration2.xml) with passwords encrypted.
    */
-  void setIptPassword(String password);
+  void encryptRegistration();
 }
