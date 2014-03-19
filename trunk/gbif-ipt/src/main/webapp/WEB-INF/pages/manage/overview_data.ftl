@@ -19,17 +19,22 @@
         </div>
     </div>
     <div class="bodyOverview">
+      <p>
+        <@s.text name='manage.overview.source.description1'/>&nbsp;<@s.text name='manage.overview.source.description2'/>&nbsp;<@s.text name='manage.overview.source.description3'><@s.param><@s.text name="button.add"/></@s.param></@s.text>
+      </p>
+      <p>
+        <@s.text name='manage.overview.source.description4'><@s.param><@s.text name="button.connectDB"/></@s.param></@s.text>
+      </p>
+      <!-- Warn users they can't update a resource by uploading a DwC-A until they have uploaded their first source file -->
+      <#if (resource.sources?size == 0) >
         <p>
-        <@s.text name='manage.overview.source.description1'><@s.param><@s.text name="button.add"/></@s.param></@s.text>
-            &nbsp;
-        <@s.text name='manage.overview.source.description2'><@s.param><@s.text name="button.connectDB"/></@s.param></@s.text>
-        </p>
-        <p>
-        <div>
+          <div>
             <img class="info" src="${baseURL}/images/info.gif"/>
-            <em><@s.text name='manage.overview.source.description15'/></em>
-        </div>
+            <em><@s.text name='manage.overview.source.description5'/></em>
+          </div>
         </p>
+      </#if>
+
 
         <div class="details">
             <table>
