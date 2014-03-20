@@ -13,7 +13,7 @@
 # language groups. We recommend using any text editors with the native2ascii command-line tools
 # to work on the translation tasks. native2ascii is a tool coming with default JDK installation.
 #
-# To add/update translation to properties files, using Chinese as an example:
+# To add/update translation to properties files, using Spanish:
 # 1. Convert the properties file to UTF-8 so characters are displayed in non-escaped form and can be
 #    read by traslators.
 #
