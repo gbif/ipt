@@ -12,7 +12,6 @@ import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
 /**
  * An Interceptor that makes sure a user with manager rights (=admin or manager role) is currently logged in and
@@ -22,7 +21,8 @@ import org.apache.log4j.Logger;
  */
 public class RequireManagerInterceptor extends AbstractInterceptor {
 
-  private static Logger log = Logger.getLogger(RequireAdminInterceptor.class);
+  private static final long serialVersionUID = -7688584369470756187L;
+
   @Inject
   private ResourceManager resourceManager;
 

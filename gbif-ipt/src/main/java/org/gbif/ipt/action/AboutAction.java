@@ -26,6 +26,8 @@ import org.apache.log4j.Logger;
 
 public class AboutAction extends BaseAction {
 
+  private static final long serialVersionUID = -476675839075190159L;
+
   // logging
   private static final Logger LOG = Logger.getLogger(AboutAction.class);
 

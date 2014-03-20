@@ -8,14 +8,11 @@ import java.util.Map;
 
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
-import org.apache.log4j.Logger;
 
 /**
  * An Interceptor that makes sure an admin user is currently logged in and returns a notAllowed otherwise.
  */
 public class RequireAdminInterceptor extends AbstractInterceptor {
-
-  private static Logger log = Logger.getLogger(RequireAdminInterceptor.class);
 
   @Override
   public String intercept(ActionInvocation invocation) throws Exception {

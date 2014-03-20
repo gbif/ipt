@@ -6,14 +6,18 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.xss.XSSUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
+
 import javax.servlet.http.HttpServletRequest;
 
+import com.google.common.base.Objects;
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
@@ -62,7 +66,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
 
   /**
    * Adds an exception message, if not null, to the action warnings.
-   *
+   * 
    * @param e the exception from which the message is taken
    */
   protected void addActionExceptionWarning(Exception e) {
@@ -89,7 +93,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
 
   /**
    * Return a list of action warning strings.
-   *
+   * 
    * @return list of action warning strings.
    */
   public List<String> getActionWarnings() {
@@ -113,7 +117,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
 
   /**
    * Return the currently logged in (session) user.
-   *
+   * 
    * @return the currently logged in (session) user or null if not logged in
    */
   public User getCurrentUser() {
@@ -135,11 +139,15 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
    * This increases page rendering with lots of <@s:text> tags by nearly 100%.
    * Struts2 manages the locale in the session param WW_TRANS_I18N_LOCALE via the i18n interceptor.
    * If the Locale is null, the default language "en" is returned.
-   *
+   * 
    * @return Locale language, or default language string "en" if Locale was null
    */
   public String getLocaleLanguage() {
-    return (getLocale() == null) ? Locale.ENGLISH.getLanguage() : getLocale().getLanguage();
+    String language = null;
+    if (getLocale() != null) {
+      language = Strings.emptyToNull(XSSUtil.stripXSS(getLocale().getLanguage()).trim());
+    }
+    return Objects.firstNonNull(language, Locale.ENGLISH.getLanguage());
   }
 
   @Override
@@ -222,7 +230,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
 
   /**
    * Determine whether some user is logged in or not.
-   *
+   * 
    * @return true if some user is logged in or false otherwise
    */
   public boolean isLoggedIn() {
@@ -271,7 +279,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
   /**
    * Utility to compare 2 objects for comparison when both converted to strings useful to compare if a submitted value
    * is the same as the persisted value.
-   *
+   * 
    * @return true only if o1.equals(o2)
    */
   protected boolean stringEquals(Object o1, Object o2) {
@@ -287,7 +295,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
 
   /**
    * Get the hosting organization of the IPT.
-   *
+   * 
    * @return hosting organization
    */
   public Organisation getHostingOrganisation() {
@@ -296,7 +304,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
 
   /**
    * Set the hosting organization variable, or set it to null if it doesn't exist.
-   *
+   * 
    * @param hostingOrganisation hosting organization
    */
   public void setHostingOrganisation(Organisation hostingOrganisation) {
@@ -305,7 +313,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
 
   /**
    * Determined if the IPT has been registered to an organization yet or not.
-   *
+   * 
    * @return whether the IPT has been registered or not
    */
   public boolean getIsRegistered() {

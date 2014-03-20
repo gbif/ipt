@@ -22,9 +22,13 @@ import org.apache.log4j.Logger;
  */
 public class SetupAndCancelInterceptor extends AbstractInterceptor {
 
-  public final String SETUP_RESULTNAME = "setupIncomplete";
-  public final String CANCEL_RESULTNAME = "cancel";
-  private static Logger log = Logger.getLogger(SetupAndCancelInterceptor.class);
+  private static final long serialVersionUID = 1988717332926909383L;
+
+  private static final Logger LOG = Logger.getLogger(SetupAndCancelInterceptor.class);
+
+  public static final String SETUP_RESULTNAME = "setupIncomplete";
+  public static final String CANCEL_RESULTNAME = "cancel";
+
   @Inject
   private ConfigManager configManager;
   @Inject
@@ -37,7 +41,7 @@ public class SetupAndCancelInterceptor extends AbstractInterceptor {
       if (action instanceof SetupAction) {
         return invocation.invoke();
       } else {
-        log.info("Setup incomplete - redirect to setup");
+        LOG.info("Setup incomplete - redirect to setup");
         return SETUP_RESULTNAME;
       }
     }

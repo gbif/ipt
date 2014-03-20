@@ -17,26 +17,30 @@ import org.apache.log4j.Logger;
  * more than 100%.
  */
 public class SimpleTextProvider {
-  protected static Logger log = Logger.getLogger(SimpleTextProvider.class);
-  private static final String defaultBundle = "ApplicationResources";
-  private Set<String> baseBundleNames = new HashSet<String>();
+
+  private static final Logger LOG = Logger.getLogger(SimpleTextProvider.class);
+  private static final String DEFAULT_BUNDLE = "ApplicationResources";
+  private final Set<String> baseBundleNames = new HashSet<String>();
 
   public SimpleTextProvider() {
-    baseBundleNames.add(defaultBundle);
+    baseBundleNames.add(DEFAULT_BUNDLE);
   }
 
   /**
    * Finds the given resource bundle by it's name.
    * <p/>
    * Will use <code>Thread.currentThread().getContextClassLoader()</code> as the classloader.
-   *
+   * 
    * @param aBundleName the name of the bundle (usually it's FQN classname).
-   * @param locale      the locale.
-   *
+   * @param locale the locale.
    * @return the bundle, <tt>MissingResourceException</tt> if not found.
    */
   public ResourceBundle findResourceBundle(String aBundleName, Locale locale) {
-    return ResourceBundle.getBundle(aBundleName, locale, Thread.currentThread().getContextClassLoader());
+    try {
+      return ResourceBundle.getBundle(aBundleName, locale, Thread.currentThread().getContextClassLoader());
+    } catch (Exception e) { // in case of error the english resource bundle is used
+      return ResourceBundle.getBundle(aBundleName, Locale.ENGLISH, Thread.currentThread().getContextClassLoader());
+    }
   }
 
   public String findText(ResourceBundle bundle, String aTextName, String defaultMessage, Object[] args) {
@@ -47,7 +51,7 @@ public class SimpleTextProvider {
         text = MessageFormat.format(message, args);
       } catch (IllegalArgumentException e) {
         // message and arguments dont match?
-        log.debug(e);
+        LOG.debug(e);
         text = message;
       }
       return text;
@@ -61,13 +65,12 @@ public class SimpleTextProvider {
    * Gets a message based on a key using the supplied args, as defined in {@link MessageFormat}, or, if the
    * message is not found, a supplied default value is returned. Instead of using the value stack in the ActionContext
    * this version of the getText() method uses the provided value stack.
-   *
+   * 
    * @param localeProvider LocaleProvider
-   * @param key          the resource bundle key that is to be searched for
+   * @param key the resource bundle key that is to be searched for
    * @param defaultValue the default value which will be returned if no message is found. If null the key name will be
-   *                     used instead
-   * @param args         a list args to be used in a {@link MessageFormat} message
-   *
+   *        used instead
+   * @param args a list args to be used in a {@link MessageFormat} message
    * @return the message as found in the resource bundle, or defaultValue if none is found
    */
   public String getText(LocaleProvider localeProvider, String key, String defaultValue, List args) {
@@ -90,7 +93,7 @@ public class SimpleTextProvider {
   }
 
   public ResourceBundle getTexts(Locale locale) {
-    return findResourceBundle(defaultBundle, locale);
+    return findResourceBundle(DEFAULT_BUNDLE, locale);
   }
 
   public ResourceBundle getTexts(String bundleName, Locale locale) {
