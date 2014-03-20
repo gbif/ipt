@@ -106,7 +106,7 @@ admin.config.setup3.title=Configuration de l''IPT terminée
 admin.config.setup3.welcome=Félicitations ! Vous avez installé l''IPT avec succès. Veuillez presser "continuer" afin de commencer à l''utiliser.
 admin.config.setup2.already.registered=L''IPT a déjà été configuré pour fonctionner en mode {0}. Pour continuer en mode PRODUCTION, veuillez  entrer une URL de base pour l''IPT qui est disponible publiquement et vérifiez que la case à cocher  de production n''est pas sélectionnée. Si au contraire vous souhaitez exécuter l''IPT en l''autre mode, veuillez arrêter votre serveur et relancez l''installation en spécifiant un nouveau répertoire de données.
 admin.config.setup2.nonadmin=L''utilisateur existe déjà en tant qu''utilisateur sans droits d''administrateur.
-admin.config.setup2.nomode=TODO_Please select the mode you would like to run the IPT in.
+admin.config.setup2.nomode=TODO: Please select the mode you would like to run the IPT in.
 
 admin.config.updateMetadata.none=Il n''y a aucune ressource à mettre à jour.
 admin.config.updateMetadata.resource.fail.registry=Une erreur s''est produite lors de la mise à jour du registre de GBIF - {0}.
