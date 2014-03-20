@@ -72,11 +72,11 @@ public class RedirectMessageInterceptor extends MethodFilterInterceptor {
    * Retrieve the errors and messages from the session and add them to the action.
    */
   protected void before(ActionInvocation invocation, BaseAction action) throws Exception {
-    @SuppressWarnings("unchecked")
+
     Map<String, ?> session = invocation.getInvocationContext().getSession();
 
     @SuppressWarnings("unchecked")
-    Collection<String> actionErrors = (Collection) session.remove(ACTION_ERRORS_KEY);
+    Collection<String> actionErrors = (Collection<String>) session.remove(ACTION_ERRORS_KEY);
     if (actionErrors != null && !actionErrors.isEmpty()) {
       for (String error : actionErrors) {
         action.addActionError(error);
@@ -84,7 +84,7 @@ public class RedirectMessageInterceptor extends MethodFilterInterceptor {
     }
 
     @SuppressWarnings("unchecked")
-    Collection<String> actionWarnings = (Collection) session.remove(ACTION_WARNINGS_KEY);
+    Collection<String> actionWarnings = (Collection<String>) session.remove(ACTION_WARNINGS_KEY);
     if (actionWarnings != null && !actionWarnings.isEmpty()) {
       for (String error : actionWarnings) {
         action.addActionWarning(error);
@@ -92,10 +92,7 @@ public class RedirectMessageInterceptor extends MethodFilterInterceptor {
     }
 
     @SuppressWarnings("unchecked")
-    Collection<String> actionMessages = (Collection) session.remove(ACTION_MESSAGES_KEY);
-    // if (actionMessages!=null){
-    // System.out.println("Found "+actionMessages.size()+" actionMessages in session");
-    // }
+    Collection<String> actionMessages = (Collection<String>) session.remove(ACTION_MESSAGES_KEY);
     if (actionMessages != null && !actionMessages.isEmpty()) {
       for (String message : actionMessages) {
         action.addActionMessage(message);
@@ -103,7 +100,7 @@ public class RedirectMessageInterceptor extends MethodFilterInterceptor {
     }
 
     @SuppressWarnings("unchecked")
-    Map<String, List<String>> fieldErrors = (Map) session.remove(FIELD_ERRORS_KEY);
+    Map<String, List<String>> fieldErrors = (Map<String, List<String>>) session.remove(FIELD_ERRORS_KEY);
     if (fieldErrors != null && !fieldErrors.isEmpty()) {
       for (Map.Entry<String, List<String>> fieldError : fieldErrors.entrySet()) {
         for (String message : fieldError.getValue()) {

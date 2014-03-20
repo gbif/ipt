@@ -12,6 +12,8 @@
  ***************************************************************************/
 package org.gbif.ipt.config;
 
+import org.gbif.ipt.xss.XSSFilter;
+
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceServletContextListener;
@@ -25,7 +27,14 @@ public class IPTContextListener extends GuiceServletContextListener {
    */
   @Override
   protected Injector getInjector() {
-    return Guice.createInjector(new ServletModule(), new Struts2GuicePluginModule(), new IPTModule());
+    return Guice.createInjector(new ServletModule() {
+
+      @Override
+      protected void configureServlets() {
+        filter("/*").through(XSSFilter.class);
+        super.configureServlets();
+      }
+    }, new Struts2GuicePluginModule(), new IPTModule());
   }
 
 }

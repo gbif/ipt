@@ -22,9 +22,6 @@ public class ResourceSessionInterceptor extends AbstractInterceptor {
 
   private static final long serialVersionUID = -184757845342974320L;
 
-  public ResourceSessionInterceptor() {
-  }
-
   @Override
   public String intercept(ActionInvocation invocation) throws Exception {
     String requestedResource = RequireManagerInterceptor.getResourceParam(invocation);

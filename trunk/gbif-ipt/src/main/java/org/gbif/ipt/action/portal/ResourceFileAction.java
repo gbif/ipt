@@ -89,25 +89,28 @@ public class ResourceFileAction extends PortalBaseAction {
    * @return Struts2 result string
    */
   public String eml() {
-    data = dataDir.resourceEmlFile(resource.getShortname(), version);
-    mimeType = "text/xml";
+    if (resource != null) {
+      data = dataDir.resourceEmlFile(resource.getShortname(), version);
+      mimeType = "text/xml";
 
-    // construct download filename
-    StringBuilder sb = new StringBuilder();
-    sb.append("eml-" + resource.getShortname());
-    if (version != null) {
-      sb.append("-v" + String.valueOf(version));
+      // construct download filename
+      StringBuilder sb = new StringBuilder();
+      sb.append("eml-" + resource.getShortname());
+      if (version != null) {
+        sb.append("-v" + String.valueOf(version));
+      }
+      sb.append(".xml");
+      filename = sb.toString();
     }
-    sb.append(".xml");
-    filename = sb.toString();
-
     return execute();
   }
 
   @Override
   public String execute() {
     // make sure we have a download filename
-    if (filename == null) {
+    if (data == null) {
+      return NOT_FOUND;
+    } else if (filename == null) {
       filename = data.getName();
     }
     try {

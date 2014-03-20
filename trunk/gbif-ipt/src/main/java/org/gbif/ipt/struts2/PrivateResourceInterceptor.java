@@ -12,7 +12,6 @@ import java.util.Map;
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
-import org.apache.log4j.Logger;
 
 /**
  * An Interceptor that makes sure a requested resource is either public or the current user has rights to manage the
@@ -21,9 +20,6 @@ import org.apache.log4j.Logger;
 public class PrivateResourceInterceptor extends AbstractInterceptor {
 
   private static final long serialVersionUID = 2340800191217429210L;
-
-  private static final Logger LOG = Logger.getLogger(RequireAdminInterceptor.class);
-
 
   @Inject
   private ResourceManager resourceManager;

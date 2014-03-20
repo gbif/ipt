@@ -16,7 +16,8 @@ import org.apache.log4j.Logger;
  */
 public class AutoLoginAdminInterceptor extends AbstractInterceptor {
 
-  private static Logger log = Logger.getLogger(RequireAdminInterceptor.class);
+  private static final Logger LOG = Logger.getLogger(RequireAdminInterceptor.class);
+
   @Inject
   private UserAccountManager userManager;
 
@@ -28,9 +29,9 @@ public class AutoLoginAdminInterceptor extends AbstractInterceptor {
       user = userManager.authenticate("admin", "carla");
       if (user != null) {
         session.put(Constants.SESSION_USER, user);
-        log.debug("Auto logged in admin");
+        LOG.debug("Auto logged in admin");
       } else {
-        log.debug("Failed to auto-login the admin");
+        LOG.debug("Failed to auto-login the admin");
       }
     }
     return invocation.invoke();

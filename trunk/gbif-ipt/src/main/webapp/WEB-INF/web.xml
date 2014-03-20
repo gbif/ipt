@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 	
 	<display-name>IPT</display-name>
-	
+
 	<!-- Google Guice is used instead of Spring for lightweight dependency injection -->
 	<filter>
 		<filter-name>guice</filter-name>
@@ -24,11 +24,12 @@
 	</filter-mapping>	
 	<listener>
 		<listener-class>org.gbif.ipt.config.IPTContextListener</listener-class>
-	</listener>
+	</listener>	
 	
 	<!-- all requests go through struts2 filter -->
 	<filter-mapping>
 		<filter-name>struts2</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+			
 </web-app>
