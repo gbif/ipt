@@ -461,7 +461,7 @@ admin.extension.install.success=La extensión {0} fue instalada satisfactoriamen
 admin.extension.install.error=Ocurrió un problema mientras se intentaba instalar la extensión {0}.
 admin.extension.install.duplicate=Una extensión con tipo de fila {0} ya ha sido instalada. Por favor desinstale la extensión con este tipo de fila e intentelo nuevamente.
 admin.extension.delete.success=La extensión {0} fue removida satisfactoriamente.
-admin.extension.delete.error=No se pudo quitar la extensión {0}.
+admin.extension.delete.error=No se pudo eliminar la extensión {0}.
 admin.extensions.couldnt.load=No se lograron cargar las extensiones registradas del Registro: {0}.
 admin.extensions.vocabularies.couldnt.load=Los vocabularios registrados no se pudieron cargar desde el Registro: {0}.
 admin.extensions.vocabulary.couldnt.load=El vocabulario predeterminado {0} no pudo ser cargado desde el Registro: {1}.
@@ -496,7 +496,7 @@ admin.user.exists=Ya existe un usuario con esta dirección electrónica {0}.
 admin.user.deleted.lastadmin=El último usuario administrador no puede ser eliminado
 admin.user.deleted.lastmanager=El usuario no puede ser eliminado puesto que es el único responsable de los siguientes recursos: {0}.
 admin.user.deleted.error=El usuario no puede ser eliminado.
-admin.user.deleted.current=No es posible eliminar una cuenta cuando ha iniciado sesión con ella. Por favor utilice una cuenta de administrador diferente para iniciar sesión en el sistema y quitar esta cuenta.
+admin.user.deleted.current=No es posible eliminar una cuenta cuando ha iniciado sesión con ella. Por favor utilice una cuenta de administrador diferente para iniciar sesión en el sistema y eliminar esta cuenta.
 admin.user.changed.current=No está autorizado para cambiar el rol del último administrador
 admin.user.cantSave=No es posible guardar el archivo del usuario
 admin.user.passwordChanged=La contraseña para {0} a cambiado a {1}.
@@ -650,7 +650,7 @@ manage.resource.migrate=El recurso coincide con un recurso registrado existente 
 manage.resource.migrate.failed=La migración del recurso falló
 manage.resource.migrate.failed.multipleUUIDs=Se encontraron multiples UUIDs en la lista de indentificadores alternativos al momento del registro.
 manage.resource.migrate.failed.badUUID=Al menos un UUID fue encontrado en la lista de identificadores alternativos que no corresponde a un recurso propiedad de {0}.
-manage.resource.migrate.failed.help=Con el fin de proceder con el registro, se debe: 1) quitar todos los identificadores alternativos UUID si este recurso está destinado a ser un recurso completamente nuevo, o 2) Adicionar un identificador alternativo UUID único, que sea igual al UUID del recurso registrado existente que será actualizado.
+manage.resource.migrate.failed.help=Con el fin de proceder con el registro, se debe: 1) eliminar todos los identificadores alternativos UUID si este recurso está destinado a ser un recurso completamente nuevo, o 2) Adicionar un identificador alternativo UUID único, que sea igual al UUID del recurso registrado existente que será actualizado.
 manage.resource.migrate.failed.duplicate=TODO: The UUID {0} found in the list of alternate identifiers is already assigned to one or more public or registered resources: {1}
 manage.resource.migrate.failed.duplicate.help=TODO: If you are trying to replace a registered resource that already exists in your IPT, the other resource has to be deleted first. In this case, please notify helpdesk@gbif.org that the resource has been replaced, and not deleted, since deleting a registered resource causes it to be flagged as deleted in the GBIF Registry.
 
@@ -820,7 +820,7 @@ manage.translation.saved=Traducción guardada para el elemento {0}.
 manage.translation.saved.failed.values=TODO: Translation failed for values: {0}. For security reasons, a value can only be translated if it is composed of alpha-numeric characters, colons(:), semi-colons(;), hyphens(-), periods(.), or spaces(" ").
 
 manage.metadata.section=Sección
-manage.metadata.removethis=Quitar
+manage.metadata.removethis=Eliminar
 manage.metadata.addnew=Añadir nuevo(a)
 
 manage.metadata.basic.title=Metadatos Básicos
