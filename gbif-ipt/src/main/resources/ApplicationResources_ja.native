@@ -1,6 +1,37 @@
-####=　
-# GENERAL BASIC EXPRESSIONS=　
-####=　
+##
+# Notes to developers:
+# Please maintain sensible groupings within this file (Do not use Attesoro to work in this file)
+# Please consider promoting generic messages out of specific sections for better reuse
+# Please consider that people will be translating this file and simplifying this for them
+#   is a priority
+##
+
+##
+# Recommended practice of translation without using Attesoro:
+#
+# Attesoro breaks the grouping of this properties file and makes maintenance cumbersome among
+# language groups. We recommend using any text editors with the native2ascii command-line tools
+# to work on the translation tasks. native2ascii is a tool coming with default JDK installation.
+#
+# To add/update translation to properties files, using Japanese:
+# 1. Convert the properties file to UTF-8 so characters are displayed in non-escaped form and can be
+#    read by traslators.
+#
+#   $ native2ascii -reverse -encoding UTF-8 ApplicationResources_ja.properties ApplicationResources_ja.native
+#
+# 2. Find the property and edit the translation.
+# 3. When finished, convert the properties file again to ASCII:
+#
+#   $ native2ascii -encoding UTF-8 ApplicationResources_ja.native ApplicationResources_ja.properties
+#
+# 4. Commit the converted file to IPT code repository.
+#
+# This way the grouping is kept and is easier for others to find relevant translations.
+##
+
+####
+# GENERAL BASIC EXPRESSIONS
+####
 title=IPT
 
 basic.seealso=参照
@@ -19,7 +50,7 @@ basic.no=いいえ
 basic.showMore=以上
 basic.showLess=以下
 
-# buttons=　
+# buttons
 button.add=追加
 button.analyze=解析する
 button.save=保存
@@ -47,17 +78,17 @@ button.connectDB=データベースに接続する
 button.remove=削除
 button.install=インストール
 
-####=　
-# LAYOUT=　
-####=　
-# footer=　
+####
+# LAYOUT
+####
+# footer
 footer.version=バージョン
 footer.projectHome=IPTプロジェクトについて
 footer.useManual=ユーザーマニュアル
 footer.bugReport=バグレポート
 footer.featureRequest=新項目のリクエスト
 
-# main menu items=　
+# main menu items
 menu.home=ホーム
 menu.about=概要
 menu.manage=リソース管理
@@ -66,7 +97,7 @@ menu.account=アカウント
 menu.logout=ログアウト
 menu.loggedin={0}としてログイン中
 
-# submenus=　
+# submenus
 submenu.basic=基本のメタデータ
 submenu.parties=アソーシエート
 submenu.geocoverage=地理的範囲
@@ -80,15 +111,15 @@ submenu.physical=外部リンク
 submenu.keywords=キーワード
 submenu.additional=追加のメタデータ
 
-# pager=　
+# pager
 pager.previous=前にもどる
 pager.next=次にすすむ
 
-####=　
-# DATA MODEL PROPERTIES=　
-####=　
+####
+# DATA MODEL PROPERTIES=
+####
 
-# user=　
+# user
 user=ユーザー
 user.email=電子メール
 user.firstname=名
@@ -102,7 +133,7 @@ user.roles.manager=登録権なしの管理者
 user.roles.publisher=登録権ありの管理者
 user.roles.admin=管理責任者（Admin)
 
-# extension=　
+# extension
 extension=Extension(Extension(拡張））
 extension.rowtype=RowType
 extension.vocabulary=語彙・用語
@@ -118,13 +149,13 @@ extension.further.title=GBIF登録で利用できるコアタイプとExtension(
 extension.further.title.help=左カラムはコアタイプとExtension(拡張）名を示しています。右カラムはコアタイプとExtension(拡張）に関する説明などの情報のまとめです。
 extension.already.installed=可能なすべてのコアタイプとExtension(拡張）機能が既にインストールされています。
 
-# vocab=　
+# vocab
 vocabulary.uri=URI
 vocabulary.concepts=語彙(用語）の概念
 vocabulary.terms.pref=推奨名
 vocabulary.terms.alt=別名
 
-# resource=　
+# resource
 resource.shortname=省略名
 resource.coreType=タイプ
 resource.coreType.selection=タイプを１つ選択してください。
@@ -146,7 +177,7 @@ resource.updateFrequency.selection=更新頻度を選択してください
 resource.updateFrequency=更新頻度
 resource.updateFrequency.help=最初のデータセットが登録されてからデータの更新や追加の頻度。毎日、毎週、毎月、2年毎、毎年の中から選択してください。 <ul><li><b>Annually:</b> updated 1 time each year<br /></li><li><b>As needed:</b> updated as needed<br /></li><li><b>Biannually:</b> updated 2 times each year<br /></li><li><b>Continually:</b> updated continually<br /></li><li><b>Daily:</b> updated 1 time each day<br /></li><li><b>Irregular:</b> updated at irregular intervals<br /></li><li><b>Monthly:</b> updated 1 time each month<br /></li><li><b>Not planned:</b> further updates are not planned<br /></li><li><b>Weekly:</b> updated 1 time each week<br /></li><li><b>Unknown:</b>further updates may still happen, but it is not known for sure<br /></li><li><b>Other maintenance period:</b> updated according to some other interval.<br /></li></ul>
 
-# sources=　
+# sources
 source.name=ソース名
 source.name.help=ソースを特定する省略名。空白やピリオドを含まない。
 source.encoding=文字エンコード
@@ -170,7 +201,7 @@ fileSource.fieldsEnclosedByEscaped.help=一行のフィールド/カラムを区
 fileSource.ignoreHeaderLines=ヘッダー行数
 fileSource.ignoreHeaderLines.help=データの取り込みの際、対象としないヘッダーの行数
 
-# ranks=　
+# ranks
 rank.kingdom=界
 rank.phylum=門
 rank.class=綱
@@ -178,10 +209,10 @@ rank.order=目
 rank.family=科
 rank.genus=属
 
-####=　
-# VALIDATION error messages=　
-####=　
-# general=　
+####
+# VALIDATION error messages
+####
+# general
 validation.required={0}は必須
 validation.invalid={0}は無効
 validation.short={0} with at least {1} letters is required.
@@ -190,7 +221,7 @@ validation.field.required=フィールド/項目
 validation.field.blank={0}は少なくとも２文字以上必要です。空白は許されません。
 validation.wrong.datatype={0}は不正なデータタイプの値にマップされています。
 
-# user/config=　
+# user/config
 validation.email.required=メール必須
 validation.email.invalid=メール無効
 validation.firstname.required=名前必須
@@ -200,13 +231,13 @@ validation.password2.wrong=パスワードが一致しません
 validation.baseURL.required=IPT　URL　必須
 validation.baseURL.invalid=IPT　URL　不適当です
 
-# organisation=　
+# organisation
 validation.organisation.password.required=パスワードが必要です。
 validation.organisation.alias.required=エイリアスが必要です。
 validation.organisation.password.invalid=無効なパスワードです。
 validation.organisation.key.required=リストから機関を１つ選んでください。
 
-# ipt=　
+# ipt
 validation.ipt.name.required=IPTタイトルが必要です。
 validation.ipt.name.short=IPTタイトルは２文字以上です。
 validation.ipt.contactName.required=TODO: Contact name is required.
@@ -216,14 +247,14 @@ validation.ipt.contactEmail.invalid=メールアドレスのフォーマット�
 validation.ipt.password.required=IPTパスワードが必要です。
 validation.ipt.password.short=TODO: IPT password must be longer than 5 characters.
 
-# resources=　
+# resources
 validation.resource.shortname.required=省略名が必要です。
 validation.resource.shortname.invalid=無効な名前です。少なくとも３文字の英文字、番号、ハイフン、アンダースコアを使ってください。空白は無効です。
 validation.resource.shortname.exists=リソース{0}はすでに存在しています。
 validation.resource.shortname.title=タイトルが必要です。
-validation.resource.import.exception=インポートファイルエラー　－　ファイルはダーウインコアフォーマットですか？http://tools.gbif.org/dwca-validator/　こちらのツールでチェックしてください。
+validation.resource.import.exception=インポートファイルエラー－　ファイルはダーウインコアフォーマットですか？http://tools.gbif.org/dwca-validator/　こちらのツールでチェックしてください。
 
-# mappings=　
+# mappings
 validation.mapping.coreid.missing=Extension(拡張）にはコアレコードにリンクバックするためのIDが必要です。
 validation.mapping.coreid.linenumber.samesufix=Another mapping to the core also uses linenumber with the same suffix as the ID generator.
 validation.mapping.coreid.linenumber.integer=Integers are not allowed as a linenumber suffix.
@@ -231,11 +262,11 @@ validation.mapping.coreid.linenumber.nocoresuffix=There is no matching core mapp
 validation.mapping.coreid.uuid.extension=自動的に生成したUUIDはExtension(拡張）に使えません。UUIDはコアレコードの中でユニークなIDにリンクしなくてはいけません。
 validation.mapping.coreid.uuid.extensions.exist=generated UUIDをIDとして利用する際にはextension(拡張）をマップすることができません。
 
-# eml=　
+# eml
 validation.lastname.organisation.position=名字、機関、職の情報が必要です。
 validation.firstname.lastname=名前（ファーストネーム）を入力する時は、名字（ラストネーム）の入力が必須です。
 
-# errors=　
+# errors
 error.header.title=Missing
 error.title=失敗しました。
 error.body=予期しないエラーが見つかりました。
@@ -244,9 +275,9 @@ error.report=あってはならないエラーを見つけた時には、bug rep
 error.thanks=ありがとうございました。IPT開発チームより。
 error.details.title=技術上の詳細
 
-####=　
-# GLOBAL SECTION=　
-####=　
+####
+# GLOBAL SECTION
+####
 login.title=ユーザーログイン
 login.intro=emailアドレスとIPTアカウントでログインしてください。<br/>未だアカウントが無い場合にはIPT管理責任者(Administrator)に連絡して作ってもらいましょう。
 login.forgottenpassword=パスワードを忘れましたか？IPT管理責任者(administrator)にリセットしてもらいましょう。
@@ -264,9 +295,9 @@ account.email.cantChange=なんらかの理由でemailアドレスを変更し�
 help.options=以下のオプションをクリックしてください。
 
 
-####=　
-# PORTAL SECTION=　
-####=　
+####
+# PORTAL SECTION
+####
 portal.home.title=このIPTからデータを利用することができます。
 portal.home.intro=このIPTをインストールすることによって公開データを利用することができます。
 portal.home.feed=最近更新されたリソースは<a href{0}>RSS feed</a>からも見ることができます。
@@ -300,7 +331,7 @@ portal.resource.organisation.key=GBIF登録
 portal.resource.organisation.name=機関
 portal.resource.organisation.node=担当ノード名
 portal.resource.metadata=リソースメタデータ
-portal.resource.creator=リソース　作成者
+portal.resource.creator=リソース作成者
 portal.resource.name=名前
 portal.resource.contact=問い合わせ
 portal.resource.tel=電話
@@ -309,9 +340,9 @@ portal.publication.log=公開ログ
 portal.resource.eml.error.load=リソース{1}のEMFファイルバージョン#{0}はロードに失敗しました。
 portal.resource.eml.error.parse=リソース{1}のEMFファイルバージョン#{0}はパースできませんでした。
 
-####=　
-# ADMIN SECTION=　
-####=　
+####
+# ADMIN SECTION
+####
 admin.home.editConfig=IPT 設定
 admin.home.editOrganisations=機関
 admin.home.editOrganisations.disabled=機関名を関連づける前に、このIPTをGBIFに登録する必要があります。
@@ -325,7 +356,7 @@ admin.home.publishResources.help=「公開」ボタンのように、すべて�
 admin.config.setup.title=IPTの設定
 admin.config.setup.welcome=IPTを使うためには設定ファイルがあるデイレクトリ（IPTデータデイレクトリ）を選ぶ必要があります。
 admin.config.setup.instructions=書き込み可能な空のフォルダ、あるいは既存のIPTデイレクトリを選んでください。システムの再起動の際に削除される/tmpのような他のプロセスに影響を与えるフォルダは決して選ばないようにしてください。このフォルダは障害時の復旧に備えて定期的にバックアップをとるべきです。
-admin.config.setup.examples=たとえば、Windowd環境なら"C:\datadir", Linux, Mac OS XのようなUnix系の環境なら"/usr/datadir"がよいでしょう。
+admin.config.setup.examples=たとえば、Windowd環境なら"C:\\datadir", Linux, Mac OS XのようなUnix系の環境なら"/usr/datadir"がよいでしょう。
 admin.config.setup.datadir=データデイレクトリの絶対パス
 admin.config.setup.datadir.created=新規データデイレクトリの作成に成功しました。
 admin.config.setup.datadir.reused=既存のデータデイレクトリの指定に成功しました。
@@ -349,7 +380,7 @@ admin.config.setup2.datadir.notExist=defaultの管理責任者(administrator)を
 admin.config.setup2.already.registered=IPTはすでに｛0｝モードで動いています。PRODUCTIONモードではIPT用の公開可能なbase URLを入力し、productionのチェックボックスが選択されていなくてはいけないことを忘れないでください。他のモードに変更したい場合には、サーバーを停止し、新たなデータデイレクトリを指定してインストールを再開してください。
 admin.config.setup2.nonadmin=非管理責任ユーザーとして既に存在します。
 admin.config.setup2.mode=IPTモード
-admin.config.setup2.nomode=TODO_Please select the mode you would like to run the IPT in.
+admin.config.setup2.nomode=TODO: Please select the mode you would like to run the IPT in.
 
 admin.config.setup3.title=IPT設定完了
 admin.config.setup3.welcome=Congratulations! IPTのインストールに成功しました。Please press continue to start using it.
@@ -384,7 +415,7 @@ admin.config.analyticsKey.help=Google AnalyticsはGoogleが提供するWeb appli
 admin.config.analyticsKey.error=不正なGoogle Analytics Keyです。
 
 admin.config.baseUrl=このIPTのBase URL
-admin.config.baseUrl.help=IPTをインストールしたルートのURL.　リソースを登録したい時には、公にアクセスできるアドレスが必要です。たとえばhttp://tools.gbif.org/ipt.
+admin.config.baseUrl.help=IPTをインストールしたルートのURL.リソースを登録したい時には、公にアクセスできるアドレスが必要です。たとえばhttp://tools.gbif.org/ipt.
 admin.config.baseUrl.changed=Base URLは正しく更新されました。
 admin.config.baseUrl.changed.reminder=ログインしたら、管理者ページの"Publish all resources"ボタンをクリックしてすべての登録データサービスのURLを更新してください。
 admin.config.baseUrl.inaccessible=Base URLはこのコンピュータからアクセスできるIPTを見つけることができませんでした。
@@ -408,11 +439,11 @@ admin.config.updateMetadata.none=公開するデータがありません。
 admin.config.updateMetadata.summary=すべてのリソースの公開が終わりました。さらに情報を見たい時はログを参照してください。
 admin.config.updateMetadata.resource.fail.registry=GBIF Registry更新エラー-｛０｝。
 
-# invalid fields=　
+# invalid fields
 invalid.fieldvalue.latitude=無効な緯度です。
 invalid.fieldvalue.longitude=無効な経度です。
 
-# extensions & vocabs=　
+# extensions & vocabs
 admin.extension.coreTypes=コアタイプ
 admin.extension.extensions=Extension(拡張）
 admin.extension.no.coreTypes.installed=コアタイプがインストールされていません。
@@ -469,11 +500,11 @@ admin.user.wrong.email.password.combination=メールアドレスとパスワー
 
 admin.logs.warn="WARN"以上の深刻なメッセージ
 admin.logs.download=<a href {0}>ログファイル</a>.のダウンロード
-# used for unkown errors where the exception message (in English...) will be displayed=　
-# use of this is to catch the errors that are not properly understood=　
+# used for unkown errors where the exception message (in English...) will be displayed=
+# use of this is to catch the errors that are not properly understood=
 admin.error.invalidConfiguration=無効な設定です: {0}
 
-#admin - registration=　
+#admin - registration=
 admin.ipt.password=IPTパスワード
 admin.ipt.password.help=IPT instanceを更に更新するためにはパスワードが必要です。思い出してください。
 admin.ipt.name=IPTインストールのためのタイトル
@@ -511,7 +542,7 @@ admin.registration.error.badResponse=Registryからの応答が無いか、無�
 admin.registration.error.io=GBIF Registryとの通信時にIOエラーが発生しています。
 admin.registration.error.unknown=GBIF Registryとの通信時未知の不具合が発生しています。
 
-#admin - organisations=　
+#admin - organisations=
 admin.organisation.title=アソーシエート機関を編集
 admin.organisation.key=機関
 admin.organisation.name=機関名
@@ -537,7 +568,7 @@ admin.organisations.couldnt.load=Registry:{0}から登録した機関をロー�
 admin.organisation.couldnt.load=Registry:{1}から登録した機関{0}をロードすることができませんでした。
 organisations.resources.couldnt.load=Registry:{0}から登録したリソースを機関に対応させることができませんでした。
 
-#predefined emails - request organisation password for IPT registration=　
+#predefined emails - request organisation password for IPT registration=
 emails.request.ipt.registration.subject ={0}にはパスワードが必要です。
 emails.request.ipt.registration1 = Dear sir/madam,%0d%0d
 emails.request.ipt.registration2 = I am trying to install an Integrated Publishing Toolkit (IPT), which is going to be hosted under your institution/organisation.%0d
@@ -547,7 +578,7 @@ emails.request.ipt.registration5 =http://gbrds.gbif.org/registry/organisation/{0
 emails.request.ipt.registration6 =ありがとうございました。
 emails.request.ipt.registration.footer =お問い合わせはこちらをクリックしてください。
 
-#predefined emails - request organisation password for organisation association=　
+#predefined emails - request organisation password for organisation association=
 emails.request.organisation.association.subject ={0}にはパスワードが必要です。
 emails.request.organisation.association1 = Dear sir/madam,%0d%0d
 emails.request.organisation.association2 =IPTのインストール中です。.%0d
@@ -558,10 +589,10 @@ emails.request.organisation.association6 =password%0d%0d
 emails.request.organisation.association7 =ありがとうございました。
 emails.request.organisation.association.footer =お問い合わせはこちらをクリックしてください。
 
-####=　
-# MANAGE SECTION=　
-####=　
-# the manage resource section=　
+####
+# MANAGE SECTION
+####
+# the manage resource section=
 manage.404.title=リソースが存在しません。
 manage.404.body=リクエストされたページは存在しません。
 manage.401.title=権限がありません。
@@ -611,7 +642,7 @@ manage.resource.read.eml.metadata=EML metadata read
 manage.resource.read.basic.metadata=基本のメタデータを読みました
 manage.resource.read.problem=アーカイブのメタデータが読めません。
 manage.resource.addSource.confirm=１つ以上のファイルがすでに存在します。これらを上書きしてよいですか？
-manage.resource.migrate={1}が現在所有する現存する登録済のリソース(UUID {0})と一致しました。そのため、このリソースは新規に登録されるのではなく、登録済のリソースと連携されます。 
+manage.resource.migrate={1}が現在所有する現存する登録済のリソース(UUID {0})と一致しました。そのため、このリソースは新規に登録されるのではなく、登録済のリソースと連携されます。
 manage.resource.migrate.failed=Resource migration failed
 manage.resource.migrate.failed.multipleUUIDs=Multiple UUIDs were found in the list of alternate identifiers at the time of registration.
 manage.resource.migrate.failed.badUUID=At least one UUID was found in the list of alternate identifiers, but it does not correspond to a resource owned by {0}.
@@ -655,6 +686,7 @@ manage.source.rows=Rows
 manage.source.modified=変更されています。
 manage.source.filesystem.error=ファイルシステムエラー：{0}
 manage.source.unsupported.compression.format=圧縮フォーマットはサポートされていません。zip, gzip,あるいはプレーンテキストファイルを使ってください。
+manage.source.unsupported.excel=エクセルファイルはサポートされていません。区切りテキストファイルを使ってください。
 manage.source.replaced.existing=既存のソースを入れ替えました。>>{0}<<
 manage.source.added.new=新ファイルソースを追加しました。>>{0}<<
 manage.source.deleted=ソース{0}を削除しました。
@@ -684,7 +716,7 @@ manage.overview.source.data=ソースデータ
 manage.overview.source.description1=Darwing Core Archiveを作成するためのデータファイルです。csv, tabなど区切り形式のテキストファイルをアップロードできます。ファイルをそのままでも、zip, gzipのような圧縮ファイルでもかまいません。
 manage.overview.source.description2=TODO: Excel files are also supported.
 manage.overview.source.description3=アップロードする時は、ローカルのファイルを選択して"{0}"をクリックしてください。
-manage.overview.source.description4=TODO: Alternatively, you can configure <i>SQL views</i> to databases in your local network. To create a new SQL source, please click "{0}" without any file chosen.
+manage.overview.source.description4=Alternatively, you can configure <i>SQL views</i> to databases in your local network. To create a new SQL source, please click "{0}" without any file chosen.
 manage.overview.source.description5=TODO: It is not possible to update a resource by uploading a Darwin Core Archive. This feature is not implemented yet.
 manage.overview.source.file=[file]
 manage.overview.source.sql=[sql]
@@ -707,6 +739,7 @@ manage.overview.visibility.no.organisations=このデータをGBIFに登録す�
 manage.overview.visibility.resource.key=リソースキー
 manage.overview.visibility.organisation=機関
 manage.overview.visibility.organisation.contact=機関の窓口
+manage.overview.visibility.organisation.key=機関キー
 manage.overview.visibility.endorsing.node=担当ノード名
 manage.overview.visibility.confirm.registration=You are about to register the resource with GBIF. Be aware that later deletion from the GBIF Index is not automatic and will require communication with the <a href="''mailto:helpdesk@gbif.org''>GBIF Help Desk</a>. Do you still want to register?
 manage.overview.visibility.confirm.agreement=Confirm that you have read and understood the <a target=''_blank'' href="http://data.gbif.org/tutorial/datasharingagreement''>GBIF data sharing agreement</a>
@@ -833,9 +866,9 @@ manage.report.exception=例外
 manage.report.finished=終了しました。
 manage.report.continueTo=Continue to <a href resource.do?r={0}>resource overview</a>.
 
-####=　
-# EML=　
-####=　
+####
+# EML
+####
 eml.title=タイトル
 eml.description=説明
 
@@ -945,7 +978,7 @@ eml.temporalCoverages.formationPeriod=生成(収集）期間
 eml.temporalCoverages.formationPeriod.help=コレクションをまとめた期間をテキスト形式で記述する　(e.g., "Victorian", "1922-1932", "c. 1750"). 進行中のコレクションの場合には以下のように記述します。 (e.g., "2010-current").
 eml.temporalCoverages.livingTimePeriod=生息期間
 eml.temporalCoverages.livingTimePeriod.help=生物材料が生きていた期間。「古生物学的時代」とか、その他のテキスト表現を含む。 (e.g., "1900-1950", "Ming Dynasty", "Pleistocene").
- 
+
 eml.project.title=タイトル
 eml.project.personnel.firstName=Personnel First Name
 eml.project.personnel.lastName=Personnel Last Name
@@ -1026,9 +1059,9 @@ eml.intellectualRights.license.pddl.text=This [DATA(BASE)] is made available und
 eml.intellectualRights.license.odcby.text=This [DATA(BASE)-NAME] is made available under the Open Data Commons Attribution License: http://www.opendatacommons.org/licenses/by/1.0/.
 eml.intellectualRights.license.odbl.text=This [DATA(BASE)-NAME] is made available under the Open Database License: http://opendatacommons.org/licenses/odbl/1.0/. Any rights in individual contents of the database are licensed under the Database Contents License: http://opendatacommons.org/licenses/dbcl/1.0/.
 
-####=　
-# RTF=　
-####=　
+####
+# RTF
+####
 rtf.authors=研究責任者(corresponding author)
 rtf.citations=引用文献
 rtf.citations.description=データペーパーの著者名、公開年（カッコ内）、タイトル、ジャーナル名、巻、号（カッコ内）、doi。
@@ -1061,7 +1094,7 @@ rtf.collections.description=Natural collections description
 rtf.collections.parent=Parent collection identifier
 rtf.collections.name=コレクション名
 rtf.collections.identifier=コレクション識別子
-rtf.collections.formatPeriod=Formation period
+rtf.collections.formatPeriod=収集期間（Formation period）
 rtf.collections.livingPeriod=生息期間
 rtf.collections.specimen=標本保存方法
 rtf.collections.curatorial=Curatorialユニット
@@ -1096,22 +1129,22 @@ rtf.references=リファレンス
 
 temporalCoverageType.SINGLE_DATE=単一の日付
 temporalCoverageType.DATE_RANGE=日付の範囲
-temporalCoverageType.FORMATION_PERIOD=Formation Period
+temporalCoverageType.FORMATION_PERIOD=収集期間（Formation Period）
 temporalCoverageType.LIVING_TIME_PERIOD=生息期間
 
 jgtiCuratorialUnitType.COUNT_RANGE=カウントの範囲
 jgtiCuratorialUnitType.COUNT_WITH_UNCERTAINTY=曖昧なカウント
 
-####=　
-# CONFIGURATIONS=　
-####=　
-# Date format=　
+####
+# CONFIGURATIONS
+####
+# Date format
 format.date={yyyy-MM-dd}
 
-# This message appears when the field value is invalid  according to the *Converter.java class=　
+# This message appears when the field value is invalid  according to the *Converter.java class=
 xwork.default.invalid.fieldvalue=無効な値
 
-# Data Tables. Warning: don't translate any word beginning and ending in underscores, e.g. _MENU_=　
+# Data Tables. Warning: don't translate any word beginning and ending in underscores, e.g. _MENU_=
 dataTables.sInfo=全リソース_TOTAL_の_START_から_END_まで表示する。
 dataTables.sInfoEmpty=０リソースの０番目から０番目までを表示する。
 dataTables.sInfoFiltered=(filtered from _MAX_ total)
@@ -1131,7 +1164,7 @@ publishing.skipping=TODO: Publishing version #{0} of resource {1} skipped: the m
 restore.resource.success=公開失敗の後、リソース{1}のヴァージョン#{0}を修復しました。
 restore.resource.failed=リソース{1}のヴァージョン#{0}の修復に失敗しました。
 
-# Auto-publishing=　
+# Auto-publishing
 autopublish=自動公開
 autopublish.off=終了
 autopublish.update=公開　＆　自動公開の間隔
