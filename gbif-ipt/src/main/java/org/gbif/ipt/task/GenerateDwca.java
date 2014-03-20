@@ -382,7 +382,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     // only validate the core data file, if the core record identifier (e.g. occurrenceID, taxonID) has been mapped
     if (arch.getCore().hasTerm(coreIdTerm)) {
       writePublicationLogMessage("The core record ID " + coreIdTerm
-        + " was mapped, so validate it is always present and unique");
+        + " was mapped, so validate it is always present and unique...");
 
       // create a new core data file sorted by ID column 0
       File sortedCore = sortCoreDataFile(arch);
@@ -831,29 +831,29 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       }
     }
 
+    // common message part used in constructing all reporting messages below
+    String mp = " for mapping " + mapping.getExtension().getTitle() + " in source " + mapping.getSource().getName();
+
     // add lines incomplete message
     if (recordsWithError > 0) {
-      addMessage(Level.WARN, String.valueOf(recordsWithError) + " records were skipped due to errors " +
-        "for mapping " + mapping.getExtension().getTitle() + " in source " + mapping.getSource().getName());
+      addMessage(Level.WARN, String.valueOf(recordsWithError) + " records were skipped due to errors" + mp);
     } else {
-      writePublicationLogMessage("No lines were skipped due to errors");
+      writePublicationLogMessage("No lines were skipped due to errors" + mp);
     }
 
     // add wrong lines user message
     if (linesWithWrongColumnNumber > 0) {
-      addMessage(Level.WARN, String.valueOf(linesWithWrongColumnNumber) + " lines with fewer columns than mapped " +
-        "for mapping " + mapping.getExtension().getTitle() + " in source " + mapping.getSource().getName());
+      addMessage(Level.WARN, String.valueOf(linesWithWrongColumnNumber) + " lines with fewer columns than mapped" + mp);
     } else {
-      writePublicationLogMessage("No lines with fewer columns than mapped");
+      writePublicationLogMessage("No lines with fewer columns than mapped" + mp);
     }
 
     // add filter message
     if (recordsFiltered > 0) {
       addMessage(Level.INFO, String.valueOf(recordsFiltered)
-        + " lines did not match the filter criteria and were skipped " +
-        "for mapping " + mapping.getExtension().getTitle() + " in source " + mapping.getSource().getName());
+        + " lines did not match the filter criteria and were skipped " + mp);
     } else {
-      writePublicationLogMessage("All lines match the filter criteria");
+      writePublicationLogMessage("All lines match the filter criteria" + mp);
     }
   }
 
