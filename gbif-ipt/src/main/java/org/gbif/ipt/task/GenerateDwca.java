@@ -99,13 +99,12 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
    * by ID which is an intermediary step performed during validation.
    * 
    * @param mappings list of ExtensionMapping
-   * @param coreRowType row type of core file
    * @throws IllegalArgumentException if not all mappings are mapped to the same extension
    * @throws InterruptedException if the thread was interrupted
    * @throws IOException if problems occurred while persisting new data files
    * @throws GeneratorException if any problem was encountered writing data file
    */
-  private void addDataFile(List<ExtensionMapping> mappings, String coreRowType) throws IOException,
+  private void addDataFile(List<ExtensionMapping> mappings) throws IOException,
     IllegalArgumentException, InterruptedException, GeneratorException {
     checkForInterruption();
     if (mappings == null || mappings.isEmpty()) {
@@ -381,8 +380,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
     // only validate the core data file, if the core record identifier (e.g. occurrenceID, taxonID) has been mapped
     if (arch.getCore().hasTerm(coreIdTerm)) {
-      writePublicationLogMessage("The core record ID " + coreIdTerm
-        + " was mapped, so validate it is always present and unique...");
+      addMessage(Level.INFO, "Validating the core record ID " + coreIdTerm + " is always present and unique. "
+                             + "Depending on the number of records, this can take a while.");
 
       // create a new core data file sorted by ID column 0
       File sortedCore = sortCoreDataFile(arch);
@@ -477,7 +476,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
         addMessage(Level.INFO, "Validated: each line has an ID, and each ID is unique");
       } else {
         addMessage(Level.ERROR,
-          "Archive validation failed, because not every row has a unique ID (please note comparisons are case insensitive");
+          "Archive validation failed, because not every row has a unique ID (please note comparisons are case insensitive)");
         throw new GeneratorException("Can't validate DwC-A for resource " + resource.getShortname()
           + ". Each row must have an ID, and each ID must be unique (please note comparisons are case insensitive)");
       }
@@ -563,8 +562,16 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     } catch (GeneratorException e) {
       // set last error report!
       setState(e);
-      // write exception to publication log file
-      writeFailureToPublicationLog(e);
+
+      // write exception to publication log file when IPT is in debug mode, otherwise just log it
+      if (cfg.debug()) {
+        writeFailureToPublicationLog(e);
+      } else {
+        log.error(
+          "Exception occurred trying to generate Darwin Core Archive for resource " + resource.getTitleAndShortname()
+          + ": " + e.getMessage(), e);
+      }
+
       // rethrow exception, which gets wrapped in an ExecutionException and re caught when calling Future.get
       throw e;
     } catch (InterruptedException e) {
@@ -634,7 +641,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     for (Extension ext : resource.getMappedExtensions()) {
       report();
       try {
-        addDataFile(resource.getMappings(ext.getRowType()), resource.getCoreRowType());
+        addDataFile(resource.getMappings(ext.getRowType()));
       } catch (IOException e) {
         throw new GeneratorException("Problem occurred while writing data file", e);
       } catch (IllegalArgumentException e) {
@@ -690,6 +697,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
         return "Compressing archive";
       case COMPLETED:
         return "Archive generated!";
+      case VALIDATING:
+        return "Validating archive";
       case ARCHIVING:
         return "Archiving version of archive";
       case CANCELLED:

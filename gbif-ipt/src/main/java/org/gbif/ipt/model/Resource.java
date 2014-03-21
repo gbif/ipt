@@ -151,7 +151,7 @@ public class Resource implements Serializable, Comparable<Resource> {
       // also remove existing mappings
       List<ExtensionMapping> ems = new ArrayList<ExtensionMapping>(mappings);
       for (ExtensionMapping em : ems) {
-        if (em.getSource().equals(src)) {
+        if (em.getSource() != null && src.equals(em.getSource())) {
           deleteMapping(em);
           log.debug("Cascading source delete to mapping " + em.getExtension().getTitle());
         }
@@ -284,10 +284,10 @@ public class Resource implements Serializable, Comparable<Resource> {
   public List<Extension> getMappedExtensions() {
     Set<Extension> exts = new HashSet<Extension>();
     for (ExtensionMapping em : mappings) {
-      if (em.getExtension() != null) {
+      if (em.getExtension() != null && em.getSource() != null) {
         exts.add(em.getExtension());
       } else {
-        log.error("Encountered an ExtensionMapping referencing NULL Extension for resource: " + getShortname());
+        log.error("ExtensionMapping referencing NULL Extension or Source for resource: " + getShortname());
       }
     }
     return new ArrayList<Extension>(exts);
