@@ -28,7 +28,7 @@ While the core definition is still undergoing changes, it gets registered into t
 
 When the core definition has been finalized, meaning that its set of properties has been frozen, it will be hosted at [http://rs.gbif.org/core/ http://rs.gbif.org/core/] and included in the [http://gbrds.gbif.org/registry/extensions.json Live Registry's list of extensions] 
 
-The same process applies for non-core extensions and vocabularies.
+The same process applies to registering non-core extensions and vocabularies.
 
 == 3. Configure IPT ==
 
