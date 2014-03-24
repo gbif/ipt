@@ -6,11 +6,11 @@
 
 The IPT always ships with 2 default cores pre-installed: taxon and occurrence. Their XML definitions can be found [http://rs.gbif.org/core/ here].
 
-As of IPT 2.1, there is now the possibility to add custom cores to the IPT, which is useful for communities prototyping new data standards. 
+Since IPT 2.1, there is now the possibility to add custom cores to the IPT, which is useful for communities prototyping new data standards. 
 
-For example, the [http://eubon-ipt.gbif.org/ EU BON IPT] has been configured to publish using a new core called [http://rs.gbif.org/sandbox/core/dwc_event.xml Event Sample]. 
+[http://www.eubon.eu/ EU BON], for example, is currently working on a new [http://rs.gbif.org/sandbox/core/dwc_event.xml Event Core]. They then established the [http://eubon-ipt.gbif.org/ EU BON IPT] that uses this new core, to assist in refining the core. 
 
-The 3 steps below explain how to 1) create your own custom core, 2) register the core with GBIF, and 3) install the core in your IPT.    
+The 3 steps below illustrate how EU BON 1) created their your own custom core, 2) registered the core with GBIF, and 3) configured an IPT to use this core.     
 
 = Instructions =
 
