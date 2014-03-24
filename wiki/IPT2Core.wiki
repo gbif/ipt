@@ -32,7 +32,7 @@ The same process applies to registering non-core extensions and vocabularies.
 
 == 3. Configure IPT ==
 
-Assuming you have an IPT running on Tomcat, stop Tomcat, and open the IPT configuration called ipt.properties file for editing (please note this file is located in the /config directory of your IPT's data directory).
+Assuming you have an IPT running on Tomcat, stop Tomcat, and open the IPT configuration file "ipt.properties" for editing (please note this file is located in the /config directory of your IPT's data directory).
 
 To configure the IPT to use the [http://rs.gbif.org/sandbox/core/dwc_event.xml Event Sample core], we would add the following 2 lines to ipt.properties:
 
