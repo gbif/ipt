@@ -20,7 +20,7 @@ Please note, the core definition must contain a property that serves as the iden
 
 The process of creating a new non-core extension is exactly the same as above.  
 
-The process of creating a new vocabulary as a data type for a property within the core is different only in that the XML definition has to comply with the [http://rs.gbif.org/schema/thesaurus.xsd GBIF Thesaurus Schema]. Once again, it is easiest to adapt an existing vocabulary definition, such as EU BON's [http://rs.gbif.org/sandbox/vocabulary/gbif/quantity-type.xml quantity type vocabulary].
+The process of creating a new vocabulary (as a data type for a property within the core, or non-core extension) is different only in that the XML definition has to comply with the [http://rs.gbif.org/schema/thesaurus.xsd GBIF Thesaurus Schema]. Once again, it is easiest to adapt an existing vocabulary definition, such as EU BON's [http://rs.gbif.org/sandbox/vocabulary/gbif/quantity-type.xml quantity type vocabulary].
 
 == 2. Register Core with GBIF ==
 
