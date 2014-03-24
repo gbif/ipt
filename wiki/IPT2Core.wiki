@@ -34,7 +34,17 @@ The same process applies for non-core extensions and vocabularies.
 
 == 3. Configure IPT ==
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+Assuming you have an IPT running on Tomcat, stop Tomcat, and open the IPT configuration called ipt.properties file for editing (please note this file is located in the /config directory of your IPT's data directory).
+
+To configure the IPT to use the [http://rs.gbif.org/sandbox/core/dwc_event.xml Event Sample core], we would add the following 2 lines to ipt.properties:
+
+{{{
+ipt.core_rowTypes=http://rs.tdwg.org/dwc/terms/Event 
+#ipt.core_idTerms=http://rs.tdwg.org/dwc/terms/eventID
+}}}
+
+This tells the IPT that all extensions with rowType http://rs.tdwg.org/dwc/terms/Event should be used as a core type. Furthermore, it tells the IPT that this http://rs.tdwg.org/dwc/terms/eventID should be used as its identifier term. Multiple cores can be specified, delimiting them with the pipe (|) character. The first entry of ipt.core_idTerms is the ID for the first entry of core_rowTypes etc.
+
+Lastly save the ipt.properties file, start Tomcat, and then [https://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes?tm=6#Install_extension install the core]. The core is available to map to in the IPT.
+
+ 
