@@ -4,7 +4,7 @@
 
 = Introduction =
 
-The IPT always ships with 2 default cores pre-installed: taxon and occurrence. Their XML definitions can be found [http://rs.gbif.org/core/ here].
+The IPT always ships with 2 cores installed by default: taxon and occurrence. Their XML definitions can be found [http://rs.gbif.org/core/ here].
 
 Since IPT 2.1, there is now the possibility to add custom cores to the IPT, which is useful for communities prototyping new data standards. 
 
