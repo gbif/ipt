@@ -40,7 +40,7 @@ To configure the IPT to use the [http://rs.gbif.org/sandbox/core/dwc_event.xml E
 
 {{{
 ipt.core_rowTypes=http://rs.tdwg.org/dwc/terms/Event 
-#ipt.core_idTerms=http://rs.tdwg.org/dwc/terms/eventID
+ipt.core_idTerms=http://rs.tdwg.org/dwc/terms/eventID
 }}}
 
 This tells the IPT that all extensions with rowType http://rs.tdwg.org/dwc/terms/Event should be used as a core type. Furthermore, it tells the IPT that this http://rs.tdwg.org/dwc/terms/eventID should be used as its identifier term. Multiple cores can be specified, delimiting them with the pipe (|) character. The first entry of ipt.core_idTerms is the ID for the first entry of core_rowTypes etc.
