@@ -8,7 +8,7 @@ The IPT always ships with 2 cores installed by default: taxon and occurrence. Si
 
 [http://www.eubon.eu/ EU BON], for example, is currently working on a new [http://rs.gbif.org/sandbox/core/dwc_event.xml Event Core], and have configured the [http://eubon-ipt.gbif.org/ EU BON IPT] to use it. In this way, their community can start trying to map their data to it, and iteratively refine its set of properties. 
 
-The 3 steps below illustrate how EU BON 1) created their your own custom core, 2) registered the core with GBIF, and 3) configured an IPT to use this core. These guiding steps will clearly outline the process of adding a new core to an IPT.  
+The 3 steps below how to 1) create your new core, 2) register it with GBIF, and 3) configure an IPT to use it. 
 
 = Steps: =
 
