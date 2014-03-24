@@ -4,9 +4,7 @@
 
 = Introduction =
 
-The IPT always ships with 2 cores installed by default: taxon and occurrence. Their XML definitions can be found [http://rs.gbif.org/core/ here].
-
-Since IPT 2.1, there is now the possibility to add custom cores to the IPT, which is useful for communities prototyping new data standards. 
+The IPT always ships with 2 cores installed by default: taxon and occurrence. Since IPT 2.1, there is now the possibility to add custom cores to the IPT, which is useful for communities prototyping new data standards. 
 
 [http://www.eubon.eu/ EU BON], for example, is currently working on a new [http://rs.gbif.org/sandbox/core/dwc_event.xml Event Core], and have configured the [http://eubon-ipt.gbif.org/ EU BON IPT] to use it. In this way, their community can start refining the core by trying to map their data to this new core. 
 
