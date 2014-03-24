@@ -18,16 +18,15 @@ The 3 steps below illustrate how EU BON 1) created their your own custom core, 2
 
 The core XML definition has to comply with the [http://rs.gbif.org/schema/extension.xsd GBIF Extension Schema]. It is easiest to simply adapt an existing core definition, such as EU BON's [http://rs.gbif.org/sandbox/core/dwc_event.xml Event Core]. 
 
-Please note, the core definition must contain a property that serves as the identifier (e.g. eventID for the Event Core). The rowType and identifier property will be used later in the IPT configuration.  
+Please note, the core definition must contain a property that serves as the identifier (e.g. http://rs.tdwg.org/dwc/terms/eventID for the [http://rs.gbif.org/sandbox/core/dwc_event.xml Event Core]).   
 
-If a new vocabulary needs to be created as a data type for a given property, the process mirrors the above only that the XML definition has to comply with the [http://rs.gbif.org/schema/thesaurus.xsd GBIF Thesaurus Schema]. Similarly, it is easiest to simply adapt an existing vocabulary definition, such as EU BON's [http://rs.gbif.org/sandbox/vocabulary/gbif/quantity-type.xml quantity type vocabulary].
+The process of creating a new vocabulary (as a data type) for a property is different only in that the XML definition has to comply with the [http://rs.gbif.org/schema/thesaurus.xsd GBIF Thesaurus Schema]. Once again, it is easiest to adapt an existing vocabulary definition, such as EU BON's [http://rs.gbif.org/sandbox/vocabulary/gbif/quantity-type.xml quantity type vocabulary].
 
 == Step 2. Register Core with GBIF ==
 
-Until the core XML definition has been finalized, it will be registered into the GBIF Sandbox Registry. Simply email your draft XML definition to the GBIF development team (dev@gbif.org). If  
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+The draft version of a core definition gets registered into the GBIF Sandbox Registry. Simply email your XML definition that's XML valid to the GBIF development team (dev@gbif.org), and they'll take care of the rest. The end result is that the core definition will be hosted at [http://rs.gbif.org/sandbox/core/ http://rs.gbif.org/sandbox/core/] and included in the [http://gbrdsdev.gbif.org/registry/extensions.json Sandbox Registry's list of extensions].
+
+When the core definition has been finalized, meaning that its set of properties has been frozen, it will be hosted at [http://rs.gbif.org/core/ http://rs.gbif.org/core/] and included in the http://gbrds.gbif.org/registry/extensions.json Live Registry's list of extensions] 
 
 == Step 3. Configure IPT ==
 
