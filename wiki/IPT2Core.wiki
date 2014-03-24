@@ -1,4 +1,7 @@
 #summary Instructions how to add a new core to the IPT.
+<font color=red>
+_Warning: This page contains configuration instructions for advanced IPT users only_
+</font>
 
 <wiki:toc max_depth="2" />
 
