@@ -12,9 +12,9 @@ Since IPT 2.1, there is now the possibility to add custom cores to the IPT, whic
 
 The 3 steps below illustrate how EU BON 1) created their your own custom core, 2) registered the core with GBIF, and 3) configured an IPT to use this core. These guiding steps will clearly outline the process of adding a new core to an IPT.  
 
-= Instructions =
+= Steps: =
 
-== Step 1. Write Core XML Definition ==
+== 1. Write Core XML Definition ==
 
 The core XML definition has to comply with the [http://rs.gbif.org/schema/extension.xsd GBIF Extension Schema]. It is easiest to simply adapt an existing core definition, such as EU BON's [http://rs.gbif.org/sandbox/core/dwc_event.xml Event Core]. 
 
@@ -24,7 +24,7 @@ The process of creating a new non-core extension is exactly the same as above.
 
 The process of creating a new vocabulary (as a data type) for a property is different only in that the XML definition has to comply with the [http://rs.gbif.org/schema/thesaurus.xsd GBIF Thesaurus Schema]. Once again, it is easiest to adapt an existing vocabulary definition, such as EU BON's [http://rs.gbif.org/sandbox/vocabulary/gbif/quantity-type.xml quantity type vocabulary].
 
-== Step 2. Register Core with GBIF ==
+== 2. Register Core with GBIF ==
 
 While the core definition is still undergoing changes, it gets registered into the GBIF Sandbox Registry. Registration can be performed by email your XML definition (formatted and validating) to the GBIF development team (dev@gbif.org). Once they have verified it's correct, it will be upload to [http://rs.gbif.org/sandbox/core/ http://rs.gbif.org/sandbox/core/], and included in the [http://gbrdsdev.gbif.org/registry/extensions.json Sandbox Registry's list of extensions].
 
@@ -32,7 +32,7 @@ When the core definition has been finalized, meaning that its set of properties 
 
 The same process applies for non-core extensions and vocabularies.
 
-== Step 3. Configure IPT ==
+== 3. Configure IPT ==
 
 Add your content here.  Format your content with:
   * Text in *bold* or _italic_
