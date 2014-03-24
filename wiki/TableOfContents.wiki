@@ -12,7 +12,7 @@
    * [IPT2ManualNotes#About_the_IPT About, Credits]
    * [IPT2ManualNotes#Resources Resources]
    * [IPT2Customization Style the IPT]
-   * [IPT2Core Add New Core to the IPT]
+   * [IPT2Core Adding a New Core]
    * [IPT2ManualNotes#Glossary Glossary]
    * [FAQ]
  * [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes?wl=es User Manual (Spanish)]
