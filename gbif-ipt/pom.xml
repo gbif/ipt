@@ -71,7 +71,8 @@
     <mockito-all.version>1.9.5</mockito-all.version>
     <mysql-connector-java.version>5.1.29</mysql-connector-java.version>
     <ojdbc.version>14</ojdbc.version>
-    <postgresql.version>9.3-1101-jdbc41</postgresql.version>
+    <!-- warning!! latest postgresql-9.3-1101-jdbc41.jar does not work with Java6 -->
+    <postgresql.version>9.3-1100-jdbc4</postgresql.version>
     <javax.mail.version>1.4.7</javax.mail.version>
     <servlet-api.version>2.5</servlet-api.version>
     <slf4j.version>1.7.6</slf4j.version>
