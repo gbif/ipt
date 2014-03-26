@@ -8,6 +8,7 @@ package org.gbif.ipt.struts2;
  * governing permissions and limitations under the License.
  */
 
+import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.Constants;
 
 import java.util.Map;
@@ -24,10 +25,18 @@ public class ResourceSessionInterceptor extends AbstractInterceptor {
 
   @Override
   public String intercept(ActionInvocation invocation) throws Exception {
-    String requestedResource = RequireManagerInterceptor.getResourceParam(invocation);
-    if (requestedResource != null) {
+    // reset the current resource in a user's session, only if resource parameter included in request
+    if (RequireManagerInterceptor.hasResourceParam(invocation)) {
       Map<String, Object> session = invocation.getInvocationContext().getSession();
-      session.put(Constants.SESSION_RESOURCE, requestedResource);
+      String requestedResource = RequireManagerInterceptor.getResourceParam(invocation);
+      if (requestedResource != null) {
+        // if the value was not null, the current resource in the session gets replaced
+        session.put(Constants.SESSION_RESOURCE, requestedResource);
+      } else {
+        // if the value was null, the current resource in the session gets removed
+        session.remove(Constants.SESSION_RESOURCE);
+        return BaseAction.NOT_FOUND;
+      }
     }
     return invocation.invoke();
   }

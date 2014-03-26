@@ -36,6 +36,17 @@ public class RequireManagerInterceptor extends AbstractInterceptor {
     return requestedResource;
   }
 
+  /**
+   * Checks whether the resource parameter is used in the request.
+   *
+   * @param invocation ActionInvocation
+   *
+   * @return true if the resource parameter was used in the request, false otherwise.
+   */
+  protected static boolean hasResourceParam(ActionInvocation invocation) {
+    return invocation.getInvocationContext().getParameters().containsKey(Constants.REQ_PARAM_RESOURCE);
+  }
+
   public static boolean isAuthorized(User user, Resource resource) {
     if (user.hasAdminRights()) {
       return true;
@@ -59,23 +70,23 @@ public class RequireManagerInterceptor extends AbstractInterceptor {
     Map<String, Object> session = invocation.getInvocationContext().getSession();
     User user = (User) session.get(Constants.SESSION_USER);
     if (user != null && user.hasManagerRights()) {
-      // now also check if we have rights for a specific resource requested
-      // lets see if we are about to manage a new resource
-      String requestedResource = getResourceParam(invocation);
-      if (requestedResource != null) {
-        // does resource exist at all?
-        Resource resource = resourceManager.get(requestedResource);
-        if (resource == null) {
-          return BaseAction.NOT_FOUND;
-        }
-        // authorized?
-        if (!isAuthorized(user, resource)) {
-          return BaseAction.NOT_ALLOWED;
-        }
-        // locked?
-        if (resourceManager.isLocked(requestedResource)) {
-          return BaseAction.LOCKED;
-        }
+        // now also check if we have rights for a specific resource requested
+        // lets see if we are about to manage a new resource
+        String requestedResource = getResourceParam(invocation);
+        if (requestedResource != null) {
+          // does resource exist at all?
+          Resource resource = resourceManager.get(requestedResource);
+          if (resource == null) {
+            return BaseAction.NOT_FOUND;
+          }
+          // authorized?
+          if (!isAuthorized(user, resource)) {
+            return BaseAction.NOT_ALLOWED;
+          }
+          // locked?
+          if (resourceManager.isLocked(requestedResource)) {
+            return BaseAction.LOCKED;
+          }
       }
       return invocation.invoke();
     }
