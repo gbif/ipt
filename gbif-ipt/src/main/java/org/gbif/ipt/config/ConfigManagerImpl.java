@@ -174,7 +174,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     log.info("Loading dwc extensions ...");
     extensionManager.load();
 
-    if (dataDir.configFile(RegistrationManagerImpl.PERSISTENCE_FILE_V1).exists()) {
+    if (!dataDir.configFile(RegistrationManagerImpl.PERSISTENCE_FILE_V2).exists()) {
       log.info("Perform 1-time event: migrate registration.xml into registration2.xml with passwords encrypted");
       registrationManager.encryptRegistration();
     }
