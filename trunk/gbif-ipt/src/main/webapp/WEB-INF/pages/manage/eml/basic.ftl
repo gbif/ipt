@@ -11,7 +11,9 @@
           $("#resource\\.coreType").val('occurrence');
 				} else if (resourceType.toLowerCase() == "checklist") {
           $("#resource\\.coreType").val('checklist');
-				}
+				} else if (resourceType.toLowerCase() == "other") {
+            $("#resource\\.coreType").val('other');
+        }
 			}
 
       // core type selection is only disabled, if resource has core
