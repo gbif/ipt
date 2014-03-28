@@ -217,7 +217,7 @@ If there are any public resources, they will appear in a table having the follow
 *Organisation* - the organisation under which the resource has been registered, if any. If the resource is not registered, the value in the Organisation column will be "Not registered". Review the information under the "Organisations" heading in the "Administration Menu" section for more information about registering organisations and registering a resource under an organisation.<br>
 *Type* - the type of the resource as given in the Type drop down on the [IPT2ManualNotes#Basic_Metadata Basic Metadata] page of the resource metadata<br>
 *Subtype* - the subtype of the resource as given in the Subtype drop down on the [IPT2ManualNotes#Basic_Metadata Basic Metadata] page of the resource metadata<br>
-*Records* - the number of rows of data in the core data file that were successfully loaded into the IPT for the resource.<br>
+*Records* - the number of rows of data in the core data file of the last published Darwin Core Archive for the resource.<br>
 *Last modified* - either the date the resource was created or the date on which the data or metadata were last modified, whichever is more recent.<br>
 *Last publication* - the date the resource was last published.<br>
 *Next publication* - the date the resource will be published next.
