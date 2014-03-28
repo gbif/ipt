@@ -27,19 +27,25 @@ public class SimpleTextProvider {
   }
 
   /**
-   * Finds the given resource bundle by it's name.
-   * <p/>
+   * Finds the given resource bundle by it's name and locale.
+   * <br/>
    * Will use <code>Thread.currentThread().getContextClassLoader()</code> as the classloader.
-   * 
+   *
    * @param aBundleName the name of the bundle (usually it's FQN classname).
-   * @param locale the locale.
-   * @return the bundle, <tt>MissingResourceException</tt> if not found.
+   * @param locale      the locale.
+   *
+   * @return the bundle, defaulting to the English bundle if no match for locale found or if Exception occurred
    */
   public ResourceBundle findResourceBundle(String aBundleName, Locale locale) {
+    Locale currentLocale = Locale.getDefault();
     try {
+      // override default Locale in case incoming locale isn't matched - see ResourceBundle.getFallbackLocale()
+      Locale.setDefault(Locale.ENGLISH);
       return ResourceBundle.getBundle(aBundleName, locale, Thread.currentThread().getContextClassLoader());
-    } catch (Exception e) { // in case of error the english resource bundle is used
+    } catch (Exception e) {
       return ResourceBundle.getBundle(aBundleName, Locale.ENGLISH, Thread.currentThread().getContextClassLoader());
+    } finally {
+      Locale.setDefault(currentLocale);
     }
   }
 

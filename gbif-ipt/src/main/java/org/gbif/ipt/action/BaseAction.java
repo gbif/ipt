@@ -13,10 +13,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
-
 import javax.servlet.http.HttpServletRequest;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionSupport;
@@ -135,19 +133,21 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
   }
 
   /**
-   * Custom simple text provider for much faster lookups.
-   * This increases page rendering with lots of <@s:text> tags by nearly 100%.
+   * Return the locale language code.
    * Struts2 manages the locale in the session param WW_TRANS_I18N_LOCALE via the i18n interceptor.
-   * If the Locale is null, the default language "en" is returned.
-   * 
-   * @return Locale language, or default language string "en" if Locale was null
+   *
+   * @return locale language code, defaulting to "en" if locale was null or if locale did not match a local
+   * ResourceBundle
    */
   public String getLocaleLanguage() {
-    String language = null;
     if (getLocale() != null) {
-      language = Strings.emptyToNull(XSSUtil.stripXSS(getLocale().getLanguage()).trim());
+      String requestedLocale = Strings.emptyToNull(XSSUtil.stripXSS(getLocale().getLanguage()).trim());
+      if (requestedLocale != null) {
+        ResourceBundle resourceBundle = textProvider.getTexts(new Locale(requestedLocale));
+        return resourceBundle.getLocale().getLanguage();
+      }
     }
-    return Objects.firstNonNull(language, Locale.ENGLISH.getLanguage());
+    return Locale.ENGLISH.getLanguage();
   }
 
   @Override
