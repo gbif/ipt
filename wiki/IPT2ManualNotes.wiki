@@ -1,8 +1,12 @@
 =The GBIF Integrated Publishing Toolkit User Manual=
 
-* IPT Version: 2.0.5*
+<font color=red>
+_Warning: This page is currently being updated in preparation for the release of IPT 2.1. The User Manual for version 2.0.5 can be found [IPTUserManualv205 here.] _
+</font>
 
- 
+* IPT Version: 2.1*
+
+_For the IPT Version 2.0.5 User Manual, please go [IPTUserManualv205 here.]_ 
 _For the IPT Version 2.0.4 User Manual, please go [IPTUserManualv204 here.]_
 _For the IPT Version 2.0.3 User Manual, please go [IPTUserManualv203 here.]_
 _For the IPT Version 2.0.2 User Manual, please go [IPTUserManualv202 here.]_
