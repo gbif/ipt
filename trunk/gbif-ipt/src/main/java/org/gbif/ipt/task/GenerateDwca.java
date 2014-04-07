@@ -95,8 +95,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
    * Adds a single data file for a list of extension mappings that must all be mapped to the same extension.
    * </br>
    * The ID column is always the 1st column (index 0) and is always equal to the core record identifier that has been
-   * mapped (e.g. occurrenceID, taxonID, etc). The ID gets converted into lower case to facilitate sorting the file
-   * by ID which is an intermediary step performed during validation.
+   * mapped (e.g. occurrenceID, taxonID, etc).
    * 
    * @param mappings list of ExtensionMapping
    * @throws IllegalArgumentException if not all mappings are mapped to the same extension
@@ -332,7 +331,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
   /**
    * Sort the core data file of a Darwin Core Archive by its ID column (always index 0 or 1st column). Sorting is case
-   * sensitive, therefore it is expected that all IDs have been converted into lower case.
+   * sensitive.
    * 
    * @param arch Archive
    * @return the core data file of the Archive sorted by its ID column 0
@@ -712,10 +711,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
   /**
    * Write data file for mapping.
-   * </br>
-   * The ID column (index 0) gets converted into lower case to facilitate sorting the file by ID which is an
-   * intermediary step performed during validation.
-   * 
+   *
    * @param writer file writer for single data file
    * @param inCols index ordered list of all output columns apart from id column
    * @param mapping mapping
