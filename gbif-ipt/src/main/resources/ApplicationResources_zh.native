@@ -791,8 +791,7 @@ autopublish.update=改變發布週期並發布
 autopublish.activate=發布並開啟自動定期發布
 autopublish.disable=發布並關閉自動定期發布
 autopublish.interval=選擇發布週期
-autopublish.help=欲 <strong>開啟</strong> 自動定期發布，請選擇一發布週期（共有五個選項）後點選發布。欲 <strong>改變</strong> 自動定期發布之週期，選擇一新選項後點選發布。欲 <strong>關閉</strong> 自動定期更新，選擇「關閉」後點選發布。 
-
+autopublish.help=欲 <strong>開啟</strong> 自動定期發布，請選擇一發布週期（共有五個選項）後點選發布。欲 <strong>改變</strong> 自動定期發布之週期，選擇一新選項後點選發布。欲 <strong>關閉</strong> 自動定期更新，選擇「關閉」後點選發布。
 manage.overview.resource.managers=資源管理者
 manage.overview.resource.managers.description=資源能由多位管理者所管理。您可以授與其他管理者修改{0}之權限。
 manage.overview.resource.managers.creator=創建者

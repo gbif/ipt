@@ -412,7 +412,7 @@ admin.config.googleMapsKey=Clave de Google Maps
 
 admin.config.analyticsGbif=Habilitar GBIF Analytics
 admin.config.analyticsGbif.help=Por favor marque esta casilla si desea permitir que GBIF incluya su IPT en el monitoreo global.
-admin.config.analyticsGbif.error= Modo GBIF Analytics inválido (debe ser verdadero or falso)
+admin.config.analyticsGbif.error=Modo GBIF Analytics inválido (debe ser verdadero or falso)
 admin.config.analyticsKey=Clave de Google Analytics
 admin.config.analyticsKey.help=Google Analytics es un servicio ofrecido por Google para supervisar el uso de una aplicación web. Por favor, introduzca su clave de Google Analytics para habilitar el seguimiento de uso de su IPT.
 admin.config.analyticsKey.error=Clave de Google Analytics inválida
@@ -1022,7 +1022,7 @@ eml.qualityControl.help=Una descripción de las acciones tomadas para controlar 
 eml.methodSteps=Metodología paso a paso
 eml.methodSteps.help=Permite documentar un serie de pasos seguidos para crear los datos del recurso. Puede consistir de descripciones textuales de los pasos, literatura relevante, software, instrumentación y datos de origen.
 eml.citation.citation=Como citar este recurso
-eml.citation.citation.help= La manera en la que se debe citar este conjunto de datos.<br /><br /><br /><br />Ejemplo en un caso donde el conjunto de datos es propiedad de una organización:<br /><br />"Centro nacional de Biodiversidad (2013). Vertebrados de la Cuenca de la Orinoquia, 1500 registros, aportados por  Pérez, S. (Investigador principal, proveedor de contenidos, proveedor de metadatos), Sánchez, M. (Procesador), Valencia, D. (Custodio, proveedor de metadatos), Martínez, V. B. (Publicador, editor), En línea, http://ipt.sibcolombia.net/resource.do?r=verte_orin publicado el  01/09/2013."<br /><br />Ejemplo en un caso donde el conjunto de datos es propiedad de un grupo de personas:<br /><br />"Valencia, D.,  Rodríguez, R., Martínez, V. B. (2013 - ). Vertebrados de la Cuenca de la Orinoquia, 1500 registros, En línea, http://ipt.sibcolombia.net/resource.do?r=verte_orin, publicado el 01/09/2013, versión 2.3 (actualizado el 21/11/2013)." <br />Para mayor información ingrese a: http://www.sibcolombia.net/web/sib/como-crear-la-referencia-de-mi-recurso<br />
+eml.citation.citation.help=La manera en la que se debe citar este conjunto de datos.<br /><br /><br /><br />Ejemplo en un caso donde el conjunto de datos es propiedad de una organización:<br /><br />"Centro nacional de Biodiversidad (2013). Vertebrados de la Cuenca de la Orinoquia, 1500 registros, aportados por  Pérez, S. (Investigador principal, proveedor de contenidos, proveedor de metadatos), Sánchez, M. (Procesador), Valencia, D. (Custodio, proveedor de metadatos), Martínez, V. B. (Publicador, editor), En línea, http://ipt.sibcolombia.net/resource.do?r=verte_orin publicado el  01/09/2013."<br /><br />Ejemplo en un caso donde el conjunto de datos es propiedad de un grupo de personas:<br /><br />"Valencia, D.,  Rodríguez, R., Martínez, V. B. (2013 - ). Vertebrados de la Cuenca de la Orinoquia, 1500 registros, En línea, http://ipt.sibcolombia.net/resource.do?r=verte_orin, publicado el 01/09/2013, versión 2.3 (actualizado el 21/11/2013)." <br />Para mayor información ingrese a: http://www.sibcolombia.net/web/sib/como-crear-la-referencia-de-mi-recurso<br />
 eml.citation.identifier=Identificador de la citación para este recurso
 eml.citation.identifier.help=Un identificador persistente para la citación (URI, DOI u otro).
 eml.bibliographicCitationSet.bibliographicCitations.citation=Referencia
@@ -1062,7 +1062,7 @@ eml.logoUrl.help=La URL del logo asociado con el recurso. Si no posee una URL pa
 eml.purpose=Propósito
 eml.purpose.help=Recuento de los propósitos con los que se desarrolló el conjunto de datos. Incluye los objetivos de la creación del conjunto de datos y el alcance esperado del mismo.
 eml.intellectualRights=Derechos de Propiedad Intelectual
-eml.intellectualRights.help=Una declaración de la gestión de derechos para el recurso, o hacer referencia a un servicio que provea tal información. 
+eml.intellectualRights.help=Una declaración de la gestión de derechos para el recurso, o hacer referencia a un servicio que provea tal información.
 eml.additionalInfo=Información adicional
 eml.additionalInfo.help=Cualquier información que no esté descrita en los demás campos del metadato, p. ej.: historia del proyecto, publicaciones que han empleado los datos asociados a este metadato, información sobre datos relacionados publicados, etc.
 eml.specimenPreservationMethod=Método de preservación de los especímenes
