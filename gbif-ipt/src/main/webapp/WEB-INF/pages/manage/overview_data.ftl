@@ -73,7 +73,7 @@
                 <input name="r" type="hidden" value="${resource.shortname}"/>
                 <select name="id" id="rowType" size="1">
                 <#-- if core hasn't been selected yet add help text to help user choose core type -->
-                  <#if (!resource.coreType?has_content || resource.coreType?lower_case == "other") && (potentialExtensions?size > 1) >
+                  <#if !resource.coreType?has_content && (potentialExtensions?size > 1) >
                       <option><@s.text name='manage.overview.DwC.Mappings.select'/></option>
                   </#if>
                   <#list potentialExtensions as e>
@@ -97,7 +97,7 @@
         </p>
 
     <#-- if core hasn't been selected yet add help text to help user understand how to choose core type -->
-    <#if (potentialExtensions?size>1) && (!resource.coreType?has_content || resource.coreType?lower_case == "other") >
+    <#if (potentialExtensions?size>1) && !resource.coreType?has_content >
         <p>
             <img class="info" src="${baseURL}/images/info.gif"/>
             <em><@s.text name='manage.overview.DwC.Mappings.coretype.description'/>
