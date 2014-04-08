@@ -996,37 +996,41 @@ public class Eml2Rtf {
       boolean firstCoverage = true;
       for (TemporalCoverage coverage : eml.getTemporalCoverages()) {
         if (coverage.getType().equals(TemporalCoverageType.SINGLE_DATE)) {
-          if (firstCoverage) {
-            firstCoverage = false;
-          } else {
+          if (coverage.getStartDate() != null) {
+            if (firstCoverage) {
+              firstCoverage = false;
+            } else {
+              p.add(Chunk.NEWLINE);
+            }
+            p.add(new Phrase(getText("rtf.tempcoverage") + ": ", fontTitle));
+            if (timeFormat.format(coverage.getStartDate()).equals("001")) {
+              p.add(yearFormat.format(coverage.getStartDate()));
+            } else {
+              p.add(dateFormat.format(coverage.getStartDate()));
+            }
             p.add(Chunk.NEWLINE);
           }
-          p.add(new Phrase(getText("rtf.tempcoverage") + ": ", fontTitle));
-          if (timeFormat.format(coverage.getStartDate()).equals("001")) {
-            p.add(yearFormat.format(coverage.getStartDate()));
-          } else {
-            p.add(dateFormat.format(coverage.getStartDate()));
-          }
-          p.add(Chunk.NEWLINE);
         } else if (coverage.getType() == TemporalCoverageType.DATE_RANGE) {
-          if (firstCoverage) {
-            firstCoverage = false;
-          } else {
+          if (coverage.getStartDate() != null && coverage.getEndDate() != null) {
+            if (firstCoverage) {
+              firstCoverage = false;
+            } else {
+              p.add(Chunk.NEWLINE);
+            }
+            p.add(new Phrase(getText("rtf.tempcoverage") + ": ", fontTitle));
+            if (timeFormat.format(coverage.getStartDate()).equals("001")) {
+              p.add(yearFormat.format(coverage.getStartDate()));
+            } else {
+              p.add(dateFormat.format(coverage.getStartDate()));
+            }
+            p.add(" - ");
+            if (timeFormat.format(coverage.getEndDate()).equals("001")) {
+              p.add(yearFormat.format(coverage.getEndDate()));
+            } else {
+              p.add(dateFormat.format(coverage.getEndDate()));
+            }
             p.add(Chunk.NEWLINE);
           }
-          p.add(new Phrase(getText("rtf.tempcoverage") + ": ", fontTitle));
-          if (timeFormat.format(coverage.getStartDate()).equals("001")) {
-            p.add(yearFormat.format(coverage.getStartDate()));
-          } else {
-            p.add(dateFormat.format(coverage.getStartDate()));
-          }
-          p.add(" - ");
-          if (timeFormat.format(coverage.getEndDate()).equals("001")) {
-            p.add(yearFormat.format(coverage.getEndDate()));
-          } else {
-            p.add(dateFormat.format(coverage.getEndDate()));
-          }
-          p.add(Chunk.NEWLINE);
         }
       }
       doc.add(p);
