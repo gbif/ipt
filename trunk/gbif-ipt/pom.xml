@@ -48,6 +48,7 @@
     <validation-api.version>1.1.0.Final</validation-api.version>
     <dwca-reader.version>1.16</dwca-reader.version>
     <gbif-api.version>0.12</gbif-api.version>
+    <gbif-parsers.version>0.7</gbif-parsers.version>
     <gbif-registry.version>2.13</gbif-registry.version>
     <gbif-common-ws.version>0.13</gbif-common-ws.version>
     <gbif-metadata-profile.version>1.0.2.3</gbif-metadata-profile.version>
@@ -304,6 +305,11 @@
       <groupId>org.gbif</groupId>
       <artifactId>gbif-api</artifactId>
       <version>${gbif-api.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.gbif</groupId>
+      <artifactId>gbif-parsers</artifactId>
+      <version>${gbif-parsers.version}</version>
     </dependency>
     <dependency>
       <groupId>org.gbif.registry</groupId>
