@@ -44,6 +44,7 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 
@@ -58,7 +59,7 @@ public class ConfigManagerImplTest {
   /**
    * @return a new ConfigManager instance.
    */
-  private ConfigManager getConfigManager() throws ParserConfigurationException, SAXException {
+  private ConfigManagerImpl getConfigManager() throws ParserConfigurationException, SAXException {
     DataDir mockedDataDir = MockDataDir.buildMock();
     InputStreamUtils streamUtils = new InputStreamUtils();
     ResourceManager mockedResourceManager = MockResourceManager.buildMock();
@@ -176,6 +177,17 @@ public class ConfigManagerImplTest {
     newProxy = "";
     configManager.setProxy(newProxy);
     assertEquals(newProxy, appConfig.getProperty(AppConfig.PROXY));
+  }
+
+  @Test
+  public void testValidateBaseURLBadHostName()
+    throws ParserConfigurationException, SAXException, MalformedURLException {
+    // Creating configManager
+    ConfigManagerImpl configManager = getConfigManager();
+
+    // Base URL invalid, since host name has underscore "_", which violoates RFC 1123 and RFC 952
+    URL testURL = new URL("http://testipt1_vh.gbif.org:8080/ipt");
+    assertFalse(configManager.validateBaseURL(testURL));
   }
 
 }
