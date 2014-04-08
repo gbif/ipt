@@ -13,7 +13,10 @@
 
 package org.gbif.ipt.action.manage;
 
+import org.gbif.api.vocabulary.Country;
 import org.gbif.api.vocabulary.DatasetSubtype;
+import org.gbif.common.parsers.CountryParser;
+import org.gbif.common.parsers.core.ParseResult;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
@@ -22,7 +25,6 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.ipt.utils.CountryUtils;
 import org.gbif.ipt.utils.LangUtils;
 import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.validation.EmlValidator;
@@ -67,6 +69,8 @@ public class MetadataAction extends ManagerBaseAction {
   // to group dataset subtype vocabulary keys
   private List<String> checklistSubtypeKeys;
   private List<String> occurrenceSubtypeKeys;
+
+  private static final CountryParser COUNTRY_PARSER = CountryParser.getInstance();
 
   private static final List<String> SECTIONS = Arrays
     .asList("basic", "geocoverage", "taxcoverage", "tempcoverage", "keywords", "parties", "project", "methods",
@@ -282,15 +286,21 @@ public class MetadataAction extends ManagerBaseAction {
       // contact
       Agent contact = resource.getEml().getContact();
       if (contact != null) {
-        if (contact.getAddress().getCountry() != null) {
-          contact.getAddress().setCountry(CountryUtils.iso2(contact.getAddress().getCountry()));
+        String countryValue = contact.getAddress().getCountry();
+        if (countryValue != null) {
+          ParseResult<Country> result = COUNTRY_PARSER.parse(countryValue);
+          if (result.isSuccessful()) {
+            contact.getAddress().setCountry(result.getPayload().getIso2LetterCode());
+          }
         }
       }
       // creator
       Agent creator = resource.getEml().resourceCreator();
       if (creator != null) {
-        if (creator.getAddress().getCountry() != null) {
-          creator.getAddress().setCountry(CountryUtils.iso2(creator.getAddress().getCountry()));
+        String countryValue = creator.getAddress().getCountry();
+        if (countryValue != null) {
+          ParseResult<Country> result = COUNTRY_PARSER.parse(countryValue);
+          creator.getAddress().setCountry(result.getPayload().getIso2LetterCode());
         }
       }
 
@@ -304,18 +314,32 @@ public class MetadataAction extends ManagerBaseAction {
       current.setEmail(getCurrentUser().getEmail());
 
       if (!isAgentWithoutRoleEmpty(metadataProvider)) {
-        if (metadataProvider.getAddress().getCountry() != null) {
-          metadataProvider.getAddress().setCountry(CountryUtils.iso2(metadataProvider.getAddress().getCountry()));
+        String countryValue = metadataProvider.getAddress().getCountry();
+        if (countryValue != null) {
+          ParseResult<Country> result = COUNTRY_PARSER.parse(countryValue);
+          metadataProvider.getAddress().setCountry(result.getPayload().getIso2LetterCode());
         }
       } else {
         // auto populate with current user
         resource.getEml().setMetadataProvider(current);
       }
 
-      // auto populate user with current user
+      // auto populate user with current user if associated parties list is empty, and eml.xml hasn't been written yet
       if (!resourceManager.isEmlExisting(resource.getShortname()) && resource.getEml().getAssociatedParties().isEmpty()) {
         current.setRole("user");
         resource.getEml().getAssociatedParties().add(current);
+      }
+      // otherwise, ensure associated parties' country value get converted into 2 letter iso code for proper display
+      else if (!resource.getEml().getAssociatedParties().isEmpty()) {
+        for (Agent party : resource.getEml().getAssociatedParties()) {
+          String countryValue = party.getAddress().getCountry();
+          if (countryValue != null) {
+            ParseResult<Country> result = COUNTRY_PARSER.parse(countryValue);
+            if (result.isSuccessful()) {
+              party.getAddress().setCountry(result.getPayload().getIso2LetterCode());
+            }
+          }
+        }
       }
 
       // if it is a submission of the taxonomic coverage, clear the session list
