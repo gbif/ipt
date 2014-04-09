@@ -26,9 +26,6 @@ package org.gbif.ipt.utils;
  */
 public class Base64Coder {
 
-  // The line separator string of the operating system.
-  private static final String systemLineSeparator = System.getProperty("line.separator");
-
   // Mapping table from 6-bit nibbles to Base64 characters.
   private static char[] map1 = new char[64];
 
