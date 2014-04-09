@@ -608,6 +608,7 @@ To migrate an *existing registered resource* to your *IPT resource*, simply foll
   # Determine the owning organisation of the *existing registered resource*, and ensure that it is added to the IPT as an organisation, and that it is configured to publish datasets. To do so, please refer to the section "Add Organisation". 
   # Determine the GBIF Registry UUID of the *existing registered resource* (it will have a format similar to the following: "5d637678-cb64-4863-a12b-78b4e1a56628"). Depending on whether you are running the IPT in test or production mode, you would visit http://gbrdsdev.gbif.org or http://gbrds.gbif.org respectively. 
   # Add this UUID to the list of the *IPT resource's* alternative identifiers on the Additional Metadata page. Don't forget to save the Additional Metadata page. 
+  # Ensure that no other public or registered resource in your IPT includes this UUID in their list of alternative identifiers. In cases where you are trying to replace a registered resource that already exists in your IPT, the other resource has to be deleted first.
   # Select the owning organisation from the drop-down list on the resource overview page, and click the register button. Similar to any other registration, you will have to confirm that you have read and understood the GBIF data sharing agreement before the registration will be executed.
   # *Send an email to helpdesk@gbif.org alerting them about the update.* In your email please enclose:
     # the name and URL (or GBIF Registry UUID) of your IPT
