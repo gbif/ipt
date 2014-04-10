@@ -15,7 +15,7 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
     jQuery.extend( jQuery.fn.dataTableExt.oSort, {
         "number-pre": function ( a )
         {
-            var x = String(String(a).replace( /<[\s\S]*?>/g, "" )).replace( /,/, '' );
+            var x = String(String(a).replace( /<[\s\S]*?>/g, "" )).replace( /,/g, '' );
             return parseFloat( x );
         },
         "number-asc": function ( a, b ) {
