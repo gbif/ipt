@@ -86,6 +86,9 @@ public class OverviewAction extends ManagerBaseAction {
     this.vocabManager = vocabManager;
   }
 
+  /**
+   * Triggered by add manager button on manage resource page.
+   */
   public String addManager() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
@@ -159,7 +162,10 @@ public class OverviewAction extends ManagerBaseAction {
     return SUCCESS;
   }
 
-  public String delmanager() throws Exception {
+  /**
+   * Triggered by delete manager link on manage resource page.
+   */
+  public String deleteManager() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
     }
