@@ -351,9 +351,14 @@ $(document).ready(function(){
             </td>
           </tr>
           <#if resource.organisation??>
+            <#-- Warning: in dev mode organization link goes to /organization (GBIF Registry console), in prod mode the link goes to /publisher (GBIF Portal) -->
             <tr>
               <th><@s.text name="manage.overview.visibility.organisation"/></th>
-              <td><a href="${cfg.portalUrl}/organization/${resource.organisation.key}" target="_blank">${resource.organisation.name!}</a></td>
+              <#if cfg.getRegistryType() =='DEVELOPMENT'>
+                <td><a href="${cfg.portalUrl}/organization/${resource.organisation.key}" target="_blank">${resource.organisation.name!"Organisation"}</a></td>
+              <#else>
+                <td><a href="${cfg.portalUrl}/publisher/${resource.organisation.key}" target="_blank">${resource.organisation.name!"Organisation"}</a></td>
+              </#if>
             </tr>
             <tr>
               <th><@s.text name="manage.overview.visibility.organisation.contact"/></th>
