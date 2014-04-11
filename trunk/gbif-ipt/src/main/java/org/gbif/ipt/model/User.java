@@ -64,6 +64,9 @@ public class User implements Serializable, Cloneable {
     return StringUtils.trimToNull(StringUtils.trimToEmpty(firstname) + " " + StringUtils.trimToEmpty(lastname));
   }
 
+  /**
+   * Called in login page, redirected to on failed logins.
+   */
   public String getNameWithEmail() {
     return StringUtils.trimToNull(getName() + " <" + email + ">");
   }
@@ -138,16 +141,6 @@ public class User implements Serializable, Cloneable {
   public void setRole(Role role) {
     this.role = role == null ? Role.User : role;
   }
-
-  //  public void setRole(String role) {
-  //    if (role != null && role.equalsIgnoreCase("manager")) {
-  //      this.role = Role.Manager;
-  //    } else if (role != null && role.equalsIgnoreCase("admin")) {
-  //      this.role = Role.Admin;
-  //    } else {
-  //      this.role = Role.User;
-  //    }
-  //  }
 
   @Override
   public String toString() {
