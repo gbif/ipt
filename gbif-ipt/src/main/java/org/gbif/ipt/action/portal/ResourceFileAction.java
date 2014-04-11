@@ -46,7 +46,7 @@ public class ResourceFileAction extends PortalBaseAction {
    * header. If the If-Modified-Since date is greater than the last published date, the NOT_MODIFIED string is returned.
    * Specific versions can also be resolved depending on the optional parameter version "v". If no specific version is
    * requested the latest published version is used.
-   * 
+   *
    * @return Struts2 result string
    */
   public String dwca() {
@@ -85,23 +85,24 @@ public class ResourceFileAction extends PortalBaseAction {
   /**
    * Handles EML file download request. Specific versions can also be resolved depending on the optional parameter
    * "version". If no specific version is requested the latest published version is used.
-   * 
+   *
    * @return Struts2 result string
    */
   public String eml() {
-    if (resource != null) {
-      data = dataDir.resourceEmlFile(resource.getShortname(), version);
-      mimeType = "text/xml";
-
-      // construct download filename
-      StringBuilder sb = new StringBuilder();
-      sb.append("eml-" + resource.getShortname());
-      if (version != null) {
-        sb.append("-v" + String.valueOf(version));
-      }
-      sb.append(".xml");
-      filename = sb.toString();
+    if (resource == null) {
+      return NOT_FOUND;
     }
+    data = dataDir.resourceEmlFile(resource.getShortname(), version);
+    mimeType = "text/xml";
+
+    // construct download filename
+    StringBuilder sb = new StringBuilder();
+    sb.append("eml-" + resource.getShortname());
+    if (version != null) {
+      sb.append("-v" + String.valueOf(version));
+    }
+    sb.append(".xml");
+    filename = sb.toString();
     return execute();
   }
 
@@ -139,6 +140,9 @@ public class ResourceFileAction extends PortalBaseAction {
   }
 
   public String logo() {
+    if (resource == null) {
+      return NOT_FOUND;
+    }
     for (String type : Constants.IMAGE_TYPES) {
       data = dataDir.resourceLogoFile(resource.getShortname(), type);
       if (data.exists()) {
@@ -158,6 +162,9 @@ public class ResourceFileAction extends PortalBaseAction {
    * Retrieve the publication log file for the resource, or return NOT_FOUND if it could not be located.
    */
   public String publicationLog() {
+    if (resource == null) {
+      return NOT_FOUND;
+    }
     data = dataDir.resourcePublicationLogFile(resource.getShortname());
     if (data.exists()) {
       mimeType = "text/log";
@@ -169,6 +176,9 @@ public class ResourceFileAction extends PortalBaseAction {
   }
 
   public String sourceLog() {
+    if (resource == null) {
+      return NOT_FOUND;
+    }
     data = dataDir.sourceLogFile(resource.getShortname(), source.getName());
     if (data.exists()) {
       mimeType = "text/log";
@@ -192,10 +202,13 @@ public class ResourceFileAction extends PortalBaseAction {
   /**
    * Handles RTF file download request. Specific versions can also be resolved depending on the optional parameter
    * version "v". If no specific version is requested the latest published version is used.
-   * 
+   *
    * @return Struts2 result string
    */
   public String rtf() {
+    if (resource == null) {
+      return NOT_FOUND;
+    }
     data = dataDir.resourceRtfFile(resource.getShortname(), version);
     mimeType = "application/rtf";
 
@@ -207,7 +220,6 @@ public class ResourceFileAction extends PortalBaseAction {
     }
     sb.append(".rtf");
     filename = sb.toString();
-
     return execute();
   }
 }
