@@ -1,3 +1,4 @@
+<#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.OverviewAction" -->
 <#escape x as x?html>
 <#macro description text maxLength>
    	<#if (text?length>maxLength)>
@@ -376,7 +377,8 @@ $(document).ready(function(){
     </div>
     <div class="actions">
       <#if (potentialManagers?size>0)>
-        <form action='resource-addmanager.do' method='post'>
+        <!-- Warning: method name match is case sensitive therefore must be addManager -->
+        <form action='resource-addManager.do' method='post'>
           <input name="r" type="hidden" value="${resource.shortname}"/>
           <select name="id" id="manager" size="1">
             <option value=""></option>
@@ -404,8 +406,9 @@ $(document).ready(function(){
         ${u}
           <tr>
             <th><@s.text name="manage.overview.resource.managers.manager"/></th>
-            <td>${u.name}, ${u.email}&nbsp;
-              <a class="button" href="resource-delmanager.do?r=${resource.shortname}&id=${u.email}">
+              <!-- Warning: method name match is case sensitive therefore must be deleteManager -->
+              <td>${u.name}, ${u.email}&nbsp;
+              <a class="button" href="resource-deleteManager.do?r=${resource.shortname}&id=${u.email}">
                 <input class="button" type="button" value='<@s.text name='button.delete'/>'/>
               </a>
             </td>
