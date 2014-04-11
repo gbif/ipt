@@ -52,7 +52,7 @@
     <gbif-registry.version>2.13</gbif-registry.version>
     <gbif-common-ws.version>0.13</gbif-common-ws.version>
     <gbif-metadata-profile.version>1.0.2.3</gbif-metadata-profile.version>
-    <gbif-common.version>0.15</gbif-common.version>
+    <gbif-common.version>0.16-SNAPSHOT</gbif-common.version>
     <dwc-api.version>1.5</dwc-api.version>
     <guava.version>14.0.1</guava.version>
     <freemarker.version>2.3.20</freemarker.version>
