@@ -403,7 +403,6 @@ $(document).ready(function(){
           <td>${resource.creator.name}, ${resource.creator.email}</td>
         </tr>
         <#list resource.managers as u>
-        ${u}
           <tr>
             <th><@s.text name="manage.overview.resource.managers.manager"/></th>
               <!-- Warning: method name match is case sensitive therefore must be deleteManager -->
