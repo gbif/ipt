@@ -288,7 +288,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     File registrationV1 = dataDir.configFile(PERSISTENCE_FILE_V1);
     if (registrationV1.exists())  {
       try {
-        Reader registrationReader = FileUtils.getUtf8Reader(dataDir.configFile(PERSISTENCE_FILE_V1));
+        Reader registrationReader = FileUtils.getUtf8Reader(registrationV1);
         ObjectInputStream in = closer.register(xstreamV1.createObjectInputStream(registrationReader));
         registration.getAssociatedOrganisations().clear();
 
@@ -329,17 +329,13 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
           log.error(e);
         }
 
-        // ensure changes are persisted to registration.xml
+        // ensure changes are persisted to registration2.xml
         save();
 
-        // delete former registration configuration (registration.xml)
-        org.apache.commons.io.FileUtils.deleteQuietly(registrationV1);
-
-      } catch (FileNotFoundException e) {
-        log.warn("Registration information not existing, " + PERSISTENCE_FILE_V1
-                 + " file missing  (This is normal when IPT is not registered yet)");
       } catch (ClassNotFoundException e) {
         log.error(e.getMessage(), e);
+        throw new InvalidConfigException(TYPE.REGISTRATION_CONFIG,
+          "Problem reading the registration information: " + e.getMessage());
       } catch (IOException e) {
         log.error(e.getMessage(), e);
         throw new InvalidConfigException(TYPE.REGISTRATION_CONFIG,
@@ -349,6 +345,9 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
           closer.close();
         } catch (IOException e) {
         }
+
+        // delete former registration configuration (registration.xml)
+        org.apache.commons.io.FileUtils.deleteQuietly(registrationV1);
       }
     }
   }
