@@ -15,6 +15,7 @@
    * [IPT2Core Adding a New Core]
    * [IPT2ManualNotes#Glossary Glossary]
    * [FAQ]
+ * [IPTReleaseNotes21 Release Notes]
  * [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes?wl=es User Manual (Spanish)]
  * Tutorials & Resources
    * [DarwinCore]
