@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.gbif</groupId>
     <artifactId>motherpom</artifactId>
-    <version>16</version>
+    <version>10</version>
   </parent>
 
   <groupId>org.gbif</groupId>
@@ -199,7 +199,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>buildnumber-maven-plugin</artifactId>
-        <version>1.2</version>
+        <version>1.0-beta-4</version>
         <executions>
           <execution>
             <phase>validate</phase>
