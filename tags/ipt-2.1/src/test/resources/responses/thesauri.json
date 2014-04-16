@@ -1,0 +1,317 @@
+{"thesauri": [
+    {
+        "title": "Dublin Core Type Vocabulary",
+        "description": "The DCMI Type Vocabulary provides a general, cross-domain list of approved terms that may be used as values for the Resource Type element to identify the genre of a resource. The terms documented here are also included in the more comprehensive document \"DCMI Metadata Terms\" at http://dublincore.org/documents/dcmi-terms/.",
+        "subject": "",
+        "identifier": "http://dublincore.org/documents/dcmi-type-vocabulary/",
+        "url": "http://rs.gbif.org/vocabulary/dcterms/type.xml"
+    },
+    {
+        "title": "Darwin Core Type Vocabulary",
+        "description": "The Type Vocabulary is a recommended set of values to use for the basisOfRecord term to categorize Darwin Core resources. The Darwin Core Type Vocabulary extends and refines terms from the Dublin Core Type Vocabulary to describe and categorize resources more specifically for biodiversity applications. The basisOfRecord should be populated with the value from the Darwin Core Type Vocabulary that best corresponds to the resource being shared.",
+        "subject": "",
+        "identifier": "http://rs.tdwg.org/dwc/dwctype/",
+        "url": "http://rs.gbif.org/vocabulary/dwc/basis_of_record.xml"
+    },
+    {
+        "title": "Licenses EOL Vocabulary",
+        "description": "Creative Commons licenses allowed in EOL",
+        "subject": "",
+        "identifier": "http://www.eol.org/IPT/vocabulary/license",
+        "url": "http://rs.gbif.org/vocabulary/eol/license.xml"
+    },
+    {
+        "title": "Data types EOL Vocabulary",
+        "description": "Data types for EOL data objects",
+        "subject": "",
+        "identifier": "http://www.eol.org/IPT/vocabulary/datatype",
+        "url": "http://rs.gbif.org/vocabulary/eol/datatype.xml"
+    },
+    {
+        "title": "MIME Type EOL Vocabulary",
+        "description": "MIME type for EOL data objects",
+        "subject": "",
+        "identifier": "http://www.eol.org/IPT/vocabulary/mimetype",
+        "url": "http://rs.gbif.org/vocabulary/eol/mimetype.xml"
+    },
+    {
+        "title": "Subject EOL Vocabulary",
+        "description": "SPM categories for text descriptions that are allowed in EOL",
+        "subject": "",
+        "identifier": "http://www.eol.org/IPT/vocabulary/subject",
+        "url": "http://rs.gbif.org/vocabulary/eol/subject.xml"
+    },
+    {
+        "title": "Systema Naturae 2000 Habitat Vocabulary",
+        "description": "Describes the syntax of the habitat of a taxon and lists the habitat codes for Systema Naturae 2000. Source document last updated: 14 Aug 2003",
+        "subject": "",
+        "identifier": "http://rs.gbif.org/vocabulary/sn2000/habitat/",
+        "url": "http://rs.gbif.org/vocabulary/sn2000/habitat.xml"
+    },
+    {
+        "title": "IUCN Habitat Vocabulary",
+        "description": "",
+        "subject": "",
+        "identifier": "http://rs.gbif.org/vocabulary/iucn/habitat/",
+        "url": "http://rs.gbif.org/vocabulary/iucn/habitat.xml"
+    },
+    {
+        "title": "IUCN Threat Status Vocabulary",
+        "description": "",
+        "subject": "",
+        "identifier": "http://rs.gbif.org/vocabulary/iucn/threat_status/",
+        "url": "http://rs.gbif.org/vocabulary/iucn/threat_status.xml"
+    },
+    {
+        "title": "MIxS Environmental Package vocabulary",
+        "description": "",
+        "subject": "",
+        "identifier": "http://gensc.org/ns/mixs/voc/investigation_type",
+        "url": "http://rs.gbif.org/vocabulary/mixs/env_package.xml"
+    },
+    {
+        "title": "MIxS Investigation Type vocabulary",
+        "description": "",
+        "subject": "",
+        "identifier": "http://gensc.org/ns/mixs/voc/investigation_type",
+        "url": "http://rs.gbif.org/vocabulary/mixs/investigation_type.xml"
+    },
+    {
+        "title": "Biological status of sample",
+        "description": "Controlled vocabulary following the Multi-Crop Passport standard for term 20, Biological Status Of Sample (SAMPSTAT).",
+        "subject": "",
+        "identifier": "http://rs.nordgen.org/dwc/germplasm/0.1/vocabulary/BiologicalStatusOfSampleCode",
+        "url": "http://rs.gbif.org/vocabulary/germplasm/0.1/BiologicalStatusOfSample.xml"
+    },
+    {
+        "title": "Acquisition source",
+        "description": "Controlled vocabulary following the Multi-Crop Passport standard for term 22, Collection or acquisition source (COLLSRC).",
+        "subject": "",
+        "identifier": "http://rs.nordgen.org/dwc/germplasm/0.1/vocabulary/AcquisitionSource",
+        "url": "http://rs.gbif.org/vocabulary/germplasm/0.1/AcquisitionSource.xml"
+    },
+    {
+        "title": "Type of germplasm storage",
+        "description": "Controlled vocabulary following the Multi-Crop Passport standard for term 27, Type of germplasm storage (STORAGE).",
+        "subject": "",
+        "identifier": "http://rs.nordgen.org/dwc/germplasm/0.1/vocabulary/TypeOfStorage",
+        "url": "http://rs.gbif.org/vocabulary/germplasm/0.1/TypeOfStorage.xml"
+    },
+    {
+        "title": "Boolean Vocabulary",
+        "description": "Boolean values true/false",
+        "subject": "",
+        "identifier": "http://rs.gbif.org/vocab/boolean/",
+        "url": "http://rs.gbif.org/vocabulary/basic/boolean.xml"
+    },
+    {
+        "title": "CITES Appendix Numbers",
+        "description": "Vocabulary for the 3 CITES (Convention on International Trade in Endangered Species of Wild Fauna and Flora) Appendix numbers. Appendices I, II and III to the Convention are lists of species afforded different levels or types of protection from over-exploitation.",
+        "subject": "",
+        "identifier": "http://rs.gbif.org/vocab/cites/",
+        "url": "http://rs.gbif.org/vocabulary/un/cites_appendix.xml"
+    },
+    {
+        "title": "ISO 639-2 Language Codes",
+        "description": "Codes for the representation of names of languages â\u20ac\u201d Part 2: Alpha-3 code, is the second part of the ISO 639 standard, which lists codes for the representation of the names of languages. The three-letter codes given for each language in this part of the standard are referred to as \"Alpha-3\" codes. There are 464 entries in the list of ISO 639-2 codes.",
+        "subject": "",
+        "identifier": "http://iso.org/639-2",
+        "url": "http://rs.gbif.org/vocabulary/iso/639-2.xml"
+    },
+    {
+        "title": "ISO 639-1 Language Codes",
+        "description": "Codes for the representation of names of languages â\u20ac\u201d Part 1: Alpha-2 code, is the first part of the ISO 639 series of international standards for language codes. Part 1 covers the registration of two-letter codes. There are 136 two-letter codes registered. The registered codes cover the world's major languages.",
+        "subject": "",
+        "identifier": "http://iso.org/639-1",
+        "url": "http://rs.gbif.org/vocabulary/iso/639-1.xml"
+    },
+    {
+        "title": "ISO 3166-1 Alpha2 Country Codes",
+        "description": "ISO 3166-1 alpha-2 codes are two-letter country codes defined in ISO 3166-1, part of the ISO 3166 standard published by the International Organization for Standardization (ISO), to represent countries, dependent territories, and special areas of geographical interest. They are the most widely used of the country codes published by ISO (the others being alpha-3 and numeric), and are used most prominently for the Internet's country code top-level domains (with a few exceptions). They were first included as part of the ISO 3166 standard in its first edition in 1974. The label for TW has been altered in this vocabulary",
+        "subject": "",
+        "identifier": "http://iso.org/iso3166-1/alpha2",
+        "url": "http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml"
+    },
+    {
+        "title": "Nomenclatural Codes",
+        "description": "GBIF recommended terms for denoting a nomenclatural code",
+        "subject": "",
+        "identifier": "http://rs.gbif.org/vocabulary/gbif/nomenclatural_code",
+        "url": "http://rs.gbif.org/vocabulary/gbif/nomenclatural_code.xml"
+    },
+    {
+        "title": "Description Type GBIF Vocabulary",
+        "description": "Vocabulary to categorise paragraphs of a taxon description. The individual terms are selected according to common usage and in some cases are overlapping or broader/narrower terms of others.",
+        "subject": "",
+        "identifier": "http://rs.gbif.org/vocabulary/gbif/descriptionType",
+        "url": "http://rs.gbif.org/vocabulary/gbif/description_type.xml"
+    },
+    {
+        "title": "Life Form GBIF Vocabulary",
+        "description": "A life form vocabulary targeted at plants and based on RaunkiÃ¦r's definitions",
+        "subject": "",
+        "identifier": "http://rs.gbif.org/vocabulary/gbif/life_form",
+        "url": "http://rs.gbif.org/vocabulary/gbif/life_form.xml"
+    },
+    {
+        "title": "Nomenclatural Status GBIF Vocabulary",
+        "description": "",
+        "subject": "",
+        "identifier": "http://rs.gbif.org/vocabulary/gbif/nomenclatural_status",
+        "url": "http://rs.gbif.org/vocabulary/gbif/nomenclatural_status.xml"
+    },
+    {
+        "title": "Reference Type GBIF Vocabulary",
+        "description": "Vocabulary to categorise (literature) references",
+        "subject": "",
+        "identifier": "http://rs.gbif.org/vocabulary/gbif/referenceType",
+        "url": "http://rs.gbif.org/vocabulary/gbif/reference_type.xml"
+    },
+    {
+        "title": "Sex GBIF Vocabulary",
+        "description": "A short vocabulary representing an organisms sex",
+        "subject": "",
+        "identifier": "http://rs.gbif.org/vocabulary/gbif/sex",
+        "url": "http://rs.gbif.org/vocabulary/gbif/sex.xml"
+    },
+    {
+        "title": "Life Stage GBIF Vocabulary",
+        "description": "A simple vocabulary to represent organism life stages across all kingdoms. Includes quite a few alternative terms",
+        "subject": "",
+        "identifier": "http://rs.gbif.org/vocabulary/gbif/life_stage",
+        "url": "http://rs.gbif.org/vocabulary/gbif/life_stage.xml"
+    },
+    {
+        "title": "Taxonomic Rank GBIF Vocabulary",
+        "description": "Common taxonomic ranks and their alternative representations",
+        "subject": "",
+        "identifier": "http://rs.gbif.org/vocabulary/gbif/rank",
+        "url": "http://rs.gbif.org/vocabulary/gbif/rank.xml"
+    },
+    {
+        "title": "GBIF Dataset Type Vocabulary",
+        "description": "Vocabulary for dataset types used in the GBIF Network.",
+        "subject": "",
+        "identifier": "http://rs.gbif.org/vocabulary/gbif/datasetType",
+        "url": "http://rs.gbif.org/vocabulary/gbif/dataset_type.xml"
+    },
+    {
+        "title": "Taxonomic Status GBIF Vocabulary",
+        "description": "Simple vocabulary to describe the taxonomic status of a name",
+        "subject": "",
+        "identifier": "http://rs.gbif.org/vocabulary/gbif/taxonomicStatus/",
+        "url": "http://rs.gbif.org/vocabulary/gbif/taxonomic_status.xml"
+    },
+    {
+        "title": "EML Agent Role Vocabulary",
+        "description": "Vocabulary for agent roles used in EML.",
+        "subject": "",
+        "identifier": "http://rs.gbif.org/vocabulary/gbif/agentRole",
+        "url": "http://rs.gbif.org/vocabulary/gbif/agent_role.xml"
+    },
+    {
+        "title": "Nomenclatural Type Designation Type Vocabulary",
+        "description": "A vocabulary to be used for reasons for a type designation of a specimen or name. See also the related type status vocabulary.",
+        "subject": "",
+        "identifier": "http://rs.gbif.org/vocabulary/gbif/type_designation_type",
+        "url": "http://rs.gbif.org/vocabulary/gbif/type_designation_type.xml"
+    },
+    {
+        "title": "GBIF Dataset Subtype Vocabulary",
+        "description": "Vocabulary for Checklist or Occurrence dataset subtypes used in the GBIF Network.",
+        "subject": "",
+        "identifier": "http://rs.gbif.org/vocabulary/gbif/datasetSubtype",
+        "url": "http://rs.gbif.org/vocabulary/gbif/dataset_subtype.xml"
+    },
+    {
+        "title": "Establishment Means GBIF Vocabulary",
+        "description": "",
+        "subject": "",
+        "identifier": "http://rs.gbif.org/vocabulary/gbif/establishment_means/",
+        "url": "http://rs.gbif.org/vocabulary/gbif/establishment_means.xml"
+    },
+    {
+        "title": "Preservation Method GBIF Vocabulary",
+        "description": "The method used to preserve specimens.  This vocabulary was based on the PreservationMethodClassVoc from the BioCASe MetaProfile",
+        "subject": "",
+        "identifier": "http://rs.gbif.org/vocabulary/gbif/preservation_method",
+        "url": "http://rs.gbif.org/vocabulary/gbif/preservation_method.xml"
+    },
+    {
+        "title": "Occurrence Status GBIF Vocabulary",
+        "description": "http://spreadsheets.google.com/pub?key=tVs-UWMXnkD3slwIE8T336w&gid=3",
+        "subject": "",
+        "identifier": "http://rs.gbif.org/vocabulary/gbif/occurrence_status/",
+        "url": "http://rs.gbif.org/vocabulary/gbif/occurrence_status.xml"
+    },
+    {
+        "title": "Nomenclatural Type Status Vocabulary",
+        "description": "A vocabulary to be used for a nomenclatural type status of a specimen or name. See also the related type reason vocabulary.",
+        "subject": "",
+        "identifier": "http://rs.gbif.org/vocabulary/gbif/type_status",
+        "url": "http://rs.gbif.org/vocabulary/gbif/type_status.xml"
+    },
+    {
+        "title": "GISIN Species Status Harmful Vocabulary",
+        "description": "http://www.niiss.org/cwis438/websites/GISINDirectory/tech/Concept_Info.php?ConceptID=8",
+        "subject": "",
+        "identifier": "http://www.gisinetwork.org/IASProfile/Harmful/terms/",
+        "url": "http://rs.gbif.org/vocabulary/gisin/2.0/harmful.xml"
+    },
+    {
+        "title": "GISIN Species Status Regulatory Vocabulary",
+        "description": "http://www.niiss.org/cwis438/websites/GISINDirectory/tech/Concept_Info.php?ConceptID=9",
+        "subject": "",
+        "identifier": "http://www.gisinetwork.org/IASProfile/Regulatory/terms/",
+        "url": "http://rs.gbif.org/vocabulary/gisin/2.0/regulatory.xml"
+    },
+    {
+        "title": "GISIN Species Status Abundance Vocabulary",
+        "description": "http://www.niiss.org/cwis438/websites/GISINDirectory/tech/Concept_Info.php?ConceptID=5",
+        "subject": "",
+        "identifier": "http://www.gisinetwork.org/IASProfile/Abundance/terms/",
+        "url": "http://rs.gbif.org/vocabulary/gisin/2.0/abundance.xml"
+    },
+    {
+        "title": "GISIN Species Status Spread Rate Vocabulary",
+        "description": "http://www.niiss.org/cwis438/websites/GISINDirectory/tech/Concept_Info.php?ConceptID=4",
+        "subject": "",
+        "identifier": "http://www.gisinetwork.org/IASProfile/SpreadRate/terms/",
+        "url": "http://rs.gbif.org/vocabulary/gisin/2.0/spreadrate.xml"
+    },
+    {
+        "title": "GISIN Species Status Presence Vocabulary",
+        "description": "http://www.niiss.org/cwis438/websites/GISINDirectory/tech/Concept_Info.php?ConceptID=2",
+        "subject": "",
+        "identifier": "http://www.gisinetwork.org/IASProfile/Presence/terms/",
+        "url": "http://rs.gbif.org/vocabulary/gisin/2.0/presence.xml"
+    },
+    {
+        "title": "GISIN Species Status Persistence Vocabulary",
+        "description": "http://www.niiss.org/cwis438/websites/GISINDirectory/tech/Concept_Info.php?ConceptID=3",
+        "subject": "",
+        "identifier": "http://www.gisinetwork.org/IASProfile/Persistence/terms/",
+        "url": "http://rs.gbif.org/vocabulary/gisin/2.0/persistence.xml"
+    },
+    {
+        "title": "GISIN Species Status Distribution Vocabulary",
+        "description": "http://www.niiss.org/cwis438/websites/GISINDirectory/tech/Concept_Info.php?ConceptID=4",
+        "subject": "",
+        "identifier": "http://www.gisinetwork.org/IASProfile/Distribution/terms/",
+        "url": "http://rs.gbif.org/vocabulary/gisin/2.0/distribution.xml"
+    },
+    {
+        "title": "GISIN Species Status Trend Vocabulary",
+        "description": "http://www.niiss.org/cwis438/websites/GISINDirectory/tech/Concept_Info.php?ConceptID=6",
+        "subject": "",
+        "identifier": "http://www.gisinetwork.org/IASProfile/Trend/terms/",
+        "url": "http://rs.gbif.org/vocabulary/gisin/2.0/trend.xml"
+    },
+    {
+        "title": "GISIN Species Status Origin Vocabulary",
+        "description": "http://www.niiss.org/cwis438/websites/GISINDirectory/tech/Concept_Info.php?ConceptID=1",
+        "subject": "",
+        "identifier": "http://www.gisinetwork.org/IASProfile/Origin/terms/",
+        "url": "http://rs.gbif.org/vocabulary/gisin/2.0/origin.xml"
+    }
+]}

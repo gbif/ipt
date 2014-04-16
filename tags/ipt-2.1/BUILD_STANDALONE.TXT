@@ -1,0 +1,18 @@
+
+#######################################
+# BUILDING THE STANDALONE APPLICATION #
+#######################################
+
+The IPT comes with an embedded jetty server and 2 startup scripts for unix (server.sh) and windows (server.bat).
+Currently there is no automated build procedure, but the manual process is very simple:
+
+1. build the WAR via "mvn package" (development) or "mvn -P release package" (production)
+2. create a new directory "ipt"
+3. copy the generated war into "ipt", explode it (=unzip) and call it "webapp". You can delete the remaining war
+4. move the server.sh script and server-readme.txt from WEB-INF/classes into the "ipt" folder
+5. Done. Test in terminal: 
+  "cd xyz/ipt"
+  "chmod ugo+x server.*"
+  "./server.sh 7002"
+  
+  

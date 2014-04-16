@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+  "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<!--
+	Actions related to the resource management of the IPT
+	These will be accessible by users with managerial privileges or the administrator
+	A manager will only be able to manage resources to which they are entitled access
+	(currently this means that they created the resource)
+ -->
+<struts>
+
+
+  <!-- The entry to the administration section -->
+  <package name="manage" extends="ipt-default" namespace="/manage">
+    <default-interceptor-ref name="managerStack"/>
+    <default-action-ref name="home"/>
+
+    <global-results>
+      <result name="404">
+        <param name="location">/WEB-INF/pages/manage/404.ftl</param>
+      </result>
+      <result name="401">
+        <param name="location">/WEB-INF/pages/manage/401.ftl</param>
+      </result>
+      <result name="cancel" type="redirect">resource.do</result>
+      <result name="home" type="redirect">home.do</result>
+      <result name="locked" type="redirect">locked.do</result>
+    </global-results>
+
+    <action name="home" class="org.gbif.ipt.action.manage.HomeAction">
+      <result>/WEB-INF/pages/manage/home.ftl</result>
+    </action>
+    <action name="locked" class="org.gbif.ipt.action.manage.OverviewAction" method="locked">
+      <result>/WEB-INF/pages/manage/locked.ftl</result>
+    </action>
+
+    <action name="create" class="org.gbif.ipt.action.manage.CreateResourceAction">
+      <interceptor-ref name="fileUpload">
+        <param name="maximumSize">104857600</param>
+      </interceptor-ref>
+      <interceptor-ref name="managerStack"/>
+      <result name="input">/WEB-INF/pages/manage/create_input.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">resource</param>
+        <param name="r">${shortname}</param>
+      </result>
+    </action>
+
+    <action name="resource" class="org.gbif.ipt.action.manage.OverviewAction">
+      <result>/WEB-INF/pages/manage/overview.ftl</result>
+      <result name="input">/WEB-INF/pages/manage/overview.ftl</result>
+    </action>
+    <action name="publish" class="org.gbif.ipt.action.manage.OverviewAction" method="publish">
+      <result name="publishing">/WEB-INF/pages/manage/locked.ftl</result>
+      <result>/WEB-INF/pages/manage/overview.ftl</result>
+      <result name="error">/WEB-INF/pages/manage/overview.ftl</result>
+    </action>
+    <action name="cancel" class="org.gbif.ipt.action.manage.OverviewAction" method="cancel">
+      <interceptor-ref name="ajaxStack"/>
+      <result>/WEB-INF/pages/manage/overview.ftl</result>
+      <result name="error">/WEB-INF/pages/manage/locked.ftl</result>
+    </action>
+    <action name="resource-*" class="org.gbif.ipt.action.manage.OverviewAction" method="{1}">
+      <result>/WEB-INF/pages/manage/overview.ftl</result>
+    </action>
+
+    <!-- EML metadata actions dynamically invoked. This is the *only* action needed for all forms -->
+    <action name="metadata-*" class="org.gbif.ipt.action.manage.MetadataAction">
+      <!-- Setting parameters like this doesnt seem to work as expected :((( -->
+      <!-- workaround is parsing the request string in the action manually, see MetadataAction.prepare() -->
+      <!--   <param name="section">{1}</param>   -->
+
+      <!-- use the template matching the dynamic method invocation, e.g. metadata-parties.do will use parties.ftl-->
+      <result name="input">/WEB-INF/pages/manage/eml/{1}.ftl</result>
+      <!-- on sucess redirect to the next metadata form page -->
+      <result name="success" type="redirectAction">
+        <param name="actionName">metadata-${next}</param>
+        <param name="r">${resource.shortname}</param>
+      </result>
+    </action>
+
+    <action name="source" class="org.gbif.ipt.action.manage.SourceAction">
+      <result name="input">/WEB-INF/pages/manage/source.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">resource</param>
+        <param name="r">${resource.shortname}</param>
+      </result>
+    </action>
+    <action name="addsource" class="org.gbif.ipt.action.manage.SourceAction" method="add">
+      <interceptor-ref name="fileUpload">
+        <param name="maximumSize">104857600</param>
+      </interceptor-ref>
+      <interceptor-ref name="managerStack"/>
+      <result name="success">/WEB-INF/pages/manage/source.ftl</result>
+      <result name="input" type="redirectAction">
+        <param name="actionName">resource</param>
+        <param name="r">${resource.shortname}</param>
+      </result>
+      <result name="error" type="redirectAction">
+        <param name="actionName">resource</param>
+        <param name="r">${resource.shortname}</param>
+      </result>
+    </action>
+    <action name="uploadlogo" class="org.gbif.ipt.action.manage.SourceAction" method="uploadLogo">
+      <interceptor-ref name="fileUpload">
+        <param name="maximumSize">2097152</param>
+        <param name="allowedTypes">image/jpeg,image/gif,image/png</param>
+      </interceptor-ref>
+      <interceptor-ref name="managerStack"/>
+      <result name="input" type="redirectAction">
+        <param name="actionName">metadata-additional</param>
+        <param name="r">${resource.shortname}</param>
+      </result>
+      <result name="error" type="redirectAction">
+        <param name="actionName">resource</param>
+        <param name="r">${resource.shortname}</param>
+      </result>
+    </action>
+    <action name="peek" class="org.gbif.ipt.action.manage.SourceAction" method="peek">
+      <interceptor-ref name="ajaxStack"/>
+      <result>/WEB-INF/pages/manage/peek.ftl</result>
+    </action>
+    <action name="mapping" class="org.gbif.ipt.action.manage.MappingAction">
+      <result name="input">/WEB-INF/pages/manage/mapping.ftl</result>
+      <result name="source">/WEB-INF/pages/manage/mappingSource.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">resource</param>
+        <param name="r">${resource.shortname}</param>
+      </result>
+      <result name="error" type="redirectAction">
+        <param name="actionName">resource</param>
+        <param name="r">${resource.shortname}</param>
+      </result>
+    </action>
+    <action name="vocabulary" class="org.gbif.ipt.action.admin.VocabulariesAction">
+      <result>/WEB-INF/pages/manage/vocabulary.ftl</result>
+    </action>
+
+    <action name="translation" class="org.gbif.ipt.action.manage.TranslationAction">
+      <result>/WEB-INF/pages/manage/translation.ftl</result>
+      <result name="none" type="redirectAction">
+        <param name="actionName">mapping</param>
+        <param name="r">${resource.shortname}</param>
+        <param name="id">${id}</param>
+        <param name="mid">${mid}</param>
+      </result>
+    </action>
+    <action name="translationReload" class="org.gbif.ipt.action.manage.TranslationAction" method="reload">
+      <result>/WEB-INF/pages/manage/translation.ftl</result>
+    </action>
+    <action name="translationAutomap" class="org.gbif.ipt.action.manage.TranslationAction" method="automap">
+      <result>/WEB-INF/pages/manage/translation.ftl</result>
+    </action>
+
+    <!-- ajaxy status report about background processes kicked off by the current user -->
+    <action name="report" class="org.gbif.ipt.action.manage.OverviewAction" method="locked">
+      <interceptor-ref name="ajaxStack"/>
+      <result>/WEB-INF/pages/manage/report.ftl</result>
+      <result name="cancel">/WEB-INF/pages/manage/report.ftl</result>
+    </action>
+
+  </package>
+</struts>
