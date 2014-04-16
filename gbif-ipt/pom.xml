@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.gbif</groupId>
     <artifactId>motherpom</artifactId>
-    <version>10</version>
+    <version>16</version>
   </parent>
 
   <groupId>org.gbif</groupId>
@@ -109,9 +109,9 @@
   </mailingLists>
 
   <scm>
-    <connection>scm:svn:http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt</connection>
-    <developerConnection>scm:svn:https://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt</developerConnection>
-    <url>http://code.google.com/p/gbif-providertoolkit/source/browse#svn/trunk/gbif-ipt</url>
+    <connection>scm:svn:http://gbif-providertoolkit.googlecode.com/svn/tags/ipt-2.1</connection>
+    <developerConnection>scm:svn:https://gbif-providertoolkit.googlecode.com/svn/tags/ipt-2.1</developerConnection>
+    <url>http://code.google.com/p/gbif-providertoolkit/source/browse#svn/tags/ipt-2.1</url>
   </scm>
 
   <issueManagement>
@@ -159,9 +159,6 @@
         <configuration>
           <useReleaseProfile>false</useReleaseProfile>
           <arguments>-Pgbif-release,release</arguments>
-          <checkModificationExcludes>
-            <checkModificationExclude>pom.xml</checkModificationExclude>
-          </checkModificationExcludes>
         </configuration>
       </plugin>
 
