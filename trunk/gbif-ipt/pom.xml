@@ -159,6 +159,9 @@
         <configuration>
           <useReleaseProfile>false</useReleaseProfile>
           <arguments>-Pgbif-release,release</arguments>
+          <checkModificationExcludes>
+            <checkModificationExclude>pom.xml</checkModificationExclude>
+          </checkModificationExcludes>
         </configuration>
       </plugin>
 
