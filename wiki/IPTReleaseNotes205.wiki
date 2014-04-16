@@ -27,20 +27,16 @@ data directory before performing an upgrade.
 
 An upgrade can be performed in 3 steps:
 
-1. Replace the previous .war file with the latest edition
-2. Backup the existing data directory
-3. Reuse the existing data directory during setup
+  # Replace the previous .war file with the latest edition
+  # Backup the existing data directory
+  # Reuse the existing data directory during setup
 
 B. Post-upgrade instructions
  
 If upgrading from 2.0.3, once the upgrade is complete, resource managers should: 
 
-1. Reset the resource subtype (if applicable), making the selection on the basic metadata 
-page. The reason being that this list now refers to a controlled vocabulary in IPT 2.0.4/5 
-and previous selections will have been reset. 
-2. Re-save the metadata for each resource. The reason being that additional validation 
-has been added to the metadata pages in IPT 2.0.4/5 in order to ensure better compliance 
-with the GBIF metadata profile.
+  # Reset the resource subtype (if applicable), making the selection on the basic metadata page. The reason being that this list now refers to a controlled vocabulary in IPT 2.0.4/5 and previous selections will have been reset. 
+  # Re-save the metadata for each resource. The reason being that additional validation has been added to the metadata pages in IPT 2.0.4/5 in order to ensure better compliance with the GBIF metadata profile.
 
 C. Other
 
