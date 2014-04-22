@@ -1,5 +1,6 @@
 package org.gbif.ipt.config;
 
+import org.gbif.metrics.ws.client.guice.MetricsWsClientModule;
 import org.gbif.registry.ws.client.guice.RegistryWsClientModule;
 import org.gbif.ws.client.guice.AnonymousAuthModule;
 import org.gbif.ws.client.guice.GbifApplicationAuthModule;
@@ -31,7 +32,7 @@ public class RegistryTestModule {
   private static Properties properties;
 
   /**
-   * Load the Properties needed to configure the webservice client from the application.properties file.
+   * Load the Properties needed to configure the webservice client from the registry.properties file.
    */
   @Singleton
   public static synchronized Properties properties() {
@@ -68,7 +69,8 @@ public class RegistryTestModule {
     if (webserviceClientReadOnly == null) {
       // Anonymous authentication module used, webservice client will be read-only
       webserviceClientReadOnly =
-        Guice.createInjector(new RegistryWsClientModule(properties()), new AnonymousAuthModule());
+        Guice.createInjector(new MetricsWsClientModule(properties()),
+          new RegistryWsClientModule(properties()), new AnonymousAuthModule());
     }
     return webserviceClientReadOnly;
   }
