@@ -50,6 +50,7 @@
     <gbif-api.version>0.12</gbif-api.version>
     <gbif-parsers.version>0.7</gbif-parsers.version>
     <gbif-registry.version>2.13</gbif-registry.version>
+    <metrics-ws-client.version>0.13</metrics-ws-client.version>
     <gbif-common-ws.version>0.13</gbif-common-ws.version>
     <gbif-metadata-profile.version>1.0.2.3</gbif-metadata-profile.version>
     <gbif-common.version>0.16</gbif-common.version>
@@ -199,6 +200,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>buildnumber-maven-plugin</artifactId>
+        <!-- Warning: do not upgrade this to 1.2 because it will break maven releases -->
         <version>1.0-beta-4</version>
         <executions>
           <execution>
@@ -315,6 +317,12 @@
       <groupId>org.gbif.registry</groupId>
       <artifactId>registry-ws-client</artifactId>
       <version>${gbif-registry.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.gbif.metrics</groupId>
+      <artifactId>metrics-ws-client</artifactId>
+      <version>${metrics-ws-client.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
