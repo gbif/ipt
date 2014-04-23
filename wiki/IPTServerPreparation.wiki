@@ -34,7 +34,7 @@ And, make sure that the proxy and proxy_http modules have been loaded into Apach
 
 ==Jetty==
 
-The IPT comes equipped with a Jetty web server and servlet container. The IPT can be launched using Jetty if you have Java 5 (minimum), Maven, and Subversion installed (Mac OSX comes with all of these installed by default). 
+The IPT comes equipped with a Jetty web server and servlet container. The IPT can be launched using Jetty if you have Java 6 (minimum), Maven, and Subversion installed (Mac OSX comes with all of these installed by default). 
 
 First, change the working directory to the location where you would like to put the IPT source code. Then issue the following commands (please check if 2.0.5 is still the latest stable version):
 
