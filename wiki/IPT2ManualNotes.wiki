@@ -46,7 +46,7 @@ The server hosting the IPT installation must make at least 256 MB RAM memory ava
 ===Disk space===
 The space required by the IPT application is less then 20MB. The contents of the IPT data directory after installation require less than 1MB of disk storage, writable by the IPT. However, the content of the data directory will grow as resources are created, and will require space roughly equal to the size of the files or tables containing the imported data sets. A reasonable estimate for the size of a relatively rich occurrence data set is one kilobyte per record. Normal usage of the IPT appends information to the log files, which will grow over time, but which generally require minimal disk space.
 ===Java===
-The server hosting the IPT must have a version no less than Java 5 installed and functional prior to the installation of the IPT.
+The server hosting the IPT must have a version no less than Java 6 installed and functional prior to the installation of the IPT.
 ===Servlet container===
 The IPT application comes packaged with Jetty and therefore requires no further servlet container. Nevertheless, the IPT can be deployed in another servlet container (e.g., Tomcat) that is already in use. Information about how to use various servlet containers with the IPT can be found at http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation.
 ==Install the IPT==
