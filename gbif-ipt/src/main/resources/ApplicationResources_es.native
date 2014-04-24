@@ -203,6 +203,7 @@ fileSource.fieldsEnclosedByEscaped=Citas de campos
 fileSource.fieldsEnclosedByEscaped.help=Un carácter único que encierra cada campo/columna en una fila. Frecuentemente está vacío, pero los archivos CSV usan comillas ("). Con esta opción, asegúrese que *todos* los campos están incluidos dentro de comillas, no sólo los que son campos de texto.
 fileSource.ignoreHeaderLines=Número de filas de encabezado
 fileSource.ignoreHeaderLines.help=Número de filas de encabezado en su archivo que deben ser ignoradas al importar.
+excelSource.sheets=Seleccione una hoja
 
 # ranks
 rank.kingdom=Reino
