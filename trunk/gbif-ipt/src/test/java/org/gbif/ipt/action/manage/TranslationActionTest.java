@@ -40,8 +40,6 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
@@ -55,7 +53,7 @@ public class TranslationActionTest {
   TranslationAction action;
 
   @Before
-  public void setup() throws SAXException, ParserConfigurationException, IOException {
+  public void setup() throws IOException, ParserConfigurationException, SAXException {
     // mock needed managers
     SimpleTextProvider mockTextProvider = mock(SimpleTextProvider.class);
     AppConfig mockCfg = mock(AppConfig.class);
@@ -97,10 +95,20 @@ public class TranslationActionTest {
     // add extension to ExtensionMapping
     mapping.setExtension(e);
 
-    // create set of translations
-    TreeMap<String, String> translations = new TreeMap<String, String>();
-    translations.put("spe", "Preserved Specimen");
-    translations.put("obs", "observation");
+    // create map of source value
+    TreeMap<String, String> sourceValues = new TreeMap<String, String>();
+    sourceValues.put("k1", "spe");
+    sourceValues.put("k2", "obs");
+
+    // create map of translation values
+    TreeMap<String, String> translatedValues = new TreeMap<String, String>();
+    translatedValues.put("k1", "Preserved Specimen");
+    translatedValues.put("k2", "observation");
+
+    // create map of translations that get persisted
+    Map<String, String> persistedTranslations = new HashMap<String, String>();
+    persistedTranslations.put("spe", "Preserved Specimen");
+    persistedTranslations.put("obs", "observation");
 
     // initialize PropertyMapping for BasisOfRecord term
     PropertyMapping field = new PropertyMapping();
@@ -109,7 +117,7 @@ public class TranslationActionTest {
     // set index
     field.setIndex(1);
     // add translations to field
-    field.setTranslation(translations);
+    field.setTranslation(persistedTranslations);
     // add set of PropertyMapping, including field, to ExtensionMapping
     Set<PropertyMapping> fields = new TreeSet<PropertyMapping>();
     fields.add(field);
@@ -165,7 +173,7 @@ public class TranslationActionTest {
 
     // create sessionScoped Translation
     // populate sessionScoped Translation with translations
-    action.getTrans().setTmap(mapping.getExtension().getRowType(), property, translations);
+    action.getTrans().setTmap(mapping.getExtension().getRowType(), property, sourceValues, translatedValues);
 
     // set various properties on Action
     action.setField(field);
@@ -186,51 +194,62 @@ public class TranslationActionTest {
   }
 
   @Test
-  public void testDelete() throws SAXException, ParserConfigurationException, IOException {
-    // check there are 2 sessionScoped and PropertyMapping (field) translations
-    assertEquals(2, action.getTrans().getTmap().size());
+  public void testDelete() {
+    // check there are 2 sessionScoped source values, 2 sessionScoped translated values, and the
+    // 2 PropertyMapping (field) translations
+    assertEquals(2, action.getTrans().getSourceValues().size());
+    assertEquals(2, action.getTrans().getTranslatedValues().size());
     assertEquals(2, action.getField().getTranslation().size());
 
     // perform deletion
     action.delete();
 
-    // check 1. there are 3 key-only sessionScoped translations (represent values read from source with no translations
-    assertEquals(3, action.getTrans().getTmap().size());
-    for (String val : action.getTrans().getTmap().values()) {
-      assertNull(val);
-    }
+    // check 1. there are 0 sessionScoped source values or translations - both get cleared
+    assertEquals(0, action.getTrans().getTranslatedValues().size());
 
     // check 2. the PropertyMapping (field) translations are empty
     assertTrue(action.getField().getTranslation().isEmpty());
+
+    // check 3. the 3 source values got reloaded
+    assertEquals(3, action.getTrans().getSourceValues().size());
   }
 
   @Test
-  public void testReload() throws SAXException, ParserConfigurationException, IOException {
+  public void testReload() {
     // check there are 2 sessionScoped and PropertyMapping (field) translations
-    assertEquals(2, action.getTrans().getTmap().size());
+    assertEquals(2, action.getTrans().getSourceValues().size());
     assertEquals(2, action.getField().getTranslation().size());
 
     // perform reload
     action.reload();
 
-    // check an additional sessionScoped translation was read from source (added to tmap)
-    assertEquals(3, action.getTrans().getTmap().size());
+    // check an additional sessionScoped translation was read from source (added to source values)
+    assertEquals(3, action.getTrans().getSourceValues().size());
 
-    // reloading source doesn't change the number of translations on the field itself
+    // reloading source doesn't change the number of translated values, or persisted translations on the field itself
+    assertEquals(2, action.getTrans().getTranslatedValues().size());
     assertEquals(2, action.getField().getTranslation().size());
   }
 
   @Test
-  public void testSave() throws IOException {
+  public void testSaveTranslations() {
     // create new set of 5 translations
-    TreeMap<String, String> translations = new TreeMap<String, String>();
-    translations.put("spe", "specimen");
-    translations.put("obs", "observation");
-    translations.put("liv", "livingSpecimen");
-    translations.put("mac", "machineObservation");
-    translations.put("zoo", "");
+    TreeMap<String, String> sourceValues = new TreeMap<String, String>();
+    sourceValues.put("k1", "spe");
+    sourceValues.put("k2", "obs");
+    sourceValues.put("k3", "liv");
+    sourceValues.put("k4", "mac");
+    sourceValues.put("k5", "zoo");
+
+    TreeMap<String, String> translatedValues = new TreeMap<String, String>();
+    translatedValues.put("k1", "specimen");
+    translatedValues.put("k2", "observation");
+    translatedValues.put("k3", "livingSpecimen");
+    translatedValues.put("k4", "machineObservation");
+    translatedValues.put("k5", "");
+
     // pretend this is the list of translations coming in from the UI
-    action.getTrans().setTmap(Constants.DWC_ROWTYPE_TAXON, DwcTerm.basisOfRecord, translations);
+    action.getTrans().setTmap(Constants.DWC_ROWTYPE_TAXON, DwcTerm.basisOfRecord, sourceValues, translatedValues);
     // perform the save
     action.save();
     // ensure it has been saved to the PropertyMapping (field)
@@ -239,61 +258,41 @@ public class TranslationActionTest {
   }
 
   @Test
-  public void testAutoMap() throws IOException {
-    // create new set of translations that haven't been mapped yet
-    TreeMap<String, String> translations = new TreeMap<String, String>();
+  public void testAutoMap() {
+    // create new map of source values that haven't been mapped yet
+    TreeMap<String, String> sourceValues = new TreeMap<String, String>();
     // will match vocab on concept
-    translations.put("PreservedSpecimen", null);
+    sourceValues.put("k1", "PreservedSpecimen");
     // will match vocab on preferred title
-    translations.put("Preserved Specimen", null);
+    sourceValues.put("k2", "Preserved Specimen");
     // will match vocab on alternative title
-    translations.put("Conserved Specimen", null);
+    sourceValues.put("k3", "Conserved Specimen");
     // will not match vocab on anything
-    translations.put("Unknown", null);
-    action.getTrans().setTmap(Constants.DWC_ROWTYPE_TAXON, DwcTerm.basisOfRecord, translations);
+    sourceValues.put("k4", "Unknown");
+
+    // create an empty map of translted values
+    TreeMap<String, String> translatedValues = new TreeMap<String, String>();
+
+    action.getTrans().setTmap(Constants.DWC_ROWTYPE_TAXON, DwcTerm.basisOfRecord, sourceValues, translatedValues);
+
     // perform auto mapping
     action.automap();
-    // assert there are 4 translations still in total
-    assertEquals(4, action.getTrans().getTmap().keySet().size());
-    // assert 3 have been auto-mapped (removing any null mapping values) and they are all equal to the vocab identifier
-    action.getTrans().getTmap().values().remove(null);
-    assertEquals(3, action.getTrans().getTmap().keySet().size());
-    for (String val : action.getTrans().getTmap().values()) {
+    // assert there are 4 source values still in total
+    assertEquals(4, action.getTrans().getSourceValues().size());
+    // assert there are 3 auto-mapped translated values now in total, and they all auto-mapped to PreservedSpecimen
+    assertEquals(3, action.getTrans().getTranslatedValues().size());
+    for (String val : action.getTmap().values()) {
       assertEquals("PreservedSpecimen", val);
     }
   }
 
   @Test
-  public void testPrepare() throws Exception {
+  public void testPrepare() {
     action.prepare();
     assertEquals("0", String.valueOf(action.getMid()));
     assertEquals(DwcTerm.basisOfRecord.qualifiedName(), action.getProperty().getQualname());
     assertEquals(2, action.getVocabTerms().size());
-    assertEquals(3, action.getTrans().getTmap().size());
-  }
-
-  @Test
-  public void testAcceptedParamNames() {
-    // IPT accepted parameter names
-    // can have alpha-numeric characters plus  ":", ";", ".", " ", "-"
-    assertTrue(action.acceptableParameterName("tmap['Valid']"));
-    assertTrue(action.acceptableParameterName("tmap['Vali:d']"));
-    assertTrue(action.acceptableParameterName("tmap['Valid.']"));
-    assertTrue(action.acceptableParameterName("tmap['within 6-20 km']"));
-    assertTrue(action.acceptableParameterName("tmap['within 5 km;']"));
-    assertTrue(action.acceptableParameterName("tmap['1969-02-22 00:00:00.0']"));
-
-    // IPT non-accepted parameter names
-    // cannot have malicious characters such as "<", ">", "&", """, "%", "'", "="
-    assertFalse(action.acceptableParameterName("tmap['<Valid>']"));
-    assertFalse(action.acceptableParameterName("tmap['Valid & valid']"));
-    assertFalse(action.acceptableParameterName("tmap['Valid \"valid\" valid']"));
-    assertFalse(action.acceptableParameterName("tmap['Valid%valid']"));
-    assertFalse(action.acceptableParameterName("tmap['Valid=4']"));
-  }
-
-  @Test
-  public void testStripBrackets() {
-     assertEquals("Valid", action.stripBrackets("tmap['Valid']"));
+    assertEquals(3, action.getTrans().getSourceValues().size());
+    assertEquals(2, action.getTrans().getTranslatedValues().size());
   }
 }
