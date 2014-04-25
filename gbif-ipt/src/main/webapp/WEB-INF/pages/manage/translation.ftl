@@ -1,8 +1,9 @@
+<#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.TranslationAction" -->
 <#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
 	<title><@s.text name="manage.translation.title"/></title>
 	<script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
-	
+
 <script type="text/javascript">
 $(document).ready(function(){
 	initHelp();
@@ -15,12 +16,12 @@ $(document).ready(function(){
 	});
 	//Hack needed for Internet Explorer X.*x
 	$('.reload').each(function() {
-		$(this).click(function() { 
+		$(this).click(function() {
  				window.location = $(this).parent('a').attr('href');
 		});
 	});
 	$('.automap').each(function() {
-		$(this).click(function() { 
+		$(this).click(function() {
  				window.location = $(this).parent('a').attr('href');
  		});
 	});
@@ -32,12 +33,12 @@ $(document).ready(function(){
 	// end hack
 	<#-- use vocabulary -->
 	<#if (vocabTerms?size>0)>
-	var vocab = [<#list vocabTerms?keys as code>{"value":"${code?replace('"','\"')}","label":"${vocabTerms[code]}"},</#list>];	
+	var vocab = [<#list vocabTerms?keys as code>{"value":"${code?replace('"','\"')}","label":"${vocabTerms[code]}"},</#list>];
 	$("#translation input").autocomplete({
 	  source: vocab
 	})
 	</#if>
-});  
+});
 </script>
  <#assign currentMenu = "manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
@@ -50,9 +51,9 @@ $(document).ready(function(){
 <h2><@s.text name="manage.translation.property"/> <em>${property.name}</em></h2>
 <p>&quot;${property.description!}&quot;</p>
 
-<#if property.vocabulary?exists>	  		
+<#if property.vocabulary?has_content>
 <p>
-<strong><@s.text name="manage.translation.vocabulary.required"/></strong>:  
+<strong><@s.text name="manage.translation.vocabulary.required"/></strong>:
 <@s.text name="manage.translation.vocabulary.required.intro"/>
 </p>
 <p>
@@ -85,9 +86,9 @@ $(document).ready(function(){
       </#if>
       <th><@s.text name="manage.translation.translated.value"/></th>
     </tr>
-    <#list tmap?keys as k>
+    <#list sourceValuesMap?keys as k>
       <tr<#if (k_index % 2) == 1> class="even"</#if>>
-        <td>${k}</td>
+        <td>${sourceValuesMap.get(k)!}</td>
         <!-- do not show column if term does not relate to vocabulary -->
         <#if (vocabTerms?size>0)>
           <td><img src="${baseURL}/images/<#if vocabTerms[tmap.get(k)!k]??>good<#else>bad</#if>.gif"/></td>
