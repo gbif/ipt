@@ -217,7 +217,7 @@ fileSource.fieldsEnclosedByEscaped=欄位包圍字元
 fileSource.fieldsEnclosedByEscaped.help=在每一列中圍繞每一欄位的單一字元符號，通常為空，但 CSV 檔中使用雙引號(")。 使用此選項時， 請確認不管是否為文字，每一欄位內容皆包含於引號中。
 fileSource.ignoreHeaderLines=標頭列數
 fileSource.ignoreHeaderLines.help=匯入資料時，檔案開頭將被略過的列數
-excelSource.sheets=TODO: Selected Worksheet
+excelSource.sheets=選定的工作表
 
 # ranks
 rank.kingdom=界
