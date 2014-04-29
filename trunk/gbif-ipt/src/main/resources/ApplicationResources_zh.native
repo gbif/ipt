@@ -826,7 +826,6 @@ manage.translation.deleted=刪除 {0} 欄位的轉譯。
 manage.translation.reloaded.values=重新自來源檔載入 {0} 獨特值
 manage.translation.reloaded.fail=本詞彙 {0} 的來源值 {1} 無法重新載入。
 manage.translation.saved=已儲存欄位名稱 {0} 的轉譯。
-manage.translation.saved.failed.values=字串值轉譯失敗：{0}。基於軟體安全，只有英文字母-數字文字、冒號、分號、連字符號、句號、空白分隔等半形符號組成的字串值可被轉譯。
 
 manage.metadata.section=段落
 manage.metadata.removethis=將此移除

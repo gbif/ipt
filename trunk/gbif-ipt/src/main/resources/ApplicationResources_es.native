@@ -820,7 +820,6 @@ manage.translation.deleted=Traducción eliminada para el elemento {0}.
 manage.translation.reloaded.values={0} diferentes valores actualizados para el elemento desde la fuente (para traducción) {1}.
 manage.translation.reloaded.fail=Valores de la fuente no se pueden actualizar para el elemento {0}: {1}
 manage.translation.saved=Traducción guardada para el elemento {0}.
-manage.translation.saved.failed.values=La traducción falló para los valores: {0}. Por razones de seguridad, un valor solo puede ser traducido si está compuesto de caracteres alfanuméricos, dos puntos (:), punto y coma (;), guiones (-), puntos (.), o espacios (" ").
 
 manage.metadata.section=Sección
 manage.metadata.removethis=Eliminar
