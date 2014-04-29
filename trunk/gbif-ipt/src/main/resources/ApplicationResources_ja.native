@@ -200,6 +200,7 @@ fileSource.fieldsEnclosedByEscaped=フィールドクオーテーション
 fileSource.fieldsEnclosedByEscaped.help=一行のフィールド/カラムを区切る１文字。空のことが多いが、CSVの時ダブルクオーテーションのオプションを使うと、すべてのフィールドがダブルクオーテーションの中に入ることになります。
 fileSource.ignoreHeaderLines=ヘッダー行数
 fileSource.ignoreHeaderLines.help=データの取り込みの際、対象としないヘッダーの行数
+excelSource.sheets=TODO: Selected Worksheet
 
 # ranks
 rank.kingdom=界

@@ -489,6 +489,7 @@ fileSource.fieldsTerminatedByEscaped=Delimitador de campo
 fileSource.fieldsTerminatedByEscaped.help=Um caractere que delimite as colunuas/campos em uma linha.
 fileSource.ignoreHeaderLines=Número de Linhas de Cabeçalho
 fileSource.ignoreHeaderLines.help=O número de linhas reservadas para cabeçalho em seu arquivo, as quais serão ignoradas durante a importação.
+excelSource.sheets=TODO: Selected Worksheet
 footer.bugReport=Reportar erros
 footer.featureRequest=Requisite um novo recurso
 footer.projectHome=Sobre o projeto IPT
