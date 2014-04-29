@@ -772,7 +772,6 @@ manage.translation.property=Propriété
 manage.translation.reloaded.values={0} valeurs distinctes ont été recharchées (pour la traduction) depuis la source de données pour le terme {1}.
 manage.translation.reloaded.fail=Les valuers n''a pas pu être recharchée pour le terme {0}: {1}
 manage.translation.saved=Traduction enregistrée pour le terme {0}.
-manage.translation.saved.failed.values=La traduction a échoué pour les valeurs: {0}. Pour des raisons de sécurité, une valeur ne peut être traduite que si elle est composée de caractères alphanumérique, deux points (:), point-virgule );), trait d'union (-), point (.), ou espace (" ").
 manage.translation.source.value=Valeur source
 manage.translation.title=Value Translation
 manage.translation.translated.value=Valeur traduite
