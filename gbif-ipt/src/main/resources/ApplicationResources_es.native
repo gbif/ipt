@@ -61,7 +61,7 @@ button.create=Crear
 button.edit=Editar
 button.back=Regresar
 button.register=Registrar
-button.publish=Generar Archivo DwC
+button.publish=Publicar
 button.public=Público
 button.updateRegistration=Actualizar registro
 button.update=Actualizar
@@ -782,12 +782,11 @@ restore.resource.failed=La restauración de la versión #{0} del recurso {1} fal
 # Auto-publishing
 autopublish=Autopublicación
 autopublish.off=Desactivar
-autopublish.update=Generar DwC-A y cambiar la frecuencia de autopublicación
-autopublish.activate=Generar DwC-A y activar la autopublicación
-autopublish.disable=Generar DwC-A y desactivar la autopublicación
+autopublish.update=Publicar y cambiar la frecuencia de autopublicación
+autopublish.activate=Publicar y activar la autopublicación
+autopublish.disable=Publicar y desactivar la autopublicación
 autopublish.interval=Seleccionar la frecuencia
-autopublish.help=Para <strong>activar</strong> la autopublicación, seleccione una de las 5 frecuencias de publicación y presione Generar DwC-A y activar la autopublicación. Para <strong>cambiar</strong> la frecuencia de autopublicación, seleccione una frecuencia de publicación diferente y presione Generar DwC-A y cambiar la frecuencia de autopublicación. Para <strong>desactivar</strong> la autopublicación, seleccione "Desactivar" y presione "Generar DwC-A y desactivar la autopublicación".
-
+autopublish.help=Para <strong>activar</strong> la autopublicación, seleccione una de las 5 frecuencias de publicación y presione Publicar y activar la autopublicación. Para <strong>cambiar</strong> la frecuencia de autopublicación, seleccione una frecuencia de publicación diferente y presione Publicar y cambiar la frecuencia de autopublicación. Para <strong>desactivar</strong> la autopublicación, seleccione "Desactivar" y presione Publicar y desactivar la autopublicación.
 manage.overview.resource.managers=Administradores de Recursos
 manage.overview.resource.managers.description=Los recursos pueden ser gestionados por varios administradores. Puede dar permisos a otros administradores para modificar "{0}".
 manage.overview.resource.managers.creator=Creador
