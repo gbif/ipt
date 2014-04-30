@@ -1,0 +1,1180 @@
+##
+# Notes to developers:
+# Please maintain sensible groupings within this file (Do not use Attesoro to work in this file)
+# Please consider promoting generic messages out of specific sections for better reuse
+# Please consider that people will be translating this file and simplifying this for them
+#   is a priority
+##
+
+##
+# IMPORTANT!! In the coming future, the conversation to ascii described below will be
+# picked up automatically. Please from now only provide edits ONLY TO THIS native file
+# in Traditional Chinese.
+##
+
+##
+# Recommended practice of translation without using Attesoro:
+#
+# Attesoro breaks the grouping of this properties file and makes maintenance cumbersome among
+# language groups. We recommend using any text editors with the native2ascii command-line tools
+# to work on the translation tasks. native2ascii is a tool coming with default JDK installation.
+#
+# To add/update translation to properties files, using Chinese as an example:
+# 1. Convert the properties file to UTF-8 so characters are displayed in non-escaped form and can be
+#    read by traslators.
+#
+#   $ native2ascii -reverse -encoding UTF-8 ApplicationResources_zh.properties ApplicationResources_zh.native
+#
+# 2. Find the property and edit the translation.
+# 3. When finished, convert the properties file again to ASCII:
+#
+#   $ native2ascii -encoding UTF-8 ApplicationResources_zh.native ApplicationResources_zh.properties
+#
+# 4. Commit the converted file to IPT code repository.
+#
+# This way the grouping is kept and is easier for others to find relevant translations.
+##
+
+##
+# IPT Interface translation contributed by TaiBIF & TFRI as of v2.0.3.
+# Reviewed and consistency checked by BCJK @ GBIFS.
+#
+# Please note if using double-byte characters for punctuation, then it shouldn't
+# be escaped by back-slash.
+##
+
+####
+# GENERAL BASIC EXPRESSIONS
+####
+title=IPT
+
+basic.seealso=參見
+basic.identifier=識別碼
+basic.link=連結
+basic.title=標題
+basic.name=名稱
+basic.namespace=名稱空間
+basic.keywords=關鍵字
+basic.description=說明
+basic.examples=範例
+basic.lastModified=最後修改
+basic.confirm=您確定嗎？
+basic.yes=是
+basic.no=否
+basic.showMore=增加顯示內容
+basic.showLess=減少顯示內容
+
+# buttons
+button.add=增加
+button.analyze=分析
+button.save=儲存
+button.delete=刪除
+button.delete.source.file=刪除原始檔案
+button.cancel=取消
+button.create=建立
+button.edit=編輯
+button.back=返回
+button.register=註冊
+button.publish=發布
+button.public=公開
+button.updateRegistration=更新註冊資訊
+button.update=更新
+button.private=尚未公開
+button.preview=預覽
+button.import=匯入
+button.reload=重新載入
+button.automap=自動欄位對應
+button.resetPassword=重設密碼
+button.continue=繼續
+button.upload=上傳
+button.clear=清除
+button.connectDB=連結資料庫
+button.remove=移除
+button.install=安裝
+
+####
+# LAYOUT
+####
+# footer
+footer.version=版本
+footer.projectHome=關於 IPT 專案
+footer.useManual=使用手冊
+footer.bugReport=回報程式錯誤
+footer.featureRequest=建議新功能
+
+# main menu items
+menu.home=首頁
+menu.about=關於
+menu.manage=管理資源
+menu.admin=系統管理
+menu.account=帳號
+menu.logout=登出
+menu.loggedin=登入身分 {0}
+
+# submenus
+submenu.basic=基本元數據
+submenu.parties=相關團體
+submenu.geocoverage=地理涵蓋範圍
+submenu.taxcoverage=分類群涵蓋範圍
+submenu.tempcoverage=時間涵蓋範圍
+submenu.project=計劃資料
+submenu.methods=取樣方法
+submenu.citations=引用文獻
+submenu.collections=採集、蒐藏資料
+submenu.physical=外部連結
+submenu.keywords=其他關鍵詞
+submenu.additional=其他元數據
+
+# pager
+pager.previous=往前
+pager.next=往後
+
+####
+# DATA MODEL PROPERTIES
+####
+
+#user
+user=使用者
+user.email=電字郵件
+user.firstname=名字
+user.lastname=姓氏
+user.password=密碼
+user.password2=驗證密碼
+user.password.new=新的密碼
+user.role=角色
+user.roles.user=使用者
+user.roles.manager=無註冊資料權限的管理員。
+user.roles.publisher=具有註冊資料權限的管理員。
+user.roles.admin=系統管理員
+
+# extension
+extension=延伸集
+extension.rowtype=列的型態
+extension.vocabulary=字彙
+extension.properties=屬性
+extension.prop.qname=限定名
+extension.prop.type=資料型態
+extension.prop.required=必要
+extension.prop.group=群組
+extension.vocabularies.title=字彙
+extension.vocabularies.last.update=最後更新： {0}<br />
+extension.vocabularies.number=所有{0}字彙與其最新的註冊版本
+extension.further.title=更多的核心類型和延伸集可從 GBIF 登錄取得。
+extension.further.title.help=左欄顯示核心集類型或延伸集的名稱。右欄顯示該核心集或延伸集的摘要資訊，以及描述其中應著錄何種資料。
+extension.already.installed=你已經安裝所有可安裝的核心類型和延伸集。
+
+# vocab
+vocabulary.uri=URI
+vocabulary.concepts=詞彙概念
+vocabulary.terms.pref=偏好的欄位名稱
+vocabulary.terms.alt=替代欄位名稱
+
+# resource
+resource.shortname=資源簡稱
+resource.coreType=核心集類型
+resource.coreType.selection=選擇一種核心集類型
+
+manage.resource.create.coreType=核心集類型
+manage.resource.create.coreType.selection=選擇一種核心集類型（額外選項）
+manage.resource.create.coreType.help=資源類型。若載入額外倉儲的資源，資源類型將自動決定並覆蓋你的選擇。<ul><li><b>出現資料：</b>此資源的基礎是自然的出現（觀察）紀錄或採集（標本）紀錄。<br /></li><li><b>名錄：</b> 此資源的基礎是分類名稱。<br /></li><li><b>元數據：</b> 有描述資料集的資訊，但無實際的原始資料的資源。例如，元數據可提供尚未數位化的採集相關資訊<br /></li><li><b>其他：</b>其他資源類型。<br /></li></ul>
+
+resource.subtype=次類型
+resource.status.private=未公開
+resource.status.public=公開
+resource.status.registered=已註冊
+resource.creator.firstname=名字
+resource.creator.lastname=姓氏
+resource.creator.email=電子郵件
+resource.coreType.help=資源的類型。此欄位的值取決於此資源的核心對應類型，若核心對應已完成，則將無法修改。
+resource.subtype.help=資源的次類型。此欄位的選項取決於核心集類型。
+resource.subtype.selection=選擇一種次類型
+resource.subtype.none=無
+resource.updateFrequency.selection=選擇更新頻率
+resource.updateFrequency=更新頻率
+resource.updateFrequency.help=資料集最初編輯完成後，資料修改或增加的頻率。使用自動發布模式，請選擇設定每日、每周、每月、每年兩次或每年一次更新資料集：<ul><li><b>每年</b>每年更新一次<br /></li><li><b>需要時：</b>依需要更新<br /></li><li><b>每年兩次：</b>每年更新兩次<br /></li><li><b>持續：</b>持續更新<br /></li><li><b>每日：</b>每日更新一次<br /></li><li><b>不定期：</b>不定期更新<br /></li><li><b>每月：</b>每月更新一次<br /></li><li><b>無計畫：</b>無計畫更新<br /></li><li><b>每周：</b>每周更新一次<br /></li><li><b>不確定：</b>有可能更新，但不確知何時<br /></li><li><b>其他更新週期：</b>依其他週期更新。<br /></li></ul>
+
+
+# sources
+source.name=資料庫來源名稱
+source.name.help=辨識資料庫來源的簡稱，不含空白字元及標點符號。
+source.encoding=字元編碼
+source.encoding.help=資料庫字元編碼系統。若不知何種編碼，嘗試使用 UTF-8，Latin-1 或 Windows-1252。
+source.dateFormat=日期格式
+source.dateFormat.help=資料庫使用日期的紀錄格式。
+sqlSource.host=資料庫伺服器
+sqlSource.host.help=輸入資料庫伺服器網址，亦可包含非預設的連接埠號（例如：localhost or msql）。ODBC連結無需輸入網址。
+sqlSource.rdbms=資料庫系統類型
+sqlSource.database=資料庫
+sqlSource.database.help=伺服器中的資料庫名稱或 ODBC 連結 DSN 名稱。
+sqlSource.username=資料庫使用者
+sqlSource.password=資料庫密碼
+sqlSource.sql=SQL 述語
+sqlSource.sql.help=讀取來源資料庫的 SQL 述語。此述語將如實傳送，因此你可以使用連結資料庫任何原有支援的功能，如函數(functions)、組別(group by)、聯集(unions)。範例: <br /> <code>SELECT * from specimen join taxon on taxon_fk=taxon.id</code>
+sqlSource.sqlLimited=預覽資料產生的 SQL 語法
+fileSource.fieldsTerminatedByEscaped=欄位分隔符號
+fileSource.fieldsTerminatedByEscaped.help=分隔每一列中的欄位的單一字元符號。
+fileSource.fieldsEnclosedByEscaped=欄位包圍字元
+fileSource.fieldsEnclosedByEscaped.help=在每一列中圍繞每一欄位的單一字元符號，通常為空，但 CSV 檔中使用雙引號(")。 使用此選項時， 請確認不管是否為文字，每一欄位內容皆包含於引號中。
+fileSource.ignoreHeaderLines=標頭列數
+fileSource.ignoreHeaderLines.help=匯入資料時，檔案開頭將被略過的列數
+excelSource.sheets=選定的工作表
+
+# ranks
+rank.kingdom=界
+rank.phylum=門
+rank.class=綱
+rank.order=目
+rank.family=科
+rank.genus=屬
+
+####
+# VALIDATION error messages
+####
+# general
+validation.required=需要 {0} 。
+validation.invalid={0} 無效。
+validation.short={0} 至少需要 {1} 字母。
+validation.contains=文字不可包含 "{0}" 符號。
+validation.field.required=欄位
+validation.field.blank={0} 必須多於 2 個字元，不可有空白字元。
+validation.wrong.datatype={0} 對應至錯誤資料類型的值。
+
+# user/config
+validation.email.required=需要填寫電子郵址。
+validation.email.invalid=電子郵件無效。
+validation.firstname.required=需填寫名字。
+validation.lastname.required=需填寫姓氏。
+validation.password.required=密碼至少需要 4 個字元。
+validation.password2.wrong=輸入密碼不一致。
+validation.baseURL.required=需要 IPT base URL。
+validation.baseURL.invalid=IPT base URL 無效。
+
+# organisation
+validation.organisation.password.required=需要密碼。
+validation.organisation.alias.required=需要別名。
+validation.organisation.password.invalid=密碼無效。
+validation.organisation.key.required=請從列表中選擇一單位組織。
+
+# ipt
+validation.ipt.name.required=需要 IPT 標題名稱。
+validation.ipt.name.short=IPT 標題名稱必須多於 2 個字元。
+validation.ipt.contactName.required=聯絡人姓名為必填。
+validation.ipt.contactEmail.required=聯絡資訊電子郵件為必填。
+validation.ipt.contactEmail.short=電子郵件必須多於5個字元。
+validation.ipt.contactEmail.invalid=電子郵址必須為有效格式（例如： name@organisation.org）。
+validation.ipt.password.required=需要 IPT 使用者密碼。
+validation.ipt.password.short=IPT 密碼必須多於5個字元。
+
+# resources
+validation.resource.shortname.required=需要簡稱。
+validation.resource.shortname.invalid=名稱無效。至少需要 3 個拉丁字元、數字、連字符號或底線，不可有空白字元。
+validation.resource.shortname.exists=資料集 {0} 已存在。
+validation.resource.shortname.title=需要標題名稱。
+validation.resource.import.exception=匯入檔案錯誤 - 您確定這是達爾文核心集檔案？請使用檔案驗證服務 http://tools.gbif.org/dwca-validator/
+
+# mappings
+validation.mapping.coreid.missing=延伸集資料需要一個識別碼(ID)以連結至核心紀錄表單。
+validation.mapping.coreid.linenumber.samesufix=其他核心類型的對應也使用具相同字尾的行號做為識別碼。
+validation.mapping.coreid.linenumber.integer=整數不能做為行號字尾。
+validation.mapping.coreid.linenumber.nocoresuffix=在行號識別碼及相同字尾沒有相同的核心紀錄對應。
+validation.mapping.coreid.uuid.extension=自動產生的 UUID 無法用於延伸集，因為 UUID 必須連結至核心紀錄中唯一的識別碼(ID)。
+validation.mapping.coreid.uuid.extensions.exist=使用系統產生的 UUID 做為識別碼，你無法對應任何延伸集的欄位名稱。
+
+# eml
+validation.lastname.organisation.position=需填寫姓氏、單位組織或職稱。
+validation.firstname.lastname=若填寫名字，則亦須填寫姓氏。
+
+# errors
+error.header.title=遺失
+error.title=噢
+error.body=您似乎發現了一個意料之外的錯誤：
+error.view.logs=查看 IPT 的日誌檔
+error.report=如果您認為這種情況不應該發生，請協助我們改進 IPT 以及<a href="http://code.google.com/p/gbif-providertoolkit/issues/entry?summary=IPT%20error">提出程式錯誤的報告</a> 來處理這個例外情況。
+error.thanks=萬分感謝，IPT 研發小組敬上。
+error.details.title=技術細節
+
+####
+# GLOBAL SECTION
+####
+login.title=使用者登入
+login.intro=請以您的電子郵件地址登入 IPT 帳號。<br />若您沒有帳號，請連絡 IPT 管理員為您設立帳號。
+login.forgottenpassword=忘了密碼？請連絡 IPT 管理員為您重置密碼
+login.forgottenpassword.mail.subject=您忘記的 IPT 密碼
+login.forgottenpassword.mail.body=IPT 管理者 {0} 您好：\n	我忘了我的 IPT 密碼，帳號是{1}。\n	是否能請您就使用者帳號單元中所列，將我的登入資料以電子郵件寄給我？\n\n謝謝！ \n {1}\n\n\n	{2}
+account.title=您的 IPT 帳號
+account.intro=您的帳號設定可以在此修改。管理資料集的角色權限必須由系統管理者指定。
+account.email.cantChange=使用者帳一旦建立，電子郵件地址即不可更改。如果因為任何原因您必須更改您的電子郵件地址，請洽您的管理員，建立一個新的帳號後移除舊的。
+404.title=找不到頁面
+404.body=抱歉，您要求瀏覽的頁面不存在。
+401.title=未經授權
+401.body=您無瀏覽此頁面的權限。<br />請先以適當權限的帳號<a href="{0}">登入</a>。
+401.manager.title=必須以使用管理者權限登入
+401.manager.body=您必須以「管理者」角色登入，方能使用 IPT 此部分之功能。請以使用管理者帳號 <a href="{0}">登入</a>，或連繫 IPT 管理者提供您此角色。
+help.options=點選以下任何選項
+
+####
+# PORTAL SECTION
+####
+portal.home.title=此 IPT 上維護的公開資源
+portal.home.intro=此 IPT 可用的公開資源
+portal.home.feed=最近更新的資源亦可由 <a href="{0}">RSS feed</a> 獲得。
+portal.home.no.public=無公開資源
+portal.home.name=名稱
+portal.home.logo=標誌
+portal.home.type=類型
+portal.home.organisation=單位組織
+portal.home.records=紀錄筆數
+portal.home.modified=最後修改時間
+portal.home.last.publication=上次發布
+manage.home.next.publication=下次發布
+portal.home.not.published=尚未發布
+portal.home.author=作者
+portal.login=登入
+portal.metadata.provider=元數據提供者
+portal.resource.no.description=無相關描述
+portal.resource.summary=摘述
+portal.resource.summary.keywords=關鍵字
+portal.resource.summary.taxcoverage=分類群涵蓋範圍
+portal.resource.summary.geocoverage=地理涵蓋範圍
+portal.resource.version=版本
+portal.resource.version.latest=檢視最近的
+portal.resource.latest=最近的
+portal.resource.download=下載
+portal.resource.records=紀錄
+portal.resource.published.archive=達爾文核心集檔案
+portal.resource.published.eml=EML
+portal.resource.published.rtf=RTF
+portal.resource.published.never=永不
+portal.resource.organisation.key=GBIF 註冊
+portal.resource.organisation.name=單位組織名稱
+portal.resource.organisation.node=認可節點
+portal.resource.metadata=資源元數據
+portal.resource.creator=資源創建者
+portal.resource.name=資源名稱
+portal.resource.contact=聯絡資訊
+portal.resource.tel=電話
+portal.resource.eml.error.load=資料集 {1} EML 檔版本 #{0} 載入失敗
+portal.resource.eml.error.parse=資料集 {1} EML 檔版本 #{0} 無法解析
+portal.publication.download.log=完整下載
+portal.publication.log=發布日誌檔
+
+####
+# ADMIN SECTION
+####
+admin.home.editConfig=IPT 設定
+admin.home.editOrganisations=組織
+admin.home.editOrganisations.disabled=IPT 在關聯組織之前必須先於 GBIF 註冊。
+admin.home.editRegistration=GBIF 註冊選項
+admin.home.manageUsers=使用者帳號
+admin.home.manageExtensions=核心類別與延伸集
+admin.home.manageLogs=日誌
+admin.home.publishResources=發布所有資料集
+admin.home.publishResources.help=和「發布」一樣，但此處發布所有資料集，亦即針對所有的資料集，IPT 將產生新的達爾文核心集檔案（DwC-A）、生態元數據語言檔案（EML）、以及多文本格式（RTF），並且將更新經由 RSS 傳送到 GBIF 登錄庫。除此之外，元數據內容亦更新至登錄庫中。<br /><br />使用時機：a) 數個資料集更新，您想要一次發布所有更新，而非個別更新。<br />基礎網址或代理伺服器網址經修改，您想要將此修改反映到所有已註冊的資料集中。
+
+admin.config.setup.title=IPT 設定
+admin.config.setup.welcome=為了使用 IPT，您必須選擇一個資料目錄讓 IPT 儲存它的配置資訊，亦即所謂的 IPT 資料目錄。
+admin.config.setup.instructions=請選擇一個空的、可寫入的資料夾，或者是一個已存在的 IPT 資料目錄。不要選擇一個容易受到其他行程影響的資料夾，如 /tmp，它在系統啟動時會被清空。這個資料夾應該保持定期備份與災難恢復計劃。
+admin.config.setup.examples=例如：使用路徑如視窗環境下的 "C:\\datadir" ，或是類 UNIX 環境（如 Linux, Mac OS X）下的 "/usr/datadir"。
+admin.config.setup.datadir=您資料目錄的絕對路徑
+admin.config.setup.datadir.created=您已經成功地建立一個新的資料目錄。
+admin.config.setup.datadir.reused=您已經成功地指定一個已存在的資料目錄。
+admin.config.setup.datadir.absolute=資料目錄的路徑必須是絕對的，不是相對的（例如是 /var/tmp/data，而不是 data）。
+admin.config.setup.datadir.error=指定的資料目錄已存在，並且似乎不適合當做 IPT 的資料目錄。
+admin.config.setup.datadir.writable=無法寫入資料目錄 "{0}"。
+
+admin.config.setup2.title=IPT 設置—第二部分
+admin.config.setup2.welcome=請為 IPT 提供額外的安裝資訊。
+admin.config.setup2.administrator=預設之系統管理員
+admin.config.setup2.administrator.help=預設系統管理員之密碼可在稍後變更，但電子郵件無法修改，除非刪除並重建。
+admin.config.setup2.mode.title=IPT 執行模式
+admin.config.setup2.mode.help=請選擇 IPT 的執行模式。IPT 執行模式決定資源是否會被 GBIF 索引而能公開搜尋。GBIF 建議 IPT 管理員嘗試使用「測試模式」以瞭解註冊程序，然後使用「正式模式」以正式發布資料。<b>警告</b>：此選項一旦選定將不可更改，您必須重新安裝以切換模式，並重覆所需的設定。
+admin.config.setup2.mode.test=<b>測試模式</b>用以評估或是在訓練課程中 IPT 的使用情況。在此模式下註冊資訊將存在測試用的登錄，且資源將不會被索引。
+admin.config.setup2.mode.production=<b>正式模式</b>用以正式發布資源。資源將會登錄在 GBIF 且會被索引。
+admin.config.setup2.success=恭喜！您的 IPT 已經設置完成。
+admin.config.setup2.next=在您開始管理資源之前，請先到管理單元，建立新的管理員與安裝適合的延伸集。
+admin.config.setup2.existingFound=在提供的位置上找到一個 IPT 資料目錄。IPT 將採用這個目錄的所有資料內容。
+admin.config.setup2.failed=設置管理員帳號失敗。無法寫入使用者檔案：{0}
+admin.config.setup2.datadir.notExist=在配置預設管理員前，請先配置一個資料目錄
+admin.config.setup2.already.registered=此 IPT 已經設定成在{0}模式執行。請記得在正式模式下，您必須輸入一個可公開存取的 URL，並確認您在設定時選取「正式模式」。如果您想要以不同模式執行 IPT，請您停止伺服器程序並在重新設定時選取新的資料目錄。
+admin.config.setup2.nonadmin=該使用者已經存在並且不是管理員。
+admin.config.setup2.mode=IPT 執行模式：
+admin.config.setup2.nomode=請選擇IPT的執行模式。
+
+admin.config.setup3.title=IPT 設置完成
+admin.config.setup3.welcome=恭喜！您已經成功地安裝您的 IPT。請按下「繼續」以使用它。
+
+admin.config.debug=除錯模式
+admin.config.debug.help=如果您在您的 IPT 上遭遇問題，並且希望啟用提供為除錯目的而增加資訊記錄功能時，請勾選此核取框。如果您需要 helpdesk 的幫助，您可能會被要求提供除錯記錄資訊。
+admin.config.debug.error=無效的除錯模式（必須為是或否）
+admin.config.save.error=無法寫入設定值－遭遇錯誤
+admin.config.archivalMode=倉儲模式
+admin.config.archivalMode.help=若希望 IPT 保存所有資料集已發布的所有版本，請選取此方塊；此功能將讓你可以追溯資料集的版本歷史。若不選取此方塊，舊版本將會被新版本複寫。請特別注意保留足夠的磁碟儲存空間。
+admin.config.archivalMode.error=無效的倉儲模式（必須為是或否）
+
+admin.config.server.data.dir=IPT 資料目錄
+admin.config.server.data.dir.help=IPT 用以寫入資料的伺服器目錄
+admin.config.server.log.dir=IPT 日誌目錄
+admin.config.server.log.dir.help=IPT 寫入日誌檔的伺服器目錄
+admin.config.server.location=IPT 伺服器位置
+admin.config.server.longitude=經度
+admin.config.server.longitude.help=經度必須輸入以 WGS84 為基準的十進位格式。<br />當表明西經時請使用減號( - )<br />例如：-86.64
+admin.config.server.latitude=緯度
+admin.config.server.latitude.help=緯度必須輸入以 WGS84 為基準的十進位格式。<br />當表明南緯時請使用減號( - )<br />例如：-10.15
+admin.config.server.location.error=IPT伺服器的緯度/經度位置不是有效的十進位制坐標（緯度介於-90與90之間，經度介於-180與180之間）。
+
+admin.config.googleMapsKey=Google Maps Key
+
+admin.config.analyticsGbif=啟用 GBIF 分析
+admin.config.analyticsGbif.help=如果您想讓 GBIF 將您的 IPT 納入全球 IPT 的使用情況監測，請勾取此核取框。
+admin.config.analyticsGbif.error=無效的 GBIF Analytics 模式（必須為是或否）
+admin.config.analyticsKey=您的 Google Analytics Key
+admin.config.analyticsKey.help=Google Analytics 是由 Google 提供監測網站應用程式的服務。請輸入您的 Google Analytics key 以便追蹤您的 IPT 使用狀況。
+admin.config.analyticsKey.error=無效的 Google Analytics Key
+
+admin.config.baseUrl=IPT 的基礎網址
+admin.config.baseUrl.help=這個網址指向您 IPT 裝置的根網址。如果您想要註冊資源，則您必須擁有可公開存取的位址。例如：http://tools.gbif.org/ipt。
+admin.config.baseUrl.changed=基礎網址已成功更新
+admin.config.baseUrl.changed.reminder=登入時，點選「發布所有資料集」按鈕（管理頁面）以更新所有已註冊資源的服務網址。
+admin.config.baseUrl.inaccessible=此基礎網址無法讓您的電腦訪問任何 IPT 網站。
+admin.config.baseUrl.invalidBaseURL=基礎網址必須要能從網際網路連上（例如：localhost 和 127.0.0.1 無法從網際網路連上，是為無效。）
+admin.config.error.invalidBaseURL=輸入的基礎網址格式不正確 (例如，http://www.my-institution.com/ipt)
+admin.config.error.invalidPort=埠號應為整數
+admin.config.error.connectionRefused=無法連上代理伺服器主機
+admin.config.error.invalidProxyURL=輸入的代理伺服器網址格式不正確 (例如，http://proxy.my-insitution.com:8080)
+admin.config.error.localhostURL=使用 localhost, 除此電腦外，IPT 將無法從外部網路連上。
+admin.config.error.datadir=設定 IPT 資料目錄失敗
+
+admin.config.proxy=代理伺服器網址
+admin.config.proxy.help=假如您的伺服器是經由代理伺服器路由，請輸入主機位址與埠號為一個字串（例如proxy.gbif.org:8080）。
+admin.config.proxy.error=無效的代理伺服器網址
+
+admin.config.registry.url=GBIF 登錄網址
+admin.config.registry.url.help=這個資料目錄所關連的 GBIF 登錄網址，這是不可改變的，只能在 IPT 的設定步驟上選擇。
+
+admin.config.updateMetadata.none=沒有資源需要更新。。。
+admin.config.updateMetadata.resource.fail.registry=在更新至 GBIF 登錄時發生錯誤 - {0}。
+admin.config.updateMetadata.summary=已完成發布所有資料集。 若需要更多資訊，請見日誌檔。
+
+# invalid fields
+invalid.fieldvalue.latitude=無效的緯度
+invalid.fieldvalue.longitude=無效的經度
+
+# extension & vocabs
+admin.extension.coreTypes=核心類型
+admin.extension.extensions=延伸集
+admin.extension.no.coreTypes.installed=沒有安裝任何核心類型。
+admin.extension.no.coreTypes.installed.help=核心集（出現紀錄及分類群）提供資料的基本欄位。
+admin.extension.no.coreTypes.installed.debug=由於尚未安裝任何核心集，您無法對應任何資料。請從核心集及延伸集列表安裝一核心集。假如列表沒有顯示，請檢查網路連線並確認這台伺服器能連上 GBIF 登錄：{0}。
+admin.extension.no.extensions.installed=沒有安裝任何核心類型。
+admin.extension.no.extensions.installed.help=延伸集在核心集之外提供更多欄位供對應。每個延伸集都有特定的欄位類群。請從以下列表安裝您所需要的延伸集。
+admin.extension.couldnt.install.coreTypes=無法安裝所有的核心類型延伸集。
+admin.extension.couldnt.install=無法安裝所要求的延伸集。
+admin.extension.install.success=成功地安裝延伸集： {0} 。
+admin.extension.install.error=在嘗試安裝延伸集 {0} 時發生錯誤。
+admin.extension.install.duplicate=已安裝有一個包含列型態 {0} 的延伸集，請移除包含該列型態的延伸集後再試一次。
+admin.extension.delete.success=成功地移除延伸集 {0}
+admin.extension.delete.error=無法移除延伸集 {0}。
+admin.extensions.couldnt.load=無法從登錄載入已註冊的延伸集：{0}。
+admin.extensions.vocabularies.couldnt.load=無法從登錄載入已註冊的詞彙：{0}。
+admin.extensions.vocabulary.couldnt.load=無法從登錄載入預設詞彙 {0}：{1}。
+admin.startup.warnings=IPT 啟動時發生錯誤。請查閱日誌檔以獲取更多資訊。錯誤排除後，請重新啟動網站伺服器。
+admin.extensions.error.updating=錯誤更新詞彙 {0}：{1}
+admin.extensions.vocabularies.updated={0}詞彙已更新。
+admin.extensions.vocabularies.unchanged={0}詞彙為最新版本。
+admin.extensions.vocabularies.errors=更新 {0} 詞彙時發生錯誤。請參考日誌！
+admin.extensions.vocabularies.update.help=延伸集中的欄位為控制詞彙，每隔一段時間這些詞彙可能會有所變動，故需要更新至 IPT。點擊以下按鈕將從 GBIF 登錄下載並更新控制詞彙。
+admin.extension.title=Darwin Core 延伸集：
+admin.extension.properties=延伸集屬性
+
+admin.vocabulary.title=控制詞彙
+
+admin.users.intro=最為管理員，您可以建立、修改或刪除使用者帳號。
+admin.users.name=名稱
+admin.users.email=電子郵件
+admin.users.role=角色
+admin.users.last.login=最後登入
+
+admin.user.title.edit=編輯使用者帳號
+admin.user.title.new=新的使用者帳號
+admin.user.intro=電子郵件地址用來識別使用者，且之後不能修改。在建立使用者時請謹慎選擇電子郵件地址。假如需要變更電子郵件地址，您將必須建立一個新的帳號後刪除舊帳號。
+admin.user.intro2=擁有管理員角色的使用者可以建立新的資源，但是不能管理由其他使用者建立的資源，除非這個資源在配置上邀請該使用者管理。您可以建立任意數量具有管理員角色的使用者，但至少有一個必須留在系統中。
+admin.user.added=使用者帳號已成功建立。
+admin.user.changed=使用者已成功更新。
+admin.user.deleted=使用者已成功地刪除。
+admin.user.login=為使變更生效，請重新登入。
+admin.user.saveError=無法套用對該使用者所做的變更
+admin.user.exists=擁有電子郵件地址 {0} 的使用者已經存在。
+admin.user.deleted.lastadmin=最後一個管理員使用者無法刪除。
+admin.user.deleted.lastmanager=該使用者無法刪除，因為他是唯一管理以下資源的人：{0}。
+admin.user.deleted.error=無法刪除使用者。
+admin.user.deleted.current=使用者登入後無法刪除自己。請使用不同的管理員帳號登入後刪除此帳號。
+admin.user.changed.current=您不能變更最後的管理員角色。
+admin.user.cantSave=無法儲存使用者檔案
+admin.user.passwordChanged={0} 的密碼已被更新至 {1}。
+admin.user.wrong.email.password.combination=電子郵件 - 密碼組合不存在
+admin.logs.warn=嚴重性大於或等於「警告」的訊息
+admin.logs.download=下載完整的 <a href="{0}">日誌檔案</a>
+# used for unkown errors where the exception message (in English...) will be displayed
+# use of this is to catch the errors that are not properly understood
+admin.error.invalidConfiguration=無效的配置：{0}
+
+# admin - registration
+admin.ipt.password=IPT 密碼
+admin.ipt.password.help=密碼是在進一步更新 IPT 時使用。請記住它 。
+admin.ipt.name=為此 IPT 設定標題
+admin.ipt.description=描述這個 IPT
+admin.ipt.primaryContactName=聯絡人名稱
+admin.ipt.primaryContactFirstName=聯絡人名字
+admin.ipt.primaryContactLastName=聯絡人姓氏
+admin.ipt.primaryContactEmail=聯絡人電子郵件
+
+admin.registration.organisationKey=此 IPT 由以下組織/機構所管轄
+admin.registration.availableOrganisations=下列組織必須可讓使用資源管理員選取。
+admin.registration.organisationPassword=為所選的組織/機構提供密碼。
+admin.registration.baseURL=基礎網址
+admin.registration.validate=驗證
+admin.registration.validate.success=基礎網址有效
+admin.registration.validate.failed.development=基礎網址無效，因為呼叫回傳失敗！請檢查這個 IPT 的基礎網址。由於此 IPT 正運行於測試模式，下方欄位無論如何將會顯示。
+admin.registration.validate.failed=驗證失敗！請檢查您的網路連線。假如已經連線，檢查基礎網址與代理伺服器網址（假如此伺服器需要的話）。
+admin.registration.intro=假如您在上列清單中找不到您的組織機構，請連繫： <a href="mailto:helpdesk@gbif.org?subject=To add an organisation to the GBIF registry&amp;body=Dear GBIF Helpdesk,%0D%0A%0D%0AI am an IPT administrator. In order to have our IPT registered under our organisation, we need to see it on the list of organisations while configuring the IPT. As I know, our organisation needs to be endorsed first, so please help us with the process.%0D%0A%0D%0AWe would like our organisation to be endorsed by [Node name].%0D%0A%0D%0AOR%0D%0A%0D%0AWe need help determining the endorsing Node.%0D%0A%0D%0AHere is the full name of our organisation [your organisation name].%0D%0A%0D%0AHere are the details for our organisation''s technical contact:%0D%0A%0D%0A[technical contact first name, last name]%0D%0A[technical contact email]%0D%0A%0D%0AHere are the details for our organisation''s administrative contact:%0D%0A%0D%0A[administrative contact first name, last name]%0D%0A[administrative contact email]%0D%0A%0D%0AThanks!%0D%0ABest regards,%0D%0A[Your name]">GBIF Help Desk</a>。請注意預設內容為英文，亦請在送出郵件之前確認您瞭解郵件內容以利後續連繫。
+admin.registration.intro2=一旦 IPT 完成註冊，此註冊即不能更改，除非連絡<a href=''mailto:helpdesk@gbif.org''>GBIF Help Desk</a>。在儲存之前請確認註冊資訊的完整與正確。
+admin.registration.registered1=此 IPT 已於 GBIF 網絡上註冊。
+admin.registration.registered2=管轄此 IPT 的機構是<b>{0}</b>。
+admin.registration.links=GBIF 登錄連結
+admin.registration.test1=在 GBIF 網絡上註冊此 IPT 的第一個步驟是驗證顯示於下方的基礎網址，點擊按鈕標籤「驗證」開始測試。假如測試成功，您將可以繼續進行註冊的下一步驟。假如測試失敗，請到 <a href="config.do">IPT 設定</a>頁面來更改伺服器的網址配置設定。
+admin.registration.success=IPT 已註冊於該組織之下。
+admin.registration.failed=IPT 註冊失敗！
+admin.registration.success.update=IPT 註冊資訊更新成功！
+admin.registration.failed.update=IPT 註冊更新失敗！
+admin.registration.error.alreadyRegistered1=此 IPT 已註冊在一組織之下。
+admin.registration.error.alreadyRegistered2=要變更組織的關聯，請聯絡 <a href=''mailto:helpdesk@gbif.org''>GBIF Help Desk</a>。
+admin.registration.error.registry=在嘗試與 GBIF 登錄溝通時發生問題
+admin.registration.error.internetConnection=檢查您的網路連線是否有效。
+admin.registration.error.proxy=檢查您的防火牆是否允許連結。假如不行，檢查是否需要使用代理伺服器網址，且網址正確。
+admin.registration.error.siteDown=在嘗試與 GBIF 登錄溝通時發生問題。請聯絡 Help Desk。
+admin.registration.error.badResponse=從登錄傳回空無或無效的回應。
+admin.registration.error.io=嘗試與 GBIF 登錄溝通時發生輸出入錯誤。
+admin.registration.error.unknown=嘗試與 GBIF 溝通時發生未知的錯誤。
+
+# admin - organisations
+admin.organisation.title=編輯關聯的組織
+admin.organisation.key=組織
+admin.organisation.name=組織名稱
+admin.organisation.password=組織密碼
+admin.organisation.alias=別名
+admin.organisation.canPublish=可發布資料集？
+admin.organisation.canPublish.help=若您想要此組織出現在供資源與組織關聯的清單中，請勾選。
+admin.organisation.password.help=組織密碼用來驗證您於所處的組織之下擁有存取權限以建立資源。假如您有不清楚地方，請聯絡該組織。
+admin.organisation.error.save=不能為此組織建立 IPT。
+admin.organisation.error.existing=組織的關聯已經存在。假如您需要編輯它，請在前一個畫面點擊按鈕標籤「編輯」。
+admin.organisation.cantSave=無法儲存組織檔案
+
+organisation.key=Key/UUID
+
+admin.organisation.deleted=組織的關聯已被刪除。
+admin.organisation.deleted.cant.resources=無法刪除此單位組織，因為已經有一或一個以上的資源與其關聯。
+admin.organisation.deleted.cant.ipt=無法刪除此單位組織，因為此 IPT 註冊在其之下。
+admin.organisation.add.title=新增關聯的組織
+admin.organisation.add.intro2=如果您需要密碼，以便將你發布於此 IPT 中的資源與你的單位組織關聯，IPT 於密碼欄位下方提供一個連結，供您點選聯繫此組織的主要聯絡人。
+admin.organisation.associated.ipt=該組織已與此 IPT 關聯。
+admin.organisation.updated.ipt=組織已被更新。
+admin.organisations.couldnt.load=無法從登錄載入已註冊之單位組織：{0}。
+admin.organisation.couldnt.load=無法從登錄 {1} 載入已註冊之單位組織：{0}。
+organisations.resources.couldnt.load=無法從登錄載入已註冊至單位組織之資源: {0}。
+
+#predefined emails - request organisation password for IPT registration
+emails.request.ipt.registration.subject=請求提供 {0} 的密碼
+emails.request.ipt.registration1=親愛的 %0d%0d 先生/女士：
+emails.request.ipt.registration2=我正試圖安裝位於您所屬組織/研究機構的整合發布資訊工具套件(Integrated Publishing Toolkit, IPT)。%0d
+emails.request.ipt.registration3=為了能繼續安裝，我需要請求您提供貴單位的密碼，以完成程序。%0d
+emails.request.ipt.registration4=如果您不了解此訊息，可以利用您的瀏覽器開啟以下連結來接收此訊息。%0d%0d
+emails.request.ipt.registration5=http://gbrds.gbif.org/registry/organisation/{0}?op=password%0d%0d
+emails.request.ipt.registration6=感謝您撥冗處理。
+emails.request.ipt.registration.footer=點擊此以聯絡
+
+#predefined emails - request organisation password for organisation association
+emails.request.organisation.association.subject=請求提供 {0} 的密碼
+emails.request.organisation.association1=親愛的先生/女士：%0d%0d
+emails.request.organisation.association2=我正試圖安裝整合發布資訊工具套件(Integrated Publishing Toolkit, IPT)。%0d
+emails.request.organisation.association3=這個工具讓我可以建立資源，並且歸屬這些資源到您的組織之下。%0d
+emails.request.organisation.association4=我希望能利用我的 IPT 連結到您的組織，因此需要請您提供您組織的密碼。%0d
+emails.request.organisation.association5=如果您不了解此訊息，可以利用您的瀏覽器開啟以下連結來接收此訊息。%0d%0d
+emails.request.organisation.association6=http://gbrds.gbif.org/registry/organisation/{0}?op=password%0d%0d
+emails.request.organisation.association7=感謝您撥冗處理。
+emails.request.organisation.association.footer=點擊此以聯絡
+
+####
+# MANAGE SECTION 資源管理
+####
+# the manage resource section
+manage.404.title=資源不存在
+manage.404.body=很抱歉，您要求的資源不存在。
+manage.401.title=未授權
+manage.401.body=很抱歉，您沒有權限管理您要求的資源。請向您的 IPT 管理員或資源創建者為您開啟合適的管理權限。
+manage.success={0} 單元儲存成功！
+manage.failed={0} 未通過驗證！請確認本單元資料輸入正確，其它單元才能成功儲存。
+manage.home.title=您有管理權限的資源
+manage.home.name=名稱
+manage.home.type=資料集類別
+manage.home.subtype=資料集子類別
+manage.home.last.modified=最後修改
+manage.home.last.publication=上次發布
+manage.home.visible=可見度
+manage.home.visible.public=公開
+manage.home.visible.private=未公開
+manage.home.organisation=組織
+manage.home.not.published=未發布
+manage.home.not.registered=未註冊
+manage.home.resource.locked=此資源由於後端處理而被鎖定中，請稍後再嘗試存取
+manage.home.resources.none=無資源，請建立一資源或向資源管理者請求將您加入已有的資源中。
+manage.locked=這份資源正在發布中，此時它被鎖定無法修改，若有需要您可以<a href="{0}">取消</a>發布。
+
+manage.resource.create.title=建立新的資源
+manage.resource.create.intro=你可以建立一份新資源、上傳一份儲存為達爾文核心集檔案的資源、或上傳自既有 IPT 資料目錄中資源存放位置製成的壓縮檔。請查閱使用手冊以瞭解詳細的步驟。在 IPT 中需要輸入一個簡短名稱以辨識此份資源，請只以字母數字、連字號、或底線命名。
+manage.resource.create.file=上傳其他檔案
+manage.resource.create.success=以 {0} 核心類型匯入已存在的達爾文核心集檔案。{1} 資料來源已被匯入且 {2} 欄位對應關係已建立。
+manage.resource.create.success.nocore=匯入已存在的達爾文核心集檔案。{0} 資料來源已被匯入，且 {1} 欄位對應關係已建立。
+manage.resource.create.core.invalid=達爾文核心集格式無效，並缺少欄位對應定義。
+manage.resource.create.failed=無法讀取上傳檔案
+manage.resource.create.rowType.null=IPT 不支援此資料記錄格式{0}
+manage.resource.create.extension.null=您上傳的達爾文核心集檔案包含此 IPT 未安裝的延伸集。請確認所需的延伸集均已安裝後，再嘗試上傳一次。
+manage.resource.create.mapping.concept.skip=忽略延伸集 {1} 未定義的資料欄位 {0} 對應
+manage.resource.delete.confirm.registered=刪除 GBIF 登錄的已註冊資源資訊無法自動完成。必須以電子郵件明確的告知 <a href=''mailto:helpdesk@gbif.org''>GBIF Help Desk</a>。您是否仍要刪除此已註冊的資源？
+manage.resource.delete.failed=無法移除資資源。
+manage.resource.status.intro.private=資料管理者尚未公開此資源。為使所有人均能獲取此資源，請將其設定為公開狀態。
+manage.resource.status.intro.public=此資源已公開，所有人均可使用。
+manage.resource.status.intro.public.migration=以 "{0}" 取代 "額外的元數據"。如果您想要以此資源更新已經由 DiGIR, BioCASE 或 TAPIR 發布之同一資源，請確認此資源註冊至同一單位組織，並請到「其它元數據」頁面，在「替代的識別碼」中填入已註冊的 UUID。
+manage.resource.status.intro.registered=此資源已向 GBIF 註冊。欲刪除註冊狀態，必須刪除整份資源並以電子郵件連繫 <a href=''mailto:helpdesk@gbif.org''>GBIF Help Desk</a>。
+manage.resource.status.registration.intro=要使資料集可公開存取，請選擇資源所屬的單位組織向 GBIF 註冊。若資源僅供資料管理員存取，則將資源設為不公開。
+manage.resource.status.registration.forbidden=您不具有向 GBIF 註冊此資源的角色權限。
+manage.resource.role.change=若您認為應擁有此權限，請聯繫 IPT 管理員。
+manage.resource.publish.forbidden=此資料集已向 GBIF 註冊，每次發布資料時，系統會更新註冊，因此你無法再發布此資料集。
+
+manage.resource.status.restrict=僅供資料管理員存取
+manage.resource.read.eml.metadata=讀取 EML 元數據
+manage.resource.read.basic.metadata=讀取基本元數據
+manage.resource.read.problem=無法讀取達爾文核心集檔案元數據。
+manage.resource.addSource.confirm=一或多個檔案已經存在。您確定要覆寫？
+manage.resource.migrate=此資源對應到一已註冊在 {1} 之下的資源 (UUID = {0})。此資源將被關聯至已註冊的資源，而非建立新資源。
+manage.resource.migrate.failed=資源遷移失敗
+manage.resource.migrate.failed.multipleUUIDs=在註冊此資源時發現替代的識別碼列表中已有多個 UUID。
+manage.resource.migrate.failed.badUUID=在替代的識別碼中發現至少有一個 UUID，但它並未對應到 {0} 所擁有的資源。
+manage.resource.migrate.failed.help=欲進行註冊程序，請循下列任一步驟：1) 若您欲發布此資源為一新資源，請移除所有替代的識別碼；2) 輸入一 UUID，且此 UUID 必須與既有、已註冊的資源相同，此將使用正發布的資源取代既有的已註冊資源。
+manage.resource.migrate.failed.duplicate=清單中顯示的 UUID {0} 識別碼已被指定用於公開或已註冊的資料集：{1} 。
+manage.resource.migrate.failed.duplicate.help=若您正嘗試取代一份已存在於 IPT 上已註冊的資料集，則必須先刪除此份已註冊的資料集。在此情況，請先以電子郵件通知 GBIF (helpdesk@gbif.org) 說明此資料集已被取代而非刪除；因為刪除一份已註冊的資料集會造成此資料集在 GBIF 資源登錄資料庫中被標示為已刪除。
+
+manage.mapping.title=對應資料來源
+manage.mapping.intro=對於每個屬性，您可以指定一個取自您的資料來源{0}中的特定欄位中的動態值，或是為所有記錄提供單一固定的靜態值。
+manage.mapping.source=資料來源
+manage.mapping.source.help=在您進行欄位對應之前，請選擇一個資料來源。
+manage.mapping.idColumn=在您的資料來源中，其內容為得以識別每一筆記錄/列為唯一的欄位，又稱為「核心識別碼」。若您想要對應其他的資料來源，這個識別碼必須存在，以連結不同資料來源中的記錄/列。
+manage.mapping.noid=無識別碼
+manage.mapping.lineNumber=行號
+manage.mapping.uuid=UUID 產生器
+manage.mapping.backToOverview=回到資源總覽頁面
+manage.mapping.hideEmpty=隱藏未對應之欄位
+manage.mapping.showAll=全部顯示
+manage.mapping.info.linenumbers=對於行號, 你可以選擇性指定一個非數字的後綴字，加在識別碼的後面。當你要多次對應同一個資源的時候，這個做法對於產生唯一識別碼來說是很有用的<br /><br />
+manage.mapping.info=過濾器會將符合的記錄從產生的壓縮檔中獨立出來。例如說指定「ColumnA IsNotNull」，將只會得到在 ColumnA 中有值的記錄。<br /><br />若相同的原始檔案會與同一延伸集多次對應以進行樞紐分析，過濾器將會很有用。如果你有兩個欄位用來存放物種的俗名（vernacular name），一個是英語，一個是西班牙語，使用該原始檔案，您可將該資源對應至俗名的延伸集兩次。每一次對應兩欄之一，並將針對那一欄的過濾器設定為IsNotNull，這樣一來，只有具俗名的欄位, 會出現在最終的資料檔案中。
+manage.mapping.filter=過濾器
+manage.mapping.filter.text=過濾器供您設定過濾條件，只有符合之資料將被選出。
+manage.mapping.filter.afterTranslation=翻譯後
+manage.mapping.filter.beforeTranslation=翻譯前
+manage.mapping.sourceSample=資料來源範例
+manage.mapping.translation=翻譯
+manage.mapping.automaped=依欄位名稱自動對應{0}欄
+manage.mapping.deleted=欄位對應{0}已刪除
+manage.mapping.couldnt.delete=無法刪除欄位對應{0}
+manage.mapping.no.mapped.title=未對應的欄位
+manage.mapping.no.mapped.columns=本資料來源中，以下的欄位未被指定至本次對應的屬性中
+
+manage.source.unique=來源名稱已存在，請選擇一個不重覆的名稱。
+manage.source.title=來源資料
+manage.source.intro=編輯您的來源資料格式
+manage.source.readable=可讀取
+manage.source.columns=欄位
+manage.source.file=檔案
+manage.source.size=尺寸
+manage.source.rows=列
+manage.source.modified=修改
+manage.source.filesystem.error=檔案系統錯誤：{0}
+manage.source.unsupported.compression.format=不支援的壓縮格式。請使用 zip、gzip 或純文字格式。
+manage.source.replaced.existing=置換現有資料來源 >>{0}<<。
+manage.source.added.new=新增檔案來源 >>{0}<<。
+manage.source.deleted=刪除來源 {0}。
+manage.source.deleted.couldnt=無法刪除來源 {0}。
+manage.source.error=來源錯誤：{0}
+manage.source.existing=來源名稱已存在。
+manage.source.invalidFileName=資料來源檔名無效：檔名只能包含字母-數字 (A-Z, 0-9)、空白分隔、底線、句號、括弧、連字號等半形符號。
+manage.source.cannot.add=無法加入檔案來源 {0}: {1}
+manage.source.cannot.load=無法載入資料來源{0}。請詢問 IPT 管理員以查詢 IPT 系統紀錄檔並瞭解可能的原因。
+manage.source.compressed.files={0} 找到壓縮檔，全部加入。"
+manage.source.source.log=來源日誌檔
+manage.source.download=下載
+manage.source.confirmation.message=您確定要刪除此資料來源檔案？請注意任何與此檔案關聯的欄位對應也會一併刪除。
+
+manage.overview.title.label=資源標題
+manage.overview.title=總覽
+manage.overview.intro=這是資源<em>{0}</em>的總覽頁面。請至少填入必填的元數據。之後您可上傳原始資料並對應欄位，以產生並發布達爾文核心集檔案。發布的資源可註冊於 GBIF 網絡中。已註冊的資源可被移除，但無法恢復至尚未公開狀態。
+manage.overview.intro.metadataOnly=這是資源<em>{0}</em>的總覽頁面。請至少填入必填性質的元數據。發布的資源可註冊於 GBIF 網絡中。已註冊的資源可被移除，但無法恢復至尚未公開狀態。
+manage.overview.no.description=無資料描述
+manage.overview.keywords=關鍵字
+manage.overview.taxcoverage=分類群涵蓋範圍
+manage.overview.geocoverage=地理涵蓋範圍
+manage.overview.metadata=元數據
+manage.overview.missing.metadata=此資源缺少必填性質的元數據！
+manage.overview.source.hidden=因為此資料集只有元數據，原始資料和欄位對應部分已被隱藏。若要增加實際的原始資料，僅需改變你的 {0} 資料集類型。
+manage.overview.source.data=來源資料
+manage.overview.source.description1=您用來產生達爾文核心集檔案的資料來源。你可以上傳壓縮檔 (zip, gzip) 或未壓縮的文字分檔（csv, tab及使用其他分隔符號的文字檔案）。如欲（再次）上傳，請選擇您電腦中的檔案並點擊「{0}」
+manage.overview.source.description2=亦支援Excel檔案格式。
+manage.overview.source.description3=如欲（再次）上傳，請選擇您電腦中的檔案並點擊「{0}」
+manage.overview.source.description4=或者是，您可以設定 <i>SQL views</i> 對應至區域網路中的資料庫。欲建立新的 SQL 資料來源，請點擊 "{0}" 沒有選擇任何文件。
+manage.overview.source.description5=無法以上傳 Darwin Core Archive 的方式更新資料集，此功能尚未提供。
+manage.overview.source.file=[file]
+manage.overview.source.sql=[sql]
+manage.overview.source.rows=列
+manage.overview.source.columns=欄位
+manage.overview.no.DwC.extensions=未安裝任何核心類型。請連絡您的 IPT 管理員！
+manage.overview.no.DwC.extension=未安裝核心類型 {0}。請連絡您的 IPT 管理員！
+manage.overview.DwC.Mappings=Darwin Core 對應
+manage.overview.DwC.Mappings.description=在您的來源資料與 Darwin Core 字集間的對應
+manage.overview.DwC.Mappings.cantdo=在新增原始資料及安裝正確的核心類型前，您不能將您的資料對應至達爾文核心集欄位。若您的資源只包含元數據則不受此限。
+manage.overview.DwC.Mappings.coretype.description=假如您的資料為名錄，請選擇「達爾文核心集名錄」；假如您的資料為基於標本或觀測活動的物種出現紀錄，請選擇「達爾文核心集出現紀錄」。
+manage.overview.DwC.Mappings.terms=字集對應至
+manage.overview.DwC.Mappings.select=選擇核心集類型（單選）
+manage.overview.DwC.Mappings.select.invalid=無效選擇：您選擇的核心集或延伸集不存在
+
+manage.overview.visibility=可見度
+manage.overview.visibility.missing.metadata=此資源在向 GBIF 網路註冊之前，必須先被公開發布。
+manage.overview.visibility.missing.registration.metadata=為了向 GBIF 註冊此資源，您必須提供必要的元數據。
+manage.overview.visibility.no.organisations=為了將此資源發布並註冊至 GBIF，你的 IPT 系統管理員必須先在 IPT 中建立單位組織名稱。
+manage.overview.visibility.resource.key=資源註冊碼
+manage.overview.visibility.organisation=單位組織
+manage.overview.visibility.organisation.contact=組織聯絡資訊
+manage.overview.visibility.endorsing.node=認可節點
+manage.overview.visibility.confirm.registration=您即將向 GBIF 註冊此資源。請注意，之後若要從 GBIF 登錄中刪除此資源無法自動完成，您需要向<a href=''mailto:helpdesk@gbif.org''>GBIF Helpdesk</a>申請。您確定要繼續嗎？
+manage.overview.visibility.confirm.agreement=請確認您已讀過並了解 <a target=''_blank'' href=''http://data.gbif.org/tutorial/datasharingagreement''>GBIF 資料共享同意書</a>
+
+manage.overview.published=公開發布一版本
+manage.overview.published.see.report=請見報告
+manage.overview.published.hide.report=隱藏報告
+manage.overview.published.description=發布新版本時，一個新的 EML 版本以及達爾文核心集檔案(DwC-A)將被建立。<br />DwC-A 將所有資料來源、對應與元數據都包裝在在一個 zip 壓縮檔中。發布新版本時，將會建立一新版本的EML、RTF、達爾文核心檔案 (DwC-A)。DwC-A 為一壓縮檔，包含了元數據、所有的原始資料及其欄位對應關係。
+manage.overview.published.description.metadataOnly=發布只有元數據的新版本資料集時，將建立一新版本的 EML、RTF 檔。
+manage.overview.published.testmode.warning=由於此 IPT 設定在測試模式，您的資料集將無法為 GBIF 索引。
+manage.overview.published.missing.metadata=在您發布資源之前請至少提供必填性質的基本元數據資料。
+manage.overview.published.last.publication=最新發布
+manage.overview.published.version=版本
+manage.overview.published.from=自
+manage.overview.published.download=下載
+manage.overview.published.records=記錄
+manage.overview.published.view=瀏覽
+manage.overview.published.archive=達爾文核心集檔案
+manage.overview.published.eml=EML
+manage.overview.published.resource.version=已發布的資源版本{0}
+manage.overview.publishing=發布中
+manage.overview.publishing.resource.version=發布中的資源版本{0}
+manage.overview.publishing.error={0}: 在第 {1} 步驟發布資料集失敗。原因：{2}
+dwca.failed=資料集 {0} 壓縮檔產生失敗：{1}
+dwca.interrupted=資料集 {0} 壓縮檔產生中斷：{1}
+publishing.started=發布資料集 {1} 版本 #{0} 開始
+publishing.success=成功發布資料集 {1} 版本 #{0}
+publishing.cancelled=取消發布資料集 {1} 版本 #{0}！
+publishing.error=發布資料集時，發生類型錯誤 {0}：{1}
+publishing.failed=發布資料集 {1} 版本 #{0} 失敗：{2}
+publishing.skipping=略過資料集 {1} 發布的版本編號 #{0}：已超過嘗試發布失敗的允許次數，請另行發布此資料集。
+restore.resource.success=由於發布失敗，還原資料集 {1} 至版本 #{0}
+restore.resource.failed=還原資料集 {1} 版本 #{0} 失敗：{2}
+
+# Auto-publishing
+autopublish=自動定期發布
+autopublish.off=關閉
+autopublish.update=改變發布週期並發布
+autopublish.activate=發布並開啟自動定期發布
+autopublish.disable=發布並關閉自動定期發布
+autopublish.interval=選擇發布週期
+autopublish.help=欲 <strong>開啟</strong> 自動定期發布，請選擇一發布週期（共有五個選項）後點選發布。欲 <strong>改變</strong> 自動定期發布之週期，選擇一新選項後點選發布。欲 <strong>關閉</strong> 自動定期更新，選擇「關閉」後點選發布。
+manage.overview.resource.managers=資源管理者
+manage.overview.resource.managers.description=資源能由多位管理者所管理。您可以授與其他管理者修改{0}之權限。
+manage.overview.resource.managers.creator=創建者
+manage.overview.resource.managers.manager=管理者
+manage.overview.resource.invalid.operation=資源{0}正在{1}，您要求的狀態變更無法被執行，請重新整理此頁面並查看此刻正確的資源狀態。
+manage.overview.resource.deleted=已刪除 {0}
+manage.overview.resource.published=資源已發布！
+manage.overview.resource.being.published=資源{0}發布中，請耐心等候。
+manage.overview.resource.registered=資源已註冊於 GBIF 登錄的組織{0}
+manage.overview.resource.update.registration=資源{0} 於 GBIF 的註冊資訊已更新
+manage.overview.manager.not.available=管理者 {0} 不存在
+manage.overview.failed.stop.publishing=停止發布{0}失敗！
+manage.overview.failed.resource.registration=資源註冊失敗！
+manage.overview.failed.resource.update=註冊更新失敗！:{0}
+manage.overview.user.added=已將 {0} 增加至資源管理員清單
+manage.overview.user.removed=已將 {0} 從資源管理員清單移除
+manage.overview.data.missing=來源資料或 Darwin Core 核心對應不存在。沒有產生數據存檔。請注意若您發布的資源只含元數據，則此為正常情況。
+manage.overview.no.data.archive.generated=未產生資料檔
+manage.overview.changed.publication.status=變更狀態為可見度{0}。
+
+manage.translation.title=資料值轉譯
+manage.translation.intro=你可以定義來源擋和儲存於已產生的達爾文核心集檔案中檔案間的欄位對應轉譯。來源檔中的獨特值列表為首次產生，但可以隨時手動重新載入，而不會影響目前的轉譯對應。
+manage.translation.property=屬性
+manage.translation.vocabulary.required=需要詞彙
+manage.translation.vocabulary.required.intro=轉譯文字左側的圖像，指示填入的值是否存在於包含此欄位名稱的詞彙中。
+manage.translation.source.value=來源文字
+manage.translation.translated.value=轉譯的資料值
+manage.translation.mapped.terms=以詞彙定義的欄位名稱對應 {0} 欄位。
+manage.translation.cantfind.vocabulary=找不到詞彙以自動對應轉譯欄位名稱。
+manage.translation.deleted=刪除 {0} 欄位的轉譯。
+manage.translation.reloaded.values=重新自來源檔載入 {0} 獨特值
+manage.translation.reloaded.fail=本詞彙 {0} 的來源值 {1} 無法重新載入。
+manage.translation.saved=已儲存欄位名稱 {0} 的轉譯。
+
+manage.metadata.section=段落
+manage.metadata.removethis=將此移除
+manage.metadata.addnew=新增
+
+manage.metadata.basic.title=基本的元數據
+manage.metadata.basic.required.message=您必須提供此資料的標題及描述。此資源的三個主要連絡資訊也必須在此描述：資源聯絡人、資源創建者及元數據提供者。在每個聯絡資訊中，在將資源公開之前，您至少必須提供連絡人的姓氏、職務或組織。對此資源創建及公開有責的個人或組織，應該在「相關團體」一節中以「發布者」的角色列出。
+
+manage.metadata.parties.title=相關團體
+manage.metadata.parties.title.numbered=相關團體 {0}
+manage.metadata.parties.intro=與此資源相關的團體（例如：典藏機構）
+manage.metadata.parties.item=相關團體
+
+manage.metadata.geocoverage.title=地理涵蓋範圍
+manage.metadata.geocoverage.intro=請拖曳地圖上的標記或是在欄位中填入本資源覆蓋的方型地理界域
+
+manage.metadata.taxcoverage.title=分類群涵蓋範圍
+manage.metadata.taxcoverage.intro=請輸入與本資源涵蓋的分類群範圍相關的元數據
+manage.metadata.taxcoverage.item=分類群涵蓋範圍
+manage.metadata.taxcoverage.addSeveralTaxa=新增數個分類群
+manage.metadata.taxcoverage.addSeveralTaxa.help=列出您資料集中所處理的分類群。為了在有意義的階層提供這些資料，在較廣分類群的資料集提供至目至科的階層；在科為主的資料集提供至屬的資料。
+manage.metadata.taxcoverage.subitem=分類學的關鍵字
+manage.metadata.taxcoverage.taxon.item=分類群
+manage.metadata.taxcoverage.unranked=無階層
+
+manage.metadata.project.title=計畫資料
+manage.metadata.project.intro=請輸入與產出本資源中的資料的計畫相關的元數據
+
+manage.metadata.methods.title=取樣方法
+manage.metadata.methods.intro=請為此資源代表的資料輸入取樣方法的元數據
+manage.metadata.methods.item=方法步骤
+
+manage.metadata.tempcoverage.title=時間涵蓋範圍
+manage.metadata.tempcoverage.intro=請輸入與此資源涵蓋的時間範圍相關的元數據。首先選擇一種時間範圍的類型，並填妥隨後出現的表單欄位。
+manage.metadata.tempcoverage.item=時間涵蓋範圍
+
+manage.metadata.citations.title=引用文獻
+manage.metadata.citations.intro=請輸入引用此資源與其它附加參考書目的方式，例如此資料集所引用或相關的參考文獻。
+manage.metadata.citations.bibliography=參考文獻
+manage.metadata.citations.item=引用文獻
+
+manage.metadata.collections.title=收藏資料
+manage.metadata.collections.intro=請為此資源輸入此收藏的元數據
+manage.metadata.collections.curatorialUnits.title=管理單位
+manage.metadata.collections.curatorialUnits.intro=請輸入本資源涵蓋的管理單位的件數。您可以輸入一個範圍，或是一個帶有不確定性的數字。管理單位包括了件(皮毛)、張(植物標本)、針(昆蟲標本)、箱、罐(組織等)
+manage.metadata.collections.curatorialUnits.item=管理單位
+
+manage.metadata.physical.title=外部連結
+manage.metadata.physical.intro=連至您資源首頁或其他可利用的資料格式（如資料庫的傾倒資料、試算表、nexus、鍵連資料等）的外部連結
+manage.metadata.physical.item=外部連結
+
+manage.metadata.keywords.title=關鍵字
+manage.metadata.keywords.intro=請為此資源輸入關鍵字集，每一字集屬於一同義詞組。
+manage.metadata.keywords.item=關鍵字
+
+manage.metadata.additional.title=額外的元數據
+manage.metadata.additional.intro=請為此資源輸入額外的元數據
+manage.metadata.additional.logo.intro=<b>上傳資源的圖示：</b>若您沒有資源圖示的 URL，您也可以自硬碟中選擇圖片檔上傳
+manage.metadata.alternateIdentifiers.title=替代的識別碼
+manage.metadata.alternateIdentifiers.intro=此處可列舉被用來標記此資源的替代識別碼，此識別碼可能來自於不同的資料管理系統。
+manage.metadata.alternateIdentifiers.item=替代的識別碼
+
+manage.report.title=發布狀態
+manage.report.logMessage=日誌檔訊息
+manage.report.exception=例外
+manage.report.finished=完成
+manage.report.continueTo=繼續到<a href="resource.do?r={0}">資源總覽</a>.
+
+####
+# EML
+####
+eml.title=標題
+eml.description=摘要
+eml.resourceCreator=資源創建者
+eml.resourceCreator.help=資源創建者為建立原始資源內容的組織或個人。當有多位創建者時，則紀錄其中負最大責任者，其它則記錄為相關人員，並指定角色為「發起人」或「內容提供者」。<br /><br />適合做為資源創建者的角色有：<br /><ul><li><b>a) 發起人：</b> 一開始收集或準備此資料集的組織或個人<br /></li><li><b>b) 內容提供者：</b> 原則上貢獻此資料集內容的組織或個人。<br /></li></ul>
+eml.resourceCreator.firstName=名字
+eml.resourceCreator.lastName=姓氏
+eml.resourceCreator.email=電子郵件
+eml.resourceCreator.phone=電話
+eml.resourceCreator.position=職稱
+eml.resourceCreator.organisation=組織
+eml.resourceCreator.address.address=地址
+eml.resourceCreator.address.city=縣市
+eml.resourceCreator.address.province=州 / 省
+eml.resourceCreator.address.country=國家
+eml.resourceCreator.address.country.help=國家、地區和島嶼名稱根據 ISO3166-1 標準
+eml.resourceCreator.address.postalCode=郵遞區號
+eml.resourceCreator.homepage=網頁
+eml.resourceCreator.copyLink=從連絡人複製資訊細節
+
+eml.metadataProvider=元數據提供者
+eml.metadataProvider.help=元數據提供者為撰寫資源元數據的組織或個人。<br /><br />適合做為元數據提供者的角色有：<br /><ul><li><b>元數據提供者</b>：負責提供元數據的人員。</li></ul>
+eml.metadataProvider.firstName=名字
+eml.metadataProvider.lastName=姓氏
+eml.metadataProvider.email=電子郵件
+eml.metadataProvider.phone=電話
+eml.metadataProvider.position=職稱
+eml.metadataProvider.organisation=組織
+eml.metadataProvider.homepage=網頁
+eml.metadataProvider.address.address=地址
+eml.metadataProvider.address.city=縣市
+eml.metadataProvider.address.province=州 / 省
+eml.metadataProvider.address.country=國家
+eml.metadataProvider.address.country.help=國家、地區和島嶼名稱根據 ISO3166-1 標準
+eml.metadataProvider.address.postalCode=郵遞區號
+
+eml.language=資源語言
+eml.language.help=描述此資源 (非元數據文件) 的主要語言。
+eml.metadataLanguage=元數據語言
+eml.metadataLanguage.help=元數據文件編寫時所使用的語言。
+
+eml.contact=聯絡資訊
+eml.contact.help=資源聯絡資訊是當有關於此資源的相關資訊或資料問題時，應該聯絡的資源管理人或組織。<br />適合做為資源聯絡資訊的角色有：<ul><li><b>a) 資源管理員</b> 負責維護資料集文件的組織或個人。</li><li><b>b) 擁有者：</b> 擁有此資料集的組織或個人（可以是資源管理員，也可以不是）。</li><li><b>c) 聯絡人：</b> 可進一步提供更多關於該資料集資訊的組織或個人。</li><li><b>d) 計畫主持人：</b> 此資料集的主要學科聯絡人。</li></ul>
+eml.contact.firstName=名字
+eml.contact.lastName=姓氏
+eml.contact.email=電子郵件
+eml.contact.phone=電話
+eml.contact.position=職稱
+eml.contact.organisation=組織
+eml.contact.address.address=地址
+eml.contact.address.city=縣市
+eml.contact.address.province=州 / 省
+eml.contact.address.country=國家
+eml.contact.address.country.help=國家、地區和島嶼名稱根據 ISO3166-1 標準
+eml.contact.address.postalCode=郵遞區號
+eml.contact.homepage=網頁
+
+eml.country.selection=選取一個國家、地區或島嶼
+eml.rank.selection=選擇一個階層
+eml.preservation.methods.selection=選擇標本保存的方法
+eml.agent.role.selection=選取一個角色
+eml.keywords=關鍵字
+eml.keywords.help=任何數量以逗號分隔的關鍵字。
+
+eml.associatedParties.firstName=名字
+eml.associatedParties.lastName=姓氏
+eml.associatedParties.phone=電話
+eml.associatedParties.role=角色
+eml.associatedParties.role.help=<ul><li><b>作者：</b>編寫著作資料集或資料論文相關的人員<br /></li><li><b>內容提供者：</b>對資料集內容提供有所貢獻的人員<br /></li><li><b>資料保管者：</b>負責保管及給予資料的人員<br /></li><li><b>資料發布者：</b>與公開發布此資料集有關之人員<br /></li><li><b>編輯：</b>使用此資料集編輯相關出版品之人員<br /></li><li><b>元數據提供者：</b>有責任提供資料集元數據的人員<br /></li><li><b>資料彙整者：</b>負責彙整此資料集的人員<br /></li><li><b>資料擁有者：</b>擁有此資料集之人員（可能是或可能不是資料保管者）<br /></li><li><b>聯絡人：</b>可聯絡並獲得此資料集更多資訊的人員<br /></li><li><b>主要研究人員：</b>此資料集主要的科學研究人員<br /></li><li><b>資料處理人員：</b>負責進行資料後續處理分析的人員<br /></li><li><b>出版者：</b>與出版此資料集出版品相關之人員<br /></li><li><b>使用者：</b>使用此資料集之人員<br /></li><li><b>資訊工程師：</b>提供資訊或應用程式支援之人員<br /></li><li><b>標本管理員：</b>紀錄或維護標本的人員。有些人的職務包含準備標本標籤以供鑑定以及保護標本。<br /></li></ul>
+eml.associatedParties.position=職稱
+eml.associatedParties.organisation=組織
+eml.associatedParties.address.address=地址
+eml.associatedParties.address.city=縣市
+eml.associatedParties.address.province=州 / 省
+eml.associatedParties.address.country=國家
+eml.associatedParties.address.country.help=國家、地區和島嶼名稱根據 ISO3166-1 標準
+eml.associatedParties.address.postalCode=郵遞區號
+eml.associatedParties.email=電子郵件
+eml.associatedParties.homepage=網頁
+
+eml.geospatialCoverages.description=描述
+eml.geospatialCoverages.globalCoverage=設定範圍為全球
+eml.geospatialCoverages.globalCoverage.help=設定地理範圍以含括整個地球
+eml.geospatialCoverages.boundingCoordinates=界定座標範圍
+eml.geospatialCoverages.boundingCoordinates.indicator=（最小或最大緯度 / 最小或最大經度）
+eml.geospatialCoverages.boundingCoordinates.min.latitude=緯度南界
+eml.geospatialCoverages.boundingCoordinates.max.latitude=緯度北界
+eml.geospatialCoverages.boundingCoordinates.min.longitude=經度西界
+eml.geospatialCoverages.boundingCoordinates.max.longitude=經度東界
+
+eml.taxonomicCoverages.description=描述
+eml.taxonomicCoverages.description.help=針對資料集或採集紀錄進行分類範圍的描述，<br />例如：<br />所有維管束植物被辨識的等級是到科或是種，地衣和蘚苔類是被辨識為蘚苔或是地衣類
+eml.taxonomicCoverages.taxonKeyword.scientificName=學名
+eml.taxonomicCoverages.taxonKeyword.commonName=俗名
+eml.taxonomicCoverages.taxonKeyword.rank=階層
+eml.taxonomicCoverages.taxonList=分類清單
+eml.taxonomicCoverages.taxonList.help=增加幾個分類群（一行一個）
+
+eml.temporalCoverages.type=時間範圍類型
+eml.temporalCoverages.singleDate=單一日期
+eml.temporalCoverages.singleDate.help=此日期用以表示時間涵蓋範圍在一天以內。請使用下列格式之一：
+
+eml.temporalCoverages.startDate=起始日期
+eml.temporalCoverages.startDate.help=時間涵蓋範圍之始。請選用以下日期格式之一：
+eml.temporalCoverages.endDate=結束日期
+eml.temporalCoverages.endDate.help=時間涵蓋範圍之末。請選用以下日期格式之一：
+eml.temporalCoverages.formationPeriod=彙整期間
+eml.temporalCoverages.formationPeriod.help=以文字描述採集品彙整的時間是哪個時期（例如：維多利亞女王時代、1922 - 1932、c. 1750）。使用此方式表示持續累積的採集蒐藏（例如：2010 年至今）。
+eml.temporalCoverages.livingTimePeriod=生物存活的時期
+eml.temporalCoverages.livingTimePeriod.help=該物種存活的時期，可包含古生物生存時期或是其他期間的文字描述（例如："1900-1950"，"明朝"，"更新世"）。
+
+eml.project.title=計畫名稱
+eml.project.personnel.firstName=人員名字
+eml.project.personnel.lastName=人員姓氏
+eml.project.funding=經費來源
+eml.project.funding.help=計畫經費來源的資訊。(例如：獎學金、計畫契約編號、經費來源的地址和單位名稱。)其他與經費相關的資訊皆可含括入內。
+eml.project.designDescription=研究設計描述
+eml.project.designDescription.help=關於研究領域一些面向的一般性描述。
+eml.project.studyAreaDescription.descriptorValue=研究區域描述
+eml.project.studyAreaDescription.descriptorValue.help=描述研究計畫的本質相關的文件，可包含研究位置的地理範圍、時間範圍和物種分類範圍的描述。
+
+eml.studyExtent=研究範圍
+eml.studyExtent.help=此欄位紀錄特定的取樣區域以及取樣頻率（時間範圍、出現頻率）。地理上的研究範圍通常是計畫元數據「研究範圍描述」中一個較大區域的代表。
+eml.sampleDescription=採樣方式描述
+eml.sampleDescription.help=此欄位用以記錄研究計畫採樣步驟的描述。此欄位的內容與期刊文獻上方法章節的中的採樣步驟描述類似。
+eml.qualityControl=品質控管
+eml.qualityControl.help=此欄位提供關於控制或評估資料品質方法、步驟的描述。
+eml.methodSteps=實驗步驟描述
+eml.methodSteps.help=此欄位提供一系列的表單用以紀錄產生資料的步驟。這些包含步驟本身的說明、相關文獻、軟體、儀器，來源資料以及任何的品質控管工作。
+eml.citation.citation=資源引用文字
+eml.citation.citation.help=引用資料集時之引用文字。<br /><br />當資料集為組織或機構所有時的範例：<br /><br />"Bombay Natural History Society (2011). Literature based species occurrence data of birds of northeast India. 2400 records, Contributed by Narwade S, Karla M, and Varier D, Online:http://ibif.gov.in:8080/ipt/resource.do?r=BNHS-NEW, released on 01/09/2011, doi:10.9999/ibif.150.2011."<br /><br />當資料集為數人所有時的範例：<br /><br />"Narwade S, Karla M, Varier D (2011) Literature based species occurrence data of birds of northeast India. 2400 records. Online:http://ibif.gov.in:8080/ipt/resource.do?r=BNHS-NEW, released on 01/09/2011, doi:10.9999/ibif.150.2011."
+eml.citation.identifier=引用識別碼
+eml.citation.identifier.help=引用文獻的 URI、DOI 或其他永久識別碼。
+eml.bibliographicCitationSet.bibliographicCitations.citation=引用文獻
+eml.bibliographicCitationSet.bibliographicCitations.identifier=引用文獻識別碼
+eml.collectionName=蒐藏名稱
+eml.collectionName.help=以原始語言記載的蒐藏名稱
+eml.collectionId=蒐藏編號
+eml.collectionId.help=蒐藏的 URI （LSID 或 URL）。若為 RDF 使用蒐藏資源的 URI。
+eml.parentCollectionId=上層採集品識別碼
+eml.parentCollectionId.help=此蒐藏之母蒐藏的識別碼，用以建立蒐藏的階層關係。如果此蒐藏無所屬之母蒐藏，請選擇「不適用」。
+eml.jgtiCuratorialUnits.type=方法類型
+eml.jgtiCuratorialUnits.rangeStart=在...之間
+eml.jgtiCuratorialUnits.rangeEnd=和
+eml.jgtiCuratorialUnits.rangeMean=計數
+eml.jgtiCuratorialUnits.uncertaintyMeasure=+/-
+eml.jgtiCuratorialUnits.unitType=單位類型
+eml.physicalData.name=資料名稱
+eml.physicalData.charset=語言編碼
+eml.physicalData.charset.help=編碼名稱。可能為 ASCII 、UTF-8 或其他常見的編碼。
+eml.physicalData.distributionUrl=下載網址
+eml.physicalData.distributionUrl.help=可下載上述格式資料的網址
+eml.physicalData.format=資料格式
+eml.physicalData.format.help=資料檔案格式的名稱，<br /><br /><b>例如：</b><br /><i>Microsoft Excel</i>
+eml.physicalData.formatVersion=資料格式版本
+eml.physicalData.formatVersion.help=資料檔案格式的版本，<br /><br /><b>例如：</b><br /><i>2000 (9.0.2720)</i>
+eml.keywords.keywordThesaurus=同義詞
+eml.keywords.keywordThesaurus.help=關鍵字來源的關鍵字辭典名稱。關鍵字辭典通常與領域有關，可以客製化也可以是正式使用的。如果您的關鍵字不是從特定辭典中取得，請輸入 <i>''n/a''</i>。<br /><br /><b>例如：</b><br /><i>"IRIS keyword thesaurus"</i>
+eml.keywords.keywordsString=關鍵字清單
+eml.keywords.keywordsString.help=可列出與此資源相關或可簡潔地描述此資源的關鍵字詞。需用逗號分隔每個關鍵字。
+eml.hierarchyLevel=層級
+eml.hierarchyLevel.help=在元數據申請時的須註明資料集層級。在 GBIF 的預設值是<i>資料集</i>。
+eml.pubDate=發表日期
+eml.pubDate.help=資源發布的日期。此日期自動於該資源每次重新發布時更新。
+eml.distributionUrl=資源網頁
+eml.logoUrl=資源標誌網址
+eml.logoUrl.help=可輸入一個與資料相關 logo 圖像網址。如果沒有資料 logo 圖像網址，也可以上傳由你的磁碟所選取的一個圖片檔案。
+eml.purpose=目的
+eml.purpose.help=關於此資料集發展動機的概要描述，可包含建立資料集之目的和此資料集所支持的項目。
+eml.intellectualRights=智慧財產權授權
+eml.intellectualRights.help=關於此資源的權利宣告，或可取得此資訊的參照資訊來源。
+eml.additionalInfo=其他額外資訊
+eml.additionalInfo.help=任何無法在其它元數據欄位說明的資料，例如計畫沿革，使用該資料的發表文獻，發布於其它地方資料的相關資訊等等。
+eml.specimenPreservationMethod=標本保存方式
+eml.specimenPreservationMethod.help=取自 GBIF 標本保存方法詞彙的關鍵字，該詞彙指出防止標本蒐藏腐敗的保存技術。假如採用多種方法，請選擇其中主要的方法。請注意，透過達爾文保存方法延伸集(http://rs.tdwg.org/dwc/terms/preparations)，您可為一標本記錄多種方法。若為活體蒐藏，請勿選擇任何選項。
+eml.alternateIdentifier=替代的識別碼
+eml.alternateIdentifier.help=此實體的另外一個次要識別碼。當您發布一資源時，IPT 的 URL 會加到識別碼的列表中。當一資源註冊到 GBIF 登錄後，它在登錄上的 UUID 亦會加到同一列表中。因此未來在註冊時，在 GBIF 登錄上 IPT 能更新同一資源，而非創建一新資源。<br /><b>範例：</b><br /><i>4fa7b334-ce0d-4e88-aaae-2e0c138d049e</i>, <i>VCR3465</i>
+eml.intellectualRights.license.help=可供套用到資料的授權選項。此為您提供資料授權的標準方式。
+eml.intellectualRights.nolicenses=尚未選定授權項目
+eml.intellectualRights.licenses.confirmation=您已經閱讀並瞭解授權內容？
+
+eml.intellectualRights.license.cczero=創用授權 CCZero
+eml.intellectualRights.license.pddl=公眾領域貢獻授權
+eml.intellectualRights.license.odcby=開放資料共享姓名標示授權
+eml.intellectualRights.license.odbl=開放資料庫授權
+eml.intellectualRights.license.disclaimer=您應該只套用授權條款至您本身的成果，除非您有必要的權利將授權條款套用至其它人的成果。
+eml.intellectualRights.license.cczero.text=此資料集及成果依創用授權 CCZero 1.0 License http://creativecommons.org/publicdomain/zero/1.0/legalcode 釋出。
+eml.intellectualRights.license.pddl.text=此 [DATA(BASE)-NAME] 依 the Public Domain Dedication and License v1.0 釋出，詳細授權內容請參照 http://www.opendatacommons.org/licenses/pddl/1.0/
+eml.intellectualRights.license.odcby.text=此 [DATA(BASE)-NAME] 依 Open Data Commons Attribution License: http://www.opendatacommons.org/licenses/by/1.0/ 釋出。
+eml.intellectualRights.license.odbl.text=此 [DATA(BASE)-NAME] 依 Open Database License: http://opendatacommons.org/licenses/odbl/1.0/ 釋出。資料庫中個別資料的所有權利均記載在授權條款中。
+
+####
+# RTF
+####
+rtf.authors=通訊作者
+rtf.citations=引用文獻
+rtf.citations.description=作者、資料論文發表年分(列於括弧中)、文章標題、期刊名、卷數、期數(列於括弧中)、和資料論文 DOI。
+rtf.received=已接收
+rtf.revised=已修訂
+rtf.accepted=已接受
+rtf.published=已發布
+rtf.abstract=摘要
+rtf.keywords=關鍵字
+rtf.generalDesciption=一般性描述
+rtf.resourceLink=資料發布連結
+rtf.taxcoverage=分類群涵蓋範圍
+rtf.taxcoverage.description=整體分類群涵蓋範圍描述
+rtf.taxcoverage.rank=分類階層
+rtf.taxcoverage.common=俗名
+rtf.spatialCoverage=空間涵蓋範圍
+rtf.spatialCoverage.general=整體空間涵蓋範圍
+rtf.spatialCoverage.coordinates=座標
+rtf.spatialCoverage.and=和
+rtf.spatialCoverage.latitude=緯度
+rtf.spatialCoverage.longitude=經度
+rtf.tempcoverage=時間涵蓋範圍
+rtf.project.details=計劃細節
+rtf.project.title=計畫名稱
+rtf.project.personnel=人員
+rtf.project.funding=經費來源
+rtf.project.area=研究區域描述
+rtf.project.design=研究設計描述
+rtf.collections.description=自然蒐藏描述
+rtf.collections.parent=總採集蒐藏辨識碼
+rtf.collections.name=採集蒐藏名稱
+rtf.collections.identifier=採集蒐藏識別碼
+rtf.collections.formatPeriod=彙集期間
+rtf.collections.livingPeriod=生存期間
+rtf.collections.specimen=標本保存方法
+rtf.collections.curatorial=蒐藏單位
+rtf.collections.curatorial.text=估計範圍
+rtf.methods=研究方法
+rtf.methods.description=方法步驟描述
+rtf.methods.studyExtent=研究範圍描述
+rtf.methods.sampling=取樣描述
+rtf.methods.quality=資料品管描述
+rtf.datasets=資料集
+rtf.datasets.description=資料集描述
+rtf.datasets.dwca=達爾文核心集檔案
+rtf.datasets.dwca.format=達爾文核心集檔案格式
+rtf.datasets.object=物件名稱
+rtf.datasets.character=字元編碼
+rtf.datasets.format=格式名稱
+rtf.datasets.format.version=格式版本
+rtf.datasets.distribution=分布
+rtf.datasets.noPublished=沒有以達爾文核心集格式發布的資料集。目前描述的資料集列於外部資料連結。
+rtf.dtasets.external=外部資料集
+rtf.publication=資料發布日期
+rtf.language=語言
+rtf.purpose=目的
+rtf.license=使用許可聲明
+rtf.date=日期
+rtf.unknown=未知
+rtf.metadata.language=元數據語言
+rtf.metadata.creation=元數據建立日期
+rtf.metadata.level=層級
+rtf.metadata.locale=語系
+rtf.references=參考文獻
+
+temporalCoverageType.SINGLE_DATE=單一日期
+temporalCoverageType.DATE_RANGE=日期範圍
+temporalCoverageType.FORMATION_PERIOD=彙集時期
+temporalCoverageType.LIVING_TIME_PERIOD=生存期間
+
+jgtiCuratorialUnitType.COUNT_RANGE=數量範圍
+jgtiCuratorialUnitType.COUNT_WITH_UNCERTAINTY=具不確定性的數量範圍
+
+####
+# CONFIGURATIONS 設定
+####
+# Date format 日期格式
+format.date={yyyy-MM-dd}
+
+# This message appears when the field value is invalid  according to the *Converter.java class
+xwork.default.invalid.fieldvalue=無效的欄位值
+
+# Data Tables. Warning: don't translate any word beginning and ending in underscores, e.g. _MENU_
+dataTables.sInfo=顯示 _START_ 至 _END_ 共 _TOTAL_ 資料集
+dataTables.sInfoEmpty=顯示 0 至 0 共 0 資料集
+dataTables.sInfoFiltered=(過濾自 _MAX_ 總數)
+dataTables.sEmptyTable=目前沒有任何資料集
+dataTables.sZeroRecords=沒有找到任何資料集

@@ -1,0 +1,652 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.gbif</groupId>
+    <artifactId>motherpom</artifactId>
+    <version>10</version>
+  </parent>
+
+  <groupId>org.gbif</groupId>
+  <artifactId>ipt</artifactId>
+  <version>2.1.1</version>
+  <packaging>war</packaging>
+
+  <name>IPT</name>
+  <description>The GBIF Integrated Publishing Toolkit</description>
+  <url>http://sites.gbif.org/providertoolkit/ipt</url>
+
+  <!--
+   Default settings used mainly for development.
+   To build a release please use -P release
+   -->
+  <properties>
+    <!--
+      maven treats properties as strings only, so we cannot negate a boolean devMode value.
+      Therefore we keep both available - make sure they are always negated in all profiles!
+      -->
+    <devMode>true</devMode>
+    <devModeNegated>false</devModeNegated>
+    <jetty.port>7001</jetty.port>
+
+    <analytics.key />
+    <ipt.frontPageImageURL />
+    <google.maps.key />
+    <ipt.baseURL />
+
+    <!-- The datadir for tests that use a guice injected DataDir object -->
+    <test.datadir>/tmp/test-datadir</test.datadir>
+
+    <jdkLevel>1.6</jdkLevel>
+
+    <apache-poi.version>3.10-FINAL</apache-poi.version>
+    <commons-digester.version>2.1</commons-digester.version>
+    <commons-lang3.version>3.3.1</commons-lang3.version>
+    <commons-io.version>2.4</commons-io.version>
+    <commons-validator.version>1.4.0</commons-validator.version>
+    <validation-api.version>1.1.0.Final</validation-api.version>
+    <dwca-reader.version>1.16</dwca-reader.version>
+    <gbif-api.version>0.12</gbif-api.version>
+    <gbif-parsers.version>0.7</gbif-parsers.version>
+    <gbif-registry.version>2.13</gbif-registry.version>
+    <metrics-ws-client.version>0.13</metrics-ws-client.version>
+    <gbif-common-ws.version>0.13</gbif-common-ws.version>
+    <gbif-metadata-profile.version>1.0.2.3</gbif-metadata-profile.version>
+    <gbif-common.version>0.16</gbif-common.version>
+    <dwc-api.version>1.5</dwc-api.version>
+    <guava.version>14.0.1</guava.version>
+    <freemarker.version>2.3.20</freemarker.version>
+    <gson.version>2.2.4</gson.version>
+    <guice.version>3.0</guice.version>
+    <httpclient.version>4.2.3</httpclient.version>
+    <httpcore.version>4.2.3</httpcore.version>
+    <itext.version>4.2.1</itext.version>
+    <itext-rtf.version>2.1.7</itext-rtf.version>
+    <javassist.version>3.12.1.GA</javassist.version>
+    <jetty-maven-plugin.version>7.6.12.v20130726</jetty-maven-plugin.version>
+    <jsp-api.version>2.0</jsp-api.version>
+    <jtds.version>1.3.1</jtds.version>
+    <junit.version>4.11</junit.version>
+    <log4j.version>1.2.17</log4j.version>
+    <mockito-all.version>1.9.5</mockito-all.version>
+    <mysql-connector-java.version>5.1.30</mysql-connector-java.version>
+    <ojdbc.version>14</ojdbc.version>
+    <!-- warning!! latest postgresql-9.3-1101-jdbc41.jar does not work with Java6 -->
+    <postgresql.version>9.3-1100-jdbc4</postgresql.version>
+    <javax.mail.version>1.4.7</javax.mail.version>
+    <servlet-api.version>2.5</servlet-api.version>
+    <slf4j.version>1.7.7</slf4j.version>
+    <struts2.version>2.3.16.2</struts2.version>
+    <xstream.version>1.4.7</xstream.version>
+    <jsr305.version>2.0.3</jsr305.version>
+    <httputils.version>0.5</httputils.version>
+  </properties>
+
+  <developers>
+    <developer>
+      <name>Tim Robertson</name>
+      <email>trobertson@gbif.org</email>
+    </developer>
+    <developer>
+      <name>Markus Döring</name>
+      <email>mdoering@gbif.org</email>
+    </developer>
+    <developer>
+      <name>Kyle Braak</name>
+      <email>kbraak@gbif.org</email>
+    </developer>
+  </developers>
+
+  <mailingLists>
+    <mailingList>
+      <name>IPT User &amp; Developer List</name>
+      <post>ipt@lists.gbif.org</post>
+      <subscribe>ipt-subscribe@lists.gbif.org</subscribe>
+      <unsubscribe>ipt-unsubscribe@lists.gbif.org</unsubscribe>
+      <archive>http://lists.gbif.org/pipermail/ipt/</archive>
+    </mailingList>
+  </mailingLists>
+
+  <scm>
+    <connection>scm:svn:http://gbif-providertoolkit.googlecode.com/svn/tags/ipt-2.1.1</connection>
+    <developerConnection>scm:svn:https://gbif-providertoolkit.googlecode.com/svn/tags/ipt-2.1.1</developerConnection>
+    <url>http://code.google.com/p/gbif-providertoolkit/source/browse#svn/tags/ipt-2.1.1</url>
+  </scm>
+
+  <issueManagement>
+    <system>Google Code</system>
+    <url>http://code.google.com/p/gbif-providertoolkit/issues/list</url>
+  </issueManagement>
+
+  <ciManagement>
+    <url>http://hudson.gbif.org/job/gbif-ipt/</url>
+    <system>jenkins</system>
+  </ciManagement>
+
+  <distributionManagement>
+    <site>
+      <id>gbif-site</id>
+      <name>Site for the IPT project</name>
+      <url>scp://tools.gbif.org:/var/www/html/sites/providertoolkit/ipt</url>
+    </site>
+  </distributionManagement>
+
+  <repositories>
+    <repository>
+      <id>gbif-all</id>
+      <url>http://repository.gbif.org/content/groups/gbif</url>
+    </repository>
+    <repository>
+      <id>gbif-thirdparty</id>
+      <url>http://repository.gbif.org/content/repositories/thirdparty</url>
+    </repository>
+    <!-- TODO: This reference needs to be removed as the repository is deprecated -->
+    <repository>
+      <id>gbif-old</id>
+      <url>http://tools.gbif.org/maven/repository</url>
+    </repository>
+  </repositories>
+
+  <build>
+    <finalName>ipt-${project.version}-r${buildNumber}</finalName>
+    <defaultGoal>jetty:run</defaultGoal>
+    <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <configuration>
+          <useReleaseProfile>false</useReleaseProfile>
+          <arguments>-Pgbif-release,release</arguments>
+        </configuration>
+      </plugin>
+
+      <!--
+      To simplify development, allows developers to use "mvn jetty:run"
+       Change the port on commandline with -D jetty.port=8080
+      -->
+
+      <plugin>
+        <!--
+          http://wiki.eclipse.org/Jetty/Feature/Jetty_Maven_Plugin
+        -->
+        <groupId>org.mortbay.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <version>${jetty-maven-plugin.version}</version>
+        <configuration>
+          <webAppConfig>
+            <contextPath>/</contextPath>
+          </webAppConfig>
+          <!-- no scan, don't detect changed classes -->
+          <scanIntervalSeconds>0</scanIntervalSeconds>
+          <stopKey>stop</stopKey>
+          <stopPort>9362</stopPort>
+          <systemProperties>
+            <systemProperty>
+              <name>servername</name>
+              <value>http://localhost:${jetty.port}</value>
+            </systemProperty>
+          </systemProperties>
+        </configuration>
+      </plugin>
+
+      <!--
+         small plugin that allows to access the projects SVN revision number.
+         Useful to keep the pom ipt version at 1.x-SNAPSHOT while still having a unique build number
+         See: http://mojo.codehaus.org/buildnumber-maven-plugin/usage.html
+         -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>buildnumber-maven-plugin</artifactId>
+        <!-- Warning: do not upgrade this to 1.2 because it will break maven releases -->
+        <version>1.0-beta-4</version>
+        <executions>
+          <execution>
+            <phase>validate</phase>
+            <goals>
+              <goal>create</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <doCheck>${devModeNegated}</doCheck>
+          <doUpdate>${devModeNegated}</doUpdate>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-eclipse-plugin</artifactId>
+        <configuration>
+          <downloadSources>true</downloadSources>
+          <additionalBuildcommands>
+            <buildcommand>com.atlassw.tools.eclipse.checkstyle.CheckstyleBuilder</buildcommand>
+          </additionalBuildcommands>
+          <additionalConfig>
+            <file>
+              <name>.checkstyle</name>
+              <url>http://rs.gbif.org/conventions/java-style-config.xml</url>
+            </file>
+          </additionalConfig>
+        </configuration>
+      </plugin>
+    </plugins>
+
+    <resources>
+      <!-- The default resources will all be filtered, i.e. maven variables ${xyz} will be replaced by maven -->
+      <resource>
+        <directory>src/main/resources</directory>
+
+        <!-- exclude the following files, as they use the same ${} syntax for non maven variables -->
+        <excludes>
+          <exclude>ApplicationResources*.properties</exclude>
+          <exclude>struts*.xml</exclude>
+        </excludes>
+        <filtering>true</filtering>
+      </resource>
+      <resource>
+
+        <!-- finally include the excluded files again without filtering -->
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>ApplicationResources*.properties</include>
+          <include>struts*.xml</include>
+        </includes>
+        <filtering>false</filtering>
+      </resource>
+    </resources>
+    <testResources>
+      <!-- with filtering copying big test files becomes VERY slow -->
+      <testResource>
+        <directory>src/test/resources</directory>
+        <excludes>
+          <exclude>*.properties</exclude>
+        </excludes>
+        <filtering>false</filtering>
+      </testResource>
+      <testResource>
+        <directory>src/test/resources</directory>
+        <includes>
+          <include>*.properties</include>
+        </includes>
+        <filtering>true</filtering>
+      </testResource>
+    </testResources>
+  </build>
+
+  <dependencies>
+    <!-- GBIF libs -->
+    <dependency>
+      <groupId>org.gbif</groupId>
+      <artifactId>dwca-reader</artifactId>
+      <version>${dwca-reader.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.gbif</groupId>
+      <artifactId>gbif-metadata-profile</artifactId>
+      <version>${gbif-metadata-profile.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.gbif</groupId>
+      <artifactId>dwc-api</artifactId>
+      <version>${dwc-api.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.gbif</groupId>
+      <artifactId>gbif-common</artifactId>
+      <version>${gbif-common.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.gbif</groupId>
+      <artifactId>gbif-httputils</artifactId>
+      <version>${httputils.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.gbif</groupId>
+      <artifactId>gbif-api</artifactId>
+      <version>${gbif-api.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.gbif</groupId>
+      <artifactId>gbif-parsers</artifactId>
+      <version>${gbif-parsers.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.gbif.registry</groupId>
+      <artifactId>registry-ws-client</artifactId>
+      <version>${gbif-registry.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.gbif.metrics</groupId>
+      <artifactId>metrics-ws-client</artifactId>
+      <version>${metrics-ws-client.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.gbif</groupId>
+      <artifactId>gbif-common-ws</artifactId>
+      <version>${gbif-common-ws.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <!-- To redirect calls to SLF4J from dwca-reader & gbif-common to Log4J -->
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>${slf4j.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+
+    <!-- Struts2 -->
+    <dependency>
+      <groupId>org.apache.struts</groupId>
+      <artifactId>struts2-core</artifactId>
+      <version>${struts2.version}</version>
+      <exclusions>
+        <!-- not needed - we use guice -->
+        <exclusion>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-test</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <!-- required by OGNL/struts2 since version 2.2.x -->
+    <dependency>
+      <groupId>javassist</groupId>
+      <artifactId>javassist</artifactId>
+      <version>${javassist.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.freemarker</groupId>
+      <artifactId>freemarker</artifactId>
+      <version>${freemarker.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.struts.xwork</groupId>
+      <artifactId>xwork-core</artifactId>
+      <version>${struts2.version}</version>
+    </dependency>
+
+    <!-- Guice provides the code based (not XML based) injection dependency framework -->
+    <dependency>
+      <groupId>com.google.inject</groupId>
+      <artifactId>guice</artifactId>
+      <version>${guice.version}</version>
+      <exclusions>
+
+        <!-- superceded by guava and causing exceptions under tomcat6 -->
+        <!--
+          java.lang.NoSuchMethodError com.google.common.collect.ImmutableList.copyOf(Ljava/util/Collection;)
+        -->
+        <exclusion>
+          <groupId>com.google.code.google-collections</groupId>
+          <artifactId>google-collect</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <!-- connector to use guice natively with struts2 -->
+    <dependency>
+      <groupId>com.google.inject.extensions</groupId>
+      <artifactId>guice-struts2</artifactId>
+      <version>${guice.version}</version>
+      <scope>compile</scope>
+      <exclusions>
+        <!-- clashes with newer version included in struts2.1.6  -->
+        <exclusion>
+          <groupId>opensymphony</groupId>
+          <artifactId>xwork</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>ognl</groupId>
+          <artifactId>ognl</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.google.inject.extensions</groupId>
+      <artifactId>guice-assistedinject</artifactId>
+      <version>${guice.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.inject.extensions</groupId>
+      <artifactId>guice-servlet</artifactId>
+      <version>${guice.version}</version>
+    </dependency>
+    <!-- Used to validate email addresses -->
+    <dependency>
+      <groupId>javax.mail</groupId>
+      <artifactId>mail</artifactId>
+      <version>${javax.mail.version}</version>
+    </dependency>
+
+    <!-- Used for the SimpleTextProvider in Struts2 -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jsp-api</artifactId>
+      <!--
+        need it for standalone, embedded jetty
+      <scope>provided</scope>
+      -->
+      <version>${jsp-api.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>${servlet-api.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- Google base libraries, e.g. collections
+      Used for equals & hash method a lot and in EML by Aaron
+      -->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>${guava.version}</version>
+    </dependency>
+
+    <!-- Accessing different external databases to suck in data alternatively to text files -->
+    <!-- JDBC driver to support a variety of external datasources -->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>${mysql-connector-java.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>${postgresql.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.sourceforge.jtds</groupId>
+      <artifactId>jtds</artifactId>
+      <version>${jtds.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>ojdbc</groupId>
+      <artifactId>ojdbc</artifactId>
+      <version>${ojdbc.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+
+    <!-- excel parsing -->
+    <dependency>
+        <groupId>org.apache.poi</groupId>
+        <artifactId>poi</artifactId>
+        <version>${apache-poi.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.poi</groupId>
+        <artifactId>poi-ooxml</artifactId>
+      <version>${apache-poi.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>dom4j</groupId>
+          <artifactId>dom4j</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <!--
+      Log4j used directly
+      PLEASE DON'T USE COMMONS-LOGGING !!!
+      there are some know classloader issues when used with tomcat
+    -->
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>${log4j.version}</version>
+    </dependency>
+
+
+    <!-- Commons lang provides utilities for (e.g.) simple hashcode building -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>${commons-lang3.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-validator</groupId>
+	  <artifactId>commons-validator</artifactId>
+	  <version>${commons-validator.version}</version>
+	</dependency>
+
+    <!-- native java io cannot handle redirects -->
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>${httpclient.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpcore</artifactId>
+      <version>${httpcore.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.validation</groupId>
+      <artifactId>validation-api</artifactId>
+      <version>${validation-api.version}</version>
+    </dependency>    
+
+    <!-- Simple XML Parsing -->
+    <dependency>
+      <groupId>commons-digester</groupId>
+      <artifactId>commons-digester</artifactId>
+      <version>${commons-digester.version}</version>
+    </dependency>
+
+    <!-- XStream for resource config data persistency (could be replaced by JAXB in the future) -->
+    <dependency>
+      <groupId>com.thoughtworks.xstream</groupId>
+      <artifactId>xstream</artifactId>
+      <version>${xstream.version}</version>
+    </dependency>
+
+    <!-- file utils -->
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>${commons-io.version}</version>
+    </dependency>
+
+    <!-- rtf generation -->
+    <dependency>
+      <groupId>com.lowagie</groupId>
+      <artifactId>itext</artifactId>
+      <version>${itext.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.lowagie</groupId>
+      <artifactId>itext-rtf</artifactId>
+      <version>${itext-rtf.version}</version>
+    </dependency>
+
+    <!-- testing -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>${mockito-all.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- JSON representation -->
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>${gson.version}</version>
+    </dependency>
+
+    <!-- Annotations -->
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+      <version>${jsr305.version}</version>
+    </dependency>
+
+  </dependencies>
+
+  <profiles>
+    <!-- Settings used for an IPT release -->
+    <profile>
+      <id>release</id>
+      <properties>
+        <devMode>false</devMode>
+        <devModeNegated>true</devModeNegated>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-war-plugin</artifactId>
+            <configuration>
+              <!-- don't bundle local datadir.location file with generated war -->
+              <excludes>**/datadir.location</excludes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- Settings used for the Staging IPT installation -->
+    <!-- Bundles datadir.location in war so Staging IPT doesn't have to reconfigure datadir on each redeploy -->
+    <profile>
+      <id>staging</id>
+      <properties>
+        <devMode>true</devMode>
+        <devModeNegated>false</devModeNegated>
+        <staging.datadir>/var/lib/tomcat7/ipt-data</staging.datadir>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-war-plugin</artifactId>
+            <configuration>
+              <webResources>
+                <resource>
+                  <filtering>true</filtering>
+                  <targetPath>WEB-INF</targetPath>
+                  <directory>src/main/webapp/WEB-INF</directory>
+                  <includes>
+                    <include>datadir.location</include>
+                  </includes>
+                </resource>
+              </webResources>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>
