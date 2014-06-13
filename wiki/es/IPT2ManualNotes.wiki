@@ -227,7 +227,7 @@ Al hacer clic en el enlace de Nombre en la lista de recursos de la página de In
 ====Página de versiones====
 Para ver una versión anterior de los metadatos de un recurso, solamente debe añadir al final de la URL el parámetro '&v=n', donde v representa la 'versión' y n es reemplazado por el número de la versión, e.g., "http://ipt.gbif.org/resource.do?r=occ&v=5". De esta forma, pueden ser recuperadas versiones específicas de los archivos EML, RTF y DWCA de un recurso. Tenga en cuenta que el Modo Archivo del IPT debe estar activado para que las versiones anteriores del DWCA sean guardadas (véase la sección [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes?wl=es#Configuración_de_las_opciones_del_IPT Configuración de las opciones del IPT]).
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v21/IPTHomeMetadataOverviewVersioned.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v21/es/IPTHomeMetadataOverviewVersioned.png]
 
 ==Menú Gestión de Recursos (visible para usuarios con el rol Administrador)==
 Esta página permite, a usuarios que cumplan el rol que corresponde (administradores), realizar cambios en los recursos existentes o crear nuevos recursos.
