@@ -29,6 +29,7 @@ public class ResourceTest {
 
   private final Extension OCC;
   private final Extension EXT;
+  private final Extension TAX;
 
   public ResourceTest() {
     OCC = new Extension();
@@ -36,6 +37,12 @@ public class ResourceTest {
     OCC.setName("Occurrence Core");
     OCC.setTitle("Occurrence Core");
     OCC.setRowType(Constants.DWC_ROWTYPE_OCCURRENCE);
+
+    TAX = new Extension();
+    TAX.setInstalled(true);
+    TAX.setName("Taxon Core");
+    TAX.setTitle("Taxon Core");
+    TAX.setRowType(Constants.DWC_ROWTYPE_TAXON);
 
     EXT = new Extension();
     EXT.setInstalled(true);
@@ -53,6 +60,12 @@ public class ResourceTest {
   private ExtensionMapping getOccExtensionMapping() {
     ExtensionMapping mapping = new ExtensionMapping();
     mapping.setExtension(OCC);
+    return mapping;
+  }
+
+  private ExtensionMapping getTaxExtensionMapping() {
+    ExtensionMapping mapping = new ExtensionMapping();
+    mapping.setExtension(TAX);
     return mapping;
   }
 
@@ -75,14 +88,16 @@ public class ResourceTest {
     // cant add an extension without having a core
     assertTrue(failed);
 
-    res.addMapping(getOccExtensionMapping());
+    res.addMapping(getTaxExtensionMapping());
     res.addMapping(getExtExtensionMapping());
-    res.addMapping(getOccExtensionMapping());
+    res.addMapping(getTaxExtensionMapping());
     res.addMapping(getExtExtensionMapping());
+    // Occurrence mapped as an extension to Taxon core, which is allowed
+    res.addMapping(getOccExtensionMapping());
 
-    assertEquals(4, res.getMappings().size());
+    assertEquals(5, res.getMappings().size());
+    // there are 2 mappings to Taxon core, 1 extension mapping to the Occurrence core which is excluded
     assertEquals(2, res.getCoreMappings().size());
-
   }
 
   @Test

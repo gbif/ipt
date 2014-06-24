@@ -1,4 +1,3 @@
-
 <!-- Represents source data and mapping data sections on resource overview page -->
 <div class="resourceOverview" id="sources">
     <div class="titleOverview">
@@ -105,34 +104,21 @@
     </#if>
 
         <div class="details">
-            <table>
-            <#list resource.coreMappings as m>
-                <tr>
-                    <th><#if m_index==0>${m.extension.title}</#if></th>
-                    <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}</td>
-                    <td>
-                        <a class="button" href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType}&mid=${m_index}">
-                            <input class="button" type="button" value='<@s.text name='button.edit'/>'/>
-                        </a>
-                    </td>
-                </tr>
-            </#list>
+          <table>
             <#list resource.getMappedExtensions() as ext>
-              <#if !ext.isCore()>
-                <#list resource.getMappings(ext.rowType) as m>
-                    <tr>
-                        <th><#if m_index==0>${ext.title}</#if></th>
-                        <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}</td>
-                        <td>
-                            <a class="button" href="mapping.do?r=${resource.shortname}&id=${ext.rowType}&mid=${m_index}">
-                                <input class="button" type="button" value='<@s.text name='button.edit'/>'/>
-                            </a>
-                        </td>
-                    </tr>
-                </#list>
-              </#if>
+              <#list resource.getMappings(ext.rowType) as m>
+                <tr>
+                  <th><#if m_index==0>${ext.title}</#if></th>
+                  <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}</td>
+                  <td>
+                    <a class="button" href="mapping.do?r=${resource.shortname}&id=${ext.rowType}&mid=${m_index}">
+                      <input class="button" type="button" value='<@s.text name='button.edit'/>'/>
+                    </a>
+                  </td>
+                </tr>
+              </#list>
             </#list>
-            </table>
+          </table>
         </div>
     </div>
 </div>
