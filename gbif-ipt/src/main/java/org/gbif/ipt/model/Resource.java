@@ -9,12 +9,7 @@ import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.metadata.eml.Eml;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import javax.annotation.Nullable;
 
 import com.google.common.base.Function;
@@ -172,6 +167,9 @@ public class Resource implements Serializable, Comparable<Resource> {
     return equal(shortname, o.shortname);
   }
 
+  /**
+   * @return all core mappings, excluding extension mappings with core row types
+   */
   public List<ExtensionMapping> getCoreMappings() {
     List<ExtensionMapping> cores = new ArrayList<ExtensionMapping>();
     for (ExtensionMapping m : mappings) {
@@ -179,6 +177,21 @@ public class Resource implements Serializable, Comparable<Resource> {
         cores.add(m);
       }
     }
+
+    // exclude extension mappings that have a core rowType (different from core mapping rowType)
+    if (!cores.isEmpty()) {
+      // the first core mapping in the list determines the resource's core rowType
+      String coreRowType = cores.get(0).getExtension().getRowType();
+      Iterator<ExtensionMapping> iter = cores.iterator();
+      while (iter.hasNext()) {
+        ExtensionMapping mapping = iter.next();
+        // remove this mapping if it doesn't have the same core row type
+        if (!mapping.getExtension().getRowType().equalsIgnoreCase(coreRowType)) {
+          iter.remove();
+        }
+      }
+    }
+
     return cores;
   }
 

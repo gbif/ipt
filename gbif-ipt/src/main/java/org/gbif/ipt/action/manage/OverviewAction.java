@@ -108,7 +108,7 @@ public class OverviewAction extends ManagerBaseAction {
   /**
    * Cancel resource publication. Publication is all or nothing. If incomplete, the version number of the resource
    * must be rolled back.
-   * 
+   *
    * @return Struts2 result string
    */
   public String cancel() throws Exception {
@@ -191,7 +191,7 @@ public class OverviewAction extends ManagerBaseAction {
 
   /**
    * Validate whether or not to show a confirmation message to overwrite the file(s) recently uploaded.
-   * 
+   *
    * @return true if a file exist in the user session. False otherwise.
    */
   public boolean getConfirmOverwrite() {
@@ -200,7 +200,7 @@ public class OverviewAction extends ManagerBaseAction {
 
   /**
    * Calculate the size of the DwC-A file.
-   * 
+   *
    * @return the size (human readable) of the DwC-A file.
    */
   public String getDwcaFormattedSize() {
@@ -209,7 +209,7 @@ public class OverviewAction extends ManagerBaseAction {
 
   /**
    * Calculate the size of the EML file.
-   * 
+   *
    * @return the size (human readable) of the EML file.
    */
   public String getEmlFormattedSize() {
@@ -218,7 +218,7 @@ public class OverviewAction extends ManagerBaseAction {
 
   /**
    * On the manage resource page page, this map is used to populate the publishing intervals dropdown.
-   * 
+   *
    * @return update frequencies map
    */
   public Map<String, String> getFrequencies() {
@@ -258,7 +258,7 @@ public class OverviewAction extends ManagerBaseAction {
 
   /**
    * Calculate the size of the RTF file.
-   * 
+   *
    * @return return the size (human readable) of the RTF file.
    */
   public String getRtfFormattedSize() {
@@ -268,7 +268,7 @@ public class OverviewAction extends ManagerBaseAction {
   /**
    * Checks if the resource meets all the conditions required in order to be registered. For example, the resource needs
    * to be published prior to registering with the GBIF Network.
-   * 
+   *
    * @param resource resource
    * @return true if the resource meets the minimum requirements to be published
    */
@@ -405,12 +405,14 @@ public class OverviewAction extends ManagerBaseAction {
         // show extensions suited for this core
         potentialExtensions = extensionManager.list(resource.getCoreRowType());
 
-        // add core itself
-        Extension core = extensionManager.get(resource.getCoreRowType());
-        if (core == null) {
-          addActionError(getText("manage.overview.no.DwC.extension", new String[] {resource.getCoreRowType()}));
+        // once the core has been mapped, other cores can be used as extensions. E.g taxon core & occurrence extension
+        List<Extension> cores = extensionManager.listCore();
+        if (cores.isEmpty()) {
+          addActionError(getText("manage.overview.no.DwC.extension", new String[]{resource.getCoreRowType()}));
         } else {
-          potentialExtensions.add(0, core);
+          for (int i = 0; i < cores.size(); i++) {
+            potentialExtensions.add(i, cores.get(i));
+          }
         }
       }
       // has no source been added yet that can be mapped? If not, return empty list of Extensions
@@ -467,7 +469,7 @@ public class OverviewAction extends ManagerBaseAction {
    * exceeded the maximum number of failed publish events during auto-publication, auto-publication for the resource is
    * suspended. By publishing the resource manually, it is assumed the manager is trying to debug the problem. Without
    * this safeguard in place, a resource can auto-publish in an endless number of failures.
-   * 
+   *
    * @return Struts2 result string
    * @throws Exception if method fails
    */
@@ -620,7 +622,7 @@ public class OverviewAction extends ManagerBaseAction {
 
   /**
    * Log how many times publication has failed for a resource, also detailing when the failures occurred.
-   * 
+   *
    * @param resource resource
    */
   @VisibleForTesting
