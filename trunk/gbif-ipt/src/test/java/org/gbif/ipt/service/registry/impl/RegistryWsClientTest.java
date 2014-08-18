@@ -42,7 +42,7 @@ public class RegistryWsClientTest {
   }
 
   @Ignore
-     public void testUpdateDataset() {
+  public void testUpdateDataset() {
     DatasetService ds = webserviceClient().getInstance(DatasetService.class);
     Dataset dataset = ds.get(UUID.fromString("8575f23e-f762-11e1-a439-00145eb45e9a"));
     dataset.setRights("CC0");
@@ -55,7 +55,7 @@ public class RegistryWsClientTest {
    * number of occurrence, checklist, and metadata-only datasets hosted by that installation.
    * Remember to configure registry.properties to connect to the desired service URLs.
    */
-  @Test
+  @Ignore
   public void gatherStatistics() {
     InstallationService installationService = webserviceClientReadOnly().getInstance(InstallationService.class);
     CubeService occurrenceCubeService = webserviceClientReadOnly().getInstance(CubeService.class);
@@ -98,12 +98,12 @@ public class RegistryWsClientTest {
               // count how many datasets are Checklist datasets, and how many different publishers share them?
               if (dataset.getType().equals(DatasetType.CHECKLIST)) {
                 iptChecklistDatasetCount++;
-                checklistDatasetPublisherKeys.add(dataset.getOwningOrganizationKey());
+                checklistDatasetPublisherKeys.add(dataset.getPublishingOrganizationKey());
               }
               // how many datasets are Occurrence datasets, and how many different publishers share them?
               else if (dataset.getType().equals(DatasetType.OCCURRENCE)) {
                 iptOccurrenceDatasetCount++;
-                occurrenceDatasetPublisherKeys.add(dataset.getOwningOrganizationKey());
+                occurrenceDatasetPublisherKeys.add(dataset.getPublishingOrganizationKey());
                 // how many occurrence records?
                 long numOccurrences =
                   occurrenceCubeService.get(new ReadBuilder().at(OccurrenceCube.DATASET_KEY, dataset.getKey()));
@@ -112,7 +112,7 @@ public class RegistryWsClientTest {
               // how many datasets are Metadata-only datasets, and how many different publishers share them?
               else {
                 iptMetadataDatasetCount++;
-                metadataDatasetPublisherKeys.add(dataset.getOwningOrganizationKey());
+                metadataDatasetPublisherKeys.add(dataset.getPublishingOrganizationKey());
               }
             }
 

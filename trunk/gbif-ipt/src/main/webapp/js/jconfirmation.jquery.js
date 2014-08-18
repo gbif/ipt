@@ -44,7 +44,7 @@
 										
 					$('#dialog-confirm').html(content);
 					$('#cbox').click(function() {
-						if($('#cbox').attr("checked")){
+						if($('#cbox').prop('checked')){
 							$('.ui-dialog-buttonset button:first-child').show();
 						}else{
 							$('.ui-dialog-buttonset button:first-child').hide();

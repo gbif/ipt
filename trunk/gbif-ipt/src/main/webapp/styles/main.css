@@ -374,7 +374,7 @@ img.testmode {
 }
 
 #region-content p {
-  font-size: 0.8em;
+  font-size: 0.9em;
 }
 
 /* simple table */
@@ -616,10 +616,20 @@ div a.button {
 #newuser div.userManageButtons input {width: auto;}
 #newuser div.userPasswordButtons input { width: auto;}
 
-#organisationsForm div {width: 60%;}
-#organisationsForm input {width: 85%;}
-#organisationsForm div.buttons input { width: auto; }
-#organisationsForm div.checkbox input { width: auto; }
+#organisationsForm div, #registrationForm div {width: 60%;}
+#organisationsForm input, #registrationForm input, #registrationForm textarea {width: 85%;}
+
+#organisationsForm div.radio {
+  margin-top: 40px;
+  margin-bottom: 5px;
+}
+
+#organisationsForm div.radio input {
+  width: 20px;
+}
+
+#organisationsForm div.buttons input, #registrationForm div.buttons input { width: auto; }
+#organisationsForm div.checkbox input, #registrationForm div.checkbox input { width: auto; }
 #organisationsForm div.checkbox div { width: auto; }
 
 #create_do input { width: 50%; }
@@ -1140,7 +1150,7 @@ table#rtable thead{
   background-color: #a9e4ba;
 }
 
-div#rtableContainer {
+div#tableContainer {
   margin-bottom: 40px;
   font-size:13px;
 }
@@ -1171,4 +1181,33 @@ a img {
 }
 .rtableTitle {
   margin-bottom:0px;
+}
+
+img.latestVersion {
+  width:17px;
+}
+
+img.latestVersionHidden {
+  width:17px;
+  opacity: 0.2;
+}
+
+.yellow {
+  color: #9F6000;
+}
+
+.identifier_part {
+  width: 60px;
+}
+span.doi_colon {
+  line-height: 14px;
+  font-size: 12px;
+}
+
+.twenty_bottom {
+  margin-bottom:20px;
+}
+
+.twenty_top {
+  margin-top:20px;
 }

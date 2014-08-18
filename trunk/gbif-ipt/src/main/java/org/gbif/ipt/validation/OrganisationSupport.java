@@ -13,6 +13,7 @@ import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.service.registry.RegistryManager;
 
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 
 public class OrganisationSupport {
@@ -29,6 +30,7 @@ public class OrganisationSupport {
     if (organisation.getPassword() == null || organisation.getPassword().length() < 1) {
       action.addFieldError("organisation.password", action.getText("validation.organisation.password.required"));
     }
+
     // validate if the key+password combination validates to true
     if (organisation.getKey() != null && organisation.getPassword() != null) {
       if (organisation.getKey().toString().length() > 0 && organisation.getPassword().length() > 0) {
@@ -37,5 +39,31 @@ public class OrganisationSupport {
         }
       }
     }
+
+    // validate that if any DOI registration agency account fields were entered, that they are all present
+    if (organisation.getDoiRegistrationAgency() != null ||
+        Strings.emptyToNull(organisation.getAgencyAccountUsername()) != null ||
+        Strings.emptyToNull(organisation.getAgencyAccountPassword()) != null ||
+        Strings.emptyToNull(organisation.getDoiPrefix()) != null) {
+
+      if (organisation.getDoiRegistrationAgency() == null) {
+        action.addFieldError("organisation.doiRegistrationAgency", action.getText("validation.organisation.doiRegistrationAgency.required"));
+        System.out.println("It is null: organisation.getDoiRegistrationAgency()");
+      }
+
+      if (Strings.emptyToNull(organisation.getAgencyAccountUsername()) == null) {
+        action.addFieldError("organisation.agencyAccountUsername", action.getText("validation.organisation.agencyAccountUsername.required"));
+      }
+
+      if (Strings.emptyToNull(organisation.getAgencyAccountPassword()) == null) {
+        action.addFieldError("organisation.agencyAccountPassword", action.getText("validation.organisation.agencyAccountPassword.required"));
+      }
+
+      if (Strings.emptyToNull(organisation.getDoiPrefix()) == null) {
+        action.addFieldError("organisation.doiPrefix", action.getText("validation.organisation.doiPrefix.required"));
+      }
+    }
+
+    // TODO validate if the account username and password are correct
   }
 }

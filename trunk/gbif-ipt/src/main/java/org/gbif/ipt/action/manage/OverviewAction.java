@@ -21,6 +21,7 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Resource.CoreRowType;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
+import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.MaintUpFreqType;
 import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.model.voc.PublicationStatus;
@@ -67,6 +68,7 @@ public class OverviewAction extends ManagerBaseAction {
   private List<User> potentialManagers;
   private List<Extension> potentialExtensions;
   private List<Organisation> organisations;
+  private List<Organisation> organisationsWithDoiAccount;
   private final EmlValidator emlValidator;
   private boolean missingMetadata;
   private boolean missingRegistrationMetadata;
@@ -74,6 +76,7 @@ public class OverviewAction extends ManagerBaseAction {
   private Date now;
   private boolean unpublish = false;
   private Map<String, String> frequencies;
+  private String doiOrganisationName;
 
   @Inject
   public OverviewAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -145,6 +148,7 @@ public class OverviewAction extends ManagerBaseAction {
     try {
       Resource res = resource;
       resourceManager.delete(res);
+      // TODO handle DOI
       addActionMessage(getText("manage.overview.resource.deleted", new String[] {res.toString()}));
       return HOME;
     } catch (IOException e) {
@@ -244,6 +248,13 @@ public class OverviewAction extends ManagerBaseAction {
     return organisations;
   }
 
+  /**
+   * @return list of organizations added to the IPT, configured with an DOI registration agency account
+   */
+  public List<Organisation> getOrganisationsWithDoiAccount() {
+    return organisationsWithDoiAccount;
+  }
+
   public List<Extension> getPotentialExtensions() {
     return potentialExtensions;
   }
@@ -280,9 +291,6 @@ public class OverviewAction extends ManagerBaseAction {
       return false;
     }
     if (resource.getCreator() == null) {
-      return false;
-    }
-    if (resource.getCreator().getEmail() == null) {
       return false;
     }
     if (!resource.isPublished()) {
@@ -354,6 +362,130 @@ public class OverviewAction extends ManagerBaseAction {
   }
 
   /**
+   * TODO
+   */
+  public String registerDoi() throws Exception {
+    LOG.info("Make DOI public..");
+    resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
+    resourceManager.updateAlternateIdentifierForDOI(resource);
+    saveResource();
+    return execute();
+  }
+
+  /**
+   * TODO
+   */
+  public String makeDoiUnavailable() throws Exception {
+    LOG.info("Make DOI unavailable..");
+    resource.setIdentifierStatus(IdentifierStatus.UNAVAILABLE);
+    resourceManager.updateAlternateIdentifierForDOI(resource);
+    saveResource();
+    return execute();
+  }
+
+  /**
+   * TODO
+   */
+  public String updateDoi() throws Exception {
+    LOG.info("Updating DOI, if status is RESERVED");
+
+    if (resource.getIdentifierStatus() != null &&
+        resource.getIdentifierStatus().compareTo(IdentifierStatus.RESERVED) == 0) {
+
+      String prefix = Strings.nullToEmpty(getDoiPrefix());
+      String newPrefix = StringUtils.trimToNull(req.getParameter("doi_prefix"));
+
+      String suffix = Strings.nullToEmpty(getDoiSuffix());
+      // TODO validate new Suffix is syntactically valid
+      String newSuffix = StringUtils.trimToNull(req.getParameter("doi_suffix"));
+
+      // check if doi prefix changed, in which case update DOI and DOI Organisation
+      if (newPrefix == null || suffix == null) {
+        resource.setDoi(null);
+        resource.setIdentifierStatus(null);
+        resource.setDoiOrganisationKey(null);
+      } else if (!newPrefix.equalsIgnoreCase(prefix) || !newSuffix.equalsIgnoreCase(suffix)) {
+        // validate prefix is valid
+        Organisation newDoiOrganisation = getOrganisationByDoiPrefix(newPrefix);
+        if (newDoiOrganisation != null) {
+          resource.setDoi(newPrefix + "/" + newSuffix);
+          resource.setDoiOrganisationKey(newDoiOrganisation.getKey());
+        } else {
+          LOG.error("This prefix is invalid: " + newPrefix);
+        }
+      } else {
+        LOG.info("prefix unchanged");
+      }
+
+      resourceManager.updateAlternateIdentifierForDOI(resource);
+      saveResource();
+
+      } else {
+        LOG.warn("Cannot update DOI unless its status is reserved");
+      }
+
+    return execute();
+  }
+
+  /**
+   * @return part before first forward slash
+   */
+  public String getDoiPrefix() {
+    String doi = Strings.emptyToNull(resource.getDoi());
+    if (doi != null) {
+      LOG.info("Get DOI prefix from: " + doi);
+      int slash = doi.indexOf("/");
+      LOG.info("DOI prefix: " + doi.substring(0, slash));
+      return doi.substring(0, slash);
+    }
+    return null;
+  }
+
+  /**
+   * @return part before first forward slash
+   */
+  public String getDoiSuffix() {
+    String doi = Strings.emptyToNull(resource.getDoi());
+    if (doi != null) {
+      LOG.info("Get DOI suffix from: " + doi);
+      int slash = doi.indexOf("/");
+      LOG.info("DOI suffix: " + doi.substring(slash + 1));
+      return doi.substring(slash  + 1);
+    }
+    return null;
+  }
+
+  /**
+   * TODO
+   */
+  public Organisation getOrganisationByDoiPrefix(String doiPrefix) {
+    if (doiPrefix != null && organisationsWithDoiAccount.size() > 0) {
+      for (Organisation organisation: organisationsWithDoiAccount) {
+        if (doiPrefix.equalsIgnoreCase(organisation.getDoiPrefix())) {
+          return organisation;
+        }
+      }
+    } else {
+      LOG.warn("doiPrefix is null, or no organisations with DOI account registered");
+    }
+    return null;
+  }
+
+  /**
+   * TODO
+   */
+  public String getDoiOrganisationName() {
+    if (resource.getDoiOrganisationKey() != null) {
+      LOG.info("Looking for organisation with DOI: " + resource.getDoiOrganisationKey());
+      // TODO validate organization has DOI account
+      return registrationManager.get(resource.getDoiOrganisationKey()).getName();
+    } else {
+      LOG.error("Couldn't find organisation with DOI: " + resource.getDoiOrganisationKey());
+    }
+    return resource.getDoiOrganisationKey().toString();
+  }
+
+  /**
    * Populate frequencies map, representing the publishing interval choices uses have when configuring
    * auto-publishing. The frequencies list is derived from an XML vocabulary, and will contain values in the requested
    * locale, defaulting to English.
@@ -390,6 +522,9 @@ public class OverviewAction extends ManagerBaseAction {
 
       // enabled registry organisations
       organisations = registrationManager.list();
+
+      // organisations with DOI Registry Agency accounts
+      organisationsWithDoiAccount = registrationManager.listAllWithDoiAccount();
 
       // remove all DwC mappings with 0 terms mapped
       // this is important do do before populating potential extensions since an empty mapping to occurrence can
@@ -521,7 +656,8 @@ public class OverviewAction extends ManagerBaseAction {
         return PUBLISHING;
       } else {
         // show action warning there is no source data and mapping, as long as resource isn't metadata-only
-        if (!resource.getCoreType().equalsIgnoreCase(Constants.DATASET_TYPE_METADATA_IDENTIFIER)) {
+        if (resource.getCoreType() != null &&
+            !resource.getCoreType().equalsIgnoreCase(Constants.DATASET_TYPE_METADATA_IDENTIFIER)) {
           addActionWarning(getText("manage.overview.data.missing"));
         }
         missingRegistrationMetadata = !hasMinimumRegistryInfo(resource);

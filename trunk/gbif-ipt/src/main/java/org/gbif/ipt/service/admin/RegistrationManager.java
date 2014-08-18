@@ -80,6 +80,11 @@ public interface RegistrationManager {
   List<Organisation> listAll();
 
   /**
+   * Returns list of all associated organisations that are configured with a DOI registration agency account.
+   */
+  List<Organisation> listAllWithDoiAccount();
+
+  /**
    * Loads all user associated organisations from file into the manager.
    */
   void load() throws InvalidConfigException;

@@ -2,14 +2,14 @@ var timeout    = 500;
 var closetimer = 0;
 var ddmenuitem = 0;
 $(document).ready(function(){
-	$("#showMore").live("click", function(e) {
+	$("#showMore").on("click", function(e) {
 		e.preventDefault();
 		var $parentTarget = $(e.target).parent();
 		var showLess = $parentTarget.html();
 		$parentTarget.html($parentTarget.next("#hiddenContent").html());	
 		$parentTarget.next("#hiddenContent").html(showLess);	
 	});
-	$("#showLess").live("click", function(e) {
+	$("#showLess").on("click", function(e) {
 		e.preventDefault();
 		var $parentTarget = $(e.target).parent();
 		var showMore = $parentTarget.html();

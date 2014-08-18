@@ -67,33 +67,33 @@
 
 		$("#copyDetails").click(function(event) {
 			event.preventDefault();
-			$("#eml\\.resourceCreator\\.firstName").attr("value", $("#eml\\.contact\\.firstName").attr("value"));
-			$("#eml\\.resourceCreator\\.lastName").attr("value", $("#eml\\.contact\\.lastName").attr("value"));
-			$("#eml\\.resourceCreator\\.position").attr("value", $("#eml\\.contact\\.position").attr("value"));
-			$("#eml\\.resourceCreator\\.organisation").attr("value", $("#eml\\.contact\\.organisation").attr("value"));
-			$("#eml\\.resourceCreator\\.address\\.address").attr("value", $("#eml\\.contact\\.address\\.address").attr("value"));
-			$("#eml\\.resourceCreator\\.address\\.city").attr("value", $("#eml\\.contact\\.address\\.city").attr("value"));
-			$("#eml\\.resourceCreator\\.address\\.province").attr("value", $("#eml\\.contact\\.address\\.province").attr("value"));
-			$("#eml\\.resourceCreator\\.address\\.postalCode").attr("value", $("#eml\\.contact\\.address\\.postalCode").attr("value"));
-			$("#eml\\.resourceCreator\\.address\\.country").attr("value", $("#eml\\.contact\\.address\\.country").attr("value"));
-			$("#eml\\.resourceCreator\\.phone").attr("value", $("#eml\\.contact\\.phone").attr("value"));
-			$("#eml\\.resourceCreator\\.email").attr("value", $("#eml\\.contact\\.email").attr("value"));
-			$("#eml\\.resourceCreator\\.homepage").attr("value", $("#eml\\.contact\\.homepage").attr("value"));
+			$("#eml\\.resourceCreator\\.firstName").prop("value", $("#eml\\.contact\\.firstName").prop("value"));
+			$("#eml\\.resourceCreator\\.lastName").prop("value", $("#eml\\.contact\\.lastName").prop("value"));
+			$("#eml\\.resourceCreator\\.position").prop("value", $("#eml\\.contact\\.position").prop("value"));
+			$("#eml\\.resourceCreator\\.organisation").prop("value", $("#eml\\.contact\\.organisation").prop("value"));
+			$("#eml\\.resourceCreator\\.address\\.address").prop("value", $("#eml\\.contact\\.address\\.address").prop("value"));
+			$("#eml\\.resourceCreator\\.address\\.city").prop("value", $("#eml\\.contact\\.address\\.city").prop("value"));
+			$("#eml\\.resourceCreator\\.address\\.province").prop("value", $("#eml\\.contact\\.address\\.province").prop("value"));
+			$("#eml\\.resourceCreator\\.address\\.postalCode").prop("value", $("#eml\\.contact\\.address\\.postalCode").prop("value"));
+			$("#eml\\.resourceCreator\\.address\\.country").prop("value", $("#eml\\.contact\\.address\\.country").prop("value"));
+			$("#eml\\.resourceCreator\\.phone").prop("value", $("#eml\\.contact\\.phone").prop("value"));
+			$("#eml\\.resourceCreator\\.email").prop("value", $("#eml\\.contact\\.email").prop("value"));
+			$("#eml\\.resourceCreator\\.homepage").prop("value", $("#eml\\.contact\\.homepage").prop("value"));
 		});
 		$("#copyDetails2").click(function(event) {
 			event.preventDefault();
-			$("#eml\\.metadataProvider\\.firstName").attr("value", $("#eml\\.contact\\.firstName").attr("value"));
-			$("#eml\\.metadataProvider\\.lastName").attr("value", $("#eml\\.contact\\.lastName").attr("value"));
-			$("#eml\\.metadataProvider\\.position").attr("value", $("#eml\\.contact\\.position").attr("value"));
-			$("#eml\\.metadataProvider\\.organisation").attr("value", $("#eml\\.contact\\.organisation").attr("value"));
-			$("#eml\\.metadataProvider\\.address\\.address").attr("value", $("#eml\\.contact\\.address\\.address").attr("value"));
-			$("#eml\\.metadataProvider\\.address\\.city").attr("value", $("#eml\\.contact\\.address\\.city").attr("value"));
-			$("#eml\\.metadataProvider\\.address\\.province").attr("value", $("#eml\\.contact\\.address\\.province").attr("value"));
-			$("#eml\\.metadataProvider\\.address\\.postalCode").attr("value", $("#eml\\.contact\\.address\\.postalCode").attr("value"));
-			$("#eml\\.metadataProvider\\.address\\.country").attr("value", $("#eml\\.contact\\.address\\.country").attr("value"));
-			$("#eml\\.metadataProvider\\.phone").attr("value", $("#eml\\.contact\\.phone").attr("value"));
-			$("#eml\\.metadataProvider\\.email").attr("value", $("#eml\\.contact\\.email").attr("value"));
-			$("#eml\\.metadataProvider\\.homepage").attr("value", $("#eml\\.contact\\.homepage").attr("value"));
+			$("#eml\\.metadataProvider\\.firstName").prop("value", $("#eml\\.contact\\.firstName").prop("value"));
+			$("#eml\\.metadataProvider\\.lastName").prop("value", $("#eml\\.contact\\.lastName").prop("value"));
+			$("#eml\\.metadataProvider\\.position").prop("value", $("#eml\\.contact\\.position").prop("value"));
+			$("#eml\\.metadataProvider\\.organisation").prop("value", $("#eml\\.contact\\.organisation").prop("value"));
+			$("#eml\\.metadataProvider\\.address\\.address").prop("value", $("#eml\\.contact\\.address\\.address").prop("value"));
+			$("#eml\\.metadataProvider\\.address\\.city").prop("value", $("#eml\\.contact\\.address\\.city").prop("value"));
+			$("#eml\\.metadataProvider\\.address\\.province").prop("value", $("#eml\\.contact\\.address\\.province").prop("value"));
+			$("#eml\\.metadataProvider\\.address\\.postalCode").prop("value", $("#eml\\.contact\\.address\\.postalCode").prop("value"));
+			$("#eml\\.metadataProvider\\.address\\.country").prop("value", $("#eml\\.contact\\.address\\.country").prop("value"));
+			$("#eml\\.metadataProvider\\.phone").prop("value", $("#eml\\.contact\\.phone").prop("value"));
+			$("#eml\\.metadataProvider\\.email").prop("value", $("#eml\\.contact\\.email").prop("value"));
+			$("#eml\\.metadataProvider\\.homepage").prop("value", $("#eml\\.contact\\.homepage").prop("value"));
 		});
 	});
 

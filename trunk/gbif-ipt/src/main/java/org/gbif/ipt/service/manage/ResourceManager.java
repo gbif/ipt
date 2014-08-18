@@ -342,6 +342,18 @@ public interface ResourceManager {
   Resource updateAlternateIdentifierForIPTURLToResource(Resource resource);
 
   /**
+   * Updates the resource's alternate identifier for its DOI and saves the EML if the DOI status is RESERVED or PUBLIC.
+   * This identifier should only exist for the resource, if its resource visibility is public.
+   *
+   * If called on a resource that already has an existing DOI (e.g. DOI for an article, or a previous major version)
+   * the method will add it to the list since a resource is allowed to have multiple DOIs.
+   *
+   * @param resource resource
+   * @return resource with DOI for the resource updated
+   */
+  Resource updateAlternateIdentifierForDOI(Resource resource);
+
+  /**
    * Return the ThreadPoolExecutor.
    *
    * @return the ThreadPoolExecutor

@@ -5,11 +5,13 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.FileUtils;
+import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlFactory;
 import org.gbif.metadata.eml.TaxonKeyword;
@@ -21,14 +23,15 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.annotation.Nullable;
 
+import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -40,6 +43,7 @@ public class ResourceAction extends PortalBaseAction {
 
   private VocabulariesManager vocabManager;
   private List<Resource> resources;
+  private List<VersionHistory> versions;
   private Integer page = 1;
   // for conveniently displaying taxonomic coverages in freemarker template
   private List<OrganizedTaxonomicCoverage> organizedCoverages;
@@ -53,6 +57,8 @@ public class ResourceAction extends PortalBaseAction {
   private boolean metadataOnly;
   private int recordsPublishedForVersion;
   private Map<String, String> frequencies;
+
+  private List<Agent> contacts;
 
   @Inject
   public ResourceAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -114,6 +120,13 @@ public class ResourceAction extends PortalBaseAction {
    */
   public List<Resource> getResources() {
     return resources;
+  }
+
+  /**
+   * @return the version history
+   */
+  public List<VersionHistory> getVersions() {
+    return versions;
   }
 
   /**
@@ -244,6 +257,57 @@ public class ResourceAction extends PortalBaseAction {
     // update frequencies list, derived from XML vocabulary, and displayed on Basic Metadata Page
     frequencies = new LinkedHashMap<String, String>();
     frequencies.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES, getLocaleLanguage(), false));
+
+    // TODO replace with actual version history
+    VersionHistory v1 = new VersionHistory();
+    v1.setVersion("1.0");
+    v1.setReleased(new Date());
+    v1.setChangeSummary("Initial publication");
+    v1.setDoi("10.4231/D3F47GT6N");
+
+    VersionHistory v2 = new VersionHistory();
+    v2.setVersion("1.1");
+    v2.setReleased(new Date());
+    v2.setChangeSummary("Metadata updated");
+    v2.setDoi("10.4231/D3F47GT6N");
+
+    VersionHistory v3 = new VersionHistory();
+    v3.setVersion("2.0");
+    v3.setReleased(new Date());
+    v3.setChangeSummary("Genus changed for all records");
+    v3.setDoi("10.5886/1bft7W5f");
+
+    VersionHistory v4 = new VersionHistory();
+    v4.setVersion("2.1");
+    v4.setReleased(new Date());
+    v4.setChangeSummary("3 new fields mapped: kingdom, phylum, class.");
+    v4.setDoi("10.5886/1bft7W5f");
+    v4.setLatest(true);
+
+    versions = Lists.newArrayList(v1, v2, v3, v4);
+
+    // TODO complete list with all contacts
+    Agent contact = eml.getContact();
+    contact.setRole("contact");
+    roles.put("contact", "Contact");
+    if (contact.getOrganisation() == null) {
+      contact.setOrganisation("GBIF");
+    }
+
+    Agent creator = eml.getResourceCreator();
+    creator.setRole("creator");
+    roles.put("creator", "Creator");
+    if (creator.getOrganisation() == null) {
+      creator.setOrganisation("GBIF");
+    }
+
+    Agent metadataProvider = eml.getMetadataProvider();
+    metadataProvider.setRole("metadataProvider");
+    if (metadataProvider.getOrganisation() == null) {
+      metadataProvider.setOrganisation("GBIF");
+    }
+
+    contacts = Lists.newArrayList(contact, creator, metadataProvider);
 
     return SUCCESS;
   }
@@ -424,5 +488,16 @@ public class ResourceAction extends PortalBaseAction {
    */
   public int getRecordsPublishedForVersion() {
     return recordsPublishedForVersion;
+  }
+
+  /**
+   * @return list of all contacts and associated parties from EML aggregated together
+   */
+  public List<Agent> getContacts() {
+    return contacts;
+  }
+
+  public void setContacts(List<Agent> contacts) {
+    this.contacts = contacts;
   }
 }

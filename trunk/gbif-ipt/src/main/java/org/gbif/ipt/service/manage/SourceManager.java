@@ -17,9 +17,7 @@ import javax.annotation.Nullable;
 import com.google.inject.ImplementedBy;
 
 /**
- * This interface details ALL methods associated with the main resource entity. The manager keeps a map of the basic
- * metadata and authorisation information in memory, but further details like the  full EML or mapping configuration is
- * stored in files and loaded into manager sessions when needed.
+ * This interface details all methods associated with a source entity.
  */
 @ImplementedBy(SourceManagerImpl.class)
 public interface SourceManager {

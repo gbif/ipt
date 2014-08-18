@@ -50,7 +50,7 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
     ];
 
     $(document).ready(function() {
-        $('#rtableContainer').html( '<table cellpadding="3" cellspacing="3" border="0" class="display" id="rtable"></table>' );
+        $('#tableContainer').html( '<table cellpadding="3" cellspacing="3" border="0" class="display" id="rtable"></table>' );
         $('#rtable').dataTable( {
             "aaData": aDataSet,
             "iDisplayLength": ${numResourcesShown},
