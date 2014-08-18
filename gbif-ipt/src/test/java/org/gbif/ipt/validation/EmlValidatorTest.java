@@ -107,6 +107,7 @@ public class EmlValidatorTest {
     assertNotNull(EmlValidator.formatURL("torrent://www.gbif.org"));
     assertNotNull(EmlValidator.formatURL("ftp://ftp.gbif.org"));
     assertNotNull(EmlValidator.formatURL("http://www.gbif.org"));
+    assertNotNull(EmlValidator.formatURL("hhttp://ipt.sibcolombia.net/iavh/resource.do?r=flora_tame_arauca_2013"));
   }
 
   @Test

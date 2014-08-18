@@ -231,6 +231,18 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     return Ordering.from(ORG_BY_NAME_ORD).sortedCopy(registration.getAssociatedOrganisations().values());
   }
 
+  public List<Organisation> listAllWithDoiAccount() {
+    List<Organisation> organisationList = new ArrayList<Organisation>();
+    for (Organisation organisation : Ordering.from(ORG_BY_NAME_ORD).sortedCopy(
+      registration.getAssociatedOrganisations().values())) {
+      if (organisation.getDoiRegistrationAgency() != null) {
+        organisationList.add(organisation);
+      }
+    }
+    return organisationList;
+  }
+
+
   public void load() throws InvalidConfigException {
     Closer closer = Closer.create();
     try {

@@ -34,6 +34,7 @@ import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
 import org.gbif.ipt.model.converter.PasswordConverter;
 import org.gbif.ipt.model.converter.UserEmailConverter;
+import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
@@ -1180,7 +1181,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * If called on a resource that is already registered, the method ensures that it won't be added a second time.
    * To accommodate updates from older versions of the IPT, the identifier is added by calling this method every
    * time the resource gets re-published.
-   * 
+   *
    * @param resource resource
    * @return resource with Registry UUID for the resource updated
    */
@@ -1264,6 +1265,53 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           if (cfg.debug()) {
             log.info("Following visibility change, IPT URL to resource was removed from Resource's list of alt ids");
           }
+        }
+      }
+    }
+    return resource;
+  }
+
+  public Resource updateAlternateIdentifierForDOI(Resource resource) {
+    // retrieve a list of the resource's alternate identifiers
+    List<String> ids = null;
+    if (resource.getEml() != null) {
+      ids = resource.getEml().getAlternateIdentifiers();
+    } else {
+      resource.setEml(new Eml());
+    }
+
+    if (ids != null && resource.getDoi() != null) {
+      // TODO use constant
+      String doi = "doi:" + resource.getDoi();
+      // has this DOI been added before?
+      boolean exists = false;
+      String existingId = null;
+      for (String id : ids) {
+        if (id.equalsIgnoreCase(doi)) {
+          exists = true;
+          existingId = id;
+        }
+      }
+      // if the DOI status is PUBLIC or RESERVED, add it to list if it doesn't exist yet
+      if (resource.getIdentifierStatus().compareTo(IdentifierStatus.UNAVAILABLE) != 0) {
+        if (!exists) {
+          ids.add(doi);
+          // save all changes to Eml
+          saveEml(resource);
+          log.info("DOI added to resource's list of alt ids");
+        } else {
+          log.info("DOI already added to resource's list of alt ids");
+        }
+      }
+      // otherwise if the DOI is UNAVAILABLE, remove it from list if it exists
+      else {
+        if (exists) {
+          ids.remove(existingId);
+          // save all changes to Eml
+          saveEml(resource);
+          log.info("Following DOI status change, DOI was removed from Resource's list of alt ids");
+        } else {
+          log.info("DOI never existed in Resource's list of alt ids, and so couldn't be removed");
         }
       }
     }

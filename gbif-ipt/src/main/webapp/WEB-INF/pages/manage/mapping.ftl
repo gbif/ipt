@@ -87,13 +87,7 @@ $(document).ready(function(){
 		$(this).click(function() {
 			window.location = $(this).parent('a').attr('href');
 		});
-	});	
-
-	$(function() {
-    if ( $.browser.msie) {
-      $('div.definition').css({overflow: "visible"});
-    } 
-  });
+	});
 	
 });   
 </script>

@@ -3,6 +3,7 @@ package org.gbif.ipt.action.admin;
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.Organisation;
+import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.RegistryException;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.servlet.SessionScoped;
 import org.apache.log4j.Logger;
@@ -58,6 +60,12 @@ public class OrganisationsAction extends POSTAction {
 
       List<Organisation> tempOrganisations;
       tempOrganisations = registryManager.getOrganisations();
+
+      // empty <option></option> needed by Select2 jquery library, to be able to display placeholder "Select an org.."
+      Organisation o = new Organisation();
+      o.setName("");
+      organisations.add(o);
+
       organisations.addAll(tempOrganisations);
       LOG.debug("organisations returned: " + organisations.size());
     }
@@ -73,6 +81,10 @@ public class OrganisationsAction extends POSTAction {
   private List<Organisation> linkedOrganisations;
   private final RegisteredOrganisations orgSession;
 
+  private String doiRegistrationAgencySelected;
+
+  private static final List<String> DOI_REGISTRATION_AGENCIES = ImmutableList.of(DOIRegistrationAgency.DATACITE.name(), DOIRegistrationAgency.EZID.name());
+
   @Inject
   public OrganisationsAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
     OrganisationSupport organisationValidation, RegisteredOrganisations orgSession, ResourceManager resourceManager) {
@@ -80,6 +92,26 @@ public class OrganisationsAction extends POSTAction {
     this.organisationValidation = organisationValidation;
     this.orgSession = orgSession;
     this.resourceManager = resourceManager;
+  }
+
+  /**
+   * @return a list of DOI registration agencies that the IPT supports
+   */
+  public List<String> getDoiRegistrationAgencies() {
+    return DOI_REGISTRATION_AGENCIES;
+  }
+
+  /**
+   * The DOI registration agency that the organization has been configured to use.
+   *
+   * @return the agency that has been selected
+   */
+  public String getDoiRegistrationAgencySelected() {
+    return doiRegistrationAgencySelected;
+  }
+
+  public void setDoiRegistrationAgencySelected(String doiRegistrationAgencySelected) {
+    this.doiRegistrationAgencySelected = doiRegistrationAgencySelected;
   }
 
   @Override
@@ -191,13 +223,15 @@ public class OrganisationsAction extends POSTAction {
         String alias = organisation.getAlias();
         boolean canHost = organisation.isCanHost();
         String password = organisation.getPassword();
+        String agencyAccountPassword = organisation.getAgencyAccountPassword();
 
         for (Organisation org : getOrganisations()) {
-          if (org.getKey().equals(organisation.getKey())) {
+          if (org.getKey() != null && org.getKey().equals(organisation.getKey())) {
             organisation = org;
             organisation.setAlias(alias);
             organisation.setCanHost(canHost);
             organisation.setPassword(password);
+            organisation.setAgencyAccountPassword(agencyAccountPassword);
             break;
           }
         }

@@ -2,6 +2,7 @@ package org.gbif.ipt.model;
 
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
+import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.MaintUpFreqType;
 import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.model.voc.PublicationStatus;
@@ -65,6 +66,10 @@ public class Resource implements Serializable, Comparable<Resource> {
   // mapping configs
   private Set<Source> sources = new HashSet<Source>();
   private List<ExtensionMapping> mappings = new ArrayList<ExtensionMapping>();
+
+  private IdentifierStatus identifierStatus = IdentifierStatus.RESERVED;
+  private String doi;
+  private UUID doiOrganisationKey;
 
   public void addManager(User manager) {
     if (manager != null) {
@@ -385,6 +390,57 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   public PublicationStatus getStatus() {
     return status;
+  }
+
+  /**
+   * TODO
+   * @return
+   */
+  @Nullable
+  public IdentifierStatus getIdentifierStatus() {
+    return identifierStatus;
+  }
+
+  /**
+   * TODO
+   * @param identifierStatus
+   */
+  public void setIdentifierStatus(@Nullable IdentifierStatus identifierStatus) {
+    this.identifierStatus = identifierStatus;
+  }
+
+  /**
+   * TODO
+   * @return
+   */
+  @Nullable
+  public String getDoi() {
+    return doi;
+  }
+
+  /**
+   * TODO
+   * @param doi
+   */
+  public void setDoi(@Nullable String doi) {
+    this.doi = doi;
+  }
+
+  /**
+   * TODO
+   * @return
+   */
+  @Nullable
+  public UUID getDoiOrganisationKey() {
+    return doiOrganisationKey;
+  }
+
+  /**
+   * TODO
+   * @param doiOrganisationKey
+   */
+  public void setDoiOrganisationKey(@Nullable UUID doiOrganisationKey) {
+    this.doiOrganisationKey = doiOrganisationKey;
   }
 
   /**

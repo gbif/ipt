@@ -28,16 +28,14 @@
   <link rel="stylesheet" type="text/css" media="all" href="${baseURL}/styles/jquery/dataTable.css"/>
  	<link rel="shortcut icon" href="${baseURL}/images/icons/favicon.ico" type="image/x-icon" />
 	<link href="${baseURL}/rss.do" title="Latest Resources" rel="alternate" type="application/rss+xml" />
-	<link media="all" type="text/css" href="${baseURL}/styles/jquery/jquery-ui-1.8.3.css" rel="stylesheet" />
+  <link media="all" type="text/css" href="${baseURL}/styles/jquery/jquery-ui.min-1.11.0.css" rel="stylesheet" />
   <!-- for css overrides needed for customizations -->
   <link rel="stylesheet" type="text/css" href="${baseURL}/styles/custom.css" />
   <!-- for support of old browsers, like IE8. See http://modernizr.com/docs/#html5inie -->
   <script type="text/javascript" src="${baseURL}/js/modernizr.js"></script>
-	<script type="text/javascript" src="${baseURL}/js/jquery/jquery.min-1.5.1.js"></script>				
-	<script type="text/javascript" src="${baseURL}/js/jquery/jquery-ui.min-1.8.3.js"></script>
+  <script type="text/javascript" src="${baseURL}/js/jquery/jquery-1.11.1.min.js"></script>
+  <script type="text/javascript" src="${baseURL}/js/jquery/jquery-ui.min-1.11.0.js"></script>
 	<script type="text/javascript" src="${baseURL}/js/global.js"></script>
-	<script type="text/javascript" src="${baseURL}/js/sorttable.js"></script>
- 
 
 [#-- GOOGLE ANALYTICS - asynchroneous: http://code.google.com/apis/analytics/docs/tracking/asyncTracking.html --]
 [#if cfg.gbifAnalytics || (cfg.analyticsKey!"")?length>1] 

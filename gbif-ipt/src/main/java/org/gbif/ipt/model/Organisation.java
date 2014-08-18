@@ -9,10 +9,13 @@
  */
 package org.gbif.ipt.model;
 
+import org.gbif.ipt.model.voc.DOIRegistrationAgency;
+
 import java.io.Serializable;
 import javax.annotation.Nullable;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Strings;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -29,6 +32,10 @@ public class Organisation extends AgentBase implements Serializable {
   private String nodeName;
   private String nodeContactEmail;
   private boolean canHost;
+  private DOIRegistrationAgency doiRegistrationAgency;
+  private String agencyAccountUsername;
+  private Password agencyAccountPassword;
+  private String doiPrefix;
 
   @Override
   public boolean equals(Object obj) {
@@ -77,9 +84,44 @@ public class Organisation extends AgentBase implements Serializable {
   @Nullable
   public String getPassword() {
     if (password != null) {
-      return password.password;
+      return Strings.emptyToNull(password.password);
     }
     return null;
+  }
+
+  /**
+   * @return the DOI Registration Agency
+   */
+  @Nullable
+  public DOIRegistrationAgency getDoiRegistrationAgency() {
+    return doiRegistrationAgency;
+  }
+
+  /**
+   * @return the DOI Registration Agency account username
+   */
+  @Nullable
+  public String getAgencyAccountUsername() {
+    return agencyAccountUsername;
+  }
+
+  /**
+   * @return the DOI Registration Agency account password
+   */
+  @Nullable
+  public String getAgencyAccountPassword() {
+    if (agencyAccountPassword != null) {
+      return Strings.emptyToNull(agencyAccountPassword.password);
+    }
+    return null;
+  }
+
+  /**
+   * @return the DOI prefix that has been assigned to the organization
+   */
+  @Nullable
+  public String getDoiPrefix() {
+    return doiPrefix;
   }
 
   /**
@@ -146,4 +188,34 @@ public class Organisation extends AgentBase implements Serializable {
     return ToStringBuilder.reflectionToString(this);
   }
 
+  /**
+   * @param doiRegistrationAgency the DOI Registration Agency the organisation has an account with
+   */
+  public void setDoiRegistrationAgency(@Nullable DOIRegistrationAgency doiRegistrationAgency) {
+    this.doiRegistrationAgency = doiRegistrationAgency;
+  }
+
+  /**
+   * @param agencyAccountUsername the DOI Registration Agency account username
+   */
+  public void setAgencyAccountUsername(@Nullable String agencyAccountUsername) {
+    this.agencyAccountUsername = StringUtils.trimToNull(agencyAccountUsername);
+  }
+
+  /**
+   * @param agencyAccountPassword the DOI Registration Agency account password
+   */
+  public void setAgencyAccountPassword(@Nullable String agencyAccountPassword) {
+    if (this.agencyAccountPassword == null) {
+      this.agencyAccountPassword = new Password();
+    }
+    this.agencyAccountPassword.password = agencyAccountPassword;
+  }
+
+  /**
+   * @param doiPrefix the DOI Prefix that has been assigned to the organization
+   */
+  public void setDoiPrefix(@Nullable String doiPrefix) {
+    this.doiPrefix = StringUtils.trimToNull(doiPrefix);
+  }
 }

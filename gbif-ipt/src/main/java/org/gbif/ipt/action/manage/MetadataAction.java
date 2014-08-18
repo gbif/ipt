@@ -21,6 +21,7 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Resource.CoreRowType;
+import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -42,6 +43,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
@@ -397,14 +399,23 @@ public class MetadataAction extends ManagerBaseAction {
 
   @Override
   public String save() throws Exception {
-    // before saving, ALL metadata sections must be valid, otherwise an error is displayed
+    // before saving, the minimum amount of mandatory metadata must have been provided, and ALL metadata sections must
+    // be valid, otherwise an error is displayed
     if (emlValidator.areAllSectionsValid(this, resource.getEml())) {
       // Save metadata information (eml.xml)
       resourceManager.saveEml(resource);
-      // Save resource information (resource.xml)
-      resourceManager.save(resource);
       // Alert user of successful save
       addActionMessage(getText("manage.success", new String[] {getText("submenu." + section)}));
+
+      // TODO: Reserve a DOI (if possible) if resource doesn't already have one
+      if (resource.getIdentifierStatus() == null) {
+        resource.setDoi("10.555/UJK78JH");
+        resource.setDoiOrganisationKey(UUID.fromString("62922b92-69d1-4c4b-831c-b23d5412a124"));
+        resource.setIdentifierStatus(IdentifierStatus.RESERVED);
+      }
+
+      // Save resource information (resource.xml)
+      resourceManager.save(resource);
     }
     return SUCCESS;
   }

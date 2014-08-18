@@ -1,5 +1,13 @@
 <#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
+<script type="text/javascript" src="${baseURL}/js/jquery/jquery-1.11.1.min.js"></script>
+<link rel="stylesheet" href="${baseURL}/styles/select2/select2-3.5.1.css">
+<script src="${baseURL}/js/select2/select2-3.5.1.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#organisation\\.key').select2({placeholder: '<@s.text name="admin.organisation.name.select"/>', width:"375px", allowClear: true});
+    });
+</script>
 <script type="text/javascript">
 $(document).ready(function(){
 	initHelp();
@@ -9,17 +17,17 @@ $(document).ready(function(){
 		var orgName = $('#organisation\\.key :selected').text();
 		$('#organisation\\.name').val(orgName);
 		$('#ipt\\.organisationKey').val($('#organisation\\.key :selected').val());
-		
-		var emailContent = '<@s.text name="emails.request.ipt.registration1"/>';
-		emailContent += '<@s.text name="emails.request.ipt.registration2"/>';
-		emailContent += '<@s.text name="emails.request.ipt.registration3"/>';
-		emailContent += '<@s.text name="emails.request.ipt.registration4"/>';
-		emailContent += '<@s.text name="emails.request.ipt.registration5"><@s.param>';
-		emailContent += $("#organisation\\.key :selected").val();
-		emailContent += '</@s.param></@s.text>';
-		emailContent += '<@s.text name="emails.request.ipt.registration6"/>';
-	
-			$('#organisation\\.name').val(orgName);	
+
+      var emailContent = '<@s.text name="emails.request.organisation.association1"/>';
+      emailContent += '<@s.text name="emails.request.organisation.association2"/>';
+      emailContent += '<@s.text name="emails.request.organisation.association3"/>';
+      emailContent += '<@s.text name="emails.request.organisation.association4"/>';
+      emailContent += '<@s.text name="emails.request.organisation.association5"/>';
+      emailContent += '<@s.text name="emails.request.organisation.association6"><@s.param>';
+      emailContent += $("#organisation\\.key :selected").val();
+      emailContent += '</@s.param></@s.text>';
+      emailContent += '<@s.text name="emails.request.organisation.association7"/>';
+
 			$('#organisation\\.alias').val(orgName);	
 			var url = "<@s.url value='${registryURL}organisation/'/>" + $('#organisation\\.key :selected').val() + ".json";
 			$.getJSON(url+"?callback=?",function(data){
@@ -125,17 +133,15 @@ $(document).ready(function(){
 	
 	<div id="registrationForm" style="display: none;" >
 		<hr/>
-		<p><@s.text name="admin.registration.intro"/></p>
-		<p><@s.text name="admin.registration.intro2"/></p>
-		
+
 		<@s.form cssClass="topForm half" action="registration" method="post" id="registrationForm" >
 			<@s.fielderror>
 		    <@s.param value="%{'organisation.key'}" />
 		  </@s.fielderror>
-			<@label i18nkey="admin.organisation.key" requiredField=true>
-			<@s.select id="organisation.key" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" size="15" disabled="false"/>
-			</@label>
-		
+      <img class="infoImg" src="${baseURL}/images/info.gif">
+      <div class="info" style="display: none;"><@s.text name="admin.registration.intro"/>&nbsp;<@s.text name="admin.registration.intro2"/></div>
+      <@s.select cssClass="e1" id="organisation.key" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" size="15" disabled="false"/>
+
 			<@input name="organisation.password" i18nkey="admin.organisation.password" type="password" help="i18n" maxlength=15 size=18 requiredField=true />
 			<div id="requestDetails"></div>
 			<@input name="organisation.alias" i18nkey="admin.organisation.alias" type="text" />

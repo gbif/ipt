@@ -26,17 +26,13 @@
 			var idNewForm = "temporal-"+count;
 			var newForm = $("#temporal-99999").clone().attr("id", idNewForm).css('display', '');
 			// Add the fields depending of the actual value in the select
-			var typeSubForm = $("#tempTypes").attr("value");			
+			var typeSubForm = $("#tempTypes").prop("value");
 			//Adding the 'sub-form' to the new form.
 			addTypeForm(newForm, typeSubForm, true);			
 			$("#temporals").append(newForm);
 			newForm.hide();		
 			//Updating the componetsof the new 'sub-form'.
 			updateFields(idNewForm, count);
-			// hack for IE (help icons dissapear)
-			if($.browser.msie) {		
-				$("#temporal-"+count).css('zoom', 1);
-			}
 			$("#temporal-"+count).slideDown("slow").css('zoom', 1);
 			
 			count++;
@@ -80,7 +76,7 @@
 			// Select ==> tempTypes
 			$("#"+idNewForm+" [id^='tempTypes']").attr("id", "tempTypes-"+index).attr("name", function() {return $(this).attr("id");});			
 			// Update the fields depending of the actual value in the select
-			var typeSubForm = $("#"+idNewForm+" #tempTypes-"+index).attr("value");			
+			var typeSubForm = $("#"+idNewForm+" #tempTypes-"+index).prop("value");
 			// Registering the event for the new selects.
 			$("#"+idNewForm+" #tempTypes-"+count).change(
 				function() {		
@@ -117,7 +113,7 @@
 		});
 		
 		function changeForm(select) {
-			var selection = select.attr("value");
+			var selection = select.prop("value");
 			var index = select.attr("id").split("-")[1];				
 			$("#temporal-"+index+" .typeForm").fadeOut(function() {
 				$(this).remove();				

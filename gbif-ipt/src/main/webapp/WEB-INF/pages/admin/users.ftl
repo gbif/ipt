@@ -15,43 +15,14 @@ $(document).ready(function(){
 </script>	
  <#assign currentMenu = "admin"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
+<#include "/WEB-INF/pages/macros/usersTable.ftl"/>
+
+<h1 class="rtableTitle"><@s.text name="admin.home.manageUsers"/></h1>
+
+<@usersTable numUsersShown=20 sEmptyTable="dataTables.sEmptyTable.users" columnToSortOn=0 sortOrder="asc" />
+<div id="tableContainer"></div>
 
 <div class="grid_24">
-<h1><@s.text name="admin.home.manageUsers"/></h1>
-
-<p><@s.text name="admin.users.intro"/></p>
-
-<table id="user-list">
-    <thead>
-	<tr>
-		<th><@s.text name="admin.users.name"/></th>
-		<th><@s.text name="admin.users.email"/></th>
-		<th><@s.text name="admin.users.role"/></th>
-		<th><@s.text name="admin.users.last.login"/></th>
-	</tr>
-	</thead>
-	<tbody>
-    <#-- for counting even or odd rows -->
-    <#function zebra index>
-      <#if (index % 2) == 0>
-        <#return "even" />
-      <#else>
-        <#return "odd" />
-      </#if>
-    </#function>
-
-	<#list users as u>	
-	<tr class="${zebra(u_index)}">
-		<td><a href="user?id=${u.email}">${u.name}</a></td>
-		<td>${u.email}</td>
-		<td><@s.text name="user.roles.${u.role?lower_case}"/></td>
-		<td>${(u.lastLogin?datetime?string.short)!"never"}</td>
-	</tr>
-	</#list>
-	</tbody>
-	
-</table>
-
 <p>
 	<button id="create"><@s.text name="button.create"/></button>
 	<button id="cancel"><@s.text name="button.cancel"/></button>
@@ -59,4 +30,10 @@ $(document).ready(function(){
 </div>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
+
+<!-- jQuery v1.11.1 -->
+<script type="text/javascript" src="${baseURL}/js/jquery/jquery-1.11.1.min.js"></script>
+<!-- DataTables v1.9.4 -->
+<script type="text/javascript" language="javascript" src="${baseURL}/js/jquery/jquery.dataTables.js"></script>
+
 </#escape>

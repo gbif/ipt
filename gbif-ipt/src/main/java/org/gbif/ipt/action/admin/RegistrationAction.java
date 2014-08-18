@@ -49,6 +49,12 @@ public class RegistrationAction extends POSTAction {
       List<Organisation> tempOrganisations;
       tempOrganisations = registryManager.getOrganisations();
       organisations.clear();
+
+      // empty <option></option> needed by Select2 jquery library, to be able to display placeholder "Select an org.."
+      Organisation o = new Organisation();
+      o.setName("");
+      organisations.add(o);
+
       organisations.addAll(tempOrganisations);
       LOG.debug("organisations returned: " + organisations.size());
     }

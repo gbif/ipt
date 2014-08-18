@@ -111,10 +111,6 @@ $(document).ready(function(){
 		
 		if(effects) {
 			 newItem.slideDown('slow');
-			// hack for IE (help icons dissapear)
-			if($.browser.msie) {
-			 	newItem.css('zoom', 1);
-			}			
 		}
 		
 		initHelp("#baseItem");
