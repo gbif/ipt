@@ -47,9 +47,7 @@ public class PasswordConverter implements Converter {
   public void marshal(Object value, HierarchicalStreamWriter writer, MarshallingContext context) {
     Password pass = (Password) value;
     try {
-      if (pass.password == null) {
-        writer.setValue(null);
-      } else {
+      if (pass.password != null) {
         writer.setValue(encrypter.encrypt(pass.password));
       }
     } catch (EncryptionException e) {
