@@ -1211,3 +1211,17 @@ span.doi_colon {
 .twenty_top {
   margin-top:20px;
 }
+
+/* mappings section manage resource page */
+.mapping_head {
+  font-size: 1.0em;
+  opacity: 0.7;
+  margin-bottom: 5px;
+}
+tr.mapping_row > td, th {
+  line-height: 90%;
+  vertical-align: middle;
+}
+tr.mapping_row > th {
+  padding-right: 10px;
+}

@@ -242,25 +242,18 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   }
 
   public List<Extension> list(String coreRowType) {
-    if (coreRowType != null && coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_OCCURRENCE)) {
-      return search(OCCURRENCE_KEYWORD, true, false);
-    } else if (coreRowType != null && coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON)) {
-      return search(TAXON_KEYWORD, true, false);
-    } else if (coreRowType != null) {
-      // search using the fully qualified core name (e.g. with http://rs.tdwg.org/dwc/terms/Occurrence)
-      // and include any with no scoping
-      return search(coreRowType, true, false);
-    } else {
-      // no core type
-      return list();
+    if (coreRowType != null) {
+      if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_OCCURRENCE)) {
+        return search(OCCURRENCE_KEYWORD, true, false);
+      } else if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON)) {
+        return search(TAXON_KEYWORD, true, false);
+      } else {
+        return search(coreRowType, true, false);
+      }
     }
+    return list();
   }
 
-  /**
-   * Returns those extensions that are suitable for use as a core.
-   * 
-   * @return The extensions or an empty list
-   */
   public List<Extension> listCore() {
     List<Extension> list = Lists.newArrayList();
     for (String rowType : AppConfig.getCoreRowTypes()) {
@@ -270,6 +263,23 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
       }
     }
     return list;
+  }
+
+  public List<Extension> listCore(String coreRowType) {
+    coreRowType = StringUtils.trimToNull(coreRowType);
+    if (coreRowType != null) {
+      List<Extension> list = Lists.newArrayList();
+        coreRowType = coreRowType.toLowerCase();
+        for (String rowType : AppConfig.getCoreRowTypes()) {
+          Extension e = get(rowType);
+          if (e != null && StringUtils.containsIgnoreCase(e.getSubject(), coreRowType)) {
+            list.add(e);
+          }
+        }
+      return list;
+    } else {
+      return listCore();
+    }
   }
 
   public int load() {

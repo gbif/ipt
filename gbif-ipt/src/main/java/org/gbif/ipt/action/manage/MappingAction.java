@@ -16,14 +16,12 @@ package org.gbif.ipt.action.manage;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
 import org.gbif.ipt.config.AppConfig;
-import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.RecordFilter;
 import org.gbif.ipt.model.RecordFilter.Comparator;
-import org.gbif.ipt.model.Resource.CoreRowType;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.service.admin.ExtensionManager;
@@ -168,8 +166,6 @@ public class MappingAction extends ManagerBaseAction {
   public String delete() {
     if (resource.deleteMapping(mapping)) {
       addActionMessage(getText("manage.mapping.deleted", new String[] {id}));
-      // reset core type to null if the core type mapping is deleted
-      updateResourceCoreType(mapping, 0);
       // set modified date
       resource.setModified(new Date());
       // save resource
@@ -403,17 +399,17 @@ public class MappingAction extends ManagerBaseAction {
           mappedFields.add(f);
         }
       }
-      // save coreid field
-      mappingCoreid.setIndex(mapping.getIdColumn());
-      mappingCoreid.setDefaultValue(mapping.getIdSuffix());
-      if (mappingCoreid.getIndex() != null || StringUtils.trimToNull(mappingCoreid.getDefaultValue()) != null) {
-        mappedFields.add(mappingCoreid);
+      // save coreid field (e.g. occurrenceID) so that it is included in mapping, despite being a duplicate of coreid
+      // Careful: only save coreid field for core extension mappings, not for extension mapping
+      if (resource.getCoreRowType().equalsIgnoreCase(mapping.getExtension().getRowType())) {
+        mappingCoreid.setIndex(mapping.getIdColumn());
+        mappingCoreid.setDefaultValue(mapping.getIdSuffix());
+        if (mappingCoreid.getIndex() != null || StringUtils.trimToNull(mappingCoreid.getDefaultValue()) != null) {
+          mappedFields.add(mappingCoreid);
+        }
       }
       // back to mapping object
       mapping.setFields(mappedFields);
-
-      // update core type
-      updateResourceCoreType(mapping, mappedFields.size());
     }
 
     // set modified date
@@ -448,36 +444,5 @@ public class MappingAction extends ManagerBaseAction {
 
   public void setMid(Integer mid) {
     this.mid = mid;
-  }
-
-  /**
-   * Update resource core type. This must be done every time the resource's core type mapping is being modified, or
-   * deleted. If it is the 1st mapping of the core type, the core type won't have been set yet. Only if 1 or more
-   * mapped fields were saved, can we consider the mapping to have been legitimate. Furthermore, if the
-   * core type mapping is being deleted, then the resource must reset its core type to null.
-   * 
-   * @param mapping ExtensionMapping
-   * @param mappedFields the number of mapped fields in the mapping - set to 0 if the mapping is to be deleted
-   */
-  void updateResourceCoreType(ExtensionMapping mapping, int mappedFields) {
-    // proceed only if we're dealing with the core type mapping
-    if (mapping.isCore()) {
-      // must be 1 or more mapped fields for mapping to be legitimate
-      if (mappedFields > 0) {
-        // set resource core type, based on core extension's coreRowType
-        String coreRowType = StringUtils.trimToNull(mapping.getExtension().getRowType());
-        if (Constants.DWC_ROWTYPE_TAXON.equalsIgnoreCase(coreRowType)) {
-          resource.setCoreType(StringUtils.capitalize(CoreRowType.CHECKLIST.toString()));
-        } else if (Constants.DWC_ROWTYPE_OCCURRENCE.equalsIgnoreCase(coreRowType)) {
-          resource.setCoreType(StringUtils.capitalize(CoreRowType.OCCURRENCE.toString()));
-        } else {
-          resource.setCoreType(StringUtils.capitalize(CoreRowType.OTHER.toString()));
-        }
-      }
-      // otherwise, reset core type!
-      else {
-        resource.setCoreType(null);
-      }
-    }
   }
 }

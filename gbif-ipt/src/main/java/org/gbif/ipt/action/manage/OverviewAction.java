@@ -18,7 +18,6 @@ import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.Resource.CoreRowType;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.model.voc.IdentifierStatus;
@@ -42,7 +41,6 @@ import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.validation.EmlValidator;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -51,6 +49,7 @@ import java.util.Map;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -66,6 +65,7 @@ public class OverviewAction extends ManagerBaseAction {
   private final ExtensionManager extensionManager;
   private final VocabulariesManager vocabManager;
   private List<User> potentialManagers;
+  private List<Extension> potentialCores;
   private List<Extension> potentialExtensions;
   private List<Organisation> organisations;
   private List<Organisation> organisationsWithDoiAccount;
@@ -253,6 +253,10 @@ public class OverviewAction extends ManagerBaseAction {
    */
   public List<Organisation> getOrganisationsWithDoiAccount() {
     return organisationsWithDoiAccount;
+  }
+
+  public List<Extension> getPotentialCores() {
+    return potentialCores;
   }
 
   public List<Extension> getPotentialExtensions() {
@@ -535,57 +539,37 @@ public class OverviewAction extends ManagerBaseAction {
         }
       }
 
-      // does the resource already have a source mapped to core type?
-      if (resource.hasCore()) {
-        // show extensions suited for this core
-        potentialExtensions = extensionManager.list(resource.getCoreRowType());
+      // Does the resource already have a source mapped to core type?
+      // The core type can be set from the basic metadata page, and determines which core extensions to show
+      String coreRowType = Strings.emptyToNull(resource.getCoreRowType());
+      potentialCores = Lists.newArrayList();
+      potentialExtensions = Lists.newArrayList();
 
-        // once the core has been mapped, other cores can be used as extensions. E.g taxon core & occurrence extension
-        List<Extension> cores = extensionManager.listCore();
-        if (cores.isEmpty()) {
-          addActionError(getText("manage.overview.no.DwC.extension", new String[]{resource.getCoreRowType()}));
-        } else {
-          for (int i = 0; i < cores.size(); i++) {
-            potentialExtensions.add(i, cores.get(i));
+      if (!resource.getSources().isEmpty()) {
+        if (coreRowType != null) {
+          Extension core = extensionManager.get(coreRowType);
+          if (core == null) {
+            addActionError(getText("manage.overview.no.DwC.extension", new String[] {coreRowType}));
+          } else {
+            // core always appears first in list
+            potentialCores.add(core);
+
+            // are there other cores that can be used as extensions for this core?
+            List<Extension> otherCores = extensionManager.listCore(coreRowType);
+            potentialExtensions.addAll(otherCores);
+
+            // are there other extensions suited for this core?
+            List<Extension> others = extensionManager.list(coreRowType);
+            potentialExtensions.addAll(others);
           }
-        }
-      }
-      // has no source been added yet that can be mapped? If not, return empty list of Extensions
-      else if (resource.getSources().isEmpty()) {
-        potentialExtensions = new ArrayList<Extension>();
-      }
-      // does the resource have no core type, but at least one source file ready to be mapped?
-      else {
-        LOG.debug("Resource has core type: " + resource.getCoreType());
-
-        if (Strings.isNullOrEmpty(resource.getCoreType()) || "Other".equalsIgnoreCase(resource.getCoreType())) {
-          // populate list of potential list of extensions with core types
-          potentialExtensions = extensionManager.listCore();
-          LOG.debug("Cores suitable for Other resources: " + potentialExtensions);
-          if (potentialExtensions.isEmpty()) {
+        } else {
+          potentialCores = extensionManager.listCore();
+          if (potentialCores.isEmpty()) {
             addActionError(getText("manage.overview.no.DwC.extensions"));
           }
-        } else {
-          potentialExtensions = new ArrayList<Extension>();
-          // the core type (from metadata pages) determines which core type extension to include
-          if (resource.getCoreType().equalsIgnoreCase(CoreRowType.CHECKLIST.toString())) {
-            Extension ext = extensionManager.get(Constants.DWC_ROWTYPE_TAXON);
-            if (ext == null) {
-              addActionError(getText("manage.overview.no.DwC.extension", new String[] {Constants.DWC_ROWTYPE_TAXON}));
-            } else {
-              potentialExtensions.add(ext);
-            }
-          } else if (resource.getCoreType().equalsIgnoreCase(CoreRowType.OCCURRENCE.toString())) {
-            Extension ext = extensionManager.get(Constants.DWC_ROWTYPE_OCCURRENCE);
-            if (ext == null) {
-              addActionError(getText("manage.overview.no.DwC.extension",
-                new String[] {Constants.DWC_ROWTYPE_OCCURRENCE}));
-            } else {
-              potentialExtensions.add(ext);
-            }
-          }
         }
       }
+
       // check EML
       missingMetadata = !emlValidator.isValid(resource.getEml(), null);
       missingRegistrationMetadata = !hasMinimumRegistryInfo(resource);

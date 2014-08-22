@@ -141,16 +141,6 @@ public class MappingActionTest {
   }
 
   @Test
-  public void testupdateResourceCoreType() {
-    // to begin with, show the resource's core type isn't null
-    assertNotNull(action.getResource().getCoreType());
-    // simulate delete core type mapping being deleted
-    action.updateResourceCoreType(action.getMapping(), 0);
-    // assert the resource's core type has been reset
-    assertNull(action.getResource().getCoreType());
-  }
-
-  @Test
   public void testSave() throws IOException {
     // prepare id, mid parameters
     action.prepare();

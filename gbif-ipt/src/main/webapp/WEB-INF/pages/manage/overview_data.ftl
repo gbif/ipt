@@ -64,29 +64,36 @@
   <div class="titleOverview">
     <div class="head">
       <@s.text name='manage.overview.DwC.Mappings'/>
-    </div>
+    </div> 
     <div class="actions">
-      <#if (potentialExtensions?size>0)>
+    <#if (potentialCores?size>0)>
         <form action='mapping.do' method='post'>
-          <input name="r" type="hidden" value="${resource.shortname}"/>
-          <select name="id" id="rowType" size="1">
-          <#-- if core hasn't been selected yet add help text to help user choose core type -->
-            <#if !resource.coreType?has_content && (potentialExtensions?size > 1) >
-              <option><@s.text name='manage.overview.DwC.Mappings.select'/></option>
-            </#if>
-            <#list potentialExtensions as e>
-              <#if e?has_content>
-                <option value="${e.rowType}">${e.title}</option>
+            <input name="r" type="hidden" value="${resource.shortname}"/>
+            <select name="id" id="rowType" size="1">
+                <optgroup label="<@s.text name='manage.overview.DwC.Mappings.cores.select'/>">
+                  <#list potentialCores as c>
+                    <#if c?has_content>
+                        <option value="${c.rowType}">${c.title}</option>
+                    </#if>
+                  </#list>
+                </optgroup>
+              <#if (potentialExtensions?size>0)>
+                  <optgroup label="<@s.text name='manage.overview.DwC.Mappings.extensions.select'/>">
+                    <#list potentialExtensions as e>
+                      <#if e?has_content>
+                          <option value="${e.rowType}">${e.title}</option>
+                      </#if>
+                    </#list>
+                  </optgroup>
               </#if>
-            </#list>
-          </select>
+            </select>
           <@s.submit name="add" key="button.add"/>
         </form>
-      </#if>
+    </#if>
     </div>
   </div>
   <div class="bodyOverview">
-    <#if (potentialExtensions?size>0)>
+    <#if (potentialCores?size>0)>
       <p>
         <@s.text name='manage.overview.DwC.Mappings.description'/>
       </p>
@@ -98,31 +105,50 @@
     </#if>
 
     <#-- if core hasn't been selected yet add help text to help user understand how to choose core type -->
-    <#if (potentialExtensions?size>1) && !resource.coreType?has_content >
+    <#if (potentialCores?size>1) && !resource.coreType?has_content >
       <div>
         <img class="info" src="${baseURL}/images/info.gif"/>
         <em><@s.text name='manage.overview.DwC.Mappings.coretype.description'/></em>
       </div>
     </#if>
 
-    <#if (resource.getMappedExtensions()?size>0) >
-      <div class="details">
-        <table>
-          <#list resource.getMappedExtensions() as ext>
-            <#list resource.getMappings(ext.rowType) as m>
-              <tr>
-                <th><#if m_index==0>${ext.title}</#if></th>
-                <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}</td>
-                <td>
-                  <a class="button" href="mapping.do?r=${resource.shortname}&id=${ext.rowType}&mid=${m_index}">
-                   <input class="button" type="button" value='<@s.text name='button.edit'/>'/>
-                  </a>
-                </td>
-              </tr>
-            </#list>
-          </#list>
-        </table>
-      </div>
+    <#if resource.coreRowType?has_content>
+        <div class="details">
+            <div class="mapping_head"><@s.text name='manage.overview.DwC.Mappings.cores.select'/></div>
+            <table>
+              <#list resource.getMappings(resource.coreRowType) as m>
+                  <tr <#if m_index==0>class="mapping_row"</#if>>
+                      <th><#if m_index==0>${m.extension.title}</#if></th>
+                      <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}</td>
+                      <td>
+                          <a class="button" href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType}&mid=${m_index}">
+                              <input class="button" type="button" value='<@s.text name='button.edit'/>'/>
+                          </a>
+                      </td>
+                  </tr>
+              </#list>
+            </table>
+          <#if (resource.getMappedExtensions()?size > 1)>
+              <div class="mapping_head"><@s.text name='manage.overview.DwC.Mappings.extensions.select'/></div>
+              <table>
+                <#list resource.getMappedExtensions() as ext>
+                  <#if ext.rowType != resource.coreRowType>
+                    <#list resource.getMappings(ext.rowType) as m>
+                        <tr <#if m_index==0>class="mapping_row"</#if>>
+                            <th><#if m_index==0>${ext.title}</#if></th>
+                            <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}</td>
+                            <td>
+                                <a class="button" href="mapping.do?r=${resource.shortname}&id=${ext.rowType}&mid=${m_index}">
+                                    <input class="button" type="button" value='<@s.text name='button.edit'/>'/>
+                                </a>
+                            </td>
+                        </tr>
+                    </#list>
+                  </#if>
+                </#list>
+              </table>
+          </#if>
+        </div>
     </#if>
   </div>
 </div>
