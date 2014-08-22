@@ -3,6 +3,7 @@ package org.gbif.ipt.model;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
 import org.gbif.ipt.model.voc.IdentifierStatus;
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.voc.MaintUpFreqType;
 import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.model.voc.PublicationStatus;
@@ -10,13 +11,22 @@ import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.metadata.eml.Eml;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
+import com.google.common.collect.Sets;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import static com.google.common.base.Objects.equal;
@@ -135,9 +145,10 @@ public class Resource implements Serializable, Comparable<Resource> {
   public boolean deleteMapping(ExtensionMapping mapping) {
     boolean result = false;
     if (mapping != null) {
+      // what's the core row type? store it before deleting the mapping, just in case this is the last core mapping!
+      String coreRowType = getCoreRowType();
       result = mappings.remove(mapping);
-      // if last core gets deleted, delete all other mappings too!
-      if (result && mapping.isCore() && getCoreMappings().isEmpty()) {
+      if (result && mapping.isCore() && getCoreMappings(coreRowType).isEmpty()) {
         mappings.clear();
       }
     }
@@ -177,45 +188,60 @@ public class Resource implements Serializable, Comparable<Resource> {
    */
   public List<ExtensionMapping> getCoreMappings() {
     List<ExtensionMapping> cores = new ArrayList<ExtensionMapping>();
+    String coreRowType = getCoreRowType();
     for (ExtensionMapping m : mappings) {
-      if (m.isCore()) {
+      if (m.isCore() && coreRowType != null && coreRowType.equalsIgnoreCase(m.getExtension().getRowType())) {
         cores.add(m);
       }
     }
-
-    // exclude extension mappings that have a core rowType (different from core mapping rowType)
-    if (!cores.isEmpty()) {
-      // the first core mapping in the list determines the resource's core rowType
-      String coreRowType = cores.get(0).getExtension().getRowType();
-      Iterator<ExtensionMapping> iter = cores.iterator();
-      while (iter.hasNext()) {
-        ExtensionMapping mapping = iter.next();
-        // remove this mapping if it doesn't have the same core row type
-        if (!mapping.getExtension().getRowType().equalsIgnoreCase(coreRowType)) {
-          iter.remove();
-        }
-      }
-    }
-
     return cores;
   }
 
   /**
-   * Get the rowType of the core mapping. This method first iterates through a list of the core mappings if there
-   * are any. Then, since they will all be of the same core rowType, the first mapping is read for its rowType and
-   * this String is returned.
+   * @param coreRowType core rowType
    *
-   * @return core rowType
+   * @return all core mappings, excluding extension mappings with core row types
+   */
+  public List<ExtensionMapping> getCoreMappings(String coreRowType) {
+    List<ExtensionMapping> cores = new ArrayList<ExtensionMapping>();
+    for (ExtensionMapping m : mappings) {
+      if (m.isCore() && coreRowType != null && coreRowType.equalsIgnoreCase(m.getExtension().getRowType())) {
+        cores.add(m);
+      }
+    }
+    return cores;
+  }
+
+  /**
+   * @return the row type of the first core extension mapping, which always determines the core row type
    */
   public String getCoreRowType() {
-    List<ExtensionMapping> cores = getCoreMappings();
-    if (!cores.isEmpty()) {
-      return cores.get(0).getExtension().getRowType();
+    for (ExtensionMapping m: mappings) {
+      if (m.isCore()) {
+        return m.getExtension().getRowType();
+      }
     }
     return null;
   }
 
+  /**
+   * At first the core type can be set during resource creation or on the basic metadata page. But once
+   * a core mapping has been done, it is derived from the core mapping.
+   *
+   * @return the core type.
+   */
+  @Nullable
   public String getCoreType() {
+    String coreRowType = getCoreRowType();
+    if (getCoreRowType() != null) {
+        if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON)) {
+          coreType = StringUtils.capitalize(CoreRowType.CHECKLIST.toString());
+        } else if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_OCCURRENCE)) {
+          coreType = StringUtils.capitalize(CoreRowType.OCCURRENCE.toString());
+        } else {
+          coreType = StringUtils.capitalize(CoreRowType.OTHER.toString());
+        }
+    }
     return coreType;
   }
 
@@ -299,16 +325,21 @@ public class Resource implements Serializable, Comparable<Resource> {
     return managers;
   }
 
+
+  /**
+   * @return a list of extensions that have been mapped to, starting with the extension that was mapped first (core
+   * mapping), and ending with the extension that was mapped last. Elements in the list are unique.
+   */
   public List<Extension> getMappedExtensions() {
-    Set<Extension> exts = new HashSet<Extension>();
+    LinkedHashSet<Extension> extensions = Sets.newLinkedHashSet();
     for (ExtensionMapping em : mappings) {
       if (em.getExtension() != null && em.getSource() != null) {
-        exts.add(em.getExtension());
+        extensions.add(em.getExtension());
       } else {
         log.error("ExtensionMapping referencing NULL Extension or Source for resource: " + getShortname());
       }
     }
-    return new ArrayList<Extension>(exts);
+    return Lists.newArrayList(extensions);
   }
 
   public ExtensionMapping getMapping(String rowType, Integer index) {
