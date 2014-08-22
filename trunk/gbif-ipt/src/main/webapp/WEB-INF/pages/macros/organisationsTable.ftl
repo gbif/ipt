@@ -7,14 +7,15 @@ organisationsTable macro: Generates a data table that has searching, pagination,
 -->
 <#macro organisationsTable numOrganisationsShown sEmptyTable columnToSortOn sortOrder>
 <script type="text/javascript" charset="utf-8">
+    <#assign emptyString="--">
 
     /* organisation list */
     var aDataSet = [
       <#list linkedOrganisations as o>
-          ['<a id="editLink_${o.key}" href="organisation?id=${o.key}">${o.name!"???"}</a>',
-           '${o.alias!}',
+          ['<a id="editLink_${o.key}" href="organisation?id=${o.key}">${o.name?replace("\'", "\\'")?replace("\"", '\\"')}</a>',
+           '<#if o.alias??>${o.alias?replace("\'", "\\'")?replace("\"", '\\"')}<#else>${emptyString}</#if>',
            '<#if o.canHost><@s.text name="basic.yes"/><#else><@s.text name="basic.no"/></#if>',
-           'DataCite']<#if o_has_next>,</#if>
+           '<#if o.doiRegistrationAgency??>${o.doiRegistrationAgency}<#else>${emptyString}</#if>']<#if o_has_next>,</#if>
       </#list>
     ];
 
