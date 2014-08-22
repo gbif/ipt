@@ -284,123 +284,123 @@ $(document).ready(function(){
   </div>
 </div>
 
-<div class="resourceOverview" id="identifierStatus">
-    <div class="titleOverview">
-       <#if missingMetadata>
-         <div class="head">
-             DOI Status
-         </div>
-      <#else>
-          <div class="head">
-              DOI Status
-              <em class="<#if resource.identifierStatus=="UNAVAILABLE">red<#elseif resource.identifierStatus=="RESERVED">yellow<#else>green</#if>"><@s.text name="resource.identifierStatus.${resource.identifierStatus?lower_case}"/></em>
-          </div>
+<#--<div class="resourceOverview" id="identifierStatus">-->
+    <#--<div class="titleOverview">-->
+       <#--<#if missingMetadata>-->
+         <#--<div class="head">-->
+             <#--DOI Status-->
+         <#--</div>-->
+      <#--<#else>-->
+          <#--<div class="head">-->
+              <#--DOI Status-->
+              <#--<em class="<#if resource.identifierStatus=="UNAVAILABLE">red<#elseif resource.identifierStatus=="RESERVED">yellow<#else>green</#if>"><@s.text name="resource.identifierStatus.${resource.identifierStatus?lower_case}"/></em>-->
+          <#--</div>-->
 
-          <div class="actions">
+          <#--<div class="actions">-->
 
-            <#if resource.identifierStatus=="RESERVED">
-                <div>
-                    <input type="button" class="doiButton" id="doi_edit" name="edit" value="<@s.text name='manage.resource.identifierStatus.edit'/>"/>
-                </div>
+            <#--<#if resource.identifierStatus=="RESERVED">-->
+                <#--<div>-->
+                    <#--<input type="button" class="doiButton" id="doi_edit" name="edit" value="<@s.text name='manage.resource.identifierStatus.edit'/>"/>-->
+                <#--</div>-->
 
-                <form action='resource-updateDoi.do' method='post'>
-                    <div id="doi_edit_block" style="display:none">
-                        <span class="doi_colon">doi:</span>
-                        <input class="identifier_part" name="doi_prefix" id="doi_prefix" value="${action.getDoiPrefix()!""}" />
-                        <input class="identifier_part" name="doi_suffix" value="${action.getDoiSuffix()!""}" />
-                        <select name="id" id="doi_select" size="1">
-                          <#list organisationsWithDoiAccount as o>
-                              <option value="${o.doiPrefix!""?string}" <#if o.doiPrefix==action.getDoiPrefix()!"">selected</#if> >${o.name}</option>
-                          </#list>
-                        </select>
-                        <div>
-                          <@s.submit name="update" key="button.save"/>
-                            <input type="button" id="doi_edit_cancel" name="cancel" value="<@s.text name='button.cancel'/>"/>
-                        </div>
-                    </div>
-                </form>
-            </#if>
+                <#--<form action='resource-updateDoi.do' method='post'>-->
+                    <#--<div id="doi_edit_block" style="display:none">-->
+                        <#--<span class="doi_colon">doi:</span>-->
+                        <#--<input class="identifier_part" name="doi_prefix" id="doi_prefix" value="${action.getDoiPrefix()!""}" />-->
+                        <#--<input class="identifier_part" name="doi_suffix" value="${action.getDoiSuffix()!""}" />-->
+                        <#--<select name="id" id="doi_select" size="1">-->
+                          <#--<#list organisationsWithDoiAccount as o>-->
+                              <#--<option value="${o.doiPrefix!""?string}" <#if o.doiPrefix==action.getDoiPrefix()!"">selected</#if> >${o.name}</option>-->
+                          <#--</#list>-->
+                        <#--</select>-->
+                        <#--<div>-->
+                          <#--<@s.submit name="update" key="button.save"/>-->
+                            <#--<input type="button" id="doi_edit_cancel" name="cancel" value="<@s.text name='button.cancel'/>"/>-->
+                        <#--</div>-->
+                    <#--</div>-->
+                <#--</form>-->
+            <#--</#if>-->
 
-            <#if resource.identifierStatus=="RESERVED" || resource.identifierStatus=="UNAVAILABLE">
-              <#assign action>registerDoi</#assign>
-            <#else>
-              <#assign action>makeDoiUnavailable</#assign>
-            </#if>
+            <#--<#if resource.identifierStatus=="RESERVED" || resource.identifierStatus=="UNAVAILABLE">-->
+              <#--<#assign action>registerDoi</#assign>-->
+            <#--<#else>-->
+              <#--<#assign action>makeDoiUnavailable</#assign>-->
+            <#--</#if>-->
 
-              <!-- The resource must be public before making its DOI public -->
-            <#if resource.status!="PRIVATE">
-                <form action='resource-${action}.do' method='post'>
-                    <input name="r" type="hidden" value="${resource.shortname}"/>
-                  <#if currentUser.hasRegistrationRights() && (organisationsWithDoiAccount?size>0)>
-                    <#if (resource.identifierStatus=="RESERVED" || resource.identifierStatus=="UNAVAILABLE") && resource.status!="PRIVATE">
-                      <#if resource.identifierStatus=="RESERVED">
-                        <@s.submit cssClass="doiButton" name="publish" key="button.register.doi"/>
-                      <#else>
-                        <@s.submit cssClass="doiButton" name="publish" key="button.makeAvailable"/>
-                      </#if>
-                    <#else>
-                      <@s.submit cssClass="doiButton" name="publish" key="button.makeUnavailable"/>
-                    </#if>
-                  </#if>
-                </form>
-            </#if>
-          </div>
-      </#if>
-    </div>
-    <div class="bodyOverview">
-      <#if missingMetadata>
-        <div>
-          <img class="info" src="${baseURL}/images/info.gif"/>
-          <em><@s.text name="manage.overview.identifierStatus.missing.metadata"/></em>
-        </div>
-      <#else>
-        <p>
-          <@s.text name="manage.resource.identifierStatus.intro.${resource.identifierStatus?lower_case}"/>
-        </p>
+              <#--<!-- The resource must be public before making its DOI public &ndash;&gt;-->
+            <#--<#if resource.status!="PRIVATE">-->
+                <#--<form action='resource-${action}.do' method='post'>-->
+                    <#--<input name="r" type="hidden" value="${resource.shortname}"/>-->
+                  <#--<#if currentUser.hasRegistrationRights() && (organisationsWithDoiAccount?size>0)>-->
+                    <#--<#if (resource.identifierStatus=="RESERVED" || resource.identifierStatus=="UNAVAILABLE") && resource.status!="PRIVATE">-->
+                      <#--<#if resource.identifierStatus=="RESERVED">-->
+                        <#--<@s.submit cssClass="doiButton" name="publish" key="button.register.doi"/>-->
+                      <#--<#else>-->
+                        <#--<@s.submit cssClass="doiButton" name="publish" key="button.makeAvailable"/>-->
+                      <#--</#if>-->
+                    <#--<#else>-->
+                      <#--<@s.submit cssClass="doiButton" name="publish" key="button.makeUnavailable"/>-->
+                    <#--</#if>-->
+                  <#--</#if>-->
+                <#--</form>-->
+            <#--</#if>-->
+          <#--</div>-->
+      <#--</#if>-->
+    <#--</div>-->
+    <#--<div class="bodyOverview">-->
+      <#--<#if missingMetadata>-->
+        <#--<div>-->
+          <#--<img class="info" src="${baseURL}/images/info.gif"/>-->
+          <#--<em><@s.text name="manage.overview.identifierStatus.missing.metadata"/></em>-->
+        <#--</div>-->
+      <#--<#else>-->
+        <#--<p>-->
+          <#--<@s.text name="manage.resource.identifierStatus.intro.${resource.identifierStatus?lower_case}"/>-->
+        <#--</p>-->
 
-        <#if resource.identifierStatus=="RESERVED"  || resource.identifierStatus=="UNAVAILABLE" >
-            <!-- Before making a DOI public, the resource's visibility must be set to public or reserved -->
-          <#if resource.status=="PRIVATE">
-              <div>
-                  <img class="info" src="${baseURL}/images/info.gif"/>
-                  <em><@s.text name="manage.resource.identifierStatus.reserved.forbidden"/></em>
-              </div>
-              <br/>
-          </#if>
+        <#--<#if resource.identifierStatus=="RESERVED"  || resource.identifierStatus=="UNAVAILABLE" >-->
+            <#--<!-- Before making a DOI public, the resource's visibility must be set to public or reserved &ndash;&gt;-->
+          <#--<#if resource.status=="PRIVATE">-->
+              <#--<div>-->
+                  <#--<img class="info" src="${baseURL}/images/info.gif"/>-->
+                  <#--<em><@s.text name="manage.resource.identifierStatus.reserved.forbidden"/></em>-->
+              <#--</div>-->
+              <#--<br/>-->
+          <#--</#if>-->
 
-          <#if currentUser.hasRegistrationRights()>
-            <#if organisationsWithDoiAccount?size==0>
-                <div>
-                    <img class="info" src="${baseURL}/images/info.gif"/>
-                    <em><@s.text name="manage.overview.identifierStatus.no.organisations"/></em>
-                </div>
-                <br/>
-            </#if>
-          <#else>
-              <div>
-                  <img class="info" src="${baseURL}/images/info.gif"/>
-                  <em><@s.text name="manage.resource.identifierStatus.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/></em>
-              </div>
-              <br/>
-          </#if>
-        </#if>
-          <div class="details">
-              <table>
-                <#if resource.doi?has_content>
-                    <tr>
-                        <th>DOI</th>
-                        <td>doi:${resource.doi!}</td>
-                    </tr>
-                    <tr>
-                        <th>DOI Registered to</th>
-                        <td>${doiOrganisationName!}</td>
-                    </tr>
-                </#if>
-              </table>
-          </div>
-      </#if>
-    </div>
-</div>
+          <#--<#if currentUser.hasRegistrationRights()>-->
+            <#--<#if organisationsWithDoiAccount?size==0>-->
+                <#--<div>-->
+                    <#--<img class="info" src="${baseURL}/images/info.gif"/>-->
+                    <#--<em><@s.text name="manage.overview.identifierStatus.no.organisations"/></em>-->
+                <#--</div>-->
+                <#--<br/>-->
+            <#--</#if>-->
+          <#--<#else>-->
+              <#--<div>-->
+                  <#--<img class="info" src="${baseURL}/images/info.gif"/>-->
+                  <#--<em><@s.text name="manage.resource.identifierStatus.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/></em>-->
+              <#--</div>-->
+              <#--<br/>-->
+          <#--</#if>-->
+        <#--</#if>-->
+          <#--<div class="details">-->
+              <#--<table>-->
+                <#--<#if resource.doi?has_content>-->
+                    <#--<tr>-->
+                        <#--<th>DOI</th>-->
+                        <#--<td>doi:${resource.doi!}</td>-->
+                    <#--</tr>-->
+                    <#--<tr>-->
+                        <#--<th>DOI Registered to</th>-->
+                        <#--<td>${doiOrganisationName!}</td>-->
+                    <#--</tr>-->
+                <#--</#if>-->
+              <#--</table>-->
+          <#--</div>-->
+      <#--</#if>-->
+    <#--</div>-->
+<#--</div>-->
 
 <div class="resourceOverview" id="visibility">
   <div class="titleOverview">
@@ -416,7 +416,7 @@ $(document).ready(function(){
 
       <form action='resource-${action}.do' method='post'>
         <input name="r" type="hidden" value="${resource.shortname}"/>
-        <#if resource.status=="PUBLIC" && resource.identifierStatus!="UNAVAILABLE">
+        <#if resource.status=="PUBLIC"  <#--&& resource.identifierStatus?? && resource.identifierStatus!="UNAVAILABLE"-->>
           <#if currentUser.hasRegistrationRights() && (organisations?size>0)>
             <select name="id" id="org" size="1">
               <#list organisations as o>
@@ -433,7 +433,7 @@ $(document).ready(function(){
         </#if>
       </form>
 
-      <#if resource.status=="PUBLIC" && resource.identifierStatus=="RESERVED">
+      <#if resource.status=="PUBLIC" <#--&& resource.identifierStatus=="RESERVED"-->>
         <#assign action>makePrivate</#assign>
         <form action='resource-${action}.do' method='post'>
           <@s.submit cssClass="confirm" name="unpublish" key="button.private" />
@@ -446,7 +446,7 @@ $(document).ready(function(){
       <@s.text name="manage.resource.status.intro.${resource.status?lower_case}"/>
     </p>
 
-    <#if resource.status=="PUBLIC" && resource.identifierStatus!="UNAVAILABLE">
+    <#if resource.status=="PUBLIC" <#--&& resource.identifierStatus!="UNAVAILABLE"-->>
       <#if missingRegistrationMetadata>
         <div>
           <img class="info" src="${baseURL}/images/warning.gif"/>
@@ -475,10 +475,10 @@ $(document).ready(function(){
         </#if>
       </#if>
 
-      <#elseif resource.status=="PUBLIC" && resource.identifierStatus=="UNAVAILABLE">
-        <p>
-          <@s.text name="manage.resource.status.unavailable"/>
-        </p>
+      <#--<#elseif resource.status=="PUBLIC" && resource.identifierStatus=="UNAVAILABLE">-->
+        <#--<p>-->
+          <#--<@s.text name="manage.resource.status.unavailable"/>-->
+        <#--</p>-->
       </#if>
 
       <#if cfg.devMode() && cfg.getRegistryType()!='PRODUCTION'>
