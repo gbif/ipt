@@ -23,6 +23,7 @@ import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.text.LineComparator;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -45,6 +46,8 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import freemarker.template.TemplateException;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOCase;
+import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Level;
 
@@ -74,6 +77,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
   private static final org.gbif.utils.file.FileUtils GBIF_FILE_UTILS = new org.gbif.utils.file.FileUtils();
   public static final String CANCELLED_STATE_MSG = "Archive generation cancelled";
   public static final String ID_COLUMN_NAME = "id";
+  public static final String TEXT_FILE_EXTENSION = ".txt";
+  public static final String WILDCARD_CHARACTER = "*";
 
   private static final Comparator<String> IGNORE_CASE_COMPARATOR = Ordering.from(new Comparator<String>() {
 
@@ -146,8 +151,12 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     // total column count is equal to id column + mapped columns
     int totalColumns = 1 + propertyList.size();
 
+    // create file name from extension name, with incremental suffix to resolve name conflicts (e.g. taxon.txt,
+    // taxon2.txt, taxon3.txt)
+    String extensionName = (ext.getName() == null) ? "f" : ext.getName().toLowerCase().replaceAll("\\s", "_");
+    String fn = createFileName(dwcaFolder, extensionName);
+
     // open new file writer for single data file
-    String fn = ext.getName().toLowerCase().replaceAll("\\s", "_") + ".txt";
     File dataFile = new File(dwcaFolder, fn);
     Writer writer = org.gbif.utils.file.FileUtils.startNewUtf8File(dataFile);
     // add source file location
@@ -175,7 +184,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
         // write data (records) to file
         dumpData(writer, inCols, m, totalColumns);
         // remember core record number
-        if (ext.isCore()) {
+        if (resource.getCoreRowType().equalsIgnoreCase(ext.getRowType())) {
           coreRecords = currRecords;
         }
       }
@@ -190,7 +199,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     }
 
     // add archive file to archive
-    if (ext.isCore()) {
+    if (resource.getCoreRowType().equalsIgnoreCase(ext.getRowType())) {
       archive.setCore(af);
     } else {
       archive.addExtension(af);
@@ -634,7 +643,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
   private void createDataFiles() throws GeneratorException, InterruptedException {
     checkForInterruption();
     setState(STATE.DATAFILES);
-    if (!resource.hasCore() || resource.getCoreMappings().get(0).getSource() == null) {
+    if (!resource.hasCore() || resource.getCoreRowType() == null
+        || resource.getCoreMappings().get(0).getSource() == null) {
       throw new GeneratorException("Core is not mapped");
     }
     for (Extension ext : resource.getMappedExtensions()) {
@@ -1082,5 +1092,46 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       }
     }
     return propertyList;
+  }
+
+  /**
+   * This method checks whether a competing file name exists in the folder where DwC-A files are written to.
+   * If a competing file name exists, a numerical suffix is appended to the file name, to differentiate it from the
+   * existing files' names. The numerical suffix is incrementing, and is equal to the number of existing files with
+   * this name.
+   * </br>
+   * E.g. the initial name has no suffix (taxon.txt), but subsequent names look like (taxon2.txt, taxon3.txt, etc).
+   *
+   * Before IPT v2.2 the DwC-A file name has been determined from the extension name. When two extensions had the same
+   * name, this caused one file to be overwritten - see Issue 1087.
+   *
+   * @param dwcaFolder folder where DwC-A files are written to
+   * @param extensionName name of extension writing file for
+   *
+   * @return name of file for DwC-A file to be written
+   */
+  protected String createFileName(File dwcaFolder, String extensionName) {
+    String wildcard = extensionName + WILDCARD_CHARACTER + TEXT_FILE_EXTENSION;
+    FileFilter fileFilter = new WildcardFileFilter(wildcard, IOCase.INSENSITIVE);
+    File[] files = dwcaFolder.listFiles(fileFilter);
+    if (files.length > 0) {
+      int max = 1;
+      String fileName = null;
+      for (File file: files) {
+        try {
+          fileName = file.getName();
+          int suffixEndIndex = fileName.indexOf(TEXT_FILE_EXTENSION);
+          String suffix = file.getName().substring(extensionName.length(), suffixEndIndex);
+          int suffixInt = Integer.valueOf(suffix);
+          if (suffixInt >= max) {
+            max = suffixInt;
+          }
+        } catch (NumberFormatException e) {
+          log.debug("No numerical suffix could be parsed from file name: " + Strings.nullToEmpty(fileName));
+        }
+      }
+      return extensionName + String.valueOf(max + 1) + TEXT_FILE_EXTENSION;
+    }
+    return extensionName + TEXT_FILE_EXTENSION;
   }
 }

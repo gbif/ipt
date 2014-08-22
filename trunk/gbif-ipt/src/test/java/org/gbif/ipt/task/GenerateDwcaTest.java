@@ -395,4 +395,33 @@ public class GenerateDwcaTest {
     resource.getMappings().get(0).setSource(fileSource);
     return resource;
   }
+
+  @Test
+  public void testCreateFileName() throws Exception {
+    generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig);
+
+    // DwC-A directory
+    File dir = FileUtils.createTempDir();
+
+    // first file
+    File materialsample = new File(dir, "materialsample.txt");
+    materialsample.createNewFile();
+
+    String fileName = generateDwca.createFileName(dir, "materialsample");
+    assertEquals("materialsample2.txt", fileName);
+
+    // second file
+    File materialsample2 = new File(dir, "materialsample2.txt");
+    materialsample2.createNewFile();
+
+    fileName = generateDwca.createFileName(dir, "materialsample");
+    assertEquals("materialsample3.txt", fileName);
+
+    // third file
+    File materialsample3 = new File(dir, "materialsample3.txt");
+    materialsample3.createNewFile();
+
+    fileName = generateDwca.createFileName(dir, "materialsample");
+    assertEquals("materialsample4.txt", fileName);
+  }
 }
