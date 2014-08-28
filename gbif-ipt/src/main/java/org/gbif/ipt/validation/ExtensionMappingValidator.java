@@ -24,20 +24,22 @@ import org.gbif.metadata.DateUtils;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.apache.commons.lang3.StringUtils;
 
 public class ExtensionMappingValidator {
 
   public static class ValidationStatus {
 
-    private List<Term> missingRequiredFields = new ArrayList<Term>();
-    private List<Term> wrongDataTypeFields = new ArrayList<Term>();
+    private List<Term> missingRequiredFields = Lists.newArrayList();
+    private List<Term> wrongDataTypeFields = Lists.newArrayList();
+    private List<String> multipleTranslationsForSameColumn = Lists.newArrayList();
     private String idProblem;
     private String[] idProblemParams;
 
@@ -72,7 +74,8 @@ public class ExtensionMappingValidator {
     }
 
     public boolean isValid() {
-      return idProblem == null && missingRequiredFields.isEmpty() && wrongDataTypeFields.isEmpty();
+      return idProblem == null && missingRequiredFields.isEmpty() && wrongDataTypeFields.isEmpty()
+             && multipleTranslationsForSameColumn.isEmpty();
     }
 
     public void setIdProblem(String idProblem) {
@@ -83,6 +86,12 @@ public class ExtensionMappingValidator {
       this.idProblemParams = idProblemParams;
     }
 
+    /**
+     * @return list of column names (from original source file) that have been translated multiple times
+     */
+    public List<String> getMultipleTranslationsForSameColumn() {
+      return multipleTranslationsForSameColumn;
+    }
   }
 
   private boolean isValidDataType(DataType dt, PropertyMapping pm, List<String[]> peek) {
@@ -132,7 +141,7 @@ public class ExtensionMappingValidator {
     return true;
   }
 
-  public ValidationStatus validate(ExtensionMapping mapping, Resource resource, List<String[]> peek) {
+  public ValidationStatus validate(ExtensionMapping mapping, Resource resource, List<String[]> peek, List<String> columns) {
     ValidationStatus v = new ValidationStatus();
     // check required fields
     Extension ext = mapping.getExtension();
@@ -143,14 +152,24 @@ public class ExtensionMappingValidator {
         }
       }
 
-      // check data types for default mappings
+      Set<Integer> translatedColumns = Sets.newHashSet();
       for (PropertyMapping pm : mapping.getFields()) {
+        // non string data type. check
         ExtensionProperty extProperty = mapping.getExtension().getProperty(pm.getTerm());
         DataType type = extProperty != null ? extProperty.getType() : null;
         if (type != null && DataType.string != type) {
-          // non string data type. check
           if (!isValidDataType(type, pm, peek)) {
             v.addWrongDataTypeField(pm.getTerm());
+          }
+        }
+
+        // check if there are multiple translations for the same column (in source file)
+        if (pm.getIndex() != null && pm.getTranslation() != null) {
+          if (translatedColumns.contains(pm.getIndex())) {
+            String columnName = columns.get(pm.getIndex());
+            v.getMultipleTranslationsForSameColumn().add(columnName);
+          } else {
+            translatedColumns.add(pm.getIndex());
           }
         }
       }

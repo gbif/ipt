@@ -60,15 +60,15 @@ public class RecordFilter implements Serializable {
   }
 
   /**
+   * @param record values array representing record/row
+   *
    * @return true if the record matches this filter criteria
    */
-  public boolean matches(String[] record, int newColumn) {
+  public boolean matches(String[] record) {
     if (record != null && comparator != null && column != null) {
-      String val;
-      if (newColumn < 0) {
-        val = record.length < column ? null : StringUtils.trimToNull(record[column]);
-      } else {
-        val = record.length < newColumn ? null : StringUtils.trimToNull(record[newColumn]);
+      String val = null;
+      if (column < record.length) {
+        val = StringUtils.trimToNull(record[column]);
       }
       switch (comparator) {
         case IsNULL:

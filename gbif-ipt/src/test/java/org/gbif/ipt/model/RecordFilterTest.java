@@ -29,13 +29,13 @@ public class RecordFilterTest {
     f.setComparator(Comparator.Equals);
     f.setParam("a");
 
-    assertFalse(f.matches(new String[] {}, -1));
-    assertFalse(f.matches(new String[] {"1", null, "2"}, -1));
-    assertFalse(f.matches(new String[] {"1", "", "2"}, -1));
-    assertFalse(f.matches(new String[] {"1", "  ", "2"}, -1));
-    assertFalse(f.matches(new String[] {"1", "A", "2"}, -1));
-    assertFalse(f.matches(new String[] {"1", "aa", "2"}, -1));
-    assertTrue(f.matches(new String[] {"1", "a", "3"}, -1));
+    assertFalse(f.matches(new String[] {}));
+    assertFalse(f.matches(new String[] {"1", null, "2"}));
+    assertFalse(f.matches(new String[] {"1", "", "2"}));
+    assertFalse(f.matches(new String[] {"1", "  ", "2"}));
+    assertFalse(f.matches(new String[] {"1", "A", "2"}));
+    assertFalse(f.matches(new String[] {"1", "aa", "2"}));
+    assertTrue(f.matches(new String[] {"1", "a", "3"}));
   }
 
   @Test
@@ -44,11 +44,11 @@ public class RecordFilterTest {
     f.setColumn(1);
     f.setComparator(Comparator.IsNotNULL);
 
-    assertFalse(f.matches(new String[] {}, -1));
-    assertFalse(f.matches(new String[] {"1", null, "2"}, -1));
-    assertFalse(f.matches(new String[] {"1", "", "2"}, -1));
-    assertFalse(f.matches(new String[] {"1", "  ", "2"}, -1));
-    assertTrue(f.matches(new String[] {"1", "2", "3"}, -1));
+    assertFalse(f.matches(new String[] {}));
+    assertFalse(f.matches(new String[] {"1", null, "2"}));
+    assertFalse(f.matches(new String[] {"1", "", "2"}));
+    assertFalse(f.matches(new String[] {"1", "  ", "2"}));
+    assertTrue(f.matches(new String[] {"1", "2", "3"}));
   }
 
   @Test
@@ -57,11 +57,11 @@ public class RecordFilterTest {
     f.setColumn(1);
     f.setComparator(Comparator.IsNULL);
 
-    assertTrue(f.matches(new String[] {}, -1));
-    assertTrue(f.matches(new String[] {"1", null, "2"}, -1));
-    assertTrue(f.matches(new String[] {"1", "", "2"}, -1));
-    assertTrue(f.matches(new String[] {"1", "  ", "2"}, -1));
-    assertFalse(f.matches(new String[] {"1", "2", "3"}, -1));
+    assertTrue(f.matches(new String[] {}));
+    assertTrue(f.matches(new String[] {"1", null, "2"}));
+    assertTrue(f.matches(new String[] {"1", "", "2"}));
+    assertTrue(f.matches(new String[] {"1", "  ", "2"}));
+    assertFalse(f.matches(new String[] {"1", "2", "3"}));
   }
 
   @Test
@@ -71,13 +71,13 @@ public class RecordFilterTest {
     f.setComparator(Comparator.NotEquals);
     f.setParam("a");
 
-    assertTrue(f.matches(new String[] {}, -1));
-    assertTrue(f.matches(new String[] {"1", null, "2"}, -1));
-    assertTrue(f.matches(new String[] {"1", "", "2"}, -1));
-    assertTrue(f.matches(new String[] {"1", "  ", "2"}, -1));
-    assertTrue(f.matches(new String[] {"1", "A", "2"}, -1));
-    assertTrue(f.matches(new String[] {"1", "aa", "2"}, -1));
-    assertFalse(f.matches(new String[] {"1", "a", "3"}, -1));
+    assertTrue(f.matches(new String[] {}));
+    assertTrue(f.matches(new String[] {"1", null, "2"}));
+    assertTrue(f.matches(new String[] {"1", "", "2"}));
+    assertTrue(f.matches(new String[] {"1", "  ", "2"}));
+    assertTrue(f.matches(new String[] {"1", "A", "2"}));
+    assertTrue(f.matches(new String[] {"1", "aa", "2"}));
+    assertFalse(f.matches(new String[] {"1", "a", "3"}));
   }
 
 }
