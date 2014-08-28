@@ -787,11 +787,11 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
             && filter.getParam() != null) {
             boolean matchesFilter;
             if (filter.getFilterTime() == RecordFilter.FilterTime.AfterTranslation) {
-              int newColumn = translatingRecord(mapping, inCols, in, record);
-              matchesFilter = filter.matches(record, newColumn);
+              applyTranslations(inCols, in, record);
+              matchesFilter = filter.matches(in);
               alreadyTranslated = true;
             } else {
-              matchesFilter = filter.matches(in, -1);
+              matchesFilter = filter.matches(in);
             }
             if (!matchesFilter) {
               writePublicationLogMessage("Line did not match the filter criteria and was skipped. SourceBase:"
@@ -802,7 +802,6 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
           }
 
           // add id column - either an existing column or the line number
-          // the id value is converted to lowercase - important for sorting the file by id (a step during validation)
           if (mapping.getIdColumn() == null) {
             record[ID_COLUMN_INDEX] = null;
           } else if (mapping.getIdColumn().equals(ExtensionMapping.IDGEN_LINE_NUMBER)) {
@@ -816,7 +815,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
           // go through all archive fields
           if (!alreadyTranslated) {
-            translatingRecord(mapping, inCols, in, record);
+            applyTranslations(inCols, in, record);
           }
           String newRow = tabRow(record);
           if (newRow != null) {
@@ -909,33 +908,29 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     return StringUtils.join(columns, '\t') + "\n";
   }
 
-  private int translatingRecord(ExtensionMapping mapping, PropertyMapping[] inCols, String[] in, String[] record) {
-    int newColumn = -1;
+  /**
+   * Apply translations or default values to row, for all mapped properties.
+   * </br>
+   * The method starts by iterating through all mapped properties, checking each one if it has been translated or a
+   * default value provided. The original value in the row is then replaced with the translated or default value.
+   * A record array representing the values to be written to the data file is also updated.
+   *
+   * @param inCols values array, of columns in row that have been mapped
+   * @param in values array, of all columns in row
+   */
+  private void applyTranslations(PropertyMapping[] inCols, String[] in, String[] record) {
     for (int i = 1; i < inCols.length; i++) {
       PropertyMapping pm = inCols[i];
       String val = null;
       if (pm != null) {
         if (pm.getIndex() != null) {
           val = in[pm.getIndex()];
-          if (mapping.getFilter() != null && pm.getIndex().equals(mapping.getFilter().getColumn())) {
-            newColumn = i;
-          }
           // translate value?
           if (pm.getTranslation() != null && pm.getTranslation().containsKey(val)) {
             val = pm.getTranslation().get(val);
+            // update value in original record
+            in[pm.getIndex()] = val;
           }
-          /*
-           * DataType type = mapping.getExtension().getProperty(pm.getTerm()).getType();
-           * if (type != null) {
-           * if (type == DataType.date) {
-           * // TODO: parse date type with mapping datetime format
-           * } else if (type == DataType.bool) {
-           * // TODO: parse date type with mapping boolean format
-           * } else if (type == DataType.decimal) {
-           * // normalise punctuation
-           * }
-           * }
-           */
         }
         // use default value for null values
         if (val == null) {
@@ -945,7 +940,6 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       // add value to data file record
       record[i] = val;
     }
-    return newColumn;
   }
 
   /**

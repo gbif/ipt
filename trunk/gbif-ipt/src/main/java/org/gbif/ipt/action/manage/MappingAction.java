@@ -93,13 +93,16 @@ public class MappingAction extends ManagerBaseAction {
     this.vocabManager = vocabManager;
   }
 
-  public void addWarnings() {
+  /**
+   * Validate the mapping and report any warning or errors, shown on the mapping page.
+   */
+  private void validateAndReport() {
     if (mapping.getSource() == null) {
       return;
     }
 
     ExtensionMappingValidator validator = new ExtensionMappingValidator();
-    ValidationStatus v = validator.validate(mapping, resource, peek);
+    ValidationStatus v = validator.validate(mapping, resource, peek, columns);
     if (v != null && !v.isValid()) {
       if (v.getIdProblem() != null) {
         addActionWarning(getText(v.getIdProblem(), v.getIdProblemParams()));
@@ -109,6 +112,10 @@ public class MappingAction extends ManagerBaseAction {
       }
       for (Term t : v.getWrongDataTypeFields()) {
         addActionWarning(getText("validation.wrong.datatype", new String[] {t.simpleName()}));
+      }
+      // report columns that have been translated multiple times
+      for (String columnName : v.getMultipleTranslationsForSameColumn()) {
+        addActionError(getText("validation.column.multipleTranslations", new String[] {columnName}));
       }
     }
   }
@@ -365,8 +372,7 @@ public class MappingAction extends ManagerBaseAction {
       }
 
       if (!isHttpPost()) {
-        // save, which does the validation, is not called for GET requests
-        addWarnings();
+        validateAndReport();
       }
     }
   }
@@ -392,24 +398,24 @@ public class MappingAction extends ManagerBaseAction {
     if (resource.getMapping(id, mid) == null) {
       mid = resource.addMapping(mapping);
     } else {
-      // save field mappings
-      Set<PropertyMapping> mappedFields = new TreeSet<PropertyMapping>();
-      for (PropertyMapping f : fields) {
-        if (f.getIndex() != null || StringUtils.trimToNull(f.getDefaultValue()) != null) {
-          mappedFields.add(f);
+        // save field mappings
+        Set<PropertyMapping> mappedFields = new TreeSet<PropertyMapping>();
+        for (PropertyMapping f : fields) {
+          if (f.getIndex() != null || StringUtils.trimToNull(f.getDefaultValue()) != null) {
+            mappedFields.add(f);
+          }
         }
-      }
-      // save coreid field (e.g. occurrenceID) so that it is included in mapping, despite being a duplicate of coreid
-      // Careful: only save coreid field for core extension mappings, not for extension mapping
-      if (resource.getCoreRowType().equalsIgnoreCase(mapping.getExtension().getRowType())) {
-        mappingCoreid.setIndex(mapping.getIdColumn());
-        mappingCoreid.setDefaultValue(mapping.getIdSuffix());
-        if (mappingCoreid.getIndex() != null || StringUtils.trimToNull(mappingCoreid.getDefaultValue()) != null) {
-          mappedFields.add(mappingCoreid);
+        // save coreid field (e.g. occurrenceID) so that it is included in mapping, despite being a duplicate of coreid
+        // Careful: only save coreid field for core extension mappings, not for extension mapping
+        if (resource.getCoreRowType().equalsIgnoreCase(mapping.getExtension().getRowType())) {
+          mappingCoreid.setIndex(mapping.getIdColumn());
+          mappingCoreid.setDefaultValue(mapping.getIdSuffix());
+          if (mappingCoreid.getIndex() != null || StringUtils.trimToNull(mappingCoreid.getDefaultValue()) != null) {
+            mappedFields.add(mappingCoreid);
+          }
         }
-      }
-      // back to mapping object
-      mapping.setFields(mappedFields);
+        // back to mapping object
+        mapping.setFields(mappedFields);
     }
 
     // set modified date
@@ -417,7 +423,7 @@ public class MappingAction extends ManagerBaseAction {
     // save entire resource config
     saveResource();
     // report validation without skipping this save
-    addWarnings();
+    validateAndReport();
 
     return defaultResult;
   }
