@@ -1,24 +1,64 @@
 <script type="text/javascript">
 $(document).ready(function(){
-	var	itemsCount=-1;
-	calcNumberOfItems();
-	
-	function calcNumberOfItems(){
-		var lastItem = $("#items .item:last-child").attr("id");
-		if(lastItem != undefined)
-			itemsCount=parseInt(lastItem.split("-")[1]);
-		else
-			itemsCount=-1;
-	}
-	
-	$("#plus").click(function(event) {
-		event.preventDefault();
-		addNewItem(true);
-	});
-		
-	$(".removeLink").click(function(event) {
-		removeItem(event);
-	});
+    var	itemsCount=-1;
+    var personnelItemsCount = -1;
+    var collectionItemsCount = -1;
+    var specimenPreservationMethodItemsCount = -1;
+
+    calcNumberOfItems();
+    calcNumberOfCollectionItems();
+    calcNumberOfSpecimenPreservationMethodItems();
+
+    function calcNumberOfItems(){
+        var lastItem = $("#items .item:last-child").attr("id");
+        if(lastItem != undefined)
+            itemsCount=parseInt(lastItem.split("-")[1]);
+        else
+            itemsCount=-1;
+    }
+
+    function calcNumberOfCollectionItems() {
+        var lastItem = $("#collection-items .item:last-child").attr("id");
+        if (lastItem != undefined)
+            collectionItemsCount = parseInt(lastItem.split("-")[2]);
+        else
+            collectionItemsCount = -1;
+    }
+
+    function calcNumberOfSpecimenPreservationMethodItems() {
+        var lastItem = $("#specimenPreservationMethod-items .item:last-child").attr("id");
+        if (lastItem != undefined)
+            specimenPreservationMethodItemsCount = parseInt(lastItem.split("-")[2]);
+        else
+            specimenPreservationMethodItemsCount = -1;
+    }
+
+    $("#plus").click(function(event) {
+        event.preventDefault();
+        addNewItem(true);
+    });
+
+    $("#plus-collection").click(function (event) {
+        event.preventDefault();
+        addNewCollectionItem(true);
+    });
+
+    $("#plus-specimenPreservationMethod").click(function (event) {
+        event.preventDefault();
+        addNewSpecimenPreservationMethodItem(true);
+    });
+
+    $(".removeLink").click(function(event) {
+        removeItem(event);
+    });
+
+    $(".removeCollectionLink").click(function (event) {
+        removeCollectionItem(event);
+    });
+
+    $(".removeSpecimenPreservationMethodLink").click(function (event) {
+        removeSpecimenPreservationMethodItem(event);
+    });
 	
 	$("[id^=plus-subItem]").click(function(event) {
 		addNewSubItem(event);
@@ -36,12 +76,7 @@ $(document).ready(function(){
 		createTaxons(event);
 	});
 	
-	$("[id^='copyDetails']").click(function(event) {
-		event.preventDefault();
-		copyDetails(event);
-	});	
-	
-	function addNewSubItem(event, text){			
+	function addNewSubItem(event, text) {
 		event.preventDefault();		
 		var baseItem = $("#item-"+$(event.target).attr("id").split("-")[2]);
 		// calculating the last taxon index.
@@ -65,7 +100,6 @@ $(document).ready(function(){
 			subBaseItem.show();
 		}
 	}
-	
 		
 	function setSubItemIndex(baseItem, subItem, subBaseIndex) {
 		<#switch "${section}">
@@ -103,50 +137,84 @@ $(document).ready(function(){
 				});
 			});
 		}
-	
-	function addNewItem(effects){
-		var newItem=$('#baseItem').clone();
-		if(effects) newItem.hide();
-		newItem.appendTo('#items');
-		
-		if(effects) {
-			 newItem.slideDown('slow');
-		}
-		
-		initHelp("#baseItem");
-		
-		setItemIndex(newItem, ++itemsCount);
-	}
-		
-	function removeItem(event){
-		event.preventDefault();
-		var $target = $(event.target);
-		$('#item-'+$target.attr("id").split("-")[1]).slideUp('slow', function() { 
-			$(this).remove();
-			$("#items .item").each(function(index) { 
-					setItemIndex($(this), index);
-			});
-			calcNumberOfItems();
-		});
-	}
 
-	function copyDetails(event) {
-		event.preventDefault();
-		var $target = $(event.target);
-		var index = $target.attr("id").split("-")[1];
-		$("#item-"+index+" [id$='firstName']").attr("value", "${eml.contact.firstName!}");
-		$("#item-"+index+" [id$='lastName']").attr("value", "${eml.contact.lastName!}");
-		$("#item-"+index+" [id$='position']").attr("value", "${eml.contact.position!}");
-		$("#item-"+index+" [id$='organisation']").attr("value", "${eml.contact.organisation!}");
-		$("#item-"+index+" [id$='address']").attr("value", "${eml.contact.address.address!}");
-		$("#item-"+index+" [id$='city']").attr("value", "${eml.contact.address.city!}");
-		$("#item-"+index+" [id$='province']").attr("value", "${eml.contact.address.province!}");
-		$("#item-"+index+" [id$='postalCode']").attr("value", "${eml.contact.address.postalCode!}");
-		$("#item-"+index+" [id$='country']").attr("value", "${eml.contact.address.country!}");
-		$("#item-"+index+" [id$='phone']").attr("value", "${eml.contact.phone!}");
-		$("#item-"+index+" [id$='email']").attr("value", "${eml.contact.email!}");
-		$("#item-"+index+" [id$='homepage']").attr("value", "${eml.contact.homepage!}");		
-	}
+    function addNewItem(effects){
+        var newItem=$('#baseItem').clone();
+        if(effects) newItem.hide();
+        newItem.appendTo('#items');
+
+        if(effects) {
+            newItem.slideDown('slow');
+        }
+
+        initHelp("#baseItem");
+
+        setItemIndex(newItem, ++itemsCount);
+    }
+
+    function addNewCollectionItem(effects){
+        var newItem=$('#baseItem-collection').clone();
+        if(effects) newItem.hide();
+        newItem.appendTo('#collection-items');
+
+        if(effects) {
+            newItem.slideDown('slow');
+        }
+
+        initHelp("#baseItem-collection");
+
+        setCollectionItemIndex(newItem, ++collectionItemsCount);
+    }
+
+    function addNewSpecimenPreservationMethodItem(effects){
+        var newItem=$('#baseItem-specimenPreservationMethod').clone();
+        if(effects) newItem.hide();
+        newItem.appendTo('#specimenPreservationMethod-items');
+
+        if(effects) {
+            newItem.slideDown('slow');
+        }
+
+        initHelp("#baseItem-specimenPreservationMethod");
+
+        setSpecimenPreservationMethodItemIndex(newItem, ++specimenPreservationMethodItemsCount);
+    }
+
+    function removeItem(event){
+        event.preventDefault();
+        var $target = $(event.target);
+        $('#item-'+$target.attr("id").split("-")[1]).slideUp('slow', function() {
+            $(this).remove();
+            $("#items .item").each(function(index) {
+                setItemIndex($(this), index);
+            });
+            calcNumberOfItems();
+        });
+    }
+
+    function removeCollectionItem(event) {
+        event.preventDefault();
+        var $target = $(event.target);
+        $('#collection-item-'+$target.attr("id").split("-")[2]).slideUp('slow', function() {
+            $(this).remove();
+            $("#collection-items .item").each(function(index) {
+                setCollectionItemIndex($(this), index);
+            });
+            calcNumberOfCollectionItems();
+        });
+    }
+
+    function removeSpecimenPreservationMethodItem(event) {
+        event.preventDefault();
+        var $target = $(event.target);
+        $('#specimenPreservationMethod-item-'+$target.attr("id").split("-")[2]).slideUp('slow', function() {
+            $(this).remove();
+            $("#specimenPreservationMethod-items .item").each(function(index) {
+                setPreservationMethodItemIndex($(this), index);
+            });
+            calcNumberOfSpecimenPreservationMethodItems();
+        });
+    }
 	
 	function showList(event) {
 		event.preventDefault();
@@ -162,7 +230,6 @@ $(document).ready(function(){
 		var $target = $(event.target);
 		var index = $target.attr("id").split("-")[2];
 		var lines = $("#taxon-list-"+index).val().split("\n");
-		//alert(lines.length);
 		var line;
 		for(var count in lines) {
 			line = $.trim(lines[count]);
@@ -185,38 +252,6 @@ $(document).ready(function(){
 		});	
 	    
 	  <#switch "${section}">
-  		<#case "parties">
-  			$("#item-"+index+" [id$='firstName']").attr("id", "eml.associatedParties["+index+"].firstName").attr("name", function() {return $(this).attr("id");});
-			$("#item-"+index+" [for$='firstName']").attr("for", "eml.associatedParties["+index+"].firstName");
-  			$("#item-"+index+" [id$='lastName']").attr("id", "eml.associatedParties["+index+"].lastName").attr("name", function() {return $(this).attr("id");});
-			$("#item-"+index+" [for$='lastName']").attr("for", "eml.associatedParties["+index+"].lastName");
-  			$("#item-"+index+" [id$='position']").attr("id", "eml.associatedParties["+index+"].position").attr("name", function() {return $(this).attr("id");});
-			$("#item-"+index+" [for$='position']").attr("for", "eml.associatedParties["+index+"].position");
-  			$("#item-"+index+" [id$='organisation']").attr("id", "eml.associatedParties["+index+"].organisation").attr("name", function() {return $(this).attr("id");});
-			$("#item-"+index+" [for$='organisation']").attr("for", "eml.associatedParties["+index+"].organisation");
-  			$("#item-"+index+" [id$='address']").attr("id", "eml.associatedParties["+index+"].address.address").attr("name", function() {return $(this).attr("id");});
-			$("#item-"+index+" [for$='address']").attr("for", "eml.associatedParties["+index+"].address.address");
-  			$("#item-"+index+" [id$='postalCode']").attr("id", "eml.associatedParties["+index+"].address.postalCode").attr("name", function() {return $(this).attr("id");});
-			$("#item-"+index+" [for$='postalCode']").attr("for", "eml.associatedParties["+index+"].address.postalCode");
-  			$("#item-"+index+" [id$='city']").attr("id", "eml.associatedParties["+index+"].address.city").attr("name", function() {return $(this).attr("id");});
-			$("#item-"+index+" [for$='city']").attr("for", "eml.associatedParties["+index+"].address.city");
-  			$("#item-"+index+" [id$='province']").attr("id", "eml.associatedParties["+index+"].address.province").attr("name", function() {return $(this).attr("id");});
-			$("#item-"+index+" [for$='province']").attr("for", "eml.associatedParties["+index+"].address.province");
-  			$("#item-"+index+" [id$='country']").attr("id", "eml.associatedParties["+index+"].address.country").attr("name", function() {return $(this).attr("id");});
-			$("#item-"+index+" [for$='country']").attr("for", "eml.associatedParties["+index+"].address.country");
-  			$("#item-"+index+" [id$='phone']").attr("id", "eml.associatedParties["+index+"].phone").attr("name", function() {return $(this).attr("id");});
-			$("#item-"+index+" [for$='phone']").attr("for", "eml.associatedParties["+index+"].phone");
-  			$("#item-"+index+" [id$='email']").attr("id", "eml.associatedParties["+index+"].email").attr("name", function() {return $(this).attr("id");});
-			$("#item-"+index+" [for$='email']").attr("for", "eml.associatedParties["+index+"].email");
-  			$("#item-"+index+" [id$='homepage']").attr("id", "eml.associatedParties["+index+"].homepage").attr("name", function() {return $(this).attr("id");});
-			$("#item-"+index+" [for$='homepage']").attr("for", "eml.associatedParties["+index+"].homepage");
-  			$("#item-"+index+" [id$='role']").attr("id", "eml.associatedParties["+index+"].role").attr("name", function() {return $(this).attr("id");});
-			$("#item-"+index+" [for$='role']").attr("for", "eml.associatedParties["+index+"].role");
-			$("#item-"+index+" [id^='copyDetails']").attr("id", "copyDetails-"+index);
-			$("#copyDetails-"+index).click(function(event) {
-				copyDetails(event, index);
-			});
-    	<#break>
     	<#case "methods">
 			$("#item-"+index+" textarea").attr("id", "eml.methodSteps["+index+"]");	
 			$("#item-"+index+" label").attr("for", "eml.methodSteps["+index+"]");		
@@ -236,17 +271,23 @@ $(document).ready(function(){
 		<#case "collections">
 			$("#item-"+index+" input").attr("id",function() {
 				var parts=$(this).attr("id").split(".");var n=parseInt(parts.length)-1;
-				return "eml.jgtiCuratorialUnits["+index+"]."+parts[n]; });
+				return "eml.jgtiCuratorialUnits["+index+"]."+parts[n];
+      });
+
 			$("#item-"+index+" select").attr("id","type-"+index).unbind().change(function() {
 				updateSubitem($(this));
 			});
+
 			$("#item-"+index+" label").attr("for",function() {
 				var parts=$(this).attr("for").split(".");var n=parseInt(parts.length)-1;
-				return "eml.jgtiCuratorialUnits["+index+"]."+parts[n]; });
+				return "eml.jgtiCuratorialUnits["+index+"]."+parts[n];
+      });
+
 			$("#item-"+index+" input").attr("name",function() {return $(this).attr("id"); });
 			$("#item-"+index+" select").attr("name",function() {return $(this).attr("id"); });
-			$("#item-"+index+" .subitem").attr("id","subitem-"+index);			
-			var selectValue = $("#item-"+index+" #type-"+index).attr("value");
+			$("#item-"+index+" .subitem").attr("id","subitem-"+index);
+
+			var selectValue = $("#item-"+index+" #type-"+index).val();
 			if(selectValue == "COUNT_RANGE") {
 				$("#item-"+index+" [id^='range-']").attr("id", "range-"+index).attr("name", function() {
 						$(this).css("display", "");
@@ -299,7 +340,7 @@ $(document).ready(function(){
 		<#case "taxcoverage">			
 			$("#item-"+index+" [id^='plus-subItem']").attr("id", "plus-subItem-"+index);
 			$("#plus-subItem-"+index).unbind();		
-			$("#plus-subItem-"+index).click(function(event){
+			$("#plus-subItem-"+index).click(function(event) {
 				event.preventDefault();
 				addNewSubItem(event);
 			});
@@ -326,15 +367,43 @@ $(document).ready(function(){
 		<#default>
   	  </#switch>		
 	}
+
+    function setCollectionItemIndex(item, index) {
+        item.attr("id","collection-item-"+index);
+
+        $("#collection-item-"+index+" [id^='collection-removeLink']").attr("id", "collection-removeLink-"+index);
+        $("#collection-removeLink-"+index).click(function(event) {
+            removeCollectionItem(event);
+        });
+
+        $("#collection-item-"+index+" [id$='collectionName']").attr("id", "eml.collections["+index+"].collectionName").attr("name", function() {return $(this).attr("id");});
+        $("#collection-item-"+index+" [for$='collectionName']").attr("for", "eml.collections["+index+"].collectionName");
+        $("#collection-item-"+index+" [id$='collectionId']").attr("id", "eml.collections["+index+"].collectionId").attr("name", function() {return $(this).attr("id");});
+        $("#collection-item-"+index+" [for$='collectionId']").attr("for", "eml.collections["+index+"].collectionId");
+        $("#collection-item-"+index+" [id$='parentCollectionId']").attr("id", "eml.collections["+index+"].parentCollectionId").attr("name", function() {return $(this).attr("id");});
+        $("#collection-item-"+index+" [for$='parentCollectionId']").attr("for", "eml.collections["+index+"].parentCollectionId");
+    }
+
+    function setSpecimenPreservationMethodItemIndex(item, index) {
+        item.attr("id","specimenPreservationMethod-item-"+index);
+
+        $("#specimenPreservationMethod-item-"+index+" [id^='specimenPreservationMethod-removeLink']").attr("id", "specimenPreservationMethod-removeLink-"+index);
+        $("#specimenPreservationMethod-removeLink-"+index).click(function(event) {
+            removeSpecimenPreservationMethodItem(event);
+        });
+
+        $("#specimenPreservationMethod-item-"+index+" [id$='specimenPreservationMethods']").attr("id", "eml.specimenPreservationMethods["+index+"]").attr("name", function() {return $(this).attr("id");});
+        $("#specimenPreservationMethod-item-"+index+" [for$='specimenPreservationMethods']").attr("for", "eml.specimenPreservationMethods["+index+"]");
+    }
 	
 	$("[id^='type-']").change(function() {
 		updateSubitem($(this));
 	});
 	
-	function updateSubitem(select) {		
+	function updateSubitem(select) {
 		<#switch "${section}">
   			<#case "collections">
-				var selection = select.attr("value");
+				var selection = select.val();
 				var index = select.attr("id").split("-")[1];
 				if(selection == "COUNT_RANGE") {
 					$("#subitem-"+index+" [id^='uncertainty-']").fadeOut(function() {

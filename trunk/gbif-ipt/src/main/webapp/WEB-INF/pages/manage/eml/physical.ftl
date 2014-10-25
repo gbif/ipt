@@ -21,32 +21,36 @@
   <form class="topForm" action="metadata-${section}.do" method="post">
     <p><@s.text name='manage.metadata.physical.intro'/></p>
 	<@input name="eml.distributionUrl" i18nkey="eml.distributionUrl" />
-	<br/>
-	<div id="items">
-		<#list eml.physicalData as item>
-			<div id="item-${item_index}" class="item clearfix">
-				<div class="right">
-					<a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.physical.item'/> ]</a>
-			    </div>
-			    <div class="halfcolumn">
-					<@input name="eml.physicalData[${item_index}].name" i18nkey="eml.physicalData.name" requiredField=true />
-				</div>
-				<div class="halfcolumn">
-					<@input name="eml.physicalData[${item_index}].charset" i18nkey="eml.physicalData.charset" help="i18n" requiredField=true />
-				</div>
-				<div class="fullcolumn">
-					<@input name="eml.physicalData[${item_index}].distributionUrl" i18nkey="eml.physicalData.distributionUrl" help="i18n" requiredField=true />
-			  	</div>
-			  	<div class="halfcolumn">
-					<@input name="eml.physicalData[${item_index}].format" i18nkey="eml.physicalData.format" help="i18n" requiredField=true />
-				</div>
-				<div class="halfcolumn">
-					<@input name="eml.physicalData[${item_index}].formatVersion" i18nkey="eml.physicalData.formatVersion" help="i18n"/>
-				</div>
-		  	</div>
-		</#list>
-	</div>
-	<div class="addNew"><a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.physical.item'/></a></div>
+
+  <div class="listBlock grid_17 suffix_1">
+    <@textinline name="eml.physicalData.other" help="i18n"/>
+      <div id="items">
+        <#list eml.physicalData as item>
+            <div id="item-${item_index}" class="item clearfix">
+                <div class="right">
+                    <a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.physical.item'/> ]</a>
+                </div>
+                <div class="halfcolumn">
+                  <@input name="eml.physicalData[${item_index}].name" i18nkey="eml.physicalData.name" requiredField=true />
+                </div>
+                <div class="halfcolumn">
+                  <@input name="eml.physicalData[${item_index}].charset" i18nkey="eml.physicalData.charset" help="i18n" requiredField=true />
+                </div>
+                <div class="fullcolumn">
+                  <@input name="eml.physicalData[${item_index}].distributionUrl" i18nkey="eml.physicalData.distributionUrl" help="i18n" requiredField=true />
+                </div>
+                <div class="halfcolumn">
+                  <@input name="eml.physicalData[${item_index}].format" i18nkey="eml.physicalData.format" help="i18n" requiredField=true />
+                </div>
+                <div class="halfcolumn">
+                  <@input name="eml.physicalData[${item_index}].formatVersion" i18nkey="eml.physicalData.formatVersion" help="i18n"/>
+                </div>
+            </div>
+        </#list>
+      </div>
+      <div class="addNew"><a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.physical.item'/></a></div>
+  </div>
+
 	<div class="buttons">
 		<@s.submit cssClass="button" name="save" key="button.save" />
 		<@s.submit cssClass="button" name="cancel" key="button.cancel" />

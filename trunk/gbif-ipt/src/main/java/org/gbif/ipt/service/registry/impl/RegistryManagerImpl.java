@@ -40,6 +40,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
@@ -361,30 +362,23 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * 4. if (3) is incomplete return null.
    */
   private Agent getPrimaryContact(Eml eml) {
-    Agent[] primaryContacts = new Agent[3];
-    primaryContacts[0] = eml.getContact();
-    primaryContacts[1] = eml.getResourceCreator();
-    primaryContacts[2] = eml.getMetadataProvider();
-    int position = 0;
-    for (Agent primaryContact : primaryContacts) {
-      if (primaryContact != null && AgentValidator.hasCompleteContactInfo(primaryContact)) {
-        // Setting the role to use it only in the primaryContact type validation, then it will return to null.
-        switch (position) {
-          case 0:
-            primaryContact.setRole("PointOfContact");
-            break;
-          case 1:
-            primaryContact.setRole("Originator");
-            break;
-          case 2:
-            primaryContact.setRole("MetadataProvider");
-            break;
-          default:
-            // it should never come here.
-        }
-        return primaryContact;
+    List<Agent> agents = Lists.newArrayList();
+    for (Agent contact: eml.getContacts()) {
+      contact.setRole("PointOfContact");
+      agents.add(contact);
+    }
+    for (Agent creator: eml.getCreators()) {
+      creator.setRole("Originator");
+      agents.add(creator);
+    }
+    for (Agent metadataProvider: eml.getMetadataProviders()) {
+      metadataProvider.setRole("MetadataProvider");
+      agents.add(metadataProvider);
+    }
+    for (Agent agent: agents) {
+      if (AgentValidator.hasCompleteContactInfo(agent)) {
+        return agent;
       }
-      position++;
     }
     return null;
   }

@@ -128,7 +128,7 @@ $(document).ready(function(){
         </div>
         <div class="body">
         <div>
-        	<div class="infos">
+        	<div>
         	  <#if coreid??>
         		<img class="infoImg" src="${baseURL}/images/info.gif" />
             	<div class="info">		
@@ -184,7 +184,7 @@ $(document).ready(function(){
   	</div>
   </div>
   <div class="body">
-  	<div class="infos">
+  	<div>
   		<img class="infoImg" src="${baseURL}/images/info.gif" />
 		<div class="info">		
 			<@s.text name='manage.mapping.info'/>
@@ -262,7 +262,7 @@ $(document).ready(function(){
 	  </div>
 	  <div class="body">
 	  <div>
-	  	<div class="infos">
+	  	<div>
 	  		<img class="infoImg" src="${baseURL}/images/info.gif" />
 			<div class="info">
 				<#if p.description?has_content>${p.description}<br/><br/></#if>              	

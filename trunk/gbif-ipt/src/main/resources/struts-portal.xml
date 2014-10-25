@@ -25,9 +25,7 @@
     </action>
 
     <action name="resource" class="org.gbif.ipt.action.portal.ResourceAction" method="detail">
-      <!-- TODO: resource_new.ftl is the new resource page - a work in progress -->
-      <!--<result>/WEB-INF/pages/portal/resource_new.ftl</result>-->
-      <result>/WEB-INF/pages/portal/resource.ftl</result>
+      <result>/WEB-INF/pages/portal/resource_new.ftl</result>
     </action>
 
     <!-- data dir files -->

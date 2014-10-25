@@ -24,10 +24,10 @@
      * Called on the initial page load.
      */
 	function init() {
-    	var maxy=parseFloat($("#"+bboxBase+"max\\.latitude").attr("value"));
-       	var miny=parseFloat($("#"+bboxBase+"min\\.latitude").attr("value"));
-        var maxx=parseFloat($("#"+bboxBase+"max\\.longitude").attr("value"));
-        var minx=parseFloat($("#"+bboxBase+"min\\.longitude").attr("value"));
+    	  var maxy=parseFloat($("#"+bboxBase+"max\\.latitude").val());
+       	var miny=parseFloat($("#"+bboxBase+"min\\.latitude").val());
+        var maxx=parseFloat($("#"+bboxBase+"max\\.longitude").val());
+        var minx=parseFloat($("#"+bboxBase+"min\\.longitude").val());
 
         if(maxy==90 && miny==-90 && maxx==180 && minx==-180){
           maxy=89.9999;
@@ -102,10 +102,10 @@
 	}
 
 	$("#bbox input").keyup(function() {
-  		var maxy=parseFloat($("#"+bboxBase+"max\\.latitude").attr("value"));
-        var miny=parseFloat($("#"+bboxBase+"min\\.latitude").attr("value"));
-        var maxx=parseFloat($("#"+bboxBase+"max\\.longitude").attr("value"));
-        var minx=parseFloat($("#"+bboxBase+"min\\.longitude").attr("value"));
+  		var maxy=parseFloat($("#"+bboxBase+"max\\.latitude").val());
+        var miny=parseFloat($("#"+bboxBase+"min\\.latitude").val());
+        var maxx=parseFloat($("#"+bboxBase+"max\\.longitude").val());
+        var minx=parseFloat($("#"+bboxBase+"min\\.longitude").val());
 
   		if(isNaN(maxy))	maxy=dfmaxy;
   			else dfmaxy=maxy;

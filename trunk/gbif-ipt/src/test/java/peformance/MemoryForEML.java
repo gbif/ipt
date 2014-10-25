@@ -9,6 +9,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.xml.sax.SAXException;
 
 public class MemoryForEML {
@@ -66,6 +68,8 @@ public class MemoryForEML {
     } catch (IOException e) {
       e.printStackTrace();
     } catch (SAXException e) {
+      e.printStackTrace();
+    } catch (ParserConfigurationException e) {
       e.printStackTrace();
     }
   }

@@ -22,10 +22,13 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Resource.CoreRowType;
 import org.gbif.ipt.model.voc.IdentifierStatus;
+import org.gbif.ipt.model.voc.MetadataSection;
+import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.utils.InputStreamUtils;
 import org.gbif.ipt.utils.LangUtils;
 import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.validation.EmlValidator;
@@ -34,38 +37,52 @@ import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.JGTICuratorialUnitType;
 import org.gbif.metadata.eml.TemporalCoverageType;
+import org.gbif.metadata.eml.UserId;
 
-import java.util.Arrays;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.Properties;
+import java.util.TreeMap;
 import java.util.UUID;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
+import com.google.gson.annotations.Since;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 public class MetadataAction extends ManagerBaseAction {
+
+  private static final Logger LOG = Logger.getLogger(MetadataAction.class);
+
 
   private final ResourceValidator validatorRes = new ResourceValidator();
   private final EmlValidator emlValidator;
   private final VocabulariesManager vocabManager;
+  @Since(2.2)
+  private static final String LICENSES_PROPFILE = "licenses.properties";
+  private static final String LICENSE_NAME = "license.name.";
+  private static final String LICENSE_TEXT = "license.text.";
 
-  private String section = "basic";
-  private String next = "geocoverage";
+  private MetadataSection section = MetadataSection.BASIC_SECTION;
+  private MetadataSection next = MetadataSection.GEOGRAPHIC_COVERAGE_SECTION;
   private Map<String, String> languages;
   private Map<String, String> countries;
   private Map<String, String> ranks;
   private Map<String, String> roles;
   private Map<String, String> licenses;
+  private Map<String, String> licenseTexts;
+  private Map<String, String> userIdDirectories;
   private Map<String, String> preservationMethods;
   private Map<String, String> types;
   private Map<String, String> datasetSubtypes;
-  private String resourceHasCore;
   private Map<String, String> frequencies;
 
   // to group dataset subtype vocabulary keys
@@ -74,9 +91,7 @@ public class MetadataAction extends ManagerBaseAction {
 
   private static final CountryParser COUNTRY_PARSER = CountryParser.getInstance();
 
-  private static final List<String> SECTIONS = Arrays
-    .asList("basic", "geocoverage", "taxcoverage", "tempcoverage", "keywords", "parties", "project", "methods",
-      "citations", "collections", "physical", "additional");
+  private Agent primaryContact;
 
   @Inject
   public MetadataAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -94,7 +109,7 @@ public class MetadataAction extends ManagerBaseAction {
   }
 
   public String getCurrentSideMenu() {
-    return section;
+    return section.getName();
   }
 
   public Eml getEml() {
@@ -118,18 +133,19 @@ public class MetadataAction extends ManagerBaseAction {
   }
 
   /*
-   * Return the text of the license through the value of the map.
+   * Called from Additional Metadata page.
+   *
+   * Determine which license is specified in the intellectual rights. If the intellectual rights contains the name of
+   * a license the IPT supports (e.g. CC-BY 4.0), the key corresponding to that license (e.g. ccby) is returned. This
+   * is used to pre-select the license drop down when the additional metadata page loads.
    */
-  public String getLicenseName() {
+  public String getLicenseKeySelected() {
     String licenseText = resource.getEml().getIntellectualRights();
-    if (licenseText != null) {
-      Set<String> keys = licenses.keySet();
-      Iterator<String> it = keys.iterator();
-      licenseText = licenseText.trim().toLowerCase();
-      while (it.hasNext()) {
-        String licenseName = it.next();
-        if (licenses.get(licenseName).equalsIgnoreCase(licenseText)) {
-          return licenseName;
+    if (!Strings.isNullOrEmpty(licenseText)) {
+      for (Map.Entry<String, String> entry: licenses.entrySet()) {
+        String licenseName = entry.getValue();
+        if (!Strings.isNullOrEmpty(licenseName) && licenseText.contains(licenseName)) {
+          return entry.getKey();
         }
       }
     }
@@ -138,6 +154,14 @@ public class MetadataAction extends ManagerBaseAction {
 
   public Map<String, String> getLicenses() {
     return licenses;
+  }
+
+  public void setLicenses(Map<String, String> licenses) {
+    this.licenses = licenses;
+  }
+
+  public Map<String, String> getLicenseTexts() {
+    return licenseTexts;
   }
 
   /**
@@ -178,7 +202,7 @@ public class MetadataAction extends ManagerBaseAction {
   }
 
   public String getNext() {
-    return next;
+    return next.getName();
   }
 
   /**
@@ -205,7 +229,7 @@ public class MetadataAction extends ManagerBaseAction {
   }
 
   public String getSection() {
-    return section;
+    return section.getName();
   }
 
   public Map<String, String> getTempTypes() {
@@ -219,182 +243,141 @@ public class MetadataAction extends ManagerBaseAction {
   @Override
   public void prepare() {
     super.prepare();
-    // somehow the action params in struts.xml dont seem to work right
-    // we therefore take the section parameter from the requested url
-    section = StringUtils.substringBetween(req.getRequestURI(), "metadata-", ".");
-    int idx = SECTIONS.indexOf(section);
-    if (idx < 0 || idx == SECTIONS.size()) {
-      idx = 0;
-    }
-    next = idx + 1 < SECTIONS.size() ? SECTIONS.get(idx + 1) : SECTIONS.get(0);
+    // take the section parameter from the requested url
+    section = MetadataSection.fromName(StringUtils.substringBetween(req.getRequestURI(), "metadata-", "."));
 
-    // licenses - Additional Metadata Page
-    licenses = new LinkedHashMap<String, String>();
-    licenses.put(getText("eml.intellectualRights.nolicenses"), "");
-    licenses
-      .put(getText("eml.intellectualRights.license.cczero"), getText("eml.intellectualRights.license.cczero.text"));
-    licenses.put(getText("eml.intellectualRights.license.pddl"), getText("eml.intellectualRights.license.pddl.text"));
-    licenses.put(getText("eml.intellectualRights.license.odcby"), getText("eml.intellectualRights.license.odcby.text"));
-    licenses.put(getText("eml.intellectualRights.license.odbl"), getText("eml.intellectualRights.license.odbl.text"));
+    switch (section) {
+      case BASIC_SECTION:
 
-    // Dataset core type list, derived from XML vocabulary, and displayed in drop-down on Basic Metadata page
-    types = new LinkedHashMap<String, String>();
-    types.put("", getText("resource.coreType.selection"));
-    types.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_TYPE, getLocaleLanguage(), false));
-    // convert all keys in Map to lowercase, in order to standardize keys across different versions of the IPT, as well
-    // as to facilitate grouping of subtypes, please see groupDatasetSubtypes()
-    types = MapUtils.getMapWithLowercaseKeys(types);
+        // Dataset core type list, derived from XML vocabulary, and displayed in drop-down on Basic Metadata page
+        types = new LinkedHashMap<String, String>();
+        types.put("", getText("resource.coreType.selection"));
+        types.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_TYPE, getLocaleLanguage(), false));
+        types = MapUtils.getMapWithLowercaseKeys(types);
 
-    // languages list, derived from XML vocabulary, and displayed in drop-down on Basic Metadata page
-    languages = vocabManager.getI18nVocab(Constants.VOCAB_URI_LANGUAGE, getLocaleLanguage(), true);
+        // Dataset Subtypes list, derived from XML vocabulary, and displayed in drop-down on Basic Metadata page
+        datasetSubtypes = new LinkedHashMap<String, String>();
+        datasetSubtypes.put("", getText("resource.subtype.selection"));
+        datasetSubtypes.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_SUBTYPES, getLocaleLanguage(), false));
+        datasetSubtypes = MapUtils.getMapWithLowercaseKeys(datasetSubtypes);
 
-    // countries list, derived from XML vocabulary, and displayed in drop-down where new contacts are created
-    countries = new LinkedHashMap<String, String>();
-    countries.put("", getText("eml.country.selection"));
-    countries.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_COUNTRY, getLocaleLanguage(), true));
+        // group subtypes into Checklist and Occurrence - used for getOccurrenceSubtypeKeys() and getChecklistSubtypeKeys()
+        groupDatasetSubtypes();
 
-    // ranks list, derived from XML vocabulary, and displayed on Taxonomic Coverage Page
-    ranks = new LinkedHashMap<String, String>();
-    ranks.put("", getText("eml.rank.selection"));
-    ranks.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, getLocaleLanguage(), false));
+        // update frequencies list, derived from XML vocabulary, and displayed in drop-down on basic metadata page
+        frequencies = new LinkedHashMap<String, String>();
+        frequencies.put("", getText("resource.updateFrequency.selection"));
+        frequencies.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES, getLocaleLanguage(), false));
 
-    // roles list, derived from XML vocabulary, and displayed in drop-down where new contacts are created
-    roles = new LinkedHashMap<String, String>();
-    roles.put("", getText("eml.agent.role.selection"));
-    roles.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_ROLES, getLocaleLanguage(), false));
+        // populate agent vocabularies
+        loadAgentVocabularies();
 
-    // Dataset Subtypes list, derived from XML vocabulary, and displayed in drop-down on Basic Metadata page
-    datasetSubtypes = new LinkedHashMap<String, String>();
-    datasetSubtypes.put("", getText("resource.subtype.selection"));
-    datasetSubtypes.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_SUBTYPES, getLocaleLanguage(), false));
-    // convert all keys in Map to lowercase, in order to standardize keys across different versions of the IPT, as well
-    // as to facilitate grouping of subtypes, please see groupDatasetSubtypes()
-    datasetSubtypes = MapUtils.getMapWithLowercaseKeys(datasetSubtypes);
-    // group subtypes into Checklist and Occurrence - used for getOccurrenceSubtypeKeys() and getChecklistSubtypeKeys()
-    groupDatasetSubtypes();
+        // load license maps:
+        // #1) license names - used to populate select on Additional Metadata Page
+        // #2) license texts - used to populate text area on Additional Metadata Page
+        loadLicensesFile();
 
-    // preservation methods list, derived from XML vocabulary, and displayed in drop-down on Collections Data Page.
-    preservationMethods = new LinkedHashMap<String, String>();
-    preservationMethods.put("", getText("eml.preservation.methods.selection"));
-    preservationMethods
-      .putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_PRESERVATION_METHOD, getLocaleLanguage(), false));
-
-    // update frequencies list, derived from XML vocabulary, and displayed in drop-down on basic metadata page
-    frequencies = new LinkedHashMap<String, String>();
-    frequencies.put("", getText("resource.updateFrequency.selection"));
-    frequencies.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES, getLocaleLanguage(), false));
-
-    if (resource != null && resource.getEml() != null) {
-      // contact
-      Agent contact = resource.getEml().getContact();
-      if (contact != null) {
-        String countryValue = contact.getAddress().getCountry();
-        if (countryValue != null) {
-          ParseResult<Country> result = COUNTRY_PARSER.parse(countryValue);
-          if (result.isSuccessful()) {
-            contact.getAddress().setCountry(result.getPayload().getIso2LetterCode());
-          }
+        if (isHttpPost()) {
+          resource.getEml().getContacts().clear();
+          resource.getEml().getCreators().clear();
+          resource.getEml().getMetadataProviders().clear();
         }
-      }
-      // creator
-      Agent creator = resource.getEml().resourceCreator();
-      if (creator != null) {
-        String countryValue = creator.getAddress().getCountry();
-        if (countryValue != null) {
-          ParseResult<Country> result = COUNTRY_PARSER.parse(countryValue);
-          creator.getAddress().setCountry(result.getPayload().getIso2LetterCode());
-        }
-      }
+        next = MetadataSection.GEOGRAPHIC_COVERAGE_SECTION;
+        break;
 
-      // metadata provider
-      Agent metadataProvider = resource.getEml().getMetadataProvider();
-
-      // create Agent equal to current user
-      Agent current = new Agent();
-      current.setFirstName(getCurrentUser().getFirstname());
-      current.setLastName(getCurrentUser().getLastname());
-      current.setEmail(getCurrentUser().getEmail());
-
-      if (!isAgentWithoutRoleEmpty(metadataProvider)) {
-        String countryValue = metadataProvider.getAddress().getCountry();
-        if (countryValue != null) {
-          ParseResult<Country> result = COUNTRY_PARSER.parse(countryValue);
-          metadataProvider.getAddress().setCountry(result.getPayload().getIso2LetterCode());
-        }
-      } else {
-        // auto populate with current user
-        resource.getEml().setMetadataProvider(current);
-      }
-
-      // auto populate user with current user if associated parties list is empty, and eml.xml hasn't been written yet
-      if (!resourceManager.isEmlExisting(resource.getShortname()) && resource.getEml().getAssociatedParties().isEmpty()) {
-        current.setRole("user");
-        resource.getEml().getAssociatedParties().add(current);
-      }
-      // otherwise, ensure associated parties' country value get converted into 2 letter iso code for proper display
-      else if (!resource.getEml().getAssociatedParties().isEmpty()) {
-        for (Agent party : resource.getEml().getAssociatedParties()) {
-          String countryValue = party.getAddress().getCountry();
-          if (countryValue != null) {
-            ParseResult<Country> result = COUNTRY_PARSER.parse(countryValue);
-            if (result.isSuccessful()) {
-              party.getAddress().setCountry(result.getPayload().getIso2LetterCode());
-            }
-          }
-        }
-      }
-
-      // if it is a submission of the taxonomic coverage, clear the session list
-      if (isHttpPost()) {
-        if ("parties".equals(section)) {
-          resource.getEml().getAssociatedParties().clear();
-        }
-        if ("geocoverage".equals(section)) {
+      case GEOGRAPHIC_COVERAGE_SECTION:
+        if (isHttpPost()) {
           resource.getEml().getGeospatialCoverages().clear();
         }
-        if ("taxcoverage".equals(section)) {
+        next = MetadataSection.TAXANOMIC_COVERAGE_SECTION;
+        break;
+
+      case TAXANOMIC_COVERAGE_SECTION:
+        // ranks list, derived from XML vocabulary, and displayed on Taxonomic Coverage Page
+        ranks = new LinkedHashMap<String, String>();
+        ranks.put("", getText("eml.rank.selection"));
+        ranks.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, getLocaleLanguage(), false));
+        if (isHttpPost()) {
           resource.getEml().getTaxonomicCoverages().clear();
         }
-        if ("tempcoverage".equals(section)) {
+        next = MetadataSection.TEMPORAL_COVERAGE_SECTION;
+        break;
+
+      case TEMPORAL_COVERAGE_SECTION:
+        if (isHttpPost()) {
           resource.getEml().getTemporalCoverages().clear();
         }
-        if ("methods".equals(section)) {
-          resource.getEml().getMethodSteps().clear();
-        }
-        if ("citations".equals(section)) {
-          resource.getEml().getBibliographicCitationSet().getBibliographicCitations().clear();
-        }
-        if ("physical".equals(section)) {
-          resource.getEml().getPhysicalData().clear();
-        }
-        if ("keywords".equals(section)) {
+        next = MetadataSection.KEYWORDS_SECTION;
+        break;
+
+      case KEYWORDS_SECTION:
+        if (isHttpPost()) {
           resource.getEml().getKeywords().clear();
         }
-        if ("collections".equals(section)) {
+        next = MetadataSection.PARTIES_SECTION;
+        break;
+
+      case PARTIES_SECTION:
+        // populate agent vocabularies
+        loadAgentVocabularies();
+        if (isHttpPost()) {
+          resource.getEml().getAssociatedParties().clear();
+        }
+        next = MetadataSection.PROJECT_SECTION;
+        break;
+
+      case PROJECT_SECTION:
+        // populate agent vocabularies
+        loadAgentVocabularies();
+        if (isHttpPost()) {
+          resource.getEml().getProject().getPersonnel().clear();
+        }
+        next = MetadataSection.METHODS_SECTION;
+        break;
+
+      case METHODS_SECTION:
+        if (isHttpPost()) {
+          resource.getEml().getMethodSteps().clear();
+        }
+        next = MetadataSection.CITATIONS_SECTION;
+        break;
+      case CITATIONS_SECTION:
+        if (isHttpPost()) {
+          resource.getEml().getBibliographicCitationSet().getBibliographicCitations().clear();
+        }
+        next = MetadataSection.COLLECTIONS_SECTION;
+        break;
+
+      case COLLECTIONS_SECTION:
+        // preservation methods list, derived from XML vocabulary, and displayed in drop-down on Collections Data Page.
+        preservationMethods = new LinkedHashMap<String, String>();
+        preservationMethods.put("", getText("eml.preservation.methods.selection"));
+        preservationMethods.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_PRESERVATION_METHOD, getLocaleLanguage(), false));
+
+        if (isHttpPost()) {
+          resource.getEml().getCollections().clear();
+          resource.getEml().getSpecimenPreservationMethods().clear();
           resource.getEml().getJgtiCuratorialUnits().clear();
         }
-        if ("additional".equals(section)) {
+        next = MetadataSection.PHYSICAL_SECTION;
+        break;
+
+      case PHYSICAL_SECTION:
+        if (isHttpPost()) {
+          resource.getEml().getPhysicalData().clear();
+        }
+        next = MetadataSection.ADDITIONAL_SECTION;
+        break;
+
+      case ADDITIONAL_SECTION:
+        if (isHttpPost()) {
           resource.getEml().getAlternateIdentifiers().clear();
         }
-      }
-    }
-  }
+        next = MetadataSection.BASIC_SECTION;
+        break;
 
-  /**
-   * Determine if all fields for an agent of type agentType (not agentWithRoleType) are empty.
-   * 
-   * @param agent Agent
-   * @return if agent is empty or not
-   */
-  private boolean isAgentWithoutRoleEmpty(Agent agent) {
-    if (agent != null) {
-      return Strings.nullToEmpty(agent.getFirstName()).trim().isEmpty() && Strings.nullToEmpty(agent.getLastName())
-        .trim().isEmpty() && Strings.nullToEmpty(agent.getOrganisation()).trim().isEmpty() && Strings
-        .nullToEmpty(agent.getPosition()).trim().isEmpty() && agent.getAddress().isEmpty() && Strings
-        .nullToEmpty(agent.getPhone()).trim().isEmpty() && Strings.nullToEmpty(agent.getEmail()).trim().isEmpty()
-        && Strings.nullToEmpty(agent.getHomepage()).trim().isEmpty();
+      default: break;
     }
-    return true;
   }
 
   @Override
@@ -405,7 +388,7 @@ public class MetadataAction extends ManagerBaseAction {
       // Save metadata information (eml.xml)
       resourceManager.saveEml(resource);
       // Alert user of successful save
-      addActionMessage(getText("manage.success", new String[] {getText("submenu." + section)}));
+      addActionMessage(getText("manage.success", new String[] {getText("submenu." + section.getName())}));
 
       // TODO: Reserve a DOI (if possible) if resource doesn't already have one
       if (resource.getIdentifierStatus() == null) {
@@ -418,10 +401,6 @@ public class MetadataAction extends ManagerBaseAction {
       resourceManager.save(resource);
     }
     return SUCCESS;
-  }
-
-  public void setLicenses(Map<String, String> licenses) {
-    this.licenses = licenses;
   }
 
   @Override
@@ -539,5 +518,165 @@ public class MetadataAction extends ManagerBaseAction {
    */
   public Map<String, String> getFrequencies() {
     return frequencies;
+  }
+
+  /**
+   * @return the very first contact entered, or a new instance of Agent if no contacts exist yet. The first contact
+   * entered is considered the primary contact. Other contact forms can be entered by copying from the primary contact.
+   */
+  public Agent getPrimaryContact() {
+    return primaryContact;
+  }
+
+  public void setPrimaryContact(Agent primaryContact) {
+    this.primaryContact = primaryContact;
+  }
+
+  public Map<String, String> getUserIdDirectories() {
+    return userIdDirectories;
+  }
+
+  private void loadLicensesFile() throws InvalidConfigException {
+    InputStreamUtils streamUtils = new InputStreamUtils();
+    InputStream licensesStream = streamUtils.classpathStream("org/gbif/metadata/eml/" + LICENSES_PROPFILE);
+    try {
+      Properties properties = new Properties();
+      if (licensesStream == null) {
+        LOG.error("Could not load licenses configuration from licenses.properties in classpath");
+      } else {
+        properties.load(licensesStream);
+        LOG.debug("Loaded licenses configuration from licenses.properties in classpath");
+
+        licenses = new TreeMap<String, String>();
+        licenseTexts = new TreeMap<String, String>();
+
+        // add "select a license" to licenses dropdown
+        licenses.put("", getText("eml.intellectualRights.nolicenses"));
+
+        for (Map.Entry<Object, Object> entry: properties.entrySet()) {
+          String key = StringUtils.trim((String) entry.getKey());
+          String value = StringUtils.trim((String) entry.getValue());
+          if (key != null && key.startsWith(LICENSE_NAME) && value != null) {
+            String keyMinusPrefix = StringUtils.trimToNull(key.replace(LICENSE_NAME, ""));
+            if (keyMinusPrefix != null) {
+              String licenseText = StringUtils.trimToNull((properties.getProperty(LICENSE_TEXT + keyMinusPrefix)));
+              if (licenseText != null) {
+                licenses.put(keyMinusPrefix, value);
+                licenseTexts.put(keyMinusPrefix, licenseText);
+              }
+            } else {
+              LOG.error("License name missing matching license text in licenses.properties file");
+            }
+          }
+        }
+        if ((licenses.size() - 1) != licenseTexts.size()) {
+          LOG.error("An unequal number of license names and license texts exists in licenses.properties file");
+        }
+      }
+    } catch (IOException e) {
+      LOG.error("Failed to load the default application configuration from application.properties", e);
+    }
+  }
+
+  /**
+   * Method that loads all vocabularies, and primary contact needed for the agent form.
+   */
+  private void loadAgentVocabularies() {
+    // user id directories, only orcid and researcherid are supported currently
+    userIdDirectories = new LinkedHashMap<String, String>();
+    userIdDirectories.put("", getText("eml.contact.noDirectory"));
+    userIdDirectories.put("http://orcid.org/", "http://orcid.org/");
+    userIdDirectories.put("http://www.researcherid.com/rid/", "http://www.researcherid.com/rid/");
+
+    // languages list, derived from XML vocabulary, and displayed in drop-down on Basic Metadata page
+    languages = vocabManager.getI18nVocab(Constants.VOCAB_URI_LANGUAGE, getLocaleLanguage(), true);
+
+    // countries list, derived from XML vocabulary, and displayed in drop-down where new contacts are created
+    countries = new LinkedHashMap<String, String>();
+    countries.put("", getText("eml.country.selection"));
+    countries.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_COUNTRY, getLocaleLanguage(), true));
+
+    // roles list, derived from XML vocabulary, and displayed in drop-down where new contacts are created
+    roles = new LinkedHashMap<String, String>();
+    roles.put("", getText("eml.agent.role.selection"));
+    roles.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_ROLES, getLocaleLanguage(), false));
+
+    if (resource != null && resource.getEml() != null) {
+
+      // create Agent equal to current user
+      Agent current = new Agent();
+      current.setFirstName(getCurrentUser().getFirstname());
+      current.setLastName(getCurrentUser().getLastname());
+      current.setEmail(getCurrentUser().getEmail());
+
+      // contacts list
+      Agent firstContact = null;
+      if (!resource.getEml().getContacts().isEmpty()) {
+        for (Agent contact: resource.getEml().getContacts()) {
+          // capture first contact, used as primary contact to copy in contact form details
+          if (firstContact == null) {
+            firstContact = contact;
+          }
+          String countryValue = contact.getAddress().getCountry();
+          if (countryValue != null) {
+            ParseResult<Country> result = COUNTRY_PARSER.parse(countryValue);
+            if (result.isSuccessful()) {
+              contact.getAddress().setCountry(result.getPayload().getIso2LetterCode());
+            }
+          }
+        }
+      }
+
+      // always populate the primary contact, used to auto-fill parties and project personnel
+      if (firstContact == null) {
+        firstContact = new Agent();
+      }
+      if (firstContact.getUserIds().isEmpty()) {
+        firstContact.setUserIds(Lists.newArrayList(new UserId()));
+      }
+      setPrimaryContact(firstContact);
+
+      // creator list
+      if (!resource.getEml().getCreators().isEmpty()) {
+        for (Agent creator: resource.getEml().getCreators()) {
+          String countryValue = creator.getAddress().getCountry();
+          if (countryValue != null) {
+            ParseResult<Country> result = COUNTRY_PARSER.parse(countryValue);
+            creator.getAddress().setCountry(result.getPayload().getIso2LetterCode());
+          }
+        }
+      }
+      // metadata provider list
+      if (!resource.getEml().getMetadataProviders().isEmpty()) {
+        for (Agent metadataProvider: resource.getEml().getMetadataProviders()) {
+          String countryValue = metadataProvider.getAddress().getCountry();
+          if (countryValue != null) {
+            ParseResult<Country> result = COUNTRY_PARSER.parse(countryValue);
+            metadataProvider.getAddress().setCountry(result.getPayload().getIso2LetterCode());
+          }
+        }
+      } else {
+        // add current user to metadataProviders list
+        resource.getEml().addMetadataProvider(current);
+      }
+
+      // auto populate user with current user if associated parties list is empty, and eml.xml hasn't been written yet
+      if (!resourceManager.isEmlExisting(resource.getShortname()) && resource.getEml().getAssociatedParties().isEmpty()) {
+        current.setRole("user");
+        resource.getEml().getAssociatedParties().add(current);
+      }
+      // otherwise, ensure associated parties' country value get converted into 2 letter iso code for proper display
+      else if (!resource.getEml().getAssociatedParties().isEmpty()) {
+        for (Agent party : resource.getEml().getAssociatedParties()) {
+          String countryValue = party.getAddress().getCountry();
+          if (countryValue != null) {
+            ParseResult<Country> result = COUNTRY_PARSER.parse(countryValue);
+            if (result.isSuccessful()) {
+              party.getAddress().setCountry(result.getPayload().getIso2LetterCode());
+            }
+          }
+        }
+      }
+    }
   }
 }

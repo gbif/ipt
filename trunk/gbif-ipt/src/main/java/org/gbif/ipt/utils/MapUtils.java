@@ -17,6 +17,9 @@ public class MapUtils {
    * Iterates over a map, and copies each entry to a new Map. The only difference, is that the
    * key is replaced with an all lowercase key instead.
    *
+   * All keys in Map are converted to lowercase in order to standardize keys across different versions of the IPT, as
+   * well as to facilitate grouping of subtypes.
+   *
    * @param m map
    *
    * @return modified map

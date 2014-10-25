@@ -1,7 +1,9 @@
  <#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name='manage.metadata.basic.title'/></title>
-<script type="text/javascript">
+<#include "/WEB-INF/pages/macros/metadata_agent.ftl"/>
+ <script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
+ <script type="text/javascript">
 	$(document).ready(function(){
 		initHelp();
       // Ensure core type cannot be changed once set (e.g., after core mapping is done)
@@ -21,6 +23,10 @@
       if (hasCore == "true") {
         $("#resource\\.coreType").attr('disabled','disabled');
       }
+
+      // if the resource has been published, or if there is a next published date, make the inputs read only on load
+      $("#eml\\.updateFrequency").attr('disabled','disabled');
+      $("#resource\\.nextPublished").attr('disabled','disabled');
 
 			function getList(list){
 				var arr=  list.split(",");
@@ -65,36 +71,52 @@
 		        }
 			});
 
-		$("#copyDetails").click(function(event) {
-			event.preventDefault();
-			$("#eml\\.resourceCreator\\.firstName").prop("value", $("#eml\\.contact\\.firstName").prop("value"));
-			$("#eml\\.resourceCreator\\.lastName").prop("value", $("#eml\\.contact\\.lastName").prop("value"));
-			$("#eml\\.resourceCreator\\.position").prop("value", $("#eml\\.contact\\.position").prop("value"));
-			$("#eml\\.resourceCreator\\.organisation").prop("value", $("#eml\\.contact\\.organisation").prop("value"));
-			$("#eml\\.resourceCreator\\.address\\.address").prop("value", $("#eml\\.contact\\.address\\.address").prop("value"));
-			$("#eml\\.resourceCreator\\.address\\.city").prop("value", $("#eml\\.contact\\.address\\.city").prop("value"));
-			$("#eml\\.resourceCreator\\.address\\.province").prop("value", $("#eml\\.contact\\.address\\.province").prop("value"));
-			$("#eml\\.resourceCreator\\.address\\.postalCode").prop("value", $("#eml\\.contact\\.address\\.postalCode").prop("value"));
-			$("#eml\\.resourceCreator\\.address\\.country").prop("value", $("#eml\\.contact\\.address\\.country").prop("value"));
-			$("#eml\\.resourceCreator\\.phone").prop("value", $("#eml\\.contact\\.phone").prop("value"));
-			$("#eml\\.resourceCreator\\.email").prop("value", $("#eml\\.contact\\.email").prop("value"));
-			$("#eml\\.resourceCreator\\.homepage").prop("value", $("#eml\\.contact\\.homepage").prop("value"));
-		});
-		$("#copyDetails2").click(function(event) {
-			event.preventDefault();
-			$("#eml\\.metadataProvider\\.firstName").prop("value", $("#eml\\.contact\\.firstName").prop("value"));
-			$("#eml\\.metadataProvider\\.lastName").prop("value", $("#eml\\.contact\\.lastName").prop("value"));
-			$("#eml\\.metadataProvider\\.position").prop("value", $("#eml\\.contact\\.position").prop("value"));
-			$("#eml\\.metadataProvider\\.organisation").prop("value", $("#eml\\.contact\\.organisation").prop("value"));
-			$("#eml\\.metadataProvider\\.address\\.address").prop("value", $("#eml\\.contact\\.address\\.address").prop("value"));
-			$("#eml\\.metadataProvider\\.address\\.city").prop("value", $("#eml\\.contact\\.address\\.city").prop("value"));
-			$("#eml\\.metadataProvider\\.address\\.province").prop("value", $("#eml\\.contact\\.address\\.province").prop("value"));
-			$("#eml\\.metadataProvider\\.address\\.postalCode").prop("value", $("#eml\\.contact\\.address\\.postalCode").prop("value"));
-			$("#eml\\.metadataProvider\\.address\\.country").prop("value", $("#eml\\.contact\\.address\\.country").prop("value"));
-			$("#eml\\.metadataProvider\\.phone").prop("value", $("#eml\\.contact\\.phone").prop("value"));
-			$("#eml\\.metadataProvider\\.email").prop("value", $("#eml\\.contact\\.email").prop("value"));
-			$("#eml\\.metadataProvider\\.homepage").prop("value", $("#eml\\.contact\\.homepage").prop("value"));
-		});
+      // Here down: related to intellectual rights
+      function exists(value) {
+          return (typeof value != 'undefined' && value);
+      };
+
+      if (exists("${eml.intellectualRights!}") && exists("${licenseKeySelected!}")) {
+          $("#intellectualRightsBlock").hide();
+          $("#intellectualRightsDiv").show();
+      } else if (exists("${eml.intellectualRights!}") && !exists("${licenseKeySelected!}")) {
+          $("#intellectualRightsBlock").show();
+          $("#intellectualRightsDiv").hide();
+      } else {
+          $("#intellectualRights").val('');
+          $("#intellectualRightsBlock").show();
+          $("#intellectualRightsDiv").hide();
+      }
+
+      $("#eml\\.intellectualRights\\.license").change(function() {
+          $('.confirm').unbind('click');
+
+          var nameRights=$("#eml\\.intellectualRights\\.license").val();
+          $("#eml\\.intellectualRights\\.license").val(nameRights);
+
+          if(nameRights) {
+
+              var licenseText=$("input:text#" + nameRights).val();
+
+              if (licenseText) {
+                  $("#intellectualRightsDiv").html(licenseText);
+                  $("#intellectualRightsDiv").show();
+                  $("#intellectualRights").html(licenseText);
+                  $("#intellectualRightsBlock").hide();
+
+                  $("#disclaimerRigths").css('display', '');
+                  $('.confirm').jConfirmAction({question : "<@s.text name="eml.intellectualRights.licenses.confirmation"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
+              }
+
+          } else {
+              $("#intellectualRightsDiv").html('');
+              $("#intellectualRightsDiv").hide();
+
+              $("#intellectualRights").val('');
+              $("#intellectualRightsBlock").show();
+              $("#disclaimerRigths").css('display', 'none');
+          }
+      });// end intellectual rights
 	});
 
 </script>
@@ -112,149 +134,441 @@
     <p><@s.text name="manage.metadata.basic.required.message" /></p>
   	<@input name="eml.title" requiredField=true />
   	<@text name="eml.description" requiredField=true />
-  	<div class="halfcolumn">
-	  	<@select name="eml.metadataLanguage" help="i18n" options=languages value="${metadataLanguageIso3!'eng'}" />
-	</div>
-	<div class="halfcolumn">
-  		<@select name="eml.language" help="i18n" options=languages value="${languageIso3!'eng'}" />
-	</div>
-	<div class="halfcolumn">
-		<@select name="resource.coreType" i18nkey="resource.coreType" help="i18n" options=types value="${resource.coreType!''}" />
-	</div>
-	<div class="halfcolumn" id="selectSubtypeDiv">
-    <@select name="resource.subtype" i18nkey="resource.subtype" help="i18n" options=listSubtypes value="${resource.subtype!''}" />
-  </div>
 
-  	<!-- Resource Contact -->
-  	<div class="basicMetadata grid_17 suffix_1">
-      	<@textinline name="eml.contact" help="i18n"/>
-    	<div class="halfcolumn">
-    	  	<@input name="eml.contact.firstName" />
-    	</div>
-      	<div class="halfcolumn">
-    	  	<@input name="eml.contact.lastName" requiredField=true />
-      	</div>
-      	<div class="halfcolumn">
-      		<@input name="eml.contact.position" requiredField=true />
-    	</div>
-      	<div class="halfcolumn">
-      		<@input name="eml.contact.organisation" requiredField=true />
-      	</div>
-      	<div class="halfcolumn">
-      		<@input name="eml.contact.address.address" />
-    	</div>
-      	<div class="halfcolumn">
-      		<@input name="eml.contact.address.city" />
-      	</div>
-      	<div class="halfcolumn">
-      		<@input name="eml.contact.address.province" />
-    	</div>
-      	<div class="halfcolumn countryList">
-      		<@select name="eml.contact.address.country" help="i18n" options=countries value="${eml.contact.address.country!}"/>
-       	</div>
-      	<div class="halfcolumn">
-      		<@input name="eml.contact.address.postalCode" />
-    	</div>
-      	<div class="halfcolumn">
-      		<@input name="eml.contact.phone" />
-      	</div>
-    	<div class="halfcolumn">
-    	  	<@input name="eml.contact.email" />
-    	</div>
-      	<div class="halfcolumn">
-    	  	<@input name="eml.contact.homepage" />
-      	</div>
-  	</div>
+  <!-- retrieve some link names one time -->
+  <#assign copyLink><@s.text name="eml.resourceCreator.copyLink"/></#assign>
+  <#assign removeContactLink><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.contact'/></#assign>
+  <#assign removeCreatorLink><@s.text name='manage.metadata.removethis'/> <@s.text name='portal.resource.creator'/></#assign>
+  <#assign removeMetadataProviderLink><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.metadataProvider'/></#assign>
+  <#assign addContactLink><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.contact'/></#assign>
+  <#assign addCreatorLink><@s.text name='manage.metadata.addnew'/> <@s.text name='portal.resource.creator'/></#assign>
+  <#assign addMetadataProviderLink><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.metadataProvider'/></#assign>
 
-  	<!-- Resource Creator -->
-	<div class="basicMetadata grid_17 suffix_1">
-      	<@textinline name="eml.resourceCreator" help="i18n"/>
-      	<div class="right">
-      		<a id="copyDetails" href="">[ <@s.text name="eml.resourceCreator.copyLink" />  ]</a>
-      	</div>
-      	<div class="halfcolumn">
-    		<@input name="eml.resourceCreator.firstName" />
-    	</div>
-      	<div class="halfcolumn">
-    		<@input name="eml.resourceCreator.lastName" requiredField=true />
-    	</div>
-      	<div class="halfcolumn">
-    		<@input name="eml.resourceCreator.position" requiredField=true />
-    	</div>
-      	<div class="halfcolumn">
-    		<@input name="eml.resourceCreator.organisation" requiredField=true />
-    	</div>
-      	<div class="halfcolumn">
-    		<@input name="eml.resourceCreator.address.address" />
-    	</div>
-      	<div class="halfcolumn">
-    		<@input name="eml.resourceCreator.address.city" />
-    	</div>
-      	<div class="halfcolumn">
-    		<@input name="eml.resourceCreator.address.province" />
-    	</div>
-      	<div class="halfcolumn countryList">
-    		<@select name="eml.resourceCreator.address.country" help="i18n" options=countries value="${eml.getResourceCreator().address.country!}"/>
-    	</div>
-      	<div class="halfcolumn">
-    		<@input name="eml.resourceCreator.address.postalCode" />
-    	</div>
-      	<div class="halfcolumn">
-    		<@input name="eml.resourceCreator.phone" />
-    	</div>
-      	<div class="halfcolumn">
-    		<@input name="eml.resourceCreator.email" />
-    	</div>
-      	<div class="halfcolumn">
-    		<@input name="eml.resourceCreator.homepage" />
-    	</div>
-  	</div>
+    <div class="third_block clearfix">
 
-  	<!-- Metadata Provider -->
-	<div class="basicMetadata grid_17 suffix_1">
-      	<@textinline name="eml.metadataProvider" help="i18n"/>
-      	<div class="right">
-      		<a id="copyDetails2" href="">[ <@s.text name="eml.resourceCreator.copyLink" />  ]</a>
-      	</div>
-      	<div class="halfcolumn">
-    		<@input name="eml.metadataProvider.firstName" />
-    	</div>
-      	<div class="halfcolumn">
-    		<@input name="eml.metadataProvider.lastName" requiredField=true />
-    	</div>
-    	<div class="halfcolumn">
-    		<@input name="eml.metadataProvider.position" requiredField=true />
-    	</div>
-      	<div class="halfcolumn">
-    		<@input name="eml.metadataProvider.organisation" requiredField=true />
-    	</div>
-    	<div class="halfcolumn">
-    		<@input name="eml.metadataProvider.address.address" />
-    	</div>
-      	<div class="halfcolumn">
-    		<@input name="eml.metadataProvider.address.city" />
-    	</div>
-    	<div class="halfcolumn">
-    		<@input name="eml.metadataProvider.address.province" />
-    	</div>
-      	<div class="halfcolumn countryList">
-    		<@select name="eml.metadataProvider.address.country" help="i18n" options=countries value="${eml.metadataProvider.address.country!}"/>
-    	</div>
-    	<div class="halfcolumn">
-    		<@input name="eml.metadataProvider.address.postalCode" />
-    	</div>
-      	<div class="halfcolumn">
-    		<@input name="eml.metadataProvider.phone" />
-    	</div>
-    	<div class="halfcolumn">
-    		<@input name="eml.metadataProvider.email" />
-    	</div>
-      	<div class="halfcolumn">
-    		<@input name="eml.metadataProvider.homepage" />
-    	</div>
+        <div  class="column_third">
+          <@select name="resource.coreType" i18nkey="resource.coreType" help="i18n" options=types value="${resource.coreType!''}" />
+        </div>
+
+        <div class="column_third">
+          <@select name="eml.metadataLanguage" help="i18n" options=languages value="${metadataLanguageIso3!'eng'}" />
+        </div>
+
+        <div class="column_third">
+          <#if eml.updateFrequency??>
+            <@select name="eml.updateFrequency" i18nkey="eml.updateFrequency" help="i18n" options=frequencies value="${eml.updateFrequency.displayValue!'unknown'}" disabled=true />
+          <#else>
+            <@select name="eml.updateFrequency" i18nkey="eml.updateFrequency" help="i18n" options=frequencies value="${'unknown'}" />
+          </#if>
+        </div>
+
+        <div id="selectSubtypeDiv" class="column_third">
+          <@select name="resource.subtype" i18nkey="resource.subtype" help="i18n" options=listSubtypes value="${resource.subtype!''}" />
+        </div>
+
+        <div class="column_third">
+          <@select name="eml.language" help="i18n" options=languages value="${languageIso3!'eng'}" />
+        </div>
+
+        <div class="column_third">
+          <#if resource.nextPublished??>
+            <#assign nextPublishedDate = resource.nextPublished?date?string("yyyy-MM-dd HH:mm:ss")!/>
+            <@input name="resource.nextPublished" value="${nextPublishedDate}" i18nkey="manage.home.next.publication" help="i18n" disabled=true />
+          <#else>
+            <@input name="resource.nextPublished" value="" i18nkey="manage.home.next.publication" help="i18n" disabled=true />
+          </#if>
+
+        </div>
+
     </div>
 
-	<div class="buttons">
+    <!-- Intellectual Rights -->
+    <div class="twenty_top">
+      <@select name="eml.intellectualRights.license" i18nkey="eml.intellectualRights.license" help="i18n" options=licenses value="${licenseKeySelected!}" />
+
+        <div id="intellectualRightsDiv" class="howtocite">
+          <@licenseLogoClass eml.intellectualRights!/>
+          <#noescape>${eml.intellectualRights!}</#noescape>
+        </div>
+
+        <div id="intellectualRightsBlock">
+            <label for="eml.intellectualRights"><@s.text name='eml.intellectualRights'/></label>
+            <img class="infoImg" src="${baseURL}/images/info.gif" />
+            <div class="info"><@s.text name='eml.intellectualRights.help'/></div>
+            <textarea id="intellectualRights" name="eml.intellectualRights" cols="40" rows="5" >${eml.intellectualRights!}</textarea>
+        </div>
+
+
+        <!-- Hidden inputs storing license texts used in populating ipr textarea when a different license gets selected -->
+      <#list licenseTexts?keys as k>
+          <input type="text" id="${k}" value="${licenseTexts[k]}" style="display: none"/>
+      </#list>
+
+        <div id='disclaimerRigths' style='display: none'>
+            <p><@s.text name='eml.intellectualRights.license.disclaimer'/></p>
+        </div>
+    </div>
+
+  	<!-- Resource Contacts -->
+  	<div class="listBlock grid_17 suffix_1">
+      <@textinline name="eml.contact.plural" help="i18n"/>
+      <div id="contact-items">
+        <#list eml.contacts as contact>
+          <div id="contact-item-${contact_index}" class="item clearfix">
+              <div class="columnLinks">
+                <!-- Do not show copy-from-resource-contact link for for first contact -->
+                <div class="halfcolumn">
+                  <a id="contact-copyDetails-${contact_index}" href="" [ ${copyLink?lower_case?cap_first}  ]</a>
+                </div>
+                <div class="halfcolumn">
+                  <a id="contact-removeLink-${contact_index}" class="removeContactLink" href="">[ ${removeContactLink?lower_case?cap_first} ]</a>
+                </div>
+              </div>
+              <div class="halfcolumn">
+                <@input name="eml.contacts[${contact_index}].firstName" i18nkey="eml.contact.firstName"/>
+              </div>
+              <div class="halfcolumn">
+                <@input name="eml.contacts[${contact_index}].lastName" i18nkey="eml.contact.lastName" requiredField=true/>
+              </div>
+              <div class="halfcolumn">
+                <@input name="eml.contacts[${contact_index}].position" i18nkey="eml.contact.position" requiredField=true />
+              </div>
+              <div class="halfcolumn">
+                <@input name="eml.contacts[${contact_index}].organisation" i18nkey="eml.contact.organisation" requiredField=true />
+              </div>
+              <div class="halfcolumn">
+                <@input name="eml.contacts[${contact_index}].address.address" i18nkey="eml.contact.address.address" />
+              </div>
+              <div class="halfcolumn">
+                <@input name="eml.contacts[${contact_index}].address.city" i18nkey="eml.contact.address.city" />
+              </div>
+              <div class="halfcolumn">
+                <@input name="eml.contacts[${contact_index}].address.province" i18nkey="eml.contact.address.province" />
+              </div>
+              <div class="halfcolumn countryList">
+                <@select name="eml.contacts[${contact_index}].address.country" help="i18n" options=countries i18nkey="eml.contact.address.country" value="${eml.contacts[contact_index].address.country!}"/>
+              </div>
+              <div class="halfcolumn">
+                <@input name="eml.contacts[${contact_index}].address.postalCode" i18nkey="eml.contact.address.postalCode" />
+              </div>
+              <div class="halfcolumn">
+                <@input name="eml.contacts[${contact_index}].phone" i18nkey="eml.contact.phone" />
+              </div>
+              <div class="halfcolumn">
+                <@input name="eml.contacts[${contact_index}].email" i18nkey="eml.contact.email" />
+              </div>
+              <div class="halfcolumn">
+                <@input name="eml.contacts[${contact_index}].homepage" i18nkey="eml.contact.homepage" />
+              </div>
+              <div class="halfcolumn">
+                <#if eml.contacts[contact_index].userIds[0]??>
+                  <@select name="eml.contacts[${contact_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${eml.contacts[contact_index].userIds[0].directory!}"/>
+                <#else>
+                  <@select name="eml.contacts[${contact_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value=""/>
+                </#if>
+              </div>
+              <div class="halfcolumn">
+                <@input name="eml.contacts[${contact_index}].userIds[0].identifier" help="i18n" i18nkey="eml.contact.identifier" />
+              </div>
+        </div>
+      </#list>
+    </div>
+  </div>
+  <div class="addNew"><a id="plus-contact" href="">${addContactLink?lower_case?cap_first}</a></div>
+
+        <!-- Resource Creators -->
+	<div class="listBlock grid_17 suffix_1">
+    <@textinline name="eml.resourceCreator.plural" help="i18n"/>
+    <div id="creator-items">
+      <#list eml.creators as creator>
+        <div id="creator-item-${creator_index}" class="item clearfix">
+            <div class="columnLinks">
+                <div class="halfcolumn">
+                    <a id="creator-copyDetails-${creator_index}" href="">[ ${copyLink?lower_case?cap_first} ]</a>
+                </div>
+                <div class="halfcolumn">
+
+                  <a id="creator-removeLink-${creator_index}" class="removeCreatorLink" href="">[ ${removeCreatorLink?lower_case?cap_first} ]</a>
+                </div>
+            </div>
+            <div class="halfcolumn">
+              <@input name="eml.creators[${creator_index}].firstName" i18nkey="eml.resourceCreator.firstName"/>
+            </div>
+            <div class="halfcolumn">
+              <@input name="eml.creators[${creator_index}].lastName" i18nkey="eml.resourceCreator.lastName" requiredField=true/>
+            </div>
+            <div class="halfcolumn">
+              <@input name="eml.creators[${creator_index}].position" i18nkey="eml.resourceCreator.position" requiredField=true />
+            </div>
+            <div class="halfcolumn">
+              <@input name="eml.creators[${creator_index}].organisation" i18nkey="eml.resourceCreator.organisation" requiredField=true />
+            </div>
+            <div class="halfcolumn">
+              <@input name="eml.creators[${creator_index}].address.address" i18nkey="eml.resourceCreator.address.address" />
+            </div>
+            <div class="halfcolumn">
+              <@input name="eml.creators[${creator_index}].address.city" i18nkey="eml.resourceCreator.address.city" />
+            </div>
+            <div class="halfcolumn">
+              <@input name="eml.creators[${creator_index}].address.province" i18nkey="eml.resourceCreator.address.province" />
+            </div>
+            <div class="halfcolumn countryList">
+              <@select name="eml.creators[${creator_index}].address.country" help="i18n" options=countries i18nkey="eml.resourceCreator.address.country" value="${eml.creators[creator_index].address.country!}"/>
+            </div>
+            <div class="halfcolumn">
+              <@input name="eml.creators[${creator_index}].address.postalCode" i18nkey="eml.resourceCreator.address.postalCode" />
+            </div>
+            <div class="halfcolumn">
+              <@input name="eml.creators[${creator_index}].phone" i18nkey="eml.resourceCreator.phone" />
+            </div>
+            <div class="halfcolumn">
+              <@input name="eml.creators[${creator_index}].email" i18nkey="eml.resourceCreator.email" />
+            </div>
+            <div class="halfcolumn">
+              <@input name="eml.creators[${creator_index}].homepage" i18nkey="eml.resourceCreator.homepage" />
+            </div>
+            <div class="halfcolumn">
+              <#if eml.creators[creator_index].userIds[0]??>
+                <@select name="eml.creators[${creator_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${eml.creators[creator_index].userIds[0].directory!}"/>
+              <#else>
+                <@select name="eml.creators[${creator_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value=""/>
+              </#if>
+            </div>
+            <div class="halfcolumn">
+              <@input name="eml.creators[${creator_index}].userIds[0].identifier" help="i18n" i18nkey="eml.contact.identifier" />
+            </div>
+        </div>
+    </#list>
+  </div>
+  </div>
+  <div class="addNew"><a id="plus-creator" href="">${addCreatorLink?lower_case?cap_first}</a></div>
+
+        <!-- Metadata Providers -->
+	<div class="listBlock grid_17 suffix_1">
+    <@textinline name="eml.metadataProvider.plural" help="i18n"/>
+    <div id="metadataProvider-items">
+      <#list eml.metadataProviders as metadataProvider>
+        <div id="metadataProvider-item-${metadataProvider_index}" class="item clearfix">
+            <div class="columnLinks">
+                <div class="halfcolumn">
+                    <a id="metadataProvider-copyDetails-${metadataProvider_index}" href="">[ <@s.text name="eml.resourceCreator.copyLink" />  ]</a>
+                </div>
+                <div class="halfcolumn">
+                    <a id="metadataProvider-removeLink-${metadataProvider_index}" class="removeMetadataProviderLink" href="">[ ${removeMetadataProviderLink?lower_case?cap_first} ]</a>
+                </div>
+            </div>
+            <div class="halfcolumn">
+              <@input name="eml.metadataProviders[${metadataProvider_index}].firstName" i18nkey="eml.metadataProvider.firstName"/>
+            </div>
+            <div class="halfcolumn">
+              <@input name="eml.metadataProviders[${metadataProvider_index}].lastName" i18nkey="eml.metadataProvider.lastName" requiredField=true/>
+            </div>
+            <div class="halfcolumn">
+              <@input name="eml.metadataProviders[${metadataProvider_index}].position" i18nkey="eml.metadataProvider.position" requiredField=true />
+            </div>
+            <div class="halfcolumn">
+              <@input name="eml.metadataProviders[${metadataProvider_index}].organisation" i18nkey="eml.metadataProvider.organisation" requiredField=true />
+            </div>
+            <div class="halfcolumn">
+              <@input name="eml.metadataProviders[${metadataProvider_index}].address.address" i18nkey="eml.metadataProvider.address.address" />
+            </div>
+            <div class="halfcolumn">
+              <@input name="eml.metadataProviders[${metadataProvider_index}].address.city" i18nkey="eml.metadataProvider.address.city" />
+            </div>
+            <div class="halfcolumn">
+              <@input name="eml.metadataProviders[${metadataProvider_index}].address.province" i18nkey="eml.metadataProvider.address.province" />
+            </div>
+            <div class="halfcolumn countryList">
+              <@select name="eml.metadataProviders[${metadataProvider_index}].address.country" help="i18n" options=countries i18nkey="eml.metadataProvider.address.country" value="${eml.metadataProviders[metadataProvider_index].address.country!}"/>
+            </div>
+            <div class="halfcolumn">
+              <@input name="eml.metadataProviders[${metadataProvider_index}].address.postalCode" i18nkey="eml.metadataProvider.address.postalCode" />
+            </div>
+            <div class="halfcolumn">
+              <@input name="eml.metadataProviders[${metadataProvider_index}].phone" i18nkey="eml.metadataProvider.phone" />
+            </div>
+            <div class="halfcolumn">
+              <@input name="eml.metadataProviders[${metadataProvider_index}].email" i18nkey="eml.metadataProvider.email" />
+            </div>
+            <div class="halfcolumn">
+              <@input name="eml.metadataProviders[${metadataProvider_index}].homepage" i18nkey="eml.metadataProvider.homepage" />
+            </div>
+            <div class="halfcolumn">
+              <#if eml.metadataProviders[metadataProvider_index].userIds[0]??>
+                <@select name="eml.metadataProviders[${metadataProvider_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${eml.metadataProviders[metadataProvider_index].userIds[0].directory!}"/>
+              <#else>
+                <@select name="eml.metadataProviders[${metadataProvider_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value=""/>
+              </#if>
+            </div>
+            <div class="halfcolumn">
+              <@input name="eml.metadataProviders[${metadataProvider_index}].userIds[0].identifier" help="i18n" i18nkey="eml.contact.identifier" />
+            </div>
+        </div>
+      </#list>
+    </div>
+  </div>
+  <div class="addNew"><a id="plus-metadataProvider" href="">${addMetadataProviderLink?lower_case?cap_first}</a></div>
+
+    <div id="baseItem-contact" class="item clearfix" style="display:none;">
+        <div class="columnLinks">
+            <div class="halfcolumn">
+                <a id="contact-copyDetails" href="">[ ${copyLink?lower_case?cap_first} ]</a>
+            </div>
+            <div class="halfcolumn">
+                <a id="contact-removeLink" class="removeContactLink" href="">[ ${removeContactLink?lower_case?cap_first} ]</a>
+            </div>
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.contact.firstName" i18nkey="eml.contact.firstName"/>
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.contact.lastName" i18nkey="eml.contact.lastName" requiredField=true/>
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.contact.position" i18nkey="eml.contact.position" requiredField=true />
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.contact.organisation" i18nkey="eml.contact.organisation" requiredField=true />
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.contact.address.address" i18nkey="eml.contact.address.address" />
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.contact.address.city" i18nkey="eml.contact.address.city" />
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.contact.address.province" i18nkey="eml.contact.address.province" />
+        </div>
+        <div class="halfcolumn countryList">
+          <@select name="country" options=countries help="i18n" i18nkey="eml.contact.address.country" />
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.contact.address.postalCode" i18nkey="eml.contact.address.postalCode" />
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.contact.phone" i18nkey="eml.contact.phone" />
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.contact.email" i18nkey="eml.contact.email" />
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.contact.homepage" i18nkey="eml.contact.homepage" />
+        </div>
+        <div class="halfcolumn">
+          <@select name="eml.contact.userId.directory" options=userIdDirectories help="i18n" i18nkey="eml.contact.directory" />
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.contact.userId.identifier" help="i18n" i18nkey="eml.contact.identifier" />
+        </div>
+    </div>
+
+    <div id="baseItem-creator" class="item clearfix" style="display:none;">
+        <div class="columnLinks">
+            <div class="halfcolumn">
+                <a id="creator-copyDetails" href="">[ ${copyLink}  ]</a>
+            </div>
+            <div class="halfcolumn">
+                <a id="creator-removeLink" class="removeCreatorLink" href="">[ ${removeCreatorLink?lower_case?cap_first} ]</a>
+            </div>
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.creator.firstName" i18nkey="eml.resourceCreator.firstName"/>
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.creator.lastName" i18nkey="eml.resourceCreator.lastName" requiredField=true/>
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.creator.position" i18nkey="eml.resourceCreator.position" requiredField=true />
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.creator.organisation" i18nkey="eml.resourceCreator.organisation" requiredField=true />
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.creator.address.address" i18nkey="eml.resourceCreator.address.address" />
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.creator.address.city" i18nkey="eml.resourceCreator.address.city" />
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.creator.address.province" i18nkey="eml.resourceCreator.address.province" />
+        </div>
+        <div class="halfcolumn countryList">
+          <@select name="country" options=countries help="i18n" i18nkey="eml.resourceCreator.address.country" />
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.creator.address.postalCode" i18nkey="eml.resourceCreator.address.postalCode" />
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.creator.phone" i18nkey="eml.resourceCreator.phone" />
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.creator.email" i18nkey="eml.resourceCreator.email" />
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.creator.homepage" i18nkey="eml.resourceCreator.homepage" />
+        </div>
+        <div class="halfcolumn">
+          <@select name="eml.creator.userId.directory" options=userIdDirectories help="i18n" i18nkey="eml.contact.directory" />
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.creator.userId.identifier" help="i18n" i18nkey="eml.contact.identifier" />
+        </div>
+    </div>
+
+    <div id="baseItem-metadataProvider" class="item clearfix" style="display:none;">
+        <div class="columnLinks">
+            <div class="halfcolumn">
+                <a id="metadataProvider-copyDetails" href="">[ ${copyLink?lower_case?cap_first}  ]</a>
+            </div>
+            <div class="halfcolumn">
+                <a id="metadataProvider-removeLink" class="removeMetadataProviderLink" href="">[ ${removeMetadataProviderLink?lower_case?cap_first} ]</a>
+            </div>
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.metadataProvider.firstName" i18nkey="eml.metadataProvider.firstName"/>
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.metadataProvider.lastName" i18nkey="eml.metadataProvider.lastName" requiredField=true/>
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.metadataProvider.position" i18nkey="eml.metadataProvider.position" requiredField=true />
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.metadataProvider.organisation" i18nkey="eml.metadataProvider.organisation" requiredField=true />
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.metadataProvider.address.address" i18nkey="eml.metadataProvider.address.address" />
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.metadataProvider.address.city" i18nkey="eml.metadataProvider.address.city" />
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.metadataProvider.address.province" i18nkey="eml.metadataProvider.address.province" />
+        </div>
+        <div class="halfcolumn countryList">
+          <@select name="country" options=countries help="i18n" i18nkey="eml.metadataProvider.address.country" />
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.metadataProvider.address.postalCode" i18nkey="eml.metadataProvider.address.postalCode" />
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.metadataProvider.phone" i18nkey="eml.metadataProvider.phone" />
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.metadataProvider.email" i18nkey="eml.metadataProvider.email" />
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.metadataProvider.homepage" i18nkey="eml.metadataProvider.homepage" />
+        </div>
+        <div class="halfcolumn">
+          <@select name="eml.metadataProvider.userId.directory" options=userIdDirectories help="i18n" i18nkey="eml.contact.directory" />
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.metadataProvider.userId.identifier" help="i18n" i18nkey="eml.contact.identifier" />
+        </div>
+    </div>
+
+        <div class="buttons">
  		<@s.submit cssClass="button" name="save" key="button.save"/>
  		<@s.submit cssClass="button" name="cancel" key="button.cancel"/>
 	</div>
