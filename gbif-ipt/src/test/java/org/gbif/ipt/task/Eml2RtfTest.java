@@ -75,6 +75,8 @@ public class Eml2RtfTest {
       e.printStackTrace();
     } catch (SAXException e) {
       e.printStackTrace();
+    } catch (ParserConfigurationException e) {
+      e.printStackTrace();
     }
   }
 }

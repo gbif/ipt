@@ -22,6 +22,7 @@ import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.MaintUpFreqType;
+import org.gbif.ipt.model.voc.MetadataSection;
 import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.DeletionNotAllowedException;
@@ -230,7 +231,7 @@ public class OverviewAction extends ManagerBaseAction {
   }
 
   public boolean getMissingBasicMetadata() {
-    return !emlValidator.isValid(resource.getEml(), "basic");
+    return !emlValidator.isValid(resource.getEml(), MetadataSection.BASIC_SECTION);
   }
 
   /**

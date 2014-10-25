@@ -48,6 +48,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.lowagie.text.Anchor;
@@ -155,13 +156,21 @@ public class Eml2Rtf {
   private void addAuthors(Document doc, Eml eml) throws DocumentException {
     // Creating set of authors with different names. (first names + last names).
     HashSet<Agent> tempAgents = new LinkedHashSet<Agent>();
-    if (exists(eml.getResourceCreator()) && exists(eml.getResourceCreator().getLastName())) {
-      tempAgents.add(eml.getResourceCreator());
+    for (Agent creator: eml.getCreators()) {
+      if (!Strings.isNullOrEmpty(creator.getLastName())) {
+        tempAgents.add(creator);
+      }
     }
-    if (exists(eml.getMetadataProvider()) && exists(eml.getMetadataProvider().getLastName())) {
-      tempAgents.add(eml.getMetadataProvider());
+    for (Agent metadataProvider: eml.getMetadataProviders()) {
+      if (!Strings.isNullOrEmpty(metadataProvider.getLastName())) {
+        tempAgents.add(metadataProvider);
+      }
     }
-    tempAgents.addAll(eml.getAssociatedParties());
+    for (Agent party: eml.getAssociatedParties()) {
+      if (!Strings.isNullOrEmpty(party.getLastName())) {
+        tempAgents.add(party);
+      }
+    }
 
     // comparing and removing those repeated agents with same name and same address.
     Collection<Integer> toRemove = new ArrayList<Integer>();
@@ -273,31 +282,37 @@ public class Eml2Rtf {
     p.add(new Phrase(getText("rtf.authors") + ": ", fontTitle));
     p.setFont(font);
     boolean isFirst = true;
-    if (exists(eml.getResourceCreator())) {
-      if (exists(eml.getResourceCreator().getFirstName())) {
-        p.add(eml.getResourceCreator().getFirstName() + " ");
+    for (Agent creator: eml.getCreators()) {
+      if (!Strings.isNullOrEmpty(creator.getFirstName())) {
+        p.add(creator.getFirstName() + " ");
       }
-      p.add(eml.getResourceCreator().getLastName());
-      if (exists(eml.getResourceCreator().getEmail())) {
-        p.add(" (" + eml.getResourceCreator().getEmail() + ")");
+      p.add(creator.getLastName());
+      if (!Strings.isNullOrEmpty(creator.getEmail())) {
+        p.add(" (" + creator.getEmail() + ")");
       }
       isFirst = false;
     }
-    if (exists(eml.getMetadataProvider())) {
+    for (Agent metadataProvider: eml.getMetadataProviders()) {
       boolean sameAsCreator = false;
-      if (!isFirst) {
-        sameAsCreator = equal(eml.getMetadataProvider().getAddress(), eml.getResourceCreator().getAddress()) && equal(
-          eml.getMetadataProvider().getEmail(), eml.getResourceCreator().getEmail());
+      for (Agent creator: eml.getCreators()) {
+        if (equal(metadataProvider.getAddress(), creator.getAddress()) && equal(
+          metadataProvider.getEmail(), creator.getEmail())) {
+          sameAsCreator = true;
+          break;
+        }
       }
       if (!sameAsCreator) {
-        p.add(", ");
-        if (exists(eml.getMetadataProvider().getFirstName())) {
-          p.add(eml.getMetadataProvider().getFirstName() + " ");
+        if (!isFirst) {
+          p.add(", ");
         }
-        p.add(eml.getMetadataProvider().getLastName());
-        if (exists(eml.getMetadataProvider().getEmail())) {
-          p.add(" (" + eml.getMetadataProvider().getEmail() + ")");
+        if (!Strings.isNullOrEmpty(metadataProvider.getFirstName())) {
+          p.add(metadataProvider.getFirstName() + " ");
         }
+        p.add(metadataProvider.getLastName());
+        if (!Strings.isNullOrEmpty(metadataProvider.getEmail())) {
+          p.add(" (" + metadataProvider.getEmail() + ")");
+        }
+        isFirst = false;
       }
     }
     p.add(Chunk.NEWLINE);
@@ -649,30 +664,36 @@ public class Eml2Rtf {
    * @throws DocumentException if problem occurs during add
    */
   private void addNaturalCollections(Document doc, Eml eml) throws DocumentException {
-    if (exists(eml.getParentCollectionId()) || exists(eml.getCollectionName()) || exists(eml.getCollectionId()) || !eml
-      .getTemporalCoverages().isEmpty() || exists(eml.getSpecimenPreservationMethod()) || !eml.getJgtiCuratorialUnits()
-      .isEmpty()) {
+    if (!eml.getCollections().isEmpty() || !eml.getTemporalCoverages().isEmpty() ||
+        !eml.getSpecimenPreservationMethods().isEmpty() || !eml.getJgtiCuratorialUnits().isEmpty()) {
+
       Paragraph p = new Paragraph();
       p.setAlignment(Element.ALIGN_JUSTIFIED);
       p.setFont(font);
-      if (exists(eml.getParentCollectionId())) {
-        p.add(new Phrase(getText("rtf.collections.description"), fontTitle));
-        p.add(Chunk.NEWLINE);
-        p.add(Chunk.NEWLINE);
-        p.add(new Phrase(getText("rtf.collections.parent") + ": ", fontTitle));
-        p.add(eml.getParentCollectionId());
-        p.add(Chunk.NEWLINE);
+
+      for (org.gbif.metadata.eml.Collection collection: eml.getCollections()) {
+        if (exists(collection.getParentCollectionId()) || exists(collection.getCollectionName()) || exists(collection.getCollectionId())) {
+          p.add(new Phrase(getText("rtf.collections.description"), fontTitle));
+          p.add(Chunk.NEWLINE);
+          p.add(Chunk.NEWLINE);
+          if (exists(collection.getParentCollectionId())) {
+            p.add(new Phrase(getText("rtf.collections.parent") + ": ", fontTitle));
+            p.add(collection.getParentCollectionId());
+            p.add(Chunk.NEWLINE);
+          }
+          if (exists(collection.getCollectionName())) {
+            p.add(new Phrase(getText("rtf.collections.name") + ": ", fontTitle));
+            p.add(collection.getCollectionName());
+            p.add(Chunk.NEWLINE);
+          }
+          if (exists(collection.getCollectionId())) {
+            p.add(new Phrase(getText("rtf.collections.identifier") + ": ", fontTitle));
+            p.add(collection.getCollectionId());
+            p.add(Chunk.NEWLINE);
+          }
+        }
       }
-      if (exists(eml.getCollectionName())) {
-        p.add(new Phrase(getText("rtf.collections.name") + ": ", fontTitle));
-        p.add(eml.getCollectionName());
-        p.add(Chunk.NEWLINE);
-      }
-      if (exists(eml.getCollectionId())) {
-        p.add(new Phrase(getText("rtf.collections.identifier") + ": ", fontTitle));
-        p.add(eml.getCollectionId());
-        p.add(Chunk.NEWLINE);
-      }
+
       for (TemporalCoverage coverage : eml.getTemporalCoverages()) {
         if (coverage.getType() == TemporalCoverageType.FORMATION_PERIOD) {
           p.add(new Phrase(getText("rtf.collections.formatPeriod") + ": ", fontTitle));
@@ -687,17 +708,19 @@ public class Eml2Rtf {
           p.add(Chunk.NEWLINE);
         }
       }
-      if (exists(eml.getSpecimenPreservationMethod())) {
-        p.add(new Phrase(getText("rtf.collections.specimen") + ": ", fontTitle));
-        VocabularyConcept vocabConcept =
-          vocabManager.get(Constants.VOCAB_URI_PRESERVATION_METHOD).findConcept(eml.getSpecimenPreservationMethod());
-        // write preservation method in default language as matched from vocabulary or original value
-        if (exists(vocabConcept)) {
-          p.add(vocabConcept.getPreferredTerm(DEFAULT_LANGUAGE).getTitle());
-        } else {
-          p.add(eml.getSpecimenPreservationMethod().replace("\r\n", "\n"));
+      for (String preservationMethod: eml.getSpecimenPreservationMethods()) {
+        if (exists(preservationMethod)) {
+          p.add(new Phrase(getText("rtf.collections.specimen") + ": ", fontTitle));
+          VocabularyConcept vocabConcept =
+            vocabManager.get(Constants.VOCAB_URI_PRESERVATION_METHOD).findConcept(preservationMethod);
+          // write preservation method in default language as matched from vocabulary or original value
+          if (exists(vocabConcept)) {
+            p.add(vocabConcept.getPreferredTerm(DEFAULT_LANGUAGE).getTitle());
+          } else {
+            p.add(preservationMethod.replace("\r\n", "\n"));
+          }
+          p.add(Chunk.NEWLINE);
         }
-        p.add(Chunk.NEWLINE);
       }
       for (JGTICuratorialUnit unit : eml.getJgtiCuratorialUnits()) {
         p.add(new Phrase(getText("rtf.collections.curatorial") + ": ", fontTitle));
@@ -748,7 +771,7 @@ public class Eml2Rtf {
    * @throws DocumentException if problem occurs during add
    */
   private void addProjectData(Document doc, Eml eml) throws DocumentException {
-    if (exists(eml.getProject().getTitle()) || exists(eml.getProject().getPersonnel().getFirstName()) || exists(
+    if (exists(eml.getProject().getTitle()) || !eml.getProject().getPersonnel().isEmpty() || exists(
       eml.getProject().getFunding()) || exists(eml.getProject().getStudyAreaDescription().getDescriptorValue())
       || exists(eml.getProject().getDesignDescription())) {
       Paragraph p = new Paragraph();
@@ -762,9 +785,19 @@ public class Eml2Rtf {
         p.add(eml.getProject().getTitle());
         p.add(Chunk.NEWLINE);
       }
-      p.add(new Phrase(getText("rtf.project.personnel") + ": ", fontTitle));
-      if (exists(eml.getProject().getPersonnel().getFirstName())) {
-        p.add(eml.getProject().getPersonnel().getFirstName() + " " + eml.getProject().getPersonnel().getLastName());
+      // list of project personnel
+      if (!eml.getProject().getPersonnel().isEmpty()) {
+        p.add(new Phrase(getText("rtf.project.personnel") + ": ", fontTitle));
+        Iterator<Agent> iter = eml.getProject().getPersonnel().iterator();
+        while (iter.hasNext()) {
+          Agent personnel = iter.next();
+          if (!Strings.isNullOrEmpty(personnel.getFirstName())) {
+            p.add(personnel.getFirstName() + " " + personnel.getLastName());
+          }
+          if (iter.hasNext()) {
+            p.add(", ");
+          }
+        }
         p.add(Chunk.NEWLINE);
       }
       if (exists(eml.getProject().getFunding())) {

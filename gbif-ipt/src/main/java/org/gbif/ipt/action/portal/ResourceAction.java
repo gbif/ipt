@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nullable;
+import javax.xml.parsers.ParserConfigurationException;
 
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
@@ -57,8 +58,6 @@ public class ResourceAction extends PortalBaseAction {
   private boolean metadataOnly;
   private int recordsPublishedForVersion;
   private Map<String, String> frequencies;
-
-  private List<Agent> contacts;
 
   @Inject
   public ResourceAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -94,7 +93,8 @@ public class ResourceAction extends PortalBaseAction {
    * @throws IOException if problem occurred loading eml file (e.g. it doesn't exist)
    * @throws SAXException if problem occurred parsing eml file
    */
-  private Eml loadEmlFromFile(String shortname, @Nullable Integer version) throws IOException, SAXException {
+  private Eml loadEmlFromFile(String shortname, @Nullable Integer version)
+    throws IOException, SAXException, ParserConfigurationException {
     File emlFile = dataDir.resourceEmlFile(shortname, version);
     LOG.debug("Loading EML from file: " + emlFile.getAbsolutePath());
     InputStream in = new FileInputStream(emlFile);
@@ -216,6 +216,11 @@ public class ResourceAction extends PortalBaseAction {
       LOG.error(msg);
       addActionError(msg);
       return ERROR;
+    } catch (ParserConfigurationException e) {
+      String msg = getText("portal.resource.eml.error.parse", new String[] {getStringVersion(), name});
+      LOG.error(msg);
+      addActionError(msg);
+      return ERROR;
     }
 
     // determine whether version of resource requested is metadata-only or not (has published DwC-A or not)
@@ -285,29 +290,6 @@ public class ResourceAction extends PortalBaseAction {
     v4.setLatest(true);
 
     versions = Lists.newArrayList(v1, v2, v3, v4);
-
-    // TODO complete list with all contacts
-    Agent contact = eml.getContact();
-    contact.setRole("contact");
-    roles.put("contact", "Contact");
-    if (contact.getOrganisation() == null) {
-      contact.setOrganisation("GBIF");
-    }
-
-    Agent creator = eml.getResourceCreator();
-    creator.setRole("creator");
-    roles.put("creator", "Creator");
-    if (creator.getOrganisation() == null) {
-      creator.setOrganisation("GBIF");
-    }
-
-    Agent metadataProvider = eml.getMetadataProvider();
-    metadataProvider.setRole("metadataProvider");
-    if (metadataProvider.getOrganisation() == null) {
-      metadataProvider.setOrganisation("GBIF");
-    }
-
-    contacts = Lists.newArrayList(contact, creator, metadataProvider);
 
     return SUCCESS;
   }
@@ -488,16 +470,5 @@ public class ResourceAction extends PortalBaseAction {
    */
   public int getRecordsPublishedForVersion() {
     return recordsPublishedForVersion;
-  }
-
-  /**
-   * @return list of all contacts and associated parties from EML aggregated together
-   */
-  public List<Agent> getContacts() {
-    return contacts;
-  }
-
-  public void setContacts(List<Agent> contacts) {
-    this.contacts = contacts;
   }
 }

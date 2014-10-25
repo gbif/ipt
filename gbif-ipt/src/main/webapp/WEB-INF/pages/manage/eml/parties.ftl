@@ -2,7 +2,7 @@
 <#setting number_format="#####.##">
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name='manage.metadata.parties.title'/></title>
-<#include "/WEB-INF/pages/macros/metadata.ftl"/>
+<#include "/WEB-INF/pages/macros/metadata_agent.ftl"/>
 <script type="text/javascript">
 $(document).ready(function(){
     initHelp();
@@ -20,15 +20,21 @@ $(document).ready(function(){
 <h2 class="subTitle"><@s.text name='manage.metadata.parties.title'/></h2>
 <form class="topForm" action="metadata-${section}.do" method="post">
     <p><@s.text name='manage.metadata.parties.intro'/></p>
-	<div id="items">
+
+    <!-- retrieve some link names one time -->
+    <#assign copyLink><@s.text name="eml.resourceCreator.copyLink"/></#assign>
+    <#assign removeLink><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.parties.item'/></#assign>
+    <#assign addLink><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.parties.item'/></#assign>
+
+    <div id="associatedParty-items">
 		<#list eml.associatedParties as item>
-			<div id="item-${item_index}" class="item associateParties clearfix">
+			<div id="associatedParty-item-${item_index}" class="item clearfix">
 				<div class="columnLinks">
 					<div class="halfcolumn">
-  	  					<a id="copyDetails-${item_index}" href="">[ <@s.text name="eml.resourceCreator.copyLink" />  ]</a>
+  	  					<a id="associatedParty-copyDetails-${item_index}" href="">[ ${copyLink?lower_case?cap_first} ]</a>
     				</div>
 					<div class="halfcolumn">
-		      			<a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.parties.item'/> ]</a>
+		      			<a id="associatedParty-removeLink-${item_index}" class="removeAssociatedPartyLink" href="">[ ${removeLink?lower_case?cap_first} ]</a>
 		    		</div>
 		    	</div>
 				<div class="halfcolumn">
@@ -64,14 +70,26 @@ $(document).ready(function(){
 		  		<div class="halfcolumn">
 		  			<@input name="eml.associatedParties[${item_index}].email" i18nkey="eml.associatedParties.email" />
 				</div>
-  				<div class="halfcolumn">
-		  			<@input name="eml.associatedParties[${item_index}].homepage" i18nkey="eml.associatedParties.homepage" />
-		  		</div>
-	  				<@select name="eml.associatedParties[${item_index}].role" i18nkey="eml.associatedParties.role" help="i18n" value="${eml.associatedParties[item_index].role!}" options=roles />
+  		  <div class="halfcolumn">
+		  	  <@input name="eml.associatedParties[${item_index}].homepage" i18nkey="eml.associatedParties.homepage" />
+		    </div>
+        <div class="halfcolumn">
+          <#if eml.associatedParties[item_index].userIds[0]??>
+            <@select name="eml.associatedParties[${item_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${eml.associatedParties[item_index].userIds[0].directory!}"/>
+          <#else>
+            <@select name="eml.associatedParties[${item_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value=""/>
+          </#if>
+        </div>
+        <div class="halfcolumn">
+          <@input name="eml.associatedParties[${item_index}].userIds[0].identifier" help="i18n" i18nkey="eml.contact.identifier" />
+        </div>
+        <div class="halfcolumn">
+          <@select name="eml.associatedParties[${item_index}].role" i18nkey="eml.associatedParties.role" help="i18n" value="${eml.associatedParties[item_index].role!}" options=roles />
+        </div>
 		  	</div>
 		</#list>
 	</div>
-	<div class="addNew"><a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.parties.item'/></a></div>
+	<div class="addNew"><a id="plus-associatedParty" href="">${addLink?lower_case?cap_first}</a></div>
 	<div id='buttons' class="buttons">
 	   	<@s.submit cssClass="button" name="save" key="button.save"/>
 		<@s.submit cssClass="button" name="cancel" key="button.cancel"/>
@@ -81,13 +99,13 @@ $(document).ready(function(){
 </form>
 </div>
 
-<div id="baseItem" class="item associateParties clearfix" style="display:none;">
+<div id="baseItem-associatedParty" class="item clearfix" style="display:none;">
 	<div class="columnLinks">
 		<div class="halfcolumn">
-  			<a id="copyDetails" href="">[ <@s.text name="eml.resourceCreator.copyLink" />  ]</a>
+  			<a id="associatedParty-copyDetails" href="">[ ${copyLink}  ]</a>
     	</div>
     	<div class="halfcolumn">
-      		<a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.parties.item'/> ]</a>
+      		<a id="associatedParty-removeLink" class="removeAssociatedPartyLink" href="">[ ${removeLink?lower_case?cap_first} ]</a>
     	</div>
     </div>
 	<div class="halfcolumn">
@@ -123,12 +141,18 @@ $(document).ready(function(){
   	<div class="halfcolumn">
   		<@input name="email" i18nkey="eml.associatedParties.email" />
   	</div>
-	<div class="halfcolumn">
+	  <div class="halfcolumn">
   		<@input name="homepage" i18nkey="eml.associatedParties.homepage" />
   	</div>
-  	<div class="halfcolumn">
-  		<@select name="role" i18nkey="eml.associatedParties.role" help="i18n" options=roles />
-  	</div>
+    <div class="halfcolumn">
+      <@select name="directory" options=userIdDirectories help="i18n" i18nkey="eml.contact.directory" />
+    </div>
+    <div class="halfcolumn">
+      <@input name="identifier" help="i18n" i18nkey="eml.contact.identifier" />
+    </div>
+    <div class="halfcolumn">
+      <@select name="role" i18nkey="eml.associatedParties.role" help="i18n" options=roles />
+    </div>
 </div>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">

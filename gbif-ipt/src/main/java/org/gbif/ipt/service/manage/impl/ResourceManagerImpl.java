@@ -101,6 +101,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import javax.annotation.Nullable;
+import javax.xml.parsers.ParserConfigurationException;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
@@ -250,6 +251,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       log.error(e);
       throw new ImportException("Invalid EML document");
     } catch (SAXException e) {
+      log.error("Invalid EML document", e);
+      throw new ImportException("Invalid EML document");
+    } catch (ParserConfigurationException e) {
       log.error("Invalid EML document", e);
       throw new ImportException("Invalid EML document");
     }
