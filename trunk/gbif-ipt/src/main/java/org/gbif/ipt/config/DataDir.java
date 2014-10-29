@@ -9,6 +9,7 @@ import org.gbif.ipt.utils.InputStreamUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.Random;
 import javax.annotation.Nullable;
 
@@ -183,31 +184,12 @@ public class DataDir {
    *
    * @return DwC-A file having specific version, defaulting to latest published version if no version specified
    */
-  public File resourceDwcaFile(String resourceName, @Nullable Integer version) {
+  public File resourceDwcaFile(String resourceName, @Nullable BigDecimal version) {
     String fn;
     if (version == null) {
       fn = DWCA_FILENAME;
     } else {
-      fn = "dwca-" + version + ".zip";
-    }
-    return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
-  }
-
-  /**
-   * Retrieves file that stores information about how many records were published for a version of a resource.
-   * If no specific version is requested, null is returned.
-   *
-   * @param resourceName resource short name
-   * @param version      version
-   *
-   * @return file for version, or null if no version number was specified
-   */
-  public File resourceCountFile(String resourceName, @Nullable Integer version) {
-    String fn;
-    if (version == null) {
-      return null;
-    } else {
-      fn = ".recordspublished-" + version;
+      fn = "dwca-" + version.toPlainString() + ".zip";
     }
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
   }
@@ -222,12 +204,12 @@ public class DataDir {
    *
    * @return EML file having specific version, defaulting to interim eml.xml without a version number if none specified
    */
-  public File resourceEmlFile(String resourceName, @Nullable Integer version) {
+  public File resourceEmlFile(String resourceName, @Nullable BigDecimal version) {
     String fn;
     if (version == null) {
       fn = EML_XML_FILENAME;
     } else {
-      fn = "eml-" + version + ".xml";
+      fn = "eml-" + version.toPlainString() + ".xml";
     }
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
   }
@@ -285,12 +267,12 @@ public class DataDir {
    *
    * @return RTF file having specific version, defaulting to latest published version if no version specified
    */
-  public File resourceRtfFile(String resourceName, @Nullable Integer version) {
+  public File resourceRtfFile(String resourceName, @Nullable BigDecimal version) {
     String fn;
     if (version == null) {
       fn = resourceName + ".rtf";
     } else {
-      fn = resourceName + "-" + version + ".rtf";
+      fn = resourceName + "-" + version.toPlainString() + ".rtf";
     }
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
   }

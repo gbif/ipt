@@ -2,7 +2,10 @@ package org.gbif.ipt.model;
 
 import org.gbif.ipt.model.voc.IdentifierStatus;
 
+import java.math.BigDecimal;
 import java.util.Date;
+import javax.annotation.Nullable;
+import javax.validation.constraints.NotNull;
 
 /**
  * Class representing all the information about a version of a resource.
@@ -10,21 +13,24 @@ import java.util.Date;
 public class VersionHistory {
 
   private String doi;
-  private String version;
+  private BigDecimal version;
   private Date released;
   private IdentifierStatus status;
   private User modifiedBy;
   private String changeSummary;
-  private boolean isLatest;
-  //private UpdateFrequency updateFrequency;
+  private int recordsPublished;
 
-  public VersionHistory() {
+  public VersionHistory(BigDecimal version, Date released, User modifiedBy) {
+    this.version = version;
+    this.released = released;
+    this.modifiedBy = modifiedBy;
   }
 
   /**
    * TODO
    * @return
    */
+  @Nullable
   public String getDoi() {
     return doi;
   }
@@ -37,11 +43,12 @@ public class VersionHistory {
    * TODO
    * @return
    */
-  public String getVersion() {
+  @NotNull
+  public BigDecimal getVersion() {
     return version;
   }
 
-  public void setVersion(String version) {
+  public void setVersion(BigDecimal version) {
     this.version = version;
   }
 
@@ -49,6 +56,7 @@ public class VersionHistory {
    * TODO
    * @return
    */
+  @NotNull
   public Date getReleased() {
     return released;
   }
@@ -61,6 +69,7 @@ public class VersionHistory {
    * TODO
    * @return
    */
+  @Nullable
   public IdentifierStatus getStatus() {
     return status;
   }
@@ -73,6 +82,7 @@ public class VersionHistory {
    * TODO
    * @return
    */
+  @NotNull
   public User getModifiedBy() {
     return modifiedBy;
   }
@@ -85,6 +95,7 @@ public class VersionHistory {
    * TODO
    * @return
    */
+  @Nullable
   public String getChangeSummary() {
     return changeSummary;
   }
@@ -97,11 +108,12 @@ public class VersionHistory {
    * TODO
    * @return
    */
-  public boolean isLatest() {
-    return isLatest;
+  @Nullable
+  public int getRecordsPublished() {
+    return recordsPublished;
   }
 
-  public void setLatest(boolean isLatest) {
-    this.isLatest = isLatest;
+  public void setRecordsPublished(int recordsPublished) {
+    this.recordsPublished = recordsPublished;
   }
 }

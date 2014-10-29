@@ -42,6 +42,7 @@ import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.validation.EmlValidator;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -129,7 +130,7 @@ public class OverviewAction extends ManagerBaseAction {
       addActionError(msg);
 
       // restore the previous version of the resource
-      resourceManager.restoreVersion(resource, resource.getLastVersion(), this);
+      resourceManager.restoreVersion(resource, resource.getReplacedEmlVersion(), this);
 
       // Struts finishes before callable has a finish to update status report, therefore,
       // temporarily override StatusReport so that Overview page report displaying up-to-date STATE and Exception
@@ -632,7 +633,7 @@ public class OverviewAction extends ManagerBaseAction {
     }
 
     // increment version number - this will be the version of newly published resource (all of eml/rtf/dwca)
-    int v = resource.getNextVersion();
+    BigDecimal v = resource.getNextVersion();
 
     try {
       // publish a new version of the resource
@@ -657,7 +658,7 @@ public class OverviewAction extends ManagerBaseAction {
         addActionError(getText("publishing.failed",
           new String[] {String.valueOf(v), resource.getShortname(), e.getMessage()}));
         // restore the previous version since publication was unsuccessful
-        resourceManager.restoreVersion(resource, v - 1, this);
+        resourceManager.restoreVersion(resource, resource.getReplacedEmlVersion(), this);
         // keep track of how many failures on auto publication have happened
         resourceManager.getProcessFailures().put(resource.getShortname(), new Date());
       }

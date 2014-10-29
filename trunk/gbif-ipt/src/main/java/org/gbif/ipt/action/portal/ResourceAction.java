@@ -22,6 +22,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -32,7 +33,6 @@ import java.util.Set;
 import javax.annotation.Nullable;
 import javax.xml.parsers.ParserConfigurationException;
 
-import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -44,7 +44,6 @@ public class ResourceAction extends PortalBaseAction {
 
   private VocabulariesManager vocabManager;
   private List<Resource> resources;
-  private List<VersionHistory> versions;
   private Integer page = 1;
   // for conveniently displaying taxonomic coverages in freemarker template
   private List<OrganizedTaxonomicCoverage> organizedCoverages;
@@ -56,7 +55,6 @@ public class ResourceAction extends PortalBaseAction {
   private DataDir dataDir;
   private Eml eml;
   private boolean metadataOnly;
-  private int recordsPublishedForVersion;
   private Map<String, String> frequencies;
 
   @Inject
@@ -93,7 +91,7 @@ public class ResourceAction extends PortalBaseAction {
    * @throws IOException if problem occurred loading eml file (e.g. it doesn't exist)
    * @throws SAXException if problem occurred parsing eml file
    */
-  private Eml loadEmlFromFile(String shortname, @Nullable Integer version)
+  private Eml loadEmlFromFile(String shortname, @Nullable BigDecimal version)
     throws IOException, SAXException, ParserConfigurationException {
     File emlFile = dataDir.resourceEmlFile(shortname, version);
     LOG.debug("Loading EML from file: " + emlFile.getAbsolutePath());
@@ -120,13 +118,6 @@ public class ResourceAction extends PortalBaseAction {
    */
   public List<Resource> getResources() {
     return resources;
-  }
-
-  /**
-   * @return the version history
-   */
-  public List<VersionHistory> getVersions() {
-    return versions;
   }
 
   /**
@@ -230,8 +221,6 @@ public class ResourceAction extends PortalBaseAction {
       File dwcaFile = dataDir.resourceDwcaFile(name, version);
       if (dwcaFile.exists()) {
         setMetadataOnly(true);
-        // determine record count for the version being requested (read from hidden file .recordspublished-version)
-        setRecordsPublishedForVersion(resource.getShortname(), version);
       }
     }
 
@@ -262,34 +251,6 @@ public class ResourceAction extends PortalBaseAction {
     // update frequencies list, derived from XML vocabulary, and displayed on Basic Metadata Page
     frequencies = new LinkedHashMap<String, String>();
     frequencies.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES, getLocaleLanguage(), false));
-
-    // TODO replace with actual version history
-    VersionHistory v1 = new VersionHistory();
-    v1.setVersion("1.0");
-    v1.setReleased(new Date());
-    v1.setChangeSummary("Initial publication");
-    v1.setDoi("10.4231/D3F47GT6N");
-
-    VersionHistory v2 = new VersionHistory();
-    v2.setVersion("1.1");
-    v2.setReleased(new Date());
-    v2.setChangeSummary("Metadata updated");
-    v2.setDoi("10.4231/D3F47GT6N");
-
-    VersionHistory v3 = new VersionHistory();
-    v3.setVersion("2.0");
-    v3.setReleased(new Date());
-    v3.setChangeSummary("Genus changed for all records");
-    v3.setDoi("10.5886/1bft7W5f");
-
-    VersionHistory v4 = new VersionHistory();
-    v4.setVersion("2.1");
-    v4.setReleased(new Date());
-    v4.setChangeSummary("3 new fields mapped: kingdom, phylum, class.");
-    v4.setDoi("10.5886/1bft7W5f");
-    v4.setLatest(true);
-
-    versions = Lists.newArrayList(v1, v2, v3, v4);
 
     return SUCCESS;
   }
@@ -438,37 +399,5 @@ public class ResourceAction extends PortalBaseAction {
    */
   public Map<String, String> getFrequencies() {
     return frequencies;
-  }
-
-  /**
-   * Look for .recordspublished-version file, and parse its contents for published record count.
-   * 
-   * @param shortname resource shortname
-   * @param version resource version to retrieve published record count for
-   * @return published record count for version or null if file not found or could not be parsed
-   */
-  public int setRecordsPublishedForVersion(String shortname, int version) {
-    recordsPublishedForVersion = 0;
-    File file = dataDir.resourceCountFile(shortname, version);
-    if (file != null && file.exists()) {
-      try {
-        String countAsString = StringUtils.trimToNull(org.apache.commons.io.FileUtils.readFileToString(file));
-        recordsPublishedForVersion = Integer.valueOf(countAsString);
-      } catch (IOException e) {
-        LOG.error("Cannot read file: " + file.getAbsolutePath(), e);
-      } catch (NumberFormatException e) {
-        LOG.error("Number read from file not valid: " + file.getAbsolutePath());
-      }
-    } else {
-      LOG.warn(".recordspublished-version file not existing for version: " + version);
-    }
-    return recordsPublishedForVersion;
-  }
-
-  /**
-   * @return the number of records published for version of resource requested.
-   */
-  public int getRecordsPublishedForVersion() {
-    return recordsPublishedForVersion;
   }
 }

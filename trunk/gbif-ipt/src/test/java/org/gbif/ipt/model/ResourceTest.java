@@ -19,6 +19,9 @@ package org.gbif.ipt.model;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.service.AlreadyExistingException;
 
+import java.math.BigDecimal;
+import java.util.Date;
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -30,6 +33,7 @@ public class ResourceTest {
   private final Extension OCC;
   private final Extension EXT;
   private final Extension TAX;
+  private static User USER;
 
   public ResourceTest() {
     OCC = new Extension();
@@ -49,6 +53,11 @@ public class ResourceTest {
     EXT.setName("Occurrence Extension");
     EXT.setTitle("Occurrence Extension");
     EXT.setRowType("http://rs.gbif.org/my/extension/test");
+
+    USER = new User();
+    USER.setEmail("jc@gbif.org");
+    USER.setLastname("Costa");
+    USER.setFirstname("Jose");
   }
 
   private ExtensionMapping getExtExtensionMapping() {
@@ -190,6 +199,60 @@ public class ResourceTest {
     resource.addMapping(mapping);
     // assert correct core row type has been determined from core mapping
     assertEquals(Constants.DWC_ROWTYPE_TAXON, resource.getCoreRowType());
+  }
+
+  @Test
+  public void testAddVersionHistory() {
+    Resource resource = getResource();
+
+    VersionHistory vh1 = new VersionHistory(BigDecimal.valueOf(1.4), new Date(), USER);
+    VersionHistory vh2 = new VersionHistory(BigDecimal.valueOf(1.5), new Date(), USER);
+
+    resource.addVersionHistory(vh1);
+    resource.addVersionHistory(vh2);
+
+    assertEquals(2, resource.getVersionHistory().size());
+
+    // try and add a version history with same version number - isn't allowed!
+    VersionHistory vh3 = new VersionHistory(BigDecimal.valueOf(1.5), new Date(), USER);
+
+    resource.addVersionHistory(vh3);
+
+    assertEquals(2, resource.getVersionHistory().size());
+  }
+
+  @Test
+  public void testRemoveVersionHistory() {
+    Resource resource = getResource();
+
+    VersionHistory vh1 = new VersionHistory(BigDecimal.valueOf(1.4), new Date(), USER);
+    VersionHistory vh2 = new VersionHistory(BigDecimal.valueOf(1.5), new Date(), USER);
+
+    resource.addVersionHistory(vh1);
+    resource.addVersionHistory(vh2);
+
+    assertEquals(2, resource.getVersionHistory().size());
+
+    // remove the last version (imagining the version had to be rolled back after failed publication)
+    resource.removeVersionHistory(BigDecimal.valueOf(1.5));
+
+    assertEquals(1, resource.getVersionHistory().size());
+    assertEquals(BigDecimal.valueOf(1.4), resource.getVersionHistory().get(0).getVersion());
+  }
+
+  @Test
+  public void testFindVersionHistory() {
+    Resource resource = getResource();
+
+    VersionHistory vh1 = new VersionHistory(BigDecimal.valueOf(1.4), new Date(), USER);
+    VersionHistory vh2 = new VersionHistory(BigDecimal.valueOf(1.5), new Date(), USER);
+
+    resource.addVersionHistory(vh1);
+    resource.addVersionHistory(vh2);
+
+    VersionHistory vh = resource.findVersionHistory(BigDecimal.valueOf(1.4));
+    assertEquals(BigDecimal.valueOf(1.4), vh.getVersion());
+    assertEquals("jc@gbif.org", vh.getModifiedBy().getEmail());
   }
 
 }

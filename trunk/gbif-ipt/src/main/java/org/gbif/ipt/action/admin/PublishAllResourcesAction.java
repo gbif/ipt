@@ -11,6 +11,7 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -57,7 +58,7 @@ public class PublishAllResourcesAction extends BaseAction {
 
     // kick off publishing for all resources, unless the resource has exceeded the maximum number of failed publications
     for (Resource resource : resources) {
-      int v = 0;
+      BigDecimal v = BigDecimal.ZERO;
       try {
         if (!resourceManager.hasMaxProcessFailures(resource)) {
           // increment version number - this will be the version of newly published eml/rtf/archive
@@ -77,7 +78,7 @@ public class PublishAllResourcesAction extends BaseAction {
           addActionError(
             getText("publishing.failed", new String[] {String.valueOf(v), resource.getShortname(), e.getMessage()}));
           // restore the previous version since publication was unsuccessful
-          resourceManager.restoreVersion(resource, v - 1, this);
+          resourceManager.restoreVersion(resource, resource.getReplacedEmlVersion(), this);
           // keep track of how many failures on auto publication have happened
           resourceManager.getProcessFailures().put(resource.getShortname(), new Date());
         }

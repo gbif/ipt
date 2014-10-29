@@ -17,6 +17,7 @@ import org.gbif.ipt.task.StatusReport;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
@@ -234,7 +235,7 @@ public interface ResourceManager {
    * @throws PublicationException if resource was already registered
    * @throws InvalidConfigException if resource or metadata could not be saved
    */
-  boolean publish(Resource resource, int version, @Nullable BaseAction action) throws PublicationException;
+  boolean publish(Resource resource, BigDecimal version, @Nullable BaseAction action) throws PublicationException;
 
   /**
    * Registers the resource with the GBIF Registry. Instead of registering a new resource, the resource can instead
@@ -318,7 +319,7 @@ public interface ResourceManager {
    * @param version  version to restore
    * @param action   action
    */
-  void restoreVersion(Resource resource, int version, @Nullable BaseAction action);
+  void restoreVersion(Resource resource, BigDecimal version, @Nullable BaseAction action);
 
   /**
    * Turn resource publicationMode to OFF.

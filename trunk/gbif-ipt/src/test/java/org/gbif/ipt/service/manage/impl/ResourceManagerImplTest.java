@@ -66,6 +66,7 @@ import org.gbif.utils.file.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -79,7 +80,6 @@ import javax.xml.parsers.SAXParserFactory;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
-import com.google.common.io.Files;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
@@ -99,7 +99,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -157,13 +156,6 @@ public class ResourceManagerImplTest {
     // tmp directory
     File tmpDataDir = FileUtils.createTempDir();
     when(mockedDataDir.tmpDir()).thenReturn(tmpDataDir);
-
-    // mock retrieval of sample resource version count file, for version 3 of resource
-    File countFile = FileUtils.getClasspathFile("resources/res1/.recordspublished-3");
-    // want to return copy of test resource file since its contents gets overwritten
-    File tmpCountFile = File.createTempFile(".recordspublished-3", "");
-    Files.copy(countFile, tmpCountFile);
-    when(mockedDataDir.resourceCountFile(eq(RESOURCE_SHORTNAME), eq(3))).thenReturn(tmpCountFile);
 
     organisation = new Organisation();
     organisation.setKey("f9b67ad0-9c9b-11d9-b9db-b8a03c50a862");
@@ -236,7 +228,7 @@ public class ResourceManagerImplTest {
     // retrieve sample zipped resource folder
     File emlXML = FileUtils.getClasspathFile("resources/res1/eml.xml");
     // mock finding eml.xml file
-    when(mockedDataDir.resourceEmlFile(anyString(), anyInt())).thenReturn(emlXML);
+    when(mockedDataDir.resourceEmlFile(anyString(), any(BigDecimal.class))).thenReturn(emlXML);
 
     // create instance of manager
     ResourceManager resourceManager = getResourceManagerImpl();
@@ -262,7 +254,7 @@ public class ResourceManagerImplTest {
     assertTrue(mockedDataDir.resourceFile("res1", ResourceManagerImpl.PERSISTENCE_FILE).exists());
 
     // properties that get preserved
-    assertEquals(3, res.getEmlVersion());
+    assertEquals(BigDecimal.valueOf(3.0), res.getEmlVersion());
     // there is 1 source file
     assertEquals(1, res.getSources().size());
     assertEquals("occurrence", res.getSources().get(0).getName());
@@ -346,8 +338,8 @@ public class ResourceManagerImplTest {
     // test if resource.xml was created.
     assertTrue(mockedDataDir.resourceFile(RESOURCE_SHORTNAME, ResourceManagerImpl.PERSISTENCE_FILE).exists());
 
-    // properties that get preserved
-    assertEquals(0, res.getEmlVersion());
+    assertNull(res.getEmlVersion());
+    assertEquals(BigDecimal.valueOf(0.0), res.getEml().getEmlVersion());
 
     // note: source gets added to resource in sourceManager.add, and since we're mocking this call we can't set source
 
@@ -595,7 +587,8 @@ public class ResourceManagerImplTest {
     assertEquals(DATASET_TYPE_OCCURRENCE_IDENTIFIER, persistedResource.getCoreType());
     assertEquals(PublicationStatus.PRIVATE, persistedResource.getStatus());
     assertEquals(1, persistedResource.getSources().size());
-    assertEquals(0, persistedResource.getEmlVersion());
+    assertNull(persistedResource.getEmlVersion());
+    assertEquals(BigDecimal.valueOf(0.0), persistedResource.getEml().getEmlVersion());
     assertEquals(0, persistedResource.getRecordsPublished());
     // should be 1 KeywordSet corresponding to Dataset Type vocabulary
     assertEquals(2, persistedResource.getEml().getKeywords().size());
@@ -659,7 +652,7 @@ public class ResourceManagerImplTest {
     ResourceManagerImpl manager = getResourceManagerImpl();
 
     // mock finding eml.xml file
-    when(mockedDataDir.resourceEmlFile(anyString(), anyInt())).thenReturn(File.createTempFile("eml", "xml"));
+    when(mockedDataDir.resourceEmlFile(anyString(), any(BigDecimal.class))).thenReturn(File.createTempFile("eml", "xml"));
 
     // create PRIVATE test resource
     Resource resource = new Resource();
@@ -714,7 +707,7 @@ public class ResourceManagerImplTest {
     ResourceManagerImpl manager = getResourceManagerImpl();
 
     // mock finding eml.xml file
-    when(mockedDataDir.resourceEmlFile(anyString(), anyInt())).thenReturn(File.createTempFile("eml", "xml"));
+    when(mockedDataDir.resourceEmlFile(anyString(), any(BigDecimal.class))).thenReturn(File.createTempFile("eml", "xml"));
 
     // create PRIVATE test resource
     Resource resource = new Resource();
@@ -966,7 +959,7 @@ public class ResourceManagerImplTest {
     resource.setPublicationMode(PublicationMode.AUTO_PUBLISH_ON);
 
     // make a few pre-publication assertions
-    assertEquals(3, resource.getEml().getEmlVersion());
+    assertEquals(BigDecimal.valueOf(3.0), resource.getEml().getEmlVersion());
     Date created = resource.getCreated();
     assertNotNull(created);
     Date pubDate = resource.getEml().getPubDate();
@@ -977,18 +970,18 @@ public class ResourceManagerImplTest {
     assertEquals(Constants.DATASET_TYPE_METADATA_IDENTIFIER, resource.getCoreType());
 
     // publish
-    resourceManager.publish(resource, 4, baseAction);
+    resourceManager.publish(resource, BigDecimal.valueOf(3.1), baseAction);
 
     // make some post-publication assertions
-    assertEquals(4, resource.getEml().getEmlVersion());
+    assertEquals(BigDecimal.valueOf(3.1), resource.getEml().getEmlVersion());
     assertNotNull(resource.getNextPublished());
     assertEquals(created.toString(), resource.getCreated().toString());
     assertNotEquals(pubDate.toString(), resource.getEml().getPubDate());
     assertNotNull(resource.getLastPublished().toString());
     assertTrue(new File(resourceDir, DataDir.EML_XML_FILENAME).exists());
-    assertTrue(new File(resourceDir, "eml-4.xml").exists());
+    assertTrue(new File(resourceDir, "eml-3.1.xml").exists());
     assertTrue(new File(resourceDir, "rtf-res2.rtf").exists());
-    assertTrue(new File(resourceDir, "rtf-res2-4.rtf").exists());
+    assertTrue(new File(resourceDir, "rtf-res2-3.1.rtf").exists());
   }
 
   @Test
@@ -1023,34 +1016,13 @@ public class ResourceManagerImplTest {
     resourceManager.save(resource);
 
     // make pre-publication assertions
-    assertEquals(3, resource.getEml().getEmlVersion());
+    assertEquals(BigDecimal.valueOf(3.0), resource.getEml().getEmlVersion());
 
     //to trigger PublicationException, indicate publication already in progress (add Future to processFutures)
     resourceManager.getProcessFutures().put(resource.getShortname(), mock(Future.class));
 
     // publish, catching expected Exception
-    resourceManager.publish(resource, 4, baseAction);
-  }
-
-  @Test
-  public void testSaveVersionCount() throws ParserConfigurationException, SAXException, IOException {
-    // create instance of manager
-    ResourceManagerImpl resourceManager = getResourceManagerImpl();
-    // prepare resource, with published record count and version 3
-    resource.setEmlVersion(3);
-    resource.setRecordsPublished(4000);
-
-    // assure count file exists unchanged
-    File countFile = mockedDataDir.resourceCountFile(resource.getShortname(), resource.getEmlVersion());
-    String countAsString = StringUtils.trimToNull(org.apache.commons.io.FileUtils.readFileToString(countFile));
-    assertEquals("1234", countAsString);
-
-    // save count file, persisting count 4000
-    resourceManager.saveVersionCount(resource);
-
-    // assure count file reflects new count
-    countAsString = StringUtils.trimToNull(org.apache.commons.io.FileUtils.readFileToString(countFile));
-    assertEquals("4000", countAsString);
+    resourceManager.publish(resource, BigDecimal.valueOf(4.0), baseAction);
   }
 
   /**
@@ -1075,18 +1047,18 @@ public class ResourceManagerImplTest {
     File copiedEmlXML = new File(resourceDir, DataDir.EML_XML_FILENAME);
     org.apache.commons.io.FileUtils.copyFile(emlXML, copiedEmlXML);
     // mock new saved eml.xml file being versioned.. useless for testing needed for compilation
-    File versionedEmlXML = new File(resourceDir, "eml-4.xml");
+    File versionedEmlXML = new File(resourceDir, "eml-3.1.xml");
     org.apache.commons.io.FileUtils.copyFile(emlXML, versionedEmlXML);
     // mock finding versioned eml.xml file
-    when(mockedDataDir.resourceEmlFile(anyString(), eq(4))).thenReturn(versionedEmlXML);
+    when(mockedDataDir.resourceEmlFile(anyString(), eq(BigDecimal.valueOf(3.1)))).thenReturn(versionedEmlXML);
     // mock finding eml.xml file
-    when(mockedDataDir.resourceEmlFile(anyString(), Matchers.<Integer>eq(null))).thenReturn(copiedEmlXML);
+    when(mockedDataDir.resourceEmlFile(anyString(), Matchers.<BigDecimal>eq(null))).thenReturn(copiedEmlXML);
     // mock finding versioned dwca file
-    when(mockedDataDir.resourceDwcaFile(anyString(), eq(4))).thenReturn(File.createTempFile("dwca-4", "zip"));
+    when(mockedDataDir.resourceDwcaFile(anyString(), eq(BigDecimal.valueOf(3.1)))).thenReturn(File.createTempFile("dwca-4.0", "zip"));
     // mock finding previous versioned dwca file
-    when(mockedDataDir.resourceDwcaFile(anyString(), eq(3))).thenReturn(File.createTempFile("dwca-3", "zip"));
+    when(mockedDataDir.resourceDwcaFile(anyString(), eq(BigDecimal.valueOf(3.0)))).thenReturn(File.createTempFile("dwca-3.0", "zip"));
     // mock finding dwca file
-    when(mockedDataDir.resourceDwcaFile(anyString(), Matchers.<Integer>eq(null))).thenReturn(File.createTempFile("dwca", "zip"));
+    when(mockedDataDir.resourceDwcaFile(anyString(), Matchers.<BigDecimal>eq(null))).thenReturn(File.createTempFile("dwca", "zip"));
 
     // retrieve sample rtf.xml
     File rtfXML = FileUtils.getClasspathFile("resources/res1/rtf-res1.rtf");
@@ -1094,10 +1066,10 @@ public class ResourceManagerImplTest {
     File copiedRtfXML = new File(resourceDir, "rtf-res2.rtf");
     org.apache.commons.io.FileUtils.copyFile(rtfXML, copiedRtfXML);
     // mock new saved eml.xml file being versioned.. useless for testing needed for compilation
-    File versionedRtfXML = new File(resourceDir, "rtf-res2-4.rtf");
+    File versionedRtfXML = new File(resourceDir, "rtf-res2-3.1.rtf");
     org.apache.commons.io.FileUtils.copyFile(rtfXML, versionedRtfXML);
     // mock finding versioned eml.xml file
-    when(mockedDataDir.resourceRtfFile(anyString(), eq(4))).thenReturn(versionedRtfXML);
+    when(mockedDataDir.resourceRtfFile(anyString(), eq(BigDecimal.valueOf(3.1)))).thenReturn(versionedRtfXML);
     // mock finding eml.xml file
     when(mockedDataDir.resourceRtfFile(anyString())).thenReturn(copiedRtfXML);
 
@@ -1106,7 +1078,7 @@ public class ResourceManagerImplTest {
 
     // create a new resource.
     Resource resource = resourceManager.create(RESOURCE_SHORTNAME, null, copiedEmlXML, creator, baseAction);
-    resource.setEmlVersion(3);
+    resource.setEmlVersion(BigDecimal.valueOf(3.0));
     return resource;
   }
 }

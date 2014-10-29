@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -510,7 +511,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     }
 
     // copy stable version of the DwC-A file
-    int version = resource.getEmlVersion();
+    BigDecimal version = resource.getEmlVersion();
     try {
       File versionedFile = dataDir.resourceDwcaFile(resource.getShortname(), version);
       FileUtils.copyFile(target, versionedFile);

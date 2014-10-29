@@ -8,6 +8,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -79,7 +80,7 @@ public class PublishingMonitor {
             List<Resource> resources = resourceManager.list();
             for (Resource resource : resources) {
               Date next = resource.getNextPublished();
-              int v = resource.getNextVersion();
+              BigDecimal v = resource.getNextVersion();
               if (next != null) {
                 // ensure resource is due to be auto-published
                 if (next.before(now)) {
@@ -105,7 +106,7 @@ public class PublishingMonitor {
                               + resource.getTitleAndShortname()
                               + " failed: " + e.getMessage());
                           // restore the previous version since publication was unsuccessful
-                          resourceManager.restoreVersion(resource, resource.getLastVersion(), null);
+                          resourceManager.restoreVersion(resource, resource.getReplacedEmlVersion(), null);
                           // keep track of how many failures on auto publication have happened
                           resourceManager.getProcessFailures().put(resource.getShortname(), new Date());
                         }

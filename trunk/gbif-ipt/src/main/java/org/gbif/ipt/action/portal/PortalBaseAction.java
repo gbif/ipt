@@ -8,6 +8,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
+import java.math.BigDecimal;
 import javax.annotation.Nullable;
 
 import com.google.common.base.Strings;
@@ -22,7 +23,7 @@ public class PortalBaseAction extends BaseAction {
 
   protected ResourceManager resourceManager;
   protected Resource resource;
-  protected Integer version;
+  protected BigDecimal version;
   public static final String UNSPECIFIED_VERSION = "unspecified";
   private static final Logger LOG = Logger.getLogger(PortalBaseAction.class);
 
@@ -62,7 +63,7 @@ public class PortalBaseAction extends BaseAction {
     String v = StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_VERSION));
     if (!Strings.isNullOrEmpty(v)) {
       try {
-        setVersion(Integer.valueOf(v));
+        setVersion(new BigDecimal(v));
       } catch (NumberFormatException e) {
         LOG.error("Parameter version (v) was not a valid number: " + String.valueOf(v));
       }
@@ -75,7 +76,7 @@ public class PortalBaseAction extends BaseAction {
    * @return the version number requested
    */
   @Nullable
-  public Integer getVersion() {
+  public BigDecimal getVersion() {
     return version;
   }
 
@@ -84,7 +85,7 @@ public class PortalBaseAction extends BaseAction {
    * 
    * @param version version number requested
    */
-  public void setVersion(Integer version) {
+  public void setVersion(BigDecimal version) {
     this.version = version;
   }
 

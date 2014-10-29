@@ -59,6 +59,7 @@ import org.gbif.utils.file.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import javax.validation.constraints.NotNull;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
@@ -356,7 +357,7 @@ public class GenerateDwcaTest {
     // retrieve sample eml.xml file
     File emlXML = FileUtils.getClasspathFile("resources/res1/eml.xml");
     // mock finding eml.xml file
-    when(mockDataDir.resourceEmlFile(anyString(), anyInt())).thenReturn(emlXML);
+    when(mockDataDir.resourceEmlFile(anyString(), any(BigDecimal.class))).thenReturn(emlXML);
 
     // create SourceManagerImpl
     mockSourceManager = new SourceManagerImpl(mock(AppConfig.class), mockDataDir);
@@ -387,7 +388,7 @@ public class GenerateDwcaTest {
     when(mockDataDir.resourceDwcaFile(anyString())).thenReturn(new File(resourceDir, DataDir.DWCA_FILENAME));
 
     // mock creation of versioned zipped dwca in resource directory
-    when(mockDataDir.resourceDwcaFile(anyString(), anyInt()))
+    when(mockDataDir.resourceDwcaFile(anyString(), any(BigDecimal.class)))
       .thenReturn(new File(resourceDir, VERSIONED_ARCHIVE_FILENAME));
 
     // add SourceBase.TextFileSource fileSource to test Resource
