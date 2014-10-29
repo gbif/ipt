@@ -12,11 +12,13 @@ versionsTable macro: Generates a data table that has pagination.
 
     /* version history list */
     var aDataSet = [
-      <#list versions as v>
-          [<#if v.latest>'<img class="latestVersion" src="../images/dataTables/forward_enabled_hover.png"/>${v.version!}'<#else>'<img class="latestVersionHidden" src="../images/dataTables/forward_enabled_hover.png"/>${v.version!}'</#if>,
+      <#list resource.getVersionHistory() as v>
+          [<#if v.version == 2.1>'<img class="latestVersion" src="../images/dataTables/forward_enabled_hover.png"/>${v.version!}'<#else>'<img class="latestVersionHidden" src="../images/dataTables/forward_enabled_hover.png"/>${v.version!}'</#if>,
            '${v.released?date}',
+           '${v.recordsPublished}',
            '${v.changeSummary!}',
            '${v.doi!}',
+           <#if v.modifiedBy??>'${v.modifiedBy.firstname?replace("\'", "\\'")?replace("\"", '\\"')!} ${v.modifiedBy.lastname?replace("\'", "\\'")?replace("\"", '\\"')!}'<#else>""</#if>,
            "<a href='${baseURL}/resource.do?r=${shortname}&amp;v=${v.version!}'>view</a>"]<#if v_has_next>,</#if>
       </#list>
     ];
@@ -44,8 +46,10 @@ versionsTable macro: Generates a data table that has pagination.
             "aoColumns": [
                 { "sTitle": "Version", "bSearchable": false},
                 { "sTitle": "Released", "bSearchable": false},
+                { "sTitle": "Records", "bSearchable": false},
                 { "sTitle": "Change Summary", "bSearchable": false},
                 { "sTitle": "DOI Handle", "bSearchable": false},
+                { "sTitle": "Published By", "bSearchable": false},
                 { "sTitle": "", "bSearchable": false}
             ],
             "aaSorting": [[ ${columnToSortOn}, "${sortOrder}" ]],

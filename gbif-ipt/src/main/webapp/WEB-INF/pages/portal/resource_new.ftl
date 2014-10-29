@@ -223,7 +223,8 @@
                             <#else>
                               <@s.text name='portal.resource.latest.version'/>&nbsp;[2.1]
                             </#if>
-                            <@s.text name='portal.resource.publishedOn'/> ${eml.pubDate?date?string.medium}, doi:${versions[3].doi!}
+                          <#-- TODO replace with actual DOI -->
+                            <@s.text name='portal.resource.publishedOn'/> ${eml.pubDate?date?string.medium}, doi:10.5886/1bft7W5f
                           <#else>
                             <@s.text name='portal.resource.published.never.long'/>
                           </#if>
@@ -246,12 +247,14 @@
                                     <li class="box"><a href="${eml.distributionUrl}" class="icon icon-homepage"><@s.text name='eml.distributionUrl.short'/></a></li>
                                 </#if>
                                 <#if resource.lastPublished??>
-                                    <li class="box"><a href="${download_dwca_url}" class="icon icon-download">DwC-A</a></li>
-                                    <li class="box"><a href="${download_eml_url}" class="icon icon-download">EML</a></li>
-                                    <li class="box"><a href="${download_rtf_url}" class="icon icon-download">RDF</a></li>
-                                    <li class="box"><a href="${anchor_versions}" class="icon icon-clock">Version History</a></li>
-                                    <li class="box"><a href="${anchor_rights}" class="icon icon-key">Rights</a></li>
-                                    <li class="box"><a href="${anchor_citation}" class="icon icon-book">Cite This</a></li>
+                                  <li class="box"><a href="${download_dwca_url}" class="icon icon-download">DwC-A</a></li>
+                                  <li class="box"><a href="${download_eml_url}" class="icon icon-download">EML</a></li>
+                                  <li class="box"><a href="${download_rtf_url}" class="icon icon-download">RDF</a></li>
+                                  <#if resource.versionHistory??>
+                                      <li class="box"><a href="${anchor_versions}" class="icon icon-clock">Version History</a></li>
+                                  </#if>
+                                  <li class="box"><a href="${anchor_rights}" class="icon icon-key">Rights</a></li>
+                                  <li class="box"><a href="${anchor_citation}" class="icon icon-book">Cite This</a></li>
                                 </#if>
                               </ul>
                           </#if>
@@ -285,16 +288,18 @@
               <#if resource.lastPublished??>
 
                 <!-- versions section -->
-                <div id ="versions" class="row">
+                <#if resource.versionHistory??>
+                  <div id ="versions" class="row">
                     <div>
-                        <h1><@s.text name='portal.resource.versions'/></h1>
-                        <@versionsTable numVersionsShown=2 sEmptyTable="dataTables.sEmptyTable.versions" columnToSortOn=0 sortOrder="desc" baseURL=baseURL shortname=resource.shortname />
-                        <div id="vtableContainer"></div>
-                        <p>
-                          <div class="clearfix"></div>
-                        </p>
+                      <h1><@s.text name='portal.resource.versions'/></h1>
+                      <@versionsTable numVersionsShown=2 sEmptyTable="dataTables.sEmptyTable.versions" columnToSortOn=0 sortOrder="desc" baseURL=baseURL shortname=resource.shortname />
+                      <div id="vtableContainer"></div>
+                      <p>
+                        <div class="clearfix"></div>
+                      </p>
                     </div>
-                </div>
+                  </div>
+                </#if>
 
                   <!-- downloads section -->
                   <div id="downloads" class="row">

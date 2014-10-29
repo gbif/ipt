@@ -28,6 +28,7 @@ import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.SqlSource;
 import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.model.User;
+import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
@@ -80,6 +81,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Writer;
+import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -801,7 +803,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             }
 
             // the previous version needs to be rolled back
-            restoreVersion(resource, resource.getLastVersion(), action);
+            restoreVersion(resource, resource.getReplacedEmlVersion(), action);
 
             // keep track of how many failures on auto publication have happened
             processFailures.put(resource.getShortname(), new Date());
@@ -1053,7 +1055,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return resource;
   }
 
-  public boolean publish(Resource resource, int version, BaseAction action)
+  public boolean publish(Resource resource, BigDecimal version, BaseAction action)
     throws PublicationException, InvalidConfigException {
     // prevent null action from being handled
     if (action == null) {
@@ -1064,6 +1066,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
     // publish RTF
     publishRtf(resource, version);
+
+    // save the version history
+    saveVersionHistory(resource, version, action.getCurrentUser());
 
     // (re)generate dwca asynchronously
     boolean dwca = false;
@@ -1103,8 +1108,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     updateNextPublishedDate(resource);
     // set number of records published
     resource.setRecordsPublished(recordCount);
-    // save the number of records published for version file (needed to display record count on resource version page)
-    saveVersionCount(resource);
+    // update records published in version history
+    VersionHistory vh = resource.findVersionHistory(resource.getEmlVersion());
+    if (vh != null) {
+      vh.setRecordsPublished(recordCount);
+      vh.setReleased(new Date());
+    }
     // persist resource object changes
     save(resource);
     // final logging
@@ -1114,48 +1123,45 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     log.info(msg);
   }
 
-  public void restoreVersion(Resource resource, int version, BaseAction action) {
+  public void restoreVersion(Resource resource, BigDecimal restoring, BaseAction action) {
     // prevent null action from being handled
     if (action == null) {
       action = new BaseAction(textProvider, cfg, registrationManager);
     }
     String shortname = resource.getShortname();
-    String sVersion = String.valueOf(version);
-    log.info("Restoring version #" + sVersion + " of resource " + shortname);
+    BigDecimal rollingBack = resource.getEmlVersion();
+    log.info("Rolling back version # " + rollingBack.toPlainString() + ", restoring version #" +
+             restoring.toPlainString() + " of resource " + shortname);
 
-    if (version >= 0) {
-      int versionToRollback = version + 1;
+    if (restoring.compareTo(BigDecimal.ZERO) >= 0) {
       try {
         // delete eml-1.xml if it exists (eml.xml must remain)
-        File versionedEMLFile = dataDir.resourceEmlFile(shortname, versionToRollback);
+        File versionedEMLFile = dataDir.resourceEmlFile(shortname, rollingBack);
         if (versionedEMLFile.exists()) {
           FileUtils.forceDelete(versionedEMLFile);
         }
         // delete shortname-1.rtf if it exists
-        File versionedRTFFile = dataDir.resourceRtfFile(shortname, versionToRollback);
+        File versionedRTFFile = dataDir.resourceRtfFile(shortname, rollingBack);
         if (versionedRTFFile.exists()) {
           FileUtils.forceDelete(versionedRTFFile);
         }
         // delete dwca-1.zip if it exists
-        File versionedDwcaFile = dataDir.resourceDwcaFile(shortname, versionToRollback);
+        File versionedDwcaFile = dataDir.resourceDwcaFile(shortname, rollingBack);
         if (versionedDwcaFile.exists()) {
           FileUtils.forceDelete(versionedDwcaFile);
         }
         // dwca.zip should be replaced with dwca-version.zip - if it exists
-        File versionedDwcaFileToRestore = dataDir.resourceDwcaFile(shortname, version);
+        File versionedDwcaFileToRestore = dataDir.resourceDwcaFile(shortname, restoring);
         if (versionedDwcaFileToRestore.exists()) {
           // proceed with overwriting/replacing dwca.zip with dwca-version.zip
           File dwca = dataDir.resourceDwcaFile(resource.getShortname(), null);
           FileUtils.copyFile(versionedDwcaFileToRestore, dwca);
         }
-        // delete .recordspublished-1 if it exists
-        File versionedCountFile = dataDir.resourceCountFile(shortname, versionToRollback);
-        if (versionedCountFile != null && versionedCountFile.exists()) {
-          FileUtils.forceDelete(versionedCountFile);
-        }
+        // ensure version history removed
+        resource.removeVersionHistory(rollingBack);
 
         // update resource.xml
-        resource.setEmlVersion(version);
+        resource.setEmlVersion(restoring);
         save(resource);
 
         // update eml.xml and persist changes
@@ -1163,12 +1169,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         saveEml(resource);
 
       } catch (IOException e) {
-        String msg = action.getText("restore.resource.failed", new String[] {sVersion, shortname, e.getMessage()});
+        String msg = action.getText("restore.resource.failed", new String[] {restoring.toPlainString(), shortname, e.getMessage()});
         log.error(msg, e);
         action.addActionError(msg);
       }
       // alert user version rollback was successful
-      String msg = action.getText("restore.resource.success", new String[] {sVersion, shortname});
+      String msg = action.getText("restore.resource.success", new String[] {restoring.toPlainString(), shortname});
       log.info(msg);
       action.addActionMessage(msg);
       // update StatusReport on publishing page
@@ -1330,7 +1336,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @param version version number to publish
    * @throws PublicationException if resource was already being published, or if publishing failed for any reason
    */
-  private void publishEml(Resource resource, int version) throws PublicationException {
+  private void publishEml(Resource resource, BigDecimal version) throws PublicationException {
     // check if publishing task is already running
     if (isLocked(resource.getShortname())) {
       throw new PublicationException(PublicationException.TYPE.LOCKED,
@@ -1368,7 +1374,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @param version version number to publish
    * @throws PublicationException if resource was already being published, or if publishing failed for any reason
    */
-  private void publishRtf(Resource resource, int version) throws PublicationException {
+  private void publishRtf(Resource resource, BigDecimal version) throws PublicationException {
     // check if publishing task is already running
     if (isLocked(resource.getShortname())) {
       throw new PublicationException(PublicationException.TYPE.LOCKED,
@@ -1620,34 +1626,22 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   /**
-   * Store the number of records published for version v of resource to a hidden file called .recordspublished-v needed
-   * to display the record number on the resource homepage for that particular version.
-   * 
-   * @param resource resource
+   * Construct the VersionHistory for version v of resource, and add it to the resource's
+   * VersionHistory List.
+   *
+   * @param resource resource published
+   * @param version version of resource published
+   * @param currentUser user publishing resource
    */
-  @VisibleForTesting
-  protected synchronized void saveVersionCount(Resource resource) {
-    Writer writer = null;
-    try {
-      File file = dataDir.resourceCountFile(resource.getShortname(), resource.getEmlVersion());
-      if (file != null) {
-        writer = org.gbif.utils.file.FileUtils.startNewUtf8File(file);
-        writer.write(String.valueOf(resource.getRecordsPublished()));
-      } else {
-        log.error("Count file for resource " + resource.getShortname() + " and version " + resource.getEmlVersion()
-          + " non existing");
-      }
-    } catch (IOException e) {
-      log.error("Problem writing to count file", e);
-    } finally {
-      if (writer != null) {
-        try {
-          writer.close();
-        } catch (IOException e) {
-          log.error("Problem closing count file");
-        }
-      }
-    }
+  protected synchronized void saveVersionHistory(Resource resource, BigDecimal version, User currentUser) {
+    VersionHistory versionHistory = new VersionHistory(version, new Date(), currentUser);
+    // DOI
+    versionHistory.setDoi(resource.getDoi());
+    // DOI status
+    versionHistory.setStatus(resource.getIdentifierStatus());
+    // TODO Change summary
+    versionHistory.setChangeSummary(resource.getChangeSummary());
+    resource.addVersionHistory(versionHistory);
   }
 
   public synchronized void save(Resource resource) throws InvalidConfigException {

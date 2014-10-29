@@ -13,19 +13,18 @@ import org.gbif.utils.file.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.io.Files;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -33,7 +32,7 @@ public class ResourceActionTest {
   private ResourceAction action;
   private Resource resource;
   private static final String RESOURCE_SHORT_NAME = "test_resource";
-  private static final int RESOURCE_VERSION = 3;
+  private static final BigDecimal RESOURCE_VERSION = new BigDecimal("3.0");
 
   @Before
   public void setup() throws IOException {
@@ -54,13 +53,6 @@ public class ResourceActionTest {
     resource = new Resource();
     resource.setShortname(RESOURCE_SHORT_NAME);
     resource.setEmlVersion(RESOURCE_VERSION);
-
-    // mock retrieval of sample resource version count file, for version 3 of resource
-    File countFile = FileUtils.getClasspathFile("resources/res1/.recordspublished-3");
-    // want to return copy of test resource file since its contents gets overwritten
-    File tmpCountFile = File.createTempFile(".recordspublished-3", "");
-    Files.copy(countFile, tmpCountFile);
-    when(mockDataDir.resourceCountFile(eq(RESOURCE_SHORT_NAME), eq(RESOURCE_VERSION))).thenReturn(tmpCountFile);
 
     action = new ResourceAction(mockTextProvider, mockCfg, mockRegistrationManager, mockResourceManager,
       mockVocabManager, mockDataDir);
@@ -100,17 +92,5 @@ public class ResourceActionTest {
     assertEquals("Plantae (Plants)", coverages.get(0).getKeywords().get(0).getDisplayNames().get(0));
     assertEquals("Equisetopsida", coverages.get(0).getKeywords().get(1).getDisplayNames().get(0));
     assertEquals("Sedges", coverages.get(0).getKeywords().get(2).getDisplayNames().get(0));
-  }
-
-  @Test
-  public void testSetRecordsPublishedForVersion() {
-    action.setRecordsPublishedForVersion(RESOURCE_SHORT_NAME, RESOURCE_VERSION);
-    assertEquals(1234, action.getRecordsPublishedForVersion());
-  }
-
-  @Test
-  public void testSetRecordsPublishedForVersionNotFound() {
-    action.setRecordsPublishedForVersion(RESOURCE_SHORT_NAME, 500);
-    assertEquals(0, action.getRecordsPublishedForVersion());
   }
 }

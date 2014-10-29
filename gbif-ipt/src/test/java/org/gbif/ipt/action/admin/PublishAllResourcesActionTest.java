@@ -20,6 +20,7 @@ import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.task.ReportHandler;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import javax.xml.parsers.ParserConfigurationException;
 
 import com.google.common.collect.Sets;
@@ -65,7 +66,9 @@ public class PublishAllResourcesActionTest {
     Resource resource = action.resourceManager.get("res2");
 
     // make a few pre-publication assertions
-    assertEquals(3, resource.getEml().getEmlVersion());
+    assertNull(resource.getReplacedEmlVersion());
+    assertEquals(BigDecimal.valueOf(3.0), resource.getEmlVersion());
+    assertEquals(BigDecimal.valueOf(3.0), resource.getEml().getEmlVersion());
 
     // populate a source mapping, and assign it to resource
     ExtensionMapping em = new ExtensionMapping();
@@ -89,7 +92,7 @@ public class PublishAllResourcesActionTest {
     // # of publish event failures for resource captured
     assertEquals(1, action.resourceManager.getProcessFailures().size());
     assertFalse(action.resourceManager.hasMaxProcessFailures(resource));
-    assertEquals(3, resource.getEml().getEmlVersion());
+    assertEquals(BigDecimal.valueOf(3.0), resource.getEml().getEmlVersion());
     assertNull(resource.getNextPublished());
     assertNull(resource.getLastPublished());
 

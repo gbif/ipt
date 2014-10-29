@@ -11,9 +11,11 @@ import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.metadata.eml.Eml;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -58,7 +60,9 @@ public class Resource implements Serializable, Comparable<Resource> {
   // publication mode
   private PublicationMode publicationMode;
   // resource version and eml version are the same
-  private int emlVersion = 0;
+  private BigDecimal emlVersion;
+  // resource version replaced
+  private BigDecimal replacedEmlVersion;
   // last time resource was successfully published
   private Date lastPublished;
   // next time resource is scheduled to be pubished
@@ -75,7 +79,10 @@ public class Resource implements Serializable, Comparable<Resource> {
   private Set<User> managers = new HashSet<User>();
   // mapping configs
   private Set<Source> sources = new HashSet<Source>();
-  private List<ExtensionMapping> mappings = new ArrayList<ExtensionMapping>();
+  private List<ExtensionMapping> mappings = Lists.newArrayList();
+
+  private String changeSummary;
+  private List<VersionHistory> versionHistory = Lists.newArrayList();
 
   private IdentifierStatus identifierStatus = IdentifierStatus.RESERVED;
   private String doi;
@@ -85,6 +92,64 @@ public class Resource implements Serializable, Comparable<Resource> {
     if (manager != null) {
       this.managers.add(manager);
     }
+  }
+
+  /**
+   * Add new VersionHistory, as long as a VersionHistory with same version hasn't been added yet.
+   *
+   * @param history VersionHistory to add
+   */
+  public void addVersionHistory(VersionHistory history) {
+    if (versionHistory == null) {
+      versionHistory = Lists.newArrayList();
+    }
+    if (history != null) {
+      boolean exists = false;
+      for (VersionHistory vh : versionHistory)
+      if (vh.getVersion().compareTo(history.getVersion()) == 0) {
+        exists = true;
+      }
+      if (!exists) {
+        versionHistory.add(history);
+      }
+    }
+  }
+
+  /**
+   * Remove a VersionHistory with specific version.
+   *
+   * @param version version of VersionHistory to remove
+   */
+  public void removeVersionHistory(BigDecimal version) {
+    if (versionHistory == null) {
+      versionHistory = Lists.newArrayList();
+    }
+    if (version != null) {
+      Iterator<VersionHistory> iter = versionHistory.iterator();
+      while (iter.hasNext()) {
+        BigDecimal historyVersion = iter.next().getVersion();
+        if (version.compareTo(historyVersion) == 0) {
+          iter.remove();
+        }
+      }
+    }
+  }
+
+  /**
+   * Find and return a VersionHistory with specific version.
+   *
+   * @param version version of VersionHistory searched for
+   * @return VersionHistory with specific version or null if not found
+   */
+  public VersionHistory findVersionHistory(BigDecimal version) {
+    if (version != null) {
+      for (VersionHistory vh : versionHistory) {
+        if (version.compareTo(vh.getVersion()) == 0) {
+          return vh;
+        }
+      }
+    }
+    return null;
   }
 
   /**
@@ -277,26 +342,17 @@ public class Resource implements Serializable, Comparable<Resource> {
    *
    * @return resource version
    */
-  public int getEmlVersion() {
+  public BigDecimal getEmlVersion() {
     return emlVersion;
   }
 
   /**
-   * Get the next resource version.
+   * Get the next resource version, bumped by minor resource version.
    *
    * @return next resource version
    */
-  public int getNextVersion() {
-    return emlVersion + 1;
-  }
-
-  /**
-   * Get the last resource version.
-   *
-   * @return last resource version
-   */
-  public int getLastVersion() {
-    return emlVersion - 1;
+  public BigDecimal getNextVersion() {
+    return getEml().getNextEmlVersionAfterMinorVersionChange();
   }
 
   public UUID getKey() {
@@ -579,10 +635,19 @@ public class Resource implements Serializable, Comparable<Resource> {
     this.eml = eml;
   }
 
-  public void setEmlVersion(int emlVersion) {
-    this.emlVersion = emlVersion;
+  /**
+   * Set the new eml (resource) version. If the new version is greater than the existing version, the previous version
+   * is stored.
+   *
+   * @param v new eml (resource) version
+   */
+  public void setEmlVersion(BigDecimal v) {
+    if (v != null && emlVersion != null && v.compareTo(emlVersion) > 0) {
+      replacedEmlVersion = emlVersion;
+    }
+    emlVersion = v;
     if (eml != null) {
-      eml.setEmlVersion(emlVersion);
+      eml.setEmlVersion(v);
     }
   }
 
@@ -682,5 +747,37 @@ public class Resource implements Serializable, Comparable<Resource> {
    */
   public boolean usesAutoPublishing() {
     return publicationMode == PublicationMode.AUTO_PUBLISH_ON && updateFrequency != null;
+  }
+
+  /**
+   * TODO
+   * @return
+   */
+  public String getChangeSummary() {
+    return changeSummary;
+  }
+
+  public void setChangeSummary(String changeSummary) {
+    this.changeSummary = changeSummary;
+  }
+
+  /**
+   * TODO
+   * @return
+   */
+  public List<VersionHistory> getVersionHistory() {
+    return versionHistory;
+  }
+
+  public void setVersionHistory(List<VersionHistory> versionHistory) {
+    this.versionHistory = versionHistory;
+  }
+
+  /**
+   * TODO
+   * @return
+   */
+  public BigDecimal getReplacedEmlVersion() {
+    return replacedEmlVersion;
   }
 }
