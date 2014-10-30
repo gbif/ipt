@@ -292,7 +292,7 @@
                   <div id ="versions" class="row">
                     <div>
                       <h1><@s.text name='portal.resource.versions'/></h1>
-                      <@versionsTable numVersionsShown=2 sEmptyTable="dataTables.sEmptyTable.versions" columnToSortOn=0 sortOrder="desc" baseURL=baseURL shortname=resource.shortname />
+                      <@versionsTable numVersionsShown=3 sEmptyTable="dataTables.sEmptyTable.versions" baseURL=baseURL shortname=resource.shortname />
                       <div id="vtableContainer"></div>
                       <p>
                         <div class="clearfix"></div>

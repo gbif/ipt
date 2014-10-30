@@ -42,7 +42,6 @@ import org.gbif.metadata.eml.UserId;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
