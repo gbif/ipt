@@ -17,19 +17,26 @@
 package org.gbif.ipt.model;
 
 import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
+import org.gbif.metadata.eml.Agent;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
+import com.google.common.collect.Lists;
+import org.apache.log4j.Logger;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class ResourceTest {
-
+  private static final Logger LOG = Logger.getLogger(ResourceTest.class);
   private final Extension OCC;
   private final Extension EXT;
   private final Extension TAX;
@@ -253,6 +260,66 @@ public class ResourceTest {
     VersionHistory vh = resource.findVersionHistory(BigDecimal.valueOf(1.4));
     assertEquals(BigDecimal.valueOf(1.4), vh.getVersion());
     assertEquals("jc@gbif.org", vh.getModifiedBy().getEmail());
+  }
+
+  @Test
+  public void testGetAuthorName() {
+    Agent creator = new Agent();
+    creator.setLastName("Williams");
+    creator.setFirstName("Brian");
+    assertEquals("Williams B", getResource().getAuthorName(creator));
+
+    creator.setFirstName("Brian Gonzalez");
+    assertEquals("Williams B G", getResource().getAuthorName(creator));
+  }
+
+  @Test
+  public void testGetPublicationYear() {
+    Date now = new Date();
+    int year = getResource().getPublicationYear(now);
+    assertNotNull(year);
+    assertEquals(4, String.valueOf(year).length());
+  }
+
+  @Test
+  public void testGenerateResourceCitation() {
+    Resource resource = new Resource();
+    resource.setTitle("Birds");
+    resource.setEmlVersion(BigDecimal.valueOf(1.6));
+    resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
+    resource.setDoi("http://doi.org/10.5886/1bft7W5f");
+
+    Calendar calendar = Calendar.getInstance();
+    calendar.set(2014, Calendar.JANUARY, 29);
+    resource.getEml().setPubDate(calendar.getTime());
+
+    Agent creator1 = new Agent();
+    creator1.setFirstName("John");
+    creator1.setLastName("Smith");
+
+    Agent creator2 = new Agent();
+    creator2.setFirstName("Paul");
+    creator2.setLastName("Weir");
+
+    List<Agent> creators = Lists.newArrayList();
+    creators.add(creator1);
+    creators.add(creator2);
+
+    resource.getEml().setCreators(creators);
+
+    Organisation publisher = new Organisation();
+    publisher.setName("NHM");
+    resource.setOrganisation(publisher);
+
+    String citation = resource.generateResourceCitation();
+
+    LOG.info("Resource citation using next minor version: " + citation);
+    assertEquals("Smith J, Weir P (2014): Birds. v1.7. NHM. Dataset. http://doi.org/10.5886/1bft7W5f", citation);
+
+    citation = resource.generateResourceCitation(BigDecimal.valueOf(1.6));
+
+    LOG.info("Resource citation with version specified: " + citation);
+    assertEquals("Smith J, Weir P (2014): Birds. v1.6. NHM. Dataset. http://doi.org/10.5886/1bft7W5f", citation);
   }
 
 }

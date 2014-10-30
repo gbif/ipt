@@ -7,13 +7,13 @@ versionsTable macro: Generates a data table that has pagination.
 - baseURL: IPT baseURL
 - shortname: The shortname of the resource
 -->
-<#macro versionsTable numVersionsShown sEmptyTable columnToSortOn sortOrder baseURL shortname>
+<#macro versionsTable numVersionsShown sEmptyTable baseURL shortname>
 <script type="text/javascript" charset="utf-8">
 
     /* version history list */
     var aDataSet = [
       <#list resource.getVersionHistory() as v>
-          [<#if v.version == 2.1>'<img class="latestVersion" src="../images/dataTables/forward_enabled_hover.png"/>${v.version!}'<#else>'<img class="latestVersionHidden" src="../images/dataTables/forward_enabled_hover.png"/>${v.version!}'</#if>,
+          [<#if (version?? && v.version == version) || (!version?? && v.version == resource.emlVersion)>'<img class="latestVersion" src="../images/dataTables/forward_enabled_hover.png"/>${v.version!}'<#else>'<img class="latestVersionHidden" src="../images/dataTables/forward_enabled_hover.png"/>${v.version!}'</#if>,
            '${v.released?date}',
            '${v.recordsPublished}',
            '${v.changeSummary!}',
@@ -31,6 +31,7 @@ versionsTable macro: Generates a data table that has pagination.
             "iDisplayLength": ${numVersionsShown},
             "bLengthChange": false,
             "bAutoWidth": false,
+            "bSort": false,
             "oLanguage": {
                 "sEmptyTable": "<@s.text name="${sEmptyTable}"/>",
                 "sZeroRecords": "<@s.text name="dataTables.sZeroRecords"/>",
@@ -52,9 +53,8 @@ versionsTable macro: Generates a data table that has pagination.
                 { "sTitle": "Published By", "bSearchable": false},
                 { "sTitle": "", "bSearchable": false}
             ],
-            "aaSorting": [[ ${columnToSortOn}, "${sortOrder}" ]],
             "aoColumnDefs": [
-                { 'bSortable': false, 'aTargets': [ 0,1,2,3,4] }
+                { 'bSortable': false, 'aTargets': [ 0,1,2,3,4,5,6] }
             ]
         } );
     } );
