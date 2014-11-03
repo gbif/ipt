@@ -81,6 +81,8 @@ public class Resource implements Serializable, Comparable<Resource> {
   private Date created;
   private User modifier;
   private Date modified;
+  private Date metadataModified;
+  private Date mappingsModified;
   private Set<User> managers = new HashSet<User>();
   // mapping configs
   private Set<Source> sources = new HashSet<Source>();
@@ -331,13 +333,6 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   public User getCreator() {
     return creator;
-  }
-
-  public String getDescription() {
-    if (eml != null) {
-      return eml.getDescription();
-    }
-    return null;
   }
 
   public Eml getEml() {
@@ -836,8 +831,8 @@ public class Resource implements Serializable, Comparable<Resource> {
       }
     }
 
-    // add publication year
-    int publicationYear = getPublicationYear(getEml().getPubDate());
+    // add year resource was first published (captured in EML dateStamp)
+    int publicationYear = getPublicationYear(getEml().getDateStamp());
     if (publicationYear > 0) {
       sb.append(" (");
       sb.append(publicationYear);
@@ -866,9 +861,12 @@ public class Resource implements Serializable, Comparable<Resource> {
     sb.append("Dataset");
     sb.append(". ");
 
-    // add identifier, if its status is public
+    // TODO: revise
+    // add identifier, if its status is public. If that's not set, use the citation identifier instead
     if (getIdentifierStatus() != null && getIdentifierStatus().equals(IdentifierStatus.PUBLIC)) {
       sb.append(Strings.nullToEmpty(getDoi()));
+    } else if (getEml().getCitation().getIdentifier() != null) {
+      sb.append(getEml().getCitation().getIdentifier());
     }
     return sb.toString();
   }
@@ -911,5 +909,39 @@ public class Resource implements Serializable, Comparable<Resource> {
     Calendar calendar = Calendar.getInstance();
     calendar.setTime(publicationDate);
     return calendar.get(Calendar.YEAR);
+  }
+
+  /**
+   * @return the date the metadata was last modified.
+   */
+  public Date getMetadataModified() {
+    return metadataModified;
+  }
+
+  /**
+   * Set metadataModified date. Update modified date at same time.
+   *
+   * @param metadataModified date metadata was last modified
+   */
+  public void setMetadataModified(Date metadataModified) {
+    this.modified = metadataModified;
+    this.metadataModified = metadataModified;
+  }
+
+  /**
+   * @return the date any source mapping was last modified.
+   */
+  public Date getMappingsModified() {
+    return mappingsModified;
+  }
+
+  /**
+   * Set mappingsModified date. Update modified date at same time.
+   *
+   * @param mappingsModified date mappings were last modified
+   */
+  public void setMappingsModified(Date mappingsModified) {
+    this.modified = mappingsModified;
+    this.mappingsModified = mappingsModified;
   }
 }

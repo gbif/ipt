@@ -1556,4 +1556,8 @@ ul {
   background-image: url('../images/icons/clock.png');
 }
 
+.icon-gbif {
+  background-image: url('../images/icons/favicon.ico');
+}
+
 /* End dataset homepage */

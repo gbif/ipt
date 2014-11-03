@@ -417,9 +417,8 @@ public class MappingAction extends ManagerBaseAction {
         // back to mapping object
         mapping.setFields(mappedFields);
     }
-
-    // set modified date
-    resource.setModified(new Date());
+    // set mappings modified date
+    resource.setMappingsModified(new Date());
     // save entire resource config
     saveResource();
     // report validation without skipping this save
