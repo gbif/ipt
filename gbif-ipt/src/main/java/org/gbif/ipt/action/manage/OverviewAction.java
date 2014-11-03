@@ -49,6 +49,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.constraints.NotNull;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
@@ -74,6 +76,8 @@ public class OverviewAction extends ManagerBaseAction {
   private final EmlValidator emlValidator;
   private boolean missingMetadata;
   private boolean missingRegistrationMetadata;
+  private boolean metadataModifiedSinceLastPublication;
+  private boolean mappingsModifiedSinceLastPublication;
   private StatusReport report;
   private Date now;
   private boolean unpublish = false;
@@ -233,6 +237,42 @@ public class OverviewAction extends ManagerBaseAction {
 
   public boolean getMissingBasicMetadata() {
     return !emlValidator.isValid(resource.getEml(), MetadataSection.BASIC_SECTION);
+  }
+
+  /**
+   * Determine whether the metadata has been modified since the last publication.
+   *
+   * @param resource resource
+   *
+   * @return true if metadata has been modified since last publication, false otherwise
+   */
+  public boolean setMetadataModifiedSinceLastPublication(@NotNull Resource resource) {
+    if (resource.getLastPublished() == null) {
+      return resource.getMetadataModified() != null;
+    } else {
+      if (resource.getMetadataModified() != null) {
+        return resource.getMetadataModified().compareTo(resource.getLastPublished()) > 0;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Determine whether the source mappings has been modified since the last publication.
+   *
+   * @param resource resource
+   *
+   * @return true if source mappings has been modified since last publication, false otherwise
+   */
+  public boolean setMappingsModifiedSinceLastPublication(@NotNull Resource resource) {
+    if (resource.getLastPublished() == null) {
+      return resource.getMetadataModified() != null;
+    } else {
+      if (resource.getMappingsModified() != null) {
+        return resource.getMappingsModified().compareTo(resource.getLastPublished()) > 0;
+      }
+    }
+    return false;
   }
 
   /**
@@ -574,7 +614,12 @@ public class OverviewAction extends ManagerBaseAction {
 
       // check EML
       missingMetadata = !emlValidator.isValid(resource.getEml(), null);
+      // check resource meets all the conditions required in order to be registered
       missingRegistrationMetadata = !hasMinimumRegistryInfo(resource);
+      // check the metadata has been modified since the last publication
+      metadataModifiedSinceLastPublication = setMetadataModifiedSinceLastPublication(resource);
+      // check the source mappings has been modified since the last publication
+      mappingsModifiedSinceLastPublication = setMappingsModifiedSinceLastPublication(resource);
 
       // populate frequencies map
       populateFrequencies();
@@ -647,6 +692,8 @@ public class OverviewAction extends ManagerBaseAction {
           addActionWarning(getText("manage.overview.data.missing"));
         }
         missingRegistrationMetadata = !hasMinimumRegistryInfo(resource);
+        metadataModifiedSinceLastPublication = setMetadataModifiedSinceLastPublication(resource);
+        mappingsModifiedSinceLastPublication = setMappingsModifiedSinceLastPublication(resource);
         return SUCCESS;
       }
     } catch (PublicationException e) {
@@ -770,5 +817,23 @@ public class OverviewAction extends ManagerBaseAction {
       sb.append("0 failed publications");
     }
     LOG.debug(sb.toString());
+  }
+
+  /**
+   * Called from manage resource page.
+   *
+   * @return true if metadata has been modified since last publication, false otherwise
+   */
+  public boolean isMetadataModifiedSinceLastPublication() {
+    return metadataModifiedSinceLastPublication;
+  }
+
+  /**
+   * Called from manage resource page.
+   *
+   * @return true if source mappings has been modified since last publication, false otherwise.
+   */
+  public boolean isMappingsModifiedSinceLastPublication() {
+    return mappingsModifiedSinceLastPublication;
   }
 }

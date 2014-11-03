@@ -19,51 +19,29 @@
       </div>
     <#else>
       <p>
-        <#assign no_description><@s.text name='manage.overview.no.description'/></#assign>
-			  <@description resource.description!no_description 100/>
+        <@s.text name="manage.overview.metadata.description"/>
+        <#if resource.coreType?has_content && resource.coreType==metadataType>
+          <@s.text name='manage.overview.source.hidden'><@s.param><a href="${baseURL}/manage/metadata-basic.do?r=${resource.shortname}&amp;edit=Edit"><@s.text name="submenu.basic"/></a></@s.param></@s.text>
+        </#if>
       </p>
 
       <div class="details">
-        <table class="twenty_bottom">
-          <#if resource.eml.subject?has_content>
-            <tr>
-              <th><@s.text name='portal.resource.summary.keywords'/></th>
-              <td><@description resource.eml.subject!no_description 90/></td>
-            </tr>
-          </#if>
-          <#assign text>
-            <#list resource.eml.taxonomicCoverages as tc>
-              <#list tc.taxonKeywords as k>
-                ${k.scientificName!}<#if k_has_next>, </#if>
-              </#list>
-              <#if tc_has_next>; </#if>
-            </#list>
-          </#assign>
-          <#if resource.eml.taxonomicCoverages?has_content>
-            <tr>
-              <th><@s.text name='portal.resource.summary.taxcoverage'/></th>
-              <td><@description text!no_description 90/></td>
-            </tr>
-          </#if>
-          <#assign text>
-            <#list resource.eml.geospatialCoverages as geo>
-              ${geo.description!}<#if geo_has_next>; </#if>
-            </#list>
-          </#assign>
-          <#if resource.eml.geospatialCoverages?has_content>
-            <tr>
-              <th><@s.text name='portal.resource.summary.geocoverage'/></th>
-              <td><@description text!no_description 90/></td>
-            </tr>
-          </#if>
+        <table>
+          <tr>
+            <#if metadataModifiedSinceLastPublication>
+              <th><@s.text name='basic.lastModified'/>:</th>
+              <td>${resource.getMetadataModified()?date?string.medium!}</td>
+              <td>
+                <a class="button" href="${baseURL}/resource/preview?r=${resource.shortname}">
+                  <input class="button" type="button" value='<@s.text name='manage.overview.metadata.preview'><@s.param>${resource.getEml().getNextEmlVersionAfterMinorVersionChange()!}</@s.param></@s.text>'/>
+                </a>
+              </td>
+            <#elseif resource.lastPublished??>
+              <th><@s.text name="manage.overview.notModified"/></th>
+            </#if>
+          </tr>
         </table>
       </div>
-      <#if resource.coreType?has_content && resource.coreType==metadataType>
-        <div>
-          <img class="info" src="${baseURL}/images/info.gif"/>
-          <em><@s.text name='manage.overview.source.hidden'><@s.param><a href="${baseURL}/manage/metadata-basic.do?r=${resource.shortname}&amp;edit=Edit"><@s.text name="submenu.basic"/></a></@s.param></@s.text></em>
-        </div>
-      </#if>
     </#if>
   </div>
 </div>

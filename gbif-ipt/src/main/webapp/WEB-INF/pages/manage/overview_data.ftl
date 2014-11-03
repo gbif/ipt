@@ -97,6 +97,19 @@
       <p>
         <@s.text name='manage.overview.DwC.Mappings.description'/>
       </p>
+
+      <div class="details twenty_bottom">
+        <table>
+          <tr>
+            <#if mappingsModifiedSinceLastPublication>
+              <th><@s.text name='basic.lastModified'/>:</th>
+              <td>${resource.getMappingsModified()?date?string.medium!}</td>
+              <#elseif resource.lastPublished??>
+                <th><@s.text name="manage.overview.notModified"/></th>
+              </#if>
+            </tr>
+          </table>
+        </div>
     <#else>
       <div>
         <img class="info" src="${baseURL}/images/info.gif"/>

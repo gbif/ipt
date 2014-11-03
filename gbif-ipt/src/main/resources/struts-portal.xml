@@ -27,6 +27,10 @@
     <action name="resource" class="org.gbif.ipt.action.portal.ResourceAction" method="detail">
       <result>/WEB-INF/pages/portal/resource_new.ftl</result>
     </action>
+    <action name="resource/preview" class="org.gbif.ipt.action.portal.ResourceAction" method="preview">
+      <interceptor-ref name="managerStack"/>
+      <result>/WEB-INF/pages/portal/resource_new.ftl</result>
+    </action>
 
     <!-- data dir files -->
     <action name="eml" class="org.gbif.ipt.action.portal.ResourceFileAction" method="eml">

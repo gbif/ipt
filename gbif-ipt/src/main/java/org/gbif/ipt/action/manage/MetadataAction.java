@@ -42,6 +42,7 @@ import org.gbif.metadata.eml.UserId;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -386,6 +387,8 @@ public class MetadataAction extends ManagerBaseAction {
     if (emlValidator.areAllSectionsValid(this, resource.getEml())) {
       // Save metadata information (eml.xml)
       resourceManager.saveEml(resource);
+      // save date metadata was last modified
+      resource.setMetadataModified(new Date());
       // Alert user of successful save
       addActionMessage(getText("manage.success", new String[] {getText("submenu." + section.getName())}));
 

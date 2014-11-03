@@ -11,7 +11,6 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.FileUtils;
-import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlFactory;
 import org.gbif.metadata.eml.TaxonKeyword;
@@ -24,13 +23,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nullable;
+import javax.validation.constraints.NotNull;
 import javax.xml.parsers.ParserConfigurationException;
 
 import com.google.inject.Inject;
@@ -56,6 +55,8 @@ public class ResourceAction extends PortalBaseAction {
   private Eml eml;
   private boolean metadataOnly;
   private Map<String, String> frequencies;
+  private int recordsPublishedForVersion;
+  private String dwcaSizeForVersion;
 
   @Inject
   public ResourceAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -82,21 +83,46 @@ public class ResourceAction extends PortalBaseAction {
 
   /**
    * Loads a specific version of a resource's metadata from its eml-v.xml file located inside its resource directory.
-   * If no eml-v.xml file was found (there have been no published versions yet), the resource is loaded from the
-   * default eml.xml file. If no eml.xml file exists yet, an empty EML instance is loaded.
-   * 
+   * </br>
+   * If no specific version is requested, the latest published version is loaded.
+   * </br>
+   * If there have been no published versions yet, the resource is loaded from the default eml.xml file.
+   * </br>
+   * If no eml.xml file exists yet, an empty EML instance is loaded.
+   *
    * @param shortname resource shortname
-   * @param version resource version (eml version)
+   * @param version   resource version (eml version)
+   *
    * @return EML object loaded from eml.xml file with specific version or a new EML instance if none found
-   * @throws IOException if problem occurred loading eml file (e.g. it doesn't exist)
+   *
+   * @throws IOException  if problem occurred loading eml file (e.g. it doesn't exist)
    * @throws SAXException if problem occurred parsing eml file
+   * @throws javax.xml.parsers.ParserConfigurationException if problem occurred parsing eml file
    */
   private Eml loadEmlFromFile(String shortname, @Nullable BigDecimal version)
     throws IOException, SAXException, ParserConfigurationException {
+    version = (version == null) ? findLatestPublishedVersion(resource) : version;
     File emlFile = dataDir.resourceEmlFile(shortname, version);
     LOG.debug("Loading EML from file: " + emlFile.getAbsolutePath());
     InputStream in = new FileInputStream(emlFile);
     return EmlFactory.build(in);
+  }
+
+  /**
+   * Return the latest published version, or null if the resource's VersionHistory list is null or empty. Important,
+   * VersionHistory goes from latest published (first index) to earliest published (last index).
+   *
+   * @param resource resource
+   * @return latest published version, or null if VersionHistory list was null or empty
+   */
+  private BigDecimal findLatestPublishedVersion(Resource resource) {
+    if (resource != null) {
+      List<VersionHistory> history = resource.getVersionHistory();
+      if (history != null && history.size() > 0) {
+        return history.get(0).getVersion();
+      }
+    }
+    return null;
   }
 
   /**
@@ -182,7 +208,103 @@ public class ResourceAction extends PortalBaseAction {
   }
 
   /**
-   * Handle everything needed to load resource detail (public portal) page.
+   * Finish loading all details shown on resource homepage.
+   *
+   * @param resource resource
+   * @param eml Eml instance
+   * @param version resource version (eml version)
+   */
+  public void finishLoadingDetail(@NotNull Resource resource, @NotNull Eml eml, @Nullable BigDecimal version) {
+    // determine whether version of resource requested is metadata-only or not (has published DwC-A or not)
+    if (version == null) {
+      metadataOnly = resource.getRecordsPublished() == 0;
+    } else {
+      String name = resource.getShortname();
+      File dwcaFile = dataDir.resourceDwcaFile(name, version);
+      if (dwcaFile.exists()) {
+        dwcaSizeForVersion = FileUtils.formatSize(dwcaFile.length(), 0);
+      } else {
+        metadataOnly = true;
+      }
+      // find record count for published version
+      for (VersionHistory history : resource.getVersionHistory()) {
+        if (version.compareTo(history.getVersion()) == 0) {
+          recordsPublishedForVersion = history.getRecordsPublished();
+        }
+      }
+    }
+
+    // now prepare organized taxonomic coverages, facilitating UI display
+    if (eml.getTaxonomicCoverages() != null) {
+      organizedCoverages = constructOrganizedTaxonomicCoverages(eml.getTaxonomicCoverages());
+    }
+    // roles list, derived from XML vocabulary, and displayed in drop-down where new contacts are created
+    roles = new LinkedHashMap<String, String>();
+    roles.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_ROLES, getLocaleLanguage(), false));
+
+    // preservation methods list, derived from XML vocabulary, and displayed in drop-down on Collections Data Page.
+    preservationMethods = new LinkedHashMap<String, String>();
+    preservationMethods
+      .putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_PRESERVATION_METHOD, getLocaleLanguage(), false));
+
+    // languages list, derived from XML vocabulary, and displayed in drop-down on Basic Metadata page
+    languages = vocabManager.getI18nVocab(Constants.VOCAB_URI_LANGUAGE, getLocaleLanguage(), true);
+
+    // countries list, derived from XML vocabulary, and displayed in drop-down where new contacts are created
+    countries = new LinkedHashMap<String, String>();
+    countries.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_COUNTRY, getLocaleLanguage(), true));
+
+    // ranks list, derived from XML vocabulary, and displayed on Taxonomic Coverage Page
+    ranks = new LinkedHashMap<String, String>();
+    ranks.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, getLocaleLanguage(), false));
+
+    // update frequencies list, derived from XML vocabulary, and displayed on Basic Metadata Page
+    frequencies = new LinkedHashMap<String, String>();
+    frequencies.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES, getLocaleLanguage(), false));
+  }
+
+  /**
+   * Preview the next published version of the resource page.
+   *
+   * @return Struts2 result string
+   */
+  public String preview() {
+    // retrieve unpublished eml.xml, using version = null
+    String name = resource.getShortname();
+    try {
+      eml = loadEmlFromFile(resource.getShortname(), null);
+    } catch (FileNotFoundException e) {
+      LOG.error("EML file version #" + getStringVersion() + " for resource " + name + " not found");
+      return NOT_FOUND;
+    } catch (IOException e) {
+      String msg = getText("portal.resource.eml.error.load", new String[] {getStringVersion(), name});
+      LOG.error(msg);
+      addActionError(msg);
+      return ERROR;
+    } catch (SAXException e) {
+      String msg = getText("portal.resource.eml.error.parse", new String[] {getStringVersion(), name});
+      LOG.error(msg);
+      addActionError(msg);
+      return ERROR;
+    } catch (ParserConfigurationException e) {
+      String msg = getText("portal.resource.eml.error.parse", new String[] {getStringVersion(), name});
+      LOG.error(msg);
+      addActionError(msg);
+      return ERROR;
+    }
+
+    // for preview only, set version to next minor published version without saving of course!
+    BigDecimal nextVersion = eml.getNextEmlVersionAfterMinorVersionChange();
+    eml.setEmlVersion(nextVersion);
+
+    finishLoadingDetail(resource, eml, null);
+
+    return SUCCESS;
+  }
+
+  /**
+   * Load resource detail (public portal) page for a specific published version, or the last published version if
+   * no resource version was specified.
    * 
    * @return Struts2 result string
    */
@@ -214,43 +336,7 @@ public class ResourceAction extends PortalBaseAction {
       return ERROR;
     }
 
-    // determine whether version of resource requested is metadata-only or not (has published DwC-A or not)
-    if (version == null) {
-      setMetadataOnly(resource.getRecordsPublished() > 0);
-    } else {
-      File dwcaFile = dataDir.resourceDwcaFile(name, version);
-      if (dwcaFile.exists()) {
-        setMetadataOnly(true);
-      }
-    }
-
-    // now prepare organized taxonomic coverages, facilitating UI display
-    if (resource != null && eml != null && eml.getTaxonomicCoverages() != null) {
-      organizedCoverages = constructOrganizedTaxonomicCoverages(eml.getTaxonomicCoverages());
-    }
-    // roles list, derived from XML vocabulary, and displayed in drop-down where new contacts are created
-    roles = new LinkedHashMap<String, String>();
-    roles.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_ROLES, getLocaleLanguage(), false));
-
-    // preservation methods list, derived from XML vocabulary, and displayed in drop-down on Collections Data Page.
-    preservationMethods = new LinkedHashMap<String, String>();
-    preservationMethods
-      .putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_PRESERVATION_METHOD, getLocaleLanguage(), false));
-
-    // languages list, derived from XML vocabulary, and displayed in drop-down on Basic Metadata page
-    languages = vocabManager.getI18nVocab(Constants.VOCAB_URI_LANGUAGE, getLocaleLanguage(), true);
-
-    // countries list, derived from XML vocabulary, and displayed in drop-down where new contacts are created
-    countries = new LinkedHashMap<String, String>();
-    countries.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_COUNTRY, getLocaleLanguage(), true));
-
-    // ranks list, derived from XML vocabulary, and displayed on Taxonomic Coverage Page
-    ranks = new LinkedHashMap<String, String>();
-    ranks.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, getLocaleLanguage(), false));
-
-    // update frequencies list, derived from XML vocabulary, and displayed on Basic Metadata Page
-    frequencies = new LinkedHashMap<String, String>();
-    frequencies.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES, getLocaleLanguage(), false));
+    finishLoadingDetail(resource, eml, version);
 
     return SUCCESS;
   }
@@ -399,5 +485,19 @@ public class ResourceAction extends PortalBaseAction {
    */
   public Map<String, String> getFrequencies() {
     return frequencies;
+  }
+
+  /**
+   * @return record count for published version (specified from version parameter)
+   */
+  public int getRecordsPublishedForVersion() {
+    return recordsPublishedForVersion;
+  }
+
+  /**
+   * @return formatted size of DwC-A for published version (specified from version parameter)
+   */
+  public String getDwcaSizeForVersion() {
+    return dwcaSizeForVersion;
   }
 }

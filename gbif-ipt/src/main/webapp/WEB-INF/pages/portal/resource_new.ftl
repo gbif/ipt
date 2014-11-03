@@ -221,10 +221,10 @@
                             <#if version?? && version!=resource.emlVersion>
                               <em class="warn"><@s.text name='portal.resource.version'/>&nbsp;${version}</em>
                             <#else>
-                              <@s.text name='portal.resource.latest.version'/>&nbsp;[2.1]
+                              <@s.text name='portal.resource.latest.version'/>&nbsp;[${resource.emlVersion!}]
                             </#if>
                           <#-- TODO replace with actual DOI -->
-                            <@s.text name='portal.resource.publishedOn'/> ${eml.pubDate?date?string.medium}, doi:10.5886/1bft7W5f
+                            <@s.text name='portal.resource.publishedOn'/> ${eml.pubDate?date?string.medium}, doi:10.5072/M87N4S2
                           <#else>
                             <@s.text name='portal.resource.published.never.long'/>
                           </#if>
@@ -235,8 +235,8 @@
                           </div>
                         </#if>
                         <p>
-                          <#if resource.description?has_content>
-                            <@textWithFormattedLink resource.description!no_description/>
+                          <#if eml.description?has_content>
+                            <@textWithFormattedLink eml.description!no_description/>
                           <#else>
                             <@s.text name='portal.resource.no.description'/>
                           </#if>
@@ -246,8 +246,13 @@
                                 <#if eml.distributionUrl?has_content>
                                     <li class="box"><a href="${eml.distributionUrl}" class="icon icon-homepage"><@s.text name='eml.distributionUrl.short'/></a></li>
                                 </#if>
-                                <#if resource.lastPublished??>
+                                <#if resource.status=="REGISTERED" && resource.key??>
+                                  <li class="box"><a href="${cfg.portalUrl}/dataset/${resource.key}" class="icon icon-gbif"><@s.text name='portal.resource.gbif.page.short'/></a></li>
+                                </#if>
+                                <#if metadataOnly == false>
                                   <li class="box"><a href="${download_dwca_url}" class="icon icon-download">DwC-A</a></li>
+                                </#if>
+                                <#if resource.lastPublished??>
                                   <li class="box"><a href="${download_eml_url}" class="icon icon-download">EML</a></li>
                                   <li class="box"><a href="${download_rtf_url}" class="icon icon-download">RDF</a></li>
                                   <#if resource.versionHistory??>
@@ -303,27 +308,30 @@
 
                   <!-- downloads section -->
                   <div id="downloads" class="row">
-                    <div>
+                     <div>
                         <h1><@s.text name='portal.resource.downloads'/></h1>
-                        <p><@s.text name='portal.resource.downloads.verbose'/></p>
+                        <#if metadataOnly == true>
+                            <p><@s.text name='portal.resource.downloads.metadataOnly.verbose'/></p>
+                        <#else>
+                            <p><@s.text name='portal.resource.downloads.verbose'/></p>
+                        </#if>
 
                         <table class="downloads">
                             <#-- Archive, EML, and RTF download links include Google Analytics event tracking -->
                             <#-- e.g. Archive event tracking includes components: _trackEvent method, category, action, label, (int) value -->
                             <#-- EML and RTF versions can always be retrieved by version number but DWCA versions are only stored if IPT Archive Mode is on -->
-                            <#if metadataOnly>
+                            <#if metadataOnly == false>
                                 <tr>
-                                    <th><@s.text name='portal.resource.dwca.verbose'/>
-
-                                      <#if version?? && version!=resource.emlVersion>
-                                        <#if recordsPublishedForVersion?? && recordsPublishedForVersion!= 0>
-                                            ${recordsPublishedForVersion?c} <@s.text name='portal.resource.records'/>
-                                        </#if>
-                                      </#if>
-                                    </th>
-                                    <td><a href="${download_dwca_url}" onClick="_gaq.push(['_trackEvent', 'Archive', 'Download', '${resource.shortname}', ${resource.recordsPublished?c!0} ]);"><@s.text name='portal.resource.download'/></a>
-                                        ${resource.recordsPublished?c!0} <@s.text name='portal.resource.records'/>&nbsp;<#if eml.language?has_content && languages[eml.language]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.language]?cap_first!}</@s.param></@s.text></#if> (${dwcaFormattedSize})
-                                    </td>
+                                    <th><@s.text name='portal.resource.dwca.verbose'/></th>
+                                    <#if version?? && version!=resource.emlVersion && recordsPublishedForVersion??>
+                                      <td><a href="${download_dwca_url}" onClick="_gaq.push(['_trackEvent', 'Archive', 'Download', '${resource.shortname}', ${recordsPublishedForVersion?c!0} ]);"><@s.text name='portal.resource.download'/></a>
+                                        ${recordsPublishedForVersion?c!0} <@s.text name='portal.resource.records'/>&nbsp;<#if eml.language?has_content && languages[eml.language]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.language]?cap_first!}</@s.param></@s.text></#if> (${dwcaSizeForVersion!})
+                                      </td>
+                                    <#else>
+                                      <td><a href="${download_dwca_url}" onClick="_gaq.push(['_trackEvent', 'Archive', 'Download', '${resource.shortname}', ${resource.recordsPublished?c!0} ]);"><@s.text name='portal.resource.download'/></a>
+                                        ${resource.recordsPublished?c!0} <@s.text name='portal.resource.records'/>&nbsp;<#if eml.language?has_content && languages[eml.language]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.language]?cap_first!}</@s.param></@s.text></#if> (${dwcaFormattedSize!})
+                                      </td>
+                                    </#if>
                                 </tr>
                             </#if>
                               <tr>
@@ -340,7 +348,7 @@
                                   </td>
                               </tr>
                         </table>
-                    </div>
+                     </div>
                   </div>
 
 
@@ -355,7 +363,7 @@
                               </#if>
                               <@s.text name='portal.resource.cite.help'/>:
                             </p>
-                            <p class="howtocite"><@textWithFormattedLink eml.citation.citation/>&nbsp;<@textWithFormattedLink eml.citation.identifier!/></p>
+                            <p class="howtocite"><@textWithFormattedLink eml.citation.citation/></p>
                         </div>
                     </div>
                 </#if>
