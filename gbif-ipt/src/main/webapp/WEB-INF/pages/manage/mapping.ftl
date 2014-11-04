@@ -257,7 +257,13 @@ $(document).ready(function(){
 	<div class="definition<#if p.required> required</#if>">	
 	  <div class="title">
 	  	<div class="head">
-			${p.name}			
+          <#if !p.namespace?starts_with("http://purl.org/")>
+            ${p.name}
+          <#elseif p.namespace?starts_with("http://purl.org/dc/terms")>
+            dcterms:${p.name}
+          <#elseif p.namespace?starts_with("http://purl.org/dc/elements/1.1")>
+            dc:${p.name}
+          </#if>
 	  	</div>
 	  </div>
 	  <div class="body">
