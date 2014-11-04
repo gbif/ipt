@@ -160,5 +160,10 @@
       <result name="cancel">/WEB-INF/pages/manage/report.ftl</result>
     </action>
 
+    <action name="mappingPeek" class="org.gbif.ipt.action.manage.OverviewAction" method="peek">
+      <interceptor-ref name="ajaxStack"/>
+      <result>/WEB-INF/pages/manage/peek.ftl</result>
+    </action>
+
   </package>
 </struts>

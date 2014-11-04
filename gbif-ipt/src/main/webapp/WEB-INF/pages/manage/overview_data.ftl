@@ -137,6 +137,7 @@
                           <a class="button" href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType}&mid=${m_index}">
                               <input class="button" type="button" value='<@s.text name='button.edit'/>'/>
                           </a>
+                          <a href="mappingPeek.do?r=${resource.shortname}&id=${m.extension.rowType}&mid=${m_index}" class="icon icon-preview peekBtn"/>
                       </td>
                   </tr>
               </#list>
@@ -154,6 +155,7 @@
                                 <a class="button" href="mapping.do?r=${resource.shortname}&id=${ext.rowType}&mid=${m_index}">
                                     <input class="button" type="button" value='<@s.text name='button.edit'/>'/>
                                 </a>
+                                <a href="mappingPeek.do?r=${resource.shortname}&id=${ext.rowType}&mid=${m_index}" class="icon icon-preview peekBtn"/>
                             </td>
                         </tr>
                     </#list>

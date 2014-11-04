@@ -10,6 +10,7 @@ import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.task.GenerateDwcaFactory;
 
 import java.io.IOException;
 import java.util.Date;
@@ -41,7 +42,7 @@ public class OverviewActionTest {
     // mock action
     action = new OverviewAction(mock(SimpleTextProvider.class), mock(AppConfig.class),
       mock(RegistrationManager.class), mockResourceManager, mock(UserAccountManager.class),
-      mock(ExtensionManager.class), mock(VocabulariesManager.class));
+      mock(ExtensionManager.class), mock(VocabulariesManager.class), mock(GenerateDwcaFactory.class));
   }
 
   @Test

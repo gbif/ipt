@@ -1560,4 +1560,12 @@ ul {
   background-image: url('../images/icons/favicon.ico');
 }
 
+.icon-preview {
+  background-image: url('../images/icons/preview.png');
+}
+
+#preview-report {
+  text-align: left;
+}
+
 /* End dataset homepage */
