@@ -12,6 +12,10 @@
  ***************************************************************************/
 package org.gbif.ipt.action.manage;
 
+import org.gbif.dwc.text.Archive;
+import org.gbif.dwc.text.ArchiveFile;
+import org.gbif.file.CSVReader;
+import org.gbif.file.CSVReaderFactory;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Extension;
@@ -36,16 +40,22 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.GenerateDwca;
+import org.gbif.ipt.task.GenerateDwcaFactory;
+import org.gbif.ipt.task.ReportHandler;
 import org.gbif.ipt.task.StatusReport;
+import org.gbif.ipt.task.TaskMessage;
 import org.gbif.ipt.utils.FileUtils;
 import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.validation.EmlValidator;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -54,12 +64,15 @@ import javax.validation.constraints.NotNull;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.google.common.io.Files;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import static org.gbif.ipt.task.GenerateDwca.CHARACTER_ENCODING;
 
-public class OverviewAction extends ManagerBaseAction {
+public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
   // logging
   private static final Logger LOG = Logger.getLogger(OverviewAction.class);
@@ -83,16 +96,23 @@ public class OverviewAction extends ManagerBaseAction {
   private boolean unpublish = false;
   private Map<String, String> frequencies;
   private String doiOrganisationName;
+  // preview
+  private GenerateDwcaFactory dwcaFactory;
+  private List<String> columns;
+  private List<String[]> peek;
+  private Integer mid;
+  private static final int PEEK_ROWS = 100;
 
   @Inject
   public OverviewAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
     ResourceManager resourceManager, UserAccountManager userAccountManager, ExtensionManager extensionManager,
-    VocabulariesManager vocabManager) {
+    VocabulariesManager vocabManager, GenerateDwcaFactory dwcaFactory) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.userManager = userAccountManager;
     this.extensionManager = extensionManager;
     this.emlValidator = new EmlValidator(cfg, registrationManager, textProvider);
     this.vocabManager = vocabManager;
+    this.dwcaFactory = dwcaFactory;
   }
 
   /**
@@ -835,5 +855,89 @@ public class OverviewAction extends ManagerBaseAction {
    */
   public boolean isMappingsModifiedSinceLastPublication() {
     return mappingsModifiedSinceLastPublication;
+  }
+
+  /**
+   * Preview the first "peekRows" number of rows for a given mapping. The mapping is specified by the combination
+   * of rowType and mapping ID.
+   */
+  public String peek() {
+    if (resource == null) {
+      return NOT_FOUND;
+    }
+
+    peek = Lists.newArrayList();
+    columns = Lists.newArrayList();
+    Exception exception = null;
+    List<TaskMessage> messages = (report == null) ? new LinkedList<TaskMessage>() : report.getMessages();
+
+    if (id != null && mid != null) {
+      ExtensionMapping mapping = resource.getMappings(id).get(mid);
+      if (mapping != null) {
+        try {
+          GenerateDwca worker = dwcaFactory.create(resource, this);
+          worker.report();
+          File tmpDir = Files.createTempDir();
+          worker.setDwcaFolder(tmpDir);
+          Archive archive = new Archive();
+          worker.setArchive(archive);
+          // create the data file inside the temp directory
+          worker.addDataFile(Lists.newArrayList(mapping), PEEK_ROWS);
+          // preview the data file, by writing header and rows
+          File[] files = tmpDir.listFiles();
+          if (files != null && files.length > 0) {
+            // file either represents a core file or an extension
+            ArchiveFile core = archive.getCore();
+            ArchiveFile ext = archive.getExtension(id, false);
+            String delimiter = (core == null) ? ext.getFieldsTerminatedBy() : core.getFieldsTerminatedBy();
+            Character quotes = (core == null) ? ext.getFieldsEnclosedBy() : core.getFieldsEnclosedBy();
+            int headerRows = (core == null) ? ext.getIgnoreHeaderLines() : core.getIgnoreHeaderLines();
+
+            CSVReader reader = CSVReaderFactory.build(files[0], CHARACTER_ENCODING, delimiter, quotes, headerRows);
+            while (reader.hasNext()) {
+              peek.add(reader.next());
+              if (columns.isEmpty()) {
+                columns = Arrays.asList(reader.header);
+              }
+            }
+          } else {
+            messages.add(new TaskMessage(Level.ERROR, getText("mapping.preview.not.found")));
+          }
+        } catch (Exception e) {
+          exception = e;
+          messages.add(new TaskMessage(Level.ERROR, getText("mapping.preview.error", new String[] {e.getMessage()})));
+        }
+      } else {
+        messages.add(new TaskMessage(Level.ERROR, getText("mapping.preview.mapping.not.found", new String[] {id, String.valueOf(mid)})));
+      }
+    } else {
+      messages.add(new TaskMessage(Level.ERROR, getText("mapping.preview.bad.request")));
+    }
+
+    report = (exception == null) ? new StatusReport(true, "succeeded", messages)
+      : new StatusReport(exception, "failed", messages);
+
+    return SUCCESS;
+  }
+
+  public List<String[]> getPeek() {
+    return peek;
+  }
+
+  public List<String> getColumns() {
+    return columns;
+  }
+
+  public Integer getMid() {
+    return mid;
+  }
+
+  public void setMid(Integer mid) {
+    this.mid = mid;
+  }
+
+  @Override
+  public void report(String resourceShortname, StatusReport report) {
+    this.report = report;
   }
 }

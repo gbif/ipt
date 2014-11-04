@@ -114,6 +114,18 @@ $(document).ready(function(){
 		});
 	}
 
+    // load a preview of the mapping in the modal window
+    $(".peekBtn").click(function(e) {
+        e.preventDefault();
+        var addressValue = $(this).attr("href");
+        $("#modalcontent").load(addressValue);
+        $("#modalbox").show();
+    });
+    $("#modalbox").click(function(e) {
+        e.preventDefault();
+        $("#modalbox").hide();
+    });
+
     // change the doi prefix input value, as per the selected organisation
     $( "#doi_select" ).change(function() {
         $("#doi_prefix").prop("value", $( this).val());

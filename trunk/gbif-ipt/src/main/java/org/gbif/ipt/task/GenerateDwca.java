@@ -72,7 +72,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
   private Exception exception;
   private AppConfig cfg;
   private static final int ID_COLUMN_INDEX = 0;
-  private static final String CHARACTER_ENCODING = "UTF-8";
+  public static final String CHARACTER_ENCODING = "UTF-8";
   private static final TermFactory TERM_FACTORY = TermFactory.instance();
   private static final String SORTED_FILE_PREFIX = "sorted_";
   private static final org.gbif.utils.file.FileUtils GBIF_FILE_UTILS = new org.gbif.utils.file.FileUtils();
@@ -104,12 +104,13 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
    * mapped (e.g. occurrenceID, taxonID, etc).
    * 
    * @param mappings list of ExtensionMapping
+   * @param rowLimit maximum number of rows to write
    * @throws IllegalArgumentException if not all mappings are mapped to the same extension
    * @throws InterruptedException if the thread was interrupted
    * @throws IOException if problems occurred while persisting new data files
    * @throws GeneratorException if any problem was encountered writing data file
    */
-  private void addDataFile(List<ExtensionMapping> mappings) throws IOException,
+  public void addDataFile(List<ExtensionMapping> mappings, @Nullable Integer rowLimit) throws IOException,
     IllegalArgumentException, InterruptedException, GeneratorException {
     checkForInterruption();
     if (mappings == null || mappings.isEmpty()) {
@@ -183,7 +184,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
         }
 
         // write data (records) to file
-        dumpData(writer, inCols, m, totalColumns);
+        dumpData(writer, inCols, m, totalColumns, rowLimit);
         // remember core record number
         if (resource.getCoreRowType().equalsIgnoreCase(ext.getRowType())) {
           coreRecords = currRecords;
@@ -651,7 +652,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     for (Extension ext : resource.getMappedExtensions()) {
       report();
       try {
-        addDataFile(resource.getMappings(ext.getRowType()));
+        addDataFile(resource.getMappings(ext.getRowType()), null);
       } catch (IOException e) {
         throw new GeneratorException("Problem occurred while writing data file", e);
       } catch (IllegalArgumentException e) {
@@ -727,10 +728,12 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
    * @param inCols index ordered list of all output columns apart from id column
    * @param mapping mapping
    * @param dataFileRowSize number of columns in data file
+   * @param rowLimit maximum number of rows to write
    * @throws GeneratorException if there was an error writing data file for mapping.
    * @throws InterruptedException if the thread was interrupted
    */
-  private void dumpData(Writer writer, PropertyMapping[] inCols, ExtensionMapping mapping, int dataFileRowSize)
+  private void dumpData(Writer writer, PropertyMapping[] inCols, ExtensionMapping mapping, int dataFileRowSize,
+    @Nullable Integer rowLimit)
     throws GeneratorException, InterruptedException {
     final String idSuffix = StringUtils.trimToEmpty(mapping.getIdSuffix());
     final RecordFilter filter = mapping.getFilter();
@@ -822,6 +825,10 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
           if (newRow != null) {
             writer.write(newRow);
             currRecords++;
+            // don't exceed row limit (e.g. only want to write X number of rows used to preview first X rows of file)
+            if (rowLimit != null && currRecords >= rowLimit) {
+              break;
+            }
           }
         }
       }
@@ -1128,5 +1135,23 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       return extensionName + String.valueOf(max + 1) + TEXT_FILE_EXTENSION;
     }
     return extensionName + TEXT_FILE_EXTENSION;
+  }
+
+  /**
+   * Required for preview mapping feature, on manage resource page.
+   *
+   * @param dwcaFolder DwC-A directory
+   */
+  public void setDwcaFolder(File dwcaFolder) {
+    this.dwcaFolder = dwcaFolder;
+  }
+
+  /**
+   * Required for preview mapping feature, on manage resource page.
+   *
+   * @param archive DwC Archive
+   */
+  public void setArchive(Archive archive) {
+    this.archive = archive;
   }
 }
