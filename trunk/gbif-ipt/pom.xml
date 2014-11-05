@@ -46,16 +46,16 @@
     <commons-io.version>2.4</commons-io.version>
     <commons-validator.version>1.4.0</commons-validator.version>
     <validation-api.version>1.1.0.Final</validation-api.version>
-    <dwca-reader.version>1.18</dwca-reader.version>
-    <gbif-api.version>0.15</gbif-api.version>
-    <gbif-parsers.version>0.9</gbif-parsers.version>
+    <dwca-reader.version>1.19-SNAPSHOT</dwca-reader.version>
+    <gbif-api.version>0.16-SNAPSHOT</gbif-api.version>
+    <gbif-parsers.version>0.10-SNAPSHOT</gbif-parsers.version>
     <gbif-registry.version>2.17</gbif-registry.version>
     <metrics-ws-client.version>0.16</metrics-ws-client.version>
-    <gbif-common-ws.version>0.15</gbif-common-ws.version>
+    <gbif-common-ws.version>0.16-SNAPSHOT</gbif-common-ws.version>
     <gbif-metadata-profile.version>1.1-SNAPSHOT</gbif-metadata-profile.version>
-    <gbif-common.version>0.16</gbif-common.version>
+    <gbif-common.version>0.17-SNAPSHOT</gbif-common.version>
     <dwc-api.version>1.9-SNAPSHOT</dwc-api.version>
-    <guava.version>14.0.1</guava.version>
+    <guava.version>17.0</guava.version>
     <freemarker.version>2.3.21</freemarker.version>
     <gson.version>2.3</gson.version>
     <guice.version>3.0</guice.version>
