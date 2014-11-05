@@ -13,7 +13,7 @@ versionsTable macro: Generates a data table that has pagination.
     /* version history list */
     var aDataSet = [
       <#list resource.getVersionHistory() as v>
-          [<#if (version?? && v.version == version) || (!version?? && v.version == resource.emlVersion)>'<img class="latestVersion" src="../images/dataTables/forward_enabled_hover.png"/>${v.version!}'<#else>'<img class="latestVersionHidden" src="../images/dataTables/forward_enabled_hover.png"/>${v.version!}'</#if>,
+          [<#if (version?? && v.version == version.toPlainString()) || (!version?? && v.version == resource.emlVersion.toPlainString())>'<img class="latestVersion" src="../images/dataTables/forward_enabled_hover.png"/>${v.version!}'<#else>'<img class="latestVersionHidden" src="../images/dataTables/forward_enabled_hover.png"/>${v.version!}'</#if>,
            '${v.released?date}',
            '${v.recordsPublished}',
            '${v.changeSummary!}',

@@ -136,7 +136,7 @@ public class Resource implements Serializable, Comparable<Resource> {
     if (version != null) {
       Iterator<VersionHistory> iter = versionHistory.iterator();
       while (iter.hasNext()) {
-        BigDecimal historyVersion = iter.next().getVersion();
+        BigDecimal historyVersion = new BigDecimal(iter.next().getVersion());
         if (version.compareTo(historyVersion) == 0) {
           iter.remove();
         }
@@ -153,7 +153,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   public VersionHistory findVersionHistory(BigDecimal version) {
     if (version != null) {
       for (VersionHistory vh : versionHistory) {
-        if (version.compareTo(vh.getVersion()) == 0) {
+        if (version.compareTo(new BigDecimal(vh.getVersion())) == 0) {
           return vh;
         }
       }
@@ -644,7 +644,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    * @param v new eml (resource) version
    */
   public void setEmlVersion(BigDecimal v) {
-    if (v != null && emlVersion != null && v.compareTo(emlVersion) > 0) {
+    if (v != null && emlVersion != null) {
       replacedEmlVersion = emlVersion;
     }
     emlVersion = v;

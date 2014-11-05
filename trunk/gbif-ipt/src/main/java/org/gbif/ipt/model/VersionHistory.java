@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 public class VersionHistory {
 
   private String doi;
-  private BigDecimal version;
+  private String version;
   private Date released;
   private IdentifierStatus status;
   private User modifiedBy;
@@ -21,7 +21,7 @@ public class VersionHistory {
   private int recordsPublished;
 
   public VersionHistory(BigDecimal version, Date released, User modifiedBy) {
-    this.version = version;
+    this.version = version.toPlainString();
     this.released = released;
     this.modifiedBy = modifiedBy;
   }
@@ -44,11 +44,11 @@ public class VersionHistory {
    * @return
    */
   @NotNull
-  public BigDecimal getVersion() {
+  public String getVersion() {
     return version;
   }
 
-  public void setVersion(BigDecimal version) {
+  public void setVersion(String version) {
     this.version = version;
   }
 

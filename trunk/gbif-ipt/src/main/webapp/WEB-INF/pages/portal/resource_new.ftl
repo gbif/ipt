@@ -202,8 +202,8 @@
 <!-- /#sidebar-wrapper -->
   <#assign no_description><@s.text name='portal.resource.no.description'/></#assign>
   <#assign download_dwca_url>${baseURL}/archive.do?r=${resource.shortname}<#if version??>&v=${version}</#if></#assign>
-  <#assign download_eml_url>${baseURL}/eml.do?r=${resource.shortname}&v=<#if version??>${version}<#else>${resource.emlVersion}</#if></#assign>
-  <#assign download_rtf_url>${baseURL}/rtf.do?r=${resource.shortname}&v=<#if version??>${version}<#else>${resource.emlVersion}</#if></#assign>
+  <#assign download_eml_url>${baseURL}/eml.do?r=${resource.shortname}&v=<#if version??>${version}<#else>${resource.emlVersion.toPlainString()}</#if></#assign>
+  <#assign download_rtf_url>${baseURL}/rtf.do?r=${resource.shortname}&v=<#if version??>${version}<#else>${resource.emlVersion.toPlainString()}</#if></#assign>
 
     <div id="wrapper">
         <#if managerRights><a href="${baseURL}/manage/resource.do?r=${resource.shortname}"><@s.text name='button.edit'/></a></#if>
@@ -218,10 +218,10 @@
                         <p class="undertitle">
                           <#if resource.lastPublished??>
                             <#-- the existence of parameter version means the version is not equal to the latest published version -->
-                            <#if version?? && version!=resource.emlVersion>
-                              <em class="warn"><@s.text name='portal.resource.version'/>&nbsp;${version}</em>
+                            <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
+                              <em class="warn"><@s.text name='portal.resource.version'/>&nbsp;${version.toPlainString()}</em>
                             <#else>
-                              <@s.text name='portal.resource.latest.version'/>&nbsp;[${resource.emlVersion!}]
+                              <@s.text name='portal.resource.latest.version'/>&nbsp;[${resource.emlVersion.toPlainString()!}]
                             </#if>
                           <#-- TODO replace with actual DOI -->
                             <@s.text name='portal.resource.publishedOn'/> ${eml.pubDate?date?string.medium}, doi:10.5072/M87N4S2
@@ -323,7 +323,7 @@
                             <#if metadataOnly == false>
                                 <tr>
                                     <th><@s.text name='portal.resource.dwca.verbose'/></th>
-                                    <#if version?? && version!=resource.emlVersion && recordsPublishedForVersion??>
+                                    <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString() && recordsPublishedForVersion??>
                                       <td><a href="${download_dwca_url}" onClick="_gaq.push(['_trackEvent', 'Archive', 'Download', '${resource.shortname}', ${recordsPublishedForVersion?c!0} ]);"><@s.text name='portal.resource.download'/></a>
                                         ${recordsPublishedForVersion?c!0} <@s.text name='portal.resource.records'/>&nbsp;<#if eml.language?has_content && languages[eml.language]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.language]?cap_first!}</@s.param></@s.text></#if> (${dwcaSizeForVersion!})
                                       </td>
@@ -358,7 +358,7 @@
                         <div>
                             <h1><@s.text name='portal.resource.cite.howTo'/></h1>
                             <p>
-                              <#if version?? && version!=resource.emlVersion>
+                              <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
                                   <em class="warn"><@s.text name='portal.resource.latest.version.warning'/>&nbsp;</em>
                               </#if>
                               <@s.text name='portal.resource.cite.help'/>:
