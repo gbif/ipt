@@ -119,7 +119,7 @@ public class ResourceAction extends PortalBaseAction {
     if (resource != null) {
       List<VersionHistory> history = resource.getVersionHistory();
       if (history != null && history.size() > 0) {
-        return history.get(0).getVersion();
+        return new BigDecimal(history.get(0).getVersion());
       }
     }
     return null;
@@ -228,7 +228,7 @@ public class ResourceAction extends PortalBaseAction {
       }
       // find record count for published version
       for (VersionHistory history : resource.getVersionHistory()) {
-        if (version.compareTo(history.getVersion()) == 0) {
+        if (version.compareTo(new BigDecimal(history.getVersion())) == 0) {
           recordsPublishedForVersion = history.getRecordsPublished();
         }
       }

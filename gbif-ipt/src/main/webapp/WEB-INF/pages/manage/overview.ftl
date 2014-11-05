@@ -226,7 +226,7 @@ $(document).ready(function(){
                 <em>${report.state}</em>
               <#else>
                 <@s.text name="manage.overview.published.version"/>
-                ${resource.emlVersion}
+                ${resource.emlVersion.toPlainString()}
                 <@s.text name="manage.overview.published.from"/>
                 ${resource.lastPublished?date?string.medium}
               </#if>

@@ -33,7 +33,7 @@
               <td>${resource.getMetadataModified()?date?string.medium!}</td>
               <td>
                 <a class="button" href="${baseURL}/resource/preview?r=${resource.shortname}">
-                  <input class="button" type="button" value='<@s.text name='manage.overview.metadata.preview'><@s.param>${resource.getEml().getNextEmlVersionAfterMinorVersionChange()!}</@s.param></@s.text>'/>
+                  <input class="button" type="button" value='<@s.text name='manage.overview.metadata.preview'><@s.param>${resource.getEml().getNextEmlVersionAfterMinorVersionChange().toPlainString()!}</@s.param></@s.text>'/>
                 </a>
               </td>
             <#elseif resource.lastPublished??>

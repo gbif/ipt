@@ -244,7 +244,29 @@ public class ResourceTest {
     resource.removeVersionHistory(BigDecimal.valueOf(1.5));
 
     assertEquals(1, resource.getVersionHistory().size());
-    assertEquals(BigDecimal.valueOf(1.4), resource.getVersionHistory().get(0).getVersion());
+    assertEquals(BigDecimal.valueOf(1.4).toPlainString(), resource.getVersionHistory().get(0).getVersion());
+  }
+
+  @Test
+  public void testAddVersionHistoryWithTrailingZero() {
+    Resource resource = getResource();
+
+    VersionHistory vh1 = new VersionHistory(new BigDecimal("1.1"), new Date(), USER);
+    VersionHistory vh9 = new VersionHistory(new BigDecimal("1.9"), new Date(), USER);
+    VersionHistory vh10 = new VersionHistory(new BigDecimal("1.10"), new Date(), USER);
+
+    resource.addVersionHistory(vh1);
+    resource.addVersionHistory(vh9);
+    resource.addVersionHistory(vh10);
+
+    assertEquals(3, resource.getVersionHistory().size());
+
+    // try and add a version history with same version number - isn't allowed!
+    VersionHistory vh3 = new VersionHistory(new BigDecimal("1.10"), new Date(), USER);
+
+    resource.addVersionHistory(vh3);
+
+    assertEquals(3, resource.getVersionHistory().size());
   }
 
   @Test
@@ -258,7 +280,7 @@ public class ResourceTest {
     resource.addVersionHistory(vh2);
 
     VersionHistory vh = resource.findVersionHistory(BigDecimal.valueOf(1.4));
-    assertEquals(BigDecimal.valueOf(1.4), vh.getVersion());
+    assertEquals(BigDecimal.valueOf(1.4).toPlainString(), vh.getVersion());
     assertEquals("jc@gbif.org", vh.getModifiedBy().getEmail());
   }
 
@@ -322,4 +344,25 @@ public class ResourceTest {
     assertEquals("Smith J, Weir P (2014): Birds. v1.6. NHM. Dataset. http://doi.org/10.5886/1bft7W5f", citation);
   }
 
+
+  /**
+   * Ensure trailing zero's don't get cutoff! E.g. we preserve version 1.10.
+   */
+  @Test
+  public void testTrailingZeros() {
+    Resource resource = getResource();
+
+    resource.setEmlVersion(new BigDecimal("0.9"));
+    resource.setEmlVersion(new BigDecimal("0.10"));
+
+    assertEquals("0.9", resource.getReplacedEmlVersion().toPlainString());
+    assertEquals("0.10", resource.getEmlVersion().toPlainString());
+    assertEquals("0.11", resource.getEml().getNextEmlVersionAfterMinorVersionChange().toPlainString());
+
+    resource.setEmlVersion(new BigDecimal("0.11"));
+
+    assertEquals("0.10", resource.getReplacedEmlVersion().toPlainString());
+    assertEquals("0.11", resource.getEmlVersion().toPlainString());
+    assertEquals("0.12", resource.getEml().getNextEmlVersionAfterMinorVersionChange().toPlainString());
+  }
 }
