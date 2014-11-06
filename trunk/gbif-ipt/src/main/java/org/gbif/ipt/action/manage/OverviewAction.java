@@ -869,7 +869,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     peek = Lists.newArrayList();
     columns = Lists.newArrayList();
     Exception exception = null;
-    List<TaskMessage> messages = (report == null) ? new LinkedList<TaskMessage>() : report.getMessages();
+    List<TaskMessage> messages = new LinkedList<TaskMessage>();
 
     if (id != null && mid != null) {
       ExtensionMapping mapping = resource.getMappings(id).get(mid);
@@ -914,7 +914,12 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       messages.add(new TaskMessage(Level.ERROR, getText("mapping.preview.bad.request")));
     }
 
-    report = (exception == null) ? new StatusReport(true, "succeeded", messages)
+    // add messages to those collected while generating preview
+    if (!messages.isEmpty()) {
+      report.getMessages().addAll(messages);
+    }
+
+    report = (exception == null) ? new StatusReport(true, "succeeded", report.getMessages())
       : new StatusReport(exception, "failed", messages);
 
     return SUCCESS;
