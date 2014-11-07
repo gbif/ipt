@@ -15,7 +15,8 @@ organisationsTable macro: Generates a data table that has searching, pagination,
           ['<a id="editLink_${o.key}" href="organisation?id=${o.key}">${o.name?replace("\'", "\\'")?replace("\"", '\\"')}</a>',
            '<#if o.alias??>${o.alias?replace("\'", "\\'")?replace("\"", '\\"')}<#else>${emptyString}</#if>',
            '<#if o.canHost><@s.text name="basic.yes"/><#else><@s.text name="basic.no"/></#if>',
-           '<#if o.doiRegistrationAgency??>${o.doiRegistrationAgency}<#else>${emptyString}</#if>']<#if o_has_next>,</#if>
+           '<#if o.doiRegistrationAgency??>${o.doiRegistrationAgency}<#else>${emptyString}</#if>',
+           '<#if o.agencyAccountPrimary><@s.text name="basic.yes"/><#else><@s.text name="basic.no"/></#if>',]<#if o_has_next>,</#if>
       </#list>
     ];
 
@@ -43,7 +44,8 @@ organisationsTable macro: Generates a data table that has searching, pagination,
                 { "sTitle": "<@s.text name="admin.organisation.name"/>", "bSearchable": true},
                 { "sTitle": "<@s.text name="admin.organisation.alias"/>", "bSearchable": true},
                 { "sTitle": "<@s.text name="admin.organisation.canPublish"/>", "bSearchable": false},
-                { "sTitle": "<@s.text name="admin.organisation.doiRegistrationAgency"/>", "bSearchable": true}
+                { "sTitle": "<@s.text name="admin.organisation.doiRegistrationAgency"/>", "bSearchable": true},
+                { "sTitle": "<@s.text name="admin.organisation.canRegisterDois"/>", "bSearchable": false}
             ],
             "aaSorting": [[ ${columnToSortOn}, "${sortOrder}" ]],
             "aoColumnDefs": [

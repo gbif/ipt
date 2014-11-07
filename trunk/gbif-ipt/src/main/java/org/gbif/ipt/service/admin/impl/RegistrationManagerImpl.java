@@ -72,12 +72,36 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     this.registryManager = registryManager;
   }
 
-  public Organisation addAssociatedOrganisation(Organisation organisation) throws AlreadyExistingException {
+  public Organisation addAssociatedOrganisation(Organisation organisation) throws AlreadyExistingException,
+    InvalidConfigException {
     if (organisation != null) {
+
+      // ensure max 1 DOI account is activated in the IPT
+      if (organisation.isAgencyAccountPrimary() && isDoiAgencyAccountActivated()) {
+        throw new InvalidConfigException(TYPE.REGISTRATION_BAD_CONFIG,
+          "Multiple DOI accounts activated in registration information - only one is allowed.");
+      }
+
       log.debug("Adding associated organisation " + organisation.getKey() + " - " + organisation.getName());
       registration.getAssociatedOrganisations().put(organisation.getKey().toString(), organisation);
     }
     return organisation;
+  }
+
+  /**
+   * Check whether any organisation associated to the IPT has a DOI agency account that has been activated. In other
+   * words, the organisation's DOI agency account has been selected as the only account used to register DOIs for
+   * datasets.
+   *
+   * @return true if organisation with activated DOI agency account exists, false otherwise
+   */
+  private boolean isDoiAgencyAccountActivated() {
+    for (Organisation organisation : registration.getAssociatedOrganisations().values()) {
+      if (organisation.isAgencyAccountPrimary()) {
+        return true;
+      }
+    }
+    return false;
   }
 
   public Organisation addHostingOrganisation(Organisation organisation) {
@@ -176,11 +200,16 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
   public Organisation delete(String key) throws DeletionNotAllowedException {
     Organisation org = get(key);
     if (org != null) {
-      // Check whether the organisation does not have any resources associated
       for (Resource resource : resourceManager.list()) {
+        // Ensure the organisation is not associated to any registered resources
         if (resource.getOrganisation() != null && resource.getOrganisation().equals(org)) {
           throw new DeletionNotAllowedException(Reason.RESOURCE_REGISTERED_WITH_ORGANISATION,
             "Resource " + resource.getShortname() + " associated with organisation");
+        }
+        // Ensure the organisation is not associated to any resources with registered DOIs
+        else if (resource.getDoiOrganisationKey() != null && resource.getDoiOrganisationKey().equals(org.getKey())) {
+          throw new DeletionNotAllowedException(Reason.RESOURCE_DOI_REGISTERED_WITH_ORGANISATION,
+            "Resource " + resource.getShortname() + " has DOI associated with organisation");
         }
       }
       // Check that the organization is not the hosting organization (IPT is not registered against the organization)

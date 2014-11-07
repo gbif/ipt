@@ -81,8 +81,6 @@ public class OrganisationsAction extends POSTAction {
   private List<Organisation> linkedOrganisations;
   private final RegisteredOrganisations orgSession;
 
-  private String doiRegistrationAgencySelected;
-
   private static final List<String> DOI_REGISTRATION_AGENCIES = ImmutableList.of(DOIRegistrationAgency.DATACITE.name(), DOIRegistrationAgency.EZID.name());
 
   @Inject
@@ -99,19 +97,6 @@ public class OrganisationsAction extends POSTAction {
    */
   public List<String> getDoiRegistrationAgencies() {
     return DOI_REGISTRATION_AGENCIES;
-  }
-
-  /**
-   * The DOI registration agency that the organization has been configured to use.
-   *
-   * @return the agency that has been selected
-   */
-  public String getDoiRegistrationAgencySelected() {
-    return doiRegistrationAgencySelected;
-  }
-
-  public void setDoiRegistrationAgencySelected(String doiRegistrationAgencySelected) {
-    this.doiRegistrationAgencySelected = doiRegistrationAgencySelected;
   }
 
   @Override
@@ -154,11 +139,10 @@ public class OrganisationsAction extends POSTAction {
   }
 
   /**
-   * @return the organisations
+   * @return all non-deleted registered organisations in GBIF Registry, excluding those already associated to the IPT.
    */
   public List<Organisation> getOrganisations() {
     List<Organisation> allOrganisations = orgSession.organisations;
-    // remove organisations already associated to the IPT
     for (Organisation linkedOrganisation : getLinkedOrganisations()) {
       if (allOrganisations.contains(linkedOrganisation)) {
         allOrganisations.remove(linkedOrganisation);
@@ -219,22 +203,6 @@ public class OrganisationsAction extends POSTAction {
           addActionError(getText("admin.organisation.error.existing"));
           return INPUT;
         }
-        // store the fields the user has supplied
-        String alias = organisation.getAlias();
-        boolean canHost = organisation.isCanHost();
-        String password = organisation.getPassword();
-        String agencyAccountPassword = organisation.getAgencyAccountPassword();
-
-        for (Organisation org : getOrganisations()) {
-          if (org.getKey() != null && org.getKey().equals(organisation.getKey())) {
-            organisation = org;
-            organisation.setAlias(alias);
-            organisation.setCanHost(canHost);
-            organisation.setPassword(password);
-            organisation.setAgencyAccountPassword(agencyAccountPassword);
-            break;
-          }
-        }
         registrationManager.addAssociatedOrganisation(organisation);
         addActionMessage(getText("admin.organisation.associated.ipt"));
       } else {
@@ -243,7 +211,7 @@ public class OrganisationsAction extends POSTAction {
       registrationManager.save();
       return SUCCESS;
     } catch (IOException e) {
-      LOG.error("The organisation association couldnt be saved: " + e.getMessage(), e);
+      LOG.error("The organisation association couldn't be saved: " + e.getMessage(), e);
       addActionError(getText("admin.organisation.error.save"));
       addActionError(e.getMessage());
       return INPUT;
@@ -278,6 +246,15 @@ public class OrganisationsAction extends POSTAction {
   @Override
   public void validate() {
     if (isHttpPost()) {
+      // ensure only one DOI account is selected as primary!
+      if (organisation.isAgencyAccountPrimary()) {
+        for (Organisation org: linkedOrganisations) {
+          if (!organisation.getKey().equals(org.getKey()) && org.isAgencyAccountPrimary()) {
+            addFieldError("organisation.agencyAccountPrimary", getText("admin.organisation.doiAccount.activated.exists"));
+            break;
+          }
+        }
+      }
       organisationValidation.validate(this, organisation);
     }
   }

@@ -37,7 +37,12 @@ public class DeletionNotAllowedException extends Exception {
     /**
      * Because some registry error occurred.
      */
-    REGISTRY_ERROR
+    REGISTRY_ERROR,
+    /**
+     * Because there is at least one resource whose DOI is registered with this organization. Used while deleting
+     * an organization.
+     */
+    RESOURCE_DOI_REGISTERED_WITH_ORGANISATION,
   }
 
   protected Reason reason;
