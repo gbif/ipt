@@ -18,9 +18,20 @@ import com.google.inject.Inject;
 
 public class OrganisationSupport {
 
-  @Inject
   private RegistryManager registryManager;
 
+  @Inject
+  public OrganisationSupport(RegistryManager registryManager) {
+    this.registryManager = registryManager;
+  }
+
+  /**
+   * Validate the fields entered for a new or edited Organisation. If not valid, an explanatory error message is
+   * added to the action.
+   *
+   * @param action action
+   * @param organisation organisation
+   */
   public void validate(BaseAction action, Organisation organisation) {
 
     if (organisation.getKey() == null || organisation.getKey().toString().length() < 1) {
@@ -44,11 +55,11 @@ public class OrganisationSupport {
     if (organisation.getDoiRegistrationAgency() != null ||
         Strings.emptyToNull(organisation.getAgencyAccountUsername()) != null ||
         Strings.emptyToNull(organisation.getAgencyAccountPassword()) != null ||
-        Strings.emptyToNull(organisation.getDoiPrefix()) != null) {
+        Strings.emptyToNull(organisation.getDoiPrefix()) != null ||
+        organisation.isAgencyAccountPrimary()) {
 
       if (organisation.getDoiRegistrationAgency() == null) {
         action.addFieldError("organisation.doiRegistrationAgency", action.getText("validation.organisation.doiRegistrationAgency.required"));
-        System.out.println("It is null: organisation.getDoiRegistrationAgency()");
       }
 
       if (Strings.emptyToNull(organisation.getAgencyAccountUsername()) == null) {

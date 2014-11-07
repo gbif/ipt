@@ -24,7 +24,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  */
 public class Organisation extends AgentBase implements Serializable {
 
-  private static final long serialVersionUID = 2238765436256564L;
+  private static final long serialVersionUID = 2283765436256564L;
 
   private Password password = new Password();
   private String alias;
@@ -32,6 +32,7 @@ public class Organisation extends AgentBase implements Serializable {
   private String nodeName;
   private String nodeContactEmail;
   private boolean canHost;
+  private boolean agencyAccountPrimary;
   private DOIRegistrationAgency doiRegistrationAgency;
   private String agencyAccountUsername;
   private Password agencyAccountPassword;
@@ -125,10 +126,25 @@ public class Organisation extends AgentBase implements Serializable {
   }
 
   /**
-   * @return the canHost
+   * @return true if datasets can be registered against this organization during registration, false otherwise.
    */
   public boolean isCanHost() {
     return canHost;
+  }
+
+  public void setCanHost(boolean canHost) {
+    this.canHost = canHost;
+  }
+
+  /**
+   * @return true if this account is the only one used by the IPT for registering DOIs, false otherwise.
+   */
+  public boolean isAgencyAccountPrimary() {
+    return agencyAccountPrimary;
+  }
+
+  public void setAgencyAccountPrimary(boolean agencyAccountPrimary) {
+    this.agencyAccountPrimary = agencyAccountPrimary;
   }
 
   /**
@@ -136,13 +152,6 @@ public class Organisation extends AgentBase implements Serializable {
    */
   public void setAlias(@Nullable String alias) {
     this.alias = StringUtils.trimToNull(alias);
-  }
-
-  /**
-   * @param canHost the canHost to set
-   */
-  public void setCanHost(boolean canHost) {
-    this.canHost = canHost;
   }
 
   /**

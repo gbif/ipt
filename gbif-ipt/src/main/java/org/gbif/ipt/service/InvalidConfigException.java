@@ -52,6 +52,10 @@ public class InvalidConfigException extends RuntimeException {
      */
     REGISTRATION_CONFIG,
     /**
+     * Registration configuration has a bad configuration (e.g. 2 DOI accounts activated, when only 1 allowed).
+     */
+    REGISTRATION_BAD_CONFIG,
+    /**
      * Resource configuration cannot be read.
      */
     RESOURCE_CONFIG,

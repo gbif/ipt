@@ -22,7 +22,8 @@ public interface RegistrationManager {
   /**
    * Associate a new organisation to this IPT installation, but doesnt persist the change.
    */
-  Organisation addAssociatedOrganisation(Organisation organisation) throws AlreadyExistingException;
+  Organisation addAssociatedOrganisation(Organisation organisation) throws AlreadyExistingException,
+    InvalidConfigException;
 
   /**
    * Register the IPT against an existing organisation.
