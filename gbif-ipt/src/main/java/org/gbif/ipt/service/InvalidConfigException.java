@@ -82,7 +82,11 @@ public class InvalidConfigException extends RuntimeException {
     /**
      * The resource cannot be migrated as configured.
      */
-    AUTO_PUBLISHING_ALREADY_OFF
+    AUTO_PUBLISHING_ALREADY_OFF,
+    /**
+     * Once a DOI registration agency account has been activated in the IPT, archival mode cannot be turned off fx.
+     */
+    DOI_REGISTRATION_ALREADY_ACTIVATED
   }
 
   protected TYPE type;

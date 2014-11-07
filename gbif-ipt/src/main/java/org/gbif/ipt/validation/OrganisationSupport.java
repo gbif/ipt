@@ -10,6 +10,8 @@
 package org.gbif.ipt.validation;
 
 import org.gbif.ipt.action.BaseAction;
+import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.service.registry.RegistryManager;
 
@@ -19,10 +21,12 @@ import com.google.inject.Inject;
 public class OrganisationSupport {
 
   private RegistryManager registryManager;
+  private AppConfig cfg;
 
   @Inject
-  public OrganisationSupport(RegistryManager registryManager) {
+  public OrganisationSupport(RegistryManager registryManager, AppConfig cfg) {
     this.registryManager = registryManager;
+    this.cfg = cfg;
   }
 
   /**
@@ -70,8 +74,13 @@ public class OrganisationSupport {
         action.addFieldError("organisation.agencyAccountPassword", action.getText("validation.organisation.agencyAccountPassword.required"));
       }
 
-      if (Strings.emptyToNull(organisation.getDoiPrefix()) == null) {
-        action.addFieldError("organisation.doiPrefix", action.getText("validation.organisation.doiPrefix.required"));
+      // running IPT in production, a DOI prefix is mandatory. In test mode, the test DOI prefix will always be used.
+      if (cfg.getRegistryType() == AppConfig.REGISTRY_TYPE.PRODUCTION) {
+        if (Strings.emptyToNull(organisation.getDoiPrefix()) == null) {
+          action.addFieldError("organisation.doiPrefix", action.getText("validation.organisation.doiPrefix.required"));
+        }
+      } else {
+        organisation.setDoiPrefix(Constants.TEST_DOI_PREFIX);
       }
     }
 

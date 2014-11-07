@@ -9,6 +9,7 @@
  */
 package org.gbif.ipt.model;
 
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 
 import java.io.Serializable;
@@ -226,5 +227,12 @@ public class Organisation extends AgentBase implements Serializable {
    */
   public void setDoiPrefix(@Nullable String doiPrefix) {
     this.doiPrefix = StringUtils.trimToNull(doiPrefix);
+  }
+
+  /**
+   * @return test DOI prefix (used in test registrations for both DataCite and EZID)
+   */
+  public String getTestDoiPrefix() {
+    return Constants.TEST_DOI_PREFIX;
   }
 }

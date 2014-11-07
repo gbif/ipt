@@ -275,7 +275,18 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     reloadLogger();
   }
 
+  /**
+   * Turn archival mode on or off. If being turned off, there can be no associated organisations in the IPT that
+   * has its DOI registration agency account activated to start registering DOIs for datasets.
+
+   * @param archivalMode true to turn on, false to turn off
+   * @throws InvalidConfigException
+   */
   public void setArchivalMode(boolean archivalMode) throws InvalidConfigException {
+    if (!archivalMode && registrationManager.findPrimaryDoiAgencyAccountActivated() != null) {
+      throw new InvalidConfigException(TYPE.DOI_REGISTRATION_ALREADY_ACTIVATED, "Cannot turn off archival mode since"
+                                                                                + "DOI registration has been activated");
+    }
     cfg.setProperty(AppConfig.ARCHIVAL_MODE, Boolean.toString(archivalMode));
   }
 

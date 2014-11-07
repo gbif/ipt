@@ -81,9 +81,9 @@ public interface RegistrationManager {
   List<Organisation> listAll();
 
   /**
-   * Returns list of all associated organisations that are configured with a DOI registration agency account.
+   * @return organisation associated to the IPT that has a DOI agency account that has been activated, false otherwise.
    */
-  List<Organisation> listAllWithDoiAccount();
+  Organisation findPrimaryDoiAgencyAccountActivated();
 
   /**
    * Loads all user associated organisations from file into the manager.

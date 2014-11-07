@@ -246,13 +246,18 @@ public class OrganisationsAction extends POSTAction {
   @Override
   public void validate() {
     if (isHttpPost()) {
-      // ensure only one DOI account is selected as primary!
       if (organisation.isAgencyAccountPrimary()) {
+        // ensure only one DOI account is selected as primary!
         for (Organisation org: linkedOrganisations) {
           if (!organisation.getKey().equals(org.getKey()) && org.isAgencyAccountPrimary()) {
-            addFieldError("organisation.agencyAccountPrimary", getText("admin.organisation.doiAccount.activated.exists"));
+            addFieldError("organisation.agencyAccountPrimary",
+              getText("admin.organisation.doiAccount.activated.exists"));
             break;
           }
+        }
+        // ensure archival mode is turned ON
+        if (!cfg.isArchivalMode()) {
+          addActionError(getText("admin.organisation.doiAccount.activated.failed"));
         }
       }
       organisationValidation.validate(this, organisation);

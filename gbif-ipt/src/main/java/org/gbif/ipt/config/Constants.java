@@ -34,6 +34,7 @@ public final class Constants {
   public static final String THESAURUS_DATASET_SUBTYPE =
     "GBIF Dataset Subtype Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_subtype.xml";
   public static final String DATASET_TYPE_METADATA_IDENTIFIER = "metadata";
+  public static final String TEST_DOI_PREFIX = "10.5072";
 
   private Constants() {
     throw new UnsupportedOperationException("Can't initialize class");

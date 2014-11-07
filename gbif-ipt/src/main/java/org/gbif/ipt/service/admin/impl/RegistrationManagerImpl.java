@@ -77,7 +77,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     if (organisation != null) {
 
       // ensure max 1 DOI account is activated in the IPT
-      if (organisation.isAgencyAccountPrimary() && isDoiAgencyAccountActivated()) {
+      if (organisation.isAgencyAccountPrimary() && findPrimaryDoiAgencyAccountActivated() != null) {
         throw new InvalidConfigException(TYPE.REGISTRATION_BAD_CONFIG,
           "Multiple DOI accounts activated in registration information - only one is allowed.");
       }
@@ -89,19 +89,19 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
   }
 
   /**
-   * Check whether any organisation associated to the IPT has a DOI agency account that has been activated. In other
-   * words, the organisation's DOI agency account has been selected as the only account used to register DOIs for
+   * Find the organisation associated to the IPT that has a DOI agency account that has been activated. This
+   * organisation's DOI agency account has been chosen as the only account used to register DOIs for
    * datasets.
    *
-   * @return true if organisation with activated DOI agency account exists, false otherwise
+   * @return organisation with activated DOI agency account if found, null otherwise
    */
-  private boolean isDoiAgencyAccountActivated() {
+  public Organisation findPrimaryDoiAgencyAccountActivated() {
     for (Organisation organisation : registration.getAssociatedOrganisations().values()) {
       if (organisation.isAgencyAccountPrimary()) {
-        return true;
+        return organisation;
       }
     }
-    return false;
+    return null;
   }
 
   public Organisation addHostingOrganisation(Organisation organisation) {
@@ -259,18 +259,6 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
   public List<Organisation> listAll() {
     return Ordering.from(ORG_BY_NAME_ORD).sortedCopy(registration.getAssociatedOrganisations().values());
   }
-
-  public List<Organisation> listAllWithDoiAccount() {
-    List<Organisation> organisationList = new ArrayList<Organisation>();
-    for (Organisation organisation : Ordering.from(ORG_BY_NAME_ORD).sortedCopy(
-      registration.getAssociatedOrganisations().values())) {
-      if (organisation.getDoiRegistrationAgency() != null) {
-        organisationList.add(organisation);
-      }
-    }
-    return organisationList;
-  }
-
 
   public void load() throws InvalidConfigException {
     Closer closer = Closer.create();
