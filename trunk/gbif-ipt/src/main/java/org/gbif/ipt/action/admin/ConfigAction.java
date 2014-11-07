@@ -169,7 +169,11 @@ public class ConfigAction extends POSTAction {
       try {
         configManager.setArchivalMode(archivalMode);
       } catch (InvalidConfigException e) {
-        addActionError(getText("admin.config.archival.error"));
+        if (e.getType() == InvalidConfigException.TYPE.DOI_REGISTRATION_ALREADY_ACTIVATED) {
+          addActionError(getText("admin.error.invalidConfiguration.doiAccount.activated"));
+        } else {
+          addActionError(getText("admin.config.archival.error"));
+        }
         return INPUT;
       }
     }

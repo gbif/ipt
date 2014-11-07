@@ -590,7 +590,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       organisations = registrationManager.list();
 
       // organisations with DOI Registry Agency accounts
-      organisationsWithDoiAccount = registrationManager.listAllWithDoiAccount();
+      // TODO fix
 
       // remove all DwC mappings with 0 terms mapped
       // this is important do do before populating potential extensions since an empty mapping to occurrence can

@@ -10,7 +10,15 @@ $(document).ready(function(){
   $('.confirm').jConfirmAction({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
 
   $('select#organisation\\.key').select2({placeholder: '<@s.text name="admin.organisation.name.select"/>', width:"375px", allowClear: true});
-  
+
+  // deactivate doi prefix input when in test mode (test prefix always used)
+  var registryType = '${cfg.getRegistryType().toString()}';
+  if (registryType == 'DEVELOPMENT') {
+      var testDoiPrefix = '${organisation.getTestDoiPrefix()}';
+      $('#organisation\\.doiPrefix').val(testDoiPrefix);
+      $('#organisation\\.doiPrefix').prop('disabled', true);
+  }
+
 	$('#organisation\\.key').change(function() {
 
   var orgName = $('#organisation\\.key :selected').text();

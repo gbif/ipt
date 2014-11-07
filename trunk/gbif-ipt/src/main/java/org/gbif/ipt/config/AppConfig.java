@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
 @Singleton
 public class AppConfig {
 
-  protected enum REGISTRY_TYPE {
+  public enum REGISTRY_TYPE {
     PRODUCTION, DEVELOPMENT
   }
 
