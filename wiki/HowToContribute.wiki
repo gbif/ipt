@@ -7,7 +7,7 @@ We are always keen on getting better documentation. The easiest and quickest way
 
 == Translations ==
 The IPT and the documentation both need internationalisation. Currently the IPT has been translated into the following languages: 
-  * (Traditional) Chinese
+  * Chinese (Traditional)
   * French
   * Japanese
   * Portuguese
