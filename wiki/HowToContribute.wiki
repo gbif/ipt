@@ -7,10 +7,11 @@ We are always keen on getting better documentation. The easiest and quickest way
 
 == Translations ==
 The IPT and the documentation both need internationalisation. Currently the IPT has been translated into the following languages: 
+  * (Traditional) Chinese
   * French
-  * Spanish
-  * Traditional Chinese
+  * Japanese
   * Portuguese
+  * Spanish
 In the case of the IPT all text is kept in a single property file, one for each language. The [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt/src/main/resources/ApplicationResources_en.properties original] is in english and if you are able and willing to translate it into another language, instructions are below.
 
 ===Begin a translation for a new language using Attesoro:===
