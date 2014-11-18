@@ -58,13 +58,13 @@ public class PublishAllResourcesAction extends BaseAction {
 
     // kick off publishing for all resources, unless the resource has exceeded the maximum number of failed publications
     for (Resource resource : resources) {
-      BigDecimal v = BigDecimal.ZERO;
+      // next version number - the version of newly published eml/rtf/archive
+      BigDecimal nextVersion = new BigDecimal(resource.getNextVersion().toPlainString());
+      BigDecimal replacedVersion = new BigDecimal(resource.getEmlVersion().toPlainString());
       try {
         if (!resourceManager.hasMaxProcessFailures(resource)) {
-          // increment version number - this will be the version of newly published eml/rtf/archive
-          v = resource.getNextVersion();
           // publish a new version of the resource - dwca gets published asynchronously
-          resourceManager.publish(resource, v, this);
+          resourceManager.publish(resource, nextVersion, this);
         } else {
           addActionError(getText("publishing.skipping",
             new String[] {String.valueOf(resource.getNextVersion()), resource.getTitleAndShortname()}));
@@ -76,16 +76,16 @@ public class PublishAllResourcesAction extends BaseAction {
         } else {
           // alert user publication failed
           addActionError(
-            getText("publishing.failed", new String[] {String.valueOf(v), resource.getShortname(), e.getMessage()}));
+            getText("publishing.failed", new String[] {replacedVersion.toPlainString(), resource.getShortname(), e.getMessage()}));
           // restore the previous version since publication was unsuccessful
-          resourceManager.restoreVersion(resource, resource.getReplacedEmlVersion(), this);
+          resourceManager.restoreVersion(resource, nextVersion, replacedVersion, this);
           // keep track of how many failures on auto publication have happened
           resourceManager.getProcessFailures().put(resource.getShortname(), new Date());
         }
       } catch (InvalidConfigException e) {
         // with this type of error, the version cannot be rolled back - just alert user publication failed
         String msg =
-          getText("publishing.failed", new String[] {String.valueOf(v), resource.getShortname(), e.getMessage()});
+          getText("publishing.failed", new String[] {nextVersion.toPlainString(), resource.getShortname(), e.getMessage()});
         log.error(msg, e);
         addActionError(msg);
       }

@@ -77,7 +77,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     if (organisation != null) {
 
       // ensure max 1 DOI account is activated in the IPT
-      if (organisation.isAgencyAccountPrimary() && findPrimaryDoiAgencyAccountActivated() != null) {
+      if (organisation.isAgencyAccountPrimary() && findPrimaryDoiAgencyAccount() != null) {
         throw new InvalidConfigException(TYPE.REGISTRATION_BAD_CONFIG,
           "Multiple DOI accounts activated in registration information - only one is allowed.");
       }
@@ -95,7 +95,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
    *
    * @return organisation with activated DOI agency account if found, null otherwise
    */
-  public Organisation findPrimaryDoiAgencyAccountActivated() {
+  public Organisation findPrimaryDoiAgencyAccount() {
     for (Organisation organisation : registration.getAssociatedOrganisations().values()) {
       if (organisation.isAgencyAccountPrimary()) {
         return organisation;

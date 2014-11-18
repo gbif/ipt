@@ -143,7 +143,7 @@
               </#list>
             </table>
           <#if (resource.getMappedExtensions()?size > 1)>
-              <div class="mapping_head"><@s.text name='manage.overview.DwC.Mappings.extensions.select'/></div>
+              <div class="mapping_head twenty_top"><@s.text name='manage.overview.DwC.Mappings.extensions.select'/></div>
               <table>
                 <#list resource.getMappedExtensions() as ext>
                   <#if ext.rowType != resource.coreRowType>

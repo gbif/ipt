@@ -113,22 +113,22 @@
         <li>
             <a class="sidebar-anchor work" href="#"><@s.text name='portal.resource.summary'/></a>
         </li>
+        <!-- Dataset must have been published to show versions, downloads, and how to cite sections -->
+        <#if resource.lastPublished??>
         <li>
-            <a class="sidebar-anchor" href="#gbif"><@s.text name='portal.resource.organisation.key'/></a>
+          <a class="sidebar-anchor" href="#downloads"><@s.text name='portal.resource.downloads'/></a>
         </li>
-      <!-- Dataset must have been published to show versions, downloads, and how to cite sections -->
-      <#if resource.lastPublished??>
         <li>
             <a class="sidebar-anchor" href="${anchor_versions}"><@s.text name='portal.resource.versions'/></a>
-        </li>
-        <li>
-            <a class="sidebar-anchor" href="#downloads"><@s.text name='portal.resource.downloads'/></a>
         </li>
         <li>
             <a class="sidebar-anchor" href="${anchor_citation}"><@s.text name='portal.resource.cite.howTo'/></a>
         </li>
         <li>
           <a class="sidebar-anchor" href="${anchor_rights}"><@s.text name='eml.intellectualRights.simple'/></a>
+        </li>
+        <li>
+          <a class="sidebar-anchor" href="#gbif"><@s.text name='portal.resource.organisation.key'/></a>
         </li>
       </#if>
         <!-- Keywords section -->
@@ -217,14 +217,15 @@
                         <h1 class="rtitle">${eml.title!resource.shortname}</h1>
                         <p class="undertitle">
                           <#if resource.lastPublished??>
+                            <#assign doi>${action.findDoiAssignedToPublishedVersion()!}</#assign>
                             <#-- the existence of parameter version means the version is not equal to the latest published version -->
                             <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
                               <em class="warn"><@s.text name='portal.resource.version'/>&nbsp;${version.toPlainString()}</em>
+                              <@s.text name='portal.resource.publishedOn'/> ${eml.pubDate?date?string.medium} <#if doi?has_content>, doi:${doi}</#if>
                             <#else>
                               <@s.text name='portal.resource.latest.version'/>&nbsp;[${resource.emlVersion.toPlainString()!}]
+                              <@s.text name='portal.resource.publishedOn'/> ${eml.pubDate?date?string.medium} <#if doi?has_content>, doi:${doi}</#if>
                             </#if>
-                          <#-- TODO replace with actual DOI -->
-                            <@s.text name='portal.resource.publishedOn'/> ${eml.pubDate?date?string.medium}, doi:10.5072/M87N4S2
                           <#else>
                             <@s.text name='portal.resource.published.never.long'/>
                           </#if>
@@ -256,7 +257,7 @@
                                   <li class="box"><a href="${download_eml_url}" class="icon icon-download">EML</a></li>
                                   <li class="box"><a href="${download_rtf_url}" class="icon icon-download">RDF</a></li>
                                   <#if resource.versionHistory??>
-                                      <li class="box"><a href="${anchor_versions}" class="icon icon-clock">Version History</a></li>
+                                      <li class="box"><a href="${anchor_versions}" class="icon icon-clock">Versions</a></li>
                                   </#if>
                                   <li class="box"><a href="${anchor_rights}" class="icon icon-key">Rights</a></li>
                                   <li class="box"><a href="${anchor_citation}" class="icon icon-book">Cite This</a></li>
@@ -268,43 +269,8 @@
                     </div>
                 </div>
 
-                <!-- GBIF Registration section -->
-                  <div id="gbif" class="row">
-                      <div>
-                          <h1><@s.text name='portal.resource.organisation.key'/></h1>
-                            <#if resource.status=="REGISTERED" && resource.organisation??>
-                                <p>
-                                  <@s.text name='manage.home.registered.verbose'><@s.param>${cfg.portalUrl}/dataset/${resource.key}</@s.param><@s.param>${resource.key}</@s.param></@s.text>
-                                  <#-- Warning: in dev mode organization link goes to /organization (GBIF Registry console), in prod mode the link goes to /publisher (GBIF Portal) -->
-                                  <#if cfg.getRegistryType() =='DEVELOPMENT'>
-                                    &nbsp;<@s.text name='manage.home.published.verbose'><@s.param>${cfg.portalUrl}/organization/${resource.organisation.key}</@s.param><@s.param>${resource.organisation.name}</@s.param><@s.param>${cfg.portalUrl}/node/${resource.organisation.nodeKey!"#"}</@s.param><@s.param>${resource.organisation.nodeName!}</@s.param></@s.text>
-                                  <#else>
-                                    &nbsp;<@s.text name='manage.home.published.verbose'><@s.param>${cfg.portalUrl}/publisher/${resource.organisation.key}</@s.param><@s.param>${resource.organisation.key}</@s.param><@s.param>${cfg.portalUrl}/node/${resource.organisation.nodeKey!"#"}</@s.param><@s.param>${resource.organisation.nodeName!}</@s.param></@s.text>
-                                  </#if>
-                                </p>
-                            <#else>
-                                <p><@s.text name='manage.home.not.registered.verbose'/></p>
-                            </#if>
-                      </div>
-                  </div>
-
-
               <!-- Dataset must have been published for versions, downloads, and how to cite sections to show -->
               <#if resource.lastPublished??>
-
-                <!-- versions section -->
-                <#if resource.versionHistory??>
-                  <div id ="versions" class="row">
-                    <div>
-                      <h1><@s.text name='portal.resource.versions'/></h1>
-                      <@versionsTable numVersionsShown=3 sEmptyTable="dataTables.sEmptyTable.versions" baseURL=baseURL shortname=resource.shortname />
-                      <div id="vtableContainer"></div>
-                      <p>
-                        <div class="clearfix"></div>
-                      </p>
-                    </div>
-                  </div>
-                </#if>
 
                   <!-- downloads section -->
                   <div id="downloads" class="row">
@@ -351,6 +317,19 @@
                      </div>
                   </div>
 
+                <!-- versions section -->
+                <#if resource.versionHistory??>
+                <div id ="versions" class="row">
+                    <div>
+                        <h1><@s.text name='portal.resource.versions'/></h1>
+                      <@versionsTable numVersionsShown=3 sEmptyTable="dataTables.sEmptyTable.versions" baseURL=baseURL shortname=resource.shortname />
+                        <div id="vtableContainer"></div>
+                        <p>
+                        <div class="clearfix"></div>
+                        </p>
+                    </div>
+                </div>
+                </#if>
 
                 <!-- citation section -->
                 <#if eml.citation?? && (eml.citation.citation?has_content || eml.citation.identifier?has_content)>
@@ -379,6 +358,26 @@
                     </div>
                 </div>
                 </#if>
+
+              <!-- GBIF Registration section -->
+              <div id="gbif" class="row">
+                  <div>
+                      <h1><@s.text name='portal.resource.organisation.key'/></h1>
+                    <#if resource.status=="REGISTERED" && resource.organisation??>
+                        <p>
+                          <@s.text name='manage.home.registered.verbose'><@s.param>${cfg.portalUrl}/dataset/${resource.key}</@s.param><@s.param>${resource.key}</@s.param></@s.text>
+                        <#-- Warning: in dev mode organization link goes to /organization (GBIF Registry console), in prod mode the link goes to /publisher (GBIF Portal) -->
+                          <#if cfg.getRegistryType() =='DEVELOPMENT'>
+                              &nbsp;<@s.text name='manage.home.published.verbose'><@s.param>${cfg.portalUrl}/organization/${resource.organisation.key}</@s.param><@s.param>${resource.organisation.name}</@s.param><@s.param>${cfg.portalUrl}/node/${resource.organisation.nodeKey!"#"}</@s.param><@s.param>${resource.organisation.nodeName!}</@s.param></@s.text>
+                          <#else>
+                              &nbsp;<@s.text name='manage.home.published.verbose'><@s.param>${cfg.portalUrl}/publisher/${resource.organisation.key}</@s.param><@s.param>${resource.organisation.key}</@s.param><@s.param>${cfg.portalUrl}/node/${resource.organisation.nodeKey!"#"}</@s.param><@s.param>${resource.organisation.nodeName!}</@s.param></@s.text>
+                          </#if>
+                        </p>
+                    <#else>
+                        <p><@s.text name='manage.home.not.registered.verbose'/></p>
+                    </#if>
+                  </div>
+              </div>
 
               <!-- Keywords section -->
               <#if eml.subject?has_content>

@@ -19,6 +19,7 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.task.ReportHandler;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import javax.xml.parsers.ParserConfigurationException;
@@ -33,6 +34,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -54,6 +56,14 @@ public class PublishAllResourcesActionTest {
     GenerateDwcaFactory mockDwcaFactory = mockResourceManager.getDwcaFactory();
     when(mockDwcaFactory.create(any(Resource.class), any(ReportHandler.class)))
       .thenThrow(new PublicationException(PublicationException.TYPE.DWCA, "Mock exception"));
+
+    // mock finding versioned EML file - not important which one
+    File emlXML = File.createTempFile("eml-1.1", ".xml");
+    when(test.getMockedDataDir().resourceEmlFile(anyString(), any(BigDecimal.class))).thenReturn(emlXML);
+
+    // mock finding versioned RTF file - not important which one
+    File rtf = File.createTempFile("short-1.1", ".rtf");
+    when(test.getMockedDataDir().resourceRtfFile(anyString(), any(BigDecimal.class))).thenReturn(rtf);
 
     // mock action
     action = new PublishAllResourcesAction(mock(SimpleTextProvider.class), mock(AppConfig.class),

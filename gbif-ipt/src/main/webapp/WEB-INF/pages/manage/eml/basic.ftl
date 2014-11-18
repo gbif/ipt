@@ -24,10 +24,6 @@
         $("#resource\\.coreType").attr('disabled','disabled');
       }
 
-      // if the resource has been published, or if there is a next published date, make the inputs read only on load
-      $("#eml\\.updateFrequency").attr('disabled','disabled');
-      $("#resource\\.nextPublished").attr('disabled','disabled');
-
 			function getList(list){
 				var arr=  list.split(",");
 				var newlistaOccurrence={};
@@ -101,7 +97,7 @@
               if (licenseText) {
                   $("#intellectualRightsDiv").html(licenseText);
                   $("#intellectualRightsDiv").show();
-                  $("#intellectualRights").html(licenseText);
+                  $("#intellectualRights").val(licenseText);
                   $("#intellectualRightsBlock").hide();
 
                   $("#disclaimerRigths").css('display', '');
@@ -135,49 +131,34 @@
   	<@input name="eml.title" requiredField=true />
   	<@text name="eml.description" requiredField=true />
 
-  <!-- retrieve some link names one time -->
-  <#assign copyLink><@s.text name="eml.resourceCreator.copyLink"/></#assign>
-  <#assign removeContactLink><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.contact'/></#assign>
-  <#assign removeCreatorLink><@s.text name='manage.metadata.removethis'/> <@s.text name='portal.resource.creator'/></#assign>
-  <#assign removeMetadataProviderLink><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.metadataProvider'/></#assign>
-  <#assign addContactLink><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.contact'/></#assign>
-  <#assign addCreatorLink><@s.text name='manage.metadata.addnew'/> <@s.text name='portal.resource.creator'/></#assign>
-  <#assign addMetadataProviderLink><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.metadataProvider'/></#assign>
-
     <div class="third_block clearfix">
 
-        <div  class="column_third">
-          <@select name="resource.coreType" i18nkey="resource.coreType" help="i18n" options=types value="${resource.coreType!''}" />
+        <div class="column_third">
+          <@select name="eml.metadataLanguage" help="i18n" options=languages value="${metadataLanguageIso3!'eng'}" requiredField=true />
+        </div>
+
+        <div  class="column_third grouped">
+          <@select name="resource.coreType" i18nkey="resource.coreType" help="i18n" options=types value="${resource.coreType!''}" requiredField=true />
         </div>
 
         <div class="column_third">
-          <@select name="eml.metadataLanguage" help="i18n" options=languages value="${metadataLanguageIso3!'eng'}" />
-        </div>
-
-        <div class="column_third">
-          <#if eml.updateFrequency??>
-            <@select name="eml.updateFrequency" i18nkey="eml.updateFrequency" help="i18n" options=frequencies value="${eml.updateFrequency.displayValue!'unknown'}" disabled=true />
+          <#if resource.organisation??>
+            <@select name="id" i18nkey="eml.publishingOrganisation" help="i18n" options=organisations value="${resource.organisation.key!''}" requiredField=true />
           <#else>
-            <@select name="eml.updateFrequency" i18nkey="eml.updateFrequency" help="i18n" options=frequencies value="${'unknown'}" />
+            <@select name="id" i18nkey="eml.publishingOrganisation" help="i18n" options=organisations requiredField=true />
           </#if>
         </div>
 
-        <div id="selectSubtypeDiv" class="column_third">
+        <div class="column_third">
+          <@select name="eml.language" help="i18n" options=languages value="${languageIso3!'eng'}" requiredField=true />
+        </div>
+
+        <div id="selectSubtypeDiv" class="column_third grouped">
           <@select name="resource.subtype" i18nkey="resource.subtype" help="i18n" options=listSubtypes value="${resource.subtype!''}" />
         </div>
 
         <div class="column_third">
-          <@select name="eml.language" help="i18n" options=languages value="${languageIso3!'eng'}" />
-        </div>
-
-        <div class="column_third">
-          <#if resource.nextPublished??>
-            <#assign nextPublishedDate = resource.nextPublished?date?string("yyyy-MM-dd HH:mm:ss")!/>
-            <@input name="resource.nextPublished" value="${nextPublishedDate}" i18nkey="manage.home.next.publication" help="i18n" disabled=true />
-          <#else>
-            <@input name="resource.nextPublished" value="" i18nkey="manage.home.next.publication" help="i18n" disabled=true />
-          </#if>
-
+            <@select name="eml.updateFrequency" i18nkey="eml.updateFrequency" help="i18n" options=frequencies value="${eml.updateFrequency.identifier!'unkown'}" requiredField=true />
         </div>
 
     </div>
@@ -192,7 +173,7 @@
         </div>
 
         <div id="intellectualRightsBlock">
-            <label for="eml.intellectualRights"><@s.text name='eml.intellectualRights'/></label>
+            <label for="eml.intellectualRights"><@s.text name='eml.intellectualRights'/>&#42;</label>
             <img class="infoImg" src="${baseURL}/images/info.gif" />
             <div class="info"><@s.text name='eml.intellectualRights.help'/></div>
             <textarea id="intellectualRights" name="eml.intellectualRights" cols="40" rows="5" >${eml.intellectualRights!}</textarea>
@@ -208,6 +189,15 @@
             <p><@s.text name='eml.intellectualRights.license.disclaimer'/></p>
         </div>
     </div>
+
+    <!-- retrieve some link names one time -->
+      <#assign copyLink><@s.text name="eml.resourceCreator.copyLink"/></#assign>
+      <#assign removeContactLink><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.contact'/></#assign>
+      <#assign removeCreatorLink><@s.text name='manage.metadata.removethis'/> <@s.text name='portal.resource.creator'/></#assign>
+      <#assign removeMetadataProviderLink><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.metadataProvider'/></#assign>
+      <#assign addContactLink><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.contact'/></#assign>
+      <#assign addCreatorLink><@s.text name='manage.metadata.addnew'/> <@s.text name='portal.resource.creator'/></#assign>
+      <#assign addMetadataProviderLink><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.metadataProvider'/></#assign>
 
   	<!-- Resource Contacts -->
   	<div class="listBlock grid_17 suffix_1">

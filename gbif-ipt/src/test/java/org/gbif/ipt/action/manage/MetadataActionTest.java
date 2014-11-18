@@ -1,6 +1,8 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -14,6 +16,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 public class MetadataActionTest {
@@ -62,5 +66,26 @@ public class MetadataActionTest {
   public void testGetChecklistSubtypesMap() {
     action.groupDatasetSubtypes();
     assertEquals(7, action.getChecklistSubtypesMap().size());
+  }
+
+  @Test
+  public void testHasDoiReservedOrAssigned() {
+    Resource resource = new Resource();
+    resource.setDoi("doi:10.1594/KHU654");
+
+    resource.setIdentifierStatus(IdentifierStatus.UNRESERVED);
+    assertFalse(action.hasDoiReservedOrAssigned(resource));
+
+    resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
+    assertTrue(action.hasDoiReservedOrAssigned(resource));
+
+    resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
+    assertTrue(action.hasDoiReservedOrAssigned(resource));
+
+    resource.setIdentifierStatus(IdentifierStatus.UNAVAILABLE);
+    assertTrue(action.hasDoiReservedOrAssigned(resource));
+
+    resource.setIdentifierStatus(IdentifierStatus.RESERVED);
+    assertTrue(action.hasDoiReservedOrAssigned(resource));
   }
 }

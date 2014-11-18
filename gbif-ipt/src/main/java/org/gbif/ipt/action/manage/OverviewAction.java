@@ -25,8 +25,6 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.model.voc.IdentifierStatus;
-import org.gbif.ipt.model.voc.MaintUpFreqType;
-import org.gbif.ipt.model.voc.MetadataSection;
 import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.DeletionNotAllowedException;
@@ -44,9 +42,10 @@ import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.task.ReportHandler;
 import org.gbif.ipt.task.StatusReport;
 import org.gbif.ipt.task.TaskMessage;
-import org.gbif.ipt.utils.FileUtils;
 import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.validation.EmlValidator;
+import org.gbif.metadata.eml.Citation;
+import org.gbif.metadata.eml.MaintenanceUpdateFrequency;
 
 import java.io.File;
 import java.io.IOException;
@@ -58,7 +57,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
 import javax.validation.constraints.NotNull;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -66,10 +64,12 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.google.inject.Inject;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+
 import static org.gbif.ipt.task.GenerateDwca.CHARACTER_ENCODING;
 
 public class OverviewAction extends ManagerBaseAction implements ReportHandler {
@@ -85,7 +85,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private List<Extension> potentialCores;
   private List<Extension> potentialExtensions;
   private List<Organisation> organisations;
-  private List<Organisation> organisationsWithDoiAccount;
+  private Organisation organisationWithPrimaryDoiAccount;
   private final EmlValidator emlValidator;
   private boolean missingMetadata;
   private boolean missingRegistrationMetadata;
@@ -94,8 +94,12 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private StatusReport report;
   private Date now;
   private boolean unpublish = false;
+  private boolean reserveDoi = false;
+  private boolean registerDoi = false;
+  private boolean deleteDoi = false;
+  private boolean delete = false;
+  private boolean undelete = false;
   private Map<String, String> frequencies;
-  private String doiOrganisationName;
   // preview
   private GenerateDwcaFactory dwcaFactory;
   private List<String> columns;
@@ -148,13 +152,13 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     if (cancelled) {
 
       // final logging
-      String sVersion = String.valueOf(resource.getEmlVersion());
-      String msg = getText("publishing.cancelled", new String[] {sVersion, resource.getShortname()});
+      BigDecimal version = resource.getEmlVersion();
+      String msg = getText("publishing.cancelled", new String[] {version.toPlainString(), resource.getShortname()});
       LOG.warn(msg);
       addActionError(msg);
 
       // restore the previous version of the resource
-      resourceManager.restoreVersion(resource, resource.getReplacedEmlVersion(), this);
+      resourceManager.restoreVersion(resource, version, resource.getReplacedEmlVersion(), this);
 
       // Struts finishes before callable has a finish to update status report, therefore,
       // temporarily override StatusReport so that Overview page report displaying up-to-date STATE and Exception
@@ -166,29 +170,72 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     return ERROR;
   }
 
+  /**
+   * TODO Deleting a resource with a DOI: a) makes the DOI unavailable, b) deletes the resource from GBIF (if its
+   * registered with GBIF), c) preserves the dataset and all its archived versions in the IPT
+   */
   @Override
   public String delete() {
     if (resource == null) {
       return NOT_FOUND;
     }
-    try {
-      Resource res = resource;
-      resourceManager.delete(res);
-      // TODO handle DOI
-      addActionMessage(getText("manage.overview.resource.deleted", new String[] {res.toString()}));
-      return HOME;
-    } catch (IOException e) {
-      String msg = getText("manage.resource.delete.failed");
-      LOG.error(msg, e);
-      addActionError(msg);
-      addActionExceptionWarning(e);
-    } catch (DeletionNotAllowedException e) {
-      String msg = getText("manage.resource.delete.failed");
-      LOG.error(msg, e);
-      addActionError(msg);
-      addActionExceptionWarning(e);
+    if (delete) {
+      try {
+        Resource res = resource;
+        if (isAlreadyAssignedDoi()) {
+          // TODO
+          resource.setStatus(PublicationStatus.DELETED);
+          saveResource();
+          addActionMessage(getText("manage.overview.resource.deleted", new String[] {res.toString()}));
+        } else {
+          resourceManager.delete(res);
+        }
+        return HOME;
+      } catch (IOException e) {
+        String msg = getText("manage.resource.delete.failed");
+        LOG.error(msg, e);
+        addActionError(msg);
+        addActionExceptionWarning(e);
+      } catch (DeletionNotAllowedException e) {
+        String msg = getText("manage.resource.delete.failed");
+        LOG.error(msg, e);
+        addActionError(msg);
+        addActionExceptionWarning(e);
+      }
+    } else {
+      addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
+        resource.getStatus().toString()}));
     }
+    return SUCCESS;
+  }
 
+  /**
+   * TODO Undeleting a resource with a DOI: a) makes the DOI available, b) undeletes the resource from GBIF (if it was registered with GBIF)
+   */
+  public String undelete() {
+    if (resource == null) {
+      return NOT_FOUND;
+    }
+    if (undelete) {
+      try {
+        Resource res = resource;
+        //resourceManager.undelete(res);
+        // TODO handle DOI
+        // TODO set to REGISTERED if it was registered, PUBLIC otherwise
+        res.setStatus(PublicationStatus.PUBLIC);
+        saveResource();
+        addActionMessage(getText("manage.overview.resource.undeleted", new String[] {res.toString()}));
+        return SUCCESS;
+      } catch (Exception e) {
+        String msg = getText("manage.resource.undelete.failed");
+        LOG.error(msg, e);
+        addActionError(msg);
+        addActionExceptionWarning(e);
+      }
+    } else {
+      addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
+        resource.getStatus().toString()}));
+    }
     return SUCCESS;
   }
 
@@ -229,34 +276,12 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   }
 
   /**
-   * Calculate the size of the DwC-A file.
-   *
-   * @return the size (human readable) of the DwC-A file.
-   */
-  public String getDwcaFormattedSize() {
-    return FileUtils.formatSize(resourceManager.getDwcaSize(resource), 2);
-  }
-
-  /**
-   * Calculate the size of the EML file.
-   *
-   * @return the size (human readable) of the EML file.
-   */
-  public String getEmlFormattedSize() {
-    return FileUtils.formatSize(resourceManager.getEmlSize(resource), 2);
-  }
-
-  /**
    * On the manage resource page page, this map is used to populate the publishing intervals dropdown.
    *
    * @return update frequencies map
    */
   public Map<String, String> getFrequencies() {
     return frequencies;
-  }
-
-  public boolean getMissingBasicMetadata() {
-    return !emlValidator.isValid(resource.getEml(), MetadataSection.BASIC_SECTION);
   }
 
   /**
@@ -310,13 +335,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     return organisations;
   }
 
-  /**
-   * @return list of organizations added to the IPT, configured with an DOI registration agency account
-   */
-  public List<Organisation> getOrganisationsWithDoiAccount() {
-    return organisationsWithDoiAccount;
-  }
-
   public List<Extension> getPotentialCores() {
     return potentialCores;
   }
@@ -334,15 +352,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   }
 
   /**
-   * Calculate the size of the RTF file.
-   *
-   * @return return the size (human readable) of the RTF file.
-   */
-  public String getRtfFormattedSize() {
-    return FileUtils.formatSize(resourceManager.getRtfSize(resource), 2);
-  }
-
-  /**
    * Checks if the resource meets all the conditions required in order to be registered. For example, the resource needs
    * to be published prior to registering with the GBIF Network.
    *
@@ -350,27 +359,14 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    * @return true if the resource meets the minimum requirements to be published
    */
   private boolean hasMinimumRegistryInfo(Resource resource) {
-    if (resource == null) {
+    if (missingMetadata) {
       return false;
     }
-    if (resource.getEml() == null) {
-      return false;
-    }
-    if (resource.getCreator() == null) {
-      return false;
-    }
-    if (!resource.isPublished()) {
-      return false;
-    }
-    return true;
+    return resource.isPublished();
   }
 
   public boolean isMissingMetadata() {
     return missingMetadata;
-  }
-
-  public boolean isRtfFileExisting() {
-    return resourceManager.isRtfExisting(resource.getShortname());
   }
 
   public String locked() throws Exception {
@@ -382,12 +378,16 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     return SUCCESS;
   }
 
+  /**
+   * Change the visibility of a resource from public to private. This operation cannot be performed, if the resource
+   * has been assigned a DOI (DOI that is registered, not reserved), or if the resource has been registered with GBIF.
+   */
   public String makePrivate() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
     }
-    if (PublicationStatus.PUBLIC == resource.getStatus()) {
-      if (unpublish) {
+    if (unpublish) {
+      if (PublicationStatus.PUBLIC == resource.getStatus() && !isAlreadyAssignedDoi()) {
         // makePrivate
         try {
           resourceManager.visibilityToPrivate(resource, this);
@@ -401,8 +401,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           resource.getStatus().toString()}));
       }
     } else {
-      addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
-        resource.getStatus().toString()}));
+      addActionWarning(getText("manage.overview.resource.invalid.operation",
+        new String[] {resource.getShortname(), resource.getStatus().toString()}));
     }
     return execute();
   }
@@ -428,80 +428,204 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   }
 
   /**
-   * TODO
+   * Reserve a DOI for a resource. Constructs the DOI metadata document, and registers it without making it public.
+   *
+   * Can be done for any resource with any status.
+   *
+   * To accommodate resources with existing DOIs, this method checks if the resource has an existing DOI.
+   * If the prefix of the existing DOI matches the prefix of the IPT primary DOI account, the DOI will be automatically
+   * reused. Otherwise, the user must remove the DOI to reserve a new one, or update the DOI prefix used by the IPT
+   * primary DOI account.
+   *
+   * Must add DOI to EML alternative identifiers, and set DOI as EML citation identifier (unpublished EML)
+   *
+   * DOI can be used on mapping core (datasetID field).
+   *
+   * If the resource has an existing DOI already, its an indication the resource is being transitioned to a new DOI.
+   * In this case, the previous DOI must be replaced by the new DOI.
    */
-  public String registerDoi() throws Exception {
-    LOG.info("Make DOI public..");
-    resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
-    resourceManager.updateAlternateIdentifierForDOI(resource);
-    saveResource();
+  public String reserveDoi() throws Exception {
+    if (resource == null) {
+      return NOT_FOUND;
+    }
+    if (reserveDoi) {
+      try {
+        if (resource.getIdentifierStatus() == IdentifierStatus.UNRESERVED && !isAlreadyAssignedDoi()) {
+          String existingDoi = findExistingDoi(resource);
+          if (existingDoi == null) {
+            resource.setDoi("10.1594/" + RandomStringUtils.randomAlphanumeric(6));
+            resource.setIdentifierStatus(IdentifierStatus.RESERVED);
+            saveResource();
+          } else {
+            // is the prefix of the existing DOI equal to the prefix assigned to the DOI account configured for this IPT?
+            String prefix = parseDoiPrefix(existingDoi);
+            String prefixAllowed = organisationWithPrimaryDoiAccount.getDoiPrefix();
+            if (prefix != null && prefixAllowed != null && prefix.equals(prefixAllowed)) {
+              // TODO: test this DOI actually exists
+              resource.setDoi(existingDoi);
+              resource.setIdentifierStatus(IdentifierStatus.RESERVED);
+              saveResource();
+              addActionMessage(getText("manage.overview.publishing.doi.reserve.reused", new String[] {existingDoi}));
+            }
+            // the prefix of the existing DOI is not equal to the prefix assigned to the IPT's primary DOI account
+            else {
+              addActionError(getText("manage.overview.publishing.doi.reserve.notRreused", new String[] {existingDoi,
+                prefixAllowed}));
+            }
+          }
+        } else if (resource.getIdentifierStatus() == IdentifierStatus.PUBLIC && isAlreadyAssignedDoi()) {
+          resource.setDoi("10.1594/" + RandomStringUtils.randomAlphanumeric(6));
+          resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
+          saveResource();
+        }
+
+      } catch (Exception e) {
+        LOG.error("Failed to reserve DOI for resource " + resource.getShortname(), e);
+      }
+    } else {
+      addActionWarning(getText("manage.overview.resource.doi.invalid.operation", new String[] {resource.getShortname(),
+        resource.getIdentifierStatus().toString()}));
+    }
     return execute();
   }
 
   /**
-   * TODO
+   * Return the existing DOI assigned to this resource. An existing DOI is set as the citation identifier.
+   * The citation identifier is determined to be a DOI, if the identifier starts with "doi:", or if it starts with
+   * "http://dx.doi.org/" - the DOI Proxy server which resolves DOIs.
+   *
+   * @return the existing DOI assigned to this resource, or null if none was found.
    */
-  public String makeDoiUnavailable() throws Exception {
-    LOG.info("Make DOI unavailable..");
+  @VisibleForTesting
+  public String findExistingDoi(Resource resource) {
+    if (resource != null && resource.getEml() != null) {
+      Citation citation = resource.getEml().getCitation();
+      if (citation != null) {
+        String identifier = StringUtils.trimToEmpty(citation.getIdentifier()).toLowerCase();
+        if (identifier.startsWith(Constants.DOI_ACCESS_SCHEMA)
+            || identifier.startsWith(Constants.DOI_PROXY_SERVER_URL)) {
+          return citation.getIdentifier();
+        }
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Register a DOI for a resource, making the DOI public, which will resolve shortly. The resource will be prevented
+   * from reverting to private. This method can only be called the first time a DOI is assigned to a resource.
+   *
+   * This does not require the resource to be republished, but the resource must be publicly visible or registered
+   * with GBIF. The VersionHistory is updated, changing the IdentifierStatus from REGISTERED to PUBLIC.
+   *
+   * TODO: The published eml.xml should also be updated, to have the correct citation if there is a discrepancy (i.e.
+   * the citation identifier does not match)
+   *
+   * Can be done for any non-private resource whose DOI has been reserved.
+   */
+  public String registerDoi() throws Exception {
+    if (resource == null) {
+      return NOT_FOUND;
+    }
+    if (registerDoi) {
+      try {
+        if (!isAlreadyAssignedDoi() && resource.getIdentifierStatus() == IdentifierStatus.RESERVED
+            && (resource.getStatus() == PublicationStatus.PUBLIC
+                || resource.getStatus() == PublicationStatus.REGISTERED)) {
+          resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
+          resource.getVersionHistory().get(0).setStatus(IdentifierStatus.PUBLIC);
+          resourceManager.updateAlternateIdentifierForDOI(resource);
+          saveResource();
+        }
+      } catch (Exception e) {
+        LOG.error("Failed to register DOI for resource " + resource.getShortname(), e);
+      }
+    } else {
+      addActionWarning(getText("manage.overview.resource.doi.invalid.operation", new String[] {resource.getShortname(),
+        resource.getIdentifierStatus().toString()}));
+    }
+    return execute();
+  }
+
+
+  /**
+   * Deletes a reserved DOI.
+   *
+   * Can only be done to a resource whose DOI is reserved but not public. If the resource previously had been assigned
+   * a DOI, that DOI is reassigned.
+   */
+  public String deleteDoi() throws Exception {
+    if (resource == null) {
+      return NOT_FOUND;
+    }
+    if (deleteDoi) {
+      try {
+        if (resource.getIdentifierStatus() == IdentifierStatus.RESERVED) {
+          resource.setDoi(null);
+          resource.setIdentifierStatus(IdentifierStatus.UNRESERVED);
+        } else if (isAlreadyAssignedDoi()
+                   && resource.getIdentifierStatus() == IdentifierStatus.PUBLIC_PENDING_PUBLICATION) {
+          // reassign previous DOI, and reset identifier status
+          resource.setDoi(resource.getVersionHistory().get(0).getDoi());
+          resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
+        }
+      } catch (Exception e) {
+        LOG.error("Failed to delete reserved DOI for resource " + resource.getShortname(), e);
+      }
+    } else {
+      addActionWarning(getText("manage.overview.resource.doi.invalid.operation", new String[] {resource.getShortname(),
+        resource.getIdentifierStatus().toString()}));
+    }
+    return execute();
+  }
+
+  /**
+   * Take a resource offline, and ensure its DOI resolves to a page explaining the resource has been removed. If the
+   * resource was registered with GBIF, it is deleted from GBIF.
+   *
+   * The resource does not have to be republished.
+   *
+   * DOI can no longer be used on mapping core (datasetID field).
+   *
+   * This changes the resource status to private.
+   *
+   * Can be done for any non-private resource whose DOI has been registered.
+   */
+  private void makeDoiUnavailable() throws Exception {
     resource.setIdentifierStatus(IdentifierStatus.UNAVAILABLE);
     resourceManager.updateAlternateIdentifierForDOI(resource);
     saveResource();
-    return execute();
   }
 
   /**
-   * TODO
+   * Take a resource online again, and ensure its DOI resolves to the resource homepage of the last published version.
+   * If the resource was registered with GBIF, it will required written communication with the GBIF Helpdesk.
+   *
+   * The resource does not have to be republished.
+   *
+   * DOI can be used on mapping core (datasetID field).
+   *
+   * This changes the resource status to public, unless the resource was previously registered in which case it will be
+   * set to registered again.
+   *
+   * Can be done for any private resource, whose DOI has been made unavailable.
    */
-  public String updateDoi() throws Exception {
-    LOG.info("Updating DOI, if status is RESERVED");
-
-    if (resource.getIdentifierStatus() != null &&
-        resource.getIdentifierStatus().compareTo(IdentifierStatus.RESERVED) == 0) {
-
-      String prefix = Strings.nullToEmpty(getDoiPrefix());
-      String newPrefix = StringUtils.trimToNull(req.getParameter("doi_prefix"));
-
-      String suffix = Strings.nullToEmpty(getDoiSuffix());
-      // TODO validate new Suffix is syntactically valid
-      String newSuffix = StringUtils.trimToNull(req.getParameter("doi_suffix"));
-
-      // check if doi prefix changed, in which case update DOI and DOI Organisation
-      if (newPrefix == null || suffix == null) {
-        resource.setDoi(null);
-        resource.setIdentifierStatus(null);
-        resource.setDoiOrganisationKey(null);
-      } else if (!newPrefix.equalsIgnoreCase(prefix) || !newSuffix.equalsIgnoreCase(suffix)) {
-        // validate prefix is valid
-        Organisation newDoiOrganisation = getOrganisationByDoiPrefix(newPrefix);
-        if (newDoiOrganisation != null) {
-          resource.setDoi(newPrefix + "/" + newSuffix);
-          resource.setDoiOrganisationKey(newDoiOrganisation.getKey());
-        } else {
-          LOG.error("This prefix is invalid: " + newPrefix);
-        }
-      } else {
-        LOG.info("prefix unchanged");
-      }
-
-      resourceManager.updateAlternateIdentifierForDOI(resource);
-      saveResource();
-
-      } else {
-        LOG.warn("Cannot update DOI unless its status is reserved");
-      }
-
-    return execute();
+  private void makeDoiAvailable() throws Exception {
+    resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
+    resourceManager.updateAlternateIdentifierForDOI(resource);
+    saveResource();
   }
 
   /**
-   * @return part before first forward slash
+   * @return DOI prefix, e.g. 10.1063 is the prefix for doi:10.1063/BhTX9uO. The DOI may contain the "doi:" access
+   * schema or DOI proxy URL "http://dx.doi.org/".
    */
-  public String getDoiPrefix() {
-    String doi = Strings.emptyToNull(resource.getDoi());
+  @VisibleForTesting
+  public String parseDoiPrefix(String doi) {
     if (doi != null) {
-      LOG.info("Get DOI prefix from: " + doi);
+      doi = StringUtils
+        .trim(doi.replaceAll(Constants.DOI_ACCESS_SCHEMA, "").replaceAll(Constants.DOI_PROXY_SERVER_URL, ""));
       int slash = doi.indexOf("/");
-      LOG.info("DOI prefix: " + doi.substring(0, slash));
       return doi.substring(0, slash);
     }
     return null;
@@ -522,33 +646,20 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   }
 
   /**
-   * TODO
+   * @return true if the resource has already been assigned a DOI, false otherwise. Remember only DOIs that are public
+   * have officially been assigned/registered.
    */
-  public Organisation getOrganisationByDoiPrefix(String doiPrefix) {
-    if (doiPrefix != null && organisationsWithDoiAccount.size() > 0) {
-      for (Organisation organisation: organisationsWithDoiAccount) {
-        if (doiPrefix.equalsIgnoreCase(organisation.getDoiPrefix())) {
-          return organisation;
-        }
+  public boolean isAlreadyAssignedDoi() {
+    if (!resource.getVersionHistory().isEmpty()) {
+      String doi = resource.getVersionHistory().get(0).getDoi();
+      IdentifierStatus status = resource.getVersionHistory().get(0).getStatus();
+      if (doi != null && status == IdentifierStatus.PUBLIC) {
+        LOG.debug("The last published version of resource [" + resource.getShortname() + "] has doi: [" + doi +
+                 "] with status: [" + status + "]");
+        return true;
       }
-    } else {
-      LOG.warn("doiPrefix is null, or no organisations with DOI account registered");
     }
-    return null;
-  }
-
-  /**
-   * TODO
-   */
-  public String getDoiOrganisationName() {
-    if (resource.getDoiOrganisationKey() != null) {
-      LOG.info("Looking for organisation with DOI: " + resource.getDoiOrganisationKey());
-      // TODO validate organization has DOI account
-      return registrationManager.get(resource.getDoiOrganisationKey()).getName();
-    } else {
-      LOG.error("Couldn't find organisation with DOI: " + resource.getDoiOrganisationKey());
-    }
-    return resource.getDoiOrganisationKey().toString();
+    return false;
   }
 
   /**
@@ -568,7 +679,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     // update frequencies list, that qualify for auto-publishing
     Map<String, String> filteredFrequencies =
       vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES, getLocaleLanguage(), false);
-    MapUtils.removeNonMatchingKeys(filteredFrequencies, MaintUpFreqType.AUTO_PUBLISHING_TYPES);
+    MapUtils.removeNonMatchingKeys(filteredFrequencies, MaintenanceUpdateFrequency.NON_ZERO_DAYS_UPDATE_PERIODS);
     frequencies.putAll(filteredFrequencies);
   }
 
@@ -588,9 +699,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
       // enabled registry organisations
       organisations = registrationManager.list();
-
-      // organisations with DOI Registry Agency accounts
-      // TODO fix
 
       // remove all DwC mappings with 0 terms mapped
       // this is important do do before populating potential extensions since an empty mapping to occurrence can
@@ -633,13 +741,15 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       }
 
       // check EML
-      missingMetadata = !emlValidator.isValid(resource.getEml(), null);
+      missingMetadata = !emlValidator.isValid(resource, null);
       // check resource meets all the conditions required in order to be registered
       missingRegistrationMetadata = !hasMinimumRegistryInfo(resource);
       // check the metadata has been modified since the last publication
       metadataModifiedSinceLastPublication = setMetadataModifiedSinceLastPublication(resource);
       // check the source mappings has been modified since the last publication
       mappingsModifiedSinceLastPublication = setMappingsModifiedSinceLastPublication(resource);
+      // find the organisation that can register DOIs for datasets
+      organisationWithPrimaryDoiAccount = registrationManager.findPrimaryDoiAgencyAccount();
 
       // populate frequencies map
       populateFrequencies();
@@ -655,6 +765,9 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    * exceeded the maximum number of failed publish events during auto-publication, auto-publication for the resource is
    * suspended. By publishing the resource manually, it is assumed the manager is trying to debug the problem. Without
    * this safeguard in place, a resource can auto-publish in an endless number of failures.
+   *
+   * TODO: if DOI is PUBLIC_PENDING_PUBLICATION, try to register DOI if publication is successful. Fail publication if register DOI fails.
+   * TODO: if DOI has a different prefix to the last DOI assigned to this resource, throw an Exception
    *
    * @return Struts2 result string
    * @throws Exception if method fails
@@ -697,13 +810,18 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       }
     }
 
-    // increment version number - this will be the version of newly published resource (all of eml/rtf/dwca)
-    BigDecimal v = resource.getNextVersion();
+    BigDecimal nextVersion = new BigDecimal(resource.getNextVersion().toPlainString());
+    BigDecimal replacedVersion = new BigDecimal(resource.getEmlVersion().toPlainString());
+
+    // TODO: implement - below is a temporary implementation.
+    if (resource.getIdentifierStatus() == IdentifierStatus.PUBLIC_PENDING_PUBLICATION && isAlreadyAssignedDoi()) {
+      resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
+    }
 
     try {
       // publish a new version of the resource
-      if (resourceManager.publish(resource, v, this)) {
-        addActionMessage(getText("publishing.started", new String[] {String.valueOf(v), resource.getShortname()}));
+      if (resourceManager.publish(resource, nextVersion, this)) {
+        addActionMessage(getText("publishing.started", new String[] {String.valueOf(nextVersion), resource.getShortname()}));
         return PUBLISHING;
       } else {
         // show action warning there is no source data and mapping, as long as resource isn't metadata-only
@@ -723,16 +841,16 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       } else {
         // alert user publication failed
         addActionError(getText("publishing.failed",
-          new String[] {String.valueOf(v), resource.getShortname(), e.getMessage()}));
+          new String[] {String.valueOf(nextVersion), resource.getShortname(), e.getMessage()}));
         // restore the previous version since publication was unsuccessful
-        resourceManager.restoreVersion(resource, resource.getReplacedEmlVersion(), this);
+        resourceManager.restoreVersion(resource, nextVersion, replacedVersion, this);
         // keep track of how many failures on auto publication have happened
         resourceManager.getProcessFailures().put(resource.getShortname(), new Date());
       }
     } catch (InvalidConfigException e) {
       // with this type of error, the version cannot be rolled back - just alert user publication failed
       String msg =
-        getText("publishing.failed", new String[] {String.valueOf(v), resource.getShortname(), e.getMessage()});
+        getText("publishing.failed", new String[] {String.valueOf(nextVersion), resource.getShortname(), e.getMessage()});
       LOG.error(msg, e);
       addActionError(msg);
     }
@@ -753,7 +871,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         if (getCurrentUser().hasRegistrationRights()) {
           Organisation org = null;
           try {
-            org = registrationManager.get(id);
+            org = resource.getOrganisation();
 
             // http://code.google.com/p/gbif-providertoolkit/issues/detail?id=594
             // It is safe to test the Organisation here. A resource cannot be registered without an organisation being
@@ -805,8 +923,58 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     return execute();
   }
 
+  /**
+   * To hold the state transition request, so the same request triggered purely by a URL will not work.
+   *
+   * @param unpublish form variable
+   */
   public void setUnpublish(String unpublish) {
     this.unpublish = StringUtils.trimToNull(unpublish) != null;
+  }
+
+  /**
+   * To hold the state transition request, so the same request triggered purely by a URL will not work.
+   *
+   * @param reserveDoi form variable
+   */
+  public void setReserveDoi(String reserveDoi) {
+    this.reserveDoi = StringUtils.trimToNull(reserveDoi) != null;
+  }
+
+  /**
+   * To hold the state transition request, so the same request triggered purely by a URL will not work.
+   *
+   * @param registerDoi form variable
+   */
+  public void setRegisterDoi(String registerDoi) {
+    this.registerDoi = StringUtils.trimToNull(registerDoi) != null;
+  }
+
+  /**
+   * To hold the state transition request, so the same request triggered purely by a URL will not work.
+   *
+   * @param deleteDoi form variable
+   */
+  public void setDeleteDoi(String deleteDoi) {
+    this.deleteDoi = StringUtils.trimToNull(deleteDoi) != null;
+  }
+
+  /**
+   * To hold the state transition request, so the same request triggered purely by a URL will not work.
+   *
+   * @param delete form variable
+   */
+  public void setDelete(String delete) {
+    this.delete = StringUtils.trimToNull(delete) != null;
+  }
+
+  /**
+   * To hold the state transition request, so the same request triggered purely by a URL will not work.
+   *
+   * @param undelete form variable
+   */
+  public void setUndelete(String undelete) {
+    this.undelete = StringUtils.trimToNull(undelete) != null;
   }
 
   /**
@@ -944,5 +1112,13 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   @Override
   public void report(String resourceShortname, StatusReport report) {
     this.report = report;
+  }
+
+  /**
+   * @return the organisation associated to this IPT that has a DOI registration agency account, which has been
+   * activated enabling it to register DOIs for datasets.
+   */
+  public Organisation getOrganisationWithPrimaryDoiAccount() {
+    return organisationWithPrimaryDoiAccount;
   }
 }

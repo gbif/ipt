@@ -36,6 +36,11 @@ public final class Constants {
   public static final String DATASET_TYPE_METADATA_IDENTIFIER = "metadata";
   public static final String TEST_DOI_PREFIX = "10.5072";
 
+  // DOI access scheme must be lower case, like ftp: or http:
+  public static final String DOI_ACCESS_SCHEMA = "doi:";
+  // DOI proxy server URL must contain trailing forward slash
+  public static final String DOI_PROXY_SERVER_URL = "http://dx.doi.org/";
+
   private Constants() {
     throw new UnsupportedOperationException("Can't initialize class");
   }

@@ -2,14 +2,14 @@ package org.gbif.ipt.model;
 
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
-import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.config.Constants;
-import org.gbif.ipt.model.voc.MaintUpFreqType;
+import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.Eml;
+import org.gbif.metadata.eml.MaintenanceUpdateFrequency;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import javax.annotation.Nullable;
+import javax.validation.constraints.NotNull;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Function;
@@ -57,7 +58,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   private String coreType;
   private String subtype;
   // update frequency
-  private MaintUpFreqType updateFrequency;
+  private MaintenanceUpdateFrequency updateFrequency;
   // publication status
   private PublicationStatus status = PublicationStatus.PRIVATE;
   // publication mode
@@ -91,7 +92,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   private String changeSummary;
   private List<VersionHistory> versionHistory = Lists.newLinkedList();
 
-  private IdentifierStatus identifierStatus = IdentifierStatus.RESERVED;
+  private IdentifierStatus identifierStatus = IdentifierStatus.UNRESERVED;
   private String doi;
   private UUID doiOrganisationKey;
 
@@ -344,17 +345,48 @@ public class Resource implements Serializable, Comparable<Resource> {
    *
    * @return resource version
    */
+  @NotNull
   public BigDecimal getEmlVersion() {
-    return emlVersion;
+    return (emlVersion == null) ? eml.getEmlVersion() : emlVersion;
   }
 
   /**
-   * Get the next resource version, bumped by minor resource version.
+   * Get the next resource version. If the resource has never been published, the next resource version
+   * is 1.0. If no new DOI has been reserved for the resource, the version is bumped by a minor resource version.
+   * If a new DOI has been reserved for the resource, the version is bumped by a major resource version.
    *
    * @return next resource version
    */
+  @NotNull
   public BigDecimal getNextVersion() {
-    return getEml().getNextEmlVersionAfterMinorVersionChange();
+    BigDecimal nextVersion;
+    // first publication
+    if (lastPublished == null) {
+      nextVersion = getEml().getEmlVersion();
+    }
+    // new DOI has been reserved, different from DOI of last published version warrants a new major release
+    else if (doi != null && getDoiOfLastPublishedVersion() != null
+               && !doi.equalsIgnoreCase(getDoiOfLastPublishedVersion())
+               && identifierStatus == IdentifierStatus.PUBLIC_PENDING_PUBLICATION) {
+      nextVersion = getEml().getNextEmlVersionAfterMajorVersionChange();
+    }
+    // all other cases warrant a minor version increment
+    else {
+      nextVersion = getEml().getNextEmlVersionAfterMinorVersionChange();
+    }
+    return nextVersion;
+  }
+
+  /**
+   * @return the DOI assigned to the last published version of the resource, equal to null if no DOI was assigned
+   * at the time of the last publication, or if the resource has not been published yet.
+   */
+  @Nullable
+  private String getDoiOfLastPublishedVersion() {
+    if (!versionHistory.isEmpty()) {
+      return versionHistory.get(0).getDoi();
+    }
+    return null;
   }
 
   public UUID getKey() {
@@ -485,7 +517,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    * TODO
    * @return
    */
-  @Nullable
+  @NotNull
   public IdentifierStatus getIdentifierStatus() {
     return identifierStatus;
   }
@@ -494,7 +526,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    * TODO
    * @param identifierStatus
    */
-  public void setIdentifierStatus(@Nullable IdentifierStatus identifierStatus) {
+  public void setIdentifierStatus(@NotNull IdentifierStatus identifierStatus) {
     this.identifierStatus = identifierStatus;
   }
 
@@ -553,7 +585,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    * @return the maintenance update frequency
    */
   @Nullable
-  public MaintUpFreqType getUpdateFrequency() {
+  public MaintenanceUpdateFrequency getUpdateFrequency() {
     return updateFrequency;
   }
 
@@ -645,7 +677,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    */
   public void setEmlVersion(BigDecimal v) {
     if (v != null && emlVersion != null) {
-      replacedEmlVersion = emlVersion;
+      replacedEmlVersion = new BigDecimal(emlVersion.toPlainString());
     }
     emlVersion = v;
     if (eml != null) {
@@ -726,7 +758,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    * @param updateFrequency MainUpFreqType Enum
    */
   public void setUpdateFrequency(String updateFrequency) {
-    this.updateFrequency = MaintUpFreqType.inferType(updateFrequency);
+    this.updateFrequency = MaintenanceUpdateFrequency.findByIdentifier(updateFrequency);
   }
 
   public void setTitle(String title) {
@@ -776,8 +808,8 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   /**
-   * TODO
-   * @return
+   * @return the version replaced by the next publication if it hasn't happened yet, or the last publication if it
+   * has happened already.
    */
   public BigDecimal getReplacedEmlVersion() {
     return replacedEmlVersion;
@@ -792,15 +824,14 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   /**
-   * Construct the resource citation from various parts, using the next resource version (assuming the next publication
-   * is a minor version change)
+   * Construct the resource citation from various parts, using the next resource version.
    * </br>
    * The citation format is:
-   * Creators (PublicationYear): Title. Version. Publisher. ResourceType. Identifier
+   * Creators (PublicationYear): Title. Version [major.minor]. Publisher. ResourceType. Identifier
    * @return generated resource citation string
    */
   public String generateResourceCitation() {
-    return generateResourceCitation(getEml().getNextEmlVersionAfterMinorVersionChange());
+    return generateResourceCitation(getNextVersion());
   }
 
   /**
@@ -862,10 +893,12 @@ public class Resource implements Serializable, Comparable<Resource> {
     sb.append(". ");
 
     // TODO: revise
-    // add identifier, if its status is public. If that's not set, use the citation identifier instead
-    if (getIdentifierStatus() != null && getIdentifierStatus().equals(IdentifierStatus.PUBLIC)) {
+    // add identifier (DOI). If that's not available, use the citation identifier instead
+    if (getDoi() != null) {
+      //For citation purposes, DataCite prefers that DOI names are displayed as linkable, permanent URLs.
+      sb.append(Constants.DOI_PROXY_SERVER_URL);
       sb.append(Strings.nullToEmpty(getDoi()));
-    } else if (getEml().getCitation().getIdentifier() != null) {
+    } else if (getEml().getCitation() != null && getEml().getCitation().getIdentifier() != null) {
       sb.append(getEml().getCitation().getIdentifier());
     }
     return sb.toString();

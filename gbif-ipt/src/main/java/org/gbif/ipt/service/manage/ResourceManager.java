@@ -316,10 +316,11 @@ public interface ResourceManager {
    * file. Don't replace the existing interim eml.xml file, only update it.
    *
    * @param resource resource
+   * @param version version to rollback
    * @param version  version to restore
    * @param action   action
    */
-  void restoreVersion(Resource resource, BigDecimal version, @Nullable BaseAction action);
+  void restoreVersion(Resource resource, BigDecimal rollingBack, BigDecimal version, @Nullable BaseAction action);
 
   /**
    * Turn resource publicationMode to OFF.

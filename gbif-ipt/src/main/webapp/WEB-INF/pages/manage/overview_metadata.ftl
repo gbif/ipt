@@ -7,12 +7,17 @@
     <div class="actions">
       <form action='metadata-basic.do' method='get'>
         <input name="r" type="hidden" value="${resource.shortname}"/>
-        <@s.submit name="edit" key="button.edit"/>
+        <@s.submit name="edit" key="button.edit" disabled="${(organisations?size==0)?string}"/>
       </form>
     </div>
   </div>
   <div class="bodyOverview">
-    <#if missingMetadata>
+    <#if organisations?size==0>
+      <div>
+          <img class="info" src="${baseURL}/images/warning.gif"/>
+          <em><@s.text name="manage.metadata.no.organisations"/></em>
+      </div>
+    <#elseif missingMetadata>
       <div>
         <img class="info" src="${baseURL}/images/warning.gif"/>
         <em><@s.text name="manage.overview.missing.metadata"/></em>
@@ -31,11 +36,6 @@
             <#if metadataModifiedSinceLastPublication>
               <th><@s.text name='basic.lastModified'/>:</th>
               <td>${resource.getMetadataModified()?date?string.medium!}</td>
-              <td>
-                <a class="button" href="${baseURL}/resource/preview?r=${resource.shortname}">
-                  <input class="button" type="button" value='<@s.text name='manage.overview.metadata.preview'><@s.param>${resource.getEml().getNextEmlVersionAfterMinorVersionChange().toPlainString()!}</@s.param></@s.text>'/>
-                </a>
-              </td>
             <#elseif resource.lastPublished??>
               <th><@s.text name="manage.overview.notModified"/></th>
             </#if>

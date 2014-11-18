@@ -19,6 +19,7 @@ import org.gbif.common.parsers.CountryParser;
 import org.gbif.common.parsers.core.ParseResult;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Resource.CoreRowType;
 import org.gbif.ipt.model.voc.IdentifierStatus;
@@ -49,11 +50,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
-import java.util.UUID;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.google.gson.annotations.Since;
+import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -66,7 +67,6 @@ public class MetadataAction extends ManagerBaseAction {
   private final ResourceValidator validatorRes = new ResourceValidator();
   private final EmlValidator emlValidator;
   private final VocabulariesManager vocabManager;
-  @Since(2.2)
   private static final String LICENSES_PROPFILE = "licenses.properties";
   private static final String LICENSE_NAME = "license.name.";
   private static final String LICENSE_TEXT = "license.text.";
@@ -84,6 +84,7 @@ public class MetadataAction extends ManagerBaseAction {
   private Map<String, String> types;
   private Map<String, String> datasetSubtypes;
   private Map<String, String> frequencies;
+  private Map<String, String> organisations;
 
   // to group dataset subtype vocabulary keys
   private List<String> checklistSubtypeKeys;
@@ -92,6 +93,7 @@ public class MetadataAction extends ManagerBaseAction {
   private static final CountryParser COUNTRY_PARSER = CountryParser.getInstance();
 
   private Agent primaryContact;
+  private boolean doiReservedOrAssigned = false;
 
   @Inject
   public MetadataAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -277,10 +279,28 @@ public class MetadataAction extends ManagerBaseAction {
         // #2) license texts - used to populate text area on Additional Metadata Page
         loadLicensesFile();
 
+        // TODO: put into method
+        // enabled registry organisations
+        List<Organisation> associatedOrganisations = registrationManager.list();
+        organisations = Maps.newLinkedHashMap();
+        if (!associatedOrganisations.isEmpty()) {
+          organisations.put("", getText("admin.organisation.name.select"));
+          for (Organisation o : associatedOrganisations) {
+            organisations.put(o.getKey().toString(), o.getName());
+          }
+        }
+
         if (isHttpPost()) {
           resource.getEml().getContacts().clear();
           resource.getEml().getCreators().clear();
           resource.getEml().getMetadataProviders().clear();
+
+          // publishing organisation, if provided must match organisation
+          String id = getId();
+          Organisation organisation = (id == null) ? null : registrationManager.get(id);
+          if (organisation != null) {
+            resource.setOrganisation(organisation);
+          }
         }
         next = MetadataSection.GEOGRAPHIC_COVERAGE_SECTION;
         break;
@@ -345,6 +365,11 @@ public class MetadataAction extends ManagerBaseAction {
         if (isHttpPost()) {
           resource.getEml().getBibliographicCitationSet().getBibliographicCitations().clear();
         }
+        doiReservedOrAssigned = hasDoiReservedOrAssigned(resource);
+        if (doiReservedOrAssigned && !isHttpPost()) {
+            addActionMessage(
+              "The DOI reserved or registered for this resource is being used as the citation identifier");
+        }
         next = MetadataSection.COLLECTIONS_SECTION;
         break;
 
@@ -384,21 +409,13 @@ public class MetadataAction extends ManagerBaseAction {
   public String save() throws Exception {
     // before saving, the minimum amount of mandatory metadata must have been provided, and ALL metadata sections must
     // be valid, otherwise an error is displayed
-    if (emlValidator.areAllSectionsValid(this, resource.getEml())) {
+    if (emlValidator.areAllSectionsValid(this, resource)) {
       // Save metadata information (eml.xml)
       resourceManager.saveEml(resource);
       // save date metadata was last modified
       resource.setMetadataModified(new Date());
       // Alert user of successful save
       addActionMessage(getText("manage.success", new String[] {getText("submenu." + section.getName())}));
-
-      // TODO: Reserve a DOI (if possible) if resource doesn't already have one
-      if (resource.getIdentifierStatus() == null) {
-        resource.setDoi("10.555/UJK78JH");
-        resource.setDoiOrganisationKey(UUID.fromString("62922b92-69d1-4c4b-831c-b23d5412a124"));
-        resource.setIdentifierStatus(IdentifierStatus.RESERVED);
-      }
-
       // Save resource information (resource.xml)
       resourceManager.save(resource);
     }
@@ -408,7 +425,7 @@ public class MetadataAction extends ManagerBaseAction {
   @Override
   public void validateHttpPostOnly() {
     validatorRes.validate(this, resource);
-    emlValidator.validate(this, resource.getEml(), section);
+    emlValidator.validate(this, resource, section);
   }
 
   /**
@@ -680,5 +697,31 @@ public class MetadataAction extends ManagerBaseAction {
         }
       }
     }
+  }
+
+  /**
+   * @return list of organisations associated to IPT that can publish resources
+   */
+  public Map<String, String> getOrganisations() {
+    return organisations;
+  }
+
+  /**
+   * Determine whether a DOI has been reserved or registered for the resource.
+   *
+   * @return true if a DOI has been reserved or registered for the resource, or false otherwise
+   */
+  @VisibleForTesting
+  public boolean hasDoiReservedOrAssigned(Resource resource) {
+    return (!Strings.isNullOrEmpty(resource.getDoi()) && resource.getIdentifierStatus() != IdentifierStatus.UNRESERVED);
+  }
+
+  /**
+   * Used to activate, deactivate the citation identifier field on the citation metadata page.
+   *
+   * @return true if a DOI has been reserved or registered for the resource, or false otherwise
+   */
+  public boolean isDoiReservedOrAssigned() {
+    return doiReservedOrAssigned;
   }
 }
