@@ -1229,18 +1229,34 @@ div.quad_block input {
   width: 70%;
 }
 
+/* basic metadata page */
 div.third_block {
-  margin-left: 5px;
+  margin-top: 10px;
 }
 div.third_block div.column_third {
   width: 33%;
-  float: left;
+  float: right;
+  padding-bottom: 10px;
+}
+.grouped {
+  border-right: 1px solid #EEEEEE;
+  border-left: 1px solid #EEEEEE;
 }
 div.third_block select {
-  width: 70%;
+  width: 80%;
 }
 div.third_block input {
   width: 70%;
+}
+div.third_block label {
+  width: 90%;
+  padding-left:10px;
+}
+div.third_block div {
+  width: 100%;
+}
+div.third_block img {
+  padding-left: 10px;
 }
 
 .readonly {
@@ -1401,7 +1417,7 @@ div.howtocite {
 }
 
 input.expand {
-  background:url(/images/icons/list-menu.png);
+  background:url(/images/icons/green/list-menu.png);
   background-repeat: no-repeat;
   width:20px;
   height:20px;
@@ -1409,7 +1425,7 @@ input.expand {
 }
 
 input.contract {
-  background:url(/images/icons/arrows-expand.png);
+  background:url(/images/icons/green/arrows-expand.png);
   background-repeat: no-repeat;
   width:20px;
   height:20px;
@@ -1542,23 +1558,23 @@ ul {
 }
 
 .icon-download {
-  background-image: url('../images/icons/download.png');
+  background-image: url('../images/icons/green/download.png');
 }
 
 .icon-homepage {
-  background-image: url('../images/icons/homepage.png');
+  background-image: url('../images/icons/green/homepage.png');
 }
 
 .icon-key {
-  background-image: url('../images/icons/key.png');
+  background-image: url('../images/icons/green/key.png');
 }
 
 .icon-book {
-  background-image: url('../images/icons/book.png');
+  background-image: url('../images/icons/green/book.png');
 }
 
 .icon-clock {
-  background-image: url('../images/icons/clock.png');
+  background-image: url('../images/icons/green/clock.png');
 }
 
 .icon-gbif {
@@ -1566,7 +1582,11 @@ ul {
 }
 
 .icon-preview {
-  background-image: url('../images/icons/preview.png');
+  background-image: url('../images/icons/green/preview.png');
+}
+
+.icon-validate {
+  background-image: url('../images/icons/checkmark.png');
 }
 
 #preview-report {

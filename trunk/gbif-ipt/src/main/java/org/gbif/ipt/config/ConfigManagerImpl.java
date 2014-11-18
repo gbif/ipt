@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.inject.Inject;
@@ -283,7 +282,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
    * @throws InvalidConfigException
    */
   public void setArchivalMode(boolean archivalMode) throws InvalidConfigException {
-    if (!archivalMode && registrationManager.findPrimaryDoiAgencyAccountActivated() != null) {
+    if (!archivalMode && registrationManager.findPrimaryDoiAgencyAccount() != null) {
       throw new InvalidConfigException(TYPE.DOI_REGISTRATION_ALREADY_ACTIVATED, "Cannot turn off archival mode since"
                                                                                 + "DOI registration has been activated");
     }

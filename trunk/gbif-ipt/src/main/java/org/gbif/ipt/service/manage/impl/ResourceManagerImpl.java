@@ -101,7 +101,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
-
 import javax.annotation.Nullable;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -750,7 +749,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   public boolean isLocked(String shortname, BaseAction action) {
     if (processFutures.containsKey(shortname)) {
       Resource resource = get(shortname);
-      String sVersion = String.valueOf(resource.getEmlVersion());
+      BigDecimal version = resource.getEmlVersion();
 
       // is listed as locked but task might be finished, check
       Future<Integer> f = processFutures.get(shortname);
@@ -788,12 +787,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           // if publication was successful..
           if (succeeded) {
             // update StatusReport on publishing page
-            String msg = action.getText("publishing.success", new String[] {sVersion, resource.getShortname()});
+            String msg = action.getText("publishing.success", new String[] {version.toPlainString(), resource.getShortname()});
             StatusReport updated = new StatusReport(true, msg, getTaskMessages(shortname));
             processReports.put(shortname, updated);
           } else {
             // alert user publication failed
-            String msg = action.getText("publishing.failed", new String[] {sVersion, shortname, reasonFailed});
+            String msg = action.getText("publishing.failed", new String[] {version.toPlainString(), shortname, reasonFailed});
             action.addActionError(msg);
 
             // update StatusReport on publishing page
@@ -803,7 +802,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             }
 
             // the previous version needs to be rolled back
-            restoreVersion(resource, resource.getReplacedEmlVersion(), action);
+            restoreVersion(resource, version, resource.getReplacedEmlVersion(), action);
 
             // keep track of how many failures on auto publication have happened
             processFailures.put(resource.getShortname(), new Date());
@@ -1123,15 +1122,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     log.info(msg);
   }
 
-  public void restoreVersion(Resource resource, BigDecimal restoring, BaseAction action) {
+  public void restoreVersion(Resource resource, BigDecimal rollingBack, BigDecimal restoring, BaseAction action) {
     // prevent null action from being handled
     if (action == null) {
       action = new BaseAction(textProvider, cfg, registrationManager);
     }
     String shortname = resource.getShortname();
-    BigDecimal rollingBack = resource.getEmlVersion();
-    log.info("Rolling back version # " + rollingBack.toPlainString() + ", restoring version #" +
-             restoring.toPlainString() + " of resource " + shortname);
+    log.info("Rolling back version #" + rollingBack.toPlainString()
+             + ". Restoring version #" + restoring.toPlainString() + " of resource " + shortname);
 
     if (restoring.compareTo(BigDecimal.ZERO) >= 0) {
       try {
@@ -1291,8 +1289,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
 
     if (ids != null && resource.getDoi() != null) {
-      // TODO use constant
-      String doi = "doi:" + resource.getDoi();
+      String doi = Constants.DOI_ACCESS_SCHEMA + resource.getDoi();
       // has this DOI been added before?
       boolean exists = false;
       String existingId = null;

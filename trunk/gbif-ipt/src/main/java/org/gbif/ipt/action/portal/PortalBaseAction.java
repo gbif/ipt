@@ -11,6 +11,7 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import java.math.BigDecimal;
 import javax.annotation.Nullable;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -96,5 +97,15 @@ public class PortalBaseAction extends BaseAction {
    */
   protected String getStringVersion() {
     return (version == null) ? UNSPECIFIED_VERSION : String.valueOf(version);
+  }
+
+  /**
+   * Resource requested.
+   *
+   * @param resource resource
+   */
+  @VisibleForTesting
+  public void setResource(Resource resource) {
+    this.resource = resource;
   }
 }

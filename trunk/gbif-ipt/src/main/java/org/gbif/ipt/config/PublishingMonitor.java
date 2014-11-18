@@ -80,7 +80,8 @@ public class PublishingMonitor {
             List<Resource> resources = resourceManager.list();
             for (Resource resource : resources) {
               Date next = resource.getNextPublished();
-              BigDecimal v = resource.getNextVersion();
+              BigDecimal nextVersion = new BigDecimal(resource.getNextVersion().toPlainString());
+              BigDecimal replacedVersion = new BigDecimal(resource.getEmlVersion().toPlainString());
               if (next != null) {
                 // ensure resource is due to be auto-published
                 if (next.before(now)) {
@@ -89,11 +90,9 @@ public class PublishingMonitor {
                     // ensure resource has not exceeded the maximum number of publication failures
                     if (!resourceManager.hasMaxProcessFailures(resource)) {
                       try {
-                        LOG.debug(
-                          "Monitor: " + resource.getTitleAndShortname() + " v# " + v + " due to be auto-published: "
-                            + next
-                              .toString());
-                        resourceManager.publish(resource, v, null);
+                        LOG.debug("Monitor: " + resource.getTitleAndShortname() + " v# " + nextVersion.toPlainString()
+                                  + " due to be auto-published: " + next.toString());
+                        resourceManager.publish(resource, nextVersion, null);
                       } catch (PublicationException e) {
                         if (PublicationException.TYPE.LOCKED == e.getType()) {
                           LOG.error("Monitor: " + resource.getTitleAndShortname()
@@ -102,21 +101,19 @@ public class PublishingMonitor {
                         } else {
                           // alert user publication failed
                           LOG.error(
-                            "Publishing version #" + String.valueOf(v) + " of resource "
+                            "Publishing version #" + nextVersion.toPlainString() + " of resource "
                               + resource.getTitleAndShortname()
                               + " failed: " + e.getMessage());
                           // restore the previous version since publication was unsuccessful
-                          resourceManager.restoreVersion(resource, resource.getReplacedEmlVersion(), null);
+                          resourceManager.restoreVersion(resource, nextVersion, replacedVersion, null);
                           // keep track of how many failures on auto publication have happened
                           resourceManager.getProcessFailures().put(resource.getShortname(), new Date());
                         }
                       } catch (InvalidConfigException e) {
-                        // with this type of error, the version cannot be rolled back - just alert user publication
-// failed
+                        // with this type of error, the version cannot be rolled back - just alert user it failed
                         LOG.error(
-                          "Publishing version #" + String.valueOf(v) + "of resource " + resource.getShortname()
-                            + "failed:"
-                            + e.getMessage(), e);
+                          "Publishing version #" + nextVersion.toPlainString() + "of resource " + resource.getShortname()
+                            + "failed:" + e.getMessage(), e);
                       }
 
                     } else {

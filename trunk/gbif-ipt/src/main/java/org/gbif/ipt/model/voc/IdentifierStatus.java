@@ -5,7 +5,12 @@ package org.gbif.ipt.model.voc;
  */
 public enum IdentifierStatus {
   /**
-   * An identifier that is not public, meaning it is not known to resolvers.
+   * An identifier that is not reserved, meaning it is not known to the DOI registration agency at all yet.
+   */
+  UNRESERVED,
+  /**
+   * An identifier that is not public, meaning it is not known to resolvers. Used the first time a DOI is assigned
+   * to the resource.
    */
   RESERVED,
   /**
@@ -13,7 +18,12 @@ public enum IdentifierStatus {
    */
   PUBLIC,
   /**
+   * An identifier that is not public, but will go public the next time the resource is published.
+   * Used to transition a resource with a public DOI gracefully to another DOI.
+   */
+  PUBLIC_PENDING_PUBLICATION,
+  /**
    * An identifier that is public, but the object it references is no longer available.
    */
-  UNAVAILABLE;
+  UNAVAILABLE
 }

@@ -10,8 +10,10 @@
 
 package org.gbif.ipt.validation;
 
+import org.gbif.api.vocabulary.Language;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.voc.MetadataSection;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -25,6 +27,7 @@ import org.gbif.metadata.eml.GeospatialCoverage;
 import org.gbif.metadata.eml.JGTICuratorialUnit;
 import org.gbif.metadata.eml.JGTICuratorialUnitType;
 import org.gbif.metadata.eml.KeywordSet;
+import org.gbif.metadata.eml.MaintenanceUpdateFrequency;
 import org.gbif.metadata.eml.PhysicalData;
 import org.gbif.metadata.eml.Point;
 import org.gbif.metadata.eml.Project;
@@ -40,7 +43,6 @@ import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
-
 import javax.annotation.Nullable;
 
 import com.google.common.base.Strings;
@@ -114,9 +116,9 @@ public class EmlValidator extends BaseValidator {
     return phone != null && phonePattern.matcher(phone).matches();
   }
 
-  public boolean isValid(Eml eml, @Nullable MetadataSection section) {
+  public boolean isValid(Resource resource, @Nullable MetadataSection section) {
     BaseAction action = new BaseAction(simpleTextProvider, cfg, regManager);
-    validate(action, eml, section);
+    validate(action, resource, section);
     return !(action.hasActionErrors() || action.hasFieldErrors());
   }
 
@@ -125,16 +127,16 @@ public class EmlValidator extends BaseValidator {
    * error message will appear for that section only.
    * 
    * @param action Action
-   * @param eml EML
+   * @param resource resource
    * @return whether all sections validated or not
    */
-  public boolean areAllSectionsValid(BaseAction action, Eml eml) {
+  public boolean areAllSectionsValid(BaseAction action, Resource resource) {
     boolean problemsEncountered = false;
     for (MetadataSection section : MetadataSection.values()) {
-      validate(action, eml, section);
+      validate(action, resource, section);
       // only highlight first section has errors
       if ((action.hasActionErrors() || action.hasFieldErrors()) && !problemsEncountered) {
-        action.addActionError(action.getText("manage.failed", new String[] {action.getText("submenu." + section)}));
+        action.addActionError(action.getText("manage.failed", new String[] {action.getText("submenu." + section.getName())}));
         problemsEncountered = true;
       }
     }
@@ -147,11 +149,13 @@ public class EmlValidator extends BaseValidator {
    * For each section, validation only proceeds if at least one field in the section's form has been entered.
    * 
    * @param action BaseAction
-   * @param eml EML
+   * @param resource resource
    * @param section EML document section name
    */
-  public void validate(BaseAction action, Eml eml, @Nullable MetadataSection section) {
-    if (eml != null) {
+  public void validate(BaseAction action, Resource resource, @Nullable MetadataSection section) {
+    if (resource != null) {
+
+      Eml eml = (resource.getEml() == null) ? new Eml() : resource.getEml();
 
       // set default
       if (section == null) {
@@ -163,18 +167,67 @@ public class EmlValidator extends BaseValidator {
           // can't bypass the basic metadata page - it is absolutely mandatory
 
           // Title - mandatory
-          if (!exists(eml.getTitle()) || eml.getTitle().trim().length() == 0) {
+          if (Strings.isNullOrEmpty(eml.getTitle())) {
             action.addFieldError("eml.title",
               action.getText("validation.required", new String[] {action.getText("eml.title")}));
           }
 
           // description - mandatory and greater than 5 chars
-          if (!exists(eml.getDescription())) {
+          if (Strings.isNullOrEmpty(eml.getDescription())) {
             action.addFieldError("eml.description",
               action.getText("validation.required", new String[] {action.getText("eml.description")}));
           } else if (!exists(eml.getDescription(), 5)) {
             action.addFieldError("eml.description",
               action.getText("validation.short", new String[] {action.getText("eml.description"), "5"}));
+          }
+
+          // intellectual rights - mandatory and greater than 3 chars
+          if (Strings.isNullOrEmpty(eml.getIntellectualRights())) {
+            action.addFieldError("eml.intellectualRights.license", action.getText("eml.intellectualRights.required"));
+          } else if (!exists(eml.getIntellectualRights(), 3)) {
+            action.addFieldError("eml.intellectualRights",
+              action.getText("validation.short", new String[] {action.getText("eml.intellectualRights"), "3"}));
+          }
+
+          // publishing organisation - mandatory
+          if (resource.getOrganisation() == null) {
+            action.addFieldError("id",
+              action.getText("validation.required", new String[] {action.getText("portal.home.organisation")}));
+          } else if (regManager.get(resource.getOrganisation().getKey()) == null) {
+            action.addFieldError("id",
+              action.getText("eml.publishingOrganisation.notFound", new String[] {resource.getOrganisation().getKey().toString()}));
+          }
+
+          // type - mandatory
+          if (Strings.isNullOrEmpty(resource.getCoreType())) {
+            action.addFieldError("resource.coreType",
+              action.getText("validation.required", new String[] {action.getText("resource.coreType")}));
+          }
+
+          // 3 Mandatory fields with default values set: metadata language, data language, and update frequency
+
+          // metadata language - mandatory (defaults to 3 letter ISO code for English)
+          if (Strings.isNullOrEmpty(eml.getMetadataLanguage())) {
+            action.addActionWarning(action.getText("eml.metadataLanguage.default"));
+            eml.setMetadataLanguage(Language.ENGLISH.getIso3LetterCode());
+          }
+
+          // data language - mandatory unless resource is metadata-only (defaults to English)
+          if (Strings.isNullOrEmpty(eml.getLanguage()) && resource.getCoreType() != null &&
+              !resource.getCoreType().equalsIgnoreCase(Resource.CoreRowType.METADATA.toString())) {
+            action.addActionWarning(action.getText("eml.language.default"));
+            eml.setLanguage(Language.ENGLISH.getIso3LetterCode());
+          }
+
+          // update frequency - mandatory (defaults to Unknown)
+          if (eml.getUpdateFrequency()==null) {
+            if (resource.getUpdateFrequency() != null) {
+              eml.setUpdateFrequency(resource.getUpdateFrequency().getIdentifier());
+              action.addActionWarning(action.getText("eml.updateFrequency.default.interval", new String[] {resource.getUpdateFrequency().getIdentifier()}));
+            } else {
+              action.addActionWarning(action.getText("eml.updateFrequency.default"));
+              eml.setUpdateFrequency(MaintenanceUpdateFrequency.UNKOWN.getIdentifier());
+            }
           }
 
           // Contacts list: at least one field has to have had data entered into it to qualify for validation

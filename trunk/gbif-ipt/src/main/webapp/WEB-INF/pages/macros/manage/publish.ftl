@@ -17,8 +17,17 @@
   </#if>
   <input id="currPubFreq" name="currPubFreq" type="hidden" value="${upFr}"/>
   <input id="pubFreq" name="pubFreq" type="hidden" value=""/>
-
-  <input type="submit" id="publishButton" value="<@s.text name='button.publish'/>"/>
+   <#if resource.identifierStatus == "UNRESERVED"
+   || (resource.identifierStatus == "RESERVED")
+   || (resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION" && resource.status != "PUBLIC" && resource.status != "REGISTERED" && currentUser.hasRegistrationRights() && organisationWithPrimaryDoiAccount??) >
+     <@s.submit id="publishButton" name="publishMajorVersion" key="button.publish" disabled="${missingMetadata?string}"/>
+   <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION" && alreadyAssignedDoi && currentUser.hasRegistrationRights() && organisationWithPrimaryDoiAccount??>
+     <@s.submit cssClass="confirmPublishMajorVersion" id="publishButton" name="publishMajorVersion" key="button.publish" disabled="${missingMetadata?string}"/>
+   <#elseif resource.identifierStatus == "PUBLIC" && currentUser.hasRegistrationRights() && organisationWithPrimaryDoiAccount??>
+     <@s.submit cssClass="confirmPublishMinorVersion" id="publishButton" name="publishMajorVersion" key="button.publish" disabled="${missingMetadata?string}"/>
+   <#else>
+     <@s.submit id="publishButton" name="publish" key="button.publish" disabled="true"/>
+   </#if>
   <br/>
   <br/>
   <div id="actions" class="autop">
@@ -34,11 +43,6 @@
       <div class="info">
         <@s.text name="autopublish.help"/>
       </div>
-    <#if resource.usesAutoPublishing()>
-      <p>
-        <#if resource.nextPublished??><@s.text name='manage.home.next.publication'/>: <em class="green">${resource.nextPublished?date?string("MMM d, yyyy, HH:mm:ss")}</#if></em>
-      </p>
-    </#if>
   </div>
 </form>
 </#macro>

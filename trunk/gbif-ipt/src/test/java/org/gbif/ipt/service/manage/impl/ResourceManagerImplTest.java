@@ -338,8 +338,8 @@ public class ResourceManagerImplTest {
     // test if resource.xml was created.
     assertTrue(mockedDataDir.resourceFile(RESOURCE_SHORTNAME, ResourceManagerImpl.PERSISTENCE_FILE).exists());
 
-    assertNull(res.getEmlVersion());
-    assertEquals(BigDecimal.valueOf(0.0), res.getEml().getEmlVersion());
+    assertEquals(BigDecimal.valueOf(1.0), res.getEml().getEmlVersion());
+    assertEquals(BigDecimal.valueOf(1.0), res.getEmlVersion());
 
     // note: source gets added to resource in sourceManager.add, and since we're mocking this call we can't set source
 
@@ -587,8 +587,8 @@ public class ResourceManagerImplTest {
     assertEquals(DATASET_TYPE_OCCURRENCE_IDENTIFIER, persistedResource.getCoreType());
     assertEquals(PublicationStatus.PRIVATE, persistedResource.getStatus());
     assertEquals(1, persistedResource.getSources().size());
-    assertNull(persistedResource.getEmlVersion());
-    assertEquals(BigDecimal.valueOf(0.0), persistedResource.getEml().getEmlVersion());
+    assertEquals(BigDecimal.valueOf(1.0), persistedResource.getEmlVersion());
+    assertEquals(BigDecimal.valueOf(1.0), persistedResource.getEml().getEmlVersion());
     assertEquals(0, persistedResource.getRecordsPublished());
     // should be 1 KeywordSet corresponding to Dataset Type vocabulary
     assertEquals(2, persistedResource.getEml().getKeywords().size());
@@ -1080,5 +1080,12 @@ public class ResourceManagerImplTest {
     Resource resource = resourceManager.create(RESOURCE_SHORTNAME, null, copiedEmlXML, creator, baseAction);
     resource.setEmlVersion(BigDecimal.valueOf(3.0));
     return resource;
+  }
+
+  /**
+   * Needed by PublishAllResourcesActionTest.
+   */
+  public DataDir getMockedDataDir() {
+    return mockedDataDir;
   }
 }

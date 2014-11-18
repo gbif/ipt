@@ -6,11 +6,13 @@ import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.VersionHistory;
+import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.FileUtils;
+import org.gbif.metadata.eml.Citation;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlFactory;
 import org.gbif.metadata.eml.TaxonKeyword;
@@ -23,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -32,6 +35,7 @@ import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 import javax.xml.parsers.ParserConfigurationException;
 
+import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -120,6 +124,28 @@ public class ResourceAction extends PortalBaseAction {
       List<VersionHistory> history = resource.getVersionHistory();
       if (history != null && history.size() > 0) {
         return new BigDecimal(history.get(0).getVersion());
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Return the DOI for version requested, or null if no DOI was assigned or the resource's VersionHistory list is
+   * null or empty. Important, VersionHistory goes from latest published (first index) to earliest published (last
+   * index).
+   *
+   * @return DOI for published version, or null if no DOI was assigned or VersionHistory list was null or empty
+   */
+  public String findDoiAssignedToPublishedVersion() {
+    if (resource != null) {
+      BigDecimal versionRequested = (getVersion() == null) ? resource.getEmlVersion() : getVersion();
+      for (VersionHistory history : resource.getVersionHistory()) {
+        if (history.getVersion().equalsIgnoreCase(versionRequested.toPlainString())) {
+          // To be officially assigned, DOI must be public
+          if (history.getStatus() == IdentifierStatus.PUBLIC) {
+            return history.getDoi();
+          }
+        }
       }
     }
     return null;
@@ -270,36 +296,89 @@ public class ResourceAction extends PortalBaseAction {
    */
   public String preview() {
     // retrieve unpublished eml.xml, using version = null
-    String name = resource.getShortname();
+    String shortname = resource.getShortname();
     try {
-      eml = loadEmlFromFile(resource.getShortname(), null);
+      File emlFile = dataDir.resourceEmlFile(shortname, null);
+      LOG.debug("Loading EML from file: " + emlFile.getAbsolutePath());
+      InputStream in = new FileInputStream(emlFile);
+      eml = EmlFactory.build(in);
     } catch (FileNotFoundException e) {
-      LOG.error("EML file version #" + getStringVersion() + " for resource " + name + " not found");
+      LOG.error("EML file version #" + getStringVersion() + " for resource " + shortname + " not found");
       return NOT_FOUND;
     } catch (IOException e) {
-      String msg = getText("portal.resource.eml.error.load", new String[] {getStringVersion(), name});
+      String msg = getText("portal.resource.eml.error.load", new String[] {getStringVersion(), shortname});
       LOG.error(msg);
       addActionError(msg);
       return ERROR;
     } catch (SAXException e) {
-      String msg = getText("portal.resource.eml.error.parse", new String[] {getStringVersion(), name});
+      String msg = getText("portal.resource.eml.error.parse", new String[] {getStringVersion(), shortname});
       LOG.error(msg);
       addActionError(msg);
       return ERROR;
     } catch (ParserConfigurationException e) {
-      String msg = getText("portal.resource.eml.error.parse", new String[] {getStringVersion(), name});
+      String msg = getText("portal.resource.eml.error.parse", new String[] {getStringVersion(), shortname});
       LOG.error(msg);
       addActionError(msg);
       return ERROR;
     }
 
-    // for preview only, set version to next minor published version without saving of course!
-    BigDecimal nextVersion = eml.getNextEmlVersionAfterMinorVersionChange();
-    eml.setEmlVersion(nextVersion);
-
-    finishLoadingDetail(resource, eml, null);
+    BigDecimal nextVersion = resource.getNextVersion();
+    resource = generatePreviewResource(resource, eml, nextVersion);
+    finishLoadingDetail(resource, eml, nextVersion);
 
     return SUCCESS;
+  }
+
+  /**
+   * Generate a copy of the resource, previewing what the next publication of the resource will look like.
+   * This involves copying over certain fields not in EML, and then setting the version equal to next published version,
+   * and setting a new pubDate.
+   *
+   * @param resource resource
+   * @param eml Eml
+   * @param nextVersion next published version
+   *
+   * @return copy of the resource, previewing what the next publication of the resource will look like
+   */
+  private Resource generatePreviewResource(Resource resource, Eml eml, BigDecimal nextVersion) {
+    Resource copy = new Resource();
+    copy.setShortname(resource.getShortname());
+    copy.setTitle(resource.getTitle());
+    copy.setLastPublished(resource.getLastPublished());
+    copy.setStatus(resource.getStatus());
+    copy.setOrganisation(resource.getOrganisation());
+    copy.setKey(resource.getKey());
+
+    // update all version number and pubDate
+    copy.setEmlVersion(nextVersion);
+
+    // update citation
+    Citation citation = new Citation();
+    citation.setCitation(resource.generateResourceCitation(nextVersion));
+    if (resource.getDoi() != null) {
+      citation.setIdentifier(resource.getDoi());
+    }
+    eml.setCitation(citation);
+
+    Date releaseDate = new Date();
+    copy.setLastPublished(releaseDate);
+    eml.setPubDate(releaseDate);
+    copy.setEml(eml);
+
+    // create new VersionHistory
+    List<VersionHistory> histories = Lists.newArrayList();
+    histories.addAll(resource.getVersionHistory());
+    copy.setVersionHistory(histories);
+    VersionHistory history = new VersionHistory(nextVersion, releaseDate, this.getCurrentUser());
+    // show DOI if it will go public on next publication
+    if (resource.getDoi() != null && (resource.getIdentifierStatus() == IdentifierStatus.PUBLIC_PENDING_PUBLICATION ||
+    resource.getIdentifierStatus() == IdentifierStatus.PUBLIC)) {
+      history.setDoi(resource.getDoi());
+      history.setStatus(IdentifierStatus.PUBLIC);
+    }
+    copy.addVersionHistory(history);
+
+    return copy;
   }
 
   /**

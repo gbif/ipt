@@ -19,18 +19,27 @@ $(document).ready(function(){
 	var $registered = false;
 
 	$('.confirm').jConfirmAction({question : "<@s.text name='basic.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
-	$('.confirmRegistration').jConfirmAction({question : "<@s.text name='manage.overview.visibility.confirm.registration'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", checkboxText: "<@s.text name='manage.overview.visibility.confirm.agreement'/>"});	
-	$('.confirmDeletion').jConfirmAction({question : "<#if resource.status=='REGISTERED'><@s.text name='manage.resource.delete.confirm.registered'/><#else><@s.text name='basic.confirm'/></#if>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
+	$('.confirmRegistration').jConfirmAction({question : "<@s.text name='manage.overview.visibility.confirm.registration'/> <@s.text name='manage.resource.delete.confirm.registered'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", checkboxText: "<@s.text name='manage.overview.visibility.confirm.agreement'/>"});
+	$('.confirmDeletion').jConfirmAction({question : "<#if alreadyAssignedDoi><@s.text name='manage.resource.delete.confirm.doi'/></br></br></#if><#if resource.status=='REGISTERED'><@s.text name='manage.resource.delete.confirm.registered'/></br></br></#if><@s.text name='manage.resource.delete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
+  $('.confirmUndeletion').jConfirmAction({question : "<@s.text name='manage.resource.undoDelete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
+
+
+  $('.confirmReserveDoi').jConfirmAction({question : "<@s.text name='manage.overview.publishing.doi.reserve.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
+  $('.confirmDeleteDoi').jConfirmAction({question : "<@s.text name='manage.overview.publishing.doi.delete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
+  $('.confirmRegisterDoi').jConfirmAction({question : "<@s.text name='manage.overview.publishing.doi.register.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", checkboxText: "<@s.text name='manage.overview.publishing.doi.register.agreement'/>"});
+  $('.confirmPublishMinorVersion').jConfirmAction({question : "<@s.text name='manage.overview.publishing.doi.minorVersion.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
+  $('.confirmPublishMajorVersion').jConfirmAction({question : "<@s.text name='manage.overview.publishing.doi.majorVersion.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
+
 
     var showReport=false;
 	$("#toggleReport").click(function() {
 		if(showReport){
 			showReport=false;
-			$("#toggleReport").text("<@s.text name='manage.overview.published.see.report'/>");
+			$("#toggleReport").text("<@s.text name='basic.show'/>");
 			$('#dwcaReport').hide();
 		}else{
 			showReport=true;
-			$("#toggleReport").text("<@s.text name='manage.overview.published.hide.report'/>");
+			$("#toggleReport").text("<@s.text name='basic.hide'/>");
 			$('#dwcaReport').show();
 		}
 	});
@@ -202,6 +211,13 @@ $(document).ready(function(){
           <@s.text name="manage.overview.published.description"/>
         </#if>
       </p>
+      <p>
+        <#if organisationWithPrimaryDoiAccount??>
+            <@s.text name='manage.overview.published.description.doiAccount'><@s.param>${organisationWithPrimaryDoiAccount.doiRegistrationAgency}</@s.param><@s.param>${organisationWithPrimaryDoiAccount.name}</@s.param><@s.param>${organisationWithPrimaryDoiAccount.doiPrefix}</@s.param></@s.text>
+          <#else>
+          <@s.text name="manage.overview.published.description.noDoiAccount"/>
+        </#if>
+      </p>
       <#if resource.status=="REGISTERED">
         <#if !currentUser.hasRegistrationRights()>
             <div>
@@ -217,202 +233,234 @@ $(document).ready(function(){
 
     <#if resource.lastPublished??>
       <div class="details">
+        <div class="mapping_head">Current release:</div>
         <table>
           <tr>
-            <th><@s.text name="manage.overview.published.last.publication"/></th>
+            <th><@s.text name="manage.overview.published.version"/></th>
             <td>
-              <!-- show either "Version #" or report state, e.g. "Failed. Fatal error" -->
-              <#if report?? && (report.state?contains('cancelled') || report.exception?has_content) >
-                <em>${report.state}</em>
-              <#else>
-                <@s.text name="manage.overview.published.version"/>
                 ${resource.emlVersion.toPlainString()}
-                <@s.text name="manage.overview.published.from"/>
-                ${resource.lastPublished?date?string.medium}
-              </#if>
-              &nbsp;
-              <#if report??>
-                <a id="toggleReport" href="#">
-                  <@s.text name="manage.overview.published.see.report"/>
+            </td>
+            <td>
+                <a class="button" href="${baseURL}/resource.do?r=${resource.shortname}">
+                    <input class="button" type="button" value='<@s.text name='manage.overview.published.view'/>'/>
                 </a>
-                <!-- ensure a space separates see report link, and publication log link-->
-                &nbsp;
-              </#if>
-              <!-- ensure publication log not shown for metadata-only resources because the log reflects dwca generation only-->
-              <#if resource.coreType?has_content && resource.coreType!=metadataType>
-                  <a href="${baseURL}/publicationlog.do?r=${resource.shortname}"><@s.text name='portal.publication.log'/></a>
-              </#if>
+                <!-- TODO: only show in production mode -->
+                <#if (resource.recordsPublished>0)>
+                  <a href="http://tools.gbif.org/dwca-validator/?archiveUrl=${baseURL}/archive.do?r=${resource.shortname}" target="_blank" class="icon icon-validate"/>
+                </#if>
             </td>
           </tr>
-          <#if report??>
-            <tr id="dwcaReport" style="display: none;">
-              <td colspan="2">
-                <div class="report">
-                  <ul class="simple">
-                    <#list report.messages as msg>
-                      <li>${msg.message} <span class="small">${msg.date?time?string}</span></li>
-                    </#list>
-                  </ul>
-                  <#if cfg.debug() && report.hasException()>
-                    <br/>
-                    <ul class="simple">
-                      <li><strong>Exception</strong> ${report.exceptionMessage!}</li>
-                      <#list report.exceptionStacktrace as msg>
-                        <li>${msg}</li>
-                      </#list>
-                    </ul>
-                  </#if>
-                </div>
-              </td>
-            </tr>
-          </#if>
-          <#if (resource.recordsPublished>0)>
             <tr>
-              <th><@s.text name="manage.overview.published.archive"/></th>
-              <td>
-                <a href="${baseURL}/archive.do?r=${resource.shortname}"><@s.text name="manage.overview.published.download"/></a>
-                (${dwcaFormattedSize}) ${resource.recordsPublished} <@s.text name="manage.overview.published.records"/>
-              </td>
+                <th>DOI</th>
+                <td>
+                  <#if alreadyAssignedDoi>
+                    ${resource.versionHistory[0].doi!}
+                  <#else>
+                    ${resource.doi!"-"}
+                  </#if>
+                </td>
+                  <#if !organisationWithPrimaryDoiAccount??>
+                    <td>
+                        <img class="infoImg" src="${baseURL}/images/warning.gif" />
+                        <div class="info">
+                          <@s.text name="manage.overview.publishing.doi.reserve.prevented.noOrganisation"/>
+                        </div>
+                    </td>
+                  <#elseif (resource.identifierStatus == "RESERVED"  || resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION") && resource.status != "PUBLIC" && resource.status != "REGISTERED" && currentUser.hasRegistrationRights() && organisationWithPrimaryDoiAccount?? >
+                    <td>
+                      <@s.submit cssClass="confirmRegisterDoi" name="registerDoi" key="button.register" disabled="true"/>
+                      <img class="infoImg" src="${baseURL}/images/warning.gif" />
+                      <div class="info">
+                        <@s.text name="manage.overview.publishing.doi.register.prevented"/>
+                      </div>
+                    </td>
+                  <#elseif resource.identifierStatus == "RESERVED" && !alreadyAssignedDoi && currentUser.hasRegistrationRights() && organisationWithPrimaryDoiAccount??>
+                      <td>
+                          <form action='resource-registerDoi.do' method='post'>
+                              <input name="r" type="hidden" value="${resource.shortname}"/>
+                            <@s.submit cssClass="confirmRegisterDoi" name="registerDoi" key="button.register" disabled="${missingMetadata?string}"/>
+                              <img class="infoImg" src="${baseURL}/images/info.gif" />
+                              <div class="info">
+                                <@s.text name="manage.overview.publishing.doi.register.help"/>
+                              </div>
+                          </form>
+                      </td>
+                  <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION" && alreadyAssignedDoi && currentUser.hasRegistrationRights() && organisationWithPrimaryDoiAccount??>
+                      <td>
+                        <img class="infoImg" src="${baseURL}/images/warning.gif" />
+                        <div class="info">
+                          <@s.text name="manage.overview.publishing.doi.replaced"/>
+                        </div>
+                      </td>
+                  <#elseif resource.identifierStatus == "UNRESERVED" && !alreadyAssignedDoi && currentUser.hasRegistrationRights() && organisationWithPrimaryDoiAccount??>
+                    <td>
+                      <form action='resource-reserveDoi.do' method='post'>
+                        <input name="r" type="hidden" value="${resource.shortname}"/>
+                        <@s.submit cssClass="confirmReserveDoi" name="reserveDoi" key="button.reserve" disabled="${missingMetadata?string}"/>
+                        <img class="infoImg" src="${baseURL}/images/info.gif" />
+                        <div class="info">
+                          <@s.text name="manage.overview.publishing.doi.reserve.help"/>
+                        </div>
+                      </form>
+                    </td>
+                  </#if>
+              </tr>
+            <tr>
+                <th>Released</th>
+                <td>${resource.lastPublished?date?string.medium}</td>
+            </tr>
+
+          <#if report??>
+
+              <tr>
+                  <th><@s.text name="manage.overview.published.report"/></th>
+                  <td>
+                      <!-- report state, e.g. "Failed. Fatal error" -->
+                    <#if report?? && (report.state?contains('cancelled') || report.exception?has_content) >
+                        <em>${report.state}</em>&nbsp;
+                    </#if>
+
+                    <#if report??>
+                        <a id="toggleReport" href="#">
+                          <@s.text name="basic.show"/>
+                        </a>
+                    </#if>
+                  </td>
+              </tr>
+
+              <tr id="dwcaReport" style="display: none;">
+                  <td colspan="2">
+                      <div class="report">
+                          <ul class="simple">
+                            <#list report.messages as msg>
+                                <li>${msg.message} <span class="small">${msg.date?time?string}</span></li>
+                            </#list>
+                          </ul>
+                        <#if cfg.debug() && report.hasException()>
+                            <br/>
+                            <ul class="simple">
+                                <li><strong>Exception</strong> ${report.exceptionMessage!}</li>
+                              <#list report.exceptionStacktrace as msg>
+                                  <li>${msg}</li>
+                              </#list>
+                            </ul>
+                        </#if>
+                      </div>
+                  </td>
+              </tr>
+          </#if>
+          <!-- ensure publication log not shown for metadata-only resources because the log reflects dwca generation only-->
+          <#if resource.coreType?has_content && resource.coreType!=metadataType>
+            <tr>
+                <th><@s.text name="portal.publication.log"/></th>
+                <td>
+                  <!-- report state, e.g. "Failed. Fatal error" -->
+                  <#if report?? && (report.state?contains('cancelled') || report.exception?has_content) >
+                    <em>${report.state}</em>&nbsp;
+                  </#if>
+                  <a href="${baseURL}/publicationlog.do?r=${resource.shortname}"><@s.text name='manage.overview.published.download'/></a>
+                </td>
             </tr>
           </#if>
-          <tr>
-            <th><@s.text name="manage.overview.published.eml"/></th>
-            <td>
-              <a href="${baseURL}/eml.do?r=${resource.shortname}&v=${resource.emlVersion}"><@s.text name="manage.overview.published.download"/></a>
-              <a href="${baseURL}/resource.do?r=${resource.shortname}"><@s.text name="manage.overview.published.view"/></a>
-              (${emlFormattedSize})
-            </td>
-          </tr>
-          <tr>
-            <th><@s.text name="portal.resource.published.rtf"/></th>
-            <td>
-              <a href="${baseURL}/rtf.do?r=${resource.shortname}&v=${resource.emlVersion}"><@s.text name="manage.overview.published.download"/></a>
-              (${rtfFormattedSize})
-            </td>
-          </tr>
         </table>
       </div>
     </#if>
+
+       <div class="details">
+          <div class="mapping_head twenty_top">Next published release:</div>
+          <table>
+              <tr>
+                  <th><@s.text name="manage.overview.published.version"/></th>
+                  <td>${resource.getNextVersion().toPlainString()}</td>
+                  <td>
+                      <a class="button" href="${baseURL}/resource/preview?r=${resource.shortname}">
+                          <input class="button" type="button" value='<@s.text name='manage.overview.metadata.preview'/>'/>
+                      </a>
+                  </td>
+              </tr>
+              <tr>
+                  <th>DOI</th>
+                  <td>
+                    <#if alreadyAssignedDoi && resource.versionHistory[0].doi == resource.doi!"" >
+                    ${resource.versionHistory[0].doi!}
+                  <#else>
+                    ${resource.doi!"-"}
+                    </#if>
+                  </td>
+                  <#if !organisationWithPrimaryDoiAccount?? && !resource.lastPublished??>
+                    <td>
+                      <img class="infoImg" src="${baseURL}/images/warning.gif" />
+                      <div class="info">
+                        <@s.text name="manage.overview.publishing.doi.reserve.prevented.noOrganisation"/>
+                      </div>
+                    </td>
+                  <#elseif resource.identifierStatus == "UNRESERVED" && alreadyAssignedDoi && currentUser.hasRegistrationRights() && organisationWithPrimaryDoiAccount??>
+                      <td>
+                          <form action='resource-reserveDoi.do' method='post'>
+                              <input name="r" type="hidden" value="${resource.shortname}"/>
+                            <@s.submit cssClass="confirmReserveDoi" name="reserveDoi" key="button.reserve" disabled="${missingMetadata?string}"/>
+                              <img class="infoImg" src="${baseURL}/images/info.gif" />
+                              <div class="info">
+                                <@s.text name="manage.overview.publishing.doi.reserve.help"/>
+                              </div>
+                          </form>
+                      </td>
+                <#elseif resource.identifierStatus == "UNRESERVED" && !alreadyAssignedDoi && !resource.lastPublished?? && currentUser.hasRegistrationRights() && organisationWithPrimaryDoiAccount??>
+                    <td>
+                        <form action='resource-reserveDoi.do' method='post'>
+                            <input name="r" type="hidden" value="${resource.shortname}"/>
+                          <@s.submit cssClass="confirmReserveDoi" name="reserveDoi" key="button.reserve" disabled="${missingMetadata?string}"/>
+                            <img class="infoImg" src="${baseURL}/images/info.gif" />
+                            <div class="info">
+                              <@s.text name="manage.overview.publishing.doi.reserve.help"/>
+                            </div>
+                        </form>
+                    </td>
+                <#elseif resource.identifierStatus == "RESERVED" && !alreadyAssignedDoi && !resource.lastPublished?? && currentUser.hasRegistrationRights() && organisationWithPrimaryDoiAccount??>
+                    <td>
+                      <@s.submit cssClass="confirmRegisterDoi" name="registerDoi" key="button.register" disabled="true"/>
+                        <img class="infoImg" src="${baseURL}/images/warning.gif" />
+                        <div class="info">
+                          <@s.text name="manage.overview.publishing.doi.register.prevented.notPublished"/>
+                        </div>
+                    </td>
+                <#elseif (resource.identifierStatus == "RESERVED" || resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION") && currentUser.hasRegistrationRights() && organisationWithPrimaryDoiAccount??>
+                  <td>
+                      <form action='resource-deleteDoi.do' method='post'>
+                        <input name="r" type="hidden" value="${resource.shortname}"/>
+                        <@s.submit cssClass="confirmDeleteDoi" name="deleteDoi" key="button.delete" disabled="${missingMetadata?string}"/>
+                        <img class="infoImg" src="${baseURL}/images/info.gif" />
+                        <div class="info">
+                          <@s.text name="manage.overview.publishing.doi.delete.help"/>
+                        </div>
+                      </form>
+                  </td>
+                <#elseif resource.identifierStatus == "PUBLIC" && alreadyAssignedDoi && currentUser.hasRegistrationRights() && organisationWithPrimaryDoiAccount??>
+                  <td>
+                    <form action='resource-reserveDoi.do' method='post'>
+                      <input name="r" type="hidden" value="${resource.shortname}"/>
+                      <@s.submit cssClass="confirmReserveDoi" name="reserveDoi" key="button.reserve.new" disabled="${missingMetadata?string}"/>
+                      <img class="infoImg" src="${baseURL}/images/info.gif" />
+                      <div class="info">
+                        <@s.text name="manage.overview.publishing.doi.reserve.new.help"/>
+                      </div>
+                    </form>
+                  </td>
+                </#if>
+              </tr>
+            <#if resource.usesAutoPublishing()>
+              <#if resource.nextPublished??>
+                  <tr>
+                      <th>Released</th>
+                      <td>${resource.nextPublished?date?string("MMM d, yyyy, HH:mm:ss")}</td>
+                  </tr>
+              </#if>
+            </#if>
+          </table>
+      </div>
+
   </div>
 </div>
-
-<#--<div class="resourceOverview" id="identifierStatus">-->
-    <#--<div class="titleOverview">-->
-       <#--<#if missingMetadata>-->
-         <#--<div class="head">-->
-             <#--DOI Status-->
-         <#--</div>-->
-      <#--<#else>-->
-          <#--<div class="head">-->
-              <#--DOI Status-->
-              <#--<em class="<#if resource.identifierStatus=="UNAVAILABLE">red<#elseif resource.identifierStatus=="RESERVED">yellow<#else>green</#if>"><@s.text name="resource.identifierStatus.${resource.identifierStatus?lower_case}"/></em>-->
-          <#--</div>-->
-
-          <#--<div class="actions">-->
-
-            <#--<#if resource.identifierStatus=="RESERVED">-->
-                <#--<div>-->
-                    <#--<input type="button" class="doiButton" id="doi_edit" name="edit" value="<@s.text name='manage.resource.identifierStatus.edit'/>"/>-->
-                <#--</div>-->
-
-                <#--<form action='resource-updateDoi.do' method='post'>-->
-                    <#--<div id="doi_edit_block" style="display:none">-->
-                        <#--<span class="doi_colon">doi:</span>-->
-                        <#--<input class="identifier_part" name="doi_prefix" id="doi_prefix" value="${action.getDoiPrefix()!""}" />-->
-                        <#--<input class="identifier_part" name="doi_suffix" value="${action.getDoiSuffix()!""}" />-->
-                        <#--<select name="id" id="doi_select" size="1">-->
-                          <#--<#list organisationsWithDoiAccount as o>-->
-                              <#--<option value="${o.doiPrefix!""?string}" <#if o.doiPrefix==action.getDoiPrefix()!"">selected</#if> >${o.name}</option>-->
-                          <#--</#list>-->
-                        <#--</select>-->
-                        <#--<div>-->
-                          <#--<@s.submit name="update" key="button.save"/>-->
-                            <#--<input type="button" id="doi_edit_cancel" name="cancel" value="<@s.text name='button.cancel'/>"/>-->
-                        <#--</div>-->
-                    <#--</div>-->
-                <#--</form>-->
-            <#--</#if>-->
-
-            <#--<#if resource.identifierStatus=="RESERVED" || resource.identifierStatus=="UNAVAILABLE">-->
-              <#--<#assign action>registerDoi</#assign>-->
-            <#--<#else>-->
-              <#--<#assign action>makeDoiUnavailable</#assign>-->
-            <#--</#if>-->
-
-              <#--<!-- The resource must be public before making its DOI public &ndash;&gt;-->
-            <#--<#if resource.status!="PRIVATE">-->
-                <#--<form action='resource-${action}.do' method='post'>-->
-                    <#--<input name="r" type="hidden" value="${resource.shortname}"/>-->
-                  <#--<#if currentUser.hasRegistrationRights() && (organisationsWithDoiAccount?size>0)>-->
-                    <#--<#if (resource.identifierStatus=="RESERVED" || resource.identifierStatus=="UNAVAILABLE") && resource.status!="PRIVATE">-->
-                      <#--<#if resource.identifierStatus=="RESERVED">-->
-                        <#--<@s.submit cssClass="doiButton" name="publish" key="button.register.doi"/>-->
-                      <#--<#else>-->
-                        <#--<@s.submit cssClass="doiButton" name="publish" key="button.makeAvailable"/>-->
-                      <#--</#if>-->
-                    <#--<#else>-->
-                      <#--<@s.submit cssClass="doiButton" name="publish" key="button.makeUnavailable"/>-->
-                    <#--</#if>-->
-                  <#--</#if>-->
-                <#--</form>-->
-            <#--</#if>-->
-          <#--</div>-->
-      <#--</#if>-->
-    <#--</div>-->
-    <#--<div class="bodyOverview">-->
-      <#--<#if missingMetadata>-->
-        <#--<div>-->
-          <#--<img class="info" src="${baseURL}/images/info.gif"/>-->
-          <#--<em><@s.text name="manage.overview.identifierStatus.missing.metadata"/></em>-->
-        <#--</div>-->
-      <#--<#else>-->
-        <#--<p>-->
-          <#--<@s.text name="manage.resource.identifierStatus.intro.${resource.identifierStatus?lower_case}"/>-->
-        <#--</p>-->
-
-        <#--<#if resource.identifierStatus=="RESERVED"  || resource.identifierStatus=="UNAVAILABLE" >-->
-            <#--<!-- Before making a DOI public, the resource's visibility must be set to public or reserved &ndash;&gt;-->
-          <#--<#if resource.status=="PRIVATE">-->
-              <#--<div>-->
-                  <#--<img class="info" src="${baseURL}/images/info.gif"/>-->
-                  <#--<em><@s.text name="manage.resource.identifierStatus.reserved.forbidden"/></em>-->
-              <#--</div>-->
-              <#--<br/>-->
-          <#--</#if>-->
-
-          <#--<#if currentUser.hasRegistrationRights()>-->
-            <#--<#if organisationsWithDoiAccount?size==0>-->
-                <#--<div>-->
-                    <#--<img class="info" src="${baseURL}/images/info.gif"/>-->
-                    <#--<em><@s.text name="manage.overview.identifierStatus.no.organisations"/></em>-->
-                <#--</div>-->
-                <#--<br/>-->
-            <#--</#if>-->
-          <#--<#else>-->
-              <#--<div>-->
-                  <#--<img class="info" src="${baseURL}/images/info.gif"/>-->
-                  <#--<em><@s.text name="manage.resource.identifierStatus.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/></em>-->
-              <#--</div>-->
-              <#--<br/>-->
-          <#--</#if>-->
-        <#--</#if>-->
-          <#--<div class="details">-->
-              <#--<table>-->
-                <#--<#if resource.doi?has_content>-->
-                    <#--<tr>-->
-                        <#--<th>DOI</th>-->
-                        <#--<td>doi:${resource.doi!}</td>-->
-                    <#--</tr>-->
-                    <#--<tr>-->
-                        <#--<th>DOI Registered to</th>-->
-                        <#--<td>${doiOrganisationName!}</td>-->
-                    <#--</tr>-->
-                <#--</#if>-->
-              <#--</table>-->
-          <#--</div>-->
-      <#--</#if>-->
-    <#--</div>-->
-<#--</div>-->
 
 <div class="resourceOverview" id="visibility">
   <div class="titleOverview">
@@ -428,15 +476,13 @@ $(document).ready(function(){
 
       <form action='resource-${action}.do' method='post'>
         <input name="r" type="hidden" value="${resource.shortname}"/>
-        <#if resource.status=="PUBLIC"  <#--&& resource.identifierStatus?? && resource.identifierStatus!="UNAVAILABLE"-->>
-          <#if currentUser.hasRegistrationRights() && (organisations?size>0)>
-            <select name="id" id="org" size="1">
-              <#list organisations as o>
-                <option value="${o.key}">${o.name}</option>
-              </#list>
-            </select>
-
-            <@s.submit cssClass="confirmRegistration" name="publish" key="button.register" disabled="${missingRegistrationMetadata?string}"/>
+        <#if resource.status=="PUBLIC">
+          <#if currentUser.hasRegistrationRights()>
+            <@s.submit cssClass="confirmRegistration" name="register" key="button.register" disabled="${missingRegistrationMetadata?string}"/>
+              <img class="infoImg" src="${baseURL}/images/info.gif" />
+              <div class="info autop">
+                <@s.text name='manage.resource.status.intro.public.migration'><@s.param><a href="${baseURL}/manage/metadata-additional.do?r=${resource.shortname}&amp;edit=Edit"><@s.text name="submenu.additional"/></a></@s.param></@s.text></br></br><@s.text name='manage.resource.status.intro.public.gbifWarning'/>
+              </div>
           </#if>
         <#else>
           <#if resource.status=="PRIVATE">
@@ -445,7 +491,7 @@ $(document).ready(function(){
         </#if>
       </form>
 
-      <#if resource.status=="PUBLIC" <#--&& resource.identifierStatus=="RESERVED"-->>
+      <#if resource.status=="PUBLIC" && (resource.identifierStatus=="RESERVED" || resource.identifierStatus == "UNRESERVED")>
         <#assign action>makePrivate</#assign>
         <form action='resource-${action}.do' method='post'>
           <@s.submit cssClass="confirm" name="unpublish" key="button.private" />
@@ -458,7 +504,7 @@ $(document).ready(function(){
       <@s.text name="manage.resource.status.intro.${resource.status?lower_case}"/>
     </p>
 
-    <#if resource.status=="PUBLIC" <#--&& resource.identifierStatus!="UNAVAILABLE"-->>
+    <#if resource.status=="PUBLIC">
       <#if missingRegistrationMetadata>
         <div>
           <img class="info" src="${baseURL}/images/warning.gif"/>
@@ -475,10 +521,6 @@ $(document).ready(function(){
                   <em><@s.text name="manage.overview.visibility.no.organisations"/></em>
               </div>
           </#if>
-            <div>
-                <img class="info" src="${baseURL}/images/info.gif"/>
-                <em><@s.text name='manage.resource.status.intro.public.migration'><@s.param><a href="${baseURL}/manage/metadata-additional.do?r=${resource.shortname}&amp;edit=Edit"><@s.text name="submenu.additional"/></a></@s.param></@s.text></em>
-            </div>
         <#else>
             <div>
                 <img class="info" src="${baseURL}/images/info.gif"/>
@@ -486,11 +528,6 @@ $(document).ready(function(){
             </div>
         </#if>
       </#if>
-
-      <#--<#elseif resource.status=="PUBLIC" && resource.identifierStatus=="UNAVAILABLE">-->
-        <#--<p>-->
-          <#--<@s.text name="manage.resource.status.unavailable"/>-->
-        <#--</p>-->
       </#if>
 
       <#if cfg.devMode() && cfg.getRegistryType()!='PRODUCTION'>
@@ -504,7 +541,7 @@ $(document).ready(function(){
         <div class="details">
           <table>
             <tr>
-              <th><@s.text name='portal.resource.organisation.key'/></th>
+              <th>GBIF UUID</th>
               <td><a href="${cfg.portalUrl}/dataset/${resource.key}" target="_blank">${resource.key}</a>
               </td>
             </tr>
@@ -585,10 +622,18 @@ $(document).ready(function(){
 </div>
 
 <div>
-  <form action='resource-delete.do' method='post'>
-    <input name="r" type="hidden" value="${resource.shortname}" />
-   	<@s.submit cssClass="button confirmDeletion" name="delete" key="button.delete"/>
-  </form>
+  <#if resource.status == "DELETED">
+      <form action='resource-undelete.do' method='post'>
+          <input name="r" type="hidden" value="${resource.shortname}" />
+        <@s.submit cssClass="button confirmUndeletion" name="undelete" key="button.undelete"/>
+      </form>
+  <#else>
+      <form action='resource-delete.do' method='post'>
+          <input name="r" type="hidden" value="${resource.shortname}" />
+        <@s.submit cssClass="button confirmDeletion" name="delete" key="button.delete"/>
+      </form>
+  </#if>
+
 </div>
 <div id="dialog"></div>
 

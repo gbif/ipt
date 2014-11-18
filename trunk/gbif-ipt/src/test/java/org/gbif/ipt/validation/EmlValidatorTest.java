@@ -13,8 +13,11 @@
 
 package org.gbif.ipt.validation;
 
+import org.gbif.api.vocabulary.Language;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.model.Organisation;
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.voc.MetadataSection;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -23,17 +26,16 @@ import org.gbif.metadata.eml.BBox;
 import org.gbif.metadata.eml.Collection;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlFactory;
+import org.gbif.metadata.eml.MaintenanceUpdateFrequency;
 import org.gbif.utils.file.FileUtils;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
+import java.util.UUID;
 import javax.xml.parsers.ParserConfigurationException;
 
-import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.xml.sax.SAXException;
@@ -44,14 +46,18 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class EmlValidatorTest {
 
   private EmlValidator validator;
+  private Resource resource;
   private Eml eml;
   private Agent badAgent;
   private BaseAction action;
+  private Organisation organisation;
 
   @Before
   public void before() throws IOException, SAXException, ParserConfigurationException {
@@ -63,8 +69,21 @@ public class EmlValidatorTest {
     // instance of BaseAction
     action = new BaseAction(mockTextProvider, mockCfg, mockRegistrationManager);
 
-    // load sample eml
+    // load sample eml, and set on resource
+    resource = new Resource();
+    organisation = new Organisation();
+    organisation.setName("NHM");
+    UUID organisationKey = UUID.randomUUID();
+    organisation.setKey(organisationKey.toString());
+    // mock organisation lookup by key
+    when(mockRegistrationManager.get(any(UUID.class))).thenReturn(organisation);
+    resource.setOrganisation(organisation);
+
+    resource.setCoreType(Resource.CoreRowType.CHECKLIST.toString());
+    resource.setUpdateFrequency(MaintenanceUpdateFrequency.ANNUALLY.toString());
+
     eml = EmlFactory.build(FileUtils.classpathStream("data/eml.xml"));
+    resource.setEml(eml);
 
     // create incomplete Agent (no last name, org name, or position)
     badAgent = new Agent();
@@ -132,26 +151,91 @@ public class EmlValidatorTest {
   @Test
   public void testBasicPart() {
     // valid
-    assertTrue(validator.isValid(eml, MetadataSection.BASIC_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
   }
 
   @Test
   public void testBasicPartTitleMissing() {
     // invalid
     eml.setTitle(null);
-    assertFalse(validator.isValid(eml, MetadataSection.BASIC_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
   }
 
   @Test
   public void testBasicPartDescriptionMissing() {
     // invalid
     eml.setDescription(null);
-    assertFalse(validator.isValid(eml, MetadataSection.BASIC_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
     eml.setDescription("shrt");
-    assertFalse(validator.isValid(eml, MetadataSection.BASIC_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
     // valid
     eml.setDescription("long_enough");
-    assertTrue(validator.isValid(eml, MetadataSection.BASIC_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+  }
+
+  @Test
+  public void testBasicPartIntellectualRightsMissing() {
+    // invalid
+    eml.setIntellectualRights("");
+    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    eml.setIntellectualRights("sh");
+    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    // valid
+    eml.setIntellectualRights("CC-BY");
+    assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+  }
+
+  @Test
+  public void testBasicPartPublishingOrganisationMissing() {
+    // invalid
+    resource.setOrganisation(null);
+    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    // valid
+    resource.setOrganisation(organisation);
+    assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+  }
+
+  @Test
+  public void testBasicPartCoreTypeMissing() {
+    // invalid
+    resource.setCoreType(null);
+    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    // valid
+    resource.setCoreType(Resource.CoreRowType.OCCURRENCE.toString());
+    assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+  }
+
+  @Test
+  public void testBasicPartUpdateFrequencyMissing() {
+    // valid, because will set to default "unkown"
+    eml.setUpdateFrequency(null);
+    resource.setUpdateFrequency(null);
+    assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    assertEquals("unkown", eml.getUpdateFrequency().getIdentifier());
+
+    // valid, because will reuse auto-publishing interval as update frequency
+    eml.setUpdateFrequency(null);
+    resource.setUpdateFrequency(MaintenanceUpdateFrequency.DAILY.getIdentifier());
+    assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    assertEquals("daily", eml.getUpdateFrequency().getIdentifier());
+  }
+
+  @Test
+  public void testBasicPartDefaultsSet() {
+    // valid
+    assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    eml.setLanguage(null);
+    eml.setMetadataLanguage(null);
+    eml.setUpdateFrequency(null);
+    resource.setUpdateFrequency(null);
+    resource.setEml(eml);
+    resource.setCoreType(Resource.CoreRowType.OCCURRENCE.toString());
+    // still valid
+    assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    // defaults correct?
+    assertEquals("eng", resource.getEml().getLanguage());
+    assertEquals("eng", resource.getEml().getMetadataLanguage());
+    assertEquals("unkown", eml.getUpdateFrequency().getIdentifier());
   }
 
   /**
@@ -175,43 +259,43 @@ public class EmlValidatorTest {
   public void testBasicPartContactIncomplete() {
     // invalid
     eml.addContact(badAgent);
-    assertFalse(validator.isValid(eml, MetadataSection.BASIC_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
     badAgent.setLastName("Smith");
     // valid
-    assertTrue(validator.isValid(eml, MetadataSection.BASIC_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
   }
 
   @Test
   public void testBasicPartCreatorIncomplete() {
     // invalid
     eml.addCreator(badAgent);
-    assertFalse(validator.isValid(eml, MetadataSection.BASIC_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
     badAgent.setLastName("Smith");
     // valid
-    assertTrue(validator.isValid(eml, MetadataSection.BASIC_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
   }
 
   @Test
   public void testBasicPartMetaProviderIncomplete() {
     // invalid
     eml.addMetadataProvider(badAgent);
-    assertFalse(validator.isValid(eml, MetadataSection.BASIC_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
     badAgent.setLastName("Smith");
     // valid
-    assertTrue(validator.isValid(eml, MetadataSection.BASIC_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
   }
 
   @Test
   public void testGeoPart() {
     // valid
-    assertTrue(validator.isValid(eml, MetadataSection.GEOGRAPHIC_COVERAGE_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.GEOGRAPHIC_COVERAGE_SECTION));
   }
 
   @Test
   public void testGeoPartDescriptionIncomplete() {
     // invalid
     eml.getGeospatialCoverages().get(0).setDescription("");
-    assertFalse(validator.isValid(eml, MetadataSection.GEOGRAPHIC_COVERAGE_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.GEOGRAPHIC_COVERAGE_SECTION));
   }
 
   @Test
@@ -220,26 +304,26 @@ public class EmlValidatorTest {
     BBox box = new BBox();
     box.getMin().setLongitude(null);
     eml.getGeospatialCoverages().get(0).setBoundingCoordinates(box);
-    assertFalse(validator.isValid(eml, MetadataSection.GEOGRAPHIC_COVERAGE_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.GEOGRAPHIC_COVERAGE_SECTION));
   }
 
   @Test
   public void testTaxCovPart() {
     // valid
-    assertTrue(validator.isValid(eml, MetadataSection.TAXANOMIC_COVERAGE_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.TAXANOMIC_COVERAGE_SECTION));
   }
 
   @Test
   public void testTaxCovPartScientificNameIncomplete() {
     // invalid
     eml.getTaxonomicCoverages().get(0).getTaxonKeywords().get(0).setScientificName(null);
-    assertFalse(validator.isValid(eml, MetadataSection.TAXANOMIC_COVERAGE_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.TAXANOMIC_COVERAGE_SECTION));
   }
 
   @Test
   public void testTempCovPart() {
     // valid
-    assertTrue(validator.isValid(eml, MetadataSection.TEMPORAL_COVERAGE_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.TEMPORAL_COVERAGE_SECTION));
   }
 
   @Test
@@ -247,7 +331,7 @@ public class EmlValidatorTest {
     // invalid
     eml.getTemporalCoverages().get(0).setStartDate(null);
     eml.getTemporalCoverages().get(0).setEndDate(new Date());
-    assertFalse(validator.isValid(eml, MetadataSection.TEMPORAL_COVERAGE_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.TEMPORAL_COVERAGE_SECTION));
   }
 
   @Test
@@ -257,33 +341,33 @@ public class EmlValidatorTest {
     eml.getTemporalCoverages().get(0).setEndDate(null);
     eml.getTemporalCoverages().get(0).setFormationPeriod(null);
     eml.getTemporalCoverages().get(0).setLivingTimePeriod(null);
-    assertFalse(validator.isValid(eml, MetadataSection.TEMPORAL_COVERAGE_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.TEMPORAL_COVERAGE_SECTION));
   }
 
   @Test
   public void testKeywordsPart() {
     // valid
-    assertTrue(validator.isValid(eml, MetadataSection.KEYWORDS_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.KEYWORDS_SECTION));
   }
 
   @Test
   public void testKeywordsPartThesaurusIncomplete() {
     // invalid
     eml.getKeywords().get(0).setKeywordThesaurus(null);
-    assertFalse(validator.isValid(eml, MetadataSection.KEYWORDS_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.KEYWORDS_SECTION));
   }
 
   @Test
   public void testKeywordsPartKeywordListIncomplete() {
     // invalid
     eml.getKeywords().get(0).setKeywords(new ArrayList<String>());
-    assertFalse(validator.isValid(eml, MetadataSection.KEYWORDS_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.KEYWORDS_SECTION));
   }
 
   @Test
   public void testPartiesPart() {
     // valid
-    assertTrue(validator.isValid(eml, MetadataSection.PARTIES_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.PARTIES_SECTION));
   }
 
   @Test
@@ -291,40 +375,40 @@ public class EmlValidatorTest {
     // invalid
     eml.getAssociatedParties().clear();
     eml.getAssociatedParties().add(badAgent);
-    assertFalse(validator.isValid(eml, MetadataSection.PARTIES_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.PARTIES_SECTION));
   }
 
   @Test
   public void testPartiesPartFirstPartyIncomplete() {
     // add emtpy party at top, with remaining 13 valid parties
     eml.getAssociatedParties().add(0, new Agent());
-    assertFalse(validator.isValid(eml, MetadataSection.PARTIES_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.PARTIES_SECTION));
   }
 
   @Test
   public void testProjectPart() {
     // valid
-    assertTrue(validator.isValid(eml, MetadataSection.PROJECT_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.PROJECT_SECTION));
   }
 
   @Test
   public void testProjectPartTitleIncomplete() {
     // invalid
     eml.getProject().setTitle(null);
-    assertFalse(validator.isValid(eml, MetadataSection.PROJECT_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.PROJECT_SECTION));
   }
 
   @Test
   public void testProjectPartPersonnelIncomplete() {
     // invalid
     eml.getProject().addProjectPersonnel(badAgent);
-    assertFalse(validator.isValid(eml, MetadataSection.PROJECT_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.PROJECT_SECTION));
   }
 
   @Test
   public void testMethodsPart() {
     // valid
-    assertTrue(validator.isValid(eml, MetadataSection.METHODS_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.METHODS_SECTION));
   }
 
   @Test
@@ -332,7 +416,7 @@ public class EmlValidatorTest {
     // invalid
     eml.setSampleDescription("Non empty");
     eml.setStudyExtent("");
-    assertFalse(validator.isValid(eml, MetadataSection.METHODS_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.METHODS_SECTION));
   }
 
   @Test
@@ -340,42 +424,42 @@ public class EmlValidatorTest {
     // invalid
     eml.setSampleDescription("");
     eml.setStudyExtent("Non empty");
-    assertFalse(validator.isValid(eml, MetadataSection.METHODS_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.METHODS_SECTION));
   }
 
   @Test
   public void testMethodsPartStepIncomplete() {
     // invalid
     eml.getMethodSteps().set(0, "");
-    assertFalse(validator.isValid(eml, MetadataSection.METHODS_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.METHODS_SECTION));
   }
 
   @Test
   public void testCitationsPart() {
     // valid
-    assertTrue(validator.isValid(eml, MetadataSection.CITATIONS_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.CITATIONS_SECTION));
   }
 
   @Test
   public void testCitationsPartCitationMissing() {
     // invalid
     eml.getCitation().setCitation("");
-    assertFalse(validator.isValid(eml, MetadataSection.CITATIONS_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.CITATIONS_SECTION));
     eml.getCitation().setCitation(null);
-    assertFalse(validator.isValid(eml, MetadataSection.CITATIONS_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.CITATIONS_SECTION));
   }
 
   @Test
   public void testCitationsPartBiblioCitationMissing() {
     // invalid
     eml.getBibliographicCitations().get(0).setCitation(null);
-    assertFalse(validator.isValid(eml, MetadataSection.CITATIONS_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.CITATIONS_SECTION));
   }
 
   @Test
   public void testCollectionPart() {
     // valid
-    assertTrue(validator.isValid(eml, MetadataSection.COLLECTIONS_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.COLLECTIONS_SECTION));
   }
 
   @Test
@@ -384,7 +468,7 @@ public class EmlValidatorTest {
     Collection collection = new Collection();
     collection.setCollectionName(null);
     eml.addCollection(collection);
-    assertFalse(validator.isValid(eml, MetadataSection.COLLECTIONS_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.COLLECTIONS_SECTION));
   }
 
   @Test
@@ -394,7 +478,7 @@ public class EmlValidatorTest {
     collection.setCollectionName("Birds");
     collection.setCollectionId(null);
     eml.addCollection(collection);
-    assertTrue(validator.isValid(eml, MetadataSection.COLLECTIONS_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.COLLECTIONS_SECTION));
   }
 
   @Test
@@ -404,75 +488,75 @@ public class EmlValidatorTest {
     collection.setCollectionName("Birds");
     collection.setParentCollectionId(null);
     eml.addCollection(collection);
-    assertTrue(validator.isValid(eml, MetadataSection.COLLECTIONS_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.COLLECTIONS_SECTION));
   }
 
   @Test
   public void testCollectionCuratorialIncomplete() {
     // invalid - doesn't exceed min length 2
     eml.getJgtiCuratorialUnits().get(0).setUnitType("m");
-    assertFalse(validator.isValid(eml, MetadataSection.COLLECTIONS_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.COLLECTIONS_SECTION));
   }
 
   @Test
   public void testPhysicalPart() {
     // valid
-    assertTrue(validator.isValid(eml, MetadataSection.PHYSICAL_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.PHYSICAL_SECTION));
   }
 
   @Test
   public void testPhysicalPartDistributionUrlInvalid() {
     // invalid
     eml.getPhysicalData().get(0).setDistributionUrl("[hppt]");
-    assertFalse(validator.isValid(eml, MetadataSection.PHYSICAL_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.PHYSICAL_SECTION));
   }
 
   @Test
   public void testPhysicalPartNameIncomplete() {
     // invalid
     eml.getPhysicalData().get(0).setName(null);
-    assertFalse(validator.isValid(eml, MetadataSection.PHYSICAL_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.PHYSICAL_SECTION));
   }
 
   @Test
   public void testPhysicalCharSetIncomplete() {
     // invalid
     eml.getPhysicalData().get(0).setCharset(null);
-    assertFalse(validator.isValid(eml, MetadataSection.PHYSICAL_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.PHYSICAL_SECTION));
   }
 
   @Test
   public void testPhysicalDistributionIncomplete() {
     // invalid
     eml.getPhysicalData().get(0).setDistributionUrl(null);
-    assertFalse(validator.isValid(eml, MetadataSection.PHYSICAL_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.PHYSICAL_SECTION));
   }
 
   @Test
   public void testPhysicalFormatIncomplete() {
     // invalid
     eml.getPhysicalData().get(0).setFormat(null);
-    assertFalse(validator.isValid(eml, MetadataSection.PHYSICAL_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.PHYSICAL_SECTION));
   }
 
   @Test
   public void testPhysicalResourceHomepageInvalid() {
     // invalid
     eml.setDistributionUrl("[]");
-    assertFalse(validator.isValid(eml, MetadataSection.PHYSICAL_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.PHYSICAL_SECTION));
   }
 
   @Test
   public void testAdditionalPart() {
     // valid
-    assertTrue(validator.isValid(eml, MetadataSection.ADDITIONAL_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.ADDITIONAL_SECTION));
   }
 
   @Test
   public void testAdditionalPartAlternateIdIncomplete() {
     // invalid
     eml.getAlternateIdentifiers().set(0, "1");
-    assertFalse(validator.isValid(eml, MetadataSection.ADDITIONAL_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.ADDITIONAL_SECTION));
   }
 
   /**
@@ -481,17 +565,30 @@ public class EmlValidatorTest {
    */
   @Test
   public void testAreAllSectionsValid() {
+    Resource resource = new Resource();
     Eml empty = new Eml();
+    resource.setEml(empty);
 
     // populate basic mandatory elements
+    Organisation organisation = new Organisation();
+    organisation.setName("NHM");
+    resource.setOrganisation(organisation);
+
+    resource.setCoreType(Resource.CoreRowType.CHECKLIST.toString());
+    resource.setUpdateFrequency(MaintenanceUpdateFrequency.ANNUALLY.toString());
+
     empty.setTitle("Title");
     empty.setDescription("Description");
+    empty.setMetadataLanguage(Language.FRENCH.getIso3LetterCode());
+    empty.setLanguage(Language.SPANISH.getIso3LetterCode());
+    empty.setIntellectualRights("CC-BY");
+
     Agent agent = new Agent();
     agent.setLastName("Smith");
     empty.addContact(agent);
     empty.addCreator(agent);
     empty.addMetadataProvider(agent);
 
-    assertTrue(validator.areAllSectionsValid(action, empty));
+    assertTrue(validator.areAllSectionsValid(action, resource));
   }
 }
