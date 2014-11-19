@@ -53,10 +53,14 @@ $(document).ready(function(){
               <#else>
               </#if>
             </table>
-            <div class="buttons">
-              <@s.submit cssClass="button" name="analyze" key="button.analyze"/>
-		 		      <@s.submit cssClass="button" id="peekBtn" name="peek" key="button.preview"/>
-            </div>
+            <table class="bottomButtons">
+              <tr>
+                <th>
+                  <@s.submit cssClass="button" name="analyze" key="button.analyze"/>
+                  <a href="#" id="peekBtn" class="icon icon-preview peekBtn"/>
+                </th>
+              </tr>
+            </table>
           </div>
         </div>
       </div>

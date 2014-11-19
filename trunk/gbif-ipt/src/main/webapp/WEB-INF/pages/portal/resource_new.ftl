@@ -201,9 +201,9 @@
 </div>
 <!-- /#sidebar-wrapper -->
   <#assign no_description><@s.text name='portal.resource.no.description'/></#assign>
-  <#assign download_dwca_url>${baseURL}/archive.do?r=${resource.shortname}<#if version??>&v=${version}</#if></#assign>
-  <#assign download_eml_url>${baseURL}/eml.do?r=${resource.shortname}&v=<#if version??>${version}<#else>${resource.emlVersion.toPlainString()}</#if></#assign>
-  <#assign download_rtf_url>${baseURL}/rtf.do?r=${resource.shortname}&v=<#if version??>${version}<#else>${resource.emlVersion.toPlainString()}</#if></#assign>
+  <#assign download_dwca_url>${baseURL}/archive.do?r=${resource.shortname}<#if version??>&v=${version.toPlainString()}</#if></#assign>
+  <#assign download_eml_url>${baseURL}/eml.do?r=${resource.shortname}&v=<#if version??>${version.toPlainString()}<#else>${resource.emlVersion.toPlainString()}</#if></#assign>
+  <#assign download_rtf_url>${baseURL}/rtf.do?r=${resource.shortname}&v=<#if version??>${version.toPlainString()}<#else>${resource.emlVersion.toPlainString()}</#if></#assign>
 
     <div id="wrapper">
         <#if managerRights><a href="${baseURL}/manage/resource.do?r=${resource.shortname}"><@s.text name='button.edit'/></a></#if>
@@ -251,16 +251,16 @@
                                   <li class="box"><a href="${cfg.portalUrl}/dataset/${resource.key}" class="icon icon-gbif"><@s.text name='portal.resource.gbif.page.short'/></a></li>
                                 </#if>
                                 <#if metadataOnly == false>
-                                  <li class="box"><a href="${download_dwca_url}" class="icon icon-download">DwC-A</a></li>
+                                  <li class="box"><a href="${download_dwca_url}" class="icon icon-download"><@s.text name='portal.resource.published.dwca'/></a></li>
                                 </#if>
                                 <#if resource.lastPublished??>
-                                  <li class="box"><a href="${download_eml_url}" class="icon icon-download">EML</a></li>
-                                  <li class="box"><a href="${download_rtf_url}" class="icon icon-download">RDF</a></li>
+                                  <li class="box"><a href="${download_eml_url}" class="icon icon-download"><@s.text name='portal.resource.published.eml'/></a></li>
+                                  <li class="box"><a href="${download_rtf_url}" class="icon icon-download"><@s.text name='portal.resource.published.rtf'/></a></li>
                                   <#if resource.versionHistory??>
-                                      <li class="box"><a href="${anchor_versions}" class="icon icon-clock">Versions</a></li>
+                                      <li class="box"><a href="${anchor_versions}" class="icon icon-clock"><@s.text name='portal.resource.versions'/></a></li>
                                   </#if>
-                                  <li class="box"><a href="${anchor_rights}" class="icon icon-key">Rights</a></li>
-                                  <li class="box"><a href="${anchor_citation}" class="icon icon-book">Cite This</a></li>
+                                  <li class="box"><a href="${anchor_rights}" class="icon icon-key"><@s.text name='eml.intellectualRights.simple'/></a></li>
+                                  <li class="box"><a href="${anchor_citation}" class="icon icon-book"><@s.text name='portal.resource.cite'/></a></li>
                                 </#if>
                               </ul>
                           </#if>
@@ -414,36 +414,31 @@
                   <div id="contacts" class="row">
                     <div>
                         <h1><@s.text name='portal.resource.contacts'/></h1>
-                        <#assign type><@s.text name='portal.resource.creator'/></#assign>
-                        <p>Who created the resource:</p>
+                        <p><@s.text name='portal.resource.creator.intro'/>:</p>
                         <div class="fullwidth">
-                          <@contactList eml.creators type/>
+                          <@contactList eml.creators/>
                         </div>
                         <div class="clearfix"></div>
 
-
-                        <#assign type><@s.text name='portal.resource.contact'/></#assign>
-                        <p class="twenty_top">Who can answer questions about the resource:</p>
+                        <p class="twenty_top"><@s.text name='portal.resource.contact.intro'/>:</p>
                         <div class="fullwidth">
-                          <@contactList eml.contacts type/>
+                          <@contactList eml.contacts/>
                         </div>
                         <div class="clearfix"></div>
 
-
-                      <#assign type><@s.text name='portal.metadata.provider'/></#assign>
-                        <p class="twenty_top">Who filled in the metadata:</p>
+                        <p class="twenty_top"><@s.text name='portal.metadata.provider.intro'/>:</p>
                         <div class="fullwidth">
-                          <@contactList eml.metadataProviders type/>
+                          <@contactList eml.metadataProviders/>
                         </div>
                         <div class="clearfix"></div>
 
-
-                        <p class="twenty_top">Who else was associated with the resource:</p>
-                        <div class="fullwidth">
-                          <@contactList eml.associatedParties/>
-                        </div>
-                        <div class="clearfix"></div>
-
+                      <#if (eml.associatedParties?size>0)>
+                          <p class="twenty_top"><@s.text name='portal.associatedParties.intro'/>:</p>
+                          <div class="fullwidth">
+                            <@contactList eml.associatedParties/>
+                          </div>
+                          <div class="clearfix"></div>
+                      </#if>
                     </div>
                   </div>
                 </#if>
