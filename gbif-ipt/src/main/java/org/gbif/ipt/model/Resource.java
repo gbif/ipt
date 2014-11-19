@@ -84,6 +84,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   private Date modified;
   private Date metadataModified;
   private Date mappingsModified;
+  private Date sourcesModified;
   private Set<User> managers = new HashSet<User>();
   // mapping configs
   private Set<Source> sources = new HashSet<Source>();
@@ -976,5 +977,22 @@ public class Resource implements Serializable, Comparable<Resource> {
   public void setMappingsModified(Date mappingsModified) {
     this.modified = mappingsModified;
     this.mappingsModified = mappingsModified;
+  }
+
+  /**
+   * @return the date any source was last modified.
+   */
+  public Date getSourcesModified() {
+    return sourcesModified;
+  }
+
+  /**
+   * Set sourcesModified date. Update modified date at same time.
+   *
+   * @param sourcesModified date sources were last modified
+   */
+  public void setSourcesModified(Date sourcesModified) {
+    this.modified = sourcesModified;
+    this.sourcesModified = sourcesModified;
   }
 }

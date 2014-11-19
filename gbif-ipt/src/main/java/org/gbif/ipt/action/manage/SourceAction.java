@@ -33,6 +33,7 @@ import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -152,6 +153,9 @@ public class SourceAction extends ManagerBaseAction {
     boolean replaced = resource.getSource(filename) != null;
     try {
       source = sourceManager.add(resource, f, filename);
+      // set sources modified date
+      resource.setSourcesModified(new Date());
+      // save resource
       saveResource();
       id = source.getName();
       if (replaced) {
@@ -190,6 +194,8 @@ public class SourceAction extends ManagerBaseAction {
   public String delete() {
     if (sourceManager.delete(resource, resource.getSource(id))) {
       addActionMessage(getText("manage.source.deleted", new String[] {id}));
+      // set sources modified date
+      resource.setSourcesModified(new Date());
       saveResource();
     } else {
       addActionMessage(getText("manage.source.deleted.couldnt", new String[] {id}));
@@ -335,6 +341,8 @@ public class SourceAction extends ManagerBaseAction {
       }
       id = source.getName();
     }
+    resource.setSourcesModified(new Date());
+    // save resource
     saveResource();
 
     return result;

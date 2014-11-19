@@ -165,6 +165,9 @@ public class MappingAction extends ManagerBaseAction {
 
   public String cancel() {
     resource.deleteMapping(mapping);
+    // set mappings modified date
+    resource.setMappingsModified(new Date());
+    // save resource
     saveResource();
     return SUCCESS;
   }
@@ -173,8 +176,8 @@ public class MappingAction extends ManagerBaseAction {
   public String delete() {
     if (resource.deleteMapping(mapping)) {
       addActionMessage(getText("manage.mapping.deleted", new String[] {id}));
-      // set modified date
-      resource.setModified(new Date());
+      // set mappings modified date
+      resource.setMappingsModified(new Date());
       // save resource
       saveResource();
     } else {
