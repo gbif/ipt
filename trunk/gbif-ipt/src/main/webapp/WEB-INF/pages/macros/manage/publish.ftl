@@ -20,11 +20,11 @@
    <#if resource.identifierStatus == "UNRESERVED"
    || (resource.identifierStatus == "RESERVED")
    || (resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION" && resource.status != "PUBLIC" && resource.status != "REGISTERED" && currentUser.hasRegistrationRights() && organisationWithPrimaryDoiAccount??) >
-     <@s.submit id="publishButton" name="publishMajorVersion" key="button.publish" disabled="${missingMetadata?string}"/>
+     <@s.submit id="publishButton" name="publish" key="button.publish" disabled="${missingMetadata?string}"/>
    <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION" && alreadyAssignedDoi && currentUser.hasRegistrationRights() && organisationWithPrimaryDoiAccount??>
-     <@s.submit cssClass="confirmPublishMajorVersion" id="publishButton" name="publishMajorVersion" key="button.publish" disabled="${missingMetadata?string}"/>
+     <@s.submit cssClass="confirmPublishMajorVersion" id="publishButton" name="publish" key="button.publish" disabled="${missingMetadata?string}"/>
    <#elseif resource.identifierStatus == "PUBLIC" && currentUser.hasRegistrationRights() && organisationWithPrimaryDoiAccount??>
-     <@s.submit cssClass="confirmPublishMinorVersion" id="publishButton" name="publishMajorVersion" key="button.publish" disabled="${missingMetadata?string}"/>
+     <@s.submit cssClass="confirmPublishMinorVersion" id="publishButton" name="publish" key="button.publish" disabled="${missingMetadata?string}"/>
    <#else>
      <@s.submit id="publishButton" name="publish" key="button.publish" disabled="true"/>
    </#if>
