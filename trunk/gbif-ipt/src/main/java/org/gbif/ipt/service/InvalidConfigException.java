@@ -86,7 +86,11 @@ public class InvalidConfigException extends RuntimeException {
     /**
      * Once a DOI registration agency account has been activated in the IPT, archival mode cannot be turned off fx.
      */
-    DOI_REGISTRATION_ALREADY_ACTIVATED
+    DOI_REGISTRATION_ALREADY_ACTIVATED,
+    /**
+     * A properties file has been configured wrong.
+     */
+    INVALID_PROPERTIES_FILE
   }
 
   protected TYPE type;

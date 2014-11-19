@@ -1,6 +1,7 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.service.admin.RegistrationManager;
@@ -30,7 +31,7 @@ public class MetadataActionTest {
 
     // initiate action
     action = new MetadataAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mock(RegistrationManager.class),
-      mock(ResourceManager.class), mock(VocabulariesManager.class));
+      mock(ResourceManager.class), mock(VocabulariesManager.class), mock(ConfigWarnings.class));
 
     // mock creation of datasetSubtypes Map, with 2 occurrence subtypes, and 6 checklist subtypes
     datasetSubtypes = new LinkedHashMap<String, String>();
@@ -87,5 +88,18 @@ public class MetadataActionTest {
 
     resource.setIdentifierStatus(IdentifierStatus.RESERVED);
     assertTrue(action.hasDoiReservedOrAssigned(resource));
+  }
+
+  @Test
+  public void testLicenseProperties() {
+    assertEquals(6, MetadataAction.licenseProperties().size());
+  }
+
+  @Test
+  public void testLoadLicensesFile() {
+    MetadataAction.loadLicenseMaps("Select a license");
+    assertEquals(4, action.getLicenses().size()); // includes default "select a license"
+    assertEquals("Select a license", action.getLicenses().get(""));
+    assertEquals(3, action.getLicenseTexts().size());
   }
 }
