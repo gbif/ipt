@@ -99,6 +99,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private boolean deleteDoi = false;
   private boolean delete = false;
   private boolean undelete = false;
+  private boolean publish = false;
   private Map<String, String> frequencies;
   // preview
   private GenerateDwcaFactory dwcaFactory;
@@ -453,7 +454,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         if (resource.getIdentifierStatus() == IdentifierStatus.UNRESERVED && !isAlreadyAssignedDoi()) {
           String existingDoi = findExistingDoi(resource);
           if (existingDoi == null) {
-            resource.setDoi("10.1594/" + RandomStringUtils.randomAlphanumeric(6));
+            resource.setDoi(makeDoi());
             resource.setIdentifierStatus(IdentifierStatus.RESERVED);
             saveResource();
           } else {
@@ -474,7 +475,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
             }
           }
         } else if (resource.getIdentifierStatus() == IdentifierStatus.PUBLIC && isAlreadyAssignedDoi()) {
-          resource.setDoi("10.1594/" + RandomStringUtils.randomAlphanumeric(6));
+          resource.setDoi(makeDoi());
           resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
           saveResource();
         }
@@ -776,83 +777,87 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     if (resource == null) {
       return NOT_FOUND;
     }
+    if (publish) {
+      // clear the processFailures for the resource, allowing auto-publication to proceed
+      if (resourceManager.getProcessFailures().containsKey(resource.getShortname())) {
+        logProcessFailures(resource);
+        LOG.info("Clearing publish event failures for resource: " + resource.getTitleAndShortname());
+        resourceManager.getProcessFailures().removeAll(resource.getShortname());
+      }
 
-    // clear the processFailures for the resource, allowing auto-publication to proceed
-    if (resourceManager.getProcessFailures().containsKey(resource.getShortname())) {
-      logProcessFailures(resource);
-      LOG.info("Clearing publish event failures for resource: " + resource.getTitleAndShortname());
-      resourceManager.getProcessFailures().removeAll(resource.getShortname());
-    }
-
-    // look for parameters publication mode and publication frequency
-    String pm = StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_PUBLICATION_MODE));
-    if (!Strings.isNullOrEmpty(pm)) {
-      try {
-        // auto-publishing being turned OFF
-        if (PublicationMode.AUTO_PUBLISH_OFF == PublicationMode.valueOf(pm) && resource.usesAutoPublishing()) {
-          resourceManager.publicationModeToOff(resource);
-        }
-        // auto-publishing being turned ON, or auto-publishing settings being updated
-        else {
-          String pf = StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_PUBLICATION_FREQUENCY));
-          if (!Strings.isNullOrEmpty(pf)) {
-            resource.setUpdateFrequency(pf);
-            resource.setPublicationMode(PublicationMode.valueOf(pm));
-          } else {
-            LOG.debug("No change to auto-publishing settings");
+      // look for parameters publication mode and publication frequency
+      String pm = StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_PUBLICATION_MODE));
+      if (!Strings.isNullOrEmpty(pm)) {
+        try {
+          // auto-publishing being turned OFF
+          if (PublicationMode.AUTO_PUBLISH_OFF == PublicationMode.valueOf(pm) && resource.usesAutoPublishing()) {
+            resourceManager.publicationModeToOff(resource);
           }
+          // auto-publishing being turned ON, or auto-publishing settings being updated
+          else {
+            String pf = StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_PUBLICATION_FREQUENCY));
+            if (!Strings.isNullOrEmpty(pf)) {
+              resource.setUpdateFrequency(pf);
+              resource.setPublicationMode(PublicationMode.valueOf(pm));
+            } else {
+              LOG.debug("No change to auto-publishing settings");
+            }
+          }
+        } catch (IllegalArgumentException e) {
+          LOG.error("Exception encountered while parsing parameters: " + e.getMessage(), e);
+        } finally {
+          // update frequencies map
+          populateFrequencies();
         }
-      } catch (IllegalArgumentException e) {
-        LOG.error("Exception encountered while parsing parameters: " + e.getMessage(), e);
-      } finally {
-        // update frequencies map
-        populateFrequencies();
       }
-    }
 
-    BigDecimal nextVersion = new BigDecimal(resource.getNextVersion().toPlainString());
-    BigDecimal replacedVersion = new BigDecimal(resource.getEmlVersion().toPlainString());
+      BigDecimal nextVersion = new BigDecimal(resource.getNextVersion().toPlainString());
+      BigDecimal replacedVersion = new BigDecimal(resource.getEmlVersion().toPlainString());
 
-    // TODO: implement - below is a temporary implementation.
-    if (resource.getIdentifierStatus() == IdentifierStatus.PUBLIC_PENDING_PUBLICATION && isAlreadyAssignedDoi()) {
-      resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
-    }
+      // TODO: implement - below is a temporary implementation.
+      if (resource.getIdentifierStatus() == IdentifierStatus.PUBLIC_PENDING_PUBLICATION && isAlreadyAssignedDoi()) {
+        resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
+      }
 
-    try {
-      // publish a new version of the resource
-      if (resourceManager.publish(resource, nextVersion, this)) {
-        addActionMessage(getText("publishing.started", new String[] {String.valueOf(nextVersion), resource.getShortname()}));
-        return PUBLISHING;
-      } else {
-        // show action warning there is no source data and mapping, as long as resource isn't metadata-only
-        if (resource.getCoreType() != null &&
-            !resource.getCoreType().equalsIgnoreCase(Constants.DATASET_TYPE_METADATA_IDENTIFIER)) {
-          addActionWarning(getText("manage.overview.data.missing"));
+      try {
+        // publish a new version of the resource
+        if (resourceManager.publish(resource, nextVersion, this)) {
+          addActionMessage(getText("publishing.started", new String[] {String.valueOf(nextVersion), resource.getShortname()}));
+          return PUBLISHING;
+        } else {
+          // show action warning there is no source data and mapping, as long as resource isn't metadata-only
+          if (resource.getCoreType() != null &&
+              !resource.getCoreType().equalsIgnoreCase(Constants.DATASET_TYPE_METADATA_IDENTIFIER)) {
+            addActionWarning(getText("manage.overview.data.missing"));
+          }
+          missingRegistrationMetadata = !hasMinimumRegistryInfo(resource);
+          metadataModifiedSinceLastPublication = setMetadataModifiedSinceLastPublication(resource);
+          mappingsModifiedSinceLastPublication = setMappingsModifiedSinceLastPublication(resource);
+          return SUCCESS;
         }
-        missingRegistrationMetadata = !hasMinimumRegistryInfo(resource);
-        metadataModifiedSinceLastPublication = setMetadataModifiedSinceLastPublication(resource);
-        mappingsModifiedSinceLastPublication = setMappingsModifiedSinceLastPublication(resource);
-        return SUCCESS;
+      } catch (PublicationException e) {
+        if (PublicationException.TYPE.LOCKED == e.getType()) {
+          addActionError(getText("manage.overview.resource.being.published",
+            new String[] {resource.getTitleAndShortname()}));
+        } else {
+          // alert user publication failed
+          addActionError(getText("publishing.failed",
+            new String[] {String.valueOf(nextVersion), resource.getShortname(), e.getMessage()}));
+          // restore the previous version since publication was unsuccessful
+          resourceManager.restoreVersion(resource, nextVersion, replacedVersion, this);
+          // keep track of how many failures on auto publication have happened
+          resourceManager.getProcessFailures().put(resource.getShortname(), new Date());
+        }
+      } catch (InvalidConfigException e) {
+        // with this type of error, the version cannot be rolled back - just alert user publication failed
+        String msg =
+          getText("publishing.failed", new String[] {String.valueOf(nextVersion), resource.getShortname(), e.getMessage()});
+        LOG.error(msg, e);
+        addActionError(msg);
       }
-    } catch (PublicationException e) {
-      if (PublicationException.TYPE.LOCKED == e.getType()) {
-        addActionError(getText("manage.overview.resource.being.published",
-          new String[] {resource.getTitleAndShortname()}));
-      } else {
-        // alert user publication failed
-        addActionError(getText("publishing.failed",
-          new String[] {String.valueOf(nextVersion), resource.getShortname(), e.getMessage()}));
-        // restore the previous version since publication was unsuccessful
-        resourceManager.restoreVersion(resource, nextVersion, replacedVersion, this);
-        // keep track of how many failures on auto publication have happened
-        resourceManager.getProcessFailures().put(resource.getShortname(), new Date());
-      }
-    } catch (InvalidConfigException e) {
-      // with this type of error, the version cannot be rolled back - just alert user publication failed
-      String msg =
-        getText("publishing.failed", new String[] {String.valueOf(nextVersion), resource.getShortname(), e.getMessage()});
-      LOG.error(msg, e);
-      addActionError(msg);
+    } else {
+      // just return the user to the manage resources page
+      return HOME;
     }
     return ERROR;
   }
@@ -933,7 +938,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   }
 
   /**
-   * To hold the state transition request, so the same request triggered purely by a URL will not work.
+   * To hold the identifier state transition request, so the same request triggered purely by a URL will not work.
    *
    * @param reserveDoi form variable
    */
@@ -942,7 +947,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   }
 
   /**
-   * To hold the state transition request, so the same request triggered purely by a URL will not work.
+   * To hold the identifier state transition request, so the same request triggered purely by a URL will not work.
    *
    * @param registerDoi form variable
    */
@@ -951,7 +956,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   }
 
   /**
-   * To hold the state transition request, so the same request triggered purely by a URL will not work.
+   * To hold the identifier state transition request, so the same request triggered purely by a URL will not work.
    *
    * @param deleteDoi form variable
    */
@@ -975,6 +980,15 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    */
   public void setUndelete(String undelete) {
     this.undelete = StringUtils.trimToNull(undelete) != null;
+  }
+
+  /**
+   * To hold the publish request, so the same request triggered purely by a URL will not work.
+   *
+   * @param publish form variable
+   */
+  public void setPublish(String publish) {
+    this.publish = StringUtils.trimToNull(publish) != null;
   }
 
   /**
@@ -1120,5 +1134,18 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    */
   public Organisation getOrganisationWithPrimaryDoiAccount() {
     return organisationWithPrimaryDoiAccount;
+  }
+
+  /**
+   * Temporary method used to create a DOI.
+   * The DOI is case insensitive.
+   *
+   * @return DOI in format prefix/suffix
+   */
+  private String makeDoi() {
+    String prefix =
+      (organisationWithPrimaryDoiAccount == null || organisationWithPrimaryDoiAccount.getDoiPrefix() == null)
+        ? Constants.TEST_DOI_PREFIX : organisationWithPrimaryDoiAccount.getDoiPrefix();
+    return prefix + "/" + RandomStringUtils.randomAlphanumeric(6).toUpperCase();
   }
 }

@@ -486,7 +486,7 @@ $(document).ready(function(){
           </#if>
         <#else>
           <#if resource.status=="PRIVATE">
-            <@s.submit name="publish" key="button.public"/>
+            <@s.submit name="makePrivate" key="button.public"/>
           </#if>
         </#if>
       </form>
