@@ -24,6 +24,20 @@
     <p>
       <@s.text name='manage.overview.source.description4'><@s.param><@s.text name="button.connectDB"/></@s.param></@s.text>
     </p>
+
+      <div class="details twenty_bottom">
+          <table>
+            <tr>
+              <#if sourcesModifiedSinceLastPublication>
+                  <th><@s.text name='basic.lastModified'/>:</th>
+                  <td>${resource.getSourcesModified()?date?string.medium!}</td>
+              <#elseif resource.lastPublished??>
+                  <th><@s.text name="manage.overview.notModified"/></th>
+              </#if>
+            </tr>
+          </table>
+      </div>
+
     <!-- Warn users they can't update a resource by uploading a DwC-A until they have uploaded their first source file -->
     <#if (resource.sources?size == 0) >
       <div>

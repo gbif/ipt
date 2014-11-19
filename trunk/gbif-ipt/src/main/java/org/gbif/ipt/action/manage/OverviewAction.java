@@ -91,6 +91,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private boolean missingRegistrationMetadata;
   private boolean metadataModifiedSinceLastPublication;
   private boolean mappingsModifiedSinceLastPublication;
+  private boolean sourcesModifiedSinceLastPublication;
   private StatusReport report;
   private Date now;
   private boolean unpublish = false;
@@ -312,10 +313,28 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    */
   public boolean setMappingsModifiedSinceLastPublication(@NotNull Resource resource) {
     if (resource.getLastPublished() == null) {
-      return resource.getMetadataModified() != null;
+      return resource.getMappingsModified() != null;
     } else {
       if (resource.getMappingsModified() != null) {
         return resource.getMappingsModified().compareTo(resource.getLastPublished()) > 0;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Determine whether the sources have been modified since the last publication.
+   *
+   * @param resource resource
+   *
+   * @return true if sources have been modified since last publication, false otherwise
+   */
+  public boolean setSourcesModifiedSinceLastPublication(@NotNull Resource resource) {
+    if (resource.getLastPublished() == null) {
+      return resource.getSourcesModified() != null;
+    } else {
+      if (resource.getSourcesModified() != null) {
+        return resource.getSourcesModified().compareTo(resource.getLastPublished()) > 0;
       }
     }
     return false;
@@ -749,6 +768,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       metadataModifiedSinceLastPublication = setMetadataModifiedSinceLastPublication(resource);
       // check the source mappings has been modified since the last publication
       mappingsModifiedSinceLastPublication = setMappingsModifiedSinceLastPublication(resource);
+      // check if the sources have been modified since the last publication
+      sourcesModifiedSinceLastPublication = setSourcesModifiedSinceLastPublication(resource);
       // find the organisation that can register DOIs for datasets
       organisationWithPrimaryDoiAccount = registrationManager.findPrimaryDoiAgencyAccount();
 
@@ -1037,6 +1058,15 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    */
   public boolean isMappingsModifiedSinceLastPublication() {
     return mappingsModifiedSinceLastPublication;
+  }
+
+  /**
+   * Called from manage resource page.
+   *
+   * @return true if sources have been modified since last publication, false otherwise.
+   */
+  public boolean isSourcesModifiedSinceLastPublication() {
+    return sourcesModifiedSinceLastPublication;
   }
 
   /**
