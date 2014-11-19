@@ -233,7 +233,7 @@ $(document).ready(function(){
 
     <#if resource.lastPublished??>
       <div class="details">
-        <div class="mapping_head">Current release:</div>
+        <div class="mapping_head"><@s.text name="manage.overview.published.last.publication.intro"/></div>
         <table>
           <tr>
             <th><@s.text name="manage.overview.published.version"/></th>
@@ -306,7 +306,7 @@ $(document).ready(function(){
                   </#if>
               </tr>
             <tr>
-                <th>Released</th>
+                <th><@s.text name="manage.overview.published.released"/></th>
                 <td>${resource.lastPublished?date?string.medium}</td>
             </tr>
 
@@ -367,7 +367,7 @@ $(document).ready(function(){
     </#if>
 
        <div class="details">
-          <div class="mapping_head twenty_top">Next published release:</div>
+          <div class="mapping_head twenty_top"><@s.text name="manage.overview.published.next.publication.intro"/></div>
           <table>
               <tr>
                   <th><@s.text name="manage.overview.published.version"/></th>
@@ -451,7 +451,7 @@ $(document).ready(function(){
             <#if resource.usesAutoPublishing()>
               <#if resource.nextPublished??>
                   <tr>
-                      <th>Released</th>
+                      <th><@s.text name="manage.overview.published.released"/></th>
                       <td>${resource.nextPublished?date?string("MMM d, yyyy, HH:mm:ss")}</td>
                   </tr>
               </#if>
