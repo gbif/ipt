@@ -10,6 +10,7 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
 <script type="text/javascript" charset="utf-8">
     <#assign emptyString="--">
     <#assign dotDot="..">
+    <#assign deletedString><@s.text name="manage.home.visible.deleted"/></#assign>
 
     /* Sorts columns having "sType": "number". It should handle numbers with locale specific separators, e.g. 1,000 */
     jQuery.extend( jQuery.fn.dataTableExt.oSort, {
@@ -44,7 +45,7 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
            '${r.modified?date}',
            <#if r.published>'${(r.lastPublished?date)!}'<#else>'<@s.text name="portal.home.not.published"/>'</#if>,
            '${(r.nextPublished?date?string("yyyy-MM-dd HH:mm:ss"))!'${emptyString}'}',
-           <#if r.status=='PRIVATE'>'<@s.text name="manage.home.visible.private"/>'<#else>'<@s.text name="manage.home.visible.public"/>'</#if>,
+           <#if r.status=='PRIVATE'>'<@s.text name="manage.home.visible.private"/>'<#elseif r.status=='DELETED'>'${deletedString}'<#else>'<@s.text name="manage.home.visible.public"/>'</#if>,
            <#if r.creator??>'${r.creator.firstname?replace("\'", "\\'")?replace("\"", '\\"')!} ${r.creator.lastname?replace("\'", "\\'")?replace("\"", '\\"')!}'<#else>'${emptyString}'</#if>]<#if r_has_next>,</#if>
       </#list>
     ];
@@ -96,6 +97,11 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
                   if (today > nextPublishedDate) {
                     oSettings.aoData[i].nTr.className += " rowInError";
                   }
+                  // warning fragile: index 9 must always equal visibility (only on manage page)
+                    var visibility = oSettings.aoData[i]._aData[9];
+                    if (visibility && visibility.toLowerCase() == '${deletedString?lower_case}') {
+                        oSettings.aoData[i].nTr.className += " rowInError";
+                    }
                 }
             }
         } );
