@@ -70,6 +70,7 @@ public class MetadataAction extends ManagerBaseAction {
   private static final String LICENSES_PROPFILE_PATH = "/org/gbif/metadata/eml/licenses.properties";
   private static final String LICENSE_NAME_PROPERTY_PREFIX = "license.name.";
   private static final String LICENSE_TEXT_PROPERTY_PREFIX = "license.text.";
+  private static final String DIRECTORIES_PROPFILE_PATH = "/org/gbif/metadata/eml/UserDirectories.properties";
 
   private MetadataSection section = MetadataSection.BASIC_SECTION;
   private MetadataSection next = MetadataSection.GEOGRAPHIC_COVERAGE_SECTION;
@@ -77,7 +78,6 @@ public class MetadataAction extends ManagerBaseAction {
   private Map<String, String> countries;
   private Map<String, String> ranks;
   private Map<String, String> roles;
-  private Map<String, String> userIdDirectories;
   private Map<String, String> preservationMethods;
   private Map<String, String> types;
   private Map<String, String> datasetSubtypes;
@@ -94,8 +94,10 @@ public class MetadataAction extends ManagerBaseAction {
   private boolean doiReservedOrAssigned = false;
   private ConfigWarnings warnings;
   private static Properties licenseProperties;
+  private static Properties directoriesProperties;
   private static Map<String, String> licenses;
   private static Map<String, String> licenseTexts;
+  private static Map<String, String> userIdDirectories;
 
   @Inject
   public MetadataAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -276,6 +278,13 @@ public class MetadataAction extends ManagerBaseAction {
         // load license maps
         try {
           loadLicenseMaps(getText("eml.intellectualRights.nolicenses"));
+        } catch (InvalidConfigException e) {
+          warnings.addStartupError(e.getMessage(), e);
+        }
+
+        // load directories map
+        try {
+          loadDirectories(getText("eml.contact.noDirectory"));
         } catch (InvalidConfigException e) {
           warnings.addStartupError(e.getMessage(), e);
         }
@@ -557,7 +566,7 @@ public class MetadataAction extends ManagerBaseAction {
   }
 
   /**
-   * @return Properties from licenses file
+   * @return Properties from licenses properties file
    *
    * @throws InvalidConfigException if licenses properties file could not be loaded
    */
@@ -567,10 +576,10 @@ public class MetadataAction extends ManagerBaseAction {
       Properties p = new Properties();
       try {
         p.load(MetadataAction.class.getResourceAsStream(LICENSES_PROPFILE_PATH));
-        LOG.debug("Loaded licenses configuration from licenses.properties in classpath");
+        LOG.debug("Loaded licenses from " + LICENSES_PROPFILE_PATH);
       } catch (IOException e) {
         throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_PROPERTIES_FILE,
-          "Failed to load properties from " + LICENSES_PROPFILE_PATH);
+          "Failed to load licenses from " + LICENSES_PROPFILE_PATH);
       } finally {
         licenseProperties = p;
       }
@@ -579,8 +588,30 @@ public class MetadataAction extends ManagerBaseAction {
   }
 
   /**
-   * Load license maps: #1) license names - used to populate select on Additional Metadata Page
-   *                    #2) license texts - used to populate text area on Additional Metadata Page
+   * @return Properties from directories properties file
+   *
+   * @throws InvalidConfigException if directories properties file could not be loaded
+   */
+  @Singleton
+  public static synchronized Properties directoriesProperties() throws InvalidConfigException {
+    if (directoriesProperties == null) {
+      Properties p = new Properties();
+      try {
+        p.load(MetadataAction.class.getResourceAsStream(DIRECTORIES_PROPFILE_PATH));
+        LOG.debug("Loaded directories from " + DIRECTORIES_PROPFILE_PATH);
+      } catch (IOException e) {
+        throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_PROPERTIES_FILE,
+          "Failed to load directories from " + DIRECTORIES_PROPFILE_PATH);
+      } finally {
+        directoriesProperties = p;
+      }
+    }
+    return directoriesProperties;
+  }
+
+  /**
+   * Load license maps: #1) license names - used to populate select on Basic Metadata Page
+   *                    #2) license texts - used to populate text area on Basic Metadata Page
    *
    * @param firstOption the default select option for the license names (e.g. no license selected)
    *
@@ -607,14 +638,47 @@ public class MetadataAction extends ManagerBaseAction {
               licenseTexts.put(keyMinusPrefix, licenseText);
             }
           } else {
-            String error = LICENSES_PROPFILE_PATH + " had been been configured wrong.";
+            String error = LICENSES_PROPFILE_PATH + " has been been configured wrong.";
             LOG.error(error);
             throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_PROPERTIES_FILE, error);
           }
         }
       }
-      if ((licenses.size() - 1) <= 0) {
+      if ((licenses.size() - 1) == 0) {
         String error = "No licenses could be loaded from " + LICENSES_PROPFILE_PATH + ". Please check configuration.";
+        LOG.error(error);
+        throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_PROPERTIES_FILE, error);
+      }
+    }
+  }
+
+  /**
+   * Load directories map used to populate select on Basic Metadata Page
+   *
+   * @param firstOption the default select option for the directory names (e.g. no directory selected)
+   *
+   * @throws InvalidConfigException if the directories properties file was badly configured
+   */
+  @Singleton
+  public static synchronized void loadDirectories(String firstOption) throws InvalidConfigException {
+    if (userIdDirectories == null) {
+      userIdDirectories = new TreeMap<String, String>();
+      userIdDirectories.put("", (firstOption == null) ? "-" : firstOption);
+
+      Properties properties = directoriesProperties();
+      for (Map.Entry<Object, Object> entry : properties.entrySet()) {
+        String key = StringUtils.trim((String) entry.getKey());
+        String value = StringUtils.trim((String) entry.getValue());
+        if (key != null && value != null) {
+          userIdDirectories.put(key, value);
+        } else {
+          String error = DIRECTORIES_PROPFILE_PATH + " has been been configured wrong.";
+          LOG.error(error);
+          throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_PROPERTIES_FILE, error);
+        }
+      }
+      if ((userIdDirectories.size() - 1) == 0) {
+        String error = "No licenses could be loaded from " + DIRECTORIES_PROPFILE_PATH + ". Please check configuration.";
         LOG.error(error);
         throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_PROPERTIES_FILE, error);
       }
@@ -625,12 +689,6 @@ public class MetadataAction extends ManagerBaseAction {
    * Method that loads all vocabularies, and primary contact needed for the agent form.
    */
   private void loadAgentVocabularies() {
-    // user id directories, only orcid and researcherid are supported currently
-    userIdDirectories = new LinkedHashMap<String, String>();
-    userIdDirectories.put("", getText("eml.contact.noDirectory"));
-    userIdDirectories.put("http://orcid.org/", "http://orcid.org/");
-    userIdDirectories.put("http://www.researcherid.com/rid/", "http://www.researcherid.com/rid/");
-
     // languages list, derived from XML vocabulary, and displayed in drop-down on Basic Metadata page
     languages = vocabManager.getI18nVocab(Constants.VOCAB_URI_LANGUAGE, getLocaleLanguage(), true);
 
