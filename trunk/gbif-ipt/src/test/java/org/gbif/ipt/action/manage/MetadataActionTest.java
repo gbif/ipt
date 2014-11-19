@@ -91,15 +91,27 @@ public class MetadataActionTest {
   }
 
   @Test
-  public void testLicenseProperties() {
+  public void testLicensesProperties() {
     assertEquals(6, MetadataAction.licenseProperties().size());
   }
 
   @Test
-  public void testLoadLicensesFile() {
+  public void testLoadLicensesMaps() {
     MetadataAction.loadLicenseMaps("Select a license");
-    assertEquals(4, action.getLicenses().size()); // includes default "select a license"
+    assertEquals(4, action.getLicenses().size()); // includes "select a license"
     assertEquals("Select a license", action.getLicenses().get(""));
     assertEquals(3, action.getLicenseTexts().size());
+  }
+
+  @Test
+  public void testDirectoriesProperties() {
+    assertEquals(4, MetadataAction.directoriesProperties().size());
+  }
+
+  @Test
+  public void testLoadDirectoriesMap() {
+    MetadataAction.loadDirectories("Select a directory");
+    assertEquals(5, action.getUserIdDirectories().size()); // includes "select a license"
+    assertEquals("Select a directory", action.getUserIdDirectories().get(""));
   }
 }
