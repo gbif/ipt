@@ -18,6 +18,7 @@ import org.gbif.api.vocabulary.DatasetSubtype;
 import org.gbif.common.parsers.CountryParser;
 import org.gbif.common.parsers.core.ParseResult;
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
@@ -29,7 +30,6 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.ipt.utils.InputStreamUtils;
 import org.gbif.ipt.utils.LangUtils;
 import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.validation.EmlValidator;
@@ -41,7 +41,6 @@ import org.gbif.metadata.eml.TemporalCoverageType;
 import org.gbif.metadata.eml.UserId;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -56,6 +55,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -67,9 +67,9 @@ public class MetadataAction extends ManagerBaseAction {
   private final ResourceValidator validatorRes = new ResourceValidator();
   private final EmlValidator emlValidator;
   private final VocabulariesManager vocabManager;
-  private static final String LICENSES_PROPFILE = "licenses.properties";
-  private static final String LICENSE_NAME = "license.name.";
-  private static final String LICENSE_TEXT = "license.text.";
+  private static final String LICENSES_PROPFILE_PATH = "/org/gbif/metadata/eml/licenses.properties";
+  private static final String LICENSE_NAME_PROPERTY_PREFIX = "license.name.";
+  private static final String LICENSE_TEXT_PROPERTY_PREFIX = "license.text.";
 
   private MetadataSection section = MetadataSection.BASIC_SECTION;
   private MetadataSection next = MetadataSection.GEOGRAPHIC_COVERAGE_SECTION;
@@ -77,8 +77,6 @@ public class MetadataAction extends ManagerBaseAction {
   private Map<String, String> countries;
   private Map<String, String> ranks;
   private Map<String, String> roles;
-  private Map<String, String> licenses;
-  private Map<String, String> licenseTexts;
   private Map<String, String> userIdDirectories;
   private Map<String, String> preservationMethods;
   private Map<String, String> types;
@@ -94,13 +92,18 @@ public class MetadataAction extends ManagerBaseAction {
 
   private Agent primaryContact;
   private boolean doiReservedOrAssigned = false;
+  private ConfigWarnings warnings;
+  private static Properties licenseProperties;
+  private static Map<String, String> licenses;
+  private static Map<String, String> licenseTexts;
 
   @Inject
   public MetadataAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    ResourceManager resourceManager, VocabulariesManager vocabManager) {
+    ResourceManager resourceManager, VocabulariesManager vocabManager, ConfigWarnings warnings) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.vocabManager = vocabManager;
     this.emlValidator = new EmlValidator(cfg, registrationManager, textProvider);
+    this.warnings = warnings;
   }
 
   /**
@@ -156,10 +159,6 @@ public class MetadataAction extends ManagerBaseAction {
 
   public Map<String, String> getLicenses() {
     return licenses;
-  }
-
-  public void setLicenses(Map<String, String> licenses) {
-    this.licenses = licenses;
   }
 
   public Map<String, String> getLicenseTexts() {
@@ -274,10 +273,12 @@ public class MetadataAction extends ManagerBaseAction {
         // populate agent vocabularies
         loadAgentVocabularies();
 
-        // load license maps:
-        // #1) license names - used to populate select on Additional Metadata Page
-        // #2) license texts - used to populate text area on Additional Metadata Page
-        loadLicensesFile();
+        // load license maps
+        try {
+          loadLicenseMaps(getText("eml.intellectualRights.nolicenses"));
+        } catch (InvalidConfigException e) {
+          warnings.addStartupError(e.getMessage(), e);
+        }
 
         // TODO: put into method
         // enabled registry organisations
@@ -555,45 +556,68 @@ public class MetadataAction extends ManagerBaseAction {
     return userIdDirectories;
   }
 
-  private void loadLicensesFile() throws InvalidConfigException {
-    InputStreamUtils streamUtils = new InputStreamUtils();
-    InputStream licensesStream = streamUtils.classpathStream("org/gbif/metadata/eml/" + LICENSES_PROPFILE);
-    try {
-      Properties properties = new Properties();
-      if (licensesStream == null) {
-        LOG.error("Could not load licenses configuration from licenses.properties in classpath");
-      } else {
-        properties.load(licensesStream);
+  /**
+   * @return Properties from licenses file
+   *
+   * @throws InvalidConfigException if licenses properties file could not be loaded
+   */
+  @Singleton
+  public static synchronized Properties licenseProperties() throws InvalidConfigException {
+    if (licenseProperties == null) {
+      Properties p = new Properties();
+      try {
+        p.load(MetadataAction.class.getResourceAsStream(LICENSES_PROPFILE_PATH));
         LOG.debug("Loaded licenses configuration from licenses.properties in classpath");
+      } catch (IOException e) {
+        throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_PROPERTIES_FILE,
+          "Failed to load properties from " + LICENSES_PROPFILE_PATH);
+      } finally {
+        licenseProperties = p;
+      }
+    }
+    return licenseProperties;
+  }
 
-        licenses = new TreeMap<String, String>();
-        licenseTexts = new TreeMap<String, String>();
+  /**
+   * Load license maps: #1) license names - used to populate select on Additional Metadata Page
+   *                    #2) license texts - used to populate text area on Additional Metadata Page
+   *
+   * @param firstOption the default select option for the license names (e.g. no license selected)
+   *
+   * @throws InvalidConfigException if the licenses properties file was badly configured
+   */
+  @Singleton
+  public static synchronized void loadLicenseMaps(String firstOption) throws InvalidConfigException {
+    if (licenses == null || licenseTexts == null) {
+      licenses = new TreeMap<String, String>();
+      licenses.put("", (firstOption == null) ? "-" : firstOption);
+      licenseTexts = new TreeMap<String, String>();
 
-        // add "select a license" to licenses dropdown
-        licenses.put("", getText("eml.intellectualRights.nolicenses"));
-
-        for (Map.Entry<Object, Object> entry: properties.entrySet()) {
-          String key = StringUtils.trim((String) entry.getKey());
-          String value = StringUtils.trim((String) entry.getValue());
-          if (key != null && key.startsWith(LICENSE_NAME) && value != null) {
-            String keyMinusPrefix = StringUtils.trimToNull(key.replace(LICENSE_NAME, ""));
-            if (keyMinusPrefix != null) {
-              String licenseText = StringUtils.trimToNull((properties.getProperty(LICENSE_TEXT + keyMinusPrefix)));
-              if (licenseText != null) {
-                licenses.put(keyMinusPrefix, value);
-                licenseTexts.put(keyMinusPrefix, licenseText);
-              }
-            } else {
-              LOG.error("License name missing matching license text in licenses.properties file");
+      Properties properties = licenseProperties();
+      for (Map.Entry<Object, Object> entry : properties.entrySet()) {
+        String key = StringUtils.trim((String) entry.getKey());
+        String value = StringUtils.trim((String) entry.getValue());
+        if (key != null && key.startsWith(LICENSE_NAME_PROPERTY_PREFIX) && value != null) {
+          String keyMinusPrefix = StringUtils.trimToNull(key.replace(LICENSE_NAME_PROPERTY_PREFIX, ""));
+          if (keyMinusPrefix != null) {
+            String licenseText =
+              StringUtils.trimToNull((properties.getProperty(LICENSE_TEXT_PROPERTY_PREFIX + keyMinusPrefix)));
+            if (licenseText != null) {
+              licenses.put(keyMinusPrefix, value);
+              licenseTexts.put(keyMinusPrefix, licenseText);
             }
+          } else {
+            String error = LICENSES_PROPFILE_PATH + " had been been configured wrong.";
+            LOG.error(error);
+            throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_PROPERTIES_FILE, error);
           }
         }
-        if ((licenses.size() - 1) != licenseTexts.size()) {
-          LOG.error("An unequal number of license names and license texts exists in licenses.properties file");
-        }
       }
-    } catch (IOException e) {
-      LOG.error("Failed to load the default application configuration from application.properties", e);
+      if ((licenses.size() - 1) <= 0) {
+        String error = "No licenses could be loaded from " + LICENSES_PROPFILE_PATH + ". Please check configuration.";
+        LOG.error(error);
+        throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_PROPERTIES_FILE, error);
+      }
     }
   }
 
