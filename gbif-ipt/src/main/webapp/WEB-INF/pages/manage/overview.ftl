@@ -362,7 +362,7 @@ $(document).ready(function(){
                   <th></th><#if resource.lastPublished??><td>${lastPublishedTitle?cap_first}</td><td></td></#if><td>${nextPublishedTitle?cap_first}</td><td></td>
               </tr>
               <tr>
-                  <th>${versionTitle?cap_first}</th><#if resource.lastPublished??><td><a class="button" href="${baseURL}/resource.do?r=${resource.shortname}"><input class="button" type="button" value='${viewTitle?cap_first}'/></a></td><td></td></#if><td><a class="button" href="${baseURL}/resource/preview?r=${resource.shortname}"><input class="button" type="button" value='${previewTitle?cap_first}'/></a></td><td></td>
+                  <th>${versionTitle?cap_first}</th><#if resource.lastPublished??><td><a class="button" href="${baseURL}/resource.do?r=${resource.shortname}"><input class="button" type="button" value='${viewTitle?cap_first}'/></a></td><td></td></#if><td><a class="button" href="${baseURL}/resource/preview?r=${resource.shortname}"><input class="button" type="button" value='${previewTitle?cap_first}' <#if missingMetadata>disabled="disabled"</#if>/></a></td><td></td>
               </tr>
               <tr>
                   <th>DOI</th><#if resource.lastPublished??><td><#if alreadyAssignedDoi>${resource.versionHistory[0].doi!}<#else>${resource.doi!"-"}</#if></td><td><@currentDoiButtonTD/></td></#if><td> <#if alreadyAssignedDoi && resource.versionHistory[0].doi == resource.doi!"" >${resource.versionHistory[0].doi!}<#else>${resource.doi!"-"}</#if></td><td><@nextDoiButtonTD/></td></tr>
