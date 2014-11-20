@@ -2,32 +2,41 @@
 <div class="resourceOverview" id="metadata">
   <div class="titleOverview">
     <div class="head">
+      <img class="infoImg" src="${baseURL}/images/info.gif" />
+      <div class="info autop">
+        <@s.text name='manage.metadata.basic.required.message'/>
+        <#if resource.coreType?has_content && resource.coreType==metadataType>
+          </br></br>
+          <@s.text name='manage.overview.source.hidden'><@s.param><a href="${baseURL}/manage/metadata-basic.do?r=${resource.shortname}&amp;edit=Edit"><@s.text name="submenu.basic"/></a></@s.param></@s.text>
+        </#if>
+      </div>
       <@s.text name='manage.overview.metadata'/>
     </div>
     <div class="actions">
       <form action='metadata-basic.do' method='get'>
         <input name="r" type="hidden" value="${resource.shortname}"/>
-        <@s.submit name="edit" key="button.edit" disabled="${(organisations?size==0)?string}"/>
+        <#if organisations?size==0>
+            <@s.submit name="edit" key="button.edit" disabled="true"/>
+            <img class="infoImg" src="${baseURL}/images/warning.gif"/>
+            <div class="info autop">
+              <@s.text name="manage.metadata.no.organisations"/>
+            </div>
+        <#elseif missingMetadata>
+            <@s.submit name="edit" key="button.edit"/>
+            <img class="infoImg" src="${baseURL}/images/warning.gif"/>
+            <div class="info autop">
+              <@s.text name="manage.overview.missing.metadata"/>
+            </div>
+        <#else>
+          <@s.submit name="edit" key="button.edit"/>
+        </#if>
       </form>
     </div>
   </div>
   <div class="bodyOverview">
-    <#if organisations?size==0>
-      <div>
-          <img class="info" src="${baseURL}/images/warning.gif"/>
-          <em><@s.text name="manage.metadata.no.organisations"/></em>
-      </div>
-    <#elseif missingMetadata>
-      <div>
-        <img class="info" src="${baseURL}/images/warning.gif"/>
-        <em><@s.text name="manage.overview.missing.metadata"/></em>
-      </div>
-    <#else>
+
       <p>
         <@s.text name="manage.overview.metadata.description"/>
-        <#if resource.coreType?has_content && resource.coreType==metadataType>
-          <@s.text name='manage.overview.source.hidden'><@s.param><a href="${baseURL}/manage/metadata-basic.do?r=${resource.shortname}&amp;edit=Edit"><@s.text name="submenu.basic"/></a></@s.param></@s.text>
-        </#if>
       </p>
 
       <div class="details">
@@ -42,6 +51,6 @@
           </tr>
         </table>
       </div>
-    </#if>
+
   </div>
 </div>

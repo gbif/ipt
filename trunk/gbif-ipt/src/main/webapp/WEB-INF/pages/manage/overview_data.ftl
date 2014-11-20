@@ -2,6 +2,10 @@
 <div class="resourceOverview" id="sources">
   <div class="titleOverview">
     <div class="head">
+      <img class="infoImg" src="${baseURL}/images/info.gif" />
+      <div class="info autop">
+      <@s.text name='manage.overview.source.description1'/>&nbsp;<@s.text name='manage.overview.source.description2'/>&nbsp;<@s.text name='manage.overview.source.description3'><@s.param><@s.text name="button.add"/></@s.param></@s.text></br></br><@s.text name='manage.overview.source.description4'><@s.param><@s.text name="button.connectDB"/></@s.param></@s.text></br></br><@s.text name='manage.overview.source.description5'/>
+      </div>
       <@s.text name='manage.overview.source.data'/>
     </div>
     <div class="actions">
@@ -19,10 +23,7 @@
   </div>
   <div class="bodyOverview">
     <p>
-      <@s.text name='manage.overview.source.description1'/>&nbsp;<@s.text name='manage.overview.source.description2'/>&nbsp;<@s.text name='manage.overview.source.description3'><@s.param><@s.text name="button.add"/></@s.param></@s.text>
-    </p>
-    <p>
-      <@s.text name='manage.overview.source.description4'><@s.param><@s.text name="button.connectDB"/></@s.param></@s.text>
+      <@s.text name='manage.overview.source.intro'/>
     </p>
 
       <div class="details twenty_bottom">
@@ -37,14 +38,6 @@
             </tr>
           </table>
       </div>
-
-    <!-- Warn users they can't update a resource by uploading a DwC-A until they have uploaded their first source file -->
-    <#if (resource.sources?size == 0) >
-      <div>
-        <img class="info" src="${baseURL}/images/info.gif"/>
-        <em><@s.text name='manage.overview.source.description5'/></em>
-      </div>
-    </#if>
 
     <#if (resource.sources?size>0)>
       <div class="details">
@@ -77,6 +70,10 @@
 <div class="resourceOverview" id="mappings">
   <div class="titleOverview">
     <div class="head">
+        <img class="infoImg" src="${baseURL}/images/info.gif" />
+        <div class="info autop">
+        <@s.text name='manage.overview.DwC.Mappings.coretype.description1'/></br></br><@s.text name='manage.overview.DwC.Mappings.coretype.description2'/></br></br><@s.text name='manage.overview.DwC.Mappings.coretype.description3'/></br></br><@s.text name='manage.overview.DwC.Mappings.coretype.description4'/>
+        </div>
       <@s.text name='manage.overview.DwC.Mappings'/>
     </div> 
     <div class="actions">
@@ -103,11 +100,19 @@
             </select>
           <@s.submit name="add" key="button.add"/>
         </form>
+    <#else>
+        <select>
+            <option value=""></option>
+        </select>
+        <img class="infoImg" src="${baseURL}/images/warning.gif" />
+        <div class="info autop">
+          <@s.text name="manage.overview.DwC.Mappings.cantdo"/>
+        </div>
     </#if>
     </div>
   </div>
   <div class="bodyOverview">
-    <#if (potentialCores?size>0)>
+
       <p>
         <@s.text name='manage.overview.DwC.Mappings.description'/>
       </p>
@@ -124,12 +129,6 @@
             </tr>
           </table>
         </div>
-    <#else>
-      <div>
-        <img class="info" src="${baseURL}/images/info.gif"/>
-        <em><@s.text name="manage.overview.DwC.Mappings.cantdo"/></em>
-      </div>
-    </#if>
 
     <#-- if core hasn't been selected yet add help text to help user understand how to choose core type -->
     <#if (potentialCores?size>1) && !resource.coreType?has_content >
