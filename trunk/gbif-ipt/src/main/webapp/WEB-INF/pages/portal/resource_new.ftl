@@ -216,15 +216,15 @@
                     <div>
                         <h1 class="rtitle">${eml.title!resource.shortname}</h1>
                         <p class="undertitle">
-                          <#if resource.lastPublished??>
+                          <#if resource.lastPublished?? && resource.organisation??>
                             <#assign doi>${action.findDoiAssignedToPublishedVersion()!}</#assign>
                             <#-- the existence of parameter version means the version is not equal to the latest published version -->
                             <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
                               <em class="warn"><@s.text name='portal.resource.version'/>&nbsp;${version.toPlainString()}</em>
-                              <@s.text name='portal.resource.publishedOn'/> ${eml.pubDate?date?string.medium} <#if doi?has_content>, doi:${doi}</#if>
+                              <@s.text name='portal.resource.publishedOn'><@s.param>${resource.organisation.name}</@s.param></@s.text> ${eml.pubDate?date?string.medium} <#if doi?has_content>, doi:${doi}</#if>
                             <#else>
                               <@s.text name='portal.resource.latest.version'/>&nbsp;[${resource.emlVersion.toPlainString()!}]
-                              <@s.text name='portal.resource.publishedOn'/> ${eml.pubDate?date?string.medium} <#if doi?has_content>, doi:${doi}</#if>
+                              <@s.text name='portal.resource.publishedOn'><@s.param>${resource.organisation.name}</@s.param></@s.text> ${eml.pubDate?date?string.medium} <#if doi?has_content>, doi:${doi}</#if>
                             </#if>
                           <#else>
                             <@s.text name='portal.resource.published.never.long'/>
