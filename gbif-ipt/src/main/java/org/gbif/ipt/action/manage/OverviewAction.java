@@ -213,6 +213,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
   /**
    * TODO Undeleting a resource with a DOI: a) makes the DOI available, b) undeletes the resource from GBIF (if it was registered with GBIF)
+   * It must check that the publishing organisation is still associated to the IPT. Alternatively, cannot delete an organisation from IPT
+   * if it still has a deleted but public resource.
    */
   public String undelete() {
     if (resource == null) {
@@ -554,6 +556,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
                 || resource.getStatus() == PublicationStatus.REGISTERED)) {
           resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
           resource.getVersionHistory().get(0).setStatus(IdentifierStatus.PUBLIC);
+          resource.getVersionHistory().get(0).setDoi(resource.getDoi());
           resourceManager.updateAlternateIdentifierForDOI(resource);
           saveResource();
         }

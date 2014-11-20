@@ -454,7 +454,7 @@ div.resourceOverview div.titleOverview {
 	font-weight: bold;
 	padding: 5px;
 	height: 100%;
-	width: 320px;
+	width: 240px;
 	background-color: #eee;
 	display: table-cell;
 }
@@ -468,7 +468,7 @@ div.resourceOverview div.bodyOverview {
 	display: table-cell;
 }
 div.resourceOverview div.bodyOverview div.details {
-	width: 500px;
+	width: 600px;
 	font-size: 0.9em;
 }
 div.resourceOverview div.bodyOverview div.details table {
@@ -482,7 +482,7 @@ div.resourceOverview div.bodyOverview div.details table td {
 	color: #666;
 }
 select#rowType {
-  width: 310px;
+  width: 220px;
 }
 select#selectSubtypeDiv {
   width: 310px;

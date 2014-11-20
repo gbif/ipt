@@ -17,17 +17,53 @@
   </#if>
   <input id="currPubFreq" name="currPubFreq" type="hidden" value="${upFr}"/>
   <input id="pubFreq" name="pubFreq" type="hidden" value=""/>
-   <#if resource.identifierStatus == "UNRESERVED"
-   || (resource.identifierStatus == "RESERVED")
-   || (resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION" && resource.status != "PUBLIC" && resource.status != "REGISTERED" && currentUser.hasRegistrationRights() && organisationWithPrimaryDoiAccount??) >
-     <@s.submit id="publishButton" name="publish" key="button.publish" disabled="${missingMetadata?string}"/>
-   <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION" && alreadyAssignedDoi && currentUser.hasRegistrationRights() && organisationWithPrimaryDoiAccount??>
-     <@s.submit cssClass="confirmPublishMajorVersion" id="publishButton" name="publish" key="button.publish" disabled="${missingMetadata?string}"/>
-   <#elseif resource.identifierStatus == "PUBLIC" && currentUser.hasRegistrationRights() && organisationWithPrimaryDoiAccount??>
-     <@s.submit cssClass="confirmPublishMinorVersion" id="publishButton" name="publish" key="button.publish" disabled="${missingMetadata?string}"/>
-   <#else>
-     <@s.submit id="publishButton" name="publish" key="button.publish" disabled="true"/>
-   </#if>
+
+  <!-- resources cannot be published if the mandatory metadata is missing -->
+  <#if missingMetadata>
+    <@s.submit id="publishButton" name="publish" key="button.publish" disabled="true"/>
+    <img class="infoImg" src="${baseURL}/images/warning.gif" />
+    <div class="info autop">
+      <@s.text name="manage.overview.published.missing.metadata"/>
+    </div>
+  <!-- resources without a DOI, with a DOI reserved, or that haven't been registered yet can be republished whenever by any manager -->
+  <#elseif (resource.identifierStatus == "UNRESERVED" || resource.identifierStatus == "RESERVED") && resource.status != "REGISTERED">
+    <@s.submit id="publishButton" name="publish" key="button.publish"/>
+  <!-- resources with an existing DOI or registered with GBIF can only be republished by managers with registration rights -->
+  <#elseif (resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION" && alreadyAssignedDoi)
+          || (resource.identifierStatus == "PUBLIC" && alreadyAssignedDoi)
+          || resource.status == "REGISTERED">
+    <!-- the user must have registration rights -->
+    <#if !currentUser.hasRegistrationRights()>
+      <@s.submit id="publishButton" name="publish" key="button.publish" disabled="true"/>
+      <img class="infoImg" src="${baseURL}/images/warning.gif" />
+      <div class="info autop">
+        <@s.text name="manage.resource.status.publication.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
+      </div>
+    <!-- an organisation with DOI account activated must exist -->
+    <#elseif ((resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION" && alreadyAssignedDoi)
+          || (resource.identifierStatus == "PUBLIC" && alreadyAssignedDoi))
+          && !organisationWithPrimaryDoiAccount??>
+      <@s.submit id="publishButton" name="publish" key="button.publish" disabled="true"/>
+      <img class="infoImg" src="${baseURL}/images/warning.gif" />
+      <div class="info autop">
+        <@s.text name="manage.resource.status.publication.forbidden.account.missing"/>
+      </div>
+    <!-- publishing a new major version -->
+    <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION" && alreadyAssignedDoi>
+      <@s.submit cssClass="confirmPublishMajorVersion" id="publishButton" name="publish" key="button.publish"/>
+    <!-- publishing a new minor version -->
+    <#elseif resource.identifierStatus == "PUBLIC" && alreadyAssignedDoi>
+      <@s.submit cssClass="confirmPublishMinorVersion" id="publishButton" name="publish" key="button.publish"/>
+    <!-- publishing a new version registered with GBIF -->
+    <#elseif resource.status == "REGISTERED">
+      <@s.submit id="publishButton" name="publish" key="button.publish"/>
+    </#if>
+  <!-- otherwise prevent publication from happening just to be safe -->
+  <#else>
+    <@s.submit id="publishButton" name="publish" key="button.publish" disabled="true"/>
+    ${alreadyAssignedDoi?string}
+  </#if>
+
   <br/>
   <br/>
   <div id="actions" class="autop">
