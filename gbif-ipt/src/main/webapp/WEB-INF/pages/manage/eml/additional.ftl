@@ -82,7 +82,7 @@
       <!-- Resource Logo -->
     	<div id="logofields" class="twenty_top quad_block">
           <div class="column_quad">
-            <@input name="eml.dateStamp" i18nkey="eml.dateStamp" help="i18n" disabled=true value='${eml.dateStamp?date?string("yyyy-MM-dd")}'/>
+            <@input name="dateStamp" i18nkey="eml.dateStamp" help="i18n" disabled=true value='${eml.dateStamp?date?string("yyyy-MM-dd")}'/>
             <@input name="eml.pubDate" i18nkey="eml.pubDate" help="i18n" disabled=true value='${eml.pubDate?date?string("yyyy-MM-dd")}'/>
           </div>
     		  <div class="column_half">

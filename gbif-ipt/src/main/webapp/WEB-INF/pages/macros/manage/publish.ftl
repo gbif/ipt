@@ -17,8 +17,9 @@
   </#if>
   <input id="currPubFreq" name="currPubFreq" type="hidden" value="${upFr}"/>
   <input id="pubFreq" name="pubFreq" type="hidden" value=""/>
+  <textarea id="summary" name="summary" cols="40" rows="5" style="display: none"></textarea>
 
-  <!-- resources cannot be published if the mandatory metadata is missing -->
+    <!-- resources cannot be published if the mandatory metadata is missing -->
   <#if missingMetadata>
     <@s.submit id="publishButton" name="publish" key="button.publish" disabled="true"/>
     <img class="infoImg" src="${baseURL}/images/warning.gif" />

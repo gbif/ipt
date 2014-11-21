@@ -7,11 +7,13 @@
 		// yesAnswer : a text for Yes answer.
 		// cancelAnswer : a text for Cancel/No answer.
 		// checkboxText: a text for the checkbox needed to confirm for Yes answer (optional)
+    // summary: a textarea to enter a summary for the submit
 		var theOptions = jQuery.extend ({
 			question: "Are You Sure ?",
 			yesAnswer: "Yes",
 			cancelAnswer: "Cancel",
-			checkboxText: undefined
+			checkboxText: undefined,
+      summary: undefined
 		}, options);
 		return this.each (function () {
 			
@@ -29,7 +31,9 @@
 							window.location = thisHref;
 						}else{
 							submitBtn.attr("jconfirmed", true);
-							submitBtn.click();
+              var selected = $("#dialogSummary").val();
+              $("#summary").empty().append(selected);
+              submitBtn.click();
 						}
 					}; 
 					btns[theOptions.cancelAnswer]=function() {								
@@ -40,9 +44,12 @@
 					var content='<p>'+theOptions.question+'</p>';
 					if(theOptions.checkboxText!=undefined){
 						content='<p>'+'<input type="checkbox" id="cbox">'+theOptions.checkboxText+'<br/><br/>'+theOptions.question+'</p>';
-					}					
-										
-					$('#dialog-confirm').html(content);
+					}
+          if(theOptions.summary!=undefined){
+            content+='<p><textarea id="dialogSummary" rows="5" cols="37" class="dialog-summary" placeholder="'+theOptions.summary+'"/></p>';
+          }
+
+          $('#dialog-confirm').html(content);
 					$('#cbox').click(function() {
 						if($('#cbox').prop('checked')){
 							$('.ui-dialog-buttonset button:first-child').show();

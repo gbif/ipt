@@ -401,6 +401,12 @@ table.simple tr.even{
 table td#resourceType, table td#resourceSubType {
   text-transform: uppercase;
 }
+table.history {
+  margin-bottom: 20px;
+}
+table.history th {
+  text-align: right;
+}
 
 #new-resource {
   padding: 20px;
@@ -463,16 +469,19 @@ div.resourceOverview div.titleOverview div.head {
 div.resourceOverview div.bodyOverview {
 	font-size: 0.85em;
 	padding: 10px;
-	width: 600px;
+	width: 650px;
 	height: 100%;
 	display: table-cell;
 }
 div.resourceOverview div.bodyOverview div.details {
-	width: 600px;
+	width: 650px;
 	font-size: 0.9em;
 }
 div.resourceOverview div.bodyOverview div.details table {
-	width: 100%;
+	width: 80%;
+}
+div.resourceOverview div.bodyOverview div.details table.publishedRelease {
+  width: 100%;
 }
 div.resourceOverview div.bodyOverview div.details table th {
 	width: 170px;
@@ -1591,6 +1600,11 @@ ul {
 
 #preview-report {
   text-align: left;
+}
+
+#dialogSummary {
+  margin-top: 10px;
+  margin-bottom: 0px;
 }
 
 /* End dataset homepage */
