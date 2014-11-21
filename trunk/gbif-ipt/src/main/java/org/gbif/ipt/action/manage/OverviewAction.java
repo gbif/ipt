@@ -101,6 +101,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private boolean delete = false;
   private boolean undelete = false;
   private boolean publish = false;
+  private String summary;
   private Map<String, String> frequencies;
   // preview
   private GenerateDwcaFactory dwcaFactory;
@@ -514,7 +515,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   /**
    * Return the existing DOI assigned to this resource. An existing DOI is set as the citation identifier.
    * The citation identifier is determined to be a DOI, if the identifier starts with "doi:", or if it starts with
-   * "http://dx.doi.org/" - the DOI Proxy server which resolves DOIs.
+   * "http://dx.doi.org/" - the DOI Proxy server which resolves DOIs. Be sure to strip the "doi:" or
+   * "http://dx.doi.org/" before returning it though.
    *
    * @return the existing DOI assigned to this resource, or null if none was found.
    */
@@ -524,9 +526,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       Citation citation = resource.getEml().getCitation();
       if (citation != null) {
         String identifier = StringUtils.trimToEmpty(citation.getIdentifier()).toLowerCase();
-        if (identifier.startsWith(Constants.DOI_ACCESS_SCHEMA)
-            || identifier.startsWith(Constants.DOI_PROXY_SERVER_URL)) {
-          return citation.getIdentifier();
+        if (identifier.startsWith(Constants.DOI_ACCESS_SCHEMA)) {
+          return citation.getIdentifier().substring(Constants.DOI_ACCESS_SCHEMA.length());
+        } else if (identifier.startsWith(Constants.DOI_PROXY_SERVER_URL)) {
+          return citation.getIdentifier().substring(Constants.DOI_PROXY_SERVER_URL.length());
         }
       }
     }
@@ -841,6 +844,11 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       // TODO: implement - below is a temporary implementation.
       if (resource.getIdentifierStatus() == IdentifierStatus.PUBLIC_PENDING_PUBLICATION && isAlreadyAssignedDoi()) {
         resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
+      }
+
+      // save change summary
+      if (getSummary() != null) {
+        resource.setChangeSummary(getSummary());
       }
 
       try {
@@ -1180,5 +1188,21 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       (organisationWithPrimaryDoiAccount == null || organisationWithPrimaryDoiAccount.getDoiPrefix() == null)
         ? Constants.TEST_DOI_PREFIX : organisationWithPrimaryDoiAccount.getDoiPrefix();
     return prefix + "/" + RandomStringUtils.randomAlphanumeric(6).toUpperCase();
+  }
+
+  /**
+   *
+   * @param summary change summary for new published version, entered by the user in the confirm dialog
+   */
+  public void setSummary(String summary) {
+    System.out.print("Summary: " + summary);
+    this.summary = summary;
+  }
+
+  /**
+   * @return the change summary for new published version, entered by the user in the confirm dialog
+   */
+  public String getSummary() {
+    return Strings.emptyToNull(summary);
   }
 }

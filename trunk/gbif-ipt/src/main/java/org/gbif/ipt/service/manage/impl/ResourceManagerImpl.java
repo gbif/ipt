@@ -1641,7 +1641,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     versionHistory.setDoi(resource.getDoi());
     // DOI status
     versionHistory.setStatus(resource.getIdentifierStatus());
-    // TODO Change summary
+    // Change summary
     versionHistory.setChangeSummary(resource.getChangeSummary());
     resource.addVersionHistory(versionHistory);
   }

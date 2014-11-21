@@ -13,13 +13,12 @@ versionsTable macro: Generates a data table that has pagination.
     /* version history list */
     var aDataSet = [
       <#list resource.getVersionHistory() as v>
-          [<#if (version?? && v.version == version.toPlainString()) || (!version?? && v.version == resource.emlVersion.toPlainString())>'<img class="latestVersion" src="../images/dataTables/forward_enabled_hover.png"/>${v.version!}'<#else>'<img class="latestVersionHidden" src="../images/dataTables/forward_enabled_hover.png"/>${v.version!}'</#if>,
+          [<#if (version?? && v.version == version.toPlainString()) || (!version?? && v.version == resource.emlVersion.toPlainString())>'<img class="latestVersion" src="../images/dataTables/forward_enabled_hover.png"/>${v.version!}'<#else>'<img class="latestVersionHidden" src="../images/dataTables/forward_enabled_hover.png"/><a href="${baseURL}/resource.do?r=${shortname}&amp;v=${v.version!}">${v.version!}</a>'</#if>,
            '${v.released?date}',
            '${v.recordsPublished}',
-           '${v.changeSummary!}',
+           <#if v.changeSummary??>"<p class='transbox'>${v.changeSummary?replace("\'", "\\'")?replace("\"", '\\"')}&nbsp;<#if managerRights><a href='${baseURL}/manage/history.do?r=${resource.shortname}&v=${v.version}'><@s.text name='button.edit'/></a></#if></p>"<#else>"-"</#if>,
            '${v.doi!}',
-           <#if v.modifiedBy??>'${v.modifiedBy.firstname?replace("\'", "\\'")?replace("\"", '\\"')!} ${v.modifiedBy.lastname?replace("\'", "\\'")?replace("\"", '\\"')!}'<#else>""</#if>,
-           "<a href='${baseURL}/resource.do?r=${shortname}&amp;v=${v.version!}'>view</a>"]<#if v_has_next>,</#if>
+           <#if v.modifiedBy??>'${v.modifiedBy.firstname?replace("\'", "\\'")?replace("\"", '\\"')!} ${v.modifiedBy.lastname?replace("\'", "\\'")?replace("\"", '\\"')!}'<#else>""</#if>]<#if v_has_next>,</#if>
       </#list>
     ];
 
@@ -45,16 +44,15 @@ versionsTable macro: Generates a data table that has pagination.
                 }
             },
             "aoColumns": [
-                { "sTitle": "Version", "bSearchable": false},
-                { "sTitle": "Released", "bSearchable": false},
-                { "sTitle": "Records", "bSearchable": false},
-                { "sTitle": "Change Summary", "bSearchable": false},
-                { "sTitle": "DOI Handle", "bSearchable": false},
-                { "sTitle": "Published By", "bSearchable": false},
-                { "sTitle": "", "bSearchable": false}
+                { "sTitle": "<@s.text name="manage.overview.published.version"/>", "bSearchable": false},
+                { "sTitle": "<@s.text name="manage.overview.published.released"/>", "bSearchable": false},
+                { "sTitle": "<@s.text name="portal.home.records"/>", "bSearchable": false},
+                { "sTitle": "<@s.text name="portal.home.summary"/>", "bSearchable": false},
+                { "sTitle": "<@s.text name="portal.home.doi"/>", "bSearchable": false},
+                { "sTitle": "<@s.text name="portal.home.modifiedBy"/>", "bSearchable": false}
             ],
             "aoColumnDefs": [
-                { 'bSortable': false, 'aTargets': [ 0,1,2,3,4,5,6] }
+                { 'bSortable': false, 'aTargets': [ 0,1,2,3,4,5] }
             ]
         } );
     } );

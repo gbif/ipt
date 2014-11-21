@@ -394,7 +394,7 @@
                 <div id="external" class="row">
                     <div>
                         <h1><@s.text name='manage.metadata.physical.alternativeTitle'/></h1>
-                        <p>The resource data is also availalble in other formats:</p>
+                        <p><@s.text name='portal.resource.otherFormats'/></p>
                         <table>
                           <#list eml.physicalData as item>
                             <#assign link=eml.physicalData[item_index]/>

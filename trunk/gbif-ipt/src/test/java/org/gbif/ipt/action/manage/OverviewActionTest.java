@@ -68,7 +68,13 @@ public class OverviewActionTest {
     eml.setCitation(citation1);
 
     String identifier = action.findExistingDoi(resource);
-    assertEquals("doi:10.1594/J67TGE", identifier);
+    assertEquals("10.1594/J67TGE", identifier);
+
+    Citation citation2 = new Citation("Text", "http://dx.doi.org/10.8894/887TGE");
+    eml.setCitation(citation2);
+
+    identifier = action.findExistingDoi(resource);
+    assertEquals("10.8894/887TGE", identifier);
   }
 
   @Test

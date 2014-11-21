@@ -155,12 +155,11 @@ $(document).ready(function(){
 	$('.confirmDeletion').jConfirmAction({question : "<#if alreadyAssignedDoi><@s.text name='manage.resource.delete.confirm.doi'/></br></br></#if><#if resource.status=='REGISTERED'><@s.text name='manage.resource.delete.confirm.registered'/></br></br></#if><@s.text name='manage.resource.delete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
   $('.confirmUndeletion').jConfirmAction({question : "<@s.text name='manage.resource.undoDelete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
 
-
   $('.confirmReserveDoi').jConfirmAction({question : "<@s.text name='manage.overview.publishing.doi.reserve.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
   $('.confirmDeleteDoi').jConfirmAction({question : "<@s.text name='manage.overview.publishing.doi.delete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
   $('.confirmRegisterDoi').jConfirmAction({question : "<@s.text name='manage.overview.publishing.doi.register.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", checkboxText: "<@s.text name='manage.overview.publishing.doi.register.agreement'/>"});
-  $('.confirmPublishMinorVersion').jConfirmAction({question : "<@s.text name='manage.overview.publishing.doi.minorVersion.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
-  $('.confirmPublishMajorVersion').jConfirmAction({question : "<@s.text name='manage.overview.publishing.doi.majorVersion.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
+  $('.confirmPublishMinorVersion').jConfirmAction({question : "<@s.text name='manage.overview.publishing.doi.minorVersion.confirm'/></br></br><@s.text name='manage.overview.publishing.doi.summary'/></br></br><@s.text name='manage.overview.publishing.doi.confirm.end'/>", yesAnswer : "<@s.text name='basic.yes'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
+  $('.confirmPublishMajorVersion').jConfirmAction({question : "<@s.text name='manage.overview.publishing.doi.majorVersion.confirm'/></br></br><@s.text name='manage.overview.publishing.doi.summary'/></br></br><@s.text name='manage.overview.publishing.doi.confirm.end'/>", yesAnswer : "<@s.text name='basic.yes'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
 
 
     var showReport=false;
@@ -357,7 +356,7 @@ $(document).ready(function(){
         <#assign viewTitle><@s.text name='manage.overview.published.view'><@s.param>${resource.emlVersion.toPlainString()}</@s.param></@s.text></#assign>
         <#assign previewTitle><@s.text name='manage.overview.metadata.preview'><@s.param>${resource.getNextVersion().toPlainString()}</@s.param></@s.text></#assign>
 
-          <table>
+          <table class="publishedRelease">
               <tr class="mapping_head">
                   <th></th><#if resource.lastPublished??><td>${lastPublishedTitle?cap_first}</td><td></td></#if><td>${nextPublishedTitle?cap_first}</td><td></td>
               </tr>
