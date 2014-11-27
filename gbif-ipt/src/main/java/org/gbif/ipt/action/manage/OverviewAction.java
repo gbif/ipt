@@ -1195,7 +1195,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    * @param summary change summary for new published version, entered by the user in the confirm dialog
    */
   public void setSummary(String summary) {
-    System.out.print("Summary: " + summary);
     this.summary = summary;
   }
 
