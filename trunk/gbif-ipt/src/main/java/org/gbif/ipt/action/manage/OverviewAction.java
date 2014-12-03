@@ -642,8 +642,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       String doi = resource.getVersionHistory().get(0).getDoi();
       IdentifierStatus status = resource.getVersionHistory().get(0).getStatus();
       if (doi != null && status == IdentifierStatus.PUBLIC) {
-        LOG.debug("The last published version of resource [" + resource.getShortname() + "] has doi: [" + doi +
-                 "] with status: [" + status + "]");
         return true;
       }
     }

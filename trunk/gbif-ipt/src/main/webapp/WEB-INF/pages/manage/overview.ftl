@@ -1,5 +1,8 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.OverviewAction" -->
 <#escape x as x?html>
+<#macro dwcaValidator>
+  <#if (resource.recordsPublished>0)><a href="http://tools.gbif.org/dwca-validator/?archiveUrl=${baseURL}/archive.do?r=${resource.shortname}" target="_blank" class="icon icon-validate"/></#if>
+</#macro>
 <#macro nextDoiButtonTD>
 
     <!-- The organisation with DOI account activated must exist,
@@ -282,7 +285,7 @@ $(document).ready(function(){
                   <th></th><#if resource.lastPublished??><td>${lastPublishedTitle?cap_first}</td><td></td></#if><td>${nextPublishedTitle?cap_first}</td><td></td>
               </tr>
               <tr>
-                  <th>${versionTitle?cap_first}</th><#if resource.lastPublished??><td><a class="button" href="${baseURL}/resource.do?r=${resource.shortname}"><input class="button" type="button" value='${viewTitle?cap_first}'/></a></td><td></td></#if><td><a class="button" href="${baseURL}/resource/preview?r=${resource.shortname}"><input class="button" type="button" value='${previewTitle?cap_first}' <#if missingMetadata>disabled="disabled"</#if>/></a></td><td></td>
+                  <th>${versionTitle?cap_first}</th><#if resource.lastPublished??><td><a class="button" href="${baseURL}/resource.do?r=${resource.shortname}"><input class="button" type="button" value='${viewTitle?cap_first}'/></a><@dwcaValidator/></td><td></td></#if><td><a class="button" href="${baseURL}/resource/preview?r=${resource.shortname}"><input class="button" type="button" value='${previewTitle?cap_first}' <#if missingMetadata>disabled="disabled"</#if>/></a></td><td></td>
               </tr>
               <tr>
                   <th>DOI</th><#if resource.lastPublished??><td><#if alreadyAssignedDoi>${resource.versionHistory[0].doi!}<#else>${emptyCell}</#if></td><td></td></#if><td> <#if alreadyAssignedDoi && resource.versionHistory[0].doi == resource.doi!"" >${resource.versionHistory[0].doi!}<#else>${resource.doi!"-"}</#if></td><td><@nextDoiButtonTD/></td></tr>

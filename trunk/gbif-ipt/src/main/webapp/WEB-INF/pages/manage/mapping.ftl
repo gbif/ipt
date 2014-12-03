@@ -1,3 +1,4 @@
+<#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.MappingAction" -->
 <#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
 	<title><@s.text name='manage.mapping.title'/></title>
@@ -100,7 +101,7 @@ $(document).ready(function(){
 <h1><span class="superscript"><@s.text name='manage.overview.title.label'/></span>
     <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
 </h1>
-<form class="topForm" action="mapping.do" method="post">
+<form id="mappingForm" class="topForm" action="mapping.do" method="post">
     <div class="grid_17 suffix_7">
         <h3 class="subTitle"><@s.text name='manage.mapping.title'/>: <a href="source.do?r=${resource.shortname}&id=${mapping.source.name}" title="<@s.text name='manage.overview.source.data'/>">${mapping.source.name}</a></h3>
         <p><@s.text name='manage.mapping.intro'><@s.param name="source"><em>${mapping.source.name}</em></@s.param></@s.text></p>
@@ -238,13 +239,13 @@ $(document).ready(function(){
 	<#list fields as field>
 	<#assign p=field.term/>
 	
-	<#if p.group?exists && p.group!=group>
+	<#if p.group?? && p.group!=group>
 	  <div class="groupmenu">
 		  <#if group!="">
-		  <div class="buttons">
-		 	<@s.submit cssClass="button" name="save" key="button.save"/>
-		 	<@s.submit cssClass="button" name="cancel" key="button.back"/>
-		  </div>
+		    <div class="buttons">
+		 	    <@s.submit cssClass="button" name="save" key="button.save"/>
+		 	    <@s.submit cssClass="button" name="cancel" key="button.back"/>
+		    </div>
 		  </#if>
 		  <#noescape>${groupMenu}</#noescape>
 		  <#assign group=p.group/>
@@ -270,40 +271,45 @@ $(document).ready(function(){
 	  <div>
 	  	<div>
 	  		<img class="infoImg" src="${baseURL}/images/info.gif" />
-			<div class="info">
-				<#if p.description?has_content>${p.description}<br/><br/></#if>              	
-				<#if p.link?has_content><@s.text name="basic.seealso"/> <a href="${p.link}">${p.link}</a><br/><br/></#if>
-				<#if p.examples?has_content>
-				<em><@s.text name="basic.examples"/></em>: ${p.examples}
-				</#if>              	
-			</div>
-	      	<#if p.vocabulary?exists>	  		
+			  <div class="info">
+				  <#if p.description?has_content>${p.description}<br/><br/></#if>
+				  <#if p.link?has_content><@s.text name="basic.seealso"/> <a href="${p.link}">${p.link}</a><br/><br/></#if>
+				  <#if p.examples?has_content>
+				     <em><@s.text name="basic.examples"/></em>: ${p.examples}
+				  </#if>
+			  </div>
+	      <#if p.vocabulary??>
 	      	<a href="vocabulary.do?id=${p.vocabulary.uriString}" target="_blank"><img class="vocabImg" src="${baseURL}/images/vocabulary.png" /></a>
-	      	</#if>
+	      </#if>
 				<select id="fIdx${field_index}" class="fidx" name="fields[${field_index}].index">
-				  <option value="" <#if !field.index??> selected="selected"</#if>></option>
-				<#list columns as col>
-				  <option value="${col_index}" <#if (field.index!-1)==col_index> selected="selected"</#if>>${col}</option>
-				</#list>
+				    <option value="" <#if !field.index??> selected="selected"</#if>></option>
+				  <#list columns as col>
+				    <option value="${col_index}" <#if (field.index!-1)==col_index> selected="selected"</#if>>${col}</option>
+				  </#list>
 				</select>
-		      	<#if p.vocabulary?exists>
-		      		<#assign vocab=vocabTerms[p.vocabulary.uriString] />
+		    <#if p.vocabulary??>
+		      <#assign vocab=vocabTerms[p.vocabulary.uriString] />
 					<select id="fVal${field_index}" class="fval" name="fields[${field_index}].defaultValue">
 					  <option value="" <#if !field.defaultValue??> selected="selected"</#if>></option>
 					<#list vocab?keys as code>
 					  <option value="${code}" <#if (field.defaultValue!"")==code> selected="selected"</#if>>${vocab.get(code)}</option>
 					</#list>
 					</select>
-		      	<#else>
-  					<input id="fVal${field_index}" class="fval" name="fields[${field_index}].defaultValue" value="${field.defaultValue!}"/>  
-		      	</#if>		
-	      	</div>
-	      	<#if field.index?exists>
+		    <#else>
+  				<input id="fVal${field_index}" class="fval" name="fields[${field_index}].defaultValue" value="${field.defaultValue!}"/>
+        </#if>
+	      </div>
+	      	<#if field.index??>
 	      	<div>
 	      		<em><@s.text name='manage.mapping.sourceSample' /></em>:	      		
 	      		<#assign first=true/>
 	      		<#list peek as row><#if row??><#if row[field.index]?has_content><#if !first> | </#if><#assign first=false/>${row[field.index]}</#if></#if></#list>
 	      	</div>
+          <div>
+            <#if datasetId?? && p.qualifiedName()?lower_case == datasetId.qualname?lower_case>
+              <@checkbox name="doiUsedForDatasetId" i18nkey="manage.mapping.datasetIdColumn" value="${doiUsedForDatasetId?string}" help="i18n"/>
+          </#if>
+          </div>
 	      	<div>
 	      		<em><@s.text name='manage.mapping.translation' /></em>:
 	      		<a href="translation.do?r=${resource.shortname}&rowtype=${p.extension.rowType}&mid=${mid}&term=${p.qualname}">

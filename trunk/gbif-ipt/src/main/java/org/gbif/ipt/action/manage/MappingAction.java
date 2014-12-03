@@ -16,6 +16,7 @@ package org.gbif.ipt.action.manage;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;
@@ -80,8 +81,10 @@ public class MappingAction extends ManagerBaseAction {
   private List<PropertyMapping> fields;
   private final Map<String, Map<String, String>> vocabTerms = new HashMap<String, Map<String, String>>();
   private ExtensionProperty coreid;
+  private ExtensionProperty datasetId;
   private Integer mid;
   private PropertyMapping mappingCoreid;
+  private boolean doiUsedForDatasetId;
 
   @Inject
   public MappingAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -208,6 +211,10 @@ public class MappingAction extends ManagerBaseAction {
 
   public PropertyMapping getMappingCoreid() {
     return mappingCoreid;
+  }
+
+  public ExtensionProperty getDatasetId() {
+    return datasetId;
   }
 
   public Integer getMid() {
@@ -343,6 +350,7 @@ public class MappingAction extends ManagerBaseAction {
 
       LOG.info("Core ID field determined as " + coreid);
 
+      datasetId = extensionManager.get(mapping.getExtension().getRowType()).getProperty(Constants.DWC_DATASET_ID);
 
       // prepare all other fields
       fields = new ArrayList<PropertyMapping>(mapping.getExtension().getProperties().size());
@@ -373,6 +381,9 @@ public class MappingAction extends ManagerBaseAction {
           addActionMessage(getText("manage.mapping.automaped", new String[] {String.valueOf(automapped)}));
         }
       }
+
+      // ensure existing configuration re-loaded
+      setDoiUsedForDatasetId(mapping.isDoiUsedForDatasetId());
 
       if (!isHttpPost()) {
         validateAndReport();
@@ -419,6 +430,8 @@ public class MappingAction extends ManagerBaseAction {
         }
         // back to mapping object
         mapping.setFields(mappedFields);
+        // persist other configurations, e.g. using DOI as datasetId
+        mapping.setDoiUsedForDatasetId(doiUsedForDatasetId);
     }
     // set mappings modified date
     resource.setMappingsModified(new Date());
@@ -450,7 +463,22 @@ public class MappingAction extends ManagerBaseAction {
     this.mappingCoreid = mappingCoreid;
   }
 
+  public void setDatasetId(ExtensionProperty datasetId) {
+    this.datasetId = datasetId;
+  }
+
   public void setMid(Integer mid) {
     this.mid = mid;
+  }
+
+  /**
+   * @return true if the DOI should be used for the datasetId, false otherwise
+   */
+  public boolean isDoiUsedForDatasetId() {
+    return doiUsedForDatasetId;
+  }
+
+  public void setDoiUsedForDatasetId(boolean doiUsedForDatasetId) {
+    this.doiUsedForDatasetId = doiUsedForDatasetId;
   }
 }

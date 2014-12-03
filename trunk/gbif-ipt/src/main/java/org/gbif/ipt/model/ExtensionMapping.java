@@ -37,6 +37,7 @@ public class ExtensionMapping implements Serializable {
   private Integer idColumn;
   private String idSuffix;
   private RecordFilter filter;
+  private boolean doiUsedForDatasetId;
 
   /**
    * @param peek Peek of File source.
@@ -119,6 +120,13 @@ public class ExtensionMapping implements Serializable {
     return pm != null && (pm.getIndex() != null || pm.getDefaultValue() != null);
   }
 
+  /**
+   * @return true if the DOI assigned to the resource should be used as the datasetId (if applicable)
+   */
+  public boolean isDoiUsedForDatasetId() {
+    return doiUsedForDatasetId;
+  }
+
   public void setExtension(Extension extension) {
     this.extension = extension;
   }
@@ -143,4 +151,7 @@ public class ExtensionMapping implements Serializable {
     this.source = source;
   }
 
+  public void setDoiUsedForDatasetId(boolean doiUsedForDatasetId) {
+    this.doiUsedForDatasetId = doiUsedForDatasetId;
+  }
 }
