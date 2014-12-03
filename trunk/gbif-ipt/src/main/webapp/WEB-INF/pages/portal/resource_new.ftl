@@ -1,3 +1,4 @@
+<#-- @ftlvariable name="" type="org.gbif.ipt.action.portal.ResourceAction" -->
 <#escape x as x?html>
   <#include "/WEB-INF/pages/inc/header.ftl">
   <#include "/WEB-INF/pages/inc/menu.ftl">
@@ -213,6 +214,10 @@
         <div id="page-content-wrapper">
             <div class="container-fluid">
                 <div id="one" class="row">
+                    <#-- display watermark for preview pages -->
+                    <#if action.isPreview()?string == "true">
+                        <div id="watermark"><@s.text name='manage.overview.metadata.preview'><@s.param>${resource.emlVersion.toPlainString()}</@s.param></@s.text></div>
+                    </#if>
                     <div>
                         <h1 class="rtitle">${eml.title!resource.shortname}</h1>
                         <p class="undertitle">
