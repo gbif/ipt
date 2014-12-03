@@ -423,10 +423,10 @@ public class ResourceTest {
     resource.setEmlVersion(v2);
     resource.setLastPublished(v2Published);
     resource.setDoi("10.1555/PU75GJ9");
-    resource.setIdentifierStatus(IdentifierStatus.RESERVED);
+    resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
     VersionHistory vh2 = new VersionHistory(v2, v2Published, USER);
     vh2.setDoi("10.1555/PU75GJ9");
-    vh2.setStatus(IdentifierStatus.RESERVED);
+    vh2.setStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
     resource.addVersionHistory(vh2);
 
     assertEquals("1.1", resource.getEmlVersion().toPlainString());

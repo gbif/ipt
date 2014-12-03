@@ -2,124 +2,24 @@
 <#escape x as x?html>
 <#macro nextDoiButtonTD>
 
-    <#if alreadyAssignedDoi?string == "false" && resource.status != "REGISTERED">
-      <#assign disableRegistrationRights="false"/>
-    <#elseif currentUser.hasRegistrationRights()?string == "true">
-      <#assign disableRegistrationRights="false"/>
-    <#else>
-      <#assign disableRegistrationRights="true"/>
-    </#if>
-
-    <#if !organisationWithPrimaryDoiAccount?? && !resource.lastPublished??>
+    <!-- The organisation with DOI account activated must exist,
+    the mandatory metadata must have been filled in,
+    and the user must have registration rights for any DOI operation made possible -->
+    <#if !organisationWithPrimaryDoiAccount??>
 
       <img class="infoImg" src="${baseURL}/images/warning.gif" />
       <div class="info">
         <@s.text name="manage.overview.publishing.doi.reserve.prevented.noOrganisation"/>
       </div>
 
-    <#elseif !currentUser.hasRegistrationRights() && !resource.lastPublished??>
+    <#elseif !currentUser.hasRegistrationRights()>
 
       <img class="infoImg" src="${baseURL}/images/warning.gif" />
       <div class="info">
         <@s.text name="manage.resource.status.doi.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
       </div>
 
-    <#elseif resource.identifierStatus == "UNRESERVED" && alreadyAssignedDoi >
-      <form action='resource-reserveDoi.do' method='post'>
-          <input name="r" type="hidden" value="${resource.shortname}"/>
-        <@s.submit cssClass="confirmReserveDoi" name="reserveDoi" key="button.reserve" disabled="${disableRegistrationRights?string}"/>
-          <img class="infoImg" src="${baseURL}/images/info.gif" />
-          <div class="info">
-            <@s.text name="manage.overview.publishing.doi.reserve.help"/>
-          </div>
-      </form>
-
-  <#elseif resource.identifierStatus == "UNRESERVED" && !alreadyAssignedDoi && !resource.lastPublished?? >
-
-      <form action='resource-reserveDoi.do' method='post'>
-          <input name="r" type="hidden" value="${resource.shortname}"/>
-        <@s.submit cssClass="confirmReserveDoi" name="reserveDoi" key="button.reserve" disabled="${disableRegistrationRights?string}"/>
-          <img class="infoImg" src="${baseURL}/images/info.gif" />
-          <div class="info">
-            <@s.text name="manage.overview.publishing.doi.reserve.help"/>
-          </div>
-      </form>
-
-  <#elseif resource.identifierStatus == "RESERVED" && !alreadyAssignedDoi && !resource.lastPublished?? >
-
-    <@s.submit cssClass="confirmRegisterDoi" name="registerDoi" key="button.register" disabled="true"/>
-      <img class="infoImg" src="${baseURL}/images/warning.gif" />
-      <div class="info">
-        <@s.text name="manage.overview.publishing.doi.register.prevented.notPublished"/>
-      </div>
-
-  <#elseif (resource.identifierStatus == "RESERVED" || resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION") >
-
-      <form action='resource-deleteDoi.do' method='post'>
-          <input name="r" type="hidden" value="${resource.shortname}"/>
-        <@s.submit cssClass="confirmDeleteDoi" name="deleteDoi" key="button.delete" disabled="${disableRegistrationRights?string}"/>
-          <img class="infoImg" src="${baseURL}/images/info.gif" />
-          <div class="info">
-            <@s.text name="manage.overview.publishing.doi.delete.help"/>
-          </div>
-      </form>
-
-  <#elseif resource.identifierStatus == "PUBLIC" && alreadyAssignedDoi >
-
-      <form action='resource-reserveDoi.do' method='post'>
-          <input name="r" type="hidden" value="${resource.shortname}"/>
-        <@s.submit cssClass="confirmReserveDoi" name="reserveDoi" key="button.reserve.new" disabled="${disableRegistrationRights?string}"/>
-          <img class="infoImg" src="${baseURL}/images/info.gif" />
-          <div class="info">
-            <@s.text name="manage.overview.publishing.doi.reserve.new.help"/>
-          </div>
-      </form>
-
-  </#if>
-</#macro>
-<#macro currentDoiButtonTD>
-
-  <#if !organisationWithPrimaryDoiAccount??>
-
-      <img class="infoImg" src="${baseURL}/images/warning.gif" />
-      <div class="info">
-        <@s.text name="manage.overview.publishing.doi.reserve.prevented.noOrganisation"/>
-      </div>
-
-  <#elseif !currentUser.hasRegistrationRights()>
-
-      <img class="infoImg" src="${baseURL}/images/warning.gif" />
-      <div class="info">
-        <@s.text name="manage.resource.status.doi.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
-      </div>
-
-  <#elseif (resource.identifierStatus == "RESERVED"  || resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION") && resource.status != "PUBLIC" && resource.status != "REGISTERED"  >
-
-    <@s.submit cssClass="confirmRegisterDoi" name="registerDoi" key="button.register" disabled="true"/>
-      <img class="infoImg" src="${baseURL}/images/warning.gif" />
-      <div class="info">
-        <@s.text name="manage.overview.publishing.doi.register.prevented"/>
-      </div>
-
-  <#elseif resource.identifierStatus == "RESERVED" && !alreadyAssignedDoi >
-
-      <form action='resource-registerDoi.do' method='post'>
-          <input name="r" type="hidden" value="${resource.shortname}"/>
-        <@s.submit cssClass="confirmRegisterDoi" name="registerDoi" key="button.register" disabled="${missingMetadata?string}"/>
-          <img class="infoImg" src="${baseURL}/images/info.gif" />
-          <div class="info">
-            <@s.text name="manage.overview.publishing.doi.register.help"/>
-          </div>
-      </form>
-
-  <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION" && alreadyAssignedDoi >
-
-      <img class="infoImg" src="${baseURL}/images/warning.gif" />
-      <div class="info">
-        <@s.text name="manage.overview.publishing.doi.replaced"/>
-      </div>
-
-  <#elseif resource.identifierStatus == "UNRESERVED" && !alreadyAssignedDoi >
+    <#elseif resource.identifierStatus == "UNRESERVED">
       <form action='resource-reserveDoi.do' method='post'>
           <input name="r" type="hidden" value="${resource.shortname}"/>
         <@s.submit cssClass="confirmReserveDoi" name="reserveDoi" key="button.reserve" disabled="${missingMetadata?string}"/>
@@ -129,9 +29,31 @@
           </div>
       </form>
 
-  </#if>
+    <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
 
+      <form action='resource-deleteDoi.do' method='post'>
+        <input name="r" type="hidden" value="${resource.shortname}"/>
+        <@s.submit cssClass="confirmDeleteDoi" name="deleteDoi" key="button.delete" disabled="${missingMetadata?string}"/>
+        <img class="infoImg" src="${baseURL}/images/info.gif" />
+        <div class="info">
+          <@s.text name="manage.overview.publishing.doi.delete.help"/>
+        </div>
+      </form>
+
+    <#elseif resource.identifierStatus == "PUBLIC" && alreadyAssignedDoi >
+
+      <form action='resource-reserveDoi.do' method='post'>
+        <input name="r" type="hidden" value="${resource.shortname}"/>
+        <@s.submit cssClass="confirmReserveDoi" name="reserveDoi" key="button.reserve.new" disabled="${missingMetadata?string}"/>
+        <img class="infoImg" src="${baseURL}/images/info.gif" />
+        <div class="info">
+          <@s.text name="manage.overview.publishing.doi.reserve.new.help"/>
+        </div>
+      </form>
+
+  </#if>
 </#macro>
+
 <#macro description text maxLength>
    	<#if (text?length>maxLength)>
    		${(text)?substring(0,maxLength)}...
@@ -157,10 +79,8 @@ $(document).ready(function(){
 
   $('.confirmReserveDoi').jConfirmAction({question : "<@s.text name='manage.overview.publishing.doi.reserve.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
   $('.confirmDeleteDoi').jConfirmAction({question : "<@s.text name='manage.overview.publishing.doi.delete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
-  $('.confirmRegisterDoi').jConfirmAction({question : "<@s.text name='manage.overview.publishing.doi.register.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", checkboxText: "<@s.text name='manage.overview.publishing.doi.register.agreement'/>"});
   $('.confirmPublishMinorVersion').jConfirmAction({question : "<@s.text name='manage.overview.publishing.doi.minorVersion.confirm'/></br></br><@s.text name='manage.overview.publishing.doi.summary'/></br></br><@s.text name='manage.overview.publishing.doi.confirm.end'/>", yesAnswer : "<@s.text name='basic.yes'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
-  $('.confirmPublishMajorVersion').jConfirmAction({question : "<@s.text name='manage.overview.publishing.doi.majorVersion.confirm'/></br></br><@s.text name='manage.overview.publishing.doi.summary'/></br></br><@s.text name='manage.overview.publishing.doi.confirm.end'/>", yesAnswer : "<@s.text name='basic.yes'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
-
+  $('.confirmPublishMajorVersion').jConfirmAction({question : "<@s.text name='manage.overview.publishing.doi.majorVersion.confirm'/></br></br><@s.text name='manage.overview.publishing.doi.summary'/></br></br><@s.text name='manage.overview.publishing.doi.confirm.end'/>", yesAnswer : "<@s.text name='basic.yes'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='basic.no'/>", checkboxText: "<@s.text name='manage.overview.publishing.doi.register.agreement'/>"});
 
     var showReport=false;
 	$("#toggleReport").click(function() {
@@ -300,7 +220,7 @@ $(document).ready(function(){
             <@s.text name="manage.overview.intro"><@s.param>${resource.title!resource.shortname}</@s.param></@s.text>
           </#if>
         </div>
-        <span class="resourceOverviewTitle"><@s.text name="manage.overview.title"/>: </span>${resource.title!resource.shortname}</h1>
+        <span class="resourceOverviewTitle"><@s.text name="manage.overview.title"/>: </span><a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a></h1>
     <p>
       <@s.text name="manage.overview.description"><@s.param>${resource.title!resource.shortname}</@s.param></@s.text>
     </p>
@@ -355,8 +275,9 @@ $(document).ready(function(){
         <#assign showTitle><@s.text name="basic.show"/></#assign>
         <#assign viewTitle><@s.text name='manage.overview.published.view'><@s.param>${resource.emlVersion.toPlainString()}</@s.param></@s.text></#assign>
         <#assign previewTitle><@s.text name='manage.overview.metadata.preview'><@s.param>${resource.getNextVersion().toPlainString()}</@s.param></@s.text></#assign>
+        <#assign emptyCell="-"/>
 
-          <table class="publishedRelease">
+          <table <#if resource.lastPublished??>class="publishedRelease"<#else>class="publishedRelease_half"</#if>>
               <tr class="mapping_head">
                   <th></th><#if resource.lastPublished??><td>${lastPublishedTitle?cap_first}</td><td></td></#if><td>${nextPublishedTitle?cap_first}</td><td></td>
               </tr>
@@ -364,7 +285,7 @@ $(document).ready(function(){
                   <th>${versionTitle?cap_first}</th><#if resource.lastPublished??><td><a class="button" href="${baseURL}/resource.do?r=${resource.shortname}"><input class="button" type="button" value='${viewTitle?cap_first}'/></a></td><td></td></#if><td><a class="button" href="${baseURL}/resource/preview?r=${resource.shortname}"><input class="button" type="button" value='${previewTitle?cap_first}' <#if missingMetadata>disabled="disabled"</#if>/></a></td><td></td>
               </tr>
               <tr>
-                  <th>DOI</th><#if resource.lastPublished??><td><#if alreadyAssignedDoi>${resource.versionHistory[0].doi!}<#else>${resource.doi!"-"}</#if></td><td><@currentDoiButtonTD/></td></#if><td> <#if alreadyAssignedDoi && resource.versionHistory[0].doi == resource.doi!"" >${resource.versionHistory[0].doi!}<#else>${resource.doi!"-"}</#if></td><td><@nextDoiButtonTD/></td></tr>
+                  <th>DOI</th><#if resource.lastPublished??><td><#if alreadyAssignedDoi>${resource.versionHistory[0].doi!}<#else>${emptyCell}</#if></td><td></td></#if><td> <#if alreadyAssignedDoi && resource.versionHistory[0].doi == resource.doi!"" >${resource.versionHistory[0].doi!}<#else>${resource.doi!"-"}</#if></td><td><@nextDoiButtonTD/></td></tr>
               <tr>
                   <th>${releasedTitle?cap_first}</th><#if resource.lastPublished??><td>${resource.lastPublished?date?string.medium}</td><td></td></#if><td><#if resource.nextPublished??>${resource.nextPublished?date?string("MMM d, yyyy, HH:mm:ss")}<#else>-</#if></td><td></td>
               </tr>
@@ -452,7 +373,7 @@ $(document).ready(function(){
         </#if>
       </form>
 
-      <#if resource.status=="PUBLIC" && (resource.identifierStatus=="RESERVED" || resource.identifierStatus == "UNRESERVED")>
+      <#if resource.status=="PUBLIC" && (resource.identifierStatus=="PUBLIC_PENDING_PUBLICATION" || resource.identifierStatus == "UNRESERVED")>
         <#assign action>makePrivate</#assign>
         <form action='resource-${action}.do' method='post'>
           <@s.submit cssClass="confirm" name="unpublish" key="button.private" />

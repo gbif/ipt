@@ -483,6 +483,9 @@ div.resourceOverview div.bodyOverview div.details table {
 div.resourceOverview div.bodyOverview div.details table.publishedRelease {
   width: 100%;
 }
+div.resourceOverview div.bodyOverview div.details table.publishedRelease_half {
+  width: 70%;
+}
 div.resourceOverview div.bodyOverview div.details table th {
 	width: 170px;
 	font-weight: bold;

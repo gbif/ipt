@@ -85,9 +85,6 @@ public class MetadataActionTest {
 
     resource.setIdentifierStatus(IdentifierStatus.UNAVAILABLE);
     assertTrue(action.hasDoiReservedOrAssigned(resource));
-
-    resource.setIdentifierStatus(IdentifierStatus.RESERVED);
-    assertTrue(action.hasDoiReservedOrAssigned(resource));
   }
 
   @Test
