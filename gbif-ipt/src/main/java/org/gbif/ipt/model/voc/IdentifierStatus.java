@@ -9,19 +9,14 @@ public enum IdentifierStatus {
    */
   UNRESERVED,
   /**
-   * An identifier that is not public, meaning it is not known to resolvers. Used the first time a DOI is assigned
-   * to the resource.
+   * An identifier that is not public, but will go public the next time the resource is published so long as
+   * the resource is public.
    */
-  RESERVED,
+  PUBLIC_PENDING_PUBLICATION,
   /**
    * An identifier that is public, meaning that it is known to resolvers.
    */
   PUBLIC,
-  /**
-   * An identifier that is not public, but will go public the next time the resource is published.
-   * Used to transition a resource with a public DOI gracefully to another DOI.
-   */
-  PUBLIC_PENDING_PUBLICATION,
   /**
    * An identifier that is public, but the object it references is no longer available.
    */

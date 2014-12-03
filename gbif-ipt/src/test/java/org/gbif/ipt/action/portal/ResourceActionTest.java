@@ -109,7 +109,7 @@ public class ResourceActionTest {
 
     // DOI must be PUBLIC to be assigned
     VersionHistory history = new VersionHistory(new BigDecimal("1.34"), new Date(), USER);
-    history.setStatus(IdentifierStatus.RESERVED);
+    history.setStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
     history.setDoi("10.1126/IO65467");
     resource.addVersionHistory(history);
     action.setResource(resource);

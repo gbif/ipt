@@ -96,7 +96,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private Date now;
   private boolean unpublish = false;
   private boolean reserveDoi = false;
-  private boolean registerDoi = false;
   private boolean deleteDoi = false;
   private boolean delete = false;
   private boolean undelete = false;
@@ -477,21 +476,19 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           String existingDoi = findExistingDoi(resource);
           if (existingDoi == null) {
             resource.setDoi(makeDoi());
-            resource.setIdentifierStatus(IdentifierStatus.RESERVED);
+            resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
             saveResource();
           } else {
-            // is the prefix of the existing DOI equal to the prefix assigned to the DOI account configured for this IPT?
             String prefix = parseDoiPrefix(existingDoi);
             String prefixAllowed = organisationWithPrimaryDoiAccount.getDoiPrefix();
+            // is the prefix of the existing DOI equal to the prefix assigned to the DOI account configured for this IPT?
             if (prefix != null && prefixAllowed != null && prefix.equals(prefixAllowed)) {
               // TODO: test this DOI actually exists
               resource.setDoi(existingDoi);
-              resource.setIdentifierStatus(IdentifierStatus.RESERVED);
+              resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
               saveResource();
               addActionMessage(getText("manage.overview.publishing.doi.reserve.reused", new String[] {existingDoi}));
-            }
-            // the prefix of the existing DOI is not equal to the prefix assigned to the IPT's primary DOI account
-            else {
+            } else {
               addActionError(getText("manage.overview.publishing.doi.reserve.notRreused", new String[] {existingDoi,
                 prefixAllowed}));
             }
@@ -537,44 +534,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   }
 
   /**
-   * Register a DOI for a resource, making the DOI public, which will resolve shortly. The resource will be prevented
-   * from reverting to private. This method can only be called the first time a DOI is assigned to a resource.
-   *
-   * This does not require the resource to be republished, but the resource must be publicly visible or registered
-   * with GBIF. The VersionHistory is updated, changing the IdentifierStatus from REGISTERED to PUBLIC.
-   *
-   * TODO: The published eml.xml should also be updated, to have the correct citation if there is a discrepancy (i.e.
-   * the citation identifier does not match)
-   *
-   * Can be done for any non-private resource whose DOI has been reserved.
-   */
-  public String registerDoi() throws Exception {
-    if (resource == null) {
-      return NOT_FOUND;
-    }
-    if (registerDoi) {
-      try {
-        if (!isAlreadyAssignedDoi() && resource.getIdentifierStatus() == IdentifierStatus.RESERVED
-            && (resource.getStatus() == PublicationStatus.PUBLIC
-                || resource.getStatus() == PublicationStatus.REGISTERED)) {
-          resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
-          resource.getVersionHistory().get(0).setStatus(IdentifierStatus.PUBLIC);
-          resource.getVersionHistory().get(0).setDoi(resource.getDoi());
-          resourceManager.updateAlternateIdentifierForDOI(resource);
-          saveResource();
-        }
-      } catch (Exception e) {
-        LOG.error("Failed to register DOI for resource " + resource.getShortname(), e);
-      }
-    } else {
-      addActionWarning(getText("manage.overview.resource.doi.invalid.operation", new String[] {resource.getShortname(),
-        resource.getIdentifierStatus().toString()}));
-    }
-    return execute();
-  }
-
-
-  /**
    * Deletes a reserved DOI.
    *
    * Can only be done to a resource whose DOI is reserved but not public. If the resource previously had been assigned
@@ -586,14 +545,17 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     }
     if (deleteDoi) {
       try {
-        if (resource.getIdentifierStatus() == IdentifierStatus.RESERVED) {
-          resource.setDoi(null);
-          resource.setIdentifierStatus(IdentifierStatus.UNRESERVED);
-        } else if (isAlreadyAssignedDoi()
-                   && resource.getIdentifierStatus() == IdentifierStatus.PUBLIC_PENDING_PUBLICATION) {
-          // reassign previous DOI, and reset identifier status
-          resource.setDoi(resource.getVersionHistory().get(0).getDoi());
-          resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
+        if (resource.getIdentifierStatus() == IdentifierStatus.PUBLIC_PENDING_PUBLICATION) {
+          if (isAlreadyAssignedDoi()) {
+            // reassign previous DOI, and reset identifier status
+            resource.setDoi(resource.getVersionHistory().get(0).getDoi());
+            resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
+            saveResource();
+          } else {
+            resource.setDoi(null);
+            resource.setIdentifierStatus(IdentifierStatus.UNRESERVED);
+            saveResource();
+          }
         }
       } catch (Exception e) {
         LOG.error("Failed to delete reserved DOI for resource " + resource.getShortname(), e);
@@ -794,7 +756,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    * suspended. By publishing the resource manually, it is assumed the manager is trying to debug the problem. Without
    * this safeguard in place, a resource can auto-publish in an endless number of failures.
    *
-   * TODO: if DOI is PUBLIC_PENDING_PUBLICATION, try to register DOI if publication is successful. Fail publication if register DOI fails.
+   * TODO: if DOI is PUBLIC_PENDING_PUBLICATION, and resource is PUBLIC, try to register DOI if publication is successful. Fail publication if register DOI fails.
    * TODO: if DOI has a different prefix to the last DOI assigned to this resource, throw an Exception
    *
    * @return Struts2 result string
@@ -842,7 +804,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       BigDecimal replacedVersion = new BigDecimal(resource.getEmlVersion().toPlainString());
 
       // TODO: implement - below is a temporary implementation.
-      if (resource.getIdentifierStatus() == IdentifierStatus.PUBLIC_PENDING_PUBLICATION && isAlreadyAssignedDoi()) {
+      if (resource.getIdentifierStatus() == IdentifierStatus.PUBLIC_PENDING_PUBLICATION &&
+          (resource.getStatus() == PublicationStatus.PUBLIC || resource.getStatus() == PublicationStatus.REGISTERED)) {
         resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
       }
 
@@ -976,15 +939,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    */
   public void setReserveDoi(String reserveDoi) {
     this.reserveDoi = StringUtils.trimToNull(reserveDoi) != null;
-  }
-
-  /**
-   * To hold the identifier state transition request, so the same request triggered purely by a URL will not work.
-   *
-   * @param registerDoi form variable
-   */
-  public void setRegisterDoi(String registerDoi) {
-    this.registerDoi = StringUtils.trimToNull(registerDoi) != null;
   }
 
   /**

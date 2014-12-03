@@ -27,10 +27,10 @@
       <@s.text name="manage.overview.published.missing.metadata"/>
     </div>
   <!-- resources without a DOI, with a DOI reserved, or that haven't been registered yet can be republished whenever by any manager -->
-  <#elseif (resource.identifierStatus == "UNRESERVED" || resource.identifierStatus == "RESERVED") && resource.status != "REGISTERED">
+  <#elseif resource.identifierStatus == "UNRESERVED" && resource.status != "REGISTERED">
     <@s.submit id="publishButton" name="publish" key="button.publish"/>
   <!-- resources with an existing DOI or registered with GBIF can only be republished by managers with registration rights -->
-  <#elseif (resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION" && alreadyAssignedDoi)
+  <#elseif (resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION")
           || (resource.identifierStatus == "PUBLIC" && alreadyAssignedDoi)
           || resource.status == "REGISTERED">
     <!-- the user must have registration rights -->
@@ -50,8 +50,21 @@
         <@s.text name="manage.resource.status.publication.forbidden.account.missing"/>
       </div>
     <!-- publishing a new major version -->
-    <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION" && alreadyAssignedDoi>
-      <@s.submit cssClass="confirmPublishMajorVersion" id="publishButton" name="publish" key="button.publish"/>
+    <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
+        <!-- prevented because the resource is private -->
+        <#if !alreadyAssignedDoi && resource.status == "PRIVATE">
+          <@s.submit id="publishButton" name="publish" key="button.publish"/>
+          <img class="infoImg" src="${baseURL}/images/warning.gif" />
+          <div class="info autop">
+            <@s.text name="manage.overview.publishing.doi.register.prevented.notPublic"/>
+          </div>
+        <#else>
+          <@s.submit cssClass="confirmPublishMajorVersion" id="publishButton" name="publish" key="button.publish"/>
+          <img class="infoImg" src="${baseURL}/images/info.gif" />
+          <div class="info autop">
+            <@s.text name="manage.overview.publishing.doi.register.help"/>
+          </div>
+        </#if>
     <!-- publishing a new minor version -->
     <#elseif resource.identifierStatus == "PUBLIC" && alreadyAssignedDoi>
       <@s.submit cssClass="confirmPublishMinorVersion" id="publishButton" name="publish" key="button.publish"/>
@@ -62,7 +75,6 @@
   <!-- otherwise prevent publication from happening just to be safe -->
   <#else>
     <@s.submit id="publishButton" name="publish" key="button.publish" disabled="true"/>
-    ${alreadyAssignedDoi?string}
   </#if>
 
   <br/>
