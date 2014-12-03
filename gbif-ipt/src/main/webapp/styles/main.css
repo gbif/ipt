@@ -645,6 +645,16 @@ div a.button {
   margin-top: 5px;
 }
 
+#mappingForm .checkbox {
+  padding-top: 0;
+  margin-top: 0;
+  width: auto;
+}
+#doiUsedForDatasetId {
+  display: inline-block;
+  width: 20px;
+}
+
 #organisationsForm div.buttons input, #registrationForm div.buttons input { width: auto; }
 #organisationsForm div.checkbox input, #registrationForm div.checkbox input { width: auto; }
 #organisationsForm div.checkbox div { width: auto; }

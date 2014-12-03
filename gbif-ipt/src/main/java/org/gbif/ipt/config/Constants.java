@@ -16,6 +16,7 @@ public final class Constants {
   public static final String DWC_ROWTYPE_TAXON = "http://rs.tdwg.org/dwc/terms/Taxon";
   public static final String DWC_OCCURRENCE_ID = "http://rs.tdwg.org/dwc/terms/occurrenceID";
   public static final String DWC_TAXON_ID = "http://rs.tdwg.org/dwc/terms/taxonID";
+  public static final String DWC_DATASET_ID = "http://rs.tdwg.org/dwc/terms/datasetID";
   public static final String VOCAB_URI_DATASET_TYPE = "http://rs.gbif.org/vocabulary/gbif/datasetType";
   public static final String VOCAB_URI_LANGUAGE = "http://iso.org/639-2";
   public static final String VOCAB_URI_COUNTRY = "http://iso.org/iso3166-1/alpha2";
