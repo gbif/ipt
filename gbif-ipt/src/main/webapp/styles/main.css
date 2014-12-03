@@ -1610,4 +1610,17 @@ ul {
   margin-bottom: 0px;
 }
 
+#watermark
+{
+  position:fixed;
+  opacity:0.15;
+  z-index:1000;
+  color:#666;
+  font-size: 650%;
+}
+
+#wrapper.toggled #watermark {
+  padding-left: 220px;
+}
+
 /* End dataset homepage */

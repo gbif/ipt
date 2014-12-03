@@ -58,6 +58,7 @@ public class ResourceAction extends PortalBaseAction {
   private DataDir dataDir;
   private Eml eml;
   private boolean metadataOnly;
+  private boolean preview;
   private Map<String, String> frequencies;
   private int recordsPublishedForVersion;
   private String dwcaSizeForVersion;
@@ -325,6 +326,7 @@ public class ResourceAction extends PortalBaseAction {
     BigDecimal nextVersion = resource.getNextVersion();
     resource = generatePreviewResource(resource, eml, nextVersion);
     finishLoadingDetail(resource, eml, nextVersion);
+    setPreview(true);
 
     return SUCCESS;
   }
@@ -578,5 +580,19 @@ public class ResourceAction extends PortalBaseAction {
    */
   public String getDwcaSizeForVersion() {
     return dwcaSizeForVersion;
+  }
+
+  /**
+   * @return true if the page rendered is a preview of the next release
+   */
+  public boolean isPreview() {
+    return preview;
+  }
+
+  /**
+   * @param preview true if the page rendered is a preview of the next release, false otherwise
+   */
+  public void setPreview(boolean preview) {
+    this.preview = preview;
   }
 }
