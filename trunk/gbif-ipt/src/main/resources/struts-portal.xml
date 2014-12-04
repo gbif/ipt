@@ -16,6 +16,9 @@
       <result name="404">
         <param name="location">/WEB-INF/pages/portal/404.ftl</param>
       </result>
+      <result name="410">
+        <param name="location">/WEB-INF/pages/portal/410.ftl</param>
+      </result>
       <result name="home" type="redirect">home.do</result>
     </global-results>
 
