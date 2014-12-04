@@ -13,12 +13,15 @@ versionsTable macro: Generates a data table that has pagination.
     /* version history list */
     var aDataSet = [
       <#list resource.getVersionHistory() as v>
-          [<#if (version?? && v.version == version.toPlainString()) || (!version?? && v.version == resource.emlVersion.toPlainString())>'<img class="latestVersion" src="../images/dataTables/forward_enabled_hover.png"/>${v.version!}'<#else>'<img class="latestVersionHidden" src="../images/dataTables/forward_enabled_hover.png"/><a href="${baseURL}/resource.do?r=${shortname}&amp;v=${v.version!}">${v.version!}</a>'</#if>,
-           '${v.released?date}',
-           '${v.recordsPublished}',
-           <#if v.changeSummary??>"<p class='transbox'>${v.changeSummary?replace("\'", "\\'")?replace("\"", '\\"')}&nbsp;<#if managerRights><a href='${baseURL}/manage/history.do?r=${resource.shortname}&v=${v.version}'><@s.text name='button.edit'/></a></#if></p>"<#else>"-"</#if>,
-           '${v.doi!}',
-           <#if v.modifiedBy??>'${v.modifiedBy.firstname?replace("\'", "\\'")?replace("\"", '\\"')!} ${v.modifiedBy.lastname?replace("\'", "\\'")?replace("\"", '\\"')!}'<#else>""</#if>]<#if v_has_next>,</#if>
+          /* only show public versions, unless user has manager rights in which case they can see all versions */
+          <#if (v.publicationStatus == 'PUBLIC' || v.publicationStatus == 'REGISTERED') || managerRights>
+              [<#if (version?? && v.version == version.toPlainString()) || (!version?? && v.version == resource.emlVersion.toPlainString())>'<img class="latestVersion" src="../images/dataTables/forward_enabled_hover.png"/>${v.version!}'<#else>'<img class="latestVersionHidden" src="../images/dataTables/forward_enabled_hover.png"/><a href="${baseURL}/resource.do?r=${shortname}&amp;v=${v.version!}">${v.version!}</a>'</#if>,
+               '${v.released?date}',
+               '${v.recordsPublished}',
+               <#if v.changeSummary??>"<p class='transbox'>${v.changeSummary?replace("\'", "\\'")?replace("\"", '\\"')}&nbsp;<#if managerRights><a href='${baseURL}/manage/history.do?r=${resource.shortname}&v=${v.version}'><@s.text name='button.edit'/></a></#if></p>"<#else>"-"</#if>,
+               '${v.doi!}',
+               <#if v.modifiedBy??>'${v.modifiedBy.firstname?replace("\'", "\\'")?replace("\"", '\\"')!} ${v.modifiedBy.lastname?replace("\'", "\\'")?replace("\"", '\\"')!}'<#else>""</#if>]<#if v_has_next>,</#if>
+          </#if>
       </#list>
     ];
 

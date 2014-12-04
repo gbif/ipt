@@ -6,6 +6,7 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.voc.IdentifierStatus;
+import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -108,7 +109,7 @@ public class ResourceActionTest {
     action.setVersion(new BigDecimal("1.34"));
 
     // DOI must be PUBLIC to be assigned
-    VersionHistory history = new VersionHistory(new BigDecimal("1.34"), new Date(), USER);
+    VersionHistory history = new VersionHistory(new BigDecimal("1.34"), new Date(), USER, PublicationStatus.PUBLIC);
     history.setStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
     history.setDoi("10.1126/IO65467");
     resource.addVersionHistory(history);

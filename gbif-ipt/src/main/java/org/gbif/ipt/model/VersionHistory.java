@@ -1,6 +1,7 @@
 package org.gbif.ipt.model;
 
 import org.gbif.ipt.model.voc.IdentifierStatus;
+import org.gbif.ipt.model.voc.PublicationStatus;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -16,14 +17,16 @@ public class VersionHistory {
   private String version;
   private Date released;
   private IdentifierStatus status;
+  private PublicationStatus publicationStatus;
   private User modifiedBy;
   private String changeSummary;
   private int recordsPublished;
 
-  public VersionHistory(BigDecimal version, Date released, User modifiedBy) {
+  public VersionHistory(BigDecimal version, Date released, User modifiedBy, PublicationStatus publicationStatus) {
     this.version = version.toPlainString();
     this.released = released;
     this.modifiedBy = modifiedBy;
+    this.publicationStatus = publicationStatus;
   }
 
   /**
@@ -115,5 +118,17 @@ public class VersionHistory {
 
   public void setRecordsPublished(int recordsPublished) {
     this.recordsPublished = recordsPublished;
+  }
+
+  /**
+   * @return the visibility of the resource, e.g. was it private, public, registered, deleted?
+   */
+  @NotNull
+  public PublicationStatus getPublicationStatus() {
+    return publicationStatus;
+  }
+
+  public void setPublicationStatus(PublicationStatus publicationStatus) {
+    this.publicationStatus = publicationStatus;
   }
 }
