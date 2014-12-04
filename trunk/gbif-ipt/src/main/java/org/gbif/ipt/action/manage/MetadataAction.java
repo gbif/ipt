@@ -269,7 +269,6 @@ public class MetadataAction extends ManagerBaseAction {
 
         // update frequencies list, derived from XML vocabulary, and displayed in drop-down on basic metadata page
         frequencies = new LinkedHashMap<String, String>();
-        frequencies.put("", getText("resource.updateFrequency.selection"));
         frequencies.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES, getLocaleLanguage(), false));
 
         // populate agent vocabularies

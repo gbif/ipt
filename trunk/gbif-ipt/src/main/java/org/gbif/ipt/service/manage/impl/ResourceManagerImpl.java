@@ -1636,7 +1636,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @param currentUser user publishing resource
    */
   protected synchronized void saveVersionHistory(Resource resource, BigDecimal version, User currentUser) {
-    VersionHistory versionHistory = new VersionHistory(version, new Date(), currentUser);
+    VersionHistory versionHistory = new VersionHistory(version, new Date(), currentUser, resource.getStatus());
     // DOI
     versionHistory.setDoi(resource.getDoi());
     // DOI status
