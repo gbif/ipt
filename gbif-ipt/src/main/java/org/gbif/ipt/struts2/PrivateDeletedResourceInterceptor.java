@@ -18,9 +18,9 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * An Interceptor that makes sure a requested resource is either public or the current user has rights to manage the
- * private resource.
+ * private resource. This prevents private resources, or deleted resource from being made available.
  */
-public class PrivateResourceInterceptor extends AbstractInterceptor {
+public class PrivateDeletedResourceInterceptor extends AbstractInterceptor {
 
   private static final long serialVersionUID = 2340800191217429210L;
 
@@ -41,16 +41,23 @@ public class PrivateResourceInterceptor extends AbstractInterceptor {
       Map<String, Object> session = invocation.getInvocationContext().getSession();
       User user = (User) session.get(Constants.SESSION_USER);
 
-      // is the resource version requested private?
+      // is the resource version requested private, or has it been deleted?
       String requestedResourceVersion = getResourceVersionParam(invocation);
       if (requestedResourceVersion != null) {
         try {
           BigDecimal version = new BigDecimal(requestedResourceVersion);
           VersionHistory history = resource.findVersionHistory(version);
-          if (history != null && history.getPublicationStatus() == PublicationStatus.PRIVATE) {
-            // user authorised?
-            if (user == null || !isAuthorized(user, resource)) {
-              return BaseAction.NOT_ALLOWED;
+          if (history != null) {
+            if (history.getPublicationStatus() == PublicationStatus.PRIVATE) {
+              // user authorised?
+              if (user == null || !isAuthorized(user, resource)) {
+                return BaseAction.NOT_ALLOWED;
+              }
+            } else if (history.getPublicationStatus() == PublicationStatus.DELETED) {
+              // user authorised?
+              if (user == null || !isAuthorized(user, resource)) {
+                return BaseAction.NOT_AVAILABLE;
+              }
             }
           }
         } catch (NumberFormatException e) {
@@ -59,11 +66,16 @@ public class PrivateResourceInterceptor extends AbstractInterceptor {
         }
       }
 
-      // is the resource currently private?
+      // is the resource currently private, or has it been deleted?
       if (PublicationStatus.PRIVATE == resource.getStatus()) {
         // user authorised?
         if (user == null || !isAuthorized(user, resource)) {
           return BaseAction.NOT_ALLOWED;
+        }
+      } else if (PublicationStatus.DELETED == resource.getStatus()) {
+        // user authorised?
+        if (user == null || !isAuthorized(user, resource)) {
+          return BaseAction.NOT_AVAILABLE;
         }
       }
     }
