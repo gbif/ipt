@@ -28,7 +28,7 @@
     </div>
   <!-- resources without a DOI, with a DOI reserved, or that haven't been registered yet can be republished whenever by any manager -->
   <#elseif resource.identifierStatus == "UNRESERVED" && resource.status != "REGISTERED">
-    <@s.submit id="publishButton" name="publish" key="button.publish"/>
+    <@s.submit cssClass="confirmPublishMinorVersion" id="publishButton" name="publish" key="button.publish"/>
   <!-- resources with an existing DOI or registered with GBIF can only be republished by managers with registration rights -->
   <#elseif (resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION")
           || (resource.identifierStatus == "PUBLIC" && alreadyAssignedDoi)
@@ -53,7 +53,7 @@
     <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
         <!-- prevented because the resource is private -->
         <#if !alreadyAssignedDoi && resource.status == "PRIVATE">
-          <@s.submit id="publishButton" name="publish" key="button.publish"/>
+          <@s.submit cssClass="confirmPublishMinorVersion" id="publishButton" name="publish" key="button.publish"/>
           <img class="infoImg" src="${baseURL}/images/warning.gif" />
           <div class="info autop">
             <@s.text name="manage.overview.publishing.doi.register.prevented.notPublic"/>
@@ -70,7 +70,7 @@
       <@s.submit cssClass="confirmPublishMinorVersion" id="publishButton" name="publish" key="button.publish"/>
     <!-- publishing a new version registered with GBIF -->
     <#elseif resource.status == "REGISTERED">
-      <@s.submit id="publishButton" name="publish" key="button.publish"/>
+      <@s.submit cssClass="confirmPublishMinorVersion" id="publishButton" name="publish" key="button.publish"/>
     </#if>
   <!-- otherwise prevent publication from happening just to be safe -->
   <#else>
