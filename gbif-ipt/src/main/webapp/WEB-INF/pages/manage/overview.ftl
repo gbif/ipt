@@ -43,7 +43,7 @@
         </div>
       </form>
 
-    <#elseif resource.identifierStatus == "PUBLIC" && alreadyAssignedDoi >
+    <#elseif resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi() >
 
       <form action='resource-reserveDoi.do' method='post'>
         <input name="r" type="hidden" value="${resource.shortname}"/>
@@ -77,7 +77,7 @@ $(document).ready(function(){
 
 	$('.confirm').jConfirmAction({question : "<@s.text name='basic.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
 	$('.confirmRegistration').jConfirmAction({question : "<@s.text name='manage.overview.visibility.confirm.registration'/> <@s.text name='manage.resource.delete.confirm.registered'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", checkboxText: "<@s.text name='manage.overview.visibility.confirm.agreement'/>"});
-	$('.confirmDeletion').jConfirmAction({question : "<#if alreadyAssignedDoi><@s.text name='manage.resource.delete.confirm.doi'/></br></br></#if><#if resource.status=='REGISTERED'><@s.text name='manage.resource.delete.confirm.registered'/></br></br></#if><@s.text name='manage.resource.delete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
+	$('.confirmDeletion').jConfirmAction({question : "<#if resource.isAlreadyAssignedDoi()><@s.text name='manage.resource.delete.confirm.doi'/></br></br></#if><#if resource.status=='REGISTERED'><@s.text name='manage.resource.delete.confirm.registered'/></br></br></#if><@s.text name='manage.resource.delete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
   $('.confirmUndeletion').jConfirmAction({question : "<@s.text name='manage.resource.undoDelete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
 
   $('.confirmReserveDoi').jConfirmAction({question : "<@s.text name='manage.overview.publishing.doi.reserve.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
@@ -276,30 +276,31 @@ $(document).ready(function(){
         <#assign pubRepTitle><@s.text name="manage.overview.published.report"/></#assign>
         <#assign downloadTitle><@s.text name='manage.overview.published.download'/></#assign>
         <#assign showTitle><@s.text name="basic.show"/></#assign>
-        <#assign viewTitle><@s.text name='manage.overview.published.view'><@s.param>${resource.emlVersion.toPlainString()}</@s.param></@s.text></#assign>
-        <#assign previewTitle><@s.text name='manage.overview.metadata.preview'><@s.param>${resource.getNextVersion().toPlainString()}</@s.param></@s.text></#assign>
+        <#assign viewTitle><@s.text name='button.view'/></#assign>
+        <#assign previewTitle><@s.text name='button.preview'/></#assign>
         <#assign emptyCell="-"/>
 
-          <table <#if resource.lastPublished??>class="publishedRelease"<#else>class="publishedRelease_half"</#if>>
-              <tr class="mapping_head">
-                  <th></th><#if resource.lastPublished??><td>${lastPublishedTitle?cap_first}</td><td></td></#if><td>${nextPublishedTitle?cap_first}</td><td></td>
+          <table class="publishedRelease">
+              <tr class="mapping_head headz">
+                  <th></th><#if resource.lastPublished??><td>${lastPublishedTitle?cap_first}</td></#if><td class="left_padding">${nextPublishedTitle?cap_first}</td>
               </tr>
               <tr>
-                  <th>${versionTitle?cap_first}</th><#if resource.lastPublished??><td><a class="button" href="${baseURL}/resource.do?r=${resource.shortname}"><input class="button" type="button" value='${viewTitle?cap_first}'/></a><@dwcaValidator/></td><td></td></#if><td><a class="button" href="${baseURL}/resource/preview?r=${resource.shortname}"><input class="button" type="button" value='${previewTitle?cap_first}' <#if missingMetadata>disabled="disabled"</#if>/></a></td><td></td>
+                  <th>${versionTitle?cap_first}</th><#if resource.lastPublished??><td class="separator">${resource.emlVersion.toPlainString()}&nbsp;<a class="button" href="${baseURL}/resource.do?r=${resource.shortname}"><input class="button" type="button" value='${viewTitle?cap_first}'/></a><@dwcaValidator/></td></#if><td class="left_padding">${resource.getNextVersion().toPlainString()}&nbsp;<a class="button" href="${baseURL}/resource/preview?r=${resource.shortname}"><input class="button" type="button" value='${previewTitle?cap_first}' <#if missingMetadata>disabled="disabled"</#if>/></a></td>
               </tr>
               <tr>
-                  <th>DOI</th><#if resource.lastPublished??><td><#if alreadyAssignedDoi>${resource.versionHistory[0].doi!}<#else>${emptyCell}</#if></td><td></td></#if><td> <#if alreadyAssignedDoi && resource.versionHistory[0].doi == resource.doi!"" >${resource.versionHistory[0].doi!}<#else>${resource.doi!"-"}</#if></td><td><@nextDoiButtonTD/></td></tr>
+                  <th>DOI</th><#if resource.lastPublished??><td style="color:green" class="separator"><#if resource.isAlreadyAssignedDoi()>${resource.versionHistory[0].doi!}<#else>${emptyCell}</#if></td></#if><td class="left_padding"><#if (resource.isAlreadyAssignedDoi() && resource.versionHistory[0].doi != resource.doi!"") || (!resource.isAlreadyAssignedDoi() && resource.doi?has_content)><em>${resource.doi!emptyCell}</em>&nbsp;</#if><@nextDoiButtonTD/></td>
+              </tr>
               <tr>
-                  <th>${releasedTitle?cap_first}</th><#if resource.lastPublished??><td>${resource.lastPublished?date?string.medium}</td><td></td></#if><td><#if resource.nextPublished??>${resource.nextPublished?date?string("MMM d, yyyy, HH:mm:ss")}<#else>-</#if></td><td></td>
+                  <th>${releasedTitle?cap_first}</th><#if resource.lastPublished??><td class="separator">${resource.lastPublished?date?string.medium}</td></#if><td class="left_padding"><#if resource.nextPublished??>${resource.nextPublished?date?string("MMM d, yyyy, HH:mm:ss")}<#else>${emptyCell}</#if></td>
               </tr>
               <#if resource.lastPublished??>
               <tr>
-                  <th>${pubLogTitle?cap_first}</th><td><a class="button" href="${baseURL}/publicationlog.do?r=${resource.shortname}"><input class="button" type="button" value='${downloadTitle?cap_first}'/></a></td><td></td><td>-</td><td></td>
+                  <th>${pubLogTitle?cap_first}</th><td class="separator"><a class="button" href="${baseURL}/publicationlog.do?r=${resource.shortname}"><input class="button" type="button" value='${downloadTitle?cap_first}'/></a></td><td class="left_padding">${emptyCell}</td>
               </tr>
               </#if>
             <#if report??>
                 <tr>
-                    <th>${pubRepTitle?cap_first}</th><td><#if report?? && (report.state?contains('cancelled') || report.exception?has_content) ><em>${report.state}</em>&nbsp;</#if><a id="toggleReport" href="#">${showTitle?cap_first}</a></td><td></td><td>-</td><td></td>
+                    <th>${pubRepTitle?cap_first}</th><td class="separator"><#if report?? && (report.state?contains('cancelled') || report.exception?has_content) ><em>${report.state}</em>&nbsp;</#if><a id="toggleReport" href="#">${showTitle?cap_first}</a></td><td class="left_padding">${emptyCell}</td>
                 </tr>
             </#if>
           </table>
@@ -485,7 +486,7 @@ $(document).ready(function(){
 </div>
 
 <div>
-  <#if alreadyAssignedDoi?string == "false" && resource.status != "REGISTERED">
+  <#if resource.isAlreadyAssignedDoi()?string == "false" && resource.status != "REGISTERED">
     <#assign disableRegistrationRights="false"/>
   <#elseif currentUser.hasRegistrationRights()?string == "true">
     <#assign disableRegistrationRights="false"/>
@@ -507,7 +508,7 @@ $(document).ready(function(){
       <form action='resource-delete.do' method='post'>
         <input name="r" type="hidden" value="${resource.shortname}" />
         <@s.submit cssClass="button confirmDeletion" name="delete" key="button.delete" disabled='${disableRegistrationRights?string}'/>
-        <#if !currentUser.hasRegistrationRights() && (alreadyAssignedDoi?string == "true" || resource.status == "REGISTERED")>
+        <#if !currentUser.hasRegistrationRights() && (resource.isAlreadyAssignedDoi()?string == "true" || resource.status == "REGISTERED")>
         <img class="infoImg" src="${baseURL}/images/warning.gif"/>
           <div class="info autop">
             <@s.text name="manage.resource.status.deletion.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>

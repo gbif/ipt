@@ -354,40 +354,45 @@ public class Resource implements Serializable, Comparable<Resource> {
   /**
    * Get the next resource version. If the resource has never been published, the next resource version
    * is 1.0. If no new DOI has been reserved for the resource, the version is bumped by a minor resource version.
-   * If a new DOI has been reserved for the resource, the version is bumped by a major resource version.
+   * If a new DOI has been reserved for the resource, and the resource's visibility is public, the version is bumped by
+   * a major resource version.
    *
    * @return next resource version
    */
   @NotNull
   public BigDecimal getNextVersion() {
     BigDecimal nextVersion;
-    // first publication
+    // first publication retrieve existing version
     if (lastPublished == null) {
-      nextVersion = getEml().getEmlVersion();
+      return getEml().getEmlVersion();
     }
-    // new DOI has been reserved, different from DOI of last published version warrants a new major release
-    else if (doi != null && getDoiOfLastPublishedVersion() != null
-               && !doi.equalsIgnoreCase(getDoiOfLastPublishedVersion())
-               && identifierStatus == IdentifierStatus.PUBLIC_PENDING_PUBLICATION) {
-      nextVersion = getEml().getNextEmlVersionAfterMajorVersionChange();
+    // There are two cases that warrant a new major version, provided a doi has been reserved for resource
+    // #1: no DOI has been assigned yet, and resource's visibility is public (or registered)
+    // #2: a DOI has been assigned already
+    if (doi != null && identifierStatus == IdentifierStatus.PUBLIC_PENDING_PUBLICATION) {
+      if (!isAlreadyAssignedDoi() && (status == PublicationStatus.PUBLIC || status == PublicationStatus.REGISTERED)) {
+        return getEml().getNextEmlVersionAfterMajorVersionChange();
+      } else if (isAlreadyAssignedDoi()) {
+        return getEml().getNextEmlVersionAfterMajorVersionChange();
+      }
     }
     // all other cases warrant a minor version increment
-    else {
-      nextVersion = getEml().getNextEmlVersionAfterMinorVersionChange();
-    }
-    return nextVersion;
+    return getEml().getNextEmlVersionAfterMinorVersionChange();
   }
 
   /**
-   * @return the DOI assigned to the last published version of the resource, equal to null if no DOI was assigned
-   * at the time of the last publication, or if the resource has not been published yet.
+   * @return true if the resource has already been assigned a DOI, false otherwise. Remember only DOIs that are public
+   * have officially been assigned/registered.
    */
-  @Nullable
-  private String getDoiOfLastPublishedVersion() {
-    if (!versionHistory.isEmpty()) {
-      return versionHistory.get(0).getDoi();
+  public boolean isAlreadyAssignedDoi() {
+    if (!getVersionHistory().isEmpty()) {
+      String doi = getVersionHistory().get(0).getDoi();
+      IdentifierStatus status = getVersionHistory().get(0).getStatus();
+      if (doi != null && status == IdentifierStatus.PUBLIC) {
+        return true;
+      }
     }
-    return null;
+    return false;
   }
 
   public UUID getKey() {

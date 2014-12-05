@@ -481,9 +481,6 @@ div.resourceOverview div.bodyOverview div.details table {
 	width: 80%;
 }
 div.resourceOverview div.bodyOverview div.details table.publishedRelease {
-  width: 100%;
-}
-div.resourceOverview div.bodyOverview div.details table.publishedRelease_half {
   width: 70%;
 }
 div.resourceOverview div.bodyOverview div.details table th {
@@ -1237,6 +1234,12 @@ tr.mapping_row > td, th {
 }
 tr.mapping_row > th {
   padding-right: 10px;
+}
+td.separator {
+  border-right: 1px solid #EEEEEE;
+}
+td.left_padding {
+  padding-left: 30px;
 }
 
 div.quad_block div.column_quad {

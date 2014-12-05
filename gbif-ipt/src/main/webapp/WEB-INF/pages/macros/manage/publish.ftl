@@ -31,7 +31,7 @@
     <@s.submit cssClass="confirmPublishMinorVersion" id="publishButton" name="publish" key="button.publish"/>
   <!-- resources with an existing DOI or registered with GBIF can only be republished by managers with registration rights -->
   <#elseif (resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION")
-          || (resource.identifierStatus == "PUBLIC" && alreadyAssignedDoi)
+          || (resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi())
           || resource.status == "REGISTERED">
     <!-- the user must have registration rights -->
     <#if !currentUser.hasRegistrationRights()>
@@ -41,8 +41,8 @@
         <@s.text name="manage.resource.status.publication.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
       </div>
     <!-- an organisation with DOI account activated must exist -->
-    <#elseif ((resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION" && alreadyAssignedDoi)
-          || (resource.identifierStatus == "PUBLIC" && alreadyAssignedDoi))
+    <#elseif ((resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION" && resource.isAlreadyAssignedDoi())
+          || (resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi()))
           && !organisationWithPrimaryDoiAccount??>
       <@s.submit id="publishButton" name="publish" key="button.publish" disabled="true"/>
       <img class="infoImg" src="${baseURL}/images/warning.gif" />
@@ -52,7 +52,7 @@
     <!-- publishing a new major version -->
     <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
         <!-- prevented because the resource is private -->
-        <#if !alreadyAssignedDoi && resource.status == "PRIVATE">
+        <#if !resource.isAlreadyAssignedDoi() && resource.status == "PRIVATE">
           <@s.submit cssClass="confirmPublishMinorVersion" id="publishButton" name="publish" key="button.publish"/>
           <img class="infoImg" src="${baseURL}/images/warning.gif" />
           <div class="info autop">
@@ -66,7 +66,7 @@
           </div>
         </#if>
     <!-- publishing a new minor version -->
-    <#elseif resource.identifierStatus == "PUBLIC" && alreadyAssignedDoi>
+    <#elseif resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi()>
       <@s.submit cssClass="confirmPublishMinorVersion" id="publishButton" name="publish" key="button.publish"/>
     <!-- publishing a new version registered with GBIF -->
     <#elseif resource.status == "REGISTERED">
