@@ -184,7 +184,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     if (delete) {
       try {
         Resource res = resource;
-        if (isAlreadyAssignedDoi()) {
+        if (resource.isAlreadyAssignedDoi()) {
           // TODO
           resource.setStatus(PublicationStatus.DELETED);
           saveResource();
@@ -409,7 +409,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       return NOT_FOUND;
     }
     if (unpublish) {
-      if (PublicationStatus.PUBLIC == resource.getStatus() && !isAlreadyAssignedDoi()) {
+      if (PublicationStatus.PUBLIC == resource.getStatus() && !resource.isAlreadyAssignedDoi()) {
         // makePrivate
         try {
           resourceManager.visibilityToPrivate(resource, this);
@@ -472,7 +472,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     }
     if (reserveDoi) {
       try {
-        if (resource.getIdentifierStatus() == IdentifierStatus.UNRESERVED && !isAlreadyAssignedDoi()) {
+        if (resource.getIdentifierStatus() == IdentifierStatus.UNRESERVED && !resource.isAlreadyAssignedDoi()) {
           String existingDoi = findExistingDoi(resource);
           if (existingDoi == null) {
             resource.setDoi(makeDoi());
@@ -493,7 +493,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
                 prefixAllowed}));
             }
           }
-        } else if (resource.getIdentifierStatus() == IdentifierStatus.PUBLIC && isAlreadyAssignedDoi()) {
+        } else if (resource.getIdentifierStatus() == IdentifierStatus.PUBLIC && resource.isAlreadyAssignedDoi()) {
           resource.setDoi(makeDoi());
           resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
           saveResource();
@@ -546,7 +546,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     if (deleteDoi) {
       try {
         if (resource.getIdentifierStatus() == IdentifierStatus.PUBLIC_PENDING_PUBLICATION) {
-          if (isAlreadyAssignedDoi()) {
+          if (resource.isAlreadyAssignedDoi()) {
             // reassign previous DOI, and reset identifier status
             resource.setDoi(resource.getVersionHistory().get(0).getDoi());
             resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
@@ -631,21 +631,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       return doi.substring(slash  + 1);
     }
     return null;
-  }
-
-  /**
-   * @return true if the resource has already been assigned a DOI, false otherwise. Remember only DOIs that are public
-   * have officially been assigned/registered.
-   */
-  public boolean isAlreadyAssignedDoi() {
-    if (!resource.getVersionHistory().isEmpty()) {
-      String doi = resource.getVersionHistory().get(0).getDoi();
-      IdentifierStatus status = resource.getVersionHistory().get(0).getStatus();
-      if (doi != null && status == IdentifierStatus.PUBLIC) {
-        return true;
-      }
-    }
-    return false;
   }
 
   /**
@@ -1131,7 +1116,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
   /**
    * Temporary method used to create a DOI.
-   * The DOI is case insensitive.
+   * The DOI is case insensitive, but lower case is used for aesthetics.
    *
    * @return DOI in format prefix/suffix
    */
@@ -1139,7 +1124,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     String prefix =
       (organisationWithPrimaryDoiAccount == null || organisationWithPrimaryDoiAccount.getDoiPrefix() == null)
         ? Constants.TEST_DOI_PREFIX : organisationWithPrimaryDoiAccount.getDoiPrefix();
-    return prefix + "/" + RandomStringUtils.randomAlphanumeric(6).toUpperCase();
+    return prefix + "/" + RandomStringUtils.randomAlphanumeric(6).toLowerCase();
   }
 
   /**
