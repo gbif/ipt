@@ -983,6 +983,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           standardizeSubtype(resource);
         }
 
+        // set IdentifierStatus if null
+        if (resource.getIdentifierStatus() == null) {
+          resource.setIdentifierStatus(IdentifierStatus.UNRESERVED);
+        }
+
         // add proper source file pointer
         for (Source src : resource.getSources()) {
           src.setResource(resource);

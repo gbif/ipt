@@ -553,6 +553,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       Citation citation = resource.getEml().getCitation();
       if (citation != null) {
         String identifier = StringUtils.trimToEmpty(citation.getIdentifier()).toLowerCase();
+        // TODO: identifier existing DOI with better regex parsing - refer to DOI class in GBIF API
         if (identifier.startsWith(Constants.DOI_ACCESS_SCHEMA)) {
           return citation.getIdentifier().substring(Constants.DOI_ACCESS_SCHEMA.length());
         } else if (identifier.startsWith(Constants.DOI_PROXY_SERVER_URL)) {
