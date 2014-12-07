@@ -16,7 +16,7 @@
 package org.gbif.ipt.model.voc;
 
 /**
- * TODO: Documentation.
+ * The different types of services (endpoints) handled by the legacy registry web services.
  */
 public enum ServiceType {
   EML("EML", "http://knb.ecoinformatics.org/software/eml/eml-2.0.1/index.html"),

@@ -1289,6 +1289,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
 
     if (ids != null && resource.getDoi() != null) {
+      // construct DOI - always appearing as doi:10.1234/suffix inside alternateIdentifier list
       String doi = Constants.DOI_ACCESS_SCHEMA + resource.getDoi();
       // has this DOI been added before?
       boolean exists = false;
@@ -1302,6 +1303,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       // if the DOI status is PUBLIC or RESERVED, add it to list if it doesn't exist yet
       if (resource.getIdentifierStatus().compareTo(IdentifierStatus.UNAVAILABLE) != 0) {
         if (!exists) {
+          // TODO ensure DOI gets added as FIRST ID appearing in the list
           ids.add(doi);
           // save all changes to Eml
           saveEml(resource);
@@ -1762,9 +1764,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       // update visibility to public
       resource.setStatus(PublicationStatus.PRIVATE);
 
-      // Changing the visibility, means some public things now need to be removed, e.g. IPT URL alt. id for resource!
-      // This means the EML needs to be updated and saved
+      // Changing the visibility means some public alternateIds need to be removed, e.g. IPT URL and resource DOI!
       updateAlternateIdentifierForIPTURLToResource(resource);
+      updateAlternateIdentifierForDOI(resource);
 
       // save all changes to resource
       save(resource);
@@ -1779,9 +1781,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       // update visibility to public
       resource.setStatus(PublicationStatus.PUBLIC);
 
-      // Changing the visibility, means some public things now need to be added, e.g. IPT URL alt. id for resource!
-      // This means the EML needs to be updated and saved
+      // Changing the visibility means some public alternateIds need to be added, e.g. IPT URL and resource DOI!
       updateAlternateIdentifierForIPTURLToResource(resource);
+      updateAlternateIdentifierForDOI(resource);
 
       // save all changes to resource
       save(resource);

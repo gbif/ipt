@@ -84,6 +84,6 @@ public class OrganisationSupport {
       }
     }
 
-    // TODO validate if the account username and password are correct
+    // TODO validate if the account username and password are correct, e.g. by reserving a test DOI
   }
 }

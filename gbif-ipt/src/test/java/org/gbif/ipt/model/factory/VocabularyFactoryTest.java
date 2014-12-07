@@ -25,7 +25,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 /**
- * TODO: Documentation.
+ * Test XML vocabulary parsed correctly.
  */
 public class VocabularyFactoryTest {
 

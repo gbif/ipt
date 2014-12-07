@@ -345,10 +345,12 @@ public interface ResourceManager {
 
   /**
    * Updates the resource's alternate identifier for its DOI and saves the EML if the DOI status is RESERVED or PUBLIC.
-   * This identifier should only exist for the resource, if its resource visibility is public.
+   * The resource DOI should always be the first DOI in the list, and should only be added if its resource visibility is
+   * public. This method would be called to remove the DOI if the resource visibility changed from public to private.
    *
    * If called on a resource that already has an existing DOI (e.g. DOI for an article, or a previous major version)
-   * the method will add it to the list since a resource is allowed to have multiple DOIs.
+   * the method will add it as the first DOI in the list, but preserve the other DOIs since a resource is allowed to
+   * have multiple DOIs.
    *
    * @param resource resource
    * @return resource with DOI for the resource updated
