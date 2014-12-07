@@ -30,7 +30,7 @@ $(document).ready(function(){
 		    </div>
         <@input name="eml.keywords[${item_index}].keywordThesaurus" i18nkey="eml.keywords.keywordThesaurus" help="i18n" requiredField=true />
         <#-- work around for a bug that converts empty keywordsList into string "null". In this case, nothing should appear in text box -->
-        <#-- TODO: remove work around after upgrading gbif-metadata-profile to 1.0.2.4 (est. for IPT v2.1.1) -->
+        <#-- TODO: remove check for "null" after fixing problem in gbif-metadata-profile -->
         <#assign keywordList = item.keywordsString />
         <#if keywordList?has_content && keywordList?lower_case == "null">
           <@text value="" name="eml.keywords[${item_index}].keywordsString" i18nkey="eml.keywords.keywordsString" help="i18n" requiredField=true/>

@@ -255,8 +255,9 @@ public class OrganisationsAction extends POSTAction {
             break;
           }
         }
-        // ensure archival mode is turned ON
+        // ensure archival mode is turned ON, otherwise ensure activation of agency account fails
         if (!cfg.isArchivalMode()) {
+          organisation.setAgencyAccountPrimary(false);
           addActionError(getText("admin.organisation.doiAccount.activated.failed"));
         }
       }

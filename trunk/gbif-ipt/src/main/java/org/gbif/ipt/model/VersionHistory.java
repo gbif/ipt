@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
 /**
- * Class representing all the information about a version of a resource.
+ * Class representing all the essential information about a historical version of a resource.
  */
 public class VersionHistory {
 
@@ -30,8 +30,7 @@ public class VersionHistory {
   }
 
   /**
-   * TODO
-   * @return
+   * @return the doi of this version, always in prefix/suffix format excluding "doi:", e.g. 10.1234/qu83ng
    */
   @Nullable
   public String getDoi() {
@@ -43,8 +42,7 @@ public class VersionHistory {
   }
 
   /**
-   * TODO
-   * @return
+   * @return the version number
    */
   @NotNull
   public String getVersion() {
@@ -56,8 +54,7 @@ public class VersionHistory {
   }
 
   /**
-   * TODO
-   * @return
+   * @return the date this version was released
    */
   @NotNull
   public Date getReleased() {
@@ -69,8 +66,7 @@ public class VersionHistory {
   }
 
   /**
-   * TODO
-   * @return
+   * @return the doi status
    */
   @Nullable
   public IdentifierStatus getStatus() {
@@ -82,8 +78,7 @@ public class VersionHistory {
   }
 
   /**
-   * TODO
-   * @return
+   * @return the date this version history was last modified (the change summary is editable after publication)
    */
   @NotNull
   public User getModifiedBy() {
@@ -95,8 +90,7 @@ public class VersionHistory {
   }
 
   /**
-   * TODO
-   * @return
+   * @return the change summary for this version
    */
   @Nullable
   public String getChangeSummary() {
@@ -108,10 +102,8 @@ public class VersionHistory {
   }
 
   /**
-   * TODO
-   * @return
+   * @return the number of records published in this version
    */
-  @Nullable
   public int getRecordsPublished() {
     return recordsPublished;
   }

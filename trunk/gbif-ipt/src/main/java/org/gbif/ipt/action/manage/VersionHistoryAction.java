@@ -16,7 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
- * Action that allows a editing the change summaries in a resource's VersionHistory.
+ * Action that allows a editing a resource version's change summary.
  */
 public class VersionHistoryAction extends ManagerBaseAction {
 
@@ -87,16 +87,14 @@ public class VersionHistoryAction extends ManagerBaseAction {
   }
 
   /**
-   * TODO
-   * @return
+   * @return the change summary (for resource version) as it was entered by the user in the form
    */
   public String getSummary() {
     return summary;
   }
 
   /**
-   * TODO
-   * @param summary
+   * @param summary the change summary (for resource version) entered by the user in the form
    */
   public void setSummary(String summary) {
     this.summary = StringUtils.trimToNull(summary);

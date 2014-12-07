@@ -173,8 +173,19 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   }
 
   /**
-   * TODO Deleting a resource with a DOI: a) makes the DOI unavailable, b) deletes the resource from GBIF (if its
-   * registered with GBIF), c) preserves the dataset and all its archived versions in the IPT
+   * Deletes a resource different ways depending on whether it was ever assigned a DOI or not.
+   * </br>
+   * If this resource was assigned a DOI, it makes the DOI unavailable meaning it still resolves, but to a page
+   * explaining the resource has been removed. Furthermore, its archived published versions must be preserved in case
+   * the resource is made available again in the future.
+   * </br>
+   * If this resource was not assigned a DOI, it's safe to just delete the resource and all its archived published
+   * versions.
+   * </br>
+   * Regardless of whether the resource was assigned a DOI, it deletes the resource from GBIF if this resource was
+   * registered with GBIF.
+   * </br>
+   * TODO: Add tests with resource having DOIs in different states
    */
   @Override
   public String delete() {
@@ -185,8 +196,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       try {
         Resource res = resource;
         if (resource.isAlreadyAssignedDoi()) {
-          // TODO
-          resource.setStatus(PublicationStatus.DELETED);
+          // TODO: Before any DOI operation, make sure an organisation with activated/primary DOI account exists (organisationWithPrimaryDoiAccount)
+          // TODO: make current DOI unavailable for this resource using the primary DOI account, and delete it from GBIF if it was registered
+          // TODO: make all former DOIs for the resource unavailable too. All versions of the resource won't resolve any more, showing a "This resource has been removed page"
+          resource.setStatus(PublicationStatus.DELETED); // mocked
           saveResource();
           addActionMessage(getText("manage.overview.resource.deleted", new String[] {res.toString()}));
         } else {
@@ -212,9 +225,16 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   }
 
   /**
-   * TODO Undeleting a resource with a DOI: a) makes the DOI available, b) undeletes the resource from GBIF (if it was registered with GBIF)
-   * It must check that the publishing organisation is still associated to the IPT. Alternatively, cannot delete an organisation from IPT
-   * if it still has a deleted but public resource.
+   * Undeletes a resource (only applicable to resources that were previously assigned a DOI).
+   * </br>
+   * Undeleting a resource makes the DOI available, resolving to the resource homepage of the last published version.
+   * Undeleting a resource should also undelete the resource from GBIF if it was previously registered with GBIF,
+   * however, at this time the GBIF registry api or GBIF registry legacy apis do not support the undelete operation and
+   * thus require communication with the GBIF Helpdesk.
+   * </br>
+   * It must check that the publishing organisation is still associated to the IPT.
+   * TODO: make sure you cannot delete an organisation from IPT if it has a deleted_but_public resource
+   * TODO: Add tests with resource having DOIs in different states
    */
   public String undelete() {
     if (resource == null) {
@@ -222,11 +242,12 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     }
     if (undelete) {
       try {
+        // TODO: Before any DOI operation, make sure an organisation with activated/primary DOI account exists (organisationWithPrimaryDoiAccount)
         Resource res = resource;
-        //resourceManager.undelete(res);
-        // TODO handle DOI
-        // TODO set to REGISTERED if it was registered, PUBLIC otherwise
-        res.setStatus(PublicationStatus.PUBLIC);
+        // TODO: check that the publishing organisation is still associated to the IPT, and the archived files still exist
+        // TODO: make current DOI available again using the primary DOI account, revert resource status back to PUBLIC/REGISTERED, and undelete it from GBIF if it was registered
+        // TODO: make all former DOIs for the resource available too. All versions of the resource will now resolve again, each resolving to its target resource page
+        res.setStatus(PublicationStatus.PUBLIC); // mocked
         saveResource();
         addActionMessage(getText("manage.overview.resource.undeleted", new String[] {res.toString()}));
         return SUCCESS;
@@ -465,6 +486,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    *
    * If the resource has an existing DOI already, its an indication the resource is being transitioned to a new DOI.
    * In this case, the previous DOI must be replaced by the new DOI.
+   *
+   * TODO: Add tests with resource having DOIs in different states
    */
   public String reserveDoi() throws Exception {
     if (resource == null) {
@@ -472,20 +495,25 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     }
     if (reserveDoi) {
       try {
+        // TODO: Before any DOI operation, make sure an organisation with activated/primary DOI account exists (organisationWithPrimaryDoiAccount)
         if (resource.getIdentifierStatus() == IdentifierStatus.UNRESERVED && !resource.isAlreadyAssignedDoi()) {
           String existingDoi = findExistingDoi(resource);
           if (existingDoi == null) {
-            resource.setDoi(makeDoi());
+            // TODO: reserve a new DOI for this resource using the primary DOI account, and update EML alternateIdentifier list
+            resource.setDoi(makeDoi());// mocked
             resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
+            resourceManager.updateAlternateIdentifierForDOI(resource);
             saveResource();
           } else {
             String prefix = parseDoiPrefix(existingDoi);
             String prefixAllowed = organisationWithPrimaryDoiAccount.getDoiPrefix();
             // is the prefix of the existing DOI equal to the prefix assigned to the DOI account configured for this IPT?
             if (prefix != null && prefixAllowed != null && prefix.equals(prefixAllowed)) {
-              // TODO: test this DOI actually exists
-              resource.setDoi(existingDoi);
+              // TODO: test the existing DOI actually exists in DataCite/EZID under the control of the primary DOI account
+              // TODO: reserve the existing DOI for this resource using the primary DOI account, and update EML alternateIdentifier list
+              resource.setDoi(existingDoi);// mocked
               resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
+              resourceManager.updateAlternateIdentifierForDOI(resource);
               saveResource();
               addActionMessage(getText("manage.overview.publishing.doi.reserve.reused", new String[] {existingDoi}));
             } else {
@@ -494,8 +522,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
             }
           }
         } else if (resource.getIdentifierStatus() == IdentifierStatus.PUBLIC && resource.isAlreadyAssignedDoi()) {
-          resource.setDoi(makeDoi());
+          // TODO; reserve a new DOI for this resource using the primary DOI account (do NOT update old DOI metadata yet), and update EML alternateIdentifier list
+          resource.setDoi(makeDoi());// mocked
           resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
+          resourceManager.updateAlternateIdentifierForDOI(resource);
           saveResource();
         }
 
@@ -538,6 +568,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    *
    * Can only be done to a resource whose DOI is reserved but not public. If the resource previously had been assigned
    * a DOI, that DOI is reassigned.
+   *
+   * TODO: Add tests with resource having DOIs in different states
    */
   public String deleteDoi() throws Exception {
     if (resource == null) {
@@ -545,15 +577,19 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     }
     if (deleteDoi) {
       try {
+        // TODO: Before any DOI operation, make sure an organisation with activated/primary DOI account exists (organisationWithPrimaryDoiAccount)
         if (resource.getIdentifierStatus() == IdentifierStatus.PUBLIC_PENDING_PUBLICATION) {
           if (resource.isAlreadyAssignedDoi()) {
-            // reassign previous DOI, and reset identifier status
-            resource.setDoi(resource.getVersionHistory().get(0).getDoi());
+            // TODO: delete reserved DOI using the primary DOI account, reassign previous DOI to resource, and update EML alternateIdentifier list
+            resource.setDoi(resource.getVersionHistory().get(0).getDoi());// mocked
             resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
+            resourceManager.updateAlternateIdentifierForDOI(resource);
             saveResource();
           } else {
-            resource.setDoi(null);
+            // TODO: delete reserved DOI using the primary DOI account, and update EML alternateIdentifier list
+            resource.setDoi(null);// mocked
             resource.setIdentifierStatus(IdentifierStatus.UNRESERVED);
+            resourceManager.updateAlternateIdentifierForDOI(resource);
             saveResource();
           }
         }
@@ -568,43 +604,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   }
 
   /**
-   * Take a resource offline, and ensure its DOI resolves to a page explaining the resource has been removed. If the
-   * resource was registered with GBIF, it is deleted from GBIF.
-   *
-   * The resource does not have to be republished.
-   *
-   * DOI can no longer be used on mapping core (datasetID field).
-   *
-   * This changes the resource status to private.
-   *
-   * Can be done for any non-private resource whose DOI has been registered.
-   */
-  private void makeDoiUnavailable() throws Exception {
-    resource.setIdentifierStatus(IdentifierStatus.UNAVAILABLE);
-    resourceManager.updateAlternateIdentifierForDOI(resource);
-    saveResource();
-  }
-
-  /**
-   * Take a resource online again, and ensure its DOI resolves to the resource homepage of the last published version.
-   * If the resource was registered with GBIF, it will required written communication with the GBIF Helpdesk.
-   *
-   * The resource does not have to be republished.
-   *
-   * DOI can be used on mapping core (datasetID field).
-   *
-   * This changes the resource status to public, unless the resource was previously registered in which case it will be
-   * set to registered again.
-   *
-   * Can be done for any private resource, whose DOI has been made unavailable.
-   */
-  private void makeDoiAvailable() throws Exception {
-    resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
-    resourceManager.updateAlternateIdentifierForDOI(resource);
-    saveResource();
-  }
-
-  /**
    * @return DOI prefix, e.g. 10.1063 is the prefix for doi:10.1063/BhTX9uO. The DOI may contain the "doi:" access
    * schema or DOI proxy URL "http://dx.doi.org/".
    */
@@ -615,20 +614,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         .trim(doi.replaceAll(Constants.DOI_ACCESS_SCHEMA, "").replaceAll(Constants.DOI_PROXY_SERVER_URL, ""));
       int slash = doi.indexOf("/");
       return doi.substring(0, slash);
-    }
-    return null;
-  }
-
-  /**
-   * @return part before first forward slash
-   */
-  public String getDoiSuffix() {
-    String doi = Strings.emptyToNull(resource.getDoi());
-    if (doi != null) {
-      LOG.info("Get DOI suffix from: " + doi);
-      int slash = doi.indexOf("/");
-      LOG.info("DOI suffix: " + doi.substring(slash + 1));
-      return doi.substring(slash  + 1);
     }
     return null;
   }
@@ -730,20 +715,29 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   }
 
   /**
-   * Executes the instruction to publish the resource.
+   * Executes the instruction to publish the resource, handles update GBIF registrations, and handles all DOI
+   * registrations and DOI update registrations.
    * </br>
-   * In addition, the method must check if resource has been configured to be auto-published.
+   * If the resource is public, and its DOI is reserved (not public), its DOI is registered if publication is successful
+   * otherwise the previous version has to be restored. This is done for all new major versions (e.g. the first time a
+   * DOI is assigned to the resource, and to transition the resource to a new DOI in case of major scientific changes).
+   * It is impossible to transition a DOI from one prefix to another, so a check should ensure this doesn't happen.
+   * </br>
+   * If the resource is public, and its DOI is registered (public), its DOI registration is updated if publication is
+   * successful otherwise the previous version has to be restored. This is done for all new minor versions.
+   * </br>
+   * Publication should fail, and the previous version restored if the DOI operation fails.
+   * </br>
+   * The method must check if resource has been configured to be auto-published.
    * </br>
    * In addition, the method must clear the processFailures for the resource being published. If a resource has
    * exceeded the maximum number of failed publish events during auto-publication, auto-publication for the resource is
    * suspended. By publishing the resource manually, it is assumed the manager is trying to debug the problem. Without
    * this safeguard in place, a resource can auto-publish in an endless number of failures.
    *
-   * TODO: if DOI is PUBLIC_PENDING_PUBLICATION, and resource is PUBLIC, try to register DOI if publication is successful. Fail publication if register DOI fails.
-   * TODO: if DOI has a different prefix to the last DOI assigned to this resource, throw an Exception
-   *
    * @return Struts2 result string
    * @throws Exception if method fails
+   * TODO: Add tests with resource having DOIs in different states
    */
   public String publish() throws Exception {
     if (resource == null) {
@@ -786,13 +780,16 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       BigDecimal nextVersion = new BigDecimal(resource.getNextVersion().toPlainString());
       BigDecimal replacedVersion = new BigDecimal(resource.getEmlVersion().toPlainString());
 
-      // TODO: implement - below is a temporary implementation.
+
       if (resource.getIdentifierStatus() == IdentifierStatus.PUBLIC_PENDING_PUBLICATION &&
           (resource.getStatus() == PublicationStatus.PUBLIC || resource.getStatus() == PublicationStatus.REGISTERED)) {
-        resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
+        // TODO: Before any DOI operation, make sure an organisation with activated/primary DOI account exists (organisationWithPrimaryDoiAccount)
+        // TODO: register DOI using the primary DOI account if publication was successful (add to ResourceManagerImpl.publishEnd() as last step after registration with GBIF,
+        // TODO: before registering DOI, ensure resource is public, and create new DataCite object from persisted EML version written during publication. This DataCite object gets passed into DOI registrations
+        resource.setIdentifierStatus(IdentifierStatus.PUBLIC); // mocked
       }
 
-      // save change summary
+      // set change summary as entered in confirm popup
       if (getSummary() != null) {
         resource.setChangeSummary(getSummary());
       }
@@ -1115,7 +1112,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   }
 
   /**
-   * Temporary method used to create a DOI.
+   * TODO: Replace this temporary method used to create a DOI. A similar method should exist in gbif-doi client library
+   * </br>
    * The DOI is case insensitive, but lower case is used for aesthetics.
    *
    * @return DOI in format prefix/suffix
