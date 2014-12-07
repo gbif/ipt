@@ -800,6 +800,9 @@ public class Resource implements Serializable, Comparable<Resource> {
    * @return the version history
    */
   public List<VersionHistory> getVersionHistory() {
+    if (versionHistory == null) {
+      return Lists.newLinkedList();
+    }
     return versionHistory;
   }
 

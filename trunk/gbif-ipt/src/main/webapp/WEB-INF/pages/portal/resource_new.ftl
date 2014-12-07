@@ -11,7 +11,7 @@
   <div class="contact">
 
     <div class="contactType">
-      <#if con.role?has_content>
+      <#if con.role?? && con.role?has_content && roles[con.role]??>
         ${roles[con.role]?cap_first!}
       <#elseif type?has_content>
         ${type}
