@@ -13,7 +13,7 @@ The IPT has been tested and works well with Tomcat 5.5, Tomcat 6.0 and Tomcat 7.
  * [TomcatInstallationWindows7 Tomcat on Windows 7]
  * [TomcatInstallationCentOS Tomcat on Cent OS 5]
 
-Download the ipt.war file of the latest release of the IPT from http://code.google.com/p/gbif-providertoolkit/downloads/list. Copy the ipt.war file to the Tomcat webapps folder and then start Tomcat, or restart Tomcat if it is already running. You can then invoke the IPT in a web browser running on the same server by using the following URL:
+Download the ipt.war file of the latest release of the IPT from http://www.gbif.org/ipt or from http://code.google.com/p/gbif-providertoolkit/. Copy the ipt.war file to the Tomcat webapps folder and then start Tomcat, or restart Tomcat if it is already running. You can then invoke the IPT in a web browser running on the same server by using the following URL:
 
 http://localhost:8080/ipt
 
