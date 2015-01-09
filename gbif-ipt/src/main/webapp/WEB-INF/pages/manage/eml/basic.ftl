@@ -24,6 +24,15 @@
         $("#resource\\.coreType").attr('disabled','disabled');
       }
 
+      // publishing organisation selection is only disabled, if resource has been registered with GBIF or assigned a DOI (no matter if it's reserved or public).
+      var isRegisteredWithGBIF="${resource.key!}";
+      var isAssignedDOI="${resource.doi!}";
+      if (isRegisteredWithGBIF != "") {
+          $("#id").attr('disabled','disabled');
+      } else if (isAssignedDOI != "") {
+          $("#id").attr('disabled','disabled');
+      }
+
 			function getList(list){
 				var arr=  list.split(",");
 				var newlistaOccurrence={};
