@@ -10,15 +10,18 @@
           event.preventDefault();
           var autoCitation = "${action.resource.generateResourceCitation()!}";
           var doi = "${action.resource.getDoi()!}";
-          var citation = "${action.resource.getEml().getCitation()!}";
-
+          var citation = "${(action.resource.getEml().getCitation())!}";
           // The auto-generated citation should always end with the citation identifier.
-          // In cases when no DOI has been assigned to the resource yet, or no citation identifier has been saved yet,
+          // In cases when the DOI has NOT been assigned to the resource yet, or the citation identifier has NOT been saved yet,
           // we simply append the citation identifier to the auto-generated citation using javascript
-          if (!doi && citation) {
-            var citationIdentifier = "${action.resource.getEml().getCitation().getIdentifier()!}";
+          if (!doi) {
             var identifier = $("#eml\\.citation\\.identifier").val();
-            if (!citationIdentifier && identifier) {
+            if (citation) {
+              var citationIdentifier = "${(action.resource.getEml().getCitation().getIdentifier())!}";
+              if (!citationIdentifier && identifier) {
+                autoCitation = autoCitation + identifier;
+              }
+            } else {
               autoCitation = autoCitation + identifier;
             }
           }
