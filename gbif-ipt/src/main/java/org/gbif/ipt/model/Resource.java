@@ -902,10 +902,9 @@ public class Resource implements Serializable, Comparable<Resource> {
     // TODO: append more specific resourceType "e.g. /Species Checklist, or /Species Observations"
     sb.append(". ");
 
-    // TODO: revise
-    // add identifier (DOI). If that's not available, use the citation identifier instead
+    // add DOI as the identifier. If no DOI exists, add the citation identifier instead
     if (getDoi() != null) {
-      //For citation purposes, DataCite prefers that DOI names are displayed as linkable, permanent URLs.
+      // for citation purposes, DataCite prefers that DOI names are displayed as linkable, permanent URLs.
       sb.append(Constants.DOI_PROXY_SERVER_URL);
       sb.append(Strings.nullToEmpty(getDoi()));
     } else if (getEml().getCitation() != null && getEml().getCitation().getIdentifier() != null) {

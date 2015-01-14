@@ -8,7 +8,22 @@
 
       $("#generateOn").click(function(event) {
           event.preventDefault();
-          $("#eml\\.citation\\.citation").val("${action.resource.generateResourceCitation()}")
+          var autoCitation = "${action.resource.generateResourceCitation()!}";
+          var doi = "${action.resource.getDoi()!}";
+          var citation = "${action.resource.getEml().getCitation()!}";
+
+          // The auto-generated citation should always end with the citation identifier.
+          // In cases when no DOI has been assigned to the resource yet, or no citation identifier has been saved yet,
+          // we simply append the citation identifier to the auto-generated citation using javascript
+          if (!doi && citation) {
+            var citationIdentifier = "${action.resource.getEml().getCitation().getIdentifier()!}";
+            var identifier = $("#eml\\.citation\\.identifier").val();
+            if (!citationIdentifier && identifier) {
+              autoCitation = autoCitation + identifier;
+            }
+          }
+
+          $("#eml\\.citation\\.citation").val(autoCitation);
           $('#cit').attr("value", "true");
           $("#generateOff").show();
           $("#generateOn").hide();
