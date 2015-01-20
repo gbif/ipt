@@ -272,10 +272,12 @@
         </excludes>
         <filtering>false</filtering>
       </testResource>
+      <!-- filtering needed for example to populate .yaml file properties from maven variables -->
       <testResource>
         <directory>src/test/resources</directory>
         <includes>
           <include>*.properties</include>
+          <include>*.yaml</include>
         </includes>
         <filtering>true</filtering>
       </testResource>
