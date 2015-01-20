@@ -182,7 +182,7 @@ public class OverviewActionIT {
     assertEquals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION, r.getIdentifierStatus());
     LOG.info("DOI was reserved successfully, DOI=" + r.getDoi());
 
-    DOI existingDOI = new DOI("doi:10.5072/rjihw2");
+    DOI existingDOI = new DOI(r.getDoi());
     Citation citation = new Citation("Mock Citation", existingDOI.toString());
     r.getEml().setCitation(citation);
     // reset DOI
