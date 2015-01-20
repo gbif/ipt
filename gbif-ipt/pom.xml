@@ -233,6 +233,11 @@
           </additionalConfig>
         </configuration>
       </plugin>
+      <!-- run integration tests (*IT) during verify -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+      </plugin>
     </plugins>
 
     <resources>
