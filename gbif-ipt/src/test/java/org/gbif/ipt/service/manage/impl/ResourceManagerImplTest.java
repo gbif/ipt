@@ -180,7 +180,7 @@ public class ResourceManagerImplTest {
     datasetSubtypes.put(DATASET_SUBTYPE_SPECIMEN_IDENTIFIER, "Specimen");
     datasetSubtypes.put("observation", "Observation");
     // mock getting the vocabulary
-    when(mockVocabulariesManager.getI18nVocab(anyString(),anyString(), anyBoolean())).thenReturn(datasetSubtypes);
+    when(mockVocabulariesManager.getI18nVocab(anyString(), anyString(), anyBoolean())).thenReturn(datasetSubtypes);
 
     // mock the cfg
     when(mockAppConfig.getBaseUrl()).thenReturn("http://localhost:7001/ipt");
@@ -202,15 +202,16 @@ public class ResourceManagerImplTest {
 
     // mock ExtensionManager returning occurrence core Extension
     when(extensionManager.get("http://rs.tdwg.org/dwc/terms/Occurrence")).thenReturn(occurrenceCore);
-    when(extensionManager.get("http://rs.tdwg.org/dwc/xsd/simpledarwincore/SimpleDarwinRecord")).thenReturn(occurrenceCore);
+    when(extensionManager.get("http://rs.tdwg.org/dwc/xsd/simpledarwincore/SimpleDarwinRecord"))
+      .thenReturn(occurrenceCore);
 
     ExtensionRowTypeConverter extensionRowTypeConverter = new ExtensionRowTypeConverter(extensionManager);
     ConceptTermConverter conceptTermConverter = new ConceptTermConverter(extensionRowTypeConverter);
 
     return new ResourceManagerImpl(mockAppConfig, mockedDataDir, mockEmailConverter, mockOrganisationKeyConverter,
-        extensionRowTypeConverter, jdbcConverter, mockSourceManager, extensionManager,
-        mockRegistryManager, conceptTermConverter, mockDwcaFactory, passwordConverter, mockEml2Rtf,
-        mockVocabulariesManager, mockSimpleTextProvider, mockRegistrationManager);
+      extensionRowTypeConverter, jdbcConverter, mockSourceManager, extensionManager, mockRegistryManager,
+      conceptTermConverter, mockDwcaFactory, passwordConverter, mockEml2Rtf, mockVocabulariesManager,
+      mockSimpleTextProvider, mockRegistrationManager);
   }
 
   /**
@@ -436,7 +437,7 @@ public class ResourceManagerImplTest {
   /**
    * test resource creation from zipped file, but resource.xml references non-existent extension.
    */
-  @Test(expected=ImportException.class)
+  @Test(expected = ImportException.class)
   public void testCreateFromZippedFileNonexistentExtension()
     throws AlreadyExistingException, ImportException, SAXException, ParserConfigurationException, IOException,
     InvalidFilenameException {
@@ -527,8 +528,8 @@ public class ResourceManagerImplTest {
    * Test resource retrieval from resource.xml file. The loadFromDir method is responsible for this retrieval.
    */
   @Test
-  public void testLoadFromDir() throws IOException, SAXException, ParserConfigurationException,
-    AlreadyExistingException {
+  public void testLoadFromDir()
+    throws IOException, SAXException, ParserConfigurationException, AlreadyExistingException {
     ResourceManagerImpl resourceManager = getResourceManagerImpl();
 
     String shortName = "ants";
@@ -652,7 +653,8 @@ public class ResourceManagerImplTest {
     ResourceManagerImpl manager = getResourceManagerImpl();
 
     // mock finding eml.xml file
-    when(mockedDataDir.resourceEmlFile(anyString(), any(BigDecimal.class))).thenReturn(File.createTempFile("eml", "xml"));
+    when(mockedDataDir.resourceEmlFile(anyString(), any(BigDecimal.class)))
+      .thenReturn(File.createTempFile("eml", "xml"));
 
     // create PRIVATE test resource
     Resource resource = new Resource();
@@ -667,7 +669,7 @@ public class ResourceManagerImplTest {
     manager.updateAlternateIdentifierForIPTURLToResource(resource);
 
     // update the alt. id - it should not have been set, since the resource is Private
-    assertTrue(resource.getEml().getAlternateIdentifiers().size()==0);
+    assertTrue(resource.getEml().getAlternateIdentifiers().size() == 0);
 
     // change resource to PUBLIC
     resource.setStatus(PublicationStatus.PUBLIC);
@@ -675,8 +677,7 @@ public class ResourceManagerImplTest {
     // update alt. id
     manager.updateAlternateIdentifierForIPTURLToResource(resource);
     // assert it has been set
-    assertEquals("http://localhost:7001/ipt/resource.do?r=bees",
-      resource.getEml().getAlternateIdentifiers().get(0));
+    assertEquals("http://localhost:7001/ipt/resource.do?r=bees", resource.getEml().getAlternateIdentifiers().get(0));
 
     // change the baseURL now
     when(mockAppConfig.getBaseUrl()).thenReturn("http://192.38.28.24:7001/ipt");
@@ -688,8 +689,7 @@ public class ResourceManagerImplTest {
     // update alt. id
     manager.updateAlternateIdentifierForIPTURLToResource(resource);
     // assert it has been set
-    assertEquals("http://192.38.28.24:7001/ipt/resource.do?r=bees",
-      resource.getEml().getAlternateIdentifiers().get(0));
+    assertEquals("http://192.38.28.24:7001/ipt/resource.do?r=bees", resource.getEml().getAlternateIdentifiers().get(0));
 
     // create PRIVATE test resource, with existing alt id
     resource.setStatus(PublicationStatus.PRIVATE);
@@ -698,7 +698,7 @@ public class ResourceManagerImplTest {
     manager.updateAlternateIdentifierForIPTURLToResource(resource);
 
     // update the alt. id - it should disapear since the resource is Private now
-    assertTrue(resource.getEml().getAlternateIdentifiers().size()==0);
+    assertTrue(resource.getEml().getAlternateIdentifiers().size() == 0);
   }
 
   @Test
@@ -707,7 +707,8 @@ public class ResourceManagerImplTest {
     ResourceManagerImpl manager = getResourceManagerImpl();
 
     // mock finding eml.xml file
-    when(mockedDataDir.resourceEmlFile(anyString(), any(BigDecimal.class))).thenReturn(File.createTempFile("eml", "xml"));
+    when(mockedDataDir.resourceEmlFile(anyString(), any(BigDecimal.class)))
+      .thenReturn(File.createTempFile("eml", "xml"));
 
     // create PRIVATE test resource
     Resource resource = new Resource();
@@ -721,14 +722,14 @@ public class ResourceManagerImplTest {
     // update alt. id
     manager.updateAlternateIdentifierForRegistry(resource);
     // update the alt. id - it should not have been set, since the resource isn't registered yet
-    assertTrue(resource.getEml().getAlternateIdentifiers().size()==0);
+    assertTrue(resource.getEml().getAlternateIdentifiers().size() == 0);
 
     // change resource to PUBLIC
     resource.setStatus(PublicationStatus.PUBLIC);
     // update alt. id
     manager.updateAlternateIdentifierForRegistry(resource);
     // update the alt. id - it should not have been set, since the resource isn't registered yet
-    assertTrue(resource.getEml().getAlternateIdentifiers().size()==0);
+    assertTrue(resource.getEml().getAlternateIdentifiers().size() == 0);
 
     // change resource to Registered and give it a Registry UUID
     UUID key = UUID.randomUUID();
@@ -743,7 +744,7 @@ public class ResourceManagerImplTest {
     // try to update alt. id again
     manager.updateAlternateIdentifierForRegistry(resource);
     // there should still only be 1
-    assertTrue(resource.getEml().getAlternateIdentifiers().size()==1);
+    assertTrue(resource.getEml().getAlternateIdentifiers().size() == 1);
   }
 
   @Test
@@ -914,7 +915,7 @@ public class ResourceManagerImplTest {
   /**
    * test failure, opening archive of zipped file, with invalid DwC-A located inside parent folder.
    */
-  @Test(expected= UnsupportedArchiveException.class)
+  @Test(expected = UnsupportedArchiveException.class)
   public void testOpenArchiveInsideParentFolderFails() throws ParserConfigurationException, SAXException, IOException {
     // create instance of manager
     ResourceManagerImpl resourceManager = getResourceManagerImpl();
@@ -1004,7 +1005,7 @@ public class ResourceManagerImplTest {
     assertTrue(resourceManager.hasMaxProcessFailures(resource));
   }
 
-  @Test(expected= PublicationException.class)
+  @Test(expected = PublicationException.class)
   public void testPublishNonRegisteredMetadataOnlyResourceFailure()
     throws ParserConfigurationException, SAXException, IOException, AlreadyExistingException, ImportException,
     InvalidFilenameException {
@@ -1054,11 +1055,14 @@ public class ResourceManagerImplTest {
     // mock finding eml.xml file
     when(mockedDataDir.resourceEmlFile(anyString(), Matchers.<BigDecimal>eq(null))).thenReturn(copiedEmlXML);
     // mock finding versioned dwca file
-    when(mockedDataDir.resourceDwcaFile(anyString(), eq(BigDecimal.valueOf(3.1)))).thenReturn(File.createTempFile("dwca-4.0", "zip"));
+    when(mockedDataDir.resourceDwcaFile(anyString(), eq(BigDecimal.valueOf(3.1))))
+      .thenReturn(File.createTempFile("dwca-4.0", "zip"));
     // mock finding previous versioned dwca file
-    when(mockedDataDir.resourceDwcaFile(anyString(), eq(BigDecimal.valueOf(3.0)))).thenReturn(File.createTempFile("dwca-3.0", "zip"));
+    when(mockedDataDir.resourceDwcaFile(anyString(), eq(BigDecimal.valueOf(3.0))))
+      .thenReturn(File.createTempFile("dwca-3.0", "zip"));
     // mock finding dwca file
-    when(mockedDataDir.resourceDwcaFile(anyString(), Matchers.<BigDecimal>eq(null))).thenReturn(File.createTempFile("dwca", "zip"));
+    when(mockedDataDir.resourceDwcaFile(anyString(), Matchers.<BigDecimal>eq(null)))
+      .thenReturn(File.createTempFile("dwca", "zip"));
 
     // retrieve sample rtf.xml
     File rtfXML = FileUtils.getClasspathFile("resources/res1/rtf-res1.rtf");

@@ -86,7 +86,7 @@ public class SetupAction extends BaseAction {
 
   /**
    * Tries to guess the current baseURL on the running server from the context
-   * 
+   *
    * @return baseURL as string
    */
   public String findBaseURL() {
@@ -131,7 +131,7 @@ public class SetupAction extends BaseAction {
 
   /**
    * If the config is in debug mode, then production settings are not possible.
-   * 
+   *
    * @return true if production setting is allowed
    */
   public boolean isProductionSettingAllowed() {
@@ -199,7 +199,7 @@ public class SetupAction extends BaseAction {
 
   /**
    * Method called when setting up the IPT for the very first time. The admin user, mode, base URL, and proxy are set.
-   * 
+   *
    * @return Struts Action String
    */
   public String setup2() {
@@ -299,8 +299,8 @@ public class SetupAction extends BaseAction {
           addFieldError("baseURL", getText("admin.config.baseUrl.inaccessible") + " " + baseURL);
         } else {
           LOG.error(e);
-          addActionError(getTextWithDynamicArgs("admin.config.setup2.already.registered", cfg.getRegistryType()
-            .toString()));
+          addActionError(
+            getTextWithDynamicArgs("admin.config.setup2.already.registered", cfg.getRegistryType().toString()));
         }
       }
     }
@@ -376,7 +376,7 @@ public class SetupAction extends BaseAction {
 
   /**
    * The mode the IPT will run in: test or production.
-   * 
+   *
    * @param modeSelected mode that has been selected to run the IPT in
    */
   public void setModeSelected(String modeSelected) {

@@ -1,5 +1,6 @@
 package org.gbif.ipt.action.manage;
 
+import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.AlreadyExistingException;
@@ -67,20 +68,13 @@ public class OverviewActionTest {
     Citation citation1 = new Citation("Text", "doi:10.1594/J67TGE");
     eml.setCitation(citation1);
 
-    String identifier = action.findExistingDoi(resource);
-    assertEquals("10.1594/J67TGE", identifier);
+    DOI identifier = action.findExistingDoi(resource);
+    assertEquals("10.1594/j67tge", identifier.getDoiName());
 
     Citation citation2 = new Citation("Text", "http://dx.doi.org/10.8894/887TGE");
     eml.setCitation(citation2);
 
     identifier = action.findExistingDoi(resource);
-    assertEquals("10.8894/887TGE", identifier);
-  }
-
-  @Test
-  public void testParseDoiPrefix() {
-    assertEquals("10.1594", action.parseDoiPrefix("doi:10.1594/J67TGE"));
-    assertEquals("10.1006", action.parseDoiPrefix("http://dx.doi.org/10.1006/jnbi.2014.2354"));
-    assertEquals("10.1063", action.parseDoiPrefix("10.1063/1.125173#sthash.Bh8X9uOD.dpuf"));
+    assertEquals("10.8894/887tge", identifier.getDoiName());
   }
 }

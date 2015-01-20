@@ -315,7 +315,7 @@ public class ResourceTest {
 
     Calendar calendar = Calendar.getInstance();
     calendar.set(2014, Calendar.JANUARY, 29);
-    resource.getEml().setPubDate(calendar.getTime());
+    resource.getEml().setDateStamp(calendar.getTime());
 
     Agent creator1 = new Agent();
     creator1.setFirstName("John");
@@ -338,12 +338,12 @@ public class ResourceTest {
     String citation = resource.generateResourceCitation();
 
     LOG.info("Resource citation using next minor version: " + citation);
-    assertEquals("Smith J, Weir P (2014): Birds. v1.7. NHM. Dataset. http://dx.doi.org/10.5886/1bft7W5f", citation);
+    assertEquals("Smith J, Weir P (2014): Birds. v1.7. NHM. Dataset. http://doi.org/10.5886/1bft7W5f", citation);
 
     citation = resource.generateResourceCitation(BigDecimal.valueOf(1.6));
 
     LOG.info("Resource citation with version specified: " + citation);
-    assertEquals("Smith J, Weir P (2014): Birds. v1.6. NHM. Dataset. http://dx.doi.org/10.5886/1bft7W5f", citation);
+    assertEquals("Smith J, Weir P (2014): Birds. v1.6. NHM. Dataset. http://doi.org/10.5886/1bft7W5f", citation);
   }
 
 
@@ -457,5 +457,91 @@ public class ResourceTest {
     assertEquals("1.2", resource.getEmlVersion().toPlainString());
     // the resource has been published, a DOI is public, but there is a new DOI reserved, so the next version is a major version bump
     assertEquals("2.0", resource.getNextVersion().toPlainString());
+  }
+
+  /**
+   * Test adding DOI as alternate identifier, when no alternate identifiers exist yet.
+   */
+  @Test
+  public void testUpdateAlternateIdentifierForDOICase1() {
+    Resource r = new Resource();
+
+    r.setDoi("10.5072/case1");
+    r.setIdentifierStatus(IdentifierStatus.PUBLIC);
+    r.updateAlternateIdentifierForDOI();
+
+    assertEquals(1, r.getEml().getAlternateIdentifiers().size());
+    assertEquals("doi:10.5072/case1", r.getEml().getAlternateIdentifiers().get(0));
+  }
+
+  /**
+   * Test adding DOI as alternate identifier, when other alternate identifiers do exist.
+   */
+  @Test
+  public void testUpdateAlternateIdentifierForDOICase2() {
+    Resource r = new Resource();
+
+    r.setDoi("10.5072/case2");
+    r.setIdentifierStatus(IdentifierStatus.PUBLIC);
+
+    r.getEml().getAlternateIdentifiers().add("alt-id-1");
+    r.getEml().getAlternateIdentifiers().add("alt-id-2");
+    assertEquals(2, r.getEml().getAlternateIdentifiers().size());
+    assertEquals("alt-id-1", r.getEml().getAlternateIdentifiers().get(0));
+    assertEquals("alt-id-2", r.getEml().getAlternateIdentifiers().get(1));
+
+    r.updateAlternateIdentifierForDOI();
+
+    assertEquals(3, r.getEml().getAlternateIdentifiers().size());
+    assertEquals("doi:10.5072/case2", r.getEml().getAlternateIdentifiers().get(0));
+    assertEquals("alt-id-1", r.getEml().getAlternateIdentifiers().get(1));
+    assertEquals("alt-id-2", r.getEml().getAlternateIdentifiers().get(2));
+  }
+
+  /**
+   *
+   * Test adding DOI as alternate identifier, when multiple DOI alternate identifiers exist.
+   */
+  @Test
+  public void testUpdateAlternateIdentifierForDOICase3() {
+    Resource r = new Resource();
+
+    r.setDoi("10.5072/case3");
+    r.setIdentifierStatus(IdentifierStatus.PUBLIC);
+
+    r.getEml().getAlternateIdentifiers().add("alt-id-1");
+    r.getEml().getAlternateIdentifiers().add("doi:10.5077/other");
+    assertEquals(2, r.getEml().getAlternateIdentifiers().size());
+    assertEquals("alt-id-1", r.getEml().getAlternateIdentifiers().get(0));
+    assertEquals("doi:10.5077/other", r.getEml().getAlternateIdentifiers().get(1));
+
+    r.updateAlternateIdentifierForDOI();
+
+    assertEquals(3, r.getEml().getAlternateIdentifiers().size());
+    assertEquals("doi:10.5072/case3", r.getEml().getAlternateIdentifiers().get(0));
+    assertEquals("alt-id-1", r.getEml().getAlternateIdentifiers().get(1));
+    assertEquals("doi:10.5077/other", r.getEml().getAlternateIdentifiers().get(2));
+  }
+
+  /**
+   * Test adding DOI as alternate identifier, when DOI status is unavailable.
+   */
+  @Test
+  public void testUpdateAlternateIdentifierForDOICase4() {
+    Resource r = new Resource();
+
+    r.setDoi("10.5072/case4");
+    r.setIdentifierStatus(IdentifierStatus.UNAVAILABLE);
+
+    r.getEml().getAlternateIdentifiers().add("doi:10.5072/case4");
+    r.getEml().getAlternateIdentifiers().add("doi:10.5077/other");
+    assertEquals(2, r.getEml().getAlternateIdentifiers().size());
+    assertEquals("doi:10.5072/case4", r.getEml().getAlternateIdentifiers().get(0));
+    assertEquals("doi:10.5077/other", r.getEml().getAlternateIdentifiers().get(1));
+
+    r.updateAlternateIdentifierForDOI();
+
+    assertEquals(1, r.getEml().getAlternateIdentifiers().size());
+    assertEquals("doi:10.5077/other", r.getEml().getAlternateIdentifiers().get(0));
   }
 }

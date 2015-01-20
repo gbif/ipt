@@ -1,5 +1,9 @@
 package org.gbif.ipt.service.admin.impl;
 
+import org.gbif.doi.service.DoiService;
+import org.gbif.doi.service.ServiceConfig;
+import org.gbif.doi.service.datacite.DataCiteService;
+import org.gbif.doi.service.ezid.EzidService;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Ipt;
@@ -10,6 +14,7 @@ import org.gbif.ipt.model.converter.PasswordConverter;
 import org.gbif.ipt.model.legacy.LegacyIpt;
 import org.gbif.ipt.model.legacy.LegacyOrganisation;
 import org.gbif.ipt.model.legacy.LegacyRegistration;
+import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.DeletionNotAllowedException;
@@ -42,9 +47,13 @@ import com.google.common.io.Closer;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.xstream.XStream;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.log4j.Logger;
 
 @Singleton
 public class RegistrationManagerImpl extends BaseManager implements RegistrationManager {
+
+  private static final Logger LOG = Logger.getLogger(RegistrationManagerImpl.class);
 
   private static final Comparator<Organisation> ORG_BY_NAME_ORD = new Comparator<Organisation>() {
 
@@ -60,20 +69,22 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
   private final XStream xstreamV2 = new XStream();
   private ResourceManager resourceManager;
   private RegistryManager registryManager;
+  private DefaultHttpClient client;
 
 
   @Inject
   public RegistrationManagerImpl(AppConfig cfg, DataDir dataDir, ResourceManager resourceManager,
-    RegistryManager registryManager, PasswordConverter passwordConverter) {
+    RegistryManager registryManager, PasswordConverter passwordConverter, DefaultHttpClient client) {
     super(cfg, dataDir);
     this.resourceManager = resourceManager;
     defineXstreamMappingV1();
     defineXstreamMappingV2(passwordConverter);
     this.registryManager = registryManager;
+    this.client = client;
   }
 
-  public Organisation addAssociatedOrganisation(Organisation organisation) throws AlreadyExistingException,
-    InvalidConfigException {
+  public Organisation addAssociatedOrganisation(Organisation organisation)
+    throws AlreadyExistingException, InvalidConfigException {
     if (organisation != null) {
 
       // ensure max 1 DOI account is activated in the IPT
@@ -100,6 +111,33 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
       if (organisation.isAgencyAccountPrimary()) {
         return organisation;
       }
+    }
+    return null;
+  }
+
+  public DoiService getDoiService() throws InvalidConfigException {
+    Organisation organisation = findPrimaryDoiAgencyAccount();
+    if (organisation != null) {
+      String username = organisation.getAgencyAccountUsername();
+      String password = organisation.getAgencyAccountPassword();
+      DOIRegistrationAgency agency = organisation.getDoiRegistrationAgency();
+
+      if (!Strings.isNullOrEmpty(username) && !Strings.isNullOrEmpty(password) && agency != null) {
+        ServiceConfig cfg = new ServiceConfig(username, password);
+        if (agency.equals(DOIRegistrationAgency.DATACITE)) {
+          return new DataCiteService(client, cfg);
+        } else if (agency.equals(DOIRegistrationAgency.EZID)) {
+          return new EzidService(client, cfg);
+        } else {
+          throw new InvalidConfigException(TYPE.REGISTRATION_BAD_CONFIG,
+            "DOI agency for " + organisation.getName() + " is not recognized: " + agency.toString());
+        }
+      } else {
+        throw new InvalidConfigException(TYPE.REGISTRATION_BAD_CONFIG,
+          "DOI agency account for " + organisation.getName() + " is missing information!");
+      }
+    } else {
+      LOG.debug("No DOI agency account has been added and activated yet to this IPT.");
     }
     return null;
   }
@@ -247,8 +285,8 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
   public List<Organisation> list() {
     List<Organisation> organisationList = new ArrayList<Organisation>();
-    for (Organisation organisation : Ordering.from(ORG_BY_NAME_ORD).sortedCopy(
-      registration.getAssociatedOrganisations().values())) {
+    for (Organisation organisation : Ordering.from(ORG_BY_NAME_ORD)
+      .sortedCopy(registration.getAssociatedOrganisations().values())) {
       if (organisation.isCanHost()) {
         organisationList.add(organisation);
       }
@@ -294,7 +332,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
     } catch (FileNotFoundException e) {
       log.warn("Registration information not existing, " + PERSISTENCE_FILE_V2
-        + " file missing  (This is normal when IPT is not registered yet)");
+               + " file missing  (This is normal when IPT is not registered yet)");
     } catch (ClassNotFoundException e) {
       log.error(e.getMessage(), e);
     } catch (IOException e) {
@@ -315,7 +353,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
   public void encryptRegistration() throws InvalidConfigException {
     Closer closer = Closer.create();
     File registrationV1 = dataDir.configFile(PERSISTENCE_FILE_V1);
-    if (registrationV1.exists())  {
+    if (registrationV1.exists()) {
       try {
         Reader registrationReader = FileUtils.getUtf8Reader(registrationV1);
         ObjectInputStream in = closer.register(xstreamV1.createObjectInputStream(registrationReader));
@@ -409,7 +447,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
   /**
    * For a single organization, update its metadata. Only updates the metadata for an organisation coming from the
    * registry, not the metadata set by the IPT administrator like can host data, etc.
-   * 
+   *
    * @param organisation Organisation
    */
   private void updateOrganisationMetadata(Organisation organisation) {
@@ -426,7 +464,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
         String oName = Strings.emptyToNull(o.getName());
 
         // sanity check - only the key must be exactly the same, and at least the name must not be null
-        if (oKey != null && oKey.equalsIgnoreCase(key) && oName != null ) {
+        if (oKey != null && oKey.equalsIgnoreCase(key) && oName != null) {
           // organisation
           organisation.setName(oName);
           organisation.setDescription(Strings.emptyToNull(o.getDescription()));

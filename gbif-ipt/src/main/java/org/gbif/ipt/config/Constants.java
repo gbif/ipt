@@ -39,8 +39,8 @@ public final class Constants {
 
   // DOI access scheme must be lower case, like ftp: or http:
   public static final String DOI_ACCESS_SCHEMA = "doi:";
-  // DOI proxy server URL must contain trailing forward slash
-  public static final String DOI_PROXY_SERVER_URL = "http://dx.doi.org/";
+  // DOI (preferred) proxy server URL must contain trailing forward slash
+  public static final String DOI_PROXY_SERVER_URL = "http://doi.org/";
 
   private Constants() {
     throw new UnsupportedOperationException("Can't initialize class");
