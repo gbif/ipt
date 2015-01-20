@@ -519,6 +519,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     // add additional ipt and organisation parameters
     data.add(new BasicNameValuePair("organisationKey", StringUtils.trimToEmpty(org.getKey().toString())));
     data.add(new BasicNameValuePair("iptKey", StringUtils.trimToEmpty(ipt.getKey().toString())));
+    // TODO: add "doi" param
 
     try {
       UrlEncodedFormEntity uefe = new UrlEncodedFormEntity(data, Charset.forName("UTF-8"));

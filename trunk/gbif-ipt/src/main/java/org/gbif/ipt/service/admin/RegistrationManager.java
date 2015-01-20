@@ -1,5 +1,6 @@
 package org.gbif.ipt.service.admin;
 
+import org.gbif.doi.service.DoiService;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.service.AlreadyExistingException;
@@ -85,6 +86,16 @@ public interface RegistrationManager {
    * found
    */
   Organisation findPrimaryDoiAgencyAccount();
+
+  /**
+   * Construct and return the appropriate DOI service depending on the type of DOI agency account that has been
+   * activated in the IPT (DataCite or EZID only).
+   *
+   * @return the DataCite or EZID service capable of reserving, minting, deleting DOIs
+   *
+   * @throws InvalidConfigException if the DOI agency account has been badly configured
+   */
+  DoiService getDoiService() throws InvalidConfigException;
 
   /**
    * Loads all user associated organisations from file into the manager.

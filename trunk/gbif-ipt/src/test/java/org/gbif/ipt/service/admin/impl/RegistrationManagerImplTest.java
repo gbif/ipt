@@ -58,6 +58,7 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
     // mock instances
     AppConfig mockAppConfig = mock(AppConfig.class);
     mockDataDir = mock(DataDir.class);
+    client = HttpUtil.newMultithreadedClient(1000, 1, 1);
     SAXParserFactory mockSAXParserFactory = mock(SAXParserFactory.class);
     ConfigWarnings mockConfigWarnings = mock(ConfigWarnings.class);
     SimpleTextProvider mockSimpleTextProvider = mock(SimpleTextProvider.class);
@@ -101,8 +102,8 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
     // mock returning list of registered Organisation with local test resource
     mockHttpUtil = mock(HttpUtil.class);
     mockResponse = mock(HttpUtil.Response.class);
-    mockResponse.content = IOUtils
-      .toString(RegistrationManagerImplTest.class.getResourceAsStream("/responses/organisation.json"), "UTF-8");
+    mockResponse.content =
+      IOUtils.toString(RegistrationManagerImplTest.class.getResourceAsStream("/responses/organisation.json"), "UTF-8");
     when(mockHttpUtil.get(anyString())).thenReturn(mockResponse);
 
     // create instance of RegistryManager
@@ -114,8 +115,9 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
     assertNotNull(mockRegistryManager.getRegisteredOrganisation(RESOURCE1_ORGANISATION_KEY));
 
     // create instance of manager
-    registrationManager = new RegistrationManagerImpl(mockAppConfig, mockDataDir, mockResourceManager,
-      mockRegistryManager, mock(PasswordConverter.class));
+    registrationManager =
+      new RegistrationManagerImpl(mockAppConfig, mockDataDir, mockResourceManager, mockRegistryManager,
+        mock(PasswordConverter.class), client);
 
     // load associatedOrganisations, hostingOrganisation, etc
     registrationManager.load();
@@ -153,7 +155,7 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
    * (registration2.xml) but on converting a LegacyOrganization, the method fails because the LegacyOrganization is
    * missing its mandatory key.
    */
-  @Test(expected=ConversionException.class)
+  @Test(expected = ConversionException.class)
   public void testEncryptRegistrationFailsOnOrganisationMissingKey() {
     // mock returning registration.xml file, with organization missing name which is NotNull field
     File registrationXML = FileUtils.getClasspathFile("config/registration_invalid.xml");
@@ -179,7 +181,7 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
    * Try adding an organisation whose DOI agency account is set to primary, when an existing organisation
    * DOI agency account has been selected as primary. Only one agency account can be activated at once.
    */
-  @Test(expected=InvalidConfigException.class)
+  @Test(expected = InvalidConfigException.class)
   public void testAddAssociatedOrganisationPrimaryAgencyAccountAlreadyExists() throws AlreadyExistingException {
     Organisation org = new Organisation();
     org.setName("Oregon University");

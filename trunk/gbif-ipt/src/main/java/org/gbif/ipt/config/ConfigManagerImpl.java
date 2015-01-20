@@ -88,11 +88,11 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
    * It Creates a HttpHost object with the string given by the user and verifies if there is a connection with this
    * host. If there is a connection with this host, it changes the current proxy host with this host. If not it keeps
    * the current proxy.
-   * 
+   *
    * @param hostTemp the actual proxy.
-   * @param proxy an URL with the format http://proxy.my-institution.com:8080.
+   * @param proxy    an URL with the format http://proxy.my-institution.com:8080.
    * @throws InvalidConfigException If it can not connect to the proxy host or if the port number is no integer or if
-   *         the proxy URL is not with the valid format http://proxy.my-institution.com:8080
+   *                                the proxy URL is not with the valid format http://proxy.my-institution.com:8080
    */
   private boolean changeProxy(HttpHost hostTemp, String proxy) {
     try {
@@ -277,14 +277,13 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   /**
    * Turn archival mode on or off. If being turned off, there can be no associated organisations in the IPT that
    * has its DOI registration agency account activated to start registering DOIs for datasets.
-
+   *
    * @param archivalMode true to turn on, false to turn off
-   * @throws InvalidConfigException
    */
   public void setArchivalMode(boolean archivalMode) throws InvalidConfigException {
     if (!archivalMode && registrationManager.findPrimaryDoiAgencyAccount() != null) {
-      throw new InvalidConfigException(TYPE.DOI_REGISTRATION_ALREADY_ACTIVATED, "Cannot turn off archival mode since"
-                                                                                + "DOI registration has been activated");
+      throw new InvalidConfigException(TYPE.DOI_REGISTRATION_ALREADY_ACTIVATED,
+        "Cannot turn off archival mode since" + "DOI registration has been activated");
     }
     cfg.setProperty(AppConfig.ARCHIVAL_MODE, Boolean.toString(archivalMode));
   }
@@ -314,7 +313,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
    * in
    * the config page), it validates if this proxy is the same as current proxy, if this is true, nothing changes, if
    * not, it removes the current proxy and save the new proxy.
-   * 
+   *
    * @param proxy an URL with the format http://proxy.my-institution.com:8080.
    */
   public void setProxy(String proxy) throws InvalidConfigException {
@@ -365,8 +364,9 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
 
   /**
    * It validates if the there is a connection with the baseURL, it executes a request using the baseURL.
-   * 
+   *
    * @param baseURL a URL to validate.
+   *
    * @return true if the response to the request has a status code equal to 200.
    */
   public boolean validateBaseURL(URL baseURL) {

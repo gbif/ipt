@@ -1284,54 +1284,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return resource;
   }
 
-  public Resource updateAlternateIdentifierForDOI(Resource resource) {
-    // retrieve a list of the resource's alternate identifiers
-    List<String> ids = null;
-    if (resource.getEml() != null) {
-      ids = resource.getEml().getAlternateIdentifiers();
-    } else {
-      resource.setEml(new Eml());
-    }
-
-    if (ids != null && resource.getDoi() != null) {
-      // construct DOI - always appearing as doi:10.1234/suffix inside alternateIdentifier list
-      String doi = Constants.DOI_ACCESS_SCHEMA + resource.getDoi();
-      // has this DOI been added before?
-      boolean exists = false;
-      String existingId = null;
-      for (String id : ids) {
-        if (id.equalsIgnoreCase(doi)) {
-          exists = true;
-          existingId = id;
-        }
-      }
-      // if the DOI status is PUBLIC or RESERVED, add it to list if it doesn't exist yet
-      if (resource.getIdentifierStatus().compareTo(IdentifierStatus.UNAVAILABLE) != 0) {
-        if (!exists) {
-          // TODO ensure DOI gets added as FIRST ID appearing in the list
-          ids.add(doi);
-          // save all changes to Eml
-          saveEml(resource);
-          log.info("DOI added to resource's list of alt ids");
-        } else {
-          log.info("DOI already added to resource's list of alt ids");
-        }
-      }
-      // otherwise if the DOI is UNAVAILABLE, remove it from list if it exists
-      else {
-        if (exists) {
-          ids.remove(existingId);
-          // save all changes to Eml
-          saveEml(resource);
-          log.info("Following DOI status change, DOI was removed from Resource's list of alt ids");
-        } else {
-          log.info("DOI never existed in Resource's list of alt ids, and so couldn't be removed");
-        }
-      }
-    }
-    return resource;
-  }
-
   /**
    * Publishes a new version of the EML file for the given resource. After publishing the new version, it copies a
    * stable version of the EML file for archival purposes.
@@ -1771,7 +1723,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
       // Changing the visibility means some public alternateIds need to be removed, e.g. IPT URL and resource DOI!
       updateAlternateIdentifierForIPTURLToResource(resource);
-      updateAlternateIdentifierForDOI(resource);
+      resource.updateAlternateIdentifierForDOI();
 
       // save all changes to resource
       save(resource);
@@ -1788,7 +1740,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
       // Changing the visibility means some public alternateIds need to be added, e.g. IPT URL and resource DOI!
       updateAlternateIdentifierForIPTURLToResource(resource);
-      updateAlternateIdentifierForDOI(resource);
+      resource.updateAlternateIdentifierForDOI();
 
       // save all changes to resource
       save(resource);

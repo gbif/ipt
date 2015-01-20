@@ -1,5 +1,6 @@
 package org.gbif.ipt.model;
 
+import org.gbif.api.model.common.DOI;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
 import org.gbif.ipt.config.Constants;
@@ -28,6 +29,7 @@ import javax.validation.constraints.NotNull;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
@@ -1003,5 +1005,51 @@ public class Resource implements Serializable, Comparable<Resource> {
   public void setSourcesModified(Date sourcesModified) {
     this.modified = sourcesModified;
     this.sourcesModified = sourcesModified;
+  }
+
+  /**
+   * Updates the resource's list of alternate identifiers for the resource's DOI, adding it or removing it depending on
+   * the status of the DOI:
+   * </br>
+   * If the status of the DOI is reserved or public, the resource DOI will be added as the first alternative identifier
+   * in the list. Please note that multiple (different) DOIs are allowed in the list of alternate identifiers.
+   * </br>
+   * If the status of the DOI is unavailable, the resource DOI will be removed from the list.
+   */
+  public synchronized void updateAlternateIdentifierForDOI() {
+    Preconditions.checkNotNull(eml);
+
+    if (doi != null) {
+      DOI doiObject = new DOI(doi);
+      // retrieve a list of the resource's alternate identifiers
+      List<String> ids = eml.getAlternateIdentifiers();
+      if (identifierStatus.equals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION) ||
+        identifierStatus.equals(IdentifierStatus.PUBLIC)) {
+        // make sure the DOI always appears first
+        List<String> reorderedList = Lists.newArrayList();
+        reorderedList.add(doiObject.toString());
+        // make sure the DOI doesn't appear twice
+        for (String id : ids) {
+          if (!id.equalsIgnoreCase(doiObject.toString())) {
+            reorderedList.add(id);
+          }
+        }
+        // replace the original list with the reordered one
+        if (!ids.isEmpty()) {
+          ids.clear();
+        }
+        ids.addAll(reorderedList);
+        log.debug("DOI=" + doiObject.toString() + " added to resource's list of alt ids as first element");
+      } else if (identifierStatus.equals(IdentifierStatus.UNAVAILABLE)) {
+        for (Iterator<String> iterator = ids.iterator(); iterator.hasNext(); ) {
+          String id = iterator.next();
+          // make sure a DOI that has been made unavailable no longer appears in the list
+          if (id.equalsIgnoreCase(doiObject.toString())) {
+            iterator.remove();
+            log.debug("DOI=" + doiObject.toString() + " removed from resource's list of alt ids");
+          }
+        }
+      }
+    }
   }
 }

@@ -12,6 +12,14 @@
  ***************************************************************************/
 package org.gbif.ipt.action.manage;
 
+import org.gbif.api.model.common.DOI;
+import org.gbif.api.model.common.DoiData;
+import org.gbif.api.model.common.DoiStatus;
+import org.gbif.doi.metadata.datacite.DataCiteMetadata;
+import org.gbif.doi.service.DoiException;
+import org.gbif.doi.service.DoiExistsException;
+import org.gbif.doi.service.DoiService;
+import org.gbif.doi.service.InvalidMetadataException;
 import org.gbif.dwc.text.Archive;
 import org.gbif.dwc.text.ArchiveFile;
 import org.gbif.file.CSVReader;
@@ -24,6 +32,7 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
+import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.model.voc.PublicationStatus;
@@ -42,6 +51,7 @@ import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.task.ReportHandler;
 import org.gbif.ipt.task.StatusReport;
 import org.gbif.ipt.task.TaskMessage;
+import org.gbif.ipt.utils.DataCiteMetadataBuilder;
 import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.validation.EmlValidator;
 import org.gbif.metadata.eml.Citation;
@@ -108,6 +118,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private List<String[]> peek;
   private Integer mid;
   private static final int PEEK_ROWS = 100;
+  private DoiService doiService;
 
   @Inject
   public OverviewAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -119,6 +130,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     this.emlValidator = new EmlValidator(cfg, registrationManager, textProvider);
     this.vocabManager = vocabManager;
     this.dwcaFactory = dwcaFactory;
+    this.doiService = registrationManager.getDoiService();
+    this.organisationWithPrimaryDoiAccount = registrationManager.findPrimaryDoiAgencyAccount();
   }
 
   /**
@@ -494,70 +507,107 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       return NOT_FOUND;
     }
     if (reserveDoi) {
-      try {
-        // TODO: Before any DOI operation, make sure an organisation with activated/primary DOI account exists (organisationWithPrimaryDoiAccount)
-        if (resource.getIdentifierStatus() == IdentifierStatus.UNRESERVED && !resource.isAlreadyAssignedDoi()) {
-          String existingDoi = findExistingDoi(resource);
-          if (existingDoi == null) {
-            // TODO: reserve a new DOI for this resource using the primary DOI account, and update EML alternateIdentifier list
-            resource.setDoi(makeDoi());// mocked
-            resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
-            resourceManager.updateAlternateIdentifierForDOI(resource);
-            saveResource();
-          } else {
-            String prefix = parseDoiPrefix(existingDoi);
-            String prefixAllowed = organisationWithPrimaryDoiAccount.getDoiPrefix();
-            // is the prefix of the existing DOI equal to the prefix assigned to the DOI account configured for this IPT?
-            if (prefix != null && prefixAllowed != null && prefix.equals(prefixAllowed)) {
-              // TODO: test the existing DOI actually exists in DataCite/EZID under the control of the primary DOI account
-              // TODO: reserve the existing DOI for this resource using the primary DOI account, and update EML alternateIdentifier list
-              resource.setDoi(existingDoi);// mocked
-              resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
-              resourceManager.updateAlternateIdentifierForDOI(resource);
-              saveResource();
-              addActionMessage(getText("manage.overview.publishing.doi.reserve.reused", new String[] {existingDoi}));
-            } else {
-              addActionError(getText("manage.overview.publishing.doi.reserve.notRreused", new String[] {existingDoi,
-                prefixAllowed}));
-            }
-          }
-        } else if (resource.getIdentifierStatus() == IdentifierStatus.PUBLIC && resource.isAlreadyAssignedDoi()) {
-          // TODO; reserve a new DOI for this resource using the primary DOI account (do NOT update old DOI metadata yet), and update EML alternateIdentifier list
-          resource.setDoi(makeDoi());// mocked
-          resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
-          resourceManager.updateAlternateIdentifierForDOI(resource);
-          saveResource();
+      DOI existingDoi = findExistingDoi(resource);
+      if ((existingDoi == null && resource.getIdentifierStatus() == IdentifierStatus.UNRESERVED && !resource
+        .isAlreadyAssignedDoi()) || (resource.getIdentifierStatus() == IdentifierStatus.PUBLIC && resource
+        .isAlreadyAssignedDoi())) {
+        DOI doi = makeDoi();
+        LOG.info("Reserving new DOI=" + doi.getDoiName() + " for " + resource.getTitleAndShortname());
+        try {
+          doReserveDOI(doi, resource);
+          String msg = doi.toString() + " was reserved successfully!";
+          LOG.info(msg);
+          addActionMessage(msg);
+        } catch (DoiExistsException e) {
+          LOG.error("Failed to reserve DOI=" + doi.getDoiName() + " because it exists already. Trying again...");
+          reserveDoi();
+        } catch (InvalidMetadataException e) {
+          String errorMsg =
+            "Failed to reserve DOI=" + doi.getDoiName() + " because DOI metadata was invalid: " + e.getMessage();
+          addActionError(errorMsg);
+          LOG.error(errorMsg);
+        } catch (DoiException e) {
+          String errorMsg = "Failed to reserve DOI=" + doi.getDoiName() + ": " + e.getMessage();
+          addActionError(errorMsg);
+          LOG.error(errorMsg);
         }
+      } else if (existingDoi != null && resource.getIdentifierStatus() == IdentifierStatus.UNRESERVED && !resource
+        .isAlreadyAssignedDoi()) {
+        LOG.info("Assigning existing DOI=" + existingDoi.getDoiName() + " to " + resource.getTitleAndShortname());
 
-      } catch (Exception e) {
-        LOG.error("Failed to reserve DOI for resource " + resource.getShortname(), e);
+        String prefix = existingDoi.getPrefix();
+        String prefixAllowed = organisationWithPrimaryDoiAccount.getDoiPrefix();
+        // ensure the prefix of the existing DOI is equal to the prefix of the DOI account configured for this IPT
+        if (prefix != null && prefixAllowed != null && prefix.equals(prefixAllowed)) {
+          try {
+            DoiData doiData = doiService.resolve(existingDoi);
+            // verify the existing DOI is either reserved or registered already
+            if (doiData != null && (doiData.getStatus().equals(DoiStatus.REGISTERED) || doiData.getStatus()
+              .equals(DoiStatus.RESERVED))) {
+              resource.setDoi(existingDoi.getDoiName());
+              resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
+              resource.updateAlternateIdentifierForDOI();
+              saveResource();
+              String msg = existingDoi.toString() + " was reused, and assigned successfully!";
+              LOG.info(msg);
+              addActionMessage(msg);
+            } else {
+              String errorMsg = "Failed to verify that DOI=" + existingDoi.getDoiName() + " has been registered already. Please try again.";
+              LOG.error(errorMsg);
+              addActionError(errorMsg);
+            }
+          } catch (DoiException e) {
+            String errorMsg =
+              "Failed to verify existing DOI=" + existingDoi.getDoiName() + " is registered: " + e.getMessage();
+            addActionError(errorMsg);
+            LOG.error(errorMsg);
+          }
+        } else {
+          addActionError(getText("manage.overview.publishing.doi.reserve.notRreused",
+            new String[] {existingDoi.toString(), prefixAllowed}));
+        }
+      } else {
+        addActionWarning(getText("manage.overview.resource.doi.invalid.operation",
+          new String[] {resource.getShortname(), resource.getIdentifierStatus().toString()}));
       }
     } else {
-      addActionWarning(getText("manage.overview.resource.doi.invalid.operation", new String[] {resource.getShortname(),
-        resource.getIdentifierStatus().toString()}));
+      addActionWarning(getText("manage.overview.resource.doi.invalid.operation",
+        new String[] {resource.getShortname(), resource.getIdentifierStatus().toString()}));
     }
     return execute();
   }
 
   /**
+   * Reserve a DOI for the resource.
+   *
+   * @param doi      DOI to reserve
+   * @param resource resource to reserve DOI for
+   *
+   * @throws DoiExistsException if the DOI being reserved already exists so that reserving can be retried with new DOI
+   */
+  private void doReserveDOI(DOI doi, Resource resource) throws DoiException {
+    // reserve a new DOI for this resource using the primary DOI account, and update EML alternateIdentifier list
+    DataCiteMetadata dataCiteMetadata = DataCiteMetadataBuilder.createDataCiteMetadata(doi, resource);
+    doiService.reserve(doi, dataCiteMetadata);
+    resource.setDoi(doi.getDoiName());
+    resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
+    resource.updateAlternateIdentifierForDOI();
+    saveResource();
+  }
+
+  /**
    * Return the existing DOI assigned to this resource. An existing DOI is set as the citation identifier.
-   * The citation identifier is determined to be a DOI, if the identifier starts with "doi:", or if it starts with
-   * "http://dx.doi.org/" - the DOI Proxy server which resolves DOIs. Be sure to strip the "doi:" or
-   * "http://dx.doi.org/" before returning it though.
    *
    * @return the existing DOI assigned to this resource, or null if none was found.
    */
   @VisibleForTesting
-  public String findExistingDoi(Resource resource) {
+  public DOI findExistingDoi(Resource resource) {
     if (resource != null && resource.getEml() != null) {
       Citation citation = resource.getEml().getCitation();
       if (citation != null) {
-        String identifier = StringUtils.trimToEmpty(citation.getIdentifier()).toLowerCase();
-        // TODO: identifier existing DOI with better regex parsing - refer to DOI class in GBIF API
-        if (identifier.startsWith(Constants.DOI_ACCESS_SCHEMA)) {
-          return citation.getIdentifier().substring(Constants.DOI_ACCESS_SCHEMA.length());
-        } else if (identifier.startsWith(Constants.DOI_PROXY_SERVER_URL)) {
-          return citation.getIdentifier().substring(Constants.DOI_PROXY_SERVER_URL.length());
+        // be sure to trim identifier, user may have added extra space which causes resolve to fail!
+        if (DOI.isParsable(StringUtils.trimToNull(citation.getIdentifier()))) {
+          return new DOI(citation.getIdentifier());
         }
       }
     }
@@ -584,13 +634,13 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
             // TODO: delete reserved DOI using the primary DOI account, reassign previous DOI to resource, and update EML alternateIdentifier list
             resource.setDoi(resource.getVersionHistory().get(0).getDoi());// mocked
             resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
-            resourceManager.updateAlternateIdentifierForDOI(resource);
+            resource.updateAlternateIdentifierForDOI();
             saveResource();
           } else {
             // TODO: delete reserved DOI using the primary DOI account, and update EML alternateIdentifier list
             resource.setDoi(null);// mocked
             resource.setIdentifierStatus(IdentifierStatus.UNRESERVED);
-            resourceManager.updateAlternateIdentifierForDOI(resource);
+            resource.updateAlternateIdentifierForDOI();
             saveResource();
           }
         }
@@ -602,21 +652,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         resource.getIdentifierStatus().toString()}));
     }
     return execute();
-  }
-
-  /**
-   * @return DOI prefix, e.g. 10.1063 is the prefix for doi:10.1063/BhTX9uO. The DOI may contain the "doi:" access
-   * schema or DOI proxy URL "http://dx.doi.org/".
-   */
-  @VisibleForTesting
-  public String parseDoiPrefix(String doi) {
-    if (doi != null) {
-      doi = StringUtils
-        .trim(doi.replaceAll(Constants.DOI_ACCESS_SCHEMA, "").replaceAll(Constants.DOI_PROXY_SERVER_URL, ""));
-      int slash = doi.indexOf("/");
-      return doi.substring(0, slash);
-    }
-    return null;
   }
 
   /**
@@ -707,8 +742,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       mappingsModifiedSinceLastPublication = setMappingsModifiedSinceLastPublication(resource);
       // check if the sources have been modified since the last publication
       sourcesModifiedSinceLastPublication = setSourcesModifiedSinceLastPublication(resource);
-      // find the organisation that can register DOIs for datasets
-      organisationWithPrimaryDoiAccount = registrationManager.findPrimaryDoiAgencyAccount();
 
       // populate frequencies map
       populateFrequencies();
@@ -1113,17 +1146,24 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   }
 
   /**
-   * TODO: Replace this temporary method used to create a DOI. A similar method should exist in gbif-doi client library
-   * </br>
-   * The DOI is case insensitive, but lower case is used for aesthetics.
+   * Generate a DOI in the format prefix/suffix where the prefix is taken from the primary DOI account, and the suffix
+   * is a 6 character lower case alpha numeric string.
    *
    * @return DOI in format prefix/suffix
    */
-  private String makeDoi() {
+  private DOI makeDoi() {
     String prefix =
       (organisationWithPrimaryDoiAccount == null || organisationWithPrimaryDoiAccount.getDoiPrefix() == null)
         ? Constants.TEST_DOI_PREFIX : organisationWithPrimaryDoiAccount.getDoiPrefix();
-    return prefix + "/" + RandomStringUtils.randomAlphanumeric(6).toLowerCase();
+
+    // EZID test account: suffix must start with /FK2
+    String slash = (organisationWithPrimaryDoiAccount.getDoiRegistrationAgency() != null
+                     && organisationWithPrimaryDoiAccount.getDoiPrefix() != null
+                     && organisationWithPrimaryDoiAccount.getDoiPrefix().equals(Constants.TEST_DOI_PREFIX)
+                     && organisationWithPrimaryDoiAccount.getDoiRegistrationAgency().equals(DOIRegistrationAgency.EZID))
+      ? "/FK2" : "/";
+
+    return new DOI(prefix + slash + RandomStringUtils.randomAlphanumeric(6).toLowerCase());
   }
 
   /**
