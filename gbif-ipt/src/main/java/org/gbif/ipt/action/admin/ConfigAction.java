@@ -128,6 +128,10 @@ public class ConfigAction extends POSTAction {
         session.remove(Constants.SESSION_USER);
         if (URLUtils.isLocalhost(burl)) {
           addActionWarning(getText("admin.config.error.localhostURL"));
+        } else if (URLUtils.isHostName(burl)) {
+          // warn the base URL is same as machine name so user checks it is visible on the Internet
+          log.info("Machine name used in base URL");
+          addActionWarning(getText("admin.config.baseUrl.sameHostName"));
         }
         baseUrlChanged = true;
       } catch (MalformedURLException e) {

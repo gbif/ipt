@@ -224,7 +224,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   public void setBaseUrl(URL baseURL) throws InvalidConfigException {
     boolean validate = true;
     if (URLUtils.isLocalhost(baseURL)) {
-      log.info("Localhost or machine name used in base URL");
+      log.info("Localhost used in base URL");
 
       // validate if localhost URL is configured only in developer mode.
       // use cfg registryType vs cfg devMode since it takes into account devMode from pom and production from setupPage

@@ -29,8 +29,18 @@ public class URLUtils {
   }
 
   public static boolean isLocalhost(URL url) {
-    return LOCAL_HOST.equalsIgnoreCase(url.getHost()) || LOCAL_IP.equalsIgnoreCase(url.getHost())
-      || url.getHost().equalsIgnoreCase(getHostName());
+    return LOCAL_HOST.equalsIgnoreCase(url.getHost()) || LOCAL_IP.equalsIgnoreCase(url.getHost());
+  }
+
+  /**
+   * Check if the host name of the <code>URL</code> matches the host name of the local host.
+   *
+   * @param url URL
+   *
+   * @return true if the host names match, false otherwise
+   */
+  public static boolean isHostName(URL url) {
+    return url.getHost().equalsIgnoreCase(getHostName());
   }
 
   /**

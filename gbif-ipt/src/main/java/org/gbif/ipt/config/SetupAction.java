@@ -252,6 +252,10 @@ public class SetupAction extends BaseAction {
             if (URLUtils.isLocalhost(burl)) {
               addFieldError("baseURL", getText("admin.config.baseUrl.invalidBaseURL"));
               return INPUT;
+            } else if (URLUtils.isHostName(burl)) {
+              // warn the base URL is same as machine name so user ensures it is visible on the Internet
+              LOG.info("Machine name used in base URL");
+              addActionWarning(getText("admin.config.baseUrl.sameHostName"));
             }
             cfg.setRegistryType(REGISTRY_TYPE.PRODUCTION);
             LOG.info("Production mode has been selected");
@@ -261,7 +265,8 @@ public class SetupAction extends BaseAction {
           }
         }
 
-        // set baseURL, this have to be before the validation with the proxy
+        // set baseURL, this has to be before the validation with the proxy
+        // will try to get local CSS file with this base URL and if it fails throws an InvalidConfigException
         configManager.setBaseUrl(burl);
 
         // set proxy
