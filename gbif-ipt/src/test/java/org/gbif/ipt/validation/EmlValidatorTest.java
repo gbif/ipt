@@ -36,6 +36,7 @@ import java.util.Date;
 import java.util.UUID;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.xml.sax.SAXException;
@@ -446,6 +447,22 @@ public class EmlValidatorTest {
     eml.getCitation().setCitation("");
     assertFalse(validator.isValid(resource, MetadataSection.CITATIONS_SECTION));
     eml.getCitation().setCitation(null);
+    assertFalse(validator.isValid(resource, MetadataSection.CITATIONS_SECTION));
+  }
+
+  @Test
+  public void testCitationIdentifiersInvalid() {
+    // valid identifiers 2 - 100
+    eml.getCitation().setIdentifier(RandomStringUtils.randomAlphabetic(2));
+    assertTrue(validator.isValid(resource, MetadataSection.CITATIONS_SECTION));
+    eml.getCitation().setIdentifier(RandomStringUtils.randomAlphabetic(100));
+    assertTrue(validator.isValid(resource, MetadataSection.CITATIONS_SECTION));
+    eml.getCitation().setIdentifier(RandomStringUtils.randomAlphabetic(75));
+    assertTrue(validator.isValid(resource, MetadataSection.CITATIONS_SECTION));
+    // invalid identifiers less than 2, or greater than 100
+    eml.getCitation().setIdentifier("a");
+    assertFalse(validator.isValid(resource, MetadataSection.CITATIONS_SECTION));
+    eml.getCitation().setIdentifier(RandomStringUtils.randomAlphabetic(110));
     assertFalse(validator.isValid(resource, MetadataSection.CITATIONS_SECTION));
   }
 
