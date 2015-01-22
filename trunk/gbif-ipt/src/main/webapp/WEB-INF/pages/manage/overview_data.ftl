@@ -147,15 +147,15 @@
                       <th><#if m_index==0>${m.extension.title}</#if></th>
                       <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}</td>
                       <td>
-                          <a class="button" href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType}&mid=${m_index}">
+                          <a class="button" href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
                               <input class="button" type="button" value='<@s.text name='button.edit'/>'/>
                           </a>
-                          <a href="mappingPeek.do?r=${resource.shortname}&id=${m.extension.rowType}&mid=${m_index}" class="icon icon-preview peekBtn"/>
+                          <a href="mappingPeek.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}" class="icon icon-preview peekBtn"/>
                       </td>
                   </tr>
               </#list>
             </table>
-          <#if (resource.getMappedExtensions()?size > 1)>
+            <#if (resource.getMappedExtensions()?size > 1)>
               <div class="mapping_head twenty_top"><@s.text name='manage.overview.DwC.Mappings.extensions.select'/></div>
               <table>
                 <#list resource.getMappedExtensions() as ext>
@@ -165,10 +165,10 @@
                             <th><#if m_index==0>${ext.title}</#if></th>
                             <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}</td>
                             <td>
-                                <a class="button" href="mapping.do?r=${resource.shortname}&id=${ext.rowType}&mid=${m_index}">
+                                <a class="button" href="mapping.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
                                     <input class="button" type="button" value='<@s.text name='button.edit'/>'/>
                                 </a>
-                                <a href="mappingPeek.do?r=${resource.shortname}&id=${ext.rowType}&mid=${m_index}" class="icon icon-preview peekBtn"/>
+                                <a href="mappingPeek.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}" class="icon icon-preview peekBtn"/>
                             </td>
                         </tr>
                     </#list>

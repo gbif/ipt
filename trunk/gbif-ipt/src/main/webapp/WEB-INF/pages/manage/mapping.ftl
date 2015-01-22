@@ -258,7 +258,7 @@ $(document).ready(function(){
 	<div class="definition<#if p.required> required</#if>">	
 	  <div class="title">
 	  	<div class="head">
-          <#if !p.namespace?starts_with("http://purl.org/")>
+          <#if !p.namespace?starts_with("http://purl.org/dc/")>
             ${p.name}
           <#elseif p.namespace?starts_with("http://purl.org/dc/terms")>
             dcterms:${p.name}
@@ -312,7 +312,7 @@ $(document).ready(function(){
           </div>
 	      	<div>
 	      		<em><@s.text name='manage.mapping.translation' /></em>:
-	      		<a href="translation.do?r=${resource.shortname}&rowtype=${p.extension.rowType}&mid=${mid}&term=${p.qualname}">
+	      		<a href="translation.do?r=${resource.shortname}&rowtype=${p.extension.rowType?url}&mid=${mid}&term=${p.qualname?url}">
 	      		<#if (((field.translation?size)!0)>0)>
 	      		${(field.translation?size)!0} terms
 	      		<#else>
