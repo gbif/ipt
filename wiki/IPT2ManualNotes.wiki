@@ -454,7 +454,7 @@ Click on the button labeled "Clear" to remove the choice of selected file and re
  * *Number of Header Rows* - 0 if the file does not contain a row of column names, 1 if the file does contain a header row.
  * *Field Delimiter* - the character or characters that signify a break between columns of data.
  * *Character Encoding* - the system that defines byte-wise definitions of the characters in the data (e.g., ISO 8859-5 refers to the Cyrillic alphabet).
- * *Field Quotes* - a single character (or none) that is used to enclose the contents of a column in the data (e.g., ' or ").
+ * *Field Quotes* - a single character (or none) that is used to enclose the contents of a column in the data (e.g., ' or "). Please note this will not properly enclose columns whose content includes newline characters (\n) or carriage returns (\r).
  * *Date Format* - a code describing the format of fields having a date data type (e.g., YYYY-MM-DD for four-digit year, two-digit month, and two-digit day separated by dashes).
  * *Selected Worksheet* - (Excel files only) this drop down lists the names of all worksheets in the Excel file/workbook. Only 1 worksheet can be used as the data source, defaulting to the first worksheet.
 
