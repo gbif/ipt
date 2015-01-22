@@ -395,7 +395,9 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       // test sql
       if (StringUtils.trimToNull(ss.getSql()) != null) {
         stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-        stmt.setFetchSize(FETCH_SIZE);
+        if ((ss.getJdbcDriver() != null) && !ss.getJdbcDriver().contains("odbc")) {
+            stmt.setFetchSize(FETCH_SIZE);
+        }
         rs = stmt.executeQuery(ss.getSqlLimited(FETCH_SIZE));
         // get number of columns
         ResultSetMetaData meta = rs.getMetaData();
@@ -496,7 +498,9 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       if (con != null) {
         // test sql
         stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-        stmt.setFetchSize(1);
+        if ((source.getJdbcDriver() != null) && !source.getJdbcDriver().contains("odbc")) {
+            stmt.setFetchSize(1);
+        }
         rs = stmt.executeQuery(source.getSqlLimited(1));
         // get column metadata
         ResultSetMetaData meta = rs.getMetaData();
@@ -694,7 +698,9 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       if (con != null) {
         // test sql
         stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-        stmt.setFetchSize(rows);
+        if ((source.getJdbcDriver() != null) && !source.getJdbcDriver().contains("odbc")) {
+            stmt.setFetchSize(rows);
+        }
         rs = stmt.executeQuery(source.getSqlLimited(rows + 1));
         // loop over result
         while (rows > 0 && rs.next()) {
