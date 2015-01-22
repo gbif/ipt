@@ -17,6 +17,7 @@ import java.util.Date;
 import javax.mail.internet.InternetAddress;
 
 import com.google.common.base.Strings;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 public abstract class BaseValidator {
@@ -37,6 +38,20 @@ public abstract class BaseValidator {
 
   protected boolean exists(String x, int minLength) {
     return x != null && x.trim().length() >= minLength;
+  }
+
+  /**
+   * Checks if string has a length in a certain range.
+   *
+   * @param x         incoming string
+   * @param minLength min length inclusive
+   * @param maxLength max length inclusive
+   *
+   * @return true if string
+   */
+  protected boolean existsInRange(String x, int minLength, int maxLength) {
+    x = StringUtils.trimToNull(x);
+    return x != null && x.length() >= minLength && x.length() <= maxLength;
   }
 
   protected boolean isValidEmail(String email) {

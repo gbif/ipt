@@ -716,10 +716,12 @@ public class EmlValidator extends BaseValidator {
 
             // evaluate Citation
             if (eml.getCitation() != null) {
-              // citation identifier must be at least 2 characters long
-              if (!Strings.isNullOrEmpty(eml.getCitation().getIdentifier()) && !exists(eml.getCitation().getIdentifier())) {
+              // citation identifier must be between 2 and 100 characters long
+              if (!Strings.isNullOrEmpty(eml.getCitation().getIdentifier())
+                  && !existsInRange(eml.getCitation().getIdentifier(), 2, 100)) {
                 action.addFieldError("eml.citation.identifier",
-                  action.getText("validation.field.blank", new String[] {action.getText("eml.citation.identifier")}));
+                  action.getText("validation.field.invalidSize", new String[]
+                    {action.getText("eml.citation.identifier"), "2", "100"}));
               }
               // citation text is required, while identifier attribute is optional
               if (exists(eml.getCitation().getIdentifier()) && !exists(eml.getCitation().getCitation())) {
