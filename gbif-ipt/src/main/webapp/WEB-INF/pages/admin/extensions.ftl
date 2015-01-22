@@ -17,7 +17,7 @@
 <div class="definition">	
   <div class="title">
   	<div class="head">
-        <a href="extension.do?id=${ext.rowType}">${ext.title}</a>
+        <a href="extension.do?id=${ext.rowType?url}">${ext.title}</a>
   	</div>
   	<div class="actions">
 	  <form action='extension.do' method='post'>
@@ -68,7 +68,7 @@
 <div class="definition">	
   <div class="title">
   	<div class="head">
-        <a href="extension.do?id=${ext.rowType}">${ext.title}</a>
+        <a href="extension.do?id=${ext.rowType?url}">${ext.title}</a>
   	</div>
   	<div class="actions">
 	  <form action='extension.do' method='post'>
