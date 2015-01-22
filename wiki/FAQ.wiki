@@ -81,6 +81,15 @@ To solve this, you can update the value with "Null" value, and update the resour
 Usually, you can rely on the log message to identify the column of interest, like in the example above, it says "column 65," which is the 65th column in the data source.
 
 The "0000-00-00 00:00:00" value in your SQL table could be resulted when importing, while having defined the column with "Not Null" and default value as "0000-00-00 00:00:00."
+
+== Source file having multiline fields break mapping ==
+=== Caused by newline characters inside fields ===
+The IPT does not support source files that have multiline fields (fields that include a newline character (\n) or carriage return (\r)) even if you have specified a field quote (a single character that encloses every field/column in a row) in the source's configuration.
+
+Unless these line breaking characters are removed, the IPT will publish files with broken lines (the columns will appear mixed up). 
+
+To solve this, you can remove these line breaking characters from the source file, replace the source file with the new one, and republish the resource. Remember that when uploading a source file, you can tell the IPT to replace the file with a new one as long as they both have the same name. That way the mappings don't have to be redone.
+
 = Performance =
 
 == My GBIF IPT instance is slow. What can I do to improve performance? ==
