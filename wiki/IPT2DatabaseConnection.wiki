@@ -7,10 +7,12 @@ This section provides information about the source database types supported by t
 The IPT can use database connections to import data from tables or views. Currently the following databases are supported out of the box:
  * Microsoft SQL Server
  * MySQL
- * ODBC (Sun Java5)
+ * ODBC (Sun Java6)`**`
  * Oracle
  * PostgreSQL
  * Sybase databases
+
+`**`Starting with Java SE 8, the JDBC-ODBC Bridge will no longer be included with the JDK. It is [https://blogs.oracle.com/Lance/entry/removal_of_the_jdbc_odbc recommended] that you use a JDBC driver provided by the vendor of your database or a commercial JDBC Driver instead of the JDBC-ODBC Bridge.
 
 = Adding new JDBC drivers =
 You can add your own jdbc drivers to the IPT if needed. For example if you prefer to use the Microsoft JDBC driver for SQL Server or want to add one for sqlite. The following steps assume you have a working IPT installed with an "exploded" war, i.e. you have a folder `ipt` (or however you named your instance) in your application servers webapps folder. The IPT needs to be stopped before you start adding a driver:
