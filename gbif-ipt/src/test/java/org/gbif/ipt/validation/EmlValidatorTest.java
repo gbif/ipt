@@ -130,6 +130,8 @@ public class EmlValidatorTest {
     assertNull(EmlValidator.formatURL("      "));
     assertNull(EmlValidator.formatURL("ftp://ftp.gbif.org //h"));
     assertNotNull(EmlValidator.formatURL("www.gbif.com"));
+    assertEquals("http://www.gbif.com", EmlValidator.formatURL("www.gbif.com"));
+    assertEquals("http://gbif.com", EmlValidator.formatURL("gbif.com"));
     assertNotNull(EmlValidator.formatURL("torrent://www.gbif.org"));
     assertNotNull(EmlValidator.formatURL("ftp://ftp.gbif.org"));
     assertNotNull(EmlValidator.formatURL("http://www.gbif.org"));
