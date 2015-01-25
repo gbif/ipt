@@ -76,7 +76,7 @@ public class PublishAllResourcesActionTest {
     Resource resource = action.resourceManager.get("res2");
 
     // make a few pre-publication assertions
-    assertNull(resource.getReplacedEmlVersion());
+    assertEquals(BigDecimal.valueOf(1.0), resource.getReplacedEmlVersion());
     assertEquals(BigDecimal.valueOf(3.0), resource.getEmlVersion());
     assertEquals(BigDecimal.valueOf(3.0), resource.getEml().getEmlVersion());
 
