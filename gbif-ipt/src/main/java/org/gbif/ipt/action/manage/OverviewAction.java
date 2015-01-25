@@ -70,6 +70,7 @@ import java.util.Map;
 import javax.validation.constraints.NotNull;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
@@ -118,7 +119,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private List<String[]> peek;
   private Integer mid;
   private static final int PEEK_ROWS = 100;
-  private DoiService doiService;
 
   @Inject
   public OverviewAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -130,7 +130,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     this.emlValidator = new EmlValidator(cfg, registrationManager, textProvider);
     this.vocabManager = vocabManager;
     this.dwcaFactory = dwcaFactory;
-    this.doiService = registrationManager.getDoiService();
     this.organisationWithPrimaryDoiAccount = registrationManager.findPrimaryDoiAgencyAccount();
   }
 
@@ -506,6 +505,11 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     if (resource == null) {
       return NOT_FOUND;
     }
+    if (registrationManager.getDoiService() == null) {
+      String msg = "No organisation with an activated DOI agency account exists. Please contact your IPT admin for help.";
+      LOG.error(msg);
+      addActionError(msg);
+    }
     if (reserveDoi) {
       DOI existingDoi = findExistingDoi(resource);
       if ((existingDoi == null && resource.getIdentifierStatus() == IdentifierStatus.UNRESERVED && !resource
@@ -540,7 +544,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         // ensure the prefix of the existing DOI is equal to the prefix of the DOI account configured for this IPT
         if (prefix != null && prefixAllowed != null && prefix.equals(prefixAllowed)) {
           try {
-            DoiData doiData = doiService.resolve(existingDoi);
+            DoiData doiData = registrationManager.getDoiService().resolve(existingDoi);
             // verify the existing DOI is either reserved or registered already
             if (doiData != null && (doiData.getStatus().equals(DoiStatus.REGISTERED) || doiData.getStatus()
               .equals(DoiStatus.RESERVED))) {
@@ -586,9 +590,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    * @throws DoiExistsException if the DOI being reserved already exists so that reserving can be retried with new DOI
    */
   private void doReserveDOI(DOI doi, Resource resource) throws DoiException {
+    Preconditions.checkNotNull(registrationManager.getDoiService());
     // reserve a new DOI for this resource using the primary DOI account, and update EML alternateIdentifier list
     DataCiteMetadata dataCiteMetadata = DataCiteMetadataBuilder.createDataCiteMetadata(doi, resource);
-    doiService.reserve(doi, dataCiteMetadata);
+    registrationManager.getDoiService().reserve(doi, dataCiteMetadata);
     resource.setDoi(doi.getDoiName());
     resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
     resource.updateAlternateIdentifierForDOI();

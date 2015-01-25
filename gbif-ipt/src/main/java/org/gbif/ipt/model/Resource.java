@@ -813,11 +813,12 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   /**
-   * @return the version replaced by the next publication if it hasn't happened yet, or the last publication if it
-   * has happened already.
+   * @return the version about to be replaced by the next publication (if publication is in progress),
+   * or the version that has been replaced by the latest publication (if publication finished).
    */
+  @NotNull
   public BigDecimal getReplacedEmlVersion() {
-    return replacedEmlVersion;
+    return (replacedEmlVersion == null) ? Constants.INITIAL_RESOURCE_VERSION : replacedEmlVersion;
   }
 
   /**
