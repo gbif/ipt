@@ -40,6 +40,7 @@ import org.gbif.ipt.model.converter.PasswordConverter;
 import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.factory.ExtensionFactory;
 import org.gbif.ipt.model.factory.ThesaurusHandlingRule;
+import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidFilenameException;
@@ -64,6 +65,7 @@ import javax.validation.constraints.NotNull;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
+import com.google.common.io.Files;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
@@ -188,6 +190,73 @@ public class GenerateDwcaTest {
     assertEquals("2", row[2]);
     assertEquals("pumm:concolor", row[3]);
     assertEquals("Animalia", row[4]);
+    reader.close();
+  }
+
+  /**
+   * Confirm resource DOI used for datasetID, when setting "doi used for DatasetID" has been turned on in the extension
+   * mapping.
+   */
+  @Test
+  public void testGenerateCoreFromSingleSourceFileDOIForDatasetID() throws Exception {
+    // retrieve sample zipped resource XML configuration file, where setting "doi used for datasetID" has been turned on
+    File resourceXML = FileUtils.getClasspathFile("resources/res1/resource_doi_dataset_id.xml");
+    // create resource from single source file
+    File occurrence = FileUtils.getClasspathFile("resources/res1/occurrence_doi_dataset_id.txt");
+    Resource resource = getResource(resourceXML, occurrence);
+
+    assertEquals("10.5072/gc8gqc", resource.getDoi());
+    assertEquals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION, resource.getIdentifierStatus());
+
+    generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig);
+    int recordCount = generateDwca.call();
+
+    // 2 rows in core file
+    assertEquals(2, recordCount);
+
+    // confirm existence of DwC-A
+    File dwca = new File(resourceDir, DataDir.DWCA_FILENAME);
+    assertTrue(dwca.exists());
+
+    // confirm existence of versioned (archived) DwC-A
+    File versionedDwca = new File(resourceDir, VERSIONED_ARCHIVE_FILENAME);
+    assertTrue(versionedDwca.exists());
+
+    // investigate the DwC-A
+    File dir = FileUtils.createTempDir();
+    CompressionUtil.decompressFile(dir, dwca, true);
+
+    Archive archive = ArchiveFactory.openArchive(dir);
+    assertEquals(Constants.DWC_ROWTYPE_OCCURRENCE, archive.getCore().getRowType());
+    assertEquals(0, archive.getCore().getId().getIndex().intValue());
+    assertEquals(5, archive.getCore().getFieldsSorted().size());
+
+    // confirm order of fields appear honors order of Occurrence Core Extension
+    assertEquals("datasetID", archive.getCore().getFieldsSorted().get(0).getTerm().simpleName());
+    assertEquals("basisOfRecord", archive.getCore().getFieldsSorted().get(1).getTerm().simpleName());
+    assertEquals("occurrenceID", archive.getCore().getFieldsSorted().get(2).getTerm().simpleName());
+    assertEquals("scientificName", archive.getCore().getFieldsSorted().get(3).getTerm().simpleName());
+    assertEquals("kingdom", archive.getCore().getFieldsSorted().get(4).getTerm().simpleName());
+
+    // confirm data written to file
+    CSVReader reader = archive.getCore().getCSVReader();
+    // 1st record
+    String[] row = reader.next();
+    assertEquals("1", row[0]);
+    assertEquals("10.5072/gc8gqc", row[1]); // confirm resource DOI used for datasetID
+    assertEquals("Animalia", row[2]);
+    assertEquals("1", row[3]);
+    assertEquals("puma concolor", row[4]);
+    assertEquals("Animalia", row[5]);
+
+    // 2nd record
+    row = reader.next();
+    assertEquals("2", row[0]);
+    assertEquals("10.5072/gc8gqc", row[1]); // confirm resource DOI used for datasetID
+    assertEquals("Animalia", row[2]);
+    assertEquals("2", row[3]);
+    assertEquals("pumm:concolor", row[4]);
+    assertEquals("Animalia", row[5]);
     reader.close();
   }
 

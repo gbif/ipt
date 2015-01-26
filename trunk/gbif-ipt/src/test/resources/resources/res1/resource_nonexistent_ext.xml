@@ -65,6 +65,7 @@
         <param></param>
         <filterTime>AfterTranslation</filterTime>
       </filter>
+      <doiUsedForDatasetId>false</doiUsedForDatasetId>
     </mapping>
   </mappings>
 </resource>

@@ -10,6 +10,7 @@ import org.gbif.dwc.text.MetaDescriptorWriter;
 import org.gbif.file.CSVReader;
 import org.gbif.file.CSVReaderFactory;
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
@@ -184,7 +185,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
         }
 
         // write data (records) to file
-        dumpData(writer, inCols, m, totalColumns, rowLimit);
+        dumpData(writer, inCols, m, totalColumns, rowLimit, resource.getDoi());
         // remember core record number
         if (resource.getCoreRowType().equalsIgnoreCase(ext.getRowType())) {
           coreRecords = currRecords;
@@ -733,7 +734,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
    * @throws InterruptedException if the thread was interrupted
    */
   private void dumpData(Writer writer, PropertyMapping[] inCols, ExtensionMapping mapping, int dataFileRowSize,
-    @Nullable Integer rowLimit)
+    @Nullable Integer rowLimit, @Nullable String doi)
     throws GeneratorException, InterruptedException {
     final String idSuffix = StringUtils.trimToEmpty(mapping.getIdSuffix());
     final RecordFilter filter = mapping.getFilter();
@@ -791,7 +792,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
             && filter.getParam() != null) {
             boolean matchesFilter;
             if (filter.getFilterTime() == RecordFilter.FilterTime.AfterTranslation) {
-              applyTranslations(inCols, in, record);
+              applyTranslations(inCols, in, record, mapping.isDoiUsedForDatasetId(), doi);
               matchesFilter = filter.matches(in);
               alreadyTranslated = true;
             } else {
@@ -819,7 +820,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
           // go through all archive fields
           if (!alreadyTranslated) {
-            applyTranslations(inCols, in, record);
+            applyTranslations(inCols, in, record, mapping.isDoiUsedForDatasetId(), doi);
           }
           String newRow = tabRow(record);
           if (newRow != null) {
@@ -926,7 +927,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
    * @param inCols values array, of columns in row that have been mapped
    * @param in values array, of all columns in row
    */
-  private void applyTranslations(PropertyMapping[] inCols, String[] in, String[] record) {
+  private void applyTranslations(PropertyMapping[] inCols, String[] in, String[] record, boolean doiUsedForDatasetId,
+    String doi) {
     for (int i = 1; i < inCols.length; i++) {
       PropertyMapping pm = inCols[i];
       String val = null;
@@ -943,6 +945,12 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
         // use default value for null values
         if (val == null) {
           val = pm.getDefaultValue();
+        }
+        // use DOI for datasetID property?
+        if (pm.getTerm().qualifiedName().equalsIgnoreCase(Constants.DWC_DATASET_ID) && doiUsedForDatasetId
+            && doi != null) {
+          // TODO: write with doi: prefix
+          val = doi;
         }
       }
       // add value to data file record
