@@ -1,5 +1,6 @@
 package org.gbif.ipt.action.manage;
 
+import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.model.Resource;
@@ -72,7 +73,7 @@ public class MetadataActionTest {
   @Test
   public void testHasDoiReservedOrAssigned() {
     Resource resource = new Resource();
-    resource.setDoi("doi:10.1594/KHU654");
+    resource.setDoi(new DOI("doi:10.1594/KHU654"));
 
     resource.setIdentifierStatus(IdentifierStatus.UNRESERVED);
     assertFalse(action.hasDoiReservedOrAssigned(resource));

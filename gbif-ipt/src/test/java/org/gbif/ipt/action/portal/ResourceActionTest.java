@@ -1,5 +1,6 @@
 package org.gbif.ipt.action.portal;
 
+import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Resource;
@@ -111,7 +112,7 @@ public class ResourceActionTest {
     // DOI must be PUBLIC to be assigned
     VersionHistory history = new VersionHistory(new BigDecimal("1.34"), new Date(), USER, PublicationStatus.PUBLIC);
     history.setStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
-    history.setDoi("10.1126/IO65467");
+    history.setDoi(new DOI("10.1126", "IO65467"));
     resource.addVersionHistory(history);
     action.setResource(resource);
 
@@ -122,6 +123,6 @@ public class ResourceActionTest {
     history.setStatus(IdentifierStatus.PUBLIC);
     resource.addVersionHistory(history);
 
-    assertEquals("10.1126/IO65467", action.findDoiAssignedToPublishedVersion());
+    assertEquals("10.1126/io65467", action.findDoiAssignedToPublishedVersion().getDoiName());
   }
 }

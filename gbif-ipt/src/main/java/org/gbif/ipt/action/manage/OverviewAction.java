@@ -548,7 +548,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
             // verify the existing DOI is either reserved or registered already
             if (doiData != null && (doiData.getStatus().equals(DoiStatus.REGISTERED) || doiData.getStatus()
               .equals(DoiStatus.RESERVED))) {
-              resource.setDoi(existingDoi.getDoiName());
+              resource.setDoi(existingDoi);
               resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
               resource.updateAlternateIdentifierForDOI();
               saveResource();
@@ -594,7 +594,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     // reserve a new DOI for this resource using the primary DOI account, and update EML alternateIdentifier list
     DataCiteMetadata dataCiteMetadata = DataCiteMetadataBuilder.createDataCiteMetadata(doi, resource);
     registrationManager.getDoiService().reserve(doi, dataCiteMetadata);
-    resource.setDoi(doi.getDoiName());
+    resource.setDoi(doi);
     resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
     resource.updateAlternateIdentifierForDOI();
     saveResource();

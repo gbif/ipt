@@ -1,5 +1,6 @@
 package org.gbif.ipt.action.portal;
 
+import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
@@ -138,7 +139,7 @@ public class ResourceAction extends PortalBaseAction {
    *
    * @return DOI for published version, or null if no DOI was assigned or VersionHistory list was null or empty
    */
-  public String findDoiAssignedToPublishedVersion() {
+  public DOI findDoiAssignedToPublishedVersion() {
     if (resource != null) {
       BigDecimal versionRequested = (getVersion() == null) ? resource.getEmlVersion() : getVersion();
       for (VersionHistory history : resource.getVersionHistory()) {
@@ -359,7 +360,7 @@ public class ResourceAction extends PortalBaseAction {
     Citation citation = new Citation();
     citation.setCitation(resource.generateResourceCitation(nextVersion));
     if (resource.getDoi() != null) {
-      citation.setIdentifier(resource.getDoi());
+      citation.setIdentifier(resource.getDoi().getUrl().toString());
     }
     eml.setCitation(citation);
 
@@ -376,6 +377,8 @@ public class ResourceAction extends PortalBaseAction {
     // show DOI if it will go public on next publication
     if (resource.getDoi() != null && (resource.getIdentifierStatus() == IdentifierStatus.PUBLIC_PENDING_PUBLICATION ||
     resource.getIdentifierStatus() == IdentifierStatus.PUBLIC)) {
+      copy.setDoi(resource.getDoi());
+      copy.setIdentifierStatus(IdentifierStatus.PUBLIC);
       history.setDoi(resource.getDoi());
       history.setStatus(IdentifierStatus.PUBLIC);
     }

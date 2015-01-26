@@ -1,5 +1,6 @@
 package org.gbif.ipt.task;
 
+import org.gbif.api.model.common.DOI;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
 import org.gbif.dwc.text.Archive;
@@ -734,7 +735,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
    * @throws InterruptedException if the thread was interrupted
    */
   private void dumpData(Writer writer, PropertyMapping[] inCols, ExtensionMapping mapping, int dataFileRowSize,
-    @Nullable Integer rowLimit, @Nullable String doi)
+    @Nullable Integer rowLimit, @Nullable DOI doi)
     throws GeneratorException, InterruptedException {
     final String idSuffix = StringUtils.trimToEmpty(mapping.getIdSuffix());
     final RecordFilter filter = mapping.getFilter();
@@ -928,7 +929,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
    * @param in values array, of all columns in row
    */
   private void applyTranslations(PropertyMapping[] inCols, String[] in, String[] record, boolean doiUsedForDatasetId,
-    String doi) {
+    DOI doi) {
     for (int i = 1; i < inCols.length; i++) {
       PropertyMapping pm = inCols[i];
       String val = null;
@@ -949,8 +950,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
         // use DOI for datasetID property?
         if (pm.getTerm().qualifiedName().equalsIgnoreCase(Constants.DWC_DATASET_ID) && doiUsedForDatasetId
             && doi != null) {
-          // TODO: write with doi: prefix
-          val = doi;
+          val = doi.toString();
         }
       }
       // add value to data file record

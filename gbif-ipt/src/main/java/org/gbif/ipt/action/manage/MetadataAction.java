@@ -794,7 +794,7 @@ public class MetadataAction extends ManagerBaseAction {
    */
   @VisibleForTesting
   public boolean hasDoiReservedOrAssigned(Resource resource) {
-    return (!Strings.isNullOrEmpty(resource.getDoi()) && resource.getIdentifierStatus() != IdentifierStatus.UNRESERVED);
+    return (resource.getDoi() != null && resource.getIdentifierStatus() != IdentifierStatus.UNRESERVED);
   }
 
   /**

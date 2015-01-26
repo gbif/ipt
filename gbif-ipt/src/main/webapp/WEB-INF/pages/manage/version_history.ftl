@@ -26,6 +26,8 @@
           <#assign modifiedTitle><@s.text name="portal.home.modifiedBy"/></#assign>
           <#assign summaryTitle><@s.text name="portal.home.summary"/></#assign>
           <#assign doiTitle><@s.text name="portal.home.doi"/></#assign>
+          <#assign none><@s.text name="basic.none"/></#assign>
+          <#assign emptyPlaceholder="-"/>
 
           <div class="clearfix">
               <#list resource.versionHistory as history>
@@ -38,9 +40,13 @@
                         <tr>
                             <th>${doiTitle}</th>
                           <#if history.status == "PUBLIC">
-                              <td>${history.doi!"None"}</td>
+                            <#if history.doi??>
+                                <td>${history.doi.getDoiName()}</td>
+                            <#else>
+                                <td>${none}</td>
+                            </#if>
                           <#else>
-                              <td>-</td>
+                              <td>${emptyPlaceholder}</td>
                           </#if>
                         </tr>
                         <tr>
