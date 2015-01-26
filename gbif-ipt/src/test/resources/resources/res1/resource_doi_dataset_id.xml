@@ -10,6 +10,8 @@
   <created>2012-08-14 17:31:49.546 UTC</created>
   <modifier reference="../creator"/>
   <modified>2012-08-16 14:30:31.779 UTC</modified>
+  <identifierStatus>PUBLIC_PENDING_PUBLICATION</identifierStatus>
+  <doi>10.5072/gc8gqc</doi>
   <managers>
     <user>jcuadra@gbif.org</user>
   </managers>
@@ -34,6 +36,12 @@
       <source class="filesource" reference="../../../sources/filesource"/>
       <extension>http://rs.tdwg.org/dwc/terms/Occurrence</extension>
       <fields>
+        <field>
+          <index>4</index>
+          <term>http://rs.tdwg.org/dwc/terms/datasetID</term>
+          <defaultValue></defaultValue>
+          <type>string</type>
+        </field>
         <field>
           <index>2</index>
           <term>http://rs.tdwg.org/dwc/terms/kingdom</term>
@@ -65,7 +73,7 @@
         <param></param>
         <filterTime>AfterTranslation</filterTime>
       </filter>
-      <doiUsedForDatasetId>false</doiUsedForDatasetId>
+      <doiUsedForDatasetId>true</doiUsedForDatasetId>
     </mapping>
   </mappings>
 </resource>

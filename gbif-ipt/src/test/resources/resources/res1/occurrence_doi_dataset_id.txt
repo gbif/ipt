@@ -1,0 +1,3 @@
+id	scientificName	basisOfRecord	kingdom	datasetID
+1	puma concolor	Animalia	Animalia	ds_77
+2	pumm:concolor	Animalia	Animalia	ds_77
