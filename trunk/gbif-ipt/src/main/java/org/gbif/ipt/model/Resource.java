@@ -96,7 +96,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   private List<VersionHistory> versionHistory = Lists.newLinkedList();
 
   private IdentifierStatus identifierStatus = IdentifierStatus.UNRESERVED;
-  private String doi;
+  private DOI doi;
   private UUID doiOrganisationKey;
 
   public void addManager(User manager) {
@@ -387,7 +387,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    */
   public boolean isAlreadyAssignedDoi() {
     if (!getVersionHistory().isEmpty()) {
-      String doi = getVersionHistory().get(0).getDoi();
+      DOI doi = getVersionHistory().get(0).getDoi();
       IdentifierStatus status = getVersionHistory().get(0).getStatus();
       if (doi != null && status == IdentifierStatus.PUBLIC) {
         return true;
@@ -539,14 +539,14 @@ public class Resource implements Serializable, Comparable<Resource> {
    * @return the DOI of the resource, always in prefix/suffix format excluding "doi:", e.g. 10.1234/qu83ng
    */
   @Nullable
-  public String getDoi() {
+  public DOI getDoi() {
     return doi;
   }
 
   /**
    * @param doi the DOI of the resource (should be paired with resource.identifierStatus)
    */
-  public void setDoi(@Nullable String doi) {
+  public void setDoi(@Nullable DOI doi) {
     this.doi = doi;
   }
 
@@ -905,12 +905,12 @@ public class Resource implements Serializable, Comparable<Resource> {
     // TODO: append more specific resourceType "e.g. /Species Checklist, or /Species Observations"
     sb.append(". ");
 
-    // add DOI as the identifier. If no DOI exists, add the citation identifier instead
+    // add DOI as the identifier. DataCite recommends using linkable, permanent URL
     if (getDoi() != null) {
-      // for citation purposes, DataCite prefers that DOI names are displayed as linkable, permanent URLs.
-      sb.append(Constants.DOI_PROXY_SERVER_URL);
-      sb.append(Strings.nullToEmpty(getDoi()));
-    } else if (getEml().getCitation() != null && getEml().getCitation().getIdentifier() != null) {
+      sb.append(getDoi().getUrl());
+    }
+    // otherwise add the citation identifier instead
+    else if (getEml().getCitation() != null && getEml().getCitation().getIdentifier() != null) {
       sb.append(getEml().getCitation().getIdentifier());
     }
     return sb.toString();
@@ -1021,17 +1021,16 @@ public class Resource implements Serializable, Comparable<Resource> {
     Preconditions.checkNotNull(eml);
 
     if (doi != null) {
-      DOI doiObject = new DOI(doi);
       // retrieve a list of the resource's alternate identifiers
       List<String> ids = eml.getAlternateIdentifiers();
       if (identifierStatus.equals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION) ||
         identifierStatus.equals(IdentifierStatus.PUBLIC)) {
         // make sure the DOI always appears first
         List<String> reorderedList = Lists.newArrayList();
-        reorderedList.add(doiObject.toString());
+        reorderedList.add(doi.toString());
         // make sure the DOI doesn't appear twice
         for (String id : ids) {
-          if (!id.equalsIgnoreCase(doiObject.toString())) {
+          if (!id.equalsIgnoreCase(doi.toString())) {
             reorderedList.add(id);
           }
         }
@@ -1040,14 +1039,14 @@ public class Resource implements Serializable, Comparable<Resource> {
           ids.clear();
         }
         ids.addAll(reorderedList);
-        log.debug("DOI=" + doiObject.toString() + " added to resource's list of alt ids as first element");
+        log.debug("DOI=" + doi.toString() + " added to resource's list of alt ids as first element");
       } else if (identifierStatus.equals(IdentifierStatus.UNAVAILABLE)) {
         for (Iterator<String> iterator = ids.iterator(); iterator.hasNext(); ) {
           String id = iterator.next();
           // make sure a DOI that has been made unavailable no longer appears in the list
-          if (id.equalsIgnoreCase(doiObject.toString())) {
+          if (id.equalsIgnoreCase(doi.toString())) {
             iterator.remove();
-            log.debug("DOI=" + doiObject.toString() + " removed from resource's list of alt ids");
+            log.debug("DOI=" + doi.toString() + " removed from resource's list of alt ids");
           }
         }
       }

@@ -1,5 +1,6 @@
 package org.gbif.ipt.service.admin.impl;
 
+import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.DataDir;
@@ -83,7 +84,7 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
     r2.setDoiOrganisationKey(UUID.fromString(RESOURCE2_ORGANISATION_KEY));
     r2.setStatus(PublicationStatus.PUBLIC);
     r2.setIdentifierStatus(IdentifierStatus.PUBLIC);
-    r2.setDoi("doi:10.1594/PANGAEA.726855");
+    r2.setDoi(new DOI("doi:10.1594/PANGAEA.726855"));
 
     // mock list() to return list with the mocked Resource - notable its organisation name is the old version
     List<Resource> resourcesList = new ArrayList<Resource>();

@@ -16,6 +16,7 @@
 
 package org.gbif.ipt.model;
 
+import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
@@ -310,7 +311,7 @@ public class ResourceTest {
     resource.setTitle("Birds");
     resource.setEmlVersion(BigDecimal.valueOf(1.6));
     resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
-    resource.setDoi("10.5886/1bft7W5f");
+    resource.setDoi(new DOI("10.5886/1bft7W5f"));
     resource.setLastPublished(new Date());
 
     Calendar calendar = Calendar.getInstance();
@@ -338,12 +339,12 @@ public class ResourceTest {
     String citation = resource.generateResourceCitation();
 
     LOG.info("Resource citation using next minor version: " + citation);
-    assertEquals("Smith J, Weir P (2014): Birds. v1.7. NHM. Dataset. http://doi.org/10.5886/1bft7W5f", citation);
+    assertEquals("Smith J, Weir P (2014): Birds. v1.7. NHM. Dataset. http://doi.org/10.5886/1bft7w5f", citation);
 
     citation = resource.generateResourceCitation(BigDecimal.valueOf(1.6));
 
     LOG.info("Resource citation with version specified: " + citation);
-    assertEquals("Smith J, Weir P (2014): Birds. v1.6. NHM. Dataset. http://doi.org/10.5886/1bft7W5f", citation);
+    assertEquals("Smith J, Weir P (2014): Birds. v1.6. NHM. Dataset. http://doi.org/10.5886/1bft7w5f", citation);
   }
 
 
@@ -423,10 +424,10 @@ public class ResourceTest {
     Date v2Published = new Date();
     resource.setEmlVersion(v2);
     resource.setLastPublished(v2Published);
-    resource.setDoi("10.1555/PU75GJ9");
+    resource.setDoi(new DOI("10.1555/PU75GJ9"));
     resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
     VersionHistory vh2 = new VersionHistory(v2, v2Published, USER, PublicationStatus.PUBLIC);
-    vh2.setDoi("10.1555/PU75GJ9");
+    vh2.setDoi(new DOI("10.1555/PU75GJ9"));
     vh2.setStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
     resource.addVersionHistory(vh2);
 
@@ -439,10 +440,10 @@ public class ResourceTest {
     Date v3Published = new Date();
     resource.setEmlVersion(v3);
     resource.setLastPublished(v3Published);
-    resource.setDoi("10.1555/PU75GJ9");
+    resource.setDoi(new DOI("10.1555/PU75GJ9"));
     resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
     VersionHistory vh3 = new VersionHistory(v3, v3Published, USER, PublicationStatus.PUBLIC);
-    vh3.setDoi("10.1555/PU75GJ9");
+    vh3.setDoi(new DOI("10.1555/PU75GJ9"));
     vh3.setStatus(IdentifierStatus.PUBLIC);
     resource.addVersionHistory(vh3);
 
@@ -451,7 +452,7 @@ public class ResourceTest {
     assertEquals("1.3", resource.getNextVersion().toPlainString());
 
     // fourth UNpublished version - new DOI reserved
-    resource.setDoi("10.1555/KY75TG");
+    resource.setDoi(new DOI("10.1555/KY75TG"));
     resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
 
     assertEquals("1.2", resource.getEmlVersion().toPlainString());
@@ -466,7 +467,7 @@ public class ResourceTest {
   public void testUpdateAlternateIdentifierForDOICase1() {
     Resource r = new Resource();
 
-    r.setDoi("10.5072/case1");
+    r.setDoi(new DOI("10.5072/case1"));
     r.setIdentifierStatus(IdentifierStatus.PUBLIC);
     r.updateAlternateIdentifierForDOI();
 
@@ -481,7 +482,7 @@ public class ResourceTest {
   public void testUpdateAlternateIdentifierForDOICase2() {
     Resource r = new Resource();
 
-    r.setDoi("10.5072/case2");
+    r.setDoi(new DOI("10.5072/case2"));
     r.setIdentifierStatus(IdentifierStatus.PUBLIC);
 
     r.getEml().getAlternateIdentifiers().add("alt-id-1");
@@ -506,7 +507,7 @@ public class ResourceTest {
   public void testUpdateAlternateIdentifierForDOICase3() {
     Resource r = new Resource();
 
-    r.setDoi("10.5072/case3");
+    r.setDoi(new DOI("10.5072/case3"));
     r.setIdentifierStatus(IdentifierStatus.PUBLIC);
 
     r.getEml().getAlternateIdentifiers().add("alt-id-1");
@@ -530,7 +531,7 @@ public class ResourceTest {
   public void testUpdateAlternateIdentifierForDOICase4() {
     Resource r = new Resource();
 
-    r.setDoi("10.5072/case4");
+    r.setDoi(new DOI("10.5072/case4"));
     r.setIdentifierStatus(IdentifierStatus.UNAVAILABLE);
 
     r.getEml().getAlternateIdentifiers().add("doi:10.5072/case4");

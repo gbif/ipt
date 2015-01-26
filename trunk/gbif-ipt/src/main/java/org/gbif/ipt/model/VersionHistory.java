@@ -1,5 +1,6 @@
 package org.gbif.ipt.model;
 
+import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
 
@@ -13,7 +14,7 @@ import javax.validation.constraints.NotNull;
  */
 public class VersionHistory {
 
-  private String doi;
+  private DOI doi;
   private String version;
   private Date released;
   private IdentifierStatus status;
@@ -33,11 +34,11 @@ public class VersionHistory {
    * @return the doi of this version, always in prefix/suffix format excluding "doi:", e.g. 10.1234/qu83ng
    */
   @Nullable
-  public String getDoi() {
+  public DOI getDoi() {
     return doi;
   }
 
-  public void setDoi(String doi) {
+  public void setDoi(DOI doi) {
     this.doi = doi;
   }
 

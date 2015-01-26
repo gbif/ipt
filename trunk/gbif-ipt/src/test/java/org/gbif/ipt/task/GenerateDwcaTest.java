@@ -76,6 +76,7 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -205,7 +206,8 @@ public class GenerateDwcaTest {
     File occurrence = FileUtils.getClasspathFile("resources/res1/occurrence_doi_dataset_id.txt");
     Resource resource = getResource(resourceXML, occurrence);
 
-    assertEquals("10.5072/gc8gqc", resource.getDoi());
+    assertNotNull(resource.getDoi());
+    assertEquals("10.5072/gc8gqc", resource.getDoi().getDoiName());
     assertEquals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION, resource.getIdentifierStatus());
 
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig);
@@ -243,7 +245,7 @@ public class GenerateDwcaTest {
     // 1st record
     String[] row = reader.next();
     assertEquals("1", row[0]);
-    assertEquals("10.5072/gc8gqc", row[1]); // confirm resource DOI used for datasetID
+    assertEquals("doi:10.5072/gc8gqc", row[1]); // confirm resource DOI used for datasetID
     assertEquals("Animalia", row[2]);
     assertEquals("1", row[3]);
     assertEquals("puma concolor", row[4]);
@@ -252,7 +254,7 @@ public class GenerateDwcaTest {
     // 2nd record
     row = reader.next();
     assertEquals("2", row[0]);
-    assertEquals("10.5072/gc8gqc", row[1]); // confirm resource DOI used for datasetID
+    assertEquals("doi:10.5072/gc8gqc", row[1]); // confirm resource DOI used for datasetID
     assertEquals("Animalia", row[2]);
     assertEquals("2", row[3]);
     assertEquals("pumm:concolor", row[4]);

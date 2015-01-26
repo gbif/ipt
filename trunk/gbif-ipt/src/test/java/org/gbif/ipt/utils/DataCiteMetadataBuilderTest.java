@@ -26,7 +26,7 @@ public class DataCiteMetadataBuilderTest {
   public void testBuilder() throws InvalidMetadataException {
     Resource resource = new Resource();
     DOI doi = new DOI("10.5072/ipt12");
-    resource.setDoi(doi.getDoiName());
+    resource.setDoi(doi);
     resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
 
     Organisation organisation = new Organisation();

@@ -182,7 +182,7 @@ public class OverviewActionIT {
     assertEquals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION, r.getIdentifierStatus());
     LOG.info("DOI was reserved successfully, DOI=" + r.getDoi());
 
-    DOI existingDOI = new DOI(r.getDoi());
+    DOI existingDOI = new DOI(r.getDoi().toString());
     Citation citation = new Citation("Mock Citation", existingDOI.toString());
     r.getEml().setCitation(citation);
     // reset DOI
@@ -191,7 +191,7 @@ public class OverviewActionIT {
 
     action.reserveDoi();
     // make sure the existing DOI was reused
-    assertEquals(existingDOI.getDoiName(), r.getDoi());
+    assertEquals(existingDOI.getDoiName(), r.getDoi().getDoiName());
     assertEquals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION, r.getIdentifierStatus());
     LOG.info("Existing DOI was reused successfully, DOI=" + existingDOI.getDoiName());
   }

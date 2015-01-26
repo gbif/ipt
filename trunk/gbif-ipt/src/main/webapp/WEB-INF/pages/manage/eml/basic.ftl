@@ -267,7 +267,11 @@
                 </#if>
               </div>
               <div class="halfcolumn">
-                <@input name="eml.contacts[${contact_index}].userIds[0].identifier" help="i18n" i18nkey="eml.contact.identifier" />
+                <#if eml.contacts[contact_index].userIds[0]??>
+                  <@input name="eml.contacts[${contact_index}].userIds[0].identifier" help="i18n" i18nkey="eml.contact.identifier" value="${eml.contacts[contact_index].userIds[0].identifier!}"/>
+                <#else>
+                  <@input name="eml.contacts[${contact_index}].userIds[0].identifier" help="i18n" i18nkey="eml.contact.identifier" value=""/>
+                </#if>
               </div>
         </div>
       </#list>
@@ -334,7 +338,11 @@
               </#if>
             </div>
             <div class="halfcolumn">
-              <@input name="eml.creators[${creator_index}].userIds[0].identifier" help="i18n" i18nkey="eml.contact.identifier" />
+              <#if eml.creators[creator_index].userIds[0]??>
+                <@input name="eml.creators[${creator_index}].userIds[0].identifier" help="i18n" i18nkey="eml.contact.identifier" value="${eml.creators[creator_index].userIds[0].identifier!}"/>
+              <#else>
+                <@input name="eml.creators[${creator_index}].userIds[0].identifier" help="i18n" i18nkey="eml.contact.identifier" value=""/>
+              </#if>
             </div>
         </div>
     </#list>
@@ -400,7 +408,11 @@
               </#if>
             </div>
             <div class="halfcolumn">
-              <@input name="eml.metadataProviders[${metadataProvider_index}].userIds[0].identifier" help="i18n" i18nkey="eml.contact.identifier" />
+              <#if eml.metadataProviders[metadataProvider_index].userIds[0]??>
+                <@input name="eml.metadataProviders[${metadataProvider_index}].userIds[0].identifier" help="i18n" i18nkey="eml.contact.identifier" value="${eml.metadataProviders[metadataProvider_index].userIds[0].identifier!}"/>
+              <#else>
+                <@input name="eml.metadataProviders[${metadataProvider_index}].userIds[0].identifier" help="i18n" i18nkey="eml.contact.identifier" value=""/>
+              </#if>
             </div>
         </div>
       </#list>
