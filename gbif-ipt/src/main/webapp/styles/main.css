@@ -490,6 +490,12 @@ div.resourceOverview div.bodyOverview div.details table th {
 div.resourceOverview div.bodyOverview div.details table td {
 	color: #666;
 }
+/* Override for published versions table, so current version properties colored green */
+div.resourceOverview div.bodyOverview div.details table.publishedRelease td.green {
+  color: #008959;
+  font-weight: 300;
+}
+
 select#rowType {
   width: 220px;
 }
