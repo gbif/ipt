@@ -288,9 +288,12 @@ $(document).ready(function(){
               <tr>
                   <th>${versionTitle?cap_first}</th><#if resource.lastPublished??><td class="separator green">${resource.emlVersion.toPlainString()}&nbsp;<a class="button" href="${baseURL}/resource.do?r=${resource.shortname}"><input class="button" type="button" value='${viewTitle?cap_first}'/></a><@dwcaValidator/></td></#if><td class="left_padding">${resource.getNextVersion().toPlainString()}&nbsp;<a class="button" href="${baseURL}/resource/preview?r=${resource.shortname}"><input class="button" type="button" value='${previewTitle?cap_first}' <#if missingMetadata>disabled="disabled"</#if>/></a></td>
               </tr>
-              <tr>
+              <!-- hide DOI row if no organisation with DOI account has been activated yet -->
+              <#if organisationWithPrimaryDoiAccount??>
+                <tr>
                   <th>DOI</th><#if resource.lastPublished??><td class="separator green"><#if resource.isAlreadyAssignedDoi()>${resource.versionHistory[0].doi!}<#else>${emptyCell}</#if></td></#if><td class="left_padding"><#if (resource.isAlreadyAssignedDoi() && resource.versionHistory[0].doi != resource.doi!"") || (!resource.isAlreadyAssignedDoi() && resource.doi?has_content)><em>${resource.doi!emptyCell}</em>&nbsp;</#if><@nextDoiButtonTD/></td>
-              </tr>
+                </tr>
+              </#if>
               <tr>
                   <th>${releasedTitle?cap_first}</th><#if resource.lastPublished??><td class="separator green">${resource.lastPublished?date?string.medium}</td></#if><td class="left_padding"><#if resource.nextPublished??>${resource.nextPublished?date?string("MMM d, yyyy, HH:mm:ss")}<#else>${emptyCell}</#if></td>
               </tr>
