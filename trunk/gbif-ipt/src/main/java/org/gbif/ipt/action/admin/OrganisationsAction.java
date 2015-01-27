@@ -250,6 +250,7 @@ public class OrganisationsAction extends POSTAction {
         // ensure only one DOI account is selected as primary!
         for (Organisation org: linkedOrganisations) {
           if (!organisation.getKey().equals(org.getKey()) && org.isAgencyAccountPrimary()) {
+            organisation.setAgencyAccountPrimary(false);
             addFieldError("organisation.agencyAccountPrimary",
               getText("admin.organisation.doiAccount.activated.exists"));
             break;
@@ -261,7 +262,10 @@ public class OrganisationsAction extends POSTAction {
           addActionError(getText("admin.organisation.doiAccount.activated.failed"));
         }
       }
-      organisationValidation.validate(this, organisation);
+      // if organisation doesn't validate prevent DOI account from being selected as primary!
+      if (!organisationValidation.validate(this, organisation)) {
+        organisation.setAgencyAccountPrimary(false);
+      }
     }
   }
 
