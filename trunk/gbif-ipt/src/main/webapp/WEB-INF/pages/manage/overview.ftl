@@ -84,6 +84,7 @@ $(document).ready(function(){
   $('.confirmDeleteDoi').jConfirmAction({question : "<@s.text name='manage.overview.publishing.doi.delete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
   $('.confirmPublishMinorVersion').jConfirmAction({question : "<@s.text name='manage.overview.publishing.doi.minorVersion.confirm'/></br></br><@s.text name='manage.overview.publishing.doi.summary'/></br></br><@s.text name='manage.overview.publishing.doi.confirm.end'/>", yesAnswer : "<@s.text name='basic.yes'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
   $('.confirmPublishMajorVersion').jConfirmAction({question : "<@s.text name='manage.overview.publishing.doi.majorVersion.confirm'/></br></br><@s.text name='manage.overview.publishing.doi.summary'/></br></br><@s.text name='manage.overview.publishing.doi.confirm.end'/>", yesAnswer : "<@s.text name='basic.yes'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='basic.no'/>", checkboxText: "<@s.text name='manage.overview.publishing.doi.register.agreement'/>"});
+  $('.confirmPublishMajorVersionWithoutDOI').jConfirmAction({question : "<@s.text name='manage.overview.publishing.withoutDoi.majorVersion.confirm'/></br></br><@s.text name='manage.overview.publishing.doi.summary'/></br></br><@s.text name='manage.overview.publishing.doi.confirm.end'/>", yesAnswer : "<@s.text name='basic.yes'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
 
     var showReport=false;
 	$("#toggleReport").click(function() {
@@ -282,16 +283,16 @@ $(document).ready(function(){
 
           <table class="publishedRelease">
               <tr class="mapping_head headz">
-                  <th></th><#if resource.lastPublished??><td>${lastPublishedTitle?cap_first}</td></#if><td class="left_padding">${nextPublishedTitle?cap_first}</td>
+                  <th></th><#if resource.lastPublished??><td class="green">${lastPublishedTitle?cap_first}</td></#if><td class="left_padding">${nextPublishedTitle?cap_first}</td>
               </tr>
               <tr>
-                  <th>${versionTitle?cap_first}</th><#if resource.lastPublished??><td class="separator">${resource.emlVersion.toPlainString()}&nbsp;<a class="button" href="${baseURL}/resource.do?r=${resource.shortname}"><input class="button" type="button" value='${viewTitle?cap_first}'/></a><@dwcaValidator/></td></#if><td class="left_padding">${resource.getNextVersion().toPlainString()}&nbsp;<a class="button" href="${baseURL}/resource/preview?r=${resource.shortname}"><input class="button" type="button" value='${previewTitle?cap_first}' <#if missingMetadata>disabled="disabled"</#if>/></a></td>
+                  <th>${versionTitle?cap_first}</th><#if resource.lastPublished??><td class="separator green">${resource.emlVersion.toPlainString()}&nbsp;<a class="button" href="${baseURL}/resource.do?r=${resource.shortname}"><input class="button" type="button" value='${viewTitle?cap_first}'/></a><@dwcaValidator/></td></#if><td class="left_padding">${resource.getNextVersion().toPlainString()}&nbsp;<a class="button" href="${baseURL}/resource/preview?r=${resource.shortname}"><input class="button" type="button" value='${previewTitle?cap_first}' <#if missingMetadata>disabled="disabled"</#if>/></a></td>
               </tr>
               <tr>
-                  <th>DOI</th><#if resource.lastPublished??><td style="color:green" class="separator"><#if resource.isAlreadyAssignedDoi()>${resource.versionHistory[0].doi!}<#else>${emptyCell}</#if></td></#if><td class="left_padding"><#if (resource.isAlreadyAssignedDoi() && resource.versionHistory[0].doi != resource.doi!"") || (!resource.isAlreadyAssignedDoi() && resource.doi?has_content)><em>${resource.doi!emptyCell}</em>&nbsp;</#if><@nextDoiButtonTD/></td>
+                  <th>DOI</th><#if resource.lastPublished??><td class="separator green"><#if resource.isAlreadyAssignedDoi()>${resource.versionHistory[0].doi!}<#else>${emptyCell}</#if></td></#if><td class="left_padding"><#if (resource.isAlreadyAssignedDoi() && resource.versionHistory[0].doi != resource.doi!"") || (!resource.isAlreadyAssignedDoi() && resource.doi?has_content)><em>${resource.doi!emptyCell}</em>&nbsp;</#if><@nextDoiButtonTD/></td>
               </tr>
               <tr>
-                  <th>${releasedTitle?cap_first}</th><#if resource.lastPublished??><td class="separator">${resource.lastPublished?date?string.medium}</td></#if><td class="left_padding"><#if resource.nextPublished??>${resource.nextPublished?date?string("MMM d, yyyy, HH:mm:ss")}<#else>${emptyCell}</#if></td>
+                  <th>${releasedTitle?cap_first}</th><#if resource.lastPublished??><td class="separator green">${resource.lastPublished?date?string.medium}</td></#if><td class="left_padding"><#if resource.nextPublished??>${resource.nextPublished?date?string("MMM d, yyyy, HH:mm:ss")}<#else>${emptyCell}</#if></td>
               </tr>
               <#if resource.lastPublished??>
               <tr>
