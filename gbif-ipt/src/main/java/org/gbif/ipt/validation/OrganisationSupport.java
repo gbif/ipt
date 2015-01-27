@@ -15,8 +15,8 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.service.registry.RegistryManager;
 
-import com.google.common.base.Strings;
 import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 
 public class OrganisationSupport {
 
@@ -36,13 +36,15 @@ public class OrganisationSupport {
    * @param action action
    * @param organisation organisation
    */
-  public void validate(BaseAction action, Organisation organisation) {
-
+  public boolean validate(BaseAction action, Organisation organisation) {
+    boolean valid = true;
     if (organisation.getKey() == null || organisation.getKey().toString().length() < 1) {
+      valid = false;
       action.addFieldError("organisation.key", action.getText("validation.organisation.key.required"));
     }
 
-    if (organisation.getPassword() == null || organisation.getPassword().length() < 1) {
+    if (StringUtils.trimToNull(organisation.getPassword()) == null) {
+      valid = false;
       action.addFieldError("organisation.password", action.getText("validation.organisation.password.required"));
     }
 
@@ -50,6 +52,7 @@ public class OrganisationSupport {
     if (organisation.getKey() != null && organisation.getPassword() != null) {
       if (organisation.getKey().toString().length() > 0 && organisation.getPassword().length() > 0) {
         if (!registryManager.validateOrganisation(organisation.getKey().toString(), organisation.getPassword())) {
+          valid = false;
           action.addFieldError("organisation.password", action.getText("validation.organisation.password.invalid"));
         }
       }
@@ -57,33 +60,44 @@ public class OrganisationSupport {
 
     // validate that if any DOI registration agency account fields were entered, that they are all present
     if (organisation.getDoiRegistrationAgency() != null ||
-        Strings.emptyToNull(organisation.getAgencyAccountUsername()) != null ||
-        Strings.emptyToNull(organisation.getAgencyAccountPassword()) != null ||
-        Strings.emptyToNull(organisation.getDoiPrefix()) != null ||
+        StringUtils.trimToNull(organisation.getAgencyAccountUsername()) != null ||
+        StringUtils.trimToNull(organisation.getAgencyAccountPassword()) != null ||
+        StringUtils.trimToNull(organisation.getDoiPrefix()) != null ||
         organisation.isAgencyAccountPrimary()) {
 
       if (organisation.getDoiRegistrationAgency() == null) {
+        valid = false;
         action.addFieldError("organisation.doiRegistrationAgency", action.getText("validation.organisation.doiRegistrationAgency.required"));
       }
 
-      if (Strings.emptyToNull(organisation.getAgencyAccountUsername()) == null) {
+      if (StringUtils.trimToNull(organisation.getAgencyAccountUsername()) == null) {
+        valid = false;
         action.addFieldError("organisation.agencyAccountUsername", action.getText("validation.organisation.agencyAccountUsername.required"));
       }
 
-      if (Strings.emptyToNull(organisation.getAgencyAccountPassword()) == null) {
+      if (StringUtils.trimToNull(organisation.getAgencyAccountPassword()) == null) {
+        valid = false;
         action.addFieldError("organisation.agencyAccountPassword", action.getText("validation.organisation.agencyAccountPassword.required"));
       }
 
-      // running IPT in production, a DOI prefix is mandatory. In test mode, the test DOI prefix will always be used.
-      if (cfg.getRegistryType() == AppConfig.REGISTRY_TYPE.PRODUCTION) {
-        if (Strings.emptyToNull(organisation.getDoiPrefix()) == null) {
-          action.addFieldError("organisation.doiPrefix", action.getText("validation.organisation.doiPrefix.required"));
-        }
+      if (StringUtils.trimToNull(organisation.getDoiPrefix()) == null) {
+        valid = false;
+        action.addFieldError("organisation.doiPrefix", action.getText("validation.organisation.doiPrefix.required"));
       } else {
-        organisation.setDoiPrefix(Constants.TEST_DOI_PREFIX);
+        // running IPT in development, the test DOI prefix is expected, but not mandatory - show warning otherwise
+        if (cfg.getRegistryType() == AppConfig.REGISTRY_TYPE.DEVELOPMENT
+            && !Constants.TEST_DOI_PREFIX.equalsIgnoreCase(StringUtils.trim(organisation.getDoiPrefix()))) {
+          action.addActionWarning(action.getText("validation.organisation.doiPrefix.invalid.testMode"));
+        }
+        // running IPT in production, the test DOI prefix cannot be used
+        else if (cfg.getRegistryType() == AppConfig.REGISTRY_TYPE.PRODUCTION
+                 && Constants.TEST_DOI_PREFIX.equalsIgnoreCase(StringUtils.trim(organisation.getDoiPrefix()))) {
+          valid = false;
+          action.addFieldError("organisation.doiPrefix", action.getText("validation.organisation.doiPrefix.invalid.productionMode"));
+        }
       }
     }
-
     // TODO validate if the account username and password are correct, e.g. by reserving a test DOI
+    return valid;
   }
 }
