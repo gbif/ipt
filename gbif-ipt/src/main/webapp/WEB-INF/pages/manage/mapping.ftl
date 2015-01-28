@@ -37,7 +37,7 @@ $(document).ready(function(){
 		$(".groupmenu").hide();
 		$('div.definition').not('.required').each(function(index) {
 			// always show all mapped and required fields
-			if ($(".fidx", this).val()=="" && $(".fval", this).val()==""){
+			if ($(".fidx", this).val()=="" && $(".fval", this).val()=="" && $("#doiUsedForDatasetId", this).is(":checked")==false){
 				$(this).hide();
 			};
 		});
@@ -299,17 +299,12 @@ $(document).ready(function(){
   				<input id="fVal${field_index}" class="fval" name="fields[${field_index}].defaultValue" value="${field.defaultValue!}"/>
         </#if>
 	      </div>
-	      	<#if field.index??>
+	      <#if field.index??>
 	      	<div>
 	      		<em><@s.text name='manage.mapping.sourceSample' /></em>:	      		
 	      		<#assign first=true/>
 	      		<#list peek as row><#if row??><#if row[field.index]?has_content><#if !first> | </#if><#assign first=false/>${row[field.index]}</#if></#if></#list>
 	      	</div>
-          <div>
-            <#if datasetId?? && p.qualifiedName()?lower_case == datasetId.qualname?lower_case>
-              <@checkbox name="doiUsedForDatasetId" i18nkey="manage.mapping.datasetIdColumn" value="${doiUsedForDatasetId?string}" help="i18n"/>
-          </#if>
-          </div>
 	      	<div>
 	      		<em><@s.text name='manage.mapping.translation' /></em>:
 	      		<a href="translation.do?r=${resource.shortname}&rowtype=${p.extension.rowType?url}&mid=${mid}&term=${p.qualname?url}">
@@ -320,8 +315,15 @@ $(document).ready(function(){
 	      		</#if>
 	      		</a>
 	      	</div>
-	      	</#if>
-	      	</div>
+	      </#if>
+        <#-- option to use DOI as datasetID -->
+        <#if datasetId?? && p.qualifiedName()?lower_case == datasetId.qualname?lower_case>
+          <div>
+            <@checkbox name="doiUsedForDatasetId" i18nkey="manage.mapping.datasetIdColumn" value="${doiUsedForDatasetId?string}" help="i18n"/>
+          </div>
+        </#if>
+
+	    </div>
 	  </div>
 	</div>
 	<div class="clearfix"></div>
