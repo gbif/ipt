@@ -44,8 +44,7 @@ public class HomeAction extends BaseAction {
   @Override
   public void prepare() {
     super.prepare();
-    resources = resourceManager.list(PublicationStatus.PUBLIC);
-    resources.addAll(resourceManager.list(PublicationStatus.REGISTERED));
+    resources = resourceManager.listPublishedPublicVersions();
     // sort alphabetically
     Collections.sort(resources);
 

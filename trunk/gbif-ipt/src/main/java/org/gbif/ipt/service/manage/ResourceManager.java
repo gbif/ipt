@@ -206,6 +206,17 @@ public interface ResourceManager {
   List<Resource> list(PublicationStatus status);
 
   /**
+   * List all resources in the IPT whose last published version was public (at the time of publication). This
+   * is used to populate the list of resources publicly shown on the IPT home page.
+   * </br>
+   * If a resource is registered with GBIF, it is assumed the resource is public and therefore is included in the list.
+   * Please note only resource published using IPT v2.2 or later store a VersionHistory.
+   *
+   * @return list of resources, or an empty list if none were found
+   */
+  List<Resource> listPublishedPublicVersions();
+
+  /**
    * list all resource that can be managed by a given user.
    *
    * @param user User

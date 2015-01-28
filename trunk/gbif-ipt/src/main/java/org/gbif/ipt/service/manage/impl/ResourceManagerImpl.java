@@ -866,6 +866,23 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return result;
   }
 
+  public List<Resource> listPublishedPublicVersions() {
+    List<Resource> result = new ArrayList<Resource>();
+    for (Resource r : resources.values()) {
+      List<VersionHistory> history = r.getVersionHistory();
+      if (history != null && history.size() > 0) {
+        VersionHistory latestVersion = history.get(0);
+        if (!latestVersion.getPublicationStatus().equals(PublicationStatus.DELETED) &&
+            !latestVersion.getPublicationStatus().equals(PublicationStatus.PRIVATE)) {
+          result.add(r);
+        }
+      } else if (r.isRegistered()) { // for backwards compatibility with resources published prior to v2.2
+        result.add(r);
+      }
+    }
+    return result;
+  }
+
   public List<Resource> list(User user) {
     List<Resource> result = new ArrayList<Resource>();
     // select basedon user rights - for testing return all resources for now

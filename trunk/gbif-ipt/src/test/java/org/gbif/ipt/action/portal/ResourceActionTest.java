@@ -1,7 +1,9 @@
 package org.gbif.ipt.action.portal;
 
 import org.gbif.api.model.common.DOI;
+import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
@@ -12,9 +14,11 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.metadata.eml.EmlWriter;
 import org.gbif.metadata.eml.TaxonKeyword;
 import org.gbif.metadata.eml.TaxonomicCoverage;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -22,26 +26,36 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import freemarker.template.TemplateException;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class ResourceActionTest {
+
   private ResourceAction action;
   private Resource resource;
   private static final String RESOURCE_SHORT_NAME = "test_resource";
-  private static final BigDecimal RESOURCE_VERSION = new BigDecimal("3.0");
-  private static User USER;
+  private static final BigDecimal LATEST_RESOURCE_VERSION = new BigDecimal("3.0");
+  private static final BigDecimal RESOURCE_VERSION_TWO = new BigDecimal("2.0");
+  private static final BigDecimal RESOURCE_VERSION_ONE = new BigDecimal("1.0");
+
+  private static User MANAGER;
 
   @Before
-  public void setup() throws IOException {
+  public void setup() throws IOException, TemplateException {
     SimpleTextProvider mockTextProvider = mock(SimpleTextProvider.class);
     AppConfig mockCfg = mock(AppConfig.class);
     RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
@@ -58,15 +72,24 @@ public class ResourceActionTest {
     // setup Resource with TaxonomicCoverage with 3 TaxonKeyword
     resource = new Resource();
     resource.setShortname(RESOURCE_SHORT_NAME);
-    resource.setEmlVersion(RESOURCE_VERSION);
+    resource.setEmlVersion(LATEST_RESOURCE_VERSION);
 
-    USER = new User();
-    USER.setEmail("jc@gbif.org");
-    USER.setLastname("Costa");
-    USER.setFirstname("Jose");
+    // setup manager as resource creator
+    MANAGER = new User();
+    MANAGER.setEmail("jc@gbif.org");
+    MANAGER.setLastname("Costa");
+    MANAGER.setFirstname("Jose");
+    MANAGER.setRole(User.Role.Manager);
+    resource.setCreator(MANAGER);
 
-    action = new ResourceAction(mockTextProvider, mockCfg, mockRegistrationManager, mockResourceManager,
-      mockVocabManager, mockDataDir);
+    // add three published versions to version history, all published by manager, some private, other public
+    VersionHistory v1 = new VersionHistory(RESOURCE_VERSION_ONE, new Date(), MANAGER, PublicationStatus.PRIVATE);
+    resource.addVersionHistory(v1);
+    VersionHistory v2 = new VersionHistory(RESOURCE_VERSION_TWO, new Date(), MANAGER, PublicationStatus.PUBLIC);
+    resource.addVersionHistory(v2);
+    VersionHistory v3 = new VersionHistory(LATEST_RESOURCE_VERSION, new Date(), MANAGER, PublicationStatus.PRIVATE);
+    resource.addVersionHistory(v3);
+    assertEquals(3, resource.getVersionHistory().size());
 
     TaxonomicCoverage coverage1 = new TaxonomicCoverage();
     coverage1.setDescription("Description1");
@@ -92,12 +115,27 @@ public class ResourceActionTest {
     List<TaxonomicCoverage> coverages = new ArrayList<TaxonomicCoverage>();
     coverages.add(coverage1);
     resource.getEml().setTaxonomicCoverages(coverages);
+
+    // mock returning Eml file, with actual resource metadata (Eml)
+    File tmpEmlFile = File.createTempFile("eml", ".xml");
+    EmlWriter.writeEmlFile(tmpEmlFile, resource.getEml());
+    when(mockDataDir.resourceEmlFile(anyString(), any(BigDecimal.class))).thenReturn(tmpEmlFile);
+
+    // mock returning DwC-A file, with file that doesn't exist. This means the resource is metadata-only
+    File nonExistingDwca = new File("dwca", ".zip");
+    assertFalse(nonExistingDwca.exists());
+    when(mockDataDir.resourceDwcaFile(anyString(), any(BigDecimal.class))).thenReturn(nonExistingDwca);
+
+    action =
+      new ResourceAction(mockTextProvider, mockCfg, mockRegistrationManager, mockResourceManager, mockVocabManager,
+        mockDataDir);
+    action.setResource(resource);
   }
 
   @Test
   public void testSetOrganizedTaxonomicCoverages() {
-    List<OrganizedTaxonomicCoverage> coverages = action.constructOrganizedTaxonomicCoverages(
-      resource.getEml().getTaxonomicCoverages());
+    List<OrganizedTaxonomicCoverage> coverages =
+      action.constructOrganizedTaxonomicCoverages(resource.getEml().getTaxonomicCoverages());
     assertEquals(1, coverages.size());
     assertEquals(3, coverages.get(0).getKeywords().size());
     assertEquals("Plantae (Plants)", coverages.get(0).getKeywords().get(0).getDisplayNames().get(0));
@@ -110,7 +148,7 @@ public class ResourceActionTest {
     action.setVersion(new BigDecimal("1.34"));
 
     // DOI must be PUBLIC to be assigned
-    VersionHistory history = new VersionHistory(new BigDecimal("1.34"), new Date(), USER, PublicationStatus.PUBLIC);
+    VersionHistory history = new VersionHistory(new BigDecimal("1.34"), new Date(), MANAGER, PublicationStatus.PUBLIC);
     history.setStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
     history.setDoi(new DOI("10.1126", "IO65467"));
     resource.addVersionHistory(history);
@@ -124,5 +162,71 @@ public class ResourceActionTest {
     resource.addVersionHistory(history);
 
     assertEquals("10.1126/io65467", action.findDoiAssignedToPublishedVersion().getDoiName());
+  }
+
+  /**
+   * When manager is not logged in, ensure published REGISTERED versions shown publicly.
+   */
+  @Test
+  public void testDetailForPublishedRegisteredVersion() {
+    // simulate pre v2.2 resource that is registered and has no VersionHistory
+    action.getResource().setKey(UUID.randomUUID());
+    action.getResource().getVersionHistory().clear();
+    assertTrue(action.getResource().isRegistered());
+    assertTrue(action.getResource().getVersionHistory().isEmpty());
+    assertEquals(LATEST_RESOURCE_VERSION, action.getResource().getEmlVersion());
+
+    // the last published version was registered and therefore can be shown publicly
+    assertEquals(BaseAction.SUCCESS, action.detail());
+  }
+
+  /**
+   * When manager is not logged in, ensure published PRIVATE versions not shown publicly.
+   */
+  @Test
+  public void testDetailForPublishedPrivateVersion() {
+    // the last published version (3.0) was private at the time of publication
+    assertEquals(BaseAction.NOT_ALLOWED, action.detail());
+  }
+
+  /**
+   * When manager is not logged in, ensure specific published PUBLIC versions are shown publicly.
+   */
+  @Test
+  public void testDetailForSpecificPublishedPublicVersion() {
+    // the published version 2.0 was public at time of publication
+    action.setVersion(RESOURCE_VERSION_TWO);
+    assertEquals(BaseAction.SUCCESS, action.detail());
+  }
+
+  /**
+   * When manager is not logged in, ensure specific published PRIVATE versions are shown publicly.
+   */
+  @Test
+  public void testDetailForSpecificPrivatePublicVersion() {
+    // the published version 1.0 was private at time of publication
+    action.setVersion(RESOURCE_VERSION_ONE);
+    assertEquals(BaseAction.NOT_ALLOWED, action.detail());
+  }
+
+  /**
+   * When manager IS not logged in, ensure ALL published versions are shown.
+   */
+  @Test
+  public void testDetailForLoggedInManager() {
+    // simulate manager being logged in
+    Map<String, Object> session = new HashMap<String, Object>();
+    session.put(Constants.SESSION_USER, MANAGER);
+    action.setSession(session);
+
+    assertNotNull(action.getCurrentUser());
+
+    // ensure all versions available to manager
+    action.setVersion(RESOURCE_VERSION_ONE);
+    assertEquals(BaseAction.SUCCESS, action.detail());
+    action.setVersion(RESOURCE_VERSION_TWO);
+    assertEquals(BaseAction.SUCCESS, action.detail());
+    action.setVersion(LATEST_RESOURCE_VERSION);
+    assertEquals(BaseAction.SUCCESS, action.detail());
   }
 }
