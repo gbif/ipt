@@ -516,6 +516,7 @@ public class Resource implements Serializable, Comparable<Resource> {
     }).sortedCopy(sources);
   }
 
+  @NotNull
   public PublicationStatus getStatus() {
     return status;
   }
@@ -642,6 +643,35 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   public boolean isPublished() {
     return lastPublished != null;
+  }
+
+  /**
+   * @return true if the last published version is public, false otherwise
+   */
+  public boolean isLastPublishedVersionPublic() {
+    List<VersionHistory> history = getVersionHistory();
+    if (!history.isEmpty()) {
+      VersionHistory latestVersion = history.get(0);
+      if (latestVersion.getPublicationStatus().equals(PublicationStatus.PUBLIC)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * @return publication status of last published version, defaulting to status=private if it is not definitively known
+   */
+  @NotNull
+  public PublicationStatus getLastPublishedVersionsPublicationStatus() {
+    List<VersionHistory> history = getVersionHistory();
+    if (!history.isEmpty()) {
+      return history.get(0).getPublicationStatus();
+    } else if (status.equals(PublicationStatus.REGISTERED)) {
+      return PublicationStatus.REGISTERED;
+    } else {
+      return PublicationStatus.PRIVATE;
+    }
   }
 
   public boolean isRegistered() {

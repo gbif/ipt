@@ -39,6 +39,10 @@ import static org.junit.Assert.assertTrue;
 
 public class ResourceTest {
   private static final Logger LOG = Logger.getLogger(ResourceTest.class);
+  private static final BigDecimal LATEST_RESOURCE_VERSION = new BigDecimal("3.0");
+  private static final BigDecimal RESOURCE_VERSION_TWO = new BigDecimal("2.0");
+  private static final BigDecimal RESOURCE_VERSION_ONE = new BigDecimal("1.0");
+
   private final Extension OCC;
   private final Extension EXT;
   private final Extension TAX;
@@ -91,6 +95,15 @@ public class ResourceTest {
     Resource res = new Resource();
     res.setTitle("Test Resource");
     res.setShortname("test");
+
+    // add three published versions to version history, all published by user, some private, other public
+    VersionHistory v1 = new VersionHistory(RESOURCE_VERSION_ONE, new Date(), USER, PublicationStatus.PRIVATE);
+    res.addVersionHistory(v1);
+    VersionHistory v2 = new VersionHistory(RESOURCE_VERSION_TWO, new Date(), USER, PublicationStatus.PUBLIC);
+    res.addVersionHistory(v2);
+    VersionHistory v3 = new VersionHistory(LATEST_RESOURCE_VERSION, new Date(), USER, PublicationStatus.PRIVATE);
+    res.addVersionHistory(v3);
+
     return res;
   }
 
@@ -214,25 +227,25 @@ public class ResourceTest {
   public void testAddVersionHistory() {
     Resource resource = getResource();
 
-    VersionHistory vh1 = new VersionHistory(BigDecimal.valueOf(1.4), new Date(), USER, PublicationStatus.PUBLIC);
-    VersionHistory vh2 = new VersionHistory(BigDecimal.valueOf(1.5), new Date(), USER, PublicationStatus.PUBLIC);
+    VersionHistory vh4 = new VersionHistory(BigDecimal.valueOf(3.4), new Date(), USER, PublicationStatus.PUBLIC);
+    VersionHistory vh5 = new VersionHistory(BigDecimal.valueOf(3.5), new Date(), USER, PublicationStatus.PUBLIC);
 
-    resource.addVersionHistory(vh1);
-    resource.addVersionHistory(vh2);
+    resource.addVersionHistory(vh4);
+    resource.addVersionHistory(vh5);
 
-    assertEquals(2, resource.getVersionHistory().size());
+    assertEquals(5, resource.getVersionHistory().size());
 
     // try and add a version history with same version number - isn't allowed!
-    VersionHistory vh3 = new VersionHistory(BigDecimal.valueOf(1.5), new Date(), USER, PublicationStatus.PUBLIC);
+    VersionHistory vh6 = new VersionHistory(BigDecimal.valueOf(3.5), new Date(), USER, PublicationStatus.PUBLIC);
 
-    resource.addVersionHistory(vh3);
+    resource.addVersionHistory(vh6);
 
-    assertEquals(2, resource.getVersionHistory().size());
+    assertEquals(5, resource.getVersionHistory().size());
   }
 
   @Test
   public void testRemoveVersionHistory() {
-    Resource resource = getResource();
+    Resource resource = new Resource();
 
     VersionHistory vh1 = new VersionHistory(BigDecimal.valueOf(1.4), new Date(), USER, PublicationStatus.PUBLIC);
     VersionHistory vh2 = new VersionHistory(BigDecimal.valueOf(1.5), new Date(), USER, PublicationStatus.PUBLIC);
@@ -251,7 +264,7 @@ public class ResourceTest {
 
   @Test
   public void testAddVersionHistoryWithTrailingZero() {
-    Resource resource = getResource();
+    Resource resource = new Resource();
 
     VersionHistory vh1 = new VersionHistory(new BigDecimal("1.1"), new Date(), USER, PublicationStatus.PUBLIC);
     VersionHistory vh9 = new VersionHistory(new BigDecimal("1.9"), new Date(), USER, PublicationStatus.PUBLIC);
@@ -273,7 +286,7 @@ public class ResourceTest {
 
   @Test
   public void testFindVersionHistory() {
-    Resource resource = getResource();
+    Resource resource = new Resource();
 
     VersionHistory vh1 = new VersionHistory(BigDecimal.valueOf(1.4), new Date(), USER, PublicationStatus.PUBLIC);
     VersionHistory vh2 = new VersionHistory(BigDecimal.valueOf(1.5), new Date(), USER, PublicationStatus.PUBLIC);
@@ -544,5 +557,23 @@ public class ResourceTest {
 
     assertEquals(1, r.getEml().getAlternateIdentifiers().size());
     assertEquals("doi:10.5077/other", r.getEml().getAlternateIdentifiers().get(0));
+  }
+
+  /**
+   * Check: the last published version (3.0) was private.
+   */
+  @Test
+  public void testIsLastPublishedVersionPublic() {
+    Resource r = getResource();
+    assertFalse(r.isLastPublishedVersionPublic());
+  }
+
+  /**
+   * Check: the last published version (3.0) publication status was PRIVATE.
+   */
+  @Test
+  public void testGetLastPublishedVersionsPublicationStatus() {
+    Resource r = getResource();
+    assertEquals(PublicationStatus.PRIVATE, r.getLastPublishedVersionsPublicationStatus());
   }
 }

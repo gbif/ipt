@@ -224,8 +224,12 @@ public class ResourceActionTest {
     // ensure all versions available to manager
     action.setVersion(RESOURCE_VERSION_ONE);
     assertEquals(BaseAction.SUCCESS, action.detail());
+    // ensure warning was generated (about this resource being private and not available to everyone)
+    assertEquals(1, action.getActionWarnings().size());
+
     action.setVersion(RESOURCE_VERSION_TWO);
     assertEquals(BaseAction.SUCCESS, action.detail());
+
     action.setVersion(LATEST_RESOURCE_VERSION);
     assertEquals(BaseAction.SUCCESS, action.detail());
   }

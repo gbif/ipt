@@ -129,7 +129,7 @@ public class ResourceAction extends PortalBaseAction {
   private BigDecimal findLatestPublishedPublicVersion(Resource resource) {
     if (resource != null) {
       List<VersionHistory> history = resource.getVersionHistory();
-      if (history != null && history.size() > 0) {
+      if (!history.isEmpty()) {
         VersionHistory latestVersion = history.get(0);
         if (!latestVersion.getPublicationStatus().equals(PublicationStatus.DELETED) &&
             !latestVersion.getPublicationStatus().equals(PublicationStatus.PRIVATE)) {
@@ -153,13 +153,33 @@ public class ResourceAction extends PortalBaseAction {
   private BigDecimal findLatestPublishedVersion(Resource resource) {
     if (resource != null) {
       List<VersionHistory> history = resource.getVersionHistory();
-      if (history != null && history.size() > 0) {
+      if (!history.isEmpty()) {
         return new BigDecimal(history.get(0).getVersion());
       } else {
         return resource.getEmlVersion();
       }
     }
     return null;
+  }
+
+  /**
+   * @return publication status of specific published version, defaulting to status=private if it is not definitively
+   * known
+   */
+  private PublicationStatus getPublishedVersionsPublicationStatus(Resource resource, BigDecimal version) {
+    Preconditions.checkNotNull(version);
+    List<VersionHistory> history = resource.getVersionHistory();
+    if (!history.isEmpty()) {
+      for (VersionHistory vh: history) {
+        BigDecimal vhVersion = new BigDecimal(vh.getVersion());
+        if (vhVersion.compareTo(version) == 0) {
+          return vh.getPublicationStatus();
+        }
+      }
+    } else if (resource.getEmlVersion().compareTo(version) == 0) {
+      return resource.getStatus();
+    }
+    return PublicationStatus.PRIVATE;
   }
 
   /**
@@ -440,6 +460,13 @@ public class ResourceAction extends PortalBaseAction {
       // resource managers can see all published versions regardless of whether they were public or private
       if (getCurrentUser() != null && RequireManagerInterceptor.isAuthorized(getCurrentUser(), resource)) {
         version = (version == null) ? findLatestPublishedVersion(resource) : version;
+
+        // warn user in case this version isn't publicly available
+        PublicationStatus versionStatus = getPublishedVersionsPublicationStatus(resource, version);
+        if (versionStatus.equals(PublicationStatus.PRIVATE) || versionStatus.equals(PublicationStatus.DELETED)) {
+          addActionWarning(
+            getText("portal.resource.warning.notPublic", new String[] {versionStatus.toString().toLowerCase()}));
+        }
       }
       // otherwise only published public versions can be shown
       else {

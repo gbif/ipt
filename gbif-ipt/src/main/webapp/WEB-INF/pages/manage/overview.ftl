@@ -280,6 +280,7 @@ $(document).ready(function(){
         <#assign viewTitle><@s.text name='button.view'/></#assign>
         <#assign previewTitle><@s.text name='button.preview'/></#assign>
         <#assign emptyCell="-"/>
+        <#assign visibilityTitle><@s.text name='manage.overview.visibility'/></#assign>
 
           <table class="publishedRelease">
               <tr class="mapping_head headz">
@@ -288,6 +289,12 @@ $(document).ready(function(){
               <tr>
                   <th>${versionTitle?cap_first}</th><#if resource.lastPublished??><td class="separator green">${resource.emlVersion.toPlainString()}&nbsp;<a class="button" href="${baseURL}/resource.do?r=${resource.shortname}"><input class="button" type="button" value='${viewTitle?cap_first}'/></a><@dwcaValidator/></td></#if><td class="left_padding">${resource.getNextVersion().toPlainString()}&nbsp;<a class="button" href="${baseURL}/resource/preview?r=${resource.shortname}"><input class="button" type="button" value='${previewTitle?cap_first}' <#if missingMetadata>disabled="disabled"</#if>/></a></td>
               </tr>
+              <!-- hide visibility row if a DOI has already been assigned to the resource since any resource with a DOI has to be public -->
+              <#if !resource.isAlreadyAssignedDoi() && !resource.isRegistered()>
+                <tr>
+                  <th>${visibilityTitle?cap_first}</th><td class="separator green">${resource.getLastPublishedVersionsPublicationStatus()?lower_case?cap_first}</td><td class="left_padding">${resource.status?lower_case?cap_first}</td>
+                </tr>
+              </#if>
               <!-- hide DOI row if no organisation with DOI account has been activated yet -->
               <#if organisationWithPrimaryDoiAccount??>
                 <tr>
@@ -357,22 +364,29 @@ $(document).ready(function(){
       <form action='resource-${action}.do' method='post'>
         <input name="r" type="hidden" value="${resource.shortname}"/>
         <#if resource.status=="PUBLIC">
-          <#if currentUser.hasRegistrationRights()>
-            <@s.submit cssClass="confirmRegistration" name="register" key="button.register" disabled="${missingRegistrationMetadata?string}"/>
-            <#if resource.status=="PUBLIC">
-              <#if missingRegistrationMetadata>
-                  <img class="infoImg" src="${baseURL}/images/warning.gif"/>
-                  <div class="info autop">
-                      <@s.text name="manage.overview.visibility.missing.metadata"/>
-                  </div>
-              </#if>
-            </#if>
-          <#else>
+          <#if !currentUser.hasRegistrationRights()>
+            <!-- Disable register button and show warning: user must have registration rights -->
             <@s.submit cssClass="confirmRegistration" name="register" key="button.register" disabled="true"/>
             <img class="infoImg" src="${baseURL}/images/warning.gif"/>
             <div class="info autop">
               <@s.text name="manage.resource.status.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
             </div>
+          <#elseif missingRegistrationMetadata?string == "true">
+            <!-- Disable register button and show warning: user must fill in minimum registration metadata -->
+            <@s.submit cssClass="confirmRegistration" name="register" key="button.register" disabled="true"/>
+            <img class="infoImg" src="${baseURL}/images/warning.gif"/>
+            <div class="info autop">
+              <@s.text name="manage.overview.visibility.missing.metadata"/>
+            </div>
+          <#elseif !resource.isLastPublishedVersionPublic()>
+            <!-- Disable register button and show warning: last published version must be publicly available to register -->
+            <@s.submit cssClass="confirmRegistration" name="register" key="button.register" disabled="true"/>
+            <img class="infoImg" src="${baseURL}/images/warning.gif"/>
+            <div class="info autop">
+              <@s.text name="manage.overview.prevented.resource.registration.notPublic"/>
+            </div>
+          <#else>
+            <@s.submit cssClass="confirmRegistration" name="register" key="button.register"/>
           </#if>
         <#else>
           <#if resource.status=="PRIVATE">
