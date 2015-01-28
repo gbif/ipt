@@ -19,7 +19,7 @@ versionsTable macro: Generates a data table that has pagination.
                '${v.released?date}',
                '${v.recordsPublished}',
                <#if v.changeSummary??>"<p class='transbox'>${v.changeSummary?replace("\'", "\\'")?replace("\"", '\\"')}&nbsp;<#if managerRights><a href='${baseURL}/manage/history.do?r=${resource.shortname}&v=${v.version}'><@s.text name='button.edit'/></a></#if></p>"<#else>"-"</#if>,
-               <#if v.doi??>'${v.doi.getDoiName()!}'<#else>''</#if>,
+               <#if v.doi?? && v.status=="PUBLIC">'${v.doi!}'<#else>''</#if>,
                <#if v.modifiedBy??>'${v.modifiedBy.firstname?replace("\'", "\\'")?replace("\"", '\\"')!} ${v.modifiedBy.lastname?replace("\'", "\\'")?replace("\"", '\\"')!}'<#else>""</#if>]<#if v_has_next>,</#if>
           </#if>
       </#list>
