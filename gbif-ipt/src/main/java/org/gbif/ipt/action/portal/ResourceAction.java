@@ -12,6 +12,7 @@ import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.struts2.RequireManagerInterceptor;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.FileUtils;
 import org.gbif.metadata.eml.Citation;
@@ -37,6 +38,7 @@ import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 import javax.xml.parsers.ParserConfigurationException;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -106,9 +108,9 @@ public class ResourceAction extends PortalBaseAction {
    * @throws SAXException if problem occurred parsing eml file
    * @throws javax.xml.parsers.ParserConfigurationException if problem occurred parsing eml file
    */
-  private Eml loadEmlFromFile(String shortname, @Nullable BigDecimal version)
+  private Eml loadEmlFromFile(String shortname, @NotNull BigDecimal version)
     throws IOException, SAXException, ParserConfigurationException {
-    version = (version == null) ? findLatestPublishedVersion(resource) : version;
+    Preconditions.checkNotNull(version);
     File emlFile = dataDir.resourceEmlFile(shortname, version);
     LOG.debug("Loading EML from file: " + emlFile.getAbsolutePath());
     InputStream in = new FileInputStream(emlFile);
@@ -116,17 +118,45 @@ public class ResourceAction extends PortalBaseAction {
   }
 
   /**
-   * Return the latest published version, or null if the resource's VersionHistory list is null or empty. Important,
-   * VersionHistory goes from latest published (first index) to earliest published (last index).
+   * Return the latest published public (or registered) version, or null if the last published version was private or
+   * deleted.
+   * </br>
+   * Important, VersionHistory goes from latest published (first index) to earliest published (last index).
    *
    * @param resource resource
-   * @return latest published version, or null if VersionHistory list was null or empty
+   * @return latest published public (or registered) version, or null if none found
+   */
+  private BigDecimal findLatestPublishedPublicVersion(Resource resource) {
+    if (resource != null) {
+      List<VersionHistory> history = resource.getVersionHistory();
+      if (history != null && history.size() > 0) {
+        VersionHistory latestVersion = history.get(0);
+        if (!latestVersion.getPublicationStatus().equals(PublicationStatus.DELETED) &&
+            !latestVersion.getPublicationStatus().equals(PublicationStatus.PRIVATE)) {
+          return new BigDecimal(latestVersion.getVersion());
+        }
+      } else if (resource.isRegistered()) {
+        return resource.getEmlVersion();
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Return the latest published version regardless of its visibility (e.g. public or private).
+   * </br>
+   * Important, VersionHistory goes from latest published (first index) to earliest published (last index).
+   *
+   * @param resource resource
+   * @return latest published public (or registered) version, or null if VersionHistory list was null or empty
    */
   private BigDecimal findLatestPublishedVersion(Resource resource) {
     if (resource != null) {
       List<VersionHistory> history = resource.getVersionHistory();
       if (history != null && history.size() > 0) {
         return new BigDecimal(history.get(0).getVersion());
+      } else {
+        return resource.getEmlVersion();
       }
     }
     return null;
@@ -388,8 +418,16 @@ public class ResourceAction extends PortalBaseAction {
   }
 
   /**
-   * Load resource detail (public portal) page for a specific published version, or the last published version if
-   * no resource version was specified.
+   * Load resource detail (public portal) page. If no resource version is specified, the last public published version
+   * is returned.
+   * </br>
+   * Admin users and resource managers can see all published versions of a resource.
+   * </br>
+   * Non authorized users can only see published versions that were publicly available at the time of publishing, or
+   * that are registered (needed for resource published prior to IPT v2.2.
+   * </br>
+   * Please note that changing a resource's visibility from private to public does not change the visibility of the
+   * last published version.
    * 
    * @return Struts2 result string
    */
@@ -397,9 +435,31 @@ public class ResourceAction extends PortalBaseAction {
     if (resource == null) {
       return NOT_FOUND;
     }
-    // load EML instance for version requested
     String name = resource.getShortname();
     try {
+      // resource managers can see all published versions regardless of whether they were public or private
+      if (getCurrentUser() != null && RequireManagerInterceptor.isAuthorized(getCurrentUser(), resource)) {
+        version = (version == null) ? findLatestPublishedVersion(resource) : version;
+      }
+      // otherwise only published public versions can be shown
+      else {
+        // if no specific version was requested, find the latest published public version
+        if (version == null) {
+          version = findLatestPublishedPublicVersion(resource);
+          if (version == null) {
+            return NOT_ALLOWED;
+          }
+        }
+        // if a specific version was requested, ensure it was public (or registered)
+        else {
+          VersionHistory history = resource.findVersionHistory(version);
+          if (history == null || history.getPublicationStatus().equals(PublicationStatus.PRIVATE) || history
+            .getPublicationStatus().equals(PublicationStatus.DELETED)) {
+            return NOT_ALLOWED;
+          }
+        }
+      }
+      // load EML instance for version requested
       eml = loadEmlFromFile(name, version);
     } catch (FileNotFoundException e) {
       LOG.error("EML file version #" + getStringVersion() + " for resource " + name + " not found");

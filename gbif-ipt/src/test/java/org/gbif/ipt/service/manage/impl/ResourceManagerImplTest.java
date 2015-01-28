@@ -1027,6 +1027,54 @@ public class ResourceManagerImplTest {
   }
 
   /**
+   * Ensure resource whose last published version is public get returned in list of published public versions.
+   */
+  @Test
+  public void testListPublishedPublicVersions()
+    throws ParserConfigurationException, SAXException, IOException, InvalidFilenameException, ImportException,
+    AlreadyExistingException {
+    // create a new resource using configuration file (resource.xml) that has version history
+    File resourceXML = FileUtils.getClasspathFile("resources/res1/resource_version_history.xml");
+    when(mockedDataDir.resourceFile(anyString(), anyString())).thenReturn(resourceXML);
+    File emlXML = FileUtils.getClasspathFile("resources/res1/eml.xml");
+    when(mockedDataDir.resourceEmlFile(anyString(), any(BigDecimal.class))).thenReturn(emlXML);
+    ResourceManager resourceManager = getResourceManagerImpl();
+    File zippedResourceFolder = FileUtils.getClasspathFile("resources/res1.zip");
+    resourceManager.create("res1", null, zippedResourceFolder, creator, baseAction);
+
+    // test if last published version of resource was public (shown in list of public resources)
+    assertEquals(1, resourceManager.listPublishedPublicVersions().size());
+  }
+
+  /**
+   * Ensure resource whose last published version is registered gets returned in list of published public versions
+   * despite not having a VersionHistory. Simulates pre IPT v2.2 resource, since VersionHistory was added from v2.2 on.
+   */
+  @Test
+  public void testListPublishedRegisteredVersions()
+    throws ParserConfigurationException, SAXException, IOException, InvalidFilenameException, ImportException,
+    AlreadyExistingException {
+    // create new resource from configuration file (resource.xml) that does not have version history
+    File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
+    when(mockedDataDir.resourceFile(anyString(), anyString())).thenReturn(resourceXML);
+    File emlXML = FileUtils.getClasspathFile("resources/res1/eml.xml");
+    when(mockedDataDir.resourceEmlFile(anyString(), any(BigDecimal.class))).thenReturn(emlXML);
+    ResourceManager resourceManager = getResourceManagerImpl();
+    File zippedResourceFolder = FileUtils.getClasspathFile("resources/res1.zip");
+    resourceManager.create("res1", null, zippedResourceFolder, creator, baseAction);
+
+    // ensure resource is registered and it has no VersionHistory - simulating pre IPT v2.2 resource
+    assertEquals(1, resourceManager.list().size());
+    Resource created = resourceManager.list().get(0);
+    created.setKey(UUID.randomUUID());
+    assertTrue(created.isRegistered());
+    assertTrue(created.getVersionHistory().isEmpty());
+
+    // test if last published version of resource was public (shown in list of public resources)
+    assertEquals(1, resourceManager.listPublishedPublicVersions().size());
+  }
+
+  /**
    * Return a Non Registered Metadata Only Resource used for testing.
    *
    * @return a Non Registered Metadata Only Resource used for testing
