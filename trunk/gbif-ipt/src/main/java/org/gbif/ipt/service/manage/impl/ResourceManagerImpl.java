@@ -870,7 +870,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     List<Resource> result = new ArrayList<Resource>();
     for (Resource r : resources.values()) {
       List<VersionHistory> history = r.getVersionHistory();
-      if (history != null && history.size() > 0) {
+      if (!history.isEmpty()) {
         VersionHistory latestVersion = history.get(0);
         if (!latestVersion.getPublicationStatus().equals(PublicationStatus.DELETED) &&
             !latestVersion.getPublicationStatus().equals(PublicationStatus.PRIVATE)) {

@@ -880,6 +880,13 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     if (resource == null) {
       return NOT_FOUND;
     }
+    // prevent registration if last published version was not public (at the time of publishing)
+    if (!resource.isLastPublishedVersionPublic()) {
+      String msg = getText("manage.overview.failed.resource.registration.notPublic");
+      addActionError(msg);
+      LOG.error(msg);
+      return INPUT;
+    }
     if (PublicationStatus.PUBLIC == resource.getStatus()) {
       if (unpublish) {
         addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),

@@ -63,6 +63,7 @@
     </action>
     <action name="resource-*" class="org.gbif.ipt.action.manage.OverviewAction" method="{1}">
       <result>/WEB-INF/pages/manage/overview.ftl</result>
+      <result name="input">/WEB-INF/pages/manage/overview.ftl</result>
     </action>
 
     <!-- EML metadata actions dynamically invoked. This is the *only* action needed for all forms -->
