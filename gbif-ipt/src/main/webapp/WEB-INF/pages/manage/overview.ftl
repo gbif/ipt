@@ -292,7 +292,7 @@ $(document).ready(function(){
               <!-- hide visibility row if a DOI has already been assigned to the resource since any resource with a DOI has to be public -->
               <#if !resource.isAlreadyAssignedDoi() && !resource.isRegistered()>
                 <tr>
-                  <th>${visibilityTitle?cap_first}</th><td class="separator green">${resource.getLastPublishedVersionsPublicationStatus()?lower_case?cap_first}</td><td class="left_padding">${resource.status?lower_case?cap_first}</td>
+                  <th>${visibilityTitle?cap_first}</th><#if resource.lastPublished??><td class="separator green">${resource.getLastPublishedVersionsPublicationStatus()?lower_case?cap_first}</td></#if><td class="left_padding">${resource.status?lower_case?cap_first}</td>
                 </tr>
               </#if>
               <!-- hide DOI row if no organisation with DOI account has been activated yet -->
