@@ -7,6 +7,7 @@ import org.gbif.doi.service.ServiceConfig;
 import org.gbif.doi.service.datacite.DataCiteService;
 import org.gbif.doi.service.ezid.EzidService;
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.voc.DOIRegistrationAgency;
@@ -47,6 +48,7 @@ import static org.mockito.Mockito.when;
 @RunWith(Parameterized.class)
 public class OverviewActionIT {
 
+
   private static final Logger LOG = Logger.getLogger(OverviewActionIT.class);
 
   private Resource r;
@@ -72,7 +74,7 @@ public class OverviewActionIT {
     Organisation oDataCite = new Organisation();
     oDataCite.setAgencyAccountPrimary(true);
     oDataCite.setName("GBIF");
-    oDataCite.setDoiPrefix("10.5072");
+    oDataCite.setDoiPrefix(Constants.TEST_DOI_PREFIX);
     oDataCite.setCanHost(true);
     oDataCite.setAgencyAccountUsername(dcCfg.getUsername());
     oDataCite.setAgencyAccountPassword(dcCfg.getPassword());
@@ -98,7 +100,7 @@ public class OverviewActionIT {
     Organisation oEZID = new Organisation();
     oEZID.setAgencyAccountPrimary(true);
     oEZID.setName("GBIF");
-    oEZID.setDoiPrefix("10.5072");
+    oEZID.setDoiPrefix(Constants.EZID_TEST_DOI_SHOULDER);
     oEZID.setCanHost(true);
     oEZID.setAgencyAccountUsername("apitest");
     oEZID.setAgencyAccountPassword("apitest");

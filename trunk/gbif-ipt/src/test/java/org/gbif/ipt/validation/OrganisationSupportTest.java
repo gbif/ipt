@@ -4,10 +4,12 @@ import org.gbif.ipt.action.admin.OrganisationsAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Organisation;
+import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.utils.HttpUtil;
 
 import java.util.Arrays;
 import java.util.UUID;
@@ -145,7 +147,8 @@ public class OrganisationSupportTest {
     RegistryManager mockRegistryManager = mock(RegistryManager.class);
     when(mockRegistryManager.validateOrganisation(ORGANISATION_KEY, VALID_ORGANISATION_PASSWORD)).thenReturn(true);
 
-    OrganisationSupport organisationSupport = new OrganisationSupport(mockRegistryManager, mockCfg);
+    OrganisationSupport organisationSupport = new OrganisationSupport(mockRegistryManager, mockCfg, HttpUtil
+      .newMultithreadedClient(10000, 3, 2));
     assertEquals(isValid, organisationSupport.validate(action, organisation));
   }
 }

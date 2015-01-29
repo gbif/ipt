@@ -38,11 +38,8 @@ public final class Constants {
     "GBIF Dataset Subtype Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_subtype.xml";
   public static final String DATASET_TYPE_METADATA_IDENTIFIER = "metadata";
   public static final String TEST_DOI_PREFIX = "10.5072";
+  public static final String EZID_TEST_DOI_SHOULDER = "10.5072/FK2";
 
-  // DOI access scheme must be lower case, like ftp: or http:
-  public static final String DOI_ACCESS_SCHEMA = "doi:";
-  // DOI (preferred) proxy server URL must contain trailing forward slash
-  public static final String DOI_PROXY_SERVER_URL = "http://doi.org/";
   // First published version number
   public static final BigDecimal INITIAL_RESOURCE_VERSION = new BigDecimal("1.0");
 

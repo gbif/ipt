@@ -11,13 +11,6 @@ $(document).ready(function(){
 
   $('select#organisation\\.key').select2({placeholder: '<@s.text name="admin.organisation.name.select"/>', width:"375px", allowClear: true});
 
-  // in test mode, prepopulate doi prefix input with test prefix, but do not deactivate it
-  var registryType = '${cfg.getRegistryType().toString()}';
-  if (registryType == 'DEVELOPMENT') {
-      var testDoiPrefix = '${organisation.getTestDoiPrefix()}';
-      $('#organisation\\.doiPrefix').val(testDoiPrefix);
-  }
-
 	$('#organisation\\.key').change(function() {
 
   var orgName = $('#organisation\\.key :selected').text();
