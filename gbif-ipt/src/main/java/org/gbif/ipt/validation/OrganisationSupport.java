@@ -9,31 +9,54 @@
 
 package org.gbif.ipt.validation;
 
+import org.gbif.api.model.common.DOI;
+import org.gbif.doi.metadata.datacite.DataCiteMetadata;
+import org.gbif.doi.service.DoiException;
+import org.gbif.doi.service.DoiService;
+import org.gbif.doi.service.InvalidMetadataException;
+import org.gbif.doi.service.ServiceConfig;
+import org.gbif.doi.service.datacite.DataCiteService;
+import org.gbif.doi.service.ezid.EzidService;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Organisation;
+import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.voc.DOIRegistrationAgency;
+import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.registry.RegistryManager;
+import org.gbif.ipt.utils.DOIUtils;
+import org.gbif.ipt.utils.DataCiteMetadataBuilder;
+import org.gbif.metadata.eml.Agent;
+
+import java.util.Date;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.log4j.Logger;
 
 public class OrganisationSupport {
 
+  // logging
+  private static final Logger LOG = Logger.getLogger(OrganisationSupport.class);
+
   private RegistryManager registryManager;
   private AppConfig cfg;
+  private DefaultHttpClient client;
 
   @Inject
-  public OrganisationSupport(RegistryManager registryManager, AppConfig cfg) {
+  public OrganisationSupport(RegistryManager registryManager, AppConfig cfg, DefaultHttpClient client) {
     this.registryManager = registryManager;
     this.cfg = cfg;
+    this.client = client;
   }
 
   /**
    * Validate the fields entered for a new or edited Organisation. If not valid, an explanatory error message is
    * added to the action.
    *
-   * @param action action
+   * @param action       action
    * @param organisation organisation
    */
   public boolean validate(BaseAction action, Organisation organisation) {
@@ -58,46 +81,108 @@ public class OrganisationSupport {
       }
     }
 
+    DOIRegistrationAgency agency = organisation.getDoiRegistrationAgency();
+    String agencyUsername = StringUtils.trimToNull(organisation.getAgencyAccountUsername());
+    String agencyPassword = StringUtils.trimToNull(organisation.getAgencyAccountPassword());
+    String prefix = StringUtils.trimToNull(organisation.getDoiPrefix());
+
     // validate that if any DOI registration agency account fields were entered, that they are all present
-    if (organisation.getDoiRegistrationAgency() != null ||
-        StringUtils.trimToNull(organisation.getAgencyAccountUsername()) != null ||
-        StringUtils.trimToNull(organisation.getAgencyAccountPassword()) != null ||
-        StringUtils.trimToNull(organisation.getDoiPrefix()) != null ||
-        organisation.isAgencyAccountPrimary()) {
+    if (agency != null || agencyUsername != null || agencyPassword != null || prefix != null) {
 
-      if (organisation.getDoiRegistrationAgency() == null) {
+      if (agency == null) {
         valid = false;
-        action.addFieldError("organisation.doiRegistrationAgency", action.getText("validation.organisation.doiRegistrationAgency.required"));
+        action.addFieldError("organisation.doiRegistrationAgency",
+          action.getText("validation.organisation.doiRegistrationAgency.required"));
       }
 
-      if (StringUtils.trimToNull(organisation.getAgencyAccountUsername()) == null) {
+      if (agencyUsername == null) {
         valid = false;
-        action.addFieldError("organisation.agencyAccountUsername", action.getText("validation.organisation.agencyAccountUsername.required"));
+        action.addFieldError("organisation.agencyAccountUsername",
+          action.getText("validation.organisation.agencyAccountUsername.required"));
       }
 
-      if (StringUtils.trimToNull(organisation.getAgencyAccountPassword()) == null) {
+      if (agencyPassword == null) {
         valid = false;
-        action.addFieldError("organisation.agencyAccountPassword", action.getText("validation.organisation.agencyAccountPassword.required"));
+        action.addFieldError("organisation.agencyAccountPassword",
+          action.getText("validation.organisation.agencyAccountPassword.required"));
       }
 
-      if (StringUtils.trimToNull(organisation.getDoiPrefix()) == null) {
+      if (prefix == null) {
         valid = false;
         action.addFieldError("organisation.doiPrefix", action.getText("validation.organisation.doiPrefix.required"));
       } else {
         // running IPT in development, the test DOI prefix is expected, but not mandatory - show warning otherwise
-        if (cfg.getRegistryType() == AppConfig.REGISTRY_TYPE.DEVELOPMENT
-            && !Constants.TEST_DOI_PREFIX.equalsIgnoreCase(StringUtils.trim(organisation.getDoiPrefix()))) {
+        if (cfg.getRegistryType() == AppConfig.REGISTRY_TYPE.DEVELOPMENT && !Constants.TEST_DOI_PREFIX
+          .equalsIgnoreCase(prefix) && !Constants.EZID_TEST_DOI_SHOULDER.equalsIgnoreCase(prefix)) {
           action.addActionWarning(action.getText("validation.organisation.doiPrefix.invalid.testMode"));
         }
         // running IPT in production, the test DOI prefix cannot be used
-        else if (cfg.getRegistryType() == AppConfig.REGISTRY_TYPE.PRODUCTION
-                 && Constants.TEST_DOI_PREFIX.equalsIgnoreCase(StringUtils.trim(organisation.getDoiPrefix()))) {
+        else if (cfg.getRegistryType() == AppConfig.REGISTRY_TYPE.PRODUCTION && (Constants.TEST_DOI_PREFIX
+          .equalsIgnoreCase(prefix) || Constants.EZID_TEST_DOI_SHOULDER.equalsIgnoreCase(prefix))) {
           valid = false;
-          action.addFieldError("organisation.doiPrefix", action.getText("validation.organisation.doiPrefix.invalid.productionMode"));
+          action.addFieldError("organisation.doiPrefix",
+            action.getText("validation.organisation.doiPrefix.invalid.productionMode"));
+        }
+      }
+
+      // validate if the account configuration is correct, e.g. by reserving a test DOI
+      if (agency != null && agencyUsername != null && agencyPassword != null && prefix != null) {
+        DoiService service;
+
+        // before configuring EZID service: clear EZID session cookie otherwise connection reuses existing login
+        if (agency.equals(DOIRegistrationAgency.EZID) && !client.getCookieStore().getCookies().isEmpty()) {
+          client.getCookieStore().clear();
+        }
+
+        ServiceConfig cfg = new ServiceConfig(agencyUsername, agencyPassword);
+        service = (agency.equals(DOIRegistrationAgency.DATACITE)) ? new DataCiteService(client, cfg) :
+          new EzidService(client, cfg);
+
+        try {
+          DOI doi = DOIUtils.mintDOI(agency, prefix);
+          DataCiteMetadata metadata = getTestDataCiteMetadata(doi);
+          service.reserve(doi, metadata);
+          // clean up
+          service.delete(doi);
+        } catch (InvalidMetadataException e) {
+          valid = false;
+          String msg = "An unexpected error occurred while trying to authenticate your " + agency.name().toLowerCase()
+                       + " account. Please try again, or contact your IPT administrator for help: " + e.getMessage();
+          action.addActionError(msg);
+          LOG.error(msg);
+        } catch (DoiException e) {
+          valid = false;
+          String msg = "Authentication failed! Please verify your " + agency.name().toLowerCase()
+                       + " account is entered correctly and try again";
+          action.addActionError(msg);
+          LOG.error(msg);
+        } finally {
+          // in case fields were trimmed, re-save agency account values
+          organisation.setAgencyAccountUsername(agencyUsername);
+          organisation.setAgencyAccountPassword(agencyPassword);
+          organisation.setDoiPrefix(prefix);
         }
       }
     }
-    // TODO validate if the account username and password are correct, e.g. by reserving a test DOI
     return valid;
+  }
+
+  /**
+   * @return DataCiteMetadata having only mandatory elements that can be used to reserve DOIs in order to test
+   * authentication
+   */
+  private static DataCiteMetadata getTestDataCiteMetadata(DOI doi) throws InvalidMetadataException {
+    Resource testResource = new Resource();
+    testResource.getEml().setTitle("Test Resource");
+    Agent creator = new Agent();
+    creator.setFirstName("John");
+    creator.setLastName("Smith");
+    testResource.getEml().addCreator(creator);
+    Organisation testOrganisation = new Organisation();
+    testOrganisation.setName("Test Organisation");
+    testResource.setOrganisation(testOrganisation);
+    testResource.getEml().setDateStamp(new Date());
+    // create and return test DataCiteMetadata from test resource having mandatory DataCite properties
+    return DataCiteMetadataBuilder.createDataCiteMetadata(doi, testResource);
   }
 }

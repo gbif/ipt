@@ -18,7 +18,6 @@ import org.gbif.api.model.common.DoiStatus;
 import org.gbif.doi.metadata.datacite.DataCiteMetadata;
 import org.gbif.doi.service.DoiException;
 import org.gbif.doi.service.DoiExistsException;
-import org.gbif.doi.service.DoiService;
 import org.gbif.doi.service.InvalidMetadataException;
 import org.gbif.dwc.text.Archive;
 import org.gbif.dwc.text.ArchiveFile;
@@ -32,7 +31,6 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
-import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.model.voc.PublicationStatus;
@@ -51,6 +49,7 @@ import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.task.ReportHandler;
 import org.gbif.ipt.task.StatusReport;
 import org.gbif.ipt.task.TaskMessage;
+import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.ipt.utils.DataCiteMetadataBuilder;
 import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.validation.EmlValidator;
@@ -75,7 +74,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.google.inject.Inject;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.log4j.Level;
@@ -96,7 +94,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private List<Extension> potentialCores;
   private List<Extension> potentialExtensions;
   private List<Organisation> organisations;
-  private Organisation organisationWithPrimaryDoiAccount;
+  private Organisation doiAccount;
   private final EmlValidator emlValidator;
   private boolean missingMetadata;
   private boolean missingRegistrationMetadata;
@@ -130,7 +128,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     this.emlValidator = new EmlValidator(cfg, registrationManager, textProvider);
     this.vocabManager = vocabManager;
     this.dwcaFactory = dwcaFactory;
-    this.organisationWithPrimaryDoiAccount = registrationManager.findPrimaryDoiAgencyAccount();
+    this.doiAccount = registrationManager.findPrimaryDoiAgencyAccount();
   }
 
   /**
@@ -515,7 +513,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       if ((existingDoi == null && resource.getIdentifierStatus() == IdentifierStatus.UNRESERVED && !resource
         .isAlreadyAssignedDoi()) || (resource.getIdentifierStatus() == IdentifierStatus.PUBLIC && resource
         .isAlreadyAssignedDoi())) {
-        DOI doi = makeDoi();
+        DOI doi = DOIUtils.mintDOI(doiAccount.getDoiRegistrationAgency(), doiAccount.getDoiPrefix());
         LOG.info("Reserving new DOI=" + doi.getDoiName() + " for " + resource.getTitleAndShortname());
         try {
           doReserveDOI(doi, resource);
@@ -539,10 +537,9 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         .isAlreadyAssignedDoi()) {
         LOG.info("Assigning existing DOI=" + existingDoi.getDoiName() + " to " + resource.getTitleAndShortname());
 
-        String prefix = existingDoi.getPrefix();
-        String prefixAllowed = organisationWithPrimaryDoiAccount.getDoiPrefix();
-        // ensure the prefix of the existing DOI is equal to the prefix of the DOI account configured for this IPT
-        if (prefix != null && prefixAllowed != null && prefix.equals(prefixAllowed)) {
+        String prefixAllowed = doiAccount.getDoiPrefix();
+        // ensure the prefix of the DOI account configured for this IPT matches the prefix of the existing DOI
+        if (prefixAllowed != null && existingDoi.getDoiName().startsWith(prefixAllowed.toLowerCase())) {
           try {
             DoiData doiData = registrationManager.getDoiService().resolve(existingDoi);
             // verify the existing DOI is either reserved or registered already
@@ -1154,28 +1151,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    * activated enabling it to register DOIs for datasets.
    */
   public Organisation getOrganisationWithPrimaryDoiAccount() {
-    return organisationWithPrimaryDoiAccount;
-  }
-
-  /**
-   * Generate a DOI in the format prefix/suffix where the prefix is taken from the primary DOI account, and the suffix
-   * is a 6 character lower case alpha numeric string.
-   *
-   * @return DOI in format prefix/suffix
-   */
-  private DOI makeDoi() {
-    String prefix =
-      (organisationWithPrimaryDoiAccount == null || organisationWithPrimaryDoiAccount.getDoiPrefix() == null)
-        ? Constants.TEST_DOI_PREFIX : organisationWithPrimaryDoiAccount.getDoiPrefix();
-
-    // EZID test account: suffix must start with /FK2
-    String slash = (organisationWithPrimaryDoiAccount.getDoiRegistrationAgency() != null
-                     && organisationWithPrimaryDoiAccount.getDoiPrefix() != null
-                     && organisationWithPrimaryDoiAccount.getDoiPrefix().equals(Constants.TEST_DOI_PREFIX)
-                     && organisationWithPrimaryDoiAccount.getDoiRegistrationAgency().equals(DOIRegistrationAgency.EZID))
-      ? "/FK2" : "/";
-
-    return new DOI(prefix + slash + RandomStringUtils.randomAlphanumeric(6).toLowerCase());
+    return doiAccount;
   }
 
   /**
