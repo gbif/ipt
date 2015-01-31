@@ -50,6 +50,7 @@ public class SetupAction extends BaseAction {
 
   // action attributes to be set
   protected String dataDirPath;
+  protected boolean readDisclaimer;
   protected User user = new User();
   private String password2;
   protected String modeSelected;
@@ -169,6 +170,13 @@ public class SetupAction extends BaseAction {
    */
   public String setup() {
     if (isHttpPost() && dataDirPath != null) {
+
+      // since IPT v2.2, user must check that they have read and understood disclaimer
+      if (!readDisclaimer) {
+        addFieldError("readDisclaimer", getText("admin.config.setup.read.error"));
+        return INPUT;
+      }
+
       File dd = new File(dataDirPath.trim());
       try {
         if (dd.isAbsolute()) {
@@ -386,5 +394,16 @@ public class SetupAction extends BaseAction {
    */
   public void setModeSelected(String modeSelected) {
     this.modeSelected = modeSelected;
+  }
+
+  /**
+   * @return true if the user has checked that they have read and understood the disclaimer, false otherwise
+   */
+  public boolean isReadDisclaimer() {
+    return readDisclaimer;
+  }
+
+  public void setReadDisclaimer(boolean readDisclaimer) {
+    this.readDisclaimer = readDisclaimer;
   }
 }

@@ -181,11 +181,12 @@ public class EmlValidatorTest {
     // invalid
     eml.setIntellectualRights("");
     assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
-    eml.setIntellectualRights("sh");
-    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
     // valid
     eml.setIntellectualRights("CC-BY");
     assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    eml.setIntellectualRights(
+      "This work is licensed under a <a href=\"http://creativecommons.org/licenses/by/4.0/legalcode\">Creative Commons Attribution (CC-BY) 4.0 License</a>.");
+    assertTrue(validator.isValid(resource, MetadataSection.METHODS_SECTION));
   }
 
   @Test

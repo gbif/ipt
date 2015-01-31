@@ -31,6 +31,7 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
+import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.model.voc.PublicationStatus;
@@ -51,13 +52,19 @@ import org.gbif.ipt.task.StatusReport;
 import org.gbif.ipt.task.TaskMessage;
 import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.ipt.utils.DataCiteMetadataBuilder;
+import org.gbif.ipt.utils.EmlUtils;
 import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.validation.EmlValidator;
 import org.gbif.metadata.eml.Citation;
+import org.gbif.metadata.eml.Eml;
+import org.gbif.metadata.eml.EmlFactory;
+import org.gbif.metadata.eml.EmlWriter;
 import org.gbif.metadata.eml.MaintenanceUpdateFrequency;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
@@ -779,6 +786,13 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     if (resource == null) {
       return NOT_FOUND;
     }
+    // prevent publishing if resource is registered but it hasn't been assigned a GBIF-supported license
+    if (resource.isRegistered() && !resource.isAssignedGBIFSupportedLicense()) {
+      String msg = getText("manage.overview.prevented.resource.publishing.noGBIFLicense");
+      addActionError(msg);
+      LOG.error(msg);
+      return INPUT;
+    }
     if (publish) {
       // clear the processFailures for the resource, allowing auto-publication to proceed
       if (resourceManager.getProcessFailures().containsKey(resource.getShortname())) {
@@ -884,6 +898,13 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       LOG.error(msg);
       return INPUT;
     }
+    // prevent registration if last published version was not assigned a GBIF-supported license
+    if (!isLastPublishedVersionAssignedGBIFSupportedLicense(resource)) {
+      String msg = getText("manage.overview.prevented.resource.registration.noGBIFLicense");
+      addActionError(msg);
+      LOG.error(msg);
+      return INPUT;
+    }
     if (PublicationStatus.PUBLIC == resource.getStatus()) {
       if (unpublish) {
         addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
@@ -944,6 +965,61 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         resource.getStatus().toString()}));
     }
     return execute();
+  }
+
+  /**
+   * Used before registering current (last) published version.
+   *
+   * @return true if the last published version has been assigned a GBIF-supported license, false otherwise
+   */
+  public boolean isLastPublishedVersionAssignedGBIFSupportedLicense(Resource resource) {
+    List<VersionHistory> history = resource.getVersionHistory();
+    if (!history.isEmpty()) {
+      VersionHistory latestVersionHistory = history.get(0);
+      BigDecimal latestVersion = new BigDecimal(latestVersionHistory.getVersion());
+      File emlFile = cfg.getDataDir().resourceEmlFile(resource.getShortname(), latestVersion);
+      if (emlFile.exists()) {
+        try {
+          LOG.debug("Loading EML from file: " + emlFile.getAbsolutePath());
+          InputStream in = new FileInputStream(emlFile);
+          Eml eml = EmlFactory.build(in);
+          if (eml.parseLicenseUrl() != null) {
+            LOG.debug("Checking if license (URL=" + eml.parseLicenseUrl() + ") is supported by GBIF..");
+            return Constants.GBIF_SUPPORTED_LICENSES.contains(eml.parseLicenseUrl());
+          }
+        } catch (Exception e) {
+          LOG.error(
+            "Failed to check if last published version of resource has been assigned a GBIF-supported license: " + e
+              .getMessage());
+        }
+      }
+    }
+    return false;
+  } //getLastPublishedVersionAssignedLicense()
+
+  /**
+   * @return license URL assigned to the last published version or null if none was assigned
+   */
+  public String getLastPublishedVersionAssignedLicense(Resource resource) {
+    List<VersionHistory> history = resource.getVersionHistory();
+    if (!history.isEmpty()) {
+      VersionHistory latestVersionHistory = history.get(0);
+      BigDecimal latestVersion = new BigDecimal(latestVersionHistory.getVersion());
+      File emlFile = cfg.getDataDir().resourceEmlFile(resource.getShortname(), latestVersion);
+      if (emlFile.exists()) {
+        try {
+          LOG.debug("Loading EML from file: " + emlFile.getAbsolutePath());
+          InputStream in = new FileInputStream(emlFile);
+          Eml eml = EmlFactory.build(in);
+          return eml.parseLicenseUrl();
+        } catch (Exception e) {
+          LOG.error(
+            "Failed to check if last published version of resource has been assigned a GBIF-supported license: " + e
+              .getMessage());
+        }
+      }
+    }
+    return null;
   }
 
   /**

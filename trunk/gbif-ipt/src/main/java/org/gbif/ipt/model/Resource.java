@@ -660,6 +660,15 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   /**
+   * Used before publishing a new version.
+   *
+   * @return true if the resource has been assigned a GBIF-supported license, false otherwise
+   */
+  public boolean isAssignedGBIFSupportedLicense() {
+    return eml.parseLicenseUrl() != null && Constants.GBIF_SUPPORTED_LICENSES.contains(eml.parseLicenseUrl());
+  }
+
+  /**
    * @return publication status of last published version, defaulting to status=private if it is not definitively known
    */
   @NotNull
@@ -675,7 +684,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   public boolean isRegistered() {
-    return key != null;
+    return key != null && status.equals(PublicationStatus.REGISTERED);
   }
 
   public void setCoreType(String coreType) {

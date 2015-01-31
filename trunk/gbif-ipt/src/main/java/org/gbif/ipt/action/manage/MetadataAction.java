@@ -140,11 +140,11 @@ public class MetadataAction extends ManagerBaseAction {
   }
 
   /*
-   * Called from Additional Metadata page.
+   * Called from Basic Metadata page.
    *
    * Determine which license is specified in the intellectual rights. If the intellectual rights contains the name of
    * a license the IPT supports (e.g. CC-BY 4.0), the key corresponding to that license (e.g. ccby) is returned. This
-   * is used to pre-select the license drop down when the additional metadata page loads.
+   * is used to pre-select the license drop down when the basic metadata page loads.
    */
   public String getLicenseKeySelected() {
     String licenseText = resource.getEml().getIntellectualRights();
@@ -303,12 +303,16 @@ public class MetadataAction extends ManagerBaseAction {
           resource.getEml().getContacts().clear();
           resource.getEml().getCreators().clear();
           resource.getEml().getMetadataProviders().clear();
+          resource.getEml().setIntellectualRights(null);
 
           // publishing organisation, if provided must match organisation
           String id = getId();
           Organisation organisation = (id == null) ? null : registrationManager.get(id);
           if (organisation != null) {
-            resource.setOrganisation(organisation);
+            // set organisation: note organisation is locked after 1) DOI assigned, or 2) after registration with GBIF
+            if (!resource.isAlreadyAssignedDoi() && !resource.isRegistered()) {
+              resource.setOrganisation(organisation);
+            }
           }
         }
         next = MetadataSection.GEOGRAPHIC_COVERAGE_SECTION;

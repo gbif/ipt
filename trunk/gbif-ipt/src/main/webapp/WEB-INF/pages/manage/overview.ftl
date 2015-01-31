@@ -64,6 +64,25 @@
    		${(text)}
    	</#if>
 </#macro>
+
+<!-- The short form of the license for display in the versions table -->
+<#macro shortLicense licenseUrl="">
+    <#if licenseUrl == "http://creativecommons.org/publicdomain/zero/1.0/legalcode">
+      CC0 1.0
+    <#elseif licenseUrl == "http://creativecommons.org/licenses/by/4.0/legalcode">
+      CC-BY 4.0
+    <#elseif licenseUrl == "http://creativecommons.org/licenses/by-nc/4.0/legalcode">
+      CC-BY-NC 4.0
+    <#elseif licenseUrl == "http://www.opendatacommons.org/licenses/pddl/1.0">
+      ODC PDDL 1.0
+    <#elseif licenseUrl == "http://www.opendatacommons.org/licenses/by/1.0">
+      ODC-By 1.0
+    <#elseif licenseUrl?has_content>
+      <@s.text name='manage.overview.noGBIFLicense'/>
+    <#else>
+      -
+    </#if>
+</#macro>
 <#include "/WEB-INF/pages/inc/header.ftl">
 	<title><@s.text name="manage.overview.title"/>: ${resource.title!resource.shortname}</title>
 	<script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
@@ -281,6 +300,7 @@ $(document).ready(function(){
         <#assign previewTitle><@s.text name='button.preview'/></#assign>
         <#assign emptyCell="-"/>
         <#assign visibilityTitle><@s.text name='manage.overview.visibility'/></#assign>
+        <#assign licenseTitle><@s.text name='eml.intellectualRights.license'/></#assign>
 
           <table class="publishedRelease">
               <tr class="mapping_head headz">
@@ -289,8 +309,8 @@ $(document).ready(function(){
               <tr>
                   <th>${versionTitle?cap_first}</th><#if resource.lastPublished??><td class="separator green">${resource.emlVersion.toPlainString()}&nbsp;<a class="button" href="${baseURL}/resource.do?r=${resource.shortname}"><input class="button" type="button" value='${viewTitle?cap_first}'/></a><@dwcaValidator/></td></#if><td class="left_padding">${resource.getNextVersion().toPlainString()}&nbsp;<a class="button" href="${baseURL}/resource/preview?r=${resource.shortname}"><input class="button" type="button" value='${previewTitle?cap_first}' <#if missingMetadata>disabled="disabled"</#if>/></a></td>
               </tr>
-              <!-- hide visibility row if a DOI has already been assigned to the resource since any resource with a DOI has to be public -->
-              <#if !resource.isAlreadyAssignedDoi() && !resource.isRegistered()>
+              <!-- hide visibility row if 1) a DOI has already been assigned to the resource since any resource with a DOI has to be public, 2) the resource is registered, or 3) the visibility of the currenct version and next version are the same -->
+              <#if !resource.isAlreadyAssignedDoi() && !resource.isRegistered() && (resource.getStatus()?lower_case != resource.getLastPublishedVersionsPublicationStatus()?lower_case) || !resource.lastPublished?? >
                 <tr>
                   <th>${visibilityTitle?cap_first}</th><#if resource.lastPublished??><td class="separator green">${resource.getLastPublishedVersionsPublicationStatus()?lower_case?cap_first}</td></#if><td class="left_padding">${resource.status?lower_case?cap_first}</td>
                 </tr>
@@ -299,6 +319,12 @@ $(document).ready(function(){
               <#if organisationWithPrimaryDoiAccount??>
                 <tr>
                   <th>DOI</th><#if resource.lastPublished??><td class="separator green"><#if resource.isAlreadyAssignedDoi()>${resource.versionHistory[0].doi!}<#else>${emptyCell}</#if></td></#if><td class="left_padding"><#if (resource.isAlreadyAssignedDoi() && resource.versionHistory[0].doi != resource.doi!"") || (!resource.isAlreadyAssignedDoi() && resource.doi?has_content)><em>${resource.doi!emptyCell}</em>&nbsp;</#if><@nextDoiButtonTD/></td>
+                </tr>
+              </#if>
+              <!-- TODO: hide license row if the current version and next version have both been assigned the same license -->
+              <#if (resource.lastPublished?? && !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)) || !resource.lastPublished?? || !resource.isAssignedGBIFSupportedLicense()>
+                <tr>
+                    <th>${licenseTitle?cap_first}</th><#if resource.lastPublished??><td class="separator green"><@shortLicense action.getLastPublishedVersionAssignedLicense(resource)!/></td></#if><td class="left_padding"><@shortLicense resource.getEml().parseLicenseUrl()/></td>
                 </tr>
               </#if>
               <tr>
@@ -356,12 +382,12 @@ $(document).ready(function(){
       <em class="<#if resource.status=="PRIVATE">red<#else>green</#if>"><@s.text name="resource.status.${resource.status?lower_case}"/></em>
     </div>
     <div class="actions">
-      <#assign action>registerResource</#assign>
+      <#assign actionMethod>registerResource</#assign>
       <#if resource.status=="PRIVATE">
-        <#assign action>makePublic</#assign>
+        <#assign actionMethod>makePublic</#assign>
       </#if>
 
-      <form action='resource-${action}.do' method='post'>
+      <form action='resource-${actionMethod}.do' method='post'>
         <input name="r" type="hidden" value="${resource.shortname}"/>
         <#if resource.status=="PUBLIC">
           <#if !currentUser.hasRegistrationRights()>
@@ -385,6 +411,13 @@ $(document).ready(function(){
             <div class="info autop">
               <@s.text name="manage.overview.prevented.resource.registration.notPublic"/>
             </div>
+          <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)>
+            <!-- Disable register button and show warning: resource must be assigned a GBIF-supported license to register -->
+            <@s.submit cssClass="confirmRegistration" name="register" key="button.register" disabled="true"/>
+            <img class="infoImg" src="${baseURL}/images/warning.gif"/>
+            <div class="info autop">
+              <@s.text name="manage.overview.prevented.resource.registration.noGBIFLicense"/>
+            </div>
           <#else>
             <@s.submit cssClass="confirmRegistration" name="register" key="button.register"/>
           </#if>
@@ -396,8 +429,8 @@ $(document).ready(function(){
       </form>
 
       <#if resource.status=="PUBLIC" && (resource.identifierStatus=="PUBLIC_PENDING_PUBLICATION" || resource.identifierStatus == "UNRESERVED")>
-        <#assign action>makePrivate</#assign>
-        <form action='resource-${action}.do' method='post'>
+        <#assign actionMethod>makePrivate</#assign>
+        <form action='resource-${actionMethod}.do' method='post'>
           <@s.submit cssClass="confirm" name="unpublish" key="button.private" />
         </form>
       </#if>
