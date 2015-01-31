@@ -171,6 +171,7 @@ public class ResourceActionTest {
   public void testDetailForPublishedRegisteredVersion() {
     // simulate pre v2.2 resource that is registered and has no VersionHistory
     action.getResource().setKey(UUID.randomUUID());
+    action.getResource().setStatus(PublicationStatus.REGISTERED);
     action.getResource().getVersionHistory().clear();
     assertTrue(action.getResource().isRegistered());
     assertTrue(action.getResource().getVersionHistory().isEmpty());

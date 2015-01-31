@@ -1067,6 +1067,7 @@ public class ResourceManagerImplTest {
     assertEquals(1, resourceManager.list().size());
     Resource created = resourceManager.list().get(0);
     created.setKey(UUID.randomUUID());
+    created.setStatus(PublicationStatus.REGISTERED);
     assertTrue(created.isRegistered());
     assertTrue(created.getVersionHistory().isEmpty());
 

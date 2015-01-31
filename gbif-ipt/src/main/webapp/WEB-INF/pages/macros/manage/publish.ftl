@@ -19,12 +19,19 @@
   <input id="pubFreq" name="pubFreq" type="hidden" value=""/>
   <textarea id="summary" name="summary" cols="40" rows="5" style="display: none"></textarea>
 
-    <!-- resources cannot be published if the mandatory metadata is missing -->
+  <!-- resources cannot be published if the mandatory metadata is missing -->
   <#if missingMetadata>
     <@s.submit id="publishButton" name="publish" key="button.publish" disabled="true"/>
     <img class="infoImg" src="${baseURL}/images/warning.gif" />
     <div class="info autop">
       <@s.text name="manage.overview.published.missing.metadata"/>
+    </div>
+  <!-- resources that are already registered cannot be re-published if they haven't been assigned a GBIF-supported license -->
+  <#elseif resource.isRegistered() && !resource.isAssignedGBIFSupportedLicense()>
+    <@s.submit id="publishButton" name="publish" key="button.publish" disabled="true"/>
+    <img class="infoImg" src="${baseURL}/images/warning.gif" />
+    <div class="info autop">
+      <@s.text name="manage.overview.prevented.resource.publishing.noGBIFLicense"/>
     </div>
   <!-- previously published resources without a DOI, or that haven't been registered yet can be republished whenever by any manager -->
   <#elseif resource.lastPublished?? && resource.identifierStatus == "UNRESERVED" && resource.status != "REGISTERED">

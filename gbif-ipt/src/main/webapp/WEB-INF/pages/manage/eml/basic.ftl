@@ -82,14 +82,11 @@
       };
 
       if (exists("${eml.intellectualRights!}") && exists("${licenseKeySelected!}")) {
-          $("#intellectualRightsBlock").hide();
           $("#intellectualRightsDiv").show();
       } else if (exists("${eml.intellectualRights!}") && !exists("${licenseKeySelected!}")) {
-          $("#intellectualRightsBlock").show();
           $("#intellectualRightsDiv").hide();
       } else {
           $("#intellectualRights").val('');
-          $("#intellectualRightsBlock").show();
           $("#intellectualRightsDiv").hide();
       }
 
@@ -107,10 +104,9 @@
                   $("#intellectualRightsDiv").html(licenseText);
                   $("#intellectualRightsDiv").show();
                   $("#intellectualRights").val(licenseText);
-                  $("#intellectualRightsBlock").hide();
+                  $("#eml\\.intellectualRights").val(licenseText);
 
                   $("#disclaimerRigths").css('display', '');
-                  $('.confirm').jConfirmAction({question : "<@s.text name="eml.intellectualRights.licenses.confirmation"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
               }
 
           } else {
@@ -118,8 +114,8 @@
               $("#intellectualRightsDiv").hide();
 
               $("#intellectualRights").val('');
-              $("#intellectualRightsBlock").show();
               $("#disclaimerRigths").css('display', 'none');
+              $("#eml\\.intellectualRights").val('');
           }
       });// end intellectual rights
 	});
@@ -180,14 +176,8 @@
           <@licenseLogoClass eml.intellectualRights!/>
           <#noescape>${eml.intellectualRights!}</#noescape>
         </div>
-
-        <div id="intellectualRightsBlock">
-            <label for="eml.intellectualRights"><@s.text name='eml.intellectualRights'/>&#42;</label>
-            <img class="infoImg" src="${baseURL}/images/info.gif" />
-            <div class="info"><@s.text name='eml.intellectualRights.help'/></div>
-            <textarea id="intellectualRights" name="eml.intellectualRights" cols="40" rows="5" >${eml.intellectualRights!}</textarea>
-        </div>
-
+        <!-- internal parameter -->
+        <input id="eml.intellectualRights" name="eml.intellectualRights" type="hidden" value="${eml.intellectualRights!}" />
 
         <!-- Hidden inputs storing license texts used in populating ipr textarea when a different license gets selected -->
       <#list licenseTexts?keys as k>

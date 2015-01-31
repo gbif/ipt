@@ -576,4 +576,29 @@ public class ResourceTest {
     Resource r = getResource();
     assertEquals(PublicationStatus.PRIVATE, r.getLastPublishedVersionsPublicationStatus());
   }
+
+  @Test
+  public void testIsAssignedGBIFSupportedLicense() {
+    Resource r = getResource();
+    // CCO
+    r.getEml().setIntellectualRights("This work is licensed under <a href=\"http://creativecommons.org/publicdomain/zero/1.0/legalcode\">Creative Commons CCZero (CC0) 1.0 License</a>.");
+    assertEquals("http://creativecommons.org/publicdomain/zero/1.0/legalcode", r.getEml().parseLicenseUrl());
+    assertTrue(r.isAssignedGBIFSupportedLicense());
+    // CC-BY
+    r.getEml().setIntellectualRights("This work is licensed under a <a href=\"http://creativecommons.org/licenses/by/4.0/legalcode\">Creative Commons Attribution (CC-BY) 4.0 License</a>.");
+    assertEquals("http://creativecommons.org/licenses/by/4.0/legalcode", r.getEml().parseLicenseUrl());
+    assertTrue(r.isAssignedGBIFSupportedLicense());
+    // CC-BY-NC
+    r.getEml().setIntellectualRights("This work is licensed under a <a href=\"http://creativecommons.org/licenses/by-nc/4.0/legalcode\">Creative Commons Attribution Non Commercial (CC-BY-NC) 4.0 License</a>.");
+    assertEquals("http://creativecommons.org/licenses/by-nc/4.0/legalcode", r.getEml().parseLicenseUrl());
+    assertTrue(r.isAssignedGBIFSupportedLicense());
+    // ODC-PDDL (considered equivalent to CC0)
+    r.getEml().setIntellectualRights("This work is licensed under a <a href=\"http://www.opendatacommons.org/licenses/pddl/1.0/\">Open Data Commons Public Domain Dedication and Licence (PDDL)</a>.");
+    assertEquals("http://www.opendatacommons.org/licenses/pddl/1.0/", r.getEml().parseLicenseUrl());
+    assertTrue(r.isAssignedGBIFSupportedLicense());
+    // ODC-BY (considered equivalent to CC-BY)
+    r.getEml().setIntellectualRights("This work is licensed under a <a href=\"http://www.opendatacommons.org/licenses/by/1.0/\">Open Data Commons Attribution License</a>.");
+    assertEquals("http://www.opendatacommons.org/licenses/by/1.0/", r.getEml().parseLicenseUrl());
+    assertTrue(r.isAssignedGBIFSupportedLicense());
+  }
 }

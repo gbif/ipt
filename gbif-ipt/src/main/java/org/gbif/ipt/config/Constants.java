@@ -2,6 +2,8 @@ package org.gbif.ipt.config;
 
 import java.math.BigDecimal;
 
+import com.google.common.collect.ImmutableSet;
+
 public final class Constants {
 
   public static final String SESSION_USER = "curr_user";
@@ -42,6 +44,12 @@ public final class Constants {
 
   // First published version number
   public static final BigDecimal INITIAL_RESOURCE_VERSION = new BigDecimal("1.0");
+
+  // Set of GBIF supported licenses
+  public static final ImmutableSet<String> GBIF_SUPPORTED_LICENSES = ImmutableSet
+    .of("http://creativecommons.org/publicdomain/zero/1.0/legalcode",
+      "http://creativecommons.org/licenses/by/4.0/legalcode", "http://creativecommons.org/licenses/by-nc/4.0/legalcode",
+      "http://www.opendatacommons.org/licenses/by/1.0/", "http://www.opendatacommons.org/licenses/pddl/1.0/");
 
   private Constants() {
     throw new UnsupportedOperationException("Can't initialize class");

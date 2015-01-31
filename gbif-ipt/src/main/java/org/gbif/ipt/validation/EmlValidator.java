@@ -181,12 +181,10 @@ public class EmlValidator extends BaseValidator {
               action.getText("validation.short", new String[] {action.getText("eml.description"), "5"}));
           }
 
-          // intellectual rights - mandatory and greater than 3 chars
+          // intellectual rights - mandatory
           if (Strings.isNullOrEmpty(eml.getIntellectualRights())) {
-            action.addFieldError("eml.intellectualRights.license", action.getText("eml.intellectualRights.required"));
-          } else if (!exists(eml.getIntellectualRights(), 3)) {
-            action.addFieldError("eml.intellectualRights",
-              action.getText("validation.short", new String[] {action.getText("eml.intellectualRights"), "3"}));
+            action.addFieldError("eml.intellectualRights.license",
+              action.getText("validation.required", new String[] {action.getText("eml.intellectualRights.license")}));
           }
 
           // publishing organisation - mandatory
