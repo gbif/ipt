@@ -396,6 +396,21 @@ public class Resource implements Serializable, Comparable<Resource> {
     return false;
   }
 
+  /**
+   * @return the DOI assigned/registered to the last published public version.
+   */
+  @Nullable
+  public DOI getAssignedDoi() {
+    if (isAlreadyAssignedDoi()) {
+      DOI doi = getVersionHistory().get(0).getDoi();
+      IdentifierStatus status = getVersionHistory().get(0).getStatus();
+      if (doi != null && status == IdentifierStatus.PUBLIC) {
+        return doi;
+      }
+    }
+    return null;
+  }
+
   public UUID getKey() {
     return key;
   }
