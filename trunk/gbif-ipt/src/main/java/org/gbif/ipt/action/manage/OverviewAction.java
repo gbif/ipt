@@ -73,6 +73,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -605,6 +606,27 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   }
 
   /**
+   * Delete a DOI for the resource. Optionally reassign DOI.
+   *
+   * @param reservedDoi DOI to delete
+   * @param resource resource to delete DOI for (optional)
+   * @param reassignedDoi DOI to reassign
+   *
+   * @throws DoiException if the deletion failed
+   */
+  private void doDeleteDOI(DOI reservedDoi, Resource resource, @Nullable DOI reassignedDoi) throws DoiException {
+    Preconditions.checkNotNull(registrationManager.getDoiService());
+    // delete reserved DOI for this resource, optionally reassign DOI, and update EML alternate identifier list
+    registrationManager.getDoiService().delete(reservedDoi);
+    resource.setDoi((reassignedDoi == null) ? null : reassignedDoi);
+    resource.setIdentifierStatus((reassignedDoi == null) ? IdentifierStatus.UNRESERVED : IdentifierStatus.PUBLIC);
+    resource.updateAlternateIdentifierForDOI();
+    saveResource();
+  }
+
+
+
+  /**
    * Return the existing DOI assigned to this resource. An existing DOI is set as the citation identifier.
    *
    * @return the existing DOI assigned to this resource, or null if none was found.
@@ -635,30 +657,48 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     if (resource == null) {
       return NOT_FOUND;
     }
+    if (registrationManager.getDoiService() == null) {
+      String msg = "No organisation with an activated DOI agency account exists. Please contact your IPT admin for help.";
+      LOG.error(msg);
+      addActionError(msg);
+    }
     if (deleteDoi) {
-      try {
-        // TODO: Before any DOI operation, make sure an organisation with activated/primary DOI account exists (organisationWithPrimaryDoiAccount)
-        if (resource.getIdentifierStatus() == IdentifierStatus.PUBLIC_PENDING_PUBLICATION) {
-          if (resource.isAlreadyAssignedDoi()) {
-            // TODO: delete reserved DOI using the primary DOI account, reassign previous DOI to resource, and update EML alternateIdentifier list
-            resource.setDoi(resource.getVersionHistory().get(0).getDoi());// mocked
-            resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
-            resource.updateAlternateIdentifierForDOI();
-            saveResource();
+        DOI reservedDoi = resource.getDoi();
+        if (reservedDoi != null && resource.getIdentifierStatus() == IdentifierStatus.PUBLIC_PENDING_PUBLICATION) {
+          DOI assignedDoi = resource.getAssignedDoi();
+          if (assignedDoi != null) {
+            LOG.info("Deleting reserved DOI=" + reservedDoi.getDoiName() + " and reassigning DOI=" + assignedDoi.getDoiName());
+            try {
+              // delete reserved DOI, reassign previous DOI to resource, and update EML alternateIdentifier list
+              doDeleteDOI(reservedDoi, resource, assignedDoi);
+              String msg = reservedDoi.toString() + " was deleted, and " + assignedDoi.getDoiName() + " was reassigned successfully!";
+              LOG.info(msg);
+              addActionMessage(msg);
+            } catch (DoiException e) {
+              String errorMsg = "Failed to delete DOI=" + resource.getDoi().getDoiName() + ": " + e.getMessage();
+              addActionError(errorMsg);
+              LOG.error(errorMsg);
+            }
           } else {
-            // TODO: delete reserved DOI using the primary DOI account, and update EML alternateIdentifier list
-            resource.setDoi(null);// mocked
-            resource.setIdentifierStatus(IdentifierStatus.UNRESERVED);
-            resource.updateAlternateIdentifierForDOI();
-            saveResource();
+            try {
+              // delete reserved DOI, and update EML alternateIdentifier list
+              doDeleteDOI(reservedDoi, resource, null);
+              String msg = reservedDoi.toString() + " was deleted successfully!";
+              LOG.info(msg);
+              addActionMessage(msg);
+            } catch (DoiException e) {
+              String errorMsg = "Failed to delete DOI=" + resource.getDoi().getDoiName() + ": " + e.getMessage();
+              addActionError(errorMsg);
+              LOG.error(errorMsg);
+            }
           }
+        } else {
+          addActionWarning(getText("manage.overview.resource.doi.invalid.operation",
+            new String[] {resource.getShortname(), resource.getIdentifierStatus().toString()}));
         }
-      } catch (Exception e) {
-        LOG.error("Failed to delete reserved DOI for resource " + resource.getShortname(), e);
-      }
     } else {
-      addActionWarning(getText("manage.overview.resource.doi.invalid.operation", new String[] {resource.getShortname(),
-        resource.getIdentifierStatus().toString()}));
+      addActionWarning(getText("manage.overview.resource.doi.invalid.operation",
+        new String[] {resource.getShortname(), resource.getIdentifierStatus().toString()}));
     }
     return execute();
   }

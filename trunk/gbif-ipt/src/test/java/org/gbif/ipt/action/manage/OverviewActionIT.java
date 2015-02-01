@@ -10,8 +10,11 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.User;
+import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 import org.gbif.ipt.model.voc.IdentifierStatus;
+import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
@@ -27,6 +30,7 @@ import org.gbif.utils.file.FileUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -40,8 +44,10 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -92,7 +98,6 @@ public class OverviewActionIT {
       new OverviewAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mockRegistrationManagerDataCite,
         mock(ResourceManager.class), mock(UserAccountManager.class), mock(ExtensionManager.class),
         mock(VocabulariesManager.class), mock(GenerateDwcaFactory.class));
-    actionDataCite.setReserveDoi("true");
 
     // EZID parameters..
     RegistrationManager mockRegistrationManagerEZID = mock(RegistrationManager.class);
@@ -119,7 +124,6 @@ public class OverviewActionIT {
       new OverviewAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mockRegistrationManagerEZID,
         mock(ResourceManager.class), mock(UserAccountManager.class), mock(ExtensionManager.class),
         mock(VocabulariesManager.class), mock(GenerateDwcaFactory.class));
-    actionEZID.setReserveDoi("true");
 
     return Arrays.asList(
       new Object[][] {{actionDataCite, DOIRegistrationAgency.DATACITE}, {actionEZID, DOIRegistrationAgency.EZID}});
@@ -167,6 +171,7 @@ public class OverviewActionIT {
   @Test
   public void testReserveDoi() throws Exception {
     LOG.info("Testing " + type + "...");
+    action.setReserveDoi("true");
     action.reserveDoi();
     assertNotNull(r.getDoi());
     assertEquals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION, r.getIdentifierStatus());
@@ -179,6 +184,7 @@ public class OverviewActionIT {
   @Test
   public void testReuseAndReserveExistingDoi() throws Exception {
     LOG.info("Testing " + type + "...");
+    action.setReserveDoi("true");
     action.reserveDoi();
     assertNotNull(r.getDoi());
     assertEquals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION, r.getIdentifierStatus());
@@ -196,6 +202,61 @@ public class OverviewActionIT {
     assertEquals(existingDOI.getDoiName(), r.getDoi().getDoiName());
     assertEquals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION, r.getIdentifierStatus());
     LOG.info("Existing DOI was reused successfully, DOI=" + existingDOI.getDoiName());
+  }
+
+  /**
+   * Test deleting reserved DOI, when the resource was never assigned a DOI before.
+   */
+  @Test
+  public void testDeleteReservedDoi() throws Exception {
+    LOG.info("Testing " + type + "...");
+    action.setDeleteDoi("true");
+    action.reserveDoi();
+    assertNotNull(r.getDoi());
+    assertEquals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION, r.getIdentifierStatus());
+    assertFalse(r.isAlreadyAssignedDoi());
+    LOG.info("DOI was reserved successfully, DOI=" + r.getDoi());
+
+    action.deleteDoi();
+    // make sure the reserved DOI was deleted
+    assertNull(r.getDoi());
+    assertEquals(IdentifierStatus.UNRESERVED, r.getIdentifierStatus());
+    assertFalse(r.isAlreadyAssignedDoi());
+    LOG.info("Existing DOI was deleted successfully");
+  }
+
+  /**
+   * Test deleting reserved DOI, when the resource was previously assigned a DOI.
+   */
+  @Test
+  public void testDeleteReservedDoiWhenPreviousDoiExists() throws Exception {
+    LOG.info("Testing " + type + "...");
+    action.setDeleteDoi("true");
+
+    // mock resource being assigned DOI
+    DOI assignedDoi = new DOI("10.5072/bclona1");
+    r.setDoi(assignedDoi);
+    r.setIdentifierStatus(IdentifierStatus.PUBLIC);
+    User user = new User();
+    user.setEmail("jsmith@gbif.org");
+    VersionHistory history = new VersionHistory(new BigDecimal("1.0"), new Date(), user, PublicationStatus.PUBLIC);
+    history.setDoi(assignedDoi);
+    history.setStatus(IdentifierStatus.PUBLIC);
+    r.addVersionHistory(history);
+    assertTrue(r.isAlreadyAssignedDoi());
+
+    // reserve new DOI for resource
+    action.reserveDoi();
+    assertNotNull(r.getDoi());
+    assertEquals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION, r.getIdentifierStatus());
+    LOG.info("DOI was reserved successfully, DOI=" + r.getDoi());
+
+    action.deleteDoi();
+    // make sure the reserved DOI was deleted, and previous DOI reassigned
+    assertEquals(assignedDoi.getDoiName(), r.getDoi().getDoiName());
+    assertEquals(IdentifierStatus.PUBLIC, r.getIdentifierStatus());
+    assertTrue(r.isAlreadyAssignedDoi());
+    LOG.info("Existing DOI was deleted successfully");
   }
 
 }
