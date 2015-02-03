@@ -15,6 +15,7 @@ import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
+import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
@@ -70,7 +71,7 @@ public class OverviewActionIT {
   }
 
   @Parameterized.Parameters
-  public static Iterable data() throws IOException {
+  public static Iterable data() throws IOException, DeletionNotAllowedException {
 
     // DataCite parameters..
     RegistrationManager mockRegistrationManagerDataCite = mock(RegistrationManager.class);
@@ -272,6 +273,7 @@ public class OverviewActionIT {
     List<String> collection = Lists.newArrayList();
     action.setActionErrors(collection);
 
+    action.setPublish("true");
     assertEquals("input", action.publish());
     assertEquals(1, action.getActionErrors().size());
     LOG.info("Publishing resource with deleted DOI failed as expected");
@@ -293,8 +295,67 @@ public class OverviewActionIT {
     List<String> collection = Lists.newArrayList();
     action.setActionErrors(collection);
 
+    action.setPublish("true");
     assertEquals("input", action.publish());
     assertEquals(1, action.getActionErrors().size());
     LOG.info("Publishing resource with DOI that cannot be resolved failed as expected");
+  }
+
+  /**
+   * Test deleting resource that has been assigned multiple DOIs, and ensure that deletion deletes all reserved DOIs,
+   * and deactivates all registered DOIs.
+   */
+  @Test
+  public void testDeleteResourceAssignedMultipleDOIs() throws Exception {
+    LOG.info("Testing " + type + "...");
+    action.setDelete("true");
+
+    action.reserveDoi();
+    DOI reserved1 = new DOI(r.getDoi().toString());
+
+    // reset
+    r.setDoi(null);
+    r.setIdentifierStatus(IdentifierStatus.UNRESERVED);
+
+    action.reserveDoi();
+    DOI reserved2 = new DOI(r.getDoi().toString());
+
+    // reset
+    r.setDoi(null);
+    r.setIdentifierStatus(IdentifierStatus.UNRESERVED);
+
+    action.reserveDoi();
+    DOI reserved3 = new DOI(r.getDoi().toString());
+
+    assertTrue(!reserved1.toString().equals(reserved2.toString()) && !reserved1.toString().equals(reserved3.toString())
+               && !reserved2.toString().equals(reserved3.toString()));
+
+    // mock VersionHistory: version 1.0 and 1.1 share same registered DOI, version 2.0 has different registered DOI
+    VersionHistory history1 =
+      new VersionHistory(new BigDecimal("1.0"), new Date(), new User(), PublicationStatus.PUBLIC);
+    history1.setDoi(reserved1);
+    history1.setStatus(IdentifierStatus.PUBLIC);
+    r.addVersionHistory(history1);
+
+    VersionHistory history11 =
+      new VersionHistory(new BigDecimal("1.1"), new Date(), new User(), PublicationStatus.PUBLIC);
+    history11.setDoi(reserved1);
+    history11.setStatus(IdentifierStatus.PUBLIC);
+    r.addVersionHistory(history11);
+
+    VersionHistory history2 =
+      new VersionHistory(new BigDecimal("2.0"), new Date(), new User(), PublicationStatus.PUBLIC);
+    history2.setDoi(reserved2);
+    history2.setStatus(IdentifierStatus.PUBLIC);
+    r.addVersionHistory(history2);
+
+    assertEquals(3, r.getVersionHistory().size());
+
+    // ensure resource has reserved DOI
+    assertTrue(r.getIdentifierStatus().equals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION));
+    assertTrue(r.isAlreadyAssignedDoi());
+    assertTrue(r.isPubliclyAvailable());
+
+    assertEquals("home", action.delete());
   }
 }

@@ -39,6 +39,10 @@ public class DeletionNotAllowedException extends Exception {
      */
     REGISTRY_ERROR,
     /**
+     * Because some DOI Registration Agency error occurred.
+     */
+    DOI_REGISTRATION_AGENCY_ERROR,
+    /**
      * Because there is at least one resource whose DOI is registered with this organization. Used while deleting
      * an organization.
      */

@@ -82,11 +82,12 @@ public interface ResourceManager {
    * Deletes a Resource.
    *
    * @param resource Resource
+   * @param remove whether the resource folder should be deleted from the data directory during deletion
    *
    * @throws IOException                 if deletion could not be completed
    * @throws DeletionNotAllowedException if deletion was not allowed to be completed
    */
-  void delete(Resource resource) throws IOException, DeletionNotAllowedException;
+  void delete(Resource resource, boolean remove) throws IOException, DeletionNotAllowedException;
 
   /**
    * Gets a resource by its shortName.

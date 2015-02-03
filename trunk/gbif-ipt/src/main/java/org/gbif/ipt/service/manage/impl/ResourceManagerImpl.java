@@ -634,9 +634,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     xstream.registerConverter(jdbcInfoConverter);
   }
 
-  public void delete(Resource resource) throws IOException, DeletionNotAllowedException {
+  public void delete(Resource resource, boolean remove) throws IOException, DeletionNotAllowedException {
     // deregister resource?
-    if (resource.getKey() != null) {
+    if (resource.isRegistered()) {
       try {
         registryManager.deregister(resource);
       } catch (RegistryException e) {
@@ -644,10 +644,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         throw new DeletionNotAllowedException(Reason.REGISTRY_ERROR, e.getMessage());
       }
     }
-    // remove from data dir
-    FileUtils.forceDelete(dataDir.resourceFile(resource, ""));
-    // remove object
-    resources.remove(resource.getShortname().toLowerCase());
+
+    // remove from data dir?
+    if (remove) {
+      FileUtils.forceDelete(dataDir.resourceFile(resource, ""));
+      // remove object
+      resources.remove(resource.getShortname().toLowerCase());
+    }
   }
 
   /**

@@ -73,6 +73,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
@@ -80,6 +81,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.google.common.io.Files;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -203,7 +205,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    * Regardless of whether the resource was assigned a DOI, it deletes the resource from GBIF if this resource was
    * registered with GBIF.
    * </br>
-   * TODO: Add tests with resource having DOIs in different states
    */
   @Override
   public String delete() {
@@ -211,17 +212,48 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       return NOT_FOUND;
     }
     if (delete) {
+      if (resource.getStatus().equals(PublicationStatus.DELETED)) {
+        addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
+          resource.getStatus().toString()}));
+        return INPUT;
+      }
       try {
-        Resource res = resource;
-        if (resource.isAlreadyAssignedDoi()) {
-          // TODO: Before any DOI operation, make sure an organisation with activated/primary DOI account exists (organisationWithPrimaryDoiAccount)
-          // TODO: make current DOI unavailable for this resource using the primary DOI account, and delete it from GBIF if it was registered
-          // TODO: make all former DOIs for the resource unavailable too. All versions of the resource won't resolve any more, showing a "This resource has been removed page"
-          resource.setStatus(PublicationStatus.DELETED); // mocked
+        DOI doi = resource.getDoi();
+        if (doi != null) {
+          // prevent deletion if it will trigger a DOI operation, but no DOI agency account has been activated yet
+          if (registrationManager.getDoiService() == null) {
+            String msg = "No organisation with an activated DOI agency account exists. Please contact your IPT admin for help.";
+            LOG.error(msg);
+            addActionError(msg);
+            return INPUT;
+          }
+
+          // de-register resource, but don't delete resource directory
+          if (resource.isRegistered()) {
+            resourceManager.delete(resource, false);
+          }
+
+          // next try to deactivate as many DOIs assigned to the resource as possible (and delete DOI if reserved)
+          doDeactivateDOI(doi);
+
+          // delete previously assigned DOIs also
+          Set<String> deleted = Sets.newHashSet(doi.toString());
+          if (!resource.getVersionHistory().isEmpty()) {
+            for (VersionHistory history: resource.getVersionHistory()) {
+              DOI formerDoi = history.getDoi();
+              if (formerDoi != null && !deleted.contains(formerDoi.toString())) {
+                doDeactivateDOI(formerDoi);
+                deleted.add(formerDoi.toString());
+              }
+            }
+          }
+
+          resource.setStatus(PublicationStatus.DELETED);
           saveResource();
-          addActionMessage(getText("manage.overview.resource.deleted", new String[] {res.toString()}));
+          addActionMessage(getText("manage.overview.resource.deleted", new String[] {resource.toString()}));
         } else {
-          resourceManager.delete(res);
+          // de-register resource, and delete resource directory
+          resourceManager.delete(resource, true);
         }
         return HOME;
       } catch (IOException e) {
@@ -240,6 +272,41 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         resource.getStatus().toString()}));
     }
     return SUCCESS;
+  }
+
+  /**
+   * Resolve DOI, then depending on its state delete it (if reserved) or deactivate it (if registered).
+   *
+   * @param doi DOI to delete/deactivate
+   *
+   * @throws org.gbif.ipt.service.DeletionNotAllowedException if deletion failed
+   */
+  private void doDeactivateDOI(DOI doi) throws DeletionNotAllowedException {
+    Preconditions.checkNotNull(registrationManager.getDoiService());
+    Preconditions.checkNotNull(doi);
+    try {
+      DoiData doiData = registrationManager.getDoiService().resolve(doi);
+      if (doiData != null && doiData.getStatus() != null) {
+        if (doiData.getStatus().equals(DoiStatus.RESERVED)) {
+          LOG.info("Deleting reserved DOI: " + doi.toString() + "...");
+          registrationManager.getDoiService().delete(doi);
+          LOG.info(doi.toString() + " deleted successfully!");
+        } else if (doiData.getStatus().equals(DoiStatus.REGISTERED)) {
+          LOG.info("Deactivating registered DOI: " + doi.toString() + "...");
+          registrationManager.getDoiService().delete(doi);
+          LOG.info(doi.toString() + " deactivated successfully!");
+        } else {
+          LOG.debug(
+            "Not appropriate to delete DOI: " + doi.toString() + ". DOI status=" + doiData.getStatus().toString());
+        }
+      } else {
+        throw new DeletionNotAllowedException(DeletionNotAllowedException.Reason.DOI_REGISTRATION_AGENCY_ERROR,
+          "Failed to resolve " + doi.toString() + " therefore it could not be deleted!");
+      }
+    } catch (DoiException e) {
+      throw new DeletionNotAllowedException(DeletionNotAllowedException.Reason.DOI_REGISTRATION_AGENCY_ERROR,
+        "Failed to delete " + doi.toString() + ": " + e.getMessage());
+    }
   }
 
   /**
@@ -509,12 +576,14 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     if (resource == null) {
       return NOT_FOUND;
     }
-    if (registrationManager.getDoiService() == null) {
-      String msg = "No organisation with an activated DOI agency account exists. Please contact your IPT admin for help.";
-      LOG.error(msg);
-      addActionError(msg);
-    }
     if (reserveDoi) {
+      // prevent reservation if no DOI registration agency account configured
+      if (registrationManager.getDoiService() == null) {
+        String msg = "No organisation with an activated DOI agency account exists. Please contact your IPT admin for help.";
+        LOG.error(msg);
+        addActionError(msg);
+        return INPUT;
+      }
       DOI existingDoi = findExistingDoi(resource);
       if ((existingDoi == null && resource.getIdentifierStatus() == IdentifierStatus.UNRESERVED && !resource
         .isAlreadyAssignedDoi()) || (resource.getIdentifierStatus() == IdentifierStatus.PUBLIC && resource
@@ -612,7 +681,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    *
    * @throws DoiException if the deletion failed
    */
-  private void doDeleteDOI(DOI reservedDoi, Resource resource, @Nullable DOI reassignedDoi) throws DoiException {
+  private void doDeleteReservedDOI(DOI reservedDoi, Resource resource, @Nullable DOI reassignedDoi) throws DoiException {
     Preconditions.checkNotNull(registrationManager.getDoiService());
     // delete reserved DOI for this resource, optionally reassign DOI, and update EML alternate identifier list
     registrationManager.getDoiService().delete(reservedDoi);
@@ -666,7 +735,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
             LOG.info("Deleting reserved " + reservedDoi.toString() + " and reassigning " + assignedDoi.toString());
             try {
               // delete reserved DOI, reassign previous DOI to resource, and update EML alternateIdentifier list
-              doDeleteDOI(reservedDoi, resource, assignedDoi);
+              doDeleteReservedDOI(reservedDoi, resource, assignedDoi);
               String msg = reservedDoi.toString() + " was deleted, and " + assignedDoi.toString() + " was reassigned successfully!";
               LOG.info(msg);
               addActionMessage(msg);
@@ -678,7 +747,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           } else {
             try {
               // delete reserved DOI, and update EML alternateIdentifier list
-              doDeleteDOI(reservedDoi, resource, null);
+              doDeleteReservedDOI(reservedDoi, resource, null);
               String msg = reservedDoi.toString() + " was deleted successfully!";
               LOG.info(msg);
               addActionMessage(msg);
@@ -822,53 +891,53 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     if (resource == null) {
       return NOT_FOUND;
     }
-    // prevent publishing if resource is registered but it hasn't been assigned a GBIF-supported license
-    if (resource.isRegistered() && !resource.isAssignedGBIFSupportedLicense()) {
-      String msg = getText("manage.overview.prevented.resource.publishing.noGBIFLicense");
-      addActionError(msg);
-      LOG.error(msg);
-      return INPUT;
-    }
-    // prevent publishing if publishing will trigger a DOI operation, but no DOI agency account has been activated yet
-    if (resource.getDoi() != null && resource.isPubliclyAvailable()) {
-      if (registrationManager.getDoiService() == null) {
-        String msg =
-          "No organisation with an activated DOI agency account exists. Please contact your IPT admin for help.";
-        LOG.error(msg);
+    if (publish) {
+      // prevent publishing if resource is registered but it hasn't been assigned a GBIF-supported license
+      if (resource.isRegistered() && !resource.isAssignedGBIFSupportedLicense()) {
+        String msg = getText("manage.overview.prevented.resource.publishing.noGBIFLicense");
         addActionError(msg);
+        LOG.error(msg);
         return INPUT;
       }
-
-      // prevent publishing if DOI does not resolve/exist, or if DOI agency account cannot resolve this DOI
-      try {
-        DoiData doiData = registrationManager.getDoiService().resolve(resource.getDoi());
-        if (doiData != null && doiData.getStatus() != null) {
-          if (doiData.getStatus().compareTo(DoiStatus.RESERVED) == 0 || doiData.getStatus().compareTo(DoiStatus.REGISTERED) == 0) {
-            LOG.debug("Pre-publication check: successfully resolved " + resource.getDoi().toString());
-          } else {
-            String msg = "Pre-publication check failed: " + resource.getDoi().toString() + " is not reserved or registered but: "
-                         + doiData.getStatus().toString();
-            LOG.error(msg);
-            addActionError(msg);
-            return INPUT;
-          }
-        } else {
-          String msg = "Pre-publication check failed: could not verify " + resource.getDoi().toString() + " exists!";
+      // prevent publishing if publishing will trigger a DOI operation, but no DOI agency account has been activated yet
+      if (resource.getDoi() != null && resource.isPubliclyAvailable()) {
+        if (registrationManager.getDoiService() == null) {
+          String msg =
+            "No organisation with an activated DOI agency account exists. Please contact your IPT admin for help.";
           LOG.error(msg);
           addActionError(msg);
           return INPUT;
         }
-      } catch (DoiException e) {
-        String msg =
-          "Pre-publication check failed: could not verify " + resource.getDoi().toString() + " exists!: " + e
-            .getMessage();
-        LOG.error(msg);
-        addActionError(msg);
-        return INPUT;
-      }
-    }
 
-    if (publish) {
+        // prevent publishing if DOI does not resolve/exist, or if DOI agency account cannot resolve this DOI
+        try {
+          DoiData doiData = registrationManager.getDoiService().resolve(resource.getDoi());
+          if (doiData != null && doiData.getStatus() != null) {
+            if (doiData.getStatus().compareTo(DoiStatus.RESERVED) == 0 || doiData.getStatus().compareTo(DoiStatus.REGISTERED) == 0) {
+              LOG.debug("Pre-publication check: successfully resolved " + resource.getDoi().toString());
+            } else {
+              String msg = "Pre-publication check failed: " + resource.getDoi().toString() + " is not reserved or registered but: "
+                           + doiData.getStatus().toString();
+              LOG.error(msg);
+              addActionError(msg);
+              return INPUT;
+            }
+          } else {
+            String msg = "Pre-publication check failed: could not verify " + resource.getDoi().toString() + " exists!";
+            LOG.error(msg);
+            addActionError(msg);
+            return INPUT;
+          }
+        } catch (DoiException e) {
+          String msg =
+            "Pre-publication check failed: could not verify " + resource.getDoi().toString() + " exists!: " + e
+              .getMessage();
+          LOG.error(msg);
+          addActionError(msg);
+          return INPUT;
+        }
+      }
+
       // clear the processFailures for the resource, allowing auto-publication to proceed
       if (resourceManager.getProcessFailures().containsKey(resource.getShortname())) {
         logProcessFailures(resource);
