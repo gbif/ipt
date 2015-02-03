@@ -166,11 +166,11 @@ public class OverviewActionTest {
   @Test
   public void testPublishResourceNotGBIFSupportedLicense() throws Exception {
     Resource r = new Resource();
-    // ODbl
     r.getEml().setIntellectualRights("This work is licensed under a <a href=\"http://opendatacommons.org/licenses/odbl/1.0\">Open Data Commons Open Database License (ODbL) 1.0</a>");
     r.setKey(UUID.randomUUID());
     r.setStatus(PublicationStatus.REGISTERED);
     action.setResource(r);
+    action.setPublish("true");
     assertEquals("input", action.publish());
     assertEquals(1, action.getActionErrors().size());
   }
@@ -182,12 +182,41 @@ public class OverviewActionTest {
   @Test
   public void testPublishPublicResourceWithDOIButNoDOIService() throws Exception {
     Resource r = new Resource();
-    // ODbl
     r.setDoi(DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX));
     r.setStatus(PublicationStatus.PUBLIC);
     action.setResource(r);
+    action.setPublish("true");
     assertNull(action.getOrganisationWithPrimaryDoiAccount());
     assertEquals("input", action.publish());
+    assertEquals(1, action.getActionErrors().size());
+  }
+
+  /**
+   * Test trying to delete a resource that is already deleted - redirects back to manage page showing warning.
+   */
+  @Test
+  public void testDeleteDeletedResource() throws Exception {
+    Resource r = new Resource();
+    r.setStatus(PublicationStatus.DELETED);
+    action.setResource(r);
+    action.setDelete("true");
+    assertEquals("input", action.delete());
+    assertEquals(1, action.getActionWarnings().size());
+  }
+
+  /**
+   * If a public resource has a DOI - deleting will trigger a DOI operation (delete reserved DOI or deactivate
+   * registered DOI. This test ensures that if a DOI service is not configured, deletion fails.
+   */
+  @Test
+  public void testDeletePublicResourceWithDOIButNoDOIService() throws Exception {
+    Resource r = new Resource();
+    r.setDoi(DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX));
+    r.setStatus(PublicationStatus.PUBLIC);
+    action.setResource(r);
+    action.setDelete("true");
+    assertNull(action.getOrganisationWithPrimaryDoiAccount());
+    assertEquals("input", action.delete());
     assertEquals(1, action.getActionErrors().size());
   }
 }
