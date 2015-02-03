@@ -24,6 +24,10 @@ public class PublicationException extends RuntimeException {
      */
     REGISTRY,
     /**
+     * Exception occurred performing a DOI related operation, e.g. reserve DOI.
+     */
+    DOI,
+    /**
      * Exception occurred while trying to schedule the resource for its next publication.
      */
     SCHEDULING,

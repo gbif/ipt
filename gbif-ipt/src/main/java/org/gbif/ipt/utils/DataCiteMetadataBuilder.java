@@ -3,6 +3,8 @@ package org.gbif.ipt.utils;
 import org.gbif.api.model.common.DOI;
 import org.gbif.doi.metadata.datacite.DataCiteMetadata;
 import org.gbif.doi.metadata.datacite.ObjectFactory;
+import org.gbif.doi.metadata.datacite.RelatedIdentifierType;
+import org.gbif.doi.metadata.datacite.RelationType;
 import org.gbif.doi.service.InvalidMetadataException;
 import org.gbif.ipt.model.Resource;
 import org.gbif.metadata.eml.Agent;
@@ -50,6 +52,13 @@ public class DataCiteMetadataBuilder {
     // publication year (mandatory)
     String publicationYear = getPublicationYear(resource.getEml());
     dataCiteMetadata.setPublicationYear(publicationYear);
+
+    // version (optional according to DataCite, mandatory and thus never null according to IPT)
+    dataCiteMetadata.setVersion(resource.getEmlVersion().toPlainString());
+
+    // relatedIdentifiers (recommended)
+    DataCiteMetadata.RelatedIdentifiers rids = FACTORY.createDataCiteMetadataRelatedIdentifiers();
+    dataCiteMetadata.setRelatedIdentifiers(rids);
 
     return dataCiteMetadata;
   }
@@ -122,9 +131,10 @@ public class DataCiteMetadataBuilder {
     DataCiteMetadata.Creators creators = FACTORY.createDataCiteMetadataCreators();
     if (!agents.isEmpty() && !Strings.isNullOrEmpty(agents.get(0).getFullName())) {
       for (Agent agent: agents) {
-        // name is mandatory
+        DataCiteMetadata.Creators.Creator creator = FACTORY.createDataCiteMetadataCreatorsCreator();
+        // name is mandatory, in order of priority:
+        // 1. try agent name
         if (!Strings.isNullOrEmpty(agent.getFullName())) {
-          DataCiteMetadata.Creators.Creator creator = FACTORY.createDataCiteMetadataCreatorsCreator();
           creator.setCreatorName(agent.getFullName());
           // identifier is optional, however, there can only be one and the name of the identifier scheme is mandatory
           if (!agent.getUserIds().isEmpty()) {
@@ -136,8 +146,30 @@ public class DataCiteMetadataBuilder {
               }
             }
           }
-          creators.getCreator().add(creator);
+          // affiliation is optional
+          if (!Strings.isNullOrEmpty(agent.getOrganisation())) {
+            creator.getAffiliation().add(agent.getOrganisation());
+          }
         }
+        // 2. try organisation name
+        else if (!Strings.isNullOrEmpty(agent.getOrganisation())) {
+          creator.setCreatorName(agent.getOrganisation());
+        }
+        // 3. try position name
+        else if (!Strings.isNullOrEmpty(agent.getPosition())) {
+          creator.setCreatorName(agent.getPosition());
+          // affiliation is optional
+          if (!Strings.isNullOrEmpty(agent.getOrganisation())) {
+            creator.getAffiliation().add(agent.getOrganisation());
+          }
+        }
+        // otherwise if no name, organisation name, or position name found, throw exception
+        else {
+          throw new InvalidMetadataException(
+            "DataCite schema (v3) requires creator have a name! Check creator/agent: " + agent.toString());
+        }
+        // add to list
+        creators.getCreator().add(creator);
       }
       return creators;
     } else {
@@ -178,12 +210,9 @@ public class DataCiteMetadataBuilder {
    * @param userId Eml UserId object
    *
    * @return DataCite NameIdentifier object or null if none could be created (e.g. because directory wasn't recognized)
-   *
-   * @throws org.gbif.doi.service.InvalidMetadataException if mandatory identifier and scheme could not be populated
    */
   @VisibleForTesting
-  protected static DataCiteMetadata.Creators.Creator.NameIdentifier convertEmlUserId(UserId userId)
-    throws InvalidMetadataException {
+  protected static DataCiteMetadata.Creators.Creator.NameIdentifier convertEmlUserId(UserId userId) {
     if (!Strings.isNullOrEmpty(userId.getIdentifier()) && !Strings.isNullOrEmpty(userId.getDirectory())) {
       String directory = Strings.nullToEmpty(userId.getDirectory()).toLowerCase();
       if (directory.contains(ORCID_NAME_IDENTIFIER_SCHEME.toLowerCase()) ||
@@ -198,9 +227,37 @@ public class DataCiteMetadataBuilder {
         LOG.debug("UserId has unrecognized directory (" + directory + "), only ORCID and ResearcherID are supported");
         return null;
       }
-    } else {
-      throw new InvalidMetadataException("DataCite schema (v3) requires NameIdentifier have an identifier and scheme");
     }
+    return null;
   }
 
+  /**
+   * Add RelatedIdentifier describing the DOI of the resource being replaced by the resource being registered.
+   *
+   * @param replaced DOI identifier of resource being replaced
+   */
+  public static void addIsNewVersionOfDOIRelatedIdentifier(@NotNull DataCiteMetadata metadata, @NotNull DOI replaced)
+    throws InvalidMetadataException {
+    DataCiteMetadata.RelatedIdentifiers.RelatedIdentifier rid =
+      FACTORY.createDataCiteMetadataRelatedIdentifiersRelatedIdentifier();
+    rid.setRelatedIdentifierType(RelatedIdentifierType.DOI);
+    rid.setValue(replaced.getDoiName());
+    rid.setRelationType(RelationType.IS_NEW_VERSION_OF);
+    metadata.getRelatedIdentifiers().getRelatedIdentifier().add(rid);
+  }
+
+  /**
+   * Add RelatedIdentifier describing the DOI of the resource replacing the resource being registered.
+   *
+   * @param replacing DOI identifier of resource replacing resource being registered
+   */
+  public static void addIsPreviousVersionOfDOIRelatedIdentifier(@NotNull DataCiteMetadata metadata,
+    @NotNull DOI replacing) {
+    DataCiteMetadata.RelatedIdentifiers.RelatedIdentifier rid =
+      FACTORY.createDataCiteMetadataRelatedIdentifiersRelatedIdentifier();
+    rid.setRelatedIdentifierType(RelatedIdentifierType.DOI);
+    rid.setValue(replacing.getDoiName());
+    rid.setRelationType(RelationType.IS_PREVIOUS_VERSION_OF);
+    metadata.getRelatedIdentifiers().getRelatedIdentifier().add(rid);
+  }
 }

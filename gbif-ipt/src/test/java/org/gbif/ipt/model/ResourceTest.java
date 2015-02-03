@@ -95,6 +95,7 @@ public class ResourceTest {
     Resource res = new Resource();
     res.setTitle("Test Resource");
     res.setShortname("test");
+    res.setStatus(PublicationStatus.PRIVATE);
 
     // add three published versions to version history, all published by user, some private, other public
     VersionHistory v1 = new VersionHistory(RESOURCE_VERSION_ONE, new Date(), USER, PublicationStatus.PRIVATE);
@@ -367,14 +368,19 @@ public class ResourceTest {
   @Test
   public void testTrailingZeros() {
     Resource resource = getResource();
+    resource.getVersionHistory().clear();
 
     // simulate publication of one version
     resource.setEmlVersion(new BigDecimal("0.9"));
     resource.setLastPublished(new Date());
+    VersionHistory history = new VersionHistory(new BigDecimal("0.9"), new Date(), USER, PublicationStatus.PRIVATE);
+    resource.addVersionHistory(history);
 
     // simulate publication of another
     resource.setEmlVersion(new BigDecimal("0.10"));
     resource.setLastPublished(new Date());
+    history = new VersionHistory(new BigDecimal("0.10"), new Date(), USER, PublicationStatus.PRIVATE);
+    resource.addVersionHistory(history);
 
     assertEquals("0.9", resource.getReplacedEmlVersion().toPlainString());
     assertEquals("0.10", resource.getEmlVersion().toPlainString());
@@ -384,6 +390,8 @@ public class ResourceTest {
 
     resource.setEmlVersion(new BigDecimal("0.11"));
     resource.setLastPublished(new Date());
+    history = new VersionHistory(new BigDecimal("0.11"), new Date(), USER, PublicationStatus.PRIVATE);
+    resource.addVersionHistory(history);
 
     assertEquals("0.10", resource.getReplacedEmlVersion().toPlainString());
     assertEquals("0.11", resource.getEmlVersion().toPlainString());
@@ -395,15 +403,20 @@ public class ResourceTest {
   @Test
   public void testSetEmlVersion() {
     Resource resource = getResource();
+    resource.getVersionHistory().clear();
     // simulate publication of one verison
     BigDecimal v = new BigDecimal("1.19");
     resource.setEmlVersion(v);
     resource.setLastPublished(new Date());
+    VersionHistory history = new VersionHistory(BigDecimal.valueOf(1.19), new Date(), USER, PublicationStatus.PUBLIC);
+    resource.addVersionHistory(history);
 
     // simulate publication of the next
     v = resource.getNextVersion();
     resource.setEmlVersion(v);
     resource.setLastPublished(new Date());
+    history = new VersionHistory(v, new Date(), USER, PublicationStatus.PUBLIC);
+    resource.addVersionHistory(history);
 
     assertEquals("1.19", resource.getReplacedEmlVersion().toPlainString());
     assertEquals("1.20", resource.getEmlVersion().toPlainString());
@@ -600,5 +613,15 @@ public class ResourceTest {
     r.getEml().setIntellectualRights("This work is licensed under a <a href=\"http://www.opendatacommons.org/licenses/by/1.0/\">Open Data Commons Attribution License</a>.");
     assertEquals("http://www.opendatacommons.org/licenses/by/1.0/", r.getEml().parseLicenseUrl());
     assertTrue(r.isAssignedGBIFSupportedLicense());
+  }
+
+  @Test
+  public void testIsPubliclyAvailable() {
+    assertFalse(getResource().isPubliclyAvailable());
+  }
+
+  @Test
+  public void testGetLastPublishedVersionsVersion() {
+    assertEquals(new BigDecimal("3.0"), getResource().getLastPublishedVersionsVersion());
   }
 }

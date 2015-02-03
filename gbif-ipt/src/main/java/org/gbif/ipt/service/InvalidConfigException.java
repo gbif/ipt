@@ -8,7 +8,7 @@ public class InvalidConfigException extends RuntimeException {
   /**
    * Generated.
    */
-  private static final long serialVersionUID = 8568781101282056985L;
+  private static final long serialVersionUID = 8567781101282056985L;
 
   public enum TYPE {
     /**
@@ -79,6 +79,10 @@ public class InvalidConfigException extends RuntimeException {
      * The resource cannot be migrated as configured.
      */
     INVALID_RESOURCE_MIGRATION,
+    /**
+     * The resource DOI cannot be registered as configured.
+     */
+    INVALID_DOI_REGISTRATION,
     /**
      * The resource cannot be migrated as configured.
      */

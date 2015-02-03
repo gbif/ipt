@@ -2,10 +2,12 @@ package org.gbif.ipt.action.manage;
 
 import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.VersionHistory;
+import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
@@ -16,6 +18,7 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.GenerateDwcaFactory;
+import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.metadata.eml.Citation;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlWriter;
@@ -36,6 +39,7 @@ import org.xml.sax.SAXException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -167,6 +171,22 @@ public class OverviewActionTest {
     r.setKey(UUID.randomUUID());
     r.setStatus(PublicationStatus.REGISTERED);
     action.setResource(r);
+    assertEquals("input", action.publish());
+    assertEquals(1, action.getActionErrors().size());
+  }
+
+  /**
+   * If a public resource has a DOI - publishing will trigger a DOI operation (register or update). This test ensures
+   * that if a DOI service is not configured, publishing fails.
+   */
+  @Test
+  public void testPublishPublicResourceWithDOIButNoDOIService() throws Exception {
+    Resource r = new Resource();
+    // ODbl
+    r.setDoi(DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX));
+    r.setStatus(PublicationStatus.PUBLIC);
+    action.setResource(r);
+    assertNull(action.getOrganisationWithPrimaryDoiAccount());
     assertEquals("input", action.publish());
     assertEquals(1, action.getActionErrors().size());
   }

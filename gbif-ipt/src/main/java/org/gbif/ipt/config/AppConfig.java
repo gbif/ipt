@@ -12,11 +12,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Writer;
+import java.math.BigDecimal;
+import java.net.URI;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.core.UriBuilder;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
@@ -60,12 +64,12 @@ public class AppConfig {
 
   // to support compatibility with historical data directories, we default to the original hard coded
   // types that were scattered across the code.
-  private static final List<String> DEFAULT_CORE_ROW_TYPES = ImmutableList.of(Constants.DWC_ROWTYPE_OCCURRENCE,
-    Constants.DWC_ROWTYPE_TAXON);
+  private static final List<String> DEFAULT_CORE_ROW_TYPES =
+    ImmutableList.of(Constants.DWC_ROWTYPE_OCCURRENCE, Constants.DWC_ROWTYPE_TAXON);
   // mapping of the id to the term that is the row ID
-  private static final Map<String, String> DEFAULT_CORE_ROW_TYPES_ID_TERMS = Maps
-    .newHashMap((ImmutableMap.of(Constants.DWC_ROWTYPE_OCCURRENCE, Constants.DWC_OCCURRENCE_ID,
-      Constants.DWC_ROWTYPE_TAXON, Constants.DWC_TAXON_ID)));
+  private static final Map<String, String> DEFAULT_CORE_ROW_TYPES_ID_TERMS = Maps.newHashMap((ImmutableMap
+    .of(Constants.DWC_ROWTYPE_OCCURRENCE, Constants.DWC_OCCURRENCE_ID, Constants.DWC_ROWTYPE_TAXON,
+      Constants.DWC_TAXON_ID)));
 
 
   private static List<String> coreRowTypes = DEFAULT_CORE_ROW_TYPES;
@@ -85,7 +89,7 @@ public class AppConfig {
 
   /**
    * Returns the term to use as the ID for core.
-   * 
+   *
    * @return The expected field for the given core.
    */
   public static String coreIdTerm(String rowType) {
@@ -93,7 +97,7 @@ public class AppConfig {
       return coreRowTypeIdTerms.get(rowType);
     } else {
       throw new IllegalArgumentException("IPT is not configured correctly to support rowType[" + rowType
-        + "].  Hint: are you missing mappings for the row type and id term in the properties?");
+                                         + "].  Hint: are you missing mappings for the row type and id term in the properties?");
     }
   }
 
@@ -215,7 +219,28 @@ public class AppConfig {
   }
 
   public String getResourceUrl(String shortname) {
-    return getBaseUrl() + "/resource.do?" + Constants.REQ_PARAM_RESOURCE + "=" + shortname;
+    return getBaseUrl() + "/resource?" + Constants.REQ_PARAM_RESOURCE + "=" + shortname;
+  }
+
+  /**
+   * @return URI to resource default homepage (no version number) used in DOI registration
+   */
+  public URI getResourceUri(@NotNull String shortname) {
+    Preconditions.checkNotNull(getBaseUrl());
+
+    return UriBuilder.fromPath(getBaseUrl()).path(Constants.REQ_PATH_RESOURCE)
+      .queryParam(Constants.REQ_PARAM_RESOURCE, shortname).build();
+  }
+
+  /**
+   * @return URI to resource homepage for a specific version of resource used in DOI registration
+   */
+  public URI getResourceVersionUri(@NotNull String shortname, @NotNull BigDecimal version) {
+    Preconditions.checkNotNull(getBaseUrl());
+
+    return UriBuilder.fromPath(getBaseUrl()).path(Constants.REQ_PATH_RESOURCE)
+      .queryParam(Constants.REQ_PARAM_RESOURCE, shortname)
+      .queryParam(Constants.REQ_PARAM_VERSION, version.toPlainString()).build();
   }
 
   public String getVersion() {
@@ -231,7 +256,7 @@ public class AppConfig {
 
   /**
    * Checks whether the IPT has been configured to use archival mode.
-   * 
+   *
    * @return whether the IPT is used in archival mode
    */
   public boolean isArchivalMode() {
@@ -244,6 +269,7 @@ public class AppConfig {
 
   /**
    * @return true if the datadir is linked to the production registry
+   *
    * @deprecated Deprecated in favor of {@link #getRegistryType()}
    */
   @Deprecated
@@ -324,7 +350,7 @@ public class AppConfig {
 
       } else {
         LOG.error("Invalid configuration of [" + CORE_ROW_TYPES + "," + CORE_ROW_ID_TERMS
-          + "].  Should have same number of elements - using defaults");
+                  + "].  Should have same number of elements - using defaults");
       }
     }
 
@@ -388,8 +414,8 @@ public class AppConfig {
         // already contains the same information. Dont do anything
         return;
       } else {
-        throw new InvalidConfigException(TYPE.DATADIR_ALREADY_REGISTERED, "The datadir is already designated as "
-          + this.type);
+        throw new InvalidConfigException(TYPE.DATADIR_ALREADY_REGISTERED,
+          "The datadir is already designated as " + this.type);
       }
     }
     try {

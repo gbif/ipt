@@ -411,6 +411,16 @@ public class Resource implements Serializable, Comparable<Resource> {
     return null;
   }
 
+  /**
+   * @return version number of last published resource, or null if last published version had none
+   */
+  public BigDecimal getLastPublishedVersionsVersion() {
+    if (!getVersionHistory().isEmpty()) {
+      return new BigDecimal(getVersionHistory().get(0).getVersion());
+    }
+    return null;
+  }
+
   public UUID getKey() {
     return key;
   }
@@ -732,7 +742,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    */
   public void setEmlVersion(BigDecimal v) {
     if (v != null && emlVersion != null) {
-      replacedEmlVersion = new BigDecimal(emlVersion.toPlainString());
+      setReplacedEmlVersion(new BigDecimal(emlVersion.toPlainString()));
     }
     emlVersion = v;
     if (eml != null) {
@@ -873,6 +883,29 @@ public class Resource implements Serializable, Comparable<Resource> {
   @NotNull
   public BigDecimal getReplacedEmlVersion() {
     return (replacedEmlVersion == null) ? Constants.INITIAL_RESOURCE_VERSION : replacedEmlVersion;
+  }
+
+  /**
+   * Set the replacedEmlVersion. This must match the last published version, if the versionHistory is not empty.
+   *
+   * @param replacedEmlVersion version to be replace, or that has been replaced
+   */
+  public void setReplacedEmlVersion(BigDecimal replacedEmlVersion) {
+    // safeguard, assuming VersionHistory not empty
+    if (!getVersionHistory().isEmpty()) {
+      BigDecimal lastVersion = getLastPublishedVersionsVersion();
+      if (replacedEmlVersion != null && lastVersion != null && replacedEmlVersion.compareTo(lastVersion) != 0) {
+        throw new IllegalArgumentException("Version replaced should be equal to last published version!");
+      }
+    }
+    this.replacedEmlVersion = replacedEmlVersion;
+  }
+
+  /**
+   * @return true if resource is publicly available, or false otherwise (e.g. it is private or deleted)
+   */
+  public boolean isPubliclyAvailable() {
+    return status.equals(PublicationStatus.PUBLIC) || status.equals(PublicationStatus.REGISTERED);
   }
 
   /**

@@ -2,14 +2,20 @@ package org.gbif.ipt.utils;
 
 import org.gbif.api.model.common.DOI;
 import org.gbif.doi.metadata.datacite.DataCiteMetadata;
+import org.gbif.doi.metadata.datacite.RelatedIdentifierType;
+import org.gbif.doi.metadata.datacite.RelationType;
 import org.gbif.doi.service.InvalidMetadataException;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.User;
+import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.voc.IdentifierStatus;
+import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.UserId;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -25,6 +31,8 @@ public class DataCiteMetadataBuilderTest {
   @Test
   public void testBuilder() throws InvalidMetadataException {
     Resource resource = new Resource();
+    resource.setEmlVersion(new BigDecimal("2.0"));
+
     DOI doi = new DOI("10.5072/ipt12");
     resource.setDoi(doi);
     resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
@@ -59,6 +67,17 @@ public class DataCiteMetadataBuilderTest {
     eml.addCreator(creator2);
 
     DataCiteMetadata dataCiteMetadata = DataCiteMetadataBuilder.createDataCiteMetadata(doi, resource);
+
+    // add isNewVersionOf RelatedIdentifier
+    DOI formerDoi = new DOI("10.5072/former");
+    User manager = new User();
+    manager.setEmail("jsmith@gbif.org");
+    BigDecimal replacedVersion = new BigDecimal("1.0");
+    VersionHistory historyVersion1 = new VersionHistory(replacedVersion, new Date(),manager, PublicationStatus.PUBLIC);
+    resource.addVersionHistory(historyVersion1);
+    DataCiteMetadataBuilder.addIsNewVersionOfDOIRelatedIdentifier(dataCiteMetadata, formerDoi);
+
+    // make assertions
     assertEquals("10.5072/ipt12", dataCiteMetadata.getIdentifier().getValue());
     assertEquals(DataCiteMetadataBuilder.DOI_IDENTIFIER_TYPE, dataCiteMetadata.getIdentifier().getIdentifierType());
     assertEquals("Ants of New York State", dataCiteMetadata.getTitles().getTitle().get(0).getValue());
@@ -72,6 +91,11 @@ public class DataCiteMetadataBuilderTest {
     assertEquals("http://orcid.org", dataCiteMetadata.getCreators().getCreator().get(0).getNameIdentifier().getSchemeURI());
     assertEquals(DataCiteMetadataBuilder.ORCID_NAME_IDENTIFIER_SCHEME, dataCiteMetadata.getCreators().getCreator().get(0).getNameIdentifier().getNameIdentifierScheme());
     assertEquals("GBIF", dataCiteMetadata.getCreators().getCreator().get(1).getCreatorName());
+    assertEquals("2.0", dataCiteMetadata.getVersion());
+    // isNewVersionOf RelatedIdentifier
+    assertEquals(RelationType.IS_NEW_VERSION_OF, dataCiteMetadata.getRelatedIdentifiers().getRelatedIdentifier().get(0).getRelationType());
+    assertEquals(formerDoi.getDoiName(), dataCiteMetadata.getRelatedIdentifiers().getRelatedIdentifier().get(0).getValue());
+    assertEquals(RelatedIdentifierType.DOI, dataCiteMetadata.getRelatedIdentifiers().getRelatedIdentifier().get(0).getRelatedIdentifierType());
   }
 
   /**
@@ -117,12 +141,13 @@ public class DataCiteMetadataBuilderTest {
   }
 
   /**
-   * SchemeURI (UserId.directory) not provided.
+   * SchemeURI (UserId.directory) not provided. Null returned in this case, since the directory and identifier are both
+   * required to output a NameIdentifier.
    */
-  @Test(expected=InvalidMetadataException.class)
+  @Test
   public void testConvertEmlUserIdWithMissingSchemeURI() throws InvalidMetadataException {
     UserId userId1 = new UserId("", "0000-0099-6824-9999");
-    DataCiteMetadataBuilder.convertEmlUserId(userId1);
+    assertNull(DataCiteMetadataBuilder.convertEmlUserId(userId1));
   }
 
   /**
