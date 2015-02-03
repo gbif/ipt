@@ -504,8 +504,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    *
    * If the resource has an existing DOI already, its an indication the resource is being transitioned to a new DOI.
    * In this case, the previous DOI must be replaced by the new DOI.
-   *
-   * TODO: Add tests with resource having DOIs in different states
    */
   public String reserveDoi() throws Exception {
     if (resource == null) {
@@ -522,28 +520,28 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         .isAlreadyAssignedDoi()) || (resource.getIdentifierStatus() == IdentifierStatus.PUBLIC && resource
         .isAlreadyAssignedDoi())) {
         DOI doi = DOIUtils.mintDOI(doiAccount.getDoiRegistrationAgency(), doiAccount.getDoiPrefix());
-        LOG.info("Reserving new DOI=" + doi.getDoiName() + " for " + resource.getTitleAndShortname());
+        LOG.info("Reserving " + doi.toString() + " for " + resource.getTitleAndShortname());
         try {
           doReserveDOI(doi, resource);
           String msg = doi.toString() + " was reserved successfully!";
           LOG.info(msg);
           addActionMessage(msg);
         } catch (DoiExistsException e) {
-          LOG.error("Failed to reserve DOI=" + doi.getDoiName() + " because it exists already. Trying again...");
+          LOG.error("Failed to reserve " + doi.toString() + " because it exists already. Trying again...");
           reserveDoi();
         } catch (InvalidMetadataException e) {
           String errorMsg =
-            "Failed to reserve DOI=" + doi.getDoiName() + " because DOI metadata was invalid: " + e.getMessage();
+            "Failed to reserve " + doi.toString() + " because DOI metadata was invalid: " + e.getMessage();
           addActionError(errorMsg);
           LOG.error(errorMsg);
         } catch (DoiException e) {
-          String errorMsg = "Failed to reserve DOI=" + doi.getDoiName() + ": " + e.getMessage();
+          String errorMsg = "Failed to reserve " + doi.toString() + ": " + e.getMessage();
           addActionError(errorMsg);
           LOG.error(errorMsg);
         }
       } else if (existingDoi != null && resource.getIdentifierStatus() == IdentifierStatus.UNRESERVED && !resource
         .isAlreadyAssignedDoi()) {
-        LOG.info("Assigning existing DOI=" + existingDoi.getDoiName() + " to " + resource.getTitleAndShortname());
+        LOG.info("Assigning " + existingDoi.toString() + " (existing DOI) to " + resource.getTitleAndShortname());
 
         String prefixAllowed = doiAccount.getDoiPrefix();
         // ensure the prefix of the DOI account configured for this IPT matches the prefix of the existing DOI
@@ -561,13 +559,13 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
               LOG.info(msg);
               addActionMessage(msg);
             } else {
-              String errorMsg = "Failed to verify that DOI=" + existingDoi.getDoiName() + " has been registered already. Please try again.";
+              String errorMsg = "Failed to verify that " + existingDoi.toString() + " has been registered already. Please try again.";
               LOG.error(errorMsg);
               addActionError(errorMsg);
             }
           } catch (DoiException e) {
             String errorMsg =
-              "Failed to verify existing DOI=" + existingDoi.getDoiName() + " is registered: " + e.getMessage();
+              "Failed to verify existing " + existingDoi.toString() + " is registered: " + e.getMessage();
             addActionError(errorMsg);
             LOG.error(errorMsg);
           }
@@ -650,8 +648,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    *
    * Can only be done to a resource whose DOI is reserved but not public. If the resource previously had been assigned
    * a DOI, that DOI is reassigned.
-   *
-   * TODO: Add tests with resource having DOIs in different states
    */
   public String deleteDoi() throws Exception {
     if (resource == null) {
@@ -667,15 +663,15 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         if (reservedDoi != null && resource.getIdentifierStatus() == IdentifierStatus.PUBLIC_PENDING_PUBLICATION) {
           DOI assignedDoi = resource.getAssignedDoi();
           if (assignedDoi != null) {
-            LOG.info("Deleting reserved DOI=" + reservedDoi.getDoiName() + " and reassigning DOI=" + assignedDoi.getDoiName());
+            LOG.info("Deleting reserved " + reservedDoi.toString() + " and reassigning " + assignedDoi.toString());
             try {
               // delete reserved DOI, reassign previous DOI to resource, and update EML alternateIdentifier list
               doDeleteDOI(reservedDoi, resource, assignedDoi);
-              String msg = reservedDoi.toString() + " was deleted, and " + assignedDoi.getDoiName() + " was reassigned successfully!";
+              String msg = reservedDoi.toString() + " was deleted, and " + assignedDoi.toString() + " was reassigned successfully!";
               LOG.info(msg);
               addActionMessage(msg);
             } catch (DoiException e) {
-              String errorMsg = "Failed to delete DOI=" + resource.getDoi().getDoiName() + ": " + e.getMessage();
+              String errorMsg = "Failed to delete " + resource.getDoi().toString() + ": " + e.getMessage();
               addActionError(errorMsg);
               LOG.error(errorMsg);
             }
@@ -687,7 +683,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
               LOG.info(msg);
               addActionMessage(msg);
             } catch (DoiException e) {
-              String errorMsg = "Failed to delete DOI=" + resource.getDoi().getDoiName() + ": " + e.getMessage();
+              String errorMsg = "Failed to delete " + resource.getDoi().toString() + ": " + e.getMessage();
               addActionError(errorMsg);
               LOG.error(errorMsg);
             }
@@ -819,8 +815,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    * this safeguard in place, a resource can auto-publish in an endless number of failures.
    *
    * @return Struts2 result string
+   *
    * @throws Exception if method fails
-   * TODO: Add tests with resource having DOIs in different states
    */
   public String publish() throws Exception {
     if (resource == null) {
@@ -833,6 +829,45 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       LOG.error(msg);
       return INPUT;
     }
+    // prevent publishing if publishing will trigger a DOI operation, but no DOI agency account has been activated yet
+    if (resource.getDoi() != null && resource.isPubliclyAvailable()) {
+      if (registrationManager.getDoiService() == null) {
+        String msg =
+          "No organisation with an activated DOI agency account exists. Please contact your IPT admin for help.";
+        LOG.error(msg);
+        addActionError(msg);
+        return INPUT;
+      }
+
+      // prevent publishing if DOI does not resolve/exist, or if DOI agency account cannot resolve this DOI
+      try {
+        DoiData doiData = registrationManager.getDoiService().resolve(resource.getDoi());
+        if (doiData != null && doiData.getStatus() != null) {
+          if (doiData.getStatus().compareTo(DoiStatus.RESERVED) == 0 || doiData.getStatus().compareTo(DoiStatus.REGISTERED) == 0) {
+            LOG.debug("Pre-publication check: successfully resolved " + resource.getDoi().toString());
+          } else {
+            String msg = "Pre-publication check failed: " + resource.getDoi().toString() + " is not reserved or registered but: "
+                         + doiData.getStatus().toString();
+            LOG.error(msg);
+            addActionError(msg);
+            return INPUT;
+          }
+        } else {
+          String msg = "Pre-publication check failed: could not verify " + resource.getDoi().toString() + " exists!";
+          LOG.error(msg);
+          addActionError(msg);
+          return INPUT;
+        }
+      } catch (DoiException e) {
+        String msg =
+          "Pre-publication check failed: could not verify " + resource.getDoi().toString() + " exists!: " + e
+            .getMessage();
+        LOG.error(msg);
+        addActionError(msg);
+        return INPUT;
+      }
+    }
+
     if (publish) {
       // clear the processFailures for the resource, allowing auto-publication to proceed
       if (resourceManager.getProcessFailures().containsKey(resource.getShortname())) {
@@ -869,15 +904,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
       BigDecimal nextVersion = new BigDecimal(resource.getNextVersion().toPlainString());
       BigDecimal replacedVersion = new BigDecimal(resource.getEmlVersion().toPlainString());
-
-
-      if (resource.getIdentifierStatus() == IdentifierStatus.PUBLIC_PENDING_PUBLICATION &&
-          (resource.getStatus() == PublicationStatus.PUBLIC || resource.getStatus() == PublicationStatus.REGISTERED)) {
-        // TODO: Before any DOI operation, make sure an organisation with activated/primary DOI account exists (organisationWithPrimaryDoiAccount)
-        // TODO: register DOI using the primary DOI account if publication was successful (add to ResourceManagerImpl.publishEnd() as last step after registration with GBIF,
-        // TODO: before registering DOI, ensure resource is public, and create new DataCite object from persisted EML version written during publication. This DataCite object gets passed into DOI registrations
-        resource.setIdentifierStatus(IdentifierStatus.PUBLIC); // mocked
-      }
 
       // set change summary as entered in confirm popup
       if (getSummary() != null) {

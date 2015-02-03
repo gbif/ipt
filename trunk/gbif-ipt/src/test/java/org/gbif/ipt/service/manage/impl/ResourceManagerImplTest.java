@@ -13,6 +13,7 @@
 
 package org.gbif.ipt.service.manage.impl;
 
+import org.gbif.api.model.common.DOI;
 import org.gbif.dwc.text.Archive;
 import org.gbif.dwc.text.UnsupportedArchiveException;
 import org.gbif.ipt.action.BaseAction;
@@ -33,6 +34,7 @@ import org.gbif.ipt.model.SqlSource;
 import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
+import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
@@ -41,6 +43,8 @@ import org.gbif.ipt.model.converter.PasswordConverter;
 import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.factory.ExtensionFactory;
 import org.gbif.ipt.model.factory.ThesaurusHandlingRule;
+import org.gbif.ipt.model.voc.DOIRegistrationAgency;
+import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
@@ -59,6 +63,7 @@ import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.Eml2Rtf;
 import org.gbif.ipt.task.GenerateDwcaFactory;
+import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.FileUtils;
@@ -985,6 +990,138 @@ public class ResourceManagerImplTest {
     assertTrue(new File(resourceDir, "rtf-res2-3.1.rtf").exists());
   }
 
+  /**
+   * Do publish, test trying to update DOI assigned to resource.
+   * </br>
+   * Publishes non-registered metadata-only resource that has been assigned a DOI. When trying to publish a new
+   * minor version an exception is thrown because the DataCite metadata is invalid (missing publisher).
+   */
+  @Test(expected = PublicationException.class)
+  public void testPublishResourceWithDOIAssignedButInvalidDOIMetadata()
+    throws ParserConfigurationException, SAXException, IOException, AlreadyExistingException, ImportException,
+    InvalidFilenameException {
+    // create instance of manager
+    ResourceManagerImpl resourceManager = getResourceManagerImpl();
+    // prepare resource
+    Resource resource = getNonRegisteredMetadataOnlyResource();
+    // configure reserved DOI
+    DOI doi = DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX);
+    resource.setDoi(doi);
+    resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
+    resource.setStatus(PublicationStatus.PUBLIC);
+    Date released = new Date();
+    resource.setLastPublished(released);
+    // versionHistory
+    VersionHistory history =
+      new VersionHistory(new BigDecimal("3.0"), resource.getLastPublished(), resource.getModifier(),
+        PublicationStatus.PUBLIC);
+    history.setDoi(doi);
+    history.setStatus(IdentifierStatus.PUBLIC);
+    history.setReleased(released);
+    resource.addVersionHistory(history);
+
+    // make a few pre-publication assertions
+    assertEquals(new BigDecimal("3.0"), resource.getEml().getEmlVersion());
+    Date created = resource.getCreated();
+    assertNotNull(created);
+    Date pubDate = resource.getEml().getPubDate();
+    assertNotNull(pubDate);
+    assertEquals(Constants.DATASET_TYPE_METADATA_IDENTIFIER, resource.getCoreType());
+    assertTrue(resource.isAlreadyAssignedDoi());
+    assertNotNull(resource.getAssignedDoi());
+    assertEquals(new BigDecimal("3.0"), resource.getLastPublishedVersionsVersion());
+    assertEquals(PublicationStatus.PUBLIC, resource.getLastPublishedVersionsPublicationStatus());
+    assertEquals(new BigDecimal("3.1"), resource.getNextVersion());
+
+    // publish, will try to update DOI, triggering exception
+    resourceManager.publish(resource, resource.getNextVersion(), baseAction);
+  }
+
+  /**
+   * Do publish, test trying to register DOI (first DOI assigned to resource).
+   * </br>
+   * Publishes non-registered metadata-only resource that has a DOI reserved, but no DOI assigned.
+   * When trying to publish a new major version an exception is thrown because the DataCite metadata is invalid
+   * (missing publisher).
+   */
+  @Test(expected = PublicationException.class)
+  public void testPublishPublicResourceWithDOIReservedButInvalidDOIMetadata()
+    throws ParserConfigurationException, SAXException, IOException, AlreadyExistingException, ImportException,
+    InvalidFilenameException {
+    // create instance of manager
+    ResourceManagerImpl resourceManager = getResourceManagerImpl();
+    // prepare resource
+    Resource resource = getNonRegisteredMetadataOnlyResource();
+    // configure reserved DOI
+    DOI doi = DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX);
+    resource.setDoi(doi);
+    resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
+    resource.setStatus(PublicationStatus.PUBLIC);
+    Date released = new Date();
+    resource.setLastPublished(released);
+    // versionHistory - no DOI
+    VersionHistory history =
+      new VersionHistory(new BigDecimal("3.0"), resource.getLastPublished(), resource.getModifier(),
+        PublicationStatus.PUBLIC);
+    history.setReleased(released);
+    resource.addVersionHistory(history);
+
+    // make a few pre-publication assertions
+    assertFalse(resource.isAlreadyAssignedDoi());
+    assertNull(resource.getAssignedDoi());
+    assertEquals(new BigDecimal("3.0"), resource.getLastPublishedVersionsVersion());
+    assertEquals(PublicationStatus.PUBLIC, resource.getLastPublishedVersionsPublicationStatus());
+    // next published version is a major version change
+    assertEquals(new BigDecimal("4.0"), resource.getNextVersion());
+
+    // publish, will try to register DOI, triggering exception
+    resourceManager.publish(resource, resource.getNextVersion(), baseAction);
+  }
+
+  /**
+   * Do publish, test trying to replace current assigned DOI with new DOI that has been reserved.
+   * </br>
+   * Publishes non-registered metadata-only resource that has a new DOI reserved, and existing DOI assigned.
+   * When trying to publish a new major version an exception is thrown because the DataCite metadata is invalid
+   * (missing publisher).
+   */
+  @Test(expected = PublicationException.class)
+  public void testPublishPublicResourceWithDOIAssignedAndReservedButInvalidDOIMetadata()
+    throws ParserConfigurationException, SAXException, IOException, AlreadyExistingException, ImportException,
+    InvalidFilenameException {
+    // create instance of manager
+    ResourceManagerImpl resourceManager = getResourceManagerImpl();
+    // prepare resource
+    Resource resource = getNonRegisteredMetadataOnlyResource();
+    // configure reserved DOI
+    DOI doi = DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX);
+    resource.setDoi(doi);
+    resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
+    resource.setStatus(PublicationStatus.PUBLIC);
+    Date released = new Date();
+    resource.setLastPublished(released);
+    // versionHistory - no DOI
+    VersionHistory history =
+      new VersionHistory(new BigDecimal("3.0"), resource.getLastPublished(), resource.getModifier(),
+        PublicationStatus.PUBLIC);
+    history.setDoi(DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX));
+    history.setStatus(IdentifierStatus.PUBLIC);
+    history.setReleased(released);
+    resource.addVersionHistory(history);
+
+    // make a few pre-publication assertions
+    assertTrue(resource.isAlreadyAssignedDoi());
+    assertNotNull(resource.getAssignedDoi());
+    assertEquals(new BigDecimal("3.0"), resource.getLastPublishedVersionsVersion());
+    assertEquals(PublicationStatus.PUBLIC, resource.getLastPublishedVersionsPublicationStatus());
+    assertEquals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION, resource.getIdentifierStatus());
+    // next published version is a major version change
+    assertEquals(new BigDecimal("4.0"), resource.getNextVersion());
+
+    // publish, will try to replace DOI with new reserved DOI, triggering exception
+    resourceManager.publish(resource, resource.getNextVersion(), baseAction);
+  }
+
   @Test
   public void testHasMaxProcessFailures() throws ParserConfigurationException, SAXException, IOException {
     ResourceManagerImpl resourceManager = getResourceManagerImpl();
@@ -1096,11 +1233,19 @@ public class ResourceManagerImplTest {
     // copy to resource folder
     File copiedEmlXML = new File(resourceDir, DataDir.EML_XML_FILENAME);
     org.apache.commons.io.FileUtils.copyFile(emlXML, copiedEmlXML);
-    // mock new saved eml.xml file being versioned.. useless for testing needed for compilation
-    File versionedEmlXML = new File(resourceDir, "eml-3.1.xml");
-    org.apache.commons.io.FileUtils.copyFile(emlXML, versionedEmlXML);
-    // mock finding versioned eml.xml file
-    when(mockedDataDir.resourceEmlFile(anyString(), eq(BigDecimal.valueOf(3.1)))).thenReturn(versionedEmlXML);
+
+    // mock new saved eml-3.1.xml file being versioned (represents new minor version)
+    File versionThreeEmlXML = new File(resourceDir, "eml-3.1.xml");
+    org.apache.commons.io.FileUtils.copyFile(emlXML, versionThreeEmlXML);
+    // mock finding versioned eml-3.1.xml file
+    when(mockedDataDir.resourceEmlFile(anyString(), eq(BigDecimal.valueOf(3.1)))).thenReturn(versionThreeEmlXML);
+
+    // mock new saved eml-4.0.xml file being versioned (represents new major version)
+    File versionFourEmlXML = new File(resourceDir, "eml-4.0.xml");
+    org.apache.commons.io.FileUtils.copyFile(emlXML, versionFourEmlXML);
+    // mock finding versioned eml-4.0.xml file
+    when(mockedDataDir.resourceEmlFile(anyString(), eq(BigDecimal.valueOf(4.0)))).thenReturn(versionFourEmlXML);
+
     // mock finding eml.xml file
     when(mockedDataDir.resourceEmlFile(anyString(), Matchers.<BigDecimal>eq(null))).thenReturn(copiedEmlXML);
     // mock finding versioned dwca file
@@ -1118,13 +1263,20 @@ public class ResourceManagerImplTest {
     // copy to resource folder
     File copiedRtfXML = new File(resourceDir, "rtf-res2.rtf");
     org.apache.commons.io.FileUtils.copyFile(rtfXML, copiedRtfXML);
-    // mock new saved eml.xml file being versioned.. useless for testing needed for compilation
-    File versionedRtfXML = new File(resourceDir, "rtf-res2-3.1.rtf");
-    org.apache.commons.io.FileUtils.copyFile(rtfXML, versionedRtfXML);
-    // mock finding versioned eml.xml file
-    when(mockedDataDir.resourceRtfFile(anyString(), eq(BigDecimal.valueOf(3.1)))).thenReturn(versionedRtfXML);
-    // mock finding eml.xml file
+    // mock finding rtf-res2.xml file
     when(mockedDataDir.resourceRtfFile(anyString())).thenReturn(copiedRtfXML);
+
+    // mock new saved rtf-res2-3.1.xml file being versioned (new minor version)
+    File versionThreeRtfXML = new File(resourceDir, "rtf-res2-3.1.rtf");
+    org.apache.commons.io.FileUtils.copyFile(rtfXML, versionThreeRtfXML);
+    // mock finding versioned rtf-res2-3.1.xml file
+    when(mockedDataDir.resourceRtfFile(anyString(), eq(BigDecimal.valueOf(3.1)))).thenReturn(versionThreeRtfXML);
+
+    // mock new saved rtf-res2-4.0.xml file being versioned (new major version)
+    File versionFourRtfXML = new File(resourceDir, "rtf-res2-4.0.rtf");
+    org.apache.commons.io.FileUtils.copyFile(rtfXML, versionFourRtfXML);
+    // mock finding versioned rtf-res2-4.0.xml file
+    when(mockedDataDir.resourceRtfFile(anyString(), eq(BigDecimal.valueOf(4.0)))).thenReturn(versionFourRtfXML);
 
     // create ResourceManagerImpl
     ResourceManagerImpl resourceManager = getResourceManagerImpl();

@@ -1,5 +1,10 @@
 package org.gbif.ipt.service.manage.impl;
 
+import org.gbif.api.model.common.DOI;
+import org.gbif.doi.metadata.datacite.DataCiteMetadata;
+import org.gbif.doi.service.DoiException;
+import org.gbif.doi.service.DoiExistsException;
+import org.gbif.doi.service.InvalidMetadataException;
 import org.gbif.dwc.terms.DcTerm;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.terms.GbifTerm;
@@ -64,6 +69,7 @@ import org.gbif.ipt.task.ReportHandler;
 import org.gbif.ipt.task.StatusReport;
 import org.gbif.ipt.task.TaskMessage;
 import org.gbif.ipt.utils.ActionLogger;
+import org.gbif.ipt.utils.DataCiteMetadataBuilder;
 import org.gbif.ipt.utils.EmlUtils;
 import org.gbif.metadata.BasicMetadata;
 import org.gbif.metadata.eml.Eml;
@@ -83,6 +89,7 @@ import java.io.OutputStream;
 import java.io.Writer;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -105,6 +112,7 @@ import javax.annotation.Nullable;
 import javax.xml.parsers.ParserConfigurationException;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Iterables;
@@ -762,7 +770,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           // retrieve resource record count (number of records published in DwC-A)
           Integer recordCount = f.get();
           // finish publication (update registration, persist resource changes)
-          publishEnd(resource, recordCount, action);
+          publishEnd(resource, recordCount, action, version);
           // important: indicate publishing finished successfully!
           succeeded = true;
         } catch (ExecutionException e) {
@@ -1088,9 +1096,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // publish RTF
     publishRtf(resource, version);
 
-    // save the version history
-    saveVersionHistory(resource, version, action.getCurrentUser());
-
     // (re)generate dwca asynchronously
     boolean dwca = false;
     if (resource.hasMappedData()) {
@@ -1098,7 +1103,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       dwca = true;
     } else {
       // finish publication now
-      publishEnd(resource, 0, action);
+      publishEnd(resource, 0, action, version);
     }
     return dwca;
   }
@@ -1112,10 +1117,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @param resource resource
    * @param recordCount number of records publishes (core file record count)
    * @param action action
+   * @param version version number to finalize publishing
+   *
    * @throws PublicationException if publication was unsuccessful
    * @throws InvalidConfigException if resource configuration could not be saved
    */
-  private void publishEnd(Resource resource, int recordCount, BaseAction action)
+  private void publishEnd(Resource resource, int recordCount, BaseAction action, BigDecimal version)
     throws PublicationException, InvalidConfigException {
     // prevent null action from being handled
     if (action == null) {
@@ -1129,12 +1136,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     updateNextPublishedDate(resource);
     // set number of records published
     resource.setRecordsPublished(recordCount);
-    // update records published in version history
-    VersionHistory vh = resource.findVersionHistory(resource.getEmlVersion());
-    if (vh != null) {
-      vh.setRecordsPublished(recordCount);
-      vh.setReleased(new Date());
-    }
+    // register/update DOI
+    executeDoiWorkflow(resource, version, resource.getReplacedEmlVersion(), action);
+    // save the version history
+    saveVersionHistory(resource, version, action.getCurrentUser());
     // persist resource object changes
     save(resource);
     // final logging
@@ -1144,14 +1149,199 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     log.info(msg);
   }
 
+  /**
+   * Depending on the state of the resource and its DOI, execute one of the following operations:
+   * - Register DOI
+   * - Update DOI
+   * - Register DOI and replace previous DOI
+   *
+   * @param resource        resource published
+   * @param version         resource version being published
+   * @param versionReplaced resource version being replaced
+   * @param action          action
+   *
+   * @throws PublicationException thrown if any part of DOI workflow failed
+   */
+  private void executeDoiWorkflow(Resource resource, BigDecimal version, BigDecimal versionReplaced, BaseAction action)
+    throws PublicationException {
+    // All DOI operations require resource be publicly available, and resource DOI be PUBLIC/PUBLIC_PENDING_PUBLICATION
+    if (resource.getDoi() != null && resource.isPubliclyAvailable() && (
+      resource.getIdentifierStatus().equals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION) || resource
+        .getIdentifierStatus().equals(IdentifierStatus.PUBLIC))) {
+      if (resource.getIdentifierStatus().equals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION)) {
+        if (resource.isAlreadyAssignedDoi()) {
+          // another new major version that replaces previous version
+          doReplaceDoi(resource, version, versionReplaced);
+          String msg = "Published new major version: " + resource.getDoi().toString()
+                       + " was registered successfully! The previous DOI has also been successfully updated, to "
+                       + "reflect that it now represents a previous version of the resource.";
+          log.info(msg);
+          action.addActionMessage(msg);
+        } else {
+          // initial major version
+          doRegisterDoi(resource, null);
+          String msg = "Published new major version: " + resource.getDoi().toString() + " was registered successfully!";
+          log.info(msg);
+          action.addActionMessage(msg);
+        }
+      } else {
+        // minor version increment
+        doUpdateDoi(resource);
+        String msg = "Published new minor version: " + resource.getDoi().toString() + " was updated successfully!";
+        log.info(msg);
+        action.addActionMessage(msg);
+      }
+    }
+  }
+
+  /**
+   * Register DOI. Corresponds to a major version change.
+   *
+   * @param resource resource whose DOI will be registered
+   */
+  @VisibleForTesting
+  protected void doRegisterDoi(Resource resource, @Nullable DOI replaced) {
+    Preconditions.checkNotNull(resource);
+
+    if (resource.getDoi() != null && resource.isPubliclyAvailable()) {
+      DOI doi = resource.getDoi();
+      try {
+        // DOI resolves to IPT public resource page
+        URI uri = cfg.getResourceUri(resource.getShortname());
+        DataCiteMetadata dataCiteMetadata = DataCiteMetadataBuilder.createDataCiteMetadata(doi, resource);
+
+        // if this resource (DOI) replaces a former resource version (DOI) add isNewVersionOf RelatedIdentifier
+        if (replaced != null) {
+          DataCiteMetadataBuilder.addIsNewVersionOfDOIRelatedIdentifier(dataCiteMetadata, replaced);
+        }
+
+        registrationManager.getDoiService().register(doi, uri, dataCiteMetadata);
+        resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
+        resource.updateAlternateIdentifierForDOI();
+      } catch (DoiExistsException e) {
+        String errorMsg = "Failed to register " + doi.toString() + " because it exists already: " + e.getMessage();
+        log.error(errorMsg);
+        throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
+      } catch (InvalidMetadataException e) {
+        String errorMsg =
+          "Failed to register " + doi.toString() + " because DOI metadata was invalid: " + e.getMessage();
+        log.error(errorMsg);
+        throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
+      } catch (DoiException e) {
+        String errorMsg = "Failed to register " + doi.toString() + ": " + e.getMessage();
+        log.error(errorMsg);
+        throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
+      }
+    } else {
+      throw new InvalidConfigException(TYPE.INVALID_DOI_REGISTRATION,
+        "Resource not in required state to register DOI!");
+    }
+  }
+
+  /**
+   * Update DOI metadata. The DOI URI isn't changed. This is done for each minor version change.
+   *
+   * @param resource resource whose DOI will be updated
+   */
+  @VisibleForTesting
+  protected void doUpdateDoi(Resource resource) {
+    Preconditions.checkNotNull(resource);
+
+    if (resource.getDoi() != null && resource.isPubliclyAvailable()) {
+      DOI doi = resource.getDoi();
+      try {
+        DataCiteMetadata dataCiteMetadata = DataCiteMetadataBuilder.createDataCiteMetadata(doi, resource);
+        registrationManager.getDoiService().update(doi, dataCiteMetadata);
+      } catch (InvalidMetadataException e) {
+        String errorMsg = "Failed to update " + doi.toString() + " metadata: " + e.getMessage();
+        log.error(errorMsg);
+        throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
+      } catch (DoiException e) {
+        String errorMsg = "Failed to update " + doi.toString() + " metadata: " + e.getMessage();
+        log.error(errorMsg);
+        throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
+      }
+    } else {
+      throw new InvalidConfigException(TYPE.INVALID_DOI_REGISTRATION, "Resource not in required state to update DOI!");
+    }
+  }
+
+  /**
+   * Replace DOI currently assigned to resource with new DOI that has been reserved for resource.
+   * This corresponds to a new major version change.
+   *
+   * @param resource resource whose DOI will be registered
+   */
+  @VisibleForTesting
+  protected void doReplaceDoi(Resource resource, BigDecimal version, BigDecimal replacedVersion) {
+    Preconditions.checkNotNull(resource);
+
+    DOI doiToRegister = resource.getDoi();
+    DOI doiToReplace = resource.getAssignedDoi();
+    BigDecimal versionToReplace = resource.getLastPublishedVersionsVersion();
+    if (doiToRegister != null && resource.isPubliclyAvailable() && doiToReplace != null
+        && resource.getEmlVersion() != null && resource.getEmlVersion().compareTo(version) == 0
+        && versionToReplace != null && versionToReplace.compareTo(replacedVersion) == 0) {
+
+      // register new DOI first, indicating it replaces former DOI
+      doRegisterDoi(resource, doiToReplace);
+
+      // update previously assigned DOI, indicating it has been replaced by new DOI
+      try {
+        // reconstruct last published version (version being replaced)
+        Resource lastPublishedVersion = new Resource();
+        lastPublishedVersion.setShortname(resource.getShortname());
+        lastPublishedVersion.setOrganisation(resource.getOrganisation());
+        lastPublishedVersion.setDoi(doiToReplace);
+
+        VersionHistory history = resource.findVersionHistory(versionToReplace);
+        lastPublishedVersion.setStatus(history.getPublicationStatus());
+        lastPublishedVersion.setIdentifierStatus(history.getStatus());
+        lastPublishedVersion.setRecordsPublished(history.getRecordsPublished());
+        lastPublishedVersion.setLastPublished(history.getReleased());
+
+        lastPublishedVersion.setEmlVersion(replacedVersion);
+        File emlFile = dataDir.resourceEmlFile(resource.getShortname(), replacedVersion);
+        if (emlFile.exists()) {
+          Eml eml = EmlUtils.loadWithLocale(emlFile, Locale.US);
+          lastPublishedVersion.setEml(eml);
+          DataCiteMetadata assignedDoiMetadata =
+            DataCiteMetadataBuilder.createDataCiteMetadata(doiToReplace, lastPublishedVersion);
+
+          // add isPreviousVersionOf new resource version registered above
+          DataCiteMetadataBuilder.addIsPreviousVersionOfDOIRelatedIdentifier(assignedDoiMetadata, doiToRegister);
+
+          // update its URI first
+          URI resourceVersionUri = cfg.getResourceVersionUri(resource.getShortname(), replacedVersion);
+          registrationManager.getDoiService().update(doiToReplace, resourceVersionUri);
+          // then update its metadata
+          registrationManager.getDoiService().update(doiToReplace, assignedDoiMetadata);
+        } else {
+          throw new PublicationException(PublicationException.TYPE.DOI, emlFile.getAbsolutePath() + " does not exist!");
+        }
+      } catch (InvalidMetadataException e) {
+        String errorMsg = "Failed to update " + doiToReplace.toString() + " metadata: " + e.getMessage();
+        log.error(errorMsg);
+        throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
+      } catch (DoiException e) {
+        String errorMsg = "Failed to update " + doiToReplace.toString() + ": " + e.getMessage();
+        log.error(errorMsg);
+        throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
+      }
+    } else {
+      throw new InvalidConfigException(TYPE.INVALID_DOI_REGISTRATION, "Resource not in required state to replace DOI!");
+    }
+  }
+
   public void restoreVersion(Resource resource, BigDecimal rollingBack, BigDecimal restoring, BaseAction action) {
     // prevent null action from being handled
     if (action == null) {
       action = new BaseAction(textProvider, cfg, registrationManager);
     }
     String shortname = resource.getShortname();
-    log.info("Rolling back version #" + rollingBack.toPlainString()
-             + ". Restoring version #" + restoring.toPlainString() + " of resource " + shortname);
+    log.info(
+      "Rolling back version #" + rollingBack.toPlainString() + ". Restoring version #" + restoring.toPlainString()
+      + " of resource " + shortname);
 
     if (restoring.compareTo(BigDecimal.ZERO) >= 0) {
       try {
@@ -1617,8 +1807,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     versionHistory.setDoi(resource.getDoi());
     // DOI status
     versionHistory.setStatus(resource.getIdentifierStatus());
-    // Change summary
+    // change summary
     versionHistory.setChangeSummary(resource.getChangeSummary());
+    // records published
+    versionHistory.setRecordsPublished(resource.getRecordsPublished());
     resource.addVersionHistory(versionHistory);
   }
 

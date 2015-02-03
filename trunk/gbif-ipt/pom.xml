@@ -83,6 +83,7 @@
     <jsr305.version>3.0.0</jsr305.version>
     <httputils.version>0.6</httputils.version>
     <jackson2.version>2.4.2</jackson2.version>
+    <jersey.version>1.18.3</jersey.version>
   </properties>
 
   <developers>
@@ -579,6 +580,17 @@
       <groupId>com.lowagie</groupId>
       <artifactId>itext-rtf</artifactId>
       <version>${itext-rtf.version}</version>
+    </dependency>
+    <!-- UriBuilder -->
+    <dependency>
+      <groupId>com.sun.jersey</groupId>
+      <artifactId>jersey-core</artifactId>
+      <version>${jersey.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.jersey</groupId>
+      <artifactId>jersey-client</artifactId>
+      <version>${jersey.version}</version>
     </dependency>
 
     <!-- testing -->

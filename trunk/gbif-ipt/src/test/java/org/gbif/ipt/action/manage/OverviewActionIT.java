@@ -22,6 +22,7 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.GenerateDwcaFactory;
+import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.Citation;
 import org.gbif.metadata.eml.Eml;
@@ -34,9 +35,11 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.google.common.collect.Lists;
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
@@ -160,6 +163,9 @@ public class OverviewActionIT {
     o.setName("GBIF");
     r.setOrganisation(o);
 
+    // resource must be publicly available
+    r.setStatus(PublicationStatus.PUBLIC);
+
     action.setResource(r);
     assertNull(r.getDoi());
     assertEquals(IdentifierStatus.UNRESERVED, r.getIdentifierStatus());
@@ -247,9 +253,10 @@ public class OverviewActionIT {
 
     // reserve new DOI for resource
     action.reserveDoi();
-    assertNotNull(r.getDoi());
+    DOI reserved = r.getDoi();
+    assertNotNull(reserved);
     assertEquals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION, r.getIdentifierStatus());
-    LOG.info("DOI was reserved successfully, DOI=" + r.getDoi());
+    LOG.info("DOI was reserved successfully, DOI=" + reserved.toString());
 
     action.deleteDoi();
     // make sure the reserved DOI was deleted, and previous DOI reassigned
@@ -257,6 +264,37 @@ public class OverviewActionIT {
     assertEquals(IdentifierStatus.PUBLIC, r.getIdentifierStatus());
     assertTrue(r.isAlreadyAssignedDoi());
     LOG.info("Existing DOI was deleted successfully");
+
+    // for fun, try to publish resource having this deleted DOI - should not be possible!!
+    r.setDoi(reserved);
+    assertTrue(r.getDoi() != null && r.isPubliclyAvailable());
+    // reset action errors, .clear() doesn't work
+    List<String> collection = Lists.newArrayList();
+    action.setActionErrors(collection);
+
+    assertEquals("input", action.publish());
+    assertEquals(1, action.getActionErrors().size());
+    LOG.info("Publishing resource with deleted DOI failed as expected");
   }
 
+  /**
+   * Ensure publishing fails (is prevented from starting) if DOI reserved cannot be resolved.
+   */
+  @Test
+  public void testPublishFailsBecauseDOICannotBeResolved() throws Exception {
+    LOG.info("Testing " + type + "...");
+    // mock resource having DOI reserved that doesn't exist!
+    DOI assignedDoi = DOIUtils.mintDOI(type,
+      (type.equals(DOIRegistrationAgency.EZID) ? Constants.EZID_TEST_DOI_SHOULDER : Constants.TEST_DOI_PREFIX));
+    r.setDoi(assignedDoi);
+    r.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
+    assertTrue(r.getDoi() != null && r.isPubliclyAvailable());
+    // reset action errors, .clear() doesn't work
+    List<String> collection = Lists.newArrayList();
+    action.setActionErrors(collection);
+
+    assertEquals("input", action.publish());
+    assertEquals(1, action.getActionErrors().size());
+    LOG.info("Publishing resource with DOI that cannot be resolved failed as expected");
+  }
 }

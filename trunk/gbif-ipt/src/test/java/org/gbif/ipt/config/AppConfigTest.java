@@ -14,9 +14,14 @@
 package org.gbif.ipt.config;
 
 
+import java.math.BigDecimal;
+import java.net.URISyntaxException;
+
 import com.google.inject.Inject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import static org.junit.Assert.assertEquals;
 
 @RunWith(InjectingTestClassRunner.class)
 public class AppConfigTest {
@@ -29,5 +34,44 @@ public class AppConfigTest {
   @Test
   public void testTestConfig() {
     System.out.println(dd.configFile("").getAbsolutePath());
+  }
+
+  @Test
+  public void testGetResourceUriFromFullyQualifiedName() throws URISyntaxException {
+    cfg.setProperty("ipt.baseURL", "http://ipt.gbif.org");
+    assertEquals("http://ipt.gbif.org/resource?r=ants", cfg.getResourceUri("ants").toString());
+  }
+
+  @Test
+  public void testGetResourceUriFromIPAddress() throws URISyntaxException {
+    cfg.setProperty("ipt.baseURL", "http://192.168.0.84:8080/ipt");
+    assertEquals("http://192.168.0.84:8080/ipt/resource?r=ants", cfg.getResourceUri("ants").toString());
+  }
+
+  @Test
+  public void testGetResourceUriFromLocalhost() throws URISyntaxException {
+    cfg.setProperty("ipt.baseURL", "http://localhost:8080");
+    assertEquals("http://localhost:8080/resource?r=ants", cfg.getResourceUri("ants").toString());
+  }
+
+  @Test
+  public void testGetResourceVersionUriFromFullyQualifiedName() throws URISyntaxException {
+    cfg.setProperty("ipt.baseURL", "http://ipt.gbif.org");
+    assertEquals("http://ipt.gbif.org/resource?r=ants&v=1.0",
+      cfg.getResourceVersionUri("ants", new BigDecimal("1.0")).toString());
+  }
+
+  @Test
+  public void testGetResourceVersionUriFromIPAddress() throws URISyntaxException {
+    cfg.setProperty("ipt.baseURL", "http://192.168.0.84:8080/ipt");
+    assertEquals("http://192.168.0.84:8080/ipt/resource?r=ants&v=1.0",
+      cfg.getResourceVersionUri("ants", new BigDecimal("1.0")).toString());
+  }
+
+  @Test
+  public void testGetResourceVersionUriFromLocalhost() throws URISyntaxException {
+    cfg.setProperty("ipt.baseURL", "http://localhost:8080");
+    assertEquals("http://localhost:8080/resource?r=ants&v=1.0",
+      cfg.getResourceVersionUri("ants", new BigDecimal("1.0")).toString());
   }
 }
