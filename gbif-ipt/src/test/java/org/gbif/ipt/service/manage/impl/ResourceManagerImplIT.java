@@ -74,8 +74,6 @@ import static org.mockito.Mockito.when;
 public class ResourceManagerImplIT {
 
   private static final Logger LOG = Logger.getLogger(ResourceManagerImplIT.class);
-  private static final BaseAction ACTION =
-    new BaseAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mock(RegistrationManager.class));
   private static DataDir MOCK_DATA_DIR = mock(DataDir.class);
   private static File TMP_EML_FILE;
 
@@ -188,9 +186,10 @@ public class ResourceManagerImplIT {
       mockPasswordConverter, mockEml2Rtf, mockVocabulariesManager, mockSimpleTextProvider, mockRegistrationManagerEZID);
 
     return Arrays.asList(new Object[][] {{managerDataCite, DOIRegistrationAgency.DATACITE,
-      DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX), mockRegistrationManagerDataCite},
-      {managerEZID, DOIRegistrationAgency.EZID,
-        DOIUtils.mintDOI(DOIRegistrationAgency.EZID, Constants.EZID_TEST_DOI_SHOULDER), mockRegistrationManagerEZID}});
+      DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX), mockRegistrationManagerDataCite}
+      // TODO undelete when EZID is back up
+//      ,{managerEZID, DOIRegistrationAgency.EZID,DOIUtils.mintDOI(DOIRegistrationAgency.EZID, Constants.EZID_TEST_DOI_SHOULDER), mockRegistrationManagerEZID}
+    });
   }
 
   /**

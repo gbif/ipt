@@ -71,6 +71,7 @@ import org.gbif.ipt.task.TaskMessage;
 import org.gbif.ipt.utils.ActionLogger;
 import org.gbif.ipt.utils.DataCiteMetadataBuilder;
 import org.gbif.ipt.utils.EmlUtils;
+import org.gbif.ipt.utils.ResourceUtils;
 import org.gbif.metadata.BasicMetadata;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlFactory;
@@ -1292,36 +1293,23 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       // update previously assigned DOI, indicating it has been replaced by new DOI
       try {
         // reconstruct last published version (version being replaced)
-        Resource lastPublishedVersion = new Resource();
-        lastPublishedVersion.setShortname(resource.getShortname());
-        lastPublishedVersion.setOrganisation(resource.getOrganisation());
-        lastPublishedVersion.setDoi(doiToReplace);
+        File replacedVersionEmlFile = dataDir.resourceEmlFile(resource.getShortname(), replacedVersion);
+        Resource lastPublishedVersion = ResourceUtils
+          .reconstructVersion(replacedVersion, resource.getShortname(), doiToReplace, resource.getOrganisation(),
+            resource.findVersionHistory(versionToReplace), replacedVersionEmlFile);
 
-        VersionHistory history = resource.findVersionHistory(versionToReplace);
-        lastPublishedVersion.setStatus(history.getPublicationStatus());
-        lastPublishedVersion.setIdentifierStatus(history.getStatus());
-        lastPublishedVersion.setRecordsPublished(history.getRecordsPublished());
-        lastPublishedVersion.setLastPublished(history.getReleased());
+        DataCiteMetadata assignedDoiMetadata =
+          DataCiteMetadataBuilder.createDataCiteMetadata(doiToReplace, lastPublishedVersion);
 
-        lastPublishedVersion.setEmlVersion(replacedVersion);
-        File emlFile = dataDir.resourceEmlFile(resource.getShortname(), replacedVersion);
-        if (emlFile.exists()) {
-          Eml eml = EmlUtils.loadWithLocale(emlFile, Locale.US);
-          lastPublishedVersion.setEml(eml);
-          DataCiteMetadata assignedDoiMetadata =
-            DataCiteMetadataBuilder.createDataCiteMetadata(doiToReplace, lastPublishedVersion);
+        // add isPreviousVersionOf new resource version registered above
+        DataCiteMetadataBuilder.addIsPreviousVersionOfDOIRelatedIdentifier(assignedDoiMetadata, doiToRegister);
 
-          // add isPreviousVersionOf new resource version registered above
-          DataCiteMetadataBuilder.addIsPreviousVersionOfDOIRelatedIdentifier(assignedDoiMetadata, doiToRegister);
+        // update its URI first
+        URI resourceVersionUri = cfg.getResourceVersionUri(resource.getShortname(), replacedVersion);
+        registrationManager.getDoiService().update(doiToReplace, resourceVersionUri);
+        // then update its metadata
+        registrationManager.getDoiService().update(doiToReplace, assignedDoiMetadata);
 
-          // update its URI first
-          URI resourceVersionUri = cfg.getResourceVersionUri(resource.getShortname(), replacedVersion);
-          registrationManager.getDoiService().update(doiToReplace, resourceVersionUri);
-          // then update its metadata
-          registrationManager.getDoiService().update(doiToReplace, assignedDoiMetadata);
-        } else {
-          throw new PublicationException(PublicationException.TYPE.DOI, emlFile.getAbsolutePath() + " does not exist!");
-        }
       } catch (InvalidMetadataException e) {
         String errorMsg = "Failed to update " + doiToReplace.toString() + " metadata: " + e.getMessage();
         log.error(errorMsg);
@@ -1329,6 +1317,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       } catch (DoiException e) {
         String errorMsg = "Failed to update " + doiToReplace.toString() + ": " + e.getMessage();
         log.error(errorMsg);
+        throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
+      } catch (IllegalArgumentException e) {
+        String errorMsg = "Failed to update " + doiToReplace.toString() + ": " + e.getMessage();
+        log.error(errorMsg, e);
         throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
       }
     } else {

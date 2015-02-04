@@ -1,13 +1,16 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.api.model.common.DOI;
+import org.gbif.doi.service.datacite.DataCiteService;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.voc.DOIRegistrationAgency;
+import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
@@ -69,9 +72,10 @@ public class OverviewActionTest {
     when(mockCfg.getDataDir()).thenReturn(mockDataDir);
 
     // mock action
-    action = new OverviewAction(mock(SimpleTextProvider.class), mockCfg,
-      mock(RegistrationManager.class), mockResourceManager, mock(UserAccountManager.class),
-      mock(ExtensionManager.class), mock(VocabulariesManager.class), mock(GenerateDwcaFactory.class));
+    action =
+      new OverviewAction(mock(SimpleTextProvider.class), mockCfg, mock(RegistrationManager.class), mockResourceManager,
+        mock(UserAccountManager.class), mock(ExtensionManager.class), mock(VocabulariesManager.class),
+        mock(GenerateDwcaFactory.class));
   }
 
   @Test
@@ -126,7 +130,8 @@ public class OverviewActionTest {
   public void testGetLastPublishedVersionAssignedLicense() throws IOException, TemplateException {
     Resource r = new Resource();
     // CCO
-    r.getEml().setIntellectualRights("This work is licensed under <a href=\"http://creativecommons.org/publicdomain/zero/1.0/legalcode\">Creative Commons CCZero (CC0) 1.0 License</a>.");
+    r.getEml().setIntellectualRights(
+      "This work is licensed under <a href=\"http://creativecommons.org/publicdomain/zero/1.0/legalcode\">Creative Commons CCZero (CC0) 1.0 License</a>.");
     assertEquals("http://creativecommons.org/publicdomain/zero/1.0/legalcode", r.getEml().parseLicenseUrl());
     assertTrue(r.isAssignedGBIFSupportedLicense());
     EmlWriter.writeEmlFile(emlFile, r.getEml());
@@ -146,7 +151,8 @@ public class OverviewActionTest {
   public void testRegisterResourceNotGBIFSupportedLicense() throws Exception {
     Resource r = new Resource();
     // ODbl
-    r.getEml().setIntellectualRights("This work is licensed under a <a href=\"http://opendatacommons.org/licenses/odbl/1.0\">Open Data Commons Open Database License (ODbL) 1.0</a>");
+    r.getEml().setIntellectualRights(
+      "This work is licensed under a <a href=\"http://opendatacommons.org/licenses/odbl/1.0\">Open Data Commons Open Database License (ODbL) 1.0</a>");
     assertEquals("http://opendatacommons.org/licenses/odbl/1.0", r.getEml().parseLicenseUrl());
     assertFalse(r.isAssignedGBIFSupportedLicense());
     EmlWriter.writeEmlFile(emlFile, r.getEml());
@@ -166,7 +172,8 @@ public class OverviewActionTest {
   @Test
   public void testPublishResourceNotGBIFSupportedLicense() throws Exception {
     Resource r = new Resource();
-    r.getEml().setIntellectualRights("This work is licensed under a <a href=\"http://opendatacommons.org/licenses/odbl/1.0\">Open Data Commons Open Database License (ODbL) 1.0</a>");
+    r.getEml().setIntellectualRights(
+      "This work is licensed under a <a href=\"http://opendatacommons.org/licenses/odbl/1.0\">Open Data Commons Open Database License (ODbL) 1.0</a>");
     r.setKey(UUID.randomUUID());
     r.setStatus(PublicationStatus.REGISTERED);
     action.setResource(r);
@@ -217,6 +224,133 @@ public class OverviewActionTest {
     action.setDelete("true");
     assertNull(action.getOrganisationWithPrimaryDoiAccount());
     assertEquals("input", action.delete());
+    assertEquals(1, action.getActionErrors().size());
+  }
+
+  @Test
+  public void testUndeleteNonDeletedResource() {
+    Resource r = new Resource();
+    r.setDoi(DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX));
+    r.setStatus(PublicationStatus.PUBLIC);
+    action.setResource(r);
+    action.setUndelete("true");
+    assertEquals("input", action.undelete());
+    assertEquals(1, action.getActionWarnings().size());
+  }
+
+  @Test
+  public void testUndeleteButNoDOIAssigned() {
+    Resource r = new Resource();
+    r.setStatus(PublicationStatus.DELETED);
+    action.setResource(r);
+    action.setUndelete("true");
+    assertEquals("input", action.undelete());
+    assertEquals(1, action.getActionWarnings().size());
+  }
+
+  @Test
+  public void testUndeleteButNoDOIService() {
+    Resource r = new Resource();
+    DOI doiToUndelete = DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX);
+    BigDecimal versionToUndelete = new BigDecimal("1.0");
+    VersionHistory vh = new VersionHistory(versionToUndelete, new Date(), new User(), PublicationStatus.PUBLIC);
+    vh.setDoi(doiToUndelete);
+    vh.setStatus(IdentifierStatus.PUBLIC);
+    r.addVersionHistory(vh);
+    // resource deleted!
+    r.setStatus(PublicationStatus.DELETED);
+    action.setResource(r);
+    action.setUndelete("true");
+    assertEquals("input", action.undelete());
+    assertEquals(1, action.getActionErrors().size());
+  }
+
+  @Test
+  public void testUndeleteButResourceHasNoOrganisation() {
+    Resource r = new Resource();
+    DOI doiToUndelete = DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX);
+    BigDecimal versionToUndelete = new BigDecimal("1.0");
+    VersionHistory vh = new VersionHistory(versionToUndelete, new Date(), new User(), PublicationStatus.PUBLIC);
+    vh.setDoi(doiToUndelete);
+    vh.setStatus(IdentifierStatus.PUBLIC);
+    r.addVersionHistory(vh);
+    // resource deleted!
+    r.setStatus(PublicationStatus.DELETED);
+    // mock organisation missing
+    r.setOrganisation(null);
+    action.setResource(r);
+    action.setUndelete("true");
+    assertEquals("input", action.undelete());
+    assertEquals(1, action.getActionErrors().size());
+  }
+
+  @Test
+  public void testUndeleteButResourceOrganisationNoLongerInIPT() {
+    Resource r = new Resource();
+    DOI doiToUndelete = DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX);
+    BigDecimal versionToUndelete = new BigDecimal("1.0");
+    VersionHistory vh = new VersionHistory(versionToUndelete, new Date(), new User(), PublicationStatus.PUBLIC);
+    vh.setDoi(doiToUndelete);
+    vh.setStatus(IdentifierStatus.PUBLIC);
+    r.addVersionHistory(vh);
+    // resource deleted!
+    r.setStatus(PublicationStatus.DELETED);
+    // mock organisation that is not associated to IPT
+    Organisation org = new Organisation();
+    org.setKey(UUID.randomUUID().toString());
+    r.setOrganisation(org);
+
+    // mock RegistrationManager returning mock DoiService
+    RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
+    DataCiteService mockDataCiteService = mock(DataCiteService.class);
+    when(mockRegistrationManager.getDoiService()).thenReturn(mockDataCiteService);
+    // mock action
+    action = new OverviewAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mockRegistrationManager,
+      mock(ResourceManager.class), mock(UserAccountManager.class), mock(ExtensionManager.class),
+      mock(VocabulariesManager.class), mock(GenerateDwcaFactory.class));
+    action.setResource(r);
+    action.setUndelete("true");
+    assertEquals("input", action.undelete());
+    assertEquals(1, action.getActionErrors().size());
+  }
+
+  @Test
+  public void testUndeleteButResourceDOIPrefixNotMatchingDOIAccountActivatedInIPT() {
+    Resource r = new Resource();
+    DOI doiToUndelete = DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX);
+    BigDecimal versionToUndelete = new BigDecimal("1.0");
+    VersionHistory vh = new VersionHistory(versionToUndelete, new Date(), new User(), PublicationStatus.PUBLIC);
+    vh.setDoi(doiToUndelete);
+    vh.setStatus(IdentifierStatus.PUBLIC);
+    r.addVersionHistory(vh);
+    // resource deleted!
+    r.setStatus(PublicationStatus.DELETED);
+    // mock organisation that is not associated to IPT
+    Organisation resourceOrganisation = new Organisation();
+    resourceOrganisation.setKey(UUID.randomUUID().toString());
+    r.setOrganisation(resourceOrganisation);
+
+    // mock RegistrationManager returning mock DoiService
+    RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
+    DataCiteService mockDataCiteService = mock(DataCiteService.class);
+    when(mockRegistrationManager.getDoiService()).thenReturn(mockDataCiteService);
+
+    // mock RegistrationManager returning resource organisation
+    when(mockRegistrationManager.get(any(UUID.class))).thenReturn(resourceOrganisation);
+
+    // mock RegistrationManager returning organisation with DOI agency account activated
+    Organisation doiAccoutActivated = new Organisation();
+    doiAccoutActivated.setKey(UUID.randomUUID().toString());
+    doiAccoutActivated.setDoiPrefix("10.5000"); // different to resource doi that has 10.5072 (DataCite test prefix)
+    when(mockRegistrationManager.findPrimaryDoiAgencyAccount()).thenReturn(doiAccoutActivated);
+
+    // mock action
+    action = new OverviewAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mockRegistrationManager,
+      mock(ResourceManager.class), mock(UserAccountManager.class), mock(ExtensionManager.class),
+      mock(VocabulariesManager.class), mock(GenerateDwcaFactory.class));
+    action.setResource(r);
+    action.setUndelete("true");
+    assertEquals("input", action.undelete());
     assertEquals(1, action.getActionErrors().size());
   }
 }

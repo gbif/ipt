@@ -39,6 +39,7 @@ import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.RegistryException;
+import org.gbif.ipt.service.UndeletNotAllowedException;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
@@ -54,6 +55,7 @@ import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.ipt.utils.DataCiteMetadataBuilder;
 import org.gbif.ipt.utils.EmlUtils;
 import org.gbif.ipt.utils.MapUtils;
+import org.gbif.ipt.utils.ResourceUtils;
 import org.gbif.ipt.validation.EmlValidator;
 import org.gbif.metadata.eml.Citation;
 import org.gbif.metadata.eml.Eml;
@@ -66,6 +68,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.net.URI;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
@@ -235,6 +238,9 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
           // next try to deactivate as many DOIs assigned to the resource as possible (and delete DOI if reserved)
           doDeactivateDOI(doi);
+          resource.setIdentifierStatus(
+            (resource.getIdentifierStatus().equals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION))
+              ? IdentifierStatus.UNRESERVED : IdentifierStatus.UNAVAILABLE);
 
           // delete previously assigned DOIs also
           Set<String> deleted = Sets.newHashSet(doi.toString());
@@ -313,40 +319,161 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    * Undeletes a resource (only applicable to resources that were previously assigned a DOI).
    * </br>
    * Undeleting a resource makes the DOI available, resolving to the resource homepage of the last published version.
+   * It also undeletes all previous DOIs assigned to the resource, resolving them to the appropriate versioned resource
+   * homepages.
+   * </br>
    * Undeleting a resource should also undelete the resource from GBIF if it was previously registered with GBIF,
    * however, at this time the GBIF registry api or GBIF registry legacy apis do not support the undelete operation and
-   * thus require communication with the GBIF Helpdesk.
-   * </br>
-   * It must check that the publishing organisation is still associated to the IPT.
-   * TODO: make sure you cannot delete an organisation from IPT if it has a deleted_but_public resource
-   * TODO: Add tests with resource having DOIs in different states
+   * thus require communication with the GBIF Helpdesk.   *
    */
   public String undelete() {
     if (resource == null) {
       return NOT_FOUND;
     }
     if (undelete) {
-      try {
-        // TODO: Before any DOI operation, make sure an organisation with activated/primary DOI account exists (organisationWithPrimaryDoiAccount)
-        Resource res = resource;
-        // TODO: check that the publishing organisation is still associated to the IPT, and the archived files still exist
-        // TODO: make current DOI available again using the primary DOI account, revert resource status back to PUBLIC/REGISTERED, and undelete it from GBIF if it was registered
-        // TODO: make all former DOIs for the resource available too. All versions of the resource will now resolve again, each resolving to its target resource page
-        res.setStatus(PublicationStatus.PUBLIC); // mocked
-        saveResource();
-        addActionMessage(getText("manage.overview.resource.undeleted", new String[] {res.toString()}));
-        return SUCCESS;
-      } catch (Exception e) {
-        String msg = getText("manage.resource.undelete.failed");
-        LOG.error(msg, e);
-        addActionError(msg);
-        addActionExceptionWarning(e);
+      if (!resource.getStatus().equals(PublicationStatus.DELETED)) {
+        addActionWarning(getText("manage.overview.resource.invalid.operation",
+          new String[] {resource.getShortname(), resource.getStatus().toString()}));
+        return INPUT;
+      }
+      // note: the DOI of last published version is undeleted
+      DOI doi = resource.getAssignedDoi();
+      if (doi != null) {
+        try {
+          // prevent deletion if it will trigger a DOI operation, but no DOI agency account has been activated yet
+          if (registrationManager.getDoiService() == null) {
+            String msg =
+              "No organisation with an activated DOI agency account exists. Please contact your IPT admin for help.";
+            LOG.error(msg);
+            addActionError(msg);
+            return INPUT;
+          }
+
+          Organisation organisation = resource.getOrganisation();
+          if (organisation == null) {
+            throw new InvalidConfigException(InvalidConfigException.TYPE.RESOURCE_CONFIG,
+              "Resource being undeleted missing publishing organisation!");
+          } else {
+            Organisation retrieved = registrationManager.get(organisation.getKey());
+            if (retrieved == null) {
+              throw new UndeletNotAllowedException(UndeletNotAllowedException.Reason.ORGANISATION_NOT_ASSOCIATED_TO_IPT,
+                "The resource organisation is no longer associated to the IPT, key=" + organisation.getKey()
+                  .toString());
+            } else {
+              Organisation doiAccountActivated = registrationManager.findPrimaryDoiAgencyAccount();
+              if (!doi.getPrefix().equalsIgnoreCase(doiAccountActivated.getDoiPrefix())) {
+                throw new UndeletNotAllowedException(UndeletNotAllowedException.Reason.DOI_PREFIX_NOT_MATCHING,
+                  doi.toString()
+                  + " has a prefix different to the prefix of the DOI agency account activated in this IPT, prefix="
+                  + doiAccountActivated.getDoiPrefix());
+              }
+            }
+          }
+
+          // reconstruct version being undeleted
+          String shortname = resource.getShortname();
+          BigDecimal versionToUndelete = resource.getLastPublishedVersionsVersion();
+          File versionToUndeleteEmlFile = cfg.getDataDir().resourceEmlFile(shortname, versionToUndelete);
+          Resource reconstructed = ResourceUtils.reconstructVersion(versionToUndelete, shortname, doi, organisation,
+            resource.findVersionHistory(versionToUndelete), versionToUndeleteEmlFile);
+          URI target = cfg.getResourceUri(shortname);
+          // perform undelete
+          doUndeleteDOI(doi, reconstructed, target);
+          resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
+
+          // undelete previously assigned DOIs also, which were all deleted/deactivated
+          Set<String> undeleted = Sets.newHashSet(doi.toString());
+          if (!resource.getVersionHistory().isEmpty()) {
+            for (VersionHistory history : resource.getVersionHistory()) {
+              DOI formerDoi = history.getDoi();
+              if (formerDoi != null && !undeleted.contains(formerDoi.toString())) {
+                // reconstruct version being undeleted
+                BigDecimal formerVersionToUndelete = new BigDecimal(history.getVersion());
+                File formerVersionToUndeleteEmlFile =
+                  cfg.getDataDir().resourceEmlFile(shortname, formerVersionToUndelete);
+                Resource formerVersionReconstructed = ResourceUtils
+                  .reconstructVersion(formerVersionToUndelete, shortname, formerDoi, organisation,
+                    resource.findVersionHistory(formerVersionToUndelete), formerVersionToUndeleteEmlFile);
+                // prepare target URI equal to version resource page
+                URI formerTarget = cfg.getResourceVersionUri(shortname, formerVersionToUndelete);
+                // perform undelete
+                doUndeleteDOI(formerDoi, formerVersionReconstructed, formerTarget);
+                undeleted.add(formerDoi.toString());
+              }
+            }
+          }
+
+          // revert resource status back to PUBLIC/REGISTERED
+          if (resource.isRegistered()) {
+            resource.setStatus(PublicationStatus.REGISTERED);
+            // TODO: undelete it from GBIF if it was registered (requires GBIF API change)
+            addActionWarning("Resource currently cannot be undeleted automatically in the GBIF Registry. "
+                             + "Therefore please write to helpdesk@gbif.org to undelete it in the GBIF Registry.");
+          } else {
+            resource.setStatus(PublicationStatus.PUBLIC);
+          }
+
+          saveResource();
+          addActionMessage(
+            getText("manage.overview.resource.undeleted", new String[] {resource.getTitleAndShortname()}));
+          return SUCCESS;
+        } catch (UndeletNotAllowedException e) {
+          String msg = getText("manage.resource.undelete.failed");
+          LOG.error(msg, e);
+          addActionError(msg);
+          addActionExceptionWarning(e);
+        } catch (IllegalArgumentException e) {
+          String msg = getText("manage.resource.undelete.failed");
+          LOG.error(msg, e);
+          addActionError(msg);
+          addActionExceptionWarning(e);
+        }
+
+      } else {
+        addActionWarning(getText("manage.overview.resource.invalid.operation",
+          new String[] {resource.getShortname(), resource.getStatus().toString()}));
       }
     } else {
-      addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
-        resource.getStatus().toString()}));
+      addActionWarning(getText("manage.overview.resource.invalid.operation",
+        new String[] {resource.getShortname(), resource.getStatus().toString()}));
     }
-    return SUCCESS;
+    return INPUT;
+  }
+
+  /**
+   * Resolve DOI, then depending on its state reactivate/undelete it if deleted.
+   *
+   * @param doi DOI to undelete
+   * @param resource resource version to undelete
+   * @param target target URI of DOI to undelete
+   *
+   * @throws org.gbif.ipt.service.UndeletNotAllowedException if undelete failed
+   */
+  private void doUndeleteDOI(DOI doi, Resource resource, URI target) throws UndeletNotAllowedException {
+    Preconditions.checkNotNull(registrationManager.getDoiService());
+    Preconditions.checkNotNull(doi);
+    Preconditions.checkNotNull(resource);
+    Preconditions.checkNotNull(target);
+    try {
+      DoiData doiData = registrationManager.getDoiService().resolve(doi);
+      if (doiData != null && doiData.getStatus() != null) {
+        if (doiData.getStatus().equals(DoiStatus.DELETED)) {
+          LOG.info("Undeleting deleted DOI: " + doi.toString() + "...");
+          DataCiteMetadata dataCiteMetadata = DataCiteMetadataBuilder.createDataCiteMetadata(doi, resource);
+          registrationManager.getDoiService().register(doi, target, dataCiteMetadata);
+          LOG.info(doi.toString() + " undeleted successfully!");
+        } else {
+          throw new UndeletNotAllowedException(UndeletNotAllowedException.Reason.DOI_NOT_DELETED,
+            doi.toString() + " cannot be undeleted because status=" + doiData.getStatus().toString());
+        }
+      } else {
+        throw new UndeletNotAllowedException(UndeletNotAllowedException.Reason.DOI_DOES_NOT_EXIST,
+          "Failed to resolve " + doi.toString() + " therefore it could not be undeleted!");
+      }
+    } catch (DoiException e) {
+      throw new UndeletNotAllowedException(UndeletNotAllowedException.Reason.DOI_REGISTRATION_AGENCY_ERROR,
+        "Failed to delete " + doi.toString() + ": " + e.getMessage());
+    }
   }
 
   /**
