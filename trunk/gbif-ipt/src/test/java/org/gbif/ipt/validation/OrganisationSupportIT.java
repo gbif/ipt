@@ -134,7 +134,10 @@ public class OrganisationSupportIT {
     o6.setAgencyAccountPassword("apitest");
     o6.setDoiPrefix("10.9999/FK2"); // wrong
 
-    return Arrays.asList(new Object[][] {{o1, true}, {o2, true}, {o3, false}, {o4, false}, {o5, false}, {o6, false}});
+    return Arrays.asList(new Object[][] {{o1, true}
+      // TODO undelete when EZID API is back up
+//      , {o2, true}
+      , {o3, false}, {o4, false}, {o5, false}, {o6, false}});
   }
 
   @Test
