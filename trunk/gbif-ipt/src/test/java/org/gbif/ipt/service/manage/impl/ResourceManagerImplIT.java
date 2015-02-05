@@ -187,8 +187,7 @@ public class ResourceManagerImplIT {
 
     return Arrays.asList(new Object[][] {{managerDataCite, DOIRegistrationAgency.DATACITE,
       DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX), mockRegistrationManagerDataCite}
-      // TODO undelete when EZID is back up
-//      ,{managerEZID, DOIRegistrationAgency.EZID,DOIUtils.mintDOI(DOIRegistrationAgency.EZID, Constants.EZID_TEST_DOI_SHOULDER), mockRegistrationManagerEZID}
+      ,{managerEZID, DOIRegistrationAgency.EZID,DOIUtils.mintDOI(DOIRegistrationAgency.EZID, Constants.EZID_TEST_DOI_SHOULDER), mockRegistrationManagerEZID}
     });
   }
 
