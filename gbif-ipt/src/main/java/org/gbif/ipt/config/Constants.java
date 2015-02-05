@@ -20,6 +20,7 @@ public final class Constants {
   public static final String DWC_ROWTYPE_OCCURRENCE = "http://rs.tdwg.org/dwc/terms/Occurrence";
   public static final String DWC_ROWTYPE_TAXON = "http://rs.tdwg.org/dwc/terms/Taxon";
   public static final String DWC_OCCURRENCE_ID = "http://rs.tdwg.org/dwc/terms/occurrenceID";
+  public static final String DWC_BASIS_OF_RECORD = "http://rs.tdwg.org/dwc/terms/basisOfRecord";
   public static final String DWC_TAXON_ID = "http://rs.tdwg.org/dwc/terms/taxonID";
   public static final String DWC_DATASET_ID = "http://rs.tdwg.org/dwc/terms/datasetID";
   public static final String VOCAB_URI_DATASET_TYPE = "http://rs.gbif.org/vocabulary/gbif/datasetType";
@@ -30,6 +31,7 @@ public final class Constants {
   public static final String VOCAB_URI_UPDATE_FREQUENCIES = "http://rs.gbif.org/vocabulary/eml/updateFrequency";
   public static final String VOCAB_URI_PRESERVATION_METHOD = "http://rs.gbif.org/vocabulary/gbif/preservation_method";
   public static final String VOCAB_URI_DATASET_SUBTYPES = "http://rs.gbif.org/vocabulary/gbif/datasetSubtype";
+  public static final String VOCAB_URI_BASIS_OF_RECORDS = "http://rs.tdwg.org/dwc/dwctype/";
   public static final String DEPRECATED_VOCAB_URI_RESOURCE_TYPE = "http://rs.gbif.org/vocabulary/gbif/resource_type";
   public static final String DEPRECATED_VOCAB_URL_RESOLVABLE_RESOURCE_TYPE =
     "http_rs_gbif_org_vocabulary_gbif_resource_type_xml.vocab";

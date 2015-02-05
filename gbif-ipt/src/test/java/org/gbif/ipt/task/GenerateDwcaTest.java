@@ -61,10 +61,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.Map;
 import javax.validation.constraints.NotNull;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
+import com.google.common.collect.Maps;
 import com.google.common.io.Files;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -72,6 +76,7 @@ import com.google.inject.servlet.ServletModule;
 import com.google.inject.struts2.Struts2GuicePluginModule;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
@@ -95,8 +100,26 @@ public class GenerateDwcaTest {
   private DataDir mockDataDir = MockDataDir.buildMock();
   private AppConfig mockAppConfig = MockAppConfig.buildMock();
   private SourceManager mockSourceManager;
+  private static VocabulariesManager mockVocabulariesManager = mock(VocabulariesManager.class);
   private File tmpDataDir;
   private File resourceDir;
+
+  @BeforeClass
+  public static void init() {
+    // populate HashMap from basisOfRecord vocabulary, with lowercase keys (used in basisOfRecord validation)
+    Map<String, String> basisOfRecords = Maps.newHashMap();
+    basisOfRecords.put("preservedspecimen", "Preserved Specimen");
+    basisOfRecords.put("fossilspecimen", "Fossil Specimen");
+    basisOfRecords.put("livingspecimen", "Living Specimen");
+    basisOfRecords.put("humanobservation", "Human Observation");
+    basisOfRecords.put("machineobservation", "Machine Observation");
+    basisOfRecords.put("materialsample", "Material Sample");
+    basisOfRecords.put("occurrence", "Occurrence");
+
+    when(
+      mockVocabulariesManager.getI18nVocab(Constants.VOCAB_URI_BASIS_OF_RECORDS, Locale.ENGLISH.getLanguage(), false))
+      .thenReturn(basisOfRecords);
+  }
 
   @Before
   public void setup() throws IOException {
@@ -134,7 +157,8 @@ public class GenerateDwcaTest {
    */
   @Test(expected = GeneratorException.class)
   public void testResourceWithNoCore() throws Exception {
-    generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mock(SourceManager.class), mockAppConfig);
+    generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mock(SourceManager.class), mockAppConfig,
+      mock(VocabulariesManager.class));
     generateDwca.call();
   }
 
@@ -146,7 +170,8 @@ public class GenerateDwcaTest {
     File occurrence = FileUtils.getClasspathFile("resources/res1/occurrence.txt");
     Resource resource = getResource(resourceXML, occurrence);
 
-    generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig);
+    generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
+      mockVocabulariesManager);
     int recordCount = generateDwca.call();
 
     // 2 rows in core file
@@ -180,18 +205,28 @@ public class GenerateDwcaTest {
     // 1st record
     String[] row = reader.next();
     assertEquals("1", row[0]);
-    assertEquals("Animalia", row[1]);
+    assertEquals("occurrence", row[1]);
     assertEquals("1", row[2]);
     assertEquals("puma concolor", row[3]);
-    assertEquals("Animalia", row[4]);
+    assertEquals("occurrence", row[4]);
     // 2nd record
     row = reader.next();
     assertEquals("2", row[0]);
-    assertEquals("Animalia", row[1]);
+    assertEquals("occurrence", row[1]);
     assertEquals("2", row[2]);
     assertEquals("pumm:concolor", row[3]);
-    assertEquals("Animalia", row[4]);
+    assertEquals("occurrence", row[4]);
     reader.close();
+
+    // since basisOfRecord was occurrence, and this is ambiguous, there should be two warning messages
+    boolean foundWarning = false;
+    for (Iterator<TaskMessage> iter = generateDwca.report().getMessages().iterator(); iter.hasNext();) {
+      TaskMessage msg = iter.next();
+      if (msg.getMessage().startsWith("2 line(s) use ambiguous basisOfRecord")) {
+        foundWarning = true;
+      }
+    }
+    assertTrue(foundWarning);
   }
 
   /**
@@ -210,7 +245,8 @@ public class GenerateDwcaTest {
     assertEquals("10.5072/gc8gqc", resource.getDoi().getDoiName());
     assertEquals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION, resource.getIdentifierStatus());
 
-    generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig);
+    generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
+      mockVocabulariesManager);
     int recordCount = generateDwca.call();
 
     // 2 rows in core file
@@ -246,19 +282,19 @@ public class GenerateDwcaTest {
     String[] row = reader.next();
     assertEquals("1", row[0]);
     assertEquals("doi:10.5072/gc8gqc", row[1]); // confirm resource DOI used for datasetID
-    assertEquals("Animalia", row[2]);
+    assertEquals("occurrence", row[2]);
     assertEquals("1", row[3]);
     assertEquals("puma concolor", row[4]);
-    assertEquals("Animalia", row[5]);
+    assertEquals("occurrence", row[5]);
 
     // 2nd record
     row = reader.next();
     assertEquals("2", row[0]);
     assertEquals("doi:10.5072/gc8gqc", row[1]); // confirm resource DOI used for datasetID
-    assertEquals("Animalia", row[2]);
+    assertEquals("occurrence", row[2]);
     assertEquals("2", row[3]);
     assertEquals("pumm:concolor", row[4]);
-    assertEquals("Animalia", row[5]);
+    assertEquals("occurrence", row[5]);
     reader.close();
   }
 
@@ -271,7 +307,8 @@ public class GenerateDwcaTest {
     File occurrence = FileUtils.getClasspathFile("resources/res1/occurrence_non_unique_ids.txt");
     Resource resource = getResource(resourceXML, occurrence);
 
-    generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig);
+    generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
+      mockVocabulariesManager);
     int recordCount = generateDwca.call();
 
     // 4 rows in core file
@@ -302,14 +339,14 @@ public class GenerateDwcaTest {
     String[] row = reader.next();
     // no id was mapped, so the first column (ID column, index 0) is empty
     assertEquals("", row[0]);
-    assertEquals("Observation", row[1]);
+    assertEquals("HumanObservation", row[1]);
     assertEquals("1", row[2]);
     assertEquals("puma concolor", row[3]);
     assertEquals("Animalia", row[4]);
     // 2nd record
     row = reader.next();
     assertEquals("", row[0]);
-    assertEquals("Observation", row[1]);
+    assertEquals("HumanObservation", row[1]);
     assertEquals("2", row[2]);
     assertEquals("Panthera onca", row[3]);
     assertEquals("Animalia", row[4]);
@@ -328,7 +365,8 @@ public class GenerateDwcaTest {
     File occurrence = FileUtils.getClasspathFile("resources/res1/occurrence_missing_ids.txt");
     Resource resource = getResource(resourceXML, occurrence);
 
-    generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig);
+    generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
+      mock(VocabulariesManager.class));
     generateDwca.call();
   }
 
@@ -344,7 +382,8 @@ public class GenerateDwcaTest {
     File occurrence = FileUtils.getClasspathFile("resources/res1/occurrence_non_unique_ids.txt");
     Resource resource = getResource(resourceXML, occurrence);
 
-    generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig);
+    generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
+      mock(VocabulariesManager.class));
     generateDwca.call();
   }
 
@@ -361,7 +400,8 @@ public class GenerateDwcaTest {
     File occurrence = FileUtils.getClasspathFile("resources/res1/occurrence_non_unique_ids_case.txt");
     Resource resource = getResource(resourceXML, occurrence);
 
-    generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig);
+    generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
+      mock(VocabulariesManager.class));
     generateDwca.call();
   }
 
@@ -469,7 +509,8 @@ public class GenerateDwcaTest {
 
   @Test
   public void testCreateFileName() throws Exception {
-    generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig);
+    generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
+      mock(VocabulariesManager.class));
 
     // DwC-A directory
     File dir = FileUtils.createTempDir();
@@ -494,5 +535,51 @@ public class GenerateDwcaTest {
 
     fileName = generateDwca.createFileName(dir, "materialsample");
     assertEquals("materialsample4.txt", fileName);
+  }
+
+  /**
+   * Confirm occurrence core with rows missing basisOfRecord throws GeneratorException.
+   */
+  @Test(expected = GeneratorException.class)
+  public void testGenerateCoreFromSingleSourceFileMissingBasisOfRecord() throws Exception {
+    // retrieve sample zipped resource XML configuration file corresponding to occurrence_missing_bor.txt
+    File resourceXML = FileUtils.getClasspathFile("resources/res1/resource_doi_dataset_id.xml");
+    // create resource from single source file
+    File occurrence = FileUtils.getClasspathFile("resources/res1/occurrence_missing_bor.txt");
+    Resource resource = getResource(resourceXML, occurrence);
+    generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
+      mockVocabulariesManager);
+    generateDwca.call();
+  }
+
+  /**
+   * Confirm occurrence core with rows with basisOfRecord not matching Darwin Core Type Vocabulary throws
+   * GeneratorException.
+   */
+  @Test(expected = GeneratorException.class)
+  public void testGenerateCoreFromSingleSourceFileNonMatchingBasisOfRecord() throws Exception {
+    // retrieve sample zipped resource XML configuration file corresponding to occurrence_missing_bor.txt
+    File resourceXML = FileUtils.getClasspathFile("resources/res1/resource_doi_dataset_id.xml");
+    // create resource from single source file
+    File occurrence = FileUtils.getClasspathFile("resources/res1/occurrence_non_matching_bor.txt");
+    Resource resource = getResource(resourceXML, occurrence);
+    generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
+      mockVocabulariesManager);
+    generateDwca.call();
+  }
+
+  /**
+   * Confirm occurrence core missing required basisOfRecord mapping throws GeneratorException.
+   */
+  @Test(expected = GeneratorException.class)
+  public void testGenerateCoreFromSingleSourceFileMissingBasisOfRecordMapping() throws Exception {
+    // retrieve sample zipped resource XML configuration file corresponding to occurrence_missing_bor.txt
+    File resourceXML = FileUtils.getClasspathFile("resources/res1/resource_no_bor_mapped.xml");
+    // create resource from single source file
+    File occurrence = FileUtils.getClasspathFile("resources/res1/occurrence_no_bor_mapped.txt");
+    Resource resource = getResource(resourceXML, occurrence);
+    generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
+      mockVocabulariesManager);
+    generateDwca.call();
   }
 }
