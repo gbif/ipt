@@ -767,6 +767,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       Future<Integer> f = processFutures.get(shortname);
       // if this task finished
       if (f.isDone()) {
+        // remove process from locking list immediately! Fixes Issue 1141
+        processFutures.remove(shortname);
         boolean succeeded = false;
         String reasonFailed = null;
         Throwable cause = null;
@@ -819,8 +821,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             // keep track of how many failures on auto publication have happened
             processFailures.put(resource.getShortname(), new Date());
           }
-          // remove process from locking list
-          processFutures.remove(shortname);
         }
         return false;
       }
