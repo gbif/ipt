@@ -609,6 +609,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     xstream.alias("sqlsource", SqlSource.class);
     xstream.alias("mapping", ExtensionMapping.class);
     xstream.alias("field", PropertyMapping.class);
+    xstream.alias("versionhistory", VersionHistory.class);
+    xstream.alias("doi", DOI.class);
 
     // transient properties
     xstream.omitField(Resource.class, "shortname");
