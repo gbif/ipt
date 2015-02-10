@@ -1,5 +1,6 @@
 package org.gbif.ipt.service.registry.impl;
 
+import org.gbif.api.model.common.DOI;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
@@ -94,6 +95,14 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     List<NameValuePair> data = new ArrayList<NameValuePair>();
 
     Eml eml = resource.getEml();
+
+    // the DOI assigned/registered to the last published public version (not the DOI reserved)
+    DOI doi = resource.getAssignedDoi();
+    if (doi != null) {
+      data.add(new BasicNameValuePair("doi", doi.toString()));
+      log.debug("Including registry param doi=" + doi.toString());
+    }
+
     data.add(new BasicNameValuePair("name", resource.getTitle() != null ? StringUtils.trimToEmpty(resource.getTitle())
       : StringUtils.trimToEmpty(resource.getShortname())));
     data.add(new BasicNameValuePair("description", StringUtils.trimToEmpty(eml.getDescription())));
@@ -519,7 +528,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     // add additional ipt and organisation parameters
     data.add(new BasicNameValuePair("organisationKey", StringUtils.trimToEmpty(org.getKey().toString())));
     data.add(new BasicNameValuePair("iptKey", StringUtils.trimToEmpty(ipt.getKey().toString())));
-    // TODO: add "doi" param
 
     try {
       UrlEncodedFormEntity uefe = new UrlEncodedFormEntity(data, Charset.forName("UTF-8"));
