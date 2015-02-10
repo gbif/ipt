@@ -1,7 +1,7 @@
 <resource>
   <coreType>Occurrence</coreType>
   <status>REGISTERED</status>
-  <emlVersion>3.0</emlVersion>
+  <emlVersion>1.1</emlVersion>
   <lastPublished>2012-08-16 13:15:16.892 UTC</lastPublished>
   <recordsPublished>2</recordsPublished>
   <key>54b58d1a-a982-445a-b4c2-5f4e49c899be</key>
@@ -29,6 +29,10 @@
       <lastModified>2012-08-16 12:20:19.819 UTC</lastModified>
     </filesource>
   </sources>
+  <doi>
+    <prefix>10.5072</prefix>
+    <suffix>gc8abc</suffix>
+  </doi>
   <mappings>
     <mapping>
       <source class="filesource" reference="../../../sources/filesource"/>
@@ -69,16 +73,20 @@
     </mapping>
   </mappings>
   <versionHistory class="linked-list">
-    <org.gbif.ipt.model.VersionHistory>
+    <versionhistory>
       <version>1.1</version>
       <released>2015-01-27 23:39:12.533 UTC</released>
-      <status>UNRESERVED</status>
+      <status>PUBLIC</status>
       <publicationStatus>PUBLIC</publicationStatus>
       <modifiedBy reference="../../../creator"/>
       <changeSummary>Public version</changeSummary>
       <recordsPublished>1</recordsPublished>
-    </org.gbif.ipt.model.VersionHistory>
-    <org.gbif.ipt.model.VersionHistory>
+      <doi>
+        <prefix>10.5072</prefix>
+        <suffix>gc8abc</suffix>
+      </doi>
+    </versionhistory>
+    <versionhistory>
       <version>1.0</version>
       <released>2015-01-27 11:07:55.770 UTC</released>
       <status>UNRESERVED</status>
@@ -86,6 +94,6 @@
       <modifiedBy reference="../../../creator"/>
       <changeSummary>Initial private publication</changeSummary>
       <recordsPublished>1</recordsPublished>
-    </org.gbif.ipt.model.VersionHistory>
+    </versionhistory>
   </versionHistory>
 </resource>

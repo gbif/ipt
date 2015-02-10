@@ -64,6 +64,7 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.Eml2Rtf;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.utils.DOIUtils;
+import org.gbif.ipt.utils.ResourceUtils;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.FileUtils;
@@ -1292,5 +1293,61 @@ public class ResourceManagerImplTest {
    */
   public DataDir getMockedDataDir() {
     return mockedDataDir;
+  }
+
+
+  /**
+   * Ensure previous published version can be reconstructed properly.
+   */
+  @Test
+  public void testReconstructVersion() throws Exception {
+    // create a new resource using configuration file (resource.xml) that has version history
+    // and manually set organisation and a few Eml properties to mock new metadata entered for pending version
+    File cfgFile = org.gbif.utils.file.FileUtils.getClasspathFile("resources/res1/resource_version_history.xml");
+    when(mockedDataDir.resourceFile(anyString(), anyString())).thenReturn(cfgFile);
+    File resourceDirectory = cfgFile.getParentFile();
+    assertTrue(resourceDirectory.isDirectory());
+    Resource resource = getResourceManagerImpl().loadFromDir(resourceDirectory);
+    String shortname = "res1";
+    assertEquals(shortname, resource.getShortname());
+    BigDecimal version = new BigDecimal("1.1");
+    assertEquals(version.toPlainString(), resource.getEmlVersion().toPlainString());
+    DOI doi = new DOI("doi:10.5072/gc8abc");
+    assertNotNull(resource.getDoi());
+    assertEquals(doi.toString(), resource.getDoi().toString());
+    assertNotNull(resource.getVersionHistory());
+    assertEquals(2, resource.getVersionHistory().size());
+    VersionHistory historyForVersionOnePointOne = resource.findVersionHistory(version);
+    assertNotNull(historyForVersionOnePointOne.getDoi());
+    assertEquals(doi.toString(), historyForVersionOnePointOne.getDoi().toString());
+    assertEquals(IdentifierStatus.PUBLIC, historyForVersionOnePointOne.getStatus());
+    assertEquals(PublicationStatus.PUBLIC, historyForVersionOnePointOne.getPublicationStatus());
+    assertEquals(2, resource.getRecordsPublished());
+    Organisation organisation = new Organisation();
+    organisation.setKey("f9b67ad0-9c9b-11d9-b9db-b8a03c50a862");
+    assertNull(resource.getOrganisation());
+    resource.setOrganisation(organisation);
+    assertEquals(organisation.getKey(), resource.getOrganisation().getKey());
+    resource.getEml().setTitle("Title for pending version 1.2");
+    resource.getEml().setDescription("Title for pending version 1.2");
+
+    // retrieve previous persisted Eml file for version 1.1
+    File emlXMLVersionOnePointOne = org.gbif.utils.file.FileUtils.getClasspathFile("resources/res1/eml-1.1.xml");
+    // reconstruct resource version 1.1
+    Resource reconstructed = ResourceUtils
+      .reconstructVersion(version, shortname, doi, organisation, historyForVersionOnePointOne,
+        emlXMLVersionOnePointOne);
+
+    assertEquals(shortname, reconstructed.getShortname());
+    assertEquals(version, reconstructed.getEmlVersion());
+    assertEquals(doi, reconstructed.getDoi());
+    assertEquals(IdentifierStatus.PUBLIC, reconstructed.getIdentifierStatus());
+    assertEquals(PublicationStatus.PUBLIC, reconstructed.getStatus());
+    assertEquals(historyForVersionOnePointOne.getReleased(), reconstructed.getLastPublished());
+    assertEquals(organisation, reconstructed.getOrganisation());
+    assertEquals(1, reconstructed.getRecordsPublished()); // changed
+    // ensure reconstructed resource uses eml-1.1.xml
+    assertEquals("Title for version 1.1", reconstructed.getEml().getTitle()); // changed
+    assertEquals("Test description for version 1.1", reconstructed.getEml().getDescription()); // changed
   }
 }
