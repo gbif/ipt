@@ -361,7 +361,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
                   .toString());
             } else {
               Organisation doiAccountActivated = registrationManager.findPrimaryDoiAgencyAccount();
-              if (!doi.getPrefix().equalsIgnoreCase(doiAccountActivated.getDoiPrefix())) {
+              if (doiAccountActivated != null && doiAccountActivated.getDoiPrefix() != null
+                  && !doi.getDoiName().toLowerCase().startsWith(doiAccountActivated.getDoiPrefix().toLowerCase())) {
                 throw new UndeletNotAllowedException(UndeletNotAllowedException.Reason.DOI_PREFIX_NOT_MATCHING,
                   doi.toString()
                   + " has a prefix different to the prefix of the DOI agency account activated in this IPT, prefix="
