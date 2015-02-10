@@ -166,8 +166,7 @@ public class OverviewActionIT {
 
     return Arrays.asList(
       new Object[][] {{actionDataCite, DOIRegistrationAgency.DATACITE}
-        //TODO undelete when EZID API working again
-//        , {actionEZID, DOIRegistrationAgency.EZID}
+        , {actionEZID, DOIRegistrationAgency.EZID}
       });
   }
 
@@ -405,8 +404,13 @@ public class OverviewActionIT {
 
     // undelete!
     action.setUndelete("true");
-    assertEquals("success", action.undelete());
-    assertEquals(PublicationStatus.PUBLIC, r.getStatus());
-    assertTrue(r.getIdentifierStatus().equals(IdentifierStatus.PUBLIC));
+
+    // since this integration tests undeletes a reserved DOI, this only works in DataCite
+    // TODO: test undelete in EZID
+    if (type.equals(DOIRegistrationAgency.DATACITE)) {
+      assertEquals("success", action.undelete());
+      assertEquals(PublicationStatus.PUBLIC, r.getStatus());
+      assertTrue(r.getIdentifierStatus().equals(IdentifierStatus.PUBLIC));
+    }
   }
 }
