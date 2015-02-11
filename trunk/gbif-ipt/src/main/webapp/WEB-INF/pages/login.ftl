@@ -1,48 +1,29 @@
+<#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl"/>
- <title><@s.text name="login.title"/></title>
- <#assign currentMenu = "account"/>
+<title><@s.text name="login.title"/></title>
+<#assign currentMenu = "account"/>
 <#include "/WEB-INF/pages/inc/menu.ftl"/>
-
-<div class="grid_18 suffix_6">
-
-<h1><@s.text name="login.title"/></h1>
-<p>
-<@s.text name="login.intro"/>: 
-<br/>
-<a href="mailto:${admin.email}?subject=${lostPswdEmailSubject?url}&Body=${lostPswdEmailBody?url}">${admin.getNameWithEmail()?xml}</a>
-</p>
-
 <#include "/WEB-INF/pages/macros/forms.ftl">
-<@s.form cssClass="topForm half" action="login.do" method="post">
-	<@input name="email" />  
-	<@input name="password" type="password" value=""/>
-	
-<#if email?exists>
-<p><@s.text name="login.forgottenpassword"/></p>
-</#if>
-
-  <div class="buttons">
- 	<@s.submit cssClass="button" name="login-submit" key="portal.login"/>
-  </div>	
-</@s.form>
 
 
-<#--
-<div id="login">
-<form id="loginFull" action="" method="post">
-  <div>
-    <input class="form-reset" type="text" size="30" name="email" id="user" value="${email!"admin"}"/>
-  </div>
-  <div>
-    <input class="form-reset"  type="password" size="30" name="password" id="pass" value="${password!"admin"}"/>
-  </div>
-  <div>
-    <@s.submit key="portal.login" name=""/>
-  </div>
-</form>
-</div>
--->
-
+  <h1><@s.text name="login.title"/></h1>
+  <div class="grid_18 suffix_6">
+  <p>
+    <@s.text name="login.intro"><@s.param>${admin.email}</@s.param></@s.text>
+  </p>
+    <form id="newuser" class="topForm half" action="${baseURL}/login.do" method="post">
+      <@input name="email" i18nkey="user.email" value="${email!}"/>
+      <@input name="password" i18nkey="user.password" type="password" value="${password!}"/>
+      <#if email?has_content>
+        <p>
+          <@s.text name="login.forgottenpassword"><@s.param>${admin.email}</@s.param></@s.text>
+        </p>
+      </#if>
+      <div class="userManageButtons">
+        <@s.submit cssClass="button" key="portal.login"/>
+      </div>
+    </form>
 </div>
 
 <#include "/WEB-INF/pages/inc/footer.ftl"/>
+</#escape>
