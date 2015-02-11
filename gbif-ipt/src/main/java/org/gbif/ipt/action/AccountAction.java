@@ -30,8 +30,6 @@ public class AccountAction extends POSTAction {
   private User user;
   // to show admin contact
   private User admin;
-  private String lostPswdEmailSubject;
-  private String lostPswdEmailBody;
 
   @Inject
   public AccountAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -55,14 +53,6 @@ public class AccountAction extends POSTAction {
 
   public String getEmail() {
     return email;
-  }
-
-  public String getLostPswdEmailBody() {
-    return lostPswdEmailBody;
-  }
-
-  public String getLostPswdEmailSubject() {
-    return lostPswdEmailSubject;
   }
 
   public String getPassword() {
@@ -112,9 +102,6 @@ public class AccountAction extends POSTAction {
     super.prepare();
     // populate admin user
     admin = userManager.list(Role.Admin).get(0);
-    lostPswdEmailSubject = getText("login.forgottenpassword.mail.subject");
-    lostPswdEmailBody = getTextWithDynamicArgs("login.forgottenpassword.mail.body", admin.getName(), "",
-      cfg.getBaseUrl() + "/admin/users.do");
     if (getCurrentUser() != null) {
       // modify existing user in session
       user = getCurrentUser();
@@ -140,10 +127,6 @@ public class AccountAction extends POSTAction {
 
   public void setEmail(String email) {
     this.email = StringUtils.trimToNull(email);
-    if (email != null) {
-      lostPswdEmailBody = getTextWithDynamicArgs("login.forgottenpassword.mail.body", admin.getName(), this.email,
-        cfg.getBaseUrl() + "/admin/user.do?id=" + this.email);
-    }
   }
 
   public void setPassword(String password) {
@@ -155,7 +138,7 @@ public class AccountAction extends POSTAction {
   }
 
   private void setRedirectUrl() {
-    redirectUrl = getBase() + "/";
+    redirectUrl = "/";
     // if we have a request refer back to the originally requested page
     if (req != null) {
       String referer = req.getHeader("Referer");

@@ -18,7 +18,7 @@
           <div id="zone-credit" class="zone zone-credit clearfix container_24">
             <aside class="grid_16 region region-credit-first" id="region-credit-first">
               <div class="region-inner region-credit-first-inner">
-                <p>&copy;2014 <a href="www.gbif.org">Global Biodiversity Information Facility</a>. Data publishers retain all rights to data.</p>
+                <p>&copy;2015 <a href="www.gbif.org">Global Biodiversity Information Facility</a>. Data publishers retain all rights to data.</p>
               </div>
             </aside>
           </div>
