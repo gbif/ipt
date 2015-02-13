@@ -187,7 +187,7 @@ public class DataCiteMetadataBuilderTest {
     User manager = new User();
     manager.setEmail("jsmith@gbif.org");
     BigDecimal replacedVersion = new BigDecimal("1.0");
-    VersionHistory historyVersion1 = new VersionHistory(replacedVersion, new Date(), manager, PublicationStatus.PUBLIC);
+    VersionHistory historyVersion1 = new VersionHistory(replacedVersion, new Date(), PublicationStatus.PUBLIC);
     resource.addVersionHistory(historyVersion1);
     DataCiteMetadataBuilder.addIsNewVersionOfDOIRelatedIdentifier(dataCiteMetadata, formerDoi);
 

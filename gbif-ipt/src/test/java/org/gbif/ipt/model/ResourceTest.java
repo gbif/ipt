@@ -98,11 +98,11 @@ public class ResourceTest {
     res.setStatus(PublicationStatus.PRIVATE);
 
     // add three published versions to version history, all published by user, some private, other public
-    VersionHistory v1 = new VersionHistory(RESOURCE_VERSION_ONE, new Date(), USER, PublicationStatus.PRIVATE);
+    VersionHistory v1 = new VersionHistory(RESOURCE_VERSION_ONE, new Date(), PublicationStatus.PRIVATE);
     res.addVersionHistory(v1);
-    VersionHistory v2 = new VersionHistory(RESOURCE_VERSION_TWO, new Date(), USER, PublicationStatus.PUBLIC);
+    VersionHistory v2 = new VersionHistory(RESOURCE_VERSION_TWO, new Date(), PublicationStatus.PUBLIC);
     res.addVersionHistory(v2);
-    VersionHistory v3 = new VersionHistory(LATEST_RESOURCE_VERSION, new Date(), USER, PublicationStatus.PRIVATE);
+    VersionHistory v3 = new VersionHistory(LATEST_RESOURCE_VERSION, new Date(), PublicationStatus.PRIVATE);
     res.addVersionHistory(v3);
 
     return res;
@@ -228,8 +228,8 @@ public class ResourceTest {
   public void testAddVersionHistory() {
     Resource resource = getResource();
 
-    VersionHistory vh4 = new VersionHistory(BigDecimal.valueOf(3.4), new Date(), USER, PublicationStatus.PUBLIC);
-    VersionHistory vh5 = new VersionHistory(BigDecimal.valueOf(3.5), new Date(), USER, PublicationStatus.PUBLIC);
+    VersionHistory vh4 = new VersionHistory(BigDecimal.valueOf(3.4), new Date(), PublicationStatus.PUBLIC);
+    VersionHistory vh5 = new VersionHistory(BigDecimal.valueOf(3.5), new Date(), PublicationStatus.PUBLIC);
 
     resource.addVersionHistory(vh4);
     resource.addVersionHistory(vh5);
@@ -237,7 +237,7 @@ public class ResourceTest {
     assertEquals(5, resource.getVersionHistory().size());
 
     // try and add a version history with same version number - isn't allowed!
-    VersionHistory vh6 = new VersionHistory(BigDecimal.valueOf(3.5), new Date(), USER, PublicationStatus.PUBLIC);
+    VersionHistory vh6 = new VersionHistory(BigDecimal.valueOf(3.5), new Date(), PublicationStatus.PUBLIC);
 
     resource.addVersionHistory(vh6);
 
@@ -248,8 +248,8 @@ public class ResourceTest {
   public void testRemoveVersionHistory() {
     Resource resource = new Resource();
 
-    VersionHistory vh1 = new VersionHistory(BigDecimal.valueOf(1.4), new Date(), USER, PublicationStatus.PUBLIC);
-    VersionHistory vh2 = new VersionHistory(BigDecimal.valueOf(1.5), new Date(), USER, PublicationStatus.PUBLIC);
+    VersionHistory vh1 = new VersionHistory(BigDecimal.valueOf(1.4), new Date(), PublicationStatus.PUBLIC);
+    VersionHistory vh2 = new VersionHistory(BigDecimal.valueOf(1.5), new Date(), PublicationStatus.PUBLIC);
 
     resource.addVersionHistory(vh1);
     resource.addVersionHistory(vh2);
@@ -267,9 +267,9 @@ public class ResourceTest {
   public void testAddVersionHistoryWithTrailingZero() {
     Resource resource = new Resource();
 
-    VersionHistory vh1 = new VersionHistory(new BigDecimal("1.1"), new Date(), USER, PublicationStatus.PUBLIC);
-    VersionHistory vh9 = new VersionHistory(new BigDecimal("1.9"), new Date(), USER, PublicationStatus.PUBLIC);
-    VersionHistory vh10 = new VersionHistory(new BigDecimal("1.10"), new Date(), USER, PublicationStatus.PUBLIC);
+    VersionHistory vh1 = new VersionHistory(new BigDecimal("1.1"), new Date(), PublicationStatus.PUBLIC);
+    VersionHistory vh9 = new VersionHistory(new BigDecimal("1.9"), new Date(), PublicationStatus.PUBLIC);
+    VersionHistory vh10 = new VersionHistory(new BigDecimal("1.10"), new Date(), PublicationStatus.PUBLIC);
 
     resource.addVersionHistory(vh1);
     resource.addVersionHistory(vh9);
@@ -278,7 +278,7 @@ public class ResourceTest {
     assertEquals(3, resource.getVersionHistory().size());
 
     // try and add a version history with same version number - isn't allowed!
-    VersionHistory vh3 = new VersionHistory(new BigDecimal("1.10"), new Date(), USER, PublicationStatus.PUBLIC);
+    VersionHistory vh3 = new VersionHistory(new BigDecimal("1.10"), new Date(), PublicationStatus.PUBLIC);
 
     resource.addVersionHistory(vh3);
 
@@ -289,15 +289,20 @@ public class ResourceTest {
   public void testFindVersionHistory() {
     Resource resource = new Resource();
 
-    VersionHistory vh1 = new VersionHistory(BigDecimal.valueOf(1.4), new Date(), USER, PublicationStatus.PUBLIC);
-    VersionHistory vh2 = new VersionHistory(BigDecimal.valueOf(1.5), new Date(), USER, PublicationStatus.PUBLIC);
+    VersionHistory vh1 = new VersionHistory(BigDecimal.valueOf(1.4), new Date(), PublicationStatus.PUBLIC);
+    vh1.setModifiedBy(USER);
+    VersionHistory vh2 = new VersionHistory(BigDecimal.valueOf(1.5), new Date(), PublicationStatus.PUBLIC);
+    vh2.setModifiedBy(USER);
 
     resource.addVersionHistory(vh1);
     resource.addVersionHistory(vh2);
 
-    VersionHistory vh = resource.findVersionHistory(BigDecimal.valueOf(1.4));
-    assertEquals(BigDecimal.valueOf(1.4).toPlainString(), vh.getVersion());
-    assertEquals("jc@gbif.org", vh.getModifiedBy().getEmail());
+    VersionHistory foundVh1 = resource.findVersionHistory(BigDecimal.valueOf(1.4));
+    assertEquals(BigDecimal.valueOf(1.4).toPlainString(), foundVh1.getVersion());
+    assertEquals("jc@gbif.org", foundVh1.getModifiedBy().getEmail());
+    VersionHistory foundVh2 = resource.findVersionHistory(BigDecimal.valueOf(1.5));
+    assertEquals(BigDecimal.valueOf(1.5).toPlainString(), foundVh2.getVersion());
+    assertEquals("jc@gbif.org", foundVh2.getModifiedBy().getEmail());
   }
 
   @Test
@@ -373,13 +378,13 @@ public class ResourceTest {
     // simulate publication of one version
     resource.setEmlVersion(new BigDecimal("0.9"));
     resource.setLastPublished(new Date());
-    VersionHistory history = new VersionHistory(new BigDecimal("0.9"), new Date(), USER, PublicationStatus.PRIVATE);
+    VersionHistory history = new VersionHistory(new BigDecimal("0.9"), new Date(), PublicationStatus.PRIVATE);
     resource.addVersionHistory(history);
 
     // simulate publication of another
     resource.setEmlVersion(new BigDecimal("0.10"));
     resource.setLastPublished(new Date());
-    history = new VersionHistory(new BigDecimal("0.10"), new Date(), USER, PublicationStatus.PRIVATE);
+    history = new VersionHistory(new BigDecimal("0.10"), new Date(), PublicationStatus.PRIVATE);
     resource.addVersionHistory(history);
 
     assertEquals("0.9", resource.getReplacedEmlVersion().toPlainString());
@@ -390,7 +395,7 @@ public class ResourceTest {
 
     resource.setEmlVersion(new BigDecimal("0.11"));
     resource.setLastPublished(new Date());
-    history = new VersionHistory(new BigDecimal("0.11"), new Date(), USER, PublicationStatus.PRIVATE);
+    history = new VersionHistory(new BigDecimal("0.11"), new Date(), PublicationStatus.PRIVATE);
     resource.addVersionHistory(history);
 
     assertEquals("0.10", resource.getReplacedEmlVersion().toPlainString());
@@ -408,14 +413,14 @@ public class ResourceTest {
     BigDecimal v = new BigDecimal("1.19");
     resource.setEmlVersion(v);
     resource.setLastPublished(new Date());
-    VersionHistory history = new VersionHistory(BigDecimal.valueOf(1.19), new Date(), USER, PublicationStatus.PUBLIC);
+    VersionHistory history = new VersionHistory(BigDecimal.valueOf(1.19), new Date(), PublicationStatus.PUBLIC);
     resource.addVersionHistory(history);
 
     // simulate publication of the next
     v = resource.getNextVersion();
     resource.setEmlVersion(v);
     resource.setLastPublished(new Date());
-    history = new VersionHistory(v, new Date(), USER, PublicationStatus.PUBLIC);
+    history = new VersionHistory(v, new Date(),PublicationStatus.PUBLIC);
     resource.addVersionHistory(history);
 
     assertEquals("1.19", resource.getReplacedEmlVersion().toPlainString());
@@ -437,7 +442,7 @@ public class ResourceTest {
     resource.setLastPublished(v1Published);
     resource.setDoi(null);
     resource.setIdentifierStatus(IdentifierStatus.UNRESERVED);
-    VersionHistory vh1 = new VersionHistory(v1, v1Published, USER, PublicationStatus.PUBLIC);
+    VersionHistory vh1 = new VersionHistory(v1, v1Published, PublicationStatus.PUBLIC);
     vh1.setStatus(IdentifierStatus.UNRESERVED);
     resource.addVersionHistory(vh1);
 
@@ -452,7 +457,7 @@ public class ResourceTest {
     resource.setLastPublished(v2Published);
     resource.setDoi(new DOI("10.1555/PU75GJ9"));
     resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
-    VersionHistory vh2 = new VersionHistory(v2, v2Published, USER, PublicationStatus.PUBLIC);
+    VersionHistory vh2 = new VersionHistory(v2, v2Published, PublicationStatus.PUBLIC);
     vh2.setDoi(new DOI("10.1555/PU75GJ9"));
     vh2.setStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
     resource.addVersionHistory(vh2);
@@ -468,7 +473,7 @@ public class ResourceTest {
     resource.setLastPublished(v3Published);
     resource.setDoi(new DOI("10.1555/PU75GJ9"));
     resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
-    VersionHistory vh3 = new VersionHistory(v3, v3Published, USER, PublicationStatus.PUBLIC);
+    VersionHistory vh3 = new VersionHistory(v3, v3Published, PublicationStatus.PUBLIC);
     vh3.setDoi(new DOI("10.1555/PU75GJ9"));
     vh3.setStatus(IdentifierStatus.PUBLIC);
     resource.addVersionHistory(vh3);

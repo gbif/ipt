@@ -283,7 +283,8 @@ public class OverviewActionIT {
     r.setIdentifierStatus(IdentifierStatus.PUBLIC);
     User user = new User();
     user.setEmail("jsmith@gbif.org");
-    VersionHistory history = new VersionHistory(new BigDecimal("1.0"), new Date(), user, PublicationStatus.PUBLIC);
+    VersionHistory history = new VersionHistory(new BigDecimal("1.0"), new Date(), PublicationStatus.PUBLIC);
+    history.setModifiedBy(user);
     history.setDoi(assignedDoi);
     history.setStatus(IdentifierStatus.PUBLIC);
     r.addVersionHistory(history);
@@ -372,19 +373,19 @@ public class OverviewActionIT {
 
     // mock VersionHistory: version 1.0 and 1.1 share same registered DOI, version 2.0 has different registered DOI
     VersionHistory history1 =
-      new VersionHistory(new BigDecimal("1.0"), new Date(), new User(), PublicationStatus.PUBLIC);
+      new VersionHistory(new BigDecimal("1.0"), new Date(), PublicationStatus.PUBLIC);
     history1.setDoi(reserved1);
     history1.setStatus(IdentifierStatus.PUBLIC);
     r.addVersionHistory(history1);
 
     VersionHistory history11 =
-      new VersionHistory(new BigDecimal("1.1"), new Date(), new User(), PublicationStatus.PUBLIC);
+      new VersionHistory(new BigDecimal("1.1"), new Date(), PublicationStatus.PUBLIC);
     history11.setDoi(reserved1);
     history11.setStatus(IdentifierStatus.PUBLIC);
     r.addVersionHistory(history11);
 
     VersionHistory history2 =
-      new VersionHistory(new BigDecimal("2.0"), new Date(), new User(), PublicationStatus.PUBLIC);
+      new VersionHistory(new BigDecimal("2.0"), new Date(), PublicationStatus.PUBLIC);
     history2.setDoi(reserved2);
     history2.setStatus(IdentifierStatus.PUBLIC);
     r.addVersionHistory(history2);

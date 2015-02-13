@@ -121,7 +121,7 @@ public class OverviewActionTest {
     EmlWriter.writeEmlFile(emlFile, r.getEml());
     User user = new User();
     user.setEmail("jsmith@gbif.org");
-    VersionHistory vh = new VersionHistory(new BigDecimal("1.0"), new Date(), user, PublicationStatus.PRIVATE);
+    VersionHistory vh = new VersionHistory(new BigDecimal("1.0"), new Date(), PublicationStatus.PRIVATE);
     r.addVersionHistory(vh);
     assertTrue(action.isLastPublishedVersionAssignedGBIFSupportedLicense(r));
   }
@@ -137,7 +137,7 @@ public class OverviewActionTest {
     EmlWriter.writeEmlFile(emlFile, r.getEml());
     User user = new User();
     user.setEmail("jsmith@gbif.org");
-    VersionHistory vh = new VersionHistory(new BigDecimal("1.0"), new Date(), user, PublicationStatus.PRIVATE);
+    VersionHistory vh = new VersionHistory(new BigDecimal("1.0"), new Date(), PublicationStatus.PRIVATE);
     r.addVersionHistory(vh);
     assertEquals("http://creativecommons.org/publicdomain/zero/1.0/legalcode",
       action.getLastPublishedVersionAssignedLicense(r));
@@ -158,7 +158,7 @@ public class OverviewActionTest {
     EmlWriter.writeEmlFile(emlFile, r.getEml());
     User user = new User();
     user.setEmail("jsmith@gbif.org");
-    VersionHistory vh = new VersionHistory(new BigDecimal("1.0"), new Date(), user, PublicationStatus.PRIVATE);
+    VersionHistory vh = new VersionHistory(new BigDecimal("1.0"), new Date(), PublicationStatus.PRIVATE);
     r.addVersionHistory(vh);
     action.setResource(r);
     assertEquals("input", action.registerResource());
@@ -253,7 +253,7 @@ public class OverviewActionTest {
     Resource r = new Resource();
     DOI doiToUndelete = DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX);
     BigDecimal versionToUndelete = new BigDecimal("1.0");
-    VersionHistory vh = new VersionHistory(versionToUndelete, new Date(), new User(), PublicationStatus.PUBLIC);
+    VersionHistory vh = new VersionHistory(versionToUndelete, new Date(), PublicationStatus.PUBLIC);
     vh.setDoi(doiToUndelete);
     vh.setStatus(IdentifierStatus.PUBLIC);
     r.addVersionHistory(vh);
@@ -270,7 +270,7 @@ public class OverviewActionTest {
     Resource r = new Resource();
     DOI doiToUndelete = DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX);
     BigDecimal versionToUndelete = new BigDecimal("1.0");
-    VersionHistory vh = new VersionHistory(versionToUndelete, new Date(), new User(), PublicationStatus.PUBLIC);
+    VersionHistory vh = new VersionHistory(versionToUndelete, new Date(), PublicationStatus.PUBLIC);
     vh.setDoi(doiToUndelete);
     vh.setStatus(IdentifierStatus.PUBLIC);
     r.addVersionHistory(vh);
@@ -289,7 +289,7 @@ public class OverviewActionTest {
     Resource r = new Resource();
     DOI doiToUndelete = DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX);
     BigDecimal versionToUndelete = new BigDecimal("1.0");
-    VersionHistory vh = new VersionHistory(versionToUndelete, new Date(), new User(), PublicationStatus.PUBLIC);
+    VersionHistory vh = new VersionHistory(versionToUndelete, new Date(), PublicationStatus.PUBLIC);
     vh.setDoi(doiToUndelete);
     vh.setStatus(IdentifierStatus.PUBLIC);
     r.addVersionHistory(vh);
@@ -319,7 +319,7 @@ public class OverviewActionTest {
     Resource r = new Resource();
     DOI doiToUndelete = DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX);
     BigDecimal versionToUndelete = new BigDecimal("1.0");
-    VersionHistory vh = new VersionHistory(versionToUndelete, new Date(), new User(), PublicationStatus.PUBLIC);
+    VersionHistory vh = new VersionHistory(versionToUndelete, new Date(), PublicationStatus.PUBLIC);
     vh.setDoi(doiToUndelete);
     vh.setStatus(IdentifierStatus.PUBLIC);
     r.addVersionHistory(vh);

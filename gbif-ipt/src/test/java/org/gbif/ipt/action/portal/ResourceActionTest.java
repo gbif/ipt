@@ -83,11 +83,11 @@ public class ResourceActionTest {
     resource.setCreator(MANAGER);
 
     // add three published versions to version history, all published by manager, some private, other public
-    VersionHistory v1 = new VersionHistory(RESOURCE_VERSION_ONE, new Date(), MANAGER, PublicationStatus.PRIVATE);
+    VersionHistory v1 = new VersionHistory(RESOURCE_VERSION_ONE, new Date(), PublicationStatus.PRIVATE);
     resource.addVersionHistory(v1);
-    VersionHistory v2 = new VersionHistory(RESOURCE_VERSION_TWO, new Date(), MANAGER, PublicationStatus.PUBLIC);
+    VersionHistory v2 = new VersionHistory(RESOURCE_VERSION_TWO, new Date(), PublicationStatus.PUBLIC);
     resource.addVersionHistory(v2);
-    VersionHistory v3 = new VersionHistory(LATEST_RESOURCE_VERSION, new Date(), MANAGER, PublicationStatus.PRIVATE);
+    VersionHistory v3 = new VersionHistory(LATEST_RESOURCE_VERSION, new Date(), PublicationStatus.PRIVATE);
     resource.addVersionHistory(v3);
     assertEquals(3, resource.getVersionHistory().size());
 
@@ -148,7 +148,8 @@ public class ResourceActionTest {
     action.setVersion(new BigDecimal("1.34"));
 
     // DOI must be PUBLIC to be assigned
-    VersionHistory history = new VersionHistory(new BigDecimal("1.34"), new Date(), MANAGER, PublicationStatus.PUBLIC);
+    VersionHistory history = new VersionHistory(new BigDecimal("1.34"), new Date(), PublicationStatus.PUBLIC);
+    history.setModifiedBy(MANAGER);
     history.setStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
     history.setDoi(new DOI("10.1126", "IO65467"));
     resource.addVersionHistory(history);

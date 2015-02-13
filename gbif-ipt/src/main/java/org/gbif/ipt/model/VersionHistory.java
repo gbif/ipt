@@ -23,10 +23,9 @@ public class VersionHistory {
   private String changeSummary;
   private int recordsPublished;
 
-  public VersionHistory(BigDecimal version, Date released, User modifiedBy, PublicationStatus publicationStatus) {
+  public VersionHistory(BigDecimal version, Date released, PublicationStatus publicationStatus) {
     this.version = version.toPlainString();
     this.released = released;
-    this.modifiedBy = modifiedBy;
     this.publicationStatus = publicationStatus;
   }
 
@@ -79,9 +78,9 @@ public class VersionHistory {
   }
 
   /**
-   * @return the date this version history was last modified (the change summary is editable after publication)
+   * @return the user that last modified the history (the change summary is editable after publication)
    */
-  @NotNull
+  @Nullable
   public User getModifiedBy() {
     return modifiedBy;
   }

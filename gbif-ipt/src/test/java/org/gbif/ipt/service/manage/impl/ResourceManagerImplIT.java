@@ -272,7 +272,8 @@ public class ResourceManagerImplIT {
     r.setLastPublished(new Date());
     User user = new User();
     user.setEmail("jsmith@gbif.org");
-    VersionHistory history = new VersionHistory(new BigDecimal("1.0"), new Date(), user, PublicationStatus.PUBLIC);
+    VersionHistory history = new VersionHistory(new BigDecimal("1.0"), new Date(), PublicationStatus.PUBLIC);
+    history.setModifiedBy(user);
     history.setStatus(IdentifierStatus.PUBLIC);
     history.setDoi(doi);
     r.addVersionHistory(history);
@@ -298,7 +299,8 @@ public class ResourceManagerImplIT {
 
     // mock version 1.1 having been published by setting last published, and adding new VersionHistory
     r.setLastPublished(new Date());
-    VersionHistory history2 = new VersionHistory(new BigDecimal("1.1"), new Date(), user, PublicationStatus.PUBLIC);
+    VersionHistory history2 = new VersionHistory(new BigDecimal("1.1"), new Date(), PublicationStatus.PUBLIC);
+    history.setModifiedBy(user);
     history2.setDoi(doi);
     history2.setStatus(IdentifierStatus.PUBLIC);
     r.addVersionHistory(history2);

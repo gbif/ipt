@@ -112,19 +112,18 @@ public class Resource implements Serializable, Comparable<Resource> {
    * @param history VersionHistory to add
    */
   public void addVersionHistory(VersionHistory history) {
+    Preconditions.checkNotNull(history);
     if (versionHistory == null) {
       versionHistory = Lists.newLinkedList();
     }
-    if (history != null) {
-      boolean exists = false;
-      for (VersionHistory vh : versionHistory) {
-        if (vh.getVersion().compareTo(history.getVersion()) == 0) {
-          exists = true;
-        }
+    boolean exists = false;
+    for (VersionHistory vh : versionHistory) {
+      if (vh.getVersion().compareTo(history.getVersion()) == 0) {
+        exists = true;
       }
-      if (!exists) {
-        versionHistory.add(0, history);
-      }
+    }
+    if (!exists) {
+      versionHistory.add(0, history);
     }
   }
 
