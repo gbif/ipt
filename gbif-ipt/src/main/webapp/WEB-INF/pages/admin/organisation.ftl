@@ -61,7 +61,7 @@ $(document).ready(function(){
 <#include "/WEB-INF/pages/macros/forms.ftl"> 
 <div class="grid_18 suffix_6">
 
-<@s.form id="organisationsForm" cssClass="topForm half" action="organisation.do" method="post">
+<@s.form id="organisationsForm" cssClass="topForm half" action="organisation.do" method="post" includeContext="false">
 
 	<#if id?has_content>
     <h1><@s.text name="admin.organisation.title"/></h1>
