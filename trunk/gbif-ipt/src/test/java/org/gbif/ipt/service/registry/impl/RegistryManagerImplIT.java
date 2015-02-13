@@ -97,7 +97,8 @@ public class RegistryManagerImplIT extends IptMockBaseTest {
       res.setSubtype("occurrence test");
 
       // mock assigning a DOI to the resource. To be assigned/registered, the last published version DOI must be public
-      VersionHistory history = new VersionHistory(new BigDecimal("1.1"), new Date(), user, PublicationStatus.PUBLIC);
+      VersionHistory history = new VersionHistory(new BigDecimal("1.1"), new Date(), PublicationStatus.PUBLIC);
+      history.setModifiedBy(user);
       DOI doi = DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, "10.5072");
       history.setDoi(doi);
       history.setStatus(IdentifierStatus.PUBLIC);

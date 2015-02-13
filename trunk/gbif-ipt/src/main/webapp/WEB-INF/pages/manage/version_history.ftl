@@ -59,7 +59,11 @@
                         </tr>
                         <tr>
                             <th>${modifiedTitle?cap_first}</th>
-                            <td>${history.modifiedBy.firstname} ${history.modifiedBy.lastname!}</td>
+                            <#if history.modifiedBy??>
+                              <td>${history.modifiedBy.firstname!} ${history.modifiedBy.lastname!}</td>
+                            <#else>
+                              <td>${emptyPlaceholder}</td>
+                            </#if>
                         </tr>
                         <tr>
                             <th>${summaryTitle?cap_first}</th>

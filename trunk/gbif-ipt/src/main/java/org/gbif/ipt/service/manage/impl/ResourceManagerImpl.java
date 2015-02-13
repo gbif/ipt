@@ -1145,7 +1145,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // register/update DOI
     executeDoiWorkflow(resource, version, resource.getReplacedEmlVersion(), action);
     // save the version history
-    saveVersionHistory(resource, version, action.getCurrentUser());
+    saveVersionHistory(resource, version, action);
     // persist resource object changes
     save(resource);
     // final logging
@@ -1796,10 +1796,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    *
    * @param resource resource published
    * @param version version of resource published
-   * @param currentUser user publishing resource
+   * @param action action
    */
-  protected synchronized void saveVersionHistory(Resource resource, BigDecimal version, User currentUser) {
-    VersionHistory versionHistory = new VersionHistory(version, new Date(), currentUser, resource.getStatus());
+  protected synchronized void saveVersionHistory(Resource resource, BigDecimal version, BaseAction action) {
+    VersionHistory versionHistory = new VersionHistory(version, new Date(), resource.getStatus());
     // DOI
     versionHistory.setDoi(resource.getDoi());
     // DOI status
@@ -1808,6 +1808,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     versionHistory.setChangeSummary(resource.getChangeSummary());
     // records published
     versionHistory.setRecordsPublished(resource.getRecordsPublished());
+    // modifiedBy
+    User modifiedBy = action.getCurrentUser();
+    if (modifiedBy != null) {
+      versionHistory.setModifiedBy(modifiedBy);
+    }
     resource.addVersionHistory(versionHistory);
   }
 

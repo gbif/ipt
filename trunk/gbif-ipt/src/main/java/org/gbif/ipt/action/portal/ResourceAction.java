@@ -6,6 +6,7 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
@@ -423,7 +424,14 @@ public class ResourceAction extends PortalBaseAction {
     List<VersionHistory> histories = Lists.newArrayList();
     histories.addAll(resource.getVersionHistory());
     copy.setVersionHistory(histories);
-    VersionHistory history = new VersionHistory(nextVersion, releaseDate, this.getCurrentUser(), PublicationStatus.PUBLIC);
+    VersionHistory history = new VersionHistory(nextVersion, releaseDate, PublicationStatus.PUBLIC);
+
+    // modifiedBy
+    User modifiedBy = getCurrentUser();
+    if (modifiedBy != null) {
+      history.setModifiedBy(modifiedBy);
+    }
+
     // show DOI if it will go public on next publication
     if (resource.getDoi() != null && (resource.getIdentifierStatus() == IdentifierStatus.PUBLIC_PENDING_PUBLICATION ||
     resource.getIdentifierStatus() == IdentifierStatus.PUBLIC)) {

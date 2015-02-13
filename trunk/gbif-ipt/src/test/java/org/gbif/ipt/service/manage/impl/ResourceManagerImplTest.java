@@ -1014,8 +1014,8 @@ public class ResourceManagerImplTest {
     resource.setLastPublished(released);
     // versionHistory
     VersionHistory history =
-      new VersionHistory(new BigDecimal("3.0"), resource.getLastPublished(), resource.getModifier(),
-        PublicationStatus.PUBLIC);
+      new VersionHistory(new BigDecimal("3.0"), resource.getLastPublished(), PublicationStatus.PUBLIC);
+    history.setModifiedBy(resource.getModifier());
     history.setDoi(doi);
     history.setStatus(IdentifierStatus.PUBLIC);
     history.setReleased(released);
@@ -1062,8 +1062,8 @@ public class ResourceManagerImplTest {
     resource.setLastPublished(released);
     // versionHistory - no DOI
     VersionHistory history =
-      new VersionHistory(new BigDecimal("3.0"), resource.getLastPublished(), resource.getModifier(),
-        PublicationStatus.PUBLIC);
+      new VersionHistory(new BigDecimal("3.0"), resource.getLastPublished(), PublicationStatus.PUBLIC);
+    history.setModifiedBy(resource.getModifier());
     history.setReleased(released);
     resource.addVersionHistory(history);
 
@@ -1103,8 +1103,8 @@ public class ResourceManagerImplTest {
     resource.setLastPublished(released);
     // versionHistory - no DOI
     VersionHistory history =
-      new VersionHistory(new BigDecimal("3.0"), resource.getLastPublished(), resource.getModifier(),
-        PublicationStatus.PUBLIC);
+      new VersionHistory(new BigDecimal("3.0"), resource.getLastPublished(), PublicationStatus.PUBLIC);
+    history.setModifiedBy(resource.getModifier());
     history.setDoi(DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX));
     history.setStatus(IdentifierStatus.PUBLIC);
     history.setReleased(released);
