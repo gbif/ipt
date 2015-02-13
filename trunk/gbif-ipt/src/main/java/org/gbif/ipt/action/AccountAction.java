@@ -1,9 +1,7 @@
 package org.gbif.ipt.action;
 
 import org.gbif.ipt.config.AppConfig;
-import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.User;
-import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -15,21 +13,22 @@ import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+/**
+ * Action handling account updates, such as changing user name and password.
+ */
 public class AccountAction extends POSTAction {
 
   // logging
   private static final Logger LOG = Logger.getLogger(AccountAction.class);
 
-  private final UserAccountManager userManager;
-  private final UserValidator userValidation = new UserValidator();
+  private static final long serialVersionUID = 5092204508303815778L;
 
-  private String redirectUrl;
+  private final UserAccountManager userManager;
+  private final UserValidator validator = new UserValidator();
+
   private String email;
-  private String password;
   private String password2;
   private User user;
-  // to show admin contact
-  private User admin;
 
   @Inject
   public AccountAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -47,61 +46,9 @@ public class AccountAction extends POSTAction {
     return super.execute();
   }
 
-  public User getAdmin() {
-    return admin;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public String getPassword2() {
-    return password2;
-  }
-
-  public String getRedirectUrl() {
-    return redirectUrl;
-  }
-
-  public User getUser() {
-    return user;
-  }
-
-  public String login() throws IOException {
-    // login
-    if (email != null) {
-      User authUser = userManager.authenticate(email, password);
-      if (authUser == null) {
-        addActionError(getText("admin.user.wrong.email.password.combination"));
-        LOG.info("User " + email + " failed to log in");
-      } else {
-        LOG.info("User " + email + " logged in successfully");
-        authUser.setLastLoginToNow();
-        userManager.save();
-        session.put(Constants.SESSION_USER, authUser);
-        // remember previous URL to redirect back to
-        setRedirectUrl();
-        return SUCCESS;
-      }
-    }
-    return INPUT;
-  }
-
-  public String logout() {
-    redirectUrl = getBase() + "/";
-    session.clear();
-    return SUCCESS;
-  }
-
   @Override
   public void prepare() {
     super.prepare();
-    // populate admin user
-    admin = userManager.list(Role.Admin).get(0);
     if (getCurrentUser() != null) {
       // modify existing user in session
       user = getCurrentUser();
@@ -111,59 +58,66 @@ public class AccountAction extends POSTAction {
   @Override
   public String save() {
     try {
-      // update passwords?
-      if (password != null) {
-        user.setPassword(password);
+      if (validator.validate(this, user)) {
+        addActionMessage(getText("admin.user.account.updated"));
+        LOG.debug("The user account has been updated");
+        userManager.save();
+        return SUCCESS;
       }
-      addActionMessage(getText("admin.user.changed"));
-      userManager.save();
-      return SUCCESS;
     } catch (IOException e) {
-      addActionError(getText("admin.user.saveError"));
+      addActionError(getText("admin.user.account.saveError"));
+      LOG.error("The user account change could not be made: " + e.getMessage(), e);
       addActionError(e.getMessage());
-      return INPUT;
+    }
+    return INPUT;
+  }
+
+  @Override
+  public void validateHttpPostOnly() {
+    if (user != null) {
+      String trimmedPassword = StringUtils.trimToNull(user.getPassword());
+      String trimmedPassword2 = StringUtils.trimToNull(password2);
+
+      // passwords don't match?
+      if (trimmedPassword != null && !trimmedPassword.equals(trimmedPassword2)) {
+        addFieldError("password2", getText("validation.password2.wrong"));
+        LOG.error("The passwords entered do not match");
+        password2 = null;
+      }
+      // password empty?
+      else if (trimmedPassword == null) {
+        addFieldError("user.password", getText("validation.password.reentered"));
+        LOG.error("The primary password entered is empty");
+      }
+      // otherwise set password even if it's too short - it gets validated during save
+      else {
+        user.setPassword(trimmedPassword);
+        LOG.error("The password has been reset");
+      }
     }
   }
 
-  public void setEmail(String email) {
-    this.email = StringUtils.trimToNull(email);
+  public String getEmail() {
+    return email;
   }
 
-  public void setPassword(String password) {
-    this.password = password;
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public String getPassword2() {
+    return password2;
   }
 
   public void setPassword2(String password2) {
     this.password2 = password2;
   }
 
-  private void setRedirectUrl() {
-    redirectUrl = "/";
-    // if we have a request refer back to the originally requested page
-    if (req != null) {
-      String referer = req.getHeader("Referer");
-      if (referer != null && referer.startsWith(cfg.getBaseUrl()) && !(referer.endsWith("login.do") || referer
-        .endsWith("login"))) {
-        redirectUrl = referer;
-      }
-    }
-    LOG.info("Redirecting to " + redirectUrl);
+  public User getUser() {
+    return user;
   }
 
   public void setUser(User user) {
     this.user = user;
   }
-
-  @Override
-  public void validateHttpPostOnly() {
-    if (user != null) {
-      userValidation.validate(this, user);
-      // update passwords?
-      if (password != null && !password.equals(password2)) {
-        addFieldError("password2", getText("validation.password2.wrong"));
-        password2 = null;
-      }
-    }
-  }
-
 }

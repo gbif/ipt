@@ -1,6 +1,6 @@
 <p><@s.text name="manage.resource.create.intro"/></p>
 
-<@s.form cssClass="topForm half" action="create.do" method="post" enctype="multipart/form-data">
+<@s.form cssClass="topForm half" action="create.do" method="post" enctype="multipart/form-data" includeContext="false">
   <@input name="shortname" i18nkey="resource.shortname" help="i18n" errorfield="resource.shortname" size=40/>
   <@select name="resourceType" i18nkey="manage.resource.create.coreType" help="i18n" options=types value="" />
   <div>
@@ -11,6 +11,6 @@
 
 <div id="create-button" class="buttons">
    	<@s.submit cssClass="button" name="create" key="button.create"/>
-  </div>	
-      
+  </div>
+
 </@s.form>
