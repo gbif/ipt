@@ -110,6 +110,9 @@ public class OrganisationSupport {
       if (prefix == null) {
         valid = false;
         action.addFieldError("organisation.doiPrefix", action.getText("validation.organisation.doiPrefix.required"));
+      } else if (!prefix.startsWith("10.")) {
+        valid = false;
+        action.addFieldError("organisation.doiPrefix", action.getText("validation.organisation.doiPrefix.invalid"));
       } else {
         // running IPT in development, the test DOI prefix is expected, but not mandatory - show warning otherwise
         if (cfg.getRegistryType() == AppConfig.REGISTRY_TYPE.DEVELOPMENT && !Constants.TEST_DOI_PREFIX
@@ -126,7 +129,7 @@ public class OrganisationSupport {
       }
 
       // validate if the account configuration is correct, e.g. by reserving a test DOI
-      if (agency != null && agencyUsername != null && agencyPassword != null && prefix != null) {
+      if (valid) {
         DoiService service;
 
         // before configuring EZID service: clear EZID session cookie otherwise connection reuses existing login
@@ -162,6 +165,8 @@ public class OrganisationSupport {
           organisation.setAgencyAccountPassword(agencyPassword);
           organisation.setDoiPrefix(prefix);
         }
+      } else {
+        LOG.debug("Not all DOI Registration agency fields were entered correctly - bypassing DOI Registration Agency validation");
       }
     }
     return valid;
