@@ -130,14 +130,6 @@
           </table>
         </div>
 
-    <#-- if core hasn't been selected yet add help text to help user understand how to choose core type -->
-    <#if (potentialCores?size>1) && !resource.coreType?has_content >
-      <div>
-        <img class="info" src="${baseURL}/images/info.gif"/>
-        <em><@s.text name='manage.overview.DwC.Mappings.coretype.description'/></em>
-      </div>
-    </#if>
-
     <#if resource.coreRowType?has_content>
         <div class="details">
             <div class="mapping_head"><@s.text name='manage.overview.DwC.Mappings.cores.select'/></div>
