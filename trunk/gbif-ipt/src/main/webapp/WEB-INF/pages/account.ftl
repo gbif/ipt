@@ -8,7 +8,7 @@
 <p><@s.text name="account.intro"/></p>
 <p><@s.text name="account.email.cantChange"/></p>
 
-<@s.form cssClass="topForm half" action="account" method="post" includeContext="false">
+<@s.form cssClass="topForm half" action="account" method="post">
 	<@s.hidden name="id" value="${user.email!}" required="true"/>
 
 	<@input name="user.email" disabled=true />  

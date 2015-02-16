@@ -118,8 +118,8 @@
         <param name="location">/WEB-INF/pages/error/error.ftl</param>
       </result>
       <result name="setupIncomplete" type="redirect">/setup.do</result>
-      <result name="login" type="redirect">/login.do</result>
-      <result name="home" type="redirect">/home.do</result>
+      <result name="login" type="redirect">${baseURL}/login.do</result>
+      <result name="home" type="redirect">${baseURL}/home.do</result>
 
     </global-results>
 
@@ -141,7 +141,7 @@
       <result name="input">/WEB-INF/pages/admin/setup3.ftl</result>
     </action>
     <action name="setupComplete">
-      <result type="redirect">/admin/</result>
+      <result type="redirect">${baseURL}/admin/</result>
     </action>
 
     <action name="login" class="org.gbif.ipt.action.LoginAction" method="login">
@@ -154,12 +154,8 @@
 
     <action name="account" class="org.gbif.ipt.action.AccountAction">
       <result name="input">/WEB-INF/pages/account.ftl</result>
-      <result name="cancel" type="redirectAction">
-        <param name="actionName">home</param>
-      </result>
-      <result name="success" type="redirectAction">
-        <param name="actionName">home</param>
-      </result>
+      <result name="cancel" type="redirect">${baseURL}/home.do</result>
+      <result name="success" type="redirect">${baseURL}/home.do</result>
     </action>
 
     <action name="about" class="org.gbif.ipt.action.AboutAction">

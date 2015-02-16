@@ -19,7 +19,7 @@
       <result name="410">
         <param name="location">/WEB-INF/pages/portal/410.ftl</param>
       </result>
-      <result name="home" type="redirect">home.do</result>
+      <result name="home" type="redirect">${baseURL}/home.do</result>
     </global-results>
 
     <action name="home" class="org.gbif.ipt.action.portal.HomeAction">
