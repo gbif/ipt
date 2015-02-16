@@ -971,7 +971,7 @@ public class Resource implements Serializable, Comparable<Resource> {
     }
 
     // add title
-    sb.append((StringUtils.trimToNull(getTitle()) == null) ? getShortname() : getTitle());
+    sb.append((StringUtils.trimToNull(getTitle()) == null) ? getShortname() : StringUtils.trim(getTitle()));
     sb.append(". ");
 
     // add version
