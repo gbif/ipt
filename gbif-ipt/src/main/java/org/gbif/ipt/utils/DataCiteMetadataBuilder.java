@@ -166,6 +166,7 @@ public class DataCiteMetadataBuilder {
     if (resource.getCoreType() != null && resource.getCoreType()
       .equalsIgnoreCase(Resource.CoreRowType.METADATA.toString())) {
       formats.getFormat().add(EML_FORMAT_NAME);
+      formats.getFormat().add(RTF_FORMAT_NAME);
     } else {
       formats.getFormat().add(DWC_FORMAT_NAME);
       formats.getFormat().add(EML_FORMAT_NAME);
