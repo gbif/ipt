@@ -10,7 +10,7 @@
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <div class="grid_18 suffix_6">
 <table id="admintable">
-	<@s.form cssClass="topForm" action="publishAll.do" method="post">
+	<@s.form cssClass="topForm" action="publishAll.do" method="post" includeContext="false">
 	<tr>
 	  <td>
 		<a href="${baseURL}/admin/config.do"><img src="${baseURL}/images/icons/settings.png" /></a>
