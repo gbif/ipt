@@ -95,13 +95,9 @@ $(document).ready(function(){
     	<h3 class="subTitle"><@s.text name="admin.registration.links"/></h3>
     	<ul>
     	 <li><a href="${cfg.portalUrl}/installation/${registeredIpt.key}" target="_blank">${registeredIpt.name!"IPT"}</a></li>
-        <#-- Warning: in dev mode organization link goes to /organization (GBIF Registry console), in prod mode the link goes to /publisher (GBIF Portal) -->
-        <#if cfg.getRegistryType() =='DEVELOPMENT'>
-         <li><a href="${cfg.portalUrl}/organization/${hostingOrganisation.key}" target="_blank">${hostingOrganisation.name!"Organisation"}</a></li>
-        <#else>
-         <li><a href="${cfg.portalUrl}/publisher/${hostingOrganisation.key}" target="_blank">${hostingOrganisation.name!"Organisation"}</a></li>
-        </#if>
-    	</ul>
+        <#-- in prod mode link goes to /publisher (GBIF Portal), in dev mode link goes to /publisher (GBIF UAT Portal) -->
+        <li><a href="${cfg.portalUrl}/publisher/${hostingOrganisation.key}" target="_blank">${hostingOrganisation.name!"Organisation"}</a></li>
+      </ul>
 
 		<@input name="registeredIpt.name" i18nkey="admin.ipt.name" type="text" requiredField=true />
 		<@text name="registeredIpt.description" i18nkey="admin.ipt.description" requiredField=true />
