@@ -327,7 +327,7 @@ public class ResourceTest {
   @Test
   public void testGenerateResourceCitation() {
     Resource resource = new Resource();
-    resource.setTitle("Birds");
+    resource.setTitle("Birds "); // should get trimmed
     resource.setEmlVersion(BigDecimal.valueOf(1.6));
     resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
     resource.setDoi(new DOI("10.5886/1bft7W5f"));
