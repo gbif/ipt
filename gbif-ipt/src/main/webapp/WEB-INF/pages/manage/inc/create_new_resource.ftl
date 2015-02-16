@@ -1,6 +1,6 @@
 <p><@s.text name="manage.resource.create.intro"/></p>
 
-<@s.form cssClass="topForm half" action="create.do" method="post" enctype="multipart/form-data" includeContext="false">
+<@s.form cssClass="topForm half" action="create.do" method="post" enctype="multipart/form-data">
   <@input name="shortname" i18nkey="resource.shortname" help="i18n" errorfield="resource.shortname" size=40/>
   <@select name="resourceType" i18nkey="manage.resource.create.coreType" help="i18n" options=types value="" />
   <div>

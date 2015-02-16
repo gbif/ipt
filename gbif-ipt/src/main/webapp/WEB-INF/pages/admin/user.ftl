@@ -14,7 +14,7 @@ $(document).ready(function(){
 <div class="grid_18 suffix_6">
 
 <h1><#if "${newUser!}"=="no"><@s.text name="admin.user.title.edit"/><#else><@s.text name="admin.user.title.new"/></#if></h1>
-<@s.form id="newuser" cssClass="topForm half" action="user.do" method="post" includeContext="false">
+<@s.form id="newuser" cssClass="topForm half" action="user.do" method="post">
 <p><@s.text name="admin.user.intro"/></p>
 <p><@s.text name="admin.user.intro2"/></p>
 

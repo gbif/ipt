@@ -23,9 +23,9 @@
       <result name="401">
         <param name="location">/WEB-INF/pages/manage/401.ftl</param>
       </result>
-      <result name="cancel" type="redirect">resource.do</result>
-      <result name="home" type="redirect">home.do</result>
-      <result name="locked" type="redirect">locked.do</result>
+      <result name="cancel" type="redirect">${baseURL}/manage/resource.do</result>
+      <result name="home" type="redirect">${baseURL}/manage/home.do</result>
+      <result name="locked" type="redirect">${baseURL}/manage/locked.do</result>
     </global-results>
 
     <action name="home" class="org.gbif.ipt.action.manage.HomeAction">
@@ -41,10 +41,7 @@
       </interceptor-ref>
       <interceptor-ref name="managerStack"/>
       <result name="input">/WEB-INF/pages/manage/create_input.ftl</result>
-      <result name="success" type="redirectAction">
-        <param name="actionName">resource</param>
-        <param name="r">${shortname}</param>
-      </result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${shortname}</result>
     </action>
 
     <action name="resource" class="org.gbif.ipt.action.manage.OverviewAction">
@@ -75,18 +72,12 @@
       <!-- use the template matching the dynamic method invocation, e.g. metadata-parties.do will use parties.ftl-->
       <result name="input">/WEB-INF/pages/manage/eml/{1}.ftl</result>
       <!-- on sucess redirect to the next metadata form page -->
-      <result name="success" type="redirectAction">
-        <param name="actionName">metadata-${next}</param>
-        <param name="r">${resource.shortname}</param>
-      </result>
+      <result name="success" type="redirect">${baseURL}/manage/metadata-${next}.do?r=${resource.shortname}</result>
     </action>
 
     <action name="source" class="org.gbif.ipt.action.manage.SourceAction">
       <result name="input">/WEB-INF/pages/manage/source.ftl</result>
-      <result name="success" type="redirectAction">
-        <param name="actionName">resource</param>
-        <param name="r">${resource.shortname}</param>
-      </result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
     </action>
     <action name="addsource" class="org.gbif.ipt.action.manage.SourceAction" method="add">
       <interceptor-ref name="fileUpload">
@@ -94,14 +85,8 @@
       </interceptor-ref>
       <interceptor-ref name="managerStack"/>
       <result name="success">/WEB-INF/pages/manage/source.ftl</result>
-      <result name="input" type="redirectAction">
-        <param name="actionName">resource</param>
-        <param name="r">${resource.shortname}</param>
-      </result>
-      <result name="error" type="redirectAction">
-        <param name="actionName">resource</param>
-        <param name="r">${resource.shortname}</param>
-      </result>
+      <result name="input" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
     </action>
     <action name="uploadlogo" class="org.gbif.ipt.action.manage.SourceAction" method="uploadLogo">
       <interceptor-ref name="fileUpload">
@@ -109,14 +94,8 @@
         <param name="allowedTypes">image/jpeg,image/gif,image/png</param>
       </interceptor-ref>
       <interceptor-ref name="managerStack"/>
-      <result name="input" type="redirectAction">
-        <param name="actionName">metadata-additional</param>
-        <param name="r">${resource.shortname}</param>
-      </result>
-      <result name="error" type="redirectAction">
-        <param name="actionName">resource</param>
-        <param name="r">${resource.shortname}</param>
-      </result>
+      <result name="input" type="redirect">${baseURL}/manage/metadata-additional.do?r=${resource.shortname}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
     </action>
     <action name="peek" class="org.gbif.ipt.action.manage.SourceAction" method="peek">
       <interceptor-ref name="ajaxStack"/>
@@ -125,26 +104,13 @@
     <action name="mapping" class="org.gbif.ipt.action.manage.MappingAction">
       <result name="input">/WEB-INF/pages/manage/mapping.ftl</result>
       <result name="source">/WEB-INF/pages/manage/mappingSource.ftl</result>
-      <result name="success" type="redirectAction">
-        <param name="actionName">resource</param>
-        <param name="r">${resource.shortname}</param>
-      </result>
-      <result name="error" type="redirectAction">
-        <param name="actionName">resource</param>
-        <param name="r">${resource.shortname}</param>
-      </result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
     </action>
     <action name="history" class="org.gbif.ipt.action.manage.VersionHistoryAction">
       <result name="input">/WEB-INF/pages/manage/version_history.ftl</result>
-      <result name="success" type="redirectAction">
-        <param name="actionName">detail</param>
-        <param name="r">${resource.shortname}</param>
-        <param name="v">${version}</param>
-      </result>
-      <result name="back" type="redirectAction">
-        <param name="actionName">detail</param>
-        <param name="r">${resource.shortname}</param>
-      </result>
+      <result name="success" type="redirect">${baseURL}/manage/detail.do?r=${resource.shortname}&amp;v=${version}</result>
+      <result name="back" type="redirect">${baseURL}/manage/detail.do?r=${resource.shortname}</result>
     </action>
     <action name="detail" class="org.gbif.ipt.action.portal.ResourceAction" method="detail">
       <result>/WEB-INF/pages/portal/resource_new.ftl</result>
@@ -155,12 +121,7 @@
 
     <action name="translation" class="org.gbif.ipt.action.manage.TranslationAction">
       <result>/WEB-INF/pages/manage/translation.ftl</result>
-      <result name="none" type="redirectAction">
-        <param name="actionName">mapping</param>
-        <param name="r">${resource.shortname}</param>
-        <param name="id">${id}</param>
-        <param name="mid">${mid}</param>
-      </result>
+      <result name="none" type="redirect">${baseURL}/manage/mapping.do?r=${resource.shortname}&amp;id=${id}&amp;mid=${mid}</result>
     </action>
     <action name="translationReload" class="org.gbif.ipt.action.manage.TranslationAction" method="reload">
       <result>/WEB-INF/pages/manage/translation.ftl</result>

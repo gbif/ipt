@@ -33,7 +33,7 @@ $(document).ready(function(){
 
 <#include "/WEB-INF/pages/macros/forms.ftl">
 
-<@s.form cssClass="topForm half" action="config" method="post" includeContext="false">
+<@s.form cssClass="topForm half" action="config" method="post">
 
    <@readonly name="dataDir" i18nkey="admin.config.server.data.dir" value="${dataDir}" help="i18n"/>
 	<@input name="baseUrl" i18nkey="admin.config.baseUrl" help="i18n" size=80/>
