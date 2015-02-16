@@ -14,7 +14,7 @@
   [/#if]
 
   [#include "/WEB-INF/pages/macros/forms.ftl"]
-  [@s.form cssClass="topForm half" action="setupComplete"]
+  [@s.form cssClass="topForm half" action="setupComplete" includeContext="false"]
 	  <div class="buttons">
  	    [@s.submit cssClass="button" name="continue" key="button.continue"/]
 	  </div>
