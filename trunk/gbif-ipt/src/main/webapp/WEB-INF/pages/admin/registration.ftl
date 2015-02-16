@@ -130,7 +130,7 @@ $(document).ready(function(){
 	<div id="registrationForm" style="display: none;" >
 		<hr/>
 
-		<@s.form cssClass="topForm half" action="registration" method="post" id="registrationForm">
+		<@s.form cssClass="topForm half" action="registration" method="post" id="registrationForm" includeContext="false">
 			<@s.fielderror>
 		    <@s.param value="%{'organisation.key'}" />
 		  </@s.fielderror>
