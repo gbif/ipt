@@ -206,25 +206,51 @@ public class AppConfig {
     return getProperty("dev.portaldev.url");
   }
 
-  public String getResourceArchiveUrl(String shortname) {
-    return getBaseUrl() + "/archive.do?" + Constants.REQ_PARAM_RESOURCE + "=" + shortname;
+  /**
+   * @return String URI to resource's last published darwin core archive (no version number)
+   */
+  @NotNull
+  public String getResourceArchiveUrl(@NotNull String shortname) {
+    Preconditions.checkNotNull(getBaseUrl());
+
+    return UriBuilder.fromPath(getBaseUrl()).path(Constants.REQ_PATH_DWCA)
+      .queryParam(Constants.REQ_PARAM_RESOURCE, shortname).build().toString();
   }
 
-  public String getResourceEmlUrl(String shortname) {
-    return getBaseUrl() + "/eml.do?" + Constants.REQ_PARAM_RESOURCE + "=" + shortname;
+  /**
+   * @return String URI to resource's last published EML file (no version number)
+   */
+  @NotNull
+  public String getResourceEmlUrl(@NotNull String shortname) {
+    Preconditions.checkNotNull(getBaseUrl());
+
+    return UriBuilder.fromPath(getBaseUrl()).path(Constants.REQ_PATH_EML)
+      .queryParam(Constants.REQ_PARAM_RESOURCE, shortname).build().toString();
   }
 
-  public String getResourceLogoUrl(String shortname) {
-    return getBaseUrl() + "/logo.do?" + Constants.REQ_PARAM_RESOURCE + "=" + shortname;
+  /**
+   * @return String URI to resource's logo (no version number)
+   */
+  @NotNull
+  public String getResourceLogoUrl(@NotNull String shortname) {
+    Preconditions.checkNotNull(getBaseUrl());
+
+    return UriBuilder.fromPath(getBaseUrl()).path(Constants.REQ_PATH_LOGO)
+      .queryParam(Constants.REQ_PARAM_RESOURCE, shortname).build().toString();
   }
 
-  public String getResourceUrl(String shortname) {
-    return getBaseUrl() + "/resource?" + Constants.REQ_PARAM_RESOURCE + "=" + shortname;
+  /**
+   * @return String URI to resource default homepage (no version number)
+   */
+  @NotNull
+  public String getResourceUrl(@NotNull String shortname) {
+    return getResourceUri(shortname).toString();
   }
 
   /**
    * @return URI to resource default homepage (no version number) used in DOI registration
    */
+  @NotNull
   public URI getResourceUri(@NotNull String shortname) {
     Preconditions.checkNotNull(getBaseUrl());
 
@@ -235,6 +261,7 @@ public class AppConfig {
   /**
    * @return URI to resource homepage for a specific version of resource used in DOI registration
    */
+  @NotNull
   public URI getResourceVersionUri(@NotNull String shortname, @NotNull BigDecimal version) {
     Preconditions.checkNotNull(getBaseUrl());
 
