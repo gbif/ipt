@@ -132,4 +132,22 @@ public class AppConfigTest {
     cfg.setProperty("ipt.baseURL", "http://localhost:8080");
     assertEquals("http://localhost:8080/logo.do?r=ants", cfg.getResourceLogoUrl("ants"));
   }
+
+  @Test
+  public void testGetResourceLink() throws Exception {
+    cfg.setProperty("ipt.baseURL", "http://ipt.gbif.org");
+    assertEquals("http://ipt.gbif.org/resource?id=ants", cfg.getResourceGuid("ants"));
+  }
+
+  @Test
+  public void testGetResourceLinkFromIPAddress() throws Exception {
+    cfg.setProperty("ipt.baseURL", "http://192.168.0.84:8080/ipt");
+    assertEquals("http://192.168.0.84:8080/ipt/resource?id=ants", cfg.getResourceGuid("ants"));
+  }
+
+  @Test
+  public void testGetResourceLinkFromLocalhost() throws Exception {
+    cfg.setProperty("ipt.baseURL", "http://localhost:8080");
+    assertEquals("http://localhost:8080/resource?id=ants", cfg.getResourceGuid("ants"));
+  }
 }

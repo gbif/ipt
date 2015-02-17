@@ -259,6 +259,17 @@ public class AppConfig {
   }
 
   /**
+   * @return String URI used as resource EML GUID, similar to resource homepage URI but with id param versus r param
+   */
+  @NotNull
+  public String getResourceGuid(@NotNull String shortname) {
+    Preconditions.checkNotNull(getBaseUrl());
+
+    return UriBuilder.fromPath(getBaseUrl()).path(Constants.REQ_PATH_RESOURCE)
+      .queryParam(Constants.REQ_PARAM_ID, shortname).build().toString();
+  }
+
+  /**
    * @return URI to resource homepage for a specific version of resource used in DOI registration
    */
   @NotNull
