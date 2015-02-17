@@ -135,8 +135,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   // key=shortname in lower case, value=resource
   private Map<String, Resource> resources = new HashMap<String, Resource>();
   public static final String PERSISTENCE_FILE = "resource.xml";
-  public static final String RESOURCE_IDENTIFIER_LINK_PART = "/resource.do?id=";
-  public static final String RESOURCE_PUBLIC_LINK_PART = "/resource.do?r=";
   private static final int MAX_PROCESS_FAILURES = 3;
   private final XStream xstream = new XStream();
   private SourceManager sourceManager;
@@ -683,26 +681,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   public long getEmlSize(Resource resource) {
     File data = dataDir.resourceEmlFile(resource.getShortname(), resource.getEmlVersion());
     return data.length();
-  }
-
-  public URL getResourceLink(String shortname) {
-    URL url = null;
-    try {
-      url = new URL(cfg.getBaseUrl() + RESOURCE_IDENTIFIER_LINK_PART + shortname);
-    } catch (MalformedURLException e) {
-      log.error(e);
-    }
-    return url;
-  }
-
-  public URL getPublicResourceLink(String shortname) {
-    URL url = null;
-    try {
-      url = new URL(cfg.getBaseUrl() + RESOURCE_PUBLIC_LINK_PART + shortname);
-    } catch (MalformedURLException e) {
-      log.error(e);
-    }
-    return url;
   }
 
   public long getRtfSize(Resource resource) {
@@ -1448,28 +1426,26 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       boolean exists = false;
       String existingId = null;
       for (String id : ids) {
-        // try to match resource.do?r=
-        if (id.contains(RESOURCE_PUBLIC_LINK_PART)) {
+        // try to match "resource"
+        if (id.contains(Constants.REQ_PATH_RESOURCE)) {
           exists = true;
           existingId = id;
         }
       }
       // if the resource is PUBLIC, or REGISTERED
       if (resource.getStatus().compareTo(PublicationStatus.PRIVATE) != 0) {
-        URL url = getPublicResourceLink(resource.getShortname());
-        // if the URL is not null, and the identifier does not exist yet - add it!
-        if (url != null) {
-          // if it already exists, then replace it just in case the baseURL has changed, for example
-          if (exists) {
-            ids.remove(existingId);
-          }
-          // lastly, be sure to add it
-          ids.add(url.toString());
-          // save all changes to Eml
-          saveEml(resource);
-          if (cfg.debug()) {
-            log.info("IPT URL to resource added to (or updated in) Resource's list of alt ids");
-          }
+        String url = cfg.getResourceUrl(resource.getShortname());
+        // if identifier does not exist yet - add it!
+        // if it already exists, then replace it just in case the baseURL has changed, for example
+        if (exists) {
+          ids.remove(existingId);
+        }
+        // lastly, be sure to add it
+        ids.add(url);
+        // save all changes to Eml
+        saveEml(resource);
+        if (cfg.debug()) {
+          log.info("IPT URL to resource added to (or updated in) Resource's list of alt ids");
         }
       }
       // otherwise if the resource is PRIVATE
@@ -1875,7 +1851,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (resource.getKey() != null) {
       resource.getEml().setGuid(resource.getKey().toString());
     } else {
-      resource.getEml().setGuid(getResourceLink(resource.getShortname()).toString());
+      resource.getEml().setGuid(cfg.getResourceGuid(resource.getShortname()));
     }
     // add/update KeywordSet for dataset type and subtype
     updateKeywordsWithDatasetTypeAndSubtype(resource);

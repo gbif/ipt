@@ -117,24 +117,6 @@ public interface ResourceManager {
   long getEmlSize(Resource resource);
 
   /**
-   * Construct a resource link (identifier) using its shortname and return it.
-   *
-   * @param shortname Resource shortname
-   *
-   * @return Link (identifier) to resource, or null if none could be constructed
-   */
-  URL getResourceLink(String shortname);
-
-  /**
-   * Construct a public resource link using its shortname and return it.
-   *
-   * @param shortname Resource shortname
-   *
-   * @return Public URL to resource, or null if none could be constructed
-   */
-  URL getPublicResourceLink(String shortname);
-
-  /**
    * Returns the size of the generated RTF file.
    *
    * @param resource Resource

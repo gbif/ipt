@@ -862,7 +862,7 @@ public class Eml2Rtf {
    * Construct IPT URL public resource link, and add it to the document. Only public or registered resources can
    * have a public resource link.
    * </p>
-   * e.g. Data published through GBIF: http://localhost:8090/ipt/resource.do?r=shortName
+   * e.g. Data published through GBIF: http://localhost:8090/ipt/resource?r=shortName
    * 
    * @param doc Document
    * @param resource Resource
@@ -882,17 +882,13 @@ public class Eml2Rtf {
       p.add(": ");
 
       // attach the IPT Public URL resource link
-      URL url = resourceManager.getPublicResourceLink(resource.getShortname());
-      String link = (url != null) ? url.toString() : null;
-      // the link only gets added, if it isn't null
-      if (link != null) {
-        Anchor resourceLink = new Anchor(link, fontLink);
-        resourceLink.setReference(link);
-        p.add(resourceLink);
-        p.add(Chunk.NEWLINE);
-        doc.add(p);
-        p.clear();
-      }
+      String link = appConfig.getResourceUrl(resource.getShortname());
+      Anchor resourceLink = new Anchor(link, fontLink);
+      resourceLink.setReference(link);
+      p.add(resourceLink);
+      p.add(Chunk.NEWLINE);
+      doc.add(p);
+      p.clear();
     }
   }
 

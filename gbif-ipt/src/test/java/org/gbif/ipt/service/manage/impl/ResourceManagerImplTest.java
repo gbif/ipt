@@ -190,6 +190,9 @@ public class ResourceManagerImplTest {
 
     // mock the cfg
     when(mockAppConfig.getBaseUrl()).thenReturn("http://localhost:7001/ipt");
+    // mock resource link used as EML GUID
+    when(mockAppConfig.getResourceGuid("bees")).thenReturn("http://localhost:7001/ipt/resource?id=bees");
+    when(mockAppConfig.getResourceGuid("res2")).thenReturn("http://localhost:7001/ipt/resource?id=res2");
 
     // construct ExtensionFactory using injected parameters
     Injector injector = Guice.createInjector(new ServletModule(), new Struts2GuicePluginModule(), new IPTModule());
@@ -680,13 +683,18 @@ public class ResourceManagerImplTest {
     // change resource to PUBLIC
     resource.setStatus(PublicationStatus.PUBLIC);
 
+    // mock returning the public resource URL
+    when(mockAppConfig.getResourceUrl("bees")).thenReturn("http://localhost:7001/ipt/resource?r=bees");
+
     // update alt. id
     manager.updateAlternateIdentifierForIPTURLToResource(resource);
-    // assert it has been set
-    assertEquals("http://localhost:7001/ipt/resource.do?r=bees", resource.getEml().getAlternateIdentifiers().get(0));
 
-    // change the baseURL now
-    when(mockAppConfig.getBaseUrl()).thenReturn("http://192.38.28.24:7001/ipt");
+    // assert it has been set
+    assertEquals("http://localhost:7001/ipt/resource?r=bees", resource.getEml().getAlternateIdentifiers().get(0));
+
+    // mock changing the the baseURL now (returning a different public resource URL)
+    when(mockAppConfig.getResourceUrl("bees")).thenReturn("http://192.38.28.24:7001/ipt/resource?r=bees");
+
     manager = new ResourceManagerImpl(mockAppConfig, mockedDataDir, mockEmailConverter, mockOrganisationKeyConverter,
       mock(ExtensionRowTypeConverter.class), mockJdbcConverter, mockSourceManager, mock(ExtensionManager.class),
       mockRegistryManager, mock(ConceptTermConverter.class), mockDwcaFactory, mockPasswordConverter, mockEml2Rtf,
@@ -695,7 +703,7 @@ public class ResourceManagerImplTest {
     // update alt. id
     manager.updateAlternateIdentifierForIPTURLToResource(resource);
     // assert it has been set
-    assertEquals("http://192.38.28.24:7001/ipt/resource.do?r=bees", resource.getEml().getAlternateIdentifiers().get(0));
+    assertEquals("http://192.38.28.24:7001/ipt/resource?r=bees", resource.getEml().getAlternateIdentifiers().get(0));
 
     // create PRIVATE test resource, with existing alt id
     resource.setStatus(PublicationStatus.PRIVATE);
