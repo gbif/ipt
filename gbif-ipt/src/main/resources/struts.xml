@@ -171,6 +171,15 @@
 
   </package>
 
+  <!-- Actions related to the inventory API of the IPT accessible by everyone. -->
+  <package name="default" namespace="/inventory" extends="json-default">
+    <action name="dataset" class="org.gbif.ipt.action.portal.InventoryAction">
+      <result name="success" type="json">
+        <param name="noCache">true</param>
+      </result>
+    </action>
+  </package>
+
   <!--
      Portal is in the namespace="/"
      Manage is in the namespace="/manage"
