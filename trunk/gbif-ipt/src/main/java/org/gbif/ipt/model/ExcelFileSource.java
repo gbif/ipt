@@ -16,12 +16,18 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFFormulaEvaluator;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  * Uses apache POI to parse excel spreadsheets.
@@ -91,8 +97,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
     }
   }
 
-  private Sheet getSheet() throws IOException {
-    Workbook book = openBook();
+  private Sheet getSheet(Workbook book) throws IOException {
     return book.getSheetAt(sheetIdx);
   }
 
@@ -100,22 +105,25 @@ public class ExcelFileSource extends SourceBase implements FileSource {
     return rows;
   }
 
-  private static String cellToString (Cell cell) {
-    //TODO: deal with different types
-    return cell.toString();
-  }
-
   private class RowIterator implements ClosableReportingIterator<String[]> {
 
     private final Sheet sheet;  // 0 based
     private final Iterator<Row> iter;
     private final int rowSize;
+    // DataFormatter displays data exactly as it appears in Excel
+    private final DataFormatter dataFormatter = new DataFormatter();
     private boolean rowError;
     private String errorMessage;
     private Exception exception;
+    // FormulaEvaluator evaluate any formula in Excel cell and returns result
+    private FormulaEvaluator formulaEvaluator;
 
     RowIterator(ExcelFileSource source) throws IOException, InvalidFormatException {
-      sheet = getSheet();
+      Workbook book = openBook();
+      sheet = getSheet(book);
+      // instantiate the appropriate FormulaEvaluator, depending on whether workbook is .xls or .xlsx
+      formulaEvaluator = (book instanceof XSSFWorkbook) ? new XSSFFormulaEvaluator((XSSFWorkbook) book)
+        : new HSSFFormulaEvaluator((HSSFWorkbook) book);
       iter = sheet.rowIterator();
       rowSize = source.getColumns();
     }
@@ -145,7 +153,8 @@ public class ExcelFileSource extends SourceBase implements FileSource {
           Row row = iter.next();
           for (int i = 0; i < rowSize; i++) {
             Cell c = row.getCell(i, Row.CREATE_NULL_AS_BLANK);
-            val[i] = cellToString(c);
+            formulaEvaluator.evaluate(c);
+            val[i] = dataFormatter.formatCellValue(c, formulaEvaluator);
           }
         } catch (Exception e) {
           LOG.debug("Exception caught: " + e.getMessage(), e);
@@ -186,7 +195,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
     try {
       return new RowIterator(this, ignoreHeaderLines);
     } catch (Exception e) {
-      LOG.error("Exception while reading excel source "+ name, e);
+      LOG.error("Exception while reading excel source " + name, e);
     }
     return null;
   }
@@ -208,7 +217,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
     if (rows > 0) {
       try {
         if (ignoreHeaderLines > 0) {
-          return Lists.newArrayList(new RowIterator(this, ignoreHeaderLines-1).next());
+          return Lists.newArrayList(new RowIterator(this, ignoreHeaderLines - 1).next());
 
         } else {
           List<String> columnList = Lists.newArrayList();
@@ -219,7 +228,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
         }
 
       } catch (Exception e) {
-        LOG.error("Exception while reading excel source "+ name, e);
+        LOG.error("Exception while reading excel source " + name, e);
       }
     }
 
@@ -254,7 +263,8 @@ public class ExcelFileSource extends SourceBase implements FileSource {
   public Set<Integer> analyze() throws IOException {
     setFileSize(getFile().length());
     // find row size
-    Sheet sheet = getSheet();
+    Workbook book = openBook();
+    Sheet sheet = getSheet(book);
     setRows(sheet.getPhysicalNumberOfRows());
 
     Iterator<Row> iter = sheet.rowIterator();
