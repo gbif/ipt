@@ -225,7 +225,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         if (doi != null) {
           // prevent deletion if it will trigger a DOI operation, but no DOI agency account has been activated yet
           if (registrationManager.getDoiService() == null) {
-            String msg = "No organisation with an activated DOI agency account exists. Please contact your IPT admin for help.";
+            String msg = getText("manage.overview.doi.operation.failed.noAccount");
             LOG.error(msg);
             addActionError(msg);
             return INPUT;
@@ -296,22 +296,24 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         if (doiData.getStatus().equals(DoiStatus.RESERVED)) {
           LOG.info("Deleting reserved DOI: " + doi.toString() + "...");
           registrationManager.getDoiService().delete(doi);
-          LOG.info(doi.toString() + " deleted successfully!");
+          String msg = getText("manage.overview.publishing.doi.delete.success", new String[] {doi.toString()});
+          LOG.info(msg);
+          addActionMessage(msg);
         } else if (doiData.getStatus().equals(DoiStatus.REGISTERED)) {
           LOG.info("Deactivating registered DOI: " + doi.toString() + "...");
           registrationManager.getDoiService().delete(doi);
-          LOG.info(doi.toString() + " deactivated successfully!");
+          String msg = getText("manage.overview.publishing.doi.deactivate.success", new String[]{doi.toString()});
+          LOG.info(msg);
+          addActionMessage(msg);
         } else {
-          LOG.debug(
+          LOG.error(
             "Not appropriate to delete DOI: " + doi.toString() + ". DOI status=" + doiData.getStatus().toString());
         }
       } else {
-        throw new DeletionNotAllowedException(DeletionNotAllowedException.Reason.DOI_REGISTRATION_AGENCY_ERROR,
-          "Failed to resolve " + doi.toString() + " therefore it could not be deleted!");
+        throw new DeletionNotAllowedException(DeletionNotAllowedException.Reason.DOI_REGISTRATION_AGENCY_ERROR, getText("manage.overview.publishing.doi.delete.failed.notResolved", new String[] {doi.toString()}));
       }
     } catch (DoiException e) {
-      throw new DeletionNotAllowedException(DeletionNotAllowedException.Reason.DOI_REGISTRATION_AGENCY_ERROR,
-        "Failed to delete " + doi.toString() + ": " + e.getMessage());
+      throw new DeletionNotAllowedException(DeletionNotAllowedException.Reason.DOI_REGISTRATION_AGENCY_ERROR, getText("manage.overview.publishing.doi.delete.failed.exception", new String[]{doi.toString(), e.getMessage()}));
     }
   }
 
@@ -342,8 +344,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         try {
           // prevent deletion if it will trigger a DOI operation, but no DOI agency account has been activated yet
           if (registrationManager.getDoiService() == null) {
-            String msg =
-              "No organisation with an activated DOI agency account exists. Please contact your IPT admin for help.";
+            String msg = getText("manage.overview.doi.operation.failed.noAccount");
             LOG.error(msg);
             addActionError(msg);
             return INPUT;
@@ -356,17 +357,12 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           } else {
             Organisation retrieved = registrationManager.get(organisation.getKey());
             if (retrieved == null) {
-              throw new UndeletNotAllowedException(UndeletNotAllowedException.Reason.ORGANISATION_NOT_ASSOCIATED_TO_IPT,
-                "The resource organisation is no longer associated to the IPT, key=" + organisation.getKey()
-                  .toString());
+              throw new UndeletNotAllowedException(UndeletNotAllowedException.Reason.ORGANISATION_NOT_ASSOCIATED_TO_IPT, getText("manage.overview.publishing.doi.undelete.failed.noOrganisation", new String[] {organisation.getKey().toString()}));
             } else {
               Organisation doiAccountActivated = registrationManager.findPrimaryDoiAgencyAccount();
               if (doiAccountActivated != null && doiAccountActivated.getDoiPrefix() != null
                   && !doi.getDoiName().toLowerCase().startsWith(doiAccountActivated.getDoiPrefix().toLowerCase())) {
-                throw new UndeletNotAllowedException(UndeletNotAllowedException.Reason.DOI_PREFIX_NOT_MATCHING,
-                  doi.toString()
-                  + " has a prefix different to the prefix of the DOI agency account activated in this IPT, prefix="
-                  + doiAccountActivated.getDoiPrefix());
+                throw new UndeletNotAllowedException(UndeletNotAllowedException.Reason.DOI_PREFIX_NOT_MATCHING, getText("manage.overview.publishing.doi.undelete.failed.badPrefix", new String[] {doi.toString(), doiAccountActivated.getDoiPrefix()}));
               }
             }
           }
@@ -408,8 +404,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           if (resource.isRegistered()) {
             resource.setStatus(PublicationStatus.REGISTERED);
             // TODO: undelete it from GBIF if it was registered (requires GBIF API change)
-            addActionWarning("Resource currently cannot be undeleted automatically in the GBIF Registry. "
-                             + "Therefore please write to helpdesk@gbif.org to undelete it in the GBIF Registry.");
+            addActionWarning(getText("manage.overview.resource.undelete.warning.gbif"));
           } else {
             resource.setStatus(PublicationStatus.PUBLIC);
           }
@@ -462,18 +457,17 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           LOG.info("Undeleting deleted DOI: " + doi.toString() + "...");
           DataCiteMetadata dataCiteMetadata = DataCiteMetadataBuilder.createDataCiteMetadata(doi, resource);
           registrationManager.getDoiService().register(doi, target, dataCiteMetadata);
-          LOG.info(doi.toString() + " undeleted successfully!");
+          String msg = getText("manage.overview.publishing.doi.undelete.success", new String[]{doi.toString()});
+          LOG.info(msg);
+          addActionMessage(msg);
         } else {
-          throw new UndeletNotAllowedException(UndeletNotAllowedException.Reason.DOI_NOT_DELETED,
-            doi.toString() + " cannot be undeleted because status=" + doiData.getStatus().toString());
+          throw new UndeletNotAllowedException(UndeletNotAllowedException.Reason.DOI_NOT_DELETED, getText("manage.overview.publishing.doi.undelete.failed.badStatus", new String[] {doi.toString(), doiData.getStatus().toString()}));
         }
       } else {
-        throw new UndeletNotAllowedException(UndeletNotAllowedException.Reason.DOI_DOES_NOT_EXIST,
-          "Failed to resolve " + doi.toString() + " therefore it could not be undeleted!");
+        throw new UndeletNotAllowedException(UndeletNotAllowedException.Reason.DOI_DOES_NOT_EXIST, getText("manage.overview.publishing.doi.undelete.failed.notResolved", new String[] {doi.toString()}));
       }
     } catch (DoiException e) {
-      throw new UndeletNotAllowedException(UndeletNotAllowedException.Reason.DOI_REGISTRATION_AGENCY_ERROR,
-        "Failed to delete " + doi.toString() + ": " + e.getMessage());
+      throw new UndeletNotAllowedException(UndeletNotAllowedException.Reason.DOI_REGISTRATION_AGENCY_ERROR, getText("manage.overview.publishing.doi.undelete.failed.exception", new String[] {doi.toString(), e.getMessage()}));
     }
   }
 
@@ -707,7 +701,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     if (reserveDoi) {
       // prevent reservation if no DOI registration agency account configured
       if (registrationManager.getDoiService() == null) {
-        String msg = "No organisation with an activated DOI agency account exists. Please contact your IPT admin for help.";
+        String msg = getText("manage.overview.doi.operation.failed.noAccount");
         LOG.error(msg);
         addActionError(msg);
         return INPUT;
@@ -720,21 +714,20 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         LOG.info("Reserving " + doi.toString() + " for " + resource.getTitleAndShortname());
         try {
           doReserveDOI(doi, resource);
-          String msg = doi.toString() + " was reserved successfully!";
+          String msg = getText("manage.overview.publishing.doi.reserve.success", new String[] {doi.toString()});
           LOG.info(msg);
           addActionMessage(msg);
         } catch (DoiExistsException e) {
-          LOG.error("Failed to reserve " + doi.toString() + " because it exists already. Trying again...");
+          LOG.error("Failed to reserve " + doi.toString() + " because it exists already. Trying again...", e);
           reserveDoi();
         } catch (InvalidMetadataException e) {
-          String errorMsg =
-            "Failed to reserve " + doi.toString() + " because DOI metadata was invalid: " + e.getMessage();
+          String errorMsg = getText("manage.overview.publishing.doi.reserve.failed.metadata", new String[] {doi.toString(), e.getMessage()});
+          LOG.error(errorMsg, e);
           addActionError(errorMsg);
-          LOG.error(errorMsg);
         } catch (DoiException e) {
-          String errorMsg = "Failed to reserve " + doi.toString() + ": " + e.getMessage();
+          String errorMsg = getText("manage.overview.publishing.doi.reserve.failed", new String[]{doi.toString(), e.getMessage()});
+          LOG.error(errorMsg, e);
           addActionError(errorMsg);
-          LOG.error(errorMsg);
         }
       } else if (existingDoi != null && resource.getIdentifierStatus() == IdentifierStatus.UNRESERVED && !resource
         .isAlreadyAssignedDoi()) {
@@ -752,23 +745,21 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
               resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
               resource.updateAlternateIdentifierForDOI();
               saveResource();
-              String msg = existingDoi.toString() + " was reused, and assigned successfully!";
+              String msg = getText("manage.overview.publishing.doi.reserve.reused", new String[] {existingDoi.toString()});
               LOG.info(msg);
               addActionMessage(msg);
             } else {
-              String errorMsg = "Failed to verify that " + existingDoi.toString() + " has been registered already. Please try again.";
+              String errorMsg = getText("manage.overview.publishing.doi.reserve.reused.failed", new String[] {existingDoi.toString()});
               LOG.error(errorMsg);
               addActionError(errorMsg);
             }
           } catch (DoiException e) {
-            String errorMsg =
-              "Failed to verify existing " + existingDoi.toString() + " is registered: " + e.getMessage();
+            String errorMsg = getText("manage.overview.publishing.doi.reserve.reused.failed.exception", new String[] {existingDoi.toString(), e.getMessage()});
+            LOG.error(errorMsg, e);
             addActionError(errorMsg);
-            LOG.error(errorMsg);
           }
         } else {
-          addActionError(getText("manage.overview.publishing.doi.reserve.notRreused",
-            new String[] {existingDoi.toString(), prefixAllowed}));
+          addActionError(getText("manage.overview.publishing.doi.reserve.notRreused", new String[] {existingDoi.toString(), prefixAllowed}));
         }
       } else {
         addActionWarning(getText("manage.overview.resource.doi.invalid.operation",
@@ -851,7 +842,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       return NOT_FOUND;
     }
     if (registrationManager.getDoiService() == null) {
-      String msg = "No organisation with an activated DOI agency account exists. Please contact your IPT admin for help.";
+      String msg = getText("manage.overview.doi.operation.failed.noAccount");
       LOG.error(msg);
       addActionError(msg);
     }
@@ -864,25 +855,26 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
             try {
               // delete reserved DOI, reassign previous DOI to resource, and update EML alternateIdentifier list
               doDeleteReservedDOI(reservedDoi, resource, assignedDoi);
-              String msg = reservedDoi.toString() + " was deleted, and " + assignedDoi.toString() + " was reassigned successfully!";
+              String msg = getText("manage.overview.publishing.doi.delete.reassign.success", new String[] {reservedDoi.toString(), assignedDoi.toString()});
               LOG.info(msg);
               addActionMessage(msg);
             } catch (DoiException e) {
-              String errorMsg = "Failed to delete " + resource.getDoi().toString() + ": " + e.getMessage();
+              String errorMsg = getText("manage.overview.publishing.doi.delete.failed.exception", new String[] {resource.getDoi().toString(), e.getMessage()});
+              LOG.error(errorMsg, e);
               addActionError(errorMsg);
-              LOG.error(errorMsg);
             }
           } else {
+            LOG.info("Deleting reserved " + reservedDoi.toString());
             try {
               // delete reserved DOI, and update EML alternateIdentifier list
               doDeleteReservedDOI(reservedDoi, resource, null);
-              String msg = reservedDoi.toString() + " was deleted successfully!";
+              String msg = getText("manage.overview.publishing.doi.delete.success", new String[] {reservedDoi.toString()});
               LOG.info(msg);
               addActionMessage(msg);
             } catch (DoiException e) {
-              String errorMsg = "Failed to delete " + resource.getDoi().toString() + ": " + e.getMessage();
+              String errorMsg = getText("manage.overview.publishing.doi.delete.failed.exception", new String[]{resource.getDoi().toString(), e.getMessage()});
+              LOG.error(errorMsg, e);
               addActionError(errorMsg);
-              LOG.error(errorMsg);
             }
           }
         } else {
@@ -1030,8 +1022,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       // prevent publishing if publishing will trigger a DOI operation, but no DOI agency account has been activated yet
       if (resource.getDoi() != null && resource.isPubliclyAvailable()) {
         if (registrationManager.getDoiService() == null) {
-          String msg =
-            "No organisation with an activated DOI agency account exists. Please contact your IPT admin for help.";
+          String msg = getText("manage.overview.doi.operation.failed.noAccount");
           LOG.error(msg);
           addActionError(msg);
           return INPUT;
@@ -1042,26 +1033,23 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           DoiData doiData = registrationManager.getDoiService().resolve(resource.getDoi());
           if (doiData != null && doiData.getStatus() != null) {
             if (doiData.getStatus().compareTo(DoiStatus.RESERVED) == 0 || doiData.getStatus().compareTo(DoiStatus.REGISTERED) == 0) {
-              LOG.debug("Pre-publication check: successfully resolved " + resource.getDoi().toString());
+              LOG.info("Pre-publication check: successfully resolved " + resource.getDoi().toString());
             } else {
-              String msg = "Pre-publication check failed: " + resource.getDoi().toString() + " is not reserved or registered but: "
-                           + doiData.getStatus().toString();
-              LOG.error(msg);
-              addActionError(msg);
+              String errorMsg = getText("manage.overview.publishing.doi.publish.check.registered.failed", new String[] {resource.getDoi().toString(), doiData.getStatus().toString()});
+              LOG.error(errorMsg);
+              addActionError(errorMsg);
               return INPUT;
             }
           } else {
-            String msg = "Pre-publication check failed: could not verify " + resource.getDoi().toString() + " exists!";
-            LOG.error(msg);
-            addActionError(msg);
+            String errorMsg = getText("manage.overview.publishing.doi.publish.check.existing.failed", new String[] {resource.getDoi().toString()});
+            LOG.error(errorMsg);
+            addActionError(errorMsg);
             return INPUT;
           }
         } catch (DoiException e) {
-          String msg =
-            "Pre-publication check failed: could not verify " + resource.getDoi().toString() + " exists!: " + e
-              .getMessage();
-          LOG.error(msg);
-          addActionError(msg);
+          String errorMsg = getText("manage.overview.publishing.doi.publish.check.existing.failed.exception", new String[] {resource.getDoi().toString(), e.getMessage()});
+          LOG.error(errorMsg, e);
+          addActionError(errorMsg);
           return INPUT;
         }
       }
@@ -1253,7 +1241,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         } catch (Exception e) {
           LOG.error(
             "Failed to check if last published version of resource has been assigned a GBIF-supported license: " + e
-              .getMessage());
+              .getMessage(), e);
         }
       }
     }
@@ -1278,7 +1266,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         } catch (Exception e) {
           LOG.error(
             "Failed to check if last published version of resource has been assigned a GBIF-supported license: " + e
-              .getMessage());
+              .getMessage(), e);
         }
       }
     }

@@ -143,7 +143,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   /**
    * Builds service type parameters used in push or post to Registry. There can only be 3 different types of Services
    * that the IPT registers: EML, DWC-ARCHIVE-OCCURRENCE or DWC-ARCHIVE-CHECKLIST - that's it.
-   * 
+   *
    * @param resource published resource
    * @return RegistryServices object, with urls and types strings
    */
@@ -463,7 +463,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   /**
    * Executes an HTTP Get Request against the GBIF Registry. If the content is not null, the Response is returned.
    * Otherwise, if the content was null, or an exception occurred, it throws the appropriate type of RegistryException.
-   * 
+   *
    * @param url Get request URL
    * @return Response if the content was not null, or a RegistryException
    * @throws RegistryException (with RegistryException.type) if the content was null or an exception occurred
@@ -507,7 +507,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   /**
    * Populate credentials for Organisation ws request.
-   * 
+   *
    * @param org Organisation
    * @return credentials
    */
@@ -533,6 +533,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       UrlEncodedFormEntity uefe = new UrlEncodedFormEntity(data, Charset.forName("UTF-8"));
       Response result = http.post(getIptResourceUri(), null, null, orgCredentials(org), uefe);
       if (result != null) {
+        log.info("Register resource response received=" + result.getStatusCode() + ": " + result.content);
         // read new UDDI ID
         saxParser.parse(getStream(result.content), newRegistryEntryHandler);
         String key = newRegistryEntryHandler.key;
@@ -607,7 +608,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   /**
    * Populate credentials for IPT ws request.
-   * 
+   *
    * @param ipt IPT
    * @return credentials
    */
@@ -617,7 +618,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   /**
    * Populate a list of name value pairs used in the common ws requests for IPT registrations and updates.
-   * 
+   *
    * @param ipt IPT
    * @param organisationKey Organisation key string
    * @return list of name value pairs, or an empty list if the IPT or organisation key were null
