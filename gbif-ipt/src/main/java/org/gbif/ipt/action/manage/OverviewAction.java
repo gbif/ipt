@@ -1090,10 +1090,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       BigDecimal nextVersion = new BigDecimal(resource.getNextVersion().toPlainString());
       BigDecimal replacedVersion = new BigDecimal(resource.getEmlVersion().toPlainString());
 
-      // set change summary as entered in confirm popup
-      if (getSummary() != null) {
-        resource.setChangeSummary(getSummary());
-      }
+      // set resource's change summary as entered in confirm popup (defaults to empty string)
+      resource.setChangeSummary(getSummary());
 
       try {
         // publish a new version of the resource
@@ -1483,10 +1481,11 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
   /**
    *
-   * @param summary change summary for new published version, entered by the user in the confirm dialog
+   * @param summary change summary for new published version, entered by the user in the confirm dialog defaulting to
+   *                empty string
    */
   public void setSummary(String summary) {
-    this.summary = summary;
+    this.summary = StringUtils.trimToEmpty(summary);
   }
 
   /**
