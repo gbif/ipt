@@ -94,9 +94,9 @@ public class VersionHistoryAction extends ManagerBaseAction {
   }
 
   /**
-   * @param summary the change summary (for resource version) entered by the user in the form
+   * @param summary the change summary (for version) entered by the user in the form, defaulting to empty string
    */
   public void setSummary(String summary) {
-    this.summary = StringUtils.trimToNull(summary);
+    this.summary = StringUtils.trimToEmpty(summary);
   }
 }

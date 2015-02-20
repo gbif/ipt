@@ -186,6 +186,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
         if (HttpUtil.success(resp)) {
           log.info("The resource has been deleted. Resource key: " + resource.getKey().toString());
         } else {
+          log.error("Deregister resource response received=" + resp.getStatusCode() + ": " + resp.content);
           throw new RegistryException(TYPE.BAD_RESPONSE, "Empty registry response");
         }
       } else {
@@ -533,7 +534,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       UrlEncodedFormEntity uefe = new UrlEncodedFormEntity(data, Charset.forName("UTF-8"));
       Response result = http.post(getIptResourceUri(), null, null, orgCredentials(org), uefe);
       if (result != null) {
-        log.info("Register resource response received=" + result.getStatusCode() + ": " + result.content);
+        log.debug("Register resource response received=" + result.getStatusCode() + ": " + result.content);
         // read new UDDI ID
         saxParser.parse(getStream(result.content), newRegistryEntryHandler);
         String key = newRegistryEntryHandler.key;
@@ -582,6 +583,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       UrlEncodedFormEntity uefe = new UrlEncodedFormEntity(data, Charset.forName("UTF-8"));
       Response result = http.post(getIptUri(), null, null, orgCredentials(org), uefe);
       if (result != null) {
+        log.debug("Register IPT response received=" + result.getStatusCode() + ": " + result.content);
         // read new UDDI ID
         saxParser.parse(getStream(result.content), newRegistryEntryHandler);
         key = newRegistryEntryHandler.key;
@@ -658,9 +660,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       if (HttpUtil.success(resp)) {
         log.info("IPT registration update was successful");
       } else {
-        String msg = "Bad registry response";
-        log.error(msg);
-        throw new RegistryException(TYPE.BAD_RESPONSE, msg);
+        log.error("Update IPT response received=" + resp.getStatusCode() + ": " + resp.content);
+        throw new RegistryException(TYPE.BAD_RESPONSE, "Bad registry response");
       }
     } catch (Exception e) {
       String msg = "Bad registry response: " + e.getMessage();
@@ -691,6 +692,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       if (HttpUtil.success(resp)) {
         log.debug("Resource's registration info has been updated");
       } else {
+        log.error("Update resource response received=" + resp.getStatusCode() + ": " + resp.content);
         throw new RegistryException(TYPE.BAD_RESPONSE, "Registration update failed");
       }
     } catch (Exception e) {
