@@ -239,7 +239,7 @@ public class ResourceAction extends PortalBaseAction {
 
   /**
    * Return the list of Agent Roles specific to the current locale.
-   * 
+   *
    * @return the list of Agent Roles specific to the current locale
    */
   public Map<String, String> getRoles() {
@@ -248,7 +248,7 @@ public class ResourceAction extends PortalBaseAction {
 
   /**
    * Return the list of Preservation Methods specific to the current locale.
-   * 
+   *
    * @return the list of Preservation Methods specific to the current locale
    */
   public Map<String, String> getPreservationMethods() {
@@ -257,7 +257,7 @@ public class ResourceAction extends PortalBaseAction {
 
   /**
    * Return the list of ISO 3 letter language codes specific to the current locale.
-   * 
+   *
    * @return the list of ISO 3 letter language codes specific to the current locale
    */
   public Map<String, String> getLanguages() {
@@ -266,7 +266,7 @@ public class ResourceAction extends PortalBaseAction {
 
   /**
    * Return the list of 2-letter country codes specific to the current locale.
-   * 
+   *
    * @return the list of 2-letter country codes specific to the current locale
    */
   public Map<String, String> getCountries() {
@@ -275,7 +275,7 @@ public class ResourceAction extends PortalBaseAction {
 
   /**
    * Return the list Ranks specific to the current locale.
-   * 
+   *
    * @return the list of Ranks specific to the current locale
    */
   public Map<String, String> getRanks() {
@@ -456,7 +456,7 @@ public class ResourceAction extends PortalBaseAction {
    * </br>
    * Please note that changing a resource's visibility from private to public does not change the visibility of the
    * last published version.
-   * 
+   *
    * @return Struts2 result string
    */
   public String detail() {
@@ -468,12 +468,14 @@ public class ResourceAction extends PortalBaseAction {
       // resource managers can see all published versions regardless of whether they were public or private
       if (getCurrentUser() != null && RequireManagerInterceptor.isAuthorized(getCurrentUser(), resource)) {
         version = (version == null) ? findLatestPublishedVersion(resource) : version;
-
         // warn user in case this version isn't publicly available
         PublicationStatus versionStatus = getPublishedVersionsPublicationStatus(resource, version);
-        if (versionStatus.equals(PublicationStatus.PRIVATE) || versionStatus.equals(PublicationStatus.DELETED)) {
-          addActionWarning(
-            getText("portal.resource.warning.notPublic", new String[] {versionStatus.toString().toLowerCase()}));
+        if (versionStatus.equals(PublicationStatus.PRIVATE)) {
+          String status = getText("resource.status.private");
+          addActionWarning(getText("portal.resource.warning.notPublic", new String[]{status.toLowerCase()}));
+        } else if (resource.getStatus().equals(PublicationStatus.DELETED)) {
+          String status = getText("resource.status.deleted");
+          addActionWarning(getText("portal.resource.warning.notPublic", new String[]{status.toLowerCase()}));
         }
       }
       // otherwise only published public versions can be shown
@@ -524,7 +526,7 @@ public class ResourceAction extends PortalBaseAction {
   /**
    * Takes a list of the resource's TaxonomicCoverages, and for each one, creates a new OrganizedTaxonomicCoverage
    * that gets added to the class' list of OrganizedTaxonomicCoverage.
-   * 
+   *
    * @param coverages list of resource's TaxonomicCoverage
    */
   List<OrganizedTaxonomicCoverage> constructOrganizedTaxonomicCoverages(List<TaxonomicCoverage> coverages) {
@@ -543,7 +545,7 @@ public class ResourceAction extends PortalBaseAction {
    * names coming from a resource's TaxonomicCoverage's TaxonKeywords corresponding to that rank. The display nane
    * consists of "scientific name (common name)". Another OrganizedTaxonomicKeywords is also created for the unknown
    * rank, that is a TaxonomicKeyword not having a rank.
-   * 
+   *
    * @param keywords list of resource's TaxonomicCoverage's TaxonKeywords
    * @return list of OrganizedTaxonomicKeywords (one for each rank + unknown rank), or an empty list if none were added
    */
@@ -590,7 +592,7 @@ public class ResourceAction extends PortalBaseAction {
   /**
    * Construct display name from TaxonKeyword's scientific name and common name properties. It will look like:
    * scientific name (common name) provided both properties are not null.
-   * 
+   *
    * @return constructed display name or an empty string if none could be constructed
    */
   private String createKeywordDisplayName(TaxonKeyword keyword) {
@@ -612,7 +614,7 @@ public class ResourceAction extends PortalBaseAction {
   /**
    * Returns a list of OrganizedTaxonomicCoverage that facilitate the display of the resource's TaxonomicCoverage on
    * the UI.
-   * 
+   *
    * @return list of OrganizedTaxonomicCoverage or an empty list if none were added
    */
   public List<OrganizedTaxonomicCoverage> getOrganizedCoverages() {
@@ -621,7 +623,7 @@ public class ResourceAction extends PortalBaseAction {
 
   /**
    * Get the EML instance to display on Resource Portal page.
-   * 
+   *
    * @return EML instance
    */
   public Eml getEml() {
@@ -630,7 +632,7 @@ public class ResourceAction extends PortalBaseAction {
 
   /**
    * Set the EML instance to display on Resource Portal page.
-   * 
+   *
    * @param eml EML instance
    */
   public void setEml(Eml eml) {
@@ -641,7 +643,7 @@ public class ResourceAction extends PortalBaseAction {
    * Returns whether the version of the resource is a metadata-only resource. This is determined by the existence of
    * a DwC-A. This method is only really of importance for versions of the resource that are not the latest. For the
    * latest published version of the resource, one can just call resource.recordsPublished() and see if it's > 0.
-   * 
+   *
    * @return true if resource is metadata-only
    */
   public boolean isMetadataOnly() {
@@ -650,7 +652,7 @@ public class ResourceAction extends PortalBaseAction {
 
   /**
    * Set whether resource is metadata-only or not.
-   * 
+   *
    * @param metadataOnly is the resource metadata-only
    */
   public void setMetadataOnly(boolean metadataOnly) {
@@ -660,7 +662,7 @@ public class ResourceAction extends PortalBaseAction {
   /**
    * This map populates the update frequencies. The map is derived from the vocabulary {@link -linkoffline
    * http://rs.gbif.org/vocabulary/eml/update_frequency.xml}.
-   * 
+   *
    * @return update frequencies map
    */
   public Map<String, String> getFrequencies() {
