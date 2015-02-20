@@ -420,6 +420,17 @@ public class Resource implements Serializable, Comparable<Resource> {
     return null;
   }
 
+  /**
+   * @return change summary of last published resource, or null if last published version had none
+   */
+  public String getLastPublishedVersionsChangeSummary() {
+    if (!getVersionHistory().isEmpty()) {
+      System.out.print(Strings.emptyToNull(getVersionHistory().get(0).getChangeSummary()));
+      return Strings.emptyToNull(getVersionHistory().get(0).getChangeSummary());
+    }
+    return null;
+  }
+
   public UUID getKey() {
     return key;
   }
