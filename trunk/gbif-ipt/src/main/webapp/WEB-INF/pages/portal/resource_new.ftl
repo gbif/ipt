@@ -340,7 +340,12 @@
                 <#if resource.versionHistory??>
                 <div id ="versions" class="row">
                     <div>
-                        <h1><@s.text name='portal.resource.versions'/></h1>
+                      <h1><@s.text name='portal.resource.versions'/></h1>
+                      <#if managerRights>
+                        <p><@s.text name='portal.resource.versions.verbose.manager'/></p>
+                      <#else>
+                        <p><@s.text name='portal.resource.versions.verbose'/></p>
+                      </#if>
                       <@versionsTable numVersionsShown=3 sEmptyTable="dataTables.sEmptyTable.versions" baseURL=baseURL shortname=resource.shortname />
                         <div id="vtableContainer"></div>
                         <p>
