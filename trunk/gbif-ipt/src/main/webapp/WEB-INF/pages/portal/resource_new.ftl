@@ -78,7 +78,7 @@
         <#assign identifier>${con.userIds[0].identifier}</#assign>
         <#if directory?has_content && identifier?has_content>
             <div>
-                <a href="${directory}${identifier}">${directory}${identifier}</a>
+                <a href="${directory}${identifier}" target="_blank">${directory}${identifier}</a>
             </div>
         </#if>
       </#if>
@@ -566,15 +566,15 @@
                                     <td><@textWithFormattedLink eml.project.designDescription/></td>
                                 </tr>
                             </#if>
-                            <#if (eml.project.personnel?size >0)>
-                            <tr>
-                                <th><@s.text name='eml.project.personnel'/></th>
-                                <td>
-                                    <@contactList eml.project.personnel "" 1/>
-                                </td>
-                            </tr>
-                            </#if>
                           </table>
+                          <#if (eml.project.personnel?size >0)>
+                              </br>
+                              <p><@s.text name='eml.project.personnel.intro'/>:</p>
+                              <div class="fullwidth">
+                                <@contactList eml.project.personnel/>
+                              </div>
+                              <div class="clearfix"></div>
+                          </#if>
                       </div>
                   </div>
                   </#if>
