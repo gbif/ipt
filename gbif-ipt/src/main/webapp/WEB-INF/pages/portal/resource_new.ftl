@@ -220,25 +220,39 @@
                     </#if>
                     <div>
                         <h1 class="rtitle">${eml.title!resource.shortname}</h1>
-                        <p class="undertitle">
-                          <#if resource.lastPublished?? && resource.organisation??>
-                            <#assign doi>${action.findDoiAssignedToPublishedVersion()!}</#assign>
+                        <div>
+                          <#assign doi>${action.findDoiAssignedToPublishedVersion()!}</#assign>
+                          <#if doi?has_content>
+                            <#assign doiUrl>${action.findDoiAssignedToPublishedVersion().getUrl()!}</#assign>
+                          </#if>
+                          <#if doi?has_content && doiUrl?has_content>
+                            <div id="resourcedoi">
+                              <span class="doi">
+                                <a href="${doiUrl!}">${doi}</a>
+                              </span>
+                            </div>
+                          </#if>
+                          <p class="undertitle">
+                            <#if resource.lastPublished?? && resource.organisation??>
                             <#-- the existence of parameter version means the version is not equal to the latest published version -->
                             <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
                               <em class="warn"><@s.text name='portal.resource.version'/>&nbsp;${version.toPlainString()}</em>
-                              <@s.text name='portal.resource.publishedOn'><@s.param>${resource.organisation.name}</@s.param></@s.text> ${eml.pubDate?date?string.medium} <#if doi?has_content>, ${doi}</#if>
+                              <@s.text name='portal.resource.publishedOn'><@s.param>${resource.organisation.name}</@s.param></@s.text> ${eml.pubDate?date?string.medium}
                             <#else>
-                              <@s.text name='portal.resource.latest.version'/>&nbsp;[${resource.emlVersion.toPlainString()!}]
-                              <@s.text name='portal.resource.publishedOn'><@s.param>${resource.organisation.name}</@s.param></@s.text> ${eml.pubDate?date?string.medium} <#if doi?has_content>, ${doi}</#if>
+                              <@s.text name='portal.resource.latest.version'/>
+                              <@s.text name='portal.resource.publishedOn'><@s.param>${resource.organisation.name}</@s.param></@s.text> ${eml.pubDate?date?string.medium}
                             </#if>
                           <#else>
                             <@s.text name='portal.resource.published.never.long'/>
                           </#if>
                         </p>
+                        </div>
+                        <div class="clearfix"></div>
+
                         <#if eml.logoUrl?has_content>
-                          <div id="resourcelogo">
-                            <img src="${eml.logoUrl}" />
-                          </div>
+                            <div id="resourcelogo">
+                                <img src="${eml.logoUrl}"/>
+                            </div>
                         </#if>
                         <p>
                           <#if eml.description?has_content>
@@ -372,7 +386,7 @@
                         <p>
                           <@s.text name='manage.home.registered.verbose'><@s.param>${cfg.portalUrl}/dataset/${resource.key}</@s.param><@s.param>${resource.key}</@s.param></@s.text>
                           <#-- in prod mode link goes to /publisher (GBIF Portal), in dev mode link goes to /publisher (GBIF UAT Portal) -->
-                          &nbsp;<@s.text name='manage.home.published.verbose'><@s.param>${cfg.portalUrl}/publisher/${resource.organisation.key}</@s.param><@s.param>${resource.organisation.key}</@s.param><@s.param>${cfg.portalUrl}/node/${resource.organisation.nodeKey!"#"}</@s.param><@s.param>${resource.organisation.nodeName!}</@s.param></@s.text>
+                          &nbsp;<@s.text name='manage.home.published.verbose'><@s.param>${cfg.portalUrl}/publisher/${resource.organisation.key}</@s.param><@s.param>${resource.organisation.name}</@s.param><@s.param>${cfg.portalUrl}/node/${resource.organisation.nodeKey!"#"}</@s.param><@s.param>${resource.organisation.nodeName!}</@s.param></@s.text>
                         </p>
                     <#else>
                         <p><@s.text name='manage.home.not.registered.verbose'/></p>
