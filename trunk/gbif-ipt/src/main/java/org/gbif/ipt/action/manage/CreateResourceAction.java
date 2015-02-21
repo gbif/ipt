@@ -1,9 +1,11 @@
 package org.gbif.ipt.action.manage;
 
+import org.apache.commons.lang3.StringUtils;
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidFilenameException;
@@ -21,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
 
@@ -41,6 +44,7 @@ public class CreateResourceAction extends POSTAction {
   private String shortname;
   private String resourceType;
   private Map<String, String> types;
+  private List<Organisation> organisations;
   private final VocabulariesManager vocabManager;
   private final ResourceValidator validator = new ResourceValidator();
 
@@ -55,6 +59,13 @@ public class CreateResourceAction extends POSTAction {
 
   public String getShortname() {
     return shortname;
+  }
+
+  @Override
+  public void prepare() {
+    super.prepare();
+    // load organisations able to host
+    organisations = registrationManager.list();
   }
 
   @Override
@@ -167,5 +178,12 @@ public class CreateResourceAction extends POSTAction {
     types.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_TYPE, getLocaleLanguage(), false));
     types = MapUtils.getMapWithLowercaseKeys(types);
     return types;
+  }
+
+  /**
+   * @return list of organisations that can host
+   */
+  public List<Organisation> getOrganisations() {
+    return organisations;
   }
 }
