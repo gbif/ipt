@@ -9,8 +9,18 @@
     <@s.file name="file" key="manage.resource.create.file" />
   </div>
 
-<div id="create-button" class="buttons">
-   	<@s.submit cssClass="button" name="create" key="button.create"/>
+  <div id="create-button" class="buttons">
+    <#if (organisations?size>0) >
+      <@s.submit cssClass="button" name="create" key="button.create"/>
+    <#else>
+      <!-- Disable create button and show warning: must be at least one organization able to host -->
+      <@s.submit cssClass="button" name="create" key="button.create" disabled="true"/>
+      <img class="infoImg" src="${baseURL}/images/warning.gif"/>
+      <div class="info autop">
+        <@s.text name="manage.resource.create.forbidden"/>
+      </div>
+    </#if>
+
   </div>
 
 </@s.form>

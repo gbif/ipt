@@ -3,6 +3,7 @@ package org.gbif.ipt.action.manage;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
@@ -25,6 +26,7 @@ public class HomeAction extends BaseAction {
   private final VocabulariesManager vocabManager;
   private Map<String, String> types;
   private Map<String, String> datasetSubtypes;
+  private List<Organisation> organisations;
 
   @Inject
   public HomeAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -49,6 +51,9 @@ public class HomeAction extends BaseAction {
     datasetSubtypes.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_SUBTYPES, getLocaleLanguage(), false));
     datasetSubtypes = MapUtils.getMapWithLowercaseKeys(datasetSubtypes);
 
+    // load organisations able to host
+    organisations = registrationManager.list();
+
     return SUCCESS;
   }
 
@@ -58,7 +63,7 @@ public class HomeAction extends BaseAction {
 
   /**
    * Get map of resource types to populate resource type selection.
-   * 
+   *
    * @return map of resource types
    */
   public Map<String, String> getTypes() {
@@ -67,7 +72,7 @@ public class HomeAction extends BaseAction {
 
   /**
    * A map of dataset subtypes keys to internationalized values.
-   * 
+   *
    * @return map of dataset subtypes
    */
   public Map<String, String> getDatasetSubtypes() {
@@ -81,6 +86,13 @@ public class HomeAction extends BaseAction {
   public String locked() {
     addActionError(getText("manage.home.resource.locked"));
     return execute();
+  }
+
+  /**
+   * @return list of organisations that can host
+   */
+  public List<Organisation> getOrganisations() {
+    return organisations;
   }
 
 }
