@@ -50,14 +50,25 @@ public interface RegistrationManager {
   Organisation delete(String key) throws DeletionNotAllowedException;
 
   /**
-   * Returns a single organisation associated to the key.
+   * Returns a single organisation associated to the key, from list of organisations loaded into memory.
+   *
+   * @param key of organisation to be returned
    */
   Organisation get(String key);
 
   /**
-   * Returns a single organisation associated to this UUID.
+   * Returns a single organisation associated to this UUID, from list of organisations loaded into memory.
+   *
+   * @param key of organisation to be returned
    */
   Organisation get(UUID key);
+
+  /**
+   * Returns a single organisation associated to the key, from disk.
+   *
+   * @param key of organisation to be returned
+   */
+  Organisation getFromDisk(String key);
 
   /**
    * Returns the hosting organisation of this IPT.

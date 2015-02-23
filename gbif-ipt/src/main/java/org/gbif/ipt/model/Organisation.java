@@ -39,6 +39,9 @@ public class Organisation extends AgentBase implements Serializable {
   private Password agencyAccountPassword;
   private String doiPrefix;
 
+  public Organisation() {
+  }
+
   @Override
   public boolean equals(Object obj) {
     if (obj instanceof Organisation) {
@@ -234,5 +237,40 @@ public class Organisation extends AgentBase implements Serializable {
    */
   public String getTestDoiPrefix() {
     return Constants.TEST_DOI_PREFIX;
+  }
+
+  /**
+   * Create new Organisation by cloning another.
+   *
+   * @param another Organisation to clone from
+   */
+  public Organisation(Organisation another) {
+    setKey(another.getKey().toString());
+    setName(another.getName());
+
+    // fields that can be edited in IPT
+    setAlias(another.getAlias());
+    setPassword(another.getPassword());
+    setCanHost(another.isCanHost());
+    setAgencyAccountPrimary(another.isAgencyAccountPrimary());
+    setDoiRegistrationAgency(another.getDoiRegistrationAgency());
+    setAgencyAccountUsername(another.getAgencyAccountUsername());
+    setAgencyAccountPassword(another.getAgencyAccountPassword());
+    setDoiPrefix(another.getDoiPrefix());
+
+    // fields that cannot be edited in IPT
+    setDescription(another.getDescription());
+    setHomepageURL(another.getHomepageURL());
+    setPrimaryContactType(another.getPrimaryContactType());
+    setPrimaryContactName(another.getPrimaryContactName());
+    setPrimaryContactFirstName(another.getPrimaryContactFirstName());
+    setPrimaryContactLastName(another.getPrimaryContactLastName());
+    setPrimaryContactDescription(another.getPrimaryContactDescription());
+    setPrimaryContactAddress(another.getPrimaryContactAddress());
+    setPrimaryContactEmail(another.getPrimaryContactEmail());
+    setPrimaryContactPhone(another.getPrimaryContactPhone());
+    setNodeKey(another.getNodeKey());
+    setNodeName(another.getNodeName());
+    setNodeContactEmail(another.getNodeContactEmail());
   }
 }
