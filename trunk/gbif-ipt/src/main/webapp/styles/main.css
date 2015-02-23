@@ -244,10 +244,10 @@ form#login-form {  display: inline-block; }
   background-color: #fff;
 }
 .site-name {
-  font-size: 1.35em;
-  margin-top: 0px;
+  font-size: 1.50em;
+  margin-top: -2px;
   margin-bottom: 0px;
-  line-height: 1.6em;
+  line-height: 2.0em;
   color: #333;
   text-transform: uppercase;
 	font-family: "DINOT-Medium", sans-serif;
@@ -269,21 +269,22 @@ form#login-form {  display: inline-block; }
 }
 
 .site-slogan {
-  font-size: 0.85em;
+  font-size: 1.0em;
   font-weight: normal;
   font-family: Arial, Helvetica, sans-serif;
-  margin-top: -3px;
+  margin-top: -10px;
   margin-bottom: 0px;
   color: #333;
   opacity: .5;
 }
 
 .logo-img {
-  margin-right: 10px;
+  margin: 5px 0px 0px 5px;
   float: left;
 }
 
 .site-name-slogan {
+  margin-top: 5px;
   float: left;
 }
 
@@ -292,8 +293,8 @@ img#logo {
 }
 
 img.testmode {
-  margin-top: -50px;
-  margin-left: 240px;
+  margin-top: -70px;
+  margin-left: 300px;
   position: absolute;
   float:left;
 }
@@ -302,7 +303,7 @@ img.testmode {
 
 #region-menu {
   font-size: 1.15em;
-  margin-top: 20px;
+  margin-top: 2px;
   background-color: #eee;
   height: 50px;
   width: 950px;

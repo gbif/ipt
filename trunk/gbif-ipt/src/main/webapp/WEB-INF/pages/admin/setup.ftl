@@ -3,7 +3,7 @@
 [#include "/WEB-INF/pages/macros/forms.ftl"]
 
 <div class="grid_18">
-		<h1>[@s.text name="admin.config.setup.title"/]</h1>
+		<h1 class="twenty_top">[@s.text name="admin.config.setup.title"/]</h1>
 		
 			[@s.actionmessage/]
 			[#if warnings?size>0]		    

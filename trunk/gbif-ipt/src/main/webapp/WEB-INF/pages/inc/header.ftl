@@ -3,18 +3,13 @@
 [#setting time_format="dd/MM/yy"]
 [#setting datetime_format="dd/MM/yy"]
 [#setting locale="en"]
-[#-- 
-[#if localeLanguage??]
- [#setting locale=localeLanguage]
-[/#if]
---]
 [#setting url_escaping_charset="UTF-8"]
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
     [#assign iptIntro = "The Integrated Publishing Toolkit (IPT) is a tool developed by the Global Biodiversity Information Facility (GBIF) to provide an easy and efficient way of publishing biodiversity data." /]
     [#assign keywords = "GBIF, Global Biodiversity Information Facility, IPT, Integrated Publishing Toolkit, checklist, occurrence, metadata, DwC-A, Darwin Core, Darwin Core Archive, biodiversity data, data paper, EML" /]
-    [#if hostingOrganisation?exists && hostingOrganisation.name??]
+    [#if hostingOrganisation?has_content && hostingOrganisation.name??]
       [#assign hostDescription = " This IPT is hosted by" + hostingOrganisation.name + "."/]
       [#assign hostKeyword = ", " + hostingOrganisation.name + "." /]
     [/#if]
