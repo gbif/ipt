@@ -20,11 +20,10 @@
       	color: #077A2D;
       	font-size: 30px;
       }
-	  #region-user-second { line-height: 18px; }
 		</style>
     <script type="text/javascript">
       $(document).ready(function(){
-        	initHelp();	
+        initHelp();
       	[#-- see global.js for function defs --]
       	initMenu();
       	langs("${localeLanguage}","${baseURL}");  
@@ -36,45 +35,33 @@
 		<div class="page clearfix" id="page">
 			<header id="section-header" class="section section-header">
         <div id="zone-user-wrapper" class="zone-wrapper zone-user-wrapper clearfix">
-        <div id="zone-user" class="zone zone-user clearfix container_24">
-          <aside class="prefix_12 grid_12 region region-user-second account" id="region-user-second">
-            <div class="region-inner region-user-second-inner">
-              <ul id="language-menu">       
-                <li><a href="#"><img src="${baseURL}/images/flags/flag_${localeLanguage}.png"/></a>
-                  <ul>
-                    <!-- add more languages as translations become available. -->                           
-                    <!-- #list ["en","es","fr","de"] as lang -->
-                    <!-- modify global.js langs() also -->
-                    [#list ["en","fr","es", "zh", "pt", "ja"] as lang]
-                      [#if localeLanguage!=lang]
-                      <li><a href="?request_locale=${lang}"><img src="${baseURL}/images/flags/flag_${lang}.png"/></a></li>
-                      [/#if]
-                    [/#list]
-                  </ul>
-                </li>
-              </ul>   
-            </div>
-          </aside>
-        </div>
-      </div>
-      <div id="zone-branding-wrapper" class="zone-wrapper zone-branding-wrapper clearfix">
-        <div id="zone-branding" class="zone zone-branding clearfix container_24">
-          <div class="grid_11 region region-branding" id="region-branding">
+          <div id="zone-user" class="zone zone-user clearfix container_24">
             <div class="region-inner region-branding-inner">
               <div class="branding-data clearfix">
-                <div class="logo-img"><a href="/" rel="home" title="GBIF Logo" class="active">
-                  <img src="${baseURL}/styles/logo.png" />
+                <div class="logo-img">
+                  <a href="${baseURL}" rel="home" title="GBIF Logo" class="active">
+                    <img src="${baseURL}/images/logo-2015.png" />
                   </a>
                 </div>
-                <hgroup class="site-name-slogan">        
-                  <h1 class="site-name"><a href="/" rel="home" title="Home" class="active">GBIF Integrated Publishing Toolkit</a><span class="logoSuperscript">(IPT)</span></h1>
+                <hgroup class="site-name-slogan">
+                  <h1 class="site-name"><a href="${baseURL}" rel="home" title="Home" class="active">Integrated Publishing Toolkit</a><span class="logoSuperscript">(IPT)</span></h1>
                   <h6 class="site-slogan">free and open access to biodiversity data</h6>
                 </hgroup>
+                <div id="region-user-second" class="region-inner region-user-second-inner">
+                  <ul id="language-menu">
+
+                    <li><a href="#"><img src="${baseURL}/images/flags/flag_${localeLanguage}.png"/></a>
+                      <ul id="languages">
+                        <!-- add more languages as translations become available. -->
+                        <!-- To see more information go to langs method in global.js -->
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
-      	</div>
-      </div>
+        </div>
     </header>
     <section id="section-content" class="section section-content menu-pull">
       <div id="zone-content-wrapper" class="zone-wrapper zone-content-wrapper clearfix">  
