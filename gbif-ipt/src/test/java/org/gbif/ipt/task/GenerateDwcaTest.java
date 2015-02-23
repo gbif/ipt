@@ -16,6 +16,7 @@
 
 package org.gbif.ipt.task;
 
+import org.gbif.api.model.common.DOI;
 import org.gbif.dwc.text.Archive;
 import org.gbif.dwc.text.ArchiveFactory;
 import org.gbif.file.CSVReader;
@@ -239,8 +240,11 @@ public class GenerateDwcaTest {
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource_doi_dataset_id.xml");
     // create resource from single source file
     File occurrence = FileUtils.getClasspathFile("resources/res1/occurrence_doi_dataset_id.txt");
+    // set DOI
     Resource resource = getResource(resourceXML, occurrence);
-
+    resource.setDoi(new DOI("10.5072/gc8gqc"));
+    resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
+    // assert DOI set properly
     assertNotNull(resource.getDoi());
     assertEquals("10.5072/gc8gqc", resource.getDoi().getDoiName());
     assertEquals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION, resource.getIdentifierStatus());

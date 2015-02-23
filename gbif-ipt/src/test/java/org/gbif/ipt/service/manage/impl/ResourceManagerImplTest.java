@@ -224,7 +224,7 @@ public class ResourceManagerImplTest {
   }
 
   /**
-   * test resource creation from zipped file.
+   * test resource creation from zipped resource folder.
    */
   @Test
   public void testCreateFromZippedFile()
@@ -264,7 +264,6 @@ public class ResourceManagerImplTest {
     assertTrue(mockedDataDir.resourceFile("res1", ResourceManagerImpl.PERSISTENCE_FILE).exists());
 
     // properties that get preserved
-    assertEquals(BigDecimal.valueOf(3.0), res.getEmlVersion());
     // there is 1 source file
     assertEquals(1, res.getSources().size());
     assertEquals("occurrence", res.getSources().get(0).getName());
@@ -280,7 +279,7 @@ public class ResourceManagerImplTest {
     assertEquals(0, res.getMappings().get(0).getIdColumn().intValue());
 
     // properties that get reset
-
+    assertEquals(Constants.INITIAL_RESOURCE_VERSION, res.getEmlVersion());
     // the resource shouldn't be registered
     assertFalse(res.isRegistered());
     // the resource shouldn't have any managers
@@ -294,12 +293,29 @@ public class ResourceManagerImplTest {
     assertEquals(PublicationStatus.PRIVATE, res.getStatus());
     // the resource should have a created date
     assertNotNull(res.getCreated());
-    // the num rowIterator published is 0
+    // the record count is 0
     assertEquals(0, res.getRecordsPublished());
+    // the DOI was reset
+    assertNull(res.getDoi());
+    assertEquals(IdentifierStatus.UNRESERVED, res.getIdentifierStatus());
+    assertNull(res.getDoiOrganisationKey());
+    // the change summary was reset
+    assertNull(res.getChangeSummary());
+    // the VersionHistory was cleared
+    assertEquals(0, res.getVersionHistory().size());
+    // the auto-publication was reset
+    assertEquals(PublicationMode.AUTO_PUBLISH_OFF, res.getPublicationMode());
+    assertNull(res.getUpdateFrequency());
+    assertNull(res.getNextPublished());
+    // the other last modified dates were also reset
+    assertNull(res.getMetadataModified());
+    assertNull(res.getMappingsModified());
+    assertNull(res.getSourcesModified());
 
     // eml properties loaded from eml.xml
     assertEquals("TEST RESOURCE", res.getEml().getTitle());
     assertEquals("Test description", res.getEml().getDescription());
+    assertEquals(Constants.INITIAL_RESOURCE_VERSION, res.getEml().getEmlVersion());
   }
 
   /**
@@ -1173,7 +1189,7 @@ public class ResourceManagerImplTest {
   }
 
   /**
-   * Ensure resource whose last published version is public get returned in list of published public versions.
+   * Ensure resource whose last published version is public gets returned in list of published public versions.
    */
   @Test
   public void testListPublishedPublicVersions()
@@ -1187,6 +1203,15 @@ public class ResourceManagerImplTest {
     ResourceManager resourceManager = getResourceManagerImpl();
     File zippedResourceFolder = FileUtils.getClasspathFile("resources/res1.zip");
     resourceManager.create("res1", null, zippedResourceFolder, creator, baseAction);
+
+    assertEquals(1, resourceManager.list().size());
+    Resource r = resourceManager.list().get(0);
+    assertEquals(PublicationStatus.PRIVATE, r.getStatus());
+    assertTrue(resourceManager.listPublishedPublicVersions().isEmpty());
+
+    // mock last published version being public
+    VersionHistory history = new VersionHistory(Constants.INITIAL_RESOURCE_VERSION, new Date(), PublicationStatus.PUBLIC);
+    r.addVersionHistory(history);
 
     // test if last published version of resource was public (shown in list of public resources)
     assertEquals(1, resourceManager.listPublishedPublicVersions().size());
