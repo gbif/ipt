@@ -56,7 +56,7 @@ public class ResourceActionTest {
 
   @Before
   public void setup() throws IOException, TemplateException {
-    SimpleTextProvider mockTextProvider = mock(SimpleTextProvider.class);
+    SimpleTextProvider textProvider = new SimpleTextProvider();
     AppConfig mockCfg = mock(AppConfig.class);
     RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
     ResourceManager mockResourceManager = mock(ResourceManager.class);
@@ -126,9 +126,8 @@ public class ResourceActionTest {
     assertFalse(nonExistingDwca.exists());
     when(mockDataDir.resourceDwcaFile(anyString(), any(BigDecimal.class))).thenReturn(nonExistingDwca);
 
-    action =
-      new ResourceAction(mockTextProvider, mockCfg, mockRegistrationManager, mockResourceManager, mockVocabManager,
-        mockDataDir);
+    action = new ResourceAction(textProvider, mockCfg, mockRegistrationManager, mockResourceManager, mockVocabManager,
+      mockDataDir);
     action.setResource(resource);
   }
 

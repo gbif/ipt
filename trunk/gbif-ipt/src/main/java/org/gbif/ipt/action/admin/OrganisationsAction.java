@@ -1,8 +1,10 @@
 package org.gbif.ipt.action.admin;
 
+import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.Organisation;
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.DeletionNotAllowedException;
@@ -17,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.servlet.SessionScoped;
@@ -81,7 +84,8 @@ public class OrganisationsAction extends POSTAction {
   private List<Organisation> linkedOrganisations;
   private final RegisteredOrganisations orgSession;
 
-  private static final List<String> DOI_REGISTRATION_AGENCIES = ImmutableList.of(DOIRegistrationAgency.DATACITE.name(), DOIRegistrationAgency.EZID.name());
+  private static final List<String> DOI_REGISTRATION_AGENCIES =
+    ImmutableList.of(DOIRegistrationAgency.DATACITE.name(), DOIRegistrationAgency.EZID.name());
 
   @Inject
   public OrganisationsAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -180,22 +184,20 @@ public class OrganisationsAction extends POSTAction {
       }
     }
     linkedOrganisations = registrationManager.listAll();
-    if (id != null) {
-      // modify existing organisation
-      organisation = registrationManager.get(id);
-    }
-    // if no id was submitted we wanted to create a new organisation
-    if (organisation == null) {
-      // reset id
-      id = null;
-      // create new organisation
+    if (id == null) {
+      //  if no id was submitted we wanted to create a new organisation
       organisation = new Organisation();
+    } else {
+      if (!isHttpPost()) {
+        // load existing organisation from disk
+        Organisation fromDisk = registrationManager.getFromDisk(id);
+        organisation = new Organisation(fromDisk);
+      }
     }
   }
 
   @Override
   public String save() {
-
     try {
       if (id == null) {
         if (registrationManager.get(organisation.getKey()) != null) {
@@ -206,6 +208,8 @@ public class OrganisationsAction extends POSTAction {
         registrationManager.addAssociatedOrganisation(organisation);
         addActionMessage(getText("admin.organisation.associated.ipt"));
       } else {
+        // update associated organisations
+        registrationManager.addAssociatedOrganisation(organisation);
         addActionMessage(getText("admin.organisation.updated.ipt"));
       }
       registrationManager.save();
@@ -219,7 +223,6 @@ public class OrganisationsAction extends POSTAction {
       addActionError(getText("admin.organisation.exists", new String[] {id}));
       return INPUT;
     }
-
   }
 
   /**
@@ -246,11 +249,12 @@ public class OrganisationsAction extends POSTAction {
   @Override
   public void validate() {
     if (isHttpPost()) {
+      boolean validated = true;
       if (organisation.isAgencyAccountPrimary()) {
         // ensure only one DOI account is selected as primary!
-        for (Organisation org: linkedOrganisations) {
+        for (Organisation org : linkedOrganisations) {
           if (!organisation.getKey().equals(org.getKey()) && org.isAgencyAccountPrimary()) {
-            organisation.setAgencyAccountPrimary(false);
+            validated = false;
             addFieldError("organisation.agencyAccountPrimary",
               getText("admin.organisation.doiAccount.activated.exists"));
             break;
@@ -258,15 +262,56 @@ public class OrganisationsAction extends POSTAction {
         }
         // ensure archival mode is turned ON, otherwise ensure activation of agency account fails
         if (!cfg.isArchivalMode()) {
-          organisation.setAgencyAccountPrimary(false);
+          validated = false;
           addActionError(getText("admin.organisation.doiAccount.activated.failed"));
         }
       }
       // if organisation doesn't validate prevent DOI account from being selected as primary!
       if (!organisationValidation.validate(this, organisation)) {
+        validated = false;
+      } else {
+        if (organisation.isAgencyAccountPrimary()) {
+          // if organisation validated, and this account has been selected as the primary DOI account,
+          // make sure all existing DOIs comply with this account as its being saved
+          if (isAnotherAccountInUseAlready(organisation)) {
+            validated = false;
+          }
+        }
+      }
+
+      // be sure to deactivate account as primary DOI account in case validation failed
+      if (!validated) {
         organisation.setAgencyAccountPrimary(false);
       }
     }
   }
 
+  /**
+   * Make sure all DOIs in this IPT correspond to the account being saved. Otherwise, the user could switch the
+   * account type from DataCite to EZID, and render all DataCite DOIs unable to be updated.
+   *
+   * @return true if DOIs assigned using another account are found in the IPT, false otherwise
+   */
+  @VisibleForTesting
+  protected boolean isAnotherAccountInUseAlready(Organisation organisation) {
+    // iterate through all resources, including deleted ones since they can be undeleted
+    for (Resource resource : resourceManager.list()) {
+      DOI doi = resource.getDoi();
+      // clone organisation being saved to new organisation to compare against organisation on disk
+      Organisation fromDisk = registrationManager.getFromDisk(organisation.getKey().toString());
+      if (doi != null && fromDisk != null) {
+        // the doi agency account must be the same
+        if (organisation.getDoiRegistrationAgency() != null && fromDisk.getDoiRegistrationAgency() != null) {
+          if (!organisation.getDoiRegistrationAgency().equals(fromDisk.getDoiRegistrationAgency())) {
+            String msg = getText("admin.organisation.doiAccount.differentTypeInUse",
+              new String[] {fromDisk.getDoiRegistrationAgency().toString().toLowerCase(), doi.toString()});
+            LOG.error(msg);
+            addActionError(msg);
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
 }

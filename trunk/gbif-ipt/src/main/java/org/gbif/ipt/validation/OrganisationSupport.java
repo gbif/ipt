@@ -23,7 +23,6 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.voc.DOIRegistrationAgency;
-import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.ipt.utils.DataCiteMetadataBuilder;
@@ -113,6 +112,9 @@ public class OrganisationSupport {
       } else if (!prefix.startsWith("10.")) {
         valid = false;
         action.addFieldError("organisation.doiPrefix", action.getText("validation.organisation.doiPrefix.invalid"));
+      } else if (!prefix.contains("/") && agency != null && agency.equals(DOIRegistrationAgency.EZID)) {
+        valid = false;
+        action.addFieldError("organisation.doiPrefix", action.getText("validation.organisation.doiPrefix.ezid.invalid"));
       } else {
         // running IPT in development, the test DOI prefix is expected, but not mandatory - show warning otherwise
         if (cfg.getRegistryType() == AppConfig.REGISTRY_TYPE.DEVELOPMENT && !Constants.TEST_DOI_PREFIX
@@ -120,8 +122,9 @@ public class OrganisationSupport {
           action.addActionWarning(action.getText("validation.organisation.doiPrefix.invalid.testMode"));
         }
         // running IPT in production, the test DOI prefix cannot be used
-        else if (cfg.getRegistryType() == AppConfig.REGISTRY_TYPE.PRODUCTION && (Constants.TEST_DOI_PREFIX
-          .equalsIgnoreCase(prefix) || Constants.EZID_TEST_DOI_SHOULDER.equalsIgnoreCase(prefix))) {
+        else if (cfg.getRegistryType() == AppConfig.REGISTRY_TYPE.PRODUCTION && (
+          Constants.TEST_DOI_PREFIX.equalsIgnoreCase(prefix) || Constants.EZID_TEST_DOI_SHOULDER
+            .equalsIgnoreCase(prefix))) {
           valid = false;
           action.addFieldError("organisation.doiPrefix",
             action.getText("validation.organisation.doiPrefix.invalid.productionMode"));
@@ -138,8 +141,8 @@ public class OrganisationSupport {
         }
 
         ServiceConfig cfg = new ServiceConfig(agencyUsername, agencyPassword);
-        service = (agency.equals(DOIRegistrationAgency.DATACITE)) ? new DataCiteService(client, cfg) :
-          new EzidService(client, cfg);
+        service = (agency.equals(DOIRegistrationAgency.DATACITE)) ? new DataCiteService(client, cfg)
+          : new EzidService(client, cfg);
 
         try {
           DOI doi = DOIUtils.mintDOI(agency, prefix);
@@ -147,18 +150,11 @@ public class OrganisationSupport {
           service.reserve(doi, metadata);
           // clean up
           service.delete(doi);
-        } catch (InvalidMetadataException e) {
-          valid = false;
-          String msg = "An unexpected error occurred while trying to authenticate your " + agency.name().toLowerCase()
-                       + " account. Please try again, or contact your IPT administrator for help: " + e.getMessage();
-          action.addActionError(msg);
-          LOG.error(msg);
         } catch (DoiException e) {
           valid = false;
-          String msg = "Authentication failed! Please verify your " + agency.name().toLowerCase()
-                       + " account is entered correctly and try again";
+          String msg = action.getText("validation.organisation.agencyAccount.cantAuthenticate");
+          LOG.error(msg, e);
           action.addActionError(msg);
-          LOG.error(msg);
         } finally {
           // in case fields were trimmed, re-save agency account values
           organisation.setAgencyAccountUsername(agencyUsername);
@@ -166,7 +162,8 @@ public class OrganisationSupport {
           organisation.setDoiPrefix(prefix);
         }
       } else {
-        LOG.debug("Not all DOI Registration agency fields were entered correctly - bypassing DOI Registration Agency validation");
+        LOG.debug(
+          "Not all DOI Registration agency fields were entered correctly - bypassing DOI Registration Agency validation");
       }
     }
     return valid;

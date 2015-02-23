@@ -6,7 +6,7 @@
       		<div id="zone-footer" class="zone zone-footer clearfix container_24">
       			<ul>
 			        <li>IPT <@s.text name="footer.version"/> ${cfg.version!"???"}</li>
-			        <li><a href="http://code.google.com/p/gbif-providertoolkit/"><@s.text name="footer.projectHome"/></a></li>
+			        <li><a href="http://www.gbif.org/ipt"><@s.text name="footer.projectHome"/></a></li>
 			        <li><a href="http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes" target="_blank"><@s.text name="footer.useManual"/></a></li>
 			        <li><a href="http://code.google.com/p/gbif-providertoolkit/issues/list" target="_blank"><@s.text name="footer.bugReport"/></a></li>
 			        <li><a href="http://code.google.com/p/gbif-providertoolkit/issues/entry?template=Feature%20request" target="_blank"><@s.text name="footer.featureRequest"/></a></li>

@@ -145,11 +145,21 @@ public class OrganisationSupportTest {
     o11.setAgencyAccountPassword("GOOD_PASSWORD");
     o11.setDoiPrefix("prefix");
 
+    // organisation DOI registration agency account, except prefix is invalid because it doesn't start with 10.
+    Organisation o12 = new Organisation();
+    o12.setName("NHM");
+    o12.setPassword(VALID_ORGANISATION_PASSWORD);
+    o12.setKey(ORGANISATION_KEY);
+    o12.setDoiRegistrationAgency(DOIRegistrationAgency.EZID);
+    o12.setAgencyAccountUsername("DK.TEST");
+    o12.setAgencyAccountPassword("GOOD_PASSWORD");
+    o12.setDoiPrefix("10.1234");
+
     return Arrays.asList(
       new Object[][] {{o1, true, mockCfgProduction}, {o2, false, mockCfgProduction}, {o3, false, mockCfgProduction},
         {o4, false, mockCfgProduction}, {o5, false, mockCfgProduction}, {o6, false, mockCfgProduction},
         {o7, false, mockCfgProduction}, {o8, false, mockCfgProduction}, {o9, false, mockCfgProduction},
-        {o10, false, mockCfgTest}, {o11, false, mockCfgProduction}});
+        {o10, false, mockCfgTest}, {o11, false, mockCfgProduction}, {o12, false, mockCfgProduction}});
   }
 
   @Test

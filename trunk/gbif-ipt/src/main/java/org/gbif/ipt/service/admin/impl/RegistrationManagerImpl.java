@@ -39,6 +39,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.UUID;
 
 import com.google.common.base.Strings;
@@ -88,12 +90,13 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     if (organisation != null) {
 
       // ensure max 1 DOI account is activated in the IPT
-      if (organisation.isAgencyAccountPrimary() && findPrimaryDoiAgencyAccount() != null) {
+      if (organisation.isAgencyAccountPrimary() && findPrimaryDoiAgencyAccount() != null && !organisation.getKey()
+        .equals(findPrimaryDoiAgencyAccount().getKey())) {
         throw new InvalidConfigException(TYPE.REGISTRATION_BAD_CONFIG,
           "Multiple DOI accounts activated in registration information - only one is allowed.");
       }
 
-      log.debug("Adding associated organisation " + organisation.getKey() + " - " + organisation.getName());
+      log.debug("Adding/updating associated organisation " + organisation.getKey() + " - " + organisation.getName());
       registration.getAssociatedOrganisations().put(organisation.getKey().toString(), organisation);
     }
     return organisation;
@@ -348,6 +351,38 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
     // it could be organisations have changed their name or node in the Registry, so update all organisation metadata
     updateAssociatedOrganisationsMetadata();
+  }
+
+  public Organisation getFromDisk(String key) {
+    Closer closer = Closer.create();
+    SortedMap<String, Organisation> associatedOrganisations = new TreeMap<String, Organisation>();
+    try {
+      Reader registrationReader = FileUtils.getUtf8Reader(dataDir.configFile(PERSISTENCE_FILE_V2));
+      ObjectInputStream in = closer.register(xstreamV2.createObjectInputStream(registrationReader));
+      in.readObject(); // skip over Registration block
+      // now parse the associated organisations
+      while (true) {
+        try {
+          Organisation org = (Organisation) in.readObject();
+          associatedOrganisations.put(org.getKey().toString(), org);
+        } catch (EOFException e) {
+          // end of file, expected exception!
+          break;
+        }
+      }
+    } catch (ClassNotFoundException e) {
+      log.error(e.getMessage(), e);
+    } catch (IOException e) {
+      log.error(e.getMessage(), e);
+      throw new InvalidConfigException(TYPE.REGISTRATION_CONFIG, "Couldnt read registration info: " + e.getMessage());
+    } finally {
+      try {
+        closer.close();
+      } catch (IOException e) {
+      }
+    }
+    // return the organisation requested
+    return associatedOrganisations.get(key);
   }
 
   public void encryptRegistration() throws InvalidConfigException {
