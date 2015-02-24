@@ -1420,6 +1420,9 @@ public class ResourceManagerImplTest {
     assertNull(history.getStatus());
     assertNull(history.getChangeSummary());
     assertNull(history.getModifiedBy());
+
+    // next version?
+    assertEquals("4.1",r.getNextVersion().toPlainString());
   }
 
   /**
@@ -1443,5 +1446,8 @@ public class ResourceManagerImplTest {
     assertEquals("19.0", loaded.getEmlVersion().toPlainString());
     assertEquals(1, loaded.getVersionHistory().size());
     assertEquals(IdentifierStatus.UNRESERVED, loaded.getIdentifierStatus());
+
+    // next version?
+    assertEquals("19.1",loaded.getNextVersion().toPlainString());
   }
 }
