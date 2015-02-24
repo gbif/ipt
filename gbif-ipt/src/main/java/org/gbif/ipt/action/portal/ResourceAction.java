@@ -496,6 +496,12 @@ public class ResourceAction extends PortalBaseAction {
           }
         }
       }
+
+      // if the specific version requested is not the latest published version, warn user
+      if (version.compareTo(resource.getLastPublishedVersionsVersion()) != 0) {
+        addActionWarning(getText("portal.resource.warning.notLatest"));
+      }
+
       // load EML instance for version requested
       eml = loadEmlFromFile(name, version);
     } catch (FileNotFoundException e) {
