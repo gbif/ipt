@@ -747,12 +747,22 @@ public class Resource implements Serializable, Comparable<Resource> {
   /**
    * Set the new eml (resource) version. If the new version is greater than the existing version, the previous version
    * is stored.
+   * </br>
+   * Please note that comparison on the minor version number must include trailing zeros, e.g. 1.10 > 1.9
    *
    * @param v new eml (resource) version
    */
   public void setEmlVersion(BigDecimal v) {
     if (v != null && emlVersion != null) {
-      setReplacedEmlVersion(new BigDecimal(emlVersion.toPlainString()));
+      int scale = v.scale(); // 0.10 has a scale of 2
+      BigDecimal scaled = v.scaleByPowerOfTen(scale); // 0.10 * 10(2) = 10
+
+      int scale2 = emlVersion.scale(); // 0.9 has a scale of 1
+      BigDecimal scaled2 = emlVersion.scaleByPowerOfTen(scale2); // 0.9 * 10(1) = 9
+
+      if (scaled.compareTo(scaled2) > 0) { // 10 > 9
+        setReplacedEmlVersion(new BigDecimal(emlVersion.toPlainString()));
+      }
     }
     emlVersion = v;
     if (eml != null) {
@@ -1137,10 +1147,11 @@ public class Resource implements Serializable, Comparable<Resource> {
         }
         ids.addAll(reorderedList);
         log.debug("DOI=" + doi.toString() + " added to resource's list of alt ids as first element");
-      } else if (identifierStatus.equals(IdentifierStatus.UNAVAILABLE)) {
+      } else if (identifierStatus.equals(IdentifierStatus.UNAVAILABLE) ||
+                 identifierStatus.equals(IdentifierStatus.UNRESERVED)) {
         for (Iterator<String> iterator = ids.iterator(); iterator.hasNext(); ) {
           String id = iterator.next();
-          // make sure a DOI that has been made unavailable no longer appears in the list
+          // make sure a DOI that has been made unavailable, or that has been deleted, no longer appears in the list
           if (id.equalsIgnoreCase(doi.toString())) {
             iterator.remove();
             log.debug("DOI=" + doi.toString() + " removed from resource's list of alt ids");
