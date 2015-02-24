@@ -117,6 +117,14 @@ public class RegistryManagerImplIT extends IptMockBaseTest {
       UUID uuid = manager.register(res, organisation, ipt);
       assertNotNull(uuid);
       LOG.info("Resource registered successfully, key=" + uuid.toString());
+
+      // apply result of registration
+      res.setKey(uuid);
+      res.setStatus(PublicationStatus.REGISTERED);
+
+      // update resource
+      assertTrue(res.isRegistered());
+      manager.updateResource(res, iptKey);
     } catch (Exception e) {
       e.printStackTrace();
       fail(e.getMessage());
