@@ -69,6 +69,7 @@ public class OverviewActionIT {
 
 
   private static final Logger LOG = Logger.getLogger(OverviewActionIT.class);
+  private static final UUID ORGANISATION_KEY = UUID.fromString("dce7a3c9-ea78-4be7-9abc-e3838de70dc5");
 
   private Resource r;
   private OverviewAction action;
@@ -111,6 +112,7 @@ public class OverviewActionIT {
     LOG.info("DataCite password (read from Maven property datacite.password)= " + dcCfg.getPassword());
 
     Organisation oDataCite = new Organisation();
+    oDataCite.setKey(ORGANISATION_KEY.toString());
     oDataCite.setAgencyAccountPrimary(true);
     oDataCite.setName("GBIF");
     oDataCite.setDoiPrefix(Constants.TEST_DOI_PREFIX);
@@ -139,6 +141,7 @@ public class OverviewActionIT {
     RegistrationManager mockRegistrationManagerEZID = mock(RegistrationManager.class);
 
     Organisation oEZID = new Organisation();
+    oEZID.setKey(ORGANISATION_KEY.toString());
     oEZID.setAgencyAccountPrimary(true);
     oEZID.setName("GBIF");
     oEZID.setDoiPrefix(Constants.EZID_TEST_DOI_SHOULDER);
@@ -219,6 +222,9 @@ public class OverviewActionIT {
     action.reserveDoi();
     assertNotNull(r.getDoi());
     assertEquals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION, r.getIdentifierStatus());
+    assertNotNull(r.getDoiOrganisationKey());
+    assertEquals(ORGANISATION_KEY, r.getDoiOrganisationKey());
+    assertEquals(1, r.getEml().getAlternateIdentifiers().size()); // alternate ids updated
     LOG.info("DOI was reserved successfully, DOI=" + r.getDoi());
   }
 
@@ -231,7 +237,9 @@ public class OverviewActionIT {
     action.setReserveDoi("true");
     action.reserveDoi();
     assertNotNull(r.getDoi());
+    assertEquals(ORGANISATION_KEY, r.getDoiOrganisationKey());
     assertEquals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION, r.getIdentifierStatus());
+    assertEquals(1, r.getEml().getAlternateIdentifiers().size()); // alternate ids updated
     LOG.info("DOI was reserved successfully, DOI=" + r.getDoi());
 
     DOI existingDOI = new DOI(r.getDoi().toString());
@@ -240,11 +248,15 @@ public class OverviewActionIT {
     // reset DOI
     r.setDoi(null);
     r.setIdentifierStatus(IdentifierStatus.UNRESERVED);
+    r.setDoiOrganisationKey(null);
+    r.getEml().getAlternateIdentifiers().clear();
 
     action.reserveDoi();
     // make sure the existing DOI was reused
     assertEquals(existingDOI.getDoiName(), r.getDoi().getDoiName());
+    assertEquals(ORGANISATION_KEY, r.getDoiOrganisationKey());
     assertEquals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION, r.getIdentifierStatus());
+    assertEquals(1, r.getEml().getAlternateIdentifiers().size()); // alternate ids updated
     LOG.info("Existing DOI was reused successfully, DOI=" + existingDOI.getDoiName());
   }
 
@@ -257,14 +269,18 @@ public class OverviewActionIT {
     action.setDeleteDoi("true");
     action.reserveDoi();
     assertNotNull(r.getDoi());
+    assertEquals(ORGANISATION_KEY, r.getDoiOrganisationKey());
     assertEquals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION, r.getIdentifierStatus());
+    assertEquals(1, r.getEml().getAlternateIdentifiers().size()); // alternate ids updated
     assertFalse(r.isAlreadyAssignedDoi());
     LOG.info("DOI was reserved successfully, DOI=" + r.getDoi());
 
     action.deleteDoi();
     // make sure the reserved DOI was deleted
     assertNull(r.getDoi());
+    assertNull(r.getDoiOrganisationKey());
     assertEquals(IdentifierStatus.UNRESERVED, r.getIdentifierStatus());
+    assertEquals(0, r.getEml().getAlternateIdentifiers().size()); // alternate ids updated
     assertFalse(r.isAlreadyAssignedDoi());
     LOG.info("Existing DOI was deleted successfully");
   }
@@ -280,6 +296,7 @@ public class OverviewActionIT {
     // mock resource being assigned DOI
     DOI assignedDoi = new DOI("10.5072/bclona1");
     r.setDoi(assignedDoi);
+    r.setDoiOrganisationKey(ORGANISATION_KEY);
     r.setIdentifierStatus(IdentifierStatus.PUBLIC);
     User user = new User();
     user.setEmail("jsmith@gbif.org");
@@ -295,12 +312,18 @@ public class OverviewActionIT {
     DOI reserved = r.getDoi();
     assertNotNull(reserved);
     assertEquals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION, r.getIdentifierStatus());
+    assertEquals(ORGANISATION_KEY, r.getDoiOrganisationKey());
+    assertEquals(1, r.getEml().getAlternateIdentifiers().size()); // alternate ids updated
+    assertEquals(reserved.toString(), r.getEml().getAlternateIdentifiers().get(0));
     LOG.info("DOI was reserved successfully, DOI=" + reserved.toString());
 
     action.deleteDoi();
     // make sure the reserved DOI was deleted, and previous DOI reassigned
     assertEquals(assignedDoi.getDoiName(), r.getDoi().getDoiName());
+    assertEquals(ORGANISATION_KEY, r.getDoiOrganisationKey());
     assertEquals(IdentifierStatus.PUBLIC, r.getIdentifierStatus());
+    assertEquals(1, r.getEml().getAlternateIdentifiers().size()); // alternate ids updated
+    assertEquals("doi:10.5072/bclona1", r.getEml().getAlternateIdentifiers().get(0));
     assertTrue(r.isAlreadyAssignedDoi());
     LOG.info("Existing DOI was deleted successfully");
 
@@ -327,6 +350,7 @@ public class OverviewActionIT {
     DOI assignedDoi = DOIUtils.mintDOI(type,
       (type.equals(DOIRegistrationAgency.EZID) ? Constants.EZID_TEST_DOI_SHOULDER : Constants.TEST_DOI_PREFIX));
     r.setDoi(assignedDoi);
+    r.setDoiOrganisationKey(ORGANISATION_KEY);
     r.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
     assertTrue(r.getDoi() != null && r.isPubliclyAvailable());
     // reset action errors, .clear() doesn't work
@@ -352,18 +376,24 @@ public class OverviewActionIT {
 
     action.reserveDoi();
     assertNotNull(r.getDoi());
+    assertEquals(ORGANISATION_KEY, r.getDoiOrganisationKey());
+    assertEquals(1, r.getEml().getAlternateIdentifiers().size());
     DOI reserved1 = new DOI(r.getDoi().toString());
 
     // reset
     r.setDoi(null);
+    r.setDoiOrganisationKey(null);
     r.setIdentifierStatus(IdentifierStatus.UNRESERVED);
+    r.getEml().getAlternateIdentifiers().clear();
 
     action.reserveDoi();
     DOI reserved2 = new DOI(r.getDoi().toString());
 
     // reset
     r.setDoi(null);
+    r.setDoiOrganisationKey(null);
     r.setIdentifierStatus(IdentifierStatus.UNRESERVED);
+    r.getEml().getAlternateIdentifiers().clear();
 
     action.reserveDoi();
     DOI reserved3 = new DOI(r.getDoi().toString());
@@ -396,12 +426,24 @@ public class OverviewActionIT {
     assertTrue(r.getIdentifierStatus().equals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION));
     assertTrue(r.isAlreadyAssignedDoi());
     assertTrue(r.isPubliclyAvailable());
+    assertEquals(ORGANISATION_KEY, r.getDoiOrganisationKey());
+
+    // mock resource having 3 alternate identifier DOIs
+    r.getEml().getAlternateIdentifiers().clear();
+    r.getEml().getAlternateIdentifiers().add(reserved1.toString());
+    r.getEml().getAlternateIdentifiers().add(reserved2.toString());
+    r.getEml().getAlternateIdentifiers().add(reserved3.toString());
+    assertEquals(3, r.getEml().getAlternateIdentifiers().size());
 
     // delete!
     action.setDelete("true");
     assertEquals("home", action.delete());
     assertEquals(PublicationStatus.DELETED, r.getStatus());
     assertEquals(IdentifierStatus.UNRESERVED, r.getIdentifierStatus());
+    assertEquals(ORGANISATION_KEY, r.getDoiOrganisationKey());
+
+    // should still be 2 alternate identifiers left (only the reserved DOI gets deleted from alternate identifiers list)
+    assertEquals(2, r.getEml().getAlternateIdentifiers().size());
 
     // undelete!
     action.setUndelete("true");
@@ -412,6 +454,8 @@ public class OverviewActionIT {
       assertEquals("success", action.undelete());
       assertEquals(PublicationStatus.PUBLIC, r.getStatus());
       assertTrue(r.getIdentifierStatus().equals(IdentifierStatus.PUBLIC));
+      assertEquals(ORGANISATION_KEY, r.getDoiOrganisationKey());
+      assertEquals(2, r.getEml().getAlternateIdentifiers().size());
     }
   }
 }

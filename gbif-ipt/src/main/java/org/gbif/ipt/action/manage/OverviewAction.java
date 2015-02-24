@@ -255,6 +255,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           }
 
           resource.setStatus(PublicationStatus.DELETED);
+          resource.updateAlternateIdentifierForDOI();
           saveResource();
           addActionMessage(getText("manage.overview.resource.deleted", new String[] {resource.toString()}));
         } else {
@@ -742,6 +743,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
             if (doiData != null && (doiData.getStatus().equals(DoiStatus.REGISTERED) || doiData.getStatus()
               .equals(DoiStatus.RESERVED))) {
               resource.setDoi(existingDoi);
+              resource.setDoiOrganisationKey(registrationManager.findPrimaryDoiAgencyAccount().getKey());
               resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
               resource.updateAlternateIdentifierForDOI();
               saveResource();
@@ -786,6 +788,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     DataCiteMetadata dataCiteMetadata = DataCiteMetadataBuilder.createDataCiteMetadata(doi, resource);
     registrationManager.getDoiService().reserve(doi, dataCiteMetadata);
     resource.setDoi(doi);
+    resource.setDoiOrganisationKey(registrationManager.findPrimaryDoiAgencyAccount().getKey());
     resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
     resource.updateAlternateIdentifierForDOI();
     saveResource();
@@ -804,9 +807,21 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     Preconditions.checkNotNull(registrationManager.getDoiService());
     // delete reserved DOI for this resource, optionally reassign DOI, and update EML alternate identifier list
     registrationManager.getDoiService().delete(reservedDoi);
-    resource.setDoi((reassignedDoi == null) ? null : reassignedDoi);
-    resource.setIdentifierStatus((reassignedDoi == null) ? IdentifierStatus.UNRESERVED : IdentifierStatus.PUBLIC);
-    resource.updateAlternateIdentifierForDOI();
+
+    // reset resource DOI
+    resource.setIdentifierStatus(IdentifierStatus.UNRESERVED);
+    resource.updateAlternateIdentifierForDOI(); // remove DOI from list of alternate ids
+    resource.setDoi(null);
+    resource.setDoiOrganisationKey(null);
+
+    // reassign resource DOI if necessary
+    if ((reassignedDoi != null)) {
+      resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
+      resource.setDoi(reassignedDoi);
+      resource.updateAlternateIdentifierForDOI(); // add DOI to list of alternate ids
+      resource.setDoiOrganisationKey(registrationManager.findPrimaryDoiAgencyAccount().getKey());
+    }
+
     saveResource();
   }
 

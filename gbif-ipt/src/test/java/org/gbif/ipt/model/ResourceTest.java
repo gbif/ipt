@@ -405,6 +405,44 @@ public class ResourceTest {
     assertEquals("0.12", resource.getNextVersion().toPlainString());
   }
 
+  /**
+   * Similar to testTrailingZeros, but using major version numbers also.
+   */
+  @Test
+  public void testTrailingZerosWithMajorVersionNumber() {
+    Resource resource = getResource();
+    resource.getVersionHistory().clear();
+
+    // simulate publication of one version
+    resource.setEmlVersion(new BigDecimal("4.9"));
+    resource.setLastPublished(new Date());
+    VersionHistory history = new VersionHistory(new BigDecimal("4.9"), new Date(), PublicationStatus.PRIVATE);
+    resource.addVersionHistory(history);
+
+    // simulate publication of another
+    resource.setEmlVersion(new BigDecimal("4.10"));
+    resource.setLastPublished(new Date());
+    history = new VersionHistory(new BigDecimal("4.10"), new Date(), PublicationStatus.PRIVATE);
+    resource.addVersionHistory(history);
+
+    assertEquals("4.9", resource.getReplacedEmlVersion().toPlainString());
+    assertEquals("4.10", resource.getEmlVersion().toPlainString());
+
+    // ensure next version determined correctly
+    assertEquals("4.11", resource.getNextVersion().toPlainString());
+
+    resource.setEmlVersion(new BigDecimal("4.11"));
+    resource.setLastPublished(new Date());
+    history = new VersionHistory(new BigDecimal("4.11"), new Date(), PublicationStatus.PRIVATE);
+    resource.addVersionHistory(history);
+
+    assertEquals("4.10", resource.getReplacedEmlVersion().toPlainString());
+    assertEquals("4.11", resource.getEmlVersion().toPlainString());
+
+    // ensure next version determined correctly
+    assertEquals("4.12", resource.getNextVersion().toPlainString());
+  }
+
   @Test
   public void testSetEmlVersion() {
     Resource resource = getResource();
@@ -425,6 +463,13 @@ public class ResourceTest {
 
     assertEquals("1.19", resource.getReplacedEmlVersion().toPlainString());
     assertEquals("1.20", resource.getEmlVersion().toPlainString());
+
+    // now imaging publishing fails before it gets the chance to finish (e.g. registry update fails)
+    // simulate restoring version 1.19
+    resource.setEmlVersion(new BigDecimal("1.19"));
+    assertEquals("1.19", resource.getReplacedEmlVersion().toPlainString());
+    assertEquals("1.19", resource.getEmlVersion().toPlainString());
+    assertEquals("1.19", resource.getEml().getEmlVersion().toPlainString());
   }
 
   @Test
