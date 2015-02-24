@@ -446,7 +446,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     if (archiveFile.hasTerm(basisOfRecord)) {
       addMessage(Level.INFO, "Validating " + archiveFile.getTitle() + ": basisOfRecord must always be present and its "
                              + "value must match the Darwin Core Type Vocabulary."
-                             + "Depending on the number of records, this can take a while.");
+                             + " Depending on the number of records, this can take a while.");
 
       // find index of basisOfRecord
       int index = archiveFile.getField(basisOfRecord).getIndex();
@@ -556,7 +556,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       addMessage(Level.ERROR,
         "Archive validation failed, because required term basisOfRecord was not mapped in the occurrence core");
       throw new GeneratorException("Can't validate DwC-A for resource " + resource.getShortname()
-                                   + "Required term basisOfRecord was not mapped in the occurrence core");
+                                   + ". Required term basisOfRecord was not mapped in the occurrence core");
     }
 
     // validate the core file if a) the record identifier (e.g. occurrenceID, taxonID) has been mapped
