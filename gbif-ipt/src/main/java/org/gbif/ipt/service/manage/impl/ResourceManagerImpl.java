@@ -89,6 +89,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -124,6 +125,7 @@ import com.lowagie.text.rtf.RtfWriter2;
 import com.thoughtworks.xstream.XStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
 import org.apache.log4j.Level;
 import org.xml.sax.SAXException;
 
@@ -963,6 +965,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    *
    * @return loaded Resource
    */
+  @VisibleForTesting
   protected Resource loadFromDir(File resourceDir) {
     return loadFromDir(resourceDir, new ActionLogger(log, new BaseAction(textProvider, cfg, registrationManager)));
   }
@@ -1018,11 +1021,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           standardizeSubtype(resource);
         }
 
-        // set IdentifierStatus if null
-        if (resource.getIdentifierStatus() == null) {
-          resource.setIdentifierStatus(IdentifierStatus.UNRESERVED);
-        }
-
         // add proper source file pointer
         for (Source src : resource.getSources()) {
           src.setResource(resource);
@@ -1031,6 +1029,24 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             frSrc.setFile(dataDir.sourceFile(resource, frSrc));
           }
         }
+
+        // pre v2.2 resources: set IdentifierStatus if null
+        if (resource.getIdentifierStatus() == null) {
+          resource.setIdentifierStatus(IdentifierStatus.UNRESERVED);
+        }
+
+        // pre v2.2 resources: convert resource version from integer to major_version.minor_version style
+        BigDecimal converted = convertVersion(resource);
+        if (converted != null) {
+          resource.setEmlVersion(converted);
+        }
+
+        // pre v2.2 resources: construct a VersionHistory for last published version (if appropriate)
+        VersionHistory history = constructVersionHistoryForLastPublishedVersion(resource);
+        if (history != null) {
+          resource.addVersionHistory(history);
+        }
+
         // load eml
         loadEml(resource);
         log.debug("Read resource configuration for " + shortname);
@@ -1040,6 +1056,43 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         throw new InvalidConfigException(TYPE.RESOURCE_CONFIG,
           "Cannot read resource configuration for " + shortname + ": " + e.getMessage());
       }
+    }
+    return null;
+  }
+
+  /**
+   * Convert integer version number to major_version.minor_version version number. Please note IPTs before v2.2 used
+   * integer-based version numbers.
+   *
+   * @param resource resource
+   *
+   * @return converted version number, or null if no conversion happened
+   */
+  protected BigDecimal convertVersion(Resource resource) {
+    if (resource.getEmlVersion() != null) {
+      BigDecimal version = resource.getEmlVersion();
+      if (version.scale() == 0) {
+        BigDecimal majorMinorVersion = version.setScale(1, RoundingMode.CEILING);
+        log.debug("Converted version [" + version.toPlainString() + "] to [" + majorMinorVersion.toPlainString() + "]");
+        return majorMinorVersion;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Construct VersionHistory for last published version of resource, if resource has been published but had no
+   * VersionHistory. Please note IPTs before v2.2 had no list of VersionHistory.
+   *
+   * @param resource resource
+   *
+   * @return VersionHistory, or null if no VersionHistory needed to be created.
+   */
+  protected VersionHistory constructVersionHistoryForLastPublishedVersion(Resource resource) {
+    if (resource.isPublished() && resource.getVersionHistory().isEmpty()) {
+      VersionHistory vh = new VersionHistory(resource.getEmlVersion(), resource.getLastPublished(), resource.getStatus());
+      vh.setRecordsPublished(resource.getRecordsPublished());
+      return vh;
     }
     return null;
   }

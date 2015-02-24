@@ -563,6 +563,7 @@ public class ResourceManagerImplTest {
     resourceManager.create(shortName, DATASET_TYPE_OCCURRENCE_IDENTIFIER, creator);
     // get added resource.
     Resource addedResource = resourceManager.get(shortName);
+    addedResource.setEmlVersion(Constants.INITIAL_RESOURCE_VERSION);
     // indicate it is a dataset subtype Specimen
     addedResource.setSubtype(DATASET_SUBTYPE_SPECIMEN_IDENTIFIER);
 
@@ -1382,5 +1383,65 @@ public class ResourceManagerImplTest {
     // ensure reconstructed resource uses eml-1.1.xml
     assertEquals("Title for version 1.1", reconstructed.getEml().getTitle()); // changed
     assertEquals("Test description for version 1.1", reconstructed.getEml().getDescription()); // changed
+  }
+
+  @Test
+  public void testConvertVersion() throws ParserConfigurationException, SAXException, IOException {
+    Resource r = new Resource();
+    r.setEmlVersion(BigDecimal.valueOf(4));
+    assertEquals(0, r.getEmlVersion().scale());
+    assertEquals(4, r.getEmlVersion().intValueExact());
+    // do conversion 4 -> 4.0
+    BigDecimal converted = getResourceManagerImpl().convertVersion(r);
+    assertEquals(new BigDecimal("4.0"), converted);
+    // ensure conversions aren't repeated
+    r.setEmlVersion(converted);
+    assertNull(getResourceManagerImpl().convertVersion(r));
+  }
+
+  @Test
+  public void testConstructVersionHistoryForLastPublishedVersion() throws ParserConfigurationException, SAXException, IOException {
+    Resource r = new Resource();
+    r.setEmlVersion(new BigDecimal("4.0"));
+    r.setStatus(PublicationStatus.PUBLIC);
+    r.setRecordsPublished(100);
+    Date lastPublished = new Date();
+    r.setLastPublished(lastPublished);
+
+    VersionHistory history = getResourceManagerImpl().constructVersionHistoryForLastPublishedVersion(r);
+    assertNotNull(history);
+    assertEquals("4.0", history.getVersion());
+    assertEquals(lastPublished, history.getReleased());
+    assertEquals(PublicationStatus.PUBLIC, history.getPublicationStatus());
+    assertEquals(100, history.getRecordsPublished());
+
+    // properties not set
+    assertNull(history.getDoi());
+    assertNull(history.getStatus());
+    assertNull(history.getChangeSummary());
+    assertNull(history.getModifiedBy());
+  }
+
+  /**
+   * Simulates what happens to a resource when upgrading an IPT to IPT v2.2:
+   * Ensure resource created using IPT v2.1 loads successfully.
+   * Specifically, it's important the version number gets converted from integer to major_version.minor_version format,
+   * and that the VersionHistory gets populated with the last published version.
+   */
+  @Test
+  public void testLoadPre2Point2Resource()
+    throws ParserConfigurationException, SAXException, IOException, InvalidFilenameException, ImportException,
+    AlreadyExistingException {
+    // create new resource from configuration file (resource.xml) that does not have version history
+    File resourceXML = FileUtils.getClasspathFile("resources/res1/resource_v1_1.xml");
+    when(mockedDataDir.resourceFile(anyString(), anyString())).thenReturn(resourceXML);
+    File emlXML = FileUtils.getClasspathFile("resources/res1/eml.xml");
+    when(mockedDataDir.resourceEmlFile(anyString(), any(BigDecimal.class))).thenReturn(emlXML);
+    ResourceManagerImpl resourceManager = getResourceManagerImpl();
+
+    Resource loaded = resourceManager.loadFromDir(resourceDir);
+    assertEquals("19.0", loaded.getEmlVersion().toPlainString());
+    assertEquals(1, loaded.getVersionHistory().size());
+    assertEquals(IdentifierStatus.UNRESERVED, loaded.getIdentifierStatus());
   }
 }
