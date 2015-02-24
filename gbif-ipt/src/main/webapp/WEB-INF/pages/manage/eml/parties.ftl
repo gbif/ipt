@@ -81,7 +81,11 @@ $(document).ready(function(){
           </#if>
         </div>
         <div class="halfcolumn">
-          <@input name="eml.associatedParties[${item_index}].userIds[0].identifier" help="i18n" i18nkey="eml.contact.identifier" />
+          <#if eml.associatedParties[item_index].userIds[0]??>
+            <@input name="eml.associatedParties[${item_index}].userIds[0].identifier" help="i18n" i18nkey="eml.contact.identifier" value="${eml.associatedParties[item_index].userIds[0].identifier}"/>
+          <#else>
+            <@input name="eml.associatedParties[${item_index}].userIds[0].identifier" help="i18n" i18nkey="eml.contact.identifier" value=""/>
+          </#if>
         </div>
         <div class="halfcolumn">
           <@select name="eml.associatedParties[${item_index}].role" i18nkey="eml.associatedParties.role" help="i18n" value="${eml.associatedParties[item_index].role!}" options=roles />
