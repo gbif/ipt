@@ -1,32 +1,29 @@
+#X-Generator: crowdin.com
+# UTF-8 English übersetzen
 ##
-# Notes to developers:
-# Please maintain sensible groupings within this file (Do not use Attesoro to work in this file)
-# Please consider promoting generic messages out of specific sections for better reuse
-# Please consider that people will be translating this file and simplifying this for them
-#   is a priority
-##
-
-##
-# Recommended practice of translation without using Attesoro:
+# Introduction (to IPT translation):
 #
-# Attesoro breaks the grouping of this properties file and makes maintenance cumbersome among
-# language groups. We recommend using any text editors with the native2ascii command-line tools
-# to work on the translation tasks. native2ascii is a tool coming with default JDK installation.
+# The preferred way of translating the IPT is using https://crowdin.com/project/gbif-ipt
+# New volunteers are always welcome. To join, just login to Crowdin and request to join the IPT project.
 #
-# To add/update translation to properties files, using Japanese:
-# 1. Convert the properties file to UTF-8 so characters are displayed in non-escaped form and can be
-#    read by traslators.
+# To Crowdin managers, please note:
 #
-#   $ native2ascii -reverse -encoding UTF-8 ApplicationResources_ja.properties ApplicationResources_ja.native
+# In Crowdin, translations are always exported in the same encoding as the original source file.
+# We want Crowdin to export translations using UTF-8, but since the IPT Resource Bundle uses ISO-8859-1, always upload
+# this file (ApplicationResource_en.properties) to Crowdin saved as UTF-8 (with BOM). To be sure the encoding is UTF-8
+# add a comment to the top of this file having a symbol from UTF-8 such as a Germanic umlaut.
 #
-# 2. Find the property and edit the translation.
-# 3. When finished, convert the properties file again to ASCII:
+# Then to update the IPT's Resource Bundle, rebuild the translations in Crowdin and export them (they will be in UTF-8).
+# Save these translations as .native properties files, and then convert them into IS0-8859-1. For Spanish for example:
 #
-#   $ native2ascii -encoding UTF-8 ApplicationResources_ja.native ApplicationResources_ja.properties
+# $ native2ascii -encoding UTF-8 ApplicationResources_es.native ApplicationResources_es.properties
 #
-# 4. Commit the converted file to IPT code repository.
+# Lastly, update the corresponding files in the Resource Bundle using the converted (ISO-8859-1/ASCII) files.
 #
-# This way the grouping is kept and is easier for others to find relevant translations.
+# To developers, please note:
+#
+# When working on this file, please maintain sensible groupings (contexts) within this file. Also please consider ways
+# to simplify the lives of translators, such as by parsing generic messages out of specific sections for better reuse.
 ##
 
 ####
@@ -49,6 +46,9 @@ basic.yes=はい
 basic.no=いいえ
 basic.showMore=以上
 basic.showLess=以下
+basic.show=表示
+basic.hide=非表示
+basic.none=None
 
 # buttons
 button.add=追加
@@ -61,11 +61,15 @@ button.create=作成する
 button.edit=編集
 button.back=戻る
 button.register=登録
+button.reserve.new=新たに保存する
+button.reserve=保存する
+button.undelete=元に戻す
 button.publish=公開する
 button.public=公開
 button.updateRegistration=登録更新
 button.update=更新
 button.private=プライベート
+button.view=一覧
 button.preview=プレビュー
 button.import=インポート
 button.reload=リロード
@@ -83,7 +87,7 @@ button.install=インストール
 ####
 # footer
 footer.version=バージョン
-footer.projectHome=IPTプロジェクトについて
+footer.projectHome=About the IPT
 footer.useManual=ユーザーマニュアル
 footer.bugReport=バグレポート
 footer.featureRequest=新項目のリクエスト
@@ -116,7 +120,7 @@ pager.previous=前にもどる
 pager.next=次にすすむ
 
 ####
-# DATA MODEL PROPERTIES=
+# DATA MODEL PROPERTIES
 ####
 
 # user
@@ -157,25 +161,26 @@ vocabulary.terms.alt=別名
 
 # resource
 resource.shortname=省略名
+resource.shortname.help=ショートネームはIPTインストール時にはリソースの識別子として、インターネット経由でリソースにアクセスする際にはURLのパラメーターとして使われます。ショートネームはアルファベットとハイフンまたはアンダーバーのみとしてください。
 resource.coreType=タイプ
 resource.coreType.selection=タイプを１つ選択してください。
 manage.resource.create.coreType=タイプ
 manage.resource.create.coreType.selection=タイプ（オプション）を１つ選択してください。
-manage.resource.create.coreType.help=リソースのタイプ。保存リソースからロードした場合は自動的にタイプが決まり、選択しても上書きされてしまいます。<ul><li><b>データ（オカレンス）：</br>リソースの基本的なデータは自然界に見出された観察データあるいはコレクションの標本です。<br /></li><b>チェックリスト:</b>データは生物分類名です。<br /></li><li><b>メタデータ：</b>データセットに関する情報で、実際のデータは入らない。メタデータは電子化されていないコレクションのデータを提供することができる<br /></li><li><b>その他：</b>その他のリソースタイプ<br /></li></ul>
+manage.resource.create.coreType.help=リソースのタイプ。保存リソースからロードした場合は自動的にタイプが決まり、選択しても上書きされてしまいます。<ul><li><b>データ（オカレンス）：</br>リソースの基本的なデータは自然界に見出された観察データあるいはコレクションの標本です。<br /></li><b>チェックリスト\:</b>データは生物分類名です。<br /></li><li><b>メタデータ：</b>データセットに関する情報で、実際のデータは入らない。メタデータは電子化されていないコレクションのデータを提供することができる<br /></li><li><b>その他：</b>その他のリソースタイプ<br /></li></ul>
 resource.subtype=サブタイプ
 resource.status.private=プライベート（非公開）
 resource.status.public=公開
 resource.status.registered=登録済み
+resource.status.deleted=削除しましたが公開されています。
 resource.creator.firstname=名
 resource.creator.lastname=姓
 resource.creator.email=電子メール
 resource.coreType.help=リソースのタイプ。このフィールドの値はコアマッピングに依存しており、Darwin Core マッピングの後には編集できません。
-resource.subtype.help=リソースのサブタイプ。このフィールドのオプションはTypeフィールドに依存して変わります。<ul><li><b>Taxonomic Authority:</b> a taxonomic checklist that is authoritative in its classification and synonymy<br /></li><li><b>Nomenclator Authority:</b> a nomenclatoral checklist that is authoritative in the pure names and publication information<br /></li><li><b>Inventory Thematic:</b> a thematic checklist that has a theme for grouping names, e.g. parasites of elephants<br /></li><li><b>Inventory Regional:</b> a regional checklist that has a regional commonality in grouping names, e.g. species in a protected area<br /></li><li><b>Global Species Dataset:</b> a taxonomic checklist with a global, spatial coverage. This subtype is used in particular by the catalogue of life to assemble its aggregated<br /></li><li><b>Derived from Occurrence:</b> a taxonomic checklist that has been derived from data that was originally occurrence data<br /></li><li><b>Specimen:</b> Specimen data. Possible museum collection<br /></li><li><b>Observation:</b> Observation data. Possible monitoring and field observations<br /></li></ul>
+resource.subtype.help=リソースのサブタイプ。このフィールドのオプションはTypeフィールドに依存して変わります。<ul><li><b>Taxonomic Authority\:</b> a taxonomic checklist that is authoritative in its classification and synonymy<br /></li><li><b>Nomenclator Authority\:</b> a nomenclatoral checklist that is authoritative in the pure names and publication information<br /></li><li><b>Inventory Thematic\:</b> a thematic checklist that has a theme for grouping names, e.g. parasites of elephants<br /></li><li><b>Inventory Regional\:</b> a regional checklist that has a regional commonality in grouping names, e.g. species in a protected area<br /></li><li><b>Global Species Dataset\:</b> a taxonomic checklist with a global, spatial coverage. This subtype is used in particular by the catalogue of life to assemble its aggregated<br /></li><li><b>Derived from Occurrence\:</b> a taxonomic checklist that has been derived from data that was originally occurrence data<br /></li><li><b>Specimen\:</b> Specimen data. Possible museum collection<br /></li><li><b>Observation\:</b> Observation data. Possible monitoring and field observations<br /></li></ul>
 resource.subtype.selection=サブタイプを選択してください
 resource.subtype.none=サブタイプなし
-resource.updateFrequency.selection=更新頻度を選択してください
 resource.updateFrequency=更新頻度
-resource.updateFrequency.help=最初のデータセットが登録されてからデータの更新や追加の頻度。毎日、毎週、毎月、2年毎、毎年の中から選択してください。 <ul><li><b>Annually:</b> updated 1 time each year<br /></li><li><b>As needed:</b> updated as needed<br /></li><li><b>Biannually:</b> updated 2 times each year<br /></li><li><b>Continually:</b> updated continually<br /></li><li><b>Daily:</b> updated 1 time each day<br /></li><li><b>Irregular:</b> updated at irregular intervals<br /></li><li><b>Monthly:</b> updated 1 time each month<br /></li><li><b>Not planned:</b> further updates are not planned<br /></li><li><b>Weekly:</b> updated 1 time each week<br /></li><li><b>Unknown:</b>further updates may still happen, but it is not known for sure<br /></li><li><b>Other maintenance period:</b> updated according to some other interval.<br /></li></ul>
+resource.updateFrequency.help=最初のデータセットが登録されてからデータの更新や追加の頻度。毎日、毎週、毎月、2年毎、毎年の中から選択してください。 <ul><li><b>Annually\:</b> updated 1 time each year<br /></li><li><b>As needed\:</b> updated as needed<br /></li><li><b>Biannually\:</b> updated 2 times each year<br /></li><li><b>Continually\:</b> updated continually<br /></li><li><b>Daily\:</b> updated 1 time each day<br /></li><li><b>Irregular\:</b> updated at irregular intervals<br /></li><li><b>Monthly\:</b> updated 1 time each month<br /></li><li><b>Not planned\:</b> further updates are not planned<br /></li><li><b>Weekly\:</b> updated 1 time each week<br /></li><li><b>Unknown\:</b>further updates may still happen, but it is not known for sure<br /></li><li><b>Other maintenance period\:</b> updated according to some other interval.<br /></li></ul>
 
 # sources
 source.name=ソース名
@@ -197,7 +202,7 @@ sqlSource.sqlLimited=データプレビュー用のSQL文を作成しました�
 fileSource.fieldsTerminatedByEscaped=フィールド/項目の区切り文字
 fileSource.fieldsTerminatedByEscaped.help=一行のフィールド/カラムを区切る１文字
 fileSource.fieldsEnclosedByEscaped=フィールドクオーテーション
-fileSource.fieldsEnclosedByEscaped.help=一行のフィールド/カラムを区切る１文字。空のことが多いが、CSVの時ダブルクオーテーションのオプションを使うと、すべてのフィールドがダブルクオーテーションの中に入ることになります。
+fileSource.fieldsEnclosedByEscaped.help=A single character that encloses every field/column in a row. Most often empty, but CSV files use a ". With this option, make sure that *all* of your fields are contained in quotes, not just those that are text. Please note that in the IPT newline characters (\n) or carriage returns (\r) cannot be enclosed by quotes and should be removed.
 fileSource.ignoreHeaderLines=ヘッダー行数
 fileSource.ignoreHeaderLines.help=データの取り込みの際、対象としないヘッダーの行数
 excelSource.sheets=選択したワークシート
@@ -220,13 +225,16 @@ validation.short={0} with at least {1} letters is required.
 validation.contains=The text may not contain the "{0}" symbol.
 validation.field.required=フィールド/項目
 validation.field.blank={0}は少なくとも２文字以上必要です。空白は許されません。
+validation.field.invalidSize={0} must have a length between {1} and {2} characters, check there are no blank spaces.
 validation.wrong.datatype={0}は不正なデータタイプの値にマップされています。
+validation.column.multipleTranslations=ソースカラム{0}には複数の翻訳が存在しています。混乱を防ぐために１つに限定してください。
 
 # user/config
 validation.email.required=メール必須
 validation.email.invalid=メール無効
 validation.firstname.required=名前必須
 validation.lastname.required=名字/姓は必須です。
+validation.password.reentered=Please reenter a valid password
 validation.password.required=最低４文字のパスワード必須
 validation.password2.wrong=パスワードが一致しません
 validation.baseURL.required=IPT　URL　必須
@@ -237,6 +245,16 @@ validation.organisation.password.required=パスワードが必要です。
 validation.organisation.alias.required=エイリアスが必要です。
 validation.organisation.password.invalid=無効なパスワードです。
 validation.organisation.key.required=リストから機関を１つ選んでください。
+validation.organisation.doiRegistrationAgency.required=DOIの登録機関が必要です。
+validation.organisation.agencyAccountUsername.required=登録機関アカウントのユーザー名が必要です。
+validation.organisation.agencyAccountPassword.required=登録機関アカウント パスワードが必要です。
+validation.organisation.doiPrefix.required=DOIのプレフィックスが必要です。
+validation.organisation.doiPrefix.invalid=DOI prefix must start with "10."
+validation.organisation.doiPrefix.ezid.invalid=EZID prefix must contain shoulder, e.g. "/FOO" in "10.1234/FOO"
+validation.organisation.doiPrefix.invalid.testMode=In test mode, typically the test DOI prefix is used\: 10.5072 for DataCite or 10.5072/FK2 for EZID
+validation.organisation.doiPrefix.invalid.productionMode=In production mode, the test DOI prefix cannot be used\: 10.5072 for DataCite or 10.5072/FK2 for EZID
+validation.organisation.agencyAccount.invalid=アカウントユーザー名パスワードの組み合わせが無効です
+validation.organisation.agencyAccount.cantAuthenticate=Authentication failed\! Please verify the DOI agency account is entered correctly and try again.
 
 # ipt
 validation.ipt.name.required=IPTタイトルが必要です。
@@ -253,7 +271,7 @@ validation.resource.shortname.required=省略名が必要です。
 validation.resource.shortname.invalid=無効な名前です。少なくとも３文字の英文字、番号、ハイフン、アンダースコアを使ってください。空白は無効です。
 validation.resource.shortname.exists=リソース{0}はすでに存在しています。
 validation.resource.shortname.title=タイトルが必要です。
-validation.resource.import.exception=インポートファイルエラー－　ファイルはダーウインコアフォーマットですか？http://tools.gbif.org/dwca-validator/　こちらのツールでチェックしてください。
+validation.resource.import.exception=インポートファイルエラー－　ファイルはダーウインコアフォーマットですか？http\://tools.gbif.org/dwca-validator/　こちらのツールでチェックしてください。
 
 # mappings
 validation.mapping.coreid.missing=Extension(拡張）にはコアレコードにリンクバックするためのIDが必要です。
@@ -266,13 +284,15 @@ validation.mapping.coreid.uuid.extensions.exist=generated UUIDをIDとして利�
 # eml
 validation.lastname.organisation.position=名字、機関、職の情報が必要です。
 validation.firstname.lastname=名前（ファーストネーム）を入力する時は、名字（ラストネーム）の入力が必須です。
+validation.personnel=担当者のディレクトリを指定する際には、担当者id も指定してください。
+validation.directory=担当者のIDを指定する時は担当者のディレクトリ（名簿）も指定してください。
 
 # errors
 error.header.title=Missing
 error.title=失敗しました。
 error.body=予期しないエラーが見つかりました。
 error.view.logs=IPTのログを見る
-error.report=あってはならないエラーを見つけた時には、bug reportまでお知らせください。<a href=http://code.google.com/p/gbif-providertoolkit/issues/entry?summary=IPT%20error>file a small bug report</a>for this exception?
+error.report=あってはならないエラーを見つけた時には、bug reportまでお知らせください。<a href\=http\://code.google.com/p/gbif-providertoolkit/issues/entry?summary\=IPT%20error>file a small bug report</a>for this exception?
 error.thanks=ありがとうございました。IPT開発チームより。
 error.details.title=技術上の詳細
 
@@ -280,19 +300,19 @@ error.details.title=技術上の詳細
 # GLOBAL SECTION
 ####
 login.title=ユーザーログイン
-login.intro=emailアドレスとIPTアカウントでログインしてください。<br/>未だアカウントが無い場合にはIPT管理責任者(Administrator)に連絡して作ってもらいましょう。
-login.forgottenpassword=パスワードを忘れましたか？IPT管理責任者(administrator)にリセットしてもらいましょう。
-login.forgottenpassword.mail.subject=IPTパスワード忘れました。
-login.forgottenpassword.mail.body={0}様、\n私のIPTアカウント{1}のパスワードを紛失してしまいました。\n IPT管理責任者(administrator)として、ユーザーアカウントパネルに記載されている私のログイン資格をemailで送ってくださいませんか？\n\nありがとうございます。\n{1}\n\n\n{2}
+login.intro=Please log into your IPT account with your email address.<br />If you don''t have an account yet, please ask the <a href\="mailto\:{0}">IPT administrator</a> to create one for you.
+login.forgottenpassword=Forgot your password? Please contact the <a href\="mailto\:{0}">IPT administrator</a> to reset it for you.
 account.title=あなたのIPTアカウント
 account.intro=あなたのIPTアカウント設定をここで変更することができます。リソースを管理することができるのは管理責任者(administratoｒ）です。
 account.email.cantChange=なんらかの理由でemailアドレスを変更しなくてはいけない時には、管理責任者(Administrator)に新規アカウントの作成と既存のアカウントの削除を依頼してください。Emailアドレスは一度作成した後、変更することはできません。
 404.title=ページが見つかりません。
 404.body=リクエストされたページは存在しません。
+410.title=リソースを削除しました。
+410.body=申し訳ありませんが、このリソースはパブリッシャーによって削除されましたされので、もう公開ダウンロードはできません。
 401.title=権限がありません。
 401.body=リクエストページを閲覧する権限がありません。閲覧権限のあるアカウントで<a href {0}>ログイン</a>してください。
 401.manager.title=管理者（Manager)ログインが必要です。
-401.manager.body=IPTのこの部分を使うためには管理者（manager)権限のユーザーとしてログインしなくてはいけません。Managerアカウントで<a href={0}>ログイン</a>するか、IPT管理責任者（administrator)にその権限を与えてもらうように頼んでください。</p>
+401.manager.body=IPTのこの部分を使うためには管理者（manager)権限のユーザーとしてログインしなくてはいけません。Managerアカウントで<a href\={0}>ログイン</a>するか、IPT管理責任者（administrator)にその権限を与えてもらうように頼んでください。</p>
 help.options=以下のオプションをクリックしてください。
 
 
@@ -308,12 +328,17 @@ portal.home.logo=ロゴ
 portal.home.organisation=機関
 portal.home.type=タイプ
 portal.home.records=レコード
+portal.home.doi=DOIハンドル
 portal.home.modified=最終更新日
+portal.home.modifiedBy=最終更新者
+portal.home.summary=変更の要約
 portal.home.last.publication=最終公開日
 portal.home.not.published=未公開
 portal.home.author=著者
 portal.login=ログイン
 portal.metadata.provider=メタデータ提供者
+portal.metadata.provider.intro=メタデータを記載した人
+portal.associatedParties.intro=他に、リソースに関連付けられていた人
 portal.resource.no.description=説明がありません
 portal.resource.summary=概要
 portal.resource.summary.keywords=キーワード
@@ -322,24 +347,50 @@ portal.resource.summary.geocoverage=地理的範囲
 portal.resource.version=バージョン
 portal.resource.version.latest=最新情報を見る
 portal.resource.latest=最新
+portal.resource.versions=バージョン
+portal.resource.versions.verbose=The table below shows only published versions of the resource that are publicly accessible.
+portal.resource.versions.verbose.manager=The table below shows all published versions of the resource, because you have access rights.
+portal.resource.downloads=ダウンロード
+portal.resource.downloads.verbose=DwC-A形式のリソース データまたは EML / RTF 形式のリソース メタデータの最新バージョンをダウンロード：
+portal.resource.downloads.metadataOnly.verbose=メタデータのみリソース のメタデータの最新版をEML または RTF としてダウンロード：
+portal.resource.publishedOn={0} によって公開
+portal.resource.latest.version=最新バージョン
+portal.resource.latest.version.warning=注意してください、これは、古いバージョンのデータセットです。
+portal.resource.cite=これを引用してください。
+portal.resource.cite.howTo=引用方法
+portal.resource.cite.help=研究者はこの研究内容を以下のように引用する必要があります。
+portal.resource.rights.help=研究者は権利に関する下記ステートメントを尊重する必要があります。
 portal.resource.download=ダウンロード
 portal.resource.records=レコード
 portal.resource.published.archive=ダーウインコアアーカイブ
 portal.resource.published.eml=EML
 portal.resource.published.rtf=RTF
+portal.resource.published.dwca=DwC A
 portal.resource.published.never=Never
+portal.resource.published.never.long=このデータセットは一度も公開されていません。
 portal.resource.organisation.key=GBIF登録
+portal.resource.gbif.page=GBIF のウェブサイトのページ
+portal.resource.gbif.page.short=GBIF
 portal.resource.organisation.name=機関
 portal.resource.organisation.node=担当ノード名
 portal.resource.metadata=リソースメタデータ
+portal.resource.metadata.verbose=EML ファイルとしてのメタデータ
+portal.resource.rtf.verbose=RTF ファイルとしてのメタデータ
+portal.resource.dwca.verbose=DwC ファイルとしてのデータ
 portal.resource.creator=リソース作成者
+portal.resource.creator.intro=リソースを作成した人
 portal.resource.name=名前
 portal.resource.contact=問い合わせ
+portal.resource.contact.intro=リソースに関する質問に答えることができる人
+portal.resource.contacts=連絡先
 portal.resource.tel=電話
 portal.publication.download.log=ダウンロードが完了しました。
 portal.publication.log=公開ログ
-portal.resource.eml.error.load=リソース{1}のEMFファイルバージョン#{0}はロードに失敗しました。
-portal.resource.eml.error.parse=リソース{1}のEMFファイルバージョン#{0}はパースできませんでした。
+portal.resource.eml.error.load=リソース{1}のEMFファイルバージョン\#{0}はロードに失敗しました。
+portal.resource.eml.error.parse=リソース{1}のEMFファイルバージョン\#{0}はパースできませんでした。
+portal.resource.otherFormats=リソース データは他の形式で入手可能です。
+portal.resource.warning.notPublic=The version you are looking at is {0} and cannot be seen by everyone\!
+portal.resource.warning.notLatest=The version you are looking at is not the latest version\! Please refer to the versions table to find the latest.
 
 ####
 # ADMIN SECTION
@@ -357,7 +408,12 @@ admin.home.publishResources.help=「公開」ボタンのように、すべて�
 admin.config.setup.title=IPTの設定
 admin.config.setup.welcome=IPTを使うためには設定ファイルがあるデイレクトリ（IPTデータデイレクトリ）を選ぶ必要があります。
 admin.config.setup.instructions=書き込み可能な空のフォルダ、あるいは既存のIPTデイレクトリを選んでください。システムの再起動の際に削除される/tmpのような他のプロセスに影響を与えるフォルダは決して選ばないようにしてください。このフォルダは障害時の復旧に備えて定期的にバックアップをとるべきです。
-admin.config.setup.examples=たとえば、Windowd環境なら"C:\\datadir", Linux, Mac OS XのようなUnix系の環境なら"/usr/datadir"がよいでしょう。
+admin.config.setup.examples=たとえば、Windowd環境なら"C\:\\datadir", Linux, Mac OS XのようなUnix系の環境なら"/usr/datadir"がよいでしょう。
+admin.config.setup.disclaimerPart1=Starting with this version, publishers are required to assign one of three machine-readable rights declarations to their data. If you cannot agree to publish your data under a CC0 1.0, CC-BY 4.0 or CC-BY-NC 4.0 declaration, we recommend that you continue to use the previous version of the IPT for now.
+admin.config.setup.disclaimerPart2=GBIF will begin working with existing publishers to implement and enforce this requirement across the network during 2015. If you are unable to choose one of the three options, you will not be able to register your dataset with GBIF or make it globally discoverable through GBIF.org. For background on this decision, <a href\="http\://www.gbif.org/terms/licences" target\="_blank">click here</a>.
+admin.config.setup.read=I have read and understood the disclaimer
+admin.config.setup.read.error=Before continuing please be sure you have read and understood the disclaimer
+admin.config.setup.disclaimer.title=Disclaimer
 admin.config.setup.datadir=データデイレクトリの絶対パス
 admin.config.setup.datadir.created=新規データデイレクトリの作成に成功しました。
 admin.config.setup.datadir.reused=既存のデータデイレクトリの指定に成功しました。
@@ -371,12 +427,12 @@ admin.config.setup2.administrator=Defaultの管理責任者(Administrator)
 admin.config.setup2.administrator.help=defaultの管理責任者(Administrator)アカウントのパスワードは後から変更ができますが、メールアドレスはユーザーを削除するか再登録しない限り変更できません。
 admin.config.setup2.mode.title=IPTモード
 admin.config.setup2.mode.help=IPTを実行するモードを選択してください。IPTモードは、ホストのリソースが公開検索用のインデックス作成の対象にするかどうかを決めるものです。GBIFは最初は登録プロセスを理解するためにテストモードで実行し、それから正式な公開用のデータ用にProductionモードで再度インストールすることを推奨します。<strong>注意</strong>：これは最終選択で取り消しができません。テストとProductionモードの切り替え時には、IPTの再インストールと設置ファイルの作成が必要です。
-admin.config.setup2.mode.test=<strong>Test</strong>モードはIPTの評価あるいはトレーニング用です。登録はあくまでもテスト登録であり、リソースのインデックスは作成されません。
-admin.config.setup2.mode.production=<strong>Production</strong>モードは正式な公開用です。リソースはGBIFに登録され、インデックスが作られます。
-admin.config.setup2.success=Congratulations! IPTの設定は完了しました。
+admin.config.setup2.mode.test=<strong>Test</strong> mode is for evaluating the IPT or running it in a training scenario. Resources registered with GBIF will go into a test registry and will never be indexed. All DOIs minted for resources in test mode should use a test prefix (e.g. 10.5072 for DataCite), meaning they are temporary.
+admin.config.setup2.mode.production=<strong>プロダクション</strong> モードは正式にリソースを公開するためのモードです。GBIF に登録されたリソース はGBIF レジストリに移動し、インデックスが作成されます。リソースに付けられたDOIは削除することができず、リソースはアクセス可能な状態に置かれます。
+admin.config.setup2.success=Congratulations\! IPTの設定は完了しました。
 admin.config.setup2.next=Administration sectionを最初によく調べてから新規管理者(manager)を作成し、リソースを取り扱う前に適切なExtension(拡張）をインストールしてください。
 admin.config.setup2.existingFound=An existing IPT data directory was found at the location provided. This existing directory with all of its previous contents will be used.
-admin.config.setup2.failed=管理責任者(Administrator)アカウントの設定は失敗しました。ユーザーファイル:{0}に書き込むことができません。
+admin.config.setup2.failed=管理責任者(Administrator)アカウントの設定は失敗しました。ユーザーファイル\:{0}に書き込むことができません。
 admin.config.setup2.datadir.notExist=defaultの管理責任者(administrator)を設定する前にデータデイレクトリを設定してください。
 admin.config.setup2.already.registered=IPTはすでに｛0｝モードで動いています。PRODUCTIONモードではIPT用の公開可能なbase URLを入力し、productionのチェックボックスが選択されていなくてはいけないことを忘れないでください。他のモードに変更したい場合には、サーバーを停止し、新たなデータデイレクトリを指定してインストールを再開してください。
 admin.config.setup2.nonadmin=非管理責任ユーザーとして既に存在します。
@@ -384,7 +440,7 @@ admin.config.setup2.mode=IPTモード
 admin.config.setup2.nomode=IPTのモードを選択してください。
 
 admin.config.setup3.title=IPT設定完了
-admin.config.setup3.welcome=Congratulations! IPTのインストールに成功しました。Please press continue to start using it.
+admin.config.setup3.welcome=Congratulations\! IPTのインストールに成功しました。Please press continue to start using it.
 
 admin.config.archivalMode=アーカイブモード
 admin.config.archivalMode.help=すべてのリソースを公開版として保存する場合にはアーカイブモードのボックスをチェックしてください。リソースの履歴を見ることができるようになります。チェックしないと旧版は最新版に上書きされてしまいます。デイスク容量が不足しないように注意しましょう。
@@ -416,21 +472,23 @@ admin.config.analyticsKey.help=Google AnalyticsはGoogleが提供するWeb appli
 admin.config.analyticsKey.error=不正なGoogle Analytics Keyです。
 
 admin.config.baseUrl=このIPTのBase URL
-admin.config.baseUrl.help=IPTをインストールしたルートのURL.リソースを登録したい時には、公にアクセスできるアドレスが必要です。たとえばhttp://tools.gbif.org/ipt.
+admin.config.baseUrl.help=IPTをインストールしたルートのURL.リソースを登録したい時には、公にアクセスできるアドレスが必要です。たとえばhttp\://tools.gbif.org/ipt.
 admin.config.baseUrl.changed=Base URLは正しく更新されました。
 admin.config.baseUrl.changed.reminder=ログインしたら、管理者ページの"Publish all resources"ボタンをクリックしてすべての登録データサービスのURLを更新してください。
 admin.config.baseUrl.inaccessible=Base URLはこのコンピュータからアクセスできるIPTを見つけることができませんでした。
 admin.config.baseUrl.invalidBaseURL=Base URLはインターネット上で見えるものでなくてはいけません。(e.g., localhost and 127.0.0.1 は無効です).
+admin.config.baseUrl.sameHostName=The machine name is used in the Base URL. Please be sure that your Base URL is visible on the Internet.
 
-admin.config.error.invalidBaseURL=Base URLはフォームが無効です。(e.g., http://www.my-institution.com/ipt)
+
+admin.config.error.invalidBaseURL=Base URLはフォームが無効です。(e.g., http\://www.my-institution.com/ipt)
 admin.config.error.invalidPort=ポート番号は整数型ではありません。
 admin.config.error.connectionRefused=プロキシホストにつながりません。
-admin.config.error.invalidProxyURL=プロキシURLは有効なフォームでありません。 (e.g., http://proxy.my-institution.com:8080)
+admin.config.error.invalidProxyURL=プロキシURLは有効なフォームでありません。 (e.g., http\://proxy.my-institution.com\:8080)
 admin.config.error.localhostURL=ローカルホスト利用,IPTはこのコンピュータ以外からは見ることができません。
 admin.config.error.datadir=IPTデータデレクトリのセットアップに失敗しました。
 
 admin.config.proxy=プロキシURL
-admin.config.proxy.help=サーバーがプロキシサーバー経由なら、ホストのアドレスとポート番号を一語で入力してください(e.g., http://proxy.gbif.org:8080).
+admin.config.proxy.help=サーバーがプロキシサーバー経由なら、ホストのアドレスとポート番号を一語で入力してください(e.g., http\://proxy.gbif.org\:8080).
 admin.config.proxy.error=プロキシURLが無効です。
 
 admin.config.registry.url=GBIF登録URL
@@ -449,7 +507,7 @@ admin.extension.coreTypes=コアタイプ
 admin.extension.extensions=Extension(拡張）
 admin.extension.no.coreTypes.installed=コアタイプがインストールされていません。
 admin.extension.no.coreTypes.installed.help=コアタイプとはデータレコード(オカーレンスと生物分類）のベースを提供するものです。
-admin.extension.no.coreTypes.installed.debug=コアタイプがインストールされていないので、データをマップすることができません。「コアタイプとExtension(拡張）」のリストからコアタイプをインストールしてください。もしリストが空でしたら、インターネット接続を確認して、サーバーがRegistry:{0}と通信できるようにしてください。
+admin.extension.no.coreTypes.installed.debug=コアタイプがインストールされていないので、データをマップすることができません。「コアタイプとExtension(拡張）」のリストからコアタイプをインストールしてください。もしリストが空でしたら、インターネット接続を確認して、サーバーがRegistry\:{0}と通信できるようにしてください。
 admin.extension.no.extensions.installed=「Extension(拡張）」がインストールされていません。
 admin.extension.no.extensions.installed.help=Extensions(拡張）によってコアタイプのレコードに追加データを関連づけることができます。各Extension は異なるタイプのデータである必要があります。以下のリストから必要なExtensionsを選んでインストールしてください。
 admin.extension.couldnt.install.coreTypes=コアタイプExtension(拡張）をインストールできませんでした。
@@ -459,14 +517,14 @@ admin.extension.install.error=Extension(拡張）{0} のインストール中に
 admin.extension.install.duplicate=rowType {0}のExtension(拡張）はすでにインストール済みです。このrowTypeをアンインストールしてやり直してください。
 admin.extension.delete.success=Extension(拡張）{0}を削除しました。
 admin.extension.delete.error=Extension(拡張）{0} を削除することができませんでした。
-admin.extensions.couldnt.load=Registry:{0}から登録したextensionをロードすることができませんでした。
-admin.extensions.vocabularies.couldnt.load=Registry:{0}から登録した語彙をロードすることができませんでした。
-admin.extensions.vocabulary.couldnt.load=Registry:{0}からデフォルト語彙{0}をロードすることができませんでした。
+admin.extensions.couldnt.load=Registry\:{0}から登録したextensionをロードすることができませんでした。
+admin.extensions.vocabularies.couldnt.load=Registry\:{0}から登録した語彙をロードすることができませんでした。
+admin.extensions.vocabulary.couldnt.load=Registry\:{0}からデフォルト語彙{0}をロードすることができませんでした。
 admin.startup.warnings=IPT開始警告。問題の診断にlogが役立ちます。問題を解決したらweb serverを再起動してください。
 admin.extensions.error.updating=用語{0}の更新エラー：{1}
 admin.extensions.vocabularies.updated={0} vocabularies have been updated.
 admin.extensions.vocabularies.unchanged={0} vocabularies have not been modified since last download.
-admin.extensions.vocabularies.errors={0} vocabularies produced an error when updating. Please consult logs!
+admin.extensions.vocabularies.errors={0} vocabularies produced an error when updating. Please consult logs\!
 admin.extensions.vocabularies.update.help=An extension can make use of lists of terms of predefined values, known as controlled vocabularies. Periodically these vocabularies may also change and require updating the in the IPT. Click on the button below to communicate with the GBIF Registry to retrieve new controlled vocabularies and updates to existing ones.
 
 admin.extension.title=ダーウインコアExtension(拡張）
@@ -485,10 +543,12 @@ admin.user.title.new=新規ユーザーアカウント
 admin.user.intro=メールアドレスはユーザーを特定するもので、一度設定した後は変更することができません。したがって新規アカウントを作成する時のメールアドレスは慎重に選んでください。変更が必要な時には、すでにあるアドレスを削除して、新しいアカウントを作成してください。
 admin.user.intro2=管理者(manager)権限のユーザーは新たなリソースを作成することができますが、他のユーザーが作成したリソースについては、このリソースの設定の中で許されていない限り編集（manage)することはできません。管理責任（Admin）権限を持つユーザーを沢山作ることはできますが、最低1名はシステムに残しておく必要があります。
 admin.user.added=ユーザーアカウントの作成に成功しました。
+admin.user.account.updated=Your user account was successfully updated.
 admin.user.changed=ユーザーを更新しました。
 admin.user.deleted=ユーザーを削除しました。
 admin.user.login=変更を有効にするには再度ログインしてください。
 admin.user.saveError=ユーザーを変更できませんでした。
+admin.user.account.saveError=Your user account change could not be applied.
 admin.user.exists=電子メールアドレス{0}のユーザーが既に存在します。
 admin.user.deleted.lastadmin=最後のAdminユーザーは削除できません。
 admin.user.deleted.lastmanager=以下のリソース{0}については管理者(manager)以外のユーザーは削除できません。
@@ -501,11 +561,12 @@ admin.user.wrong.email.password.combination=メールアドレスとパスワー
 
 admin.logs.warn="WARN"以上の深刻なメッセージ
 admin.logs.download=<a href {0}>ログファイル</a>.のダウンロード
-# used for unkown errors where the exception message (in English...) will be displayed=
-# use of this is to catch the errors that are not properly understood=
-admin.error.invalidConfiguration=無効な設定です: {0}
+# used for unkown errors where the exception message (in English...) will be displayed
+# use of this is to catch the errors that are not properly understood
+admin.error.invalidConfiguration=無効な設定です\: {0}
+admin.error.invalidConfiguration.doiAccount.activated=このIPTでDOIが登録できるようになったため、アーカイブのモードはオフにすることができません。DOI登録のために選択した DataCite/EZID アカウントを非アクティブ化することによってDOI登録を無効にすることができます。
 
-#admin - registration=
+#admin - registration
 admin.ipt.password=IPTパスワード
 admin.ipt.password.help=IPT instanceを更に更新するためにはパスワードが必要です。思い出してください。
 admin.ipt.name=IPTインストールのためのタイトル
@@ -523,18 +584,18 @@ admin.registration.validate=確認する、承認する
 admin.registration.validate.success=Base URLは有効です。
 admin.registration.validate.failed.development=Base URLは無効です。アクセス可能なURLかどうかチェックしてください。このIPTはテストモードで動いていますので、以下の登録フォームはとりあえず有効です。
 admin.registration.validate.failed=確認できませんでした。インターネット接続をチェックしてください。接続に問題がなければ、Base URLとProxy URL（必要ならば）を調べてください。
-admin.registration.intro=If you don''t see the desired organisation on the list, please contact the <a href=mailto:helpdesk@gbif.org?subject=To add an organisation to the GBRDS registry&amp;body=Dear GBIF Helpdesk,%0D%0A%0D%0AI am an IPT administrator. In order to have our IPT registered under our organisation, we need to see it on the list of organisations while configuring the IPT. As I know, our organisation needs to be endorsed first, so please help us with the process.%0D%0A%0D%0AWe would like our organisation to be endorsed by [Node name].%0D%0A%0D%0AOR%0D%0A%0D%0AWe need help determining the endorsing Node.%0D%0A%0D%0AHere is the full name of our organisation [your organisation name].%0D%0A%0D%0AHere are the details for our organisation''s technical contact:%0D%0A%0D%0A[technical contact first name, last name]%0D%0A[technical contact email]%0D%0A%0D%0AHere are the details for our organisation''s administrative contact:%0D%0A%0D%0A[administrative contact first name, last name]%0D%0A[administrative contact email]%0D%0A%0D%0AThanks!%0D%0ABest regards,%0D%0A[Your name]>GBIF Help Desk</a>.
-admin.registration.intro2=Once the IPT is registered, the registration cannot be changed except by contacting the <a href="mailto:helpdesk@gbif.org">GBIF Help Desk</a>. Please be sure that the registration information is complete and correct before saving.
+admin.registration.intro=If you don''t see the desired organisation on the list, please contact the <a href\=mailto\:helpdesk@gbif.org?subject\=To add an organisation to the GBRDS registry&amp;body\=Dear GBIF Helpdesk,%0D%0A%0D%0AI am an IPT administrator. In order to have our IPT registered under our organisation, we need to see it on the list of organisations while configuring the IPT. As I know, our organisation needs to be endorsed first, so please help us with the process.%0D%0A%0D%0AWe would like our organisation to be endorsed by [Node name].%0D%0A%0D%0AOR%0D%0A%0D%0AWe need help determining the endorsing Node.%0D%0A%0D%0AHere is the full name of our organisation [your organisation name].%0D%0A%0D%0AHere are the details for our organisation''s technical contact\:%0D%0A%0D%0A[technical contact first name, last name]%0D%0A[technical contact email]%0D%0A%0D%0AHere are the details for our organisation''s administrative contact\:%0D%0A%0D%0A[administrative contact first name, last name]%0D%0A[administrative contact email]%0D%0A%0D%0AThanks\!%0D%0ABest regards,%0D%0A[Your name]>GBIF Help Desk</a>.
+admin.registration.intro2=Once the IPT is registered, the registration cannot be changed except by contacting the <a href\="mailto\:helpdesk@gbif.org">GBIF Help Desk</a>. Please be sure that the registration information is complete and correct before saving.
 admin.registration.registered1=このIPTはGBIFネットワークにすでに登録されています。
 admin.registration.registered2=IPT のホスト機関は<strong>{0}</strong>.
 admin.registration.links=GBIF登録リンク
-admin.registration.test1=GBIF Network にIPTを登録する最初のステップは、以下に示すようにBase URLを確認することです。 テストを開始するには "Validate" というラベルのボタンをクリックします。テストが成功したら、次の登録のステップを続けることができます。テストが失敗ならば、 <a href="config.do">IPT settings</a> ページに行ってサーバーのURLの設定を変えます。
+admin.registration.test1=GBIF Network にIPTを登録する最初のステップは、以下に示すようにBase URLを確認することです。 テストを開始するには "Validate" というラベルのボタンをクリックします。テストが成功したら、次の登録のステップを続けることができます。テストが失敗ならば、 <a href\="config.do">IPT settings</a> ページに行ってサーバーのURLの設定を変えます。
 admin.registration.success=IPTはこの機関で登録されています。
 admin.registration.failed=IPT登録失敗
 admin.registration.success.update=IPT更新成功
 admin.registration.failed.update=IPT更新失敗
 admin.registration.error.alreadyRegistered1=このIPTは機関がすでに登録されています。
-admin.registration.error.alreadyRegistered2=To change the association with an organisation, please contact the <a href="mailto:helpdesk@gbif.org">GBIF Help Desk</a>.
+admin.registration.error.alreadyRegistered2=To change the association with an organisation, please contact the <a href\="mailto\:helpdesk@gbif.org">GBIF Help Desk</a>.
 admin.registration.error.registry=GBIF登録サイトとの交信に問題が発生しました。
 admin.registration.error.internetConnection=インターネット接続がアクテイブであることを確かめてください。
 admin.registration.error.proxy=ファイアーオールが接続を許可しているかどうか確かめてください。許可されている場合、プロキシURLの指定が要求されているかどうか、それが正しいかも確かめてください。
@@ -543,10 +604,11 @@ admin.registration.error.badResponse=Registryからの応答が無いか、無�
 admin.registration.error.io=GBIF Registryとの通信時にIOエラーが発生しています。
 admin.registration.error.unknown=GBIF Registryとの通信時未知の不具合が発生しています。
 
-#admin - organisations=
+#admin - organisations
 admin.organisation.title=アソーシエート機関を編集
 admin.organisation.key=機関
 admin.organisation.name=機関名
+admin.organisation.name.select=組織を選択してください。
 admin.organisation.password=機関のパスワード
 admin.organisation.alias=エイリアス
 admin.organisation.canPublish=データを公開してもよいですか？
@@ -555,7 +617,20 @@ admin.organisation.password.help=あなたがこの機関のデータにアク�
 admin.organisation.error.save=この機関ではIPTへの関連付けができませんでした。
 admin.organisation.error.existing=この機関はすでに存在しています。編集が必要ならば前の画面で"Edit"ボタンをクリックしてください。
 admin.organisation.cantSave=機関ファイルを保存できません。
-
+admin.organisation.doiRegistrationAgency=DOI登録機関
+admin.organisation.doiRegistrationAgency.help=DataCite メンバー （または EZID）の同意書に一度サインすると、その組織にアカウントが発行され、 複数のプレフィックスを持つDOIを登録できるようになります。以下のアカウントの詳細ページに記入するだけで、IPT経由で直接、そのデータセットにその組織が望むプレフィックスのDOIを登録することができるようになります。
+admin.organisation.doiRegistrationAgency.username=アカウントのユーザー名
+admin.organisation.doiRegistrationAgency.username.help=組織に発行された DataCite/EZID アカウントのユーザー名 （シンボル）。
+admin.organisation.doiRegistrationAgency.password=アカウントのパスワード
+admin.organisation.doiRegistrationAgency.password.help=組織に発行された DataCite/EZID アカウントのパスワード。
+admin.organisation.doiRegistrationAgency.prefix=DOIプレフィックス/肩付き
+admin.organisation.doiRegistrationAgency.prefix.help=The preferred DOI prefix/shoulder used to mint DOIs. This prefix is unique to the account issued to the organisation. Warning\: always use a test prefix (e.g. 10.5072 for DataCite, 10.5072/FK2 for EZID) when running the IPT in test mode\!
+admin.organisation.doiAccount.activated=アクティブ アカウント
+admin.organisation.doiAccount.activated.help=IPTからデータセットにDOIを登録する唯一のアカウントとしてこのDataCite/EZIDアカウントをアクティブにするためには、ここをチェックします。一度にアクテイブにできるのは１個のDataCite/EZID アカウントだけです。
+admin.organisation.doiAccount.activated.exists=IPT経由でDOIを登録するための他のDataCite/EZID アカウントが既に選択されています。このアカウントを有効にしたい場合には、先に選択されているアカウントを無効にする必要があります。
+admin.organisation.canRegisterDois=DOIを登録することができますか？
+admin.organisation.doiAccount.activated.failed=IPTのアーカイブ モードが IPT 設定になっていない限り、この DataCite/EZID アカウントをアクティブにできません。アーカイブ モード では、すべての公開済ダーウィン コア アーカイブ バージョンが保存され、ダウンロードできるようになっていますので、古いバージョン用のDOIも有効で、そのリソースをダウンロードすることができます。
+admin.organisation.doiAccount.differentTypeInUse=Only one DOI account can be activated at a time. A DOI account of type {0} has already been used to assign DOIs to one or more resources, e.g. DOI\={1}
 organisation.key=Key/UUID
 
 admin.organisation.deleted=この機関の対応付けは削除されました。
@@ -565,26 +640,26 @@ admin.organisation.add.title=アソーシエート機関名を追加
 admin.organisation.add.intro2=このIPTのデータに機関を対応づけるパスワードが必要な場合には、機関を選択した後に、問い合わせ先へのリンクがパスワードフィールドの下に表示されます。
 admin.organisation.associated.ipt=この機関はこのIPTと対応付いています。
 admin.organisation.updated.ipt=機関情報が更新されています。
-admin.organisations.couldnt.load=Registry:{0}から登録した機関をロードすることができませんでした。
-admin.organisation.couldnt.load=Registry:{1}から登録した機関{0}をロードすることができませんでした。
-organisations.resources.couldnt.load=Registry:{0}から登録したリソースを機関に対応させることができませんでした。
+admin.organisations.couldnt.load=Registry\:{0}から登録した機関をロードすることができませんでした。
+admin.organisation.couldnt.load=Registry\:{1}から登録した機関{0}をロードすることができませんでした。
+organisations.resources.couldnt.load=Registry\:{0}から登録したリソースを機関に対応させることができませんでした。
 
-#predefined emails - request organisation password for IPT registration=
+#predefined emails - request organisation password for IPT registration
 emails.request.ipt.registration.subject={0}にはパスワードが必要です。
 emails.request.ipt.registration1=Dear sir/madam,%0d%0d
 emails.request.ipt.registration2=I am trying to install an Integrated Publishing Toolkit (IPT), which is going to be hosted under your institution/organisation.%0d
-emails.request.ipt.registration3=To continue with the installation, I will need to kindly ask you to provide me with your organisation\\''s password, as this is needed to complete the process%0d
-emails.request.ipt.registration4=In case you don\\''t know this information, you can open the following link in your browser to receive this information%0d%0d
-emails.request.ipt.registration5=http://gbrds.gbif.org/registry/organisation/{0}?op=password%0d%0d
+emails.request.ipt.registration3=To continue with the installation, I will need to kindly ask you to provide me with your organisation\''s password, as this is needed to complete the process%0d
+emails.request.ipt.registration4=In case you don\''t know this information, you can open the following link in your browser to receive this information%0d%0d
+emails.request.ipt.registration5=http\://gbrds.gbif.org/registry/organisation/{0}?op\=password%0d%0d
 emails.request.ipt.registration6=ありがとうございました。
 emails.request.ipt.registration.footer=お問い合わせはこちらをクリックしてください。
 
-#predefined emails - request organisation password for organisation association=
+#predefined emails - request organisation password for organisation association
 emails.request.organisation.association.subject={0}にはパスワードが必要です。
 emails.request.organisation.association1=Dear sir/madam,%0d%0d
 emails.request.organisation.association2=IPTのインストール中です。.%0d
 emails.request.organisation.association3=This tool allows me to create resources and assign these resources to organisations. %0d
-emails.request.organisation.association4=I would like to link your organisation with my IPT, but for this I will need you to provide me with your organisation\\'' password%0d
+emails.request.organisation.association4=I would like to link your organisation with my IPT, but for this I will need you to provide me with your organisation\'' password%0d
 emails.request.organisation.association5=わからない場合にはブラウザ上の次のリンクを開くと情報%0d%0dを得ることができます。
 emails.request.organisation.association6=password%0d%0d
 emails.request.organisation.association7=ありがとうございました。
@@ -593,7 +668,7 @@ emails.request.organisation.association.footer=お問い合わせはこちらを
 ####
 # MANAGE SECTION
 ####
-# the manage resource section=
+# the manage resource section
 manage.404.title=リソースが存在しません。
 manage.404.body=リクエストされたページは存在しません。
 manage.401.title=権限がありません。
@@ -610,8 +685,12 @@ manage.home.next.publication=次期公開予定日
 manage.home.visible=公開状況
 manage.home.visible.public=公開
 manage.home.visible.private=非公開
+manage.home.visible.deleted=削除済
 manage.home.organisation=機関
 manage.home.not.registered=未登録
+manage.home.not.registered.verbose=このリソースは GBIF に登録されていません。
+manage.home.registered.verbose=このリソースをはGBIF と登録されており GBIF UUID\: <a href\="{0}">{1}</a>が割り当てられています。
+manage.home.published.verbose=\ <a href\="{2}">{3}</a> によって承認されたデータ パブリッシャーとして GBIF に登録されている<a href\="{0}">{1}</a> が、このリソースをパブリッシュしました。
 manage.home.not.published=未公開
 manage.home.resource.locked=バックグラウンドでプロセス中のためロックされています。後でもう一度試してください。
 manage.home.resources.none=None, please create a resource or ask existing managers to add you to their resource(s).
@@ -619,7 +698,7 @@ manage.home.resources.none=None, please create a resource or ask existing manage
 manage.locked=This resource is currently being published. Meanwhile it is locked for further modifications, but you can <a href{0}>cancel</a> the process if needed.
 
 manage.resource.create.title=新規リソースを作成する
-manage.resource.create.intro=空の新規リソースを作成することができます。既存のリソースをzip形式のDwC-Aとしてアップロードするか、既存のIPTリソースをzipでまとめたリソースの設定フォルダを使ってアップロードします。詳細はユーザーマニュアルを参照してください。IPTインストール中、リソースのIDとして省略名が必要です。英数字、ハイフン、アンダーバーのみ使うことができます。
+manage.resource.create.intro=新しい空のリソースを作成し、zip 形式のダーウィン コア アーカイブとして保存されている既存のリソースをアップロードするか、または既存のIPTリソースを圧縮されたリソース設定フォルダーを使用してアップロードできます。具体的な操作はユーザーズ マニュアルを参照してください。ショートネームは必須です。
 manage.resource.create.file=Optional archived resource to load
 manage.resource.create.success=Imported existing Darwin Core archive with a core row type of {0}. {1} source(s) were imported and {2} mapping(s) created.
 manage.resource.create.success.nocore=Imported existing Darwin Core archive.  {0} source(s) were imported and {1} mapping(s) created.
@@ -628,15 +707,31 @@ manage.resource.create.failed=アップロードファイルが読めません�
 manage.resource.create.rowType.null=RowType {0} not available in this IPT installation
 manage.resource.create.extension.null=Extension(拡張）が存在しません。すでにインストール済みのextension(拡張）を調べて再度インポートしてください。
 manage.resource.create.mapping.concept.skip=Skipped mapped term {0}, which is unknown to extension {1}
-manage.resource.delete.confirm.registered=Deletion from the GBIF Index is not automatic. It will require explicit email communication with the <a href=''mailto:helpdesk@gbif.org''>GBIF Help Desk</a>. Do you still want to delete this registered resource?
+manage.resource.create.forbidden=No resources can be created until at least one organisation able to host resources is associated to the IPT. Please contact your IPT administrator for help.
+manage.resource.delete.confirm=この登録済みのリソースを削除しますか。
+manage.resource.delete.confirm.registered=GBIF インデックスからの削除は自動的に行われるため、元に戻す場合には<a href\=''mailto\:helpdesk@gbif.org''> GBIF ヘルプ デスク</a> にメールで依頼するしか方法がないことに注意してください。
+manage.resource.delete.confirm.doi=このリソースにはDOIが割り当てられているため、DOIは継続する必要があります。削除するということはもはやダウンロードできなくなることであり、リソースについての説明ページを特定するDOIを取り消すことになります。更新されたDOIが世界中に知れ渡るまで最長24時間かかることに留意してください。
+manage.resource.undoDelete.confirm=このリソースは以前DOIを割り当てられているため、このリソースの削除を取り消し、最後に公開した時のDOIを利用をすることによって、もう一度データをダウンロードすることができます。
 manage.resource.delete.failed=リソースの削除に失敗しました。
+manage.resource.undelete.failed=リソース削除の取り消しに失敗しました。
 manage.resource.status.intro.private=このリソースはprivateです。誰もが利用できるようにするためにはpublicにしてください。
 manage.resource.status.intro.public=このリソースはpublicですので、誰もが利用できます。
 manage.resource.status.intro.public.migration=If you want this resource to update an existing registered DiGIR, BioCASE, or TAPIR resource, please ensure the resource is registered against the same owning organization, and that the existing registered resource UUID has been added to the resource''s list of alternative identifiers on the {0} page.
-manage.resource.status.intro.registered=This public resource is registered with GBIF. To change this status you must delete the entire resource and contact the <a href="mailto:helpdesk@gbif.org>GBIF Help Desk</a>.
-manage.resource.status.restrict=管理者（manager）に限定
-manage.resource.status.registration.intro=To make it discoverable, please select the organisation to which the resource is associated and register it with GBIF. To make it accessible only to managers, make it private.
+manage.resource.status.intro.public.gbifWarning=GBIF 登録後のインデックス化には1 時間ほどかかることを留意してください。
+manage.resource.status.intro.registered=このパブリック リソースが GBIF に登録された ということは、<a href\="http\://www.gbif.org"target\="_blank"> GBIF のウェブサイト</a> から世界中で見ることができることを意味します。
+manage.resource.status.intro.deleted=このリソースはすでに削除されていますが、アクセス可能な公開DOIが割り当てられています。そのDOI を指定することによって、リソースが削除され、もはやダウンロードできないことを説明するページを見ることができます。
+manage.resource.status.registration.intro=このリソースを<a href\="http\://www.gbif.org" target\="_blank">GBIFのウエブサイト</a>から世界中の人に見てもらうためにGBIFに登録します。マネージャーしかアクセスできないようにする場合にはプライベートにします。
 manage.resource.status.registration.forbidden=このデータをGBIFに登録するための権限がありません。
+manage.resource.status.publication.forbidden=あなたにはこのリソースを公開する権限がありません。
+manage.resource.status.publication.forbidden.account.missing=DataCite または EZID アカウントが見つからないか、間違って設定されているため、このリソースを公開することができません。
+manage.resource.status.deletion.forbidden=あなたにはこのリソースを削除する権限がありません。
+manage.resource.status.undeletion.forbidden=あなたにはこのリソースを元に戻す権限がありません。
+manage.resource.status.doi.forbidden=あなたにはこのリソースにDOIを割り当てる権限がありません。
+
+
+manage.resource.identifierStatus.intro.reserved=リソースのDOIが予約されています、ということはまだ利用できないことを意味しています。DOIを有効にするためには、正しいDOIであることを確認した後公開します。DOIは一度公開されると削除できませんし、リソースを非公開にすることもできませんのでご注意ください。
+manage.resource.identifierStatus.intro.public=このリソースのDOIは公開されているということは、利用できることを意味します。もしリソースが無効であるとか、削除されるべき場合には、DOIを利用できないようにしてください。こうすることによって、そのリソースについての最初のページ（入口）にアクセスすることができなくなります。
+manage.resource.identifierStatus.edit=DOIを編集する。
 manage.resource.role.change=許可(権限）が必要ならばIPT管理責任者(Administrator)に問い合わせてください。
 manage.resource.publish.forbidden=Since this resource is registered with GBIF already, and the resource''s registration gets updated during each publication, you can no longer publish this resource.
 manage.resource.read.eml.metadata=EML metadata read
@@ -647,8 +742,8 @@ manage.resource.migrate={1}が現在所有する現存する登録済のリソ�
 manage.resource.migrate.failed=Resource migration failed
 manage.resource.migrate.failed.multipleUUIDs=Multiple UUIDs were found in the list of alternate identifiers at the time of registration.
 manage.resource.migrate.failed.badUUID=At least one UUID was found in the list of alternate identifiers, but it does not correspond to a resource owned by {0}.
-manage.resource.migrate.failed.help=In order to proceed with registration either: 1) remove all UUID alternate identifiers if this resource is meant to be a brand new resource, or 2) add a single UUID alternate identifier equal to the UUID of the existing registered resource that it is meant to update.
-manage.resource.migrate.failed.duplicate=The UUID {0} found in the list of alternate identifiers is already assigned to one or more public or registered resources: {1}
+manage.resource.migrate.failed.help=In order to proceed with registration either\: 1) remove all UUID alternate identifiers if this resource is meant to be a brand new resource, or 2) add a single UUID alternate identifier equal to the UUID of the existing registered resource that it is meant to update.
+manage.resource.migrate.failed.duplicate=The UUID {0} found in the list of alternate identifiers is already assigned to one or more public or registered resources\: {1}
 manage.resource.migrate.failed.duplicate.help=If you are trying to replace a registered resource that already exists in your IPT, the other resource has to be deleted first. In this case, please notify helpdesk@gbif.org that the resource has been replaced, and not deleted, since deleting a registered resource causes it to be flagged as deleted in the GBIF Registry.
 
 manage.mapping.title=マッピングソースデータ
@@ -656,10 +751,11 @@ manage.mapping.intro=それぞれのプロパテイについては、ソース�
 manage.mapping.source=ソースデータ
 manage.mapping.source.help=マッピングを開始する前にデータファイルを選択してください。
 manage.mapping.idColumn=それぞれのレコード（行）に付与されているユニークキー（core IDともいう）を持つデータのカラム。他のソースをマップしたいならば、このIDで対応づけることができます。
+manage.mapping.datasetIdColumn=リソースのDOIを使用します。
+manage.mapping.datasetIdColumn.help=datasetID の既定値をリソースのDOIと同じ値に設定する場合は、このボックスをチェックしてください。この設定は、このマッピングにのみ適用されますので、必要な場合にはすべての場所でこの操作を繰り返す必要があります。
 manage.mapping.noid=IDがありません。
 manage.mapping.lineNumber=行番号
 manage.mapping.uuid=UUID Generator
-manage.mapping.backToOverview=リソース概要ページに戻る
 manage.mapping.hideEmpty=マップされていないフィールドを表示しない。
 manage.mapping.showAll=すべてを表示する。
 manage.mapping.info.linenumbers=For line numbers you can specify an optional non-numerical suffix to be appended to the id. This is useful to generate unique identifiers when mapping the same source multiple times.<br /><br />
@@ -676,6 +772,9 @@ manage.mapping.couldnt.delete=マッピング{0}を削除できませんでし�
 manage.mapping.no.mapped.title=マップされていないカラム（項目）
 manage.mapping.no.mapped.columns=The following columns of the source are not assigned to the properties of this mapping
 
+manage.history.title=バージョン履歴
+manage.history.intro={1} リソースのバージョン {0} の概要の変更を編集します。
+
 manage.source.unique=ソース名が既に存在しています。名前はユニークなものを選んでください。
 manage.source.title=ソースデータ
 manage.source.intro=データ形式を編集
@@ -687,7 +786,6 @@ manage.source.rows=Rows
 manage.source.modified=変更されています。
 manage.source.filesystem.error=ファイルシステムエラー：{0}
 manage.source.unsupported.compression.format=圧縮フォーマットはサポートされていません。zip, gzip,あるいはプレーンテキストファイルを使ってください。
-manage.source.unsupported.excel=エクセルファイルはサポートされていません。区切りテキストファイルを使ってください。
 manage.source.replaced.existing=既存のソースを入れ替えました。>>{0}<<
 manage.source.added.new=新ファイルソースを追加しました。>>{0}<<
 manage.source.deleted=ソース{0}を削除しました。
@@ -695,7 +793,7 @@ manage.source.deleted.couldnt=ソース{0}は削除できませんでした。
 manage.source.error=ソースエラー{0}
 manage.source.existing=名前がすでに存在するソース
 manage.source.invalidFileName=ソースファイル名が無効です。ファイル名に使えるのは、アルファベット、数字、空白、アンダースコア、ピリオド、括弧、ハイフンのみです。
-manage.source.cannot.add=データ{0}:{1}は追加できません。
+manage.source.cannot.add=データ{0}\:{1}は追加できません。
 manage.source.cannot.load=ソース{0}はロードできませんでした。原因を知るには、管理責任者に頼んでIPTのログを調べてもらってください。
 manage.source.compressed.files={0} 圧縮ファイルを見つけました。すべて追加します。
 manage.source.source.log=ソースログ
@@ -704,23 +802,29 @@ manage.source.confirmation.message=ソールファイルを本当に削除した
 
 manage.overview.title.label=リソースタイトル
 manage.overview.title=概要
-manage.overview.intro=これは <em>{0}</em>リソースの全体像です。DwC-Aを作成して公開するためには、ソースデータをアップロードしてマッピングするところから開始してください。必須のメタデータを入力することを忘れないでください。公開リソースはGBIFネットワークに登録することができます。登録リソースは削除することができますが、非公開(private)に戻すことはできません。
-manage.overview.intro.metadataOnly=これは <em>{0}</em>リソースの全体像です。必須のメタデータを入力して開始してください。公開済みのリソースはGBIFネットワークに登録することができます。登録リソースは削除することができますが、非公開(private)に戻すことはできません。
+manage.overview.description=これは <em>{0}</em> リソースの概要のページです。
+manage.overview.intro=Darwin Core アーカイブを作成して公開するためには、ソースデータをアップロードしてマッピングをすることから始めてください。必須であるメタデータの入力を忘れないでください。公開されたリソースを GBIF ネットワークに登録され、DOI が割り当てられます。GBIF に登録したリソースを削除することができますが、プライベートの状態に戻すことはできません。リソースに一旦DOIが割り当てられた後は削除することもできず、アクセス可能な公開状態のまま残ります。
+manage.overview.intro.metadataOnly=必須のメタデータを入力するところから開始してください。公開されたリソースはGBIFネットワークに登録することができます。登録したリソースを削除することができますが、プライベートの状態に戻すことはできません。
 manage.overview.no.description=説明はありません。
 manage.overview.keywords=キーワード
 manage.overview.taxcoverage=生物分類学的範囲
 manage.overview.geocoverage=地理的範囲
 manage.overview.metadata=メタデータ
 manage.overview.missing.metadata=リソースに必要なメタデータがありません。
+manage.overview.metadata.description=リソースのメタデータ。
+manage.overview.metadata.preview=プレビュー {0}
+manage.overview.notModified=最後のパブリケーションから変更していません。
 manage.overview.source.hidden=Since this is a metadata-only resource, the source data and mapping sections are hidden. To add actual primary data, just change the resource type in your {0}.
 manage.overview.source.data=ソースデータ
-manage.overview.source.description1=Darwing Core Archiveを作成するためのデータファイルです。csv, tabなど区切り形式のテキストファイルをアップロードできます。ファイルをそのままでも、zip, gzipのような圧縮ファイルでもかまいません。
+manage.overview.source.intro=ダーウィン コア アーカイブを生成するためのソース データ ファイルと SQL ソース 。
+manage.overview.source.description1=区切り記号付きテキスト ファイル (csv、タブ、およびその他の区切り記号を使用したファイル) はそのまま、あるいは圧縮形式(zip またはgzip)でもアップロードすることができます。 
 manage.overview.source.description2=エクセルファイルもサポートしています。
 manage.overview.source.description3=アップロードする時は、ローカルのファイルを選択して"{0}"をクリックしてください。
 manage.overview.source.description4=Alternatively, you can configure <i>SQL views</i> to databases in your local network. To create a new SQL source, please click "{0}" without any file chosen.
 manage.overview.source.description5=ダーウインコアアーカイブをアップロードしてもリソースを更新するｋとおはできません。この機能は未だ実装していません。
 manage.overview.source.file=[file]
 manage.overview.source.sql=[sql]
+manage.overview.source.excel=[excel]
 manage.overview.source.rows=rows
 manage.overview.source.columns=カラム/列
 manage.overview.no.DwC.extensions=Core Typeがインストールされていません。IPT管理責任者(Administrator)に問い合わせてください。
@@ -728,48 +832,116 @@ manage.overview.no.DwC.extension=コアタイプ{0}はインストールされ�
 manage.overview.DwC.Mappings=ダーウインコアマッピング
 manage.overview.DwC.Mappings.description=ソースデータとダーウインコアのマッピング中です。
 manage.overview.DwC.Mappings.cantdo=No mapping between the source data and Darwin Core terms can be done until source data has been added, and the right core type has been installed. Only if this is a metadata-only resource is no mapping necessary.
-manage.overview.DwC.Mappings.coretype.description=Choose "Darwin Core Checklist" when the basis of the resource is taxon names, or choose "Darwin Core Occurrence" when the basis of the resource is occurrences in nature (observations) or in a collection (specimens).
+manage.overview.DwC.Mappings.coretype.description1=ここでは、適切な拡張を選択することによって、あなたのソース データをダーウィンコアの項目にマップすることができます。
+manage.overview.DwC.Mappings.coretype.description2=まず最初に、コアタイプを選択し、次にマップの拡張を選択する前にマップします。
+manage.overview.DwC.Mappings.coretype.description3=リソースのベースが分類名の場合は、「ダーウィン コア分類群」を選択し、リソースのベースが自然 (観察) またはコレクション (標本) データである場合は「ダーウィン コアオカレンス」を選択します。
+manage.overview.DwC.Mappings.coretype.description4=[選択] ボックスの中に適切なコアタイプまたは拡張がない場合には、 IPT の管理者にお問い合わせください。
 manage.overview.DwC.Mappings.terms=terms mapped to
 manage.overview.DwC.Mappings.select=コアタイプ（１つだけ）選択してください。
+manage.overview.DwC.Mappings.cores.select=コア
+manage.overview.DwC.Mappings.extensions.select=拡張機能
 manage.overview.DwC.Mappings.select.invalid=無効な選択です。選択したコアタイプまたはExtension(拡張）は存在しません。
+mapping.preview.success=マッピング プレビューは正常に終了しました。
+mapping.preview.failed=プレビューのマッピングに失敗しました
+mapping.preview.not.found=プレビュー マップ ファイルが見つかりません
+mapping.preview.error=マッピング プレビューの生成に失敗しました\: {0}
+mapping.preview.mapping.not.found=RowType\={0} マッピング ID\={1}にはマッピングがありません。
+mapping.preview.bad.request=不正なリクエスト\: rowType とマッピング ID はマッピングプレビューに必要です。
 
 manage.overview.visibility=公開状況
+manage.overview.visibility.description=リソースの可視性とは、それを見ることのできる人を決めることで、privateならマネージャーのみ、publicならば誰もが、registeredはGBIFウェブサイトから世界中に見てもらう、deleted but publicとは削除されているがDOIを割り当てられているので誰もが見ることができる、ことになります。既定では、各リソースを見ることができるのは、それを作成した利用者とそのリソースを作成したIPTでAdmin role(管理責任者）を設定されている人です。
 manage.overview.visibility.missing.metadata=GBIFネットワークに登録する前にリソースは公開されている必要があります。
 manage.overview.visibility.missing.registration.metadata=このデータをGBIFに登録する場合にはメタデータが必要です。
 manage.overview.visibility.no.organisations=このデータをGBIFに登録する場合には、IPT管理責任者(Administrator)は最初に機関をこのIPTに関連づける必要があります。
+manage.metadata.no.organisations=メタデータを入力する前に、IPT管理責任者はこのリソースの公開に責任を持つ組織をIPTに関連づける必要があります。
+manage.overview.identifierStatus.no.organisations=DOIを登録するためにはIPT管理者が最初に組織（DOI登録機関のアカウントを持つ）とこのIPTを関連付ける必要があります。
+manage.overview.identifierStatus.missing.metadata=リソース用のDOIを予約する前に必要な基本メタデータを提供する必要があります。
 manage.overview.visibility.resource.key=リソースキー
 manage.overview.visibility.organisation=機関
 manage.overview.visibility.organisation.contact=機関の窓口
-manage.overview.visibility.organisation.key=機関キー
 manage.overview.visibility.endorsing.node=担当ノード名
-manage.overview.visibility.confirm.registration=You are about to register the resource with GBIF. Be aware that later deletion from the GBIF Index is not automatic and will require communication with the <a href="''mailto:helpdesk@gbif.org''>GBIF Help Desk</a>. Do you still want to register?
-manage.overview.visibility.confirm.agreement=Confirm that you have read and understood the <a target=''_blank'' href="http://data.gbif.org/tutorial/datasharingagreement''>GBIF data sharing agreement</a>
-manage.overview.published=公開リリース
+manage.overview.visibility.confirm.registration=あなたはリソースをGBIFに登録しようとしています。本当に登録しますか。
+manage.overview.visibility.confirm.agreement=Confirm that you have read and understood the <a target\=''_blank'' href\=''http\://www.gbif.org/terms/licences/data-sharing''>GBIF data sharing agreement</a>
+manage.overview.published=発行済みのバージョン
+manage.overview.published.report=パブリケーションレポート
 manage.overview.published.see.report=レポートを見る
 manage.overview.published.hide.report=レポートを隠す
-manage.overview.published.description=When publishing a new release, a new EML version, RTF version, and a Darwin Core Archive (DwC-A) will be created. A DwC-A bundles all source files with mappings and metadata in one zipped archive.
-manage.overview.published.description.metadataOnly=When publishing a new release of a metadata-only resource, a new EML version and RTF version will be created.
+manage.overview.published.intro=現在のバージョンと保留中の発行済みバージョンを比較したプレビュー。
+manage.overview.published.description=新しいバージョンのリソースを公開する時には、新版のEML,RTFおよびDwC-Aが作成されます。DwC-Aはマッピングされたすべてのリソースファイルとメタデータを１つのzip形式のアーカイブとしてバンドルします。
+manage.overview.published.description.metadataOnly=メタデータのみのリソースを新規に公開する時には、新規のEMLとRTFが作成されます。
+manage.overview.published.description.doiAccount=このリソースに割り当てられたすべてのDOIは、プレフィックス{2}をもつ{1}に属する{0}アカウントを使って登録されました。科学的に重要な変更をする場合には、その都度新しいDOIを登録することをお薦めします。詳細はユーザマニュアルを参照してください。
+manage.overview.published.description.noDoiAccount=利用者に使ったデータのバージョンをわかりやすくするために、新たに公開されたバージョン毎に変更の要約を入力することをお薦めする。
 manage.overview.published.testmode.warning=あなたのデータは、IPT instanceがテストモードであるためGBIFのインデクシングができません。
 manage.overview.published.missing.metadata=データ公開の前に必要な基本メタデータを入れてください。
 manage.overview.published.last.publication=最終公開日
+manage.overview.published.last.publication.intro=現在のバージョン
+manage.overview.published.next.publication.intro=保留中のバージョン
+manage.overview.published.released=公開されました。
 manage.overview.published.version=バージョン
 manage.overview.published.from=から
 manage.overview.published.download=ダウンロード
 manage.overview.published.records=レコード
-manage.overview.published.view=view
 manage.overview.published.archive=ダーウインコアアーカイブ
 manage.overview.published.eml=EML
 manage.overview.published.resource.version=公開リソースのバージョン{0}
 manage.overview.publishing=公開しています。
-manage.overview.publishing.resource.version=リソースヴァージョン#{0}を公開しています。
-manage.overview.publishing.error={0}:リソースの公開がステップ{1}で失敗しました。理由は{2}です。
+manage.overview.publishing.resource.version=リソースヴァージョン\#{0}を公開しています。
+manage.overview.publishing.error={0}\:リソースの公開がステップ{1}で失敗しました。理由は{2}です。
 
+manage.overview.publishing.doi.reserve.confirm=このリソースのDOIを予約しようとしています。登録されていない限り、DOIを削除することができますが、予約しますか。
+manage.overview.publishing.doi.reserve.help=You can reserve a DOI for a resource after the mandatory metadata has been entered. To reuse an existing DOI, enter it into the citation identifier field in the resource metadata. If a resource is publicly available and reserved a DOI, the next publication will result in a new major version and the DOI will be registered. Otherwise if a resource is private and reserved a DOI, the next publication will result in a new minor version of the resource and the DOI will NOT be registered. Be aware that until a DOI is registered you can still delete it.
+manage.overview.publishing.doi.reserve.new.help=すでにDOIを割り当てられている公開リソースに対して、新しいDOIを予約することは可能です。DOIは次回リソースが公開されるときに登録され、新たに公開されたバージョンのリソースを特定することになります。以前使っていたDOIは前のバージョンのリソースに対応していますが、新しいバージョンに置き換えられているという警告が表示されます。リソースが公開されない限り、予約済みのDOIを削除することができることを覚えておいてください。
+manage.overview.publishing.doi.reserve.prevented.noOrganisation=DataCiteまたはEZIDアカウントをもつ機関名をIPTと関連づけない限り、DOIをこのリソースに割り当てることはできません。IPT管理責任者に問い合わせてください。
+manage.overview.publishing.doi.delete.confirm=このリソースに予約済みのDOIを削除しようとしています。このDOIは一度も登録されたことがないため公開されませんので、削除しても大丈夫です。削除しますか？
+manage.overview.publishing.doi.delete.help=このリソースに予約されてDOIを削除することができます。このDOIは一度も登録されていないので公開されることはなく、削除しても大丈夫です。
+manage.overview.publishing.doi.register.agreement=DOIを一度登録したら削除できないことをあなたは理解していますか。
+manage.overview.publishing.doi.register.help=リソースの保留中のバージョンに予約されているDOIは次回リソースが公開されるときに登録されます。
+manage.overview.publishing.doi.register.prevented.notPublic=このリソースはprivateのため、予約されているDOIを登録することができません。DOIを登録するためには、リソースを公開しなくてはなりません。\n
+manage.overview.publishing.doi.minorVersion.confirm=このリソースの新しい <b>マイナー</b> バージョンを公開しようとしています。最後の公開以来、科学的に重要な変更がなされている場合、公開を一旦キャンセルして新しいDOIを割り当て、再び公開する必要があります。
+manage.overview.publishing.doi.majorVersion.confirm=あなたはこのリソースの新しい <b>メジャー</b> バージョンを公開しようとしています。初めてリソースにDOIが割り当てられる場合、あるいはリソースが科学的に重要な変更を受けた後ならばこれは適切です。公開が成功すると、このリソースに予約したDOIが登録され約 5 分後に有効になるでしょう。それを望まない場合は、キャンセルし、予約したDOIを削除します。
+manage.overview.publishing.withoutDoi.majorVersion.confirm=You are about to publish a new <b>major</b> version of this resource, which is appropriate the first time a resource is published, or after the resource underwent scientifically significant changes. If this is not what you want, cancel.
+manage.overview.publishing.doi.summary=公開に先立ち、変更点を要約することによってあなたのデータを使っている研究者をサポートすることができます。
+manage.overview.publishing.doi.summary.placeholder=このバージョンの変更内容をまとめてください。後からいつでも編集することができます。
+manage.overview.publishing.doi.confirm.end=公開しますか。
+manage.overview.publishing.doi.replaced=現在のバージョンに割り当てられているDOIは、次の公開時に保留中のバージョンに置き換えられるでしょう。
+manage.overview.publishing.doi.reserve.reused=既存のDOI[{0}]はすでにこのリソースに割り当てられており、再利用されます。もしこれが正しくないDOIの場合、予約したDOIを削除するか、メタデータの引用識別子フィールドから取り除く、または置換して別のDOIの予約を試みることができます。
+manage.overview.publishing.doi.reserve.notRreused=既存のDOI [{0}] は既にこのリソースに割り当てられていますが、この IPT はプレフィックス {1} でしか登録できないので再利用ができません。メタデータの引用識別子フィールドからDOIを取り除いたり置換して別のDOIを予約することができます。それでもこのDOIを使用したい場合は、 IPT 管理者に問い合わせてください。
+manage.overview.publishing.doi.reserve.success={0} was reserved successfully
+manage.overview.publishing.doi.reserve.failed=Failed to reserve {0}\: {1}
+manage.overview.publishing.doi.reserve.failed.metadata=Failed to reserve {0} because DOI metadata was invalid\: {1}
+manage.overview.publishing.doi.reserve.reused.failed=Failed to verify that {0} has been registered already. Please try again.
+manage.overview.publishing.doi.reserve.reused.failed.exception=Failed to verify that {0} has been registered already\: {1}
+manage.overview.publishing.doi.publish.check.registered.failed=Pre-publication check failed\: {0} is not reserved or registered. Its status is\: {1}
+manage.overview.publishing.doi.publish.check.existing.failed=Pre-publication check failed\: could not verify {0} exists\!
+manage.overview.publishing.doi.publish.check.existing.failed.exception=Pre-publication check failed\: could not verify {0} exists\!\: {1}
+
+manage.overview.publishing.doi.publish.updateDoi.failed=Failed to update {0} metadata\: {1}
+manage.overview.publishing.doi.publish.newMinorVersion=Published new minor version\: {0} was updated successfully
+manage.overview.publishing.doi.publish.newMajorVersion=Published new major version\: {0} was registered successfully
+manage.overview.publishing.doi.publish.newMajorVersion.replaces=Published new major version\: {0} was registered successfully\! The previous DOI has also been successfully updated, to reflect that it now represents a previous version of the resource
+manage.overview.doi.operation.failed.noAccount=No organisation with an activated DOI agency account exists. Please contact your IPT admin for help.
+manage.overview.publishing.doi.delete.success={0} was deleted successfully
+manage.overview.publishing.doi.delete.reassign.success={0} was deleted, and {1} was reassigned successfully
+manage.overview.publishing.doi.delete.failed.exception=Failed to delete {0}\: {1}
+manage.overview.publishing.doi.delete.failed.notResolved=Failed to verify {0} exists therefore it could not be deleted\!
+manage.overview.publishing.doi.deactivate.success={0} was deactivated successfully
+manage.overview.publishing.doi.undelete.success={0} was undeleted successfully
+manage.overview.publishing.doi.undelete.failed.noOrganisation=The resource''s organisation is no longer associated to the IPT, key\={0}
+manage.overview.publishing.doi.undelete.failed.badPrefix={0} has a prefix different to the prefix of the DOI agency account activated in this IPT\: {1}
+manage.overview.publishing.doi.undelete.failed.badStatus={0} cannot be undeleted because its status is {1}
+manage.overview.publishing.doi.undelete.failed.notResolved=Failed to verify {0} exists therefore it could not be undeleted\!
+manage.overview.publishing.doi.undelete.failed.exception=Failed to undelete {0}\: {1}
+
+manage.overview.resource.undelete.warning.gbif=Resource currently cannot be undeleted automatically in the GBIF Registry. Therefore please write to helpdesk@gbif.org to undelete it in the GBIF Registry.
 manage.overview.resource.managers=リソース　管理者(Managers)
-manage.overview.resource.managers.description=複数の管理者managersでリソースを管理することができます。あなたは他の管理者が{0}を編集することを許可することができます。
+manage.overview.resource.managers.intro=管理者がこのリソースを変更する権限を与えた。
+manage.overview.resource.managers.description=複数の管理者がリソースを管理することができます。あなたはリソースを変更する権限を他の管理者に付与することができます。新しい管理者アカウントを追加する場合は IPT の管理者までご連絡ください。
 manage.overview.resource.managers.creator=作成者
 manage.overview.resource.managers.manager=管理者
 manage.overview.resource.invalid.operation=Resource {0} is currently {1}, setting it to the requested state would be an invalid change. Please refresh the page to see the correct current state.
+manage.overview.resource.doi.invalid.operation=リソース {0} DOI は現在 {1}、setting it to the requested state would be an invalid change。修正後の状態を見るためにページを再表示してください。
 manage.overview.resource.deleted={0}を削除しました。
+manage.overview.resource.undeleted=削除したデータを元に戻しました{0}
 manage.overview.resource.published=リソースを公開しました。
 manage.overview.resource.being.published=リソース{0}は公開中です。しばらくお待ちください。
 manage.overview.resource.registered=Registered resource under the organisation {0} in the GBIF Registry.
@@ -777,7 +949,12 @@ manage.overview.resource.update.registration=リソース{0}のGBIF登録を更�
 manage.overview.manager.not.available=Manager {0} not available.
 manage.overview.failed.stop.publishing=公開中止に失敗しました。
 manage.overview.failed.resource.registration=リソースの登録に失敗しました。
-manage.overview.failed.resource.update=Registration update failed: {0}
+manage.overview.failed.resource.registration.notPublic=The current published version is not publicly available. Please publish a new version that is publicly available and try again.
+manage.overview.prevented.resource.registration.noGBIFLicense=The resource cannot be registered because the current published version was not assigned one of the licences that GBIF supports. To enable registration, assign one of these licences and publish a new version.
+manage.overview.prevented.resource.publishing.noGBIFLicense=This registered resource cannot be re-published because it is not assigned one of the licences that GBIF supports. To enable publishing, please assign it one of these licences.
+manage.overview.prevented.resource.registration.notPublic=The resource cannot be registered because the current published version is not publicly available. Please publish a new version that is publicly available to enable registration.
+manage.overview.noGBIFLicense=Not GBIF-supported
+manage.overview.failed.resource.update=Registration update failed\: {0}
 manage.overview.user.added={0}をリソースマネージャーのリストに追加しました。
 manage.overview.user.removed=リソースマネージャーのリストから{0}を削除しました。
 manage.overview.data.missing=ソースデータあるいはDarwin Coreマッピングが見つかりません。データアーカイブは作成されませんでした。もしもメタデータのみのリソースを公開しているのでしたら、この注意書きは正常で問題ありません。
@@ -795,7 +972,7 @@ manage.translation.mapped.terms=Mapped {0} terms based on vocabulary terms.
 manage.translation.cantfind.vocabulary=Can''t find a vocabulary to automap translation.
 manage.translation.deleted=Translation deleted for term {0}.
 manage.translation.reloaded.values=Reloaded {0} distinct value(s) from source (for translation) for term {1}.
-manage.translation.reloaded.fail=Source values could not be reloaded for term {0}: {1}
+manage.translation.reloaded.fail=Source values could not be reloaded for term {0}\: {1}
 manage.translation.saved=Translation saved for term {0}.
 
 manage.metadata.section=セクション
@@ -803,7 +980,7 @@ manage.metadata.removethis=削除
 manage.metadata.addnew=Add new
 
 manage.metadata.basic.title=基本のメタデータ
-manage.metadata.basic.required.message=データのタイトルと説明が必要です。データについて３つのcontact：Resource contact, resource creator, metadata providerがここに記載されていなくてはいけません。データを公開する前に、各contactに対して少なくとも姓、職名、機関名を入れる必要があります。IPTから公開されるデータの作成と効果的なデータ公開に対して責任を持つ人（機関）は、"publisher"[権限・役割]をもつ関係者として名前を追加しなくてはいけません。
+manage.metadata.basic.required.message=基本メタデータページの必須プロパティをすべて入力してください、そうするとリソースに必要な他のページのメタデータの入力を続行することができます。提供するメタデータが多いほど、あなたのリソースが目にとまり、他の研究者によって再利用され、論文に引用される機会が増えるのです。
 
 manage.metadata.parties.title=アソーシエート
 manage.metadata.parties.title.numbered=アソーシエート{0}
@@ -834,20 +1011,22 @@ manage.metadata.tempcoverage.intro=Please enter metadata about the time periods 
 manage.metadata.tempcoverage.item=時間的範囲
 
 manage.metadata.citations.title=引用論文
-manage.metadata.citations.intro=Please enter how to cite this resource as well as an optional bibliography, i.e., citations of other resources related to or used by this data set.
-manage.metadata.citations.bibliography=Bibliography
-manage.metadata.citations.item=引用文献
+manage.metadata.citations.intro=あなたのリソースの引用方法を入力してください。あなたのリソースがいつも確実に引用されるように、IPT を引用を自動生成できるようにしておきます。関連の他のリソースの引用論文やこのリソースの作成に使われた論文の情報なども、別途入力することができます。
+manage.metadata.citations.bibliography=書誌情報の引用
+manage.metadata.citations.bibliography.help=このリソースに関連またはこのリソースの作成に使われた他のリソースの引用論文。
+manage.metadata.citations.item=書誌情報の引用
 
 manage.metadata.collections.title=コレクションデータ
 manage.metadata.collections.intro=Please enter the collection metadata for the resource.
 manage.metadata.collections.curatorialUnits.title=Curatorialユニット
-manage.metadata.collections.curatorialUnits.intro=Please enter the counts of curatorial units covered by the resource. You may the count as a range or as a value with an uncertainty. Examples of units include skins, sheets, pins, boxes, jars.
+manage.metadata.collections.curatorialUnits.title.help=そのリソースのキュレーションユニット数。カウントは、範囲指定や不確実な値としても入力できます。単位は、スキン、シート、ピン、ボックス、jar などがあります。
 manage.metadata.collections.curatorialUnits.item=Curatorialユニット
 
 
 manage.metadata.physical.title=外部リンク
 manage.metadata.physical.intro=External links to your resource homepage or other available formats (e.g., database dumps, spreadsheets, nexus, linked data, etc.).
 manage.metadata.physical.item=外部リンク
+manage.metadata.physical.alternativeTitle=外部データ
 
 manage.metadata.keywords.title=キーワード
 manage.metadata.keywords.intro=Please enter sets of keywords for the resource, each with a thesaurus or controlled vocabulary.
@@ -855,25 +1034,30 @@ manage.metadata.keywords.item=キーワード
 
 manage.metadata.additional.title=追加のメタデータ
 manage.metadata.additional.intro=Please enter the additional metadata for the resource.
-manage.metadata.additional.logo.intro=<b>Upload resource logo:</b> If you don''t have a URL for the resource logo, you may upload an image file selected from your disk.
+manage.metadata.additional.logo.intro=<b>Upload resource logo\:</b> If you don''t have a URL for the resource logo, you may upload an image file selected from your disk.
 manage.metadata.alternateIdentifiers.title=代替識別子
-manage.metadata.alternateIdentifiers.intro=Alternative identifiers that are used to label this resource, possibly from different data management systems, can be listed here.
+manage.metadata.alternateIdentifiers.title.help=このリソースのラベルに使用される代替の識別子（おそらく別のデータ管理システム由来の）がここに表示されます。
 manage.metadata.alternateIdentifiers.item=代替識別子
 
 manage.report.title=公開状況
 manage.report.logMessage=ログメッセージ
 manage.report.exception=例外
 manage.report.finished=終了しました。
-manage.report.continueTo=Continue to <a href resource.do?r={0}>resource overview</a>.
+manage.report.continueTo=Continue to <a href resource.do?r\={0}>resource overview</a>.
 
 ####
 # EML
 ####
 eml.title=タイトル
 eml.description=説明
+eml.publishingOrganisation=公開（発行）機関
+eml.publishingOrganisation.help=Please select the organisation responsible for publishing (producing, releasing, holding) this resource. It will be used as the resource''s publishing organisation when registering this resource with GBIF and when submitting metadata during DOI registrations. It will also be used to auto-generate the citation for the resource (if auto-generation is turned on), so consider the prominence of the role. Please be aware your selection cannot be changed after the resource has been either registered with GBIF or assigned a DOI.
+eml.publishingOrganisation.required=機関/組織名が必要です。
+eml.publishingOrganisation.notFound=機関/組織名 (キー \={0}) が見つかりません ！
 
 eml.resourceCreator=リソース　作成者
-eml.resourceCreator.help=作成者とはオリジナルのデータに責任をもつ人または機関を指します。複数の作成者がいる場合には、もっとも大きな責任を担う人を作成者とし、その他の人は"originator"または"content provider"の[権限・役割]をもつ関係者として追加します。.<br /><br />データ作成者を区別する役割の例:<br /><ul><li><b>a) 原著者Originator:</b> 最初にデータセットをコレクションあるいは作成した人<br /></li><li><b>b) 提供者Content provider:</b> データセットの内容について中心となって貢献した人または機関<br /></li></ul>
+eml.resourceCreator.plural=リソース作成者
+eml.resourceCreator.plural.help=作成者（クリエーター）リストは、リソースを作成した個人または組織名を指定した優先順位で表示しています。自動生成機能をオンに設定しているならば、このリストはリソース引用情報を自動生成する際に使われます。
 eml.resourceCreator.firstName=名
 eml.resourceCreator.lastName=名字/姓
 eml.resourceCreator.email=電子メール
@@ -888,9 +1072,11 @@ eml.resourceCreator.address.country.help=国、領域、島などはISO 3166-1�
 eml.resourceCreator.address.postalCode=郵便番号
 eml.resourceCreator.homepage=ホームページ
 eml.resourceCreator.copyLink=リソース問い合わせの情報をコピーする。
+eml.resourceCreator.required=少なくとも 1 人の作成者が必要です。
 
 eml.metadataProvider=メタデータ提供者
-eml.metadataProvider.help=メタデータの提供者とは、リソースのメタデータの作成に責任をもつ人または機関である。<br/><br/>メタデータ提供者の役割</br><ul><li><b>メタデータ提供者</b>:メタデータ提供に責任をもつ人。
+eml.metadataProvider.plural=メタデータ提供者
+eml.metadataProvider.plural.help=メタデータ プロバイダーのリストとは、リソースのメタデータの作成に責任をもつ個人または組織名のリストです。
 eml.metadataProvider.firstName=名
 eml.metadataProvider.lastName=名字/姓
 eml.metadataProvider.email=電子メール
@@ -904,14 +1090,19 @@ eml.metadataProvider.address.province=州・県
 eml.metadataProvider.address.country=国
 eml.metadataProvider.address.country.help=国、領域、島などはISO 3166-1基準に従うこと。
 eml.metadataProvider.address.postalCode=郵便番号
+eml.metadataProvider.required=少なくとも 1 つのメタデータ プロバイダーが必要です。
 
-eml.language=リソース　言語
+eml.language=データ言語
 eml.language.help=リソース（メタデータではなく）を記載している第一言語
+eml.language.default=データ言語のデフォルト設定は英語です。
 eml.metadataLanguage=メタデータ言語
 eml.metadataLanguage.help=メタデータの言語
+eml.metadataLanguage.default=メタデータの言語のデフォルト設定は英語です。
+eml.language.available={0} で
 
 eml.contact=リソース　問い合わせ
-eml.contact.help=「リソース問い合わせ」とは当該リソースについてより詳細な情報を入手したいときに対応する人または機関です。またリソースを査定し、リソースやデータに関する問題を問い合わせる人、または機関です。<br/>各役割の例<ul><li><b>a)管理者:</b>データセットペーパーの責任者<ul><li><b>b)所有者r:</b>データセットの所有者</b><ul><li><b>c)問い合わせ先:</b>データセットに関する詳細情報の窓口<ul><li><b>d)研究代表者:</b>データセットの科学的な対応を中心となって行う。
+eml.contact.plural=リソースの問い合わせ先
+eml.contact.plural.help=連絡先リストとは、当該リソースについての詳細情報を取得する際にコンタクトできる個人や機関・組織名のことです。リソースデータのキュレーションを担当したとか、データなどについての問題点について問い合わせできる個人や組織名です。
 eml.contact.firstName=名
 eml.contact.lastName=名字/姓
 eml.contact.email=電子メール
@@ -925,6 +1116,12 @@ eml.contact.address.country=国
 eml.contact.address.country.help=国、領域、島などはISO 3166-1基準に従うこと。
 eml.contact.address.postalCode=郵便番号
 eml.contact.homepage=ホームページ
+eml.contact.required=少なくとも 1 つの連絡先が必要です。
+eml.contact.noDirectory=ディレクトリを選択します。
+eml.contact.directory=担当者デイレクトリ
+eml.contact.directory.help=担当者 id が属するディレクトリ システムの URL です。
+eml.contact.identifier=担当者ID
+eml.contact.identifier.help=16 桁 ORCID ID (例： 0000-0002-1825年-0097) または指定した担当者ディレクトリリンクしている別の識別子(ID)です。
 
 eml.country.selection=国、地域、島　を選択してください。
 eml.rank.selection=ランクを1つ選択してください。
@@ -937,7 +1134,7 @@ eml.associatedParties.firstName=名
 eml.associatedParties.lastName=姓
 eml.associatedParties.phone=電話番号
 eml.associatedParties.role=Role
-eml.associatedParties.role.help=<ul><li><b>著者:</b>データセットまたはデータペーパーを使った公開論文の著作権者<br /></li><li><b>コンテンツ提供者:</b>データセットのコンテンツに貢献した人(データセットは合作と記載されているかもしれない)<br /></li><li><b>管理人(Custodian Steward):</b>データセットの責任者<br /></li><li><b>配布者:</b>データセットの公開や配布にかかわる人（機関）<br /></li><li><b>編集者:</b> データセットまたはデータペーパーを使った公開論文の<編集者<br /></li><li><b>メタデータ提供者:</b>メタデータを提供する人（機関）<br /></li><li><b>原著者:</b>データセットをコレクション作成した人（機関）<br /></li><li><b>所有者:</b>データの所有者 (管理人であってもなくても)<br /></li><li><b>問い合わせ先:</b>データセットに関する問い合わせ先<br /></li><li><b>研究代表者PI:</b>データセットに関する研究代表者<br /></li><li><b>加工者:</b>データセットコレクション後の加工に関わる人（機関）<br /></li><li><b>発行者:</b>データセットまたはデータペーパーを使った公開論文の発行者<br /></li><li><b>利用者:</b>データセットを利用する人（機関）<br /></li><li><b>プログラマー:</b> データセットに関する情報科学的なサポートをする人（機関）<br /></li><li><b>キュレーター:</b> コレクションの標本を管理記載する人. 標本の作製やラベリングができる、つまり同定や標本の保存が出来る人<br /></li></ul>
+eml.associatedParties.role.help=<ul><li><b>著者\:</b>データセットまたはデータペーパーを使った公開論文の著作権者<br /></li><li><b>コンテンツ提供者\:</b>データセットのコンテンツに貢献した人(データセットは合作と記載されているかもしれない)<br /></li><li><b>管理人(Custodian Steward)\:</b>データセットの責任者<br /></li><li><b>配布者\:</b>データセットの公開や配布にかかわる人（機関）<br /></li><li><b>編集者\:</b> データセットまたはデータペーパーを使った公開論文の<編集者<br /></li><li><b>メタデータ提供者\:</b>メタデータを提供する人（機関）<br /></li><li><b>原著者\:</b>データセットをコレクション作成した人（機関）<br /></li><li><b>所有者\:</b>データの所有者 (管理人であってもなくても)<br /></li><li><b>問い合わせ先\:</b>データセットに関する問い合わせ先<br /></li><li><b>研究代表者PI\:</b>データセットに関する研究代表者<br /></li><li><b>加工者\:</b>データセットコレクション後の加工に関わる人（機関）<br /></li><li><b>発行者\:</b>データセットまたはデータペーパーを使った公開論文の発行者<br /></li><li><b>利用者\:</b>データセットを利用する人（機関）<br /></li><li><b>プログラマー\:</b> データセットに関する情報科学的なサポートをする人（機関）<br /></li><li><b>キュレーター\:</b> コレクションの標本を管理記載する人. 標本の作製やラベリングができる、つまり同定や標本の保存が出来る人<br /></li></ul>
 eml.associatedParties.position=職
 eml.associatedParties.organisation=機関
 eml.associatedParties.address.address=住所
@@ -960,7 +1157,7 @@ eml.geospatialCoverages.boundingCoordinates.min.longitude=西
 eml.geospatialCoverages.boundingCoordinates.max.longitude=東
 
 eml.taxonomicCoverages.description=説明
-eml.taxonomicCoverages.description.help=データセットあるいはコレクションの生物分類記述。<br /><b>例:</b><br /><i>"すべての維管束植物は科または種まで識別できる。苔類と地衣類は苔と地衣としている。"</i>
+eml.taxonomicCoverages.description.help=データセットあるいはコレクションの生物分類記述。<br /><b>例\:</b><br /><i>"すべての維管束植物は科または種まで識別できる。苔類と地衣類は苔と地衣としている。"</i>
 eml.taxonomicCoverages.taxonKeyword.scientificName=学名
 eml.taxonomicCoverages.taxonKeyword.commonName=一般名
 eml.taxonomicCoverages.taxonKeyword.rank=ランク
@@ -971,23 +1168,30 @@ eml.temporalCoverages.type=時間的範囲タイプ
 eml.temporalCoverages.singleDate=単一の日付
 eml.temporalCoverages.singleDate.help=これは当該日を意味します。これらのフォーマットから１つ選んでください。
 eml.temporalCoverages.startDate=開始日
-eml.temporalCoverages.startDate.help=リソースをカバーする時間的範囲の開始日。これらの日付フォーマットから１つ選んで使ってください。:
+eml.temporalCoverages.startDate.help=リソースをカバーする時間的範囲の開始日。これらの日付フォーマットから１つ選んで使ってください。\:
 eml.temporalCoverages.endDate=終了日
-eml.temporalCoverages.endDate.help=リソースをカバーする時間的範囲の終了日。これらの日付フォーマットから１つ選んで使ってください。:
+eml.temporalCoverages.endDate.help=リソースをカバーする時間的範囲の終了日。これらの日付フォーマットから１つ選んで使ってください。\:
 eml.temporalCoverages.formationPeriod=生成(収集）期間
 eml.temporalCoverages.formationPeriod.help=コレクションをまとめた期間をテキスト形式で記述する　(e.g., "Victorian", "1922-1932", "c. 1750"). 進行中のコレクションの場合には以下のように記述します。 (e.g., "2010-current").
 eml.temporalCoverages.livingTimePeriod=生息期間
 eml.temporalCoverages.livingTimePeriod.help=生物材料が生きていた期間。「古生物学的時代」とか、その他のテキスト表現を含む。 (e.g., "1900-1950", "Ming Dynasty", "Pleistocene").
 
 eml.project.title=タイトル
+eml.project.identifier=識別子
+eml.project.identifier.help=研究プロジェクトの一意の識別子。これは、たとえば一連のモニタリングプロジェクトのように、同じプロジェクトに関連付けられている複数のデータセット/EML ドキュメントなどにリンクする時に使用できます。プロジェクトの説明には関連についても記述できます。
+eml.project.description=説明
+eml.project.description.help=研究プロジェクトの概要。
+eml.project.personnel=プロジェクト担当者
+eml.project.personnel.help=担当者のリストは、プロジェクトに関わる人々 を表します。
 eml.project.personnel.firstName=Personnel First Name
 eml.project.personnel.lastName=Personnel Last Name
+eml.project.personnel.intro=The personnel involved in the project
 eml.project.funding=ファンデイング
 eml.project.funding.help=プロジェクトのファンドに関する情報（たとえば、グラント、契約番号、ファンドの名称とアドレスなど）。その他のファンドに関する情報も含めることができます。
 eml.project.studyAreaDescription.descriptorValue=Study Area Description
 eml.project.studyAreaDescription.descriptorValue.help=Documents the physical area associated with the research project. It can include descriptions of the geographic, temporal, and taxonomic coverage of the research location.
 eml.project.designDescription=研究の意図、目的、背景など（デザイン）
-eml.project.designDescription.help=テキスト形式で記載された研究領域についての一般的な記述。背景や目的など。
+eml.project.designDescription.help=研究デザインの一般的なテキストタイプの説明です。目的、動機、理論、仮説、方法、統計的なデザインや実作業などの詳細な説明を記述することができます。
 
 eml.studyExtent=Study Extent
 eml.studyExtent.help=この項目には収集領域や収集頻度(期間、頻度）を記載します。地理的研究範囲は通常、メタデータページの"Study Area Description"に記載されているより広い領域を代表する地域を記述します。
@@ -996,18 +1200,26 @@ eml.sampleDescription.help=この項目では、研究プロジェクトで採�
 eml.qualityControl=Quality Control
 eml.qualityControl.help=このフィールドは、データの品質を管理または評価するためにとった具体的な活動について記述します。
 eml.methodSteps=Step Description
-eml.methodSteps.help=この項目は、データを作成の工程を記述するもので、複数データの入力を許しています。ここには、方法、関連論文、ソフトウエア、機器、ソースデータ、品質評価方法などを記載します。
+eml.methodSteps.help=このフィールドは複数の要素セットを入力することができます。たとえばこの研究につかった一連の方法や操作、またはデータファイルの作成の工程などです。これらには、手法、関連の論文、ソフトウエア、機器、ソースデータ、品質管理などに関するテキスト文書が含まれます。各方法について、他の研究者が理解し、場合によっては再現することができるように、詳細に記述されるべきです。
 eml.citation.citation=リソース　引用論文
-eml.citation.citation.help=A single citation for use when citing the dataset.<br /><br />Example in case where the dataset is owned by an organization:<br /><br />"Bombay Natural History Society (2011). Literature based species occurrence data of birds of northeast India. 2400 records, Contributed by Narwade S, Karla M, and Varier D, Online:http://ibif.gov.in:8080/ipt/resource.do?rBNHS-NEW, released on 01/09/2011, doi:10.9999/ibif.150.2011."<br /><br />Example in case when the dataset is owned by a group of people:<br /><br />"Narwade S, Karla M, Varier D (2011) Literature based species occurrence data of birds of northeast India. 2400 records. Online:http://ibif.gov.in:8080/ipt/resource.do?rBNHS-NEW, released on 01/09/2011, doi:10.9999/ibif.150.2011."
+eml.citation.citation.help=データセットを引用する際に使用する 1 つの引用。自動生成をONにして、 IPT に引用記述を自動生成させます。自動生成で使用される形式は DataCite の引用形式に基づいており、<a href\="https\://www.force11.org/datacitation"target\="_blank"> データの引用に関する原則の共同宣言</a> を満たすものです。この形式には、継続的に更新するデータセットにとって特に重要なバージョン番号が含まれます。< br/> < br/> 研究所がクリエイターの場合の引用記述例\: < br/> < br/>"オンタリオ生物多様性研究所(2011)オンタリオ州の渡り鳥バージョン 1.2。グエルフ大学。データセット/種の分布データ。http\://dx.doi.org/10.5886/qzxxd2pa"< br/> < br/> 9 人のクリエイターの引用記述例<br />\: < br/> < br/>「Brouillet L、Desmet P、Coursol F、Meades SJ、Favrequ M、Anions M、Belisle P、Gendrequ C 、Shorthouse D （2010）カナダの維管束植物の データベース　バージョン 1.2。モントリオール大学生物多様性センター。データセット/種のチェックリスト。http\://doi.org/10.5886/1bft7W5f"
+eml.citation.generate.turn.on=自動生成はオフ です- オンにしてください。
+eml.citation.generate.turn.off=自動生成はオン です- オフにしてください。
 
-eml.citation.identifier=引用文献の識別子
-eml.citation.identifier.help=URI, DOI　あるいは他の論文用ID
-eml.bibliographicCitationSet.bibliographicCitations.citation=引用文献
-eml.bibliographicCitationSet.bibliographicCitations.identifier=引用文献の識別子
+eml.citation.identifier=リソース引用識別子
+eml.citation.identifier.help=オンラインデータセットを特定するDOI は、URI、またはその他の永続的な識別子。識別子を引用文に含めることをお勧めします。
+eml.bibliographicCitationSet.bibliographicCitations.citation=書誌情報の引用
+eml.bibliographicCitationSet.bibliographicCitations.citation.help=このリソースの作成に使用または関連する外部リソースの引用文献。
+eml.bibliographicCitationSet.bibliographicCitations.identifier=書誌情報の引用識別子
+eml.bibliographicCitationSet.bibliographicCitations.identifier.help=オンラインデータセットを特定するDOI は、URI、または永続的な識別子。それは通常論文などの最後に置かれる引用文献として利用できます。
+eml.collection=コレクション
+eml.collection.plural=コレクション（複数）
+eml.collection.plural.help=コレクションリストとはこのリソースが使っているコレクションを示します。
 eml.collectionName=コレクション名
 eml.collectionName.help=現地言語で記載されたコレクションの公式名
 eml.collectionId=コレクション識別子
 eml.collectionId.help=コレクションのURI (LSID or URL)。 RDFではコレクションリソースのURI として利用します。
+eml.collection.required=少なくとも 1 つのコレクションが必要です。
 eml.parentCollectionId=Parent Collection Identifier
 eml.parentCollectionId.help=Identifier for the parent collection for this sub-collection. Enables a hierarchy of collections and sub collections to be built. Please enter "Not applicable" if this collection does not have a parent collection.
 eml.jgtiCuratorialUnits.type=メソッドタイプ
@@ -1022,42 +1234,50 @@ eml.physicalData.charset.help=Contains the name of the character encoding. This 
 eml.physicalData.distributionUrl=ダウンロードURL
 eml.physicalData.distributionUrl.help=The URL to download the resource in the mentioned format.
 eml.physicalData.format=データ形式
-eml.physicalData.format.help=データのフォーマット名<br /><b>例:</b><br /><i>Microsoft Excel</i>
+eml.physicalData.format.help=データのフォーマット名<br /><b>例\:</b><br /><i>Microsoft Excel</i>
 eml.physicalData.formatVersion=データ形式のバージョン
-eml.physicalData.formatVersion.help=データフォーマットのバージョン<br /><b>例:</b><br /><i>2000 (9.0.2720)</i>
+eml.physicalData.formatVersion.help=データフォーマットのバージョン<br /><b>例\:</b><br /><i>2000 (9.0.2720)</i>
+eml.physicalData.other=他のデータ形式
+eml.physicalData.other.help=リソースの他のフォーマットへのリンク（たとえば、データベースのダンプファイル、スプレッドシード、ネクサス、リンクトデータなど）
 eml.keywords.keywordThesaurus=シソーラス/語彙・用語
-eml.keywords.keywordThesaurus.help=キーワードが由来する語彙。キーワード語彙は通常学問分野に特化していますが、慣習的表現や公式の記載も可能です。キーワードが引き出せなかった場合には、 <i>''n/a''</i>と入力してください。<br /><br /><b>例: </b><br /><i>"IRIS keyword thesaurus"</i>
+eml.keywords.keywordThesaurus.help=キーワードが由来する語彙。キーワード語彙は通常学問分野に特化していますが、慣習的表現や公式の記載も可能です。キーワードが引き出せなかった場合には、 <i>''n/a''</i>と入力してください。<br /><br /><b>例\: </b><br /><i>"IRIS keyword thesaurus"</i>
 eml.keywords.keywordsString=キーワードリスト
 eml.keywords.keywordsString.help=リソースを端的に示すキーワード。コンマ区切り。
 eml.hierarchyLevel=階層レベル
 eml.hierarchyLevel.help=メタデータに入れるデータセットレベル。GBIFのデフォルト値は<i>dataset</i>
-eml.pubDate=公開日
-eml.pubDate.help=リソースが公開された日付。リソースが再公開される度にこの日付は自動的に更新されます。
+eml.pubDate=最終公開日
+eml.pubDate.help=リソースが最後に公開された日付。リソースが再公開される度にこの日付は自動的に更新されます。
+eml.dateStamp=作成日
+eml.dateStamp.help=リソースの最初のバージョンが公開された日付。リソースの引用時に出版年を表示するために使われます。
 eml.distributionUrl=リソースのホームページ
+eml.distributionUrl.short=ホーム
 eml.logoUrl=リソース　ロゴ　URL
 eml.logoUrl.help=リソースに関連づけられているロゴのURL。無ければあなたのデイスクの画像ファイルをアップロードします。
 eml.purpose=目的
 eml.purpose.help=このデータセットを作成した意図、目的、データセットが示唆することなど。
-eml.intellectualRights=IPの権利
-eml.intellectualRights.help=リソースの権利に関する記述、あるいはその情報提供サービスに関する引用文など。
+
 eml.additionalInfo=追加情報
 eml.additionalInfo.help=メタデータのフィールドに記載できない情報、たとえばプロジェクトの履歴、今のデータを使った論文、どこかに発表された関連情報など。
 eml.specimenPreservationMethod=標本保存方法
-eml.specimenPreservationMethod.help=Keyword from the GBIF Specimen Preservation Method vocabulary indicating the process or technique used to prevent physical deterioration of non-living collections. If the collection has more than one preservation method, select the dominant preservation method. Remember you can include a list of preparations and preservation methods for a specimen in your data mapping DwC term preparations (http://rs.tdwg.org/dwc/terms/preparations). Please don''t select anything for treatments for living collections.
+eml.specimenPreservationMethod.short=保存方法
+eml.specimenPreservationMethod.plural=標本保存方法
+eml.specimenPreservationMethod.plural.help=本リソースに含まれる標本保存方法のリスト。
+eml.specimenPreservationMethod.help=Keyword from the GBIF Specimen Preservation Method vocabulary indicating the process or technique used to prevent physical deterioration of non-living collections. If the collection has more than one preservation method, select the dominant preservation method. Remember you can include a list of preparations and preservation methods for a specimen in your data mapping DwC term preparations (http\://rs.tdwg.org/dwc/terms/preparations). Please don''t select anything for treatments for living collections.
 eml.alternateIdentifier=代替識別子
-eml.alternateIdentifier.help=An additional, secondary identifier for this entity. When the resource is published, the IPT''s URL to the resource is added to the list of identifiers. When a resource is registered with the GBIF Registry, the Registry''s unique resource UUID is also added to the list of identifiers. If the resource represents an existing registered resource in the GBIF Registry, the existing registered resource UUID can be added to the list of identifiers. This will enable the IPT resource to update the existing resource during registration, instead of registering a brand new resource.<br /><b>Example(s):</b><br /><i>4fa7b334-ce0d-4e88-aaae-2e0c138d049e</i>, <i>VCR3465</i>
-eml.intellectualRights.license.help=Licenses that apply to data. A standardised way to grant copyright permissions to your work.
+eml.alternateIdentifier.help=An additional, secondary identifier for this entity. When the resource is published, the IPT''s URL to the resource is added to the list of identifiers. When a resource is registered with the GBIF Registry, the Registry''s unique resource UUID is also added to the list of identifiers. If the resource represents an existing registered resource in the GBIF Registry, the existing registered resource UUID can be added to the list of identifiers. This will enable the IPT resource to update the existing resource during registration, instead of registering a brand new resource.<br /><b>Example(s)\:</b><br /><i>4fa7b334-ce0d-4e88-aaae-2e0c138d049e</i>, <i>VCR3465</i>
+
+eml.intellectualRights.simple=権利
+eml.intellectualRights.license=データライセンス
+eml.intellectualRights.license.help=The licence that you apply to a dataset provides a standardized way to define appropriate uses of your work. GBIF encourages publishers to adopt the least restrictive licence possible from among three machine-readable options (CC0 1.0, CC-BY 4.0 or CC-BY-NC 4.0) to encourage the widest possible use and application of data. Learn more <a href\="http\://www.gbif.org/terms/licences" target\="_blank">here</a>. If you feel unable to select one of the three options, please contact the GBIF Secretariat at participation@gbif.org.
 eml.intellectualRights.nolicenses=No license selected
-eml.intellectualRights.licenses.confirmation=Have you read and understood the license?
-eml.intellectualRights.license.cczero=CCゼロを作成する
-eml.intellectualRights.license.pddl=Open Data Commons Public Domain Dedication and Licence (PDDL)
-eml.intellectualRights.license.odcby=Open Data Commons Attribution License
-eml.intellectualRights.license.odbl=Open Data Commons Open Database License (ODbL)
 eml.intellectualRights.license.disclaimer=You should only apply a license to your own work unless you have the necessary rights to apply it to another person''s.
-eml.intellectualRights.license.cczero.text=This work is licensed under a Creative Commons CCZero 1.0 License http://creativecommons.org/publicdomain/zero/1.0/legalcode.
-eml.intellectualRights.license.pddl.text=This [DATA(BASE)] is made available under the Public Domain Dedication and License v1.0 whose full text can be found at: http://www.opendatacommons.org/licenses/pddl/1.0/.
-eml.intellectualRights.license.odcby.text=This [DATA(BASE)-NAME] is made available under the Open Data Commons Attribution License: http://www.opendatacommons.org/licenses/by/1.0/.
-eml.intellectualRights.license.odbl.text=This [DATA(BASE)-NAME] is made available under the Open Database License: http://opendatacommons.org/licenses/odbl/1.0/. Any rights in individual contents of the database are licensed under the Database Contents License: http://opendatacommons.org/licenses/dbcl/1.0/.
+
+eml.updateFrequency=更新頻度
+eml.updateFrequency.help=最初のリソースが公開された後の更新頻度。この値は自動公開のタイミングの既定値（自動発行を有効にされている場合）となりますが、後から変更することができます。リソースのメンテナンスの頻度は追加のメタデータページ上で入力することができます。
+eml.updateFrequency.default=更新頻度はデフォルトでは不明と設定されています。
+eml.updateFrequency.default.interval=更新頻度のデフォルト設定は自動発行間隔： {0}です。
+eml.updateFrequencyDescription=メンテナンス内容
+eml.updateFrequencyDescription.help=このリソースのメンテナンス頻度に関する説明、基本メタデータ ページで選択した更新頻度を補足します。
 
 ####
 # RTF
@@ -1141,28 +1361,33 @@ jgtiCuratorialUnitType.COUNT_WITH_UNCERTAINTY=曖昧なカウント
 # Date format
 format.date={yyyy-MM-dd}
 
-# This message appears when the field value is invalid  according to the *Converter.java class=
+# This message appears when the field value is invalid  according to the *Converter.java class
 xwork.default.invalid.fieldvalue=無効な値
 
-# Data Tables. Warning: don't translate any word beginning and ending in underscores, e.g. _MENU_=
+# Data Tables. Warning: don't translate any word beginning and ending in underscores, e.g. _MENU_
 dataTables.sInfo=全リソース_TOTAL_の_START_から_END_まで表示する。
+dataTables.sInfo.versions=\ START_ to _END_of _TOTAL_バージョンを表示する。
 dataTables.sInfoEmpty=０リソースの０番目から０番目までを表示する。
 dataTables.sInfoFiltered=(filtered from _MAX_ total)
-dataTables.sEmptyTable=利用できるリソースはありません。
+dataTables.sEmptyTable.resources=利用できるリソースはありません。
+dataTables.sEmptyTable.organisations=組織がありません。
+dataTables.sEmptyTable.versions=バージョンがありません。
+dataTables.sEmptyTable.users=ユーザーがありません。
 dataTables.sZeroRecords=リソースが見つかりません。
 
-dwca.failed=リソース{1}のヴァージョン#{0}のアーカイブ作成は失敗しました。
-dwca.interrupted=リソース{1}のヴァージョン#{0}のアーカイブ作成が中断しました。
+dwca.failed=リソース{1}のヴァージョン\#{0}のアーカイブ作成は失敗しました。
+dwca.interrupted=リソース{1}のヴァージョン\#{0}のアーカイブ作成が中断しました。
 
-publishing.started=リソース{1}のヴァージョン#{0}の公開を開始しました。
-publishing.success=リソース{1}のヴァージョン#{0}の公開は成功しました。
-publishing.cancelled=リソース{1}のヴァージョン#{0}の公開はキャンセルされました。
+publishing.started=リソース{1}のヴァージョン\#{0}の公開を開始しました。
+publishing.success=リソース{1}のヴァージョン\#{0}の公開は成功しました。
+publishing.cancelled=リソース{1}のヴァージョン\#{0}の公開はキャンセルされました。
 publishing.error=公開中にタイプ{0}のエラーが発生しました：{1}
-publishing.failed=リソース{1}のヴァージョン#{0}の公開に失敗しました：{2}
-publishing.skipping=リソース{1}のヴァージョン#{0}の公開はスキップしました。公開作業の失敗回数がリミットに達したので、このリソースを別に公開してみてください。
+publishing.failed=リソース{1}のヴァージョン\#{0}の公開に失敗しました：{2}
+publishing.skipping=リソース{1}のヴァージョン\#{0}の公開はスキップしました。公開作業の失敗回数がリミットに達したので、このリソースを別に公開してみてください。
+publishing.changeSummary.default=None provided
 
-restore.resource.success=公開失敗の後、リソース{1}のヴァージョン#{0}を修復しました。
-restore.resource.failed=リソース{1}のヴァージョン#{0}の修復に失敗しました。
+restore.resource.success=公開失敗の後、リソース{1}のヴァージョン\#{0}を修復しました。
+restore.resource.failed=リソース{1}のヴァージョン\#{0}の修復に失敗しました。
 
 # Auto-publishing
 autopublish=自動公開
@@ -1173,3 +1398,5 @@ autopublish.disable=公開　＆　自動公開OFF
 autopublish.interval=頻度を選択
 autopublish.help=自動公開を<strong>ON</strong>にする時は、５つの公開間隔(スケジュール）の中から１つを選び、publishを押します。公開間隔を<strong>変更する</strong>時は、異なる間隔(スケジュール）を選んでpublishを押します。自動公開を<strong>OFF</strong>にする場合には"Turn off"を選んでpublishを押します。
 
+# Struts2 overrides
+struts.messages.upload.error.SizeLimitExceededException=アップロードされたファイルが大きすぎます ！許容最大サイズは {0} バイトですが、リクエストサイズは {1} バイトでした。この問題を回避するために、ファイルの圧縮 (zip と gzip) を試みてください。IPT でサポートされている複数のデータベースのいずれかにデータを流し込むか、ファイルを分割します。詳細についてはユーザー マニュアルを参照してください。
