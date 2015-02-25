@@ -117,6 +117,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.ListMultimap;
+import com.google.common.io.Files;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.lowagie.text.Document;
@@ -1032,9 +1033,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         }
 
         // pre v2.2 resources: convert resource version from integer to major_version.minor_version style
+        // also convert/rename eml, rtf, and dwca versioned files also
         BigDecimal converted = convertVersion(resource);
         if (converted != null) {
-          resource.setEmlVersion(converted);
+          updateResourceVersion(resource, resource.getEmlVersion(), converted);
         }
 
         // pre v2.2 resources: construct a VersionHistory for last published version (if appropriate)
@@ -1074,6 +1076,54 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       }
     }
     return null;
+  }
+
+  /**
+   * Update a resource's version, and rename its eml, rtf, and dwca versioned files to have the new version also.
+   *
+   * @param resource resource to update
+   * @param oldVersion old version number
+   * @param newVersion new version number
+   *
+   * @return resource whose version number and files' version numbers have been updated
+   */
+  protected Resource updateResourceVersion(Resource resource, BigDecimal oldVersion, BigDecimal newVersion) {
+    Preconditions.checkNotNull(resource);
+    Preconditions.checkNotNull(oldVersion);
+    Preconditions.checkNotNull(newVersion);
+    // proceed if old and new versions are not equal in both value and scale - comparison done using .equals
+    if (!oldVersion.equals(newVersion)) {
+      try {
+        // rename e.g. eml-18.xml to eml-18.0.xml (if eml-18.xml exists)
+        File oldEml = dataDir.resourceEmlFile(resource.getShortname(), oldVersion);
+        File newEml = dataDir.resourceEmlFile(resource.getShortname(), newVersion);
+        if (oldEml.exists() && !newEml.exists()) {
+          Files.move(oldEml, newEml);
+        }
+
+        // rename e.g. zvv-18.rtf to zvv-18.0.rtf
+        File oldRtf = dataDir.resourceRtfFile(resource.getShortname(), oldVersion);
+        File newRtf = dataDir.resourceRtfFile(resource.getShortname(), newVersion);
+        if (oldRtf.exists() && !newRtf.exists()) {
+          Files.move(oldRtf, newRtf);
+        }
+
+        // rename e.g. dwca-18.zip to dwca-18.0.zip
+        File oldDwca = dataDir.resourceDwcaFile(resource.getShortname(), oldVersion);
+        File newDwca = dataDir.resourceDwcaFile(resource.getShortname(), newVersion);
+        if (oldDwca.exists() && !newDwca.exists()) {
+          Files.move(oldDwca, newDwca);
+        }
+
+        // if all renames were successful (didn't throw an exception), set new version
+        resource.setEmlVersion(newVersion);
+      } catch (IOException e) {
+        log.error("Failed to update version number for " + resource.getShortname(), e);
+        throw new InvalidConfigException(TYPE.CONFIG_WRITE,
+          "Failed to update version number for " + resource.getShortname() + ": " + e.getMessage());
+      }
+    }
+    return resource;
   }
 
   /**

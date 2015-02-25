@@ -1429,7 +1429,8 @@ public class ResourceManagerImplTest {
    * Simulates what happens to a resource when upgrading an IPT to IPT v2.2:
    * Ensure resource created using IPT v2.1 loads successfully.
    * Specifically, it's important the version number gets converted from integer to major_version.minor_version format,
-   * and that the VersionHistory gets populated with the last published version.
+   * the eml, rtf, and dwca versioned files get renamed using the major_version.minor_version format, and that the
+   * VersionHistory gets populated with the last published version.
    */
   @Test
   public void testLoadPre2Point2Resource()
@@ -1438,14 +1439,45 @@ public class ResourceManagerImplTest {
     // create new resource from configuration file (resource.xml) that does not have version history
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource_v1_1.xml");
     when(mockedDataDir.resourceFile(anyString(), anyString())).thenReturn(resourceXML);
-    File emlXML = FileUtils.getClasspathFile("resources/res1/eml.xml");
-    when(mockedDataDir.resourceEmlFile(anyString(), any(BigDecimal.class))).thenReturn(emlXML);
+
+    // mock returning eml-19.xml in temp directory
+    File eml = File.createTempFile("eml-19", ".xml", mockedDataDir.tmpDir());
+    when(mockedDataDir.resourceEmlFile(resourceDir.getName(), new BigDecimal("19"))).thenReturn(eml);
+
+    // mock returning eml-19.0.xml in temp directory, that doesn't exist!
+    File emlNew = new File(eml.getParentFile(), "eml-19.0.xml");
+    assertFalse(emlNew.exists());
+    when(mockedDataDir.resourceEmlFile(resourceDir.getName(), new BigDecimal("19.0"))).thenReturn(emlNew);
+
+    // mock returning res1-19.rtf in temp directory
+    File rtf = File.createTempFile("res1-19", ".rtf", mockedDataDir.tmpDir());
+    when(mockedDataDir.resourceRtfFile(resourceDir.getName(), new BigDecimal("19"))).thenReturn(rtf);
+
+    // mock returning res1-19.0.rtf in temp directory, that doesn't exist!
+    File rtfNew = new File(eml.getParentFile(), "res1-19.0.rtf");
+    assertFalse(rtfNew.exists());
+    when(mockedDataDir.resourceRtfFile(resourceDir.getName(), new BigDecimal("19.0"))).thenReturn(rtfNew);
+
+    // mock returning dwca-19.zip in temp directory
+    File dwca = File.createTempFile("dwca-19", ".zip", mockedDataDir.tmpDir());
+    when(mockedDataDir.resourceDwcaFile(resourceDir.getName(), new BigDecimal("19"))).thenReturn(dwca);
+
+    // mock returning dwca-19.0.zip in temp directory
+    File dwcaNew = new File(dwca.getParentFile(), "dwca-19.0.zip");
+    assertFalse(dwcaNew.exists());
+    when(mockedDataDir.resourceDwcaFile(resourceDir.getName(), new BigDecimal("19.0"))).thenReturn(dwcaNew);
+
     ResourceManagerImpl resourceManager = getResourceManagerImpl();
 
     Resource loaded = resourceManager.loadFromDir(resourceDir);
     assertEquals("19.0", loaded.getEmlVersion().toPlainString());
     assertEquals(1, loaded.getVersionHistory().size());
     assertEquals(IdentifierStatus.UNRESERVED, loaded.getIdentifierStatus());
+
+    // assert files exist now
+    assertTrue(emlNew.exists());
+    assertTrue(rtfNew.exists());
+    assertTrue(dwcaNew.exists());
 
     // next version?
     assertEquals("19.1",loaded.getNextVersion().toPlainString());
