@@ -1,3 +1,0 @@
-id	scientificName	basisOfRecord	kingdom	datasetID
-1	puma concolor	occurrence	occurrence	ds_77
-2	pumm:concolor	occurrence	occurrence	ds_77
