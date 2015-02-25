@@ -34,6 +34,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -211,7 +212,7 @@ public class ResourceActionTest {
   }
 
   /**
-   * When manager IS not logged in, ensure ALL published versions are shown.
+   * When manager IS logged in, ensure ALL published versions are shown.
    */
   @Test
   public void testDetailForLoggedInManager() {
@@ -224,14 +225,30 @@ public class ResourceActionTest {
 
     // ensure all versions available to manager
     action.setVersion(RESOURCE_VERSION_ONE);
+    assertNotEquals(resource.getEmlVersion(), action.getVersion());
+
     assertEquals(BaseAction.SUCCESS, action.detail());
-    // ensure warning was generated (about this resource being private and not available to everyone)
-    assertEquals(1, action.getActionWarnings().size());
+    // ensure warnings were generated:
+    // 1. warning about this resource being private and not available to everyone
+    // 2. warning about requesting version that is not the latest
+    assertEquals(2, action.getActionWarnings().size());
+
+    // reset warnings
+    action.getActionWarnings().clear();
 
     action.setVersion(RESOURCE_VERSION_TWO);
     assertEquals(BaseAction.SUCCESS, action.detail());
+    // ensure warning was generated:
+    // 1. warning about requesting version that is not the latest
+    assertEquals(1, action.getActionWarnings().size());
+
+    // reset warnings
+    action.getActionWarnings().clear();
 
     action.setVersion(LATEST_RESOURCE_VERSION);
     assertEquals(BaseAction.SUCCESS, action.detail());
+    // ensure warning was generated:
+    // 1. warning about this resource being private and not available to everyone
+    assertEquals(1, action.getActionWarnings().size());
   }
 }
