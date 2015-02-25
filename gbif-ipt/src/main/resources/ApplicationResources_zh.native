@@ -1,46 +1,29 @@
+#X-Generator: crowdin.com
+# UTF-8 English übersetzen
 ##
-# Notes to developers:
-# Please maintain sensible groupings within this file (Do not use Attesoro to work in this file)
-# Please consider promoting generic messages out of specific sections for better reuse
-# Please consider that people will be translating this file and simplifying this for them
-#   is a priority
-##
-
-##
-# IMPORTANT!! In the coming future, the conversation to ascii described below will be
-# picked up automatically. Please from now only provide edits ONLY TO THIS native file
-# in Traditional Chinese.
-##
-
-##
-# Recommended practice of translation without using Attesoro:
+# Introduction (to IPT translation):
 #
-# Attesoro breaks the grouping of this properties file and makes maintenance cumbersome among
-# language groups. We recommend using any text editors with the native2ascii command-line tools
-# to work on the translation tasks. native2ascii is a tool coming with default JDK installation.
+# The preferred way of translating the IPT is using https://crowdin.com/project/gbif-ipt
+# New volunteers are always welcome. To join, just login to Crowdin and request to join the IPT project.
 #
-# To add/update translation to properties files, using Chinese as an example:
-# 1. Convert the properties file to UTF-8 so characters are displayed in non-escaped form and can be
-#    read by traslators.
+# To Crowdin managers, please note:
 #
-#   $ native2ascii -reverse -encoding UTF-8 ApplicationResources_zh.properties ApplicationResources_zh.native
+# In Crowdin, translations are always exported in the same encoding as the original source file.
+# We want Crowdin to export translations using UTF-8, but since the IPT Resource Bundle uses ISO-8859-1, always upload
+# this file (ApplicationResource_en.properties) to Crowdin saved as UTF-8 (with BOM). To be sure the encoding is UTF-8
+# add a comment to the top of this file having a symbol from UTF-8 such as a Germanic umlaut.
 #
-# 2. Find the property and edit the translation.
-# 3. When finished, convert the properties file again to ASCII:
+# Then to update the IPT's Resource Bundle, rebuild the translations in Crowdin and export them (they will be in UTF-8).
+# Save these translations as .native properties files, and then convert them into IS0-8859-1. For Spanish for example:
 #
-#   $ native2ascii -encoding UTF-8 ApplicationResources_zh.native ApplicationResources_zh.properties
+# $ native2ascii -encoding UTF-8 ApplicationResources_es.native ApplicationResources_es.properties
 #
-# 4. Commit the converted file to IPT code repository.
+# Lastly, update the corresponding files in the Resource Bundle using the converted (ISO-8859-1/ASCII) files.
 #
-# This way the grouping is kept and is easier for others to find relevant translations.
-##
-
-##
-# IPT Interface translation contributed by TaiBIF & TFRI as of v2.0.3.
-# Reviewed and consistency checked by BCJK @ GBIFS.
+# To developers, please note:
 #
-# Please note if using double-byte characters for punctuation, then it shouldn't
-# be escaped by back-slash.
+# When working on this file, please maintain sensible groupings (contexts) within this file. Also please consider ways
+# to simplify the lives of translators, such as by parsing generic messages out of specific sections for better reuse.
 ##
 
 ####
@@ -63,6 +46,9 @@ basic.yes=是
 basic.no=否
 basic.showMore=增加顯示內容
 basic.showLess=減少顯示內容
+basic.show=顯示
+basic.hide=隱藏
+basic.none=None
 
 # buttons
 button.add=增加
@@ -75,11 +61,15 @@ button.create=建立
 button.edit=編輯
 button.back=返回
 button.register=註冊
+button.reserve.new=保留新增
+button.reserve=保留
+button.undelete=復原刪除
 button.publish=發布
 button.public=公開
 button.updateRegistration=更新註冊資訊
 button.update=更新
 button.private=尚未公開
+button.view=檢視
 button.preview=預覽
 button.import=匯入
 button.reload=重新載入
@@ -97,7 +87,7 @@ button.install=安裝
 ####
 # footer
 footer.version=版本
-footer.projectHome=關於 IPT 專案
+footer.projectHome=About the IPT
 footer.useManual=使用手冊
 footer.bugReport=回報程式錯誤
 footer.featureRequest=建議新功能
@@ -133,7 +123,7 @@ pager.next=往後
 # DATA MODEL PROPERTIES
 ####
 
-#user
+# user
 user=使用者
 user.email=電字郵件
 user.firstname=名字
@@ -171,17 +161,17 @@ vocabulary.terms.alt=替代欄位名稱
 
 # resource
 resource.shortname=資源簡稱
+resource.shortname.help=簡短名稱是做為IPT資源的辨識碼，並用以編寫網暩網路存取該資源的網址。請僅以數字、字母、連字符號、或底線編寫資源簡短名稱。
 resource.coreType=核心集類型
 resource.coreType.selection=選擇一種核心集類型
-
 manage.resource.create.coreType=核心集類型
 manage.resource.create.coreType.selection=選擇一種核心集類型（額外選項）
 manage.resource.create.coreType.help=資源類型。若載入額外倉儲的資源，資源類型將自動決定並覆蓋你的選擇。<ul><li><b>出現資料：</b>此資源的基礎是自然的出現（觀察）紀錄或採集（標本）紀錄。<br /></li><li><b>名錄：</b> 此資源的基礎是分類名稱。<br /></li><li><b>元數據：</b> 有描述資料集的資訊，但無實際的原始資料的資源。例如，元數據可提供尚未數位化的採集相關資訊<br /></li><li><b>其他：</b>其他資源類型。<br /></li></ul>
-
 resource.subtype=次類型
 resource.status.private=未公開
 resource.status.public=公開
 resource.status.registered=已註冊
+resource.status.deleted=已刪除，但仍公開。
 resource.creator.firstname=名字
 resource.creator.lastname=姓氏
 resource.creator.email=電子郵件
@@ -189,10 +179,8 @@ resource.coreType.help=資源的類型。此欄位的值取決於此資源的核
 resource.subtype.help=資源的次類型。此欄位的選項取決於核心集類型。
 resource.subtype.selection=選擇一種次類型
 resource.subtype.none=無
-resource.updateFrequency.selection=選擇更新頻率
 resource.updateFrequency=更新頻率
 resource.updateFrequency.help=資料集最初編輯完成後，資料修改或增加的頻率。使用自動發布模式，請選擇設定每日、每周、每月、每年兩次或每年一次更新資料集：<ul><li><b>每年</b>每年更新一次<br /></li><li><b>需要時：</b>依需要更新<br /></li><li><b>每年兩次：</b>每年更新兩次<br /></li><li><b>持續：</b>持續更新<br /></li><li><b>每日：</b>每日更新一次<br /></li><li><b>不定期：</b>不定期更新<br /></li><li><b>每月：</b>每月更新一次<br /></li><li><b>無計畫：</b>無計畫更新<br /></li><li><b>每周：</b>每周更新一次<br /></li><li><b>不確定：</b>有可能更新，但不確知何時<br /></li><li><b>其他更新週期：</b>依其他週期更新。<br /></li></ul>
-
 
 # sources
 source.name=資料庫來源名稱
@@ -209,12 +197,12 @@ sqlSource.database.help=伺服器中的資料庫名稱或 ODBC 連結 DSN 名稱
 sqlSource.username=資料庫使用者
 sqlSource.password=資料庫密碼
 sqlSource.sql=SQL 述語
-sqlSource.sql.help=讀取來源資料庫的 SQL 述語。此述語將如實傳送，因此你可以使用連結資料庫任何原有支援的功能，如函數(functions)、組別(group by)、聯集(unions)。範例: <br /> <code>SELECT * from specimen join taxon on taxon_fk=taxon.id</code>
+sqlSource.sql.help=讀取來源資料庫的 SQL 述語。此述語將如實傳送，因此你可以使用連結資料庫任何原有支援的功能，如函數(functions)、組別(group by)、聯集(unions)。範例\: <br /> <code>SELECT * from specimen join taxon on taxon_fk\=taxon.id</code>
 sqlSource.sqlLimited=預覽資料產生的 SQL 語法
 fileSource.fieldsTerminatedByEscaped=欄位分隔符號
 fileSource.fieldsTerminatedByEscaped.help=分隔每一列中的欄位的單一字元符號。
 fileSource.fieldsEnclosedByEscaped=欄位包圍字元
-fileSource.fieldsEnclosedByEscaped.help=在每一列中圍繞每一欄位的單一字元符號，通常為空，但 CSV 檔中使用雙引號(")。 使用此選項時， 請確認不管是否為文字，每一欄位內容皆包含於引號中。
+fileSource.fieldsEnclosedByEscaped.help=A single character that encloses every field/column in a row. Most often empty, but CSV files use a ". With this option, make sure that *all* of your fields are contained in quotes, not just those that are text. Please note that in the IPT newline characters (\n) or carriage returns (\r) cannot be enclosed by quotes and should be removed.
 fileSource.ignoreHeaderLines=標頭列數
 fileSource.ignoreHeaderLines.help=匯入資料時，檔案開頭將被略過的列數
 excelSource.sheets=選定的工作表
@@ -237,13 +225,16 @@ validation.short={0} 至少需要 {1} 字母。
 validation.contains=文字不可包含 "{0}" 符號。
 validation.field.required=欄位
 validation.field.blank={0} 必須多於 2 個字元，不可有空白字元。
+validation.field.invalidSize={0} must have a length between {1} and {2} characters, check there are no blank spaces.
 validation.wrong.datatype={0} 對應至錯誤資料類型的值。
+validation.column.multipleTranslations=來源欄位 {0} 有多種翻譯名稱。為避免翻譯衝突，請選用一種翻譯。
 
 # user/config
 validation.email.required=需要填寫電子郵址。
 validation.email.invalid=電子郵件無效。
 validation.firstname.required=需填寫名字。
 validation.lastname.required=需填寫姓氏。
+validation.password.reentered=Please reenter a valid password
 validation.password.required=密碼至少需要 4 個字元。
 validation.password2.wrong=輸入密碼不一致。
 validation.baseURL.required=需要 IPT base URL。
@@ -254,6 +245,16 @@ validation.organisation.password.required=需要密碼。
 validation.organisation.alias.required=需要別名。
 validation.organisation.password.invalid=密碼無效。
 validation.organisation.key.required=請從列表中選擇一單位組織。
+validation.organisation.doiRegistrationAgency.required=需要DOI註冊組織
+validation.organisation.agencyAccountUsername.required=需要註冊組織的使用者帳號
+validation.organisation.agencyAccountPassword.required=需要註冊組織的使用者密碼
+validation.organisation.doiPrefix.required=需要DOI前置字元
+validation.organisation.doiPrefix.invalid=DOI prefix must start with "10."
+validation.organisation.doiPrefix.ezid.invalid=EZID prefix must contain shoulder, e.g. "/FOO" in "10.1234/FOO"
+validation.organisation.doiPrefix.invalid.testMode=In test mode, typically the test DOI prefix is used\: 10.5072 for DataCite or 10.5072/FK2 for EZID
+validation.organisation.doiPrefix.invalid.productionMode=In production mode, the test DOI prefix cannot be used\: 10.5072 for DataCite or 10.5072/FK2 for EZID
+validation.organisation.agencyAccount.invalid=無效的使用者帳號或密碼
+validation.organisation.agencyAccount.cantAuthenticate=Authentication failed\! Please verify the DOI agency account is entered correctly and try again.
 
 # ipt
 validation.ipt.name.required=需要 IPT 標題名稱。
@@ -270,7 +271,7 @@ validation.resource.shortname.required=需要簡稱。
 validation.resource.shortname.invalid=名稱無效。至少需要 3 個拉丁字元、數字、連字符號或底線，不可有空白字元。
 validation.resource.shortname.exists=資料集 {0} 已存在。
 validation.resource.shortname.title=需要標題名稱。
-validation.resource.import.exception=匯入檔案錯誤 - 您確定這是達爾文核心集檔案？請使用檔案驗證服務 http://tools.gbif.org/dwca-validator/
+validation.resource.import.exception=匯入檔案錯誤 - 您確定這是達爾文核心集檔案？請使用檔案驗證服務 http\://tools.gbif.org/dwca-validator/
 
 # mappings
 validation.mapping.coreid.missing=延伸集資料需要一個識別碼(ID)以連結至核心紀錄表單。
@@ -283,13 +284,15 @@ validation.mapping.coreid.uuid.extensions.exist=使用系統產生的 UUID 做�
 # eml
 validation.lastname.organisation.position=需填寫姓氏、單位組織或職稱。
 validation.firstname.lastname=若填寫名字，則亦須填寫姓氏。
+validation.personnel=若提供工作人員目錄，工作人員辨識碼亦須提供。
+validation.directory=若提供工作人員辨識碼，工作人員目錄亦須提供。
 
 # errors
 error.header.title=遺失
 error.title=噢
 error.body=您似乎發現了一個意料之外的錯誤：
 error.view.logs=查看 IPT 的日誌檔
-error.report=如果您認為這種情況不應該發生，請協助我們改進 IPT 以及<a href="http://code.google.com/p/gbif-providertoolkit/issues/entry?summary=IPT%20error">提出程式錯誤的報告</a> 來處理這個例外情況。
+error.report=如果您認為這種情況不應該發生，請協助我們改進 IPT 以及<a href\="http\://code.google.com/p/gbif-providertoolkit/issues/entry?summary\=IPT%20error">提出程式錯誤的報告</a> 來處理這個例外情況。
 error.thanks=萬分感謝，IPT 研發小組敬上。
 error.details.title=技術細節
 
@@ -297,40 +300,45 @@ error.details.title=技術細節
 # GLOBAL SECTION
 ####
 login.title=使用者登入
-login.intro=請以您的電子郵件地址登入 IPT 帳號。<br />若您沒有帳號，請連絡 IPT 管理員為您設立帳號。
-login.forgottenpassword=忘了密碼？請連絡 IPT 管理員為您重置密碼
-login.forgottenpassword.mail.subject=您忘記的 IPT 密碼
-login.forgottenpassword.mail.body=IPT 管理者 {0} 您好：\n	我忘了我的 IPT 密碼，帳號是{1}。\n	是否能請您就使用者帳號單元中所列，將我的登入資料以電子郵件寄給我？\n\n謝謝！ \n {1}\n\n\n	{2}
+login.intro=Please log into your IPT account with your email address.<br />If you don''t have an account yet, please ask the <a href\="mailto\:{0}">IPT administrator</a> to create one for you.
+login.forgottenpassword=Forgot your password? Please contact the <a href\="mailto\:{0}">IPT administrator</a> to reset it for you.
 account.title=您的 IPT 帳號
 account.intro=您的帳號設定可以在此修改。管理資料集的角色權限必須由系統管理者指定。
 account.email.cantChange=使用者帳一旦建立，電子郵件地址即不可更改。如果因為任何原因您必須更改您的電子郵件地址，請洽您的管理員，建立一個新的帳號後移除舊的。
 404.title=找不到頁面
 404.body=抱歉，您要求瀏覽的頁面不存在。
+410.title=資原已移除
+410.body=抱歉，該資源已被資料發佈者刪除，因此無法公開下載。
 401.title=未經授權
-401.body=您無瀏覽此頁面的權限。<br />請先以適當權限的帳號<a href="{0}">登入</a>。
+401.body=您無瀏覽此頁面的權限。<br />請先以適當權限的帳號<a href\="{0}">登入</a>。
 401.manager.title=必須以使用管理者權限登入
-401.manager.body=您必須以「管理者」角色登入，方能使用 IPT 此部分之功能。請以使用管理者帳號 <a href="{0}">登入</a>，或連繫 IPT 管理者提供您此角色。
+401.manager.body=您必須以「管理者」角色登入，方能使用 IPT 此部分之功能。請以使用管理者帳號 <a href\="{0}">登入</a>，或連繫 IPT 管理者提供您此角色。
 help.options=點選以下任何選項
+
 
 ####
 # PORTAL SECTION
 ####
 portal.home.title=此 IPT 上維護的公開資源
 portal.home.intro=此 IPT 可用的公開資源
-portal.home.feed=最近更新的資源亦可由 <a href="{0}">RSS feed</a> 獲得。
+portal.home.feed=最近更新的資源亦可由 <a href\="{0}">RSS feed</a> 獲得。
 portal.home.no.public=無公開資源
 portal.home.name=名稱
 portal.home.logo=標誌
-portal.home.type=類型
 portal.home.organisation=單位組織
+portal.home.type=類型
 portal.home.records=紀錄筆數
+portal.home.doi=DOI處理
 portal.home.modified=最後修改時間
+portal.home.modifiedBy=最後修改者
+portal.home.summary=異動摘要
 portal.home.last.publication=上次發布
-manage.home.next.publication=下次發布
 portal.home.not.published=尚未發布
 portal.home.author=作者
 portal.login=登入
 portal.metadata.provider=元數據提供者
+portal.metadata.provider.intro=元數據填寫者
+portal.associatedParties.intro=與此資源的相關者
 portal.resource.no.description=無相關描述
 portal.resource.summary=摘述
 portal.resource.summary.keywords=關鍵字
@@ -339,24 +347,50 @@ portal.resource.summary.geocoverage=地理涵蓋範圍
 portal.resource.version=版本
 portal.resource.version.latest=檢視最近的
 portal.resource.latest=最近的
+portal.resource.versions=版本
+portal.resource.versions.verbose=The table below shows only published versions of the resource that are publicly accessible.
+portal.resource.versions.verbose.manager=The table below shows all published versions of the resource, because you have access rights.
+portal.resource.downloads=下載
+portal.resource.downloads.verbose=下載最新版本的Darwin Core Archive (DwC-A)資源，或資源元數據的EML或RTF文字檔。
+portal.resource.downloads.metadataOnly.verbose=下載最新版本資源元數據的EML或RTF文字檔。
+portal.resource.publishedOn=由 {0} 發佈於
+portal.resource.latest.version=最新版本
+portal.resource.latest.version.warning=請注意，此資料集為舊版本。
+portal.resource.cite=引用此資源
+portal.resource.cite.howTo=如何引用
+portal.resource.cite.help=研究者應依照以下指示引用此資源。
+portal.resource.rights.help=研究者應尊重以下權利聲明。
 portal.resource.download=下載
 portal.resource.records=紀錄
 portal.resource.published.archive=達爾文核心集檔案
 portal.resource.published.eml=EML
 portal.resource.published.rtf=RTF
+portal.resource.published.dwca=DwC-A
 portal.resource.published.never=永不
+portal.resource.published.never.long=此資料集從未發佈。
 portal.resource.organisation.key=GBIF 註冊
+portal.resource.gbif.page=GBIF首頁
+portal.resource.gbif.page.short=GBIF
 portal.resource.organisation.name=單位組織名稱
 portal.resource.organisation.node=認可節點
 portal.resource.metadata=資源元數據
+portal.resource.metadata.verbose=元數據EML檔
+portal.resource.rtf.verbose=元數據RTF文字檔
+portal.resource.dwca.verbose=DwC-A資料集
 portal.resource.creator=資源創建者
+portal.resource.creator.intro=資源建立者
 portal.resource.name=資源名稱
 portal.resource.contact=聯絡資訊
+portal.resource.contact.intro=可回覆此資源相關問題者
+portal.resource.contacts=聯絡資訊
 portal.resource.tel=電話
-portal.resource.eml.error.load=資料集 {1} EML 檔版本 #{0} 載入失敗
-portal.resource.eml.error.parse=資料集 {1} EML 檔版本 #{0} 無法解析
 portal.publication.download.log=完整下載
 portal.publication.log=發布日誌檔
+portal.resource.eml.error.load=資料集 {1} EML 檔版本 \#{0} 載入失敗
+portal.resource.eml.error.parse=資料集 {1} EML 檔版本 \#{0} 無法解析
+portal.resource.otherFormats=此資源尚有其他格式可用
+portal.resource.warning.notPublic=The version you are looking at is {0} and cannot be seen by everyone\!
+portal.resource.warning.notLatest=The version you are looking at is not the latest version\! Please refer to the versions table to find the latest.
 
 ####
 # ADMIN SECTION
@@ -374,7 +408,12 @@ admin.home.publishResources.help=和「發布」一樣，但此處發布所有�
 admin.config.setup.title=IPT 設定
 admin.config.setup.welcome=為了使用 IPT，您必須選擇一個資料目錄讓 IPT 儲存它的配置資訊，亦即所謂的 IPT 資料目錄。
 admin.config.setup.instructions=請選擇一個空的、可寫入的資料夾，或者是一個已存在的 IPT 資料目錄。不要選擇一個容易受到其他行程影響的資料夾，如 /tmp，它在系統啟動時會被清空。這個資料夾應該保持定期備份與災難恢復計劃。
-admin.config.setup.examples=例如：使用路徑如視窗環境下的 "C:\\datadir" ，或是類 UNIX 環境（如 Linux, Mac OS X）下的 "/usr/datadir"。
+admin.config.setup.examples=例如：使用路徑如視窗環境下的 "C\:\\datadir" ，或是類 UNIX 環境（如 Linux, Mac OS X）下的 "/usr/datadir"。
+admin.config.setup.disclaimerPart1=Starting with this version, publishers are required to assign one of three machine-readable rights declarations to their data. If you cannot agree to publish your data under a CC0 1.0, CC-BY 4.0 or CC-BY-NC 4.0 declaration, we recommend that you continue to use the previous version of the IPT for now.
+admin.config.setup.disclaimerPart2=GBIF will begin working with existing publishers to implement and enforce this requirement across the network during 2015. If you are unable to choose one of the three options, you will not be able to register your dataset with GBIF or make it globally discoverable through GBIF.org. For background on this decision, <a href\="http\://www.gbif.org/terms/licences" target\="_blank">click here</a>.
+admin.config.setup.read=I have read and understood the disclaimer
+admin.config.setup.read.error=Before continuing please be sure you have read and understood the disclaimer
+admin.config.setup.disclaimer.title=Disclaimer
 admin.config.setup.datadir=您資料目錄的絕對路徑
 admin.config.setup.datadir.created=您已經成功地建立一個新的資料目錄。
 admin.config.setup.datadir.reused=您已經成功地指定一個已存在的資料目錄。
@@ -388,8 +427,8 @@ admin.config.setup2.administrator=預設之系統管理員
 admin.config.setup2.administrator.help=預設系統管理員之密碼可在稍後變更，但電子郵件無法修改，除非刪除並重建。
 admin.config.setup2.mode.title=IPT 執行模式
 admin.config.setup2.mode.help=請選擇 IPT 的執行模式。IPT 執行模式決定資源是否會被 GBIF 索引而能公開搜尋。GBIF 建議 IPT 管理員嘗試使用「測試模式」以瞭解註冊程序，然後使用「正式模式」以正式發布資料。<b>警告</b>：此選項一旦選定將不可更改，您必須重新安裝以切換模式，並重覆所需的設定。
-admin.config.setup2.mode.test=<b>測試模式</b>用以評估或是在訓練課程中 IPT 的使用情況。在此模式下註冊資訊將存在測試用的登錄，且資源將不會被索引。
-admin.config.setup2.mode.production=<b>正式模式</b>用以正式發布資源。資源將會登錄在 GBIF 且會被索引。
+admin.config.setup2.mode.test=<strong>Test</strong> mode is for evaluating the IPT or running it in a training scenario. Resources registered with GBIF will go into a test registry and will never be indexed. All DOIs minted for resources in test mode should use a test prefix (e.g. 10.5072 for DataCite), meaning they are temporary.
+admin.config.setup2.mode.production=<strong>生產</strong> 模式是用來正式的發佈資源。資源註冊至GBIF將會保存於登錄資料庫，並編製索引。為註冊資源所編製的DOI辨識碼無法被刪除，且註冊資源需保持公開取用。
 admin.config.setup2.success=恭喜！您的 IPT 已經設置完成。
 admin.config.setup2.next=在您開始管理資源之前，請先到管理單元，建立新的管理員與安裝適合的延伸集。
 admin.config.setup2.existingFound=在提供的位置上找到一個 IPT 資料目錄。IPT 將採用這個目錄的所有資料內容。
@@ -403,13 +442,15 @@ admin.config.setup2.nomode=請選擇IPT的執行模式。
 admin.config.setup3.title=IPT 設置完成
 admin.config.setup3.welcome=恭喜！您已經成功地安裝您的 IPT。請按下「繼續」以使用它。
 
-admin.config.debug=除錯模式
-admin.config.debug.help=如果您在您的 IPT 上遭遇問題，並且希望啟用提供為除錯目的而增加資訊記錄功能時，請勾選此核取框。如果您需要 helpdesk 的幫助，您可能會被要求提供除錯記錄資訊。
-admin.config.debug.error=無效的除錯模式（必須為是或否）
-admin.config.save.error=無法寫入設定值－遭遇錯誤
 admin.config.archivalMode=倉儲模式
 admin.config.archivalMode.help=若希望 IPT 保存所有資料集已發布的所有版本，請選取此方塊；此功能將讓你可以追溯資料集的版本歷史。若不選取此方塊，舊版本將會被新版本複寫。請特別注意保留足夠的磁碟儲存空間。
 admin.config.archivalMode.error=無效的倉儲模式（必須為是或否）
+admin.config.debug.error=無效的除錯模式（必須為是或否）
+admin.config.analyticsGbif.error=無效的 GBIF Analytics 模式（必須為是或否）
+admin.config.save.error=無法寫入設定值－遭遇錯誤
+
+admin.config.debug=除錯模式
+admin.config.debug.help=如果您在您的 IPT 上遭遇問題，並且希望啟用提供為除錯目的而增加資訊記錄功能時，請勾選此核取框。如果您需要 helpdesk 的幫助，您可能會被要求提供除錯記錄資訊。
 
 admin.config.server.data.dir=IPT 資料目錄
 admin.config.server.data.dir.help=IPT 用以寫入資料的伺服器目錄
@@ -426,40 +467,42 @@ admin.config.googleMapsKey=Google Maps Key
 
 admin.config.analyticsGbif=啟用 GBIF 分析
 admin.config.analyticsGbif.help=如果您想讓 GBIF 將您的 IPT 納入全球 IPT 的使用情況監測，請勾取此核取框。
-admin.config.analyticsGbif.error=無效的 GBIF Analytics 模式（必須為是或否）
 admin.config.analyticsKey=您的 Google Analytics Key
 admin.config.analyticsKey.help=Google Analytics 是由 Google 提供監測網站應用程式的服務。請輸入您的 Google Analytics key 以便追蹤您的 IPT 使用狀況。
 admin.config.analyticsKey.error=無效的 Google Analytics Key
 
 admin.config.baseUrl=IPT 的基礎網址
-admin.config.baseUrl.help=這個網址指向您 IPT 裝置的根網址。如果您想要註冊資源，則您必須擁有可公開存取的位址。例如：http://tools.gbif.org/ipt。
+admin.config.baseUrl.help=這個網址指向您 IPT 裝置的根網址。如果您想要註冊資源，則您必須擁有可公開存取的位址。例如：http\://tools.gbif.org/ipt。
 admin.config.baseUrl.changed=基礎網址已成功更新
 admin.config.baseUrl.changed.reminder=登入時，點選「發布所有資料集」按鈕（管理頁面）以更新所有已註冊資源的服務網址。
 admin.config.baseUrl.inaccessible=此基礎網址無法讓您的電腦訪問任何 IPT 網站。
 admin.config.baseUrl.invalidBaseURL=基礎網址必須要能從網際網路連上（例如：localhost 和 127.0.0.1 無法從網際網路連上，是為無效。）
-admin.config.error.invalidBaseURL=輸入的基礎網址格式不正確 (例如，http://www.my-institution.com/ipt)
+admin.config.baseUrl.sameHostName=The machine name is used in the Base URL. Please be sure that your Base URL is visible on the Internet.
+
+
+admin.config.error.invalidBaseURL=輸入的基礎網址格式不正確 (例如，http\://www.my-institution.com/ipt)
 admin.config.error.invalidPort=埠號應為整數
 admin.config.error.connectionRefused=無法連上代理伺服器主機
-admin.config.error.invalidProxyURL=輸入的代理伺服器網址格式不正確 (例如，http://proxy.my-insitution.com:8080)
+admin.config.error.invalidProxyURL=輸入的代理伺服器網址格式不正確 (例如，http\://proxy.my-insitution.com\:8080)
 admin.config.error.localhostURL=使用 localhost, 除此電腦外，IPT 將無法從外部網路連上。
 admin.config.error.datadir=設定 IPT 資料目錄失敗
 
 admin.config.proxy=代理伺服器網址
-admin.config.proxy.help=假如您的伺服器是經由代理伺服器路由，請輸入主機位址與埠號為一個字串（例如proxy.gbif.org:8080）。
+admin.config.proxy.help=假如您的伺服器是經由代理伺服器路由，請輸入主機位址與埠號為一個字串（例如proxy.gbif.org\:8080）。
 admin.config.proxy.error=無效的代理伺服器網址
 
 admin.config.registry.url=GBIF 登錄網址
 admin.config.registry.url.help=這個資料目錄所關連的 GBIF 登錄網址，這是不可改變的，只能在 IPT 的設定步驟上選擇。
 
 admin.config.updateMetadata.none=沒有資源需要更新。。。
-admin.config.updateMetadata.resource.fail.registry=在更新至 GBIF 登錄時發生錯誤 - {0}。
 admin.config.updateMetadata.summary=已完成發布所有資料集。 若需要更多資訊，請見日誌檔。
+admin.config.updateMetadata.resource.fail.registry=在更新至 GBIF 登錄時發生錯誤 - {0}。
 
 # invalid fields
 invalid.fieldvalue.latitude=無效的緯度
 invalid.fieldvalue.longitude=無效的經度
 
-# extension & vocabs
+# extensions & vocabs
 admin.extension.coreTypes=核心類型
 admin.extension.extensions=延伸集
 admin.extension.no.coreTypes.installed=沒有安裝任何核心類型。
@@ -483,6 +526,7 @@ admin.extensions.vocabularies.updated={0}詞彙已更新。
 admin.extensions.vocabularies.unchanged={0}詞彙為最新版本。
 admin.extensions.vocabularies.errors=更新 {0} 詞彙時發生錯誤。請參考日誌！
 admin.extensions.vocabularies.update.help=延伸集中的欄位為控制詞彙，每隔一段時間這些詞彙可能會有所變動，故需要更新至 IPT。點擊以下按鈕將從 GBIF 登錄下載並更新控制詞彙。
+
 admin.extension.title=Darwin Core 延伸集：
 admin.extension.properties=延伸集屬性
 
@@ -499,10 +543,12 @@ admin.user.title.new=新的使用者帳號
 admin.user.intro=電子郵件地址用來識別使用者，且之後不能修改。在建立使用者時請謹慎選擇電子郵件地址。假如需要變更電子郵件地址，您將必須建立一個新的帳號後刪除舊帳號。
 admin.user.intro2=擁有管理員角色的使用者可以建立新的資源，但是不能管理由其他使用者建立的資源，除非這個資源在配置上邀請該使用者管理。您可以建立任意數量具有管理員角色的使用者，但至少有一個必須留在系統中。
 admin.user.added=使用者帳號已成功建立。
+admin.user.account.updated=Your user account was successfully updated.
 admin.user.changed=使用者已成功更新。
 admin.user.deleted=使用者已成功地刪除。
 admin.user.login=為使變更生效，請重新登入。
 admin.user.saveError=無法套用對該使用者所做的變更
+admin.user.account.saveError=Your user account change could not be applied.
 admin.user.exists=擁有電子郵件地址 {0} 的使用者已經存在。
 admin.user.deleted.lastadmin=最後一個管理員使用者無法刪除。
 admin.user.deleted.lastmanager=該使用者無法刪除，因為他是唯一管理以下資源的人：{0}。
@@ -512,13 +558,15 @@ admin.user.changed.current=您不能變更最後的管理員角色。
 admin.user.cantSave=無法儲存使用者檔案
 admin.user.passwordChanged={0} 的密碼已被更新至 {1}。
 admin.user.wrong.email.password.combination=電子郵件 - 密碼組合不存在
+
 admin.logs.warn=嚴重性大於或等於「警告」的訊息
-admin.logs.download=下載完整的 <a href="{0}">日誌檔案</a>
+admin.logs.download=下載完整的 <a href\="{0}">日誌檔案</a>
 # used for unkown errors where the exception message (in English...) will be displayed
 # use of this is to catch the errors that are not properly understood
 admin.error.invalidConfiguration=無效的配置：{0}
+admin.error.invalidConfiguration.doiAccount.activated=檔案保存模式不能被關閉，因為此IPT平台的DOI註冊功能已被啟用。你可以停用用來註冊DOI的DataCite/EZID帳號以關閉DOI註冊功能。
 
-# admin - registration
+#admin - registration
 admin.ipt.password=IPT 密碼
 admin.ipt.password.help=密碼是在進一步更新 IPT 時使用。請記住它 。
 admin.ipt.name=為此 IPT 設定標題
@@ -536,18 +584,18 @@ admin.registration.validate=驗證
 admin.registration.validate.success=基礎網址有效
 admin.registration.validate.failed.development=基礎網址無效，因為呼叫回傳失敗！請檢查這個 IPT 的基礎網址。由於此 IPT 正運行於測試模式，下方欄位無論如何將會顯示。
 admin.registration.validate.failed=驗證失敗！請檢查您的網路連線。假如已經連線，檢查基礎網址與代理伺服器網址（假如此伺服器需要的話）。
-admin.registration.intro=假如您在上列清單中找不到您的組織機構，請連繫： <a href="mailto:helpdesk@gbif.org?subject=To add an organisation to the GBIF registry&amp;body=Dear GBIF Helpdesk,%0D%0A%0D%0AI am an IPT administrator. In order to have our IPT registered under our organisation, we need to see it on the list of organisations while configuring the IPT. As I know, our organisation needs to be endorsed first, so please help us with the process.%0D%0A%0D%0AWe would like our organisation to be endorsed by [Node name].%0D%0A%0D%0AOR%0D%0A%0D%0AWe need help determining the endorsing Node.%0D%0A%0D%0AHere is the full name of our organisation [your organisation name].%0D%0A%0D%0AHere are the details for our organisation''s technical contact:%0D%0A%0D%0A[technical contact first name, last name]%0D%0A[technical contact email]%0D%0A%0D%0AHere are the details for our organisation''s administrative contact:%0D%0A%0D%0A[administrative contact first name, last name]%0D%0A[administrative contact email]%0D%0A%0D%0AThanks!%0D%0ABest regards,%0D%0A[Your name]">GBIF Help Desk</a>。請注意預設內容為英文，亦請在送出郵件之前確認您瞭解郵件內容以利後續連繫。
-admin.registration.intro2=一旦 IPT 完成註冊，此註冊即不能更改，除非連絡<a href=''mailto:helpdesk@gbif.org''>GBIF Help Desk</a>。在儲存之前請確認註冊資訊的完整與正確。
+admin.registration.intro=假如您在上列清單中找不到您的組織機構，請連繫： <a href\="mailto\:helpdesk@gbif.org?subject\=To add an organisation to the GBIF registry&amp;body\=Dear GBIF Helpdesk,%0D%0A%0D%0AI am an IPT administrator. In order to have our IPT registered under our organisation, we need to see it on the list of organisations while configuring the IPT. As I know, our organisation needs to be endorsed first, so please help us with the process.%0D%0A%0D%0AWe would like our organisation to be endorsed by [Node name].%0D%0A%0D%0AOR%0D%0A%0D%0AWe need help determining the endorsing Node.%0D%0A%0D%0AHere is the full name of our organisation [your organisation name].%0D%0A%0D%0AHere are the details for our organisation''s technical contact\:%0D%0A%0D%0A[technical contact first name, last name]%0D%0A[technical contact email]%0D%0A%0D%0AHere are the details for our organisation''s administrative contact\:%0D%0A%0D%0A[administrative contact first name, last name]%0D%0A[administrative contact email]%0D%0A%0D%0AThanks\!%0D%0ABest regards,%0D%0A[Your name]">GBIF Help Desk</a>。請注意預設內容為英文，亦請在送出郵件之前確認您瞭解郵件內容以利後續連繫。
+admin.registration.intro2=一旦 IPT 完成註冊，此註冊即不能更改，除非連絡<a href\=''mailto\:helpdesk@gbif.org''>GBIF Help Desk</a>。在儲存之前請確認註冊資訊的完整與正確。
 admin.registration.registered1=此 IPT 已於 GBIF 網絡上註冊。
 admin.registration.registered2=管轄此 IPT 的機構是<b>{0}</b>。
 admin.registration.links=GBIF 登錄連結
-admin.registration.test1=在 GBIF 網絡上註冊此 IPT 的第一個步驟是驗證顯示於下方的基礎網址，點擊按鈕標籤「驗證」開始測試。假如測試成功，您將可以繼續進行註冊的下一步驟。假如測試失敗，請到 <a href="config.do">IPT 設定</a>頁面來更改伺服器的網址配置設定。
+admin.registration.test1=在 GBIF 網絡上註冊此 IPT 的第一個步驟是驗證顯示於下方的基礎網址，點擊按鈕標籤「驗證」開始測試。假如測試成功，您將可以繼續進行註冊的下一步驟。假如測試失敗，請到 <a href\="config.do">IPT 設定</a>頁面來更改伺服器的網址配置設定。
 admin.registration.success=IPT 已註冊於該組織之下。
 admin.registration.failed=IPT 註冊失敗！
 admin.registration.success.update=IPT 註冊資訊更新成功！
 admin.registration.failed.update=IPT 註冊更新失敗！
 admin.registration.error.alreadyRegistered1=此 IPT 已註冊在一組織之下。
-admin.registration.error.alreadyRegistered2=要變更組織的關聯，請聯絡 <a href=''mailto:helpdesk@gbif.org''>GBIF Help Desk</a>。
+admin.registration.error.alreadyRegistered2=要變更組織的關聯，請聯絡 <a href\=''mailto\:helpdesk@gbif.org''>GBIF Help Desk</a>。
 admin.registration.error.registry=在嘗試與 GBIF 登錄溝通時發生問題
 admin.registration.error.internetConnection=檢查您的網路連線是否有效。
 admin.registration.error.proxy=檢查您的防火牆是否允許連結。假如不行，檢查是否需要使用代理伺服器網址，且網址正確。
@@ -556,10 +604,11 @@ admin.registration.error.badResponse=從登錄傳回空無或無效的回應。
 admin.registration.error.io=嘗試與 GBIF 登錄溝通時發生輸出入錯誤。
 admin.registration.error.unknown=嘗試與 GBIF 溝通時發生未知的錯誤。
 
-# admin - organisations
+#admin - organisations
 admin.organisation.title=編輯關聯的組織
 admin.organisation.key=組織
 admin.organisation.name=組織名稱
+admin.organisation.name.select=選擇單位組織
 admin.organisation.password=組織密碼
 admin.organisation.alias=別名
 admin.organisation.canPublish=可發布資料集？
@@ -568,7 +617,20 @@ admin.organisation.password.help=組織密碼用來驗證您於所處的組織�
 admin.organisation.error.save=不能為此組織建立 IPT。
 admin.organisation.error.existing=組織的關聯已經存在。假如您需要編輯它，請在前一個畫面點擊按鈕標籤「編輯」。
 admin.organisation.cantSave=無法儲存組織檔案
-
+admin.organisation.doiRegistrationAgency=DOI註冊機構
+admin.organisation.doiRegistrationAgency.help=一旦單位組織與DataCite(或EZID)簽署協議，帳號即核發給該單位組織，使其具備使用一或多個前置字元註冊DOI的權限。
+admin.organisation.doiRegistrationAgency.username=使用者帳號
+admin.organisation.doiRegistrationAgency.username.help=核發給該組織的 DataCite/EZID 使用者名稱(符號)
+admin.organisation.doiRegistrationAgency.password=帳號密碼
+admin.organisation.doiRegistrationAgency.password.help=該組織 DataCite/EZID 帳號的密碼
+admin.organisation.doiRegistrationAgency.prefix=DOI 前置/中間代碼
+admin.organisation.doiRegistrationAgency.prefix.help=The preferred DOI prefix/shoulder used to mint DOIs. This prefix is unique to the account issued to the organisation. Warning\: always use a test prefix (e.g. 10.5072 for DataCite, 10.5072/FK2 for EZID) when running the IPT in test mode\!
+admin.organisation.doiAccount.activated=帳號已啟用
+admin.organisation.doiAccount.activated.help=Check this to activate this DataCite/EZID account as the only account used by the IPT to register DOIs for datasets. Only one DataCite/EZID account can be activated at a time.
+admin.organisation.doiAccount.activated.exists=Another DataCite/EZID account has already been selected as the account used by the IPT to register DOIs for datasets. In order to activate this account instead, the other account must be de-activated first.
+admin.organisation.canRegisterDois=是否可註冊DOI？
+admin.organisation.doiAccount.activated.failed=This DataCite/EZID account cannot be activated unless Archival Mode in the IPT is turned on in IPT Settings. Archival mode stores every published Darwin Core Archive version so that they remain downloadable. A DOI resolving to an older version of the resource should still make the data available for download.
+admin.organisation.doiAccount.differentTypeInUse=Only one DOI account can be activated at a time. A DOI account of type {0} has already been used to assign DOIs to one or more resources, e.g. DOI\={1}
 organisation.key=Key/UUID
 
 admin.organisation.deleted=組織的關聯已被刪除。
@@ -580,7 +642,7 @@ admin.organisation.associated.ipt=該組織已與此 IPT 關聯。
 admin.organisation.updated.ipt=組織已被更新。
 admin.organisations.couldnt.load=無法從登錄載入已註冊之單位組織：{0}。
 admin.organisation.couldnt.load=無法從登錄 {1} 載入已註冊之單位組織：{0}。
-organisations.resources.couldnt.load=無法從登錄載入已註冊至單位組織之資源: {0}。
+organisations.resources.couldnt.load=無法從登錄載入已註冊至單位組織之資源\: {0}。
 
 #predefined emails - request organisation password for IPT registration
 emails.request.ipt.registration.subject=請求提供 {0} 的密碼
@@ -588,7 +650,7 @@ emails.request.ipt.registration1=親愛的 %0d%0d 先生/女士：
 emails.request.ipt.registration2=我正試圖安裝位於您所屬組織/研究機構的整合發布資訊工具套件(Integrated Publishing Toolkit, IPT)。%0d
 emails.request.ipt.registration3=為了能繼續安裝，我需要請求您提供貴單位的密碼，以完成程序。%0d
 emails.request.ipt.registration4=如果您不了解此訊息，可以利用您的瀏覽器開啟以下連結來接收此訊息。%0d%0d
-emails.request.ipt.registration5=http://gbrds.gbif.org/registry/organisation/{0}?op=password%0d%0d
+emails.request.ipt.registration5=http\://gbrds.gbif.org/registry/organisation/{0}?op\=password%0d%0d
 emails.request.ipt.registration6=感謝您撥冗處理。
 emails.request.ipt.registration.footer=點擊此以聯絡
 
@@ -599,12 +661,12 @@ emails.request.organisation.association2=我正試圖安裝整合發布資訊工
 emails.request.organisation.association3=這個工具讓我可以建立資源，並且歸屬這些資源到您的組織之下。%0d
 emails.request.organisation.association4=我希望能利用我的 IPT 連結到您的組織，因此需要請您提供您組織的密碼。%0d
 emails.request.organisation.association5=如果您不了解此訊息，可以利用您的瀏覽器開啟以下連結來接收此訊息。%0d%0d
-emails.request.organisation.association6=http://gbrds.gbif.org/registry/organisation/{0}?op=password%0d%0d
+emails.request.organisation.association6=http\://gbrds.gbif.org/registry/organisation/{0}?op\=password%0d%0d
 emails.request.organisation.association7=感謝您撥冗處理。
 emails.request.organisation.association.footer=點擊此以聯絡
 
 ####
-# MANAGE SECTION 資源管理
+# MANAGE SECTION
 ####
 # the manage resource section
 manage.404.title=資源不存在
@@ -619,18 +681,24 @@ manage.home.type=資料集類別
 manage.home.subtype=資料集子類別
 manage.home.last.modified=最後修改
 manage.home.last.publication=上次發布
+manage.home.next.publication=下次發布
 manage.home.visible=可見度
 manage.home.visible.public=公開
 manage.home.visible.private=未公開
+manage.home.visible.deleted=已刪除
 manage.home.organisation=組織
-manage.home.not.published=未發布
 manage.home.not.registered=未註冊
+manage.home.not.registered.verbose=此資源尚未向GBIF註冊
+manage.home.registered.verbose=此資源已向GBIF註冊，並指定以下之GBIF UUID\: <a href\="{0}">{1}</a>。
+manage.home.published.verbose=<a href\="{0}">{1}</a> 發佈此資源，並經由<a href\="{2}">{3}</a>同意向GBIF註冊成為資料發佈者。
+manage.home.not.published=未發布
 manage.home.resource.locked=此資源由於後端處理而被鎖定中，請稍後再嘗試存取
 manage.home.resources.none=無資源，請建立一資源或向資源管理者請求將您加入已有的資源中。
-manage.locked=這份資源正在發布中，此時它被鎖定無法修改，若有需要您可以<a href="{0}">取消</a>發布。
+
+manage.locked=這份資源正在發布中，此時它被鎖定無法修改，若有需要您可以<a href\="{0}">取消</a>發布。
 
 manage.resource.create.title=建立新的資源
-manage.resource.create.intro=你可以建立一份新資源、上傳一份儲存為達爾文核心集檔案的資源、或上傳自既有 IPT 資料目錄中資源存放位置製成的壓縮檔。請查閱使用手冊以瞭解詳細的步驟。在 IPT 中需要輸入一個簡短名稱以辨識此份資源，請只以字母數字、連字號、或底線命名。
+manage.resource.create.intro=You can create a new blank resource, upload an existing resource saved as a zipped Darwin Core archive, or upload an existing IPT resource using its zipped resource configuration folder. Please refer to the User Manual for more specific instructions. A short name is required.
 manage.resource.create.file=上傳其他檔案
 manage.resource.create.success=以 {0} 核心類型匯入已存在的達爾文核心集檔案。{1} 資料來源已被匯入且 {2} 欄位對應關係已建立。
 manage.resource.create.success.nocore=匯入已存在的達爾文核心集檔案。{0} 資料來源已被匯入，且 {1} 欄位對應關係已建立。
@@ -639,23 +707,38 @@ manage.resource.create.failed=無法讀取上傳檔案
 manage.resource.create.rowType.null=IPT 不支援此資料記錄格式{0}
 manage.resource.create.extension.null=您上傳的達爾文核心集檔案包含此 IPT 未安裝的延伸集。請確認所需的延伸集均已安裝後，再嘗試上傳一次。
 manage.resource.create.mapping.concept.skip=忽略延伸集 {1} 未定義的資料欄位 {0} 對應
-manage.resource.delete.confirm.registered=刪除 GBIF 登錄的已註冊資源資訊無法自動完成。必須以電子郵件明確的告知 <a href=''mailto:helpdesk@gbif.org''>GBIF Help Desk</a>。您是否仍要刪除此已註冊的資源？
+manage.resource.create.forbidden=No resources can be created until at least one organisation able to host resources is associated to the IPT. Please contact your IPT administrator for help.
+manage.resource.delete.confirm=是否仍要刪除此已註冊的資源？
+manage.resource.delete.confirm.registered=Be aware deletion from the GBIF Index is automatic, but cannot be undone without explicit email communication with the <a href\=''mailto\:helpdesk@gbif.org''>GBIF Help Desk</a>.
+manage.resource.delete.confirm.doi=Because this resource has been assigned a DOI, the DOI must continue to resolve. Deletion ensures the data can no longer be downloaded, and the DOI resolves to a page explaining the resource has been retracted. Be aware that it can take up to 24 hours until a DOI update is globally known.
+manage.resource.undoDelete.confirm=Because this resource was previously assigned a DOI, undoing the deletion for this resource makes the data available for download again, by resolving to the last published version of this resource. Be aware that it can take up to 24 hours until a DOI update is globally known. Do you still want to undelete this resource?
 manage.resource.delete.failed=無法移除資資源。
+manage.resource.undelete.failed=無法復原刪除資源。
 manage.resource.status.intro.private=資料管理者尚未公開此資源。為使所有人均能獲取此資源，請將其設定為公開狀態。
 manage.resource.status.intro.public=此資源已公開，所有人均可使用。
 manage.resource.status.intro.public.migration=以 "{0}" 取代 "額外的元數據"。如果您想要以此資源更新已經由 DiGIR, BioCASE 或 TAPIR 發布之同一資源，請確認此資源註冊至同一單位組織，並請到「其它元數據」頁面，在「替代的識別碼」中填入已註冊的 UUID。
-manage.resource.status.intro.registered=此資源已向 GBIF 註冊。欲刪除註冊狀態，必須刪除整份資源並以電子郵件連繫 <a href=''mailto:helpdesk@gbif.org''>GBIF Help Desk</a>。
-manage.resource.status.registration.intro=要使資料集可公開存取，請選擇資源所屬的單位組織向 GBIF 註冊。若資源僅供資料管理員存取，則將資源設為不公開。
+manage.resource.status.intro.public.gbifWarning=Be aware it can take up to one hour for data to be indexed by GBIF following registration.
+manage.resource.status.intro.registered=This public resource is registered with GBIF meaning that it is globally discoverable via the <a href\="http\://www.gbif.org" target\="_blank">GBIF website</a>.
+manage.resource.status.intro.deleted=This resource has been deleted, but since it was assigned a DOI must remain publicly accessible. Its DOI resolves to a page explaining the resource has been deleted, and the data is no longer available for download.
+manage.resource.status.registration.intro=Register this resource with GBIF to make it globally discoverable via the <a href\="http\://www.gbif.org" target\="_blank">GBIF website</a>. To make it accessible only to managers, make it private.
 manage.resource.status.registration.forbidden=您不具有向 GBIF 註冊此資源的角色權限。
+manage.resource.status.publication.forbidden=You do not have the role necessary to publish this resource.
+manage.resource.status.publication.forbidden.account.missing=This resource cannot be published, because the DataCite or EZID account is missing or has been configured wrong.
+manage.resource.status.deletion.forbidden=You do not have the role necessary to delete this resource.
+manage.resource.status.undeletion.forbidden=You do not have the role necessary to undelete this resource.
+manage.resource.status.doi.forbidden=You do not have the role necessary to assign DOIs this resource.
+
+
+manage.resource.identifierStatus.intro.reserved=This resource''s DOI is reserved, meaning it is not known to resolvers. To make this DOI known to resolvers, please verify the DOI is correct, and then make it public. Please note that once a DOI is public, it cannot be deleted and the resource''s visibility cannot be changed back to private.
+manage.resource.identifierStatus.intro.public=This resource''s DOI is public, meaning that it is known to resolvers. If this resource is invalid or about to be deleted, please make the DOI unavailable. This action will ensure the DOI no longer resolves to a resource landing page.
+manage.resource.identifierStatus.edit=編輯DOI
 manage.resource.role.change=若您認為應擁有此權限，請聯繫 IPT 管理員。
 manage.resource.publish.forbidden=此資料集已向 GBIF 註冊，每次發布資料時，系統會更新註冊，因此你無法再發布此資料集。
-
-manage.resource.status.restrict=僅供資料管理員存取
 manage.resource.read.eml.metadata=讀取 EML 元數據
 manage.resource.read.basic.metadata=讀取基本元數據
 manage.resource.read.problem=無法讀取達爾文核心集檔案元數據。
 manage.resource.addSource.confirm=一或多個檔案已經存在。您確定要覆寫？
-manage.resource.migrate=此資源對應到一已註冊在 {1} 之下的資源 (UUID = {0})。此資源將被關聯至已註冊的資源，而非建立新資源。
+manage.resource.migrate=此資源對應到一已註冊在 {1} 之下的資源 (UUID \= {0})。此資源將被關聯至已註冊的資源，而非建立新資源。
 manage.resource.migrate.failed=資源遷移失敗
 manage.resource.migrate.failed.multipleUUIDs=在註冊此資源時發現替代的識別碼列表中已有多個 UUID。
 manage.resource.migrate.failed.badUUID=在替代的識別碼中發現至少有一個 UUID，但它並未對應到 {0} 所擁有的資源。
@@ -668,10 +751,11 @@ manage.mapping.intro=對於每個屬性，您可以指定一個取自您的資�
 manage.mapping.source=資料來源
 manage.mapping.source.help=在您進行欄位對應之前，請選擇一個資料來源。
 manage.mapping.idColumn=在您的資料來源中，其內容為得以識別每一筆記錄/列為唯一的欄位，又稱為「核心識別碼」。若您想要對應其他的資料來源，這個識別碼必須存在，以連結不同資料來源中的記錄/列。
+manage.mapping.datasetIdColumn=使用資源DOI
+manage.mapping.datasetIdColumn.help=Please check this box if you want the IPT to set the default value for datasetID equal to the resource DOI. Please note this setting only applies to this mapping, so repeat elsewhere if necessary.
 manage.mapping.noid=無識別碼
 manage.mapping.lineNumber=行號
 manage.mapping.uuid=UUID 產生器
-manage.mapping.backToOverview=回到資源總覽頁面
 manage.mapping.hideEmpty=隱藏未對應之欄位
 manage.mapping.showAll=全部顯示
 manage.mapping.info.linenumbers=對於行號, 你可以選擇性指定一個非數字的後綴字，加在識別碼的後面。當你要多次對應同一個資源的時候，這個做法對於產生唯一識別碼來說是很有用的<br /><br />
@@ -687,6 +771,9 @@ manage.mapping.deleted=欄位對應{0}已刪除
 manage.mapping.couldnt.delete=無法刪除欄位對應{0}
 manage.mapping.no.mapped.title=未對應的欄位
 manage.mapping.no.mapped.columns=本資料來源中，以下的欄位未被指定至本次對應的屬性中
+
+manage.history.title=版本歷史
+manage.history.intro=編輯 {1} 資源 {0} 版的異動記錄摘要。
 
 manage.source.unique=來源名稱已存在，請選擇一個不重覆的名稱。
 manage.source.title=來源資料
@@ -706,7 +793,7 @@ manage.source.deleted.couldnt=無法刪除來源 {0}。
 manage.source.error=來源錯誤：{0}
 manage.source.existing=來源名稱已存在。
 manage.source.invalidFileName=資料來源檔名無效：檔名只能包含字母-數字 (A-Z, 0-9)、空白分隔、底線、句號、括弧、連字號等半形符號。
-manage.source.cannot.add=無法加入檔案來源 {0}: {1}
+manage.source.cannot.add=無法加入檔案來源 {0}\: {1}
 manage.source.cannot.load=無法載入資料來源{0}。請詢問 IPT 管理員以查詢 IPT 系統紀錄檔並瞭解可能的原因。
 manage.source.compressed.files={0} 找到壓縮檔，全部加入。"
 manage.source.source.log=來源日誌檔
@@ -715,23 +802,29 @@ manage.source.confirmation.message=您確定要刪除此資料來源檔案？請
 
 manage.overview.title.label=資源標題
 manage.overview.title=總覽
-manage.overview.intro=這是資源<em>{0}</em>的總覽頁面。請至少填入必填的元數據。之後您可上傳原始資料並對應欄位，以產生並發布達爾文核心集檔案。發布的資源可註冊於 GBIF 網絡中。已註冊的資源可被移除，但無法恢復至尚未公開狀態。
-manage.overview.intro.metadataOnly=這是資源<em>{0}</em>的總覽頁面。請至少填入必填性質的元數據。發布的資源可註冊於 GBIF 網絡中。已註冊的資源可被移除，但無法恢復至尚未公開狀態。
+manage.overview.description=此為 <em>{0}</em> 資源的概述。
+manage.overview.intro=Please start by uploading and mapping source data to generate and publish a Darwin Core archive. Don''t forget to fill in the mandatory metadata. Published resources can be registered with the GBIF Network, and assigned a DOI. Resources registered with GBIF can be removed, but they cannot be reverted to a private state. After a resource has been assigned a DOI, however, it cannot be deleted and must remain publicly accessible.
+manage.overview.intro.metadataOnly=Please start by filling in the mandatory metadata. Published resources can be registered with the GBIF Network. Registered resources can be removed, but they cannot be reverted to a private state.
 manage.overview.no.description=無資料描述
 manage.overview.keywords=關鍵字
 manage.overview.taxcoverage=分類群涵蓋範圍
 manage.overview.geocoverage=地理涵蓋範圍
 manage.overview.metadata=元數據
 manage.overview.missing.metadata=此資源缺少必填性質的元數據！
+manage.overview.metadata.description=您的資源元數據
+manage.overview.metadata.preview=預覽 {0}
+manage.overview.notModified=自上次發佈後未修改
 manage.overview.source.hidden=因為此資料集只有元數據，原始資料和欄位對應部分已被隱藏。若要增加實際的原始資料，僅需改變你的 {0} 資料集類型。
 manage.overview.source.data=來源資料
-manage.overview.source.description1=您用來產生達爾文核心集檔案的資料來源。你可以上傳壓縮檔 (zip, gzip) 或未壓縮的文字分檔（csv, tab及使用其他分隔符號的文字檔案）。如欲（再次）上傳，請選擇您電腦中的檔案並點擊「{0}」
+manage.overview.source.intro=您用以產生Darwin Core Archive的資料檔和SQL資源
+manage.overview.source.description1=You can upload delimited text files (csv, tab, and files using any other delimiter) either directly or compressed (zip or gzip).
 manage.overview.source.description2=亦支援Excel檔案格式。
 manage.overview.source.description3=如欲（再次）上傳，請選擇您電腦中的檔案並點擊「{0}」
 manage.overview.source.description4=或者是，您可以設定 <i>SQL views</i> 對應至區域網路中的資料庫。欲建立新的 SQL 資料來源，請點擊 "{0}" 沒有選擇任何文件。
 manage.overview.source.description5=無法以上傳 Darwin Core Archive 的方式更新資料集，此功能尚未提供。
 manage.overview.source.file=[file]
 manage.overview.source.sql=[sql]
+manage.overview.source.excel=[excel]
 manage.overview.source.rows=列
 manage.overview.source.columns=欄位
 manage.overview.no.DwC.extensions=未安裝任何核心類型。請連絡您的 IPT 管理員！
@@ -739,66 +832,116 @@ manage.overview.no.DwC.extension=未安裝核心類型 {0}。請連絡您的 IPT
 manage.overview.DwC.Mappings=Darwin Core 對應
 manage.overview.DwC.Mappings.description=在您的來源資料與 Darwin Core 字集間的對應
 manage.overview.DwC.Mappings.cantdo=在新增原始資料及安裝正確的核心類型前，您不能將您的資料對應至達爾文核心集欄位。若您的資源只包含元數據則不受此限。
-manage.overview.DwC.Mappings.coretype.description=假如您的資料為名錄，請選擇「達爾文核心集名錄」；假如您的資料為基於標本或觀測活動的物種出現紀錄，請選擇「達爾文核心集出現紀錄」。
+manage.overview.DwC.Mappings.coretype.description1=Here you can map your source data to Darwin Core terms by selecting the appropriate extension that has fields matching the ones to map in the source data.
+manage.overview.DwC.Mappings.coretype.description2=First, select a Core Type and map that before selecting an extension to map.
+manage.overview.DwC.Mappings.coretype.description3=Choose "Darwin Core Taxon" when the basis of the resource is taxon names, or choose "Darwin Core Occurrence" when the basis of the resource is occurrences in nature (observations) or in a collection (specimens).
+manage.overview.DwC.Mappings.coretype.description4=If the appropriate core type or extension does not appear in the select box, please contact your IPT admin to install it.
 manage.overview.DwC.Mappings.terms=字集對應至
 manage.overview.DwC.Mappings.select=選擇核心集類型（單選）
+manage.overview.DwC.Mappings.cores.select=核心
+manage.overview.DwC.Mappings.extensions.select=延伸模組
 manage.overview.DwC.Mappings.select.invalid=無效選擇：您選擇的核心集或延伸集不存在
+mapping.preview.success=欄位對應預覽完成
+mapping.preview.failed=欄位對應預覽失敗
+mapping.preview.not.found=找不到欄位對應預覽檔
+mapping.preview.error=產生欄位對應預覽失敗：{0}
+mapping.preview.mapping.not.found=找不到rowType\={0}和mapping ID\={1}的對應
+mapping.preview.bad.request=錯誤請求： rowType和mapping ID為預覽欄位對應所必需。
 
 manage.overview.visibility=可見度
+manage.overview.visibility.description=The visibility of a resource determines who will be able to view it, whether viewing is private to managers (private), available to everyone (public), globally discoverable through via GBIF website (registered), or deleted but still available to everyone since it was assigned a DOI (deleted but public). By default, each resource is visible only to the user who created it and any other users who have the Admin role on the IPT where the resource is created.
 manage.overview.visibility.missing.metadata=此資源在向 GBIF 網路註冊之前，必須先被公開發布。
 manage.overview.visibility.missing.registration.metadata=為了向 GBIF 註冊此資源，您必須提供必要的元數據。
 manage.overview.visibility.no.organisations=為了將此資源發布並註冊至 GBIF，你的 IPT 系統管理員必須先在 IPT 中建立單位組織名稱。
+manage.metadata.no.organisations=Before you can enter any metadata, your IPT administrator must first associate the organisation responsible for publishing this resource with this IPT.
+manage.overview.identifierStatus.no.organisations=In order to register a DOI your IPT administrator must first associate an organisation (that has an account with a DOI registration agency) with this IPT.
+manage.overview.identifierStatus.missing.metadata=Before a DOI can be reserved for a resource you must provide the required basic metadata.
 manage.overview.visibility.resource.key=資源註冊碼
 manage.overview.visibility.organisation=單位組織
 manage.overview.visibility.organisation.contact=組織聯絡資訊
 manage.overview.visibility.endorsing.node=認可節點
-manage.overview.visibility.confirm.registration=您即將向 GBIF 註冊此資源。請注意，之後若要從 GBIF 登錄中刪除此資源無法自動完成，您需要向<a href=''mailto:helpdesk@gbif.org''>GBIF Helpdesk</a>申請。您確定要繼續嗎？
-manage.overview.visibility.confirm.agreement=請確認您已讀過並了解 <a target=''_blank'' href=''http://data.gbif.org/tutorial/datasharingagreement''>GBIF 資料共享同意書</a>
-
-manage.overview.published=公開發布一版本
+manage.overview.visibility.confirm.registration=You are about to register the resource with GBIF. Do you still want to register?
+manage.overview.visibility.confirm.agreement=Confirm that you have read and understood the <a target\=''_blank'' href\=''http\://www.gbif.org/terms/licences/data-sharing''>GBIF data sharing agreement</a>
+manage.overview.published=已發佈的版本
+manage.overview.published.report=發佈報告
 manage.overview.published.see.report=請見報告
 manage.overview.published.hide.report=隱藏報告
-manage.overview.published.description=發布新版本時，一個新的 EML 版本以及達爾文核心集檔案(DwC-A)將被建立。<br />DwC-A 將所有資料來源、對應與元數據都包裝在在一個 zip 壓縮檔中。發布新版本時，將會建立一新版本的EML、RTF、達爾文核心檔案 (DwC-A)。DwC-A 為一壓縮檔，包含了元數據、所有的原始資料及其欄位對應關係。
-manage.overview.published.description.metadataOnly=發布只有元數據的新版本資料集時，將建立一新版本的 EML、RTF 檔。
+manage.overview.published.intro=A preview of your pending published version compared with the current version if existing.
+manage.overview.published.description=When publishing a new version of a resource, a new EML version, RTF version, and a Darwin Core Archive (DwC-A) will be created. A DwC-A bundles all source files with mappings and metadata in one zipped archive.
+manage.overview.published.description.metadataOnly=When publishing a new version of a metadata-only resource, a new EML version and RTF version will be created.
+manage.overview.published.description.doiAccount=All DOIs assigned to this resource are registered using the {0} account belonging to {1} with prefix {2}. Best practice is to assign a new DOI to the resource every time it undergoes a scientifically significant change. Please refer to the user manual for more guidance.
+manage.overview.published.description.noDoiAccount=Best practice is to enter a change summary for each new published version in order to help users of the data understand which version of the data to use.
 manage.overview.published.testmode.warning=由於此 IPT 設定在測試模式，您的資料集將無法為 GBIF 索引。
 manage.overview.published.missing.metadata=在您發布資源之前請至少提供必填性質的基本元數據資料。
 manage.overview.published.last.publication=最新發布
+manage.overview.published.last.publication.intro=目前版本
+manage.overview.published.next.publication.intro=暫定版本
+manage.overview.published.released=發佈
 manage.overview.published.version=版本
 manage.overview.published.from=自
 manage.overview.published.download=下載
 manage.overview.published.records=記錄
-manage.overview.published.view=瀏覽
 manage.overview.published.archive=達爾文核心集檔案
 manage.overview.published.eml=EML
 manage.overview.published.resource.version=已發布的資源版本{0}
 manage.overview.publishing=發布中
 manage.overview.publishing.resource.version=發布中的資源版本{0}
-manage.overview.publishing.error={0}: 在第 {1} 步驟發布資料集失敗。原因：{2}
-dwca.failed=資料集 {0} 壓縮檔產生失敗：{1}
-dwca.interrupted=資料集 {0} 壓縮檔產生中斷：{1}
-publishing.started=發布資料集 {1} 版本 #{0} 開始
-publishing.success=成功發布資料集 {1} 版本 #{0}
-publishing.cancelled=取消發布資料集 {1} 版本 #{0}！
-publishing.error=發布資料集時，發生類型錯誤 {0}：{1}
-publishing.failed=發布資料集 {1} 版本 #{0} 失敗：{2}
-publishing.skipping=略過資料集 {1} 發布的版本編號 #{0}：已超過嘗試發布失敗的允許次數，請另行發布此資料集。
-restore.resource.success=由於發布失敗，還原資料集 {1} 至版本 #{0}
-restore.resource.failed=還原資料集 {1} 版本 #{0} 失敗：{2}
+manage.overview.publishing.error={0}\: 在第 {1} 步驟發布資料集失敗。原因：{2}
 
-# Auto-publishing
-autopublish=自動定期發布
-autopublish.off=關閉
-autopublish.update=改變發布週期並發布
-autopublish.activate=發布並開啟自動定期發布
-autopublish.disable=發布並關閉自動定期發布
-autopublish.interval=選擇發布週期
-autopublish.help=欲 <strong>開啟</strong> 自動定期發布，請選擇一發布週期（共有五個選項）後點選發布。欲 <strong>改變</strong> 自動定期發布之週期，選擇一新選項後點選發布。欲 <strong>關閉</strong> 自動定期更新，選擇「關閉」後點選發布。
+manage.overview.publishing.doi.reserve.confirm=You are about to reserve a DOI for this resource. Be aware you can still delete the DOI, as long as it has not been registered yet. Do you still want to reserve?
+manage.overview.publishing.doi.reserve.help=You can reserve a DOI for a resource after the mandatory metadata has been entered. To reuse an existing DOI, enter it into the citation identifier field in the resource metadata. If a resource is publicly available and reserved a DOI, the next publication will result in a new major version and the DOI will be registered. Otherwise if a resource is private and reserved a DOI, the next publication will result in a new minor version of the resource and the DOI will NOT be registered. Be aware that until a DOI is registered you can still delete it.
+manage.overview.publishing.doi.reserve.new.help=You can reserve a new DOI for a published resource that has already been assigned a DOI. Be aware the DOI will be registered the next time the resource is published, and will resolve to the newly published version of the resource. The former DOI will still resolve to the previous version, but will display a warning that it has been superseded by the new one. Also be aware you can still delete the reserved DOI as long as it isn''t published.
+manage.overview.publishing.doi.reserve.prevented.noOrganisation=You cannot assign a DOI to this resource until an organization with a DataCite or EZID account is associated to this IPT. Please contact your IPT administrator to do this.
+manage.overview.publishing.doi.delete.confirm=You are about to delete a reserved DOI for this resource. Since this DOI was never registered, it was never publicly resolvable and is safe to delete. Do you still want to delete?
+manage.overview.publishing.doi.delete.help=You can delete the DOI reserved for this resource. Since this DOI was never registered, it was never publicly resolvable and is safe to delete.
+manage.overview.publishing.doi.register.agreement=請確認您已瞭解DOIs一但註冊即無法刪除。
+manage.overview.publishing.doi.register.help=The DOI that has been reserved for the pending version of this resource will be registered the next time the resource is published.
+manage.overview.publishing.doi.register.prevented.notPublic=You cannot register the DOI that has been reserved for this resource because the resource is private. To register the DOI, make the resource public and publish the resource.
+manage.overview.publishing.doi.minorVersion.confirm=You are about to publish a new <b>minor</b> version of this resource. If there have been scientifically significant changes to the resource since the last publication, you should cancel, assign this resource a new DOI, and then publish again.
+manage.overview.publishing.doi.majorVersion.confirm=You are about to publish a new <b>major</b> version of this resource, which is appropriate the first time a resource is assigned a DOI, or after the resource underwent scientifically significant changes. Following successful publication, the DOI reserved for this resource will be registered and should resolve after about 5 minutes. If this is not what you want, cancel and delete the reserved DOI.
+manage.overview.publishing.withoutDoi.majorVersion.confirm=You are about to publish a new <b>major</b> version of this resource, which is appropriate the first time a resource is published, or after the resource underwent scientifically significant changes. If this is not what you want, cancel.
+manage.overview.publishing.doi.summary=Before you publish, you can assist researchers using your data by summarizing what has changed in this version.
+manage.overview.publishing.doi.summary.placeholder=Please summarize what has changed in this version. You can always edit this later.
+manage.overview.publishing.doi.confirm.end=你仍然要發佈嗎？
+manage.overview.publishing.doi.replaced=The DOI assigned to the current version will be superseded by the DOI reserved for the pending version the next time the resource is published.
+manage.overview.publishing.doi.reserve.reused=An existing DOI [{0}] has already been assigned to this resource and will be reused. If this is not the correct DOI, you can delete the reserved DOI, remove or replace the DOI from the citation identifier field in the resource metadata and then try to reserve another DOI.
+manage.overview.publishing.doi.reserve.notRreused=An existing DOI [{0}] has already been assigned to this resource, however, it cannot be reused because this IPT is restricted to registering DOIs under the prefix {1}. You can remove or replace the DOI from the citation identifier field in the resource metadata and then try to reserve another DOI. If you still want to use this DOI, please contact your IPT administrator for help.
+manage.overview.publishing.doi.reserve.success={0} was reserved successfully
+manage.overview.publishing.doi.reserve.failed=Failed to reserve {0}\: {1}
+manage.overview.publishing.doi.reserve.failed.metadata=Failed to reserve {0} because DOI metadata was invalid\: {1}
+manage.overview.publishing.doi.reserve.reused.failed=Failed to verify that {0} has been registered already. Please try again.
+manage.overview.publishing.doi.reserve.reused.failed.exception=Failed to verify that {0} has been registered already\: {1}
+manage.overview.publishing.doi.publish.check.registered.failed=Pre-publication check failed\: {0} is not reserved or registered. Its status is\: {1}
+manage.overview.publishing.doi.publish.check.existing.failed=Pre-publication check failed\: could not verify {0} exists\!
+manage.overview.publishing.doi.publish.check.existing.failed.exception=Pre-publication check failed\: could not verify {0} exists\!\: {1}
+
+manage.overview.publishing.doi.publish.updateDoi.failed=Failed to update {0} metadata\: {1}
+manage.overview.publishing.doi.publish.newMinorVersion=Published new minor version\: {0} was updated successfully
+manage.overview.publishing.doi.publish.newMajorVersion=Published new major version\: {0} was registered successfully
+manage.overview.publishing.doi.publish.newMajorVersion.replaces=Published new major version\: {0} was registered successfully\! The previous DOI has also been successfully updated, to reflect that it now represents a previous version of the resource
+manage.overview.doi.operation.failed.noAccount=No organisation with an activated DOI agency account exists. Please contact your IPT admin for help.
+manage.overview.publishing.doi.delete.success={0} was deleted successfully
+manage.overview.publishing.doi.delete.reassign.success={0} was deleted, and {1} was reassigned successfully
+manage.overview.publishing.doi.delete.failed.exception=Failed to delete {0}\: {1}
+manage.overview.publishing.doi.delete.failed.notResolved=Failed to verify {0} exists therefore it could not be deleted\!
+manage.overview.publishing.doi.deactivate.success={0} was deactivated successfully
+manage.overview.publishing.doi.undelete.success={0} was undeleted successfully
+manage.overview.publishing.doi.undelete.failed.noOrganisation=The resource''s organisation is no longer associated to the IPT, key\={0}
+manage.overview.publishing.doi.undelete.failed.badPrefix={0} has a prefix different to the prefix of the DOI agency account activated in this IPT\: {1}
+manage.overview.publishing.doi.undelete.failed.badStatus={0} cannot be undeleted because its status is {1}
+manage.overview.publishing.doi.undelete.failed.notResolved=Failed to verify {0} exists therefore it could not be undeleted\!
+manage.overview.publishing.doi.undelete.failed.exception=Failed to undelete {0}\: {1}
+
+manage.overview.resource.undelete.warning.gbif=Resource currently cannot be undeleted automatically in the GBIF Registry. Therefore please write to helpdesk@gbif.org to undelete it in the GBIF Registry.
 manage.overview.resource.managers=資源管理者
-manage.overview.resource.managers.description=資源能由多位管理者所管理。您可以授與其他管理者修改{0}之權限。
+manage.overview.resource.managers.intro=Managers granted permission to modify this resource.
+manage.overview.resource.managers.description=Resources can be managed by several managers. You can grant other managers permission to modify this resource. Please contact your IPT admin to add accounts for new managers.
 manage.overview.resource.managers.creator=創建者
 manage.overview.resource.managers.manager=管理者
 manage.overview.resource.invalid.operation=資源{0}正在{1}，您要求的狀態變更無法被執行，請重新整理此頁面並查看此刻正確的資源狀態。
+manage.overview.resource.doi.invalid.operation=Resource {0} DOI is currently {1}, setting it to the requested state would be an invalid change. Please refresh the page to see the correct current state.
 manage.overview.resource.deleted=已刪除 {0}
+manage.overview.resource.undeleted=復原刪除 {0}
 manage.overview.resource.published=資源已發布！
 manage.overview.resource.being.published=資源{0}發布中，請耐心等候。
 manage.overview.resource.registered=資源已註冊於 GBIF 登錄的組織{0}
@@ -806,7 +949,12 @@ manage.overview.resource.update.registration=資源{0} 於 GBIF 的註冊資訊�
 manage.overview.manager.not.available=管理者 {0} 不存在
 manage.overview.failed.stop.publishing=停止發布{0}失敗！
 manage.overview.failed.resource.registration=資源註冊失敗！
-manage.overview.failed.resource.update=註冊更新失敗！:{0}
+manage.overview.failed.resource.registration.notPublic=The current published version is not publicly available. Please publish a new version that is publicly available and try again.
+manage.overview.prevented.resource.registration.noGBIFLicense=The resource cannot be registered because the current published version was not assigned one of the licences that GBIF supports. To enable registration, assign one of these licences and publish a new version.
+manage.overview.prevented.resource.publishing.noGBIFLicense=This registered resource cannot be re-published because it is not assigned one of the licences that GBIF supports. To enable publishing, please assign it one of these licences.
+manage.overview.prevented.resource.registration.notPublic=The resource cannot be registered because the current published version is not publicly available. Please publish a new version that is publicly available to enable registration.
+manage.overview.noGBIFLicense=Not GBIF-supported
+manage.overview.failed.resource.update=註冊更新失敗！\:{0}
 manage.overview.user.added=已將 {0} 增加至資源管理員清單
 manage.overview.user.removed=已將 {0} 從資源管理員清單移除
 manage.overview.data.missing=來源資料或 Darwin Core 核心對應不存在。沒有產生數據存檔。請注意若您發布的資源只含元數據，則此為正常情況。
@@ -832,7 +980,7 @@ manage.metadata.removethis=將此移除
 manage.metadata.addnew=新增
 
 manage.metadata.basic.title=基本的元數據
-manage.metadata.basic.required.message=您必須提供此資料的標題及描述。此資源的三個主要連絡資訊也必須在此描述：資源聯絡人、資源創建者及元數據提供者。在每個聯絡資訊中，在將資源公開之前，您至少必須提供連絡人的姓氏、職務或組織。對此資源創建及公開有責的個人或組織，應該在「相關團體」一節中以「發布者」的角色列出。
+manage.metadata.basic.required.message=Please enter all the mandatory properties on the Basic Metadata page, and then continue entering metadata in the other pages that are applicable to your resource. The more metadata you provide, the greater the chance that your resource will be found, reused by other researchers, and cited.
 
 manage.metadata.parties.title=相關團體
 manage.metadata.parties.title.numbered=相關團體 {0}
@@ -863,19 +1011,22 @@ manage.metadata.tempcoverage.intro=請輸入與此資源涵蓋的時間範圍相
 manage.metadata.tempcoverage.item=時間涵蓋範圍
 
 manage.metadata.citations.title=引用文獻
-manage.metadata.citations.intro=請輸入引用此資源與其它附加參考書目的方式，例如此資料集所引用或相關的參考文獻。
-manage.metadata.citations.bibliography=參考文獻
+manage.metadata.citations.intro=Please enter how your resource should be cited. To ensure your resource is reliably and consistently cited, let the IPT auto-generate the citation for you. An optional bibliography can also be entered, i.e., citations of other resources related to or used in the creation of this resource.
+manage.metadata.citations.bibliography=引用文獻
+manage.metadata.citations.bibliography.help=Citations of other resources related to or used in the creation of this resource.
 manage.metadata.citations.item=引用文獻
 
 manage.metadata.collections.title=收藏資料
 manage.metadata.collections.intro=請為此資源輸入此收藏的元數據
 manage.metadata.collections.curatorialUnits.title=管理單位
-manage.metadata.collections.curatorialUnits.intro=請輸入本資源涵蓋的管理單位的件數。您可以輸入一個範圍，或是一個帶有不確定性的數字。管理單位包括了件(皮毛)、張(植物標本)、針(昆蟲標本)、箱、罐(組織等)
+manage.metadata.collections.curatorialUnits.title.help=The counts of curatorial units covered by the resource. The count can be entered as a range or as a value with an uncertainty. Examples of units include skins, sheets, pins, boxes, jars.
 manage.metadata.collections.curatorialUnits.item=管理單位
+
 
 manage.metadata.physical.title=外部連結
 manage.metadata.physical.intro=連至您資源首頁或其他可利用的資料格式（如資料庫的傾倒資料、試算表、nexus、鍵連資料等）的外部連結
 manage.metadata.physical.item=外部連結
+manage.metadata.physical.alternativeTitle=外部資料
 
 manage.metadata.keywords.title=關鍵字
 manage.metadata.keywords.intro=請為此資源輸入關鍵字集，每一字集屬於一同義詞組。
@@ -885,22 +1036,28 @@ manage.metadata.additional.title=額外的元數據
 manage.metadata.additional.intro=請為此資源輸入額外的元數據
 manage.metadata.additional.logo.intro=<b>上傳資源的圖示：</b>若您沒有資源圖示的 URL，您也可以自硬碟中選擇圖片檔上傳
 manage.metadata.alternateIdentifiers.title=替代的識別碼
-manage.metadata.alternateIdentifiers.intro=此處可列舉被用來標記此資源的替代識別碼，此識別碼可能來自於不同的資料管理系統。
+manage.metadata.alternateIdentifiers.title.help=Alternative identifiers that are used to label this resource, possibly from different data management systems, can be listed here.
 manage.metadata.alternateIdentifiers.item=替代的識別碼
 
 manage.report.title=發布狀態
 manage.report.logMessage=日誌檔訊息
 manage.report.exception=例外
 manage.report.finished=完成
-manage.report.continueTo=繼續到<a href="resource.do?r={0}">資源總覽</a>.
+manage.report.continueTo=繼續到<a href\="resource.do?r\={0}">資源總覽</a>.
 
 ####
 # EML
 ####
 eml.title=標題
 eml.description=摘要
+eml.publishingOrganisation=發佈單位組織
+eml.publishingOrganisation.help=Please select the organisation responsible for publishing (producing, releasing, holding) this resource. It will be used as the resource''s publishing organisation when registering this resource with GBIF and when submitting metadata during DOI registrations. It will also be used to auto-generate the citation for the resource (if auto-generation is turned on), so consider the prominence of the role. Please be aware your selection cannot be changed after the resource has been either registered with GBIF or assigned a DOI.
+eml.publishingOrganisation.required=必需輸入發佈的單位組織
+eml.publishingOrganisation.notFound=找不到單位組織 (key\={0}) \!
+
 eml.resourceCreator=資源創建者
-eml.resourceCreator.help=資源創建者為建立原始資源內容的組織或個人。當有多位創建者時，則紀錄其中負最大責任者，其它則記錄為相關人員，並指定角色為「發起人」或「內容提供者」。<br /><br />適合做為資源創建者的角色有：<br /><ul><li><b>a) 發起人：</b> 一開始收集或準備此資料集的組織或個人<br /></li><li><b>b) 內容提供者：</b> 原則上貢獻此資料集內容的組織或個人。<br /></li></ul>
+eml.resourceCreator.plural=資源創建者
+eml.resourceCreator.plural.help=The list of creators represents the people and organisations who created the resource, in priority order. The list will be used to auto-generate the resource citation (if auto-generation is turned on).
 eml.resourceCreator.firstName=名字
 eml.resourceCreator.lastName=姓氏
 eml.resourceCreator.email=電子郵件
@@ -915,9 +1072,11 @@ eml.resourceCreator.address.country.help=國家、地區和島嶼名稱根據 IS
 eml.resourceCreator.address.postalCode=郵遞區號
 eml.resourceCreator.homepage=網頁
 eml.resourceCreator.copyLink=從連絡人複製資訊細節
+eml.resourceCreator.required=至少需輸入一位創建者
 
 eml.metadataProvider=元數據提供者
-eml.metadataProvider.help=元數據提供者為撰寫資源元數據的組織或個人。<br /><br />適合做為元數據提供者的角色有：<br /><ul><li><b>元數據提供者</b>：負責提供元數據的人員。</li></ul>
+eml.metadataProvider.plural=元數據提供者
+eml.metadataProvider.plural.help=The list of metadata providers represents the people and organisations responsible for producing the resource metadata.
 eml.metadataProvider.firstName=名字
 eml.metadataProvider.lastName=姓氏
 eml.metadataProvider.email=電子郵件
@@ -931,14 +1090,19 @@ eml.metadataProvider.address.province=州 / 省
 eml.metadataProvider.address.country=國家
 eml.metadataProvider.address.country.help=國家、地區和島嶼名稱根據 ISO3166-1 標準
 eml.metadataProvider.address.postalCode=郵遞區號
+eml.metadataProvider.required=At least one metadata provider is required
 
-eml.language=資源語言
+eml.language=資料語言
 eml.language.help=描述此資源 (非元數據文件) 的主要語言。
+eml.language.default=The data language has defaulted to English.
 eml.metadataLanguage=元數據語言
 eml.metadataLanguage.help=元數據文件編寫時所使用的語言。
+eml.metadataLanguage.default=The metadata language has defaulted to English.
+eml.language.available=在 {0} 中
 
 eml.contact=聯絡資訊
-eml.contact.help=資源聯絡資訊是當有關於此資源的相關資訊或資料問題時，應該聯絡的資源管理人或組織。<br />適合做為資源聯絡資訊的角色有：<ul><li><b>a) 資源管理員</b> 負責維護資料集文件的組織或個人。</li><li><b>b) 擁有者：</b> 擁有此資料集的組織或個人（可以是資源管理員，也可以不是）。</li><li><b>c) 聯絡人：</b> 可進一步提供更多關於該資料集資訊的組織或個人。</li><li><b>d) 計畫主持人：</b> 此資料集的主要學科聯絡人。</li></ul>
+eml.contact.plural=資源聯絡人
+eml.contact.plural.help=The list of contacts represents the people and organisations that should be contacted to get more information about the resource, that curate the resource or to whom putative problems with the resource or its data should be addressed.
 eml.contact.firstName=名字
 eml.contact.lastName=姓氏
 eml.contact.email=電子郵件
@@ -952,6 +1116,12 @@ eml.contact.address.country=國家
 eml.contact.address.country.help=國家、地區和島嶼名稱根據 ISO3166-1 標準
 eml.contact.address.postalCode=郵遞區號
 eml.contact.homepage=網頁
+eml.contact.required=至少需要輸入一位聯絡人資訊
+eml.contact.noDirectory=選擇目錄
+eml.contact.directory=人員目錄
+eml.contact.directory.help=The URL of the personnel directory system to which the personnel identifier belongs.
+eml.contact.identifier=人員辨識碼
+eml.contact.identifier.help=A 16-digit ORCID ID (e.g. 0000-0002-1825-0097) or another identifier that links this person to the personnel directory specified.
 
 eml.country.selection=選取一個國家、地區或島嶼
 eml.rank.selection=選擇一個階層
@@ -997,7 +1167,6 @@ eml.taxonomicCoverages.taxonList.help=增加幾個分類群（一行一個）
 eml.temporalCoverages.type=時間範圍類型
 eml.temporalCoverages.singleDate=單一日期
 eml.temporalCoverages.singleDate.help=此日期用以表示時間涵蓋範圍在一天以內。請使用下列格式之一：
-
 eml.temporalCoverages.startDate=起始日期
 eml.temporalCoverages.startDate.help=時間涵蓋範圍之始。請選用以下日期格式之一：
 eml.temporalCoverages.endDate=結束日期
@@ -1008,14 +1177,21 @@ eml.temporalCoverages.livingTimePeriod=生物存活的時期
 eml.temporalCoverages.livingTimePeriod.help=該物種存活的時期，可包含古生物生存時期或是其他期間的文字描述（例如："1900-1950"，"明朝"，"更新世"）。
 
 eml.project.title=計畫名稱
+eml.project.identifier=辨識碼
+eml.project.identifier.help=A unique identifier for the research project. This can be used to link multiple dataset/EML document instances that are associated in some way with the same project, e.g. a monitoring series. The nature of the association can be described in the project description.
+eml.project.description=Description
+eml.project.description.help=Abstract about the research project.
+eml.project.personnel=Project Personnel
+eml.project.personnel.help=The list of personnel represents the people involved in the project.
 eml.project.personnel.firstName=人員名字
 eml.project.personnel.lastName=人員姓氏
+eml.project.personnel.intro=The personnel involved in the project
 eml.project.funding=經費來源
 eml.project.funding.help=計畫經費來源的資訊。(例如：獎學金、計畫契約編號、經費來源的地址和單位名稱。)其他與經費相關的資訊皆可含括入內。
-eml.project.designDescription=研究設計描述
-eml.project.designDescription.help=關於研究領域一些面向的一般性描述。
 eml.project.studyAreaDescription.descriptorValue=研究區域描述
 eml.project.studyAreaDescription.descriptorValue.help=描述研究計畫的本質相關的文件，可包含研究位置的地理範圍、時間範圍和物種分類範圍的描述。
+eml.project.designDescription=研究設計描述
+eml.project.designDescription.help=A general textual description of research design. It can include detailed accounts of goals, motivations, theory, hypotheses, strategy, statistical design, and actual work.
 
 eml.studyExtent=研究範圍
 eml.studyExtent.help=此欄位紀錄特定的取樣區域以及取樣頻率（時間範圍、出現頻率）。地理上的研究範圍通常是計畫元數據「研究範圍描述」中一個較大區域的代表。
@@ -1024,17 +1200,26 @@ eml.sampleDescription.help=此欄位用以記錄研究計畫採樣步驟的描�
 eml.qualityControl=品質控管
 eml.qualityControl.help=此欄位提供關於控制或評估資料品質方法、步驟的描述。
 eml.methodSteps=實驗步驟描述
-eml.methodSteps.help=此欄位提供一系列的表單用以紀錄產生資料的步驟。這些包含步驟本身的說明、相關文獻、軟體、儀器，來源資料以及任何的品質控管工作。
+eml.methodSteps.help=This field allows for repeated sets of elements that document a series of methods and procedures used in the study, and the processing steps leading to the production of the data files. These include text descriptions of the procedures, relevant literature, software, instrumentation, source data and any quality control measures taken. Each method should be described in enough detail to allow other researchers to interpret and repeat, if required, the study.
 eml.citation.citation=資源引用文字
-eml.citation.citation.help=引用資料集時之引用文字。<br /><br />當資料集為組織或機構所有時的範例：<br /><br />"Bombay Natural History Society (2011). Literature based species occurrence data of birds of northeast India. 2400 records, Contributed by Narwade S, Karla M, and Varier D, Online:http://ibif.gov.in:8080/ipt/resource.do?r=BNHS-NEW, released on 01/09/2011, doi:10.9999/ibif.150.2011."<br /><br />當資料集為數人所有時的範例：<br /><br />"Narwade S, Karla M, Varier D (2011) Literature based species occurrence data of birds of northeast India. 2400 records. Online:http://ibif.gov.in:8080/ipt/resource.do?r=BNHS-NEW, released on 01/09/2011, doi:10.9999/ibif.150.2011."
-eml.citation.identifier=引用識別碼
-eml.citation.identifier.help=引用文獻的 URI、DOI 或其他永久識別碼。
+eml.citation.citation.help=A single citation for use when citing the dataset. Turn on auto-generation to let the IPT auto-generate the citation for you. The citation format used in auto-generation is based on DataCite''s preferred citation format, and satisfies the <a href\="https\://www.force11.org/datacitation" target\="_blank">Joint Declaration of Data Citation Principles</a>. This format includes a version number, which is especially important for datasets that are continuously updated.<br /><br />Example citation with institutional creator\:<br /><br />"Biodiversity Institute of Ontario (2011) Migratory birds of Ontario. Version 1.2. University of Guelph. Dataset/Species occurrences. http\://dx.doi.org/10.5886/qzxxd2pa"<br /><br />Example citation with 9 creators\:<br /><br />"Brouillet L, Desmet P, Coursol F, Meades SJ, Favreau M, Anions M, Belisle P, Gendreau C, Shorthouse D (2010) Database of vascular plants of Canada. Version 1.2. Universite de Montreal Biodiversity Centre. Dataset/Species checklist. http\://doi.org/10.5886/1bft7W5f"
+eml.citation.generate.turn.on=自動產生已關閉－請開啟
+eml.citation.generate.turn.off=自動產生已開啟－請關閉
+
+eml.citation.identifier=資源引用識別碼
+eml.citation.identifier.help=A DOI, URI, or other persistent identifier that resolves to the online dataset. It is recommended the identifier be included in the citation.
 eml.bibliographicCitationSet.bibliographicCitations.citation=引用文獻
-eml.bibliographicCitationSet.bibliographicCitations.identifier=引用文獻識別碼
+eml.bibliographicCitationSet.bibliographicCitations.citation.help=引用有關或用於建立此資源的外部資源
+eml.bibliographicCitationSet.bibliographicCitations.identifier=Bibliographic Citation Identifier
+eml.bibliographicCitationSet.bibliographicCitations.identifier.help=A DOI, URI, or other persistent identifier that resolves to the online dataset. It should be used in the citation, usually at the end.
+eml.collection=Collection
+eml.collection.plural=Collections
+eml.collection.plural.help=The list of collections represents the collections which this resource is based on.
 eml.collectionName=蒐藏名稱
 eml.collectionName.help=以原始語言記載的蒐藏名稱
 eml.collectionId=蒐藏編號
 eml.collectionId.help=蒐藏的 URI （LSID 或 URL）。若為 RDF 使用蒐藏資源的 URI。
+eml.collection.required=At least one collection is required.
 eml.parentCollectionId=上層採集品識別碼
 eml.parentCollectionId.help=此蒐藏之母蒐藏的識別碼，用以建立蒐藏的階層關係。如果此蒐藏無所屬之母蒐藏，請選擇「不適用」。
 eml.jgtiCuratorialUnits.type=方法類型
@@ -1052,40 +1237,47 @@ eml.physicalData.format=資料格式
 eml.physicalData.format.help=資料檔案格式的名稱，<br /><br /><b>例如：</b><br /><i>Microsoft Excel</i>
 eml.physicalData.formatVersion=資料格式版本
 eml.physicalData.formatVersion.help=資料檔案格式的版本，<br /><br /><b>例如：</b><br /><i>2000 (9.0.2720)</i>
+eml.physicalData.other=其他資料格式
+eml.physicalData.other.help=Links to your resource data in other formats (e.g., database dumps, spreadsheets, nexus, linked data, etc.).
 eml.keywords.keywordThesaurus=同義詞
 eml.keywords.keywordThesaurus.help=關鍵字來源的關鍵字辭典名稱。關鍵字辭典通常與領域有關，可以客製化也可以是正式使用的。如果您的關鍵字不是從特定辭典中取得，請輸入 <i>''n/a''</i>。<br /><br /><b>例如：</b><br /><i>"IRIS keyword thesaurus"</i>
 eml.keywords.keywordsString=關鍵字清單
 eml.keywords.keywordsString.help=可列出與此資源相關或可簡潔地描述此資源的關鍵字詞。需用逗號分隔每個關鍵字。
 eml.hierarchyLevel=層級
 eml.hierarchyLevel.help=在元數據申請時的須註明資料集層級。在 GBIF 的預設值是<i>資料集</i>。
-eml.pubDate=發表日期
-eml.pubDate.help=資源發布的日期。此日期自動於該資源每次重新發布時更新。
+eml.pubDate=上次發佈的日期
+eml.pubDate.help=The date on which the resource was last published. This is updated automatically every time the resource is re-published.
+eml.dateStamp=Date Created
+eml.dateStamp.help=The date on which the first version of the resource was published/made publicly available. It will be used to formulate the publication year in the resource citation.
 eml.distributionUrl=資源網頁
+eml.distributionUrl.short=Home
 eml.logoUrl=資源標誌網址
 eml.logoUrl.help=可輸入一個與資料相關 logo 圖像網址。如果沒有資料 logo 圖像網址，也可以上傳由你的磁碟所選取的一個圖片檔案。
 eml.purpose=目的
 eml.purpose.help=關於此資料集發展動機的概要描述，可包含建立資料集之目的和此資料集所支持的項目。
-eml.intellectualRights=智慧財產權授權
-eml.intellectualRights.help=關於此資源的權利宣告，或可取得此資訊的參照資訊來源。
+
 eml.additionalInfo=其他額外資訊
 eml.additionalInfo.help=任何無法在其它元數據欄位說明的資料，例如計畫沿革，使用該資料的發表文獻，發布於其它地方資料的相關資訊等等。
 eml.specimenPreservationMethod=標本保存方式
-eml.specimenPreservationMethod.help=取自 GBIF 標本保存方法詞彙的關鍵字，該詞彙指出防止標本蒐藏腐敗的保存技術。假如採用多種方法，請選擇其中主要的方法。請注意，透過達爾文保存方法延伸集(http://rs.tdwg.org/dwc/terms/preparations)，您可為一標本記錄多種方法。若為活體蒐藏，請勿選擇任何選項。
+eml.specimenPreservationMethod.short=preservation method
+eml.specimenPreservationMethod.plural=Specimen preservation methods
+eml.specimenPreservationMethod.plural.help=The list of specimen preservation methods covered by the resource.
+eml.specimenPreservationMethod.help=取自 GBIF 標本保存方法詞彙的關鍵字，該詞彙指出防止標本蒐藏腐敗的保存技術。假如採用多種方法，請選擇其中主要的方法。請注意，透過達爾文保存方法延伸集(http\://rs.tdwg.org/dwc/terms/preparations)，您可為一標本記錄多種方法。若為活體蒐藏，請勿選擇任何選項。
 eml.alternateIdentifier=替代的識別碼
 eml.alternateIdentifier.help=此實體的另外一個次要識別碼。當您發布一資源時，IPT 的 URL 會加到識別碼的列表中。當一資源註冊到 GBIF 登錄後，它在登錄上的 UUID 亦會加到同一列表中。因此未來在註冊時，在 GBIF 登錄上 IPT 能更新同一資源，而非創建一新資源。<br /><b>範例：</b><br /><i>4fa7b334-ce0d-4e88-aaae-2e0c138d049e</i>, <i>VCR3465</i>
-eml.intellectualRights.license.help=可供套用到資料的授權選項。此為您提供資料授權的標準方式。
-eml.intellectualRights.nolicenses=尚未選定授權項目
-eml.intellectualRights.licenses.confirmation=您已經閱讀並瞭解授權內容？
 
-eml.intellectualRights.license.cczero=創用授權 CCZero
-eml.intellectualRights.license.pddl=公眾領域貢獻授權
-eml.intellectualRights.license.odcby=開放資料共享姓名標示授權
-eml.intellectualRights.license.odbl=開放資料庫授權
+eml.intellectualRights.simple=Rights
+eml.intellectualRights.license=Data Licence
+eml.intellectualRights.license.help=The licence that you apply to a dataset provides a standardized way to define appropriate uses of your work. GBIF encourages publishers to adopt the least restrictive licence possible from among three machine-readable options (CC0 1.0, CC-BY 4.0 or CC-BY-NC 4.0) to encourage the widest possible use and application of data. Learn more <a href\="http\://www.gbif.org/terms/licences" target\="_blank">here</a>. If you feel unable to select one of the three options, please contact the GBIF Secretariat at participation@gbif.org.
+eml.intellectualRights.nolicenses=尚未選定授權項目
 eml.intellectualRights.license.disclaimer=您應該只套用授權條款至您本身的成果，除非您有必要的權利將授權條款套用至其它人的成果。
-eml.intellectualRights.license.cczero.text=此資料集及成果依創用授權 CCZero 1.0 License http://creativecommons.org/publicdomain/zero/1.0/legalcode 釋出。
-eml.intellectualRights.license.pddl.text=此 [DATA(BASE)-NAME] 依 the Public Domain Dedication and License v1.0 釋出，詳細授權內容請參照 http://www.opendatacommons.org/licenses/pddl/1.0/
-eml.intellectualRights.license.odcby.text=此 [DATA(BASE)-NAME] 依 Open Data Commons Attribution License: http://www.opendatacommons.org/licenses/by/1.0/ 釋出。
-eml.intellectualRights.license.odbl.text=此 [DATA(BASE)-NAME] 依 Open Database License: http://opendatacommons.org/licenses/odbl/1.0/ 釋出。資料庫中個別資料的所有權利均記載在授權條款中。
+
+eml.updateFrequency=Update Frequency
+eml.updateFrequency.help=The the frequency with which changes are made to the resource after the initial resource has been published. For convenience, its value will default to the auto-publishing interval (if auto-publishing has been turned on), however, it can always be overridden later. Please note a description of the maintenance frequency of the resource can also be entered on the Additional Metadata page.
+eml.updateFrequency.default=The update frequency defaulted to unknown.
+eml.updateFrequency.default.interval=The update frequency defaulted to auto-publishing interval\: {0}
+eml.updateFrequencyDescription=維護說明
+eml.updateFrequencyDescription.help=A description of the maintenance frequency of this resource. This description compliments the update frequency selected on the Basic Metadata page.
 
 ####
 # RTF
@@ -1164,9 +1356,9 @@ jgtiCuratorialUnitType.COUNT_RANGE=數量範圍
 jgtiCuratorialUnitType.COUNT_WITH_UNCERTAINTY=具不確定性的數量範圍
 
 ####
-# CONFIGURATIONS 設定
+# CONFIGURATIONS
 ####
-# Date format 日期格式
+# Date format
 format.date={yyyy-MM-dd}
 
 # This message appears when the field value is invalid  according to the *Converter.java class
@@ -1174,7 +1366,37 @@ xwork.default.invalid.fieldvalue=無效的欄位值
 
 # Data Tables. Warning: don't translate any word beginning and ending in underscores, e.g. _MENU_
 dataTables.sInfo=顯示 _START_ 至 _END_ 共 _TOTAL_ 資料集
+dataTables.sInfo.versions=Showing _START_ to _END_ of _TOTAL_ versions
 dataTables.sInfoEmpty=顯示 0 至 0 共 0 資料集
 dataTables.sInfoFiltered=(過濾自 _MAX_ 總數)
-dataTables.sEmptyTable=目前沒有任何資料集
+dataTables.sEmptyTable.resources=目前沒有任何資源
+dataTables.sEmptyTable.organisations=目前沒有任何單位組織
+dataTables.sEmptyTable.versions=目前沒有任何版本
+dataTables.sEmptyTable.users=目前沒有任何使用者
 dataTables.sZeroRecords=沒有找到任何資料集
+
+dwca.failed=資料集 {0} 壓縮檔產生失敗：{1}
+dwca.interrupted=資料集 {0} 壓縮檔產生中斷：{1}
+
+publishing.started=發布資料集 {1} 版本 \#{0} 開始
+publishing.success=成功發布資料集 {1} 版本 \#{0}
+publishing.cancelled=取消發布資料集 {1} 版本 \#{0}！
+publishing.error=發布資料集時，發生類型錯誤 {0}：{1}
+publishing.failed=發布資料集 {1} 版本 \#{0} 失敗：{2}
+publishing.skipping=略過資料集 {1} 發布的版本編號 \#{0}：已超過嘗試發布失敗的允許次數，請另行發布此資料集。
+publishing.changeSummary.default=None provided
+
+restore.resource.success=由於發布失敗，還原資料集 {1} 至版本 \#{0}
+restore.resource.failed=還原資料集 {1} 版本 \#{0} 失敗：{2}
+
+# Auto-publishing
+autopublish=自動定期發布
+autopublish.off=關閉
+autopublish.update=改變發布週期並發布
+autopublish.activate=發布並開啟自動定期發布
+autopublish.disable=發布並關閉自動定期發布
+autopublish.interval=選擇發布週期
+autopublish.help=欲 <strong>開啟</strong> 自動定期發布，請選擇一發布週期（共有五個選項）後點選發布。欲 <strong>改變</strong> 自動定期發布之週期，選擇一新選項後點選發布。欲 <strong>關閉</strong> 自動定期更新，選擇「關閉」後點選發布。
+
+# Struts2 overrides
+struts.messages.upload.error.SizeLimitExceededException=The uploaded file is too large\! Max size allowed is {0} bytes but request was {1} bytes. To work around this problem, you can try compressing the file (with zip or gzip), loading the data into one of the many databases supported by the IPT, or splitting the file up. Please refer to the user manual for more information.
