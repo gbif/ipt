@@ -1400,6 +1400,20 @@ public class ResourceManagerImplTest {
   }
 
   @Test
+  public void testConvertVersionZero() throws ParserConfigurationException, SAXException, IOException {
+    Resource r = new Resource();
+    r.setEmlVersion(BigDecimal.valueOf(0));
+    assertEquals(0, r.getEmlVersion().scale());
+    assertEquals(0, r.getEmlVersion().intValueExact());
+    // do conversion 0 -> 1.0
+    BigDecimal converted = getResourceManagerImpl().convertVersion(r);
+    assertEquals(new BigDecimal("1.0"), converted);
+    // ensure conversions aren't repeated
+    r.setEmlVersion(converted);
+    assertNull(getResourceManagerImpl().convertVersion(r));
+  }
+
+  @Test
   public void testConstructVersionHistoryForLastPublishedVersion() throws ParserConfigurationException, SAXException, IOException {
     Resource r = new Resource();
     r.setEmlVersion(new BigDecimal("4.0"));

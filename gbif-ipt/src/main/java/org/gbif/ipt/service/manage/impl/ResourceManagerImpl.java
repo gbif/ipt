@@ -1069,7 +1069,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   protected BigDecimal convertVersion(Resource resource) {
     if (resource.getEmlVersion() != null) {
       BigDecimal version = resource.getEmlVersion();
-      if (version.scale() == 0) {
+      // special conversion: 0 -> 1.0
+      if (version.equals(BigDecimal.ZERO)) {
+        return Constants.INITIAL_RESOURCE_VERSION;
+      } else if (version.scale() == 0) {
         BigDecimal majorMinorVersion = version.setScale(1, RoundingMode.CEILING);
         log.debug("Converted version [" + version.toPlainString() + "] to [" + majorMinorVersion.toPlainString() + "]");
         return majorMinorVersion;
