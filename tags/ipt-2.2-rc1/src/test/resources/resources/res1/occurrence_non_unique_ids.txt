@@ -1,0 +1,5 @@
+id	scientificName	basisOfRecord	kingdom
+1	puma concolor	HumanObservation	Animalia
+2	Panthera onca	HumanObservation	Animalia
+2	Panthera tigris	HumanObservation	Animalia
+4	Panthera leo	HumanObservation	Animalia
