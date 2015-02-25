@@ -1,0 +1,123 @@
+<eml:eml xmlns:eml="eml://ecoinformatics.org/eml-2.1.1"
+         xmlns:dc="http://purl.org/dc/terms/"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="eml://ecoinformatics.org/eml-2.1.1 http://rs.gbif.org/schema/eml-gbif-profile/1.0.1/eml.xsd"
+         packageId="http://localhost:7001/ipt/resource.do?id=test4/v3" system="http://gbif.org" scope="system"
+         xml:lang="eng">
+
+    <dataset>
+      <alternateIdentifier>http://localhost:7001/ipt/resource.do?r=test4</alternateIdentifier>    
+      <title xml:lang="eng">TEST RESOURCE</title>
+      <creator>
+    <individualName>
+      <surName>Braak2</surName>
+    </individualName>
+    <organizationName>Global Biodiversity Information Facility (GBIF)</organizationName>
+    <address>
+      <deliveryPoint>Universitetsparken 15</deliveryPoint>
+      <city>København</city>
+      <administrativeArea>Danmark</administrativeArea>
+      <postalCode>2100</postalCode>
+    </address>
+      </creator>
+      <metadataProvider>
+    <individualName>
+      <surName>Braak2</surName>
+    </individualName>
+    <organizationName>Global Biodiversity Information Facility (GBIF)</organizationName>
+    <address>
+      <deliveryPoint>Universitetsparken 15</deliveryPoint>
+      <city>København</city>
+      <administrativeArea>Danmark</administrativeArea>
+      <postalCode>2100</postalCode>
+    </address>
+      </metadataProvider>
+      <associatedParty>
+    <individualName>
+      <givenName>Kyle</givenName>
+      <surName>Braak</surName>
+    </individualName>
+    <electronicMailAddress>kbraak@gbif.org</electronicMailAddress>
+    <role>user</role>
+      </associatedParty>
+	  <pubDate>
+      	2012-08-16
+      </pubDate>
+      <language>eng</language>
+      <abstract>
+        <para>Test description</para>
+      </abstract>
+      <keywordSet>
+        <keyword>Phytosociology</keyword>
+        <keyword>Vegetation</keyword>
+        <keyword>India</keyword>
+        <keyword>National Park</keyword>
+        <keyword>Sanctuary</keyword>
+        <keyword>Tree</keyword>
+        <keyword>Shrub</keyword>
+        <keyword>Herb</keyword>
+        <keyword>Orchid</keyword>
+        <keyword>Climber</keyword>
+        <keyword>Grass</keyword>
+        <keyword>Angiosperms</keyword>
+        <keyword>Gymnoperms</keyword>
+        <keyword>Pteridophytes</keyword>
+        <keywordThesaurus>Agarious</keywordThesaurus>
+      </keywordSet>
+      <coverage>        
+        <geographicCoverage>
+          <geographicDescription>This is a geographic coverage that extends over most of eastern Africa.</geographicDescription>
+          <boundingCoordinates>
+            <westBoundingCoordinate>1.6</westBoundingCoordinate>
+            <eastBoundingCoordinate>47.27</eastBoundingCoordinate>
+            <northBoundingCoordinate>7.22</northBoundingCoordinate>
+            <southBoundingCoordinate>-5.82</southBoundingCoordinate>
+          </boundingCoordinates>
+        </geographicCoverage>
+        <taxonomicCoverage>
+         	<generalTaxonomicCoverage>Taxonoic description that is really interesting and long winded. But here we are.</generalTaxonomicCoverage>
+         <taxonomicClassification>
+           	<taxonRankName>domain</taxonRankName>
+           	<taxonRankValue>Sci name1</taxonRankValue>
+           	<commonName>Common</commonName>
+         </taxonomicClassification>
+         <taxonomicClassification>
+           	<taxonRankName>subkingdom</taxonRankName>
+           	<taxonRankValue>Sci name2</taxonRankValue>
+           	<commonName>Common2</commonName>
+         </taxonomicClassification>
+         <taxonomicClassification>
+           	<taxonRankName>superphylum</taxonRankName>
+           	<taxonRankValue>Sci name3</taxonRankValue>
+           	<commonName>Common3</commonName>
+         </taxonomicClassification>
+         <taxonomicClassification>
+           	<taxonRankName>domain</taxonRankName>
+           	<taxonRankValue>Sci name4</taxonRankValue>
+           	<commonName>Common4</commonName>
+         </taxonomicClassification>
+        </taxonomicCoverage>
+      </coverage>
+      <contact>
+    <individualName>
+      <surName>Braak2</surName>
+    </individualName>
+    <organizationName>Global Biodiversity Information Facility (GBIF)</organizationName>
+    <address>
+      <deliveryPoint>Universitetsparken 15</deliveryPoint>
+      <city>København</city>
+      <administrativeArea>Danmark</administrativeArea>
+      <postalCode>2100</postalCode>
+    </address>
+      </contact>
+    </dataset>
+    <additionalMetadata>
+     <metadata>
+      <gbif>
+        <dateStamp>2012-08-16T10:33:53.343+02:00</dateStamp>
+        <hierarchyLevel>dataset</hierarchyLevel>
+        <dc:replaces>http://localhost:7001/ipt/resource.do?id=test4/v2.xml</dc:replaces>
+      </gbif>
+     </metadata>
+    </additionalMetadata>
+</eml:eml>
