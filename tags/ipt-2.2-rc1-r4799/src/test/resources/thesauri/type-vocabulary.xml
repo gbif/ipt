@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="http://rs.gbif.org/style/human.xsl"?>
+<voc:thesaurus xmlns:voc="http://rs.gbif.org/thesaurus/" xmlns:ext="http://rs.gbif.org/extension/" xmlns:dcam="http://purl.org/dc/dcam/" xmlns:dc="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://rs.gbif.org/thesaurus/  http://rs.gbif.org/schema/thesaurus.xsd" 
+  dc:URI="http://dublincore.org/documents/dcmi-type-vocabulary/"
+  dc:relation="http://dublincore.org/documents/dcmi-type-vocabulary/"
+  dc:description='The DCMI Type Vocabulary provides a general, cross-domain list of approved terms that may be used as values for the Resource Type element to identify the genre of a resource. The terms documented here are also included in the more comprehensive document "DCMI Metadata Terms" at http://dublincore.org/documents/dcmi-terms/.' 
+  dc:title="Dublin Core Type Vocabulary" 
+  >
+  <voc:concept dc:identifier="Collection" dc:URI="http://purl.org/dc/dcmitype/Collection" >
+   <voc:preferred>
+    <voc:term dc:source="Dublin Core RDF" dc:title="Collection" xml:lang="eng"/>
+    <voc:term dc:title="Sammlung" xml:lang="ger"/>
+   </voc:preferred>
+   <voc:alternative/>
+  </voc:concept>
+  <voc:concept dc:identifier="Dataset" dc:URI="http://purl.org/dc/dcmitype/Dataset" >
+   <voc:preferred>
+    <voc:term dc:source="Dublin Core RDF" dc:title="Dataset" xml:lang="en"/>
+   </voc:preferred>
+   <voc:alternative/>
+  </voc:concept>
+  <voc:concept dc:identifier="Event" dc:URI="http://purl.org/dc/dcmitype/Event" >
+   <voc:preferred>
+    <voc:term dc:source="Dublin Core RDF" dc:title="Event" xml:lang="en"/>
+   </voc:preferred>
+   <voc:alternative/>
+  </voc:concept>
+  <voc:concept dc:identifier="Image" dc:URI="http://purl.org/dc/dcmitype/Image" >
+   <voc:preferred>
+    <voc:term dc:source="Dublin Core RDF" dc:title="Image" xml:lang="en"/>
+   </voc:preferred>
+   <voc:alternative/>
+  </voc:concept>
+  <voc:concept dc:identifier="InteractiveResource" dc:URI="http://purl.org/dc/dcmitype/InteractiveResource" >
+   <voc:preferred>
+    <voc:term dc:source="Dublin Core RDF" dc:title="Interactive Resource" xml:lang="en"/>
+   </voc:preferred>
+   <voc:alternative/>
+  </voc:concept>
+  <voc:concept dc:identifier="Service" dc:URI="http://purl.org/dc/dcmitype/Service" >
+   <voc:preferred>
+    <voc:term dc:source="Dublin Core RDF" dc:title="Service" xml:lang="en"/>
+   </voc:preferred>
+   <voc:alternative/>
+  </voc:concept>
+  <voc:concept dc:identifier="Software" dc:URI="http://purl.org/dc/dcmitype/Software" >
+   <voc:preferred>
+    <voc:term dc:source="Dublin Core RDF" dc:title="Software" xml:lang="en"/>
+   </voc:preferred>
+   <voc:alternative/>
+  </voc:concept>
+  <voc:concept dc:identifier="Sound" dc:URI="http://purl.org/dc/dcmitype/Sound" >
+   <voc:preferred>
+    <voc:term dc:source="Dublin Core RDF" dc:title="Sound" xml:lang="en"/>
+   </voc:preferred>
+   <voc:alternative/>
+  </voc:concept>
+  <voc:concept dc:identifier="Text" dc:URI="http://purl.org/dc/dcmitype/Text" >
+   <voc:preferred>
+    <voc:term dc:source="Dublin Core RDF" dc:title="Text" xml:lang="en"/>
+   </voc:preferred>
+   <voc:alternative/>
+  </voc:concept>
+  <voc:concept dc:identifier="PhysicalObject" dc:URI="http://purl.org/dc/dcmitype/PhysicalObject" >
+   <voc:preferred>
+    <voc:term dc:source="Dublin Core RDF" dc:title="Physical Object" xml:lang="en"/>
+   </voc:preferred>
+   <voc:alternative/>
+  </voc:concept>
+  <voc:concept dc:identifier="StillImage" dc:URI="http://purl.org/dc/dcmitype/StillImage" >
+   <voc:preferred>
+    <voc:term dc:source="Dublin Core RDF" dc:title="Still Image" xml:lang="en"/>
+   </voc:preferred>
+   <voc:alternative/>
+  </voc:concept>
+  <voc:concept dc:identifier="MovingImage" dc:URI="http://purl.org/dc/dcmitype/MovingImage" >
+   <voc:preferred>
+    <voc:term dc:source="Dublin Core RDF" dc:title="Moving Image" xml:lang="en"/>
+   </voc:preferred>
+   <voc:alternative/>
+  </voc:concept>
+ </voc:thesaurus>
+ 

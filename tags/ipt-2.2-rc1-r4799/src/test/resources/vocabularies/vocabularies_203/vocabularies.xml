@@ -1,0 +1,10 @@
+<map>
+  <entry>
+    <string>http://rs.gbif.org/vocabulary/gbif/datasettype</string>
+    <url>http://rs.gbif.org/vocabulary/gbif/dataset_type.xml</url>
+  </entry>
+  <entry>
+    <string>http://rs.gbif.org/vocabulary/gbif/resource_type</string>
+    <url>http://rs.gbif.org/vocabulary/gbif/resource_type.xml</url>
+  </entry>
+</map>

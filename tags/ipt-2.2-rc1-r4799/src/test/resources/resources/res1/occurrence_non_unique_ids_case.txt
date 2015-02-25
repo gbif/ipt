@@ -1,0 +1,5 @@
+id	scientificName	basisOfRecord	kingdom
+FISHES1	puma concolor	Observation	Animalia
+Fishes1	Panthera onca	Observation	Animalia
+FISHES2	Panthera tigris	Observation	Animalia
+Fishes2	Panthera leo	Observation	Animalia
