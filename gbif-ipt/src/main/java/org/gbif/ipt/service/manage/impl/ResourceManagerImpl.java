@@ -941,18 +941,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * found, the resource is loaded with an empty EML instance.
    *
    * @param resource resource
-   *
-   * @return EML object loaded from eml.xml file or a new EML instance if none found
    */
-  private Eml loadEml(Resource resource) {
+  private void loadEml(Resource resource) {
     File emlFile = dataDir.resourceEmlFile(resource.getShortname(), null);
-    // US Locale is used because uses '.' for decimal separator
+    // load resource metadata, use US Locale to interpret it because uses '.' for decimal separator
     Eml eml = EmlUtils.loadWithLocale(emlFile, Locale.US);
-    // load resource metadata
     resource.setEml(eml);
-    // udpate EML with latest resource basics (version and GUID)
-    syncEmlWithResource(resource);
-    return eml;
   }
 
   /**
@@ -1032,6 +1026,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           resource.setIdentifierStatus(IdentifierStatus.UNRESERVED);
         }
 
+        // load eml (this must be done before trying to convert version below)
+        loadEml(resource);
+
         // pre v2.2 resources: convert resource version from integer to major_version.minor_version style
         // also convert/rename eml, rtf, and dwca versioned files also
         BigDecimal converted = convertVersion(resource);
@@ -1045,8 +1042,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           resource.addVersionHistory(history);
         }
 
-        // load eml
-        loadEml(resource);
+        // update EML with latest resource basics (version and GUID)
+        syncEmlWithResource(resource);
+
         log.debug("Read resource configuration for " + shortname);
         return resource;
       } catch (FileNotFoundException e) {
@@ -1985,7 +1983,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private void syncEmlWithResource(Resource resource) {
     // set EML version
     resource.getEml().setEmlVersion(resource.getEmlVersion());
-    // we need some GUID. If we have use the registry key, if not use the resource URL
+    // we need some GUID: use the registry key if resource is registered, otherwise use the resource URL
     if (resource.getKey() != null) {
       resource.getEml().setGuid(resource.getKey().toString());
     } else {
