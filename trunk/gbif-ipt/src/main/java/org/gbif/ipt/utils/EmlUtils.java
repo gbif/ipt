@@ -115,6 +115,11 @@ public class EmlUtils {
 
   /**
    * Reads an EML file using a specific Locale to interpret correctly: decimal separators, commas and currency formats.
+   *
+   * @param emlFile EML file to read from
+   * @param locale  Locale to use when interpreting EML file
+   *
+   * @return EML file read from file, or new EML instance if the file to load from did not exist, or could not be parsed
    */
   public static Eml loadWithLocale(File emlFile, Locale locale) {
     Eml eml = null;
