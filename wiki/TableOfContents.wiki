@@ -21,6 +21,8 @@
    * [DarwinCore]
    * [DataPreparation Data Preparation]
    * [TutorialOccurrenceResource Occurrence Resource Tutorial]
+ * Translators
+   * [HowToTranslate How to Translate]
  * Developers
    * [HowToContribute How to Contribute]
    * [KeyTechnologies Key Technologies]
