@@ -1,5 +1,5 @@
 = Introduction =
-The core development of the IPT is directed by GBIF, but the coding is a community effort and everyone is welcome to join the project. 
+The core development of the IPT is directed by GBIF, but the coding is a community effort and everyone is welcome to join. 
 
 == Source Code ==
 Java or html/jquery developers are very welcome to contribute code patches. For your reference, the core frameworks used by the IPT are listed below:
