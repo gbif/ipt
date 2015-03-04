@@ -43,17 +43,3 @@
      * [IPTUserManualv203 User Manual]
    * IPT version 2.0.2
      * [IPTUserManualv202 User Manual]
-   * IPT version 1.0 (*deprecated*)
-     * User Manual v1.0
-       * [UserManualChapter1 Background Information]
-       * [UserManualChapter2 General specifications]
-       * [UserManualChapter3 Installation]
-       * [UserManualChapter4 Configuration]
-       * [UserManualChapter5 Resources Management]
-       * [UserManualCopyright Copyright]
-     * Developers
-       * [V1DevelopersGettingStarted Getting Started]
-       * [DevelopersGettingStartedAlt Getting Started (command line setup)]
-       * [EclipseEnvironmentAndCheckstyles Eclipse Setup]
-       * [EclipseSetupOSX OS X Developers]
-       * [V1Webservices Data Services] 
