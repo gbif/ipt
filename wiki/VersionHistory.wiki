@@ -1,4 +1,31 @@
 #summary Version history of releases
 #sidebar TableOfContents
 
-Please refer to [http://www.gbif.org/ipt/releases http://www.gbif.org/ipt/releases]
+For a complete version history please refer to [http://www.gbif.org/ipt/releases http://www.gbif.org/ipt/releases]
+
+   * IPT version 2.1
+     * [IPTUserManualv21 User Manual]
+     * [IPTReleaseNotes21 Release Notes]
+   * IPT version 2.0.5
+     * [IPTUserManualv205 User Manual]
+     * [IPTReleaseNotes205 Release Notes]
+   * IPT version 2.0.4
+     * [IPTUserManualv204 User Manual]
+   * IPT version 2.0.3
+     * [IPTUserManualv203 User Manual]
+   * IPT version 2.0.2
+     * [IPTUserManualv202 User Manual]
+   * IPT version 1.0 (*deprecated*)
+     * User Manual v1.0
+       * [UserManualChapter1 Background Information]
+       * [UserManualChapter2 General specifications]
+       * [UserManualChapter3 Installation]
+       * [UserManualChapter4 Configuration]
+       * [UserManualChapter5 Resources Management]
+       * [UserManualCopyright Copyright]
+     * Developers
+       * [V1DevelopersGettingStarted Getting Started]
+       * [DevelopersGettingStartedAlt Getting Started (command line setup)]
+       * [EclipseEnvironmentAndCheckstyles Eclipse Setup]
+       * [EclipseSetupOSX OS X Developers]
+       * [V1Webservices Data Services] 
