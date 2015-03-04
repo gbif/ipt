@@ -25,7 +25,6 @@
    * [HowToTranslate How to Translate]
  * Developers
    * [HowToContribute How to Contribute]
-   * [KeyTechnologies Key Technologies]
    * [DevelopersGettingStarted Getting Started]
    * [Environments]
  * Versions
