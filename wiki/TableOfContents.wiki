@@ -33,6 +33,9 @@
    * New Features Considered
      * [DataTransformations Data transformations]
  * Older IPT versions
+   * IPT version 2.1
+     * [IPTUserManualv21 User Manual]
+     * [IPTReleaseNotes21 Release Notes]
    * IPT version 2.0.5
      * [IPTUserManualv205 User Manual]
      * [IPTReleaseNotes205 Release Notes]
