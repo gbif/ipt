@@ -1,37 +1,19 @@
 = Introduction =
-The core development of the IPT is directed by GBIF, but the coding, the documentation and internationalisation is a community effort and everyone is welcome to join the project. *Please use the [http://lists.gbif.org/mailman/listinfo/ipt mailing list] to get in touch with the developers and project leaders*.
+The IPT user interface and the documentation both need internationalisation. Internationalisation is a community effort, and everyone is welcome to join. 
 
-= How To Contribute =
-== Documentation ==
-We are always keen on getting better documentation. The easiest and quickest way to help us improve the user manual is to [http://code.google.com/p/gbif-providertoolkit/issues/entry?template=Documentation%20issue submit documentation issues] into our issue tracker and mark them with "Documentation". This will be picked up by our technical writer and finally end up in the [IPT2ManualNotes user manual].
+== User Interface ==
+The preferred way of translating the user interface is using an online translation tool called [https://crowdin.com/project/gbif-ipt Crowdin]. To join, just login to [https://crowdin.com/project/gbif-ipt Crowdin], select the language you would like to translate, and hit the 'Join' button. A manager will handle your request, and add you to the translation team. After that, you can get started translating. Most people find Crowdin incredibly easy and intuitive to use. For help using Crowdin, you can always refer to their [https://support.crowdin.com/for-translators/getting-started-translators/interface-overview Knowledge Base].
 
-== Translations ==
-The IPT and the documentation both need internationalisation. Currently the IPT has been translated into the following languages: 
+If you want to translate the user interface into another language, please contact the [https://crowdin.com/profile/kbraak project owner].
+
+=== Current Languages ===
+
   * Chinese (Traditional)
   * French
   * Japanese
   * Portuguese
   * Spanish
-In the case of the IPT all text is kept in a single property file, one for each language. The [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt/src/main/resources/ApplicationResources_en.properties original] is in english and if you are able and willing to translate it into another language, instructions are below.
 
-===Begin a translation for a new language using Attesoro:===
-  # Download Attesoro from http://attesoro.org/download.html (Select Download binary -- Version 1.8.01, Executable Jar)
-  # Download the [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt/src/main/resources/ApplicationResources_en.properties english default properties file] from the gbif-ipt project site (Right click, Save as.., "ApplicationResources_en.properties")
-  # Open the Attesoro jar file (e.g., attesoro_1_8.jar). It is an executable jar file that will run as an application if you have Java installed on your system. Otherwise you will have to install Java and then run the Attesoro jar file.
-  # In Attesoro, select the File->Open... menu item and open the ApplicationResources_en.properties file downloaded in the step above.
-  # Create a new Locale for the language you want to translate into (e.g. Edit, Locale, New.., Japanese (ja)/Japan -> click OK).
-  # Click File -> Save... this will save ApplicationResources_en_Ja_JP.properties in the same location as ApplicationResources_en.properties
-  # Using TextWrangler, I recommend you open and re-save ApplicationResources_en_Ja_JP.properties using Latin-1 encoding. 
-  # To test if the values are being saved with the right encoding, translate a value for any key (separate instructions below) and save (File -> Save...).
-  # Reopen the ApplicationResources_en_ja_JP.properties in TextWrangler to check if the accented values have saved properly. In the case of Japanse, the characters are unicode escaped (e.g. admin.config.analyticsKey=\u3053\u308c\u306f....) The following screenshot should help you with these last few steps: [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/Attesoro-ja.png]
-  # Send Kyle (kbraak@gbif.org) or Burke (bko@gbif.org) an email with the ApplicationResources_en_ja_JP.properties file so they can verify the file before continuing the rest of the translation.
+=== Upcoming Languages ===
 
-===To translate a value for a key:===
-  # Click on the Locale name, notice that all un-translated terms start off blue.
-  # To translate, click on a Key from the left sidebar, read its Default Text, and enter in the translated text. Leave the box "Use Default" checked if you want to use the English translation, or if you are uncertain about how to translate the term. 
-  # After a Key is translated, its color turns green so that you can keep track of recently translated terms.
-  # Save your work. Notice all green Keys turn to black. All remaining untranslated terms remain blue. 
-  # When you feel that you have a final product, save it once more, and send the final version to Kyle (kbraak@gbif.org) or Burke (bko@gbif.org) so that they can add it to the project for you.  You can request to become a member so that you can commit the file yourself if you prefer - just ask Kyle or Burke. 
-
-== Source Code ==
-Java or html/jquery developers are very welcome to contribute. See KeyTechnologies for the most important frameworks we use.
+  * Russian
