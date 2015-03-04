@@ -1,19 +1,26 @@
 = Introduction =
-The IPT user interface and the documentation both need internationalisation. Internationalisation is a community effort, and everyone is welcome to join. 
+The IPT user interface and the user manual both need internationalisation. Internationalisation is a community effort, and everyone is welcome to join. 
 
 == User Interface ==
 The preferred way of translating the user interface is using an online translation tool called [https://crowdin.com/project/gbif-ipt Crowdin]. To join, just login to [https://crowdin.com/project/gbif-ipt Crowdin], select the language you would like to translate, and hit the 'Join' button. A manager will handle your request, and add you to the translation team. After that, you can get started translating. Most people find Crowdin incredibly easy and intuitive to use. For help using Crowdin, you can always refer to their [https://support.crowdin.com/for-translators/getting-started-translators/interface-overview Knowledge Base].
 
-If you want to translate the user interface into another language, please contact the [https://crowdin.com/profile/kbraak project owner].
+If you want to translate the user interface into another language, please email dev@gbif.org.
 
-=== Current Languages ===
+=== Languages ===
 
-  * Chinese (Traditional)
   * French
   * Japanese
   * Portuguese
+  * Russian (pending)
   * Spanish
+  * Traditional Chinese
 
-=== Upcoming Languages ===
+== User Manual ==
+The easiest way to translate the user manual is through the Google Code wiki. Please email dev@gbif.org to add you to the project with sufficient privileges to be able to edit the wiki. 
 
-  * Russian
+For new languages, a project manager needs to create a new directory under /svn/wiki using the 2-letter ISO 639-1 code as the directory name. Then the project manager will copy the English wiki page (corresponding to the User Manual) this directory. That page can now be translated/edited directly through the wiki. Screenshots in other languages are committed to the [https://code.google.com/p/gbif-providertoolkit/source/browse/#svn%2Ftrunk%2Fgbif-ipt-docs gbif-ipt-docs] repository. A new directory using the 2-letter ISO 639-1 code is used to store screenshots corresponding to that language per version number. Don't worry, the project manager will help guide new translators through all steps to get them running.
+
+=== Languages ===
+
+  * Portuguese (pending)
+  * Spanish
