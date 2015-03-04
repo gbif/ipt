@@ -30,8 +30,6 @@
  * Versions
    * [Roadmap]
    * [VersionHistory Version History]
-   * New Features Considered
-     * [DataTransformations Data transformations]
  * Older IPT versions
    * IPT version 2.1
      * [IPTUserManualv21 User Manual]
