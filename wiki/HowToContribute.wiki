@@ -2,4 +2,9 @@
 The core development of the IPT is directed by GBIF, but the coding is a community effort and everyone is welcome to join the project. 
 
 == Source Code ==
-Java or html/jquery developers are very welcome to contribute code patches. See [KeyTechnologies Key Technologies] for the most important frameworks we use.
+Java or html/jquery developers are very welcome to contribute code patches. For your reference, the core frameworks used by the IPT are listed below:
+
+ * [http://struts.apache.org/2.x/index.html Struts2]
+ * [http://code.google.com/p/google-guice/ Google Guice]
+ * [http://freemarker.sourceforge.net/docs/ Freemarker] templating
+ * [http://jquery.com/ JQuery] for javascript and ajax
