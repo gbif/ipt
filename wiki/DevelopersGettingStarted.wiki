@@ -4,7 +4,7 @@
 
 == Introduction  ==
 
-The GBIF IPT is an open source struts2 web application in Java, see KeyTechnologies. Its software architecture and important use cases are described in detail in the [http://code.google.com/p/gbif-providertoolkit/downloads/list?can=2&q=IPT+Architecture IPT Architecture document].
+The GBIF IPT is an open source struts2 web application in Java. Its software architecture and important use cases are described in detail in the [http://code.google.com/p/gbif-providertoolkit/downloads/list?can=2&q=IPT+Architecture IPT Architecture document].
 
 == Getting the source, Maven & Eclipse ==
 We use Maven extensively to manage dependencies and the build process. 
