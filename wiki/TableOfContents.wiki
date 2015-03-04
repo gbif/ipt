@@ -22,7 +22,7 @@
    * [DataPreparation Data Preparation]
    * [TutorialOccurrenceResource Occurrence Resource Tutorial]
  * Translators
-   * [HowToTranslate How to Translate]
+   * [HowToTranslate How to Contribute]
  * Developers
    * [HowToContribute How to Contribute]
    * [DevelopersGettingStarted Getting Started]
