@@ -4,8 +4,6 @@ The IPT [HowToTranslate#User_Interface User Interface] and [HowToTranslate#User_
 == User Interface ==
 The preferred way of translating the user interface is using an online translation tool called [https://crowdin.com/project/gbif-ipt Crowdin]. To join, just login to [https://crowdin.com/project/gbif-ipt Crowdin], select the language you would like to translate, and hit the 'Join' button. A manager will handle your request, and add you to the translation team. After that, you can get started translating. Most people find Crowdin incredibly easy and intuitive to use. For help using Crowdin, you can always refer to their [https://support.crowdin.com/for-translators/getting-started-translators/interface-overview Knowledge Base].
 
-If you want to translate the user interface into another language, please email dev@gbif.org.
-
 === Languages ===
 
   * French
@@ -14,6 +12,7 @@ If you want to translate the user interface into another language, please email 
   * Russian (pending)
   * Spanish
   * Traditional Chinese
+If you want to translate the user interface into another language, please email dev@gbif.org.
 
 == User Manual ==
 The easiest way to translate the user manual is through the Google Code wiki. Please email dev@gbif.org to add you to the project with sufficient privileges to be able to edit the wiki. 
