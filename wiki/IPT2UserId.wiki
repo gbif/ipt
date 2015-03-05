@@ -27,7 +27,7 @@ The steps below explain how to configure the IPT with another user directory to 
 
 = Instructions =
 
-Locate the UserDirectories.properties  e.g. /tomcat7/webapps/ipt/WEB-INF/classes/org/gbif/metadata/eml/licenses.properties. Open the file in a text editor, and do the following:
+Locate the UserDirectories.properties file e.g. /tomcat7/webapps/ipt/WEB-INF/classes/org/gbif/metadata/eml/licenses.properties. Open the file in a text editor, and do the following:
   # Add a new property defining the user directory using the following format:
 {{{
 URL=URL
