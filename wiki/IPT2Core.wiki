@@ -4,9 +4,11 @@
 _Warning: This page contains configuration instructions for advanced IPT users only_
 </font>
 
+= How To Add a New Core =
+
 <wiki:toc max_depth="2" />
 
-= Introduction =
+== Introduction ==
 
 The IPT always ships with 2 cores installed by default: taxon and occurrence. Since IPT 2.1, there is now the possibility to add custom cores to the IPT, which is useful for communities prototyping new data standards. 
 
@@ -14,7 +16,7 @@ The IPT always ships with 2 cores installed by default: taxon and occurrence. Si
 
 The 3 steps below explain how to 1) create your new core, 2) register it with GBIF, and 3) configure an IPT to use it. 
 
-= Steps: =
+== Instructions ==
 
 == 1. Write Core XML Definition ==
 
