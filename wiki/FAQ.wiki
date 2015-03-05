@@ -4,7 +4,7 @@
 
 In this page you will find answers for the most frequent asked questions about the GBIF IPT by installers and users. Please check the contents of this page before contacting the helpdesk.
 
-<wiki:toc max_depth="2" />
+<wiki:toc max_depth="3" />
 
 == Installation ==
 
