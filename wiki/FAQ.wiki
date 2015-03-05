@@ -24,14 +24,6 @@ These libraries are not needed for the GBIF IPT operation so make a backup copy 
 
 _If your server admin won't allow these libraries to be removed_, another known solution reported in Issue 851 is to include the xalan.jar in the IPT's /lib directory located at $tomcat/webapps/ipt/WEB-INF. Just copy the jar file to that folder, restart Tomcat, and the error should disappear.
 
-= Usage =
-== Yikes when deleting a resource ==
-Sometimes deleting a resource causes an error and leaves a corrupted resource behind that cannot be modified again and causes the resource listing in Explore and Manage to fail. Apart from a fresh reinstall the only way to fix this is to enable the H2 Console and modify the database manually like this, with `77` being the resource number to be deleted:
-
-{{{
-  DELETE RESOURCE WHERE ID=77;
-}}}
-
 == DwC-A file doesn't include all records ==
 === Caused by invalid DATETIME value ===
 If the published DwC-A file doesn't have records in the expected counts, and you see there is a message in Administration > Logs, which says
