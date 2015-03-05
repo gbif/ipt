@@ -1,4 +1,5 @@
 #summary Instructions how to add a new core to the IPT.
+#labels Phase-Deploy
 <font color=red>
 _Warning: This page contains configuration instructions for advanced IPT users only_
 </font>
