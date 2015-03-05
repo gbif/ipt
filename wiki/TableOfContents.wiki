@@ -1,12 +1,12 @@
 ﻿#summary One-sentence summary of this page.
 
  * [IPT2ManualNotes User Manual]
-   * [IPTServerPreparation Server Preparation]
-     * [TomcatInstallationMacOSX Install Tomcat on Mac OS X]
-     * [TomcatInstallationWindows7 Install Tomcat on Windows 7]
-     * [TomcatInstallationCentOS Install Tomcat on CentOS 5]
-     * [PermissionSettings Permission Settings for IPT Data Directory]
    * [IPT2ManualNotes#Getting_Started_Guide Getting Started Guide]
+     * [IPTServerPreparation Server Preparation]
+       * [TomcatInstallationMacOSX Install Tomcat on Mac OS X]
+       * [TomcatInstallationWindows7 Install Tomcat on Windows 7]
+       * [TomcatInstallationCentOS Install Tomcat on CentOS 5]
+       * [PermissionSettings Permission Settings for IPT Data Directory]
    * [IPT2ManualNotes#Quick_Reference_Guide Quick Reference Guide]
    * [IPT2DatabaseConnection Supported Databases]
    * [IPT2ManualNotes#About_the_IPT About, Credits]
