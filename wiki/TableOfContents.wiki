@@ -18,8 +18,8 @@
      * [IPT2License Adding a New License]
      * [IPT2UserId Adding a New User ID Directory]
  * [IPTReleaseNotes21 Release Notes]
- * [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes?wl=es User Manual (Spanish)]
  * [FAQ] 
+ * [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes?wl=es User Manual (Spanish)]
  * Tutorials & Resources
    * [DarwinCore]
    * [DataPreparation Data Preparation]
