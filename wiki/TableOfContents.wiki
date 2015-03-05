@@ -25,7 +25,6 @@
    * [HowToTranslate How to Contribute]
  * Developers
    * [HowToContribute How to Contribute]
-   * [DevelopersGettingStarted Getting Started]
    * [Environments]
  * Versions
    * [Roadmap]
