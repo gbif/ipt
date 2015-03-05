@@ -6,6 +6,8 @@ In this page you will find answers to the most frequently asked questions about 
 
 <wiki:toc max_depth="3" />
 
+= FAQ =
+
 == Installation ==
 
 === 1. What is the best way to move my IPT to another server without losing any data? ===
