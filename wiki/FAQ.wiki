@@ -52,7 +52,6 @@ To solve this, you can remove these line breaking characters from the source fil
 == My GBIF IPT instance is slow. What can I do to improve performance? ==
 
 Apache Tomcat comes with very little allocated memory. In order to increase performance, this amount should be increased depending on the amount of physical memory on the server. If the server has at least 2GB of RAM, the available memory should be increased to 1GB. For more information on how to do it, see the following links:
-  * [http://explanatorygap.net/2005/03/06/configuring-tomcat-under-os-x-server-for-more-memory/]
   * http://wiki.apache.org/tomcat/FAQ/Memory
 
 The following is known to run:
