@@ -24,7 +24,7 @@ The steps below explain how to configure the IPT with another license to choose 
 
 = Instructions =
 
-Open licenses.properties in a text editor and then do the following:
+Locate licenses.properties inside /WEB-INF/classes/org/gbif/metadata/eml and open it in a text editor. Then do the following:
   # Add a new property defining the license name using the following format:
 {{{
 license.name.<prefix>=Name
