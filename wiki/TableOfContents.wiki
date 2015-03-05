@@ -11,8 +11,11 @@
    * [IPT2DatabaseConnection Supported Databases]
    * [IPT2ManualNotes#About_the_IPT About, Credits]
    * [IPT2ManualNotes#Resources Resources]
-   * [IPT2Customization Style the IPT]
-   * [IPT2Core Adding a New Core]
+   * Customize the IPT
+     * [IPT2Customization Style the IPT]
+     * [IPT2Core Adding a New Core]
+     * [IPT2Core Adding a New License]
+     * [IPT2Core Adding a New User ID Directory]
    * [IPT2ManualNotes#Glossary Glossary]
    * [FAQ]
  * [IPTReleaseNotes21 Release Notes]
