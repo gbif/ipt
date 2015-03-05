@@ -8,7 +8,7 @@ _Warning: This page contains configuration instructions for advanced IPT users o
 
 = Introduction =
 
-Since IPT v2.2 the IPT ships with 3 machine readable licenses to choose from: 
+Since IPT v2.2 the IPT ships with 3 machine readable licenses to choose from when applying a license to your resource: 
 
  * Public Domain (CC0 1.0, technically a waiver)
  * Creative Commons Attribution (CC-BY 4.0)
@@ -22,9 +22,21 @@ The list of licenses and their rights statements can be modified, however, which
 
 The steps below explain how to configure the IPT with another license to choose from.
 
-= Steps =
+= Instructions =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+Open licenses.properties in a text editor and then do the following:
+  # Add a new property defining the license name using the following format:
+{{{
+license.name.<prefix>=Name
+# For example:
+license.name.odcby=Open Data Commons Attribution License (ODC-By) 1.0
+}}}
+  # Add a new property defining the license rights statement using the following format:
+{{{
+license.prefix.<prefix>=Text
+# For example: 
+license.text.odcby=This work is licensed under a <a href="http://www.opendatacommons.org/licenses/by/1.0">Open Data Commons Attribution License (ODC-By) 1.0</a>.
+}}}
+  #  Warning: you must include an HTML anchor in the text linking to the license URL, and the anchor name should be the same name chosen in the name property (above).
+  # Backup the licenses.properties file, since it will get overwritten the next time you upgrade your IPT
+  # Restart your servlet container (e.g. Tomcat) so that the new configuration takes effect
