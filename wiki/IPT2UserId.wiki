@@ -8,8 +8,19 @@ _Warning: This page contains configuration instructions for advanced IPT users o
 
 = Introduction =
 
-Add your content here.
+Since IPT v2.2 the IPT ships with 4 user directories to choose from when entering a user ID for any contact, creator, metadata provider, associated party, or project personnel. Those directories are:
+ * http://orcid.org/ (ORCID)
+ * http://www.researcherid.com/rid/ (ResearcherID)
+ * http://scholar.google.com/citations?user= (Google Scholar)
+ * https://www.linkedin.com/profile/view?id= (LinkedIn)
 
+Each user directory URL will gets combined with a user ID to produce a link to the user's profile page within that directory. For example:
+
+ [http://orcid.org/0000-0002-1825-0097 http://orcid.org/*0000-0002-1825-0097*]
+
+The list of user directories can be modified, however, which is useful for communities that rely on other directories. 
+
+The steps below explain how to configure the IPT with another user directory to choose from.
 
 = Details =
 
