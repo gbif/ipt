@@ -2,7 +2,7 @@
 #labels Phase-Support
 #sidebar TableOfContents
 
-In this page you will find answers for the most frequent asked questions about the GBIF IPT by installers and users. Please check the contents of this page before contacting the helpdesk.
+In this page you will find answers to the most frequently asked questions about the GBIF IPT. Please check the contents of this page before contacting the GBIF Helpdesk.
 
 <wiki:toc max_depth="3" />
 
