@@ -12,12 +12,13 @@
    * [IPT2ManualNotes#About_the_IPT About, Credits]
    * [IPT2ManualNotes#Resources Resources]
    * [IPT2ManualNotes#Glossary Glossary]
+   * [FAQ]
    * Customize the IPT
      * [IPT2Customization Style the IPT]
      * [IPT2Core Adding a New Core]
      * [IPT2License Adding a New License]
      * [IPT2UserId Adding a New User ID Directory]
-   * [FAQ]
+   
  * [IPTReleaseNotes21 Release Notes]
  * [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes?wl=es User Manual (Spanish)]
  * Tutorials & Resources
