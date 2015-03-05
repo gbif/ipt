@@ -39,7 +39,7 @@ Unless these line breaking characters are removed, the IPT will publish files wi
 
 To solve this, you can remove these line breaking characters from the source file, replace the source file with the new one, and republish the resource. Remember that when uploading a source file, you can tell the IPT to replace the file with a new one as long as they both have the same name. That way the mappings don't have to be redone.
 
-== 2. Why do published files not include all records ==
+== 2. Why do published files not include all records? ==
 Check the publication logs for exceptions such as:
 
 {{{
