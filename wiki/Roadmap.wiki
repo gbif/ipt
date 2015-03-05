@@ -1,4 +1,6 @@
 #summary Roadmap for upcoming releases
 #sidebar TableOfContents
 
+= Roadmap =
+
 Please refer to [http://www.gbif.org/ipt/releases http://www.gbif.org/ipt/releases]
