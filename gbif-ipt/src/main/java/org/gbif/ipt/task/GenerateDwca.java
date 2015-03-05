@@ -573,7 +573,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       if (isOccurrenceCore(arch)) {
         addMessage(Level.INFO, "Validating that the occurrence core basisOfRecord is always present and its "
                                + "value matches the Darwin Core Type Vocabulary."
-                               + "Depending on the number of records, this can take a while.");
+                               + " Depending on the number of records, this can take a while.");
         basisOfRecordIndex = arch.getCore().getField(basisOfRecord).getIndex();
       }
 
