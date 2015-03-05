@@ -37,6 +37,6 @@ license.text.<prefix>=Text
 # For example: 
 license.text.odcby=This work is licensed under a <a href="http://www.opendatacommons.org/licenses/by/1.0">Open Data Commons Attribution License (ODC-By) 1.0</a>.
 }}}
-  #  Warning: the _prefix_ of both keys must match, and an HTML anchor must be included in the text since this is what makes the license machine readable. Furthermore, please ensure the anchor name is the same as the name chosen in the name property above.
+  #  Double check i) the _prefix_ of both keys matches, ii) an HTML anchor defining the license name and URL is included in the text since this is what makes the license machine readable, iii) the name used in the HTML anchor is the same as name used in the name property above.
   # Backup the licenses.properties file, since it will get overwritten the next time you upgrade your IPT
   # Restart your servlet container (e.g. Tomcat) so that the new configuration takes effect
