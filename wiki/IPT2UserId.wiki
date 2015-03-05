@@ -34,6 +34,6 @@ URL=URL
 # For example:
 http\://orcid.org/=http://orcid.org/
 }}}
-  #  Double check i) colon in the property key is escaped by a backwards slash, ii) both the key and value are equal, with the exception of the escape character in the key
+  #  Double check i) the colon in the property key is escaped by a backwards slash, ii) both the key and value are equal, with the exception of the escape character in the key
   # Backup the UserDirectories.properties file, since it will get overwritten the next time you upgrade your IPT
   # Restart your servlet container (e.g. Tomcat) so that the new configuration takes effect
