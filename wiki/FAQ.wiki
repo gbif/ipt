@@ -30,9 +30,9 @@ These libraries are not needed for the GBIF IPT operation so make a backup copy 
 
 _If your server admin won't allow these libraries to be removed_, another known solution reported in Issue 851 is to include the xalan.jar in the IPT's /lib directory located at $tomcat/webapps/ipt/WEB-INF. Just copy the jar file to that folder, restart Tomcat, and the error should disappear.
 
-=== Usage ===
+== Usage ==
 
-== 1. Why do published files contain broken lines? ==
+=== 1. Why do published files contain broken lines? ===
 The IPT does not support source files that have multiline fields (fields that include a newline character (\n) or carriage return (\r)) even if you have specified a field quote (a single character that encloses every field/column in a row) in the source's configuration.
 
 Unless these line breaking characters are removed, the IPT will publish files with broken lines (the columns will appear mixed up). 
