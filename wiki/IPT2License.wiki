@@ -8,10 +8,21 @@ _Warning: This page contains configuration instructions for advanced IPT users o
 
 = Introduction =
 
-Add your content here.
+Since IPT v2.2 the IPT ships with 3 machine readable licenses to choose from: 
 
+ * Public Domain (CC0 1.0, technically a waiver)
+ * Creative Commons Attribution (CC-BY 4.0)
+ * Creative Commons Attribution Non Commercial (CC-BY-NC 4.0)
 
-= Details =
+Each license has a default rights statement associated to it that gets shown to users. For example, if the publisher chooses to apply CC-BY to their resource, this rights statement shown to users is:
+
+ This work is licensed under a <a href="http://creativecommons.org/licenses/by/4.0/legalcode">Creative Commons Attribution (CC-BY) 4.0 License</a>.
+
+The list of licenses and their rights statements can be modified, however, which is useful for communities that need to apply different licenses to their resources, or that want to include additional usage instructions.  
+
+The steps below explain how to configure the IPT with another license to choose from.
+
+= Steps =
 
 Add your content here.  Format your content with:
   * Text in *bold* or _italic_
