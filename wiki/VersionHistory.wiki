@@ -1,8 +1,6 @@
 #summary Version history of releases
 #sidebar TableOfContents
 
-<wiki:toc max_depth="2" />
-
 For a more detailed version history please refer to [http://www.gbif.org/ipt/releases http://www.gbif.org/ipt/releases]
 
 == IPT version 2.1 ==
