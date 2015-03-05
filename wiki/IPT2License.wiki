@@ -4,9 +4,11 @@
 _Warning: This page contains configuration instructions for advanced IPT users only_
 </font>
 
+= How To Add a New License =
+
 <wiki:toc max_depth="2" />
 
-= Introduction =
+== Introduction ==
 
 Since IPT v2.2 the IPT ships with 3 machine readable licenses to choose from when applying a license to your resource: 
 
@@ -22,7 +24,7 @@ The list of licenses and their rights statements can be modified, however, which
 
 The steps below explain how to configure the IPT with another license to choose from.
 
-= Instructions =
+== Instructions ==
 
 Locate the licenses.properties file e.g. /tomcat7/webapps/ipt/WEB-INF/classes/org/gbif/metadata/eml/licenses.properties. Open the file in a text editor, and do the following:
   # Add a new property defining the license name using the following format:
