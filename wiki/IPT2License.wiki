@@ -1,5 +1,7 @@
 #summary Instructions how to add/edit licenses
 
+<wiki:toc max_depth="2" />
+
 = Introduction =
 
 Add your content here.
