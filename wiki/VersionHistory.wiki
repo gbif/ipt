@@ -3,17 +3,4 @@
 
 = Version History =
 
-For a more detailed version history please refer to [http://www.gbif.org/ipt/releases http://www.gbif.org/ipt/releases]
-
-== IPT version 2.1 ==
-     * [IPTUserManualv21 User Manual]
-     * [IPTReleaseNotes21 Release Notes]
-== IPT version 2.0.5 ==
-     * [IPTUserManualv205 User Manual]
-     * [IPTReleaseNotes205 Release Notes]
-== IPT version 2.0.4 ==
-     * [IPTUserManualv204 User Manual]
-== IPT version 2.0.3 ==
-     * [IPTUserManualv203 User Manual]
-== IPT version 2.0.2 ==
-     * [IPTUserManualv202 User Manual] 
+Please refer to http://www.gbif.org/ipt/releases
