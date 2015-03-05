@@ -14,7 +14,7 @@ Since IPT v2.2 the IPT ships with 4 user directories to choose from when enterin
  * http://scholar.google.com/citations?user= (Google Scholar)
  * https://www.linkedin.com/profile/view?id= (LinkedIn)
 
-Users enter a user ID, which gets combined with the user directory to form a link to the user profile page. For example: 
+After having selected a user directory, IPT users enter a conjoining user ID. The combination of the two is used to form a link to a user profile page, for example:
 
  * http://orcid.org/0000-0002-1825-0097
  * http://www.researcherid.com/rid/A-1009-2008
