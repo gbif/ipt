@@ -1,17 +1,19 @@
 #summary Version history of releases
 #sidebar TableOfContents
 
-For a complete version history please refer to [http://www.gbif.org/ipt/releases http://www.gbif.org/ipt/releases]
+<wiki:toc max_depth="2" />
 
-   * IPT version 2.1
+For a more detailed version history please refer to [http://www.gbif.org/ipt/releases http://www.gbif.org/ipt/releases]
+
+== IPT version 2.1 ==
      * [IPTUserManualv21 User Manual]
      * [IPTReleaseNotes21 Release Notes]
-   * IPT version 2.0.5
+== IPT version 2.0.5 ==
      * [IPTUserManualv205 User Manual]
      * [IPTReleaseNotes205 Release Notes]
-   * IPT version 2.0.4
+== IPT version 2.0.4 ==
      * [IPTUserManualv204 User Manual]
-   * IPT version 2.0.3
+== IPT version 2.0.3 ==
      * [IPTUserManualv203 User Manual]
-   * IPT version 2.0.2
+== IPT version 2.0.2 ==
      * [IPTUserManualv202 User Manual] 
