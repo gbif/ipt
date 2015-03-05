@@ -14,7 +14,7 @@
    * Customize the IPT
      * [IPT2Customization Style the IPT]
      * [IPT2Core Adding a New Core]
-     * [IPT2Licenses Adding a New License]
+     * [IPT2License Adding a New License]
      * [IPT2UserId Adding a New User ID Directory]
    * [IPT2ManualNotes#Glossary Glossary]
    * [FAQ]
