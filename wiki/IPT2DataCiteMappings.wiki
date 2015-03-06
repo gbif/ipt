@@ -21,3 +21,5 @@ Legend:
 ||nameIdentifierScheme||M||1||ORCID (mandatory if nameIdentifier is used)||
 ||schemeURI||O||0-1||http://www.orcid.org||
 ||contributor||R||0-n||resource contact, metadataProvider, and associatedParties with various roles ||
+||contributorName ||R||1||resource contact name (mandatory if contributor is used)||
+||contributorType ||R||1||“ContactPerson” - controlled value (mandatory if contributor is used). Other role to controlled value mappings: author->"Other", contentProvider -> “DataCollector”, custodianSteward -> “DataManager”, distributor -> “Distributor”, editor -> “Editor”, metadataProvider -> “DataCurator”, owner -> “RightsHolder”, principalInvestigator -> “ProjectLeader”, processor -> “Producer”, publisher -> “Producer”, user -> “Other”, programmer -> “Producer”, curator -> “DataCurator”||
