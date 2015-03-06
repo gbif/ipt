@@ -6,7 +6,7 @@
 
 == Introduction ==
 
-Since IPT v2.2 data publishers can choose to let the IPT auto generate a citation for their dataset. Before publishers had to enter their own citation. 
+Since IPT v2.2 data publishers can choose to let the IPT auto-generate a citation for their dataset. Before publishers had to enter their own citation. 
 
 The auto-generated citation format includes the dataset version number and DOI. Human readers can use the DOI to link to the dataset homepage, and can use the version number to download the exact version of that dataset. This enables reproducing scientific results based on usage of the dataset. 
 
