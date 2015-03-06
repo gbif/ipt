@@ -2,6 +2,8 @@
 
 = IPT Versioning Policy =
 
+<wiki:toc max_depth="2" />
+
 Add your content here.
 
 == Introduction ==
