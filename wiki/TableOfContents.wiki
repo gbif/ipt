@@ -23,6 +23,7 @@
      * [PermissionSettings Permission Settings for IPT Data Directory]
    * IPT Design
      * [IPT2Versioning Dataset Versioning Policy]
+     * [IPT2Citation Dataset Citation Format]
    * [DarwinCore]
    * [DataPreparation Data Preparation]
    * [TutorialOccurrenceResource Occurrence Resource Tutorial]
