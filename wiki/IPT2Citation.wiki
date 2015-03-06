@@ -14,7 +14,7 @@ A detailed description of the IPT's citation format is described below. It is im
 
 == Citation Format ==
 
-Creators^1^ (PublicationYear)^2^: Title^3^. Version^4^. Publisher^5^. ResourceType^6^. Identifier^7^
+====Creators^1^ (PublicationYear)^2^: Title^3^. Version^4^. Publisher^5^. ResourceType^6^. Identifier^7^====
 
 7 citation parts explained:
 
