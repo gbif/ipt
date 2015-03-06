@@ -4,8 +4,6 @@
 
 <wiki:toc max_depth="2" />
 
-Add your content here.
-
 == Introduction ==
 
 Add your content here.  Format your content with:
