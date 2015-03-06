@@ -1,0 +1,12 @@
+#summary A description of the IPT's citation format
+
+= IPT Citation Format =
+
+<wiki:toc max_depth="2" />
+
+== Introduction ==
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
