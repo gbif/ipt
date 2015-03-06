@@ -18,37 +18,16 @@ The 3 steps below explain how to 1) create your new core, 2) register it with GB
 
 == Instructions ==
 
-== 1. Write Core XML Definition ==
-
-The core XML definition has to comply with the [http://rs.gbif.org/schema/extension.xsd GBIF Extension Schema]. It is easiest to simply adapt an existing core definition, such as EU BON's [http://rs.gbif.org/sandbox/core/dwc_event.xml Event Core]. 
-
-Please note, the core definition must contain a property that serves as the identifier (e.g. http://rs.tdwg.org/dwc/terms/eventID for the [http://rs.gbif.org/sandbox/core/dwc_event.xml Event Core]). 
-
-The process of creating a new non-core extension is exactly the same as above.  
-
-The process of creating a new vocabulary (as a data type for a property within the core, or non-core extension) is different only in that the XML definition has to comply with the [http://rs.gbif.org/schema/thesaurus.xsd GBIF Thesaurus Schema]. Once again, it is easiest to adapt an existing vocabulary definition, such as EU BON's [http://rs.gbif.org/sandbox/vocabulary/gbif/quantity-type.xml quantity type vocabulary].
-
-== 2. Register Core with GBIF ==
-
-While the core definition is still undergoing changes, it gets registered into the GBIF Sandbox Registry. To register your core, email your formatted and validated XML definition to the GBIF development team (dev@gbif.org). If it passes inspection, it will be uploaded to [http://rs.gbif.org/sandbox/core/ http://rs.gbif.org/sandbox/core/], and included in the [http://gbrdsdev.gbif.org/registry/extensions.json Sandbox Registry's list of extensions].
-
-When the core definition has been finalized, meaning that its set of properties has been frozen, it will be hosted at [http://rs.gbif.org/core/ http://rs.gbif.org/core/] and included in the [http://gbrds.gbif.org/registry/extensions.json Live Registry's list of extensions] 
-
-The same process applies to registering non-core extensions and vocabularies.
-
-== 3. Configure IPT ==
-
-To configure the IPT to use the [http://rs.gbif.org/sandbox/core/dwc_event.xml Event Core], add the following 2 lines to $IPT_DATA_DIR/config/ipt.properties. 
-
+  # Write Core XML Definition
+    The core XML definition has to comply with the [http://rs.gbif.org/schema/extension.xsd GBIF Extension Schema]. It is easiest to simply adapt an existing core definition, such as EU BON's [http://rs.gbif.org/sandbox/core/dwc_event.xml Event Core]. Please note, the core definition must contain a property that serves as the identifier (e.g. http://rs.tdwg.org/dwc/terms/eventID for the [http://rs.gbif.org/sandbox/core/dwc_event.xml Event Core]). The process of creating a new non-core extension is exactly the same as for a core extension. The process of creating a new vocabulary (as a data type for a property within the core, or non-core extension) is different only in that the XML definition has to comply with the [http://rs.gbif.org/schema/thesaurus.xsd GBIF Thesaurus Schema]. Once again, it is easiest to adapt an existing vocabulary definition, such as EU BON's [http://rs.gbif.org/sandbox/vocabulary/gbif/quantity-type.xml quantity type vocabulary].
+  # Register Core with GBIF
+    While the core definition is still undergoing changes, it gets registered into the GBIF Sandbox Registry. To register your core, email your formatted and validated XML definition to the GBIF development team (dev@gbif.org). If it passes inspection, it will be uploaded to [http://rs.gbif.org/sandbox/core/ http://rs.gbif.org/sandbox/core/], and included in the [http://gbrdsdev.gbif.org/registry/extensions.json Sandbox Registry's list of extensions]. When the core definition has been finalized, meaning that its set of properties has been frozen, it will be hosted at [http://rs.gbif.org/core/ http://rs.gbif.org/core/] and included in the [http://gbrds.gbif.org/registry/extensions.json Live Registry's list of extensions] The same process applies to registering non-core extensions and vocabularies.
+  # Configure IPT
+    To configure the IPT to use the [http://rs.gbif.org/sandbox/core/dwc_event.xml Event Core], add the following 2 lines to $IPT_DATA_DIR/config/ipt.properties.
 {{{
 ipt.core_rowTypes=http://rs.tdwg.org/dwc/terms/Event 
 ipt.core_idTerms=http://rs.tdwg.org/dwc/terms/eventID
 }}}
-
-This configures the IPT to recognize all extensions with rowType http://rs.tdwg.org/dwc/terms/Event as core types, and to use http://rs.tdwg.org/dwc/terms/eventID as its identifier term. 
-
-Multiple cores can be specified, delimiting them with the pipe (|) character. The first entry of ipt.core_idTerms is the ID for the first entry of core_rowTypes, and so on.
-
-Lastly, save the ipt.properties file, restart Tomcat, and then [https://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes?tm=6#Install_extension install the core]. The core is now available to use in the IPT.
+    This configures the IPT to recognize all extensions with rowType http://rs.tdwg.org/dwc/terms/Event as core types, and to use http://rs.tdwg.org/dwc/terms/eventID as its identifier term. Multiple cores can be specified, delimiting them with the pipe (|) character. The first entry of ipt.core_idTerms is the ID for the first entry of core_rowTypes, and so on. Lastly, save the ipt.properties file, restart Tomcat, and then [https://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes?tm=6#Install_extension install the core]. The core is now available to use in the IPT.
 
  
