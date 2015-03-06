@@ -1,8 +1,8 @@
 #summary A list of DataCite metadata schema mappings to IPT resource/EML properties
 
-= Introduction =
+= DataCite to EML mapping =
 
-To understand how the IPT produces the DataCite metadata from the IPT resource/EML properties you can refer to the mappings below.
+To understand how the IPT produces the DataCite metadata from the EML and IPT resource properties you can refer to the mappings below.
 
 == Mappings ==
 
@@ -55,4 +55,3 @@ Legend:
 ||descriptionType||R||1||“Abstract” - controlled value (mandatory if Description is used). Additional descriptions can be described for methods, with descriptionType “Methods”||
 ||geoLocationBox||R||0-1||resource bounding box (first pair is SW point, second pair is NE point, e.g. 41.090 -71.032 42.893 -68.211)||
 ||geoLocationPlace||R||0-1||resource geographic description, free text.||
-
