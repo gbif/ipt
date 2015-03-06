@@ -24,6 +24,7 @@
    * IPT Design
      * [IPT2Versioning Dataset Versioning Policy]
      * [IPT2Citation Dataset Citation Format]
+     * [IPT2DataCiteMappings DataCite to EML mappings]
    * [DarwinCore]
    * [DataPreparation Data Preparation]
    * [TutorialOccurrenceResource Occurrence Resource Tutorial]
