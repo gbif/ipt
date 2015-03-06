@@ -1,6 +1,6 @@
 #summary A list of DataCite metadata schema mappings to IPT resource/EML properties
 
-= DataCite to EML mapping =
+= DataCite to EML mappings =
 
 To understand how the IPT produces the DataCite metadata from the EML and IPT resource properties you can refer to the mappings below.
 
