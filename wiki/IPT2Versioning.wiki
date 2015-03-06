@@ -19,9 +19,8 @@ The IPT’s dataset versioning policy is based on [http://schema.datacite.org/ D
   * A new major version leads to the creation of a new DOI, whereas a new minor version does not.
   * A new minor version is assigned to the dataset every time the dataset is published, and it isn’t appropriate to assign it a new major version.
   * For continuously updated datasets (e.g. time series datasets), a new minor version is assigned to the dataset each time it is republished, so long as ongoing additions don’t change pre-existing records in a scientifically significant way. This decision must be made by the publisher. 
-  * A detailed summary of what has changed since the last publication must be entered by the publisher before any new major or minor version of the dataset can be published. 
-  * Every major and minor version of a dataset has its own IPT landing page, making the archived version of the dataset (DwC-A, EML) freely available for download.
-  * Only landing pages of publicly available versions will be freely accessible on the Internet.
+  * A detailed summary of what has changed since the last publication should ideally be entered by the publisher before any new major or minor version of the dataset can be published. 
+  * Every major and minor version of a dataset has its own IPT landing page, making the archived version of the dataset (DwC-A, EML) freely available for download. Of course only landing pages of publicly available versions will be freely accessible on the Internet.
   * All IPT landing pages will comprise a comprehensive metadata record describing the datasets, and provide direct access to the data or information about how to access it.
   * The landing page of the old major version points (has a link) to the new version, with an explanation of the status of the old version. 
   * Deleted datasets have an IPT landing page that explains the dataset was removed. It the deleted dataset was assigned a DOI, all its versions are archived otherwise its permanently deleted.
