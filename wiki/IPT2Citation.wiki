@@ -11,3 +11,12 @@ Since IPT v2.2 data publishers can choose to let the IPT auto-generate a citatio
 The auto-generated citation format includes the dataset version number and DOI. Human readers can use the DOI to link to the dataset homepage, and can use the version number to locate and download the exact version. This enables reproducing scientific results based on usage of the dataset. 
 
 A detailed description of the IPT's citation format is described below. It is important to note that the format is based on DataCite’s preferred citation format, and satisfies the [https://www.force11.org/datacitation Joint Declaration of Data Citation Principles]. For more information about the DataCite format, you can refer to Section 2.2 Citation of their [http://schema.datacite.org/meta/kernel-3/doc/DataCite-MetadataKernel_v3.0.pdf Metadata Schema]. Each part of the citation is described in the table below, with several examples given afterward. 
+
+== Citation Format ==
+
+Creators^1^ (PublicationYear)^2^: Title^3^. Version^4^. Publisher^5^. ResourceType^6^. Identifier^7^
+
+7 citation parts explained:
+
+|| *Part* || *Description* ||
+|| 1.Creators || One or more individuals, groups, or institutions responsible for the creation of the dataset. All contributors to the dataset should be listed - see data citation principle #2. Creators should be aware, however, that the full list can be truncated by the Journal during typesetting (e.g. According to Nature’s guidelines, they will truncate at 6 creators). Creators should be listed last name first, followed by initials of given names. Creators are listed according the the importance of the role they played in the creation of the dataset, with the most important creator appearing first. Multiple creators are separated by commas. ||
