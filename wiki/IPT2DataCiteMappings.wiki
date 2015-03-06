@@ -1,0 +1,23 @@
+#summary A list of DataCite metadata schema mappings to IPT resource/EML properties
+
+= Introduction =
+
+To understand how the IPT produces the DataCite metadata from the IPT resource/EML properties you can refer to the mappings below.
+
+== Mappings ==
+
+Legend:
+  * *DataCite property*: lists the name of the DataCite metadata property 
+  * *Obl.*: Obligation, the property is (M) mandatory, ( R ) recommended, and (O) optional
+  * *Occ*: Occurrence/cardinality, the property is (1-n) required and repeatable, (1) required but not repeatable, (0-n) optional and repeatable, (0-1) optional but not repeatable 
+  * *IPT/EML property*: IPT resource property, or EML property the DataCite property maps to
+
+|| *DataCite property* || *Obl.* || *Occ.* || *IPT/EML property* ||
+||identifier ||M||1||resource DOI ||
+||identifierType||M||1||“DOI” - controlled value||
+||creator||M||1-n||resource creator (plus associate parties with role originator)||
+||creatorName||M||1||resource creator name||
+||nameIdentifier||R||0-1||resource creator ORCID||
+||nameIdentifierScheme||M||1||ORCID (mandatory if nameIdentifier is used)||
+||schemeURI||O||0-1||http://www.orcid.org||
+||contributor||R||0-n||resource contact, metadataProvider, and associatedParties with various roles ||
