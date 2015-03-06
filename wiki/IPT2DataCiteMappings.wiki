@@ -1,6 +1,6 @@
-#summary A list of DataCite metadata schema mappings to IPT resource/EML properties
+#summary A list of DataCite metadata schema mappings to EML and IPT resource properties
 
-= DataCite to EML mappings =
+= Datacite to EML mappings =
 
 <wiki:toc max_depth="2" />
 
