@@ -1,11 +1,10 @@
 #summary A description of how the IPT assigns DOIs to datasets
 
+= IPT DOI Workflow =
+
+<wiki:toc max_depth="2" />
+
 = Introduction =
-
-Add your content here.
-
-
-= Details =
 
 Add your content here.  Format your content with:
   * Text in *bold* or _italic_
