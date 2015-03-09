@@ -18,7 +18,7 @@ The first step in assigning a DOI to a dataset, is reserving a DOI.  A publisher
 
 The DOI will get registered the next time the resource is published, provided the resource is publicly available. This results in a major version change. 
 
-Until the reserved DOI gets registered it can still be delete. A graphical representation of this workflow follows:
+Until the reserved DOI gets registered it can still be deleted. A graphical representation of this workflow is below:
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/AssignNewDOI.png]
 
@@ -30,6 +30,6 @@ To assign an existing DOI to a dataset, publishers must set the DOI as the citat
 
 The DOI will get updated the next time the resource is published, provided the resource is publicly available. This results in a minor version change. 
 
-Since the DOI was already registered it cannot be deleted. A graphical representation of this workflow follows:
+Since the DOI was already registered it cannot be deleted. A graphical representation of this workflow is below:
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/AssignExistingDOI.png]
