@@ -14,7 +14,7 @@ Since IPT v2.2, the IPT can be configured to use a DataCite or EZID account to m
 
 Ideally publishers assign a new DOI to a dataset each time it undergoes a scientifically significant change. This differentiates major versions from each other, and allows them to be uniquely cited. 
 
-The first step in assigning a DOI to a dataset, is reserving a DOI.  A publisher may reserve a DOI for a dataset after the mandatory metadata has been entered. The advantage of having a DOI that is reserved but not registered, is that it can still be included in a manuscript prior to a dataset's official release.
+The first step in assigning a DOI to a dataset, is reserving a DOI.  A publisher may reserve a DOI for a dataset after the mandatory metadata has been entered. The advantage of a reserved DOI is that it can be included in a manuscript prior to a dataset's official release.
 
 The DOI will get registered the next time the resource is published, provided the resource is publicly available. This results in a major version change. 
 
