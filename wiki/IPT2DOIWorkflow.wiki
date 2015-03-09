@@ -4,7 +4,7 @@
 
 <wiki:toc max_depth="2" />
 
-= Introduction =
+== Introduction ==
 
 Add your content here.  Format your content with:
   * Text in *bold* or _italic_
