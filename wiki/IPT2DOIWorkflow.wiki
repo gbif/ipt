@@ -6,14 +6,13 @@
 
 == Introduction ==
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+Since IPT v2.2, the IPT can be configured to use a DataCite or EZID account to manage DOIs for datasets. Publishers have the option of assigning a new DOI to a dataset, or letting the IPT manage an existing DOI for a dataset. 
 
 == Workflow ==
 
 === Assigning a DOI ===
+
+
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/AssignNewDOI.png]
 
