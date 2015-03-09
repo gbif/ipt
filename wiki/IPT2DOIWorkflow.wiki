@@ -26,7 +26,7 @@ Until the reserved DOI gets registered it can still be deleted. A graphical repr
 
 If a dataset has already been assigned a DOI, publishers have the option of letting the IPT manage the existing DOI for them. This facilitates updating the DOI metadata, since the IPT automatically updates the DOI metadata every time the dataset is (re)published.
 
-To assign an existing DOI to a dataset, publishers must set the DOI as the citation identifier (in resource metadata). After the mandatory metadata has been entered, the publisher may reserve a DOI. Since the existing DOI has been entered however, the IPT reuses that instead of minting a new DOI. Of course the IPT's DOI-assigning account must have the rights to manage this DOI, otherwise an error message will appear. 
+To assign an existing DOI to a dataset, publishers must set the DOI as the citation identifier (in resource metadata). After the mandatory metadata has been entered, the publisher may reserve a DOI. Since the existing DOI has been entered, however, the IPT reuses that instead of minting a new DOI. Of course the IPT's DOI-assigning account must have the rights to manage this DOI, otherwise an error message will appear. 
 
 The DOI will get updated the next time the resource is published, provided the resource is publicly available. This results in a minor version change. 
 
