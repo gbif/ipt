@@ -13,4 +13,6 @@ Add your content here.  Format your content with:
 
 == Workflow ==
 
+=== Assigning an Existing DOI ===
+
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/AssignExistingDOI.png]
