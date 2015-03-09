@@ -2,7 +2,7 @@
 
 = IPT DOI Workflow =
 
-<wiki:toc max_depth="2" />
+<wiki:toc max_depth="3" />
 
 == Introduction ==
 
