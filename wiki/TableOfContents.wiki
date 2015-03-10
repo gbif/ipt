@@ -20,7 +20,6 @@
      * [TomcatInstallationMacOSX Install Tomcat on Mac OS X]
      * [TomcatInstallationWindows7 Install Tomcat on Windows 7]
      * [TomcatInstallationCentOS Install Tomcat on CentOS 5]
-     * [PermissionSettings Permission Settings for IPT Data Directory]
    * IPT Design
      * [IPT2Versioning Dataset Versioning Policy]
      * [IPT2Citation Dataset Citation Format]
