@@ -6,7 +6,11 @@
 
 ==Introduction==
 
-This page contains information about how to setup a servlet container on your server and deploy your IPT. It also includes information about how to set up an Apache reverse proxy in front of Tomcat for example.
+Since the IPT ships as a .war file, installing the IPT consists of deploying the .war file in a servlet container such as Tomcat. 
+
+This page explains how to install different types of servlet containers on your server, and how to deploy the IPT in them.
+
+It isn't necessary to use an Apache reverse proxy, but in case you do, this page also explains how to configure an Apache virtual host declaration for the IPT.
 
 ==Servlet Containers== 
 
@@ -52,6 +56,10 @@ The first time the mvn command is run it will download many libraries and may ta
 
 `$ cd gbif-ipt`<br>
 `$ svn up`<br>
+
+===Wildfly8 (JBoss)===
+
+Instructions pending.
 
 ==Apache reverse proxy==
 
