@@ -14,7 +14,7 @@ function extractGoogleVideoDocid(url) {
 }
 
 function extractVimeoId(url) {
-  var pattern = /(?:http:\/\/)?(?:www\.)?vimeo\.com\/(\d+)/i;
+  var pattern = /(?:https:\/\/)?(?:www\.)?vimeo\.com\/(\d+)/i;
   return extractId(pattern, url);
 }
 
