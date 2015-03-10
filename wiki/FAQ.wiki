@@ -32,6 +32,26 @@ These libraries are not needed for the GBIF IPT operation so make a backup copy 
 
 _If your server admin won't allow these libraries to be removed_, another known solution reported in Issue 851 is to include the xalan.jar in the IPT's /lib directory located at $tomcat/webapps/ipt/WEB-INF. Just copy the jar file to that folder, restart Tomcat, and the error should disappear.
 
+=== 4. I get the following error: "The data directory '/directory' is not writable. What should I do? ===
+
+Assuming you are running Tomcat for example, you need to ensure the user running Tomcat has permissions on the directory. To find out the user running Tomcat in UNIX, open a shell and enter the following command:
+
+{{{
+$ ps waux | grep tomcat
+}}}
+
+If the user is "tomcatuser", and this user belongs to group "tomcatgroup" then change the ownership of the IPT data directory (and it's child folders and files) by entering the following command:
+
+{{{
+chown -R tomcatuser:tomcatgroup directory/
+}}}
+
+To ensure only this user has write permission, enter the following command:
+
+{{{
+chmod -R 755 directory/
+}}}
+
 == Usage ==
 
 === 1. Why do published files contain broken lines? ===
