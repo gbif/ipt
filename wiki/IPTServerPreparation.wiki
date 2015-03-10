@@ -69,7 +69,7 @@ Instructions pending.
 
 If you wish to use Apache to proxy requests for example to Tomcat (because, for instance, your firewall blocks port 8080 and Apache is already running on port 80), you need to ensure that the cookies that Tomcat sets are handled correctly.  
 
-http://ipt.gbif-uat.org/ for example has been setup on http://apps.gbif-uat.org:8080/ipt/ with requests going through an Apache reverse proxy and no Tomcat Host used. Here are the mod_proxy directives used:
+The virtual host http://ipt.gbif-uat.org/ has requests going through an Apache reverse proxy deployed in Tomcat on http://apps.gbif-uat.org:8080/ipt/ with no Tomcat Host defined. Here are the mod_proxy directives used:
 
 {{{
 <VirtualHost *:80>
