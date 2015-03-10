@@ -30,7 +30,7 @@ http://localhost:8080/ipt
 
 If the installation doesn't start please check the catalina.out logfile, and refer to the [FAQ] for help.
 
-The following screencast also explains how to install the IPT using Tomcat:
+The following screencast also explains how to install the IPT using Tomcat, assuming Tomcat has already been installed.
 
 <wiki:gadget url="https://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/vimeoSupport/gcVideo.xml" up_video="https://vimeo.com/116142276" width="640" height="384"/>
 
