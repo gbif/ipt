@@ -14,7 +14,7 @@ It isn't necessary to use an Apache reverse proxy, but in case you do, this page
 
 ==Servlet Containers== 
 
-The most common servlet containers used to deploy the IPT are Tomcat and Jetty. Information about how to deploy the IPT to both of these servlet contains follows.
+The most common servlet containers used to deploy the IPT are Tomcat, Jetty, and Wildfly8 (JBoss). Information about how to deploy the IPT in these servlets follows.
 
 ===Tomcat===
 
