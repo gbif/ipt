@@ -67,12 +67,14 @@ Instructions pending.
 
 ==Apache reverse proxy==
 
-If you wish to use Apache to proxy requests for example to Tomcat (because, for instance, your firewall blocks port 8080 and Apache is already running on port 80), you need to ensure that the cookies that Tomcat sets are handled correctly.  If you've followed the directions above for setting up Tomcat you would need the following lines as part of your Virtual Host declaration in Apache:
+If you wish to use Apache to proxy requests for example to Tomcat (because, for instance, your firewall blocks port 8080 and Apache is already running on port 80), you need to ensure that the cookies that Tomcat sets are handled correctly.  If the IPT is available for example from http://localhost:8080/ipt you should define your Virtual Host declaration in Apache:
 
-	`ProxyPreserveHost On`<br/>
-	`ProxyPass / http://localhost:8080/ipt/`<br/>
-	`ProxyPassReverse / http://localhost:8080/ipt/`<br/>
-	`ProxyPassReverseCookiePath /ipt /`<br/>
+{{{
+	ProxyPreserveHost On
+	ProxyPass / http://localhost:8080/ipt/
+	ProxyPassReverse / http://localhost:8080/ipt/
+	ProxyPassReverseCookiePath /ipt /
+}}}
 
 And, make sure that the proxy and proxy_http modules have been loaded into Apache.
  
