@@ -1,12 +1,18 @@
-#IPT server preparation considerations for various environments
+#summary IPT server preparation considerations for various environments
 
-This section contains information about IPT installations that may vary between operating systems or servlet containers.  
+=How To Prepare Your IPT Server = 
 
-=How to Prepare Your IPT Server = 
+<wiki:toc max_depth="3" />
 
-<wiki:toc max_depth="2" />
+==Introduction==
 
-==Tomcat==
+This page contains information about how to setup a servlet container on your server and deploy your IPT. It also includes information about how to set up an Apache reverse proxy in front of Tomcat for example.
+
+==Servlet Containers== 
+
+The most common servlet containers used to deploy the IPT are Tomcat and Jetty. Information about how to deploy the IPT to both of these servlet contains follows.
+
+===Tomcat===
 
 The IPT has been tested and works well with Tomcat 5.5, Tomcat 6.0 and Tomcat 7.0. The Apache Tomcat documentation can be found on http://tomcat.apache.org/. Also, minimal instructions for Tomcat installations on various operating systems can be found in associated Server Preparation pages: 
 
@@ -20,7 +26,7 @@ http://localhost:8080/ipt
 
 If the installation doesn't start please check the catalina.out logfile, and refer to the [FAQ] for help.
 
-==Jetty==
+===Jetty===
 
 The IPT comes equipped with a Jetty web server and servlet container. The IPT can be launched using Jetty if you have Java 6 (minimum), Maven, and Subversion installed (Mac OSX comes with all of these installed by default). 
 
