@@ -32,7 +32,7 @@ If the installation doesn't start please check the catalina.out logfile, and ref
 
 The following screencast will help guide you how to install the IPT using Tomcat:
 
-<wiki:gadget url="https://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/vimeoSupport/gcVideo.xml" up_video="https://vimeo.com/116142276" width="640" height="384"/>
+<wiki:video url="https://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/vimeoSupport/gcVideo.xml" up_video="https://vimeo.com/116142276" width="640" height="384"/>
 
 ===Jetty===
 
