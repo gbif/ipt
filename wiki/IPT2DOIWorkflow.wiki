@@ -1,6 +1,6 @@
 #summary A description of how the IPT assigns DOIs to datasets
 
-= IPT DOI Workflow =
+= IPT DOI Workflows =
 
 <wiki:toc max_depth="3" />
 
