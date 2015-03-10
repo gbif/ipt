@@ -30,6 +30,10 @@ http://localhost:8080/ipt
 
 If the installation doesn't start please check the catalina.out logfile, and refer to the [FAQ] for help.
 
+The following screencast will help guide you how to install the IPT using Tomcat:
+
+<wiki:gadget url="https://vimeo.com/116142276" height="200" border="0" /> 
+
 ===Jetty===
 
 The IPT comes equipped with a Jetty web server and servlet container. The IPT can be launched using Jetty if you have Java 6 (minimum), Maven, and Subversion installed (Mac OSX comes with all of these installed by default). 
