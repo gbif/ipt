@@ -9,11 +9,14 @@ import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.metadata.eml.Agent;
+import org.gbif.metadata.eml.Citation;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.MaintenanceUpdateFrequency;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -151,6 +154,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    * Find and return a VersionHistory with specific version.
    *
    * @param version version of VersionHistory searched for
+   *
    * @return VersionHistory with specific version or null if not found
    */
   public VersionHistory findVersionHistory(BigDecimal version) {
@@ -293,7 +297,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    * @return the row type of the first core extension mapping, which always determines the core row type
    */
   public String getCoreRowType() {
-    for (ExtensionMapping m: mappings) {
+    for (ExtensionMapping m : mappings) {
       if (m.isCore()) {
         return m.getExtension().getRowType();
       }
@@ -311,13 +315,13 @@ public class Resource implements Serializable, Comparable<Resource> {
   public String getCoreType() {
     String coreRowType = getCoreRowType();
     if (getCoreRowType() != null) {
-        if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON)) {
-          coreType = StringUtils.capitalize(CoreRowType.CHECKLIST.toString());
-        } else if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_OCCURRENCE)) {
-          coreType = StringUtils.capitalize(CoreRowType.OCCURRENCE.toString());
-        } else {
-          coreType = StringUtils.capitalize(CoreRowType.OTHER.toString());
-        }
+      if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON)) {
+        coreType = StringUtils.capitalize(CoreRowType.CHECKLIST.toString());
+      } else if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_OCCURRENCE)) {
+        coreType = StringUtils.capitalize(CoreRowType.OCCURRENCE.toString());
+      } else {
+        coreType = StringUtils.capitalize(CoreRowType.OTHER.toString());
+      }
     }
     return coreType;
   }
@@ -608,7 +612,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    * @return the PublicationMode of the resource, or PublicationMode.AUTO_PUBLISH_OFF if not set yet
    */
   public PublicationMode getPublicationMode() {
-    return (publicationMode == null) ? PublicationMode.AUTO_PUBLISH_OFF: publicationMode;
+    return (publicationMode == null) ? PublicationMode.AUTO_PUBLISH_OFF : publicationMode;
   }
 
   public String getSubtype() {
@@ -943,15 +947,26 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   /**
-   * Construct the resource citation from various parts, using the NEXT resource version.
+   * Construct the resource citation from various parts for the version specified.
+   * </br>
+   * This method is called from the Citation metadata page, in order to preview the resource citation for the upcoming
+   * version for example.
    * </br>
    * The citation format is:
-   * Creators (PublicationYear): Title. Version [major.minor]. Publisher. ResourceType. Identifier
+   * Creators (PublicationYear): Title. Version. Publisher. ResourceType. Identifier
    *
-   * @return generated resource citation string
+   * @param version  resource version to use in citation
+   * @param homepage homepage URI
+   *
+   * @return generated resource citation string, or null if it failed to be generated
    */
-  public String generateResourceCitation() {
-    return generateResourceCitation(getNextVersion());
+  public String generateResourceCitation(@NotNull String version, @NotNull String homepage) {
+    try {
+      return generateResourceCitation(new BigDecimal(version), new URI(homepage));
+    } catch (URISyntaxException e) {
+      log.error("Failed to generate URI for homepage string: " + homepage, e);
+    }
+    return null;
   }
 
   /**
@@ -960,9 +975,12 @@ public class Resource implements Serializable, Comparable<Resource> {
    * The citation format is:
    * Creators (PublicationYear): Title. Version. Publisher. ResourceType. Identifier
    *
+   * @param version  resource version to use in citation
+   * @param homepage homepage URI
+   *
    * @return generated resource citation string
    */
-  public String generateResourceCitation(BigDecimal version) {
+  public String generateResourceCitation(@NotNull BigDecimal version, @NotNull URI homepage) {
     StringBuilder sb = new StringBuilder();
 
     // make list of verified authors (having first and last name)
@@ -1017,8 +1035,12 @@ public class Resource implements Serializable, Comparable<Resource> {
       sb.append(getDoi().getUrl());
     }
     // otherwise add the citation identifier instead
-    else if (getEml().getCitation() != null && getEml().getCitation().getIdentifier() != null) {
+    else if (getEml().getCitation() != null && !Strings.isNullOrEmpty(getEml().getCitation().getIdentifier())) {
       sb.append(getEml().getCitation().getIdentifier());
+    }
+    // otherwise use its IPT homepage as the identifier
+    else {
+      sb.append(homepage.toString());
     }
     return sb.toString();
   }
@@ -1130,8 +1152,8 @@ public class Resource implements Serializable, Comparable<Resource> {
     if (doi != null) {
       // retrieve a list of the resource's alternate identifiers
       List<String> ids = eml.getAlternateIdentifiers();
-      if (identifierStatus.equals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION) ||
-        identifierStatus.equals(IdentifierStatus.PUBLIC)) {
+      if (identifierStatus.equals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION) || identifierStatus
+        .equals(IdentifierStatus.PUBLIC)) {
         // make sure the DOI always appears first
         List<String> reorderedList = Lists.newArrayList();
         reorderedList.add(doi.toString());
@@ -1147,8 +1169,8 @@ public class Resource implements Serializable, Comparable<Resource> {
         }
         ids.addAll(reorderedList);
         log.debug("DOI=" + doi.toString() + " added to resource's list of alt ids as first element");
-      } else if (identifierStatus.equals(IdentifierStatus.UNAVAILABLE) ||
-                 identifierStatus.equals(IdentifierStatus.UNRESERVED)) {
+      } else if (identifierStatus.equals(IdentifierStatus.UNAVAILABLE) || identifierStatus
+        .equals(IdentifierStatus.UNRESERVED)) {
         for (Iterator<String> iterator = ids.iterator(); iterator.hasNext(); ) {
           String id = iterator.next();
           // make sure a DOI that has been made unavailable, or that has been deleted, no longer appears in the list
@@ -1157,6 +1179,48 @@ public class Resource implements Serializable, Comparable<Resource> {
             log.debug("DOI=" + doi.toString() + " removed from resource's list of alt ids");
           }
         }
+      }
+    }
+  }
+
+  /**
+   * Updates the resource's citation identifier for the resource's DOI, adding it or removing it depending on
+   * the status of the DOI:
+   * </br>
+   * If the status of the DOI is reserved or public, the resource DOI will be set as the resource citation identifier.
+   * </br>
+   * If the status of the DOI is unavailable or unreserved, the resource DOI will be unset as the citation identifier.
+   */
+  public synchronized void updateCitationIdentifierForDOI() {
+    Preconditions.checkNotNull(eml);
+
+    if (doi != null) {
+      // retrieve resource's citation identifier
+      Citation citation = eml.getCitation();
+      if (identifierStatus.equals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION) || identifierStatus
+        .equals(IdentifierStatus.PUBLIC)) {
+        // make sure the DOI set as resource citation identifier
+        if (citation == null) {
+          // resource must have citation if it has a DOI
+          setCitationAutoGenerated(true);
+          eml.setCitation(new Citation("Will be replaced by auto-generated citation", doi.getUrl().toString()));
+        } else {
+          citation.setIdentifier(doi.getUrl().toString());
+        }
+        log.debug("DOI=" + doi.getUrl().toString() + " set as resource's citation identifier");
+      } else if (identifierStatus.equals(IdentifierStatus.UNAVAILABLE) || identifierStatus
+        .equals(IdentifierStatus.UNRESERVED)) {
+        // make sure the DOI no longer set as resource citation identifier
+        if (citation == null) {
+          // resource must have had a citation if it had a DOI
+          setCitationAutoGenerated(true);
+          Citation generated = new Citation();
+          generated.setCitation("Will be replaced by auto-generated citation");
+          eml.setCitation(generated);
+        } else {
+          citation.setIdentifier(null);
+        }
+        log.debug("DOI=" + doi.getUrl().toString() + " unset as resource's citation identifier");
       }
     }
   }

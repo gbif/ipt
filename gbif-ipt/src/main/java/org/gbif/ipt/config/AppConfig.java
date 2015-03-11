@@ -281,6 +281,18 @@ public class AppConfig {
       .queryParam(Constants.REQ_PARAM_VERSION, version.toPlainString()).build();
   }
 
+  /**
+   * Called from citations metadata page.
+   *
+   * @return URI to resource homepage for a specific version of resource used in DOI registration
+   */
+  @NotNull
+  public String getResourceVersionUri(@NotNull String shortname, @NotNull String version) {
+    Preconditions.checkNotNull(getBaseUrl());
+
+    return getResourceVersionUri(shortname, new BigDecimal(version)).toString();
+  }
+
   public String getVersion() {
     return properties.getProperty("dev.version");
   }
