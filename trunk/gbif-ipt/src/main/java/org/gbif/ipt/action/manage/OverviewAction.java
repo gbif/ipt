@@ -256,6 +256,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
           resource.setStatus(PublicationStatus.DELETED);
           resource.updateAlternateIdentifierForDOI();
+          resource.updateCitationIdentifierForDOI(); // unset DOI as citation identifier
           saveResource();
           addActionMessage(getText("manage.overview.resource.deleted", new String[] {resource.toString()}));
         } else {
@@ -378,6 +379,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           // perform undelete
           doUndeleteDOI(doi, reconstructed, target);
           resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
+          resource.updateCitationIdentifierForDOI();
 
           // undelete previously assigned DOIs also, which were all deleted/deactivated
           Set<String> undeleted = Sets.newHashSet(doi.toString());
@@ -746,6 +748,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
               resource.setDoiOrganisationKey(registrationManager.findPrimaryDoiAgencyAccount().getKey());
               resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
               resource.updateAlternateIdentifierForDOI();
+              resource.updateCitationIdentifierForDOI(); // set DOI as citation identifier
               saveResource();
               String msg = getText("manage.overview.publishing.doi.reserve.reused", new String[] {existingDoi.toString()});
               LOG.info(msg);
@@ -791,6 +794,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     resource.setDoiOrganisationKey(registrationManager.findPrimaryDoiAgencyAccount().getKey());
     resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
     resource.updateAlternateIdentifierForDOI();
+    resource.updateCitationIdentifierForDOI(); // set DOI as citation identifier
     saveResource();
   }
 
@@ -811,6 +815,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     // reset resource DOI
     resource.setIdentifierStatus(IdentifierStatus.UNRESERVED);
     resource.updateAlternateIdentifierForDOI(); // remove DOI from list of alternate ids
+    resource.updateCitationIdentifierForDOI(); // unset DOI as citation identifier
     resource.setDoi(null);
     resource.setDoiOrganisationKey(null);
 
@@ -819,6 +824,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
       resource.setDoi(reassignedDoi);
       resource.updateAlternateIdentifierForDOI(); // add DOI to list of alternate ids
+      resource.updateCitationIdentifierForDOI(); // set DOI as citation identifier
       resource.setDoiOrganisationKey(registrationManager.findPrimaryDoiAgencyAccount().getKey());
     }
 

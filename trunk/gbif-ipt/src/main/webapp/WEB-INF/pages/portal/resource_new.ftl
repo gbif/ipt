@@ -122,9 +122,12 @@
         <li>
             <a class="sidebar-anchor" href="${anchor_versions}"><@s.text name='portal.resource.versions'/></a>
         </li>
-        <li>
+        <!-- Citation section -->
+        <#if eml.citation?? && (eml.citation.citation?has_content || eml.citation.identifier?has_content)>
+          <li>
             <a class="sidebar-anchor" href="${anchor_citation}"><@s.text name='portal.resource.cite.howTo'/></a>
-        </li>
+          </li>
+        </#if>
         <li>
           <a class="sidebar-anchor" href="${anchor_rights}"><@s.text name='eml.intellectualRights.simple'/></a>
         </li>
@@ -264,7 +267,7 @@
                           <#if eml.distributionUrl?has_content || resource.lastPublished??>
                               <ul class="horizontal-list">
                                 <#if eml.distributionUrl?has_content>
-                                    <li class="box"><a href="${eml.distributionUrl}" class="icon icon-homepage"><@s.text name='eml.distributionUrl.short'/></a></li>
+                                  <li class="box"><a href="${eml.distributionUrl}" class="icon icon-homepage"><@s.text name='eml.distributionUrl.short'/></a></li>
                                 </#if>
                                 <#if resource.status=="REGISTERED" && resource.key??>
                                   <li class="box"><a href="${cfg.portalUrl}/dataset/${resource.key}" class="icon icon-gbif"><@s.text name='portal.resource.gbif.page.short'/></a></li>
@@ -276,10 +279,12 @@
                                   <li class="box"><a href="${download_eml_url}" class="icon icon-download"><@s.text name='portal.resource.published.eml'/></a></li>
                                   <li class="box"><a href="${download_rtf_url}" class="icon icon-download"><@s.text name='portal.resource.published.rtf'/></a></li>
                                   <#if resource.versionHistory??>
-                                      <li class="box"><a href="${anchor_versions}" class="icon icon-clock"><@s.text name='portal.resource.versions'/></a></li>
+                                    <li class="box"><a href="${anchor_versions}" class="icon icon-clock"><@s.text name='portal.resource.versions'/></a></li>
                                   </#if>
                                   <li class="box"><a href="${anchor_rights}" class="icon icon-key"><@s.text name='eml.intellectualRights.simple'/></a></li>
-                                  <li class="box"><a href="${anchor_citation}" class="icon icon-book"><@s.text name='portal.resource.cite'/></a></li>
+                                  <#if eml.citation?? && (eml.citation.citation?has_content || eml.citation.identifier?has_content)>
+                                    <li class="box"><a href="${anchor_citation}" class="icon icon-book"><@s.text name='portal.resource.cite'/></a></li>
+                                  </#if>
                                 </#if>
                               </ul>
                           </#if>
