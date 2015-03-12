@@ -73,6 +73,7 @@ This section explains how to setup a virtual host name for your IPT (e.g. ipt.gb
 
 On RedHat and compatibles (e.g. Centos or Fedora) please make sure you have installed the "httpd" package (if not, "yum install httpd") then, in /etc/httpd/conf.d/ create a config file with a descriptive name (e.g. MyVhost.example.com.conf) in which you add
 
+{{{
 <VirtualHost *:80>
     DocumentRoot   /var/www/html/MyVhost   
     ServerName  ipt.example.com
@@ -80,9 +81,11 @@ On RedHat and compatibles (e.g. Centos or Fedora) please make sure you have inst
     ErrorLog    logs/ipt.example.com-error_log
     CustomLog   logs/ipt.example.com-acces_log common
 </VirtualHost>
+}}}
 
 You can combine the virtual host definition and the proxying feature presented below in one virtual host definition
 
+{{{
 <VirtualHost *:80>
     DocumentRoot   /var/www/html/MyVhost   
     ServerName  ipt.example.com
@@ -94,6 +97,7 @@ You can combine the virtual host definition and the proxying feature presented b
     ProxyPassReverse        /       http://apps.gbif-uat.org:8080/ipt/
     ProxyPassReverseCookiePath  /ipt /
 </VirtualHost>
+}}}
 
 After you have created the files, make sure to (re)start the Apache server. 
 
