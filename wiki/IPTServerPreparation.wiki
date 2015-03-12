@@ -71,17 +71,41 @@ This section explains how to setup a virtual host name for your IPT (e.g. ipt.gb
 
 ===Define Virtual Host Name===
 
-Instructions on how to define a virtual host name for an IPT in Red Hat pending.
+On RedHat and compatibles (e.g. Centos or Fedora) please make sure you have installed the "httpd" package (if not, "yum install httpd") then, in /etc/httpd/conf.d/ create a config file with a descriptive name (e.g. MyVhost.example.com.conf) in which you add
+
+<VirtualHost *:80>
+    DocumentRoot   /var/www/html/MyVhost   
+    ServerName  ipt.example.com
+    ServerAdmin webmaster@example.com
+    ErrorLog    logs/ipt.example.com-error_log
+    CustomLog   logs/ipt.example.com-acces_log common
+</VirtualHost>
+
+You can combine the virtual host definition and the proxying feature presented below in one virtual host definition
+
+<VirtualHost *:80>
+    DocumentRoot   /var/www/html/MyVhost   
+    ServerName  ipt.example.com
+    ServerAdmin webmaster@example.com
+    ErrorLog    logs/ipt.example.com-error_log
+    CustomLog   logs/ipt.example.com-acces_log common
+    ProxyPreserveHost       On
+    ProxyPass               /       http://apps.gbif-uat.org:8080/ipt/
+    ProxyPassReverse        /       http://apps.gbif-uat.org:8080/ipt/
+    ProxyPassReverseCookiePath  /ipt /
+</VirtualHost>
+
+After you have created the files, make sure to (re)start the Apache server. 
 
 ===Configure Apache Reverse Proxy==
 
 If you wish to use Apache to proxy requests for example to Tomcat (because, for instance, your firewall blocks port 8080 and Apache is already running on port 80), you need to ensure that the cookies that Tomcat sets are handled correctly.  
 
-The virtual host http://ipt.gbif-uat.org/ has requests going through an Apache reverse proxy to an IPT deployed in Tomcat available at http://apps.gbif-uat.org:8080/ipt/ with no Tomcat Host defined. Here are the mod_proxy directives used:
+Imagine the virtual host ipt.example.com has requests going through an Apache reverse proxy to an IPT deployed in Tomcat available at http://apps.gbif-uat.org:8080/ipt/ (with no Tomcat Host defined). Here are the mod_proxy directives used:
 
 {{{
 <VirtualHost *:80>
-    ServerName  ipt.gbif-uat.org
+    ServerName  ipt.example.com
     ProxyPreserveHost       On
     ProxyPass               /       http://apps.gbif-uat.org:8080/ipt/
     ProxyPassReverse        /       http://apps.gbif-uat.org:8080/ipt/
