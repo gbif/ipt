@@ -1,4 +1,4 @@
-#X-Generator: crowdin.com
+﻿#X-Generator: crowdin.com
 # UTF-8 English übersetzen
 ##
 # Introduction (to IPT translation):
@@ -48,7 +48,7 @@ basic.showMore=以上
 basic.showLess=以下
 basic.show=表示
 basic.hide=非表示
-basic.none=None
+basic.none=[なし]
 
 # buttons
 button.add=追加
@@ -87,7 +87,7 @@ button.install=インストール
 ####
 # footer
 footer.version=バージョン
-footer.projectHome=About the IPT
+footer.projectHome=IPT について
 footer.useManual=ユーザーマニュアル
 footer.bugReport=バグレポート
 footer.featureRequest=新項目のリクエスト
@@ -202,7 +202,7 @@ sqlSource.sqlLimited=データプレビュー用のSQL文を作成しました�
 fileSource.fieldsTerminatedByEscaped=フィールド/項目の区切り文字
 fileSource.fieldsTerminatedByEscaped.help=一行のフィールド/カラムを区切る１文字
 fileSource.fieldsEnclosedByEscaped=フィールドクオーテーション
-fileSource.fieldsEnclosedByEscaped.help=A single character that encloses every field/column in a row. Most often empty, but CSV files use a ". With this option, make sure that *all* of your fields are contained in quotes, not just those that are text. Please note that in the IPT newline characters (\n) or carriage returns (\r) cannot be enclosed by quotes and should be removed.
+fileSource.fieldsEnclosedByEscaped.help=行内のすべてのフィールド/列を仕切る単一の文字。多くの場合空白ですが、CSV ファイルでは”を使用します。このオプションを使うと、フィールドのすべてがテキストだけではなく引用符が含まれることに気をつけてください。IPT では、改行文字 () 、またはキャリッジ リターン () を引用符で囲むことはできず、削除する必要がありますので注意してください。
 fileSource.ignoreHeaderLines=ヘッダー行数
 fileSource.ignoreHeaderLines.help=データの取り込みの際、対象としないヘッダーの行数
 excelSource.sheets=選択したワークシート
@@ -225,7 +225,7 @@ validation.short={0} with at least {1} letters is required.
 validation.contains=The text may not contain the "{0}" symbol.
 validation.field.required=フィールド/項目
 validation.field.blank={0}は少なくとも２文字以上必要です。空白は許されません。
-validation.field.invalidSize={0} must have a length between {1} and {2} characters, check there are no blank spaces.
+validation.field.invalidSize={0} は {1} から {2} までの文字数とし、空白スペースがないことを確認してください。
 validation.wrong.datatype={0}は不正なデータタイプの値にマップされています。
 validation.column.multipleTranslations=ソースカラム{0}には複数の翻訳が存在しています。混乱を防ぐために１つに限定してください。
 
@@ -234,7 +234,7 @@ validation.email.required=メール必須
 validation.email.invalid=メール無効
 validation.firstname.required=名前必須
 validation.lastname.required=名字/姓は必須です。
-validation.password.reentered=Please reenter a valid password
+validation.password.reentered=有効なパスワードを再入力してください。
 validation.password.required=最低４文字のパスワード必須
 validation.password2.wrong=パスワードが一致しません
 validation.baseURL.required=IPT　URL　必須
@@ -249,12 +249,12 @@ validation.organisation.doiRegistrationAgency.required=DOIの登録機関が必�
 validation.organisation.agencyAccountUsername.required=登録機関アカウントのユーザー名が必要です。
 validation.organisation.agencyAccountPassword.required=登録機関アカウント パスワードが必要です。
 validation.organisation.doiPrefix.required=DOIのプレフィックスが必要です。
-validation.organisation.doiPrefix.invalid=DOI prefix must start with "10."
-validation.organisation.doiPrefix.ezid.invalid=EZID prefix must contain shoulder, e.g. "/FOO" in "10.1234/FOO"
-validation.organisation.doiPrefix.invalid.testMode=In test mode, typically the test DOI prefix is used\: 10.5072 for DataCite or 10.5072/FK2 for EZID
-validation.organisation.doiPrefix.invalid.productionMode=In production mode, the test DOI prefix cannot be used\: 10.5072 for DataCite or 10.5072/FK2 for EZID
+validation.organisation.doiPrefix.invalid=DOIプレフィックスは「10.」で始まらなければなりません
+validation.organisation.doiPrefix.ezid.invalid=EZID 接頭辞は例えば、"/FOO""10.1234/FOO"のようなshoulderを含める必要があります。
+validation.organisation.doiPrefix.invalid.testMode=テスト モードでは通常テストDOIプレフィックスが使用されます\: DataCiteでは10.5072, EZID ならば10.5072/FK2 10.5072のようになります。
+validation.organisation.doiPrefix.invalid.productionMode=プロダクション モードでテストはDOIプレフィックスは使用できません\: DataCite の10.5072または EZID の 10.5072/FK2 10.5072などです。
 validation.organisation.agencyAccount.invalid=アカウントユーザー名パスワードの組み合わせが無効です
-validation.organisation.agencyAccount.cantAuthenticate=Authentication failed\! Please verify the DOI agency account is entered correctly and try again.
+validation.organisation.agencyAccount.cantAuthenticate=認証に失敗しました 。DOI代理店アカウントが正しく入力されていることを確認してもう一度やり直してください。
 
 # ipt
 validation.ipt.name.required=IPTタイトルが必要です。
@@ -300,8 +300,8 @@ error.details.title=技術上の詳細
 # GLOBAL SECTION
 ####
 login.title=ユーザーログイン
-login.intro=Please log into your IPT account with your email address.<br />If you don''t have an account yet, please ask the <a href\="mailto\:{0}">IPT administrator</a> to create one for you.
-login.forgottenpassword=Forgot your password? Please contact the <a href\="mailto\:{0}">IPT administrator</a> to reset it for you.
+login.intro=メールアドレスであなたの IPT アカウントにログインしてください < br/> アカウントをまだ持っていない場合には、<a href\="mailto\:{0}"> IPT 管理者</a> にアカウント作成を依頼してください。
+login.forgottenpassword=パスワードをお忘れですか？パスワードをリセットするためには <a href\="mailto\:{0}"> IPT の管理者</a> に問い合わせてください。
 account.title=あなたのIPTアカウント
 account.intro=あなたのIPTアカウント設定をここで変更することができます。リソースを管理することができるのは管理責任者(administratoｒ）です。
 account.email.cantChange=なんらかの理由でemailアドレスを変更しなくてはいけない時には、管理責任者(Administrator)に新規アカウントの作成と既存のアカウントの削除を依頼してください。Emailアドレスは一度作成した後、変更することはできません。
@@ -348,8 +348,8 @@ portal.resource.version=バージョン
 portal.resource.version.latest=最新情報を見る
 portal.resource.latest=最新
 portal.resource.versions=バージョン
-portal.resource.versions.verbose=The table below shows only published versions of the resource that are publicly accessible.
-portal.resource.versions.verbose.manager=The table below shows all published versions of the resource, because you have access rights.
+portal.resource.versions.verbose=次の表は、公にアクセス可能な公開バージョンのリソースのみ表示しています。
+portal.resource.versions.verbose.manager=次の表はすべてアクセス権のある発行済みバージョンのリソースを示しています。
 portal.resource.downloads=ダウンロード
 portal.resource.downloads.verbose=DwC-A形式のリソース データまたは EML / RTF 形式のリソース メタデータの最新バージョンをダウンロード：
 portal.resource.downloads.metadataOnly.verbose=メタデータのみリソース のメタデータの最新版をEML または RTF としてダウンロード：
@@ -389,8 +389,8 @@ portal.publication.log=公開ログ
 portal.resource.eml.error.load=リソース{1}のEMFファイルバージョン\#{0}はロードに失敗しました。
 portal.resource.eml.error.parse=リソース{1}のEMFファイルバージョン\#{0}はパースできませんでした。
 portal.resource.otherFormats=リソース データは他の形式で入手可能です。
-portal.resource.warning.notPublic=The version you are looking at is {0} and cannot be seen by everyone\!
-portal.resource.warning.notLatest=The version you are looking at is not the latest version\! Please refer to the versions table to find the latest.
+portal.resource.warning.notPublic=あなたが見ているバージョン は{0} ですから誰も見ることができません！
+portal.resource.warning.notLatest=あなたが見ているバージョンは最新ではありません！バージョン テーブルを参照して最新版を探してください。
 
 ####
 # ADMIN SECTION
@@ -409,11 +409,11 @@ admin.config.setup.title=IPTの設定
 admin.config.setup.welcome=IPTを使うためには設定ファイルがあるデイレクトリ（IPTデータデイレクトリ）を選ぶ必要があります。
 admin.config.setup.instructions=書き込み可能な空のフォルダ、あるいは既存のIPTデイレクトリを選んでください。システムの再起動の際に削除される/tmpのような他のプロセスに影響を与えるフォルダは決して選ばないようにしてください。このフォルダは障害時の復旧に備えて定期的にバックアップをとるべきです。
 admin.config.setup.examples=たとえば、Windowd環境なら"C\:\\datadir", Linux, Mac OS XのようなUnix系の環境なら"/usr/datadir"がよいでしょう。
-admin.config.setup.disclaimerPart1=Starting with this version, publishers are required to assign one of three machine-readable rights declarations to their data. If you cannot agree to publish your data under a CC0 1.0, CC-BY 4.0 or CC-BY-NC 4.0 declaration, we recommend that you continue to use the previous version of the IPT for now.
-admin.config.setup.disclaimerPart2=GBIF will begin working with existing publishers to implement and enforce this requirement across the network during 2015. If you are unable to choose one of the three options, you will not be able to register your dataset with GBIF or make it globally discoverable through GBIF.org. For background on this decision, <a href\="http\://www.gbif.org/terms/licences" target\="_blank">click here</a>.
-admin.config.setup.read=I have read and understood the disclaimer
-admin.config.setup.read.error=Before continuing please be sure you have read and understood the disclaimer
-admin.config.setup.disclaimer.title=Disclaimer
+admin.config.setup.disclaimerPart1=このバージョンから、パブリッシャーは、自分のデータを 3 つの機械可読な権利宣言のうちの１つを割り当てる必要があります。CC0 1.0、CC BY 4.0 または CC による NC 4.0 宣言下でデータを公開することに同意できない場合は、今のところ、旧バージョンのIPTを使い続けることをお勧めします。
+admin.config.setup.disclaimerPart2=GBIF は既存のパブリーシャーと共に、以下の要件を適用することを2015年のうちに開始します。もしも3 つのオプションのいずれも選択できない場合は、GBIF へのデータセットの登録または GBIF.org を通じて世界に公開することはできません。この決定の背景について知りたいときは<a href\="http\://www.gbif.org/terms/licences"target\="_blank"> ここをクリック</a>してください。
+admin.config.setup.read=私は免責事項を読み、理解しています。
+admin.config.setup.read.error=続行する前に免責事項を必ず読んで、理解してください。
+admin.config.setup.disclaimer.title=免責事項
 admin.config.setup.datadir=データデイレクトリの絶対パス
 admin.config.setup.datadir.created=新規データデイレクトリの作成に成功しました。
 admin.config.setup.datadir.reused=既存のデータデイレクトリの指定に成功しました。
@@ -427,7 +427,7 @@ admin.config.setup2.administrator=Defaultの管理責任者(Administrator)
 admin.config.setup2.administrator.help=defaultの管理責任者(Administrator)アカウントのパスワードは後から変更ができますが、メールアドレスはユーザーを削除するか再登録しない限り変更できません。
 admin.config.setup2.mode.title=IPTモード
 admin.config.setup2.mode.help=IPTを実行するモードを選択してください。IPTモードは、ホストのリソースが公開検索用のインデックス作成の対象にするかどうかを決めるものです。GBIFは最初は登録プロセスを理解するためにテストモードで実行し、それから正式な公開用のデータ用にProductionモードで再度インストールすることを推奨します。<strong>注意</strong>：これは最終選択で取り消しができません。テストとProductionモードの切り替え時には、IPTの再インストールと設置ファイルの作成が必要です。
-admin.config.setup2.mode.test=<strong>Test</strong> mode is for evaluating the IPT or running it in a training scenario. Resources registered with GBIF will go into a test registry and will never be indexed. All DOIs minted for resources in test mode should use a test prefix (e.g. 10.5072 for DataCite), meaning they are temporary.
+admin.config.setup2.mode.test=<strong>テスト</strong> モードは、IPT の評価やトレーニングの時に使います。このモードでは、GBIF に登録したリソースはテスト用のレジストリに入り、インデックスが作成されることはありません。テストモードでリソースにつけられたDOIにはすべて試験モードを意味するプレフィックス(たとえばDataCiteの10.5072)が付きます。
 admin.config.setup2.mode.production=<strong>プロダクション</strong> モードは正式にリソースを公開するためのモードです。GBIF に登録されたリソース はGBIF レジストリに移動し、インデックスが作成されます。リソースに付けられたDOIは削除することができず、リソースはアクセス可能な状態に置かれます。
 admin.config.setup2.success=Congratulations\! IPTの設定は完了しました。
 admin.config.setup2.next=Administration sectionを最初によく調べてから新規管理者(manager)を作成し、リソースを取り扱う前に適切なExtension(拡張）をインストールしてください。
@@ -477,7 +477,7 @@ admin.config.baseUrl.changed=Base URLは正しく更新されました。
 admin.config.baseUrl.changed.reminder=ログインしたら、管理者ページの"Publish all resources"ボタンをクリックしてすべての登録データサービスのURLを更新してください。
 admin.config.baseUrl.inaccessible=Base URLはこのコンピュータからアクセスできるIPTを見つけることができませんでした。
 admin.config.baseUrl.invalidBaseURL=Base URLはインターネット上で見えるものでなくてはいけません。(e.g., localhost and 127.0.0.1 は無効です).
-admin.config.baseUrl.sameHostName=The machine name is used in the Base URL. Please be sure that your Base URL is visible on the Internet.
+admin.config.baseUrl.sameHostName=マシン名はベース URL で使用されます。ベース URL がインターネット上で見つけられることを必ず確認してください。
 
 
 admin.config.error.invalidBaseURL=Base URLはフォームが無効です。(e.g., http\://www.my-institution.com/ipt)
@@ -543,12 +543,12 @@ admin.user.title.new=新規ユーザーアカウント
 admin.user.intro=メールアドレスはユーザーを特定するもので、一度設定した後は変更することができません。したがって新規アカウントを作成する時のメールアドレスは慎重に選んでください。変更が必要な時には、すでにあるアドレスを削除して、新しいアカウントを作成してください。
 admin.user.intro2=管理者(manager)権限のユーザーは新たなリソースを作成することができますが、他のユーザーが作成したリソースについては、このリソースの設定の中で許されていない限り編集（manage)することはできません。管理責任（Admin）権限を持つユーザーを沢山作ることはできますが、最低1名はシステムに残しておく必要があります。
 admin.user.added=ユーザーアカウントの作成に成功しました。
-admin.user.account.updated=Your user account was successfully updated.
+admin.user.account.updated=自分のユーザー アカウントが正常に更新されました。
 admin.user.changed=ユーザーを更新しました。
 admin.user.deleted=ユーザーを削除しました。
 admin.user.login=変更を有効にするには再度ログインしてください。
 admin.user.saveError=ユーザーを変更できませんでした。
-admin.user.account.saveError=Your user account change could not be applied.
+admin.user.account.saveError=ユーザー アカウントの変更を適用できませんでした。
 admin.user.exists=電子メールアドレス{0}のユーザーが既に存在します。
 admin.user.deleted.lastadmin=最後のAdminユーザーは削除できません。
 admin.user.deleted.lastmanager=以下のリソース{0}については管理者(manager)以外のユーザーは削除できません。
@@ -624,13 +624,13 @@ admin.organisation.doiRegistrationAgency.username.help=組織に発行された 
 admin.organisation.doiRegistrationAgency.password=アカウントのパスワード
 admin.organisation.doiRegistrationAgency.password.help=組織に発行された DataCite/EZID アカウントのパスワード。
 admin.organisation.doiRegistrationAgency.prefix=DOIプレフィックス/肩付き
-admin.organisation.doiRegistrationAgency.prefix.help=The preferred DOI prefix/shoulder used to mint DOIs. This prefix is unique to the account issued to the organisation. Warning\: always use a test prefix (e.g. 10.5072 for DataCite, 10.5072/FK2 for EZID) when running the IPT in test mode\!
+admin.organisation.doiRegistrationAgency.prefix.help=DOIを新たに作る際には希望するプレフィックスを使います。プレフィックスは、その組織に発行されたアカウントに対して一意です。警告\:テストモードでIPTを実行する場合は 常に、テスト用のプレフィックス （例えば DataCiteなら10.5072、EZID なら10.5072/FK2 ）を使用してください。
 admin.organisation.doiAccount.activated=アクティブ アカウント
 admin.organisation.doiAccount.activated.help=IPTからデータセットにDOIを登録する唯一のアカウントとしてこのDataCite/EZIDアカウントをアクティブにするためには、ここをチェックします。一度にアクテイブにできるのは１個のDataCite/EZID アカウントだけです。
 admin.organisation.doiAccount.activated.exists=IPT経由でDOIを登録するための他のDataCite/EZID アカウントが既に選択されています。このアカウントを有効にしたい場合には、先に選択されているアカウントを無効にする必要があります。
 admin.organisation.canRegisterDois=DOIを登録することができますか？
 admin.organisation.doiAccount.activated.failed=IPTのアーカイブ モードが IPT 設定になっていない限り、この DataCite/EZID アカウントをアクティブにできません。アーカイブ モード では、すべての公開済ダーウィン コア アーカイブ バージョンが保存され、ダウンロードできるようになっていますので、古いバージョン用のDOIも有効で、そのリソースをダウンロードすることができます。
-admin.organisation.doiAccount.differentTypeInUse=Only one DOI account can be activated at a time. A DOI account of type {0} has already been used to assign DOIs to one or more resources, e.g. DOI\={1}
+admin.organisation.doiAccount.differentTypeInUse=DOIアカウントは一度に1 つだけアクティブにできます。タイプ {0} のDOIアカウントは既に１つ以上のリソースに割り当てられています。例えばDOI\={1}
 organisation.key=Key/UUID
 
 admin.organisation.deleted=この機関の対応付けは削除されました。
@@ -707,7 +707,7 @@ manage.resource.create.failed=アップロードファイルが読めません�
 manage.resource.create.rowType.null=RowType {0} not available in this IPT installation
 manage.resource.create.extension.null=Extension(拡張）が存在しません。すでにインストール済みのextension(拡張）を調べて再度インポートしてください。
 manage.resource.create.mapping.concept.skip=Skipped mapped term {0}, which is unknown to extension {1}
-manage.resource.create.forbidden=No resources can be created until at least one organisation able to host resources is associated to the IPT. Please contact your IPT administrator for help.
+manage.resource.create.forbidden=IPTのホストリソースに少なくとも１つの組織を割り当てない限りリソースを作成することはできません。ヘルプが必要ならばIPT 管理者に問い合わせてください。
 manage.resource.delete.confirm=この登録済みのリソースを削除しますか。
 manage.resource.delete.confirm.registered=GBIF インデックスからの削除は自動的に行われるため、元に戻す場合には<a href\=''mailto\:helpdesk@gbif.org''> GBIF ヘルプ デスク</a> にメールで依頼するしか方法がないことに注意してください。
 manage.resource.delete.confirm.doi=このリソースにはDOIが割り当てられているため、DOIは継続する必要があります。削除するということはもはやダウンロードできなくなることであり、リソースについての説明ページを特定するDOIを取り消すことになります。更新されたDOIが世界中に知れ渡るまで最長24時間かかることに留意してください。
@@ -861,7 +861,7 @@ manage.overview.visibility.organisation=機関
 manage.overview.visibility.organisation.contact=機関の窓口
 manage.overview.visibility.endorsing.node=担当ノード名
 manage.overview.visibility.confirm.registration=あなたはリソースをGBIFに登録しようとしています。本当に登録しますか。
-manage.overview.visibility.confirm.agreement=Confirm that you have read and understood the <a target\=''_blank'' href\=''http\://www.gbif.org/terms/licences/data-sharing''>GBIF data sharing agreement</a>
+manage.overview.visibility.confirm.agreement=\ <a target\=''_blank'' href\=''http\://www.gbif.org/terms/licences/data-sharing''> GBIF のデータ共有契約</a> を読んで理解していることを確認してください。
 manage.overview.published=発行済みのバージョン
 manage.overview.published.report=パブリケーションレポート
 manage.overview.published.see.report=レポートを見る
@@ -889,7 +889,7 @@ manage.overview.publishing.resource.version=リソースヴァージョン\#{0}�
 manage.overview.publishing.error={0}\:リソースの公開がステップ{1}で失敗しました。理由は{2}です。
 
 manage.overview.publishing.doi.reserve.confirm=このリソースのDOIを予約しようとしています。登録されていない限り、DOIを削除することができますが、予約しますか。
-manage.overview.publishing.doi.reserve.help=You can reserve a DOI for a resource after the mandatory metadata has been entered. To reuse an existing DOI, enter it into the citation identifier field in the resource metadata. If a resource is publicly available and reserved a DOI, the next publication will result in a new major version and the DOI will be registered. Otherwise if a resource is private and reserved a DOI, the next publication will result in a new minor version of the resource and the DOI will NOT be registered. Be aware that until a DOI is registered you can still delete it.
+manage.overview.publishing.doi.reserve.help=必須のメタデータを入力した後にDOIを予約することができます。既存のDOIを再利用する時は、リソースメタデータのcitation identifierフィールドに入力します。リソースが公開されていてDOIが予約されているならば、次回の公開が新規のメジャーバージョンになり、そのDOIが登録されるでしょう。リソースがprivate状態でDOIが予約されている場合には、次回の公開が新たなマイナーバージョンとなり、DOIは登録されません。DOIは登録される前なら削除することができることを、覚えていてください。
 manage.overview.publishing.doi.reserve.new.help=すでにDOIを割り当てられている公開リソースに対して、新しいDOIを予約することは可能です。DOIは次回リソースが公開されるときに登録され、新たに公開されたバージョンのリソースを特定することになります。以前使っていたDOIは前のバージョンのリソースに対応していますが、新しいバージョンに置き換えられているという警告が表示されます。リソースが公開されない限り、予約済みのDOIを削除することができることを覚えておいてください。
 manage.overview.publishing.doi.reserve.prevented.noOrganisation=DataCiteまたはEZIDアカウントをもつ機関名をIPTと関連づけない限り、DOIをこのリソースに割り当てることはできません。IPT管理責任者に問い合わせてください。
 manage.overview.publishing.doi.delete.confirm=このリソースに予約済みのDOIを削除しようとしています。このDOIは一度も登録されたことがないため公開されませんので、削除しても大丈夫です。削除しますか？
@@ -899,40 +899,40 @@ manage.overview.publishing.doi.register.help=リソースの保留中のバー�
 manage.overview.publishing.doi.register.prevented.notPublic=このリソースはprivateのため、予約されているDOIを登録することができません。DOIを登録するためには、リソースを公開しなくてはなりません。\n
 manage.overview.publishing.doi.minorVersion.confirm=このリソースの新しい <b>マイナー</b> バージョンを公開しようとしています。最後の公開以来、科学的に重要な変更がなされている場合、公開を一旦キャンセルして新しいDOIを割り当て、再び公開する必要があります。
 manage.overview.publishing.doi.majorVersion.confirm=あなたはこのリソースの新しい <b>メジャー</b> バージョンを公開しようとしています。初めてリソースにDOIが割り当てられる場合、あるいはリソースが科学的に重要な変更を受けた後ならばこれは適切です。公開が成功すると、このリソースに予約したDOIが登録され約 5 分後に有効になるでしょう。それを望まない場合は、キャンセルし、予約したDOIを削除します。
-manage.overview.publishing.withoutDoi.majorVersion.confirm=You are about to publish a new <b>major</b> version of this resource, which is appropriate the first time a resource is published, or after the resource underwent scientifically significant changes. If this is not what you want, cancel.
+manage.overview.publishing.withoutDoi.majorVersion.confirm=あなたはこのリソースの新しい <b>メジャー</b> バージョンを発行しようとしています。それはリソースを初めて公開するとき、あるいは科学的に重要な変更を行った後の操作として適当ですが、そうでない場合は、キャンセルしてください。
 manage.overview.publishing.doi.summary=公開に先立ち、変更点を要約することによってあなたのデータを使っている研究者をサポートすることができます。
 manage.overview.publishing.doi.summary.placeholder=このバージョンの変更内容をまとめてください。後からいつでも編集することができます。
 manage.overview.publishing.doi.confirm.end=公開しますか。
 manage.overview.publishing.doi.replaced=現在のバージョンに割り当てられているDOIは、次の公開時に保留中のバージョンに置き換えられるでしょう。
 manage.overview.publishing.doi.reserve.reused=既存のDOI[{0}]はすでにこのリソースに割り当てられており、再利用されます。もしこれが正しくないDOIの場合、予約したDOIを削除するか、メタデータの引用識別子フィールドから取り除く、または置換して別のDOIの予約を試みることができます。
 manage.overview.publishing.doi.reserve.notRreused=既存のDOI [{0}] は既にこのリソースに割り当てられていますが、この IPT はプレフィックス {1} でしか登録できないので再利用ができません。メタデータの引用識別子フィールドからDOIを取り除いたり置換して別のDOIを予約することができます。それでもこのDOIを使用したい場合は、 IPT 管理者に問い合わせてください。
-manage.overview.publishing.doi.reserve.success={0} was reserved successfully
-manage.overview.publishing.doi.reserve.failed=Failed to reserve {0}\: {1}
-manage.overview.publishing.doi.reserve.failed.metadata=Failed to reserve {0} because DOI metadata was invalid\: {1}
-manage.overview.publishing.doi.reserve.reused.failed=Failed to verify that {0} has been registered already. Please try again.
-manage.overview.publishing.doi.reserve.reused.failed.exception=Failed to verify that {0} has been registered already\: {1}
-manage.overview.publishing.doi.publish.check.registered.failed=Pre-publication check failed\: {0} is not reserved or registered. Its status is\: {1}
-manage.overview.publishing.doi.publish.check.existing.failed=Pre-publication check failed\: could not verify {0} exists\!
-manage.overview.publishing.doi.publish.check.existing.failed.exception=Pre-publication check failed\: could not verify {0} exists\!\: {1}
+manage.overview.publishing.doi.reserve.success={0} が正常に予約されました。
+manage.overview.publishing.doi.reserve.failed=予約{0}\:{1}が失敗しました。
+manage.overview.publishing.doi.reserve.failed.metadata=DOIメタデータが無効であるため、予約 {0} できませんでした\: {1}
+manage.overview.publishing.doi.reserve.reused.failed=それ {0} が既に登録されていることを確認することができませんでした。もう一度やり直してください。
+manage.overview.publishing.doi.reserve.reused.failed.exception=\ {0} が既に登録されていることを確認できませんでした\: {1}
+manage.overview.publishing.doi.publish.check.registered.failed=公開前のチェックに失敗しました\: {0} は予約も登録もされていません。その状態は： {1}です。
+manage.overview.publishing.doi.publish.check.existing.failed=公開前のチェックに失敗しました\: {0} の存在を確認できませんでした ！
+manage.overview.publishing.doi.publish.check.existing.failed.exception=公開前のチェックに失敗しました\: {0} の存在を確認できませんでした ！： {1}
 
-manage.overview.publishing.doi.publish.updateDoi.failed=Failed to update {0} metadata\: {1}
-manage.overview.publishing.doi.publish.newMinorVersion=Published new minor version\: {0} was updated successfully
-manage.overview.publishing.doi.publish.newMajorVersion=Published new major version\: {0} was registered successfully
-manage.overview.publishing.doi.publish.newMajorVersion.replaces=Published new major version\: {0} was registered successfully\! The previous DOI has also been successfully updated, to reflect that it now represents a previous version of the resource
-manage.overview.doi.operation.failed.noAccount=No organisation with an activated DOI agency account exists. Please contact your IPT admin for help.
-manage.overview.publishing.doi.delete.success={0} was deleted successfully
-manage.overview.publishing.doi.delete.reassign.success={0} was deleted, and {1} was reassigned successfully
-manage.overview.publishing.doi.delete.failed.exception=Failed to delete {0}\: {1}
-manage.overview.publishing.doi.delete.failed.notResolved=Failed to verify {0} exists therefore it could not be deleted\!
-manage.overview.publishing.doi.deactivate.success={0} was deactivated successfully
-manage.overview.publishing.doi.undelete.success={0} was undeleted successfully
-manage.overview.publishing.doi.undelete.failed.noOrganisation=The resource''s organisation is no longer associated to the IPT, key\={0}
-manage.overview.publishing.doi.undelete.failed.badPrefix={0} has a prefix different to the prefix of the DOI agency account activated in this IPT\: {1}
-manage.overview.publishing.doi.undelete.failed.badStatus={0} cannot be undeleted because its status is {1}
-manage.overview.publishing.doi.undelete.failed.notResolved=Failed to verify {0} exists therefore it could not be undeleted\!
-manage.overview.publishing.doi.undelete.failed.exception=Failed to undelete {0}\: {1}
+manage.overview.publishing.doi.publish.updateDoi.failed={0}メタデータの更新に失敗しました\: {1}
+manage.overview.publishing.doi.publish.newMinorVersion=公開された新しいマイナー バージョン\: {0} を正常に更新しました
+manage.overview.publishing.doi.publish.newMajorVersion=公開された新しいメジャー バージョン\: {0} が正常に登録されました
+manage.overview.publishing.doi.publish.newMajorVersion.replaces=公開された新しいメジャー バージョン\: {0} は正常に登録されました！以前のDOIは正常に更新されています。つまり古いDOIは古いバージョンのリソースを表します。
+manage.overview.doi.operation.failed.noAccount=アクティブなDOI代理店アカウントを持つ組織は存在しません。IPT 管理者にお問い合わせください。
+manage.overview.publishing.doi.delete.success={0} の削除に成功しました。
+manage.overview.publishing.doi.delete.reassign.success={0} が削除され、{1} が正常に再割り当てされました
+manage.overview.publishing.doi.delete.failed.exception={0} の削除に失敗しました\: {1}
+manage.overview.publishing.doi.delete.failed.notResolved={0} の存在を確認できませんでしたので、削除することができませんでした ！
+manage.overview.publishing.doi.deactivate.success={0} が正常に非アクティブ化されました。
+manage.overview.publishing.doi.undelete.success={0} をもとに戻すことに成功しました。
+manage.overview.publishing.doi.undelete.failed.noOrganisation=そのリソースの組織はもはやIPT、キー \={0}に関連付けられていません。
+manage.overview.publishing.doi.undelete.failed.badPrefix={0}のプレフィックスは、 はこの IPT のアクティブDOI代理店アカウントのプレフィックスと異なります\: {1}
+manage.overview.publishing.doi.undelete.failed.badStatus={0} は、ステータスが {1} であるために、削除を取り消すことはできません。
+manage.overview.publishing.doi.undelete.failed.notResolved={0} が存在することを確認できませんでしたので、アンデリートできませんでした ！
+manage.overview.publishing.doi.undelete.failed.exception={0} を元に戻すことに失敗しました\: {1}
 
-manage.overview.resource.undelete.warning.gbif=Resource currently cannot be undeleted automatically in the GBIF Registry. Therefore please write to helpdesk@gbif.org to undelete it in the GBIF Registry.
+manage.overview.resource.undelete.warning.gbif=削除したリソースを自動的に取り消すことは今のところできませんので、GBIFレジストリから削除を取り消す場合にはhelpdesk@gbif.org に問い合わせてください。
 manage.overview.resource.managers=リソース　管理者(Managers)
 manage.overview.resource.managers.intro=管理者がこのリソースを変更する権限を与えた。
 manage.overview.resource.managers.description=複数の管理者がリソースを管理することができます。あなたはリソースを変更する権限を他の管理者に付与することができます。新しい管理者アカウントを追加する場合は IPT の管理者までご連絡ください。
@@ -949,11 +949,11 @@ manage.overview.resource.update.registration=リソース{0}のGBIF登録を更�
 manage.overview.manager.not.available=Manager {0} not available.
 manage.overview.failed.stop.publishing=公開中止に失敗しました。
 manage.overview.failed.resource.registration=リソースの登録に失敗しました。
-manage.overview.failed.resource.registration.notPublic=The current published version is not publicly available. Please publish a new version that is publicly available and try again.
-manage.overview.prevented.resource.registration.noGBIFLicense=The resource cannot be registered because the current published version was not assigned one of the licences that GBIF supports. To enable registration, assign one of these licences and publish a new version.
-manage.overview.prevented.resource.publishing.noGBIFLicense=This registered resource cannot be re-published because it is not assigned one of the licences that GBIF supports. To enable publishing, please assign it one of these licences.
-manage.overview.prevented.resource.registration.notPublic=The resource cannot be registered because the current published version is not publicly available. Please publish a new version that is publicly available to enable registration.
-manage.overview.noGBIFLicense=Not GBIF-supported
+manage.overview.failed.resource.registration.notPublic=現在の発行されたバージョンは公開されていません。公開されている新しいバージョンを発行して、もう一度やり直してください。
+manage.overview.prevented.resource.registration.noGBIFLicense=現在の発行されたバージョンは GBIF がサポートするライセンスのいずれも割り当てられていないため、このリソースを登録することができません。登録するためには、これらのライセンスのいずれかを割り当てて、新しいバージョンを発行してください。
+manage.overview.prevented.resource.publishing.noGBIFLicense=GBIF がサポートするライセンスのいずれも割り当てられていないために、この登録済みのリソースを再パブリッシュすることができません。パブリッシュするためには、これらのライセンスの１つを割り当ててください。
+manage.overview.prevented.resource.registration.notPublic=公開されたバージョンが公に利用できるようになっていないため、リソースを登録することができません。登録を有効にするためには利用可能な新しいバージョンを公開してしてください。
+manage.overview.noGBIFLicense=GBIF サポートされていません
 manage.overview.failed.resource.update=Registration update failed\: {0}
 manage.overview.user.added={0}をリソースマネージャーのリストに追加しました。
 manage.overview.user.removed=リソースマネージャーのリストから{0}を削除しました。
@@ -1051,7 +1051,7 @@ manage.report.continueTo=Continue to <a href resource.do?r\={0}>resource overvie
 eml.title=タイトル
 eml.description=説明
 eml.publishingOrganisation=公開（発行）機関
-eml.publishingOrganisation.help=Please select the organisation responsible for publishing (producing, releasing, holding) this resource. It will be used as the resource''s publishing organisation when registering this resource with GBIF and when submitting metadata during DOI registrations. It will also be used to auto-generate the citation for the resource (if auto-generation is turned on), so consider the prominence of the role. Please be aware your selection cannot be changed after the resource has been either registered with GBIF or assigned a DOI.
+eml.publishingOrganisation.help=パブリッシュ（作成、リリース、保管）を担当する組織を選択してください。それは、このリソースをGBIFに登録する時や、DOIの登録時にメタデータを登録する時、リソースのパブリッシング組織となります。それは、リソースの引用を自動生成する時（自動生成がONになっていれば）にも使われます。したがって、役割の重要性を認識してください。リソースをGBIFに一旦登録したら、あるいはDOIを割り当てたなら、この選択を変えることができませんので、注意してください。
 eml.publishingOrganisation.required=機関/組織名が必要です。
 eml.publishingOrganisation.notFound=機関/組織名 (キー \={0}) が見つかりません ！
 
@@ -1185,7 +1185,7 @@ eml.project.personnel=プロジェクト担当者
 eml.project.personnel.help=担当者のリストは、プロジェクトに関わる人々 を表します。
 eml.project.personnel.firstName=Personnel First Name
 eml.project.personnel.lastName=Personnel Last Name
-eml.project.personnel.intro=The personnel involved in the project
+eml.project.personnel.intro=プロジェクトに携わる要員
 eml.project.funding=ファンデイング
 eml.project.funding.help=プロジェクトのファンドに関する情報（たとえば、グラント、契約番号、ファンドの名称とアドレスなど）。その他のファンドに関する情報も含めることができます。
 eml.project.studyAreaDescription.descriptorValue=Study Area Description
@@ -1268,7 +1268,7 @@ eml.alternateIdentifier.help=An additional, secondary identifier for this entity
 
 eml.intellectualRights.simple=権利
 eml.intellectualRights.license=データライセンス
-eml.intellectualRights.license.help=The licence that you apply to a dataset provides a standardized way to define appropriate uses of your work. GBIF encourages publishers to adopt the least restrictive licence possible from among three machine-readable options (CC0 1.0, CC-BY 4.0 or CC-BY-NC 4.0) to encourage the widest possible use and application of data. Learn more <a href\="http\://www.gbif.org/terms/licences" target\="_blank">here</a>. If you feel unable to select one of the three options, please contact the GBIF Secretariat at participation@gbif.org.
+eml.intellectualRights.license.help=データセットに採用したライセンスにようって、あなたのデータの正しい利用方法が標準化された方法で利用者に提供されます。GBIFはパプブリッシャーに対して、機械可読可能な３つのオプション（CC0 1.0, CC-BY 4.0 or CC-BY-NC 4.0）のうち最も制限の少ないライセンスを採用することをお勧めします。詳細は<a href\="http\://www.gbif.org/terms/licences" target\="_blank">こちら</a>を参照してください。もしも３つの選択肢のいずれも選ぶことができないと感じたならば、participation@gbif.orgのGBIF Secretariatまでお問い合わせください。
 eml.intellectualRights.nolicenses=No license selected
 eml.intellectualRights.license.disclaimer=You should only apply a license to your own work unless you have the necessary rights to apply it to another person''s.
 
@@ -1306,7 +1306,7 @@ rtf.spatialCoverage.longitude=経度
 rtf.tempcoverage=時間的範囲
 rtf.project.details=プロジェクトの詳細
 rtf.project.title=プロジェクトのタイトル
-rtf.project.personnel=Personnel
+rtf.project.personnel=担当者
 rtf.project.funding=ファンデイング
 rtf.project.area=Study area descriptions/descriptor
 rtf.project.design=デザインの説明
@@ -1384,7 +1384,7 @@ publishing.cancelled=リソース{1}のヴァージョン\#{0}の公開はキャ
 publishing.error=公開中にタイプ{0}のエラーが発生しました：{1}
 publishing.failed=リソース{1}のヴァージョン\#{0}の公開に失敗しました：{2}
 publishing.skipping=リソース{1}のヴァージョン\#{0}の公開はスキップしました。公開作業の失敗回数がリミットに達したので、このリソースを別に公開してみてください。
-publishing.changeSummary.default=None provided
+publishing.changeSummary.default=指定されていません
 
 restore.resource.success=公開失敗の後、リソース{1}のヴァージョン\#{0}を修復しました。
 restore.resource.failed=リソース{1}のヴァージョン\#{0}の修復に失敗しました。
@@ -1400,3 +1400,4 @@ autopublish.help=自動公開を<strong>ON</strong>にする時は、５つの�
 
 # Struts2 overrides
 struts.messages.upload.error.SizeLimitExceededException=アップロードされたファイルが大きすぎます ！許容最大サイズは {0} バイトですが、リクエストサイズは {1} バイトでした。この問題を回避するために、ファイルの圧縮 (zip と gzip) を試みてください。IPT でサポートされている複数のデータベースのいずれかにデータを流し込むか、ファイルを分割します。詳細についてはユーザー マニュアルを参照してください。
+
