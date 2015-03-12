@@ -1655,7 +1655,6 @@ span.doi {
     font-style: normal;
     text-decoration: none;
     padding: 2px 0px 2px 4px;
-    border-radius: 5px;
     border-color: #008959;
     border-style: solid;
     border-width: 1px;
@@ -1667,13 +1666,13 @@ span.doi:before {
 
 span.doi a {
     color: #666;
-    background: #dbf0e8;
+    background: white;
     font-style: normal;
     text-decoration: none;
     text-transform: lowercase;
     margin-left: 4px;
+    margin-right: 1px;
     padding: 2px 5px 2px 4px;
-    border-radius: 0px 5px 5px 0px;
 }
 
 /* End dataset homepage */
