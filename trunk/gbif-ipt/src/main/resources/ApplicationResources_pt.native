@@ -1,4 +1,4 @@
-#X-Generator: crowdin.com
+﻿#X-Generator: crowdin.com
 # UTF-8 English übersetzen
 ##
 # Introduction (to IPT translation):
@@ -48,7 +48,7 @@ basic.showMore=Mais
 basic.showLess=Menos
 basic.show=Mostrar
 basic.hide=Ocultar
-basic.none=None
+basic.none=Nenhuma
 
 # buttons
 button.add=Adicionar
@@ -61,9 +61,9 @@ button.create=Criar
 button.edit=Editar
 button.back=Voltar
 button.register=Registrar
-button.reserve.new=Reserve new
+button.reserve.new=Nova reserva
 button.reserve=Reserva
-button.undelete=Undelete
+button.undelete=Desfazer deleção
 button.publish=Publicar
 button.public=Público
 button.updateRegistration=Atualizar Registro
@@ -76,7 +76,7 @@ button.reload=Recarregar
 button.automap=Mapeamento Automático
 button.resetPassword=Reiniciar Senha
 button.continue=Continuar
-button.upload=Carga
+button.upload=Carregar
 button.clear=Limpar
 button.connectDB=Conectar à Base de Dados
 button.remove=Remover
@@ -87,7 +87,7 @@ button.install=Instalar
 ####
 # footer
 footer.version=Versão
-footer.projectHome=About the IPT
+footer.projectHome=Sobre o IPT
 footer.useManual=Manual do usuário
 footer.bugReport=Reportar erros
 footer.featureRequest=Requisite um novo recurso
@@ -144,11 +144,11 @@ extension.vocabulary=Vocabulário
 extension.properties=Propriedades
 extension.prop.qname=Nome qualificado
 extension.prop.type=Tipo de dado
-extension.prop.required=Requerida
+extension.prop.required=Obrigatório
 extension.prop.group=Grupo
 extension.vocabularies.title=Vocabulários
 extension.vocabularies.last.update=Última atualização em\: {0}<br />
-extension.vocabularies.number=todos os {0} vocabulários têm a última versão registrada
+extension.vocabularies.number=todos os {0} vocabulários com última versão registrada
 extension.further.title=Outros padrões e extensões disponíveis no Registro GBIF
 extension.further.title.help=A coluna da esquerda mostra o nome do Padrão ou Extensão. Na coluna da direita encontra-se um resumo de informações sobre o Padrão ou Extensão, incluindo uma breve descrição dos tipos de dados que devem conter.
 extension.already.installed=Todos os padrões e extensões disponíveis já foram instalados
@@ -161,7 +161,7 @@ vocabulary.terms.alt=Elementos Alternativos
 
 # resource
 resource.shortname=Nome
-resource.shortname.help=The short name serves as an identifier for the resource within this IPT installation, and will be used as a parameter in the URL to access the resource via the Internet. Please use only alphanumeric characters, hyphens, or underscores.
+resource.shortname.help=O nome curto serve como um identificador para o recurso dentro desta instalação do IPT e será usado como um parâmetro na URL para acessar o recurso através da Internet. Por favor, use somente alfanuméricos, hífens ou underscores.
 resource.coreType=Tipo
 resource.coreType.selection=Selecione um tipo
 manage.resource.create.coreType=Tipo
@@ -202,7 +202,7 @@ sqlSource.sqlLimited=SQL gerdo para pré-visualizar dados
 fileSource.fieldsTerminatedByEscaped=Delimitador de campo
 fileSource.fieldsTerminatedByEscaped.help=Um caractere que delimite as colunuas/campos em uma linha.
 fileSource.fieldsEnclosedByEscaped=Delimitador de texto (citação)
-fileSource.fieldsEnclosedByEscaped.help=A single character that encloses every field/column in a row. Most often empty, but CSV files use a ". With this option, make sure that *all* of your fields are contained in quotes, not just those that are text. Please note that in the IPT newline characters (\n) or carriage returns (\r) cannot be enclosed by quotes and should be removed.
+fileSource.fieldsEnclosedByEscaped.help=Um caractere que delimita cada campo/coluna em uma linha. Normalmente é vazio, mas arquivos CSV usam um ". Com esta opção, certifique-se de que * todos * seus campos estão entre aspas, não apenas aqueles que são texto. Por favor, perceba que no IPT os caracteres de nova linha () ou de quebras de linha () não podem ser delimitada por aspas e devem ser removido.
 fileSource.ignoreHeaderLines=Número de Linhas de Cabeçalho
 fileSource.ignoreHeaderLines.help=O número de linhas reservadas para cabeçalho em seu arquivo, as quais serão ignoradas durante a importação.
 excelSource.sheets=Planilha selecionada
@@ -219,25 +219,25 @@ rank.genus=Gênero
 # VALIDATION error messages
 ####
 # general
-validation.required={0} requerido
+validation.required={0} são obrigatórios.
 validation.invalid={0} é inválido.
 validation.short={0} com ao menos {1} letras é requerido.
 validation.contains=O texto não pode conter o símbolo "{0}".
 validation.field.required=Campo
 validation.field.blank={0} deve conter mais de 2 caracteres, sem espaços em branco
-validation.field.invalidSize={0} must have a length between {1} and {2} characters, check there are no blank spaces.
+validation.field.invalidSize={0} deve ter um comprimento entre {1} e {2} caracteres, verifique se não há espaços em branco.
 validation.wrong.datatype={0} está mapeado com valores de dados inválidos.
-validation.column.multipleTranslations=Multiple translations exist for source column {0}. To prevent conflicting translations, please limit to one.
+validation.column.multipleTranslations=Existem múltiplas traduções para a coluna {0}. Para evitar traduções conflitantes, por favor, utilize apenas uma.
 
 # user/config
 validation.email.required=Email é obrigatório.
 validation.email.invalid=Email inválido.
-validation.firstname.required=Primeiro nome é obrigatório.
+validation.firstname.required=O primeiro nome é obrigatório.
 validation.lastname.required=O último nome é obrigatório.
-validation.password.reentered=Please reenter a valid password
-validation.password.required=É necessário uma senha de com ao menos 4 caracteres.
+validation.password.reentered=Por favor, digite novamente uma senha válida
+validation.password.required=É necessária uma senha com ao menos 4 caracteres.
 validation.password2.wrong=As senhas não coincidem.
-validation.baseURL.required=A URL base do IPT é obrigatório.
+validation.baseURL.required=A URL base do IPT é obrigatória.
 validation.baseURL.invalid=A base da URL do IPT é inválida.
 
 # organisation
@@ -245,16 +245,16 @@ validation.organisation.password.required=A senha é obrigatória.
 validation.organisation.alias.required=O "alias" é obrigatório.
 validation.organisation.password.invalid=A senha está inválida.
 validation.organisation.key.required=Por favor, selecione uma organização da lista.
-validation.organisation.doiRegistrationAgency.required=DOI registration agency is required
-validation.organisation.agencyAccountUsername.required=Registration agency account username is required
-validation.organisation.agencyAccountPassword.required=Registration agency account password is required
-validation.organisation.doiPrefix.required=DOI prefix is required
-validation.organisation.doiPrefix.invalid=DOI prefix must start with "10."
-validation.organisation.doiPrefix.ezid.invalid=EZID prefix must contain shoulder, e.g. "/FOO" in "10.1234/FOO"
-validation.organisation.doiPrefix.invalid.testMode=In test mode, typically the test DOI prefix is used\: 10.5072 for DataCite or 10.5072/FK2 for EZID
-validation.organisation.doiPrefix.invalid.productionMode=In production mode, the test DOI prefix cannot be used\: 10.5072 for DataCite or 10.5072/FK2 for EZID
-validation.organisation.agencyAccount.invalid=Invalid account username password combination supplied
-validation.organisation.agencyAccount.cantAuthenticate=Authentication failed\! Please verify the DOI agency account is entered correctly and try again.
+validation.organisation.doiRegistrationAgency.required=Agência do registo DOI é necessária
+validation.organisation.agencyAccountUsername.required=É necessário o nome do usuário da conta da agência de registro
+validation.organisation.agencyAccountPassword.required=É necessária a senha do usuário da conta da agência de registro
+validation.organisation.doiPrefix.required=Prefixo DOI é necessário
+validation.organisation.doiPrefix.invalid=Prefixo DOI deve começar com "10."
+validation.organisation.doiPrefix.ezid.invalid=Prefixo EZID deve conter um nome, por exemplo, "/ FOO" no "10.1234/FOO"
+validation.organisation.doiPrefix.invalid.testMode=No modo de teste, normalmente é usado o prefixo DOI teste\: 10.5072 para DataCite ou 10.5072/FK2 para EZID
+validation.organisation.doiPrefix.invalid.productionMode=No modo de produção, o prefixo DOI teste não pode ser usado\: 10.5072 para DataCite ou 10.5072/FK2 para EZID
+validation.organisation.agencyAccount.invalid=Combinação inválida de nome do usuário e senha
+validation.organisation.agencyAccount.cantAuthenticate=A autenticação falhou\! Por favor, verifique se que a conta de agência DOI foi digitada corretamente e tente novamente.
 
 # ipt
 validation.ipt.name.required=O título do IPT é obrigatório.
@@ -263,7 +263,7 @@ validation.ipt.contactName.required=O Nome de contato é obrigatório.
 validation.ipt.contactEmail.required=O email de contato é obrigatório.
 validation.ipt.contactEmail.short=O email de contato deve ter mais de 5 caracteres.
 validation.ipt.contactEmail.invalid=O email deve estar em um formato válido (e.g., nome@organizacao.org)
-validation.ipt.password.required=A senha do IPT é obrigatório.
+validation.ipt.password.required=A senha do IPT é obrigatória.
 validation.ipt.password.short=A senha do IPT deve ter mais de 5 caracteres.
 
 # resources
@@ -284,8 +284,8 @@ validation.mapping.coreid.uuid.extensions.exist=Quando utilizado UUIDs gerados c
 # eml
 validation.lastname.organisation.position=Um último nome, uma organização ou um nome de cargo é obrigatório.
 validation.firstname.lastname=Se o primeiro nome é fornecido, o último nome deve ser fornecido também.
-validation.personnel=If the personnel directory is supplied, the personnel identifier must also be supplied.
-validation.directory=If the personnel identifier is supplied, the personnel directory must also be supplied.
+validation.personnel=Se o diretório pessoal for fornecido, o identificador pessoal também deve ser fornecido.
+validation.directory=Se o identificador pessoal for fornecido, o diretório pessoal também deve ser fornecido.
 
 # errors
 error.header.title=Faltante
@@ -300,15 +300,15 @@ error.details.title=Detalhes técnicos
 # GLOBAL SECTION
 ####
 login.title=Login de Usuário
-login.intro=Please log into your IPT account with your email address.<br />If you don''t have an account yet, please ask the <a href\="mailto\:{0}">IPT administrator</a> to create one for you.
-login.forgottenpassword=Forgot your password? Please contact the <a href\="mailto\:{0}">IPT administrator</a> to reset it for you.
+login.intro=Por favor, entrar em sua conta do IPT com seu endereço de e-mail... < br / > se ainda não possui uma conta, por favor, peça ao <a href\="mailto\:{0}"> administrador do IPT</a> para criar um para você.
+login.forgottenpassword=Esqueceu sua senha? Contacte o <a href\="mailto\:{0}"> administrador do IPT</a> para redefini-la para você.
 account.title=Sua conta no IPT
 account.intro=As preferências da sua conta podem ser alteradas aqui. A permissão para gerenciar estes recursos devem ser atribuídos por um administrador.
 account.email.cantChange=Se por alguma razão você tiver que trocar seu e-mail, por favor solicite ao adminstrador para criar uma nova conta para você e apague a atual, pois o email não pode ser trocado uma vez que a conta foi criada.
 404.title=Página não encontrada
 404.body=Desculpe, mas esta página solicitada por você não existe.
 410.title=Recurso Removido
-410.body=We are sorry, but this resource has been removed by the publisher and is therefore no longer available for public download.
+410.body=Pedimos desculpas, mas esse recurso foi removido pelo editor e, portanto, não está mais disponível para download público.
 401.title=Não Autorizado
 401.body=Você não está autorizado a ver esta página.<br />Por favor, faça <a href\="{0}">identifique-se</a> com uma conta apropriada.
 401.manager.title=Login de Administrador Requerido
@@ -328,7 +328,7 @@ portal.home.logo=Logo
 portal.home.organisation=Organização
 portal.home.type=Tipo
 portal.home.records=Registros
-portal.home.doi=DOI handle
+portal.home.doi=Handle do DOI
 portal.home.modified=Última modificação
 portal.home.modifiedBy=Modificado pela última vez por
 portal.home.summary=Resumo das mudanças
@@ -337,8 +337,8 @@ portal.home.not.published=Não publicado
 portal.home.author=Autor
 portal.login=login
 portal.metadata.provider=Provedor de Metadados
-portal.metadata.provider.intro=Who filled in the metadata
-portal.associatedParties.intro=Who else was associated with the resource
+portal.metadata.provider.intro=Quem preencher os metadados
+portal.associatedParties.intro=Quem mais foi associado com o recurso
 portal.resource.no.description=Nenhuma descrição disponível
 portal.resource.summary=Resumo
 portal.resource.summary.keywords=Palavras-chave
@@ -348,18 +348,18 @@ portal.resource.version=Versão
 portal.resource.version.latest=ver a última
 portal.resource.latest=última
 portal.resource.versions=Versões
-portal.resource.versions.verbose=The table below shows only published versions of the resource that are publicly accessible.
-portal.resource.versions.verbose.manager=The table below shows all published versions of the resource, because you have access rights.
+portal.resource.versions.verbose=A tabela abaixo mostra apenas versões de recursos que são publicamente acessíveis.
+portal.resource.versions.verbose.manager=A tabela abaixo mostra todas as versões do recursos publicados, porque você tem direitos de acesso.
 portal.resource.downloads=Downloads
-portal.resource.downloads.verbose=Download the latest version of the resource data as a Darwin Core Archive (DwC-A) or the resource metadata as EML or RTF\:
-portal.resource.downloads.metadataOnly.verbose=Download the latest version of the metadata-only resource metadata as EML or RTF\:
+portal.resource.downloads.verbose=Baixe a última versão do recurso de dados, como um Darwin Core Archive (DwC-A) ou recurso de metadados, como EML ou RTF\:
+portal.resource.downloads.metadataOnly.verbose=Baixe a versão mais recente dos metadados como EML ou RTF\:
 portal.resource.publishedOn=publicado por {0} em
 portal.resource.latest.version=Versão mais recente
-portal.resource.latest.version.warning=Please be aware, this is an old version of the dataset.
+portal.resource.latest.version.warning=Lembre-se, esta é uma versão antiga do dataset.
 portal.resource.cite=Citar isso
 portal.resource.cite.howTo=Como citar
-portal.resource.cite.help=Researchers should cite this work as follows
-portal.resource.rights.help=Researchers should respect the following rights statement
+portal.resource.cite.help=Pesquisadores deveriam citar esta obra da seguinte maneira
+portal.resource.rights.help=Pesquisadores devem respeitar a seguinte declaração de direitos
 portal.resource.download=download
 portal.resource.records=registros
 portal.resource.published.archive=Darwin Core Archive
@@ -367,9 +367,9 @@ portal.resource.published.eml=EML
 portal.resource.published.rtf=RTF
 portal.resource.published.dwca=DwC-A
 portal.resource.published.never=Nunca
-portal.resource.published.never.long=This dataset has never been published
+portal.resource.published.never.long=Este conjunto de dados nunca foi publicado
 portal.resource.organisation.key=GBIF Registration
-portal.resource.gbif.page=GBIF website page
+portal.resource.gbif.page=Página do site do GBIF
 portal.resource.gbif.page.short=GBIF
 portal.resource.organisation.name=Organização
 portal.resource.organisation.node=Endossando Nó
@@ -388,9 +388,9 @@ portal.publication.download.log=Download do completo
 portal.publication.log=Log de Publicação
 portal.resource.eml.error.load=Falha ao carregar o arquivo EML de versão \#{0} para o recurso {1}
 portal.resource.eml.error.parse=Arquivo EML de versão \#{0} para o recurso {1} não pode ser interpretado
-portal.resource.otherFormats=The resource data is also available in other formats
-portal.resource.warning.notPublic=The version you are looking at is {0} and cannot be seen by everyone\!
-portal.resource.warning.notLatest=The version you are looking at is not the latest version\! Please refer to the versions table to find the latest.
+portal.resource.otherFormats=Os dados de recurso também estão disponíveis em outros formatos
+portal.resource.warning.notPublic=A versão que você está olhando é {0} e não pode ser vista por todos\!
+portal.resource.warning.notLatest=A versão que você está olhando não é a versão mais recente\! Por favor, consulte a tabela de versões para encontrar a mais atualizada.
 
 ####
 # ADMIN SECTION
@@ -409,11 +409,11 @@ admin.config.setup.title=Instalação do IPT
 admin.config.setup.welcome=Para usar o IPT, você deve selecionar um diretório onde serão armazenadas suas informações de configuração - chamado diretório de dados do IPT.
 admin.config.setup.instructions=Por favor, selecione uma pasta vazia com permissão de escrita ou um diretório de dados do IPT previamente configurado. Não selecione uma pasta vulnerável a outros processos, por exemplo /tmp, que possa ser esvaziada no reinício do sistema. Você deve realizar regularmente cópias de segurança de acordo com um plano de recuperação em casos de falha do sistema.
 admin.config.setup.examples=Por exemplo, use um caminho como "C\:\\datadir" para ambientes Windows ou "/usr/datadir" para ambientes Unix/Linux ou Mac OS X.
-admin.config.setup.disclaimerPart1=Starting with this version, publishers are required to assign one of three machine-readable rights declarations to their data. If you cannot agree to publish your data under a CC0 1.0, CC-BY 4.0 or CC-BY-NC 4.0 declaration, we recommend that you continue to use the previous version of the IPT for now.
-admin.config.setup.disclaimerPart2=GBIF will begin working with existing publishers to implement and enforce this requirement across the network during 2015. If you are unable to choose one of the three options, you will not be able to register your dataset with GBIF or make it globally discoverable through GBIF.org. For background on this decision, <a href\="http\://www.gbif.org/terms/licences" target\="_blank">click here</a>.
-admin.config.setup.read=I have read and understood the disclaimer
-admin.config.setup.read.error=Before continuing please be sure you have read and understood the disclaimer
-admin.config.setup.disclaimer.title=Disclaimer
+admin.config.setup.disclaimerPart1=A partir desta versão, os publicadores são obrigados a atribuir uma das três declarações de direitos de uso para seus dados, as quais podem ser lidas digitalmente. Se você não concorda em publicar dados sob as declarações CC0 1.0, 4.0 CC-BY ou CC-BY-NC 4.0, nós recomendamos que você continue a usar a versão anterior do IPT por enquanto.
+admin.config.setup.disclaimerPart2=O GBIF começará a trabalhar com editoras existentes para aplicar e fazer cumprir este  requisito através da rede durante 2015. Se você não deseja escolher uma das três opções, você não poderá registrar seu dataset com GBIF ou torná-lo globalmente disponível através de GBIF.org. Para obter informações sobre esta decisão, <a href\="http\://www.gbif.org/terms/licences" target\="_blank"> clique aqui</a>.
+admin.config.setup.read=Eu li e entendi o aviso de isenção
+admin.config.setup.read.error=Antes de continuar certifique-se de que leu e compreendeu o termo de responsabilidade
+admin.config.setup.disclaimer.title=Termo de responsabilidade
 admin.config.setup.datadir=O caminho absoluto para o seu diretório de dados.
 admin.config.setup.datadir.created=Você criou com sucesso o diretório de dados.
 admin.config.setup.datadir.reused=Você selecionou com sucesso um diretório de dados existente.
@@ -427,8 +427,8 @@ admin.config.setup2.administrator=Administrador default
 admin.config.setup2.administrator.help=A senha para a conta de administrador default pode ser modificada depois, mas o email não pode ser alterado sem que se elimine e crie novamente o usuário.
 admin.config.setup2.mode.title=Modo do IPT
 admin.config.setup2.mode.help=Selecione o modo em que deseja executar o IPT. O modo do IPT determina se os recursos alocados serão ou não indexados pelo GBIF, com o objetivo de facilitar o acesso público. GBIF recomenda aos administradores do IPT usar o modo de Teste primeiro para entender o processo de registro, e então reinstalar no modo de Produção para a publicação definitiva. <strong>Atenção</strong>\:  para esta inslação, a seleção é definitiva e não pode ser alterada depois. Para trocar do modo de teste para o de produção, ou vice-versa, você deve reinstalar o IPT e repetir todas as configurações.
-admin.config.setup2.mode.test=<strong>Test</strong> mode is for evaluating the IPT or running it in a training scenario. Resources registered with GBIF will go into a test registry and will never be indexed. All DOIs minted for resources in test mode should use a test prefix (e.g. 10.5072 for DataCite), meaning they are temporary.
-admin.config.setup2.mode.production=<strong>Production</strong> mode is for publishing resources formally. Resources registered with GBIF go into the GBIF Registry and will be indexed. DOIs minted for resources cannot be deleted, and require resources to remain publicly accessible.
+admin.config.setup2.mode.test=Modo de <strong>teste</strong> é para avaliar o IPT ou executá-lo em um cenário de treinamento. Recursos de teste registrados com o GBIF nunca serão indexados. Todos os DOIs cunhadas para recursos no modo de teste devem usar um prefixo de teste (por exemplo, 10.5072 para DataCite), significando que eles são temporários.
+admin.config.setup2.mode.production=Modo de <strong>produção</strong> é para a publicação formal de recursos. Os recursos registrados entrarão em um Registro do GBIF e serão indexados. Todos os DOIs gerados para os recursos não podem ser excluídos e exigem recursos para manterem-se acessível ao público.
 admin.config.setup2.success=Parabéns\! A configuração do seu IPT está completa.
 admin.config.setup2.next=Por favor, primeiro revise a seção de admnistração, crie novos administradores e instale as extensões adequadas antes você gerenciar os recursos.
 admin.config.setup2.existingFound=Um "IPT data directory" existente foi encontrado no local fornecido e será utilizado com todo o seu conteúdo anterior.
@@ -477,7 +477,7 @@ admin.config.baseUrl.changed=A URL Base foi atualizada com sucesso.
 admin.config.baseUrl.changed.reminder=Uma vez logado, pressione o botão "Publicar todos os recursos" (na página de Administração)
 admin.config.baseUrl.inaccessible=A URL Base não aponta para uma instalação do IPT que é acessível a partir deste computador.
 admin.config.baseUrl.invalidBaseURL=A URL Base deve ser visível na Internet (exemplo, localhost e 127.0.01 não são válidos).
-admin.config.baseUrl.sameHostName=The machine name is used in the Base URL. Please be sure that your Base URL is visible on the Internet.
+admin.config.baseUrl.sameHostName=O nome da máquina é usado na URL de Base. Por favor, certifique-se de que sua URL de Base é visível na Internet.
 
 
 admin.config.error.invalidBaseURL=A URL Base fornecida não está dentro do formato válido (ex\: http\://www.my-institution.com/ipt)
@@ -543,12 +543,12 @@ admin.user.title.new=Nova Conta de Usuário
 admin.user.intro=Endereços de email identificam usuários e não podem ser alterados depois. Por favor, selecione com cuidado quando criar uma conta. Se um email precisa ser alterado, você terá que criar uma nova conta e remover a antiga.
 admin.user.intro2=Usuários adminstradores estão encarregados para criar novos recursos, mas não podem gerenciar recursos criados por outros usuários, a menos que eles sejam convidados para fazer isso na configuração deste recurso. Você pode criar qualquer número de usuários administradores, mas ao menos um deve permanecer no sistema.
 admin.user.added=A conta de usuário foi criada com sucesso.
-admin.user.account.updated=Your user account was successfully updated.
+admin.user.account.updated=Sua conta de usuário foi atualizada com sucesso.
 admin.user.changed=O usuário foi atualizado com sucesso.
 admin.user.deleted=O usuário foi removido com sucesso.
 admin.user.login=Para que as mudanças tenham efeito, por favor, faça login novamente.
 admin.user.saveError=A mudança de usuário não pode ser aplicada.
-admin.user.account.saveError=Your user account change could not be applied.
+admin.user.account.saveError=A mudança de sua conta de usuário pode não ter sido aplicada.
 admin.user.exists=Já existe um usuário com o email {0}.
 admin.user.deleted.lastadmin=O último usuário Admin não pode ser removido.
 admin.user.deleted.lastmanager=O usuário não pode ser removido pois é o único administrador para os seguintes recursos\: {0}.
@@ -564,7 +564,7 @@ admin.logs.download=Faça download do <a href\="{0}">arquivo completo de log</a>
 # used for unkown errors where the exception message (in English...) will be displayed
 # use of this is to catch the errors that are not properly understood
 admin.error.invalidConfiguration=Configuração fornecida inválida\: {0}
-admin.error.invalidConfiguration.doiAccount.activated=Archival mode cannot be turned off, since DOI registration has been enabled in this IPT. You can disable DOI registration by deactivating the DataCite/EZID account selected to register DOIs.
+admin.error.invalidConfiguration.doiAccount.activated=O modo de arquivamento não pode ser desligado, uma vez que o registro DOI foi habilitado nesta IPT. Você pode desabilitar o registro DOI, desativando a conta de DataCite/EZID selecionada para registar DOIs.
 
 #admin - registration
 admin.ipt.password=Senha do IPT
@@ -617,20 +617,20 @@ admin.organisation.password.help=Senha da Organização para verificar que você
 admin.organisation.error.save=A associação com o IPT não pode ser feita para esta Organização.
 admin.organisation.error.existing=A associação com esta organizção já existe. Se você precisa editá-la, por favor, clique no botão "Editar" na tela anterior.
 admin.organisation.cantSave=Não se pode salvar o arquivo da organização.
-admin.organisation.doiRegistrationAgency=DOI registration agency
-admin.organisation.doiRegistrationAgency.help=Once an organisation signs an agreement with a DataCite member (or EZID), an account is issued to the organisation that gives it permission to register DOIs under one or more prefixes. Simply fill in the account details below, to enable registering DOIs for datasets under this organisation''s preferred prefix, directly via the IPT.
+admin.organisation.doiRegistrationAgency=Agência de registro do DOI
+admin.organisation.doiRegistrationAgency.help=Uma vez que uma organização assina um acordo com um membro do DataCite (ou EZID), uma conta é emitida para a organização que lhe dá permissão para registrar DOIs sob um ou mais prefixos. Basta preencha os detalhes da conta abaixo, para permitir registrar datasets sob um prefixo preferido desta organização, diretamente através do IPT.
 admin.organisation.doiRegistrationAgency.username=Nome de usuário da conta
-admin.organisation.doiRegistrationAgency.username.help=The username (symbol) of the DataCite/EZID account issued to the organisation.
+admin.organisation.doiRegistrationAgency.username.help=O nome de usuário (símbolo) da conta do DataCite/EZID emitida para a organização.
 admin.organisation.doiRegistrationAgency.password=Senha da conta
-admin.organisation.doiRegistrationAgency.password.help=The password of the DataCite/EZID account issued to the organisation.
-admin.organisation.doiRegistrationAgency.prefix=DOI prefix/shoulder
-admin.organisation.doiRegistrationAgency.prefix.help=The preferred DOI prefix/shoulder used to mint DOIs. This prefix is unique to the account issued to the organisation. Warning\: always use a test prefix (e.g. 10.5072 for DataCite, 10.5072/FK2 for EZID) when running the IPT in test mode\!
+admin.organisation.doiRegistrationAgency.password.help=A senha da conta do DataCite/EZID emitida para a organização.
+admin.organisation.doiRegistrationAgency.prefix=Prefixo do DOI
+admin.organisation.doiRegistrationAgency.prefix.help=Preferencialmente, o prefixo do DOI deve ser utilizado para identificar os DOIs. Este prefixo é exclusivo para a conta emitida para a organização. Aviso\: Utilize sempre um prefixo de teste (por exemplo, 10.5072 para DataCite, 10.5072/FK2 para EZID) ao executar o IPT em modo de teste\!
 admin.organisation.doiAccount.activated=Conta ativada
-admin.organisation.doiAccount.activated.help=Check this to activate this DataCite/EZID account as the only account used by the IPT to register DOIs for datasets. Only one DataCite/EZID account can be activated at a time.
-admin.organisation.doiAccount.activated.exists=Another DataCite/EZID account has already been selected as the account used by the IPT to register DOIs for datasets. In order to activate this account instead, the other account must be de-activated first.
-admin.organisation.canRegisterDois=Can register DOIs?
-admin.organisation.doiAccount.activated.failed=This DataCite/EZID account cannot be activated unless Archival Mode in the IPT is turned on in IPT Settings. Archival mode stores every published Darwin Core Archive version so that they remain downloadable. A DOI resolving to an older version of the resource should still make the data available for download.
-admin.organisation.doiAccount.differentTypeInUse=Only one DOI account can be activated at a time. A DOI account of type {0} has already been used to assign DOIs to one or more resources, e.g. DOI\={1}
+admin.organisation.doiAccount.activated.help=Marque aqui para ativar essa conta DataCite/EZID como a única conta usada pelo IPT para registrar DOIs de conjuntos de dados. Apenas uma conta de DataCite/EZID pode ser ativada por vez.
+admin.organisation.doiAccount.activated.exists=Outra conta DataCite/EZID já foi selecionada como a conta usada pelo IPT para registrar DOIs para os conjuntos de dados. Para ativar essa conta, é necessário que a outra conta seja desativada.
+admin.organisation.canRegisterDois=Pode registar o DOI?
+admin.organisation.doiAccount.activated.failed=Esta conta de DataCite/EZID não pode ser ativada a menos que o modo de arquivamento do IPT esteja ativado nas configurações do IPT. O modo de arquivamento armazena todas as versões publicadas do Darwin Core Archive para que elas permaneçam disponíveis para download. Um DOI que aponte para uma versão mais antiga do recurso ainda deve tornar os dados disponíveis para download.
+admin.organisation.doiAccount.differentTypeInUse=Apenas uma conta DOI pode ser ativada por vez. Uma conta DOI do tipo {0} já tem sido utilizada para associar os DOIs de um ou mais recursos, por exemplo, DOI\={1}
 organisation.key=Chave/UUID
 
 admin.organisation.deleted=A associação com a organização foi removida.
@@ -685,12 +685,12 @@ manage.home.next.publication=Próxima publicação
 manage.home.visible=Visibilidade
 manage.home.visible.public=Público
 manage.home.visible.private=Privado
-manage.home.visible.deleted=Deleted
+manage.home.visible.deleted=Apagado
 manage.home.organisation=Organização
 manage.home.not.registered=Não registrado
-manage.home.not.registered.verbose=This resource has not been registered with GBIF
-manage.home.registered.verbose=This resource has been registered with GBIF, and assigned the following GBIF UUID\: <a href\="{0}">{1}</a>.
-manage.home.published.verbose=<a href\="{0}">{1}</a> publishes this resource, and is itself registered in GBIF as a data publisher endorsed by <a href\="{2}">{3}</a>.
+manage.home.not.registered.verbose=Este recurso não foi registrado pelo GBIF
+manage.home.registered.verbose=Este recurso foi registrado no GBIF e atribuído ao seguinte GBIF UUID\: <a href\="{0}">{1}</a>.
+manage.home.published.verbose=<a href\="{0}">{1}</a> publica este recurso, e está registrado no GBIF como um publicador de dados aprovado por <a href\="{2}">{3}</a>.
 manage.home.not.published=Não publicado
 manage.home.resource.locked=Este recurso está bloqueado devido a um preocessamento em execução. Por favor, tente mais tarde.
 manage.home.resources.none=Nenhum, por favor criar um recurso ou perguntar a um gerenciador para adicionar você a esse(s) recurso(s).
@@ -698,7 +698,7 @@ manage.home.resources.none=Nenhum, por favor criar um recurso ou perguntar a um 
 manage.locked=Esse recurso está atualmente sendo publicado e permanecerá bloqueado para modificações. Você pode <a href\="{0}">cancelar</a> o processo se necessário.
 
 manage.resource.create.title=Criar um Recurso Novo
-manage.resource.create.intro=You can create a new blank resource, upload an existing resource saved as a zipped Darwin Core archive, or upload an existing IPT resource using its zipped resource configuration folder. Please refer to the User Manual for more specific instructions. A short name is required.
+manage.resource.create.intro=Você pode criar um novo recurso em branco, carregar um recurso existente salvo como um arquivo Darwin Core archive ou carregar um recurso IPT existente, utilizando a pasta de configuração do recurso compactada. Por favor consulte o Manual do Usuário para obter instruções mais específicas. Um nome curto é necessário.
 manage.resource.create.file=Recurso arquivado opcional para carregar
 manage.resource.create.success=Importado o Darwin Core Archive existente com um tipo de linha central de {0}. {1} fontes foram importadas e {2} mapeamentos foram criados.
 manage.resource.create.success.nocore=Importado o Darwin Core Archive existente. {0} fontes foram importadas e {1} mapeamentos foram criados.
@@ -707,30 +707,30 @@ manage.resource.create.failed=Não é possível ler o arquivo
 manage.resource.create.rowType.null=Tipo de Linha {0} não está disponível nesta instalação do IPT
 manage.resource.create.extension.null=Uma extensão não existente foi encontrada. Por favor, verifique se todas as extensões desse recurso já estão instaladas e repita o precedimento de importação.
 manage.resource.create.mapping.concept.skip=Ignorou o termo {0} mapeado, o qual não é conhecido pela extenção {1}
-manage.resource.create.forbidden=No resources can be created until at least one organisation able to host resources is associated to the IPT. Please contact your IPT administrator for help.
-manage.resource.delete.confirm=Do you still want to delete this registered resource?
-manage.resource.delete.confirm.registered=Be aware deletion from the GBIF Index is automatic, but cannot be undone without explicit email communication with the <a href\=''mailto\:helpdesk@gbif.org''>GBIF Help Desk</a>.
-manage.resource.delete.confirm.doi=Because this resource has been assigned a DOI, the DOI must continue to resolve. Deletion ensures the data can no longer be downloaded, and the DOI resolves to a page explaining the resource has been retracted. Be aware that it can take up to 24 hours until a DOI update is globally known.
-manage.resource.undoDelete.confirm=Because this resource was previously assigned a DOI, undoing the deletion for this resource makes the data available for download again, by resolving to the last published version of this resource. Be aware that it can take up to 24 hours until a DOI update is globally known. Do you still want to undelete this resource?
+manage.resource.create.forbidden=Nenhum recurso pode ser criado enquanto ao menos uma organização, capaz de hospedar recursos, seja associada ao IPT. Por favor entre em contato com o administrador do IPT para obter ajuda.
+manage.resource.delete.confirm=Você ainda deseja excluir este recurso registrado?
+manage.resource.delete.confirm.registered=Esteja ciente de que a exclusão do índice GBIF é automática, mas não pode ser desfeita sem comunicação explícita por e-mail com o <a href\=''mailto\:helpdesk@gbif.org''> GBIF Help Desk</a>.
+manage.resource.delete.confirm.doi=Considerando que este recurso tem sido atribuído a um DOI, o DOI deve continuar a funcionar. A exclusão garante que os dados não poderão ser baixados e a interpretação do DOI encaminhará para uma página explicando que o recurso foi recolhido. Esteja ciente de que a atualização do DOI pode demorar até 24 horas para ser mundialmente conhecida.
+manage.resource.undoDelete.confirm=Considerando que este recurso foi atribuído anteriormente a um DOI, ao desfazer a exclusão deste recurso os dados estarão disponíveis novamente para download utilizando a última versão pública deste recurso. Esteja ciente de que a atualização do DOI pode demorar até 24 horas para ser mundialmente conhecida. Ainda quer desfazer a exclusão deste recurso?
 manage.resource.delete.failed=Falha ao remover recurso.
-manage.resource.undelete.failed=Failed to undelete resource.
+manage.resource.undelete.failed=Falha ao recuperar o recurso.
 manage.resource.status.intro.private=Esse recurso está privado para gestores. Para torná-lo disponível para todos, deixe-o público.
 manage.resource.status.intro.public=Esse recurso está público e disponível para todos.
 manage.resource.status.intro.public.migration=Se você quiser esse recurso para atualizar um recurso do DiGIR, BioCASE ou TAPIR, por favor, certifique-se de que o recurso está registrado com o mesmo proprietário da organização e que o recurso UUID registrado foi adicionado à lista de recurso com um identificador alternativo na página de {0}.
-manage.resource.status.intro.public.gbifWarning=Be aware it can take up to one hour for data to be indexed by GBIF following registration.
-manage.resource.status.intro.registered=This public resource is registered with GBIF meaning that it is globally discoverable via the <a href\="http\://www.gbif.org" target\="_blank">GBIF website</a>.
-manage.resource.status.intro.deleted=This resource has been deleted, but since it was assigned a DOI must remain publicly accessible. Its DOI resolves to a page explaining the resource has been deleted, and the data is no longer available for download.
-manage.resource.status.registration.intro=Register this resource with GBIF to make it globally discoverable via the <a href\="http\://www.gbif.org" target\="_blank">GBIF website</a>. To make it accessible only to managers, make it private.
+manage.resource.status.intro.public.gbifWarning=Esteja ciente de que pode demorar até uma hora para que os dados sejam indexados pelo GBIF durante o registro.
+manage.resource.status.intro.registered=Este recurso público está registrado no GBIF, ou seja, visível globalmente por meio do <a href\="http\://www.gbif.org" target\="_blank">GBIF website</a>.
+manage.resource.status.intro.deleted=Este recurso foi excluído, mas devido a sua atribuição a um DOI, precisa permanecer publicamente acessível. Seu DOI resolve para uma página explicando que o recurso foi excluído, e que os dados não estão mais disponíveis para download.
+manage.resource.status.registration.intro=Registre este recurso no GBIF para torná-lo globalmente acessível por meio do <a href\="http\://www.gbif.org" target\="_blank">GBIF website</a>. Para torná-lo acessível apenas para gestores, este recurso deve ser privado.
 manage.resource.status.registration.forbidden=O seu usuário não possui direitos necessários para registrar esse recurso no GBIF.
-manage.resource.status.publication.forbidden=You do not have the role necessary to publish this resource.
-manage.resource.status.publication.forbidden.account.missing=This resource cannot be published, because the DataCite or EZID account is missing or has been configured wrong.
-manage.resource.status.deletion.forbidden=You do not have the role necessary to delete this resource.
-manage.resource.status.undeletion.forbidden=You do not have the role necessary to undelete this resource.
-manage.resource.status.doi.forbidden=You do not have the role necessary to assign DOIs this resource.
+manage.resource.status.publication.forbidden=Você não possui o papel necessário para publicar este recurso.
+manage.resource.status.publication.forbidden.account.missing=Este recurso não pode ser publicado, porque a conta DataCite ou EZID não existe ou foi mal configurada.
+manage.resource.status.deletion.forbidden=Você não possui o papel necessário para excluir este recurso.
+manage.resource.status.undeletion.forbidden=Você não possui o papel necessário para recuperar este recurso.
+manage.resource.status.doi.forbidden=Você não possui o papel necessário para associar DOIs para este recurso.
 
 
-manage.resource.identifierStatus.intro.reserved=This resource''s DOI is reserved, meaning it is not known to resolvers. To make this DOI known to resolvers, please verify the DOI is correct, and then make it public. Please note that once a DOI is public, it cannot be deleted and the resource''s visibility cannot be changed back to private.
-manage.resource.identifierStatus.intro.public=This resource''s DOI is public, meaning that it is known to resolvers. If this resource is invalid or about to be deleted, please make the DOI unavailable. This action will ensure the DOI no longer resolves to a resource landing page.
+manage.resource.identifierStatus.intro.reserved=O DOI deste recurso está reservado, o que significa que ele não é conhecido pelos interpretadores. Para tornar este DOI conhecido, por favor, verifique se ele está correto e torne-o público. Por favor, note que uma vez público, o DOI não poderá ser excluído e a visibilidade do recurso não poderá ser alterada para privada.
+manage.resource.identifierStatus.intro.public=O DOI deste recurso é público, o que significa que é conhecido por resolvedores. Se este recurso for inválido ou prestes a ser excluído, por favor, indisponibilize o DOI. Isso irá garantir que o DOI não seja resolvido por uma página de recurso.
 manage.resource.identifierStatus.edit=Editar DOI
 manage.resource.role.change=Por favor, entre em contato com o administrador do IPT para receber os direto necessários.
 manage.resource.publish.forbidden=Uma vez que esse recurso já econtra-se registrado no GBIF, e recursos registrados são atualizados a acada publicação, você não pode publicar esse recurso.
@@ -751,8 +751,8 @@ manage.mapping.intro=Para cada propriedade que você pode atribuir um valor din�
 manage.mapping.source=Fonte de dados
 manage.mapping.source.help=Antes de começar o mapeamento de conceitos, por favor selecione um arquivo de fonte de dados.
 manage.mapping.idColumn=A coluna na fonte que contém uma chave única para cada registro/linha, também conhecida como "core id". Se pretende mapear outra fonte, este identificador é necessário e irá ser utilizado para juntar as linhas da fonte.
-manage.mapping.datasetIdColumn=Use resource DOI
-manage.mapping.datasetIdColumn.help=Please check this box if you want the IPT to set the default value for datasetID equal to the resource DOI. Please note this setting only applies to this mapping, so repeat elsewhere if necessary.
+manage.mapping.datasetIdColumn=Usar DOI do recurso
+manage.mapping.datasetIdColumn.help=Por favor, marque esta caixa se você quer o IPT defina o valor padrão do datasetID igual ao recurso DOI. Por favor, note que esta configuração se aplica somente para esse mapeamento, então repita o procedimento em outro lugar, se necessário.
 manage.mapping.noid=Sem ID
 manage.mapping.lineNumber=Número da Linha
 manage.mapping.uuid=Gerador de UUID
@@ -773,7 +773,7 @@ manage.mapping.no.mapped.title=Colunas não mapeadas
 manage.mapping.no.mapped.columns=As seguintes colunas da fonte não são atribuídas às propriedades deste mapeamento
 
 manage.history.title=Histórico de versões
-manage.history.intro=Edit the change summary for version {0} of the {1} resource.
+manage.history.intro=Edite o resumo das alterações para a versão {0} do recurso {1}.
 
 manage.source.unique=O nome da fonte já existe. Por favor, escolha um nome único.
 manage.source.title=Fonte de Dados
@@ -802,22 +802,22 @@ manage.source.confirmation.message=Tem certeza que deseja apagar essa fonte de a
 
 manage.overview.title.label=Título do Recurso
 manage.overview.title=Visão Global
-manage.overview.description=This is the overview page for the <em>{0}</em> resource.
-manage.overview.intro=Please start by uploading and mapping source data to generate and publish a Darwin Core archive. Don''t forget to fill in the mandatory metadata. Published resources can be registered with the GBIF Network, and assigned a DOI. Resources registered with GBIF can be removed, but they cannot be reverted to a private state. After a resource has been assigned a DOI, however, it cannot be deleted and must remain publicly accessible.
-manage.overview.intro.metadataOnly=Please start by filling in the mandatory metadata. Published resources can be registered with the GBIF Network. Registered resources can be removed, but they cannot be reverted to a private state.
+manage.overview.description=Esta é a página de visão geral do recurso <em>{0}</em>.
+manage.overview.intro=Por favor, comece carregando e mapeando a fonte de dados para gerar e publicar um Darwin Core Archive. Não se esqueça de preencher os metadados obrigatórios. Recursos publicados podem ser registrados com a rede GBIF e atribuídos a um DOI. Recursos registrados com o GBIF podem ser removidos, mas eles não podem ser revertidos para um estado privado. Após um recurso ter sido atribuído a um DOI, no entanto, ele não pode ser excluído e deve permanecer acessível ao público.
+manage.overview.intro.metadataOnly=Por favor, comece preenchendo os metadados obrigatórios. Recursos publicados podem ser registrados com a rede GBIF. Recursos registrados podem ser removidos, mas eles não podem ser revertidos para um estado particular.
 manage.overview.no.description=Sem Descrição disponível
 manage.overview.keywords=Palavras-chave
 manage.overview.taxcoverage=Cobertura Taxonômica
 manage.overview.geocoverage=Cobertura Geográfica
 manage.overview.metadata=Metadados
 manage.overview.missing.metadata=O recurso está com metadado obrigatório faltando\!
-manage.overview.metadata.description=Your resource metadata.
+manage.overview.metadata.description=Seu recurso de metadados.
 manage.overview.metadata.preview=Visualização {0}
-manage.overview.notModified=Not modified since last publication
+manage.overview.notModified=Não modificado desde a última publicação
 manage.overview.source.hidden=Como este é um recurso exclusivo de metadados, os dados de origem e as seções de mapeamento estão ocultas. Para adicionar dados primários reais, basta alterar o tipo do recurso em seu {0}.
 manage.overview.source.data=Fonte de Dados
-manage.overview.source.intro=Your source data files and SQL sources for generating a Darwin Core Archive.
-manage.overview.source.description1=You can upload delimited text files (csv, tab, and files using any other delimiter) either directly or compressed (zip or gzip).
+manage.overview.source.intro=Seus arquivos de conjuntos de dados e SQL para gerar um Darwin Core Archive.
+manage.overview.source.description1=Você pode carregar arquivos de texto delimitados (csv, tab, e arquivos usando qualquer outro delimitador) diretamente ou compactado (zip ou gzip).
 manage.overview.source.description2=Arquivos Excel também são suportados.
 manage.overview.source.description3=Para (re)fazer upload de um arquivo, selecione o arquivo local e clique em "{0}".
 manage.overview.source.description4=Como alternativa, você pode configurar <i>Views SQL</ i> para bancos de dados em sua rede local. Para criar uma fonte de SQL novo, por favor clique em "{0}", sem qualquer arquivo escolhido.
@@ -832,51 +832,51 @@ manage.overview.no.DwC.extension=Esquema (core) {0} não foi instalado. Por favo
 manage.overview.DwC.Mappings=Mapeamentos Darwin Core
 manage.overview.DwC.Mappings.description=Seu mapeamento entre a fonte de dados e os termos do Darwin Core.
 manage.overview.DwC.Mappings.cantdo=Nenhum mapeamento entre a fonte de dados e os termos Darwin Core pode ser feito até as fontes de dados serem adicionadas e direitos do esquema serem instalados. Apenas se isso for um recurso de metadados somente, nenhum mapeamento é necessário.
-manage.overview.DwC.Mappings.coretype.description1=Here you can map your source data to Darwin Core terms by selecting the appropriate extension that has fields matching the ones to map in the source data.
-manage.overview.DwC.Mappings.coretype.description2=First, select a Core Type and map that before selecting an extension to map.
-manage.overview.DwC.Mappings.coretype.description3=Choose "Darwin Core Taxon" when the basis of the resource is taxon names, or choose "Darwin Core Occurrence" when the basis of the resource is occurrences in nature (observations) or in a collection (specimens).
-manage.overview.DwC.Mappings.coretype.description4=If the appropriate core type or extension does not appear in the select box, please contact your IPT admin to install it.
+manage.overview.DwC.Mappings.coretype.description1=Aqui você pode mapear os dados com os termos do Darwin Core, selecionando a extensão apropriada que possui os campos correspondentes aos que devem ser mapeados no conjunto de dados.
+manage.overview.DwC.Mappings.coretype.description2=Primeiro, selecione o Padrão Core e realize o seu mapeamento antes de selecionar uma uma extensão para mapear.
+manage.overview.DwC.Mappings.coretype.description3=Escolha "Darwin Core Taxon" quando a base do recurso são os nomes dos táxons, ou escolha "Darwin Core Occurrence" quando a base do recurso são as ocorrências na natureza (observações) ou em uma coleção (espécimes).
+manage.overview.DwC.Mappings.coretype.description4=Se os padrões ou extensões apropriadas não estiverem disponíveis na caixa de seleção, por favor, entre em contato com o administrador do IPT para instalá-los.
 manage.overview.DwC.Mappings.terms=termos mapeados para
 manage.overview.DwC.Mappings.select=Selecione o Tipo de Esquema (somente 1)
 manage.overview.DwC.Mappings.cores.select=Core
 manage.overview.DwC.Mappings.extensions.select=Extensões
 manage.overview.DwC.Mappings.select.invalid=Seleção inválida\: o tipo de núcleo ou de extensão que você selecionou não existe
-mapping.preview.success=Mapping preview finished successfully
-mapping.preview.failed=Mapping preview failed
-mapping.preview.not.found=Preview mapping file not found
-mapping.preview.error=Generating mapping preview failed\: {0}
-mapping.preview.mapping.not.found=No mapping found with rowType\={0} and mapping ID\={1}
-mapping.preview.bad.request=Bad request\: rowType and mapping ID are required to preview mapping
+mapping.preview.success=Visualização do mapeamento concluída com êxito
+mapping.preview.failed=Falha na visualização prévia do mapa
+mapping.preview.not.found=Arquivo da visualização do mapeamento não encontrado
+mapping.preview.error=Geração da visualização do mapeamento falhou\: {0}
+mapping.preview.mapping.not.found=Nenhum mapeamento encontrado para Tipo de Linha\={0} e ID do Mapeamento\={1}
+mapping.preview.bad.request=Solicitação incorreta\: Tipo de Linha e ID do Mapeamento são necessários para pré-visualizar o mapeamento
 
 manage.overview.visibility=Visibilidade
-manage.overview.visibility.description=The visibility of a resource determines who will be able to view it, whether viewing is private to managers (private), available to everyone (public), globally discoverable through via GBIF website (registered), or deleted but still available to everyone since it was assigned a DOI (deleted but public). By default, each resource is visible only to the user who created it and any other users who have the Admin role on the IPT where the resource is created.
+manage.overview.visibility.description=A visibilidade de um recurso determina quem será capaz de visualizá-lo, se a visualização é privada para gerentes (privado), disponíveis para todos (público), globalmente detectável pelo site do GBIF (registrado) ou excluído mas ainda disponível para todos desde que esteja atribuído a um DOI (excluído mas público). Por padrão, cada recurso é visível apenas para o usuário que o criou e todos os outros usuários que têm a função de administrador sobre o IPT onde o recurso é criado.
 manage.overview.visibility.missing.metadata=O recurso precisa ser publicado antes de se inscrever com a Rede GBIF.
 manage.overview.visibility.missing.registration.metadata=Para registrar este recurso com GBIF você deve fornecer os metadados necessários.
 manage.overview.visibility.no.organisations=Para registrar este recurso no GBIF o administrador do IPT deve primeiro associar uma organização com este IPT.
-manage.metadata.no.organisations=Before you can enter any metadata, your IPT administrator must first associate the organisation responsible for publishing this resource with this IPT.
-manage.overview.identifierStatus.no.organisations=In order to register a DOI your IPT administrator must first associate an organisation (that has an account with a DOI registration agency) with this IPT.
-manage.overview.identifierStatus.missing.metadata=Before a DOI can be reserved for a resource you must provide the required basic metadata.
+manage.metadata.no.organisations=Antes que você possa inserir qualquer metadado, o administrador do IPT deve primeiro associar a organização responsável pela publicação deste recurso no IPT.
+manage.overview.identifierStatus.no.organisations=Para registrar um DOI, o administrador do IPT deve primeiramente associar uma organização (que possua uma conta de uma agência de registro DOI) no IPT.
+manage.overview.identifierStatus.missing.metadata=Antes que um DOI seja reservado para um recurso é necessário o fornecimento dos metadados básicos.
 manage.overview.visibility.resource.key=Chave do Recurso
 manage.overview.visibility.organisation=Organização
 manage.overview.visibility.organisation.contact=Contato da Organização
 manage.overview.visibility.endorsing.node=Endossando nó
-manage.overview.visibility.confirm.registration=You are about to register the resource with GBIF. Do you still want to register?
-manage.overview.visibility.confirm.agreement=Confirm that you have read and understood the <a target\=''_blank'' href\=''http\://www.gbif.org/terms/licences/data-sharing''>GBIF data sharing agreement</a>
+manage.overview.visibility.confirm.registration=Você está pronto para registrar o recurso no GBIF. Deseja registrá-lo?
+manage.overview.visibility.confirm.agreement=Confirme que você leu e entendeu o <a target\=''_blank'' href\=''http\://www.gbif.org/terms/licences/data-sharing''>termo de compartilhamento do GBIF</a>
 manage.overview.published=Versões Publicadas
 manage.overview.published.report=Relatório de Publicação
 manage.overview.published.see.report=Veja o relatório
 manage.overview.published.hide.report=Ocultar relatório
-manage.overview.published.intro=A preview of your pending published version compared with the current version if existing.
-manage.overview.published.description=When publishing a new version of a resource, a new EML version, RTF version, and a Darwin Core Archive (DwC-A) will be created. A DwC-A bundles all source files with mappings and metadata in one zipped archive.
-manage.overview.published.description.metadataOnly=When publishing a new version of a metadata-only resource, a new EML version and RTF version will be created.
-manage.overview.published.description.doiAccount=All DOIs assigned to this resource are registered using the {0} account belonging to {1} with prefix {2}. Best practice is to assign a new DOI to the resource every time it undergoes a scientifically significant change. Please refer to the user manual for more guidance.
-manage.overview.published.description.noDoiAccount=Best practice is to enter a change summary for each new published version in order to help users of the data understand which version of the data to use.
+manage.overview.published.intro=Uma pré-visualização da versão pendente de publicação comparada com a versão atual, se existente.
+manage.overview.published.description=Ao publicar uma nova atualização do recurso, uma nova versão do EML, do RTF e do Darwin Core Archive (DWC-A) serão criados. O DwC-A empacotará todos os arquivos fontes com mapeamentos e metadados em um arquivo zipado.
+manage.overview.published.description.metadataOnly=Ao publicar uma nova versão unicamente dos metadados de um recurso, será criada uma nova versão do EML e RTF.
+manage.overview.published.description.doiAccount=Todos os DOIs atribuídos a este recurso são registrados usando a conta de {0} pertencente a {1} com o prefixo {2}. A melhor prática é atribuir um novo DOI para o recurso cada vez que ele sofre uma mudança científica significativa. Por favor consulte o manual do usuário para obter mais orientações.
+manage.overview.published.description.noDoiAccount=Melhores práticas é inserir um resumo de mudança para cada nova versão publicada para ajudar os usuários dos dados entenderem qual versão dos dados usar.
 manage.overview.published.testmode.warning=Seu recurso não pode ser indexado pelo GBIF porque a sua instância do IPT está rodando em modo de Teste.
 manage.overview.published.missing.metadata=Antes de publicar um recurso, você deve fornecer os metadados básica necessários.
 manage.overview.published.last.publication=Última publicação
 manage.overview.published.last.publication.intro=Versão Atual
-manage.overview.published.next.publication.intro=Pending version
-manage.overview.published.released=Published on
+manage.overview.published.next.publication.intro=Versão pendente
+manage.overview.published.released=Publicado em
 manage.overview.published.version=Versão
 manage.overview.published.from=de
 manage.overview.published.download=download
@@ -888,58 +888,58 @@ manage.overview.publishing=publicação
 manage.overview.publishing.resource.version=Publicando recurso versão \#{0}.
 manage.overview.publishing.error={0}\: A publicação do recurso falhou no passo {1}. Motivo\: {2}
 
-manage.overview.publishing.doi.reserve.confirm=You are about to reserve a DOI for this resource. Be aware you can still delete the DOI, as long as it has not been registered yet. Do you still want to reserve?
-manage.overview.publishing.doi.reserve.help=You can reserve a DOI for a resource after the mandatory metadata has been entered. To reuse an existing DOI, enter it into the citation identifier field in the resource metadata. If a resource is publicly available and reserved a DOI, the next publication will result in a new major version and the DOI will be registered. Otherwise if a resource is private and reserved a DOI, the next publication will result in a new minor version of the resource and the DOI will NOT be registered. Be aware that until a DOI is registered you can still delete it.
-manage.overview.publishing.doi.reserve.new.help=You can reserve a new DOI for a published resource that has already been assigned a DOI. Be aware the DOI will be registered the next time the resource is published, and will resolve to the newly published version of the resource. The former DOI will still resolve to the previous version, but will display a warning that it has been superseded by the new one. Also be aware you can still delete the reserved DOI as long as it isn''t published.
-manage.overview.publishing.doi.reserve.prevented.noOrganisation=You cannot assign a DOI to this resource until an organization with a DataCite or EZID account is associated to this IPT. Please contact your IPT administrator to do this.
-manage.overview.publishing.doi.delete.confirm=You are about to delete a reserved DOI for this resource. Since this DOI was never registered, it was never publicly resolvable and is safe to delete. Do you still want to delete?
-manage.overview.publishing.doi.delete.help=You can delete the DOI reserved for this resource. Since this DOI was never registered, it was never publicly resolvable and is safe to delete.
-manage.overview.publishing.doi.register.agreement=Confirm that you understand DOIs cannot be deleted once registered.
-manage.overview.publishing.doi.register.help=The DOI that has been reserved for the pending version of this resource will be registered the next time the resource is published.
-manage.overview.publishing.doi.register.prevented.notPublic=You cannot register the DOI that has been reserved for this resource because the resource is private. To register the DOI, make the resource public and publish the resource.
-manage.overview.publishing.doi.minorVersion.confirm=You are about to publish a new <b>minor</b> version of this resource. If there have been scientifically significant changes to the resource since the last publication, you should cancel, assign this resource a new DOI, and then publish again.
-manage.overview.publishing.doi.majorVersion.confirm=You are about to publish a new <b>major</b> version of this resource, which is appropriate the first time a resource is assigned a DOI, or after the resource underwent scientifically significant changes. Following successful publication, the DOI reserved for this resource will be registered and should resolve after about 5 minutes. If this is not what you want, cancel and delete the reserved DOI.
-manage.overview.publishing.withoutDoi.majorVersion.confirm=You are about to publish a new <b>major</b> version of this resource, which is appropriate the first time a resource is published, or after the resource underwent scientifically significant changes. If this is not what you want, cancel.
-manage.overview.publishing.doi.summary=Before you publish, you can assist researchers using your data by summarizing what has changed in this version.
-manage.overview.publishing.doi.summary.placeholder=Please summarize what has changed in this version. You can always edit this later.
+manage.overview.publishing.doi.reserve.confirm=Você está prestes a reservar um DOI para este recurso. Esteja ciente de que você ainda pode excluir o DOI, enquanto ele ainda não tiver sido registrado. Você ainda quer a reserva?
+manage.overview.publishing.doi.reserve.help=Após os metadados obrigatórios serem inseridos, você pode reservar um DOI para um recurso. Para reutilizar um DOI existente, insira o DOI no campo de identificador de citação dos metadados do recurso. Se um recurso está disponível publicamente e com um DOI reservado, a próxima publicação resultará em uma nova versão principal do recurso e o DOI será registrado. Caso contrário, se um recurso é privado e com um DOI reservado, a próxima publicação resultará em uma nova versão secundária do recurso e o DOI não será registrado. Esteja ciente de que até um DOI ser registrado, você ainda poderá apaga-lo.
+manage.overview.publishing.doi.reserve.new.help=Você pode solicitar um novo DOI para um recurso publicado que já tenha um DOI atribuído. Esteja ciente que o DOI será registrado na próxima vez que o recurso for publicado e será considerado a versão do recurso recém publicado. O antigo DOI ainda resolverá a versão anterior, mas exibirá um aviso de que ele foi substituído por um novo. Também esteja ciente de que você ainda pode excluir o DOI solicitado, contanto que não esteja publicado.
+manage.overview.publishing.doi.reserve.prevented.noOrganisation=Você não pode atribuir um DOI a esse recurso até que uma organização com uma conta no DataCite ou no EZID esteja associada a este IPT. Entre em contato com o administrador do seu IPT para fazer isso.
+manage.overview.publishing.doi.delete.confirm=Você está prestes a excluir um DOI reservado para este recurso. Considerando que este DOI nunca foi registrado, ele nunca foi disponibilizado publicamente e é seguro excluir. Ainda quer excluir?
+manage.overview.publishing.doi.delete.help=Você pode excluir o DOI reservado para este recurso. Uma vez que este DOI nunca foi registrado e nem resolvido publicamente, é segura a sua exclusão.
+manage.overview.publishing.doi.register.agreement=Confirme que você entende que os DOIs não podem ser excluídos uma vez que forem registrados.
+manage.overview.publishing.doi.register.help=O DOI que foi reservado para uma versão pendente deste recurso será registrado na próxima vez que o recurso for publicado.
+manage.overview.publishing.doi.register.prevented.notPublic=Você não pode registrar o DOI que foi reservado para este recurso porque o recurso é particular. Para registrar o DOI, torne público o recurso e depois publique o recurso.
+manage.overview.publishing.doi.minorVersion.confirm=Você está prestes a publicar uma nova versão <b>menor</b> deste recurso. Se houve mudanças científicas significativas para o recurso desde a última publicação, você deve cancelar, atribuir esse recurso a um novo DOI e depois publicar novamente.
+manage.overview.publishing.doi.majorVersion.confirm=Você está prestes a publicar uma nova versão <b>principal</b> deste recurso, que é apropriado a primeira vez que um recurso é publicado, ou depois que o recurso passou por mudanças científicas significativas. Após obter sucesso na publicação, o DOI reservado para este recurso será registrado e estará disponível em cerca de 5 minutos. Se não é isso que você quer, cancele e exclua o DOI reservado.
+manage.overview.publishing.withoutDoi.majorVersion.confirm=Você está prestes a publicar uma nova versão <b>principal</b> deste recurso, que é apropriado a primeira vez que um recurso é publicado, ou depois que o recurso passou por mudanças científicas significativas. Se não é isso o que você quer, cancele.
+manage.overview.publishing.doi.summary=Antes de publicar, você pode ajudar os pesquisadores, utilizando seus dados, para sumarizar o que foi alterado nesta versão.
+manage.overview.publishing.doi.summary.placeholder=Por favor, sumarize o que foi alterado nesta versão. Você poderá alterar este texto mais tarde.
 manage.overview.publishing.doi.confirm.end=Você ainda quer publicar?
-manage.overview.publishing.doi.replaced=The DOI assigned to the current version will be superseded by the DOI reserved for the pending version the next time the resource is published.
-manage.overview.publishing.doi.reserve.reused=An existing DOI [{0}] has already been assigned to this resource and will be reused. If this is not the correct DOI, you can delete the reserved DOI, remove or replace the DOI from the citation identifier field in the resource metadata and then try to reserve another DOI.
-manage.overview.publishing.doi.reserve.notRreused=An existing DOI [{0}] has already been assigned to this resource, however, it cannot be reused because this IPT is restricted to registering DOIs under the prefix {1}. You can remove or replace the DOI from the citation identifier field in the resource metadata and then try to reserve another DOI. If you still want to use this DOI, please contact your IPT administrator for help.
-manage.overview.publishing.doi.reserve.success={0} was reserved successfully
-manage.overview.publishing.doi.reserve.failed=Failed to reserve {0}\: {1}
-manage.overview.publishing.doi.reserve.failed.metadata=Failed to reserve {0} because DOI metadata was invalid\: {1}
-manage.overview.publishing.doi.reserve.reused.failed=Failed to verify that {0} has been registered already. Please try again.
-manage.overview.publishing.doi.reserve.reused.failed.exception=Failed to verify that {0} has been registered already\: {1}
-manage.overview.publishing.doi.publish.check.registered.failed=Pre-publication check failed\: {0} is not reserved or registered. Its status is\: {1}
-manage.overview.publishing.doi.publish.check.existing.failed=Pre-publication check failed\: could not verify {0} exists\!
-manage.overview.publishing.doi.publish.check.existing.failed.exception=Pre-publication check failed\: could not verify {0} exists\!\: {1}
+manage.overview.publishing.doi.replaced=O DOI atribuído para a versão atual vai ser substituído pelo DOI reservado para a versão pendente da próxima vez que o recurso for publicado.
+manage.overview.publishing.doi.reserve.reused=Um DOI [{0}] existente já foi atribuído a esse recurso e será reutilizado. Se este não for o DOI correto, você pode excluir o DOI reservado, remover ou substituir o DOI do campo identificador de citação nos metadados do recurso e então tentar reservar um outro DOI.
+manage.overview.publishing.doi.reserve.notRreused=Um DOI [{0}] existente já foi atribuído a esse recurso, no entanto, ele não pode ser reutilizado porque este IPT é restrito para registrar os DOIs sob o prefixo {1}. Você pode remover ou substituir o DOI do campo identificador de citação nos metadados do recurso e, em seguida, tentar reservar outro DOI. Se você ainda quiser usar este DOI, contacte o administrador do IPT para ajuda-lo.
+manage.overview.publishing.doi.reserve.success={0} foi reservado com sucesso
+manage.overview.publishing.doi.reserve.failed=Impossível reservar {0}\: {1}
+manage.overview.publishing.doi.reserve.failed.metadata=Não foi possível reservar {0} porque o metadado DOI é inválido\: {1}
+manage.overview.publishing.doi.reserve.reused.failed=Falha ao verificar que {0} já foi registrado. Por favor tente novamente.
+manage.overview.publishing.doi.reserve.reused.failed.exception=Falha ao verificar que {0} já foi registrado\: {1}
+manage.overview.publishing.doi.publish.check.registered.failed=Falha ao verificar a pré-publicação\: {0} não está reservado ou registrado. Seu estado é\: {1}
+manage.overview.publishing.doi.publish.check.existing.failed=Falha na verificação da pré-publicação\: não foi possível verificar se {0} existe\!
+manage.overview.publishing.doi.publish.check.existing.failed.exception=Falha na verificação da pré-publicação\: não foi possível verificar se {0} existe\!\: {1}
 
-manage.overview.publishing.doi.publish.updateDoi.failed=Failed to update {0} metadata\: {1}
-manage.overview.publishing.doi.publish.newMinorVersion=Published new minor version\: {0} was updated successfully
-manage.overview.publishing.doi.publish.newMajorVersion=Published new major version\: {0} was registered successfully
-manage.overview.publishing.doi.publish.newMajorVersion.replaces=Published new major version\: {0} was registered successfully\! The previous DOI has also been successfully updated, to reflect that it now represents a previous version of the resource
-manage.overview.doi.operation.failed.noAccount=No organisation with an activated DOI agency account exists. Please contact your IPT admin for help.
-manage.overview.publishing.doi.delete.success={0} was deleted successfully
-manage.overview.publishing.doi.delete.reassign.success={0} was deleted, and {1} was reassigned successfully
-manage.overview.publishing.doi.delete.failed.exception=Failed to delete {0}\: {1}
-manage.overview.publishing.doi.delete.failed.notResolved=Failed to verify {0} exists therefore it could not be deleted\!
-manage.overview.publishing.doi.deactivate.success={0} was deactivated successfully
-manage.overview.publishing.doi.undelete.success={0} was undeleted successfully
-manage.overview.publishing.doi.undelete.failed.noOrganisation=The resource''s organisation is no longer associated to the IPT, key\={0}
-manage.overview.publishing.doi.undelete.failed.badPrefix={0} has a prefix different to the prefix of the DOI agency account activated in this IPT\: {1}
-manage.overview.publishing.doi.undelete.failed.badStatus={0} cannot be undeleted because its status is {1}
-manage.overview.publishing.doi.undelete.failed.notResolved=Failed to verify {0} exists therefore it could not be undeleted\!
-manage.overview.publishing.doi.undelete.failed.exception=Failed to undelete {0}\: {1}
+manage.overview.publishing.doi.publish.updateDoi.failed=Falha ao atualizar os metadados {0}\: {1}
+manage.overview.publishing.doi.publish.newMinorVersion=Publicada nova versão com pequenas alterações\: {0} foi atualizado com sucesso
+manage.overview.publishing.doi.publish.newMajorVersion=Publicada nova versão com grandes alterações\: {0} foi registrado com sucesso
+manage.overview.publishing.doi.publish.newMajorVersion.replaces=Publicada nova versão principal\: {0} foram registrados com sucesso\! O DOI anterior também foi atualizado com êxito, para refletir que ele agora representa uma versão anterior do recurso
+manage.overview.doi.operation.failed.noAccount=Não existe uma organização com uma conta de agência DOI ativa. Por favor entre em contato com o administrador do IPT para ajuda.
+manage.overview.publishing.doi.delete.success={0} foi excluído com êxito
+manage.overview.publishing.doi.delete.reassign.success={0} foi excluído, e {1} foi transferido com sucesso
+manage.overview.publishing.doi.delete.failed.exception=Falha ao excluir {0}\: {1}
+manage.overview.publishing.doi.delete.failed.notResolved=Falha ao verificar a existência de {0}, portanto não foi apagado\!
+manage.overview.publishing.doi.deactivate.success={0} foi desativado com sucesso
+manage.overview.publishing.doi.undelete.success={0} foi recuperado com sucesso
+manage.overview.publishing.doi.undelete.failed.noOrganisation=A organização do recurso não é mais associada ao IPT, chave\={0}
+manage.overview.publishing.doi.undelete.failed.badPrefix={0} tem um prefixo diferente do prefixo da conta da agência DOI ativada neste IPT\: {1}
+manage.overview.publishing.doi.undelete.failed.badStatus={0} não pode ser recuperado porque o seu estado é {1}
+manage.overview.publishing.doi.undelete.failed.notResolved=Falha ao verificar se {0} existe, portanto, não pode ser recuperado\!
+manage.overview.publishing.doi.undelete.failed.exception=Falha ao excluir {0}\: {1}
 
-manage.overview.resource.undelete.warning.gbif=Resource currently cannot be undeleted automatically in the GBIF Registry. Therefore please write to helpdesk@gbif.org to undelete it in the GBIF Registry.
+manage.overview.resource.undelete.warning.gbif=No momento os recursos não podem ser restaurados automaticamente no registro GBIF. Portanto, escreva para helpdesk@gbif.org para recuperá-los no registro GBIF.
 manage.overview.resource.managers=Gestores de Recursos
-manage.overview.resource.managers.intro=Managers granted permission to modify this resource.
-manage.overview.resource.managers.description=Resources can be managed by several managers. You can grant other managers permission to modify this resource. Please contact your IPT admin to add accounts for new managers.
+manage.overview.resource.managers.intro=Permissão concedida pelos gestores para a modificação deste recurso.
+manage.overview.resource.managers.description=Os recursos podem ser geridos por diversos gestores. Você pode conceder permissão para outros gerentes modificarem este recurso. Por favor entre em contato com o administrador IPT para adicionar as contas de novos gestores.
 manage.overview.resource.managers.creator=Criador
 manage.overview.resource.managers.manager=Gestor
 manage.overview.resource.invalid.operation=O recurso {0} está atualmente {1}, defini-lo para um estado requisitado poderia ser uma alteração inválida. Por favor, atualize a página para ver o estado atual correto.
-manage.overview.resource.doi.invalid.operation=Resource {0} DOI is currently {1}, setting it to the requested state would be an invalid change. Please refresh the page to see the correct current state.
+manage.overview.resource.doi.invalid.operation=O DOI do recurso {0} está atualmente {1}, o ajuste do seu estado para requisitado seria uma alteração inválida. Por favor, atualize a página para visualizar o estado atual.
 manage.overview.resource.deleted=Deletado {0}
 manage.overview.resource.undeleted=Recuperados {0}
 manage.overview.resource.published=Recurso publicado\!
@@ -949,11 +949,11 @@ manage.overview.resource.update.registration=O registro do recurso {0} foi atual
 manage.overview.manager.not.available=Gestor {0} não disponível.
 manage.overview.failed.stop.publishing=Falho ao tentar parar a publicação\!
 manage.overview.failed.resource.registration=O registro do recurso falhou\!
-manage.overview.failed.resource.registration.notPublic=The current published version is not publicly available. Please publish a new version that is publicly available and try again.
-manage.overview.prevented.resource.registration.noGBIFLicense=The resource cannot be registered because the current published version was not assigned one of the licences that GBIF supports. To enable registration, assign one of these licences and publish a new version.
-manage.overview.prevented.resource.publishing.noGBIFLicense=This registered resource cannot be re-published because it is not assigned one of the licences that GBIF supports. To enable publishing, please assign it one of these licences.
-manage.overview.prevented.resource.registration.notPublic=The resource cannot be registered because the current published version is not publicly available. Please publish a new version that is publicly available to enable registration.
-manage.overview.noGBIFLicense=Not GBIF-supported
+manage.overview.failed.resource.registration.notPublic=A versão atual publicada não está disponível publicamente. Por favor, publique uma nova versão disponível ao público e tente novamente.
+manage.overview.prevented.resource.registration.noGBIFLicense=O recurso não pode ser registrado, porque a versão atual publicada não foi atribuída a um dos certificados que o GBIF suporta. Para habilitar o registro, atribua um desses certificados ao recurso e publique uma nova versão.
+manage.overview.prevented.resource.publishing.noGBIFLicense=Este recurso registrado não pode ser republicado, porque ele não tem atribuída uma das licenças que o GBIF suporta. Para habilitar a publicação, por favor, atribua um destes certificados ao recurso.
+manage.overview.prevented.resource.registration.notPublic=O recurso não pode ser registrado porque a versão atual disponível não está pública. Por favor, publique uma nova versão que é publicamente disponível para permitir o registro.
+manage.overview.noGBIFLicense=Não suportado pelo GBIF
 manage.overview.failed.resource.update=A atualização do registro falhou\: {0}
 manage.overview.user.added={0} adicionado para a lista de gerenciadores de recursos.
 manage.overview.user.removed=Removido {0} a partir da lista de gestores de recursos.
@@ -980,7 +980,7 @@ manage.metadata.removethis=Remover isso
 manage.metadata.addnew=Adicionar novo
 
 manage.metadata.basic.title=Metadados Básicos
-manage.metadata.basic.required.message=Please enter all the mandatory properties on the Basic Metadata page, and then continue entering metadata in the other pages that are applicable to your resource. The more metadata you provide, the greater the chance that your resource will be found, reused by other researchers, and cited.
+manage.metadata.basic.required.message=Por favor, insira todos os campos obrigatórios da página de metadados básicos, e então continue inserindo metadados nas outras páginas que são aplicáveis ao seu recurso. Quanto mais metadados você fornecer, maior a chance de que seus recursos serão encontrados, reutilizados por outros pesquisadores e citados.
 
 manage.metadata.parties.title=Partes Associadas
 manage.metadata.parties.title.numbered=Parte Associada {0}
@@ -1011,20 +1011,20 @@ manage.metadata.tempcoverage.intro=Por favor insira os metadados sobre os perío
 manage.metadata.tempcoverage.item=cobertura temporal
 
 manage.metadata.citations.title=Citações
-manage.metadata.citations.intro=Please enter how your resource should be cited. To ensure your resource is reliably and consistently cited, let the IPT auto-generate the citation for you. An optional bibliography can also be entered, i.e., citations of other resources related to or used in the creation of this resource.
-manage.metadata.citations.bibliography=Bibliographic Citations
-manage.metadata.citations.bibliography.help=Citations of other resources related to or used in the creation of this resource.
-manage.metadata.citations.item=bibliographic citation
+manage.metadata.citations.intro=Por favor insira como seu recurso deve ser citado. Para garantir que o seu recurso seja citado de forma confiável e consistente, deixe o IPT gerar automaticamente a citação para você. Uma bibliografia opcional também pode ser inserida, ou seja, citações de outros recursos relacionados ou utilizados na criação deste recurso.
+manage.metadata.citations.bibliography=Citações bibliográficas
+manage.metadata.citations.bibliography.help=As citações de outros recursos relacionados ou utilizados na criação deste recurso.
+manage.metadata.citations.item=citação bibliográfica
 
 manage.metadata.collections.title=Dados de Coleção
 manage.metadata.collections.intro=Por favor, insira o metadados da coleção para o recurso.
 manage.metadata.collections.curatorialUnits.title=Unidades de Curadoria
-manage.metadata.collections.curatorialUnits.title.help=The counts of curatorial units covered by the resource. The count can be entered as a range or as a value with an uncertainty. Examples of units include skins, sheets, pins, boxes, jars.
+manage.metadata.collections.curatorialUnits.title.help=A contagem de unidades curatoriais abrangidas pelo recurso. A contagem pode ser inserida como um intervalo ou um valor com uma incerteza. Peles, folhas, pinos, caixas, frascos são exemplos de unidades.
 manage.metadata.collections.curatorialUnits.item=unidade curatorial
 
 
 manage.metadata.physical.title=Links externos
-manage.metadata.physical.intro=Os links para a página inicial de recursos ou outros formatos disponíveis (por exemplo, repositórios de banco de dados, planilhas, nexus, dados ligados, etc.)
+manage.metadata.physical.intro=Links externos para a sua página de recurso ou outros formatos disponíveis (exemplo, dumps de banco de dados, planilhas, nexus, dados ligados, etc.).
 manage.metadata.physical.item=Links externos
 manage.metadata.physical.alternativeTitle=Dados externos
 
@@ -1036,7 +1036,7 @@ manage.metadata.additional.title=Metadados Adicionais
 manage.metadata.additional.intro=Por favor, inclua o metadados adicional para o recurso.
 manage.metadata.additional.logo.intro=<b>Upload o logo do recurso\:</b> Se você não tem uma URL para o logo do recurso, você pode fazer upload de um arquivo de imagem selecionado apartir do disco.
 manage.metadata.alternateIdentifiers.title=Identificadores alternativos
-manage.metadata.alternateIdentifiers.title.help=Alternative identifiers that are used to label this resource, possibly from different data management systems, can be listed here.
+manage.metadata.alternateIdentifiers.title.help=Identificadores alternativos que são utilizados para rotular este recurso, possivelmente em diferentes sistemas de gerenciamento, podem ser listados aqui.
 manage.metadata.alternateIdentifiers.item=identificador alternativo
 
 manage.report.title=Status da Publicação
@@ -1050,14 +1050,14 @@ manage.report.continueTo=Continue para <a href\="resource.do?r\={0}">visão glob
 ####
 eml.title=Título
 eml.description=Descrição
-eml.publishingOrganisation=Publishing Organisation
-eml.publishingOrganisation.help=Please select the organisation responsible for publishing (producing, releasing, holding) this resource. It will be used as the resource''s publishing organisation when registering this resource with GBIF and when submitting metadata during DOI registrations. It will also be used to auto-generate the citation for the resource (if auto-generation is turned on), so consider the prominence of the role. Please be aware your selection cannot be changed after the resource has been either registered with GBIF or assigned a DOI.
-eml.publishingOrganisation.required=Publishing Organisation is required.
-eml.publishingOrganisation.notFound=Organisation (key\={0}) not found\!
+eml.publishingOrganisation=Organização publicadora
+eml.publishingOrganisation.help=Por favor, selecione a organização responsável pela publicação (produção, lançamento, manutenção) deste recurso. Ela servirá como organização de publicação do recurso ao registrar este recurso com o GBIF e ao submeter os metadados durante as inscrições do DOI. Ela também será usada para gerar automaticamente a citação para o recurso (se a geração automática estiver ativada), então, considere a sua importância. Por favor, esteja ciente de que a sua escolha não poderá ser alterada depois que o recurso tiver sido registrado com o GBIF ou atribuído a um DOI.
+eml.publishingOrganisation.required=Organização Publicadora é obrigatório.
+eml.publishingOrganisation.notFound=Organização (key\={0}) não foi encontrada\!
 
 eml.resourceCreator=Criador do Recurso
 eml.resourceCreator.plural=Criadores do Recurso
-eml.resourceCreator.plural.help=The list of creators represents the people and organisations who created the resource, in priority order. The list will be used to auto-generate the resource citation (if auto-generation is turned on).
+eml.resourceCreator.plural.help=A lista de criadores representa as pessoas e organizações que criaram o recurso, em ordem de prioridade. A lista será usada para gerar automaticamente a citação do recurso (se a geração automática estiver ativada).
 eml.resourceCreator.firstName=Primeiro Nome
 eml.resourceCreator.lastName=Último Nome
 eml.resourceCreator.email=Email
@@ -1072,11 +1072,11 @@ eml.resourceCreator.address.country.help=Países, territórios e ilhas utilizam 
 eml.resourceCreator.address.postalCode=Código Postal
 eml.resourceCreator.homepage=Home Page
 eml.resourceCreator.copyLink=Copiar detalhes de contato do recurso
-eml.resourceCreator.required=At least one creator is required
+eml.resourceCreator.required=Pelo menos um criador é necessário
 
 eml.metadataProvider=Provedor dos Metadados
 eml.metadataProvider.plural=Provedores dos Metadados
-eml.metadataProvider.plural.help=The list of metadata providers represents the people and organisations responsible for producing the resource metadata.
+eml.metadataProvider.plural.help=A lista de fornecedores de metadados representam as pessoas e organizações responsáveis pela produção dos metadados do recurso.
 eml.metadataProvider.firstName=Primeiro Nome
 eml.metadataProvider.lastName=Último Nome
 eml.metadataProvider.email=Email
@@ -1090,19 +1090,19 @@ eml.metadataProvider.address.province=Estado/Região
 eml.metadataProvider.address.country=País
 eml.metadataProvider.address.country.help=Países, territórios, e ilhas utilizam o padrão ISO 3166-1.
 eml.metadataProvider.address.postalCode=Código Postal
-eml.metadataProvider.required=At least one metadata provider is required
+eml.metadataProvider.required=Pelo menos um metadados de provedor é necessário
 
-eml.language=Data Language
+eml.language=Idioma dos dados
 eml.language.help=O idioma primário em que o documento está escrito (não o documento de metadado).
-eml.language.default=The data language has defaulted to English.
+eml.language.default=O idioma dos dados foi padronizado em Inglês.
 eml.metadataLanguage=Idioma dos Metadados
 eml.metadataLanguage.help=O idioma em que foi escrito o documento de dados.
-eml.metadataLanguage.default=The metadata language has defaulted to English.
+eml.metadataLanguage.default=O idioma dos metadados foi padronizado em Inglês.
 eml.language.available=em {0}
 
 eml.contact=Contato do Recurso
-eml.contact.plural=Resource Contacts
-eml.contact.plural.help=The list of contacts represents the people and organisations that should be contacted to get more information about the resource, that curate the resource or to whom putative problems with the resource or its data should be addressed.
+eml.contact.plural=Contato do Recurso
+eml.contact.plural.help=A lista de contatos representa as pessoas e organizações que devem ser contactadas para obter mais informações sobre o recurso ou a quem devem ser dirigidos problemas com o recurso ou seus dados.
 eml.contact.firstName=Primeiro Nome
 eml.contact.lastName=Último Nome
 eml.contact.email=Email
@@ -1118,10 +1118,10 @@ eml.contact.address.postalCode=Código Postal
 eml.contact.homepage=Home Page
 eml.contact.required=Pelo menos um contato é necessário
 eml.contact.noDirectory=Selecione um diretório
-eml.contact.directory=Personnel Directory
-eml.contact.directory.help=The URL of the personnel directory system to which the personnel identifier belongs.
+eml.contact.directory=Diretório de pessoal
+eml.contact.directory.help=A URL do sistema do diretório pessoal no qual o identificador pessoal pertence.
 eml.contact.identifier=Identificador Pessoal
-eml.contact.identifier.help=A 16-digit ORCID ID (e.g. 0000-0002-1825-0097) or another identifier that links this person to the personnel directory specified.
+eml.contact.identifier.help=Um ID de ORCID de 16 dígitos (por exemplo, 0000-0002-1825-0097) ou outro identificador que vincula essa pessoa para o diretório pessoal especificado.
 
 eml.country.selection=Selecione um país, território ou ilha
 eml.rank.selection=Selecione uma categoria
@@ -1178,20 +1178,20 @@ eml.temporalCoverages.livingTimePeriod.help=O período de tempo em que o materia
 
 eml.project.title=Título
 eml.project.identifier=Identificador
-eml.project.identifier.help=A unique identifier for the research project. This can be used to link multiple dataset/EML document instances that are associated in some way with the same project, e.g. a monitoring series. The nature of the association can be described in the project description.
+eml.project.identifier.help=Um identificador exclusivo para o projeto de pesquisa. Isso pode ser usado para vincular várias instâncias de documentos dataset/EML que estão associadas de alguma forma ao mesmo projeto, por exemplo, a uma série de monitoramento. A natureza da associação pode ser descrita na descrição do projeto.
 eml.project.description=Descrição
 eml.project.description.help=Resumo sobre o projeto de pesquisa.
-eml.project.personnel=Project Personnel
-eml.project.personnel.help=The list of personnel represents the people involved in the project.
+eml.project.personnel=Pessoas associadas ao projeto
+eml.project.personnel.help=A lista de pessoal representa as pessoas envolvidas no projeto.
 eml.project.personnel.firstName=Primeiro Nome
 eml.project.personnel.lastName=Último Nome
-eml.project.personnel.intro=The personnel involved in the project
+eml.project.personnel.intro=O pessoal envolvido no projeto
 eml.project.funding=Financiamento
 eml.project.funding.help=Informação sobre fontes de financiamento para o projeto (ex. numero de contrato, nomes e endereços das fontes de financiamento). Outras informações relacionadas ao financiamento também podem ser incluídas.
 eml.project.studyAreaDescription.descriptorValue=Descrição da Área de Estudo
 eml.project.studyAreaDescription.descriptorValue.help=Documenta a área física associada com o projeto de pesquisa. Pode incluir descrições da cobertura geográfica, temporal e taxonomica do local de pesquisa.
 eml.project.designDescription=Descrição do Design
-eml.project.designDescription.help=A general textual description of research design. It can include detailed accounts of goals, motivations, theory, hypotheses, strategy, statistical design, and actual work.
+eml.project.designDescription.help=Uma descrição textual geral do projeto de pesquisa. Pode incluir descrições detalhadas dos objetivos, motivações, teoria, hipóteses, estratégia, projeto estatístico e trabalhos atuais.
 
 eml.studyExtent=Área de Estudo
 eml.studyExtent.help=Descrição da Área de amostra específica e a frenquência de amostra (limites temporais, frenquência de ocorrência). A área geográfica de estudo geralmente substitui a Área documentada em "Descrição da Área de Estudo" da seção "Dados do Projeto".
@@ -1200,26 +1200,26 @@ eml.sampleDescription.help=Descrição dos protocolos usados durante o projeto d
 eml.qualityControl=Controle de Qualidade
 eml.qualityControl.help=Uma descrição de ações tomadas para controlar ou avaliar a qualidade dos dados resultantes das descrições de passos associados.
 eml.methodSteps=Descrição do Passo
-eml.methodSteps.help=This field allows for repeated sets of elements that document a series of methods and procedures used in the study, and the processing steps leading to the production of the data files. These include text descriptions of the procedures, relevant literature, software, instrumentation, source data and any quality control measures taken. Each method should be described in enough detail to allow other researchers to interpret and repeat, if required, the study.
+eml.methodSteps.help=Este campo permite um conjunto de elementos que documentam uma série de métodos e procedimentos utilizados no estudo, e as etapas de processamento que levam à produção dos arquivos de dados. Eles incluem descrições de texto dos procedimentos, Literatura relevante, software, instrumentação, fonte de dados e quaisquer medidas de controle de qualidade. Cada método deve ser descrito em detalhes suficientes para permitir que outros pesquisadores possam interpretar e repetir, se necessário, o estudo.
 eml.citation.citation=Referência do Recurso
-eml.citation.citation.help=A single citation for use when citing the dataset. Turn on auto-generation to let the IPT auto-generate the citation for you. The citation format used in auto-generation is based on DataCite''s preferred citation format, and satisfies the <a href\="https\://www.force11.org/datacitation" target\="_blank">Joint Declaration of Data Citation Principles</a>. This format includes a version number, which is especially important for datasets that are continuously updated.<br /><br />Example citation with institutional creator\:<br /><br />"Biodiversity Institute of Ontario (2011) Migratory birds of Ontario. Version 1.2. University of Guelph. Dataset/Species occurrences. http\://dx.doi.org/10.5886/qzxxd2pa"<br /><br />Example citation with 9 creators\:<br /><br />"Brouillet L, Desmet P, Coursol F, Meades SJ, Favreau M, Anions M, Belisle P, Gendreau C, Shorthouse D (2010) Database of vascular plants of Canada. Version 1.2. Universite de Montreal Biodiversity Centre. Dataset/Species checklist. http\://doi.org/10.5886/1bft7W5f"
-eml.citation.generate.turn.on=Auto-generation is OFF - Turn on
-eml.citation.generate.turn.off=Auto-generation is On - Turn off
+eml.citation.citation.help=Uma única citação para ser usada quando o dataset for citando. Ative a auto-geração para deixar o IPT auto-gerar a citação para você. O formato de citação usado na geração automática é baseado no formato de citação preferencial do DataCite e satisfaz a <a href\="https\://www.force11.org/datacitation" target\="_blank"> Declaração Conjunta de Princípios de Citação de Dados</a>. Este formato inclui um número de versão, que é especialmente importante para conjuntos de dados que são continuamente atualizados. < br / > < br / > Exemplo de citação com um criador institucional\: < br / > < br / >"Biodiversity Institute of Ontario (2011) Migratory birds of Ontario. Version 1.2. University of Guelph. Dataset/Species occurrences. http\://dx.doi.org/10.5886/qzxxd2pa"< br / > < br / > Exemplo de citação com 9 criadores\: < br / > < br / >"Brouillet L, Desmet P, Coursol F, Meades SJ, Favreau M, Anions M, Belisle P, Gendreau C, Shorthouse D (2010) Database of vascular plants of Canada. Version 1.2. Universite de Montreal Biodiversity Centre. Dataset/Species checklist. http\://doi.org/10.5886/1bft7W5f"
+eml.citation.generate.turn.on=Auto-geração está DESLIGADO - Ligar
+eml.citation.generate.turn.off=Auto-geração está LIGADO - Desligar
 
-eml.citation.identifier=Resource Citation Identifier
-eml.citation.identifier.help=A DOI, URI, or other persistent identifier that resolves to the online dataset. It is recommended the identifier be included in the citation.
-eml.bibliographicCitationSet.bibliographicCitations.citation=Bibliographic Citation
-eml.bibliographicCitationSet.bibliographicCitations.citation.help=The citation of an external resource related to or used in the creation of this resource.
-eml.bibliographicCitationSet.bibliographicCitations.identifier=Bibliographic Citation Identifier
-eml.bibliographicCitationSet.bibliographicCitations.identifier.help=A DOI, URI, or other persistent identifier that resolves to the online dataset. It should be used in the citation, usually at the end.
+eml.citation.identifier=Identificador de Citação de Recurso
+eml.citation.identifier.help=Um DOI, URI ou outro identificador persistente que resolva o dataset on-line. Recomenda-se incluir o identificador na citação.
+eml.bibliographicCitationSet.bibliographicCitations.citation=Citação bibliográfica
+eml.bibliographicCitationSet.bibliographicCitations.citation.help=A citação de um recurso externo relacionado ou utilizado na criação deste recurso.
+eml.bibliographicCitationSet.bibliographicCitations.identifier=Identificador de citação bibliográfica
+eml.bibliographicCitationSet.bibliographicCitations.identifier.help=Um DOI, URI, ou outro identificador persistente que resolva para o conjunto de dados online. Deve ser utilizado na citação, geralmente no final.
 eml.collection=Coleção
 eml.collection.plural=Coleções
-eml.collection.plural.help=The list of collections represents the collections which this resource is based on.
+eml.collection.plural.help=A lista de coleções representa as coleções que este recurso se baseia.
 eml.collectionName=Nome da Coleção
 eml.collectionName.help=Nome oficial da Coleção no idioma local.
 eml.collectionId=Identificador da Coleção
 eml.collectionId.help=A URI (LSID ou URL) da coleção. Em RDF, usado como URI do recurso da coleção.
-eml.collection.required=At least one collection is required.
+eml.collection.required=É obrigatório pelo menos uma coleção.
 eml.parentCollectionId=Identificador da Coleção Parental
 eml.parentCollectionId.help=Identificador para a coleção parental desta subcoleção. Permite a construção da hierarquia de coleções e subcoleções. Por favor, coloque o valor "Not applicable" se esta coleção não tem uma coleção parental.
 eml.jgtiCuratorialUnits.type=Tipo de Método
@@ -1238,17 +1238,17 @@ eml.physicalData.format.help=Formato do arquivo de dados <br /><b>Exemplo(s)\:</
 eml.physicalData.formatVersion=Versão do Formato dos Dados
 eml.physicalData.formatVersion.help=Versão do formato<br/><b>Exemplo(s)\:</b><br/><i>2000 (9.0.2720)</i>
 eml.physicalData.other=Outros Formatos de Dados
-eml.physicalData.other.help=Links to your resource data in other formats (e.g., database dumps, spreadsheets, nexus, linked data, etc.).
+eml.physicalData.other.help=Links para os seus recursos de dados em outros formatos (exemplo, dumps de bancos de dados, planilhas, nexus, dados ligados, etc.).
 eml.keywords.keywordThesaurus=Thesaurus/Vocabulário
 eml.keywords.keywordThesaurus.help=Um nome para o thesaurus/vocabulário de onde a palavra-chave foi derivada. Os Thesaurus de Palavras-Chave são usualmente específicos e podem ser customizados ou oficiais. Se as palavras-chave não foram extraídos de um thesaurus/vocabulário específico, coloque <i>''n/a''</i><br /><br /><b>Exemplo(s)\: </b><br /><i>"IRIS keyword thesaurus"</i>
 eml.keywords.keywordsString=Lista de Palavras-Chave
 eml.keywords.keywordsString.help=Palavras-chave que descrevem suscitamente o recurso ou são relacionados ao recurso. Separe cada palavra-chave com vírgulas.
 eml.hierarchyLevel=Nível de Hierarquia
 eml.hierarchyLevel.help=Nível do conjunto de dados correspondente ao metadado. O valor padrão para GBIF é <i>conjunto de dados</i>.
-eml.pubDate=Date Last Published
-eml.pubDate.help=The date on which the resource was last published. This is updated automatically every time the resource is re-published.
+eml.pubDate=Data da última publicação
+eml.pubDate.help=A data em que o recurso foi publicado pela última vez. Esta é atualizada automaticamente a cada vez que o recurso é publicado.
 eml.dateStamp=Data de Criação
-eml.dateStamp.help=The date on which the first version of the resource was published/made publicly available. It will be used to formulate the publication year in the resource citation.
+eml.dateStamp.help=A data em que a primeira versão do recurso foi publicado. Será utilizada para a definição do ano de publicação na citação do recurso.
 eml.distributionUrl=URL do Recurso
 eml.distributionUrl.short=Início
 eml.logoUrl=URL do logo do recurso
@@ -1259,25 +1259,25 @@ eml.purpose.help=Resumo das intenções pelas quais este conjunto de dados foi d
 eml.additionalInfo=Informação adicional
 eml.additionalInfo.help=Qualquer informação que não está descrita nos demais campos do metadado, ex. história do projeto, publicações que utilizaram os dados associados a este metadado, informações sobre dados relacionados publicados, etc.
 eml.specimenPreservationMethod=Método de preservação dos Espécimes
-eml.specimenPreservationMethod.short=preservation method
-eml.specimenPreservationMethod.plural=Specimen preservation methods
-eml.specimenPreservationMethod.plural.help=The list of specimen preservation methods covered by the resource.
+eml.specimenPreservationMethod.short=método de preservação
+eml.specimenPreservationMethod.plural=Métodos de preservação do espécime
+eml.specimenPreservationMethod.plural.help=A lista de métodos de preservação de espécimes considerados no recurso.
 eml.specimenPreservationMethod.help=Palavras-Chave do vocabulário Método de Preservação de Espécimes do GBIF, indicando o processo e técnica utilziada para prevenir deterioração física das coleções não-vivas. Se a coleção tem mais de um método de preservação, selecione o predominante. Recorde que pode incluir uma lista de métodos para um espécime no elemento "Preparações" do mapeamento de dados DwC (http\://rs.tdwg.org/dwc/terms/preparations). Por favor, não selecione tratamentos para coleções vivas.
 eml.alternateIdentifier=Identificador Alternativo
 eml.alternateIdentifier.help=Um identificador secundário para esta entidade. Quando o recurso é publicado, a URL do IPT do recurso é adicionada na lista de identificadores. Quando um recurso é registrado com o Registro GBIF, o registro único do recurso também é adicionado na lista de identificadores. Se o recurso representa um recurso existente no Registro GBIF, é possível agregar o UUID do recurso existente na lista de identificadores. Isto permitirá atualizar o recurso existente com o recurso do IPT durante o registro.
 
 eml.intellectualRights.simple=Direitos
 eml.intellectualRights.license=Licença de Dados
-eml.intellectualRights.license.help=The licence that you apply to a dataset provides a standardized way to define appropriate uses of your work. GBIF encourages publishers to adopt the least restrictive licence possible from among three machine-readable options (CC0 1.0, CC-BY 4.0 or CC-BY-NC 4.0) to encourage the widest possible use and application of data. Learn more <a href\="http\://www.gbif.org/terms/licences" target\="_blank">here</a>. If you feel unable to select one of the three options, please contact the GBIF Secretariat at participation@gbif.org.
+eml.intellectualRights.license.help=A licença que você aplica sobre um dataset fornece uma maneira padronizada para definir a utilização apropriada do seu trabalho. O GBIF incentiva os editores a adotar a licença menos restritiva possível entre as três opções de leitura por máquinas (CC0 1.0, 4.0 CC-BY ou CC-BY-NC 4.0) para incentivar utilização e aplicação mais ampla possível dos dados. Saiba mais <a href\="http\://www.gbif.org/terms/licences" target\="_blank"> aqui</a>. Se você se sente incapaz de selecionar uma das três opções, entre em contato com o Secretariado do GBIF em participation@gbif.org.
 eml.intellectualRights.nolicenses=Nenhuma licença selecionada
 eml.intellectualRights.license.disclaimer=Você deve aplicar a licença somente ao seu próprio trabalho, a menos que tenha direitos necessários para aplica-la ao trabalho de terceiros.
 
 eml.updateFrequency=Frequência de Atualização
-eml.updateFrequency.help=The the frequency with which changes are made to the resource after the initial resource has been published. For convenience, its value will default to the auto-publishing interval (if auto-publishing has been turned on), however, it can always be overridden later. Please note a description of the maintenance frequency of the resource can also be entered on the Additional Metadata page.
-eml.updateFrequency.default=The update frequency defaulted to unknown.
-eml.updateFrequency.default.interval=The update frequency defaulted to auto-publishing interval\: {0}
-eml.updateFrequencyDescription=Maintenance Description
-eml.updateFrequencyDescription.help=A description of the maintenance frequency of this resource. This description compliments the update frequency selected on the Basic Metadata page.
+eml.updateFrequency.help=A frequência com que são feitas alterações para o recurso após o recurso inicial ter sido publicado. Para sua conveniência, seu valor padrão será o intervalo de publicação automática (se a publicação automática foi ativada), no entanto, ele poderá ser substituído mais tarde. Por favor, note que uma descrição da frequência de manutenção do recurso também pode ser inserida na página Additional Metadata.
+eml.updateFrequency.default=A frequência de atualização é atribuída por padrão como desconhecida.
+eml.updateFrequency.default.interval=A frequência de atualização é atribuída por padrão como intervalo de auto-publicação\: {0}
+eml.updateFrequencyDescription=Descrição da manutenção
+eml.updateFrequencyDescription.help=Uma descrição da frequência da manutenção deste recurso. Esta descrição complementa a freqüência de atualização selecionada na página de Metadados Básicos.
 
 ####
 # RTF
@@ -1366,11 +1366,11 @@ xwork.default.invalid.fieldvalue=Valor inválido
 
 # Data Tables. Warning: don't translate any word beginning and ending in underscores, e.g. _MENU_
 dataTables.sInfo=Visualizando _START_ até _END_ de _TOTAL_ recursos
-dataTables.sInfo.versions=Showing _START_ to _END_ of _TOTAL_ versions
+dataTables.sInfo.versions=Mostrando _START_ to_END_of_TOTAL_ versões
 dataTables.sInfoEmpty=Visualizando 0 até 0 de 0 recursos
 dataTables.sInfoFiltered=(filtrado de _MAX_ totais)
-dataTables.sEmptyTable.resources=No resources are currently available
-dataTables.sEmptyTable.organisations=No organisations are currently available
+dataTables.sEmptyTable.resources=Nenhum recurso está disponível atualmente
+dataTables.sEmptyTable.organisations=Nenhuma organização disponível atualmente
 dataTables.sEmptyTable.versions=Nenhuma versão está atualmente disponível
 dataTables.sEmptyTable.users=Nenhum usuário está atualmente disponível
 dataTables.sZeroRecords=Nenhum recurso foi encontrado
@@ -1384,7 +1384,7 @@ publishing.cancelled=Publicação da versão \#{0} do recurso {1} foi cancelada\
 publishing.error=Foi encontrado um erro do tipo {0} durante a publicação\: {1}
 publishing.failed=Publicação da versão \#{0} do recurso {1} falhou\: {2}
 publishing.skipping=Versão de Publicação \#{0} do recurso {1} ignorado\: o número máximo de tentativas falhas de publicação foi atingida. Por favor, tente publicar este recurso separadamente
-publishing.changeSummary.default=None provided
+publishing.changeSummary.default=Não provido
 
 restore.resource.success=Versão \#{0} do recurso {1} restaurada após a falha de publicação
 restore.resource.failed=A restauração da versão \#{0} do recurso {1} falhou\: {2}
@@ -1399,4 +1399,5 @@ autopublish.interval=Selecionar intervalo
 autopublish.help=Para <strong>ativar</strong> a publicação automática, selecione uma das 5 opções de intervalos de publicação e clique em publicar. Para <strong>alterar</strong> o intervalo de publicação, selecione uma opção diferente de intervalo de publicação e clique em publicar. Para <strong>desativar</strong> a publicação automática, selecione "Desativar" e clique em publicar.
 
 # Struts2 overrides
-struts.messages.upload.error.SizeLimitExceededException=The uploaded file is too large\! Max size allowed is {0} bytes but request was {1} bytes. To work around this problem, you can try compressing the file (with zip or gzip), loading the data into one of the many databases supported by the IPT, or splitting the file up. Please refer to the user manual for more information.
+struts.messages.upload.error.SizeLimitExceededException=O arquivo enviado é muito grande\! Tamanho máximo permitido é de {0} bytes, mas requisitado foi {1} bytes. Para contornar esse problema, você pode tentar compactar o arquivo (com zip ou gzip), carregar os dados em um dos muitos bancos de dados suportados pelo IPT ou dividir o arquivo. Por favor consulte o manual do usuário para obter mais informações.
+
