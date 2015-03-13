@@ -460,19 +460,21 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
    */
   private void updateAssociatedOrganisationsMetadata() {
     try {
-      // 1. check associated Organisations
+      // 1. update associated organisations' metadata
       for (Map.Entry<String, Organisation> entry : registration.getAssociatedOrganisations().entrySet()) {
-        // search for that particular organisation, has the name changed?
-        updateOrganisationMetadata(entry.getValue());
+        Organisation o = entry.getValue();
+        updateOrganisationMetadata(o);
+        // replace organisation in list of associated organisations now
+        registration.getAssociatedOrganisations().put(entry.getKey(), o);
       }
 
-      // 2. check hosting Organisation - IPT Organisation
+      // 2. update hosting organisation's metadata
       Organisation hostingOrganisation = registration.getHostingOrganisation();
       if (hostingOrganisation != null) {
         updateOrganisationMetadata(hostingOrganisation);
       }
 
-      // ensure changes are persisted to registration.xml
+      // ensure changes are persisted to registration2.xml
       save();
     } catch (IOException e) {
       log.error("A problem occurred saving ");
@@ -481,7 +483,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
   /**
    * For a single organization, update its metadata. Only updates the metadata for an organisation coming from the
-   * registry, not the metadata set by the IPT administrator like can host data, etc.
+   * registry, not the metadata set by the IPT administrator like can host data, DOI configuration, etc.
    *
    * @param organisation Organisation
    */
@@ -517,8 +519,6 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
           organisation.setPrimaryContactEmail(Strings.emptyToNull(o.getPrimaryContactEmail()));
           organisation.setPrimaryContactPhone(Strings.emptyToNull(o.getPrimaryContactPhone()));
           organisation.setPrimaryContactType(Strings.emptyToNull(o.getPrimaryContactType()));
-          // replace organisation in list of associated organisations now
-          registration.getAssociatedOrganisations().put(key, organisation);
           log.debug("Organisation (" + key + ") updated with latest metadata from Registry");
         } else {
           log.debug("Update of organisation failed: organisation retrieved from Registry was missing name");

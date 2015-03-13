@@ -68,14 +68,31 @@ $(document).ready(function(){
 		<@input name="organisation.name" i18nkey="admin.organisation.name" type="text" disabled=true/>
 		<@s.hidden name="organisation.key" id="organisation.key" required="true" />
 		<@s.hidden name="id" id="id" required="true" />
+    <!-- preserve other fields not edited -->
+    <@s.hidden name="organisation.nodeName" id="organisation.nodeName" />
+    <@s.hidden name="organisation.nodeKey" id="organisation.nodeKey" />
+    <@s.hidden name="organisation.primaryContactPhone" id="organisation.primaryContactPhone" />
+    <@s.hidden name="organisation.primaryContactEmail" id="organisation.primaryContactEmail" />
+    <@s.hidden name="organisation.primaryContactAddress" id="organisation.primaryContactAddress" />
+    <@s.hidden name="organisation.primaryContactDescription" id="organisation.primaryContactDescription" />
+    <@s.hidden name="organisation.primaryContactName" id="organisation.primaryContactName" />
+    <@s.hidden name="organisation.primaryContactType" id="organisation.primaryContactType" />
+    <@s.hidden name="organisation.homepageURL" id="organisation.homepageURL" />
+    <@s.hidden name="organisation.description" id="organisation.description" />
 	<#else>
     <h1><@s.text name="admin.organisation.add.title"/></h1>
 		<@s.hidden id="organisation.name" name="organisation.name" required="true" />
-		<@s.hidden id="organisation.primaryContactType" name="organisation.primaryContactType" />
-		<@s.hidden id="organisation.primaryContactName" name="organisation.primaryContactName" />
-		<@s.hidden id="organisation.primaryContactEmail" name="organisation.primaryContactEmail" />
-		<@s.hidden id="organisation.nodeKey" name="organisation.nodeKey" />
-		<@s.hidden id="organisation.nodeName" name="organisation.nodeName" />
+    <!-- preserve other fields not edited -->
+    <@s.hidden name="organisation.nodeName" id="organisation.nodeName" />
+    <@s.hidden name="organisation.nodeKey" id="organisation.nodeKey" />
+    <@s.hidden name="organisation.primaryContactPhone" id="organisation.primaryContactPhone" />
+    <@s.hidden name="organisation.primaryContactEmail" id="organisation.primaryContactEmail" />
+    <@s.hidden name="organisation.primaryContactAddress" id="organisation.primaryContactAddress" />
+    <@s.hidden name="organisation.primaryContactDescription" id="organisation.primaryContactDescription" />
+    <@s.hidden name="organisation.primaryContactName" id="organisation.primaryContactName" />
+    <@s.hidden name="organisation.primaryContactType" id="organisation.primaryContactType" />
+    <@s.hidden name="organisation.homepageURL" id="organisation.homepageURL" />
+    <@s.hidden name="organisation.description" id="organisation.description" />
     <img class="infoImg" src="${baseURL}/images/info.gif">
     <div class="info" style="display: none;"><@s.text name="admin.registration.intro"/>&nbsp;<@s.text name="admin.organisation.add.intro2"/></div>
     <@s.select id="organisation.key" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" disabled="false"/>
