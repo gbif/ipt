@@ -1046,7 +1046,8 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   /**
-   * Construct author name for citation. Name must have a last name and at least one first name to be included.
+   * Construct author name for citation. Name must have a last name and at least one first name to be included. If
+   * both the first and last name are left blank on purpose, the organisation name can be used as an alternative.
    *
    * @param creator creator
    *
@@ -1057,6 +1058,7 @@ public class Resource implements Serializable, Comparable<Resource> {
     StringBuilder sb = new StringBuilder();
     String lastName = StringUtils.trimToNull(creator.getLastName());
     String firstNames = StringUtils.trimToNull(creator.getFirstName());
+    String organisation = StringUtils.trimToNull(creator.getOrganisation());
     if (lastName != null && firstNames != null) {
       sb.append(lastName);
       sb.append(" ");
@@ -1068,6 +1070,8 @@ public class Resource implements Serializable, Comparable<Resource> {
           sb.append(" ");
         }
       }
+    } else if (lastName == null && firstNames == null && organisation != null) {
+      sb.append(organisation);
     }
     return sb.toString();
   }
