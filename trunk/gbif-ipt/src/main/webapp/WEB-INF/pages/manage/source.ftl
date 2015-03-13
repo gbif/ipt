@@ -57,6 +57,7 @@ $(document).ready(function(){
               <tr>
                 <th>
                   <@s.submit cssClass="button" name="analyze" key="button.analyze"/>
+                  <!-- preview icon is taken from Gentleface Toolbar Icon Set available from http://gentleface.com/free_icon_set.html licensed under CC-BY -->
                   <a href="#" id="peekBtn" class="icon icon-preview peekBtn"/>
                 </th>
               </tr>

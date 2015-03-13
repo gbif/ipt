@@ -1610,7 +1610,8 @@ ul {
 }
 
 .icon-preview {
-  background-image: url('../images/icons/green/preview.png');
+  background-image: url('../images/icons/green/preview2.png');
+  margin-left: 4px;
 }
 
 .icon-validate {
