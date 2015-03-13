@@ -321,6 +321,26 @@ public class ResourceTest {
     assertEquals("Williams B G", getResource().getAuthorName(creator));
   }
 
+  /**
+   * Check the organisation is only used as the creator name (author name) when the first and last
+   * names are left blank on purpose.
+   */
+  @Test
+  public void testGetAuthorNameUsingOrganisation() {
+    Agent creator = new Agent();
+    creator.setLastName("");
+    creator.setFirstName("");
+    creator.setOrganisation("Natural History Museum of Denmark");
+    assertEquals("Natural History Museum of Denmark", getResource().getAuthorName(creator));
+
+    creator.setFirstName("Brian Gonzalez");
+    assertEquals("", getResource().getAuthorName(creator));
+
+    creator.setFirstName("");
+    creator.setLastName("Williams");
+    assertEquals("", getResource().getAuthorName(creator));
+  }
+
   @Test
   public void testGetPublicationYear() {
     Date now = new Date();
