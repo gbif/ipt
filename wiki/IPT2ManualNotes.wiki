@@ -75,16 +75,17 @@ If the initial data directory assignment step was successful, the IPT will prese
    * *Password* - a password for the default administrator. <br>*Note*: The password should be made secure and safe from loss, as it is not recoverable from the IPT application.
    * *Verify password* - an exact copy of the password as entered in the Password text box to confirm that it was entered as intended.
   * IPT Mode - The IPT mode decides whether or not the hosted resources will be indexed for public search access by GBIF. GBIF recommends IPT administrators try Test mode first in order to understand the registration process, and then reinstall in Production mode for formal data publishing. Warning: for a given installation, this selection is final and cannot be changed later on. To switch from test to production mode or vice versa, you will have to reinstall your IPT and repeat any configurations you made. (see the "Starting Over" section in this Getting Started Guide).
-    * *IPT mode* - Choose between Test mode and Production mode. Test mode is for evaluating the IPT or running it in a training scenario, and registrations will go into a test registry and resources will never be indexed. Production mode, on the other hand, is for publishing resources formally, and resources are registered into the GBIF Registry and will be indexed.
+    * *IPT mode* - Choose between Test mode and Production mode. Test mode is for evaluating the IPT or running it in a training scenario, and registrations will go into a test registry and resources will never be indexed. All DOIs minted for resources in test mode should use a test prefix (e.g. 10.5072 for DataCite), meaning they are temporary. Production mode, on the other hand, is for publishing resources formally, and resources are registered into the GBIF Registry and will be indexed. DOIs minted for resources cannot be deleted, and require resources to remain publicly accessible.
   * Base URL
    * *Base URL for this IPT* - the URL that points to the root of this IPT installation. The URL is detected automatically if possible, but should be changed in production systems to be accessible via the Internet in order for the IPT to function fully. Configuring the IPT Base URL to use localhost, for example, will not allow the instance of the IPT to be registered with GBIF, will not allow the IPT to be associated with an organisation, and will not allow resources to be publicly accessible.
    * *Proxy URL* - if the server on which the IPT is installed is routed through a proxy server or virtual host, enter the host address and port number through which the IPT will be accessible via the Internet as a URL in the format protocol:host:port, for example, http://proxy.gbif.org:8080.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/IPTSetup2.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTSetup2_1.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTSetup2_2.png]
 
 When all of the information on the page is complete and correct, click on the button labeled "Save" to complete the IPT setup process. If a problem occurs, an error message will appear at the top of the page with recommendations about how to resolve the issue. Provided the issue has been resolved, restarting the web server will make it disappear. If the setup is successful, a page confirming the success of the setup will appear. 
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTSetupFinished.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTSetupFinished.png]
 
 Click on the button labeled "Continue" to open the IPT Administration page (see the screen image, below), from which further configuration of the IPT can be accomplished. Please review the explanations of all of the Administration functions before continuing. Details about the options presented on this screen are given in the "Administration Menu" section of the Quick Reference Guide. Before adding data resources to the IPT, the administrator must, at a minimum, verify the IPT settings, set the GBIF registration options, and associate the IPT with an organisation. The Organisations button is disabled by default until the GBIF registration options have been set.
 
@@ -173,7 +174,7 @@ Example table sorted in descending order by the column labeled "Type".
 ===Controls that appear on all pages===
 This section describes several features that are accessible in the header and footer of most of the pages of the IPT.
 ====Header====
-The header section of the IPT appears in the upper right of most pages and allows basic control over the IPT, including the who is using it, and in what language. Following are two screen images showing the two possible states in which the header may be found - logged in, and not logged in.
+The header section of the IPT appears in the upper right of most pages and allows basic control over the IPT, including who is using it, and in what language. Following are two screen images showing the two possible states in which the header may be found - logged in, and not logged in.
 
 Header, not logged in, English language chosen for the user interface: 
 
