@@ -67,11 +67,11 @@ Instructions pending.
 
 ==Virtual Host Name==
 
-This section explains how to setup a virtual host name for your IPT (e.g. ipt.gbif-uat.org) in Apache. A name-based virtual host is preferred over an IP-based virtual host because it is more aesthetically pleasing and easier to remember. 
+This section explains how to setup a virtual host name for your IPT (e.g. ipt.example.com) in Apache. A name-based virtual host is preferred over an IP-based virtual host because it is more aesthetically pleasing and easier to remember. 
 
 ===Define Virtual Host Name===
 
-On RedHat and compatibles (e.g. Centos or Fedora) please make sure you have installed the "httpd" package (if not, "yum install httpd") then, in /etc/httpd/conf.d/ create a config file with a descriptive name (e.g. MyVhost.example.com.conf) in which you add
+On RedHat and compatibles (e.g. Centos or Fedora) please make sure you have installed the "httpd" package (if not, "yum install httpd") then, in /etc/httpd/conf.d/ create a config file with a descriptive name (e.g. MyVhost.ipt.example.com.conf) in which you add
 
 {{{
 <VirtualHost *:80>
@@ -79,7 +79,7 @@ On RedHat and compatibles (e.g. Centos or Fedora) please make sure you have inst
     ServerName  ipt.example.com
     ServerAdmin webmaster@example.com
     ErrorLog    logs/ipt.example.com-error_log
-    CustomLog   logs/ipt.example.com-acces_log common
+    CustomLog   logs/ipt.example.com-access_log common
 </VirtualHost>
 }}}
 
@@ -91,7 +91,7 @@ You can combine the virtual host definition and the proxying feature presented b
     ServerName  ipt.example.com
     ServerAdmin webmaster@example.com
     ErrorLog    logs/ipt.example.com-error_log
-    CustomLog   logs/ipt.example.com-acces_log common
+    CustomLog   logs/ipt.example.com-access_log common
     ProxyPreserveHost       On
     ProxyPass               /       http://apps.gbif-uat.org:8080/ipt/
     ProxyPassReverse        /       http://apps.gbif-uat.org:8080/ipt/
