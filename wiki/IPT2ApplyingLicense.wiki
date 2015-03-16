@@ -10,14 +10,18 @@ Please note that CC0 is technically a waiver.
 
 == Dataset Level ==
 
-The license chosen must apply to the dataset as a whole. Only one license should be applied to the dataset, even if multiple licenses are complimentary to each other (e.g. CC-BY and ODC-By).
+The license chosen must apply to the dataset as a whole. Only one license should be applied at the *dataset level*, even if multiple licenses are complimentary to each other (e.g. CC-BY and ODC-By).
+
+To apply a license at the *dataset level* in the IPT, choose a license from the drop down on the basic metadata page:
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/LicenseDropdownWide.png]
 
 In case different licenses apply to separate components of a dataset, the recommended best practice is to publish each component separately having their own metadata and identifier (e.g. DOI). This recommendation is in compliance with DataCite's recommended practice for such cases. 
 
 == Record Level ==
 
-All licenses specified at the record level should comply with the license at the dataset level.
+All licenses specified at the *record level* should comply with the license at the dataset level.
 
-To specify a license at the record level, publishers should use the Darwin Core term [http://rs.tdwg.org/dwc/terms/index.htm#dcterms:license license]. As per Darwin Core's recommendation, the URI of the license should be used to populate the license. Be careful not to add contradictory usage restrictions in the Darwin Core term [http://rs.tdwg.org/dwc/terms/index.htm#dcterms:accessRights accessRights]. In theory, the license should provide sufficient access rights information without having to specify them in accessRights also. 
+To apply a license at the *record level* using the IPT, publishers should use/map to the Darwin Core term [http://rs.tdwg.org/dwc/terms/index.htm#dcterms:license license]. As per Darwin Core's recommendation, the URI of the license should be used to populate the license. Be careful not to add contradictory usage restrictions in the Darwin Core term [http://rs.tdwg.org/dwc/terms/index.htm#dcterms:accessRights accessRights]. In theory, the license should provide sufficient access rights information without having to specify them in accessRights also. 
 
 Please note the Darwin Core term [http://rs.tdwg.org/dwc/terms/history/#dcterms:rights rights] has now been deprecated and should no longer be used.
