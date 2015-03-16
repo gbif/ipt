@@ -25,6 +25,7 @@
      * [IPT2Citation Dataset Citation Format]
      * [IPT2DataCiteMappings DataCite to EML mappings]
      * [IPT2DOIWorkflow DOI Workflows]
+   * [IPT2ApplyingLicense How To Apply a License]
    * [DarwinCore]
    * [DataPreparation Data Preparation]
    * [TutorialOccurrenceResource Occurrence Resource Tutorial]
