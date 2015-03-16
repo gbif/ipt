@@ -4,18 +4,20 @@
 
 == Introduction ==
 
-Add your content here.
+In accordance with the [http://www.gbif.org/terms/licences GBIF licensing policy], a dataset should be made available for use under CC0, CC-BY, or CC-BY-NC. This page describes how to properly apply a license to a dataset, ensuring consistency at the dataset level and the record level. 
+
+Please note that CC0 is technically a waiver.
 
 == Dataset Level ==
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+The license chosen must apply to the dataset as a whole. Only one license should be applied to the dataset, even if multiple licenses are complimentary to each other (e.g. CC-BY and ODC-By).
+
+In case different licenses apply to separate components of a dataset, the recommended best practice is to publish each component separately having their own metadata and identifier (e.g. DOI). This recommendation is in compliance with DataCite's recommended practice for such cases. 
 
 == Record Level ==
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+All licenses specified at the record level should comply with the license at the dataset level.
+
+To specify a license at the record level, publishers should use the Darwin Core term [http://rs.tdwg.org/dwc/terms/index.htm#dcterms:license license]. As per Darwin Core's recommendation, the URI of the license should be used to populate the license. Be careful not to add contradictory usage restrictions in the Darwin Core term [http://rs.tdwg.org/dwc/terms/index.htm#dcterms:accessRights accessRights]. In theory, the license should provide sufficient access rights information without having to specify them in accessRights also. 
+
+Please note the Darwin Core term [http://rs.tdwg.org/dwc/terms/history/#dcterms:rights rights] has now been deprecated and should no longer be used.
