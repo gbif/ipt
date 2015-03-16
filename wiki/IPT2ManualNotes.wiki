@@ -687,11 +687,11 @@ If the validation test is unsuccessful, an error message will suggest the nature
 
 *GBIF Registry inaccessible* - If an error message suggests that none of the previous errors has occurred and yet there is a failure to communicate with the GBIF Registry, please report that there are problems connecting to the GBIF registry to the GBIF help desk (helpdesk@gbif.org).
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTAdminRegistrationStep1.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTAdminRegistrationStep1.png]
 
 If the IPT passes the validation step above, a form showing additional information required for registration is presented. In this step, the IPT instance is associated to an organization. *The organization must already be registered in the GBIF Registry, and its password must be known.*  For explanations of the fields and selections on this form, refer to the information below.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTAdminRegistrationStep2.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTAdminRegistrationStep2.png]
 
 Following are explanations of the specific information to select or enter:<br>
 *Organisation* - the select box contains a list of organisations in the GBIF registry. Select the single organisation with which this IPT instance will be associated. If you are unable to find the organisation you seek on the list, use the GBIF Registry (http://www.gbif.org/publisher/search) to determine if the organisation is registered under a name other than what you expected. If the organisation is not yet registered with GBIF, please contact the GBIF Help Desk to register the organisation before proceeding with the registration of the IPT. Click on the helpful GBIF Help Desk link to open up an email template in your default mail client that you just have to fill in the required information before sending.<br>
@@ -707,7 +707,7 @@ Following are explanations of the specific information to select or enter:<br>
 ==Edit GBIF registration==
 This page allows a user to edit the title, description, contact name, and contact email of the IPT instance once it has been registered in the GBIF Registry. Changing the associated (host) organisation is not possible. For help changing other fields displayed in the GBIF Registry, the administrator can ontact the GBIF Help Desk (helpdesk@gbif.org).
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/IPTAdminEditRegistration.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTAdminEditRegistration.png]
 ==Configure Organisations==
 This page is unavailable until the IPT instance has been successfully registered in the GBIF Registry (see the information under the "Configure GBIF registration" heading of the "Administration Menu" section). Once registered, this page shows a list of organisations that can be associated with resources in this IPT instance. An IPT that hosts data for organisations other than the one to which it is associated must have the additional organisations configured before they can be used. The list shows columns for "Organisation Name", "Alias", and "Can publish resources?" The Organisation Name is the title of the organisation as registered in the GBIF Registry. The Alias is a name given to the organisation for convenience within the IPT instance; aliases, rather then the full Organisation Name, appear in Organisation selection lists in the IPT. The checkbox under the column labeled "Can publish resources?" indicates whether the organisation can be associated with resources in the IPT. Only those organisations having this box checked will appear in lists to be associated with resources.
 
