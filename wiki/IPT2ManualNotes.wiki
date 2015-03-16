@@ -45,7 +45,7 @@ The space required by the IPT application is less then 20MB. The contents of the
 ===Java===
 The server hosting the IPT must have a version no less than Java 6 installed and functional prior to the installation of the IPT.
 ===Servlet container===
-The IPT application comes packaged with Jetty and therefore requires no further servlet container. Nevertheless, the IPT can be deployed in another servlet container (e.g., Tomcat) that is already in use. Information about how to use various servlet containers with the IPT can be found at http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation.
+The IPT application comes packaged with Jetty and therefore requires no further servlet container. Nevertheless, the IPT can be deployed in another servlet container (e.g., Tomcat) that is already in use. Information about how to use various servlet containers with the IPT, and how to setup a virtual host name for your IPT can be found at http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation.
 ==Install the IPT==
 ===Prepare the server===
 Before installing the IPT, be sure that the intended hosting server meets the minimum specifications described in the sections under "Requirements", above. 
