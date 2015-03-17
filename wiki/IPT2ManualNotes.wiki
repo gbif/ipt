@@ -328,8 +328,6 @@ If the source data are contained in multiple text files, the process described i
 *Database as data source*<br>
 The IPT can use database connections to import data from tables or views. A list of supported database connections is given on the [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2DatabaseConnection Supported databases] page of the IPT Project wiki. To configure a database as a data source, click on the button labeled "Connect to DB" in the left-hand column of the Source Data area of the Resource Overview page. This will open a Source Database detail page. 
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v21/IPTManageResourceSourceData.png]
-
 The Source Database Detail page shows the name of the resource along with a summary of the database characteristics (readability, number of columns detected) and allows the user to view and edit the parameters that describe how to access the data from the database, and to use these settings to analyze and preview the data. 
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v204/IPTManageResourceSourceDatabase.png]
