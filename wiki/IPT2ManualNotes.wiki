@@ -421,7 +421,7 @@ In addition to the explanatory information about the extension at the top of the
 </wiki:comment>
 
 ====Metadata====
-This area of the Resource Overview page allows a user to see basic information about the resource metadata in the panel to the right, and to view and edit these and other metadata in detail by clicking on the button labeled "Edit" in the panel to the left. For more information about resource metadata in the GBIF context, see http://www.gbif.org/informatics/discoverymetadata/. Every resource requires a minimal set of descriptive metadata in order to be published in the GBIF network. If any of the required metadata are missing, the Resource Overview page will open with a warning message in the Metadata area of the page.
+This area of the Resource Overview page allows a user to edit the resource metadata. By clicking on the button labeled "Edit" in the panel to the left the metadata can be edited. The panel to the right shows when the metadata was last modified. Every resource requires a minimal set of descriptive metadata in order to i) be published in the GBIF network, ii) be registered with DataCite/EZID (in other words, be assigned a DOI). If any of the required metadata are missing, the Resource Overview page will open with a warning message in the Metadata area of the page.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMetadataMissing.png]
 
