@@ -246,7 +246,7 @@ Following are explanations of the table columns:<br>
 ==Manage Resources Menu (visible to users with an Admin or Manager role)==
 This page allows users having the appropriate role (managers and administrators) to make changes to existing resources or to create new resources. 
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/IPTManageResources.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResources.png]
 ===Manage Resources Table===
 When the Manage Resources page is first opened, it shows a table of existing resources that the current user has permission to change, including those created by this user and those which this user has been invited to manage by others. Refer to the information under the [IPT2ManualNotes#Public_Resources_Table Public Resources Table] section for detailed explanations of the Name, Organisation, Type, Subtype, Records, Last Modified, Last publication, and Next publication columns. In addition, the Manage Resources Table includes the following column of basic information about the resources:
 
