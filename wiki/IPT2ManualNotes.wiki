@@ -227,12 +227,21 @@ To view the resource homepage, user can click on the name link in the list of re
 
 Please note only a user having the Admin role or one of the Manager roles can edit a resource's metadata. To learn more, please refer to the information under the "Edit an existing resource" heading in the "Manage Resources Menu" section.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/IPTHomeMetadataOverview.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTHomeMetadataOverview.png]
 
-====Versioned page====
-To view an older version of the metadata about the resource, just add the trailing parameter '&v=n' to the URL where v stands for 'version', and n gets replaced by the version number, e.g., "http://ipt.gbif.org/resource.do?r=occ&v=5". In this way, specific versions of a resource's EML, RTF, and DWCA files can be retrieved. Please note, the IPT's Archival Mode must be turned on in order for old versions of DWCA to be stored (see [IPT2ManualNotes#Configure_IPT_settings Configure IPT settings] section).
+====Version history====
+The version history table lists all published versions of the resource, enabling users to track changes to the resource over time and download previous versions' data/metadata. Please note, the IPT's Archival Mode must be turned on in order for old versions of DWCA to be stored (see [IPT2ManualNotes#Configure_IPT_settings Configure IPT settings] section). Only versions that are publicly accessible can be viewed by external users, whereas admins and resource managers can see all versions. For explanations of the table columns, refer to the information below. 
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/IPTHomeMetadataOverviewVersioned.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTVersionHistoryTable.png]
+
+Following are explanations of the table columns:<br>
+
+*Version* - the published version's version number, which uses the major_version.minor_version format. The version of the resource homepage currently being viewed is clearly indicated. To open a specific version's homepage, click on the version number. *Note*: A major version change compared to the last published version indicates that a scientifically significant change has taken place.<br>
+*Published on* - the date the published version was released.<br>
+*Records* - the number of records the published version contains.<br> 
+*Change summary* - a summary of what has changed since the last published version.<br>
+*DOI handle* - the DOI handle assigned to the published version. *Note*: If the DOI is different from the DOI of the last published version, this indicates that a scientifically significant change has been done to the resource.<br>
+*Last modified by* - the IPT user that last modified the published version.<br>
 
 ==Manage Resources Menu (visible to users with an Admin or Manager role)==
 This page allows users having the appropriate role (managers and administrators) to make changes to existing resources or to create new resources. 
