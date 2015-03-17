@@ -1172,6 +1172,10 @@ div#tableContainer {
   font-size:13px;
 }
 
+div#vtableContainer {
+  font-size:0.9em;
+}
+
 tr.name_column, th.name_column {
   width: 250px;
 }
