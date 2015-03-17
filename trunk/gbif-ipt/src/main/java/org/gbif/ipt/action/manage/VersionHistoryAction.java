@@ -2,6 +2,7 @@ package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -52,6 +53,13 @@ public class VersionHistoryAction extends ManagerBaseAction {
       VersionHistory history = resource.findVersionHistory(getVersion());
       if (history != null) {
         history.setChangeSummary(getSummary());
+
+        // update who is responsible for update
+        User user = getCurrentUser();
+        if (user != null) {
+          history.setModifiedBy(user);
+        }
+
         // save resource
         saveResource();
         return SUCCESS;
