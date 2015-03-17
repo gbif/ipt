@@ -532,14 +532,14 @@ This metadata page contains information about a project under which the data in 
       * *Personnel Role* - the role of the person associated with the project. Click on the information icon to the left of the select box to see descriptions of the possible roles. Choose the most appropriate role in the select box for the person named above.
 
 ====Sampling Methods====
-This metadata page contains information about sampling methods in general, and about specific sampling steps. if appropriate. Before any Sampling Method data are entered for the resource, the page will show text boxes for three aspects of the sampling methods (Study Extent, Sampling Description, and Quality Control) and a link labeled "Add new method step".
+This metadata page contains information about sampling methods used for the data represented by the resource.
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v204/IPTManageResourceMetadataSamplingMethods.png]
-    * *Study Extent* - a description of the physical and temporal conditions under which the sampling occurred.
-    * *Sampling Description* - a description of the protocol used during sampling that resulted in the data in the resource.
-    * *Quality Control* - a description of methods taken to measure and report the quality of the data produced by the sampling methods.
-    * *Add new method step* -  click on this link to add a text box labeled "Step Description" to the page. A method step is one in a series of steps taken to accomplish the sampling. One may add as many method steps as desired.
-      * *Step Description* - a description of one step in the sampling methods used. The description is meant clarify how the data were acquired and processed so that other researchers can understand the suitability of the data for other uses. 
-    * *Remove this method step* - click on this link to remove the method step (Step Description text box) that follows immediately below the link.
+    * *Study Extent* - a description of the physical and temporal conditions under which the sampling occurred. The geographic study extent is usually a surrogate (representative area of) for the larger area documented in the "Study Area Description" field of the Project metadata page.
+    * *Sampling Description* - a text-based/human readable description of the sampling procedures used in the research project. The content of this element would be similar to a description of sampling procedures found in the methods section of a journal article.
+    * *Quality Control* - a description of actions taken to either control or assess the quality of data resulting from the associated method step(s).
+    * *Step Description* - A method step is one in a series of repeated sets of elements that document a series of methods and procedures used in the study, and the processing steps leading to the production of the data files. These include text descriptions of the procedures, relevant literature, software, instrumentation, source data and any quality control measures taken. Each method should be described in enough detail to allow other researchers to interpret and repeat, if required, the study.
+    * *Add new method step* -  click on this link to add a text box labeled "Step Description" to the page (see above). One may add as many method steps as desired.
+    * *Remove this method step* - click on this link to remove the method step text box that follows immediately below the link.
 ====Citations====
 This metadata page contains information about how to cite the resource as well as a bibliography of citations related to the data set, such as publications that were used in or resulted from the production of the data. Each Citation, whether for the resource or in the bibliography, consists of an optional unique Citation Identifier allowing the citation to be found among digital sources and a traditional textual citation. Before any Citation data are entered, the page will show a text box for the Citation Identifier for the resource, a text box for the Resource Citation, a heading labeled "Bibliography", and a link labeled "Add new citation".
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v204/IPTManageResourceMetadataCitations.png]
