@@ -207,7 +207,7 @@ This page allows users to view a list of public resources, if any, and to look a
 If there are any public resources, they will appear in a table having the following columns:
 
 *Logo* - the resource logo (configurable in Additional Metadata page of the resource metadata)<br>
-*Name* - the title of the resource as given in the Title entry of the resource metadata. The Name appears as a link, which will open a Metadata Overview page (see below) for the selected resource.<br>
+*Name* - the title of the resource as given in the Title entry of the resource metadata. The Name appears as a link, which will open the resource's hompeage (see below).<br>
 *Organisation* - the organisation under which the resource has been registered, if any. If the resource is not registered, the value in the Organisation column will be "Not registered". Review the information under the "Organisations" heading in the "Administration Menu" section for more information about registering organisations and registering a resource under an organisation.<br>
 *Type* - the type of the resource as given in the Type drop down on the [IPT2ManualNotes#Basic_Metadata Basic Metadata] page of the resource metadata<br>
 *Subtype* - the subtype of the resource as given in the Subtype drop down on the [IPT2ManualNotes#Basic_Metadata Basic Metadata] page of the resource metadata<br>
@@ -219,8 +219,13 @@ If there are any public resources, they will appear in a table having the follow
 The IPT supports syndication via RSS for those who wish to monitor resource configuration changes. The RSS feed is accessible by clicking on the link provided below the list of public hosted resources. The RSS feed can be read in any standard RSS client.
 ===Registered resource inventory===
 The IPT provides a simple JSON inventory of all registered resources. This feature isn't shown on the user interface. To view simply append /inventory/dataset to the IPT base URL, e.g. http://ipt.gbif.org/inventory/dataset. GBIF uses this inventory to monitor whether it is properly indexing resources by comparing the target and indexed record counts. 
-===Metadata Overview page===
-Clicking on the Name link in the list of resources on the Home page shows a new page having all of the metadata about the selected resource. This is the one page where you can easily review all of the metadata for a resource. A user having the Admin role or one of the Manager roles can edit the metadata. Refer to the information under the "Edit an existing resource" heading in the "Manage Resources Menu" section.
+===Resource homepage===
+The resource homepage is intended to be used by external users of a resource. The homepage lists all the metadata about a selected resource in a user, provides links to download the data/metadata, and displays the resource's version history. 
+
+To view the resource homepage, user can click on the name link in the list of resources on the Home page. Another way to get to the resource's homepage is using its DOI: when a resource is assigned a DOI via the IPT, it always resolves to its homepage.
+
+
+Please note only a user having the Admin role or one of the Manager roles can edit a resource's metadata. To learn more, please refer to the information under the "Edit an existing resource" heading in the "Manage Resources Menu" section.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/IPTHomeMetadataOverview.png]
 
@@ -577,7 +582,7 @@ The publish action does several things: First, the current metadata are written 
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourcePublishingStatus.png]
 
-  * *Published* - After a resource has been published, summary information about the published release (version) will appear in the right-hand column of the Published Release area of the Resource Overview page. The summary includes the serial integer version and date of the latest publication, a link entitled "See Report" to view the publication log summary, a link to download the Publication Log file, a link to download the Darwin Core Archive file, a link download the EML file, a link to view the metadata contained in the EML file in the Metadata Overview page as described under the heading of the same name in the "Home Menu" section, and a link to download the RTF data publication document. A helpful feature for each downloadable file, is that its size is indicated beside it.
+  * *Published* - After a resource has been published, summary information about the published release (version) will appear in the right-hand column of the Published Release area of the Resource Overview page. The summary includes the serial integer version and date of the latest publication, a link entitled "See Report" to view the publication log summary, a link to download the Publication Log file, a link to download the Darwin Core Archive file, a link download the EML file, a link to view the metadata contained in the EML file in the resource homepage as described under the heading of the same name in the "Home Menu" section, and a link to download the RTF data publication document. A helpful feature for each downloadable file, is that its size is indicated beside it.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/IPTManageResourcePublished.png]
 
