@@ -516,15 +516,21 @@ This metadata pages contains information about one or more people or organisatio
     * *Role* - this select box contains a list of possible roles that the associated party might have in relation to the resource. Click on the information icon to the left of the select box to see descriptions of the possible roles. Choose the most appropriate role for the associated party in the select box.
     * *Add new associated party* - click on this link to initiate a form for an additional associated party.
 ====Project Data====
-This metadata page contains information about a project under which the data in the resource were produced. Appropriate only if the data were produced under a single project.
+This metadata page contains information about a project under which the data in the resource were produced.
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v204/IPTManageResourceMetadataProjectData.png]
     * *Title* - the title of the project.
-    * *Personnel First Name* - the first name of the most relevant person associated with the project.
-    * *Personnel Last Name* - the first name of the most relevant person associated with the project.
-    * *Personnel Role* - the role of the person named above in relation to the project. Click on the information icon to the left of the select box to see descriptions of the possible roles. Choose the most appropriate role in the select box for the person named above.
-    * *Funding* - information about project funding and its sources (grant titles and numbers, contract numbers, names and addresses, active period, etc.).
+    * *Identifier* - a unique identifier for the research project. This can be used to link multiple dataset/EML document instances that are associated in some way with the same project, e.g. a monitoring series. The nature of the association can be described in the project description.
+    * *Description* - an abstract about the research project.
+    * *Funding* - information about project funding and its sources (grant titles and numbers, contract numbers, names and addresses, active period, etc.). Other funding-related information may also be included.
     * *Study Area Description* - a description of the physical area where the project occurred (physical location, habitat, temporal coverage, etc.).
-    * *Design Description* - a description of the design and objectives of the project (what questions were being investigated, why the area was selected, etc.).
+    * *Design Description* - a description of the design and objectives of the project. It can include detailed accounts of goals, motivations, theory, hypotheses, strategy, statistical design, and actual work.
+    * *Project Personnel* - the list of people involved in the project.
+      * *Personnel First Name* - the first name of the person associated with the project.
+      * *Personnel Last Name* - the last name of the person associated with the project.
+      * *Personnel Directory* - the URL of the personnel directory system to which the personnel identifier belongs. There are four default directories to choose from: ORCID, ResearchID, LinkedIn, and Google Scholar. If you'd like to change the IPT's default set of directories, refer to the [IPT2UserId How To Add a New User ID Directory] page in the IPT wiki.
+      * *Personnel Identifier* - a 16-digit ORCID ID (e.g. 0000-0002-1825-0097) or another identifier that links this person to the personnel directory specified.
+      * *Personnel Role* - the role of the person associated with the project. Click on the information icon to the left of the select box to see descriptions of the possible roles. Choose the most appropriate role in the select box for the person named above.
+
 ====Sampling Methods====
 This metadata page contains information about sampling methods in general, and about specific sampling steps. if appropriate. Before any Sampling Method data are entered for the resource, the page will show text boxes for three aspects of the sampling methods (Study Extent, Sampling Description, and Quality Control) and a link labeled "Add new method step".
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v204/IPTManageResourceMetadataSamplingMethods.png]
