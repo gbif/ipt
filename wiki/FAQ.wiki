@@ -60,7 +60,11 @@ It can be changed easily by manual configuration though. To change the default l
 
 struts.locale=pt
 
-Restart Tomcat, and the IPT will startup in Portuguese. Unfortunately every time you upgrade to a new version of the IPT, you have to apply the same change.
+Restart Tomcat, and the IPT will startup in Portuguese. 
+
+Please note the two-letter language code must match the code used by the IPT. Other languages currently supported include Japanese (ja), French (fr), Spanish (es), and Traditional Chinese (zh).
+
+Please note that every time you upgrade to a new version of the IPT, you will have to apply the same change.
 
 == Usage ==
 
