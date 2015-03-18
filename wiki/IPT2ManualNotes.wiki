@@ -668,7 +668,7 @@ Best practice is to assign a new DOI to the resource every time it undergoes a s
 
 *Publishing Status page*
 
-A page entitled Publishing Status will show status messages highlighting the success or failure to publish each of the documents, as well as the detailed results of the publishing process. Publication of a new version is an all or nothing event, meaning that all documents must be successfully published otherwise the version is rolled back.
+A page entitled Publishing Status will show status messages highlighting the success or failure of each publishing step. Publication of a new version is an all or nothing event, meaning that all steps finish successfully otherwise the version is rolled back.
     * *Resource overview* - This link leads to the Manage Resource page for the resource just published.
     * *Publication log* - This link initiates a download of a file named "publication.log", which contains the detailed output of the publication process. This file contains specific information to help managers identify problems during publication such as:
        * how many records couldn't be read and were not written to the DwC-A 
