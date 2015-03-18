@@ -639,7 +639,9 @@ _Table 2 (below): demonstrates a minor version change since the DOI assigned to 
    * *Publication log*: - click the download button to retrieve the "publication.log" of the current version. The resource manager can use the publication log to diagnose why publication failed for example. A more detailed description of its contents is described below in the Publishing Status page section. This is not applicable to the pending version.
    * *Publication report*: - the publication summary of the current version - not applicable to the pending version.
 
-*Publishing steps*: - the publish action consists of the steps described below. Publication is all or nothing meaning that each step must terminate successfully in order for a new version to be published. If any step fails, or if the publish action is canceled, the version is rolled back to the last published version.
+*Publishing steps*
+
+The publish action consists of the steps described below. Publication is all or nothing meaning that each step must terminate successfully in order for a new version to be published. If any step fails, or if the publish action is canceled, the version is rolled back to the last published version.
    # The current metadata are written to the file eml.xml. An incremental version named eml-n.xml (where n is the incremental version number reflecting the publication version) is always saved. 
    # A data publication document in Rich Text Format (RTF) is written to the file shortname.rtf. An incremental version of the RTF file named shortname-n.rtf is always saved. 
    # The current primary resource data as configured through mapping are written to the Darwin Core Archive file named dwca.zip. The data files in the Darwin Core Archive are then validated (see "Data Validation" section below). 
@@ -650,7 +652,8 @@ _Table 2 (below): demonstrates a minor version change since the DOI assigned to 
 *Data Validation*
 
 The IPT performs the following validations on the data files inside the DWCA:
-      * If a column representing the core record identifier (e.g. occurrenceID is the core record identifier of the Occurrence core) is found in the core data file, the IPT will validate that for each record, the core record identifier is present, and unique. 
+ * If a column representing the core record identifier (e.g. occurrenceID is the core record identifier of the Occurrence core) is found in the core data file, the IPT will validate that for each record, the core record identifier is present, and unique.
+ * The Darwin Core term [http://rs.tdwg.org/dwc/terms/#basisOfRecord basisOfRecord] is a required term in the Occurrence extension. Therefore the IPT validates that each Occurrence data file has a basisOfRecord column. In addition, the IPT validates that for each Occurrence record the basisOfRecord is present, and its value matches the [http://rs.gbif.org/vocabulary/dwc/basis_of_record.xml Darwin Core Type vocabulary]. 
 
 *Publishing Status page*
 
