@@ -549,7 +549,7 @@ This metadata page contains information about how to cite the resource as well a
       * Example citation with 9 creators:<br> 
         Brouillet L, Desmet P, Coursol F, Meades SJ, Favreau M, Anions M, Belisle P, Gendreau C, Shorthouse D (2010) Database of vascular plants of Canada. Version 1.2. Universite de Montreal Biodiversity Centre. Dataset/Species checklist. http://doi.org/10.5886/1bft7W5f 
     * *Auto-generation - Turn On/Off* - turn on to let the IPT auto-generate the resource citation for you. The citation format used in auto-generation is based on DataCite's preferred citation format, and satisfies the Joint Declaration of Data Citation Principles. This format includes a version number, which is especially important for datasets that are continuously updated. You can read more about the citation format in the [IPT2Citation IPT Citation Format] page in the IPT wiki.
-    * *Citation Identifier* - a DOI, URI, or other persistent identifier that resolves to the online dataset. It is recommended the identifier be included in the citation.   
+    * *Citation Identifier* - a DOI, URI, or other persistent identifier that resolves to the online dataset. It is recommended the identifier be included in the citation. If the resource has been assigned a DOI (using the IPT), the IPT sets the DOI as the citation identifier and it can no longer be edited.   
     * *Bibliographic Citations* - the additional citations of other resources related to or used in the creation of this resource.
     * *Add new bibliographic citation* -  click on this link to add the text boxes required for an additional citation in the bibliography.
       * *Bibliographic Citation* - the citation of an external resource related to or used in the creation of this resource.
