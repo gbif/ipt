@@ -660,7 +660,7 @@ A page entitled Publishing Status will show status messages highlighting the suc
        * how many records contained fewer columns than the number that was mapped
     * *Log message* - The Publishing Status page shows a summary of the information that was sent to the filed named publication.log, which is stored in the directory for the resource within the IPT's data directory and which is accessible through the link to the "Publication Log" immediately above the log message summary.
 
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourcePublishingStatus.png]
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourcePublishingStatus.png]
 
 ====Visibility====
 The Visibility area of the Manage Resources page allows users having manager rights for the resource to change its visibility state. The visibility of a resource determines who will be able to view it, whether viewing is limited (private), open (public), or discoverable through the GBIF Registry (registered). By default, each resource is visible only to the user who created it and any other users who have the Admin role on the IPT where the resource is created.
