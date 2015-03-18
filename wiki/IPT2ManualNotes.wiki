@@ -619,13 +619,23 @@ The *left-hand* section controls how resource versions are published. The publis
  * *Publish on demand*: - simply click on the button labeled "Publish" to trigger publishing a new version. The button labeled "Publish" will be enabled if 1) the required metadata for the resource are complete, and 2) the user has the role "Manager with/without registration rights". When the resource is registered or the resource has been assigned a DOI, however, only users with the role "Manager with registration rights" can publish, since the resource's registration gets updated during each publication (see the explanation for Role in the "Create a new user" section under the "Configure User accounts" heading of the "Administration Menu" section). A complete description of what happens during the publish action follows next. 
  * *Auto-publishing*: - to turn on automated publishing, select one of the 5 publishing intervals (annually, biannually, monthly, weekly, or daily) and then press the publish button. When automated publishing is on, the publishing interval and next published date are clearly displayed in the published release section. To change the publishing interval, select a different publishing interval and press publish. To turn off automated publishing, select "Turn off" and then press publish. In case of failure, publishing will be retried automatically up to 3 more times. This safeguards against infinite publishing loops. Resources configured to publish automatically, but that failed to finish successfully will have a next publication date in the past, and will be highlighted in the public and manage resource tables.
 
-The *right-hand* section contains a table that compares the current version against the pending version. Resource managers can use this table to manage resource versioning, preview the pending version, plus review and validate the current version. For explanations of the rows of information in the table, refer to the information below.[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourcePublishTable.png] 
-   * *Version*: - to come
-   * *Visibility*: - to come
-   * *DOI*: - to come
-   * *Data License*: - to come
-   * *Published on*: - to come
-   * *Publication log*: - to come
+The *right-hand* section contains a table that compares the current version against the pending version. Resource managers can use this table to manage resource versioning, preview the pending version, plus review and validate the current version. For explanations of the rows of information in the table, refer to the information below.
+
+_Table 1 (below): demonstrates a major version change since the pending version has been reserved a new DOI:_
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourcePublishTable.png]
+
+_Table 2 (below): demonstrates a minor version change since the DOI assigned to the current and pending versions is the same:_
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourcePublishTable2.png]
+ 
+   * *Version*: - the version number tracking the  major_version.minor_version of the current/pending version. Each time the resource undergoes scientifically significant changes, the resource manager should ensure the pending version has a new major version, done by reserving it a new DOI. A detailed description of the IPT's versioning policy is explained in [IPT2Versioning here]. In the current version column, click the "View" button to see the current version's homepage. In the pending version column, click the "Preview" button to see a preview of the pending version's homepage. Before publishing the resource manager can preview the pending version to make sure it is ready to publish.  
+   * *Visibility*: - the visibility of the current/pending version. In order to register the resource with GBIF, the resource manager must ensure the current version is public. In order to assign a DOI to a resource, the resource manager must ensure the pending version is public. 
+   * *DOI*: - to DOI of the current/pending version. The DOI of the current version can never be changed, however, the DOI of the pending version can be reserved or deleted. For explanations of how DOIs are reserved, deleted, registered, deactivated, reactivated please see the DOI section below.
+   * *Data License*: - the license applied to the resource. In order to register the resource with GBIF, the resource manager must ensure a license equivalent to either CC0, CC-BY, or CC-BY-NC is applied to the resource. GBIF's licensing policy is described [http://www.gbif.org/terms/licences here]. 
+   * *Published on*: - to date the current version was published on / the date the pending version will be published on.
+   * *Publication log*: - click the download button to retrieve the "publication.log" of the current version. The resource manager can use the publication log to diagnose why publication failed for example. A more detailed description of its contents is described below in the Publishing Status page section. This is not applicable to the pending version.
+   * *Publication report*: - the publication summary of the current version - not applicable to the pending version.
 
 *Publishing steps*: - the publish action consists of the steps described below. Publication is all or nothing meaning that each step must terminate successfully in order for a new version to be published. If any step fails, or if the publish action is canceled, the version is rolled back to the last published version.
    # The current metadata are written to the file eml.xml. An incremental version named eml-n.xml (where n is the incremental version number reflecting the publication version) is always saved. 
@@ -651,10 +661,6 @@ A page entitled Publishing Status will show status messages highlighting the suc
     * *Log message* - The Publishing Status page shows a summary of the information that was sent to the filed named publication.log, which is stored in the directory for the resource within the IPT's data directory and which is accessible through the link to the "Publication Log" immediately above the log message summary.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourcePublishingStatus.png]
-
-  * *Published* - After a resource has been published, summary information about the published release (version) will appear in the right-hand column of the Published Release area of the Resource Overview page. The summary includes the serial integer version and date of the latest publication, a link entitled "See Report" to view the publication log summary, a link to download the Publication Log file, a link to download the Darwin Core Archive file, a link download the EML file, a link to view the metadata contained in the EML file in the resource homepage as described under the heading of the same name in the "Home Menu" section, and a link to download the RTF data publication document. A helpful feature for each downloadable file, is that its size is indicated beside it.
-
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/IPTManageResourcePublished.png]
 
 ====Visibility====
 The Visibility area of the Manage Resources page allows users having manager rights for the resource to change its visibility state. The visibility of a resource determines who will be able to view it, whether viewing is limited (private), open (public), or discoverable through the GBIF Registry (registered). By default, each resource is visible only to the user who created it and any other users who have the Admin role on the IPT where the resource is created.
