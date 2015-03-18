@@ -352,17 +352,16 @@ This area of the Resource Overview page allows a user to map the fields in the i
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceDwCMapping.png]
 
-After the desired core type or extension is selected, click on the button labeled "Add" to open the Data Source selection page. This page gives an explanation of the type of data the extension is meant to support, and shows a select box containing a list of all of the configured data sources. 
+After the desired core type or extension is selected, click on the button labeled "Add" to open the Data Source selection page. This page gives an explanation of the type of data the extension is meant to support, and shows a select box containing a list of all of the configured data sources. *Note*: A resource must only use 1 core type: choose "Darwin Core Checklist" when the basis of the resource is taxon names, or choose "Darwin Core Occurrence" when the basis of the resource is occurrences in nature (observations) or in a collection (specimens). Only after the desired core type has been mapped, will it be possible to map other extensions.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceSelect.png]
 
-Note: A resource must only use 1 core type: choose "Darwin Core Checklist" when the basis of the resource is taxon names, or choose "Darwin Core Occurrence" when the basis of the resource is occurrences in nature (observations) or in a collection (specimens). Only after the desired core type has been mapped, will it be possible to map other extensions.
-
-_Skip to the description of the Data Mapping page below for help doing the actual mapping between the desired core type or extension._ 
+Select the data source to map, and then click on the button labeled "Save". This will open the Data Mapping detail page (skip to the [IPT2ManualNotes#Data_Mapping_detail_page Data Mapping detail page] below for help doing the actual mapping).
 
 After a new mapping has been added, it will be visible in the right-hand column of the Darwin Core Mappings area. This area will contain a list of all the resource's mappings divided into Core Type mappings and Extension mappings. Click the "Edit" button beside a mapping to modify it, or click the preview icon [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/preview.png] to preview the mapping. Resource managers are advised to preview all mappings prior to publishing a new version. 
 
-Select the data source to map, and then click on the button labeled "Save". This will open the Data Mapping detail page and display a status message showing how many fields from the data source were automatically mapped to the fields in the extensions. Fields are automatically mapped if the field names, converted to all lower case, match each other.
+=====Data Mapping detail page=====
+After a mapping between a data source and Core Type or Extension has been created, this page opens and display a status message showing how many fields from the data source were automatically mapped to the fields in the extensions. Fields are automatically mapped if the field names, converted to all lower case, match each other.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceMapping.png]
 
