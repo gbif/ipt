@@ -612,10 +612,14 @@ This area of the Resource Overview page allows a user to publish a version of th
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourcePublish.png]
 
-The *left-hand* section controls how resource versions are published. The publish button can be used to publish new versions on demand, or auto-publishing can be enabled to publish new versions on a schedule: 
+The *left-hand* section controls how resource versions are published. The publish button can be used to publish new versions on demand, or auto-publishing can be enabled to publish new versions on a schedule. For explanations of the options in this section, refer to the information below.
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourcePublishLeftSide2.png] 
+  
  * *Publish on demand*: - simply click on the button labeled "Publish" to trigger publishing a new version. The button labeled "Publish" will be enabled if 1) the required metadata for the resource are complete, and 2) the user has the role "Manager with/without registration rights". When the resource is registered or the resource has been assigned a DOI, however, only users with the role "Manager with registration rights" can publish, since the resource's registration gets updated during each publication (see the explanation for Role in the "Create a new user" section under the "Configure User accounts" heading of the "Administration Menu" section). A complete description of what happens during the publish action follows next. 
  * *Auto-publishing*: - to turn on automated publishing, select one of the 5 publishing intervals (annually, biannually, monthly, weekly, or daily) and then press the publish button. When automated publishing is on, the publishing interval and next published date are clearly displayed in the published release section. To change the publishing interval, select a different publishing interval and press publish. To turn off automated publishing, select "Turn off" and then press publish. In case of failure, publishing will be retried automatically up to 3 more times. This safeguards against infinite publishing loops. Resources configured to publish automatically, but that failed to finish successfully will have a next publication date in the past, and will be highlighted in the public and manage resource tables.
-The *right-hand* section contains a table that compares the current version against the pending version. Resource managers can use this table to manage resource versioning, preview the pending version, plus review and validate the current version. A description of each row in the table follows: 
+
+The *right-hand* section contains a table that compares the current version against the pending version. Resource managers can use this table to manage resource versioning, preview the pending version, plus review and validate the current version. For explanations of the rows of information in the table, refer to the information below.[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourcePublishTable.png] 
    * *Version*: - to come
    * *Visibility*: - to come
    * *DOI*: - to come
@@ -628,8 +632,8 @@ The *right-hand* section contains a table that compares the current version agai
    # A data publication document in Rich Text Format (RTF) is written to the file shortname.rtf. An incremental version of the RTF file named shortname-n.rtf is always saved. 
    # The current primary resource data as configured through mapping are written to the Darwin Core Archive file named dwca.zip. The data files in the Darwin Core Archive are then validated (see "Data Validation" section below). 
    # If the IPT's Archival Mode is turned on (see [IPT2ManualNotes#Configure_IPT_settings Configure IPT settings] section, an incremental version of the Darwin Core Archive file named dwca-n.zip is also saved.
-   # The DOI metadata about the resource is updated and propagated to DOI resolvers if the resource is assigned a DOI using the IPT.   
    # The information about the resource is updated in the GBIF Registry if the resource is registered. 
+   # The DOI metadata about the resource is updated and propagated to DOI resolvers if the resource is assigned a DOI using the IPT.
 
 *Data Validation*
 
