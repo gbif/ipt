@@ -52,6 +52,16 @@ To ensure only this user has write permission, enter the following command:
 $ chmod -R 755 directory/
 }}}
 
+=== 5. How can I change the IPT's default language? ===
+
+The IPT's default language is English, and there is no way to change the default language via the user interface. 
+
+It can be changed easily by manual configuration though. To change the default language from English to Portuguese for example, first locate the struts.properties file (if the IPT is deployed in Tomcat for example, it would be located in /tomcat6/webapps/ipt/WEB-INF/classes). Then update the struts.locale property to:
+
+struts.locale=pt
+
+Restart Tomcat, and the IPT will startup in Portuguese. Unfortunately every time you upgrade to a new version of the IPT, you have to apply the same change.
+
 == Usage ==
 
 === 1. Why do published files contain broken lines? ===
