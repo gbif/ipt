@@ -162,7 +162,6 @@ Example calendar associated with an text box labeled "End Date" in which 31 Dec 
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TextBoxWithCalendarOpen.png]
 
-
 *Sortable Table* - a table that allows the rows to be sorted by the values of a selected column in ascending or descending order. The column headers are the labels for the columns, which appear as links. Click on a column header to sort the table using the values in that column. Click again on the same column header to sort the the table in the opposite direction.
 
 Example table sorted in ascending order by the column labeled "Name".
@@ -170,6 +169,18 @@ Example table sorted in ascending order by the column labeled "Name".
 
 Example table sorted in descending order by the column labeled "Type".
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TableSortedDescending.png]
+
+====File upload====
+Files can be uploaded in the IPT during two actions: when [IPT2ManualNotes#Create_a_New_Resource creating a new resource], or when [IPT2ManualNotes#Source_Data adding new source data files]. 
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/Control-UploadCreateResource.png]
+
+[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/Control-UploadSourceData.png]
+
+The IPT has an upload size limit of 100MB. The following work-arounds are recommended in the event uploaded file exceeds this limit:
+ * compressing the file (with zip or gzip)
+ * loading the data into one of the many [IPT2DatabaseConnection databases supported by the IPT]
+ * splitting the file up
 
 ===Controls that appear on all pages===
 This section describes several features that are accessible in the header and footer of most of the pages of the IPT.
@@ -199,6 +210,7 @@ The footer section of the IPT appears along the bottom of most pages and contain
 *Report a bug* - This link opens the list of known open issues for the IPT (http://code.google.com/p/gbif-providertoolkit/issues/list/). If you think you have encountered a bug, look at the list of known issues first to see if the bug has already been reported. If it has, you may add new information as a comment to the existing bug report that might help engineers to diagnose the problem and get it fixed. If no bug similar to the one you have encountered in the IPT appears on the list, you can create a new bug report by clicking on the "New issues" link. When entering a bug report, it is useful to include the version of the IPT you are using (see the explanation for "Version", above).<br>
 *Request new feature* - This link (http://code.google.com/p/gbif-providertoolkit/issues/entry?template=Feature%20request) opens a specific form in the IPT issue tracker that can be filled in to request a capability that the IPT does not currently have.<br>
 *Copyright* - The copyright for the IPT software is held by the Global Biodiversity Information Facility. A link to the home page for GBIF is provided. Details of the copyright and licensing can be seen in the "About the IPT" section of this user manual.
+
 ==Home Menu (visible to all users)==
 This page allows users to view a list of public resources, if any, and to look at the detailed metadata of any resource on the list. 
 
