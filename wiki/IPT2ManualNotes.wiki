@@ -364,7 +364,7 @@ This area of the Resource Overview page allows a user to map the fields in the i
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceDwCMapping.png]
 
-After the desired core type or extension is selected, click on the button labeled "Add" to open the Data Source selection page. This page gives an explanation of the type of data the extension is meant to support, and shows a select box containing a list of all of the configured data sources. *Note*: A resource must only use 1 core type: choose "Darwin Core Checklist" when the basis of the resource is taxon names, or choose "Darwin Core Occurrence" when the basis of the resource is occurrences in nature (observations) or in a collection (specimens). Only after the desired core type has been mapped, will it be possible to map other extensions.
+After the desired core type or extension is selected, click on the button labeled "Add" to open the Data Source selection page. This page gives an explanation of the type of data the extension is meant to support, and shows a select box containing a list of all of the configured data sources. *Note 1*: A resource must only use 1 core type: choose "Darwin Core Checklist" when the basis of the resource is taxon names, or choose "Darwin Core Occurrence" when the basis of the resource is occurrences in nature (observations) or in a collection (specimens). Only after the desired core type has been mapped, will it be possible to map other extensions. *Note 2*: It is possible to map another core type as an extension as long as it is different from the core type mapped.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceSelect.png]
 
