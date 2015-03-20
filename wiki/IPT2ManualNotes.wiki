@@ -935,8 +935,6 @@ The issue tracker is the bug report and feature request management system for th
 Subscribe to the IPT mailing list to send and receive messages related to the use of the Integrated Publishing Toolkit. This group is for users to support each other in the use of the IPT: http://lists.gbif.org/mailman/listinfo/ipt/.
 ==IPT server preparation==
 This wiki page gives details about preparing a server to run the IPT and can be found on the IPT project code site wiki at http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation.
-==IPT software updates==
-This wiki page gives details about updating aspects of the IPT, including upgrading an older installation of the IPT to a new version: http://code.google.com/p/gbif-providertoolkit/wiki/IPTUpdates.
 ==IPT supported databases==
 This wiki page gives details about the database management systems to which the IPT can connect for a data source. The page can be found on the IPT project code site at http://code.google.com/p/gbif-providertoolkit/wiki/IPT2DatabaseConnection.
 ==IPT test installation==
