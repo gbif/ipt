@@ -1,6 +1,6 @@
 =The GBIF Integrated Publishing Toolkit User Manual=
 
-* Under Construction for IPT Version: 2.2*
+* IPT Version: 2.2*
 
 _For the IPT Version 2.1 user manual, please go [IPTUserManualv21 here.] Otherwise, user manuals for older versions are available from the [http://www.gbif.org/ipt/releases Version History] page._ 
 
