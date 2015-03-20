@@ -232,7 +232,7 @@ The IPT supports syndication via RSS for those who wish to monitor when new reso
 ===Registered resource inventory===
 The IPT provides a simple JSON inventory of all registered resources. This feature isn't shown on the user interface. To view simply append /inventory/dataset to the IPT base URL, e.g. http://ipt.gbif.org/inventory/dataset. GBIF uses this inventory to monitor whether it is properly indexing resources by comparing the target and indexed record counts. 
 ===Resource homepage===
-The resource homepage is aimed at external users of a resource. The homepage lists all the metadata about a selected resource, provides links to download the data/metadata, and displays the resource's version history. 
+The resource homepage is aimed at external users of a resource. The homepage lists all the metadata about a selected version of a resource, provides links to download the version's data/metadata, and displays the resource's version history. 
 
 To view the resource homepage, user can click on the name link in the list of resources on the Home page. Another way to get to the resource's homepage is using its DOI: when a resource is assigned a DOI via the IPT, it always resolves to its homepage.
 
