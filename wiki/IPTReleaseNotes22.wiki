@@ -23,12 +23,11 @@ and limitations under the License.
 
 ===A. Performing the upgrade===
 
-*Warning 1*: It is always a good idea to take the precaution of backing up the existing IPT 
-data directory before performing an upgrade. 
+*Warning 1*: Be sure to backup the IPT data directory before performing an upgrade. It is highly recommended to run scheduled backups of the IPT data directory in general. 
 
 *Warning 2*: Once an IPT has been upgraded to 2.2, it will not be possible to downgrade to an earlier version due to changes to the IPT's configuration files.
 
-*Warning 3*: Starting with 2.2, publishers are required to assign one of three machine-readable rights declarations to their data otherwise they will not be able to register their dataset with GBIF or make it globally discoverable through GBIF.org. If publishers cannot agree to publish their data under a CC0 1.0, CC-BY 4.0 or CC-BY-NC 4.0 declaration, it is recommend to continue to use the previous version of the IPT for now. 
+*Warning 3*: Starting with 2.2, publishers are required to assign one of three machine-readable rights declarations to their data otherwise they will not be able to register their dataset with GBIF or make it globally discoverable through GBIF.org. If publishers cannot agree to publish their data under a [http://creativecommons.org/publicdomain/zero/1.0/legalcode CC0 1.0], [http://creativecommons.org/licenses/by/4.0/legalcode CC-BY 4.0] or [http://creativecommons.org/licenses/by-nc/4.0/legalcode CC-BY-NC 4.0] declaration, it is recommend to continue to use the previous version of the IPT for now. 
 
 An upgrade can be performed in 3 steps:
 
@@ -38,9 +37,8 @@ An upgrade can be performed in 3 steps:
 
 ===B. Post-upgrade instructions===
 
-*Upgrading from 2.1*, once the upgrade is complete, resource managers should: 
-  # Republish 
-  # Proxy settings
+Once the upgrade is complete, resource managers should: 
+  # Assign one of CC0, CC-BY, or CC-BY-NC to each datasets, and republish them. GBIF will begin working with existing publishers across the network during 2015 to ensure all datasets are assigned one of these three licenses. For background on this decision click [http://www.gbif.org/terms/licences here].
 
 *Upgrading from 2.0.5*, once the upgrade is complete, resource managers should: 
   # Republish all occurrence and checklist resources (Windows hosted IPTs only). A [https://code.google.com/p/gbif-providertoolkit/issues/detail?id=1015 bug] in 2.0.5 caused names of files inside the Darwin Core Archive to be prefixed by a backward slash, e.g. "\meta.xml".
@@ -57,11 +55,12 @@ An upgrade can be performed in 3 steps:
     * it is possible to enter an identifier and description for a project
     * it is possible to specify the update frequency of a dataset using a controlled vocabulary or providing a general description
     * it is possible to store a machine readable license (storing both the URL and title of the license) 
+  * IPT 2.2 fixes a longstanding [https://code.google.com/p/gbif-providertoolkit/issues/detail?id=817 bug] when running the IPT using an Apache Reverse Proxy. Please refer to the [IPTServerPreparation Server Preparation] wiki page for more information using a reverse proxy or virtual host name for your IPT instance.
   * A new [IPT2ApplyingLicense guide] on how to apply a license to a dataset has been added to the IPT wiki.
 
 ==Dependency Notes==
 
-This new version has been tested and designed to work on Tomcat 6.0 or 7.0. Since 2.1 the IPT no longer supports Java 5, and is designed to run on Java 6 or later. 
+This new version has been tested and designed to work on Tomcat 6.0 or 7.0. Since 2.1 the IPT no longer supports Java 5, and is designed to run on Java 6 or later. The IPT will end support for Java 6 in 2015, so please be proactive and plan a Java upgrade on your server soon.
 
 ==Viewing the IPT change log==
 
