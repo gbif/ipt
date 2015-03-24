@@ -23,12 +23,12 @@ and limitations under the License.
 
 ===A. Performing the upgrade===
 
-Warning 1: It is always a good idea to take the precaution of backing up the existing IPT 
+*Warning 1*: It is always a good idea to take the precaution of backing up the existing IPT 
 data directory before performing an upgrade. 
 
-Warning 2: Once an IPT has been upgraded to 2.2, it will not be possible to downgrade to an earlier version due to changes to the IPT's configuration files.
+*Warning 2*: Once an IPT has been upgraded to 2.2, it will not be possible to downgrade to an earlier version due to changes to the IPT's configuration files.
 
-Warning 3: Starting with 2.2, publishers are required to assign one of three machine-readable rights declarations to their data otherwise they will not be able to register their dataset with GBIF or make it globally discoverable through GBIF.org. If publishers cannot agree to publish their data under a CC0 1.0, CC-BY 4.0 or CC-BY-NC 4.0 declaration, it is recommend to continue to use the previous version of the IPT for now. 
+*Warning 3*: Starting with 2.2, publishers are required to assign one of three machine-readable rights declarations to their data otherwise they will not be able to register their dataset with GBIF or make it globally discoverable through GBIF.org. If publishers cannot agree to publish their data under a CC0 1.0, CC-BY 4.0 or CC-BY-NC 4.0 declaration, it is recommend to continue to use the previous version of the IPT for now. 
 
 An upgrade can be performed in 3 steps:
 
