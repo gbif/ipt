@@ -1,0 +1,109 @@
+MVN JUNIT TEST Parameters throw Proxy
+-Dhttp.proxyHost=proxy.com -Dhttp.proxyPort=0000
+
+TEST ORGS:
+Tim
+password
+
+Academy of Natural Sciences
+CU7a0fujX4
+
+Australian Biological Resources Study
+qFyoVmtdwON
+
+
+
+######################
+# CODING CONVENTIONS #
+######################
+
+### subversion ###
+please dont check in unused files or "old" copies of files, e.g. by renaming them into xyz-old. Delete them and use subversion to get hold of previous copies!
+If you want an old copy side by side for the current work, please do so locally and do *not* check this file into svn.
+
+Code in the trunk should always compile and allow the startup of jetty via maven!
+There can be non functional pieces checked in as long as they dont break the entire application.
+
+
+### Guice ###
+IptModule contains wiring, but for interfaces these are annotated directly with @ImplementedBy(ConfigManagerImpl.class)
+ 
+### Configuration ###
+DataDir
+ inside WEB-INF of a running IPT a single file datadir.location is created that points to the currently used datadir where all configuration and data is stored. If this file is deleted the setup intercseptor will ask the user to assign a new (potentially existing) datadir
+ hidden file ".gbifreg" indicates that the datadir is linked to the production registry. This cannot be changed again from the UI
+ the class is used to get handles on file within the current datadir - all access to files in the datadir should be done via this class!!!
+
+AppConfig
+ contains all IPT wide configuration, in particular the baseURL for the application
+ 
+### Struts2 ###
+BaseAction:
+ supplies the AppConfig, implements session aware and gives access to current user, implements a simpler TextProvider which is faster than the native struts2 one. 
+
+Interceptors
+ setup interceptor checks if the datadir is configured and an admin user exists - otherwise redirects to the setup action
+ resource interceptor: checks a manager is allowed to edit this resource and load a new resource (+eml & resource config) into the users session
+ access control for managers & admins is done in seperate interceptors
+ 
+ stacks:
+ for each package (root, portal, manage, admin) its own interceptor stack exists
+
+POSTAction:
+ this helper action class simplifies working with forms.
+ For modifying instance data always use POST, never GET.
+ The "input" resultname is used to show the form. We can therefore use the standard validation interceptor which uses the input result when data doesnt validate.
+ The "success" result is called when the form submit succeeded. In many cases this should simply be a redirect to another, often the corresponding list, action.
+
+ The action implements preparable, request aware and the execute method.
+   execute: FormAction determines if a POST or GET is used and calls save (POST), delete (POST + delete=true) or nothing (GET). 
+ If any other action values need to be set you can override prepare() - but remember to call super.execute().
+   prepare: the "id" parameter of the request object is stored in the action
+
+ Most full actions for modifying entities should override the following methods:
+   prepare(): load existing values based on "id" parameter and request object
+   save(): persist data AFTER the params interceptor did its job
+   delete(): this method is called when a POST with a "delete=anything_but_null" parameter is received
+  If the id given does not exist you can set the "notFound" property to true in any of the above methods. FormAction will then return a 404 result name
+
+Validation:
+  prefer to implement the validate() method of an action (instead of using xml validation definitions).
+  See SetupAction as an example.
+  Validation requires an "input" result name that shows the form when the form was not valid.
+  using the simple theme we also need to declare where to render the validation feedback: http://struts.apache.org/2.1.8/docs/fielderror.html
+  validation package for support classes to validate reoccurring entities, e.g. users
+  
+### HTML Design ###
+links
+  for absolute links always use ${base}/my/ipt/link.do and refrain from using struts or jsp url tags!
+  always use the suffix *.do for all urls within the IPT
+   
+forms
+  use the forms.ftl macros instead of struts2 tags!
+  i18n select drop downs
+  only use proper buttons (wrapped in links) or input@type=submit (forms) for add,delete,edit,create actions
+    use class="small" for small buttons 
+  best practices: 
+    http://htmldog.com/articles/formlayout/
+    http://blog.sherpawebstudios.com/2009/06/17/top-10-html-form-layout-best-practices/
+result lists
+  table class="simple"
+  for pageable results use ???
+
+### Javascript ###
+only use jQuery for custom code!
+use jconfirmation plugin with plain links or buttons when asking for confirmation, e.g. deletes 
+
+
+### CSS ###
+stick with the single css plus one for the portal webapp in the future.
+Keep number of css classes to a minimum and consider using page specific css in <head><style> on that page
+
+
+### Managers ###
+2 tier architecture only with interfaces + implementation 
+
+### i18n ###
+templates, actions and also important service messages should be localised using a single resource bundle, ApplicationResources.bundle
+the vocabularies can be used to populate select drop downs easily by calling getI18nVocab(...)
+
