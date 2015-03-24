@@ -234,24 +234,11 @@
           </additionalConfig>
         </configuration>
       </plugin>
-      <!-- run integration tests (*IT) during verify -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-failsafe-plugin</artifactId>
-        <executions>
-          <!-- Invokes both the verify goals of the Failsafe Maven plugin -->
-          <execution>
-            <id>integration-tests</id>
-            <goals>
-              <goal>integration-test</goal>
-              <goal>verify</goal>
-            </goals>
-            <configuration>
-              <skipTests>true</skipTests>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
+      <!-- disabled for release: runs integration tests (*IT) during verify -->
+      <!--<plugin>-->
+        <!--<groupId>org.apache.maven.plugins</groupId>-->
+        <!--<artifactId>maven-failsafe-plugin</artifactId>-->
+      <!--</plugin>-->
     </plugins>
 
     <resources>
