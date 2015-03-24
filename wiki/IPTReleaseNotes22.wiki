@@ -61,8 +61,8 @@ This new version has been tested and designed to work on Tomcat 7.0. Since 2.1 t
 
 ==Viewing the IPT change log==
 
-This version addressed a total of 85 issues: 38 Defects, 11 Enhancements, 18 Won't fix, 6 Duplicates, 1 Other, and 11 that were considered as Invalid. 
-These are detailed in the [https://code.google.com/p/gbif-providertoolkit/issues/list?can=1&q=milestone=Release2.1&sort=status&colspec=ID%20Type%20Status%20Priority%20Milestone%20Owner%20Summary issue tracking system]
+This version addressed a total of 74 issues: 20 Defects, 26 Enhancements, 16 Won't fix, 6 Duplicates, 2 Other, 1 Task, and 3 that were considered as Invalid. 
+These are detailed in the [https://code.google.com/p/gbif-providertoolkit/issues/list?can=1&q=Milestone=Release2.2&sort=type issue tracking system]
   
 ==When all else fails==
 
