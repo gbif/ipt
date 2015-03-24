@@ -50,7 +50,7 @@ Upgrading from 2.0.5, once the upgrade is complete, resource managers should:
 
 ==Dependency Notes==
 
-This new version has been tested and designed to work on Tomcat 6.0 or 7.0. Please note IPT 2.2 no longer supports Java 5, and is designed to run on Java 6 or later. 
+This new version has been tested and designed to work on Tomcat 6.0 or 7.0. Since 2.1 the IPT no longer supports Java 5, and is designed to run on Java 6 or later. 
 
 ==Viewing the IPT change log==
 
