@@ -52,7 +52,7 @@ Only applicable to *upgrades from 2.0.5*, resource managers should check the geo
     * it is possible to enter an identifier and description for a project
     * it is possible to specify the update frequency of a dataset using a controlled vocabulary or providing a general description
     * it is possible to store a machine readable license (storing both the URL and title of the license) 
-  * IPT 2.2 fixes a longstanding [https://code.google.com/p/gbif-providertoolkit/issues/detail?id=817 bug] when running the IPT using an Apache Reverse Proxy. Please refer to the [IPTServerPreparation Server Preparation] wiki page for more information using a reverse proxy or virtual host name for your IPT instance.
+  * IPT 2.2 fixes a longstanding [https://code.google.com/p/gbif-providertoolkit/issues/detail?id=817 bug] when running the IPT using an Apache Reverse Proxy. Please refer to the improved [IPTServerPreparation Server Preparation] wiki page for assistance using a reverse proxy or virtual host name for your IPT instance.
   * A new [IPT2ApplyingLicense guide] on how to apply a license to a dataset has been added to the IPT wiki.
 
 ==Dependency Notes==
