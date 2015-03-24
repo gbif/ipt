@@ -45,7 +45,7 @@ Only applicable to *upgrades from 2.0.5*, resource managers should check the geo
 
   * IPT 2.2 now supports assigning DOIs to resources. To enable this feature, the IPT administrator must configure the IPT with a DataCite or EZID account. Please see these [IPT2ManualNotes#Configure_Organisations instructions] for help. To understand how the IPT assigns DOIs to datasets, refer to the [IPT2DOIWorkflow IPT's DOI workflows] page in the IPT wiki.
   * IPT 2.2 supports automatic generation of the resource citation. Please see these [IPT2ManualNotes#Citations instructions] for help.
-  * IPT 2.2 performs basisOfRecord validation on all occurrence records. The implication is that each Occurrence mapping must map the basisOfRecord term, and each basisOfRecord value must match the [http://rs.gbif.org/vocabulary/dwc/basis_of_record.xml Darwin Core Type vocabulary].
+  * IPT 2.2 performs [http://rs.tdwg.org/dwc/terms/#basisOfRecord basisOfRecord] validation on all occurrence records. The implication is that each Occurrence mapping must map the [http://rs.tdwg.org/dwc/terms/#basisOfRecord basisOfRecord] term, and each [http://rs.tdwg.org/dwc/terms/#basisOfRecord basisOfRecord] value must match the [http://rs.gbif.org/vocabulary/dwc/basis_of_record.xml Darwin Core Type vocabulary].
   * IPT 2.2 publishes resource metadata using a new version of the GBIF Metadata Profile (v1.1). Publishers can now take advantage of the following changes:
     * it is possible to enter multiple resource contacts, creators, metadata providers, and project personnel
     * it is possible to enter metadata about multiple collections, including multiple specimen preservation methods
