@@ -28,7 +28,6 @@
       -->
     <devMode>true</devMode>
     <devModeNegated>false</devModeNegated>
-    <skipIntegrationTests>false</skipIntegrationTests>
     <jetty.port>7001</jetty.port>
 
     <analytics.key />
@@ -248,11 +247,7 @@
               <goal>verify</goal>
             </goals>
             <configuration>
-              <!--
-                  Skips integration tests if the value of skip.integration.tests
-                  property is true
-              -->
-              <skipTests>${skipIntegrationTests}</skipTests>
+              <skipTests>true</skipTests>
             </configuration>
           </execution>
         </executions>
@@ -666,10 +661,6 @@
       <properties>
         <devMode>false</devMode>
         <devModeNegated>true</devModeNegated>
-        <!--
-          Integration tests are not run on releases
-        -->
-        <skipIntegrationTests>true</skipIntegrationTests>
       </properties>
       <build>
         <plugins>
