@@ -38,15 +38,20 @@ An upgrade can be performed in 3 steps:
 
 ===B. Post-upgrade instructions===
 
-Upgrading from 2.0.5, once the upgrade is complete, resource managers should: 
+*Upgrading from 2.1*, once the upgrade is complete, resource managers should: 
+  # Republish 
+  # Proxy settings
+
+*Upgrading from 2.0.5*, once the upgrade is complete, resource managers should: 
   # Republish all occurrence and checklist resources (Windows hosted IPTs only). A [https://code.google.com/p/gbif-providertoolkit/issues/detail?id=1015 bug] in 2.0.5 caused names of files inside the Darwin Core Archive to be prefixed by a backward slash, e.g. "\meta.xml".
   # Check the geographic coverage is correct for each resource (if applicable). A bug in all earlier versions of the IPT caused bounding boxes to reset to global coverage following server restart on some locales. This was due to a [https://code.google.com/p/gbif-providertoolkit/issues/detail?id=1043 bug] interpreting decimal coordinates, and was been fixed already in 2.1
 
-===C. Other===
+===C. New Features / Other===
 
   * IPT 2.2 now supports assigning DOIs to resources. To enable this feature, the IPT administrator must configure the IPT with a DataCite or EZID account. Please see these [IPT2ManualNotes#Configure_Organisations instructions] for help. To understand how the IPT assigns DOIs to datasets, refer to the [IPT2DOIWorkflow IPT's DOI workflows] page in the IPT wiki.
-  * IPT 2.2 now performs basisOfRecord validation on all occurrence records. The implication is that each Occurrence core mapping must map the basisOfRecord term, and each basisOfRecord value must match the Darwin Core Type vocabulary.
-  * GBIF has released a new [IPT2ApplyingLicense guide] on how to apply a license to a dataset
+  * IPT 2.2 supports automatic generation of the resource citation. Please see these [IPT2ManualNotes#Citations instructions] for help.
+  * IPT 2.2 performs basisOfRecord validation on all occurrence records. The implication is that each Occurrence core mapping must map the basisOfRecord term, and each basisOfRecord value must match the Darwin Core Type vocabulary.
+  * A new [IPT2ApplyingLicense guide] on how to apply a license to a dataset has been added to the IPT wiki.
 
 ==Dependency Notes==
 
