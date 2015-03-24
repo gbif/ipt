@@ -12,7 +12,7 @@
      * [IPT2Core Adding a New Core]
      * [IPT2License Adding a New License]
      * [IPT2UserId Adding a New User ID Directory]
- * [IPTReleaseNotes21 Release Notes]
+ * [IPTReleaseNotes22 Release Notes]
  * [FAQ] 
  * [http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes?wl=es User Manual (Spanish)]
  * Tutorials & Resources
