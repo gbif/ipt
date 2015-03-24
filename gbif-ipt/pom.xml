@@ -28,6 +28,7 @@
       -->
     <devMode>true</devMode>
     <devModeNegated>false</devModeNegated>
+    <skipIntegrationTests>false</skipIntegrationTests>
     <jetty.port>7001</jetty.port>
 
     <analytics.key />
@@ -238,6 +239,22 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
+        <executions>
+          <!-- Invokes both the verify goals of the Failsafe Maven plugin -->
+          <execution>
+            <id>integration-tests</id>
+            <goals>
+              <goal>verify</goal>
+            </goals>
+            <configuration>
+              <!--
+                  Skips integration tests if the value of skip.integration.tests
+                  property is true
+              -->
+              <skipTests>${skipIntegrationTests}</skipTests>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
 
@@ -648,6 +665,10 @@
       <properties>
         <devMode>false</devMode>
         <devModeNegated>true</devModeNegated>
+        <!--
+          Integration tests are not run on releases
+        -->
+        <skipIntegrationTests>true</skipIntegrationTests>
       </properties>
       <build>
         <plugins>
