@@ -39,9 +39,7 @@ An upgrade can be performed in 3 steps:
 
 Once the upgrade is complete, resource managers should assign one of [http://creativecommons.org/publicdomain/zero/1.0/legalcode CC0 1.0], [http://creativecommons.org/licenses/by/4.0/legalcode CC-BY 4.0] or [http://creativecommons.org/licenses/by-nc/4.0/legalcode CC-BY-NC 4.0] to each of their datasets and then republish them. GBIF will begin working with existing publishers across the network during 2015 to ensure all datasets are assigned one of these three licenses For background on GBIF's new licensing policy click [http://www.gbif.org/terms/licences here].
 
-Only applicable to *upgrades from 2.0.5*: after the upgrade is complete, resource managers should: 
-  # Republish all occurrence and checklist resources (Windows hosted IPTs only). A [https://code.google.com/p/gbif-providertoolkit/issues/detail?id=1015 bug] in 2.0.5 caused names of files inside the Darwin Core Archive to be prefixed by a backward slash, e.g. "\meta.xml".
-  # Check the geographic coverage is correct for each resource (if applicable). A bug in all earlier versions of the IPT caused bounding boxes to reset to global coverage following server restart on some locales. This was due to a [https://code.google.com/p/gbif-providertoolkit/issues/detail?id=1043 bug] interpreting decimal coordinates, and was been fixed already in 2.1
+Only applicable to *upgrades from 2.0.5*, resource managers should check the geographic coverage is correct for each resource (if applicable). A bug in all earlier versions of the IPT caused bounding boxes to reset to global coverage following server restart on some locales. This was due to a [https://code.google.com/p/gbif-providertoolkit/issues/detail?id=1043 bug] interpreting decimal coordinates, and was been fixed already in 2.1.
 
 ===C. New Features / Other===
 
