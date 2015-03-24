@@ -57,7 +57,7 @@ Only applicable to *upgrades from 2.0.5*, resource managers should check the geo
 
 ==Dependency Notes==
 
-This new version has been tested and designed to work on Tomcat 6.0 or 7.0. Since 2.1 the IPT no longer supports Java 5, and is designed to run on Java 6 or later. The IPT will end support for Java 6 in 2015, so please be proactive and plan a Java upgrade on your server soon.
+This new version has been tested and designed to work on Tomcat 7.0. Since 2.1 the IPT no longer supports Java 5, and is designed to run on Java 6 or later. The IPT will end support for Java 6 in 2015, so please be proactive and plan a Java upgrade on your server soon.
 
 ==Viewing the IPT change log==
 
