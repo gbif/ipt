@@ -33,7 +33,6 @@
    * [HowToTranslate How to Contribute]
  * Developers
    * [HowToContribute How to Contribute]
-   * [Environments]
  * Versions
    * [Roadmap]
    * [VersionHistory Version History]
