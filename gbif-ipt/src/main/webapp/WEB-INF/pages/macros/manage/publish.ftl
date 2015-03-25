@@ -72,8 +72,8 @@
           <div class="info autop">
             <@s.text name="manage.overview.publishing.doi.register.prevented.notPublic"/>
           </div>
-        <!-- and its status is public, its reserved DOI can be registered during next publication  -->
-        <#elseif resource.status == "PUBLIC">
+        <!-- and its status is public (or registered), its reserved DOI can be registered during next publication  -->
+        <#elseif resource.status == "PUBLIC" || resource.status == "REGISTERED">
           <@s.submit cssClass="confirmPublishMajorVersion" id="publishButton" name="publish" key="button.publish"/>
           <img class="infoImg" src="${baseURL}/images/info.gif" />
           <div class="info autop">
