@@ -9,6 +9,7 @@ import org.gbif.metadata.eml.Eml;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.Locale;
+import java.util.UUID;
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
@@ -28,10 +29,19 @@ public class ResourceUtils {
   /**
    * Reconstruct published version, using version's Eml file, version history, etc.
    *
+   * @param version version to assign to reconstructed resource
+   * @param shortname shortname to assign to reconstructed resource
+   * @param doi DOI to assign to reconstructed resource
+   * @param organisation organisation to assign to reconstructed resource
+   * @param versionHistory VersionHistory corresponding to resource version being reconstructed
+   * @param versionEmlFile eml file corresponding to version of resource being reconstructed
+   * @param key GBIF UUID to assign to reconstructed resource
+   *
    * @return published version reconstructed
    */
   public static Resource reconstructVersion(@NotNull BigDecimal version, @NotNull String shortname, @NotNull DOI doi,
-    @Nullable Organisation organisation, @Nullable VersionHistory versionHistory, @Nullable File versionEmlFile) {
+    @Nullable Organisation organisation, @Nullable VersionHistory versionHistory, @Nullable File versionEmlFile,
+    @Nullable UUID key) {
     Preconditions.checkNotNull(version);
     Preconditions.checkNotNull(shortname);
     Preconditions.checkNotNull(doi);
@@ -47,6 +57,7 @@ public class ResourceUtils {
     resource.setEmlVersion(version);
     resource.setDoi(doi);
     resource.setOrganisation(organisation);
+    resource.setKey(key);
     resource.setStatus(versionHistory.getPublicationStatus());
     resource.setIdentifierStatus(versionHistory.getStatus());
     resource.setRecordsPublished(versionHistory.getRecordsPublished());

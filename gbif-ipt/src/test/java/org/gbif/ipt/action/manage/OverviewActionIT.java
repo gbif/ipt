@@ -485,7 +485,8 @@ public class OverviewActionIT {
       assertTrue(r.getIdentifierStatus().equals(IdentifierStatus.PUBLIC));
       assertEquals(ORGANISATION_KEY, r.getDoiOrganisationKey());
       assertEquals(2, r.getEml().getAlternateIdentifiers().size());
-      assertEquals(reserved3.getUrl().toString(), r.getEml().getCitation().getIdentifier()); // same DOI still set as citation id
+      // DOI of last published version should be used as citation identifier
+      assertEquals(reserved2.getUrl().toString(), r.getEml().getCitation().getIdentifier());
     }
   }
 }

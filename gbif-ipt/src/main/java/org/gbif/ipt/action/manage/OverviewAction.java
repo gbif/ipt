@@ -77,6 +77,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
@@ -372,12 +373,15 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           // reconstruct version being undeleted
           String shortname = resource.getShortname();
           BigDecimal versionToUndelete = resource.getLastPublishedVersionsVersion();
+          UUID key = resource.getKey();
           File versionToUndeleteEmlFile = cfg.getDataDir().resourceEmlFile(shortname, versionToUndelete);
           Resource reconstructed = ResourceUtils.reconstructVersion(versionToUndelete, shortname, doi, organisation,
-            resource.findVersionHistory(versionToUndelete), versionToUndeleteEmlFile);
+            resource.findVersionHistory(versionToUndelete), versionToUndeleteEmlFile, key);
           URI target = cfg.getResourceUri(shortname);
           // perform undelete
           doUndeleteDOI(doi, reconstructed, target);
+          // reassign DOI of last published version
+          resource.setDoi(doi);
           resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
           resource.updateCitationIdentifierForDOI();
 
@@ -393,7 +397,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
                   cfg.getDataDir().resourceEmlFile(shortname, formerVersionToUndelete);
                 Resource formerVersionReconstructed = ResourceUtils
                   .reconstructVersion(formerVersionToUndelete, shortname, formerDoi, organisation,
-                    resource.findVersionHistory(formerVersionToUndelete), formerVersionToUndeleteEmlFile);
+                    resource.findVersionHistory(formerVersionToUndelete), formerVersionToUndeleteEmlFile, key);
                 // prepare target URI equal to version resource page
                 URI formerTarget = cfg.getResourceVersionUri(shortname, formerVersionToUndelete);
                 // perform undelete
@@ -404,7 +408,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           }
 
           // revert resource status back to PUBLIC/REGISTERED
-          if (resource.isRegistered()) {
+          if (reconstructed.isRegistered()) {
             resource.setStatus(PublicationStatus.REGISTERED);
             // TODO: undelete it from GBIF if it was registered (requires GBIF API change)
             addActionWarning(getText("manage.overview.resource.undelete.warning.gbif"));

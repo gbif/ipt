@@ -1363,14 +1363,14 @@ public class ResourceManagerImplTest {
     resource.setOrganisation(organisation);
     assertEquals(organisation.getKey(), resource.getOrganisation().getKey());
     resource.getEml().setTitle("Title for pending version 1.2");
-    resource.getEml().setDescription("Title for pending version 1.2");
+    resource.getEml().setDescription("Title description for pending version 1.2");
 
     // retrieve previous persisted Eml file for version 1.1
     File emlXMLVersionOnePointOne = org.gbif.utils.file.FileUtils.getClasspathFile("resources/res1/eml-1.1.xml");
     // reconstruct resource version 1.1
     Resource reconstructed = ResourceUtils
       .reconstructVersion(version, shortname, doi, organisation, historyForVersionOnePointOne,
-        emlXMLVersionOnePointOne);
+        emlXMLVersionOnePointOne, null);
 
     assertEquals(shortname, reconstructed.getShortname());
     assertEquals(version, reconstructed.getEmlVersion());
@@ -1383,6 +1383,66 @@ public class ResourceManagerImplTest {
     // ensure reconstructed resource uses eml-1.1.xml
     assertEquals("Title for version 1.1", reconstructed.getEml().getTitle()); // changed
     assertEquals("Test description for version 1.1", reconstructed.getEml().getDescription()); // changed
+  }
+
+  /**
+   * Ensure previous registered version can be reconstructed properly.
+   */
+  @Test
+  public void testReconstructRegisteredVersion() throws Exception {
+    // create a new resource using configuration file (resource.xml) that has version history
+    // and manually set organisation and a few Eml properties to mock new metadata entered for pending version
+    File cfgFile = org.gbif.utils.file.FileUtils.getClasspathFile("resources/res1/resource_reg_version_history.xml");
+    when(mockedDataDir.resourceFile(anyString(), anyString())).thenReturn(cfgFile);
+    File resourceDirectory = cfgFile.getParentFile();
+    assertTrue(resourceDirectory.isDirectory());
+    Resource resource = getResourceManagerImpl().loadFromDir(resourceDirectory);
+    String shortname = "res1";
+    assertEquals(shortname, resource.getShortname());
+    BigDecimal version = new BigDecimal("5.0");
+    assertEquals(version.toPlainString(), resource.getEmlVersion().toPlainString());
+    DOI doi = new DOI("doi:10.5072/fk22zu2ds");
+    assertNotNull(resource.getDoi());
+    assertEquals(doi.toString(), resource.getDoi().toString());
+    assertNotNull(resource.getVersionHistory());
+    assertEquals(6, resource.getVersionHistory().size());
+    VersionHistory historyForVersionFivePointZero = resource.findVersionHistory(version);
+    assertNotNull(historyForVersionFivePointZero.getDoi());
+    assertEquals(doi.toString(), historyForVersionFivePointZero.getDoi().toString());
+    assertEquals(IdentifierStatus.PUBLIC, historyForVersionFivePointZero.getStatus());
+    assertEquals(PublicationStatus.REGISTERED, historyForVersionFivePointZero.getPublicationStatus());
+    assertEquals(0, resource.getRecordsPublished());
+    Organisation organisation = new Organisation();
+    organisation.setKey("299958e0-4c06-11d8-b290-b8a03c50a862");
+    assertNull(resource.getOrganisation());
+    resource.setOrganisation(organisation);
+    assertEquals(organisation.getKey(), resource.getOrganisation().getKey());
+
+    UUID key = UUID.fromString("da2049f3-bcc3-4730-ad33-c057ed5ac20b");
+    resource.setKey(key);
+
+    resource.getEml().setTitle("Title for pending version 5.1");
+    resource.getEml().setDescription("Description for pending version 5.1");
+
+    // retrieve previous persisted Eml file for version 5.0
+    File emlXMLVersionOnePointOne = org.gbif.utils.file.FileUtils.getClasspathFile("resources/res1/eml-5.0.xml");
+    // reconstruct resource version 5.0
+    Resource reconstructed = ResourceUtils
+      .reconstructVersion(version, shortname, doi, organisation, historyForVersionFivePointZero,
+        emlXMLVersionOnePointOne, key);
+
+    assertEquals(shortname, reconstructed.getShortname());
+    assertEquals(version, reconstructed.getEmlVersion());
+    assertEquals(doi, reconstructed.getDoi());
+    assertEquals(IdentifierStatus.PUBLIC, reconstructed.getIdentifierStatus());
+    assertEquals(PublicationStatus.REGISTERED, reconstructed.getStatus());
+    assertEquals(key, reconstructed.getKey());
+    assertEquals(historyForVersionFivePointZero.getReleased(), reconstructed.getLastPublished());
+    assertEquals(organisation, reconstructed.getOrganisation());
+    assertEquals(0, reconstructed.getRecordsPublished()); // unchanged
+    // ensure reconstructed resource uses eml-5.0.xml
+    assertEquals("Test Dataset Please Ignore", reconstructed.getEml().getTitle()); // changed
+    assertEquals("This dataset covers mosses and lichens from Russia.", reconstructed.getEml().getDescription()); // changed
   }
 
   @Test
