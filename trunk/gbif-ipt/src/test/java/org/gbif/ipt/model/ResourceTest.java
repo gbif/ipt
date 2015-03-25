@@ -369,6 +369,10 @@ public class ResourceTest {
     resource.setLastPublished(new Date());
     // create hompepage for next resource version (1.7)
     URI homepage = new URI("http://ipt.gbif.org/resource?r=birds&v=1.7");
+    // make resource of type occurrence
+    List<ExtensionMapping> extensionMappings = Lists.newArrayList();
+    extensionMappings.add(getOccExtensionMapping());
+    resource.setMappings(extensionMappings);
 
     Calendar calendar = Calendar.getInstance();
     calendar.set(2014, Calendar.JANUARY, 29);
@@ -396,17 +400,22 @@ public class ResourceTest {
     String citation = resource.generateResourceCitation(resource.getNextVersion(), homepage);
 
     LOG.info("Resource citation using next minor version: " + citation);
-    assertEquals("Smith J, Weir P (2014): Birds. v1.7. NHM. Dataset. http://ipt.gbif.org/resource?r=birds&v=1.7", citation);
+    assertEquals("Smith J, Weir P (2014): Birds. v1.7. NHM. Dataset/Occurrence. http://ipt.gbif.org/resource?r=birds&v=1.7", citation);
 
     // mock assigning Citation Identifier to resource
     Citation emlCitation = new Citation("Citation text", "http://doi.org/10.5886/cit_id");
     resource.getEml().setCitation(emlCitation);
 
+    // change resource to type checklist
+    extensionMappings.clear();
+    extensionMappings.add(getTaxExtensionMapping());
+    resource.setMappings(extensionMappings);
+
     // resource has citation identifier, therefore should use that as citation identifier now
     citation = resource.generateResourceCitation(resource.getNextVersion(), homepage);
 
     LOG.info("Resource citation using next minor version: " + citation);
-    assertEquals("Smith J, Weir P (2014): Birds. v1.7. NHM. Dataset. http://doi.org/10.5886/cit_id", citation);
+    assertEquals("Smith J, Weir P (2014): Birds. v1.7. NHM. Dataset/Checklist. http://doi.org/10.5886/cit_id", citation);
 
     // mock assigning DOI to resource
     resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
@@ -416,7 +425,7 @@ public class ResourceTest {
     citation = resource.generateResourceCitation(resource.getNextVersion(), homepage);
 
     LOG.info("Resource citation with version specified: " + citation);
-    assertEquals("Smith J, Weir P (2014): Birds. v1.7. NHM. Dataset. http://doi.org/10.5886/1bft7w5f", citation);
+    assertEquals("Smith J, Weir P (2014): Birds. v1.7. NHM. Dataset/Checklist. http://doi.org/10.5886/1bft7w5f", citation);
   }
 
 
