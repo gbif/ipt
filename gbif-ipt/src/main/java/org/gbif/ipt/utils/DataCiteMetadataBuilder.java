@@ -32,6 +32,7 @@ import javax.validation.constraints.NotNull;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 public class DataCiteMetadataBuilder {
@@ -317,7 +318,9 @@ public class DataCiteMetadataBuilder {
   protected static DataCiteMetadata.ResourceType getResourceType(Resource resource) {
     DataCiteMetadata.ResourceType resourceType = FACTORY.createDataCiteMetadataResourceType();
     resourceType.setResourceTypeGeneral(ResourceType.DATASET);
-    resourceType.setValue(resource.getCoreType());
+    if (resource.getCoreType() != null) {
+      resourceType.setValue(StringUtils.capitalize(resource.getCoreType().toLowerCase()));
+    }
     return resourceType;
   }
 

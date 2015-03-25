@@ -1025,9 +1025,12 @@ public class Resource implements Serializable, Comparable<Resource> {
       sb.append(". ");
     }
 
-    // add ResourceType, e.g. Dataset/Species Observations
+    // add ResourceTypeGeneral/ResourceType, e.g. Dataset/Occurrence, Dataset/Checklist
     sb.append("Dataset");
-    // TODO: append more specific resourceType "e.g. /Species Checklist, or /Species Observations"
+    if (getCoreType() != null) {
+      sb.append("/");
+      sb.append(StringUtils.capitalize(getCoreType().toLowerCase()));
+    }
     sb.append(". ");
 
     // add DOI as the identifier. DataCite recommends using linkable, permanent URL
