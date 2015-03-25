@@ -30,6 +30,8 @@ A detailed description of the IPT's citation format is described below. It is im
 == Example Citations ==
 
   * Example citation for occurrence dataset, with institutional creator, and DOI: 
-  Biodiversity Institute of Ontario (2011) Migratory birds of Ontario. Version 2.1. University of Guelph. Dataset/Species occurrences. http://dx.doi.org/10.5886/qzxxd2pa
+  Biodiversity Institute of Ontario (2011) Migratory birds of Ontario. Version 2.1. University of Guelph. Dataset/Occurrence. http://dx.doi.org/10.5886/qzxxd2pa
   * Example citation for checklist dataset, with more than 9 creators, and DOI:
-  Brouillet L, Desmet P, Coursol F, Meades SJ, Favreau M, Anions M, Bélisle P, Gendreau C, Shorthouse D (2010) Database of vascular plants of Canada. Version
+  Brouillet L, Desmet P, Coursol F, Meades SJ, Favreau M, Anions M, Bélisle P, Gendreau C, Shorthouse D (2010) Database of vascular plants of Canada. Version 3.1. Université de Montréal Biodiversity Centre. Dataset/Checklist. http://doi.org/10.5886/1bft7W5f
+  * Example citation for occurrence dataset with 3 creators, and without DOI:
+  Harihar A, Pandav B, Hussein M (2014) Camera trap database of Tigers from Rajaji National Park, Uttarakhand. Version 1.0. Wildlife Institute of India. Dataset/Occurrence Data. http://ibif.gov.in:8080/ipt/resource.do?r=camera_trap_rajaji_np
