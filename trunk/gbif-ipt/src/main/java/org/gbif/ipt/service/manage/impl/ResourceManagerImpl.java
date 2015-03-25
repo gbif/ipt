@@ -1406,7 +1406,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         File replacedVersionEmlFile = dataDir.resourceEmlFile(resource.getShortname(), replacedVersion);
         Resource lastPublishedVersion = ResourceUtils
           .reconstructVersion(replacedVersion, resource.getShortname(), doiToReplace, resource.getOrganisation(),
-            resource.findVersionHistory(versionToReplace), replacedVersionEmlFile);
+            resource.findVersionHistory(versionToReplace), replacedVersionEmlFile, resource.getKey());
 
         DataCiteMetadata assignedDoiMetadata =
           DataCiteMetadataBuilder.createDataCiteMetadata(doiToReplace, lastPublishedVersion);
