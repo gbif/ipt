@@ -738,7 +738,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         }
       } else if (existingDoi != null && resource.getIdentifierStatus() == IdentifierStatus.UNRESERVED && !resource
         .isAlreadyAssignedDoi()) {
-        LOG.info("Assigning " + existingDoi.toString() + " (existing DOI) to " + resource.getTitleAndShortname());
 
         String prefixAllowed = doiAccount.getDoiPrefix();
         // ensure the prefix of the DOI account configured for this IPT matches the prefix of the existing DOI
@@ -746,17 +745,34 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           try {
             DoiData doiData = registrationManager.getDoiService().resolve(existingDoi);
             // verify the existing DOI is either reserved or registered already
-            if (doiData != null && (doiData.getStatus().equals(DoiStatus.REGISTERED) || doiData.getStatus()
-              .equals(DoiStatus.RESERVED))) {
-              resource.setDoi(existingDoi);
-              resource.setDoiOrganisationKey(registrationManager.findPrimaryDoiAgencyAccount().getKey());
-              resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
-              resource.updateAlternateIdentifierForDOI();
-              resource.updateCitationIdentifierForDOI(); // set DOI as citation identifier
-              saveResource();
-              String msg = getText("manage.overview.publishing.doi.reserve.reused", new String[] {existingDoi.toString()});
-              LOG.info(msg);
-              addActionMessage(msg);
+            if (doiData != null && doiData.getStatus().equals(DoiStatus.RESERVED)) {
+              LOG.info("Assigning " + existingDoi.toString() + " (existing reserved DOI) to " + resource.getTitleAndShortname());
+              doReuseDOI(existingDoi, resource);
+            } else if (doiData != null && doiData.getStatus().equals(DoiStatus.REGISTERED)) {
+              LOG.info("Assigning " + existingDoi.toString() + " (existing registered DOI) to " + resource.getTitleAndShortname());
+
+              // the DOI is registered and should resolve to this resource's public homepage, so verify the homepage is publicly accessible
+              LOG.debug("Resource " + resource.getShortname() + " has status=" + resource.getStatus());
+              if (!resource.isPubliclyAvailable()) {
+                // TODO: i18n
+                String errorMsg = "Failed to reuse existing registered DOI (" + existingDoi.toString() + "). To be able to assign it to this resource, the resource must be publicly accessible.";
+                LOG.error(errorMsg);
+                addActionError(errorMsg);
+              } else {
+                // the DOI is registered and its target URI should be equal to the public resource homepage URI
+                URI target = doiData.getTarget();
+                LOG.debug(existingDoi.toString() + " has target URI=" + target);
+                URI homepage = cfg.getResourceUri(resource.getShortname());
+                if (target != null && target.equals(homepage)) {
+                  LOG.debug("Verified target URI of existing registered DOI is equal to public resource homepage URI");
+                  doReuseDOI(existingDoi, resource);
+                } else {
+                  // TODO: i18n
+                  String errorMsg = "Failed to reuse existing registered DOI (" + existingDoi.toString() + "). To be able to assign it to this resource, its target URI must be changed to " + homepage.toString();
+                  LOG.error(errorMsg);
+                  addActionError(errorMsg);
+                }
+              }
             } else {
               String errorMsg = getText("manage.overview.publishing.doi.reserve.reused.failed", new String[] {existingDoi.toString()});
               LOG.error(errorMsg);
@@ -779,6 +795,24 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         new String[] {resource.getShortname(), resource.getIdentifierStatus().toString()}));
     }
     return execute();
+  }
+
+  /**
+   * Do the changes to the resource, necessary to reuse an existing DOI.
+   *
+   * @param doi existing DOI to reuse
+   * @param resource resource to apply changes to
+   */
+  private void doReuseDOI(DOI doi, Resource resource) {
+    resource.setDoi(doi);
+    resource.setDoiOrganisationKey(registrationManager.findPrimaryDoiAgencyAccount().getKey());
+    resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
+    resource.updateAlternateIdentifierForDOI();
+    resource.updateCitationIdentifierForDOI(); // set DOI as citation identifier
+    saveResource();
+    String msg = getText("manage.overview.publishing.doi.reserve.reused", new String[] {doi.toString()});
+    LOG.info(msg);
+    addActionMessage(msg);
   }
 
   /**
