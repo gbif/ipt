@@ -847,8 +847,16 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    */
   private void doDeleteReservedDOI(DOI reservedDoi, Resource resource, @Nullable DOI reassignedDoi) throws DoiException {
     Preconditions.checkNotNull(registrationManager.getDoiService());
-    // delete reserved DOI for this resource, optionally reassign DOI, and update EML alternate identifier list
-    registrationManager.getDoiService().delete(reservedDoi);
+
+    // safeguard - prevent deleting existing registered DOIs
+    DoiData doiData = registrationManager.getDoiService().resolve(reservedDoi);
+    if (doiData != null && doiData.getStatus() != null && !doiData.getStatus().equals(DoiStatus.REGISTERED)) {
+      LOG.debug("Deleting reserved DOI=" + reservedDoi.toString());
+      // delete reserved DOI for this resource
+      registrationManager.getDoiService().delete(reservedDoi);
+    } else {
+      LOG.debug("Deleting reserved DOI bypassed because this is an existing registered DOI: " + reservedDoi.toString());
+    }
 
     // reset resource DOI
     resource.setIdentifierStatus(IdentifierStatus.UNRESERVED);
