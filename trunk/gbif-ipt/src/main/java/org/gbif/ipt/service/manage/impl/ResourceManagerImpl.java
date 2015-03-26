@@ -1317,11 +1317,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     Preconditions.checkNotNull(resource);
 
     if (resource.getDoi() != null && resource.isPubliclyAvailable()) {
+      DataCiteMetadata dataCiteMetadata = null;
       DOI doi = resource.getDoi();
       try {
         // DOI resolves to IPT public resource page
         URI uri = cfg.getResourceUri(resource.getShortname());
-        DataCiteMetadata dataCiteMetadata = DataCiteMetadataBuilder.createDataCiteMetadata(doi, resource);
+        dataCiteMetadata = DataCiteMetadataBuilder.createDataCiteMetadata(doi, resource);
 
         // if this resource (DOI) replaces a former resource version (DOI) add isNewVersionOf RelatedIdentifier
         if (replaced != null) {
@@ -1333,9 +1334,17 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         resource.updateAlternateIdentifierForDOI();
         resource.updateCitationIdentifierForDOI(); // set DOI as citation identifier
       } catch (DoiExistsException e) {
-        String errorMsg = "Failed to register " + doi.toString() + " because it exists already: " + e.getMessage();
-        log.error(errorMsg);
-        throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
+        log.warn("Received DoiExistsException registering resource meaning this is an existing DOI that should be updated instead", e);
+        try {
+          registrationManager.getDoiService().update(doi, dataCiteMetadata);
+          resource.setIdentifierStatus(IdentifierStatus.PUBLIC); // must transition reused (registered DOI) from public_pending_publication to public
+          resource.updateAlternateIdentifierForDOI();
+          resource.updateCitationIdentifierForDOI(); // set DOI as citation identifier
+        } catch (DoiException e2) {
+          String errorMsg = "Failed to update existing DOI  " + doi.toString() + ": " + e2.getMessage();
+          log.error(errorMsg, e2);
+          throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e2);
+        }
       } catch (InvalidMetadataException e) {
         String errorMsg =
           "Failed to register " + doi.toString() + " because DOI metadata was invalid: " + e.getMessage();
