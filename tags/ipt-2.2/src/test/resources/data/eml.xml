@@ -1,0 +1,539 @@
+<eml:eml xmlns:eml="eml://ecoinformatics.org/eml-2.1.1"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="eml://ecoinformatics.org/eml-2.1.1 http://rs.gbif.org/schema/eml-gbif-profile/1.0.1/eml.xsd"
+         packageId="http://ipt.gbif.org/resource.do?id=testeml/v1" system="http://gbif.org" scope="system"
+         xml:lang="est">
+
+    <dataset>
+      <alternateIdentifier>http://192.38.28.24:8090/ipt/resource.do?r=test4</alternateIdentifier>    
+      <alternateIdentifier>9fdbfd6e-e727-4188-a864-6f499d484c81</alternateIdentifier>    
+      <title xml:lang="est">WII Herbarium Dataset</title>
+      <creator>
+    <individualName>
+      <givenName>Bhupendra Singh</givenName>
+      <surName>Adhikari</surName>
+    </individualName>
+    <organizationName>Wildlife Institute of India</organizationName>
+    <positionName>Scientist-E</positionName>
+    <address>
+      <deliveryPoint>Chandrabani</deliveryPoint>
+      <city>Dehradun</city>
+      <administrativeArea>Uttarakhand</administrativeArea>
+      <postalCode>248001</postalCode>
+      <country>IN</country>
+    </address>
+    <phone>+91-1352640112</phone>
+    <electronicMailAddress>adhikaribs@wii.gov.in</electronicMailAddress>
+    <onlineUrl>http://www.wii.gov.in</onlineUrl>
+      </creator>
+      <metadataProvider>
+    <individualName>
+      <givenName>Bhupendra Singh</givenName>
+      <surName>Adhikari</surName>
+    </individualName>
+    <organizationName>Wildlife Institute of India</organizationName>
+    <positionName>Scientist-E</positionName>
+    <address>
+      <deliveryPoint>Chandrabani</deliveryPoint>
+      <city>Dehradun</city>
+      <administrativeArea>Uttarakhand</administrativeArea>
+      <postalCode>248001</postalCode>
+      <country>IN</country>
+    </address>
+    <phone>+91-1352640112</phone>
+    <electronicMailAddress>adhikaribs@wii.gov.in</electronicMailAddress>
+    <onlineUrl>http://www.wii.gov.in</onlineUrl>
+      </metadataProvider>
+      <associatedParty>
+    <individualName>
+      <givenName>Gopal Singh</givenName>
+      <surName>Rawat</surName>
+    </individualName>
+    <organizationName>Wildlife Institute of India</organizationName>
+    <positionName>Scientist-G</positionName>
+    <address>
+      <deliveryPoint>Post Box. 18, Chandrabani</deliveryPoint>
+      <city>Dehradun</city>
+      <administrativeArea>Uttarakhand</administrativeArea>
+      <postalCode>248001</postalCode>
+      <country>IN</country>
+    </address>
+    <phone>+91-1352640112</phone>
+    <electronicMailAddress>rawatg@wii.gov.in</electronicMailAddress>
+    <onlineUrl>www.wii.gov.in</onlineUrl>
+    <role>custodianSteward</role>
+      </associatedParty>
+      <associatedParty>
+    <individualName>
+      <givenName>Mani Mattozhiyil</givenName>
+      <surName>Babu</surName>
+    </individualName>
+    <organizationName>Wildlife Institute of India</organizationName>
+    <positionName>Herbarium Technician</positionName>
+    <address>
+      <deliveryPoint>Chandrabani</deliveryPoint>
+      <city>Dehradun</city>
+      <administrativeArea>Uttarakhand</administrativeArea>
+      <postalCode>248001</postalCode>
+      <country>IN</country>
+    </address>
+    <phone>+91-1352640112</phone>
+    <electronicMailAddress>mmb@wii.gov.in</electronicMailAddress>
+    <onlineUrl>www.wii.gov.in</onlineUrl>
+    <role>processor</role>
+      </associatedParty>
+      <associatedParty>
+    <individualName>
+      <givenName>Prem Lal</givenName>
+      <surName>Saklani</surName>
+    </individualName>
+    <organizationName>Wildlife Institute of India</organizationName>
+    <positionName>Herbarium Technician</positionName>
+    <address>
+      <deliveryPoint>Chandrabani</deliveryPoint>
+      <city>Dehradun</city>
+      <administrativeArea>Uttarakhand</administrativeArea>
+      <postalCode>248001</postalCode>
+      <country>IN</country>
+    </address>
+    <phone>+91-1352640112</phone>
+    <electronicMailAddress>pls@wii.gov.in</electronicMailAddress>
+    <onlineUrl>www.wii.gov.in</onlineUrl>
+    <role>processor</role>
+      </associatedParty>
+      <associatedParty>
+    <individualName>
+      <givenName>Shyam</givenName>
+      <surName>Lal</surName>
+    </individualName>
+    <organizationName>Wildlife Institute of India</organizationName>
+    <positionName>Herbarium Assistant</positionName>
+    <address>
+      <deliveryPoint>Chandrabani</deliveryPoint>
+      <city>Dehradun</city>
+      <administrativeArea>Uttarakhand</administrativeArea>
+      <postalCode>248001</postalCode>
+      <country>IN</country>
+    </address>
+    <phone>+91-1352640112</phone>
+    <electronicMailAddress>shyamlal@wii.gov.in</electronicMailAddress>
+    <onlineUrl>www.wii.gov.in</onlineUrl>
+    <role>processor</role>
+      </associatedParty>
+      <associatedParty>
+    <individualName>
+      <givenName>Birender Singh</givenName>
+      <surName>Rawat</surName>
+    </individualName>
+    <organizationName>Wildlife Institute of India</organizationName>
+    <positionName>Herbarium Assistant</positionName>
+    <address>
+      <deliveryPoint>Chandrabani</deliveryPoint>
+      <city>Dehradun</city>
+      <administrativeArea>Uttarakhand</administrativeArea>
+      <postalCode>248001</postalCode>
+      <country>IN</country>
+    </address>
+    <phone>+91-1352640112</phone>
+    <electronicMailAddress>birender@wii.gov.in</electronicMailAddress>
+    <onlineUrl>www.wii.gov.in</onlineUrl>
+    <role>processor</role>
+      </associatedParty>
+      <associatedParty>
+    <individualName>
+      <givenName>V.B.</givenName>
+      <surName>Mathur</surName>
+    </individualName>
+    <organizationName>Wildlife Institute of India</organizationName>
+    <positionName>Dean</positionName>
+    <address>
+      <deliveryPoint>Chandrabani</deliveryPoint>
+      <city>Dehradun</city>
+      <administrativeArea>Uttarakhand</administrativeArea>
+      <postalCode>248001</postalCode>
+      <country>IN</country>
+    </address>
+    <phone>+91-1352640112</phone>
+    <electronicMailAddress>vbm@wii.gov.in</electronicMailAddress>
+    <onlineUrl>www.wii.gov.in</onlineUrl>
+    <role>distributor</role>
+      </associatedParty>
+      <associatedParty>
+    <individualName>
+      <givenName>Gautam</givenName>
+      <surName>Talukdar</surName>
+    </individualName>
+    <organizationName>Wildlife Institute of India</organizationName>
+    <positionName>Scientist-C</positionName>
+    <address>
+      <deliveryPoint>Chandrabani</deliveryPoint>
+      <city>Dehradun</city>
+      <administrativeArea>Uttarakhand</administrativeArea>
+      <postalCode>248001</postalCode>
+      <country>IN</country>
+    </address>
+    <phone>+91-1352640112</phone>
+    <electronicMailAddress>gautam@wii.gov.in</electronicMailAddress>
+    <onlineUrl>www.wii.gov.in</onlineUrl>
+    <role>publisher</role>
+      </associatedParty>
+      <associatedParty>
+    <individualName>
+      <givenName>Karthik</givenName>
+      <surName>Vasudevan</surName>
+    </individualName>
+    <organizationName>Wildlife Institute of India</organizationName>
+    <positionName>Scientist-D</positionName>
+    <address>
+      <deliveryPoint>Chandrabani</deliveryPoint>
+      <city>Dehradun</city>
+      <administrativeArea>Uttarakhand</administrativeArea>
+      <postalCode>248001</postalCode>
+      <country>IN</country>
+    </address>
+    <phone>+91-1352640112</phone>
+    <electronicMailAddress>karthik@wii.gov.in</electronicMailAddress>
+    <onlineUrl>www.wii.gov.in</onlineUrl>
+    <role>publisher</role>
+      </associatedParty>
+      <associatedParty>
+    <individualName>
+      <givenName>Vishwas</givenName>
+      <surName>Chavan</surName>
+    </individualName>
+    <organizationName>Global Biodiversity Information Facility</organizationName>
+    <positionName>Senior Programme Officer for DIGIT</positionName>
+    <address>
+      <deliveryPoint>Universitetsparken 15, DK 2100</deliveryPoint>
+      <city>Copenhagen</city>
+      <country>DK</country>
+    </address>
+    <phone>+45 35 32 14 75</phone>
+    <electronicMailAddress>vchavan@gbif.org</electronicMailAddress>
+    <onlineUrl>www.gbif.org</onlineUrl>
+    <role>publisher</role>
+      </associatedParty>
+      <associatedParty>
+    <individualName>
+      <givenName>Rajesh</givenName>
+      <surName>Thapa</surName>
+    </individualName>
+    <organizationName>Wildlife Institute of India</organizationName>
+    <positionName>System Manager</positionName>
+    <address>
+      <deliveryPoint>Chandrabani</deliveryPoint>
+      <city>Dehradun</city>
+      <administrativeArea>Uttarakhand</administrativeArea>
+      <postalCode>248001</postalCode>
+      <country>IN</country>
+    </address>
+    <phone>+91-1352640112</phone>
+    <electronicMailAddress>rthapa@wii.gov.in</electronicMailAddress>
+    <onlineUrl>www.wii.gov.in</onlineUrl>
+    <role>publisher</role>
+      </associatedParty>
+      <associatedParty>
+    <individualName>
+      <givenName>Dinesh Singh</givenName>
+      <surName>Pundir</surName>
+    </individualName>
+    <organizationName>Wildlife Institute of India</organizationName>
+    <positionName>Asstt. Programmer</positionName>
+    <address>
+      <deliveryPoint>Chandrabani</deliveryPoint>
+      <city>Dehradun</city>
+      <administrativeArea>Uttarakhand</administrativeArea>
+      <postalCode>248001</postalCode>
+      <country>IN</country>
+    </address>
+    <phone>+91-1352640112</phone>
+    <electronicMailAddress>dspundir@wii.gov.in</electronicMailAddress>
+    <onlineUrl>www.wii.gov.in</onlineUrl>
+    <role>programmer</role>
+      </associatedParty>
+      <associatedParty>
+    <individualName>
+      <givenName>Harendra</givenName>
+      <surName>Kumar</surName>
+    </individualName>
+    <organizationName>Wildlife Institute of India</organizationName>
+    <positionName>Asstt. Programmer</positionName>
+    <address>
+      <deliveryPoint>Chandrabani</deliveryPoint>
+      <city>Dehradun</city>
+      <administrativeArea>Uttarakhand</administrativeArea>
+      <postalCode>248001</postalCode>
+      <country>IN</country>
+    </address>
+    <phone>+91-1352640112</phone>
+    <electronicMailAddress>harendra@wii.gov.in</electronicMailAddress>
+    <onlineUrl>www.wii.gov.in</onlineUrl>
+    <role>programmer</role>
+      </associatedParty>
+      <associatedParty>
+    <individualName>
+      <givenName>Virendra</givenName>
+      <surName>Sharma</surName>
+    </individualName>
+    <organizationName>Wildlife Institute of India</organizationName>
+    <positionName>Computer Personel</positionName>
+    <address>
+      <deliveryPoint>Chandrabani</deliveryPoint>
+      <city>Dehradun</city>
+      <administrativeArea>Uttarakhand</administrativeArea>
+      <postalCode>248001</postalCode>
+      <country>IN</country>
+    </address>
+    <phone>+91-1352640112</phone>
+    <electronicMailAddress>viru@wii.gov.in</electronicMailAddress>
+    <onlineUrl>www.wii.gov.in</onlineUrl>
+    <role>programmer</role>
+      </associatedParty>
+      <associatedParty>
+    <individualName>
+      <givenName>Rajesh</givenName>
+      <surName>Sood</surName>
+    </individualName>
+    <organizationName>Global Biodiversity Information Facility</organizationName>
+    <positionName>Information System Analyst</positionName>
+    <address>
+      <deliveryPoint>Universitetsparken 15, DK 2100</deliveryPoint>
+      <city>Copenhagen</city>
+      <country>DK</country>
+    </address>
+    <phone>+45 35 32 14 75</phone>
+    <electronicMailAddress>rsood@gbif.org</electronicMailAddress>
+    <onlineUrl>www.gbif.org</onlineUrl>
+    <role>programmer</role>
+      </associatedParty>
+	  <pubDate>
+      	2011-06-29
+      </pubDate>
+      <language>dut</language>
+      <abstract>
+        <para>This paper describe the herbarium dataset of the Wildlife Institute of India (WII), Dehradun, India. Altogether 4867 specimens are housed at WII herbarium, of which 4322 are digitized and published through the GBIF network. Since the inception of Wildlife Institute of India, the experts from Food and Agricultural Organisation (FAO) and scientists, trainees, researcher, students and herbarium staff had initiated collection of plant specimens from various protected areas distributed in all the biogeographic zones of the country. These specimens are preserved with dry preservation technique and kept in herbarium cabinets according to the Benthem &amp; Hooker’s classification (1862-1883). The main contributors to the herbarium specimens were W.A. Rodgers, G.S. Rawat, S.S.R. Bennet, J.L. Shrivastava, Ramesh, M.M. Babu, P.L. Saklani and Parmar. The collection material is mainly utilized by the researchers and field managers from the respective protected areas of the country to prepare a checklist for Management plan. Accession of new specimens and digitization of existing ones is an ongoing process at the herbarium. It is envisaged that the herbarium will house over 2000 specimens by 2015.</para>
+      </abstract>
+      <keywordSet>
+        <keyword>Phytosociology</keyword>
+        <keyword>Vegetation</keyword>
+        <keyword>India</keyword>
+        <keyword>National Park</keyword>
+        <keyword>Sanctuary</keyword>
+        <keyword>Tree</keyword>
+        <keyword>Shrub</keyword>
+        <keyword>Herb</keyword>
+        <keyword>Orchid</keyword>
+        <keyword>Climber</keyword>
+        <keyword>Grass</keyword>
+        <keyword>Angiosperms</keyword>
+        <keyword>Gymnoperms</keyword>
+        <keyword>Pteridophytes</keyword>
+        <keywordThesaurus>Agrovoc</keywordThesaurus>
+      </keywordSet>
+      <keywordSet>
+        <keyword>Observation</keyword>
+        <keywordThesaurus>GBIF DatasetSubtype Vocabulary</keywordThesaurus>
+      </keywordSet>
+      <additionalInfo>
+        <para>This is some additional information. </para>
+      </additionalInfo>
+      <intellectualRights>
+        <para>This work is licensed under a Creative Commons CCZero 1.0 License http://creativecommons.org/publicdomain/zero/1.0/legalcode</para>
+      </intellectualRights>
+      <distribution scope="document">
+        <online>
+          <url function="information">http://www.wii.gov.in</url>
+        </online>
+      </distribution>
+      <coverage>        
+        <geographicCoverage>
+          <geographicDescription>Distribution all over India. India is the seventh largest country in the world, bounded by the Indian Ocean on the south, the Arabian Sea on the west, and the Bay of Bengal on the east with coastline of 7517km. It borders Pakistan to the west; China, Nepal, and Bhutan to the north-east; and Bangladesh and Myanmar to the east, while. Sri Lanka, Maldives and Indonesia in the Indian Ocean are in close vicinity and provide the country a distinct geographical entity. 
+
+The country is characterized by its diverse physical units, which includes Himalayan mountain chain; plains of river Indus, Ganga and Brahmaputra; peninsular plateau; Western ghats; Eastern ghats and the coastal plains and the Islands. In general four major river systems, the Himalayan, deccan, coastal and rivers of the inland drainage basin are there. The Himalayan rivers are generally snow-fed and flow throughout the year. During rainy and winter seasons Himalaya receives very heavy rainfall and snow fall, respectively, causes frequent floods. Maximum deccan and coastal rivers are non-perennial and generally rain-fed. The rivers of the inland drainage basin are lost somewhere in its own basin. The altitude ranges from coastal region to the highest peak Kanchenjunga (8598m asl). 
+
+Despite the country&apos;s size the entire country has a tropical climate marked with relatively high temperature during summer and dry winters and seasonal rhythm of the monsoon is apparent throughout. Although, much of northern India lies beyond the tropical zone, the north-eastern region receive very heavy rainfall followed by Western Ghats and western Himalaya (&gt;2000mm annually). However, eastern peninsula extending up to the northern plains receives rainfall between 1000 to 2000mm in a year, while the area from Western Deccan up to the Punjab plains receives rainfall between 100-500 mm a year. Parts of Run of Kachchh, Rajasthan and Trans-Himalayan region (Ladakh) have hardly any rainfall. Yearly the country has to face various kinds of natural hazards, viz., droughts, flash floods, wide spread and destructive flooding from seasonal rains, severe thunder and hail storms and earthquakes.
+
+Rodgers and Panwar (1988) divided India into 10 biogeographic zone, which were further divided into 25 biogeographic provinces considering the factors such as altitude, moisture, topography and rainfall for the planning of wildlife protected areas in India. At present there are 665 Pas in the country, of which 15.3% National Parks, 77.4% Wildlife Sanctuaries, 6.6% Conservation Reserves and 0.6% Community Reserves.
+
+Champion and Seth (1968) classified the forests of India into 6 major ecological classes depending upon their ecological functions, which are as follows: Eco class I: Tropical wet evergreen forests, Tropical semi-evergreen forests and tropical moist deciduous forests; Eco-class II: littoral and swamp forests; Eco-class III: tropical dry deciduous forests; Eco-class IV: tropical thorn forests and tropical dry evergreen forest; Eco-class V: sub-tropical broadleaved hill forests, sub-tropical pine forest and sub-tropical dry evergreen forests; and Eco-class VI: montane wet temperate forests, Himalayan moist temperate forests, Himalayan dry temperate forests, sub-alpine forests, moist alpine scrub and dry alpine scrub.</geographicDescription>
+          <boundingCoordinates>
+            <westBoundingCoordinate>68.7</westBoundingCoordinate>
+            <eastBoundingCoordinate>97.25</eastBoundingCoordinate>
+            <northBoundingCoordinate>37.6</northBoundingCoordinate>
+            <southBoundingCoordinate>8.4</southBoundingCoordinate>
+          </boundingCoordinates>
+        </geographicCoverage>
+        <temporalCoverage>
+          <singleDateTime><calendarDate>2012-08-02</calendarDate></singleDateTime>
+        </temporalCoverage>
+        <temporalCoverage>
+          <rangeOfDates>
+            <beginDate><calendarDate>2012-08-02</calendarDate></beginDate>
+            <endDate><calendarDate>2012-08-04</calendarDate></endDate>
+          </rangeOfDates>
+        </temporalCoverage>
+        <taxonomicCoverage>
+         	<generalTaxonomicCoverage>The coverage of this database is mainly plants from Angiosperms, Gymnosperms and Pteridophytes. The highest number of records are from the family Poaceae (#613) followed by Asteraceae (#270), Fabaceae (#216), Acanthaceae (#145), Lamiaceae (#144), Rosaceae (#131), Euphorbiaceae (#107), Rubiaceae (#105), Cyperaceae (#96), Mimosaceae (#70), Verbenaceae (#64), Scrophulariaceae (#58), Ranunculaceae (#55), Apocynaceae, Malvaceae (#53 each), Lauraceae (#50) and rest of other families have individuals &lt;50.</generalTaxonomicCoverage>
+         <taxonomicClassification>
+           	<taxonRankName>kingdom</taxonRankName>
+           	<taxonRankValue>Plantae</taxonRankValue>
+           	<commonName>Common name1</commonName>
+         </taxonomicClassification>
+         <taxonomicClassification>
+           	<taxonRankName>phylum</taxonRankName>
+           	<taxonRankValue>Equisetophyta, Lycopodiophyta, Magnoliophyta, Pinophyta, Pteridophyta</taxonRankValue>
+           	<commonName>Common name2</commonName>
+         </taxonomicClassification>
+         <taxonomicClassification>
+           	<taxonRankName>class</taxonRankName>
+           	<taxonRankValue>Equisetopsida, Filicopsida, Liliopsida, Lycopodiopsida, Magnoliopsida, Magnolipsida, Pinopsida</taxonRankValue>
+           	<commonName>Common name3</commonName>
+         </taxonomicClassification>
+         <taxonomicClassification>
+           	<taxonRankName>order</taxonRankName>
+           	<taxonRankValue>Alismatales, Apiales, Aristolochiales, Asparagales, Asterales, Buxales, Capparales, Caryophyllales, Celastrales, Commelinales, Cornales, Dilleniales, Dioscoreales, Dipsacales, Ebenales, Equisetales, Equisetopsida, Ericales, Fabales, Fagales, Gentianales, Geraniales, Hamamelidales, Juglandales, Lamiales, Laurales, Liliales, Liliopsida, Linales, Lycopodiales, Magnoliales, Malpighiales, Malvales, Marattiales, Myricales, Myrtales, Nepenthales, Nymphaeales, Papaverales, Pinales, Piperales, Plantaginales, Plumbaginales, Poales, Polygalales, Polygonales, Polypodiales, Primulales, Proteales, Ranunculalaes, Ranunculales, Rhamnales, Rhizophorales, Rosales, Rubiales, Salicales, Santalales, Sapindales, Scrophulariales, Selaginellales, Solanales, Theales, Urticales, Violales, Zingiberales</taxonRankValue>
+           	<commonName>Common name4</commonName>
+         </taxonomicClassification>
+         <taxonomicClassification>
+           	<taxonRankName>family</taxonRankName>
+           	<taxonRankValue>Acanthaceae, Actinopteridaceae,  Adiantaceae,  Agavaceae,  Alangiaceae,  Alismataceae,  Alliaceae,  Amaranthaceae,  Amaryllidaceae,  Anacardiaceae,  Angiopteridaceae,  Annonaceae,  Apiaceae,  Apocynaceae,  Aquifoliaceae,  Araceae,  Araliaceae,  Aristolochiaceae,  Asclepiadaceae,  Aspidaceae,  Aspleniaceae,  Asteraceae,  Athyriaceae,  Avicenniaceae,  Balsaminaceae,  Bambusaceae,  Begoniaceae,  Berberidaceae,  Betulaceae,  Bignoniaceae,  Blechnaceae,  Bombaceae,  Boraginaceae,  Brassicaceae,  Bringtoniaceae,  Bubiaceae,  Buddlejaceae,  Burseraceae,  Buxaceae,  Cactaceae,  Caesalpiniaceae,  Campanulaceae,  Cannaceae,  Capparidaceae, Caprifoliaceae, Caprifoliaceae, Carophyllaceae, Carpinaceae, Caryophyllaceae, Celastraceae, Celastraceae, Ceratophyllaceae, Chenopodiaceae, Chloranthaceae, Cleomaceae, Clusiaceae, Cochlospermaceae, Combretaceae, Commelinaceae, Connaraceae, Convolvulaceae, Coriariaceae, Cornaceae, Corylaceae, Costaceae, Crassulaceae, Cryptogrammataceae, Cupressaceae, Cuscutaceae, Cycadaceae, Cyperaceae, Davalliaceae, Dilleniaceae, Dioscoreaceae, Dipsacaceae, Dipterocarpaceae, Droseraceae, Ebenaceae, Ehretiaceae, , Elaegenaceae, Elaeocarpaceae, Elatinaceae, Eleagnaceae, Equisetaceae, Ericaceae, Euphorbiaceae, Fabaceae, Fagaceae, Flacourtiaceae, Fumeriaceae, Gentianaceae, Geraniaceae, Gesneriaceae, Ginkgoaceae, Gleicheniaceae, Grassulariaceae, Grossulariaceae, Gyrocarpaceae, Hamamelidaceae, Hemionitidaceae, Hydrangeaceae, Hydrocharitaceae, Hypericaceae, Hypoxidaceae, Iridaceae, , Juglandaceae, Juncaceae, Juncaginaceae, Lamiaceae, Lauraceae, Leeaceae, Lentibulariaceae, Liliaceae, Linaceae, Lindsaeaceae, Lobeliaceae, Lomariopsidaceae, Loranthaceae, Lycopodiaceae, Lythraceae, Magnoliaceae, Malvaceae, Maraceae, Marantaceae, Marattiaceae, Marsileaceae, Martyniaceae, Melastomaceae, Meliaceae, Menispermaceae, Mimosaceae, Moraceae, Moringaceae, Mosaceae, Myricaceae, Myristicaceae, Myrsinaceae, Myrtaceae, , Myrtyniaceae, Nepenthaceae, Nepenthaceae, Nyctaginaceae, Ochnaceae, Oleaceae, Oleandraceae, Onagraceae, Ophioglossaceae, Opiliaceae, Orchidaceae, Orobanchaceae, Osmundaceae, Oxalidaceae, Paeoniaceae, Palmaceae, Papaveraceae, Parkeriaceae, Parnasiaceae, Parnassiaceae, Pedaliaceae, Periplocaceae, Peteridaceae, Phytolaccaceae, Pinaceae, Piperaceae, Plantaginaceae, Plantanaceae, Ploygonaceae, Plumbagiaceae, Plumbaginaceae, Poaceae, Podocarpaceae, Podophyllaceae, Polygalaceae, Polygonaceae, Polygonaceae, Polypodiaceae, Portulacaceae, Potaliaceae, Potamogetonaceae, Primulaceae, Proteaceae, Pteridaceae, Punicaceae, , Ananculaceae, Rhamnaceae, Rhizophoraceae, Rochidaceae, Rosaceae, Rubiaceae, Rutaceae, Sabiaceae, Salicaceae, Salvadoraceae, Santalaceae, Sapindaceae, Sapotaceae, Saururaceae, Saxifragaceae, Schizacaceae, Schizaeaceae, Scrophulariaceae, Selaginellaceae, Simroubaceae, Sinopteridaceae, Smilacaceae, Smyplocaceae, Solanaceae, Sonneratiaceae, Spidaceae, Spotaceae, Sterculiaceae, Strychnaceae, Symplocaceae, Synopteridaceae, Tamaraicaceae, Tamaricaceae, Taxaceae, Theaceae, Thelipteridaceae, Thymelaeaceae, Tiliaceae, Trilliaceae, Ulmaceae, Urticaceae, Utricaceae, Valerianaceae, Verbenaceae, Violaceae, Vitaceae, Vitiaceae, Whymelaeaceae, Zingiberaceae.</taxonRankValue>
+           	<commonName>Common name5</commonName>
+         </taxonomicClassification>
+        </taxonomicCoverage>
+      </coverage>
+      <purpose>
+        <para>Preparation of checklist of protected areas for management plan writing and for ecological studies.</para>
+      </purpose>
+      <contact>
+    <individualName>
+      <givenName>Bhupendra Singh</givenName>
+      <surName>Adhikari</surName>
+    </individualName>
+    <organizationName>Wildlife Institute of India</organizationName>
+    <positionName>Scientist-E</positionName>
+    <address>
+      <deliveryPoint>Chandrabani</deliveryPoint>
+      <city>Dehradun</city>
+      <administrativeArea>Uttarakhand</administrativeArea>
+      <postalCode>248001</postalCode>
+      <country>IN</country>
+    </address>
+    <phone>+91-1352640112</phone>
+    <electronicMailAddress>adhikaribs@wii.gov.in</electronicMailAddress>
+    <onlineUrl>http://www.wii.gov.in</onlineUrl>
+      </contact>
+      <methods>
+        <methodStep>
+          <description>
+            <para>Step description, to fix eml.</para>
+          </description>
+        </methodStep>
+        <sampling>
+          <studyExtent>
+            <description>
+            	<para>Plant samples were collected from various protected areas spread across the country.</para>
+            </description>
+          </studyExtent>
+          <samplingDescription>
+            <para>Representative plant samples were collected as part of surveys and ecosystem study events in various protected areas.</para>
+          </samplingDescription>
+        </sampling>
+        <qualityControl>
+          <description>
+            <para>Each herbarium sheet was entered into accession registrar once it was identified by the experts. Data from the lables on herbarium sheet was documented in MS Excel. Quality assessment and control procedures were followed for taxonomic and geocoordinate elements of the data. Catalogue of Life (www.catalogoflife.org) was used to determine the taxon hierarchy of the identified specimens. GeoLocate service was used to determine the latitude and longitude (decimal degree) of the localities. Since the localities represent large areas coordinate precision was identified as nearest minute.</para>
+          </description>
+        </qualityControl>
+      </methods>
+      <project>
+       	 <title>Herbarium collection at Wildlife Institute of India, Dehradun</title>
+        <personnel>
+          <individualName>
+            <givenName>Bhupendra Singh</givenName>
+            <surName>Adhikari</surName>
+          </individualName>
+          <role>pointOfContact</role>
+        </personnel>
+        <funding>
+          <para>Ministry of Environment and Forests, Paryavaran Bhawan, C.G. O. Complex, New Delhi</para>
+        </funding>
+        <studyAreaDescription>
+          <descriptor name="generic"  citableClassificationSystem="false">
+            <descriptorValue>Time to time as per the need of a research on a particular topic Wildlife Institute of India had initiated projects in different parts of the country (biogeographic zones) and under those projects as per the requirement the collections were done.</descriptorValue>
+          </descriptor>
+        </studyAreaDescription>            
+        <designDescription>
+          <description>
+          		<para>Most of the plant specimens were collected based on their importance and at random. There was no any method for this.</para>
+          </description>
+        </designDescription>
+      </project>
+    </dataset>
+    <additionalMetadata>
+     <metadata>
+      <gbif>
+        <dateStamp>2011-06-29T07:09:08.453+02:00</dateStamp>
+        <hierarchyLevel>dataset</hierarchyLevel>
+        <citation identifier="http://identifier1.gbif.org">Adhikar BS, Rawat GS, Babu MM, Saklani PL, Rawat BS, Mathur VB, Talukdar G, Vasudevan K, Chavan V, Thapa R, Pundir DS, Kumar H, Sharma V and R Sood (2011). Wildlife Institute of India Herbarium dataset. PhytoKeys.</citation>
+        <bibliography>
+          <citation identifier="http://identifier2.gbif.org">Bennet, S. S. R. 1987. Name Changes in Flowering plants of India and Adjacent Regions. Dehradun: Triseas Publishers, India.</citation>
+          <citation identifier="http://identifier3.gbif.org">Duthei, J.F. 1903-29. Flora of the upper Gangetic Plain and of the adjacent Siwaliks and sub-Himalayan tracts. Vols. I-III. Calcutta: Govt. of India.</citation>
+          <citation identifier="http://identifier4.gbif.org">Gaur, R.D. 1999. Flora of the District Garhwal, North West Himalaya (with ethnobotanical notes). Srinagar (Garhwal), U.P.: Trans Media, India.</citation>
+          <citation>Gupta, R.K. 1968. Flora Nainitalensis. New Delhi: Navayug Traders.</citation>
+          <citation>Hooker, J.D. 1887- 1897. The flora of British India. Vols. I-VII, Oxford</citation>
+          <citation>Kanjilal, U.N. 1928. Forest flora of the Chakrata, Dehradun and Saharanpur Forest Divisions, Uttar Pradesh. (revised by Basant Lal Gupta, 3rd ed.). New Delhi: Govt. of India Press.</citation>
+          <citation>Naithani, B.D. 1984. Flora of Chamoli Vol. I –II. Culcutta: Director, Botanical Survey of India, Howrah, India.</citation>
+          <citation>Osmaston, A.E. 1926. A Forest Flora of Kumaon. Dehradun: Bishen Singh Mahendra Pal Singh, India.</citation>
+          <citation>Raizada, M.B. and Saxena, H.O. 1978. Flora of Mussoorie, Vol. I. Bishen Singh Mahendra Pal Singh, Dehra Dun.</citation>
+          <citation>Singh, K.K and Prakash, A. 2002. Flora of Rajaji National Park, Uttaranchal. Bishen Singh Mahendra Pal Singh, Dehradun.</citation>
+          <citation>Dietrich Brandis. 1987. Indian Trees.  Bishen Singh Mahendra Pal Singh, Dehradun.</citation>
+          <citation>Mathew, K.M. 1983. The Flora of the Tamilnadu Carnatic Vol I-III, The Rapinant Herbarium, St. Joseph’s College, Thiruchirapally, Tanil Nadu.</citation>
+          <citation>Gamble, J.S. 1984.  Flora of the Presidency of Madras Vol I-III, Bishen Singh Mahendra Pal Singh, Dehradun.</citation>
+          <citation>Fyson, P.F. 1986. The Flora of the South Indian Hill Stations, Periodical Expert Book Agency, Vivek Vihar, Delhi.</citation>
+          <citation>Maheswari, J.K. 1983.  Illustrations to the Flora of Delhi, CSIR, New Delhi</citation>
+          <citation>Babu, C.R. 1977. Herbaceous Flora of Dehradun, Uttar Pradesh, CSIR, New Delhi.</citation>
+          <citation>Singh,  K.K. 1997. Flora of Dudhwa National Park, Kheri District, Uttar Pradesh, Bishen Singh Mahendra Pal Singh, Dehradun</citation>
+          <citation>Bor, N.L. 1960. The grasses of Burma, Ceylon, India and Pakistan (excluding Bambuseae) Pergamon Press, Oxford.</citation>
+          <citation>Polunin O. and Stainton, A. 1984. Flowers of the Himalaya. Oxford University Press, Delhi.</citation>
+          <citation>Rodgers, W.A. and Panwar, H.S. (1988). Planning a wildlife protected area network in India. 2 vols. Project FO: IND/82/003. FAO, Dehra Dun. 339, 267 pp.</citation>
+          <citation>Champion, H. G., and S. K. Seth. 1968. A Revised Survey of the Forest Types of India. Manager of Publications, Government of India, New Delhi.</citation>
+          <citation>Lawrence, G. H. M. 1951. Taxonomy of Vascular Plants. The Macmillan Company, New York.</citation>
+        </bibliography>
+        <physical>
+          <objectName>Orignal Excel Dataset</objectName>
+          <characterEncoding>UTF-8</characterEncoding>
+          <dataFormat>
+            <externallyDefinedFormat>
+              <formatName>Excel</formatName>
+              <formatVersion>98</formatVersion>
+            </externallyDefinedFormat>
+          </dataFormat>
+          <distribution>
+            <online>
+              <url function="download">http://data.wii.gov.in/download/1</url>
+            </online>
+          </distribution>
+        </physical>
+        <resourceLogoUrl>http://ibif.gov.in:8080/ipt/logo.do?r=wii1</resourceLogoUrl>
+        <collection>
+          <parentCollectionIdentifier>WA Rodgers, GS Rawat, SSR Bennet, JL Shrivastava, Ramesh, MM Babu, PL Saklani, Parmar</parentCollectionIdentifier>
+          <collectionIdentifier>WA Rodgers, GS Rawat, SSR Bennet, JL Shrivastava, Ramesh, MM Babu, PL Saklani, Parmar</collectionIdentifier>
+          <collectionName>Collection from Protected Areas of the country</collectionName>
+        </collection>
+        <formationPeriod>1984-1995</formationPeriod>
+        <specimenPreservationMethod>driedAndPressed</specimenPreservationMethod>
+       	<livingTimePeriod>Jurrasic era</livingTimePeriod>
+        <jgtiCuratorialUnit>
+          <jgtiUnitType>mm</jgtiUnitType>
+          <jgtiUnitRange>
+             <beginRange>3</beginRange>
+             <endRange>5</endRange>
+          </jgtiUnitRange>
+        </jgtiCuratorialUnit>
+        <jgtiCuratorialUnit>
+          <jgtiUnitType>degrees celcius</jgtiUnitType>
+            <jgtiUnits uncertaintyMeasure="5">100</jgtiUnits>
+        </jgtiCuratorialUnit>
+      </gbif>
+     </metadata>
+    </additionalMetadata>
+</eml:eml>
