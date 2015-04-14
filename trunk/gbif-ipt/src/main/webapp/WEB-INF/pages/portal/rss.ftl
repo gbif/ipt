@@ -39,8 +39,6 @@
         <#if (res.recordsPublished>0)>
         <ipt:dwca>${cfg.getResourceArchiveUrl(res.shortname)}</ipt:dwca>
         </#if>
-        </#if>
-	    <#if res.eml.distributionUrl?has_content>
         <pubDate>${res.lastPublished?string("EEE, dd MMM yyyy HH:mm:ss Z")}</pubDate>
         </#if>
         <#-- guid is a string that uniquely identifies the RSS item. For RSS readers to detect that a resource was
