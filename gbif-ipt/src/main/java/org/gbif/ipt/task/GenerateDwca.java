@@ -264,7 +264,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     checkForInterruption();
     setState(STATE.METADATA);
     try {
-      FileUtils.copyFile(dataDir.resourceEmlFile(resource.getShortname(), null), new File(dwcaFolder,
+      FileUtils.copyFile(dataDir.resourceEmlFile(resource.getShortname()), new File(dwcaFolder,
         DataDir.EML_XML_FILENAME));
       archive.setMetadataLocation(DataDir.EML_XML_FILENAME);
     } catch (IOException e) {
@@ -299,17 +299,18 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     checkForInterruption();
     setState(STATE.BUNDLING);
     File zip = null;
+    BigDecimal version = resource.getEmlVersion();
     try {
       // create zip
       zip = dataDir.tmpFile("dwca", ".zip");
       CompressionUtil.zipDir(dwcaFolder, zip);
       if (zip.exists()) {
-        // move to data dir
-        File target = dataDir.resourceDwcaFile(resource.getShortname());
-        if (target.exists()) {
-          FileUtils.forceDelete(target);
+        // move to data dir with versioned name
+        File versionedFile = dataDir.resourceDwcaFile(resource.getShortname(), version);
+        if (versionedFile.exists()) {
+          FileUtils.forceDelete(versionedFile);
         }
-        FileUtils.moveFile(zip, target);
+        FileUtils.moveFile(zip, versionedFile);
       } else {
         throw new GeneratorException("Archive bundling failed: temp archive not created: " + zip.getAbsolutePath());
       }
@@ -323,7 +324,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       }
     }
     // final reporting
-    addMessage(Level.INFO, "Archive compressed");
+    addMessage(Level.INFO, "Archive has been compressed");
   }
 
   /**
@@ -782,34 +783,6 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
   }
 
   /**
-   * This method copies a stable version of the latest bundled DwC-A file for archival purposes. This method should
-   * only be called if the IPT has been configured in "archival mode".
-   * 
-   * @throws GeneratorException if the archival couldn't complete for any reason
-   */
-  private void archiveArchive() throws GeneratorException {
-    setState(STATE.ARCHIVING);
-
-    File target = dataDir.resourceDwcaFile(resource.getShortname());
-    if (!target.exists()) {
-      throw new GeneratorException("Can't archive DwC-A file for resource " + resource.getShortname()
-        + "Published DwC-A file doesn't exist");
-    }
-
-    // copy stable version of the DwC-A file
-    BigDecimal version = resource.getEmlVersion();
-    try {
-      File versionedFile = dataDir.resourceDwcaFile(resource.getShortname(), version);
-      FileUtils.copyFile(target, versionedFile);
-    } catch (IOException e) {
-      throw new GeneratorException("Can't archive DwC-A file for resource " + resource.getShortname(), e);
-    }
-
-    // final reporting
-    addMessage(Level.INFO, "Archive version #" + String.valueOf(version) + " has been archived");
-  }
-
-  /**
    * Method responsible for all stages of DwC-A file generation.
    * 
    * @return number of records published in core file
@@ -843,12 +816,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       bundleArchive();
 
       // reporting
-      addMessage(Level.INFO, "Archive generated successfully!");
-
-      // archive version of archive (if archival mode is turned on)
-      if (cfg.isArchivalMode()) {
-        archiveArchive();
-      }
+      addMessage(Level.INFO, "Archive version #" + String.valueOf(resource.getEmlVersion()) + " generated successfully!");
 
       // set final state
       setState(STATE.COMPLETED);

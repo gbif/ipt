@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.Random;
-import javax.annotation.Nullable;
+import javax.validation.constraints.NotNull;
 
 import com.google.inject.Singleton;
 import org.apache.commons.io.FileUtils;
@@ -164,54 +164,51 @@ public class DataDir {
   }
 
   /**
-   * Retrieves DwC-A file for the latest published version of the resource.
+   * Retrieves published DwC-A file for a specific version of a resource.
+   *
+   * @param resourceName resource short name
+   * @param version      version
+   *
+   * @return DwC-A file having specific version
+   */
+  public File resourceDwcaFile(@NotNull String resourceName, @NotNull BigDecimal version) {
+    String fn = "dwca-" + version.toPlainString() + ".zip";
+    return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
+  }
+
+  /**
+   * Retrieves DwC-A file for a resource.
    *
    * @param resourceName resource short name
    *
-   * @return latest published version of DwC-A file
+   * @return DwC-A file having specific version
    */
-  public File resourceDwcaFile(String resourceName) {
+  public File resourceDwcaFile(@NotNull String resourceName) {
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + DWCA_FILENAME);
   }
 
   /**
-   * Retrieves published DwC-A file for a resource.
-   * Specific versions can also be requested depending on the parameter "version". If no specific version is
-   * requested, the latest published version (dwca.zip) is used.
+   * Retrieves published EML file for a specific version of a resource.
    *
    * @param resourceName resource short name
    * @param version      version
    *
-   * @return DwC-A file having specific version, defaulting to latest published version if no version specified
+   * @return EML file having specific version
    */
-  public File resourceDwcaFile(String resourceName, @Nullable BigDecimal version) {
-    String fn;
-    if (version == null) {
-      fn = DWCA_FILENAME;
-    } else {
-      fn = "dwca-" + version.toPlainString() + ".zip";
-    }
+  public File resourceEmlFile(@NotNull String resourceName, @NotNull BigDecimal version) {
+    String fn = "eml-" + version.toPlainString() + ".xml";
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
   }
 
   /**
-   * Retrieves file for the latest published version of the EML file representing the resource metadata in XML format.
-   * Specific versions can also be resolved depending on the parameter "version". If no specific version is
-   * requested, or if the version requested is 0, the interim eml.xml without a version number is used.
+   * Retrieves EML file for a resource.
    *
    * @param resourceName resource short name
-   * @param version      version
    *
-   * @return EML file having specific version, defaulting to interim eml.xml without a version number if none specified
+   * @return interim EML file for resource
    */
-  public File resourceEmlFile(String resourceName, @Nullable BigDecimal version) {
-    String fn;
-    if (version == null) {
-      fn = EML_XML_FILENAME;
-    } else {
-      fn = "eml-" + version.toPlainString() + ".xml";
-    }
-    return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
+  public File resourceEmlFile(@NotNull String resourceName) {
+    return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + EML_XML_FILENAME);
   }
 
   public File resourceFile(Resource resource, String path) {
@@ -246,34 +243,15 @@ public class DataDir {
   }
 
   /**
-   * Retrieves file for the latest published version of the RFT file representing the EML metadata in RTF format.
-   *
-   * @param resourceName resource short name
-   *
-   * @return latest published version of RTF file
-   */
-  public File resourceRtfFile(String resourceName) {
-    String fn = resourceName + ".rtf";
-    return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
-  }
-
-  /**
-   * Retrieves file for the latest published version of the RFT file representing the EML metadata in RTF format.
-   * Specific versions can also be resolved depending on the parameter "version". If no specific version is
-   * requested, the latest published version is used.
+   * Retrieves published RTF file for a specific version of a resource.
    *
    * @param resourceName resource short name
    * @param version      version
    *
    * @return RTF file having specific version, defaulting to latest published version if no version specified
    */
-  public File resourceRtfFile(String resourceName, @Nullable BigDecimal version) {
-    String fn;
-    if (version == null) {
-      fn = resourceName + ".rtf";
-    } else {
-      fn = resourceName + "-" + version.toPlainString() + ".rtf";
-    }
+  public File resourceRtfFile(@NotNull String resourceName, @NotNull BigDecimal version) {
+    String fn = resourceName + "-" + version.toPlainString() + ".rtf";
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
   }
 

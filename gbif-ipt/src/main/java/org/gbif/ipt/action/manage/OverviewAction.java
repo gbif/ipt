@@ -994,7 +994,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       organisations = registrationManager.list();
 
       // remove all DwC mappings with 0 terms mapped
-      // this is important do do before populating potential extensions since an empty mapping to occurrence can
+      // this is important to do before populating potential extensions since an empty mapping to occurrence can
       // indicate the resource hasCore is true
       for (ExtensionMapping em : resource.getCoreMappings()) {
         if (em.getFields().isEmpty()) {

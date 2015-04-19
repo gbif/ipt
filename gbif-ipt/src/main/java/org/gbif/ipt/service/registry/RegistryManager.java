@@ -65,7 +65,7 @@ public interface RegistryManager {
   List<Vocabulary> getVocabularies() throws RegistryException;
 
   /**
-   * Register a new resource with the GBIF registry and associate with to the given organisation.
+   * Register a new resource with the GBIF Registry associated with the IPT and organisation specified.
    *
    * @param resource     Resource being registered
    * @param organisation Organisation owning resource

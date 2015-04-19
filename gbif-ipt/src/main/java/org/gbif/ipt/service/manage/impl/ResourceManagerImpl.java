@@ -236,7 +236,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   /**
    * Copies incoming eml file to data directory with name eml.xml.
    * </br>
-   * Thie method retrieves a file handle to the eml.xml file in data directory. It then copies the incoming emlFile to
+   * This method retrieves a file handle to the eml.xml file in data directory. It then copies the incoming emlFile to
    * over to this file. From this file an Eml instance is then populated and returned.
    *
    * @param shortname shortname
@@ -247,7 +247,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @throws ImportException if eml file could not be read/parsed
    */
   private Eml copyMetadata(String shortname, File emlFile) throws ImportException {
-    File emlFile2 = dataDir.resourceEmlFile(shortname, null);
+    File emlFile2 = dataDir.resourceEmlFile(shortname);
     try {
       FileUtils.copyFile(emlFile, emlFile2);
     } catch (IOException e1) {
@@ -698,21 +698,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return resources.get(shortname.toLowerCase());
   }
 
-  public long getDwcaSize(Resource resource) {
-    File data = dataDir.resourceDwcaFile(resource.getShortname());
-    return data.length();
-  }
-
-  public long getEmlSize(Resource resource) {
-    File data = dataDir.resourceEmlFile(resource.getShortname(), resource.getEmlVersion());
-    return data.length();
-  }
-
-  public long getRtfSize(Resource resource) {
-    File data = dataDir.resourceRtfFile(resource.getShortname());
-    return data.length();
-  }
-
   private ExtensionMapping importMappings(ActionLogger alog, ArchiveFile af, Source source) {
     ExtensionMapping map = new ExtensionMapping();
     map.setSource(source);
@@ -759,7 +744,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   public boolean isEmlExisting(String shortName) {
-    File emlFile = dataDir.resourceEmlFile(shortName, null);
+    File emlFile = dataDir.resourceEmlFile(shortName);
     return emlFile.exists();
   }
 
@@ -838,11 +823,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   public boolean isLocked(String shortname) {
     return isLocked(shortname, new BaseAction(textProvider, cfg, registrationManager));
-  }
-
-  public boolean isRtfExisting(String shortName) {
-    File rtfFile = dataDir.resourceRtfFile(shortName);
-    return rtfFile.exists();
   }
 
   public List<Resource> latest(int startPage, int pageSize) {
@@ -943,7 +923,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @param resource resource
    */
   private void loadEml(Resource resource) {
-    File emlFile = dataDir.resourceEmlFile(resource.getShortname(), null);
+    File emlFile = dataDir.resourceEmlFile(resource.getShortname());
     // load resource metadata, use US Locale to interpret it because uses '.' for decimal separator
     Eml eml = EmlUtils.loadWithLocale(emlFile, Locale.US);
     resource.setEml(eml);
@@ -1042,6 +1022,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           resource.addVersionHistory(history);
         }
 
+        // pre v2.2.1 resources: rename dwca.zip to dwca-18.0.zip (where 18.0 is the last published version for example)
+        if (resource.getLastPublishedVersionsVersion() != null) {
+          renameDwcaToIncludeVersion(resource, resource.getLastPublishedVersionsVersion());
+        }
+
         // update EML with latest resource basics (version and GUID)
         syncEmlWithResource(resource);
 
@@ -1125,6 +1110,30 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       }
     }
     return resource;
+  }
+
+  /**
+   * Rename a resource's dwca.zip to have the last published version, e.g. dwca-18.0.zip
+   *
+   * @param resource resource to update
+   * @param version last published version number
+   */
+  protected void renameDwcaToIncludeVersion(Resource resource, BigDecimal version) {
+    Preconditions.checkNotNull(resource);
+    Preconditions.checkNotNull(version);
+    File unversionedDwca = dataDir.resourceDwcaFile(resource.getShortname());
+    File versionedDwca = dataDir.resourceDwcaFile(resource.getShortname(), version);
+    // proceed if resource has previously been published, and versioned dwca does not exist
+    if (unversionedDwca.exists() && !versionedDwca.exists()) {
+      try {
+        Files.move(unversionedDwca, versionedDwca);
+        log.debug("Renamed dwca.zip to " + versionedDwca.getName());
+      } catch (IOException e) {
+        log.error("Failed to rename dwca.zip file name with version number for " + resource.getShortname(), e);
+        throw new InvalidConfigException(TYPE.CONFIG_WRITE,
+          "Failed to update version number for " + resource.getShortname() + ": " + e.getMessage());
+      }
+    }
   }
 
   /**
@@ -1254,6 +1263,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     saveVersionHistory(resource, version, action);
     // persist resource object changes
     save(resource);
+    // if archival mode is NOT turned on, don't keep former archive version (version replaced)
+    if (!cfg.isArchivalMode() && version.compareTo(resource.getReplacedEmlVersion()) != 0) {
+      removeArchiveVersion(resource.getShortname(), resource.getReplacedEmlVersion());
+    }
     // final logging
     String msg = action
       .getText("publishing.success", new String[] {String.valueOf(resource.getEmlVersion()), resource.getShortname()});
@@ -1474,12 +1487,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         if (versionedDwcaFile.exists()) {
           FileUtils.forceDelete(versionedDwcaFile);
         }
-        // dwca.zip should be replaced with dwca-version.zip - if it exists
+        // dwca-rollingBack.zip should be replaced with dwca-restoring.zip - if it exists
         File versionedDwcaFileToRestore = dataDir.resourceDwcaFile(shortname, restoring);
         if (versionedDwcaFileToRestore.exists()) {
-          // proceed with overwriting/replacing dwca.zip with dwca-version.zip
-          File dwca = dataDir.resourceDwcaFile(resource.getShortname(), null);
-          FileUtils.copyFile(versionedDwcaFileToRestore, dwca);
+          // proceed with overwriting/replacing dwca-rollingBack.zip with dwca-restoring.zip
+          File versionedDwcaFileToRollback = dataDir.resourceDwcaFile(resource.getShortname(), rollingBack);
+          FileUtils.copyFile(versionedDwcaFileToRestore, versionedDwcaFileToRollback);
         }
         // ensure version history removed
         resource.removeVersionHistory(rollingBack);
@@ -1606,8 +1619,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   /**
-   * Publishes a new version of the EML file for the given resource. After publishing the new version, it copies a
-   * stable version of the EML file for archival purposes.
+   * Publishes a new version of the EML file for the given resource.
    *
    * @param resource Resource
    * @param version  version number to publish
@@ -1639,8 +1651,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // save all changes to Eml
     saveEml(resource);
 
-    // copy stable version of the eml file
-    File trunkFile = dataDir.resourceEmlFile(resource.getShortname(), null);
+    // create versioned eml file
+    File trunkFile = dataDir.resourceEmlFile(resource.getShortname());
     File versionedFile = dataDir.resourceEmlFile(resource.getShortname(), version);
     try {
       FileUtils.copyFile(trunkFile, versionedFile);
@@ -1651,8 +1663,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   /**
-   * Publishes a new version of the RTF file for the given resource. After publishing the new version, it copies a
-   * stable version of the RTF file for archival purposes.
+   * Publishes a new version of the RTF file for the given resource.
    *
    * @param resource Resource
    * @param version  version number to publish
@@ -1667,7 +1678,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
 
     Document doc = new Document();
-    File rtfFile = dataDir.resourceRtfFile(resource.getShortname());
+    File rtfFile = dataDir.resourceRtfFile(resource.getShortname(), version);
     OutputStream out = null;
     try {
       out = new FileOutputStream(rtfFile);
@@ -1690,16 +1701,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           log.warn("FileOutputStream to RTF file could not be closed");
         }
       }
-    }
-
-    // copy current rtf version.
-    File trunkRtfFile = dataDir.resourceRtfFile(resource.getShortname());
-    File versionedRtfFile = dataDir.resourceRtfFile(resource.getShortname(), version);
-    try {
-      FileUtils.copyFile(trunkRtfFile, versionedRtfFile);
-    } catch (IOException e) {
-      throw new PublicationException(PublicationException.TYPE.RTF,
-        "Can't publish rtf file for resource " + resource.getShortname(), e);
     }
   }
 
@@ -1970,7 +1971,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // set modified date
     resource.setModified(new Date());
     // save into data dir
-    File emlFile = dataDir.resourceEmlFile(resource.getShortname(), null);
+    File emlFile = dataDir.resourceEmlFile(resource.getShortname());
     // Locale.US it's used because uses '.' as the decimal separator
     EmlUtils.writeWithLocale(emlFile, resource, Locale.US);
     log.debug("Updated EML file for " + resource);
@@ -2224,5 +2225,22 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   @VisibleForTesting
   public GenerateDwcaFactory getDwcaFactory() {
     return dwcaFactory;
+  }
+
+  /**
+   * Remove an archive version from the file system (because it has been replaced by a new published version for
+   * example).
+   *
+   * @param version of archive to remove
+   */
+  @VisibleForTesting
+  public void removeArchiveVersion(String shortname, BigDecimal version) {
+    File dwcaFile = dataDir.resourceDwcaFile(shortname, version);
+    if (dwcaFile != null && dwcaFile.exists()) {
+      boolean deleted = FileUtils.deleteQuietly(dwcaFile);
+      if (deleted) {
+        log.debug(dwcaFile.getAbsolutePath() + " has been successfully deleted.");
+      }
+    }
   }
 }
