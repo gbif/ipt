@@ -466,6 +466,9 @@ public class GenerateDwcaTest {
     // mock finding eml.xml file
     when(mockDataDir.resourceEmlFile(anyString())).thenReturn(emlXML);
 
+    // mock finding dwca.zip file that does not exist
+    when(mockDataDir.resourceDwcaFile(anyString())).thenReturn(new File("dwca.zip"));
+
     // create SourceManagerImpl
     mockSourceManager = new SourceManagerImpl(mock(AppConfig.class), mockDataDir);
 
