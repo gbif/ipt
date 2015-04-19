@@ -217,6 +217,9 @@ public class ResourceManagerImplTest {
     ExtensionRowTypeConverter extensionRowTypeConverter = new ExtensionRowTypeConverter(extensionManager);
     ConceptTermConverter conceptTermConverter = new ConceptTermConverter(extensionRowTypeConverter);
 
+    // mock finding dwca.zip file that does not exist
+    when(mockedDataDir.resourceDwcaFile(anyString())).thenReturn(new File("dwca.zip"));
+
     return new ResourceManagerImpl(mockAppConfig, mockedDataDir, mockEmailConverter, mockOrganisationKeyConverter,
       extensionRowTypeConverter, jdbcConverter, mockSourceManager, extensionManager, mockRegistryManager,
       conceptTermConverter, mockDwcaFactory, passwordConverter, mockEml2Rtf, mockVocabulariesManager,
