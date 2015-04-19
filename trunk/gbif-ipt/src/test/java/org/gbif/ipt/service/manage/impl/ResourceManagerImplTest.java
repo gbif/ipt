@@ -1282,24 +1282,19 @@ public class ResourceManagerImplTest {
     when(mockedDataDir.resourceEmlFile(anyString(), eq(BigDecimal.valueOf(4.0)))).thenReturn(versionFourEmlXML);
 
     // mock finding eml.xml file
-    when(mockedDataDir.resourceEmlFile(anyString(), Matchers.<BigDecimal>eq(null))).thenReturn(copiedEmlXML);
+    when(mockedDataDir.resourceEmlFile(anyString())).thenReturn(copiedEmlXML);
     // mock finding versioned dwca file
     when(mockedDataDir.resourceDwcaFile(anyString(), eq(BigDecimal.valueOf(3.1))))
       .thenReturn(File.createTempFile("dwca-4.0", "zip"));
     // mock finding previous versioned dwca file
     when(mockedDataDir.resourceDwcaFile(anyString(), eq(BigDecimal.valueOf(3.0))))
       .thenReturn(File.createTempFile("dwca-3.0", "zip"));
-    // mock finding dwca file
-    when(mockedDataDir.resourceDwcaFile(anyString(), Matchers.<BigDecimal>eq(null)))
-      .thenReturn(File.createTempFile("dwca", "zip"));
 
     // retrieve sample rtf.xml
     File rtfXML = FileUtils.getClasspathFile("resources/res1/rtf-res1.rtf");
     // copy to resource folder
     File copiedRtfXML = new File(resourceDir, "rtf-res2.rtf");
     org.apache.commons.io.FileUtils.copyFile(rtfXML, copiedRtfXML);
-    // mock finding rtf-res2.xml file
-    when(mockedDataDir.resourceRtfFile(anyString())).thenReturn(copiedRtfXML);
 
     // mock new saved rtf-res2-3.1.xml file being versioned (new minor version)
     File versionThreeRtfXML = new File(resourceDir, "rtf-res2-3.1.rtf");
@@ -1555,5 +1550,19 @@ public class ResourceManagerImplTest {
 
     // next version?
     assertEquals("19.1",loaded.getNextVersion().toPlainString());
+  }
+
+  @Test
+  public void testRemoveArchiveVersion() throws IOException, ParserConfigurationException, SAXException {
+    File dwca60 = new File(resourceDir, resource.getShortname() + "/" + "dwca-60.0.zip");
+    assertFalse(dwca60.exists());
+
+    File zippedResourceFolder = FileUtils.getClasspathFile("resources/res1.zip");
+    org.apache.commons.io.FileUtils.copyFile(zippedResourceFolder, dwca60);
+    assertTrue(dwca60.exists());
+
+    when(mockedDataDir.resourceDwcaFile("res2", new BigDecimal("60.0"))).thenReturn(dwca60);
+
+    getResourceManagerImpl().removeArchiveVersion(resource.getShortname(), new BigDecimal("60.0"));
   }
 }

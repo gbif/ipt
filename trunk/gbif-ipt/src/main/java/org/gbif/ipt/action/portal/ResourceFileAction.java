@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
@@ -66,14 +67,25 @@ public class ResourceFileAction extends PortalBaseAction {
       // headers might not be formed correctly, swallow
       LOG.warn("Conditional get with If-Modified-Since header couldnt be interpreted", e);
     }
-    // serve file as set in prepare method
+
+    // if no specific version is requested, use the latest published version
+    if (version == null) {
+      BigDecimal latestVersion = resource.getLastPublishedVersionsVersion();
+      if (latestVersion == null) {
+        return NOT_FOUND;
+      } else {
+        version = latestVersion;
+      }
+    }
+
+    // serve file
     data = dataDir.resourceDwcaFile(resource.getShortname(), version);
 
     // construct download filename
     StringBuilder sb = new StringBuilder();
     sb.append("dwca-" + resource.getShortname());
     if (version != null) {
-      sb.append("-v" + String.valueOf(version));
+      sb.append("-v" + version.toPlainString());
     }
     sb.append(".zip");
     filename = sb.toString();
@@ -92,6 +104,17 @@ public class ResourceFileAction extends PortalBaseAction {
     if (resource == null) {
       return NOT_FOUND;
     }
+
+    // if no specific version is requested, use the latest published version
+    if (version == null) {
+      BigDecimal latestVersion = resource.getLastPublishedVersionsVersion();
+      if (latestVersion == null) {
+        return NOT_FOUND;
+      } else {
+        version = latestVersion;
+      }
+    }
+
     data = dataDir.resourceEmlFile(resource.getShortname(), version);
     mimeType = "text/xml";
 
@@ -99,7 +122,7 @@ public class ResourceFileAction extends PortalBaseAction {
     StringBuilder sb = new StringBuilder();
     sb.append("eml-" + resource.getShortname());
     if (version != null) {
-      sb.append("-v" + String.valueOf(version));
+      sb.append("-v" + version.toPlainString());
     }
     sb.append(".xml");
     filename = sb.toString();
@@ -209,6 +232,17 @@ public class ResourceFileAction extends PortalBaseAction {
     if (resource == null) {
       return NOT_FOUND;
     }
+
+    // if no specific version is requested, use the latest published version
+    if (version == null) {
+      BigDecimal latestVersion = resource.getLastPublishedVersionsVersion();
+      if (latestVersion == null) {
+        return NOT_FOUND;
+      } else {
+        version = latestVersion;
+      }
+    }
+
     data = dataDir.resourceRtfFile(resource.getShortname(), version);
     mimeType = "application/rtf";
 
@@ -216,7 +250,7 @@ public class ResourceFileAction extends PortalBaseAction {
     StringBuilder sb = new StringBuilder();
     sb.append("rtf-" + resource.getShortname());
     if (version != null) {
-      sb.append("-v" + String.valueOf(version));
+      sb.append("-v" + version.toPlainString());
     }
     sb.append(".rtf");
     filename = sb.toString();

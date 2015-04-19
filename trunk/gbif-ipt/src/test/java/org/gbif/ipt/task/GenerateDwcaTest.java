@@ -92,7 +92,7 @@ import static org.mockito.Mockito.when;
 public class GenerateDwcaTest {
 
   private static final String RESOURCE_SHORTNAME = "res1";
-  private static final String VERSIONED_ARCHIVE_FILENAME = "dwca-3.zip";
+  private static final String VERSIONED_ARCHIVE_FILENAME = "dwca-3.0.zip";
 
   private GenerateDwca generateDwca;
   private Resource resource;
@@ -124,9 +124,10 @@ public class GenerateDwcaTest {
 
   @Before
   public void setup() throws IOException {
-    // create resource
+    // create resource, version 3.0
     resource = new Resource();
     resource.setShortname(RESOURCE_SHORTNAME);
+    resource.setEmlVersion(new BigDecimal("3.0"));
 
     // create user
     creator = new User();
@@ -178,17 +179,13 @@ public class GenerateDwcaTest {
     // 2 rows in core file
     assertEquals(2, recordCount);
 
-    // confirm existence of DwC-A
-    File dwca = new File(resourceDir, DataDir.DWCA_FILENAME);
-    assertTrue(dwca.exists());
-
-    // confirm existence of versioned (archived) DwC-A
+    // confirm existence of versioned (archived) DwC-A "dwca-3.0.zip"
     File versionedDwca = new File(resourceDir, VERSIONED_ARCHIVE_FILENAME);
     assertTrue(versionedDwca.exists());
 
     // investigate the DwC-A
     File dir = FileUtils.createTempDir();
-    CompressionUtil.decompressFile(dir, dwca, true);
+    CompressionUtil.decompressFile(dir, versionedDwca, true);
 
     Archive archive = ArchiveFactory.openArchive(dir);
     assertEquals(Constants.DWC_ROWTYPE_OCCURRENCE, archive.getCore().getRowType());
@@ -256,17 +253,13 @@ public class GenerateDwcaTest {
     // 2 rows in core file
     assertEquals(2, recordCount);
 
-    // confirm existence of DwC-A
-    File dwca = new File(resourceDir, DataDir.DWCA_FILENAME);
-    assertTrue(dwca.exists());
-
-    // confirm existence of versioned (archived) DwC-A
+    // confirm existence of versioned (archived) DwC-A "dwca-3.0.zip"
     File versionedDwca = new File(resourceDir, VERSIONED_ARCHIVE_FILENAME);
     assertTrue(versionedDwca.exists());
 
     // investigate the DwC-A
     File dir = FileUtils.createTempDir();
-    CompressionUtil.decompressFile(dir, dwca, true);
+    CompressionUtil.decompressFile(dir, versionedDwca, true);
 
     Archive archive = ArchiveFactory.openArchive(dir);
     assertEquals(Constants.DWC_ROWTYPE_OCCURRENCE, archive.getCore().getRowType());
@@ -318,13 +311,13 @@ public class GenerateDwcaTest {
     // 4 rows in core file
     assertEquals(4, recordCount);
 
-    // confirm existence of DwC-A
-    File dwca = new File(resourceDir, DataDir.DWCA_FILENAME);
-    assertTrue(dwca.exists());
+    // confirm existence of versioned DwC-A "dwca-3.0.zip"
+    File versionedDwca = new File(resourceDir, VERSIONED_ARCHIVE_FILENAME);
+    assertTrue(versionedDwca.exists());
 
     // investigate the DwC-A
     File dir = FileUtils.createTempDir();
-    CompressionUtil.decompressFile(dir, dwca, true);
+    CompressionUtil.decompressFile(dir, versionedDwca, true);
 
     Archive archive = ArchiveFactory.openArchive(dir);
     assertEquals(Constants.DWC_ROWTYPE_OCCURRENCE, archive.getCore().getRowType());
@@ -471,7 +464,7 @@ public class GenerateDwcaTest {
     // retrieve sample eml.xml file
     File emlXML = FileUtils.getClasspathFile("resources/res1/eml.xml");
     // mock finding eml.xml file
-    when(mockDataDir.resourceEmlFile(anyString(), any(BigDecimal.class))).thenReturn(emlXML);
+    when(mockDataDir.resourceEmlFile(anyString())).thenReturn(emlXML);
 
     // create SourceManagerImpl
     mockSourceManager = new SourceManagerImpl(mock(AppConfig.class), mockDataDir);
@@ -496,10 +489,7 @@ public class GenerateDwcaTest {
     when(mockDataDir.sourceLogFile(anyString(), anyString())).thenReturn(new File(resourceDir, "log.txt"));
 
     // mock creation of zipped dwca in temp directory - this later becomes the actual archive generated
-    when(mockDataDir.tmpFile(anyString(), anyString())).thenReturn(new File(tmpDataDir, DataDir.DWCA_FILENAME));
-
-    // mock creation of zipped dwca in resource directory
-    when(mockDataDir.resourceDwcaFile(anyString())).thenReturn(new File(resourceDir, DataDir.DWCA_FILENAME));
+    when(mockDataDir.tmpFile(anyString(), anyString())).thenReturn(new File(tmpDataDir, "dwca.zip"));
 
     // mock creation of versioned zipped dwca in resource directory
     when(mockDataDir.resourceDwcaFile(anyString(), any(BigDecimal.class)))

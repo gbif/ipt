@@ -320,7 +320,7 @@
                                       </td>
                                     <#else>
                                       <td><a href="${download_dwca_url}" onClick="_gaq.push(['_trackEvent', 'Archive', 'Download', '${resource.shortname}', ${resource.recordsPublished?c!0} ]);"><@s.text name='portal.resource.download'/></a>
-                                        ${resource.recordsPublished?c!0} <@s.text name='portal.resource.records'/>&nbsp;<#if eml.language?has_content && languages[eml.language]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.language]?cap_first!}</@s.param></@s.text></#if> (${dwcaFormattedSize!})<#if eml.updateFrequency?has_content && eml.updateFrequency.identifier?has_content && frequencies[eml.updateFrequency.identifier]?has_content>&nbsp;-&nbsp;${updateFrequencyTitle?lower_case?cap_first}:&nbsp;${frequencies[eml.updateFrequency.identifier]?lower_case}</#if>
+                                        ${resource.recordsPublished?c!0} <@s.text name='portal.resource.records'/>&nbsp;<#if eml.language?has_content && languages[eml.language]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.language]?cap_first!}</@s.param></@s.text></#if> (${dwcaSizeForVersion!})<#if eml.updateFrequency?has_content && eml.updateFrequency.identifier?has_content && frequencies[eml.updateFrequency.identifier]?has_content>&nbsp;-&nbsp;${updateFrequencyTitle?lower_case?cap_first}:&nbsp;${frequencies[eml.updateFrequency.identifier]?lower_case}</#if>
                                       </td>
                                     </#if>
                                 </tr>
@@ -328,14 +328,14 @@
                               <tr>
                                   <th><@s.text name='portal.resource.metadata.verbose'/></th>
                                   <td><a href="${download_eml_url}" onClick="_gaq.push(['_trackEvent', 'EML', 'Download', '${resource.shortname}']);"><@s.text name='portal.resource.download'/></a>
-                                      <#if eml.metadataLanguage?has_content && languages[eml.metadataLanguage]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.metadataLanguage]?cap_first!}</@s.param></@s.text></#if> (${emlFormattedSize})
+                                      <#if eml.metadataLanguage?has_content && languages[eml.metadataLanguage]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.metadataLanguage]?cap_first!}</@s.param></@s.text></#if> (${emlSizeForVersion})
                                   </td>
                               </tr>
 
                               <tr>
                                   <th><@s.text name='portal.resource.rtf.verbose'/></th>
                                   <td><a href="${download_rtf_url}" onClick="_gaq.push(['_trackEvent', 'RTF', 'Download', '${resource.shortname}']);"><@s.text name='portal.resource.download'/></a>
-                                      <#if eml.metadataLanguage?has_content && languages[eml.metadataLanguage]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.metadataLanguage]?cap_first!}</@s.param></@s.text></#if> (${rtfFormattedSize})
+                                      <#if eml.metadataLanguage?has_content && languages[eml.metadataLanguage]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.metadataLanguage]?cap_first!}</@s.param></@s.text></#if> (${rtfSizeForVersion})
                                   </td>
                               </tr>
                         </table>

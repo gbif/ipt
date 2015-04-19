@@ -117,10 +117,14 @@ public class ResourceActionTest {
     coverages.add(coverage1);
     resource.getEml().setTaxonomicCoverages(coverages);
 
-    // mock returning Eml file, with actual resource metadata (Eml)
-    File tmpEmlFile = File.createTempFile("eml", ".xml");
-    EmlWriter.writeEmlFile(tmpEmlFile, resource.getEml());
-    when(mockDataDir.resourceEmlFile(anyString(), any(BigDecimal.class))).thenReturn(tmpEmlFile);
+    // mock returning EML file, with actual resource metadata
+    File emlFile = File.createTempFile("eml-3.0.xml", ".xml");
+    EmlWriter.writeEmlFile(emlFile, resource.getEml());
+    when(mockDataDir.resourceEmlFile(anyString(), any(BigDecimal.class))).thenReturn(emlFile);
+
+    // mock returning RTF file, with empty content
+    File rtfFile = File.createTempFile(RESOURCE_SHORT_NAME + "-3.0", ".rtf");
+    when(mockDataDir.resourceRtfFile(anyString(), any(BigDecimal.class))).thenReturn(rtfFile);
 
     // mock returning DwC-A file, with file that doesn't exist. This means the resource is metadata-only
     File nonExistingDwca = new File("dwca", ".zip");

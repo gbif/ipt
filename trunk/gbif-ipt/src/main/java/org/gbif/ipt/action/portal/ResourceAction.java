@@ -68,6 +68,8 @@ public class ResourceAction extends PortalBaseAction {
   private Map<String, String> frequencies;
   private int recordsPublishedForVersion;
   private String dwcaSizeForVersion;
+  private String emlSizeForVersion;
+  private String rtfSizeForVersion;
 
   @Inject
   public ResourceAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -83,13 +85,6 @@ public class ResourceAction extends PortalBaseAction {
       return NOT_FOUND;
     }
     return SUCCESS;
-  }
-
-  /**
-   * Return the size of the DwC-A file.
-   */
-  public String getDwcaFormattedSize() {
-    return FileUtils.formatSize(resourceManager.getDwcaSize(resource), 0);
   }
 
   /**
@@ -209,13 +204,6 @@ public class ResourceAction extends PortalBaseAction {
     return null;
   }
 
-  /**
-   * Return the size of the EML file.
-   */
-  public String getEmlFormattedSize() {
-    return FileUtils.formatSize(resourceManager.getEmlSize(resource), 0);
-  }
-
   public Ipt getIpt() {
     if (registrationManager.getIpt() == null) {
       return new Ipt();
@@ -228,17 +216,6 @@ public class ResourceAction extends PortalBaseAction {
    */
   public List<Resource> getResources() {
     return resources;
-  }
-
-  /**
-   * Return the RTF size file format.
-   */
-  public String getRtfFormattedSize() {
-    return FileUtils.formatSize(resourceManager.getRtfSize(resource), 0);
-  }
-
-  public boolean isRtfFileExisting() {
-    return resourceManager.isRtfExisting(resource.getShortname());
   }
 
   /**
@@ -296,26 +273,40 @@ public class ResourceAction extends PortalBaseAction {
    *
    * @param resource resource
    * @param eml      Eml instance
-   * @param version  resource version (eml version)
+   * @param version  resource version (eml version) to load
    */
-  public void finishLoadingDetail(@NotNull Resource resource, @NotNull Eml eml, @Nullable BigDecimal version) {
+  public void finishLoadingDetail(@NotNull Resource resource, @NotNull Eml eml, @NotNull BigDecimal version) {
     // determine whether version of resource requested is metadata-only or not (has published DwC-A or not)
-    if (version == null) {
-      metadataOnly = resource.getRecordsPublished() == 0;
+    String name = resource.getShortname();
+    File dwcaFile = dataDir.resourceDwcaFile(name, version);
+    if (dwcaFile.exists()) {
+      dwcaSizeForVersion = FileUtils.formatSize(dwcaFile.length(), 0);
     } else {
-      String name = resource.getShortname();
-      File dwcaFile = dataDir.resourceDwcaFile(name, version);
-      if (dwcaFile.exists()) {
-        dwcaSizeForVersion = FileUtils.formatSize(dwcaFile.length(), 0);
-      } else {
-        metadataOnly = true;
+      metadataOnly = true;
+    }
+
+    // determine EML file size
+    File emlFile = dataDir.resourceEmlFile(name, version);
+    emlSizeForVersion = FileUtils.formatSize(emlFile.length(), 0);
+
+    // determine RTF file size
+    File rtfFile = dataDir.resourceRtfFile(name, version);
+    rtfSizeForVersion = FileUtils.formatSize(rtfFile.length(), 0);
+
+    // find record count for published version
+    for (VersionHistory history : resource.getVersionHistory()) {
+      if (version.compareTo(new BigDecimal(history.getVersion())) == 0) {
+        recordsPublishedForVersion = history.getRecordsPublished();
       }
-      // find record count for published version
-      for (VersionHistory history : resource.getVersionHistory()) {
-        if (version.compareTo(new BigDecimal(history.getVersion())) == 0) {
-          recordsPublishedForVersion = history.getRecordsPublished();
-        }
-      }
+    }
+
+    // if the record count for this published version is greater than 0, but no dwca was found, it must have been
+    // deleted which means that archival mode was not turned on when the proceeding version was published
+    if (metadataOnly && recordsPublishedForVersion > 0) {
+      // TODO i18n
+      addActionWarning(
+        "The DwC-A file published for this version had " + String.valueOf(recordsPublishedForVersion)
+        + " records but was not archived.");
     }
 
     // now prepare organized taxonomic coverages, facilitating UI display
@@ -356,7 +347,7 @@ public class ResourceAction extends PortalBaseAction {
     // retrieve unpublished eml.xml, using version = null
     String shortname = resource.getShortname();
     try {
-      File emlFile = dataDir.resourceEmlFile(shortname, null);
+      File emlFile = dataDir.resourceEmlFile(shortname);
       LOG.debug("Loading EML from file: " + emlFile.getAbsolutePath());
       InputStream in = new FileInputStream(emlFile);
       eml = EmlFactory.build(in);
@@ -690,10 +681,24 @@ public class ResourceAction extends PortalBaseAction {
   }
 
   /**
-   * @return formatted size of DwC-A for published version (specified from version parameter)
+   * @return formatted size of DwC-A for published version
    */
   public String getDwcaSizeForVersion() {
     return dwcaSizeForVersion;
+  }
+
+  /**
+   * @return formatted size of EML for published version
+   */
+  public String getEmlSizeForVersion() {
+    return emlSizeForVersion;
+  }
+
+  /**
+   * @return formatted size of RTF for published version
+   */
+  public String getRtfSizeForVersion() {
+    return rtfSizeForVersion;
   }
 
   /**

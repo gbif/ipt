@@ -18,7 +18,6 @@ import org.gbif.ipt.task.StatusReport;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.net.URL;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -99,34 +98,7 @@ public interface ResourceManager {
   Resource get(String shortname);
 
   /**
-   * Return the size of the generated DwC-A file.
-   *
-   * @param resource Resource
-   *
-   * @return size of DwC-A file
-   */
-  long getDwcaSize(Resource resource);
-
-  /**
-   * Return the size of the generated EML file.
-   *
-   * @param resource Resource
-   *
-   * @return size of EML file
-   */
-  long getEmlSize(Resource resource);
-
-  /**
-   * Returns the size of the generated RTF file.
-   *
-   * @param resource Resource
-   *
-   * @return size of RTF file
-   */
-  long getRtfSize(Resource resource);
-
-  /**
-   * Validate if the EML file exist for a specific resource in the data directory.
+   * Validate if the EML file exists for a specific resource in the data directory.
    *
    * @param shortName Resource shortname
    *
@@ -152,15 +124,6 @@ public interface ResourceManager {
    * @see org.gbif.ipt.service.manage.ResourceManager#isLocked(String, org.gbif.ipt.action.BaseAction)
    */
   boolean isLocked(String shortname);
-
-  /**
-   * Validate if the RTF existence for a specific resource in the data directory.
-   *
-   * @param shortName Resource shortname
-   *
-   * @return true if RTF File exists, and false otherwise.
-   */
-  boolean isRtfExisting(String shortName);
 
   /**
    * Returns the latest resources ,ordered by last modified date.
