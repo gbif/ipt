@@ -1,0 +1,17 @@
+{
+  primaryContactDescription: "",
+  homepageURL: "http://www.acnatsci.org/",
+  nodeName: "USA",
+  primaryContactPhone: "1-215-299-1161",
+  nodeContactEmail: "",
+  primaryContactEmail: "mole@morris.net",
+  descriptionLanguage: "en",
+  nameLanguage: "en",
+  primaryContactAddress: "",
+  description: "http://www.acnatsci.org/",
+  name: "New Name Academy of Natural Sciences",
+  primaryContactType: "technical",
+  key: "f9b67ad0-9c9b-11d9-b9db-b8a03c50a862",
+  primaryContactName: "Paul J. Morris ",
+  nodeKey: "us"
+}

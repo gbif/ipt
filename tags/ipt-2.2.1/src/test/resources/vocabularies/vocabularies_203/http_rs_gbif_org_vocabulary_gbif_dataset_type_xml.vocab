@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/style/human.xsl"?>
+<thesaurus
+    dc:URI="http://rs.gbif.org/vocabulary/gbif/datasetType"
+    dc:description="Vocabulary for dataset types used in the GBIF Network."
+    dc:title="GBIF Dataset Type Vocabulary"
+    xmlns="http://rs.gbif.org/thesaurus/" xmlns:dc="http://purl.org/dc/terms/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://rs.gbif.org/thesaurus/  http://rs.gbif.org/schema/thesaurus.xsd">
+    <concept dc:identifier="occurrence" dc:URI="http://rs.gbif.org/vocabulary/gbif/datasetType/occurrence"
+        dc:relation=""
+        dc:description="a generic occurrence resource.">
+        <preferred>
+            <term dc:title="Occurrence" xml:lang="en"/>
+            <term dc:title="Ocurrencia" xml:lang="es"/>
+            <term dc:title="Occurrence" xml:lang="fr"/>
+        </preferred>
+        <alternative>
+        </alternative>
+    </concept>
+    <concept dc:identifier="checklist" dc:URI="http://rs.gbif.org/vocabulary/gbif/datasetType/checklist"
+        dc:relation=""
+        dc:description="a generic checklist resource.">
+        <preferred>
+            <term dc:title="Checklist" xml:lang="en"/>
+            <term dc:title="Lista de chequeo taxonómica" xml:lang="es"/>
+            <term dc:title="Checklist" xml:lang="fr"/>
+        </preferred>
+        <alternative>
+            <term dc:title="Liste de noms taxonomiques" xml:lang="fr"/>
+        </alternative>
+    </concept>
+    <concept dc:identifier="metadata" dc:URI="http://rs.gbif.org/vocabulary/gbif/datasetType/metadata"
+        dc:relation=""
+        dc:description="a metadata-only resource.">
+        <preferred>
+            <term dc:title="Metadata-only" xml:lang="en"/>
+            <term dc:title="Solamente metadatos" xml:lang="es"/>
+            <term dc:title="Seulement métadonnées" xml:lang="fr"/>
+        </preferred>
+        <alternative>
+        </alternative>
+    </concept>
+    <concept dc:identifier="other" dc:URI="http://rs.gbif.org/vocabulary/gbif/datasetType/other"
+        dc:relation=""
+        dc:description="another type of resource that isn't of type occurrence or checklist.">
+        <preferred>
+            <term dc:title="Other" xml:lang="en"/>
+            <term dc:title="Otro" xml:lang="es"/>
+            <term dc:title="Autre" xml:lang="fr"/>
+        </preferred>
+        <alternative>
+        </alternative>
+    </concept>
+</thesaurus>
