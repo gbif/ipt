@@ -234,11 +234,11 @@
           </additionalConfig>
         </configuration>
       </plugin>
-      <!-- commented out for release only! runs integration tests (*IT) during verify -->
-      <!--<plugin>-->
-        <!--<groupId>org.apache.maven.plugins</groupId>-->
-        <!--<artifactId>maven-failsafe-plugin</artifactId>-->
-      <!--</plugin>-->
+      <!-- runs integration tests (*IT) during verify -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+      </plugin>
     </plugins>
 
     <resources>
