@@ -177,7 +177,7 @@ Files can be uploaded in the IPT during two actions: when [IPT2ManualNotes#Creat
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/Control-UploadSourceData.png]
 
-The IPT has an upload size limit of 100MB. The following work-arounds are recommended in the event that the uploaded file exceeds this limit:
+The IPT has an upload size limit of 100MB. There is no limit to the size of dataset the IPT can publish/export though. For loading datasets larger than 100MB in size into the IPT, the following work-arounds are recommended:
  * compressing the file (with zip or gzip)
  * loading the data into one of the many [IPT2DatabaseConnection databases supported by the IPT]
  * splitting the file up
