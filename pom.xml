@@ -207,6 +207,7 @@
         <configuration>
           <doCheck>${devModeNegated}</doCheck>
           <doUpdate>${devModeNegated}</doUpdate>
+          <revisionOnScmFailure>v2</revisionOnScmFailure>
         </configuration>
       </plugin>
 
