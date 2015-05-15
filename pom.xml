@@ -195,7 +195,7 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>buildnumber-maven-plugin</artifactId>
         <!-- Warning: do not upgrade this to 1.3 because it will break maven releases -->
-        <version>1.0-beta-4</version>
+        <version>1.3</version>
         <executions>
           <execution>
             <phase>validate</phase>
@@ -207,7 +207,6 @@
         <configuration>
           <doCheck>${devModeNegated}</doCheck>
           <doUpdate>${devModeNegated}</doUpdate>
-          <revisionOnScmFailure>v2</revisionOnScmFailure>
         </configuration>
       </plugin>
 
