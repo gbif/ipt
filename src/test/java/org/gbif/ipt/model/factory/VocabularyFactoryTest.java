@@ -12,6 +12,9 @@ import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.model.VocabularyConcept;
 import org.gbif.ipt.model.VocabularyTerm;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -57,14 +60,8 @@ public class VocabularyFactoryTest {
       assertNull(tc.getLink());
       assertEquals("http://purl.org/dc/dcmitype/Collection", tc.getUri());
       assertEquals(tv, tc.getVocabulary());
-      assertEquals("Collection", tc.getIdentifier());
       assertEquals("Collection", tc.getPreferredTerm("en").getTitle());
       assertEquals("Sammlung", tc.getPreferredTerm("de").getTitle());
-
-      assertEquals("Collection", tc.getIdentifier());
-      assertNull(tc.getLink());
-      assertEquals("http://purl.org/dc/dcmitype/Collection", tc.getUri());
-      assertEquals(tv, tc.getVocabulary());
 
       assertNotNull(tc.getTerms());
       assertNotNull(tc.getPreferredTerms());
@@ -83,6 +80,47 @@ public class VocabularyFactoryTest {
         assertEquals("Sammlung", tt.getTitle());
       }
 
+    } catch (Exception e) {
+      e.printStackTrace();
+      fail(e.getMessage());
+    }
+  }
+
+  /**
+   * Test building Quantity Type vocabulary that has issued date (used to version the vocabulary).
+   */
+  @Test
+  public void testBuildVersionedVocabulary() {
+    try {
+      Vocabulary v =
+        getFactory().build(VocabularyFactoryTest.class.getResourceAsStream("/thesauri/quantity_type-2015-05-04.xml"));
+
+      assertEquals("Quantity Type Vocabulary", v.getTitle());
+      assertEquals("http://rs.gbif.org/sandbox/vocabulary/gbif/quantityType20150424/", v.getUriString());
+      assertNull(v.getLink());
+      assertEquals("The quantityType Vocabulary is a recommended set of values to use for the Darwin Core quantityType property.", v.getDescription());
+
+      // issued date parsed correctly?
+      DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+      String issued = "2015-05-04";
+      Date result = df.parse(issued);
+      assertEquals(result.toString(), v.getIssued().toString());
+
+      assertNotNull(v.getConcepts());
+      assertEquals(12, v.getConcepts().size());
+
+      VocabularyConcept tc = v.getConcepts().get(0);
+      assertEquals("percentageOfSpecies", tc.getIdentifier());
+      assertNull(tc.getLink());
+      assertEquals("http://rs.gbif.org/vocabulary/gbif/quantityType/percentageOfSpecies", tc.getUri());
+      assertEquals(v, tc.getVocabulary());
+      assertEquals("percentage of species", tc.getPreferredTerm("en").getTitle());
+
+      assertNotNull(tc.getTerms());
+      assertEquals(1, tc.getTerms().size());
+      assertNotNull(tc.getPreferredTerms());
+      assertEquals(1, tc.getPreferredTerms().size());
+      assertEquals(0, tc.getAlternativeTerms().size());
     } catch (Exception e) {
       e.printStackTrace();
       fail(e.getMessage());

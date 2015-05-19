@@ -109,6 +109,9 @@ public class ExtensionFactory {
     digester.addCallMethod("*/extension", "setRowType", 1);
     digester.addCallParam("*/extension", 0, "rowType");
 
+    digester.addCallMethod("*/extension", "setIssuedDateAsString", 1);
+    digester.addRule("*/extension", new CallParamNoNSRule(0, "issued"));
+
     digester.addCallMethod("*/extension", "setLink", 1);
     digester.addRule("*/extension", new CallParamNoNSRule(0, "relation"));
 

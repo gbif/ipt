@@ -15,6 +15,7 @@ package org.gbif.ipt.service.registry.impl;
 
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Organisation;
@@ -34,6 +35,7 @@ import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.junit.Before;
@@ -85,8 +87,43 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
         mockSimpleTextProvider, mockRegistrationManager);
 
     List<Extension> extensions = manager.getExtensions();
-    // a total of 14 Extensions are expected
-    assertEquals(14, extensions.size());
+    // a total of 22 Extensions are expected
+    assertEquals(22, extensions.size());
+
+    // a total of 1 Extensions with rowType Occurrence are expected
+    List<Extension> occurrenceCoreExtensions = Lists.newArrayList();
+    for (Extension x: extensions) {
+      if (x.getRowType().equalsIgnoreCase(Constants.DWC_ROWTYPE_OCCURRENCE)) {
+        occurrenceCoreExtensions.add(x);
+      }
+    }
+    assertEquals(1, occurrenceCoreExtensions.size());
+  }
+
+  @Test
+  public void testGetSandboxExtensions() throws SAXException, ParserConfigurationException, IOException, URISyntaxException {
+    // mock response from Registry with local test resource
+    mockResponse.content =
+      IOUtils.toString(RegistryManagerImplTest.class.getResourceAsStream("/responses/extensions_sandbox.json"), "UTF-8");
+    when(mockHttpUtil.get(anyString())).thenReturn(mockResponse);
+
+    // create instance of RegistryManager
+    RegistryManager manager =
+      new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpUtil, mockSAXParserFactory, mockConfigWarnings,
+        mockSimpleTextProvider, mockRegistrationManager);
+
+    List<Extension> extensions = manager.getExtensions();
+    // a total of 52 Extensions are expected
+    assertEquals(52, extensions.size());
+
+    // a total of 3 Extensions with rowType Occurrence are expected
+    List<Extension> occurrenceCoreExtensions = Lists.newArrayList();
+    for (Extension x: extensions) {
+      if (x.getRowType().equalsIgnoreCase(Constants.DWC_ROWTYPE_OCCURRENCE)) {
+        occurrenceCoreExtensions.add(x);
+      }
+    }
+    assertEquals(3, occurrenceCoreExtensions.size());
   }
 
   @Test
@@ -163,7 +200,33 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
         mockSimpleTextProvider, mockRegistrationManager);
 
     List<Vocabulary> vocabularies = manager.getVocabularies();
-    assertEquals(45, vocabularies.size());
+    assertEquals(52, vocabularies.size());
+  }
+
+  @Test
+  public void testGetVocabulariesSandbox() throws SAXException, ParserConfigurationException, IOException, URISyntaxException {
+    // mock response from Registry with local test resource
+    mockResponse.content =
+      IOUtils.toString(RegistryManagerImplTest.class.getResourceAsStream("/responses/thesauri_sandbox.json"), "UTF-8");
+
+    when(mockHttpUtil.get(anyString())).thenReturn(mockResponse);
+
+    // create instance of RegistryManager
+    RegistryManager manager =
+      new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpUtil, mockSAXParserFactory, mockConfigWarnings,
+        mockSimpleTextProvider, mockRegistrationManager);
+
+    List<Vocabulary> vocabularies = manager.getVocabularies();
+    assertEquals(65, vocabularies.size());
+
+    // a total of 2 Vocabularies for QuantityType
+    List<Vocabulary> quantityTypeVocabularies = Lists.newArrayList();
+    for (Vocabulary v: vocabularies) {
+      if (v.getUriString().contains("quantityType")) {
+        quantityTypeVocabularies.add(v);
+      }
+    }
+    assertEquals(2, quantityTypeVocabularies.size());
   }
 
   @Test

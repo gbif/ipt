@@ -1,6 +1,6 @@
 package org.gbif.ipt.model;
 
-import org.gbif.file.CSVReader;
+import org.gbif.io.CSVReader;
 import org.gbif.ipt.utils.FileUtils;
 import org.gbif.utils.file.ClosableReportingIterator;
 

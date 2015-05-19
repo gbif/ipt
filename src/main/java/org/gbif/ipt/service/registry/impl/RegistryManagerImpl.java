@@ -43,6 +43,7 @@ import javax.xml.parsers.SAXParserFactory;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
@@ -86,7 +87,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     super(cfg, dataDir);
     this.saxParser = saxFactory.newSAXParser();
     this.http = httpUtil;
-    this.gson = new Gson();
+    this.gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
     this.warnings = warnings;
     baseAction = new BaseAction(textProvider, cfg, registrationManager);
   }

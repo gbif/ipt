@@ -37,6 +37,8 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -111,6 +113,14 @@ public class ExtensionManagerImplTest {
     // get ext. and assert a couple properties
     Extension ext = extensionManager.get("http://rs.tdwg.org/dwc/terms/Occurrence");
     assertEquals(161, ext.getProperties().size());
+    // confirm the extension attributes are read correctly from the XML (not the JSON)
     assertEquals("Darwin Core Occurrence", ext.getTitle());
+    assertEquals("Occurrence", ext.getName());
+    assertTrue(ext.getDescription().startsWith("The category"));
+    assertEquals("http://rs.tdwg.org/dwc/terms/index.htm#Occurrence", ext.getLink().toString());
+    assertFalse(ext.isLatest());
+    assertNull(ext.getIssued());
+    assertNull(ext.getSubject());
+    assertNull(ext.getUrl());
   }
 }

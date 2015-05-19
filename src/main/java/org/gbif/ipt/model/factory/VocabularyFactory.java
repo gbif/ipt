@@ -63,6 +63,9 @@ public class VocabularyFactory {
     digester.addCallMethod("*/thesaurus", "setTitle", 1);
     digester.addRule("*/thesaurus", new CallParamNoNSRule(0, "title"));
 
+    digester.addCallMethod("*/thesaurus", "setIssuedDateAsString", 1);
+    digester.addRule("*/thesaurus", new CallParamNoNSRule(0, "issued"));
+
     digester.addCallMethod("*/thesaurus", "setDescription", 1);
     digester.addRule("*/thesaurus", new CallParamNoNSRule(0, "description"));
 

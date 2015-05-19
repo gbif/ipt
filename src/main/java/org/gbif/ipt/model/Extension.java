@@ -2,10 +2,12 @@ package org.gbif.ipt.model;
 
 import org.gbif.dwc.terms.Term;
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.metadata.DateUtils;
 
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -24,7 +26,7 @@ import static com.google.common.base.Objects.equal;
  */
 public class Extension implements Serializable {
 
-  private static final long serialVersionUID = 543543543L;
+  private static final long serialVersionUID = 54354388543L;
   private String title; // human title
   private String name; // table, file & xml tag naming. no whitespace allowed
   private URL url;
@@ -33,6 +35,8 @@ public class Extension implements Serializable {
   private String subject;
   private String description;
   private String namespace;
+  private boolean isLatest;
+  private Date issued;
   private URL link; // to documentation
   private boolean installed;
   private List<ExtensionProperty> properties = new ArrayList<ExtensionProperty>();
@@ -207,4 +211,36 @@ public class Extension implements Serializable {
     return new ToStringBuilder(this).append("name", this.name).append("rowType", this.rowType).toString();
   }
 
+  /**
+   * @return true if this Extension is the latest version, false otherwise
+   */
+  public boolean isLatest() {
+    return isLatest;
+  }
+
+  public void setLatest(boolean isLatest) {
+    this.isLatest = isLatest;
+  }
+
+  /**
+   * @return the date this Extension was issued/released/published.
+   */
+  public Date getIssued() {
+    return issued;
+  }
+
+  public void setIssued(Date issued) {
+    this.issued = issued;
+  }
+
+  /**
+   * Utility to set the issued date, converting it from a textual format.
+   *
+   * @param dateString To set
+   *
+   * @throws ParseException Should it be an erroneous format
+   */
+  public void setIssuedDateAsString(String dateString) throws ParseException {
+    issued = DateUtils.calendarDate(dateString);
+  }
 }

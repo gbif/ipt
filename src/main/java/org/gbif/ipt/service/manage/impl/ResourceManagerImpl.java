@@ -1,6 +1,7 @@
 package org.gbif.ipt.service.manage.impl;
 
 import org.gbif.api.model.common.DOI;
+import org.gbif.api.model.registry.Dataset;
 import org.gbif.doi.metadata.datacite.DataCiteMetadata;
 import org.gbif.doi.service.DoiException;
 import org.gbif.doi.service.DoiExistsException;
@@ -10,11 +11,11 @@ import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.terms.GbifTerm;
 import org.gbif.dwc.terms.IucnTerm;
 import org.gbif.dwc.terms.Term;
-import org.gbif.dwc.text.Archive;
-import org.gbif.dwc.text.ArchiveFactory;
-import org.gbif.dwc.text.ArchiveField;
-import org.gbif.dwc.text.ArchiveFile;
-import org.gbif.dwc.text.UnsupportedArchiveException;
+import org.gbif.dwca.io.Archive;
+import org.gbif.dwca.io.ArchiveFactory;
+import org.gbif.dwca.io.ArchiveField;
+import org.gbif.dwca.io.ArchiveFile;
+import org.gbif.dwca.io.UnsupportedArchiveException;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
@@ -72,7 +73,6 @@ import org.gbif.ipt.utils.ActionLogger;
 import org.gbif.ipt.utils.DataCiteMetadataBuilder;
 import org.gbif.ipt.utils.EmlUtils;
 import org.gbif.ipt.utils.ResourceUtils;
-import org.gbif.metadata.BasicMetadata;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlFactory;
 import org.gbif.metadata.eml.KeywordSet;
@@ -126,7 +126,6 @@ import com.lowagie.text.rtf.RtfWriter2;
 import com.thoughtworks.xstream.XStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
 import org.apache.log4j.Level;
 import org.xml.sax.SAXException;
 
@@ -209,26 +208,26 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   /**
-   * Read other metadata formats like Dublin Core, and populate an Eml instance from all corresponding fields possible.
+   * Populate an Eml instance from a Dataset object that was created from a Dublin Core metadata document, or
+   * another basic metadata format. Note: only a small number of fields actually contain data.
    *
-   * @param metadata BasicMetadata object
+   * @param metadata Dataset object
    *
    * @return Eml instance
    */
-  private Eml convertMetadataToEml(BasicMetadata metadata) {
+  private Eml convertMetadataToEml(Dataset metadata) {
     Eml eml = new Eml();
     if (metadata != null) {
-      if (metadata instanceof Eml) {
-        eml = (Eml) metadata;
-      } else {
-        // copy properties
-        eml.setTitle(metadata.getTitle());
-        eml.setDescription(metadata.getDescription());
-        eml.setDistributionUrl(metadata.getHomepageUrl());
-        eml.setLogoUrl(metadata.getLogoUrl());
-        eml.setSubject(metadata.getSubject());
-        eml.setPubDate(metadata.getPublished());
+      // copy properties
+      eml.setTitle(metadata.getTitle());
+      eml.setDescription(metadata.getDescription());
+      if (metadata.getHomepage() != null) {
+        eml.setDistributionUrl(metadata.getHomepage().toString());
       }
+      if (metadata.getLogoUrl() != null) {
+        eml.setLogoUrl(metadata.getLogoUrl().toString());
+      }
+      eml.setPubDate(metadata.getPubDate());
     }
     return eml;
   }
@@ -523,65 +522,66 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         arch = ArchiveFactory.openArchive(dwca);
       }
 
-      // keep track of source files as a dwca might refer to the same source file multiple times
-      Map<String, TextFileSource> sources = new HashMap<String, TextFileSource>();
-      if (arch.getCore() != null) {
-
-        // determine coreType for the resource based on the rowType
-        String coreRowType = StringUtils.trimToNull(arch.getCore().getRowType());
-        if (Constants.DWC_ROWTYPE_TAXON.equalsIgnoreCase(coreRowType)) {
-          // Taxon
-          coreRowType = StringUtils.capitalize(CoreRowType.CHECKLIST.toString().toLowerCase());
-        } else if (Constants.DWC_ROWTYPE_OCCURRENCE.equalsIgnoreCase(coreRowType)) {
-          // Occurrence
-          coreRowType = StringUtils.capitalize(CoreRowType.OCCURRENCE.toString().toLowerCase());
-        } else {
-          coreRowType = StringUtils.capitalize(CoreRowType.OTHER.toString().toLowerCase());
-        }
-
-        // create new resource
-        resource = create(shortname, coreRowType, creator);
-
-        // read core source+mappings
-        TextFileSource s = importSource(resource, arch.getCore());
-        sources.put(arch.getCore().getLocation(), s);
-        ExtensionMapping map = importMappings(alog, arch.getCore(), s);
-
-        resource.addMapping(map);
-        // read extension sources+mappings
-        for (ArchiveFile ext : arch.getExtensions()) {
-          if (sources.containsKey(ext.getLocation())) {
-            s = sources.get(ext.getLocation());
-            log.debug("SourceBase " + s.getName() + " shared by multiple extensions");
-          } else {
-            s = importSource(resource, ext);
-            sources.put(ext.getLocation(), s);
-          }
-          map = importMappings(alog, ext, s);
-          resource.addMapping(map);
-        }
-        // try to read metadata
-        Eml eml = readMetadata(resource.getShortname(), arch, alog);
-        if (eml != null) {
-          resource.setEml(eml);
-        }
-        // finally persist the whole thing
-        save(resource);
-
-        if (StringUtils.isBlank(resource.getCoreRowType())) {
-          alog.info("manage.resource.create.success.nocore",
-            new String[] {String.valueOf(resource.getSources().size()), String.valueOf(resource.getMappings().size())});
-        } else {
-          alog.info("manage.resource.create.success",
-            new String[] {resource.getCoreRowType(), String.valueOf(resource.getSources().size()),
-              String.valueOf(resource.getMappings().size())});
-        }
-
-      } else {
+      if (arch.getCore() == null) {
         alog.warn("manage.resource.create.core.invalid");
         throw new ImportException("Darwin core archive is invalid and does not have a core mapping");
       }
 
+      if (arch.getCore().getRowType() == null) {
+        // TODO action log
+        throw new ImportException("Darwin core archive is invalid, core mapping has no rowType");
+      }
+
+      // keep track of source files as a dwca might refer to the same source file multiple times
+      Map<String, TextFileSource> sources = new HashMap<String, TextFileSource>();
+
+      // determine core type for the resource based on the rowType
+      Term rowType = arch.getCore().getRowType();
+      CoreRowType type;
+      if (rowType.equals(DwcTerm.Taxon)) {
+        type = CoreRowType.CHECKLIST;
+      } else if (rowType.equals(DwcTerm.Occurrence)) {
+        type = CoreRowType.OCCURRENCE;
+      } else if (rowType.equals(DwcTerm.Event)) {
+        type = CoreRowType.EVENT;
+      } else {
+        type = CoreRowType.OTHER;
+      }
+
+      // create new resource
+      resource = create(shortname, type.toString().toUpperCase(Locale.ENGLISH), creator);
+
+      // read core source+mappings
+      TextFileSource s = importSource(resource, arch.getCore());
+      sources.put(arch.getCore().getLocation(), s);
+      ExtensionMapping map = importMappings(alog, arch.getCore(), s);
+      resource.addMapping(map);
+
+      // read extension sources+mappings
+      for (ArchiveFile ext : arch.getExtensions()) {
+        if (sources.containsKey(ext.getLocation())) {
+          s = sources.get(ext.getLocation());
+          log.debug("SourceBase " + s.getName() + " shared by multiple extensions");
+        } else {
+          s = importSource(resource, ext);
+          sources.put(ext.getLocation(), s);
+        }
+        map = importMappings(alog, ext, s);
+        resource.addMapping(map);
+      }
+
+      // try to read metadata
+      Eml eml = readMetadata(resource.getShortname(), arch, alog);
+      if (eml != null) {
+        resource.setEml(eml);
+      }
+
+      // finally persist the whole thing
+      save(resource);
+
+      alog.info("manage.resource.create.success",
+        new String[] {resource.getCoreRowType(), String.valueOf(resource.getSources().size()),
+          String.valueOf(resource.getMappings().size())});
     } catch (UnsupportedArchiveException e) {
       alog.warn(e.getMessage(), e);
       throw new ImportException(e);
@@ -701,9 +701,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private ExtensionMapping importMappings(ActionLogger alog, ArchiveFile af, Source source) {
     ExtensionMapping map = new ExtensionMapping();
     map.setSource(source);
-    Extension ext = extensionManager.get(af.getRowType());
+    Extension ext = extensionManager.get(af.getRowType().qualifiedName());
     if (ext == null) {
-      alog.warn("manage.resource.create.rowType.null", new String[] {af.getRowType()});
+      alog.warn("manage.resource.create.rowType.null", new String[] {af.getRowType().qualifiedName()});
       return null;
     }
     map.setExtension(ext);

@@ -19,10 +19,12 @@ import org.gbif.doi.metadata.datacite.DataCiteMetadata;
 import org.gbif.doi.service.DoiException;
 import org.gbif.doi.service.DoiExistsException;
 import org.gbif.doi.service.InvalidMetadataException;
-import org.gbif.dwc.text.Archive;
-import org.gbif.dwc.text.ArchiveFile;
-import org.gbif.file.CSVReader;
-import org.gbif.file.CSVReaderFactory;
+import org.gbif.dwc.terms.Term;
+import org.gbif.dwc.terms.TermFactory;
+import org.gbif.dwca.io.Archive;
+import org.gbif.dwca.io.ArchiveFile;
+import org.gbif.io.CSVReader;
+import org.gbif.io.CSVReaderFactory;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Extension;
@@ -101,6 +103,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private static final Logger LOG = Logger.getLogger(OverviewAction.class);
 
   private static final String PUBLISHING = "publishing";
+  private static final TermFactory TERM_FACTORY = TermFactory.instance();
   private final UserAccountManager userManager;
   private final ExtensionManager extensionManager;
   private final VocabulariesManager vocabManager;
@@ -678,8 +681,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       }
 
     } else {
-      addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
-        resource.getStatus().toString()}));
+      addActionWarning(getText("manage.overview.resource.invalid.operation",
+        new String[] {resource.getShortname(), resource.getStatus().toString()}));
     }
     return execute();
   }
@@ -1463,7 +1466,13 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     Exception exception = null;
     List<TaskMessage> messages = new LinkedList<TaskMessage>();
 
-    if (id != null && mid != null) {
+    // find the rowType
+    Term rowType = null;
+    if (id != null) {
+      rowType = TERM_FACTORY.findTerm(id);
+    }
+
+    if (rowType != null && mid != null) {
       ExtensionMapping mapping = resource.getMappings(id).get(mid);
       if (mapping != null) {
         try {
@@ -1480,7 +1489,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           if (files != null && files.length > 0) {
             // file either represents a core file or an extension
             ArchiveFile core = archive.getCore();
-            ArchiveFile ext = archive.getExtension(id, false);
+            ArchiveFile ext = archive.getExtension(rowType);
             String delimiter = (core == null) ? ext.getFieldsTerminatedBy() : core.getFieldsTerminatedBy();
             Character quotes = (core == null) ? ext.getFieldsEnclosedBy() : core.getFieldsEnclosedBy();
             int headerRows = (core == null) ? ext.getIgnoreHeaderLines() : core.getIgnoreHeaderLines();

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/style/human.xsl"?>
+<thesaurus
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:dc="http://purl.org/dc/terms/"
+  xmlns="http://rs.gbif.org/thesaurus/"
+  xsi:schemaLocation="http://rs.gbif.org/thesaurus/  http://rs.gbif.org/sandbox/schema/thesaurus.xsd"
+  dc:title="Quantity Type Vocabulary"
+  dc:URI="http://rs.gbif.org/sandbox/vocabulary/gbif/quantityType20150424/"
+  dc:issued="2015-05-04"
+  dc:description="The quantityType Vocabulary is a recommended set of values to	use for the Darwin Core quantityType property.">
+
+  <concept dc:identifier="percentageOfSpecies"
+           dc:URI="http://rs.gbif.org/vocabulary/gbif/quantityType/percentageOfSpecies"
+           dc:relation=""
+           dc:description="a measurement type where the quantity of a species in a sample is recorded as a percentage of the total individual count of all species">
+    <preferred>
+      <term dc:source="" dc:title="percentage of species" xml:lang="en"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="percentageOfBiovolume"
+           dc:URI="http://rs.gbif.org/vocabulary/gbif/quantityType/percentageOfBiovolume"
+           dc:relation=""
+           dc:description="a measurement type where the quantity of a species in a sample is recorded as a percentage of the total biovolume of all species">
+    <preferred>
+      <term dc:source="" dc:title="percentage of biovolume" xml:lang="en"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="percentageOfBiomass"
+           dc:URI="http://rs.gbif.org/vocabulary/gbif/quantityType/percentageOfBiomass"
+           dc:relation=""
+           dc:description="a measurement type where the quantity of a species in a sample is recorded as a percentage of the total biomass of all species">
+    <preferred>
+      <term dc:source="" dc:title="percentage of biomass" xml:lang="en"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="percentageCoverage"
+           dc:URI="http://rs.gbif.org/vocabulary/gbif/quantityType/percentageCoverage"
+           dc:relation=""
+           dc:description="a measurement type where the quantity of a species in a sample is recorded as the percentage coverage of the total area being sampled">
+    <preferred>
+      <term dc:source="" dc:title="percentage coverage" xml:lang="en"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="individuals"
+           dc:URI="http://rs.gbif.org/vocabulary/gbif/quantityType/individuals"
+           dc:relation=""
+           dc:description="a measurement type where the quantity of a species in a
+    sample is recorded as the number of individuals (e.g. per litre,
+    per square metre, per cubic metre, per hour, per day)">
+    <preferred>
+      <term dc:source="" dc:title="individuals" xml:lang="en"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="dominScale"
+           dc:URI="http://rs.gbif.org/vocabulary/gbif/quantityType/dominScale"
+           dc:relation=""
+           dc:description="a measurement type where the cover of a species in a
+    sample is recorded using the Domin scale">
+    <preferred>
+      <term dc:source="" dc:title="domin scale" xml:lang="en"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="braunBlanquetScale"
+           dc:URI="http://rs.gbif.org/vocabulary/gbif/quantityType/braunBlanquetScale"
+           dc:relation=""
+           dc:description="a measurement type where the cover of a species in a
+    sample is recorded using the Braun-Blanquet scale">
+    <preferred>
+      <term dc:source="" dc:title="braun-blanquet scale" xml:lang="en"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="biomassAFDG"
+           dc:URI="http://rs.gbif.org/vocabulary/gbif/quantityType/biomassAFDG"
+           dc:relation=""
+           dc:description="a measurement type where the quantity of a species in a
+    sample is recorded as the ash free dry weight biomass in grams (g)">
+    <preferred>
+      <term dc:source="" dc:title="biomass ash-free dry weight in grams (g)" xml:lang="en"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="biomassG"
+           dc:URI="http://rs.gbif.org/vocabulary/gbif/quantityType/biomassG"
+           dc:relation=""
+           dc:description="a measurement type where the quantity of a species in a
+    sample is recorded as the biomass in grams (g)">
+    <preferred>
+      <term dc:source="" dc:title="biomass in grams (g)" xml:lang="en"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="biomassKg"
+           dc:URI="http://rs.gbif.org/vocabulary/gbif/quantityType/biomassKg"
+           dc:relation=""
+           dc:description="a measurement type where the quantity of a species in a
+    sample is recorded as the biomass in kilograms (kg)">
+    <preferred>
+      <term dc:source="" dc:title="biomass in kilograms (kg)" xml:lang="en"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="biovolumeCubicMicrons"
+           dc:URI="http://rs.gbif.org/vocabulary/gbif/quantityType/biovolumeCubicMicrons"
+           dc:relation=""
+           dc:description="a measurement type where the quantity of a species in a
+    sample is recorded as the biovolume in cubic microns (µ^3)">
+    <preferred>
+      <term dc:source="" dc:title="biovolume in cubic microns (µ^3)" xml:lang="en"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="biovolumeMl"
+           dc:URI="http://rs.gbif.org/vocabulary/gbif/quantityType/biovolumeMl"
+           dc:relation=""
+           dc:description="a measurement type where the quantity of a species in a
+    sample is recorded as the biovolume in millilitres (ml)">
+    <preferred>
+      <term dc:source="" dc:title="biovolume in millilitres (ml)" xml:lang="en"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+</thesaurus>

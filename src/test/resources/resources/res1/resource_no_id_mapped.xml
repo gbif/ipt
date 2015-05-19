@@ -54,7 +54,7 @@
         </field>
         <field>
           <index>0</index>
-          <term>http://rs.tdwg.org/dwc/terms/individualID</term>
+          <term>http://rs.tdwg.org/dwc/terms/organismID</term>
           <defaultValue></defaultValue>
           <type>string</type>
         </field>

@@ -17,9 +17,10 @@
 package org.gbif.ipt.task;
 
 import org.gbif.api.model.common.DOI;
-import org.gbif.dwc.text.Archive;
-import org.gbif.dwc.text.ArchiveFactory;
-import org.gbif.file.CSVReader;
+import org.gbif.dwc.terms.DwcTerm;
+import org.gbif.dwca.io.Archive;
+import org.gbif.dwca.io.ArchiveFactory;
+import org.gbif.io.CSVReader;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
@@ -188,7 +189,7 @@ public class GenerateDwcaTest {
     CompressionUtil.decompressFile(dir, versionedDwca, true);
 
     Archive archive = ArchiveFactory.openArchive(dir);
-    assertEquals(Constants.DWC_ROWTYPE_OCCURRENCE, archive.getCore().getRowType());
+    assertEquals(DwcTerm.Occurrence, archive.getCore().getRowType());
     assertEquals(0, archive.getCore().getId().getIndex().intValue());
     assertEquals(4, archive.getCore().getFieldsSorted().size());
 
@@ -262,7 +263,7 @@ public class GenerateDwcaTest {
     CompressionUtil.decompressFile(dir, versionedDwca, true);
 
     Archive archive = ArchiveFactory.openArchive(dir);
-    assertEquals(Constants.DWC_ROWTYPE_OCCURRENCE, archive.getCore().getRowType());
+    assertEquals(DwcTerm.Occurrence, archive.getCore().getRowType());
     assertEquals(0, archive.getCore().getId().getIndex().intValue());
     assertEquals(5, archive.getCore().getFieldsSorted().size());
 
@@ -320,13 +321,13 @@ public class GenerateDwcaTest {
     CompressionUtil.decompressFile(dir, versionedDwca, true);
 
     Archive archive = ArchiveFactory.openArchive(dir);
-    assertEquals(Constants.DWC_ROWTYPE_OCCURRENCE, archive.getCore().getRowType());
+    assertEquals(DwcTerm.Occurrence, archive.getCore().getRowType());
     assertEquals(0, archive.getCore().getId().getIndex().intValue());
     assertEquals(4, archive.getCore().getFieldsSorted().size());
 
     // confirm order of fields appear honors order of Occurrence Core Extension
     assertEquals("basisOfRecord", archive.getCore().getFieldsSorted().get(0).getTerm().simpleName());
-    assertEquals("individualID", archive.getCore().getFieldsSorted().get(1).getTerm().simpleName());
+    assertEquals("organismID", archive.getCore().getFieldsSorted().get(1).getTerm().simpleName());
     assertEquals("scientificName", archive.getCore().getFieldsSorted().get(2).getTerm().simpleName());
     assertEquals("kingdom", archive.getCore().getFieldsSorted().get(3).getTerm().simpleName());
 
@@ -443,7 +444,7 @@ public class GenerateDwcaTest {
     JdbcInfoConverter jdbcConverter = new JdbcInfoConverter(support);
 
     // construct occurrence core Extension
-    InputStream occurrenceCoreIs = GenerateDwcaTest.class.getResourceAsStream("/extensions/dwc_occurrence.xml");
+    InputStream occurrenceCoreIs = GenerateDwcaTest.class.getResourceAsStream("/extensions/dwc_occurrence_2015-04-24.xml");
     Extension occurrenceCore = extensionFactory.build(occurrenceCoreIs);
     ExtensionManager extensionManager = mock(ExtensionManager.class);
 

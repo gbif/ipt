@@ -7,10 +7,13 @@
  */
 package org.gbif.ipt.model;
 
+import org.gbif.metadata.DateUtils;
+
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,6 +37,8 @@ public class Vocabulary implements Comparable, Serializable {
   private String title;
   private String description;
   private String subject;
+  private boolean isLatest;
+  private Date issued;
   private URL link; // to further documentation
   private List<VocabularyConcept> concepts = new LinkedList<VocabularyConcept>();
   // the data this local vocabulary copy was last updated
@@ -185,5 +190,38 @@ public class Vocabulary implements Comparable, Serializable {
 
   public void setUriResolvable(URI uriResolvable) {
     this.uriResolvable = uriResolvable;
+  }
+
+  /**
+   * @return true if this Extension is the latest version, false otherwise
+   */
+  public boolean isLatest() {
+    return isLatest;
+  }
+
+  public void setLatest(boolean isLatest) {
+    this.isLatest = isLatest;
+  }
+
+  /**
+   * @return the date this Extension was issued/released/published.
+   */
+  public Date getIssued() {
+    return issued;
+  }
+
+  public void setIssued(Date issued) {
+    this.issued = issued;
+  }
+
+  /**
+   * Utility to set the issued date, converting it from a textual format.
+   *
+   * @param dateString To set
+   *
+   * @throws ParseException Should it be an erroneous format
+   */
+  public void setIssuedDateAsString(String dateString) throws ParseException {
+    issued = DateUtils.calendarDate(dateString);
   }
 }

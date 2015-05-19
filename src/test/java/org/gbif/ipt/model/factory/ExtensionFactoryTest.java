@@ -9,12 +9,15 @@ package org.gbif.ipt.model.factory;
 
 import org.gbif.dwc.terms.DcTerm;
 import org.gbif.dwc.terms.DwcTerm;
-import org.gbif.dwc.text.ArchiveField.DataType;
+import org.gbif.dwca.io.ArchiveField.DataType;
 import org.gbif.ipt.config.IPTModule;
 import org.gbif.ipt.mock.MockVocabulariesManager;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionProperty;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -87,6 +90,44 @@ public class ExtensionFactoryTest {
       assertEquals(DataType.date, e.getProperty(DcTerm.modified).getType());
       assertEquals(DataType.string, e.getProperty(DwcTerm.scientificName).getType());
       assertEquals(DataType.uri, e.getProperty(DcTerm.source).getType());
+
+    } catch (Exception e) {
+      e.printStackTrace();
+      fail(e.getMessage());
+    }
+  }
+
+  /**
+   * Test building Event core extension that has issued date (used to version the extension).
+   */
+  @Test
+  public void testBuildVersionedExtension() {
+    try {
+      ExtensionFactory factory = getFactory();
+      Extension e = factory.build(ExtensionFactoryTest.class.getResourceAsStream("/extensions/dwc_event-2015-05-04.xml"));
+
+      assertEquals("Darwin Core Event", e.getTitle());
+      assertEquals("Event", e.getName());
+      assertEquals("http://rs.tdwg.org/dwc/terms/", e.getNamespace());
+      assertEquals("http://rs.tdwg.org/dwc/terms/Event", e.getRowType());
+      assertEquals("The category of information pertaining to a sampling event.", e.getDescription());
+      assertEquals("http://rs.tdwg.org/dwc/terms/index.htm#Event", e.getLink().toString());
+
+      // issued date parsed correctly?
+      DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+      String issued = "2015-05-04";
+      Date result = df.parse(issued);
+      assertEquals(result.toString(), e.getIssued().toString());
+
+      assertNotNull(e.getProperties());
+      assertEquals(99, e.getProperties().size());
+
+      // data types
+      assertEquals(DataType.string, e.getProperty(DcTerm.license).getType());
+      assertEquals(DataType.string, e.getProperty(DwcTerm.sampleSizeUnit).getType());
+      assertEquals("Event", e.getProperty(DwcTerm.sampleSizeUnit).getGroup());
+      assertEquals(DataType.string, e.getProperty(DwcTerm.sampleSizeValue).getType());
+      assertEquals(DataType.string, e.getProperty(DwcTerm.parentEventID).getType());
 
     } catch (Exception e) {
       e.printStackTrace();

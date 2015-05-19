@@ -1,5 +1,8 @@
 package org.gbif.ipt.config;
 
+import org.gbif.dwc.terms.DwcTerm;
+import org.gbif.dwc.terms.Term;
+
 import java.math.BigDecimal;
 
 import com.google.common.collect.ImmutableSet;
@@ -21,8 +24,8 @@ public final class Constants {
   public static final String REQ_PARAM_VERSION = "v";
   public static final String REQ_PARAM_PUBLICATION_MODE = "pubMode";
   public static final String REQ_PARAM_PUBLICATION_FREQUENCY = "pubFreq";
-  public static final String DWC_ROWTYPE_OCCURRENCE = "http://rs.tdwg.org/dwc/terms/Occurrence";
-  public static final String DWC_ROWTYPE_TAXON = "http://rs.tdwg.org/dwc/terms/Taxon";
+  public static final String DWC_ROWTYPE_OCCURRENCE = DwcTerm.Occurrence.qualifiedName();
+  public static final String DWC_ROWTYPE_TAXON = DwcTerm.Taxon.qualifiedName();
   public static final String DWC_OCCURRENCE_ID = "http://rs.tdwg.org/dwc/terms/occurrenceID";
   public static final String DWC_BASIS_OF_RECORD = "http://rs.tdwg.org/dwc/terms/basisOfRecord";
   public static final String DWC_TAXON_ID = "http://rs.tdwg.org/dwc/terms/taxonID";

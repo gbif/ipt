@@ -1,15 +1,16 @@
 package org.gbif.ipt.task;
 
 import org.gbif.api.model.common.DOI;
+import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
-import org.gbif.dwc.text.Archive;
-import org.gbif.dwc.text.ArchiveFactory;
-import org.gbif.dwc.text.ArchiveField;
-import org.gbif.dwc.text.ArchiveFile;
-import org.gbif.dwc.text.MetaDescriptorWriter;
-import org.gbif.file.CSVReader;
-import org.gbif.file.CSVReaderFactory;
+import org.gbif.dwca.io.Archive;
+import org.gbif.dwca.io.ArchiveFactory;
+import org.gbif.dwca.io.ArchiveField;
+import org.gbif.dwca.io.ArchiveFile;
+import org.gbif.dwca.io.MetaDescriptorWriter;
+import org.gbif.io.CSVReader;
+import org.gbif.io.CSVReaderFactory;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
@@ -143,7 +144,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
     // create new tab file with the help of the Archive class representing the core file or an extension
     ArchiveFile af = ArchiveFile.buildTabFile();
-    af.setRowType(ext.getRowType());
+    af.setRowType(TERM_FACTORY.findTerm(ext.getRowType()));
     af.setEncoding(CHARACTER_ENCODING);
     af.setDateFormat("YYYY-MM-DD");
     // in the generated file column 0 will be the id column
@@ -396,7 +397,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
   /**
    * Validate all extension files:
    * </br>
-   * -validate basisOfRecords in extensions having occurrence rowtype.
+   * -validate basisOfRecords in extensions having occurrence rowType.
    *
    * @param extensions Set of Archive extension data files (not core data files)
    *
@@ -408,7 +409,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     throws InterruptedException, GeneratorException, IOException {
     for (ArchiveFile extension: extensions) {
       // validate extensions with occurrence rowType
-      if (extension.getRowType().equalsIgnoreCase(Constants.DWC_ROWTYPE_OCCURRENCE)) {
+      if (extension.getRowType().equals(DwcTerm.Occurrence)) {
         // populate basisOfRecord lookup HashMap
         loadBasisOfRecordMapFromVocabulary();
         // do BoR validation
@@ -779,7 +780,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
    * @return true if the archive core file has occurrence rowType.
    */
   private boolean isOccurrenceCore(Archive arch) {
-    return arch.getCore().getRowType().equalsIgnoreCase(Constants.DWC_ROWTYPE_OCCURRENCE);
+    return arch.getCore().getRowType().equals(DwcTerm.Occurrence);
   }
 
   /**
@@ -929,8 +930,6 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     try {
       MetaDescriptorWriter.writeMetaFile(new File(dwcaFolder, "meta.xml"), archive);
     } catch (IOException e) {
-      throw new GeneratorException("Meta.xml file could not be written", e);
-    } catch (TemplateException e) {
       throw new GeneratorException("Meta.xml file could not be written", e);
     }
     // final reporting

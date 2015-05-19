@@ -169,7 +169,7 @@ public class MetadataAction extends ManagerBaseAction {
 
   /**
    * Returns a Map containing dataset subtype entries. The entries returned depending on the core type.
-   * For exmaple, if the core type is Occurrence, the Map will only contain occurrence dataset subtypes.
+   * For example, if the core type is Occurrence, the Map will only contain occurrence dataset subtypes.
    * This method is called by Struts.
    * 
    * @return Map of dataset subtypes

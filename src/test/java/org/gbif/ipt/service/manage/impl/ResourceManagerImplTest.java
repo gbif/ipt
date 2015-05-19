@@ -14,8 +14,8 @@
 package org.gbif.ipt.service.manage.impl;
 
 import org.gbif.api.model.common.DOI;
-import org.gbif.dwc.text.Archive;
-import org.gbif.dwc.text.UnsupportedArchiveException;
+import org.gbif.dwca.io.Archive;
+import org.gbif.dwca.io.UnsupportedArchiveException;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
@@ -333,7 +333,7 @@ public class ResourceManagerImplTest {
     ResourceManager resourceManager = getResourceManagerImpl();
 
     // retrieve sample DwC-A file
-    File dwca = FileUtils.getClasspathFile("resources/occurrence.txt.zip");
+    File dwca = FileUtils.getClasspathFile("resources/occurrence2.txt.zip");
 
     // create copy of DwC-A file in tmp dir, used to mock saving source resource filesource
     File tmpDir = FileUtils.createTempDir();
@@ -376,7 +376,7 @@ public class ResourceManagerImplTest {
     assertEquals(1, res.getMappings().size());
     assertEquals("singletxt", res.getMappings().get(0).getSource().getName());
     assertEquals(Constants.DWC_ROWTYPE_OCCURRENCE, res.getMappings().get(0).getExtension().getRowType());
-    assertEquals(22, res.getMappings().get(0).getFields().size());
+    assertEquals(23, res.getMappings().get(0).getFields().size());
     assertEquals(0, res.getMappings().get(0).getIdColumn().intValue());
 
     // there are no eml properties except default shortname as title since there was no eml.xml file included
@@ -403,6 +403,22 @@ public class ResourceManagerImplTest {
   }
 
   /**
+   * test resource creation from single DwC-A zipped file, having no rowType. The rowType is determined by the
+   * identifier term (e.g. rowType dwc:Occurrence corresponds to existence of term occurrenceID).
+   */
+  @Test(expected = ImportException.class)
+  public void testCreateFromSingleZippedFileWithNoRowType()
+    throws ParserConfigurationException, SAXException, IOException, InvalidFilenameException, ImportException,
+    AlreadyExistingException {
+    // create instance of manager
+    ResourceManager resourceManager = getResourceManagerImpl();
+    // retrieve sample DwC-A file
+    File dwca = FileUtils.getClasspathFile("resources/occurrence.txt.zip");
+    // create a new resource.
+    resourceManager.create(RESOURCE_SHORTNAME, null, dwca, creator, baseAction);
+  }
+
+  /**
    * test resource creation from single DwC-A gzipped file.
    */
   @Test
@@ -414,7 +430,7 @@ public class ResourceManagerImplTest {
     ResourceManager resourceManager = getResourceManagerImpl();
 
     // retrieve sample gzip DwC-A file
-    File dwca = FileUtils.getClasspathFile("resources/occurrence.txt.gz");
+    File dwca = FileUtils.getClasspathFile("resources/occurrence2.txt.gz");
 
     // create copy of DwC-A file in tmp dir, used to mock saving source resource filesource
     File tmpDir = FileUtils.createTempDir();
@@ -454,7 +470,7 @@ public class ResourceManagerImplTest {
     assertEquals(1, res.getMappings().size());
     assertEquals("singletxt", res.getMappings().get(0).getSource().getName());
     assertEquals(Constants.DWC_ROWTYPE_OCCURRENCE, res.getMappings().get(0).getExtension().getRowType());
-    assertEquals(22, res.getMappings().get(0).getFields().size());
+    assertEquals(23, res.getMappings().get(0).getFields().size());
     assertEquals(0, res.getMappings().get(0).getIdColumn().intValue());
 
     // there are no eml properties except default shortname as title since there was no eml.xml file included
@@ -497,7 +513,7 @@ public class ResourceManagerImplTest {
     when(mockSourceManager.add(any(Resource.class), any(File.class), anyString()))
       .thenThrow(new InvalidFilenameException("Bad filename!"));
     // retrieve sample gzip DwC-A file
-    File dwca = FileUtils.getClasspathFile("resources/occurrence.txt.gz");
+    File dwca = FileUtils.getClasspathFile("resources/occurrence2.txt.zip");
     // create a new resource, triggering exception
     resourceManager.create("res-single-gz", null, dwca, creator, baseAction);
   }
@@ -943,7 +959,7 @@ public class ResourceManagerImplTest {
     // open DwC-A located inside parent folder
     Archive archive = resourceManager.openArchiveInsideParentFolder(dwcaDir);
     assertNotNull(archive);
-    assertEquals(Constants.DWC_ROWTYPE_OCCURRENCE, archive.getCore().getRowType());
+    assertEquals(Constants.DWC_ROWTYPE_OCCURRENCE, archive.getCore().getRowType().qualifiedName());
   }
 
   /**

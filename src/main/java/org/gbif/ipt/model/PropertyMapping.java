@@ -16,7 +16,7 @@
 
 package org.gbif.ipt.model;
 
-import org.gbif.dwc.text.ArchiveField;
+import org.gbif.dwca.io.ArchiveField;
 
 import java.io.Serializable;
 import java.util.Map;

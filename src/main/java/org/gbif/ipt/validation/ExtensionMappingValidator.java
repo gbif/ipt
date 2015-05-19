@@ -14,7 +14,7 @@
 package org.gbif.ipt.validation;
 
 import org.gbif.dwc.terms.Term;
-import org.gbif.dwc.text.ArchiveField.DataType;
+import org.gbif.dwca.io.ArchiveField.DataType;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;

@@ -50,7 +50,7 @@ import static com.google.common.base.Objects.equal;
 public class Resource implements Serializable, Comparable<Resource> {
 
   public enum CoreRowType {
-    OCCURRENCE, CHECKLIST, METADATA, OTHER
+    OCCURRENCE, CHECKLIST, EVENT, METADATA, OTHER
   }
 
   private static Logger log = Logger.getLogger(Resource.class);
