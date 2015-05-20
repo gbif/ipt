@@ -170,7 +170,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     log.info("Loading vocabularies ...");
     vocabManager.load();
 
-    log.info("Loading dwc extensions ...");
+    log.info("Loading extensions ...");
     extensionManager.load();
 
     if (!dataDir.configFile(RegistrationManagerImpl.PERSISTENCE_FILE_V2).exists()) {

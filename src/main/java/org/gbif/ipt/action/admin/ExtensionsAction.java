@@ -18,10 +18,15 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Map.Entry;
 
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Function;
+import com.google.common.collect.Ordering;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -51,8 +56,8 @@ public class ExtensionsAction extends POSTAction {
 
   @Inject
   public ExtensionsAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    ExtensionManager extensionManager, VocabulariesManager vocabManager,
-    RegistryManager registryManager, ConfigWarnings warnings) {
+    ExtensionManager extensionManager, VocabulariesManager vocabManager, RegistryManager registryManager,
+    ConfigWarnings warnings) {
     super(textProvider, cfg, registrationManager);
     this.extensionManager = extensionManager;
     this.vocabManager = vocabManager;
@@ -104,19 +109,19 @@ public class ExtensionsAction extends POSTAction {
    * Handles the population of installed and uninstalled extensions on the "Core Types and Extensions" page.
    * Optionally, the user may have triggered an update vocabularies. This method always tries to pick up newly
    * registered extensions from the Registry.
-   * 
+   *
    * @return struts2 result
    */
   public String list() {
     if (updateVocabs) {
       UpdateResult result = vocabManager.updateAll();
-      addActionMessage(getText("admin.extensions.vocabularies.updated",
-        new String[] {String.valueOf(result.updated.size())}));
-      addActionMessage(getText("admin.extensions.vocabularies.unchanged",
-        new String[] {String.valueOf(result.unchanged.size())}));
+      addActionMessage(
+        getText("admin.extensions.vocabularies.updated", new String[] {String.valueOf(result.updated.size())}));
+      addActionMessage(
+        getText("admin.extensions.vocabularies.unchanged", new String[] {String.valueOf(result.unchanged.size())}));
       if (!result.errors.isEmpty()) {
-        addActionWarning(getText("admin.extensions.vocabularies.errors",
-          new String[] {String.valueOf(result.errors.size())}));
+        addActionWarning(
+          getText("admin.extensions.vocabularies.errors", new String[] {String.valueOf(result.errors.size())}));
         for (Entry<String, String> err : result.errors.entrySet()) {
           addActionError(getText("admin.extensions.error.updating", new String[] {err.getKey(), err.getValue()}));
         }
@@ -126,7 +131,7 @@ public class ExtensionsAction extends POSTAction {
     // retrieve all extensions that have been installed already
     extensions = extensionManager.list();
 
-    // populate list of uninstalled extensions, removing extensions installed already
+    // populate list of uninstalled extensions, removing extensions installed already, showing only latest versions
     newExtensions = getRegisteredExtensions();
     for (Extension e : extensions) {
       newExtensions.remove(e);
@@ -165,11 +170,14 @@ public class ExtensionsAction extends POSTAction {
   }
 
   /**
-   * Reload all the list of registered extensions.
+   * Reload the list of registered extensions, loading the latest extension versions.
    */
   private void loadRegisteredExtensions() {
     try {
-      setRegisteredExtensions(registryManager.getExtensions());
+      List<Extension> all = registryManager.getExtensions();
+      if (!all.isEmpty()) {
+        setRegisteredExtensions(getLatestVersions(all));
+      }
     } catch (RegistryException e) {
       // log as specific error message as possible about why the Registry error occurred
       String msg = RegistryException.logRegistryException(e.getType(), this);
@@ -187,6 +195,36 @@ public class ExtensionsAction extends POSTAction {
         setRegisteredExtensions(new ArrayList<Extension>());
       }
     }
+  }
+
+  /**
+   * Filter a list of extensions, returning the latest version for each rowType. The latest version of an extension
+   * is determined by its issued date.
+   *
+   * @param extensions unfiltered list of all registered extensions
+   *
+   * @return filtered list of extensions
+   */
+  @VisibleForTesting
+  protected List<Extension> getLatestVersions(List<Extension> extensions) {
+    Ordering<Extension> byIssuedDate = Ordering.natural().nullsLast().onResultOf(new Function<Extension, Date>() {
+      public Date apply(Extension extension) {
+        return extension.getIssued();
+      }
+    });
+    // sort extensions by issued date
+    List<Extension> sorted = byIssuedDate.immutableSortedCopy(extensions);
+    // populate list of latest extension versions
+    Map<String, Extension> extensionsByRowtype = new HashMap<String, Extension>();
+    if (!sorted.isEmpty()) {
+      for (Extension extension: sorted) {
+        String rowType = extension.getRowType();
+        if (rowType != null && !extensionsByRowtype.containsKey(rowType)) {
+          extensionsByRowtype.put(rowType, extension);
+        }
+      }
+    }
+    return new ArrayList<Extension>(extensionsByRowtype.values());
   }
 
   @Override

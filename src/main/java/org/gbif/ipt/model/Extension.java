@@ -14,6 +14,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import com.google.common.base.Objects;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.CompareToBuilder;
@@ -225,6 +227,7 @@ public class Extension implements Serializable {
   /**
    * @return the date this Extension was issued/released/published.
    */
+  @Nullable
   public Date getIssued() {
     return issued;
   }

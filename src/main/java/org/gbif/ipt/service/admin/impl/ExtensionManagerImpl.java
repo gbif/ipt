@@ -313,7 +313,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
         ext = factory.build(fileIn);
         // normalise rowtype
         ext.setRowType(normalizeRowType(ext.getRowType()));
-        // keep vocab in local lookup
+        // keep extension in local lookup: allowed one installed/loaded extension per rowType
         extensionsByRowtype.put(ext.getRowType(), ext);
         log.info("Successfully loaded extension " + ext.getRowType());
       } catch (FileNotFoundException e) {
