@@ -2,6 +2,11 @@
  <title><@s.text name="admin.home.manageExtensions"/></title>
  <#assign currentMenu = "admin"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
+<script type="text/javascript">
+    $(document).ready(function(){
+        initHelp();
+    });
+</script>
 
 <div class="grid_23">
 <h1><@s.text name="admin.extension.coreTypes"/></h1>
@@ -17,13 +22,22 @@
 <div class="definition">	
   <div class="title">
   	<div class="head">
-        <a href="extension.do?id=${ext.rowType?url}">${ext.title}</a>
+      <a href="extension.do?id=${ext.rowType?url}">${ext.title}</a>
+			<#if !ext.isLatest()>
+        <img class="infoImg" src="${baseURL}/images/warning.gif"/>
+        <div class="info autop">
+				  <@s.text name="admin.extension.version.warning"/>
+        </div>
+			</#if>
   	</div>
   	<div class="actions">
 	  <form action='extension.do' method='post'>
-		<input type='hidden' name='id' value='${ext.rowType}' />
-		<@s.submit name="delete" key="button.remove"/>
-  	  </form>
+      <input type='hidden' name='id' value='${ext.rowType}' />
+			<#if !ext.isLatest()>
+				<@s.submit name="update" key="button.update"/>
+			</#if>
+		  <@s.submit name="delete" key="button.remove"/>
+		</form>
   	</div>
   </div>
   <div class="body">
@@ -33,6 +47,9 @@
       	</div>
       	<div class="details">
       		<table>
+							<#if ext.issued??>
+                <tr><th><@s.text name="basic.issued"/></th><td>${ext.issued?date?string.medium}</td></tr>
+							</#if>
           		<tr><th><@s.text name="extension.properties"/></th><td>${ext.properties?size}</td></tr>
           		<tr><th><@s.text name="basic.name"/></th><td>${ext.name}</td></tr>
           		<tr><th><@s.text name="basic.namespace"/></th><td>${ext.namespace}</td></tr>

@@ -26,7 +26,7 @@ public interface RegistryManager {
   void deregister(Resource resource) throws RegistryException;
 
   /**
-   * Gets list of extensions from the Registry.
+   * Gets list of all registered extensions from the Registry.
    *
    * @return list of extensions, or an empty list if none were retrieved from valid response
    *

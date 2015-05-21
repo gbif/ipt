@@ -42,8 +42,8 @@ public class ExtensionsAction extends POSTAction {
   private final ExtensionManager extensionManager;
   private final VocabulariesManager vocabManager;
   private final RegistryManager registryManager;
-  // list of all registered extensions
-  private List<Extension> registeredExtensions;
+  // list of latest registered extension versions
+  private List<Extension> latestExtensionVersions;
   private List<Extension> extensions;
   private Extension extension;
   private String url;
@@ -74,6 +74,12 @@ public class ExtensionsAction extends POSTAction {
       addActionWarning(getText("admin.extension.delete.error", new String[] {id}));
       addActionExceptionWarning(e);
     }
+    return SUCCESS;
+  }
+
+  public String update() throws Exception {
+    // TODO
+    LOG.info("Update extension " + id);
     return SUCCESS;
   }
 
@@ -131,8 +137,11 @@ public class ExtensionsAction extends POSTAction {
     // retrieve all extensions that have been installed already
     extensions = extensionManager.list();
 
+    // update each installed extension indicating whether it is the latest version (for its rowType) or not
+    updateIsLatest(extensions);
+
     // populate list of uninstalled extensions, removing extensions installed already, showing only latest versions
-    newExtensions = getRegisteredExtensions();
+    newExtensions = getLatestExtensionVersions();
     for (Extension e : extensions) {
       newExtensions.remove(e);
     }
@@ -154,8 +163,8 @@ public class ExtensionsAction extends POSTAction {
   public void prepare() {
     super.prepare();
 
-    // load all registered extensions from registry
-    loadRegisteredExtensions();
+    // load latest extension versions from Registry
+    loadLatestExtensionVersions();
 
     // ensure mandatory vocabs are always loaded
     vocabManager.load();
@@ -170,18 +179,50 @@ public class ExtensionsAction extends POSTAction {
   }
 
   /**
-   * Reload the list of registered extensions, loading the latest extension versions.
+   * Iterate through list of installed extensions. Update each one, indicating if it is the latest version or not.
    */
-  private void loadRegisteredExtensions() {
+  @VisibleForTesting
+  protected void updateIsLatest(List<Extension> extensions) {
+    if (!extensions.isEmpty()) {
+      // complete list of registered extensions (latest and non-latest versions)
+      List<Extension> registered = registryManager.getExtensions();
+      for (Extension extension : extensions) {
+        // is this the latest version?
+        for (Extension rExtension : registered) {
+          if (extension.getRowType() != null && rExtension.getRowType() != null) {
+            String rowTypeOne = extension.getRowType();
+            String rowTypeTwo = rExtension.getRowType();
+            // first compare on rowType
+            if (rowTypeOne.equalsIgnoreCase(rowTypeTwo)) {
+              Date issuedOne = extension.getIssued();
+              Date issuedTwo = rExtension.getIssued();
+              // next compare on issued date: can both be null, or issued date must be same
+              if ((issuedOne == null && issuedTwo == null) || (issuedOne != null && issuedTwo != null
+                                                               && issuedOne.compareTo(issuedTwo) == 0)) {
+                extension.setLatest(rExtension.isLatest());
+              }
+            }
+          }
+        }
+        LOG.debug("Installed extension with rowType " + extension.getRowType() + " latest=" + extension.isLatest());
+      }
+    }
+  }
+
+  /**
+   * Reload the list of registered extensions, loading only the latest extension versions.
+   */
+  private void loadLatestExtensionVersions() {
     try {
+      // list of all registered extensions
       List<Extension> all = registryManager.getExtensions();
       if (!all.isEmpty()) {
-        setRegisteredExtensions(getLatestVersions(all));
+        // list of latest extension versions
+        setLatestExtensionVersions(getLatestVersions(all));
       }
     } catch (RegistryException e) {
-      // log as specific error message as possible about why the Registry error occurred
+      // add startup error message that explains why the Registry error occurred
       String msg = RegistryException.logRegistryException(e.getType(), this);
-      // add startup error message about Registry error
       warnings.addStartupError(msg);
       LOG.error(msg);
 
@@ -190,9 +231,9 @@ public class ExtensionsAction extends POSTAction {
       warnings.addStartupError(msg);
       LOG.error(msg);
     } finally {
-      // initialize list as empty list had the list not been populated
-      if (getRegisteredExtensions() == null) {
-        setRegisteredExtensions(new ArrayList<Extension>());
+      // initialize list as empty list if the list could not be populated
+      if (getLatestExtensionVersions() == null) {
+        setLatestExtensionVersions(new ArrayList<Extension>());
       }
     }
   }
@@ -257,11 +298,14 @@ public class ExtensionsAction extends POSTAction {
     this.url = url;
   }
 
-  public List<Extension> getRegisteredExtensions() {
-    return registeredExtensions;
+  /**
+   * @return list of latest registered extensions
+   */
+  public List<Extension> getLatestExtensionVersions() {
+    return latestExtensionVersions;
   }
 
-  public void setRegisteredExtensions(List<Extension> registeredExtensions) {
-    this.registeredExtensions = registeredExtensions;
+  public void setLatestExtensionVersions(List<Extension> latestExtensionVersions) {
+    this.latestExtensionVersions = latestExtensionVersions;
   }
 }
