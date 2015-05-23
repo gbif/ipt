@@ -327,9 +327,14 @@ public class AppConfig {
     return REGISTRY_TYPE.DEVELOPMENT == type;
   }
 
+  /**
+   * Load application configuration from application properties file (application.properties) and from
+   * user configuration file (ipt.properties), which includes populating core configuration.
+   */
   protected void loadConfig() throws InvalidConfigException {
     InputStreamUtils streamUtils = new InputStreamUtils();
     InputStream configStream = streamUtils.classpathStream(CLASSPATH_PROPFILE);
+    // load default configuration from application.properties
     try {
       Properties props = new Properties();
       if (configStream == null) {
@@ -339,7 +344,7 @@ public class AppConfig {
         LOG.debug("Loaded default configuration from application.properties in classpath");
       }
       if (dataDir.dataDir != null && dataDir.dataDir.exists()) {
-        // read user configuration from data dir if it exists
+        // load user configuration properties from data dir ipt.properties (if it exists)
         File userCfgFile = new File(dataDir.dataDir, "config/" + DATADIR_PROPFILE);
         if (userCfgFile.exists()) {
           FileInputStream fis = null;

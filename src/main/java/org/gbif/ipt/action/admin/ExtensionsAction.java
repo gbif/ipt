@@ -68,7 +68,7 @@ public class ExtensionsAction extends POSTAction {
   @Override
   public String delete() throws Exception {
     try {
-      extensionManager.delete(id);
+      extensionManager.uninstallSafely(id);
       addActionMessage(getText("admin.extension.delete.success", new String[] {id}));
     } catch (DeletionNotAllowedException e) {
       addActionWarning(getText("admin.extension.delete.error", new String[] {id}));
@@ -77,9 +77,24 @@ public class ExtensionsAction extends POSTAction {
     return SUCCESS;
   }
 
+  /**
+   * Update installed extension to latest version.
+   * </br>
+   * This involves migrating all associated resource mappings over to the new version.
+   * </br>
+   * If there are no associated resource mappings, the new version can simply be installed.
+   *
+   * @return struts2 result
+   */
   public String update() throws Exception {
-    // TODO
-    LOG.info("Update extension " + id);
+    try {
+      LOG.info("Updating extension " + id + " to latest version...");
+      extensionManager.update(id);
+      addActionMessage(getText("admin.extension.update.success", new String[] {id}));
+    } catch (Exception e) {
+      LOG.error(e);
+      addActionWarning(getText("admin.extension.update.error", new String[] {e.getMessage()}), e);
+    }
     return SUCCESS;
   }
 
@@ -274,7 +289,7 @@ public class ExtensionsAction extends POSTAction {
       extensionManager.install(new URL(url));
       addActionMessage(getText("admin.extension.install.success", new String[] {url}));
     } catch (Exception e) {
-      LOG.debug(e);
+      LOG.error(e);
       addActionWarning(getText("admin.extension.install.error", new String[] {url}), e);
     }
     return SUCCESS;

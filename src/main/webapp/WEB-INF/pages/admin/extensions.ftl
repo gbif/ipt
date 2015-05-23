@@ -31,13 +31,16 @@
 			</#if>
   	</div>
   	<div class="actions">
-	  <form action='extension.do' method='post'>
-      <input type='hidden' name='id' value='${ext.rowType}' />
 			<#if !ext.isLatest()>
-				<@s.submit name="update" key="button.update"/>
+        <form action='updateExtension.do' method='post'>
+      	  <input type='hidden' name='id' value='${ext.rowType}' />
+					<@s.submit name="update" key="button.update"/>
+        </form>
 			</#if>
-		  <@s.submit name="delete" key="button.remove"/>
-		</form>
+			<form action='extension.do' method='post'>
+       	<input type='hidden' name='id' value='${ext.rowType}' />
+				<@s.submit name="delete" key="button.remove"/>
+			</form>
   	</div>
   </div>
   <div class="body">

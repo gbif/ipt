@@ -5,6 +5,7 @@ import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.impl.ExtensionManagerImpl;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
@@ -17,9 +18,18 @@ import com.google.inject.ImplementedBy;
 public interface ExtensionManager {
 
   /**
-   * Remove an installed extension by its unique rowType.
+   * Safely remove an installed extension by its unique rowType, making sure no mappings to this extension exist.
+   *
+   * @param rowType of installed extension to remove
+   *
+   * @throws DeletionNotAllowedException if at least one mapping to this extension exists preventing deletion
    */
-  void delete(String rowType) throws DeletionNotAllowedException;
+  void uninstallSafely(String rowType) throws DeletionNotAllowedException;
+
+  /**
+   * Update an installed extension to the latest version, identified by its rowType.
+   */
+  void update(String rowType) throws IOException;
 
   /**
    * Get a locally installed extension by its rowType.

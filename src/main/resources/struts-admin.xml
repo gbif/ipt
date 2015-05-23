@@ -49,6 +49,9 @@
     <action name="extensions" class="org.gbif.ipt.action.admin.ExtensionsAction" method="list">
       <result>/WEB-INF/pages/admin/extensions.ftl</result>
     </action>
+    <action name="updateExtension" class="org.gbif.ipt.action.admin.ExtensionsAction" method="update">
+      <result type="redirect">${baseURL}/admin/extensions.do</result>
+    </action>
     <action name="extension" class="org.gbif.ipt.action.admin.ExtensionsAction">
       <result name="input">/WEB-INF/pages/admin/extension.ftl</result>
       <result type="redirect">${baseURL}/admin/extensions.do</result>
