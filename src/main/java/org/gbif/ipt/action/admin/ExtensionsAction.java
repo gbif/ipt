@@ -53,6 +53,7 @@ public class ExtensionsAction extends POSTAction {
   private String dateFormat;
   private List<Extension> newExtensions;
   private ConfigWarnings warnings;
+  private boolean upToDate = true;
 
   @Inject
   public ExtensionsAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -171,6 +172,14 @@ public class ExtensionsAction extends POSTAction {
         dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, locale).format(vocabsLastUpdated);
       }
     }
+
+    // warn user if updates to installed extensions are available
+    if (isUpToDate()) {
+      addActionMessage(getText("admin.extensions.upToDate"));
+    } else {
+      addActionWarning(getText("admin.extensions.not.upToDate"));
+    }
+
     return SUCCESS;
   }
 
@@ -214,7 +223,12 @@ public class ExtensionsAction extends POSTAction {
               // next compare on issued date: can both be null, or issued date must be same
               if ((issuedOne == null && issuedTwo == null) || (issuedOne != null && issuedTwo != null
                                                                && issuedOne.compareTo(issuedTwo) == 0)) {
-                extension.setLatest(rExtension.isLatest());
+                if (!rExtension.isLatest()) {
+                  extension.setLatest(false);
+                  setUpToDate(false);
+                } else {
+                  extension.setLatest(true);
+                }
               }
             }
           }
@@ -322,5 +336,16 @@ public class ExtensionsAction extends POSTAction {
 
   public void setLatestExtensionVersions(List<Extension> latestExtensionVersions) {
     this.latestExtensionVersions = latestExtensionVersions;
+  }
+
+  /**
+   * @return true if all installed extensions are the latest version, false otherwise
+   */
+  public boolean isUpToDate() {
+    return upToDate;
+  }
+
+  public void setUpToDate(boolean upToDate) {
+    this.upToDate = upToDate;
   }
 }

@@ -9,12 +9,12 @@
 </script>
 
 <div class="grid_23">
-<h1><@s.text name="admin.extension.coreTypes"/></h1>
+  <h1><@s.text name="admin.extension.coreTypes"/></h1>
   <p>
-  <@s.text name="admin.extension.no.coreTypes.installed.help"><@s.param>${cfg.registryUrl}</@s.param></@s.text>
+    <@s.text name="admin.extension.no.coreTypes.installed.help"><@s.param>${cfg.registryUrl}</@s.param></@s.text>
   </p>
-<#assign count=0>
 
+<#assign count=0>
 <#list extensions as ext>
 <#if ext.core>
 <#assign count=count+1>
@@ -44,7 +44,7 @@
   	</div>
   </div>
   <div class="body">
-      	<div>
+			<div>
 			<p>${ext.description!}
 			<#if ext.link?has_content><br/><@s.text name="basic.seealso"/> <a href="${ext.link}">${ext.link}</a></#if></p>             	
       	</div>
@@ -57,7 +57,9 @@
           		<tr><th><@s.text name="basic.name"/></th><td>${ext.name}</td></tr>
           		<tr><th><@s.text name="basic.namespace"/></th><td>${ext.namespace}</td></tr>
           		<tr><th><@s.text name="extension.rowtype"/></th><td>${ext.rowType}</td></tr>
-          		<tr><th><@s.text name="basic.keywords"/></th><td>${ext.subject!}</td></tr>
+						  <#if ext.subject?has_content>
+                <tr><th><@s.text name="basic.keywords"/></th><td>${ext.subject!}</td></tr>
+							</#if>
       		</table>
       	</div>
   </div>
@@ -108,7 +110,9 @@
           		<tr><th><@s.text name="basic.name"/></th><td>${ext.name}</td></tr>
           		<tr><th><@s.text name="basic.namespace"/></th><td>${ext.namespace}</td></tr>
           		<tr><th><@s.text name="extension.rowtype"/></th><td>${ext.rowType}</td></tr>
-          		<tr><th><@s.text name="basic.keywords"/></th><td>${ext.subject!}</td></tr>
+						  <#if ext.subject?has_content>
+                <tr><th><@s.text name="basic.keywords"/></th><td>${ext.subject!}</td></tr>
+							</#if>
       		</table>
       	</div>
   </div>
