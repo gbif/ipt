@@ -41,8 +41,7 @@ public class Vocabulary implements Comparable, Serializable {
   private Date issued;
   private URL link; // to further documentation
   private List<VocabularyConcept> concepts = new LinkedList<VocabularyConcept>();
-  // the data this local vocabulary copy was last updated
-  private Date lastUpdate = new Date();
+  private Date modified = new Date();
 
   public void addConcept(VocabularyConcept concept) {
     if (concepts == null) {
@@ -114,10 +113,6 @@ public class Vocabulary implements Comparable, Serializable {
     return description;
   }
 
-  public Date getLastUpdate() {
-    return lastUpdate;
-  }
-
   public URL getLink() {
     return link;
   }
@@ -128,6 +123,13 @@ public class Vocabulary implements Comparable, Serializable {
 
   public String getTitle() {
     return title;
+  }
+
+  /**
+   * @return date the vocabulary was last updated
+   */
+  public Date getModified() {
+    return modified;
   }
 
   @Override
@@ -141,10 +143,6 @@ public class Vocabulary implements Comparable, Serializable {
 
   public void setDescription(String description) {
     this.description = description;
-  }
-
-  public void setLastUpdate(Date lastUpdate) {
-    this.lastUpdate = lastUpdate;
   }
 
   public void setLink(String link) {
@@ -164,6 +162,10 @@ public class Vocabulary implements Comparable, Serializable {
 
   public void setTitle(String title) {
     this.title = title;
+  }
+
+  public void setModified(Date modified) {
+    this.modified = modified;
   }
 
   /**

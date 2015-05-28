@@ -28,27 +28,28 @@ import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
 /**
- * Building from XML definitions.
+ * Class used to build Vocabularies from XML definitions.
  */
 public class VocabularyFactory {
 
   public static final String VOCABULARY_NAMESPACE = "http://rs.gbif.org/thesaurus/";
-  private static final Logger LOG = Logger.getLogger(VocabularyFactory.class);
-  private final HttpClient client;
   private final SAXParserFactory saxf;
 
   @Inject
-  public VocabularyFactory(DefaultHttpClient httpClient, SAXParserFactory saxf) {
-    this.client = httpClient;
+  public VocabularyFactory(SAXParserFactory saxf) {
     this.saxf = saxf;
   }
 
   /**
-   * Builds a Vocabulary from the supplied input stream
+   * Builds a Vocabulary from the supplied input stream on the XML definition file.
    *
-   * @param is For the XML
+   * @param is input stream on the XML definition file
    *
-   * @return The extension
+   * @return Vocabulary
+   *
+   * @throws IOException if an input/output error occurs
+   * @throws SAXException if a parsing exception occurs
+   * @throws ParserConfigurationException if a parser cannot be created which satisfies the requested configuration
    */
   public Vocabulary build(InputStream is) throws IOException, SAXException, ParserConfigurationException {
     Digester digester = new Digester(saxf.newSAXParser());
@@ -118,40 +119,4 @@ public class VocabularyFactory {
     digester.parse(is);
     return tv;
   }
-
-  /**
-   * @param url To build from
-   *
-   * @return The thesaurus or null on error
-   */
-  public Vocabulary build(String url) {
-    HttpGet get = new HttpGet(url);
-
-    // execute
-    try {
-      HttpResponse response = client.execute(get);
-      HttpEntity entity = response.getEntity();
-      if (entity != null) {
-        // copy stream to local file
-        InputStream is = entity.getContent();
-        try {
-          Vocabulary tv = build(is);
-          LOG.info("Successfully parsed Thesaurus: " + tv.getTitle());
-          return tv;
-
-        } catch (SAXException e) {
-          LOG.error("Unable to parse XML for extension: " + e.getMessage(), e);
-        } finally {
-          is.close();
-        }
-        // close http connection
-        EntityUtils.consume(entity);
-      }
-    } catch (Exception e) {
-      LOG.error(e);
-    }
-
-    return null;
-  }
-
 }

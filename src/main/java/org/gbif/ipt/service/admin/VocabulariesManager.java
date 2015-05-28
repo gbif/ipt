@@ -1,11 +1,11 @@
 package org.gbif.ipt.service.admin;
 
 import org.gbif.ipt.model.Vocabulary;
-import org.gbif.ipt.service.DeletionNotAllowedException;
+import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
-import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl.UpdateResult;
 
-import java.net.URI;
+import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
@@ -18,30 +18,33 @@ import com.google.inject.ImplementedBy;
 public interface VocabulariesManager {
 
   /**
-   * removes a local vocabulary copy
+   * Retrieves an installed vocabulary by its unique URI.
    *
-   * @param uri unique URI identifying the vocabulary as given in the vocabulary definition
-   */
-  void delete(String uri) throws DeletionNotAllowedException;
-
-  /**
-   * Retrieve vocabulary by its unique global URI identifier from installed vocabularies.
-   *
-   * @param uriString unique URI string identifying the vocabulary as given in the vocabulary definition
+   * @param uri unique URI
    *
    * @return the installed vocabulary or null if not found
    */
-  Vocabulary get(String uriString);
+  Vocabulary get(String uri);
 
   /**
-   * Returns the parsed vocabulary located at the given URI. If downloaded already it will return the cached copy or
-   * otherwise download it from the URI.
+   * Retrieves an installed vocabulary by its URL.
    *
-   * @param uriObject the resolvable URI that locates the xml vocabulary definition
+   * @param url url to the xml vocabulary definition
    *
    * @return the installed vocabulary or null if not found
    */
-  Vocabulary get(URI uriObject);
+  Vocabulary get(URL url);
+
+  /**
+   * Download and install a vocabulary into local file. The final filename is based on the vocabulary's identifier.
+   *
+   * @param url the URL of the XML based vocabulary definition
+   *
+   * @return the installed vocabulary
+   *
+   * @throws InvalidConfigException if Vocabulary failed to be installed
+   */
+  Vocabulary install(URL url);
 
   /**
    * Returns a regular map than can be used to populate html select drop downs with
@@ -53,14 +56,14 @@ public interface VocabulariesManager {
    * @param sortAlphabetically if true sort map values alphabetically, otherwise use native ordering
    *
    * @return return vocabulary map for given language sorted alphabetically, or an empty map if no vocabulary concepts
-   *         could be populated
+   * could be populated
    */
   Map<String, String> getI18nVocab(String uri, String lang, boolean sortAlphabetically);
 
   /**
-   * Lists all locally known vocabularies.
+   * Lists all installed vocabularies.
    *
-   * @return all locally known vocabularies
+   * @return all installed vocabularies
    */
   List<Vocabulary> list();
 
@@ -73,10 +76,16 @@ public interface VocabulariesManager {
   int load();
 
   /**
-   * Downloads the latest version for the locally known vocabuarlies by looking up the latest registry entry
-   * for their URI. Updates all related concepts & terms.
-   *
-   * @return UpdateResult with information relating to sucesses and failures of the update
+   * Install or update latest version of all default vocabularies.
    */
-  UpdateResult updateAll();
+  void installOrUpdateDefaults() throws InvalidConfigException;
+
+  /**
+   * Update vocabulary if it changed since last time it was updated.
+   *
+   * @param uri the identifier of the vocabulary
+   *
+   * @return true if the update happened, false otherwise
+   */
+  boolean updateIfChanged(String uri) throws IOException, InvalidConfigException;
 }

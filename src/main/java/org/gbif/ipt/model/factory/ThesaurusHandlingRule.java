@@ -11,7 +11,8 @@ import org.gbif.ipt.model.ExtensionProperty;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 
-import java.net.URI;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import com.google.inject.Inject;
 import org.apache.commons.digester.Rule;
@@ -41,15 +42,19 @@ public class ThesaurusHandlingRule extends Rule {
       if (ThesaurusHandlingRule.ATTRIBUTE_THESAURUS.equals(attributes.getQName(i))) {
         Vocabulary tv = null;
         try {
-          URI vocabURIObject = new URI(attributes.getValue(i));
-          tv = vocabManager.get(vocabURIObject);
-        } catch (Exception e) {
-          LOG
-            .error("Vocabulary with location " + attributes.getValue(i) + " couldnt get hold of: " + e.getMessage(), e);
+          URL url = new URL(attributes.getValue(i));
+          tv = vocabManager.get(url);
+          // install vocabulary if it's new
+          if (tv == null) {
+            LOG.warn("Installing new vocabulary with URL (" + attributes.getValue(i) + ")...");
+            tv = vocabManager.install(url);
+          }
+        } catch (MalformedURLException e) {
+          LOG.error("Thesaurus URL (" + attributes.getValue(i) + ") is malformed: " + e.getMessage(), e);
         }
 
         if (tv == null) {
-          LOG.warn("No Vocabulary object exists for the URL[" + attributes.getValue(i) + "] so cannot be set");
+          LOG.error("No Vocabulary object exists for the URL (" + attributes.getValue(i) + ") so cannot be set");
         } else {
           Object extensionPropertyAsObject = getDigester().peek();
           if (extensionPropertyAsObject instanceof ExtensionProperty) {

@@ -126,25 +126,17 @@
   </p>
 </#if>
 
-<#if (numVocabs>0)>
 </div>
 <hr/>
 <div class="grid_23">
-<h3><@s.text name="extension.vocabularies.title"/></h3>
-
-  <p>
-    <@s.text name="admin.extensions.vocabularies.update.help"/>
-  </p>
-  <p>
-  <@s.text name="extension.vocabularies.last.update"><@s.param>${dateFormat}</@s.param></@s.text>
-
-  <form action='extensions.do' method='post'>
-    <@s.submit name="updateVocabs" key="button.update"/>
-	<@s.text name="extension.vocabularies.number"><@s.param>${numVocabs}</@s.param></@s.text>
-  </form>
-  </p>
-</#if>
-
+  <h3><@s.text name="extension.synchronise.title"/></h3>
+  <p><@s.text name="admin.extensions.synchronise.help"/></p>
+	<#if lastSynchronised?has_content>
+      <p><@s.text name="extension.last.synchronised"><@s.param>${lastSynchronised?date?string("yyyy-MM-dd HH:mm:ss")}</@s.param></@s.text></p>
+	</#if>
+	<form action='extensions.do' method='post'>
+    <@s.submit name="synchronise" key="button.synchronise"/>
+  </form><br/>
 </div>
 <hr/>
 

@@ -40,6 +40,10 @@ public class InvalidConfigException extends RuntimeException {
      */
     INVALID_EXTENSION,
     /**
+     * Vocabulary is invalid for some reason. For example it has XML breaking characters and can't be parsed.
+     */
+    INVALID_VOCABULARY,
+    /**
      * The IPT mode (test or production) has been set, and this cannot change.
      */
     DATADIR_ALREADY_REGISTERED,

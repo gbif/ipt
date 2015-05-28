@@ -64,7 +64,7 @@ public class ConfigManagerImplTest {
     InputStreamUtils streamUtils = new InputStreamUtils();
     ResourceManager mockedResourceManager = MockResourceManager.buildMock();
     ExtensionManager mockedExtensionManager = mock(ExtensionManager.class);
-    VocabulariesManager mockedVocabularies = new MockVocabulariesManager();
+    VocabulariesManager mockedVocabularies = mock(VocabulariesManager.class);
     RegistrationManager mockedRegistrationManager = MockRegistrationManager.buildMock();
     UserAccountManager mockedUserManager = MockUserAccountManager.buildMock();
     ConfigWarnings warnings = new ConfigWarnings();

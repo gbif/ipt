@@ -215,11 +215,11 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * @see org.gbif.ipt.service.registry.RegistryManager#getExtensions()
    */
   public List<Extension> getExtensions() throws RegistryException {
-    Map<String, List<Extension>> jSONextensions = gson
+    Map<String, List<Extension>> jSONExtensions = gson
       .fromJson(requestHttpGetFromRegistry(getExtensionsURL(true)).content,
         new TypeToken<Map<String, List<Extension>>>() {
         }.getType());
-    return (jSONextensions.get("extensions") == null) ? new ArrayList<Extension>() : jSONextensions.get("extensions");
+    return (jSONExtensions.get("extensions") == null) ? new ArrayList<Extension>() : jSONExtensions.get("extensions");
   }
 
   /**
@@ -410,10 +410,11 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * @see org.gbif.ipt.service.registry.RegistryManager#getVocabularies()
    */
   public List<Vocabulary> getVocabularies() throws RegistryException {
-    Map<String, List<Vocabulary>> map = gson.fromJson(requestHttpGetFromRegistry(getVocabulariesURL(true)).content,
+    Map<String, List<Vocabulary>> jSONVocabularies = gson
+      .fromJson(requestHttpGetFromRegistry(getVocabulariesURL(true)).content,
       new TypeToken<Map<String, List<Vocabulary>>>() {
       }.getType());
-    return (map.get("thesauri") == null) ? new ArrayList<Vocabulary>() : map.get("thesauri");
+    return (jSONVocabularies.get("thesauri") == null) ? new ArrayList<Vocabulary>() : jSONVocabularies.get("thesauri");
   }
 
   /*

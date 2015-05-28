@@ -35,9 +35,7 @@ public class VocabularyFactoryTest {
   private VocabularyFactory getFactory() throws ParserConfigurationException, SAXException {
     IPTModule mod = new IPTModule();
     SAXParserFactory sax = mod.provideNsAwareSaxParserFactory();
-    DefaultHttpClient client = new DefaultHttpClient();
-    VocabularyFactory factory = new VocabularyFactory(client, sax);
-    return factory;
+    return new VocabularyFactory(sax);
   }
 
   @Test
@@ -96,7 +94,7 @@ public class VocabularyFactoryTest {
         getFactory().build(VocabularyFactoryTest.class.getResourceAsStream("/thesauri/quantity_type-2015-05-04.xml"));
 
       assertEquals("Quantity Type Vocabulary", v.getTitle());
-      assertEquals("http://rs.gbif.org/sandbox/vocabulary/gbif/quantityType20150424/", v.getUriString());
+      assertEquals("http://rs.gbif.org/vocabulary/gbif/quantityType", v.getUriString());
       assertNull(v.getLink());
       assertEquals("The quantityType Vocabulary is a recommended set of values to use for the Darwin Core quantityType property.", v.getDescription());
 

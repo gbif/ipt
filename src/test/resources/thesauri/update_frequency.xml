@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/style/human.xsl"?>
+<thesaurus
+  dc:URI="http://rs.gbif.org/vocabulary/eml/updateFrequency"
+  dc:description="Vocabulary that describes the frequency with which changes and additions are made to the dataset after the initial dataset is completed. The vocabulary is derived from the EML specification (version 2.1.1) at http://knb.ecoinformatics.org/software/eml/eml-2.1.1/eml-dataset.html#maintenanceUpdateFrequency/."
+  dc:title="EML Maintenance Update Frequency"
+  xmlns="http://rs.gbif.org/thesaurus/" xmlns:dc="http://purl.org/dc/terms/"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://rs.gbif.org/thesaurus/  http://rs.gbif.org/schema/thesaurus.xsd">
+  <concept dc:identifier="daily" dc:URI="http://rs.gbif.org/vocabulary/eml/updateFrequency/daily"
+           dc:relation=""
+           dc:description="Updated 1 time each day.">
+    <preferred>
+      <term dc:title="Daily" xml:lang="en"/>
+      <term dc:title="Diario" xml:lang="es"/>
+      <term dc:title="Journalière" xml:lang="fr"/>
+      <term dc:title="Diariamente" xml:lang="pt"/>
+      <term dc:title="每日一次" xml:lang="zh"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+  <concept dc:identifier="weekly" dc:URI="http://rs.gbif.org/vocabulary/eml/updateFrequency/weekly"
+           dc:relation=""
+           dc:description="Updated 1 time each week.">
+    <preferred>
+      <term dc:title="Weekly" xml:lang="en"/>
+      <term dc:title="Semanal" xml:lang="es"/>
+      <term dc:title="Quotidienne" xml:lang="fr"/>
+      <term dc:title="Semanalmente" xml:lang="pt"/>
+      <term dc:title="每周一次" xml:lang="zh"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+  <concept dc:identifier="monthly" dc:URI="http://rs.gbif.org/vocabulary/eml/updateFrequency/monthly"
+           dc:relation=""
+           dc:description="Updated 1 time each month.">
+    <preferred>
+      <term dc:title="Monthly" xml:lang="en"/>
+      <term dc:title="Mensual" xml:lang="es"/>
+      <term dc:title="Mensuel" xml:lang="fr"/>
+      <term dc:title="Mensalmente" xml:lang="pt"/>
+      <term dc:title="每月一次" xml:lang="zh"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+  <concept dc:identifier="biannually" dc:URI="http://rs.gbif.org/vocabulary/eml/updateFrequency/biannually"
+           dc:relation=""
+           dc:description="Updated 2 times each year.">
+    <preferred>
+      <term dc:title="Biannually" xml:lang="en"/>
+      <term dc:title="Semestral" xml:lang="es"/>
+      <term dc:title="Bi-annuel" xml:lang="fr"/>
+      <term dc:title="Bianual" xml:lang="pt"/>
+      <term dc:title="兩年一次" xml:lang="zh"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+  <concept dc:identifier="annually" dc:URI="http://rs.gbif.org/vocabulary/eml/updateFrequency/annually"
+           dc:relation=""
+           dc:description="Updated 1 time each year.">
+    <preferred>
+      <term dc:title="Annually" xml:lang="en"/>
+      <term dc:title="Annual" xml:lang="es"/>
+      <term dc:title="Annuel" xml:lang="fr"/>
+      <term dc:title="Atualmente" xml:lang="pt"/>
+      <term dc:title="每年一次" xml:lang="zh"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+  <concept dc:identifier="asNeeded" dc:URI="http://rs.gbif.org/vocabulary/eml/updateFrequency/asNeeded"
+           dc:relation=""
+           dc:description="Updated as needed.">
+    <preferred>
+      <term dc:title="As needed" xml:lang="en"/>
+      <term dc:title="Cuando sea necesario" xml:lang="es"/>
+      <term dc:title="Quand cela est nécessaire" xml:lang="fr"/>
+      <term dc:title="Quando necessário" xml:lang="pt"/>
+      <term dc:title="需要時" xml:lang="zh"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+  <concept dc:identifier="continually" dc:URI="http://rs.gbif.org/vocabulary/eml/updateFrequency/continually"
+           dc:relation=""
+           dc:description="Updated continually.">
+    <preferred>
+      <term dc:title="Continually" xml:lang="en"/>
+      <term dc:title="Continuo" xml:lang="es"/>
+      <term dc:title="Continuellement" xml:lang="fr"/>
+      <term dc:title="Continuamente" xml:lang="pt"/>
+      <term dc:title="持續更新" xml:lang="zh"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+  <concept dc:identifier="irregular" dc:URI="http://rs.gbif.org/vocabulary/eml/updateFrequency/irregular"
+           dc:relation=""
+           dc:description="Updated at irregular intervals.">
+    <preferred>
+      <term dc:title="Irregular" xml:lang="en"/>
+      <term dc:title="Irregular" xml:lang="es"/>
+      <term dc:title="Irrègulière" xml:lang="fr"/>
+      <term dc:title="Irregular" xml:lang="pt"/>
+      <term dc:title="依其他週期更新" xml:lang="zh"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+  <concept dc:identifier="notPlanned" dc:URI="http://rs.gbif.org/vocabulary/eml/updateFrequency/notPlanned"
+           dc:relation=""
+           dc:description="Further updates are not planned.">
+    <preferred>
+      <term dc:title="Not planned" xml:lang="en"/>
+      <term dc:title="No planeado" xml:lang="es"/>
+      <term dc:title="Non planifié" xml:lang="fr"/>
+      <term dc:title="Não plenejado" xml:lang="pt"/>
+      <term dc:title="無計畫更新" xml:lang="zh"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+  <concept dc:identifier="unkown" dc:URI="http://rs.gbif.org/vocabulary/eml/updateFrequency/unkown"
+           dc:relation=""
+           dc:description="Further updates may still happen, but it is not known for sure.">
+    <preferred>
+      <term dc:title="Unknown" xml:lang="en"/>
+      <term dc:title="Desconocido" xml:lang="es"/>
+      <term dc:title="Inconnue" xml:lang="fr"/>
+      <term dc:title="Desconhecido" xml:lang="pt"/>
+      <term dc:title="有可能更新，但不確知何時" xml:lang="zh"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+  <concept dc:identifier="otherMaintenancePeriod" dc:URI="http://rs.gbif.org/vocabulary/eml/updateFrequency/otherMaintenancePeriod"
+           dc:relation=""
+           dc:description="Updated according to some other interval.">
+    <preferred>
+      <term dc:title="Other maintenance period" xml:lang="en"/>
+      <term dc:title="Otro periodo de mantenimiento" xml:lang="es"/>
+      <term dc:title="Autre période de maintenance" xml:lang="fr"/>
+      <term dc:title="Outro período de manutenção" xml:lang="pt"/>
+      <term dc:title="其他更新週期" xml:lang="zh"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+</thesaurus>

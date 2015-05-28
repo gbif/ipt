@@ -12,6 +12,7 @@ import org.gbif.ipt.service.admin.ConfigManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
+import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.URLUtils;
 import org.gbif.ipt.validation.UserValidator;
@@ -45,6 +46,7 @@ public class SetupAction extends BaseAction {
   private final UserAccountManager userManager;
   private final DataDir dataDir;
   private final ExtensionManager extensionManager;
+  private final VocabulariesManager vocabulariesManager;
 
   private final UserValidator userValidation = new UserValidator();
 
@@ -68,13 +70,14 @@ public class SetupAction extends BaseAction {
   @Inject
   public SetupAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager regManager,
     ConfigManager configManager, UserAccountManager userManager, DataDir dataDir,
-    ExtensionManager extensionManager, DefaultHttpClient client) {
+    ExtensionManager extensionManager, DefaultHttpClient client, VocabulariesManager vocabulariesManager) {
     super(textProvider, cfg, regManager);
     this.configManager = configManager;
     this.userManager = userManager;
     this.dataDir = dataDir;
     this.extensionManager = extensionManager;
     this.httpUtil = new HttpUtil(client);
+    this.vocabulariesManager = vocabulariesManager;
   }
 
   public List<String> getModes() {
@@ -323,14 +326,23 @@ public class SetupAction extends BaseAction {
   public String setup3() {
     configManager.loadDataDirConfig();
     session.put(Constants.SESSION_USER, userManager.getSetupUser());
-    List<Extension> list = extensionManager.listCore();
 
-    if (list.isEmpty()) {
+    // install or update latest version of all default vocabularies
+    try {
+      vocabulariesManager.installOrUpdateDefaults();
+    } catch (InvalidConfigException e) {
+      String msg = getText("admin.vocabulary.couldnt.install.defaults", new String[] {e.getMessage()});
+      LOG.error(msg, e);
+      addActionWarning(msg, e);
+    }
+
+    List<Extension> extensions = extensionManager.listCore();
+    if (extensions.isEmpty()) {
       try {
         // install core type extensions
         extensionManager.installCoreTypes();
       } catch (InvalidConfigException e) {
-        LOG.debug(e);
+        LOG.error(e);
         addActionWarning(getText("admin.extension.couldnt.install.coreTypes"), e);
       }
     }

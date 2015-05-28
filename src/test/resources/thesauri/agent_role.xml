@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/style/human.xsl"?>
+<thesaurus
+  dc:URI="http://rs.gbif.org/vocabulary/gbif/agentRole"
+  dc:description="Vocabulary for agent roles used in EML."
+  dc:title="EML Agent Role Vocabulary"
+  xmlns="http://rs.gbif.org/thesaurus/" xmlns:dc="http://purl.org/dc/terms/"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://rs.gbif.org/thesaurus/  http://rs.gbif.org/schema/thesaurus.xsd">
+  <concept dc:identifier="author" dc:URI="http://rs.gbif.org/vocabulary/gbif/agentRole/author"
+           dc:relation=""
+           dc:description="an agent who is an author of a publication that used the dataset, or author of a data paper">
+    <preferred>
+      <term dc:title="Author" xml:lang="en"/>
+      <term dc:title="Autor" xml:lang="es"/>
+      <term dc:title="Auteur" xml:lang="fr"/>
+      <term dc:title="作者" xml:lang="zh"/>
+      <term dc:title="Autor" xml:lang="pt"/>
+      <term dc:title="論文著者" xml:lang="ja"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+  <concept dc:identifier="contentProvider" dc:URI="http://rs.gbif.org/vocabulary/gbif/agentRole/contentProvider"
+           dc:relation=""
+           dc:description=" an agent who contributed content to a dataset (the dataset being described may be a composite)">
+    <preferred>
+      <term dc:title="Content Provider" xml:lang="en"/>
+      <term dc:title="Proveedor de Contenido" xml:lang="es"/>
+      <term dc:title="Fournisseur de Contenu" xml:lang="fr"/>
+      <term dc:title="內容提供者" xml:lang="zh"/>
+      <term dc:title="Provedor de Conteúdo" xml:lang="pt"/>
+      <term dc:title="データ提供者" xml:lang="ja"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+  <concept dc:identifier="custodianSteward" dc:URI="http://rs.gbif.org/vocabulary/gbif/agentRole/custodianSteward"
+           dc:relation=""
+           dc:description=" an agent who is responsible for/takes care of the dataset">
+    <preferred>
+      <term dc:title="Custodian Steward" xml:lang="en"/>
+      <term dc:title="Custodio de los Datos" xml:lang="es"/>
+      <term dc:title="Curateur des Données" xml:lang="fr"/>
+      <term dc:title="託管人" xml:lang="zh"/>
+      <term dc:title="Custódio de dados" xml:lang="pt"/>
+      <term dc:title="custodianSteward(保管者）" xml:lang="ja"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+  <concept dc:identifier="distributor" dc:URI="http://rs.gbif.org/vocabulary/gbif/agentRole/distributor"
+           dc:relation=""
+           dc:description="an agent involved in the publishing/distribution chain of a dataset">
+    <preferred>
+      <term dc:title="Distributor" xml:lang="en"/>
+      <term dc:title="Distribuidor" xml:lang="es"/>
+      <term dc:title="Distributeur" xml:lang="fr"/>
+      <term dc:title="散布者" xml:lang="zh"/>
+      <term dc:title="Distribuidor" xml:lang="pt"/>
+      <term dc:title="データ配布者" xml:lang="ja"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+  <concept dc:identifier="editor" dc:URI="http://rs.gbif.org/vocabulary/gbif/agentRole/editor"
+           dc:relation=""
+           dc:description="an agent associated with editing a publication that used the dataset, or a data paper">
+    <preferred>
+      <term dc:title="Editor" xml:lang="en"/>
+      <term dc:title="Editor" xml:lang="es"/>
+      <term dc:title="Editeur" xml:lang="fr"/>
+      <term dc:title="編輯" xml:lang="zh"/>
+      <term dc:title="Editor" xml:lang="pt"/>
+      <term dc:title="編集者" xml:lang="ja"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+  <concept dc:identifier="metadataProvider" dc:URI="http://rs.gbif.org/vocabulary/gbif/agentRole/metadataProvider"
+           dc:relation=""
+           dc:description="an agent responsible for providing the metadata">
+    <preferred>
+      <term dc:title="Metadata Provider" xml:lang="en"/>
+      <term dc:title="Proveedor de los Metadatos" xml:lang="es"/>
+      <term dc:title="Fournisseur des Métadonnées" xml:lang="fr"/>
+      <term dc:title="元數據提供者" xml:lang="zh"/>
+      <term dc:title="Provedor dos Metadados" xml:lang="pt"/>
+      <term dc:title="メタデータ提供者" xml:lang="ja"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+  <concept dc:identifier="originator" dc:URI="http://rs.gbif.org/vocabulary/gbif/agentRole/originator"
+           dc:relation=""
+           dc:description="an agent who originally gathered/prepared the dataset">
+    <preferred>
+      <term dc:title="Originator" xml:lang="en"/>
+      <term dc:title="Originador" xml:lang="es"/>
+      <term dc:title="Créateur" xml:lang="fr"/>
+      <term dc:title="出處" xml:lang="zh"/>
+      <term dc:title="Originador" xml:lang="pt"/>
+      <term dc:title="最初のデータ採集者" xml:lang="ja"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+  <concept dc:identifier="owner" dc:URI="http://rs.gbif.org/vocabulary/gbif/agentRole/owner"
+           dc:relation=""
+           dc:description="an agent who owns the dataset (may or may not be the custodian)">
+    <preferred>
+      <term dc:title="Owner" xml:lang="en"/>
+      <term dc:title="Propietario" xml:lang="es"/>
+      <term dc:title="Propriétaire" xml:lang="fr"/>
+      <term dc:title="擁有者" xml:lang="zh"/>
+      <term dc:title="Proprietário" xml:lang="pt"/>
+      <term dc:title="データ所有者" xml:lang="ja"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+  <concept dc:identifier="pointOfContact" dc:URI="http://rs.gbif.org/vocabulary/gbif/agentRole/pointOfContact"
+           dc:relation=""
+           dc:description="an agent to contact for further information about the dataset">
+    <preferred>
+      <term dc:title="Point Of Contact" xml:lang="en"/>
+      <term dc:title="Punto de Contacto" xml:lang="es"/>
+      <term dc:title="Personne de Contact" xml:lang="fr"/>
+      <term dc:title="連絡人" xml:lang="zh"/>
+      <term dc:title="Ponto de Contato" xml:lang="pt"/>
+      <term dc:title="連絡先" xml:lang="ja"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+  <concept dc:identifier="principalInvestigator"
+           dc:URI="http://rs.gbif.org/vocabulary/gbif/agentRole/principalInvestigator"
+           dc:relation=""
+           dc:description="a primary scientific contact associated with the dataset">
+    <preferred>
+      <term dc:title="Principal Investigator" xml:lang="en"/>
+      <term dc:title="Investigador Principal" xml:lang="es"/>
+      <term dc:title="Chercheur Principal" xml:lang="fr"/>
+      <term dc:title="研究主持人" xml:lang="zh"/>
+      <term dc:title="Pesquisador Principal" xml:lang="pt"/>
+      <term dc:title="研究代表者" xml:lang="ja"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+  <concept dc:identifier="processor" dc:URI="http://rs.gbif.org/vocabulary/gbif/agentRole/processor"
+           dc:relation=""
+           dc:description="an agent responsible for any post-collection processing of the dataset">
+    <preferred>
+      <term dc:title="Processor" xml:lang="en"/>
+      <term dc:title="Procesador" xml:lang="es"/>
+      <term dc:title="Processeur" xml:lang="fr"/>
+      <term dc:title="處理者" xml:lang="zh"/>
+      <term dc:title="Processador" xml:lang="pt"/>
+      <term dc:title="データ処理者" xml:lang="ja"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+  <concept dc:identifier="publisher" dc:URI="http://rs.gbif.org/vocabulary/gbif/agentRole/publisher"
+           dc:relation=""
+           dc:description="the agent associated with the publishing of some entity (paper, article, book, etc) based on the dataset, or of a data paper">
+    <preferred>
+      <term dc:title="Publisher" xml:lang="en"/>
+      <term dc:title="Publicador" xml:lang="es"/>
+      <term dc:title="Publicateur" xml:lang="fr"/>
+      <term dc:title="發布者" xml:lang="zh"/>
+      <term dc:title="Publicador" xml:lang="pt"/>
+      <term dc:title="データ公開者" xml:lang="ja"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+  <concept dc:identifier="user" dc:URI="http://rs.gbif.org/vocabulary/gbif/agentRole/user"
+           dc:relation=""
+           dc:description="an agent that makes use of the dataset">
+    <preferred>
+      <term dc:title="User" xml:lang="en"/>
+      <term dc:title="Usuario" xml:lang="es"/>
+      <term dc:title="Utilisateur" xml:lang="fr"/>
+      <term dc:title="使用者" xml:lang="zh"/>
+      <term dc:title="Usuário" xml:lang="pt"/>
+      <term dc:title="データ利用者" xml:lang="ja"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+  <concept dc:identifier="programmer" dc:URI="http://rs.gbif.org/vocabulary/gbif/agentRole/programmer"
+           dc:relation=""
+           dc:description="an agent providing informatics/programming support related to the dataset">
+    <preferred>
+      <term dc:title="Programmer" xml:lang="en"/>
+      <term dc:title="Programador" xml:lang="es"/>
+      <term dc:title="Programmeur" xml:lang="fr"/>
+      <term dc:title="程式設計師" xml:lang="zh"/>
+      <term dc:title="Programador" xml:lang="pt"/>
+      <term dc:title="プログラマー" xml:lang="ja"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+  <concept dc:identifier="curator" dc:URI="http://rs.gbif.org/vocabulary/gbif/agentRole/curator"
+           dc:relation=""
+           dc:description="an agent that maintains and documents the specimens in a collection. Some of their duties include preparing and labeling specimens so they are ready for identification, and protecting the specimens">
+    <preferred>
+      <term dc:title="Curator" xml:lang="en"/>
+      <term dc:title="Curador" xml:lang="es"/>
+      <term dc:title="Conservateur" xml:lang="fr"/>
+      <term dc:title="典藏經理" xml:lang="zh"/>
+      <term dc:title="Curador" xml:lang="pt"/>
+      <term dc:title="キュレーター" xml:lang="ja"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+</thesaurus>

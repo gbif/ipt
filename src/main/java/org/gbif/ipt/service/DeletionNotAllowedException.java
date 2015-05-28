@@ -23,10 +23,6 @@ public class DeletionNotAllowedException extends Exception {
      */
     BASE_VOCABULARY,
     /**
-     * Because the vocabulary is used in a registered extension. Used while deleting a vocabulary.
-     */
-    VOCABULARY_USED_IN_EXTENSION,
-    /**
      * Because there is at least one resource registered to this organization. Used while deleting an organization.
      */
     RESOURCE_REGISTERED_WITH_ORGANISATION,

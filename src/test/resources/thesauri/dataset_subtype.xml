@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/style/human.xsl"?>
+<thesaurus
+  dc:URI="http://rs.gbif.org/vocabulary/gbif/datasetSubtype"
+  dc:description="Vocabulary for Checklist or Occurrence dataset subtypes used in the GBIF Network."
+  dc:title="GBIF Dataset Subtype Vocabulary"
+  xmlns="http://rs.gbif.org/thesaurus/" xmlns:dc="http://purl.org/dc/terms/"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://rs.gbif.org/thesaurus/  http://rs.gbif.org/schema/thesaurus.xsd">
+  <concept dc:identifier="taxonomicAuthority" dc:URI="http://rs.gbif.org/vocabulary/gbif/datasetSubtype/taxonomicAuthority"
+           dc:relation=""
+           dc:description="EN: A taxonomic checklist that is authoritative in its classification and synonymy. ZH: 指的是分類體系與同物異名關係">
+    <preferred>
+      <term dc:title="Taxonomic Authority" xml:lang="en"/>
+      <term dc:title="Autoridad Taxonómica" xml:lang="es"/>
+      <term dc:title="Autorité Taxonomique" xml:lang="fr"/>
+      <term dc:title="分類權威" xml:lang="zh"/>
+      <term dc:title="Autoridade Taxonômica" xml:lang="pt"/>
+      <term dc:title="正式な生物分類" xml:lang="ja"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+  <concept dc:identifier="nomenclatorAuthority" dc:URI="http://rs.gbif.org/vocabulary/gbif/datasetSubtype/nomenclatorAuthority"
+           dc:relation=""
+           dc:description="EN: A nomenclatoral checklist that is authoritative in the pure names and publication information. ZH: 指的是命名與發表資訊，著重於該學名的合法性與有效性">
+    <preferred>
+      <term dc:title="Nomenclator Authority" xml:lang="en"/>
+      <term dc:title="Autoridad Nomenclatural" xml:lang="es"/>
+      <term dc:title="Autorité de Nomenclature" xml:lang="fr"/>
+      <term dc:title="命名權威" xml:lang="zh"/>
+      <term dc:title="Autoridade Nomenclatural" xml:lang="pt"/>
+      <term dc:title="正式な学名命名" xml:lang="ja"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+  <concept dc:identifier="inventoryThematic" dc:URI="http://rs.gbif.org/vocabulary/gbif/datasetSubtype/inventoryThematic"
+           dc:relation=""
+           dc:description="a thematic checklist that has a theme for grouping names, e.g. parasites of elephants.">
+    <preferred>
+      <term dc:title="Inventory Thematic" xml:lang="en"/>
+      <term dc:title="Inventario Temático" xml:lang="es"/>
+      <term dc:title="Inventaire Thématique" xml:lang="fr"/>
+      <term dc:title="主題性清冊" xml:lang="zh"/>
+      <term dc:title="Inventário Temático" xml:lang="pt"/>
+      <term dc:title="主題目録" xml:lang="ja"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+  <concept dc:identifier="inventoryRegional" dc:URI="http://rs.gbif.org/vocabulary/gbif/datasetSubtype/inventoryRegional"
+           dc:relation=""
+           dc:description="a regional checklist that has a regional commonality in grouping names, e.g. species in a protected area.">
+    <preferred>
+      <term dc:title="Inventory Regional" xml:lang="en"/>
+      <term dc:title="Inventario Regional" xml:lang="es"/>
+      <term dc:title="Inventaire Régional" xml:lang="fr"/>
+      <term dc:title="區域性清冊" xml:lang="zh"/>
+      <term dc:title="Inventário Regional" xml:lang="pt"/>
+      <term dc:title="地域目録" xml:lang="ja"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+  <concept dc:identifier="globalSpeciesDataset" dc:URI="http://rs.gbif.org/vocabulary/gbif/datasetSubtype/globalSpeciesDataset"
+           dc:relation=""
+           dc:description="A taxonomic checklist with a global, spatial coverage. This subtype is used in particular by the catalogue of life to assemble its aggregated checklist.">
+    <preferred>
+      <term dc:title="Global Species Dataset" xml:lang="en"/>
+      <term dc:title="Recurso Mundial de Especies" xml:lang="es"/>
+      <term dc:title="Ressource Mondiale des Espèces" xml:lang="fr"/>
+      <term dc:title="全球物種資料集" xml:lang="zh"/>
+      <term dc:title="Conjunto de Dados Mundial de Espécies" xml:lang="pt"/>
+      <term dc:title="地球規模生物種データセット" xml:lang="ja"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+  <concept dc:identifier="derivedFromOccurrence" dc:URI="http://rs.gbif.org/vocabulary/gbif/datasetSubtype/derivedFromOccurrence"
+           dc:relation=""
+           dc:description="A taxonomic checklist that has been derived from data that was originally occurrence data.">
+    <preferred>
+      <term dc:title="Derived from Occurrence" xml:lang="en"/>
+      <term dc:title="Derivado de Registros Biológicos" xml:lang="es"/>
+      <term dc:title="Dérivée de Données d'Occurrences" xml:lang="fr"/>
+      <term dc:title="取自物種出現紀錄" xml:lang="zh"/>
+      <term dc:title="Derivado de Ocorrência" xml:lang="pt"/>
+      <term dc:title="オカレンス由来の生物分類" xml:lang="ja"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+  <concept dc:identifier="specimen" dc:URI="http://rs.gbif.org/vocabulary/gbif/datasetSubtype/specimen"
+           dc:relation=""
+           dc:description="Specimen data. Possible museum collection.">
+    <preferred>
+      <term dc:title="Specimen" xml:lang="en"/>
+      <term dc:title="Ejemplar" xml:lang="es"/>
+      <term dc:title="Spécimen" xml:lang="fr"/>
+      <term dc:title="標本" xml:lang="zh"/>
+      <term dc:title="Espécime" xml:lang="pt"/>
+      <term dc:title="標本" xml:lang="ja"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+  <concept dc:identifier="observation" dc:URI="http://rs.gbif.org/vocabulary/gbif/datasetSubtype/observation"
+           dc:relation=""
+           dc:description="Observation data. Possible monitoring and field observations.">
+    <preferred>
+      <term dc:title="Observation" xml:lang="en"/>
+      <term dc:title="Observación" xml:lang="es"/>
+      <term dc:title="Observation" xml:lang="fr"/>
+      <term dc:title="觀測" xml:lang="zh"/>
+      <term dc:title="Observação" xml:lang="pt"/>
+      <term dc:title="観察" xml:lang="ja"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+</thesaurus>

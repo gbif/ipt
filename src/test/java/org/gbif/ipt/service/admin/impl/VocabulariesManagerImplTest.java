@@ -5,99 +5,222 @@ import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.config.IPTModule;
+import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.model.factory.VocabularyFactory;
-import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.registry.RegistryManager;
+import org.gbif.ipt.service.registry.impl.RegistryManagerImpl;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.utils.HttpUtil;
 import org.gbif.utils.file.FileUtils;
 
-import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
 
+import com.google.common.io.Files;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
 import com.google.inject.struts2.Struts2GuicePluginModule;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
+import org.junit.Before;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class VocabulariesManagerImplTest {
 
-  private Injector injector =
-    Guice.createInjector(new ServletModule(), new Struts2GuicePluginModule(), new IPTModule());
+  private static final File TMP_DIR = Files.createTempDir();
+  private VocabulariesManager manager;
+  private DataDir dataDir;
+  private AppConfig appConfig;
 
-  // construct VocabularyFactory
-  private DefaultHttpClient httpClient = injector.getInstance(DefaultHttpClient.class);
-  private SAXParserFactory saxf = injector.getInstance(SAXParserFactory.class);
-  private VocabularyFactory vocabularyFactory = new VocabularyFactory(httpClient, saxf);
+  @Before
+  public void setup() throws ParserConfigurationException, SAXException, IOException, URISyntaxException {
+    dataDir = mock(DataDir.class);
+    appConfig = new AppConfig(dataDir);
+    ConfigWarnings warnings = new ConfigWarnings();
 
-  private AppConfig mockAppCfg = mock(AppConfig.class);
-  private DataDir mockDataDir = mock(DataDir.class);
+    Injector injector = Guice.createInjector(new ServletModule(), new Struts2GuicePluginModule(), new IPTModule());
+    SAXParserFactory saxf = injector.getInstance(SAXParserFactory.class);
+    VocabularyFactory vocabularyFactory = new VocabularyFactory(saxf);
 
-  private RegistryManager registryManager = mock(RegistryManager.class);
-  private ExtensionManager extensionManager = mock(ExtensionManager.class);
-  private ConfigWarnings warnings = new ConfigWarnings();
-  private SimpleTextProvider textProvider = mock(SimpleTextProvider.class);
-  private RegistrationManager registrationManager = mock(RegistrationManager.class);
+    // construct mock RegistryManager:
+    // mock getVocabularies() response from Registry with local test resource (list of vocabularies from thesauri_sandbox.json)
+    HttpUtil mockHttpUtil = mock(HttpUtil.class);
+    HttpUtil.Response mockResponse = mock(HttpUtil.Response.class);
+    mockResponse.content =
+      IOUtils.toString(ExtensionManagerImplTest.class.getResourceAsStream("/responses/thesauri_sandbox.json"), "UTF-8");
+    when(mockHttpUtil.get(anyString())).thenReturn(mockResponse);
 
-  VocabulariesManager manager;
+    // create instance of RegistryManager
+    RegistryManager mockRegistryManager =
+      new RegistryManagerImpl(appConfig, dataDir, mockHttpUtil, saxf, warnings, mock(SimpleTextProvider.class),
+        mock(RegistrationManager.class));
 
+    assertTrue(TMP_DIR.isDirectory());
+
+    // copy vocabulary file to temporary directory
+    File newRanksVoc = FileUtils.getClasspathFile("thesauri/rank_2015-04-24.xml");
+    File datasetTypeVoc = FileUtils.getClasspathFile("thesauri/dataset_type.xml");
+    File languageVoc = FileUtils.getClasspathFile("thesauri/639-2.xml");
+    File countryVoc = FileUtils.getClasspathFile("thesauri/3166-1.xml");
+    File roleVoc = FileUtils.getClasspathFile("thesauri/agent_role.xml");
+    File frequencyVoc = FileUtils.getClasspathFile("thesauri/update_frequency.xml");
+    File methodsVoc = FileUtils.getClasspathFile("thesauri/preservation_method.xml");
+    File subtypesVoc = FileUtils.getClasspathFile("thesauri/dataset_subtype.xml");
+
+    org.apache.commons.io.FileUtils.copyFileToDirectory(newRanksVoc, TMP_DIR);
+    org.apache.commons.io.FileUtils.copyFileToDirectory(datasetTypeVoc, TMP_DIR);
+    org.apache.commons.io.FileUtils.copyFileToDirectory(languageVoc, TMP_DIR);
+    org.apache.commons.io.FileUtils.copyFileToDirectory(countryVoc, TMP_DIR);
+    org.apache.commons.io.FileUtils.copyFileToDirectory(roleVoc, TMP_DIR);
+    org.apache.commons.io.FileUtils.copyFileToDirectory(frequencyVoc, TMP_DIR);
+    org.apache.commons.io.FileUtils.copyFileToDirectory(methodsVoc, TMP_DIR);
+    org.apache.commons.io.FileUtils.copyFileToDirectory(subtypesVoc, TMP_DIR);
+
+    File tmpNewRankVoc = new File(TMP_DIR, "rank_2015-04-24.xml");
+    assertTrue(tmpNewRankVoc.exists());
+    File tmpDatasetTypeVoc = new File(TMP_DIR, "dataset_type.xml");
+    File tmpLanguageVoc = new File(TMP_DIR, "639-2.xml");
+    File tmpCountryVoc = new File(TMP_DIR, "3166-1.xml");
+    File tmpRoleVoc = new File(TMP_DIR, "agent_role.xml");
+    File tmpFrequencyVoc = new File(TMP_DIR, "update_frequency.xml");
+    File tmpMethodVoc = new File(TMP_DIR, "preservation_method.xml");
+    File tmpSubtypeVoc = new File(TMP_DIR, "dataset_subtype.xml");
+
+    // mock returning temporary files when looked up by their 'safe' filenames
+    when(dataDir.tmpFile("http_rs_gbif_org_sandbox_vocabulary_gbif_rank_2015-04-24_xml.xml")).thenReturn(tmpNewRankVoc);
+    when(dataDir.tmpFile("http_rs_gbif_org_vocabulary_gbif_dataset_type_xml.xml")).thenReturn(tmpDatasetTypeVoc);
+    when(dataDir.tmpFile("http_rs_gbif_org_vocabulary_iso_639-2_xml.xml")).thenReturn(tmpLanguageVoc);
+    when(dataDir.tmpFile("http_rs_gbif_org_vocabulary_iso_3166-1_alpha2_xml.xml")).thenReturn(tmpCountryVoc);
+    when(dataDir.tmpFile("http_rs_gbif_org_vocabulary_gbif_agent_role_xml.xml")).thenReturn(tmpRoleVoc);
+    when(dataDir.tmpFile("http_rs_gbif_org_vocabulary_eml_update_frequency_xml.xml")).thenReturn(tmpFrequencyVoc);
+    when(dataDir.tmpFile("http_rs_gbif_org_vocabulary_gbif_preservation_method_xml.xml")).thenReturn(tmpMethodVoc);
+    when(dataDir.tmpFile("http_rs_gbif_org_vocabulary_gbif_dataset_subtype_xml.xml")).thenReturn(tmpSubtypeVoc);
+
+    // mock returning newly created and installed vocabulary files
+    File rankInstalled = new File(TMP_DIR, "http_rs_gbif_org_vocabulary_gbif_rank.vocab");
+    File datasetTypeInstalled = new File(TMP_DIR, "http_rs_gbif_org_vocabulary_gbif_datasetType.vocab");
+    File languageInstalled = new File(TMP_DIR, "http_iso_org_639-2.vocab");
+    File countryInstalled = new File(TMP_DIR, "http_iso_org_iso3166-1_alpha2.vocab");
+    File roleInstalled = new File(TMP_DIR, "http_rs_gbif_org_vocabulary_gbif_agentRole.vocab");
+    File frequencyInstalled = new File(TMP_DIR, "http_rs_gbif_org_vocabulary_eml_updateFrequency.vocab");
+    File methodInstalled = new File(TMP_DIR, "http_rs_gbif_org_vocabulary_gbif_preservation_method.vocab");
+    File subtypeInstalled = new File(TMP_DIR, "http_rs_gbif_org_vocabulary_gbif_datasetSubtype.vocab");
+
+    when(dataDir.configFile(VocabulariesManagerImpl.CONFIG_FOLDER + "/http_rs_gbif_org_vocabulary_gbif_rank.vocab"))
+      .thenReturn(rankInstalled);
+    when(
+      dataDir.configFile(VocabulariesManagerImpl.CONFIG_FOLDER + "/http_rs_gbif_org_vocabulary_gbif_datasetType.vocab"))
+      .thenReturn(datasetTypeInstalled);
+    when(dataDir.configFile(VocabulariesManagerImpl.CONFIG_FOLDER + "/http_iso_org_639-2.vocab"))
+      .thenReturn(languageInstalled);
+    when(dataDir.configFile(VocabulariesManagerImpl.CONFIG_FOLDER + "/http_iso_org_iso3166-1_alpha2.vocab"))
+      .thenReturn(countryInstalled);
+    when(
+      dataDir.configFile(VocabulariesManagerImpl.CONFIG_FOLDER + "/http_rs_gbif_org_vocabulary_gbif_agentRole.vocab"))
+      .thenReturn(roleInstalled);
+    when(dataDir
+      .configFile(VocabulariesManagerImpl.CONFIG_FOLDER + "/http_rs_gbif_org_vocabulary_eml_updateFrequency.vocab"))
+      .thenReturn(frequencyInstalled);
+    when(dataDir.configFile(
+      VocabulariesManagerImpl.CONFIG_FOLDER + "/http_rs_gbif_org_vocabulary_gbif_preservation_method.vocab"))
+      .thenReturn(methodInstalled);
+    when(dataDir
+      .configFile(VocabulariesManagerImpl.CONFIG_FOLDER + "/http_rs_gbif_org_vocabulary_gbif_datasetSubtype.vocab"))
+      .thenReturn(subtypeInstalled);
+
+    // Mock downloading vocabulary into tmpFile - we're cheating by handling the actual file already as if it
+    // were downloaded already. Furthermore, mock download() response with StatusLine with 200 OK response code
+    StatusLine sl = mock(StatusLine.class);
+    when(sl.getStatusCode()).thenReturn(HttpStatus.SC_OK);
+    when(mockHttpUtil.download(any(URL.class), any(File.class))).thenReturn(sl);
+
+    manager =
+      new VocabulariesManagerImpl(appConfig, dataDir, vocabularyFactory, mockHttpUtil, mockRegistryManager, warnings,
+        mock(SimpleTextProvider.class), mock(RegistrationManager.class));
+  }
+
+  /**
+   * Test installing default vocabularies, and ensuring they are the latest versions. After, mock having installed
+   * an out-of-date vocabulary, and test updating default vocabularies to the latest versions.
+   */
   @Test
-  public void testLoad() {
-    // mock data directory's .vocabularies folder
-    File myTmpVocabDir = FileUtils.getClasspathFile("vocabularies");
-    assertTrue(myTmpVocabDir.isDirectory());
-    when(mockDataDir.configFile(VocabulariesManagerImpl.CONFIG_FOLDER)).thenReturn(myTmpVocabDir);
+  public void testInstallDefaults() throws IOException {
+    assertTrue(manager.list().isEmpty());
+    manager.installOrUpdateDefaults();
+    assertFalse(manager.list().isEmpty());
 
-    // mock vocabularies.xml from actual test resources file
-    File vocabulariesXml = org.gbif.utils.file.FileUtils.getClasspathFile("vocabularies/vocabularies.xml");
-    when(mockDataDir.configFile(VocabulariesManagerImpl.CONFIG_FOLDER + "/" + VocabulariesManagerImpl.PERSISTENCE_FILE))
-      .thenReturn(vocabulariesXml);
+    // verify all installed vocabularies use latest version
+    for (Vocabulary v : manager.list()) {
+      assertTrue(v.isLatest());
+    }
 
-    // mock existence of deprecated vocab file
-    when(mockDataDir.configFile(VocabulariesManagerImpl.CONFIG_FOLDER + "/" +
-                                Constants.DEPRECATED_VOCAB_URL_RESOLVABLE_RESOURCE_TYPE)).thenReturn(new File("empty"));
+    // mock installing out-of-date rank vocabulary
+    for (Vocabulary v : manager.list()) {
+      if (v.getUriString().equalsIgnoreCase(Constants.VOCAB_URI_RANKS)) {
+        v.setIssued(null);
+        v.setLatest(false);
+      }
+    }
 
-    manager = new VocabulariesManagerImpl(mockAppCfg, mockDataDir, vocabularyFactory, httpClient, registryManager,
-      extensionManager, warnings, textProvider, registrationManager);
+    // once again, prepare mock downloaded file since the earlier version was moved above
+    File newRanksVoc = FileUtils.getClasspathFile("thesauri/rank_2015-04-24.xml");
+    org.apache.commons.io.FileUtils.copyFileToDirectory(newRanksVoc, TMP_DIR);
+    File tmpNewRankVoc = new File(TMP_DIR, "rank_2015-04-24.xml");
+    when(dataDir.tmpFile("http_rs_gbif_org_sandbox_vocabulary_gbif_rank_2015-04-24_xml.xml")).thenReturn(tmpNewRankVoc);
 
+    // try updating all default installed vocabularies to use latest version
+    manager.installOrUpdateDefaults();
+
+    // verify all installed vocabularies use latest version
+    for (Vocabulary v : manager.list()) {
+      assertTrue(v.isLatest());
+    }
+  }
+
+  /**
+   * Test loading vocabularies into memory.
+   */
+  @Test
+  public void testLoad() throws IOException {
+    File vocabDir = new File(TMP_DIR, VocabulariesManagerImpl.CONFIG_FOLDER);
+    assertTrue(vocabDir.mkdir());
+    assertTrue(vocabDir.isDirectory());
+
+    // add vocabulary to directory
+    File ranksVoc = FileUtils.getClasspathFile("thesauri/rank.xml");
+    File renamed = new File(vocabDir, "http_rs_gbif_org_vocabulary_gbif_rank.vocab");
+    org.apache.commons.io.FileUtils.copyFile(ranksVoc, renamed);
+    File tmpRankVoc = new File(vocabDir, "http_rs_gbif_org_vocabulary_gbif_rank.vocab");
+    assertTrue(tmpRankVoc.exists());
+    assertEquals(1, vocabDir.listFiles().length);
+    when(dataDir.configFile(VocabulariesManagerImpl.CONFIG_FOLDER)).thenReturn(vocabDir);
+
+    assertTrue(manager.list().isEmpty());
     assertEquals(1, manager.load());
+    assertFalse(manager.list().isEmpty());
+    assertEquals("Taxonomic Rank GBIF Vocabulary", manager.get("http://rs.gbif.org/vocabulary/gbif/rank").getTitle());
+    assertEquals("http://rs.gbif.org/vocabulary/gbif/rank.xml", manager.get("http://rs.gbif.org/vocabulary/gbif/rank").getUriResolvable().toString());
   }
 
   @Test
-  public void testLoadFromVersion203() {
-    // mock data directory's .vocabularies from 2.0.3 version of IPT
-    File myTmpVocabDir = FileUtils.getClasspathFile("vocabularies/vocabularies_203");
-    assertTrue(myTmpVocabDir.isDirectory());
-    when(mockDataDir.configFile(VocabulariesManagerImpl.CONFIG_FOLDER)).thenReturn(myTmpVocabDir);
+  public void testUpdateIfChanged() {
 
-    // mock vocabularies.xml from 2.0.3 version of IPT
-    File vocabulariesXml =
-      org.gbif.utils.file.FileUtils.getClasspathFile("vocabularies/vocabularies_203/vocabularies.xml");
-    when(mockDataDir.configFile(VocabulariesManagerImpl.CONFIG_FOLDER + "/" + VocabulariesManagerImpl.PERSISTENCE_FILE))
-      .thenReturn(vocabulariesXml);
-
-    // mock deprecated vocabulary file
-    File deprecatedVocab = FileUtils
-      .getClasspathFile("vocabularies/vocabularies_203/http_rs_gbif_org_vocabulary_gbif_resource_type_xml.vocab");
-    assertTrue(deprecatedVocab.isFile());
-
-    // mock returning deprecated vocab file
-    when(mockDataDir.configFile(VocabulariesManagerImpl.CONFIG_FOLDER + "/" +
-                                Constants.DEPRECATED_VOCAB_URL_RESOLVABLE_RESOURCE_TYPE)).thenReturn(deprecatedVocab);
-
-    manager = new VocabulariesManagerImpl(mockAppCfg, mockDataDir, vocabularyFactory, httpClient, registryManager,
-      extensionManager, warnings, textProvider, registrationManager);
-
-    // only 1 vocabulary should be loaded - the deprecated one should be removed
-    assertEquals(1, manager.load());
   }
-
 }

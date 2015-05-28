@@ -11,11 +11,13 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.model.VocabularyConcept;
 import org.gbif.ipt.model.VocabularyTerm;
+import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.VocabulariesManager;
-import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl.UpdateResult;
 import org.gbif.ipt.utils.IptMockBaseTest;
 
+import java.io.IOException;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -27,10 +29,10 @@ import java.util.Map;
  */
 public class MockVocabulariesManager extends IptMockBaseTest implements VocabulariesManager {
 
-  public void delete(String uri) {
-    // TODO
-  }
-
+  /**
+   * Get one of the installed vocabularies by its unique identifier, populate its list of VocabularyConcept, and
+   * return it.
+   */
   public Vocabulary get(String uri) {
     Vocabulary v = new Vocabulary();
     Map<String, String> vocabMap = getI18nVocab(uri, Locale.getDefault().getDisplayLanguage(), false);
@@ -46,10 +48,23 @@ public class MockVocabulariesManager extends IptMockBaseTest implements Vocabula
     return v;
   }
 
+  @Override
+  public Vocabulary get(URL url) {
+    return null;
+  }
+
+  @Override
+  public Vocabulary install(URL url) {
+    return null;
+  }
+
   public Vocabulary get(URI uri) {
     return new Vocabulary();
   }
 
+  /**
+   * Mock minimal copies of rank, country, language, and preservation method vocabularies being installed.
+   */
   public Map<String, String> getI18nVocab(String uri, String lang, boolean sort) {
     Map<String, String> vocabMap = new LinkedHashMap<String, String>();
     if (uri.equals(Constants.VOCAB_URI_RANKS)) {
@@ -108,7 +123,13 @@ public class MockVocabulariesManager extends IptMockBaseTest implements Vocabula
     return 0;
   }
 
-  public UpdateResult updateAll() {
-    return null;
+  @Override
+  public void installOrUpdateDefaults() throws InvalidConfigException {
+  }
+
+
+  @Override
+  public boolean updateIfChanged(String uri) throws IOException, InvalidConfigException {
+    return false;
   }
 }

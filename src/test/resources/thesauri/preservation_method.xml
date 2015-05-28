@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/style/human.xsl"?>
+<thesaurus
+  dc:URI="http://rs.gbif.org/vocabulary/gbif/preservation_method"
+  dc:description="The method used to preserve specimens.  This vocabulary was based on the PreservationMethodClassVoc from the BioCASe MetaProfile"
+  dc:title="Preservation Method GBIF Vocabulary"
+  xmlns="http://rs.gbif.org/thesaurus/" xmlns:dc="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://rs.gbif.org/thesaurus/  http://rs.gbif.org/schema/thesaurus.xsd">
+
+  <concept dc:identifier="noTreatment" dc:URI="http://rs.gbif.org/vocabulary/gbif/preservationMethod/noTreatment"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/preservationMethod/noTreatment"
+           dc:description="No treatment">
+    <preferred>
+      <term dc:title="No treatment" xml:lang="en"/>
+      <term dc:title="Ningún tratamiento" xml:lang="es"/>
+      <term dc:title="Sem tratamento" xml:lang="pt"/>
+    </preferred>
+    <alternative></alternative>
+  </concept>
+  <concept dc:identifier="alcohol" dc:URI="http://rs.gbif.org/vocabulary/gbif/preservationMethod/alcohol"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/preservationMethod/alcohol"
+           dc:description="Alcohol">
+    <preferred>
+      <term dc:title="Alcohol" xml:lang="en"/>
+      <term dc:title="Alcohol" xml:lang="es"/>
+      <term dc:title="Álcool" xml:lang="pt"/>
+    </preferred>
+    <alternative></alternative>
+  </concept>
+  <concept dc:identifier="deepFrozen" dc:URI="http://rs.gbif.org/vocabulary/gbif/preservationMethod/deepFrozen"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/preservationMethod/deepFrozen"
+           dc:description="Deep frozen">
+    <preferred>
+      <term dc:title="Deep frozen" xml:lang="en"/>
+      <term dc:title="Congelado" xml:lang="es"/>
+      <term dc:title="Congelado" xml:lang="pt"/>
+    </preferred>
+    <alternative></alternative>
+  </concept>
+  <concept dc:identifier="dried" dc:URI="http://rs.gbif.org/vocabulary/gbif/preservationMethod/dried"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/preservationMethod/dried"
+           dc:description="Dried">
+    <preferred>
+      <term dc:title="Dried" xml:lang="en"/>
+      <term dc:title="Secado" xml:lang="es"/>
+      <term dc:title="Seco" xml:lang="pt"/>
+    </preferred>
+    <alternative></alternative>
+  </concept>
+  <concept dc:identifier="driedAndPressed" dc:URI="http://rs.gbif.org/vocabulary/gbif/preservationMethod/driedAndPressed"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/preservationMethod/driedAndPressed"
+           dc:description="Dried and pressed">
+    <preferred>
+      <term dc:title="Dried and pressed" xml:lang="en"/>
+      <term dc:title="Secado y prensado" xml:lang="es"/>
+      <term dc:title="Seco e prensado" xml:lang="pt"/>
+    </preferred>
+    <alternative></alternative>
+  </concept>
+  <concept dc:identifier="formalin" dc:URI="http://rs.gbif.org/vocabulary/gbif/preservationMethod/formalin"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/preservationMethod/formalin"
+           dc:description="Formalin">
+    <preferred>
+      <term dc:title="Formalin" xml:lang="en"/>
+      <term dc:title="Formalina" xml:lang="es"/>
+      <term dc:title="Formalina" xml:lang="pt"/>
+    </preferred>
+    <alternative></alternative>
+  </concept>
+  <concept dc:identifier="refrigerated" dc:URI="http://rs.gbif.org/vocabulary/gbif/preservationMethod/refrigerated"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/preservationMethod/refrigerated"
+           dc:description="Refrigerated">
+    <preferred>
+      <term dc:title="Refrigerated" xml:lang="en"/>
+      <term dc:title="Refrigerado" xml:lang="es"/>
+      <term dc:title="Refrigerado" xml:lang="pt"/>
+    </preferred>
+    <alternative></alternative>
+  </concept>
+  <concept dc:identifier="freezeDried" dc:URI="http://rs.gbif.org/vocabulary/gbif/preservationMethod/freezeDried"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/preservationMethod/freezeDried"
+           dc:description="Freeze-dried">
+    <preferred>
+      <term dc:title="Freeze-dried" xml:lang="en"/>
+      <term dc:title="Liofilizado" xml:lang="es"/>
+      <term dc:title="Liofilizado" xml:lang="pt"/>
+    </preferred>
+    <alternative></alternative>
+  </concept>
+  <concept dc:identifier="glycerin" dc:URI="http://rs.gbif.org/vocabulary/gbif/preservationMethod/glycerin"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/preservationMethod/glycerin"
+           dc:description="Glycerin">
+    <preferred>
+      <term dc:title="Glycerin" xml:lang="en"/>
+      <term dc:title="Glicerina" xml:lang="es"/>
+      <term dc:title="Glicerina" xml:lang="pt"/>
+    </preferred>
+    <alternative></alternative>
+  </concept>
+  <concept dc:identifier="gumArabic" dc:URI="http://rs.gbif.org/vocabulary/gbif/preservationMethod/gumArabic"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/preservationMethod/gumArabic"
+           dc:description="Gum arabic">
+    <preferred>
+      <term dc:title="Gum arabic" xml:lang="en"/>
+      <term dc:title="Goma arábiga" xml:lang="es"/>
+      <term dc:title="Goma arábica" xml:lang="pt"/>
+    </preferred>
+    <alternative></alternative>
+  </concept>
+  <concept dc:identifier="microscopicPreparation" dc:URI="http://rs.gbif.org/vocabulary/gbif/preservationMethod/microscopicPreparation"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/preservationMethod/microscopicPreparation"
+           dc:description="Microscopic preparation">
+    <preferred>
+      <term dc:title="Microscopic preparation" xml:lang="en"/>
+      <term dc:title="Preparación microscópica" xml:lang="es"/>
+      <term dc:title="Preparação microscópica" xml:lang="pt"/>
+    </preferred>
+    <alternative></alternative>
+  </concept>
+  <concept dc:identifier="mounted" dc:URI="http://rs.gbif.org/vocabulary/gbif/preservationMethod/mounted"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/preservationMethod/mounted"
+           dc:description="Mounted">
+    <preferred>
+      <term dc:title="Mounted" xml:lang="en"/>
+      <term dc:title="Disecado" xml:lang="es"/>
+      <term dc:title="Montado" xml:lang="pt"/>
+    </preferred>
+    <alternative></alternative>
+  </concept>
+  <concept dc:identifier="pinned" dc:URI="http://rs.gbif.org/vocabulary/gbif/preservationMethod/pinned"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/preservationMethod/pinned"
+           dc:description="Pinned">
+    <preferred>
+      <term dc:title="Pinned" xml:lang="en"/>
+      <term dc:title="Montado con alfileres" xml:lang="es"/>
+      <term dc:title="Montado com alfinetes" xml:lang="pt"/>
+    </preferred>
+    <alternative></alternative>
+  </concept>
+  <concept dc:identifier="other" dc:URI="http://rs.gbif.org/vocabulary/gbif/preservationMethod/other"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/preservationMethod/other"
+           dc:description="Other">
+    <preferred>
+      <term dc:title="Other" xml:lang="en"/>
+      <term dc:title="Otro" xml:lang="es"/>
+      <term dc:title="Outro" xml:lang="pt"/>
+    </preferred>
+    <alternative></alternative>
+  </concept>
+</thesaurus>

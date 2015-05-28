@@ -11,10 +11,13 @@ import org.gbif.dwc.terms.DcTerm;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwca.io.ArchiveField.DataType;
 import org.gbif.ipt.config.IPTModule;
-import org.gbif.ipt.mock.MockVocabulariesManager;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionProperty;
+import org.gbif.ipt.model.Vocabulary;
+import org.gbif.ipt.service.admin.VocabulariesManager;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,16 +31,24 @@ import org.xml.sax.SAXException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ExtensionFactoryTest {
 
-  public static ExtensionFactory getFactory() throws ParserConfigurationException, SAXException {
+  public static ExtensionFactory getFactory() throws ParserConfigurationException, SAXException, MalformedURLException {
     IPTModule mod = new IPTModule();
     SAXParserFactory sax = mod.provideNsAwareSaxParserFactory();
     DefaultHttpClient client = new DefaultHttpClient();
-    ExtensionFactory factory =
-      new ExtensionFactory(new ThesaurusHandlingRule(new MockVocabulariesManager()), sax, client);
-    return factory;
+
+    VocabulariesManager vocabulariesManager = mock(VocabulariesManager.class);
+    Vocabulary v = new Vocabulary();
+    v.setUriString("http://rs.gbif.org/vocabulary/gbif/nomenclatural_code");
+    v.setTitle("Nomenclatural Codes");
+    when(vocabulariesManager.get(new URL("http://rs.gbif.org/vocabulary/gbif/nomenclatural_code.xml"))).thenReturn(v);
+
+    ThesaurusHandlingRule thesaurusHandlingRule = new ThesaurusHandlingRule(vocabulariesManager);
+    return new ExtensionFactory(thesaurusHandlingRule, sax, client);
   }
 
   @Test
@@ -45,13 +56,6 @@ public class ExtensionFactoryTest {
     try {
       ExtensionFactory factory = getFactory();
       Extension e = factory.build(ExtensionFactoryTest.class.getResourceAsStream("/extensions/dwc_taxon.xml"));
-
-      /*
-       * dc:title="Darwin Core Taxon" name="Taxon" namespace="http://rs.tdwg.org/dwc/terms/"
-       * rowType="http://rs.tdwg.org/dwc/terms/Taxon" dc:relation="http://rs.tdwg.org/dwc/terms/index.htm#Taxon"
-       * dc:description
-       * ="The category of information pertaining to taxonomic names, taxon name usages, or taxon concepts.">
-       */
 
       assertEquals("Darwin Core Taxon", e.getTitle());
       assertEquals("Taxon", e.getName());
@@ -79,11 +83,8 @@ public class ExtensionFactoryTest {
           assertEquals("http://rs.tdwg.org/dwc/terms/", p.getNamespace());
           assertEquals("Taxon", p.getGroup());
           assertNotNull(p.getVocabulary());
-          // dont assert these as we use a mock vocab manager !
-          //        assertEquals("Nomenclatural Codes", p.getVocabulary().getTitle());
-          //        assertEquals(6, p.getVocabulary().getConcepts().size());
+          assertEquals("Nomenclatural Codes", p.getVocabulary().getTitle());
         }
-
       }
 
       // data types
@@ -104,7 +105,8 @@ public class ExtensionFactoryTest {
   public void testBuildVersionedExtension() {
     try {
       ExtensionFactory factory = getFactory();
-      Extension e = factory.build(ExtensionFactoryTest.class.getResourceAsStream("/extensions/dwc_event-2015-05-04.xml"));
+      Extension e =
+        factory.build(ExtensionFactoryTest.class.getResourceAsStream("/extensions/dwc_event-2015-05-04.xml"));
 
       assertEquals("Darwin Core Event", e.getTitle());
       assertEquals("Event", e.getName());
@@ -154,14 +156,6 @@ public class ExtensionFactoryTest {
       ExtensionFactory factory = getFactory();
       Extension e =
         factory.build(ExtensionFactoryTest.class.getResourceAsStream("/extensions/dwc-core-extension_prefixed.xml"));
-
-      /*
-       * dc:title="Darwin Core Taxon" name="Taxon" namespace="http://rs.tdwg.org/dwc/terms/"
-       * rowType="http://rs.tdwg.org/dwc/terms/Taxon" dc:relation="http://rs.tdwg.org/dwc/terms/index.htm#Taxon"
-       * dc:description
-       * ="The category of information pertaining to taxonomic names, taxon name usages, or taxon concepts.">
-       */
-
       assertEquals("Darwin Core Taxon", e.getTitle());
       assertEquals("Taxon", e.getName());
       assertEquals("http://rs.tdwg.org/dwc/terms/", e.getNamespace());
@@ -187,13 +181,9 @@ public class ExtensionFactoryTest {
           assertEquals("http://rs.tdwg.org/dwc/terms/", p.getNamespace());
           assertEquals("Taxon", p.getGroup());
           assertNotNull(p.getVocabulary());
-          // dont assert these as we use a mock vocab manager !
-          //          assertEquals("Nomenclatural Codes", p.getVocabulary().getTitle());
-          //          assertEquals(6, p.getVocabulary().getConcepts().size());
+          assertEquals("Nomenclatural Codes", p.getVocabulary().getTitle());
         }
-
       }
-
     } catch (Exception e) {
       e.printStackTrace();
       fail(e.getMessage());

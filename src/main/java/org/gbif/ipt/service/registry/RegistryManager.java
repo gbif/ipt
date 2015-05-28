@@ -55,10 +55,9 @@ public interface RegistryManager {
   Organisation getRegisteredOrganisation(String key);
 
   /**
-   * Retrieves a list of Vocabulary from the Registry, but only the basic metadata, i.e. each without the list
-   * concepts.
+   * Gets list of all registered vocabularies from the Registry.
    *
-   * @return list of thesauri, or an empty list if none were retrieved from valid response
+   * @return list of vocabularies, or an empty list if none were retrieved from valid response
    *
    * @throws RegistryException if the list of thesauri couldn't be populated
    */

@@ -37,7 +37,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -47,17 +46,20 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.google.common.io.Closer;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
+
+import static org.gbif.utils.HttpUtil.success;
 
 @Singleton
 public class ExtensionManagerImpl extends BaseManager implements ExtensionManager {
@@ -67,7 +69,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   protected static final String CONFIG_FOLDER = ".extensions";
   private final static String TAXON_KEYWORD = "dwc:taxon";
   private final static String OCCURRENCE_KEYWORD = "dwc:occurrence";
-  private final Map<String, Extension> extensionsByRowtype = new HashMap<String, Extension>();
+  private final Map<String, Extension> extensionsByRowtype = Maps.newHashMap();
   private final ExtensionFactory factory;
   private final HttpUtil downloader;
   private final ResourceManager resourceManager;
@@ -116,6 +118,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     return rowType;
   }
 
+  @Override
   public void uninstallSafely(String rowType) throws DeletionNotAllowedException {
     if (extensionsByRowtype.containsKey(rowType)) {
       // check if its used by some resources
@@ -157,53 +160,63 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     Extension installed = get(rowType);
 
     if (installed != null) {
-      // verify there is a newer (latest) version
-      List<Extension> extensions = registryManager.getExtensions();
-
-      Extension latestVersion = null;
-      for (Extension e : extensions) {
-        // match by rowType and isLatest, plus the URL cannot be null in order to be installed
-        if (e.getRowType() != null && e.getRowType().equalsIgnoreCase(rowType) && e.isLatest()) {
-          latestVersion = e;
-          break;
-        }
-      }
-
-      boolean isNewVersion = false;
-      if (latestVersion != null) {
-        Date issued = installed.getIssued();
-        Date issuedLatest = latestVersion.getIssued();
-        if (issued == null && issuedLatest != null) {
-          isNewVersion = true;
-        } else if (issued != null && issuedLatest != null) {
-          isNewVersion = (issuedLatest.compareTo(issued) > 0); // latest version must have newer issued date
-        }
-      }
-
-      if (isNewVersion && latestVersion.getUrl() != null) {
-        // check if there are any associated resource mappings
-        List<Resource> resourcesToMigrate = Lists.newArrayList();
-        for (Resource r : resourceManager.list()) {
-          if (!r.getMappings(rowType).isEmpty()) {
-            resourcesToMigrate.add(r);
+      try {
+        // verify there is a newer (latest) version
+        Extension latestVersion = null;
+        for (Extension e : registryManager.getExtensions()) {
+          // match by rowType and isLatest, plus the URL cannot be null in order to be installed
+          if (e.getRowType() != null && e.getRowType().equalsIgnoreCase(rowType) && e.isLatest()) {
+            latestVersion = e;
+            break;
           }
         }
 
-        // first download latestVersion XML file
-        File tmpFile = download(latestVersion.getUrl());
-        Extension extension = loadFromFile(tmpFile);
-
-        // if there are mappings to this extension - do migrations to latest version, save resources
-        if (!resourcesToMigrate.isEmpty()) {
-          for (Resource r : resourcesToMigrate) {
-            migrateResourceToNewExtensionVersion(r, installed, extension);
-            resourceManager.save(r);
+        boolean isNewVersion = false;
+        if (latestVersion != null) {
+          Date issued = installed.getIssued();
+          Date issuedLatest = latestVersion.getIssued();
+          if (issued == null && issuedLatest != null) {
+            isNewVersion = true;
+          } else if (issued != null && issuedLatest != null) {
+            isNewVersion = (issuedLatest.compareTo(issued) > 0); // latest version must have newer issued date
           }
         }
 
-        // uninstall and install new version
-        uninstall(rowType);
-        finishInstall(tmpFile, extension);
+        if (isNewVersion && latestVersion.getUrl() != null) {
+          // check if there are any associated resource mappings
+          List<Resource> resourcesToMigrate = Lists.newArrayList();
+          for (Resource r : resourceManager.list()) {
+            if (!r.getMappings(rowType).isEmpty()) {
+              resourcesToMigrate.add(r);
+            }
+          }
+
+          // first download latestVersion XML file
+          File tmpFile = download(latestVersion.getUrl());
+          Extension extension = loadFromFile(tmpFile);
+
+          // if there are mappings to this extension - do migrations to latest version, save resources
+          if (!resourcesToMigrate.isEmpty()) {
+            for (Resource r : resourcesToMigrate) {
+              migrateResourceToNewExtensionVersion(r, installed, extension);
+              resourceManager.save(r);
+            }
+          }
+
+          // uninstall and install new version
+          uninstall(rowType);
+          finishInstall(tmpFile, extension);
+        }
+      } catch (RegistryException e) {
+        // add startup error message about Registry error
+        String msg = RegistryException.logRegistryException(e.getType(), baseAction);
+        warnings.addStartupError(msg);
+        log.error(msg);
+
+        // add startup error message that explains the consequence of the Registry error
+        msg = baseAction.getText("admin.extensions.couldnt.load", new String[] {cfg.getRegistryUrl()});
+        warnings.addStartupError(msg);
+        log.error(msg);
       }
     }
   }
@@ -221,7 +234,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     Preconditions.checkState(current.getRowType().equalsIgnoreCase(newer.getRowType()));
     Preconditions.checkState(!r.getMappings(current.getRowType()).isEmpty());
     log.info("Migrating " + r.getShortname() + " mappings to extension " + current.getRowType()
-              + " to latest extension version");
+             + " to latest extension version");
 
     // populate various set to keep track of how many terms were deprecated, how terms' vocabulary was updated, etc
     Set<ExtensionProperty> deprecated = Sets.newHashSet();
@@ -371,37 +384,42 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     return coreTypes;
   }
 
+  /**
+   * Retrieve extension file by its unique rowType.
+   *
+   * @param rowType rowType of extension
+   *
+   * @return extension file
+   */
   private File getExtensionFile(String rowType) {
     String filename = rowType.replaceAll("[/.:]+", "_") + ".xml";
     return dataDir.configFile(CONFIG_FOLDER + "/" + filename);
   }
 
   /**
-   * Download and install an extension. The final filename is based on the extension's rowType.
+   * Download and install an extension into local file. The final filename is based on the extension's rowType.
    *
    * @param url the URL of the xml based extension definition
    *
    * @return the installed extension
    *
-   * @throws InvalidConfigException if Extension failed to be loaded
+   * @throws InvalidConfigException if Extension failed to be installed
    */
   public synchronized Extension install(URL url) throws InvalidConfigException {
     Preconditions.checkNotNull(url);
 
-    Extension extension = null;
     try {
       File tmpFile = download(url);
-      extension = loadFromFile(tmpFile);
+      Extension extension = loadFromFile(tmpFile);
       finishInstall(tmpFile, extension);
+      return extension;
     } catch (InvalidConfigException e) {
       throw e;
     } catch (Exception e) {
       String msg = baseAction.getText("admin.extension.install.error", new String[] {url.toString()});
-      e.printStackTrace();
-      log.error(msg);
+      log.error(msg, e);
       throw new InvalidConfigException(TYPE.INVALID_EXTENSION, msg, e);
     }
-    return extension;
   }
 
   /**
@@ -441,7 +459,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     String filename = url.toString().replaceAll("[/:.]+", "_") + ".xml";
     File tmpFile = dataDir.tmpFile(filename);
     StatusLine statusLine = downloader.download(url, tmpFile);
-    if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
+    if (success(statusLine)) {
       log.info("Successfully downloaded extension: " + url.toString());
       return tmpFile;
     } else {
@@ -544,30 +562,28 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     Preconditions.checkNotNull(localFile);
     Preconditions.checkState(localFile.exists());
 
-    InputStream fileIn = null;
+    Closer closer = Closer.create();
     try {
-      fileIn = new FileInputStream(localFile);
+      InputStream fileIn = closer.register(new FileInputStream(localFile));
       Extension extension = factory.build(fileIn);
       // normalise rowtype
       extension.setRowType(normalizeRowType(extension.getRowType()));
       log.info("Successfully loaded extension " + extension.getRowType());
       return extension;
     } catch (IOException e) {
-      log.error("Cant access local extension file (" + localFile.getAbsolutePath() + ")", e);
-      throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Cant access local extension file");
+      log.error("Can't access local extension file (" + localFile.getAbsolutePath() + ")", e);
+      throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Can't access local extension file");
     } catch (SAXException e) {
-      log.error("Cant parse local extension file (" + localFile.getAbsolutePath() + ")", e);
-      throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Cant parse local extension file");
+      log.error("Can't parse local extension file (" + localFile.getAbsolutePath() + ")", e);
+      throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Can't parse local extension file");
     } catch (ParserConfigurationException e) {
-      log.error("Cant create sax parser", e);
-      throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Cant create sax parser");
+      log.error("Can't create sax parser", e);
+      throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Can't create sax parser");
     } finally {
-      if (fileIn != null) {
-        try {
-          fileIn.close();
-        } catch (IOException e) {
-          log.error("Input stream on extension file (" + localFile.getAbsolutePath() + ") could not be closed.");
-        }
+      try {
+        closer.close();
+      } catch (IOException e) {
+        log.debug("Failed to close input stream on extension file", e);
       }
     }
   }

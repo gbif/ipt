@@ -1,0 +1,650 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/style/human.xsl"?>
+<thesaurus
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:dc="http://purl.org/dc/terms/"
+  xmlns="http://rs.gbif.org/thesaurus/"
+  xsi:schemaLocation="http://rs.gbif.org/thesaurus/  http://rs.gbif.org/sandbox/schema/thesaurus.xsd"
+  dc:title="Taxonomic Rank GBIF Vocabulary"
+  dc:URI="http://rs.gbif.org/vocabulary/gbif/rank"
+  dc:issued="2015-04-24"
+  dc:description="An ordered taxonomic rank vocabulary with the most frequently used values and their alternative representations.">
+
+  <concept dc:identifier="domain" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/domain"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/domain"
+           dc:description="">
+    <preferred>
+      <term dc:title="domain" xml:lang="en"/>
+      <term dc:title="dominio" xml:lang="es"/>
+      <term dc:title="domínio" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+      <term dc:title="superdomain" xml:lang="en"/>
+      <term dc:title="empire" xml:lang="en"/>
+      <term dc:title="superkingdom" xml:lang="en"/>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="kingdom" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/kingdom"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/kingdom"
+           dc:description="">
+    <preferred>
+      <term dc:title="kingdom" xml:lang="en"/>
+      <term dc:title="reino" xml:lang="es"/>
+      <term dc:title="reino" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+      <term dc:title="regnum" xml:lang="lt"/>
+      <term dc:title="Reich" xml:lang="de"/>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="subkingdom" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/subkingdom"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/subkingdom"
+           dc:description="">
+    <preferred>
+      <term dc:title="subkingdom" xml:lang="en"/>
+      <term dc:title="subreino" xml:lang="es"/>
+      <term dc:title="subreino" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+      <term dc:title="subregnum" xml:lang="lt"/>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="superphylum" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/superphylum"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/superphylum"
+           dc:description="">
+    <preferred>
+      <term dc:title="superphylum" xml:lang="en"/>
+      <term dc:title="superfilo" xml:lang="es"/>
+      <term dc:title="Überabteilung" xml:lang="de"/>
+      <term dc:title="superfilo" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="phylum" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/phylum"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/phylum"
+           dc:description="">
+    <preferred>
+      <term dc:title="phylum" xml:lang="en"/>
+      <term dc:title="filo" xml:lang="es"/>
+      <term dc:title="Stamm" xml:lang="de"/>
+      <term dc:title="filo" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+      <term dc:title="divisio" xml:lang="lt"/>
+      <term dc:title="devision" xml:lang="en"/>
+      <term dc:title="Abteilung" xml:lang="de"/>
+      <term dc:title="división" xml:lang="es"/>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="subphylum" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/subphylum"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/subphylum"
+           dc:description="">
+    <preferred>
+      <term dc:title="subphylum" xml:lang="en"/>
+      <term dc:title="subfilo" xml:lang="es"/>
+      <term dc:title="Unterstamm" xml:lang="de"/>
+      <term dc:title="subfilo" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+      <term dc:title="subdivision" xml:lang="en" />
+      <term dc:title="subdivisión" xml:lang="es" />
+      <term dc:title="subdivisio" xml:lang="lt" />
+      <term dc:title="Unterabteilung" xml:lang="de"/>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="superclass" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/superclass"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/superclass"
+           dc:description="">
+    <preferred>
+      <term dc:title="superclass" xml:lang="en"/>
+      <term dc:title="superclase" xml:lang="es"/>
+      <term dc:title="superclasse" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="class" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/class"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/class"
+           dc:description="">
+    <preferred>
+      <term dc:title="class" xml:lang="en"/>
+      <term dc:title="clase" xml:lang="es"/>
+      <term dc:title="Klasse" xml:lang="de"/>
+      <term dc:title="classe" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+      <term dc:title="classis" xml:lang="lt"/>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="subclass" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/subclass"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/subclass"
+           dc:description="">
+    <preferred>
+      <term dc:title="subclass" xml:lang="en"/>
+      <term dc:title="subclase" xml:lang="es"/>
+      <term dc:title="subclasse" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+      <term dc:title="subclassis" xml:lang="lt"/>
+      <term dc:title="Unterklasse" xml:lang="de"/>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="supercohort" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/supercohort"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/supercohort"
+           dc:description="This concept has been deprecated! (Super)cohorte in the zoological sense placed between superorder and subclass">
+    <preferred>
+      <term dc:title="supercohort" xml:lang="en"/>
+      <term dc:title="supercohorte" xml:lang="es"/>
+      <term dc:title="supercohors" xml:lang="lt"/>
+      <term dc:title="Überkohorte" xml:lang="de"/>
+      <term dc:title="supercohorte" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="cohort" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/cohort"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/cohort"
+           dc:description="This concept has been deprecated! Cohorte in the zoological sense placed between superorder and subclass">
+    <preferred>
+      <term dc:title="cohort" xml:lang="en"/>
+      <term dc:title="cohorte" xml:lang="es"/>
+      <term dc:title="cohors" xml:lang="lt"/>
+      <term dc:title="Kohorte" xml:lang="de"/>
+      <term dc:title="cohorte" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="subcohort" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/subcohort"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/subcohort"
+           dc:description="This concept has been deprecated! (Sub)cohorte in the zoological sense placed between superorder and subclass">
+    <preferred>
+      <term dc:title="subcohort" xml:lang="en"/>
+      <term dc:title="subcohorte" xml:lang="es"/>
+      <term dc:title="Unterkohorte" xml:lang="de"/>
+      <term dc:title="subcohorte" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="superorder" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/superorder"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/superorder"
+           dc:description="">
+    <preferred>
+      <term dc:title="superorder" xml:lang="en"/>
+      <term dc:title="superorden" xml:lang="es"/>
+      <term dc:title="Überordnung" xml:lang="de"/>
+      <term dc:title="superordem" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="order" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/order"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/order"
+           dc:description="">
+    <preferred>
+      <term dc:title="order" xml:lang="en"/>
+      <term dc:title="orden" xml:lang="es"/>
+      <term dc:title="Ordnung" xml:lang="de"/>
+      <term dc:title="ordo" xml:lang="lt"/>
+      <term dc:title="ordem" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+      <term dc:title="Reihe" xml:lang="de"/>
+      <term dc:title="nixus" xml:lang="lt"/>
+      <term dc:title="alliance" xml:lang="en"/>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="suborder" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/suborder"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/suborder"
+           dc:description="">
+    <preferred>
+      <term dc:title="suborder" xml:lang="en"/>
+      <term dc:title="suborden" xml:lang="es"/>
+      <term dc:title="Unterordnung" xml:lang="de"/>
+      <term dc:title="subordem" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+      <term dc:title="subordo" xml:lang="en"/>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="infraorder" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/infraorder"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/infraorder"
+           dc:description="">
+    <preferred>
+      <term dc:title="infraorder" xml:lang="en"/>
+      <term dc:title="infraorden" xml:lang="es"/>
+      <term dc:title="infraordem" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="superfamily" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/superfamily"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/superfamily"
+           dc:description="">
+    <preferred>
+      <term dc:title="superfamily" xml:lang="en"/>
+      <term dc:title="superfamilia" xml:lang="es"/>
+      <term dc:title="Überfamilie" xml:lang="de"/>
+      <term dc:title="superfamília" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="family" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/family"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/family"
+           dc:description="">
+    <preferred>
+      <term dc:title="family" xml:lang="en"/>
+      <term dc:title="familia" xml:lang="es"/>
+      <term dc:title="Familie" xml:lang="de"/>
+      <term dc:title="familia" xml:lang="lt"/>
+      <term dc:title="família" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="subfamily" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/subfamily"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/subfamily"
+           dc:description="">
+    <preferred>
+      <term dc:title="subfamily" xml:lang="en"/>
+      <term dc:title="subfamilia" xml:lang="es"/>
+      <term dc:title="Unterfamilie" xml:lang="de"/>
+      <term dc:title="subfamilia" xml:lang="lt"/>
+      <term dc:title="subfamília" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="tribe" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/tribe"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/tribe"
+           dc:description="">
+    <preferred>
+      <term dc:title="tribe" xml:lang="en"/>
+      <term dc:title="tribu" xml:lang="es"/>
+      <term dc:title="tribus" xml:lang="lt"/>
+      <term dc:title="Tribus" xml:lang="de"/>
+      <term dc:title="tribo" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="subtribe" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/subtribe"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/subtribe"
+           dc:description="">
+    <preferred>
+      <term dc:title="subtribe" xml:lang="en"/>
+      <term dc:title="subtribu" xml:lang="es"/>
+      <term dc:title="Untertribus" xml:lang="de"/>
+      <term dc:title="subtribo" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+      <term dc:title="subtribus" xml:lang="lt"/>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="supragenericname" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/supragenericname"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/supragenericname"
+           dc:description="Used for any other unspecific rank above genera.">
+    <preferred>
+      <term dc:title="supragenericname" xml:lang="en"/>
+    </preferred>
+  </concept>
+
+  <concept dc:identifier="genus" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/genus"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/genus"
+           dc:description="">
+    <preferred>
+      <term dc:title="genus" xml:lang="en"/>
+      <term dc:title="género" xml:lang="es"/>
+      <term dc:title="Gattung" xml:lang="de"/>
+      <term dc:title="gênero" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="subgenus" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/subgenus"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/subgenus"
+           dc:description="">
+    <preferred>
+      <term dc:title="subgenus" xml:lang="en"/>
+      <term dc:title="subgénero" xml:lang="es"/>
+      <term dc:title="Untergattung" xml:lang="de"/>
+      <term dc:title="subgênero" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="section" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/section"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/section"
+           dc:description="Section within a genus. In Zoology a section sometimes refers to a group above family level, this is NOT meant">
+    <preferred>
+      <term dc:title="section" xml:lang="en"/>
+      <term dc:title="sección" xml:lang="es"/>
+      <term dc:title="Sektion" xml:lang="de"/>
+      <term dc:title="secção" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+      <term dc:title="sectio" xml:lang="en"/>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="subsection" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/subsection"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/subsection"
+           dc:description="Subsection within a genus">
+    <preferred>
+      <term dc:title="subsection" xml:lang="en"/>
+      <term dc:title="subsección" xml:lang="es"/>
+      <term dc:title="Untersektion" xml:lang="de"/>
+      <term dc:title="subsecção" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+      <term dc:title="subsectio" xml:lang="en"/>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="series" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/series"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/series"
+           dc:description="Series within a genus">
+    <preferred>
+      <term dc:title="series" xml:lang="en"/>
+      <term dc:title="serie" xml:lang="es"/>
+      <term dc:title="Serie" xml:lang="de"/>
+      <term dc:title="série" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="subseries" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/subseries"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/subseries"
+           dc:description="Subseries within a genus">
+    <preferred>
+      <term dc:title="subseries" xml:lang="en"/>
+      <term dc:title="subserie" xml:lang="es"/>
+      <term dc:title="Unterserie" xml:lang="de"/>
+      <term dc:title="subsérie" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="speciesAggregate" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/speciesAggregate"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/speciesAggregate"
+           dc:description=" A loosely defined group of species. Zoology: 'Aggregate - a group of species, other than a subgenus, within a genus. An aggregate may be denoted by a group name interpolated in parentheses.' -- The Berlin/MoreTax model notes:'[these] aren't taxonomic ranks but cirumscriptions because on the one hand they are necessary for the concatenation of the fullname and on the other hand they are necessary for distinguishing the aggregate or species group from the microspecies.' Compare subspecific aggregate for a group of subspecies within a species!">
+    <preferred>
+      <term dc:title="speciesAggregate" xml:lang="en"/>
+      <term dc:title="grupo de especies" xml:lang="es"/>
+      <term dc:title="grupo de espécies" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+      <term dc:title="aggregate" xml:lang="en"/>
+      <term dc:title="species group" xml:lang="en"/>
+      <term dc:title="species complex" xml:lang="en"/>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="infragenericname" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/infragenericname"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/infragenericname"
+           dc:description="Used for any other unspecific rank below genera and above species.">
+    <preferred>
+      <term dc:title="infragenericname" xml:lang="en"/>
+    </preferred>
+  </concept>
+
+  <concept dc:identifier="species" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/species"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/species"
+           dc:description="">
+    <preferred>
+      <term dc:title="species" xml:lang="en"/>
+      <term dc:title="especie" xml:lang="es"/>
+      <term dc:title="Art" xml:lang="de"/>
+      <term dc:title="espécie" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="subspecificAggregate" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/subspecificAggregate"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/subspecificAggregate"
+           dc:description="A loosely defined group of subspecies. Zoology:'Aggregate - a group of subspecies within a species. An aggregate may be denoted by a group name interpolated in parentheses.'">
+    <preferred>
+      <term dc:title="subspecificAggregate" xml:lang="en"/>
+      <term dc:title="grupo de subespecies" xml:lang="es"/>
+      <term dc:title="grupo de subespécies" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+      <term dc:title="group" xml:lang="en"/>
+      <term dc:title="complex" xml:lang="en"/>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="infraspecificname" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/infraspecificname"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/infraspecificname"
+           dc:description="Used for any other unspecific rank below genera and above species.">
+    <preferred>
+      <term dc:title="infraspecificname" xml:lang="en"/>
+    </preferred>
+  </concept>
+
+  <concept dc:identifier="subspecies" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/subspecies"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/subspecies"
+           dc:description="">
+    <preferred>
+      <term dc:title="subspecies" xml:lang="en"/>
+      <term dc:title="subespecie" xml:lang="es"/>
+      <term dc:title="Unterart" xml:lang="de"/>
+      <term dc:title="subespécie" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="infrasubspecificname" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/infrasubspecificname"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/infrasubspecificname"
+           dc:description="Used also for any other unspecific rank below subspecies.">
+    <preferred>
+      <term dc:title="infrasubspecificname" xml:lang="en"/>
+    </preferred>
+  </concept>
+
+  <concept dc:identifier="variety" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/variety"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/variety"
+           dc:description="">
+    <preferred>
+      <term dc:title="variety" xml:lang="en"/>
+      <term dc:title="variedad" xml:lang="es"/>
+      <term dc:title="Varietät" xml:lang="de"/>
+      <term dc:title="variedade" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+      <term dc:title="varietas" xml:lang="en"/>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="subvariety" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/subvariety"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/subvariety"
+           dc:description="">
+    <preferred>
+      <term dc:title="subvariety" xml:lang="en"/>
+      <term dc:title="subvariedad" xml:lang="es"/>
+      <term dc:title="Untervarietät" xml:lang="de"/>
+      <term dc:title="subvariedade" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+      <term dc:title="subvarietas" xml:lang="en"/>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="form" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/form"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/form"
+           dc:description="">
+    <preferred>
+      <term dc:title="form" xml:lang="en"/>
+      <term dc:title="forma" xml:lang="es"/>
+      <term dc:title="Form" xml:lang="de"/>
+      <term dc:title="forma" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+      <term dc:title="forma" xml:lang="en"/>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="subform" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/subform"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/subform"
+           dc:description="">
+    <preferred>
+      <term dc:title="subform" xml:lang="en"/>
+      <term dc:title="subforma" xml:lang="es"/>
+      <term dc:title="Unterform" xml:lang="de"/>
+      <term dc:title="subforma" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+      <term dc:title="subforma" xml:lang="en"/>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="pathovar" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/pathovar"
+           dc:relation="http://www.ncbi.nlm.nih.gov/books/NBK8812/table/A844/?report=objectonly"
+           dc:description="Microbial rank based on pathogenic reactions in one or more hosts. For recommendations on designating pathovars and use of designations when reviving names see Dye et al. (1980) Standards for naming pathovars of phytopathogenic bacteria and a list of pathovar names and pathotype strains. Rev. Plant Pathol. 59:153–168. Example: Pseudomonas syringae pv. lachrymans.">
+    <preferred>
+      <term dc:title="pathovar" xml:lang="en"/>
+    </preferred>
+  </concept>
+
+  <concept dc:identifier="biovar" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/biovar"
+           dc:relation="http://www.ncbi.nlm.nih.gov/books/NBK8812/table/A844/?report=objectonly"
+           dc:description="Microbial rank based on biochemical or physiological properties. Example: Francisella tularensis biovar tularensis.">
+    <preferred>
+      <term dc:title="biovar" xml:lang="en"/>
+    </preferred>
+  </concept>
+
+  <concept dc:identifier="chemovar" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/chemovar"
+           dc:relation="http://www.ncbi.nlm.nih.gov/books/NBK8812/table/A844/?report=objectonly"
+           dc:description="Microbial rank based on production or amount of production of a particular chemical. Example: Vibrio alginolyticus chemovar iophagus.">
+    <preferred>
+      <term dc:title="chemovar" xml:lang="en"/>
+    </preferred>
+  </concept>
+
+  <concept dc:identifier="morphovar" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/morphovar"
+           dc:relation="http://www.ncbi.nlm.nih.gov/books/NBK8812/table/A844/?report=objectonly"
+           dc:description="Microbial rank based on morphological characterislics. Example: Acinetobacter junii morphovar I.">
+    <preferred>
+      <term dc:title="morphovar" xml:lang="en"/>
+    </preferred>
+  </concept>
+
+  <concept dc:identifier="phagovar" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/phagovar"
+           dc:relation="http://www.ncbi.nlm.nih.gov/books/NBK8812/table/A844/?report=objectonly"
+           dc:description="Microbial infrasubspecific rank based on reactions to bacteriophage. Example: Staphyloccocus aureus phagovar 42D.">
+    <preferred>
+      <term dc:title="phagovar" xml:lang="en"/>
+    </preferred>
+  </concept>
+
+  <concept dc:identifier="serovar" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/serovar"
+           dc:relation="http://www.ncbi.nlm.nih.gov/books/NBK8812/table/A844/?report=objectonly"
+           dc:description="Microbial infrasubspecific rank based on antigenic characteristics. Example: Salmonella enterica serovar Dublin.">
+    <preferred>
+      <term dc:title="serovar" xml:lang="en"/>
+    </preferred>
+  </concept>
+
+  <concept dc:identifier="chemoform" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/chemoform"
+           dc:relation="http://www.ncbi.nlm.nih.gov/books/NBK8812/table/A844/?report=objectonly"
+           dc:description="Microbial infrasubspecific rank based on chemical constitution. Example: Thymus vulgaris ct. geraniol.">
+    <preferred>
+      <term dc:title="chemoform" xml:lang="en"/>
+    </preferred>
+  </concept>
+
+  <concept dc:identifier="formaspecialis" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/formaspecialis"
+           dc:relation="http://www.ncbi.nlm.nih.gov/books/NBK8812/table/A844/?report=objectonly"
+           dc:description="Microbial infrasubspecific rank. A parasitic, symbiotic, or commensal microorganism distinguished primarily by adaptation to a particular host or habitat. Named preferably by the scientific name of the host in the genitive. Example: Puccinia graminis f. sp. avenae">
+    <preferred>
+      <term dc:title="formaspecialis" xml:lang="en"/>
+    </preferred>
+  </concept>
+
+  <concept dc:identifier="cultivarGroup" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/cultivarGroup"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/cultivarGroup"
+           dc:description=" cultivar-group">
+    <preferred>
+      <term dc:title="cultivarGroup" xml:lang="en"/>
+      <term dc:title="grupo de cultivares" xml:lang="es"/>
+      <term dc:title="grupo de cultivares" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+      <term dc:title="grex" xml:lang="en"/>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="cultivar" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/cultivar"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/cultivar"
+           dc:description="The epithet is usually output in single quotes and may contain multiple words, see ICBN §28. Examples: Taxus baccata 'Variegata', Juniperus ×pfitzeriana 'Wilhelm Pfitzer'; Magnolia 'Elizabeth' (= a hybrid, no species epithet).">
+    <preferred>
+      <term dc:title="cultivar" xml:lang="en"/>
+      <term dc:title="cultivar" xml:lang="es"/>
+      <term dc:title="cultivar" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="strain" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/strain"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/strain"
+           dc:description="Bacteria species may be classified by strains (for example Escherichia coli O157:H7, a strain that can cause food poisoning).">
+    <preferred>
+      <term dc:title="strain" xml:lang="en"/>
+      <term dc:title="cepa" xml:lang="es"/>
+      <term dc:title="cepa" xml:lang="pt"/>
+    </preferred>
+    <alternative>
+    </alternative>
+  </concept>
+
+  <concept dc:identifier="informal" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/informal"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/informal"
+           dc:description="">
+    <preferred>
+      <term dc:title="informal" xml:lang="en"/>
+    </preferred>
+  </concept>
+
+  <concept dc:identifier="unranked" dc:URI="http://rs.gbif.org/vocabulary/gbif/rank/unranked"
+           dc:relation="http://rs.gbif.org/vocabulary/gbif/rank/unranked"
+           dc:description="">
+    <preferred>
+      <term dc:title="unranked" xml:lang="en"/>
+    </preferred>
+  </concept>
+
+</thesaurus>

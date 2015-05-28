@@ -6,7 +6,7 @@
   xmlns="http://rs.gbif.org/thesaurus/"
   xsi:schemaLocation="http://rs.gbif.org/thesaurus/  http://rs.gbif.org/sandbox/schema/thesaurus.xsd"
   dc:title="Quantity Type Vocabulary"
-  dc:URI="http://rs.gbif.org/sandbox/vocabulary/gbif/quantityType20150424/"
+  dc:URI="http://rs.gbif.org/vocabulary/gbif/quantityType"
   dc:issued="2015-05-04"
   dc:description="The quantityType Vocabulary is a recommended set of values to	use for the Darwin Core quantityType property.">
 

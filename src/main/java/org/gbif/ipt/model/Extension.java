@@ -28,7 +28,7 @@ import static com.google.common.base.Objects.equal;
  */
 public class Extension implements Serializable {
 
-  private static final long serialVersionUID = 54354388543L;
+  private static final long serialVersionUID = 54294388543L;
   private String title; // human title
   private String name; // table, file & xml tag naming. no whitespace allowed
   private URL url;
@@ -73,6 +73,9 @@ public class Extension implements Serializable {
     return link;
   }
 
+  /**
+   * @return date the extension was last updated
+   */
   public Date getModified() {
     return modified;
   }

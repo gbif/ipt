@@ -6,23 +6,20 @@ import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.service.DeletionNotAllowedException;
+import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
-import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl.UpdateResult;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.net.URL;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Function;
@@ -47,10 +44,8 @@ public class ExtensionsAction extends POSTAction {
   private List<Extension> extensions;
   private Extension extension;
   private String url;
-  private Boolean updateVocabs = false;
-  private int numVocabs = 0;
-  private Date vocabsLastUpdated;
-  private String dateFormat;
+  private Boolean synchronise = false;
+  private Date lastSynchronised;
   private List<Extension> newExtensions;
   private ConfigWarnings warnings;
   private boolean upToDate = true;
@@ -99,10 +94,6 @@ public class ExtensionsAction extends POSTAction {
     return SUCCESS;
   }
 
-  public String getDateFormat() {
-    return dateFormat;
-  }
-
   public Extension getExtension() {
     return extension;
   }
@@ -115,38 +106,23 @@ public class ExtensionsAction extends POSTAction {
     return newExtensions;
   }
 
-  public int getNumVocabs() {
-    return numVocabs;
-  }
-
-  public Boolean getUpdateVocab() {
-    return updateVocabs;
-  }
-
-  public Date getVocabsLastUpdated() {
-    return vocabsLastUpdated;
-  }
-
   /**
    * Handles the population of installed and uninstalled extensions on the "Core Types and Extensions" page.
-   * Optionally, the user may have triggered an update vocabularies. This method always tries to pick up newly
-   * registered extensions from the Registry.
+   * This method always tries to pick up newly registered extensions from the Registry.
+   * </br>
+   * Optionally, the user may have triggered synchronise action, which updates default vocabularies to use latest
+   * versions, and synchronises all installed extensions and vocabularies with the registry to ensure their content
+   * is up-to-date.
    *
    * @return struts2 result
    */
   public String list() {
-    if (updateVocabs) {
-      UpdateResult result = vocabManager.updateAll();
-      addActionMessage(
-        getText("admin.extensions.vocabularies.updated", new String[] {String.valueOf(result.updated.size())}));
-      addActionMessage(
-        getText("admin.extensions.vocabularies.unchanged", new String[] {String.valueOf(result.unchanged.size())}));
-      if (!result.errors.isEmpty()) {
-        addActionWarning(
-          getText("admin.extensions.vocabularies.errors", new String[] {String.valueOf(result.errors.size())}));
-        for (Entry<String, String> err : result.errors.entrySet()) {
-          addActionError(getText("admin.extensions.error.updating", new String[] {err.getKey(), err.getValue()}));
-        }
+    if (synchronise) {
+      try {
+        synchronise();
+        addActionMessage(getText("admin.extensions.synchronise.success"));
+      } catch (Exception e) {
+        addActionWarning(getText("admin.extensions.synchronise.error", new String[] {e.getMessage()}));
       }
     }
 
@@ -162,14 +138,10 @@ public class ExtensionsAction extends POSTAction {
       newExtensions.remove(e);
     }
 
-    // find latest update date of all vocabularies
-    List<Vocabulary> vocabs = vocabManager.list();
-    numVocabs = vocabs.size();
-    for (Vocabulary v : vocabs) {
-      if (vocabsLastUpdated == null || vocabsLastUpdated.before(v.getLastUpdate())) {
-        Locale locale = getLocale();
-        vocabsLastUpdated = v.getLastUpdate();
-        dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, locale).format(vocabsLastUpdated);
+    // find date extensions were last synchronised
+    for (Extension ex : extensions) {
+      if (lastSynchronised == null || lastSynchronised.before(ex.getModified())) {
+        lastSynchronised = ex.getModified();
       }
     }
 
@@ -287,7 +259,7 @@ public class ExtensionsAction extends POSTAction {
     // populate list of latest extension versions
     Map<String, Extension> extensionsByRowtype = new HashMap<String, Extension>();
     if (!sorted.isEmpty()) {
-      for (Extension extension: sorted) {
+      for (Extension extension : sorted) {
         String rowType = extension.getRowType();
         if (rowType != null && !extensionsByRowtype.containsKey(rowType)) {
           extensionsByRowtype.put(rowType, extension);
@@ -309,18 +281,53 @@ public class ExtensionsAction extends POSTAction {
     return SUCCESS;
   }
 
-  public void setDateFormat(String dateFormat) {
-    this.dateFormat = dateFormat;
+  /**
+   * Ensures the default installed vocabularies always use the latest version.
+   * </br>
+   * Then synchronises all installed extensions and vocabularies with registry to make sure their content is up-to-date.
+   */
+  public void synchronise() {
+    LOG.info("Update default vocabularies to use latest versions...");
+    try {
+      vocabManager.installOrUpdateDefaults();
+    } catch (InvalidConfigException e) {
+      String msg = getText("admin.vocabulary.couldnt.install.defaults", new String[] {e.getMessage()});
+      LOG.error(msg, e);
+      addActionWarning(msg, e);
+    }
+
+    LOG.info("Updating content of all installed vocabularies...");
+    for (Vocabulary v : vocabManager.list()) {
+      try {
+        LOG.debug("Updating vocabulary " + v.getUriString());
+        vocabManager.updateIfChanged(v.getUriString());
+      } catch (Exception e) {
+        LOG.error("Failed to update vocabulary: " + v.getUriString(), e);
+      }
+    }
+
+    LOG.info("Updating content of all installed extensions...");
+    for (Extension ex : extensionManager.list()) {
+      try {
+        LOG.debug("Updating extension " + ex.getRowType());
+        vocabManager.updateIfChanged(ex.getRowType());
+      } catch (Exception e) {
+        LOG.error("Failed to update extension: " + ex.getRowType(), e);
+      }
+    }
   }
 
   public void setExtension(Extension extension) {
     this.extension = extension;
   }
 
-  public void setUpdateVocabs(String x) {
-    if (StringUtils.trimToNull(x) != null) {
-      this.updateVocabs = true;
-    }
+  /**
+   * To hold the state transition request, so the same request triggered purely by a URL will not work.
+   *
+   * @param synchronise form variable
+   */
+  public void setSynchronise(String synchronise) {
+    this.synchronise = StringUtils.trimToNull(synchronise) != null;
   }
 
   public void setUrl(String url) {
