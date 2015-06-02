@@ -543,7 +543,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       } else if (rowType.equals(DwcTerm.Occurrence)) {
         type = CoreRowType.OCCURRENCE;
       } else if (rowType.equals(DwcTerm.Event)) {
-        type = CoreRowType.EVENT;
+        type = CoreRowType.SAMPLINGEVENT;
       } else {
         type = CoreRowType.OTHER;
       }
@@ -1169,6 +1169,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         resource.setCoreType(CoreRowType.OCCURRENCE.toString().toLowerCase());
       } else if (Constants.DWC_ROWTYPE_TAXON.equalsIgnoreCase(resource.getCoreRowType())) {
         resource.setCoreType(CoreRowType.CHECKLIST.toString().toLowerCase());
+      } else if (Constants.DWC_ROWTYPE_EVENT.equalsIgnoreCase(resource.getCoreRowType())) {
+        resource.setCoreType(CoreRowType.SAMPLINGEVENT.toString().toLowerCase());
       }
     }
     return resource;

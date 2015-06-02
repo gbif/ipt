@@ -65,12 +65,13 @@ public class AppConfig {
   // to support compatibility with historical data directories, we default to the original hard coded
   // types that were scattered across the code.
   private static final List<String> DEFAULT_CORE_ROW_TYPES =
-    ImmutableList.of(Constants.DWC_ROWTYPE_OCCURRENCE, Constants.DWC_ROWTYPE_TAXON);
+    ImmutableList.of(Constants.DWC_ROWTYPE_OCCURRENCE, Constants.DWC_ROWTYPE_TAXON, Constants.DWC_ROWTYPE_EVENT);
+
   // mapping of the id to the term that is the row ID
   private static final Map<String, String> DEFAULT_CORE_ROW_TYPES_ID_TERMS = Maps.newHashMap((ImmutableMap
-    .of(Constants.DWC_ROWTYPE_OCCURRENCE, Constants.DWC_OCCURRENCE_ID, Constants.DWC_ROWTYPE_TAXON,
-      Constants.DWC_TAXON_ID)));
-
+    .of(Constants.DWC_ROWTYPE_OCCURRENCE, Constants.DWC_OCCURRENCE_ID,
+      Constants.DWC_ROWTYPE_TAXON, Constants.DWC_TAXON_ID,
+      Constants.DWC_ROWTYPE_EVENT, Constants.DWC_EVENT_ID)));
 
   private static List<String> coreRowTypes = DEFAULT_CORE_ROW_TYPES;
   private static Map<String, String> coreRowTypeIdTerms = DEFAULT_CORE_ROW_TYPES_ID_TERMS;
@@ -373,6 +374,7 @@ public class AppConfig {
       // without error replace existing config with new one
       this.properties = props;
 
+      // populates the cores supported
       populateCoreConfiguration();
 
     } catch (IOException e) {

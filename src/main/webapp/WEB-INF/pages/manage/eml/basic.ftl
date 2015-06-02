@@ -13,7 +13,9 @@
           $("#resource\\.coreType").val('occurrence');
 				} else if (resourceType.toLowerCase() == "checklist") {
           $("#resource\\.coreType").val('checklist');
-				} else if (resourceType.toLowerCase() == "other") {
+				} else if (resourceType.toLowerCase() == "samplingevent") {
+            $("#resource\\.coreType").val('samplingevent');
+        } else if (resourceType.toLowerCase() == "other") {
             $("#resource\\.coreType").val('other');
         }
 			}
@@ -64,6 +66,10 @@
                 $.each(list, function(key, value) {
                   $('#resource\\.subtype').append('<option value="'+key+'">'+value+'</option>');
                 });
+              break;
+              case 'samplingevent':
+                $('#resource\\.subtype >option').remove();
+                $('#resource\\.subtype').append('<option value="">No subtype</option>');
               break;
               case 'other':
                 $('#resource\\.subtype >option').remove();

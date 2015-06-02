@@ -206,7 +206,10 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
 
     try {
       File installedFile = getVocabFile(vocabulary.getUriString());
-      FileUtils.moveFile(tmpFile, installedFile);
+      // never replace an existing vocabulary file. It can only be uninstalled (removed), or updated
+      if (!installedFile.exists()) {
+        FileUtils.moveFile(tmpFile, installedFile);
+      }
       // keep vocabulary in local lookup: allowed one installed vocabulary per identifier
       vocabulariesById.put(vocabulary.getUriString(), vocabulary);
     } catch (IOException e) {

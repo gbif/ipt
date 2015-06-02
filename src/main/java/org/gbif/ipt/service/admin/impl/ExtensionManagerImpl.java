@@ -69,6 +69,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   protected static final String CONFIG_FOLDER = ".extensions";
   private final static String TAXON_KEYWORD = "dwc:taxon";
   private final static String OCCURRENCE_KEYWORD = "dwc:occurrence";
+  private final static String EVENT_KEYWORD = "dwc:event";
   private final Map<String, Extension> extensionsByRowtype = Maps.newHashMap();
   private final ExtensionFactory factory;
   private final HttpUtil downloader;
@@ -492,6 +493,8 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
         return search(OCCURRENCE_KEYWORD, true, false);
       } else if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON)) {
         return search(TAXON_KEYWORD, true, false);
+      } else if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_EVENT)) {
+        return search(EVENT_KEYWORD, true, false);
       } else {
         return search(coreRowType, true, false);
       }

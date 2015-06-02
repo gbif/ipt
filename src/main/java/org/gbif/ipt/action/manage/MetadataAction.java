@@ -182,6 +182,8 @@ public class MetadataAction extends ManagerBaseAction {
           return getChecklistSubtypesMap();
         } else if (Constants.DWC_ROWTYPE_OCCURRENCE.toLowerCase().contains(core)) {
           return getOccurrenceSubtypesMap();
+        } else if (Constants.DWC_ROWTYPE_EVENT.toLowerCase().contains(core)) {
+          return getEmptySubtypeMap(); // because there are currently no dataset subtypes for sampling event datasets
         }
       }
     } else {
@@ -189,6 +191,8 @@ public class MetadataAction extends ManagerBaseAction {
         return getChecklistSubtypesMap();
       } else if (resource.getCoreType().equalsIgnoreCase(CoreRowType.OCCURRENCE.toString())) {
         return getOccurrenceSubtypesMap();
+      } else if (resource.getCoreType().equalsIgnoreCase(CoreRowType.SAMPLINGEVENT.toString())) {
+        return getEmptySubtypeMap(); // because there are currently no dataset subtypes for sampling event datasets
       } else if (CoreRowType.OTHER.toString().equalsIgnoreCase(resource.getCoreType())) {
         return getEmptySubtypeMap();
       }

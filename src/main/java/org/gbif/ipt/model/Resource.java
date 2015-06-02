@@ -50,7 +50,7 @@ import static com.google.common.base.Objects.equal;
 public class Resource implements Serializable, Comparable<Resource> {
 
   public enum CoreRowType {
-    OCCURRENCE, CHECKLIST, EVENT, METADATA, OTHER
+    OCCURRENCE, CHECKLIST, SAMPLINGEVENT, METADATA, OTHER
   }
 
   private static Logger log = Logger.getLogger(Resource.class);
@@ -314,11 +314,13 @@ public class Resource implements Serializable, Comparable<Resource> {
   @Nullable
   public String getCoreType() {
     String coreRowType = getCoreRowType();
-    if (getCoreRowType() != null) {
+    if (coreRowType != null) {
       if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON)) {
         coreType = StringUtils.capitalize(CoreRowType.CHECKLIST.toString());
       } else if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_OCCURRENCE)) {
         coreType = StringUtils.capitalize(CoreRowType.OCCURRENCE.toString());
+      } else if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_EVENT)) {
+        coreType = StringUtils.capitalize(CoreRowType.SAMPLINGEVENT.toString());
       } else {
         coreType = StringUtils.capitalize(CoreRowType.OTHER.toString());
       }

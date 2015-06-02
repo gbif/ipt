@@ -106,7 +106,7 @@ public class ExtensionFactoryTest {
     try {
       ExtensionFactory factory = getFactory();
       Extension e =
-        factory.build(ExtensionFactoryTest.class.getResourceAsStream("/extensions/dwc_event-2015-05-04.xml"));
+        factory.build(ExtensionFactoryTest.class.getResourceAsStream("/extensions/dwc_event_2015-04-24.xml"));
 
       assertEquals("Darwin Core Event", e.getTitle());
       assertEquals("Event", e.getName());
@@ -117,7 +117,7 @@ public class ExtensionFactoryTest {
 
       // issued date parsed correctly?
       DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-      String issued = "2015-05-04";
+      String issued = "2015-04-24";
       Date result = df.parse(issued);
       assertEquals(result.toString(), e.getIssued().toString());
 

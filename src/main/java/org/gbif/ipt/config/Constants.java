@@ -26,9 +26,11 @@ public final class Constants {
   public static final String REQ_PARAM_PUBLICATION_FREQUENCY = "pubFreq";
   public static final String DWC_ROWTYPE_OCCURRENCE = DwcTerm.Occurrence.qualifiedName();
   public static final String DWC_ROWTYPE_TAXON = DwcTerm.Taxon.qualifiedName();
+  public static final String DWC_ROWTYPE_EVENT = DwcTerm.Event.qualifiedName();
   public static final String DWC_OCCURRENCE_ID = "http://rs.tdwg.org/dwc/terms/occurrenceID";
-  public static final String DWC_BASIS_OF_RECORD = "http://rs.tdwg.org/dwc/terms/basisOfRecord";
   public static final String DWC_TAXON_ID = "http://rs.tdwg.org/dwc/terms/taxonID";
+  public static final String DWC_EVENT_ID = "http://rs.tdwg.org/dwc/terms/eventID";
+  public static final String DWC_BASIS_OF_RECORD = "http://rs.tdwg.org/dwc/terms/basisOfRecord";
   public static final String DWC_DATASET_ID = "http://rs.tdwg.org/dwc/terms/datasetID";
   public static final String VOCAB_URI_DATASET_TYPE = "http://rs.gbif.org/vocabulary/gbif/datasetType";
   public static final String VOCAB_URI_LANGUAGE = "http://iso.org/639-2";

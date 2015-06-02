@@ -66,6 +66,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   private static final String SERVICE_TYPE_EML = "EML";
   private static final String SERVICE_TYPE_OCCURRENCE = "DWC-ARCHIVE-OCCURRENCE";
   private static final String SERVICE_TYPE_CHECKLIST = "DWC-ARCHIVE-CHECKLIST";
+  private static final String SERVICE_TYPE_SAMPLING_EVENT = "DWC-ARCHIVE-SAMPLING-EVENT";
   private static final String SERVICE_TYPE_RSS = "RSS";
   private static final String CONTACT_TYPE_TECHNICAL = "technical";
   private static final String CONTACT_TYPE_ADMINISTRATIVE = "administrative";
@@ -142,10 +143,11 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   }
 
   /**
-   * Builds service type parameters used in push or post to Registry. There can only be 3 different types of Services
-   * that the IPT registers: EML, DWC-ARCHIVE-OCCURRENCE or DWC-ARCHIVE-CHECKLIST - that's it.
+   * Builds service type parameters used in push or post to Registry. There can only be 4 different types of Services
+   * that the IPT registers: EML, DWC-ARCHIVE-OCCURRENCE, DWC-ARCHIVE-CHECKLIST, DWC-ARCHIVE-SAMPLING-EVENT - that's it.
    *
    * @param resource published resource
+   *
    * @return RegistryServices object, with urls and types strings
    */
   private RegistryServices buildServiceTypeParams(Resource resource) {
@@ -155,7 +157,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     rs.serviceTypes = SERVICE_TYPE_EML;
     rs.serviceURLs = cfg.getResourceEmlUrl(resource.getShortname());
 
-    // now check if there are any other services: either DWC-ARCHIVE-OCCURRENCE or DWC-ARCHIVE-CHECKLIST
+    // check are there any other services: DWC-ARCHIVE-OCCURRENCE, DWC-ARCHIVE-CHECKLIST, or DWC-ARCHIVE-SAMPLING-EVENT
     if (resource.hasPublishedData() && resource.getCoreTypeTerm() != null) {
       if (DwcTerm.Occurrence == resource.getCoreTypeTerm()) {
         log.debug("Registering EML & DwC-A Occurrence Service");
@@ -165,6 +167,10 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
         log.debug("Registering EML & DwC-A Checklist Service");
         rs.serviceURLs += "|" + cfg.getResourceArchiveUrl(resource.getShortname());
         rs.serviceTypes += "|" + SERVICE_TYPE_CHECKLIST;
+      } else if (DwcTerm.Event == resource.getCoreTypeTerm()) {
+        log.debug("Registering EML & DwC-A Sampling Event Service");
+        rs.serviceURLs += "|" + cfg.getResourceArchiveUrl(resource.getShortname());
+        rs.serviceTypes += "|" + SERVICE_TYPE_SAMPLING_EVENT;
       } else {
         log.warn("Unknown core resource type " + resource.getCoreTypeTerm());
         log.debug("Registering EML service only");

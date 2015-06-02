@@ -113,11 +113,17 @@ public class ExtensionManagerImplTest {
     File tmpNewerOccCore = new File(myTmpDir, "dwc_occurrence_2015-04-24.xml");
     assertTrue(tmpNewerOccCore.exists());
 
-    // copy newer version of occurrence core extension to temporary directory
+    // copy latest version of taxon core extension to temporary directory
     File taxonCore = FileUtils.getClasspathFile("extensions/dwc_taxon_2015-04-24.xml");
     org.apache.commons.io.FileUtils.copyFileToDirectory(taxonCore, myTmpDir);
     File tmpTaxonCore = new File(myTmpDir, "dwc_taxon_2015-04-24.xml");
     assertTrue(tmpTaxonCore.exists());
+
+    // copy latest version of event core extension to temporary directory
+    File eventCore = FileUtils.getClasspathFile("extensions/dwc_event_2015-04-24.xml");
+    org.apache.commons.io.FileUtils.copyFileToDirectory(eventCore, myTmpDir);
+    File tmpEventCore = new File(myTmpDir, "dwc_event_2015-04-24.xml");
+    assertTrue(tmpEventCore.exists());
 
     // mock returning temporary files when looked up by their 'safe' filenames
     when(mockDataDir.tmpFile("http_rs_gbif_org_core_dwc_occurrence_xml.xml")).thenReturn(tmpOccCore);
@@ -125,6 +131,8 @@ public class ExtensionManagerImplTest {
       .thenReturn(tmpNewerOccCore);
     when(mockDataDir.tmpFile("http_rs_gbif_org_sandbox_core_dwc_taxon_2015-04-24_xml.xml"))
       .thenReturn(tmpTaxonCore);
+    when(mockDataDir.tmpFile("http_rs_gbif_org_sandbox_core_dwc_event_2015-04-24_xml.xml"))
+      .thenReturn(tmpEventCore);
 
     // Mock downloading extension into tmpFile - we're cheating by handling the actual file already as if it
     // were downloaded already. Furthermore, mock download() response with StatusLine with 200 OK response code
@@ -134,11 +142,18 @@ public class ExtensionManagerImplTest {
 
     // mock returning newly created occurrence core extension file
     File occCoreExtension = new File(myTmpDir, "http_rs_tdwg_org_dwc_terms_Occurrence.xml");
-    File taxonCoreExtension = new File(myTmpDir, "http_rs_tdwg_org_dwc_terms_Taxon.xml");
     when(mockDataDir.configFile(ExtensionManagerImpl.CONFIG_FOLDER + "/http_rs_tdwg_org_dwc_terms_Occurrence.xml"))
       .thenReturn(occCoreExtension);
+
+    // mock returning newly created taxon core extension file
+    File taxonCoreExtension = new File(myTmpDir, "http_rs_tdwg_org_dwc_terms_Taxon.xml");
     when(mockDataDir.configFile(ExtensionManagerImpl.CONFIG_FOLDER + "/http_rs_tdwg_org_dwc_terms_Taxon.xml"))
       .thenReturn(taxonCoreExtension);
+
+    // mock returning newly created event core extension file
+    File eventCoreExtension = new File(myTmpDir, "http_rs_tdwg_org_dwc_terms_Event.xml");
+    when(mockDataDir.configFile(ExtensionManagerImpl.CONFIG_FOLDER + "/http_rs_tdwg_org_dwc_terms_Event.xml"))
+      .thenReturn(eventCoreExtension);
 
     // create instance
     extensionManager =
@@ -149,7 +164,7 @@ public class ExtensionManagerImplTest {
   @Test
   public void testInstallCoreTypes() {
     extensionManager.installCoreTypes();
-    assertEquals(2, extensionManager.list().size());
+    assertEquals(3, extensionManager.list().size());
     // get ext. and assert a couple properties
     Extension ext = extensionManager.get("http://rs.tdwg.org/dwc/terms/Occurrence");
     assertEquals(169, ext.getProperties().size());
