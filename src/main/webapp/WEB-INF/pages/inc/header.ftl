@@ -5,7 +5,8 @@
 [#setting locale="en"]
 [#setting url_escaping_charset="UTF-8"]
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:dc="http://purl.org/dc/elements/1.1/">
   <head>
   <link rel="stylesheet" type="text/css" media="all" href="${baseURL}/styles/reset.css" />
 	<link rel="stylesheet" type="text/css" media="all" href="${baseURL}/styles/text.css" />

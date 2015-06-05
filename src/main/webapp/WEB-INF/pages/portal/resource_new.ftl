@@ -5,9 +5,9 @@
   <#include "/WEB-INF/pages/macros/forms.ftl"/>
   <#include "/WEB-INF/pages/macros/versionsTable.ftl"/>
 <#--
-	Construct a Contact. Parameters are the actual contact object, and the contact type
+	Construct a Contact. Parameters are the actual contact object, the contact type, and the Dublin Core Property Type
 -->
-<#macro contact con type>
+<#macro contact con type dcPropertyType>
   <div class="contact">
 
     <div class="contactType">
@@ -19,7 +19,7 @@
     </div>
 
     <#-- minimum info is the last name, organisation name, or position name -->
-    <div class="contactName">
+    <div <#if dcPropertyType?has_content>property="dc:${dcPropertyType}" </#if> class="contactName">
       <#if con.lastName?has_content>
         ${con.firstName!} ${con.lastName!}
       <#elseif con.organisation?has_content>
@@ -87,12 +87,12 @@
 </#macro>
 
 <#-- Creates a column list of contacts, defaults to 2 columns -->
-  <#macro contactList contacts contactType="" columns=2>
+  <#macro contactList contacts contactType="" dcPropertyType="" columns=2>
     <#list contacts as c>
       <#if c_index%columns==0>
       <div class="contact_row col${columns}">
       </#if>
-      <@contact con=c type=contactType/>
+      <@contact con=c type=contactType dcPropertyType=dcPropertyType />
       <#if c_index%columns==columns-1 || !c_has_next >
           <!-- end of row -->
       </div>
@@ -223,7 +223,7 @@
                         <div id="watermark"><@s.text name='manage.overview.metadata.preview'><@s.param>${resource.emlVersion.toPlainString()}</@s.param></@s.text></div>
                     </#if>
                     <div>
-                        <h1 class="rtitle">${eml.title!resource.shortname}</h1>
+                        <h1 property="dc:title" class="rtitle">${eml.title!resource.shortname}</h1>
                         <div>
                           <#assign doi>${action.findDoiAssignedToPublishedVersion()!}</#assign>
                           <#if doi?has_content>
@@ -232,20 +232,21 @@
                           <#if doi?has_content && doiUrl?has_content>
                             <div id="resourcedoi">
                               <span class="doi">
-                                <a href="${doiUrl!}">${doi}</a>
+                                <a property="dc:identifier" href="${doiUrl!}">${doi}</a>
                               </span>
                             </div>
                           </#if>
                           <p class="undertitle">
                             <#if resource.lastPublished?? && resource.organisation??>
-                            <#-- the existence of parameter version means the version is not equal to the latest published version -->
-                            <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
-                              <em class="warn"><@s.text name='portal.resource.version'/>&nbsp;${version.toPlainString()}</em>
-                              <@s.text name='portal.resource.publishedOn'><@s.param>${resource.organisation.name}</@s.param></@s.text> ${eml.pubDate?date?string.medium}
-                            <#else>
-                              <@s.text name='portal.resource.latest.version'/>
-                              <@s.text name='portal.resource.publishedOn'><@s.param>${resource.organisation.name}</@s.param></@s.text> ${eml.pubDate?date?string.medium}
-                            </#if>
+                              <#-- the existence of parameter version means the version is not equal to the latest published version -->
+                              <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
+                                <em class="warn"><@s.text name='portal.resource.version'/>&nbsp;${version.toPlainString()}</em>
+                                <@s.text name='portal.resource.publishedOn'><@s.param>${resource.organisation.name}</@s.param></@s.text> <span property="dc:issued">${eml.pubDate?date?string.medium}</span>
+                              <#else>
+                                <@s.text name='portal.resource.latest.version'/>
+                                <@s.text name='portal.resource.publishedOn'><@s.param>${resource.organisation.name}</@s.param></@s.text> <span property="dc:issued">${eml.pubDate?date?string.medium}</span>
+                              </#if>
+                              <span property="dc:publisher" style="display: none">${resource.organisation.name}</span>
                           <#else>
                             <@s.text name='portal.resource.published.never.long'/>
                           </#if>
@@ -258,7 +259,7 @@
                                 <img src="${eml.logoUrl}"/>
                             </div>
                         </#if>
-                        <p>
+                        <p property="dc:abstract">
                           <#if eml.description?has_content>
                             <@textWithFormattedLink eml.description!no_description/>
                           <#else>
@@ -372,7 +373,7 @@
                               </#if>
                               <@s.text name='portal.resource.cite.help'/>:
                             </p>
-                            <p class="howtocite"><@textWithFormattedLink eml.citation.citation/></p>
+                            <p property="dc:bibliographicCitation" class="howtocite"><@textWithFormattedLink eml.citation.citation/></p>
                         </div>
                     </div>
                 </#if>
@@ -384,7 +385,7 @@
                         <h1><@s.text name='eml.intellectualRights.simple'/></h1>
                         <p><@s.text name='portal.resource.rights.help'/>:</p>
                         <@licenseLogoClass eml.intellectualRights!/>
-                        <p><#noescape>${eml.intellectualRights!}</#noescape></p>
+                        <p property="dc:license"><#noescape>${eml.intellectualRights!}</#noescape></p>
                     </div>
                 </div>
                 </#if>
@@ -410,7 +411,7 @@
                   <div id="keywords" class="row">
                       <div>
                           <h1><@s.text name='portal.resource.summary.keywords'/></h1>
-                          <p><@textWithFormattedLink eml.subject!no_description/></p>
+                          <p property="dc:subject"><@textWithFormattedLink eml.subject!no_description/></p>
                       </div>
                   </div>
               </#if>
@@ -424,7 +425,7 @@
                         <table>
                           <#list eml.physicalData as item>
                             <#assign link=eml.physicalData[item_index]/>
-                              <tr><th>${link.name!}</th><td><a href="${link.distributionUrl}">${link.distributionUrl!"?"}</a>
+                              <tr property="dc:isFormatOf"><th>${link.name!}</th><td><a href="${link.distributionUrl}">${link.distributionUrl!"?"}</a>
                                 <#if link.charset?? || link.format?? || link.formatVersion??>
                                 ${link.charset!} ${link.format!} ${link.formatVersion!}
                                 </#if>
@@ -442,26 +443,26 @@
                         <h1><@s.text name='portal.resource.contacts'/></h1>
                         <p><@s.text name='portal.resource.creator.intro'/>:</p>
                         <div class="fullwidth">
-                          <@contactList eml.creators/>
+                          <@contactList contacts=eml.creators dcPropertyType='creator'/>
                         </div>
                         <div class="clearfix"></div>
 
                         <p class="twenty_top"><@s.text name='portal.resource.contact.intro'/>:</p>
                         <div class="fullwidth">
-                          <@contactList eml.contacts/>
+                          <@contactList contacts=eml.contacts dcPropertyType='mediator'/>
                         </div>
                         <div class="clearfix"></div>
 
                         <p class="twenty_top"><@s.text name='portal.metadata.provider.intro'/>:</p>
                         <div class="fullwidth">
-                          <@contactList eml.metadataProviders/>
+                          <@contactList contacts=eml.metadataProviders dcPropertyType='contributor'/>
                         </div>
                         <div class="clearfix"></div>
 
                       <#if (eml.associatedParties?size>0)>
                           <p class="twenty_top"><@s.text name='portal.associatedParties.intro'/>:</p>
                           <div class="fullwidth">
-                            <@contactList eml.associatedParties/>
+                            <@contactList contacts=eml.associatedParties dcPropertyType='contributor'/>
                           </div>
                           <div class="clearfix"></div>
                       </#if>
@@ -474,7 +475,7 @@
                     <div id="geospatial" class="row">
                         <div>
                             <h1><@s.text name='portal.resource.summary.geocoverage'/></h1>
-                            <p><@textWithFormattedLink eml.geospatialCoverages[0].description!no_description/></p>
+                            <p property="dc:spatial"><@textWithFormattedLink eml.geospatialCoverages[0].description!no_description/></p>
                             <table>
                                     <tr>
                                         <th><@s.text name='eml.geospatialCoverages.boundingCoordinates'/></th>
@@ -529,22 +530,22 @@
                               <#if ("${item.type}" == "DATE_RANGE") && eml.temporalCoverages[item_index].startDate?? && eml.temporalCoverages[item_index].endDate?? >
                                   <tr>
                                       <th><@s.text name='eml.temporalCoverages.startDate'/> / <@s.text name='eml.temporalCoverages.endDate'/></th>
-                                      <td>${eml.temporalCoverages[item_index].startDate?date} / ${eml.temporalCoverages[item_index].endDate?date}</td>
+                                      <td property="dc:temporal">${eml.temporalCoverages[item_index].startDate?date} / ${eml.temporalCoverages[item_index].endDate?date}</td>
                                   </tr>
                               <#elseif "${item.type}" == "SINGLE_DATE" && eml.temporalCoverages[item_index].startDate?? >
                                   <tr>
                                       <th><@s.text name='eml.temporalCoverages.startDate'/></th>
-                                      <td>${eml.temporalCoverages[item_index].startDate?date}</td>
+                                      <td property="dc:temporal">${eml.temporalCoverages[item_index].startDate?date}</td>
                                   </tr>
                               <#elseif "${item.type}" == "FORMATION_PERIOD" && eml.temporalCoverages[item_index].formationPeriod?? >
                                   <tr>
                                       <th><@s.text name='eml.temporalCoverages.formationPeriod'/></th>
-                                      <td>${eml.temporalCoverages[item_index].formationPeriod}</td>
+                                      <td property="dc:temporal">${eml.temporalCoverages[item_index].formationPeriod}</td>
                                   </tr>
                               <#elseif eml.temporalCoverages[item_index].livingTimePeriod??> <!-- LIVING_TIME_PERIOD -->
                                   <tr>
                                       <th><@s.text name='eml.temporalCoverages.livingTimePeriod'/></th>
-                                      <td>${eml.temporalCoverages[item_index].livingTimePeriod!}</td>
+                                      <td property="dc:temporal">${eml.temporalCoverages[item_index].livingTimePeriod!}</td>
                                   </tr>
                               </#if>
                             </table>
@@ -709,7 +710,7 @@
                     <ol>
                       <#list eml.bibliographicCitationSet.bibliographicCitations as item>
                         <#if item.citation?has_content>
-                            <li>
+                            <li property="dc:references">
                               <@textWithFormattedLink item.citation/>
                                 <@textWithFormattedLink item.identifier!/>
                             </li>
