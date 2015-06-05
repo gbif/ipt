@@ -41,12 +41,15 @@
 	</tr>
 	<tr>
 	  <td>
-		<#if isRegistered><a href="${baseURL}/admin/organisations.do"><img src="${baseURL}/images/icons/organisation.png" /></a>	
-		<#else><img src="${baseURL}/images/icons/organisation-grey.png" /></#if>
+		  <#if registeredIpt??>
+				<a href="${baseURL}/admin/organisations.do"><img src="${baseURL}/images/icons/organisation.png" /></a>
+		  <#else>
+				<img src="${baseURL}/images/icons/organisation-grey.png" />
+		  </#if>
 	  </td>
 	  <td colspan="2">
 		<@s.text name="admin.home.editOrganisations"/>
-		<#if !isRegistered><div id="un-registered"><@s.text name="admin.home.editOrganisations.disabled"/></div></#if>
+		<#if !registeredIpt??><div id="un-registered"><@s.text name="admin.home.editOrganisations.disabled"/></div></#if>
 	  </td>
 	</tr>
 

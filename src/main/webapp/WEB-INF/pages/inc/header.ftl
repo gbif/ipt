@@ -1,22 +1,13 @@
 [#ftl]
 [#setting date_format="yyyy-MM-dd"]
-[#setting time_format="dd/MM/yy"]
-[#setting datetime_format="dd/MM/yy"]
+[#setting time_format="hh:mm:ss"]
+[#setting datetime_format="iso"]
 [#setting locale="en"]
 [#setting url_escaping_charset="UTF-8"]
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-    [#assign iptIntro = "The Integrated Publishing Toolkit (IPT) is a tool developed by the Global Biodiversity Information Facility (GBIF) to provide an easy and efficient way of publishing biodiversity data." /]
-    [#assign keywords = "GBIF, Global Biodiversity Information Facility, IPT, Integrated Publishing Toolkit, checklist, occurrence, metadata, DwC-A, Darwin Core, Darwin Core Archive, biodiversity data, data paper, EML" /]
-    [#if hostingOrganisation?has_content && hostingOrganisation.name??]
-      [#assign hostDescription = " This IPT is hosted by" + hostingOrganisation.name + "."/]
-      [#assign hostKeyword = ", " + hostingOrganisation.name + "." /]
-    [/#if]
-    <meta name="copyright" lang="en" content="GBIF" />
-    <meta name="description" lang="en" content="${iptIntro}${hostDescription!""}" />
-    <meta name="keywords" lang="en" content="${keywords}${hostKeyword!"."}" />
-    <link rel="stylesheet" type="text/css" media="all" href="${baseURL}/styles/reset.css" />
+  <head>
+  <link rel="stylesheet" type="text/css" media="all" href="${baseURL}/styles/reset.css" />
 	<link rel="stylesheet" type="text/css" media="all" href="${baseURL}/styles/text.css" />
 	<link rel="stylesheet" type="text/css" media="all" href="${baseURL}/styles/960_24_col.css" />
  	<link rel="stylesheet" type="text/css" href="${baseURL}/styles/main.css" />
@@ -51,6 +42,26 @@
   })();
 </script>
 [/#if]
+
+    [#-- Metadata used by browsers (title in browser toolbar, bookmark when added to favorites), search engines (keywords) --]
+    [#assign metaKeywords = "GBIF, Global Biodiversity Information Facility, IPT, Integrated Publishing Toolkit, checklist, occurrence, metadata, DwC-A, Darwin Core, Darwin Core Archive, biodiversity data, data paper, EML" /]
+    [#assign registeredIpt = action.getRegisteredIpt()/]
+    [#if resource?? && eml??]
+      <title>${eml.title!"IPT"}</title>
+      <meta name="description" content="${eml.description!}" charset="UTF-8"}" />
+      [#if eml.subject?has_content]
+        <meta name="keywords" content="${eml.subject?replace(";", ",")}" charset="UTF-8" />
+      [/#if]
+    [#elseif registeredIpt??]
+      <title>${registeredIpt.name!"IPT"}</title>
+      <meta name="description" content="${registeredIpt.description!}" charset="UTF-8"}" />
+      <meta name="keywords" content="${metaKeywords}" charset="UTF-8" />
+    [#else]
+      <title>IPT</title>
+      <meta name="description" content="The Integrated Publishing Toolkit (IPT) is a tool developed by the Global Biodiversity Information Facility (GBIF) to provide an easy and efficient way of publishing biodiversity data." charset="UTF-8"}" />
+      <meta name="keywords" content="${metaKeywords}" charset="UTF-8" />
+    [/#if]
+    <meta name="generator" content="IPT ${cfg.version!}" />
 
 <script type="text/javascript">
 $(document).ready(function(){

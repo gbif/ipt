@@ -2,7 +2,7 @@ package org.gbif.ipt.action;
 
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
-import org.gbif.ipt.model.Organisation;
+import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -53,9 +53,6 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
   protected AppConfig cfg;
   protected RegistrationManager registrationManager;
 
-  // the hosting organization
-  private Organisation hostingOrganisation;
-
   @Inject
   public BaseAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager) {
     this.textProvider = textProvider;
@@ -65,7 +62,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
 
   /**
    * Adds an exception message, if not null, to the action warnings.
-   * 
+   *
    * @param e the exception from which the message is taken
    */
   protected void addActionExceptionWarning(Exception e) {
@@ -92,7 +89,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
 
   /**
    * Return a list of action warning strings.
-   * 
+   *
    * @return list of action warning strings.
    */
   public List<String> getActionWarnings() {
@@ -116,7 +113,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
 
   /**
    * Return the currently logged in (session) user.
-   * 
+   *
    * @return the currently logged in (session) user or null if not logged in
    */
   public User getCurrentUser() {
@@ -231,7 +228,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
 
   /**
    * Determine whether some user is logged in or not.
-   * 
+   *
    * @return true if some user is logged in or false otherwise
    */
   public boolean isLoggedIn() {
@@ -259,9 +256,6 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
     // so we investigate the request object directly BEFORE the param interceptor is called
     // this allows us to load any existing instances that should be modified
     id = StringUtils.trimToNull(req.getParameter("id"));
-
-    // set hosting organization
-    setHostingOrganisation(registrationManager.getHostingOrganisation());
   }
 
   public void setServletRequest(HttpServletRequest req) {
@@ -280,7 +274,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
   /**
    * Utility to compare 2 objects for comparison when both converted to strings useful to compare if a submitted value
    * is the same as the persisted value.
-   * 
+   *
    * @return true only if o1.equals(o2)
    */
   protected boolean stringEquals(Object o1, Object o2) {
@@ -295,29 +289,9 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
   }
 
   /**
-   * Get the hosting organization of the IPT.
-   * 
-   * @return hosting organization
+   * @return the registered IPT instance, or null if the IPT hasn't been registered yet.
    */
-  public Organisation getHostingOrganisation() {
-    return hostingOrganisation;
-  }
-
-  /**
-   * Set the hosting organization variable, or set it to null if it doesn't exist.
-   * 
-   * @param hostingOrganisation hosting organization
-   */
-  public void setHostingOrganisation(Organisation hostingOrganisation) {
-    this.hostingOrganisation = (hostingOrganisation != null) ? hostingOrganisation : null;
-  }
-
-  /**
-   * Determined if the IPT has been registered to an organization yet or not.
-   * 
-   * @return whether the IPT has been registered or not
-   */
-  public boolean getIsRegistered() {
-    return getHostingOrganisation() != null;
+  public Ipt getRegisteredIpt() {
+    return registrationManager.getIpt();
   }
 }

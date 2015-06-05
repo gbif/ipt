@@ -96,13 +96,6 @@ public class RegistrationAction extends POSTAction {
   }
 
   /**
-   * @return the registered
-   */
-  public boolean getIsRegistered() {
-    return registrationManager.getHostingOrganisation() != null;
-  }
-
-  /**
    * @return the organisation
    */
   public Organisation getOrganisation() {
@@ -115,10 +108,6 @@ public class RegistrationAction extends POSTAction {
   public List<Organisation> getOrganisations() {
     organisations.addAll(orgSession.organisations);
     return organisations;
-  }
-
-  public Ipt getRegisteredIpt() {
-    return registrationManager.getIpt();
   }
 
   public String getRegistryURL() {
@@ -134,10 +123,9 @@ public class RegistrationAction extends POSTAction {
 
   @Override
   public void prepare() {
-    // load hosting organization - call superclass' prepare()
     super.prepare();
     // will not be session scoping the list of organisations from the registry as this is basically a 1 time step
-    if (!getIsRegistered() && !orgSession.isLoaded()) {
+    if (getRegisteredIpt() == null && !orgSession.isLoaded()) {
       try {
         orgSession.load();
       } catch (RegistryException e) {
@@ -157,7 +145,7 @@ public class RegistrationAction extends POSTAction {
 
   @Override
   public String save() {
-    if (registrationManager.getHostingOrganisation() == null) {
+    if (getRegisteredIpt() == null) {
       try {
         // register against the Registry
         registryManager.registerIPT(ipt, organisation);
@@ -170,9 +158,8 @@ public class RegistrationAction extends POSTAction {
         addActionMessage(getText("admin.registration.success"));
         return SUCCESS;
       } catch (RegistryException re) {
-        // log as specific error message as possible about why the Registry error occurred
+        // add error message explaining why the Registry error occurred
         String msg = RegistryException.logRegistryException(re.getType(), this);
-        // add error message about Registry error
         addActionError(msg);
         LOG.error(msg);
 
@@ -222,7 +209,7 @@ public class RegistrationAction extends POSTAction {
       registrationManager.save();
       addActionMessage(getText("admin.registration.success.update"));
     } catch (RegistryException e) {
-      // log as specific error message as possible about why the Registry error occurred
+      // add error message explaining why the Registry error occurred
       String msg = RegistryException.logRegistryException(e.getType(), this);
       // add error message about Registry error
       addActionError(msg);
@@ -244,7 +231,7 @@ public class RegistrationAction extends POSTAction {
   @Override
   public void validate() {
     if (isHttpPost()) {
-      if (getIsRegistered()) {
+      if (getRegisteredIpt() != null) {
         iptValidation.validateUpdate(this, getRegisteredIpt());
       } else {
         iptValidation.validate(this, ipt);
