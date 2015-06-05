@@ -39,7 +39,7 @@
                         </tr>
                         <tr>
                             <th>${doiTitle}</th>
-                          <#if history.status == "PUBLIC">
+                          <#if history.status! == "PUBLIC">
                             <#if history.doi??>
                                 <td>${history.doi.getDoiName()}</td>
                             <#else>
