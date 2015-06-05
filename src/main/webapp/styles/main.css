@@ -475,17 +475,16 @@ div.resourceOverview div.bodyOverview {
 	display: table-cell;
 }
 div.resourceOverview div.bodyOverview div.details {
-	width: 650px;
 	font-size: 0.9em;
 }
 div.resourceOverview div.bodyOverview div.details table {
-	width: 80%;
+	width: 100%;
 }
 div.resourceOverview div.bodyOverview div.details table.publishedRelease {
   width: 70%;
 }
 div.resourceOverview div.bodyOverview div.details table th {
-	width: 170px;
+  width: 33%;
 	font-weight: bold;
 }
 div.resourceOverview div.bodyOverview div.details table td {
@@ -947,6 +946,7 @@ div.definition div.body table th {
 	font-weight: bold;
 	font-size: 0.9em;
 	width: 150px;
+  line-height: 2.0em;
 }
 div.definition div.body div.details {
   font-size: 0.9em;
@@ -1239,13 +1239,7 @@ span.doi_colon {
   opacity: 0.7;
   margin-bottom: 5px;
 }
-tr.mapping_row > td, th {
-  line-height: 90%;
-  vertical-align: middle;
-}
-tr.mapping_row > th {
-  padding-right: 10px;
-}
+
 td.separator {
   border-right: 1px solid #EEEEEE;
 }
@@ -1553,12 +1547,6 @@ div.contact .email + .phone {
   float: left;
   padding-bottom: 20px;
   padding-right: 10px;
-}
-
-table th {
-  width: 182px;
-  vertical-align: top;
-  line-height: 23px;
 }
 
 ul {

@@ -25,18 +25,12 @@
     <p>
       <@s.text name='manage.overview.source.intro'/>
     </p>
-
       <div class="details twenty_bottom">
-          <table>
-            <tr>
-              <#if sourcesModifiedSinceLastPublication>
-                  <th><@s.text name='basic.lastModified'/>:</th>
-                  <td>${resource.getSourcesModified()?date?string.medium!}</td>
-              <#elseif resource.lastPublished??>
-                  <th><@s.text name="manage.overview.notModified"/></th>
-              </#if>
-            </tr>
-          </table>
+        <#if sourcesModifiedSinceLastPublication>
+          <@s.text name='manage.home.last.modified'/> ${resource.getSourcesModified()?date?string.medium!}
+        <#elseif resource.lastPublished??>
+          <@s.text name="manage.overview.notModified"/>
+        </#if>
       </div>
 
     <#if (resource.sources?size>0)>
@@ -46,10 +40,10 @@
             <tr>
               <#if src.isFileSource()>
                 <th>${src.name} <@s.text name='manage.overview.source.file'/></th>
-                <td>${src.fileSizeFormatted},&nbsp;${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>,&nbsp;${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/>.&nbsp;${(src.lastModified?datetime?string)!}<#if !src.readable>&nbsp;<img src="${baseURL}/images/warning.gif"/></#if></td>
+                <td>${src.fileSizeFormatted},&nbsp;${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>,&nbsp;${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/>.&nbsp;${(src.lastModified?date?string.medium)!}<#if !src.readable>&nbsp;<img src="${baseURL}/images/warning.gif"/></#if></td>
               <#elseif src.isExcelSource()>
                 <th>${src.name} <@s.text name='manage.overview.source.excel'/></th>
-                <td>${src.fileSizeFormatted},&nbsp;${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>,&nbsp;${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/>.&nbsp;${(src.lastModified?datetime?string)!}<#if !src.readable>&nbsp;<img src="${baseURL}/images/warning.gif"/></#if></td>
+                <td>${src.fileSizeFormatted},&nbsp;${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>,&nbsp;${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/>.&nbsp;${(src.lastModified?date?string.medium)!}<#if !src.readable>&nbsp;<img src="${baseURL}/images/warning.gif"/></#if></td>
               <#else>
                 <th>${src.name} <@s.text name='manage.overview.source.sql'/></th>
                 <td>db=${src.database!"..."},&nbsp;${src.columns}&nbsp;<@s.text name='manage.overview.source.columns'/>.<#if !src.readable>&nbsp;<img src="${baseURL}/images/warning.gif"/></#if></td>
@@ -118,17 +112,12 @@
       </p>
 
       <div class="details twenty_bottom">
-        <table>
-          <tr>
-            <#if mappingsModifiedSinceLastPublication>
-              <th><@s.text name='basic.lastModified'/>:</th>
-              <td>${resource.getMappingsModified()?date?string.medium!}</td>
-              <#elseif resource.lastPublished??>
-                <th><@s.text name="manage.overview.notModified"/></th>
-              </#if>
-            </tr>
-          </table>
-        </div>
+        <#if mappingsModifiedSinceLastPublication>
+          <@s.text name='manage.home.last.modified'/> ${resource.getMappingsModified()?date?string.medium!}
+        <#elseif resource.lastPublished??>
+          <@s.text name="manage.overview.notModified"/>
+        </#if>
+      </div>
 
     <#if resource.coreRowType?has_content>
         <div class="details">
@@ -137,13 +126,14 @@
               <#list resource.getMappings(resource.coreRowType) as m>
                   <tr <#if m_index==0>class="mapping_row"</#if>>
                       <th><#if m_index==0>${m.extension.title}</#if></th>
-                      <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}</td>
+                      <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}.&nbsp;${(m.lastModified?date?string.medium)!}</td>
                       <td>
+                          <!-- preview icon is taken from Gentleface Toolbar Icon Set available from http://gentleface.com/free_icon_set.html licensed under CC-BY -->
+                          <a href="mappingPeek.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}" class="icon icon-preview peekBtn"/>
                           <a class="button" href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
                               <input class="button" type="button" value='<@s.text name='button.edit'/>'/>
                           </a>
-                          <!-- preview icon is taken from Gentleface Toolbar Icon Set available from http://gentleface.com/free_icon_set.html licensed under CC-BY -->
-                          <a href="mappingPeek.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}" class="icon icon-preview peekBtn"/>
+
                       </td>
                   </tr>
               </#list>
@@ -156,13 +146,13 @@
                     <#list resource.getMappings(ext.rowType) as m>
                         <tr <#if m_index==0>class="mapping_row"</#if>>
                             <th><#if m_index==0>${ext.title}</#if></th>
-                            <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}</td>
+                            <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}.&nbsp;${(m.lastModified?date?string.medium)!}</td>
                             <td>
+                                <!-- preview icon is taken from Gentleface Toolbar Icon Set available from http://gentleface.com/free_icon_set.html licensed under CC-BY -->
+                                <a href="mappingPeek.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}" class="icon icon-preview peekBtn"/>
                                 <a class="button" href="mapping.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
                                     <input class="button" type="button" value='<@s.text name='button.edit'/>'/>
                                 </a>
-                                <!-- preview icon is taken from Gentleface Toolbar Icon Set available from http://gentleface.com/free_icon_set.html licensed under CC-BY -->
-                                <a href="mappingPeek.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}" class="icon icon-preview peekBtn"/>
                             </td>
                         </tr>
                     </#list>

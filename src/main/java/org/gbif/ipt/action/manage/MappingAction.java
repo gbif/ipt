@@ -433,8 +433,11 @@ public class MappingAction extends ManagerBaseAction {
         // persist other configurations, e.g. using DOI as datasetId
         mapping.setDoiUsedForDatasetId(doiUsedForDatasetId);
     }
-    // set mappings modified date
-    resource.setMappingsModified(new Date());
+    // update last modified dates
+    Date lastModified = new Date();
+    mapping.setLastModified(lastModified);
+    resource.setMappingsModified(lastModified);
+
     // save entire resource config
     saveResource();
     // report validation without skipping this save

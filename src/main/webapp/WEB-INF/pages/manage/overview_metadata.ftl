@@ -43,10 +43,9 @@
         <table>
           <tr>
             <#if metadataModifiedSinceLastPublication>
-              <th><@s.text name='basic.lastModified'/>:</th>
-              <td>${resource.getMetadataModified()?date?string.medium!}</td>
+              <@s.text name='manage.home.last.modified'/> ${resource.getMetadataModified()?date?string.medium!}
             <#elseif resource.lastPublished??>
-              <th><@s.text name="manage.overview.notModified"/></th>
+              <@s.text name="manage.overview.notModified"/>
             </#if>
           </tr>
         </table>

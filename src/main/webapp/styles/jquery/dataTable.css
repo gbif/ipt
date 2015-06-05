@@ -159,6 +159,7 @@ table.display tr.heading2 td {
 
 table.display td {
 	padding: 3px 10px;
+	vertical-align: top;
 }
 
 table.display td.center {

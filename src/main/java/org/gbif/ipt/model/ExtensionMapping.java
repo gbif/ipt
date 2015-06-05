@@ -18,6 +18,7 @@ import org.gbif.ipt.config.Constants;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -38,6 +39,7 @@ public class ExtensionMapping implements Serializable {
   private String idSuffix;
   private RecordFilter filter;
   private boolean doiUsedForDatasetId;
+  private Date lastModified;
 
   /**
    * @param peek Peek of File source.
@@ -127,6 +129,13 @@ public class ExtensionMapping implements Serializable {
     return doiUsedForDatasetId;
   }
 
+  /**
+   * @return date extension mapping was last modified
+   */
+  public Date getLastModified() {
+    return lastModified;
+  }
+
   public void setExtension(Extension extension) {
     this.extension = extension;
   }
@@ -153,5 +162,9 @@ public class ExtensionMapping implements Serializable {
 
   public void setDoiUsedForDatasetId(boolean doiUsedForDatasetId) {
     this.doiUsedForDatasetId = doiUsedForDatasetId;
+  }
+
+  public void setLastModified(Date lastModified) {
+    this.lastModified = lastModified;
   }
 }
