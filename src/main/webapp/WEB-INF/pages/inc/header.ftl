@@ -46,7 +46,7 @@
 
     [#-- Metadata used by browsers (title in browser toolbar, bookmark when added to favorites), search engines (keywords) --]
     [#assign metaKeywords = "GBIF, Global Biodiversity Information Facility, IPT, Integrated Publishing Toolkit, checklist, occurrence, metadata, DwC-A, Darwin Core, Darwin Core Archive, biodiversity data, data paper, EML" /]
-    [#assign registeredIpt = action.getRegisteredIpt()/]
+    [#assign registeredIpt = action.getRegisteredIpt()!/]
     [#if resource?? && eml??]
       <title>${eml.title!"IPT"}</title>
       <meta name="description" content="${eml.description!}" charset="UTF-8"}" />
