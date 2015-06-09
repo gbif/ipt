@@ -24,6 +24,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -65,9 +66,9 @@ public class ResourceActionTest {
     DataDir mockDataDir = mock(DataDir.class);
 
     // mock: vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, Locale.getDefault().getLanguage(), false);
-    Map<String, String> ranks = new HashMap<String, String>();
-    ranks.put("Class", "http://rs.gbif.org/vocabulary/gbif/rank/class");
+    Map<String, String> ranks = new LinkedHashMap<String, String>();
     ranks.put("kingdom", "http://rs.gbif.org/vocabulary/gbif/rank/kingdom");
+    ranks.put("Class", "http://rs.gbif.org/vocabulary/gbif/rank/class");
     when(mockVocabManager.getI18nVocab(anyString(), anyString(), anyBoolean())).thenReturn(ranks);
 
     // setup Resource with TaxonomicCoverage with 3 TaxonKeyword
