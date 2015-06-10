@@ -31,6 +31,7 @@ public abstract class SourceBase implements Comparable<Source>, Serializable, So
   protected Resource resource;
   protected String name;
   protected String encoding = "UTF-8";
+  protected String multiValueFieldsDelimitedBy;
   protected String dateFormat = "YYYY-MM-DD";
   protected int columns;
   protected boolean readable = false;
@@ -88,22 +89,32 @@ public abstract class SourceBase implements Comparable<Source>, Serializable, So
     return equal(name, o.getName());
   }
 
+  @Override
   public int getColumns() {
     return columns;
   }
 
+  @Override
   public String getDateFormat() {
     return dateFormat;
   }
 
+  @Override
   public String getEncoding() {
     return encoding;
   }
 
+  @Override
+  public String getMultiValueFieldsDelimitedBy() {
+    return multiValueFieldsDelimitedBy;
+  }
+
+  @Override
   public String getName() {
     return name;
   }
 
+  @Override
   public Resource getResource() {
     return resource;
   }
@@ -114,42 +125,57 @@ public abstract class SourceBase implements Comparable<Source>, Serializable, So
     return Objects.hashCode(name);
   }
 
+  @Override
   public boolean isFileSource() {
     return TextFileSource.class.isInstance(this);
   }
 
+  @Override
   public boolean isExcelSource() {
     return ExcelFileSource.class.isInstance(this);
   }
 
+  @Override
   public boolean isSqlSource() {
     return SqlSource.class.isInstance(this);
   }
 
+  @Override
   public boolean isReadable() {
     return readable;
   }
 
+  @Override
   public void setColumns(int columns) {
     this.columns = columns;
   }
 
+  @Override
   public void setDateFormat(String dateFormat) {
     this.dateFormat = dateFormat;
   }
 
+  @Override
   public void setEncoding(String encoding) {
     this.encoding = encoding;
   }
 
+  @Override
+  public void setMultiValueFieldsDelimitedBy(String multiValueFieldsDelimitedBy) {
+    this.multiValueFieldsDelimitedBy = multiValueFieldsDelimitedBy;
+  }
+
+  @Override
   public void setName(String name) {
     this.name = normaliseName(name);
   }
 
+  @Override
   public void setReadable(boolean readable) {
     this.readable = readable;
   }
 
+  @Override
   public void setResource(Resource resource) {
     this.resource = resource;
   }
@@ -158,5 +184,4 @@ public abstract class SourceBase implements Comparable<Source>, Serializable, So
   public String toString() {
     return this.getClass().getSimpleName() + "[" + name + ";" + resource + "]";
   }
-
 }

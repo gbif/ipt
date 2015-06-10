@@ -46,14 +46,13 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.regex.Pattern;
-
 import javax.annotation.Nullable;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Ordering;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-import freemarker.template.TemplateException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
@@ -90,6 +89,13 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
   public static final String ID_COLUMN_NAME = "id";
   public static final String TEXT_FILE_EXTENSION = ".txt";
   public static final String WILDCARD_CHARACTER = "*";
+
+  public static final Set<DwcTerm> DWC_MULTI_VALUE_TERMS = ImmutableSet.of(DwcTerm.recordedBy, DwcTerm.preparations,
+    DwcTerm.associatedMedia, DwcTerm.associatedReferences, DwcTerm.associatedSequences, DwcTerm.associatedTaxa,
+    DwcTerm.otherCatalogNumbers, DwcTerm.associatedOccurrences, DwcTerm.associatedOrganisms,
+    DwcTerm.previousIdentifications, DwcTerm.higherGeography, DwcTerm.georeferencedBy, DwcTerm.georeferenceSources,
+    DwcTerm.typeStatus, DwcTerm.identifiedBy, DwcTerm.identificationReferences, DwcTerm.higherClassification,
+    DwcTerm.measurementDeterminedBy);
 
   private static final Comparator<String> IGNORE_CASE_COMPARATOR = Ordering.from(new Comparator<String>() {
 
@@ -276,16 +282,26 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
   }
 
   /**
-   * Build a new ArchiveField having a ConceptTerm and defaultValue.
+   * Build a new ArchiveField having a ConceptTerm, plus optional multi-value delimiter.
+   * </br>
+   * Since all default values ​​will be written in the data file, they won't be expressed in the archive file (meta.xml).
+   * That's why the default value is always set to null.
    * 
    * @param term ConceptTerm
-   * @param defaultValue default value
+   * @param delimitedBy multi-value delimiter
+   *
    * @return ArchiveField created
    */
-  private ArchiveField buildField(Term term, @Nullable String defaultValue) {
+  private ArchiveField buildField(Term term, @Nullable String delimitedBy) {
     ArchiveField f = new ArchiveField();
     f.setTerm(term);
-    f.setDefaultValue(defaultValue);
+    f.setDefaultValue(null);
+
+    // is this term a multi-value field, and has a multi-value delimiter been configured?
+    if (delimitedBy != null && term instanceof DwcTerm && DWC_MULTI_VALUE_TERMS.contains(term)) {
+      f.setDelimitedBy(delimitedBy);
+    }
+
     return f;
   }
 
@@ -717,8 +733,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       }
 
     } else {
-      writePublicationLogMessage("The core record ID " + coreIdTerm
-        + " was not mapped, so there is no need to validate it");
+      writePublicationLogMessage(
+        "The core record ID " + coreIdTerm + " was not mapped, so there is no need to validate it");
     }
   }
 
@@ -1246,18 +1262,22 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
   }
 
   /**
-   * First we need to find the union of all terms mapped and make them a field in the final archive. We keep a static
-   * mapping only if it applies to ALL mappings of the same term. While doing this, populate set of conceptTerms that
-   * have been mapped (in all files) for a single Extension.
+   * First we need to find the union of all terms mapped (in all files) for a single Extension. Then make each mapped
+   * term a field in the final archive. Static/default mappings are not stored for a field, since they are not
+   * expressed in meta.xml but instead get written to the data file.
    * 
    * @param mappings list of ExtensionMapping
    * @param af ArchiveFile
+   *
    * @return set of conceptTerms that have been mapped (in all files) for a single Extension
    */
-  private Set<Term> addFieldsToArchive(List<ExtensionMapping> mappings, ArchiveFile af) {
+  private Set<Term> addFieldsToArchive(List<ExtensionMapping> mappings, ArchiveFile af) throws GeneratorException{
 
     Set<Term> mappedConceptTerms = new HashSet<Term>();
     for (ExtensionMapping m : mappings) {
+      // multi-value field delimiter, part of each source data configuration
+      String delimitedBy = StringUtils.trimToNull(m.getSource().getMultiValueFieldsDelimitedBy());
+
       for (PropertyMapping pm : m.getFields()) {
 
         // ArchiveFile.ArchiveField must be dwc-api Term such as DcTerm, DwcTerm, etc.
@@ -1265,29 +1285,23 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
         Term term = TERM_FACTORY.findTerm(pm.getTerm().qualifiedName());
 
         if (af.hasTerm(term)) {
-          // different default value?
           ArchiveField field = af.getField(term);
-          if (field.getDefaultValue() != null && !field.getDefaultValue().equals(pm.getDefaultValue())) {
-            // different values, reset to null - we will have to explicitly write the values into the data file
-            field.setDefaultValue(null);
-            mappedConceptTerms.add(term);
+          mappedConceptTerms.add(term);
+
+          // multi-value delimiter must be same across all sources
+          if (field.getDelimitedBy() != null && !field.getDelimitedBy().equals(delimitedBy)) {
+            throw new GeneratorException(
+              "More than one type of multi-value field delimiter is being used in the source files mapped to the "
+              + m.getExtension().getName()
+              + " extension. Please either ensure all source files mapped to this extension use the same delimiter, otherwise just leave the delimiter blank.");
           }
         } else {
-          // check if we have a dynamic mapping
-          if (pm.getIndex() != null) {
+          if ((pm.getIndex() != null && pm.getIndex() >= 0) || pm.getIndex() == null) {
 
             log.debug("Handling property mapping for term: " + term.qualifiedName() + " (index "
-              + pm.getIndex() + ")");
+                      + pm.getIndex() + ")");
 
-            if (pm.getIndex() >= 0) {
-              // Since all default values ​​will be written in the data file, they won't be expressed in the
-              // archive file (meta.xml). That's why we send a null value.
-              af.addField(buildField(term, null));
-              mappedConceptTerms.add(term);
-            }
-          } else {
-            // Only with default value.
-            af.addField(buildField(term, null));
+            af.addField(buildField(term, delimitedBy));
             mappedConceptTerms.add(term);
           }
         }

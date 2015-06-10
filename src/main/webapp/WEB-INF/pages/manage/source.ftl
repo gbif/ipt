@@ -65,6 +65,22 @@ $(document).ready(function(){
           </div>
         </div>
       </div>
+
+      <#-- inputs used by multiple source types -->
+      <#macro multivalue>
+        <@input name="source.multiValueFieldsDelimitedBy" help="i18n" helpOptions={"|":"[ | ] Pipe",";":"[ ; ] Semicolon",",":"[ , ] Comma"}/>
+      </#macro>
+      <#macro dateFormat>
+        <@input name="source.dateFormat" help="i18n" helpOptions={"YYYY-MM-DD":"ISO format: YYYY-MM-DD","MM/DD/YYYY":"US dates: MM/DD/YYYY","DD.MM.YYYY":"DD.MM.YYYY"}/>
+      </#macro>
+      <#macro encoding>
+        <@input name="source.encoding" help="i18n" helpOptions={"UTF-8":"UTF-8","Latin1":"Latin 1","Cp1252":"Windows1252"}/>
+      </#macro>
+      <#macro headerLines>
+        <@input name="source.ignoreHeaderLines" help="i18n" helpOptions={"0":"None","1":"Single Header row"}/>
+      </#macro>
+
+
         <div class="clearfix" style="margin-top: 40px;">
 
           <#if source.isSqlSource()>
@@ -93,20 +109,26 @@ $(document).ready(function(){
             </div>
             </#if>
               <div class="halfcolumn">
-                <@input name="source.encoding" help="i18n" helpOptions={"UTF-8":"UTF-8","Latin1":"Latin 1","Cp1252":"Windows1252"}/>
+                <@encoding/>
               </div>
               <div class="halfcolumn">
-                <@input name="source.dateFormat" help="i18n" helpOptions={"YYYY-MM-DD":"ISO format: YYYY-MM-DD","MM/DD/YYYY":"US dates: MM/DD/YYYY","DD.MM.YYYY":"DD.MM.YYYY"}/>
+                <@dateFormat/>
+              </div>
+              <div class="halfcolumn">
+                <@multivalue/>
+              </div>
+              <div class="halfcolumn">
               </div>
           <#elseif source.isExcelSource()>
           <#-- excel source -->
               <div class="halfcolumn">
-                <@input name="source.ignoreHeaderLines" help="i18n" helpOptions={"0":"None","1":"Single Header row"} i18nkey="fileSource.ignoreHeaderLines"/>
+                <@headerLines/>
               </div>
               <div class="halfcolumn">
                 <@select name="source.sheetIdx" options=source.sheets() value="${source.sheetIdx}" i18nkey="excelSource.sheets" />
               </div>
               <div class="halfcolumn">
+                <@multivalue/>
               </div>
               <div class="halfcolumn">
               </div>
@@ -114,7 +136,7 @@ $(document).ready(function(){
           <#else>
           <#-- file source -->
               <div class="halfcolumn">
-                <@input name="fileSource.ignoreHeaderLines" help="i18n" helpOptions={"0":"None","1":"Single Header row"}/>
+                <@headerLines/>
               </div>
               <div class="halfcolumn">
               </div>
@@ -125,10 +147,15 @@ $(document).ready(function(){
                 <@input name="fileSource.fieldsEnclosedByEscaped" help="i18n" helpOptions={"":"None","&quot;":"Double Quote","'":"Single Quote"}/>
               </div>
               <div class="halfcolumn">
-                <@input name="source.encoding" help="i18n" helpOptions={"UTF-8":"UTF-8","Latin1":"Latin 1","Cp1252":"Windows1252"}/>
+                <@multivalue/>
               </div>
               <div class="halfcolumn">
-                <@input name="source.dateFormat" help="i18n" helpOptions={"YYYY-MM-DD":"ISO format: YYYY-MM-DD","MM/DD/YYYY":"US dates: MM/DD/YYYY","DD.MM.YYYY":"DD.MM.YYYY"}/>
+                <@encoding/>
+              </div>
+              <div class="halfcolumn">
+                <@dateFormat/>
+              </div>
+              <div class="halfcolumn">
               </div>
           </#if>
 

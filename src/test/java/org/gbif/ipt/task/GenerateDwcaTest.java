@@ -84,6 +84,7 @@ import org.xml.sax.SAXException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -579,5 +580,53 @@ public class GenerateDwcaTest {
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
       mockVocabulariesManager);
     generateDwca.call();
+  }
+
+  /**
+   * Test makes sure the multi-value field delimiter gets set on the appropriate term mappings in the meta.xml.
+   */
+  @Test
+  public void testMultiValueFieldDelimiterSet() throws Exception {
+    // retrieve sample zipped resource XML configuration file
+    File resourceXML = FileUtils.getClasspathFile("resources/res1/resource_multivalue.xml");
+    // create resource from single source file
+    File occurrence = FileUtils.getClasspathFile("resources/res1/occurrence_multivalue.txt");
+    Resource resource = getResource(resourceXML, occurrence);
+    resource.getMappings().get(0).getSource().setMultiValueFieldsDelimitedBy("|");
+
+    generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
+      mockVocabulariesManager);
+    int recordCount = generateDwca.call();
+
+    // 2 rows in core file
+    assertEquals(2, recordCount);
+
+    // confirm existence of versioned (archived) DwC-A "dwca-3.0.zip"
+    File versionedDwca = new File(resourceDir, VERSIONED_ARCHIVE_FILENAME);
+    assertTrue(versionedDwca.exists());
+
+    // investigate the DwC-A
+    File dir = FileUtils.createTempDir();
+    CompressionUtil.decompressFile(dir, versionedDwca, true);
+
+    Archive archive = ArchiveFactory.openArchive(dir);
+    assertEquals(DwcTerm.Occurrence, archive.getCore().getRowType());
+    assertEquals(0, archive.getCore().getId().getIndex().intValue());
+    assertEquals(4, archive.getCore().getFieldsSorted().size());
+    assertEquals("|", archive.getCore().getField(DwcTerm.associatedMedia).getDelimitedBy());
+    assertNull(archive.getCore().getField(DwcTerm.occurrenceID).getDelimitedBy());
+
+    // confirm order of fields appear honors order of Occurrence Core Extension
+    assertEquals("associatedMedia", archive.getCore().getFieldsSorted().get(2).getTerm().simpleName());
+
+    // confirm data written to file
+    CSVReader reader = archive.getCore().getCSVReader();
+    // 1st record
+    String[] row = reader.next();
+    assertEquals("http://dummyimage.com/1|http://dummyimage.com/2", row[3]);
+    // 2nd record
+    row = reader.next();
+    assertEquals("http://dummyimage.com/3|http://dummyimage.com/4", row[3]);
+    reader.close();
   }
 }

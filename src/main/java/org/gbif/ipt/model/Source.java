@@ -11,6 +11,11 @@ public interface Source {
 
   String getEncoding();
 
+  /**
+   * @return the character that separates values in a multi-valued field
+   */
+  String getMultiValueFieldsDelimitedBy();
+
   String getName();
 
   Resource getResource();
@@ -28,6 +33,8 @@ public interface Source {
   void setDateFormat(String dateFormat);
 
   void setEncoding(String encoding);
+
+  void setMultiValueFieldsDelimitedBy(String multiValueFieldsDelimitedBy);
 
   void setName(String name);
 
