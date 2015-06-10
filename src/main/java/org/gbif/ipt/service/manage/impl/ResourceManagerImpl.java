@@ -765,8 +765,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         try {
           // retrieve resource record count (number of records published in DwC-A)
           Integer recordCount = f.get();
+          // set number of records published
+          resource.setRecordsPublished(recordCount);
           // finish publication (update registration, persist resource changes)
-          publishEnd(resource, recordCount, action, version);
+          publishEnd(resource, action, version);
           // important: indicate publishing finished successfully!
           succeeded = true;
         } catch (ExecutionException e) {
@@ -1225,8 +1227,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       generateDwca(resource);
       dwca = true;
     } else {
+      // set number of records published
+      resource.setRecordsPublished(0);
       // finish publication now
-      publishEnd(resource, 0, action, version);
+      publishEnd(resource, action, version);
     }
     return dwca;
   }
@@ -1238,14 +1242,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * be called after DwC-A has completed successfully.
    *
    * @param resource    resource
-   * @param recordCount number of records publishes (core file record count)
    * @param action      action
    * @param version     version number to finalize publishing
    *
    * @throws PublicationException   if publication was unsuccessful
    * @throws InvalidConfigException if resource configuration could not be saved
    */
-  private void publishEnd(Resource resource, int recordCount, BaseAction action, BigDecimal version)
+  private void publishEnd(Resource resource, BaseAction action, BigDecimal version)
     throws PublicationException, InvalidConfigException {
     // prevent null action from being handled
     if (action == null) {
@@ -1257,8 +1260,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     resource.setLastPublished(new Date());
     // set next published date (if resource configured for auto-publishing)
     updateNextPublishedDate(resource);
-    // set number of records published
-    resource.setRecordsPublished(recordCount);
     // register/update DOI
     executeDoiWorkflow(resource, version, resource.getReplacedEmlVersion(), action);
     // save the version history
@@ -1498,6 +1499,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         }
         // ensure version history removed
         resource.removeVersionHistory(rollingBack);
+
+        // ensure recordsPublished count gets reset
+        VersionHistory restoredVersionVersionHistory = resource.findVersionHistory(restoring);
+        if (restoredVersionVersionHistory != null) {
+          resource.setRecordsPublished(restoredVersionVersionHistory.getRecordsPublished());
+        }
 
         // update resource.xml
         resource.setEmlVersion(restoring);

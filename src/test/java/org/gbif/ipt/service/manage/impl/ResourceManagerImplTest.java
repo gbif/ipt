@@ -1510,7 +1510,7 @@ public class ResourceManagerImplTest {
     assertNull(history.getModifiedBy());
 
     // next version?
-    assertEquals("4.1",r.getNextVersion().toPlainString());
+    assertEquals("4.1", r.getNextVersion().toPlainString());
   }
 
   /**
@@ -1583,5 +1583,71 @@ public class ResourceManagerImplTest {
     when(mockedDataDir.resourceDwcaFile("res2", new BigDecimal("60.0"))).thenReturn(dwca60);
 
     getResourceManagerImpl().removeArchiveVersion(resource.getShortname(), new BigDecimal("60.0"));
+  }
+
+  /**
+   * Test trying to restore last published version works.
+   * TODO: test resource with persisted dwca files
+   */
+  @Test
+  public void testRestoreVersion()
+    throws ParserConfigurationException, SAXException, IOException, AlreadyExistingException, ImportException,
+    InvalidFilenameException {
+    // create instance of manager
+    ResourceManagerImpl resourceManager = getResourceManagerImpl();
+    // prepare resource
+    Resource resource = getNonRegisteredMetadataOnlyResource();
+
+    // configure resource that is in middle of publication
+    DOI doi = DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX);
+    resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
+    resource.setDoi(doi);
+    resource.setStatus(PublicationStatus.PUBLIC);
+    resource.setEmlVersion(new BigDecimal("3.1"));
+    Date released30 = new Date();
+    Date released31 = new Date();
+    resource.setLastPublished(released31);
+    resource.setRecordsPublished(400);
+
+    // versionHistory for version 3.0
+    VersionHistory history30 =
+      new VersionHistory(new BigDecimal("3.0"), resource.getLastPublished(), PublicationStatus.PUBLIC);
+    history30.setModifiedBy(resource.getModifier());
+    history30.setDoi(null);
+    history30.setStatus(IdentifierStatus.UNAVAILABLE);
+    history30.setReleased(released30);
+    history30.setRecordsPublished(200);
+    resource.addVersionHistory(history30);
+
+    // versionHistory for version 3.1
+    VersionHistory history31 =
+      new VersionHistory(new BigDecimal("3.1"), resource.getLastPublished(), PublicationStatus.PUBLIC);
+    history31.setModifiedBy(resource.getModifier());
+    history31.setDoi(doi);
+    history31.setStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
+    history31.setReleased(released31);
+    history31.setRecordsPublished(400);
+    resource.addVersionHistory(history31);
+
+    // make some assertions
+    assertEquals(new BigDecimal("3.1"), resource.getEml().getEmlVersion());
+    assertEquals(new BigDecimal("3.1"), resource.getLastPublishedVersionsVersion());
+
+    File emlFile31 = mockedDataDir.resourceEmlFile(resource.getShortname(), new BigDecimal("3.1"));
+    assertTrue(emlFile31.exists());
+    File rtfFile31 = mockedDataDir.resourceRtfFile(resource.getShortname(), new BigDecimal("3.1"));
+    assertTrue(rtfFile31.exists());
+    assertEquals(400, resource.getRecordsPublished());
+    assertEquals(released31, resource.getLastPublished());
+
+    // publish, will try to update DOI, triggering exception
+    resourceManager.restoreVersion(resource, new BigDecimal("3.1"), new BigDecimal("3.0"), baseAction);
+
+    // make some assertions
+    assertFalse(emlFile31.exists());
+    assertFalse(rtfFile31.exists());
+    assertEquals(200, resource.getRecordsPublished());
+    assertEquals(new BigDecimal("3.0"), resource.getEmlVersion());
+    assertEquals(released30, resource.getLastPublished());
   }
 }
