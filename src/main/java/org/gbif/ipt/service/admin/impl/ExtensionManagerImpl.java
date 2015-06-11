@@ -156,70 +156,80 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   }
 
   @Override
-  public synchronized void update(String rowType) throws IOException {
+  public synchronized void update(String rowType) throws IOException, RegistryException {
     // identify installed extension by rowType
     Extension installed = get(rowType);
 
     if (installed != null) {
-      try {
-        // verify there is a newer (latest) version
-        Extension latestVersion = null;
-        for (Extension e : registryManager.getExtensions()) {
-          // match by rowType and isLatest, plus the URL cannot be null in order to be installed
-          if (e.getRowType() != null && e.getRowType().equalsIgnoreCase(rowType) && e.isLatest()) {
-            latestVersion = e;
-            break;
+
+      // verify there is a newer (latest) version
+      Extension latestVersion = null;
+      for (Extension e : registryManager.getExtensions()) {
+        // match by rowType and isLatest, plus the URL cannot be null in order to be installed
+        if (e.getRowType() != null && e.getRowType().equalsIgnoreCase(rowType) && e.isLatest()) {
+          latestVersion = e;
+          break;
+        }
+      }
+
+      boolean isNewVersion = false;
+      if (latestVersion != null) {
+        Date issued = installed.getIssued();
+        Date issuedLatest = latestVersion.getIssued();
+        if (issued == null && issuedLatest != null) {
+          isNewVersion = true;
+        } else if (issued != null && issuedLatest != null) {
+          isNewVersion = (issuedLatest.compareTo(issued) > 0); // latest version must have newer issued date
+        }
+      }
+
+      if (isNewVersion && latestVersion.getUrl() != null) {
+        // check if there are any associated resource mappings
+        List<Resource> resourcesToMigrate = Lists.newArrayList();
+        for (Resource r : resourceManager.list()) {
+          if (!r.getMappings(rowType).isEmpty()) {
+            resourcesToMigrate.add(r);
           }
         }
 
-        boolean isNewVersion = false;
-        if (latestVersion != null) {
-          Date issued = installed.getIssued();
-          Date issuedLatest = latestVersion.getIssued();
-          if (issued == null && issuedLatest != null) {
-            isNewVersion = true;
-          } else if (issued != null && issuedLatest != null) {
-            isNewVersion = (issuedLatest.compareTo(issued) > 0); // latest version must have newer issued date
+        // first download latestVersion XML file
+        File tmpFile = download(latestVersion.getUrl());
+        Extension extension = loadFromFile(tmpFile);
+
+        // if there are mappings to this extension - do migrations to latest version, save resources
+        if (!resourcesToMigrate.isEmpty()) {
+          for (Resource r : resourcesToMigrate) {
+            migrateResourceToNewExtensionVersion(r, installed, extension);
+            resourceManager.save(r);
           }
         }
 
-        if (isNewVersion && latestVersion.getUrl() != null) {
-          // check if there are any associated resource mappings
-          List<Resource> resourcesToMigrate = Lists.newArrayList();
-          for (Resource r : resourceManager.list()) {
-            if (!r.getMappings(rowType).isEmpty()) {
-              resourcesToMigrate.add(r);
-            }
-          }
-
-          // first download latestVersion XML file
-          File tmpFile = download(latestVersion.getUrl());
-          Extension extension = loadFromFile(tmpFile);
-
-          // if there are mappings to this extension - do migrations to latest version, save resources
-          if (!resourcesToMigrate.isEmpty()) {
-            for (Resource r : resourcesToMigrate) {
-              migrateResourceToNewExtensionVersion(r, installed, extension);
-              resourceManager.save(r);
-            }
-          }
-
-          // uninstall and install new version
-          uninstall(rowType);
-          finishInstall(tmpFile, extension);
-        }
-      } catch (RegistryException e) {
-        // add startup error message about Registry error
-        String msg = RegistryException.logRegistryException(e.getType(), baseAction);
-        warnings.addStartupError(msg);
-        log.error(msg);
-
-        // add startup error message that explains the consequence of the Registry error
-        msg = baseAction.getText("admin.extensions.couldnt.load", new String[] {cfg.getRegistryUrl()});
-        warnings.addStartupError(msg);
-        log.error(msg);
+        // uninstall and install new version
+        uninstall(rowType);
+        finishInstall(tmpFile, extension);
       }
     }
+  }
+
+  @Override
+  public synchronized boolean updateIfChanged(String rowType) throws IOException, RegistryException {
+    // identify installed extension by rowType
+    Extension installed = get(rowType);
+    if (installed != null) {
+      Extension matched = null;
+      for (Extension ex : registryManager.getExtensions()) {
+        if (ex.getRowType() != null && ex.getRowType().equalsIgnoreCase(rowType)) {
+          matched = ex;
+          break;
+        }
+      }
+      // verify the version was updated
+      if (matched != null && matched.getUrl() != null) {
+        File extensionFile = getExtensionFile(rowType);
+        return downloader.downloadIfChanged(matched.getUrl(), extensionFile);
+      }
+    }
+    return false;
   }
 
   /**
@@ -345,6 +355,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     }
   }
 
+  @Override
   public Extension get(String rowType) {
     return extensionsByRowtype.get(normalizeRowType(rowType));
   }
@@ -406,6 +417,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
    *
    * @throws InvalidConfigException if Extension failed to be installed
    */
+  @Override
   public synchronized Extension install(URL url) throws InvalidConfigException {
     Preconditions.checkNotNull(url);
 
@@ -476,6 +488,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
    *
    * @throws InvalidConfigException if any installation fails
    */
+  @Override
   public void installCoreTypes() throws InvalidConfigException {
     List<Extension> extensions = getCoreTypes();
     for (Extension ext : extensions) {
@@ -483,10 +496,12 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     }
   }
 
+  @Override
   public List<Extension> list() {
     return new ArrayList<Extension>(extensionsByRowtype.values());
   }
 
+  @Override
   public List<Extension> list(String coreRowType) {
     if (coreRowType != null) {
       if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_OCCURRENCE)) {
@@ -502,6 +517,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     return list();
   }
 
+  @Override
   public List<Extension> listCore() {
     List<Extension> list = Lists.newArrayList();
     for (String rowType : AppConfig.getCoreRowTypes()) {
@@ -513,6 +529,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     return list;
   }
 
+  @Override
   public List<Extension> listCore(String coreRowType) {
     coreRowType = StringUtils.trimToNull(coreRowType);
     if (coreRowType != null) {
@@ -530,6 +547,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     }
   }
 
+  @Override
   public int load() {
     File extensionDir = dataDir.configFile(CONFIG_FOLDER);
     int counter = 0;

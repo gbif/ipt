@@ -2,6 +2,7 @@ package org.gbif.ipt.service.admin;
 
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.service.InvalidConfigException;
+import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 
 import java.io.IOException;
@@ -87,5 +88,5 @@ public interface VocabulariesManager {
    *
    * @return true if the update happened, false otherwise
    */
-  boolean updateIfChanged(String uri) throws IOException, InvalidConfigException;
+  boolean updateIfChanged(String uri) throws IOException, RegistryException;
 }
