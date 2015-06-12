@@ -1,6 +1,7 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.portal.ResourceAction" -->
 <#escape x as x?html>
   <#include "/WEB-INF/pages/inc/header.ftl">
+  <title>${eml.title!"IPT"}</title>
   <#include "/WEB-INF/pages/inc/menu.ftl">
   <#include "/WEB-INF/pages/macros/forms.ftl"/>
   <#include "/WEB-INF/pages/macros/versionsTable.ftl"/>
