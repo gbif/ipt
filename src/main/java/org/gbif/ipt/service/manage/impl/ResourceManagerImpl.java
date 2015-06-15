@@ -300,7 +300,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // if decompression succeeded, create resource depending on whether file was 'IPT Resource Folder' or a 'DwC-A'
     else {
       resource =
-        (isIPTResourceFolder(dwcaDir)) ? createFromIPTResourceFolder(shortname, dwcaDir.listFiles()[0], creator, alog)
+        (isIPTResourceFolder(dwcaDir)) ? createFromIPTResourceFolder(shortname, dwcaDir, creator, alog)
           : createFromArchive(shortname, dwcaDir, creator, alog);
     }
 
@@ -322,7 +322,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * an exception is thrown alerting the user they should try again with a unique name.
    *
    * @param shortname resource shortname
-   * @param folder    IPT resource folder (in tmp directory of IPT data_dir)
+   * @param folder    IPT resource folder
    * @param creator   Creator
    * @param alog      action logging
    *
@@ -402,75 +402,20 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   /**
-   * Determine whether the decompressed file represents an IPT Resource folder or not. To qualify, the root
-   * folder must contain at the very least a resource.xml file, and an eml.xml file.
+   * Determine whether the directory represents an IPT Resource directory or not. To qualify, directory must contain
+   * at least a resource.xml and eml.xml file.
    *
-   * @param tmpDir folder where compressed file was decompressed
+   * @param dir directory where compressed file was decompressed
    *
-   * @return if there is an IPT Resource folder or not that has been extracted in the tmpDir
+   * @return true if it is an IPT Resource folder or false otherwise
    */
-  private boolean isIPTResourceFolder(File tmpDir) {
-    boolean foundResourceFile = false;
-    boolean foundEmlFile = false;
-    if (tmpDir.exists() && tmpDir.isDirectory()) {
-      // get the compressed folder's root folder
-      File[] contents = tmpDir.listFiles();
-      if (contents == null) {
-        return false;
-      } else if (contents.length != 1) {
-        return false;
-      } else {
-        File root = contents[0];
-        // differentiate between single file and potential resource folder
-        if (root.isDirectory()) {
-          // return all files in root directory, and filter by .xml files
-          for (File f : root.listFiles(new XmlFilenameFilter())) {
-            // have we found the resource.xml file?
-            if (f.getName().equalsIgnoreCase(PERSISTENCE_FILE)) {
-              foundResourceFile = true;
-            }
-            // have we found the eml.xml file?
-            if (f.getName().equalsIgnoreCase(DataDir.EML_XML_FILENAME)) {
-              foundEmlFile = true;
-            }
-          }
-        } else {
-          log.debug("A single file has been encountered");
-        }
-      }
+  private boolean isIPTResourceFolder(File dir) {
+    if (dir.exists() && dir.isDirectory()) {
+      File persistenceFile = new File(dir, PERSISTENCE_FILE);
+      File emlFile = new File(dir, DataDir.EML_XML_FILENAME);
+      return persistenceFile.isFile() && emlFile.isFile();
     }
-    return (foundEmlFile && foundResourceFile);
-  }
-
-  /**
-   * Try to locate a DwC-A located inside a parent folder, open it, and return the Archive.
-   *
-   * @param tmpDir folder where compressed file was decompressed
-   *
-   * @return the Archive, or null if none exists
-   *
-   * @throws UnsupportedArchiveException if the DwC-A was invalid
-   * @throws IOException                 if the DwC-A could not be opened
-   */
-  protected Archive openArchiveInsideParentFolder(File tmpDir) throws UnsupportedArchiveException, IOException {
-    if (tmpDir.exists() && tmpDir.isDirectory()) {
-      // get the compressed folder's root folder
-      File[] contents = tmpDir.listFiles();
-      if (contents == null) {
-        return null;
-      } else if (contents.length != 1) {
-        return null;
-      } else {
-        File root = contents[0];
-        // differentiate between single file and potential DwC-A folder
-        if (root.isDirectory()) {
-          return ArchiveFactory.openArchive(root);
-        } else {
-          log.debug("A single file has been encountered");
-        }
-      }
-    }
-    return null;
+    return false;
   }
 
   /**
@@ -515,12 +460,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     throws AlreadyExistingException, ImportException, InvalidFilenameException {
     Resource resource;
     try {
-      // open the dwca, assuming it is located inside a parent folder
-      Archive arch = openArchiveInsideParentFolder(dwca);
-      if (arch == null) {
-        // otherwise, open the dwca with dwca reader
-        arch = ArchiveFactory.openArchive(dwca);
-      }
+      // try to read dwca
+      Archive arch = ArchiveFactory.openArchive(dwca);
 
       if (arch.getCore() == null) {
         alog.warn("manage.resource.create.core.invalid");

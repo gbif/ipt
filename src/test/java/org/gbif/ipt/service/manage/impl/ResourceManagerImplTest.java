@@ -15,6 +15,7 @@ package org.gbif.ipt.service.manage.impl;
 
 import org.gbif.api.model.common.DOI;
 import org.gbif.dwca.io.Archive;
+import org.gbif.dwca.io.ArchiveFactory;
 import org.gbif.dwca.io.UnsupportedArchiveException;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
@@ -957,7 +958,7 @@ public class ResourceManagerImplTest {
     // decompress the incoming file
     CompressionUtil.decompressFile(dwcaDir, dwca, true);
     // open DwC-A located inside parent folder
-    Archive archive = resourceManager.openArchiveInsideParentFolder(dwcaDir);
+    Archive archive = ArchiveFactory.openArchive(dwcaDir);
     assertNotNull(archive);
     assertEquals(Constants.DWC_ROWTYPE_OCCURRENCE, archive.getCore().getRowType().qualifiedName());
   }
@@ -976,25 +977,7 @@ public class ResourceManagerImplTest {
     // decompress the incoming file
     CompressionUtil.decompressFile(dwcaDir, dwca, true);
     // open DwC-A located inside parent folder, which throws UnsupportedArchiveException wrapping SaxParseException
-    resourceManager.openArchiveInsideParentFolder(dwcaDir);
-  }
-
-  /**
-   * test null result, opening archive of zipped file not located inside parent folder.
-   */
-  @Test
-  public void testOpenArchiveInsideParentFolderNull() throws ParserConfigurationException, SAXException, IOException {
-    // create instance of manager
-    ResourceManagerImpl resourceManager = getResourceManagerImpl();
-    // decompress archive
-    File dwcaDir = FileUtils.createTempDir();
-    // DwC-A located inside parent folder, with invalid meta.xml
-    File dwca = FileUtils.getClasspathFile("resources/occurrence.txt.zip");
-    // decompress the incoming file
-    CompressionUtil.decompressFile(dwcaDir, dwca, true);
-    // open DwC-A, not located inside parent folder, which throws UnsupportedArchiveException wrapping SaxParseException
-    Archive archive = resourceManager.openArchiveInsideParentFolder(dwcaDir);
-    assertNull(archive);
+    ArchiveFactory.openArchive(dwcaDir);
   }
 
   @Test
