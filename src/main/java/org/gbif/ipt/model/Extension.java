@@ -8,15 +8,14 @@ import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import javax.annotation.Nullable;
 
 import com.google.common.base.Objects;
+import com.google.common.collect.Lists;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -41,7 +40,7 @@ public class Extension implements Serializable {
   private Date issued;
   private URL link; // to documentation
   private boolean installed;
-  private List<ExtensionProperty> properties = new ArrayList<ExtensionProperty>();
+  private List<ExtensionProperty> properties = Lists.newArrayList();
   private Date modified = new Date();
 
   public void addProperty(ExtensionProperty property) {
@@ -248,5 +247,18 @@ public class Extension implements Serializable {
    */
   public void setIssuedDateAsString(String dateString) throws ParseException {
     issued = DateUtils.calendarDate(dateString);
+  }
+
+  /**
+   * @return ordered list of all groups in extension, in the order they appear in extension
+   */
+  public List<String> getGroups() {
+    List<String> groups = Lists.newArrayList();
+    for (ExtensionProperty property : properties) {
+      if (property.getGroup() != null && !groups.contains(property.getGroup())) {
+        groups.add(property.getGroup());
+      }
+    }
+    return groups;
   }
 }

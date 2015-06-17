@@ -44,7 +44,9 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 
+import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -58,7 +60,7 @@ import org.apache.log4j.Logger;
  * So the save method is always executed for POST requests, but not for GETs.
  * Please dont add any action errors as this will trigger the validation interceptor and causes problems, use
  * addActionWarning() instead.
- * 
+ *
  * @author markus
  */
 public class MappingAction extends ManagerBaseAction {
@@ -126,7 +128,7 @@ public class MappingAction extends ManagerBaseAction {
   /**
    * This method automaps a source's columns. First it tries to automap the mappingCoreId column, and then it tries
    * to automap the source's remaining fields against the core/extension.
-   * 
+   *
    * @return the number of terms that have been automapped
    */
   int automap() {
@@ -137,7 +139,8 @@ public class MappingAction extends ManagerBaseAction {
     int idx1 = 0;
     for (String col : columns) {
       String normCol = normalizeColumnName(col);
-      if (normCol != null && TermFactory.normaliseTerm(mappingCoreid.getTerm().simpleName()).equalsIgnoreCase(normCol)) {
+      if (normCol != null && TermFactory.normaliseTerm(mappingCoreid.getTerm().simpleName())
+        .equalsIgnoreCase(normCol)) {
         // mappingCoreId and mapping id column must both be set (and have the same index) to automap successfully.
         mappingCoreid.setIndex(idx1);
         mapping.setIdColumn(idx1);
@@ -205,6 +208,21 @@ public class MappingAction extends ManagerBaseAction {
     return fields;
   }
 
+  /**
+   * @return the index of the property mapping in the PropertyMapping "fields" list
+   */
+  public int getFieldsIndex(PropertyMapping propertyMapping) {
+    if (propertyMapping != null) {
+      for (int i = 0; i < fields.size(); i++) {
+        PropertyMapping p = fields.get(i);
+        if (p.getTerm().qualifiedName().equalsIgnoreCase(propertyMapping.getTerm().qualifiedName())) {
+          return i;
+        }
+      }
+    }
+    return -1;
+  }
+
   public ExtensionMapping getMapping() {
     return mapping;
   }
@@ -221,25 +239,65 @@ public class MappingAction extends ManagerBaseAction {
     return mid;
   }
 
+  /**
+   * @return list of columns in the source data that have not been mapped to field(s) yet.
+   */
   public List<String> getNonMappedColumns() {
-    List<String> nonMappedColumns = new ArrayList<String>();
-    nonMappedColumns.addAll(columns);
-    for (int index = 0; index < columns.size(); index++) {
-      if (columns.get(index).length() == 0) {
-        nonMappedColumns.remove(columns.get(index));
-      } else {
-        if (mappingCoreid.getIndex() != null && mappingCoreid.getIndex() == index) {
-          nonMappedColumns.remove(columns.get(index));
-        } else {
-          for (PropertyMapping field : fields) {
-            if (field.getIndex() != null && field.getIndex() == index) {
-              nonMappedColumns.remove(columns.get(index));
-            }
-          }
+    List<String> mapped = Lists.newArrayList();
+
+    // get list of all columns mapped to fields
+    for (PropertyMapping field : fields) {
+      if (field.getIndex() != null) {
+        String sourceColumn = columns.get(field.getIndex());
+        if (sourceColumn != null) {
+          mapped.add(sourceColumn);
         }
       }
     }
-    return nonMappedColumns;
+
+    // get column mapped to coreId field
+    if (mappingCoreid.getIndex() != null && columns.get(mappingCoreid.getIndex()) != null) {
+      mapped.add(columns.get(mappingCoreid.getIndex()));
+    }
+
+    // return list all source columns excluding those mapped
+    List<String> nonMapped = Lists.newArrayList(columns);
+    nonMapped.removeAll(mapped);
+    return nonMapped;
+  }
+
+  /**
+   * @return list of groups in extension that are redundant (are already included in the core extension)
+   */
+  public List<String> getRedundantGroups() {
+    List<String> redundantGroups = new ArrayList<String>();
+    if (resource.getCoreRowType() != null && !resource.getCoreRowType()
+      .equalsIgnoreCase(mapping.getExtension().getRowType())) {
+      Extension core = extensionManager.get(resource.getCoreRowType());
+      redundantGroups = extensionManager.getRedundantGroups(mapping.getExtension(), core);
+    }
+    return redundantGroups;
+  }
+
+  /**
+   * @return all PropertyMapping for all extension's terms matching group (whether mapped or not)
+   */
+  public List<PropertyMapping> getFieldsByGroup(String group) {
+    Preconditions.checkNotNull(group);
+    List<PropertyMapping> byGroup = Lists.newArrayList();
+    for (ExtensionProperty ep : mapping.getExtension().getProperties()) {
+      if (ep.getGroup() != null && group.equalsIgnoreCase(ep.getGroup())) {
+        PropertyMapping pm = mapping.getField(ep.qualifiedName());
+        if (pm == null) {
+          PropertyMapping newPm = new PropertyMapping();
+          newPm.setTerm(ep);
+          byGroup.add(newPm);
+        } else {
+          byGroup.add(pm);
+        }
+      }
+    }
+    return byGroup;
   }
 
   public List<String[]> getPeek() {
@@ -254,7 +312,7 @@ public class MappingAction extends ManagerBaseAction {
    * Normalizes an incoming column name so that it can later be compared against a ConceptTerm's simpleName.
    * This method converts the incoming string to lower case, and will take the substring up to, but no including the
    * first ":".
-   * 
+   *
    * @param col column name
    * @return the normalized column name, or null if the incoming name was null or empty
    */
@@ -412,26 +470,26 @@ public class MappingAction extends ManagerBaseAction {
     if (resource.getMapping(id, mid) == null) {
       mid = resource.addMapping(mapping);
     } else {
-        // save field mappings
-        Set<PropertyMapping> mappedFields = new TreeSet<PropertyMapping>();
-        for (PropertyMapping f : fields) {
-          if (f.getIndex() != null || StringUtils.trimToNull(f.getDefaultValue()) != null) {
-            mappedFields.add(f);
-          }
+      // save field mappings
+      Set<PropertyMapping> mappedFields = new TreeSet<PropertyMapping>();
+      for (PropertyMapping f : fields) {
+        if (f.getIndex() != null || StringUtils.trimToNull(f.getDefaultValue()) != null) {
+          mappedFields.add(f);
         }
-        // save coreid field (e.g. occurrenceID) so that it is included in mapping, despite being a duplicate of coreid
-        // Careful: only save coreid field for core extension mappings, not for extension mapping
-        if (resource.getCoreRowType().equalsIgnoreCase(mapping.getExtension().getRowType())) {
-          mappingCoreid.setIndex(mapping.getIdColumn());
-          mappingCoreid.setDefaultValue(mapping.getIdSuffix());
-          if (mappingCoreid.getIndex() != null || StringUtils.trimToNull(mappingCoreid.getDefaultValue()) != null) {
-            mappedFields.add(mappingCoreid);
-          }
+      }
+      // save coreid field (e.g. occurrenceID) so that it is included in mapping, despite being a duplicate of coreid
+      // Careful: only save coreid field for core extension mappings, not for extension mapping
+      if (resource.getCoreRowType().equalsIgnoreCase(mapping.getExtension().getRowType())) {
+        mappingCoreid.setIndex(mapping.getIdColumn());
+        mappingCoreid.setDefaultValue(mapping.getIdSuffix());
+        if (mappingCoreid.getIndex() != null || StringUtils.trimToNull(mappingCoreid.getDefaultValue()) != null) {
+          mappedFields.add(mappingCoreid);
         }
-        // back to mapping object
-        mapping.setFields(mappedFields);
-        // persist other configurations, e.g. using DOI as datasetId
-        mapping.setDoiUsedForDatasetId(doiUsedForDatasetId);
+      }
+      // back to mapping object
+      mapping.setFields(mappedFields);
+      // persist other configurations, e.g. using DOI as datasetId
+      mapping.setDoiUsedForDatasetId(doiUsedForDatasetId);
     }
     // update last modified dates
     Date lastModified = new Date();

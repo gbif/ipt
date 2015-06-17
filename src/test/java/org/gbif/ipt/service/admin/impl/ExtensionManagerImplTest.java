@@ -352,4 +352,34 @@ public class ExtensionManagerImplTest {
     assertNull(em.getExtension().getIssued());
     return r;
   }
+
+  @Test
+  public void testGetRedundantGroups() throws IOException {
+    ExtensionManagerImpl manager =
+      new ExtensionManagerImpl(mock(AppConfig.class), mock(DataDir.class), extensionFactory,
+        mock(ResourceManager.class), mock(HttpUtil.class), mock(ConfigWarnings.class), mock(SimpleTextProvider.class),
+        mock(RegistrationManager.class), mock(RegistryManager.class));
+    File myTmpDir = Files.createTempDir();
+
+    // load Occurrence extension
+    File occ = FileUtils.getClasspathFile("extensions/dwc_occurrence.xml");
+    org.apache.commons.io.FileUtils.copyFileToDirectory(occ, myTmpDir);
+    File tmpOccFile = new File(myTmpDir, "dwc_occurrence.xml");
+    Extension occExt = manager.loadFromFile(tmpOccFile);
+
+    // load Event (core) extension
+    File evt = FileUtils.getClasspathFile("extensions/dwc_event_2015-04-24.xml");
+    org.apache.commons.io.FileUtils.copyFileToDirectory(evt, myTmpDir);
+    File tmpEvtFile = new File(myTmpDir, "dwc_event_2015-04-24.xml");
+    Extension evtExt = manager.loadFromFile(tmpEvtFile);
+
+    List<String> redundant = manager.getRedundantGroups(occExt, evtExt);
+
+    // confirm Occurrence extension has 4 redundant groups that already appear in the core Event extension
+    assertEquals(4, redundant.size());
+    assertTrue(redundant.contains("Event"));
+    assertTrue(redundant.contains("Record Level"));
+    assertTrue(redundant.contains("Location"));
+    assertTrue(redundant.contains("GeologicalContext"));
+  }
 }

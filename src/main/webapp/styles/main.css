@@ -648,16 +648,6 @@ div a.button {
   margin-top: 5px;
 }
 
-#mappingForm .checkbox {
-  padding-top: 0;
-  margin-top: 0;
-  width: auto;
-}
-#doiUsedForDatasetId {
-  display: inline-block;
-  width: 20px;
-}
-
 #organisationsForm div.buttons input, #registrationForm div.buttons input { width: auto; }
 #organisationsForm div.checkbox input, #registrationForm div.checkbox input { width: auto; }
 #organisationsForm div.checkbox div { width: auto; }
@@ -807,14 +797,6 @@ h3.subTitle {
   font-family: "Arial", sans-serif;
   font-size: 1.2em;
 }
-h3.groupTitle {
-  display: block;
-  margin-top: 10px;
-  font-family: "Arial", sans-serif;
-  font-size: 1.2em;
-  color: #000;
-  float: left;
-}
 div#Collection-Data {
   padding-bottom: 40px;
   margin-bottom: 20px;
@@ -951,20 +933,7 @@ div.definition div.body table th {
 div.definition div.body div.details {
   font-size: 0.9em;
 }
-div.conceptItem { margin-bottom: 3px; float: left; }
-#conceptItemWrapper {
-  height: 960px;
-  overflow: scroll;
-}
-#unmapped-columns {
-  overflow: normal;
-}
-#unmapped-columns ul li {
-  width: 950px;
-}
-#filter {
-  color: #0080FF;
-}
+
 div.required div.title {
   color: #bc5e5b;
   font-weight: bold;
@@ -1669,3 +1638,63 @@ span.doi a {
 }
 
 /* End dataset homepage */
+
+/* Start mapping page */
+.mappingRow {
+  padding: 5px;
+}
+.mappingRow div.title {
+  font-weight: bold;
+  width: 30%;
+  display: inline-block;
+  overflow:hidden;
+  padding-left: 5px;
+  font-size: 0.9em;
+  vertical-align: top;
+}
+.mappingRow div.body {
+  word-break: break-all;
+  color: #666;
+  display: inline-block;
+  vertical-align: top;
+}
+.mappingText {
+  word-break: normal;
+  font-size: 0.8em;
+}
+.sample {
+  padding-left: 25px;
+}
+.mappingRow select{
+  width: 175px;
+}
+.mappingRow input{
+  width: 175px;
+}
+#mappingForm .checkbox {
+  padding-top: 0;
+  margin-top: 0;
+}
+#doiUsedForDatasetId {
+  display: inline-block;
+  width: 20px;
+}
+#filter {
+  color: #0080FF;
+}
+#coreID {
+  color: #008959;
+}
+.sidebar-nav > .title {
+  font-weight: bold;
+}
+div.odd {
+  background-color: #EEEEEE;
+}
+div.requiredMapping {
+  background-color: #E6F5EB;
+}
+div.mappingFiler {
+  background-color: #F0FAFF;
+}
+/* End mapping page */

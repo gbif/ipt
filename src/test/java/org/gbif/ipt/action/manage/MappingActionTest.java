@@ -58,6 +58,7 @@ public class MappingActionTest {
     // mappingCoreId = OccurrenceID
     PropertyMapping mappingCoreid = new PropertyMapping();
     mappingCoreid.setTerm(DwcTerm.occurrenceID);
+    mappingCoreid.setIndex(3);
 
     // an ExtensionMapping to Extension Darwin Core Occurrence Core
     ExtensionMapping mapping = new ExtensionMapping();
@@ -92,15 +93,16 @@ public class MappingActionTest {
     List<PropertyMapping> fields = new ArrayList<PropertyMapping>();
     PropertyMapping identificationId = new PropertyMapping();
     identificationId.setTerm(DwcTerm.identificationID);
+    identificationId.setIndex(0);
     fields.add(identificationId);
     PropertyMapping identificationQualifier = new PropertyMapping();
     identificationQualifier.setTerm(DwcTerm.identificationQualifier);
+    identificationQualifier.setIndex(1);
     fields.add(identificationQualifier);
 
     // mock action
     action = new MappingAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mock(RegistrationManager.class),
-      mockResourceManager, mockExtensionManager, mock(SourceManager.class),
-      mock(VocabulariesManager.class));
+      mockResourceManager, mockExtensionManager, mock(SourceManager.class), mock(VocabulariesManager.class));
 
     action.setColumns(columns);
     action.setMappingCoreid(mappingCoreid);
@@ -149,6 +151,14 @@ public class MappingActionTest {
     // perform save
     action.save();
     // assert the resource's core type remains as Occurrence Core Type
-    assertEquals(Resource.CoreRowType.OCCURRENCE.toString(), StringUtils.capitalize(action.getResource().getCoreType()));
+    assertEquals(Resource.CoreRowType.OCCURRENCE.toString(),
+      StringUtils.capitalize(action.getResource().getCoreType()));
+  }
+
+  @Test
+  public void testGetNonMappedColumns() {
+    List<String> nonMapped = action.getNonMappedColumns();
+    assertEquals(1, nonMapped.size());
+    assertEquals("unknown", nonMapped.get(0));
   }
 }

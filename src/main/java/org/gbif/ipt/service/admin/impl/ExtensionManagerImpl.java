@@ -634,4 +634,16 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     }
     return list;
   }
+
+  public List<String> getRedundantGroups(Extension extension, Extension core) {
+    List<String> groups = extension.getGroups();
+    List<String> coreGroups = core.getGroups();
+    if (!groups.isEmpty() && !coreGroups.isEmpty()) {
+      // find groups already included in core extension...
+      coreGroups.retainAll(groups);
+      return coreGroups;
+    } else {
+      return Lists.newArrayList();
+    }
+  }
 }

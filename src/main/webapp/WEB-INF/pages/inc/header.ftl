@@ -48,12 +48,12 @@
     [#assign metaKeywords = "GBIF, Global Biodiversity Information Facility, IPT, Integrated Publishing Toolkit, checklist, occurrence, metadata, DwC-A, Darwin Core, Darwin Core Archive, biodiversity data, data paper, EML" /]
     [#assign registeredIpt = action.getRegisteredIpt()!/]
     [#if resource?? && eml??]
-      <meta name="description" content="${eml.description!}" charset="UTF-8"}" />
+      <meta name="description" content="${eml.description!}" charset="UTF-8" />
       [#if eml.subject?has_content]
         <meta name="keywords" content="${eml.subject?replace(";", ",")}" charset="UTF-8" />
       [/#if]
     [#elseif registeredIpt??]
-      <meta name="description" content="${registeredIpt.description!}" charset="UTF-8"}" />
+      <meta name="description" content="${registeredIpt.description!}" charset="UTF-8" />
       <meta name="keywords" content="${metaKeywords}" charset="UTF-8" />
     [#else]
       <meta name="description" content="The Integrated Publishing Toolkit (IPT) is a tool developed by the Global Biodiversity Information Facility (GBIF) to provide an easy and efficient way of publishing biodiversity data." charset="UTF-8"}" />
