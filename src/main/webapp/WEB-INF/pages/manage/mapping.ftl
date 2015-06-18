@@ -133,19 +133,12 @@ $(document).ready(function(){
 <#assign currentMenu = "manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
-<#assign groups = mapping.extension.getGroups()/>
 <#assign redundants = action.getRedundantGroups()/>
-
-  <#if mapping.isCore()>
-    <#assign extensionType><@s.text name='extension.core'/></#assign>
-  <#else>
-    <#assign extensionType><@s.text name='extension.core'/></#assign>
-  </#if>
-
 
 <#macro showField field index>
   <#assign p=field.term/>
-  <#assign fieldsIndex = action.getFieldsIndex(field)/>
+  <#assign fieldsIndex = action.getFieldsTermIndices().get(p.qualifiedName())/>
+
   <div class="mappingRow<#if p.required> required</#if> ${["odd", "even"][index%2]}">
       <div>
         <img class="infoImg" src="${baseURL}/images/info.gif" />
@@ -169,7 +162,6 @@ $(document).ready(function(){
 
         <div class="body">
             <div>
-
                 <select id="fIdx${fieldsIndex}" class="fidx" name="fields[${fieldsIndex}].index">
                     <option value="" <#if !field.index??> selected="selected"</#if>></option>
                   <#list columns as col>
@@ -216,8 +208,6 @@ $(document).ready(function(){
 </div>
 </#macro>
 
-
-
 <h1><span class="superscript"><@s.text name='manage.overview.title.label'/></span>
   <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
 </h1>
@@ -227,8 +217,9 @@ $(document).ready(function(){
   <!-- Sidebar -->
   <div id="sidebar-wrapper">
       <ul class="sidebar-nav">
+        <li class="title"><@s.text name='manage.mapping.index'/></li>
+        <#assign groups = fieldsByGroup?keys/>
         <#if (groups?size>0)>
-            <li class="title">Term Index</li>
           <#list groups as g>
             <li <#if redundants?seq_contains(g)>class="redundant"</#if>><a class="sidebar-anchor" href="#group_${g}">${g}</a></li>
           </#list>
@@ -237,7 +228,7 @@ $(document).ready(function(){
         <#if (redundants?size>0)>
             <li><a href="#redundant"><@s.text name='manage.mapping.redundant'/></a></li>
         </#if>
-          <li class="title">Term Filters</li>
+          <li class="title"><@s.text name='manage.mapping.filters'/></li>
           <li><a id="toggleFields" href="#"><@s.text name='manage.mapping.hideEmpty'/></a></li>
         <#if (redundants?size>0)>
             <li><a id="toggleGroups" href="#"><@s.text name='manage.mapping.hideGroups'/></a></li>
@@ -266,6 +257,12 @@ $(document).ready(function(){
                 </div>
               <@s.text name='manage.mapping.title'/>
             </h2>
+            <!-- Is this extension mapped as a core? -->
+            <#if mapping.isCore()>
+              <#assign extensionType><@s.text name='extension.core'/></#assign>
+            <#else>
+              <#assign extensionType><@s.text name='extension'/></#assign>
+            </#if>
             <p>
               <@s.text name='manage.mapping.intro1'><@s.param><a href="source.do?r=${resource.shortname}&id=${mapping.source.name}" title="<@s.text name='manage.overview.source.data'/>">${mapping.source.name}</a></@s.param><@s.param>${extensionType?lower_case}:</@s.param><@s.param><a href="${mapping.extension.link}">${mapping.extension.title}</a></@s.param></@s.text>
             </p>
@@ -280,9 +277,7 @@ $(document).ready(function(){
 
 
                     <div class="mappingRow requiredMapping">
-
                       <#if coreid??>
-
                           <img class="infoImg" src="${baseURL}/images/info.gif" />
                           <div class="info">
                             <#if coreid.description?has_content>${coreid.description}</#if>
@@ -362,17 +357,16 @@ $(document).ready(function(){
                                     <input id="filterParam" style="width:100px" name="mapping.filter.param" style="width:190px;" value="${mapping.filter.param!}" />
                                 </div>
                             </div>
-
                     </div>
 
             <#-- Display fields either by group, or as single list of fields-->
-            <#if (groups?size>0)>
-              <#list groups as g>
-                <#assign fieldsByGroup = action.getFieldsByGroup(g?string)/>
-                  <#if (fieldsByGroup?size>0)>
+            <#if (fieldsByGroup?keys?size>0)>
+              <#list fieldsByGroup?keys as g>
+                <#assign groupsFields = fieldsByGroup.get(g)/>
+                  <#if (groupsFields?size>0)>
                     <div id="group_${g}" <#if redundants?seq_contains(g)>class="redundant"</#if> >
                       <h3 class="twenty_top">${g}</h3>
-                      <#list fieldsByGroup as field>
+                      <#list groupsFields as field>
                         <@showField field field_index/>
                       </#list>
                       <div class="twenty_top">
@@ -389,9 +383,6 @@ $(document).ready(function(){
                 <@showField field field_index/>
               </#list>
             </#if>
-
-
-
 
           <#if (action.getNonMappedColumns()?size>0)>
             <div>

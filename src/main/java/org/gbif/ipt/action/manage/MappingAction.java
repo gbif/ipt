@@ -37,16 +37,15 @@ import org.gbif.ipt.validation.ExtensionMappingValidator.ValidationStatus;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 
-import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -81,7 +80,9 @@ public class MappingAction extends ManagerBaseAction {
   private final Comparator[] comparators = Comparator.values();
   private List<String[]> peek;
   private List<PropertyMapping> fields;
-  private final Map<String, Map<String, String>> vocabTerms = new HashMap<String, Map<String, String>>();
+  private Map<String, Integer> fieldsTermIndices = Maps.newHashMap();
+  private Map<String, List<PropertyMapping>> fieldsByGroup = Maps.newLinkedHashMap();
+  private final Map<String, Map<String, String>> vocabTerms = Maps.newHashMap();
   private ExtensionProperty coreid;
   private ExtensionProperty datasetId;
   private Integer mid;
@@ -208,21 +209,6 @@ public class MappingAction extends ManagerBaseAction {
     return fields;
   }
 
-  /**
-   * @return the index of the property mapping in the PropertyMapping "fields" list
-   */
-  public int getFieldsIndex(PropertyMapping propertyMapping) {
-    if (propertyMapping != null) {
-      for (int i = 0; i < fields.size(); i++) {
-        PropertyMapping p = fields.get(i);
-        if (p.getTerm().qualifiedName().equalsIgnoreCase(propertyMapping.getTerm().qualifiedName())) {
-          return i;
-        }
-      }
-    }
-    return -1;
-  }
-
   public ExtensionMapping getMapping() {
     return mapping;
   }
@@ -277,27 +263,6 @@ public class MappingAction extends ManagerBaseAction {
       redundantGroups = extensionManager.getRedundantGroups(mapping.getExtension(), core);
     }
     return redundantGroups;
-  }
-
-  /**
-   * @return all PropertyMapping for all extension's terms matching group (whether mapped or not)
-   */
-  public List<PropertyMapping> getFieldsByGroup(String group) {
-    Preconditions.checkNotNull(group);
-    List<PropertyMapping> byGroup = Lists.newArrayList();
-    for (ExtensionProperty ep : mapping.getExtension().getProperties()) {
-      if (ep.getGroup() != null && group.equalsIgnoreCase(ep.getGroup())) {
-        PropertyMapping pm = mapping.getField(ep.qualifiedName());
-        if (pm == null) {
-          PropertyMapping newPm = new PropertyMapping();
-          newPm.setTerm(ep);
-          byGroup.add(newPm);
-        } else {
-          byGroup.add(pm);
-        }
-      }
-    }
-    return byGroup;
   }
 
   public List<String[]> getPeek() {
@@ -412,24 +377,31 @@ public class MappingAction extends ManagerBaseAction {
 
       // prepare all other fields
       fields = new ArrayList<PropertyMapping>(mapping.getExtension().getProperties().size());
-      for (ExtensionProperty p : mapping.getExtension().getProperties()) {
+      for (int i = 0; i < mapping.getExtension().getProperties().size(); i++) {
+        ExtensionProperty ep = mapping.getExtension().getProperties().get(i);
         // ignore core id term
-        if (p.equals(coreid)) {
-          continue;
+        if (!ep.equals(coreid)) {
+          PropertyMapping pm = populatePropertyMapping(ep);
+          fields.add(pm);
+
+          // also store PropertyMapping by group/class
+          String group = ep.getGroup();
+          if (group != null) {
+            if (fieldsByGroup.get(group) == null) {
+              fieldsByGroup.put(group, new ArrayList<PropertyMapping>());
+            }
+            fieldsByGroup.get(group).add(pm);
+          }
+
+          // for easy retrieval of PropertyMapping index by qualifiedName..
+          fieldsTermIndices.put(ep.getQualname(), i);
+
+          // populate vocabulary terms
+          if (ep.getVocabulary() != null) {
+            String id = ep.getVocabulary().getUriString();
+            vocabTerms.put(id, vocabManager.getI18nVocab(id, getLocaleLanguage(), true));
+          }
         }
-        // uses a vocabulary?
-        if (p.getVocabulary() != null) {
-          vocabTerms.put(p.getVocabulary().getUriString(),
-            vocabManager.getI18nVocab(p.getVocabulary().getUriString(), getLocaleLanguage(), true));
-        }
-        // mapped already?
-        PropertyMapping f = mapping.getField(p.getQualname());
-        if (f == null) {
-          // no, create bare mapping field
-          f = new PropertyMapping();
-        }
-        f.setTerm(p);
-        fields.add(f);
       }
 
       // finally do automapping if no fields are found
@@ -447,6 +419,25 @@ public class MappingAction extends ManagerBaseAction {
         validateAndReport();
       }
     }
+  }
+
+  /**
+   * Populate a PropertyMapping from an ExtensionProperty. If the ExtensionProperty is already mapped, preserves
+   * the existing PropertyMapping. Otherwise, creates a brand new PropertyMapping.
+   *
+   * @param ep ExtensionProperty
+   *
+   * @return PropertyMapping created
+   */
+  private PropertyMapping populatePropertyMapping(ExtensionProperty ep) {
+    // mapped already?
+    PropertyMapping pm = mapping.getField(ep.getQualname());
+    if (pm == null) {
+      // no, create brand new PropertyMapping
+      pm = new PropertyMapping();
+    }
+    pm.setTerm(ep);
+    return pm;
   }
 
   private void readSource() {
@@ -541,5 +532,19 @@ public class MappingAction extends ManagerBaseAction {
 
   public void setDoiUsedForDatasetId(boolean doiUsedForDatasetId) {
     this.doiUsedForDatasetId = doiUsedForDatasetId;
+  }
+
+  /**
+   * Called from Freemarker template.
+   */
+  public Map<String, List<PropertyMapping>> getFieldsByGroup() {
+    return fieldsByGroup;
+  }
+
+  /**
+   * Called from Freemarker template.
+   */
+  public Map<String, Integer> getFieldsTermIndices() {
+    return fieldsTermIndices;
   }
 }
