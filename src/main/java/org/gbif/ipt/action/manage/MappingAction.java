@@ -43,6 +43,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -355,28 +356,28 @@ public class MappingAction extends ManagerBaseAction {
       }
       LOG.info("Core row type: " + coreRowType);
 
-      // setup the core record id term
-      String coreIdTerm = AppConfig.coreIdTerm(coreRowType);
 
+      String coreIdTerm = AppConfig.coreIdTerm(coreRowType);
       coreid = extensionManager.get(coreRowType).getProperty(coreIdTerm);
       LOG.info("Field representing the id for the core: " + coreid);
+
+      // setup the core record id term
       mappingCoreid = mapping.getField(coreid.getQualname());
       if (mappingCoreid == null) {
-        // no, create bare mapping field
         mappingCoreid = new PropertyMapping();
         mappingCoreid.setTerm(coreid);
         mappingCoreid.setIndex(mapping.getIdColumn());
+        fields = new ArrayList<PropertyMapping>(mapping.getExtension().getProperties().size());
+      } else {
+        fields = new ArrayList<PropertyMapping>(mapping.getExtension().getProperties().size() -1);
       }
 
       // inspect source
       readSource();
 
-      LOG.info("Core ID field determined as " + coreid);
-
       datasetId = extensionManager.get(mapping.getExtension().getRowType()).getProperty(Constants.DWC_DATASET_ID);
 
       // prepare all other fields
-      fields = new ArrayList<PropertyMapping>(mapping.getExtension().getProperties().size());
       for (int i = 0; i < mapping.getExtension().getProperties().size(); i++) {
         ExtensionProperty ep = mapping.getExtension().getProperties().get(i);
         // ignore core id term
@@ -394,7 +395,7 @@ public class MappingAction extends ManagerBaseAction {
           }
 
           // for easy retrieval of PropertyMapping index by qualifiedName..
-          fieldsTermIndices.put(ep.getQualname(), i);
+          fieldsTermIndices.put(ep.getQualname(), fields.lastIndexOf(pm));
 
           // populate vocabulary terms
           if (ep.getVocabulary() != null) {
@@ -464,7 +465,8 @@ public class MappingAction extends ManagerBaseAction {
       // save field mappings
       Set<PropertyMapping> mappedFields = new TreeSet<PropertyMapping>();
       for (PropertyMapping f : fields) {
-        if (f.getIndex() != null || StringUtils.trimToNull(f.getDefaultValue()) != null) {
+        Integer index = MoreObjects.firstNonNull(f.getIndex(), -9999);
+        if (index >= 0 || StringUtils.trimToNull(f.getDefaultValue()) != null) {
           mappedFields.add(f);
         }
       }
@@ -473,7 +475,8 @@ public class MappingAction extends ManagerBaseAction {
       if (resource.getCoreRowType().equalsIgnoreCase(mapping.getExtension().getRowType())) {
         mappingCoreid.setIndex(mapping.getIdColumn());
         mappingCoreid.setDefaultValue(mapping.getIdSuffix());
-        if (mappingCoreid.getIndex() != null || StringUtils.trimToNull(mappingCoreid.getDefaultValue()) != null) {
+        Integer index = MoreObjects.firstNonNull(mappingCoreid.getIndex(), -9999);
+        if (index >= 0 || StringUtils.trimToNull(mappingCoreid.getDefaultValue()) != null) {
           mappedFields.add(mappingCoreid);
         }
       }
@@ -491,6 +494,7 @@ public class MappingAction extends ManagerBaseAction {
     saveResource();
     // report validation without skipping this save
     validateAndReport();
+    LOG.debug("mapping saved..");
 
     return defaultResult;
   }

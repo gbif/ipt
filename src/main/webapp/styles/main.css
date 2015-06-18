@@ -1675,10 +1675,6 @@ span.doi a {
   padding-top: 0;
   margin-top: 0;
 }
-#doiUsedForDatasetId {
-  display: inline-block;
-  width: 20px;
-}
 #filter {
   color: #0080FF;
 }
@@ -1696,5 +1692,8 @@ div.requiredMapping {
 }
 div.mappingFiler {
   background-color: #F0FAFF;
+}
+.datasetDoiCheckbox {
+  margin-left: -100px !important;
 }
 /* End mapping page */

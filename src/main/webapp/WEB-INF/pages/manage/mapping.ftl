@@ -30,6 +30,28 @@ $(document).ready(function(){
 			$("#filterComp").show();
 		}
 	}
+  function activateDeactivateAllStaticInputs() {
+    $('.fidx').each(function() {
+      activateDeactivateStaticInput($(this));
+    });
+  }
+  function activateDeactivateStaticInput(target) {
+    var index = target.attr('id').substring(4);
+    var input = $("#fVal"+index);
+    var checkbox = $("#cVal"+index);
+    if (!target.val().trim()) {
+      input.prop('disabled', false);
+      checkbox.attr('disabled', false);
+    } else {
+      // deactivate input
+      input.val('');
+      input.prop('disabled', true);
+      // deactivate checkbox
+      checkbox.attr('checked', false);
+      checkbox.attr('disabled', true);
+
+    }
+  }
 	function hideFields() {
 		showAll=false;
 		$("#showAllValue").val("false");
@@ -45,24 +67,24 @@ $(document).ready(function(){
 		  $('#filterSection').hide();
 		}
 	}
-    function hideRedundantGroups() {
-        showAllGroups=false;
-        $("#showAllGroupsValue").val("false");
-        $("#toggleGroups").text("<@s.text name="manage.mapping.showAllGroups" />");
-        $('div.redundant').each(function(index) {
-          $(this).hide();
-        });
-        // hide sidebar links too
-        $('li.redundant').each(function(index) {
-            $(this).hide();
-        });
-    }
-
+  function hideRedundantGroups() {
+    showAllGroups=false;
+    $("#showAllGroupsValue").val("false");
+    $("#toggleGroups").text("<@s.text name="manage.mapping.showAllGroups" />");
+    $('div.redundant').each(function(index) {
+      $(this).hide();
+    });
+    // hide sidebar links too
+    $('li.redundant').each(function(index) {
+      $(this).hide();
+    });
+  }
 	
 	initHelp();
 	showHideIdSuffix();
 	showHideFilter();
 	showHideFilterName();
+  activateDeactivateAllStaticInputs();
 	var showAll=${Parameters.showAll!"true"};
 	if (!showAll){
 		hideFields();
@@ -118,6 +140,10 @@ $(document).ready(function(){
 	$("#filterName").change(function() {
 		showHideFilterName();
 	});
+
+  $(".fidx").change(function() {
+    activateDeactivateStaticInput($(this));
+  });
 	
 	//Hack needed for Internet Explorer X.*x
 	$('.add').each(function() {
@@ -125,7 +151,6 @@ $(document).ready(function(){
 			window.location = $(this).parent('a').attr('href');
 		});
 	});
-	
 });   
 </script>
 <style>
@@ -134,6 +159,23 @@ $(document).ready(function(){
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <#assign redundants = action.getRedundantGroups()/>
+
+<#macro threeButtons>
+  <@s.submit cssClass="button" name="save" key="button.save"/>
+  <@s.submit cssClass="confirm" name="delete" key="button.delete"/>
+  <@s.submit cssClass="button" name="cancel" key="button.back"/>
+</#macro>
+
+<#macro datasetDoiCheckbox idAttr name i18nkey classAttr requiredField value="-99999" errorfield="">
+  <div class="checkbox">
+      <div><#include "/WEB-INF/pages/macros/form_field_common.ftl"></div>
+      <#-- use name if value was not supplied -->
+      <#if value == "-99999">
+        <#assign value><@s.property value="${name}"/></#assign>
+      </#if>
+      <@s.checkbox key=name id=idAttr value=value cssClass=classAttr/>
+  </div>
+</#macro>
 
 <#macro showField field index>
   <#assign p=field.term/>
@@ -182,17 +224,17 @@ $(document).ready(function(){
               </#if>
             </div>
         </div>
-  <#if field.index??>
+        <#if datasetId?? && p.qualifiedName()?lower_case == datasetId.qualname?lower_case>
+          <div class="sample mappingText">
+            <#-- option to use DOI as datasetID -->
+            <@datasetDoiCheckbox idAttr="cVal${fieldsIndex}" name="doiUsedForDatasetId" i18nkey="manage.mapping.datasetIdColumn" classAttr="cval datasetDoiCheckbox" requiredField=false value="${doiUsedForDatasetId?string}" errorfield="" />
+          </div>
+        </#if>
+    <#if field.index??>
       <div class="sample mappingText">
         <@s.text name='manage.mapping.sourceSample' />:
           <em><#list peek as row><#if row??><#if row[field.index]?has_content>${row[field.index]}<#if row_has_next> | </#if></#if></#if></#list></em>
       </div>
-    <#if datasetId?? && p.qualifiedName()?lower_case == datasetId.qualname?lower_case>
-        <div class="sample mappingText">
-        <#-- option to use DOI as datasetID -->
-                                    <@checkbox name="doiUsedForDatasetId" i18nkey="manage.mapping.datasetIdColumn" value="${doiUsedForDatasetId?string}"/>
-        </div>
-    </#if>
       <div class="sample mappingText">
         <@s.text name='manage.mapping.translation' />:
           <a href="translation.do?r=${resource.shortname}&rowtype=${p.extension.rowType?url}&mid=${mid}&term=${p.qualname?url}">
@@ -235,9 +277,7 @@ $(document).ready(function(){
         </#if>
           <li>
               <div>
-                <@s.submit cssClass="button" name="save" key="button.save"/>
- 	              <@s.submit cssClass="confirm" name="delete" key="button.delete"/>
- 	              <@s.submit cssClass="button" name="cancel" key="button.back"/>
+                <@threeButtons/>
               </div>
           </li>
       </ul>
@@ -370,18 +410,19 @@ $(document).ready(function(){
                         <@showField field field_index/>
                       </#list>
                       <div class="twenty_top">
-                        <@s.submit cssClass="button" name="save" key="button.save"/>
- 	                      <@s.submit cssClass="confirm" name="delete" key="button.delete"/>
- 	                      <@s.submit cssClass="button" name="cancel" key="button.back"/>
+                        <@threeButtons/>
                       </div>
                     </div>
                 </#if>
               </#list>
             <#else>
-                <h3 class="twenty_top">Fields</h3>
+                <h3 class="twenty_top"><@s.text name="manage.mapping.fields"/></h3>
               <#list fields as field>
                 <@showField field field_index/>
               </#list>
+              <div class="twenty_top">
+                <@threeButtons/>
+              </div>
             </#if>
 
           <#if (action.getNonMappedColumns()?size>0)>
