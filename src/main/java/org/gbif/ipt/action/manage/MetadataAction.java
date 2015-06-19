@@ -304,6 +304,7 @@ public class MetadataAction extends ManagerBaseAction {
         }
 
         if (isHttpPost()) {
+          resource.getEml().getDescription().clear();
           resource.getEml().getContacts().clear();
           resource.getEml().getCreators().clear();
           resource.getEml().getMetadataProviders().clear();
@@ -319,14 +320,12 @@ public class MetadataAction extends ManagerBaseAction {
             }
           }
         }
-        next = MetadataSection.GEOGRAPHIC_COVERAGE_SECTION;
         break;
 
       case GEOGRAPHIC_COVERAGE_SECTION:
         if (isHttpPost()) {
           resource.getEml().getGeospatialCoverages().clear();
         }
-        next = MetadataSection.TAXANOMIC_COVERAGE_SECTION;
         break;
 
       case TAXANOMIC_COVERAGE_SECTION:
@@ -337,21 +336,18 @@ public class MetadataAction extends ManagerBaseAction {
         if (isHttpPost()) {
           resource.getEml().getTaxonomicCoverages().clear();
         }
-        next = MetadataSection.TEMPORAL_COVERAGE_SECTION;
         break;
 
       case TEMPORAL_COVERAGE_SECTION:
         if (isHttpPost()) {
           resource.getEml().getTemporalCoverages().clear();
         }
-        next = MetadataSection.KEYWORDS_SECTION;
         break;
 
       case KEYWORDS_SECTION:
         if (isHttpPost()) {
           resource.getEml().getKeywords().clear();
         }
-        next = MetadataSection.PARTIES_SECTION;
         break;
 
       case PARTIES_SECTION:
@@ -360,7 +356,6 @@ public class MetadataAction extends ManagerBaseAction {
         if (isHttpPost()) {
           resource.getEml().getAssociatedParties().clear();
         }
-        next = MetadataSection.PROJECT_SECTION;
         break;
 
       case PROJECT_SECTION:
@@ -369,14 +364,12 @@ public class MetadataAction extends ManagerBaseAction {
         if (isHttpPost()) {
           resource.getEml().getProject().getPersonnel().clear();
         }
-        next = MetadataSection.METHODS_SECTION;
         break;
 
       case METHODS_SECTION:
         if (isHttpPost()) {
           resource.getEml().getMethodSteps().clear();
         }
-        next = MetadataSection.CITATIONS_SECTION;
         break;
       case CITATIONS_SECTION:
         if (isHttpPost()) {
@@ -387,7 +380,6 @@ public class MetadataAction extends ManagerBaseAction {
             addActionMessage(
               "The DOI reserved or registered for this resource is being used as the citation identifier");
         }
-        next = MetadataSection.COLLECTIONS_SECTION;
         break;
 
       case COLLECTIONS_SECTION:
@@ -401,21 +393,18 @@ public class MetadataAction extends ManagerBaseAction {
           resource.getEml().getSpecimenPreservationMethods().clear();
           resource.getEml().getJgtiCuratorialUnits().clear();
         }
-        next = MetadataSection.PHYSICAL_SECTION;
         break;
 
       case PHYSICAL_SECTION:
         if (isHttpPost()) {
           resource.getEml().getPhysicalData().clear();
         }
-        next = MetadataSection.ADDITIONAL_SECTION;
         break;
 
       case ADDITIONAL_SECTION:
         if (isHttpPost()) {
           resource.getEml().getAlternateIdentifiers().clear();
         }
-        next = MetadataSection.BASIC_SECTION;
         break;
 
       default: break;
@@ -435,7 +424,51 @@ public class MetadataAction extends ManagerBaseAction {
       addActionMessage(getText("manage.success", new String[] {getText("submenu." + section.getName())}));
       // Save resource information (resource.xml)
       resourceManager.save(resource);
+      // progress to next section, since save succeeded
+      switch (section) {
+        case BASIC_SECTION:
+          next = MetadataSection.GEOGRAPHIC_COVERAGE_SECTION;
+          break;
+        case GEOGRAPHIC_COVERAGE_SECTION:
+          next = MetadataSection.TAXANOMIC_COVERAGE_SECTION;
+          break;
+        case TAXANOMIC_COVERAGE_SECTION:
+          next = MetadataSection.TEMPORAL_COVERAGE_SECTION;
+          break;
+        case TEMPORAL_COVERAGE_SECTION:
+          next = MetadataSection.KEYWORDS_SECTION;
+          break;
+        case KEYWORDS_SECTION:
+          next = MetadataSection.PARTIES_SECTION;
+          break;
+        case PARTIES_SECTION:
+          next = MetadataSection.PROJECT_SECTION;
+          break;
+        case PROJECT_SECTION:
+          next = MetadataSection.METHODS_SECTION;
+          break;
+        case METHODS_SECTION:
+          next = MetadataSection.CITATIONS_SECTION;
+          break;
+        case CITATIONS_SECTION:
+          next = MetadataSection.COLLECTIONS_SECTION;
+          break;
+        case COLLECTIONS_SECTION:
+          next = MetadataSection.PHYSICAL_SECTION;
+          break;
+        case PHYSICAL_SECTION:
+          next = MetadataSection.ADDITIONAL_SECTION;
+          break;
+        case ADDITIONAL_SECTION:
+          next = MetadataSection.BASIC_SECTION;
+          break;
+        default: break;
+      }
+    } else {
+      // stay on the same section, since save failed
+      next = section;
     }
+
     return SUCCESS;
   }
 

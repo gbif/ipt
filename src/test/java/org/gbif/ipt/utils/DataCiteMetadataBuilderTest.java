@@ -27,6 +27,8 @@ import org.gbif.metadata.eml.TemporalCoverage;
 import org.gbif.metadata.eml.UserId;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -65,7 +67,10 @@ public class DataCiteMetadataBuilderTest {
     resource.setEml(eml);
 
     eml.setTitle("Ants of New York State");
-    eml.setDescription("Comprehensive ants collection");
+    List<String> description = Lists.newArrayList();
+    description.add("Comprehensive ants collection.");
+    description.add("Mostly dried preserved.");
+    eml.setDescription(description);
     eml.setMetadataLanguage("eng");
     eml.setLanguage("heb");
     Agent creator1 = new Agent();
@@ -315,8 +320,10 @@ public class DataCiteMetadataBuilderTest {
       dataCiteMetadata.getRightsList().getRights().get(0).getValue());
 
     // Abstract aka description
-    assertEquals("Comprehensive ants collection",
+    assertEquals("Comprehensive ants collection.",
       dataCiteMetadata.getDescriptions().getDescription().get(0).getContent().get(0));
+    assertEquals("Mostly dried preserved.",
+      dataCiteMetadata.getDescriptions().getDescription().get(1).getContent().get(0));
     assertEquals(DescriptionType.ABSTRACT,
       dataCiteMetadata.getDescriptions().getDescription().get(0).getDescriptionType());
     assertEquals("eng", dataCiteMetadata.getDescriptions().getDescription().get(0).getLang());

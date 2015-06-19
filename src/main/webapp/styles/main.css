@@ -86,6 +86,7 @@ ul.fielderror{
 	background-image: url('../images/minus.png');
 	font-size:0.85em;
 	display: block;
+  clear: both;
 }
 ul.fielderror li {
   margin-left: 0px;
@@ -598,13 +599,17 @@ div.textRight div.info{
 	margin-top: 5px;
 }
 .topForm textarea {
-	margin-left: 0.5em;
-	width: 90%;
+	width: 95%;
 	overflow: auto;
 }
 .topForm input {
-	margin-left: 0.5em;
-	width: 93%;
+	width: 95%;
+}
+.half input {
+  width: 50%;
+}
+.half textarea {
+  width: 50%;
 }
 .topForm input.button {
 	width: auto;
@@ -621,10 +626,6 @@ div a.button {
 .bottomButtons {
   margin-top: 10px;
 }
-/* Not all half column are suppose to be half, so a new class introduced */
-#registration div {width: 60%;}
-#registration input {width: 85%;}
-#registration div.buttons input {width: auto;}
 
 #newuser div {width: 60%;}
 #newuser input {width: 85%;}
@@ -1263,13 +1264,19 @@ div.third_block img {
   color:#303030
 }
 
+/* Start basic metadata page */
 div.howtocite {
-  margin: 10px 35px 10px 20px;
+  margin: 10px 9px 10px 20px;
   padding: 10px 20px 10px 20px;
   border-style: solid;
   border-width: 1px;
   font-style: italic;
 }
+textarea.basic {
+  margin-left: 15px;
+  margin-bottom: -10px;
+}
+/* End basic metadata page */
 
 .cc_logo {
   display: block;

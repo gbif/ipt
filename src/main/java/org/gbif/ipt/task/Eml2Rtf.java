@@ -90,7 +90,7 @@ public class Eml2Rtf {
   private ResourceManager resourceManager;
 
   /**
-   * Add abstract section. This corresponds to resource's description.
+   * Add abstract section. This corresponds to resource's description, broken into one or more paragraphs.
    * 
    * @param doc Document
    * @param eml EML
@@ -104,8 +104,12 @@ public class Eml2Rtf {
       p.add(new Phrase(getText("rtf.abstract"), fontTitle));
       p.add(Chunk.NEWLINE);
       p.add(Chunk.NEWLINE);
-      p.add(eml.getDescription().replace("\r\n", "\n"));
-      p.add(Chunk.NEWLINE);
+      for (String para : eml.getDescription()) {
+        if (!Strings.isNullOrEmpty(para)) {
+          p.add(para.replace("\r\n", "\n"));
+          p.add(Chunk.NEWLINE);
+        }
+      }
       doc.add(p);
       p.clear();
     }

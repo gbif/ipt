@@ -33,9 +33,11 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import javax.xml.parsers.ParserConfigurationException;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -167,12 +169,14 @@ public class EmlValidatorTest {
   @Test
   public void testBasicPartDescriptionMissing() {
     // invalid
-    eml.setDescription(null);
+    List<String> description = Lists.newArrayList();
+    eml.setDescription(description);
     assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
-    eml.setDescription("shrt");
+    description.add("shrt");
     assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
     // valid
-    eml.setDescription("long_enough");
+    description.clear();
+    description.add("long_enough");
     assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
   }
 
@@ -598,7 +602,7 @@ public class EmlValidatorTest {
     resource.setUpdateFrequency(MaintenanceUpdateFrequency.ANNUALLY.toString());
 
     empty.setTitle("Title");
-    empty.setDescription("Description");
+    empty.addDescriptionPara("Description");
     empty.setMetadataLanguage(Language.FRENCH.getIso3LetterCode());
     empty.setLanguage(Language.SPANISH.getIso3LetterCode());
     empty.setIntellectualRights("CC-BY");

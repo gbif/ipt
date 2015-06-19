@@ -113,6 +113,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Iterables;
@@ -220,7 +221,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (metadata != null) {
       // copy properties
       eml.setTitle(metadata.getTitle());
-      eml.setDescription(metadata.getDescription());
+
+      if (metadata.getDescription() != null) {
+        // split description into paragraphs
+        for (String para : Splitter.onPattern("\r?\n").trimResults().omitEmptyStrings().split(metadata.getDescription())) {
+          eml.addDescriptionPara(para);
+        }
+      }
+
       if (metadata.getHomepage() != null) {
         eml.setDistributionUrl(metadata.getHomepage().toString());
       }

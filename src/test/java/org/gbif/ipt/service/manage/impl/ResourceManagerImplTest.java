@@ -87,6 +87,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
+import com.google.common.collect.Lists;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
@@ -318,7 +319,7 @@ public class ResourceManagerImplTest {
 
     // eml properties loaded from eml.xml
     assertEquals("TEST RESOURCE", res.getEml().getTitle());
-    assertEquals("Test description", res.getEml().getDescription());
+    assertEquals("Test description", res.getEml().getDescription().get(0));
     assertEquals(Constants.INITIAL_RESOURCE_VERSION, res.getEml().getEmlVersion());
   }
 
@@ -382,7 +383,7 @@ public class ResourceManagerImplTest {
 
     // there are no eml properties except default shortname as title since there was no eml.xml file included
     assertEquals(RESOURCE_SHORTNAME, res.getEml().getTitle());
-    assertEquals(null, res.getEml().getDescription());
+    assertTrue(res.getEml().getDescription().isEmpty());
 
     // properties that never get set on new resource creation
 
@@ -476,7 +477,7 @@ public class ResourceManagerImplTest {
 
     // there are no eml properties except default shortname as title since there was no eml.xml file included
     assertEquals("res-single-gz", res.getEml().getTitle());
-    assertEquals(null, res.getEml().getDescription());
+    assertTrue(res.getEml().getDescription().isEmpty());
   }
 
   /**
@@ -1360,7 +1361,9 @@ public class ResourceManagerImplTest {
     resource.setOrganisation(organisation);
     assertEquals(organisation.getKey(), resource.getOrganisation().getKey());
     resource.getEml().setTitle("Title for pending version 1.2");
-    resource.getEml().setDescription("Title description for pending version 1.2");
+    List<String> description = Lists.newArrayList();
+    description.add("Title description for pending version 1.2");
+    resource.getEml().setDescription(description);
 
     // retrieve previous persisted Eml file for version 1.1
     File emlXMLVersionOnePointOne = org.gbif.utils.file.FileUtils.getClasspathFile("resources/res1/eml-1.1.xml");
@@ -1379,7 +1382,7 @@ public class ResourceManagerImplTest {
     assertEquals(1, reconstructed.getRecordsPublished()); // changed
     // ensure reconstructed resource uses eml-1.1.xml
     assertEquals("Title for version 1.1", reconstructed.getEml().getTitle()); // changed
-    assertEquals("Test description for version 1.1", reconstructed.getEml().getDescription()); // changed
+    assertEquals("Test description for version 1.1", reconstructed.getEml().getDescription().get(0)); // changed
   }
 
   /**
@@ -1419,7 +1422,9 @@ public class ResourceManagerImplTest {
     resource.setKey(key);
 
     resource.getEml().setTitle("Title for pending version 5.1");
-    resource.getEml().setDescription("Description for pending version 5.1");
+    List<String> description = Lists.newArrayList();
+    description.add("Description for pending version 5.1");
+    resource.getEml().setDescription(description);
 
     // retrieve previous persisted Eml file for version 5.0
     File emlXMLVersionOnePointOne = org.gbif.utils.file.FileUtils.getClasspathFile("resources/res1/eml-5.0.xml");
@@ -1439,7 +1444,7 @@ public class ResourceManagerImplTest {
     assertEquals(0, reconstructed.getRecordsPublished()); // unchanged
     // ensure reconstructed resource uses eml-5.0.xml
     assertEquals("Test Dataset Please Ignore", reconstructed.getEml().getTitle()); // changed
-    assertEquals("This dataset covers mosses and lichens from Russia.", reconstructed.getEml().getDescription()); // changed
+    assertEquals("This dataset covers mosses and lichens from Russia.", reconstructed.getEml().getDescription().get(0)); // changed
   }
 
   @Test

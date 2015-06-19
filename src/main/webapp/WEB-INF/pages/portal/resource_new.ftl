@@ -260,13 +260,21 @@
                                 <img src="${eml.logoUrl}"/>
                             </div>
                         </#if>
-                        <p property="dc:abstract">
-                          <#if eml.description?has_content>
-                            <@textWithFormattedLink eml.description!no_description/>
-                          <#else>
-                            <@s.text name='portal.resource.no.description'/>
-                          </#if>
-                        </p>
+
+                        <#if (eml.description?size>0)>
+                          <div property="dc:abstract">
+                            <#list eml.description as para>
+                              <#if para?has_content>
+                                <p>
+                                  <@textWithFormattedLink para/>
+                                </p>
+                              </#if>
+                            </#list>
+                          </div>
+                        <#else>
+                          <@s.text name='portal.resource.no.description'/>
+                        </#if>
+
                           <#if eml.distributionUrl?has_content || resource.lastPublished??>
                               <ul class="horizontal-list">
                                 <#if eml.distributionUrl?has_content>

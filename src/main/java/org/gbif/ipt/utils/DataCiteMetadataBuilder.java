@@ -197,12 +197,16 @@ public class DataCiteMetadataBuilder {
    */
   protected static DataCiteMetadata.Descriptions getDescriptions(Eml eml) {
     DataCiteMetadata.Descriptions descriptions = FACTORY.createDataCiteMetadataDescriptions();
-    if (!Strings.isNullOrEmpty(eml.getDescription())) {
-      DataCiteMetadata.Descriptions.Description description = FACTORY.createDataCiteMetadataDescriptionsDescription();
-      description.setDescriptionType(DescriptionType.ABSTRACT);
-      description.setLang(eml.getMetadataLanguage());
-      description.getContent().add(eml.getDescription());
-      descriptions.getDescription().add(description);
+    if (!eml.getDescription().isEmpty()) {
+      for (String para : eml.getDescription()) {
+        if (!Strings.isNullOrEmpty(para)) {
+          DataCiteMetadata.Descriptions.Description description = FACTORY.createDataCiteMetadataDescriptionsDescription();
+          description.setDescriptionType(DescriptionType.ABSTRACT);
+          description.setLang(eml.getMetadataLanguage());
+          description.getContent().add(para);
+          descriptions.getDescription().add(description);
+        }
+      }
     }
     return descriptions;
   }

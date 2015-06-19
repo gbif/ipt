@@ -173,12 +173,19 @@ public class EmlValidator extends BaseValidator {
           }
 
           // description - mandatory and greater than 5 chars
-          if (Strings.isNullOrEmpty(eml.getDescription())) {
-            action.addFieldError("eml.description",
-              action.getText("validation.required", new String[] {action.getText("eml.description")}));
-          } else if (!exists(eml.getDescription(), 5)) {
-            action.addFieldError("eml.description",
-              action.getText("validation.short", new String[] {action.getText("eml.description"), "5"}));
+          if (eml.getDescription().isEmpty()) {
+            action
+              .addActionError(action.getText("validation.required", new String[] {action.getText("eml.description")}));
+          } else {
+            // ensure each description is longer than min length
+            int index = 0;
+            for (String d : eml.getDescription()) {
+              if (!exists(d, 5)) {
+                action.addFieldError("eml.description[" + index + "]",
+                  action.getText("validation.short", new String[] {action.getText("eml.description"), "5"}));
+              }
+              index++;
+            }
           }
 
           // intellectual rights - mandatory

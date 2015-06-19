@@ -11,6 +11,13 @@
 	<textarea id="${name}" name="${name}" cols="${size}" rows="${rows}" <#if (maxlength>0)>maxlength="${maxlength}"</#if><#if disabled>readonly="readonly"</#if>><#if value=="-99999"><@s.property value="${name}"/><#else>${value}</#if></textarea>
   </div>
 </#macro>
+<#-- has no label or help icon, and is used exclusively on basic metadata page description textareas -->
+<#macro simpleText name value="-99999" errorfield="" size=40 rows=5 disabled=false requiredField=false maxlength=-1>
+    <div>
+      <#if errorfield==""><@s.fielderror cssClass="fielderror" fieldName="${name}"/><#else><@s.fielderror cssClass="fielderror" fieldName="${errorfield}"/></#if>
+      <textarea id="${name}" name="${name}" cols="${size}" rows="${rows}" class="basic" <#if (maxlength>0)>maxlength="${maxlength}"</#if><#if disabled>readonly="readonly"</#if>><#if value=="-99999"><@s.property value="${name}"/><#else>${value}</#if></textarea>
+    </div>
+</#macro>
 
 <#macro textinline name value="-99999" i18nkey="" errorfield="" help="">
 	<div class="textinline">

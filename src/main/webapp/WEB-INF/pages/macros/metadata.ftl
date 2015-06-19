@@ -249,9 +249,15 @@ $(document).ready(function(){
 		$("#item-"+index+" .removeLink").attr("id", "removeLink-"+index);
 		$("#removeLink-"+index).click(function(event) {
 			removeItem(event);
-		});	
-	    
+		});
+
 	  <#switch "${section}">
+			<#case "basic">
+        $("#item-"+index+" textarea").attr("id",function() {
+          return "eml.description["+index+"]"; });
+        $("#item-"+index+" textarea").attr("name",function() {
+          return $(this).attr("id"); });
+			<#break>
     	<#case "methods">
 			$("#item-"+index+" textarea").attr("id", "eml.methodSteps["+index+"]");	
 			$("#item-"+index+" label").attr("for", "eml.methodSteps["+index+"]");		

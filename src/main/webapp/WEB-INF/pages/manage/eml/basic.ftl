@@ -1,5 +1,6 @@
  <#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
+<#include "/WEB-INF/pages/macros/metadata.ftl"/>
 <title><@s.text name='manage.metadata.basic.title'/></title>
 <#include "/WEB-INF/pages/macros/metadata_agent.ftl"/>
  <script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
@@ -140,7 +141,6 @@
     <form class="topForm" action="metadata-${section}.do" method="post">
     <p><@s.text name="manage.metadata.basic.required.message" /></p>
   	<@input name="eml.title" requiredField=true />
-  	<@text name="eml.description" requiredField=true />
 
     <div class="third_block clearfix">
 
@@ -195,6 +195,31 @@
         </div>
     </div>
 
+        <!-- Descriptions, broken into one or more paragraphs -->
+        <div class="listBlock grid_17 suffix_1">
+          <@textinline name="eml.description" help="i18n"/>
+            <div id="items">
+              <#list eml.description as item>
+                  <div id="item-${item_index}" class="item paragraphk">
+                    <div class="halfcolumn">&nbsp;</div>
+                    <div class="halfcolumn">
+                      <a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='eml.description.item'/> ]</a>
+                    </div>
+                    <@simpleText name="eml.description[${item_index}]" requiredField=true/>
+                  </div>
+              </#list>
+            </div>
+            <div class="addNew"><a id="plus" href="">[ <@s.text name='manage.metadata.addnew'/> <@s.text name='eml.description.item'/> ]</a></div>
+        </div>
+
+        <div id="baseItem" class="item" style="display:none;">
+            <div class="halfcolumn">&nbsp;</div>
+            <div class="halfcolumn">
+                <a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='eml.description.item'/> ]</a>
+            </div>
+          <@simpleText name=""/>
+        </div>
+
     <!-- retrieve some link names one time -->
       <#assign copyLink><@s.text name="eml.resourceCreator.copyLink"/></#assign>
       <#assign removeContactLink><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.contact'/></#assign>
@@ -212,9 +237,7 @@
           <div id="contact-item-${contact_index}" class="item clearfix">
               <div class="columnLinks">
                 <!-- Do not show copy-from-resource-contact link for for first contact -->
-                <div class="halfcolumn">
-                  <a id="contact-copyDetails-${contact_index}" href="" [ ${copyLink?lower_case?cap_first}  ]</a>
-                </div>
+                <div class="halfcolumn">&nbsp;</div>
                 <div class="halfcolumn">
                   <a id="contact-removeLink-${contact_index}" class="removeContactLink" href="">[ ${removeContactLink?lower_case?cap_first} ]</a>
                 </div>
