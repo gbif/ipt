@@ -1,12 +1,17 @@
+<#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
  <title><@s.text name="admin.home.manageExtensions"/></title>
- <#assign currentMenu = "admin"/>
-<#include "/WEB-INF/pages/inc/menu.ftl">
+ <script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
+
 <script type="text/javascript">
     $(document).ready(function(){
         initHelp();
+        $('.confirm').jConfirmAction({question : "<@s.text name='admin.extension.update.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
     });
 </script>
+
+	<#assign currentMenu = "admin"/>
+	<#include "/WEB-INF/pages/inc/menu.ftl">
 
 <div class="grid_23">
   <h1><@s.text name="admin.extension.coreTypes"/></h1>
@@ -34,7 +39,7 @@
 			<#if !ext.isLatest()>
         <form action='updateExtension.do' method='post'>
       	  <input type='hidden' name='id' value='${ext.rowType}' />
-					<@s.submit name="update" key="button.update"/>
+					<@s.submit cssClass="confirm" name="update" key="button.update"/>
         </form>
 			</#if>
 			<form action='extension.do' method='post'>
@@ -179,3 +184,4 @@
 </#if>
 </div>
 <#include "/WEB-INF/pages/inc/footer.ftl">
+</#escape>
