@@ -1,0 +1,3 @@
+id	sampleSizeValue	sampleSizeUnit	basisOfRecord
+1	5	metre	event
+2	5	metre	event

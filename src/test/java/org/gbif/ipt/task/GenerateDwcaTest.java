@@ -445,12 +445,18 @@ public class GenerateDwcaTest {
     JdbcInfoConverter jdbcConverter = new JdbcInfoConverter(support);
 
     // construct occurrence core Extension
-    InputStream occurrenceCoreIs = GenerateDwcaTest.class.getResourceAsStream("/extensions/dwc_occurrence_2015-04-24.xml");
+    InputStream occurrenceCoreIs = GenerateDwcaTest.class.getResourceAsStream(
+      "/extensions/dwc_occurrence_2015-04-24.xml");
     Extension occurrenceCore = extensionFactory.build(occurrenceCoreIs);
     ExtensionManager extensionManager = mock(ExtensionManager.class);
 
+    // construct event core Extension
+    InputStream eventCoreIs = GenerateDwcaTest.class.getResourceAsStream("/extensions/dwc_event_2015-04-24.xml");
+    Extension eventCore = extensionFactory.build(eventCoreIs);
+
     // mock ExtensionManager returning occurrence core Extension
     when(extensionManager.get("http://rs.tdwg.org/dwc/terms/Occurrence")).thenReturn(occurrenceCore);
+    when(extensionManager.get("http://rs.tdwg.org/dwc/terms/Event")).thenReturn(eventCore);
     when(extensionManager.get("http://rs.tdwg.org/dwc/xsd/simpledarwincore/SimpleDarwinRecord"))
       .thenReturn(occurrenceCore);
 
@@ -628,5 +634,36 @@ public class GenerateDwcaTest {
     row = reader.next();
     assertEquals("http://dummyimage.com/3|http://dummyimage.com/4", row[3]);
     reader.close();
+  }
+
+  /**
+   * A generated DwC-a with event core, but missing occurrence mapping, is expected to throw a GeneratorException.
+   */
+  @Test(expected = GeneratorException.class)
+  public void testValidateEventCoreFromSingleSourceFileMissingOccurrenceExtension() throws Exception {
+    // retrieve sample zipped resource XML configuration file
+    File resourceXML = FileUtils.getClasspathFile("resources/res1/resource_event_1.xml");
+    // create resource, with single source file that is missing occurrenceIDs
+    File event = FileUtils.getClasspathFile("resources/res1/event.txt");
+    Resource resource = getResource(resourceXML, event);
+
+    generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
+      mock(VocabulariesManager.class));
+    generateDwca.call();
+  }
+
+  /**
+   * Confirm event core with rows missing basisOfRecord throws GeneratorException.
+   */
+  @Test(expected = GeneratorException.class)
+  public void testGenerateEventCoreFromSingleSourceFileMissingBasisOfRecord() throws Exception {
+    // retrieve sample zipped resource XML configuration file corresponding to occurrence_missing_bor.txt
+    File resourceXML = FileUtils.getClasspathFile("resources/res1/resource_event_2.xml");
+    // create resource from single source file
+    File occurrence = FileUtils.getClasspathFile("resources/res1/event_missing_bor.txt");
+    Resource resource = getResource(resourceXML, occurrence);
+    generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
+      mockVocabulariesManager);
+    generateDwca.call();
   }
 }

@@ -346,7 +346,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
   /**
    * Validate the DwC-A:
-   * -ensure that if the core record identifier is mapped (e.g. occurrenceID, taxonID, etc) its present on all
+   * -ensure that if the core record identifier is mapped (e.g. occurrenceID, taxonID, etc) it is present on all
    * rows, and is unique
    * 
    * @throws GeneratorException if DwC-A could not be validated
@@ -554,8 +554,10 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
    * Validate the Archive's core data file has an ID for each row, and that each ID is unique. Perform this check
    * only if the core record ID term (e.g. occurrenceID, taxonID, etc) has actually been mapped.
    * </br>
-   * If the core has rowType occurrence, validate the core data file has a basisOfRecord for each row, and that each
-   * basisOfRecord matches the DwC Type Vocabulary.
+   * If the core has rowType occurrence or event, validate the core data file has a basisOfRecord for each row, and
+   * that each basisOfRecord matches the DwC Type Vocabulary.
+   * </br>
+   * If the core has rowType event, validate there are associated occurrences.
    * 
    * @param arch Archive
    *
@@ -569,12 +571,17 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     // get the basisOfRecord term
     Term basisOfRecord = TERM_FACTORY.findTerm(Constants.DWC_BASIS_OF_RECORD);
 
-    // fail immediately if occurrence core doesn't contain basisOfRecord mapping
-    if (isOccurrenceCore(arch) && !arch.getCore().hasTerm(basisOfRecord)) {
+    // fail immediately if occurrence core or event core doesn't contain basisOfRecord mapping
+    if ((isOccurrenceCore(arch) || isEventCore(arch)) && !arch.getCore().hasTerm(basisOfRecord)) {
       addMessage(Level.ERROR,
         "Archive validation failed, because required term basisOfRecord was not mapped in the occurrence core");
       throw new GeneratorException("Can't validate DwC-A for resource " + resource.getShortname()
                                    + ". Required term basisOfRecord was not mapped in the occurrence core");
+    }
+
+    // fail immediately if event core doesn't have associated occurrences
+    if (isEventCore(arch)) {
+      validateEventCore(arch);
     }
 
     // validate the core file if a) the record identifier (e.g. occurrenceID, taxonID) has been mapped
@@ -739,6 +746,32 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
   }
 
   /**
+   * Check if event core has an occurrence mapping, with at least one associated occurrence.
+   *
+   * @param arch Archive
+   */
+  private void validateEventCore(Archive arch) throws GeneratorException {
+    boolean validEventCore = true;
+    // test if occurrence extension mapped
+    ArchiveFile occurrenceExtension = arch.getExtension(DwcTerm.Occurrence);
+    if (occurrenceExtension == null) {
+      validEventCore = false;
+    }
+    // test if it has at least one record
+    else {
+      if (!occurrenceExtension.iterator().hasNext()) {
+        validEventCore = false;
+      }
+    }
+    if (!validEventCore) {
+      addMessage(Level.ERROR,
+        "Archive validation failed, because sampling event resource has no associated occurrences.");
+      throw new GeneratorException("Can't validate DwC-A for resource " + resource.getShortname()
+                                   + ". Sampling event has no associated occurrence records");
+    }
+  }
+
+  /**
    * Report basisOfRecord validation (shared by two methods 1. validateBasisOfRecord(ArchiveFile archiveFile)
    * 2. validateCoreDataFile(Archive arch).
    *
@@ -797,6 +830,13 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
    */
   private boolean isOccurrenceCore(Archive arch) {
     return arch.getCore().getRowType().equals(DwcTerm.Occurrence);
+  }
+
+  /**
+   * @return true if the archive core file has event rowType.
+   */
+  private boolean isEventCore(Archive arch) {
+    return arch.getCore().getRowType().equals(DwcTerm.Event);
   }
 
   /**
