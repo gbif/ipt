@@ -292,16 +292,8 @@ public class MetadataAction extends ManagerBaseAction {
           warnings.addStartupError(e.getMessage(), e);
         }
 
-        // TODO: put into method
-        // enabled registry organisations
-        List<Organisation> associatedOrganisations = registrationManager.list();
-        organisations = Maps.newLinkedHashMap();
-        if (!associatedOrganisations.isEmpty()) {
-          organisations.put("", getText("admin.organisation.name.select"));
-          for (Organisation o : associatedOrganisations) {
-            organisations.put(o.getKey().toString(), o.getName());
-          }
-        }
+        // load organisations map
+        loadOrganisations();
 
         if (isHttpPost()) {
           resource.getEml().getDescription().clear();
@@ -845,5 +837,20 @@ public class MetadataAction extends ManagerBaseAction {
    */
   public boolean isDoiReservedOrAssigned() {
     return doiReservedOrAssigned;
+  }
+
+  /**
+   * Populate organisations dropdown options/list, with placeholder option, followed by list of organisations able to
+   * host resources.
+   */
+  private void loadOrganisations() {
+    List<Organisation> associatedOrganisations = registrationManager.list();
+    organisations = Maps.newLinkedHashMap();
+    if (!associatedOrganisations.isEmpty()) {
+      organisations.put("", getText("admin.organisation.name.select"));
+      for (Organisation o : associatedOrganisations) {
+        organisations.put(o.getKey().toString(), o.getName());
+      }
+    }
   }
 }

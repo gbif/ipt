@@ -36,7 +36,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -303,10 +302,8 @@ public class ResourceAction extends PortalBaseAction {
     // if the record count for this published version is greater than 0, but no dwca was found, it must have been
     // deleted which means that archival mode was not turned on when the proceeding version was published
     if (metadataOnly && recordsPublishedForVersion > 0) {
-      // TODO i18n
-      addActionWarning(
-        "The DwC-A file published for this version had " + String.valueOf(recordsPublishedForVersion)
-        + " records but was not archived.");
+      addActionWarning(getText("portal.resource.version.notArchived.count",
+        new String[] {String.valueOf(recordsPublishedForVersion)}));
     }
 
     // now prepare organized taxonomic coverages, facilitating UI display

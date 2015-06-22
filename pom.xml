@@ -136,11 +136,6 @@
       <id>gbif-thirdparty</id>
       <url>http://repository.gbif.org/content/repositories/thirdparty</url>
     </repository>
-    <!-- TODO: This reference needs to be removed as the repository is deprecated -->
-    <repository>
-      <id>gbif-old</id>
-      <url>http://tools.gbif.org/maven/repository</url>
-    </repository>
   </repositories>
 
   <build>

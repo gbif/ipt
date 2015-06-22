@@ -126,7 +126,6 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.rtf.RtfWriter2;
 import com.thoughtworks.xstream.XStream;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Level;
 import org.xml.sax.SAXException;
 
@@ -224,7 +223,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
       if (metadata.getDescription() != null) {
         // split description into paragraphs
-        for (String para : Splitter.onPattern("\r?\n").trimResults().omitEmptyStrings().split(metadata.getDescription())) {
+        for (String para : Splitter.onPattern("\r?\n").trimResults().omitEmptyStrings()
+          .split(metadata.getDescription())) {
           eml.addDescriptionPara(para);
         }
       }
@@ -307,9 +307,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
     // if decompression succeeded, create resource depending on whether file was 'IPT Resource Folder' or a 'DwC-A'
     else {
-      resource =
-        (isIPTResourceFolder(dwcaDir)) ? createFromIPTResourceFolder(shortname, dwcaDir, creator, alog)
-          : createFromArchive(shortname, dwcaDir, creator, alog);
+      resource = (isIPTResourceFolder(dwcaDir)) ? createFromIPTResourceFolder(shortname, dwcaDir, creator, alog)
+        : createFromArchive(shortname, dwcaDir, creator, alog);
     }
 
     // set resource type, if it hasn't been set already
@@ -477,7 +476,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       }
 
       if (arch.getCore().getRowType() == null) {
-        // TODO action log
+        alog.warn("manage.resource.create.core.invalid.rowType");
         throw new ImportException("Darwin core archive is invalid, core mapping has no rowType");
       }
 
@@ -1018,7 +1017,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   /**
    * Update a resource's version, and rename its eml, rtf, and dwca versioned files to have the new version also.
    *
-   * @param resource resource to update
+   * @param resource   resource to update
    * @param oldVersion old version number
    * @param newVersion new version number
    *
@@ -1067,7 +1066,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * Rename a resource's dwca.zip to have the last published version, e.g. dwca-18.0.zip
    *
    * @param resource resource to update
-   * @param version last published version number
+   * @param version  last published version number
    */
   protected void renameDwcaToIncludeVersion(Resource resource, BigDecimal version) {
     Preconditions.checkNotNull(resource);
@@ -1097,7 +1096,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   protected VersionHistory constructVersionHistoryForLastPublishedVersion(Resource resource) {
     if (resource.isPublished() && resource.getVersionHistory().isEmpty()) {
-      VersionHistory vh = new VersionHistory(resource.getEmlVersion(), resource.getLastPublished(), resource.getStatus());
+      VersionHistory vh =
+        new VersionHistory(resource.getEmlVersion(), resource.getLastPublished(), resource.getStatus());
       vh.setRecordsPublished(resource.getRecordsPublished());
       return vh;
     }
@@ -1190,9 +1190,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * Publishing is split into 2 parts because DwC-A generation is asynchronous. This 2nd part of publishing can only
    * be called after DwC-A has completed successfully.
    *
-   * @param resource    resource
-   * @param action      action
-   * @param version     version number to finalize publishing
+   * @param resource resource
+   * @param action   action
+   * @param version  version number to finalize publishing
    *
    * @throws PublicationException   if publication was unsuccessful
    * @throws InvalidConfigException if resource configuration could not be saved
@@ -1299,10 +1299,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         resource.updateAlternateIdentifierForDOI();
         resource.updateCitationIdentifierForDOI(); // set DOI as citation identifier
       } catch (DoiExistsException e) {
-        log.warn("Received DoiExistsException registering resource meaning this is an existing DOI that should be updated instead", e);
+        log.warn(
+          "Received DoiExistsException registering resource meaning this is an existing DOI that should be updated instead",
+          e);
         try {
           registrationManager.getDoiService().update(doi, dataCiteMetadata);
-          resource.setIdentifierStatus(IdentifierStatus.PUBLIC); // must transition reused (registered DOI) from public_pending_publication to public
+          resource.setIdentifierStatus(
+            IdentifierStatus.PUBLIC); // must transition reused (registered DOI) from public_pending_publication to public
           resource.updateAlternateIdentifierForDOI();
           resource.updateCitationIdentifierForDOI(); // set DOI as citation identifier
         } catch (DoiException e2) {

@@ -757,8 +757,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
               // the DOI is registered and should resolve to this resource's public homepage, so verify the homepage is publicly accessible
               LOG.debug("Resource " + resource.getShortname() + " has status=" + resource.getStatus());
               if (!resource.isPubliclyAvailable()) {
-                // TODO: i18n
-                String errorMsg = "Failed to reuse existing registered DOI (" + existingDoi.toString() + "). To be able to assign it to this resource, the resource must be publicly accessible.";
+                String errorMsg = getText("manage.overview.publishing.doi.reserve.failed.notPublic", new String[]{existingDoi.toString()});
                 LOG.error(errorMsg);
                 addActionError(errorMsg);
               } else {
@@ -770,8 +769,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
                   LOG.debug("Verified target URI of existing registered DOI is equal to public resource homepage URI");
                   doReuseDOI(existingDoi, resource);
                 } else {
-                  // TODO: i18n
-                  String errorMsg = "Failed to reuse existing registered DOI (" + existingDoi.toString() + "). To be able to assign it to this resource, its target URI must be changed to " + homepage.toString();
+                  String errorMsg = getText("manage.overview.publishing.doi.reserve.failed.invalid.target", new String[]{existingDoi.toString(), homepage.toString()});
                   LOG.error(errorMsg);
                   addActionError(errorMsg);
                 }
