@@ -199,8 +199,10 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
         // if there are mappings to this extension - do migrations to latest version, save resources
         if (!resourcesToMigrate.isEmpty()) {
           for (Resource r : resourcesToMigrate) {
+            log.info("Updating " + rowType + " mappings for resource: " + r.getTitleAndShortname() + "...");
             migrateResourceToNewExtensionVersion(r, installed, extension);
             resourceManager.save(r);
+            log.info("Updated " + rowType + " mappings successfully for resource: " + r.getTitleAndShortname());
           }
         }
 
