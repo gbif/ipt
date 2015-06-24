@@ -24,6 +24,7 @@ import javax.ws.rs.core.UriBuilder;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
@@ -145,11 +146,11 @@ public class AppConfig {
   public Double getLatitude() {
     try {
       String val = properties.getProperty(IPT_LATITUDE);
-      if (val != null) {
+      if (!Strings.isNullOrEmpty(val)) {
         return Double.valueOf(val);
       }
     } catch (NumberFormatException e) {
-      LOG.warn(e.getMessage());
+      LOG.warn("IPT latitude was invalid: " + e.getMessage());
     }
     return null;
   }
@@ -157,11 +158,11 @@ public class AppConfig {
   public Double getLongitude() {
     try {
       String val = properties.getProperty(IPT_LONGITUDE);
-      if (val != null) {
+      if (!Strings.isNullOrEmpty(val)) {
         return Double.valueOf(val);
       }
     } catch (NumberFormatException e) {
-      LOG.warn(e.getMessage());
+      LOG.warn("IPT longitude was invalid: " +e.getMessage());
     }
     return null;
   }
