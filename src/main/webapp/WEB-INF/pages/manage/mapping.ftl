@@ -233,7 +233,18 @@ $(document).ready(function(){
     <#if field.index??>
       <div class="sample mappingText">
         <@s.text name='manage.mapping.sourceSample' />:
-          <em><#list peek as row><#if row??><#if row[field.index]?has_content>${row[field.index]}<#if row_has_next> | </#if></#if></#if></#list></em>
+        <em>
+          <#list peek as row>
+            <#if row??>
+              <#if row[field.index]?has_content && row[field.index]!=" ">
+                ${row[field.index]}
+              <#else>
+                &nbsp;
+              </#if>
+              <#if row_has_next> | </#if>
+            </#if>
+          </#list>
+        </em>
       </div>
       <div class="sample mappingText">
         <@s.text name='manage.mapping.translation' />:
