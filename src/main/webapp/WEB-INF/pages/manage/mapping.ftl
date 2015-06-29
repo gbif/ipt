@@ -166,6 +166,24 @@ $(document).ready(function(){
   <@s.submit cssClass="button" name="cancel" key="button.back"/>
 </#macro>
 
+<#macro sourceSample index>
+  <div class="sample mappingText">
+    <@s.text name='manage.mapping.sourceSample' />:
+      <em>
+        <#list peek as row>
+          <#if row??>
+            <#if row[index]?has_content && row[index]!=" ">
+              ${row[index]}
+            <#else>
+              &nbsp;
+            </#if>
+            <#if row_has_next> | </#if>
+          </#if>
+        </#list>
+      </em>
+  </div>
+</#macro>
+
 <#macro datasetDoiCheckbox idAttr name i18nkey classAttr requiredField value="-99999" errorfield="">
   <div class="checkbox">
       <div><#include "/WEB-INF/pages/macros/form_field_common.ftl"></div>
@@ -231,21 +249,7 @@ $(document).ready(function(){
           </div>
         </#if>
     <#if field.index??>
-      <div class="sample mappingText">
-        <@s.text name='manage.mapping.sourceSample' />:
-        <em>
-          <#list peek as row>
-            <#if row??>
-              <#if row[field.index]?has_content && row[field.index]!=" ">
-                ${row[field.index]}
-              <#else>
-                &nbsp;
-              </#if>
-              <#if row_has_next> | </#if>
-            </#if>
-          </#list>
-        </em>
-      </div>
+      <@sourceSample field.index/>
       <div class="sample mappingText">
         <@s.text name='manage.mapping.translation' />:
           <a href="translation.do?r=${resource.shortname}&rowtype=${p.extension.rowType?url}&mid=${mid}&term=${p.qualname?url}">
@@ -364,12 +368,8 @@ $(document).ready(function(){
                         </div>
 
                       <#if ((mapping.idColumn!-99)>=0)>
-                          <div class="sample mappingText">
-                            <@s.text name='manage.mapping.sourceSample' />:
-                            <em><#list peek as row><#if row??><#if row[mapping.idColumn]?has_content>${row[mapping.idColumn]}<#if row_has_next> | </#if></#if></#if></#list></em>
-                          </div>
+                        <@sourceSample mapping.idColumn/>
                       </#if>
-
                   </div>
 
 
