@@ -115,8 +115,8 @@ public interface ExtensionManager {
   void installCoreTypes() throws InvalidConfigException;
 
   /**
-   * Get a list of all (term) groups/classes in an extension that are redundant, meaning these term groups are already
-   * included in the core extension.
+   * Get a list of all (term) groups/classes in an extension that are redundant, excluding Record-Level terms.
+   * A redundant group/class, is a group/class that is already included in the core extension.
    *
    * @return list of redundant groups in an extension
    */

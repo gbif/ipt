@@ -159,6 +159,7 @@ $(document).ready(function(){
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <#assign redundants = action.getRedundantGroups()/>
+<#assign nonMapped = action.getNonMappedColumns()/>
 
 <#macro threeButtons>
   <@s.submit cssClass="button" name="save" key="button.save"/>
@@ -281,7 +282,9 @@ $(document).ready(function(){
             <li <#if redundants?seq_contains(g)>class="redundant"</#if>><a class="sidebar-anchor" href="#group_${g}">${g}</a></li>
           </#list>
         </#if>
+        <#if (nonMapped?size>0)>
           <li><a href="#nonmapped"><@s.text name='manage.mapping.nonmapped'/></a></li>
+        </#if>
         <#if (redundants?size>0)>
             <li><a href="#redundant"><@s.text name='manage.mapping.redundant'/></a></li>
         </#if>
@@ -436,12 +439,12 @@ $(document).ready(function(){
               </div>
             </#if>
 
-          <#if (action.getNonMappedColumns()?size>0)>
+          <#if (nonMapped?size>0)>
             <div>
               <h3 id="nonmapped" class="twenty_top"><@s.text name="manage.mapping.no.mapped.title"/></h3>
               <p><@s.text name="manage.mapping.no.mapped.columns"/>:</p>
               <ul>
-                <#list action.getNonMappedColumns() as col>
+                <#list nonMapped as col>
                   <li>${col}</li>
                 </#list>
               </ul>

@@ -70,6 +70,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   private final static String TAXON_KEYWORD = "dwc:taxon";
   private final static String OCCURRENCE_KEYWORD = "dwc:occurrence";
   private final static String EVENT_KEYWORD = "dwc:event";
+  private final static String RECORD_LEVEL_CLASS = "Record-level";
   private final Map<String, Extension> extensionsByRowtype = Maps.newHashMap();
   private final ExtensionFactory factory;
   private final HttpUtil downloader;
@@ -641,8 +642,12 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     List<String> groups = extension.getGroups();
     List<String> coreGroups = core.getGroups();
     if (!groups.isEmpty() && !coreGroups.isEmpty()) {
-      // find groups already included in core extension...
+      // retain groups already included in core extension...
       coreGroups.retainAll(groups);
+      // exclude Record-Level since this cannot ever be a redundant class
+      if (coreGroups.contains(RECORD_LEVEL_CLASS)) {
+        coreGroups.remove(RECORD_LEVEL_CLASS);
+      }
       return coreGroups;
     } else {
       return Lists.newArrayList();
