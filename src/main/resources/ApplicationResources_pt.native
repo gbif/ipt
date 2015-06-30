@@ -49,6 +49,7 @@ basic.showLess=Menos
 basic.show=Mostrar
 basic.hide=Ocultar
 basic.none=Nenhuma
+basic.issued=Emitido
 
 # buttons
 button.add=Adicionar
@@ -68,6 +69,7 @@ button.publish=Publicar
 button.public=Público
 button.updateRegistration=Atualizar Registro
 button.update=Atualizar
+button.synchronise=Sincronizar
 button.private=Privado
 button.view=Visualizar
 button.preview=Prévia
@@ -139,6 +141,7 @@ user.roles.admin=Administrador
 
 # extension
 extension=Extensão
+extension.core=Extensão do núcleo
 extension.rowtype=Tipo de linha
 extension.vocabulary=Vocabulário
 extension.properties=Propriedades
@@ -146,9 +149,8 @@ extension.prop.qname=Nome qualificado
 extension.prop.type=Tipo de dado
 extension.prop.required=Obrigatório
 extension.prop.group=Grupo
-extension.vocabularies.title=Vocabulários
-extension.vocabularies.last.update=Última atualização em\: {0}<br />
-extension.vocabularies.number=todos os {0} vocabulários com última versão registrada
+extension.synchronise.title=Sincronizar Extensões e Vocabulários
+extension.last.synchronised=Última sincronização em {0}
 extension.further.title=Outros padrões e extensões disponíveis no Registro GBIF
 extension.further.title.help=A coluna da esquerda mostra o nome do Padrão ou Extensão. Na coluna da direita encontra-se um resumo de informações sobre o Padrão ou Extensão, incluindo uma breve descrição dos tipos de dados que devem conter.
 extension.already.installed=Todos os padrões e extensões disponíveis já foram instalados
@@ -166,7 +168,7 @@ resource.coreType=Tipo
 resource.coreType.selection=Selecione um tipo
 manage.resource.create.coreType=Tipo
 manage.resource.create.coreType.selection=Selecione um tipo (opcional)
-manage.resource.create.coreType.help=O tipo de recurso. Se o recurso opcionalmente arquivado for carregado, o tipo será deterimnado automaticamente e sobrescrevera sua seleção. <ul><li><b>Ocorrência\:</b> a base do recurso é ocorrências na natureza (observações) ou em coleções (espécimes).<br /></li><li><b>Checklist\:</b> a base do recurso é nomes de táxons.<br /></li><li><b>Somente metadatos\:</b> um recurso tendo informações sobre um dataset, mas sem ter os dados primários. Um recurso de metadados pode ter informações sobre uma coleção que nao foi digitalizada ainda, por exemplo.<br /></li><li><b>Outro\:</b> outro tipo de recurso.<br /></li></ul>
+manage.resource.create.coreType.help=O tipo de recurso. Se recursos opcional arquivados é carregado, o tipo será determinado automaticamente e substituirá sua seleção. <ul><li><b>Ocorrência\:</b> a base do recurso é ocorrências na natureza (observações) ou em uma coleção (espécimes). < br / ></li> <li><b>Lista de Verificação (Checklist)\:</b> a base do recurso é nomes de táxon. < br / ></li> <li><b>Evento de Amostragem\:</b> a base do recurso é um evento de amostragem. < br / ></li> <li><b>Metadados\:</b> um recurso que possua informações sobre um conjunto de dados, mas sem ter os dados primários reais. Um recurso de metadados pode dar informações sobre uma coleção que ainda não foi digitalizada, por exemplo. < br / ></li> <li><b>Outro\:</b> outro tipo de recurso. < br / ></li></ul>
 resource.subtype=Subtipo
 resource.status.private=Privado
 resource.status.public=Público
@@ -189,6 +191,10 @@ source.encoding=Codificação de Caracteres
 source.encoding.help=Codificação de caracteres da fonte de dados. Se não for conhecida, tente UTF-8, Latin-1 ou Windows-1252
 source.dateFormat=Formato de data
 source.dateFormat.help=O formato de data utilizado pela fonte de dados.
+source.multiValueFieldsDelimitedBy=Delimitador de múltiplos valores
+source.multiValueFieldsDelimitedBy.help=Um caractere único que delimita os valores em um campo multi-valor.
+source.ignoreHeaderLines=Número de Linhas de Cabeçalho
+source.ignoreHeaderLines.help=O número de linhas de cabeçalho no seu arquivo que serão ignoradas durante a importação.
 sqlSource.host=Host
 sqlSource.host.help=O endereço do servidor de banco de dados, opcionalmente, com número de portão não padrão (ex., localhost ou mysql.gbif.org\:1336). Não é necessário para ODBC.
 sqlSource.rdbms=Sistema de Banco de Dados
@@ -203,8 +209,6 @@ fileSource.fieldsTerminatedByEscaped=Delimitador de campo
 fileSource.fieldsTerminatedByEscaped.help=Um caractere que delimite as colunuas/campos em uma linha.
 fileSource.fieldsEnclosedByEscaped=Delimitador de texto (citação)
 fileSource.fieldsEnclosedByEscaped.help=Um caractere que delimita cada campo/coluna em uma linha. Normalmente é vazio, mas arquivos CSV usam um ". Com esta opção, certifique-se de que * todos * seus campos estão entre aspas, não apenas aqueles que são texto. Por favor, perceba que no IPT os caracteres de nova linha () ou de quebras de linha () não podem ser delimitada por aspas e devem ser removido.
-fileSource.ignoreHeaderLines=Número de Linhas de Cabeçalho
-fileSource.ignoreHeaderLines.help=O número de linhas reservadas para cabeçalho em seu arquivo, as quais serão ignoradas durante a importação.
 excelSource.sheets=Planilha selecionada
 
 # ranks
@@ -391,6 +395,7 @@ portal.resource.eml.error.parse=Arquivo EML de versão \#{0} para o recurso {1} 
 portal.resource.otherFormats=Os dados de recurso também estão disponíveis em outros formatos
 portal.resource.warning.notPublic=A versão que você está olhando é {0} e não pode ser vista por todos\!
 portal.resource.warning.notLatest=A versão que você está olhando não é a versão mais recente\! Por favor, consulte a tabela de versões para encontrar a mais atualizada.
+portal.resource.version.notArchived.count=O arquivo DWC-A publicado para esta versão possuía {0} registros, mas não foi arquivado.
 
 ####
 # ADMIN SECTION
@@ -506,15 +511,16 @@ invalid.fieldvalue.longitude=Longitude inválida
 admin.extension.coreTypes=Padrões
 admin.extension.extensions=Extensões
 admin.extension.no.coreTypes.installed=Não há padrões instalados.
-admin.extension.no.coreTypes.installed.help=Os padrões provem a base para o registro de dados\: Ocorrência e Taxon.
+admin.extension.no.coreTypes.installed.help=Os tipos do núcleo fornecem a base para os registros de dados\: Ocurrence, Taxon e Event.
 admin.extension.no.coreTypes.installed.debug=Como nenhum padrão foi instalado, nenhum dado pode ser mapeado. Por favor, instale um padrão listado na lista de Padrões e Extensões. Se esta lista estiver vazia, por favor, verifique sua conexão com a internet e que o servidor está apto a comunicar com o Registro\: {0}.
 admin.extension.no.extensions.installed=Não há extensões instaladas.
 admin.extension.no.extensions.installed.help=Extensões permitem associar dados adicionais a um registro que utiliza um padrão. Cada extensão destina-se a acomodar um diferente tipo de dado. Por favor, instale todas as Extensões que você precisar na lista abaixo.
 admin.extension.couldnt.install.coreTypes=Não foi possível instalar todas as extensões dos padrões.
+admin.vocabulary.couldnt.install.defaults=Não foi possível instalar (ou atualizar) as últimas versões de todos os vocabulários padrões\: {0}.
 admin.extension.couldnt.install=Nåo foi possível instalar a extensão {0}.
 admin.extension.install.success=A extensão {0} foi instalada com sucesso.
 admin.extension.install.error=Ocorreu um erro durante a instalacão da extensão {0}.
-admin.extension.install.duplicate=Uma extensão com rowType {0} já foi instalada. Por favor, remova a extensão com este rowType e tente novamente.
+admin.vocabulary.install.error=Ocorreu um erro durante a tentativa de instalação do vocabulário {0}.
 admin.extension.delete.success=A extensão {0} foi removida com sucesso
 admin.extension.delete.error=Não foi possível remover a extensão.
 admin.extensions.couldnt.load=Não foi possível carregar as extensões do Registro\: {0}.
@@ -522,14 +528,19 @@ admin.extensions.vocabularies.couldnt.load=Não foi possível carregar os vocabu
 admin.extensions.vocabulary.couldnt.load=Não foi possível carregar o vocabulário padrão {0} a partir do Registro\: {1}.
 admin.startup.warnings=Avisos no início do IPT. Para ajuda adicional no diagnóstico de problemas, por favor, veja os logs. Depois de corrigir os problemas, por favor, reinicie seu servidor web.
 admin.extensions.error.updating=Erro de atualização do vocabulário {0} \: {1}
-admin.extensions.vocabularies.updated={0} vocabulários foram atualizados.
+admin.extensions.synchronise.success=Todos os vocabulários e extensões foram sincronizados com o registro.
+admin.extensions.synchronise.error=Falha na sincronização de todos os vocabulários e extensões com o registro\: {0}.
 admin.extensions.vocabularies.unchanged={0} vocabulários não foram modificados desde o último download.
 admin.extensions.vocabularies.errors={0} vocabulários produziram erro quando atualizados. Por favor, consulte os logs\!
-admin.extensions.vocabularies.update.help=Uma extensão pode utilizar listas de termos pré-definidos, conhecidas como vocabulários controlados. Periodicamente estes vocabulários também podem mudar e por isso devem ser atualizados no IPT. Clique no botão abaixo para comunicar com o Registro GBIF para encontrar novos vocabulários controlados e atualizar os existentes.
-
+admin.extensions.synchronise.help=Clique no botão abaixo para sincronizar todas as extensões instaladas e os vocabulários com o Registro do GBIF para atualizar seu conteúdo (por exemplo, se novas traduções foram adicionadas a um vocabulário).
+admin.extensions.upToDate=Todas as extensões instaladas utilizam a versão mais recente.
+admin.extensions.not.upToDate=Uma ou mais extensões instaladas estão desatualizadas. Por favor atualize as mesmas para as versões mais recentes.
 admin.extension.title=Extensões do Darwin Core\:
 admin.extension.properties=Propriedades da Extensão
-
+admin.extension.version.warning=A versão instalada está desatualizada. Por favor, atualize para a versão mais recente desta extensão para usufruir de todos os novos termos e vocabulários. Mapeamentos para termos obsoletos serão removidos. Mapeamentos para termos obsoletos que foram substituídos por outro termo será atualizado automaticamente.
+admin.extension.update.confirm=Você está prestes a atualizar esta extensão para a versão mais recente. Após a atualização, os recursos afetados devem ser revistos e republicados. Você ainda deseja atualizar?
+admin.extension.update.success=Extensão atualizada com sucesso {0}. Para informações adicionais, incluindo os recursos que foram afetados pela atualização, consulte os logs.
+admin.extension.update.error=Um erro ocorreu durante a tentativa de atualização da extensão {0}.
 admin.vocabulary.title=Vocabulário Controlado
 
 admin.users.intro=Como administrador você pode criar, modificar ou remover contas de usuários.
@@ -701,8 +712,8 @@ manage.resource.create.title=Criar um Recurso Novo
 manage.resource.create.intro=Você pode criar um novo recurso em branco, carregar um recurso existente salvo como um arquivo Darwin Core archive ou carregar um recurso IPT existente, utilizando a pasta de configuração do recurso compactada. Por favor consulte o Manual do Usuário para obter instruções mais específicas. Um nome curto é necessário.
 manage.resource.create.file=Recurso arquivado opcional para carregar
 manage.resource.create.success=Importado o Darwin Core Archive existente com um tipo de linha central de {0}. {1} fontes foram importadas e {2} mapeamentos foram criados.
-manage.resource.create.success.nocore=Importado o Darwin Core Archive existente. {0} fontes foram importadas e {1} mapeamentos foram criados.
 manage.resource.create.core.invalid=O Darwin Core Archive está inválido e não possui um um mapeamento de esquema
+manage.resource.create.core.invalid.rowType=O arquivo Darwin Core é inválido\: O mapeamento do núcleo não possui rowType
 manage.resource.create.failed=Não é possível ler o arquivo
 manage.resource.create.rowType.null=Tipo de Linha {0} não está disponível nesta instalação do IPT
 manage.resource.create.extension.null=Uma extensão não existente foi encontrada. Por favor, verifique se todas as extensões desse recurso já estão instaladas e repita o precedimento de importação.
@@ -747,21 +758,29 @@ manage.resource.migrate.failed.duplicate=O UUID {0} encontrado na lista de ident
 manage.resource.migrate.failed.duplicate.help=Se você esta tentando substituir um recurso registrado que já existe em seu IPT, o outro recurso deve ser eliminado primeiro. Neste caso, por favor avise helpdesk@gbif.org que o recurso foi substituído, e não excluído, uma vez que a exclusão de um registro registrado faz com que seja marcado como excluído no Registro GBIF.
 
 manage.mapping.title=Mapeamento de Fontes de Dados
-manage.mapping.intro=Para cada propriedade que você pode atribuir um valor dinâmico obtido de uma coluna especificada do arquivo de dados de fonte {0} ou fornecer um valor fixo, estático que é usado para todos os registros.
+manage.mapping.intro1=Mapeamento de fonte de dados {0} para {1} {2}.
+manage.mapping.intro=Cada coluna da fonte de dados pode ser mapeada para um ou mais campos nesta extensão. Você também pode especificar um valor estático para cada campo que é usado para todos os registros, ou definir uma tradução entre os valores de sua fonte de dados e o valor usado. <br/> <br/> Observe a coluna na fonte que contém uma chave única para cada linha/registro deve ser mapeada para o identificador. Se você deseja mapear outras fontes, este identificador é necessário e será usado para interligar suas linhas de fonte. <br/> <br/> Também um filtro pode ser usado para incluir somente os registros que correspondam a um critério definido para um dos campos de dados de origem.
+
 manage.mapping.source=Fonte de dados
 manage.mapping.source.help=Antes de começar o mapeamento de conceitos, por favor selecione um arquivo de fonte de dados.
-manage.mapping.idColumn=A coluna na fonte que contém uma chave única para cada registro/linha, também conhecida como "core id". Se pretende mapear outra fonte, este identificador é necessário e irá ser utilizado para juntar as linhas da fonte.
 manage.mapping.datasetIdColumn=Usar DOI do recurso
-manage.mapping.datasetIdColumn.help=Por favor, marque esta caixa se você quer o IPT defina o valor padrão do datasetID igual ao recurso DOI. Por favor, note que esta configuração se aplica somente para esse mapeamento, então repita o procedimento em outro lugar, se necessário.
+manage.mapping.datasetIdColumn.help=Por favor marque o campo "Utilizar recurso DOI" se você deseja que o IPT defina o valor padrão do datasetID igual ao do recurso DOI. Note que esta configuração se aplica somente a este mapeamento, sendo necessário a repetição do procedimento nos demais mapeamentos, se necessário.
 manage.mapping.noid=Sem ID
 manage.mapping.lineNumber=Número da Linha
 manage.mapping.uuid=Gerador de UUID
 manage.mapping.hideEmpty=Esconder Campos Não Mapeados
-manage.mapping.showAll=Mostrar Todos
+manage.mapping.nonmapped=Campos não mapeados
+manage.mapping.hideGroups=Esconder classes redundantes
+manage.mapping.redundant=Classes redundantes
+manage.mapping.showAll=Mostrar todos os campos
+manage.mapping.showAllGroups=Mostrar todas as classes
+manage.mapping.index=Índice do campo
+manage.mapping.filters=Filtros do campo
+manage.mapping.fields=Campos
+
 manage.mapping.info.linenumbers=Para os números de linha, você pode especificar opcionalmente um sufixo não numérico para ser anexado ao id. Isso é útil para gerar identificadores únicos ao mapear a mesma fonte várias vezes. <br /> <br />
 manage.mapping.info=Um filtro exclui registros correspondentes a partir do arquivo gerado. Por exemplo, especifique &quot;ColumnA IsNotNull&quot; para incluir somente registros que tenham algum valor na ColumnA. <br /> <br /> Um filtro pode ser muito útil se a mesma extensão é mapeado várias vezes para fazer pivôs. Se você tem duas colunas para nomes populares, uma para Inglês, um para Português, na mesma fonte, você pode mapear a mesma fonte duas vezes para a extensão nomes vernáculo. Mapear uma das duas colunas para cada mapeamento e definir o filtro na mesma coluna de IsNotNull. Dessa forma, somente os registros de extensão que realmente têm um nome vernáculo vão para o arquivo de dados final.
 manage.mapping.filter=Filtro
-manage.mapping.filter.text=O filtro permite incluir somente registros que correspondem com um critério definido por um campo da fonte de dados.
 manage.mapping.filter.afterTranslation=Após da Tradução
 manage.mapping.filter.beforeTranslation=Antes da Tradução
 manage.mapping.sourceSample=Exemplos de fontes
@@ -770,7 +789,9 @@ manage.mapping.automaped={0} mapeamento automático de colunas baseado nos nomes
 manage.mapping.deleted=Mapeamento {0} excluído.
 manage.mapping.couldnt.delete=Não foi possível excluir o mapeamento {0}.
 manage.mapping.no.mapped.title=Colunas não mapeadas
-manage.mapping.no.mapped.columns=As seguintes colunas da fonte não são atribuídas às propriedades deste mapeamento
+manage.mapping.no.mapped.columns=As seguintes colunas da fonte não estão mapeadas a nenhum campo desta extensão
+manage.mapping.redundant.classes.title=Classes de termos redundantes
+manage.mapping.redundant.classes.intro=As seguintes classes são redundantes, uma vez que elas já estão inclusas na extensão do núcleo
 
 manage.history.title=Histórico de versões
 manage.history.intro=Edite o resumo das alterações para a versão {0} do recurso {1}.
@@ -834,7 +855,7 @@ manage.overview.DwC.Mappings.description=Seu mapeamento entre a fonte de dados e
 manage.overview.DwC.Mappings.cantdo=Nenhum mapeamento entre a fonte de dados e os termos Darwin Core pode ser feito até as fontes de dados serem adicionadas e direitos do esquema serem instalados. Apenas se isso for um recurso de metadados somente, nenhum mapeamento é necessário.
 manage.overview.DwC.Mappings.coretype.description1=Aqui você pode mapear os dados com os termos do Darwin Core, selecionando a extensão apropriada que possui os campos correspondentes aos que devem ser mapeados no conjunto de dados.
 manage.overview.DwC.Mappings.coretype.description2=Primeiro, selecione o Padrão Core e realize o seu mapeamento antes de selecionar uma uma extensão para mapear.
-manage.overview.DwC.Mappings.coretype.description3=Escolha "Darwin Core Taxon" quando a base do recurso são os nomes dos táxons, ou escolha "Darwin Core Occurrence" quando a base do recurso são as ocorrências na natureza (observações) ou em uma coleção (espécimes).
+manage.overview.DwC.Mappings.coretype.description3=Escolha "Darwin Core Taxon" quando a base do recurso é nomes de táxon, escolha "Darwin Core Event", quando a base do recurso é um evento de amostragem ou escolha "Darwin Core Occurrence", quando a base do recurso é ocorrências na natureza (observações) ou em uma coleção (espécimes).
 manage.overview.DwC.Mappings.coretype.description4=Se os padrões ou extensões apropriadas não estiverem disponíveis na caixa de seleção, por favor, entre em contato com o administrador do IPT para instalá-los.
 manage.overview.DwC.Mappings.terms=termos mapeados para
 manage.overview.DwC.Mappings.select=Selecione o Tipo de Esquema (somente 1)
@@ -909,6 +930,8 @@ manage.overview.publishing.doi.reserve.notRreused=Um DOI [{0}] existente já foi
 manage.overview.publishing.doi.reserve.success={0} foi reservado com sucesso
 manage.overview.publishing.doi.reserve.failed=Impossível reservar {0}\: {1}
 manage.overview.publishing.doi.reserve.failed.metadata=Não foi possível reservar {0} porque o metadado DOI é inválido\: {1}
+manage.overview.publishing.doi.reserve.failed.notPublic=Falha na reutilização de DOI registrado ({0}). Para ser capaz de atribuí-lo a este recurso, o recurso precisa ser publicamente acessível.
+manage.overview.publishing.doi.reserve.failed.invalid.target=Falha na reutilização de DOI registrado ({0}). Para ser capaz de atribuí-lo a este recurso, o seu URI deve ser alterado para {1}.
 manage.overview.publishing.doi.reserve.reused.failed=Falha ao verificar que {0} já foi registrado. Por favor tente novamente.
 manage.overview.publishing.doi.reserve.reused.failed.exception=Falha ao verificar que {0} já foi registrado\: {1}
 manage.overview.publishing.doi.publish.check.registered.failed=Falha ao verificar a pré-publicação\: {0} não está reservado ou registrado. Seu estado é\: {1}
@@ -1050,6 +1073,8 @@ manage.report.continueTo=Continue para <a href\="resource.do?r\={0}">visão glob
 ####
 eml.title=Título
 eml.description=Descrição
+eml.description.help=Um breve resumo do recurso que está sendo documentado dividido em parágrafos.
+eml.description.item=Parágrafo
 eml.publishingOrganisation=Organização publicadora
 eml.publishingOrganisation.help=Por favor, selecione a organização responsável pela publicação (produção, lançamento, manutenção) deste recurso. Ela servirá como organização de publicação do recurso ao registrar este recurso com o GBIF e ao submeter os metadados durante as inscrições do DOI. Ela também será usada para gerar automaticamente a citação para o recurso (se a geração automática estiver ativada), então, considere a sua importância. Por favor, esteja ciente de que a sua escolha não poderá ser alterada depois que o recurso tiver sido registrado com o GBIF ou atribuído a um DOI.
 eml.publishingOrganisation.required=Organização Publicadora é obrigatório.
@@ -1207,11 +1232,11 @@ eml.citation.generate.turn.on=Auto-geração está DESLIGADO - Ligar
 eml.citation.generate.turn.off=Auto-geração está LIGADO - Desligar
 
 eml.citation.identifier=Identificador de Citação de Recurso
-eml.citation.identifier.help=Um DOI, URI ou outro identificador persistente que resolva o dataset on-line. Recomenda-se incluir o identificador na citação.
+eml.citation.identifier.help=Um DOI, URI ou outro identificador persistente que permita um conjunto de dados ser resolvido on-line. Recomenda-se o identificador ser incluído na citação. Por favor, note que se o recurso tiver um DOI atribuído (usando o IPT), o IPT define o DOI como o identificador de citação e ele não poderá ser editado.
 eml.bibliographicCitationSet.bibliographicCitations.citation=Citação bibliográfica
 eml.bibliographicCitationSet.bibliographicCitations.citation.help=A citação de um recurso externo relacionado ou utilizado na criação deste recurso.
 eml.bibliographicCitationSet.bibliographicCitations.identifier=Identificador de citação bibliográfica
-eml.bibliographicCitationSet.bibliographicCitations.identifier.help=Um DOI, URI, ou outro identificador persistente que resolva para o conjunto de dados online. Deve ser utilizado na citação, geralmente no final.
+eml.bibliographicCitationSet.bibliographicCitations.identifier.help=Um DOI, URI, ou outro identificar persistente que identifica o recurso externo online. Deve ser utilizado na citação, geralmente no final.
 eml.collection=Coleção
 eml.collection.plural=Coleções
 eml.collection.plural.help=A lista de coleções representa as coleções que este recurso se baseia.
@@ -1264,7 +1289,7 @@ eml.specimenPreservationMethod.plural=Métodos de preservação do espécime
 eml.specimenPreservationMethod.plural.help=A lista de métodos de preservação de espécimes considerados no recurso.
 eml.specimenPreservationMethod.help=Palavras-Chave do vocabulário Método de Preservação de Espécimes do GBIF, indicando o processo e técnica utilziada para prevenir deterioração física das coleções não-vivas. Se a coleção tem mais de um método de preservação, selecione o predominante. Recorde que pode incluir uma lista de métodos para um espécime no elemento "Preparações" do mapeamento de dados DwC (http\://rs.tdwg.org/dwc/terms/preparations). Por favor, não selecione tratamentos para coleções vivas.
 eml.alternateIdentifier=Identificador Alternativo
-eml.alternateIdentifier.help=Um identificador secundário para esta entidade. Quando o recurso é publicado, a URL do IPT do recurso é adicionada na lista de identificadores. Quando um recurso é registrado com o Registro GBIF, o registro único do recurso também é adicionado na lista de identificadores. Se o recurso representa um recurso existente no Registro GBIF, é possível agregar o UUID do recurso existente na lista de identificadores. Isto permitirá atualizar o recurso existente com o recurso do IPT durante o registro.
+eml.alternateIdentifier.help=Um identificador adicional, secundário para esta entidade. Quando o recurso for publicado, a URL do IPT para o recurso é adicionado à lista de identificadores. Quando um recurso é atribuído um novo DOI (usando o IPT), o IPT garante que este DOI é colocado em primeiro lugar na lista de identificadores. Quando um recurso é registrado com o Registro do GBIF, UUID do recurso único do Registro também é adicionado à lista de identificadores. Se o recurso representa um recurso já existente e registrado no Registro do GBIF, o UUID do recurso registrado pode ser adicionado à lista de identificadores de recurso. Isto permitirá que o recurso do IPT atualize o recurso existente durante o registo, em vez de registrar um novo recurso... < br / > <b>exemplo (s)\:</b> < br / > <i>4fa7b334-ce0d-4e88-aaae-2e0c138d049e</i>, <i>VCR3465</i>
 
 eml.intellectualRights.simple=Direitos
 eml.intellectualRights.license=Licença de Dados
@@ -1400,4 +1425,3 @@ autopublish.help=Para <strong>ativar</strong> a publicação automática, seleci
 
 # Struts2 overrides
 struts.messages.upload.error.SizeLimitExceededException=O arquivo enviado é muito grande\! Tamanho máximo permitido é de {0} bytes, mas requisitado foi {1} bytes. Para contornar esse problema, você pode tentar compactar o arquivo (com zip ou gzip), carregar os dados em um dos muitos bancos de dados suportados pelo IPT ou dividir o arquivo. Por favor consulte o manual do usuário para obter mais informações.
-
