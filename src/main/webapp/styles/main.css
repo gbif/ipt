@@ -1427,7 +1427,7 @@ textarea.basic {
 }
 
 input.expand {
-  background:url(/images/icons/green/list-menu.png);
+  background:url(../images/icons/green/list-menu.png);
   background-repeat: no-repeat;
   width:20px;
   height:20px;
@@ -1435,7 +1435,7 @@ input.expand {
 }
 
 input.contract {
-  background:url(/images/icons/green/arrows-expand.png);
+  background:url(../images/icons/green/arrows-expand.png);
   background-repeat: no-repeat;
   width:20px;
   height:20px;
