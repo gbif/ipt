@@ -144,6 +144,11 @@ $(document).ready(function(){
   $(".fidx").change(function() {
     activateDeactivateStaticInput($(this));
   });
+
+  $(".sidebar-anchor").click(function(e) {
+    $("a").removeClass("sidebar-nav-selected");
+    $(this).addClass("sidebar-nav-selected");
+  });
 	
 	//Hack needed for Internet Explorer X.*x
 	$('.add').each(function() {
@@ -283,10 +288,10 @@ $(document).ready(function(){
           </#list>
         </#if>
         <#if (nonMapped?size>0)>
-          <li><a href="#nonmapped"><@s.text name='manage.mapping.nonmapped'/></a></li>
+          <li><a class="sidebar-anchor" href="#nonmapped"><@s.text name='manage.mapping.nonmapped'/></a></li>
         </#if>
         <#if (redundants?size>0)>
-            <li><a href="#redundant"><@s.text name='manage.mapping.redundant'/></a></li>
+            <li><a class="sidebar-anchor" href="#redundant"><@s.text name='manage.mapping.redundant'/></a></li>
         </#if>
           <li class="title"><@s.text name='manage.mapping.filters'/></li>
           <li><a id="toggleFields" href="#"><@s.text name='manage.mapping.hideEmpty'/></a></li>
