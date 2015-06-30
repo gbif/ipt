@@ -266,13 +266,13 @@ public class ExtensionsAction extends POSTAction {
    */
   @VisibleForTesting
   protected List<Extension> getLatestVersions(List<Extension> extensions) {
-    Ordering<Extension> byIssuedDate = Ordering.natural().nullsLast().onResultOf(new Function<Extension, Date>() {
+    Ordering<Extension> byIssuedDate = Ordering.natural().nullsFirst().onResultOf(new Function<Extension, Date>() {
       public Date apply(Extension extension) {
         return extension.getIssued();
       }
     });
-    // sort extensions by issued date
-    List<Extension> sorted = byIssuedDate.immutableSortedCopy(extensions);
+    // sort extensions by issued date, starting with latest issued
+    List<Extension> sorted = byIssuedDate.immutableSortedCopy(extensions).reverse();
     // populate list of latest extension versions
     Map<String, Extension> extensionsByRowtype = new HashMap<String, Extension>();
     if (!sorted.isEmpty()) {
