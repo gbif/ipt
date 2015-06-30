@@ -554,7 +554,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
    * Validate the Archive's core data file has an ID for each row, and that each ID is unique. Perform this check
    * only if the core record ID term (e.g. occurrenceID, taxonID, etc) has actually been mapped.
    * </br>
-   * If the core has rowType occurrence or event, validate the core data file has a basisOfRecord for each row, and
+   * If the core has rowType occurrence, validate the core data file has a basisOfRecord for each row, and
    * that each basisOfRecord matches the DwC Type Vocabulary.
    * </br>
    * If the core has rowType event, validate there are associated occurrences.
@@ -571,8 +571,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     // get the basisOfRecord term
     Term basisOfRecord = TERM_FACTORY.findTerm(Constants.DWC_BASIS_OF_RECORD);
 
-    // fail immediately if occurrence core or event core doesn't contain basisOfRecord mapping
-    if ((isOccurrenceCore(arch) || isEventCore(arch)) && !arch.getCore().hasTerm(basisOfRecord)) {
+    // fail immediately if occurrence core doesn't contain basisOfRecord mapping
+    if (isOccurrenceCore(arch) && !arch.getCore().hasTerm(basisOfRecord)) {
       addMessage(Level.ERROR,
         "Archive validation failed, because required term basisOfRecord was not mapped in the occurrence core");
       throw new GeneratorException("Can't validate DwC-A for resource " + resource.getShortname()
