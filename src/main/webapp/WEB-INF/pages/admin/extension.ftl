@@ -58,7 +58,7 @@
         <em><@s.text name="basic.examples"/></em>: ${p.examples}
       </p>
     </#if>
-      	<#if p.vocabulary?exists>
+      	<#if p.vocabulary??>
       	<p>
 	      	<em><@s.text name="extension.vocabulary"/></em>: 
 	      	<a href="vocabulary.do?id=${p.vocabulary.uriString}">${p.vocabulary.title}</a>

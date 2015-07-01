@@ -1,5 +1,5 @@
 <h1>About this IPT installation</h1>
-<#if hostingOrganisation?exists && hostingOrganisation.name??>
+<#if hostingOrganisation?? && hostingOrganisation.name??>
 <p>This is a default IPT hosted by ${hostingOrganisation.name}</p>
 
 <p>You can use the following variables about the hosting organisation:</p>
