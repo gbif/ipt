@@ -14,6 +14,7 @@
 package org.gbif.ipt.action;
 
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
@@ -26,7 +27,7 @@ import org.apache.log4j.Logger;
 
 public class AboutAction extends BaseAction {
 
-  private static final long serialVersionUID = -476675839075190159L;
+  private static final long serialVersionUID = -471175839075190159L;
 
   // logging
   private static final Logger LOG = Logger.getLogger(AboutAction.class);
@@ -47,8 +48,6 @@ public class AboutAction extends BaseAction {
 
   @Override
   public void prepare() {
-    // load hosting organization - call superclass' prepare()
-    super.prepare();
     try {
       StringWriter result = new StringWriter();
       Template tmpl = ftl.getTemplate("datadir::config/about.ftl");
@@ -58,5 +57,14 @@ public class AboutAction extends BaseAction {
       LOG.warn("Cannot render custom about.ftl template from data dir", e);
       content = "";
     }
+  }
+
+  /**
+   * This method is called from about.ftl.
+   *
+   * @return the organisation hosting this IPT instance, or null if the IPT hasn't been registered yet.
+   */
+  public Organisation getHostingOrganisation() {
+    return registrationManager.getHostingOrganisation();
   }
 }
