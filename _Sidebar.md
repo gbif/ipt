@@ -25,10 +25,10 @@
     - [[DarwinCore|DarwinCore.wiki]]
     - [[Data Preparation|DataPreparation.wiki]]
     - [[Occurrence Resource Tutorial|TutorialOccurrenceResource.wiki]]
-  * Translators
-    * [How to Contribute](HowToTranslate.md)
-  * Developers
-    * [How to Contribute](HowToContribute.md)
-  * Versions
-    * [Roadmap](Roadmap.md)
-    * [Version History](VersionHistory.md)
++ Translators
+    - [[How to Contribute|HowToTranslate.wiki]]
++ Developers
+    - [[How to Contribute|HowToContribute.wiki]]
++ Versions
+    - [[Roadmap|Roadmap.wiki)]]
+    - [[Version History|VersionHistory.wiki)]]
