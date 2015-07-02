@@ -1,6 +1,6 @@
 #Welcome to the IPT wiki!  
 
-Here you can find the [[IPT User Manual|IPT2ManualNotes.wiki]] plus other valuable resources. For a complete description of this project plus its uptake statistics, release history, and roadmap please visit the [IPT Website](http://www.gbif.org/ipt) instead.
+Here you can find the [[IPT User Manual|IPT2ManualNotes.wiki]] and a variety of other valuable resources. If you're searching for a more complete description of this project, its uptake statistics, release history, or roadmap, please visit the [IPT Website](http://www.gbif.org/ipt) instead.
 
 ####Acknowledgements
 
