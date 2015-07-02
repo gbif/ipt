@@ -69,7 +69,8 @@ Note 2: If you have a data directory from a previously running IPT of the same v
 
 Note 3: Click on the language name in the upper right hand corner to see whether your preferred language is available to use the IPT in.
 
-![http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTSetup1.png](http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTSetup1.png)
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTSetup1.png' />
+
 ### IPT setup II
 If the initial data directory assignment step was successful, the IPT will present a second setup page (see screen image, below) on which the information about the default administrator of the IPT must be entered, along with the information about what mode the IPT should run in, and how the IPT will be accessed from the Internet. Following are explanations of the fields encountered on the second setup page:
   * Default administrator - The default administrator will have a distinct login and the authority to make changes to all aspects of the IPT installation. The default administrator will be able to make additional user accounts, including other administrators having the same authority to make changes. Though administrators can be added and removed, the IPT must always have at least one.
@@ -84,16 +85,16 @@ If the initial data directory assignment step was successful, the IPT will prese
 <ul><li><b>Base URL for this IPT</b> - the URL that points to the root of this IPT installation. The URL is detected automatically if possible, but should be changed in production systems to be accessible via the Internet in order for the IPT to function fully. Configuring the IPT Base URL to use localhost, for example, will not allow the instance of the IPT to be registered with GBIF, will not allow the IPT to be associated with an organisation, and will not allow resources to be publicly accessible.<br>
 </li><li><b>Proxy URL</b> - if the server on which the IPT is installed is routed through a proxy server or virtual host, enter the host address and port number through which the IPT will be accessible via the Internet as a URL in the format protocol:host:port, for example, <a href='http://proxy.gbif.org:8080'>http://proxy.gbif.org:8080</a>.</li></ul></li></ul>
 
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTSetup2_1.png' />
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTSetup2_2.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTSetup2_1.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTSetup2_2.png' />
 
 When all of the information on the page is complete and correct, click on the button labeled "Save" to complete the IPT setup process. If a problem occurs, an error message will appear at the top of the page with recommendations about how to resolve the issue. Provided the issue has been resolved, restarting the web server will make it disappear. If the setup is successful, a page confirming the success of the setup will appear.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTSetupFinished.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTSetupFinished.png' />
 
 Click on the button labeled "Continue" to open the IPT Administration page (see the screen image, below), from which further configuration of the IPT can be accomplished. Please review the explanations of all of the Administration functions before continuing. Details about the options presented on this screen are given in the "Administration Menu" section of the Quick Reference Guide. Before adding data resources to the IPT, the administrator must, at a minimum, verify the IPT settings, set the GBIF registration options, and associate the IPT with an organisation. The Organisations button is disabled by default until the GBIF registration options have been set.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/IPTAdminBeforeRegistration.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v205/IPTAdminBeforeRegistration.png' />
 
 Once you have completed the steps in this Getting Started Guide, your IPT is ready to add resources (data sets and metadata). You may want to complete one or more of the tutorials to understand how common IPT tasks are accomplished. For detailed explanations of any further aspects of the IPT, consult the Quick Reference Guide of this user manual.<br>
 <h2>Starting Over</h2>
@@ -116,70 +117,70 @@ Most user interface controls have both enabled and disabled modes. If the contro
 <br>
 Menu bar before login or after a user having no special role logs in, with the Home menu active:<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTMenuBarHomeAbout.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/IPTMenuBarHomeAbout.png' />
 
 Menu after a user having a Manager role logs in, with the Manage Resources menu active:<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTMenuBarHomeManageAbout.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/IPTMenuBarHomeManageAbout.png' />
 
 Menu after a user having the Admin role logs in, with the Administration menu active:<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTMenuBarHomeManageAdminAbout.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/IPTMenuBarHomeManageAdminAbout.png' />
 
 <b>Text boxes</b> - allow textual information to be viewed or entered.<br>
 <br>
 Example text box and label for an email address:<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TextBoxExample.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/Control-TextBoxExample.png' />
 
 <b>Check boxes</b> - allow a value to viewed or set to true (when checked) or false (when unchecked).<br>
 <br>
 Example check box and label to indicate that the IPT can publish resources:<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v203/Control-CheckboxExample.png' /><br>
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v203/Control-CheckboxExample.png' /><br>
 
 <b>Select boxes</b> - allows a value to be viewed or selected from a list of predefined values. A select box may contain explanatory text about the selection in place of a selectable value. In this case the selection will begin with "Select " (e.g., "Select a country, territory, or island"). Click on the select box to open it and see the list of possible values. Click on one of the choices to set that value.<br>
 <br>
 Example select box and label for the user role, with Admin selected:<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-SelectBoxExample.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/Control-SelectBoxExample.png' />
 
 <b>Links</b> - opens a page other than the one on which the link occurs. Links may open the new page in the same browser window (or tab) or in a separate window (or tab).<br>
 <br>
 Example link to the account information page for the logged in user:<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-LinkExample.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/Control-LinkExample.png' />
 
 <b>Information icon</b> - shows a message explaining the intention of the control next to which it appears. Click on the icon next to any field to see a help message about that control. Click on it again to make the message disappear. Some information messages include a link, which, if selected, will populate the control with the appropriate value for the selection.<br>
 <br>
 Example information icon for character encoding after the UTF-8 link was selected:<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Information-CharacterEncoding.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/Information-CharacterEncoding.png' />
 
-<b>Documentation icon</b> <img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-DocumentationIcon.png' /> - this icon indicates that there is a detailed information page about the subject with which the icon is associated. Click on the icon to open the page in a new browser window.<br>
+<b>Documentation icon</b> <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/Control-DocumentationIcon.png' /> - this icon indicates that there is a detailed information page about the subject with which the icon is associated. Click on the icon to open the page in a new browser window.<br>
 <br>
-<b>Trash icon</b> <img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TrashIcon.png' /> - this icon is associated with other controls on the page. Clicking on the icon will delete the associated data.<br>
+<b>Trash icon</b> <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/Control-TrashIcon.png' /> - this icon is associated with other controls on the page. Clicking on the icon will delete the associated data.<br>
 <br>
-<b>Calendar icon</b> <img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-CalendarIcon.png' /> - this icon is associated with a text field meant to contain a date. Clicking on the icon opens a small calendar with controls that allow the user to scroll forward and backward from the currently selected month and year, select boxes to choose a different month or year, and days of the week arranged in a standard New Era calendar. Selecting a specific day will place the date in the correct format into the associated text box.<br>
+<b>Calendar icon</b> <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/Control-CalendarIcon.png' /> - this icon is associated with a text field meant to contain a date. Clicking on the icon opens a small calendar with controls that allow the user to scroll forward and backward from the currently selected month and year, select boxes to choose a different month or year, and days of the week arranged in a standard New Era calendar. Selecting a specific day will place the date in the correct format into the associated text box.<br>
 <br>
 Example calendar associated with an text box labeled "End Date" in which 31 Dec 2010 is the current date but not yet selected:<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TextBoxWithCalendarOpen.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/Control-TextBoxWithCalendarOpen.png' />
 
 <b>Sortable Table</b> - a table that allows the rows to be sorted by the values of a selected column in ascending or descending order. The column headers are the labels for the columns, which appear as links. Click on a column header to sort the table using the values in that column. Click again on the same column header to sort the table in the opposite direction.<br>
 <br>
 Example table sorted in ascending order by the column labeled "Name".<br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TableSortedAscending.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/Control-TableSortedAscending.png' />
 
 Example table sorted in descending order by the column labeled "Type".<br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TableSortedDescending.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/Control-TableSortedDescending.png' />
 
 <h4>File upload</h4>
 Files can be uploaded in the IPT during two actions: when <a href='IPT2ManualNotes#Create_a_New_Resource.md'>creating a new resource</a>, or when <a href='IPT2ManualNotes#Source_Data.md'>adding new source data files</a>.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/Control-UploadCreateResource.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/Control-UploadCreateResource.png' />
 
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/Control-UploadSourceData.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/Control-UploadSourceData.png' />
 
 The IPT has an upload size limit of 100MB. There is no limit to the size of Darwin Core Archive the IPT can export/publish though. For loading datasets larger than 100MB in size into the IPT, the following work-arounds are recommended:<br>
 <ul><li>compressing the file (with zip or gzip)<br>
@@ -193,11 +194,11 @@ The header section of the IPT appears in the upper right of most pages and allow
 <br>
 Header, not logged in, English language chosen for the user interface:<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/IPTHeaderNotLoggedIn.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v205/IPTHeaderNotLoggedIn.png' />
 
 Header, logged in, English language chosen for the user interface:<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/IPTHeaderLoggedIn.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v205/IPTHeaderLoggedIn.png' />
 
 <b>Login</b> - A user who has already been created in this IPT instance can log in by entering the email address and password in the upper right-hand corner of the page, and then click on the "Login" link. Only an existing user having the Admin role can create new users. The process for creating new users is explained under the "Configure User accounts" heading in the "Administration Menu" section. The process of initializing the IPT creates the first user having the Admin role.<br>
 <b>Logout</b> - If someone is logged in to the IPT, the email address of the person who is logged in is given in the upper right-hand corner of the page along with a "Logout" link.<br>
@@ -206,7 +207,7 @@ Header, logged in, English language chosen for the user interface:<br>
 <h4>Footer</h4>
 The footer section of the IPT appears along the bottom of most pages and contains information about the IPT version and links to important resources.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTFooter.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTFooter.png' />
 
 <b>Version</b> - At the left of the footer at bottom of the page is the version of the IPT that is currently running. The version information can be used to determine which features are included in the IPT and what bugs are known to exist. This is the version information that is requested when making bug reports.<br>
 <b>About the IPT</b> - This link leads to the IPT website (<a href='http://www.gbif.org/ipt'>http://www.gbif.org/ipt</a>), where further information about the IPT can be found, including the version history, roadmap, uptake statistics, and further related documentation.<br>
@@ -218,7 +219,7 @@ The footer section of the IPT appears along the bottom of most pages and contain
 <h2>Home Menu (visible to all users)</h2>
 This page allows users to view a list of public resources, if any, and to look at the detailed metadata of any resource on the list.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/IPTHome.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v205/IPTHome.png' />
 <h3>Public Resources Table</h3>
 If there are any public resources, they will appear in a table having the following columns:<br>
 <br>
@@ -243,12 +244,12 @@ To view the resource homepage, user can click on the name link in the list of re
 <br>
 Please note only a user having the Admin role or one of the Manager roles can edit a resource's metadata. To learn more, please refer to the information under the "Edit an existing resource" heading in the "Manage Resources Menu" section.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTHomeMetadataOverview.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTHomeMetadataOverview.png' />
 
 <h4>Version history</h4>
 The version history table lists all published versions of the resource, enabling users to track changes to the resource over time and download previous versions' data/metadata. Please note, the IPT's Archival Mode must be turned on in order for old versions of DWCA to be stored (see <a href='IPT2ManualNotes#Configure_IPT_settings.md'>Configure IPT settings</a> section). Only versions that are publicly accessible can be viewed by external users, whereas admins and resource managers can see all versions. For explanations of the table columns, refer to the information below.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTVersionHistoryTable.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTVersionHistoryTable.png' />
 
 Following are explanations of the table columns:<br>
 
@@ -262,7 +263,7 @@ Following are explanations of the table columns:<br>
 <h2>Manage Resources Menu (visible to users with an Admin or Manager role)</h2>
 This page allows users having the appropriate role (managers and administrators) to make changes to existing resources or to create new resources.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResources.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResources.png' />
 <h3>Manage Resources Table</h3>
 When the Manage Resources page is first opened, it shows a table of existing resources that the current user has permission to change, including those created by this user and those that this user has been invited to manage by others. Refer to the information under the <a href='IPT2ManualNotes#Public_Resources_Table.md'>Public Resources Table</a> section for detailed explanations of the Name, Organisation, Type, Subtype, Records, Last Modified, Last publication, and Next publication columns. In addition, the Manage Resources Table includes the following column of basic information about the resources:<br>
 <br>
@@ -280,10 +281,10 @@ Begin by entering a new resource shortname as described above, and then click on
 <h4>Upload a Darwin Core Archive</h4>
 The IPT is able to import valid Darwin Core Archive files up to 100MB in size. Information about Darwin Core Archives can be found on the Darwin Core web site (<a href='http://rs.tdwg.org/dwc/terms/guides/text/'>http://rs.tdwg.org/dwc/terms/guides/text/</a>), with further information about the IPT's use of them on the GBIF IPT Google Code site wiki (<a href='http://code.google.com/p/gbif-providertoolkit/wiki/DarwinCore'>http://code.google.com/p/gbif-providertoolkit/wiki/DarwinCore</a> ). To import a Darwin Core Archive, click on the button labeled "Choose File", then navigate to and select the intended archive file. After selecting the file, its name will appear next to the "Choose File" button.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceUploadDwcA.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceUploadDwcA.png' />
 
 Click on the button labeled "Create". If there is a problem importing the selected file, an error message will alert the user. If the import is successful, a Resource Overview page will appear with an informational message at the top describing the results of the import process.<br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceUploadDwCASuccess.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceUploadDwCASuccess.png' />
 <h4>Upload a zipped IPT resource configuration folder</h4>
 It is possible to create a copy of a resource from its zipped IPT resource configuration folder. The only condition is that the resource must have been created under a compatible version of the IPT. Effectively, this will copy all the resource's metadata, source data, and mappings. It will <b>not</b> copy the resource's registration information, version history, DOI(s), version number, managers, publication status, created date, last publication date, or even preserve the resource short name.<br>
 <br>
@@ -297,7 +298,7 @@ To do so, just follow these instructions:<br>
 <h4>Upload a metadata file</h4>
 The IPT is able to import and export valid dataset metadata files that conform to the GBIF Metadata Profile. Information about the GBIF EML Metadata Profile can be found in the <a href='http://www.gbif.org/orc/?doc_id=2820'>GBIF Metadata Profile Reference Guide</a>. Information about how to author a metadata document conforming to the GBIF Metadata Profile Darwin Core can be found in the <a href='http://www.gbif.org/orc/?doc_id=2821'>GBIF Metadata Profile How To Guide</a>. To import a metadata file, select the resource type "metadata-only", then click on the button labeled "Choose File", navigate to and select the intended metadata file. After selecting the file, its name will appear next to the "Choose File" button.</li></ol></li></ol>
 
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceUploadEml.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceUploadEml.png' />
 
 Click on the button labeled "Create". If there is a problem importing the selected file, an error message will alert the user. If the import is successful, a Resource Overview page will appear with the metadata having been populated. The source data and mapping sections will remain hidden since this is a metadata-only resource. Should you decide to add primary dataset at a later time, just change the resource type in the Basic Metadata page of the metadata.<br>
 <h3>Edit an existing resource</h3>
@@ -305,7 +306,7 @@ The table of existing resources shows only those resources that can be edited by
 <h3>Resource Overview</h3>
 This page allows users having managerial permission to make changes to various aspects of a resource's configuration. The name of the resource is given at the top of the page under the menu bar. If the resource has not been given a title, the resource shortname will appear at the top of the page and will act as a title instead. Below the resource name is a table showing categories of the resource configuration on the left with corresponding sections to the right. Information icons throughout the table can help guide managers in using each category. Each of these categories is configured separately as explained in detail in the following sections.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceOverview.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceOverview.png' />
 
 <h4>Source Data</h4>
 This area of the Resource Overview page allows a user to import primary data from files or databases into the IPT. If a resource has no source data it is considered a metadata-only resource, with information about a data set or collection, but without any primary data. It is possible to connect a resource to more than one data source if the sources are related to each other. More about relating multiple data sources is explained in the <a href='http://rs.tdwg.org/dwc/terms/guides/text/index.htm#implement'>Implementation Guide</a> section of the Darwin Core Text Guide.  Following are explanations for the preliminary step of choosing the source data either from text files or from database sources:<br>
@@ -313,11 +314,11 @@ This area of the Resource Overview page allows a user to import primary data fro
 <b>File as data source</b><br>
 The IPT can import uncompressed delimited text files (csv, tab, and files using any other delimiter) or equivalent files compressed with zip or gzip. Excel files are also supported. Click on the button labeled "Choose File" to navigate to and select the file to import. The file name can only be composed of alphanumeric characters (A-Z, 0-9), white space, underscores, periods, parentheses, and hyphens. After selecting the file, its name will appear to the right of the "Choose File" button.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceData.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceData.png' />
 
 Click on the button labeled "Clear" to remove the choice of selected file and return to the previous state before any data source was selected. Or, click on the button labeled "Add" to open the Source Data File detail page (if there is the risk of overwriting a file with the same name, a dialog opens that asks the user to confirm they actually want to overwrite it). This page shows the name of the resource along with a summary of the file characteristics (readability, number of columns detected, absolute path to the file, the file size, the number of rows detected, and the date the file was last loaded into the IPT). The Source Data File detail page allows the user to view and edit the parameters that describe the content of the selected file, and to use these settings to analyze and preview the file.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceDataFormat.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceDataFormat.png' />
 <ul><li><b>Source Name</b> - the name of the file selected, without the file extension.<br>
 </li><li><b>Readable</b> - this icon indicates whether data are accessible using the file format information provided on this page.<br>
 </li><li><b>Columns</b> - the number of columns in the dataset as configured using the parameters on this page.<br>
@@ -327,7 +328,7 @@ Click on the button labeled "Clear" to remove the choice of selected file and re
 </li><li><b>Modified</b> - the date stamp of the file indicating when it was last saved.<br>
 </li><li><b>Source log</b> - this link downloads the file containing the log produced when processing the file using the information contained on this page. Any problems encountered while processing the file, such as missing data and unexpected formatting will be in this log file.<br>
 </li><li><b>Analyze</b> - click on this button to generate a data summary based on the database connection settings on this page. The analysis will indicate whether the database is readable, and if so, how many columns there are in the results of the SQL Statement.<br>
-</li><li><b>Preview</b> <img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/preview.png' /> - click on this button to see an interpretation of the data based on the database connection settings on this page.<br>
+</li><li><b>Preview</b> <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/preview.png' /> - click on this button to see an interpretation of the data based on the database connection settings on this page.<br>
 </li><li><b>Number of Header Rows</b> - 0 if the file does not contain a row of column names, 1 if the file does contain a header row.<br>
 </li><li><b>Field Delimiter</b> - the character or characters that signify a break between columns of data.<br>
 </li><li><b>Character Encoding</b> - the system that defines byte-wise definitions of the characters in the data (e.g., ISO 8859-5 refers to the Cyrillic alphabet).<br>
@@ -337,7 +338,7 @@ Click on the button labeled "Clear" to remove the choice of selected file and re
 
 After the parameters for the data source have been set so that the file is interpreted correctly, click on the button labeled "Save" to store this configuration. If the save is successful, the Resource Overview page will appear, with summary information about the file in the right-hand column of the Source Data area. A button labeled "Edit" will also appear with the source data file summary information in the right-hand column, allowing the user to reopen the Source Data File detail page.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceSummary.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceSummary.png' />
 
 Should the user want to delete this source, they can reopen the Source Data File detail page and press the "Delete source file" button. Be aware though, that any mappings associated to this file will also be deleted.<br>
 <br>
@@ -348,13 +349,13 @@ The IPT can use database connections to import data from tables or views. A list
 <br>
 The Source Database Detail page shows the name of the resource along with a summary of the database characteristics (readability, number of columns detected) and allows the user to view and edit the parameters that describe how to access the data from the database, and to use these settings to analyze and preview the data.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceDatabase.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceDatabase.png' />
 
 <ul><li><b>Source Name</b> - the name of the data source. Unlike a file data source, this can be edited and given any name by the user.<br>
 </li><li><b>Readable</b> - this icon indicates whether data are accessible using the connection information provided on this page.<br>
 </li><li><b>Columns</b> - the number of columns in the dataset as configured using the parameters on this page.<br>
 </li><li><b>Analyze</b> - click on this button to generate a data summary based on the database connection settings on this page. The analysis will indicate whether the database is readable, and if so, how many columns there are in the results of the SQL Statement.<br>
-</li><li><b>Preview</b> <img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/preview.png' /> - click on this button to see an interpretation of the data based on the database connection settings on this page.<br>
+</li><li><b>Preview</b> <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/preview.png' /> - click on this button to see an interpretation of the data based on the database connection settings on this page.<br>
 </li><li><b>Database System</b> - the relational database management system to which the IPT must connect to retrieve the data.<br>
 </li><li><b>Host</b> - The database server address, optionally including the non-default port number (e.g., localhost or mysql.gbif.org:1336). For ODBC connections, this is not needed.<br>
 </li><li><b>Database</b> - The name of the database in the database management system, or the DSN for an ODBC connection.<br>
@@ -368,20 +369,20 @@ After the parameters for the data source have been set so that the data are acce
 <h4>Darwin Core Mappings</h4>
 This area of the Resource Overview page allows a user to map the fields in the incoming data to fields in installed extensions and to see which fields from the sources have not been mapped. This option is not available until at least one data source has been successfully added and at least one extension has been installed.<br>Once these conditions have been met, the left-hand column of the Darwin Core Mappings area will contain a select box with a list of Core Types and Extensions that have been installed. Select a Core Type and map that before selecting an extension to map. Select the appropriate extension that has fields matching the ones to map in the data source. If the appropriate core type or extension does not appear in the select box, it will have to be installed first. Refer to the information under the "Configure Core Types and Extensions" heading in the "Administration Menu" section for an explanation of how to install extensions.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceDwCMapping.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceDwCMapping.png' />
 
 After the desired core type or extension is selected, click on the button labeled "Add" to open the Data Source selection page. This page gives an explanation of the type of data the extension is meant to support, and shows a select box containing a list of all of the configured data sources. <b>Note 1</b>: A resource must only use 1 core type: choose "Darwin Core Checklist" when the basis of the resource is taxon names, or choose "Darwin Core Occurrence" when the basis of the resource is occurrences in nature (observations) or in a collection (specimens). Only after the desired core type has been mapped, will it be possible to map other extensions. <b>Note 2</b>: It is possible to map another core type as an extension as long as it is different from the core type mapped.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceSelect.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceSelect.png' />
 
 Select the data source to map, and then click on the button labeled "Save". This will open the Data Mapping detail page (skip to the <a href='IPT2ManualNotes#Data_Mapping_detail_page.md'>Data Mapping detail page</a> below for help doing the actual mapping).<br>
 <br>
-After a new mapping has been added, it will be visible in the right-hand column of the Darwin Core Mappings area. This area will contain a list of all the resource's mappings divided into Core Type mappings and Extension mappings. Click the "Edit" button beside a mapping to modify it, or click the preview icon <img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/preview.png' /> to preview the mapping. Resource managers are advised to preview all mappings prior to publishing a new version.<br>
+After a new mapping has been added, it will be visible in the right-hand column of the Darwin Core Mappings area. This area will contain a list of all the resource's mappings divided into Core Type mappings and Extension mappings. Click the "Edit" button beside a mapping to modify it, or click the preview icon <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/preview.png' /> to preview the mapping. Resource managers are advised to preview all mappings prior to publishing a new version.<br>
 <br>
 <h5>Data Mapping detail page</h5>
 After a mapping between a data source and Core Type or Extension has been created, this page opens and displays a status message showing how many fields from the data source were automatically mapped to the fields in the extensions. Fields are automatically mapped if the field names, converted to all lower case, match each other.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceMapping.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceMapping.png' />
 
 The Data Mapping page allows a user to specify exactly how the data accessible through this IPT resource are to be configured based on the selected extension. At the top of the page is the name of the source data being mapped. The name is also a link back to the edit source data page. Below that, is the name of the extension to which the source data are being mapped, along with a description of the purpose of the extension.<br>
 <br>
@@ -393,24 +394,24 @@ The right-hand column contains information icons and controls (select boxes, tex
 </li><li><b>Data source field select box - ID field</b> - This field can be matched to a source data field, or it can be set to "No ID" signifying that the field will not be mapped to a source data field. The ID field is required in order to link records from the two sources together. The ID can be auto-generated from the "Line Number" or "UUID Generator", but this feature is exclusively available when mapping a source to the Taxon Core Type's taxonID field.<br>
 </li><li><b>Constant value text box</b> - To set the published value of any non-identifier extension field to a single value for every record in the data source, make sure that no value is selected in the source field select box and enter the desired constant for the extension field in the text box to the right of the source field select box. Example:</li></ul>
 
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceMappingConstant.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMappingConstant.png' />
 
 <ul><li><b>Constant controlled value select box</b> - If the right-hand column for the extension field contains a second select box instead of a text box, this means that the field is governed by a controlled vocabulary. In this case, choose a value from the vocabulary list to use as a constant value in place of typing a constant into a text box.</li></ul>
 
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceMappingSelectConstant.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMappingSelectConstant.png' />
 
 <ul><li><b>Use resource DOI</b> - (Special constant controlled value) It is possible to set the default value for datasetID equal to the resource DOI. This option only applies to extensions having the Darwin Core term <a href='http://rs.tdwg.org/dwc/terms/#datasetID'>datasetID</a>, such as the Occurrence extension. To activate, ensure the checkbox is selected, and that no source data field has been selected and no constant value has been entered.</li></ul>
 
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceMappingSourceDatasetID.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMappingSourceDatasetID.png' />
 
 <ul><li><b>Vocabulary detail button</b> - Extension fields that are governed by a controlled vocabulary will have an icon between the information icon and the source field selection box. Click on this icon to open a Vocabulary Detail page in a new browser window (or tab) on which is a list of accepted values for the extension field with explanations and alternative synonyms in various languages.<br>
 </li><li><b>Source Sample</b> - This area shows actual values from the first few records of the selected field of the source data, separated by spaces and the character '|'. This helps the user understand if the contents of the source data field are appropriate for the extension field to which it has been mapped.</li></ul>
 
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceMappingSourceSample.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMappingSourceSample.png' />
 
 <ul><li><b>Translate</b> - Click on this button to open a Value Translation page on which distinct values in the selected field of the source data can be translated to new values in the archive generated by the IPT for this data resource. After the translations have been entered and saved, the Data Mapping page will appear again, and will display text as a link in place of the "Translate" button to show the number of values for which there are translations having values different from the original values. Click on this link to reopen the Value Translation page for this extension field.</li></ul>
 
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceTranslation.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceTranslation.png' />
 
 <ul><li><b>Value Translation page</b> - When this page opens for the first time it shows a message at the top giving the number of distinct values of the selected field in the source data, up to 1000 values. The page shows the name and description of the extension field for which translations are being made. If the field is governed by a controlled vocabulary, information about that vocabulary and an icon to open a Vocabulary Detail page (see Vocabulary Detail button explanation, above) will appear under the field description. Below the field description is a table showing the distinct values of the field found in the source data under the column heading "Source Value" with text boxes under the column heading "Translated Value". Enter the value to which the Source Value should be translated in the text box. The icon to the left of the translated value text box indicates if the value provided exists in the vocabulary for this term. Bounding the table above and below by the following set of buttons:<br>
 <ul><li><b>Save</b> - click on this button to save all of the changes that have been made on this page and return to the Data Mapping page.<br>
@@ -424,8 +425,8 @@ The right-hand column contains information icons and controls (select boxes, tex
 </li><li><b>IsNotNull</b> - this operator is true if the source data field is not empty. In this case no value is needed in the text box at the right. If there is a value in the text box, it will be ignored.<br>
 </li><li><b>Equals</b> - this operator is true if the source data field is equal to the value in the text box at the right. Equality is evaluated based on string matching, thus, if the data source value for a record is 2.0 and the value in the text box is 2, the record will not be included in the filtered data set.<br>
 </li><li><b>NotEquals</b> - this operator is true if the source data field is not equal to the value in the text box at the right. Equality is evaluated based on string matching, thus, if the data source value for a record is 2.0 and the value in the text box is 2, the record will be included in the filtered data set.<br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceFilter.png' />
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceFilterEquals.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceFilter.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceFilterEquals.png' />
 </li></ul></li><li><b>Required fields</b> - If there are any required properties that must be mapped for the Core Type or Extension, these have their names highlighted. Be aware basisOfRecord publication will fail if <a href='http://rs.tdwg.org/dwc/terms/#basisOfRecord'>basisOfRecord</a> has not been mapped for the Occurrence core. Also, a special case exists for the ID field, which is only required when linking two sources together.</li></ul>
 
 
@@ -438,17 +439,17 @@ In addition to the explanatory information about the extension at the top of the
 </li><li><b>Back</b> - clicking on this button will abandon all changes that have been made on this page since it was last saved and return to the Resource Overview page.<br>
 <a href='Hidden comment: 
 * *Unmapped columns* - this section contains a list of columns in the source file, table, or view that have not been mapped. This list can help to determine if everything from the source has been mapped that should be mapped.
-[http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/IPTManageResourceMappingUnmappedColumns.png]
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/IPTManageResourceMappingUnmappedColumns.png' />
 '></a></li></ul>
 
 <h4>Metadata</h4>
 This area of the Resource Overview page allows a user to edit the resource metadata. By clicking on the button labeled "Edit" in the panel to the left the metadata can be edited. The panel to the right shows when the metadata was last modified. Every resource requires a minimal set of descriptive metadata in order to i) be published in the GBIF network, ii) be registered with DataCite/EZID (in other words, be assigned a DOI). If any of the required metadata is missing, the Resource Overview page will open with a warning message in the Metadata area of the page.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataMissing.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataMissing.png' />
 
 Clicking on the "Edit" button opens the <a href='IPT2ManualNotes#Basic_Metadata.md'>Basic Metadata</a> page, the first of a series of metadata pages. Each page will appear in sequence as the button labeled "Save" is clicked upon finishing entering data on any given metadata page. Saving the metadata on the last of the metadata pages will transition back to the <a href='IPT2ManualNotes#Basic_Metadata.md'>Basic Metadata</a> page. Clicking on the button labeled "Cancel" on any given metadata page will disregard any changes made on that page and return to the Resource Overview page. In a column at the right of each metadata page is a list of links to all of the metadata pages for easy reference and navigation. Click on any of the links to open the metadata page for that topic.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataPagesList.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataPagesList.png' />
 
 Following is a list of the metadata pages and their contents:<br>
 <h4>Basic Metadata</h4>
@@ -463,7 +464,7 @@ All metadata fields on this page are required. Please note for each contact you 
 </li><li><b>Metadata Language</b> - the language in which the metadata are written.<br>
 </li><li><b>Resource Language</b> - the language in which the data for the resource are written.<br>
 </li><li><b>Data License</b> - the licence that you apply to the resource. The license provides a standardized way to define appropriate uses of your work. GBIF encourages publishers to adopt the least restrictive licence possible from among three (default) machine-readable options (CC0 1.0, CC-BY 4.0 or CC-BY-NC 4.0) to encourage the widest possible use and application of data. Learn more about GBIF's policy <a href='http://www.gbif.org/terms/licences'>here</a>. If you feel unable to select one of the three options, please contact the GBIF Secretariat at participation@gbif.org. To find out how to apply a license at the record-level, refer to the <a href='IPT2ApplyingLicense.md'>How To Apply a License To a Dataset</a> page in the IPT wiki. To find out how to change the IPT's default set of licenses, refer to the <a href='IPT2License.md'>How To Add a New License</a> page in the IPT wiki.<br>
-</li><li><b>Resource Contacts</b> - the list of people and organisations that should be contacted to get more information about the resource, that curate the resource or to whom putative problems with the resource or its data should be addressed. <img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataResourceContact.png' />
+</li><li><b>Resource Contacts</b> - the list of people and organisations that should be contacted to get more information about the resource, that curate the resource or to whom putative problems with the resource or its data should be addressed. <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataResourceContact.png' />
 <ul><li><b>Add new resource contact</b> - click on this link to initiate a form for an additional resource contact.<br>
 </li><li><b>Remove this resource contact</b> - click on this link to remove the resource contact that follows immediately below the link.<br>
 </li><li><b>First Name</b> - the first or given name of the resource contact.<br>
@@ -485,59 +486,59 @@ All metadata fields on this page are required. Please note for each contact you 
 </li><li><b>Metadata Providers</b> - the people and organisations responsible for producing the resource metadata. If this person or organisation is the same as the first resource contact, all of the details of the latter can be copied into the equivalent fields for the resource creator by clicking on the link labeled "copy details from resource contact". The metadata provider has all of the same fields and requirements as the resource contact. Refer to the field explanations under Resource Contacts, above.<br>
 <h4>Geographic Coverage</h4>
 This metadata page contains information about the geographic area covered by the resource. The page contains a map and associated controls that allow the user to set the geographic coverage. Below is a screen image showing the contents of the Geographic Coverage page, followed by explanations of the controls.<br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataGeographicCoverage.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataGeographicCoverage.png' />
 </li><li><b>Coverage Map</b> - if connected to the Internet, a Google Map of the earth will appear on the geographic coverage page. This map shows a box with control points (markers) on opposite corners. The corners correspond with the values in the Latitude and Longitude text boxes, explained below. Click on a marker and drag it to a new location to reset the geographic bounds of the box. The corresponding latitude and longitude values will change to match the box on the map. Both markers can be dragged in this way. The map has common viewing features of Google Maps, including a scale bar, a select menu to view different layers (terrain, satellite imagery, etc.), and buttons to zoom in (+) and zoom out (-).<br>
 </li><li><b>Set global coverage?</b> - click on this check box to change the geographic coverage to cover the entire earth.<br>
 </li><li><b>West/East/South/North</b> - these four text boxes correspond to the corners of the box bounding the area covered by the resource. The values to enter in these text boxes are decimal degrees (e.g. 45.2345), with the standard limiting values of -90 to +90 latitude (South/North) and -180 to +180 longitude (West/East), with positive latitude in the northern hemisphere and positive longitude east of the Greenwich Meridian to the International Dateline. Manipulating the bounding box markers on the map will set these values, but valid values can all be entered in these text boxes directly if desired. The map will update when the information on the page is saved by clicking on the button labeled "Save".<br>
 </li><li><b>Description</b> - a textual description of the geographic coverage. This information can be provided in place of, or to augment the information in the other fields on the page.<br>
 <h4>Taxonomic Coverage</h4>
 This metadata page allows the user to enter information about one of more groups of taxa covered by the resource, each of which is called a taxonomic coverage. Each coverage consists of a description and list of taxa, where each taxon consists of a taxon name (either scientific or common) and a taxon rank. Before any taxonomic coverages are created, the page shows only a link labeled "Add new taxonomic coverage". Clicking on this link will show a text box for the description and several links. Below is a screen image showing the Taxonomic Coverage page before any data have been entered, followed by explanations of the controls seen on the page in this state.<br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataTaxonomic.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataTaxonomic.png' />
 </li><li><b>Remove this taxonomic coverage</b> - click on this link to remove the taxonomic coverage that follows immediately below the link, including the description, the list, and all single taxon entries.<br>
 </li><li><b>Description</b> - a textual description of a range of taxa represented in the resource. Each taxonomic coverage has its own description. This information can be provided in place of, or to augment the information in the other fields on the page.<br>
 </li><li><b>Add several taxa</b> - this link adds a text box labeled "Taxon List" to the page.<br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataTaxonList.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataTaxonList.png' />
 <ul><li><b>Taxon List</b> - this text box allows the user to enter a list of taxa with each taxon on a separate line by using the ENTER key within the text box. The taxa entered in this list are treated as scientific names.<br>
 </li><li><b>Add</b> - this button processes the values entered in the Taxon List text box and creates scientific names for each of them within the taxonomic coverage.<br>
 </li></ul></li><li><b>Add new taxon</b> - this link adds controls to enter a single taxon to the taxonomic coverage - text boxes for Scientific Name and Common Name, a select box for Rank and a trash icon. The taxon can contain any combination of scientific and common name with an optional rank.<br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataSingleTaxon.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataSingleTaxon.png' />
 <ul><li><b>Scientific Name</b> - this text box is meant to contain the scientific name for the taxon.<br>
 </li><li><b>Common Name</b> - this text box is meant to contain the scientific name for the taxon.<br>
 </li><li><b>Rank</b> - this text box is meant to contain the taxonomic rank of the taxon.<br>
-</li><li><b>Trash Icon</b> <img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/Control-TrashIcon.png' /> - clicking on this icon will remove the taxon (scientific name, common name, and rank) to the left of the icon from the taxonomic coverage.<br>
+</li><li><b>Trash Icon</b> <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/Control-TrashIcon.png' /> - clicking on this icon will remove the taxon (scientific name, common name, and rank) to the left of the icon from the taxonomic coverage.<br>
 </li></ul></li><li><b>Add new taxonomic coverage</b> - click on this link to initiate a form for a new taxonomic coverage with a text box labeled "Description" and links to "Add several taxa" and "Add new taxon" as described above.<br>
 <h4>Temporal Coverage</h4>
 This metadata page contains information about one of more dates, date ranges, or named periods of time covered by the resource, each of which is called a temporal coverage. Coverages may refer to the times during which the collection or data set was assembled (Single Date, Date Range, and Formation Period), or to times during which the subjects of the data set or collection were alive (Living Time Period). Before the first temporal coverage for the resource is created, the page shows only a link labeled "Add new temporal coverage". Clicking on this link will show the default temporal coverage type "Single Date" in a select box, a text box labeled "Start Date", a calendar icon, and two links. Below is a screen image showing the default Temporal Coverage page before any data have been entered, followed by explanations of the controls seen on the page in this state.</li></ul>
 
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataTemporalCoverages.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataTemporalCoverages.png' />
 
 <ul><li><b>Add new temporal coverage</b> - click on this link to initiate a form for an additional temporal coverage.<br>
 </li><li><b>Remove this temporal coverage</b> - click on this link to remove the temporal coverage that follows immediately below the link.<br>
 </li><li><b>Temporal Coverage Type</b> - select one of the options in this select box to set the type of temporal coverage, which can consist of a single date, a date range, a formation period, or a living time period. Selecting a type will reveal controls appropriate to the choice as explained below.<br>
 <ul><li><b>Single Date</b> - this is the default temporal coverage type showing when a temporal coverage is first created. This type is meant to represent a coverage spanning one day. Selecting this type reveals a text box for a Start Date, with a calendar icon to the right with which a date can be selected.<br>
-<ul><li><b>Start Date</b> - this text box is meant to contain a single date in one of the supported date formats. To select a date, click on the calendar icon and choose a date, or enter the date manually. To find out what date formats are supported, open the information icon. Example: 2010-12-31 for 31 December 2010 in the New Era calendar.<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataTemporalCoverageSingleDate.png' />
+<ul><li><b>Start Date</b> - this text box is meant to contain a single date in one of the supported date formats. To select a date, click on the calendar icon and choose a date, or enter the date manually. To find out what date formats are supported, open the information icon. Example: 2010-12-31 for 31 December 2010 in the New Era calendar.<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataTemporalCoverageSingleDate.png' />
 </li></ul></li><li><b>Date Range</b> - this temporal coverage is meant to describe the time period within which the objects in the collection were collected. Selecting this temporal coverage type reveals a text box for a Start Date and a text box for an End Date, each with a calendar icon to the right with which a date can be selected.<br>
 <ul><li><b>Start Date</b> - this text box is meant to contain the date the coverage began, in one of the supported date formats. To select a date, click on the calendar icon and choose a date, or enter the date manually. To find out what date formats are supported, open the information icon. Example: 2010-12-31 for 31 December 2010 in the New Era calendar.<br>
-</li><li><b>End Date</b> - this text box is meant to contain the date the coverage ended, in one of the supported date formats. To select a date, click on the calendar icon and choose a date, or enter the date manually. To find out what date formats are supported, open the information icon. Example: 2010-12-31 for 31 December 2010 in the New Era calendar.<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataTemporalCoverageDateRange.png' />
-</li></ul></li><li><b>Formation Period</b> - this temporal coverage type is meant to accommodate a named or other time period during which a collection or data set was assembled. Examples: "Victorian", "1922-1932", "c. 1750".<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataTemporalCoverageFormationPeriod.png' />
-</li><li><b>Living Time Period</b> - this temporal coverage type is meant to accommodate a named or other time period during which the biological entities in the collection or data set were alive, including paleontological time periods. Examples: "1900-1950", "Ming Dynasty", "Pleistocene".<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataTemporalCoverageLivingTimePeriod.png' />
+</li><li><b>End Date</b> - this text box is meant to contain the date the coverage ended, in one of the supported date formats. To select a date, click on the calendar icon and choose a date, or enter the date manually. To find out what date formats are supported, open the information icon. Example: 2010-12-31 for 31 December 2010 in the New Era calendar.<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataTemporalCoverageDateRange.png' />
+</li></ul></li><li><b>Formation Period</b> - this temporal coverage type is meant to accommodate a named or other time period during which a collection or data set was assembled. Examples: "Victorian", "1922-1932", "c. 1750".<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataTemporalCoverageFormationPeriod.png' />
+</li><li><b>Living Time Period</b> - this temporal coverage type is meant to accommodate a named or other time period during which the biological entities in the collection or data set were alive, including paleontological time periods. Examples: "1900-1950", "Ming Dynasty", "Pleistocene".<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataTemporalCoverageLivingTimePeriod.png' />
 <h4>Keywords</h4>
 This metadata page allows the user to create one or more sets of keywords about the resource. Each set of keywords can be associated with a thesaurus/vocabulary that governs the terms in the list.<br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataKeywords.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataKeywords.png' />
 </li></ul></li><li><b>Remove this keyword set</b> - click on this link to remove the keyword set that follows immediately below the link.<br>
 </li><li><b>Thesaurus/Vocabulary</b> - enter the name of a thesaurus or controlled vocabulary from which the keywords in the set are derived. If the keywords are not governed by a thesaurus/vocabulary, enter "n/a" indicating that it is not applicable in this text box. Example: IRIS keyword thesaurus.<br>
 </li><li><b>Keyword List</b> - enter a list of keywords, separated by commas that describe or are related to the resource.<br>
 </li><li><b>Add new keyword set</b> - click on this link to initiate a form for an additional keyword set.<br>
 <h4>Associated Parties</h4>
 This metadata pages contains information about one or more people or organisations associated with the resource in addition to those already covered on the Basic Metadata page. Many of the controls on this page are in common with those for the Resource Contacts on the <a href='IPT2ManualNotes#Basic_Metadata.md'>Basic Metadata</a> page. Explanations for the remainder of the controls are given below.<br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataAssociatedParties.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataAssociatedParties.png' />
 </li><li><b>Copy details from resource contact</b> - if this person or organisation is the same as the first Resource Contact on the Basic Metadata page, all of the details can be copied into the equivalent fields for the associated party by clicking on this link.<br>
 </li><li><b>Remove this associated party</b> - click on this link to remove the associated party that follows immediately below the link.<br>
 </li><li><b>Role</b> - this select box contains a list of possible roles that the associated party might have in relation to the resource. Click on the information icon to the left of the select box to see descriptions of the possible roles. Choose the most appropriate role for the associated party in the select box.<br>
 </li><li><b>Add new associated party</b> - click on this link to initiate a form for an additional associated party.<br>
 <h4>Project Data</h4>
 This metadata page contains information about a project under which the data in the resource were produced.<br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataProjectData.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataProjectData.png' />
 </li><li><b>Title</b> - the title of the project.<br>
 </li><li><b>Identifier</b> - a unique identifier for the research project. This can be used to link multiple dataset/EML document instances that are associated in some way with the same project, e.g. a monitoring series. The nature of the association can be described in the project description.<br>
 </li><li><b>Description</b> - an abstract about the research project.<br>
@@ -553,7 +554,7 @@ This metadata page contains information about a project under which the data in 
 
 <h4>Sampling Methods</h4>
 This metadata page contains information about sampling methods used for the data represented by the resource.<br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataSamplingMethods.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataSamplingMethods.png' />
 <ul><li><b>Study Extent</b> - a description of the physical and temporal conditions under which the sampling occurred. The geographic study extent is usually a surrogate (representative area of) for the larger area documented in the "Study Area Description" field of the Project metadata page.<br>
 </li><li><b>Sampling Description</b> - a text-based/human readable description of the sampling procedures used in the research project. The content of this element would be similar to a description of sampling procedures found in the methods section of a journal article.<br>
 </li><li><b>Quality Control</b> - a description of actions taken to either control or assess the quality of data resulting from the associated method step(s).<br>
@@ -562,7 +563,7 @@ This metadata page contains information about sampling methods used for the data
 </li><li><b>Remove this method step</b> - click on this link to remove the method step text box that follows immediately below the link.<br>
 <h4>Citations</h4>
 This metadata page contains information about how to cite the resource as well as a bibliography of citations related to the data set, such as publications that were used in or resulted from the production of the data. Each Citation, whether for the resource or in the bibliography, consists of an optional unique Citation Identifier allowing the citation to be found among digital sources and a traditional textual citation. Before any Citation data are entered, the page will show a text box for the Citation Identifier for the resource, a text box for the Resource Citation, a heading labeled "Bibliographic Citations", and a link labeled "Add new bibliographic citation".<br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataCitations.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataCitations.png' />
 </li><li><b>Resource Citation</b> - the single citation for use when citing the dataset.<br>
 <ul><li>Example citation with institutional creator:<br>
 <blockquote>Biodiversity Institute of Ontario (2011) Migratory birds of Ontario. Version 1.2. University of Guelph. Dataset/Species occurrences. <a href='http://dx.doi.org/10.5886/qzxxd2pa'>http://dx.doi.org/10.5886/qzxxd2pa</a>
@@ -573,20 +574,20 @@ This metadata page contains information about how to cite the resource as well a
 </li><li><b>Bibliographic Citations</b> - the additional citations of other resources related to or used in the creation of this resource.<br>
 </li><li><b>Add new bibliographic citation</b> -  click on this link to add the text boxes required for an additional citation in the bibliography.<br>
 <ul><li><b>Bibliographic Citation</b> - the citation of an external resource related to or used in the creation of this resource.<br>
-</li><li><b>Bibliographic Citation Identifier</b> - a DOI, URI, or other persistent identifier that resolves to the online external resource. It should be used in the citation, usually at the end. <img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataBibCitations.png' />
+</li><li><b>Bibliographic Citation Identifier</b> - a DOI, URI, or other persistent identifier that resolves to the online external resource. It should be used in the citation, usually at the end. <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataBibCitations.png' />
 </li></ul></li><li><b>Remove this bibliographic citation</b> - click on this link to remove the citation that follows immediately below the link.<br>
 <h4>Collection Data</h4>
 This metadata page contains information about the physical natural history collection associated with the resource (if any) as well as lists of types objects in the collection, called Curatorial Units, and summary information about them. Before any Collection data are entered, the page will show a header for each section (Collections, Specimen preservation methods, Curatorial Units) and a link labeled "Add new curatorial unit".<br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataCollectionData.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataCollectionData.png' />
 </li><li><b>Collections</b> - the list of collections that this resource is based on.<br>
 <ul><li><b>Add new citation</b> -  click on this link to add the text boxes required for an additional collection in the Collections section.<br>
 </li><li><b>Collection Name</b> - the full standard name by which the collection is known or cited in the local language.<br>
 </li><li><b>Collection Identifier</b> - The URI (LSID or URL) of the collection. In RDF, used as URI of the collection resource.<br>
 </li><li><b>Parent Collection Identifier</b> - Identifier for the parent collection for this sub-collection. Enables a hierarchy of collections and sub collections to be built. Please enter "Not applicable" if this collection does not have a parent collection.<br>
-</li><li><b>Remove this collection</b> - click on this link to remove the collection that follows immediately below the link.<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataCollections.png' />
+</li><li><b>Remove this collection</b> - click on this link to remove the collection that follows immediately below the link.<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataCollections.png' />
 </li></ul></li><li><b>Specimen Preservation Methods</b> - the list of specimen preservation methods covered by the resource, indicating the process or technique used to prevent physical deterioration of non-living collections. The values to choose from are based on the <a href='http://rs.gbif.org/vocabulary/gbif/preservation_method.xml'>GBIF Specimen Preservation Method vocabulary</a>. Remember you can include a list of preparations and preservation methods for a specimen in your data mapping DwC term preparations (<a href='http://rs.tdwg.org/dwc/terms/preparations'>http://rs.tdwg.org/dwc/terms/preparations</a>). Please don't select anything for treatments for living collections. This can relate to the curatorial unit(s) in the collection.<br>
 <ul><li><b>Add new preservation method</b> -  click on this link to add the text boxes required for an additional preservation method in the Specimen Preservation Methods section.<br>
-</li><li><b>Remove this preservation method</b> - click on this link to remove the preservation method that follows immediately below the link.<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataPreservationMethods.png' />
+</li><li><b>Remove this preservation method</b> - click on this link to remove the preservation method that follows immediately below the link.<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataPreservationMethods.png' />
 </li></ul></li><li><b>Curatorial Units</b> - the counts of curatorial units covered by the resource. The count can be entered as a range or as a value with an uncertainty. Examples of units include skins, sheets, pins, boxes, and jars. Overall, this section summarizes the physical contents of the collection by type.<br>
 <ul><li><b>Add new curatorial unit</b> -  click on this link to add the select text boxes required for an additional curatorial unit in the Curatorial Units section. When a new curatorial unit is added, the default Method Type selection is "Count Range".<br>
 </li><li><b>Method Type</b> - this select box allows the user to choose from among two methods to specify the number of objects of a given type, either a count range, or a count with uncertainty. After making the selection, appropriate text boxes will appear allowing that counting method to the represented.<br>
@@ -597,10 +598,10 @@ This metadata page contains information about the physical natural history colle
 <ul><li><b>Count</b> - enter the mean likely number of object in this text box.<br>
 </li><li><b>+/-</b> - enter the number of objects more or less than the number in the count text box for the range of possible counts of the particular unit type<br>
 </li></ul></li><li><b>Unit Type</b> - the single type of object (specimen, lot, tray, box, jar, etc.) represented by the method type and count.<br>
-</li></ul></li><li><b>Remove this curatorial unit</b> - click on this link to remove the curatorial unit that follows immediately below the link.<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataCuratorialUnits.png' />
+</li></ul></li><li><b>Remove this curatorial unit</b> - click on this link to remove the curatorial unit that follows immediately below the link.<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataCuratorialUnits.png' />
 <h4>External Links</h4>
 This metadata page contains links to the home page for the resource as well as links to the resource in alternate forms (database files, spreadsheets, linked data, etc.) and the information about them. Before any external links are entered, the page will show a text box for the Resource Homepage and a link labeled "Add new external link".<br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataExternalLinks.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataExternalLinks.png' />
 </li></ul></li><li><b>Resource Homepage</b> - enter the full current URL of the web page containing information about the resource or its data set.<br>
 </li><li><b>Other Data Formats</b> - links to your resource data in other formats (e.g., database dumps, spreadsheets, nexus, linked data, etc.).<br>
 <ul><li><b>Add new external link</b> -  click on the link having this text to add the text boxes required for an additional external link.<br>
@@ -612,7 +613,7 @@ This metadata page contains links to the home page for the resource as well as l
 </li><li><b>Remove this external link</b> - click on the link having this label to remove the external link that follows immediately below.<br>
 <h4>Additional Metadata</h4>
 This metadata page contains information about other aspects of the resource not captured on one of the other metadata pages, including alternative identifiers for the resource. Before any alternative identifiers are entered, the page will show text boxes for the purpose, maintenance description, additional metadata, a header for the Alternative Identifiers area, and a link labeled "Add new alternative identifier".<br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataAdditionalMetadata.png' /></li></ul></li></ul>
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataAdditionalMetadata.png' /></li></ul></li></ul>
 
 <ul><li><b>Date Created</b> - the date on which the first version of the resource was published. It will be used to formulate the publication year in the auto-generated resource citation. This value is set automatically when publishing and cannot be edited.<br>
 </li><li><b>Date Published</b> - the date when the resource was last published. This value is set automatically when publishing (see the <a href='IPT2ManualNotes#Published_Release.md'>Published Release</a> section).<br>
@@ -628,14 +629,14 @@ This metadata page contains information about other aspects of the resource not 
 <h4>Published Versions</h4>
 This area of the Resource Overview page allows a user to publish a version of the resource.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourcePublish.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourcePublish.png' />
 
 The <b>left-hand</b> section controls how resource versions are published. The publish button can be used to publish new versions on demand, or auto-publishing can be enabled to publish new versions on a schedule. For explanations of the options in this section, refer to the information below.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourcePublishLeftSide2.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourcePublishLeftSide2.png' />
 
 <ul><li><b>Publish on demand</b>: - simply click on the button labeled "Publish" to trigger publishing a new version. The button labeled "Publish" will be enabled if 1) the required metadata for the resource are complete, and 2) the user has the role "Manager with/without registration rights". When the resource is registered or the resource has been assigned a DOI, however, only users with the role "Manager with registration rights" can publish, since the resource's registration gets updated during each publication (see the explanation for Role in the "Create a new user" section under the "Configure User accounts" heading of the "Administration Menu" section). After pressing the "Publish" button, a confirmation dialog will appear. The dialog varies depending on whether the pending version is a major version change or minor version change:<br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourcePublishMajor.png' /><img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourcePublishMinor.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourcePublishMajor.png' /><img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourcePublishMinor.png' />
 </li></ul><blockquote>The resource manager should enter a summary of what changes have been made to the resource (metadata or data) since the last/current version was published. The change summary is stored as part of the resource version history, and can be edited by resource managers via the resource homepage. A complete description of what happens after pressing "Publish" is explained in the "Publishing steps" section below.<br>
 </blockquote><ul><li><b>Auto-publishing</b>: - to turn on automated publishing, select one of the 5 publishing intervals (annually, biannually, monthly, weekly, or daily) and then press the publish button. When automated publishing is on, the publishing interval and next published date are clearly displayed in the published release section. To change the publishing interval, select a different publishing interval and press publish. To turn off automated publishing, select "Turn off" and then press publish. In case of failure, publishing will be retried automatically up to 3 more times. This safeguards against infinite publishing loops. Resources configured to publish automatically, but that failed to finish successfully will have a next publication date in the past, and will be highlighted in the public and manage resource tables.</li></ul>
 
@@ -643,13 +644,13 @@ The <b>right-hand</b> section contains a table that compares the current version
 <br>
 <i>Table 1 (below): demonstrates a major version change since the pending version has been reserved a new DOI:</i>
 
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourcePublishTable.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourcePublishTable.png' />
 
 <i>Table 2 (below): demonstrates a minor version change since the DOI assigned to the current and pending versions is the same:</i>
 
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourcePublishTable2.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourcePublishTable2.png' />
 
-<ul><li><b>Version</b>: - the version number tracking the  major_version.minor_version of the current/pending version. Each time the resource undergoes scientifically significant changes, the resource manager should ensure the pending version has a new major version, done by reserving it a new DOI. A detailed description of the IPT's versioning policy is explained in <a href='IPT2Versioning.md'>here</a>. In the current version column, click the "View" button to see the current version's homepage. Assuming a DwC-A has been published, click <img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/Checkmark.png' /> the to validate it using the <a href='http://tools.gbif.org/dwca-validator/'>Darwin Core Archive Validator</a>. In the pending version column, click the "Preview" button to see a preview of the pending version's homepage. The homepage preview is private to resource managers only, and enables them to make sure the resource is ready to publish.<br>
+<ul><li><b>Version</b>: - the version number tracking the  major_version.minor_version of the current/pending version. Each time the resource undergoes scientifically significant changes, the resource manager should ensure the pending version has a new major version, done by reserving it a new DOI. A detailed description of the IPT's versioning policy is explained in <a href='IPT2Versioning.md'>here</a>. In the current version column, click the "View" button to see the current version's homepage. Assuming a DwC-A has been published, click <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/Checkmark.png' /> the to validate it using the <a href='http://tools.gbif.org/dwca-validator/'>Darwin Core Archive Validator</a>. In the pending version column, click the "Preview" button to see a preview of the pending version's homepage. The homepage preview is private to resource managers only, and enables them to make sure the resource is ready to publish.<br>
 </li><li><b>Visibility</b>: - the visibility of the current/pending version. In order to register the resource with GBIF, the resource manager must ensure the current version is public. In order to assign a DOI to a resource, the resource manager must ensure the pending version is public.<br>
 </li><li><b>DOI</b>: - to DOI of the current/pending version. The DOI of the current version can never be changed, however, the DOI of the pending version can be reserved or deleted. For explanations of how DOIs are reserved, deleted, registered, deactivated, reactivated please see the DOI section below.<br>
 </li><li><b>Data License</b>: - the license applied to the resource. In order to register the resource with GBIF, the resource manager must ensure a license equivalent to either CC0, CC-BY, or CC-BY-NC is applied to the resource. GBIF's licensing policy is described <a href='http://www.gbif.org/terms/licences'>here</a>.<br>
@@ -694,17 +695,17 @@ A page entitled Publishing Status will show status messages highlighting the suc
 </li><li>how many records contained fewer columns than the number that was mapped<br>
 </li></ul></li><li><b>Log message</b> - The Publishing Status page shows a summary of the information that was sent to the filed named publication.log, which is stored in the directory for the resource within the IPT's data directory and which is accessible through the link to the "Publication Log" immediately above the log message summary.</li></ul>
 
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourcePublishingStatus.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourcePublishingStatus.png' />
 
 <h4>Visibility</h4>
 The Visibility area of the Manage Resources page allows users having manager rights for the resource to change its visibility state. The visibility of a resource determines who will be able to view it, and whether the resource can be assigned a DOI or registered with GBIF. By default, each resource is visible only to the user who created it and any other users who have the Admin role on the IPT where the resource is created. For explanations of each visibility state refer to the information below.<br>
 <br>
-<ul><li><b>Private</b> - A private resource is visible only to those who created it, or those who have been granted permission to manage it within the IPT, or by a user having the Admin role. This is primarily meant to preserve the resource from public visibility until it has been completely and properly configured. Be aware a DOI can be reserved for a private resource, but that DOI cannot be registered until the resource is publicly visible. When the resource is ready for public visibility, click on the button labeled "Public". A message will appear at the top of the page saying that the status has been changed to "Public".<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceVisibilityPrivate.png' />
-</li><li><b>Public</b> - A public resource is visible to anyone using the IPT instance where the resource is installed (on the table of public resource on the IPT Home page). If the resource has a reserved DOI, that DOI will be registered the next time the resource is published. The resource is ultimately accessible via the Internet to anyone who knows its homepage URL or DOI. However, the resource is not globally discoverable through the GBIF website until it has been registered with the GBIF Registry. Be aware the visibility of a resource assigned a DOI cannot be changed to private.<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceVisibilityPublicNeedToPublish.png' /> Two buttons appear in the left-hand section of the visibility area. Clicking on the button labeled "Private" will remove the resource entirely from public visibility and return it to the private state. The button labeled "Register" will only be enabled if 1) the required metadata for the resource are complete, 2) the resource has been published (see the explanation of the "Published Release" area of the Resource Overview page, below), and 3) the user has the role "Manager with registration rights" (see the explanation for Role in the "Create a new user" section under the "Configure User accounts" heading of the "Administration Menu" section). A user having the Admin role can grant the "Manager with registration rights" to any user.<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceVisibilityPublic.png' /> Finally, click on the button labeled "Register" to register the resource with the GBIF Registry. (<b>Note:</b> If you want this resource to update an existing registered DiGIR, BioCASE, or TAPIR resource, please refer to the section <a href='IPT2ManualNotes#Migrate_a_Resource.md'>Migrate a Resource</a> below) Clicking on this button will open a dialog box with which to confirm that you have read and understood the GBIF data sharing agreement, to which a link is given. Click on the check box to indicate that you agree with these terms. Doing so will cause a button labeled "Yes" to appear at the bottom of the dialog box. Click on "Yes" to register the resource, or click on "No" to defer the decision and close the dialog box.<br>
-</li></ul><blockquote><img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceVisibilityRegisterAgreement.png' /></blockquote>
+<ul><li><b>Private</b> - A private resource is visible only to those who created it, or those who have been granted permission to manage it within the IPT, or by a user having the Admin role. This is primarily meant to preserve the resource from public visibility until it has been completely and properly configured. Be aware a DOI can be reserved for a private resource, but that DOI cannot be registered until the resource is publicly visible. When the resource is ready for public visibility, click on the button labeled "Public". A message will appear at the top of the page saying that the status has been changed to "Public".<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceVisibilityPrivate.png' />
+</li><li><b>Public</b> - A public resource is visible to anyone using the IPT instance where the resource is installed (on the table of public resource on the IPT Home page). If the resource has a reserved DOI, that DOI will be registered the next time the resource is published. The resource is ultimately accessible via the Internet to anyone who knows its homepage URL or DOI. However, the resource is not globally discoverable through the GBIF website until it has been registered with the GBIF Registry. Be aware the visibility of a resource assigned a DOI cannot be changed to private.<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceVisibilityPublicNeedToPublish.png' /> Two buttons appear in the left-hand section of the visibility area. Clicking on the button labeled "Private" will remove the resource entirely from public visibility and return it to the private state. The button labeled "Register" will only be enabled if 1) the required metadata for the resource are complete, 2) the resource has been published (see the explanation of the "Published Release" area of the Resource Overview page, below), and 3) the user has the role "Manager with registration rights" (see the explanation for Role in the "Create a new user" section under the "Configure User accounts" heading of the "Administration Menu" section). A user having the Admin role can grant the "Manager with registration rights" to any user.<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceVisibilityPublic.png' /> Finally, click on the button labeled "Register" to register the resource with the GBIF Registry. (<b>Note:</b> If you want this resource to update an existing registered DiGIR, BioCASE, or TAPIR resource, please refer to the section <a href='IPT2ManualNotes#Migrate_a_Resource.md'>Migrate a Resource</a> below) Clicking on this button will open a dialog box with which to confirm that you have read and understood the GBIF data sharing agreement, to which a link is given. Click on the check box to indicate that you agree with these terms. Doing so will cause a button labeled "Yes" to appear at the bottom of the dialog box. Click on "Yes" to register the resource, or click on "No" to defer the decision and close the dialog box.<br>
+</li></ul><blockquote><img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceVisibilityRegisterAgreement.png' /></blockquote>
 
 <blockquote>If the attempt to register is successful, a message will appear at the top of the page saying that the status has been changed to "Registered".<br>
-</blockquote><ul><li><b>Registered</b> - A resource that has been registered with the GBIF network is discoverable through the GBIF website and the data from the resource can be indexed by and accessed from the GBIF portal. Be aware it can take up to one hour for data to be indexed by GBIF following registration. A summary of information registered with GBIF will appear in the right-hand column when registration is complete.<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceVisibilityRegistered.png' /> If the resource has already been registered, every time the "Publish" button is clicked, its registration information in the GBIF Registry also gets updated. The visibility of a registered resource can not be changed to private. If a resource must be removed from the GBIF Registry, follow the procedure described in the "Delete a Resource" section under the "Resource Overview" heading in the "Manage Resources Menu" section.<br>
+</blockquote><ul><li><b>Registered</b> - A resource that has been registered with the GBIF network is discoverable through the GBIF website and the data from the resource can be indexed by and accessed from the GBIF portal. Be aware it can take up to one hour for data to be indexed by GBIF following registration. A summary of information registered with GBIF will appear in the right-hand column when registration is complete.<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceVisibilityRegistered.png' /> If the resource has already been registered, every time the "Publish" button is clicked, its registration information in the GBIF Registry also gets updated. The visibility of a registered resource can not be changed to private. If a resource must be removed from the GBIF Registry, follow the procedure described in the "Delete a Resource" section under the "Resource Overview" heading in the "Manage Resources Menu" section.<br>
 <h4>Migrate a Resource</h4>
 There is now a way to migrate registered DiGIR, BioCASE, and TAPIR resources to an IPT. The way this works, is that the IPT resource is configured to update the existing registered DiGIR, BioCASE, or TAPIR resource that it corresponds to in the GBIF Registry. This allows the resource to preserve its GBIF Registry UUID.</li></ul>
 
@@ -720,22 +721,22 @@ To migrate an <b>existing registered resource</b> to your <b>IPT resource</b>, s
 </li><li>the name and GBIF Registry UUID of your updated Resource (see line Resource Key on resource overview page, for example: Resource Key d990532f-6783-4871-b2d3-cae3d0cb872b)<br>
 </li><li>(if applicable) whether the DiGIR/BioCASE/TAPIR technical installation that used to serve the resource has been deprecated, and whether it can be deleted from the GBIF Registry<br>
 <h4>Resource Managers</h4>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceManagers.png' /></li></ol></li></ol>
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceManagers.png' /></li></ol></li></ol>
 
 Each resource has one or more explicitly assigned managers who are allowed to view, change, and remove the resource. The user who creates a resource automatically has these capabilities. Additional managers can be associated with a resource and given these same capabilities by selecting them by name from the select box in this area of the Resource Overview page, then clicking on the button labeled "Add". Any manager associated with a resource and having the role "Manager with registration rights" may also register the resource and update it in the GBIF registry. All users having the Admin role automatically have complete managerial roles for all resources in the IPT instance. The right-hand column of this area shows the name and email address of the creator of the resource. If any managers have been added, their names and email addresses will be listed under the creator. Any added manager can have the managerial role for the resource removed by clicking on the button labeled "Delete" to the right of the email address in the manager listing.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceManagerAdded.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceManagerAdded.png' />
 
 <h4>Delete a Resource</h4>
 Clicking on the button labeled "Delete" on the Resource Overview page will remove the resource from the IPT and all of the related documents from the file system. If you intend to remove a resource that has been registered with GBIF, you should also inform the GBIF Help Desk (helpdesk@gbif.org) that you would like it to be unregistered. If you want to preserve the resource information but remove the resource from the IPT, make a copy of the folder for the resource to a safe location outside of the IPT directory structure. The name of the folder for the resource is the same as the resource Shortname, and can be found under the folder named "resources" in the IPT data directory. A resource saved in this way can be re-integrated into the IPT, or integrated with a distinct IPT instance by following the procedure described in the "Integrate an existing resource configuration folder" section under the "Create a New Resource" heading in the "Manage Resources Menu" section.<br>
 <h2>Administration Menu (visible only to users having the Admin role)</h2>
 This section describes each of the functions that are accessible from the Administration menu. Clicking on the Administration menu opens a page (see screen image, below) from which each of these specific administrative tasks can be accessed by clicking on the appropriate button. Note that the button labeled "Organisations" will remain disabled by default until the GBIF registration options have been set.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/IPTAdminBeforeRegistration.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v205/IPTAdminBeforeRegistration.png' />
 <h3>Configure IPT settings</h3>
 This page allows a user having the Admin role to make and change settings for the characteristics of this IPT instance.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/IPTAdminConfigIPT.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v205/IPTAdminConfigIPT.png' />
 
 <b>Base URL</b> - This is the URL that points to the root of this IPT installation. The URL is set automatically during the installation of the IPT. The Base URL must be accessible via the Internet in order for the IPT to function fully. Configuring the IPT Base URL to use localhost, for example, will not allow the instance of the IPT to be registered with GBIF, will not allow the IPT to be associated with an organisation and will not allow the resources to be publicly accessible.<br><b>Note</b>: The IPT tests the Base URL for accessibility from the client computer when the IPT Settings are saved. If the IPT is not accessible at the given Base URL, the IPT will display a warning message and the changes will not be saved. The procedure to change the Base URL if the new URL is not yet functional (such as a port change that requires the IPT to be restarted) is given below:<br>
 <ul><li>log out of and shut down the IPT.<br>
@@ -758,11 +759,11 @@ This option is an administrative action just like the Publish button, only it pu
 <h3>Configure User accounts</h3>
 This page allows users having the Admin role to create, modify, and delete user accounts. When the page is opened, it shows a table of existing users and basic information about them including their names, email addresses, roles, and the date and time of their last logins.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTAdminUserAccounts.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAdminUserAccounts.png' />
 <h4>Create a new user</h4>
 A new user can be created by clicking on the button labeled "Create" below the list of existing users. This will open a page on which the information about the user can be entered, after which the new user can be created by clicking on the button labeled "Save".<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTAdminUserCreateUser.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAdminUserCreateUser.png' />
 
 <b>Email</b> - The current email address of the user is used as an identifier to log in within the IPT and can not be changed.<br><b>Note</b>: If the user requires a change of email address, the recommended procedure is to create a new user account with the new email address, then delete the user account having the antiquated email address.<br>
 <b>First name</b> - The first name of the user.<br>
@@ -774,7 +775,7 @@ A new user can be created by clicking on the button labeled "Create" below the l
 <h4>Modify an existing user</h4>
 Information about users can be changed in the user details page after selecting the name of the user you wish to modify from the list of existing users. The user detail page shows all of the information about that user. The first name, last name, and role for the user can be changed by entering the new values and clicking on the button labeled "Save". Details of the information to be entered on this page can be found in the explanations in the "Create a new user" section, above.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTAdminUserEditUser.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAdminUserEditUser.png' />
 
 <b>Reset password</b> - If a user forgets a password, clicking on the button labeled "Reset Password" can generate a new one, after which a new password is given in an information message at the top of the page.<br><b>Note</b>: The IPT does not inform the affected user of this change, so it is the responsibility of the Admin who resets the password to inform the user of the new one.<br>
 <br>
@@ -796,11 +797,11 @@ If the validation test is unsuccessful, an error message will suggest the nature
 <br>
 <b>GBIF Registry inaccessible</b> - If an error message suggests that none of the previous errors has occurred and yet there is a failure to communicate with the GBIF Registry, please report that there are problems connecting to the GBIF registry to the GBIF help desk (helpdesk@gbif.org).<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTAdminRegistrationStep1.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAdminRegistrationStep1.png' />
 
 If the IPT passes the validation step above, a form showing additional information required for registration is presented. In this step, the IPT instance is associated to an organization. <b>The organization must already be registered in the GBIF Registry, and its password must be known.</b>  For explanations of the fields and selections on this form, refer to the information below.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTAdminRegistrationStep2.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAdminRegistrationStep2.png' />
 
 Following are explanations of the specific information to select or enter:<br>
 <b>Organisation</b> - the select box contains a list of organisations in the GBIF registry. Select the single organisation with which this IPT instance will be associated. If you are unable to find the organisation you seek on the list, use the GBIF Registry (<a href='http://www.gbif.org/publisher/search'>http://www.gbif.org/publisher/search</a>) to determine if the organisation is registered under a name other than what you expected. If the organisation is not yet registered with GBIF, please contact the GBIF Help Desk to register the organisation before proceeding with the registration of the IPT. Click on the helpful GBIF Help Desk link to open up an email template in your default mail client that you just have to fill in the required information before sending.<br>
@@ -816,17 +817,17 @@ Following are explanations of the specific information to select or enter:<br>
 <h2>Edit GBIF registration</h2>
 This page allows a user to edit the title, description, contact name, and contact email of the IPT instance once it has been registered in the GBIF Registry. Changing the associated (host) organisation is not possible. For help changing other fields displayed in the GBIF Registry, the administrator can contact the GBIF Help Desk (helpdesk@gbif.org).<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTAdminEditRegistration.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAdminEditRegistration.png' />
 <h2>Configure Organisations</h2>
 This page is unavailable until the IPT instance has been successfully registered in the GBIF Registry (see the information under the "Configure GBIF registration" heading of the "Administration Menu" section). Once registered, this page shows a list of organisations that can be associated with resources in this IPT instance. An IPT that hosts data for organisations other than the one to which it is associated must have the additional organisations configured before they can be used.<br>
 
 An IPT capable of assigning DOIs to resources must also have an organisation configured with a DataCite or EZID account. To be configured with a DataCite or EZID account, the organisation does not necessary have to be able to publish resources (be associated with resources). Only one DataCite or EZID account can be used to register DOIs at a time, and the IPT's archival mode must also be turned on (please refer to the "Configure IPT settings" section to learn more about the archival mode). The list of organisations shows which organisations have been configured with DataCite or EZID accounts, and which one has been selected to register DOIs for all resources in this IPT instance.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTAdminOrgs.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAdminOrgs.png' />
 <h3>Edit organisation</h3>
 On this page a user having the Admin role can edit the organisation. Click on the button labeled "Edit" to open the page containing the details of the selected organisation. For explanations of the fields and selections on this form, refer to the information below.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTAdminOrgsEditOrg.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAdminOrgsEditOrg.png' />
 
 Following are explanations of the specific information to select or enter:<br>
 <br>
@@ -843,7 +844,7 @@ Following are explanations of the specific information to select or enter:<br>
 <h3>Add organisation</h3>
 Organisations are not available to be associated with resources until a user having the Admin role adds them. Click on the button labeled "Add" to open a page on which an additional organisation can be selected from the GBIF Registry to be used in this instance of the IPT. For explanations of the fields and selections on this page, refer to the information under the "Edit Organisation" section above. After the desired organisation is selected and all other data entered, including the password for the organisation, click on the button labeled "Save" to add the selected organisation to the list.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTAdminOrgsAddOrg.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAdminOrgsAddOrg.png' />
 <h2>Configure Core Types and Extensions</h2>
 This page allows a user having the Admin role to enable the instance of the IPT to import and share various pre-defined types of data from the GBIF Registry. Each type includes properties (fields, terms) that support a specific purpose. For example, the Darwin Core Taxon Core Type supports information pertaining to taxonomic names, taxon name usages, and taxon concepts and allows the IPT to host resources for taxonomic and nomenclatural checklists. A distinction is made between Core Types and extensions. Core types provide the basis for data records, (Occurrence and Taxon, for example) while extensions provide the means to associate additional data with a record of the Core Type. Only one Core Type can be selected for a given resource as explained under the "Darwin Core Mappings" heading of the "Resource Overview" section.<br>
 <br>
@@ -851,7 +852,7 @@ Vocabularies contain lists of valid values that a particular term in a Core Type
 <br>
 Before any extensions have been installed, the Core Types and Extensions page begins with a section labeled "Vocabularies" having a single button labeled "Update". Core Types and Extensions that exist in the GBIF Registry but have not yet been installed are listed below the Vocabularies section. When an extension is successfully installed, it will appear above the Vocabularies section.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTAdminExtensions.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAdminExtensions.png' />
 
 The lists of extensions (installed and not installed) each have two columns. The left-hand column shows the name of the extension as a link and a button labeled either "Install" or "Remove". In the right-hand column is a summary of the information about the extension, including a brief description of the type of data the extension is meant to accommodate, a link to more information about the extension if it exists, the number of properties (fields, terms) in the extension, the name of the extension, it's namespace, RowType, and keywords. For more information about these attributes of an extension, see the documentation on Darwin Core Archives at <a href='http://rs.tdwg.org/dwc/terms/guides/text/'>http://rs.tdwg.org/dwc/terms/guides/text/</a>.<br>
 Following are the actions that can be taken with respect to extensions:<br>
@@ -860,11 +861,11 @@ An extension can make use of lists of terms of predefined values, known as contr
 <h3>View extension details</h3>
 The title of each extension in the first column is a link to a detail page for that extension. The detail page shows all of the summary information that can be seen in the right-hand column of the extensions list as well as the detailed description, references, and examples for each of the properties in the extension.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTAdminExtensionsDetail.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAdminExtensionsDetail.png' />
 
 For properties that have controlled vocabularies, the property information in the right-hand column will contain the name of the vocabulary as a link next to the label "Vocabulary:". Clicking on the link will open a detail page for the vocabulary, with a summary of the vocabulary at the top and a table of the valid values with further detailed information such as preferred and alternate terms and identifiers.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTAdminExtensionsDetailVocabulary.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAdminExtensionsDetailVocabulary.png' />
 <h3>Install extension</h3>
 For any of the extensions that have not yet been installed in the IPT, there is a button labeled "Install" under the extension name in the left-hand column. Click on this button to retrieve the extension from the GBIF registry and install it in the IPT.<br>
 <h3>Remove extension</h3>
@@ -872,11 +873,11 @@ For any extension that has already been installed in the IPT, it can be removed 
 <h2>View IPT logs</h2>
 Messages generated from actions taken while running the IPT are logged to files for reference in the directory called "logs" within the IPT data directory (see the information under the "IPT Settings" heading in the "Administration Menu" section). The View IPT logs page shows messages from the file called admin.log, which contains only those log messages that have a severity of WARNING or greater (such as errors). The complete log of messages (contained in the file called debug.log) can be opened and viewed by clicking on the link labeled "complete log file". The contents of the complete log file may be useful when reporting an apparent bug.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTAdminLogs.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAdminLogs.png' />
 <h2>About Menu (visible to all users)</h2>
 The default About page gives information about the current IPT installation, including information about the hosting organisation, if that has been registered. This page is meant to be customized for the individual IPT instance by editing the file called about.ftl in the directory called "config" within the IPT data directory (see the information under the "IPT Settings" heading in the "Administration Menu" section). The about.ftl file is a Freemarker template that can contain a combination of HTML and variable references of the form ${host.variable!"alternate value if null"}. After making changes to the about.ftl file, the About page will have to be restarted to show the changes. Look at the default about.ftl file for examples of variables that can be included.<br>
 <br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTAbout.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAbout.png' />
 
 Here is the content of the about.ftl file resulting in the page as viewed above.<br>
 <pre><code>&lt;h1&gt;About this IPT installation&lt;/h1&gt;<br>
