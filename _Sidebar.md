@@ -12,7 +12,7 @@
     - [[Adding a New Core|IPT2Core.wiki]]
     - [[Adding a New License|IPT2License.wiki]]
     - [[Adding a New User ID Directory|IPT2UserId.wiki]]
-+ Tutorials & Resources
++ Resources & Tutorials
     - [[Server Preparation|IPTServerPreparation.wiki]]
       - [[Install Tomcat on Mac OS X|TomcatInstallationMacOSX.wiki]]
       - [[Install Tomcat on Windows 7|TomcatInstallationWindows7.wiki]]
