@@ -30,5 +30,5 @@
 + Developers
     - [[How to Contribute|HowToContribute.wiki]]
 + Versions
-    - [[Roadmap|Roadmap.wiki)]]
-    - [[Version History|VersionHistory.wiki)]]
+    - [[Roadmap|Roadmap.wiki]]
+    - [[Version History|VersionHistory.wiki]]
