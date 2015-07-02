@@ -27,7 +27,6 @@
     - [[DarwinCore|DarwinCore.wiki]]
     - [[Data Preparation|DataPreparation.wiki]]
     - [[Occurrence Resource Tutorial|TutorialOccurrenceResource.wiki]]
-+ Translators
-    - [[How to Contribute|HowToTranslate.wiki]]
-+ Developers
-    - [[How to Contribute|HowToContribute.wiki]]
++ How to Contribute
+    - [[For Translators|HowToTranslate.wiki]]
+    - [[For Developers|HowToContribute.wiki]]
