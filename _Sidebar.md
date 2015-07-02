@@ -1,5 +1,4 @@
 + [[Release Notes|IPTReleaseNotes22.wiki]]
-
 + [[User Manual|IPT2ManualNotes.wiki]]
     - [[Getting Started Guide|IPT2ManualNotes.wiki#getting-started-guide]]
     - [[Quick Reference Guide|IPT2ManualNotes.wiki#quick-reference-guide]]
@@ -7,9 +6,7 @@
     - [[About, Credits|IPT2ManualNotes.wiki#about-the-ipt]]
     - [[Resources|IPT2ManualNotes.wiki#resources]]
     - [[Glossary|IPT2ManualNotes.wiki#glossary]]
-
 + [[FAQ|FAQ.wiki]] 
-
 + Customize the IPT
     - [[Style the IPT|IPT2Customization.wiki]]
     - [[Adding a New Core|IPT2Core.wiki]]
