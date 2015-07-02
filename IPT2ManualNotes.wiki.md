@@ -453,7 +453,7 @@ Clicking on the "Edit" button opens the <a href='IPT2ManualNotes#Basic_Metadata.
 Following is a list of the metadata pages and their contents:<br>
 <h4>Basic Metadata</h4>
 All metadata fields on this page are required. Please note for each contact you must supply at least a last name, a position or an organisation.<br>
-<img src='http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataBasicMetadata.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataBasicMetadata.png' />
 <ul><li><b>Title</b> - the Title for the resource. This title will appear as the Name of the resource throughout the IPT. The title will also appear in the GBIF Registry.<br>
 </li><li><b>Description</b> - text describing the resource. This required field should provide a summary that will help potential users of the data to understand if it may be of interest.<br>
 </li><li><b>Publishing Organisation</b> - the organisation responsible for publishing (producing, releasing, holding) this resource. It will be used as the resource's publishing organisation when registering this resource with GBIF and when submitting metadata during DOI registrations. It will also be used to auto-generate the citation for the resource (if auto-generation is turned on), so consider the prominence of the role. If the desired organisation does not appear in the list it may be added by the IPT Administrator (see the information under the "Configure Organisations" heading in the "Administration Menu" section). Please be aware your selection cannot be changed after the resource has been either registered with GBIF or assigned a DOI.<br>
