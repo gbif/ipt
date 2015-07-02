@@ -7,6 +7,8 @@
     - [[Resources|IPT2ManualNotes.wiki#resources]]
     - [[Glossary|IPT2ManualNotes.wiki#glossary]]
 + [[FAQ|FAQ.wiki]] 
++ [[Roadmap|Roadmap.wiki]]
++ [[Version History|VersionHistory.wiki]]
 + Customize the IPT
     - [[Style the IPT|IPT2Customization.wiki]]
     - [[Adding a New Core|IPT2Core.wiki]]
@@ -29,6 +31,3 @@
     - [[How to Contribute|HowToTranslate.wiki]]
 + Developers
     - [[How to Contribute|HowToContribute.wiki]]
-+ Versions
-    - [[Roadmap|Roadmap.wiki]]
-    - [[Version History|VersionHistory.wiki]]
