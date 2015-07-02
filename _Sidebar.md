@@ -2,12 +2,9 @@
     * [[Getting Started Guide|IPT2ManualNotes.wiki#getting-started-guide]]
     * [[Quick Reference Guide|IPT2ManualNotes.wiki#quick-reference-guide]]
     * [[Supported Databases|IPT2DatabaseConnection.wiki]]
-    * [About, Credits](IPT2ManualNotes#About_the_IPT.md)
-* [[Getting Started Guide|IPT2ManualNotes.wiki#getting-started-guide]]
-    * [Resources](IPT2ManualNotes#Resources.md)
-* [[Getting Started Guide|IPT2ManualNotes.wiki#getting-started-guide]]
-    * [Glossary](IPT2ManualNotes#Glossary.md)
-* [[Getting Started Guide|IPT2ManualNotes.wiki#getting-started-guide]]
+    * [[About, Credits|IPT2ManualNotes.wiki#about-the-ipt]]
+    * [[Resources|IPT2ManualNotes.wiki#resources]]
+    * [[Glossary|IPT2ManualNotes.wiki#glossary]]
     * Customize the IPT
       * [Style the IPT](IPT2Customization.md)
       * [Adding a New Core](IPT2Core.md)
