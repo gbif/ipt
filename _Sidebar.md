@@ -17,15 +17,14 @@
       - [[Install Tomcat on Mac OS X|TomcatInstallationMacOSX.wiki]]
       - [[Install Tomcat on Windows 7|TomcatInstallationWindows7.wiki]]
       - [[Install Tomcat on CentOS 5|TomcatInstallationCentOS.wiki]]
-    - IPT Design
-      - [[Dataset Versioning Policy|IPT2Versioning.wiki]]
-      - [[Dataset Citation Format|IPT2Citation.wiki]]
-      - [[DataCite to EML mappings|IPT2DataCiteMappings.wiki]]
-      - [[DOI Workflows|IPT2DOIWorkflow.wiki]]
-      - [[How To Apply a License|IPT2ApplyingLicense.wiki]]
-      - [[DarwinCore|DarwinCore.wiki]]
-      - [[Data Preparation|DataPreparation.wiki]]
-      - [[Occurrence Resource Tutorial|TutorialOccurrenceResource.wiki]]
+    - [[Dataset Versioning Policy|IPT2Versioning.wiki]]
+    - [[Dataset Citation Format|IPT2Citation.wiki]]
+    - [[DataCite to EML mappings|IPT2DataCiteMappings.wiki]]
+    - [[DOI Workflows|IPT2DOIWorkflow.wiki]]
+    - [[How To Apply a License|IPT2ApplyingLicense.wiki]]
+    - [[DarwinCore|DarwinCore.wiki]]
+    - [[Data Preparation|DataPreparation.wiki]]
+    - [[Occurrence Resource Tutorial|TutorialOccurrenceResource.wiki]]
   * Translators
     * [How to Contribute](HowToTranslate.md)
   * Developers
