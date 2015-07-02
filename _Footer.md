@@ -1,1 +1,1 @@
-©2015 Global Biodiversity Information Facility.
+©2015 Global Biodiversity Information Facility
