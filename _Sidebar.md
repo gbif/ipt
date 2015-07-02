@@ -9,12 +9,15 @@
 + [[FAQ|FAQ.wiki]] 
 + [[Roadmap|Roadmap.wiki]]
 + [[Version History|VersionHistory.wiki]]
-+ Customize the IPT
++ How to Customize the IPT
     - [[Style the IPT|IPT2Customization.wiki]]
     - [[Adding a New Core|IPT2Core.wiki]]
     - [[Adding a New License|IPT2License.wiki]]
     - [[Adding a New User ID Directory|IPT2UserId.wiki]]
-+ Resources & Tutorials
++ How to Contribute
+    - [[For Translators|HowToTranslate.wiki]]
+    - [[For Developers|HowToContribute.wiki]]
++ Other Resources & Tutorials
     - [[Server Preparation|IPTServerPreparation.wiki]]
       - [[Install Tomcat on Mac OS X|TomcatInstallationMacOSX.wiki]]
       - [[Install Tomcat on Windows 7|TomcatInstallationWindows7.wiki]]
@@ -27,6 +30,3 @@
     - [[DarwinCore|DarwinCore.wiki]]
     - [[Data Preparation|DataPreparation.wiki]]
     - [[Occurrence Resource Tutorial|TutorialOccurrenceResource.wiki]]
-+ How to Contribute
-    - [[For Translators|HowToTranslate.wiki]]
-    - [[For Developers|HowToContribute.wiki]]
