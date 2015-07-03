@@ -109,7 +109,7 @@ _For the IPT Version 2.1 user manual, please go [[here|IPTUserManualv21.wiki]] O
 
 # Introduction
 ## About the GBIF Integrated Publishing Toolkit
-The GBIF Integrated Publishing Toolkit (IPT) is a freely available open source web application that makes it easy to share three types of biodiversity-related information: primary taxon occurrence data, taxon checklists, and general metadata about data sources. An IPT instance as well as the data and metadata registered through the IPT are connected to the GBIF Registry, are indexed for consultation via the GBIF network and portal, and are made accessible for public use. More information about the GBIF IPT can be found at http://www.gbif.org/ipt.
+The GBIF Integrated Publishing Toolkit (IPT) is a freely available open source web application that makes it easy to share three types of biodiversity-related information: primary taxon occurrence data, taxon checklists, and general metadata about data sources. An IPT instance as well as the data and metadata registered through the IPT are connected to the GBIF Registry, are indexed for consultation via the GBIF network and portal, and are made accessible for public use. More information about the GBIF IPT can be found at the [IPT website](http://www.gbif.org/ipt).
 
 Founded and funded by governments in 2001, The Global Biodiversity Information Facility (GBIF) is the world's largest multi-lateral initiative for enabling free access to biodiversity data via the
 Internet. [GBIF's diverse Participants](http://www.gbif.org/participation/participant-list) include primarily countries and
@@ -153,7 +153,7 @@ The IPT application comes packaged with Jetty and therefore requires no further 
 ### Prepare the server
 Before installing the IPT, be sure that the intended hosting server meets the minimum specifications described in the sections under "Requirements", above.
 ### Download the IPT
-The latest release of the IPT software is available for download as a WAR file (or Web application ARchive) from http://www.gbif.org/ipt or from http://code.google.com/p/gbif-providertoolkit/. Download this file to the server on which the IPT will run. Developers or those wishing to use the latest revision of the source code should consult the [[How to Contribute|HowToContribute.wiki]] section of the GBIF IPT Google Code site wiki.
+The latest release of the IPT software is available for download as a WAR file (or Web application ARchive) from the [IPT website](http://www.gbif.org/ipt). Download this file to the server on which the IPT will run. Developers or those wishing to use the latest revision of the source code should consult the [[How to Contribute|HowToContribute.wiki]] section of the GBIF IPT Google Code site wiki.
 ### Deploy the IPT to the servlet container
 Follow the normal process for deploying a web application to a servlet container. A wiki page with further information about specific installations can be found at http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation.
 ### Run the IPT application
@@ -309,7 +309,7 @@ The footer section of the IPT appears along the bottom of most pages and contain
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTFooter.png' />
 
 <b>Version</b> - At the left of the footer at bottom of the page is the version of the IPT that is currently running. The version information can be used to determine which features are included in the IPT and what bugs are known to exist. This is the version information that is requested when making bug reports.<br>
-<b>About the IPT</b> - This link leads to the IPT website (<a href='http://www.gbif.org/ipt'>http://www.gbif.org/ipt</a>), where further information about the IPT can be found, including the version history, roadmap, uptake statistics, and further related documentation.<br>
+<b>About the IPT</b> - This link leads to the [IPT website](http://www.gbif.org/ipt), where further information about the IPT can be found, including the version history, roadmap, uptake statistics, and further related documentation.<br>
 <b>User Manual</b> - This link opens the most recently released online version of the IPT User Manual.<br>
 <b>Report a bug</b> - This link opens the list of known open issues for the IPT (<a href='http://code.google.com/p/gbif-providertoolkit/issues/list/'>http://code.google.com/p/gbif-providertoolkit/issues/list/</a>). If you think you have encountered a bug, look at the list of known issues first to see if the bug has already been reported. If it has, you may add new information as a comment to the existing bug report that might help engineers to diagnose the problem and get it fixed. If no bug similar to the one you have encountered in the IPT appears on the list, you can create a new bug report by clicking on the "New issues" link. When entering a bug report, it is useful to include the version of the IPT you are using (see the explanation for "Version", above).<br>
 <b>Request new feature</b> - This link (<a href='http://code.google.com/p/gbif-providertoolkit/issues/entry?template=Feature%20request'>http://code.google.com/p/gbif-providertoolkit/issues/entry?template=Feature%20request</a>) opens a specific form in the IPT issue tracker that can be filled in to request a capability that the IPT does not currently have.<br>
