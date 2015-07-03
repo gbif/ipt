@@ -155,7 +155,7 @@ Before installing the IPT, be sure that the intended hosting server meets the mi
 ### Download the IPT
 The latest release of the IPT software is available for download as a WAR file (or Web application ARchive) from the [IPT website](http://www.gbif.org/ipt). Download this file to the server on which the IPT will run. Developers or those wishing to use the latest revision of the source code should consult the [[How to Contribute|HowToContribute.wiki]] section of the GBIF IPT Google Code site wiki.
 ### Deploy the IPT to the servlet container
-Follow the normal process for deploying a web application to a servlet container. A wiki page with further information about specific installations can be found at http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation.
+Follow the normal process for deploying a web application to a servlet container. A wiki page with further information about specific installations can be found [[here|IPTServerPreparation.wiki]].
 ### Run the IPT application
 Successful deployment of the IPT to the servlet container will make the IPT accessible through a web browser at a URL determined by the servlet's base URL followed by /ipt (e.g., http://localhost:8080/ipt). If the installation was successful, the initial IPT setup page will appear in a web browser using the IPT's URL.
 ## Set up the IPT for the first time
@@ -310,9 +310,9 @@ The footer section of the IPT appears along the bottom of most pages and contain
 
 <b>Version</b> - At the left of the footer at bottom of the page is the version of the IPT that is currently running. The version information can be used to determine which features are included in the IPT and what bugs are known to exist. This is the version information that is requested when making bug reports.<br>
 <b>About the IPT</b> - This link leads to the [IPT website](http://www.gbif.org/ipt), where further information about the IPT can be found, including the version history, roadmap, uptake statistics, and further related documentation.<br>
-<b>User Manual</b> - This link opens the most recently released online version of the IPT User Manual.<br>
-<b>Report a bug</b> - This link opens the list of known open issues for the IPT (<a href='http://code.google.com/p/gbif-providertoolkit/issues/list/'>http://code.google.com/p/gbif-providertoolkit/issues/list/</a>). If you think you have encountered a bug, look at the list of known issues first to see if the bug has already been reported. If it has, you may add new information as a comment to the existing bug report that might help engineers to diagnose the problem and get it fixed. If no bug similar to the one you have encountered in the IPT appears on the list, you can create a new bug report by clicking on the "New issues" link. When entering a bug report, it is useful to include the version of the IPT you are using (see the explanation for "Version", above).<br>
-<b>Request new feature</b> - This link (<a href='http://code.google.com/p/gbif-providertoolkit/issues/entry?template=Feature%20request'>http://code.google.com/p/gbif-providertoolkit/issues/entry?template=Feature%20request</a>) opens a specific form in the IPT issue tracker that can be filled in to request a capability that the IPT does not currently have.<br>
+<b>[[User Manual|IPT2ManualNotes.wiki]]</b> - This link opens the most recently released online version of the IPT User Manual.<br>
+<b>[Report a bug](https://github.com/gbif/ipt/issues/)</b> - This link opens the list of known open issues for the IPT. If you think you have encountered a bug, look at the list of known issues first to see if the bug has already been reported. If it has, you may add new information as a comment to the existing bug report that might help engineers to diagnose the problem and get it fixed. If no bug similar to the one you have encountered in the IPT appears on the list, you can create a new bug report by clicking on the "New issues" link. When entering a bug report, it is useful to include the version of the IPT you are using (see the explanation for "Version", above).<br>
+<b>[Request new feature](https://github.com/gbif/ipt/issues/new)</b> - This link opens a specific form in the IPT issue tracker that can be filled in to request a capability that the IPT does not currently have.<br>
 <b>Copyright</b> - The copyright for the IPT software is held by the Global Biodiversity Information Facility. A link to the home page for GBIF is provided. Details of the copyright and licensing can be seen in the "About the IPT" section of this user manual.<br>
 <br>
 ## Home Menu (visible to all users)
@@ -378,7 +378,7 @@ Of course, you can always just <i>create an entirely new resource</i> without lo
 Begin by entering a new resource shortname as described above, and then click on the button labeled "Create". This will open the Resource Overview page. Proceed by completing the various sections of the manage resource page based on the descriptions under the "Resource Overview" heading of the "Manage Resources Menu" section.<br>
 <br>
 #### Upload a Darwin Core Archive
-The IPT is able to import valid Darwin Core Archive files up to 100MB in size. Information about Darwin Core Archives can be found on the Darwin Core web site (<a href='http://rs.tdwg.org/dwc/terms/guides/text/'>http://rs.tdwg.org/dwc/terms/guides/text/</a>), with further information about the IPT's use of them on the GBIF IPT Google Code site wiki (<a href='http://code.google.com/p/gbif-providertoolkit/wiki/DarwinCore'>http://code.google.com/p/gbif-providertoolkit/wiki/DarwinCore</a> ). To import a Darwin Core Archive, click on the button labeled "Choose File", then navigate to and select the intended archive file. After selecting the file, its name will appear next to the "Choose File" button.<br>
+The IPT is able to import valid Darwin Core Archive files up to 100MB in size. Information about Darwin Core Archives can be found on the Darwin Core web site (<a href='http://rs.tdwg.org/dwc/terms/guides/text/'>http://rs.tdwg.org/dwc/terms/guides/text/</a>), with further information about the IPT's use of them [[here|DarwinCore.wiki]]. To import a Darwin Core Archive, click on the button labeled "Choose File", then navigate to and select the intended archive file. After selecting the file, its name will appear next to the "Choose File" button.<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceUploadDwcA.png' />
 
@@ -1028,14 +1028,14 @@ Details about the structure of a Darwin Core Archive, abbreviated DWCA, can be f
 Send email messages to helpdesk@gbif.org to report problems with GBIF services, such as the GBIF Registry. Do not send IPT-specific help question to the Help Desk. Instead send them to the IPT mailing list (see below).<br>
 ## GBIF Registry
 Use this online application to find information about organisations, IPT instances, and resources registered with GBIF: <a href='http://www.gbif.org/dataset'>http://www.gbif.org/dataset</a>.<br>
-## IPT code site
-The code site is the project repository for all of the open source code, management, and documentation of the IPT: <a href='http://code.google.com/p/gbif-providertoolkit/source/checkout/'>http://code.google.com/p/gbif-providertoolkit/source/checkout/</a>.<br>
+## IPT GitHub site
+This GitHub site is the project repository for all of the open source code, management, and documentation of the IPT.<br>
 ## IPT developer documentation
-Developers who wish to contribute, or to use the latest revision of the source code for their installation should consult the "Developers" section of the GBIF IPT Google Code site wiki: <a href='http://code.google.com/p/gbif-providertoolkit/wiki/HowToContribute'>http://code.google.com/p/gbif-providertoolkit/wiki/HowToContribute</a>.<br>
+Developers who wish to contribute, or to use the latest revision of the source code for their installation should consult the [[How to Contribute|HowToContribute.wiki]] section of the IPT wiki.<br>
 ## IPT experts group in the GBIF Community Site
 The GBIF Community Site hosts a group for those interested in participating in helpdesk, promotion, and training activities related to the GBIF IPT. This is a place to exchange experiences, ask for help, and post opportunities, with the objective of a wider uptake of the tool inside and outside of the GBIF Network: <a href='http://community.gbif.org/pg/groups/3529/gbif-ipt-helpdesk-and-training-experts/'>http://community.gbif.org/pg/groups/3529/gbif-ipt-helpdesk-and-training-experts/</a>.<br>
 ## IPT issue tracker
-The issue tracker is the bug report and feature request management system for the IPT software and documentation: <a href='http://code.google.com/p/gbif-providertoolkit/issues/list/'>http://code.google.com/p/gbif-providertoolkit/issues/list/</a>.<br>
+The [issue tracker](https://github.com/gbif/ipt/issues) is the bug report and feature request management system for the IPT software and documentation.<br>
 ## IPT mailing list
 Subscribe to the IPT mailing list to send and receive messages related to the use of the Integrated Publishing Toolkit. This group is for users to support each other in the use of the IPT: <a href='http://lists.gbif.org/mailman/listinfo/ipt/'>http://lists.gbif.org/mailman/listinfo/ipt/</a>.<br>
 ## IPT server preparation
