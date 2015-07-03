@@ -1,6 +1,7 @@
 
+# How to Contribute
 
-# Introduction
+## Introduction
 The core development of the IPT is directed by GBIF, but the coding is a community effort and everyone is welcome to join. Java or HTML/jQuery developers are very welcome to contribute code patches.
 
 ## Source Code
