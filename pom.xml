@@ -657,7 +657,7 @@
       <properties>
         <devMode>true</devMode>
         <devModeNegated>false</devModeNegated>
-        <staging.datadir>/var/lib/tomcat7/ipt-data</staging.datadir>
+        <staging.datadir>/var/lib/tomcat/ipt-data</staging.datadir>
       </properties>
       <build>
         <plugins>
