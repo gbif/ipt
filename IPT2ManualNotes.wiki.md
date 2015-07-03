@@ -319,7 +319,7 @@ The footer section of the IPT appears along the bottom of most pages and contain
 This page allows users to view a list of public resources, if any, and to look at the detailed metadata of any resource on the list.<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v205/IPTHome.png' />
-<h3>Public Resources Table</h3>
+### Public Resources Table
 If there are any public resources, they will appear in a table having the following columns:<br>
 <br>
 <b>Logo</b> - the resource logo (configurable in Additional Metadata page of the resource metadata)<br>
@@ -331,11 +331,11 @@ If there are any public resources, they will appear in a table having the follow
 <b>Last modified</b> - either the date the resource was created or the date on which the data or metadata were last modified, whichever is more recent.<br>
 <b>Last publication</b> - the date the resource was last published.<br>
 <b>Next publication</b> - the date the resource will be published next.<br>
-<h3>RSS feed</h3>
+### RSS feed
 The IPT supports syndication via RSS for those who wish to monitor when new resource versions get published, and how resources change over time. In fact each time a new resource version is broadcast, it will include a summary of what changed since the last version (assuming the publisher entered a change summary, otherwise it defaults to the resource description). The RSS feed is accessible by clicking on the link provided below the list of public hosted resources. The RSS feed can be read in any standard RSS client.<br>
-<h3>Registered resource inventory</h3>
+### Registered resource inventory
 The IPT provides a simple JSON inventory of all registered resources. This feature isn't shown on the user interface. To view simply append /inventory/dataset to the IPT base URL, e.g. <a href='http://ipt.gbif.org/inventory/dataset'>http://ipt.gbif.org/inventory/dataset</a>. GBIF uses this inventory to monitor whether it is properly indexing resources by comparing the target and indexed record counts.<br>
-<h3>Resource homepage</h3>
+### Resource homepage
 The resource homepage is aimed at external users of a resource. The homepage lists all the metadata about a selected version of a resource, provides links to download the version's data/metadata, and displays the resource's version history.<br>
 <br>
 To view the resource homepage, user can click on the name link in the list of resources on the Home page. Another way to get to the resource's homepage is using its DOI: when a resource is assigned a DOI via the IPT, it always resolves to its homepage.<br>
@@ -363,14 +363,14 @@ Following are explanations of the table columns:<br>
 This page allows users having the appropriate role (managers and administrators) to make changes to existing resources or to create new resources.<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResources.png' />
-<h3>Manage Resources Table</h3>
+### Manage Resources Table
 When the Manage Resources page is first opened, it shows a table of existing resources that the current user has permission to change, including those created by this user and those that this user has been invited to manage by others. Refer to the information under the [[Public Resources Table|IPT2ManualNotes.wiki#public-resources-table]] section for detailed explanations of the Name, Organisation, Type, Subtype, Records, Last Modified, Last publication, and Next publication columns. In addition, the Manage Resources Table includes the following column of basic information about the resources:<br>
 <br>
 <b>Visibility</b> - a category stating who has access to view the resource. If the resource is "Public", all users will be able to see it on the [[Public Resources Table|IPT2ManualNotes.wiki#public-resources-table]] on the Home page. If the resource is "Private", it will be visible in the Manage Resources table only to the user who created it, to those who have been invited to manage it, and to users having the Admin role. Details about inviting others to manage a resource are given in the "Resource Managers" section under the "Resource Overview" heading in the "Manage Resources" section.<br>
 <br>
 <b>Author</b> - the IPT user who created the resource.<br>
 <br>
-<h3>Create a New Resource</h3>
+### Create a New Resource
 Below the Manage Resource table is a form that can be used to create a new resource. First, a unique "shortname" must be provided for the resource. This short name will be used to uniquely identify the resource within the IPT instance, and will be used within the URL to access the resource via the Internet. The shortname must be at least three characters in length, may contain alphanumeric characters, but must not contain white space or punctuation other than hyphens or underscores (e.g., "firstresource" or "first_resource", but not "first resource" or "firstresource!"). Second, an optional resource type can be provided. Please note that when an optional archived resource is loaded (see below) the type will be determined automatically and overwrite this selection. Third, an optional archived resource can be uploaded. The following sections describe the 3 different types of archived resources from which a new resource can be derived: [[Darwin Core Archive|IPT2ManualNotes.wiki#upload-a-darwin-core-archive]], [[zipped (.zip) IPT resource configuration folder|IPT2ManualNotes.wiki#upload-a-zipped-ipt-resource-configuration-folder]], [[metadata file|IPT2ManualNotes.wiki#upload-a-metadata-file]].<br>
 <br>
 Of course, you can always just <i>create an entirely new resource</i> without loading an existing archived resource. With this option the resource configuration will have to be created in its entirety through the IPT forms, including uploading source data files (or connecting to a database) and mapping the fields therein to terms in the appropriate extension or extensions. <b>Please note the IPT has a 100MB file upload limit</b>, however, there is <b>no limit to the size of Darwin Core Archive the IPT can export/publish</b>. Refer to the [[File upload|IPT2ManualNotes.wiki#file-upload]] section to find out how to work around the file upload limit.</b>
@@ -400,9 +400,9 @@ The IPT is able to import and export valid dataset metadata files that conform t
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceUploadEml.png' />
 
 Click on the button labeled "Create". If there is a problem importing the selected file, an error message will alert the user. If the import is successful, a Resource Overview page will appear with the metadata having been populated. The source data and mapping sections will remain hidden since this is a metadata-only resource. Should you decide to add primary dataset at a later time, just change the resource type in the [[Basic Metadata|IPT2ManualNotes.wiki#basic-metadata]] page of the metadata.<br>
-<h3>Edit an existing resource</h3>
+### Edit an existing resource
 The table of existing resources shows only those resources that can be edited by the current user. To edit a resource, click on the name of the resource in the table of resources. The link will open the Resource Overview page for the selected resource. Refer to the descriptions under the "Resource Overview" heading of the "Manage Resources Menu" section for details on how to edit various aspects of the resource.<br>
-<h3>Resource Overview</h3>
+### Resource Overview
 This page allows users having managerial permission to make changes to various aspects of a resource's configuration. The name of the resource is given at the top of the page under the menu bar. If the resource has not been given a title, the resource shortname will appear at the top of the page and will act as a title instead. Below the resource name is a table showing categories of the resource configuration on the left with corresponding sections to the right. Information icons throughout the table can help guide managers in using each category. Each of these categories is configured separately as explained in detail in the following sections.<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceOverview.png' />
@@ -832,7 +832,7 @@ Clicking on the button labeled "Delete" on the Resource Overview page will remov
 This section describes each of the functions that are accessible from the Administration menu. Clicking on the Administration menu opens a page (see screen image, below) from which each of these specific administrative tasks can be accessed by clicking on the appropriate button. Note that the button labeled "Organisations" will remain disabled by default until the GBIF registration options have been set.<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v205/IPTAdminBeforeRegistration.png' />
-<h3>Configure IPT settings</h3>
+### Configure IPT settings
 This page allows a user having the Admin role to make and change settings for the characteristics of this IPT instance.<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v205/IPTAdminConfigIPT.png' />
@@ -850,12 +850,12 @@ This page allows a user having the Admin role to make and change settings for th
 <b>Archival Mode</b> - Check this box if you want your IPT to archive all published versions for all resources. It will enable you to track a resource's version history. If unchecked, older versions will be overwritten with the latest. Beware not to run out of disk space.<br>
 <b>IPT Server Location</b> - This area of the page allows the Admin to set the geographic coordinates (latitude and longitude) of the location of the server on which the IPT is installed. Setting these coordinates allows GBIF to map the location of this among other registered IPT installations around the world.</li></ul>
 
-<h3>Publish all resources</h3>
+### Publish all resources
 This option is an administrative action just like the Publish button, only it publishes ALL resources. Therefore for each resource, it creates a new DWCA, EML, and RTF, and broadcasts the update to the Registry and via RSS. In addition, it also updates the IPTs metadata in the Registry. If any of the following conditions have been met since the last time the resources were updated, click on this button to make the necessary updates:<br>
 <ul><li>Multiple resources have been updated, and you want to publish a new release for all of them instead of publishing them individually.<br>
 </li><li>The Base URL or Proxy URL has been changed and you want to update the IPTs registered services to reflect the change.</li></ul>
 
-<h3>Configure User accounts</h3>
+### Configure User accounts
 This page allows users having the Admin role to create, modify, and delete user accounts. When the page is opened, it shows a table of existing users and basic information about them including their names, email addresses, roles, and the date and time of their last logins.<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAdminUserAccounts.png' />
@@ -923,7 +923,7 @@ This page is unavailable until the IPT instance has been successfully registered
 An IPT capable of assigning DOIs to resources must also have an organisation configured with a DataCite or EZID account. To be configured with a DataCite or EZID account, the organisation does not necessary have to be able to publish resources (be associated with resources). Only one DataCite or EZID account can be used to register DOIs at a time, and the IPT's archival mode must also be turned on (please refer to the [[Configure IPT settings|IPT2ManualNotes.wiki#configure-ipt-settings]] section to learn more about the archival mode). The list of organisations shows which organisations have been configured with DataCite or EZID accounts, and which one has been selected to register DOIs for all resources in this IPT instance.<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAdminOrgs.png' />
-<h3>Edit organisation</h3>
+### Edit organisation
 On this page a user having the Admin role can edit the organisation. Click on the button labeled "Edit" to open the page containing the details of the selected organisation. For explanations of the fields and selections on this form, refer to the information below.<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAdminOrgsEditOrg.png' />
@@ -940,7 +940,7 @@ Following are explanations of the specific information to select or enter:<br>
 <b>DOI prefix/shoulder</b> - the preferred DOI prefix/shoulder used to mint DOIs. This prefix is unique to the account issued to the organisation. <b>Note</b>: always use a test prefix (e.g. 10.5072 for DataCite, 10.5072/FK2 for EZID) when running the IPT in test mode.<br>
 <b>Account activated</b> - this checkbox indicates if this DataCite/EZID account is the only account used by the IPT to register DOIs for datasets. Only one DataCite/EZID account can be activated at a time.<br>
 
-<h3>Add organisation</h3>
+### Add organisation
 Organisations are not available to be associated with resources until a user having the Admin role adds them. Click on the button labeled "Add" to open a page on which an additional organisation can be selected from the GBIF Registry to be used in this instance of the IPT. For explanations of the fields and selections on this page, refer to the information under the "Edit Organisation" section above. After the desired organisation is selected and all other data entered, including the password for the organisation, click on the button labeled "Save" to add the selected organisation to the list.<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAdminOrgsAddOrg.png' />
@@ -955,9 +955,9 @@ Before any extensions have been installed, the Core Types and Extensions page be
 
 The lists of extensions (installed and not installed) each have two columns. The left-hand column shows the name of the extension as a link and a button labeled either "Install" or "Remove". In the right-hand column is a summary of the information about the extension, including a brief description of the type of data the extension is meant to accommodate, a link to more information about the extension if it exists, the number of properties (fields, terms) in the extension, the name of the extension, it's namespace, RowType, and keywords. For more information about these attributes of an extension, see the documentation on Darwin Core Archives at <a href='http://rs.tdwg.org/dwc/terms/guides/text/'>http://rs.tdwg.org/dwc/terms/guides/text/</a>.<br>
 Following are the actions that can be taken with respect to extensions:<br>
-<h3>Update vocabularies</h3>
+### Update vocabularies
 An extension can make use of lists of terms of predefined values, known as controlled vocabularies. Periodically these vocabularies may also change and require updating the in the IPT. Click on the button labeled "Update" in the Vocabularies section to communicate with the GBIF Registry to retrieve new controlled vocabularies and updates to existing ones. After the update is complete, one or more messages will indicate how many updates were made and if there were any errors.<br>
-<h3>View extension details</h3>
+### View extension details
 The title of each extension in the first column is a link to a detail page for that extension. The detail page shows all of the summary information that can be seen in the right-hand column of the extensions list as well as the detailed description, references, and examples for each of the properties in the extension.<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAdminExtensionsDetail.png' />
@@ -965,9 +965,9 @@ The title of each extension in the first column is a link to a detail page for t
 For properties that have controlled vocabularies, the property information in the right-hand column will contain the name of the vocabulary as a link next to the label "Vocabulary:". Clicking on the link will open a detail page for the vocabulary, with a summary of the vocabulary at the top and a table of the valid values with further detailed information such as preferred and alternate terms and identifiers.<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAdminExtensionsDetailVocabulary.png' />
-<h3>Install extension</h3>
+### Install extension
 For any of the extensions that have not yet been installed in the IPT, there is a button labeled "Install" under the extension name in the left-hand column. Click on this button to retrieve the extension from the GBIF registry and install it in the IPT.<br>
-<h3>Remove extension</h3>
+### Remove extension
 For any extension that has already been installed in the IPT, it can be removed by clicking the button labeled "Remove". Extensions that are in use to map data for any resource in the IPT cannot be removed. Any attempt to do so will show an error message and a list of resources that use the extension in a mapping.<br>
 ## View IPT logs
 Messages generated from actions taken while running the IPT are logged to files for reference in the directory called "logs" within the IPT data directory (see the information under the "IPT Settings" heading in the "Administration Menu" section). The View IPT logs page shows messages from the file called admin.log, which contains only those log messages that have a severity of WARNING or greater (such as errors). The complete log of messages (contained in the file called debug.log) can be opened and viewed by clicking on the link labeled "complete log file". The contents of the complete log file may be useful when reporting an apparent bug.<br>
