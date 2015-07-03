@@ -42,9 +42,9 @@ _For the IPT Version 2.1 user manual, please go [[here|IPTUserManualv21.wiki]] O
   + Manage Resources Menu (visible to users with an Admin or Manager role)
     + Manage Resources Table
     + Create a New Resource
-      + Upload a Darwin Core Archive
-      + Upload a zipped IPT resource configuration folder
-      + Upload a metadata file
+      + [[Upload a Darwin Core Archive|IPT2ManualNotes.wiki#upload-a-darwin-core-archive]]
+      + [[Upload a zipped IPT resource configuration folder|IPT2ManualNotes.wiki#upload-a-zipped-ipt-resource-configuration-folder]]
+      + [[Upload a metadata file|IPT2ManualNotes.wiki#upload-a-metadata-file]]
     + Edit an existing resource
     + Resource Overview
       + Source Data
@@ -371,7 +371,7 @@ When the Manage Resources page is first opened, it shows a table of existing res
 <b>Author</b> - the IPT user who created the resource.<br>
 <br>
 <h3>Create a New Resource</h3>
-Below the Manage Resource table is a form that can be used to create a new resource. First, a unique "shortname" must be provided for the resource. This short name will be used to uniquely identify the resource within the IPT instance, and will be used within the URL to access the resource via the Internet. The shortname must be at least three characters in length, may contain alphanumeric characters, but must not contain white space or punctuation other than hyphens or underscores (e.g., "firstresource" or "first_resource", but not "first resource" or "firstresource!"). Second, an optional resource type can be provided. Please note that when an optional archived resource is loaded (see below) the type will be determined automatically and overwrite this selection. Third, an optional archived resource can be uploaded. The following sections describe the 3 different types of archived resources from which a new resource can be derived: <a href='IPT2ManualNotes#Upload_a_Darwin_Core_Archive.md'>Darwin Core Archive</a>, <a href='IPT2ManualNotes#Upload_a_zipped_IPT_resource_configuration_folder.md'>zipped (.zip) IPT resource configuration folder</a>, <a href='IPT2ManualNotes#Upload_a_metadata_file.md'>metadata file</a>.<br>
+Below the Manage Resource table is a form that can be used to create a new resource. First, a unique "shortname" must be provided for the resource. This short name will be used to uniquely identify the resource within the IPT instance, and will be used within the URL to access the resource via the Internet. The shortname must be at least three characters in length, may contain alphanumeric characters, but must not contain white space or punctuation other than hyphens or underscores (e.g., "firstresource" or "first_resource", but not "first resource" or "firstresource!"). Second, an optional resource type can be provided. Please note that when an optional archived resource is loaded (see below) the type will be determined automatically and overwrite this selection. Third, an optional archived resource can be uploaded. The following sections describe the 3 different types of archived resources from which a new resource can be derived: [[Darwin Core Archive|IPT2ManualNotes.wiki#upload-a-darwin-core-archive]], [[zipped (.zip) IPT resource configuration folder|IPT2ManualNotes.wiki#upload-a-zipped-ipt-resource-configuration-folder]], [[metadata file|IPT2ManualNotes.wiki#upload-a-metadata-file]].<br>
 <br>
 Of course, you can always just <i>create an entirely new resource</i> without loading an existing archived resource. With this option the resource configuration will have to be created in its entirety through the IPT forms, including uploading source data files (or connecting to a database) and mapping the fields therein to terms in the appropriate extension or extensions. <b>Please note the IPT has a 100MB file upload limit</b>, however, there is <b>no limit to the size of Darwin Core Archive the IPT can export/publish</b>. Refer to the <a href='IPT2ManualNotes#File_upload.md'>File upload section</a> to find out how to work around the file upload limit<b>.</b>
 
