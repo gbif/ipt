@@ -34,7 +34,7 @@ _For the IPT Version 2.1 user manual, please go [[here|IPTUserManualv21.wiki]] O
       + Header
       + Footer
   + Home Menu (visible to all users)
-    + Public Resources Table
+    + [[Public Resources Table|IPT2ManualNotes.wiki#public-resources-table]]
     + RSS feed
     + Registered resource inventory
     + Resource homepage
@@ -364,9 +364,9 @@ This page allows users having the appropriate role (managers and administrators)
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResources.png' />
 <h3>Manage Resources Table</h3>
-When the Manage Resources page is first opened, it shows a table of existing resources that the current user has permission to change, including those created by this user and those that this user has been invited to manage by others. Refer to the information under the <a href='IPT2ManualNotes#Public_Resources_Table.md'>Public Resources Table</a> section for detailed explanations of the Name, Organisation, Type, Subtype, Records, Last Modified, Last publication, and Next publication columns. In addition, the Manage Resources Table includes the following column of basic information about the resources:<br>
+When the Manage Resources page is first opened, it shows a table of existing resources that the current user has permission to change, including those created by this user and those that this user has been invited to manage by others. Refer to the information under the [[Public Resources Table|IPT2ManualNotes.wiki#public-resources-table]] section for detailed explanations of the Name, Organisation, Type, Subtype, Records, Last Modified, Last publication, and Next publication columns. In addition, the Manage Resources Table includes the following column of basic information about the resources:<br>
 <br>
-<b>Visibility</b> - a category stating who has access to view the resource. If the resource is "Public", all users will be able to see it on the Public Resources table on the Home page. If the resource is "Private", it will be visible in the Manage Resources table only to the user who created it, to those who have been invited to manage it, and to users having the Admin role. Details about inviting others to manage a resource are given in the "Resource Managers" section under the "Resource Overview" heading in the "Manage Resources" section.<br>
+<b>Visibility</b> - a category stating who has access to view the resource. If the resource is "Public", all users will be able to see it on the [[Public Resources Table|IPT2ManualNotes.wiki#public-resources-table]] on the Home page. If the resource is "Private", it will be visible in the Manage Resources table only to the user who created it, to those who have been invited to manage it, and to users having the Admin role. Details about inviting others to manage a resource are given in the "Resource Managers" section under the "Resource Overview" heading in the "Manage Resources" section.<br>
 <br>
 <b>Author</b> - the IPT user who created the resource.<br>
 <br>
