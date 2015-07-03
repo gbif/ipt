@@ -68,7 +68,7 @@ _For the IPT Version 2.1 user manual, please go [[here|IPTUserManualv21.wiki]] O
       + Resource Managers
       + Delete a Resource
   + Administration Menu (visible only to users having the Admin role)
-    + Configure IPT settings
+    + [[Configure IPT settings|IPT2ManualNotes.wiki#configure-ipt-settings]]
     + Publish all resources
     + Configure User accounts
       + Create a new user
@@ -346,7 +346,7 @@ Please note only a user having the Admin role or one of the Manager roles can ed
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTHomeMetadataOverview.png' />
 
 <h4>Version history</h4>
-The version history table lists all published versions of the resource, enabling users to track changes to the resource over time and download previous versions' data/metadata. Please note, the IPT's Archival Mode must be turned on in order for old versions of DWCA to be stored (see <a href='IPT2ManualNotes#Configure_IPT_settings.md'>Configure IPT settings</a> section). Only versions that are publicly accessible can be viewed by external users, whereas admins and resource managers can see all versions. For explanations of the table columns, refer to the information below.<br>
+The version history table lists all published versions of the resource, enabling users to track changes to the resource over time and download previous versions' data/metadata. Please note, the IPT's Archival Mode must be turned on in order for old versions of DWCA to be stored (see [[Configure IPT settings|IPT2ManualNotes.wiki#configure-ipt-settings]] section). Only versions that are publicly accessible can be viewed by external users, whereas admins and resource managers can see all versions. For explanations of the table columns, refer to the information below.<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTVersionHistoryTable.png' />
 
@@ -763,7 +763,7 @@ The publish action consists of the steps described below. Publication is all or 
 <ol><li>The current metadata are written to the file eml.xml. An incremental version named eml-n.xml (where n is the incremental version number reflecting the publication version) is always saved.<br>
 </li><li>A data publication document in Rich Text Format (RTF) is written to the file shortname.rtf. An incremental version of the RTF file named shortname-n.rtf is always saved.<br>
 </li><li>The current primary resource data as configured through mapping are written to the Darwin Core Archive file named dwca.zip. The data files in the Darwin Core Archive are then validated (see "Data Validation" section below).<br>
-</li><li>If the IPT's Archival Mode is turned on (see <a href='IPT2ManualNotes#Configure_IPT_settings.md'>Configure IPT settings</a> section, an incremental version of the Darwin Core Archive file named dwca-n.zip is also saved.<br>
+</li><li>If the IPT's Archival Mode is turned on (see [[Configure IPT settings|IPT2ManualNotes.wiki#configure-ipt-settings]] section, an incremental version of the Darwin Core Archive file named dwca-n.zip is also saved.<br>
 </li><li>The information about the resource is updated in the GBIF Registry if the resource is registered.<br>
 </li><li>The DOI metadata about the resource is updated and propagated to DOI resolvers if the resource is assigned a DOI using the IPT.</li></ol>
 
@@ -890,7 +890,7 @@ If the validation test is unsuccessful, an error message will suggest the nature
 <br>
 <b>No Internet connectivity</b> - The IPT requires an active Internet connection to function properly. An error will occur if connectivity to the Internet is lost when the button labeled "Validate" button is clicked. Restore Internet connectivity before trying to proceed with registration.<br>
 <br>
-<b>Incorrect Base or Proxy URL</b> - The Base URL is automatically detected and configured during the IPT setup process (see the "IPT Setup II" section). Changes in the configuration of the server on which the IPT is installed could require a change in the Base URL or the Proxy URL. The Base and Proxy URLs can be changed on the Configure IPT Settings page (see the explanations for Base URL and Proxy URL in the "Configure IPT Settings" section).<br>
+<b>Incorrect Base or Proxy URL</b> - The Base URL is automatically detected and configured during the IPT setup process (see the "IPT Setup II" section). Changes in the configuration of the server on which the IPT is installed could require a change in the Base URL or the Proxy URL. The Base and Proxy URLs can be changed on the Configure IPT Settings page (see the explanations for Base URL and Proxy URL in the [[Configure IPT settings|IPT2ManualNotes.wiki#configure-ipt-settings]] section).<br>
 <br>
 <b>Firewall</b> - If the Internet connection is live, a firewall may be preventing connections to the Base URL or Proxy. Change the firewall or proxy settings to all outside connections.<br>
 <br>
@@ -920,7 +920,7 @@ This page allows a user to edit the title, description, contact name, and contac
 <h2>Configure Organisations</h2>
 This page is unavailable until the IPT instance has been successfully registered in the GBIF Registry (see the information under the "Configure GBIF registration" heading of the "Administration Menu" section). Once registered, this page shows a list of organisations that can be associated with resources in this IPT instance. An IPT that hosts data for organisations other than the one to which it is associated must have the additional organisations configured before they can be used.<br>
 
-An IPT capable of assigning DOIs to resources must also have an organisation configured with a DataCite or EZID account. To be configured with a DataCite or EZID account, the organisation does not necessary have to be able to publish resources (be associated with resources). Only one DataCite or EZID account can be used to register DOIs at a time, and the IPT's archival mode must also be turned on (please refer to the "Configure IPT settings" section to learn more about the archival mode). The list of organisations shows which organisations have been configured with DataCite or EZID accounts, and which one has been selected to register DOIs for all resources in this IPT instance.<br>
+An IPT capable of assigning DOIs to resources must also have an organisation configured with a DataCite or EZID account. To be configured with a DataCite or EZID account, the organisation does not necessary have to be able to publish resources (be associated with resources). Only one DataCite or EZID account can be used to register DOIs at a time, and the IPT's archival mode must also be turned on (please refer to the [[Configure IPT settings|IPT2ManualNotes.wiki#configure-ipt-settings]] section to learn more about the archival mode). The list of organisations shows which organisations have been configured with DataCite or EZID accounts, and which one has been selected to register DOIs for all resources in this IPT instance.<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAdminOrgs.png' />
 <h3>Edit organisation</h3>
