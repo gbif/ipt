@@ -474,7 +474,7 @@ After the desired core type or extension is selected, click on the button labele
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceSelect.png' />
 
-Select the data source to map, and then click on the button labeled "Save". This will open the Data Mapping detail page (skip to the <a href='IPT2ManualNotes#Data_Mapping_detail_page.md'>Data Mapping detail page</a> below for help doing the actual mapping).<br>
+Select the data source to map, and then click on the button labeled "Save". This will open the Data Mapping detail page (skip to the [[Data Mapping detail page|IPT2ManualNotes.wiki#data-mapping-detail-page]] below for help doing the actual mapping).<br>
 <br>
 After a new mapping has been added, it will be visible in the right-hand column of the Darwin Core Mappings area. This area will contain a list of all the resource's mappings divided into Core Type mappings and Extension mappings. Click the "Edit" button beside a mapping to modify it, or click the preview icon <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/preview.png' /> to preview the mapping. Resource managers are advised to preview all mappings prior to publishing a new version.<br>
 <br>
