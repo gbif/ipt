@@ -50,7 +50,7 @@ _For the IPT Version 2.1 user manual, please go [[here|IPTUserManualv21.wiki]] O
       + Source Data
       + Darwin Core Mappings
       + Metadata
-      + Basic Metadata
+      + [[Basic Metadata|IPT2ManualNotes.wiki#basic-metadata]]
       + Geographic Coverage
       + Taxonomic Coverage
       + Temporal Coverage
