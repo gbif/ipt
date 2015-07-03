@@ -1004,7 +1004,7 @@ This IPT installation has not been registered yet.<br>
 &lt;/#if&gt;<br>
 </code></pre>
 <hr />
-<h1>About the IPT</h1>
+# About the IPT
 ## Citation
 This user manual adapts and builds upon the previous IPT User Manual (Réveillon 2009). The recommended citation for this user Manual is as follows:<br>
 <br>
@@ -1021,7 +1021,7 @@ This user manual is released under the Creative Commons Attribution-Non-commerci
 </li><li>you may not use this work for commercial purposes;<br>
 </li><li>if you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.<br>
 <hr />
-<h1>Resources</h1>
+# Resources
 ## Darwin Core Archive documentation
 Details about the structure of a Darwin Core Archive, abbreviated DWCA, can be found in the "Text Guide" section of the Darwin Core web site: <a href='http://rs.tdwg.org/dwc/terms/guides/text/'>http://rs.tdwg.org/dwc/terms/guides/text/</a>. Further information about the IPT's use of DWCAs can be found on [[this|DarwinCore.wiki]] wiki page.<br>
 ## GBIF Help Desk
@@ -1045,11 +1045,11 @@ This wiki page gives details about the database management systems to which the 
 ## IPT test installation
 GBIF provides a functional installation of the IPT for evaluation and testing purposes. The test installation of the latest release can be found at <a href='http://ipt.gbif.org'>http://ipt.gbif.org</a>.<br>
 <hr />
-<h1>References</h1>
+# References
 Réveillon, A. 2009. The GBIF Integrated Publishing Toolkit User Manual, version 1.0. Copenhagen: Global Biodiversity Information Facility. 37 pp.</li></ul>
 
 <hr />
-<h1>Glossary</h1>
+# Glossary
 <b>Checklist Resource</b> - a resource having information about one of many types of taxon-related lists.<br>
 <b>Core Type</b> - a category of predefined sets of data properties (Taxon and Occurrence) used as the basis of a resource. Additional extensions might be linked to these Core Types when mapping data in the IPT.<br>
 <b>CSV file</b> - a text file that contains data in the Comma-separated Value format.<br>
