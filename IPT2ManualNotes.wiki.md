@@ -325,8 +325,8 @@ If there are any public resources, they will appear in a table having the follow
 <b>Logo</b> - the resource logo (configurable in Additional Metadata page of the resource metadata)<br>
 <b>Name</b> - the title of the resource as given in the Title entry of the resource metadata. The Name appears as a link, which will open the resource's homepage (see below).<br>
 <b>Organisation</b> - the organisation under which the resource has been registered, if any. If the resource is not registered, the value in the Organisation column will be "Not registered". Review the information under the "Organisations" heading in the "Administration Menu" section for more information about registering organisations and registering a resource under an organisation.<br>
-<b>Type</b> - the type of the resource as given in the Type drop down on the <a href='IPT2ManualNotes#Basic_Metadata.md'>Basic Metadata</a> page of the resource metadata<br>
-<b>Subtype</b> - the subtype of the resource as given in the Subtype drop down on the <a href='IPT2ManualNotes#Basic_Metadata.md'>Basic Metadata</a> page of the resource metadata<br>
+<b>Type</b> - the type of the resource as given in the Type drop down on the [[Basic Metadata|IPT2ManualNotes.wiki#basic-metadata]] page of the resource metadata<br>
+<b>Subtype</b> - the subtype of the resource as given in the Subtype drop down on the [[Basic Metadata|IPT2ManualNotes.wiki#basic-metadata]] page of the resource metadata<br>
 <b>Records</b> - the number of rows of data in the core data file of the last published Darwin Core Archive for the resource.<br>
 <b>Last modified</b> - either the date the resource was created or the date on which the data or metadata were last modified, whichever is more recent.<br>
 <b>Last publication</b> - the date the resource was last published.<br>
@@ -399,7 +399,7 @@ The IPT is able to import and export valid dataset metadata files that conform t
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceUploadEml.png' />
 
-Click on the button labeled "Create". If there is a problem importing the selected file, an error message will alert the user. If the import is successful, a Resource Overview page will appear with the metadata having been populated. The source data and mapping sections will remain hidden since this is a metadata-only resource. Should you decide to add primary dataset at a later time, just change the resource type in the Basic Metadata page of the metadata.<br>
+Click on the button labeled "Create". If there is a problem importing the selected file, an error message will alert the user. If the import is successful, a Resource Overview page will appear with the metadata having been populated. The source data and mapping sections will remain hidden since this is a metadata-only resource. Should you decide to add primary dataset at a later time, just change the resource type in the [[Basic Metadata|IPT2ManualNotes.wiki#basic-metadata]] page of the metadata.<br>
 <h3>Edit an existing resource</h3>
 The table of existing resources shows only those resources that can be edited by the current user. To edit a resource, click on the name of the resource in the table of resources. The link will open the Resource Overview page for the selected resource. Refer to the descriptions under the "Resource Overview" heading of the "Manage Resources Menu" section for details on how to edit various aspects of the resource.<br>
 <h3>Resource Overview</h3>
@@ -546,7 +546,7 @@ This area of the Resource Overview page allows a user to edit the resource metad
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataMissing.png' />
 
-Clicking on the "Edit" button opens the <a href='IPT2ManualNotes#Basic_Metadata.md'>Basic Metadata</a> page, the first of a series of metadata pages. Each page will appear in sequence as the button labeled "Save" is clicked upon finishing entering data on any given metadata page. Saving the metadata on the last of the metadata pages will transition back to the <a href='IPT2ManualNotes#Basic_Metadata.md'>Basic Metadata</a> page. Clicking on the button labeled "Cancel" on any given metadata page will disregard any changes made on that page and return to the Resource Overview page. In a column at the right of each metadata page is a list of links to all of the metadata pages for easy reference and navigation. Click on any of the links to open the metadata page for that topic.<br>
+Clicking on the "Edit" button opens the [[Basic Metadata|IPT2ManualNotes.wiki#basic-metadata]] page, the first of a series of metadata pages. Each page will appear in sequence as the button labeled "Save" is clicked upon finishing entering data on any given metadata page. Saving the metadata on the last of the metadata pages will transition back to the [[Basic Metadata|IPT2ManualNotes.wiki#basic-metadata]] page. Clicking on the button labeled "Cancel" on any given metadata page will disregard any changes made on that page and return to the Resource Overview page. In a column at the right of each metadata page is a list of links to all of the metadata pages for easy reference and navigation. Click on any of the links to open the metadata page for that topic.<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataPagesList.png' />
 
@@ -629,7 +629,7 @@ This metadata page allows the user to create one or more sets of keywords about 
 </li><li><b>Keyword List</b> - enter a list of keywords, separated by commas that describe or are related to the resource.<br>
 </li><li><b>Add new keyword set</b> - click on this link to initiate a form for an additional keyword set.<br>
 <h4>Associated Parties</h4>
-This metadata pages contains information about one or more people or organisations associated with the resource in addition to those already covered on the Basic Metadata page. Many of the controls on this page are in common with those for the Resource Contacts on the <a href='IPT2ManualNotes#Basic_Metadata.md'>Basic Metadata</a> page. Explanations for the remainder of the controls are given below.<br>
+This metadata pages contains information about one or more people or organisations associated with the resource in addition to those already covered on the Basic Metadata page. Many of the controls on this page are in common with those for the Resource Contacts on the [[Basic Metadata|IPT2ManualNotes.wiki#basic-metadata]] page. Explanations for the remainder of the controls are given below.<br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataAssociatedParties.png' />
 </li><li><b>Copy details from resource contact</b> - if this person or organisation is the same as the first Resource Contact on the Basic Metadata page, all of the details can be copied into the equivalent fields for the associated party by clicking on this link.<br>
 </li><li><b>Remove this associated party</b> - click on this link to remove the associated party that follows immediately below the link.<br>
