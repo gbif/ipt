@@ -345,7 +345,7 @@ Please note only a user having the Admin role or one of the Manager roles can ed
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTHomeMetadataOverview.png' />
 
-<h4>Version history</h4>
+#### Version history
 The version history table lists all published versions of the resource, enabling users to track changes to the resource over time and download previous versions' data/metadata. Please note, the IPT's Archival Mode must be turned on in order for old versions of DWCA to be stored (see [[Configure IPT settings|IPT2ManualNotes.wiki#configure-ipt-settings]] section). Only versions that are publicly accessible can be viewed by external users, whereas admins and resource managers can see all versions. For explanations of the table columns, refer to the information below.<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTVersionHistoryTable.png' />
@@ -377,14 +377,14 @@ Of course, you can always just <i>create an entirely new resource</i> without lo
 
 Begin by entering a new resource shortname as described above, and then click on the button labeled "Create". This will open the Resource Overview page. Proceed by completing the various sections of the manage resource page based on the descriptions under the "Resource Overview" heading of the "Manage Resources Menu" section.<br>
 <br>
-<h4>Upload a Darwin Core Archive</h4>
+#### Upload a Darwin Core Archive
 The IPT is able to import valid Darwin Core Archive files up to 100MB in size. Information about Darwin Core Archives can be found on the Darwin Core web site (<a href='http://rs.tdwg.org/dwc/terms/guides/text/'>http://rs.tdwg.org/dwc/terms/guides/text/</a>), with further information about the IPT's use of them on the GBIF IPT Google Code site wiki (<a href='http://code.google.com/p/gbif-providertoolkit/wiki/DarwinCore'>http://code.google.com/p/gbif-providertoolkit/wiki/DarwinCore</a> ). To import a Darwin Core Archive, click on the button labeled "Choose File", then navigate to and select the intended archive file. After selecting the file, its name will appear next to the "Choose File" button.<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceUploadDwcA.png' />
 
 Click on the button labeled "Create". If there is a problem importing the selected file, an error message will alert the user. If the import is successful, a Resource Overview page will appear with an informational message at the top describing the results of the import process.<br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceUploadDwCASuccess.png' />
-<h4>Upload a zipped IPT resource configuration folder</h4>
+#### Upload a zipped IPT resource configuration folder
 It is possible to create a copy of a resource from its zipped IPT resource configuration folder. The only condition is that the resource must have been created under a compatible version of the IPT. Effectively, this will copy all the resource's metadata, source data, and mappings. It will <b>not</b> copy the resource's registration information, version history, DOI(s), version number, managers, publication status, created date, last publication date, or even preserve the resource short name.<br>
 <br>
 To do so, just follow these instructions:<br>
@@ -394,7 +394,7 @@ To do so, just follow these instructions:<br>
 <ol><li>Enter a new resource short name. You can preserve the zipped resource's short name, provided it doesn't already exist in your IPT.<br>
 </li><li>Click on the button labeled "Choose File", then navigate to and select the intended zipped resource configuration folder.<br>
 </li><li>After selecting the file, its name will appear next to the "Choose File" button. Click on the button labeled "Create". If there is a problem importing the selected file, an error message will alert the user. If the import is successful, a Resource Overview page will appear with the resource metadata, source data, and mappings all copied from the zipped resource into the new resource.<br>
-<h4>Upload a metadata file</h4>
+#### Upload a metadata file
 The IPT is able to import and export valid dataset metadata files that conform to the GBIF Metadata Profile. Information about the GBIF EML Metadata Profile can be found in the <a href='http://www.gbif.org/orc/?doc_id=2820'>GBIF Metadata Profile Reference Guide</a>. Information about how to author a metadata document conforming to the GBIF Metadata Profile Darwin Core can be found in the <a href='http://www.gbif.org/orc/?doc_id=2821'>GBIF Metadata Profile How To Guide</a>. To import a metadata file, select the resource type "metadata-only", then click on the button labeled "Choose File", navigate to and select the intended metadata file. After selecting the file, its name will appear next to the "Choose File" button.</li></ol></li></ol>
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceUploadEml.png' />
@@ -407,7 +407,7 @@ This page allows users having managerial permission to make changes to various a
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceOverview.png' />
 
-<h4>Source Data</h4>
+#### Source Data
 This area of the Resource Overview page allows a user to import primary data from files or databases into the IPT. If a resource has no source data it is considered a metadata-only resource, with information about a data set or collection, but without any primary data. It is possible to connect a resource to more than one data source if the sources are related to each other. More about relating multiple data sources is explained in the <a href='http://rs.tdwg.org/dwc/terms/guides/text/index.htm#implement'>Implementation Guide</a> section of the Darwin Core Text Guide.  Following are explanations for the preliminary step of choosing the source data either from text files or from database sources:<br>
 <br>
 <b>File as data source</b><br>
@@ -465,7 +465,7 @@ The Source Database Detail page shows the name of the resource along with a summ
 </li><li><b>Date Format</b> - a code describing the format of fields having a date data type (e.g., YYYY-MM-DD for four-digit year, two-digit month, and two-digit day separated by dashes).</li></ul>
 
 After the parameters for the data source have been set so that the data are accessed correctly, click on the button labeled "Save" to store this configuration. If the save is successful, the Resource Overview page will appear, with summary information about the data in the right-hand column of the Source Data area. A button labeled "Edit" will also appear with the source data summary information, allowing the user to reopen the Source Database detail page.<br>
-<h4>Darwin Core Mappings</h4>
+#### Darwin Core Mappings
 This area of the Resource Overview page allows a user to map the fields in the incoming data to fields in installed extensions and to see which fields from the sources have not been mapped. This option is not available until at least one data source has been successfully added and at least one extension has been installed.<br>Once these conditions have been met, the left-hand column of the Darwin Core Mappings area will contain a select box with a list of Core Types and Extensions that have been installed. Select a Core Type and map that before selecting an extension to map. Select the appropriate extension that has fields matching the ones to map in the data source. If the appropriate core type or extension does not appear in the select box, it will have to be installed first. Refer to the information under the "Configure Core Types and Extensions" heading in the "Administration Menu" section for an explanation of how to install extensions.<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceDwCMapping.png' />
@@ -478,7 +478,7 @@ Select the data source to map, and then click on the button labeled "Save". This
 <br>
 After a new mapping has been added, it will be visible in the right-hand column of the Darwin Core Mappings area. This area will contain a list of all the resource's mappings divided into Core Type mappings and Extension mappings. Click the "Edit" button beside a mapping to modify it, or click the preview icon <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/preview.png' /> to preview the mapping. Resource managers are advised to preview all mappings prior to publishing a new version.<br>
 <br>
-<h5>Data Mapping detail page</h5>
+##### Data Mapping detail page
 After a mapping between a data source and Core Type or Extension has been created, this page opens and displays a status message showing how many fields from the data source were automatically mapped to the fields in the extensions. Fields are automatically mapped if the field names, converted to all lower case, match each other.<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceMapping.png' />
@@ -541,7 +541,7 @@ In addition to the explanatory information about the extension at the top of the
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/IPTManageResourceMappingUnmappedColumns.png' />
 '></a></li></ul>
 
-<h4>Metadata</h4>
+#### Metadata
 This area of the Resource Overview page allows a user to edit the resource metadata. By clicking on the button labeled "Edit" in the panel to the left the metadata can be edited. The panel to the right shows when the metadata was last modified. Every resource requires a minimal set of descriptive metadata in order to i) be published in the GBIF network, ii) be registered with DataCite/EZID (in other words, be assigned a DOI). If any of the required metadata is missing, the Resource Overview page will open with a warning message in the Metadata area of the page.<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataMissing.png' />
@@ -551,7 +551,7 @@ Clicking on the "Edit" button opens the [[Basic Metadata|IPT2ManualNotes.wiki#ba
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataPagesList.png' />
 
 Following is a list of the metadata pages and their contents:<br>
-<h4>Basic Metadata</h4>
+#### Basic Metadata
 All metadata fields on this page are required. Please note for each contact you must supply at least a last name, a position or an organisation.<br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataBasicMetadata.png' />
 <ul><li><b>Title</b> - the Title for the resource. This title will appear as the Name of the resource throughout the IPT. The title will also appear in the GBIF Registry.<br>
@@ -583,14 +583,14 @@ All metadata fields on this page are required. Please note for each contact you 
 
 <ul><li><b>Resource Creators</b> - the people and organisations who created the resource, in priority order. The list will be used to auto-generate the resource citation (if auto-generation is turned on). If this person or organisation is the same as the first resource contact, all of the details of the latter can be copied into the equivalent fields for the resource creator by clicking on the link labeled "copy details from resource contact". The resource creator has all of the same fields and requirements as the resource contact. Refer to the field explanations under Resource Contacts, above. <b>Note</b>: the person(s) or organisation(s) responsible for the creation of the resource as it appears in the IPT and for effectively publishing the resource can add themselves as an associated party with role 'publisher'.<br>
 </li><li><b>Metadata Providers</b> - the people and organisations responsible for producing the resource metadata. If this person or organisation is the same as the first resource contact, all of the details of the latter can be copied into the equivalent fields for the resource creator by clicking on the link labeled "copy details from resource contact". The metadata provider has all of the same fields and requirements as the resource contact. Refer to the field explanations under Resource Contacts, above.<br>
-<h4>Geographic Coverage</h4>
+#### Geographic Coverage
 This metadata page contains information about the geographic area covered by the resource. The page contains a map and associated controls that allow the user to set the geographic coverage. Below is a screen image showing the contents of the Geographic Coverage page, followed by explanations of the controls.<br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataGeographicCoverage.png' />
 </li><li><b>Coverage Map</b> - if connected to the Internet, a Google Map of the earth will appear on the geographic coverage page. This map shows a box with control points (markers) on opposite corners. The corners correspond with the values in the Latitude and Longitude text boxes, explained below. Click on a marker and drag it to a new location to reset the geographic bounds of the box. The corresponding latitude and longitude values will change to match the box on the map. Both markers can be dragged in this way. The map has common viewing features of Google Maps, including a scale bar, a select menu to view different layers (terrain, satellite imagery, etc.), and buttons to zoom in (+) and zoom out (-).<br>
 </li><li><b>Set global coverage?</b> - click on this check box to change the geographic coverage to cover the entire earth.<br>
 </li><li><b>West/East/South/North</b> - these four text boxes correspond to the corners of the box bounding the area covered by the resource. The values to enter in these text boxes are decimal degrees (e.g. 45.2345), with the standard limiting values of -90 to +90 latitude (South/North) and -180 to +180 longitude (West/East), with positive latitude in the northern hemisphere and positive longitude east of the Greenwich Meridian to the International Dateline. Manipulating the bounding box markers on the map will set these values, but valid values can all be entered in these text boxes directly if desired. The map will update when the information on the page is saved by clicking on the button labeled "Save".<br>
 </li><li><b>Description</b> - a textual description of the geographic coverage. This information can be provided in place of, or to augment the information in the other fields on the page.<br>
-<h4>Taxonomic Coverage</h4>
+#### Taxonomic Coverage
 This metadata page allows the user to enter information about one of more groups of taxa covered by the resource, each of which is called a taxonomic coverage. Each coverage consists of a description and list of taxa, where each taxon consists of a taxon name (either scientific or common) and a taxon rank. Before any taxonomic coverages are created, the page shows only a link labeled "Add new taxonomic coverage". Clicking on this link will show a text box for the description and several links. Below is a screen image showing the Taxonomic Coverage page before any data have been entered, followed by explanations of the controls seen on the page in this state.<br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataTaxonomic.png' />
 </li><li><b>Remove this taxonomic coverage</b> - click on this link to remove the taxonomic coverage that follows immediately below the link, including the description, the list, and all single taxon entries.<br>
@@ -606,7 +606,7 @@ This metadata page allows the user to enter information about one of more groups
 </li><li><b>Rank</b> - this text box is meant to contain the taxonomic rank of the taxon.<br>
 </li><li><b>Trash Icon</b> <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/Control-TrashIcon.png' /> - clicking on this icon will remove the taxon (scientific name, common name, and rank) to the left of the icon from the taxonomic coverage.<br>
 </li></ul></li><li><b>Add new taxonomic coverage</b> - click on this link to initiate a form for a new taxonomic coverage with a text box labeled "Description" and links to "Add several taxa" and "Add new taxon" as described above.<br>
-<h4>Temporal Coverage</h4>
+#### Temporal Coverage
 This metadata page contains information about one of more dates, date ranges, or named periods of time covered by the resource, each of which is called a temporal coverage. Coverages may refer to the times during which the collection or data set was assembled (Single Date, Date Range, and Formation Period), or to times during which the subjects of the data set or collection were alive (Living Time Period). Before the first temporal coverage for the resource is created, the page shows only a link labeled "Add new temporal coverage". Clicking on this link will show the default temporal coverage type "Single Date" in a select box, a text box labeled "Start Date", a calendar icon, and two links. Below is a screen image showing the default Temporal Coverage page before any data have been entered, followed by explanations of the controls seen on the page in this state.</li></ul>
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataTemporalCoverages.png' />
@@ -621,21 +621,21 @@ This metadata page contains information about one of more dates, date ranges, or
 </li><li><b>End Date</b> - this text box is meant to contain the date the coverage ended, in one of the supported date formats. To select a date, click on the calendar icon and choose a date, or enter the date manually. To find out what date formats are supported, open the information icon. Example: 2010-12-31 for 31 December 2010 in the New Era calendar.<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataTemporalCoverageDateRange.png' />
 </li></ul></li><li><b>Formation Period</b> - this temporal coverage type is meant to accommodate a named or other time period during which a collection or data set was assembled. Examples: "Victorian", "1922-1932", "c. 1750".<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataTemporalCoverageFormationPeriod.png' />
 </li><li><b>Living Time Period</b> - this temporal coverage type is meant to accommodate a named or other time period during which the biological entities in the collection or data set were alive, including paleontological time periods. Examples: "1900-1950", "Ming Dynasty", "Pleistocene".<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataTemporalCoverageLivingTimePeriod.png' />
-<h4>Keywords</h4>
+#### Keywords
 This metadata page allows the user to create one or more sets of keywords about the resource. Each set of keywords can be associated with a thesaurus/vocabulary that governs the terms in the list.<br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataKeywords.png' />
 </li></ul></li><li><b>Remove this keyword set</b> - click on this link to remove the keyword set that follows immediately below the link.<br>
 </li><li><b>Thesaurus/Vocabulary</b> - enter the name of a thesaurus or controlled vocabulary from which the keywords in the set are derived. If the keywords are not governed by a thesaurus/vocabulary, enter "n/a" indicating that it is not applicable in this text box. Example: IRIS keyword thesaurus.<br>
 </li><li><b>Keyword List</b> - enter a list of keywords, separated by commas that describe or are related to the resource.<br>
 </li><li><b>Add new keyword set</b> - click on this link to initiate a form for an additional keyword set.<br>
-<h4>Associated Parties</h4>
+#### Associated Parties
 This metadata pages contains information about one or more people or organisations associated with the resource in addition to those already covered on the Basic Metadata page. Many of the controls on this page are in common with those for the Resource Contacts on the [[Basic Metadata|IPT2ManualNotes.wiki#basic-metadata]] page. Explanations for the remainder of the controls are given below.<br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataAssociatedParties.png' />
 </li><li><b>Copy details from resource contact</b> - if this person or organisation is the same as the first Resource Contact on the Basic Metadata page, all of the details can be copied into the equivalent fields for the associated party by clicking on this link.<br>
 </li><li><b>Remove this associated party</b> - click on this link to remove the associated party that follows immediately below the link.<br>
 </li><li><b>Role</b> - this select box contains a list of possible roles that the associated party might have in relation to the resource. Click on the information icon to the left of the select box to see descriptions of the possible roles. Choose the most appropriate role for the associated party in the select box.<br>
 </li><li><b>Add new associated party</b> - click on this link to initiate a form for an additional associated party.<br>
-<h4>Project Data</h4>
+#### Project Data
 This metadata page contains information about a project under which the data in the resource were produced.<br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataProjectData.png' />
 </li><li><b>Title</b> - the title of the project.<br>
@@ -651,7 +651,7 @@ This metadata page contains information about a project under which the data in 
 </li><li><b>Personnel Identifier</b> - a 16-digit ORCID ID (e.g. 0000-0002-1825-0097) or another identifier that links this person to the personnel directory specified.<br>
 </li><li><b>Personnel Role</b> - the role of the person associated with the project. Click on the information icon to the left of the select box to see descriptions of the possible roles. Choose the most appropriate role in the select box for the person named above.</li></ul></li></ul>
 
-<h4>Sampling Methods</h4>
+#### Sampling Methods
 This metadata page contains information about sampling methods used for the data represented by the resource.<br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataSamplingMethods.png' />
 <ul><li><b>Study Extent</b> - a description of the physical and temporal conditions under which the sampling occurred. The geographic study extent is usually a surrogate (representative area of) for the larger area documented in the "Study Area Description" field of the Project metadata page.<br>
@@ -660,7 +660,7 @@ This metadata page contains information about sampling methods used for the data
 </li><li><b>Step Description</b> - A method step is one in a series of repeated sets of elements that document a series of methods and procedures used in the study, and the processing steps leading to the production of the data files. These include text descriptions of the procedures, relevant literature, software, instrumentation, source data and any quality control measures taken. Each method should be described in enough detail to allow other researchers to interpret and repeat, if required, the study.<br>
 </li><li><b>Add new method step</b> -  click on this link to add a text box labeled "Step Description" to the page (see above). One may add as many method steps as desired.<br>
 </li><li><b>Remove this method step</b> - click on this link to remove the method step text box that follows immediately below the link.<br>
-<h4>Citations</h4>
+#### Citations
 This metadata page contains information about how to cite the resource as well as a bibliography of citations related to the data set, such as publications that were used in or resulted from the production of the data. Each Citation, whether for the resource or in the bibliography, consists of an optional unique Citation Identifier allowing the citation to be found among digital sources and a traditional textual citation. Before any Citation data are entered, the page will show a text box for the Citation Identifier for the resource, a text box for the Resource Citation, a heading labeled "Bibliographic Citations", and a link labeled "Add new bibliographic citation".<br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataCitations.png' />
 </li><li><b>Resource Citation</b> - the single citation for use when citing the dataset.<br>
@@ -675,7 +675,7 @@ This metadata page contains information about how to cite the resource as well a
 <ul><li><b>Bibliographic Citation</b> - the citation of an external resource related to or used in the creation of this resource.<br>
 </li><li><b>Bibliographic Citation Identifier</b> - a DOI, URI, or other persistent identifier that resolves to the online external resource. It should be used in the citation, usually at the end. <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataBibCitations.png' />
 </li></ul></li><li><b>Remove this bibliographic citation</b> - click on this link to remove the citation that follows immediately below the link.<br>
-<h4>Collection Data</h4>
+#### Collection Data
 This metadata page contains information about the physical natural history collection associated with the resource (if any) as well as lists of types objects in the collection, called Curatorial Units, and summary information about them. Before any Collection data are entered, the page will show a header for each section (Collections, Specimen preservation methods, Curatorial Units) and a link labeled "Add new curatorial unit".<br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataCollectionData.png' />
 </li><li><b>Collections</b> - the list of collections that this resource is based on.<br>
@@ -698,7 +698,7 @@ This metadata page contains information about the physical natural history colle
 </li><li><b>+/-</b> - enter the number of objects more or less than the number in the count text box for the range of possible counts of the particular unit type<br>
 </li></ul></li><li><b>Unit Type</b> - the single type of object (specimen, lot, tray, box, jar, etc.) represented by the method type and count.<br>
 </li></ul></li><li><b>Remove this curatorial unit</b> - click on this link to remove the curatorial unit that follows immediately below the link.<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataCuratorialUnits.png' />
-<h4>External Links</h4>
+#### External Links
 This metadata page contains links to the home page for the resource as well as links to the resource in alternate forms (database files, spreadsheets, linked data, etc.) and the information about them. Before any external links are entered, the page will show a text box for the Resource Homepage and a link labeled "Add new external link".<br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataExternalLinks.png' />
 </li></ul></li><li><b>Resource Homepage</b> - enter the full current URL of the web page containing information about the resource or its data set.<br>
@@ -710,7 +710,7 @@ This metadata page contains links to the home page for the resource as well as l
 </li><li><b>Data Format</b> - the name or code of the document or file format (e.g., CSV, TXT, XLS, Microsoft Excel, MySQL).<br>
 </li><li><b>Data Format Version</b> - the version of the document or file format given in the Data Format text box (e.g., 2003, 5.2).<br>
 </li><li><b>Remove this external link</b> - click on the link having this label to remove the external link that follows immediately below.<br>
-<h4>Additional Metadata</h4>
+#### Additional Metadata
 This metadata page contains information about other aspects of the resource not captured on one of the other metadata pages, including alternative identifiers for the resource. Before any alternative identifiers are entered, the page will show text boxes for the purpose, maintenance description, additional metadata, a header for the Alternative Identifiers area, and a link labeled "Add new alternative identifier".<br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataAdditionalMetadata.png' /></li></ul></li></ul>
 
@@ -725,7 +725,7 @@ This metadata page contains information about other aspects of the resource not 
 </li><li><b>Alternative Identifier</b> - the text for the alternative identifier for the resource (e.g., a URL, UUID, or any other unique key value).<br>
 </li><li><b>Remove this alternative identifier</b> - click on this link to remove the alternative identifier that follows immediately below.</li></ul></li></ul>
 
-<h4>Published Versions</h4>
+#### Published Versions
 This area of the Resource Overview page allows a user to publish a version of the resource.<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourcePublish.png' />
@@ -796,7 +796,7 @@ A page entitled Publishing Status will show status messages highlighting the suc
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourcePublishingStatus.png' />
 
-<h4>Visibility</h4>
+#### Visibility
 The Visibility area of the Manage Resources page allows users having manager rights for the resource to change its visibility state. The visibility of a resource determines who will be able to view it, and whether the resource can be assigned a DOI or registered with GBIF. By default, each resource is visible only to the user who created it and any other users who have the Admin role on the IPT where the resource is created. For explanations of each visibility state refer to the information below.<br>
 <br>
 <ul><li><b>Private</b> - A private resource is visible only to those who created it, or those who have been granted permission to manage it within the IPT, or by a user having the Admin role. This is primarily meant to preserve the resource from public visibility until it has been completely and properly configured. Be aware a DOI can be reserved for a private resource, but that DOI cannot be registered until the resource is publicly visible. When the resource is ready for public visibility, click on the button labeled "Public". A message will appear at the top of the page saying that the status has been changed to "Public".<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceVisibilityPrivate.png' />
@@ -805,7 +805,7 @@ The Visibility area of the Manage Resources page allows users having manager rig
 
 <blockquote>If the attempt to register is successful, a message will appear at the top of the page saying that the status has been changed to "Registered".<br>
 </blockquote><ul><li><b>Registered</b> - A resource that has been registered with the GBIF network is discoverable through the GBIF website and the data from the resource can be indexed by and accessed from the GBIF portal. Be aware it can take up to one hour for data to be indexed by GBIF following registration. A summary of information registered with GBIF will appear in the right-hand column when registration is complete.<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceVisibilityRegistered.png' /> If the resource has already been registered, every time the "Publish" button is clicked, its registration information in the GBIF Registry also gets updated. The visibility of a registered resource can not be changed to private. If a resource must be removed from the GBIF Registry, follow the procedure described in the "Delete a Resource" section under the "Resource Overview" heading in the "Manage Resources Menu" section.<br>
-<h4>Migrate a Resource</h4>
+#### Migrate a Resource#### 
 There is now a way to migrate registered DiGIR, BioCASE, and TAPIR resources to an IPT. The way this works, is that the IPT resource is configured to update the existing registered DiGIR, BioCASE, or TAPIR resource that it corresponds to in the GBIF Registry. This allows the resource to preserve its GBIF Registry UUID.</li></ul>
 
 To migrate an <b>existing registered resource</b> to your <b>IPT resource</b>, simply follow these instructions:<br>
@@ -819,14 +819,14 @@ To migrate an <b>existing registered resource</b> to your <b>IPT resource</b>, s
 <ol><li>the name and URL (or GBIF Registry UUID) of your IPT<br>
 </li><li>the name and GBIF Registry UUID of your updated Resource (see line Resource Key on resource overview page, for example: Resource Key d990532f-6783-4871-b2d3-cae3d0cb872b)<br>
 </li><li>(if applicable) whether the DiGIR/BioCASE/TAPIR technical installation that used to serve the resource has been deprecated, and whether it can be deleted from the GBIF Registry<br>
-<h4>Resource Managers</h4>
+#### Resource Managers
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceManagers.png' /></li></ol></li></ol>
 
 Each resource has one or more explicitly assigned managers who are allowed to view, change, and remove the resource. The user who creates a resource automatically has these capabilities. Additional managers can be associated with a resource and given these same capabilities by selecting them by name from the select box in this area of the Resource Overview page, then clicking on the button labeled "Add". Any manager associated with a resource and having the role "Manager with registration rights" may also register the resource and update it in the GBIF registry. All users having the Admin role automatically have complete managerial roles for all resources in the IPT instance. The right-hand column of this area shows the name and email address of the creator of the resource. If any managers have been added, their names and email addresses will be listed under the creator. Any added manager can have the managerial role for the resource removed by clicking on the button labeled "Delete" to the right of the email address in the manager listing.<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceManagerAdded.png' />
 
-<h4>Delete a Resource</h4>
+#### Delete a Resource
 Clicking on the button labeled "Delete" on the Resource Overview page will remove the resource from the IPT and all of the related documents from the file system. If you intend to remove a resource that has been registered with GBIF, you should also inform the GBIF Help Desk (helpdesk@gbif.org) that you would like it to be unregistered. If you want to preserve the resource information but remove the resource from the IPT, make a copy of the folder for the resource to a safe location outside of the IPT directory structure. The name of the folder for the resource is the same as the resource Shortname, and can be found under the folder named "resources" in the IPT data directory. A resource saved in this way can be re-integrated into the IPT, or integrated with a distinct IPT instance by following the procedure described in the "Integrate an existing resource configuration folder" section under the "Create a New Resource" heading in the "Manage Resources Menu" section.<br>
 ## Administration Menu (visible only to users having the Admin role)
 This section describes each of the functions that are accessible from the Administration menu. Clicking on the Administration menu opens a page (see screen image, below) from which each of these specific administrative tasks can be accessed by clicking on the appropriate button. Note that the button labeled "Organisations" will remain disabled by default until the GBIF registration options have been set.<br>
@@ -859,7 +859,7 @@ This option is an administrative action just like the Publish button, only it pu
 This page allows users having the Admin role to create, modify, and delete user accounts. When the page is opened, it shows a table of existing users and basic information about them including their names, email addresses, roles, and the date and time of their last logins.<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAdminUserAccounts.png' />
-<h4>Create a new user</h4>
+#### Create a new user
 A new user can be created by clicking on the button labeled "Create" below the list of existing users. This will open a page on which the information about the user can be entered, after which the new user can be created by clicking on the button labeled "Save".<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAdminUserCreateUser.png' />
@@ -871,14 +871,14 @@ A new user can be created by clicking on the button labeled "Create" below the l
 <b>Password</b> - The password for the user must consist of at least four characters and should be made secure and safe from loss, as it is not recoverable from the IPT application.<br><b>Note</b>: If a user's password is lost, it can be reset to an automatically generated new value by a user having the Admin role. It is the responsibility of the Admin user to communicate this new password to the user for whom it was reset. The user can then change the password to the desired value by entering it in the IPT Account page accessible through the "Account" link in the header in the upper right corner of every page after logging in.<br>
 <b>Verify password</b> - An exact copy of the password as entered in the Password text box to confirm that it was entered as intended.<br>
 <br>
-<h4>Modify an existing user</h4>
+#### Modify an existing user
 Information about users can be changed in the user details page after selecting the name of the user you wish to modify from the list of existing users. The user detail page shows all of the information about that user. The first name, last name, and role for the user can be changed by entering the new values and clicking on the button labeled "Save". Details of the information to be entered on this page can be found in the explanations in the "Create a new user" section, above.<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAdminUserEditUser.png' />
 
 <b>Reset password</b> - If a user forgets a password, clicking on the button labeled "Reset Password" can generate a new one, after which a new password is given in an information message at the top of the page.<br><b>Note</b>: The IPT does not inform the affected user of this change, so it is the responsibility of the Admin who resets the password to inform the user of the new one.<br>
 <br>
-<h4>Delete a user</h4>
+#### Delete a user
 Users accounts that are no longer necessary can be deleted using the user detail page accessed by selecting the name of the user you wish to delete from the list of existing users. On the bottom of the user detail page, click on the button labeled "Delete" to remove this user account. There are several conditions under which a user cannot be deleted. A user cannot delete an account while logged in to that account. It must be deleted from another account having the Admin role. Also, the IPT installation must always have at least one user having the Admin role, so the last remaining Admin can not be deleted. To remove that user, first create a new user having the Admin role and log in with that new user to delete the other Admin account. Finally, each resource must have at least one associated user having either the Admin or one of the Manager roles, so the last remaining Manager of a resource can not be deleted. To remove that user, first associate another user having the Admin or one of the Manager roles with any resources for which the user you wish to delete is the last remaining manager. Refer to the information under "Resource Managers"  in the "Edit an existing resource" section above to see how new managers can be assigned.<br>
 <br>
 ## Configure GBIF registration options
