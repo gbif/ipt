@@ -286,9 +286,9 @@ The IPT has an upload size limit of 100MB. There is no limit to the size of Darw
 </li><li>loading the data into one of the many [[databases supported by the IPT|IPT2DatabaseConnection.wiki]]
 </li><li>splitting the file up</li></ul>
 
-<h3>Controls that appear on all pages</h3>
+### Controls that appear on all pages
 This section describes several features that are accessible in the header and footer of most of the pages of the IPT.<br>
-<h4>Header</h4>
+#### Header
 The header section of the IPT appears in the upper right of most pages and allows basic control over the IPT, including who is using it, and in what language. Following are two screen images showing the two possible states in which the header may be found - logged in, and not logged in.<br>
 <br>
 Header, not logged in, English language chosen for the user interface:<br>
@@ -303,7 +303,7 @@ Header, logged in, English language chosen for the user interface:<br>
 <b>Logout</b> - If someone is logged in to the IPT, the email address of the person who is logged in is given in the upper right-hand corner of the page along with a "Logout" link.<br>
 <b>Account</b> - To see this link and the page to which it leads, you must be logged into the IPT. The page shows the details of the account information for the person who is logged in to the IPT and allows them to be changed. The details of the fields found on this page can be found under the "Configure User accounts" heading in the "Administration Menu" section.<br>
 <b>Language selection</b> - In the upper right-hand corner of the page is a name depicting the language in which the IPT is currently being presented. The default language for the IPT is English. The language of the user interface can be changed by selecting a name for the desired language, if available. GBIF actively seeks translations for the IPT into additional languages. For more information, consult the [[How to Translate|HowToTranslate.wiki]] page of the GBIF IPT Google Code site wiki.<br>
-<h4>Footer</h4>
+#### Footer
 The footer section of the IPT appears along the bottom of most pages and contains information about the IPT version and links to important resources.<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTFooter.png' />
