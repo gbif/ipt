@@ -4,7 +4,7 @@
 
 _For the IPT Version 2.1 user manual, please go [here.](IPTUserManualv21.md) Otherwise, user manuals for older versions are available from the [Version History](http://www.gbif.org/ipt/releases) page._
 
-Table of Contents
+# Table of Contents
 + Introduction
   + About the GBIF Integrated Publishing Toolkit
   + How to Use this Manual
