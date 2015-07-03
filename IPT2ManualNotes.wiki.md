@@ -196,7 +196,7 @@ Click on the button labeled "Continue" to open the IPT Administration page (see 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v205/IPTAdminBeforeRegistration.png' />
 
 Once you have completed the steps in this Getting Started Guide, your IPT is ready to add resources (data sets and metadata). You may want to complete one or more of the tutorials to understand how common IPT tasks are accomplished. For detailed explanations of any further aspects of the IPT, consult the Quick Reference Guide of this user manual.<br>
-<h2>Starting Over</h2>
+## Starting Over
 It is relatively easy to re-initiate the IPT and begin again with the first setup page by doing the following:<br>
 <ul><li>Every user who is logged in to the IPT should first log out.<br>
 </li><li>Remove the file called datadir.location from the folder where it was created by the IPT (normally WEB-INF within the IPT base installation directory - not within the IPT data directory configured in the first setup step).<br>
@@ -205,11 +205,11 @@ It is relatively easy to re-initiate the IPT and begin again with the first setu
 </li><li>If the same data directory location is desired, but without the previous IPT configuration, then the contents of that data directory should be moved to a different location or removed entirely before clicking on "Save" in the initial IPT setup page.<br>
 </li><li>If an entirely new data directory is used, then the setup will proceed exactly as described in the "IPT setup" section of this Getting Started Guide.<br>
 <hr />
-<h1>Quick Reference Guide</h1>
-<h2>Introduction</h2>
+# Quick Reference Guide
+## Introduction
 This Quick Reference Guide explains in detail the capabilities of an IPT instance that has been installed, run for the first time, and tested to be functional as explained in the Getting Started Guide. The details of this guide are presented in four sections corresponding to the four "menus" available in the IPT user interface. Some tabs are only visible when a user having the appropriate rights to see them is logged in.<br>
-<h2>Common features</h2>
-<h3>User interface controls</h3>
+## Common features
+### User interface controls
 Most user interface controls have both enabled and disabled modes. If the control is enabled, it will either commit an action when clicked (a button, for example), or it will allow changes to be made to the value bound to the control (a text, check, or select box, for example). In the latter case the changes will be saved, if possible, when the form on which they appear is saved, which is generally accomplished on a given page by clicking on a button labeled "Save". Disabled controls show the value of the associated information, but do not allow that information to be saved under the conditions in effect at the time they appear. The purpose for most user interface controls is indicated by an associated label that appears above and/or to the left of the control. Sometimes supplemental information is also accessible from an associated information icon.</li></ul></li></ul>
 
 <b>Menus</b> - in the IPT, a menu bar appears below the GBIF logo on nearly every page. The menu bar is populated with menus that guide users to fundamental topics. Menu items appear based on the what the current user is authorized to see based on their role. The currently active menu is colored brightly, while inactive menus are grey. Click on a menu to open and activate the page for that topic.<br>
@@ -274,7 +274,7 @@ Example table sorted in ascending order by the column labeled "Name".<br>
 Example table sorted in descending order by the column labeled "Type".<br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/Control-TableSortedDescending.png' />
 
-<h4>File upload</h4>
+#### File upload
 Files can be uploaded in the IPT during two actions: when [[creating a new resource|IPT2ManualNotes.wiki#create-a-new-resource]], or when [[adding new source data files|IPT2ManualNotes.wiki#source-data]].<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/Control-UploadCreateResource.png' />
