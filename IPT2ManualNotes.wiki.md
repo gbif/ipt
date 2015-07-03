@@ -4,7 +4,106 @@
 
 _For the IPT Version 2.1 user manual, please go [here.](IPTUserManualv21.md) Otherwise, user manuals for older versions are available from the [Version History](http://www.gbif.org/ipt/releases) page._
 
-
+Table of Contents
++ Introduction
+  + About the GBIF Integrated Publishing Toolkit
+  + How to Use this Manual
++ Getting Started Guide
+  + Requirements
+    + Internet Connectivity
+    + Stable URL
+    + Memory
+    + Disk space
+    + Java
+    + Servlet container
+  + Install the IPT
+    + Prepare the server
+    + Download the IPT
+    + Deploy the IPT to the servlet container
+    + Run the IPT application
+  + Set up the IPT for the first time
+    + IPT setup
+    + IPT setup II
+  + Starting Over
++ Quick Reference Guide
+  + Introduction
+  + Common features
+    + User interface controls
+      + File upload
+    + Controls that appear on all pages
+      + Header
+      + Footer
+  + Home Menu (visible to all users)
+    + Public Resources Table
+    + RSS feed
+    + Registered resource inventory
+    + Resource homepage
+      + Version history
+  + Manage Resources Menu (visible to users with an Admin or Manager role)
+    + Manage Resources Table
+    + Create a New Resource
+      + Upload a Darwin Core Archive
+      + Upload a zipped IPT resource configuration folder
+      + Upload a metadata file
+    + Edit an existing resource
+    + Resource Overview
+      + Source Data
+      + Darwin Core Mappings
+      + Metadata
+      + Basic Metadata
+      + Geographic Coverage
+      + Taxonomic Coverage
+      + Temporal Coverage
+      + Keywords
+      + Associated Parties
+      + Project Data
+      + Sampling Methods
+      + Citations
+      + Collection Data
+      + External Links
+      + Additional Metadata
+      + Published Versions
+      + Visibility
+      + Migrate a Resource
+      + Resource Managers
+      + Delete a Resource
+  + Administration Menu (visible only to users having the Admin role)
+    + Configure IPT settings
+    + Publish all resources
+    + Configure User accounts
+      + Create a new user
+      + Modify an existing user
+      + Delete a user
+  + Configure GBIF registration options
+  + Edit GBIF registration
+  + Configure Organisations
+    + Edit organisation
+    + Add organisation
+  + Configure Core Types and Extensions
+    + Update vocabularies
+    + View extension details
+    + Install extension
+    + Remove extension
+  + View IPT logs
+  + About Menu (visible to all users)
++ About the IPT
+  + Citation
+  + Copyright
+  + License
++ Resources
+  + Darwin Core Archive documentation
+  + GBIF Help Desk
+  + GBIF Registry
+  + IPT code site
+  + IPT developer documentation
+  + IPT experts group in the GBIF Community Site
+  + IPT issue tracker
+  + IPT mailing list
+  + IPT server preparation
+  + IPT supported databases
+  + IPT test installation
++ References
++ Glossary
 
 ---
 
