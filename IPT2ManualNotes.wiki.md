@@ -1023,7 +1023,7 @@ This user manual is released under the Creative Commons Attribution-Non-commerci
 <hr />
 <h1>Resources</h1>
 <h2>Darwin Core Archive documentation</h2>
-Details about the structure of a Darwin Core Archive, abbreviated DWCA, can be found in the "Text Guide" section of the Darwin Core web site: <a href='http://rs.tdwg.org/dwc/terms/guides/text/'>http://rs.tdwg.org/dwc/terms/guides/text/</a>. Further information about the IPT's use of DWCAs can be found on the GBIF IPT Google Code site wiki: (<a href='http://code.google.com/p/gbif-providertoolkit/wiki/DarwinCore'>http://code.google.com/p/gbif-providertoolkit/wiki/DarwinCore</a> ).<br>
+Details about the structure of a Darwin Core Archive, abbreviated DWCA, can be found in the "Text Guide" section of the Darwin Core web site: <a href='http://rs.tdwg.org/dwc/terms/guides/text/'>http://rs.tdwg.org/dwc/terms/guides/text/</a>. Further information about the IPT's use of DWCAs can be found on [[this|DarwinCore.wiki]] wiki page.<br>
 <h2>GBIF Help Desk</h2>
 Send email messages to helpdesk@gbif.org to report problems with GBIF services, such as the GBIF Registry. Do not send IPT-specific help question to the Help Desk. Instead send them to the IPT mailing list (see below).<br>
 <h2>GBIF Registry</h2>
