@@ -315,7 +315,7 @@ The footer section of the IPT appears along the bottom of most pages and contain
 <b>Request new feature</b> - This link (<a href='http://code.google.com/p/gbif-providertoolkit/issues/entry?template=Feature%20request'>http://code.google.com/p/gbif-providertoolkit/issues/entry?template=Feature%20request</a>) opens a specific form in the IPT issue tracker that can be filled in to request a capability that the IPT does not currently have.<br>
 <b>Copyright</b> - The copyright for the IPT software is held by the Global Biodiversity Information Facility. A link to the home page for GBIF is provided. Details of the copyright and licensing can be seen in the "About the IPT" section of this user manual.<br>
 <br>
-<h2>Home Menu (visible to all users)</h2>
+## Home Menu (visible to all users)
 This page allows users to view a list of public resources, if any, and to look at the detailed metadata of any resource on the list.<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v205/IPTHome.png' />
@@ -359,7 +359,7 @@ Following are explanations of the table columns:<br>
 <b>DOI handle</b> - the DOI handle assigned to the published version. <b>Note</b>: If the DOI is different from the DOI of the last published version, this indicates that a scientifically significant change has been done to the resource.<br>
 <b>Last modified by</b> - the IPT user that last modified the published version.<br>
 
-<h2>Manage Resources Menu (visible to users with an Admin or Manager role)</h2>
+## Manage Resources Menu (visible to users with an Admin or Manager role)
 This page allows users having the appropriate role (managers and administrators) to make changes to existing resources or to create new resources.<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResources.png' />
@@ -828,7 +828,7 @@ Each resource has one or more explicitly assigned managers who are allowed to vi
 
 <h4>Delete a Resource</h4>
 Clicking on the button labeled "Delete" on the Resource Overview page will remove the resource from the IPT and all of the related documents from the file system. If you intend to remove a resource that has been registered with GBIF, you should also inform the GBIF Help Desk (helpdesk@gbif.org) that you would like it to be unregistered. If you want to preserve the resource information but remove the resource from the IPT, make a copy of the folder for the resource to a safe location outside of the IPT directory structure. The name of the folder for the resource is the same as the resource Shortname, and can be found under the folder named "resources" in the IPT data directory. A resource saved in this way can be re-integrated into the IPT, or integrated with a distinct IPT instance by following the procedure described in the "Integrate an existing resource configuration folder" section under the "Create a New Resource" heading in the "Manage Resources Menu" section.<br>
-<h2>Administration Menu (visible only to users having the Admin role)</h2>
+## Administration Menu (visible only to users having the Admin role)
 This section describes each of the functions that are accessible from the Administration menu. Clicking on the Administration menu opens a page (see screen image, below) from which each of these specific administrative tasks can be accessed by clicking on the appropriate button. Note that the button labeled "Organisations" will remain disabled by default until the GBIF registration options have been set.<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v205/IPTAdminBeforeRegistration.png' />
@@ -881,7 +881,7 @@ Information about users can be changed in the user details page after selecting 
 <h4>Delete a user</h4>
 Users accounts that are no longer necessary can be deleted using the user detail page accessed by selecting the name of the user you wish to delete from the list of existing users. On the bottom of the user detail page, click on the button labeled "Delete" to remove this user account. There are several conditions under which a user cannot be deleted. A user cannot delete an account while logged in to that account. It must be deleted from another account having the Admin role. Also, the IPT installation must always have at least one user having the Admin role, so the last remaining Admin can not be deleted. To remove that user, first create a new user having the Admin role and log in with that new user to delete the other Admin account. Finally, each resource must have at least one associated user having either the Admin or one of the Manager roles, so the last remaining Manager of a resource can not be deleted. To remove that user, first associate another user having the Admin or one of the Manager roles with any resources for which the user you wish to delete is the last remaining manager. Refer to the information under "Resource Managers"  in the "Edit an existing resource" section above to see how new managers can be assigned.<br>
 <br>
-<h2>Configure GBIF registration options</h2>
+## Configure GBIF registration options
 This page allows a user to register the IPT instance in the GBIF Registry if this has not already been done. The IPT must be registered before any of the IPTs resources can be associated with an organisation (see the information under the "Configure Organisations" heading in the "Administration Menu" section) or published (see the [[Published Versions|IPT2ManualNotes.wiki#published-versions]] section). Information about a registered IPT and its public resources become searchable through the Registry's services, and the data from the public resources published on the IPT can be indexed for searching via the GBIF portal. If the IPT has already been registered, the registered information for the IPT can be edited opening the "Edit GBIF registration" page.<br>
 <br>
 The first step to register with GBIF is to test that the IPT has a valid URL that can be reached by the GBIF services. To run this test, click on the button labeled "Validate".<br>
@@ -913,11 +913,11 @@ Following are explanations of the specific information to select or enter:<br>
 <b>Contact Email</b> - enter the current email address of the person whose name is given in the Contact Name.<br>
 <b>IPT password</b> - enter the password that should be used to edit the entry for this IPT installation in the GBIF Registry.<br>
 <b>Save</b> - when all of the information above is entered or selected, click on the button labeled "Save" to register the IPT installation with the GBIF Registry. After successfully registering the IPT installation, the Configure GBIF registration page will show that the IPT has already been registered and associated with the selected organisation. Also, after a successful registration, the Configure Organisations page will become accessible from the Administration menu.<br><b>Note</b>: Any changes to the IPT registration (rather than resource registration - for which see the "Visibility" section under the "Resource Overview" heading in the "Manage Resources Menu" section as well as the information under the "Publish all resources" heading in the "Administration Menu" section) will have to be done in consultation with the GBIF Help Desk (helpdesk@gbif.org).<br>
-<h2>Edit GBIF registration</h2>
+## Edit GBIF registration
 This page allows a user to edit the title, description, contact name, and contact email of the IPT instance once it has been registered in the GBIF Registry. Changing the associated (host) organisation is not possible. For help changing other fields displayed in the GBIF Registry, the administrator can contact the GBIF Help Desk (helpdesk@gbif.org).<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAdminEditRegistration.png' />
-<h2>Configure Organisations</h2>
+## Configure Organisations
 This page is unavailable until the IPT instance has been successfully registered in the GBIF Registry (see the information under the "Configure GBIF registration" heading of the "Administration Menu" section). Once registered, this page shows a list of organisations that can be associated with resources in this IPT instance. An IPT that hosts data for organisations other than the one to which it is associated must have the additional organisations configured before they can be used.<br>
 
 An IPT capable of assigning DOIs to resources must also have an organisation configured with a DataCite or EZID account. To be configured with a DataCite or EZID account, the organisation does not necessary have to be able to publish resources (be associated with resources). Only one DataCite or EZID account can be used to register DOIs at a time, and the IPT's archival mode must also be turned on (please refer to the [[Configure IPT settings|IPT2ManualNotes.wiki#configure-ipt-settings]] section to learn more about the archival mode). The list of organisations shows which organisations have been configured with DataCite or EZID accounts, and which one has been selected to register DOIs for all resources in this IPT instance.<br>
@@ -944,7 +944,7 @@ Following are explanations of the specific information to select or enter:<br>
 Organisations are not available to be associated with resources until a user having the Admin role adds them. Click on the button labeled "Add" to open a page on which an additional organisation can be selected from the GBIF Registry to be used in this instance of the IPT. For explanations of the fields and selections on this page, refer to the information under the "Edit Organisation" section above. After the desired organisation is selected and all other data entered, including the password for the organisation, click on the button labeled "Save" to add the selected organisation to the list.<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAdminOrgsAddOrg.png' />
-<h2>Configure Core Types and Extensions</h2>
+## Configure Core Types and Extensions
 This page allows a user having the Admin role to enable the instance of the IPT to import and share various pre-defined types of data from the GBIF Registry. Each type includes properties (fields, terms) that support a specific purpose. For example, the Darwin Core Taxon Core Type supports information pertaining to taxonomic names, taxon name usages, and taxon concepts and allows the IPT to host resources for taxonomic and nomenclatural checklists. A distinction is made between Core Types and extensions. Core types provide the basis for data records, (Occurrence and Taxon, for example) while extensions provide the means to associate additional data with a record of the Core Type. Only one Core Type can be selected for a given resource as explained under the "Darwin Core Mappings" heading of the "Resource Overview" section.<br>
 <br>
 Vocabularies contain lists of valid values that a particular term in a Core Type or Extension can take. For example, the <a href='http://rs.gbif.org/vocabulary/dwc/basis_of_record.xml'>Darwin Core Type vocabulary</a> contains all of the standard values allowed in the Darwin Core term <a href='http://rs.tdwg.org/dwc/terms/#basisOfRecord'>basisOfRecord</a>.<br>
@@ -969,11 +969,11 @@ For properties that have controlled vocabularies, the property information in th
 For any of the extensions that have not yet been installed in the IPT, there is a button labeled "Install" under the extension name in the left-hand column. Click on this button to retrieve the extension from the GBIF registry and install it in the IPT.<br>
 <h3>Remove extension</h3>
 For any extension that has already been installed in the IPT, it can be removed by clicking the button labeled "Remove". Extensions that are in use to map data for any resource in the IPT cannot be removed. Any attempt to do so will show an error message and a list of resources that use the extension in a mapping.<br>
-<h2>View IPT logs</h2>
+## View IPT logs
 Messages generated from actions taken while running the IPT are logged to files for reference in the directory called "logs" within the IPT data directory (see the information under the "IPT Settings" heading in the "Administration Menu" section). The View IPT logs page shows messages from the file called admin.log, which contains only those log messages that have a severity of WARNING or greater (such as errors). The complete log of messages (contained in the file called debug.log) can be opened and viewed by clicking on the link labeled "complete log file". The contents of the complete log file may be useful when reporting an apparent bug.<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAdminLogs.png' />
-<h2>About Menu (visible to all users)</h2>
+## About Menu (visible to all users)
 The default About page gives information about the current IPT installation, including information about the hosting organisation, if that has been registered. This page is meant to be customized for the individual IPT instance by editing the file called about.ftl in the directory called "config" within the IPT data directory (see the information under the "IPT Settings" heading in the "Administration Menu" section). The about.ftl file is a Freemarker template that can contain a combination of HTML and variable references of the form ${host.variable!"alternate value if null"}. After making changes to the about.ftl file, the About page will have to be restarted to show the changes. Look at the default about.ftl file for examples of variables that can be included.<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAbout.png' />
@@ -1005,15 +1005,15 @@ This IPT installation has not been registered yet.<br>
 </code></pre>
 <hr />
 <h1>About the IPT</h1>
-<h2>Citation</h2>
+## Citation
 This user manual adapts and builds upon the previous IPT User Manual (Réveillon 2009). The recommended citation for this user Manual is as follows:<br>
 <br>
 Wieczorek, J. 2011. The GBIF Integrated Publishing Toolkit User Manual, version 2.0. Copenhagen: Global Biodiversity Information Facility.<br>
 <br>
-<h2>Copyright</h2>
+## Copyright
 The GBIF Integrated Publishing Toolkit and this user manual are Copyright 2011 by the Global Biodiversity Information Facility Secretariat.<br>
 <br>
-<h2>License</h2>
+## License
 The GBIF Integrated Publishing Toolkit is open source software released under the Apache License Version 2.0. You may obtain a copy of this License at <a href='http://www.apache.org/licenses/LICENSE-2.0'>http://www.apache.org/licenses/LICENSE-2.0</a>. Unless required by applicable law or agreed to in writing, software distributed under this License is distributed on an "as is" basis, without warranties of conditions of any kind, either express or implied. See the License for the specific language governing rights and limitations under the License.<br>
 <br>
 This user manual is released under the Creative Commons Attribution-Non-commercial-Share Alike 3.0 Unported License. You may obtain a copy of this license at <a href='http://creativecommons.org/licenses/by-nc-sa/3.0/'>http://creativecommons.org/licenses/by-nc-sa/3.0/</a>. Though you should consult the actual license document for details, in general terms the license states that you are free to copy, distribute, transmit, remix and adapt the work, under the following conditions:<br>
@@ -1022,27 +1022,27 @@ This user manual is released under the Creative Commons Attribution-Non-commerci
 </li><li>if you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.<br>
 <hr />
 <h1>Resources</h1>
-<h2>Darwin Core Archive documentation</h2>
+## Darwin Core Archive documentation
 Details about the structure of a Darwin Core Archive, abbreviated DWCA, can be found in the "Text Guide" section of the Darwin Core web site: <a href='http://rs.tdwg.org/dwc/terms/guides/text/'>http://rs.tdwg.org/dwc/terms/guides/text/</a>. Further information about the IPT's use of DWCAs can be found on [[this|DarwinCore.wiki]] wiki page.<br>
-<h2>GBIF Help Desk</h2>
+## GBIF Help Desk
 Send email messages to helpdesk@gbif.org to report problems with GBIF services, such as the GBIF Registry. Do not send IPT-specific help question to the Help Desk. Instead send them to the IPT mailing list (see below).<br>
-<h2>GBIF Registry</h2>
+## GBIF Registry
 Use this online application to find information about organisations, IPT instances, and resources registered with GBIF: <a href='http://www.gbif.org/dataset'>http://www.gbif.org/dataset</a>.<br>
-<h2>IPT code site</h2>
+## IPT code site
 The code site is the project repository for all of the open source code, management, and documentation of the IPT: <a href='http://code.google.com/p/gbif-providertoolkit/source/checkout/'>http://code.google.com/p/gbif-providertoolkit/source/checkout/</a>.<br>
-<h2>IPT developer documentation</h2>
+## IPT developer documentation
 Developers who wish to contribute, or to use the latest revision of the source code for their installation should consult the "Developers" section of the GBIF IPT Google Code site wiki: <a href='http://code.google.com/p/gbif-providertoolkit/wiki/HowToContribute'>http://code.google.com/p/gbif-providertoolkit/wiki/HowToContribute</a>.<br>
-<h2>IPT experts group in the GBIF Community Site</h2>
+## IPT experts group in the GBIF Community Site
 The GBIF Community Site hosts a group for those interested in participating in helpdesk, promotion, and training activities related to the GBIF IPT. This is a place to exchange experiences, ask for help, and post opportunities, with the objective of a wider uptake of the tool inside and outside of the GBIF Network: <a href='http://community.gbif.org/pg/groups/3529/gbif-ipt-helpdesk-and-training-experts/'>http://community.gbif.org/pg/groups/3529/gbif-ipt-helpdesk-and-training-experts/</a>.<br>
-<h2>IPT issue tracker</h2>
+## IPT issue tracker
 The issue tracker is the bug report and feature request management system for the IPT software and documentation: <a href='http://code.google.com/p/gbif-providertoolkit/issues/list/'>http://code.google.com/p/gbif-providertoolkit/issues/list/</a>.<br>
-<h2>IPT mailing list</h2>
+## IPT mailing list
 Subscribe to the IPT mailing list to send and receive messages related to the use of the Integrated Publishing Toolkit. This group is for users to support each other in the use of the IPT: <a href='http://lists.gbif.org/mailman/listinfo/ipt/'>http://lists.gbif.org/mailman/listinfo/ipt/</a>.<br>
-<h2>IPT server preparation</h2>
+## IPT server preparation
 This wiki page gives details about preparing a server to run the IPT and can be found on the IPT project code site wiki at <a href='http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation'>http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation</a>.<br>
-<h2>IPT supported databases</h2>
+## IPT supported databases
 This wiki page gives details about the database management systems to which the IPT can connect for a data source. The page can be found on the IPT project code site [[here|IPT2DatabaseConnection.wiki]].<br>
-<h2>IPT test installation</h2>
+## IPT test installation
 GBIF provides a functional installation of the IPT for evaluation and testing purposes. The test installation of the latest release can be found at <a href='http://ipt.gbif.org'>http://ipt.gbif.org</a>.<br>
 <hr />
 <h1>References</h1>
