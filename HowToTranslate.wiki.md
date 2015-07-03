@@ -1,6 +1,6 @@
+# How to Translate
 
-
-# Introduction
+## Introduction
 The IPT user interface and user manual both need internationalisation. Internationalisation is a community effort, and everyone is welcome to join.
 
 ## How To Translate the User Interface
