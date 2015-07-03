@@ -275,7 +275,7 @@ Example table sorted in descending order by the column labeled "Type".<br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/Control-TableSortedDescending.png' />
 
 <h4>File upload</h4>
-Files can be uploaded in the IPT during two actions: when <a href='IPT2ManualNotes#Create_a_New_Resource.md'>creating a new resource</a>, or when <a href='IPT2ManualNotes#Source_Data.md'>adding new source data files</a>.<br>
+Files can be uploaded in the IPT during two actions: when [[creating a new resource|IPT2ManualNotes.wiki#create-a-new-resource]], or when [[adding new source data files|IPT2ManualNotes.wiki#source-data]].<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/Control-UploadCreateResource.png' />
 
