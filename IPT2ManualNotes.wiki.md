@@ -2,7 +2,7 @@
 
 **IPT Version: 2.2**
 
-_For the IPT Version 2.1 user manual, please go [here.](IPTUserManualv21.md) Otherwise, user manuals for older versions are available from the [Version History](http://www.gbif.org/ipt/releases) page._
+_For the IPT Version 2.1 user manual, please go [[here|IPTUserManualv21.wiki]] Otherwise, user manuals for older versions are available from the [Version History](http://www.gbif.org/ipt/releases) page._
 
 # Table of Contents
 + [[Introduction|IPT2ManualNotes.wiki#introduction]]
@@ -668,7 +668,7 @@ This metadata page contains information about how to cite the resource as well a
 <blockquote>Biodiversity Institute of Ontario (2011) Migratory birds of Ontario. Version 1.2. University of Guelph. Dataset/Species occurrences. <a href='http://dx.doi.org/10.5886/qzxxd2pa'>http://dx.doi.org/10.5886/qzxxd2pa</a>
 </blockquote></li><li>Example citation with 9 creators:<br>
 <blockquote>Brouillet L, Desmet P, Coursol F, Meades SJ, Favreau M, Anions M, Belisle P, Gendreau C, Shorthouse D (2010) Database of vascular plants of Canada. Version 1.2. Universite de Montreal Biodiversity Centre. Dataset/Species checklist. <a href='http://doi.org/10.5886/1bft7W5f'>http://doi.org/10.5886/1bft7W5f</a>
-</blockquote></li></ul></li><li><b>Auto-generation - Turn On/Off</b> - turn on to let the IPT auto-generate the resource citation for you. The citation format used in auto-generation is based on DataCite's preferred citation format, and satisfies the Joint Declaration of Data Citation Principles. This format includes a version number, which is especially important for datasets that are continuously updated. You can read more about the citation format in the <a href='IPT2Citation.md'>IPT Citation Format</a> page in the IPT wiki.<br>
+</blockquote></li></ul></li><li><b>Auto-generation - Turn On/Off</b> - turn on to let the IPT auto-generate the resource citation for you. The citation format used in auto-generation is based on DataCite's preferred citation format, and satisfies the Joint Declaration of Data Citation Principles. This format includes a version number, which is especially important for datasets that are continuously updated. You can read more about the citation format in the [[IPT Citation Format|IPT2Citation.wiki]] page in the IPT wiki.<br>
 </li><li><b>Citation Identifier</b> - a DOI, URI, or other persistent identifier that resolves to the online dataset. It is recommended the identifier be included in the citation. If the resource has been assigned a DOI (using the IPT), the IPT sets the DOI as the citation identifier and it can no longer be edited.<br>
 </li><li><b>Bibliographic Citations</b> - the additional citations of other resources related to or used in the creation of this resource.<br>
 </li><li><b>Add new bibliographic citation</b> -  click on this link to add the text boxes required for an additional citation in the bibliography.<br>
@@ -715,7 +715,7 @@ This metadata page contains information about other aspects of the resource not 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataAdditionalMetadata.png' /></li></ul></li></ul>
 
 <ul><li><b>Date Created</b> - the date on which the first version of the resource was published. It will be used to formulate the publication year in the auto-generated resource citation. This value is set automatically when publishing and cannot be edited.<br>
-</li><li><b>Date Published</b> - the date when the resource was last published. This value is set automatically when publishing (see the <a href='IPT2ManualNotes#Published_Release.md'>Published Release</a> section).<br>
+</li><li><b>Date Published</b> - the date when the resource was last published. This value is set automatically when publishing (see the [[Published Versions|IPT2ManualNotes.wiki#published-versions]] section).<br>
 </li><li><b>Resource logo URL</b> - a logo representing the resource. The logo URL can be used to upload the resource. It may also be uploaded from an image file selected from your disk.<br>
 </li><li><b>Purpose</b> - a summary of the intentions for which the data set was developed. Includes objectives for creating the data set and what the data set is to support.<br>
 </li><li><b>Maintenance Description</b> - a description of the maintenance frequency of this resource. This description compliments the update frequency selected on the Basic Metadata page.<br>
