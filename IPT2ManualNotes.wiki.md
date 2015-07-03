@@ -283,7 +283,7 @@ Files can be uploaded in the IPT during two actions: when [[creating a new resou
 
 The IPT has an upload size limit of 100MB. There is no limit to the size of Darwin Core Archive the IPT can export/publish though. For loading datasets larger than 100MB in size into the IPT, the following work-arounds are recommended:<br>
 <ul><li>compressing the file (with zip or gzip)<br>
-</li><li>loading the data into one of the many <a href='IPT2DatabaseConnection.md'>databases supported by the IPT</a>
+</li><li>loading the data into one of the many [[databases supported by the IPT|IPT2DatabaseConnection.wiki]]
 </li><li>splitting the file up</li></ul>
 
 <h3>Controls that appear on all pages</h3>
@@ -444,7 +444,7 @@ Should the user want to delete this source, they can reopen the Source Data File
 If the source data are contained in multiple text files, the process described in this section can be repeated for each of the files to import. A zipped folder with multiple text files can also be imported to add multiple source files in one go.<br>
 <br>
 <b>Database as data source</b><br>
-The IPT can use database connections to import data from tables or views. A list of supported database connections is given on the <a href='http://code.google.com/p/gbif-providertoolkit/wiki/IPT2DatabaseConnection'>Supported databases</a> page of the IPT Project wiki. To configure a database as a data source, click on the button labeled "Connect to DB" in the left-hand column of the Source Data area of the Resource Overview page. This will open a Source Database detail page.<br>
+The IPT can use database connections to import data from tables or views. A list of supported database connections is given on the [[Supported Databases|IPT2DatabaseConnection.wiki]] page of the IPT Project wiki. To configure a database as a data source, click on the button labeled "Connect to DB" in the left-hand column of the Source Data area of the Resource Overview page. This will open a Source Database detail page.<br>
 <br>
 The Source Database Detail page shows the name of the resource along with a summary of the database characteristics (readability, number of columns detected) and allows the user to view and edit the parameters that describe how to access the data from the database, and to use these settings to analyze and preview the data.<br>
 <br>
@@ -1041,7 +1041,7 @@ Subscribe to the IPT mailing list to send and receive messages related to the us
 <h2>IPT server preparation</h2>
 This wiki page gives details about preparing a server to run the IPT and can be found on the IPT project code site wiki at <a href='http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation'>http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation</a>.<br>
 <h2>IPT supported databases</h2>
-This wiki page gives details about the database management systems to which the IPT can connect for a data source. The page can be found on the IPT project code site at <a href='http://code.google.com/p/gbif-providertoolkit/wiki/IPT2DatabaseConnection'>http://code.google.com/p/gbif-providertoolkit/wiki/IPT2DatabaseConnection</a>.<br>
+This wiki page gives details about the database management systems to which the IPT can connect for a data source. The page can be found on the IPT project code site [[here|IPT2DatabaseConnection.wiki]].<br>
 <h2>IPT test installation</h2>
 GBIF provides a functional installation of the IPT for evaluation and testing purposes. The test installation of the latest release can be found at <a href='http://ipt.gbif.org'>http://ipt.gbif.org</a>.<br>
 <hr />
