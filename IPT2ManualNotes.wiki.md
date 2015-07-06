@@ -45,28 +45,28 @@ _For the IPT Version 2.1 user manual, please go [[here|IPTUserManualv21.wiki]] O
       + [[Upload a Darwin Core Archive|IPT2ManualNotes.wiki#upload-a-darwin-core-archive]]
       + [[Upload a zipped IPT resource configuration folder|IPT2ManualNotes.wiki#upload-a-zipped-ipt-resource-configuration-folder]]
       + [[Upload a metadata file|IPT2ManualNotes.wiki#upload-a-metadata-file]]
-    + Edit an existing resource
-    + Resource Overview
-      + Source Data
-      + Darwin Core Mappings
-      + Metadata
+    + [[Edit an existing resource|IPT2ManualNotes.wiki#edit-an-existing-resource]]
+    + [[Resource Overview|IPT2ManualNotes.wiki#resource-overview]]
+      + [[Source Data|IPT2ManualNotes.wiki#source-data]]
+      + [[Darwin Core Mappings|IPT2ManualNotes.wiki#darwin-core-mappings]]
+      + [[Metadata|IPT2ManualNotes.wiki#metadata]]
       + [[Basic Metadata|IPT2ManualNotes.wiki#basic-metadata]]
-      + Geographic Coverage
-      + Taxonomic Coverage
-      + Temporal Coverage
-      + Keywords
-      + Associated Parties
-      + Project Data
-      + Sampling Methods
-      + Citations
-      + Collection Data
-      + External Links
-      + Additional Metadata
-      + Published Versions
-      + Visibility
-      + Migrate a Resource
-      + Resource Managers
-      + Delete a Resource
+      + [[Geographic Coverage|IPT2ManualNotes.wiki#geographic-coverage]]
+      + [[Taxonomic Coverage|IPT2ManualNotes.wiki#taxonomic-coverage]]
+      + [[Temporal Coverage|IPT2ManualNotes.wiki#temporal-coverage]]
+      + [[Keywords|IPT2ManualNotes.wiki#keywords]]
+      + [[Associated Parties|IPT2ManualNotes.wiki#associated-parties]]
+      + [[Project Data|IPT2ManualNotes.wiki#project-data]]
+      + [[Sampling Methods|IPT2ManualNotes.wiki#sampling-methods]]
+      + [[Citations|IPT2ManualNotes.wiki#citations]]
+      + [[Collection Data|IPT2ManualNotes.wiki#collection-data]]
+      + [[External Links|IPT2ManualNotes.wiki#external-links]]
+      + [[Additional Metadata|IPT2ManualNotes.wiki#additional-metadata]]
+      + [[Published Versions|IPT2ManualNotes.wiki#published-versions]]
+      + [[Visibility|IPT2ManualNotes.wiki#visibility]]
+      + [[Migrate a Resource|IPT2ManualNotes.wiki#migrate-a-resource]]
+      + [[Resource Managers|IPT2ManualNotes.wiki#resource-managers]]
+      + [[Delete a Resource|IPT2ManualNotes.wiki#delete-a-resource]]
   + Administration Menu (visible only to users having the Admin role)
     + [[Configure IPT settings|IPT2ManualNotes.wiki#configure-ipt-settings]]
     + Publish all resources
