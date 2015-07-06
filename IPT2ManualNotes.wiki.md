@@ -6,8 +6,8 @@ _For the IPT Version 2.1 user manual, please go [[here|IPTUserManualv21.wiki]] O
 
 # Table of Contents
 + [[Introduction|IPT2ManualNotes.wiki#introduction]]
-  + About the GBIF Integrated Publishing Toolkit
-  + How to Use this Manual
+  + [[About the GBIF Integrated Publishing Toolkit|IPT2ManualNotes.wiki#about-the-gbif-integrated-publishing-toolkit]]
+  + [[How to Use this Manual|IPT2ManualNotes.wiki#how-to-use-this-manual]]
 + Getting Started Guide
   + Requirements
     + Internet Connectivity
