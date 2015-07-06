@@ -74,16 +74,16 @@ _For the IPT Version 2.1 user manual, please go [[here|IPTUserManualv21.wiki]] O
       + [[Create a new user|IPT2ManualNotes.wiki#create-a-new-user]]
       + [[Modify an existing user|IPT2ManualNotes.wiki#modify-an-existing-user]]
       + [[Delete a user|IPT2ManualNotes.wiki#delete-a-user]]
-  + Configure GBIF registration options
-  + Edit GBIF registration
-  + Configure Organisations
-    + Edit organisation
-    + Add organisation
-  + Configure Core Types and Extensions
-    + Update vocabularies
-    + View extension details
-    + Install extension
-    + Remove extension
+  + [[Configure GBIF registration options|IPT2ManualNotes.wiki#configure-gbif-registration-options]]
+  + [[Edit GBIF registration|IPT2ManualNotes.wiki#edit-gbif-registration]]
+  + [[Configure Organisations|IPT2ManualNotes.wiki#configure-organisations]]
+    + [[Edit organisation|IPT2ManualNotes.wiki#edit-organisation]]
+    + [[Add organisation|IPT2ManualNotes.wiki#add-organisation]]
+  + [[Configure Core Types and Extensions|IPT2ManualNotes.wiki#configure-core-types-and-extensions]]
+    + [[Update vocabularies|IPT2ManualNotes.wiki#update-vocabularies]]
+    + [[View extension details|IPT2ManualNotes.wiki#view-extension-details]]
+    + [[Install extension|IPT2ManualNotes.wiki#install-extension]]
+    + [[Remove extension|IPT2ManualNotes.wiki#remove-extension]]
   + View IPT logs
   + About Menu (visible to all users)
 + About the IPT
