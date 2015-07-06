@@ -67,13 +67,13 @@ _For the IPT Version 2.1 user manual, please go [[here|IPTUserManualv21.wiki]] O
       + [[Migrate a Resource|IPT2ManualNotes.wiki#migrate-a-resource]]
       + [[Resource Managers|IPT2ManualNotes.wiki#resource-managers]]
       + [[Delete a Resource|IPT2ManualNotes.wiki#delete-a-resource]]
-  + Administration Menu (visible only to users having the Admin role)
+  + [[Administration Menu (visible only to users having the Admin role)|IPT2ManualNotes.wiki#administration-menu-visible-only-to-users-having-the-admin-role]]
     + [[Configure IPT settings|IPT2ManualNotes.wiki#configure-ipt-settings]]
-    + Publish all resources
-    + Configure User accounts
-      + Create a new user
-      + Modify an existing user
-      + Delete a user
+    + [[Publish all resources|IPT2ManualNotes.wiki#publish-all-resources]]
+    + [[Configure User accounts|IPT2ManualNotes.wiki#configure-user-accounts]]
+      + [[Create a new user|IPT2ManualNotes.wiki#create-a-new-user]]
+      + [[Modify an existing user|IPT2ManualNotes.wiki#modify-an-existing-user]]
+      + [[Delete a user|IPT2ManualNotes.wiki#delete-a-user]]
   + Configure GBIF registration options
   + Edit GBIF registration
   + Configure Organisations
