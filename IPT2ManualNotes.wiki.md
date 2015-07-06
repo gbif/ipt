@@ -84,13 +84,13 @@ _For the IPT Version 2.1 user manual, please go [[here|IPTUserManualv21.wiki]] O
     + [[View extension details|IPT2ManualNotes.wiki#view-extension-details]]
     + [[Install extension|IPT2ManualNotes.wiki#install-extension]]
     + [[Remove extension|IPT2ManualNotes.wiki#remove-extension]]
-  + View IPT logs
-  + About Menu (visible to all users)
-+ About the IPT
-  + Citation
-  + Copyright
-  + License
-+ Resources
+  + [[View IPT logs|IPT2ManualNotes.wiki#view-ipt-logs]]
+  + [[About Menu (visible to all users)|IPT2ManualNotes.wiki#about-menu-visible-to-all-users]]
++ [[About the IPT|IPT2ManualNotes.wiki#about-the-ipt]]
+  + [[Citation|IPT2ManualNotes.wiki#citation]]
+  + [[Copyright|IPT2ManualNotes.wiki#copyright]]
+  + [[License|IPT2ManualNotes.wiki#license]]
++ [[Resources|IPT2ManualNotes.wiki#resources]]
   + [[Darwin Core Archive documentation|IPT2ManualNotes.wiki#darwin-core-archive-documentation]]
   + [[GBIF Help Desk|IPT2ManualNotes.wiki#gbif-help-desk]]
   + [[GBIF Registry|IPT2ManualNotes.wiki#gbif-registry]]
