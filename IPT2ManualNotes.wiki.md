@@ -26,7 +26,7 @@ _For the IPT Version 2.1 user manual, please go [[here|IPTUserManualv21.wiki]] O
     + [[IPT setup II|IPT2ManualNotes.wiki#ipt-setup-II]]
   + [[Starting Over|IPT2ManualNotes.wiki#starting-over]]
 + [[Quick Reference Guide|IPT2ManualNotes.wiki#quick-reference-guide]]
-  + [[Introduction|IPT2ManualNotes.wiki#introduction]]
+  + [[Introduction|IPT2ManualNotes.wiki#introduction-1]]
   + [[Common features|IPT2ManualNotes.wiki#common-features]]
     + [[User interface controls|IPT2ManualNotes.wiki#user-interface-controls]]
       + [[File upload|IPT2ManualNotes.wiki#file-upload]]
