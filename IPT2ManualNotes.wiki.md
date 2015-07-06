@@ -91,19 +91,19 @@ _For the IPT Version 2.1 user manual, please go [[here|IPTUserManualv21.wiki]] O
   + Copyright
   + License
 + Resources
-  + Darwin Core Archive documentation
-  + GBIF Help Desk
-  + GBIF Registry
-  + IPT code site
-  + IPT developer documentation
-  + IPT experts group in the GBIF Community Site
-  + IPT issue tracker
-  + IPT mailing list
-  + IPT server preparation
-  + IPT supported databases
-  + IPT test installation
-+ References
-+ Glossary
+  + [[Darwin Core Archive documentation|IPT2ManualNotes.wiki#darwin-core-archive-documentation]]
+  + [[GBIF Help Desk|IPT2ManualNotes.wiki#gbif-help-desk]]
+  + [[GBIF Registry|IPT2ManualNotes.wiki#gbif-registry]]
+  + [[IPT code site|IPT2ManualNotes.wiki#ipt-code-site]]
+  + [[IPT developer documentation|IPT2ManualNotes.wiki#ipt-developer-documentation]]
+  + [[IPT experts group in the GBIF Community Site|IPT2ManualNotes.wiki#ipt-experts-group-in-the-gbif-community Site]]
+  + [[IPT issue tracker|IPT2ManualNotes.wiki#ipt-issue-tracker]]
+  + [[IPT mailing list|IPT2ManualNotes.wiki#ipt-mailing-list]]
+  + [[IPT server preparation|IPT2ManualNotes.wiki#ipt-server-preparation]]
+  + [[IPT supported databases|IPT2ManualNotes.wiki#ipt-supported-databases]]
+  + [[IPT test installation|IPT2ManualNotes.wiki#ipt-test-installation]]
++ [[References|IPT2ManualNotes.wiki#references]]
++ [[Glossary|IPT2ManualNotes.wiki#glossary]]
 
 ---
 
