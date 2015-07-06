@@ -24,15 +24,15 @@ _For the IPT Version 2.1 user manual, please go [[here|IPTUserManualv21.wiki]] O
   + [[Set up the IPT for the first time|IPT2ManualNotes.wiki#set-up-the-ipt-for-the-first-time]]
     + [[IPT setup|IPT2ManualNotes.wiki#ipt-setup]]
     + [[IPT setup II|IPT2ManualNotes.wiki#ipt-setup-II]]
-  + Starting Over
-+ Quick Reference Guide
-  + Introduction
-  + Common features
-    + User interface controls
+  + [[Starting Over|IPT2ManualNotes.wiki#starting-over]]
++ [[Quick Reference Guide|IPT2ManualNotes.wiki#quick-reference-guide]]
+  + [[Introduction|IPT2ManualNotes.wiki#introduction]]
+  + [[Common features|IPT2ManualNotes.wiki#common-features]]
+    + [[User interface controls|IPT2ManualNotes.wiki#user-interface-controls]]
       + [[File upload|IPT2ManualNotes.wiki#file-upload]]
-    + Controls that appear on all pages
-      + Header
-      + Footer
+    + [[Controls that appear on all pages|IPT2ManualNotes.wiki#controls-that-appear-on-all-pages]]
+      + [[Header|IPT2ManualNotes.wiki#header]]
+      + [[Footer|IPT2ManualNotes.wiki#footer]]
   + Home Menu (visible to all users)
     + [[Public Resources Table|IPT2ManualNotes.wiki#public-resources-table]]
     + RSS feed
@@ -204,7 +204,8 @@ It is relatively easy to re-initiate the IPT and begin again with the first setu
 <ul><li>If the user enters the same absolute path to the data directory as before, the previous configuration will be completely restored, assuming that there has been no incompatible upgrade in IPT versions between the time when the data directory was last used and when it is used to re-initiate the IPT.<br>
 </li><li>If the same data directory location is desired, but without the previous IPT configuration, then the contents of that data directory should be moved to a different location or removed entirely before clicking on "Save" in the initial IPT setup page.<br>
 </li><li>If an entirely new data directory is used, then the setup will proceed exactly as described in the "IPT setup" section of this Getting Started Guide.<br>
-<hr />
+
+
 # Quick Reference Guide
 ## Introduction
 This Quick Reference Guide explains in detail the capabilities of an IPT instance that has been installed, run for the first time, and tested to be functional as explained in the Getting Started Guide. The details of this guide are presented in four sections corresponding to the four "menus" available in the IPT user interface. Some tabs are only visible when a user having the appropriate rights to see them is logged in.<br>
