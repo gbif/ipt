@@ -21,9 +21,9 @@ _For the IPT Version 2.1 user manual, please go [[here|IPTUserManualv21.wiki]] O
     + [[Download the IPT|IPT2ManualNotes.wiki#download-the-ipt]]
     + [[Deploy the IPT to the servlet container|IPT2ManualNotes.wiki#deploy-the-ipt-to-the-servlet-container]]
     + [[Run the IPT application|IPT2ManualNotes.wiki#run-the-ipt0-application]]
-  + Set up the IPT for the first time
-    + IPT setup
-    + IPT setup II
+  + [[Set up the IPT for the first time|IPT2ManualNotes.wiki#set-up-the-ipt-for-the-first-time]]
+    + [[IPT setup|IPT2ManualNotes.wiki#ipt-setup]]
+    + [[IPT setup II|IPT2ManualNotes.wiki#ipt-setup-II]]
   + Starting Over
 + Quick Reference Guide
   + Introduction
