@@ -33,7 +33,7 @@ _For the IPT Version 2.1 user manual, please go [[here|IPTUserManualv21.wiki]] O
     + [[Controls that appear on all pages|IPT2ManualNotes.wiki#controls-that-appear-on-all-pages]]
       + [[Header|IPT2ManualNotes.wiki#header]]
       + [[Footer|IPT2ManualNotes.wiki#footer]]
-  + [[Home Menu (visible to all users)|IPT2ManualNotes.wiki#home-menu-(visible-to-all-users)]]
+  + [[Home Menu (visible to all users)|IPT2ManualNotes.wiki#home-menu-visible-to-all-users]]
     + [[Public Resources Table|IPT2ManualNotes.wiki#public-resources-table]]
     + [[RSS feed|IPT2ManualNotes.wiki#rss-feed]]
     + [[Registered resource inventory|IPT2ManualNotes.wiki#registered-resource-inventory]]
