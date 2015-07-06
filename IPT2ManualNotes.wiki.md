@@ -39,9 +39,9 @@ _For the IPT Version 2.1 user manual, please go [[here|IPTUserManualv21.wiki]] O
     + [[Registered resource inventory|IPT2ManualNotes.wiki#registered-resource-inventory]]
     + [[Resource homepage|IPT2ManualNotes.wiki#resource-homepage]]
       + [[Version history|IPT2ManualNotes.wiki#version-history]]
-  + Manage Resources Menu (visible to users with an Admin or Manager role)
-    + Manage Resources Table
-    + Create a New Resource
+  + [[Manage Resources Menu (visible to users with an Admin or Manager role)|IPT2ManualNotes.wiki#manage-resources-menu-visible-to-users-with-an-admin-or-manager-role]]
+    + [[Manage Resources Table|IPT2ManualNotes.wiki#Manage Resources Table]]
+    + [[Create a New Resource|IPT2ManualNotes.wiki#Create a New Resource]]
       + [[Upload a Darwin Core Archive|IPT2ManualNotes.wiki#upload-a-darwin-core-archive]]
       + [[Upload a zipped IPT resource configuration folder|IPT2ManualNotes.wiki#upload-a-zipped-ipt-resource-configuration-folder]]
       + [[Upload a metadata file|IPT2ManualNotes.wiki#upload-a-metadata-file]]
