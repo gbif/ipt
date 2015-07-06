@@ -8,14 +8,14 @@ _For the IPT Version 2.1 user manual, please go [[here|IPTUserManualv21.wiki]] O
 + [[Introduction|IPT2ManualNotes.wiki#introduction]]
   + [[About the GBIF Integrated Publishing Toolkit|IPT2ManualNotes.wiki#about-the-gbif-integrated-publishing-toolkit]]
   + [[How to Use this Manual|IPT2ManualNotes.wiki#how-to-use-this-manual]]
-+ Getting Started Guide
-  + Requirements
-    + Internet Connectivity
-    + Stable URL
-    + Memory
-    + Disk space
-    + Java
-    + Servlet container
++ [[Getting Started Guide|IPT2ManualNotes.wiki#getting-started-guide]]
+  + [[Requirements|IPT2ManualNotes.wiki#requirements]]
+    + [[Internet Connectivity|IPT2ManualNotes.wiki#internet-connectivity]]
+    + [[Stable URL|IPT2ManualNotes.wiki#stable-url]]
+    + [[Memory|IPT2ManualNotes.wiki#memory]]
+    + [[Disk space|IPT2ManualNotes.wiki#disk-space]]
+    + [[Java|IPT2ManualNotes.wiki#java]]
+    + [[Servlet container|IPT2ManualNotes.wiki#servlet-container]]
   + Install the IPT
     + Prepare the server
     + Download the IPT
