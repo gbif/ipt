@@ -1062,7 +1062,7 @@ GBIF provides a functional installation of the IPT for evaluation and testing pu
 Réveillon, A. 2009. The GBIF Integrated Publishing Toolkit User Manual, version 1.0. Copenhagen: Global Biodiversity Information Facility. 37 pp.
 
 # Glossary
-* **Checklist Resource **- a resource having information about one of many types of taxon-related lists.
+* **Checklist Resource ** - a resource having information about one of many types of taxon-related lists.
 * **Core Type** - a category of predefined sets of data properties (Taxon and Occurrence) used as the basis of a resource. Additional extensions might be linked to these Core Types when mapping data in the IPT.
 * **CSV file** - a text file that contains data in the Comma-separated Value format.
 * **Data directory** - the full (rather than relative) path (location) in the file structure where the data associated with the IPT instance are located.
