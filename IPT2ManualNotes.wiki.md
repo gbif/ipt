@@ -1,4 +1,4 @@
-# The GBIF Integrated Publishing Toolkit User Manual
+# The IPT User Manual
 
 **IPT Version: 2.2**
 
