@@ -932,17 +932,16 @@ On this page a user having the Admin role can edit the organisation. Click on th
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAdminOrgsEditOrg.png' />
 
-Following are explanations of the specific information to select or enter:<br>
-<br>
-<b>Organisation name</b> - the title of the organisation as registered in the GBIF Registry. <b>Note</b>: this cannot be changed.<br>
-<b>Organisation password</b> - the password that should be used to edit the entry for this organisation in the GBIF Registry.<br>
-<b>Organisation alias</b> - a name given to the organisation for convenience within the IPT instance; aliases, rather then the full Organisation Name appear in Organisation selection lists in the IPT.<br>
-<b>Can publish resources</b> - this checkbox indicates whether the organisation can be associated with resources in the IPT. Only those organisations having this box checked will appear in lists to be associated with resources.<br>
-<b>DOI registration agency</b> - the type of account used to register DOIs for resources; can be either DataCite or EZID. <b>Note</b>: an account is issued to the organisation after it signs an agreement with a DataCite member (or EZID), which gives it permission to register DOIs under one or more prefixes (e.g. 10.5072) in one or more domains (e.g. gbif.org). <b>Note</b>: confirm that the account can actually register DOIs under the IPT's domain/base URL otherwise registrations via the IPT won't work.<br>
-<b>Account username</b> - the username (symbol) of the DataCite/EZID account issued to the organisation.<br>
-<b>Account password</b> - the password of the DataCite/EZID account issued to the organisation.<br>
-<b>DOI prefix/shoulder</b> - the preferred DOI prefix/shoulder used to mint DOIs. This prefix is unique to the account issued to the organisation. <b>Note</b>: always use a test prefix (e.g. 10.5072 for DataCite, 10.5072/FK2 for EZID) when running the IPT in test mode.<br>
-<b>Account activated</b> - this checkbox indicates if this DataCite/EZID account is the only account used by the IPT to register DOIs for datasets. Only one DataCite/EZID account can be activated at a time.<br>
+Following are explanations of the specific information to select or enter:
+* **Organisation name** - the title of the organisation as registered in the GBIF Registry. **Note**: this cannot be changed.
+* **Organisation password** - the password that should be used to edit the entry for this organisation in the GBIF Registry.
+* **Organisation alias** - a name given to the organisation for convenience within the IPT instance; aliases, rather then the full Organisation Name appear in Organisation selection lists in the IPT.
+* **Can publish resources - this checkbox indicates whether the organisation can be associated with resources in the IPT. Only those organisations having this box checked will appear in lists to be associated with resources.
+* **DOI registration agency** - the type of account used to register DOIs for resources; can be either DataCite or EZID. **Note**: an account is issued to the organisation after it signs an agreement with a DataCite member (or EZID), which gives it permission to register DOIs under one or more prefixes (e.g. 10.5072) in one or more domains (e.g. gbif.org). **Note**: confirm that the account can actually register DOIs under the IPT's domain/base URL otherwise registrations via the IPT won't work.
+* **Account username** - the username (symbol) of the DataCite/EZID account issued to the organisation.
+* **Account password** - the password of the DataCite/EZID account issued to the organisation.
+* **DOI prefix/shoulder** - the preferred DOI prefix/shoulder used to mint DOIs. This prefix is unique to the account issued to the organisation. Note: always use a test prefix (e.g. 10.5072 for DataCite, 10.5072/FK2 for EZID) when running the IPT in test mode.
+* **Account activated** - this checkbox indicates if this DataCite/EZID account is the only account used by the IPT to register DOIs for datasets. Only one DataCite/EZID account can be activated at a time.
 
 ### Add organisation
 Organisations are not available to be associated with resources until a user having the Admin role adds them. Click on the button labeled "Add" to open a page on which an additional organisation can be selected from the GBIF Registry to be used in this instance of the IPT. For explanations of the fields and selections on this page, refer to the information under the "Edit Organisation" section above. After the desired organisation is selected and all other data entered, including the password for the organisation, click on the button labeled "Save" to add the selected organisation to the list.<br>
@@ -1010,13 +1009,13 @@ This IPT installation has not been registered yet.<br>
 <hr />
 # About the IPT
 ## Citation
-This user manual adapts and builds upon the previous IPT User Manual (Réveillon 2009). The recommended citation for this user Manual is as follows:<br>
-<br>
-Wieczorek, J. 2011. The GBIF Integrated Publishing Toolkit User Manual, version 2.0. Copenhagen: Global Biodiversity Information Facility.<br>
-<br>
+This user manual adapts and builds upon the previous IPT User Manual (Réveillon 2009). The recommended citation for this user Manual is as follows:
+
+Wieczorek & Braak (2015). The GBIF Integrated Publishing Toolkit User Manual, version 2.2. Copenhagen: Global Biodiversity Information Facility.
+
 ## Copyright
-The GBIF Integrated Publishing Toolkit and this user manual are Copyright 2011 by the Global Biodiversity Information Facility Secretariat.<br>
-<br>
+The GBIF Integrated Publishing Toolkit and this user manual are Copyright 2015 by the Global Biodiversity Information Facility Secretariat.
+
 ## License
 The GBIF Integrated Publishing Toolkit is open source software released under the Apache License Version 2.0. You may obtain a copy of this License at <a href='http://www.apache.org/licenses/LICENSE-2.0'>http://www.apache.org/licenses/LICENSE-2.0</a>. Unless required by applicable law or agreed to in writing, software distributed under this License is distributed on an "as is" basis, without warranties of conditions of any kind, either express or implied. See the License for the specific language governing rights and limitations under the License.
 
@@ -1027,32 +1026,41 @@ This user manual is released under the Creative Commons Attribution-Non-commerci
 
 # Resources
 ## Darwin Core Archive documentation
-Details about the structure of a Darwin Core Archive, abbreviated DWCA, can be found in the "Text Guide" section of the Darwin Core web site: <a href='http://rs.tdwg.org/dwc/terms/guides/text/'>http://rs.tdwg.org/dwc/terms/guides/text/</a>. Further information about the IPT's use of DWCAs can be found on [[this|DarwinCore.wiki]] wiki page.<br>
-## GBIF Help Desk
-Send email messages to helpdesk@gbif.org to report problems with GBIF services, such as the GBIF Registry. Do not send IPT-specific help question to the Help Desk. Instead send them to the IPT mailing list (see below).<br>
-## GBIF Registry
-Use this online application to find information about organisations, IPT instances, and resources registered with GBIF: <a href='http://www.gbif.org/dataset'>http://www.gbif.org/dataset</a>.<br>
-## IPT GitHub site
-This GitHub site is the project repository for all of the open source code, management, and documentation of the IPT.<br>
-## IPT developer documentation
-Developers who wish to contribute, or to use the latest revision of the source code for their installation should consult the [[How to Contribute|HowToContribute.wiki]] section of the IPT wiki.<br>
-## IPT experts group in the GBIF Community Site
-The GBIF Community Site hosts a group for those interested in participating in helpdesk, promotion, and training activities related to the GBIF IPT. This is a place to exchange experiences, ask for help, and post opportunities, with the objective of a wider uptake of the tool inside and outside of the GBIF Network: <a href='http://community.gbif.org/pg/groups/3529/gbif-ipt-helpdesk-and-training-experts/'>http://community.gbif.org/pg/groups/3529/gbif-ipt-helpdesk-and-training-experts/</a>.<br>
-## IPT issue tracker
-The [issue tracker](https://github.com/gbif/ipt/issues) is the bug report and feature request management system for the IPT software and documentation.<br>
-## IPT mailing list
-Subscribe to the IPT mailing list to send and receive messages related to the use of the Integrated Publishing Toolkit. This group is for users to support each other in the use of the IPT: <a href='http://lists.gbif.org/mailman/listinfo/ipt/'>http://lists.gbif.org/mailman/listinfo/ipt/</a>.<br>
-## IPT server preparation
-This wiki page gives details about preparing a server to run the IPT and can be found on the IPT project code site wiki at <a href='http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation'>http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation</a>.<br>
-## IPT supported databases
-This wiki page gives details about the database management systems to which the IPT can connect for a data source. The page can be found on the IPT project code site [[here|IPT2DatabaseConnection.wiki]].<br>
-## IPT test installation
-GBIF provides a functional installation of the IPT for evaluation and testing purposes. The test installation of the latest release can be found at <a href='http://ipt.gbif.org'>http://ipt.gbif.org</a>.<br>
-<hr />
-# References
-Réveillon, A. 2009. The GBIF Integrated Publishing Toolkit User Manual, version 1.0. Copenhagen: Global Biodiversity Information Facility. 37 pp.</li></ul>
+Details about the structure of a Darwin Core Archive, abbreviated DWCA, can be found in the "Text Guide" section of the Darwin Core web site: <a href='http://rs.tdwg.org/dwc/terms/guides/text/'>http://rs.tdwg.org/dwc/terms/guides/text/</a>. Further information about the IPT's use of DWCAs can be found on [[this|DarwinCore.wiki]] wiki page.
 
-<hr />
+## GBIF Help Desk
+Send email messages to helpdesk@gbif.org to report problems with GBIF services, such as the GBIF Registry. Do not send IPT-specific help question to the Help Desk. Instead send them to the IPT mailing list (see below).
+
+## GBIF Registry
+Use this online application to find information about organisations, IPT instances, and resources registered with GBIF: <a href='http://www.gbif.org/dataset'>http://www.gbif.org/dataset</a>.
+
+## IPT GitHub site
+This GitHub site is the project repository for all of the open source code, management, and documentation of the IPT.
+
+## IPT developer documentation
+Developers who wish to contribute, or to use the latest revision of the source code for their installation should consult the [[How to Contribute|HowToContribute.wiki]] section of the IPT wiki.
+
+## IPT experts group in the GBIF Community Site
+The GBIF Community Site hosts a group for those interested in participating in helpdesk, promotion, and training activities related to the GBIF IPT. This is a place to exchange experiences, ask for help, and post opportunities, with the objective of a wider uptake of the tool inside and outside of the GBIF Network: <a href='http://community.gbif.org/pg/groups/3529/gbif-ipt-helpdesk-and-training-experts/'>http://community.gbif.org/pg/groups/3529/gbif-ipt-helpdesk-and-training-experts/</a>.
+
+## IPT issue tracker
+The [issue tracker](https://github.com/gbif/ipt/issues) is the bug report and feature request management system for the IPT software and documentation.
+
+## IPT mailing list
+Subscribe to the IPT mailing list to send and receive messages related to the use of the Integrated Publishing Toolkit. This group is for users to support each other in the use of the IPT: <a href='http://lists.gbif.org/mailman/listinfo/ipt/'>http://lists.gbif.org/mailman/listinfo/ipt/</a>.
+
+## IPT server preparation
+This wiki page gives details about preparing a server to run the IPT and can be found on the IPT project code site wiki at <a href='http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation'>http://code.google.com/p/gbif-providertoolkit/wiki/IPTServerPreparation</a>.
+
+## IPT supported databases
+This wiki page gives details about the database management systems to which the IPT can connect for a data source. The page can be found on the IPT project code site [[here|IPT2DatabaseConnection.wiki]].
+
+## IPT test installation
+GBIF provides a functional installation of the IPT for evaluation and testing purposes. The test installation of the latest release can be found at <a href='http://ipt.gbif.org'>http://ipt.gbif.org</a>.
+
+# References
+Réveillon, A. 2009. The GBIF Integrated Publishing Toolkit User Manual, version 1.0. Copenhagen: Global Biodiversity Information Facility. 37 pp.
+
 # Glossary
 <b>Checklist Resource</b> - a resource having information about one of many types of taxon-related lists.<br>
 <b>Core Type</b> - a category of predefined sets of data properties (Taxon and Occurrence) used as the basis of a resource. Additional extensions might be linked to these Core Types when mapping data in the IPT.<br>
