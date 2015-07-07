@@ -1015,13 +1015,13 @@ Wieczorek, J. 2011. The GBIF Integrated Publishing Toolkit User Manual, version 
 The GBIF Integrated Publishing Toolkit and this user manual are Copyright 2011 by the Global Biodiversity Information Facility Secretariat.<br>
 <br>
 ## License
-The GBIF Integrated Publishing Toolkit is open source software released under the Apache License Version 2.0. You may obtain a copy of this License at <a href='http://www.apache.org/licenses/LICENSE-2.0'>http://www.apache.org/licenses/LICENSE-2.0</a>. Unless required by applicable law or agreed to in writing, software distributed under this License is distributed on an "as is" basis, without warranties of conditions of any kind, either express or implied. See the License for the specific language governing rights and limitations under the License.<br>
-<br>
-This user manual is released under the Creative Commons Attribution-Non-commercial-Share Alike 3.0 Unported License. You may obtain a copy of this license at <a href='http://creativecommons.org/licenses/by-nc-sa/3.0/'>http://creativecommons.org/licenses/by-nc-sa/3.0/</a>. Though you should consult the actual license document for details, in general terms the license states that you are free to copy, distribute, transmit, remix and adapt the work, under the following conditions:<br>
-<ul><li>you must cite the work in the manner specified on this page (but not in a way that suggests that GBIF or the GBIF Secretariat endorses you or your use of the work);<br>
-</li><li>you may not use this work for commercial purposes;<br>
-</li><li>if you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.<br>
-<hr />
+The GBIF Integrated Publishing Toolkit is open source software released under the Apache License Version 2.0. You may obtain a copy of this License at <a href='http://www.apache.org/licenses/LICENSE-2.0'>http://www.apache.org/licenses/LICENSE-2.0</a>. Unless required by applicable law or agreed to in writing, software distributed under this License is distributed on an "as is" basis, without warranties of conditions of any kind, either express or implied. See the License for the specific language governing rights and limitations under the License.
+
+This user manual is released under the Creative Commons Attribution-Non-commercial-Share Alike 3.0 Unported License. You may obtain a copy of this license at <a href='http://creativecommons.org/licenses/by-nc-sa/3.0/'>http://creativecommons.org/licenses/by-nc-sa/3.0/</a>. Though you should consult the actual license document for details, in general terms the license states that you are free to copy, distribute, transmit, remix and adapt the work, under the following conditions:
+* you must cite the work in the manner specified on this page (but not in a way that suggests that GBIF or the GBIF Secretariat endorses you or your use of the work);
+* you may not use this work for commercial purposes;
+* if you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
+
 # Resources
 ## Darwin Core Archive documentation
 Details about the structure of a Darwin Core Archive, abbreviated DWCA, can be found in the "Text Guide" section of the Darwin Core web site: <a href='http://rs.tdwg.org/dwc/terms/guides/text/'>http://rs.tdwg.org/dwc/terms/guides/text/</a>. Further information about the IPT's use of DWCAs can be found on [[this|DarwinCore.wiki]] wiki page.<br>
