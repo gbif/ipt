@@ -25,6 +25,7 @@
     - [[DataCite to EML mappings|IPT2DataCiteMappings.wiki]]
     - [[DOI Workflows|IPT2DOIWorkflow.wiki]]
     - [[How To Apply a License|IPT2ApplyingLicense.wiki]]
+    - [[IPT Workbook|Workbook.wiki]]
     - [[DarwinCore|DarwinCore.wiki]]
     - [[Data Preparation|DataPreparation.wiki]]
     - [[Occurrence Resource Tutorial|TutorialOccurrenceResource.wiki]]
