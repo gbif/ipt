@@ -1062,26 +1062,26 @@ GBIF provides a functional installation of the IPT for evaluation and testing pu
 Réveillon, A. 2009. The GBIF Integrated Publishing Toolkit User Manual, version 1.0. Copenhagen: Global Biodiversity Information Facility. 37 pp.
 
 # Glossary
-<b>Checklist Resource</b> - a resource having information about one of many types of taxon-related lists.<br>
-<b>Core Type</b> - a category of predefined sets of data properties (Taxon and Occurrence) used as the basis of a resource. Additional extensions might be linked to these Core Types when mapping data in the IPT.<br>
-<b>CSV file</b> - a text file that contains data in the Comma-separated Value format.<br>
-<b>Data directory</b> - the full (rather than relative) path (location) in the file structure where the data associated with the IPT instance are located.<br>
-<b>Darwin Core</b> - a standard consisting of terms and classes of terms used to share biodiversity data.<br>
-<b>Darwin Core Archive</b> - a single zipped archive for a data set consisting of one or more text files of data, an XML file (meta.xml) describing the contents of the text files and how they relate to each other, and an XML file (eml.xml) containing the metadata in EML about the data set.<br>
-<b>EML</b> - the Ecological Markup Language is an XML-based profile used to encode metadata about a data set. <br>
-<b>Extension</b> - in this user manual, an extension is a set of terms corresponding to a specific category of data. An extension should be thought of as an extension of the capabilities of the IPT rather than as an extension of any particular standard.<br>
-<b>GBIF Registry</b> - a registry that manages the nodes, organisations, resources, and IPT installations registered with GBIF, making them discoverable and interoperable.<br>
-<b>Metadata</b> - in this user manual, metadata refers to the information about a data set as opposed the primary data in the data set.<br>
-<b>Metadata Resource</b> - a resource having information about a data set, but without having the actual primary data. A metadata resource might give information about a collection that has not yet been digitized, for example.<br>
-<b>Occurrence Resource</b> - a resource having information about Occurrences as defined in the Darwin Core.<br>
-<b>Private</b> - a state of a resource in which only the creator, invited managers, and IPT administrators can view it.<br>
-<b>Public</b> - a state of a resource in which anyone can view it.<br>
-<b>Published Release</b> - the latest version of the Darwin Core Archive produced for a resource in the IPT and registered in the GBIF Registry.<br>
-<b>Registered</b> - a state of a public resource or of an IPT instance in which anyone can discover it through the GBIF Registry.<br>
-<b>Resource</b> - in this user manual, resource refers to a data set and the metadata about it.<br>
-<b>Resource Managers</b> - IPT users having a role that allows them to create, change, and remove resources.<br>
-<b>RowType</b> - the category of information represented in an extension. The RowType is generally the URI of the Class that best fits the information contained in the extension.<br>
-<b>RSS</b> - the acronym for Really Simple Syndication, a type of subscription format for tracking changes to a web site.<br>
-<b>Shortname</b> - a short unique name used for resource identification within the IPT and services that access the IPT.<br>
-<b>Source Data</b> - in this user manual, the source data are the data that are mapped to core types and extensions within a resource and may consist of text files or a database.<br>
-<b>Visibility</b> - a term describing how a resource may be viewed (private, public, or registered).
+* **Checklist Resource **- a resource having information about one of many types of taxon-related lists.
+* **Core Type** - a category of predefined sets of data properties (Taxon and Occurrence) used as the basis of a resource. Additional extensions might be linked to these Core Types when mapping data in the IPT.
+* **CSV file** - a text file that contains data in the Comma-separated Value format.
+* **Data directory** - the full (rather than relative) path (location) in the file structure where the data associated with the IPT instance are located.
+* **Darwin Core** - a standard consisting of terms and classes of terms used to share biodiversity data.<br>
+* **Darwin Core Archive** - a single zipped archive for a data set consisting of one or more text files of data, an XML file (meta.xml) describing the contents of the text files and how they relate to each other, and an XML file (eml.xml) containing the metadata in EML about the data set.
+* **EML** - the Ecological Markup Language is an XML-based profile used to encode metadata about a data set. <br>
+* **Extension** - in this user manual, an extension is a set of terms corresponding to a specific category of data. An extension should be thought of as an extension of the capabilities of the IPT rather than as an extension of any particular standard.
+* **GBIF Registry** - a registry that manages the nodes, organisations, resources, and IPT installations registered with GBIF, making them discoverable and interoperable.
+* **Metadata** - in this user manual, metadata refers to the information about a data set as opposed the primary data in the data set.
+* **Metadata Resource** - a resource having information about a data set, but without having the actual primary data. A metadata resource might give information about a collection that has not yet been digitized, for example.
+* **Occurrence Resource** - a resource having information about Occurrences as defined in the Darwin Core.
+* **Private** - a state of a resource in which only the creator, invited managers, and IPT administrators can view it.
+* **Public** - a state of a resource in which anyone can view it.
+* **Published Release** - the latest version of the Darwin Core Archive produced for a resource in the IPT and registered in the GBIF Registry.
+* **Registered** - a state of a public resource or of an IPT instance in which anyone can discover it through the GBIF Registry.
+* **Resource** - in this user manual, resource refers to a data set and the metadata about it.
+* **Resource Managers** - IPT users having a role that allows them to create, change, and remove resources.
+* **RowType** - the category of information represented in an extension. The RowType is generally the URI of the Class that best fits the information contained in the extension.
+* **RSS** - the acronym for Really Simple Syndication, a type of subscription format for tracking changes to a web site.
+* **Shortname** - a short unique name used for resource identification within the IPT and services that access the IPT.
+* **Source Data** - in this user manual, the source data are the data that are mapped to core types and extensions within a resource and may consist of text files or a database.
+* **Visibility** - a term describing how a resource may be viewed (private, public, or registered).
