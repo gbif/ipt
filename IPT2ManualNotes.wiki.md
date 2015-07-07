@@ -853,9 +853,9 @@ This page allows a user having the Admin role to make and change settings for th
 * **IPT Server Location** - This area of the page allows the Admin to set the geographic coordinates (latitude and longitude) of the location of the server on which the IPT is installed. Setting these coordinates allows GBIF to map the location of this among other registered IPT installations around the world.
 
 ### Publish all resources
-This option is an administrative action just like the Publish button, only it publishes ALL resources. Therefore for each resource, it creates a new DWCA, EML, and RTF, and broadcasts the update to the Registry and via RSS. In addition, it also updates the IPTs metadata in the Registry. If any of the following conditions have been met since the last time the resources were updated, click on this button to make the necessary updates:<br>
-<ul><li>Multiple resources have been updated, and you want to publish a new release for all of them instead of publishing them individually.<br>
-</li><li>The Base URL or Proxy URL has been changed and you want to update the IPTs registered services to reflect the change.</li></ul>
+This option is an administrative action just like the Publish button, only it publishes ALL resources. Therefore for each resource, it creates a new DWCA, EML, and RTF, and broadcasts the update to the Registry and via RSS. In addition, it also updates the IPTs metadata in the Registry. If any of the following conditions have been met since the last time the resources were updated, click on this button to make the necessary updates:
+* Multiple resources have been updated, and you want to publish a new release for all of them instead of publishing them individually.
+* The Base URL or Proxy URL has been changed and you want to update the IPTs registered services to reflect the change.
 
 ### Configure User accounts
 This page allows users having the Admin role to create, modify, and delete user accounts. When the page is opened, it shows a table of existing users and basic information about them including their names, email addresses, roles, and the date and time of their last logins.<br>
