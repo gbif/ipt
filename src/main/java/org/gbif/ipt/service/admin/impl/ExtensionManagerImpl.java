@@ -521,6 +521,22 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   }
 
   @Override
+  public List<Extension> listCore(String coreRowType) {
+    if (coreRowType != null) {
+      if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_OCCURRENCE)) {
+        return search(OCCURRENCE_KEYWORD, false, true);
+      } else if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON)) {
+        return search(TAXON_KEYWORD, false, true);
+      } else if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_EVENT)) {
+        return search(EVENT_KEYWORD, false, true);
+      } else {
+        return search(coreRowType, false, true);
+      }
+    }
+    return listCore();
+  }
+
+  @Override
   public List<Extension> listCore() {
     List<Extension> list = Lists.newArrayList();
     for (String rowType : AppConfig.getCoreRowTypes()) {
@@ -530,24 +546,6 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
       }
     }
     return list;
-  }
-
-  @Override
-  public List<Extension> listCore(String coreRowType) {
-    coreRowType = StringUtils.trimToNull(coreRowType);
-    if (coreRowType != null) {
-      List<Extension> list = Lists.newArrayList();
-      coreRowType = coreRowType.toLowerCase();
-      for (String rowType : AppConfig.getCoreRowTypes()) {
-        Extension e = get(rowType);
-        if (e != null && StringUtils.containsIgnoreCase(e.getSubject(), coreRowType)) {
-          list.add(e);
-        }
-      }
-      return list;
-    } else {
-      return listCore();
-    }
   }
 
   @Override
