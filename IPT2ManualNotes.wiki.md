@@ -806,22 +806,23 @@ The Visibility area of the Manage Resources page allows users having manager rig
 * **Registered** - A resource that has been registered with the GBIF network is discoverable through the GBIF website and the data from the resource can be indexed by and accessed from the GBIF portal. Be aware it can take up to one hour for data to be indexed by GBIF following registration. A summary of information registered with GBIF will appear in the right-hand column when registration is complete.<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceVisibilityRegistered.png' /> If the resource has already been registered, every time the "Publish" button is clicked, its registration information in the GBIF Registry also gets updated. The visibility of a registered resource can not be changed to private. If a resource must be removed from the GBIF Registry, follow the procedure described in the "Delete a Resource" section under the "Resource Overview" heading in the "Manage Resources Menu" section.
 
 #### Migrate a Resource
-There is now a way to migrate registered DiGIR, BioCASE, and TAPIR resources to an IPT. The way this works, is that the IPT resource is configured to update the existing registered DiGIR, BioCASE, or TAPIR resource that it corresponds to in the GBIF Registry. This allows the resource to preserve its GBIF Registry UUID.</li></ul>
+There is now a way to migrate registered DiGIR, BioCASE, and TAPIR resources to an IPT. The way this works, is that the IPT resource is configured to update the existing registered DiGIR, BioCASE, or TAPIR resource that it corresponds to in the GBIF Registry. This allows the resource to preserve its GBIF Registry UUID.
 
-To migrate an <b>existing registered resource</b> to your <b>IPT resource</b>, simply follow these instructions:<br>
-<ol><li>Ensure that the <b>IPT resource's</b> visibility is public and NOT registered.<br>
-</li><li>Determine the owning organisation of the <b>existing registered resource</b>, and ensure that it is added to the IPT as an organisation, and that it is configured to publish datasets. To do so, please refer to the section "Add Organisation".<br>
-</li><li>Determine the GBIF Registry UUID of the <b>existing registered resource</b> (it will have a format similar to the following: "5d637678-cb64-4863-a12b-78b4e1a56628"). Depending on whether you are running the IPT in test or production mode, you would visit <a href='http://www.gbif-uat.org/dataset'>http://www.gbif-uat.org/dataset</a> or <a href='http://www.gbif.org/dataset'>http://www.gbif.org/dataset</a> respectively.<br>
-</li><li>Add this UUID to the list of the <b>IPT resource's</b> alternative identifiers on the Additional Metadata page. Don't forget to save the Additional Metadata page.<br>
-</li><li>Ensure that no other public or registered resource in your IPT includes this UUID in their list of alternative identifiers. In cases where you are trying to replace a registered resource that already exists in your IPT, the other resource has to be deleted first.<br>
-</li><li>Select the owning organisation from the drop-down list on the resource overview page, and click the register button. Similar to any other registration, you will have to confirm that you have read and understood the GBIF data sharing agreement before the registration will be executed.<br>
-</li><li><b>Send an email to helpdesk@gbif.org alerting them about the update.</b> In your email please enclose:<br>
-<ol><li>the name and URL (or GBIF Registry UUID) of your IPT<br>
-</li><li>the name and GBIF Registry UUID of your updated Resource (see line Resource Key on resource overview page, for example: Resource Key d990532f-6783-4871-b2d3-cae3d0cb872b)<br>
-</li><li>(if applicable) whether the DiGIR/BioCASE/TAPIR technical installation that used to serve the resource has been deprecated, and whether it can be deleted from the GBIF Registry<br>
+To migrate an **existing registered resource** to your **IPT resource**, simply follow these instructions:
+
+1. Ensure that the **IPT resource's** visibility is public and NOT registered.
+2. Determine the owning organisation of the e**xisting registered resource**, and ensure that it is added to the IPT as an organisation, and that it is configured to publish datasets. To do so, please refer to the section "Add Organisation".
+3. Determine the GBIF Registry UUID of the **existing registered resource** (it will have a format similar to the following: "5d637678-cb64-4863-a12b-78b4e1a56628"). Depending on whether you are running the IPT in test or production mode, you would visit <a href='http://www.gbif-uat.org/dataset'>http://www.gbif-uat.org/dataset</a> or <a href='http://www.gbif.org/dataset'>http://www.gbif.org/dataset</a> respectively.
+4. Add this UUID to the list of the **IPT resource's** alternative identifiers on the Additional Metadata page. Don't forget to save the Additional Metadata page.
+5. Ensure that no other public or registered resource in your IPT includes this UUID in their list of alternative identifiers. In cases where you are trying to replace a registered resource that already exists in your IPT, the other resource has to be deleted first.
+6. Select the owning organisation from the drop-down list on the resource overview page, and click the register button. Similar to any other registration, you will have to confirm that you have read and understood the GBIF data sharing agreement before the registration will be executed.
+7. **Send an email to helpdesk@gbif.org alerting them about the update**. In your email please enclose:
+  1. the name and URL (or GBIF Registry UUID) of your IPT
+  2. the name and GBIF Registry UUID of your updated Resource (see line Resource Key on resource overview page, for example: Resource Key d990532f-6783-4871-b2d3-cae3d0cb872b)
+  3. (if applicable) whether the DiGIR/BioCASE/TAPIR technical installation that used to serve the resource has been deprecated, and whether it can be deleted from the GBIF Registry
+
 #### Resource Managers
-<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceManagers.png' /></li></ol></li></ol>
-
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceManagers.png' />
 Each resource has one or more explicitly assigned managers who are allowed to view, change, and remove the resource. The user who creates a resource automatically has these capabilities. Additional managers can be associated with a resource and given these same capabilities by selecting them by name from the select box in this area of the Resource Overview page, then clicking on the button labeled "Add". Any manager associated with a resource and having the role "Manager with registration rights" may also register the resource and update it in the GBIF registry. All users having the Admin role automatically have complete managerial roles for all resources in the IPT instance. The right-hand column of this area shows the name and email address of the creator of the resource. If any managers have been added, their names and email addresses will be listed under the creator. Any added manager can have the managerial role for the resource removed by clicking on the button labeled "Delete" to the right of the email address in the manager listing.<br>
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceManagerAdded.png' />
