@@ -862,17 +862,18 @@ This page allows users having the Admin role to create, modify, and delete user 
 <br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAdminUserAccounts.png' />
 #### Create a new user
-A new user can be created by clicking on the button labeled "Create" below the list of existing users. This will open a page on which the information about the user can be entered, after which the new user can be created by clicking on the button labeled "Save".<br>
-<br>
+A new user can be created by clicking on the button labeled "Create" below the list of existing users. This will open a page on which the information about the user can be entered, after which the new user can be created by clicking on the button labeled "Save".
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAdminUserCreateUser.png' />
 
-<b>Email</b> - The current email address of the user is used as an identifier to log in within the IPT and can not be changed.<br><b>Note</b>: If the user requires a change of email address, the recommended procedure is to create a new user account with the new email address, then delete the user account having the antiquated email address.<br>
-<b>First name</b> - The first name of the user.<br>
-<b>Last name</b> - The last name of the user.<br>
-<b>Role</b> - The role the user will have with respect to this installation of the IPT. Admin users can make changes to all aspects of the instance of the IPT. Users having the role "Manager without registration rights" are able to create, edit, remove, and manage resources they have created or have been invited to manage within the IPT instance. Users having the role "Manager with registration rights" have the additional capability to register resources with the GBIF network. Other users can log in to the IPT and view resources, but cannot make any changes.<br>
-<b>Password</b> - The password for the user must consist of at least four characters and should be made secure and safe from loss, as it is not recoverable from the IPT application.<br><b>Note</b>: If a user's password is lost, it can be reset to an automatically generated new value by a user having the Admin role. It is the responsibility of the Admin user to communicate this new password to the user for whom it was reset. The user can then change the password to the desired value by entering it in the IPT Account page accessible through the "Account" link in the header in the upper right corner of every page after logging in.<br>
-<b>Verify password</b> - An exact copy of the password as entered in the Password text box to confirm that it was entered as intended.<br>
-<br>
+* **Email** - The current email address of the user is used as an identifier to log in within the IPT and can not be changed.
+* **Note**: If the user requires a change of email address, the recommended procedure is to create a new user account with the new email address, then delete the user account having the antiquated email address.
+* **First name** - The first name of the user.
+* **Last name** - The last name of the user.
+* **Role** - The role the user will have with respect to this installation of the IPT. Admin users can make changes to all aspects of the instance of the IPT. Users having the role "Manager without registration rights" are able to create, edit, remove, and manage resources they have created or have been invited to manage within the IPT instance. Users having the role "Manager with registration rights" have the additional capability to register resources with the GBIF network. Other users can log in to the IPT and view resources, but cannot make any changes.
+* **Password** - The password for the user must consist of at least four characters and should be made secure and safe from loss, as it is not recoverable from the IPT application.
+* **Note**: If a user's password is lost, it can be reset to an automatically generated new value by a user having the Admin role. It is the responsibility of the Admin user to communicate this new password to the user for whom it was reset. The user can then change the password to the desired value by entering it in the IPT Account page accessible through the "Account" link in the header in the upper right corner of every page after logging in.
+* **Verify password** - An exact copy of the password as entered in the Password text box to confirm that it was entered as intended.
+
 #### Modify an existing user
 Information about users can be changed in the user details page after selecting the name of the user you wish to modify from the list of existing users. The user detail page shows all of the information about that user. The first name, last name, and role for the user can be changed by entering the new values and clicking on the button labeled "Save". Details of the information to be entered on this page can be found in the explanations in the "Create a new user" section, above.<br>
 <br>
