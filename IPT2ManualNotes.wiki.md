@@ -213,87 +213,87 @@ This Quick Reference Guide explains in detail the capabilities of an IPT instanc
 ### User interface controls
 Most user interface controls have both enabled and disabled modes. If the control is enabled, it will either commit an action when clicked (a button, for example), or it will allow changes to be made to the value bound to the control (a text, check, or select box, for example). In the latter case the changes will be saved, if possible, when the form on which they appear is saved, which is generally accomplished on a given page by clicking on a button labeled "Save". Disabled controls show the value of the associated information, but do not allow that information to be saved under the conditions in effect at the time they appear. The purpose for most user interface controls is indicated by an associated label that appears above and/or to the left of the control. Sometimes supplemental information is also accessible from an associated information icon.</li></ul></li></ul>
 
-<b>Menus</b> - in the IPT, a menu bar appears below the GBIF logo on nearly every page. The menu bar is populated with menus that guide users to fundamental topics. Menu items appear based on the what the current user is authorized to see based on their role. The currently active menu is colored brightly, while inactive menus are grey. Click on a menu to open and activate the page for that topic.<br>
-<br>
-Menu bar before login or after a user having no special role logs in, with the Home menu active:<br>
-<br>
+**Menus** - in the IPT, a menu bar appears below the GBIF logo on nearly every page. The menu bar is populated with menus that guide users to fundamental topics. Menu items appear based on the what the current user is authorized to see based on their role. The currently active menu is colored brightly, while inactive menus are grey. Click on a menu to open and activate the page for that topic.
+
+Menu bar before login or after a user having no special role logs in, with the Home menu active:
+
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/IPTMenuBarHomeAbout.png' />
 
-Menu after a user having a Manager role logs in, with the Manage Resources menu active:<br>
-<br>
+Menu after a user having a Manager role logs in, with the Manage Resources menu active:
+
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/IPTMenuBarHomeManageAbout.png' />
 
-Menu after a user having the Admin role logs in, with the Administration menu active:<br>
-<br>
+Menu after a user having the Admin role logs in, with the Administration menu active:
+
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/IPTMenuBarHomeManageAdminAbout.png' />
 
-<b>Text boxes</b> - allow textual information to be viewed or entered.<br>
-<br>
-Example text box and label for an email address:<br>
-<br>
+**Text boxes** - allow textual information to be viewed or entered.
+
+Example text box and label for an email address:
+
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/Control-TextBoxExample.png' />
 
-<b>Check boxes</b> - allow a value to viewed or set to true (when checked) or false (when unchecked).<br>
-<br>
-Example check box and label to indicate that the IPT can publish resources:<br>
-<br>
-<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v203/Control-CheckboxExample.png' /><br>
+**Check boxes** - allow a value to viewed or set to true (when checked) or false (when unchecked).
 
-<b>Select boxes</b> - allows a value to be viewed or selected from a list of predefined values. A select box may contain explanatory text about the selection in place of a selectable value. In this case the selection will begin with "Select " (e.g., "Select a country, territory, or island"). Click on the select box to open it and see the list of possible values. Click on one of the choices to set that value.<br>
-<br>
-Example select box and label for the user role, with Admin selected:<br>
-<br>
+Example check box and label to indicate that the IPT can publish resources:
+
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v203/Control-CheckboxExample.png' />
+
+**Select boxes** - allows a value to be viewed or selected from a list of predefined values. A select box may contain explanatory text about the selection in place of a selectable value. In this case the selection will begin with "Select " (e.g., "Select a country, territory, or island"). Click on the select box to open it and see the list of possible values. Click on one of the choices to set that value.
+
+Example select box and label for the user role, with Admin selected:
+
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/Control-SelectBoxExample.png' />
 
-<b>Links</b> - opens a page other than the one on which the link occurs. Links may open the new page in the same browser window (or tab) or in a separate window (or tab).<br>
-<br>
-Example link to the account information page for the logged in user:<br>
-<br>
+**Links** - opens a page other than the one on which the link occurs. Links may open the new page in the same browser window (or tab) or in a separate window (or tab).
+
+Example link to the account information page for the logged in user:
+
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/Control-LinkExample.png' />
 
-<b>Information icon</b> - shows a message explaining the intention of the control next to which it appears. Click on the icon next to any field to see a help message about that control. Click on it again to make the message disappear. Some information messages include a link, which, if selected, will populate the control with the appropriate value for the selection.<br>
-<br>
-Example information icon for character encoding after the UTF-8 link was selected:<br>
-<br>
+**Information icon** - shows a message explaining the intention of the control next to which it appears. Click on the icon next to any field to see a help message about that control. Click on it again to make the message disappear. Some information messages include a link, which, if selected, will populate the control with the appropriate value for the selection.
+
+Example information icon for character encoding after the UTF-8 link was selected:
+
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/Information-CharacterEncoding.png' />
 
-<b>Documentation icon</b> <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/Control-DocumentationIcon.png' /> - this icon indicates that there is a detailed information page about the subject with which the icon is associated. Click on the icon to open the page in a new browser window.<br>
-<br>
-<b>Trash icon</b> <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/Control-TrashIcon.png' /> - this icon is associated with other controls on the page. Clicking on the icon will delete the associated data.<br>
-<br>
-<b>Calendar icon</b> <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/Control-CalendarIcon.png' /> - this icon is associated with a text field meant to contain a date. Clicking on the icon opens a small calendar with controls that allow the user to scroll forward and backward from the currently selected month and year, select boxes to choose a different month or year, and days of the week arranged in a standard New Era calendar. Selecting a specific day will place the date in the correct format into the associated text box.<br>
-<br>
-Example calendar associated with an text box labeled "End Date" in which 31 Dec 2010 is the current date but not yet selected:<br>
-<br>
+**Documentation icon** <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/Control-DocumentationIcon.png' /> - this icon indicates that there is a detailed information page about the subject with which the icon is associated. Click on the icon to open the page in a new browser window.
+
+**Trash icon** <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/Control-TrashIcon.png' /> - this icon is associated with other controls on the page. Clicking on the icon will delete the associated data.
+
+**Calendar icon** <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/Control-CalendarIcon.png' /> - this icon is associated with a text field meant to contain a date. Clicking on the icon opens a small calendar with controls that allow the user to scroll forward and backward from the currently selected month and year, select boxes to choose a different month or year, and days of the week arranged in a standard New Era calendar. Selecting a specific day will place the date in the correct format into the associated text box.
+
+Example calendar associated with an text box labeled "End Date" in which 31 Dec 2010 is the current date but not yet selected:
+
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/Control-TextBoxWithCalendarOpen.png' />
 
-<b>Sortable Table</b> - a table that allows the rows to be sorted by the values of a selected column in ascending or descending order. The column headers are the labels for the columns, which appear as links. Click on a column header to sort the table using the values in that column. Click again on the same column header to sort the table in the opposite direction.<br>
-<br>
-Example table sorted in ascending order by the column labeled "Name".<br>
+**Sortable Table** - a table that allows the rows to be sorted by the values of a selected column in ascending or descending order. The column headers are the labels for the columns, which appear as links. Click on a column header to sort the table using the values in that column. Click again on the same column header to sort the table in the opposite direction.
+
+Example table sorted in ascending order by the column labeled "Name".
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/Control-TableSortedAscending.png' />
 
-Example table sorted in descending order by the column labeled "Type".<br>
+Example table sorted in descending order by the column labeled "Type".
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/Control-TableSortedDescending.png' />
 
 #### File upload
-Files can be uploaded in the IPT during two actions: when [[creating a new resource|IPT2ManualNotes.wiki#create-a-new-resource]], or when [[adding new source data files|IPT2ManualNotes.wiki#source-data]].<br>
-<br>
+Files can be uploaded in the IPT during two actions: when [[creating a new resource|IPT2ManualNotes.wiki#create-a-new-resource]], or when [[adding new source data files|IPT2ManualNotes.wiki#source-data]].
+
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/Control-UploadCreateResource.png' />
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/Control-UploadSourceData.png' />
 
-The IPT has an upload size limit of 100MB. There is no limit to the size of Darwin Core Archive the IPT can export/publish though. For loading datasets larger than 100MB in size into the IPT, the following work-arounds are recommended:<br>
-<ul><li>compressing the file (with zip or gzip)<br>
-</li><li>loading the data into one of the many [[databases supported by the IPT|IPT2DatabaseConnection.wiki]]
-</li><li>splitting the file up</li></ul>
+The IPT has an upload size limit of 100MB. There is no limit to the size of Darwin Core Archive the IPT can export/publish though. For loading datasets larger than 100MB in size into the IPT, the following work-arounds are recommended:
+* compressing the file (with zip or gzip)
+* loading the data into one of the many [[databases supported by the IPT|IPT2DatabaseConnection.wiki]]
+* splitting the file up
 
 ### Controls that appear on all pages
-This section describes several features that are accessible in the header and footer of most of the pages of the IPT.<br>
+This section describes several features that are accessible in the header and footer of most of the pages of the IPT.
 #### Header
-The header section of the IPT appears in the upper right of most pages and allows basic control over the IPT, including who is using it, and in what language. Following are two screen images showing the two possible states in which the header may be found - logged in, and not logged in.<br>
-<br>
-Header, not logged in, English language chosen for the user interface:<br>
-<br>
+The header section of the IPT appears in the upper right of most pages and allows basic control over the IPT, including who is using it, and in what language. Following are two screen images showing the two possible states in which the header may be found - logged in, and not logged in.
+
+Header, not logged in, English language chosen for the user interface:
+
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v205/IPTHeaderNotLoggedIn.png' />
 
 Header, logged in, English language chosen for the user interface:<br>
