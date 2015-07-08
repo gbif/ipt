@@ -52,7 +52,7 @@
                   <@input name="eml.project.personnel[${item_index}].lastName" i18nkey="eml.project.personnel.lastName" requiredField=true/>
                 </div>
                 <div class="halfcolumn">
-                  <#if eml.project.personnel[item_index].userIds[0]??>
+                  <#if eml.project.personnel[item_index]?? && eml.project.personnel[item_index].userIds[0]??>
                     <@select name="eml.project.personnel[${item_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${eml.project.personnel[item_index].userIds[0].directory!}"/>
                   <#else>
                     <@select name="eml.project.personnel[${item_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value=""/>

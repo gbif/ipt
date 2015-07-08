@@ -1484,6 +1484,10 @@ div.contact {
   margin-bottom: 40px;
 }
 
+.row td {
+  padding-left: 5px;
+}
+
 div.contact .contactType {
   color: #333333;
   margin-bottom: 0 !important;
