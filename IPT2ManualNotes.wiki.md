@@ -374,113 +374,121 @@ When the Manage Resources page is first opened, it shows a table of existing res
 * **Author** - the IPT user who created the resource.
 
 ### Create a New Resource
-Below the Manage Resource table is a form that can be used to create a new resource. First, a unique "shortname" must be provided for the resource. This short name will be used to uniquely identify the resource within the IPT instance, and will be used within the URL to access the resource via the Internet. The shortname must be at least three characters in length, may contain alphanumeric characters, but must not contain white space or punctuation other than hyphens or underscores (e.g., "firstresource" or "first_resource", but not "first resource" or "firstresource!"). Second, an optional resource type can be provided. Please note that when an optional archived resource is loaded (see below) the type will be determined automatically and overwrite this selection. Third, an optional archived resource can be uploaded. The following sections describe the 3 different types of archived resources from which a new resource can be derived: [[Darwin Core Archive|IPT2ManualNotes.wiki#upload-a-darwin-core-archive]], [[zipped (.zip) IPT resource configuration folder|IPT2ManualNotes.wiki#upload-a-zipped-ipt-resource-configuration-folder]], [[metadata file|IPT2ManualNotes.wiki#upload-a-metadata-file]].<br>
-<br>
-Of course, you can always just <i>create an entirely new resource</i> without loading an existing archived resource. With this option the resource configuration will have to be created in its entirety through the IPT forms, including uploading source data files (or connecting to a database) and mapping the fields therein to terms in the appropriate extension or extensions. <b>Please note the IPT has a 100MB file upload limit</b>, however, there is <b>no limit to the size of Darwin Core Archive the IPT can export/publish</b>. Refer to the [[File upload|IPT2ManualNotes.wiki#file-upload]] section to find out how to work around the file upload limit.</b>
+Below the Manage Resource table is a form that can be used to create a new resource. First, a unique "shortname" must be provided for the resource. This short name will be used to uniquely identify the resource within the IPT instance, and will be used within the URL to access the resource via the Internet. The shortname must be at least three characters in length, may contain alphanumeric characters, but must not contain white space or punctuation other than hyphens or underscores (e.g., "firstresource" or "first_resource", but not "first resource" or "firstresource!"). Second, an optional resource type can be provided. Please note that when an optional archived resource is loaded (see below) the type will be determined automatically and overwrite this selection. Third, an optional archived resource can be uploaded. The following sections describe the 3 different types of archived resources from which a new resource can be derived: [[Darwin Core Archive|IPT2ManualNotes.wiki#upload-a-darwin-core-archive]], [[zipped (.zip) IPT resource configuration folder|IPT2ManualNotes.wiki#upload-a-zipped-ipt-resource-configuration-folder]], [[metadata file|IPT2ManualNotes.wiki#upload-a-metadata-file]].
 
-Begin by entering a new resource shortname as described above, and then click on the button labeled "Create". This will open the Resource Overview page. Proceed by completing the various sections of the manage resource page based on the descriptions under the "Resource Overview" heading of the "Manage Resources Menu" section.<br>
-<br>
+Of course, you can always just _create an entirely new resource_ without loading an existing archived resource. With this option the resource configuration will have to be created in its entirety through the IPT forms, including uploading source data files (or connecting to a database) and mapping the fields therein to terms in the appropriate extension or extensions. **Please note the IPT has a 100MB file upload limit**, however, there is **no limit to the size of Darwin Core Archive the IPT can export/publish**. Refer to the [[File upload|IPT2ManualNotes.wiki#file-upload]] section to find out how to work around the file upload limit.
+
+Begin by entering a new resource shortname as described above, and then click on the button labeled "Create". This will open the Resource Overview page. Proceed by completing the various sections of the manage resource page based on the descriptions under the "Resource Overview" heading of the "Manage Resources Menu" section.
+
 #### Upload a Darwin Core Archive
-The IPT is able to import valid Darwin Core Archive files up to 100MB in size. Information about Darwin Core Archives can be found on the Darwin Core web site (<a href='http://rs.tdwg.org/dwc/terms/guides/text/'>http://rs.tdwg.org/dwc/terms/guides/text/</a>), with further information about the IPT's use of them [[here|DarwinCore.wiki]]. To import a Darwin Core Archive, click on the button labeled "Choose File", then navigate to and select the intended archive file. After selecting the file, its name will appear next to the "Choose File" button.<br>
-<br>
+The IPT is able to import valid Darwin Core Archive files up to 100MB in size. Information about Darwin Core Archives can be found on the Darwin Core web site (<a href='http://rs.tdwg.org/dwc/terms/guides/text/'>http://rs.tdwg.org/dwc/terms/guides/text/</a>), with further information about the IPT's use of them [[here|DarwinCore.wiki]]. To import a Darwin Core Archive, click on the button labeled "Choose File", then navigate to and select the intended archive file. After selecting the file, its name will appear next to the "Choose File" button.
+
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceUploadDwcA.png' />
 
-Click on the button labeled "Create". If there is a problem importing the selected file, an error message will alert the user. If the import is successful, a Resource Overview page will appear with an informational message at the top describing the results of the import process.<br>
+Click on the button labeled "Create". If there is a problem importing the selected file, an error message will alert the user. If the import is successful, a Resource Overview page will appear with an informational message at the top describing the results of the import process.
+
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceUploadDwCASuccess.png' />
+
 #### Upload a zipped IPT resource configuration folder
-It is possible to create a copy of a resource from its zipped IPT resource configuration folder. The only condition is that the resource must have been created under a compatible version of the IPT. Effectively, this will copy all the resource's metadata, source data, and mappings. It will <b>not</b> copy the resource's registration information, version history, DOI(s), version number, managers, publication status, created date, last publication date, or even preserve the resource short name.<br>
-<br>
-To do so, just follow these instructions:<br>
-<ol><li>Locate the resource configuration folder corresponding to the resource you want to copy. The resource configuration folders are stored inside the $data-directory/resources folder, and named using the resource short name. For example, if the resource had short name "ants", it would be found at $data-directory/resources/ants.<br>
-</li><li>Zip (compress) the resource configuration folder: ants/ -> ants.zip<br>
-</li><li>On the "Create a New Resource" section on the "Manage Resource Menu" page:<br>
-<ol><li>Enter a new resource short name. You can preserve the zipped resource's short name, provided it doesn't already exist in your IPT.<br>
-</li><li>Click on the button labeled "Choose File", then navigate to and select the intended zipped resource configuration folder.<br>
-</li><li>After selecting the file, its name will appear next to the "Choose File" button. Click on the button labeled "Create". If there is a problem importing the selected file, an error message will alert the user. If the import is successful, a Resource Overview page will appear with the resource metadata, source data, and mappings all copied from the zipped resource into the new resource.<br>
+It is possible to create a copy of a resource from its zipped IPT resource configuration folder. The only condition is that the resource must have been created under a compatible version of the IPT. Effectively, this will copy all the resource's metadata, source data, and mappings. It will <b>not</b> copy the resource's registration information, version history, DOI(s), version number, managers, publication status, created date, last publication date, or even preserve the resource short name.
+
+To do so, just follow these instructions:
+
+1. Locate the resource configuration folder corresponding to the resource you want to copy. The resource configuration folders are stored inside the $data-directory/resources folder, and named using the resource short name. For example, if the resource had short name "ants", it would be found at $data-directory/resources/ants.
+2. Zip (compress) the resource configuration folder: ants/ -> ants.zip
+3. On the "Create a New Resource" section on the "Manage Resource Menu" page:
+  1. Enter a new resource short name. You can preserve the zipped resource's short name, provided it doesn't already exist in your IPT.
+  2. Click on the button labeled "Choose File", then navigate to and select the intended zipped resource configuration folder.
+  3. After selecting the file, its name will appear next to the "Choose File" button. Click on the button labeled "Create". If there is a problem importing the selected file, an error message will alert the user. If the import is successful, a Resource Overview page will appear with the resource metadata, source data, and mappings all copied from the zipped resource into the new resource.
+
 #### Upload a metadata file
-The IPT is able to import and export valid dataset metadata files that conform to the GBIF Metadata Profile. Information about the GBIF EML Metadata Profile can be found in the <a href='http://www.gbif.org/orc/?doc_id=2820'>GBIF Metadata Profile Reference Guide</a>. Information about how to author a metadata document conforming to the GBIF Metadata Profile Darwin Core can be found in the <a href='http://www.gbif.org/orc/?doc_id=2821'>GBIF Metadata Profile How To Guide</a>. To import a metadata file, select the resource type "metadata-only", then click on the button labeled "Choose File", navigate to and select the intended metadata file. After selecting the file, its name will appear next to the "Choose File" button.</li></ol></li></ol>
+The IPT is able to import and export valid dataset metadata files that conform to the GBIF Metadata Profile. Information about the GBIF EML Metadata Profile can be found in the <a href='http://www.gbif.org/orc/?doc_id=2820'>GBIF Metadata Profile Reference Guide</a>. Information about how to author a metadata document conforming to the GBIF Metadata Profile Darwin Core can be found in the <a href='http://www.gbif.org/orc/?doc_id=2821'>GBIF Metadata Profile How To Guide</a>. To import a metadata file, select the resource type "metadata-only", then click on the button labeled "Choose File", navigate to and select the intended metadata file. After selecting the file, its name will appear next to the "Choose File" button.
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceUploadEml.png' />
 
-Click on the button labeled "Create". If there is a problem importing the selected file, an error message will alert the user. If the import is successful, a Resource Overview page will appear with the metadata having been populated. The source data and mapping sections will remain hidden since this is a metadata-only resource. Should you decide to add primary dataset at a later time, just change the resource type in the [[Basic Metadata|IPT2ManualNotes.wiki#basic-metadata]] page of the metadata.<br>
+Click on the button labeled "Create". If there is a problem importing the selected file, an error message will alert the user. If the import is successful, a Resource Overview page will appear with the metadata having been populated. The source data and mapping sections will remain hidden since this is a metadata-only resource. Should you decide to add primary dataset at a later time, just change the resource type in the [[Basic Metadata|IPT2ManualNotes.wiki#basic-metadata]] page of the metadata.
+
 ### Edit an existing resource
-The table of existing resources shows only those resources that can be edited by the current user. To edit a resource, click on the name of the resource in the table of resources. The link will open the Resource Overview page for the selected resource. Refer to the descriptions under the "Resource Overview" heading of the "Manage Resources Menu" section for details on how to edit various aspects of the resource.<br>
+The table of existing resources shows only those resources that can be edited by the current user. To edit a resource, click on the name of the resource in the table of resources. The link will open the Resource Overview page for the selected resource. Refer to the descriptions under the "Resource Overview" heading of the "Manage Resources Menu" section for details on how to edit various aspects of the resource.
+
 ### Resource Overview
-This page allows users having managerial permission to make changes to various aspects of a resource's configuration. The name of the resource is given at the top of the page under the menu bar. If the resource has not been given a title, the resource shortname will appear at the top of the page and will act as a title instead. Below the resource name is a table showing categories of the resource configuration on the left with corresponding sections to the right. Information icons throughout the table can help guide managers in using each category. Each of these categories is configured separately as explained in detail in the following sections.<br>
-<br>
+This page allows users having managerial permission to make changes to various aspects of a resource's configuration. The name of the resource is given at the top of the page under the menu bar. If the resource has not been given a title, the resource shortname will appear at the top of the page and will act as a title instead. Below the resource name is a table showing categories of the resource configuration on the left with corresponding sections to the right. Information icons throughout the table can help guide managers in using each category. Each of these categories is configured separately as explained in detail in the following sections.
+
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceOverview.png' />
 
 #### Source Data
-This area of the Resource Overview page allows a user to import primary data from files or databases into the IPT. If a resource has no source data it is considered a metadata-only resource, with information about a data set or collection, but without any primary data. It is possible to connect a resource to more than one data source if the sources are related to each other. More about relating multiple data sources is explained in the <a href='http://rs.tdwg.org/dwc/terms/guides/text/index.htm#implement'>Implementation Guide</a> section of the Darwin Core Text Guide.  Following are explanations for the preliminary step of choosing the source data either from text files or from database sources:<br>
-<br>
-<b>File as data source</b><br>
-The IPT can import uncompressed delimited text files (csv, tab, and files using any other delimiter) or equivalent files compressed with zip or gzip. Excel files are also supported. Click on the button labeled "Choose File" to navigate to and select the file to import. The file name can only be composed of alphanumeric characters (A-Z, 0-9), white space, underscores, periods, parentheses, and hyphens. After selecting the file, its name will appear to the right of the "Choose File" button.<br>
-<br>
+This area of the Resource Overview page allows a user to import primary data from files or databases into the IPT. If a resource has no source data it is considered a metadata-only resource, with information about a data set or collection, but without any primary data. It is possible to connect a resource to more than one data source if the sources are related to each other. More about relating multiple data sources is explained in the <a href='http://rs.tdwg.org/dwc/terms/guides/text/index.htm#implement'>Implementation Guide</a> section of the Darwin Core Text Guide.  Following are explanations for the preliminary step of choosing the source data either from text files or from database sources:
+
+##### File as data source
+The IPT can import uncompressed delimited text files (csv, tab, and files using any other delimiter) or equivalent files compressed with zip or gzip. Excel files are also supported. Click on the button labeled "Choose File" to navigate to and select the file to import. The file name can only be composed of alphanumeric characters (A-Z, 0-9), white space, underscores, periods, parentheses, and hyphens. After selecting the file, its name will appear to the right of the "Choose File" button.
+
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceData.png' />
 
-Click on the button labeled "Clear" to remove the choice of selected file and return to the previous state before any data source was selected. Or, click on the button labeled "Add" to open the Source Data File detail page (if there is the risk of overwriting a file with the same name, a dialog opens that asks the user to confirm they actually want to overwrite it). This page shows the name of the resource along with a summary of the file characteristics (readability, number of columns detected, absolute path to the file, the file size, the number of rows detected, and the date the file was last loaded into the IPT). The Source Data File detail page allows the user to view and edit the parameters that describe the content of the selected file, and to use these settings to analyze and preview the file.<br>
-<br>
-<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceDataFormat.png' />
-<ul><li><b>Source Name</b> - the name of the file selected, without the file extension.<br>
-</li><li><b>Readable</b> - this icon indicates whether data are accessible using the file format information provided on this page.<br>
-</li><li><b>Columns</b> - the number of columns in the dataset as configured using the parameters on this page.<br>
-</li><li><b>File</b> - the full path to the location of the file to use as the data source.<br>
-</li><li><b>Size</b> - the file size.<br>
-</li><li><b>Rows</b> - the number of rows found in the data file. (Note: This number helps check if all records are identified.)<br>
-</li><li><b>Modified</b> - the date stamp of the file indicating when it was last saved.<br>
-</li><li><b>Source log</b> - this link downloads the file containing the log produced when processing the file using the information contained on this page. Any problems encountered while processing the file, such as missing data and unexpected formatting will be in this log file.<br>
-</li><li><b>Analyze</b> - click on this button to generate a data summary based on the database connection settings on this page. The analysis will indicate whether the database is readable, and if so, how many columns there are in the results of the SQL Statement.<br>
-</li><li><b>Preview</b> <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/preview.png' /> - click on this button to see an interpretation of the data based on the database connection settings on this page.<br>
-</li><li><b>Number of Header Rows</b> - 0 if the file does not contain a row of column names, 1 if the file does contain a header row.<br>
-</li><li><b>Field Delimiter</b> - the character or characters that signify a break between columns of data.<br>
-</li><li><b>Character Encoding</b> - the system that defines byte-wise definitions of the characters in the data (e.g., ISO 8859-5 refers to the Cyrillic alphabet).<br>
-</li><li><b>Field Quotes</b> - a single character (or none) that is used to enclose the contents of a column in the data (e.g., ' or "). Please note this will not properly enclose columns whose content includes newline characters (\n) or carriage returns (\r).<br>
-</li><li><b>Date Format</b> - a code describing the format of fields having a date data type (e.g., YYYY-MM-DD for four-digit year, two-digit month, and two-digit day separated by dashes).<br>
-</li><li><b>Selected Worksheet</b> - (Excel files only) this drop down lists the names of all worksheets in the Excel file/workbook. Only 1 worksheet can be used as the data source, defaulting to the first worksheet.</li></ul>
+Click on the button labeled "Clear" to remove the choice of selected file and return to the previous state before any data source was selected. Or, click on the button labeled "Add" to open the Source Data File detail page (if there is the risk of overwriting a file with the same name, a dialog opens that asks the user to confirm they actually want to overwrite it). This page shows the name of the resource along with a summary of the file characteristics (readability, number of columns detected, absolute path to the file, the file size, the number of rows detected, and the date the file was last loaded into the IPT). The Source Data File detail page allows the user to view and edit the parameters that describe the content of the selected file, and to use these settings to analyze and preview the file.
 
-After the parameters for the data source have been set so that the file is interpreted correctly, click on the button labeled "Save" to store this configuration. If the save is successful, the Resource Overview page will appear, with summary information about the file in the right-hand column of the Source Data area. A button labeled "Edit" will also appear with the source data file summary information in the right-hand column, allowing the user to reopen the Source Data File detail page.<br>
-<br>
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceDataFormat.png' />
+
+* **Source Name** - the name of the file selected, without the file extension.
+**Readable** - this icon indicates whether data are accessible using the file format information provided on this page.
+* **Columns** - the number of columns in the dataset as configured using the parameters on this page.
+* **File** - the full path to the location of the file to use as the data source.
+* **Size** - the file size.
+* **Rows** - the number of rows found in the data file. (Note: This number helps check if all records are identified.)
+* **Modified** - the date stamp of the file indicating when it was last saved.
+* **Source log** - this link downloads the file containing the log produced when processing the file using the information contained on this page. Any problems encountered while processing the file, such as missing data and unexpected formatting will be in this log file.
+* **Analyze** - click on this button to generate a data summary based on the database connection settings on this page. The analysis will indicate whether the database is readable, and if so, how many columns there are in the results of the SQL Statement.
+* **Preview** <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/preview.png' /> - click on this button to see an interpretation of the data based on the database connection settings on this page.
+* **Number of Header Rows** - 0 if the file does not contain a row of column names, 1 if the file does contain a header row.
+* **Field Delimiter** - the character or characters that signify a break between columns of data.
+* **Character Encoding** - the system that defines byte-wise definitions of the characters in the data (e.g., ISO 8859-5 refers to the Cyrillic alphabet).
+* **Field Quotes** - a single character (or none) that is used to enclose the contents of a column in the data (e.g., ' or "). Please note this will not properly enclose columns whose content includes newline characters (\n) or carriage retur</b>ns (\r).
+* **Date Format** - a code describing the format of fields having a date data type (e.g., YYYY-MM-DD for four-digit year, two-digit month, and two-digit day separated by dashes)</b>.
+* **Selected Worksheet** - (Excel files only) this drop down lists the names of all worksheets in the Excel file/workbook. Only 1 worksheet can be used as the data source, defaulting to the first worksheet.
+
+After the parameters for the data source have been set so that the file is interpreted correctly, click on the button labeled "Save" to store this configuration. If the save is successful, the Resource Overview page will appear, with summary information about the file in the right-hand column of the Source Data area. A button labeled "Edit" will also appear with the source data file summary information in the right-hand column, allowing the user to reopen the Source Data File detail page.
+
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceSummary.png' />
 
-Should the user want to delete this source, they can reopen the Source Data File detail page and press the "Delete source file" button. Be aware though, that any mappings associated to this file will also be deleted.<br>
-<br>
-If the source data are contained in multiple text files, the process described in this section can be repeated for each of the files to import. A zipped folder with multiple text files can also be imported to add multiple source files in one go.<br>
-<br>
-<b>Database as data source</b><br>
-The IPT can use database connections to import data from tables or views. A list of supported database connections is given on the [[Supported Databases|IPT2DatabaseConnection.wiki]] page of the IPT Project wiki. To configure a database as a data source, click on the button labeled "Connect to DB" in the left-hand column of the Source Data area of the Resource Overview page. This will open a Source Database detail page.<br>
-<br>
-The Source Database Detail page shows the name of the resource along with a summary of the database characteristics (readability, number of columns detected) and allows the user to view and edit the parameters that describe how to access the data from the database, and to use these settings to analyze and preview the data.<br>
-<br>
+Should the user want to delete this source, they can reopen the Source Data File detail page and press the "Delete source file" button. Be aware though, that any mappings associated to this file will also be deleted.
+
+If the source data are contained in multiple text files, the process described in this section can be repeated for each of the files to import. A zipped folder with multiple text files can also be imported to add multiple source files in one go.
+
+##### Database as data source
+The IPT can use database connections to import data from tables or views. A list of supported database connections is given on the [[Supported Databases|IPT2DatabaseConnection.wiki]] page of the IPT Project wiki. To configure a database as a data source, click on the button labeled "Connect to DB" in the left-hand column of the Source Data area of the Resource Overview page. This will open a Source Database detail page.
+
+The Source Database Detail page shows the name of the resource along with a summary of the database characteristics (readability, number of columns detected) and allows the user to view and edit the parameters that describe how to access the data from the database, and to use these settings to analyze and preview the data.
+
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceDatabase.png' />
 
-<ul><li><b>Source Name</b> - the name of the data source. Unlike a file data source, this can be edited and given any name by the user.<br>
-</li><li><b>Readable</b> - this icon indicates whether data are accessible using the connection information provided on this page.<br>
-</li><li><b>Columns</b> - the number of columns in the dataset as configured using the parameters on this page.<br>
-</li><li><b>Analyze</b> - click on this button to generate a data summary based on the database connection settings on this page. The analysis will indicate whether the database is readable, and if so, how many columns there are in the results of the SQL Statement.<br>
-</li><li><b>Preview</b> <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/preview.png' /> - click on this button to see an interpretation of the data based on the database connection settings on this page.<br>
-</li><li><b>Database System</b> - the relational database management system to which the IPT must connect to retrieve the data.<br>
-</li><li><b>Host</b> - The database server address, optionally including the non-default port number (e.g., localhost or mysql.gbif.org:1336). For ODBC connections, this is not needed.<br>
-</li><li><b>Database</b> - The name of the database in the database management system, or the DSN for an ODBC connection.<br>
-</li><li><b>Database User</b> - the name of the database user to use when connecting to the database.<br>
-</li><li><b>Database Password</b> - the password for the database user to connect to the database.<br>
-</li><li><b>SQL Statement</b> - The Structured Query Language statement used to read data from the source database. The statement will be sent as-is to the configured database, so you can use any native feature of the database such as functions, group by statements, limits, or unions, if supported. Example:<code>`SELECT * from specimen join taxon on taxon_fk=taxon.id`</code>. While testing a large data source it is a good idea to include the appropriate language in the SELECT statement to limit the number of rows returned by the query - for example, in MySQL, <code>`SELECT * from specimen join taxon on taxon_fk=taxon.id` LIMIT 10</code>. When the statement has been fully tested with the Darwin Core Mappings (see the following section of the Quick Reference Guide), change the SQL Statement to return the full intended data set.<br>
-</li><li><b>Character Encoding</b> - the system that defines byte-wise definitions of the characters in the data (e.g., Latin1, UTF-8 ).<br>
-</li><li><b>Date Format</b> - a code describing the format of fields having a date data type (e.g., YYYY-MM-DD for four-digit year, two-digit month, and two-digit day separated by dashes).</li></ul>
+* **Source Name** - the name of the data source. Unlike a file data source, this can be edited and given any name by the user.
+* **Readable** - this icon indicates whether data are accessible using the connection information provided on this page.
+* **Columns** - the number of columns in the dataset as configured using the parameters on this page.
+* **Analyze** - click on this button to generate a data summary based on the database connection settings on this page. The analysis will indicate whether the database is readable, and if so, how many columns there are in the results of the SQL Statement.
+* **Preview** <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/preview.png' /> - click on this button to see an interpretation of the data based on the database connection settings on this page.
+* **Database System** - the relational database management system to which the IPT must connect to retrieve the data.
+Host - The database server address, optionally including the non-default port number (e.g., localhost or mysql.gbif.org:1336). For ODBC connections, this is not needed.
+* **Database** - The name of the database in the database management system, or the DSN for an ODBC connection.
+* **Database User** - the name of the database user to use when connecting to the database.
+* **Database Password** - the password for the database user to connect to the database.
+* **SQL Statement** - The Structured Query Language statement used to read data from the source database. The statement will be sent as-is to the configured database, so you can use any native feature of the database such as functions, group by statements, limits, or unions, if supported. Example:<code>`SELECT * from specimen join taxon on taxon_fk=taxon.id`</code>. While testing a large data source it is a good idea to include the appropriate language in the SELECT statement to limit the number of rows returned by the query - for example, in MySQL, <code>`SELECT * from specimen join taxon on taxon_fk=taxon.id` LIMIT 10</code>. When the statement has been fully tested with the Darwin Core Mappings (see the following section of the Quick Reference Guide), change the SQL Statement to return the full intended data set.
+Character Encoding - the system that defines byte-wise definitions of the characters in the data (e.g., Latin1, UTF-8 ).
+* **Date Format** - a code describing the format of fields having a date data type (e.g., YYYY-MM-DD for four-digit year, two-digit month, and two-digit day separated by dashes).
 
-After the parameters for the data source have been set so that the data are accessed correctly, click on the button labeled "Save" to store this configuration. If the save is successful, the Resource Overview page will appear, with summary information about the data in the right-hand column of the Source Data area. A button labeled "Edit" will also appear with the source data summary information, allowing the user to reopen the Source Database detail page.<br>
+After the parameters for the data source have been set so that the data are accessed correctly, click on the button labeled "Save" to store this configuration. If the save is successful, the Resource Overview page will appear, with summary information about the data in the right-hand column of the Source Data area. A button labeled "Edit" will also appear with the source data summary information, allowing the user to reopen the Source Database detail page.
+
 #### Darwin Core Mappings
-This area of the Resource Overview page allows a user to map the fields in the incoming data to fields in installed extensions and to see which fields from the sources have not been mapped. This option is not available until at least one data source has been successfully added and at least one extension has been installed.<br>Once these conditions have been met, the left-hand column of the Darwin Core Mappings area will contain a select box with a list of Core Types and Extensions that have been installed. Select a Core Type and map that before selecting an extension to map. Select the appropriate extension that has fields matching the ones to map in the data source. If the appropriate core type or extension does not appear in the select box, it will have to be installed first. Refer to the information under the "Configure Core Types and Extensions" heading in the "Administration Menu" section for an explanation of how to install extensions.<br>
-<br>
+This area of the Resource Overview page allows a user to map the fields in the incoming data to fields in installed extensions and to see which fields from the sources have not been mapped. This option is not available until at least one data source has been successfully added and at least one extension has been installed.<br>Once these conditions have been met, the left-hand column of the Darwin Core Mappings area will contain a select box with a list of Core Types and Extensions that have been installed. Select a Core Type and map that before selecting an extension to map. Select the appropriate extension that has fields matching the ones to map in the data source. If the appropriate core type or extension does not appear in the select box, it will have to be installed first. Refer to the information under the "Configure Core Types and Extensions" heading in the "Administration Menu" section for an explanation of how to install extensions.
+
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceDwCMapping.png' />
 
-After the desired core type or extension is selected, click on the button labeled "Add" to open the Data Source selection page. This page gives an explanation of the type of data the extension is meant to support, and shows a select box containing a list of all of the configured data sources. <b>Note 1</b>: A resource must only use 1 core type: choose "Darwin Core Checklist" when the basis of the resource is taxon names, or choose "Darwin Core Occurrence" when the basis of the resource is occurrences in nature (observations) or in a collection (specimens). Only after the desired core type has been mapped, will it be possible to map other extensions. <b>Note 2</b>: It is possible to map another core type as an extension as long as it is different from the core type mapped.<br>
-<br>
+After the desired core type or extension is selected, click on the button labeled "Add" to open the Data Source selection page. This page gives an explanation of the type of data the extension is meant to support, and shows a select box containing a list of all of the configured data sources. <b>Note 1</b>: A resource must only use 1 core type: choose "Darwin Core Checklist" when the basis of the resource is taxon names, or choose "Darwin Core Occurrence" when the basis of the resource is occurrences in nature (observations) or in a collection (specimens). Only after the desired core type has been mapped, will it be possible to map other extensions. <b>Note 2</b>: It is possible to map another core type as an extension as long as it is different from the core type mapped.
+
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceSelect.png' />
 
-Select the data source to map, and then click on the button labeled "Save". This will open the Data Mapping detail page (skip to the [[Data Mapping detail page|IPT2ManualNotes.wiki#data-mapping-detail-page]] below for help doing the actual mapping).<br>
-<br>
-After a new mapping has been added, it will be visible in the right-hand column of the Darwin Core Mappings area. This area will contain a list of all the resource's mappings divided into Core Type mappings and Extension mappings. Click the "Edit" button beside a mapping to modify it, or click the preview icon <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/preview.png' /> to preview the mapping. Resource managers are advised to preview all mappings prior to publishing a new version.<br>
-<br>
+Select the data source to map, and then click on the button labeled "Save". This will open the Data Mapping detail page (skip to the [[Data Mapping detail page|IPT2ManualNotes.wiki#data-mapping-detail-page]] below for help doing the actual mapping).
+
+After a new mapping has been added, it will be visible in the right-hand column of the Darwin Core Mappings area. This area will contain a list of all the resource's mappings divided into Core Type mappings and Extension mappings. Click the "Edit" button beside a mapping to modify it, or click the preview icon <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/preview.png' /> to preview the mapping. Resource managers are advised to preview all mappings prior to publishing a new version.
+
 ##### Data Mapping detail page
 After a mapping between a data source and Core Type or Extension has been created, this page opens and displays a status message showing how many fields from the data source were automatically mapped to the fields in the extensions. Fields are automatically mapped if the field names, converted to all lower case, match each other.<br>
 <br>
