@@ -623,82 +623,87 @@ This metadata page contains information about one of more dates, date ranges, or
   * **Living Time Period** - this temporal coverage type is meant to accommodate a named or other time period during which the biological entities in the collection or data set were alive, including paleontological time periods. Examples: "1900-1950", "Ming Dynasty", "Pleistocene".<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataTemporalCoverageLivingTimePeriod.png' />
 
 #### Keywords
-This metadata page allows the user to create one or more sets of keywords about the resource. Each set of keywords can be associated with a thesaurus/vocabulary that governs the terms in the list.<br>
+This metadata page allows the user to create one or more sets of keywords about the resource. Each set of keywords can be associated with a thesaurus/vocabulary that governs the terms in the list.
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataKeywords.png' />
-</li></ul></li><li><b>Remove this keyword set</b> - click on this link to remove the keyword set that follows immediately below the link.<br>
-</li><li><b>Thesaurus/Vocabulary</b> - enter the name of a thesaurus or controlled vocabulary from which the keywords in the set are derived. If the keywords are not governed by a thesaurus/vocabulary, enter "n/a" indicating that it is not applicable in this text box. Example: IRIS keyword thesaurus.<br>
-</li><li><b>Keyword List</b> - enter a list of keywords, separated by commas that describe or are related to the resource.<br>
-</li><li><b>Add new keyword set</b> - click on this link to initiate a form for an additional keyword set.<br>
+* **Remove this keyword set** - click on this link to remove the keyword set that follows immediately below the link.
+* **Thesaurus/Vocabulary** - enter the name of a thesaurus or controlled vocabulary from which the keywords in the set are derived. If the keywords are not governed by a thesaurus/vocabulary, enter "n/a" indicating that it is not applicable in this text box. Example: IRIS keyword thesaurus.
+* **Keyword List** - enter a list of keywords, separated by commas that describe or are related to the resource.
+* **Add new keyword set** - click on this link to initiate a form for an additional keyword set.
+
 #### Associated Parties
-This metadata pages contains information about one or more people or organisations associated with the resource in addition to those already covered on the Basic Metadata page. Many of the controls on this page are in common with those for the Resource Contacts on the [[Basic Metadata|IPT2ManualNotes.wiki#basic-metadata]] page. Explanations for the remainder of the controls are given below.<br>
+This metadata pages contains information about one or more people or organisations associated with the resource in addition to those already covered on the Basic Metadata page. Many of the controls on this page are in common with those for the Resource Contacts on the [[Basic Metadata|IPT2ManualNotes.wiki#basic-metadata]] page. Explanations for the remainder of the controls are given below.
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataAssociatedParties.png' />
-</li><li><b>Copy details from resource contact</b> - if this person or organisation is the same as the first Resource Contact on the Basic Metadata page, all of the details can be copied into the equivalent fields for the associated party by clicking on this link.<br>
-</li><li><b>Remove this associated party</b> - click on this link to remove the associated party that follows immediately below the link.<br>
-</li><li><b>Role</b> - this select box contains a list of possible roles that the associated party might have in relation to the resource. Click on the information icon to the left of the select box to see descriptions of the possible roles. Choose the most appropriate role for the associated party in the select box.<br>
-</li><li><b>Add new associated party</b> - click on this link to initiate a form for an additional associated party.<br>
+* **Copy details from resource contact** - if this person or organisation is the same as the first Resource Contact on the Basic Metadata page, all of the details can be copied into the equivalent fields for the associated party by clicking on this link.
+* **Remove this associated party** - click on this link to remove the associated party that follows immediately below the link.
+* **Role** - this select box contains a list of possible roles that the associated party might have in relation to the resource. Click on the information icon to the left of the select box to see descriptions of the possible roles. Choose the most appropriate role for the associated party in the select box.
+* **Add new associated party** - click on this link to initiate a form for an additional associated party.
+
 #### Project Data
-This metadata page contains information about a project under which the data in the resource were produced.<br>
+This metadata page contains information about a project under which the data in the resource were produced.
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataProjectData.png' />
-</li><li><b>Title</b> - the title of the project.<br>
-</li><li><b>Identifier</b> - a unique identifier for the research project. This can be used to link multiple dataset/EML document instances that are associated in some way with the same project, e.g. a monitoring series. The nature of the association can be described in the project description.<br>
-</li><li><b>Description</b> - an abstract about the research project.<br>
-</li><li><b>Funding</b> - information about project funding and its sources (grant titles and numbers, contract numbers, names and addresses, active period, etc.). Other funding-related information may also be included.<br>
-</li><li><b>Study Area Description</b> - a description of the physical area where the project occurred (physical location, habitat, temporal coverage, etc.).<br>
-</li><li><b>Design Description</b> - a description of the design and objectives of the project. It can include detailed accounts of goals, motivations, theory, hypotheses, strategy, statistical design, and actual work.<br>
-</li><li><b>Project Personnel</b> - the list of people involved in the project.<br>
-<ul><li><b>Personnel First Name</b> - the first name of the person associated with the project.<br>
-</li><li><b>Personnel Last Name</b> - the last name of the person associated with the project.<br>
-</li><li><b>Personnel Directory</b> - the URL of the personnel directory system to which the personnel identifier belongs. There are four default directories to choose from: ORCID, ResearchID, LinkedIn, and Google Scholar. If you'd like to change the IPT's default set of directories, refer to the [[How To Add a New User ID Directory|IPT2UserId.wiki]] page in the IPT wiki.<br>
-</li><li><b>Personnel Identifier</b> - a 16-digit ORCID ID (e.g. 0000-0002-1825-0097) or another identifier that links this person to the personnel directory specified.<br>
-</li><li><b>Personnel Role</b> - the role of the person associated with the project. Click on the information icon to the left of the select box to see descriptions of the possible roles. Choose the most appropriate role in the select box for the person named above.</li></ul></li></ul>
+* **Title** - the title of the project.
+* **Identifier - a unique identifier for the research project. This can be used to link multiple dataset/EML document instances that are associated in some way with the same project, e.g. a monitoring series. The nature of the association can be described in the project description.
+* **Description** - an abstract about the research project.
+* **Funding** - information about project funding and its sources (grant titles and numbers, contract numbers, names and addresses, active period, etc.). Other funding-related information may also be included.
+* **Study Area Description** - a description of the physical area where the project occurred (physical location, habitat, temporal coverage, etc.).
+* **Design Description** - a description of the design and objectives of the project. It can include detailed accounts of goals, motivations, theory, hypotheses, strategy, statistical design, and actual work.
+* **Project Personnel** - the list of people involved in the project.
+  * **Personnel First Name** - the first name of the person associated with the project.
+  * **Personnel Last Name** - the last name of the person associated with the project.
+  * **Personnel Directory** - the URL of the personnel directory system to which the personnel identifier belongs. There are four default directories to choose from: ORCID, ResearchID, LinkedIn, and Google Scholar. If you'd like to change the IPT's default set of directories, refer to the [[How To Add a New User ID Directory|IPT2UserId.wiki]] page in the IPT wiki.
+  * **Personnel Identifier** - a 16-digit ORCID ID (e.g. 0000-0002-1825-0097) or another identifier that links this person to the personnel directory specified.
+  * **Personnel Role** - the role of the person associated with the project. Click on the information icon to the left of the select box to see descriptions of the possible roles. Choose the most appropriate role in the select box for the person named above.
 
 #### Sampling Methods
-This metadata page contains information about sampling methods used for the data represented by the resource.<br>
+This metadata page contains information about sampling methods used for the data represented by the resource.
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataSamplingMethods.png' />
-<ul><li><b>Study Extent</b> - a description of the physical and temporal conditions under which the sampling occurred. The geographic study extent is usually a surrogate (representative area of) for the larger area documented in the "Study Area Description" field of the Project metadata page.<br>
-</li><li><b>Sampling Description</b> - a text-based/human readable description of the sampling procedures used in the research project. The content of this element would be similar to a description of sampling procedures found in the methods section of a journal article.<br>
-</li><li><b>Quality Control</b> - a description of actions taken to either control or assess the quality of data resulting from the associated method step(s).<br>
-</li><li><b>Step Description</b> - A method step is one in a series of repeated sets of elements that document a series of methods and procedures used in the study, and the processing steps leading to the production of the data files. These include text descriptions of the procedures, relevant literature, software, instrumentation, source data and any quality control measures taken. Each method should be described in enough detail to allow other researchers to interpret and repeat, if required, the study.<br>
-</li><li><b>Add new method step</b> -  click on this link to add a text box labeled "Step Description" to the page (see above). One may add as many method steps as desired.<br>
-</li><li><b>Remove this method step</b> - click on this link to remove the method step text box that follows immediately below the link.<br>
+* **Study Extent** - a description of the physical and temporal conditions under which the sampling occurred. The geographic study extent is usually a surrogate (representative area of) for the larger area documented in the "Study Area Description" field of the Project metadata page.
+* **Sampling Description** - a text-based/human readable description of the sampling procedures used in the research project. The content of this element would be similar to a description of sampling procedures found in the methods section of a journal article.
+* **Quality Control** - a description of actions taken to either control or assess the quality of data resulting from the associated method step(s).
+* **Step Description** - A method step is one in a series of repeated sets of elements that document a series of methods and procedures used in the study, and the processing steps leading to the production of the data files. These include text descriptions of the procedures, relevant literature, software, instrumentation, source data and any quality control measures taken. Each method should be described in enough detail to allow other researchers to interpret and repeat, if required, the study.
+* **Add new method step** -  click on this link to add a text box labeled "Step Description" to the page (see above). One may add as many method steps as desired.
+* **Remove this method step** - click on this link to remove the method step text box that follows immediately below the link.
+
 #### Citations
-This metadata page contains information about how to cite the resource as well as a bibliography of citations related to the data set, such as publications that were used in or resulted from the production of the data. Each Citation, whether for the resource or in the bibliography, consists of an optional unique Citation Identifier allowing the citation to be found among digital sources and a traditional textual citation. Before any Citation data are entered, the page will show a text box for the Citation Identifier for the resource, a text box for the Resource Citation, a heading labeled "Bibliographic Citations", and a link labeled "Add new bibliographic citation".<br>
+This metadata page contains information about how to cite the resource as well as a bibliography of citations related to the data set, such as publications that were used in or resulted from the production of the data. Each Citation, whether for the resource or in the bibliography, consists of an optional unique Citation Identifier allowing the citation to be found among digital sources and a traditional textual citation. Before any Citation data are entered, the page will show a text box for the Citation Identifier for the resource, a text box for the Resource Citation, a heading labeled "Bibliographic Citations", and a link labeled "Add new bibliographic citation".
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataCitations.png' />
-</li><li><b>Resource Citation</b> - the single citation for use when citing the dataset.<br>
-<ul><li>Example citation with institutional creator:<br>
-<blockquote>Biodiversity Institute of Ontario (2011) Migratory birds of Ontario. Version 1.2. University of Guelph. Dataset/Species occurrences. <a href='http://dx.doi.org/10.5886/qzxxd2pa'>http://dx.doi.org/10.5886/qzxxd2pa</a>
-</blockquote></li><li>Example citation with 9 creators:<br>
-<blockquote>Brouillet L, Desmet P, Coursol F, Meades SJ, Favreau M, Anions M, Belisle P, Gendreau C, Shorthouse D (2010) Database of vascular plants of Canada. Version 1.2. Universite de Montreal Biodiversity Centre. Dataset/Species checklist. <a href='http://doi.org/10.5886/1bft7W5f'>http://doi.org/10.5886/1bft7W5f</a>
-</blockquote></li></ul></li><li><b>Auto-generation - Turn On/Off</b> - turn on to let the IPT auto-generate the resource citation for you. The citation format used in auto-generation is based on DataCite's preferred citation format, and satisfies the Joint Declaration of Data Citation Principles. This format includes a version number, which is especially important for datasets that are continuously updated. You can read more about the citation format in the [[IPT Citation Format|IPT2Citation.wiki]] page in the IPT wiki.<br>
-</li><li><b>Citation Identifier</b> - a DOI, URI, or other persistent identifier that resolves to the online dataset. It is recommended the identifier be included in the citation. If the resource has been assigned a DOI (using the IPT), the IPT sets the DOI as the citation identifier and it can no longer be edited.<br>
-</li><li><b>Bibliographic Citations</b> - the additional citations of other resources related to or used in the creation of this resource.<br>
-</li><li><b>Add new bibliographic citation</b> -  click on this link to add the text boxes required for an additional citation in the bibliography.<br>
-<ul><li><b>Bibliographic Citation</b> - the citation of an external resource related to or used in the creation of this resource.<br>
-</li><li><b>Bibliographic Citation Identifier</b> - a DOI, URI, or other persistent identifier that resolves to the online external resource. It should be used in the citation, usually at the end. <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataBibCitations.png' />
-</li></ul></li><li><b>Remove this bibliographic citation</b> - click on this link to remove the citation that follows immediately below the link.<br>
+* **Resource Citation** - the single citation for use when citing the dataset.
+  * Example citation with institutional creator:
+  Biodiversity Institute of Ontario (2011) Migratory birds of Ontario. Version 1.2. University of Guelph. Dataset/Species occurrences. <a href='http://dx.doi.org/10.5886/qzxxd2pa'>http://dx.doi.org/10.5886/qzxxd2pa</a>
+  * Example citation with 9 creators:
+  Brouillet L, Desmet P, Coursol F, Meades SJ, Favreau M, Anions M, Belisle P, Gendreau C, Shorthouse D (2010) Database of vascular plants of Canada. Version 1.2. Universite de Montreal Biodiversity Centre. Dataset/Species checklist. <a href='http://doi.org/10.5886/1bft7W5f'>http://doi.org/10.5886/1bft7W5f</a>
+* **Auto-generation - Turn On/Off** - turn on to let the IPT auto-generate the resource citation for you. The citation format used in auto-generation is based on DataCite's preferred citation format, and satisfies the Joint Declaration of Data Citation Principles. This format includes a version number, which is especially important for datasets that are continuously updated. You can read more about the citation format in the [[IPT Citation Format|IPT2Citation.wiki]] page in the IPT wiki.
+* **Citation Identifier** - a DOI, URI, or other persistent identifier that resolves to the online dataset. It is recommended the identifier be included in the citation. If the resource has been assigned a DOI (using the IPT), the IPT sets the DOI as the citation identifier and it can no longer be edited.
+* **Bibliographic Citations** - the additional citations of other resources related to or used in the creation of this resource.
+* **Add new bibliographic citation** -  click on this link to add the text boxes required for an additional citation in the bibliography.
+  * **Bibliographic Citation** - the citation of an external resource related to or used in the creation of this resource.
+  * **Bibliographic Citation Identifier** - a DOI, URI, or other persistent identifier that resolves to the online external resource. It should be used in the citation, usually at the end. <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataBibCitations.png' />
+  * **Remove this bibliographic citation** - click on this link to remove the citation that follows immediately below the link.
+
 #### Collection Data
-This metadata page contains information about the physical natural history collection associated with the resource (if any) as well as lists of types objects in the collection, called Curatorial Units, and summary information about them. Before any Collection data are entered, the page will show a header for each section (Collections, Specimen preservation methods, Curatorial Units) and a link labeled "Add new curatorial unit".<br>
+This metadata page contains information about the physical natural history collection associated with the resource (if any) as well as lists of types objects in the collection, called Curatorial Units, and summary information about them. Before any Collection data are entered, the page will show a header for each section (Collections, Specimen preservation methods, Curatorial Units) and a link labeled "Add new curatorial unit".
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataCollectionData.png' />
-</li><li><b>Collections</b> - the list of collections that this resource is based on.<br>
-<ul><li><b>Add new citation</b> -  click on this link to add the text boxes required for an additional collection in the Collections section.<br>
-</li><li><b>Collection Name</b> - the full standard name by which the collection is known or cited in the local language.<br>
-</li><li><b>Collection Identifier</b> - The URI (LSID or URL) of the collection. In RDF, used as URI of the collection resource.<br>
-</li><li><b>Parent Collection Identifier</b> - Identifier for the parent collection for this sub-collection. Enables a hierarchy of collections and sub collections to be built. Please enter "Not applicable" if this collection does not have a parent collection.<br>
-</li><li><b>Remove this collection</b> - click on this link to remove the collection that follows immediately below the link.<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataCollections.png' />
-</li></ul></li><li><b>Specimen Preservation Methods</b> - the list of specimen preservation methods covered by the resource, indicating the process or technique used to prevent physical deterioration of non-living collections. The values to choose from are based on the <a href='http://rs.gbif.org/vocabulary/gbif/preservation_method.xml'>GBIF Specimen Preservation Method vocabulary</a>. Remember you can include a list of preparations and preservation methods for a specimen in your data mapping DwC term preparations (<a href='http://rs.tdwg.org/dwc/terms/preparations'>http://rs.tdwg.org/dwc/terms/preparations</a>). Please don't select anything for treatments for living collections. This can relate to the curatorial unit(s) in the collection.<br>
-<ul><li><b>Add new preservation method</b> -  click on this link to add the text boxes required for an additional preservation method in the Specimen Preservation Methods section.<br>
-</li><li><b>Remove this preservation method</b> - click on this link to remove the preservation method that follows immediately below the link.<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataPreservationMethods.png' />
-</li></ul></li><li><b>Curatorial Units</b> - the counts of curatorial units covered by the resource. The count can be entered as a range or as a value with an uncertainty. Examples of units include skins, sheets, pins, boxes, and jars. Overall, this section summarizes the physical contents of the collection by type.<br>
-<ul><li><b>Add new curatorial unit</b> -  click on this link to add the select text boxes required for an additional curatorial unit in the Curatorial Units section. When a new curatorial unit is added, the default Method Type selection is "Count Range".<br>
-</li><li><b>Method Type</b> - this select box allows the user to choose from among two methods to specify the number of objects of a given type, either a count range, or a count with uncertainty. After making the selection, appropriate text boxes will appear allowing that counting method to the represented.<br>
-<ul><li><b>Count Range</b> - this method type allows the user to set the lower and upper bounds on the number of objects of a particular unit type. See screen image above.<br>
-<ul><li><b>Between</b> - enter the lower bound of the number of objects in this text box.<br>
-</li><li><b>and</b> - enter the upper bound of the number of objects in this text box.<br>
-</li></ul></li><li><b>Count with uncertainty</b> - this method allows the user to set a number of objects of a particular unit type with an uncertainty above or below that number.<br>
-<ul><li><b>Count</b> - enter the mean likely number of object in this text box.<br>
-</li><li><b>+/-</b> - enter the number of objects more or less than the number in the count text box for the range of possible counts of the particular unit type<br>
-</li></ul></li><li><b>Unit Type</b> - the single type of object (specimen, lot, tray, box, jar, etc.) represented by the method type and count.<br>
-</li></ul></li><li><b>Remove this curatorial unit</b> - click on this link to remove the curatorial unit that follows immediately below the link.<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataCuratorialUnits.png' />
+* **Collections** - the list of collections that this resource is based on.
+  * **Add new citation** -  click on this link to add the text boxes required for an additional collection in the Collections section.
+  * **Collection Name** - the full standard name by which the collection is known or cited in the local language.
+  * **Collection Identifier** - The URI (LSID or URL) of the collection. In RDF, used as URI of the collection resource.
+  * **Parent Collection Identifier** - Identifier for the parent collection for this sub-collection. Enables a hierarchy of collections and sub collections to be built. Please enter "Not applicable" if this collection does not have a parent collection.
+  * **Remove this collection** - click on this link to remove the collection that follows immediately below the link.<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataCollections.png' />
+* **Specimen Preservation Methods** - the list of specimen preservation methods covered by the resource, indicating the process or technique used to prevent physical deterioration of non-living collections. The values to choose from are based on the <a href='http://rs.gbif.org/vocabulary/gbif/preservation_method.xml'>GBIF Specimen Preservation Method vocabulary</a>. Remember you can include a list of preparations and preservation methods for a specimen in your data mapping DwC term preparations (<a href='http://rs.tdwg.org/dwc/terms/preparations'>http://rs.tdwg.org/dwc/terms/preparations</a>). Please don't select anything for treatments for living collections. This can relate to the curatorial unit(s) in the collection.
+  * **Add new preservation method** -  click on this link to add the text boxes required for an additional preservation method in the Specimen Preservation Methods section.
+  * **Remove this preservation method** - click on this link to remove the preservation method that follows immediately below the link.<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataPreservationMethods.png' />
+* **Curatorial Units** - the counts of curatorial units covered by the resource. The count can be entered as a range or as a value with an uncertainty. Examples of units include skins, sheets, pins, boxes, and jars. Overall, this section summarizes the physical contents of the collection by type.
+  * **Add new curatorial unit** -  click on this link to add the select text boxes required for an additional curatorial unit in the Curatorial Units section. When a new curatorial unit is added, the default Method Type selection is "Count Range".
+  * **Method Type** - this select box allows the user to choose from among two methods to specify the number of objects of a given type, either a count range, or a count with uncertainty. After making the selection, appropriate text boxes will appear allowing that counting method to the represented.
+    * **Count Range** - this method type allows the user to set the lower and upper bounds on the number of objects of a particular unit type. See screen image above.
+      * **Between** - enter the lower bound of the number of objects in this text box.
+      * **and** - enter the upper bound of the number of objects in this text box.
+    * **Count with uncertainty** - this method allows the user to set a number of objects of a particular unit type with an uncertainty above or below that number.
+      * **Count** - enter the mean likely number of object in this text box.
+      * **+/-** - enter the number of objects more or less than the number in the count text box for the range of possible counts of the particular unit type
+    * **Unit Type** - the single type of object (specimen, lot, tray, box, jar, etc.) represented by the method type and count.
+  * **Remove this curatorial unit** - click on this link to remove the curatorial unit that follows immediately below the link.<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataCuratorialUnits.png' />
+
 #### External Links
 This metadata page contains links to the home page for the resource as well as links to the resource in alternate forms (database files, spreadsheets, linked data, etc.) and the information about them. Before any external links are entered, the page will show a text box for the Resource Homepage and a link labeled "Add new external link".<br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataExternalLinks.png' />
