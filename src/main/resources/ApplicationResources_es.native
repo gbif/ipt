@@ -49,6 +49,7 @@ basic.showLess=Menos
 basic.show=Mostrar
 basic.hide=Ocultar
 basic.none=Ninguno
+basic.issued=Emitido
 
 # buttons
 button.add=Agregar
@@ -68,6 +69,7 @@ button.publish=Publicar
 button.public=Público
 button.updateRegistration=Actualizar Registro
 button.update=Actualizar
+button.synchronise=Sincronizar
 button.private=Privado
 button.view=Ver
 button.preview=Vista previa
@@ -139,6 +141,7 @@ user.roles.admin=Administrador
 
 # extension
 extension=Extensión
+extension.core=Extensión del Core
 extension.rowtype=Categoría
 extension.vocabulary=Vocabulario
 extension.properties=Propiedades
@@ -146,9 +149,8 @@ extension.prop.qname=Nombre cualificado
 extension.prop.type=Tipo de dato
 extension.prop.required=Requerida
 extension.prop.group=Grupo
-extension.vocabularies.title=Vocabularios
-extension.vocabularies.last.update=Última actualización en\: {0}<br />
-extension.vocabularies.number=todos los {0} vocabularios tienen la última versión registrada
+extension.synchronise.title=Sincronizar Extensiones y Vocabularios
+extension.last.synchronised=Última sincronización el {0}
 extension.further.title=Otros Estándares y Extensiones disponibles en el Registro GBIF
 extension.further.title.help=La columna de la izquierda muestra el nombre del Estándar o la Extensión. En la columna de la derecha encuentra un resumen de la información acerca del Estándar o la Extensión, incluyendo una breve descripción del tipo de datos que debe contener.
 extension.already.installed=Ya instaló todos los estándares y extensiones disponibles
@@ -166,7 +168,7 @@ resource.coreType=Tipo
 resource.coreType.selection=Seleccione un tipo
 manage.resource.create.coreType=Tipo
 manage.resource.create.coreType.selection=Seleccione un tipo (opcional)
-manage.resource.create.coreType.help=El tipo de recurso. Si el archivo del recurso es cargado, el tipo será determinado automáticamente y se sobreescribe en su selección. <ul><li><b>Registro biológico\:</b> la base del recurso son registros biológicos en la naturaleza (observaciones) o en una colección (ejemplares).<br /></li><li><b>Lista de chequeo\:</b> la base del recurso son nombres taxonómicos.<br /></li><li><b>Solamente metadatos\:</b> un recurso que contiene información acerca de un conjunto de datos, pero sin los datos primarios. Por ejemplo, un recurso de metadatos puede dar información acerca de una colección que aun no ha sido digitalizada.<br /></li><li><b>Otro\:</b> Otro tipo de recurso.<br /></li></ul>
+manage.resource.create.coreType.help=El tipo de recurso. Si el archivo del recurso es cargado, el tipo será determinado automáticamente y se sobreescribe en su selección. <ul><li><b>Registro biológico\:</b> la base del recurso son registros biológicos en la naturaleza (observaciones) o en una colección (ejemplares).<ul><li><b>Lista de chequeo\:</b> la base del recurso son nombres taxonómicos.<ul><li><b>Evento de Muestreo\:</b> la base del recurso es un evento de muestreo.<ul><li><b>Metadatos\:</b> un recurso que contiene información acerca de un conjunto de datos, pero sin los datos primarios. Por ejemplo, un recurso de metadatos puede dar información acerca de una colección que aun no ha sido digitalizada.<br /></li><li><b>Otro\:</b>  Otro tipo de recurso.<br /></li></ul>
 resource.subtype=Subtipo
 resource.status.private=Privado
 resource.status.public=Público
@@ -189,6 +191,10 @@ source.encoding=Codificación de caracteres
 source.encoding.help=Codificación de caracteres del archivo del conjunto de datos. Si no se conoce, intente con UTF-8, Latin-1 ó Windows-1252
 source.dateFormat=Formato de fecha
 source.dateFormat.help=Formato de fecha utilizado en el archivo del conjunto de datos.
+source.multiValueFieldsDelimitedBy=Delimitador de Columnas
+source.multiValueFieldsDelimitedBy.help=Un carácter único que delimita las columnas en una fila.
+source.ignoreHeaderLines=Número de Filas del Encabezado
+source.ignoreHeaderLines.help=El número de filas del encabezado en su archivo que deben ser ignoradas en la importación.
 sqlSource.host=Alojador
 sqlSource.host.help=La dirección del servidor de la base de datos, incluyendo de manera opcional, el número de puerto no predeterminado (e.g., localhost ó mysql.gbif.org\:1336). Para ODBC, esto no es necesario.
 sqlSource.rdbms=Sistema de la base de datos
@@ -203,8 +209,6 @@ fileSource.fieldsTerminatedByEscaped=Delimitador de columnas
 fileSource.fieldsTerminatedByEscaped.help=Un carácter único que delimita los campos/columnas en una fila.
 fileSource.fieldsEnclosedByEscaped=Delimitador de texto
 fileSource.fieldsEnclosedByEscaped.help=Un único caracter que encierra cada campo/columna en una fila. Frecuentemente vacío, pero los archivos CSV usan una ". Con esta opción, asegúrese que *todos* sus campos estén entre comillas, no solo aquellos que tienen texto. Tenga en cuenta que en el IPT una nueva linea de caracteres () o saltos de linea () no pueden ser incluidos entre comillas y deben eliminarse.
-fileSource.ignoreHeaderLines=Número de filas del encabezado
-fileSource.ignoreHeaderLines.help=Número de filas del encabezado en su archivo que deben ser ignoradas al importar.
 excelSource.sheets=Seleccione una hoja
 
 # ranks
@@ -391,6 +395,7 @@ portal.resource.eml.error.parse=No fue posible analizar el archivo EML versión 
 portal.resource.otherFormats=Los datos del recurso también están disponibles en otros formatos
 portal.resource.warning.notPublic=La versión que usted está viendo es la {0} y no puede ser vista por todo el mundo\!
 portal.resource.warning.notLatest=La versión que usted está viendo no es la última\! Por favor consulte la tabla de versiones para encontrar las últimas novedades.
+portal.resource.version.notArchived.count=El archivo DwC-A publicado para esta versión tenía {0} registros pero no fue archivado.
 
 ####
 # ADMIN SECTION
@@ -506,15 +511,16 @@ invalid.fieldvalue.longitude=Longitud Inválida
 admin.extension.coreTypes=Estándares
 admin.extension.extensions=Extensiones
 admin.extension.no.coreTypes.installed=No hay Estándares instalados.
-admin.extension.no.coreTypes.installed.help=Los estándares proveen la base para el registro de datos\: Registro Biológico y Taxón.
+admin.extension.no.coreTypes.installed.help=Los core del estándar proporcionan la base para los registros\: Occurrence, Taxon, y Event.
 admin.extension.no.coreTypes.installed.debug=Debido que ningún estándar ha sido instalado, no se pueden mapear los datos. Por favor, instale un estándar de la lista de Estándares y Extensiones. Si la lista está vacía, por favor verifique su conexión a Internet y que el servidor pueda comunicarse con el Registro\: {0}.
 admin.extension.no.extensions.installed=No hay Extensiones instaladas.
 admin.extension.no.extensions.installed.help=Las extensiones proveen los medios para asociar datos adicionales con un registro del Estándar. Cada Extensión debe contener un tipo datos diferente. Por favor, instale todas las extensiones que requiere, a partir de la siguiente lista.
 admin.extension.couldnt.install.coreTypes=No se lograron instalar todas las extensiones del Estándar.
+admin.vocabulary.couldnt.install.defaults=No fue posible instalar (o actualizar) las últimas versiones de todos los vocabularios predeterminados\: {0}.
 admin.extension.couldnt.install=No se logró instalar la extensión {0} solicitada.
 admin.extension.install.success=La extensión {0} fue instalada exitosamente.
 admin.extension.install.error=Ocurrió un problema mientras se intentaba instalar la extensión {0}.
-admin.extension.install.duplicate=Ya ha sido instalada una extensión con la categoría {0}. Por favor desinstale la extensión con esta categoría e inténtelo nuevamente.
+admin.vocabulary.install.error=Ocurrió un error al intentar instalar el vocabulario {0}.
 admin.extension.delete.success=La extensión {0} fue eliminada satisfactoriamente
 admin.extension.delete.error=No se logró eliminar la extensión {0}.
 admin.extensions.couldnt.load=Las extensiones registradas no se lograron cargar desde el Registro\: {0}.
@@ -522,14 +528,19 @@ admin.extensions.vocabularies.couldnt.load=Los vocabularios registrados no se pu
 admin.extensions.vocabulary.couldnt.load=El vocabulario predeterminado {0} no pudo ser cargado desde el Registro\: {1}.
 admin.startup.warnings=Advertencias en el inicio del IPT. Para obtener ayuda adicional en el diagnostico del(los) problema(s), por favor véase la actividad del sistema. Despues de corregir el(los) problema(s), por favor reinice su servidor web.
 admin.extensions.error.updating=Error actualizando el vocabulario {0}\: {1}
-admin.extensions.vocabularies.updated={0} vocabularios fueron actualizados.
+admin.extensions.synchronise.success=Todos los vocabularios y las extensiones han sido sincronizadas con el registro.
+admin.extensions.synchronise.error=Falló la sincronización de todos los vocabularios y extensiones con registro\: {0}.
 admin.extensions.vocabularies.unchanged={0} vocabularios no fueron modificados desde la última descarga.
 admin.extensions.vocabularies.errors={0} vocabularios produjeron un error mientras se actualizaban. ¡Por favor consulte la actividad del sistema\!
-admin.extensions.vocabularies.update.help=Una extensión puede hacer uso de las listas de elementos de valores predeterminados, conocidas como vocabularios controlados. Periódicamente, estos vocabularios pueden también cambiar y requerir una actualización en el IPT. Haga clic en el botón a continuación para establecer comunicación con el Registro GBIF y obtener los nuevos vocabularios controlados y las actualizaciones sobre los existentes.
-
+admin.extensions.synchronise.help=Haga clic en el botón de abajo para sincronizar todas las extensiones y vocabularios instalados con el Registro de GBIF que actualiza sus contenidos (por ejemplo, si se han añadido nuevas traducciones a un vocabulario).
+admin.extensions.upToDate=Todas las extensiones instaladas utilizan la última versión.
+admin.extensions.not.upToDate=Una o más extensiones instaladas están desactualizadas. Por favor actualizarlas a las últimas versiones.
 admin.extension.title=Extensiones del Darwin Core\:
 admin.extension.properties=Propiedades de la Extensión
-
+admin.extension.version.warning=La versión instalada está desactualizada. Por favor actualícela a la última versión con el fin de aprovechar los nuevos términos y vocabularios. Se eliminarán los mapeos existentes con términos obsoletos y serán sustituidos automáticamente con los términos actualizados.
+admin.extension.update.confirm=Está a punto de actualizar esta extensión a la última versión. Después la actualización, los recursos afectados deben ser revisados y publicados nuevamente. ¿Desea realizar la actualización?
+admin.extension.update.success=La extensión {0} ha sido actualizada correctamente. Para información adicional, incluyendo qué recursos fueron afectados con la actualización, consulte los logs.
+admin.extension.update.error=Se generó un error al intentar actualizar la extensión {0}.
 admin.vocabulary.title=Vocabulario Controlado
 
 admin.users.intro=Como administrador puede crear, modificar o eliminar cuentas de usuario.
@@ -701,8 +712,8 @@ manage.resource.create.title=Crear un Nuevo Recurso
 manage.resource.create.intro=Puede crear un nuevo recurso en blanco, subir un recurso existente guardado como un archivo Darwin Core comprimido, o subir un recurso existente en un IPT, utilizando su carpeta de configuración de recursos en formato .zip. Por favor, consulte el Manual del Usuario para obtener instrucciones más específicas. Se requiere un nombre corto.
 manage.resource.create.file=Cargue un Archivo Darwin Core (opcional)\:
 manage.resource.create.success=El Archivo Darwin Core existente fue importado e interpretado bajo la categoría {0}. Conjuntos de datos importados\: {1}. Mapeos creados\: {2}.
-manage.resource.create.success.nocore=Se ha importado el Archivo Darwin Core. Conjuntos de datos importados\: {0}. Mapeos creados\: {1}.
 manage.resource.create.core.invalid=El Archivo Darwin Core es inválido y no tiene un mapeo con el estándar
+manage.resource.create.core.invalid.rowType=El archivo Darwin Core es invalido\: El core mapeado no tiene categoría
 manage.resource.create.failed=No es posible leer el archivo cargado
 manage.resource.create.rowType.null=La categoría {0} no esta disponible en este IPT
 manage.resource.create.extension.null=Se encontró una extensión inexistente. Por favor verifique que hayan sido instaladas todas las extensiones de las que depende este recurso, e importelo nuevamente si ya está instalada.
@@ -747,21 +758,29 @@ manage.resource.migrate.failed.duplicate=El UUID {0} encontrado en la lista de i
 manage.resource.migrate.failed.duplicate.help=Si está tratando de remplazar un recurso registrado que ya existe en el IPT, el otro recurso debe ser eliminado primero. En este caso, por favor notifique a helpdesk@gbif.org que el recurso ha sido remplazado, y no eliminado, esto se debe a que la eliminación de un recurso registrado se marca como borrado en el Registro de GBIF.
 
 manage.mapping.title=Mapeo del Conjunto de Datos
-manage.mapping.intro=Para cada propiedad, puede asignar un valor dinámico obtenido de la columna especificada en su archivo del conjunto de datos "{0}" o proporcionar un valor fijo, que es usado para todos los registros.
+manage.mapping.intro1=Mapeado el conjunto de datos {0} to {1} {2}.
+manage.mapping.intro=Cada columna del conjunto de datos puede ser mapeada a uno o más elementos en esta extensión. También puede especificar un valor estático para cada elemento que se utiliza para todos los registros, o definir una traducción entre los valores de su conjunto de datos y el valor usado.<br/> <br/>Note que la columna en su conjunto de datos contiene una clave única para cada registro/fila que debe ser mapeado al identificador. Si desea mapa otros conjuntos de datos, este identificador es necesario y se utilizará para unir sus filas.<br/> <br/>También se puede usar un filtro para incluir sólo los registros que coincidan con un criterio para uno de los campos del conjunto de datos.
+
 manage.mapping.source=Conjunto de datos
 manage.mapping.source.help=Antes de empezar a mapear los elementos, por favor seleccione un archivo que contenga el conjunto de datos.
-manage.mapping.idColumn=La columna en su conjunto de datos que contiene un identificador único para cada registro/fila, también conocido como "core id". Si desea mapear otras fuentes del conjuntos de datos, este identificador es requerido y será usado para asociar sus registros.
 manage.mapping.datasetIdColumn=Usar DOI del recurso
 manage.mapping.datasetIdColumn.help=Por favor, marque esta casilla si desea que el IPT establezca como valor predeterminado para el datasetID, el DOI del recurso. Tenga en cuenta que esta configuración sólo aplica al mapeo de este elemento, así que en otras partes se debe repetir si es necesario.
 manage.mapping.noid=Sin ID
 manage.mapping.lineNumber=Número de Línea
 manage.mapping.uuid=Generador de UUID
 manage.mapping.hideEmpty=Ocultar Campos no Mapeados
-manage.mapping.showAll=Mostrar Todo
+manage.mapping.nonmapped=Campos no mapeados
+manage.mapping.hideGroups=Ocultar las clases redundantes
+manage.mapping.redundant=Clases redundantes
+manage.mapping.showAll=Mostrar todos los campos
+manage.mapping.showAllGroups=Mostrar todas las clases
+manage.mapping.index=Índice de Campos
+manage.mapping.filters=Filtros del Campo
+manage.mapping.fields=Campos
+
 manage.mapping.info.linenumbers=Para los números de línea, puede especificar un sufijo no numérico opcional para ser añadido al id. Esto es útil para generar identificadores únicos cuando se mapea el mismo conjunto de datos múltiples veces<br /><br />
 manage.mapping.info=Un filtro excluye los registros coincidentes del archivo generado. Por ejemplo, especifique &quot;ColumnA IsNotNULL&quot;  para incluir únicamente los registros que tengan un valor en la ColumnA.<br /><br />Un filtro puede ser muy útil si la misma extensión es mapeada varias veces para crear tablas cruzadas. Si tiene dos columnas para nombres comunes, uno en Inglés y otro en Español, en la misma fuente de datos, puede hacer un mapeo adicional hacia la extensión de nombres comunes. Mapee una de las dos columnas en cada mapeo y establezca el filtro en la misma columna para IsNotNULL. De este modo, únicamente los registros de la extensión que realmente tienen un nombre común, quedarán en el archivo final.
 manage.mapping.filter=Filtro
-manage.mapping.filter.text=El filtro le permite incluir únicamente registros que coincidan con un criterio establecido para uno de los campos del conjunto de datos.
 manage.mapping.filter.afterTranslation=Después de la Traducción
 manage.mapping.filter.beforeTranslation=Antes de la Traducción
 manage.mapping.sourceSample=Muestra de los datos
@@ -770,7 +789,9 @@ manage.mapping.automaped={0} columnas automapeadas con base en los nombres del e
 manage.mapping.deleted=Mapeo eliminado {0}.
 manage.mapping.couldnt.delete=No fue posible eliminar el mapeo {0}.
 manage.mapping.no.mapped.title=Columnas sin mapear
-manage.mapping.no.mapped.columns=Las siguientes columnas del conjunto de datos no están asignadas a las propiedades de este mapeo
+manage.mapping.no.mapped.columns=Las siguientes columnas del conjunto de datos no están mapeadas a elemento alguno de esta extensión
+manage.mapping.redundant.classes.title=Clases de términos redundantes
+manage.mapping.redundant.classes.intro=Las siguientes clases son redundantes, puesto que ya están incluidas en la extensión del Core
 
 manage.history.title=Historial de Versiones
 manage.history.intro=Editar el resumen de cambios para la versión {0} del recurso {1}.
@@ -834,7 +855,7 @@ manage.overview.DwC.Mappings.description=Su mapeo entre el conjunto de datos y l
 manage.overview.DwC.Mappings.cantdo=No se puede realizar un mapeo entre el conjunto de datos y los elementos del Darwin Core hasta que el conjunto de datos no haya sido cargado y los estándares correctos hayan sido instalados. La única forma para que el mapeo no sea necesario, es que el recurso esté compuesto solamente por metadatos.
 manage.overview.DwC.Mappings.coretype.description1=Aquí puede mapear el conjunto de datos con los elementos de Darwin Core, seleccionando la extensión adecuada que tiene campos que coinciden con los del conjunto de datos.
 manage.overview.DwC.Mappings.coretype.description2=En primer lugar, seleccione un Estándar y realice el mapeo con éste, antes de seleccionar una extensión a mapear.
-manage.overview.DwC.Mappings.coretype.description3=Elija "Darwin Core Taxon" cuando la base del recurso son nombres de taxa, o "Darwin Core Occurrence" cuando la base del recurso son observaciones en la naturaleza (ocurrencias) o en una colección (ejemplares).
+manage.overview.DwC.Mappings.coretype.description3=Seleccione "Darwin Core Taxon" cuando la base del recurso son nombres taxonómicos, "Darwin Core Event" cuando la base del recurso es un evento de muestreo o "Darwin Core Occurrence" cuando la base del recurso son registros en la naturaleza (observaciones) o en una colección (especímenes).
 manage.overview.DwC.Mappings.coretype.description4=Si no aparece en el cuadro de selección el estándar o la extensión adecuada, póngase en contacto con el administrador del IPT para instalarla.
 manage.overview.DwC.Mappings.terms=elementos mapeados en
 manage.overview.DwC.Mappings.select=Seleccione únicamente un Estándar
@@ -909,6 +930,8 @@ manage.overview.publishing.doi.reserve.notRreused=Un DOI existente [{0}] ya ha s
 manage.overview.publishing.doi.reserve.success={0} fue solicitado exitosamente
 manage.overview.publishing.doi.reserve.failed=Error al solicitar {0}\: {1}
 manage.overview.publishing.doi.reserve.failed.metadata=Error al solicitar {0} debido a que los metadatos del DOI eran inválidos\: {1}
+manage.overview.publishing.doi.reserve.failed.notPublic=Falló la reutilización del DOI registrado ({0}). Para poder asignarlo a este recurso, el recurso debe ser público.
+manage.overview.publishing.doi.reserve.failed.invalid.target=Falló la reutilización del DOI registrado ({0}). Para poder asignarlo a este recurso, debe cambiarse el el destino URI a {1}.
 manage.overview.publishing.doi.reserve.reused.failed=Error al verificar que {0} ya a sido registrado. Por favor inténtelo nuevamente.
 manage.overview.publishing.doi.reserve.reused.failed.exception=Error al verificar que {0} ya a sido registrado\: {1}
 manage.overview.publishing.doi.publish.check.registered.failed=Error al verificar la pre-publicación\: {0} no esta solicitado o registrado. El estatus es\: {1}
@@ -1050,6 +1073,8 @@ manage.report.continueTo=Continúe a la <a href\="resource.do?r\={0}">vista gene
 ####
 eml.title=Título
 eml.description=Descripción
+eml.description.help=Una breve descripción del recurso que está siendo documentado, dividido en párrafos.
+eml.description.item=Párrafo
 eml.publishingOrganisation=Organización publicadora
 eml.publishingOrganisation.help=Por favor seleccione la organización responsable para la publicación (producción, liberación, mantenimiento) este recurso. Se utilizará como organización publicadora del recurso cuando se haga el registro en GBIF y al someter los metadatos durante el registro de los DOI. También se utilizará para generar la referencia del recurso (si la generación automática está activada), así que considere la importancia de este rol. Por favor tenga en cuenta que su selección no puede ser cambiada después de que el recurso ha sido registrado en GBIF o le ha sido asignado un DOI.
 eml.publishingOrganisation.required=En necesaria la organización publicadora.
@@ -1207,11 +1232,11 @@ eml.citation.generate.turn.on=Generación automática Desactivada - Activar
 eml.citation.generate.turn.off=Generación automática Activada - Desactivar
 
 eml.citation.identifier=Identificador de la Referencia del Recurso
-eml.citation.identifier.help=Un DOI, URI u otro identificador persistente que resuelva el conjunto de datos en línea. Se recomienda incluir el identificador en la referencia.
+eml.citation.identifier.help=Un DOI, URI u otro identificador persistente que se resuelva en el conjunto de datos en línea. Se recomienda incluir el identificador en la citación. Tenga en cuenta que si el recurso tiene un DOI asignado (utilizando el IPT), el IPT establece el DOI como el identificador de la cita y no puede ser editado.
 eml.bibliographicCitationSet.bibliographicCitations.citation=Referencia Bibliográfica
 eml.bibliographicCitationSet.bibliographicCitations.citation.help=La referencia de un recurso externo relacionado con o utilizado en la creación de este recurso.
 eml.bibliographicCitationSet.bibliographicCitations.identifier=Identificador de la Referencia Bibliográfica
-eml.bibliographicCitationSet.bibliographicCitations.identifier.help=Un DOI, URI u otro identificador persistente que resuelva el conjunto de datos en línea. Debe utilizarse en la referencia, generalmente al final.
+eml.bibliographicCitationSet.bibliographicCitations.identifier.help=Un DOI, URI u otro identificador persistente que se resuelva en el recurso externo en línea. Se debe utilizar en la citación, generalmente al final.
 eml.collection=Colección
 eml.collection.plural=Colecciones
 eml.collection.plural.help=La lista de colecciones representa las colecciones en las que se basa este recurso.
@@ -1264,7 +1289,7 @@ eml.specimenPreservationMethod.plural=Métodos de preservación de los ejemplare
 eml.specimenPreservationMethod.plural.help=La lista de métodos de preservación de ejemplares usados en este recurso.
 eml.specimenPreservationMethod.help=Palabra clave del vocabulario Método de Preservación de Ejemplares de GBIF, indica el proceso o técnica utilizada para prevenir el deterioro físico de las colecciones no vivientes. Si la colección tiene más de un método de preservación, seleccione el predominante. Recuerde que puede incluir una lista de métodos de preparación y preservación para un ejemplar en el elemento "Preparaciones" en el mapeo de datos DwC (http\://rs.tdwg.org/dwc/terms/preparations). Por favor, no seleccione ningún tratamiento para colecciones vivas.
 eml.alternateIdentifier=Identificador Alternativo
-eml.alternateIdentifier.help=Un identificador secundario adicional para esta entidad. Cuando el recurso es publicado, la URL del IPT del recurso es adicionada a la lista de identificadores. Cuando un recurso es registrado en el Registro GBIF, el registro único del recurso (UUID) también es adicionado a la lista de identificadores. Si el recurso representa un recurso existente en el Registro GBIF, es posible agregar el UUID  del recurso existente a la lista de identificadores. Esto permitirá actualizar el recurso existente con el recurso del IPT durante el registro, en lugar de registrarse un nuevo recurso.<br /><b>Ejemplo(s)\:</b><br /><i>4fa7b334-ce0d-4e88-aaae-2e0c138d049e</i>, <i>VCR3465</i>
+eml.alternateIdentifier.help=Un identificador secundario adicional para esta entidad. Cuando el recurso es publicado, la URL del IPT al recurso se adiciona a la lista de identificadores. Cuando un recurso le es asignado un DOI nuevo (utilizando el IPT), el IPT asegura que este DOI sea ubicado de primero en la lista de identificadores. Cuando un recurso es registrado en el Registro GBIF, el UUID del registro también se agrega a la lista de identificadores. Si el recurso representa un recurso existente registrado en el Registro GBIF, el UUID del recurso existente registrado puede añadirse a la lista de identificadores. Esto permitirá que el recurso IPT actualice el recurso existente durante el registro, en lugar de registrar un nuevo recurso.<br /><b>Ejemplo(s)\:</b><br /><i>4fa7b334-ce0d-4e88-aaae-2e0c138d049e</i>, <i>VCR3465</i>
 
 eml.intellectualRights.simple=Derechos
 eml.intellectualRights.license=Licencia de los datos
@@ -1400,4 +1425,3 @@ autopublish.help=Para <strong>activar</strong> la autopublicación, seleccione u
 
 # Struts2 overrides
 struts.messages.upload.error.SizeLimitExceededException=¡El archivo es demasiado grande\! El tamaño máximo permitido es de {0} bytes, su archivo es de {1} bytes. Para solucionar este problema, intente comprimir el archivo (con zip o gzip), cargar los datos en una de las muchas bases de datos soportados por el IPT o dividiendo el archivo. Por favor consulte el manual del usuario para obtener más información.
-
