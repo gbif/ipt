@@ -705,17 +705,18 @@ This metadata page contains information about the physical natural history colle
   * **Remove this curatorial unit** - click on this link to remove the curatorial unit that follows immediately below the link.<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataCuratorialUnits.png' />
 
 #### External Links
-This metadata page contains links to the home page for the resource as well as links to the resource in alternate forms (database files, spreadsheets, linked data, etc.) and the information about them. Before any external links are entered, the page will show a text box for the Resource Homepage and a link labeled "Add new external link".<br>
+This metadata page contains links to the home page for the resource as well as links to the resource in alternate forms (database files, spreadsheets, linked data, etc.) and the information about them. Before any external links are entered, the page will show a text box for the Resource Homepage and a link labeled "Add new external link".
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataExternalLinks.png' />
-</li></ul></li><li><b>Resource Homepage</b> - enter the full current URL of the web page containing information about the resource or its data set.<br>
-</li><li><b>Other Data Formats</b> - links to your resource data in other formats (e.g., database dumps, spreadsheets, nexus, linked data, etc.).<br>
-<ul><li><b>Add new external link</b> -  click on the link having this text to add the text boxes required for an additional external link.<br>
-</li><li><b>Name</b> - the name of the file or data set.<br>
-</li><li><b>Character Set</b> - the name or code for the character encoding (e.g., ASCII, UTF-8).<br>
-</li><li><b>Download URL</b> - the URL from which the file for the document or data set can be downloaded in the mentioned format.<br>
-</li><li><b>Data Format</b> - the name or code of the document or file format (e.g., CSV, TXT, XLS, Microsoft Excel, MySQL).<br>
-</li><li><b>Data Format Version</b> - the version of the document or file format given in the Data Format text box (e.g., 2003, 5.2).<br>
-</li><li><b>Remove this external link</b> - click on the link having this label to remove the external link that follows immediately below.<br>
+* **Resource Homepage** - enter the full current URL of the web page containing information about the resource or its data set.
+* **Other Data Formats** - links to your resource data in other formats (e.g., database dumps, spreadsheets, nexus, linked data, etc.).
+  * **Add new external link** -  click on the link having this text to add the text boxes required for an additional external link.
+  * **Name** - the name of the file or data set.
+  * **Character Set** - the name or code for the character encoding (e.g., ASCII, UTF-8).
+  * **Download URL** - the URL from which the file for the document or data set can be downloaded in the mentioned format.
+  * **Data Format** - the name or code of the document or file format (e.g., CSV, TXT, XLS, Microsoft Excel, MySQL).
+  * **Data Format Version** - the version of the document or file format given in the Data Format text box (e.g., 2003, 5.2).
+  * **Remove this external link** - click on the link having this label to remove the external link that follows immediately below.
+
 #### Additional Metadata
 This metadata page contains information about other aspects of the resource not captured on one of the other metadata pages, including alternative identifiers for the resource. Before any alternative identifiers are entered, the page will show text boxes for the purpose, maintenance description, additional metadata, a header for the Alternative Identifiers area, and a link labeled "Add new alternative identifier".<br>
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataAdditionalMetadata.png' /></li></ul></li></ul>
