@@ -296,54 +296,56 @@ Header, not logged in, English language chosen for the user interface:
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v205/IPTHeaderNotLoggedIn.png' />
 
-Header, logged in, English language chosen for the user interface:<br>
-<br>
+Header, logged in, English language chosen for the user interface:
+
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v205/IPTHeaderLoggedIn.png' />
 
-<b>Login</b> - A user who has already been created in this IPT instance can log in by entering the email address and password in the upper right-hand corner of the page, and then click on the "Login" link. Only an existing user having the Admin role can create new users. The process for creating new users is explained under the "Configure User accounts" heading in the "Administration Menu" section. The process of initializing the IPT creates the first user having the Admin role.<br>
-<b>Logout</b> - If someone is logged in to the IPT, the email address of the person who is logged in is given in the upper right-hand corner of the page along with a "Logout" link.<br>
-<b>Account</b> - To see this link and the page to which it leads, you must be logged into the IPT. The page shows the details of the account information for the person who is logged in to the IPT and allows them to be changed. The details of the fields found on this page can be found under the "Configure User accounts" heading in the "Administration Menu" section.<br>
-<b>Language selection</b> - In the upper right-hand corner of the page is a name depicting the language in which the IPT is currently being presented. The default language for the IPT is English. The language of the user interface can be changed by selecting a name for the desired language, if available. GBIF actively seeks translations for the IPT into additional languages. For more information, consult the [[How to Translate|HowToTranslate.wiki]] page of the GBIF IPT Google Code site wiki.<br>
+* **Login** - A user who has already been created in this IPT instance can log in by entering the email address and password in the upper right-hand corner of the page, and then click on the "Login" link. Only an existing user having the Admin role can create new users. The process for creating new users is explained under the "Configure User accounts" heading in the "Administration Menu" section. The process of initializing the IPT creates the first user having the Admin role.
+* **Logout** - If someone is logged in to the IPT, the email address of the person who is logged in is given in the upper right-hand corner of the page along with a "Logout" link.
+* **Account** - To see this link and the page to which it leads, you must be logged into the IPT. The page shows the details of the account information for the person who is logged in to the IPT and allows them to be changed. The details of the fields found on this page can be found under the "Configure User accounts" heading in the "Administration Menu" section.
+* **Language selection** - In the upper right-hand corner of the page is a name depicting the language in which the IPT is currently being presented. The default language for the IPT is English. The language of the user interface can be changed by selecting a name for the desired language, if available. GBIF actively seeks translations for the IPT into additional languages. For more information, consult the [[How to Translate|HowToTranslate.wiki]] page of the GBIF IPT Google Code site wiki.
+
 #### Footer
-The footer section of the IPT appears along the bottom of most pages and contains information about the IPT version and links to important resources.<br>
-<br>
+The footer section of the IPT appears along the bottom of most pages and contains information about the IPT version and links to important resources.
+
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTFooter.png' />
 
-<b>Version</b> - At the left of the footer at bottom of the page is the version of the IPT that is currently running. The version information can be used to determine which features are included in the IPT and what bugs are known to exist. This is the version information that is requested when making bug reports.<br>
-<b>About the IPT</b> - This link leads to the [IPT website](http://www.gbif.org/ipt), where further information about the IPT can be found, including the version history, roadmap, uptake statistics, and further related documentation.<br>
-<b>[[User Manual|IPT2ManualNotes.wiki]]</b> - This link opens the most recently released online version of the IPT User Manual.<br>
-<b>[Report a bug](https://github.com/gbif/ipt/issues/)</b> - This link opens the list of known open issues for the IPT. If you think you have encountered a bug, look at the list of known issues first to see if the bug has already been reported. If it has, you may add new information as a comment to the existing bug report that might help engineers to diagnose the problem and get it fixed. If no bug similar to the one you have encountered in the IPT appears on the list, you can create a new bug report by clicking on the "New issues" link. When entering a bug report, it is useful to include the version of the IPT you are using (see the explanation for "Version", above).<br>
-<b>[Request new feature](https://github.com/gbif/ipt/issues/new)</b> - This link opens a specific form in the IPT issue tracker that can be filled in to request a capability that the IPT does not currently have.<br>
-<b>Copyright</b> - The copyright for the IPT software is held by the Global Biodiversity Information Facility. A link to the home page for GBIF is provided. Details of the copyright and licensing can be seen in the "About the IPT" section of this user manual.<br>
-<br>
+* **Version** - At the left of the footer at bottom of the page is the version of the IPT that is currently running. The version information can be used to determine which features are included in the IPT and what bugs are known to exist. This is the version information that is requested when making bug reports.
+* **About the IPT** - This link leads to the [IPT website](http://www.gbif.org/ipt), where further information about the IPT can be found, including the version history, roadmap, uptake statistics, and further related documentation.
+* **User Manual** - This link opens the most recently released online version of the IPT User Manual.
+* [**Report a bug**](https://github.com/gbif/ipt/issues/) - This link opens the list of known open issues for the IPT. If you think you have encountered a bug, look at the list of known issues first to see if the bug has already been reported. If it has, you may add new information as a comment to the existing bug report that might help engineers to diagnose the problem and get it fixed. If no bug similar to the one you have encountered in the IPT appears on the list, you can create a new bug report by clicking on the "New issues" link. When entering a bug report, it is useful to include the version of the IPT you are using (see the explanation for "Version", above).
+* [**Request new feature**](https://github.com/gbif/ipt/issues/new) - This link opens a specific form in the IPT issue tracker that can be filled in to request a capability that the IPT does not currently have.
+* **Copyright** - The copyright for the IPT software is held by the Global Biodiversity Information Facility. A link to the home page for GBIF is provided. Details of the copyright and licensing can be seen in the "About the IPT" section of this user manual.
+
 ## Home Menu (visible to all users)
-This page allows users to view a list of public resources, if any, and to look at the detailed metadata of any resource on the list.<br>
-<br>
+This page allows users to view a list of public resources, if any, and to look at the detailed metadata of any resource on the list.
+
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v205/IPTHome.png' />
 ### Public Resources Table
-If there are any public resources, they will appear in a table having the following columns:<br>
-<br>
-<b>Logo</b> - the resource logo (configurable in Additional Metadata page of the resource metadata)<br>
-<b>Name</b> - the title of the resource as given in the Title entry of the resource metadata. The Name appears as a link, which will open the resource's homepage (see below).<br>
-<b>Organisation</b> - the organisation under which the resource has been registered, if any. If the resource is not registered, the value in the Organisation column will be "Not registered". Review the information under the "Organisations" heading in the "Administration Menu" section for more information about registering organisations and registering a resource under an organisation.<br>
-<b>Type</b> - the type of the resource as given in the Type drop down on the [[Basic Metadata|IPT2ManualNotes.wiki#basic-metadata]] page of the resource metadata<br>
-<b>Subtype</b> - the subtype of the resource as given in the Subtype drop down on the [[Basic Metadata|IPT2ManualNotes.wiki#basic-metadata]] page of the resource metadata<br>
-<b>Records</b> - the number of rows of data in the core data file of the last published Darwin Core Archive for the resource.<br>
-<b>Last modified</b> - either the date the resource was created or the date on which the data or metadata were last modified, whichever is more recent.<br>
-<b>Last publication</b> - the date the resource was last published.<br>
-<b>Next publication</b> - the date the resource will be published next.<br>
+If there are any public resources, they will appear in a table having the following columns:
+
+* **Logo** - the resource logo (configurable in Additional Metadata page of the resource metadata)
+* **Name** - the title of the resource as given in the Title entry of the resource metadata. The Name appears as a link, which will open the resource's homepage (see below).
+* **Organisation** - the organisation under which the resource has been registered, if any. If the resource is not registered, the value in the Organisation column will be "Not registered". Review the information under the "Organisations" heading in the "Administration Menu" section for more information about registering organisations and registering a resource under an organisation.
+* **Type** - the type of the resource as given in the Type drop down on the [[Basic Metadata|IPT2ManualNotes.wiki#basic-metadata]] page of the resource metadata
+* **Subtype** - the subtype of the resource as given in the Subtype drop down on the [[Basic Metadata|IPT2ManualNotes.wiki#basic-metadata]] page of the resource metadata
+* **Records** - the number of rows of data in the core data file of the last published Darwin Core Archive for the resource.
+**Last modified** - either the date the resource was created or the date on which the data or metadata were last modified, whichever is more recent.
+* **Last publication** - the date the resource was last published.
+* **Next publication** - the date the resource will be published next.
+
 ### RSS feed
 The IPT supports syndication via RSS for those who wish to monitor when new resource versions get published, and how resources change over time. In fact each time a new resource version is broadcast, it will include a summary of what changed since the last version (assuming the publisher entered a change summary, otherwise it defaults to the resource description). The RSS feed is accessible by clicking on the link provided below the list of public hosted resources. The RSS feed can be read in any standard RSS client.<br>
 ### Registered resource inventory
-The IPT provides a simple JSON inventory of all registered resources. This feature isn't shown on the user interface. To view simply append /inventory/dataset to the IPT base URL, e.g. <a href='http://ipt.gbif.org/inventory/dataset'>http://ipt.gbif.org/inventory/dataset</a>. GBIF uses this inventory to monitor whether it is properly indexing resources by comparing the target and indexed record counts.<br>
+The IPT provides a simple JSON inventory of all registered resources. This feature isn't shown on the user interface. To view simply append /inventory/dataset to the IPT base URL, e.g. <a href='http://ipt.gbif.org/inventory/dataset'>http://ipt.gbif.org/inventory/dataset</a>. GBIF uses this inventory to monitor whether it is properly indexing resources by comparing the target and indexed record counts.
+
 ### Resource homepage
-The resource homepage is aimed at external users of a resource. The homepage lists all the metadata about a selected version of a resource, provides links to download the version's data/metadata, and displays the resource's version history.<br>
-<br>
-To view the resource homepage, user can click on the name link in the list of resources on the Home page. Another way to get to the resource's homepage is using its DOI: when a resource is assigned a DOI via the IPT, it always resolves to its homepage.<br>
-<br>
-<br>
-Please note only a user having the Admin role or one of the Manager roles can edit a resource's metadata. To learn more, please refer to the information under the "Edit an existing resource" heading in the "Manage Resources Menu" section.<br>
-<br>
+The resource homepage is aimed at external users of a resource. The homepage lists all the metadata about a selected version of a resource, provides links to download the version's data/metadata, and displays the resource's version history.
+
+To view the resource homepage, user can click on the name link in the list of resources on the Home page. Another way to get to the resource's homepage is using its DOI: when a resource is assigned a DOI via the IPT, it always resolves to its homepage.
+
+Please note only a user having the Admin role or one of the Manager roles can edit a resource's metadata. To learn more, please refer to the information under the "Edit an existing resource" heading in the "Manage Resources Menu" section.
+
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTHomeMetadataOverview.png' />
 
 #### Version history
