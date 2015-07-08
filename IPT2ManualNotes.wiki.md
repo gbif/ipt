@@ -335,7 +335,8 @@ If there are any public resources, they will appear in a table having the follow
 * **Next publication** - the date the resource will be published next.
 
 ### RSS feed
-The IPT supports syndication via RSS for those who wish to monitor when new resource versions get published, and how resources change over time. In fact each time a new resource version is broadcast, it will include a summary of what changed since the last version (assuming the publisher entered a change summary, otherwise it defaults to the resource description). The RSS feed is accessible by clicking on the link provided below the list of public hosted resources. The RSS feed can be read in any standard RSS client.<br>
+The IPT supports syndication via RSS for those who wish to monitor when new resource versions get published, and how resources change over time. In fact each time a new resource version is broadcast, it will include a summary of what changed since the last version (assuming the publisher entered a change summary, otherwise it defaults to the resource description). The RSS feed is accessible by clicking on the link provided below the list of public hosted resources. The RSS feed can be read in any standard RSS client.
+
 ### Registered resource inventory
 The IPT provides a simple JSON inventory of all registered resources. This feature isn't shown on the user interface. To view simply append /inventory/dataset to the IPT base URL, e.g. <a href='http://ipt.gbif.org/inventory/dataset'>http://ipt.gbif.org/inventory/dataset</a>. GBIF uses this inventory to monitor whether it is properly indexing resources by comparing the target and indexed record counts.
 
@@ -349,30 +350,29 @@ Please note only a user having the Admin role or one of the Manager roles can ed
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTHomeMetadataOverview.png' />
 
 #### Version history
-The version history table lists all published versions of the resource, enabling users to track changes to the resource over time and download previous versions' data/metadata. Please note, the IPT's Archival Mode must be turned on in order for old versions of DWCA to be stored (see [[Configure IPT settings|IPT2ManualNotes.wiki#configure-ipt-settings]] section). Only versions that are publicly accessible can be viewed by external users, whereas admins and resource managers can see all versions. For explanations of the table columns, refer to the information below.<br>
-<br>
+The version history table lists all published versions of the resource, enabling users to track changes to the resource over time and download previous versions' data/metadata. Please note, the IPT's Archival Mode must be turned on in order for old versions of DWCA to be stored (see [[Configure IPT settings|IPT2ManualNotes.wiki#configure-ipt-settings]] section). Only versions that are publicly accessible can be viewed by external users, whereas admins and resource managers can see all versions. For explanations of the table columns, refer to the information below.
+
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTVersionHistoryTable.png' />
 
-Following are explanations of the table columns:<br>
+Following are explanations of the table columns:
 
-<b>Version</b> - the published version's version number, which uses the major_version.minor_version format. The version of the resource homepage currently being viewed is clearly indicated. To open a specific version's homepage, click on the version number. <b>Note</b>: A major version change compared to the last published version indicates that a scientifically significant change has taken place.<br>
-<b>Published on</b> - the date the published version was released.<br>
-<b>Records</b> - the number of records the published version contains.<br>
-<b>Change summary</b> - a summary of what has changed since the last published version.<br>
-<b>DOI handle</b> - the DOI handle assigned to the published version. <b>Note</b>: If the DOI is different from the DOI of the last published version, this indicates that a scientifically significant change has been done to the resource.<br>
-<b>Last modified by</b> - the IPT user that last modified the published version.<br>
+* **Version** - the published version's version number, which uses the major_version.minor_version format. The version of the resource homepage currently being viewed is clearly indicated. To open a specific version's homepage, click on the version number. **Note**: A major version change compared to the last published version indicates that a scientifically significant change has taken place.
+* **Published on** - the date the published version was released.
+* **Records** - the number of records the published version contains.
+* **Change summary** - a summary of what has changed since the last published version.
+* **DOI handle** - the DOI handle assigned to the published version. <b>Note</b>: If the DOI is different from the DOI of the last published version, this indicates that a scientifically significant change has been done to the resource.
+* **Last modified by** - the IPT user that last modified the published version.
 
 ## Manage Resources Menu (visible to users with an Admin or Manager role)
-This page allows users having the appropriate role (managers and administrators) to make changes to existing resources or to create new resources.<br>
-<br>
+This page allows users having the appropriate role (managers and administrators) to make changes to existing resources or to create new resources.
+
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResources.png' />
+
 ### Manage Resources Table
-When the Manage Resources page is first opened, it shows a table of existing resources that the current user has permission to change, including those created by this user and those that this user has been invited to manage by others. Refer to the information under the [[Public Resources Table|IPT2ManualNotes.wiki#public-resources-table]] section for detailed explanations of the Name, Organisation, Type, Subtype, Records, Last Modified, Last publication, and Next publication columns. In addition, the Manage Resources Table includes the following column of basic information about the resources:<br>
-<br>
-<b>Visibility</b> - a category stating who has access to view the resource. If the resource is "Public", all users will be able to see it on the [[Public Resources Table|IPT2ManualNotes.wiki#public-resources-table]] on the Home page. If the resource is "Private", it will be visible in the Manage Resources table only to the user who created it, to those who have been invited to manage it, and to users having the Admin role. Details about inviting others to manage a resource are given in the "Resource Managers" section under the "Resource Overview" heading in the "Manage Resources" section.<br>
-<br>
-<b>Author</b> - the IPT user who created the resource.<br>
-<br>
+When the Manage Resources page is first opened, it shows a table of existing resources that the current user has permission to change, including those created by this user and those that this user has been invited to manage by others. Refer to the information under the [[Public Resources Table|IPT2ManualNotes.wiki#public-resources-table]] section for detailed explanations of the Name, Organisation, Type, Subtype, Records, Last Modified, Last publication, and Next publication columns. In addition, the Manage Resources Table includes the following column of basic information about the resources:
+* **Visibility** - a category stating who has access to view the resource. If the resource is "Public", all users will be able to see it on the [[Public Resources Table|IPT2ManualNotes.wiki#public-resources-table]] on the Home page. If the resource is "Private", it will be visible in the Manage Resources table only to the user who created it, to those who have been invited to manage it, and to users having the Admin role. Details about inviting others to manage a resource are given in the "Resource Managers" section under the "Resource Overview" heading in the "Manage Resources" section.
+* **Author** - the IPT user who created the resource.
+
 ### Create a New Resource
 Below the Manage Resource table is a form that can be used to create a new resource. First, a unique "shortname" must be provided for the resource. This short name will be used to uniquely identify the resource within the IPT instance, and will be used within the URL to access the resource via the Internet. The shortname must be at least three characters in length, may contain alphanumeric characters, but must not contain white space or punctuation other than hyphens or underscores (e.g., "firstresource" or "first_resource", but not "first resource" or "firstresource!"). Second, an optional resource type can be provided. Please note that when an optional archived resource is loaded (see below) the type will be determined automatically and overwrite this selection. Third, an optional archived resource can be uploaded. The following sections describe the 3 different types of archived resources from which a new resource can be derived: [[Darwin Core Archive|IPT2ManualNotes.wiki#upload-a-darwin-core-archive]], [[zipped (.zip) IPT resource configuration folder|IPT2ManualNotes.wiki#upload-a-zipped-ipt-resource-configuration-folder]], [[metadata file|IPT2ManualNotes.wiki#upload-a-metadata-file]].<br>
 <br>
