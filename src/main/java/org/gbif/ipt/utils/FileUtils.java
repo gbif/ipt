@@ -16,6 +16,7 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.text.NumberFormat;
 
+import com.google.common.base.Preconditions;
 import org.apache.log4j.Logger;
 
 public class FileUtils {
@@ -90,4 +91,20 @@ public class FileUtils {
     }
     return new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, false), UTF8));
   }
+
+  /**
+   * Construct filename for persisted file (e.g. vocabulary or extension) replacing certain characters with an
+   * underscore, and appending a suffix.
+   *
+   * @param name   original name, excluding suffix
+   * @param suffix suffix to add to filename
+   *
+   * @return constructed filename
+   */
+  public static String getSuffixedFileName(String name, String suffix) {
+    Preconditions.checkNotNull(name);
+    Preconditions.checkNotNull(suffix);
+    return name.replaceAll("[/.:]+", "_") + suffix;
+  }
+
 }

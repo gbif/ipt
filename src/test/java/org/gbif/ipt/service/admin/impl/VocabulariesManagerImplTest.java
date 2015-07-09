@@ -205,7 +205,7 @@ public class VocabulariesManagerImplTest {
 
     // add vocabulary to directory
     File ranksVoc = FileUtils.getClasspathFile("thesauri/rank.xml");
-    File renamed = new File(vocabDir, "http_rs_gbif_org_vocabulary_gbif_rank.vocab");
+    File renamed = new File(vocabDir, "http_rs_gbif_org_vocabulary_gbif_rank_xml.vocab");
     org.apache.commons.io.FileUtils.copyFile(ranksVoc, renamed);
     assertTrue(renamed.exists());
     assertEquals(1, vocabDir.listFiles().length);
@@ -217,7 +217,7 @@ public class VocabulariesManagerImplTest {
 
     Vocabulary v = manager.get("http://rs.gbif.org/vocabulary/gbif/rank");
     assertEquals("Taxonomic Rank GBIF Vocabulary", v.getTitle());
-    assertEquals("http://rs.gbif.org/sandbox/vocabulary/gbif/rank_2015-04-24.xml", v.getUriResolvable().toString());
+    assertEquals("http://rs.gbif.org/vocabulary/gbif/rank.xml", v.getUriResolvable().toString());
   }
 
   @Test

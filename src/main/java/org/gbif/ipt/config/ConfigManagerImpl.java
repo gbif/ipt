@@ -10,6 +10,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.admin.impl.RegistrationManagerImpl;
+import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.utils.InputStreamUtils;
 import org.gbif.ipt.utils.LogFileAppender;
@@ -25,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -54,6 +56,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   private static final String PATH_TO_CSS = "/styles/main.css";
 
   private static final int DEFAULT_TO = 4000; // Default time out
+  private static final String DEPRECATED_VOCAB_PERSISTENCE_FILE = "vocabularies.xml";
 
   @Inject
   public ConfigManagerImpl(DataDir dataDir, AppConfig cfg, InputStreamUtils streamUtils,
@@ -169,6 +172,13 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
 
     log.info("Loading vocabularies ...");
     vocabManager.load();
+
+    File vocabDir = dataDir.configFile(VocabulariesManagerImpl.CONFIG_FOLDER);
+    File deprecatedVocabFile = new File(vocabDir, DEPRECATED_VOCAB_PERSISTENCE_FILE);
+    if (deprecatedVocabFile.exists()) {
+      log.info("Perform 1-time event: delete deprecated vocabularies.xml file");
+      FileUtils.deleteQuietly(deprecatedVocabFile);
+    }
 
     log.info("Loading extensions ...");
     extensionManager.load();

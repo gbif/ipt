@@ -63,8 +63,8 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
 
   // local lookup
   private Map<String, Vocabulary> vocabulariesById = Maps.newHashMap();
-  protected static final String CONFIG_FOLDER = ".vocabularies";
-  private static final String VOCAB_FILE_SUFFIX = ".vocab";
+  public static final String CONFIG_FOLDER = ".vocabularies";
+  public static final String VOCAB_FILE_SUFFIX = ".vocab";
   private VocabularyFactory vocabFactory;
   private HttpUtil downloader;
   private final RegistryManager registryManager;
@@ -99,14 +99,17 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
    */
   private void uninstall(String identifier) {
     if (vocabulariesById.containsKey(identifier)) {
-      File f = getVocabFile(vocabulariesById.get(identifier).getUriResolvable());
-      vocabulariesById.remove(identifier);
+      // 1. delete persisted vocab file
+      Vocabulary toUninstall = vocabulariesById.get(identifier);
+      File f = getVocabFile(toUninstall.getUriResolvable());
       if (f.exists()) {
         f.delete();
         log.debug("Successfully deleted (uninstalled) vocabulary file: " + f.getAbsolutePath());
       } else {
         log.warn("Vocabulary file doesn't exist locally - can't delete: " + f.getAbsolutePath());
       }
+      // 2. delete from local lookup
+      vocabulariesById.remove(identifier);
     } else {
       log.warn("Vocabulary not installed locally, can't uninstall: " + identifier);
     }
@@ -173,7 +176,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
    * @return vocabulary file
    */
   private File getVocabFile(URI uri) {
-    String filename = uri.toString().replaceAll("[/.:]+", "_") + VOCAB_FILE_SUFFIX;
+    String filename = org.gbif.ipt.utils.FileUtils.getSuffixedFileName(uri.toString(), VOCAB_FILE_SUFFIX);
     return dataDir.configFile(CONFIG_FOLDER + "/" + filename);
   }
 
@@ -253,7 +256,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
 
   @Override
   public int load() {
-    Map<String, URI> idToUrl = idToUrl();
+    Map<String, Vocabulary> fileNameToVocabulary = getFileNameToVocabularyMap();
     // now iterate over all vocab files and load them
     File dir = dataDir.configFile(CONFIG_FOLDER);
     int counter = 0;
@@ -264,15 +267,22 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       for (File vf : files) {
         try {
           Vocabulary v = loadFromFile(vf);
-          if (idToUrl.containsKey(v.getUriString())) {
-            // populate vocabulary's resolvable URI, and at the same time ensure vocabulary is registered
-            v.setUriResolvable(idToUrl.get(v.getUriString()));
-            // keep vocabulary in local lookup: allowed one installed vocabulary per identifier
-            vocabulariesById.put(v.getUriString(), v);
-            counter++;
+          if (fileNameToVocabulary.containsKey(vf.getName())) {
+            if (!vocabulariesById.containsKey(v.getUriString())) {
+              // populate vocabulary's resolvable URI (needed in order to properly uninstall vocabulary later)
+              v.setUriResolvable(fileNameToVocabulary.get(vf.getName()).getUriResolvable());
+              // keep vocabulary in local lookup: allowed one installed vocabulary per identifier
+              vocabulariesById.put(v.getUriString(), v);
+              counter++;
+            } else {
+              // skip - was loaded already
+              counter++;
+            }
+          } else {
+            warnings.addStartupError("Unknown vocabulary found: " + v.getUriString());
           }
         } catch (InvalidConfigException e) {
-          warnings.addStartupError("Cant load local vocabulary definition " + vf.getAbsolutePath(), e);
+          warnings.addStartupError("Failed to load vocabulary definition file: " + vf.getAbsolutePath(), e);
         }
       }
     }
@@ -280,21 +290,19 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   }
 
   /**
-   * @return map of unique identifier to resolvable URL for latest version of all registered vocabularies
+   * Iterate through all registered vocabularies an populate a map where each key is the name of the file if it were
+   * persisted, and the value is the Vocabulary object.
+   *
+   * @return map containig all registered vocabularies
    */
-  private Map<String, URI> idToUrl() {
-    Map<String, URI> map = Maps.newHashMap();
+  private Map<String, Vocabulary> getFileNameToVocabularyMap() {
+    Map<String, Vocabulary> map = Maps.newHashMap();
     try {
       for (Vocabulary v : registryManager.getVocabularies()) {
         if (v.getUriString() != null && v.getUriResolvable() != null) {
-          // if in map already, make sure it only gets replaced if this version of vocab is the latest one
-          if (map.containsKey(v.getUriString())) {
-            if (v.isLatest()) {
-              map.put(v.getUriString(), v.getUriResolvable());
-            }
-          } else {
-            map.put(v.getUriString(), v.getUriResolvable());
-          }
+          String filename =
+            org.gbif.ipt.utils.FileUtils.getSuffixedFileName(v.getUriResolvable().toString(), VOCAB_FILE_SUFFIX);
+          map.put(filename, v);
         }
       }
     } catch (RegistryException e) {
@@ -462,9 +470,8 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       if (isNewVersion && latestVersion.getUriResolvable() != null) {
         // first download latestVersion XML file
         File tmpFile = download(latestVersion.getUriResolvable().toURL());
-        Vocabulary vocabulary = loadFromFile(tmpFile);
-        // uninstall and install new version
-        uninstall(vocabulary.getUriString());
+        // uninstall old version, then install new version
+        uninstall(installed.getUriString());
         finishInstall(tmpFile, latestVersion);
       }
     }

@@ -66,6 +66,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
 
   // logging
   private static final Logger log = Logger.getLogger(ExtensionManagerImpl.class);
+  public static final String EXTENSION_FILE_SUFFIX = ".xml";
   protected static final String CONFIG_FOLDER = ".extensions";
   private final static String TAXON_KEYWORD = "dwc:taxon";
   private final static String OCCURRENCE_KEYWORD = "dwc:occurrence";
@@ -407,7 +408,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
    * @return extension file
    */
   private File getExtensionFile(String rowType) {
-    String filename = rowType.replaceAll("[/.:]+", "_") + ".xml";
+    String filename = org.gbif.ipt.utils.FileUtils.getSuffixedFileName(rowType, EXTENSION_FILE_SUFFIX);
     return dataDir.configFile(CONFIG_FOLDER + "/" + filename);
   }
 
@@ -472,7 +473,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
    */
   private File download(URL url) throws IOException {
     Preconditions.checkNotNull(url);
-    String filename = url.toString().replaceAll("[/:.]+", "_") + ".xml";
+    String filename = org.gbif.ipt.utils.FileUtils.getSuffixedFileName(url.toString(), EXTENSION_FILE_SUFFIX);
     File tmpFile = dataDir.tmpFile(filename);
     StatusLine statusLine = downloader.download(url, tmpFile);
     if (success(statusLine)) {
@@ -554,7 +555,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     int counter = 0;
     if (extensionDir.isDirectory()) {
       List<File> extensionFiles = new ArrayList<File>();
-      FilenameFilter ff = new SuffixFileFilter(".xml", IOCase.INSENSITIVE);
+      FilenameFilter ff = new SuffixFileFilter(EXTENSION_FILE_SUFFIX, IOCase.INSENSITIVE);
       extensionFiles.addAll(Arrays.asList(extensionDir.listFiles(ff)));
       for (File ef : extensionFiles) {
         try {
