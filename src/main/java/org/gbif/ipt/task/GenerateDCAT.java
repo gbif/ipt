@@ -177,6 +177,8 @@ public class GenerateDCAT {
     }
 
     private String createDataset(){
+        String s = "";
+
         //dct:title
         //dct:description
         //dcat:theme
