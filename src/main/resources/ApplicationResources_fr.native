@@ -49,6 +49,7 @@ basic.showLess=moins
 basic.show=Afficher
 basic.hide=Masquer
 basic.none=Aucun
+basic.issued=Publié
 
 # buttons
 button.add=Ajouter
@@ -68,6 +69,7 @@ button.publish=Publier
 button.public=Public
 button.updateRegistration=Mettre à jour l''enregistrement
 button.update=Mettre à jour
+button.synchronise=Synchroniser
 button.private=Privé
 button.view=Voir
 button.preview=Aperçu
@@ -139,6 +141,7 @@ user.roles.admin=Administrateur
 
 # extension
 extension=Extension
+extension.core=Extension du Core
 extension.rowtype=RowType
 extension.vocabulary=Vocabulaire
 extension.properties=Propriétés
@@ -146,9 +149,8 @@ extension.prop.qname=Qualname
 extension.prop.type=Type de donnée
 extension.prop.required=Nécessaire
 extension.prop.group=Groupe
-extension.vocabularies.title=Vocabulaires
-extension.vocabularies.last.update=Dernière mise à jour le {0}<br />
-extension.vocabularies.number=les {0} vocabulaires avec la dernière version publiée.
+extension.synchronise.title=Synchroniser les Extensions et Vocabulaires
+extension.last.synchronised=Dernière synchronisation le {0}
 extension.further.title=Autres modules noyau et d''extension Darwin Core disponibles
 extension.further.title.help=La colonne de gauche contient le nom du module noyau ou d''extension. Dans la colonne de droite se trouve une brève description de ce module ainsi que des données cibles.
 extension.already.installed=Tous les modules (noyau et extension) disponibles sont déjà installés.
@@ -166,7 +168,7 @@ resource.coreType=Type
 resource.coreType.selection=Sélectionnez le type
 manage.resource.create.coreType=Type
 manage.resource.create.coreType.selection=Sélectionner le type (optionnel)
-manage.resource.create.coreType.help=Le type de la ressource. Si vous chargez une ressource archivée, le type sera automatiquement déterminé et écrasera votre sélection. <ul><li><b>Occurrence\:</b> les occurrences dans la nature (observations) ou dans une collection (spécimens) sont la base de la ressource.<br /></li><li><b>Checklist\:</b> les noms de taxon sont la base de la ressource.<br /></li><li><b>Métadonnées uniquement\:</b> une ressource ayant les informations du dataset sans avoir les données primaires. Une ressource de métadonnée peut vous donner des informations à propos d''une collection qui n''a pas encore été numérisée, par exemple.<br /></li><li><b>Autre\:</b> un autre type de ressource.<br /></li></ul>
+manage.resource.create.coreType.help=Le type de ressource. Si une archive supplémentaire est chargée, le type sera déterminé automatiquement et écrasera votre sélection. <ul><li><b>Occurrence \:</b> la ressource est constituée d''occurrences vues dans la nature (observations) ou dans une collection (spécimens). < br / ></li> <li><b>Référentiel taxonomique \:</b> la ressource est constituée de noms de taxons. < br / ></li> <li><b>Données d''échantillonnage \:</b> la ressource est constituée de données d''échantillonnage. < br / ></li> <li><b>Métadonnées \:</b> une ressource constituée d''informations sur un jeu de données, mais sans avoir les données primaires associées. Une ressource de métadonnées peut donner des informations sur une collection n''ayant pas encore été numérisée, par exemple. < br /></li> <li><b>Autres \:</b> un autre type de ressource. < br /></li></ul>
 resource.subtype=Sous-type
 resource.status.private=Privé
 resource.status.public=Public
@@ -189,6 +191,10 @@ source.encoding=Jeu de caractères
 source.encoding.help=Encodage des caractères utilisé dans la source de donnée (UTF-8, Latin-1 ou Windows-1252 sont des valeurs courantes)
 source.dateFormat=Format de date
 source.dateFormat.help=Le format de dates utilisé dans les données source
+source.multiValueFieldsDelimitedBy=Séparateur de valeurs multiples
+source.multiValueFieldsDelimitedBy.help=Un caractère unique qui délimite les valeurs dans un champ à valeurs multiples.
+source.ignoreHeaderLines=Nombre de lignes d''en-tête
+source.ignoreHeaderLines.help=Le nombre de lignes d''en-tête dans votre fichier à ignorer lors de l''import.
 sqlSource.host=Hôte
 sqlSource.host.help=L''adresse (nom d''hôte ou adresse IP) du serveur de base de donnée. Un numéro de port peut être également fourni si nécessaire. Ce champ n''est pas nécessaire en cas de connexion ODBC. Par exemple\: "localhost" ou "mysql.gbif.org\:1336".
 sqlSource.rdbms=Type de base de données
@@ -203,8 +209,6 @@ fileSource.fieldsTerminatedByEscaped=Délimiteur de champ
 fileSource.fieldsTerminatedByEscaped.help=Le caractère utilisé pour délimiter les champs/colonnes au sein d''une ligne.
 fileSource.fieldsEnclosedByEscaped=Délimiteur de texte
 fileSource.fieldsEnclosedByEscaped.help=Un seul caractère qui entoure chaque champ/colonne sur une ligne. Le plus souvent vide, mais les fichiers CSV utilisent un ". Avec cette option, assurez-vous que *tous* les champs soient entourés de guillemets, pas seulement les champs texte. Veuillez notez que dans l''IPT, le caractère à la ligne (\n) ou les retours chariots (\n) ne doivent pas être entourés de guillemets et doivent être supprimés.
-fileSource.ignoreHeaderLines=Nombre de lignes d''en-tête / de titre
-fileSource.ignoreHeaderLines.help=Le nombre de lignes d''en-tête dans le fichier (ces lignes seront ignorées lors de l''import).
 excelSource.sheets=Feuille de calcul sélectionnée
 
 # ranks
@@ -391,6 +395,7 @@ portal.resource.eml.error.parse=Le fichier EML de la ressource {1} en version \#
 portal.resource.otherFormats=Les données de la ressource sont disponibles dans d''autres formats
 portal.resource.warning.notPublic=La version que vous regardez est {0} et n''est pas visible par tous le monde\!
 portal.resource.warning.notLatest=La version que vous regardez n''est pas la dernière version\! Veuillez consulter le tableau des versions pour trouver la plus récente.
+portal.resource.version.notArchived.count=Le fichier DwC-A publié pour cette version a {0} occurrences mais n''a pas été archivé.
 
 ####
 # ADMIN SECTION
@@ -506,15 +511,16 @@ invalid.fieldvalue.longitude=Longitude incorrecte
 admin.extension.coreTypes=Modules noyau
 admin.extension.extensions=Modules d''extensions
 admin.extension.no.coreTypes.installed=Il n''y a pas de module noyau installé.
-admin.extension.no.coreTypes.installed.help=Les modules noyau forment la base des enregistrements\: Occurrence et Taxon.
+admin.extension.no.coreTypes.installed.help=Les types "Core" fournissent les termes de base pour les données primaires \: Occurrence, Taxon et Event.
 admin.extension.no.coreTypes.installed.debug=Aucun module noyau n''étant installé actuellement, il n''est pas possible d''effectuer le mapping des données. Veuillez tout d''abord installer un module noyau. Si cette liste apparait vide, veuillez vérifier votre connexion Internet, et que votre serveur peut entrer en communication avec le Registre GBIF\: {0}.
 admin.extension.no.extensions.installed=Il n''y a pas de modules d''extension installé.
 admin.extension.no.extensions.installed.help=Les modules d''extension permettent d''associer des données supplémentaires (par rapport au modules noyau) à un enregistrement. Chaque extension cible une catégorie de données différente. Vous pouvez installer les extensions désirées grace à la liste ci-dessous.
 admin.extension.couldnt.install.coreTypes=Impossible d''installer les modules noyau.
+admin.vocabulary.couldnt.install.defaults=L''installation (ou la mise à jour) des dernières versions des vocabulaires par défaut n''a pas pu être effectuée \: {0}.
 admin.extension.couldnt.install=Impossible d''installer les modules d''extension.
 admin.extension.install.success=Le module d''extension {0} a été correctement installé.
 admin.extension.install.error=Une erreur s''est produite lors de l''installation du module {0}.
-admin.extension.install.duplicate=Un module avec le rowType {0} est déjà installée. Veuillez la désinstaller, puis réessayer.
+admin.vocabulary.install.error=Une erreur s''est produite lors de la tentative d''installation du vocabulaire {0}.
 admin.extension.delete.success=Le module d''extension {0} a été supprimé
 admin.extension.delete.error=Impossible de supprimer le module d''extension {0}.
 admin.extensions.couldnt.load=Impossible de charger le module d''extension du registre GBIF\: {0}.
@@ -522,14 +528,19 @@ admin.extensions.vocabularies.couldnt.load=Impossible de charger les vocabulaire
 admin.extensions.vocabulary.couldnt.load=Impossible de charger le vocabulaire par défaut {0} depuis le Registre GBIF\: {1}.
 admin.startup.warnings=Des avertissements sont survenus au démarrage de l''application. Pour plus d''informations, consultez le fichier journal. Redémarrez le serveur web après correction du problème.
 admin.extensions.error.updating=Erreur à la mise à jour du vocabulaire {0} \: {1}
-admin.extensions.vocabularies.updated=Le vocabulaire {0} a été mis à jour.
+admin.extensions.synchronise.success=Tous les vocabulaires et extensions ont été synchronisés avec le registre.
+admin.extensions.synchronise.error=Échec de la synchronisation de tous les vocabulaires et extensions avec le registre \: {0}.
 admin.extensions.vocabularies.unchanged=Le vocabulaire {0} n''a pas été mis à jour depuis le dernier téléchargement.
 admin.extensions.vocabularies.errors=Le vocabulaire {0} à généré une erreur lors de la mise à jour. Merci de consulter les journaux d''erreurs.
-admin.extensions.vocabularies.update.help=Les extensions peuvent faire usage de liste de termes prédéfinis, connus sous le nom de "vocabulaires controllés". Dans la durée, il arrive que ces vocabulaires évoluent et nécessitent d''être mis à jour dans l''IPT. Cliquez sur le bouton ci-dessous afin de les mettre à jour.
-
+admin.extensions.synchronise.help=Cliquez sur le bouton ci-dessous pour synchroniser toutes les extensions et vocabulaires installés avec le Registre du GBIF pour mettre à jour leur contenu (par exemple si de nouvelles traductions ont été ajoutées à un vocabulaire).
+admin.extensions.upToDate=Toutes les extensions installées utilisent la dernière version.
+admin.extensions.not.upToDate=Une ou plusieurs extensions installées sont obsolètes. Veuillez les mettre à jour en installant les versions les plus récentes.
 admin.extension.title=Module d''extension Darwin Core
 admin.extension.properties=Attributs de l''extension
-
+admin.extension.version.warning=La version installée est périmée. Veuillez installer la dernière version de cette extension afin de bénéficier des nouveaux termes et vocabulaires. Les mappages existants renvoyant aux termes obsolètes seront supprimés. Les mappages existants renvoyant vers les termes ayant été remplacés par un autre terme seront mis à jour automatiquement.
+admin.extension.update.confirm=Vous êtes sur le point d''installer la dernière version de cette extension. Suite à la mise à jour, les ressources concernées doivent être revues et republiées. Voulez-vous toujours à jour ?
+admin.extension.update.success=Extension {0} installée avec succès. Pour plus d''informations, dont le nom des ressources concernées par la mise à jour, veuillez consulter les rapports de mises à jour.
+admin.extension.update.error=Une erreur s''est produite lors de la mise à jour de l''extension {0}.
 admin.vocabulary.title=Vocabulaire contrôlé
 
 admin.users.intro=En tant qu''administrateur, vous pouvez créer, modifier et supprimer les comptes utilisateurs.
@@ -701,8 +712,8 @@ manage.resource.create.title=Créer une nouvelle ressource
 manage.resource.create.intro=Vous pouvez créer une nouvelle ressource vierge, charger une ressource existante sous forme d''archive Darwin Core zippée, ou charger une ressource IPT existante en utilisant son dossier de configuration zippé. Veuillez vous référer au Manuel d''Utilisation pour des instructions plus détaillées. Un nom court pour la ressource est requis.
 manage.resource.create.file=Fichier Darwin Core Archive existant (facultatif)
 manage.resource.create.success=Fichier Darwin Core archive préexistant importé. Le type du noyau est {0}. {1} source(s) a été importée et {2} mapping(s) créé(s).
-manage.resource.create.success.nocore=Fichier Darwin Core archive préexistant importé. {0} source(s) a été importée et {1} mapping(s) créé(s).
 manage.resource.create.core.invalid=Le ficher Darwin Core Archive n''est pas valide et ne possède pas de mapping vers un module noyau.
+manage.resource.create.core.invalid.rowType=L''archive Darwin Core est invalide \: le mapping principal n''a aucun rowType
 manage.resource.create.failed=Impossible de lire le fichier transmis.
 manage.resource.create.rowType.null=Type de ligne {0} pas disponible pour cette installation IPT.
 manage.resource.create.extension.null=Une extension inexistante à été rencontrée. Veuillez vérifier que tous les modules d''extension utilisés pour cette ressource sont installés, puis réimportez cette ressource.
@@ -747,21 +758,29 @@ manage.resource.migrate.failed.duplicate=L''UUID {0} trouvé dans la liste dans 
 manage.resource.migrate.failed.duplicate.help=Si vous essayez de remplacer une ressource enregistrée qui existe dans votre IPT, l''autre ressource doit d''abord être supprimée. Dans ce cas, merci de contacter  helpdesk@gbif.org pour indiquer que cette ressource a été remplacé et pas supprimé. Dès lors qu''une ressource enregistrée est supprimée, celle-ci est marquée comme supprimée dans le registre du GBIF.
 
 manage.mapping.title=Mapping de la source de données
-manage.mapping.intro=Pour chaque propriété, vous pouvez soit choisir une valeur dynamique (lue dans une des colonnes de votre source de données - {0}), soit configurer manuellement une valeur statique qui sera appliquée à tous les enregistrements.
+manage.mapping.intro1=Mise en correspondance de la donnée source {0} et de {1} {2}.
+manage.mapping.intro=Chaque colonne des données sources peuvent être mappées (mises en correspondance avec) à un ou plusieurs champs dans cette extension. Vous pouvez également spécifier une valeur statique pour chaque champ, qui sera utilisée pour tous les enregistrements, ou définir une traduction entre les valeurs de vos données source et la valeur utilisée. <br/> <br/> Notez que la colonne de votre source qui contient une clé unique pour chaque enregistrement/ligne doit correspondre à l''identifiant. Si vous souhaitez mapper d''autres sources, cet identifiant est obligatoire et servira à relier les lignes de vos différentes sources. <br/> <br/> Un filtre permet également d''inclure uniquement les enregistrements qui correspondent à un critère défini pour l''un des champs des données source.
+
 manage.mapping.source=Source de données
 manage.mapping.source.help=Afin d''effectuer le mapping, veuillez sélectionner le fichier source des données.
-manage.mapping.idColumn=La colonne de votre source de donnée qui contient un identifiant (valeur unique) pour chaque ligne, comme par exemple un numéro de spécimen. Obligatoire si vous désirez utiliser le système des "modules d''extension Darwin Core" (principe du schéma en étoile).
 manage.mapping.datasetIdColumn=Utiliser le DOI de la ressource
 manage.mapping.datasetIdColumn.help=Merci de cocher cette case si vous voulez que l''IPT assigne par défaut le DOI de la ressource au terme datasetID. Notez que ce paramètre s''applique uniquement à ce mapping, donc répétez-le ailleurs si nécessaire.
 manage.mapping.noid=Pas d''ID
 manage.mapping.lineNumber=N° de ligne
 manage.mapping.uuid=Générateur d''identifiants uniques (UUID)
 manage.mapping.hideEmpty=N''afficher que les termes déjà mappés
-manage.mapping.showAll=Afficher tous les termes
+manage.mapping.nonmapped=Champs non mappés
+manage.mapping.hideGroups=Masquer les catégories redondantes
+manage.mapping.redundant=Catégories redondantes
+manage.mapping.showAll=Afficher tous les champs
+manage.mapping.showAllGroups=Afficher toutes les catégories
+manage.mapping.index=Index des champs
+manage.mapping.filters=Filtres des champs
+manage.mapping.fields=Champs
+
 manage.mapping.info.linenumbers=Pour les numéros de ligne, vous pouvez si vous le désirez spécifier un suffixe (non numérique) qui sera accolé à l''identifiant. Ceci peut être utile de façon à générer des identifiants uniques tout en mappant plusieurs fois la même source de données.<br /><br />
 manage.mapping.info=Un filtre excluera les enregistrements corresondants de l''archive générée. Vous pouvez par exemple spécifier ColonneA IsNotNull de façon à inclure uniquement les enregistrements qui possèdent une valeur dans la colonne A.<br /><br />Un filtre peut être très utile dans le cas ou une même extension Darwin Core est mapée plusieurs fois pour former des pivots. Si vous avez par exemple deux colonnes pour pour les noms vernaculaires (Français et Anglais), vous pouvez mapper deux fois la même source de données vers l''extension VernacularNames. Mappez alors chaque colonne séparément, et placez un filtre sur cette même colonne avec la valeur IsNotNull. De cette façon, uniquement les enregistrements possédant un nom vernaculaire dans la langue appropriée seront inclus dans le fichier final du module d''extension.
 manage.mapping.filter=Filtre
-manage.mapping.filter.text=Le filtre permet d''inclure uniquement les enregistrements qui remplissent une condition précise (sur un des champs).
 manage.mapping.filter.afterTranslation=Après traduction
 manage.mapping.filter.beforeTranslation=Avant traduction
 manage.mapping.sourceSample=Aperçu des données
@@ -770,7 +789,9 @@ manage.mapping.automaped={0} colonnes ont été "mappées" automatiquement sur b
 manage.mapping.deleted=Mapping {0} supprimé.
 manage.mapping.couldnt.delete=Impossible de supprimer le mapping {0}
 manage.mapping.no.mapped.title=Colonnes non-mappées
-manage.mapping.no.mapped.columns=Les colonnes suivantes existent dans votre source mais ne sont actuellement pas référencées par ce mapping
+manage.mapping.no.mapped.columns=Les colonnes suivantes du fichier source ne sont pas mappées à un champ de cette extension
+manage.mapping.redundant.classes.title=Classes de termes redondantes
+manage.mapping.redundant.classes.intro=Les classes suivantes sont redondantes, car elles sont déjà inclues dans l''extension Core
 
 manage.history.title=Historique des versions
 manage.history.intro=Modifier le résumé des modifications pour la version {0} de la ressource {1}.
@@ -834,7 +855,7 @@ manage.overview.DwC.Mappings.description=Configuration des différents "mappings
 manage.overview.DwC.Mappings.cantdo=Le "mapping" entre les données et les termes Darwin Core nécessite au préalable l''ajout de la source de données et l''installation du module noyau approprié. Cette étape de mapping n''est pas nécessaire si la ressource contient uniquement des métadonnées (pas de données).
 manage.overview.DwC.Mappings.coretype.description1=Ici, vous pouvez faire la correspondance entre vos données et les termes Darwin Core en sélectionnant l''extension dont les champs correspondent à ceux de votre fichier source.
 manage.overview.DwC.Mappings.coretype.description2=Pour commencer, sélectionnez un Core Type (principaux termes Darwin Core) et effectuez la correspondance avec vos données avant de sélectionner une extension.
-manage.overview.DwC.Mappings.coretype.description3=Choisissez "Darwin Core Taxon" lorsque votre ressource est une liste de noms de taxons, ou choisissez "Darwin Core Occurrence" lorsque votre ressources consiste en une liste d''occurrences relevées sur le terrain (observations) ou conservées en collection (spécimens).
+manage.overview.DwC.Mappings.coretype.description3=Choisissez « Darwin Core Taxon » lorsque la base de la ressource est le nom du taxon, choisissez « Darwin Core Event » lorsque la base de la ressource est un événement d''échantillonnage ou « Darwin Core Occurrence » lorsque la base de la ressource est une occurrence dans la nature (observation) ou dans une collection (spécimen).
 manage.overview.DwC.Mappings.coretype.description4=Si le Core Type ou l''extension appropriée n''apparaît pas dans la liste déroulante, veuillez contacter votre administrateur IPT afin qu''il l''installe.
 manage.overview.DwC.Mappings.terms=termes mappés vers
 manage.overview.DwC.Mappings.select=Sélectionnez le module "noyau" (1 et 1 seul)
@@ -909,6 +930,8 @@ manage.overview.publishing.doi.reserve.notRreused=Un DOI existant [{0}] a déjà
 manage.overview.publishing.doi.reserve.success={0} a été réservé avec succès
 manage.overview.publishing.doi.reserve.failed=Impossible de réserver {0} \: {1}
 manage.overview.publishing.doi.reserve.failed.metadata=Impossible de réserver {0} car les métadonnées du DOI n''étaient pas valides \: {1}
+manage.overview.publishing.doi.reserve.failed.notPublic=Impossible de réutiliser le DOI enregistré existant ({0}). Pour pouvoir l''attribuer à cette ressource, la ressource doit être accessible au public.
+manage.overview.publishing.doi.reserve.failed.invalid.target=Impossible de réutiliser le DOI enregistré existant ({0}). Pour pouvoir l''assigner à cette ressource, son URI cible doit être remplacé par {1}.
 manage.overview.publishing.doi.reserve.reused.failed=Impossible de vérifier que {0} est déjà enregistré. Merci de réessayer.
 manage.overview.publishing.doi.reserve.reused.failed.exception=Impossible de vérifier que {0} est déjà enregistré \: {1}
 manage.overview.publishing.doi.publish.check.registered.failed=Échec du contrôle de prépublication \: {0} n''est pas réservé ou enregistré. Son statut est \: {1}
@@ -1050,6 +1073,8 @@ manage.report.continueTo=Retourner vers <a href\="resource.do?r\={0}">la vue d''
 ####
 eml.title=Titre
 eml.description=Description
+eml.description.help=Un bref aperçu de la ressource décrite, divisé en paragraphes.
+eml.description.item=Paragraphe
 eml.publishingOrganisation=Organisation responsable de la publication
 eml.publishingOrganisation.help=Veuillez sélectionner l''organisme responsable de la publication (production, diffusion, droits juridiques) de cette ressource. Il servira comme organisation de publication de la ressource lors de l''inscription de cette ressource sur le GBIF et lors de la soumission des métadonnées au cours des attributions de DOI. Il servira également à générer automatiquement la référence bibliographique de la ressource (si la génération automatique est activée), merci donc de prendre en compte l''importance du rôle. Veuillez noter que votre sélection ne peut pas être modifiée après que la ressource a été enregistrée sur le GBIF ou qu''un DOI lui a été attribué.
 eml.publishingOrganisation.required=L''organisation responsable de la publication est nécessaire.
@@ -1207,7 +1232,7 @@ eml.citation.generate.turn.on=Génération automatique désactivée - Activer
 eml.citation.generate.turn.off=Génération automatique activée - Désactiver
 
 eml.citation.identifier=Identifiant de la citation de la ressource
-eml.citation.identifier.help=Un DOI, URI ou autre identifiant persistant qui renvoie au jeu de données en ligne. Il est recommandé d''inclure l''identifiant dans la citation.
+eml.citation.identifier.help=Un DOI, URI ou tout autre identifiant persistant qui correspond au jeu de données en ligne. Il est recommandé d''inclure l''identifiant dans la citation. Veuillez noter que si un DOI a été attribué à la ressource (à l''aide de l''IPT), l''IPT définit le DOI comme l''identifiant de référence, et il peut ne plus être modifié.
 eml.bibliographicCitationSet.bibliographicCitations.citation=Citation bibliographique
 eml.bibliographicCitationSet.bibliographicCitations.citation.help=La citation d''une ressource externe associée ou utilisée dans la création de cette ressource.
 eml.bibliographicCitationSet.bibliographicCitations.identifier=Identifiant de la citation bibliographique
@@ -1264,7 +1289,7 @@ eml.specimenPreservationMethod.plural=Méthode de conservation des spécimens
 eml.specimenPreservationMethod.plural.help=Liste des méthodes de conservation des spécimens couvertes par la ressource.
 eml.specimenPreservationMethod.help=Mot clé (du vocabulaire controllé GBIF Specimen Preservation Method) décrivant le procédé ou la technique utilisé(e) pour prévenir la détérioration physique des collections non-vivantes. Si plusieurs méthodes ont été utilisées, sélectionnez la méthode principale. Vous pouvez aussi spécifier une liste de préparations et de méthodes de préservation pour un spécimen dans votre mapping des données (terme "preparations", http\://rs.tdwg.org/dwc/terms/preparations). Ce champ doit rester vide pour les collections vivantes.
 eml.alternateIdentifier=Identifiant alternatif
-eml.alternateIdentifier.help=Un identifiant secondaire pour cette entité (facultatif). Lors de la publication d''une ressource, son URL est ajoutée à la liste des identifiants. Lors de l''association d''une ressource avec le registre GBIF, son UUID est également ajouté à la liste des identifiants. Si l''UUID d''une ressource déjà existante est indiqué dans ce champ, il sera également ajouté à la liste des identifiants et cette ressource sera utilisée pour mettre à jour la ressource préexistante (au lieu de créer une toute nouvelle ressource).</br><b>Exemples(s)\:</b><br /><i>4fa7b334-ce0d-4e88-aaae-2e0c138d049e</i>, <i>VCR3465</i>
+eml.alternateIdentifier.help=Un identificateur supplémentaire accessoire pour cette entité. Lorsque la ressource est publiée, l''URL de la ressource sur l''IPT  est ajoutée à la liste des identifiants. Lorsqu''un nouveau DOI est affecté à la ressource est affectée (à l''aide de l''IPT), l''IPT fait en sorte que ce DOI soit placé en premier dans la liste des identifiants. Lorsqu''une ressource est enregistrée sur le Registre du GBIF, l''UUID unique de la ressource dans le Registre est également ajouté à la liste des identifiants. Si la ressource représente une ressource existante enregistrée dans le Registre du GBIF, l''UUID enregistré existant peut être ajouté à la liste des identifiants. Cela permettra à l''IPT de mettre à jour la ressource existante lors de l''enregistrement, au lieu d''inscrire une nouvelle ressource. < br / > <b>exemple(s) \:</b> < br /> <i>4fa7b334-ce0d-4e88-aaae-2e0c138d049e</i>, <i>VCR3465</i>
 
 eml.intellectualRights.simple=Droits
 eml.intellectualRights.license=Licence de données
@@ -1400,4 +1425,3 @@ autopublish.help=Pour <strong>activer</strong> la publication automatique, séle
 
 # Struts2 overrides
 struts.messages.upload.error.SizeLimitExceededException=Le fichier transféré est trop grand \! La taille maximum autorisée est de {0} octets mais la requête était de {1} octets. Pour contourner ce problème, vous pouvez essayer de compresser le fichier (avec zip ou gzip), de charger les données dans une des nombreuses bases de données prises en charge par l''IPT ou de fractionner le fichier. Veuillez vous référer au manuel d''utilisation pour plus d''informations.
-
