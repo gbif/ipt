@@ -15,6 +15,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.NamedNodeMap;
+
 /**
  * DCAT FILE EXAMPLE
  *
@@ -32,6 +33,7 @@ import org.w3c.dom.NamedNodeMap;
  *dcat:distribution <http://datatank4.gent.be/bestuurenbeleid/schepenen.json> .
  *
  */
+
 public class GenerateDCAT {
 
    /* @Inject
@@ -56,12 +58,10 @@ public class GenerateDCAT {
         prefix.put("schema:","http://schema.org/");
         prefix.put("adms:","http://www.w3.org/ns/adms#");
 
-        String EML = "<eml:eml xsi:schemaLocation=\"eml://ecoinformatics.org/eml-2.1.1 http://rs.gbif.org/schema/eml-gbif-profile/1.1/eml.xsd\" packageId=\"http://localhost:8080/resource?id=restest1/v1.0\" system=\"http://gbif.org\" scope=\"system\" xml:lang=\"eng\"><dataset><alternateIdentifier>http://localhost:8080/resource?r=restest1</alternateIdentifier><title xml:lang=\"eng\">Testing oSoc15</title><creator><individualName><surName>Test</surName></individualName><organizationName>Debug</organizationName><positionName>Leader Test</positionName><address><country>BE</country></address></creator><metadataProvider><individualName><surName>Test</surName></individualName><organizationName>TestMeta</organizationName><positionName>Leader Metadata</positionName><address><country>BE</country></address></metadataProvider><pubDate>\n" +
-                "      2015-07-08\n" +
-                "  </pubDate><language>eng</language><abstract><para>Testing progress</para></abstract><keywordSet><keyword>Metadata</keyword><keywordThesaurus>GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type.xml</keywordThesaurus></keywordSet><keywordSet><keyword>Observation</keyword><keywordThesaurus>GBIF Dataset Subtype Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_subtype.xml</keywordThesaurus></keywordSet><intellectualRights><para>To the extent possible under law, the publisher has waived all rights to these data and has dedicated them to the <ulink url=\"http://creativecommons.org/publicdomain/zero/1.0/legalcode\"><citetitle>Public Domain (CC0 1.0)</citetitle></ulink>. Users may copy, modify, distribute and use the work, including for commercial purposes, without restriction.</para></intellectualRights><coverage><geographicCoverage><boundingCoordinates><westBoundingCoordinate>2.66</westBoundingCoordinate><eastBoundingCoordinate>6.66</eastBoundingCoordinate><northBoundingCoordinate>51.2</northBoundingCoordinate><southBoundingCoordinate>49.76</southBoundingCoordinate></boundingCoordinates></geographicCoverage></coverage><maintenance><description><para/></description><maintenanceUpdateFrequency>notPlanned</maintenanceUpdateFrequency></maintenance><contact><individualName><surName>test</surName></individualName><organizationName>Testing</organizationName><positionName>Leader</positionName><address><country>BE</country></address></contact></dataset><additionalMetadata><metadata><gbif><dateStamp>2015-07-07T02:41:40.519+02:00</dateStamp><hierarchyLevel>dataset</hierarchyLevel></gbif></metadata></additionalMetadata></eml:eml>";
         ArrayList<String> txt = readXmlFile();
         ArrayList<String> finalTxt = hasMapToStringArray(prefix);
         finalTxt.addAll(txt);
+
         writeFile(finalTxt);
     }
 
@@ -85,6 +85,7 @@ public class GenerateDCAT {
         }
         return text;
     }
+
     /**
      * Write a new file with information in it
      *  @param informations
@@ -104,12 +105,13 @@ public class GenerateDCAT {
             System.out.println("Writing error " + exception.getMessage());
         }
     }
+
        private static ArrayList<String> readXmlFile() {
            ArrayList<String> txt = new ArrayList<String>();
            try {
 
                File file = new File("/home/sylvain/Documents/datadir/coccinellidae/eml.xml");//Need to be fix HARDOCING
-
+             //  File file = new File("/home/sylvain/Documents/datadir/resources/ResTest1/eml.xml");//Need to be fix HARDOCING
                DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 
                Document doc = dBuilder.parse(file);
@@ -138,7 +140,6 @@ public class GenerateDCAT {
                     NamedNodeMap nodeMap = tempNode.getAttributes();
 
                     for (int i = 0; i < nodeMap.getLength(); i++) {
-
                         Node node = nodeMap.item(i);
                         /*System.out.println("attr name : " + node.getNodeName());
                         System.out.println("attr value : " + node.getNodeValue());*/
@@ -150,7 +151,7 @@ public class GenerateDCAT {
                         System.out.println(tempNode.getTextContent());
                         txt.add(tempNode.getTextContent());
                     }
-                    printNode(tempNode.getChildNodes(),position,txt);
+                    printNode(tempNode.getChildNodes(), position, txt);
                 }
                 System.out.println(position + "[CLOSE]" + tempNode.getNodeName());
                 txt.add(position + "[CLOSE]" + tempNode.getNodeName());
@@ -194,6 +195,7 @@ public class GenerateDCAT {
     }
 
     private String createDistribution(){
+        String plop ="";
         //dct:description
         //dct:license
         //dcat:mediaType
