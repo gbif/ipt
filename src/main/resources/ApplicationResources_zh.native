@@ -49,6 +49,7 @@ basic.showLess=減少顯示內容
 basic.show=顯示
 basic.hide=隱藏
 basic.none=None
+basic.issued=Issued
 
 # buttons
 button.add=增加
@@ -68,6 +69,7 @@ button.publish=發布
 button.public=公開
 button.updateRegistration=更新註冊資訊
 button.update=更新
+button.synchronise=Synchronise
 button.private=尚未公開
 button.view=檢視
 button.preview=預覽
@@ -139,6 +141,7 @@ user.roles.admin=系統管理員
 
 # extension
 extension=延伸集
+extension.core=Core Extension
 extension.rowtype=列的型態
 extension.vocabulary=字彙
 extension.properties=屬性
@@ -146,9 +149,8 @@ extension.prop.qname=限定名
 extension.prop.type=資料型態
 extension.prop.required=必要
 extension.prop.group=群組
-extension.vocabularies.title=字彙
-extension.vocabularies.last.update=最後更新： {0}<br />
-extension.vocabularies.number=所有{0}字彙與其最新的註冊版本
+extension.synchronise.title=Synchronise Extensions and Vocabularies
+extension.last.synchronised=Last synchronised on {0}
 extension.further.title=更多的核心類型和延伸集可從 GBIF 登錄取得。
 extension.further.title.help=左欄顯示核心集類型或延伸集的名稱。右欄顯示該核心集或延伸集的摘要資訊，以及描述其中應著錄何種資料。
 extension.already.installed=你已經安裝所有可安裝的核心類型和延伸集。
@@ -166,7 +168,7 @@ resource.coreType=核心集類型
 resource.coreType.selection=選擇一種核心集類型
 manage.resource.create.coreType=核心集類型
 manage.resource.create.coreType.selection=選擇一種核心集類型（額外選項）
-manage.resource.create.coreType.help=資源類型。若載入額外倉儲的資源，資源類型將自動決定並覆蓋你的選擇。<ul><li><b>出現資料：</b>此資源的基礎是自然的出現（觀察）紀錄或採集（標本）紀錄。<br /></li><li><b>名錄：</b> 此資源的基礎是分類名稱。<br /></li><li><b>元數據：</b> 有描述資料集的資訊，但無實際的原始資料的資源。例如，元數據可提供尚未數位化的採集相關資訊<br /></li><li><b>其他：</b>其他資源類型。<br /></li></ul>
+manage.resource.create.coreType.help=The type of resource. If optional archived resource is loaded, the type will be determined automatically and overwrite your selection. <ul><li><b>Occurrence\:</b> the basis of the resource is occurrences in nature (observations) or in a collection (specimens).<br /></li><li><b>Checklist\:</b> the basis of the resource is taxon names.<br /></li><li><b>Sampling Event\:</b> the basis of the resource is a sampling event.<br /></li><li><b>Metadata\:</b> a resource having information about a dataset, but without having the actual primary data. A metadata resource might give information about a collection that has not yet been digitized, for example.<br /></li><li><b>Other\:</b> another type of resource.<br /></li></ul>
 resource.subtype=次類型
 resource.status.private=未公開
 resource.status.public=公開
@@ -189,6 +191,10 @@ source.encoding=字元編碼
 source.encoding.help=資料庫字元編碼系統。若不知何種編碼，嘗試使用 UTF-8，Latin-1 或 Windows-1252。
 source.dateFormat=日期格式
 source.dateFormat.help=資料庫使用日期的紀錄格式。
+source.multiValueFieldsDelimitedBy=Multi-value Delimiter
+source.multiValueFieldsDelimitedBy.help=A single character that delimits the values in a multi-value field.
+source.ignoreHeaderLines=Number of Header Rows
+source.ignoreHeaderLines.help=The number of header rows in your file to be ignored when importing.
 sqlSource.host=資料庫伺服器
 sqlSource.host.help=輸入資料庫伺服器網址，亦可包含非預設的連接埠號（例如：localhost or msql）。ODBC連結無需輸入網址。
 sqlSource.rdbms=資料庫系統類型
@@ -203,8 +209,6 @@ fileSource.fieldsTerminatedByEscaped=欄位分隔符號
 fileSource.fieldsTerminatedByEscaped.help=分隔每一列中的欄位的單一字元符號。
 fileSource.fieldsEnclosedByEscaped=欄位包圍字元
 fileSource.fieldsEnclosedByEscaped.help=A single character that encloses every field/column in a row. Most often empty, but CSV files use a ". With this option, make sure that *all* of your fields are contained in quotes, not just those that are text. Please note that in the IPT newline characters (\n) or carriage returns (\r) cannot be enclosed by quotes and should be removed.
-fileSource.ignoreHeaderLines=標頭列數
-fileSource.ignoreHeaderLines.help=匯入資料時，檔案開頭將被略過的列數
 excelSource.sheets=選定的工作表
 
 # ranks
@@ -391,6 +395,7 @@ portal.resource.eml.error.parse=資料集 {1} EML 檔版本 \#{0} 無法解析
 portal.resource.otherFormats=此資源尚有其他格式可用
 portal.resource.warning.notPublic=The version you are looking at is {0} and cannot be seen by everyone\!
 portal.resource.warning.notLatest=The version you are looking at is not the latest version\! Please refer to the versions table to find the latest.
+portal.resource.version.notArchived.count=The DwC-A file published for this version had {0} records but was not archived.
 
 ####
 # ADMIN SECTION
@@ -496,7 +501,7 @@ admin.config.registry.url.help=這個資料目錄所關連的 GBIF 登錄網址�
 
 admin.config.updateMetadata.none=沒有資源需要更新。。。
 admin.config.updateMetadata.summary=已完成發布所有資料集。 若需要更多資訊，請見日誌檔。
-admin.config.updateMetadata.resource.fail.registry=在更新至 GBIF 登錄時發生錯誤 - {0}。
+admin.config.updateMetadata.resource.fail.registry=GBIF 註冊更新時發生錯誤 - {0}。
 
 # invalid fields
 invalid.fieldvalue.latitude=無效的緯度
@@ -506,15 +511,16 @@ invalid.fieldvalue.longitude=無效的經度
 admin.extension.coreTypes=核心類型
 admin.extension.extensions=延伸集
 admin.extension.no.coreTypes.installed=沒有安裝任何核心類型。
-admin.extension.no.coreTypes.installed.help=核心集（出現紀錄及分類群）提供資料的基本欄位。
+admin.extension.no.coreTypes.installed.help=Core types provide the basis for data records\: Occurrence, Taxon, and Event.
 admin.extension.no.coreTypes.installed.debug=由於尚未安裝任何核心集，您無法對應任何資料。請從核心集及延伸集列表安裝一核心集。假如列表沒有顯示，請檢查網路連線並確認這台伺服器能連上 GBIF 登錄：{0}。
 admin.extension.no.extensions.installed=沒有安裝任何核心類型。
 admin.extension.no.extensions.installed.help=延伸集在核心集之外提供更多欄位供對應。每個延伸集都有特定的欄位類群。請從以下列表安裝您所需要的延伸集。
 admin.extension.couldnt.install.coreTypes=無法安裝所有的核心類型延伸集。
+admin.vocabulary.couldnt.install.defaults=Couldn''t install (or update) latest versions of all default vocabularies\: {0}.
 admin.extension.couldnt.install=無法安裝所要求的延伸集。
 admin.extension.install.success=成功地安裝延伸集： {0} 。
 admin.extension.install.error=在嘗試安裝延伸集 {0} 時發生錯誤。
-admin.extension.install.duplicate=已安裝有一個包含列型態 {0} 的延伸集，請移除包含該列型態的延伸集後再試一次。
+admin.vocabulary.install.error=An error occurred while trying to install vocabulary {0}.
 admin.extension.delete.success=成功地移除延伸集 {0}
 admin.extension.delete.error=無法移除延伸集 {0}。
 admin.extensions.couldnt.load=無法從登錄載入已註冊的延伸集：{0}。
@@ -522,14 +528,19 @@ admin.extensions.vocabularies.couldnt.load=無法從登錄載入已註冊的詞�
 admin.extensions.vocabulary.couldnt.load=無法從登錄載入預設詞彙 {0}：{1}。
 admin.startup.warnings=IPT 啟動時發生錯誤。請查閱日誌檔以獲取更多資訊。錯誤排除後，請重新啟動網站伺服器。
 admin.extensions.error.updating=錯誤更新詞彙 {0}：{1}
-admin.extensions.vocabularies.updated={0}詞彙已更新。
+admin.extensions.synchronise.success=All vocabularies and extensions have been synchronised with registry.
+admin.extensions.synchronise.error=Failed to synchronise all vocabularies and extensions with registry\: {0}.
 admin.extensions.vocabularies.unchanged={0}詞彙為最新版本。
 admin.extensions.vocabularies.errors=更新 {0} 詞彙時發生錯誤。請參考日誌！
-admin.extensions.vocabularies.update.help=延伸集中的欄位為控制詞彙，每隔一段時間這些詞彙可能會有所變動，故需要更新至 IPT。點擊以下按鈕將從 GBIF 登錄下載並更新控制詞彙。
-
+admin.extensions.synchronise.help=Click on the button below to synchronise all installed extensions and vocabularies with the GBIF Registry to update their content (e.g. if new translations have been added to a vocabulary).
+admin.extensions.upToDate=All installed extensions use the latest version.
+admin.extensions.not.upToDate=One or more installed extensions are out-of-date. Please update them to the latest versions.
 admin.extension.title=Darwin Core 延伸集：
 admin.extension.properties=延伸集屬性
-
+admin.extension.version.warning=The version installed is out-of-date. Please update to the latest version of this extension in order to take advantage of any new terms and new vocabularies. Existing mappings to deprecated terms will be removed. Existing mappings to deprecated terms that have been replaced by another term will be automatically updated.
+admin.extension.update.confirm=You are about to update this extension to the latest version. Following the update, affected resources should be reviewed and republished. Do you still want to update?
+admin.extension.update.success=Successfully updated extension {0}. For additional information, including which resources were affected by the update, please see logs.
+admin.extension.update.error=An error occurred while trying to update extension {0}.
 admin.vocabulary.title=控制詞彙
 
 admin.users.intro=最為管理員，您可以建立、修改或刪除使用者帳號。
@@ -701,8 +712,8 @@ manage.resource.create.title=建立新的資源
 manage.resource.create.intro=You can create a new blank resource, upload an existing resource saved as a zipped Darwin Core archive, or upload an existing IPT resource using its zipped resource configuration folder. Please refer to the User Manual for more specific instructions. A short name is required.
 manage.resource.create.file=上傳其他檔案
 manage.resource.create.success=以 {0} 核心類型匯入已存在的達爾文核心集檔案。{1} 資料來源已被匯入且 {2} 欄位對應關係已建立。
-manage.resource.create.success.nocore=匯入已存在的達爾文核心集檔案。{0} 資料來源已被匯入，且 {1} 欄位對應關係已建立。
 manage.resource.create.core.invalid=達爾文核心集格式無效，並缺少欄位對應定義。
+manage.resource.create.core.invalid.rowType=Darwin core archive is invalid\: core mapping has no rowType
 manage.resource.create.failed=無法讀取上傳檔案
 manage.resource.create.rowType.null=IPT 不支援此資料記錄格式{0}
 manage.resource.create.extension.null=您上傳的達爾文核心集檔案包含此 IPT 未安裝的延伸集。請確認所需的延伸集均已安裝後，再嘗試上傳一次。
@@ -747,21 +758,29 @@ manage.resource.migrate.failed.duplicate=清單中顯示的 UUID {0} 識別碼�
 manage.resource.migrate.failed.duplicate.help=若您正嘗試取代一份已存在於 IPT 上已註冊的資料集，則必須先刪除此份已註冊的資料集。在此情況，請先以電子郵件通知 GBIF (helpdesk@gbif.org) 說明此資料集已被取代而非刪除；因為刪除一份已註冊的資料集會造成此資料集在 GBIF 資源登錄資料庫中被標示為已刪除。
 
 manage.mapping.title=對應資料來源
-manage.mapping.intro=對於每個屬性，您可以指定一個取自您的資料來源{0}中的特定欄位中的動態值，或是為所有記錄提供單一固定的靜態值。
+manage.mapping.intro1=Mapping source data {0} to {1} {2}.
+manage.mapping.intro=Each column of the source data can be mapped to one or more fields in this extension. You can also specify a static value for each field that is used for all records, or define a translation between values from your source data and the value used.<br/><br/>Note the column in your source that holds a unique key for every record/row should be mapped to the identifier. If you want to map other sources, this identifier is required and will be used to link your source rows together.<br/><br/>Also a filter can also be used to include only records that match a criterion set for one of the source data fields.
+
 manage.mapping.source=資料來源
 manage.mapping.source.help=在您進行欄位對應之前，請選擇一個資料來源。
-manage.mapping.idColumn=在您的資料來源中，其內容為得以識別每一筆記錄/列為唯一的欄位，又稱為「核心識別碼」。若您想要對應其他的資料來源，這個識別碼必須存在，以連結不同資料來源中的記錄/列。
 manage.mapping.datasetIdColumn=使用資源DOI
-manage.mapping.datasetIdColumn.help=Please check this box if you want the IPT to set the default value for datasetID equal to the resource DOI. Please note this setting only applies to this mapping, so repeat elsewhere if necessary.
+manage.mapping.datasetIdColumn.help=Please check the "Use resource DOI" box if you want the IPT to set the default value for datasetID equal to the resource DOI. Please note this setting only applies to this mapping, so repeat elsewhere if necessary.
 manage.mapping.noid=無識別碼
 manage.mapping.lineNumber=行號
 manage.mapping.uuid=UUID 產生器
 manage.mapping.hideEmpty=隱藏未對應之欄位
-manage.mapping.showAll=全部顯示
+manage.mapping.nonmapped=Unmapped fields
+manage.mapping.hideGroups=Hide redundant classes
+manage.mapping.redundant=Redundant classes
+manage.mapping.showAll=Show all fields
+manage.mapping.showAllGroups=Show all classes
+manage.mapping.index=Field Index
+manage.mapping.filters=Field Filters
+manage.mapping.fields=Fields
+
 manage.mapping.info.linenumbers=對於行號, 你可以選擇性指定一個非數字的後綴字，加在識別碼的後面。當你要多次對應同一個資源的時候，這個做法對於產生唯一識別碼來說是很有用的<br /><br />
 manage.mapping.info=過濾器會將符合的記錄從產生的壓縮檔中獨立出來。例如說指定「ColumnA IsNotNull」，將只會得到在 ColumnA 中有值的記錄。<br /><br />若相同的原始檔案會與同一延伸集多次對應以進行樞紐分析，過濾器將會很有用。如果你有兩個欄位用來存放物種的俗名（vernacular name），一個是英語，一個是西班牙語，使用該原始檔案，您可將該資源對應至俗名的延伸集兩次。每一次對應兩欄之一，並將針對那一欄的過濾器設定為IsNotNull，這樣一來，只有具俗名的欄位, 會出現在最終的資料檔案中。
 manage.mapping.filter=過濾器
-manage.mapping.filter.text=過濾器供您設定過濾條件，只有符合之資料將被選出。
 manage.mapping.filter.afterTranslation=翻譯後
 manage.mapping.filter.beforeTranslation=翻譯前
 manage.mapping.sourceSample=資料來源範例
@@ -770,7 +789,9 @@ manage.mapping.automaped=依欄位名稱自動對應{0}欄
 manage.mapping.deleted=欄位對應{0}已刪除
 manage.mapping.couldnt.delete=無法刪除欄位對應{0}
 manage.mapping.no.mapped.title=未對應的欄位
-manage.mapping.no.mapped.columns=本資料來源中，以下的欄位未被指定至本次對應的屬性中
+manage.mapping.no.mapped.columns=The following columns of the source are not mapped to any field in this extension
+manage.mapping.redundant.classes.title=Redundant term classes
+manage.mapping.redundant.classes.intro=The following classes are redundant, since they are already included in the core extension
 
 manage.history.title=版本歷史
 manage.history.intro=編輯 {1} 資源 {0} 版的異動記錄摘要。
@@ -834,9 +855,9 @@ manage.overview.DwC.Mappings.description=在您的來源資料與 Darwin Core �
 manage.overview.DwC.Mappings.cantdo=在新增原始資料及安裝正確的核心類型前，您不能將您的資料對應至達爾文核心集欄位。若您的資源只包含元數據則不受此限。
 manage.overview.DwC.Mappings.coretype.description1=Here you can map your source data to Darwin Core terms by selecting the appropriate extension that has fields matching the ones to map in the source data.
 manage.overview.DwC.Mappings.coretype.description2=First, select a Core Type and map that before selecting an extension to map.
-manage.overview.DwC.Mappings.coretype.description3=Choose "Darwin Core Taxon" when the basis of the resource is taxon names, or choose "Darwin Core Occurrence" when the basis of the resource is occurrences in nature (observations) or in a collection (specimens).
+manage.overview.DwC.Mappings.coretype.description3=Choose "Darwin Core Taxon" when the basis of the resource is taxon names, choose "Darwin Core Event" when the basis of the resource is a sampling event, or choose "Darwin Core Occurrence" when the basis of the resource is occurrences in nature (observations) or in a collection (specimens).
 manage.overview.DwC.Mappings.coretype.description4=If the appropriate core type or extension does not appear in the select box, please contact your IPT admin to install it.
-manage.overview.DwC.Mappings.terms=字集對應至
+manage.overview.DwC.Mappings.terms=欄位名稱對應至
 manage.overview.DwC.Mappings.select=選擇核心集類型（單選）
 manage.overview.DwC.Mappings.cores.select=核心
 manage.overview.DwC.Mappings.extensions.select=延伸模組
@@ -909,6 +930,8 @@ manage.overview.publishing.doi.reserve.notRreused=An existing DOI [{0}] has alre
 manage.overview.publishing.doi.reserve.success={0} was reserved successfully
 manage.overview.publishing.doi.reserve.failed=Failed to reserve {0}\: {1}
 manage.overview.publishing.doi.reserve.failed.metadata=Failed to reserve {0} because DOI metadata was invalid\: {1}
+manage.overview.publishing.doi.reserve.failed.notPublic=Failed to reuse existing registered DOI ({0}). To be able to assign it to this resource, the resource must be publicly accessible.
+manage.overview.publishing.doi.reserve.failed.invalid.target=Failed to reuse existing registered DOI ({0}). To be able to assign it to this resource, its target URI must be changed to {1}.
 manage.overview.publishing.doi.reserve.reused.failed=Failed to verify that {0} has been registered already. Please try again.
 manage.overview.publishing.doi.reserve.reused.failed.exception=Failed to verify that {0} has been registered already\: {1}
 manage.overview.publishing.doi.publish.check.registered.failed=Pre-publication check failed\: {0} is not reserved or registered. Its status is\: {1}
@@ -1040,8 +1063,8 @@ manage.metadata.alternateIdentifiers.title.help=Alternative identifiers that are
 manage.metadata.alternateIdentifiers.item=替代的識別碼
 
 manage.report.title=發布狀態
-manage.report.logMessage=日誌檔訊息
-manage.report.exception=例外
+manage.report.logMessage=記錄檔訊息
+manage.report.exception=異常
 manage.report.finished=完成
 manage.report.continueTo=繼續到<a href\="resource.do?r\={0}">資源總覽</a>.
 
@@ -1050,6 +1073,8 @@ manage.report.continueTo=繼續到<a href\="resource.do?r\={0}">資源總覽</a>
 ####
 eml.title=標題
 eml.description=摘要
+eml.description.help=A brief overview of the resource that is being documented broken into paragraphs.
+eml.description.item=Paragraph
 eml.publishingOrganisation=發佈單位組織
 eml.publishingOrganisation.help=Please select the organisation responsible for publishing (producing, releasing, holding) this resource. It will be used as the resource''s publishing organisation when registering this resource with GBIF and when submitting metadata during DOI registrations. It will also be used to auto-generate the citation for the resource (if auto-generation is turned on), so consider the prominence of the role. Please be aware your selection cannot be changed after the resource has been either registered with GBIF or assigned a DOI.
 eml.publishingOrganisation.required=必需輸入發佈的單位組織
@@ -1115,7 +1140,7 @@ eml.contact.address.province=州 / 省
 eml.contact.address.country=國家
 eml.contact.address.country.help=國家、地區和島嶼名稱根據 ISO3166-1 標準
 eml.contact.address.postalCode=郵遞區號
-eml.contact.homepage=網頁
+eml.contact.homepage=首頁
 eml.contact.required=至少需要輸入一位聯絡人資訊
 eml.contact.noDirectory=選擇目錄
 eml.contact.directory=人員目錄
@@ -1207,11 +1232,11 @@ eml.citation.generate.turn.on=自動產生已關閉－請開啟
 eml.citation.generate.turn.off=自動產生已開啟－請關閉
 
 eml.citation.identifier=資源引用識別碼
-eml.citation.identifier.help=A DOI, URI, or other persistent identifier that resolves to the online dataset. It is recommended the identifier be included in the citation.
+eml.citation.identifier.help=A DOI, URI, or other persistent identifier that resolves to the online dataset. It is recommended the identifier be included in the citation. Please note that if the resource has been assigned a DOI (using the IPT), the IPT sets the DOI as the citation identifier and it can no longer be edited.
 eml.bibliographicCitationSet.bibliographicCitations.citation=引用文獻
 eml.bibliographicCitationSet.bibliographicCitations.citation.help=引用有關或用於建立此資源的外部資源
 eml.bibliographicCitationSet.bibliographicCitations.identifier=Bibliographic Citation Identifier
-eml.bibliographicCitationSet.bibliographicCitations.identifier.help=A DOI, URI, or other persistent identifier that resolves to the online dataset. It should be used in the citation, usually at the end.
+eml.bibliographicCitationSet.bibliographicCitations.identifier.help=A DOI, URI, or other persistent identifier that resolves to the online external resource. It should be used in the citation, usually at the end.
 eml.collection=Collection
 eml.collection.plural=Collections
 eml.collection.plural.help=The list of collections represents the collections which this resource is based on.
@@ -1264,7 +1289,7 @@ eml.specimenPreservationMethod.plural=Specimen preservation methods
 eml.specimenPreservationMethod.plural.help=The list of specimen preservation methods covered by the resource.
 eml.specimenPreservationMethod.help=取自 GBIF 標本保存方法詞彙的關鍵字，該詞彙指出防止標本蒐藏腐敗的保存技術。假如採用多種方法，請選擇其中主要的方法。請注意，透過達爾文保存方法延伸集(http\://rs.tdwg.org/dwc/terms/preparations)，您可為一標本記錄多種方法。若為活體蒐藏，請勿選擇任何選項。
 eml.alternateIdentifier=替代的識別碼
-eml.alternateIdentifier.help=此實體的另外一個次要識別碼。當您發布一資源時，IPT 的 URL 會加到識別碼的列表中。當一資源註冊到 GBIF 登錄後，它在登錄上的 UUID 亦會加到同一列表中。因此未來在註冊時，在 GBIF 登錄上 IPT 能更新同一資源，而非創建一新資源。<br /><b>範例：</b><br /><i>4fa7b334-ce0d-4e88-aaae-2e0c138d049e</i>, <i>VCR3465</i>
+eml.alternateIdentifier.help=An additional, secondary identifier for this entity. When the resource is published, the IPT''s URL to the resource is added to the list of identifiers. When a resource is assigned a new DOI (using the IPT), the IPT ensures this DOI is placed first in the list of identifiers. When a resource is registered with the GBIF Registry, the Registry''s unique resource UUID is also added to the list of identifiers. If the resource represents an existing registered resource in the GBIF Registry, the existing registered resource UUID can be added to the list of identifiers. This will enable the IPT resource to update the existing resource during registration, instead of registering a brand new resource.<br /><b>Example(s)\:</b><br /><i>4fa7b334-ce0d-4e88-aaae-2e0c138d049e</i>, <i>VCR3465</i>
 
 eml.intellectualRights.simple=Rights
 eml.intellectualRights.license=Data Licence
