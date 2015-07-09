@@ -123,26 +123,26 @@ public class VocabulariesManagerImplTest {
     File methodInstalled = new File(TMP_DIR, "http_rs_gbif_org_vocabulary_gbif_preservation_method.vocab");
     File subtypeInstalled = new File(TMP_DIR, "http_rs_gbif_org_vocabulary_gbif_datasetSubtype.vocab");
 
-    when(dataDir.configFile(VocabulariesManagerImpl.CONFIG_FOLDER + "/http_rs_gbif_org_vocabulary_gbif_rank.vocab"))
+    when(dataDir.configFile(VocabulariesManagerImpl.CONFIG_FOLDER + "/http_rs_gbif_org_sandbox_vocabulary_gbif_rank_2015-04-24_xml.vocab"))
       .thenReturn(rankInstalled);
     when(
-      dataDir.configFile(VocabulariesManagerImpl.CONFIG_FOLDER + "/http_rs_gbif_org_vocabulary_gbif_datasetType.vocab"))
+      dataDir.configFile(VocabulariesManagerImpl.CONFIG_FOLDER + "/http_rs_gbif_org_vocabulary_gbif_dataset_type_xml.vocab"))
       .thenReturn(datasetTypeInstalled);
-    when(dataDir.configFile(VocabulariesManagerImpl.CONFIG_FOLDER + "/http_iso_org_639-2.vocab"))
+    when(dataDir.configFile(VocabulariesManagerImpl.CONFIG_FOLDER + "/http_rs_gbif_org_vocabulary_iso_639-2_xml.vocab"))
       .thenReturn(languageInstalled);
-    when(dataDir.configFile(VocabulariesManagerImpl.CONFIG_FOLDER + "/http_iso_org_iso3166-1_alpha2.vocab"))
+    when(dataDir.configFile(VocabulariesManagerImpl.CONFIG_FOLDER + "/http_rs_gbif_org_vocabulary_iso_3166-1_alpha2_xml.vocab"))
       .thenReturn(countryInstalled);
     when(
-      dataDir.configFile(VocabulariesManagerImpl.CONFIG_FOLDER + "/http_rs_gbif_org_vocabulary_gbif_agentRole.vocab"))
+      dataDir.configFile(VocabulariesManagerImpl.CONFIG_FOLDER + "/http_rs_gbif_org_vocabulary_gbif_agent_role_xml.vocab"))
       .thenReturn(roleInstalled);
     when(dataDir
-      .configFile(VocabulariesManagerImpl.CONFIG_FOLDER + "/http_rs_gbif_org_vocabulary_eml_updateFrequency.vocab"))
+      .configFile(VocabulariesManagerImpl.CONFIG_FOLDER + "/http_rs_gbif_org_vocabulary_eml_update_frequency_xml.vocab"))
       .thenReturn(frequencyInstalled);
     when(dataDir.configFile(
-      VocabulariesManagerImpl.CONFIG_FOLDER + "/http_rs_gbif_org_vocabulary_gbif_preservation_method.vocab"))
+      VocabulariesManagerImpl.CONFIG_FOLDER + "/http_rs_gbif_org_vocabulary_gbif_preservation_method_xml.vocab"))
       .thenReturn(methodInstalled);
     when(dataDir
-      .configFile(VocabulariesManagerImpl.CONFIG_FOLDER + "/http_rs_gbif_org_vocabulary_gbif_datasetSubtype.vocab"))
+      .configFile(VocabulariesManagerImpl.CONFIG_FOLDER + "/http_rs_gbif_org_vocabulary_gbif_dataset_subtype_xml.vocab"))
       .thenReturn(subtypeInstalled);
 
     // Mock downloading vocabulary into tmpFile - we're cheating by handling the actual file already as if it

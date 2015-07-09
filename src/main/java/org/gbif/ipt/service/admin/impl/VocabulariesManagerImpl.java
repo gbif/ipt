@@ -99,15 +99,16 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
    */
   private void uninstall(String identifier) {
     if (vocabulariesById.containsKey(identifier)) {
+      File f = getVocabFile(vocabulariesById.get(identifier).getUriResolvable());
       vocabulariesById.remove(identifier);
-      File f = getVocabFile(identifier);
       if (f.exists()) {
         f.delete();
+        log.debug("Successfully deleted (uninstalled) vocabulary file: " + f.getAbsolutePath());
       } else {
-        log.warn("Vocabulary doesn't exist locally - can't delete " + identifier);
+        log.warn("Vocabulary file doesn't exist locally - can't delete: " + f.getAbsolutePath());
       }
     } else {
-      log.warn("Vocabulary not installed locally, can't delete " + identifier);
+      log.warn("Vocabulary not installed locally, can't uninstall: " + identifier);
     }
   }
 
@@ -165,14 +166,14 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   }
 
   /**
-   * Retrieve vocabulary file by its unique URI.
+   * Retrieve vocabulary file by its resolvable URI.
    *
-   * @param identifier vocabulary URI
+   * @param uri resolvable URI of vocabulary to retrieve
    *
    * @return vocabulary file
    */
-  private File getVocabFile(String identifier) {
-    String filename = identifier.replaceAll("[/.:]+", "_") + VOCAB_FILE_SUFFIX;
+  private File getVocabFile(URI uri) {
+    String filename = uri.toString().replaceAll("[/.:]+", "_") + VOCAB_FILE_SUFFIX;
     return dataDir.configFile(CONFIG_FOLDER + "/" + filename);
   }
 
@@ -209,7 +210,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
     Preconditions.checkNotNull(vocabulary.getUriString());
 
     try {
-      File installedFile = getVocabFile(vocabulary.getUriString());
+      File installedFile = getVocabFile(vocabulary.getUriResolvable());
       // never replace an existing vocabulary file. It can only be uninstalled (removed), or updated
       if (!installedFile.exists()) {
         FileUtils.moveFile(tmpFile, installedFile);
@@ -483,7 +484,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       }
       // verify the version was updated
       if (matched != null && matched.getUriResolvable() != null) {
-        File vocabFile = getVocabFile(identifier);
+        File vocabFile = getVocabFile(matched.getUriResolvable());
         return downloader.downloadIfChanged(matched.getUriResolvable().toURL(), vocabFile);
       }
 
