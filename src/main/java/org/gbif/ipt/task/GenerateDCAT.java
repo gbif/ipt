@@ -157,4 +157,50 @@ public class GenerateDCAT {
             }
         }
     }
+
+    private String createCatalog(){
+        //Mandatory
+        //dct:title
+        //dct:description
+        //dct:publisher
+        //dcat:dataset
+        //foaf:homepage
+        //dct:rights
+        //dct:issued
+        //dct:modified
+        //dcat:themeTaxonomy
+        //dct:spatial
+
+
+        return new String();
+    }
+
+    private String createDataset(){
+        //dct:title
+        //dct:description
+        //dcat:theme
+        //dcat:keyword
+        //dct:issued
+        //dct:modified
+        //dct:isVersionOf
+        //dct:spatial
+        //adms:versionInfo
+        //adms:versionNotes
+        //adms:contactPoint
+        //dcat:landingPage
+
+
+        return new String();
+    }
+
+    private String createDistribution(){
+        //dct:description
+        //dct:license
+        //dcat:mediaType
+        //dct:format
+        //dcat:downloadURL
+
+
+        return new String();
+    }
 }
