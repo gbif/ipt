@@ -279,14 +279,21 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   }
 
   /**
-   * @return map of unique identifier to resolvable URL for all registered vocabularies
+   * @return map of unique identifier to resolvable URL for latest version of all registered vocabularies
    */
   private Map<String, URI> idToUrl() {
     Map<String, URI> map = Maps.newHashMap();
     try {
       for (Vocabulary v : registryManager.getVocabularies()) {
         if (v.getUriString() != null && v.getUriResolvable() != null) {
-          map.put(v.getUriString(), v.getUriResolvable());
+          // if in map already, make sure it only gets replaced if this version of vocab is the latest one
+          if (map.containsKey(v.getUriString())) {
+            if (v.isLatest()) {
+              map.put(v.getUriString(), v.getUriResolvable());
+            }
+          } else {
+            map.put(v.getUriString(), v.getUriResolvable());
+          }
         }
       }
     } catch (RegistryException e) {
@@ -326,7 +333,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
         }
       } else {
         try {
-          updateToLatest(installed, vocabularies);
+          updateToLatest(installed, latest);
         } catch (IOException e) {
           throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_DATA_DIR,
             "Can't update default vocabulary: " + installed.getUriString(), e);
@@ -429,28 +436,26 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
     }
   }
 
-  private void updateToLatest(Vocabulary installed, List<Vocabulary> vocabularies)
+  /**
+   * Update an installed vocabulary to the latest version.
+   *
+   * @param installed version of vocabulary installed
+   * @param latestVersion latest version of vocabulary (not installed yet)
+   *
+   * @throws IOException if latest version cannot be downloaded
+   * @throws InvalidConfigException if latest version cannot be read
+   */
+  private void updateToLatest(Vocabulary installed, Vocabulary latestVersion)
     throws IOException, InvalidConfigException {
-    if (installed != null) {
-
-      Vocabulary latestVersion = null;
-      for (Vocabulary v : vocabularies) {
-        // match by identifier and isLatest
-        if (v.getUriString() != null && v.getUriString().equalsIgnoreCase(installed.getUriString()) && v.isLatest()) {
-          latestVersion = v;
-          break;
-        }
-      }
+    if (installed != null && latestVersion != null) {
 
       boolean isNewVersion = false;
-      if (latestVersion != null) {
-        Date issued = installed.getIssued();
-        Date issuedLatest = latestVersion.getIssued();
-        if (issued == null && issuedLatest != null) {
-          isNewVersion = true;
-        } else if (issued != null && issuedLatest != null) {
-          isNewVersion = (issuedLatest.compareTo(issued) > 0); // latest version must have newer issued date
-        }
+      Date issued = installed.getIssued();
+      Date issuedLatest = latestVersion.getIssued();
+      if (issued == null && issuedLatest != null) {
+        isNewVersion = true;
+      } else if (issued != null && issuedLatest != null) {
+        isNewVersion = (issuedLatest.compareTo(issued) > 0); // latest version must have newer issued date
       }
 
       if (isNewVersion && latestVersion.getUriResolvable() != null) {

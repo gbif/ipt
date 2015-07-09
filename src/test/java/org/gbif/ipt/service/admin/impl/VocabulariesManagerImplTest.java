@@ -207,16 +207,17 @@ public class VocabulariesManagerImplTest {
     File ranksVoc = FileUtils.getClasspathFile("thesauri/rank.xml");
     File renamed = new File(vocabDir, "http_rs_gbif_org_vocabulary_gbif_rank.vocab");
     org.apache.commons.io.FileUtils.copyFile(ranksVoc, renamed);
-    File tmpRankVoc = new File(vocabDir, "http_rs_gbif_org_vocabulary_gbif_rank.vocab");
-    assertTrue(tmpRankVoc.exists());
+    assertTrue(renamed.exists());
     assertEquals(1, vocabDir.listFiles().length);
     when(dataDir.configFile(VocabulariesManagerImpl.CONFIG_FOLDER)).thenReturn(vocabDir);
 
     assertTrue(manager.list().isEmpty());
     assertEquals(1, manager.load());
     assertFalse(manager.list().isEmpty());
-    assertEquals("Taxonomic Rank GBIF Vocabulary", manager.get("http://rs.gbif.org/vocabulary/gbif/rank").getTitle());
-    assertEquals("http://rs.gbif.org/vocabulary/gbif/rank.xml", manager.get("http://rs.gbif.org/vocabulary/gbif/rank").getUriResolvable().toString());
+
+    Vocabulary v = manager.get("http://rs.gbif.org/vocabulary/gbif/rank");
+    assertEquals("Taxonomic Rank GBIF Vocabulary", v.getTitle());
+    assertEquals("http://rs.gbif.org/sandbox/vocabulary/gbif/rank_2015-04-24.xml", v.getUriResolvable().toString());
   }
 
   @Test
