@@ -174,7 +174,11 @@ public class ExtensionsAction extends POSTAction {
   }
 
   /**
-   * Iterate through list of installed extensions. Update each one, indicating if it is the latest version or not.
+   * Method used for 1) updating each extensions' isLatest field, and 2) for action logging (logging if at least
+   * one extension is not up-to-date).
+   * </br>
+   * Works by iterating through list of installed extensions. Updates each one, indicating if it is the latest version
+   * or not. Plus, updates boolean "upToDate", set to false if there is at least one extension that is not up-to-date.
    */
   @VisibleForTesting
   protected void updateIsLatest(List<Extension> extensions) {
@@ -183,6 +187,7 @@ public class ExtensionsAction extends POSTAction {
         // complete list of registered extensions (latest and non-latest versions)
         List<Extension> registered = registryManager.getExtensions();
         for (Extension extension : extensions) {
+          extension.setLatest(true);
           for (Extension rExtension : registered) {
             // check if registered extension is latest, and if it is, try to use it in comparison
             if (rExtension.isLatest() && extension.getRowType().equalsIgnoreCase(rExtension.getRowType())) {
@@ -190,8 +195,10 @@ public class ExtensionsAction extends POSTAction {
               Date issuedTwo = rExtension.getIssued();
               if (issuedOne == null && issuedTwo != null) {
                 setUpToDate(false);
+                extension.setLatest(false);
               } else if (issuedTwo != null && issuedTwo.compareTo(issuedOne) > 0) {
                 setUpToDate(false);
+                extension.setLatest(false);
               }
             }
           }
