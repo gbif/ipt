@@ -87,6 +87,7 @@ _For the IPT Version 2.2 user manual, please go [[here|IPTUserManualv22.wiki]] O
     + [[View extension details|IPT2ManualNotes.wiki#view-extension-details]]
     + [[Install extension|IPT2ManualNotes.wiki#install-extension]]
     + [[Remove extension|IPT2ManualNotes.wiki#remove-extension]]
+    + [[Update extension|IPT2ManualNotes.wiki#update-extension]]
   + [[View IPT logs|IPT2ManualNotes.wiki#view-ipt-logs]]
   + [[About Menu (visible to all users)|IPT2ManualNotes.wiki#about-menu-visible-to-all-users]]
 + [[About the IPT|IPT2ManualNotes.wiki#about-the-ipt]]
