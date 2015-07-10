@@ -117,7 +117,14 @@ _For the IPT Version 2.2 user manual, please go [[here|IPTUserManualv22.wiki]] O
 
 # Introduction
 ## About the GBIF Integrated Publishing Toolkit
-The GBIF Integrated Publishing Toolkit (IPT) is a freely available open source web application that makes it easy to share three types of biodiversity-related information: primary taxon occurrence data, taxon checklists, and general metadata about data sources. An IPT instance as well as the data and metadata registered through the IPT are connected to the GBIF Registry, are indexed for consultation via the GBIF network and portal, and are made accessible for public use. More information about the GBIF IPT can be found at the [IPT website](http://www.gbif.org/ipt).
+The GBIF Integrated Publishing Toolkit (IPT) is a freely available open source web application that makes it easy to share four types of biodiversity-related information: 
+
+1. primary taxon occurrence data
+2. taxon checklists
+3. sampling event data
+4. general metadata about data sources. 
+
+An IPT instance as well as the data and metadata registered through the IPT are connected to the GBIF Registry, are indexed for consultation via the GBIF network and portal, and are made accessible for public use. More information about the GBIF IPT can be found at the [IPT website](http://www.gbif.org/ipt).
 
 Founded and funded by governments in 2001, The Global Biodiversity Information Facility (GBIF) is the world's largest multi-lateral initiative for enabling free access to biodiversity data via the
 Internet. [GBIF's diverse Participants](http://www.gbif.org/participation/participant-list) include primarily countries and
@@ -1140,6 +1147,7 @@ Réveillon, A. 2009. The GBIF Integrated Publishing Toolkit User Manual, version
 * **Resource Managers** - IPT users having a role that allows them to create, change, and remove resources.
 * **RowType** - the category of information represented in an extension. The RowType is generally the URI of the Class that best fits the information contained in the extension.
 * **RSS** - the acronym for Really Simple Syndication, a type of subscription format for tracking changes to a web site.
+* **Sampling Event Resource** - a resource having information about a sampling event as defined in the Darwin Core.
 * **Shortname** - a short unique name used for resource identification within the IPT and services that access the IPT.
 * **Source Data** - in this user manual, the source data are the data that are mapped to core types and extensions within a resource and may consist of text files or a database.
 * **Visibility** - a term describing how a resource may be viewed (private, public, or registered).
