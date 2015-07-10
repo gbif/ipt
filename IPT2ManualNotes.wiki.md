@@ -49,6 +49,8 @@ _For the IPT Version 2.2 user manual, please go [[here|IPTUserManualv22.wiki]] O
     + [[Edit an existing resource|IPT2ManualNotes.wiki#edit-an-existing-resource]]
     + [[Resource Overview|IPT2ManualNotes.wiki#resource-overview]]
       + [[Source Data|IPT2ManualNotes.wiki#source-data]]
+        + [[File as data source|IPT2ManualNotes.wiki#file-as-data-source]]
+        + [[Database as data source|IPT2ManualNotes.wiki#database-as-data-source]]
       + [[Darwin Core Mappings|IPT2ManualNotes.wiki#darwin-core-mappings]]
       + [[Metadata|IPT2ManualNotes.wiki#metadata]]
       + [[Basic Metadata|IPT2ManualNotes.wiki#basic-metadata]]
