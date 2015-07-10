@@ -1,9 +1,8 @@
 # The IPT User Manual
 
-### **This page is under construction**
-**IPT Version: 2.3 (Coming August 2015)**
+**IPT Version: 2.2**
 
-_For the IPT Version 2.2 user manual, please go [[here|IPTUserManualv22.wiki]] Otherwise, user manuals for older versions are available from the [Version History](http://www.gbif.org/ipt/releases) page._
+_For the IPT Version 2.1 user manual, please go [[here|IPTUserManualv21.wiki]] Otherwise, user manuals for older versions are available from the [Version History](http://www.gbif.org/ipt/releases) page._
 
 # Table of Contents
 + [[Introduction|IPT2ManualNotes.wiki#introduction]]
@@ -950,7 +949,7 @@ Following are explanations of the specific information to select or enter:
 * **Organisation name** - the title of the organisation as registered in the GBIF Registry. **Note**: this cannot be changed.
 * **Organisation password** - the password that should be used to edit the entry for this organisation in the GBIF Registry.
 * **Organisation alias** - a name given to the organisation for convenience within the IPT instance; aliases, rather then the full Organisation Name appear in Organisation selection lists in the IPT.
-* **Can publish resources** - this checkbox indicates whether the organisation can be associated with resources in the IPT. Only those organisations having this box checked will appear in lists to be associated with resources.
+* **Can publish resources - this checkbox indicates whether the organisation can be associated with resources in the IPT. Only those organisations having this box checked will appear in lists to be associated with resources.
 * **DOI registration agency** - the type of account used to register DOIs for resources; can be either DataCite or EZID. **Note**: an account is issued to the organisation after it signs an agreement with a DataCite member (or EZID), which gives it permission to register DOIs under one or more prefixes (e.g. 10.5072) in one or more domains (e.g. gbif.org). **Note**: confirm that the account can actually register DOIs under the IPT's domain/base URL otherwise registrations via the IPT won't work.
 * **Account username** - the username (symbol) of the DataCite/EZID account issued to the organisation.
 * **Account password** - the password of the DataCite/EZID account issued to the organisation.
