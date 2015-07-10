@@ -52,6 +52,7 @@ _For the IPT Version 2.2 user manual, please go [[here|IPTUserManualv22.wiki]] O
         + [[File as data source|IPT2ManualNotes.wiki#file-as-data-source]]
         + [[Database as data source|IPT2ManualNotes.wiki#database-as-data-source]]
       + [[Darwin Core Mappings|IPT2ManualNotes.wiki#darwin-core-mappings]]
+        + [[Data Mapping detail page|IPT2ManualNotes.wiki#data-mapping-detail-page]]
       + [[Metadata|IPT2ManualNotes.wiki#metadata]]
         + [[Basic Metadata|IPT2ManualNotes.wiki#basic-metadata]]
         + [[Geographic Coverage|IPT2ManualNotes.wiki#geographic-coverage]]
