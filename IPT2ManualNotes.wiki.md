@@ -980,11 +980,11 @@ An extension can make use of lists of terms of predefined values, known as contr
 ### View extension details
 The title of each extension in the first column is a link to a detail page for that extension. The detail page shows all of the summary information that can be seen in the right-hand column of the extensions list as well as the detailed description, references, and examples for each of the properties in the extension.
 
-<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAdminExtensionsDetail.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v23/IPTAdminExtensionsDetail.png' />
 
 For properties that have controlled vocabularies, the property information in the right-hand column will contain the name of the vocabulary as a link next to the label "Vocabulary:". Clicking on the link will open a detail page for the vocabulary, with a summary of the vocabulary at the top and a table of the valid values with further detailed information such as preferred and alternate terms and identifiers.
 
-<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAdminExtensionsDetailVocabulary.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v23/IPTAdminExtensionsDetailVocabulary.png' />
 
 ### Install extension
 For any of the extensions that have not yet been installed in the IPT, there is a button labeled "Install" under the extension name in the left-hand column. Click on this button to retrieve the extension from the GBIF registry and install it in the IPT.
