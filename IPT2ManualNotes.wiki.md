@@ -509,7 +509,7 @@ After a new mapping has been added, it will be visible in the right-hand column 
 ##### Data Mapping detail page
 After a mapping between a data source and Core Type or Extension has been created, this page opens and displays a status message showing how many fields from the data source were automatically mapped to the fields in the extensions. Fields are automatically mapped if the field names, converted to all lower case, match each other.
 
-<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceMapping.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v23/IPTManageResourceSourceMapping.png' />
 
 The Data Mapping page allows a user to specify exactly how the data accessible through this IPT resource are to be configured based on the selected extension. At the top of the page is the name of the source data being mapped. The name is also a link back to the edit source data page. Below that, is the name of the extension to which the source data are being mapped, along with a description of the purpose of the extension.
 
