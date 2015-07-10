@@ -226,6 +226,15 @@ public class DataDir {
   public File resourceFile(String resourceName, String path) {
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + path);
   }
+   //TODO DCAT FILE
+    /**
+     * Constructs an absolute path to the DCAT file into the resource Directory
+     *
+     * @param path the relative path within the individual resource folder
+     */
+    public File DCATFile(@NotNull String resourceName,@NotNull String path) {
+        return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + path);
+    }
 
   /**
    * @param suffix the logo file suffix, indicating the format. E.g. jpeg or gif
