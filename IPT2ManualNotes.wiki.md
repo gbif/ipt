@@ -992,6 +992,13 @@ For any of the extensions that have not yet been installed in the IPT, there is 
 ### Remove extension
 For any extension that has already been installed in the IPT, it can be removed by clicking the button labeled "Remove". Extensions that are in use to map data for any resource in the IPT cannot be removed. Any attempt to do so will show an error message and a list of resources that use the extension in a mapping.
 
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v23/IPTAdminExtensionsDetailVocabulary.png' />
+
+### Update extension
+For any extension that has already been installed in the IPT, and is out-of-date, it can be updated by clicking the button labeled "Update". Updating an extension makes it possible to take advantage of any new terms and new vocabularies. During an update, existing mappings to deprecated terms will be removed, and existing mappings to deprecated terms that have been replaced by another term will be automatically updated. Following the update, all affected resources should be reviewed and republished. 
+
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v23/IPTAdminExtensionsUpdate.png' />
+
 ## View IPT logs
 Messages generated from actions taken while running the IPT are logged to files for reference in the directory called "logs" within the IPT data directory (see the information under the "IPT Settings" heading in the "Administration Menu" section). The View IPT logs page shows messages from the file called admin.log, which contains only those log messages that have a severity of WARNING or greater (such as errors). The complete log of messages (contained in the file called debug.log) can be opened and viewed by clicking on the link labeled "complete log file". The contents of the complete log file may be useful when reporting an apparent bug.
 
