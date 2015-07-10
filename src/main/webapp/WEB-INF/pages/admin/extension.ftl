@@ -10,6 +10,22 @@
          <th><@s.text name="basic.title"/></th><td>${extension.title}</td>
     </tr>
     <tr>
+        <th><@s.text name="basic.description"/></th><td>${extension.description}</td>
+    </tr>
+<#if extension.link?has_content>
+    <tr>
+        <th><@s.text name="basic.link"/></th><td><a href="${extension.link}">${extension.link}</a></td>
+    </tr>
+</#if>
+<#if extension.issued??>
+    <tr>
+        <th><@s.text name="basic.issued"/></th><td>${extension.issued?date?string.medium}</td>
+    </tr>
+</#if>
+    <tr>
+        <th><@s.text name="extension.properties"/></th><td>${extension.properties?size}</td>
+    </tr>
+    <tr>
          <th><@s.text name="basic.name"/></th><td>${extension.name}</td>
     </tr>
     <tr>
@@ -19,19 +35,9 @@
          <th><@s.text name="extension.rowtype"/></th><td>${extension.rowType}</td>
     </tr>
     <tr>
-         <th><@s.text name="basic.description"/></th><td>${extension.description}</td>
+        <th><@s.text name="basic.lastModified"/></th><td>${extension.modified?datetime?string.medium}</td>
     </tr>
-    <#if extension.link?has_content>
-    <tr>
-         <th><@s.text name="basic.link"/></th>
-		<td>
-         <a href="${extension.link}">${extension.link}</a>
-		</td>
-    </tr>
-    </#if>
 </table>
-
-	
    
 <p>
 	<a href="extensions.do"><button><@s.text name="button.back"/></button></a>

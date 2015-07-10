@@ -9,29 +9,30 @@
     <tr>
          <th><@s.text name="basic.title"/></th><td>${vocabulary.title}</td>
     </tr>
-    <#if vocabulary.issued??>
-        <tr>
-            <th><@s.text name="basic.issued"/></th><td>${vocabulary.issued?date?string.medium}</td>
-        </tr>
-    </#if>
+    <tr>
+        <th><@s.text name="basic.description"/></th><td>${vocabulary.description!}</td>
+    </tr>
+<#if vocabulary.link?has_content>
+    <tr>
+        <th><@s.text name="basic.link"/></th><td><a href="${vocabulary.link}">${vocabulary.link}</a></td>
+    </tr>
+</#if>
+<#if vocabulary.issued??>
+     <tr>
+        <th><@s.text name="basic.issued"/></th><td>${vocabulary.issued?date?string.medium}</td>
+     </tr>
+</#if>
+    <tr>
+        <th><@s.text name="vocabulary.concepts"/></th><td>${vocabulary.concepts?size}</td>
+    </tr>
     <tr>
          <th><@s.text name="basic.identifier"/></th><td>${vocabulary.uriString}</td>
     </tr>
-    <tr>
-         <th><@s.text name="basic.description"/></th><td>${vocabulary.description!}</td>
-    </tr>
+
     <#if vocabulary.subject??>
         <tr>
             <th><@s.text name="basic.keywords"/></th><td>${vocabulary.subject!}</td>
         </tr>
-    </#if>
-    <#if vocabulary.link?has_content>
-    <tr>
-         <th><@s.text name="basic.link"/></th>
-		<td>
-         <a href="${vocabulary.link}">${vocabulary.link}</a>
-		</td>
-    </tr>
     </#if>
     <tr>
          <th><@s.text name="basic.lastModified"/></th><td>${vocabulary.modified?datetime?string.medium}</td>

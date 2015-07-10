@@ -183,25 +183,15 @@ public class ExtensionsAction extends POSTAction {
         // complete list of registered extensions (latest and non-latest versions)
         List<Extension> registered = registryManager.getExtensions();
         for (Extension extension : extensions) {
-          // is this the latest version?
           for (Extension rExtension : registered) {
-            if (extension.getRowType() != null && rExtension.getRowType() != null) {
-              String rowTypeOne = extension.getRowType();
-              String rowTypeTwo = rExtension.getRowType();
-              // first compare on rowType
-              if (rowTypeOne.equalsIgnoreCase(rowTypeTwo)) {
-                Date issuedOne = extension.getIssued();
-                Date issuedTwo = rExtension.getIssued();
-                // next compare on issued date: can both be null, or issued date must be same
-                if ((issuedOne == null && issuedTwo == null) || (issuedOne != null && issuedTwo != null
-                                                                 && issuedOne.compareTo(issuedTwo) == 0)) {
-                  if (!rExtension.isLatest()) {
-                    extension.setLatest(false);
-                    setUpToDate(false);
-                  } else {
-                    extension.setLatest(true);
-                  }
-                }
+            // check if registered extension is latest, and if it is, try to use it in comparison
+            if (rExtension.isLatest() && extension.getRowType().equalsIgnoreCase(rExtension.getRowType())) {
+              Date issuedOne = extension.getIssued();
+              Date issuedTwo = rExtension.getIssued();
+              if (issuedOne == null && issuedTwo != null) {
+                setUpToDate(false);
+              } else if (issuedTwo != null && issuedTwo.compareTo(issuedOne) > 0) {
+                setUpToDate(false);
               }
             }
           }
