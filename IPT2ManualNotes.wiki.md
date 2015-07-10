@@ -561,7 +561,7 @@ Following is a list of the metadata pages and their contents:
 #### Basic Metadata
 All metadata fields on this page are required. Please note for each contact you must supply at least a last name, a position or an organisation.
 
-<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataBasicMetadata.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v23/IPTManageResourceMetadataBasicMetadata.png' />
 
 * **Title** - the Title for the resource. This title will appear as the Name of the resource throughout the IPT. The title will also appear in the GBIF Registry.
 * **Publishing Organisation** - the organisation responsible for publishing (producing, releasing, holding) this resource. It will be used as the resource's publishing organisation when registering this resource with GBIF and when submitting metadata during DOI registrations. It will also be used to auto-generate the citation for the resource (if auto-generation is turned on), so consider the prominence of the role. If the desired organisation does not appear in the list it may be added by the IPT Administrator (see the information under the "Configure Organisations" heading in the "Administration Menu" section). Please be aware your selection cannot be changed after the resource has been either registered with GBIF or assigned a DOI.
