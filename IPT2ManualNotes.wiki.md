@@ -504,6 +504,8 @@ Select the data source to map, and then click on the button labeled "Save". This
 
 After a new mapping has been added, it will be visible in the right-hand column of the Darwin Core Mappings area. This area will contain a list of all the resource's mappings divided into Core Type mappings and Extension mappings. Click the "Edit" button beside a mapping to modify it, or click the preview icon <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/preview.png' /> to preview the mapping. Resource managers are advised to preview all mappings prior to publishing a new version.
 
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v23/IPTManageResourceDwCMapping2.png' />
+
 ##### Data Mapping detail page
 After a mapping between a data source and Core Type or Extension has been created, this page opens and displays a status message showing how many fields from the data source were automatically mapped to the fields in the extensions. Fields are automatically mapped if the field names, converted to all lower case, match each other.
 
