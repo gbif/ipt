@@ -52,6 +52,7 @@ _For the IPT Version 2.2 user manual, please go [[here|IPTUserManualv22.wiki]] O
         + [[File as data source|IPT2ManualNotes.wiki#file-as-data-source]]
         + [[Database as data source|IPT2ManualNotes.wiki#database-as-data-source]]
       + [[Darwin Core Mappings|IPT2ManualNotes.wiki#darwin-core-mappings]]
+        + [[Data Source selection page|IPT2ManualNotes.wiki#data-source-selection-page]]
         + [[Data Mapping detail page|IPT2ManualNotes.wiki#data-mapping-detail-page]]
         + [[Value Translation page|IPT2ManualNotes.wiki#value-translation-page]]
       + [[Metadata|IPT2ManualNotes.wiki#metadata]]
@@ -490,11 +491,14 @@ This area of the Resource Overview page allows a user to map the fields in the i
 
 Once these conditions have been met, the left-hand column of the Darwin Core Mappings area will contain a select box with a list of Core Types and Extensions that have been installed. Select a Core Type and map that before selecting an extension to map. Select the appropriate extension that has fields matching the ones to map in the data source. If the appropriate core type or extension does not appear in the select box, it will have to be installed first. Refer to the information under the "Configure Core Types and Extensions" heading in the "Administration Menu" section for an explanation of how to install extensions.
 
-<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceDwCMapping.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v23/IPTManageResourceDwCMapping.png' />
 
-After the desired core type or extension is selected, click on the button labeled "Add" to open the Data Source selection page. This page gives an explanation of the type of data the extension is meant to support, and shows a select box containing a list of all of the configured data sources. **Note 1**: A resource must only use 1 core type: choose "Darwin Core Checklist" when the basis of the resource is taxon names, or choose "Darwin Core Occurrence" when the basis of the resource is occurrences in nature (observations) or in a collection (specimens). Only after the desired core type has been mapped, will it be possible to map other extensions. **Note 2**: It is possible to map another core type as an extension as long as it is different from the core type mapped.
+After the desired core type or extension is selected, click on the button labeled "Add" to open the [[Data Source selection page|IPT2ManualNotes.wiki#data-source-selection-page]]. 
 
-<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceSelect.png' />
+##### Data Source selection page
+This page gives an explanation of the type of data the extension is meant to support, and shows a select box containing a list of all of the configured data sources. **Note 1**: A resource must only use 1 core type: choose "Darwin Core Checklist" when the basis of the resource is taxon names, or choose "Darwin Core Occurrence" when the basis of the resource is occurrences in nature (observations) or in a collection (specimens). Only after the desired core type has been mapped, will it be possible to map other extensions. **Note 2**: It is possible to map another core type as an extension as long as it is different from the core type mapped.
+
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v23/IPTManageResourceSourceSelect.png' />
 
 Select the data source to map, and then click on the button labeled "Save". This will open the Data Mapping detail page (skip to the [[Data Mapping detail page|IPT2ManualNotes.wiki#data-mapping-detail-page]] below for help doing the actual mapping).
 
