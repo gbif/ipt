@@ -83,7 +83,7 @@ _For the IPT Version 2.2 user manual, please go [[here|IPTUserManualv22.wiki]] O
     + [[Edit organisation|IPT2ManualNotes.wiki#edit-organisation]]
     + [[Add organisation|IPT2ManualNotes.wiki#add-organisation]]
   + [[Configure Core Types and Extensions|IPT2ManualNotes.wiki#configure-core-types-and-extensions]]
-    + [[Update vocabularies|IPT2ManualNotes.wiki#update-vocabularies]]
+    + [[Synchronise Extensions and Vocabularies|IPT2ManualNotes.wiki#synchronise-extensions-and-vocabularies]]
     + [[View extension details|IPT2ManualNotes.wiki#view-extension-details]]
     + [[Install extension|IPT2ManualNotes.wiki#install-extension]]
     + [[Remove extension|IPT2ManualNotes.wiki#remove-extension]]
