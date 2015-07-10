@@ -73,15 +73,7 @@ import org.gbif.metadata.eml.KeywordSet;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Writer;
+import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URI;
@@ -140,6 +132,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private ListMultimap<String, Date> processFailures = ArrayListMultimap.create();
   private Map<String, StatusReport> processReports = new HashMap<String, StatusReport>();
   private Eml2Rtf eml2Rtf;
+  //TODO
+  private GenerateDCAT generateDCAT;
   private VocabulariesManager vocabManager;
   private SimpleTextProvider textProvider;
   private RegistrationManager registrationManager;
@@ -1164,7 +1158,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // publish RTF
     publishRtf(resource, version);
     //TODO GENERATE DCAT
-    //  publishDCAT.(resource);
+    publishDCAT(resource, version);
     // (re)generate dwca asynchronously
     boolean dwca = false;
     if (resource.hasMappedData()) {
@@ -1619,40 +1613,46 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
     //TODO Create DCAT feed
     /**
-     * Publishes a new version of the RTF file for the given resource.
+     * Publishes a new version of the DCAT file for the given resource.
      *
      * @param resource Resource
      *
      * @throws PublicationException if resource was already being published, or if publishing failed for any reason
      */
-    private void publishDCAT(Resource resource) throws PublicationException {
+    private void publishDCAT (Resource resource, BigDecimal version) throws PublicationException {
         // check if publishing task is already running
         if (isLocked(resource.getShortname())) {
             throw new PublicationException(PublicationException.TYPE.LOCKED,
                     "Resource " + resource.getShortname() + " is currently locked by another process");
         }
+
         Document doc = new Document();
-        File DCATFile = new File("po");
+        File DCATFile = dataDir.resourceDCATFile(resource.getShortname(), version);
+        log.warn("RS :" + DCATFile.getAbsolutePath());
         OutputStream out = null;
         try {
-            out = new FileOutputStream(DCATFile);
-            RtfWriter2.getInstance(doc, out);
-            eml2Rtf.writeEmlIntoRtf(doc, resource);
+          //generateDCAT.write(resource,DCATFile);
+
+            File fnew = new File ("d");//Need to be fix HARDCODING
+            String warn = new String("DCAT FILE PATH" +fnew.getAbsolutePath());
+            log.warn(warn);
+            PrintWriter pwnew = new PrintWriter (new BufferedWriter (new FileWriter (fnew)));
+            pwnew.println("HELLO WORLD");
+            pwnew.close();
+
+
         } catch (FileNotFoundException e) {
-            throw new PublicationException(PublicationException.TYPE.RTF,
-                    "Can't find rtf file to write metadata to: " + DCATFile.getAbsolutePath(), e);
-        } catch (DocumentException e) {
-            throw new PublicationException(PublicationException.TYPE.RTF,
-                    "RTF DocumentException while writing to file: " + DCATFile.getAbsolutePath(), e);
+            throw new PublicationException(PublicationException.TYPE.DCAT,
+                    "Can't find DCAT file to write metadata to: " + DCATFile.getAbsolutePath(), e);
         } catch (Exception e) {
-            throw new PublicationException(PublicationException.TYPE.RTF,
-                    "An unexpected error occurred while writing RTF file: " + e.getMessage(), e);
+            throw new PublicationException(PublicationException.TYPE.DCAT,
+                    "An unexpected error occurred while writing DCAT file: " + e.getMessage(), e);
         } finally {
             if (out != null) {
                 try {
                     out.close();
                 } catch (IOException e) {
-                    log.warn("FileOutputStream to RTF file could not be closed");
+                    log.warn("FileOutputStream to DCAT file could not be closed");
                 }
             }
         }
@@ -1673,7 +1673,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
 
     Document doc = new Document();
+    log.warn("NAME = " +  version.toPlainString());
     File rtfFile = dataDir.resourceRtfFile(resource.getShortname(), version);
+    log.warn("FILE :::::::::::" + rtfFile.getAbsolutePath());
+
     OutputStream out = null;
     try {
       out = new FileOutputStream(rtfFile);

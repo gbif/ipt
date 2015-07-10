@@ -226,16 +226,6 @@ public class DataDir {
   public File resourceFile(String resourceName, String path) {
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + path);
   }
-   //TODO DCAT FILE
-    /**
-     * Constructs an absolute path to the DCAT file into the resource Directory
-     *
-     * @param path the relative path within the individual resource folder
-     */
-    public File DCATFile(@NotNull String resourceName,@NotNull String path) {
-        return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + path);
-    }
-
   /**
    * @param suffix the logo file suffix, indicating the format. E.g. jpeg or gif
    */
@@ -259,6 +249,18 @@ public class DataDir {
    *
    * @return RTF file having specific version, defaulting to latest published version if no version specified
    */
+  public File resourceDCATFile(@NotNull String resourceName, @NotNull BigDecimal version) {
+    String fn = resourceName + "-" + version.toPlainString() + ".rtf";
+    return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
+  }
+    /**
+     * Retrieves published DCAT file for a specific version of a resource.
+     *
+     * @param resourceName resource short name
+     * @param version      version
+     *
+     * @return DCAT file having specific version, defaulting to latest published version if no version specified
+     */
   public File resourceRtfFile(@NotNull String resourceName, @NotNull BigDecimal version) {
     String fn = resourceName + "-" + version.toPlainString() + ".rtf";
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
