@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.gbif:gbif-metadata-profile:1.1.1-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/gbif/gbif-metadata-profile/1.1.1-SNAPSHOT/gbif-metadata-profile-1.1.1-20150625.151854-6.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/gbif/gbif-metadata-profile/1.1.1-SNAPSHOT/gbif-metadata-profile-1.1.1-20150625.151854-6-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/gbif/gbif-metadata-profile/1.1.1-SNAPSHOT/gbif-metadata-profile-1.1.1-20150625.151854-6-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

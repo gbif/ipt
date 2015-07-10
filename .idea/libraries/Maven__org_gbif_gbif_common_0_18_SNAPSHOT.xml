@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.gbif:gbif-common:0.18-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/gbif/gbif-common/0.18-SNAPSHOT/gbif-common-0.18-20150625.144355-12.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/gbif/gbif-common/0.18-SNAPSHOT/gbif-common-0.18-20150625.144355-12-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/gbif/gbif-common/0.18-SNAPSHOT/gbif-common-0.18-20150625.144355-12-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

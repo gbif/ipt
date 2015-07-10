@@ -42,10 +42,9 @@ public class GenerateDCAT {
     private  Eml eml;
     private  Organisation organisation;*/
 
-    public static void main (String[]args){
-        Resource r = new Resource();
-        r.setShortname("Testing Resource");
-        System.out.println("-----------------------------------\n"+"         Testing Resource\n"+"-----------------------------------\n"+ r.toString());
+    public void create(Resource resource){
+        //resource.setShortname("Testing Resource");
+        System.out.println("-----------------------------------\n"+"         Testing Resource\n"+"-----------------------------------\n"+ resource.toString());
 
         HashMap<String,String> prefix = new HashMap<String,String>();
 
@@ -125,7 +124,7 @@ public class GenerateDCAT {
        }
 
     /**
-     * Recursive method for traking/printing everyNode
+     * Recursive method for tracking/printing everyNode
      * @param nodeList
      */
     private static void printNode(NodeList nodeList,String position,ArrayList<String> txt) {

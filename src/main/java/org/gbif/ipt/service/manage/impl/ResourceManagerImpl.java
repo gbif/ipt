@@ -62,13 +62,7 @@ import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.RequireManagerInterceptor;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.ipt.task.Eml2Rtf;
-import org.gbif.ipt.task.GenerateDwca;
-import org.gbif.ipt.task.GenerateDwcaFactory;
-import org.gbif.ipt.task.GeneratorException;
-import org.gbif.ipt.task.ReportHandler;
-import org.gbif.ipt.task.StatusReport;
-import org.gbif.ipt.task.TaskMessage;
+import org.gbif.ipt.task.*;
 import org.gbif.ipt.utils.ActionLogger;
 import org.gbif.ipt.utils.DataCiteMetadataBuilder;
 import org.gbif.ipt.utils.EmlUtils;
@@ -1169,7 +1163,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
     // publish RTF
     publishRtf(resource, version);
-
+    //TODO GENERATE DCAT
+    //  publishDCAT.(resource);
     // (re)generate dwca asynchronously
     boolean dwca = false;
     if (resource.hasMappedData()) {
@@ -1622,7 +1617,46 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         "Can't publish eml file for resource " + resource.getShortname(), e);
     }
   }
-
+    //TODO Create DCAT feed
+    /**
+     * Publishes a new version of the RTF file for the given resource.
+     *
+     * @param resource Resource
+     *
+     * @throws PublicationException if resource was already being published, or if publishing failed for any reason
+     */
+    private void publishDCAT(Resource resource) throws PublicationException {
+        // check if publishing task is already running
+        if (isLocked(resource.getShortname())) {
+            throw new PublicationException(PublicationException.TYPE.LOCKED,
+                    "Resource " + resource.getShortname() + " is currently locked by another process");
+        }
+        Document doc = new Document();
+        File DCATFile = new File("po");
+        OutputStream out = null;
+        try {
+            out = new FileOutputStream(DCATFile);
+            RtfWriter2.getInstance(doc, out);
+            eml2Rtf.writeEmlIntoRtf(doc, resource);
+        } catch (FileNotFoundException e) {
+            throw new PublicationException(PublicationException.TYPE.RTF,
+                    "Can't find rtf file to write metadata to: " + DCATFile.getAbsolutePath(), e);
+        } catch (DocumentException e) {
+            throw new PublicationException(PublicationException.TYPE.RTF,
+                    "RTF DocumentException while writing to file: " + DCATFile.getAbsolutePath(), e);
+        } catch (Exception e) {
+            throw new PublicationException(PublicationException.TYPE.RTF,
+                    "An unexpected error occurred while writing RTF file: " + e.getMessage(), e);
+        } finally {
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    log.warn("FileOutputStream to RTF file could not be closed");
+                }
+            }
+        }
+    }
   /**
    * Publishes a new version of the RTF file for the given resource.
    *
