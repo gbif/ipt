@@ -428,7 +428,7 @@ The IPT can import uncompressed delimited text files (csv, tab, and files using 
 
 Click on the button labeled "Clear" to remove the choice of selected file and return to the previous state before any data source was selected. Or, click on the button labeled "Add" to open the Source Data File detail page (if there is the risk of overwriting a file with the same name, a dialog opens that asks the user to confirm they actually want to overwrite it). This page shows the name of the resource along with a summary of the file characteristics (readability, number of columns detected, absolute path to the file, the file size, the number of rows detected, and the date the file was last loaded into the IPT). The Source Data File detail page allows the user to view and edit the parameters that describe the content of the selected file, and to use these settings to analyze and preview the file.
 
-<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceDataFormat.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v23/IPTManageResourceSourceDataFormat.png' />
 
 * **Source Name** - the name of the file selected, without the file extension.
 **Readable** - this icon indicates whether data are accessible using the file format information provided on this page.
@@ -444,6 +444,7 @@ Click on the button labeled "Clear" to remove the choice of selected file and re
 * **Field Delimiter** - the character or characters that signify a break between columns of data.
 * **Character Encoding** - the system that defines byte-wise definitions of the characters in the data (e.g., ISO 8859-5 refers to the Cyrillic alphabet).
 * **Field Quotes** - a single character (or none) that is used to enclose the contents of a column in the data (e.g., ' or "). Please note this will not properly enclose columns whose content includes newline characters (\n) or carriage returns (\r).
+* **Multi-value Delimiter** - a single character that delimits the values in a multi-value field (e.g., | or ;). 
 * **Date Format** - a code describing the format of fields having a date data type (e.g., YYYY-MM-DD for four-digit year, two-digit month, and two-digit day separated by dashes).
 * **Selected Worksheet** - (Excel files only) this drop down lists the names of all worksheets in the Excel file/workbook. Only 1 worksheet can be used as the data source, defaulting to the first worksheet.
 
