@@ -238,7 +238,7 @@ public class GenerateDCAT {
     }
 
     private String createDistribution() {
-        String plop = "";
+        String dist = "";
 
         //Recommended
         //dct:description
