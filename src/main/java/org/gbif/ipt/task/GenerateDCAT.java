@@ -1,9 +1,12 @@
 package org.gbif.ipt.task;
 
+import com.google.inject.Inject;
+import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Resource;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -39,11 +42,12 @@ import org.w3c.dom.NamedNodeMap;
 
 public class GenerateDCAT {
 
-   /* @Inject
-    DataDir Directory;
-    private  Resource resource;
-    private  Eml eml;
-    private  Organisation organisation;*/
+    @Inject
+    DataDir directory;
+
+    public GenerateDCAT() {
+
+    }
 
     public void create(Resource resource) {
         //resource.setShortname("Testing Resource");
@@ -187,54 +191,79 @@ public class GenerateDCAT {
      * @param resource the resource to create the DCAT feed for
      * @return string representation of DCAT feed
      */
-    public static String createDCATDataset(Resource resource) {
+    public String createDCATDataset(Resource resource) {
 
-        StringBuilder sb = new StringBuilder();
+        StringBuilder datasetBuilder = new StringBuilder();
         Eml eml = resource.getEml();
 
         //Base
-        String subject = eml.getHomepageUrl() + "/#dataset";
-        sb.append(subject);
-        sb.append("\n");
+        datasetBuilder.append(":");
+        datasetBuilder.append(eml.getHomepageUrl() + "/#dataset" + "\n");
+        datasetBuilder.append("a dcat:Dataset");
+
 
         //----------------------------------
         //Mandatory
         //dct:title
-        String title = eml.getTitle();
-        sb.append(title);
-        sb.append("\n");
+        addPredicateToBuilder(datasetBuilder, "dct:title");
+        addObjectToBuilder(datasetBuilder, eml.getTitle(), true);
         //dct:description
-        String description = eml.getDescription().toString();
-        sb.append(description);
-        sb.append("\n");
+        addPredicateToBuilder(datasetBuilder, "dct:description");
+        String description = "";
+        for (String des : eml.getDescription()) {
+            description += des;
+            if (eml.getDescription().indexOf(des) != eml.getDescription().size() - 1) {
+                description += "\n";
+            }
+        }
+        addObjectToBuilder(datasetBuilder, description, true);
 
         //---------------------------------
         //Recommended
         //dcat:keyword
-        String keyword = "";
         for (KeywordSet key : eml.getKeywords()) {
-            keyword += key.getKeywordsString();
+            addPredicateToBuilder(datasetBuilder, "dcat:keyword");
+            addObjectsToBuilder(datasetBuilder, key.getKeywords(), true);
         }
-        sb.append(keyword);
-        sb.append("\n");
 
         //dcat:theme
+        //TODO
         String theme = "";
         //adms:contactPoint
+        //TODO
         String contactPoint = "";
 
         //----------------------------------
         //Optional
         //dct:issued
+        addPredicateToBuilder(datasetBuilder, "dct:issued");
+        addObjectToBuilder(datasetBuilder, parseToIsoDate(eml.getDateStamp()), true);
         //dct:modified
+        addPredicateToBuilder(datasetBuilder, "dct:modified");
+        addObjectToBuilder(datasetBuilder, parseToIsoDate(eml.getPubDate()), true);
         //dct:isVersionOf
+        //TODO
         //dct:spatial
+        //addStringtoBuilder(datasetBuilder, "dct:spatial", resource.getEml().getGeospatialCoverages().toString());
         //adms:versionInfo
         //adms:versionNotes
+        //addStringtoBuilder(datasetBuilder, "adms:versionNotes", resource.getEml().getEmlVersion().toString());
         //dcat:landingPage
 
+        return datasetBuilder.toString();
+    }
 
-        return sb.toString();
+    /**
+     * JAVA 8 SUPPORTS THIS ALREADY
+     * THIS METHOD WON'T BE NEEDED
+     * Parse a Date object to the ISO8601 standard
+     *
+     * @param dateStamp Date object
+     * @return ISO8601 string representation for a date
+     */
+    public static String parseToIsoDate(Date dateStamp) {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmXXX");
+        return df.format(new Date());
     }
 
     private String createDistribution() {
@@ -252,4 +281,75 @@ public class GenerateDCAT {
 
         return new String();
     }
+
+    /**
+     * Method to add the predicate to the builder in turtle syntax
+     * Ends the last predicate with a ; and a newline
+     *
+     * @param stringBuilder builder for the String
+     * @param predicate     Realtion between the subject and object
+     */
+    private static void addPredicateToBuilder(StringBuilder stringBuilder, String predicate) {
+        stringBuilder.append(";\n");
+        stringBuilder.append(predicate);
+        stringBuilder.append(" ");
+    }
+
+    /**
+     * Add objects to the builder.
+     * Puts commas between the literal and encapsulates the objects with " or <  depending on the boolean literal
+     * Objects cannot be null and must at least contain one value
+     *
+     * @param builder StringBuilder
+     * @param object  Object to add
+     * @param literal Whether the object is a literal or a resoure
+     *                A literal is encaplsulated with ", while a resource with '<'
+     */
+    private static void addObjectToBuilder(StringBuilder builder, String object, boolean literal) {
+        builder.append(encapsulateObject(object, literal));
+    }
+
+    /**
+     * Add a list of objects to the builder.
+     * Puts commas between the literal and encapsulates the objects with " or <  depending on the boolean literal
+     * Objects cannot be null and must at least contain one value
+     *
+     * @param builder StringBuilder
+     * @param objects List of objects to add
+     * @param literal Whether the objects are literals or resoures
+     *                A literal is encaplsulated with ", while a resource with '<'
+     */
+    private static void addObjectsToBuilder(StringBuilder builder, List<String> objects, boolean literal) {
+        for (String s : objects) {
+            if (objects.indexOf(s) != 0) {
+                builder.append(",");
+            }
+            builder.append(encapsulateObject(s, literal));
+        }
+    }
+
+    /**
+     * Encapsulates an object with " or < depending on the boolean literal
+     * Literals are encapsulated with "
+     * Resources are encapsulated with < and >
+     *
+     * @param object  string to encapsulate
+     * @param literal if the object is a literal or a resource
+     */
+    private static String encapsulateObject(String object, boolean literal) {
+        String ret = "";
+        if (literal) {
+            ret += "\"";
+        } else {
+            ret += "<";
+        }
+        ret += object;
+        if (literal) {
+            ret += "\"";
+        } else {
+            ret += ">";
+        }
+        return ret;
+    }
+
 }

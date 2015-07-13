@@ -160,15 +160,15 @@ public class GenerateDCATTest {
         Resource res = null;
         // retrieve sample zipped resource XML configuration file
         File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
-        System.out.println(resourceXML.getAbsolutePath());
         // create resource from single source file
         File occurrence = FileUtils.getClasspathFile("resources/res1/occurrence.txt");
         try {
             res = getResource(resourceXML, occurrence);
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
         }
-        System.out.println(GenerateDCAT.createDCATDataset(res));
+        GenerateDCAT gd = new GenerateDCAT();
+        System.out.println(gd.createDCATDataset(res));
     }
 
 
