@@ -16,7 +16,9 @@ import java.io.PrintWriter;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 
+import org.gbif.metadata.eml.BBox;
 import org.gbif.metadata.eml.Eml;
+import org.gbif.metadata.eml.GeospatialCoverage;
 import org.gbif.metadata.eml.KeywordSet;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -63,6 +65,7 @@ public class GenerateDCAT {
         prefix.put("foaf:", "http://xmlns.com/foaf/0.1/");
         prefix.put("schema:", "http://schema.org/");
         prefix.put("adms:", "http://www.w3.org/ns/adms#");
+        prefix.put("geo:", "http://www.w3.org/2003/01/geo/wgs84_pos#");
 
         ArrayList<String> txt = readXmlFile();
         ArrayList<String> finalTxt = hasMapToStringArray(prefix);
@@ -187,6 +190,7 @@ public class GenerateDCAT {
 
     /**
      * Create the DCAT feed for one dataset
+     * This is parsed into turtle syntax
      *
      * @param resource the resource to create the DCAT feed for
      * @return string representation of DCAT feed
@@ -206,7 +210,7 @@ public class GenerateDCAT {
         //Mandatory
         //dct:title
         addPredicateToBuilder(datasetBuilder, "dct:title");
-        addObjectToBuilder(datasetBuilder, eml.getTitle(), true);
+        addObjectToBuilder(datasetBuilder, eml.getTitle(), ObjectTypes.LITERAL);
         //dct:description
         addPredicateToBuilder(datasetBuilder, "dct:description");
         String description = "";
@@ -216,58 +220,65 @@ public class GenerateDCAT {
                 description += "\n";
             }
         }
-        addObjectToBuilder(datasetBuilder, description, true);
+        addObjectToBuilder(datasetBuilder, description, ObjectTypes.LITERAL);
 
         //---------------------------------
         //Recommended
         //dcat:keyword
         for (KeywordSet key : eml.getKeywords()) {
             addPredicateToBuilder(datasetBuilder, "dcat:keyword");
-            addObjectsToBuilder(datasetBuilder, key.getKeywords(), true);
+            addObjectsToBuilder(datasetBuilder, key.getKeywords(), ObjectTypes.LITERAL);
         }
 
         //dcat:theme
         //TODO
-        String theme = "";
+        addPredicateToBuilder(datasetBuilder, "dcat:theme");
+        addObjectToBuilder(datasetBuilder, "", ObjectTypes.RESOURCE);
         //adms:contactPoint
         //TODO
-        String contactPoint = "";
+        addPredicateToBuilder(datasetBuilder, "adms:contactPoint");
+        addObjectToBuilder(datasetBuilder, "", ObjectTypes.RESOURCE);
 
         //----------------------------------
         //Optional
         //dct:issued
         addPredicateToBuilder(datasetBuilder, "dct:issued");
-        addObjectToBuilder(datasetBuilder, parseToIsoDate(eml.getDateStamp()), true);
+        addObjectToBuilder(datasetBuilder, parseToIsoDate(eml.getDateStamp()), ObjectTypes.LITERAL);
         //dct:modified
         addPredicateToBuilder(datasetBuilder, "dct:modified");
-        addObjectToBuilder(datasetBuilder, parseToIsoDate(eml.getPubDate()), true);
+        addObjectToBuilder(datasetBuilder, parseToIsoDate(eml.getPubDate()), ObjectTypes.LITERAL);
         //dct:isVersionOf
         //TODO
+        addPredicateToBuilder(datasetBuilder, "dcat:isVersionOf");
+        addObjectToBuilder(datasetBuilder, "", ObjectTypes.RESOURCE);
         //dct:spatial
-        //addStringtoBuilder(datasetBuilder, "dct:spatial", resource.getEml().getGeospatialCoverages().toString());
+        for(GeospatialCoverage geospac : eml.getGeospatialCoverages()){
+            BBox bb = geospac.getBoundingCoordinates();
+            addPredicateToBuilder(datasetBuilder, "dct:spatial");
+            String spatial = " geo:Point [ geo:lat \"" + bb.getMin().getLatitude() + "\" ; geo:long \"" + bb.getMin().getLongitude() + "\" ] ; "
+                    + "geo:Point [ geo:lat \"" + bb.getMax().getLatitude() + "\" ; geo:long \"" + bb.getMax().getLongitude() + "\" ] ";
+            addObjectToBuilder(datasetBuilder, spatial, ObjectTypes.OBJECT);
+        }
         //adms:versionInfo
+        //TODO
+        addPredicateToBuilder(datasetBuilder, "adms:versionInfo");
+        addObjectToBuilder(datasetBuilder, "", ObjectTypes.LITERAL);
         //adms:versionNotes
+        //TODO
+        addPredicateToBuilder(datasetBuilder, "adms:versionNotes");
+        addObjectToBuilder(datasetBuilder, "", ObjectTypes.LITERAL);
         //addStringtoBuilder(datasetBuilder, "adms:versionNotes", resource.getEml().getEmlVersion().toString());
         //dcat:landingPage
+        addPredicateToBuilder(datasetBuilder, "dcat:landingPage");
+        addObjectToBuilder(datasetBuilder, eml.getHomepageUrl(), ObjectTypes.RESOURCE);
 
+        datasetBuilder.append(" .");
         return datasetBuilder.toString();
     }
 
-    /**
-     * JAVA 8 SUPPORTS THIS ALREADY
-     * THIS METHOD WON'T BE NEEDED
-     * Parse a Date object to the ISO8601 standard
-     *
-     * @param dateStamp Date object
-     * @return ISO8601 string representation for a date
-     */
-    public static String parseToIsoDate(Date dateStamp) {
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmXXX");
-        return df.format(new Date());
-    }
-
     private String createDistribution() {
-        String dist = "";
+        StringBuilder distributionBuilder = new StringBuilder();
+
 
         //Recommended
         //dct:description
@@ -290,23 +301,22 @@ public class GenerateDCAT {
      * @param predicate     Realtion between the subject and object
      */
     private static void addPredicateToBuilder(StringBuilder stringBuilder, String predicate) {
-        stringBuilder.append(";\n");
+        stringBuilder.append(" ;\n");
         stringBuilder.append(predicate);
         stringBuilder.append(" ");
     }
 
     /**
      * Add objects to the builder.
-     * Puts commas between the literal and encapsulates the objects with " or <  depending on the boolean literal
+     * Puts commas between the literal and encapsulates the objects
      * Objects cannot be null and must at least contain one value
      *
      * @param builder StringBuilder
      * @param object  Object to add
-     * @param literal Whether the object is a literal or a resoure
-     *                A literal is encaplsulated with ", while a resource with '<'
+     * @param type    type of the object (literal, resource or an object)
      */
-    private static void addObjectToBuilder(StringBuilder builder, String object, boolean literal) {
-        builder.append(encapsulateObject(object, literal));
+    private static void addObjectToBuilder(StringBuilder builder, String object, ObjectTypes type) {
+        builder.append(encapsulateObject(object, type));
     }
 
     /**
@@ -316,40 +326,69 @@ public class GenerateDCAT {
      *
      * @param builder StringBuilder
      * @param objects List of objects to add
-     * @param literal Whether the objects are literals or resoures
-     *                A literal is encaplsulated with ", while a resource with '<'
+     * @param type    type of the objects (Literals, resources or objects)
      */
-    private static void addObjectsToBuilder(StringBuilder builder, List<String> objects, boolean literal) {
+    private static void addObjectsToBuilder(StringBuilder builder, List<String> objects, ObjectTypes type) {
         for (String s : objects) {
             if (objects.indexOf(s) != 0) {
-                builder.append(",");
+                builder.append(" , ");
             }
-            builder.append(encapsulateObject(s, literal));
+            builder.append(encapsulateObject(s, type));
         }
     }
 
+    private enum ObjectTypes {
+        OBJECT, LITERAL, RESOURCE
+    }
+
     /**
-     * Encapsulates an object with " or < depending on the boolean literal
+     * Encapsulates an object
      * Literals are encapsulated with "
      * Resources are encapsulated with < and >
+     * Objects are encapsulated wth [ and ]
      *
-     * @param object  string to encapsulate
-     * @param literal if the object is a literal or a resource
+     * @param object string to encapsulate
+     * @param type   type of the object
      */
-    private static String encapsulateObject(String object, boolean literal) {
+    private static String encapsulateObject(String object, ObjectTypes type) {
         String ret = "";
-        if (literal) {
-            ret += "\"";
-        } else {
-            ret += "<";
+        switch (type) {
+            case LITERAL:
+                ret += "\"";
+                break;
+            case RESOURCE:
+                ret += "<";
+                break;
+            case OBJECT:
+                ret += "[";
+                break;
         }
         ret += object;
-        if (literal) {
-            ret += "\"";
-        } else {
-            ret += ">";
+        switch (type) {
+            case LITERAL:
+                ret += "\"";
+                break;
+            case RESOURCE:
+                ret += ">";
+                break;
+            case OBJECT:
+                ret += "]";
+                break;
         }
         return ret;
+    }
+
+    /**
+     * JAVA 8 SUPPORTS THIS ALREADY
+     * THIS METHOD WON'T BE NEEDED
+     * Parse a Date object to the ISO8601 standard
+     *
+     * @param dateStamp Date object
+     * @return ISO8601 string representation for a date
+     */
+    public static String parseToIsoDate(Date dateStamp) {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmXXX");
+        return df.format(new Date());
     }
 
 }
