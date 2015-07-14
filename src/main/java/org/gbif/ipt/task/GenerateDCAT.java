@@ -16,10 +16,7 @@ import java.io.PrintWriter;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 
-import org.gbif.metadata.eml.BBox;
-import org.gbif.metadata.eml.Eml;
-import org.gbif.metadata.eml.GeospatialCoverage;
-import org.gbif.metadata.eml.KeywordSet;
+import org.gbif.metadata.eml.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
@@ -66,6 +63,7 @@ public class GenerateDCAT {
         prefix.put("schema:", "http://schema.org/");
         prefix.put("adms:", "http://www.w3.org/ns/adms#");
         prefix.put("geo:", "http://www.w3.org/2003/01/geo/wgs84_pos#");
+        prefix.put("vcard", "http://www.w3.org/2006/vcard/ns#");
 
         ArrayList<String> txt = readXmlFile();
         ArrayList<String> finalTxt = hasMapToStringArray(prefix);
@@ -229,15 +227,16 @@ public class GenerateDCAT {
             addPredicateToBuilder(datasetBuilder, "dcat:keyword");
             addObjectsToBuilder(datasetBuilder, key.getKeywords(), ObjectTypes.LITERAL);
         }
-
         //dcat:theme
         //TODO
         addPredicateToBuilder(datasetBuilder, "dcat:theme");
         addObjectToBuilder(datasetBuilder, "", ObjectTypes.RESOURCE);
         //adms:contactPoint
-        //TODO
-        addPredicateToBuilder(datasetBuilder, "adms:contactPoint");
-        addObjectToBuilder(datasetBuilder, "", ObjectTypes.RESOURCE);
+        for (Agent contact : eml.getContacts()) {
+            addPredicateToBuilder(datasetBuilder, "adms:contactPoint");
+            String agent = " vcard:Kind \"Individual\" ; vcard:fn \"" + contact.getFullName() + "\" ] ";
+            addObjectToBuilder(datasetBuilder, agent, ObjectTypes.OBJECT);
+        }
 
         //----------------------------------
         //Optional
@@ -252,7 +251,7 @@ public class GenerateDCAT {
         addPredicateToBuilder(datasetBuilder, "dcat:isVersionOf");
         addObjectToBuilder(datasetBuilder, "", ObjectTypes.RESOURCE);
         //dct:spatial
-        for(GeospatialCoverage geospac : eml.getGeospatialCoverages()){
+        for (GeospatialCoverage geospac : eml.getGeospatialCoverages()) {
             BBox bb = geospac.getBoundingCoordinates();
             addPredicateToBuilder(datasetBuilder, "dct:spatial");
             String spatial = " geo:Point [ geo:lat \"" + bb.getMin().getLatitude() + "\" ; geo:long \"" + bb.getMin().getLongitude() + "\" ] ; "
@@ -276,13 +275,21 @@ public class GenerateDCAT {
         return datasetBuilder.toString();
     }
 
-    private String createDistribution() {
+    public String createDCATDistribution(Resource resource) {
         StringBuilder distributionBuilder = new StringBuilder();
+        Eml eml = resource.getEml();
 
+        //Base
+        distributionBuilder.append(":");
+        distributionBuilder.append(eml.getHomepageUrl() + "/#Distribution" + "\n");
+        distributionBuilder.append("a dcat:Distribution");
 
+        //----------------------------------
         //Recommended
         //dct:description
 
+
+        //----------------------------------
         //Optional
         //dct:license
         //dcat:mediaType
@@ -290,7 +297,7 @@ public class GenerateDCAT {
         //dcat:downloadURL
 
 
-        return new String();
+        return distributionBuilder.toString();
     }
 
     /**
