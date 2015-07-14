@@ -1,6 +1,7 @@
 package org.gbif.ipt.task;
 
 import com.google.inject.Inject;
+import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Resource;
 
@@ -16,6 +17,7 @@ import java.io.PrintWriter;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 
+import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.metadata.eml.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -39,13 +41,16 @@ import org.w3c.dom.NamedNodeMap;
  * dcat:distribution <http://datatank4.gent.be/bestuurenbeleid/schepenen.json> .
  */
 
+/**
+ * Class to generate a DCAT feed of the data
+ */
 public class GenerateDCAT {
 
+    private AppConfig cfg;
+
     @Inject
-    DataDir directory;
-
-    public GenerateDCAT() {
-
+    public GenerateDCAT(AppConfig cfg){
+        this.cfg = cfg;
     }
 
     public void create(Resource resource) {
@@ -62,8 +67,8 @@ public class GenerateDCAT {
         prefix.put("foaf:", "http://xmlns.com/foaf/0.1/");
         prefix.put("schema:", "http://schema.org/");
         prefix.put("adms:", "http://www.w3.org/ns/adms#");
-        prefix.put("geo:", "http://www.w3.org/2003/01/geo/wgs84_pos#");
-        prefix.put("vcard", "http://www.w3.org/2006/vcard/ns#");
+        prefix.put("locn:", "http://www.w3.org/ns/locn#");
+        prefix.put("vcard:", "http://www.w3.org/2006/vcard/ns#");
 
         ArrayList<String> txt = readXmlFile();
         ArrayList<String> finalTxt = hasMapToStringArray(prefix);
@@ -165,9 +170,34 @@ public class GenerateDCAT {
         }
     }
 
-    private String createCatalog() {
+    public String createPrefixes() {
+        StringBuilder prefixBuilder = new StringBuilder();
+
+        HashMap<String, String> prefix = new HashMap<String, String>();
+        prefix.put("dct:", "http://purl.org/dc/terms/");
+        prefix.put("dcat:", "http://www.w3.org/ns/dcat#");
+        prefix.put("xsd:", "http://www.w3.org/2001/XMLSchema#");
+        prefix.put("skos:", "http://www.w3.org/2004/02/skos/core#");
+        prefix.put("rdfs:", "http://www.w3.org/2000/01/rdf-schema#");
+        prefix.put("foaf:", "http://xmlns.com/foaf/0.1/");
+        prefix.put("schema:", "http://schema.org/");
+        prefix.put("adms:", "http://www.w3.org/ns/adms#");
+        prefix.put("locn:", "http://www.w3.org/ns/locn#");
+        prefix.put("vcard:", "http://www.w3.org/2006/vcard/ns#");
+
+        for (String pre : prefix.keySet()) {
+            prefixBuilder.append("@prefix " + pre + " <" + prefix.get(pre) + "> .\n");
+        }
+        return prefixBuilder.toString();
+    }
+
+    public String createDCATCatalog() {
+
+        StringBuilder catalogBuilder = new StringBuilder();
+
         //Mandatory
         //dct:title
+        //System.out.println(registrationManager.getIpt().getName());
         //dct:description
         //dct:publisher
         //dcat:dataset
@@ -199,8 +229,13 @@ public class GenerateDCAT {
         Eml eml = resource.getEml();
 
         //Base
-        datasetBuilder.append(":");
-        datasetBuilder.append(eml.getHomepageUrl() + "/#dataset" + "\n");
+        String url = "";
+        if (cfg == null) {
+            System.out.println("Haha");
+        } else {
+            url = cfg.getResourceUrl(resource.getShortname()) + "#dataset";
+        }
+        datasetBuilder.append(encapsulateObject(url, ObjectTypes.RESOURCE) + "\n");
         datasetBuilder.append("a dcat:Dataset");
 
 
@@ -234,7 +269,8 @@ public class GenerateDCAT {
         //adms:contactPoint
         for (Agent contact : eml.getContacts()) {
             addPredicateToBuilder(datasetBuilder, "adms:contactPoint");
-            String agent = " vcard:Kind \"Individual\" ; vcard:fn \"" + contact.getFullName() + "\" ] ";
+            String agent = " a vcard:Individual ; vcard:fn \"" + contact.getFullName() + "\" "
+                    + " ; vcard:hasEmail <mailto:" + contact.getEmail() + "> ";
             addObjectToBuilder(datasetBuilder, agent, ObjectTypes.OBJECT);
         }
 
@@ -246,57 +282,74 @@ public class GenerateDCAT {
         //dct:modified
         addPredicateToBuilder(datasetBuilder, "dct:modified");
         addObjectToBuilder(datasetBuilder, parseToIsoDate(eml.getPubDate()), ObjectTypes.LITERAL);
-        //dct:isVersionOf
-        //TODO
-        addPredicateToBuilder(datasetBuilder, "dcat:isVersionOf");
-        addObjectToBuilder(datasetBuilder, "", ObjectTypes.RESOURCE);
         //dct:spatial
+        //TODO
         for (GeospatialCoverage geospac : eml.getGeospatialCoverages()) {
             BBox bb = geospac.getBoundingCoordinates();
             addPredicateToBuilder(datasetBuilder, "dct:spatial");
-            String spatial = " geo:Point [ geo:lat \"" + bb.getMin().getLatitude() + "\" ; geo:long \"" + bb.getMin().getLongitude() + "\" ] ; "
-                    + "geo:Point [ geo:lat \"" + bb.getMax().getLatitude() + "\" ; geo:long \"" + bb.getMax().getLongitude() + "\" ] ";
+            String spatial = " a dct:Location ; locn:geometry \"" + "{ \\\"type\\\": \\\"Polygon\\\", \\\"coordinates\\\": [ [ ["
+                    + bb.getMin().getLongitude() + "," + bb.getMin().getLatitude()
+                    + "], [" + bb.getMin().getLongitude() + "," + bb.getMax().getLatitude()
+                    + "], [" + bb.getMax().getLongitude() + "," + bb.getMax().getLatitude()
+                    + "], [" + bb.getMax().getLongitude() + "," + bb.getMin().getLatitude()
+                    + "], [" + bb.getMin().getLongitude() + "," + bb.getMin().getLatitude()
+                    + "] ] ] }" + "\" ";
             addObjectToBuilder(datasetBuilder, spatial, ObjectTypes.OBJECT);
         }
         //adms:versionInfo
-        //TODO
-        addPredicateToBuilder(datasetBuilder, "adms:versionInfo");
-        addObjectToBuilder(datasetBuilder, "", ObjectTypes.LITERAL);
+        if (resource.getLastPublishedVersionsVersion() != null) {
+            addPredicateToBuilder(datasetBuilder, "adms:versionInfo");
+            addObjectToBuilder(datasetBuilder, resource.getLastPublishedVersionsVersion().toString(), ObjectTypes.LITERAL);
+        }
         //adms:versionNotes
-        //TODO
-        addPredicateToBuilder(datasetBuilder, "adms:versionNotes");
-        addObjectToBuilder(datasetBuilder, "", ObjectTypes.LITERAL);
-        //addStringtoBuilder(datasetBuilder, "adms:versionNotes", resource.getEml().getEmlVersion().toString());
+        if (resource.getLastPublishedVersionsChangeSummary() != null) {
+            addPredicateToBuilder(datasetBuilder, "adms:versionNotes");
+            addObjectToBuilder(datasetBuilder, resource.getLastPublishedVersionsChangeSummary().toString(), ObjectTypes.LITERAL);
+        }
         //dcat:landingPage
         addPredicateToBuilder(datasetBuilder, "dcat:landingPage");
-        addObjectToBuilder(datasetBuilder, eml.getHomepageUrl(), ObjectTypes.RESOURCE);
+        addObjectToBuilder(datasetBuilder, eml.getPublished().toString(), ObjectTypes.RESOURCE);
 
         datasetBuilder.append(" .");
         return datasetBuilder.toString();
     }
 
+    /**
+     * @param resource
+     * @return
+     */
     public String createDCATDistribution(Resource resource) {
         StringBuilder distributionBuilder = new StringBuilder();
         Eml eml = resource.getEml();
 
         //Base
-        distributionBuilder.append(":");
-        distributionBuilder.append(eml.getHomepageUrl() + "/#Distribution" + "\n");
+        distributionBuilder.append(encapsulateObject(".com" + "/#Distribution", ObjectTypes.RESOURCE) + "\n");
         distributionBuilder.append("a dcat:Distribution");
 
         //----------------------------------
         //Recommended
         //dct:description
+        addPredicateToBuilder(distributionBuilder, "dct:description");
+        addObjectToBuilder(distributionBuilder, "Darwin Core Archive", ObjectTypes.LITERAL);
+        //dct:license
+        addPredicateToBuilder(distributionBuilder, "dct:license");
+        addObjectToBuilder(distributionBuilder, eml.parseLicenseUrl(), ObjectTypes.RESOURCE);
+        //dct:format
+        addPredicateToBuilder(distributionBuilder, "dct:format");
+        addObjectToBuilder(distributionBuilder, "dwc-a", ObjectTypes.LITERAL);
 
 
         //----------------------------------
         //Optional
-        //dct:license
         //dcat:mediaType
-        //dct:format
+        addPredicateToBuilder(distributionBuilder, "dcat:mediaType");
+        addObjectToBuilder(distributionBuilder, "application/zip", ObjectTypes.LITERAL);
         //dcat:downloadURL
+        addPredicateToBuilder(distributionBuilder, "dcat:downloadURL");
+        addObjectToBuilder(distributionBuilder, eml.getDistributionUrl(), ObjectTypes.RESOURCE);
 
 
+        distributionBuilder.append(" .");
         return distributionBuilder.toString();
     }
 

@@ -96,6 +96,7 @@ public class GenerateDCATTest {
     private static final String RESOURCE_SHORTNAME = "res1";
     private static final String VERSIONED_ARCHIVE_FILENAME = "dwca-3.0.zip";
 
+    private GenerateDwca generateDwca;
     private Resource resource;
     private User creator;
     private ReportHandler mockHandler;
@@ -156,6 +157,12 @@ public class GenerateDCATTest {
     }
 
     @Test
+    public void testCreateDCATCatalog() {
+        //GenerateDCAT gd = new GenerateDCAT();
+        //System.out.println(gd.createDCATCatalog());
+    }
+
+    @Test
     public void testCreateDCATDataset() {
         Resource res = null;
         // retrieve sample zipped resource XML configuration file
@@ -167,8 +174,24 @@ public class GenerateDCATTest {
         } catch (Exception e) {
             System.out.println(e);
         }
-        GenerateDCAT gd = new GenerateDCAT();
-        System.out.println(gd.createDCATDataset(res));
+        //GenerateDCAT gd = new GenerateDCAT();
+        //System.out.println(gd.createDCATDataset(res));
+    }
+
+    @Test
+    public void testCreateDCATDistribution() {
+        Resource res = null;
+        // retrieve sample zipped resource XML configuration file
+        File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
+        // create resource from single source file
+        File occurrence = FileUtils.getClasspathFile("resources/res1/occurrence.txt");
+        try {
+            res = getResource(resourceXML, occurrence);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        //GenerateDCAT gd = new GenerateDCAT();
+        //System.out.println(gd.createDCATDistribution(res));
     }
 
 
