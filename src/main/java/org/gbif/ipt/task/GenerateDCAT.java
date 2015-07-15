@@ -6,14 +6,10 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Resource;
 
+import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.logging.Logger;
 
 import org.gbif.ipt.service.admin.RegistrationManager;
@@ -37,6 +33,39 @@ public class GenerateDCAT {
         this.cfg = cfg;
         this.regMgr = regMgr;
         this.rscMgr = rscMgr;
+    }
+
+    public  String readingDCAT(){
+        String DCATCatalog ="";
+        String CurrentLine;
+        BufferedReader br = null;
+        for(Resource res : rscMgr.listPublishedPublicVersions()){
+           try
+           {
+               String path = rscMgr.isDCATExisting(res.getShortname());
+               if(path != null){
+                br = new BufferedReader(new FileReader(path));
+                while ((CurrentLine = br.readLine()) != null) {
+                    DCATCatalog += CurrentLine + "\n";
+                }
+               }
+               else {//TODO Create a DCAT feed for this dataset ?
+                };
+        }
+        catch (FileNotFoundException e){
+            System.out.println("404 : DCAT-DATASET file not found : "+ e);
+        }catch(IOException e){
+                System.out.println("error" + e);
+            } finally {
+            try {
+                if (br != null)br.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+       }
+       System.out.println("CATALOG \n" + DCATCatalog);
+        return DCATCatalog;
     }
 
     /**
@@ -184,50 +213,23 @@ public class GenerateDCAT {
         catalogBuilder.append("\n");
         catalogBuilder.append(" a dcat:Catalog");
 
+        //Mandatory
         //dct:title
-        addPredicateToBuilder(catalogBuilder, "dct:title");
-        addObjectToBuilder(catalogBuilder, ipt.getName(), ObjectTypes.LITERAL);
+        //System.out.println(registrationManager.getIpt().getName());
         //dct:description
-        addPredicateToBuilder(catalogBuilder, "dct:description");
-        addObjectToBuilder(catalogBuilder, ipt.getDescription(), ObjectTypes.LITERAL);
         //dct:publisher
-        if (ipt.getKey() != null) {
-            addPredicateToBuilder(catalogBuilder, "dct:publisher");
-            String publisher = "http://www.gbif.org/publisher/" + ipt.getKey() + "#Organization";
-            String organisation = encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + ipt.getName() + "\" .";
-            organisations.add(organisation);
-            addObjectToBuilder(catalogBuilder, publisher, ObjectTypes.RESOURCE);
-        }
         //dcat:dataset
-        addPredicateToBuilder(catalogBuilder, "dcat:dataset");
-        addObjectsToBuilder(catalogBuilder, uris, ObjectTypes.RESOURCE);
+
+        //Recommended
         //foaf:homepage
-        if (ipt.getHomepageURL() != null) {
-            addPredicateToBuilder(catalogBuilder, "foaf:homepage");
-            addObjectToBuilder(catalogBuilder, ipt.getHomepageURL(), ObjectTypes.RESOURCE);
-        }
         //dct:issued
-        addPredicateToBuilder(catalogBuilder, "dct:issued");
-        addObjectToBuilder(catalogBuilder, parseToIsoDate(firstCreation), ObjectTypes.LITERAL);
         //dct:modified
-        addPredicateToBuilder(catalogBuilder, "dct:modified");
-        addObjectToBuilder(catalogBuilder, parseToIsoDate(lastModification), ObjectTypes.LITERAL);
         //dcat:themeTaxonomy
-        addPredicateToBuilder(catalogBuilder, "dcat:themeTaxonomy");
-        addObjectToBuilder(catalogBuilder, "http://eurovoc.europa.eu/5463", ObjectTypes.RESOURCE);
+
+        //Optional
         //dct:rights
-        addPredicateToBuilder(catalogBuilder, "dct:rights");
-        addObjectToBuilder(catalogBuilder, "https://creativecommons.org/publicdomain/zero/1.0/", ObjectTypes.RESOURCE);
         //dct:spatial
-        if (cfg.getLongitude() != null && cfg.getLatitude() != null) {
-            addPredicateToBuilder(catalogBuilder, "dct:spatial");
-            String spatial = " a dct:Location ; locn:geometry \"" + "{ \\\"type\\\": \\\"Point\\\", \\\"coordinates\\\": [ "
-                    + cfg.getLongitude() + "," + cfg.getLatitude()
-                    + " ] }\" ";
-            addObjectToBuilder(catalogBuilder, spatial, ObjectTypes.OBJECT);
-        }else{
-            Logger.getGlobal().info("No spatial data defined for the IPT");
-        }
+
 
         catalogBuilder.append(" .\n");
         return catalogBuilder.toString();
@@ -307,10 +309,10 @@ public class GenerateDCAT {
         }
         //dct:issued
         addPredicateToBuilder(datasetBuilder, "dct:issued");
-        addObjectToBuilder(datasetBuilder, parseToIsoDate(resource.getCreated()), ObjectTypes.LITERAL);
+        addObjectToBuilder(datasetBuilder, parseToIsoDate(eml.getDateStamp()), ObjectTypes.LITERAL);
         //dct:modified
         addPredicateToBuilder(datasetBuilder, "dct:modified");
-        addObjectToBuilder(datasetBuilder, parseToIsoDate(resource.getLastPublished()), ObjectTypes.LITERAL);
+        addObjectToBuilder(datasetBuilder, parseToIsoDate(eml.getPubDate()), ObjectTypes.LITERAL);
         //dct:spatial
         //Uses geoJSON to represent the geospatial coverage
         //This can easily be verified at http://geojsonlint.com/
