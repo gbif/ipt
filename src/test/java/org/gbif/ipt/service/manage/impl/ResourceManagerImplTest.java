@@ -1318,7 +1318,7 @@ public class ResourceManagerImplTest {
 
         //TODO DCAT
         // mock new saved dcat.txt file being versioned for every new version
-        File dcatFile = new File(resourceDir, "dcat.txt");
+        File dcatFile = new File(resourceDir, "dcat-dataset.txt");
         // mock finding versioned dcat.txt file
         when(mockedDataDir.resourceDCATFile(anyString())).thenReturn(dcatFile);
 

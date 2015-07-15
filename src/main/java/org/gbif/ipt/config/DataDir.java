@@ -263,7 +263,7 @@ public class DataDir {
      */
     //TODO
     public File resourceDCATFile(@NotNull String resourceName) {
-        return dataFile(RESOURCES_DIR + "/" + resourceName + "/dcat.txt");
+        return dataFile(RESOURCES_DIR + "/" + resourceName + "/dcat-dataset.txt");
     }
 
   /**
