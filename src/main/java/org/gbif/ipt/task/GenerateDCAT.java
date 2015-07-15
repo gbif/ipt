@@ -1,5 +1,6 @@
 package org.gbif.ipt.task;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.gbif.ipt.config.AppConfig;
@@ -59,15 +60,15 @@ public class GenerateDCAT {
     public String createDCATFeed() {
         StringBuilder feed = new StringBuilder();
         organisations = new HashSet<String>();
-        feed.append(createPrefixes());
+        feed.append(createPrefixesInformation());
         feed.append("\n");
-        feed.append(createDCATCatalog());
+        feed.append(createDCATCatalogInformation());
         feed.append("\n");
 
         for (Resource res : rscMgr.list()) {
-            feed.append(createDCATDataset(res));
+            feed.append(createDCATDatasetInformation(res));
             feed.append("\n");
-            feed.append(createDCATDistribution(res));
+            feed.append(createDCATDistributionInformation(res));
             feed.append("\n");
         }
 
@@ -81,10 +82,11 @@ public class GenerateDCAT {
     /**
      * Create the DCAT information for one
      *
-     * @return
+     * @return String
      */
     public String createDCATDataset() {
         StringBuilder datasetBuilder = new StringBuilder();
+
         return datasetBuilder.toString();
     }
 
@@ -109,7 +111,8 @@ public class GenerateDCAT {
      *
      * @return String Prefixes
      */
-    private String createPrefixes() {
+    @VisibleForTesting
+    protected String createPrefixesInformation() {
         prefixes = new HashMap<String, String>();
         prefixes.put("dct:", "http://purl.org/dc/terms/");
         prefixes.put("dcat:", "http://www.w3.org/ns/dcat#");
@@ -153,7 +156,8 @@ public class GenerateDCAT {
      *
      * @return String DCAT Catalog
      */
-    private String createDCATCatalog() {
+    @VisibleForTesting
+    protected String createDCATCatalogInformation() {
 
         StringBuilder catalogBuilder = new StringBuilder();
         Ipt ipt = regMgr.getIpt();
@@ -225,7 +229,7 @@ public class GenerateDCAT {
                     + cfg.getLongitude() + "," + cfg.getLatitude()
                     + " ] }\" ";
             addObjectToBuilder(catalogBuilder, spatial, ObjectTypes.OBJECT);
-        }else{
+        } else {
             Logger.getGlobal().info("No spatial data defined for the IPT");
         }
 
@@ -260,7 +264,8 @@ public class GenerateDCAT {
      * @param resource resource to create DCAT Dataset from
      * @return String DCAT Dataset for one resource
      */
-    private String createDCATDataset(Resource resource) {
+    @VisibleForTesting
+    protected String createDCATDatasetInformation(Resource resource) {
 
         StringBuilder datasetBuilder = new StringBuilder();
         Eml eml = resource.getEml();
@@ -383,7 +388,8 @@ public class GenerateDCAT {
      * @param resource resource to create he DCAT Distribution from
      * @return String DCAT Distribution for one resource
      */
-    private String createDCATDistribution(Resource resource) {
+    @VisibleForTesting
+    protected String createDCATDistributionInformation(Resource resource) {
         StringBuilder distributionBuilder = new StringBuilder();
         Eml eml = resource.getEml();
 

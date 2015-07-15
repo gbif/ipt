@@ -16,20 +16,13 @@
 
 package org.gbif.ipt.task;
 
-import org.gbif.api.model.common.DOI;
-import org.gbif.dwc.terms.DwcTerm;
-import org.gbif.dwca.io.Archive;
-import org.gbif.dwca.io.ArchiveFactory;
-import org.gbif.io.CSVReader;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.config.IPTModule;
 import org.gbif.ipt.config.JdbcSupport;
-import org.gbif.ipt.mock.MockAppConfig;
-import org.gbif.ipt.mock.MockDataDir;
-import org.gbif.ipt.mock.MockRegistryManager;
+import org.gbif.ipt.mock.*;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.FileSource;
 import org.gbif.ipt.model.Resource;
@@ -42,7 +35,6 @@ import org.gbif.ipt.model.converter.PasswordConverter;
 import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.factory.ExtensionFactory;
 import org.gbif.ipt.model.factory.ThesaurusHandlingRule;
-import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidFilenameException;
@@ -56,7 +48,6 @@ import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.service.manage.impl.SourceManagerImpl;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.FileUtils;
 
 import java.io.File;
@@ -91,6 +82,9 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * Test class for the DCAT generation
+ */
 public class GenerateDCATTest {
 
     private static final String RESOURCE_SHORTNAME = "res1";
@@ -103,6 +97,7 @@ public class GenerateDCATTest {
     private DataDir mockDataDir = MockDataDir.buildMock();
     private AppConfig mockAppConfig = MockAppConfig.buildMock();
     private SourceManager mockSourceManager;
+    private GenerateDCAT mockGenerateDCAT;
     private static VocabulariesManager mockVocabulariesManager = mock(VocabulariesManager.class);
     private File tmpDataDir;
     private File resourceDir;
@@ -154,12 +149,13 @@ public class GenerateDCATTest {
 
         // archival mode on
         when(mockAppConfig.isArchivalMode()).thenReturn(true);
+
+        mockGenerateDCAT = new GenerateDCAT(mockAppConfig, MockRegistrationManager.buildMock(), MockResourceManager.buildMock());
     }
 
     @Test
-    public void testCreateDCATCatalog() {
-        //GenerateDCAT gd = new GenerateDCAT();
-        //System.out.println(gd.createDCATCatalog());
+    public void testCreatePrefixes() {
+        //System.out.println(mockGenerateDCAT.createPrefixesInformation());
     }
 
     @Test
@@ -172,10 +168,9 @@ public class GenerateDCATTest {
         try {
             res = getResource(resourceXML, occurrence);
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
-        //GenerateDCAT gd = new GenerateDCAT();
-        //System.out.println(gd.createDCATDataset(res));
+        //System.out.println(mockGenerateDCAT.createDCATDatasetInformation(res));
     }
 
     @Test
@@ -188,10 +183,9 @@ public class GenerateDCATTest {
         try {
             res = getResource(resourceXML, occurrence);
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
-        //GenerateDCAT gd = new GenerateDCAT();
-        //System.out.println(gd.createDCATDistribution(res));
+        //System.out.println(mockGenerateDCAT.createDCATDistributionInformation(res));
     }
 
 
