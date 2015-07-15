@@ -11,6 +11,11 @@ import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.logging.Logger;
 
 import org.gbif.ipt.service.admin.RegistrationManager;
@@ -36,48 +41,40 @@ public class GenerateDCAT {
         this.rscMgr = rscMgr;
     }
 
-    public  String readingDCAT(){
-        String DCATCatalog ="";
-        String CurrentLine;
-        BufferedReader br = null;
-        for(Resource res : rscMgr.listPublishedPublicVersions()){
-           try
-           {
-               String path = rscMgr.isDCATExisting(res.getShortname());
-               if(path != null){
-                br = new BufferedReader(new FileReader(path));
-                while ((CurrentLine = br.readLine()) != null) {
-                    DCATCatalog += CurrentLine + "\n";
-                }
-               }
-               else {//TODO Create a DCAT feed for this dataset ?
-                };
-        }
-        catch (FileNotFoundException e){
-            System.out.println("404 : DCAT-DATASET file not found : "+ e);
-        }catch(IOException e){
-                System.out.println("error" + e);
-            } finally {
-            try {
-                if (br != null)br.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-       }
-       System.out.println("CATALOG \n" + DCATCatalog);
-        return DCATCatalog;
-    }
-
     /**
-     * Create the DCAT feed
+     * Get the DCAT feed
      * The prefixes, Catalog, all Datasets, all Distributions and the organizations
      *
      * @return DCAT feed
      */
     public String getDCATFeed() {
-        StringBuilder feed = new StringBuilder();
-        return feed.toString();
+        String DCATCatalog = "";
+        String CurrentLine;
+        BufferedReader br = null;
+        for (Resource res : rscMgr.listPublishedPublicVersions()) {
+            try {
+                String path = rscMgr.isDCATExisting(res.getShortname());
+                if (path != null) {
+                    br = new BufferedReader(new FileReader(path));
+                    while ((CurrentLine = br.readLine()) != null) {
+                        DCATCatalog += CurrentLine + "\n";
+                    }
+                } else {//TODO Create a DCAT feed for this dataset ?
+                }
+            } catch (FileNotFoundException e) {
+                System.out.println("404 : DCAT-DATASET file not found : " + e);
+            } catch (IOException e) {
+                System.out.println("error" + e);
+            } finally {
+                try {
+                    if (br != null) br.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        System.out.println("CATALOG \n" + DCATCatalog);
+        return DCATCatalog;
     }
 
     /**
@@ -109,12 +106,16 @@ public class GenerateDCAT {
     }
 
     /**
-     * Create the DCAT information for one
+     * Create the DCAT information for one resource
      *
      * @return String
      */
-    public String createDCATDataset() {
+    public String createDCATDataset(Resource resource) {
         StringBuilder datasetBuilder = new StringBuilder();
+        datasetBuilder.append(createDCATDatasetInformation(resource));
+        datasetBuilder.append("\n");
+        datasetBuilder.append(createDCATDistributionInformation(resource));
+        datasetBuilder.append("\n");
         return datasetBuilder.toString();
     }
 
@@ -124,13 +125,13 @@ public class GenerateDCAT {
      * @param path        the path of the file
      * @param information information to be put in the file
      */
-    private void writeFile(String path, String information) {
+    private void writeToFile(String path, String information) {
         try {
             PrintWriter pwnew = new PrintWriter(new BufferedWriter(new FileWriter(new File(path))));
             pwnew.println(information);
             pwnew.close();
-        } catch (IOException exception) {
-            //System.out.println("Writing error " + exception.getMessage());
+        } catch (IOException e) {
+            //System.out.println("Writing error " + e.getMessage());
         }
     }
 
