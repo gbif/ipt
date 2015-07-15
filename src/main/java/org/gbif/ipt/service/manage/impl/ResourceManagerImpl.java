@@ -677,6 +677,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         return emlFile.exists();
     }
 
+    public String isDCATExisting(String shortName){
+        File DCATFile = dataDir.resourceDCATFile(shortName);
+        if(DCATFile.exists()){
+            return DCATFile.getAbsolutePath();
+        }
+        return null;
+    }
+
     public boolean isLocked(String shortname, BaseAction action) {
         if (processFutures.containsKey(shortname)) {
             Resource resource = get(shortname);
