@@ -2,7 +2,6 @@ package org.gbif.ipt.task;
 
 import com.google.inject.Inject;
 import org.gbif.ipt.config.AppConfig;
-import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Resource;
 
 import java.text.DateFormat;
@@ -13,33 +12,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Logger;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
-
-import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.metadata.eml.*;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Node;
-import org.w3c.dom.NamedNodeMap;
-
-/**
- * DCAT FILE EXAMPLE
- *
- * @prefix dcat: <http://www.w3.org/ns/dcat#> .
- * @prefix dc: <http://purl.org/dc/terms/> .
- * @prefix foaf: <http://xmlns.com/foaf/0.1/> .
- * <http://datatank4.gent.be/bestuurenbeleid/schepenen>
- * a dcat:Dataset ;
- * dc:title "bestuurenbeleid/schepenen" ;
- * dc:description """Schepenen van Stad Gent.
- * """ ;
- * dc:identifier "bestuurenbeleid/schepenen" ;
- * dc:issued "2015-01-15T13:05:42+0000" ;
- * dc:modified "2015-01-15T13:05:42+0000" ;
- * dcat:distribution <http://datatank4.gent.be/bestuurenbeleid/schepenen.json> .
- */
 
 /**
  * Class to generate a DCAT feed of the data
@@ -47,61 +23,42 @@ import org.w3c.dom.NamedNodeMap;
 public class GenerateDCAT {
 
     private AppConfig cfg;
+    private ResourceManager rscMgr;
+    private static Map<String, String> prefixes;
+    private Set<String> organisations;
 
     @Inject
-    public GenerateDCAT(AppConfig cfg){
+    public GenerateDCAT(AppConfig cfg, ResourceManager rscMgr) {
         this.cfg = cfg;
+        this.rscMgr = rscMgr;
     }
 
-    public void create(Resource resource) {
-        //resource.setShortname("Testing Resource");
-        System.out.println("-----------------------------------\n" + "         Testing Resource\n" + "-----------------------------------\n" + resource.toString());
+    public String createDCATFeed() {
+        StringBuilder feed = new StringBuilder();
+        organisations = new HashSet<String>();
+        feed.append(createPrefixes());
+        feed.append("\n");
+        feed.append(createDCATCatalog());
+        feed.append("\n");
 
-        HashMap<String, String> prefix = new HashMap<String, String>();
-
-        prefix.put("dct:", "http://purl.org/dc/terms/");
-        prefix.put("dcat:", "http://www.w3.org/ns/dcat#");
-        prefix.put("xsd:", "http://www.w3.org/2001/XMLSchema#");
-        prefix.put("skos:", "http://www.w3.org/2004/02/skos/core#");
-        prefix.put("rdfs:", "http://www.w3.org/2000/01/rdf-schema#");
-        prefix.put("foaf:", "http://xmlns.com/foaf/0.1/");
-        prefix.put("schema:", "http://schema.org/");
-        prefix.put("adms:", "http://www.w3.org/ns/adms#");
-        prefix.put("locn:", "http://www.w3.org/ns/locn#");
-        prefix.put("vcard:", "http://www.w3.org/2006/vcard/ns#");
-
-        ArrayList<String> txt = readXmlFile();
-        ArrayList<String> finalTxt = hasMapToStringArray(prefix);
-        finalTxt.addAll(txt);
-
-        writeFile(finalTxt);
-    }
-
-    /**
-     * Convert the prefix Hashmap to a array list
-     *
-     * @param prefix
-     * @return
-     */
-    private static ArrayList<String> hasMapToStringArray(HashMap<String, String> prefix) {
-        Object[] keyArray = prefix.keySet().toArray();
-        String[] strArray = new String[keyArray.length];
-        for (int i = 0; i < keyArray.length; i++) {
-            strArray[i] = new String((String) keyArray[i]);
+        for (Resource res : rscMgr.list()) {
+            feed.append(createDCATDataset(res));
+            feed.append("\n");
+            feed.append(createDCATDistribution(res));
+            feed.append("\n");
         }
-        ArrayList<String> text = new ArrayList<String>();
-        for (String key : strArray) {
-            String link = prefix.get(key);
-            String line = "@prefix " + key + link;
-            text.add(line);
+
+        for (String org : organisations) {
+            feed.append(org);
+            feed.append("\n");
         }
-        return text;
+        return feed.toString();
     }
 
     /**
      * Write a new file with information in it
      *
-     * @param informations
+     * @param informations Information
      */
     private static void writeFile(ArrayList<String> informations) {
         File fnew = new File("/home/sylvain/Documents/datadir/dcat.txt");//Need to be fix HARDCODING
@@ -116,84 +73,45 @@ public class GenerateDCAT {
         }
     }
 
-    private static ArrayList<String> readXmlFile() {
-        ArrayList<String> txt = new ArrayList<String>();
-        try {
-
-            File file = new File("/home/sylvain/Documents/datadir/coccinellidae/eml.xml");//Need to be fix HARDOCING
-            //  File file = new File("/home/sylvain/Documents/datadir/resources/ResTest1/eml.xml");//Need to be fix HARDOCING
-            DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-
-            Document doc = dBuilder.parse(file);
-            if (doc.hasChildNodes()) {
-                printNode(doc.getChildNodes(), "", txt);
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return txt;
-    }
-
     /**
-     * Recursive method for tracking/printing everyNode
+     * Write all the prefixes needed in a String representation
      *
-     * @param nodeList
+     * @return String Prefixes
      */
-    private static void printNode(NodeList nodeList, String position, ArrayList<String> txt) {
-
-        for (int count = 0; count < nodeList.getLength(); count++) {
-            Node tempNode = nodeList.item(count);
-            if (tempNode.getNodeType() == Node.ELEMENT_NODE) {
-                position += "-";
-                System.out.println(position + "[OPEN]" + tempNode.getNodeName());
-                txt.add(position + "[OPEN]" + tempNode.getNodeName());
-                if (tempNode.hasAttributes()) {
-                    NamedNodeMap nodeMap = tempNode.getAttributes();
-
-                    for (int i = 0; i < nodeMap.getLength(); i++) {
-                        Node node = nodeMap.item(i);
-                        /*System.out.println("attr name : " + node.getNodeName());
-                        System.out.println("attr value : " + node.getNodeValue());*/
-                    }
-                }
-                //Recursive loop
-                if (tempNode.hasChildNodes()) {
-                    if (tempNode.getChildNodes().getLength() == 1) {
-                        System.out.println(tempNode.getTextContent());
-                        txt.add(tempNode.getTextContent());
-                    }
-                    printNode(tempNode.getChildNodes(), position, txt);
-                }
-                System.out.println(position + "[CLOSE]" + tempNode.getNodeName());
-                txt.add(position + "[CLOSE]" + tempNode.getNodeName());
-            }
-        }
-    }
-
     public String createPrefixes() {
+        prefixes = new HashMap<String, String>();
+        prefixes.put("dct:", "http://purl.org/dc/terms/");
+        prefixes.put("dcat:", "http://www.w3.org/ns/dcat#");
+        prefixes.put("xsd:", "http://www.w3.org/2001/XMLSchema#");
+        prefixes.put("skos:", "http://www.w3.org/2004/02/skos/core#");
+        prefixes.put("rdfs:", "http://www.w3.org/2000/01/rdf-schema#");
+        prefixes.put("foaf:", "http://xmlns.com/foaf/0.1/");
+        prefixes.put("schema:", "http://schema.org/");
+        prefixes.put("adms:", "http://www.w3.org/ns/adms#");
+        prefixes.put("locn:", "http://www.w3.org/ns/locn#");
+        prefixes.put("vcard:", "http://www.w3.org/2006/vcard/ns#");
+
         StringBuilder prefixBuilder = new StringBuilder();
-
-        HashMap<String, String> prefix = new HashMap<String, String>();
-        prefix.put("dct:", "http://purl.org/dc/terms/");
-        prefix.put("dcat:", "http://www.w3.org/ns/dcat#");
-        prefix.put("xsd:", "http://www.w3.org/2001/XMLSchema#");
-        prefix.put("skos:", "http://www.w3.org/2004/02/skos/core#");
-        prefix.put("rdfs:", "http://www.w3.org/2000/01/rdf-schema#");
-        prefix.put("foaf:", "http://xmlns.com/foaf/0.1/");
-        prefix.put("schema:", "http://schema.org/");
-        prefix.put("adms:", "http://www.w3.org/ns/adms#");
-        prefix.put("locn:", "http://www.w3.org/ns/locn#");
-        prefix.put("vcard:", "http://www.w3.org/2006/vcard/ns#");
-
-        for (String pre : prefix.keySet()) {
-            prefixBuilder.append("@prefix " + pre + " <" + prefix.get(pre) + "> .\n");
+        for (String pre : prefixes.keySet()) {
+            prefixBuilder.append("@prefix ");
+            prefixBuilder.append(pre);
+            prefixBuilder.append(" <");
+            prefixBuilder.append(prefixes.get(pre));
+            prefixBuilder.append("> .\n");
         }
         return prefixBuilder.toString();
     }
 
-    public String createDCATCatalog() {
+    /**
+     * Create the DCAT feed for the Catalog
+     *
+     * @return String DCAT Catalog
+     */
+    private String createDCATCatalog() {
 
         StringBuilder catalogBuilder = new StringBuilder();
+
+        catalogBuilder.append(" a dcat:Catalog");
 
         //Mandatory
         //dct:title
@@ -213,69 +131,82 @@ public class GenerateDCAT {
         //dct:spatial
 
 
-        return new String();
+        catalogBuilder.append(" .\n");
+        return catalogBuilder.toString();
     }
 
     /**
-     * Create the DCAT feed for one dataset
-     * This is parsed into turtle syntax
+     * Create a DCAT Dataset of one resource
+     * <p>
+     * Implmented:
+     * <ul>
+     * <li>dct:title</li>
+     * <li>dct:description</li>
+     * <li>dcat:keyword</li>
+     * <li>dcat:theme</li>
+     * <li>adms:contactPoint</li>
+     * <li>dct:issued</li>
+     * <li>dct:modified</li>
+     * <li>dct:spatial</li>
+     * <li>adms:versionInfo</li>
+     * <li>adms:versionNotes</li>
+     * <li>dcat:landingPage</li>
+     * <li>foaf:homepage</li>
+     * <li>dct:identifier</li>
+     * <li>dct:publisher</li>
+     * </ul>
+     * </p>
+     * For every publisher it comes along it creates a foaf:agent with the name of the organisation
+     * This is then added to the set organisations, this is not added to this return method
      *
-     * @param resource the resource to create the DCAT feed for
-     * @return string representation of DCAT feed
+     * @param resource resource to create DCAT Dataset from
+     * @return String DCAT Dataset for one resource
      */
-    public String createDCATDataset(Resource resource) {
+    private String createDCATDataset(Resource resource) {
 
         StringBuilder datasetBuilder = new StringBuilder();
         Eml eml = resource.getEml();
 
         //Base
-        String url = "";
-        if (cfg == null) {
-            System.out.println("Haha");
-        } else {
+        String url = "localhost:8080#dataset";
+        if (cfg != null) {
             url = cfg.getResourceUrl(resource.getShortname()) + "#dataset";
+        } else {
+            Logger.getGlobal().info("Couldn't load URL of the resource:" + resource.getShortname());
         }
-        datasetBuilder.append(encapsulateObject(url, ObjectTypes.RESOURCE) + "\n");
+        datasetBuilder.append(encapsulateObject(url, ObjectTypes.RESOURCE));
+        datasetBuilder.append("\n");
         datasetBuilder.append("a dcat:Dataset");
 
-
-        //----------------------------------
-        //Mandatory
         //dct:title
         addPredicateToBuilder(datasetBuilder, "dct:title");
         addObjectToBuilder(datasetBuilder, eml.getTitle(), ObjectTypes.LITERAL);
         //dct:description
         addPredicateToBuilder(datasetBuilder, "dct:description");
-        String description = "";
+        StringBuilder description = new StringBuilder();
         for (String des : eml.getDescription()) {
-            description += des;
-            if (eml.getDescription().indexOf(des) != eml.getDescription().size() - 1) {
-                description += "\n";
-            }
+            description.append(des);
+            description.append("\n");
         }
-        addObjectToBuilder(datasetBuilder, description, ObjectTypes.LITERAL);
-
-        //---------------------------------
-        //Recommended
+        description.deleteCharAt(description.length() - 1);
+        addObjectToBuilder(datasetBuilder, description.toString(), ObjectTypes.LITERAL);
         //dcat:keyword
         for (KeywordSet key : eml.getKeywords()) {
             addPredicateToBuilder(datasetBuilder, "dcat:keyword");
             addObjectsToBuilder(datasetBuilder, key.getKeywords(), ObjectTypes.LITERAL);
         }
         //dcat:theme
-        //TODO
         addPredicateToBuilder(datasetBuilder, "dcat:theme");
-        addObjectToBuilder(datasetBuilder, "", ObjectTypes.RESOURCE);
+        addObjectToBuilder(datasetBuilder, "http://eurovoc.europa.eu/5463", ObjectTypes.RESOURCE);
         //adms:contactPoint
         for (Agent contact : eml.getContacts()) {
             addPredicateToBuilder(datasetBuilder, "adms:contactPoint");
-            String agent = " a vcard:Individual ; vcard:fn \"" + contact.getFullName() + "\" "
-                    + " ; vcard:hasEmail <mailto:" + contact.getEmail() + "> ";
+            String agent = " a vcard:Kind ; vcard:fn \"" + contact.getFullName() + "\" ";
+            if (contact.getEmail() != null) {
+                agent += " ; vcard:hasEmail <mailto:" + contact.getEmail() + "> ";
+            }
             addObjectToBuilder(datasetBuilder, agent, ObjectTypes.OBJECT);
         }
-
-        //----------------------------------
-        //Optional
         //dct:issued
         addPredicateToBuilder(datasetBuilder, "dct:issued");
         addObjectToBuilder(datasetBuilder, parseToIsoDate(eml.getDateStamp()), ObjectTypes.LITERAL);
@@ -283,7 +214,8 @@ public class GenerateDCAT {
         addPredicateToBuilder(datasetBuilder, "dct:modified");
         addObjectToBuilder(datasetBuilder, parseToIsoDate(eml.getPubDate()), ObjectTypes.LITERAL);
         //dct:spatial
-        //TODO
+        //Uses geoJSON to represent the geospatial coverage
+        //This can easily be verified at http://geojsonlint.com/
         for (GeospatialCoverage geospac : eml.getGeospatialCoverages()) {
             BBox bb = geospac.getBoundingCoordinates();
             addPredicateToBuilder(datasetBuilder, "dct:spatial");
@@ -304,71 +236,113 @@ public class GenerateDCAT {
         //adms:versionNotes
         if (resource.getLastPublishedVersionsChangeSummary() != null) {
             addPredicateToBuilder(datasetBuilder, "adms:versionNotes");
-            addObjectToBuilder(datasetBuilder, resource.getLastPublishedVersionsChangeSummary().toString(), ObjectTypes.LITERAL);
+            addObjectToBuilder(datasetBuilder, resource.getLastPublishedVersionsChangeSummary(), ObjectTypes.LITERAL);
         }
         //dcat:landingPage
+        String landingPage = "localhost:8080";
+        if (cfg != null) {
+            landingPage = cfg.getResourceUrl(resource.getShortname());
+        } else {
+            Logger.getGlobal().info("Couldn't load URL for landingPage of " + resource.getShortname());
+        }
         addPredicateToBuilder(datasetBuilder, "dcat:landingPage");
-        addObjectToBuilder(datasetBuilder, eml.getPublished().toString(), ObjectTypes.RESOURCE);
+        addObjectToBuilder(datasetBuilder, landingPage, ObjectTypes.RESOURCE);
+        //foaf:homepage
+        if (eml.getHomepageUrl() != null) {
+            addPredicateToBuilder(datasetBuilder, "foaf:homepage");
+            addObjectToBuilder(datasetBuilder, eml.getHomepageUrl(), ObjectTypes.RESOURCE);
+        }
+        //dct:identifier
+        if (resource.getKey() != null) {
+            addPredicateToBuilder(datasetBuilder, "dct:identifier");
+            addObjectToBuilder(datasetBuilder, "http://www.gbif.org/dataset/" + resource.getKey(), ObjectTypes.LITERAL);
+        }
+        //dct:publisher
+        if (resource.getOrganisation() != null && resource.getOrganisation().getKey() != null) {
+            addPredicateToBuilder(datasetBuilder, "dct:publisher");
+            String publisher = "http://www.gbif.org/publisher/" + resource.getOrganisation().getKey();
+            String organisation = encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + resource.getOrganisation().getName() + "\" .";
+            organisations.add(organisation);
+            addObjectToBuilder(datasetBuilder, publisher, ObjectTypes.RESOURCE);
+        }
 
-        datasetBuilder.append(" .");
+        datasetBuilder.append(" .\n");
         return datasetBuilder.toString();
     }
 
     /**
-     * @param resource
-     * @return
+     * Create a DCAT Distribution of one resoure
+     * <p>
+     * Implemented:
+     * <ul>
+     * <li>dct:description</li>
+     * <li>dct:license</li>
+     * <li>dct:format</li>
+     * <li>dcat:mediaType</li>
+     * <li>dcat:downloadURL</li>
+     * </ul>
+     *
+     * @param resource resource to create he DCAT Distribution from
+     * @return String DCAT Distribution for one resource
      */
-    public String createDCATDistribution(Resource resource) {
+    private String createDCATDistribution(Resource resource) {
         StringBuilder distributionBuilder = new StringBuilder();
         Eml eml = resource.getEml();
 
         //Base
-        distributionBuilder.append(encapsulateObject(".com" + "/#Distribution", ObjectTypes.RESOURCE) + "\n");
+        String url = "localhost:8080#distribution";
+        if (cfg != null) {
+            url = cfg.getResourceArchiveUrl(resource.getShortname());
+        } else {
+            Logger.getGlobal().info("Couldn't load URL of the distribution:" + resource.getShortname());
+        }
+        distributionBuilder.append(encapsulateObject(url, ObjectTypes.RESOURCE));
+        distributionBuilder.append("\n");
         distributionBuilder.append("a dcat:Distribution");
-
-        //----------------------------------
-        //Recommended
         //dct:description
         addPredicateToBuilder(distributionBuilder, "dct:description");
         addObjectToBuilder(distributionBuilder, "Darwin Core Archive", ObjectTypes.LITERAL);
         //dct:license
-        addPredicateToBuilder(distributionBuilder, "dct:license");
-        addObjectToBuilder(distributionBuilder, eml.parseLicenseUrl(), ObjectTypes.RESOURCE);
+        if (eml.parseLicenseUrl() != null) {
+            addPredicateToBuilder(distributionBuilder, "dct:license");
+            addObjectToBuilder(distributionBuilder, eml.parseLicenseUrl(), ObjectTypes.RESOURCE);
+        } else {
+            Logger.getGlobal().info("Can't parse licenseURL for the distribution of " + resource.getShortname());
+        }
         //dct:format
         addPredicateToBuilder(distributionBuilder, "dct:format");
         addObjectToBuilder(distributionBuilder, "dwc-a", ObjectTypes.LITERAL);
-
-
-        //----------------------------------
-        //Optional
         //dcat:mediaType
         addPredicateToBuilder(distributionBuilder, "dcat:mediaType");
         addObjectToBuilder(distributionBuilder, "application/zip", ObjectTypes.LITERAL);
         //dcat:downloadURL
-        addPredicateToBuilder(distributionBuilder, "dcat:downloadURL");
-        addObjectToBuilder(distributionBuilder, eml.getDistributionUrl(), ObjectTypes.RESOURCE);
+        if (cfg != null) {
+            addPredicateToBuilder(distributionBuilder, "dcat:downloadURL");
+            addObjectToBuilder(distributionBuilder, cfg.getResourceArchiveUrl(resource.getShortname()), ObjectTypes.RESOURCE);
+        } else {
+            Logger.getGlobal().info("Couldn't get downloadURL for the distribution of " + resource.getShortname());
+        }
 
-
-        distributionBuilder.append(" .");
+        distributionBuilder.append(" .\n");
         return distributionBuilder.toString();
     }
 
     /**
      * Method to add the predicate to the builder in turtle syntax
-     * Ends the last predicate with a ; and a newline
+     * Ends the previous predicate with a ; and a newline
      *
-     * @param stringBuilder builder for the String
-     * @param predicate     Realtion between the subject and object
+     * @param builder   builder for the String
+     * @param predicate Relation between the subject and object
      */
-    private static void addPredicateToBuilder(StringBuilder stringBuilder, String predicate) {
-        stringBuilder.append(" ;\n");
-        stringBuilder.append(predicate);
-        stringBuilder.append(" ");
+    private static void addPredicateToBuilder(StringBuilder builder, String predicate) {
+        builder.append(" ;\n");
+        builder.append(predicate);
+        builder.append(" ");
     }
 
     /**
-     * Add objects to the builder.
-     * Puts commas between the literal and encapsulates the objects
+     * Add objects to the builder
+     * Encapsulates the object
      * Objects cannot be null and must at least contain one value
      *
      * @param builder StringBuilder
@@ -380,7 +354,7 @@ public class GenerateDCAT {
     }
 
     /**
-     * Add a list of objects to the builder.
+     * Add a list of objects to the builder
      * Puts commas between the literal and encapsulates the objects with " or <  depending on the boolean literal
      * Objects cannot be null and must at least contain one value
      *
@@ -397,6 +371,9 @@ public class GenerateDCAT {
         }
     }
 
+    /**
+     * Enumeration to describe the kind of the object
+     */
     private enum ObjectTypes {
         OBJECT, LITERAL, RESOURCE
     }
@@ -446,7 +423,7 @@ public class GenerateDCAT {
      * @param dateStamp Date object
      * @return ISO8601 string representation for a date
      */
-    public static String parseToIsoDate(Date dateStamp) {
+    private static String parseToIsoDate(Date dateStamp) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmXXX");
         return df.format(new Date());
     }

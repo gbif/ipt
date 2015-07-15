@@ -179,6 +179,7 @@
         </action>
     </package>
 
+    <!-- DCAT actions -->
     <package name="dcatPackage" namespace="/" extends="struts-default">
         <action name="dcat" class="org.gbif.ipt.action.portal.DCATAction">
             <result type="stream">
