@@ -254,14 +254,11 @@ public class DataDir {
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
   }
     /**
-     * Retrieves published DCAT file for a specific version of a resource.
+     * Retrieves published DCAT file for a specific resource.
      *
      * @param resourceName resource short name
-    // * @param version      version
-     *
-     * @return DCAT file
+     * @return File DCAT file
      */
-    //TODO
     public File resourceDCATFile(@NotNull String resourceName) {
         return dataFile(RESOURCES_DIR + "/" + resourceName + "/dcat-dataset.txt");
     }

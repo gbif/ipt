@@ -1151,8 +1151,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         publishEml(resource, version);
         // publish RTF
         publishRtf(resource, version);
-        //TODO GENERATE DCAT
-        publishDCAT(resource, version);
+        // publish DCAT
+        publishDCAT(resource);
 
         // (re)generate dwca asynchronously
         boolean dwca = false;
@@ -1602,7 +1602,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
                     "Can't publish eml file for resource " + resource.getShortname(), e);
         }
     }
-    //TODO Create DCAT feed
 
     /**
      * Publishes a new version of the DCAT file for the given resource.
@@ -1610,7 +1609,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
      * @param resource Resource
      * @throws PublicationException if resource was already being published, or if publishing failed for any reason
      */
-    private void publishDCAT(Resource resource, BigDecimal version) throws PublicationException {
+    private void publishDCAT(Resource resource) throws PublicationException {
         // check if publishing task is already running
         if (isLocked(resource.getShortname())) {
             throw new PublicationException(PublicationException.TYPE.LOCKED,
