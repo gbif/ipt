@@ -188,6 +188,13 @@
                 <param name="inputName">dcatInfo</param>
             </result>
         </action>
+        <action name="newdcat" class="org.gbif.ipt.action.portal.DCATAction" method="createNewDCAT">
+            <result type="stream">
+                <param name="noCache">true</param>
+                <param name="contentType">text</param>
+                <param name="inputName">dcatInfo</param>
+            </result>
+        </action>
     </package>
 
     <!--

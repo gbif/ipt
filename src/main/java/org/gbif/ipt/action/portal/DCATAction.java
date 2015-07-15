@@ -1,9 +1,5 @@
 package org.gbif.ipt.action.portal;
 
-
-import org.gbif.ipt.config.AppConfig;
-import org.gbif.ipt.service.manage.ResourceManager;
-
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionSupport;
 import org.gbif.ipt.task.GenerateDCAT;
@@ -31,13 +27,13 @@ public class DCATAction extends ActionSupport {
 
     /**
      * Method called when this action is called
-     * Creates a GenerateDCAT and makes a new InputStream with the DCAT feed
+     * Fills the stream with the DCAT feed
      *
      * @return String whether the method has been executed with success
      */
     @Override
     public String execute() {
-        String out = generateDCAT.createDCATFeed();
+        String out = "Hehehe";
         try {
             dcatInfo = new ByteArrayInputStream(out.getBytes("UTF-8"));
         } catch (UnsupportedEncodingException e) {
@@ -53,6 +49,22 @@ public class DCATAction extends ActionSupport {
      */
     public InputStream getDcatInfo() {
         return dcatInfo;
+    }
+
+    /**
+     * Method called by $(baseURL)/newdcat
+     * Regenerates the DCAT feed
+     *
+     * @return
+     */
+    public String createNewDCAT() {
+        String out = generateDCAT.createDCATFeed();
+        try {
+            dcatInfo = new ByteArrayInputStream(out.getBytes("UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return SUCCESS;
     }
 
 }

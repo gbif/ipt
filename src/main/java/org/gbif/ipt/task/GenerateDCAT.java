@@ -11,11 +11,6 @@ import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.logging.Logger;
 
 import org.gbif.ipt.service.admin.RegistrationManager;
@@ -31,7 +26,6 @@ public class GenerateDCAT {
     private AppConfig cfg;
     private RegistrationManager regMgr;
     private ResourceManager rscMgr;
-    private static Map<String, String> prefixes;
     private Set<String> organisations;
 
     @Inject
@@ -142,7 +136,7 @@ public class GenerateDCAT {
      */
     @VisibleForTesting
     protected String createPrefixesInformation() {
-        prefixes = new HashMap<String, String>();
+        HashMap<String, String> prefixes = new HashMap<String, String>();
         prefixes.put("dct:", "http://purl.org/dc/terms/");
         prefixes.put("dcat:", "http://www.w3.org/ns/dcat#");
         prefixes.put("xsd:", "http://www.w3.org/2001/XMLSchema#");
@@ -559,7 +553,7 @@ public class GenerateDCAT {
      */
     private static String parseToIsoDate(Date dateStamp) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmXXX");
-        return df.format(new Date());
+        return df.format(dateStamp);
     }
 
 }
